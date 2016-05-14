@@ -11,5 +11,7 @@ We are gradually removing our internal dependencies to jQuery, as well as moving
 
 ## Build
     npm install -g gulp
+    npm install -g typings
     npm install
+    typings install
     gulp
