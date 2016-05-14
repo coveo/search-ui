@@ -11,7 +11,8 @@ node_js:
 - 4.2.2
 before_script:
 - npm install -g gulp
-- npm install
+- npm install -g typings
+- typings
 script:
 - gulp
 deploy:

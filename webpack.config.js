@@ -1,5 +1,5 @@
 module.exports = {
-  entry: ['./src/dependencies.js', './src/Index.ts'],
+  entry: ['./src/Dependencies.js', './src/Index.ts'],
   output: {
     path: './bin',
     filename: 'coveo.search.js',

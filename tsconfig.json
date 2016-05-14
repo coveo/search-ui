@@ -4,7 +4,8 @@
     "target": "es5",
     "declaration": true,
     "outDir": "./bin",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "noEmitOnError": true
   },
   "filesGlob": [
     "src/**/*.ts",
