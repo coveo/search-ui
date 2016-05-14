@@ -1,0 +1,116 @@
+{
+  "filetype": {
+    "html": {
+      "icon": "webpage",
+      "captions": {
+        "en": "HTML File",
+        "fr": "Fichier HTML"
+      }
+    },
+    "wiki": {
+      "icon": "webpage",
+      "captions": {
+        "en": "Wiki",
+        "fr": "Wiki"
+      }
+    },
+    "webscraperwebpage": {
+      "icon": "webpage",
+      "captions": {
+        "en": "Web page",
+        "fr": "Web page"
+      }
+    },
+    "image": {
+      "icon": "images",
+      "captions": {
+        "en": "Image",
+        "fr": "Image"
+      }
+    },
+    "folder": {
+      "icon": "folder",
+      "captions": {
+        "en": "Folder",
+        "fr": "Dossier"
+      }
+    },
+    "txt": {
+      "icon": "file",
+      "captions": {
+        "en": "Text",
+        "fr": "Texte"
+      },
+      "shouldDisplayLabel": true
+    },
+    "zip": {
+      "icon": "file",
+      "captions": {
+        "en": "Zip File",
+        "fr": "Fichier compressé"
+      },
+      "shouldDisplayLabel": true
+    },
+    "pdf": {
+      "icon": "file",
+      "captions": {
+        "en": "PDF File",
+        "fr": "Fichier PDF"
+      },
+      "shouldDisplayLabel": true
+    },
+    "xml": {
+      "icon": "file",
+      "captions": {
+        "en": "XML File",
+        "fr": "Fichier XML"
+      },
+      "shouldDisplayLabel": true
+    },
+    "doc": {
+      "icon": "file",
+      "captions": {
+        "en": "Document",
+        "fr": "Document"
+      },
+      "shouldDisplayLabel": true
+    },
+    "xls": {
+      "icon": "file",
+      "captions": {
+        "en": "Spreadsheet Document",
+        "fr": "Chiffrier"
+      },
+      "shouldDisplayLabel": true
+    },
+    "ppt": {
+      "icon": "file",
+      "captions": {
+        "en": "Presentation Document",
+        "fr": "Présentation"
+      },
+      "shouldDisplayLabel": true
+    },
+    "video": {
+      "icon": "video",
+      "captions": {
+        "en": "Video",
+        "fr": "Vidéo"
+      }
+    },
+    "youtube": {
+      "icon": "video",
+      "captions": {
+        "en": "YouTube Video",
+        "fr": "Vidéo YouTube"
+      }
+    },
+    "saleforceitem": {
+      "icon": "list",
+      "captions": {
+        "en": "Salesforce",
+        "fr": "Salesforce"
+      }
+    }
+  }
+}

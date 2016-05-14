@@ -1,0 +1,49 @@
+.coveo-child-result {
+  @include QuickviewContainer('.coveo-email-header');
+}
+
+.coveo-email-from {
+  margin: 0 15px 0 10px;
+}
+
+.coveo-email-from, .coveo-email-to {
+  @include coveo-email-to-and-from;
+  display: inline-block;
+}
+
+.coveo-emails-excess-collapsed, .coveo-emails-excess-expanded {
+  display: none;
+  cursor: pointer;
+  &.coveo-active {
+    display: inline;
+  }
+}
+
+.coveo-emails-excess-collapsed {
+  color: $color-result-clickable;
+  &:hover {
+    color: $color-orange;
+  }
+}
+
+.coveo-email-child-from {
+  margin: 0 10px 0 5px;
+}
+
+.coveo-email-child-excerpt {
+  font-size: 13px;
+  text-decoration: none !important;
+}
+
+.coveo-email-child-excerpt:not(:hover) {
+  color: inherit !important;
+}
+
+.CoveoResult, .CoveoResult:hover {
+  .coveo-email-result-top-result {
+    @include QuickviewContainer('.coveo-title');
+    > .coveo-icon.filetype {
+      margin-top: 2px;
+    }
+  }
+}

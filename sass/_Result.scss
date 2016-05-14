@@ -1,0 +1,160 @@
+.CoveoResult {
+  border-bottom: $default-border;
+  margin: 20px 0px 20px 20px;
+  position: relative; // Allows using absolute positioning for buttons such as Show All Thread, etc.
+
+  &.coveo-omnibox-selectable {
+    padding: 10px 10px 10px 15px;
+    margin: 0;
+  }
+
+  .coveo-icon {
+    float: left;
+    margin: 3px 4px 0px -20px;
+  }
+
+  .coveo-no-thumbnail {
+    display: none;
+  }
+
+  .coveo-date {
+    float: right;
+    font-size: 13px;
+    margin-left: 10px;
+    padding-top: 3px;
+  }
+
+  .coveo-title {
+    display: block;
+    font-size: 16px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    line-height: 24px;
+    > * {
+      vertical-align: middle;
+    }
+
+    .CoveoResultLink {
+      margin-right: 5px;
+      display: inline;
+      overflow: hidden;
+      white-space: normal;
+    }
+
+    .CoveoResultLink:after {
+      content: '\00a0';
+      white-space: nowrap;
+      visibility: hidden;
+    }
+  }
+
+  .coveo-excerpt {
+    max-width: 600px;
+    font-size: 14px;
+    padding: 5px 0 8px 0;
+  }
+
+  a {
+    @include clickable();
+  }
+
+  .coveo-badge {
+    display: inline-block;
+    padding: 4px 6px;
+    vertical-align: middle;
+    font-size: 12px;
+  }
+
+  .CoveoBadge .coveo-value {
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 1em;
+    line-height: 1.25em;
+    margin-right: 8px;
+
+    &.coveo-clickable {
+      @include clickable();
+    }
+
+    .coveo-badge-icon {
+      position: relative;
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      margin-right: 2px;
+      vertical-align: middle;
+
+      &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 2px;
+        top: 3px;
+        width: 12px;
+        height: 10px;
+        transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+        border: 2px solid;
+        border-right: none;
+        // YEP A MATRIX FOR IE8. You have to trust me on that want
+        filter: progid:DXImageTransform.Microsoft.Matrix(
+                        M11=0.7071067811865483,
+                        M12=0.7071067811865467,
+                        M21=-0.7071067811865467,
+                        M22=0.7071067811865483,
+                        SizingMethod='auto expand');
+        -webkit-backface-visibility: hidden;
+        -webkit-border-top-left-radius: 2px;
+        -webkit-border-bottom-left-radius: 2px;
+        -moz-border-radius-topleft: 2px;
+        -moz-border-radius-bottomleft: 2px;
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+        box-sizing: border-box;
+      }
+      &:after {
+        content: '';
+        display: block;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 7px;
+        height: 7px;
+        border: 2px solid;
+        border-bottom: none;
+        border-left: none;
+
+        -webkit-border-top-right-radius: 3px;
+        -moz-border-radius-topright: 3px;
+        border-top-right-radius: 3px;
+        box-sizing: border-box;
+      }
+
+    }
+
+    .coveo-badge-label {
+      vertical-align: middle;
+    }
+  }
+
+  .coveo-selectable-link {
+    @include clickable();
+  }
+
+  .coveo-field .coveo-label {
+    font-weight: normal;
+  }
+
+  .CoveoResultFolding {
+    .coveo-child-result {
+      .CoveoQuickview {
+        margin-left: 5px;
+      }
+    }
+  }
+
+  &.coveo-is-recommendation {
+    box-shadow: 0 0 0 5px #263E55;
+  }
+}

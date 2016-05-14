@@ -1,0 +1,29 @@
+import {Promise} from 'es6-promise';
+
+export interface PopulateOmniboxObject {
+  completeQueryExpression: PopulateOmniboxQueryExpression;
+  currentQueryExpression: PopulateOmniboxQueryExpression;
+  allQueryExpressions: PopulateOmniboxQueryExpression[];
+  cursorPosition: number;
+  clear(): void;
+  clearCurrentExpression(): void;
+  replace(searchValue: string, newValue: string): void;
+  replaceCurrentExpression(newValue: string): void;
+  insertAt(at: number, toInsert: string): void;
+  closeOmnibox(): void;
+}
+
+export interface PopulateOmniboxQueryExpression {
+  word: string;
+  regex: RegExp;
+}
+
+export interface OmniboxData extends PopulateOmniboxObject {
+  rows: OmniboxDataRow[];
+}
+
+export interface OmniboxDataRow {
+  zIndex?: number;
+  element?: HTMLElement;
+  deferred?: Promise<OmniboxDataRow>;
+}

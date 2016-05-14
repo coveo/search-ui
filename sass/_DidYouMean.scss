@@ -1,0 +1,23 @@
+.CoveoDidYouMean {
+  padding: 10px;
+
+  a {
+    @include clickable();
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.coveo-did-you-mean-highlight {
+  font-weight: normal;
+}
+
+.coveo-did-you-mean-word-correction {
+  font-weight: bold;
+}
+
+.coveo-did-you-mean-no-results-for {
+  font-size: 16px;
+}

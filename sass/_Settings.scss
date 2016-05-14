@@ -1,0 +1,104 @@
+.CoveoSettings {
+  float: right;
+  margin: 0 0 0 36px;
+  border-radius: 50%;
+  border: $default-border;
+  width: 40px;
+  height: 40px;
+  top: 5px;
+  position: relative;
+  cursor: pointer;
+}
+
+.coveo-settings-squares {
+  width: 100%;
+  display: inline-block;
+  line-height: 4px;
+  height: 4px;
+  @include align('vertical', absolute);
+  text-align: center;
+}
+
+.coveo-settings-square {
+  width: 4px;
+  height: 4px;
+  display: inline-block;
+  vertical-align: top;
+  background-color: $color-blueish-gray;
+  & + .coveo-settings-square {
+    margin-left: 5px;
+    margin-right: 5px;
+    & + .coveo-settings-square {
+      margin-left: 0px;
+      margin-right: 0px;
+    }
+  }
+}
+
+
+.coveo-settings-advanced-menu {
+  position:absolute;
+  background: $color-blueish-white-grey;
+  @include defaultRoundedBorder();
+  min-width: 160px;
+  z-index: 11;
+
+  &:before {
+    content: "";
+    position:absolute;
+    top: -13px;
+    right: 13px;
+    @include triangle(12px, $color-light-grey, up);
+  }
+}
+
+.coveo-settings-item {
+  clear:both;
+  overflow: hidden;
+
+  .coveo-icon{
+    margin:7px 10px 0px 10px;
+  }
+
+  @include hoverEffectForDropdown();
+
+  .coveo-settings-text {
+    overflow:hidden;
+    padding:8px 8px 8px 8px;
+    white-space: nowrap;
+  }
+
+  &:first-child {
+    border-top-left-radius: $default-border-radius;
+    border-top-right-radius: $default-border-radius;
+  }
+
+  &:last-child {
+    border-bottom-left-radius: $default-border-radius;
+    border-bottom-right-radius: $default-border-radius;
+  }
+
+  &.coveo-share-query {
+    @include iconWithHoverState('.coveo-sprites-dropdown-share-query');
+  }
+
+  &.coveo-preferences-panel {
+    @include iconWithHoverState('.coveo-sprites-dropdown-preferences');
+  }
+
+  &.coveo-authentication-provider {
+    @include iconWithHoverState('.coveo-sprites-dropwdown-authenticate');
+  }
+
+  &.coveo-export-to-excel {
+    @include iconWithHoverState('.coveo-sprites-dropdown-export-to-excel');
+  }
+
+  &.coveo-follow-query {
+    @include iconWithHoverState('.coveo-sprites-dropdown-follow-query');
+  }
+
+  &.coveo-subscriptions-panel {
+    @include iconWithHoverState('.coveo-sprites-dropdown-follow-query');
+  }
+}

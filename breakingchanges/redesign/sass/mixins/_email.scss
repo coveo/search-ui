@@ -1,0 +1,9 @@
+@mixin coveo-email-to-and-from {
+  color: $color-medium-gray;
+  font-size: 13px;
+  line-height: 44px;
+  a {
+    @include coveo-clickable-link-inside-result;
+    white-space: nowrap;
+  }
+}

@@ -1,0 +1,19 @@
+<div class="coveo-date"><%- dateTime(raw.limessageposttime) %></div>
+
+<div class="coveo-lithium-header">
+    <span class="coveo-lithium-from">
+        From: <span class="CoveoFieldValue" data-field="@limessageauthor"></span>
+    </span>
+</div>
+
+<div class='coveo-excerpt coveo-show-if-normal'>
+    <a class="CoveoResultLink">
+        <%= highlight(firstSentences, firstSentencesHighlights) %>
+    </a>
+</div>
+
+<div class='coveo-excerpt coveo-show-if-expanded'>
+    <a class="CoveoResultLink">
+        <%= raw.limessagebody %>
+    </a>
+</div>

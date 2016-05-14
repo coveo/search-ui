@@ -1,0 +1,109 @@
+{
+  "filetype": {
+    "exchangemessage": {
+      "icon": "mail",
+      "captions": {
+        "en": "Message",
+        "fr": "Message"
+      }
+    },
+    "exchangeappointment": {
+      "icon": "calendar",
+      "captions": {
+        "en": "Appointment",
+        "fr": "Rendez-vous"
+      }
+    },
+    "exchangenote": {
+      "icon": "list",
+      "captions": {
+        "en": "Note",
+        "fr": "Note"
+      }
+    },
+    "exchangetask": {
+      "icon": "case",
+      "captions": {
+        "en": "Task",
+        "fr": "Tâche"
+      }
+    },
+    "exchangeperson": {
+      "icon": "user",
+      "captions": {
+        "en": "Exchange user",
+        "fr": "Utilisateur exchange"
+      }
+    },
+    "activedirperson": {
+      "icon": "user",
+      "captions": {
+        "en": "Active Directory user",
+        "fr": "Utilisateur active directory"
+      }
+    },
+    "exchangeactivity": {
+      "icon": "list",
+      "captions": {
+        "en": "Activity",
+        "fr": "Activité"
+      }
+    },
+    "exchangecalendarmessage": {
+      "icon": "calendar",
+      "captions": {
+        "en": "Calendar message",
+        "fr": "Message calendrier"
+      }
+    },
+    "exchangedocument": {
+      "icon": "file",
+      "captions": {
+        "en": "Exchange document",
+        "fr": "Document exchange"
+      }
+    },
+    "exchangedsn": {
+      "icon": "mail"
+    },
+    "exchangefreebusy": {
+      "icon": "custom"
+    },
+    "exchangegroup": {
+      "icon": "user"
+    },
+    "exchangemdn": {
+      "icon": "custom"
+    },
+    "exchangerecallmessage": {
+      "icon": "mail"
+    },
+    "exchangerecallreport": {
+      "icon": "mail"
+    },
+    "exchangeobject": {
+      "icon": "custom"
+    },
+    "exchangerssfeed": {
+      "icon": "list",
+      "captions": {
+        "en": "RSS Feed",
+        "fr": "Flux RSS"
+      }
+    },
+    "exchangejunkmessage": {
+      "icon": "mail",
+      "captions": {
+        "en": "Junk email",
+        "fr": "Courrier indésirable"
+      }
+    },
+    "exchangeofficecom": {
+      "icon": "list",
+      "captions": {
+        "en": "Communications",
+        "fr": "Communications"
+      }
+    }
+  }
+}

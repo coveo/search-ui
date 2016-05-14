@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="./bin/coveo.search.js"></script>
+    <script src="./bin/coveo.search.dependencies.js"></script>
+    <link rel="stylesheet" href="css/CoveoFullSearchNewDesign.css" />
+  </head>
+  <body class="CoveoSearchInterface">
+    <div class="CoveoAnalytics"></div>
+    <div class="CoveoSearchbox"></div>
+  </body>
+  <script>
+    Coveo.SearchEndpoint.configureSampleEndpoint();
+    Coveo.init(document.body);
+  </script>
+</html>

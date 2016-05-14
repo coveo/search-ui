@@ -1,0 +1,107 @@
+.coveo-facet-settings-popup {
+  position: absolute;
+  overflow: hidden;
+  @include defaultRoundedBorder();
+  z-index: 11;
+  background-color: white;
+}
+
+.coveo-facet-settings-section {
+  clear: both;
+  white-space: nowrap;
+  .coveo-icon {
+    margin: 10px;
+  }
+  .coveo-icon-container {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+.coveo-facet-settings-items {
+  padding: 0;
+  overflow: hidden;
+  vertical-align: middle;
+  display: inline-block;
+  font-size: $font-size-smallest;
+
+}
+
+.coveo-facet-settings-item {
+  white-space: nowrap;
+  padding: 10px;
+  cursor: pointer;
+  -moz-padding-end: 70px;
+
+  &.coveo-selected {
+    font-weight: bold;
+  }
+  color: $color-dark-grey;
+}
+
+.coveo-facet-settings-disabled {
+  .coveo-facet-settings-item {
+    cursor: default;
+    opacity: 0.5;
+    &:hover {
+      background: white;
+    }
+  }
+}
+
+.coveo-facet-settings-section-sort {
+  @include iconWithHoverState('.coveo-sprites-sort', 'none');
+  &.coveo-facet-settings-section {
+    margin-bottom: 15px;
+    .coveo-icon-container {
+      vertical-align: top;
+    }
+  }
+}
+
+.coveo-facet-settings-section-direction-ascending {
+  cursor: pointer;
+  &.coveo-facet-settings-disabled {
+    cursor: inherit;
+  }
+  @include iconWithHoverState('.coveo-sprites-dropdown-ascending', 'none', 'coveo-facet-settings-disabled');
+}
+
+.coveo-facet-settings-section-direction-descending {
+  cursor: pointer;
+  &.coveo-facet-settings-disabled {
+    cursor: inherit;
+  }
+  @include iconWithHoverState('.coveo-sprites-dropdown-descending', 'none', 'coveo-facet-settings-disabled');
+}
+
+.coveo-facet-settings-section-save-state {
+  border-top: $default-border;
+  cursor: pointer;
+  @include iconWithHoverState('.coveo-sprites-dropdown-more', 'none', 'coveo-facet-settings-disabled');
+}
+
+.coveo-facet-settings-section-clear-state {
+  border-top: $default-border;
+  cursor: pointer;
+  @include iconWithHoverState('.coveo-sprites-dropdown-more', 'none', 'coveo-facet-settings-disabled');
+}
+
+.coveo-facet-settings-section-hide {
+  border-top: $default-border;
+  cursor: pointer;
+  @include iconWithHoverState('.coveo-sprites-dropdown-collapse', 'none', 'coveo-facet-settings-disabled');
+}
+
+.coveo-facet-settings-section-show {
+  border-top: $default-border;
+  cursor: pointer;
+  @include iconWithHoverState('.coveo-sprites-dropdown-expand', 'none', 'coveo-facet-settings-disabled');
+}
+
+.coveo-facet-settings-section-sort-title {
+  font-size: $font-size-smallest;
+  font-weight: bold;
+  color: $color-blueish-gray;
+  padding: 10px;
+}

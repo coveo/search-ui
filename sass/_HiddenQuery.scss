@@ -1,0 +1,14 @@
+.coveo-hidden-query-breadcrumb-title {
+  @include breadcrumbTitle();
+}
+
+
+.coveo-hidden-query-breadcrumb-value {
+  @include clickableVibrant();
+}
+
+.coveo-hidden-query-breadcrumb-clear {
+  display: inline-block;
+  margin: 3px 0px 0px 5px;
+  @include clearButton('&'); 
+}

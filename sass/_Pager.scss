@@ -1,0 +1,32 @@
+.coveo-pager-list {
+  padding-left:0;
+}
+
+.coveo-pager-list-item {
+  border: 0;
+  margin: 5px 6px 5px 6px;
+  padding: 0;
+  list-style: none;
+  display: inline-block;
+  vertical-align: baseline;
+  color: #bcc3ca;
+  font-size: $font-size-biggest;
+  &.coveo-active {
+    font-size: $font-size-huge;
+    color: $color-blueish-gray;
+  }
+  &:hover {
+    color: $color-blueish-gray;
+  }
+  cursor: pointer;
+}
+
+.coveo-pager-next > a > span {
+  @extend .coveo-sprites-pager-right-arrow;
+  vertical-align: middle;
+}
+
+.coveo-pager-previous > a > span {
+  @extend .coveo-sprites-pager-left-arrow;
+  vertical-align: middle;
+}

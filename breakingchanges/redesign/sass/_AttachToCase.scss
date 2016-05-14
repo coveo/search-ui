@@ -1,0 +1,51 @@
+.CoveoAttachToCase {
+  height: 16px;
+  display: inline-block;
+  
+  span {
+    display: inline-block;
+    color: #adadad;
+    padding-right: 5px;
+    cursor: pointer;
+    vertical-align: middle;
+    
+    &:before {
+        display: inline-block;
+        content: '';
+        margin-right: 3px; 
+        vertical-align: middle;
+    }
+    
+    &.coveo-attach-to-case-attach {
+        display: none;
+    }
+    
+    &.coveo-attach-to-case-attach:before {
+      @extend .coveo-sprites-attachToCase-attach;
+    }
+    
+    &.coveo-attach-to-case-attached:before {
+      @extend .coveo-sprites-attachToCase-attached;
+    }
+    
+    &.coveo-attach-to-case-loading:before {
+      background: url(../image/wait_facet.gif) no-repeat;
+      background-size: 100%;
+      width: 10px;
+      height: 10px;
+      margin: 1px 6px 1px 3px;
+    }
+    
+    &.coveo-attach-to-case-readonly {
+        cursor: inherit;
+    }
+    
+    span {
+      vertical-align: middle;
+    }
+  }
+}
+  
+.coveo-result-frame:hover .coveo-attach-to-case-attach:not(.coveo-attach-to-case-readonly) {
+    display: inline-block;
+}

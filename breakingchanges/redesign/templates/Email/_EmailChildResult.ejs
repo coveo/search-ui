@@ -1,0 +1,27 @@
+<div class="coveo-date"><%- dateTime(raw.date) %></div>
+
+<div class="coveo-email-header">
+    <span class="coveo-child-email-from">
+        <% if(!isMobileDevice()) { %>
+            <%= email(raw.from, undefined, undefined, undefined, true) %>
+        <span class="CoveoQuickview" data-template-id="EmailQuickviewContent">
+            <div class='coveo-icon-for-quickview'>Quickview</div>
+        </span>
+        <% } else { %>
+            <span class="CoveoFieldValue" data-field="@from" data-helper="email" data-html-value="true"></span>
+        <% } %>
+    </span>
+</div>
+
+<div class="coveo-excerpt">
+    <% if(hasHtmlVersion && isMobileDevice()) { %>
+    <a class="CoveoResultLink coveo-email-child-excerpt"><%= highlight(firstSentences, firstSentencesHighlights) %></a>
+      <span class="CoveoQuickview" data-template-id="EmailQuickviewContent">
+        <div class='coveo-icon-for-quickview'>Quickview</div>
+      </span>
+    <% } else { %>
+    <a class="CoveoResultLink coveo-email-child-excerpt"><%= highlight(firstSentences, firstSentencesHighlights) %></a>
+    <% } %>
+</div>
+
+<div class="CoveoResultAttachments" data-result-template-id="EmailResultAttachment"></div>

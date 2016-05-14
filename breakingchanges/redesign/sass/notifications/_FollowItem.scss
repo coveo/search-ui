@@ -1,0 +1,25 @@
+.CoveoFollowItem {
+  display: inline-block;
+  color: #adadad;
+  padding-left: 7px;
+  cursor: pointer;
+  &:before {
+    content: '';
+    @extend .coveo-sprites-subscription-follow;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+  &.coveo-follow-item-followed:before {
+    @extend .coveo-sprites-subscription-followed;
+  }
+  &.coveo-follow-item-loading:before {
+    background: url(../image/wait_facet.gif) no-repeat;
+    background-size: 100%;
+    width: 10px;
+    height: 10px;
+    margin: 1px 9px 1px 3px;
+  }
+  span {
+    vertical-align: middle;
+  }
+}

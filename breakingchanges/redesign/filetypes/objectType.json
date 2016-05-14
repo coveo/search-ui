@@ -1,0 +1,208 @@
+{
+  "objecttype": {
+    "people": {
+      "icon": "objectType-user",
+      "captions": {
+        "en": "People",
+        "fr": "Personne"
+      }
+    },
+    "message": {
+      "icon": "objectType-message",
+      "captions": {
+        "en": "Message",
+        "fr": "Message"
+      }
+    },
+    "feed": {
+      "icon": "objectType-rss",
+      "captions": {
+        "en": "RSS Feed",
+        "fr": "Flux RSS"
+      }
+    },
+    "thread": {
+      "icon": "objectType-thread",
+      "captions": {
+        "en": "Thread",
+        "fr": "Fil de conversation"
+      }
+    },
+    "file": {
+      "icon": "objectType-file",
+      "captions": {
+        "en": "File",
+        "fr": "Fichier"
+      }
+    },
+    "board": {
+      "icon": "objectType-board",
+      "captions": {
+        "en": "",
+        "fr": ""
+      }
+    },
+    "category": {
+      "icon": "objectType-category",
+      "captions": {
+        "en": "",
+        "fr": ""
+      }
+    },
+    "account": {
+      "icon": "objectType-account",
+      "captions": {
+        "en": "Account",
+        "fr": "Compte"
+      }
+    },
+    "campaign": {
+      "icon": "objectType-campaign",
+      "captions": {
+        "en": "Campaign",
+        "fr": "Campagne"
+      }
+    },
+    "case": {
+      "icon": "objectType-case",
+      "captions": {
+        "en": "Case",
+        "fr": "Cas"
+      }
+    },
+    "contact": {
+      "icon": "objectType-contact",
+      "captions": {
+        "en": "Contact",
+        "fr": "Contact"
+      }
+    },
+    "contract": {
+      "icon": "objectType-contract",
+      "captions": {
+        "en": "Contract",
+        "fr": "Contrat"
+      }
+    },
+    "event": {
+      "icon": "objectType-event",
+      "captions": {
+        "en": "Event",
+        "fr": "Évènement"
+      }
+    },
+    "lead": {
+      "icon": "objectType-lead",
+      "captions": {
+        "en": "Lead",
+        "fr": "Piste"
+      }
+    },
+    "solution": {
+      "icon": "objectType-answer",
+      "captions": {
+        "en": "Solution",
+        "fr": "Solution"
+      }
+    },
+    "task": {
+      "icon": "objectType-task",
+      "captions": {
+        "en": "Task",
+        "fr": "Tâche"
+      }
+    },
+    "user": {
+      "icon": "objectType-user",
+      "captions": {
+        "en": "User",
+        "fr": "Utilisateur"
+      }
+    },
+    "attachment": {
+      "icon": "objectType-attachment",
+      "captions": {
+        "en": "Attachment",
+        "fr": "Attachement"
+      }
+    },
+    "casecomment": {
+      "icon": "objectType-comment",
+      "captions": {
+        "en": "Case Comment",
+        "fr": "Commentaire sur un cas"
+      }
+    },
+    "opportunity": {
+      "icon": "objectType-opportunity",
+      "captions": {
+        "en": "Opportunity",
+        "fr": "Opportunité"
+      }
+    },
+    "feeditem": {
+      "icon": "objectType-chatter",
+      "captions": {
+        "en": "Chatter",
+        "fr": "Chatter"
+      }
+    },
+    "feedcomment": {
+      "icon": "objectType-chatter",
+      "captions": {
+        "en": "Chatter",
+        "fr": "Chatter"
+      }
+    },
+    "note": {
+      "icon": "objectType-note",
+      "captions": {
+        "en": "Note",
+        "fr": "Note"
+      }
+    },
+    "product": {
+      "icon": "objectType-product",
+      "captions": {
+        "en": "Product",
+        "fr": "Produit"
+      }
+    },
+    "partner": {
+      "icon": "objectType-partner",
+      "captions": {
+        "en": "Partner",
+        "fr": "Partenaire"
+      }
+    },
+
+    "kbdocumentation": {
+      "icon": "objectType-kb",
+      "captions": {
+        "en": "Documentation",
+        "fr": "Documentation"
+      }
+    },
+    "kbsolution": {
+      "icon": "objectType-answer",
+      "captions": {
+        "en": "Solution",
+        "fr": "Solution"
+      }
+    },
+    "kbknowledgearticle": {
+      "icon": "objectType-kb",
+      "captions": {
+        "en": "Knowledge Article",
+        "fr": "Article de base de connaissance"
+      }
+    },
+    "kbattachment": {
+      "icon": "objectType-attachment",
+      "captions": {
+        "en": "Attachment",
+        "fr": "Attachement"
+      }
+    }
+  }
+}

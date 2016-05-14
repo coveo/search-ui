@@ -1,0 +1,27 @@
+@mixin mediaSelector($max){
+  .coveo-media-max-width-#{$max} {
+    @content;
+  }
+  @media (max-width: $max * 1px) {
+    @content;
+  }
+}
+
+
+@mixin smallMobile {
+	@include mediaSelector(640) {
+		@content;
+	}
+}
+
+@mixin smallMobileLandscape {
+	@include mediaSelector(480) {
+		@content;
+	}
+}
+
+@mixin smallMobileLandscapeToPortraitTablet {
+	@include mediaSelector(767) {
+		@content;
+	}
+}

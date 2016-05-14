@@ -1,0 +1,11 @@
+{
+  "filetype": {
+    "youtube": {
+      "icon": "youtube-youtube",
+      "captions": {
+        "en": "YouTube video",
+        "fr": "Vidéos YouTube"
+      }
+    }
+  }
+}

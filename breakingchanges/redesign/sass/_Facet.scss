@@ -1,0 +1,47 @@
+.CoveoFacet, .CoveoFacetRange, .CoveoFacetSlider {
+  margin-top: 5px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid $color-facet-border;
+}
+
+.ie8or9 .coveo-facet-header-wait-animation, .ie8or9 .coveo-facet-search-wait-animation {
+  background: url(../image/wait_facet.gif) no-repeat;
+  background-size: 100%;
+}
+
+.coveo-facet-selectable:hover {
+  background-color: $color-light-blue;
+}
+
+.coveo-facet-empty {
+  display: none;
+}
+
+.coveo-facet-dependent {
+  display: none;
+}
+
+.coveo-facet-collapsed {
+  .coveo-facet-value {
+    display: none;
+    &.coveo-selected, &.coveo-excluded {
+      display: inherit;
+    }
+  }
+  .coveo-facet-footer {
+    display: none;
+  }
+}
+
+.coveo-facet-fade {
+  .coveo-facet-value {
+    opacity: 0.5;
+    &.coveo-selected, &.coveo-excluded, &.coveo-facet-search-selectable {
+      opacity: 1;
+    }
+  }
+}
+
+.coveo-mobile-device {
+  @import "MobileFacet";
+}

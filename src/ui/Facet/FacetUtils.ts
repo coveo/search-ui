@@ -1,0 +1,138 @@
+/// <reference path="../../Base.ts" />
+/// <reference path="../Misc/FileTypes.ts" />
+
+/**
+ * @nodoc
+ */
+module Coveo.FacetUtils {
+  export function getRegexToUseForFacetSearch(value: string, ignoreAccent: boolean) {
+    return new RegExp(StringUtils.stringToRegex(value, ignoreAccent), 'i');
+  }
+
+  export function getValuesToUseForSearchInFacet(original: string, facet: Facet): string[] {
+    var ret = [original];
+    var regex = this.getRegexToUseForFacetSearch(original, facet.options.facetSearchIgnoreAccents);
+    if (facet.options.valueCaption) {
+      _.chain(facet.options.valueCaption)
+          .pairs()
+          .filter((pair) => {
+            return regex.test(pair[1])
+          })
+          .each((match) => {
+            ret.push(match[0])
+          });
+      if (QueryUtils.isStratusAgnosticField(facet.options.field, '@objecttype') || QueryUtils.isStratusAgnosticField(facet.options.field, '@filetype')) {
+        _.each(FileTypes.getFileTypeCaptions(), (value: string, key: string) => {
+          if (!(key in facet.options.valueCaption) && regex.test(value)) {
+            ret.push(key)
+          }
+        });
+      }
+    } else if (QueryUtils.isStratusAgnosticField(facet.options.field, '@objecttype') || QueryUtils.isStratusAgnosticField(facet.options.field, '@filetype')) {
+      _.each(_.filter(_.pairs(FileTypes.getFileTypeCaptions()), (pair) => {
+        return regex.test(pair[1])
+      }), (match) => {
+        ret.push(match[0])
+      });
+    } else if (QueryUtils.isStratusAgnosticField(facet.options.field, '@month')) {
+      _.each(_.range(1, 13), (month) => {
+        if (regex.test(DateUtils.monthToString(month - 1))) {
+          ret.push(('0' + month.toString()).substr(-2));
+        }
+      });
+    }
+    return ret;
+  }
+
+  export function buildFacetSearchPattern(values: string[]) {
+    values = _.map(values, (value) => {
+      return Utils.escapeRegexCharacter(value);
+    });
+    values[0] = ".*" + values[0] + ".*";
+    return values.join("|");
+  }
+
+  export function needAnotherFacetSearch(currentSearchLength: number, newSearchLength: number, oldSearchLength: number, desiredSearchLength: number) {
+    //Something was removed (currentSearch < newSearch)
+    //&& we might want to display more facet search result(currentSearch < desiredSearch)
+    //&& the new query returned more stuff than the old one so there's still more results(currentSearchLength > oldLength)
+    return currentSearchLength < newSearchLength && currentSearchLength < desiredSearchLength && currentSearchLength > oldSearchLength;
+  }
+
+  export function addNoStateCssClassToFacetValues(facet: Facet, container: HTMLElement) {
+    //This takes care of adding the correct css class on each facet value checkbox (empty white box) if at least one value is selected in that facet
+    if (facet.values.getSelected().length != 0) {
+      var noStates = $$(container).findAll('li:not(.coveo-selected)');
+      _.each(noStates, (noState) => {
+        $$(noState).addClass('coveo-no-state');
+      })
+    }
+  }
+
+  export function tryToGetTranslatedCaption(field: string, value: string) {
+    var found: string;
+
+    if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@filetype')) {
+      found = FileTypes.getFileTypeCaptions()[value.toLowerCase()];
+    } else if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@month')) {
+      try {
+        var month = parseInt(value);
+        found = DateUtils.monthToString(month - 1);
+      } catch (ex) {
+        // Do nothing
+      }
+    }
+    return found != undefined && Utils.isNonEmptyString(found) ? found : value;
+  }
+
+  export function clipCaptionsToAvoidOverflowingTheirContainer(facet: Facet, forceClip?: boolean) {
+    // in new design, we don't need this : use flexbox instead (sorry IE user)
+    if (facet.getBindings && facet.getBindings().searchInterface && facet.getBindings().searchInterface.isNewDesign()) {
+      return;
+    }
+    if (!(facet.isInstanceOf('HierarchicalFacet')) || forceClip) {
+      facet.logger.trace('Clipping captions');
+      //force facet to show to calculate width
+      $$(facet.element).show();
+      var element = facet.element;
+      var captions = $$(element).findAll('.coveo-facet-value-caption');
+      for (var i = 0; i < captions.length; i++) {
+        if (captions[i].style.width != '') {
+          captions[i].style.width = '';
+        }
+      }
+      var labels = $$(element).findAll('.coveo-facet-value-label-wrapper');
+      var labelsMaxWidth: { element: HTMLElement; width: number; crop: number; label: HTMLElement; }[] = [];
+      for (var i = 0; i < labels.length; i++) {
+        var label: HTMLElement = labels[i];
+        var caption: HTMLElement = $$(label).find('.coveo-facet-value-caption');
+
+        var labelWidth = label.scrollWidth;
+        var labelVisibleWidth = label.clientWidth;
+
+        var captionWidth = caption.scrollWidth;
+
+        var crop = Math.max(0, labelWidth - labelVisibleWidth);
+        if (crop) {
+          labelsMaxWidth.push({
+            element: caption,
+            width: captionWidth,
+            crop: crop,
+            label: label
+          });
+        }
+      }
+      //remove the specific css class
+      element.style.display = '';
+      for (var i = 0; i < labelsMaxWidth.length; i++) {
+        var labelMaxWidth = labelsMaxWidth[i];
+        labelMaxWidth.element.style.width = labelMaxWidth.width - labelMaxWidth.crop + 'px';
+        if (labelMaxWidth.crop > 0) {
+          labelMaxWidth.label.setAttribute('title', $$(labelMaxWidth.element).text())
+        } else {
+          labelMaxWidth.label.setAttribute('title', null);
+        }
+      }
+    }
+  }
+}

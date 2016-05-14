@@ -1,0 +1,44 @@
+.CoveoSearchInterface {
+  display: none; //hide the UI while loading
+
+  .coveo-highlight, .highlight {
+    font-weight:bold;
+  }
+  
+  input[type=text]::-ms-clear { 
+    width : 0; height: 0; 
+  }
+
+  &.coveo-waiting-for-first-query{
+    background: #f7f7f7;
+  }
+
+  .coveo-tab-disabled {
+    display: none;
+  }
+}
+
+.coveo-hide-until-loaded {
+  display: none;
+}
+
+.coveo-show-after-loaded {
+  @include animation-name(coveo-appear);
+  @include animation-duration(1s);
+}
+
+body.coveo-modalBox-opened{
+  &, .CoveoSearchInterface{
+    overflow: hidden;
+  }
+}
+
+@include keyframes(coveo-appear) {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

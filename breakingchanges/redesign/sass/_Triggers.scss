@@ -1,0 +1,15 @@
+.CoveoTriggers {
+  background-color: $color-triggers-background;
+  .coveo-trigger-notify {
+    padding: 10px;
+  }
+  a {
+    color: $color-triggers-link;
+    font-weight: bold;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

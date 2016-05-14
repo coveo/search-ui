@@ -1,0 +1,39 @@
+{
+  "filetype": {
+    "lithiummessage": {
+      "icon": "lithium-message",
+      "captions": {
+        "en": "Message",
+        "fr": "Message"
+      }
+    },
+    "lithiumthread": {
+      "icon": "lithium-thread",
+      "captions": {
+        "en": "Thread",
+        "fr": "Fil de conversation"
+      }
+    },
+    "lithiumboard": {
+      "icon": "lithium-board",
+      "captions": {
+        "en": "Board",
+        "fr": "Board"
+      }
+    },
+    "lithiumcategory": {
+      "icon": "lithium-category",
+      "captions": {
+        "en": "Category",
+        "fr": "Catégorie"
+      }
+    },
+    "lithiumcommunity": {
+      "icon": "default",
+      "captions": {
+        "en": "Community",
+        "fr": "Communauté"
+      }
+    }
+  }
+}

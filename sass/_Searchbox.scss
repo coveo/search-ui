@@ -1,0 +1,39 @@
+.coveo-waiting-for-first-query .CoveoSearchbox .CoveoSearchButton {
+  z-index: 0;
+}
+.CoveoSearchbox {
+  &.coveo-inline {
+    overflow: hidden;
+    .magic-box {
+      overflow: visible;
+    }
+  }
+  .CoveoSearchButton {
+    float: right;
+    z-index: 2;
+    position: relative;
+    border-top-right-radius: $default-border-radius;
+    border-bottom-right-radius: $default-border-radius;
+  }
+
+  .magic-box {
+    @include defaultRoundedBorder();
+    .magic-box-clear:before {
+      border-left: none;
+    }
+    .magic-box-clear .magic-box-icon:before {
+      content: '';
+      @extend .coveo-sprites-main-clear;
+    }
+    .magic-box-input {
+      border-radius: $default-border-radius;
+    }
+    .magic-box-input > input {
+      color: $color-blueish-gray;
+    }
+  }
+}
+
+.CoveoSettings + .CoveoSearchbox {
+  margin-right: 76px;
+}

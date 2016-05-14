@@ -1,0 +1,160 @@
+// https://app.frontify.com/d/GthysWU8RY0Q/brand-guidelines#/basics/colors
+
+// Corporate Main Colors
+$coveo-orange: #f58020;
+$coveo-blue: #004990;
+
+// Complementary Colors Set 1
+$color-charcoal: #08080E;
+$color-dark-grey: #373737;
+$color-grey: #4F5658;
+$color-greyish-dark-blue: #263E55;
+$color-greyish-teal-blue: #1D4F76;
+$color-blueish-gray: #67768B;
+$color-vibrant-blue: #009ddc;
+
+// Complementary Colors Set 2
+$color-teal: #296896;
+$color-greyish-cyan: #CDDEE9;
+$color-greyish-light-cyan: #CDDEE9;
+$color-light-grey: #BCC3CA;
+$color-blueish-white-grey: #E6ECf0;
+$color-blueish-white: #F7F8F9;
+
+// Coveo Partners Colors
+$color-coveo-for-sitecore: #DC291E;
+$color-coveo-for-salesforce: #009DDC;
+
+$color-green: #4caf50;
+
+// Font sizes
+$font-size-huge: 24px;
+$font-size-biggest: 18px;
+$font-size-bigger: 16px;
+$font-size-regular: 15px;
+$font-size-smaller: 14px;
+$font-size-smallest: 12px;
+
+// Border
+$default-border-radius: 4px;
+$default-border: 1px solid $color-light-grey;
+@mixin defaultRoundedBorder {
+  border: $default-border;
+  border-radius: $default-border-radius;
+}
+
+/*
+* @param direction vertical or horizontal
+* @param position type of positioning to apply (relative/absolute)
+*/
+@mixin align($direction: 'vertical', $position: relative) {
+  position: $position;
+  @if $direction == 'vertical' {
+    top: 50%;
+    @include transform(translateY(-50%));
+  } @else {
+    left: 50%;
+    @include transform(translateX(-50%));
+  }
+}
+
+@mixin hoverEffectForDropdown($target: '&') {
+  @include clickable();
+  cursor: pointer;
+  #{$target} {
+    background: white;
+  }
+
+  #{$target}:hover {
+    background: $color-blueish-white-grey;
+  }
+}
+
+@mixin iconWithHoverState($iconBase, $float:'left', $inactive : 'coveo-disabled') {
+  $iconActive: #{$iconBase} + '-active';
+  .coveo-icon {
+    @extend #{$iconBase};
+    float: #{$float};
+  }
+  &:hover {
+    .coveo-icon {
+      @extend #{$iconActive};
+    }
+  }
+  &:hover.#{$inactive} {
+    .coveo-icon {
+      @extend #{$iconBase};
+    }
+  }
+}
+
+@mixin clickable {
+  color: $color-teal;
+  text-decoration: none;
+  cursor: pointer;
+  &:hover, &:visited {
+    text-decoration: none;
+    color: $color-greyish-dark-blue;
+  }
+  &:hover, &:hover a {
+    text-decoration: underline;
+  }
+  &.coveo-selected * {
+    color: $color-greyish-dark-blue;
+  }
+}
+
+@mixin clickableVibrant {
+  @include clickable();
+  color: $color-coveo-for-salesforce;
+  &:hover {
+    text-decoration: underline;
+    color: $color-coveo-for-salesforce;
+  }
+  &.coveo-selected * {
+    color: $color-coveo-for-salesforce;
+  }
+}
+
+/*
+* @param $selector css selector on which to apply the icon. Can be '&' if the icon should be applied on the current element;
+* @param $size size of the icon to use
+*/
+@mixin clearButton($selector, $size:'normal') {
+  cursor: pointer;
+  $icon: '.coveo-sprites-clear-inactive-filters';
+  $icon-clear: '.coveo-sprites-clear-active-filters';
+
+  @if $size == 'smaller' {
+    $icon: '.coveo-sprites-facet-exclusion-hover';
+    $icon-clear: '.coveo-sprites-facet-checkbox-exclusion';
+  } @else if $size == 'smallest' {
+    $icon: '.coveo-sprites-facet-exclusion-hover';
+    $icon-clear: '.coveo-sprites-facet-checkbox-exclusion';
+  } @else if $size == 'bigger' {
+    $icon: '.coveo-sprites-main-clear';
+    $icon-clear: '.coveo-sprites-main-clear-hover'; //TODO icon not exported yet
+  }
+
+  #{$selector} {
+    @extend #{$icon};
+  }
+  &:hover {
+    #{$selector} {
+      @extend #{$icon-clear};
+    }
+  }
+}
+
+@mixin breadcrumbTitle {
+  color: $color-blueish-gray;
+  margin-right: 14px;
+}
+
+@mixin coveo-email-to-and-from {
+  font-size: 13px;
+  a {
+    @include clickable();
+    white-space: nowrap;
+  }
+}

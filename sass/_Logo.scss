@@ -1,0 +1,13 @@
+.coveo-logo{
+	@extend .coveo-sprites-coveo-logo;
+}
+.coveo-powered-by {
+	@extend .coveo-sprites-coveo-powered-by-logo;
+}
+
+.coveo-facet-column {
+  .coveo-logo {
+		@include align('horizontal');
+		margin: 10px 0px;
+  }
+}

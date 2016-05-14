@@ -1,0 +1,8 @@
+.CoveoTriggers {
+  .coveo-trigger-notify {
+    padding: 10px 0px;
+  }
+  a {
+   @include clickable();
+  }
+}

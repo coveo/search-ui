@@ -1,0 +1,17 @@
+.coveo-omnibox-result-list-header {
+	@extend .coveo-top-suggestion-header;
+
+	.coveo-icon-omnibox-result-list {
+		@extend .coveo-top-suggestion-header-icon;
+	}
+}
+
+.coveo-top-field-suggestion-row {
+	@extend .coveo-top-suggestion-row;
+}
+.CoveoResult {
+	&.coveo-omnibox-selectable {
+	  padding: 10px 10px 10px 36px;
+	  margin: 0;
+	}
+}

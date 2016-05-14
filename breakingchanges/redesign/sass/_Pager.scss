@@ -1,0 +1,88 @@
+.CoveoPager {
+  margin: 30px 0 30px 20px;
+  font-size: 12px;
+
+  ul {
+    &:hover:first-child > a {
+      border-left: 1px solid $color-pager-hover-border;
+    }
+    &:hover:last-child > a {
+      border-right: 1px solid $color-pager-hover-border;
+    }
+  }
+
+  .coveo-active > a {
+    color: $color-pager-active-text;
+    background: $color-pager-active-background;
+    border-left: 1px solid $color-pager-border;
+    border-top: 1px solid $color-pager-active-border;
+    border-bottom: 1px solid $color-pager-active-border;
+  }
+
+  .coveo-active:first-child > a {
+    border-left: 1px solid $color-pager-active-border;
+  }
+
+  .coveo-active:last-child > a {
+    border-right: 1px solid $color-pager-active-border;
+  }
+}
+
+.coveo-pager-list {
+  padding: 0;
+}
+
+.coveo-pager-list-item {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.coveo-pager-anchor {
+  display: inline-block;
+
+  padding: 7px 6px 6px 5px;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  color: $color-pager-text;
+  background: $color-pager-background;
+  border-left: 1px solid $color-pager-border;
+  border-top: 1px solid $color-pager-border;
+  border-bottom: 1px solid $color-pager-border;
+  height: 30px;
+  width: 30px;
+  cursor: pointer;
+
+  &:hover {
+    color: $color-pager-hover-text;
+    background: $color-pager-hover-background;
+    border-left: 1px solid $color-pager-border;
+    border-top: 1px solid $color-pager-hover-border;
+    border-bottom: 1px solid $color-pager-hover-border;
+  }
+}
+
+.coveo-pager-previous {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.coveo-pager-next {
+  border: 1px solid $color-pager-border;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.coveo-pager-previous > a > span {
+  @extend .coveo-sprites-pager-previous;
+  vertical-align: middle;
+}
+
+.coveo-pager-next > a > span {
+  @extend .coveo-sprites-pager-next;
+  vertical-align: middle;
+}

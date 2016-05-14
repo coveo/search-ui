@@ -1,0 +1,19 @@
+.coveo-chatter-result-box {
+  margin-top: 5px;
+  background-color: #f7f7f7;
+}
+
+.coveo-chatter-result-likes {
+  display: inline;
+}
+
+.coveo-chatter-result-box-row {
+
+  > * {
+    vertical-align: middle;
+  }
+}
+
+.coveo-chatter-result-box-row .coveo-chatter-result-box-icon {
+  margin-right: 10px;
+}

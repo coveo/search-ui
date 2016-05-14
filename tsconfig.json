@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "declaration": true,
+    "outDir": "./bin",
+    "rootDir": "./src"
+  },
+  "filesGlob": [
+    "src/**/*.ts",
+    "lib/**/*.d.ts"
+  ],
+  "files": [
+    "typings/browser.d.ts",
+    "lib/promise.d.ts",
+    "lib/MagicBox.d.ts",
+    "src/Index.ts",
+    "src/misc/Version.ts",
+    "src/misc/Logger.ts",
+    "src/utils/Dom.ts",
+    "src/utils/DeviceUtils.ts",
+    "src/utils/HashUtils.ts",
+    "src/rest/SearchEndpoint.ts",
+    "src/ui/SearchInterface/SearchInterface.ts",
+    "src/ui/Analytics/Analytics.ts",
+    "src/ui/Searchbox/Searchbox.ts",
+    "src/ui/Querybox/Querybox.ts",
+    "src/ui/SearchButton/SearchButton.ts"
+  ]
+}

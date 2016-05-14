@@ -1,0 +1,97 @@
+@import "Color";
+@import "Icons";
+@import "sprites";
+@import "Animations";
+
+@import "mixins/mediaQuery";
+@import "mixins/email";
+@import "mixins/genericButton";
+@import "mixins/loader";
+@import "mixins/mobileFacet";
+@import "mixins/resultLink";
+@import "mixins/searchButton";
+@import "mixins/preferencePanel";
+@import "mixins/fieldTable";
+@import "mixins/login";
+@import "mixins/resultAttachments";
+@import "mixins/breadcrumb";
+@import "mixins/slider";
+@import "mixins/mediacss";
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 200 / 100), only screen and (min-device-pixel-ratio: 2) {
+	@import "retina";
+}
+@import "Quickview"; //RECHECK AFTER MERGE
+@import "AuthenticationProvider"; //OK NO CHANGE
+@import "Breadcrumb"; //DONE
+@import "SearchModalBox"; //OK NO CHANGE
+@import "CurrentTab"; //OK NO CHANGE
+@import "DidYouMean"; //DONE
+@import "Chatter"; //DONE
+@import "Email"; // ... not sure about this one, it's complicated
+@import "Excerpt";
+@import "People"; // ... this one is also complicated
+@import "ErrorReport"; //DONE
+@import "FacetSearch"; // DONE
+@import "FacetValues"; //DONE
+@import "FacetBreadcrumb"; //DONE
+@import "FacetHeader"; //DONE
+@import "FacetFooter"; //DONE
+@import "Facet"; //DONE
+@import "FacetSlider"; //OK NO CHANGE
+@import "FacetSettings"; //DONE
+@import "Lithium"; //OK NO CHANGE
+@import "Loader"; //OK NO CHANGE
+@import "Tab"; //OK NO CHANGE
+@import "Omnibox"; //DONE
+@import "Pager"; //DONE
+@import "PrintableUri"; //OK NO CHANGE
+@import "Querybox"; //OK NO CHANGE
+@import "QueryDuration"; //OK NO CHANGE
+@import "QuerySummary"; //DONE
+@import "Result";// ... not sure
+@import "ResultAttachments"; //DONE
+@import "ResultFolding"; //DONE
+@import "ResultFrame"; // ... not sure
+@import "ResultLink"; //OK NO CHANGE
+@import "ResultList"; //OK NO CHANGE
+@import "ImageResultList"; // ... not sure
+@import "Searchbox"; //OK NO CHANGE
+@import "SearchButton"; //OK NO CHANGE
+@import "SearchInterface"; //OK NO CHANGE
+@import "Settings"; //DONE
+@import "ShareQuery"; //DONE
+@import "Sort"; //OK NO CHANGE
+@import "coveo"; //OK NO CHANGE
+@import "Debug"; // OK NO CHANGE
+@import "TabGroup"; //OK NO CHANGE
+@import "Text";
+@import "Suggestions"; //OK NO CHANGE
+@import "FieldSuggestions"; //OK NO CHANGE
+@import "AnalyticsSuggestions"; //OK NO CHANGE
+@import "Slider"; //OK NO CHANGE
+@import "EmailActions"; //DONE
+@import "PreferencesPanel"; //Pretty complicated but w/e not really important
+@import "ResultsFiltersPreferences"; //Pretty complicated bu w/e not really important
+@import "ResultTagging";
+@import "OmniboxResultList";
+@import "HierarchicalFacet";
+@import "HiddenQuery";
+@import "ModalBox";
+@import "Salesforce";
+@import "SalesforceChatter";
+@import "Triggers";
+@import "UserActions";
+@import "Matrix";
+@import "AttachToCase";
+@import "YouTube";
+@import "ExportToExcel";
+
+@import "notifications/FollowItem";
+@import "notifications/FollowQuery";
+@import "notifications/SubscriptionsPanel";
+@import "notifications/SubscriptionsMessages";
+
+.coveo-clear {
+  clear: both;
+}

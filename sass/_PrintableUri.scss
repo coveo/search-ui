@@ -1,0 +1,19 @@
+.CoveoPrintableUri{
+  margin: 2px 0 5px 0;
+
+
+  a {
+	font-size: $font-size-smallest;
+	@include clickable();
+	padding: 0 2px 0 2px;
+	display:inline-block;
+  }
+
+  .coveo-printable-uri-separator {
+	font-size: 9px;
+  }
+
+  .coveo-hidden {
+	display: none;
+  }
+}

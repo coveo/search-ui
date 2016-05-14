@@ -1,0 +1,82 @@
+
+.CoveoFieldTable {
+  @include defaultRoundedBorder();
+  width: 100%;
+  background-color: $color-blueish-white;
+  padding-bottom: 10px;
+  position: relative;
+  th, td {
+    font-size: $font-size-smaller;
+  }
+  td {
+    width: 99%;
+    padding: 10px 20px 0px 0px;
+    .coveo-clickable {
+      @include clickable();
+      &.coveo-selected {
+        font-weight: bold;
+      }
+    }
+  }
+
+  th {
+    color: $color-blueish-gray;
+    text-align: left;
+    font-weight: normal;
+    white-space: nowrap;
+    padding: 10px 10px 0px 20px;
+  }
+  border-collapse: separate;
+  margin-bottom: 20px;
+
+}
+
+.coveo-field-table-toggle {
+  @include clickable();
+  margin: 0px 5px 5px 0px;
+  .coveo-field-table-toggle-caption {
+    margin-right: 5px;
+  }
+}
+
+.coveo-field-table-toggle-container {
+  overflow: hidden;
+  height: 0;
+  transition: height 0.5s ease-in-out;
+  &.coveo-no-transition {
+    transition: none;
+  }
+}
+
+.coveo-field-table-toggle-icon {
+  position: relative;
+  top: 2px;
+
+  @extend .coveo-sprites-arrow-down;
+  @include transition(opacity 0.5s);
+  opacity: 1;
+  &.coveo-opened {
+    opacity: 0;
+  }
+}
+
+.coveo-field-table-toggle-icon-up {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  margin: 0;
+  @extend .coveo-sprites-arrow-up;
+  display: none;
+  &.coveo-opened {
+    display: inline-block;
+  }
+}
+
+.CoveoFieldValue {
+  .coveo-clickable {
+    @include clickable();
+    &.coveo-selected {
+      font-weight: bold;
+    }
+  }
+}

@@ -1,0 +1,29 @@
+.CoveoQuerySummary {
+  div {
+    margin-bottom: 5px;
+  }
+  ul {
+    margin-top: 0px;
+    li {
+      font-size: $font-size-smaller;
+    }
+  }
+  color: $color-blueish-gray;
+  &.coveo-hidden {
+    display: none;
+  }
+}
+
+.coveo-query-summary-no-results-string {
+  font-size: $font-size-bigger;
+}
+
+.coveo-query-summary-search-tips-info {
+  font-size: $font-size-bigger;
+}
+
+.coveo-query-summary-cancel-last {
+  font-size: $font-size-smaller;
+  @include clickable();
+}
+

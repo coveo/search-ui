@@ -1,0 +1,27 @@
+.coveo-sort-section {
+	float:right;
+	width:50%;
+	text-align: right;
+}
+
+.CoveoSort {
+  font-size: 13px;
+	background-color:$color-mobile-gray-results-header-section;
+	border:none;
+	min-height:25px;
+	min-width:60px;
+	padding: 15px 10px 10px 15px;
+	text-align:center;
+	display:inline;
+	float:right;
+
+	&:hover {
+		color:$color-sort;
+		text-decoration: none;
+	}
+
+	&:hover.coveo-selected {
+		color:$color-sort-selected;
+		text-decoration: none;
+	}
+}

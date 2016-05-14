@@ -1,0 +1,44 @@
+/// <reference path='../Base.ts' />
+
+module Coveo {
+  export interface IAnalyticsSearchEventsArgs {
+    searchEvents: IAPISearchEvent[];
+  }
+
+  export interface IAnalyticsDocumentViewEventArgs {
+    documentViewEvent: IAPIDocumentViewEvent;
+  }
+
+  export interface IAnalyticsCustomEventArgs {
+    customEvent: IAPICustomEvent;
+  }
+
+  export interface IChangeAnalyticsCustomDataEventArgs extends IChangeableAnalyticsDataObject {
+    type : string;
+<<<<<<< mine
+    metaObject: IChangeableAnalyticsMetaObject;
+=======
+    metaObject: ChangeableAnalyticsMetaObject;
+    actionType: string;
+    actionCause: string;
+>>>>>>> theirs
+  }
+
+  export interface IChangeableAnalyticsMetaObject {
+    [name: string]: string;
+  }
+
+  export interface IChangeableAnalyticsDataObject {
+    originLevel1: string;
+    originLevel2: string;
+    originLevel3: string;
+    language: string;
+  }
+
+  export class AnalyticsEvents {
+    public static searchEvent = 'analyticsSearchEvent';
+    public static documentViewEvent = 'analyticsDocumentViewEvent';
+    public static customEvent = 'analyticsCustomEvent';
+    public static changeAnalyticsCustomData = 'changeAnalyticsCustomData';
+  }
+}

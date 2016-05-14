@@ -1,0 +1,507 @@
+import {IStringMap} from '../rest/GenericParam';
+import {Logger} from '../misc/Logger';
+import {Assert} from '../misc/Assert';
+import {TimeSpan} from '../utils/TimeSpanUtils';
+import {isPhonegap, getDeviceName} from '../utils/DeviceUtils';
+import {isNonEmptyString} from '../utils/Utils';
+import {Promise} from 'es6-promise';
+import _ = require('underscore');
+
+declare var XDomainRequest;
+
+
+/**
+ * Parameters that can be used when calling an {@link EndpointCaller}
+ */
+export interface IEndpointCallParameters {
+  /**
+   * Url to target
+   */
+  url: string;
+  /**
+   * Array of query string params.<br/>
+   * eg: ['foo=1','bar=2']
+   */
+  queryString: string[];
+  /**
+   * Body of the request.<br/>
+   * key -> value map (JSON)
+   */
+  requestData: IStringMap<any>;
+  /**
+   * Request data type.<br/>
+   * eg: "application/json", "application/x-www-form-urlencoded; charset=\"UTF-8\""
+   */
+  requestDataType?: string;
+  /**
+   * Or HTTP verb : GET, POST, PUT, etc.
+   */
+  method: string;
+  /**
+   * responseType of the request.</br>
+   * eg: "text", "arraybuffer" etc.
+   */
+  responseType: string;
+  /**
+   * Flag to specify if the endpoint should return different type of error as actual 200 success for the browser, but with the error code/message contained in the response.
+   */
+  errorsAsSuccess: boolean;
+}
+
+/**
+ * Information about a request
+ */
+export interface IRequestInfo<T> {
+  /**
+   * Url that was requested
+   */
+  url: string;
+  /**
+   * The query string parameters that were used for this request
+   */
+  queryString: string[];
+  /**
+   * The data that was sent for this request
+   */
+  requestData: IStringMap<any>;
+  /**
+   * The requestDataType that was used for this request
+   */
+  requestDataType: string;
+  /**
+   * The timestamp at which the request started
+   */
+  begun: Date;
+  /**
+   * The method that was used for this request
+   */
+  method: string;
+}
+
+/**
+ * A generic response
+ */
+export interface IResponse<T> {
+  /**
+   * Data of the response
+   */
+  data?: T;
+}
+
+/**
+ * A generic success response
+ */
+export interface ISuccessResponse<T> extends IResponse<T> {
+  /**
+   * The time that the successfull response took to complete
+   */
+  duration: number;
+  /**
+   * Data of the response
+   */
+  data: T;
+}
+
+/**
+ * An error response
+ */
+export interface IErrorResponse extends IResponse<IStringMap<any>> {
+  /**
+   * Status code for the error
+   */
+  statusCode: number;
+  /**
+   * Data about the error
+   */
+  data?: {
+    /**
+     * Message for the error
+     */
+    message?: string;
+    /**
+     * Type of the error
+     */
+        type?: string;
+    /**
+     * A report provided by the search api
+     */
+    executionReport?: string;
+    [key: string]: any;
+  };
+}
+
+/**
+ * Possible options when creating a {@link EndpointCaller}
+ */
+export interface IEndpointCallerOptions {
+  /**
+   * The access token to use for this endpoint.
+   */
+  accessToken?: string;
+  /**
+   * The username to use to log into this endpoint. Used for basic auth.<br/>
+   * Not used if accessToken is provided.
+   */
+  username?: string;
+  /**
+   * The password to use to log into this endpoint. Used for basic auth.<br/>
+   * Not used if accessToken is provided.
+   */
+  password?: string;
+}
+
+//In ie8, XMLHttpRequest has no status property, so let's use this enum instead
+enum XMLHttpRequestStatus {
+  OPENED = XMLHttpRequest.OPENED || 1,
+  HEADERS_RECEIVED = XMLHttpRequest.HEADERS_RECEIVED || 2,
+  DONE = XMLHttpRequest.DONE || 4
+}
+
+/**
+ * This class is in charge of calling an endpoint (eg: a {@link SearchEndpoint} or a {@link AnalyticsEndpoint}.<br/>
+ * This means it's only uses to execute an XMLHttpRequest (for example), massage the response and check if there are errors.<br/>
+ * Will execute the call and return a Promise.<br/>
+ * Call using one of those options : <br/>
+ * -- XMLHttpRequest for recent browser that support CORS, or if the endpoint is on the same origin.<br/>
+ * -- XDomainRequest for older IE browser that do not support CORS.<br/>
+ * -- Jsonp if all else fails, or is explicitly enabled.
+ */
+export class EndpointCaller {
+  public logger: Logger;
+
+  /**
+   * Set this property to true to enable Jsonp call to the endpoint.<br/>
+   * Be aware that jsonp is "easier" to setup endpoint wise, but has a lot of drawback and limitation for the client code.<br/>
+   * Default to false.
+   * @type {boolean}
+   */
+  public useJsonp = false;
+
+  /**
+   * Create a new EndpointCaller.
+   * @param options Specify the authentication that will be used for this endpoint. Not needed if the endpoint is public and has no authentication
+   */
+  constructor(public options: IEndpointCallerOptions = {}) {
+    this.logger = new Logger(this);
+  }
+
+  /**
+   * Generic call to the endpoint using the provided {@link IEndpointCallParameters}.<br/>
+   * Internally, will decide which method to use to call the endpoint :<br/>
+   * -- XMLHttpRequest for recent browser that support CORS, or if the endpoint is on the same origin.<br/>
+   * -- XDomainRequest for older IE browser that do not support CORS.<br/>
+   * -- Jsonp if all else fails, or is explicitly enabled.
+   * @param params The parameters to use for the call
+   * @returns {any} A promise of the given type
+   */
+  public call<T>(params: IEndpointCallParameters): Promise<ISuccessResponse<T>> {
+    var requestInfo: IRequestInfo<T> = {
+      url: params.url,
+      queryString: params.errorsAsSuccess ? params.queryString.concat(['errorsAsSuccess=1']) : params.queryString,
+      requestData: params.requestData,
+      requestDataType: params.requestDataType || 'application/x-www-form-urlencoded; charset="UTF-8"',
+      begun: new Date(),
+      method: params.method
+    };
+
+    this.logger.trace('Performing REST request', requestInfo);
+    var urlObject = this.parseURL(requestInfo.url);
+    //In IE8, hostname and port return "" when we are on the same domain.
+    var isLocalHost = (window.location.hostname === urlObject.hostname) || (urlObject.hostname === '');
+
+    var currentPort = (window.location.port != '' ? window.location.port : (window.location.protocol == 'https:' ? '443' : '80' ));
+    var isSamePort = currentPort == urlObject.port;
+    var isCrossOrigin = !(isLocalHost && isSamePort)
+    if (!this.useJsonp) {
+      if (this.isCORSSupported() || !isCrossOrigin) {
+        return this.callUsingXMLHttpRequest(requestInfo, params.responseType);
+      } else if (this.isXDomainRequestSupported()) {
+        return this.callUsingXDomainRequest(requestInfo);
+      } else {
+        return this.callUsingAjaxJsonP(requestInfo);
+      }
+    } else {
+      return this.callUsingAjaxJsonP(requestInfo);
+    }
+  }
+
+  /**
+   * Call the endpoint using XMLHttpRequest. Used internally by {@link EndpointCaller.call}.<br/>
+   * Will try internally to handle error if it can.<br/>
+   * Promise will otherwise fail with the error type.
+   * @param requestInfo The info about the request
+   * @param responseType The responseType. Default to text. https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType
+   * @returns {Promise<T>|Promise}
+   */
+  public callUsingXMLHttpRequest<T>(requestInfo: IRequestInfo<T>, responseType = 'text'): Promise<ISuccessResponse<T>> {
+    return new Promise((resolve, reject)=> {
+      var xmlHttpRequest = new XMLHttpRequest();
+
+      // Beware, most stuff must be set on the event that says the request is OPENED.
+      // Otherwise it'll bork on some browsers. Gotta love standards.
+
+      // This sent variable allowed to remove the second call of onreadystatechange with the state OPENED in IE11
+      var sent = false;
+
+      xmlHttpRequest.onreadystatechange = (ev) => {
+        if (xmlHttpRequest.readyState == XMLHttpRequestStatus.OPENED && !sent) {
+          sent = true;
+          xmlHttpRequest.withCredentials = true;
+
+          // Set authentication depending on what we're using
+          if (this.options.accessToken) {
+            xmlHttpRequest.setRequestHeader('Authorization', 'Bearer ' + this.options.accessToken);
+          } else if (this.options.username && this.options.password) {
+            xmlHttpRequest.setRequestHeader('Authorization',
+                'Basic ' + btoa(this.options.username + ":" + this.options.password));
+          }
+
+          // Under Phonegap, we must set this special http header that'll prevent the server
+          // from challenging us for Basic Authentication. This avoids a bug where Phonegap
+          // would simply deadlock trying to show a popup.
+          if (isPhonegap()) {
+            xmlHttpRequest.setRequestHeader('Basic-Auth-Challenge-Client', 'Phonegap');
+          }
+
+          if (requestInfo.method == 'GET') {
+            xmlHttpRequest.send();
+          } else if (requestInfo.requestDataType.indexOf('application/json') === 0) {
+            xmlHttpRequest.setRequestHeader('Content-Type', 'application/json; charset="UTF-8"');
+            xmlHttpRequest.send(JSON.stringify(requestInfo.requestData));
+          } else {
+            xmlHttpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset="UTF-8"');
+            xmlHttpRequest.send(this.convertJsonToFormBody(requestInfo.requestData));
+          }
+
+          // The "responseType" varies if the request is a success or not.
+          // Therefore we postpone setting "responseType" until we know if the
+          // request is a success or not. Doing so, we avoid this potential
+          // error in Chrome:
+          //
+          //   Uncaught InvalidStateError: Failed to read the 'responseText'
+          //   property from 'XMLHttpRequest': The value is only accessible if
+          //   the object's 'responseType' is '' or 'text' (was 'document').
+          //
+        } else if (xmlHttpRequest.readyState == XMLHttpRequestStatus.HEADERS_RECEIVED) {
+          var status = xmlHttpRequest.status;
+
+          if (this.isSuccessHttpStatus(status)) {
+            xmlHttpRequest.responseType = responseType;
+          } else {
+            xmlHttpRequest.responseType = 'text';
+          }
+        } else if (xmlHttpRequest.readyState == XMLHttpRequestStatus.DONE) {
+          var status = xmlHttpRequest.status;
+          var data;
+          switch (responseType) {
+            case 'json':
+              data = xmlHttpRequest.response;
+              // Work around a bug in IE11 where responseType jsonis not supported : the response comes back as a plain string
+              // Force the json parse manually
+              if (responseType == 'json' && getDeviceName() == 'IE') {
+                try {
+                  data = JSON.parse(data);
+                } catch (e) {
+                  // Do nothing, it probably means the data was JSON already
+                }
+              }
+              break;
+            case 'text':
+              data = this.tryParseResponseText(xmlHttpRequest.responseText, xmlHttpRequest.getResponseHeader('Content-Type'));
+              break;
+            default:
+              data = xmlHttpRequest.response;
+              break;
+          }
+
+          if (data == undefined) {
+            data = this.tryParseResponseText(xmlHttpRequest.responseText, xmlHttpRequest.getResponseHeader('Content-Type'));
+          }
+
+          if (this.isSuccessHttpStatus(status)) {
+            this.handleSuccessfulResponseThatMightBeAnError(requestInfo, data, resolve, reject);
+          } else {
+            this.handleError(requestInfo, xmlHttpRequest.status, undefined, reject);
+          }
+        }
+      };
+
+      var queryString = requestInfo.queryString;
+      if (requestInfo.method == 'GET') {
+        queryString = queryString.concat(this.convertJsonToQueryString(requestInfo.requestData));
+      }
+      xmlHttpRequest.open(requestInfo.method, this.combineUrlAndQueryString(requestInfo.url, queryString));
+    })
+  }
+
+  /**
+   * Call the endpoint using XDomainRequest https://msdn.microsoft.com/en-us/library/cc288060(v=vs.85).aspx<br/>
+   * Used for IE8/9
+   * @param requestInfo The info about the request
+   * @returns {Promise<T>|Promise}
+   */
+  public callUsingXDomainRequest<T>(requestInfo: IRequestInfo<T>): Promise<IResponse<T>> {
+    return new Promise((resolve, reject)=> {
+      var queryString = requestInfo.queryString.concat([]);
+
+      // XDomainRequest don't support including stuff in the header, so we must
+      // put the access token in the query string if we have one.
+      if (this.options.accessToken) {
+        queryString.push('access_token=' + encodeURIComponent(this.options.accessToken));
+      }
+
+      var xDomainRequest = new XDomainRequest();
+      if (requestInfo.method == 'GET') {
+        queryString = queryString.concat(this.convertJsonToQueryString(requestInfo.requestData))
+      }
+      xDomainRequest.open(requestInfo.method, this.combineUrlAndQueryString(requestInfo.url, queryString));
+
+      xDomainRequest.onload = () => {
+        var data = this.tryParseResponseText(xDomainRequest.responseText, xDomainRequest.contentType);
+        this.handleSuccessfulResponseThatMightBeAnError(requestInfo, data, resolve, reject);
+      };
+
+      xDomainRequest.onerror = () => {
+        var data = this.tryParseResponseText(xDomainRequest.responseText, xDomainRequest.contentType);
+        this.handleError(requestInfo, 0, data, reject);
+      };
+
+      // We must set those functions otherwise it will sometime fail in IE
+      xDomainRequest.ontimeout = () => this.logger.error('Request timeout', xDomainRequest, requestInfo.requestData);
+      xDomainRequest.onprogress = () => this.logger.trace('Request progress', xDomainRequest, requestInfo.requestData);
+
+      // We must open the request in a separate thread, for obscure reasons
+      _.defer(() => {
+        if (requestInfo.method == 'GET') {
+          xDomainRequest.send();
+        } else {
+          xDomainRequest.send(this.convertJsonToFormBody(requestInfo.requestData));
+        }
+      });
+    })
+  }
+
+  /**
+   * Call the endpoint using Jsonp https://en.wikipedia.org/wiki/JSONP<br/>
+   * Should be used for dev only, or for very special setup as using jsonp has a lot of drawbacks.
+   * @param requestInfo The info about the request
+   * @returns {Promise<T>|Promise}
+   */
+  public callUsingAjaxJsonP<T>(requestInfo: IRequestInfo<T>): Promise<IResponse<T>> {
+    return new Promise((resolve, reject)=> {
+      var queryString = requestInfo.queryString.concat(this.convertJsonToQueryString(requestInfo.requestData));
+
+      // JSONP don't support including stuff in the header, so we must
+      // put the access token in the query string if we have one.
+      if (this.options.accessToken) {
+        queryString.push('access_token=' + encodeURIComponent(this.options.accessToken));
+      }
+
+      queryString.push('callback=?');
+
+      $['jsonp']({
+        url: this.combineUrlAndQueryString(requestInfo.url, queryString),
+        success: (data: any) => this.handleSuccessfulResponseThatMightBeAnError(requestInfo, data, resolve, reject),
+        error: () => this.handleError(requestInfo, 0, undefined, reject)
+      });
+    })
+  }
+
+  private parseURL(url: string) {
+    var urlObject = document.createElement('a');
+    urlObject.href = url;
+    return urlObject;
+  }
+
+  private convertJsonToQueryString(json: { [key: string]: any; }): string[] {
+    Assert.exists(json);
+
+    var result: string[] = [];
+    _.each(json, (value, key) => {
+      if (value != null) {
+        if (_.isObject(value)) {
+          result.push(key + '=' + encodeURIComponent(JSON.stringify(value)));
+        } else {
+          result.push(key + '=' + encodeURIComponent(value.toString()));
+        }
+      }
+    });
+
+    return result;
+  }
+
+  private convertJsonToFormBody(json: { [key: string]: any; }): string {
+    return this.convertJsonToQueryString(json).join('&');
+  }
+
+  private handleSuccessfulResponseThatMightBeAnError<T>(requestInfo: IRequestInfo<T>, data: any, success, error) {
+    if (this.isErrorResponseBody(data)) {
+      this.handleError(requestInfo, data.statusCode, data, error);
+    } else {
+      this.handleSuccess(requestInfo, data, success);
+    }
+  }
+
+  private handleSuccess<T>(requestInfo: IRequestInfo<T>, data: T, success) {
+    var querySuccess: ISuccessResponse<T> = {
+      duration: TimeSpan.fromDates(requestInfo.begun, new Date()).getMilliseconds(),
+      data: data
+    };
+
+    this.logger.trace('REST request successful', data, requestInfo);
+    success(querySuccess);
+  }
+
+  private handleError<T>(requestInfo: IRequestInfo<T>, status: number, data: any, error) {
+    var queryError: IErrorResponse = {
+      statusCode: status,
+      data: data
+    };
+    this.logger.error('REST request failed', status, data, requestInfo);
+    error(queryError);
+  }
+
+  private combineUrlAndQueryString(url: String, queryString: string[]): string {
+    var questionMark = '?';
+    if (url.match(/\?$/)) {
+      questionMark = '';
+    }
+    return url + (queryString.length > 0 ? questionMark + queryString.join('&') : '');
+  }
+
+  private isXDomainRequestSupported(): boolean {
+    return 'XDomainRequest' in window;
+  }
+
+  private isCORSSupported(): boolean {
+    return 'withCredentials' in new XMLHttpRequest();
+  }
+
+  private isSuccessHttpStatus(status: number): boolean {
+    return status >= 200 && status < 300 || status === 304;
+  }
+
+  private tryParseResponseText(json: string, contentType: string): any {
+    if (contentType != null && contentType.indexOf('application/json') != -1) {
+      if (isNonEmptyString(json)) {
+        try {
+          return JSON.parse(json);
+        } catch (ex) {
+          return undefined;
+        }
+      } else {
+        return undefined;
+      }
+    } else {
+      return json;
+    }
+  }
+
+  private isErrorResponseBody(data: any): boolean {
+    if (data && data.statusCode) {
+      return !this.isSuccessHttpStatus(data.statusCode);
+    } else {
+      return false;
+    }
+  }
+}

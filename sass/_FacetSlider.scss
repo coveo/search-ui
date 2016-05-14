@@ -1,0 +1,23 @@
+@import 'Slider';
+// Use a mixin so that
+@include coveoSlider();
+
+.CoveoFacetSlider {
+  &.coveo-disabled {
+    .coveo-slider-line {
+      background-color: $color-light-grey;
+    }
+    .coveo-slider-button {
+      background-color: $color-teal;
+      box-shadow: none;
+    }
+  }
+  &.coveo-facet-collapsed {
+    .coveo-slider-container {
+      display: none;
+    }
+  }
+  &.coveo-disabled-empty {
+    display: none;
+  }
+}

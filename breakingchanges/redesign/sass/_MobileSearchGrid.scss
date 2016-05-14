@@ -1,0 +1,14 @@
+@import "neat/neat";
+
+.CoveoSearchInterface {
+
+  @include outer-container;
+
+  .search-section {
+    @include row();
+  }
+
+  .results-section {
+    @include row();
+  }
+}

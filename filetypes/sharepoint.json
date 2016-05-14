@@ -1,0 +1,1247 @@
+{
+  "filetype": {
+    "spportal": {
+      "icon": "webpage",
+      "captions": {
+        "en": "Portal",
+        "fr": "Portail",
+        "es": "Portal",
+        "pt": "Portal",
+        "de": "Portal",
+        "nl": "Portaal"
+      }
+    },
+    "spsite": {
+      "icon": "webpage",
+      "captions": {
+        "en": "Site",
+        "fr": "Site",
+        "es": "Sitio",
+        "pt": "Site",
+        "de": "Site",
+        "nl": "Site"
+      }
+    },
+    "spuserprofile": {
+      "icon": "user",
+      "captions": {
+        "en": "SharePoint User",
+        "fr": "Utilisateur SharePoint",
+        "es": "Usuario SharePoint ",
+        "pt": "Usuário SharePoint",
+        "de": "SharePoint-Benutzer",
+        "nl": "SharePoint Gebruiker"
+      }
+    },
+    "sparea": {
+      "icon": "custom",
+      "captions": {
+        "en": "Area",
+        "fr": "Zone",
+        "es": "Área",
+        "pt": "Área",
+        "de": "Zone",
+        "nl": "Gebied"
+      }
+    },
+    "spannouncement": {
+      "icon": "list",
+      "captions": {
+        "en": "Announcement",
+        "fr": "Annonce",
+        "es": "Anuncio",
+        "pt": "Anúncio",
+        "de": "Ankündigung",
+        "nl": "Mededeling"
+      }
+    },
+    "spannouncementlist": {
+      "icon": "list",
+      "captions": {
+        "en": "Announcements",
+        "fr": "Annonces",
+        "es": "Anuncios",
+        "pt": "Anúncios",
+        "de": "Ankündigungen",
+        "nl": "Mededelingen"
+      }
+    },
+    "spcontact": {
+      "icon": "user",
+      "captions": {
+        "en": "Contact",
+        "fr": "Contact",
+        "es": "Contacto",
+        "pt": "Contato",
+        "de": "Kontakt",
+        "nl": "Contact"
+      }
+    },
+    "spcontactlist": {
+      "icon": "user",
+      "captions": {
+        "en": "Contacts",
+        "fr": "Contacts",
+        "es": "Contactos",
+        "pt": "Contatos",
+        "de": "Kontakte",
+        "nl": "Contacten"
+      }
+    },
+    "spcustomlist": {
+      "icon": "custom",
+      "captions": {
+        "en": "Custom Lists",
+        "fr": "Listes personnalisées",
+        "es": "Listas personalizadas",
+        "pt": "Listas personalizadas",
+        "de": "angepasste Listen",
+        "nl": "Aangepaste lijsten"
+      }
+    },
+    "spdiscussionboard": {
+      "icon": "list",
+      "captions": {
+        "en": "Discussion Board",
+        "fr": "Babillard de discussion",
+        "es": "Foro de discusión",
+        "pt": "Fórum de discussão",
+        "de": "Diskussionsforum",
+        "nl": "Discussieforum"
+      }
+    },
+    "spdiscussionboardlist": {
+      "icon": "list",
+      "captions": {
+        "en": "Discussion Boards",
+        "fr": "Babillards de discussion",
+        "es": "Foros de discusión",
+        "pt": "Fóruns de discussão",
+        "de": "Diskussionsforen",
+        "nl": "Discussieforums"
+      }
+    },
+    "spdocumentlibrarylist": {
+      "icon": "folder",
+      "captions": {
+        "en": "Document Library",
+        "fr": "Bibliothèque de documents",
+        "es": "Biblioteca de documentos",
+        "pt": "Biblioteca de documentos",
+        "de": "Dokumentenbibliothek 1",
+        "nl": "Document bibliotheek"
+      }
+    },
+    "spevent": {
+      "icon": "calendar",
+      "captions": {
+        "en": "Event",
+        "fr": "Événement",
+        "es": "Evento",
+        "pt": "Evento",
+        "de": "Ereignis",
+        "nl": "Gebeurtenis"
+      }
+    },
+    "speventlist": {
+      "icon": "calendar",
+      "captions": {
+        "en": "Events",
+        "fr": "Événements",
+        "es": "Eventos",
+        "pt": "Eventos",
+        "de": "Ereignisse",
+        "nl": "Gebeurtenissen"
+      }
+    },
+    "spformlibrarylist": {
+      "icon": "folder",
+      "captions": {
+        "en": "Form Library",
+        "fr": "Bibliothèque de formulaires",
+        "es": "Biblioteca de formularios",
+        "pt": "Biblioteca de formulários",
+        "de": "Formularbibliothek",
+        "nl": "Formulierbibliotheek"
+      }
+    },
+    "spissue": {
+      "icon": "link",
+      "captions": {
+        "en": "Issue",
+        "fr": "Problème",
+        "es": "Tema",
+        "pt": "Questão",
+        "de": "Problem",
+        "nl": "Probleem"
+      }
+    },
+    "spissuelist": {
+      "icon": "link",
+      "captions": {
+        "en": "Issues",
+        "fr": "Problèmes",
+        "es": "Temas",
+        "pt": "Questões",
+        "de": "Probleme",
+        "nl": "Problemen"
+      }
+    },
+    "splink": {
+      "icon": "link",
+      "captions": {
+        "en": "Link",
+        "fr": "Lien",
+        "es": "Enlace",
+        "pt": "Link",
+        "de": "Link",
+        "nl": "Link"
+      }
+    },
+    "splinklist": {
+      "icon": "link",
+      "captions": {
+        "en": "Links",
+        "fr": "Liens",
+        "es": "Enlaces",
+        "pt": "Links",
+        "de": "Links",
+        "nl": "Links"
+      }
+    },
+    "sppicturelibrarylist": {
+      "icon": "images",
+      "captions": {
+        "en": "Picture Library",
+        "fr": "Bibliothèque d'images",
+        "es": "Biblioteca de imágenes",
+        "pt": "Biblioteca de imagens",
+        "de": "Bildbibliothek",
+        "nl": "Afbeeldingsbibliotheek"
+      }
+    },
+    "spsurvey": {
+      "icon": "custom",
+      "captions": {
+        "en": "Survey",
+        "fr": "Sondage",
+        "es": "Encuesta",
+        "pt": "Pesquisa",
+        "de": "Umfrage",
+        "nl": "Enquête"
+      }
+    },
+    "spsurveylist": {
+      "icon": "custom",
+      "captions": {
+        "en": "Surveys",
+        "fr": "Sondages",
+        "es": "Encuestas",
+        "pt": "Pesquisas",
+        "de": "Umfragen",
+        "nl": "Enquêtes"
+      }
+    },
+    "sptask": {
+      "icon": "calendar",
+      "captions": {
+        "en": "Task",
+        "fr": "Tâche",
+        "es": "Tarea",
+        "pt": "Tarefa",
+        "de": "Aufgabe",
+        "nl": "Taak"
+      }
+    },
+    "sptasklist": {
+      "icon": "calendar",
+      "captions": {
+        "en": "Tasks",
+        "fr": "Tâches",
+        "es": "Tareas",
+        "pt": "Tarefas",
+        "de": "Aufgaben",
+        "nl": "Taken"
+      }
+    },
+    "spagenda": {
+      "icon": "calendar",
+      "captions": {
+        "en": "Agenda",
+        "fr": "Agenda",
+        "es": "Agenda",
+        "pt": "Agenda",
+        "de": "Agenda",
+        "nl": "Agenda"
+      }
+    },
+    "spagendalist": {
+      "icon": "calendar",
+      "captions": {
+        "en": "Agendas",
+        "fr": "Agendas",
+        "es": "Agendas",
+        "pt": "Agendas",
+        "de": "Agenden",
+        "nl": "Agenda's"
+      }
+    },
+    "spattendee": {
+      "icon": "user",
+      "captions": {
+        "en": "Attendee",
+        "fr": "Participant",
+        "es": "Participante",
+        "pt": "Participante",
+        "de": "Teilnehmer",
+        "nl": "Genodigde"
+      }
+    },
+    "spattendeelist": {
+      "icon": "user",
+      "captions": {
+        "en": "Attendees",
+        "fr": "Participants",
+        "es": "Participantes",
+        "pt": "Participantes",
+        "de": "Teilnehmer",
+        "nl": "Genodigden"
+      }
+    },
+    "spcustomgridlist": {
+      "icon": "custom",
+      "captions": {
+        "en": "Custom Grids",
+        "fr": "Grilles personnalisées",
+        "es": "Cuadrículas personalizadas",
+        "pt": "Tabelas personalizadas",
+        "de": "angepasste Raster",
+        "nl": "Aangepaste rasters"
+      }
+    },
+    "spdecision": {
+      "icon": "custom",
+      "captions": {
+        "en": "Decision",
+        "fr": "Décision",
+        "es": "Decisión",
+        "pt": "Decisão",
+        "de": "Entscheidung",
+        "nl": "Beslissing"
+      }
+    },
+    "spdecisionlist": {
+      "icon": "custom",
+      "captions": {
+        "en": "Decisions",
+        "fr": "Décisions",
+        "es": "Decisiones",
+        "pt": "Decisões",
+        "de": "Entscheidungen",
+        "nl": "Beslissingen"
+      }
+    },
+    "spobjective": {
+      "icon": "custom",
+      "captions": {
+        "en": "Objective",
+        "fr": "Objectif",
+        "es": "Objetivo",
+        "pt": "Objetivo",
+        "de": "Ziel",
+        "nl": "Intentie"
+      }
+    },
+    "spobjectivelist": {
+      "icon": "custom",
+      "captions": {
+        "en": "Objectives",
+        "fr": "Objectifs",
+        "es": "Objetivos",
+        "pt": "Objetivos",
+        "de": "Ziele",
+        "nl": "Intenties"
+      }
+    },
+    "sptextbox": {
+      "icon": "list",
+      "captions": {
+        "en": "Textbox",
+        "fr": "Zone de texte",
+        "es": "Cuadro de texto",
+        "pt": "quadro de texto",
+        "de": "Textfeld",
+        "nl": "Tekstvak"
+      }
+    },
+    "sptextboxlist": {
+      "icon": "list",
+      "captions": {
+        "en": "Textbox list",
+        "fr": "Zones de texte",
+        "es": "Lista de cuadros de texto",
+        "pt": "Lista de quadros de texto",
+        "de": "Textfeldliste",
+        "nl": "Tekstvak lijst"
+      }
+    },
+    "spthingstobring": {
+      "icon": "custom",
+      "captions": {
+        "en": "Thing To Bring",
+        "fr": "Élément à prévoir",
+        "es": "Elemento a proveer",
+        "pt": "Coisa para trazer",
+        "de": "Element, das geholt werden soll",
+        "nl": "Ding meenemen"
+      }
+    },
+    "spthingstobringlist": {
+      "icon": "custom",
+      "captions": {
+        "en": "Things To Bring",
+        "fr": "Éléments à prévoir",
+        "es": "Elementos a proveer",
+        "pt": "Coisas para trazer",
+        "de": "Elemente, die geholt werden sollen",
+        "nl": "Dingen meenemen"
+      }
+    },
+    "sparealisting": {
+      "icon": "custom",
+      "captions": {
+        "en": "Area Listing",
+        "fr": "Liste de zones",
+        "es": "Listado de áreas",
+        "pt": "Lista de áreas",
+        "de": "Zonenauflistung",
+        "nl": "Lijst van gebieden"
+      }
+    },
+    "spmeetingserie": {
+      "icon": "calendar",
+      "captions": {
+        "en": "Meeting series",
+        "fr": "Espace de travail de réunion",
+        "es": "Serie de reuniones",
+        "pt": "Série de reuniões",
+        "de": "Terminserie",
+        "nl": "Vergadering serie"
+      }
+    },
+    "spmeetingserielist": {
+      "icon": "calendar",
+      "captions": {
+        "en": "Meeting Series List",
+        "fr": "Liste d'espace de travail de réunion",
+        "es": "Lista de series de reuniones",
+        "pt": "Lista de séries de reuniões",
+        "de": "Liste Terminserien",
+        "nl": "Lijst vergadering serie"
+      }
+    },
+    "spsitedirectory": {
+      "icon": "folder",
+      "captions": {
+        "en": "Site Directory Item",
+        "fr": "Élément d'un répertoire de sites",
+        "es": "Elemento de un directorio de sitios",
+        "pt": "Elemento de um diretório de sites",
+        "de": "Element in Sitebibliothek",
+        "nl": "Site Directory Item"
+      }
+    },
+    "spsitedirectorylist": {
+      "icon": "folder",
+      "captions": {
+        "en": "Site Directory",
+        "fr": "Répertoire des sites",
+        "es": "Directorio de sitios",
+        "pt": "Diretório de sites",
+        "de": "Sitebibliothek",
+        "nl": "Site Directory"
+      }
+    },
+    "spdatasource": {
+      "icon": "kb",
+      "captions": {
+        "en": "Data Source",
+        "fr": "Source de données",
+        "es": "Fuente de datos",
+        "pt": "Fonte de dados",
+        "de": "Datenquelle",
+        "nl": "Inhoudsbron"
+      }
+    },
+    "spdatasourcelist": {
+      "icon": "kb",
+      "captions": {
+        "en": "Data Source List",
+        "fr": "Liste de sources de données",
+        "es": "Lista de fuentes de datos",
+        "pt": "Lista de fontes de dados",
+        "de": "Liste Datenquellen",
+        "nl": "Lijst van Inhoudsbronnen"
+      }
+    },
+    "splisttemplatecataloglist": {
+      "icon": "folder",
+      "captions": {
+        "en": "List Template Catalog List",
+        "fr": "Catalogue de modèles de listes",
+        "es": "Lista de catálogos de plantillas de listas",
+        "pt": "Lista de catálogos de gabaritos de listas",
+        "de": "Vorlagelistenkatalog",
+        "nl": "Sjaboloon catalogus lijst"
+      }
+    },
+    "spwebpartcataloglist": {
+      "icon": "folder",
+      "captions": {
+        "en": "WebPart catalog list",
+        "fr": "Catalogue de composants WebPart",
+        "es": "Lista de catálogos de webpart",
+        "pt": "Lista de catálogos de Webpart",
+        "de": "Webpartkatalogliste",
+        "nl": "Webpart catalog lijst"
+      }
+    },
+    "spwebtemplatecataloglist": {
+      "icon": "folder",
+      "captions": {
+        "en": "Web Template Catalog List",
+        "fr": "Catalogue de modèles de pages Web",
+        "es": "Lista de catálogos de plantillas Web",
+        "pt": "Lista de catálogos de gabaritos web",
+        "de": "Webvorlagenkatalogliste",
+        "nl": "Web Template Catalogus lijst"
+      }
+    },
+    "spworkspacepagelist": {
+      "icon": "folder",
+      "captions": {
+        "en": "Workspace Page List",
+        "fr": "Liste de pages d'espace de travail",
+        "es": "Lista de páginas de áreas de trabajo",
+        "pt": "Lista de páginas de espaço de trabalho",
+        "de": "Workspace Seitenliste",
+        "nl": "Werkgebied pagina's lijst"
+      }
+    },
+    "spunknownlist": {
+      "icon": "custom",
+      "captions": {
+        "en": "Custom List",
+        "fr": "Liste personnalisée",
+        "es": "Lista personalizada",
+        "pt": "Lista personalizada",
+        "de": "angepasste Liste",
+        "nl": "Aangepaste lijst"
+      }
+    },
+    "spadministratortask": {
+      "icon": "calendar",
+      "captions": {
+        "en": "Administrator Task",
+        "fr": "Tâche d'administrateur",
+        "es": "Tarea del administrador",
+        "pt": "Tarefa do administrador",
+        "de": "Administrator-Aufgabe",
+        "nl": "Administrator - Taak"
+      }
+    },
+    "spadministratortasklist": {
+      "icon": "calendar",
+      "captions": {
+        "en": "Administrator Tasks",
+        "fr": "Tâches d'administrateur",
+        "es": "Tareas del administrador",
+        "pt": "Tarefas do administrador",
+        "de": "Administrator-Aufgaben",
+        "nl": "Administrator - Taken"
+      }
+    },
+    "spareadocumentlibrarylist": {
+      "icon": "folder",
+      "captions": {
+        "en": "Area Document Library",
+        "fr": "Bibliothèque de documents zonés",
+        "es": "Librería de documentos del área",
+        "pt": "Biblioteca de documentos da área",
+        "de": "Bereichs-Dokumentenbibliothek",
+        "nl": "Dokument bibliotheek gebied"
+      }
+    },
+    "spblogcategory": {
+      "icon": "list",
+      "captions": {
+        "en": "Blog Category",
+        "fr": "Catégorie de blogue",
+        "es": "Categoría de blog",
+        "pt": "Categoria de blog",
+        "de": "Blog-Kategorie",
+        "nl": "Blog Categorie"
+      }
+    },
+    "spblogcategorylist": {
+      "icon": "list",
+      "captions": {
+        "en": "Blog Category",
+        "fr": "Catégorie de blogue",
+        "es": "Categoría de blog",
+        "pt": "Categoria de blog",
+        "de": "Blog-Kategorie",
+        "nl": "Blog Categorie"
+      }
+    },
+    "spblogcomment": {
+      "icon": "list",
+      "captions": {
+        "en": "Blog Comment",
+        "fr": "Commentaire de blogue",
+        "es": "Comentario de blog ",
+        "pt": "Comentário de blog",
+        "de": "Blog-Kommentar",
+        "nl": "Blog Commentaar"
+      }
+    },
+    "spblogcommentlist": {
+      "icon": "list",
+      "captions": {
+        "en": "Blog Comments",
+        "fr": "Commentaires de blogue",
+        "es": "Comentarios de blog",
+        "pt": "Comentários de blog",
+        "de": "Blog-Kommentare",
+        "nl": "Blog Commentaren"
+      }
+    },
+    "spblogpost": {
+      "icon": "list",
+      "captions": {
+        "en": "Blog Post",
+        "fr": "Article de blogue",
+        "es": "Escribir un mensaje en un blog ",
+        "pt": "Escrever uma mensagem num blog",
+        "de": "Blog-Beitrag",
+        "nl": "Blog bijdrage"
+      }
+    },
+    "spblogpostlist": {
+      "icon": "list",
+      "captions": {
+        "en": "Blog Posts",
+        "fr": "Articles de blogue",
+        "es": "Escribir mensajes en un blog",
+        "pt": "Escrever mensagens num blog",
+        "de": "Blog-Beiträge",
+        "nl": "Blog bijdragen"
+      }
+    },
+    "spdataconnectionlibrarylist": {
+      "icon": "kb",
+      "captions": {
+        "en": "Data Connection Library",
+        "fr": "Bibliothèque de connexions",
+        "es": "Librería de conexión de datos",
+        "pt": "Biblioteca de conexão de dados",
+        "de": "Datenverbindungsbibliothek",
+        "nl": "Data connectie bibliotheek"
+      }
+    },
+    "spdistributiongroup": {
+      "icon": "custom",
+      "captions": {
+        "en": "Distribution Group",
+        "fr": "Groupe de distribution",
+        "es": "Grupo de distribución",
+        "pt": "Grupo de distribuição",
+        "de": "Verteilergruppe",
+        "nl": "Distributiegroep"
+      }
+    },
+    "spdistributiongrouplist": {
+      "icon": "custom",
+      "captions": {
+        "en": "Distribution Groups",
+        "fr": "Groupes de distribution",
+        "es": "Grupos de distribución",
+        "pt": "Grupos de distribuição",
+        "de": "Verteilergruppen",
+        "nl": "Distributiegroepen"
+      }
+    },
+    "spipfslist": {
+      "icon": "kb",
+      "captions": {
+        "en": "InfoPath Form Servers",
+        "fr": "Serveurs de formulaire InfoPath",
+        "es": "Servidores InfoPath Form ",
+        "pt": "Servidores de formulário InfoPath",
+        "de": "InfoPath-Formularserver",
+        "nl": "InfoPath Form server"
+      }
+    },
+    "spkeyperformanceindicator": {
+      "icon": "custom",
+      "captions": {
+        "en": "Key Performance Indicator",
+        "fr": "Indicateur de performance clé",
+        "es": "Inidicador de rendimiento clave",
+        "pt": "Indicador de rendimento ",
+        "de": "Key Performance-Indikator",
+        "nl": "Key Performance Indicator"
+      }
+    },
+    "spkeyperformanceindicatorlist": {
+      "icon": "custom",
+      "captions": {
+        "en": "Key Performance Indicators",
+        "fr": "Indicateurs de performance clé",
+        "es": "Indicadores de rendimiento claves",
+        "pt": "Indicadores de rendimento",
+        "de": "Key Performance-Indikatoren",
+        "nl": "Key Performance Indicatoren"
+      }
+    },
+    "splanguagesandtranslator": {
+      "icon": "list",
+      "captions": {
+        "en": "Languages and Translator",
+        "fr": "Langue et traducteur",
+        "es": "Idiomas y traductor",
+        "pt": "Idiomas e tradutor",
+        "de": "Sprachen und Übersetzer",
+        "nl": "Taal en vertalingen"
+      }
+    },
+    "splanguagesandtranslatorlist": {
+      "icon": "list",
+      "captions": {
+        "en": "Languages and Translators",
+        "fr": "Langues et traducteurs",
+        "es": "Idiomas y traductores",
+        "pt": "Idiomas e tradutores",
+        "de": "Sprachen und Übersetzer",
+        "nl": "Talen en vertalingen"
+      }
+    },
+    "spmasterpagescataloglist": {
+      "icon": "folder",
+      "captions": {
+        "en": "Master Pages Library",
+        "fr": "Bibliothèque de pages maîtres",
+        "es": "Programa de páginas maestras",
+        "pt": "Programa de páginas master",
+        "de": "Masterseiten-Bibliothek",
+        "nl": "Masterpage bibliotheek"
+      }
+    },
+    "spnocodeworkflowlibrarylist": {
+      "icon": "folder",
+      "captions": {
+        "en": "No Code Workflow Library",
+        "fr": "Bibliothèque de séquences non codées",
+        "es": "No se encuentra un programa de flujo de trabajo de código",
+        "pt": "Não há biblioteca de fluxo de trabalho de código",
+        "de": "No Code-Arbeitsablaufsbibliothek",
+        "nl": "Geen code werkproces bibliotheek "
+      }
+    },
+    "spprojecttask": {
+      "icon": "case",
+      "captions": {
+        "en": "Project Task",
+        "fr": "Tâche de projet",
+        "es": "Tarea de proyecto",
+        "pt": "Tarefa de projeto",
+        "de": "Projektaufgabe",
+        "nl": "Projecttaak"
+      }
+    },
+    "spprojecttasklist": {
+      "icon": "case",
+      "captions": {
+        "en": "Project Tasks",
+        "fr": "Tâches de projet",
+        "es": "Tareas de proyecto",
+        "pt": "Tarefas de projeto",
+        "de": "Projektaufgaben",
+        "nl": "Projekttaken"
+      }
+    },
+    "sppublishingpageslibrarylist": {
+      "icon": "folder",
+      "captions": {
+        "en": "Page Library",
+        "fr": "Bibliothèque de page",
+        "es": "Programa de la página",
+        "pt": "Biblioteca de página",
+        "de": "Seitenbibliothek",
+        "nl": "Pagina bibliotheek"
+      }
+    },
+    "spreportdocumentlibrarylist": {
+      "icon": "folder",
+      "captions": {
+        "en": "Report Document Library",
+        "fr": "Bibliothèque de documents rapport",
+        "es": "Programa de documento de informe",
+        "pt": "Biblioteca de documentos de relatórios",
+        "de": "Berichts-Dokumentenbibliothek",
+        "nl": "Rapport documenten bibliotheek"
+      }
+    },
+    "spreportlibrarylist": {
+      "icon": "folder",
+      "captions": {
+        "en": "Report Library",
+        "fr": "Bibliothèque de rapports",
+        "es": "Librería de informes",
+        "pt": "Biblioteca de relatórios",
+        "de": "Berichtsbibliothek",
+        "nl": "Rapport bibliotheek"
+      }
+    },
+    "spslidelibrarylist": {
+      "icon": "folder",
+      "captions": {
+        "en": "Slide Library",
+        "fr": "Bibliothèque de diapositives",
+        "es": "Librería de diapositivas",
+        "pt": "Biblioteca de slides",
+        "de": "Folienbibliothek",
+        "nl": "Slide bibliotheek"
+      }
+    },
+    "sptab": {
+      "icon": "custom",
+      "captions": {
+        "en": "Tabs",
+        "fr": "Onglets",
+        "es": "Fichas",
+        "pt": "Lingüeta",
+        "de": "Registerkarten",
+        "nl": "Tabbladen"
+      }
+    },
+    "sptablist": {
+      "icon": "custom",
+      "captions": {
+        "en": "Tabs List",
+        "fr": "Liste d'onglets",
+        "es": "Listas de fichas",
+        "pt": "Lista de lingüetas",
+        "de": "Registerkartenliste",
+        "nl": "Tabbladen lijst"
+      }
+    },
+    "sptranslationmanagementlibrarylist": {
+      "icon": "folder",
+      "captions": {
+        "en": "Translation Management Library",
+        "fr": "Bibliothèque de traductions",
+        "es": "Translation Management Library",
+        "pt": "Biblioteca de gerenciamento de tradução",
+        "de": "Bibliothek zur Übersetzungsverwaltung",
+        "nl": "Vertalings management bibliotheek"
+      }
+    },
+    "spuserinformation": {
+      "icon": "user",
+      "captions": {
+        "en": "User Information",
+        "fr": "Information d'utilisateur",
+        "es": "Información del usuario",
+        "pt": "Informações do usuário",
+        "de": "Benutzerinformationen",
+        "nl": "Gebruiker informatie"
+      }
+    },
+    "spuserinformationlist": {
+      "icon": "user",
+      "captions": {
+        "en": "User Information List",
+        "fr": "Liste d'information d'utilisateur",
+        "es": "Lista de información del usuario",
+        "pt": "Lista de informações do usuário",
+        "de": "Liste der Benutzerinformationen",
+        "nl": "Lijst van gebruikers"
+      }
+    },
+    "spwikipagelibrarylist": {
+      "icon": "folder",
+      "captions": {
+        "en": "Wiki Page Library",
+        "fr": "Bibliothèque de pages Wiki",
+        "es": "Librería de la página de Wiki",
+        "pt": "Biblioteca de páginas Wiki",
+        "de": "Wiki-Seitenbibliothek",
+        "nl": "Wiki pagina bibliotheek"
+      }
+    },
+    "spworkflowhistory": {
+      "icon": "calendar",
+      "captions": {
+        "en": "Workflow History",
+        "fr": "Historique de processus",
+        "es": "Antecedente de flujo de trabajo",
+        "pt": "Antecedente de fluxo de trabalho",
+        "de": "Arbeitsablaufs-Verlaufsprotokoll",
+        "nl": "Werkproces geschiedenis"
+      }
+    },
+    "spworkflowhistorylist": {
+      "icon": "calendar",
+      "captions": {
+        "en": "Workflow Histories",
+        "fr": "Historiques de processus",
+        "es": "Antecedentes de flujo de trabajo",
+        "pt": "Antecedentes de fluxo de trabalho",
+        "de": "Arbeitsablaufs-Verlaufsprotokolle",
+        "nl": "Werkproces geschiedenis"
+      }
+    },
+    "spworkflowprocess": {
+      "icon": "custom",
+      "captions": {
+        "en": "Custom Workflow Process",
+        "fr": "Séquence de tâche personnalisée",
+        "es": "Proceso de flujo de trabajo personalizado",
+        "pt": "Processo de fluxo de trabalho personalizado",
+        "de": "Benutzerdefinierter Arbeitsablauf",
+        "nl": "Door gebruiker gedefinieert werkproces"
+      }
+    },
+    "spworkflowprocesslist": {
+      "icon": "custom",
+      "captions": {
+        "en": "Custom Workflow Processes",
+        "fr": "Séquence de tâches personnalisées",
+        "es": "Procesos de flujo de trabajo personalizados",
+        "pt": "Processos de fluxo de trabalho personalizados",
+        "de": "Benutzerdefinierte Arbeitsabläufe",
+        "nl": "Door gebruiker gedefinieerde werkprocessen"
+      }
+    },
+    "sppublishingimageslibrarylist": {
+      "icon": "folder",
+      "captions": {
+        "en": "Publishing Image Library",
+        "fr": "Bibliothèque d'images de publication",
+        "es": "Biblioteca de imagen de publicación",
+        "pt": "Biblioteca de imagens de publicação",
+        "de": "Publishing-Image-Bibliothek",
+        "nl": "Gepubliceerde Afbeeldingen Bibliotheek"
+      }
+    },
+    "spcirculation": {
+      "icon": "custom",
+      "captions": {
+        "en": "Circulation",
+        "fr": "Circulation",
+        "es": "Circulación",
+        "pt": "Circulação",
+        "de": "Circulation",
+        "nl": "Circulatie"
+      }
+    },
+    "spcirculationlist": {
+      "icon": "custom",
+      "captions": {
+        "en": "Circulations",
+        "fr": "Circulations",
+        "es": "Circulaciones ",
+        "pt": "Circulações",
+        "de": "Circulations",
+        "nl": "Circulaties"
+      }
+    },
+    "spdashboardslibrarylist": {
+      "icon": "folder",
+      "captions": {
+        "en": "Dashboard Library",
+        "fr": "Bibliothèque de tableaux de bord",
+        "es": "Biblioteca del tablero de comandos",
+        "pt": "Biblioteca do painel",
+        "de": "Dashboard-Bibliothek",
+        "nl": "Dashboard bibliotheek"
+      }
+    },
+    "spdataconnectionforperformancepointlibrarylist": {
+      "icon": "folder",
+      "captions": {
+        "en": "Data Connection for Performance Point Library",
+        "fr": "Bibliothèque de connexions pour la performance",
+        "es": "Conexión de datos para el funcionamiento de la biblioteca de punto",
+        "pt": "Conexão de dados para biblioteca de desempenho",
+        "de": "Datenverbindung für Performance-Point-Bibliothek",
+        "nl": "Data connectie voor Peformance Point Bibliotheek"
+      }
+    },
+    "sphealthreport": {
+      "icon": "list",
+      "captions": {
+        "en": "Health Report",
+        "fr": "Rapport de santé",
+        "es": "Informe de integridad",
+        "pt": "Relatório de saúde",
+        "de": "Bericht zur Computergesundheit",
+        "nl": "Status rapport"
+      }
+    },
+    "sphealthreportlist": {
+      "icon": "list",
+      "captions": {
+        "en": "Health Reports",
+        "fr": "Rapports de santé",
+        "es": "Informes de integridad",
+        "pt": "Relatórios de saúde",
+        "de": "Berichte zur Computergesundheit",
+        "nl": "Status rapporten"
+      }
+    },
+    "sphealthrule": {
+      "icon": "list",
+      "captions": {
+        "en": "Health Rule",
+        "fr": "Règle de santé",
+        "es": "Regla de integridad",
+        "pt": "Regra de saúde",
+        "de": "Regel zur Erhaltung der Computergesundheit",
+        "nl": "Status regel"
+      }
+    },
+    "sphealthrulelist": {
+      "icon": "list",
+      "captions": {
+        "en": "Health Rules",
+        "fr": "Règles de santé",
+        "es": "Reglas de integridad",
+        "pt": "Regras de saúde",
+        "de": "Regeln zur Erhaltung der Computergesundheit",
+        "nl": "Status regels"
+      }
+    },
+    "spimedictionary": {
+      "icon": "folder",
+      "captions": {
+        "en": "IME Dictionary",
+        "fr": "Dictionnaire IME",
+        "es": "Diccionario IME",
+        "pt": "Dicionário IME",
+        "de": "IME-Wörterbuch",
+        "nl": "IME Dictionary"
+      }
+    },
+    "spimedictionarylist": {
+      "icon": "folder",
+      "captions": {
+        "en": "IME Dictionaries",
+        "fr": "Dictionnaires IME",
+        "es": "Diccionarios IME",
+        "pt": "Dicionários IME",
+        "de": "IME-Wörterbücher",
+        "nl": "IME Dictionaries"
+      }
+    },
+    "spperformancepointcontent": {
+      "icon": "list",
+      "captions": {
+        "en": "Performance Point Content",
+        "fr": "Contenu de point de performance",
+        "es": "Contenido de punto de rendimiento",
+        "pt": "Conteúdo de pontos de desempenho",
+        "de": "Performance-Point-Inhalt",
+        "nl": "Performance Point Content"
+      }
+    },
+    "spperformancepointcontentlist": {
+      "icon": "list",
+      "captions": {
+        "en": "Performance Point Contents",
+        "fr": "Contenus de point de performance",
+        "es": "Contenidos de punto de rendimiento",
+        "pt": "Conteúdo de pontos de desempenho",
+        "de": "Performance-Point-Inhalte",
+        "nl": "Performance Point Contents"
+      }
+    },
+    "spphonecallmemo": {
+      "icon": "list",
+      "captions": {
+        "en": "Phone Call Memo",
+        "fr": "Mémo d'appel téléphonique",
+        "es": "Memo de llamada telefónica",
+        "pt": "Memória de chamadas telefônicas",
+        "de": "Anruf-Memo",
+        "nl": "Telefoongesprek memo"
+      }
+    },
+    "spphonecallmemolist": {
+      "icon": "list",
+      "captions": {
+        "en": "Phone Call Memos",
+        "fr": "Mémos d'appel téléphonique",
+        "es": "Memos de llamada telefónica",
+        "pt": "Memórias de chamadas telefônicas",
+        "de": "Anruf-Memos",
+        "nl": "Telefoongesprek memo's"
+      }
+    },
+    "sprecordlibrarylist": {
+      "icon": "folder",
+      "captions": {
+        "en": "Record Library",
+        "fr": "Bibliothèque d'enregistrements",
+        "es": "Biblioteca de registros",
+        "pt": "Biblioteca de registros",
+        "de": "Datensatzbibliothek",
+        "nl": "Record Bibliotheek"
+      }
+    },
+    "spresource": {
+      "icon": "file",
+      "captions": {
+        "en": "Resource",
+        "fr": "Ressource",
+        "es": "Recurso",
+        "pt": "Recurso",
+        "de": "Ressource",
+        "nl": "Resource"
+      }
+    },
+    "spresourcelist": {
+      "icon": "file",
+      "captions": {
+        "en": "Resources",
+        "fr": "Ressources",
+        "es": "Recursos",
+        "pt": "Recursos",
+        "de": "Ressourcen",
+        "nl": "Resources"
+      }
+    },
+    "spprocessdiagramslibrarylist": {
+      "icon": "folder",
+      "captions": {
+        "en": "Process Diagram Library",
+        "fr": "Bibliothèque de diagrammes de processus",
+        "es": "Biblioteca de diagrama de proceso",
+        "pt": "Biblioteca de diagramas de processos",
+        "de": "Prozessdiagrammbibliothek  ",
+        "nl": "Proces Diagram Bibliotheek"
+      }
+    },
+    "spsitethemeslibrarylist": {
+      "icon": "folder",
+      "captions": {
+        "en": "Site Theme Library",
+        "fr": "Bibliothèque de thèmes de site",
+        "es": "Biblioteca de temas de sitio",
+        "pt": "Biblioteca de temas do site",
+        "de": "Site-Themen-Bibliothek",
+        "nl": "Site Theme Library"
+      }
+    },
+    "spsolutionslibrarylist": {
+      "icon": "folder",
+      "captions": {
+        "en": "Solution Library",
+        "fr": "Bibliothèque de solutions",
+        "es": "Biblioteca de soluciones",
+        "pt": "Biblioteca de soluções",
+        "de": "Lösungsbibliothek",
+        "nl": "Oplossing bibliotheek"
+      }
+    },
+    "spwfpublibrarylist": {
+      "icon": "folder",
+      "captions": {
+        "en": "WFPUB Library",
+        "fr": "Bibliothèque de WFPUB",
+        "es": "Biblioteca WFPUB",
+        "pt": "Biblioteca WFPUB",
+        "de": "WFPUB-Bibliothek",
+        "nl": "WFPUB Library"
+      }
+    },
+    "spwhereabout": {
+      "icon": "custom",
+      "captions": {
+        "en": "Whereabout",
+        "fr": "Endroit",
+        "es": "Ubicación",
+        "pt": "Localização",
+        "de": "Ort",
+        "nl": "Waar is"
+      }
+    },
+    "spwhereaboutlist": {
+      "icon": "custom",
+      "captions": {
+        "en": "Whereabouts",
+        "fr": "Endroits",
+        "es": "Ubicaciones",
+        "pt": "Localizações",
+        "de": "Orte",
+        "nl": "Waar zijn"
+      }
+    },
+    "spdocumentlink": {
+      "icon": "link",
+      "captions": {
+        "en": "Link to a Document",
+        "fr": "Lien vers un document",
+        "es": "Vincular a un documento",
+        "pt": "Associar a um documento",
+        "de": "Link zu einem Dokument",
+        "nl": "Linken naar een dokument"
+      }
+    },
+    "spdocumentset": {
+      "icon": "folder",
+      "captions": {
+        "en": "Document Set",
+        "fr": "Ensemble de documents",
+        "es": "Conjunto de documentos",
+        "pt": "Conjunto de documentos",
+        "de": "Dokumentenmappe",
+        "nl": "Dokument set"
+      }
+    },
+    "spmicrofeedpost": {
+      "icon": "list",
+      "captions": {
+        "en": "Microfeed Post",
+        "fr": "Billet d'un microfil de nouvelles",
+        "es": "",
+        "pt": "",
+        "de": "",
+        "nl": ""
+      }
+    },
+    "spmicrofeedlist": {
+      "icon": "list",
+      "captions": {
+        "en": "Microfeed",
+        "fr": "Microfil de nouvelles",
+        "es": "",
+        "pt": "",
+        "de": "",
+        "nl": ""
+      }
+    },
+    "splistfolder": {
+      "icon": "folder",
+      "captions": {
+        "en": "List Folder",
+        "fr": "Dossier de liste",
+        "es": "Carpeta de la lista",
+        "pt": "Pasta lista",
+        "de": "Liste Ordner",
+        "nl": "Mappenlijst"
+      }
+    }
+  }
+}

@@ -1,0 +1,182 @@
+.CoveoSearchInterface {
+  *:hover {
+    cursor: default !important; /* To remove all pointers on mobile */
+  }
+
+  .results-header {
+    border-bottom: 1px solid #c0c0c0;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+  }
+}
+
+.coveo-results-column {
+  overflow-y: scroll;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 280px;
+}
+
+@include smallMobile() {
+  .coveo-searchSectionFacetsButton {
+    display: block;
+  }
+  .coveo-results-column {
+    right: 0;
+  }
+}
+
+.CoveoQuerySummary {
+  color: #999999;
+  text-align: center;
+  margin-bottom: 30px;
+  .coveo-highlight {
+    color: #000000;
+  }
+}
+
+.CoveoDidYouMean {
+  background-color: #F4F4F4;
+  border-top: #BFBFBF 1px solid;
+  padding: 10px;
+}
+
+.coveo-logo-section {
+  .coveo-logo {
+    @extend .coveo-sprites-common-logo_light;
+    float: left;
+    margin-left: 15px;
+    margin-bottom: 12px;
+    margin-top: 10px;
+  }
+}
+
+.coveo-results-header {
+  margin: 0px;
+  overflow: hidden;
+}
+
+.coveo-container {
+  overflow: hidden;
+  padding: 0 0 0 5px;
+}
+
+.CoveoResultList {
+  margin-top: 0;
+  padding: 5px 0px 0px 0px;
+  background-color: $color-mobile-gray-result-section;
+
+}
+
+.CoveoDidYouMean {
+  overflow: hidden;
+}
+
+.coveo-show-if-no-results {
+  overflow: hidden;
+}
+
+.CoveoResult {
+  clear: both;
+  overflow: hidden;
+  line-height: 24px;
+  margin: 0px 6px 5px 6px;
+  background-color: white;
+  border: 1px solid #cccccc;
+  padding: 10px;
+
+  * {
+    @include user-select(none);
+  }
+
+  .coveo-date {
+    height: 30px;
+    line-height: 30px;
+    font-weight: bold;
+    color: #999999;
+    font-size: 13px;
+    margin-right: 6px;
+  }
+
+  a:hover {
+    color: $color-result-clickable;
+    text-decoration: none;
+  }
+
+  a.CoveoResultLink{
+    &:hover {
+      color: $color-result-link;
+    }
+    &:after {
+      display: none;
+    }
+  }
+
+  .CoveoFieldValue span.coveo-clickable:hover {
+    color: $color-result-clickable;
+  }
+
+  .coveo-excerpt {
+    color: #000000;
+    overflow: hidden;
+    transition: height 0.3s;
+    padding-left: 2px;
+    margin: 4px 0;
+    font-size: 13px;
+  }
+
+  .coveo-excerpt-value {
+    float: left;
+    width: 100%;
+    padding: 6px 0
+  }
+
+  .CoveoValue {
+    float: left;
+    width: 100%;
+    margin-bottom: 0.5em;
+  }
+
+  .coveo-title {
+    font-size: 16px;
+    cursor: pointer;
+    display: block;
+    margin: 3px 0;
+  }
+
+  .CoveoQuickview {
+    visibility: visible !important;
+  }
+
+  .open-link:link {
+    color: #0066cc;
+  }
+
+  .coveo-icon {
+    margin: 6px 4px 6px 0px;
+    float: left;
+  }
+
+  table.fields {
+    width: auto;
+    border-spacing: 0;
+    padding: 0;
+
+    .field {
+      .label, .value {
+        padding: 2px 5px;
+        line-height: 16px;
+      }
+
+      .label {
+        text-align: right;
+        font-weight: normal;
+        background-color: #f4f4f4;
+        min-width: 100px;
+        max-width: 180px;
+      }
+    }
+  }
+}

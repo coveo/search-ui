@@ -1,0 +1,40 @@
+.coveo-facet-more, .coveo-facet-less {
+  width: 100%;
+  height: 15px;
+  background: white;
+  cursor: pointer;
+  text-align: center;
+  &:hover {
+    background: $color-light-grey;
+  }
+
+}
+
+.coveo-facet-more {
+  border-bottom-left-radius: $default-border-radius;
+  border-bottom-right-radius: $default-border-radius;
+  .coveo-icon {
+    @extend .coveo-sprites-arrow-down;
+    position: relative;
+    top:1px;
+  }
+  display: none;
+  &.coveo-active {
+    display: block;
+  }
+}
+
+.coveo-facet-less {
+  .coveo-icon {
+    @extend .coveo-sprites-arrow-up;
+  }
+}
+
+.coveo-facet-footer.coveo-facet-empty {
+  display: block;
+  visibility: hidden;
+
+}
+.coveo-facet-footer {
+  min-height: 15px;
+}

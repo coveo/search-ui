@@ -1,0 +1,42 @@
+.CoveoShareQuery {
+  overflow: hidden;
+  margin-top: 10px;
+  display: none;
+  &.coveo-share-query-opened {
+    display: block;
+  }
+}
+
+.coveo-share-query-summary-info-close {
+  float: right;
+  @include clearButton('&');
+}
+
+.coveo-share-query-summary-info {
+  font-size: $font-size-bigger;
+}
+
+.coveo-share-query-summary-info-boxes {
+  margin-top: 4px;
+  padding-bottom: 5px;
+
+	div:last-child {
+	  margin-top: 6px;
+	}
+}
+
+.coveo-share-query-summary-info-label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 5px;
+  font-weight: initial;
+}
+
+.coveo-share-query-summary-info-input {
+  width: 100%;
+  margin-bottom: 5px;
+  @include defaultRoundedBorder();
+  padding: 5px;
+  height: 35px;
+  font-size: $font-size-smaller;
+}

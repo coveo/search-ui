@@ -1,0 +1,223 @@
+{
+  "objecttype": {
+    "people": {
+      "icon": "user",
+      "captions": {
+        "en": "People",
+        "fr": "Personne"
+      }
+    },
+    "message": {
+      "icon": "mail",
+      "captions": {
+        "en": "Message",
+        "fr": "Message"
+      }
+    },
+    "feed": {
+      "icon": "list",
+      "captions": {
+        "en": "RSS Feed",
+        "fr": "Flux RSS"
+      }
+    },
+    "thread": {
+      "icon": "list",
+      "captions": {
+        "en": "Thread",
+        "fr": "Fil de conversation"
+      }
+    },
+    "file": {
+      "icon": "file",
+      "captions": {
+        "en": "File",
+        "fr": "Fichier"
+      }
+    },
+    "board": {
+      "icon": "list",
+      "captions": {
+        "en": "",
+        "fr": ""
+      }
+    },
+    "category": {
+      "icon": "list",
+      "captions": {
+        "en": "",
+        "fr": ""
+      }
+    },
+    "account": {
+      "icon": "user",
+      "captions": {
+        "en": "Account",
+        "fr": "Compte"
+      }
+    },
+    "campaign": {
+      "icon": "calendar",
+      "captions": {
+        "en": "Campaign",
+        "fr": "Campagne"
+      }
+    },
+    "case": {
+      "icon": "case",
+      "captions": {
+        "en": "Case",
+        "fr": "Cas"
+      }
+    },
+    "contact": {
+      "icon": "user",
+      "captions": {
+        "en": "Contact",
+        "fr": "Contact"
+      }
+    },
+    "contract": {
+      "icon": "file",
+      "captions": {
+        "en": "Contract",
+        "fr": "Contrat"
+      }
+    },
+    "event": {
+      "icon": "calendar",
+      "captions": {
+        "en": "Event",
+        "fr": "Évènement"
+      }
+    },
+    "lead": {
+      "icon": "case",
+      "captions": {
+        "en": "Lead",
+        "fr": "Piste"
+      },
+      "shouldDisplayLabel": true
+    },
+    "solution": {
+      "icon": "kb",
+      "captions": {
+        "en": "Solution",
+        "fr": "Solution"
+      },
+      "shouldDisplayLabel": true
+    },
+    "task": {
+      "icon": "case",
+      "captions": {
+        "en": "Task",
+        "fr": "Tâche"
+      },
+      "shouldDisplayLabel": true
+    },
+    "user": {
+      "icon": "user",
+      "captions": {
+        "en": "User",
+        "fr": "Utilisateur"
+      }
+    },
+    "attachment": {
+      "icon": "attachment",
+      "captions": {
+        "en": "Attachment",
+        "fr": "Attachement"
+      }
+    },
+    "casecomment": {
+      "icon": "mail",
+      "captions": {
+        "en": "Case Comment",
+        "fr": "Commentaire sur un cas"
+      }
+    },
+    "opportunity": {
+      "icon": "list",
+      "captions": {
+        "en": "Opportunity",
+        "fr": "Opportunité"
+      },
+      "shouldDisplayLabel": true
+    },
+    "feeditem": {
+      "icon": "mail",
+      "captions": {
+        "en": "Chatter",
+        "fr": "Chatter"
+      }
+    },
+    "feedcomment": {
+      "icon": "mail",
+      "captions": {
+        "en": "Chatter",
+        "fr": "Chatter"
+      }
+    },
+    "note": {
+      "icon": "file",
+      "captions": {
+        "en": "Note",
+        "fr": "Note"
+      },
+      "shouldDisplayLabel": true
+    },
+    "product": {
+      "icon": "product",
+      "captions": {
+        "en": "Product",
+        "fr": "Produit"
+      }
+    },
+    "partner": {
+      "icon": "user",
+      "captions": {
+        "en": "Partner",
+        "fr": "Partenaire"
+      }
+    },
+    "kbdocumentation": {
+      "icon": "kb",
+      "captions": {
+        "en": "Documentation",
+        "fr": "Documentation"
+      },
+      "shouldDisplayLabel": true
+    },
+    "kbtechnicalarticle": {
+      "icon": "kb",
+      "captions": {
+        "en": "Documentation",
+        "fr": "Documentation"
+      },
+      "shouldDisplayLabel": true
+    },
+    "kbsolution": {
+      "icon": "kb",
+      "captions": {
+        "en": "Solution",
+        "fr": "Solution"
+      },
+      "shouldDisplayLabel": true
+    },
+    "kbknowledgearticle": {
+      "icon": "kb",
+      "captions": {
+        "en": "Knowledge Article",
+        "fr": "Article de base de connaissance"
+      },
+      "shouldDisplayLabel": true
+    },
+    "kbattachment": {
+      "icon": "attachment",
+      "captions": {
+        "en": "Attachment",
+        "fr": "Attachement"
+      }
+    }
+  }
+}

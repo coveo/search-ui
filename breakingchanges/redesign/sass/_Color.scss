@@ -1,0 +1,103 @@
+//Misc
+$color-orange: #F47F24;
+$color-dark-orange: #d86d01;
+$color-light-blue: #d7ebff;
+$color-medium-blue: #336699;
+$color-blue-navy: #3a465e;
+$color-silver: Silver;
+$color-beige: #F4F4F4;
+$color-navy: #3a465e;
+$color-light-gray: #dddddd;
+$color-medium-gray: #666666;
+$color-medium-dark-gray: #cccccc;
+$color-dark-gray: #343434;
+$color-light-red: #6e6e6e;
+$color-blue-for-link: #0066cc;
+$drop-down-box-shadow: 0px 0px 2px rgba(0,0,0,0.4);
+
+$color-main-background: white;
+$color-gray-background: #f7f7f7;
+
+$color-search-button: $color-orange;
+$color-search-button-border: $color-dark-orange;
+$color-search-button-hover: #F58C3A;
+
+$color-tab-background: #535362;
+$color-tab-text: #fefefe;
+$color-tab-hover-background: #6d6d79;
+$color-tab-selected-background: #2B2B33;
+
+$color-search-section-background: #E9E9E9;
+
+$color-query-box-border: $color-medium-dark-gray;
+$query-box-shadow: inset 0px 2px 5px -1px #eeeeee;
+
+$color-result-border: $color-medium-dark-gray;
+
+$color-facet-title: #39465D;
+$color-facet-border: $color-medium-dark-gray;
+$color-facet-background: $color-gray-background;
+$color-facet-setting-background: $color-gray-background;
+$color-facet-setting-border: #e0e0e0;
+$color-facet-checkbox-normal: white;
+$color-facet-checkbox-hover: $color-orange;
+$color-facet-checkbox-selected: #b0b3ae;
+$color-facet-checkbox-disabled: $color-gray-background;
+$color-facet-search-box-border: $color-query-box-border;
+$facet-search-box-shadow: $query-box-shadow;
+$facet-search-results-shadow: 0px 0px 4px 1px #e6e6e6;
+
+$color-query-duration: $color-medium-gray;
+
+$color-did-you-mean-background: $color-gray-background;
+$color-did-you-mean-link: #052c7d;
+
+$color-result-border: $color-medium-dark-gray;
+
+$color-result-clickable: #2c5985;
+$color-result-clickable-hover: $color-orange;
+$color-result-badge-background: $color-gray-background;
+$color-result-link: $color-blue-for-link;
+$color-result-link-visited: #4c0066;
+$color-result-date: $color-medium-gray;
+$color-result-value-table-header-color: $color-medium-gray;
+$color-result-value-table-background: $color-gray-background;
+
+$color-pager-text: $color-medium-gray;
+$color-pager-border: $color-medium-dark-gray;
+$color-pager-background: $color-gray-background;
+$color-pager-active-text: white;
+$color-pager-active-border: #0058b0;
+$color-pager-active-background: #0065cb;
+$color-pager-hover-text: $color-medium-gray;
+$color-pager-hover-border: $color-medium-dark-gray;
+$color-pager-hover-background: white;
+
+$color-omnibox-border: #BBBBBB;
+$omnibox-shadow: $facet-search-box-shadow;
+$color-omnibox-facet-header: #E9E9E9;
+$color-omnibox-header: $color-medium-gray;
+
+$color-color-box-border: #BBBBBB;
+$color-box-shadow: $facet-search-box-shadow;
+$color-color-box-close-border: $color-medium-dark-gray;
+$color-color-box-close: $color-gray-background;
+
+
+$color-printable-uri: $color-medium-gray;
+
+$color-sort: $color-blue-for-link;
+$color-sort-selected: black;
+$color-sort-hover: $color-blue-for-link;
+
+$color-settings-background: $color-gray-background;
+$color-settings-border: $color-medium-dark-gray;
+
+$color-email-header: $color-medium-gray;
+
+$color-error-report-background: $color-gray-background;
+$color-error-report-link: $color-blue-for-link;
+$color-error-report-link-hover: $color-orange;
+
+$color-triggers-background: $color-gray-background;
+$color-triggers-link: #052c7d;

@@ -1,0 +1,48 @@
+@mixin mediaCss($max){
+  .coveo-layout-#{$max} {
+    @content;
+  }
+  @media (max-width: $max * 1px) {
+    @content;
+  }
+}
+
+@mixin mediaCss($max, $min){
+  .coveo-layout-#{$min}-#{$max} {
+    @content;
+  }
+  @media (max-width: $max * 1px) {
+    @content;
+  }
+}
+
+
+@mixin smallMobile {
+	@include mediaCss(640) {
+		@content;
+	}
+}
+
+@mixin smallMobileLandscape {
+	@include mediaCss(480) {
+		@content;
+	}
+}
+
+@mixin smallMobileLandscapeToPortraitTablet {
+	@include mediaCss(767) {
+		@content;
+	}
+}
+
+@mixin tabletLandscapeToDesktop {
+	@include mediaCss(979, 768) {
+		@content;
+	}
+}
+
+@mixin largeDesktop {
+	@media (min-width: 1200px) {
+		@content;
+	}
+}

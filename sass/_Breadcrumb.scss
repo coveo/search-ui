@@ -1,0 +1,40 @@
+.CoveoBreadcrumb {
+  padding: 10px 0px 10px 0px;
+  &.coveo-small-display {
+    @include breadcrumb-small-display;
+  }
+  position: relative;
+  overflow: hidden;
+  border-bottom: $default-border;
+  @include display(flex);
+  @include align-items(flex-start);
+}
+
+
+.coveo-breadcrumb-clear-all {
+  @include clickable();
+  display: inline-block;
+  font-size: $font-size-smaller;
+  & > div {
+    display: inline-block;
+  }
+  @include clearButton('.coveo-breadcrumb-icon-clear-all');
+  @include defaultRoundedBorder();
+  padding: 5px;
+  margin-left: 5px;
+  @include flex-shrink(0);
+}
+
+.coveo-breadcrumb-icon-clear-all {
+  margin-right: 5px;
+}
+
+.coveo-breadcrumb-items {
+  padding-bottom: 10px;
+  display: inline-block;
+  @include flex-grow(1);
+}
+
+.coveo-breadcrumb-item {
+  margin: 5px 0px 5px 0px;
+}

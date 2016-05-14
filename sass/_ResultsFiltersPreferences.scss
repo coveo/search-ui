@@ -1,0 +1,201 @@
+.CoveoResultsFiltersPreferences {
+  .coveo-title {
+    display: inline-block;
+  }
+
+  .coveo-choice-container {
+    background-color: #ececec;
+    margin-bottom: 2px;
+    padding: 0;
+
+    .coveo-section {
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-left: 10px;
+      line-height: 30px;
+      height: 30px;
+    }
+
+    .coveo-section-tab, .coveo-section-expression {
+      padding-top: 2px;
+    }
+
+    .coveo-section-input {
+      width: 20%;
+    }
+
+    .coveo-section-tab {
+      width: 20%;
+    }
+
+    .coveo-section-expression {
+      width: 45%;
+    }
+
+    .coveo-section-edit-delete {
+      width: 10%;
+      float: right;
+    }
+    .coveo-section.coveo-section-input {
+      .coveo-input-icon.coveo-selected:before {
+        bottom: 7px;
+      }
+    }
+  }
+
+  .coveo-advanced-filters {
+    @include defaultRoundedBorder();
+    display: inline-block;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    padding: 6px 5px 6px 5px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .coveo-online-help {
+    @include clickable();
+    float: right;
+    width: 30px;
+    height: 30px;
+    text-align: right;
+    font-weight: bold;
+  }
+
+  .coveo-delete {
+    position: relative;
+    top: 2px;
+    left: 25px;
+    .coveo-icon {
+      @extend .coveo-sprites-clear-active-filters;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .coveo-edit {
+    position: relative;
+    top: 2px;
+    left: 10px;
+    .coveo-icon {
+      @extend .coveo-sprites-settings;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .coveo-advanced-filters-builder {
+    display: none;
+    background-color: #ebf3fb;
+    position: relative;
+
+    form {
+      height: 120px;
+      overflow: hidden;
+      padding: 0;
+      @include display('flex');
+    }
+
+    &.coveo-active {
+      display: block;
+      z-index: 1;
+    }
+
+    .coveo-choice-container {
+      margin: 0;
+      background-color: #ebf3fb;
+      vertical-align: top;
+      height: 100%;
+      text-align: center;
+    }
+
+    .coveo-caption, .coveo-tab, .coveo-close-and-save {
+      @include flex-grow(1);
+    }
+
+    .coveo-expression {
+      @include flex-grow(2);
+    }
+
+    .coveo-caption, .coveo-tab, .coveo-expression {
+      height: 100%;
+    }
+
+    .coveo-tab {
+      text-align: center;
+    }
+
+    .coveo-caption, .coveo-expression {
+      > div {
+        height: 100%;
+        width: 100%;
+      }
+    }
+
+    .coveo-close-and-save {
+
+      .coveo-save {
+        @extend .coveo-sprites-checkbox-hook-active;
+        @include clickable();
+        position: absolute;
+        top: 5px;
+        right: 20px;
+      }
+
+      .coveo-close {
+        @include clearButton('&');
+        position: absolute;
+        top: 9px;
+        right: 5px;
+      }
+    }
+
+    textArea {
+      height: 90%;
+      width: 93%;
+      background-color: white;
+      border: 1px solid transparent;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, .39), 0 -1px 1px #FFF, 0 1px 0 #FFF;
+      resize: none;
+      font-family: $helvetica;
+      margin-top: 6px;
+    }
+
+    textArea.coveo-Tab {
+      height: 36px;
+    }
+
+    select {
+      height: 70px;
+      width: 90%;
+      font-family: $helvetica;
+    }
+  }
+}
+
+.coveo-results-filter-preferences-breadcrumb {
+  .coveo-title {
+    @include breadcrumbTitle();
+  }
+
+  .coveo-value {
+    font-size: $font-size-smaller;
+    display: inline-block;
+
+    @include clearButton('.coveo-clear');
+    @include clickableVibrant();
+    & + & {
+      margin-left: 10px;
+    }
+
+    .coveo-clear {
+      margin-left: 5px;
+    }
+  }
+}

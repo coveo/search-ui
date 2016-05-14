@@ -1,0 +1,25 @@
+{
+  "filetype": {
+    "youtube": {
+      "icon": "video",
+      "captions": {
+        "en": "YouTube video",
+        "fr": "Vidéos YouTube"
+      }
+    },
+    "youtubevideo": {
+      "icon": "video",
+      "captions": {
+        "en": "YouTube video",
+        "fr": "Vidéos YouTube"
+      }
+    },
+    "youtubeplaylistitem": {
+      "icon": "video",
+      "captions": {
+        "en": "YouTube playlist item",
+        "fr": "Élément de piste de lecture"
+      }
+    }
+  }
+}

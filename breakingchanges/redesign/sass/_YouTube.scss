@@ -1,0 +1,20 @@
+.coveo-youtube-player.coveo-modalBox {
+  > .coveo-wrapper {
+    height: 90%;
+    width: 90%;
+    position: relative;
+    overflow: hidden;
+  }
+}
+
+.coveo-youtube-thumbnail-container {
+  position: relative;
+}
+
+.coveo-youtube-thumbnail-play-button {
+  position: absolute;
+  left:50%;
+  top:50%;
+  @include transform(translate(-50%, -50%));
+  @extend .coveo-sprites-youtube;
+}

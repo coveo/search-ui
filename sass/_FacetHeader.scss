@@ -1,0 +1,59 @@
+.coveo-facet-header {
+  padding: 10px 20px;
+  background: white;
+  clear: both;
+  overflow: hidden;
+  @include border-top-radius($default-border-radius);
+}
+
+.coveo-facet-header-title {
+  font-size: $font-size-biggest;
+  float:left;
+}
+
+.coveo-facet-header-settings {
+  .coveo-icon {
+    @extend .coveo-sprites-more-menu;
+  }
+  &:hover {
+    .coveo-icon {
+      @extend .coveo-sprites-more-menu-active;
+    }
+  }
+}
+
+.coveo-facet-header-operator {
+  .coveo-icon.coveo-and {
+    @extend .coveo-sprites-and;
+  }
+  .coveo-icon.coveo-or {
+    @extend .coveo-sprites-or;
+  }
+}
+
+.coveo-facet-header-operator, .coveo-facet-header-eraser, .coveo-facet-header-settings, .coveo-facet-header-collapse, .coveo-facet-header-expand {
+  float: right;
+  cursor: pointer;
+  margin-left: 10px;
+  position: relative;
+  top:2px;
+}
+
+.coveo-facet-header-eraser {
+  @include clearButton('&', 'bigger');
+  position: relative;
+  top:0px;
+}
+
+.coveo-facet-header-wait-animation {
+  float: left;
+  margin: 2px 0px 0px 10px;
+  position: relative;
+  width: 16px;
+  height: 16px;
+  @extend .coveo-sprites-facet-loading;
+  @include animation-name(coveo-spin);
+  @include animation-timing-function(linear);
+  @include animation-duration(1s);
+  @include animation-iteration-count(infinite);
+}

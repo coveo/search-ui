@@ -1,0 +1,31 @@
+.coveo-slider-button {
+	width: 25px;
+	height: 25px;
+}
+
+.coveo-slider-container {
+	height: 50px;
+}
+
+.coveo-slider-line {
+	height: 16px;
+	top:4px;
+}
+
+.coveo-slider-caption {
+	position: absolute;
+	top:30px;
+}
+
+.coveo-slider-container.coveo-with-graph {
+	height:115px;
+	.coveo-slider-button {
+		top: 65px;
+	}
+	.coveo-slider-line{
+		top:70px;
+	}
+	.coveo-slider-caption{
+		top:92px;
+	}
+}
