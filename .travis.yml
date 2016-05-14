@@ -1,7 +1,17 @@
+sudo: false
+language: node_js
+cache:
+  directories:
+  - node_modules
+notifications:
+  email:
+    on_success: change
+    on_failure: always
 node_js:
 - 4.2.2
 before_script:
 - npm install -g gulp
+- npm install
 script:
 - gulp
 deploy:
