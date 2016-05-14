@@ -1,3 +1,9 @@
+node_js:
+- 4.2.2
+before_script:
+- npm install -g gulp
+script:
+- gulp
 deploy:
   provider: npm
   email: sandbox_JSUI@coveo.com
