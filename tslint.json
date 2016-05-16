@@ -2,8 +2,6 @@
   "rules": {
     "align": [
       true,
-      "parameters",
-      "arguments",
       "statements"
     ],
     "ban": [
@@ -72,7 +70,6 @@
     ],
     "typedef": [
       true,
-      "parameter",
       "property-declaration"
     ],
     "typedef-whitespace": [
