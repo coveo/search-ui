@@ -865,3 +865,8 @@ input[type=checkbox]:checked + .tsd-widget:before { background-position: -160px 
 .tsd-select .tsd-select-list li.selected:before { background-position: -200px 0; }
 @media (max-width: 900px) { .tsd-select .tsd-select-list { top: 0; left: auto; right: 100%; margin-right: -5px; }
   .tsd-select .tsd-select-label:before { background-position: -280px 0; } }
+
+
+.tsd-is-external {
+    display: none;
+}

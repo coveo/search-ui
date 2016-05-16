@@ -10,10 +10,9 @@ gulp.task('doc', function () {
     theme: 'docs/theme',
     name: 'Coveo JS search',
     readme: 'none',
-    externalPattern: '**/typings/**',
-    excludeExternal: false
+    externalPattern: '**/{typings,lib}/**'
   });
-  var src = app.expandInputFiles(['src/Exports.ts']);
+  var src = app.expandInputFiles(['src/Doc.ts']);
   var project = app.convert(src);
-  app.generateDocs(project, 'docstest');
+  app.generateDocs(project, 'docgen');
 })
