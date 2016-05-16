@@ -43,6 +43,7 @@
     "gulp-sass": "2.0.4",
     "gulp-shell": "^0.5.2",
     "gulp-tsc": "^1.1.5",
+    "gulp-tsfmt": "^1.0.2",
     "imports-loader": "^0.6.5",
     "jasmine-core": "^2.4.1",
     "json5": "^0.5.0",
@@ -59,12 +60,14 @@
     "script-loader": "^0.7.0",
     "ts-loader": "^0.8.2",
     "tsconfig-glob": "^0.4.3",
+    "tslint": "^3.10.2",
     "typedoc": "https://github.com/coveord/typedoc/tarball/master",
     "webpack": "^1.13.0"
   },
   "dependencies": {
     "coveomagicbox": "^1.0.5",
     "es6-promise": "^3.1.2",
+    "gulp-tslint": "^5.0.0",
     "modal-box": "1.0.6",
     "typescript": "1.8.x",
     "underscore": "^1.8.3"
