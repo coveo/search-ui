@@ -13,6 +13,9 @@ before_script:
 - npm install -g gulp
 - npm install -g typings
 - typings install
+script:
+- npm run build
+- npm run test
 deploy:
   provider: npm
   email: sandbox_JSUI@coveo.com
