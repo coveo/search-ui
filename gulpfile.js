@@ -14,7 +14,7 @@ gulp.task('build', function (done) {
 
 gulp.task('buildLegacy', function (done) {
   runsequence(['cssLegacy', 'fileTypesLegacy', 'spritesLegacy'], done)
-})
+});
 
 gulp.task('clean', function (done) {
   return gulp.src(['./bin', './zip/**.zip'], {read: false})
