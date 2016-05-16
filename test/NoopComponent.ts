@@ -1,10 +1,10 @@
 /// <reference path="Test.ts" />
 module Coveo.Components {
-  export class NoopComponent extends Component {
+  export class NoopComponent {
     static ID = 'NoopComponent';
 
     constructor(element: HTMLElement, options: any, bindings: IComponentBindings) {
-      super(element, NoopComponent.ID, bindings)
+
     }
   }
 }

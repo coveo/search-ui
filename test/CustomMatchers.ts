@@ -1,6 +1,5 @@
 /// <reference path="Test.ts" />
 
-
 module Coveo {
   export function registerCustomMatcher() {
     var customMatcher: jasmine.CustomMatcherFactories = {

@@ -304,52 +304,6 @@ module Coveo {
       return result;
     }
 
-    static createUserActionsHandlerWithData(): UserActionsHandler {
-      var handler: UserActionsHandler = {
-        getDataFromUA: (callback: any) => {
-          var userQueyEvent: APIAnalyticsEvent = {
-            dateTime: new Date(0).getTime(),
-            type: "Search",
-            eventMetadata: {actionCause: "searchboxSubmit", queryExpression: "User query"}
-          };
-          var documentEvent: APIAnalyticsEvent = {
-            dateTime: new Date(1000 * 60).getTime(),
-            type: "Click",
-            eventMetadata: {actionCause: "documentOpen", documentTitle: "Title", documentURL: "URL"}
-          };
-          var customEvent: APIAnalyticsEvent = {
-            dateTime: new Date(1000 * 60 * 2).getTime(),
-            type: "createCase",
-            eventMetadata: {customEventValue: "createCase"}
-          };
-          var visit = {events: [userQueyEvent, documentEvent, customEvent], numberOfEvents: 3, visitId: "visitId"};
-
-          callback({totalNumberOfVisits: 1, visits: [visit]});
-        }
-      };
-
-      return handler;
-    }
-
-    static createUserActionsHandlerWithNoData(): UserActionsHandler {
-      var handler: UserActionsHandler = {
-        getDataFromUA: (callback: any) => {
-          var data: APIAnalyticsVisitResponse = {totalNumberOfVisits: 0, visits: []};
-          callback(data);
-        }
-      };
-
-      return handler;
-    }
-
-    static createUserActionsHandlerLoading(): UserActionsHandler {
-      var handler: UserActionsHandler = {
-        getDataFromUA: (callback: any) => {
-        }
-      };
-      return handler;
-    }
-
     static createFakeSearchEvent(token = 'foo'): ISearchEvent {
       return {
         actionCause: token + 'actionCause',

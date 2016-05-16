@@ -4,3 +4,4 @@ bin
 lib/MagicBox.d.ts
 src/strings
 typings
+coverage

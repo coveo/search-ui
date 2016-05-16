@@ -11,6 +11,7 @@ export {SearchEndpoint} from './rest/SearchEndpoint';
 
 // UI BASE
 export * from './ui/Base/RegisteredNamedMethods';
+export {ComponentOptions} from './ui/Base/ComponentOptions';
 
 // UI
 export {SearchInterface, StandaloneSearchInterface} from './ui/SearchInterface/SearchInterface';

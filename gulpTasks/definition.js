@@ -32,6 +32,7 @@ gulp.task('externalDefs', function () {
         './typings/browser/ambient/underscore/index.d.ts',
         './typings/browser/ambient/jquery/index.d.ts',
         './lib/MagicBox.d.ts',
+        './node_modules/modal-box/bin/ModalBox.d.ts',
         './lib/d3.d.ts',
         './lib/fastclick.d.ts',
         './lib/promise.d.ts',

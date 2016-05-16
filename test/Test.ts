@@ -7,6 +7,7 @@
 /// <reference path="CustomMatchers.ts" />
 
 //***** TEST UTILITIES ******
+/// <reference path="Fake.ts" />
 /// <reference path="NoopComponent.ts" />
 /// <reference path="MockEnvironment.ts" />
 /// <reference path="Simulate.ts" />

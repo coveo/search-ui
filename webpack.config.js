@@ -14,7 +14,7 @@ module.exports = {
       'modal-box': __dirname + '/node_modules/modal-box/bin/ModalBox.min.js',
       'fast-click': __dirname + '/lib/fastclick.min.js',
       'jstz': __dirname + '/lib/jstz.min.js',
-      'magic-box': __dirname + '/node_modules/coveomagicbox/bin/MagicBox.min.js'
+      'magic-box': __dirname + '/node_modules/coveomagicbox/bin/MagicBox.js'
     }
   },
   module: {

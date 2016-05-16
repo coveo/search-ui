@@ -4,7 +4,7 @@
   "description": "Coveo JavaScript Search Framework",
   "main": "coveo.search.js",
   "scripts": {
-    "test": "test",
+    "test": "gulp buildTest && node_modules/karma/bin/karma start",
     "build": "gulp"
   },
   "repository": {
@@ -42,6 +42,7 @@
     "gulp-rimraf": "^0.2.0",
     "gulp-sass": "2.0.4",
     "gulp-shell": "^0.5.2",
+    "gulp-tsc": "^1.1.5",
     "imports-loader": "^0.6.5",
     "jasmine-core": "^2.4.1",
     "json5": "^0.5.0",

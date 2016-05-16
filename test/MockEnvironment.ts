@@ -1,9 +1,6 @@
 /// <reference path="Test.ts" />
 
 module Coveo.Mock {
-  import Options = Coveo.ModalBox.Options;
-  import Option = Coveo.ComponentOptions.Option;
-  import QueryController = Coveo.QueryController;
   export interface MockEnvironment extends Coveo.IComponentBindings {
     root: HTMLElement;
     element: HTMLElement;
@@ -100,7 +97,6 @@ module Coveo.Mock {
       Component.bindComponentToElement(this.root, this.componentStateModel);
       Component.bindComponentToElement(this.root, this.componentOptionsModel);
 
-      this.searchInterface.searchInterface = this.searchInterface;
       this.searchInterface.queryController = this.queryController;
       this.searchInterface.queryStateModel = this.queryStateModel;
       this.searchInterface.componentStateModel = this.componentStateModel;
@@ -202,7 +198,7 @@ module Coveo.Mock {
     return mockWindow;
   }
 
-  export function mockComponent<T extends Component>(constructorFunc, name = 'mock'): T {
+  export function mockComponent<T extends BaseComponent>(constructorFunc, name = 'mock'): T {
     var m = mock<T>(constructorFunc, name);
     m.type = name;
     return m;

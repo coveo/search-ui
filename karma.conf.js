@@ -1,7 +1,21 @@
 module.exports = function(config) {
   config.set({
     frameworks: ['jasmine'],
-    browsers : ['Chrome', 'PhantomJS']
-    //...
+    browsers: ['PhantomJS'],
+    singleRun: true,
+    files: ['./test/lib/jquery.js', './bin/js/CoveoJsSearch.js', './bin/js/CoveoJsSearch.dependencies.js', './bin/tests/tests.js'],
+    plugins: [
+      'karma-jasmine',
+      'karma-chrome-launcher',
+      'karma-phantomjs-launcher',
+      'karma-coverage'
+    ],
+    preprocessors: {
+      './bin/js/CoveoJsSearch.js': 'coverage'
+    },
+    reporters: ['progress', 'coverage'],
+    coverageReporter: {
+      type: 'text-summary'
+    }
   });
 };
