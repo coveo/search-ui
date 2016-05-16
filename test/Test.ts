@@ -3,6 +3,7 @@
 //***** COVEO SEARCH ******
 /// <reference path="../bin/ts/CoveoJsSearch.d.ts" />
 
+
 //***** CUSTOM MATCHER ******
 /// <reference path="CustomMatchers.ts" />
 
