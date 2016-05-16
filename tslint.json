@@ -30,9 +30,9 @@
       false,
       140
     ],
-    "member-access": true,
+    "member-access": false,
     "member-ordering": [
-      true,
+      false,
       { "order": "fields-first" }
     ],
     "new-parens": true,
@@ -41,7 +41,7 @@
     "no-duplicate-key": true,
     "no-duplicate-variable": true,
     "no-inferrable-types": false,
-    "no-shadowed-variable": true,
+    "no-shadowed-variable": false,
     "no-trailing-whitespace": true,
     "no-unreachable": false,
     "no-unused-expression": false,
@@ -63,9 +63,6 @@
       true,
       "single"
     ],
-    "radix": false,
-    "semicolon": [true, "always"],
-    "switch-default": false,
     "trailing-comma": [
       false,
       {
@@ -73,14 +70,8 @@
         "singleline": "never"
       }
     ],
-    "triple-equals": [
-      true,
-      "allow-null-check",
-      "allow-undefined-check"
-    ],
     "typedef": [
       true,
-      "call-signature",
       "parameter",
       "property-declaration"
     ],

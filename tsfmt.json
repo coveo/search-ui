@@ -1,7 +1,9 @@
 {
   "indentSize": 2,
   "tabSize": 2,
+  "newLineCharacter": "\r\n",
   "convertTabsToSpaces": true,
+  "insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": false,
   "insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": false,
-  "insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false
+  "insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces": false
 }
