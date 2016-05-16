@@ -1,5 +1,7 @@
 {
   "indentSize": 2,
   "tabSize": 2,
-  "convertTabsToSpaces": true
+  "convertTabsToSpaces": true,
+  "insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": false,
+  "insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false
 }
