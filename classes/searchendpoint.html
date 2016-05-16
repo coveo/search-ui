@@ -1,0 +1,1267 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>SearchEndpoint | Coveo JS search</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<script src="../assets/js/modernizr.js"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.js" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">Coveo JS search</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../index.html">Globals</a>
+				</li>
+				<li>
+					<a href="searchendpoint.html">SearchEndpoint</a>
+				</li>
+			</ul>
+			<h1>Class SearchEndpoint</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>A search endpoint allows to execute various actions against the Coveo Search API and index.<br/>
+							For example, you can search, list field values, get the quickview content for a document, etc.<br/>
+							Any actions that you execute using this class will not trigger a full query cycle for the Coveo components.<br/>
+							This is because this class will not trigger any query events directly.<br/>
+						If you wish to execute a query that all components will react to (and trigger the corresponding query events), use the <a href="querycontroller.html">QueryController</a></p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchendpoint.html#deletesubscription" class="tsd-kind-icon">delete<wbr>Subscription</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchendpoint.html#extensions" class="tsd-kind-icon">extensions</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchendpoint.html#follow" class="tsd-kind-icon">follow</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchendpoint.html#getauthenticationprovideruri" class="tsd-kind-icon">get<wbr>Authentication<wbr>Provider<wbr>Uri</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchendpoint.html#getbasealertsuri" class="tsd-kind-icon">get<wbr>Base<wbr>Alerts<wbr>Uri</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchendpoint.html#getbaseuri" class="tsd-kind-icon">get<wbr>Base<wbr>Uri</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchendpoint.html#getdocument" class="tsd-kind-icon">get<wbr>Document</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchendpoint.html#getdocumenthtml" class="tsd-kind-icon">get<wbr>Document<wbr>Html</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchendpoint.html#getdocumenttext" class="tsd-kind-icon">get<wbr>Document<wbr>Text</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchendpoint.html#getexporttoexcellink" class="tsd-kind-icon">get<wbr>Export<wbr>ToExcel<wbr>Link</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchendpoint.html#getrawdatastream" class="tsd-kind-icon">get<wbr>Raw<wbr>Data<wbr>Stream</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchendpoint.html#getrevealquerysuggest" class="tsd-kind-icon">get<wbr>Reveal<wbr>Query<wbr>Suggest</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchendpoint.html#getviewasdatastreamuri" class="tsd-kind-icon">get<wbr>View<wbr>AsDatastream<wbr>Uri</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchendpoint.html#getviewashtmluri" class="tsd-kind-icon">get<wbr>View<wbr>AsHtml<wbr>Uri</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchendpoint.html#isjsonp" class="tsd-kind-icon">is<wbr>Jsonp</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchendpoint.html#listfieldvalues" class="tsd-kind-icon">list<wbr>Field<wbr>Values</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchendpoint.html#listfields" class="tsd-kind-icon">list<wbr>Fields</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchendpoint.html#listsubscriptions" class="tsd-kind-icon">list<wbr>Subscriptions</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchendpoint.html#ratedocument" class="tsd-kind-icon">rate<wbr>Document</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchendpoint.html#search" class="tsd-kind-icon">search</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchendpoint.html#tagdocument" class="tsd-kind-icon">tag<wbr>Document</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchendpoint.html#updatesubscription" class="tsd-kind-icon">update<wbr>Subscription</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="searchendpoint.html#configurecloudendpoint" class="tsd-kind-icon">configure<wbr>Cloud<wbr>Endpoint</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="searchendpoint.html#configureonpremiseendpoint" class="tsd-kind-icon">configure<wbr>OnPremise<wbr>Endpoint</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="searchendpoint.html#configuresampleendpoint" class="tsd-kind-icon">configure<wbr>Sample<wbr>Endpoint</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="searchendpoint.html#endpoints" class="tsd-kind-icon">endpoints</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="searchendpoint.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="deletesubscription" class="tsd-anchor"></a>
+					<h3>delete<wbr>Subscription</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">delete<wbr>Subscription<span class="tsd-signature-symbol">(</span>subscription<span class="tsd-signature-symbol">: </span><a href="../interfaces/isubscription.html" class="tsd-signature-type">ISubscription</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/isubscription.html" class="tsd-signature-type">ISubscription</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:670</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Delete a subscription</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>subscription: <a href="../interfaces/isubscription.html" class="tsd-signature-type">ISubscription</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The subscription to delete</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/isubscription.html" class="tsd-signature-type">ISubscription</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="extensions" class="tsd-anchor"></a>
+					<h3>extensions</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">extensions<span class="tsd-signature-symbol">(</span>callOptions<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iextension.html" class="tsd-signature-type">IExtension</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:484</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>List all available query extensions for the search endpoint</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Additional set of options to use for this call.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iextension.html" class="tsd-signature-type">IExtension</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="follow" class="tsd-anchor"></a>
+					<h3>follow</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">follow<span class="tsd-signature-symbol">(</span>request<span class="tsd-signature-symbol">: </span><a href="../interfaces/isubscriptionrequest.html" class="tsd-signature-type">ISubscriptionRequest</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/isubscription.html" class="tsd-signature-type">ISubscription</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:577</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Allow to follow a document or a query on the search alerts service</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>request: <a href="../interfaces/isubscriptionrequest.html" class="tsd-signature-type">ISubscriptionRequest</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/isubscription.html" class="tsd-signature-type">ISubscription</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getauthenticationprovideruri" class="tsd-anchor"></a>
+					<h3>get<wbr>Authentication<wbr>Provider<wbr>Uri</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Authentication<wbr>Provider<wbr>Uri<span class="tsd-signature-symbol">(</span>provider<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, returnUri<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, message<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:189</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get the uri that can be use to authenticate against the given provider</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>provider: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The provider name</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> returnUri: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The uri at which to return after the authentication is completed</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> message: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The message for authentication</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getbasealertsuri" class="tsd-anchor"></a>
+					<h3>get<wbr>Base<wbr>Alerts<wbr>Uri</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Base<wbr>Alerts<wbr>Uri<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:178</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return the base uri of the endpoint for search alert</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getbaseuri" class="tsd-anchor"></a>
+					<h3>get<wbr>Base<wbr>Uri</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Base<wbr>Uri<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:170</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return the base uri of the endpoint to perform search</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getdocument" class="tsd-anchor"></a>
+					<h3>get<wbr>Document</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Document<span class="tsd-signature-symbol">(</span>documentUniqueID<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, callOptions<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:331</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return a single document, using it&#39;s uniqueId</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>documentUniqueID: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Typically the <a href="../interfaces/iqueryresult.html#uniqueid">IQueryResult.uniqueId</a> on each result</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Additional set of options to use for this call.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getdocumenthtml" class="tsd-anchor"></a>
+					<h3>get<wbr>Document<wbr>Html</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Document<wbr>Html<span class="tsd-signature-symbol">(</span>documentUniqueID<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, callOptions<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iviewashtmloptions.html" class="tsd-signature-type">IViewAsHtmlOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">HTMLDocument</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:378</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return the content for a single document, as an HTMLDocument.<br/>
+									Think : quickview</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>documentUniqueID: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Typically the <a href="../interfaces/iqueryresult.html#uniqueid">IQueryResult.uniqueId</a> on each result</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iviewashtmloptions.html" class="tsd-signature-type">IViewAsHtmlOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Additional set of options to use for this call.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">HTMLDocument</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getdocumenttext" class="tsd-anchor"></a>
+					<h3>get<wbr>Document<wbr>Text</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Document<wbr>Text<span class="tsd-signature-symbol">(</span>documentUniqueID<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, callOptions<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:353</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return the content for a single document, as text.<br/>
+									Think : quickview</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>documentUniqueID: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Typically the <a href="../interfaces/iqueryresult.html#uniqueid">IQueryResult.uniqueId</a> on each result</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Additional set of options to use for this call.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getexporttoexcellink" class="tsd-anchor"></a>
+					<h3>get<wbr>Export<wbr>ToExcel<wbr>Link</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Export<wbr>ToExcel<wbr>Link<span class="tsd-signature-symbol">(</span>query<span class="tsd-signature-symbol">: </span><a href="../interfaces/iquery.html" class="tsd-signature-type">IQuery</a>, numberOfResults<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, callOptions<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:267</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get a link/uri to download a set of results, for a given query, to an xlsx format.<br/>
+									Note : This does not download automatically the documents, merely provide an url at which to download them.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>query: <a href="../interfaces/iquery.html" class="tsd-signature-type">IQuery</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The query for which to get the xlsx documents</p>
+									</div>
+								</li>
+								<li>
+									<h5>numberOfResults: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The number of results that should be downloaded</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Additional set of options to use for this call.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getrawdatastream" class="tsd-anchor"></a>
+					<h3>get<wbr>Raw<wbr>Data<wbr>Stream</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Raw<wbr>Data<wbr>Stream<span class="tsd-signature-symbol">(</span>documentUniqueId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, dataStreamType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, callOptions<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iviewashtmloptions.html" class="tsd-signature-type">IViewAsHtmlOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ArrayBuffer</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:294</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get the raw datastream for a given document. This is typically used to get a thumbnail for a document.<br/>
+										Return an array buffer : <br/>
+										eg : var rawBinary = String.fromCharCode.apply(null, new Uint8Array(response));<br/>
+									img.setAttribute(&#39;src&#39;, &#39;data:image/png;base64,&#39; + btoa(rawBinary));</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>documentUniqueId: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Typically the <a href="../interfaces/iqueryresult.html#uniqueid">IQueryResult.uniqueId</a> on each result</p>
+									</div>
+								</li>
+								<li>
+									<h5>dataStreamType: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Normally : &#39;$Thumbnail&#39;</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iviewashtmloptions.html" class="tsd-signature-type">IViewAsHtmlOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Additional set of options to use for this call.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ArrayBuffer</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getrevealquerysuggest" class="tsd-anchor"></a>
+					<h3>get<wbr>Reveal<wbr>Query<wbr>Suggest</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Reveal<wbr>Query<wbr>Suggest<span class="tsd-signature-symbol">(</span>request<span class="tsd-signature-symbol">: </span><a href="../interfaces/irevealquerysuggestrequest.html" class="tsd-signature-type">IRevealQuerySuggestRequest</a>, callOptions<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/irevealquerysuggestresponse.html" class="tsd-signature-type">IRevealQuerySuggestResponse</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:555</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return a list of reveal query suggestions, based on the given request</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>request: <a href="../interfaces/irevealquerysuggestrequest.html" class="tsd-signature-type">IRevealQuerySuggestRequest</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>query and number of suggestions to return</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Additional set of options to use for this call.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/irevealquerysuggestresponse.html" class="tsd-signature-type">IRevealQuerySuggestResponse</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getviewasdatastreamuri" class="tsd-anchor"></a>
+					<h3>get<wbr>View<wbr>AsDatastream<wbr>Uri</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>View<wbr>AsDatastream<wbr>Uri<span class="tsd-signature-symbol">(</span>documentUniqueID<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, dataStreamType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, callOptions<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iviewashtmloptions.html" class="tsd-signature-type">IViewAsHtmlOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:320</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return an url that will allow to see the datastream for a given document. This is typically used to get a thumbnail for a document.<br/></p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>documentUniqueID: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Typically the <a href="../interfaces/iqueryresult.html#uniqueid">IQueryResult.uniqueId</a> on each result</p>
+									</div>
+								</li>
+								<li>
+									<h5>dataStreamType: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Normally : &#39;$Thumbnail&#39;</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iviewashtmloptions.html" class="tsd-signature-type">IViewAsHtmlOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Additional set of options to use for this call.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getviewashtmluri" class="tsd-anchor"></a>
+					<h3>get<wbr>View<wbr>AsHtml<wbr>Uri</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>View<wbr>AsHtml<wbr>Uri<span class="tsd-signature-symbol">(</span>documentUniqueID<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, callOptions<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iviewashtmloptions.html" class="tsd-signature-type">IViewAsHtmlOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:400</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return an url that will allow to see a single document content, as HTML.<br/>
+									Think : quickview</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>documentUniqueID: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Typically the <a href="../interfaces/iqueryresult.html#uniqueid">IQueryResult.uniqueId</a> on each result</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iviewashtmloptions.html" class="tsd-signature-type">IViewAsHtmlOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Additional set of options to use for this call.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="isjsonp" class="tsd-anchor"></a>
+					<h3>is<wbr>Jsonp</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Jsonp<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:208</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>is the search endpoint using jsonp internally to communicate with Search API</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="listfieldvalues" class="tsd-anchor"></a>
+					<h3>list<wbr>Field<wbr>Values</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">list<wbr>Field<wbr>Values<span class="tsd-signature-symbol">(</span>request<span class="tsd-signature-symbol">: </span><a href="../interfaces/ilistfieldvaluesrequest.html" class="tsd-signature-type">IListFieldValuesRequest</a>, callOptions<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iindexfieldvalue.html" class="tsd-signature-type">IIndexFieldValue</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:434</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>List the possible values for a given request</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>request: <a href="../interfaces/ilistfieldvaluesrequest.html" class="tsd-signature-type">IListFieldValuesRequest</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The request for which to list the possible field values</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Additional set of options to use for this call.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iindexfieldvalue.html" class="tsd-signature-type">IIndexFieldValue</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="listfields" class="tsd-anchor"></a>
+					<h3>list<wbr>Fields</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">list<wbr>Fields<span class="tsd-signature-symbol">(</span>callOptions<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/ifielddescription.html" class="tsd-signature-type">IFieldDescription</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:461</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>List all fields for the index, and return an array of their description</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Additional set of options to use for this call.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/ifielddescription.html" class="tsd-signature-type">IFieldDescription</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="listsubscriptions" class="tsd-anchor"></a>
+					<h3>list<wbr>Subscriptions</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">list<wbr>Subscriptions<span class="tsd-signature-symbol">(</span>page<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Object</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:602</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return a Promise of array of current subscriptions</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>page: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The page of the subsctiptions</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Object</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="ratedocument" class="tsd-anchor"></a>
+					<h3>rate<wbr>Document</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">rate<wbr>Document<span class="tsd-signature-symbol">(</span>ratingRequest<span class="tsd-signature-symbol">: </span><a href="../interfaces/iratingrequest.html" class="tsd-signature-type">IRatingRequest</a>, callOptions<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:507</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Allow to rate a single document in the index (granted that collaborative rating is enabled on your index)</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>ratingRequest: <a href="../interfaces/iratingrequest.html" class="tsd-signature-type">IRatingRequest</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Document id and rating</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Additional set of options to use for this call.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="search" class="tsd-anchor"></a>
+					<h3>search</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">search<span class="tsd-signature-symbol">(</span>query<span class="tsd-signature-symbol">: </span><a href="../interfaces/iquery.html" class="tsd-signature-type">IQuery</a>, callOptions<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iqueryresults.html" class="tsd-signature-type">IQueryResults</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:219</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Perform a search on the index and returns a Promise of <a href="../interfaces/iqueryresults.html">IQueryResults</a>.<br/>
+									Will modify the query results slightly, by adding additional information on each results (an id, the state object, etc.)</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>query: <a href="../interfaces/iquery.html" class="tsd-signature-type">IQuery</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The query to execute. Typically, the query object is built using a <a href="querybuilder.html">QueryBuilder</a></p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Additional set of options to use for this call.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iqueryresults.html" class="tsd-signature-type">IQueryResults</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="tagdocument" class="tsd-anchor"></a>
+					<h3>tag<wbr>Document</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">tag<wbr>Document<span class="tsd-signature-symbol">(</span>taggingRequest<span class="tsd-signature-symbol">: </span><a href="../interfaces/itaggingrequest.html" class="tsd-signature-type">ITaggingRequest</a>, callOptions<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:531</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Allow to tag a single document</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>taggingRequest: <a href="../interfaces/itaggingrequest.html" class="tsd-signature-type">ITaggingRequest</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Document id and tag action to perform</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Additional set of options to use for this call.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="updatesubscription" class="tsd-anchor"></a>
+					<h3>update<wbr>Subscription</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Subscription<span class="tsd-signature-symbol">(</span>subscription<span class="tsd-signature-symbol">: </span><a href="../interfaces/isubscription.html" class="tsd-signature-type">ISubscription</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/isubscription.html" class="tsd-signature-type">ISubscription</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:647</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Update a subscription with new parameters</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>subscription: <a href="../interfaces/isubscription.html" class="tsd-signature-type">ISubscription</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The subscription to update with new parameters</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/isubscription.html" class="tsd-signature-type">ISubscription</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="configurecloudendpoint" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> configure<wbr>Cloud<wbr>Endpoint</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">configure<wbr>Cloud<wbr>Endpoint<span class="tsd-signature-symbol">(</span>organization<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, token<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, uri<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, otherOptions<span class="tsd-signature-symbol">?: </span><a href="../interfaces/isearchendpointoptions.html" class="tsd-signature-type">ISearchEndpointOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:85</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Configure an endpoint to a Coveo Cloud index.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> organization: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The organization id of your Coveo cloud index</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> token: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The token to use to execute query. If null, you will most probably need to login when querying.</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> uri: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;https://cloudplatform.coveo.com/rest/search&quot;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The uri of your cloud Search API. By default, will point to the production environment</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> otherOptions: <a href="../interfaces/isearchendpointoptions.html" class="tsd-signature-type">ISearchEndpointOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A set of additional options to use when configuring this endpoint</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="configureonpremiseendpoint" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> configure<wbr>OnPremise<wbr>Endpoint</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">configure<wbr>OnPremise<wbr>Endpoint<span class="tsd-signature-symbol">(</span>uri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, token<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, otherOptions<span class="tsd-signature-symbol">?: </span><a href="../interfaces/isearchendpointoptions.html" class="tsd-signature-type">ISearchEndpointOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:104</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Configure an endpoint to a Coveo on premise index.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>uri: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The uri of your Coveo Search API endpoint. eg : <a href="http://myserver:8080/rest/search">http://myserver:8080/rest/search</a></p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> token: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The token to use to execute query. If null, you will most probably need to login when querying (unless the search api is configured using advanced auth options, like windows auth or claims)</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> otherOptions: <a href="../interfaces/isearchendpointoptions.html" class="tsd-signature-type">ISearchEndpointOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A set of additional options to use when configuring this endpoint</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="configuresampleendpoint" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> configure<wbr>Sample<wbr>Endpoint</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">configure<wbr>Sample<wbr>Endpoint<span class="tsd-signature-symbol">(</span>otherOptions<span class="tsd-signature-symbol">?: </span><a href="../interfaces/isearchendpointoptions.html" class="tsd-signature-type">ISearchEndpointOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:61</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Configure an endpoint that will point to a Coveo Cloud index, which contains a set of public sources with no security on them.<br/>
+									Used for demo purposes and ease of setup.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> otherOptions: <a href="../interfaces/isearchendpointoptions.html" class="tsd-signature-type">ISearchEndpointOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A set of additional options to use when configuring this endpoint</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="endpoints" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> endpoints</h3>
+					<div class="tsd-signature tsd-kind-icon">endpoints<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:54</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A map of all the initialized endpoint.<br/>
+							eg : Coveo.SearchEndpoint.endpoints[&#39;default&#39;] will return the default endpoint that was created at initialization</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt class="tsd-comment-flag-type">type</dt>
+							<dd><p>{{}}</p>
+							</dd>
+						</dl>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-index-signature">
+								<h5><span class="tsd-signature-symbol">[</span>endpoint: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><a href="searchendpoint.html" class="tsd-signature-type">SearchEndpoint</a></h5>
+							</li>
+						</ul>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Search<wbr>Endpoint<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/isearchendpointoptions.html" class="tsd-signature-type">ISearchEndpointOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="searchendpoint.html" class="tsd-signature-type">SearchEndpoint</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="src/rest/SearchEndpoint.ts">src/rest/SearchEndpoint.ts:131</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Create a new SearchEndpoint.<br/>
+										Will use a set of sane default options, and merge them with the options parameter.<br/>
+									Will create an <a href="endpointcaller.html">EndpointCaller</a> and use it to communicate with the endpoint internally</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../interfaces/isearchendpointoptions.html" class="tsd-signature-type">ISearchEndpointOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="searchendpoint.html" class="tsd-signature-type">SearchEndpoint</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">SearchEndpoint</span>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implements</h3>
+				<ul class="tsd-hierarchy">
+					<li><span class="tsd-signature-type">ISearchEndpoint</span></li>
+				</ul>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class">
+						<a href="searchendpoint.html" class="tsd-kind-icon">Search<wbr>Endpoint</a>
+						<ul>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchendpoint.html#deletesubscription" class="tsd-kind-icon">delete<wbr>Subscription</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchendpoint.html#extensions" class="tsd-kind-icon">extensions</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchendpoint.html#follow" class="tsd-kind-icon">follow</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchendpoint.html#getauthenticationprovideruri" class="tsd-kind-icon">get<wbr>Authentication<wbr>Provider<wbr>Uri</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchendpoint.html#getbasealertsuri" class="tsd-kind-icon">get<wbr>Base<wbr>Alerts<wbr>Uri</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchendpoint.html#getbaseuri" class="tsd-kind-icon">get<wbr>Base<wbr>Uri</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchendpoint.html#getdocument" class="tsd-kind-icon">get<wbr>Document</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchendpoint.html#getdocumenthtml" class="tsd-kind-icon">get<wbr>Document<wbr>Html</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchendpoint.html#getdocumenttext" class="tsd-kind-icon">get<wbr>Document<wbr>Text</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchendpoint.html#getexporttoexcellink" class="tsd-kind-icon">get<wbr>Export<wbr>ToExcel<wbr>Link</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchendpoint.html#getrawdatastream" class="tsd-kind-icon">get<wbr>Raw<wbr>Data<wbr>Stream</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchendpoint.html#getrevealquerysuggest" class="tsd-kind-icon">get<wbr>Reveal<wbr>Query<wbr>Suggest</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchendpoint.html#getviewasdatastreamuri" class="tsd-kind-icon">get<wbr>View<wbr>AsDatastream<wbr>Uri</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchendpoint.html#getviewashtmluri" class="tsd-kind-icon">get<wbr>View<wbr>AsHtml<wbr>Uri</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchendpoint.html#isjsonp" class="tsd-kind-icon">is<wbr>Jsonp</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchendpoint.html#listfieldvalues" class="tsd-kind-icon">list<wbr>Field<wbr>Values</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchendpoint.html#listfields" class="tsd-kind-icon">list<wbr>Fields</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchendpoint.html#listsubscriptions" class="tsd-kind-icon">list<wbr>Subscriptions</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchendpoint.html#ratedocument" class="tsd-kind-icon">rate<wbr>Document</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchendpoint.html#search" class="tsd-kind-icon">search</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchendpoint.html#tagdocument" class="tsd-kind-icon">tag<wbr>Document</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchendpoint.html#updatesubscription" class="tsd-kind-icon">update<wbr>Subscription</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="searchendpoint.html#configurecloudendpoint" class="tsd-kind-icon">configure<wbr>Cloud<wbr>Endpoint</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="searchendpoint.html#configureonpremiseendpoint" class="tsd-kind-icon">configure<wbr>OnPremise<wbr>Endpoint</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="searchendpoint.html#configuresampleendpoint" class="tsd-kind-icon">configure<wbr>Sample<wbr>Endpoint</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="searchendpoint.html#endpoints" class="tsd-kind-icon">endpoints</a>
+							</li>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="searchendpoint.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.io" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
