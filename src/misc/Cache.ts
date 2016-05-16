@@ -1,4 +1,4 @@
-/// <reference path="../Base.ts" />
+
 module Coveo {
     export class Cache<Type> {
         constructor(public onEmpty?:() => Type) {}

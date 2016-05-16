@@ -1,8 +1,8 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../Templates/CoreHelpers.ts" />
-/// <reference path="../Templates/Template.ts" />
-/// <reference path="../Templates/TemplateCache.ts" />
-/// <reference path="../Quickview/Quickview.ts" />
+
+
+
+
+
 module Coveo {
   export interface IResultListOptions {
     resultContainer?: HTMLElement;

@@ -1,4 +1,4 @@
-/// <reference path="../Base.ts" />
+
 
 // In this file we put the *generic* additions we make to the JQuery interface.
 // Those should be candidates to be merged in the .d.ts we download from GitHub.

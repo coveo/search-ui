@@ -1,6 +1,6 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../Menu/MenuItem.ts" />
-/// <reference path="PreferencesPanelItem.ts" />
+
+
+
 
 module Coveo {
   export interface IPreferencesPanelOptions {

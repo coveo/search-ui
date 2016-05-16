@@ -1,4 +1,4 @@
-/// <reference path="../../utils/AjaxUtils.ts" />
+
 module Coveo {
 
   export class LoginCredentials {

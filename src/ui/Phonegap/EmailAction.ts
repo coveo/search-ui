@@ -1,6 +1,6 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="MailTo.ts" />
-/// <reference path="EmailActions.ts" />
+
+
+
 module Coveo {
   export interface EmailActionOptions {
     type: string;

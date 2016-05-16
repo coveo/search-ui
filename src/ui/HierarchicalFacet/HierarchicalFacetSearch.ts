@@ -1,5 +1,5 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../Facet/FacetSearch.ts" />
+
+
 
 module Coveo {
   export class HierarchicalFacetSearch extends FacetSearch {

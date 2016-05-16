@@ -1,8 +1,8 @@
 module.exports = {
   entry: ['./src/Dependencies.js', './src/Index.ts'],
   output: {
-    path: './bin',
-    filename: 'coveo.search.js',
+    path: './bin/js',
+    filename: 'CoveoJsSearch.js',
     libraryTarget: 'assign',
     library: ['Coveo']
   },
@@ -21,5 +21,6 @@ module.exports = {
     loaders: [
       {test: /\.ts$/, loader: 'ts-loader'}
     ]
-  }
+  },
+  bail: true
 }

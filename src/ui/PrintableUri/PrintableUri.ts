@@ -1,6 +1,6 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../../utils/PhonegapUtils.ts" />
-/// <reference path="../../utils/HighlightUtils.ts" />
+
+
+
 module Coveo {
   export interface PrintableUriOptions {
   }

@@ -1,5 +1,5 @@
-/// <reference path='../Base.ts' />
-/// <reference path='../ui/Breadcrumb/BreadcrumbInterface.ts' />
+
+
 module Coveo {
   /**
    * Event triggered when populating the breadcrumb

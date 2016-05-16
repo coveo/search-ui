@@ -1,5 +1,5 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../../events/SearchAlertEvents.ts" />
+
+
 
 module Coveo {
   export interface FollowItemOptions {

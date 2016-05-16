@@ -1,5 +1,5 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="BreadcrumbValueElement.ts" />
+
+
 module Coveo {
   export class BreadcrumbValueList {
     private expanded: FacetValue[];

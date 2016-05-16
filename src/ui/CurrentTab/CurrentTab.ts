@@ -1,5 +1,5 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../Tab/Tab.ts" />
+
+
 module Coveo {
   export interface CurrentTabOptions {
     tabSectionToOpen: string;

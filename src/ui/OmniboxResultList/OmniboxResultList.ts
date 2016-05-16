@@ -1,7 +1,7 @@
-﻿/// <reference path="../../Base.ts" />
-/// <reference path="../ResultList/ResultList.ts" />
-/// <reference path="../../events/OmniboxEvents.ts" />
-/// <reference path="../Misc/SuggestionForOmnibox.ts" />
+﻿
+
+
+
 module Coveo {
   export interface OmniboxResultListOptions extends IResultListOptions {
     omniboxZIndex?: number;

@@ -1,4 +1,4 @@
-import {buildBooleanOption, initComponentOptions} from '../Base/ComponentOptions';
+import {ComponentOptions} from '../Base/ComponentOptions';
 import {LocalStorageUtils} from '../../utils/LocalStorageUtils';
 import {IFieldDescription} from '../../rest/FieldDescription';
 import {IBuildingQueryEventArgs, IQuerySuccessEventArgs, QueryEvents} from '../../events/QueryEvents';
@@ -26,7 +26,7 @@ export interface DebugOptions {
 export class Debug extends RootComponent {
   static ID = 'Debug';
   static options: DebugOptions = {
-    enableDebug: buildBooleanOption({defaultValue: false})
+    enableDebug: ComponentOptions.buildBooleanOption({defaultValue: false})
   };
 
   static customOrder = ['error', 'queryDuration', 'result', 'fields', 'rankingInfo', 'template', 'query', 'results', 'state'];
@@ -45,7 +45,7 @@ export class Debug extends RootComponent {
 
   constructor(public element: HTMLElement, public queryController: QueryController, public options?: DebugOptions) {
     super(element, Debug.ID);
-    this.options = initComponentOptions(element, Debug, options);
+    this.options = ComponentOptions.initComponentOptions(element, Debug, options);
     $$(this.element).on(QueryEvents.buildingQuery, (e, args: IBuildingQueryEventArgs)=> {
       args.queryBuilder.enableDebug = this.debug || args.queryBuilder.enableDebug;
     })

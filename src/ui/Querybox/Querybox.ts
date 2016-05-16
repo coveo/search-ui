@@ -1,6 +1,6 @@
 import {Initialization} from '../Base/Initialization';
 import {Component, IComponentBindings} from '../Base/Component';
-import {buildBooleanOption, buildNumberOption, buildStringOption, initComponentOptions} from '../Base/ComponentOptions';
+import {ComponentOptions} from '../Base/ComponentOptions';
 import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
 import {ModelEvents, IAttributeChangedEventArg} from '../../models/Model';
 import {QueryStateAttributes, QueryStateModel} from '../../models/QueryStateModel';
@@ -8,7 +8,6 @@ import {StandaloneSearchInterfaceEvents} from '../../events/StandaloneSearchInte
 import {IAnalyticsNoMeta, AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {$$} from '../../utils/Dom';
 import {Assert} from '../../misc/Assert';
-
 
 export interface IQueryboxOptions {
   enableSearchAsYouType?: boolean;
@@ -41,51 +40,51 @@ export class Querybox extends Component {
      * Specify if search as you type should be enabled.<br/>
      * Default to false.
      */
-    enableSearchAsYouType: buildBooleanOption({defaultValue: false}),
+    enableSearchAsYouType: ComponentOptions.buildBooleanOption({defaultValue: false}),
     /**
      * If enableSearchAsYouType is enabled, this option specify the delay (in ms) between a keypress and a query being triggered<br/>
      * Default to 500 ms
      */
-    searchAsYouTypeDelay: buildNumberOption({defaultValue: 500, min: 0}),
+    searchAsYouTypeDelay: ComponentOptions.buildNumberOption({defaultValue: 500, min: 0}),
     /**
      * Specifies whether the Coveo Platform does try to interpret special query syntax such as field references in the query entered through the query box.<br/>
      * This means that a
      * The default value is true.
      */
-    enableQuerySyntax: buildBooleanOption({defaultValue: true}),
+    enableQuerySyntax: ComponentOptions.buildBooleanOption({defaultValue: true}),
     /**
      * Specifies whether the Coveo Platform expands keywords containing wildcard characters (*) to the possible matching keywords to broaden the query.<br/>
      * The default value is false.
      */
-    enableWildcards: buildBooleanOption({defaultValue: false}),
+    enableWildcards: ComponentOptions.buildBooleanOption({defaultValue: false}),
     /**
      * Specifies whether the Coveo Platform expands keywords containing question mark characters (?) to the possible matching keywords to broaden the query.<br/>
      * The default value is false.
      */
-    enableQuestionMarks: buildBooleanOption({defaultValue: false}),
+    enableQuestionMarks: ComponentOptions.buildBooleanOption({defaultValue: false}),
     /**
      * If true, the or and and keywords in the query box will be treated as boolean operators for the query when they are typed in lowercase.<br/>
      * This applies for all operators<br/>
      * Default value is false
      */
-    enableLowercaseOperators: buildBooleanOption({defaultValue: false}),
+    enableLowercaseOperators: ComponentOptions.buildBooleanOption({defaultValue: false}),
     /**
      * Specifies whether a query containing a large number of keywords (see partialMatchKeywords) is automatically converted to a partial match expression in order to match documents containing only a subset of the keywords (see partialMatchThreshold for defining the subset).<br/>
      * The default value is false.
      */
-    enablePartialMatch: buildBooleanOption({defaultValue: false}),
+    enablePartialMatch: ComponentOptions.buildBooleanOption({defaultValue: false}),
     /**
      * When partial match is enabled, specifies the minimum number of keywords that must be present in the query to activate the partial match.<br/>
      * The default value is 5.
      */
-    partialMatchKeywords: buildNumberOption({defaultValue: 5, min: 1}),
+    partialMatchKeywords: ComponentOptions.buildNumberOption({defaultValue: 5, min: 1}),
     /**
      * When partial match is enabled, specifies either an absolute or percentage value indicating the minimum number of keywords a document must contain in order to match the query.<br/>
      * The default value is 50%.
      */
-    partialMatchThreshold: buildStringOption({defaultValue: '50%'}),
-    placeholder: buildStringOption(),
-    autoFocus: buildBooleanOption({defaultValue: true})
+    partialMatchThreshold: ComponentOptions.buildStringOption({defaultValue: '50%'}),
+    placeholder: ComponentOptions.buildStringOption(),
+    autoFocus: ComponentOptions.buildBooleanOption({defaultValue: true})
   }
 
   public magicBox : Coveo.MagicBox.Instance;
@@ -107,7 +106,7 @@ export class Querybox extends Component {
       this.logger.error('QueryBox can\'t be use on a HTMLInputElement');
     }
 
-    this.options = initComponentOptions(element, Querybox, options);
+    this.options = ComponentOptions.initComponentOptions(element, Querybox, options);
 
     this.magicBox = Coveo.MagicBox.create(element, new Coveo.MagicBox.Grammar('Query', {
       Query: '[Term*][Spaces?]',

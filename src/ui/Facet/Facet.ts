@@ -1,20 +1,20 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="FacetValues.ts" />
-/// <reference path="../../controllers/FacetQueryController.ts" />
-/// <reference path="FacetSearch.ts" />
-/// <reference path="FacetHeader.ts" />
-/// <reference path="FacetSort.ts" />
-/// <reference path="FacetSettings.ts" />
-/// <reference path="FacetValuesList.ts" />
-/// <reference path="ValueElementRenderer.ts" />
-/// <reference path="ValueElement.ts" />
-/// <reference path="FacetValueElement.ts" />
-/// <reference path="OmniboxValueElement.ts" />
-/// <reference path="FacetSearchValuesList.ts" />
-/// <reference path="BreadcrumbValuesList.ts" />
-/// <reference path="OmniboxValuesList.ts" />
-/// <reference path="../../events/OmniboxEvents.ts" />
-/// <reference path="../../events/BreadcrumbEvents.ts" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 module Coveo {
 
   export interface IFacetOptions {

@@ -1,5 +1,5 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../Login/Login.ts" />
+
+
 module Coveo {
   export interface StandaloneLoginOptions extends LoginOptions {
     requirePageSettings?: boolean;

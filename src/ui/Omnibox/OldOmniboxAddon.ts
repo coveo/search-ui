@@ -3,7 +3,7 @@ import {Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion} from 
 import {OmniboxDataRow} from './OmniboxInterface';
 import {OmniboxEvents, IPopulateOmniboxEventArgs, IPopulateOmniboxEventRow} from '../../events/OmniboxEvents';
 import {$$} from '../../utils/Dom';
-import {isNullOrUndefined, escapeRegexCharacter} from '../../utils/Utils';
+import {Utils} from '../../utils/Utils';
 import _ = require('underscore');
 
 export class OldOmniboxAddon {
@@ -59,7 +59,7 @@ export class OldOmniboxAddon {
     if (strValue == null) {
       strValue = this.omnibox.getText();
     }
-    return new RegExp(escapeRegexCharacter(strValue), "i");
+    return new RegExp(Utils.escapeRegexCharacter(strValue), "i");
   }
 
   private getQueryExpressionBreakDown() {
@@ -130,14 +130,14 @@ export class OldOmniboxAddon {
 
   private rowsToSuggestions(rows: OmniboxDataRow[]): Promise<IOmniboxSuggestion[]>[] {
     return _.map(rows, (row: IPopulateOmniboxEventRow) => {
-      if (!isNullOrUndefined(row.element)) {
+      if (!Utils.isNullOrUndefined(row.element)) {
         return new Promise<IOmniboxSuggestion[]>((resolve)=> {
           resolve([{
             dom: row.element,
             index: row.zIndex
           }])
         })
-      } else if (!isNullOrUndefined(row.deferred)) {
+      } else if (!Utils.isNullOrUndefined(row.deferred)) {
         return new Promise<IOmniboxSuggestion[]>((resolve)=> {
           row.deferred.then((row)=> {
             if (row.element != null) {

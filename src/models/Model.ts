@@ -1,6 +1,6 @@
 import {$$} from '../utils/Dom';
 import {Assert} from '../misc/Assert';
-import {objectEqual, arrayEqual, isNullOrUndefined, isUndefined, parseBooleanIfNotUndefined, extendDeep} from '../utils/Utils';
+import {Utils} from '../utils/Utils';
 import {BaseComponent} from '../ui/Base/BaseComponent';
 import _ = require('underscore');
 
@@ -63,7 +63,7 @@ export class Model extends BaseComponent {
     super(element, id);
     this.eventNameSpace = id;
 
-    this.defaultAttributes = extendDeep(this.defaultAttributes, attributes);
+    this.defaultAttributes = Utils.extendDeep(this.defaultAttributes, attributes);
     this.attributes = attributes;
     this.logger.debug("Creating model");
   }
@@ -78,7 +78,7 @@ export class Model extends BaseComponent {
     var attributes: {[key: string]: any} = {};
     _.each(this.attributes, (attribute, key) => {
       if (_.isObject(attribute)) {
-        if (!objectEqual(attribute, this.defaultAttributes[key])) {
+        if (!Utils.objectEqual(attribute, this.defaultAttributes[key])) {
           attributes[key] = attribute
         }
       } else if (attribute != this.defaultAttributes[key]) {
@@ -191,13 +191,13 @@ export class Model extends BaseComponent {
   }
 
   private validateType(attribute: string, value: any) {
-    if (!isNullOrUndefined(this.attributes[attribute]) && !isUndefined(value)) {
+    if (!Utils.isNullOrUndefined(this.attributes[attribute]) && !Utils.isUndefined(value)) {
       if (_.isNumber(this.attributes[attribute])) {
         Assert.check(_.isNumber(value) && !isNaN(value), 'Non-matching type')
       } else if (_.isBoolean(this.attributes[attribute])) {
-        Assert.check(_.isBoolean(value) || parseBooleanIfNotUndefined(value) !== undefined, 'Non-matching type');
+        Assert.check(_.isBoolean(value) || Utils.parseBooleanIfNotUndefined(value) !== undefined, 'Non-matching type');
       } else {
-        if (!isNullOrUndefined(this.defaultAttributes[attribute])) {
+        if (!Utils.isNullOrUndefined(this.defaultAttributes[attribute])) {
           Assert.check(typeof value === typeof this.defaultAttributes[attribute], 'Non-matching type');
         }
       }
@@ -211,7 +211,7 @@ export class Model extends BaseComponent {
       if (_.isBoolean(value)) {
         return value;
       } else {
-        return parseBooleanIfNotUndefined(value);
+        return Utils.parseBooleanIfNotUndefined(value);
       }
     }
     return value;
@@ -223,10 +223,10 @@ export class Model extends BaseComponent {
       return oldValue !== newValue
     }
     if (_.isArray(oldValue)) {
-      return !arrayEqual(oldValue, newValue);
+      return !Utils.arrayEqual(oldValue, newValue);
     }
     if (_.isObject(oldValue)) {
-      return !objectEqual(oldValue, newValue);
+      return !Utils.objectEqual(oldValue, newValue);
     }
     return true;
   }

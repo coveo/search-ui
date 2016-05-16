@@ -1,8 +1,8 @@
-﻿/// <reference path="../../Base.ts" />
-/// <reference path="../PreferencesPanel/PreferencesPanel.ts" />
-/// <reference path="../../utils/KeyboardUtils.ts" />
-/// <reference path="../../events/BreadcrumbEvents.ts" />
-/// <reference path="../../utils/LocalStorageUtils.ts" />
+﻿
+
+
+
+
 module Coveo {
   export interface ResultFilterPreference {
     selected?: boolean;

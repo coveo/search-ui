@@ -1,6 +1,6 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../ResultList/ResultList.ts" />
-/// <reference path="DefaultFoldingTemplate.ts" />
+
+
+
 module Coveo {
   export interface IResultFoldingOptions {
     resultTemplate?: Template;

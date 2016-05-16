@@ -1,6 +1,6 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../../events/BreadcrumbEvents.ts" />
-/// <reference path="BreadcrumbInterface.ts" />
+
+
+
 module Coveo {
 
   /**

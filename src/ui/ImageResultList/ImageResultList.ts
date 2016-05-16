@@ -1,5 +1,5 @@
-﻿/// <reference path="../../Base.ts" />
-/// <reference path="../ResultList/ResultList.ts" />
+﻿
+
 module Coveo {
   export interface ImageResultListOptions extends IResultListOptions {
     layoutType?: string;

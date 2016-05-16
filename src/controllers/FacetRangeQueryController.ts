@@ -1,5 +1,5 @@
-/// <reference path="../Base.ts" />
-/// <reference path="../utils/DateUtils.ts" />
+
+
 module Coveo {
   export class FacetRangeQueryController extends FacetQueryController {
     public graphGroupByQueriesIndex: number;

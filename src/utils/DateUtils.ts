@@ -1,5 +1,5 @@
-/// <reference path="../Base.ts" />
-/// <reference path="../misc/Options.ts" />
+
+
 module Coveo {
   export interface DateToStringOptions {
     now?: Date;

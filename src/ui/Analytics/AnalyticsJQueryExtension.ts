@@ -1,4 +1,4 @@
-/// <reference path="../../Base.ts" />
+
 
 module Coveo {
   function getCoveoAnalyticsClient(element: HTMLElement) {

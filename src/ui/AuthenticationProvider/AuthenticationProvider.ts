@@ -1,5 +1,5 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../Menu/MenuItem.ts" />
+
+
 
 module Coveo {
   export interface AuthenticationProviderOptions {

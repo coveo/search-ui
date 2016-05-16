@@ -1,6 +1,6 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="QuickviewDocument.ts" />
-/// <reference path="DefaultQuickviewTemplate.ts" />
+
+
+
 module Coveo {
   export interface QuickviewOptions {
     title?: string;

@@ -1,12 +1,12 @@
-﻿/// <reference path='../../Base.ts' />
-/// <reference path='../Facet/Facet.ts' />
-/// <reference path='../../controllers/HierarchicalFacetQueryController.ts' />
-/// <reference path='HierarchicalFacetValueElement.ts' />
-/// <reference path='HierarchicalFacetValuesList.ts' />
-/// <reference path='OmniboxHierarchicalValuesList.ts' />
-/// <reference path='HierarchicalBreadcrumbValuesList.ts' />
-/// <reference path='HierarchicalFacetSearchValuesList.ts' />
-/// <reference path='HierarchicalFacetSearch.ts' />
+﻿
+
+
+
+
+
+
+
+
 
 module Coveo {
   export interface IHierarchicalFacetOptions extends IFacetOptions {

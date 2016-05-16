@@ -2,7 +2,7 @@ import {IQueryResults} from '../rest/QueryResults';
 import {IQueryResult} from '../rest/QueryResult';
 import {IQuery} from '../rest/Query';
 import {Assert} from '../misc/Assert';
-import {isNullOrUndefined} from '../utils/Utils';
+import {Utils} from '../utils/Utils';
 import _ = require('underscore');
 
 declare var crypto: Crypto;
@@ -167,7 +167,7 @@ export class QueryUtils {
     _.each(result.childResults, (child: IQueryResult)=> {
       child[property] = value;
     })
-    if (!isNullOrUndefined(result.parentResult)) {
+    if (!Utils.isNullOrUndefined(result.parentResult)) {
       result.parentResult[property] = value;
     }
   }

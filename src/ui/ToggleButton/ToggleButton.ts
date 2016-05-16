@@ -1,5 +1,5 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../../utils/MobileUtils.ts" />
+
+
 module Coveo {
   export interface ToggleButtonOptions {
     toggleClass?: string;

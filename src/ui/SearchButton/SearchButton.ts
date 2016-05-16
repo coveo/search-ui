@@ -1,5 +1,5 @@
 import {Component, IComponentBindings} from '../Base/Component';
-import {trim} from '../../utils/Utils';
+import {Utils} from '../../utils/Utils';
 import {$$} from '../../utils/Dom';
 import {l} from '../../strings/Strings';
 import {IAnalyticsNoMeta, AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
@@ -31,7 +31,7 @@ export class SearchButton extends Component {
 
     this.bind.on(element, 'click', ()=> this.handleClick());
     // Provide a magnifier icon if element contains nothing
-    if (trim($$(this.element).text()) == '') {
+    if (Utils.trim($$(this.element).text()) == '') {
       element.innerHTML = '<span class="coveo-icon">' + l("Search") + '</span>';
     }
   }

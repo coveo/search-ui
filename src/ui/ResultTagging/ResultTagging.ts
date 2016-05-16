@@ -1,6 +1,6 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../../utils/OSUtils.ts" />
-/// <reference path="../../utils/KeyboardUtils.ts" />
+
+
+
 
 module Coveo {
   export interface ResultTaggingOptions {

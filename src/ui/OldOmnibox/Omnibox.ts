@@ -1,7 +1,7 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="OmniboxOptions.ts" />
-/// <reference path="../Querybox/Querybox.ts" />
-/// <reference path="../../events/OmniboxEvents.ts" />
+
+
+
+
 
 module Coveo {
 

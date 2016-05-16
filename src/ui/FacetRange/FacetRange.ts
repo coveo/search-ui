@@ -1,6 +1,6 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../Facet/Facet.ts" />
-/// <reference path="../../controllers/FacetRangeQueryController.ts" />
+
+
+
 module Coveo {
 
   export interface FacetRangeOptions extends IFacetOptions {

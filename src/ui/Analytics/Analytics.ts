@@ -1,6 +1,6 @@
 import {Component, IComponentBindings} from '../Base/Component';
 import {IAnalyticsClient} from './AnalyticsClient';
-import {buildStringOption, buildBooleanOption, initComponentOptions} from '../Base/ComponentOptions';
+import {ComponentOptions} from '../Base/ComponentOptions';
 import {AnalyticsEndpoint} from '../../rest/AnalyticsEndpoint';
 import {SearchEndpoint} from '../../rest/SearchEndpoint';
 import {Assert} from '../../misc/Assert';
@@ -11,7 +11,7 @@ import {Model, IAttributeChangedEventArg} from '../../models/Model';
 import {BaseComponent} from '../Base/BaseComponent';
 import {IAnalyticsActionCause, IAnalyticsDocumentViewMeta} from '../Analytics/AnalyticsActionListMeta';
 import {IQueryResult} from '../../rest/QueryResult';
-import {isNonEmptyString} from '../../utils/Utils';
+import {Utils} from '../../utils/Utils';
 import {NoopAnalyticsClient} from '../Analytics/NoopAnalyticsClient';
 import {LiveAnalyticsClient} from './LiveAnalyticsClient';
 import {MultiAnalyticsClient} from './MultiAnalyticsClient';
@@ -43,45 +43,45 @@ export class Analytics extends Component {
     /**
      * Specifies the name of the user for usage analytics logs.
      */
-    user: buildStringOption(),
+    user: ComponentOptions.buildStringOption(),
     /**
      * Specifies the name of the user display name for usage analytics logs.
      */
-    userDisplayName: buildStringOption(),
+    userDisplayName: ComponentOptions.buildStringOption(),
     /**
      * Specifies the token used to gain access the analytics endpoint.<br/>
      * This attribute is optional, the component will use the search token by default.
      */
-    token: buildStringOption(),
+    token: ComponentOptions.buildStringOption(),
     /**
      * Specifies the URL of the analytics logger for rare cases where it is different from the default usage analytics Coveo Cloud endpoint (https://usageanalytics.coveo.com).
      */
-    endpoint: buildStringOption({defaultValue: AnalyticsEndpoint.DEFAULT_ANALYTICS_URI}),
+    endpoint: ComponentOptions.buildStringOption({defaultValue: AnalyticsEndpoint.DEFAULT_ANALYTICS_URI}),
     /**
      * Specifies whether the search user identities are converted in a unique hash in the logged analytics data to prevent analytics reviewers and managers to identify who performs which queries.<br/>
      * When enabled, the Coveo Analytics Platform can still properly identify sessions made by anonymous users, versus ones from users that are authenticated in some way with the site containing the search page.<br/>
      * The default value is false.
      */
-    anonymous: buildBooleanOption({defaultValue: false}),
+    anonymous: ComponentOptions.buildBooleanOption({defaultValue: false}),
     /**
      * Sets the Search Hub dimension on the search events.<br/>
      * The Search Hub dimension is typically a name that refers to a specific search page. For example, one could use the CommunitySite value to refer to a search page on a company's public community site.<br/>
      * The default value is default.
      */
-    searchHub: buildStringOption({defaultValue: 'default'}),
+    searchHub: ComponentOptions.buildStringOption({defaultValue: 'default'}),
     /**
      * Specifies the name of the split test run that the search page is a part of.<br/>
      * This dimension can be used to perform A/B testing using different search page layouts and features, inside the Coveo Query pipeline.<br/>
      * By default, this value is not specified and no split test run name is reported to the Coveo Analytics Platform.
      */
-    splitTestRunName: buildStringOption(),
+    splitTestRunName: ComponentOptions.buildStringOption(),
     /**
      * Specifies the version name for the page when a split test run is active.<br/>
      * When reporting on A/B testing analytics data, this value specifies the test run version name that has been presented to the user.<br/>
      * By default, this value is not specified.
      */
-    splitTestRunVersion: buildStringOption(),
-    sendToCloud: buildBooleanOption({defaultValue: true})
+    splitTestRunVersion: ComponentOptions.buildStringOption(),
+    sendToCloud: ComponentOptions.buildBooleanOption({defaultValue: true})
   };
 
   /**
@@ -97,7 +97,7 @@ export class Analytics extends Component {
    */
   constructor(public element: HTMLElement, public options: IAnalyticsOptions = {}, bindings?: IComponentBindings) {
     super(element, Analytics.ID, bindings);
-    this.options = initComponentOptions(element, Analytics, options);
+    this.options = ComponentOptions.initComponentOptions(element, Analytics, options);
     if (this.options.token == null) {
       var defaultEndpoint = SearchEndpoint.endpoints['default'];
       if (defaultEndpoint) {
@@ -183,7 +183,7 @@ export class Analytics extends Component {
   }
 
   private initializeAnalyticsClient() {
-    if (isNonEmptyString(this.options.endpoint)) {
+    if (Utils.isNonEmptyString(this.options.endpoint)) {
       var endpoint = this.initializeAnalyticsEndpoint();
       var elementToInitializeClient: HTMLElement;
       if (this.root && this.element) {

@@ -1,4 +1,4 @@
-/// <reference path="../Base.ts" />
+
 module Coveo {
   export class EmailActionsUtils {
     static buildMailToString(options: MailToOptions): string {

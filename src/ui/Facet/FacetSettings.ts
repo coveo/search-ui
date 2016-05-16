@@ -1,5 +1,5 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../../utils/LocalStorageUtils.ts" />
+
+
 module Coveo {
 
   export interface IFacetSettingsKlass {

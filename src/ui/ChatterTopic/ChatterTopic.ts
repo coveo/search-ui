@@ -1,5 +1,5 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../../utils/ChatterUtils.ts" />
+
+
 
 module Coveo {
   export interface ChatterTopicOption {

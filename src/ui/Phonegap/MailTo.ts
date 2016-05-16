@@ -1,7 +1,7 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../../utils/EmailActionsUtils.ts" />
-/// <reference path="../Phonegap/PhonegapPlugins.ts" />
-/// <reference path="../../misc/Options.ts" />
+
+
+
+
 
 module Coveo {
   export interface MailToOptions {

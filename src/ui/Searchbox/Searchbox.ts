@@ -1,7 +1,7 @@
 import {IOmniboxOptions} from '../Omnibox/Omnibox';
 import {Component, IComponentBindings} from '../Base/Component';
 import {Omnibox} from '../Omnibox/Omnibox';
-import {buildBooleanOption, initComponentOptions} from '../Base/ComponentOptions'
+import {ComponentOptions} from '../Base/ComponentOptions'
 import {SearchButton} from '../SearchButton/SearchButton';
 import {Querybox} from '../Querybox/Querybox';
 import {$$} from '../../utils/Dom';
@@ -31,13 +31,13 @@ export class Searchbox extends Component {
      * Specifies whether the search box instantiates a {@link SearchButton}.<br/>
      * Default value is true.
      */
-    addSearchButton: buildBooleanOption({defaultValue: true}),
+    addSearchButton: ComponentOptions.buildBooleanOption({defaultValue: true}),
     /**
      * Specifies whether the search box instantiates a {@link Omnibox} Component.<br/>
      * Otherwise, the search box instantiates a {@link Querybox} Component.<br/>
      * Default value is false.
      */
-    enableOmnibox: buildBooleanOption({defaultValue: false})
+    enableOmnibox: ComponentOptions.buildBooleanOption({defaultValue: false})
   }
 
   /**
@@ -62,7 +62,7 @@ export class Searchbox extends Component {
   constructor(public element: HTMLElement, public options?: ISearchboxOptions, bindings?: IComponentBindings) {
     super(element, Searchbox.ID, bindings);
 
-    this.options = initComponentOptions(element, Searchbox, options);
+    this.options = ComponentOptions.initComponentOptions(element, Searchbox, options);
 
     if (this.options.inline) {
       $$(element).addClass('coveo-inline');

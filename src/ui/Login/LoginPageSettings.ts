@@ -1,4 +1,4 @@
-/// <reference path="../../utils/PhonegapFileAccessUtils.ts" />
+
 
 module Coveo {
 

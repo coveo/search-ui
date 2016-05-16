@@ -1,4 +1,4 @@
-/// <reference path="../../Base.ts" />
+
 module Coveo {
   /**
    * Represent a single cell of data in the {@link Matrix} component

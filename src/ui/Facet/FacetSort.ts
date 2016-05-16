@@ -1,4 +1,4 @@
-/// <reference path="../../Base.ts" />
+
 module Coveo {
   export interface FacetSortKlass {
     new(sorts: string[], facet: Facet): FacetSort;

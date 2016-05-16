@@ -1,6 +1,6 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="FieldValue.ts" />
-/// <reference path="Badge.ts" />
+
+
+
 module Coveo {
   export interface IFieldTableOptions {
     allowMinimization: boolean;

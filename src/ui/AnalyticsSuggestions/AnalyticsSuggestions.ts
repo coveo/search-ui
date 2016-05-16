@@ -1,6 +1,6 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../Misc/SuggestionForOmnibox.ts" />
-/// <reference path="../../events/OmniboxEvents.ts" />
+
+
+
 module Coveo {
   export interface AnalyticsSuggestionsOptions extends SuggestionForOmniboxOptions {
   }

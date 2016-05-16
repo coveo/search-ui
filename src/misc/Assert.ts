@@ -1,5 +1,5 @@
 import {Logger} from '../misc/Logger';
-import {isNonEmptyString, isUndefined, isNull, isNullOrUndefined} from '../utils/Utils';
+import {Utils} from '../utils/Utils';
 import _ = require('underscore');
 
 export class Assert {
@@ -12,7 +12,7 @@ export class Assert {
       console.trace();
     }
 
-    if (isNonEmptyString(message)) {
+    if (Utils.isNonEmptyString(message)) {
       throw new PreconditionFailedException(message);
     } else {
       throw new PreconditionFailedException('Assertion Failed!');
@@ -30,27 +30,27 @@ export class Assert {
   }
 
   static isUndefined(obj: any) {
-    Assert.check(isUndefined(obj), 'Value should be undefined.');
+    Assert.check(Utils.isUndefined(obj), 'Value should be undefined.');
   }
 
   static isNotUndefined(obj: any) {
-    Assert.check(!isUndefined(obj), 'Value should not be undefined.');
+    Assert.check(!Utils.isUndefined(obj), 'Value should not be undefined.');
   }
 
   static isNull(obj: any) {
-    Assert.check(isNull(obj), 'Value should be null.');
+    Assert.check(Utils.isNull(obj), 'Value should be null.');
   }
 
   static isNotNull(obj: any) {
-    Assert.check(!isNull(obj), 'Value should not be null.');
+    Assert.check(!Utils.isNull(obj), 'Value should not be null.');
   }
 
   static exists(obj: any) {
-    Assert.check(!isNullOrUndefined(obj), 'Value should not be null or undefined');
+    Assert.check(!Utils.isNullOrUndefined(obj), 'Value should not be null or undefined');
   }
 
   static doesNotExists(obj: any) {
-    Assert.check(isNullOrUndefined(obj), 'Value should be null or undefined');
+    Assert.check(Utils.isNullOrUndefined(obj), 'Value should be null or undefined');
   }
 
   static isString(obj: any) {
@@ -64,7 +64,7 @@ export class Assert {
   }
 
   static isNonEmptyString(str: string) {
-    Assert.check(isNonEmptyString(str), 'Value should be a non-empty string.');
+    Assert.check(Utils.isNonEmptyString(str), 'Value should be a non-empty string.');
   }
 
   static isNumber(obj: any) {

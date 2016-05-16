@@ -1,5 +1,5 @@
 import {IAnalyticsClient} from './AnalyticsClient';
-import {getDeviceName, isMobileDevice} from '../../utils/DeviceUtils';
+import {DeviceUtils} from '../../utils/DeviceUtils';
 import {PendingSearchEvent} from './PendingSearchEvent';
 import {PendingSearchAsYouTypeSearchEvent} from './PendingSearchAsYouTypeSearchEvent';
 import {AnalyticsEndpoint} from '../../rest/AnalyticsEndpoint';
@@ -26,8 +26,8 @@ import _ = require('underscore');
 export class LiveAnalyticsClient implements IAnalyticsClient {
   public isContextual: boolean = false;
   private language = <string>String['locale'];
-  private device = getDeviceName();
-  private mobile = isMobileDevice();
+  private device = DeviceUtils.getDeviceName();
+  private mobile = DeviceUtils.isMobileDevice();
   private pendingSearchEvent: PendingSearchEvent;
   private pendingSearchAsYouTypeSearchEvent: PendingSearchAsYouTypeSearchEvent;
   private logger: Logger;

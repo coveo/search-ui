@@ -1,5 +1,5 @@
 import {Assert} from '../misc/Assert';
-import {isNonEmptyArray} from '../utils/Utils';
+import {Utils} from '../utils/Utils';
 
 export class HashUtils {
   private static Delimiter = {
@@ -38,9 +38,9 @@ export class HashUtils {
     var hash: String[] = [];
     _.each(<_.Dictionary<any>>values, (valueToEncode, key, obj?) => {
       var encodedValue = "";
-      if (isNonEmptyArray(valueToEncode)) {
+      if (Utils.isNonEmptyArray(valueToEncode)) {
         encodedValue = HashUtils.encodeArray(valueToEncode);
-      } else if (_.isObject(valueToEncode) && isNonEmptyArray(_.keys(valueToEncode))) {
+      } else if (_.isObject(valueToEncode) && Utils.isNonEmptyArray(_.keys(valueToEncode))) {
         encodedValue = HashUtils.encodeObject(valueToEncode);
       } else {
         encodedValue = encodeURIComponent(valueToEncode.toString());

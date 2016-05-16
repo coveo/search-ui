@@ -12,7 +12,7 @@ import {INewQueryEventArgs, IPreprocessResultsEventArgs, INoResultsEventArgs, IQ
 import {QueryUtils} from '../utils/QueryUtils';
 import {Defer} from '../misc/Defer';
 import {$$, Dom} from '../utils/Dom';
-import {isNonEmptyString, exists} from '../utils/Utils';
+import {Utils} from '../utils/Utils';
 import {Promise} from 'es6-promise';
 import {BaseComponent} from '../ui/Base/BaseComponent';
 import _ = require('underscore');
@@ -413,7 +413,7 @@ export class QueryController extends RootComponent {
   }
 
   public isStandaloneSearchbox(): boolean {
-    return isNonEmptyString(this.options.searchPageUri);
+    return Utils.isNonEmptyString(this.options.searchPageUri);
   }
 
   public saveLastQuery() {
@@ -465,7 +465,7 @@ export class QueryController extends RootComponent {
   }
 
   private cancelAnyCurrentPendingQuery() {
-    if (exists(this.currentPendingQuery)) {
+    if (Utils.exists(this.currentPendingQuery)) {
       this.logger.debug('Cancelling current pending query');
       Promise.reject(this.currentPendingQuery);
       this.currentPendingQuery = undefined;

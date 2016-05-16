@@ -1,9 +1,9 @@
 import {IQueryResult} from '../../rest/QueryResult';
 import {Logger} from '../../misc/Logger';
 import {IComponentDefinition, Component, IComponentBindings} from '../Base/Component';
-import {extendDeep, exists, isHtmlElement, isNonEmptyString} from '../../utils/Utils';
+import {Utils} from '../../utils/Utils';
 import {Assert} from '../../misc/Assert';
-import {isIE8or9} from '../../utils/DeviceUtils';
+import {DeviceUtils} from '../../utils/DeviceUtils';
 import {$$} from '../../utils/Dom';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {SearchInterface, StandaloneSearchInterface} from '../SearchInterface/SearchInterface';
@@ -44,7 +44,7 @@ export class Initialization {
    */
   public static registerDefaultOptions(element: HTMLElement, options: {}): void {
     var existing = element['CoveoDefaultOptions'] || {};
-    var updated = extendDeep(existing, options);
+    var updated = Utils.extendDeep(existing, options);
     element['CoveoDefaultOptions'] = updated;
   }
 
@@ -52,8 +52,8 @@ export class Initialization {
     var optionsForThisElement = element['CoveoDefaultOptions'];
 
     var optionsSoFar: {};
-    if (exists(optionsForThisElement)) {
-      optionsSoFar = extendDeep(optionsForThisElement, options);
+    if (Utils.exists(optionsForThisElement)) {
+      optionsSoFar = Utils.extendDeep(optionsForThisElement, options);
     } else {
       optionsSoFar = options;
     }
@@ -84,7 +84,7 @@ export class Initialization {
    * @returns {boolean}
    */
   public static isComponentClassIdRegistered(componentClassId: string): boolean {
-    return exists(Initialization.autoCreateComponents[componentClassId]);
+    return Utils.exists(Initialization.autoCreateComponents[componentClassId]);
   }
 
   /**
@@ -114,7 +114,7 @@ export class Initialization {
   public static initializeFramework(element: HTMLElement, options?: any, initSearchInterfaceFunction?: (...args: any[])=> void) {
     Assert.exists(element);
 
-    if (isIE8or9()) {
+    if (DeviceUtils.isIE8or9()) {
       $$('html').addClass('ie8or9');
     }
 
@@ -267,7 +267,7 @@ export class Initialization {
    * @returns {boolean}
    */
   public static isNamedMethodRegistered(methodName: string): boolean {
-    return exists(Initialization.namedMethods[methodName]);
+    return Utils.exists(Initialization.namedMethods[methodName]);
   }
 
   /**
@@ -293,7 +293,7 @@ export class Initialization {
     Assert.exists(boundComponent[methodName]);
 
     var originalMethodName = '__' + methodName;
-    if (!exists(boundComponent[originalMethodName])) {
+    if (!Utils.exists(boundComponent[originalMethodName])) {
       boundComponent[originalMethodName] = boundComponent[methodName];
     }
 
@@ -349,7 +349,7 @@ export class Initialization {
 
   private static isThereASingleComponentBoundToThisElement(element: HTMLElement): boolean {
     Assert.exists(element);
-    return exists(Component.get(element));
+    return Utils.exists(Component.get(element));
   }
 
   private static dispatchMethodCallOnBoundComponent(methodName: string, element: HTMLElement, args: any[]): any {
@@ -360,7 +360,7 @@ export class Initialization {
     Assert.exists(boundComponent);
 
     var method = boundComponent[methodName];
-    if (exists(method)) {
+    if (Utils.exists(method)) {
       return method.apply(boundComponent, args);
     } else {
       Assert.fail('No method named ' + methodName + ' exist on component ' + boundComponent.type);
@@ -373,7 +373,7 @@ export class Initialization {
       var meta = HashUtils.getValue('firstQueryMeta', HashUtils.getHash()) || {};
       searchInterface.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList[firstQueryCause], meta);
     } else {
-      if (isNonEmptyString(searchInterface.getBindings().queryStateModel.get('q'))) {
+      if (Utils.isNonEmptyString(searchInterface.getBindings().queryStateModel.get('q'))) {
         searchInterface.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchFromLink, {});
       } else {
         searchInterface.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.interfaceLoad, {});
@@ -382,25 +382,25 @@ export class Initialization {
   }
 
   private static performInitFunctionsOption(options, event: string) {
-    if (exists(options)) {
+    if (Utils.exists(options)) {
       Initialization.performFunctions(options[event]);
     }
   }
 
   private static performPreInitFunctions(options) {
-    if (exists(options)) {
+    if (Utils.exists(options)) {
       Initialization.performFunctions(options[InitializationEvents.beforeInitialization]);
     }
   }
 
   private static performPostInitFunction(options) {
-    if (exists(options)) {
+    if (Utils.exists(options)) {
       Initialization.performFunctions(options[InitializationEvents.afterInitialization]);
     }
   }
 
   private static performFunctions(option) {
-    if (exists(option)) {
+    if (Utils.exists(option)) {
       _.each(option, (func: () => void) => {
         if (typeof func == 'function') {
           func()
@@ -436,7 +436,7 @@ export class Initialization {
       };
       _.each(options['externalComponents'], (externalComponent: HTMLElement) => {
         var elementToInstantiate = externalComponent;
-        if (isHtmlElement(elementToInstantiate)) {
+        if (Utils.isHtmlElement(elementToInstantiate)) {
           Initialization.automaticallyCreateComponentsInside(elementToInstantiate, initParameters);
         }
       })
@@ -450,12 +450,12 @@ export class Initialization {
           // If options were provided, lookup options for this component class and
           // also for the element id. Merge them and pass those to the factory method.
           var optionsToUse = undefined;
-          if (exists(initParameters.options)) {
+          if (Utils.exists(initParameters.options)) {
             var optionsForComponentClass = initParameters.options[componentClassId];
             var optionsForElementId = initParameters.options[matchingElement.id];
             var initOptions = initParameters.options["initOptions"] ? initParameters.options["initOptions"][componentClassId] : {};
-            optionsToUse = extendDeep(optionsForElementId, initOptions);
-            optionsToUse = extendDeep(optionsForComponentClass, optionsToUse);
+            optionsToUse = Utils.extendDeep(optionsForElementId, initOptions);
+            optionsToUse = Utils.extendDeep(optionsForComponentClass, optionsToUse);
           }
           var initParamToUse = _.extend({}, initParameters, {options: optionsToUse});
           Initialization.createComponentOfThisClassOnElement(componentClass['ID'], matchingElement, initParamToUse);

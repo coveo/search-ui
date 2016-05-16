@@ -1,5 +1,5 @@
-/// <reference path="../Base.ts" />
-/// <reference path="../utils/DateUtils.ts" />
+
+
 module Coveo {
   export class FacetSliderQueryController {
     public graphGroupByQueriesIndex: number;

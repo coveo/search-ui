@@ -1,7 +1,7 @@
 import {Model, IModelSetOptions} from './Model';
 import {Assert} from '../misc/Assert';
 import {IStringMap} from '../rest/GenericParam';
-import {isNonEmptyArray, isNonEmptyString} from '../utils/Utils';
+import {Utils} from '../utils/Utils';
 import _ = require('underscore');
 
 export const QueryStateAttributes = {
@@ -91,7 +91,7 @@ export class QueryStateModel extends Model {
    */
   public atLeastOneFacetIsActive() {
     return !_.isUndefined(_.find(this.attributes, (value, key: any) => {
-      return key.indexOf("f:") == 0 && isNonEmptyArray(value) && key.indexOf(':range') < 0;
+      return key.indexOf("f:") == 0 && Utils.isNonEmptyArray(value) && key.indexOf(':range') < 0;
     }))
   }
 
@@ -113,7 +113,7 @@ export function setState(model: Model, args: any[]): any {
   if (args.length == 0 || args[0] == undefined) {
     // No args means return the model
     return model;
-  } else if (args.length == 1 && isNonEmptyString(args[0])) {
+  } else if (args.length == 1 && Utils.isNonEmptyString(args[0])) {
     // One string arg means retrieve value from model
     return model.get(args[0]);
   } else if (_.isObject(args[0])) {

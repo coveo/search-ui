@@ -1,8 +1,8 @@
 import {Template} from './Template';
 import {TemplateHelperFunction} from './TemplateHelpers';
 import {Assert} from '../../misc/Assert';
-import {loadFieldsOption, FieldsOption} from '../Base/ComponentOptions';
-import {exists} from '../../utils/Utils';
+import {ComponentOptions, FieldsOption} from '../Base/ComponentOptions';
+import {Utils} from '../../utils/Utils';
 import _ = require('underscore');
 
 _.templateSettings = {
@@ -42,7 +42,7 @@ export class UnderscoreTemplate extends Template {
 
     this.fields = Template.getFieldFromString(templateString + ' ' + condition);
 
-    var additionalFields = loadFieldsOption(element, 'fields', <FieldsOption>{includeInResults: true});
+    var additionalFields = ComponentOptions.loadFieldsOption(element, 'fields', <FieldsOption>{includeInResults: true});
     if (additionalFields != null) {
       // remove the @
       this.fields = this.fields.concat(_.map(additionalFields, (field)=>field.substr(1)));
@@ -86,6 +86,6 @@ export class UnderscoreTemplate extends Template {
   }
 
   static isLibraryAvailable(): boolean {
-    return exists(window['_']);
+    return Utils.exists(window['_']);
   }
 }

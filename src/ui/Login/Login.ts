@@ -1,6 +1,6 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="LoginCredentials.ts" />
-/// <reference path="LoginPageSettings.ts" />
+
+
+
 module Coveo {
   export interface LoginOptions {
     id?: string;

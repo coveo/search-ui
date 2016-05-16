@@ -1,5 +1,5 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../../events/AnalyticsEvents.ts" />
+
+
 
 declare var userActionsHandler: Coveo.UserActionsHandler;
 

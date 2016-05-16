@@ -1,4 +1,4 @@
-import {toDashCase, isNullOrUndefined} from '../utils/Utils';
+import {Utils} from '../utils/Utils';
 import {Assert} from '../misc/Assert';
 import {Logger} from '../misc/Logger';
 import _ = require('underscore');
@@ -41,7 +41,7 @@ export class Dom {
       if (key === 'className') {
         elem.className = props['className'];
       } else {
-        let attr = key.indexOf('-') !== -1 ? key : toDashCase(key)
+        let attr = key.indexOf('-') !== -1 ? key : Utils.toDashCase(key)
         elem.setAttribute(attr, props[key]);
       }
     }
@@ -273,7 +273,7 @@ export class Dom {
    * @swtch If true, add the class regardless and if false, remove the class
    */
   public toggleClass(className: string, swtch?: boolean): void {
-    if (isNullOrUndefined(swtch)) {
+    if (Utils.isNullOrUndefined(swtch)) {
       if (this.hasClass(className)) {
         this.removeClass(className);
       } else {

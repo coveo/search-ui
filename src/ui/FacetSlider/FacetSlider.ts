@@ -1,8 +1,8 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../Misc/Slider.ts" />
-/// <reference path="../../controllers/FacetSliderQueryController.ts" />
-/// <reference path="../../events/SliderEvents.ts" />
-/// <reference path="../../utils/FeatureDetectionUtils.ts" />
+
+
+
+
+
 
 module Coveo {
   export interface IFacetSliderOptions extends ISliderOptions {

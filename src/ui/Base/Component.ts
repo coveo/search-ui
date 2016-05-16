@@ -2,7 +2,7 @@ import {Assert} from '../../misc/Assert';
 import {Logger} from '../../misc/Logger';
 import {IQueryResult} from '../../rest/QueryResult';
 import {DebugEvents} from '../../events/DebugEvents';
-import {exists} from '../../utils/Utils';
+import {Utils} from '../../utils/Utils';
 import {$$} from '../../utils/Dom';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import {ComponentStateModel} from '../../models/ComponentStateModel';
@@ -219,7 +219,7 @@ export class Component extends BaseComponent {
 
     if (_.isString(componentClass)) {
       return <Component>element[Component.computeCssClassNameForType(componentClass)];
-    } else if (exists(componentClass)) {
+    } else if (Utils.exists(componentClass)) {
       Assert.exists(componentClass.ID);
       return <Component>element[Component.computeCssClassNameForType(componentClass.ID)];
     } else {

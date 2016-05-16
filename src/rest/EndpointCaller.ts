@@ -2,8 +2,8 @@ import {IStringMap} from '../rest/GenericParam';
 import {Logger} from '../misc/Logger';
 import {Assert} from '../misc/Assert';
 import {TimeSpan} from '../utils/TimeSpanUtils';
-import {isPhonegap, getDeviceName} from '../utils/DeviceUtils';
-import {isNonEmptyString} from '../utils/Utils';
+import {DeviceUtils} from '../utils/DeviceUtils';
+import {Utils} from '../utils/Utils';
 import {Promise} from 'es6-promise';
 import _ = require('underscore');
 
@@ -259,7 +259,7 @@ export class EndpointCaller {
           // Under Phonegap, we must set this special http header that'll prevent the server
           // from challenging us for Basic Authentication. This avoids a bug where Phonegap
           // would simply deadlock trying to show a popup.
-          if (isPhonegap()) {
+          if (DeviceUtils.isPhonegap()) {
             xmlHttpRequest.setRequestHeader('Basic-Auth-Challenge-Client', 'Phonegap');
           }
 
@@ -298,7 +298,7 @@ export class EndpointCaller {
               data = xmlHttpRequest.response;
               // Work around a bug in IE11 where responseType jsonis not supported : the response comes back as a plain string
               // Force the json parse manually
-              if (responseType == 'json' && getDeviceName() == 'IE') {
+              if (responseType == 'json' && DeviceUtils.getDeviceName() == 'IE') {
                 try {
                   data = JSON.parse(data);
                 } catch (e) {
@@ -483,7 +483,7 @@ export class EndpointCaller {
 
   private tryParseResponseText(json: string, contentType: string): any {
     if (contentType != null && contentType.indexOf('application/json') != -1) {
-      if (isNonEmptyString(json)) {
+      if (Utils.isNonEmptyString(json)) {
         try {
           return JSON.parse(json);
         } catch (ex) {

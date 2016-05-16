@@ -1,5 +1,5 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="SortCriteria.ts" />
+
+
 module Coveo {
 
   export interface ISortOptions {

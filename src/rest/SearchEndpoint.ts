@@ -21,7 +21,7 @@ import {AjaxError} from '../rest/AjaxError';
 import {MissingAuthenticationError} from '../rest/MissingAuthenticationError';
 import {QueryUtils} from '../utils/QueryUtils';
 import {QueryError} from '../rest/QueryError';
-import {isNonEmptyString, isNullOrEmptyString} from '../utils/Utils';
+import {Utils} from '../utils/Utils';
 import {Promise} from 'es6-promise';
 import _ = require('underscore');
 
@@ -144,7 +144,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     // to NOT be set, allowing those pages to work with non Windows/Basic/Cookie
     // authentication. If anonymous is explicitly set to false, we'll use withCredentials.
     var defaultOptions = new DefaultSearchEndpointOptions();
-    defaultOptions.anonymous = window.location.href.indexOf('file://') == 0 && isNonEmptyString(options.accessToken);
+    defaultOptions.anonymous = window.location.href.indexOf('file://') == 0 && Utils.isNonEmptyString(options.accessToken);
     this.options = <ISearchEndpointOptions>_.extend({}, defaultOptions, options);
 
     // Forward any debug=1 query argument to the REST API to ease debugging
@@ -189,13 +189,13 @@ export class SearchEndpoint implements ISearchEndpoint {
   public getAuthenticationProviderUri(provider: string, returnUri?: string, message?: string): string {
     var uri = this.buildBaseUri('/login/' + provider) + '?';
 
-    if (isNonEmptyString(this.options.accessToken)) {
+    if (Utils.isNonEmptyString(this.options.accessToken)) {
       uri += 'access_token=' + encodeURIComponent(this.options.accessToken) + '&';
     }
 
-    if (isNonEmptyString(returnUri)) {
+    if (Utils.isNonEmptyString(returnUri)) {
       uri += 'redirectUri=' + encodeURIComponent(returnUri);
-    } else if (isNonEmptyString(message)) {
+    } else if (Utils.isNonEmptyString(message)) {
       uri += 'message=' + encodeURIComponent(message);
     }
     return uri;
@@ -247,7 +247,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       // If the server specified no search ID generated one using the client-side
       // GUID generator. We prefer server generated guids to allow tracking a query
       // all the way from the analytics to the logs.
-      if (isNullOrEmptyString(results.searchUid)) {
+      if (Utils.isNullOrEmptyString(results.searchUid)) {
         results.searchUid = QueryUtils.createGuid();
       }
       QueryUtils.setIndexAndUidOnQueryResults(query, results, results.searchUid, results.pipeline, results.splitTestRun);
@@ -268,7 +268,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     var baseUri = this.buildBaseUri('/');
     var queryString = this.buildCompleteQueryString(callOptions, null, query);
 
-    if (isNonEmptyString(this.options.accessToken)) {
+    if (Utils.isNonEmptyString(this.options.accessToken)) {
       queryString.push('access_token=' + encodeURIComponent(this.options.accessToken));
     }
 
@@ -774,7 +774,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     // Since those uri will be loaded in a frame or tab, we must include any
     // authentication token as a query string argument instead of relying on
     // endpoint caller for this.
-    if (isNonEmptyString(this.options.accessToken)) {
+    if (Utils.isNonEmptyString(this.options.accessToken)) {
       queryString.push('access_token=' + encodeURIComponent(this.options.accessToken));
     }
 
@@ -842,7 +842,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   private canRenewAccessToken(): boolean {
-    return isNonEmptyString(this.options.accessToken) && _.isFunction(this.options.renewAccessToken);
+    return Utils.isNonEmptyString(this.options.accessToken) && _.isFunction(this.options.renewAccessToken);
   }
 
   private renewAccessToken(): Promise<string>|Promise<any> {

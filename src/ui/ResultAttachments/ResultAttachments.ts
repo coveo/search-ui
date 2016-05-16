@@ -1,5 +1,5 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="DefaultResultAttachmentTemplate.ts" />
+
+
 module Coveo {
   export interface IResultAttachmentsOptions {
     resultTemplate?: Template;

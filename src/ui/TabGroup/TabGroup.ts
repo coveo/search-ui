@@ -1,6 +1,6 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="TabGroupMenu.ts" />
-/// <reference path="../Tab/Tab.ts" />
+
+
+
 module Coveo {
   export interface TabGroupOptions {
     id?: string;

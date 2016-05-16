@@ -1,12 +1,12 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../Misc/FileTypes.ts" />
-/// <reference path="../../utils/HtmlUtils.ts" />
-/// <reference path="../../utils/EmailUtils.ts" />
-/// <reference path="../../utils/DateUtils.ts" />
-/// <reference path="../../utils/CurrencyUtils.ts" />
-/// <reference path="../../utils/HighlightUtils.ts" />
-/// <reference path="../../utils/StreamHighlightUtils.ts" />
-/// <reference path="../../utils/ChatterUtils.ts" />
+
+
+
+
+
+
+
+
+
 
 module Coveo {
   TemplateHelpers.registerFieldHelper('javascriptEncode', (value: string) => {

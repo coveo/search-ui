@@ -1,6 +1,6 @@
 import {Assert} from '../../misc/Assert';
 import {UnderscoreTemplate} from './UnderscoreTemplate';
-import {getCaseInsensitiveProperty} from '../../utils/Utils';
+import {Utils} from '../../utils/Utils';
 
 export interface TemplateHelperFunction {
   (...args: any[]): string;
@@ -33,7 +33,7 @@ export class TemplateHelpers {
   }
 
   static getHelper(name: string): TemplateHelperFunction {
-    return getCaseInsensitiveProperty(TemplateHelpers.helpers, name);
+    return Utils.getCaseInsensitiveProperty(TemplateHelpers.helpers, name);
   }
 
   static getHelpers() {

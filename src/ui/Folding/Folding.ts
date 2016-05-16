@@ -1,5 +1,5 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../Sort/SortCriteria.ts" />
+
+
 module Coveo {
   export interface IFoldingOptions {
     field?: string;

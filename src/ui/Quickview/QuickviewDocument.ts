@@ -1,6 +1,6 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../Phonegap/EmailAction.ts" />
-/// <reference path="../../utils/PhonegapUtils.ts" />
+
+
+
 module Coveo {
   var HIGHLIGHT_PREFIX = "CoveoHighlight";
 

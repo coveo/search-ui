@@ -1,6 +1,6 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../Menu/MenuItem.ts" />
-/// <reference path="../../events/SettingsEvents.ts" />
+
+
+
 
 module Coveo {
   export interface ISettingsOptions {

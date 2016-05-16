@@ -1,4 +1,4 @@
-/// <reference path="../Base.ts" />
+
 module Coveo {
   // \u2011: http://graphemica.com/%E2%80%91
   var nonWordBoundary = '[\\.\\-\\u2011\\s~=,.\\|\\/:\'`’;_()]';

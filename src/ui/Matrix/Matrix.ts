@@ -1,6 +1,6 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="Cell.ts" />
-/// <reference path="DefaultMatrixResultPreviewTemplate.ts" />
+
+
+
 module Coveo {
   export interface IMatrixOptions {
     title?: string;

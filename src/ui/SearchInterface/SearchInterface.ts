@@ -1,8 +1,8 @@
 import {SearchEndpoint} from '../../rest/SearchEndpoint';
-import {buildBooleanOption, buildNumberOption, buildStringOption, buildChildHtmlElementOption, buildCustomOption, initComponentOptions} from '../Base/ComponentOptions';
-import {getBasicLoadingAnimation} from '../../utils/JQueryUtils';
-import {isMobileDevice} from '../../utils/DeviceUtils';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {DeviceUtils} from '../../utils/DeviceUtils';
 import {$$} from '../../utils/Dom';
+import {getBasicLoadingAnimation} from '../../utils/DomUtils';
 import {Assert} from '../../misc/Assert';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import {ComponentStateModel} from '../../models/ComponentStateModel';
@@ -16,7 +16,7 @@ import {LocalStorageHistoryController} from '../../controllers/LocalStorageHisto
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {IAnalyticsClient} from '../Analytics/AnalyticsClient';
 import {NoopAnalyticsClient} from '../Analytics/NoopAnalyticsClient';
-import {isNullOrUndefined, isNonEmptyString, isEmptyString} from '../../utils/Utils';
+import {Utils} from '../../utils/Utils';
 import {RootComponent} from '../Base/RootComponent';
 import {BaseComponent} from '../Base/BaseComponent';
 import {Debug} from '../Debug/Debug';
@@ -67,31 +67,31 @@ export class SearchInterface extends RootComponent {
      * For example #q=foobar.<br/>
      * The default value is false.
      */
-    enableHistory: buildBooleanOption({defaultValue: false}),
+    enableHistory: ComponentOptions.buildBooleanOption({defaultValue: false}),
     /**
      * Specifies that you wish to use the local storage of the browser to store the state of the interface.<br/>
      * This can be used for very specific purpose, and only if you know what you are doing.<br/>
      * Default value is false.
      */
-    useLocalStorageForHistory: buildBooleanOption({defaultValue: false}),
+    useLocalStorageForHistory: ComponentOptions.buildBooleanOption({defaultValue: false}),
     /**
      * Specifies the number of results that each page displays.<br/>
      * Default is 10.
      */
-    resultsPerPage: buildNumberOption({defaultValue: 10, min: 0}),
+    resultsPerPage: ComponentOptions.buildNumberOption({defaultValue: 10, min: 0}),
     /**
      * Specifies the number of characters of the excerpt to get at query time and display for each query result.<br/>
      * This setting is global and can not be modified on a per result basis.<br/>
      * The default value is 200.
      */
-    excerptLength: buildNumberOption({defaultValue: 200, min: 0}),
+    excerptLength: ComponentOptions.buildNumberOption({defaultValue: 200, min: 0}),
     /**
      * Specifies an expression to add to each query.<br/>
      * This should be use if you wish to add a global filter for your whole search interface that applies for all tab.<br/>
      * Do not use this for security concern ... (It's javascript after all).<br/>
      * By default none is added.
      */
-    expression: buildStringOption({defaultValue: ''}),
+    expression: ComponentOptions.buildStringOption({defaultValue: ''}),
     /**
      * Specifies the name of a field to use as a custom filter when executing the query (also referred to as "folding").<br/>
      * Setting this option causes the index to return only one result having any particular value inside the filter field. Any other matching result is "folded" inside the childResults member of each JSON query result.<br/>
@@ -99,13 +99,13 @@ export class SearchInterface extends RootComponent {
      * This is obviously an advanced feature. Instead, look into using the {@link Folding} component, which covers a lot of different use cases.<br/>
      * By default none is added
      */
-    filterField: buildStringOption({defaultValue: ''}),
+    filterField: ComponentOptions.buildStringOption({defaultValue: ''}),
     /**
      * Specifies whether the interface should display a loading animation before the first query has completed successfully.<br/>
      * Note that if you set autoTriggerQuery to false, this means that the loading animation won't go away automatically.<br/>
      * Default is true.
      */
-    hideUntilFirstQuery: buildBooleanOption({defaultValue: true}),
+    hideUntilFirstQuery: ComponentOptions.buildBooleanOption({defaultValue: true}),
     /**
      * Specifies the animation that you wish to use for your interface.<br/>
      * This can be either a selector, or an element that matches the correct css class.<br/>
@@ -113,7 +113,7 @@ export class SearchInterface extends RootComponent {
      * Eg : &lt;element class="CoveoSearchInterface"&gt;&lt;element class="coveo-first-loading-animation"/&gt;&lt;/element&gt;<br/>
      * By default, this will be a Coveo CSS animation (which can also be customized with css)
      */
-    firstLoadingAnimation: buildChildHtmlElementOption({
+    firstLoadingAnimation: ComponentOptions.buildChildHtmlElementOption({
       childSelector: ".coveo-first-loading-animation",
       defaultFunction: () => getBasicLoadingAnimation()
     }),
@@ -122,51 +122,51 @@ export class SearchInterface extends RootComponent {
      * Note that if you set this to false, then the hideUntilFirstQuery option still applies. This means that the animation will still show until a query is triggered.<br/>
      * Default is true.
      */
-    autoTriggerQuery: buildBooleanOption({defaultValue: true}),
-    endpoint: buildCustomOption((endpoint) => endpoint != null && endpoint in SearchEndpoint.endpoints ? SearchEndpoint.endpoints[endpoint] : null, {defaultFunction: () => SearchEndpoint.endpoints['default']}),
+    autoTriggerQuery: ComponentOptions.buildBooleanOption({defaultValue: true}),
+    endpoint: ComponentOptions.buildCustomOption((endpoint) => endpoint != null && endpoint in SearchEndpoint.endpoints ? SearchEndpoint.endpoints[endpoint] : null, {defaultFunction: () => SearchEndpoint.endpoints['default']}),
     /**
      * Specifies the timezone in which the search interface is loaded. This allows the index to recognize some special query syntax.<br/>
      * This must be an IANA zone info key (aka the Olson time zone database). For example : 'America/New_York'.<br/>
      * By default, we use a library that tries to detect the timezone automatically.<br/>
      */
-    timezone: buildStringOption({defaultFunction: () => jstz.determine().name()}),
+    timezone: ComponentOptions.buildStringOption({defaultFunction: () => jstz.determine().name()}),
     /**
      * Specifies whether to enable the feature that allows users to ALT + double click on any results to get the Debug page with a detailed view of all the properties and fields for a given result.<br/>
      * This has no security concern (as all those informations are visible to users through the browser developer console or by calling the Coveo API directly).<br/>
      * The default value is true.
      */
-    enableDebugInfo: buildBooleanOption({defaultValue: true}),
+    enableDebugInfo: ComponentOptions.buildBooleanOption({defaultValue: true}),
     /**
      * Specifies whether to enable the collaborative rating for the index and and include the user rating on each results to the normal index ranking.<br/>
      * If activated, this option can be leveraged with the {@link ResultRating} component.<br/>
      * The default value is false.
      */
-    enableCollaborativeRating: buildBooleanOption({defaultValue: false}),
+    enableCollaborativeRating: ComponentOptions.buildBooleanOption({defaultValue: false}),
     /**
      * Specifies whether to filter duplicates on the search results.<br/>
      * When true, duplicates do not appear in search results, but they however are included in facet counts, which can be sometimes confusing for the users. This is a limitation of the index.<br/>
      * Example: The user narrows a query to one document that has a duplicate. Only one document appears in search results, but the facet count is 2.<br/>
      * The default value is false.
      */
-    enableDuplicateFiltering: buildBooleanOption({defaultValue: false}),
+    enableDuplicateFiltering: ComponentOptions.buildBooleanOption({defaultValue: false}),
     /**
      * Specifies the name of the query pipeline to use for the queries. If not specified, the default value is default, which means the default query pipeline will be used.<br/>
      * You can use this parameter for example when your index is in a Coveo Cloud Organization where you created pipelines (see https://onlinehelp.coveo.com/en/cloud/creating_and_managing_query_pipelines.htm).<br/>
      * Default value is "default".
      */
-    pipeline: buildStringOption(),
+    pipeline: ComponentOptions.buildStringOption(),
     /**
      * Specifies the maximum age in milliseconds that cached query results can have in order to be used (instead of performing a new query on the index).<br/>
      * If cached results are available but are older than the specified age, a new query will be performed on the index.<br/>
      * On high-volume public web sites, having a larger maximum age can greatly improve query response time at the cost of result freshness.<br/>
      * By default, the Coveo Search API will determine the cache length. This is typically 15 minutes.
      */
-    maximumAge: buildNumberOption(),
+    maximumAge: ComponentOptions.buildNumberOption(),
     /**
      * Specifies the search page you wish to navigate to when instantiating a standalone search box interface.<br/>
      * By default this is undefined, meaning the search interface will not redirect.
      */
-    searchPageUri: buildStringOption()
+    searchPageUri: ComponentOptions.buildStringOption()
   };
 
   private attachedComponents: { [type: string]: BaseComponent[] };
@@ -191,13 +191,13 @@ export class SearchInterface extends RootComponent {
   constructor(public element: HTMLElement, public options?: ISearchInterfaceOptions, public analyticsOptions?, _window = window) {
     super(element, SearchInterface.ID);
 
-    if (isMobileDevice()) {
+    if (DeviceUtils.isMobileDevice()) {
       $$(document.body).addClass('coveo-mobile-device');
     }
 
     FastClick.attach(element);
 
-    this.options = initComponentOptions(element, SearchInterface, options);
+    this.options = ComponentOptions.initComponentOptions(element, SearchInterface, options);
     Assert.exists(element);
     Assert.exists(this.options);
 
@@ -502,31 +502,31 @@ export class SearchInterface extends RootComponent {
       data.queryBuilder.enableDuplicateFiltering = true;
     }
 
-    if (!isNullOrUndefined(this.options.pipeline)) {
+    if (!Utils.isNullOrUndefined(this.options.pipeline)) {
       data.queryBuilder.pipeline = this.options.pipeline;
     }
 
-    if (!isNullOrUndefined(this.options.maximumAge)) {
+    if (!Utils.isNullOrUndefined(this.options.maximumAge)) {
       data.queryBuilder.maximumAge = this.options.maximumAge;
     }
 
-    if (!isNullOrUndefined(this.options.resultsPerPage)) {
+    if (!Utils.isNullOrUndefined(this.options.resultsPerPage)) {
       data.queryBuilder.numberOfResults = this.options.resultsPerPage;
     }
 
-    if (!isNullOrUndefined(this.options.excerptLength)) {
+    if (!Utils.isNullOrUndefined(this.options.excerptLength)) {
       data.queryBuilder.excerptLength = this.options.excerptLength;
     }
 
-    if (isNonEmptyString(this.options.expression)) {
+    if (Utils.isNonEmptyString(this.options.expression)) {
       data.queryBuilder.advancedExpression.add(this.options.expression);
     }
 
-    if (isNonEmptyString(this.options.filterField)) {
+    if (Utils.isNonEmptyString(this.options.filterField)) {
       data.queryBuilder.filterField = this.options.filterField;
     }
 
-    if (isNonEmptyString(this.options.timezone)) {
+    if (Utils.isNonEmptyString(this.options.timezone)) {
       data.queryBuilder.timezone = this.options.timezone;
     }
 
@@ -545,11 +545,11 @@ export class StandaloneSearchInterface extends SearchInterface {
   static ID = 'StandaloneSearchInterface'
 
   public static options: StandaloneSearchInterfaceOptions = {
-    redirectIfEmpty: buildBooleanOption({defaultValue: true})
+    redirectIfEmpty: ComponentOptions.buildBooleanOption({defaultValue: true})
   }
 
   constructor(public element: HTMLElement, public options?: StandaloneSearchInterfaceOptions, public analyticsOptions?, _window = window) {
-    super(element, initComponentOptions(element, StandaloneSearchInterface, options), analyticsOptions, _window);
+    super(element, ComponentOptions.initComponentOptions(element, StandaloneSearchInterface, options), analyticsOptions, _window);
     $$(this.root).on(QueryEvents.newQuery, (e: Event, args: INewQueryEventArgs)=> this.handleRedirect(e, args));
   }
 
@@ -587,6 +587,6 @@ export class StandaloneSearchInterface extends SearchInterface {
   }
 
   private searchboxIsEmpty(): boolean {
-    return isEmptyString(this.queryStateModel.get(QueryStateModel.attributesEnum.q))
+    return Utils.isEmptyString(this.queryStateModel.get(QueryStateModel.attributesEnum.q))
   }
 }

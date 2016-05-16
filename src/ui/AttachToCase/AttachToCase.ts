@@ -1,5 +1,5 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../../utils/HighlightUtils.ts" />
+
+
 
 module Coveo {
   declare var attachToCaseEndpoint: AttachToCaseEndpoint;

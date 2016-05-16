@@ -1,6 +1,6 @@
-require('globals?o=coveo.search.dependencies!l10n');
-require('globals?o=coveo.search.dependencies!modal-box');
-require('globals?o=coveo.search.dependencies!fast-click');
-require('globals?o=coveo.search.dependencies!jstz');
-require('globals?o=coveo.search.dependencies!magic-box');
-require('globals?o=coveo.search.dependencies!underscore');
+require('globals?o=CoveoJsSearch.dependencies!l10n');
+require('globals?o=CoveoJsSearch.dependencies!modal-box');
+require('globals?o=CoveoJsSearch.dependencies!fast-click');
+require('globals?o=CoveoJsSearch.dependencies!jstz');
+require('globals?o=CoveoJsSearch.dependencies!magic-box');
+require('globals?o=CoveoJsSearch.dependencies!underscore');

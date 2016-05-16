@@ -1,8 +1,8 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../../events/SettingsEvents.ts" />
-/// <reference path="../Menu/MenuItem.ts" />
-/// <reference path="../Querybox/Querybox.ts" />
-/// <reference path="../Omnibox/Omnibox.ts" />
+
+
+
+
+
 
 module Coveo {
   export interface SearchAlertsOptions {

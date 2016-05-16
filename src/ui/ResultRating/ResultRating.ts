@@ -1,4 +1,4 @@
-/// <reference path="../../Base.ts" />
+
 
 module Coveo {
   export enum RatingValues {Undefined, Lowest, Low, Average, Good, Best};

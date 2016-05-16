@@ -1,4 +1,4 @@
-/// <reference path="../../Base.ts" />
+
 
 module Coveo {
   export var context: any;

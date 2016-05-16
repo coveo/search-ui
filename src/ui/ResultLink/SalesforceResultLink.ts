@@ -1,8 +1,8 @@
 
-/// <reference path="../../Base.ts" />
-/// <reference path="ResultLinkOptions.ts" />
-/// <reference path="ResultLink.ts" />
-/// <reference path="SalesforceUtils.ts" />
+
+
+
+
 
 module Coveo {
 

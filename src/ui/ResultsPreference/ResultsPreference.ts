@@ -1,7 +1,7 @@
-﻿/// <reference path="../../Base.ts" />
-/// <reference path="../ResultLink/ResultLinkOptions.ts" />
-/// <reference path="../../utils/LocalStorageUtils.ts" />
-/// <reference path="../PreferencesPanel/PreferencesPanel.ts" />
+﻿
+
+
+
 module Coveo {
   export interface IResultsPreferencesOptions {
     enableOpenInOutlook?: boolean;

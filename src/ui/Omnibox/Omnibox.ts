@@ -6,7 +6,7 @@
 
 import {IQueryboxOptions} from '../Querybox/Querybox';
 import {Component, IComponentBindings} from '../Base/Component';
-import {buildBooleanOption, buildNumberOption, buildFieldsOption, buildStringOption, initComponentOptions} from '../Base/ComponentOptions';
+import {ComponentOptions} from '../Base/ComponentOptions';
 import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
 import {StandaloneSearchInterfaceEvents} from '../../events/StandaloneSearchInterfaceEvents';
 import {ModelEvents, IAttributeChangedEventArg} from '../../models/Model';
@@ -68,18 +68,18 @@ export class Omnibox extends Component {
      * Activate this as well a searchAsYouType + reveal suggestions for a cool effect !<br/>
      * Default value is false
      */
-    inline: buildBooleanOption({defaultValue: false}),
+    inline: ComponentOptions.buildBooleanOption({defaultValue: false}),
     /**
      * Specifies whether a new query is automatically triggered whenever the user types new text inside the query box.<br/>
      * Activate this as well a inline + reveal suggestions for a cool effect !<br/>
      * The default is false.
      */
-    enableSearchAsYouType: buildBooleanOption({defaultValue: false}),
+    enableSearchAsYouType: ComponentOptions.buildBooleanOption({defaultValue: false}),
     /**
      * When search as you type is enabled, specifies the delay in milliseconds before a new query is triggered when the user types new text inside the query box.<br/>
      * The default value is 2000 milliseconds.
      */
-    searchAsYouTypeDelay: buildNumberOption({
+    searchAsYouTypeDelay: ComponentOptions.buildNumberOption({
       defaultValue: 2000,
       min: 0,
       depend: 'enableSearchAsYouType'
@@ -89,36 +89,36 @@ export class Omnibox extends Component {
      * The field addon allows the search box to highlight and complete field syntax.<br/>
      * Default value is false
      */
-    enableFieldAddon: buildBooleanOption({defaultValue: false, depend: 'enableQuerySyntax'}),
-    enableSimpleFieldAddon: buildBooleanOption({defaultValue: false, depend: 'enableFieldAddon'}),
-    listOfFields: buildFieldsOption({depend: 'enableFieldAddon'}),
+    enableFieldAddon: ComponentOptions.buildBooleanOption({defaultValue: false, depend: 'enableQuerySyntax'}),
+    enableSimpleFieldAddon: ComponentOptions.buildBooleanOption({defaultValue: false, depend: 'enableFieldAddon'}),
+    listOfFields: ComponentOptions.buildFieldsOption({depend: 'enableFieldAddon'}),
     /**
      * Specifies whether the Omnibox suggests top queries logged by the Coveo Cloud Analytics.<br/>
      * This implies that your integration has a proper coveo cloud analytics integration configured.<br/>
      * Default value is false
      */
-    enableTopQueryAddon: buildBooleanOption({defaultValue: false}),
+    enableTopQueryAddon: ComponentOptions.buildBooleanOption({defaultValue: false}),
     /**
      * Specifies whether the reveal query suggestions should be enabled.<br/>
      * This implies that your integration has a proper reveal integration configured.<br/>
      * Default value is false
      */
-    enableRevealQuerySuggestAddon: buildBooleanOption({defaultValue: false}),
+    enableRevealQuerySuggestAddon: ComponentOptions.buildBooleanOption({defaultValue: false}),
     /**
      * Specifies whether the query extension addon should be enabled.<br/>
      * This allows the omnibox to complete the syntax for query extensions.<br/>
      * Default value is false
      */
-    enableQueryExtensionAddon: buildBooleanOption({defaultValue: false, depend: 'enableQuerySyntax'}),
+    enableQueryExtensionAddon: ComponentOptions.buildBooleanOption({defaultValue: false, depend: 'enableQuerySyntax'}),
     /**
      * Specifies a placeholder for input
      */
-    placeholder: buildStringOption(),
+    placeholder: ComponentOptions.buildStringOption(),
     /**
      * Specifies a timeout before rejecting suggestions in the omnibox.<br/>
      * Default value is 2000 (2 seconds)
      */
-    omniboxTimeout: buildNumberOption({defaultValue: 2000})
+    omniboxTimeout: ComponentOptions.buildNumberOption({defaultValue: 2000})
   }
 
   public magicBox: Coveo.MagicBox.Instance;
@@ -132,7 +132,7 @@ export class Omnibox extends Component {
   constructor(public element: HTMLElement, public options?: IOmniboxOptions, bindings?: IComponentBindings) {
     super(element, Omnibox.ID, bindings);
 
-    this.options = initComponentOptions(element, Omnibox, options);
+    this.options = ComponentOptions.initComponentOptions(element, Omnibox, options);
 
     var grammar: { start: string; expressions: { [id: string]: Coveo.MagicBox.ExpressionDef } };
 

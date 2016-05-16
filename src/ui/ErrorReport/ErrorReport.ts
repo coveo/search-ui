@@ -1,5 +1,5 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../Phonegap/PhonegapPlugins.ts" />
+
+
 module Coveo {
   export interface IErrorReportOptions {
     showDetailedError: boolean;

@@ -1,6 +1,6 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="../../utils/KeyboardUtils.ts" />
-/// <reference path="FacetSearchParameters.ts" />
+
+
+
 module Coveo {
   /**
    * Used by the {@link Facet} component to render and handle the facet search part of each facet.

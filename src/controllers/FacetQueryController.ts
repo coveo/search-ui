@@ -1,5 +1,5 @@
-/// <reference path="../Base.ts" />
-/// <reference path="../ui/Facet/FacetUtils.ts" />
+
+
 
 module Coveo {
 

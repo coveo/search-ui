@@ -1,7 +1,7 @@
-/// <reference path="../../Base.ts" />
-/// <reference path="ResultLinkOptions.ts" />
-/// <reference path="../../utils/OSUtils.ts" />
-/// <reference path="../../utils/PhonegapUtils.ts" />
+
+
+
+
 module Coveo {
 
   export class ResultLink extends Component {
