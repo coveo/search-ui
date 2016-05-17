@@ -8,7 +8,9 @@ const sourceFiles = ['src/**/*.ts', '!src/**/*.d.ts'];
 gulp.task('lint', function () {
   gulp.src(sourceFiles)
     .pipe(tslint())
-    .pipe(tslint.report('prose'));
+    .pipe(tslint.report('prose', {
+      emitError: false
+    }));
 })
 
 gulp.task('format', function () {
