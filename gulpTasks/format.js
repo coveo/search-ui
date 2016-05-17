@@ -1,20 +1,11 @@
 const gulp = require('gulp');
-const tslint = require('gulp-tslint');
-const tsfmt = require('gulp-tsfmt');
+const prettyTypescript = require('pretty-typescript');
 const path = require('path');
 
 const sourceFiles = ['src/**/*.ts', '!src/**/*.d.ts', '!src/strings/**/*.ts'];
 
-gulp.task('lint', function () {
-  gulp.src(sourceFiles)
-    .pipe(tslint())
-    .pipe(tslint.report('prose', {
-      emitError: false
-    }));
-})
-
 gulp.task('format', function () {
   gulp.src(sourceFiles)
-    .pipe(tsfmt())
+    .pipe(prettyTypescript())
     .pipe(gulp.dest(file => path.dirname(file.path)));
 })

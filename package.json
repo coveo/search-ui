@@ -56,7 +56,7 @@
     "node-sass": "3.4.1",
     "phantomjs-prebuilt": "^2.1.7",
     "png-sprite": "^0.1.1",
-    "pretty-typescript": "^1.0.0",
+    "pretty-typescript": "^1.1.0",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.1.5",
     "script-loader": "^0.7.0",
