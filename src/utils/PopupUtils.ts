@@ -1,55 +1,54 @@
-module Coveo.PopupUtils {
+export interface Position {
+  vertical: VerticalAlignment;
+  horizontal: HorizontalAlignment;
+  verticalOffset?: number;
+  horizontalOffset?: number;
+  horizontalClip?:boolean;
+}
 
-  export interface Position {
-    vertical: VerticalAlignment;
-    horizontal: HorizontalAlignment;
-    verticalOffset?: number;
-    horizontalOffset?: number;
-    horizontalClip?:boolean;
-  }
+export enum VerticalAlignment {
+  TOP,
+  MIDDLE,
+  BOTTOM,
+  INNERTOP,
+  INNERBOTTOM
+}
 
-  export enum VerticalAlignment {
-    TOP,
-    MIDDLE,
-    BOTTOM,
-    INNERTOP,
-    INNERBOTTOM
-  }
+export enum HorizontalAlignment {
+  LEFT,
+  CENTER,
+  RIGHT,
+  INNERLEFT,
+  INNERRIGHT
+}
 
-  export enum HorizontalAlignment {
-    LEFT,
-    CENTER,
-    RIGHT,
-    INNERLEFT,
-    INNERRIGHT
-  }
+interface Offset {
+  left: number;
+  top: number;
+}
 
-  interface Offset {
-    left: number;
-    top: number;
-  }
+interface ElementBoundary {
+  top: number;
+  left: number;
+  right: number;
+  bottom: number;
+}
 
-  interface ElementBoundary {
-    top: number;
-    left: number;
-    right: number;
-    bottom: number;
-  }
-
-  export function positionPopup(popUp: HTMLElement, nextTo: HTMLElement, appendTo: HTMLElement, boundary: HTMLElement, desiredPosition: Position, checkForBoundary = 0) {
+export class PopupUtils {
+  static positionPopup(popUp: HTMLElement, nextTo: HTMLElement, appendTo: HTMLElement, boundary: HTMLElement, desiredPosition: Position, checkForBoundary = 0) {
     appendTo.appendChild(popUp);
     desiredPosition.verticalOffset = desiredPosition.verticalOffset ? desiredPosition.verticalOffset : 0;
     desiredPosition.horizontalOffset = desiredPosition.horizontalOffset ? desiredPosition.horizontalOffset : 0;
 
     var popUpPosition = _.clone(nextTo.getBoundingClientRect());
-    basicVerticalAlignment(popUpPosition, popUp, nextTo, desiredPosition);
-    basicHorizontalAlignment(popUpPosition, popUp, nextTo, desiredPosition);
-    finalAdjustement(popUp.getBoundingClientRect(), popUpPosition, popUp, desiredPosition);
+    PopupUtils.basicVerticalAlignment(popUpPosition, popUp, nextTo, desiredPosition);
+    PopupUtils.basicHorizontalAlignment(popUpPosition, popUp, nextTo, desiredPosition);
+    PopupUtils.finalAdjustement(popUp.getBoundingClientRect(), popUpPosition, popUp, desiredPosition);
 
-    var popUpBoundary = getBoundary(popUp);
-    var boundaryPosition = getBoundary(boundary);
+    var popUpBoundary = PopupUtils.getBoundary(popUp);
+    var boundaryPosition = PopupUtils.getBoundary(boundary);
     if (checkForBoundary < 2) {
-      var checkBoundary = checkForOutOfBoundary(popUpBoundary, boundaryPosition);
+      var checkBoundary = PopupUtils.checkForOutOfBoundary(popUpBoundary, boundaryPosition);
       if (checkBoundary.horizontal != 'ok' && desiredPosition.horizontalClip === true) {
         var width = popUp.offsetWidth;
         if (popUpBoundary.left < boundaryPosition.left) {
@@ -62,20 +61,20 @@ module Coveo.PopupUtils {
         checkBoundary.horizontal = 'ok';
       }
       if (checkBoundary.vertical != 'ok' || checkBoundary.horizontal != 'ok') {
-        var newDesiredPosition = alignInsideBoundary(desiredPosition, checkBoundary);
-        positionPopup(popUp, nextTo, appendTo, boundary, newDesiredPosition, checkForBoundary + 1);
+        var newDesiredPosition = PopupUtils.alignInsideBoundary(desiredPosition, checkBoundary);
+        PopupUtils.positionPopup(popUp, nextTo, appendTo, boundary, newDesiredPosition, checkForBoundary + 1);
       }
     }
   }
 
-  function finalAdjustement(popUpOffSet: Offset, popUpPosition: Offset, popUp: HTMLElement, desiredPosition: Position) {
+  private static finalAdjustement(popUpOffSet: Offset, popUpPosition: Offset, popUp: HTMLElement, desiredPosition: Position) {
     var position = popUp.getBoundingClientRect();
     popUp.style.position = 'absolute';
-    popUp.style.top = (position.top + desiredPosition.verticalOffset) - (popUpOffSet.top - popUpPosition.top) + "px";
-    popUp.style.left = (position.left + desiredPosition.horizontalOffset) - (popUpOffSet.left - popUpPosition.left) + "px";
+    popUp.style.top = (position.top + desiredPosition.verticalOffset) - (popUpOffSet.top - popUpPosition.top) + 'px';
+    popUp.style.left = (position.left + desiredPosition.horizontalOffset) - (popUpOffSet.left - popUpPosition.left) + 'px';
   }
 
-  function basicVerticalAlignment(popUpPosition: Offset, popUp: HTMLElement, nextTo: HTMLElement, desiredPosition: Position) {
+  private static basicVerticalAlignment(popUpPosition: Offset, popUp: HTMLElement, nextTo: HTMLElement, desiredPosition: Position) {
     switch (desiredPosition.vertical) {
       case VerticalAlignment.TOP:
         popUpPosition.top -= popUp.offsetHeight;
@@ -95,7 +94,7 @@ module Coveo.PopupUtils {
     }
   }
 
-  function basicHorizontalAlignment(popUpPosition: Offset, popUp: HTMLElement, nextTo: HTMLElement, desiredPosition: Position) {
+  private static basicHorizontalAlignment(popUpPosition: Offset, popUp: HTMLElement, nextTo: HTMLElement, desiredPosition: Position) {
     switch (desiredPosition.horizontal) {
       case HorizontalAlignment.LEFT:
         popUpPosition.left -= popUp.offsetWidth;
@@ -104,7 +103,7 @@ module Coveo.PopupUtils {
         popUpPosition.left += nextTo.offsetWidth;
         break;
       case HorizontalAlignment.CENTER:
-        popUpPosition.left += offSetToAlignCenter(popUp, nextTo);
+        popUpPosition.left += PopupUtils.offSetToAlignCenter(popUp, nextTo);
         break;
       case HorizontalAlignment.INNERLEFT:
         break; //Nothing to do, it's the default alignment normally
@@ -116,28 +115,28 @@ module Coveo.PopupUtils {
     }
   }
 
-  function alignInsideBoundary(oldPosition: Position, checkBoundary) {
+  private static alignInsideBoundary(oldPosition: Position, checkBoundary) {
     var newDesiredPosition = oldPosition;
-    if (checkBoundary.horizontal == "left") {
+    if (checkBoundary.horizontal == 'left') {
       newDesiredPosition.horizontal = HorizontalAlignment.RIGHT;
     }
-    if (checkBoundary.horizontal == "right") {
+    if (checkBoundary.horizontal == 'right') {
       newDesiredPosition.horizontal = HorizontalAlignment.LEFT;
     }
-    if (checkBoundary.vertical == "top") {
+    if (checkBoundary.vertical == 'top') {
       newDesiredPosition.vertical = VerticalAlignment.BOTTOM;
     }
-    if (checkBoundary.vertical == "bottom") {
+    if (checkBoundary.vertical == 'bottom') {
       newDesiredPosition.vertical = VerticalAlignment.TOP;
     }
     return newDesiredPosition;
   }
 
-  function offSetToAlignCenter(popUp: HTMLElement, nextTo: HTMLElement) {
+  private static offSetToAlignCenter(popUp: HTMLElement, nextTo: HTMLElement) {
     return (nextTo.offsetWidth - popUp.offsetWidth) / 2;
   }
 
-  function getBoundary(element: HTMLElement) {
+  private static getBoundary(element: HTMLElement) {
     var boundaryOffset = element.getBoundingClientRect();
     var toAddVertically;
     if (element.tagName.toLowerCase() == 'body') {
@@ -155,22 +154,22 @@ module Coveo.PopupUtils {
     }
   }
 
-  function checkForOutOfBoundary(popUpBoundary: ElementBoundary, boundary: ElementBoundary) {
+  private static checkForOutOfBoundary(popUpBoundary: ElementBoundary, boundary: ElementBoundary) {
     var ret = {
-      vertical: "ok",
-      horizontal: "ok"
+      vertical: 'ok',
+      horizontal: 'ok'
     }
     if (popUpBoundary.top < boundary.top) {
-      ret.vertical = "top";
+      ret.vertical = 'top';
     }
     if (popUpBoundary.bottom > boundary.bottom) {
-      ret.vertical = "bottom";
+      ret.vertical = 'bottom';
     }
     if (popUpBoundary.left < boundary.left) {
-      ret.horizontal = "left";
+      ret.horizontal = 'left';
     }
     if (popUpBoundary.right > boundary.right) {
-      ret.horizontal = "right";
+      ret.horizontal = 'right';
     }
     return ret;
   }

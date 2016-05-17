@@ -40,6 +40,6 @@ export class LocalStorageUtils<T> {
   }
 
   private getLocalStorageKey() {
-    return "coveo-" + this.id;
+    return 'coveo-' + this.id;
   }
 }

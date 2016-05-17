@@ -8,51 +8,51 @@ export class DeviceUtils {
   static getDeviceName(): string {
     var userAgent = navigator.userAgent;
     if (userAgent.match(/Android/i)) {
-      return "Android";
+      return 'Android';
     }
     if (userAgent.match(/BlackBerry/i)) {
-      return "BlackBerry";
+      return 'BlackBerry';
     }
     if (userAgent.match(/iPhone/i)) {
-      return "iPhone";
+      return 'iPhone';
     }
     if (userAgent.match(/iPad/i)) {
-      return "iPad";
+      return 'iPad';
     }
     if (userAgent.match(/iPod/i)) {
-      return "iPod";
+      return 'iPod';
     }
     if (userAgent.match(/Opera Mini/i)) {
-      return "Opera Mini";
+      return 'Opera Mini';
     }
     if (userAgent.match(/IEMobile/i)) {
-      return "IE Mobile";
+      return 'IE Mobile';
     }
     if (userAgent.match(/Chrome/i)) {
-      return "Chrome";
+      return 'Chrome';
     }
     if (userAgent.match(/MSIE/i) || userAgent.match(/Trident/i)) {
-      return "IE";
+      return 'IE';
     }
     if (userAgent.match(/Opera/i)) {
-      return "Opera";
+      return 'Opera';
     }
     if (userAgent.match(/Firefox/i)) {
-      return "Firefox";
+      return 'Firefox';
     }
     if (userAgent.match(/Safari/i)) {
-      return "Safari";
+      return 'Safari';
     }
-    return "Others";
+    return 'Others';
   }
 
   static isAndroid() {
-    return DeviceUtils.getDeviceName() == "Android";
+    return DeviceUtils.getDeviceName() == 'Android';
   }
 
   static isIos() {
     var deviceName = DeviceUtils.getDeviceName();
-    return deviceName == "iPhone" || deviceName == "iPad" || deviceName == "iPod";
+    return deviceName == 'iPhone' || deviceName == 'iPad' || deviceName == 'iPod';
   }
 
   static isIE8or9(): boolean {

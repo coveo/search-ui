@@ -2,7 +2,7 @@ import {IUserIdentity} from './UserIdentity';
 import {IRankingExpression} from './RankingExpression';
 import {IQueryException} from './QueryException';
 import {IQueryResult} from './QueryResult';
-import {GroupByResult} from './GroupByResult';
+import {IGroupByResult} from './GroupByResult';
 import {IQueryCorrection} from './QueryCorrection';
 import {ITrigger} from './Trigger';
 
@@ -110,7 +110,7 @@ export interface IQueryResults {
   /**
    * The group by results of the query
    */
-  groupByResults: GroupByResult[];
+  groupByResults: IGroupByResult[];
   /**
    * Possible query corrections (eg : {@link DidYouMean})
    */

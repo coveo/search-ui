@@ -1,6 +1,6 @@
 import {Promise} from 'es6-promise';
 
-export interface PopulateOmniboxObject {
+export interface IPopulateOmniboxObject {
   completeQueryExpression: PopulateOmniboxQueryExpression;
   currentQueryExpression: PopulateOmniboxQueryExpression;
   allQueryExpressions: PopulateOmniboxQueryExpression[];
@@ -18,7 +18,7 @@ export interface PopulateOmniboxQueryExpression {
   regex: RegExp;
 }
 
-export interface OmniboxData extends PopulateOmniboxObject {
+export interface OmniboxData extends IPopulateOmniboxObject {
   rows: OmniboxDataRow[];
 }
 

@@ -21,4 +21,4 @@ deploy:
     secure: doH59/t/wV/xU+U07Ml+HKuhDLEVuLxPzP3tKEnTpRYyPwEQ/jhoFaruflSXEZ0TtM5okRR6KxJnzNoHsy+rlkaVza4ZCIKkxs5aBXcS4tq+85OAe8fLe/I2o43Prjx56A1VYMU+4ctz155WdqZ6pKIstKuN90jXW+9wZxVrmMdgv7gJ7p1/4HiP1bK9BqI+Ed3+mO2gl4txVOG5FcWJWU2/0LqCXMctYEUgw+u7GlIe3DgofTKaVY6W1Tav2FCCQCRT3qij8S61DRIclclPQeeyrE1FV+VzAdl0lXbK5fPYzdU2V2vLUNjcfVkwHhFd2Z3H62t7sJ/uUHfc9TZLgFLi3PdhJ1OxXAsYwkRcGhsmhYYaFUTN3dmLjDjWYd1WeUhsGkok8/tWVd12HlCwmMShI2ZvNT9XMjl2km7go8mnuOFgqjiHIPa2j7rRGYVgvjJT8ZZpfqUNkX7/26qcz8YXl/G3j/iFuM3nxqnj/Xr8CG8NhwVdaXZmUu3TFWgb8NAYgCFquZHlBX//liwng/s4R0ilNwc8PQ30GC4Up5fEJHlFBMhQpeCS4o3gUNz7AekAxHruzoSHppsHH3emdes0qSZwVw2H+V+51bdRiR4XZX/ekvB6w0JJyTXPOSAL985TZaGiCAP0lHvnUZPNAru5e09godqjHDHSam4n0c8=
   on:
     tags: true
-    repo: coveo/Search-UI
+    repo: coveo/search-ui

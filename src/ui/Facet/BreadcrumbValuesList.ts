@@ -1,86 +1,134 @@
+import {FacetValue} from './FacetValues';
+import {DeviceUtils} from '../../utils/DeviceUtils';
+import {Facet} from './Facet';
+import {BreadcrumbValueElementKlass} from './BreadcrumbValueElement';
+import {Assert} from '../../misc/Assert';
+import {$$} from '../../utils/Dom';
 
+declare var Globalize;
 
-module Coveo {
-  export class BreadcrumbValueList {
-    private expanded: FacetValue[];
-    private collapsed: FacetValue[];
-    private elem: JQuery;
-    private valueContainer: JQuery;
-    constructor(public facet: Facet, public facetValues: FacetValue[], public breadcrumbValueElementKlass: BreadcrumbValueElementKlass) {
-      this.setExpandedAndCollapsed();
-      this.elem = $('<div/>').addClass('coveo-facet-breadcrumb');
-      var title = DeviceUtils.isMobileDevice() ? $("<div/>") : $("<span/>");
-      title.addClass('coveo-facet-breadcrumb-title').text(this.facet.options.title + (DeviceUtils.isMobileDevice() ? '' : ':')).appendTo(this.elem);
-      this.valueContainer = $('<span/>').addClass('coveo-facet-breadcrumb-values').appendTo(this.elem);
+export class BreadcrumbValueList {
+  private expanded: FacetValue[];
+  private collapsed: FacetValue[];
+  private elem: HTMLElement;
+  private valueContainer: HTMLElement;
+
+  constructor(public facet: Facet, public facetValues: FacetValue[], public breadcrumbValueElementKlass: BreadcrumbValueElementKlass) {
+    this.setExpandedAndCollapsed();
+    this.elem = $$('div', {
+      className: 'coveo-facet-breadcrumb'
+    }).el;
+
+    let title = DeviceUtils.isMobileDevice() ? $$('div') : $$('span');
+    title.addClass('coveo-facet-breadcrumb-title');
+    title.text(this.facet.options.title + (DeviceUtils.isMobileDevice() ? '' : ':'));
+    this.elem.appendChild(title.el);
+
+    this.valueContainer = $$('span', {
+      className: 'coveo-facet-breadcrumb-values'
+    }).el;
+    this.elem.appendChild(this.valueContainer);
+  }
+
+  public build(): HTMLElement {
+    this.buildExpanded();
+    if (this.collapsed.length != 0) {
+      this.buildCollapsed();
     }
+    return this.elem;
+  }
 
-    public build(): JQuery {
-      this.buildExpanded();
-      if (this.collapsed.length != 0) {
-        this.buildCollapsed();
-      }
-      return this.elem;
-    }
-
-    private buildExpanded() {
-      _.each(this.expanded, (value: FacetValue, index?: number, list?) => {
-        if (index != 0 && !DeviceUtils.isMobileDevice() && !this.facet.searchInterface.isNewDesign()) {
-          $('<span/>').addClass('coveo-facet-breadcrumb-separator').text(', ').appendTo(this.valueContainer);
-        }
-        new this.breadcrumbValueElementKlass(this.facet, value).build().appendTo(this.valueContainer);
-      });
-    }
-
-    private buildCollapsed() {
-      var numberOfSelected = _.filter(this.collapsed, (value: FacetValue) => value.selected).length;
-      var numberOfExcluded = _.filter(this.collapsed, (value: FacetValue) => value.excluded).length;
-      Assert.check(numberOfSelected + numberOfExcluded == this.collapsed.length);
-
-      var elem = $('<div/>').addClass('coveo-facet-breadcrumb-value');
-      if (!DeviceUtils.isMobileDevice()) {
-        $('<span/>').addClass('coveo-separator').text(', ').appendTo(elem);
-      }
-      if (numberOfSelected > 0) {
-        $('<span/>').addClass('coveo-facet-breadcrumb-multi-count').text(Globalize.format(numberOfSelected, 'n0')).appendTo(elem);
-        $('<div/>').addClass('coveo-selected').addClass('coveo-facet-breadcrumb-multi-icon').appendTo(elem);
-      }
-      if (numberOfExcluded > 0) {
-        $('<span/>').addClass('coveo-facet-breadcrumb-multi-count').text(Globalize.format(numberOfExcluded, 'n0')).appendTo(elem);
-        $('<div />').addClass('coveo-excluded').addClass('coveo-facet-breadcrumb-multi-icon').appendTo(elem);
-      }
-
-      var valueElements = _.map(this.collapsed, (facetValue) => {
-        return new this.breadcrumbValueElementKlass(this.facet, facetValue);
-      })
-      var toolTips = _.map(valueElements, (valueElement) => {
-        return valueElement.getBreadcrumbTooltip();
-      })
-
-      elem.attr('title', toolTips.join('\n'));
-
-      elem.click(() => {
-        var elements = [];
-        _.forEach(valueElements, (valueElement) => {
-          if (!DeviceUtils.isMobileDevice()) {
-            elements.push($('<span/>').addClass('coveo-facet-breadcrumb-separator').text(', ')[0]);
-          }
-          elements.push(valueElement.build(false).get(0));
+  private buildExpanded() {
+    _.each(this.expanded, (value: FacetValue, index?: number, list?) => {
+      if (index != 0 && !DeviceUtils.isMobileDevice() && !this.facet.searchInterface.isNewDesign()) {
+        let separator = $$('span', {
+          className: 'coveo-facet-breadcrumb-separator'
         });
-        $(elements).insertBefore(elem);
-        elem.detach();
-      });
+        separator.text(', ');
+        this.valueContainer.appendChild(separator.el);
+      }
+      var elementBreadcrumb = new this.breadcrumbValueElementKlass(this.facet, value).build();
+      this.valueContainer.appendChild(elementBreadcrumb.el);
+    });
+  }
 
-      this.valueContainer.append(elem);
+  private buildCollapsed() {
+    let numberOfSelected = _.filter(this.collapsed, (value: FacetValue) => value.selected).length;
+    let numberOfExcluded = _.filter(this.collapsed, (value: FacetValue) => value.excluded).length;
+    Assert.check(numberOfSelected + numberOfExcluded == this.collapsed.length);
+
+    var elem = $$('div', {
+      className: 'coveo-facet-breadcrumb-value'
+    })
+    if (!DeviceUtils.isMobileDevice()) {
+      let sep = $$('span', {
+        className: 'coveo-separator'
+      });
+      sep.text(', ');
+      elem.el.appendChild(sep.el);
+    }
+    if (numberOfSelected > 0) {
+      let multi = $$('span', {
+        className: 'coveo-facet-breadcrumb-multi-count'
+      })
+      multi.text(Globalize.format(numberOfSelected, 'n0'));
+      elem.el.appendChild(multi.el);
+
+      let multiIcon = $$('div', {
+        className: 'coveo-selected coveo-facet-breadcrumb-multi-icon'
+      })
+      elem.el.appendChild(multiIcon.el);
+    }
+    if (numberOfExcluded > 0) {
+      let multiExcluded = $$('span', {
+        className: 'coveo-facet-breadcrumb-multi-count'
+      })
+      multiExcluded.text(Globalize.format(numberOfExcluded, 'n0'));
+      elem.el.appendChild(multiExcluded.el);
+
+      let multiExcludedIcon = $$('div', {
+        className: 'coveo-excluded coveo-facet-breadcrumb-multi-icon'
+      });
+      elem.el.appendChild(multiExcludedIcon.el);
     }
 
-    private setExpandedAndCollapsed() {
-      if (this.facetValues.length > this.facet.options.numberOfValuesInBreadcrumb) {
-        this.collapsed = _.rest(this.facetValues, this.facet.options.numberOfValuesInBreadcrumb - 1);
-        this.expanded = _.first(this.facetValues, this.facet.options.numberOfValuesInBreadcrumb - 1);
-      } else {
-        this.collapsed = [];
-        this.expanded = this.facetValues;
-      }
+    let valueElements = _.map(this.collapsed, (facetValue) => {
+      return new this.breadcrumbValueElementKlass(this.facet, facetValue);
+    })
+
+    let toolTips = _.map(valueElements, (valueElement) => {
+      return valueElement.getBreadcrumbTooltip();
+    })
+
+    elem.el.setAttribute('title', toolTips.join('\n'));
+    elem.on('click', () => {
+      var elements: HTMLElement[] = [];
+      _.forEach(valueElements, (valueElement) => {
+        if (!DeviceUtils.isMobileDevice()) {
+          let separatorsClicked = $$('span', {
+            className: 'coveo-facet-breadcrumb-separator'
+          });
+          separatorsClicked.text(', ');
+          elements.push(separatorsClicked.el);
+        }
+        elements.push(valueElement.build(false).el);
+      });
+      _.each(elements, (el)=> {
+        $$(el).insertBefore(elem.el);
+      })
+      elem.detach();
+    });
+
+    this.valueContainer.appendChild(elem.el);
+  }
+
+  private setExpandedAndCollapsed() {
+    if (this.facetValues.length > this.facet.options.numberOfValuesInBreadcrumb) {
+      this.collapsed = _.rest(this.facetValues, this.facet.options.numberOfValuesInBreadcrumb - 1);
+      this.expanded = _.first(this.facetValues, this.facet.options.numberOfValuesInBreadcrumb - 1);
+    } else {
+      this.collapsed = [];
+      this.expanded = this.facetValues;
     }
   }
 }

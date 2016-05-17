@@ -1,5 +1,5 @@
 import _ =require('underscore');
-import {extendDeep} from '../utils/Utils';
+import {Utils} from '../utils/Utils';
 
 export class Options {
   public merge<T>(provided: T): T {
@@ -7,6 +7,6 @@ export class Options {
   }
 
   public mergeDeep<T>(provided: T): T {
-    return _.extend({}, extendDeep(this, provided));
+    return _.extend({}, Utils.extendDeep(this, provided));
   }
 }

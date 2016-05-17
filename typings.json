@@ -2,5 +2,8 @@
   "ambientDependencies": {
     "jquery": "registry:dt/jquery#1.10.0+20160417213236",
     "underscore": "registry:dt/underscore#1.7.0+20160412141459"
+  },
+  "dependencies": {
+    "d3": "registry:npm/d3#3.0.0+20160211003958"
   }
 }

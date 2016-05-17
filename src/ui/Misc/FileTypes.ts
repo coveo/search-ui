@@ -1,27 +1,27 @@
-﻿
+﻿import {IQueryResult} from '../../rest/QueryResult';
+import {Utils} from '../../utils/Utils';
+import {l} from '../../strings/Strings';
+import {Assert} from '../../misc/Assert';
 
-/**
-* @nodoc
-*/
-module Coveo.FileTypes {
-  // On-demand mapping of file types to captions. Used by facets, but I don't
-  // really like this. Maybe a dedicated filetype facet would be better? Hmm...
-  var fileTypeCaptions: {[id:string]:string};
+// On-demand mapping of file types to captions. Used by facets, but I don't
+// really like this. Maybe a dedicated filetype facet would be better? Hmm...
+let fileTypeCaptions: {[id:string]:string};
 
-  export interface FileTypeInfo {
-    icon: string;
-    caption: string;
-  }
+export interface FileTypeInfo {
+  icon: string;
+  caption: string;
+}
 
-  export function get(result: IQueryResult): FileTypeInfo {
+export class FileTypes {
+  static get(result: IQueryResult): FileTypeInfo {
     var objecttype = <string>result.raw.objecttype;
     var filetype = <string>result.raw.filetype;
 
     // When @objecttype is File we fallback on @filetype for icons and such
     if (Utils.isNonEmptyString(objecttype) && objecttype.toLowerCase() != 'file') {
-      return getObjectType(objecttype);
+      return FileTypes.getObjectType(objecttype);
     } else if (Utils.isNonEmptyString(filetype)) {
-      return getFileType(filetype);
+      return FileTypes.getFileType(filetype);
     } else {
       return {
         // This will render a default icon. Really it should not happen.
@@ -31,7 +31,7 @@ module Coveo.FileTypes {
     }
   }
 
-  export function getObjectType(objecttype: string): FileTypeInfo {
+  static getObjectType(objecttype: string): FileTypeInfo {
     // We must use lowercase filetypes because that's how the CSS classes
     // are generated (they are case sensitive, alas).
     objecttype = objecttype.toLowerCase();
@@ -45,14 +45,14 @@ module Coveo.FileTypes {
     }
   }
 
-  export function getFileType(filetype: string): FileTypeInfo {
+  static getFileType(filetype: string): FileTypeInfo {
     // We must use lowercase filetypes because that's how the CSS classes
     // are generated (they are case sensitive, alas).
     filetype = filetype.toLowerCase();
 
     // Sometimes, filetype begins with a period (typically means the index has
     // no idea and uses the file extension as a filetype).
-    if (filetype[0] == ".") {
+    if (filetype[0] == '.') {
       filetype = filetype.substring(1);
     }
 
@@ -64,7 +64,7 @@ module Coveo.FileTypes {
     }
   }
 
-  export function getFileTypeCaptions() {
+  static getFileTypeCaptions() {
     if (fileTypeCaptions == undefined) {
       fileTypeCaptions = {};
       var strings = String['locales'][String['locale']];

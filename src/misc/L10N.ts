@@ -1,6 +1,7 @@
 import _ = require('underscore');
-var pluralRegex = /<pl>(((?!<\/pl>).)*)<\/pl>/g;
-var singularRegex = /<sn>(((?!<\/sn>).)*)<\/sn>/g;
+
+const pluralRegex = /<pl>(((?!<\/pl>).)*)<\/pl>/g;
+const singularRegex = /<sn>(((?!<\/sn>).)*)<\/sn>/g;
 
 export var L10N = {
   format: (key: string, ...args: any[]) => {

@@ -1,5 +1,6 @@
 import {Assert} from '../misc/Assert';
 import {Highlight} from '../rest/Highlight';
+import {$$} from '../utils/Dom';
 
 export class StringUtils {
   static javascriptEncode(value: string): string {
@@ -14,8 +15,9 @@ export class StringUtils {
 
   static htmlEncode(value: string): string {
     Assert.isString(value);
-
-    return $('<div/>').text(value).html();
+    var div = $$('div');
+    div.text(value);
+    return div.el.innerHTML;
   }
 
   static splice(value: string, index: number, remove: number, toAdd: string): string {

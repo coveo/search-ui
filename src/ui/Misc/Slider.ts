@@ -1,6 +1,27 @@
+import {$$} from '../../utils/Dom';
+import {DeviceUtils} from '../../utils/DeviceUtils';
+import {SliderEvents, IGraphValueSelectedArgs} from '../../events/SliderEvents';
+import {Utils} from '../../utils/Utils';
+import {InitializationEvents} from '../../events/InitializationEvents';
+import D3 = require('d3');
 
+declare var Globalize;
 
-module Coveo {
+export interface IStartSlideEventArgs {
+  slider: Slider;
+  button: SliderButton;
+}
+
+export interface IDuringSlideEventArgs {
+  slider: Slider;
+  button: SliderButton;
+}
+
+export interface IEndSlideEventArgs {
+  slider: Slider;
+  button: SliderButton;
+}
+
   export interface ISliderGraphData {
     start: any;
     y: number;
@@ -358,7 +379,7 @@ module Coveo {
       document.body.style[this.getUserSelect()] = 'none';
       document.body.style.cursor = 'pointer';
       $$(this.element).addClass('coveo-active');
-      $$(this.element).trigger(SliderEvents.startSlide, <StartSlideEventArgs>{
+      $$(this.element).trigger(SliderEvents.startSlide, <IStartSlideEventArgs>{
         button: this,
         slider: this.slider
       });
@@ -370,7 +391,7 @@ module Coveo {
         this.updatePosition(e);
         this.slider.onMoving();
         this.handleButtonNearEnd();
-        $$(this.element).trigger(SliderEvents.duringSlide, <DuringSlideEventArgs>{
+        $$(this.element).trigger(SliderEvents.duringSlide, <IDuringSlideEventArgs>{
           button: this,
           slider: this.slider
         });
@@ -382,7 +403,7 @@ module Coveo {
         document.body.style[this.getUserSelect()] = this.origUserSelect;
         document.body.style.cursor = this.origCursor;
         $$(this.element).removeClass("coveo-active");
-        $$(this.element).trigger(SliderEvents.endSlide, <EndSlideEventArgs>{
+        $$(this.element).trigger(SliderEvents.endSlide, <IEndSlideEventArgs>{
           button: this,
           slider: this.slider
         })
@@ -586,7 +607,7 @@ module Coveo {
   }
 
   class SliderGraph {
-    private svg: D3.Selection;
+    private svg: D3.Selection<any>;
     private x: D3.Scale.OrdinalScale;
     private y: D3.Scale.LinearScale;
     private oldData: ISliderGraphData[];
@@ -778,7 +799,7 @@ module Coveo {
 
     private getFunctionForClick() {
       return (d: ISliderGraphData, i) => {
-        $$(this.slider.element).trigger(SliderEvents.graphValueSelected, <GraphValueSelectedArgs>{
+        $$(this.slider.element).trigger(SliderEvents.graphValueSelected, <IGraphValueSelectedArgs>{
           start: d.start,
           end: d.end,
           value: d.y
@@ -798,4 +819,3 @@ module Coveo {
       }
     }
   }
-}

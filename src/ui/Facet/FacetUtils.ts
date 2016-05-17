@@ -1,15 +1,20 @@
+/// <reference path="Facet.ts" />
 
+import {Facet} from './Facet';
+import {StringUtils} from '../../utils/StringUtils';
+import {QueryUtils} from '../../utils/QueryUtils';
+import {FileTypes} from '../Misc/FileTypes';
+import {DateUtils} from '../../utils/DateUtils';
+import {Utils} from '../../utils/Utils';
+import {$$} from '../../utils/Dom';
+import _ = require('underscore');
 
-
-/**
- * @nodoc
- */
-module Coveo.FacetUtils {
-  export function getRegexToUseForFacetSearch(value: string, ignoreAccent: boolean) {
+export class FacetUtils {
+  static getRegexToUseForFacetSearch(value: string, ignoreAccent: boolean) {
     return new RegExp(StringUtils.stringToRegex(value, ignoreAccent), 'i');
   }
 
-  export function getValuesToUseForSearchInFacet(original: string, facet: Facet): string[] {
+  static getValuesToUseForSearchInFacet(original: string, facet: Facet): string[] {
     var ret = [original];
     var regex = this.getRegexToUseForFacetSearch(original, facet.options.facetSearchIgnoreAccents);
     if (facet.options.valueCaption) {
@@ -44,7 +49,7 @@ module Coveo.FacetUtils {
     return ret;
   }
 
-  export function buildFacetSearchPattern(values: string[]) {
+  static buildFacetSearchPattern(values: string[]) {
     values = _.map(values, (value) => {
       return Utils.escapeRegexCharacter(value);
     });
@@ -52,14 +57,14 @@ module Coveo.FacetUtils {
     return values.join("|");
   }
 
-  export function needAnotherFacetSearch(currentSearchLength: number, newSearchLength: number, oldSearchLength: number, desiredSearchLength: number) {
+  static needAnotherFacetSearch(currentSearchLength: number, newSearchLength: number, oldSearchLength: number, desiredSearchLength: number) {
     //Something was removed (currentSearch < newSearch)
     //&& we might want to display more facet search result(currentSearch < desiredSearch)
     //&& the new query returned more stuff than the old one so there's still more results(currentSearchLength > oldLength)
     return currentSearchLength < newSearchLength && currentSearchLength < desiredSearchLength && currentSearchLength > oldSearchLength;
   }
 
-  export function addNoStateCssClassToFacetValues(facet: Facet, container: HTMLElement) {
+  static addNoStateCssClassToFacetValues(facet: Facet, container: HTMLElement) {
     //This takes care of adding the correct css class on each facet value checkbox (empty white box) if at least one value is selected in that facet
     if (facet.values.getSelected().length != 0) {
       var noStates = $$(container).findAll('li:not(.coveo-selected)');
@@ -69,7 +74,7 @@ module Coveo.FacetUtils {
     }
   }
 
-  export function tryToGetTranslatedCaption(field: string, value: string) {
+  static tryToGetTranslatedCaption(field: string, value: string) {
     var found: string;
 
     if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@filetype')) {
@@ -85,7 +90,7 @@ module Coveo.FacetUtils {
     return found != undefined && Utils.isNonEmptyString(found) ? found : value;
   }
 
-  export function clipCaptionsToAvoidOverflowingTheirContainer(facet: Facet, forceClip?: boolean) {
+  static clipCaptionsToAvoidOverflowingTheirContainer(facet: Facet, forceClip?: boolean) {
     // in new design, we don't need this : use flexbox instead (sorry IE user)
     if (facet.getBindings && facet.getBindings().searchInterface && facet.getBindings().searchInterface.isNewDesign()) {
       return;

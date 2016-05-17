@@ -1,6 +1,6 @@
 import {IGroupByValue} from './GroupByValue';
 
-export interface GroupByResult {
+export interface IGroupByResult {
   field: string;
   values: IGroupByValue[];
   globalComputedFieldResults?: number[];

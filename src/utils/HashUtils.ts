@@ -3,14 +3,14 @@ import {Utils} from '../utils/Utils';
 
 export class HashUtils {
   private static Delimiter = {
-    "objectStart": "{",
-    "objectEnd": "}",
-    "arrayStart": "[",
-    "arrayEnd": "]",
-    "objectStartRegExp": "^{",
-    "objectEndRegExp": "}+$",
-    "arrayStartRegExp": "^[",
-    "arrayEndRegExp": "]+$"
+    'objectStart': '{',
+    'objectEnd': '}',
+    'arrayStart': '[',
+    'arrayEnd': ']',
+    'objectStartRegExp': '^{',
+    'objectEndRegExp': '}+$',
+    'arrayStartRegExp': '^[',
+    'arrayEndRegExp': ']+$'
   }
 
   public static getHash(w = window): string {
@@ -19,7 +19,7 @@ export class HashUtils {
     // window.location.hash returns the DECODED hash on Firefox (it's a well known bug),
     // so any & in values will be already unescaped. This breaks our value splitting.
     // The following trick works on all browsers.
-    var ret = "#" + (w.location.href.split("#")[1] || "");
+    var ret = '#' + (w.location.href.split('#')[1] || '');
     return HashUtils.getAjaxcrawlableHash(ret);
   }
 
@@ -37,7 +37,7 @@ export class HashUtils {
   public static encodeValues(values: {}): string {
     var hash: String[] = [];
     _.each(<_.Dictionary<any>>values, (valueToEncode, key, obj?) => {
-      var encodedValue = "";
+      var encodedValue = '';
       if (Utils.isNonEmptyArray(valueToEncode)) {
         encodedValue = HashUtils.encodeArray(valueToEncode);
       } else if (_.isObject(valueToEncode) && Utils.isNonEmptyArray(_.keys(valueToEncode))) {
@@ -45,8 +45,8 @@ export class HashUtils {
       } else {
         encodedValue = encodeURIComponent(valueToEncode.toString());
       }
-      if (encodedValue != "") {
-        hash.push(key + "=" + encodedValue);
+      if (encodedValue != '') {
+        hash.push(key + '=' + encodedValue);
       }
     });
 
@@ -54,7 +54,7 @@ export class HashUtils {
   }
 
   private static getAjaxcrawlableHash(hash: string) {
-    if (hash[1] != undefined && hash[1] == "!") {
+    if (hash[1] != undefined && hash[1] == '!') {
       return hash.substring(0, 1) + hash.substring(2);
     } else {
       return hash;
@@ -66,12 +66,12 @@ export class HashUtils {
     Assert.exists(toParse);
     Assert.check(toParse.indexOf('#') == 0 || toParse == '');
 
-    var toParseArray = toParse.substr(1).split("&");
+    var toParseArray = toParse.substr(1).split('&');
     var paramPos = 0;
     var loop = true;
     var paramValue: string = undefined;
     while (loop) {
-      var paramValuePair = toParseArray[paramPos].split("=");
+      var paramValuePair = toParseArray[paramPos].split('=');
       if (paramValuePair[0] == value) {
         loop = false;
         paramValue = paramValuePair[1];
@@ -89,9 +89,9 @@ export class HashUtils {
   private static getValueDependingOnType(paramValue: string): any {
     var type = HashUtils.getValueType(paramValue);
     var returnValue;
-    if (type == "object") {
+    if (type == 'object') {
       returnValue = HashUtils.decodeObject(paramValue);
-    } else if (type == "array") {
+    } else if (type == 'array') {
       returnValue = HashUtils.decodeArray(paramValue);
     } else {
       returnValue = decodeURIComponent(paramValue);
@@ -101,11 +101,11 @@ export class HashUtils {
 
   private static getValueType(paramValue: string): string {
     if (HashUtils.isObject(paramValue)) {
-      return "object";
+      return 'object';
     } else if (HashUtils.isArray(paramValue)) {
-      return "array"
+      return 'array'
     } else {
-      return "other"
+      return 'other'
     }
   }
 
@@ -158,15 +158,15 @@ export class HashUtils {
     _.each(array, (value) => {
       arrayReturn.push(encodeURIComponent(value));
     });
-    return HashUtils.Delimiter.arrayStart + arrayReturn.join(",") + HashUtils.Delimiter.arrayEnd;
+    return HashUtils.Delimiter.arrayStart + arrayReturn.join(',') + HashUtils.Delimiter.arrayEnd;
   }
 
   public static encodeObject(obj: Object): string {
     var ret = HashUtils.Delimiter.objectStart;
     var retArray = [];
     _.each(<_.Dictionary<any>>obj, (val, key?, obj?) => {
-      var retValue = "";
-      retValue += "\"" + encodeURIComponent(key) + "\"" + " : "
+      var retValue = '';
+      retValue += '\'' + encodeURIComponent(key) + '\'' + ' : '
       if (_.isArray(val)) {
         retValue += HashUtils.encodeArray(val)
       } else if (_.isObject(val)) {
@@ -176,12 +176,12 @@ export class HashUtils {
           retValue += encodeURIComponent(val)
         }
         else {
-          retValue += "\"" + encodeURIComponent(val) + "\""
+          retValue += '\'' + encodeURIComponent(val) + '\''
         }
       }
       retArray.push(retValue)
     })
-    ret += retArray.join(" , ");
+    ret += retArray.join(' , ');
     return ret + HashUtils.Delimiter.objectEnd;
   }
 
@@ -200,7 +200,7 @@ export class HashUtils {
     }
     value = value.substr(1);
     value = value.substr(0, value.length - 1);
-    var array = value.split(",");
+    var array = value.split(',');
     return _.map(array, (val)=> {
       return decodeURIComponent(val);
     })

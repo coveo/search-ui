@@ -1,19 +1,25 @@
-
-
-module Coveo {
+/**
+ * Represent an item to insert in the breadcrumb
+ */
+export interface IBreadcrumbItem {
   /**
-   * Event triggered when populating the breadcrumb
+   * The HTMLElement to insert in the breadcrumb
    */
-  export interface IPopulateBreadcrumbEventArgs {
-    breadcrumbs: IBreadcrumbItem[];
-  }
+  element: HTMLElement;
+}
 
-  export interface ClearBreadcrumbEventArgs {
-  }
+/**
+ * Event triggered when populating the breadcrumb
+ */
+export interface IPopulateBreadcrumbEventArgs {
+  breadcrumbs: IBreadcrumbItem[];
+}
 
-  export class BreadcrumbEvents {
-    public static populateBreadcrumb = 'populateBreadcrumb';
-    public static clearBreadcrumb = 'clearBreadcrumb';
-    public static redrawBreadcrumb = 'redrawBreadcrumb';
-  }
+export interface ClearBreadcrumbEventArgs {
+}
+
+export class BreadcrumbEvents {
+  public static populateBreadcrumb = 'populateBreadcrumb';
+  public static clearBreadcrumb = 'clearBreadcrumb';
+  public static redrawBreadcrumb = 'redrawBreadcrumb';
 }

@@ -1,6 +1,8 @@
 import {Assert} from '../misc/Assert';
 import {Options} from '../misc/Options';
-import {isNonEmptyString} from '../utils/Utils';
+import {Utils} from '../utils/Utils';
+
+declare var Globalize;
 
 export interface CurrencyToStringOptions {
   decimals?: number;
@@ -14,7 +16,7 @@ class DefaultCurrencyToStringOptions extends Options implements CurrencyToString
 
 export class CurrencyUtils {
   static currencyToString(value: number, options?: CurrencyToStringOptions): string {
-    if (Coveo.Utils.isNullOrUndefined(value)) {
+    if (Utils.isNullOrUndefined(value)) {
       return '';
     }
     value = Number(value);
@@ -26,7 +28,7 @@ export class CurrencyUtils {
     var currency = Globalize.culture().numberFormat.currency;
     var backup = currency.symbol;
 
-    if (isNonEmptyString(options.symbol)) {
+    if (Utils.isNonEmptyString(options.symbol)) {
       currency.symbol = options.symbol;
     }
 
