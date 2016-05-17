@@ -3,7 +3,7 @@ const tslint = require('gulp-tslint');
 const tsfmt = require('gulp-tsfmt');
 const path = require('path');
 
-const sourceFiles = ['src/**/*.ts', '!src/**/*.d.ts'];
+const sourceFiles = ['src/**/*.ts', '!src/**/*.d.ts', '!src/strings/**/*.ts'];
 
 gulp.task('lint', function () {
   gulp.src(sourceFiles)

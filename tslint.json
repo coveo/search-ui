@@ -16,8 +16,7 @@
     "eofline": true,
     "indent": [
       true,
-      "spaces",
-      2
+      "spaces"
     ],
     "interface-name": [
       true,
