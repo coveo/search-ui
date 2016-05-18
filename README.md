@@ -16,4 +16,4 @@ We are gradually removing our internal dependencies to jQuery, as well as moving
     typings install
     gulp
 ## Documentation
-    Generated using typedoc. Available [here](https://coveo.github.io/search-ui/)
+Generated using typedoc. Available [here](https://coveo.github.io/search-ui/)
