@@ -3,7 +3,7 @@ module.exports = function(config) {
     frameworks: ['jasmine'],
     browsers: ['PhantomJS'],
     singleRun: true,
-    files: ['./test/lib/jquery.js', './bin/js/CoveoJsSearch.js', './bin/js/CoveoJsSearch.dependencies.js', './bin/tests/tests.js'],
+    files: ['./test/lib/jasmine-ajax/jasmine-ajax.js', './test/lib/jquery.js', './bin/js/CoveoJsSearch.js', './bin/js/CoveoJsSearch.dependencies.js', './bin/tests/tests.js'],
     plugins: [
       'karma-jasmine',
       'karma-chrome-launcher',

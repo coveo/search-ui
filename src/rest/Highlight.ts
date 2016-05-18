@@ -1,4 +1,4 @@
-export interface Highlight {
+export interface IHighlight {
   offset: number;
   length: number;
   dataHighlightGroup?: number

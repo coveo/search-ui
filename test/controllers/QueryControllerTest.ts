@@ -5,9 +5,11 @@ module Coveo {
     var test: Mock.IBasicComponentSetup<QueryController>;
 
     beforeEach(function () {
-      test = Mock.optionsComponentSetup<QueryController, ISearchInterfaceOptions>(QueryController, {});
+      test = <Mock.IBasicComponentSetup<QueryController>>{};
+      test.env = new Mock.MockEnvironmentBuilder().build();
+      test.cmp = new QueryController(test.env.root, {}, test.env.usageAnalytics, test.env.searchInterface);
       test.cmp.setEndpoint(test.env.searchEndpoint)
-      test.cmp.root = test.env.root;
+      test.cmp.element = test.env.root;
     })
 
     afterEach(function () {

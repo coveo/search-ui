@@ -23,7 +23,7 @@ module Coveo {
       beforeEach(function () {
         model = new Model(div, 'test', {
           foo: 'bar'
-        }, env)
+        })
         spy = jasmine.createSpy('spy');
       })
 

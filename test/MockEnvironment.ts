@@ -77,12 +77,12 @@ module Coveo.Mock {
        this.searchEndpoint = endpoint;
        return this;
      }
-     
+
      /*
      public getBindings(): ComponentBindings {
      return this.build();
      }*/
-     
+
     public build(): MockEnvironment {
       if (this.built) {
         return this.getBindings();
@@ -140,7 +140,7 @@ module Coveo.Mock {
      }*/
   }
 
-  export interface IBasicComponentSetup<T extends Component> {
+  export interface IBasicComponentSetup<T extends BaseComponent> {
     env: MockEnvironment;
     cmp:T;
   }
@@ -237,15 +237,15 @@ module Coveo.Mock {
     return m;
   }
 
-  export function basicComponentSetup<T extends Component>(klass: IComponentDefinition) {
+  export function basicComponentSetup<T>(klass) {
     var envBuilder = new Mock.MockEnvironmentBuilder();
     return {
       env: envBuilder.build(),
       cmp: <T>new klass(envBuilder.getBindings().element, undefined, envBuilder.getBindings())
     }
   }
-  
-  export function basicResultComponentSetup<T extends Component>(klass: IComponentDefinition) {
+
+  export function basicResultComponentSetup<T>(klass) {
     var envBuilder = new Mock.MockEnvironmentBuilder().withResult();
     return {
       env: envBuilder.build(),
@@ -253,15 +253,15 @@ module Coveo.Mock {
     }
   }
 
-  export function optionsResultComponentSetup<T extends Component, U>(klass: IComponentDefinition, options: U, result: IQueryResult) {
+  export function optionsResultComponentSetup<T, U>(klass, options: U, result: IQueryResult) {
     var envBuilder = new Mock.MockEnvironmentBuilder().withResult(result);
     return {
       env: envBuilder.build(),
       cmp: <T>new klass(envBuilder.getBindings().element, options, envBuilder.getBindings(), envBuilder.result)
     }
   }
-  
-  export function optionsComponentSetup<T extends Component, U>(klass: IComponentDefinition, options: U) {
+
+  export function optionsComponentSetup<T, U>(klass, options: U) {
     var envBuilder = new Mock.MockEnvironmentBuilder();
     return {
       env: envBuilder.build(),
@@ -269,7 +269,7 @@ module Coveo.Mock {
     }
   }
 
-  export function advancedComponentSetup<T extends Component>(klass: IComponentDefinition, options?: AdvancedComponentSetupOptions) {
+  export function advancedComponentSetup<T>(klass, options?: AdvancedComponentSetupOptions) {
     var baseOptions = new AdvancedComponentSetupOptions();
     var optsMerged = baseOptions.merge(options);
 
@@ -280,8 +280,8 @@ module Coveo.Mock {
       cmp: <T>new klass(envBuilder.getBindings().element, optsMerged.cmpOptions, envBuilder.getBindings())
     }
   }
-  
-  export function advancedResultComponentSetup<T extends Component>(klass: IComponentDefinition, result: IQueryResult, options?: AdvancedComponentSetupOptions) {
+
+  export function advancedResultComponentSetup<T>(klass, result: IQueryResult, options?: AdvancedComponentSetupOptions) {
     var baseOptions = new AdvancedComponentSetupOptions();
     var optsMerged = baseOptions.merge(options);
 

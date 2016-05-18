@@ -1,7 +1,7 @@
 import {Utils} from './Utils';
-import {Highlight} from '../rest/Highlight';
+import {IHighlight} from '../rest/Highlight';
 import {Assert} from '../misc/Assert';
-
+import _ = require('underscore');
 
 export class Hole {
   constructor(public begin: number, public size: number, public replacementSize: number) {
@@ -164,11 +164,11 @@ export class StringAndHoles {
 }
 
 export class HighlightUtils {
-  static highlightString(content: string, highlights: Highlight[], holes: Hole[], cssClass: string): string {
+  static highlightString(content: string, highlights: IHighlight[], holes: Hole[], cssClass: string): string {
     return HighlightUtils.buildHighlightedString(content, highlights, holes, cssClass);
   }
 
-  static buildHighlightedString(content: string, highlights: Highlight[], holes: Hole[], cssClass: string): string {
+  static buildHighlightedString(content: string, highlights: IHighlight[], holes: Hole[], cssClass: string): string {
     Assert.isNotUndefined(highlights);
     Assert.isNotNull(highlights);
     Assert.isNonEmptyString(cssClass);

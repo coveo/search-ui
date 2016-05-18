@@ -1,5 +1,5 @@
 import {Assert} from '../misc/Assert';
-import {Highlight} from '../rest/Highlight';
+import {IHighlight} from '../rest/Highlight';
 import {$$} from '../utils/Dom';
 
 export class StringUtils {
@@ -66,8 +66,8 @@ export class StringUtils {
     return encoded;
   }
 
-  static getHighlights(strToSearch: string, regexToFind: RegExp, dataHighlightGroupTerm: string): Highlight[] {
-    var match, indexes: Highlight[] = [];
+  static getHighlights(strToSearch: string, regexToFind: RegExp, dataHighlightGroupTerm: string): IHighlight[] {
+    var match, indexes: IHighlight[] = [];
 
     while (match = regexToFind.exec(strToSearch)) {
       var desiredMatch = match[2];
