@@ -9,7 +9,7 @@ requireDir('./gulpTasks');
 gulp.task('default', ['build', 'buildLegacy']);
 
 gulp.task('build', function (done) {
-  runsequence('clean', ['css', 'fileTypes', 'sprites', 'strings', 'setup'], 'lint', 'compile', 'definitions', done);
+  runsequence('clean', ['css', 'fileTypes', 'sprites', 'strings', 'setup'], 'prettify', 'compile', 'definitions', done);
 });
 
 gulp.task('buildLegacy', function (done) {
