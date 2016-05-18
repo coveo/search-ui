@@ -1,9 +1,11 @@
-﻿
+﻿/// <reference path="../Facet/Facet.ts" />
 
-module Coveo {
-  export class HierarchicalFacetSearchValuesList extends FacetSearchValuesList {
-    constructor(public facet: Facet) {
-      super(facet, HierarchicalFacetSearchValueElement);
-    }
+import {Facet} from '../Facet/Facet';
+import {FacetSearchValuesList} from '../Facet/FacetSearchValuesList';
+import {HierarchicalFacetSearchValueElement} from './HierarchicalFacetSearchValueElement';
+
+export class HierarchicalFacetSearchValuesList extends FacetSearchValuesList {
+  constructor(public facet: Facet) {
+    super(facet, HierarchicalFacetSearchValueElement);
   }
-} 
+}

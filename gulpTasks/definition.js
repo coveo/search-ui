@@ -21,8 +21,10 @@ gulp.task('removeExternalDefs', function (done) {
   var content = file.substr(start);
   content = content.replace(/\/\/\/.*<reference.*\/>/gm, '');
   content = '/// <reference path="Externals.d.ts" />\n' + content;
-  var end = content.lastIndexOf('declare module \'Coveo\'');
-  content = content.substring(0, end);
+  /*var end = content.lastIndexOf('declare module \'Coveo\'');
+   content = content.substring(0, end);*/
+  //var firstCompBindings = content.indexOf('interface icomponentbindings')
+  //content = removeDuplicateDeclarations(content, 'export interface IComponentBindings');
   fs.writeFileSync('bin/ts/CoveoJsSearch.d.ts', content);
   done();
 })
@@ -50,8 +52,22 @@ gulp.task('internalDefs', function (done) {
     baseDir: './src/',
     out: 'bin/ts/CoveoJsSearch.d.ts',
     externs: ['Externals.d.ts'],
-    excludes: ['/lib/**/*.d.ts', 'node_modules/**/*.d.ts', 'typings/**/*.d.ts']
+    excludes: ['/lib/**/*.d.ts', 'node_modules/**/*.d.ts', 'typings/**/*.d.ts', '/src/Index.ts', '/src/Doc,ts']
   });
   done();
 })
+
+
+function removeDuplicateDeclarations(content, declaration) {
+  var firstDeclaration = content.indexOf(declaration);
+  console.log(firstDeclaration)
+  while (content.lastIndexOf(declaration) != firstDeclaration) {
+    console.log(content.lastIndexOf(declaration))
+    var lastDeclaration = content.lastIndexOf(declaration);
+    var endOfLastDeclaration = content.indexOf('}', lastDeclaration);
+    console.log(endOfLastDeclaration)
+    content = content.substr(0, lastDeclaration) + content.substr(endOfLastDeclaration + 1);
+  }
+  return content;
+}
 

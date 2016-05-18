@@ -7,7 +7,6 @@ import {$$} from '../../utils/Dom';
 import {LocalStorageUtils} from '../../utils/LocalStorageUtils';
 import {FacetSortDescription} from './FacetSort';
 import {Utils} from '../../utils/Utils';
-import {PopupUtils} from '../../utils/PopupUtils';
 import {l} from '../../strings/Strings';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import {FacetHeader} from './FacetHeader';

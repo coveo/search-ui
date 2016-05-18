@@ -1,9 +1,10 @@
+/// <reference path="../../../lib/d3.d.ts" />
 import {$$} from '../../utils/Dom';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {SliderEvents, IGraphValueSelectedArgs} from '../../events/SliderEvents';
 import {Utils} from '../../utils/Utils';
 import {InitializationEvents} from '../../events/InitializationEvents';
-import D3 = require('d3');
+import d3 = require('d3');
 
 declare var Globalize;
 
@@ -607,9 +608,9 @@ export interface IEndSlideEventArgs {
   }
 
   class SliderGraph {
-    private svg: D3.Selection<any>;
-    private x: D3.Scale.OrdinalScale;
-    private y: D3.Scale.LinearScale;
+    private svg:any;
+    private x: any;
+    private y: any;
     private oldData: ISliderGraphData[];
     private tooltip: HTMLElement;
     private resize: (...args: any[]) => void;

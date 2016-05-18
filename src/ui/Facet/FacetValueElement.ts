@@ -4,8 +4,8 @@ import {Facet} from './Facet';
 import {FacetValue} from './FacetValues';
 import {QueryEvents} from '../../events/QueryEvents';
 import {$$} from '../../utils/Dom';
-
 import {ValueElement} from './ValueElement';
+
 
 export interface FacetValueElementKlass {
   new (facet: Facet, facetValue: FacetValue, displayNextTime?: boolean): FacetValueElement;

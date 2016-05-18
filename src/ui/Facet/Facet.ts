@@ -1,3 +1,4 @@
+/// <reference path="../../controllers/HierarchicalFacetQueryController.ts" />
 /// <reference path="../../controllers/FacetQueryController.ts" />
 /// <reference path="FacetSearch.ts" />
 /// <reference path="FacetSettings.ts" />
@@ -6,6 +7,7 @@
 /// <reference path="BreadcrumbValueElement.ts" />
 /// <reference path="ValueElementRenderer.ts" />
 /// <reference path="FacetSearchParameters.ts" />
+/// <reference path="../HierarchicalFacet/HierarchicalFacet.ts" />
 
 import {Component, IComponentBindings} from '../Base/Component';
 import {FacetValue, FacetValues} from './FacetValues';
@@ -44,7 +46,7 @@ import {ValueElementRenderer} from './ValueElementRenderer';
 import {FacetSearchParameters} from './FacetSearchParameters';
 import {OmniboxDataRow} from '../Omnibox/OmniboxInterface';
 import {Initialization} from '../Base/Initialization';
-
+import {BreadcrumbEvents, ClearBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
 
 export interface IFacetOptions {
   title?: string;
@@ -830,7 +832,7 @@ export class Facet extends Component {
     if (this.values.hasSelectedOrExcludedValues()) {
       var element = new BreadcrumbValueList(this, this.values.getSelected().concat(this.values.getExcluded()), BreadcrumbValueElement).build();
       args.breadcrumbs.push({
-        element: element.get(0)
+        element: element
       });
     }
   }
@@ -1178,7 +1180,7 @@ export class Facet extends Component {
   }
 
   private handleOmniboxWithSearchInFacet(eventArg: IPopulateOmniboxEventArgs) {
-    var regex = new RegExp('^' + eventArg.completeQueryExpression.regex.source, 'i');
+    /*var regex = new RegExp('^' + eventArg.completeQueryExpression.regex.source, 'i');
     var deferred = $.Deferred<OmniboxDataRow>();
     eventArg.rows.push({deferred: deferred});
 
@@ -1198,7 +1200,7 @@ export class Facet extends Component {
       });
     }).catch(() => {
       deferred.resolve({element: undefined});
-    })
+    })*/
   }
 
   private handleDuringQuery() {

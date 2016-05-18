@@ -21,6 +21,8 @@ import {Defer} from '../../misc/Defer';
 import {FacetSearchValuesListKlass} from './FacetSearchValuesList';
 import {FacetValueElement} from './FacetValueElement';
 
+declare const Coveo;
+
 /**
  * Used by the {@link Facet} component to render and handle the facet search part of each facet.
  */

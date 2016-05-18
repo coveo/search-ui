@@ -9,6 +9,8 @@ import {$$} from '../../utils/Dom';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {Defer} from '../../misc/Defer';
 
+declare const Coveo;
+
 export interface ValueElementKlass {
   new (facet: Facet, facetValue: FacetValue): ValueElement;
 }

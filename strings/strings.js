@@ -68,9 +68,13 @@ function Dictionary(from, options) {
 
   this.writeLanguageFile = function (to, language, culture, typed) {
     var code = '(function() {\n';
-
+    code += '\tvar merge = function(obj1, obj2) {\n' +
+        '\t\tvar obj3 = {};\n' +
+        '\t\tfor(var attrname in obj1){obj3[attrname] = obj1[attrname]; }\n' +
+        '\t\tfor(var attrname in obj2){obj3[attrname] = obj2[attrname]; }\n' +
+        '\t\treturn obj3;\n' +
+        '}\n'
     code += '  var dict = {\n';
-
     var that = this;
     _.each(_.keys(this.json), function (key) {
       var str = that.json[key][language];
@@ -85,7 +89,7 @@ function Dictionary(from, options) {
     // separate string files for the same language (ex: interface editor).
     var languageWithQuotes = JSON.stringify(language);
     code += '  var locales = String["locales"] || (String["locales"] = {});\n';
-    code += '  locales[' + languageWithQuotes + '] = _.extend({}, locales[' + languageWithQuotes + '], dict);\n';
+    code += '  locales[' + languageWithQuotes + '] = merge(locales[' + languageWithQuotes + '], dict);\n';
     code += '  String["toLocaleString"].call(this, { ' + languageWithQuotes + ': dict });\n';
     code += '  String["locale"] = ' + languageWithQuotes + ';\n';
     code += '  String["defaultLocale"] = "en";\n';

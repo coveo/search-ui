@@ -1,19 +1,23 @@
-﻿
+﻿/// <reference path="HierarchicalFacet.ts" />
 
-module Coveo {
-  export class OmniboxHierarchicalValueElement extends OmniboxValueElement {
-    constructor(public facet: HierarchicalFacet, public facetValue: FacetValue, public eventArg: PopulateOmniboxObject) {
-      super(facet, facetValue, eventArg)
-    }
+import {OmniboxValueElement} from '../Facet/OmniboxValueElement';
+import {HierarchicalFacet} from './HierarchicalFacet';
+import {FacetValue} from '../Facet/FacetValues';
+import {IPopulateOmniboxObject} from '../Omnibox/OmniboxInterface';
+import {ValueElementEventsBinding} from '../Facet/ValueElement';
 
-    public _handleSelectValue(eventBindings: ValueElementEventsBinding) {
-      this.facet.open(this.facetValue);
-      super.handleSelectValue(eventBindings);
-    }
-
-    public _handleExcludeClick(eventBindings: ValueElementEventsBinding) {
-      this.facet.open(this.facetValue);
-      super.handleExcludeClick(eventBindings);
-    }
+export class OmniboxHierarchicalValueElement extends OmniboxValueElement {
+  constructor(public facet: HierarchicalFacet, public facetValue: FacetValue, public eventArg: IPopulateOmniboxObject) {
+    super(facet, facetValue, eventArg)
   }
-}  
+
+  public _handleSelectValue(eventBindings: ValueElementEventsBinding) {
+    this.facet.open(this.facetValue);
+    super.handleSelectValue(eventBindings);
+  }
+
+  public _handleExcludeClick(eventBindings: ValueElementEventsBinding) {
+    this.facet.open(this.facetValue);
+    super.handleExcludeClick(eventBindings);
+  }
+}

@@ -9,6 +9,8 @@ import {Utils} from '../../utils/Utils';
 import {$$} from '../../utils/Dom';
 import _ = require('underscore');
 
+declare const Coveo;
+
 export class FacetUtils {
   static getRegexToUseForFacetSearch(value: string, ignoreAccent: boolean) {
     return new RegExp(StringUtils.stringToRegex(value, ignoreAccent), 'i');
@@ -95,7 +97,7 @@ export class FacetUtils {
     if (facet.getBindings && facet.getBindings().searchInterface && facet.getBindings().searchInterface.isNewDesign()) {
       return;
     }
-    if (!(facet.isInstanceOf('HierarchicalFacet')) || forceClip) {
+    if (!(Coveo.HierarchicalFacet && facet instanceof Coveo.HierarchicalFacet) || forceClip) {
       facet.logger.trace('Clipping captions');
       //force facet to show to calculate width
       $$(facet.element).show();

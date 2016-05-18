@@ -6,13 +6,14 @@
     "outDir": "./bin"
   },
   "filesGlob": [
-    "src/events/**.ts"
+    "src/ui/Analytics/**.ts"
   ],
   "files": [
     "typings/browser.d.ts",
     "lib/promise.d.ts",
     "lib/MagicBox.d.ts",
-    "src/Index.ts",
+    "lib/globalize.d.ts",
+    "lib/d3.d.ts",
     "src/ui/SearchInterface/SearchInterface.ts",
     "src/ui/Aggregate/Aggregate.ts",
     "src/ui/Analytics/Analytics.ts",
@@ -111,7 +112,6 @@
     "src/utils/StringUtils.ts",
     "src/utils/TimeSpanUtils.ts",
     "src/utils/Utils.ts",
-    "src/strings/DefaultLanguage.ts",
     "src/strings/Strings.ts",
     "src/models/ComponentOptionsModel.ts",
     "src/models/ComponentStateModel.ts",
@@ -129,6 +129,15 @@
     "src/events/SearchAlertEvents.ts",
     "src/events/SettingsEvents.ts",
     "src/events/SliderEvents.ts",
-    "src/events/StandaloneSearchInterfaceEvents.ts"
+    "src/events/StandaloneSearchInterfaceEvents.ts",
+    "src/ui/Analytics/Analytics.ts",
+    "src/ui/Analytics/AnalyticsActionListMeta.ts",
+    "src/ui/Analytics/AnalyticsClient.ts",
+    "src/ui/Analytics/LiveAnalyticsClient.ts",
+    "src/ui/Analytics/MultiAnalyticsClient.ts",
+    "src/ui/Analytics/NoopAnalyticsClient.ts",
+    "src/ui/Analytics/PendingSearchAsYouTypeSearchEvent.ts",
+    "src/ui/Analytics/PendingSearchEvent.ts",
+    "src/ui/Facet/Facet.ts"
   ]
 }

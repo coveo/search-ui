@@ -5,7 +5,7 @@ import {Facet} from './Facet';
 import {Assert} from '../../misc/Assert';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {IAnalyticsFacetMeta, AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {$$} from '../../utils/Dom';
+import {$$, Dom} from '../../utils/Dom';
 
 export interface BreadcrumbValueElementKlass {
   new (facet: Facet, facetValue: FacetValue): BreadcrumbValueElement;

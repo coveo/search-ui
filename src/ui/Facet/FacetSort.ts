@@ -7,6 +7,8 @@ import {Utils} from '../../utils/Utils';
 import {FacetValue} from './FacetValues';
 import {StringUtils} from '../../utils/StringUtils';
 
+declare const Coveo;
+
 export interface FacetSortKlass {
   new(sorts: string[], facet: Facet): FacetSort;
 }
@@ -100,7 +102,7 @@ export class FacetSort {
   }
 
   private removeEnabledSortsBasedOnFacetType() {
-    if (this.facet.isInstanceOf('FacetRange')) {
+    if (Coveo.FacetRange && this.facet instanceof Coveo.FacetRange) {
       var facetRange = this.facet;
       if (facetRange.options['slider']) {
         this.enabledSorts = [];

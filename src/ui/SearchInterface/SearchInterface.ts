@@ -2,7 +2,7 @@ import {SearchEndpoint} from '../../rest/SearchEndpoint';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {$$} from '../../utils/Dom';
-import {getBasicLoadingAnimation} from '../../utils/DomUtils';
+import {DomUtils} from '../../utils/DomUtils';
 import {Assert} from '../../misc/Assert';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import {ComponentStateModel} from '../../models/ComponentStateModel';
@@ -115,7 +115,7 @@ export class SearchInterface extends RootComponent {
      */
     firstLoadingAnimation: ComponentOptions.buildChildHtmlElementOption({
       childSelector: ".coveo-first-loading-animation",
-      defaultFunction: () => getBasicLoadingAnimation()
+      defaultFunction: () => DomUtils.getBasicLoadingAnimation()
     }),
     /**
      * Specifies whether the init function should trigger the first query automatically when the page is loaded.<br/>

@@ -1,15 +1,18 @@
-﻿
+﻿/// <reference path="HierarchicalFacet.ts" />
 
-module Coveo {
-  export class HierarchicalFacetValuesList extends FacetValuesList {
-    public hierarchyFacetValues: FacetValue[];
+import {FacetValuesList} from '../Facet/FacetValuesList';
+import {FacetValue} from '../Facet/FacetValues';
+import {HierarchicalFacet} from './HierarchicalFacet';
+import {FacetValueElementKlass} from '../Facet/FacetValueElement';
 
-    constructor(public facet: HierarchicalFacet, public facetValueElementKlass: FacetValueElementKlass) {
-      super(facet, facetValueElementKlass);
-    }
+export class HierarchicalFacetValuesList extends FacetValuesList {
+  public hierarchyFacetValues: FacetValue[];
 
-    protected getValuesToBuildWith() {
-      return this.hierarchyFacetValues;
-    }
+  constructor(public facet: HierarchicalFacet, public facetValueElementKlass: FacetValueElementKlass) {
+    super(facet, facetValueElementKlass);
   }
-} 
+
+  protected getValuesToBuildWith() {
+    return this.hierarchyFacetValues;
+  }
+}
