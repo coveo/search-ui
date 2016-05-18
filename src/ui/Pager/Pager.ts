@@ -1,6 +1,4 @@
-
-
-module Coveo {
+import {Component} from '../Base/Component';
   export interface IPagerOptions {
     numberOfPages?: number;
     enableNavigationButton?: boolean;
@@ -291,4 +289,3 @@ module Coveo {
   }
 
   Initialization.registerAutoCreateComponent(Pager);
-}

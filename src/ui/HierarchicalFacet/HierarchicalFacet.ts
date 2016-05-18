@@ -10,7 +10,7 @@ import {Facet} from '../Facet/Facet';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {HierarchicalFacetValuesList} from './HierarchicalFacetValuesList';
 import {HierarchicalFacetQueryController} from '../../controllers/HierarchicalFacetQueryController';
-import {IComponentBindings} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
 import {IIndexFieldValue} from '../../rest/FieldValue';
 import {Utils} from '../../utils/Utils';
 import {$$} from '../../utils/Dom';

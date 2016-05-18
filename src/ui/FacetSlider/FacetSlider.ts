@@ -2,7 +2,8 @@
 /// <reference path="../../controllers/FacetSliderQueryController.ts" />
 
 import {ISliderOptions, Slider, IEndSlideEventArgs, IDuringSlideEventArgs, ISliderGraphData} from '../Misc/Slider';
-import {Component, IComponentBindings} from '../Base/Component';
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {FacetHeader} from '../Facet/FacetHeader';
 import {l} from '../../strings/Strings';

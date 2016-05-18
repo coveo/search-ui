@@ -1,4 +1,5 @@
-import {Component, IComponentBindings} from '../Base/Component';
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
 import {Utils} from '../../utils/Utils';
 import {$$} from '../../utils/Dom';
 import {l} from '../../strings/Strings';

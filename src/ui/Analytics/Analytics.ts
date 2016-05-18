@@ -1,4 +1,5 @@
-import {Component, IComponentBindings} from '../Base/Component';
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
 import {IAnalyticsClient} from './AnalyticsClient';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {AnalyticsEndpoint} from '../../rest/AnalyticsEndpoint';

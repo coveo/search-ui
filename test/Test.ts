@@ -3,7 +3,6 @@
 //***** COVEO SEARCH ******
 /// <reference path="../bin/ts/CoveoJsSearch.d.ts" />
 
-
 //***** CUSTOM MATCHER ******
 /// <reference path="CustomMatchers.ts" />
 
@@ -16,7 +15,10 @@
 //***** TEST ON UTILS ******
 /// <reference path="utils/DomTest.ts" />
 
-
+module Coveo {
+  var _ = window['_'];
+  Coveo._ = _;
+}
 
 // Get a much cleaner output in phantomjs
 if (window['_phantom']) {
@@ -26,3 +28,5 @@ if (window['_phantom']) {
 function isPhantomJs() {
   return navigator.userAgent.indexOf('PhantomJS') != -1;
 }
+
+
