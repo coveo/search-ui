@@ -70,7 +70,7 @@ export class RevealQuerySuggestAddon {
     if (this.currentPromise == null) {
       var promise = this.getRevealQuerySuggest(text);
       this.cache[text] = promise;
-      promise.catch(()=> {
+      promise.catch(() => {
         delete this.cache[text];
       })
     } else {
@@ -85,9 +85,9 @@ export class RevealQuerySuggestAddon {
   }
 
   private getRevealQuerySuggest(text: string): Promise<IOmniboxSuggestion[]> {
-    var payload = <IRevealQuerySuggestRequest>{q: text},
-        language = <string>String['locale'],
-        searchHub = this.omnibox.getBindings().componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchHub);
+    var payload = <IRevealQuerySuggestRequest>{ q: text },
+      language = <string>String['locale'],
+      searchHub = this.omnibox.getBindings().componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchHub);
 
     if (language) {
       payload.language = language;
@@ -98,19 +98,19 @@ export class RevealQuerySuggestAddon {
     }
 
     this.currentPromise = this.omnibox.queryController.getEndpoint()
-                              .getRevealQuerySuggest(payload)
-                              .then((result: IRevealQuerySuggestResponse) => {
-                                var completions = result.completions;
-                                var results: IOmniboxSuggestion[] = _.map(completions, (completion, i) => {
-                                  return {
-                                    html: RevealQuerySuggestAddon.suggestiontHtml(completion),
-                                    text: completion.expression,
-                                    index: RevealQuerySuggestAddon.Index - i / completions.length,
-                                    partial: RevealQuerySuggestAddon.isPartialMatch(completion)
-                                  }
-                                });
-                                return results;
-                              })
+      .getRevealQuerySuggest(payload)
+      .then((result: IRevealQuerySuggestResponse) => {
+        var completions = result.completions;
+        var results: IOmniboxSuggestion[] = _.map(completions, (completion, i) => {
+          return {
+            html: RevealQuerySuggestAddon.suggestiontHtml(completion),
+            text: completion.expression,
+            index: RevealQuerySuggestAddon.Index - i / completions.length,
+            partial: RevealQuerySuggestAddon.isPartialMatch(completion)
+          }
+        });
+        return results;
+      })
 
     this.currentPromise.finally(() => {
       this.currentPromise = null;

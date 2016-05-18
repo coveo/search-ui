@@ -21,13 +21,13 @@ export class FacetUtils {
     var regex = this.getRegexToUseForFacetSearch(original, facet.options.facetSearchIgnoreAccents);
     if (facet.options.valueCaption) {
       _.chain(facet.options.valueCaption)
-          .pairs()
-          .filter((pair) => {
-            return regex.test(pair[1])
-          })
-          .each((match) => {
-            ret.push(match[0])
-          });
+        .pairs()
+        .filter((pair) => {
+          return regex.test(pair[1])
+        })
+        .each((match) => {
+          ret.push(match[0])
+        });
       if (QueryUtils.isStratusAgnosticField(facet.options.field, '@objecttype') || QueryUtils.isStratusAgnosticField(facet.options.field, '@filetype')) {
         _.each(FileTypes.getFileTypeCaptions(), (value: string, key: string) => {
           if (!(key in facet.options.valueCaption) && regex.test(value)) {

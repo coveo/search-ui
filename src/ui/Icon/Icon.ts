@@ -28,7 +28,7 @@ module Coveo {
        * Setting this value to true will output the smaller version of the auto-generated icon.<br/>
        * Default is `false`.
        */
-      small: ComponentOptions.buildBooleanOption({defaultValue: false}),
+      small: ComponentOptions.buildBooleanOption({ defaultValue: false }),
       /**
        * Setting this to true will force the caption/label to appear.<br/>
        * Setting this to false will force the caption/label to never appear.<br/>
@@ -63,7 +63,7 @@ module Coveo {
       var possibleInternalQuickview = $$(this.element).find('.' + Component.computeCssClassNameForType(Quickview.ID));
       if (!Utils.isNullOrUndefined(possibleInternalQuickview) && QueryUtils.hasHTMLVersion(this.result)) {
         $$(this.element).addClass('coveo-with-quickview');
-        $$(this.element).on('click', ()=> {
+        $$(this.element).on('click', () => {
           var qv: Quickview = <Quickview>Component.get(possibleInternalQuickview);
           qv.open();
         });
@@ -76,7 +76,7 @@ module Coveo {
       info = Icon.preprocessIconInfo(options, info);
       $$(element).addClass(info.icon);
       element.setAttribute('title', info.caption);
-      if(options.small) {
+      if (options.small) {
         $$(element).addClass('coveo-small');
       }
       if (Icon.shouldDisplayLabel(options, bindings)) {

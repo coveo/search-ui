@@ -13,7 +13,7 @@ export interface IAnalyticsClient {
    */
   isActivated(): boolean;
   getCurrentEventCause(): string;
-  getCurrentEventMeta(): {[key:string]:any};
+  getCurrentEventMeta(): { [key: string]: any };
   /**
    * Log a search event on the service, using a cause and a meta object.<br/>
    * Note that the event will be sent on the service when a query successfully return, not immediately after calling this method.<br/>

@@ -15,7 +15,7 @@ export class QueryUtils {
   //This method is a fallback as it's generate a lot of collisions in Chrome.
   static generateWithRandom(): string {
     // http://stackoverflow.com/a/2117523
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
       return v.toString(16);
     });
@@ -24,7 +24,7 @@ export class QueryUtils {
   static generateWithCrypto(): string {
     var buf = new Uint16Array(8);
     crypto.getRandomValues(buf);
-    var S4 = function (num) {
+    var S4 = function(num) {
       var ret = num.toString(16);
       while (ret.length < 4) {
         ret = "0" + ret;
@@ -49,7 +49,7 @@ export class QueryUtils {
     QueryUtils.setPropertyOnResults(results, "queryUid", queryUid);
     QueryUtils.setPropertyOnResults(results, "pipeline", pipeline);
     QueryUtils.setPropertyOnResults(results, "splitTestRun", splitTestRun);
-    QueryUtils.setPropertyOnResults(results, "index", index, ()=> ++index);
+    QueryUtils.setPropertyOnResults(results, "index", index, () => ++index);
   }
 
   static setTermsToHighlightOnQueryResults(query: IQuery, results: IQueryResults) {
@@ -155,8 +155,8 @@ export class QueryUtils {
     return urlSplit[0] + path + "?" + (urlSplit[1] || "");
   }
 
-  public static setPropertyOnResults(results: IQueryResults, property: string, value: any, afterOneLoop ?: ()=> any) {
-    _.each(results.results, (result: IQueryResult)=> {
+  public static setPropertyOnResults(results: IQueryResults, property: string, value: any, afterOneLoop?: () => any) {
+    _.each(results.results, (result: IQueryResult) => {
       QueryUtils.setPropertyOnResult(result, property, value);
       value = afterOneLoop ? afterOneLoop() : value;
     })
@@ -164,7 +164,7 @@ export class QueryUtils {
 
   public static setPropertyOnResult(result: IQueryResult, property: string, value: any) {
     result[property] = value;
-    _.each(result.childResults, (child: IQueryResult)=> {
+    _.each(result.childResults, (child: IQueryResult) => {
       child[property] = value;
     })
     if (!Utils.isNullOrUndefined(result.parentResult)) {

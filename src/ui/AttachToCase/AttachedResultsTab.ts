@@ -53,7 +53,7 @@ module Coveo {
       if (sfkbids.length > 0) {
         builder.addFieldExpression("@sfkbid", "=", sfkbids);
       }
-      
+
       // In case we don't have any attached results
       if (sfkbids.length + sysurihashs.length == 0) {
         builder.add("NOT @uri");

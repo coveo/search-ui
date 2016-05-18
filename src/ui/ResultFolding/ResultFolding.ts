@@ -34,7 +34,7 @@ module Coveo {
        * ```
        * which will use a previously registered template ID (see {@link TemplateCache})
        */
-      resultTemplate: ComponentOptions.buildTemplateOption({defaultFunction: () => new DefaultFoldingTemplate()}),
+      resultTemplate: ComponentOptions.buildTemplateOption({ defaultFunction: () => new DefaultFoldingTemplate() }),
       /**
        * Specifies the caption to show at the top of the child results when the conversation is not expanded.<br/>
        * By default, the value is undefined, which doesn't show any caption.
@@ -49,17 +49,17 @@ module Coveo {
        * Specifies the caption to show on the link to expand / show child results
        * The default value is the localized version of <code>ShowMore</code>.
        */
-      moreCaption: ComponentOptions.buildLocalizedStringOption({postProcessing: (value) => value || l("ShowMore")}),
+      moreCaption: ComponentOptions.buildLocalizedStringOption({ postProcessing: (value) => value || l("ShowMore") }),
       /**
        * Specifies the caption to show on the link to shrink the loaded conversation back to only the top result.
        * The default value is the localized version of <code>ShowLess</code>.
        */
-      lessCaption: ComponentOptions.buildLocalizedStringOption({postProcessing: (value) => value || l("ShowLess")}),
+      lessCaption: ComponentOptions.buildLocalizedStringOption({ postProcessing: (value) => value || l("ShowLess") }),
       /**
        * Specifies the caption to show when there is only one result in a conversation.
        * The default value is the localized version of <code>DisplayingTheOnlyMessage</code>.
        */
-      oneResultCaption: ComponentOptions.buildLocalizedStringOption({postProcessing: (value) => value || l("DisplayingTheOnlyMessage")})
+      oneResultCaption: ComponentOptions.buildLocalizedStringOption({ postProcessing: (value) => value || l("DisplayingTheOnlyMessage") })
     };
 
     private normalCaption: HTMLElement;
@@ -95,23 +95,23 @@ module Coveo {
 
       this.cancelAnyPendingShowMore();
       this.moreResultsPromise = this.result.moreResults();
-      this.waitAnimation = $$('div', {className: 'coveo-loading-spinner'}).el;
+      this.waitAnimation = $$('div', { className: 'coveo-loading-spinner' }).el;
       this.results.appendChild(this.waitAnimation);
       this.updateElementVisibility();
 
       this.moreResultsPromise
-          .then((results?: IQueryResult[]) => {
-            this.childResults = results;
-            this.showingMoreResults = true;
-            this.displayThoseResults(results);
-            this.updateElementVisibility(results.length);
-            return results;
-          })
-          .finally((results?: IQueryResult[]) => {
-            this.moreResultsPromise = undefined;
-            $$(this.waitAnimation).detach();
-            this.waitAnimation = undefined;
-          });
+        .then((results?: IQueryResult[]) => {
+          this.childResults = results;
+          this.showingMoreResults = true;
+          this.displayThoseResults(results);
+          this.updateElementVisibility(results.length);
+          return results;
+        })
+        .finally((results?: IQueryResult[]) => {
+          this.moreResultsPromise = undefined;
+          $$(this.waitAnimation).detach();
+          this.waitAnimation = undefined;
+        });
     }
 
     public showLessResults() {
@@ -129,41 +129,41 @@ module Coveo {
     }
 
     private buildHeader() {
-      var header = $$('div', {className: 'coveo-folding-header'}).el;
+      var header = $$('div', { className: 'coveo-folding-header' }).el;
       this.element.appendChild(header);
       if (this.options.normalCaption != undefined && this.options.expandedCaption != undefined) {
-        this.normalCaption = $$('div', {className: 'coveo-folding-normal-caption'}, this.options.normalCaption).el;
+        this.normalCaption = $$('div', { className: 'coveo-folding-normal-caption' }, this.options.normalCaption).el;
         header.appendChild(this.normalCaption);
 
-        this.expandedCaption = $$('div', {className: 'coveo-folding-expanded-caption'}, this.options.expandedCaption).el;
+        this.expandedCaption = $$('div', { className: 'coveo-folding-expanded-caption' }, this.options.expandedCaption).el;
         header.appendChild(this.expandedCaption);
       }
-      this.oneResultCaption = $$('div', {className: 'coveo-folding-oneresult-caption'}, this.options.oneResultCaption).el;
+      this.oneResultCaption = $$('div', { className: 'coveo-folding-oneresult-caption' }, this.options.oneResultCaption).el;
       header.appendChild(this.oneResultCaption);
     }
 
     private buildResults() {
-      this.results = $$('div', {className: 'coveo-folding-results'}).el;
+      this.results = $$('div', { className: 'coveo-folding-results' }).el;
       this.element.appendChild(this.results);
     }
 
     private buildFooter() {
-      var footer = $$('div', {className: 'coveo-folding-footer'}).el;
+      var footer = $$('div', { className: 'coveo-folding-footer' }).el;
       this.element.parentElement.appendChild(footer);
 
       if (this.result.moreResults) {
-        this.showMore = $$('div', {className: 'coveo-folding-footer-section-for-less'}).el;
+        this.showMore = $$('div', { className: 'coveo-folding-footer-section-for-less' }).el;
         $$(this.showMore).on('click', () => this.showMoreResults());
         footer.appendChild(this.showMore);
 
-        this.showLess = $$('div', {className: 'coveo-folding-footer-section-for-more'}).el;
+        this.showLess = $$('div', { className: 'coveo-folding-footer-section-for-more' }).el;
         $$(this.showLess).on('click', () => this.showLessResults());
         footer.appendChild(this.showLess);
 
-        var footerIconShowMore = $$('div', {className: 'coveo-more'}, $$('span', {className: 'coveo-folding-footer-icon'}).el).el;
-        var footerIconShowLess = $$('div', {className: 'coveo-less'}, $$('span', {className: 'coveo-folding-footer-icon'}).el).el;
-        var showMoreLink = $$('a', {className: 'coveo-folding-show-more'}, this.options.moreCaption).el;
-        var showLessLink = $$('a', {className: 'coveo-folding-show-less'}, this.options.lessCaption).el;
+        var footerIconShowMore = $$('div', { className: 'coveo-more' }, $$('span', { className: 'coveo-folding-footer-icon' }).el).el;
+        var footerIconShowLess = $$('div', { className: 'coveo-less' }, $$('span', { className: 'coveo-folding-footer-icon' }).el).el;
+        var showMoreLink = $$('a', { className: 'coveo-folding-show-more' }, this.options.moreCaption).el;
+        var showLessLink = $$('a', { className: 'coveo-folding-show-less' }, this.options.lessCaption).el;
         this.showMore.appendChild(showMoreLink);
         this.showLess.appendChild(showLessLink);
         this.showMore.appendChild(footerIconShowMore);
@@ -201,14 +201,14 @@ module Coveo {
       window.scrollTo(0, window.scrollY + resultElem.getBoundingClientRect().top);
     }
 
-    private displayThoseResults(results:IQueryResult[]) {
+    private displayThoseResults(results: IQueryResult[]) {
       $$(this.results).empty();
       _.each(results, (result) => {
         this.renderChildResult(result);
       });
     }
 
-    private renderChildResult(childResult:IQueryResult) {
+    private renderChildResult(childResult: IQueryResult) {
       QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), childResult);
 
       var oneChild = this.options.resultTemplate.instantiateToElement(childResult)
@@ -220,11 +220,11 @@ module Coveo {
       this.autoCreateComponentsInsideResult(oneChild, childResult);
     }
 
-    private autoCreateComponentsInsideResult(element:HTMLElement, result:IQueryResult) {
+    private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult) {
       Assert.exists(element);
 
       var initOptions = this.searchInterface.options;
-      var initParameters:IInitializationParameters = {options: initOptions, bindings: this.getBindings(), result: result}
+      var initParameters: IInitializationParameters = { options: initOptions, bindings: this.getBindings(), result: result }
       Initialization.automaticallyCreateComponentsInside(element, initParameters);
     }
 

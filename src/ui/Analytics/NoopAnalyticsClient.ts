@@ -15,7 +15,7 @@ export class NoopAnalyticsClient implements IAnalyticsClient {
     return null;
   }
 
-  getCurrentEventMeta(): {[key:string]:any} {
+  getCurrentEventMeta(): { [key: string]: any } {
     return {};
   }
 
@@ -32,13 +32,13 @@ export class NoopAnalyticsClient implements IAnalyticsClient {
   }
 
   getTopQueries(params: ITopQueries): Promise<string[]> {
-    return new Promise((resolve, reject)=> {
+    return new Promise((resolve, reject) => {
       resolve([]);
     })
   }
 
   getCurrentVisitIdPromise(): Promise<string> {
-    return new Promise((resolve, reject)=> {
+    return new Promise((resolve, reject) => {
       resolve(null);
     })
   }

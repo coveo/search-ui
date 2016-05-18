@@ -18,7 +18,7 @@ module Coveo {
         Assert.check(direction == '');
       }
     }
-    
+
     /**
      * Return a new SortCriteria from a string
      * @param criteria The string from which to create the SortCriteria
@@ -61,7 +61,7 @@ module Coveo {
         Assert.fail('Cannot retrieve value: ' + this.sort);
       }
     }
-    
+
     /**
      * Returns a string representation of the sort criteria (e.g. 'date ascending')
      */
@@ -81,7 +81,7 @@ module Coveo {
       Assert.exists(criteria);
       return criteria.sort == this.sort && criteria.direction == this.direction;
     }
-    
+
     private static sortIsField(criteria: string) {
       return criteria.charAt(0) == "@";
     }

@@ -1,11 +1,11 @@
-﻿import {IQueryResult} from '../../rest/QueryResult';
+import {IQueryResult} from '../../rest/QueryResult';
 import {Utils} from '../../utils/Utils';
 import {l} from '../../strings/Strings';
 import {Assert} from '../../misc/Assert';
 
 // On-demand mapping of file types to captions. Used by facets, but I don't
 // really like this. Maybe a dedicated filetype facet would be better? Hmm...
-let fileTypeCaptions: {[id:string]:string};
+let fileTypeCaptions: { [id: string]: string };
 
 export interface FileTypeInfo {
   icon: string;

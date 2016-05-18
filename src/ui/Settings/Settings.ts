@@ -33,7 +33,7 @@ export class Settings extends Component {
      * The delay before hiding the popup menu when the mouse leaves it.<br/>
      * The default value is <code>300</code>
      */
-    menuDelay: ComponentOptions.buildNumberOption({defaultValue: 300, min: 0})
+    menuDelay: ComponentOptions.buildNumberOption({ defaultValue: 300, min: 0 })
   };
 
   private menu: HTMLElement;
@@ -76,12 +76,12 @@ export class Settings extends Component {
 
   private init() {
     if (this.searchInterface.isNewDesign()) {
-      var square = $$('span', {className: 'coveo-settings-square'}).el;
-      var squares = $$('span', {className: 'coveo-settings-squares'}).el;
+      var square = $$('span', { className: 'coveo-settings-square' }).el;
+      var squares = $$('span', { className: 'coveo-settings-squares' }).el;
       _.times(3, () => squares.appendChild(square.cloneNode()));
       this.element.appendChild(squares);
     } else {
-      var icon = $$('span', {className: 'coveo-settings-icon'}).el;
+      var icon = $$('span', { className: 'coveo-settings-icon' }).el;
       this.element.appendChild(icon);
     }
 
@@ -94,7 +94,7 @@ export class Settings extends Component {
   }
 
   private buildMenu(): HTMLElement {
-    var menu = $$('div', {className: 'coveo-settings-advanced-menu'}).el;
+    var menu = $$('div', { className: 'coveo-settings-advanced-menu' }).el;
     var settingsPopulateMenuArgs: ISettingsPopulateMenuArgs = {
       settings: this,
       menuData: []
@@ -105,8 +105,8 @@ export class Settings extends Component {
         className: `coveo-settings-item ${menuItem.className}`,
         title: _.escape(menuItem.tooltip || '')
       }).el;
-      menuItemDom.appendChild($$('div', {className: 'coveo-icon'}).el);
-      menuItemDom.appendChild($$('div', {className: 'coveo-settings-text'}, _.escape(menuItem.text)).el);
+      menuItemDom.appendChild($$('div', { className: 'coveo-icon' }).el);
+      menuItemDom.appendChild($$('div', { className: 'coveo-settings-text' }, _.escape(menuItem.text)).el);
       $$(menuItemDom).on('click', () => {
         $$(this.menu).detach();
         _.each(settingsPopulateMenuArgs.menuData, (menuItem) => {

@@ -20,7 +20,7 @@ export class FacetRange extends Facet {
   static ID = 'FacetRange';
   static parent = Facet;
   static options = <FacetRangeOptions>{
-    dateField: ComponentOptions.buildBooleanOption({defaultValue: false}),
+    dateField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
   };
 
   public options: FacetRangeOptions;

@@ -151,7 +151,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     if (SearchEndpoint.isDebugArgumentPresent()) {
       this.options.queryStringArguments['debug'] = 1;
     }
-    this.onUnload = ()=> {
+    this.onUnload = () => {
       this.handleUnload();
     }
     window.addEventListener('beforeunload', this.onUnload);
@@ -232,7 +232,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       method: 'POST'
     };
 
-    return this.performOneCall(params).then((results?: IQueryResults)=> {
+    return this.performOneCall(params).then((results?: IQueryResults) => {
       this.logger.info('REST query successful', results, query);
 
       // Version check
@@ -304,7 +304,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       responseType: 'arraybuffer'
     };
     this.logger.info('Performing REST query for datastream ' + dataStreamType + ' on document uniqueID' + documentUniqueId);
-    return this.performOneCall(params).then((results)=> {
+    return this.performOneCall(params).then((results) => {
       this.logger.info('REST query successful', results, documentUniqueId);
       return results;
     })
@@ -362,10 +362,10 @@ export class SearchEndpoint implements ISearchEndpoint {
       errorsAsSuccess: true
     };
 
-    return this.performOneCall<{content:string, duration: number}>(params)
-               .then((data)=> {
-                 return data.content
-               });
+    return this.performOneCall<{ content: string, duration: number }>(params)
+      .then((data) => {
+        return data.content
+      });
   }
 
   /**
@@ -382,7 +382,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       url: this.buildBaseUri('/html'),
       queryString: this.buildViewAsHtmlQueryString(documentUniqueID, callOptions, false),
       method: 'POST',
-      requestData: callOptions.queryObject || {q: callOptions.query},
+      requestData: callOptions.queryObject || { q: callOptions.query },
       responseType: 'document',
       errorsAsSuccess: false
     };
@@ -419,10 +419,10 @@ export class SearchEndpoint implements ISearchEndpoint {
     };
 
     return this.performOneCall<any>(params)
-               .then((data) => {
-                 this.logger.info('REST list field values successful', data.values, request);
-                 return data.values;
-               })
+      .then((data) => {
+        this.logger.info('REST list field values successful', data.values, request);
+        return data.values;
+      })
   }
 
   /**
@@ -447,10 +447,10 @@ export class SearchEndpoint implements ISearchEndpoint {
     };
 
     return this.performOneCall<any>(params)
-               .then((data)=> {
-                 this.logger.info('REST list field values successful', data.values, request);
-                 return data.values
-               })
+      .then((data) => {
+        this.logger.info('REST list field values successful', data.values, request);
+        return data.values
+      })
   }
 
   /**
@@ -471,7 +471,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       errorsAsSuccess: true
     };
 
-    return this.performOneCall<ListFieldsResult>(params).then((data)=> {
+    return this.performOneCall<ListFieldsResult>(params).then((data) => {
       return data.fields;
     })
   }
@@ -517,7 +517,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       responseType: "text"
     }
 
-    return this.performOneCall<any>(params).then(()=> {
+    return this.performOneCall<any>(params).then(() => {
       return true;
     })
   }
@@ -541,7 +541,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       responseType: "text"
     }
 
-    return this.performOneCall<any>(params).then(()=> {
+    return this.performOneCall<any>(params).then(() => {
       return true;
     })
   }
@@ -601,7 +601,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    */
   public listSubscriptions(page: number) {
     if (this.options.isGuestUser) {
-      return new Promise((resolve, reject)=> {
+      return new Promise((resolve, reject) => {
         reject()
       })
     }
@@ -624,10 +624,10 @@ export class SearchEndpoint implements ISearchEndpoint {
       };
 
       this.currentListSubscriptions = this.performOneCall<ISubscription[]>(params);
-      this.currentListSubscriptions.then((data: any)=> {
+      this.currentListSubscriptions.then((data: any) => {
         this.currentListSubscriptions = null;
         return data;
-      }).catch((e: AjaxError)=> {
+      }).catch((e: AjaxError) => {
         // Trap 503 error, as the listSubscription call is called on every page initialization
         // to check for current subscriptions. By default, the search alert service is not enabled for most organization
         // Don't want to pollute the console with un-needed noise and confusion
@@ -805,30 +805,30 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   private performOneCall<T>(params: IEndpointCallParameters, autoRenewToken = true): Promise<T> {
     return this.caller.call(params)
-               .then((response?: ISuccessResponse<T>)=> {
-                 if (response.data != null) {
-                   (<any>response.data).clientDuration = response.duration;
-                 }
-                 return response.data
-               }).catch((error?: IErrorResponse)=> {
-          if (autoRenewToken && this.canRenewAccessToken() && this.isAccessTokenExpiredStatus(error.statusCode)) {
-            this.renewAccessToken()
-                .then(()=> {
-                  return this.performOneCall(params, autoRenewToken);
-                })
-                .catch(()=> {
-                  return Promise.reject(this.handleErrorResponse(error));
-                })
-          } else if (error.statusCode == 0 && this.isRedirecting) {
-            // The page is getting redirected
-            // Set timeout on return with empty string, since it does not really matter
-            _.defer(function () {
-              return '';
-            });
-          } else {
-            return Promise.reject(this.handleErrorResponse(error));
-          }
-        })
+      .then((response?: ISuccessResponse<T>) => {
+        if (response.data != null) {
+          (<any>response.data).clientDuration = response.duration;
+        }
+        return response.data
+      }).catch((error?: IErrorResponse) => {
+        if (autoRenewToken && this.canRenewAccessToken() && this.isAccessTokenExpiredStatus(error.statusCode)) {
+          this.renewAccessToken()
+            .then(() => {
+              return this.performOneCall(params, autoRenewToken);
+            })
+            .catch(() => {
+              return Promise.reject(this.handleErrorResponse(error));
+            })
+        } else if (error.statusCode == 0 && this.isRedirecting) {
+          // The page is getting redirected
+          // Set timeout on return with empty string, since it does not really matter
+          _.defer(function() {
+            return '';
+          });
+        } else {
+          return Promise.reject(this.handleErrorResponse(error));
+        }
+      })
   }
 
   private handleErrorResponse(errorResponse: IErrorResponse): Error {
@@ -845,18 +845,18 @@ export class SearchEndpoint implements ISearchEndpoint {
     return Utils.isNonEmptyString(this.options.accessToken) && _.isFunction(this.options.renewAccessToken);
   }
 
-  private renewAccessToken(): Promise<string>|Promise<any> {
+  private renewAccessToken(): Promise<string> | Promise<any> {
     this.logger.info('Renewing expired access token');
-    return this.options.renewAccessToken().then((token: string)=> {
-                 Assert.isNonEmptyString(token);
-                 this.options.accessToken = token;
-                 this.createEndpointCaller();
-                 return token;
-               })
-               .catch((e: any)=> {
-                 this.logger.error('Failed to renew access token', e);
-                 return e;
-               })
+    return this.options.renewAccessToken().then((token: string) => {
+      Assert.isNonEmptyString(token);
+      this.options.accessToken = token;
+      this.createEndpointCaller();
+      return token;
+    })
+      .catch((e: any) => {
+        this.logger.error('Failed to renew access token', e);
+        return e;
+      })
   }
 
   private isMissingAuthenticationProviderStatus(status: number): boolean {

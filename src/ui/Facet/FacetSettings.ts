@@ -12,7 +12,7 @@ import {QueryStateModel} from '../../models/QueryStateModel';
 import {FacetHeader} from './FacetHeader';
 import {IAnalyticsFacetMeta, AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {DeviceUtils} from '../../utils/DeviceUtils';
-import {PopupUtils, HorizontalAlignment,VerticalAlignment } from '../../utils/PopupUtils';
+import {PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
 
 export interface IFacetSettingsKlass {
   new (sorts: string[], facet: Facet): FacetSettings;
@@ -80,7 +80,7 @@ export class FacetSettings extends FacetSort {
     this.hideSection = this.buildHideSection();
     this.showSection = this.buildShowSection();
 
-    var appendCommon = ()=> {
+    var appendCommon = () => {
       this.appendIfNotUndefined(this.saveStateSection);
       this.appendIfNotUndefined(this.clearStateSection);
       this.appendIfNotUndefined(this.hideSection);
@@ -90,7 +90,7 @@ export class FacetSettings extends FacetSort {
     this.handleMouseEventOnButton(this.sortSection);
     if (Utils.isNonEmptyArray(this.enabledSorts)) {
       this.settingsPopup.appendChild(this.sortSection.element);
-      _.each(this.directionSection, (d)=> {
+      _.each(this.directionSection, (d) => {
         this.appendIfNotUndefined(d);
       })
       appendCommon();
@@ -112,9 +112,9 @@ export class FacetSettings extends FacetSort {
       var currentStateExcluded = this.facet.queryStateModel.get(this.excludedStateAttribute);
       var currentStateOperator = this.facet.queryStateModel.get(this.operatorStateAttribute);
       if (!Utils.isNullOrUndefined(state)
-          && Utils.isEmptyArray(currentStateIncluded)
-          && Utils.isEmptyArray(currentStateExcluded)
-          && !Utils.isNonEmptyString(currentStateOperator)) {
+        && Utils.isEmptyArray(currentStateIncluded)
+        && Utils.isEmptyArray(currentStateExcluded)
+        && !Utils.isNonEmptyString(currentStateOperator)) {
         var toSet: { [key: string]: any } = {};
         toSet[this.includedStateAttribute] = state.included;
         toSet[this.excludedStateAttribute] = state.excluded;
@@ -155,11 +155,11 @@ export class FacetSettings extends FacetSort {
    */
   public open() {
     PopupUtils.positionPopup(
-        this.settingsPopup,
-        this.settingsButton,
-        this.facet.root,
-        this.facet.root,
-        this.getPopupAlignment());
+      this.settingsPopup,
+      this.settingsButton,
+      this.facet.root,
+      this.facet.root,
+      this.getPopupAlignment());
 
     $$(this.hideSection).toggle(!$$(this.facet.element).hasClass('coveo-facet-collapsed'));
     $$(this.showSection).toggle($$(this.facet.element).hasClass('coveo-facet-collapsed'));
@@ -189,12 +189,12 @@ export class FacetSettings extends FacetSort {
       sortSectionItems.appendChild(sortTitle);
     }
     var sortItems = this.buildSortSectionItems();
-    _.each(sortItems, (s)=> {
+    _.each(sortItems, (s) => {
       sortSectionItems.appendChild(s);
     })
     sortSection.appendChild(sortSectionIcon);
     sortSection.appendChild(sortSectionItems);
-    return {element: sortSection, sortItems: sortItems};
+    return { element: sortSection, sortItems: sortItems };
   }
 
   private buildSortSectionItems() {
@@ -203,7 +203,7 @@ export class FacetSettings extends FacetSort {
         return undefined;
       } else {
         var elem = this.buildItem(l(enabledSort.label), enabledSort.description);
-        $$(elem).on('click', (e: Event)=> this.handleClickSortButton(e, enabledSort));
+        $$(elem).on('click', (e: Event) => this.handleClickSortButton(e, enabledSort));
         return elem;
       }
     })
@@ -236,7 +236,7 @@ export class FacetSettings extends FacetSort {
       directionItemsAscending.appendChild(ascending)
       directionAscendingSection.appendChild(iconAscending);
       directionAscendingSection.appendChild(directionItemsAscending);
-      $$(directionAscendingSection).on('click', (e: Event)=> this.handleDirectionClick(e, 'ascending'));
+      $$(directionAscendingSection).on('click', (e: Event) => this.handleDirectionClick(e, 'ascending'));
 
       var directionDescendingSection = this.buildAscendingOrDescendingSection('Descending');
       var directionItemsDescending = this.buildItems();
@@ -261,10 +261,10 @@ export class FacetSettings extends FacetSort {
 
       var directionItems = this.buildItems();
       var ascending = this.buildAscendingOrDescending('Ascending');
-      $$(ascending).on('click', (e: Event)=> this.handleDirectionClick(e, 'ascending'));
+      $$(ascending).on('click', (e: Event) => this.handleDirectionClick(e, 'ascending'));
 
       var descending = this.buildAscendingOrDescending('Descending');
-      $$(descending).on('click', (e: Event)=> this.handleDirectionClick(e, 'descending'));
+      $$(descending).on('click', (e: Event) => this.handleDirectionClick(e, 'descending'));
 
       directionItems.appendChild(ascending);
       directionItems.appendChild(descending);
@@ -298,7 +298,7 @@ export class FacetSettings extends FacetSort {
 
     saveStateSection.appendChild(icon);
     saveStateSection.appendChild(saveStateItems);
-    $$(saveStateSection).on('click', (e: Event)=> this.handleSaveStateClick());
+    $$(saveStateSection).on('click', (e: Event) => this.handleSaveStateClick());
     return saveStateSection;
   }
 
@@ -310,7 +310,7 @@ export class FacetSettings extends FacetSort {
     clearStateItems.appendChild(clearStateItem);
     clearStateSection.appendChild(icon);
     clearStateSection.appendChild(clearStateItems);
-    $$(clearStateSection).on('click', (e: Event)=> this.handleClearStateClick());
+    $$(clearStateSection).on('click', (e: Event) => this.handleClearStateClick());
     return clearStateSection;
   }
 
@@ -323,7 +323,7 @@ export class FacetSettings extends FacetSort {
 
     hideSection.appendChild(icon);
     hideSection.appendChild(hideItems);
-    $$(hideSection).on('click', (e: Event)=> {
+    $$(hideSection).on('click', (e: Event) => {
       this.facet.facetHeader.collapseFacet();
       this.close();
     })
@@ -339,7 +339,7 @@ export class FacetSettings extends FacetSort {
 
     showSection.appendChild(icon);
     showSection.appendChild(showItems);
-    $$(showSection).on('click', (e: Event)=> {
+    $$(showSection).on('click', (e: Event) => {
       this.facet.facetHeader.expandFacet();
       this.close();
     })
@@ -415,7 +415,7 @@ export class FacetSettings extends FacetSort {
   private handleDirectionClick(e: Event, direction: string) {
     if (!$$((<HTMLElement>e.target).parentElement.parentElement).hasClass('coveo-facet-settings-disabled') && this.activeSort.name.indexOf(direction) == -1) {
       this.activeSort = FacetSettings.availableSorts[this.activeSort.relatedSort];
-      _.each(this.directionSection, (d)=> {
+      _.each(this.directionSection, (d) => {
         this.unselectSection(d);
       })
       this.selectItem(<HTMLElement>e.target);
@@ -444,14 +444,14 @@ export class FacetSettings extends FacetSort {
 
   private handleMouseEventOnButton(sortSection: { element: HTMLElement; sortItems: HTMLElement[] }) {
     var closeTimeout: number;
-    $$(this.settingsButton).on('click', (e: Event)=> this.handleClickSettingsButtons(e, sortSection));
+    $$(this.settingsButton).on('click', (e: Event) => this.handleClickSettingsButtons(e, sortSection));
 
-    var mouseLeave = ()=> {
+    var mouseLeave = () => {
       closeTimeout = setTimeout(() => {
         this.close();
       }, 300)
     }
-    var mouseEnter = ()=> {
+    var mouseEnter = () => {
       clearTimeout(closeTimeout);
     }
 
@@ -463,9 +463,9 @@ export class FacetSettings extends FacetSort {
 
   public getCurrentDirectionItem(directionSection = this.directionSection) {
     var found: HTMLElement;
-    _.each(directionSection, (direction)=> {
+    _.each(directionSection, (direction) => {
       if (!found) {
-        found = _.find(this.getItems(direction), (direction: HTMLElement)=> {
+        found = _.find(this.getItems(direction), (direction: HTMLElement) => {
           return this.activeSort.name.indexOf(direction.getAttribute('data-direction')) != -1
         })
       }
@@ -477,7 +477,7 @@ export class FacetSettings extends FacetSort {
   }
 
   private activateDirectionSection() {
-    _.each(this.directionSection, (direction)=> {
+    _.each(this.directionSection, (direction) => {
       $$(direction).removeClass('coveo-facet-settings-disabled');
       this.unselectSection(direction);
     })
@@ -485,7 +485,7 @@ export class FacetSettings extends FacetSort {
   }
 
   private disableDirectionSection() {
-    _.each(this.directionSection, (direction)=> {
+    _.each(this.directionSection, (direction) => {
       $$(direction).addClass('coveo-facet-settings-disabled');
       this.unselectSection(direction);
     })
@@ -497,7 +497,7 @@ export class FacetSettings extends FacetSort {
   }
 
   private unselectSection(section: HTMLElement) {
-    _.each(this.getItems(section), (i)=> {
+    _.each(this.getItems(section), (i) => {
       $$(i).removeClass('coveo-selected');
     })
   }
@@ -520,7 +520,7 @@ export class FacetSettings extends FacetSort {
   }
 
   private filterDuplicateForRendering() {
-    _.each(this.enabledSorts, (enabledSort: FacetSortDescription, i: number)=> {
+    _.each(this.enabledSorts, (enabledSort: FacetSortDescription, i: number) => {
       if (enabledSort.relatedSort != null) {
         for (var j = i + 1; j < this.enabledSorts.length; j++) {
           if (this.enabledSorts[j].name == enabledSort.relatedSort) {

@@ -36,7 +36,7 @@ export class BreadcrumbValueElement {
     elem.el.appendChild(clear.el);
 
     var clicked = false;
-    elem.on('click', ()=> {
+    elem.on('click', () => {
       if (!clicked) {
         clicked = true;
         if (this.facetValue.excluded) {
@@ -44,7 +44,7 @@ export class BreadcrumbValueElement {
         } else {
           this.facet.deselectValue(this.facetValue.value);
         }
-        this.facet.triggerNewQuery(() => this.facet.usageAnalytics.logSearchEvent < IAnalyticsFacetMeta >(AnalyticsActionCauseList.breadcrumbFacet, {
+        this.facet.triggerNewQuery(() => this.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(AnalyticsActionCauseList.breadcrumbFacet, {
           facetId: this.facet.options.id,
           facetValue: this.facetValue.value,
           facetTitle: this.facet.options.title

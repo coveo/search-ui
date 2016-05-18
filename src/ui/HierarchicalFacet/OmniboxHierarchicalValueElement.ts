@@ -1,4 +1,4 @@
-﻿/// <reference path="HierarchicalFacet.ts" />
+/// <reference path="HierarchicalFacet.ts" />
 
 import {OmniboxValueElement} from '../Facet/OmniboxValueElement';
 import {HierarchicalFacet} from './HierarchicalFacet';

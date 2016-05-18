@@ -1,4 +1,4 @@
-﻿import {FacetValueElement} from '../Facet/FacetValueElement';
+import {FacetValueElement} from '../Facet/FacetValueElement';
 import {HierarchicalFacet} from '../HierarchicalFacet/HierarchicalFacet';
 import {ValueElementEventsBinding} from '../Facet/ValueElement';
 import {FacetValue} from '../Facet/FacetValues';

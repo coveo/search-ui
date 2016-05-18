@@ -21,7 +21,7 @@ import {Initialization} from '../Base/Initialization';
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;
-  queryOverride?:string;
+  queryOverride?: string;
   id?: string;
   field?: string;
   title?: string;
@@ -44,18 +44,18 @@ export class FacetSlider extends Component {
      * The title on top of the facet component.<br/>
      * Default value is the localized string for 'No title'
      */
-    title: ComponentOptions.buildLocalizedStringOption({defaultValue: l('NoTitle')}),
+    title: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('NoTitle') }),
     /**
      * Specifies whether the field for which you are requesting a range is a date field.<br/>
      * This allow the facet to correctly build the outgoing group by request, as well as render it correctly.<br/>
      */
-    dateField: ComponentOptions.buildBooleanOption({defaultValue: false}),
+    dateField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies the index field whose values will be use in the facet.<br/>
      * This require the given field to be configured correctly in the index as a facet field.<br/>
      * This is a required option and cannot be omitted, otherwise the facet component will not work.
      */
-    field: ComponentOptions.buildFieldOption({groupByField: true, required: true}),
+    field: ComponentOptions.buildFieldOption({ groupByField: true, required: true }),
     /**
      * Specifies a unique identifier for a facet. This identifier will be used to save the facet state in the url hash, for example.<br/>
      * Optional, since the default will be the {@link FacetSlider.options.field} option.<br/>
@@ -92,18 +92,18 @@ export class FacetSlider extends Component {
      * Specifies if you want to exclude the outer bounds of your slider in the generated query, when they are not active.<br/>
      * Default value is false
      */
-    excludeOuterBounds: ComponentOptions.buildBooleanOption({defaultValue: false}),
+    excludeOuterBounds: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies to how many decimal digit displayed numerical values are rounded.<br/>
      * Optional. By default, the number rounds to 0 decimal digits.
      */
-    rounded: ComponentOptions.buildNumberOption({min: 0}),
+    rounded: ComponentOptions.buildNumberOption({ min: 0 }),
     /**
      * Specifies the number of steps that you want in your slider.<br/>
      * For example, if your range is [ 0 , 100 ] and you specify 10 steps, then the end user is allowed to move the slider only to the values [ 0, 10, 20. 30 ... , 100 ].<br/>
      * Optional. By default the slider will allow all values.
      */
-    steps: ComponentOptions.buildNumberOption({min: 2}),
+    steps: ComponentOptions.buildNumberOption({ min: 2 }),
     /**
      * Specifies whether you want a slider with two buttons, or only one.<br/>
      * Optional. By default only one button appears in the slider.
@@ -120,9 +120,9 @@ export class FacetSlider extends Component {
      */
     displayAsValue: ComponentOptions.buildObjectOption({
       subOptions: {
-        enable: ComponentOptions.buildBooleanOption({defaultValue: true}),
+        enable: ComponentOptions.buildBooleanOption({ defaultValue: true }),
         unitSign: ComponentOptions.buildStringOption(),
-        separator: ComponentOptions.buildStringOption({defaultValue: '-'})
+        separator: ComponentOptions.buildStringOption({ defaultValue: '-' })
       }
     }),
     /**
@@ -135,8 +135,8 @@ export class FacetSlider extends Component {
      */
     displayAsPercent: ComponentOptions.buildObjectOption({
       subOptions: {
-        enable: ComponentOptions.buildBooleanOption({defaultValue: false}),
-        separator: ComponentOptions.buildStringOption({defaultValue: '-'})
+        enable: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+        separator: ComponentOptions.buildStringOption({ defaultValue: '-' })
       }
     }),
     /**
@@ -148,14 +148,14 @@ export class FacetSlider extends Component {
      */
     graph: ComponentOptions.buildObjectOption({
       subOptions: {
-        steps: ComponentOptions.buildNumberOption({min: 2}),
-        animationDuration: ComponentOptions.buildNumberOption({min: 0}),
+        steps: ComponentOptions.buildNumberOption({ min: 2 }),
+        animationDuration: ComponentOptions.buildNumberOption({ min: 0 }),
         margin: ComponentOptions.buildObjectOption({
           subOptions: {
-            top: ComponentOptions.buildNumberOption({min: 0}),
-            bottom: ComponentOptions.buildNumberOption({min: 0}),
-            left: ComponentOptions.buildNumberOption({min: 0}),
-            right: ComponentOptions.buildNumberOption({min: 0})
+            top: ComponentOptions.buildNumberOption({ min: 0 }),
+            bottom: ComponentOptions.buildNumberOption({ min: 0 }),
+            left: ComponentOptions.buildNumberOption({ min: 0 }),
+            right: ComponentOptions.buildNumberOption({ min: 0 })
           }
         })
       }
@@ -205,13 +205,13 @@ export class FacetSlider extends Component {
 
     this.facetQueryController = new FacetSliderQueryController(this);
     this.initQueryStateEvents();
-    this.bind.onRootElement(QueryEvents.newQuery, ()=> this.handleNewQuery());
-    this.bind.onRootElement(QueryEvents.noResults, ()=> this.handleNoresults());
-    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (args: IQuerySuccessEventArgs)=> this.handleDeferredQuerySuccess(args));
-    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs)=> this.handleBuildingQuery(args));
-    this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs)=> this.handleDoneBuildingQuery(args));
-    this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs)=> this.handlePopulateBreadcrumb(args));
-    this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, ()=> this.reset())
+    this.bind.onRootElement(QueryEvents.newQuery, () => this.handleNewQuery());
+    this.bind.onRootElement(QueryEvents.noResults, () => this.handleNoresults());
+    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (args: IQuerySuccessEventArgs) => this.handleDeferredQuerySuccess(args));
+    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
+    this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
+    this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) => this.handlePopulateBreadcrumb(args));
+    this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset())
   }
 
   public createDom() {
@@ -269,10 +269,10 @@ export class FacetSlider extends Component {
    */
   public isActive(): boolean {
     return !isNaN(this.startOfSlider)
-        && !isNaN(this.endOfSlider)
-        && !isNaN(this.initialStartOfSlider)
-        && !isNaN(this.initialEndOfSlider)
-        && (this.startOfSlider != this.initialStartOfSlider || this.endOfSlider != this.initialEndOfSlider)
+      && !isNaN(this.endOfSlider)
+      && !isNaN(this.initialStartOfSlider)
+      && !isNaN(this.initialEndOfSlider)
+      && (this.startOfSlider != this.initialStartOfSlider || this.endOfSlider != this.initialEndOfSlider)
   }
 
   public getSliderBoundaryForQuery(): number[] {
@@ -306,7 +306,7 @@ export class FacetSlider extends Component {
   }
 
   private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs): void {
-    var populateBreadcrumb = ()=> {
+    var populateBreadcrumb = () => {
       if (this.isActive()) {
         args.breadcrumbs.push(<IBreadcrumbItem>{
           element: this.buildBreadcrumbFacetSlider()
@@ -316,7 +316,7 @@ export class FacetSlider extends Component {
     if (this.slider) {
       populateBreadcrumb()
     } else {
-      $$(this.root).one(QueryEvents.deferredQuerySuccess, ()=> {
+      $$(this.root).one(QueryEvents.deferredQuerySuccess, () => {
         populateBreadcrumb();
         $$(this.root).trigger(BreadcrumbEvents.redrawBreadcrumb);
       })
@@ -350,9 +350,9 @@ export class FacetSlider extends Component {
     });
     value.el.appendChild(clear.el);
 
-    value.on('click', ()=> {
+    value.on('click', () => {
       this.reset();
-      this.usageAnalytics.logSearchEvent < IAnalyticsFacetMeta >(AnalyticsActionCauseList.facetClearAll, {
+      this.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(AnalyticsActionCauseList.facetClearAll, {
         facetId: this.options.id,
         facetTitle: this.options.title
       });
@@ -390,7 +390,7 @@ export class FacetSlider extends Component {
     }
     var sliderDiv = $$('div').el;
 
-    this.slider = new Slider(sliderDiv, _.extend({}, this.options, {dateField: this.options.dateField}), this.root);
+    this.slider = new Slider(sliderDiv, _.extend({}, this.options, { dateField: this.options.dateField }), this.root);
     $$(sliderDiv).on(SliderEvents.endSlide, (e: MouseEvent, args: IEndSlideEventArgs) => {
       this.handleEndSlide(args);
     });
@@ -445,7 +445,7 @@ export class FacetSlider extends Component {
     this.endOfSlider = values[1];
     if (this.updateQueryState(values)) {
       this.updateAppearanceDependingOnState();
-      this.usageAnalytics.logSearchEvent < IAnalyticsFacetSliderChangeMeta >(AnalyticsActionCauseList.facetRangeSlider, {
+      this.usageAnalytics.logSearchEvent<IAnalyticsFacetSliderChangeMeta>(AnalyticsActionCauseList.facetRangeSlider, {
         facetId: this.options.id,
         facetRangeStart: this.startOfSlider.toString(),
         facetRangeEnd: this.endOfSlider.toString()
@@ -470,7 +470,7 @@ export class FacetSlider extends Component {
       this.endOfSlider = args.end;
       this.slider.setValues([this.startOfSlider, this.endOfSlider]);
       this.updateQueryState();
-      this.usageAnalytics.logSearchEvent < IAnalyticsFacetGraphSelectedMeta >(AnalyticsActionCauseList.facetRangeGraph, {
+      this.usageAnalytics.logSearchEvent<IAnalyticsFacetGraphSelectedMeta>(AnalyticsActionCauseList.facetRangeGraph, {
         facetId: this.options.id,
         facetRangeStart: this.startOfSlider.toString(),
         facetRangeEnd: this.endOfSlider.toString()
@@ -487,7 +487,7 @@ export class FacetSlider extends Component {
     if (model == null || copyOfValues[0] != model[0] || copyOfValues[1] != model[1]) {
       copyOfValues[0] = start;
       copyOfValues[1] = end;
-      this.queryStateModel.set(this.rangeQueryStateAttribute, copyOfValues, {silent: silent});
+      this.queryStateModel.set(this.rangeQueryStateAttribute, copyOfValues, { silent: silent });
       return true;
     }
     return false;

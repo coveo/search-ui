@@ -6,7 +6,7 @@ export interface IComputedFieldRequest {
   /**
    * This specifies the field on which the aggregate operation will be performed. This field is typically a numerical value.
    */
-  field:string;
+  field: string;
   /**
    * This specifies the operation to execute on the field value.<br/>
    * Possible operations:
@@ -15,5 +15,5 @@ export interface IComputedFieldRequest {
    * --minimum: Retrieves the smallest of all values.
    * --maximum: Retrieves the largest of all values.
    */
-  operation:string;
+  operation: string;
 }

@@ -75,7 +75,7 @@ export class Model extends BaseComponent {
   }
 
   public getAttributes() {
-    var attributes: {[key: string]: any} = {};
+    var attributes: { [key: string]: any } = {};
     _.each(this.attributes, (attribute, key) => {
       if (_.isObject(attribute)) {
         if (!Utils.objectEqual(attribute, this.defaultAttributes[key])) {
@@ -175,15 +175,15 @@ export class Model extends BaseComponent {
   }
 
   private createAttributeChangedArgument(attribute: string): IAttributeChangedEventArg {
-    return {attribute: attribute, value: this.attributes[attribute]};
+    return { attribute: attribute, value: this.attributes[attribute] };
   }
 
   private createAttributesChangedArgument(): IAttributesChangedEventArg {
-    return {attributes: this.attributes};
+    return { attributes: this.attributes };
   }
 
   private createModelChangedArgument(): IModelChangedEventArg {
-    return {model: this};
+    return { model: this };
   }
 
   private checkIfAttributeExists(attribute: string) {

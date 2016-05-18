@@ -5,7 +5,7 @@ interface Window {
 }
 
 if (window['$'] != undefined && window['$'].fn != undefined) {
-  window['$'].fn.coveo = function (...args: any[]) {
+  window['$'].fn.coveo = function(...args: any[]) {
     var returnValue: any;
     this.each((index: number, element: HTMLElement) => {
       var returnValueForThisElement: any;
@@ -24,4 +24,3 @@ if (window['$'] != undefined && window['$'].fn != undefined) {
     return returnValue;
   }
 }
-

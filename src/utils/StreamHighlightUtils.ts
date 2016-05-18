@@ -18,7 +18,7 @@ class DefaultStreamHighlightOptions extends Options implements StreamHighlightOp
   }
 }
 
-export function highlightStreamHTML(stream: string, termsToHighlight: {[originalTerm:string]: string[]}, phrasesToHighlight: {[phrase: string]: {[originalTerm:string]: string[]}}, options?: StreamHighlightOptions) {
+export function highlightStreamHTML(stream: string, termsToHighlight: { [originalTerm: string]: string[] }, phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } }, options?: StreamHighlightOptions) {
   var opts = new DefaultStreamHighlightOptions().merge(options);
   var container = createStreamHTMLContainer(stream);
   container.find('*').each((i: number, elem: HTMLElement) => {
@@ -28,12 +28,12 @@ export function highlightStreamHTML(stream: string, termsToHighlight: {[original
   return container.html();
 }
 
-export function highlightStreamText(stream: string, termsToHighlight: {[originalTerm:string]: string[]}, phrasesToHighlight: {[phrase: string]: {[originalTerm:string]: string[]}}, options?: StreamHighlightOptions) {
+export function highlightStreamText(stream: string, termsToHighlight: { [originalTerm: string]: string[] }, phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } }, options?: StreamHighlightOptions) {
   var opts = new DefaultStreamHighlightOptions().merge(options);
   return HighlightUtils.highlightString(stream, getRestHighlightsForAllTerms(stream, termsToHighlight, phrasesToHighlight, opts), [], opts.cssClass)
 }
 
-function getRestHighlightsForAllTerms(toHighlight: string, termsToHighlight: {[originalTerm:string]: string[]}, phrasesToHighlight: {[phrase: string]: {[originalTerm:string]: string[]}}, opts: StreamHighlightOptions): Highlight[] {
+function getRestHighlightsForAllTerms(toHighlight: string, termsToHighlight: { [originalTerm: string]: string[] }, phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } }, opts: StreamHighlightOptions): Highlight[] {
   var indexes = [];
   var sortedTerms = _.keys(termsToHighlight).sort(termsSorting);
   _.each(sortedTerms, (term: string) => {
@@ -46,10 +46,10 @@ function getRestHighlightsForAllTerms(toHighlight: string, termsToHighlight: {[o
     }
   });
 
-  _.each(phrasesToHighlight, (phrase, origPhrase)=> {
+  _.each(phrasesToHighlight, (phrase, origPhrase) => {
     var split = origPhrase.split(' ');
     var regex = regexStart;
-    _.each(split, (origWord, i)=> {
+    _.each(split, (origWord, i) => {
       regex += '(?:' + [origWord].concat(phrase[origWord]).join('|') + ')';
       if (i == split.length - 1) {
         regex += '(?='
@@ -70,22 +70,22 @@ function getRestHighlightsForAllTerms(toHighlight: string, termsToHighlight: {[o
   })
 
   return _.chain(indexes)
-          .flatten()
-          .compact()
-          .uniq((highlight: Highlight)=> {
-            return highlight.offset
-          })
-          .sortBy((highlight: Highlight)=> {
-            return highlight.offset
-          })
-          .map((highlight)=> {
-            var keysFromTerms = _.keys(termsToHighlight);
-            var keysFromPhrases = _.keys(phrasesToHighlight);
-            var keys = keysFromTerms.concat(keysFromPhrases);
-            var group = _.indexOf(keys, highlight.dataHighlightGroupTerm) + 1
-            return _.extend(highlight, {dataHighlightGroup: group});
-          })
-          .value()
+    .flatten()
+    .compact()
+    .uniq((highlight: Highlight) => {
+      return highlight.offset
+    })
+    .sortBy((highlight: Highlight) => {
+      return highlight.offset
+    })
+    .map((highlight) => {
+      var keysFromTerms = _.keys(termsToHighlight);
+      var keysFromPhrases = _.keys(phrasesToHighlight);
+      var keys = keysFromTerms.concat(keysFromPhrases);
+      var group = _.indexOf(keys, highlight.dataHighlightGroupTerm) + 1
+      return _.extend(highlight, { dataHighlightGroup: group });
+    })
+    .value()
 }
 
 function termsSorting(first: string, second: string) {

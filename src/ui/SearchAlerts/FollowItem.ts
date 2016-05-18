@@ -50,7 +50,7 @@ module Coveo {
     private updateIsFollowed() {
       this.queryController.getEndpoint()
         .listSubscriptions()
-          .then((subscriptions: ISubscription[]) => {
+        .then((subscriptions: ISubscription[]) => {
           var subscription: ISubscription = _.find(subscriptions, (subscription: ISubscription) => {
             var typeConfig = <ISubscriptionItemRequest>subscription.typeConfig;
             return typeConfig.id != null && typeConfig.id == this.getId();
@@ -61,7 +61,7 @@ module Coveo {
             this.setNotFollowed();
           }
         })
-          .catch(() => {
+        .catch(() => {
           this.remove();
         })
     }
@@ -86,14 +86,14 @@ module Coveo {
         if (this.subscription.id) {
           this.queryController.getEndpoint()
             .deleteSubscription(this.subscription)
-              .then(() => {
+            .then(() => {
               var eventArgs: SearchAlertEventArgs = {
                 subscription: this.subscription,
                 dom: this.element
               };
               $(this.root).trigger(SearchAlertEvents.searchAlertDeleted, eventArgs);
             })
-              .catch(() => {
+            .catch(() => {
               this.container.removeClass("coveo-follow-item-loading");
               var eventArgs: SearchAlertsFailEventArgs = {
                 dom: this.element
@@ -102,19 +102,19 @@ module Coveo {
             })
         } else {
           this.queryController.getEndpoint().follow(this.subscription)
-              .then((subscription: ISubscription) => {
-                var eventArgs: SearchAlertEventArgs = {
-                  subscription: subscription,
-                  dom: this.element
-                };
-                $(this.root).trigger(SearchAlertEvents.searchAlertCreated, eventArgs);
-              })
-              .catch(() => {
-                this.container.removeClass("coveo-follow-item-loading");
-                var eventArgs: SearchAlertsFailEventArgs = {
-                  dom: this.element
-                };
-                $(this.root).trigger(SearchAlertEvents.SearchAlertsFail, eventArgs);
+            .then((subscription: ISubscription) => {
+              var eventArgs: SearchAlertEventArgs = {
+                subscription: subscription,
+                dom: this.element
+              };
+              $(this.root).trigger(SearchAlertEvents.searchAlertCreated, eventArgs);
+            })
+            .catch(() => {
+              this.container.removeClass("coveo-follow-item-loading");
+              var eventArgs: SearchAlertsFailEventArgs = {
+                dom: this.element
+              };
+              $(this.root).trigger(SearchAlertEvents.SearchAlertsFail, eventArgs);
             })
         }
       }
@@ -146,20 +146,20 @@ module Coveo {
       return this.result.raw.sysurihash || this.result.raw.urihash;
     }
 
-    private static buildFollowRequest(id: string, title: string, options:FollowItemOptions): ISubscriptionRequest {
+    private static buildFollowRequest(id: string, title: string, options: FollowItemOptions): ISubscriptionRequest {
       var typeCofig: ISubscriptionItemRequest = {
         id: id,
         title: title
       }
-      
-      if(options.modifiedDateField){
+
+      if (options.modifiedDateField) {
         typeCofig.modifiedDateField = options.modifiedDateField;
       }
-      
-      if(options.watchedFields){
+
+      if (options.watchedFields) {
         typeCofig.watchedFields = options.watchedFields;
       }
-      
+
       return {
         type: SubscriptionType.followDocument,
         typeConfig: typeCofig

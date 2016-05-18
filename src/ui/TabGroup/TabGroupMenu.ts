@@ -13,7 +13,7 @@ module Coveo {
   export class TabGroupMenu extends Component {
     static ID = 'TabGroupMenu';
     static options: TabGroupMenuOptions = {
-      menuDelay: ComponentOptions.buildNumberOption({defaultValue: 300, min: 0})
+      menuDelay: ComponentOptions.buildNumberOption({ defaultValue: 300, min: 0 })
     };
 
     private menuItems: ItemInMenu[];
@@ -95,7 +95,7 @@ module Coveo {
       $(this.element).append(this.activeMenuItemDisplay, this.menuItemsContainer);
       this.menuItems = _.map($(this.element).find("." + Component.computeCssClassName(TabGroup)), (elementInside: HTMLElement) => {
         this.menuItemsContainer.append(elementInside);
-        return {tabGroup: <TabGroup>$(elementInside).coveo(), element: $(elementInside)};
+        return { tabGroup: <TabGroup>$(elementInside).coveo(), element: $(elementInside) };
       })
     }
 

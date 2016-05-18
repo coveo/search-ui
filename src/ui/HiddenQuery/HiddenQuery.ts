@@ -21,12 +21,12 @@ module Coveo {
        * After this length, the component will slice the descrption and add [...].<br/>
        * Default value is 100
        */
-      maximumDescriptionLength: ComponentOptions.buildNumberOption({min: 0, defaultValue: 100}),
+      maximumDescriptionLength: ComponentOptions.buildNumberOption({ min: 0, defaultValue: 100 }),
       /**
        * Specifies a title that will appear in the {@link Breadcrumb} when it is populated by the HiddenQuery component.<br/>
        * By default, it is a localized string for "Additional filters :"
        */
-      title: ComponentOptions.buildLocalizedStringOption({defaultValue: l('AdditionalFilters') + ' : '})
+      title: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('AdditionalFilters') + ' : ' })
     };
 
     /**
@@ -40,9 +40,9 @@ module Coveo {
       super(element, HiddenQuery.ID, bindings);
       this.options = ComponentOptions.initComponentOptions(element, HiddenQuery, options);
 
-      this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs)=> this.handleBuildingQuery(args));
-      this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs)=> this.handlePopulateBreadcrumb(args));
-      this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, ()=> this.setStateEmpty());
+      this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
+      this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) => this.handlePopulateBreadcrumb(args));
+      this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.setStateEmpty());
     }
 
     /**
@@ -51,7 +51,7 @@ module Coveo {
     public clear() {
       this.setStateEmpty();
       var hiddenDescriptionRemoved = this.getDescription();
-      this.usageAnalytics.logSearchEvent<IAnalyticsContextRemoveMeta>(AnalyticsActionCauseList.contextRemove, {contextName: hiddenDescriptionRemoved});
+      this.usageAnalytics.logSearchEvent<IAnalyticsContextRemoveMeta>(AnalyticsActionCauseList.contextRemove, { contextName: hiddenDescriptionRemoved });
       this.queryController.executeQuery();
     }
 
@@ -92,7 +92,7 @@ module Coveo {
         $$(clear).addClass('coveo-hidden-query-breadcrumb-clear');
         elem.appendChild(clear);
 
-        $$(elem).on('click', ()=> this.clear());
+        $$(elem).on('click', () => this.clear());
 
         args.breadcrumbs.push({
           element: elem

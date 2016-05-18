@@ -1,4 +1,4 @@
-﻿import {IFieldDescription} from '../../rest/FieldDescription';
+import {IFieldDescription} from '../../rest/FieldDescription';
 import {IComponentDefinition} from './Component';
 import {Assert} from '../../misc/Assert';
 import {Template} from '../Templates/Template';
@@ -30,9 +30,9 @@ export interface OptionArgs<T> {
   required?: boolean;
   postProcessing?: PostProcessing<T>;
   attrName?: string;
-  section?:string;
-  depend?:string;
-  priority?:number;
+  section?: string;
+  depend?: string;
+  priority?: number;
 }
 
 export interface NumberOption extends Option<number>, NumberOptionArgs {
@@ -84,7 +84,7 @@ export interface FieldsOptionArgs extends OptionArgs<string[]> {
   includeInResults?: boolean;
   sortByField?: boolean;
   splitGroupByField?: boolean;
-  match?:(field: IFieldDescription)=>boolean;
+  match?: (field: IFieldDescription) => boolean;
 }
 
 export interface ObjectOption extends Option<{ [key: string]: any }>, ObjectOptionArgs {
@@ -119,81 +119,81 @@ const fieldsSeperator = /\s*,\s*/;
 const localizer = /([a-zA-Z\-]+)\s*:\s*(([^,]|,\s*(?!([a-zA-Z\-]+)\s*:))+)/g;
 
 export class ComponentOptions {
-  static buildBooleanOption(optionArgs ?: OptionArgs < boolean >): boolean {
-    return ComponentOptions.buildOption < boolean >(Type.BOOLEAN, ComponentOptions.loadBooleanOption, optionArgs);
+  static buildBooleanOption(optionArgs?: OptionArgs<boolean>): boolean {
+    return ComponentOptions.buildOption<boolean>(Type.BOOLEAN, ComponentOptions.loadBooleanOption, optionArgs);
   }
 
-  static buildNumberOption(optionArgs ?: NumberOptionArgs): number {
-    return ComponentOptions.buildOption < number >(Type.NUMBER, ComponentOptions.loadNumberOption, optionArgs);
+  static buildNumberOption(optionArgs?: NumberOptionArgs): number {
+    return ComponentOptions.buildOption<number>(Type.NUMBER, ComponentOptions.loadNumberOption, optionArgs);
   }
 
-  static buildStringOption(optionArgs ?: OptionArgs < string >): string {
-    return ComponentOptions.buildOption < string >(Type.STRING, ComponentOptions.loadStringOption, optionArgs);
+  static buildStringOption(optionArgs?: OptionArgs<string>): string {
+    return ComponentOptions.buildOption<string>(Type.STRING, ComponentOptions.loadStringOption, optionArgs);
   }
 
-  static buildIconOption(optionArgs ?: OptionArgs < string >): string {
-    return ComponentOptions.buildOption < string >(Type.ICON, ComponentOptions.loadStringOption, optionArgs);
+  static buildIconOption(optionArgs?: OptionArgs<string>): string {
+    return ComponentOptions.buildOption<string>(Type.ICON, ComponentOptions.loadStringOption, optionArgs);
   }
 
-  static buildHelperOption(optionArgs ?: OptionArgs < string >): string {
-    return ComponentOptions.buildOption < string >(Type.HELPER, ComponentOptions.loadStringOption, optionArgs);
+  static buildHelperOption(optionArgs?: OptionArgs<string>): string {
+    return ComponentOptions.buildOption<string>(Type.HELPER, ComponentOptions.loadStringOption, optionArgs);
   }
 
-  static buildJsonOption(optionArgs ?: OptionArgs < string >): string {
-    return ComponentOptions.buildOption < string >(Type.JSON, ComponentOptions.loadStringOption, optionArgs);
+  static buildJsonOption(optionArgs?: OptionArgs<string>): string {
+    return ComponentOptions.buildOption<string>(Type.JSON, ComponentOptions.loadStringOption, optionArgs);
   }
 
-  static buildLocalizedStringOption(optionArgs ?: OptionArgs < string >): string {
-    return ComponentOptions.buildOption < string >(Type.LOCALIZED_STRING, ComponentOptions.loadLocalizedStringOption, optionArgs);
+  static buildLocalizedStringOption(optionArgs?: OptionArgs<string>): string {
+    return ComponentOptions.buildOption<string>(Type.LOCALIZED_STRING, ComponentOptions.loadLocalizedStringOption, optionArgs);
   }
 
-  static buildFieldOption(optionArgs ?: FieldOptionArgs): string {
-    return ComponentOptions.buildOption < string >(Type.FIELD, ComponentOptions.loadFieldOption, optionArgs);
+  static buildFieldOption(optionArgs?: FieldOptionArgs): string {
+    return ComponentOptions.buildOption<string>(Type.FIELD, ComponentOptions.loadFieldOption, optionArgs);
   }
 
-  static buildFieldsOption(optionArgs ?: FieldsOptionArgs): string[] {
-    return ComponentOptions.buildOption < string[] >(Type.FIELDS, ComponentOptions.loadFieldsOption, optionArgs);
+  static buildFieldsOption(optionArgs?: FieldsOptionArgs): string[] {
+    return ComponentOptions.buildOption<string[]>(Type.FIELDS, ComponentOptions.loadFieldsOption, optionArgs);
   }
 
-  static buildListOption(optionArgs ?: ListOptionArgs): string[] {
-    return ComponentOptions.buildOption < string[] >(Type.LIST, ComponentOptions.loadListOption, optionArgs);
+  static buildListOption(optionArgs?: ListOptionArgs): string[] {
+    return ComponentOptions.buildOption<string[]>(Type.LIST, ComponentOptions.loadListOption, optionArgs);
   }
 
-  static buildSelectorOption(optionArgs ?: OptionArgs < HTMLElement >): HTMLElement {
-    return ComponentOptions.buildOption < HTMLElement >(Type.SELECTOR, ComponentOptions.loadSelectorOption, optionArgs);
+  static buildSelectorOption(optionArgs?: OptionArgs<HTMLElement>): HTMLElement {
+    return ComponentOptions.buildOption<HTMLElement>(Type.SELECTOR, ComponentOptions.loadSelectorOption, optionArgs);
   }
 
-  static buildChildHtmlElementOption(optionArgs ?: ChildHtmlElementOptionArgs): HTMLElement {
-    return ComponentOptions.buildOption < HTMLElement >(Type.CHILD_HTML_ELEMENT, ComponentOptions.loadChildHtmlElementOption, optionArgs);
+  static buildChildHtmlElementOption(optionArgs?: ChildHtmlElementOptionArgs): HTMLElement {
+    return ComponentOptions.buildOption<HTMLElement>(Type.CHILD_HTML_ELEMENT, ComponentOptions.loadChildHtmlElementOption, optionArgs);
   }
 
-  static buildTemplateOption(optionArgs ?: TemplateOptionArgs): Template {
-    return ComponentOptions.buildOption < Template >(Type.TEMPLATE, ComponentOptions.loadTemplateOption, optionArgs);
+  static buildTemplateOption(optionArgs?: TemplateOptionArgs): Template {
+    return ComponentOptions.buildOption<Template>(Type.TEMPLATE, ComponentOptions.loadTemplateOption, optionArgs);
   }
 
-  static buildCustomOption < T > (converter: (value: string) => T, optionArgs ?: OptionArgs < T >): T {
-    var loadOption: LoadOption < T > = (element: HTMLElement, name: string, option: Option < T >) => {
+  static buildCustomOption<T>(converter: (value: string) => T, optionArgs?: OptionArgs<T>): T {
+    var loadOption: LoadOption<T> = (element: HTMLElement, name: string, option: Option<T>) => {
       var stringvalue = ComponentOptions.loadStringOption(element, name, option);
       return converter(stringvalue);
     }
-    return ComponentOptions.buildOption < T >(Type.STRING, loadOption, optionArgs);
+    return ComponentOptions.buildOption<T>(Type.STRING, loadOption, optionArgs);
   }
 
-  static buildCustomListOption < T > (converter: (value: string[]) => T, optionArgs ?: ListOptionArgs): T {
-    var loadOption: LoadOption < T > = (element: HTMLElement, name: string, option: any) => {
+  static buildCustomListOption<T>(converter: (value: string[]) => T, optionArgs?: ListOptionArgs): T {
+    var loadOption: LoadOption<T> = (element: HTMLElement, name: string, option: any) => {
       var stringvalue = ComponentOptions.loadListOption(element, name, option);
       return converter(stringvalue);
     }
-    return ComponentOptions.buildOption < any >(Type.LIST, loadOption, optionArgs);
+    return ComponentOptions.buildOption<any>(Type.LIST, loadOption, optionArgs);
   }
 
-  static buildObjectOption(optionArgs ?: ObjectOptionArgs): any {
-    var loadOption: LoadOption < {
+  static buildObjectOption(optionArgs?: ObjectOptionArgs): any {
+    var loadOption: LoadOption<{
       [key: string]: any
-    } > = (element: HTMLElement, name: string, option: Option < any >) => {
+    }> = (element: HTMLElement, name: string, option: Option<any>) => {
       var keys = _.keys(optionArgs.subOptions);
       var scopedOptions: {
-        [name: string]: Option < any >
+        [name: string]: Option<any>
       } = {};
       var scopedValues: {
         [name: string]: any
@@ -218,19 +218,19 @@ export class ComponentOptions {
       }
       return resultFound ? resultValues : null;
     }
-    return ComponentOptions.buildOption < {
+    return ComponentOptions.buildOption<{
       [key: string]: any
-    } >(Type.OBJECT, loadOption, optionArgs);
+    }>(Type.OBJECT, loadOption, optionArgs);
   }
 
-  static buildOption < T > (type: Type, load: LoadOption < T >, optionArg: OptionArgs < T > = {}): T {
-    var option: Option < T > = < any > optionArg;
+  static buildOption<T>(type: Type, load: LoadOption<T>, optionArg: OptionArgs<T> = {}): T {
+    var option: Option<T> = <any>optionArg;
     option.type = type;
     option.load = load;
-    return <any > option;
+    return <any>option;
   }
 
-  static attrNameFromName(name: string, optionArgs ?: OptionArgs < any >) {
+  static attrNameFromName(name: string, optionArgs?: OptionArgs<any>) {
     if (optionArgs && optionArgs.attrName) {
       return optionArgs.attrName;
     }
@@ -245,13 +245,13 @@ export class ComponentOptions {
     return parent + name.substr(0, 1).toUpperCase() + name.substr(1)
   }
 
-  static initComponentOptions(element: HTMLElement, component: any, values ?: any) {
+  static initComponentOptions(element: HTMLElement, component: any, values?: any) {
     return ComponentOptions.initOptions(element, component.options, values);
   }
 
   static initOptions(element: HTMLElement, options: {
-    [name: string]: Option < any >
-  }, values ?: any) {
+    [name: string]: Option<any>
+  }, values?: any) {
     if (values == null) {
       values = {};
     }
@@ -298,17 +298,17 @@ export class ComponentOptions {
     return values;
   }
 
-  static loadStringOption(element: HTMLElement, name: string, option: Option < any >): string {
+  static loadStringOption(element: HTMLElement, name: string, option: Option<any>): string {
     return element.getAttribute(ComponentOptions.attrNameFromName(name, option));
   }
 
-  static loadFieldOption(element: HTMLElement, name: string, option: Option < any >): string {
+  static loadFieldOption(element: HTMLElement, name: string, option: Option<any>): string {
     var field = ComponentOptions.loadStringOption(element, name, option);
     Assert.check(!Utils.isNonEmptyString(field) || Utils.isCoveoField(field), field + ' is not a valid field');
     return field;
   }
 
-  static loadFieldsOption(element: HTMLElement, name: string, option: Option < any >): string[] {
+  static loadFieldsOption(element: HTMLElement, name: string, option: Option<any>): string[] {
     var fieldsAttr = ComponentOptions.loadStringOption(element, name, option);
     if (fieldsAttr == null) {
       return null;
@@ -320,7 +320,7 @@ export class ComponentOptions {
     return fields;
   }
 
-  static loadLocalizedStringOption(element: HTMLElement, name: string, option: Option < any >): string {
+  static loadLocalizedStringOption(element: HTMLElement, name: string, option: Option<any>): string {
     var attributeValue = ComponentOptions.loadStringOption(element, name, option);
     var locale: string = String['locale'] || String['defaultLocale'];
     if (locale != null && attributeValue != null) {
@@ -358,7 +358,7 @@ export class ComponentOptions {
     return numberValue;
   }
 
-  static loadBooleanOption(element: HTMLElement, name: string, option: Option < any >): boolean {
+  static loadBooleanOption(element: HTMLElement, name: string, option: Option<any>): boolean {
     return Utils.parseBooleanIfNotUndefined(ComponentOptions.loadStringOption(element, name, option));
   }
 
@@ -368,14 +368,14 @@ export class ComponentOptions {
     return Utils.isNonEmptyString(attributeValue) ? attributeValue.split(separator) : null;
   }
 
-  static loadEnumOption(element: HTMLElement, name: string, option: Option < any >, _enum: any): number {
+  static loadEnumOption(element: HTMLElement, name: string, option: Option<any>, _enum: any): number {
     var enumAsString = ComponentOptions.loadStringOption(element, name, option);
     return enumAsString != null ? _enum[enumAsString] : null;
   }
 
-  static loadSelectorOption(element: HTMLElement, name: string, option: Option < any >): HTMLElement {
+  static loadSelectorOption(element: HTMLElement, name: string, option: Option<any>): HTMLElement {
     var attributeValue = ComponentOptions.loadStringOption(element, name, option)
-    return Utils.isNonEmptyString(attributeValue) ? < HTMLElement > document.querySelector(attributeValue) : null;
+    return Utils.isNonEmptyString(attributeValue) ? <HTMLElement>document.querySelector(attributeValue) : null;
   }
 
   static loadChildHtmlElementOption(element: HTMLElement, name: string, option: ChildHtmlElementOption): HTMLElement {
@@ -384,7 +384,7 @@ export class ComponentOptions {
     var selectorAttr = option.selectorAttr || ComponentOptions.attrNameFromName(name, option) + '-selector';
     var selector = element.getAttribute(selectorAttr);
     if (selector != null) {
-      htmlElement = < HTMLElement > document.body.querySelector(selector);
+      htmlElement = <HTMLElement>document.body.querySelector(selector);
     }
     // Child
     if (htmlElement == null) {
@@ -402,7 +402,7 @@ export class ComponentOptions {
     if ($$(element).is(selector)) {
       return element;
     }
-    return <HTMLElement > $$(element).find(selector);
+    return <HTMLElement>$$(element).find(selector);
   }
 
   static loadChildrenHtmlElementFromSelector(element: HTMLElement, selector: string): HTMLElement[] {
@@ -421,7 +421,7 @@ export class ComponentOptions {
     var selectorAttr = option.selectorAttr || ComponentOptions.attrNameFromName(name, option) + '-selector';
     var selector = element.getAttribute(selectorAttr);
     if (selector != null) {
-      var templateElement = < HTMLElement > document.querySelector(selector);
+      var templateElement = <HTMLElement>document.querySelector(selector);
       if (templateElement != null) {
         template = ComponentOptions.createResultTemplateFromElement(templateElement);
       }
@@ -458,16 +458,16 @@ export class ComponentOptions {
   }
 
   static findParentScrolling(element: HTMLElement): HTMLElement {
-    while (< Node > element != document && element != null) {
+    while (<Node>element != document && element != null) {
       if (ComponentOptions.isElementScrollable(element)) {
         if (element.tagName == 'body') {
           return element;
         }
-        return <any > window;
+        return <any>window;
       }
       element = element.parentElement;
     }
-    return <any > window;
+    return <any>window;
   }
 
   static isElementScrollable(element: HTMLElement) {
@@ -478,8 +478,8 @@ export class ComponentOptions {
     Assert.exists(element);
     var type = element.getAttribute('type');
     var mimeTypes = 'You must specify the type of template. Valid values are :' +
-        ' ' + UnderscoreTemplate.mimeTypes.toString() +
-        ' ' + HtmlTemplate.mimeTypes.toString()
+      ' ' + UnderscoreTemplate.mimeTypes.toString() +
+      ' ' + HtmlTemplate.mimeTypes.toString()
     Assert.check(Utils.isNonEmptyString(type), mimeTypes);
 
     if (_.indexOf(UnderscoreTemplate.mimeTypes, type) != -1) {

@@ -145,7 +145,7 @@ module Coveo {
       let color = this.getColor(value);
 
       if (this.searchInterface.isNewDesign()) {
-        var icon = $$('span', {className: 'coveo-badge-icon'}).el;
+        var icon = $$('span', { className: 'coveo-badge-icon' }).el;
         if (color.icon != null) {
           icon.style.color = color.icon;
         }
@@ -153,7 +153,7 @@ module Coveo {
         valueDom.style.background = color.icon;
       }
 
-      let label = $$('span', {className: 'coveo-badge-label'}, valueDom.innerHTML).el;
+      let label = $$('span', { className: 'coveo-badge-label' }, valueDom.innerHTML).el;
 
       if (color.text != null) {
         label.style.color = color.text;

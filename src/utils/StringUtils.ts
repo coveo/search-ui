@@ -73,7 +73,7 @@ export class StringUtils {
       var desiredMatch = match[2];
       var undesiredMatch = match[1];
       var offset = match.index + undesiredMatch.length;
-      indexes.push({offset: offset, length: desiredMatch.length, dataHighlightGroupTerm: dataHighlightGroupTerm})
+      indexes.push({ offset: offset, length: desiredMatch.length, dataHighlightGroupTerm: dataHighlightGroupTerm })
       if (!regexToFind.global) {
         break;
       }

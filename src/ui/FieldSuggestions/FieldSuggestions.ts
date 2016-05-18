@@ -13,25 +13,25 @@ module Coveo {
   export class FieldSuggestions extends Coveo.Component {
     static ID = "FieldSuggestions";
     static options: FieldSuggestionsOptions = {
-      field: ComponentOptions.buildFieldOption({required: true}),
-      queryOverride: ComponentOptions.buildStringOption({defaultValue: ''}),
-      omniboxZIndex: ComponentOptions.buildNumberOption({defaultValue: 51, min: 0}),
-      headerTitle: ComponentOptions.buildLocalizedStringOption({defaultValue: l("SuggestedResults")}),
-      numberOfSuggestions: ComponentOptions.buildNumberOption({defaultValue: 5, min: 1}),
+      field: ComponentOptions.buildFieldOption({ required: true }),
+      queryOverride: ComponentOptions.buildStringOption({ defaultValue: '' }),
+      omniboxZIndex: ComponentOptions.buildNumberOption({ defaultValue: 51, min: 0 }),
+      headerTitle: ComponentOptions.buildLocalizedStringOption({ defaultValue: l("SuggestedResults") }),
+      numberOfSuggestions: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1 }),
 
-      omniboxDelay: ComponentOptions.buildNumberOption({defaultValue: 500, min: 0})
+      omniboxDelay: ComponentOptions.buildNumberOption({ defaultValue: 500, min: 0 })
     };
 
     private suggestionForOmnibox: SuggestionForOmnibox;
 
     private topFieldElementHeaderTemplate = _.template(
-        "<div class='coveo-top-field-suggestion-header'>\
+      "<div class='coveo-top-field-suggestion-header'>\
           <span class='coveo-icon-top-field'></span> \
           <span class='coveo-caption'><%= headerTitle %></span> \
         </div>"
     );
     private topFieldElementRowTemplate = _.template(
-        "<div class='magic-box-suggestion coveo-omnibox-selectable coveo-top-field-suggestion-row'> \
+      "<div class='magic-box-suggestion coveo-omnibox-selectable coveo-top-field-suggestion-row'> \
           <%= data %> \
         </div>"
     );
@@ -59,7 +59,7 @@ module Coveo {
         };
       } else {
         suggestionStructure = {
-          header: {template: this.topFieldElementHeaderTemplate, title: this.options.headerTitle},
+          header: { template: this.topFieldElementHeaderTemplate, title: this.options.headerTitle },
           row: this.topFieldElementRowTemplate
         };
       }
@@ -82,7 +82,7 @@ module Coveo {
         }
         this.lastDeferred = $.Deferred<OmniboxDataRow>();
         clearTimeout(this.lastTimeout);
-        var triggerQuery = ()=> {
+        var triggerQuery = () => {
           this.lastTimeout = null;
           var searchPromise = this.queryController.getEndpoint().listFieldValues(this.buildListFieldValueRequest(valueToSearch));
 

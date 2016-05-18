@@ -1,15 +1,15 @@
 interface Window {
   sforce: {
     console: {
-      isInConsole: ()=>boolean;
-      getPageInfo: (tabId:string, callback?:(result)=> any) => void;
-      openSubtab: (primaryTabId:string, url:string, active:boolean, tabLabel:string, tabId:string, callback?:(result)=> any) => void;
-      focusSubtabById: (tabId:string, callback?:(result)=> any) => void;
-      getSubtabIds: (primaryTabId?:string, callback?:(result)=>any)=>void;
-      getFocusedPrimaryTabId: (callback?:(result)=>any)=>void;
-      openPrimaryTab: (tabId:string, url:string, active:boolean, tabLabel?:string, callback?:(result)=>any)=>void;
-      focusPrimaryTabById: (id:string, callback?:(result)=>any) =>void;
-      getPrimaryTabIds: (callback?:(result)=>any)=> void;
+      isInConsole: () => boolean;
+      getPageInfo: (tabId: string, callback?: (result) => any) => void;
+      openSubtab: (primaryTabId: string, url: string, active: boolean, tabLabel: string, tabId: string, callback?: (result) => any) => void;
+      focusSubtabById: (tabId: string, callback?: (result) => any) => void;
+      getSubtabIds: (primaryTabId?: string, callback?: (result) => any) => void;
+      getFocusedPrimaryTabId: (callback?: (result) => any) => void;
+      openPrimaryTab: (tabId: string, url: string, active: boolean, tabLabel?: string, callback?: (result) => any) => void;
+      focusPrimaryTabById: (id: string, callback?: (result) => any) => void;
+      getPrimaryTabIds: (callback?: (result) => any) => void;
     }
   }
 }
@@ -26,7 +26,7 @@ module Coveo {
       return SalesforceUtilities.isInSalesforce() && window.sforce.console != undefined && window.sforce.console.isInConsole();
     }
 
-    static focusOrOpenTab(url:string, tabText:string, openInPrimaryTab:boolean = false) {
+    static focusOrOpenTab(url: string, tabText: string, openInPrimaryTab: boolean = false) {
 
       url = typeof url !== 'undefined' ? url : "";
       var originalUrl = url;
@@ -84,7 +84,7 @@ module Coveo {
           subtabCount = result.ids.length;
 
           for (var i = 0; i < result.ids.length; i++) {
-            window.sforce.console.getPageInfo(result.ids[i], function (newResult) {
+            window.sforce.console.getPageInfo(result.ids[i], function(newResult) {
               handleGetSubtabInfo(newResult, result.ids[subtabIndex]);
             });
           }
@@ -136,7 +136,7 @@ module Coveo {
           primaryTabCount = result.ids.length;
 
           for (var i = 0; i < result.ids.length; i++) {
-            window.sforce.console.getPageInfo(result.ids[i], function (newResult) {
+            window.sforce.console.getPageInfo(result.ids[i], function(newResult) {
               handleGetPrimaryTabInfo(newResult, result.ids[primaryTabIndex]);
             });
           }
@@ -147,7 +147,7 @@ module Coveo {
       }
     }
 
-    static getSfIdFromUrl(url:string) {
+    static getSfIdFromUrl(url: string) {
       var id = url.substr((url.lastIndexOf('/') + 1), 18);
       var idIsValid = /^\w+$/.test(id);
       if (!idIsValid) {
@@ -156,7 +156,7 @@ module Coveo {
       return id.substr(0, 15);
     }
 
-    static expandStringUsingRecord(value:string, record:any) {
+    static expandStringUsingRecord(value: string, record: any) {
       if (value != null) {
         var matches = value.match(/\{!(>?)(.*?)\}/g);
         if (matches != null) {
@@ -179,7 +179,7 @@ module Coveo {
       return value;
     }
 
-    static expandStringUsingExpert(value:string, expert:any) {
+    static expandStringUsingExpert(value: string, expert: any) {
       if (value != null) {
         var matches = value.match(/%(\w+)%/g);
         if (matches != null) {
@@ -201,7 +201,7 @@ module Coveo {
       return value;
     }
 
-    static cleanSentenceForQuery(sentence:string) {
+    static cleanSentenceForQuery(sentence: string) {
       return sentence.replace(/[\[\]"'\(\),\.@=<>:]/g, '');
     }
   }

@@ -30,7 +30,7 @@ export class ValueElement {
 
   public build(): ValueElement {
     this.renderer = new ValueElementRenderer(this.facet, this.facetValue).build();
-    this.bindEvent({displayNextTime: true, pinFacet: this.facet.options.preservePosition});
+    this.bindEvent({ displayNextTime: true, pinFacet: this.facet.options.preservePosition });
     return this;
   }
 
@@ -143,7 +143,7 @@ export class ValueElement {
   }
 
   protected handleEventForCheckboxChange(eventBindings: ValueElementEventsBinding) {
-    $$(this.renderer.checkbox).on('change', ()=> {
+    $$(this.renderer.checkbox).on('change', () => {
       if (eventBindings.omniboxObject) {
         this.omniboxCloseEvent(eventBindings.omniboxObject);
       }

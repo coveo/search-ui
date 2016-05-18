@@ -1,11 +1,11 @@
-﻿/**
+/**
  * Information about a single field in the index
  */
 export interface IFieldDescription {
   /**
    * It's type, as a string
    */
-      type: string;
+  type: string;
   /**
    * It's name, as a string
    */

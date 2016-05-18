@@ -103,7 +103,7 @@ module Coveo {
       $$(this.element).removeClass('coveo-tab-disabled');
       super.enable();
     }
-    
+
     public disable() {
       $$(this.element).addClass('coveo-tab-disabled');
       super.disable();
@@ -115,7 +115,7 @@ module Coveo {
     public getCurrentCriteria(): SortCriteria {
       return this.currentCriteria;
     }
-    
+
     /**
      * Returns true if one of the sort criterias matches the passed argument.
      * @param sortId The sort criteria to verify with (e.g. 'date descending')
@@ -182,7 +182,7 @@ module Coveo {
         $$(this.element).toggleClass('coveo-ascending', direction == "ascending");
       }
     }
-    
+
   }
 
   Initialization.registerAutoCreateComponent(Sort);

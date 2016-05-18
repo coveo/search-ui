@@ -1,4 +1,4 @@
-﻿var localStorage = window.localStorage;
+var localStorage = window.localStorage;
 export class LocalStorageUtils<T> {
   constructor(public id: string) {
   }

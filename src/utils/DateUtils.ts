@@ -153,15 +153,15 @@ export class DateUtils {
     }
 
     return ('0' + ((to.getTime() - from.getTime()) / (1000 * 60 * 60)).toFixed()).slice(-2) +
-        ':' + ('0' + ((to.getTime() - from.getTime()) % (1000 * 60 * 60) / (1000 * 60)).toFixed()).slice(-2) +
-        ':' + ('0' + ((to.getTime() - from.getTime()) % (1000 * 60) / (1000)).toFixed()).slice(-2);
+      ':' + ('0' + ((to.getTime() - from.getTime()) % (1000 * 60 * 60) / (1000 * 60)).toFixed()).slice(-2) +
+      ':' + ('0' + ((to.getTime() - from.getTime()) % (1000 * 60) / (1000)).toFixed()).slice(-2);
   }
 }
 
 //Shim for IE8 Date.toISOString
 //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString
 if (!Date.prototype.toISOString) {
-  (function () {
+  (function() {
     function pad(number) {
       if (number < 10) {
         return '0' + number;
@@ -169,15 +169,15 @@ if (!Date.prototype.toISOString) {
       return number;
     }
 
-    Date.prototype.toISOString = function () {
+    Date.prototype.toISOString = function() {
       return this.getUTCFullYear() +
-          '-' + pad(this.getUTCMonth() + 1) +
-          '-' + pad(this.getUTCDate()) +
-          'T' + pad(this.getUTCHours()) +
-          ':' + pad(this.getUTCMinutes()) +
-          ':' + pad(this.getUTCSeconds()) +
-          '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
-          'Z';
+        '-' + pad(this.getUTCMonth() + 1) +
+        '-' + pad(this.getUTCDate()) +
+        'T' + pad(this.getUTCHours()) +
+        ':' + pad(this.getUTCMinutes()) +
+        ':' + pad(this.getUTCSeconds()) +
+        '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
+        'Z';
     };
-  }());
+  } ());
 }

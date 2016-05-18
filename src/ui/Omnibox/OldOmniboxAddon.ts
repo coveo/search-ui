@@ -131,15 +131,15 @@ export class OldOmniboxAddon {
   private rowsToSuggestions(rows: OmniboxDataRow[]): Promise<IOmniboxSuggestion[]>[] {
     return _.map(rows, (row: IPopulateOmniboxEventRow) => {
       if (!Utils.isNullOrUndefined(row.element)) {
-        return new Promise<IOmniboxSuggestion[]>((resolve)=> {
+        return new Promise<IOmniboxSuggestion[]>((resolve) => {
           resolve([{
             dom: row.element,
             index: row.zIndex
           }])
         })
       } else if (!Utils.isNullOrUndefined(row.deferred)) {
-        return new Promise<IOmniboxSuggestion[]>((resolve)=> {
-          row.deferred.then((row)=> {
+        return new Promise<IOmniboxSuggestion[]>((resolve) => {
+          row.deferred.then((row) => {
             if (row.element != null) {
               resolve([{
                 dom: row.element,
