@@ -55,7 +55,7 @@ module Coveo {
     }
   });
 
-  TemplateHelpers.registerTemplateHelper('highlightStreamText', (content: string, termsToHighlight = resolveQueryResultFromCallStack().termsToHighlight, phrasesToHighlight = resolveQueryResultFromCallStack().phrasesToHighlight, opts?: StreamHighlightOptions)=> {
+  TemplateHelpers.registerTemplateHelper('highlightStreamText', (content: string, termsToHighlight = resolveQueryResultFromCallStack().termsToHighlight, phrasesToHighlight = resolveQueryResultFromCallStack().phrasesToHighlight, opts?: StreamHighlightOptions) => {
     if (Utils.exists(content)) {
       if (Utils.isNonEmptyArray(_.keys(termsToHighlight)) || Utils.isNonEmptyArray(_.keys(phrasesToHighlight))) {
         return highlightStreamText(content, termsToHighlight, phrasesToHighlight, opts)
@@ -67,7 +67,7 @@ module Coveo {
     }
   });
 
-  TemplateHelpers.registerTemplateHelper('highlightStreamHTML', (content: string, termsToHighlight = resolveQueryResultFromCallStack().termsToHighlight, phrasesToHighlight = resolveQueryResultFromCallStack().phrasesToHighlight, opts?: StreamHighlightOptions)=> {
+  TemplateHelpers.registerTemplateHelper('highlightStreamHTML', (content: string, termsToHighlight = resolveQueryResultFromCallStack().termsToHighlight, phrasesToHighlight = resolveQueryResultFromCallStack().phrasesToHighlight, opts?: StreamHighlightOptions) => {
     if (Utils.exists(content)) {
       if (Utils.isNonEmptyArray(termsToHighlight)) {
         return highlightStreamHTML(content, termsToHighlight, phrasesToHighlight, opts)
@@ -115,7 +115,7 @@ module Coveo {
     return CurrencyUtils.currencyToString(value, options);
   });
 
-  TemplateHelpers.registerFieldHelper('timeSpan', (value: any, options: TimeSpanUtilsOptions = {isMilliseconds: false})=> {
+  TemplateHelpers.registerFieldHelper('timeSpan', (value: any, options: TimeSpanUtilsOptions = { isMilliseconds: false }) => {
     return new TimeSpan(value, options.isMilliseconds).getHHMMSS();
   });
 
@@ -183,30 +183,30 @@ module Coveo {
 
   TemplateHelpers.registerTemplateHelper('attrEncode', (value: string) => {
     return ('' + value)/* Forces the conversion to string. */
-        .replace(/&/g, '&amp;')/* This MUST be the 1st replacement. */
-        .replace(/'/g, '&apos;')/* The 4 other predefined entities, required. */
-        .replace(/"/g, '&quot;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
+      .replace(/&/g, '&amp;')/* This MUST be the 1st replacement. */
+      .replace(/'/g, '&apos;')/* The 4 other predefined entities, required. */
+      .replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
   });
 
   TemplateHelpers.registerTemplateHelper('templateFields', (result: IQueryResult = resolveQueryResultFromCallStack()) => {
-        var rows: string[] = [];
-        if (result.fields != null) {
-          _.forEach(result.fields, (tableField: any)=> {
-            var tr = $(document.createElement('tr'));
-            _.forEach(tableField, (value: any, key: string)=> {
-              if (_.isObject(value)) {
-                tr.attr(ComponentOptions.attrNameFromName(key), JSON.stringify(value));
-              } else {
-                tr.attr(ComponentOptions.attrNameFromName(key), value);
-              }
-            });
-            return rows.push(tr.get(0).outerHTML);
-          });
-        }
-        return rows.join('');
-      }
+    var rows: string[] = [];
+    if (result.fields != null) {
+      _.forEach(result.fields, (tableField: any) => {
+        var tr = $(document.createElement('tr'));
+        _.forEach(tableField, (value: any, key: string) => {
+          if (_.isObject(value)) {
+            tr.attr(ComponentOptions.attrNameFromName(key), JSON.stringify(value));
+          } else {
+            tr.attr(ComponentOptions.attrNameFromName(key), value);
+          }
+        });
+        return rows.push(tr.get(0).outerHTML);
+      });
+    }
+    return rows.join('');
+  }
   );
 
   TemplateHelpers.registerTemplateHelper('loadTemplates', (templatesToLoad: { [id: string]: any }, once = true) => {
@@ -237,7 +237,7 @@ module Coveo {
 
   var byteMeasure = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB'];
 
-  TemplateHelpers.registerFieldHelper('size', (value: any, options?: {base?:number; presision?:number;}) => {
+  TemplateHelpers.registerFieldHelper('size', (value: any, options?: { base?: number; presision?: number; }) => {
     var size = Number(value);
     var presision = (options != null && options.presision != null ? options.presision : 2);
     var base = (options != null && options.base != null ? options.base : 0);

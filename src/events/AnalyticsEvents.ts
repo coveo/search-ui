@@ -15,7 +15,7 @@ export interface IAnalyticsCustomEventArgs {
 }
 
 export interface IChangeAnalyticsCustomDataEventArgs extends IChangeableAnalyticsDataObject {
-  type : string;
+  type: string;
   metaObject: IChangeableAnalyticsMetaObject;
   actionType: string;
   actionCause: string;

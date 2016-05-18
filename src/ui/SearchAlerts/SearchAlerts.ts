@@ -20,7 +20,7 @@ module Coveo {
       enableFollowQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
       modifiedDateField: ComponentOptions.buildStringOption(),
       enableMessage: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-      messageCloseDelay : ComponentOptions.buildNumberOption({ defaultValue: 3000 }),
+      messageCloseDelay: ComponentOptions.buildNumberOption({ defaultValue: 3000 }),
     };
 
     private modal: ModalBox.ModalBox;
@@ -43,42 +43,42 @@ module Coveo {
         if (!once) {
           once = true;
           this.queryController.getEndpoint().listSubscriptions()
-              .then(() => {
-                this.bind.onRootElement(SettingsEvents.settingsPopulateMenu, (args: ISettingsPopulateMenuArgs) => {
-                  if (this.options.enableManagePanel) {
-                    args.menuData.push({
-                      text: l('SearchAlerts_Panel'),
-                      className: 'coveo-subscriptions-panel',
-                      onOpen: () => this.openPanel(),
-                      onClose: () => this.close()
-                    });
-                  }
-                  if (this.options.enableFollowQuery) {
-                    args.menuData.push({
-                      text: l('SearchAlerts_followQuery'),
-                      className: 'coveo-follow-query',
-                      tooltip: l('FollowQueryDescription'),
-                      onOpen: () => this.followQuery(),
-                      onClose: () => {
-                      }
-                    });
-                  }
-                });
-              })
-              .catch((e: AjaxError)=> {
-                // Trap 503 error, as the listSubscription call is called on every page initialization
-                // to check for current subscriptions. By default, the search alert service is not enabled for most organization
-                // Don't want to pollute the console with un-needed noise and confusion
-                if (e.status != 503) {
-                  throw e;
+            .then(() => {
+              this.bind.onRootElement(SettingsEvents.settingsPopulateMenu, (args: ISettingsPopulateMenuArgs) => {
+                if (this.options.enableManagePanel) {
+                  args.menuData.push({
+                    text: l('SearchAlerts_Panel'),
+                    className: 'coveo-subscriptions-panel',
+                    onOpen: () => this.openPanel(),
+                    onClose: () => this.close()
+                  });
+                }
+                if (this.options.enableFollowQuery) {
+                  args.menuData.push({
+                    text: l('SearchAlerts_followQuery'),
+                    className: 'coveo-follow-query',
+                    tooltip: l('FollowQueryDescription'),
+                    onOpen: () => this.followQuery(),
+                    onClose: () => {
+                    }
+                  });
                 }
               });
+            })
+            .catch((e: AjaxError) => {
+              // Trap 503 error, as the listSubscription call is called on every page initialization
+              // to check for current subscriptions. By default, the search alert service is not enabled for most organization
+              // Don't want to pollute the console with un-needed noise and confusion
+              if (e.status != 503) {
+                throw e;
+              }
+            });
         }
       })
     }
 
     public openPanel() {
-      var title = $(`<div><div class="coveo-subscriptions-panel-close"><span></span></div><div class="coveo-subscriptions-panel-title">${ l("SearchAlerts_Panel") }</div>`);
+      var title = $(`<div><div class="coveo-subscriptions-panel-close"><span></span></div><div class="coveo-subscriptions-panel-title">${l("SearchAlerts_Panel")}</div>`);
       title.find('.coveo-subscriptions-panel-close').on('click', () => {
         this.close();
       });
@@ -87,10 +87,10 @@ module Coveo {
         <table class="coveo-subscriptions-panel-content" cellspacing="0">
           <thead>
             <tr>
-              <th class="coveo-subscriptions-panel-content-type">${ l("SearchAlerts_Type") }</th>
-              <th>${ l("SearchAlerts_Content") }</th>
-              <th>${ l("SearchAlerts_Frequency") }</th>
-              <th class="coveo-subscriptions-panel-content-actions">${ l("SearchAlerts_Actions") }</th>
+              <th class="coveo-subscriptions-panel-content-type">${ l("SearchAlerts_Type")}</th>
+              <th>${ l("SearchAlerts_Content")}</th>
+              <th>${ l("SearchAlerts_Frequency")}</th>
+              <th class="coveo-subscriptions-panel-content-actions">${ l("SearchAlerts_Actions")}</th>
             </tr>
           </thead>
           <tbody class="coveo-subscriptions-panel-spacer">
@@ -100,7 +100,7 @@ module Coveo {
           </tbody>
           <tbody class="coveo-subscriptions-panel-subscriptions">
             <tr class="coveo-subscriptions-panel-no-subscriptions">
-              <td colsspan="3">${ l("SearchAlerts_PanelNoSearchAlerts") }</td>
+              <td colsspan="3">${ l("SearchAlerts_PanelNoSearchAlerts")}</td>
             </tr>
           </tbody>
         </table>
@@ -161,22 +161,22 @@ module Coveo {
       }
 
       var element = $(`<tr class="coveo-subscriptions-panel-subscription">
-        <td class="coveo-subscriptions-panel-content-type">${ l("SearchAlerts_Type_" + subscription.type) }</td>
+        <td class="coveo-subscriptions-panel-content-type">${ l("SearchAlerts_Type_" + subscription.type)}</td>
         <td>
           <div class="coveo-subscriptions-panel-context">
-            ${ context }
+            ${ context}
           </div>
         </td>
         <td>
           <div class="coveo-subscriptions-panel-frequency">
             <select>
-             ${ _.map(frequencies, (frequency) => `<option value="${ frequency.value }">${ frequency.label }</option>`) }
+             ${ _.map(frequencies, (frequency) => `<option value="${frequency.value}">${frequency.label}</option>`)}
             </select>
           </div>
         </td>
         <td class="coveo-subscriptions-panel-content-actions">
-          <div class="coveo-subscriptions-panel-action coveo-subscriptions-panel-action-unfollow">${ l("SearchAlerts_unFollowing") }</div>
-          <div class="coveo-subscriptions-panel-action coveo-subscriptions-panel-action-follow">${ l("SearchAlerts_follow") }</div>
+          <div class="coveo-subscriptions-panel-action coveo-subscriptions-panel-action-unfollow">${ l("SearchAlerts_unFollowing")}</div>
+          <div class="coveo-subscriptions-panel-action coveo-subscriptions-panel-action-follow">${ l("SearchAlerts_follow")}</div>
         </td>
       </tr>`)
 
@@ -266,15 +266,15 @@ module Coveo {
       return dom;
     }
 
-    private static buildFollowQueryRequest(query: IQuery, options:SearchAlertsOptions): ISubscriptionRequest {
+    private static buildFollowQueryRequest(query: IQuery, options: SearchAlertsOptions): ISubscriptionRequest {
       var typeCofig: ISubscriptionQueryRequest = {
-          query: query
+        query: query
       }
-      
-      if(options.modifiedDateField){
+
+      if (options.modifiedDateField) {
         typeCofig.modifiedDateField = options.modifiedDateField;
       }
-      
+
       return {
         type: SubscriptionType.followQuery,
         typeConfig: typeCofig

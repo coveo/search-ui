@@ -1,4 +1,4 @@
-﻿/// <reference path="../Facet/Facet.ts" />
+/// <reference path="../Facet/Facet.ts" />
 
 import {Facet} from '../Facet/Facet';
 import {FacetSearchValuesList} from '../Facet/FacetSearchValuesList';

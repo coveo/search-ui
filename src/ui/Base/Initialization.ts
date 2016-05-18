@@ -111,7 +111,7 @@ export class Initialization {
    * @param options The options for all component (eg: {Searchbox : {enableSearchAsYouType : true}})
    * @param initSearchInterfaceFunction The function to execute to create the {@link SearchInterface} component. Different init call will create different {@link SearchInterface}.
    */
-  public static initializeFramework(element: HTMLElement, options?: any, initSearchInterfaceFunction?: (...args: any[])=> void) {
+  public static initializeFramework(element: HTMLElement, options?: any, initSearchInterfaceFunction?: (...args: any[]) => void) {
     Assert.exists(element);
 
     if (DeviceUtils.isIE8or9()) {
@@ -142,7 +142,7 @@ export class Initialization {
     // the class. Also, we add a class that gives the opportunity for an animation
     // to apply at startup, such as a fade-in that comes in by default.
     var elemsHidden = $$(element).findAll('.coveo-hide-until-loaded');
-    _.each(elemsHidden, (e: HTMLElement)=> {
+    _.each(elemsHidden, (e: HTMLElement) => {
       $$(e).removeClass('coveo-hide-until-loaded');
       $$(e).addClass('coveo-show-after-loaded');
     })
@@ -162,7 +162,7 @@ export class Initialization {
     options = Initialization.resolveDefaultOptions(element, options);
     var searchInterface = new SearchInterface(element, options.SearchInterface, options.Analytics);
     searchInterface.options.originalOptionsObject = options;
-    var initParameters: IInitializationParameters = {options: options, bindings: searchInterface.getBindings()};
+    var initParameters: IInitializationParameters = { options: options, bindings: searchInterface.getBindings() };
     Initialization.automaticallyCreateComponentsInside(element, initParameters);
   }
 
@@ -175,7 +175,7 @@ export class Initialization {
     options = Initialization.resolveDefaultOptions(element, options);
     var searchInterface = new StandaloneSearchInterface(element, options.StandaloneSearchInterface, options.Analytics);
     searchInterface.options.originalOptionsObject = options;
-    var initParameters: IInitializationParameters = {options: options, bindings: searchInterface.getBindings()};
+    var initParameters: IInitializationParameters = { options: options, bindings: searchInterface.getBindings() };
     Initialization.automaticallyCreateComponentsInside(element, initParameters);
   }
 
@@ -237,7 +237,7 @@ export class Initialization {
     var result: IQueryResult = undefined;
 
     if (initParameters != undefined) {
-      _.each(<{[key:string]: any}>initParameters.bindings, (value, key)=> {
+      _.each(<{ [key: string]: any }>initParameters.bindings, (value, key) => {
         bindings[key] = value;
       });
       options = initParameters.options;
@@ -309,11 +309,11 @@ export class Initialization {
     var boxRef = Component.getComponentRef(fromInitTypeToBoxReference);
     if (boxRef) {
       new Logger(element).info('Initializing box of type ' + fromInitTypeToBoxReference);
-      var injectFunction: ()=>any = injectMarkup ? boxRef.getInjection : ()=> {
+      var injectFunction: () => any = injectMarkup ? boxRef.getInjection : () => {
       };
       var box = new boxRef(element, options[fromInitTypeToBoxReference], options.Analytics, injectFunction, options);
       box.options.originalOptionsObject = options;
-      var initParameters: IInitializationParameters = {options: options, bindings: box.getBindings()};
+      var initParameters: IInitializationParameters = { options: options, bindings: box.getBindings() };
       Initialization.automaticallyCreateComponentsInside(element, initParameters);
     } else {
       new Logger(element).error('Trying to initialize box of type : ' + fromInitTypeToBoxReference + ' but not found in code (not compiled)!');
@@ -457,7 +457,7 @@ export class Initialization {
             optionsToUse = Utils.extendDeep(optionsForElementId, initOptions);
             optionsToUse = Utils.extendDeep(optionsForComponentClass, optionsToUse);
           }
-          var initParamToUse = _.extend({}, initParameters, {options: optionsToUse});
+          var initParamToUse = _.extend({}, initParameters, { options: optionsToUse });
           Initialization.createComponentOfThisClassOnElement(componentClass['ID'], matchingElement, initParamToUse);
         }
       });

@@ -27,22 +27,22 @@ export class TopQueryAddon {
       return this.cache[text];
     }
 
-    var promise = this.omnibox.usageAnalytics.getTopQueries({queryText: text, pageSize: 5})
-                      .then((results) => {
-                        if (results.length == 1 && results[0].toLowerCase() == text.toLowerCase()) {
-                          results = []
-                        }
+    var promise = this.omnibox.usageAnalytics.getTopQueries({ queryText: text, pageSize: 5 })
+      .then((results) => {
+        if (results.length == 1 && results[0].toLowerCase() == text.toLowerCase()) {
+          results = []
+        }
 
-                        return _.map(results, (result, i) => {
-                          return {
-                            html: Coveo.MagicBox.Utils.highlightText(result, text, true),
-                            text: result,
-                            index: TopQueryAddon.Index - i / results.length
-                          }
-                        });
-                      })
+        return _.map(results, (result, i) => {
+          return {
+            html: Coveo.MagicBox.Utils.highlightText(result, text, true),
+            text: result,
+            index: TopQueryAddon.Index - i / results.length
+          }
+        });
+      })
 
-    promise.catch(()=> {
+    promise.catch(() => {
       delete this.cache[text];
     })
 

@@ -81,13 +81,13 @@ module Coveo {
       /**
        * Specifies a customized constant expression to send when querying the expanded results.
        */
-      expandExpression: ComponentOptions.buildStringOption({depend : 'enableExpand'}),
+      expandExpression: ComponentOptions.buildStringOption({ depend: 'enableExpand' }),
       /**
        * Specifies the maximum number of expanded results.<br/>
        * The default value is 100.<br/>
        * The minimum value is 1.
        */
-      maximumExpandedResults: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1 , depend: 'enableExpand'})
+      maximumExpandedResults: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1, depend: 'enableExpand' })
     }
 
     /**
@@ -296,10 +296,10 @@ module Coveo {
 
       var builtQuery = query.build();
       return this.queryController.getEndpoint().search(builtQuery)
-          .then((results: IQueryResults) => {
-            this.handlePreprocessMoreResults(results);
-            return results.results;
-          });
+        .then((results: IQueryResults) => {
+          this.handlePreprocessMoreResults(results);
+          return results.results;
+        });
     }
 
     private handlePreprocessMoreResults(queryResults: IQueryResults) {

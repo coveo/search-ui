@@ -11,19 +11,19 @@ module Coveo {
   export class EmailActions extends Coveo.Component {
     static ID = 'EmailActions';
 
-    static options:EmailActionsOptions = {
-      currentUserEmail: ComponentOptions.buildStringOption({defaultValue: ''}),
-      reply: ComponentOptions.buildBooleanOption({defaultValue: true}),
-      replyAll: ComponentOptions.buildBooleanOption({defaultValue: true}),
-      forward: ComponentOptions.buildBooleanOption({defaultValue: true})
-  }
+    static options: EmailActionsOptions = {
+      currentUserEmail: ComponentOptions.buildStringOption({ defaultValue: '' }),
+      reply: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+      replyAll: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+      forward: ComponentOptions.buildBooleanOption({ defaultValue: true })
+    }
 
-    private reply:EmailAction;
-    private replyAll:EmailAction;
-    private forward:EmailAction;
-    public loadingAnimation:HTMLElement;
+    private reply: EmailAction;
+    private replyAll: EmailAction;
+    private forward: EmailAction;
+    public loadingAnimation: HTMLElement;
 
-    constructor(public element:HTMLElement, public options:EmailActionsOptions, bindings?:IComponentBindings, private result?:IQueryResult) {
+    constructor(public element: HTMLElement, public options: EmailActionsOptions, bindings?: IComponentBindings, private result?: IQueryResult) {
       super(element, EmailActions.ID, bindings);
 
       this.options = ComponentOptions.initComponentOptions(element, EmailActions, options);

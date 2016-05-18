@@ -29,19 +29,19 @@ module Coveo {
        * ```
        * which will use a previously registered template ID (see {@link TemplateCache})
        */
-      resultTemplate: ComponentOptions.buildTemplateOption({defaultFunction: (e) => new DefaultResultAttachmentTemplate()}),
+      resultTemplate: ComponentOptions.buildTemplateOption({ defaultFunction: (e) => new DefaultResultAttachmentTemplate() }),
       /**
        * Specifies the template to use to render sub-attachments, which are attachments within other attachments,
        * for example multiple files embedded in a .zip attachment.<br/>
        * Sub-attachments can also contain other sub-attachments.<br/>
        * The template can be specified the same way as {@link ResultAttachments.options.resultTemplate resultTemplate}
        */
-      subResultTemplate: ComponentOptions.buildTemplateOption({postProcessing: (value: Template, options: IResultAttachmentsOptions) => value != null ? value : options.resultTemplate}),
+      subResultTemplate: ComponentOptions.buildTemplateOption({ postProcessing: (value: Template, options: IResultAttachmentsOptions) => value != null ? value : options.resultTemplate }),
       /**
        * Specifies the maximum nesting depth at which the component should stop rendering sub-attachments.<br/>
        * The default value is 5.
        */
-      maximumAttachmentLevel: ComponentOptions.buildNumberOption({defaultValue: 5, min: 0})
+      maximumAttachmentLevel: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0 })
     }
 
     private attachments: IQueryResult[];
@@ -70,7 +70,7 @@ module Coveo {
         QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), attachment)
         var container = this.attachmentLevel > 0 ? this.options.subResultTemplate.instantiateToElement(attachment) : this.options.resultTemplate.instantiateToElement(attachment);
 
-        this.autoCreateComponentsInsideResult(container, _.extend({}, attachment, {attachments: []}));
+        this.autoCreateComponentsInsideResult(container, _.extend({}, attachment, { attachments: [] }));
 
         $$(container).addClass('coveo-result-attachments-container');
         this.element.appendChild(container);

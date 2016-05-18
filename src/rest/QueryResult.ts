@@ -69,8 +69,8 @@ export interface IQueryResult {
    * This value specifies whether the result was recommended by Coveo Reveal.
    */
   isRecommendation: boolean;
-  termsToHighlight?: {[originalTerm: string]: string[]};
-  phrasesToHighlight: {[phrase: string]: {[originalTerm: string]: string[]}};
+  termsToHighlight?: { [originalTerm: string]: string[] };
+  phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } };
   rankingModifier?: string;
 
   // Those fields are added by the JS UI framework

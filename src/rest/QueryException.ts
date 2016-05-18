@@ -5,6 +5,6 @@ export interface IQueryException {
   /**
    * The exception code
    */
-  code:string;
-  context:string;
+  code: string;
+  context: string;
 }

@@ -1,4 +1,4 @@
-﻿/// <reference path="../ui/HierarchicalFacet/HierarchicalFacet.ts" />
+/// <reference path="../ui/HierarchicalFacet/HierarchicalFacet.ts" />
 /// <reference path="./FacetQueryController.ts" />
 
 import {FacetQueryController} from './FacetQueryController';

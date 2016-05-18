@@ -34,7 +34,7 @@ module Coveo {
     private showMessage(dom: JQuery, message: string, error: boolean) {
       this.message = $(`<div class="coveo-subscriptions-messages-message">
           <div class="coveo-subscriptions-messages-info-close"></div>
-          <div class="coveo-subscriptions-messages-content">${ message }</div>
+          <div class="coveo-subscriptions-messages-content">${ message}</div>
         </div>`);
 
       this.message.toggleClass('coveo-subscriptions-messages-error', error)

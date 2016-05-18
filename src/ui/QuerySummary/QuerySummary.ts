@@ -20,12 +20,12 @@ module Coveo {
        * Specifies whether the search tips are displayed to the end user when there are no search results.<br/>
        * The default value is <code>true</code>.
        */
-      enableSearchTips: ComponentOptions.buildBooleanOption({defaultValue: true}),
+      enableSearchTips: ComponentOptions.buildBooleanOption({ defaultValue: true }),
       /**
        * Specifies whether to hide the information about the current range of results being displayed and only display the search tips.<br/>
        * The default value is <code>false</code>.
        */
-      onlyDisplaySearchTips: ComponentOptions.buildBooleanOption({defaultValue: false})
+      onlyDisplaySearchTips: ComponentOptions.buildBooleanOption({ defaultValue: false })
     };
 
     private textContainer: HTMLElement;
@@ -34,8 +34,8 @@ module Coveo {
       super(element, QuerySummary.ID, bindings);
 
       this.options = ComponentOptions.initComponentOptions(element, QuerySummary, options);
-      this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs)=> this.handleQuerySuccess(data));
-      this.bind.onRootElement(QueryEvents.queryError, ()=> this.hide());
+      this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
+      this.bind.onRootElement(QueryEvents.queryError, () => this.hide());
       this.hide();
       this.textContainer = $$('span').el;
       this.element.appendChild(this.textContainer);
@@ -60,9 +60,9 @@ module Coveo {
           var last = Globalize.format(data.query.firstResult + data.results.results.length, 'n0');
           var totalCount = Globalize.format(data.results.totalCountFiltered, 'n0');
 
-          var highlightFirst = $$('span', {className: 'coveo-highlight'}, first).el;
-          var highlightLast = $$('span', {className: 'coveo-highlight'}, last).el;
-          var highlightTotal = $$('span', {className: 'coveo-highlight'}, totalCount).el;
+          var highlightFirst = $$('span', { className: 'coveo-highlight' }, first).el;
+          var highlightLast = $$('span', { className: 'coveo-highlight' }, last).el;
+          var highlightTotal = $$('span', { className: 'coveo-highlight' }, totalCount).el;
 
           this.textContainer.innerHTML = l('ShowingResultsOf', highlightFirst.outerHTML, highlightLast.outerHTML, highlightTotal.outerHTML, data.results.results.length);
         }
@@ -83,15 +83,15 @@ module Coveo {
       if (queryEscaped != '') {
         noResultsForString = $$('div', {
           className: 'coveo-query-summary-no-results-string'
-        }, l('noResultFor', $$('span', {className: 'coveo-highlight'}, queryEscaped).el.outerHTML));
+        }, l('noResultFor', $$('span', { className: 'coveo-highlight' }, queryEscaped).el.outerHTML));
       }
       var cancelLastAction = $$('div', {
         className: 'coveo-query-summary-cancel-last'
       }, l('CancelLastAction'));
 
-      cancelLastAction.on('click', ()=> {
+      cancelLastAction.on('click', () => {
         this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.noResultsBack, {}, this.root);
-        this.usageAnalytics.logSearchEvent < IAnalyticsNoMeta >(AnalyticsActionCauseList.noResultsBack, {})
+        this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.noResultsBack, {})
         history.back();
       });
 

@@ -5,9 +5,9 @@ module Coveo {
     static ID = 'Excerpt';
 
     constructor(public element: HTMLElement,
-                public options?: any,
-                public bindings?: IComponentBindings,
-                public result?: IQueryResult) {
+      public options?: any,
+      public bindings?: IComponentBindings,
+      public result?: IQueryResult) {
       super(element, Excerpt.ID, bindings);
 
       this.options = ComponentOptions.initComponentOptions(element, Excerpt, options);

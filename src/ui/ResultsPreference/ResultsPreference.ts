@@ -1,4 +1,4 @@
-﻿
+
 
 
 
@@ -26,12 +26,12 @@ module Coveo {
        * Enable or disable the options to open results in outlook.<br/>
        * Default value is <code>true</code>
        */
-      enableOpenInOutlook: ComponentOptions.buildBooleanOption({defaultValue: true}),
+      enableOpenInOutlook: ComponentOptions.buildBooleanOption({ defaultValue: true }),
       /**
        * Enable or disable the options to open results in a new window.<br/>
        * Default value is <code>true</code>
        */
-      enableOpenInNewWindow: ComponentOptions.buildBooleanOption({defaultValue: true})
+      enableOpenInNewWindow: ComponentOptions.buildBooleanOption({ defaultValue: true })
     };
 
     public preferences: ResultLinkOptions;
@@ -96,11 +96,11 @@ module Coveo {
 
     private buildCheckboxesInput() {
       var inputs = [];
-      if(this.options.enableOpenInOutlook){
-        inputs.push({label: l('OpenInOutlookWhenPossible')});
+      if (this.options.enableOpenInOutlook) {
+        inputs.push({ label: l('OpenInOutlookWhenPossible') });
       }
-      if(this.options.enableOpenInNewWindow){
-        inputs.push({label: l('AlwaysOpenInNewWindow')});
+      if (this.options.enableOpenInNewWindow) {
+        inputs.push({ label: l('AlwaysOpenInNewWindow') });
       }
       this.preferencePanelCheckboxInput = new PreferencesPanelCheckboxInput(inputs, ResultsPreferences.ID);
       var container = $$('div', {
@@ -109,7 +109,7 @@ module Coveo {
 
       container.el.appendChild(this.preferencePanelCheckboxInput.build());
       var executeOnChange = container.findAll('input');
-      _.each(executeOnChange, (toExec)=> {
+      _.each(executeOnChange, (toExec) => {
         $$(toExec).on('change', (e: Event) => {
           this.fromPreferenceChangeEventToUsageAnalyticsLog(e);
           this.save();
@@ -147,10 +147,10 @@ module Coveo {
     private fromPreferenceChangeEventToUsageAnalyticsLog(e: Event) {
       var type = (<HTMLInputElement>e.target).checked ? 'selected' : 'unselected';
       var preference = $(e.target).val();
-      this.usageAnalytics.logCustomEvent<IAnalyticsPreferencesChangeMeta>(AnalyticsActionCauseList.preferencesChange, {preferenceName: preference, preferenceType : type}, this.element);
-      this.usageAnalytics.logSearchEvent<IAnalyticsPreferencesChangeMeta>(AnalyticsActionCauseList.preferencesChange, {preferenceName: preference, preferenceType : type});
+      this.usageAnalytics.logCustomEvent<IAnalyticsPreferencesChangeMeta>(AnalyticsActionCauseList.preferencesChange, { preferenceName: preference, preferenceType: type }, this.element);
+      this.usageAnalytics.logSearchEvent<IAnalyticsPreferencesChangeMeta>(AnalyticsActionCauseList.preferencesChange, { preferenceName: preference, preferenceType: type });
     }
   }
 
   Initialization.registerAutoCreateComponent(ResultsPreferences);
-} 
+}

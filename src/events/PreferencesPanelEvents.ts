@@ -1,4 +1,4 @@
-﻿
+
 
 module Coveo {
   export interface SavePreferencesEventArgs {

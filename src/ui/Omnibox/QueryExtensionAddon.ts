@@ -60,12 +60,12 @@ export class QueryExtensionAddon {
       if (current != null) {
 
         var used: string[] = _.chain(queryExtensionArgumentResults)
-                              .map((result) => {
-                                var name = result.find('QueryExtensionArgumentName');
-                                return name && name.toString();
-                              })
-                              .compact()
-                              .value();
+          .map((result) => {
+            var name = result.find('QueryExtensionArgumentName');
+            return name && name.toString();
+          })
+          .compact()
+          .value();
 
         var name = queryExtension.find('QueryExtensionName').toString();
 
@@ -90,7 +90,7 @@ export class QueryExtensionAddon {
   }
 
   private hashValueToSuggestion(hash: QueryExtensionAddonHash, promise: Promise<string[]>): Promise<IOmniboxSuggestion[]> {
-    return promise.then((values)=> {
+    return promise.then((values) => {
       var suggestions: IOmniboxSuggestion[] = _.map(values, (value, i) => {
         return {
           html: Coveo.MagicBox.Utils.highlightText(value, hash.current, true),
@@ -115,18 +115,18 @@ export class QueryExtensionAddon {
     var extensionName = current.toLowerCase();
     return this.getExtensions().then((extensions: IExtension[]) => {
       var matchExtensions = _.chain(extensions)
-                             .map((extension: IExtension) => {
-                               return {
-                                 index: extension.name.toLowerCase().indexOf(extensionName),
-                                 extension: extension.name
-                               };
-                             })
-                             .filter((extension) => {
-                               return extension.index != -1 && extension.extension.length > extensionName.length;
-                             })
-                             .sortBy('index')
-                             .pluck('extension')
-                             .value();
+        .map((extension: IExtension) => {
+          return {
+            index: extension.name.toLowerCase().indexOf(extensionName),
+            extension: extension.name
+          };
+        })
+        .filter((extension) => {
+          return extension.index != -1 && extension.extension.length > extensionName.length;
+        })
+        .sortBy('index')
+        .pluck('extension')
+        .value();
       matchExtensions = _.first(matchExtensions, 5);
       return matchExtensions;
     })

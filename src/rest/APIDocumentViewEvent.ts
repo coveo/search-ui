@@ -10,7 +10,7 @@ export interface IAPIDocumentViewEvent {
   documentUri: string;
   documentUriHash: string;
   viewMethod: string;
-  actionCause : string;
+  actionCause: string;
   queryPipeline: string;
   splitTestRunName: string;
   splitTestRunVersion: string;

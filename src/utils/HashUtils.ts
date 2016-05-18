@@ -201,7 +201,7 @@ export class HashUtils {
     value = value.substr(1);
     value = value.substr(0, value.length - 1);
     var array = value.split(',');
-    return _.map(array, (val)=> {
+    return _.map(array, (val) => {
       return decodeURIComponent(val);
     })
   }

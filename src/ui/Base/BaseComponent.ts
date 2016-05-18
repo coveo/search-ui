@@ -35,7 +35,7 @@ export class BaseComponent {
   }
 
   private initDebugInfo() {
-    $$(this.element).on('doubleclick', function (e: MouseEvent) {
+    $$(this.element).on('doubleclick', function(e: MouseEvent) {
       if (e.altKey) {
         var debugInfo = this.debugInfo();
         if (debugInfo != null) {

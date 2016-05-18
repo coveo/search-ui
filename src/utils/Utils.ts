@@ -15,7 +15,7 @@ export class Utils {
 
   static isNullOrUndefined(obj: any): boolean {
     return Utils.isUndefined(obj) || Utils.isNull(obj);
-}
+  }
 
   static exists(obj: any): boolean {
     return !Utils.isNullOrUndefined(obj);
@@ -120,7 +120,7 @@ export class Utils {
   }
 
   static decodeHTMLEntities(rawString: string) {
-    return rawString.replace(/&#(\d+);/g, function (match, dec) {
+    return rawString.replace(/&#(\d+);/g, function(match, dec) {
       return String.fromCharCode(dec);
     });
   }
@@ -206,12 +206,12 @@ export class Utils {
     var result;
     var timeout: number = null;
     var previous = 0;
-    var later = function () {
+    var later = function() {
       previous = options.leading === false ? 0 : new Date().getTime();
       timeout = null;
       result = func.apply(context, args);
     };
-    return function () {
+    return function() {
       var now = new Date().getTime();
       if (!previous && options.leading === false) {
         previous = now;
@@ -281,7 +281,7 @@ export class Utils {
   static debounce(func: Function, wait: number) {
     var timeout: number;
     var stackTraceTimeout: number;
-    return function (...args: any[]) {
+    return function(...args: any[]) {
       if (timeout == null) {
         timeout = setTimeout(() => {
           timeout = null;
@@ -291,7 +291,7 @@ export class Utils {
           stackTraceTimeout = null;
         });
       } else if (stackTraceTimeout == null) {
-      clearTimeout(timeout);
+        clearTimeout(timeout);
         timeout = setTimeout(() => {
           func.apply(this, args);
           timeout = null;
@@ -319,5 +319,3 @@ export class Utils {
     return camelCased.replace(/([a-z][A-Z])/g, (g) => g[0] + '-' + g[1].toLowerCase());
   }
 }
-
-

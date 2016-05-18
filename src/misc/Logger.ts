@@ -1,45 +1,45 @@
 // Ensure that we're not going to get console is undefined error in IE8-9
 if (!window['console']) {
   console = {
-    log: function () {
+    log: function() {
     },
-    debug: function () {
+    debug: function() {
     },
-    info: function () {
+    info: function() {
     },
-    warn: function () {
+    warn: function() {
     },
-    error: function () {
+    error: function() {
     },
-    assert: function () {
+    assert: function() {
     },
-    clear: function () {
+    clear: function() {
     },
-    count: function () {
+    count: function() {
     },
-    dir: function () {
+    dir: function() {
     },
-    dirxml: function () {
+    dirxml: function() {
     },
-    group: function () {
+    group: function() {
     },
-    groupCollapsed: function () {
+    groupCollapsed: function() {
     },
-    groupEnd: function () {
+    groupEnd: function() {
     },
-    msIsIndependentlyComposed: function (element: any): any {
+    msIsIndependentlyComposed: function(element: any): any {
     },
-    profile: function () {
+    profile: function() {
     },
-    profileEnd: function () {
+    profileEnd: function() {
     },
-    select: function () {
+    select: function() {
     },
-    time: function () {
+    time: function() {
     },
-    timeEnd: function () {
+    timeEnd: function() {
     },
-    trace: function () {
+    trace: function() {
     }
   };
 }

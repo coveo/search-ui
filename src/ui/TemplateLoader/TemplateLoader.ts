@@ -1,8 +1,8 @@
 
 module Coveo {
   export interface TemplateLoaderOptions {
-    template:Template;
-    condition?:String;
+    template: Template;
+    condition?: String;
   }
 
   export class TemplateLoader extends Component {
@@ -14,9 +14,9 @@ module Coveo {
     };
 
     constructor(public element: HTMLElement,
-                public options?: TemplateLoaderOptions,
-                public bindings?: IComponentBindings,
-                public result?: IQueryResult) {
+      public options?: TemplateLoaderOptions,
+      public bindings?: IComponentBindings,
+      public result?: IQueryResult) {
       super(element, TemplateLoader.ID, bindings);
       this.options = ComponentOptions.initComponentOptions(element, TemplateLoader, options);
       this.result = this.result || this.resolveResult();
@@ -33,20 +33,20 @@ module Coveo {
     }
 
     private initialize() {
-      if(this.options.template != null){
+      if (this.options.template != null) {
         var initOptions = this.searchInterface.options;
         var initParameters: IInitializationParameters = {
           options: initOptions,
           bindings: this.bindings,
           result: this.result
         };
-        
+
         var parents = $(this.element).parents("." + Component.computeCssClassName(TemplateLoader));
-        _.each(parents, (parent)=>{
+        _.each(parents, (parent) => {
           var parentHTML = $(parent).clone().children().remove().end().get(0).outerHTML;
           Assert.check(parentHTML.indexOf(this.element.outerHTML) === -1, "TemplateLoader cannot load a template into itself.")
         })
-        
+
         this.element.innerHTML = this.options.template.instantiateToString(this.result, false);
         Initialization.automaticallyCreateComponentsInside(this.element, initParameters);
       }

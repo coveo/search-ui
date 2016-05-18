@@ -164,7 +164,7 @@ export interface IQuery {
   groupBy?: IGroupByRequest[];
   debug?: boolean;
   timezone?: string;
-  enableDuplicateFiltering?:boolean;
+  enableDuplicateFiltering?: boolean;
   /**
    * Whether the index should take collaborative rating in account when ranking result. See : {@link ResultRating}
    */
@@ -172,13 +172,13 @@ export interface IQuery {
   /**
    * Specifies the childField when doing parent-child loading (See : {@link Folding})
    */
-  childField?:string;
+  childField?: string;
   /**
    * Specifies the parentField when doing parent-child loading (See : {@link Folding})
    */
-  parentField?:string;
+  parentField?: string;
   /**
    * The context is a map of key_value that can be used in the Query pipeline in the Coveo platform.<br/>
    */
-  context?: {[name:string]:any}
+  context?: { [name: string]: any }
 }

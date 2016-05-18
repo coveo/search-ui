@@ -6,16 +6,16 @@ module Coveo {
     style?: string;
     weight?: string;
     textAlign?: string;
-    
+
     marginTop?: string;
     marginBottom?: string;
     marginLeft?: string;
     marginRight?: string;
-    
+
     paddingTop?: string;
     paddingBottom?: string;
     paddingLeft?: string;
-    paddingRight?: string;    
+    paddingRight?: string;
   }
 
   export class Text extends Component {
@@ -38,8 +38,8 @@ module Coveo {
     };
 
     constructor(public element: HTMLElement,
-                public options?: TextOptions,
-                bindings?: IComponentBindings) {
+      public options?: TextOptions,
+      bindings?: IComponentBindings) {
       super(element, Text.ID, bindings);
       this.options = ComponentOptions.initComponentOptions(element, Text, options);
       $(this.element).text(this.options.value);

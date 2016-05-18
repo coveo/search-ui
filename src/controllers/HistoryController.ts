@@ -46,11 +46,11 @@ export class HistoryController extends RootComponent {
       this.logger.trace('Query model changed. Update hash');
       this.updateHashFromModel();
     });
-    this.hashchange = ()=> {
+    this.hashchange = () => {
       this.handleHashChange();
     }
     this.windoh.addEventListener('hashchange', this.hashchange);
-    $$(this.element).on(InitializationEvents.nuke, ()=> this.handleNuke());
+    $$(this.element).on(InitializationEvents.nuke, () => this.handleNuke());
   }
 
   /**

@@ -29,7 +29,7 @@ export class SearchButton extends Component {
   constructor(public element: HTMLElement, public options?: ISearchButtonOptions, bindings?: IComponentBindings) {
     super(element, SearchButton.ID, bindings);
 
-    this.bind.on(element, 'click', ()=> this.handleClick());
+    this.bind.on(element, 'click', () => this.handleClick());
     // Provide a magnifier icon if element contains nothing
     if (Utils.trim($$(this.element).text()) == '') {
       element.innerHTML = '<span class="coveo-icon">' + l("Search") + '</span>';

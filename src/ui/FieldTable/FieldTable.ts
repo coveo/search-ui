@@ -26,21 +26,21 @@ module Coveo {
        * Specifies whether to allow the minimization (collapsing) of the FieldTable.<br/>
        * This creates a 'minimize' and 'expand' link above the table.
        */
-      allowMinimization: ComponentOptions.buildBooleanOption({defaultValue: true}),
+      allowMinimization: ComponentOptions.buildBooleanOption({ defaultValue: true }),
       /**
        * Specifies the caption to show on the minimize link (when the table is expanded).<br/>
        * By default, it is set to the localized version of "Details".
        */
-      expandedTitle: ComponentOptions.buildStringOption({defaultValue: 'Details'.toLocaleString(), depend: 'allowMinimization'}),
+      expandedTitle: ComponentOptions.buildStringOption({ defaultValue: 'Details'.toLocaleString(), depend: 'allowMinimization' }),
       /**
        * Specifies the caption to show on the expand link (when the table is minimized).<br/>
        * By default, it is set to the localized version of "Details".
        */
-      minimizedTitle: ComponentOptions.buildStringOption({defaultValue: 'Details'.toLocaleString(), depend: 'allowMinimization'}),
+      minimizedTitle: ComponentOptions.buildStringOption({ defaultValue: 'Details'.toLocaleString(), depend: 'allowMinimization' }),
       /**
        * Specifies whether the table is minimized by default.
        */
-      minimizedByDefault: ComponentOptions.buildBooleanOption({depend: 'allowMinimization'})
+      minimizedByDefault: ComponentOptions.buildBooleanOption({ depend: 'allowMinimization' })
     };
 
     public isExpanded: boolean;
@@ -72,7 +72,7 @@ module Coveo {
       }
 
       if (this.isTogglable()) {
-        this.toggleContainer = $$('div', {className: 'coveo-field-table-toggle-container'}).el;
+        this.toggleContainer = $$('div', { className: 'coveo-field-table-toggle-container' }).el;
         this.buildToggle();
         $$(this.toggleContainer).insertBefore(this.element);
         this.toggleContainer.appendChild(this.element);
@@ -88,7 +88,7 @@ module Coveo {
     public toggle(anim = false) {
       if (this.isTogglable()) {
         this.isExpanded = !this.isExpanded;
-        this.isExpanded ? this.expand(anim) : this.minimize(anim) ;
+        this.isExpanded ? this.expand(anim) : this.minimize(anim);
       }
     }
 
@@ -129,15 +129,15 @@ module Coveo {
     }
 
     private buildToggle() {
-      this.toggleIcon = $$('span', {className: 'coveo-field-table-toggle-icon'}).el;
-      this.toggleCaption = $$('span', {className: 'coveo-field-table-toggle-caption'}).el;
+      this.toggleIcon = $$('span', { className: 'coveo-field-table-toggle-icon' }).el;
+      this.toggleCaption = $$('span', { className: 'coveo-field-table-toggle-caption' }).el;
 
-      this.toggleButton = $$('div', {className: 'coveo-field-table-toggle'}).el;
+      this.toggleButton = $$('div', { className: 'coveo-field-table-toggle' }).el;
       this.toggleButton.appendChild(this.toggleCaption);
       this.toggleButton.appendChild(this.toggleIcon);
       $$(this.toggleButton).insertBefore(this.element);
 
-      this.toggleButtonInsideTable = $$('span', {className: 'coveo-field-table-toggle-icon-up coveo-field-table-toggle'}).el;
+      this.toggleButtonInsideTable = $$('span', { className: 'coveo-field-table-toggle-icon-up coveo-field-table-toggle' }).el;
       this.element.appendChild(this.toggleButtonInsideTable);
 
       if (this.options.minimizedByDefault === true) {

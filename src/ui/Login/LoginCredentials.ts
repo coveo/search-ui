@@ -7,12 +7,12 @@ module Coveo {
     private loginPassword: JQuery;
 
     private userInputTemplate = _.template(
-        "<div class='coveo-input-container'>\
+      "<div class='coveo-input-container'>\
           <span class='coveo-username-icon'></span>\
           <input class='coveo-username' type='text' placeholder='" + l("Username") + "' autocorrect='off' autocapitalize='off' />\
       </div>");
     private passwordInputTemplate = _.template(
-        "<div class='coveo-input-container'>\
+      "<div class='coveo-input-container'>\
           <span class='coveo-password-icon'></span>\
           <input class='coveo-password'  type='password' placeholder='" + l("Password") + "' autocorrect='off' autocapitalize='off' />\
       </div>");

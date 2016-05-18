@@ -23,13 +23,13 @@ module Coveo {
        * has no thumbnail in the index.<br/>
        * Default value: <code>coveo-no-thumbnail</code>
        */
-      noThumbnailClass: ComponentOptions.buildStringOption({defaultValue:'coveo-no-thumbnail'}),
+      noThumbnailClass: ComponentOptions.buildStringOption({ defaultValue: 'coveo-no-thumbnail' }),
       /**
        * Specifies if a clickable {@link ResultLink} is to be created around the Thumbnail.<br/>
        * Uses all the same options as as {@link ResultLink} except <code>field</code><br/>
        * Default value is <code>false</code>
        */
-      clickable:  ComponentOptions.buildBooleanOption({defaultValue:false})
+      clickable: ComponentOptions.buildBooleanOption({ defaultValue: false })
     };
 
     static parent = ResultLink;
@@ -55,7 +55,7 @@ module Coveo {
 
       this.options = ComponentOptions.initOptions(element, <any>Thumbnail.options, options);
 
-      if(this.options.clickable){
+      if (this.options.clickable) {
         new ResultLink(this.element, this.options, this.bindings, this.result);
       }
 
@@ -88,11 +88,11 @@ module Coveo {
     }
 
     private buildImageWithDirectSrcAttribute(endpoint: ISearchEndpoint) {
-      var dataStreamUri = endpoint.getViewAsDatastreamUri(this.result.uniqueId, '$Thumbnail$', {contentType: "image/png"});
+      var dataStreamUri = endpoint.getViewAsDatastreamUri(this.result.uniqueId, '$Thumbnail$', { contentType: "image/png" });
       this.element.setAttribute('src', dataStreamUri);
     }
 
-    private buildImageWithBase64SrcAttribute(endpoint:ISearchEndpoint) {
+    private buildImageWithBase64SrcAttribute(endpoint: ISearchEndpoint) {
       endpoint.getRawDataStream(this.result.uniqueId, '$Thumbnail$')
         .then((response) => {
           var rawBinary = String.fromCharCode.apply(null, new Uint8Array(response));

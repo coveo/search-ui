@@ -28,7 +28,7 @@ export class FacetValuesList {
   }
 
   public getAllFacetValue(): FacetValue[] {
-    return _.map(this.getAll(), (v: ValueElement)=> {
+    return _.map(this.getAll(), (v: ValueElement) => {
       return v.facetValue
     })
   }
@@ -128,7 +128,7 @@ export class FacetValuesList {
 
   private facetValueShouldBeRemoved(facetValue: FacetValue): boolean {
     return facetValue.occurrences == 0 &&
-        (facetValue.delta == 0 || facetValue.delta == undefined) && !facetValue.selected && !facetValue.excluded && !this.facet.keepDisplayedValuesNextTime
+      (facetValue.delta == 0 || facetValue.delta == undefined) && !facetValue.selected && !facetValue.excluded && !this.facet.keepDisplayedValuesNextTime
   }
 
   private ensureFacetValueIsInList(value: any) {

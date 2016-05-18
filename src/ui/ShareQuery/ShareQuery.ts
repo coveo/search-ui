@@ -4,7 +4,7 @@
 module Coveo {
   export interface IShareQueryOptions {
   }
-  
+
   /**
    * ShareQuery shows 2 text boxes, one with a shareable link and the
    * other with the complete query expression of the currently performed query.<br/>
@@ -54,35 +54,35 @@ module Coveo {
     public close() {
       $$(this.element).removeClass('coveo-share-query-opened');
     }
-    
+
     /**
      * Get the link to the current query
      */
     public getLinkToThisQuery(): string {
       return this.linkToThisQuery.value;
     }
-    
+
     /**
      * Set the link to the current query
      */
     public setLinkToThisQuery(link: string): void {
       this.linkToThisQuery.value = link;
     }
-    
+
     /**
      * Get the complete query string
      */
     public getCompleteQuery(): string {
       return this.completeQuery.value;
     }
-    
+
     /**
      * Set the complete query string
      */
     public setCompleteQuery(completeQuery: string) {
       this.completeQuery.value = completeQuery;
     }
-    
+
     private handleProcessNewQueryResults(args: IQuerySuccessEventArgs) {
       Assert.exists(args);
       Assert.exists(args.results);
@@ -102,23 +102,23 @@ module Coveo {
     }
 
     private buildContent(): HTMLElement {
-      var content = $$('div', {className: 'coveo-share-query-summary-info'}).el;
-      content.appendChild($$('span', {className: 'coveo-query-summary-info-title'}).el);
+      var content = $$('div', { className: 'coveo-share-query-summary-info' }).el;
+      content.appendChild($$('span', { className: 'coveo-query-summary-info-title' }).el);
       $$(content).text(l('ShareQuery'))
-      
-      var close = $$('div', {className: 'coveo-share-query-summary-info-close'}).el;
+
+      var close = $$('div', { className: 'coveo-share-query-summary-info-close' }).el;
       close.appendChild($$('span').el);
       $$(close).on('click', () => this.close());
       content.appendChild(close);
-      
-      var boxes = $$('div', {className: 'coveo-share-query-summary-info-boxes'}).el;
-      
+
+      var boxes = $$('div', { className: 'coveo-share-query-summary-info-boxes' }).el;
+
       this.linkToThisQuery = <HTMLInputElement>$$('input', {
         'type': 'text',
         className: 'coveo-share-query-summary-info-input'
       }).el;
       $$(this.linkToThisQuery).on('click', () => this.linkToThisQuery.select());
-      
+
       this.completeQuery = <HTMLInputElement>$$('input').el;
       this.completeQuery.setAttribute('type', 'text')
       $$(this.completeQuery).addClass('coveo-share-query-summary-info-input');
@@ -133,9 +133,9 @@ module Coveo {
     }
 
     private buildTextBoxWithLabel(label: string, input: HTMLInputElement): HTMLElement {
-      var labelElement = $$('span', {className: 'coveo-share-query-summary-info-label'})
+      var labelElement = $$('span', { className: 'coveo-share-query-summary-info-label' })
       labelElement.text(label);
-      
+
       let returnDiv = $$('div').el;
       returnDiv.appendChild(labelElement.el);
       returnDiv.appendChild(input);

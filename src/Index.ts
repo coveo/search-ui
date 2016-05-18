@@ -23,3 +23,4 @@ export {SearchButton} from './ui/SearchButton/SearchButton';
 export {Searchbox} from './ui/Searchbox/Searchbox';
 export {Breadcrumb} from './ui/Breadcrumb/Breadcrumb';
 export {Facet} from './ui/Facet/Facet';
+export {Pager} from './ui/Pager/Pager';

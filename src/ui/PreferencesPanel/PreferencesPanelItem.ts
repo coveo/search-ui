@@ -1,4 +1,4 @@
-﻿
+
 module Coveo {
   export interface PreferencePanelInputToBuild {
     label: string;
@@ -89,12 +89,12 @@ module Coveo {
       var icons = $$(build).findAll('.coveo-input-icon');
       _.each(icons, (icon: HTMLElement) => {
         var input = <HTMLInputElement>$$(icon.parentElement).find('input');
-        $$(input).on('change', ()=> {
+        $$(input).on('change', () => {
           var checked = input.checked;
           $$(icon).toggleClass('coveo-selected', checked);
         })
 
-        $$(icon).on('click', ()=> {
+        $$(icon).on('click', () => {
           input.checked = !input.checked;
           $$(input).trigger('change');
         })
@@ -141,7 +141,7 @@ module Coveo {
     public reset(): void {
       _.each(this.inputs, (input: HTMLElement) => {
         var inputElement: HTMLInputElement | HTMLTextAreaElement = (<HTMLInputElement>$$(input).find('input'));
-        if(!inputElement) {
+        if (!inputElement) {
           inputElement = (<HTMLTextAreaElement>$$(input).find('textarea'));
         }
         inputElement.value = '';
@@ -192,15 +192,15 @@ module Coveo {
         var optEl = $$('option', undefined, option).el;
         this.select.appendChild(optEl);
       });
-      $$(this.select).on('change', ()=> {
+      $$(this.select).on('change', () => {
         var values: string[] = _.chain(<any>this.select.options)
-                                .filter((opt: HTMLOptionElement)=> {
-                                  return opt.selected;
-                                })
-                                .map((opt: HTMLOptionElement)=> {
-                                  return opt.value;
-                                })
-                                .value();
+          .filter((opt: HTMLOptionElement) => {
+            return opt.selected;
+          })
+          .map((opt: HTMLOptionElement) => {
+            return opt.value;
+          })
+          .value();
 
         if (!Utils.isNullOrUndefined(values) && !Utils.isEmptyArray(values)) {
           this.textInput.setValue(this.toBuild.label, values.join(','));
