@@ -234,17 +234,15 @@ export class Component extends BaseComponent {
   }
 
   static getResult(element: HTMLElement, noThrow: boolean = false): IQueryResult {
-    var resultElement = $(element).closest('.CoveoResult');
-    Assert.check(noThrow || resultElement.length != 0);
-    return resultElement.data('CoveoResult');
+    var resultElement = $$(element).closest('.CoveoResult');
+    Assert.check(noThrow || resultElement != undefined);
+    return resultElement['CoveoResult'];
   }
 
   static bindResultToElement(element: HTMLElement, result: IQueryResult) {
     Assert.exists(element);
     Assert.exists(result);
-    $(element)
-      .addClass('CoveoResult')
-      .data('CoveoResult', result);
+    $$(element).addClass('CoveoResult');
     element['CoveoResult'] = result;
   }
 

@@ -471,7 +471,7 @@ export class ComponentOptions {
   }
 
   static isElementScrollable(element: HTMLElement) {
-    return $(element).css("overflow-y") == "scroll";
+    return $$(element).css('overflow-y') == 'scroll';
   }
 
   static createResultTemplateFromElement(element: HTMLElement): Template {

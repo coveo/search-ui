@@ -59,6 +59,10 @@ export class Dom {
     return elem;
   }
 
+  public css(propertyValue: string): string {
+    return window.getComputedStyle(this.el).getPropertyValue(propertyValue);
+  }
+
   /**
    * Get or set the text content of the HTMLElement.<br/>
    * @param txt Optional. If given, this will set the text content of the element. If not, will return the text content.
