@@ -23,6 +23,6 @@ export class FacetValueElement extends ValueElement {
   }
 
   public bindEvent() {
-    super.bindEvent({displayNextTime: this.keepDisplayedValueNextTime, pinFacet: this.facet.options.preservePosition});
+    super.bindEvent({ displayNextTime: this.keepDisplayedValueNextTime, pinFacet: this.facet.options.preservePosition });
   }
 }

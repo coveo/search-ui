@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Describe the cause of an event for the analytics service
  */
 export interface IAnalyticsActionCause {
@@ -11,7 +11,7 @@ export interface IAnalyticsActionCause {
    * The type of the event. Allow to regroup similar event type together when doing reporting.<br/>
    * For example, all search box event will be of type "search box"
    */
-      type: string;
+  type: string;
   metaMap?: { [name: string]: number };
 }
 
@@ -134,11 +134,11 @@ export interface IAnalyticsCaseDetachMeta extends IAnalyticsCaseAttachMeta {
 }
 
 export interface IAnalyticsCaseCreationInputChangeMeta {
-  inputTitle : string;
+  inputTitle: string;
 }
 
 export interface IAnalyticsCaseCreationDeflectionMeta {
-  hasClicks : boolean;
+  hasClicks: boolean;
 }
 
 export interface IAnalyticsPagerMeta {
@@ -162,95 +162,95 @@ export interface IAnalyticsTriggerExecute {
 }
 
 export var AnalyticsActionCauseList = {
-  interfaceLoad: <IAnalyticsActionCause> {
+  interfaceLoad: <IAnalyticsActionCause>{
     name: 'interfaceLoad',
     type: 'interface'
   },
-  interfaceChange: <IAnalyticsActionCause> {
+  interfaceChange: <IAnalyticsActionCause>{
     name: 'interfaceChange',
     type: 'interface',
-    metaMap: {interfaceChangeTo: 1}
+    metaMap: { interfaceChangeTo: 1 }
   },
-  contextRemove: <IAnalyticsActionCause> {
+  contextRemove: <IAnalyticsActionCause>{
     name: 'contextRemove',
     type: 'misc',
-    metaMap: {contextName: 1}
+    metaMap: { contextName: 1 }
   },
-  didyoumeanAutomatic: <IAnalyticsActionCause> {
+  didyoumeanAutomatic: <IAnalyticsActionCause>{
     name: 'didyoumeanAutomatic',
     type: 'misc'
   },
-  didyoumeanClick: <IAnalyticsActionCause> {
+  didyoumeanClick: <IAnalyticsActionCause>{
     name: 'didyoumeanClick',
     type: 'misc'
   },
-  resultsSort: <IAnalyticsActionCause> {
+  resultsSort: <IAnalyticsActionCause>{
     name: 'resultsSort',
     type: 'misc',
-    metaMap: {resultsSortBy: 1}
+    metaMap: { resultsSortBy: 1 }
   },
-  searchboxSubmit: <IAnalyticsActionCause> {
+  searchboxSubmit: <IAnalyticsActionCause>{
     name: 'searchboxSubmit',
     type: 'search box'
   },
-  searchboxClear: <IAnalyticsActionCause> {
+  searchboxClear: <IAnalyticsActionCause>{
     name: 'searchboxClear',
     type: 'search box'
   },
-  searchboxAsYouType: <IAnalyticsActionCause> {
+  searchboxAsYouType: <IAnalyticsActionCause>{
     name: 'searchboxAsYouType',
     type: 'search box'
   },
-  breadcrumbFacet: <IAnalyticsActionCause> {
+  breadcrumbFacet: <IAnalyticsActionCause>{
     name: 'breadcrumbFacet',
     type: 'breadcrumb',
-    metaMap: {facetId: 1, facetValue: 2, facetTitle: 3}
+    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
   },
-  breadcrumbResetAll: <IAnalyticsActionCause> {
+  breadcrumbResetAll: <IAnalyticsActionCause>{
     name: 'breadcrumbResetAll',
     type: 'breadcrumb',
   },
-  documentTag: <IAnalyticsActionCause> {
+  documentTag: <IAnalyticsActionCause>{
     name: 'documentTag',
     type: 'document',
-    metaMap: {facetId: 1, facetValue: 2, facetTitle: 3}
+    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
   },
-  documentField: <IAnalyticsActionCause> {
+  documentField: <IAnalyticsActionCause>{
     name: 'documentField',
     type: 'document',
-    metaMap: {facetId: 1, facetValue: 2, facetTitle: 3}
+    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
   },
-  documentQuickview: <IAnalyticsActionCause> {
+  documentQuickview: <IAnalyticsActionCause>{
     name: 'documentQuickview',
     type: 'document',
-    metaMap: {documentTitle: 1, documentURL: 2}
+    metaMap: { documentTitle: 1, documentURL: 2 }
   },
-  documentOpen: <IAnalyticsActionCause> {
+  documentOpen: <IAnalyticsActionCause>{
     name: 'documentOpen',
     type: 'document',
-    metaMap: {documentTitle: 1, documentURL: 2}
+    metaMap: { documentTitle: 1, documentURL: 2 }
   },
-  omniboxFacetSelect: <IAnalyticsActionCause> {
+  omniboxFacetSelect: <IAnalyticsActionCause>{
     name: 'omniboxFacetSelect',
     type: 'omnibox',
-    metaMap: {facetId: 1, facetValue: 2, facetTitle: 3}
+    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
   },
-  omniboxFacetExclude: <IAnalyticsActionCause> {
+  omniboxFacetExclude: <IAnalyticsActionCause>{
     name: 'omniboxFacetExclude',
     type: 'omnibox',
-    metaMap: {facetId: 1, facetValue: 2, facetTitle: 3}
+    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
   },
-  omniboxFacetDeselect: <IAnalyticsActionCause> {
+  omniboxFacetDeselect: <IAnalyticsActionCause>{
     name: 'omniboxFacetDeselect',
     type: 'omnibox',
-    metaMap: {facetId: 1, facetValue: 2, facetTitle: 3}
+    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
   },
-  omniboxFacetUnexclude: <IAnalyticsActionCause> {
+  omniboxFacetUnexclude: <IAnalyticsActionCause>{
     name: 'omniboxFacetUnexclude',
     type: 'omnibox',
-    metaMap: {faceId: 1, facetValue: 2, facetTitle: 3}
+    metaMap: { faceId: 1, facetValue: 2, facetTitle: 3 }
   },
-  omniboxAnalytics: <IAnalyticsActionCause> {
+  omniboxAnalytics: <IAnalyticsActionCause>{
     name: 'omniboxAnalytics',
     type: 'omnibox',
     metaMap: {
@@ -260,179 +260,179 @@ export var AnalyticsActionCauseList = {
       suggestions: 4
     }
   },
-  omniboxField: <IAnalyticsActionCause> {
+  omniboxField: <IAnalyticsActionCause>{
     name: 'omniboxField',
     type: 'omnibox'
   },
-  facetClearAll: <IAnalyticsActionCause> {
+  facetClearAll: <IAnalyticsActionCause>{
     name: 'facetClearAll',
     type: 'facet',
-    metaMap: {facetId: 1}
+    metaMap: { facetId: 1 }
   },
-  facetSearch: <IAnalyticsActionCause> {
+  facetSearch: <IAnalyticsActionCause>{
     name: 'facetSearch',
     type: 'facet',
-    metaMap: {facetId: 1}
+    metaMap: { facetId: 1 }
   },
-  facetToggle: <IAnalyticsActionCause> {
+  facetToggle: <IAnalyticsActionCause>{
     name: 'facetToggle',
     type: 'facet',
-    metaMap: {facetId: 1, facetOperatorBefore: 2, facetOperatorAfter: 3}
+    metaMap: { facetId: 1, facetOperatorBefore: 2, facetOperatorAfter: 3 }
   },
-  facetRangeSlider: <IAnalyticsActionCause> {
+  facetRangeSlider: <IAnalyticsActionCause>{
     name: 'facetRangeSlider',
     type: 'facet',
-    metaMap: {facetId: 1, facetRangeStart: 2, facetRangeEnd: 3}
+    metaMap: { facetId: 1, facetRangeStart: 2, facetRangeEnd: 3 }
   },
-  facetRangeGraph: <IAnalyticsActionCause> {
+  facetRangeGraph: <IAnalyticsActionCause>{
     name: 'facetRangeGraph',
     type: 'facet',
-    metaMap: {facetId: 1, facetRangeStart: 2, facetRangeEnd: 3}
+    metaMap: { facetId: 1, facetRangeStart: 2, facetRangeEnd: 3 }
   },
-  facetSelect: <IAnalyticsActionCause> {
+  facetSelect: <IAnalyticsActionCause>{
     name: 'facetSelect',
     type: 'facet',
-    metaMap: {facetId: 1, facetValue: 2, facetTitle: 3}
+    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
   },
-  facetSelectAll: <IAnalyticsActionCause> {
+  facetSelectAll: <IAnalyticsActionCause>{
     name: 'facetSelectAll',
     type: 'facet',
-    metaMap: {facetId: 1, facetValue: 2, facetTitle: 3}
+    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
   },
-  facetDeselect: <IAnalyticsActionCause> {
+  facetDeselect: <IAnalyticsActionCause>{
     name: 'facetDeselect',
     type: 'facet',
-    metaMap: {facetId: 1, facetValue: 2, facetTitle: 3}
+    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
   },
-  facetExclude: <IAnalyticsActionCause> {
+  facetExclude: <IAnalyticsActionCause>{
     name: 'facetExclude',
     type: 'facet',
-    metaMap: {facetId: 1, facetValue: 2, facetTitle: 3}
+    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
   },
-  facetUnexclude: <IAnalyticsActionCause> {
+  facetUnexclude: <IAnalyticsActionCause>{
     name: 'facetUnexclude',
     type: 'facet',
-    metaMap: {facetId: 1, facetValue: 2, facetTitle: 3}
+    metaMap: { facetId: 1, facetValue: 2, facetTitle: 3 }
   },
-  errorBack: <IAnalyticsActionCause> {
+  errorBack: <IAnalyticsActionCause>{
     name: 'errorBack',
     type: 'errors'
   },
-  errorClearQuery: <IAnalyticsActionCause> {
+  errorClearQuery: <IAnalyticsActionCause>{
     name: 'errorClearQuery',
     type: 'errors'
   },
-  errorRetry: <IAnalyticsActionCause> {
+  errorRetry: <IAnalyticsActionCause>{
     name: 'errorRetry',
     type: 'errors'
   },
-  noResultsBack: <IAnalyticsActionCause> {
+  noResultsBack: <IAnalyticsActionCause>{
     name: 'noResultsBack',
     type: 'noResults'
   },
-  expandToFullUI: <IAnalyticsActionCause> {
+  expandToFullUI: <IAnalyticsActionCause>{
     name: 'expandToFullUI',
     type: 'interface'
   },
-  caseCreationInputChange: <IAnalyticsActionCause> {
+  caseCreationInputChange: <IAnalyticsActionCause>{
     name: 'inputChange',
     type: 'caseCreation'
   },
-  caseCreationSubmitButton: <IAnalyticsActionCause> {
+  caseCreationSubmitButton: <IAnalyticsActionCause>{
     name: 'submitButton',
     type: 'caseCreation'
   },
-  caseCreationCancelButton: <IAnalyticsActionCause> {
+  caseCreationCancelButton: <IAnalyticsActionCause>{
     name: 'cancelButton',
     type: 'caseCreation'
   },
-  caseCreationUnloadPage: <IAnalyticsActionCause> {
+  caseCreationUnloadPage: <IAnalyticsActionCause>{
     name: 'unloadPage',
     type: 'caseCreation'
   },
-  casecontextAdd: <IAnalyticsActionCause> {
+  casecontextAdd: <IAnalyticsActionCause>{
     name: 'casecontextAdd',
     type: 'casecontext',
-    metaMap: {caseID: 5}
+    metaMap: { caseID: 5 }
   },
-  casecontextRemove: <IAnalyticsActionCause> {
+  casecontextRemove: <IAnalyticsActionCause>{
     name: 'casecontextRemove',
     type: 'casecontext',
-    metaMap: {caseID: 5}
+    metaMap: { caseID: 5 }
   },
-  preferencesChange: <IAnalyticsActionCause> {
+  preferencesChange: <IAnalyticsActionCause>{
     name: 'preferencesChange',
     type: 'preferences',
-    metaMap: {preferenceName: 1, preferenceType: 2}
+    metaMap: { preferenceName: 1, preferenceType: 2 }
   },
-  getUserHistory: <IAnalyticsActionCause> {
+  getUserHistory: <IAnalyticsActionCause>{
     name: 'getUserHistory',
     type: 'userHistory'
   },
-  userActionDocumentClick: <IAnalyticsActionCause> {
+  userActionDocumentClick: <IAnalyticsActionCause>{
     name: 'userActionDocumentClick',
     type: 'userHistory'
   },
-  caseAttach: <IAnalyticsActionCause> {
+  caseAttach: <IAnalyticsActionCause>{
     name: 'caseAttach',
     type: 'case',
-    metaMap: {documentTitle: 1, resultUriHash: 3, articleID: 4, caseID: 5}
+    metaMap: { documentTitle: 1, resultUriHash: 3, articleID: 4, caseID: 5 }
   },
-  caseDetach: <IAnalyticsActionCause> {
+  caseDetach: <IAnalyticsActionCause>{
     name: 'caseDetach',
     type: 'case',
-    metaMap: {documentTitle: 1, resultUriHash: 3, articleID: 4, caseID: 5}
+    metaMap: { documentTitle: 1, resultUriHash: 3, articleID: 4, caseID: 5 }
   },
-  customfiltersChange: <IAnalyticsActionCause> {
+  customfiltersChange: <IAnalyticsActionCause>{
     name: 'customfiltersChange',
     type: 'customfilters',
-    metaMap: {customFilterName: 1, customFilterType: 2, customFilterExpression: 3}
+    metaMap: { customFilterName: 1, customFilterType: 2, customFilterExpression: 3 }
   },
-  pagerNumber: <IAnalyticsActionCause> {
+  pagerNumber: <IAnalyticsActionCause>{
     name: 'pagerNumber',
     type: 'getMoreResults',
-    metaMap: {'pagerNumber': 1}
+    metaMap: { 'pagerNumber': 1 }
   },
-  pagerNext: <IAnalyticsActionCause> {
+  pagerNext: <IAnalyticsActionCause>{
     name: 'pagerNext',
     type: 'getMoreResults',
-    metaMap: {'pagerNumber': 1}
+    metaMap: { 'pagerNumber': 1 }
   },
-  pagerPrevious: <IAnalyticsActionCause> {
+  pagerPrevious: <IAnalyticsActionCause>{
     name: 'pagerPrevious',
     type: 'getMoreResults',
-    metaMap: {'pagerNumber': 1}
+    metaMap: { 'pagerNumber': 1 }
   },
-  pagerScrolling: <IAnalyticsActionCause> {
+  pagerScrolling: <IAnalyticsActionCause>{
     name: 'pagerScrolling',
     type: 'getMoreResults'
   },
-  searchFromLink: <IAnalyticsActionCause> {
+  searchFromLink: <IAnalyticsActionCause>{
     name: 'searchFromLink',
     type: 'interface'
   },
-  triggerNotify: <IAnalyticsActionCause> {
+  triggerNotify: <IAnalyticsActionCause>{
     name: 'notify',
     type: 'queryPipelineTriggers'
   },
-  triggerExecute: <IAnalyticsActionCause> {
+  triggerExecute: <IAnalyticsActionCause>{
     name: 'execute',
     type: 'queryPipelineTriggers'
   },
-  triggerQuery: <IAnalyticsActionCause> {
+  triggerQuery: <IAnalyticsActionCause>{
     name: 'query',
     type: 'queryPipelineTriggers'
   },
-  triggerRedirect: <IAnalyticsActionCause> {
+  triggerRedirect: <IAnalyticsActionCause>{
     name: 'redirect',
     type: 'queryPipelineTriggers'
   },
-  queryError: <IAnalyticsActionCause> {
+  queryError: <IAnalyticsActionCause>{
     name: 'query',
     type: 'errors',
-    metaMap: {'query': 1, 'aq': 2, 'cq': 3, 'dq': 4, 'errorType': 5, 'errorMessage': 6}
+    metaMap: { 'query': 1, 'aq': 2, 'cq': 3, 'dq': 4, 'errorType': 5, 'errorMessage': 6 }
   },
-  exportToExcel: <IAnalyticsActionCause> {
+  exportToExcel: <IAnalyticsActionCause>{
     name: 'exportToExcel',
     type: 'misc'
   }

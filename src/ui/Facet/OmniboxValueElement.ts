@@ -16,6 +16,6 @@ export class OmniboxValueElement extends ValueElement {
   }
 
   public bindEvent() {
-    super.bindEvent({displayNextTime: false, pinFacet: false, omniboxObject: this.eventArg});
+    super.bindEvent({ displayNextTime: false, pinFacet: false, omniboxObject: this.eventArg });
   }
 }

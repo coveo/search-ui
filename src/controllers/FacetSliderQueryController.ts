@@ -10,7 +10,7 @@ import {DateUtils} from '../utils/DateUtils';
 
 export class FacetSliderQueryController {
   public graphGroupByQueriesIndex: number;
-  private rangeValuesForGraphToUse: {start:any; end: any}[];
+  private rangeValuesForGraphToUse: { start: any; end: any }[];
   public lastGroupByRequestIndex: number;
 
   constructor(public facet: FacetSlider) {

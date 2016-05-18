@@ -121,7 +121,7 @@ export interface IErrorResponse extends IResponse<IStringMap<any>> {
     /**
      * Type of the error
      */
-        type?: string;
+    type?: string;
     /**
      * A report provided by the search api
      */
@@ -209,7 +209,7 @@ export class EndpointCaller {
     //In IE8, hostname and port return "" when we are on the same domain.
     var isLocalHost = (window.location.hostname === urlObject.hostname) || (urlObject.hostname === '');
 
-    var currentPort = (window.location.port != '' ? window.location.port : (window.location.protocol == 'https:' ? '443' : '80' ));
+    var currentPort = (window.location.port != '' ? window.location.port : (window.location.protocol == 'https:' ? '443' : '80'));
     var isSamePort = currentPort == urlObject.port;
     var isCrossOrigin = !(isLocalHost && isSamePort)
     if (!this.useJsonp) {
@@ -234,7 +234,7 @@ export class EndpointCaller {
    * @returns {Promise<T>|Promise}
    */
   public callUsingXMLHttpRequest<T>(requestInfo: IRequestInfo<T>, responseType = 'text'): Promise<ISuccessResponse<T>> {
-    return new Promise((resolve, reject)=> {
+    return new Promise((resolve, reject) => {
       var xmlHttpRequest = new XMLHttpRequest();
 
       // Beware, most stuff must be set on the event that says the request is OPENED.
@@ -253,7 +253,7 @@ export class EndpointCaller {
             xmlHttpRequest.setRequestHeader('Authorization', 'Bearer ' + this.options.accessToken);
           } else if (this.options.username && this.options.password) {
             xmlHttpRequest.setRequestHeader('Authorization',
-                'Basic ' + btoa(this.options.username + ":" + this.options.password));
+              'Basic ' + btoa(this.options.username + ":" + this.options.password));
           }
 
           // Under Phonegap, we must set this special http header that'll prevent the server
@@ -341,7 +341,7 @@ export class EndpointCaller {
    * @returns {Promise<T>|Promise}
    */
   public callUsingXDomainRequest<T>(requestInfo: IRequestInfo<T>): Promise<IResponse<T>> {
-    return new Promise((resolve, reject)=> {
+    return new Promise((resolve, reject) => {
       var queryString = requestInfo.queryString.concat([]);
 
       // XDomainRequest don't support including stuff in the header, so we must
@@ -388,7 +388,7 @@ export class EndpointCaller {
    * @returns {Promise<T>|Promise}
    */
   public callUsingAjaxJsonP<T>(requestInfo: IRequestInfo<T>): Promise<IResponse<T>> {
-    return new Promise((resolve, reject)=> {
+    return new Promise((resolve, reject) => {
       var queryString = requestInfo.queryString.concat(this.convertJsonToQueryString(requestInfo.requestData));
 
       // JSONP don't support including stuff in the header, so we must

@@ -29,7 +29,7 @@ export class PendingSearchEvent {
     Assert.exists(endpoint);
     Assert.exists(templateSearchEvent);
 
-    this.handler = (evt: Event, arg: IDuringQueryEventArgs)=> {
+    this.handler = (evt: Event, arg: IDuringQueryEventArgs) => {
       this.handleDuringQuery(evt, arg)
     };
     $$(root).on(QueryEvents.duringQuery, this.handler);
@@ -82,7 +82,7 @@ export class PendingSearchEvent {
         this.results.push(queryResults);
         return queryResults
       }
-    }).finally(()=> {
+    }).finally(() => {
       var index = _.indexOf(this.searchPromises, args.promise);
       this.searchPromises.splice(index, 1);
       if (this.searchPromises.length == 0) {
@@ -112,15 +112,15 @@ export class PendingSearchEvent {
         var apiSearchEvents = _.map(this.searchEvents, (searchEvent: ISearchEvent) => {
           return APIAnalyticsBuilder.convertSearchEventToAPI(searchEvent);
         });
-        $$(this.root).trigger(AnalyticsEvents.searchEvent, <IAnalyticsSearchEventsArgs> {searchEvents: apiSearchEvents});
+        $$(this.root).trigger(AnalyticsEvents.searchEvent, <IAnalyticsSearchEventsArgs>{ searchEvents: apiSearchEvents });
       });
     }
   }
 
   private fillSearchEvent(searchEvent: ISearchEvent,
-                          searchInterface: SearchInterface,
-                          query: IQuery,
-                          queryResults: IQueryResults) {
+    searchInterface: SearchInterface,
+    query: IQuery,
+    queryResults: IQueryResults) {
     Assert.exists(searchEvent);
     Assert.exists(searchInterface);
     Assert.exists(query);

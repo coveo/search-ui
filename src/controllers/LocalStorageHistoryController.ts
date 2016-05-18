@@ -15,7 +15,7 @@ import {$$} from '../utils/Dom';
 export class LocalStorageHistoryController extends RootComponent {
   static ID = 'LocalStorageHistoryController';
 
-  public storage: LocalStorageUtils<{[key: string]: any}>;
+  public storage: LocalStorageUtils<{ [key: string]: any }>;
   private omit: string[] = [];
 
   /**
@@ -30,11 +30,11 @@ export class LocalStorageHistoryController extends RootComponent {
     if (!windoh['localStorage']) {
       new Logger(element).info('No local storage available in current browser. LocalStorageHistoryController cannot initialize itself', this);
     } else {
-      this.storage = new LocalStorageUtils<{[key: string]: any}>(LocalStorageHistoryController.ID);
+      this.storage = new LocalStorageUtils<{ [key: string]: any }>(LocalStorageHistoryController.ID);
       Assert.exists(this.model);
       Assert.exists(this.queryController);
-      $$(this.element).on(InitializationEvents.restoreHistoryState, ()=> this.updateModelFromLocalStorage());
-      $$(this.element).on(this.model.getEventName(Model.eventTypes.all), ()=> this.updateLocalStorageFromModel());
+      $$(this.element).on(InitializationEvents.restoreHistoryState, () => this.updateModelFromLocalStorage());
+      $$(this.element).on(this.model.getEventName(Model.eventTypes.all), () => this.updateLocalStorageFromModel());
     }
   }
 
@@ -65,7 +65,7 @@ export class LocalStorageHistoryController extends RootComponent {
     this.model.setMultiple(toSet);
   }
 
-  public setStorageValues(values: {[key: string]: any}) {
+  public setStorageValues(values: { [key: string]: any }) {
     this.storage.save(values);
   }
 }

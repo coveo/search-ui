@@ -26,7 +26,7 @@ export interface DebugOptions {
 export class Debug extends RootComponent {
   static ID = 'Debug';
   static options: DebugOptions = {
-    enableDebug: ComponentOptions.buildBooleanOption({defaultValue: false})
+    enableDebug: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
 
   static customOrder = ['error', 'queryDuration', 'result', 'fields', 'rankingInfo', 'template', 'query', 'results', 'state'];
@@ -39,18 +39,18 @@ export class Debug extends RootComponent {
 
   private debug = false;
   private highlightRecommendation = false;
-  private fields: {[field: string]: IFieldDescription};
+  private fields: { [field: string]: IFieldDescription };
 
   private stackDebug: any;
 
   constructor(public element: HTMLElement, public queryController: QueryController, public options?: DebugOptions) {
     super(element, Debug.ID);
     this.options = ComponentOptions.initComponentOptions(element, Debug, options);
-    $$(this.element).on(QueryEvents.buildingQuery, (e, args: IBuildingQueryEventArgs)=> {
+    $$(this.element).on(QueryEvents.buildingQuery, (e, args: IBuildingQueryEventArgs) => {
       args.queryBuilder.enableDebug = this.debug || args.queryBuilder.enableDebug;
     })
-    $$(this.element).on(ResultListEvents.newResultDisplayed, (e, args: IDisplayedNewResultEventArgs)=> this.handleNewResultDisplayed(args));
-    $$(this.element).on(DebugEvents.showDebugPanel, (e, args)=> {
+    $$(this.element).on(ResultListEvents.newResultDisplayed, (e, args: IDisplayedNewResultEventArgs) => this.handleNewResultDisplayed(args));
+    $$(this.element).on(DebugEvents.showDebugPanel, (e, args) => {
       this.handleShowDebugPanel(args);
     })
 
@@ -76,7 +76,7 @@ export class Debug extends RootComponent {
     title.appendChild(this.buildEnabledHighlightRecommendation());
     title.appendChild(this.buildEnableDebugCheckbox(build.body, search, bodyBuilder));
     title.appendChild(search);
-    var downloadLink = $$('a', {download: 'debug.json', 'href': this.downloadHref(build.json)}, 'Download');
+    var downloadLink = $$('a', { download: 'debug.json', 'href': this.downloadHref(build.json) }, 'Download');
     title.appendChild(downloadLink.el)
   }
 
@@ -124,7 +124,7 @@ export class Debug extends RootComponent {
   }
 
   public buildStackPanel(stackDebug: any, results?: IQueryResults): { body: HTMLElement; json: any; } {
-    var body = Dom.createElement('div', {className: 'coveo-debug'});
+    var body = Dom.createElement('div', { className: 'coveo-debug' });
 
     var keys: any[][] = _.pairs(_.keys(stackDebug));
 
@@ -155,21 +155,21 @@ export class Debug extends RootComponent {
       body.appendChild(section.dom);
     });
 
-    return {body: body, json: json};
+    return { body: body, json: json };
   }
 
   private buildStackPanelSection(value: any, results: IQueryResults): { section: HTMLElement; json?: any; } {
     if (value instanceof HTMLElement) {
-      return {section: value};
+      return { section: value };
     } else if (_.isFunction(value)) {
       return this.buildStackPanelSection(value(results), results);
     }
     var json = this.toJson(value);
-    return {section: this.buildProperty(json), json: json};
+    return { section: this.buildProperty(json), json: json };
   }
 
   private buildSearchBox(body: HTMLElement) {
-    var dom = Dom.createElement('div', {className: 'coveo-debug-search'}, '<input type="text"/>');
+    var dom = Dom.createElement('div', { className: 'coveo-debug-search' }, '<input type="text"/>');
     dom.onclick = (e) => {
       e.stopPropagation();
     };
@@ -197,7 +197,7 @@ export class Debug extends RootComponent {
 
   private search(value: string, body: HTMLElement) {
     if (_.isEmpty(value)) {
-      $$(body).findAll('.coveo-search-match, .coveo-search-submatch').forEach((el)=> {
+      $$(body).findAll('.coveo-search-match, .coveo-search-submatch').forEach((el) => {
         $$(el).removeClass('coveo-search-match, coveo-search-submatch')
       });
       $$(body).removeClass('coveo-searching')
@@ -245,7 +245,7 @@ export class Debug extends RootComponent {
   }
 
   private buildEnableDebugCheckbox(body: HTMLElement, search: HTMLElement, bodyBuilder: (results: IQueryResults) => HTMLElement) {
-    var dom = Dom.createElement('div', {className: 'coveo-enabled-debug'}, '<label>Enable query debug <input type="checkbox"/></label>');
+    var dom = Dom.createElement('div', { className: 'coveo-enabled-debug' }, '<label>Enable query debug <input type="checkbox"/></label>');
     $$(dom).on('click', (e) => {
       e.stopPropagation();
     });
@@ -255,14 +255,14 @@ export class Debug extends RootComponent {
     }
     checkbox.onchange = () => {
       this.debug = !this.debug;
-      $$(this.element).one(QueryEvents.querySuccess + ' ' + QueryEvents.queryError, (e: Event, args: IQuerySuccessEventArgs)=> {
+      $$(this.element).one(QueryEvents.querySuccess + ' ' + QueryEvents.queryError, (e: Event, args: IQuerySuccessEventArgs) => {
         $$(body).removeClass('coveo-debug-loading');
         $$(body).empty();
-        $$(bodyBuilder(args.results)).children().forEach((child)=> {
+        $$(bodyBuilder(args.results)).children().forEach((child) => {
           body.appendChild(child);
         });
       })
-      this.queryController.executeQuery({closeModalBox: false});
+      this.queryController.executeQuery({ closeModalBox: false });
       $$(body).addClass('coveo-debug-loading');
       var input = search.querySelector('input') as HTMLInputElement;
       input.value = '';
@@ -272,7 +272,7 @@ export class Debug extends RootComponent {
   }
 
   private buildEnabledHighlightRecommendation() {
-    var dom = Dom.createElement('div', {className: 'coveo-enabled-highlight-recommendation'}, '<label>Highlight recommendation <input type="checkbox"/></label>');
+    var dom = Dom.createElement('div', { className: 'coveo-enabled-highlight-recommendation' }, '<label>Highlight recommendation <input type="checkbox"/></label>');
     dom.onclick = (e) => {
       e.stopPropagation();
     };
@@ -282,18 +282,18 @@ export class Debug extends RootComponent {
     }
     checkbox.onchange = () => {
       this.highlightRecommendation = !this.highlightRecommendation;
-      this.queryController.executeQuery({closeModalBox: false});
+      this.queryController.executeQuery({ closeModalBox: false });
     };
     return dom;
   }
 
   private buildSection(id: string) {
-    var dom = Dom.createElement('div', {className: 'coveo-section coveo-' + id + '-section'});
-    var header = Dom.createElement('div', {className: 'coveo-section-header'});
+    var dom = Dom.createElement('div', { className: 'coveo-section coveo-' + id + '-section' });
+    var header = Dom.createElement('div', { className: 'coveo-section-header' });
     $$(header).text(id);
     dom.appendChild(header);
 
-    var container = Dom.createElement('div', {className: 'coveo-section-container'});
+    var container = Dom.createElement('div', { className: 'coveo-section-container' });
     dom.appendChild(container);
 
     if (_.contains(this.collapsedSections, id)) {
@@ -317,11 +317,11 @@ export class Debug extends RootComponent {
     }
   }
 
-  private fetchFields(): Promise<{[field: string]: IFieldDescription}> {
+  private fetchFields(): Promise<{ [field: string]: IFieldDescription }> {
     if (this.fields == null) {
-      return this.queryController.getEndpoint().listFields().then((fields: IFieldDescription[])=> {
+      return this.queryController.getEndpoint().listFields().then((fields: IFieldDescription[]) => {
         this.fields = {};
-        fields.forEach((field)=> {
+        fields.forEach((field) => {
           this.fields[field.name] = field;
         });
         return this.fields;
@@ -333,25 +333,25 @@ export class Debug extends RootComponent {
 
   private buildFieldsSection(result: IQueryResult) {
     return this.fetchFields()
-               .then((fieldDescriptions: {[field: string]: IFieldDescription})=> {
-                 var fields = {};
-                 _.each(result.raw, (value: any, key: string) => {
-                   var fieldDescription = fieldDescriptions['@' + key];
-                   if (fieldDescription == null && key.match(/^sys/)) {
-                     fieldDescription = fieldDescriptions['@' + key.substr(3)];
-                   }
-                   if (fieldDescription == null) {
-                     fields['@' + key] = value;
-                   } else if (fieldDescription.fieldType == 'Date') {
-                     fields['@' + key] = new Date(value);
-                   } else if (fieldDescription.splitGroupByField) {
-                     fields['@' + key] = value.split(/\s*;\s*/);
-                   } else {
-                     fields['@' + key] = value;
-                   }
-                 });
-                 return fields;
-               });
+      .then((fieldDescriptions: { [field: string]: IFieldDescription }) => {
+        var fields = {};
+        _.each(result.raw, (value: any, key: string) => {
+          var fieldDescription = fieldDescriptions['@' + key];
+          if (fieldDescription == null && key.match(/^sys/)) {
+            fieldDescription = fieldDescriptions['@' + key.substr(3)];
+          }
+          if (fieldDescription == null) {
+            fields['@' + key] = value;
+          } else if (fieldDescription.fieldType == 'Date') {
+            fields['@' + key] = new Date(value);
+          } else if (fieldDescription.splitGroupByField) {
+            fields['@' + key] = value.split(/\s*;\s*/);
+          } else {
+            fields['@' + key] = value;
+          }
+        });
+        return fields;
+      });
   }
 
   private buildRankingInfoSection(result: IQueryResult) {
@@ -413,7 +413,7 @@ export class Debug extends RootComponent {
   private buildPromise(promise: Promise<any>, label?: string): HTMLElement {
     var dom: HTMLElement = document.createElement('div');
     dom.className = "coveo-property coveo-property-promise";
-    promise.then((value)=> {
+    promise.then((value) => {
       var resolvedDom = this.buildProperty(value, label);
       $$(dom).replaceWith(resolvedDom);
     });
@@ -550,7 +550,7 @@ export class Debug extends RootComponent {
       return this.templateToJson(value);
     }
     if (value instanceof Promise) {
-      return value.then((value)=> {
+      return value.then((value) => {
         return this.toJson(value, depth, done);
       });
     }
@@ -638,12 +638,12 @@ export class Debug extends RootComponent {
     if (element != null) {
       var match = element.innerText.split(new RegExp('(?=' + StringUtils.regexEncode(search) + ')', 'gi'));
       element.innerHTML = '';
-      match.forEach((value)=> {
+      match.forEach((value) => {
         var regex = new RegExp('(' + StringUtils.regexEncode(search) + ')', 'i');
         var group = value.match(regex);
         var span: HTMLSpanElement;
         if (group != null) {
-          span = Dom.createElement('span', {className: 'coveo-debug-highlight'});
+          span = Dom.createElement('span', { className: 'coveo-debug-highlight' });
           span.appendChild(document.createTextNode(group[1]));
           element.appendChild(span);
           span = Dom.createElement('span');

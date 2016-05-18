@@ -1,4 +1,4 @@
-﻿import {PendingSearchEvent} from './PendingSearchEvent';
+import {PendingSearchEvent} from './PendingSearchEvent';
 import {AnalyticsEndpoint} from '../../rest/AnalyticsEndpoint';
 import {$$} from '../../utils/Dom';
 import {InitializationEvents} from '../../events/InitializationEvents';
@@ -14,11 +14,11 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
 
   constructor(public root: HTMLElement, public endpoint: AnalyticsEndpoint, public templateSearchEvent: ISearchEvent, public sendToCloud) {
     super(root, endpoint, templateSearchEvent, sendToCloud);
-    this.beforeUnloadHandler = ()=> {
+    this.beforeUnloadHandler = () => {
       this.onWindowUnload();
     }
     window.addEventListener('beforeunload', this.beforeUnloadHandler);
-    $$(root).on(InitializationEvents.nuke, ()=> this.handleNuke());
+    $$(root).on(InitializationEvents.nuke, () => this.handleNuke());
   }
 
   protected handleDuringQuery(e: Event, args: IDuringQueryEventArgs) {

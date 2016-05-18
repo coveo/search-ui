@@ -19,7 +19,7 @@ export class FieldAddon {
   cache: { [hash: string]: Promise<string[]> } = {};
 
   constructor(public omnibox: Omnibox) {
-    this.omnibox.bind.on(this.omnibox.element, OmniboxEvents.populateOmniboxSuggestions, (args: IPopulateOmniboxSuggestionsEventArgs)=> {
+    this.omnibox.bind.on(this.omnibox.element, OmniboxEvents.populateOmniboxSuggestions, (args: IPopulateOmniboxSuggestionsEventArgs) => {
       args.suggestions.push(this.getSuggestion());
     })
   }
@@ -57,7 +57,7 @@ export class FieldAddon {
       var currentField = fieldName.toString();
       var before = fieldName.before();
       var after = fieldName.after();
-      return {type: "FieldName", current: currentField, before: before, after: after};
+      return { type: "FieldName", current: currentField, before: before, after: after };
     }
     var fieldValue: Coveo.MagicBox.Result = _.last(this.omnibox.resultAtCursor('FieldValue'));
     if (fieldValue) {
@@ -72,7 +72,7 @@ export class FieldAddon {
         var value = fieldValue.toString();
         var before = fieldValue.before();
         var after = fieldValue.after();
-        return {type: 'FieldValue', field: field, current: value, before: before, after: after};
+        return { type: 'FieldValue', field: field, current: value, before: before, after: after };
       }
     }
     if (this.omnibox.options.enableSimpleFieldAddon) {
@@ -81,7 +81,7 @@ export class FieldAddon {
         var currentField = word.toString();
         var before = word.before();
         var after = word.after();
-        return {type: 'SimpleFieldName', current: currentField, before: before, after: after};
+        return { type: 'SimpleFieldName', current: currentField, before: before, after: after };
       }
     }
   }
@@ -110,16 +110,16 @@ export class FieldAddon {
 
   private getFields(): Promise<string[]> {
     if (this.fields == null) {
-      this.fields = new Promise<string[]>((resolve, reject)=> {
+      this.fields = new Promise<string[]>((resolve, reject) => {
         if (this.omnibox.options.listOfFields != null) {
           resolve(this.omnibox.options.listOfFields);
         } else {
-          var promise: Promise<IFieldDescription[]|EndpointError> = this.omnibox.queryController.getEndpoint().listFields();
+          var promise: Promise<IFieldDescription[] | EndpointError> = this.omnibox.queryController.getEndpoint().listFields();
           promise.then((fieldDescriptions: IFieldDescription[]) => {
             var fieldNames = _.chain(fieldDescriptions)
-                              .filter((fieldDescription: IFieldDescription) => fieldDescription.includeInQuery && fieldDescription.groupByField)
-                              .map((fieldDescription: IFieldDescription) => fieldDescription.name.substr(1))
-                              .value();
+              .filter((fieldDescription: IFieldDescription) => fieldDescription.includeInQuery && fieldDescription.groupByField)
+              .map((fieldDescription: IFieldDescription) => fieldDescription.name.substr(1))
+              .value();
 
             resolve(fieldNames);
           }).catch(() => {
@@ -138,18 +138,18 @@ export class FieldAddon {
 
     return this.getFields().then((fields: string[]) => {
       var matchFields = _.chain(fields)
-                         .map((field: string) => {
-                           return {
-                             index: field.toLowerCase().indexOf(fieldNameLC),
-                             field: withAt ? '@' + field : field
-                           };
-                         })
-                         .filter((field) => {
-                           return field.index != -1 && field.field.length > current.length;
-                         })
-                         .sortBy('index')
-                         .map((field) => field.field)
-                         .value();
+        .map((field: string) => {
+          return {
+            index: field.toLowerCase().indexOf(fieldNameLC),
+            field: withAt ? '@' + field : field
+          };
+        })
+        .filter((field) => {
+          return field.index != -1 && field.field.length > current.length;
+        })
+        .sortBy('index')
+        .map((field) => field.field)
+        .value();
       matchFields = _.first(matchFields, 5);
       return matchFields;
     })
@@ -164,20 +164,20 @@ export class FieldAddon {
       maximumNumberOfValues: 5
     }).then((values) => {
       return _.chain(values)
-              .map((value) => {
-                return {
-                  index: value.value.toLowerCase().indexOf(current),
-                  value: value.value
-                };
-              })
-              .filter((value) => {
-                return value.value.length > current.length;
-              })
-              .sortBy('index')
-              .map((value) => {
-                return value.value.replace(/ /g, "\u00A0");
-              })
-              .value();
+        .map((value) => {
+          return {
+            index: value.value.toLowerCase().indexOf(current),
+            value: value.value
+          };
+        })
+        .filter((value) => {
+          return value.value.length > current.length;
+        })
+        .sortBy('index')
+        .map((value) => {
+          return value.value.replace(/ /g, "\u00A0");
+        })
+        .value();
     })
   }
 
@@ -187,18 +187,18 @@ export class FieldAddon {
 
     return this.getFields().then((fields: string[]) => {
       var matchFields = _.chain(fields)
-                         .map((field: string) => {
-                           return {
-                             index: field.toLowerCase().indexOf(fieldNameLC),
-                             field: field + ':'
-                           };
-                         })
-                         .filter((field) => {
-                           return field.index != -1 && field.field.length > current.length;
-                         })
-                         .sortBy('index')
-                         .map((field) => field.field)
-                         .value();
+        .map((field: string) => {
+          return {
+            index: field.toLowerCase().indexOf(fieldNameLC),
+            field: field + ':'
+          };
+        })
+        .filter((field) => {
+          return field.index != -1 && field.field.length > current.length;
+        })
+        .sortBy('index')
+        .map((field) => field.field)
+        .value();
       matchFields = _.first(matchFields, 5);
       return matchFields;
     })

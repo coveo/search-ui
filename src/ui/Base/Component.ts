@@ -210,8 +210,8 @@ export class Component extends BaseComponent {
     Assert.exists(element);
     Assert.exists(result);
     $(element)
-        .addClass('CoveoResult')
-        .data('CoveoResult', result);
+      .addClass('CoveoResult')
+      .data('CoveoResult', result);
     element['CoveoResult'] = result;
   }
 
@@ -341,7 +341,7 @@ export class ComponentEvents {
    * @param event The event for which to register an handler
    * @param handler The function to execute when the event is triggered
    */
-  public oneRootElement<T>(event: string, handler: (args: T)=> any) {
+  public oneRootElement<T>(event: string, handler: (args: T) => any) {
     this.one(this.owner.root, event, handler);
   }
 
@@ -352,7 +352,7 @@ export class ComponentEvents {
    * @param attribute The attribute for which to register an event
    * @param handler The handler to execute when the query state event is triggered
    */
-  public onQueryState<T>(eventType: string, attribute?: string, handler?: (args: T)=> any) {
+  public onQueryState<T>(eventType: string, attribute?: string, handler?: (args: T) => any) {
     this.onRootElement(this.getQueryStateEventName(eventType, attribute), handler);
   }
 
@@ -364,7 +364,7 @@ export class ComponentEvents {
    * @param attribute The attribute for which to register an event
    * @param handler The handler to execute when the query state event is triggered
    */
-  public oneQueryState<T>(eventType: string, attribute?: string, handler?: (args: T)=> any) {
+  public oneQueryState<T>(eventType: string, attribute?: string, handler?: (args: T) => any) {
     this.oneRootElement(this.getQueryStateEventName(eventType, attribute), handler);
   }
 
@@ -377,7 +377,7 @@ export class ComponentEvents {
   public trigger(el: HTMLElement, event: string, args?: Object);
   public trigger(el: JQuery, event: string, args?: Object);
   public trigger(arg: any, event: string, args?: Object) {
-    this.wrapToCallIfEnabled(()=> {
+    this.wrapToCallIfEnabled(() => {
       if (arg instanceof HTMLElement) {
         var htmlEl: HTMLElement = arg;
         $$(htmlEl).trigger(event, args);

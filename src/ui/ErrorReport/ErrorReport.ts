@@ -36,11 +36,11 @@ module Coveo {
       super(element, ErrorReport.ID, bindings);
       this.options = ComponentOptions.initComponentOptions(element, ErrorReport, options);
 
-      var title = $$('div', {className: 'coveo-error-report-title'}, '<h3></h3><h4></h4>');
+      var title = $$('div', { className: 'coveo-error-report-title' }, '<h3></h3><h4></h4>');
       this.element.appendChild(title.el);
 
 
-      var optionsElement = $$('div', {className: 'coveo-error-report-options'});
+      var optionsElement = $$('div', { className: 'coveo-error-report-options' });
       optionsElement.el.appendChild(this.buildPrevious());
       optionsElement.el.appendChild(this.buildReset());
       optionsElement.el.appendChild(this.buildRetry());
@@ -54,8 +54,8 @@ module Coveo {
 
       $$(this.element).hide();
 
-      this.bind.onRootElement(QueryEvents.newQuery, ()=> this.handleNewQuery());
-      this.bind.onRootElement(QueryEvents.queryError, (data: IQueryErrorEventArgs)=> this.handleQueryError(data));
+      this.bind.onRootElement(QueryEvents.newQuery, () => this.handleNewQuery());
+      this.bind.onRootElement(QueryEvents.queryError, (data: IQueryErrorEventArgs) => this.handleQueryError(data));
     }
 
     /**
@@ -100,7 +100,7 @@ module Coveo {
     }
 
     private buildPrevious(): HTMLElement {
-      var previous = $$('span', {className: 'coveo-error-report-previous'}, l('GoBack'));
+      var previous = $$('span', { className: 'coveo-error-report-previous' }, l('GoBack'));
       previous.on('click', () => this.back());
       return previous.el;
     }
@@ -120,7 +120,7 @@ module Coveo {
         className: 'coveo-error-report-retry'
       }, l('Retry'));
 
-      retry.on('click', ()=> this.retry());
+      retry.on('click', () => this.retry());
 
       return retry.el;
     }
@@ -150,7 +150,7 @@ module Coveo {
           className: 'coveo-error-report-more-info'
         }, l('MoreInfo'));
 
-        moreInfo.on('click', ()=> {
+        moreInfo.on('click', () => {
           moreInfo.empty();
           this.message.el.appendChild(this.buildErrorInfo(data.error));
         })

@@ -67,31 +67,31 @@ export class SearchInterface extends RootComponent {
      * For example #q=foobar.<br/>
      * The default value is false.
      */
-    enableHistory: ComponentOptions.buildBooleanOption({defaultValue: false}),
+    enableHistory: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies that you wish to use the local storage of the browser to store the state of the interface.<br/>
      * This can be used for very specific purpose, and only if you know what you are doing.<br/>
      * Default value is false.
      */
-    useLocalStorageForHistory: ComponentOptions.buildBooleanOption({defaultValue: false}),
+    useLocalStorageForHistory: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies the number of results that each page displays.<br/>
      * Default is 10.
      */
-    resultsPerPage: ComponentOptions.buildNumberOption({defaultValue: 10, min: 0}),
+    resultsPerPage: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 0 }),
     /**
      * Specifies the number of characters of the excerpt to get at query time and display for each query result.<br/>
      * This setting is global and can not be modified on a per result basis.<br/>
      * The default value is 200.
      */
-    excerptLength: ComponentOptions.buildNumberOption({defaultValue: 200, min: 0}),
+    excerptLength: ComponentOptions.buildNumberOption({ defaultValue: 200, min: 0 }),
     /**
      * Specifies an expression to add to each query.<br/>
      * This should be use if you wish to add a global filter for your whole search interface that applies for all tab.<br/>
      * Do not use this for security concern ... (It's javascript after all).<br/>
      * By default none is added.
      */
-    expression: ComponentOptions.buildStringOption({defaultValue: ''}),
+    expression: ComponentOptions.buildStringOption({ defaultValue: '' }),
     /**
      * Specifies the name of a field to use as a custom filter when executing the query (also referred to as "folding").<br/>
      * Setting this option causes the index to return only one result having any particular value inside the filter field. Any other matching result is "folded" inside the childResults member of each JSON query result.<br/>
@@ -99,13 +99,13 @@ export class SearchInterface extends RootComponent {
      * This is obviously an advanced feature. Instead, look into using the {@link Folding} component, which covers a lot of different use cases.<br/>
      * By default none is added
      */
-    filterField: ComponentOptions.buildStringOption({defaultValue: ''}),
+    filterField: ComponentOptions.buildStringOption({ defaultValue: '' }),
     /**
      * Specifies whether the interface should display a loading animation before the first query has completed successfully.<br/>
      * Note that if you set autoTriggerQuery to false, this means that the loading animation won't go away automatically.<br/>
      * Default is true.
      */
-    hideUntilFirstQuery: ComponentOptions.buildBooleanOption({defaultValue: true}),
+    hideUntilFirstQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies the animation that you wish to use for your interface.<br/>
      * This can be either a selector, or an element that matches the correct css class.<br/>
@@ -122,33 +122,33 @@ export class SearchInterface extends RootComponent {
      * Note that if you set this to false, then the hideUntilFirstQuery option still applies. This means that the animation will still show until a query is triggered.<br/>
      * Default is true.
      */
-    autoTriggerQuery: ComponentOptions.buildBooleanOption({defaultValue: true}),
-    endpoint: ComponentOptions.buildCustomOption((endpoint) => endpoint != null && endpoint in SearchEndpoint.endpoints ? SearchEndpoint.endpoints[endpoint] : null, {defaultFunction: () => SearchEndpoint.endpoints['default']}),
+    autoTriggerQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    endpoint: ComponentOptions.buildCustomOption((endpoint) => endpoint != null && endpoint in SearchEndpoint.endpoints ? SearchEndpoint.endpoints[endpoint] : null, { defaultFunction: () => SearchEndpoint.endpoints['default'] }),
     /**
      * Specifies the timezone in which the search interface is loaded. This allows the index to recognize some special query syntax.<br/>
      * This must be an IANA zone info key (aka the Olson time zone database). For example : 'America/New_York'.<br/>
      * By default, we use a library that tries to detect the timezone automatically.<br/>
      */
-    timezone: ComponentOptions.buildStringOption({defaultFunction: () => jstz.determine().name()}),
+    timezone: ComponentOptions.buildStringOption({ defaultFunction: () => jstz.determine().name() }),
     /**
      * Specifies whether to enable the feature that allows users to ALT + double click on any results to get the Debug page with a detailed view of all the properties and fields for a given result.<br/>
      * This has no security concern (as all those informations are visible to users through the browser developer console or by calling the Coveo API directly).<br/>
      * The default value is true.
      */
-    enableDebugInfo: ComponentOptions.buildBooleanOption({defaultValue: true}),
+    enableDebugInfo: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies whether to enable the collaborative rating for the index and and include the user rating on each results to the normal index ranking.<br/>
      * If activated, this option can be leveraged with the {@link ResultRating} component.<br/>
      * The default value is false.
      */
-    enableCollaborativeRating: ComponentOptions.buildBooleanOption({defaultValue: false}),
+    enableCollaborativeRating: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies whether to filter duplicates on the search results.<br/>
      * When true, duplicates do not appear in search results, but they however are included in facet counts, which can be sometimes confusing for the users. This is a limitation of the index.<br/>
      * Example: The user narrows a query to one document that has a duplicate. Only one document appears in search results, but the facet count is 2.<br/>
      * The default value is false.
      */
-    enableDuplicateFiltering: ComponentOptions.buildBooleanOption({defaultValue: false}),
+    enableDuplicateFiltering: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies the name of the query pipeline to use for the queries. If not specified, the default value is default, which means the default query pipeline will be used.<br/>
      * You can use this parameter for example when your index is in a Coveo Cloud Organization where you created pipelines (see https://onlinehelp.coveo.com/en/cloud/creating_and_managing_query_pipelines.htm).<br/>
@@ -214,8 +214,8 @@ export class SearchInterface extends RootComponent {
 
 
     var eventName = this.queryStateModel.getEventName(Model.eventTypes.preprocess);
-    $$(this.element).on(eventName, (e, args)=> this.handlePreprocessQueryStateModel(args));
-    $$(this.element).on(QueryEvents.buildingQuery, (e, args)=> this.handleBuildingQuery(args));
+    $$(this.element).on(eventName, (e, args) => this.handlePreprocessQueryStateModel(args));
+    $$(this.element).on(QueryEvents.buildingQuery, (e, args) => this.handleBuildingQuery(args));
 
     if (this.options.enableHistory) {
       if (!this.options.useLocalStorageForHistory) {
@@ -224,11 +224,11 @@ export class SearchInterface extends RootComponent {
         new LocalStorageHistoryController(element, _window, this.queryStateModel, this.queryController);
       }
     } else {
-      $$(this.element).on(InitializationEvents.restoreHistoryState, ()=> this.queryStateModel.setMultiple(this.queryStateModel.defaultAttributes))
+      $$(this.element).on(InitializationEvents.restoreHistoryState, () => this.queryStateModel.setMultiple(this.queryStateModel.defaultAttributes))
     }
 
     var eventNameQuickview = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.quickview);
-    $$(this.element).on(eventNameQuickview, (e, args)=> this.handleQuickviewChanged(args));
+    $$(this.element).on(eventNameQuickview, (e, args) => this.handleQuickviewChanged(args));
     //shows the UI, since it's been hidden while loading
     this.element.style.display = 'block';
     this.setupDebugInfo();
@@ -336,11 +336,11 @@ export class SearchInterface extends RootComponent {
   private showAndHideFirstQueryAnimation() {
     this.showWaitAnimation();
     // On first query success or error, wait for call stack to finish, then remove the animation
-    $$(this.element).one(QueryEvents.querySuccess, ()=> {
-      _.defer(()=> this.hideWaitAnimation());
+    $$(this.element).one(QueryEvents.querySuccess, () => {
+      _.defer(() => this.hideWaitAnimation());
     })
-    $$(this.element).one(QueryEvents.queryError, ()=> {
-      _.defer(()=> this.hideWaitAnimation());
+    $$(this.element).one(QueryEvents.queryError, () => {
+      _.defer(() => this.hideWaitAnimation());
     })
   }
 
@@ -545,12 +545,12 @@ export class StandaloneSearchInterface extends SearchInterface {
   static ID = 'StandaloneSearchInterface'
 
   public static options: StandaloneSearchInterfaceOptions = {
-    redirectIfEmpty: ComponentOptions.buildBooleanOption({defaultValue: true})
+    redirectIfEmpty: ComponentOptions.buildBooleanOption({ defaultValue: true })
   }
 
   constructor(public element: HTMLElement, public options?: StandaloneSearchInterfaceOptions, public analyticsOptions?, _window = window) {
     super(element, ComponentOptions.initComponentOptions(element, StandaloneSearchInterface, options), analyticsOptions, _window);
-    $$(this.root).on(QueryEvents.newQuery, (e: Event, args: INewQueryEventArgs)=> this.handleRedirect(e, args));
+    $$(this.root).on(QueryEvents.newQuery, (e: Event, args: INewQueryEventArgs) => this.handleRedirect(e, args));
   }
 
   public handleRedirect(e: Event, data: INewQueryEventArgs) {

@@ -11,7 +11,7 @@ import {l} from '../../strings/Strings';
 import {IAnalyticsFacetOperatorMeta, IAnalyticsFacetMeta, AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 
 export interface IFacetHeaderOptions {
-  facetElement:HTMLElement;
+  facetElement: HTMLElement;
   title: string;
   field: string;
   enableClearElement: boolean;
@@ -165,7 +165,7 @@ export class FacetHeader {
     $$(collapse).addClass('coveo-facet-header-collapse');
     collapse.appendChild(icon);
 
-    $$(collapse).on('click', ()=> this.collapseFacet());
+    $$(collapse).on('click', () => this.collapseFacet());
 
     return collapse;
   }
@@ -179,7 +179,7 @@ export class FacetHeader {
     $$(expand).hide();
     $$(expand).addClass('coveo-facet-header-expand');
     expand.appendChild(icon);
-    $$(expand).on('click', ()=> this.expandFacet());
+    $$(expand).on('click', () => this.expandFacet());
     return expand;
   }
 
@@ -191,7 +191,7 @@ export class FacetHeader {
     toggle.setAttribute('title', l('SwitchTo', this.options.facet.options.useAnd ? l('Or') : l('And')));
     $$(toggle).addClass('coveo-facet-header-operator');
     toggle.appendChild(icon);
-    $$(toggle).on('click', ()=> this.handleOperatorClick());
+    $$(toggle).on('click', () => this.handleOperatorClick());
 
     return toggle;
   }
@@ -205,7 +205,7 @@ export class FacetHeader {
     if (this.options.facet.getSelectedValues().length != 0) {
       var operatorNow = this.options.facet.options.useAnd ? 'AND' : 'OR';
       var operatorBefore = this.options.facet.options.useAnd ? 'OR' : 'AND';
-      this.options.facet.triggerNewQuery(() => this.options.facet.usageAnalytics.logSearchEvent < IAnalyticsFacetOperatorMeta >(AnalyticsActionCauseList.facetToggle, {
+      this.options.facet.triggerNewQuery(() => this.options.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetOperatorMeta>(AnalyticsActionCauseList.facetToggle, {
         facetId: this.options.facet.options.id,
         facetOperatorBefore: operatorBefore,
         facetOperatorAfter: operatorNow,
@@ -229,7 +229,7 @@ export class FacetHeader {
     eraser.setAttribute('title', l('Clear', this.options.title));
     eraser.appendChild(icon);
     $$(eraser).addClass('coveo-facet-header-eraser');
-    $$(eraser).on('click', ()=> {
+    $$(eraser).on('click', () => {
       var cmp = this.options.facet || this.options.facetSlider;
       cmp.reset();
       cmp.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(AnalyticsActionCauseList.facetClearAll, {

@@ -8,18 +8,18 @@ module Coveo {
   export class Omnibox2 extends Querybox {
     static ID = 'Omnibox';
     static options: OmniboxOptions = {
-      omniboxDelay: ComponentOptions.buildNumberOption({defaultValue: 500, min: 0}),
-      omniboxTimeout: ComponentOptions.buildNumberOption({defaultValue: 2000, min: 0}),
-      omniboxChangeLimit: ComponentOptions.buildNumberOption({defaultValue: 3, min: 1}),
-      omniboxMinimumLetters: ComponentOptions.buildNumberOption({defaultValue: 1, min: 1})
+      omniboxDelay: ComponentOptions.buildNumberOption({ defaultValue: 500, min: 0 }),
+      omniboxTimeout: ComponentOptions.buildNumberOption({ defaultValue: 2000, min: 0 }),
+      omniboxChangeLimit: ComponentOptions.buildNumberOption({ defaultValue: 3, min: 1 }),
+      omniboxMinimumLetters: ComponentOptions.buildNumberOption({ defaultValue: 1, min: 1 })
     };
 
     static parent: ComponentClass = Querybox;
 
     private omniboxHeaderSearchForTemplate = _.template(
-        "<div class='coveo-omnibox-selectable coveo-omnibox-section coveo-omnibox-header'>" +
-        "<div class='coveo-text'>" + l("SearchFor", "<strong><%- data %></strong>") + "</div>" +
-        "</div>");
+      "<div class='coveo-omnibox-selectable coveo-omnibox-section coveo-omnibox-header'>" +
+      "<div class='coveo-text'>" + l("SearchFor", "<strong><%- data %></strong>") + "</div>" +
+      "</div>");
 
     private omniboxIsOpen = false;
     private omniboxDiv: JQuery;
@@ -38,8 +38,8 @@ module Coveo {
     private resize: (...args: any[]) => void;
 
     constructor(public element: HTMLElement,
-                public options: OmniboxOptions,
-                bindings?: ComponentBindings) {
+      public options: OmniboxOptions,
+      bindings?: ComponentBindings) {
       super(element, options, bindings);
 
       this.options = ComponentOptions.initComponentOptions(element, Omnibox, options);
@@ -59,13 +59,13 @@ module Coveo {
 
       var eventName = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.q);
       $(this.queryStateModel.element).on(eventName, $.proxy(this._handleQueryStateChanged, this));
-      
+
       this.resize = (e) => {
         if (this.omniboxIsOpen && !$.contains(this.omniboxDiv.get(0), $(e.target).get(0))) {
           this.close();
         }
       };
-        
+
       $(window).on("resize", this.resize);
       this.bind.onRoot(InitializationEvents.nuke, this.handleNuke);
     }
@@ -96,11 +96,11 @@ module Coveo {
       } else {
         this.close();
       }
-    }     
-    
-    private handleNuke(){
-       $(window).off("resize", this.resize); 
-       $("body").off('click', this.handleBodyClick);
+    }
+
+    private handleNuke() {
+      $(window).off("resize", this.resize);
+      $("body").off('click', this.handleBodyClick);
     }
 
     private getDataForOmniboxBody() {
@@ -156,7 +156,7 @@ module Coveo {
     private requestOmniboxData(dataToSearch: PopulateOmniboxObject) {
       Assert.exists(dataToSearch);
       this.logger.info("Requesting omnibox data to all components");
-      var eventArgs = <PopulateOmniboxEventArgs>$.extend({rows: []}, dataToSearch);
+      var eventArgs = <PopulateOmniboxEventArgs>$.extend({ rows: [] }, dataToSearch);
       $(this.root).trigger(OmniboxEvents.populateOmnibox, eventArgs);
       return eventArgs;
     }
@@ -185,7 +185,7 @@ module Coveo {
       event.stopImmediatePropagation();
       var currentNumberOfLettersInOmnibox = $(this.element).val().length;
       if (!Utils.isNullOrUndefined(this.lastOmniboxData) && !Utils.isNullOrUndefined(this.lastNumberOfLettersInOmnibox) &&
-          Math.abs(currentNumberOfLettersInOmnibox - this.lastNumberOfLettersInOmnibox) > this.options.omniboxChangeLimit) {
+        Math.abs(currentNumberOfLettersInOmnibox - this.lastNumberOfLettersInOmnibox) > this.options.omniboxChangeLimit) {
         this.rejectAllPendingDeferred(this.lastOmniboxData);
         this.prepareThrottledCall();
       }
@@ -197,7 +197,7 @@ module Coveo {
           this.selectionEvent();
         } else {
           this.close();
-          this.triggerNewQuery(() => this.usageAnalytics.logSearchEvent < AnalyticsNoMeta >(AnalyticsActionCauseList.searchboxSubmit, {}));
+          this.triggerNewQuery(() => this.usageAnalytics.logSearchEvent<AnalyticsNoMeta>(AnalyticsActionCauseList.searchboxSubmit, {}));
         }
       } else if (KeyboardUtils.isArrowKeyPushed(event.keyCode) && this.omniboxIsOpen) {
         this.navigationEvent(event);
@@ -234,7 +234,7 @@ module Coveo {
         this.keyBoardSelection();
       } else {
         this.close();
-        this.triggerNewQuery(() => this.usageAnalytics.logSearchEvent < AnalyticsNoMeta >(AnalyticsActionCauseList.searchboxSubmit, {}))
+        this.triggerNewQuery(() => this.usageAnalytics.logSearchEvent<AnalyticsNoMeta>(AnalyticsActionCauseList.searchboxSubmit, {}))
       }
     }
 
@@ -287,7 +287,7 @@ module Coveo {
       this.logger.info("Triggering new query because of omnibox selection");
       this.close();
       this.queryStateModel.set(QueryStateModel.attributesEnum.q, $(this.element).val());
-      this.queryController.deferExecuteQuery({beforeExecuteQuery: beforeExecuteQuery});
+      this.queryController.deferExecuteQuery({ beforeExecuteQuery: beforeExecuteQuery });
     }
 
     private processNewOmniboxData(data: PopulateOmniboxEventArgs) {
@@ -320,9 +320,9 @@ module Coveo {
       if (this.omniboxHeader != undefined) {
         this.omniboxHeader.remove()
       }
-      this.omniboxHeader = $(this.omniboxHeaderSearchForTemplate({data: $(this.element).val()}))
+      this.omniboxHeader = $(this.omniboxHeaderSearchForTemplate({ data: $(this.element).val() }))
       this.omniboxHeader.click(() => {
-        this.triggerNewQuery(() => this.usageAnalytics.logSearchEvent < AnalyticsNoMeta >(AnalyticsActionCauseList.searchboxSubmit, {}));
+        this.triggerNewQuery(() => this.usageAnalytics.logSearchEvent<AnalyticsNoMeta>(AnalyticsActionCauseList.searchboxSubmit, {}));
       })
       this.omniboxDiv.prepend(this.omniboxHeader);
     }
@@ -332,7 +332,7 @@ module Coveo {
         this.omniboxRows = [];
         this.lastOmniboxData = data;
         this.lastNumberOfLettersInOmnibox = $(this.element).val().length;
-        var atLeastOneRowCurrentlyExists = _.find(data.rows, (row: PopulateOmniboxEventRow)=> {
+        var atLeastOneRowCurrentlyExists = _.find(data.rows, (row: PopulateOmniboxEventRow) => {
           return !Utils.isNullOrUndefined(row.element);
         });
 
@@ -403,7 +403,7 @@ module Coveo {
     private renderOmniboxForOneElement(row: OmniboxDataRow) {
       var zIndex = row.zIndex || -1;
       $(row.element).addClass('coveo-omnibox-section');
-      this.omniboxRows.push({zIndex: zIndex, element: row.element});
+      this.omniboxRows.push({ zIndex: zIndex, element: row.element });
     }
 
     private renderOmniboxForOneElementDeferred(row: OmniboxDataRow) {
@@ -480,7 +480,7 @@ module Coveo {
       var searchbox = $(this.element).closest("." + Component.computeCssClassNameForType(Searchbox.ID));
       if (searchbox.length != 0) {
         var searchboxComponent = <Searchbox>searchbox.coveo(Searchbox);
-        if(searchboxComponent.searchButton && $(searchboxComponent.searchButton.element).css('position') != 'absolute') {
+        if (searchboxComponent.searchButton && $(searchboxComponent.searchButton.element).css('position') != 'absolute') {
           return $(searchboxComponent.searchButton.element).outerWidth()
         }
       }

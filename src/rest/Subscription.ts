@@ -38,7 +38,7 @@ export interface ISubscriptionRequest {
    * Type of subscription.<br/>
    * Can be 'followQuery' or 'followDocument'
    */
-      type: string;
+  type: string;
   /**
    * Config of the subscription
    */

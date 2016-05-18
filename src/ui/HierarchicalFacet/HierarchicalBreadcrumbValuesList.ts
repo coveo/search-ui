@@ -1,4 +1,4 @@
-﻿/// <reference path="HierarchicalFacet.ts" />
+/// <reference path="HierarchicalFacet.ts" />
 
 import {BreadcrumbValueList} from '../Facet/BreadcrumbValuesList';
 import {HierarchicalFacet, ValueHierarchy} from './HierarchicalFacet';

@@ -28,7 +28,7 @@ module Coveo {
     static ID = 'QuickviewDocument';
 
     static options: QuickviewDocumentOptions = {
-      maximumDocumentSize: ComponentOptions.buildNumberOption({defaultValue: 0, min: 0}),
+      maximumDocumentSize: ComponentOptions.buildNumberOption({ defaultValue: 0, min: 0 }),
     };
 
     private iframe: JQuery;
@@ -81,33 +81,33 @@ module Coveo {
       };
 
       endpoint.getDocumentHtml(this.result.uniqueId, callOptions)
-          .then((html: HTMLDocument) => {
-            // If the contentDocument is null at this point it means that the Quick View
-            // was closed before we've finished loading it. In this case do nothing.
-            if (iframe.contentDocument == null) {
-              return;
-            }
+        .then((html: HTMLDocument) => {
+          // If the contentDocument is null at this point it means that the Quick View
+          // was closed before we've finished loading it. In this case do nothing.
+          if (iframe.contentDocument == null) {
+            return;
+          }
 
-            this.renderHTMLDocument(iframe, html);
+          this.renderHTMLDocument(iframe, html);
+          this.triggerQuickviewLoaded(beforeLoad);
+        })
+        .catch((error: AjaxError) => {
+          // If the contentDocument is null at this point it means that the Quick View
+          // was closed before we've finished loading it. In this case do nothing.
+          if (iframe.contentDocument == null) {
+            return;
+          }
+
+          if (error.status != 0) {
+            this.renderErrorReport(iframe);
             this.triggerQuickviewLoaded(beforeLoad);
-          })
-          .catch((error: AjaxError) => {
-            // If the contentDocument is null at this point it means that the Quick View
-            // was closed before we've finished loading it. In this case do nothing.
-            if (iframe.contentDocument == null) {
-              return;
-            }
-
-            if (error.status != 0) {
-              this.renderErrorReport(iframe);
+          } else {
+            iframe.onload = () => {
               this.triggerQuickviewLoaded(beforeLoad);
-            } else {
-              iframe.onload = () => {
-                this.triggerQuickviewLoaded(beforeLoad);
-              }
-              iframe.src = endpoint.getViewAsHtmlUri(this.result.uniqueId, callOptions);
             }
-          });
+            iframe.src = endpoint.getViewAsHtmlUri(this.result.uniqueId, callOptions);
+          }
+        });
     }
 
     protected renderHTMLDocument(iframe: HTMLIFrameElement, html: HTMLDocument) {
@@ -213,7 +213,7 @@ module Coveo {
 
     private triggerQuickviewLoaded(beforeLoad: number) {
       var afterLoad = (new Date()).getTime();
-      var eventArgs: QuickviewLoadedEventArgs = {duration: afterLoad - beforeLoad};
+      var eventArgs: QuickviewLoadedEventArgs = { duration: afterLoad - beforeLoad };
       $(this.element).trigger(UserActionEvents.quickviewLoaded, eventArgs);
     }
 
@@ -269,64 +269,64 @@ module Coveo {
       var highlightsCount = 0;
 
       $(window.document.body)
-          .find('[id^=' + HIGHLIGHT_PREFIX + ']')
-          .each((index, element: HTMLElement) => {
-            var idParts = this.getHighlightIdParts(element);
+        .find('[id^=' + HIGHLIGHT_PREFIX + ']')
+        .each((index, element: HTMLElement) => {
+          var idParts = this.getHighlightIdParts(element);
 
-            if (idParts) {
-              var idIndexPart = idParts[1];                    // X
-              var idOccurencePart = parseInt(idParts[2], 10);  // Y
-              var idTermPart = parseInt(idParts[3], 10);       // Z in <span id="CoveoHighlight:X.Y.Z">a</span>
+          if (idParts) {
+            var idIndexPart = idParts[1];                    // X
+            var idOccurencePart = parseInt(idParts[2], 10);  // Y
+            var idTermPart = parseInt(idParts[3], 10);       // Z in <span id="CoveoHighlight:X.Y.Z">a</span>
 
-              var word = words[idIndexPart];
+            var word = words[idIndexPart];
 
-              // The "idTermPart" check is to circumvent a bug from the index
-              // where an highlight of an empty string start with an idTermPart > 1.
-              if (word == null && idTermPart == 1) {
-                words[idIndexPart] = word = {
-                  text: this.getHighlightInnerText(element),
-                  count: 1,
-                  index: parseInt(idIndexPart, 10),
+            // The "idTermPart" check is to circumvent a bug from the index
+            // where an highlight of an empty string start with an idTermPart > 1.
+            if (word == null && idTermPart == 1) {
+              words[idIndexPart] = word = {
+                text: this.getHighlightInnerText(element),
+                count: 1,
+                index: parseInt(idIndexPart, 10),
 
-                  // Here I try to be clever.
-                  // An overlaping word:
-                  // 1) always start with a "coveotaggedword" element.
-                  // 2) then other "coveotaggedword" elements may follow
-                  // 3) then a "span" element may follow.
-                  //
-                  // All 1), 2) and 3) will have the same id so I consider them as
-                  // a whole having the id 0 instead of 1.
-                  termsCount: element.nodeName.toLowerCase() == "coveotaggedword" ? 0 : 1,
-                  element: element,
-                  occurence: idOccurencePart
-                };
-              } else if (word) {
-                if (word.occurence == idOccurencePart) {
-                  if (element.nodeName.toLowerCase() == "coveotaggedword") {
-                    word.text += this.getHighlightInnerText(element);
-                    // Doesn't count as a term part (see method description for more info).
-                  } else if (word.termsCount < idTermPart) {
-                    word.text += this.getHighlightInnerText(element);
-                    word.termsCount += 1;
-                  }
+                // Here I try to be clever.
+                // An overlaping word:
+                // 1) always start with a "coveotaggedword" element.
+                // 2) then other "coveotaggedword" elements may follow
+                // 3) then a "span" element may follow.
+                //
+                // All 1), 2) and 3) will have the same id so I consider them as
+                // a whole having the id 0 instead of 1.
+                termsCount: element.nodeName.toLowerCase() == "coveotaggedword" ? 0 : 1,
+                element: element,
+                occurence: idOccurencePart
+              };
+            } else if (word) {
+              if (word.occurence == idOccurencePart) {
+                if (element.nodeName.toLowerCase() == "coveotaggedword") {
+                  word.text += this.getHighlightInnerText(element);
+                  // Doesn't count as a term part (see method description for more info).
+                } else if (word.termsCount < idTermPart) {
+                  word.text += this.getHighlightInnerText(element);
+                  word.termsCount += 1;
                 }
-
-                word.count = Math.max(word.count, idOccurencePart);
-                highlightsCount += 1;
               }
 
-              // See the method description to understand why this code let us
-              // create the word "bcdef" instead of "bdef".
-              if (word && word.occurence == idOccurencePart && element.nodeName.toLowerCase() == "span") {
-                var embeddedWordParts = this.getHightlightEmbeddedWordIdParts(element);
-                var embeddedWord = embeddedWordParts ? words[embeddedWordParts[1]] : null;
+              word.count = Math.max(word.count, idOccurencePart);
+              highlightsCount += 1;
+            }
 
-                if (embeddedWord && embeddedWord.occurence == parseInt(embeddedWordParts[2], 10)) {
-                  embeddedWord.text += element.childNodes[0].nodeValue || ""; // only immediate text without children.
-                }
+            // See the method description to understand why this code let us
+            // create the word "bcdef" instead of "bdef".
+            if (word && word.occurence == idOccurencePart && element.nodeName.toLowerCase() == "span") {
+              var embeddedWordParts = this.getHightlightEmbeddedWordIdParts(element);
+              var embeddedWord = embeddedWordParts ? words[embeddedWordParts[1]] : null;
+
+              if (embeddedWord && embeddedWord.occurence == parseInt(embeddedWordParts[2], 10)) {
+                embeddedWord.text += element.childNodes[0].nodeValue || ""; // only immediate text without children.
               }
             }
-          });
+          }
+        });
 
       if (highlightsCount == 0) {
         this.header.css("min-height", 0);
@@ -358,9 +358,9 @@ module Coveo {
 
     private getHighlightIdParts(element: HTMLElement): string[] {
       var parts = element
-          .id
-          .substr(HIGHLIGHT_PREFIX.length + 1)
-          .match(/^([0-9]+)\.([0-9]+)\.([0-9]+)$/);
+        .id
+        .substr(HIGHLIGHT_PREFIX.length + 1)
+        .match(/^([0-9]+)\.([0-9]+)\.([0-9]+)$/);
 
       return (parts && parts.length > 3) ? parts : null;
     }
@@ -377,7 +377,7 @@ module Coveo {
     private getHightlightEmbeddedWordIdParts(element: HTMLElement): string[] {
       var embedded = element.getElementsByTagName('coveotaggedword')[0];
 
-      return embedded ? this.getHighlightIdParts(<HTMLElement> embedded) : null;
+      return embedded ? this.getHighlightIdParts(<HTMLElement>embedded) : null;
     }
 
     private resolveOriginalTermFromHighlight(highlight: string): string {
@@ -388,11 +388,11 @@ module Coveo {
         // We look for the term expansion and we'll return the corresponding
         // original term is one is found.
         found = _.find(_.keys(this.result.termsToHighlight), (originalTerm: string) => {
-              // The expansions do NOT include the original term (makes sense), so be sure to check
-              // the original term for a match too.
-              return (originalTerm.toLowerCase() == highlight.toLowerCase()) ||
-                  (_.find(this.result.termsToHighlight[originalTerm], (expansion: string) => expansion.toLowerCase() == highlight.toLowerCase()) != undefined)
-            }) || found;
+          // The expansions do NOT include the original term (makes sense), so be sure to check
+          // the original term for a match too.
+          return (originalTerm.toLowerCase() == highlight.toLowerCase()) ||
+            (_.find(this.result.termsToHighlight[originalTerm], (expansion: string) => expansion.toLowerCase() == highlight.toLowerCase()) != undefined)
+        }) || found;
       }
       return found;
     }
@@ -432,7 +432,7 @@ module Coveo {
 
       // Un-highlight any currently selected element
       scroll.find('[id^="' + HIGHLIGHT_PREFIX + ':' + state.word.index + '.' + fromIndex + '"]')
-          .css('border', '');
+        .css('border', '');
 
       // Find and highlight the new element.
       var element = $(window.document.body).find('[id^="' + HIGHLIGHT_PREFIX + ':' + state.word.index + '.' + toIndex + '."]');

@@ -17,8 +17,8 @@ module Coveo {
   export class SalesforceResultLink extends ResultLink {
     static ID = 'SalesforceResultLink';
     static options: SalesforceResultLinkOptions = _.extend({}, {
-      openInPrimaryTab: ComponentOptions.buildBooleanOption({defaultValue: true}),
-      openInSubTab: ComponentOptions.buildBooleanOption({defaultValue: false})
+      openInPrimaryTab: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+      openInSubTab: ComponentOptions.buildBooleanOption({ defaultValue: false })
     }, ResultLink.options);
 
     constructor(public element: HTMLElement, public options?: SalesforceResultLinkOptions, bindings?: IResultsComponentBindings, public result?: IQueryResult) {
@@ -29,12 +29,12 @@ module Coveo {
       if (SalesforceUtilities.isInSalesforceConsole()) {
         var eventWasBinded = false;
         if (this.options.openInPrimaryTab) {
-          $(this.element).click(()=> {
+          $(this.element).click(() => {
             SalesforceUtilities.focusOrOpenTab(decodeURIComponent(this.result.clickUri), this.result.title, true);
           });
           eventWasBinded = true;
         } else if (this.options.openInSubTab) {
-          $(this.element).click(()=> {
+          $(this.element).click(() => {
             SalesforceUtilities.focusOrOpenTab(decodeURIComponent(this.result.clickUri), this.result.title, false);
           });
           eventWasBinded = true;

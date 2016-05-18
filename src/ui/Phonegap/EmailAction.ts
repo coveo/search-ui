@@ -76,13 +76,13 @@ module Coveo {
         if (DeviceUtils.isAndroid()) {
           promise = endPoint.getDocumentText(this.result.uniqueId)
             .then((res) => {
-            this.doneRetrieveBody(res, callback);
-          })
+              this.doneRetrieveBody(res, callback);
+            })
         } else {
           promise = endPoint.getDocumentHtml(this.result.uniqueId)
             .then((res) => {
-            this.doneRetrieveBody(res.getElementsByTagName("body")[0].innerHTML, callback);
-          })
+              this.doneRetrieveBody(res.getElementsByTagName("body")[0].innerHTML, callback);
+            })
         }
         promise.catch(() => {
           this.doneRetrieveBody('', callback);

@@ -3,7 +3,7 @@ module Coveo {
   /**
    * Represent a single cell of data in the {@link Matrix} component
    */
-  export class Cell{
+  export class Cell {
     private value: any;
     private element: HTMLElement;
     private previewActive = false;
@@ -17,7 +17,7 @@ module Coveo {
      * Return the value of the cell
      * @returns {any}
      */
-    public getValue(): any{
+    public getValue(): any {
       return this.value;
     }
 
@@ -25,7 +25,7 @@ module Coveo {
      * Return the HTMLElement for the cell
      * @returns {HTMLElement}
      */
-    public getHTML(): HTMLElement{
+    public getHTML(): HTMLElement {
       return this.element;
     }
 
@@ -33,7 +33,7 @@ module Coveo {
      * Set the value if the cell
      * @param value
      */
-    public setValue(value: any){
+    public setValue(value: any) {
       this.value = value;
     }
 
@@ -41,7 +41,7 @@ module Coveo {
      * Set the HTMLElement for the cell
      * @param html
      */
-    public setHTML(html: HTMLElement){
+    public setHTML(html: HTMLElement) {
       this.element = html;
     }
 
@@ -57,12 +57,12 @@ module Coveo {
       });
       previewContainer.el.style.minWidth = minWidth;
       previewContainer.el.style.maxWidth = maxWidth;
-      previewContainer.on('click', (e: MouseEvent)=> {
+      previewContainer.on('click', (e: MouseEvent) => {
         e.stopPropagation();
       });
       this.element.appendChild(previewContainer.el);
       var container = $$(this.element).findAll('.matrix-results-preview-container');
-      _.each(container, (c: HTMLElement)=> {
+      _.each(container, (c: HTMLElement) => {
         $$(c).hide();
       })
     }
@@ -82,13 +82,13 @@ module Coveo {
      * Update the preview with a new template
      * @param template
      */
-    public updatePreview(template: string){
+    public updatePreview(template: string) {
       if (this.previewActive) {
         var preview = $$(this.element).find('.matrix-results-preview-container');
         preview.innerHTML += template;
         $$(preview).show();
       }
     }
-    
+
   }
 }

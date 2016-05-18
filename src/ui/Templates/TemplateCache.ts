@@ -70,7 +70,7 @@ export class TemplateCache {
       while (i--) {
         arr[i] = <HTMLElement>scriptList.item(i);
       }
-      _.each(arr, (elem: HTMLElement)=> {
+      _.each(arr, (elem: HTMLElement) => {
         var template = new UnderscoreTemplate(elem);
         TemplateCache.registerTemplate(elem.getAttribute('id'), template);
       })
@@ -86,7 +86,7 @@ export class TemplateCache {
         arr[i] = <HTMLElement>scriptList.item(i);
       }
 
-      _.each(arr, (elem: HTMLElement)=> {
+      _.each(arr, (elem: HTMLElement) => {
         var template = new HtmlTemplate(elem);
         TemplateCache.registerTemplate(elem.getAttribute('id'), template);
       })
@@ -94,6 +94,6 @@ export class TemplateCache {
   }
 }
 
-document.addEventListener('DOMContentLoaded', ()=> {
+document.addEventListener('DOMContentLoaded', () => {
   TemplateCache.scanAndRegisterTemplates();
 })

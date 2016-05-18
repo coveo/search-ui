@@ -35,12 +35,12 @@ module Coveo {
        * The unique ID for a tab.<br/>
        * This is mandatory and required for the tab to function properly
        */
-      id: ComponentOptions.buildStringOption({required: true}),
+      id: ComponentOptions.buildStringOption({ required: true }),
       /**
        * The caption for the tab.<br/>
        * This is mandatory and required for the tab to function properly
        */
-      caption: ComponentOptions.buildLocalizedStringOption({required: true}),
+      caption: ComponentOptions.buildLocalizedStringOption({ required: true }),
       /**
        * Specify an icon for the tab.<br/>
        * This options is mostly kept for legacy reason. Do not use one if not needed.
@@ -68,12 +68,12 @@ module Coveo {
        * The constant part of the query is specially optimized by the index to execute faster, but you must be careful not to include dynamic query expressions otherwise the cache would lose its efficiency.<br/>
        * By default, this option is set to true.
        */
-      constant: ComponentOptions.buildBooleanOption({defaultValue: true}),
+      constant: ComponentOptions.buildBooleanOption({ defaultValue: true }),
       /**
        * Specifies whether to filter duplicates on the search results.<br/>
        * The default value is false.
        */
-      enableDuplicateFiltering: ComponentOptions.buildBooleanOption({defaultValue: false}),
+      enableDuplicateFiltering: ComponentOptions.buildBooleanOption({ defaultValue: false }),
       /**
        * Specifies the name of the query pipeline to use for the queries, in the Coveo platform ( Query Pipeline in the cloud admin).<br/>
        * If not specified, the default value is null, in which case pipeline selection conditions defined in a Coveo Cloud organization apply.
@@ -101,9 +101,9 @@ module Coveo {
 
       this.options = ComponentOptions.initComponentOptions(element, Tab, options);
 
-      this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs)=> this.handleBuildingQuery(args));
-      this.bind.onQueryState(ModelEvents.CHANGE_ONE, QueryStateAttributes.T, (args: IAttributeChangedEventArg)=> this.handleQueryStateChanged(args));
-      this.bind.on(element, 'click', (e: Event)=> this.handleClick());
+      this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
+      this.bind.onQueryState(ModelEvents.CHANGE_ONE, QueryStateAttributes.T, (args: IAttributeChangedEventArg) => this.handleQueryStateChanged(args));
+      this.bind.on(element, 'click', (e: Event) => this.handleClick());
       this.render();
     }
 
@@ -120,7 +120,7 @@ module Coveo {
         if (DeviceUtils.isMobileDevice()) {
           MobileUtils.removeToggleClassOnSearchInterface();
         }
-        this.usageAnalytics.logSearchEvent<IAnalyticsInterfaceChange>(AnalyticsActionCauseList.interfaceChange, {interfaceChangeTo: this.options.id});
+        this.usageAnalytics.logSearchEvent<IAnalyticsInterfaceChange>(AnalyticsActionCauseList.interfaceChange, { interfaceChangeTo: this.options.id });
         this.queryController.executeQuery();
       }
     }
@@ -138,8 +138,8 @@ module Coveo {
       Assert.check(!(includedTabs.length != 0 && excludedTabs.length != 0), 'You cannot both explicity include and exclude an element from tabs');
 
       return (includedTabs.length != 0 && _.indexOf(includedTabs, this.options.id) != -1) ||
-          (excludedTabs.length != 0 && _.indexOf(excludedTabs, this.options.id) == -1) ||
-          (includedTabs.length == 0 && excludedTabs.length == 0);
+        (excludedTabs.length != 0 && _.indexOf(excludedTabs, this.options.id) == -1) ||
+        (includedTabs.length == 0 && excludedTabs.length == 0);
     }
 
     private handleClick() {
@@ -220,7 +220,7 @@ module Coveo {
         }
       });
 
-      $$(this.root).one(QueryEvents.querySuccess, ()=> {
+      $$(this.root).one(QueryEvents.querySuccess, () => {
         _.each(showElements, (elem) => $$(elem).removeClass('coveo-tab-disabled'));
         _.each(hideElements, (elem) => $$(elem).addClass('coveo-tab-disabled'));
       })
@@ -237,7 +237,7 @@ module Coveo {
     private toggleAllComponentsUnder(element: HTMLElement, enable: boolean) {
       Assert.exists(element);
 
-      var togglePossibleComponent = (possibleComponent: HTMLElement)=> {
+      var togglePossibleComponent = (possibleComponent: HTMLElement) => {
         var possibleCmp = Component.get(possibleComponent, undefined, true);
         if (possibleCmp) {
           if (enable) {
@@ -249,7 +249,7 @@ module Coveo {
       }
 
       togglePossibleComponent(element);
-      _.each($$(element).findAll('*'), (el)=> {
+      _.each($$(element).findAll('*'), (el) => {
         togglePossibleComponent(el);
       })
     }

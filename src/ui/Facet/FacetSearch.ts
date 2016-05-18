@@ -42,7 +42,7 @@ export class FacetSearch {
   private facetSearchPromise: Promise<IIndexFieldValue[]>;
   private moreValuesToFetch = true;
   private onResize: (...args: any[]) => void;
-  private onDocClick: (e: Event)=>void;
+  private onDocClick: (e: Event) => void;
 
   constructor(public facet: Facet, public facetSearchValuesListKlass: FacetSearchValuesListKlass) {
     this.searchResults = document.createElement('ul');
@@ -52,7 +52,7 @@ export class FacetSearch {
         this.positionSearchResults();
       }
     };
-    this.onDocClick = (e: Event)=> {
+    this.onDocClick = (e: Event) => {
       this.handleClickElsewhere(e);
     }
     window.addEventListener('resize', this.onResize);
@@ -189,9 +189,9 @@ export class FacetSearch {
     Component.pointElementsToDummyForm(this.input);
     this.middle.appendChild(this.input);
 
-    $$(this.input).on('keyup', (e: KeyboardEvent)=> this.handleFacetSearchKeyUp(e));
-    $$(this.clear).on('click', (e: Event)=> this.handleFacetSearchClear());
-    $$(this.input).on('focus', (e: Event)=> this.handleFacetSearchFocus());
+    $$(this.input).on('keyup', (e: KeyboardEvent) => this.handleFacetSearchKeyUp(e));
+    $$(this.clear).on('click', (e: Event) => this.handleFacetSearchClear());
+    $$(this.input).on('focus', (e: Event) => this.handleFacetSearchFocus());
 
     return this.search;
   }
@@ -201,7 +201,7 @@ export class FacetSearch {
     $$(button).addClass('coveo-facet-search-button-mobile');
     $$(button).text(l('Search'));
     this.search = this.buildBaseSearch();
-    $$(button).on('click', ()=> {
+    $$(button).on('click', () => {
       var toOpen = document.createElement('div');
       toOpen.appendChild(this.search);
 
@@ -376,7 +376,7 @@ export class FacetSearch {
       var selectAll = document.createElement('li');
       $$(selectAll).addClass(['coveo-facet-selectable', 'coveo-facet-search-selectable', 'coveo-facet-search-select-all']);
       $$(selectAll).text('SelectAll');
-      $$(selectAll).on('click', ()=> this.selectAllValuesMatchingSearch());
+      $$(selectAll).on('click', () => this.selectAllValuesMatchingSearch());
       if (!this.isMobileDevice()) {
         this.searchResults.appendChild(selectAll);
       }
@@ -384,7 +384,7 @@ export class FacetSearch {
     var facetValues = _.map(fieldValues, (fieldValue) => {
       return FacetValue.create(fieldValue);
     });
-    _.each(new this.facetSearchValuesListKlass(this.facet, FacetValueElement).build(facetValues), (listElement: HTMLElement)=> {
+    _.each(new this.facetSearchValuesListKlass(this.facet, FacetValueElement).build(facetValues), (listElement: HTMLElement) => {
       this.searchResults.appendChild(listElement);
     })
     if (this.currentlyDisplayedResults) {
@@ -399,13 +399,13 @@ export class FacetSearch {
       selectAll.appendChild(selectAllMobile);
       this.searchResults.appendChild(selectAll);
     }
-    _.each($$(this.searchResults).findAll('.coveo-facet-selectable'), (elem: HTMLElement)=> {
+    _.each($$(this.searchResults).findAll('.coveo-facet-selectable'), (elem: HTMLElement) => {
       $$(elem).addClass('coveo-facet-search-selectable');
       this.setupFacetSearchResultsEvents(elem);
     })
 
     if (this.facet.searchInterface.isNewDesign()) {
-      $$(this.searchResults).on('scroll', ()=> this.handleFacetSearchResultsScroll());
+      $$(this.searchResults).on('scroll', () => this.handleFacetSearchResultsScroll());
     }
   }
 
@@ -418,18 +418,18 @@ export class FacetSearch {
     var touchDragging = false;
     var mouseDragging = false;
     $(elem)
-        .mousedown(() => mouseDragging = false)
-        .mousemove(() => mouseDragging = true)
-        .on('touchmove', () => touchDragging = true)
-        .on('mouseup touchend', () => {
-          if (!touchDragging && !mouseDragging) {
-            setTimeout(() => {
-              this.completelyDismissSearch();
-            }, 0) // setTimeout is to give time to trigger the click event before hiding the search menu.
-          }
-          touchDragging = false;
-          mouseDragging = false;
-        });
+      .mousedown(() => mouseDragging = false)
+      .mousemove(() => mouseDragging = true)
+      .on('touchmove', () => touchDragging = true)
+      .on('mouseup touchend', () => {
+        if (!touchDragging && !mouseDragging) {
+          setTimeout(() => {
+            this.completelyDismissSearch();
+          }, 0) // setTimeout is to give time to trigger the click event before hiding the search menu.
+        }
+        touchDragging = false;
+        mouseDragging = false;
+      });
   }
 
   private handleFacetSearchResultsScroll() {
@@ -476,7 +476,7 @@ export class FacetSearch {
 
   private highlightCurrentQueryWithinSearchResults() {
     var captions = $$(this.searchResults).findAll('.coveo-facet-value-caption');
-    _.each(captions, (captionElement: HTMLElement)=> {
+    _.each(captions, (captionElement: HTMLElement) => {
       var search = this.getValueInInputForFacetSearch();
       var regex = new RegExp('(' + StringUtils.wildcardsToRegex(search, this.facet.options.facetSearchIgnoreAccents) + ')', 'ig');
 
@@ -491,7 +491,7 @@ export class FacetSearch {
   }
 
   private makeCurrentResult(result: HTMLElement) {
-    _.each(this.getSelectables(), (selectable: HTMLElement)=> {
+    _.each(this.getSelectables(), (selectable: HTMLElement) => {
       $$(selectable).removeClass('coveo-current');
     })
     $$(result).addClass('coveo-current');
@@ -499,7 +499,7 @@ export class FacetSearch {
 
   private moveCurrentResultDown() {
     var current = $$(this.searchResults).find('.coveo-current');
-    _.each(this.getSelectables(), (selectable: HTMLElement)=> {
+    _.each(this.getSelectables(), (selectable: HTMLElement) => {
       $$(selectable).removeClass('coveo-current');
     })
     var allSelectables = this.getSelectables();
@@ -513,7 +513,7 @@ export class FacetSearch {
 
   private moveCurrentResultUp() {
     var current = $$(this.searchResults).find('.coveo-current');
-    _.each($$(this.searchResults).findAll('.coveo-facet-selectable'), (s)=> {
+    _.each($$(this.searchResults).findAll('.coveo-facet-selectable'), (s) => {
       $$(s).removeClass('coveo-current');
     })
 

@@ -57,12 +57,12 @@ module Coveo {
        * Specifies the field to use for the columns.<br/>
        * Required options, otherwise the component will not work
        */
-      columnField: ComponentOptions.buildFieldOption({required: true}),
+      columnField: ComponentOptions.buildFieldOption({ required: true }),
       /**
        * Specifies the criteria used to sort the rows. The available sort criteria are the same as those for the Group By parameter (see Group By Parameters - sortCriteria).<br/>
        * The default value is 'ComputedFieldDescending'.
        */
-      sortCriteria: ComponentOptions.buildStringOption({defaultValue: 'ComputedFieldDescending'}),
+      sortCriteria: ComponentOptions.buildStringOption({ defaultValue: 'ComputedFieldDescending' }),
       /**
        * Specifies the maximum number of rows to display in the matrix.<br/>
        * The default value is 10.
@@ -114,7 +114,7 @@ module Coveo {
        * </ul>
        * The default value is sum.
        */
-      computedFieldOperation: ComponentOptions.buildStringOption({defaultValue: 'sum'}),
+      computedFieldOperation: ComponentOptions.buildStringOption({ defaultValue: 'sum' }),
       /**
        * Specifies how to format the values resulting from a computed field operation.<br/>
        * The available formats are the same as those for the {@link Facet.options.computedFieldFormat}.<br/>
@@ -126,13 +126,13 @@ module Coveo {
        * </ul>
        * The default value is c0.
        */
-      computedFieldFormat: ComponentOptions.buildStringOption({defaultValue: 'c0'}),
+      computedFieldFormat: ComponentOptions.buildStringOption({ defaultValue: 'c0' }),
       /**
        * Specifies the font-size of the cells.<br/>
        * This option is mainly used to reduce the cell font-size when some values are cropped because there are too many columns in the matrix.<br/>
        * Other options to fix this problem are to remove less important columns or modify the CSS to give more place to the matrix.
        */
-      cellFontSize: ComponentOptions.buildStringOption({defaultValue: ''}),
+      cellFontSize: ComponentOptions.buildStringOption({ defaultValue: '' }),
       /**
        * Specifies whether to show a preview popup of cell results on hover. The default value is true.
        */
@@ -150,7 +150,7 @@ module Coveo {
        * </ul>
        * The default value is 'FieldDescending'.
        */
-      previewSortCriteria: ComponentOptions.buildStringOption({defaultValue: 'FieldDescending'}),
+      previewSortCriteria: ComponentOptions.buildStringOption({ defaultValue: 'FieldDescending' }),
       /**
        * Specifies the field to use when the previewSortCriteria option is FieldDescending or FieldAscending.<br/>
        * By default, the value of the computedField option is used.
@@ -160,12 +160,12 @@ module Coveo {
        * Specifies the maximum width of the preview pop-up.<br/>
        * The default value is 500px.
        */
-      previewMaxWidth: ComponentOptions.buildStringOption({defaultValue: '500px'}),
+      previewMaxWidth: ComponentOptions.buildStringOption({ defaultValue: '500px' }),
       /**
        * Specifies the minimum width of the preview pop-up.<br/>
        * The default value is 0.
        */
-      previewMinWidth: ComponentOptions.buildStringOption({defaultValue: '0'}),
+      previewMinWidth: ComponentOptions.buildStringOption({ defaultValue: '0' }),
       /**
        * Specifies the delay (in milliseconds) before the query used to get the preview results is sent.<br/>
        * The default value is 500.
@@ -323,16 +323,16 @@ module Coveo {
 
       if (this.options.cellFontSize !== '') {
         var cells = $$(this.element).findAll('.coveo-matrix-cell');
-        _.each(cells, (c: HTMLElement)=> {
+        _.each(cells, (c: HTMLElement) => {
           c.style.fontSize = this.options.cellFontSize;
         })
       }
     }
 
     private bindEvents() {
-      this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs)=> this.handleBuildingQuery(args));
-      this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs)=> this.handleDoneBuildingQuery(args));
-      this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (args: IQuerySuccessEventArgs)=> this.handleDeferredQuerySuccess(args));
+      this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
+      this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
+      this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (args: IQuerySuccessEventArgs) => this.handleDeferredQuerySuccess(args));
     }
 
     private initQueryState() {
@@ -678,7 +678,7 @@ module Coveo {
             this.setValue(value, i + 1, 0);
           }
         }
-        
+
         for (var i = 1; i < this.numberOfRows; i++) {
           for (var j = 1; j < this.numberOfColumns; j++) {
             var columnResult = results.groupByResults[this.groupByIndex[j]];
@@ -694,17 +694,17 @@ module Coveo {
       var body = $$(this.element).find('.coveo-matrix')
       for (var i = 0; i < this.numberOfColumns; i++) {
         var cell = this.data[rowNumber][i].getHTML();
-        $$(cell).on('click', ()=> {
-          var handler = (num)=> {
+        $$(cell).on('click', () => {
+          var handler = (num) => {
             this.handleClick(rowNumber, num);
           }
           handler(i);
         })
 
         if (this.options.enableHoverPreview) {
-          ((num: number)=> {
-            $$(cell).on('mouseover', ()=> this.handleHoverIn(rowNumber, num));
-            $$(cell).on('mouseout', ()=> this.handleHoverOut(rowNumber, num));
+          ((num: number) => {
+            $$(cell).on('mouseover', () => this.handleHoverIn(rowNumber, num));
+            $$(cell).on('mouseout', () => this.handleHoverOut(rowNumber, num));
           })(i)
         }
         row.appendChild(cell);
@@ -740,7 +740,7 @@ module Coveo {
           return;
         }
         var cell = this.data[rowNumber][columnNumber];
-        var instantiatedResults = _.map(data.results, (r: IQueryResult)=> {
+        var instantiatedResults = _.map(data.results, (r: IQueryResult) => {
           return this.instantiateTemplate(r)
         })
         var html = '';
@@ -773,7 +773,7 @@ module Coveo {
       query.sortCriteria = this.options.previewSortCriteria;
       query.sortField = this.options.previewSortField;
       var fieldSliced = this.options.computedField.slice(1);
-      var fieldExists = _.find(query.fieldsToInclude, (field: string)=> {
+      var fieldExists = _.find(query.fieldsToInclude, (field: string) => {
         return field == fieldSliced
       })
       if (!fieldExists) {

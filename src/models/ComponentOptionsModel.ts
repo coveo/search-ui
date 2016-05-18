@@ -1,4 +1,4 @@
-﻿import {Model} from './Model';
+import {Model} from './Model';
 import _ = require('underscore');
 
 export interface ComponentOptionsAttributes {

@@ -57,7 +57,7 @@ module Coveo {
     }
 
     private buildCloseButton(): void {
-      var closeButton = $$('div', {className: 'coveo-preferences-panel-close'}, $$('span', {className: 'coveo-icon'}).el)
+      var closeButton = $$('div', { className: 'coveo-preferences-panel-close' }, $$('span', { className: 'coveo-icon' }).el)
       closeButton.on('click', () => {
         this.close();
       })
@@ -65,7 +65,7 @@ module Coveo {
     }
 
     private buildTitle(): void {
-      var title = $$('div', {className: 'coveo-preferences-panel-title'}, l('Preferences')).el;
+      var title = $$('div', { className: 'coveo-preferences-panel-title' }, l('Preferences')).el;
       $$(this.element).prepend(title);
     }
   }

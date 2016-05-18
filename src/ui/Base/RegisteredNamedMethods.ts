@@ -21,7 +21,7 @@ import _ = require('underscore');
  * @param options JSON options for the framework eg : <code>{Searchbox : {enableSearchAsYouType: true}}</code>
  */
 export function init(element: HTMLElement, options: any = {}) {
-  Initialization.initializeFramework(element, options, ()=> {
+  Initialization.initializeFramework(element, options, () => {
     Initialization.initSearchInterface(element, options);
   });
 }
@@ -44,8 +44,8 @@ export function initSearchbox(element: HTMLElement, searchPageUri: string, optio
   searchInterfaceOptions.autoTriggerQuery = false;
   searchInterfaceOptions.hideUntilFirstQuery = false;
   searchInterfaceOptions.enableHistory = false;
-  options = _.extend({}, options, {StandaloneSearchInterface: searchInterfaceOptions});
-  Initialization.initializeFramework(element, options, ()=> {
+  options = _.extend({}, options, { StandaloneSearchInterface: searchInterfaceOptions });
+  Initialization.initializeFramework(element, options, () => {
     Initialization.initStandaloneSearchInterface(element, options);
   });
 }
@@ -223,7 +223,7 @@ Initialization.registerNamedMethod('options', (element: HTMLElement, options: an
  * @param methodName
  * @param handler
  */
-export function patch(element: HTMLElement, methodName: string, handler: (...args: any[])=> any) {
+export function patch(element: HTMLElement, methodName: string, handler: (...args: any[]) => any) {
   Initialization.monkeyPatchComponentMethod(methodName, element, handler);
 }
 
@@ -263,7 +263,7 @@ export function initBox(element: HTMLElement, ...args: any[]) {
   var merged: any = {};
   merged[type || "Container"] = _.extend({}, options.SearchInterface, options[type]);
   options = _.extend({}, options, merged);
-  Initialization.initializeFramework(element, options, ()=> {
+  Initialization.initializeFramework(element, options, () => {
     Initialization.initBoxInterface(element, options, type, injectMarkup)
   });
 }
@@ -277,6 +277,6 @@ export function nuke(element: HTMLElement) {
   $$(element).trigger(InitializationEvents.nuke);
 }
 
-Initialization.registerNamedMethod('nuke', (element: HTMLElement)=> {
+Initialization.registerNamedMethod('nuke', (element: HTMLElement) => {
   nuke(element);
 })

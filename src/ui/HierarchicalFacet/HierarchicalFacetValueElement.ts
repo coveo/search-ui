@@ -1,4 +1,4 @@
-﻿/// <reference path="HierarchicalFacet.ts" />
+/// <reference path="HierarchicalFacet.ts" />
 
 import {FacetValueElement} from '../Facet/FacetValueElement';
 import {HierarchicalFacet} from './HierarchicalFacet';

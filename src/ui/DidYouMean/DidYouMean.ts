@@ -24,7 +24,7 @@ module Coveo {
        */
       enableAutoCorrection: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     };
-    
+
     public correctedTerm: string;
 
     private hideNext: boolean;
@@ -44,7 +44,7 @@ module Coveo {
       Assert.exists(this.options);
 
       this.hideNext = true;
-      
+
       this.correctedTerm = null;
 
       this.bind.onRootElement(QueryEvents.buildingQuery, this.handlePrepareQueryBuilder);
@@ -53,7 +53,7 @@ module Coveo {
       this.bind.onRootElement(QueryEvents.newQuery, this.handleNewQuery);
       $$(this.element).hide();
     }
-    
+
     /**
      * Execute a query with the corrected term <br/>
      * Will throw an exception if the corrected term has not been initialized
@@ -91,11 +91,11 @@ module Coveo {
         data.retryTheQuery = true;
         this.hideNext = false;
 
-        var noResultsFor = $$('div', {className: 'coveo-did-you-mean-no-results-for'}).el;
+        var noResultsFor = $$('div', { className: 'coveo-did-you-mean-no-results-for' }).el;
         noResultsFor.innerHTML = l('noResultFor', '<span class="coveo-highlight coveo-did-you-mean-highlight">' + StringUtils.htmlEncode(originalQuery) + '</span>');
         this.element.appendChild(noResultsFor);
 
-        var automaticCorrect = $$('div', {className: 'coveo-did-you-mean-automatic-correct'}).el;
+        var automaticCorrect = $$('div', { className: 'coveo-did-you-mean-automatic-correct' }).el;
         automaticCorrect.innerHTML = l('autoCorrectedQueryTo', '<span class="coveo-highlight">' + correctedSentence + '</span>');
         this.element.appendChild(automaticCorrect);
 
@@ -114,7 +114,7 @@ module Coveo {
       if (Utils.isNonEmptyArray(results.queryCorrections)) {
         var correctedSentence = this.buildCorrectedSentence(results.queryCorrections[0]);
         this.correctedTerm = results.queryCorrections[0].correctedQuery;
-        var didYouMean = $$('div', {className: 'coveo-did-you-mean-suggestion'}, l('didYouMean', '')).el;
+        var didYouMean = $$('div', { className: 'coveo-did-you-mean-suggestion' }, l('didYouMean', '')).el;
         this.element.appendChild(didYouMean);
 
         var searchTerm = $$('a', {}, correctedSentence).el;

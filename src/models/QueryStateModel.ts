@@ -119,13 +119,13 @@ export function setState(model: Model, args: any[]): any {
   } else if (_.isObject(args[0])) {
     // One dictionary means set multiple values
     var toSet = args[0];
-    var options = _.extend(<IModelSetOptions>{customAttribute: true}, <IModelSetOptions>args[1]);
+    var options = _.extend(<IModelSetOptions>{ customAttribute: true }, <IModelSetOptions>args[1]);
     return model.setMultiple(toSet, options);
   } else if (args.length > 1) {
     // Otherwise we're setting a value
     var name = <string>args[0];
     var value = args[1];
-    var options = _.extend(<IModelSetOptions>{customAttribute: true}, <IModelSetOptions>args[2]);
+    var options = _.extend(<IModelSetOptions>{ customAttribute: true }, <IModelSetOptions>args[2]);
     Assert.isNonEmptyString(name);
     return model.set(name, value, options);
   }

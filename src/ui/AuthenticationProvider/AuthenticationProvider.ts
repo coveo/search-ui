@@ -11,14 +11,14 @@ module Coveo {
 
   export class AuthenticationProvider extends Component {
     static ID = 'AuthenticationProvider';
-        
+
     static options: AuthenticationProviderOptions = {
       name: ComponentOptions.buildStringOption(),
       caption: ComponentOptions.buildStringOption({ postProcessing: (value, options) => value || options.name }),
       useIFrame: ComponentOptions.buildBooleanOption({ defaultValue: false, attrName: 'data-use-iframe' }),
       showIFrame: ComponentOptions.buildBooleanOption({ defaultValue: true, attrName: 'data-show-iframe' })
     };
-    
+
     private handlers: ((...args: any[]) => void)[];
 
 
@@ -74,25 +74,25 @@ module Coveo {
       } else {
         modalbox = this.createPopupForWaitMessage(iframe);
       }
-      
+
       var handler = this.createHandler(modalbox, iframe);
       $(window).one('message', handler);
       this.handlers.push(handler);
     }
-    
+
     private createHandler(modalbox: ModalBox.ModalBox, iframe: JQuery): () => void {
-        return () => {
-            modalbox.close();
-            iframe.detach();
-            this.logger.info("Got authentication for provider " + this.options.name + "; retrying query.");
-            this.queryController.executeQuery();
+      return () => {
+        modalbox.close();
+        iframe.detach();
+        this.logger.info("Got authentication for provider " + this.options.name + "; retrying query.");
+        this.queryController.executeQuery();
       }
     }
-    
-    private handleNuke(){
-        this.handlers.forEach(handler => {
-            $(window).off('message', handler);
-        });
+
+    private handleNuke() {
+      this.handlers.forEach(handler => {
+        $(window).off('message', handler);
+      });
     }
 
     private createPopupForWaitMessage(iframe: JQuery): ModalBox.ModalBox {

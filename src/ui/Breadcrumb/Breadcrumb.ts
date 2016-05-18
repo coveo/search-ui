@@ -36,8 +36,8 @@ export class Breadcrumb extends Component {
 
     this.options = ComponentOptions.initComponentOptions(element, Breadcrumb, options);
 
-    this.bind.oneRootElement(InitializationEvents.afterInitialization, ()=> this.handleAfterInitialization());
-    this.bind.onRootElement(BreadcrumbEvents.redrawBreadcrumb, ()=> this.redrawBreadcrumb());
+    this.bind.oneRootElement(InitializationEvents.afterInitialization, () => this.handleAfterInitialization());
+    this.bind.onRootElement(BreadcrumbEvents.redrawBreadcrumb, () => this.redrawBreadcrumb());
     this.element.style.display = 'none';
   }
 
@@ -47,7 +47,7 @@ export class Breadcrumb extends Component {
    * @returns {IBreadcrumbItem[]}
    */
   public getBreadcrumbs(): IBreadcrumbItem[] {
-    var args = <IPopulateBreadcrumbEventArgs>{breadcrumbs: []};
+    var args = <IPopulateBreadcrumbEventArgs>{ breadcrumbs: [] };
     this.bind.trigger(this.root, BreadcrumbEvents.populateBreadcrumb, args);
     this.logger.debug('Retrieved breadcrumbs', args.breadcrumbs);
     this.lastBreadcrumbs = args.breadcrumbs;
@@ -81,7 +81,7 @@ export class Breadcrumb extends Component {
     var breadcrumbItems = document.createElement('div');
     $$(breadcrumbItems).addClass('coveo-breadcrumb-items');
     this.element.appendChild(breadcrumbItems);
-    _.each(breadcrumbs, (bcrumb: IBreadcrumbItem)=> {
+    _.each(breadcrumbs, (bcrumb: IBreadcrumbItem) => {
       var elem = bcrumb.element;
       $$(elem).addClass('coveo-breadcrumb-item');
       breadcrumbItems.appendChild(elem);
@@ -104,7 +104,7 @@ export class Breadcrumb extends Component {
       this.element.insertBefore(clear, this.element.firstChild);
     }
 
-    this.bind.on(clear, 'click', ()=> {
+    this.bind.on(clear, 'click', () => {
       this.clearBreadcrumbs();
     })
   }
@@ -120,7 +120,7 @@ export class Breadcrumb extends Component {
   private handleAfterInitialization() {
     // We must bind to these events after the initialization to make sure the breadcrumb generation
     // is made with updated components. (E.G facet, facetrange, ...)
-    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, ()=> this.handleDeferredQuerySuccess());
+    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.handleDeferredQuerySuccess());
   }
 }
 

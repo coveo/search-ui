@@ -5,10 +5,10 @@ export interface IUserIdentity {
   /**
    * The name of the identity
    */
-  name:string;
+  name: string;
   /**
    * The provider of the identity in the Coveo platform
    */
-  provider:string;
-  type:string;
+  provider: string;
+  type: string;
 }

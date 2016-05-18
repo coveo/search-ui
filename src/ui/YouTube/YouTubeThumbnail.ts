@@ -12,7 +12,7 @@ module Coveo {
 
     static options: YouTubeThumbnailOptions = {
       width: ComponentOptions.buildStringOption({ defaultValue: '200px' }),
-      height: ComponentOptions.buildStringOption({defaultValue: '112px'}),
+      height: ComponentOptions.buildStringOption({ defaultValue: '112px' }),
       embed: ComponentOptions.buildBooleanOption({ defaultValue: true })
     };
 

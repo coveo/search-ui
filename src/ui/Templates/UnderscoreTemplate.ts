@@ -42,19 +42,19 @@ export class UnderscoreTemplate extends Template {
 
     this.fields = Template.getFieldFromString(templateString + ' ' + condition);
 
-    var additionalFields = ComponentOptions.loadFieldsOption(element, 'fields', <FieldsOption>{includeInResults: true});
+    var additionalFields = ComponentOptions.loadFieldsOption(element, 'fields', <FieldsOption>{ includeInResults: true });
     if (additionalFields != null) {
       // remove the @
-      this.fields = this.fields.concat(_.map(additionalFields, (field)=>field.substr(1)));
+      this.fields = this.fields.concat(_.map(additionalFields, (field) => field.substr(1)));
     }
   }
 
   toHtmlElement(): HTMLElement {
     var script = document.createElement('script');
     $(script)
-        .attr('type', _.first(UnderscoreTemplate.mimeTypes))
-        .attr('data-condition', $(this.element).data('condition'))
-        .text(this.element.innerHTML);
+      .attr('type', _.first(UnderscoreTemplate.mimeTypes))
+      .attr('data-condition', $(this.element).data('condition'))
+      .text(this.element.innerHTML);
     return script;
   }
 

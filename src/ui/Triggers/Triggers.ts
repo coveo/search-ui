@@ -12,7 +12,7 @@ module Coveo {
   export class Triggers extends Component {
     static ID = 'Triggers';
     static options: ITriggersOptions = {};
-    
+
     /**
      * The list of notifications returned by the Search API for the current query (via 'notify' triggers).<br/>
      * This list is automatically displayed visually in the component.
@@ -34,7 +34,7 @@ module Coveo {
       this.options = ComponentOptions.initComponentOptions(element, Triggers, options);
       Assert.exists(element);
       Assert.exists(this.options);
-      
+
       this.notifications = [];
 
       this.bind.onRootElement(QueryEvents.querySuccess, this.handleProcessNewQueryResults);
@@ -60,7 +60,7 @@ module Coveo {
         }, this.element);
 
         this.notifications.push(trigger.content);
-        this.element.appendChild($$('div', {className: 'coveo-trigger-notify'}, trigger.content).el);
+        this.element.appendChild($$('div', { className: 'coveo-trigger-notify' }, trigger.content).el);
 
         showElement = true;
       });

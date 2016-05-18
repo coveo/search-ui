@@ -24,7 +24,7 @@ export class Dom {
     this.el = el;
   }
 
-  private static handlers: {eventHandle: Function, fn: EventListener}[] = [];
+  private static handlers: { eventHandle: Function, fn: EventListener }[] = [];
 
   /**
    * Helper function to quickly create an HTMLElement
@@ -34,7 +34,7 @@ export class Dom {
    * the latter of which will automatically get replaced to dash-case.
    * @param innerHTML The contents of the new HTMLElement, either in string form or as another HTMLElement
    */
-  static createElement(type: string, props?: Object, ...children: Array<string | HTMLElement| Dom>): HTMLElement {
+  static createElement(type: string, props?: Object, ...children: Array<string | HTMLElement | Dom>): HTMLElement {
     var elem: HTMLElement = document.createElement(type);
 
     for (var key in props) {
@@ -46,7 +46,7 @@ export class Dom {
       }
     }
 
-    _.forEach(children, (child: string | HTMLElement| Dom)=> {
+    _.forEach(children, (child: string | HTMLElement | Dom) => {
       if (child instanceof HTMLElement) {
         elem.appendChild(child);
       } else if (_.isString(child)) {
@@ -245,7 +245,7 @@ export class Dom {
   public addClass(className: string): void;
   public addClass(className: any): void {
     if (_.isArray(className)) {
-      _.each(className, (name: string)=> {
+      _.each(className, (name: string) => {
         this.addClass(name);
       })
     } else {
@@ -357,7 +357,7 @@ export class Dom {
       if (jq) {
         jq(this.el).on(type, eventHandle);
       } else if (this.el.addEventListener) {
-        var fn = (e: CustomEvent)=> {
+        var fn = (e: CustomEvent) => {
           eventHandle(e, e.detail)
         }
         Dom.handlers.push({
@@ -385,7 +385,7 @@ export class Dom {
         this.one(t, eventHandle);
       })
     } else {
-      var once = (e: Event, args: any)=> {
+      var once = (e: Event, args: any) => {
         this.off(type, once);
         return eventHandle(e, args);
       }
@@ -411,7 +411,7 @@ export class Dom {
         jq(this.el).off(type, eventHandle);
       } else if (this.el.removeEventListener) {
         var idx = 0
-        var found = _.find(Dom.handlers, (handlerObj: {eventHandle: Function, fn: EventListener}, i)=> {
+        var found = _.find(Dom.handlers, (handlerObj: { eventHandle: Function, fn: EventListener }, i) => {
           if (handlerObj.eventHandle == eventHandle) {
             idx = i;
             return true;
@@ -437,7 +437,7 @@ export class Dom {
     if (jq) {
       jq(this.el).trigger(type, data)
     } else if (CustomEvent !== undefined) {
-      var event = new CustomEvent(type, {detail: data, bubbles: true});
+      var event = new CustomEvent(type, { detail: data, bubbles: true });
       this.el.dispatchEvent(event);
     } else {
       // TODO Support for older browser ?
@@ -526,7 +526,7 @@ export class Doc {
  */
 export function $$(dom: Dom): Dom;
 export function $$(html: HTMLElement): Dom;
-export function $$(type: string, props?: Object, ...children: Array<string | HTMLElement| Dom>): Dom;
+export function $$(type: string, props?: Object, ...children: Array<string | HTMLElement | Dom>): Dom;
 export function $$(...args: any[]): Dom {
   if (args.length === 1 && args[0] instanceof Dom) {
     return args[0];

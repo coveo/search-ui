@@ -24,7 +24,7 @@ export class ValueElementRenderer {
   public withNo(element: HTMLElement): ValueElementRenderer;
   public withNo(element: any): ValueElementRenderer {
     if (_.isArray(element)) {
-      _.each(element, (e: HTMLElement)=> {
+      _.each(element, (e: HTMLElement) => {
         if (e) {
           $$(e).detach();
         }
@@ -55,11 +55,11 @@ export class ValueElementRenderer {
       this.excludeIcon = this.buildExcludeIcon();
       this.listElement.appendChild(this.excludeIcon);
 
-      $$(this.excludeIcon).on('mouseover', ()=> {
+      $$(this.excludeIcon).on('mouseover', () => {
         $$(this.listElement).addClass('coveo-facet-value-will-exclude');
       });
 
-      $$(this.excludeIcon).on('mouseout', ()=> {
+      $$(this.excludeIcon).on('mouseout', () => {
         $$(this.listElement).removeClass('coveo-facet-value-will-exclude');
       });
     }

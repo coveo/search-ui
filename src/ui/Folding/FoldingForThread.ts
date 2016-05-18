@@ -19,11 +19,11 @@ module Coveo {
      */
     constructor(public element: HTMLElement, public options: IFoldingOptions, bindings?: IComponentBindings) {
       super(element, options, bindings);
-      this.options.getMoreResults = (results:IQueryResult[]) => {
+      this.options.getMoreResults = (results: IQueryResult[]) => {
         return Coveo.Folding.foldWithParent(results)[0].attachments;
       };
 
-      this.options.getResult = (result:IQueryResult) => {
+      this.options.getResult = (result: IQueryResult) => {
         var defaultResult = Folding.defaultGetResult(result);
         defaultResult.childResults = defaultResult.attachments;
         defaultResult.attachments = [];

@@ -3,7 +3,7 @@ export interface Position {
   horizontal: HorizontalAlignment;
   verticalOffset?: number;
   horizontalOffset?: number;
-  horizontalClip?:boolean;
+  horizontalClip?: boolean;
 }
 
 export enum VerticalAlignment {

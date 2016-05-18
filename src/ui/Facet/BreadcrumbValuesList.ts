@@ -113,7 +113,7 @@ export class BreadcrumbValueList {
         }
         elements.push(valueElement.build(false).el);
       });
-      _.each(elements, (el)=> {
+      _.each(elements, (el) => {
         $$(el).insertBefore(elem.el);
       })
       elem.detach();
