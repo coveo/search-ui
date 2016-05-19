@@ -141,6 +141,7 @@
     "src/ui/Facet/Facet.ts",
     "src/ui/Pager/Pager.ts",
     "src/ui/ResultList/ResultList.ts",
-    "src/ui/Excerpt/Excerpt.ts"
+    "src/ui/Excerpt/Excerpt.ts",
+    "src/ui/ResultLink/ResultLink.ts"
   ]
 }

@@ -5,6 +5,10 @@ import {IQueryResult} from '../../rest/QueryResult'
 import {Initialization} from '../Base/Initialization';
 import {HighlightUtils} from '../../utils/HighlightUtils';
 
+
+/**
+ * You can use the Excerpt component inside @link{ResultTemplates} to take care of rendering the document excerpt, as well as highlight keywords using the correct @link{ResultTemplateHelpers}. 
+ */
 export class Excerpt extends Component {
   static ID = 'Excerpt';
 

@@ -138,6 +138,23 @@ export class Dom {
       }
     }
   }
+  
+  /**
+   * Returns the value of the specified attribute.
+   * @param name The name of the attribute
+   */
+  public getAttribute(name: string): string {
+    return this.el.getAttribute(name);
+  }
+  
+  /**
+   * Sets the value of the specified attribute.
+   * @param name The name of the attribute
+   * @param value The value to set
+   */
+  public setAttribute(name: string, value: string){
+    this.el.setAttribute(name, value);
+  }
 
   /**
    * Find a child element, given a CSS selector
