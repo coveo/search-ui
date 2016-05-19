@@ -117,6 +117,7 @@
 						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="searchinterface.html#disabled" class="tsd-kind-icon">disabled</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="searchinterface.html#logger" class="tsd-kind-icon">logger</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="searchinterface.html#id" class="tsd-kind-icon">ID</a></li>
 							</ul>
@@ -284,7 +285,7 @@
 							<p>Specifies the name of a field to use as a custom filter when executing the query (also referred to as &quot;folding&quot;).<br/>
 								Setting this option causes the index to return only one result having any particular value inside the filter field. Any other matching result is &quot;folded&quot; inside the childResults member of each JSON query result.<br/>
 								This feature is typically used with threaded conversations to include only one top-level result per conversation. Thus, the field specified in this option typically is a value unique to each thread that is shared by all items (e.g., posts, emails, etc.) in the thread.<br/>
-								This is obviously an advanced feature. Instead, look into using the {@link Folding} component, which covers a lot of different use cases.<br/>
+								This is obviously an advanced feature. Instead, look into using the <a href="../components/folding.html">Folding</a> component, which covers a lot of different use cases.<br/>
 							By default none is added</p>
 						</div>
 					</div>
@@ -669,6 +670,30 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="disabled" class="tsd-anchor"></a>
+					<h3>disabled</h3>
+					<div class="tsd-signature tsd-kind-icon">disabled<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from BaseComponent.disabled</p>
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L22">src/ui/Base/BaseComponent.ts
+							:22</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A disabled component will be invisible to the end user<br/>
+							It will also not participate in the query, or listen to {@link ComponentsEvent}</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt class="tsd-comment-flag-type">type</dt>
+							<dd><p>{boolean}</p>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="logger" class="tsd-anchor"></a>
 					<h3>logger</h3>
 					<div class="tsd-signature tsd-kind-icon">logger<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Logger</span></div>
@@ -694,8 +719,8 @@
 						<p>Inherited from BaseComponent.ID</p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L21">src/ui/Base/BaseComponent.ts
-							:21</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L27">src/ui/Base/BaseComponent.ts
+							:27</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -810,6 +835,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="searchinterface.html#showwaitanimation" class="tsd-kind-icon">show<wbr>Wait<wbr>Animation</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="searchinterface.html#disabled" class="tsd-kind-icon">disabled</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="searchinterface.html#logger" class="tsd-kind-icon">logger</a>

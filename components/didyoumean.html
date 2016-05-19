@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Omnibox | Coveo JS search</title>
+	<title>DidYouMean | Coveo JS search</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -57,10 +57,10 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="omnibox.html">Omnibox</a>
+					<a href="didyoumean.html">DidYouMean</a>
 				</li>
 			</ul>
-			<h1>Coveo component Omnibox</h1>
+			<h1>Coveo component DidYouMean</h1>
 		</div>
 	</div>
 </header>
@@ -70,10 +70,9 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>This component is very similar to the simpler <a href="querybox.html">Querybox</a> Component and support all the same options/behavior except for the search-as-you-type feature.<br/>
-							In addition, it takes care of adding a type-ahead capability. The type-ahead and the suggestions it displays are customizable and extensible by any custom component.<br/>
-							The type-ahead is configurable by activating addon which are provided OOTB (facets, analytics suggestions, reveal suggestions, and advanced coveo syntax suggestions).<br/>
-						It is also possible for external code to provide suggestions.</p>
+						<p>This component is responsible for displaying query corrections. If this component is in the page
+							and the query returns no results, but finds a possible query correction, the component either
+						suggests the correction or automatically triggers a new query with the suggested term.</p>
 					</div>
 				</div>
 			</section>
@@ -84,49 +83,37 @@
 						<section class="tsd-index-section ">
 							<h3>Component Options</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omnibox.html#options.enablefieldaddon" class="tsd-kind-icon">enable<wbr>Field<wbr>Addon</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omnibox.html#options.enablequeryextensionaddon" class="tsd-kind-icon">enable<wbr>Query<wbr>Extension<wbr>Addon</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omnibox.html#options.enablerevealquerysuggestaddon" class="tsd-kind-icon">enable<wbr>Reveal<wbr>Query<wbr>Suggest<wbr>Addon</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omnibox.html#options.enablesearchasyoutype" class="tsd-kind-icon">enable<wbr>Search<wbr>AsYou<wbr>Type</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omnibox.html#options.enabletopqueryaddon" class="tsd-kind-icon">enable<wbr>Top<wbr>Query<wbr>Addon</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omnibox.html#options.inline" class="tsd-kind-icon">inline</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omnibox.html#options.omniboxtimeout" class="tsd-kind-icon">omnibox<wbr>Timeout</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omnibox.html#options.placeholder" class="tsd-kind-icon">placeholder</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omnibox.html#options.searchasyoutypedelay" class="tsd-kind-icon">search<wbr>AsYou<wbr>Type<wbr>Delay</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="didyoumean.html#options.enableautocorrection" class="tsd-kind-icon">enable<wbr>Auto<wbr>Correction</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="omnibox.html#clear" class="tsd-kind-icon">clear</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="omnibox.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="omnibox.html#getinput" class="tsd-kind-icon">get<wbr>Input</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="omnibox.html#gettext" class="tsd-kind-icon">get<wbr>Text</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="omnibox.html#settext" class="tsd-kind-icon">set<wbr>Text</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="omnibox.html#submit" class="tsd-kind-icon">submit</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="omnibox.html#get" class="tsd-kind-icon">get</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="didyoumean.html#doquerywithcorrectedterm" class="tsd-kind-icon">do<wbr>Query<wbr>With<wbr>Corrected<wbr>Term</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="didyoumean.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="didyoumean.html#get" class="tsd-kind-icon">get</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="omnibox.html#bind" class="tsd-kind-icon">bind</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="omnibox.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="omnibox.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="omnibox.html#disabled" class="tsd-kind-icon">disabled</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="omnibox.html#logger" class="tsd-kind-icon">logger</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="omnibox.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="omnibox.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="omnibox.html#root" class="tsd-kind-icon">root</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="omnibox.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="omnibox.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="omnibox.html#id" class="tsd-kind-icon">ID</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="didyoumean.html#bind" class="tsd-kind-icon">bind</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="didyoumean.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="didyoumean.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="didyoumean.html#disabled" class="tsd-kind-icon">disabled</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="didyoumean.html#logger" class="tsd-kind-icon">logger</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="didyoumean.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="didyoumean.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="didyoumean.html#root" class="tsd-kind-icon">root</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="didyoumean.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="didyoumean.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="didyoumean.html#id" class="tsd-kind-icon">ID</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite"><a href="omnibox.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite"><a href="didyoumean.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 					</div>
@@ -135,169 +122,21 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Component Options</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.enablefieldaddon" class="tsd-anchor"></a>
-					<h3>enable<wbr>Field<wbr>Addon</h3>
-					<div class="tsd-signature tsd-kind-icon">enable<wbr>Field<wbr>Addon<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<a name="options.enableautocorrection" class="tsd-anchor"></a>
+					<h3>enable<wbr>Auto<wbr>Correction</h3>
+					<div class="tsd-signature tsd-kind-icon">enable<wbr>Auto<wbr>Correction<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L93">src/ui/Omnibox/Omnibox.ts
-							:93</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DidYouMean/DidYouMean.ts#L36">src/ui/DidYouMean/DidYouMean.ts
+							:36</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether the field addon should be enabled.<br/>
-								The field addon allows the search box to highlight and complete field syntax.<br/>
-							Default value is false</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.enablequeryextensionaddon" class="tsd-anchor"></a>
-					<h3>enable<wbr>Query<wbr>Extension<wbr>Addon</h3>
-					<div class="tsd-signature tsd-kind-icon">enable<wbr>Query<wbr>Extension<wbr>Addon<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L113">src/ui/Omnibox/Omnibox.ts
-							:113</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies whether the query extension addon should be enabled.<br/>
-								This allows the omnibox to complete the syntax for query extensions.<br/>
-							Default value is false</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.enablerevealquerysuggestaddon" class="tsd-anchor"></a>
-					<h3>enable<wbr>Reveal<wbr>Query<wbr>Suggest<wbr>Addon</h3>
-					<div class="tsd-signature tsd-kind-icon">enable<wbr>Reveal<wbr>Query<wbr>Suggest<wbr>Addon<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L107">src/ui/Omnibox/Omnibox.ts
-							:107</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies whether the reveal query suggestions should be enabled.<br/>
-								This implies that your integration has a proper reveal integration configured.<br/>
-							Default value is false</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.enablesearchasyoutype" class="tsd-anchor"></a>
-					<h3>enable<wbr>Search<wbr>AsYou<wbr>Type</h3>
-					<div class="tsd-signature tsd-kind-icon">enable<wbr>Search<wbr>AsYou<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L78">src/ui/Omnibox/Omnibox.ts
-							:78</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies whether a new query is automatically triggered whenever the user types new text inside the query box.<br/>
-								Activate this as well a inline + reveal suggestions for a cool effect !<br/>
-							The default is false.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.enabletopqueryaddon" class="tsd-anchor"></a>
-					<h3>enable<wbr>Top<wbr>Query<wbr>Addon</h3>
-					<div class="tsd-signature tsd-kind-icon">enable<wbr>Top<wbr>Query<wbr>Addon<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L101">src/ui/Omnibox/Omnibox.ts
-							:101</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies whether the Omnibox suggests top queries logged by the Coveo Cloud Analytics.<br/>
-								This implies that your integration has a proper coveo cloud analytics integration configured.<br/>
-							Default value is false</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.inline" class="tsd-anchor"></a>
-					<h3>inline</h3>
-					<div class="tsd-signature tsd-kind-icon">inline<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L72">src/ui/Omnibox/Omnibox.ts
-							:72</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies that suggestions appearing in the omnibox should push the result down, instead of appearing over the results.<br/>
-								Activate this as well a searchAsYouType + reveal suggestions for a cool effect !<br/>
-							Default value is false</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.omniboxtimeout" class="tsd-anchor"></a>
-					<h3>omnibox<wbr>Timeout</h3>
-					<div class="tsd-signature tsd-kind-icon">omnibox<wbr>Timeout<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L122">src/ui/Omnibox/Omnibox.ts
-							:122</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies a timeout before rejecting suggestions in the omnibox.<br/>
-							Default value is 2000 (2 seconds)</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.placeholder" class="tsd-anchor"></a>
-					<h3>placeholder</h3>
-					<div class="tsd-signature tsd-kind-icon">placeholder<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L117">src/ui/Omnibox/Omnibox.ts
-							:117</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies a placeholder for input</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.searchasyoutypedelay" class="tsd-anchor"></a>
-					<h3>search<wbr>AsYou<wbr>Type<wbr>Delay</h3>
-					<div class="tsd-signature tsd-kind-icon">search<wbr>AsYou<wbr>Type<wbr>Delay<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L83">src/ui/Omnibox/Omnibox.ts
-							:83</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>When search as you type is enabled, specifies the delay in milliseconds before a new query is triggered when the user types new text inside the query box.<br/>
-							The default value is 2000 milliseconds.</p>
+							<p>This option allows the DidYouMean component to automatically trigger a new query
+								when there are no results and a correction is available <br/>
+							The default value is <code>true</code></p>
 						</div>
 					</div>
 				</section>
@@ -305,23 +144,24 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-					<a name="clear" class="tsd-anchor"></a>
-					<h3>clear</h3>
+					<a name="doquerywithcorrectedterm" class="tsd-anchor"></a>
+					<h3>do<wbr>Query<wbr>With<wbr>Corrected<wbr>Term</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">clear<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">do<wbr>Query<wbr>With<wbr>Corrected<wbr>Term<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L215">src/ui/Omnibox/Omnibox.ts
-									:215</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DidYouMean/DidYouMean.ts#L72">src/ui/DidYouMean/DidYouMean.ts
+									:72</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Clear the content of the input</p>
+									<p>Execute a query with the corrected term <br/>
+									Will throw an exception if the corrected term has not been initialized</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -350,112 +190,6 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-					<a name="getinput" class="tsd-anchor"></a>
-					<h3>get<wbr>Input</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Input<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLInputElement</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L222">src/ui/Omnibox/Omnibox.ts
-									:222</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get the HTMLInputElement of the omnibox</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLInputElement</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-					<a name="gettext" class="tsd-anchor"></a>
-					<h3>get<wbr>Text</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Text<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L199">src/ui/Omnibox/Omnibox.ts
-									:199</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get the current content of the input</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-					<a name="settext" class="tsd-anchor"></a>
-					<h3>set<wbr>Text</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Text<span class="tsd-signature-symbol">(</span>text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L207">src/ui/Omnibox/Omnibox.ts
-									:207</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Set the content of the input</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>text: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The string to set in the input</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-					<a name="submit" class="tsd-anchor"></a>
-					<h3>submit</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">submit<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L188">src/ui/Omnibox/Omnibox.ts
-									:188</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Trigger a query. The current input content will be added to the query<br/>
-									If the content of the input has not changed since the last submit, no new query will be triggered.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -726,7 +460,7 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Omnibox<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IOmniboxOptions</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="omnibox.html" class="tsd-signature-type">Omnibox</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Did<wbr>You<wbr>Mean<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IDidYouMeanOptions</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="didyoumean.html" class="tsd-signature-type">DidYouMean</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -734,13 +468,13 @@
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Omnibox/Omnibox.ts#L128">src/ui/Omnibox/Omnibox.ts
-									:128</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DidYouMean/DidYouMean.ts#L41">src/ui/DidYouMean/DidYouMean.ts
+									:41</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Create a new omnibox with, enable required addons, and bind events on various query events</p>
+									<p>Create a new DidYouMean component</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -749,13 +483,17 @@
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">IOmniboxOptions</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">IDidYouMeanOptions</span></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+										</div>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="omnibox.html" class="tsd-signature-type">Omnibox</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="didyoumean.html" class="tsd-signature-type">DidYouMean</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -767,67 +505,55 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-kind-coveo-component">
-						<a href="omnibox.html" class="tsd-kind-icon">Omnibox</a>
+						<a href="didyoumean.html" class="tsd-kind-icon">Did<wbr>You<wbr>Mean</a>
 						<ul>
 							<li class=" tsd-kind-object-literal tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-static">
-								<a href="omnibox.html#options" class="tsd-kind-icon">options</a>
+								<a href="didyoumean.html#options" class="tsd-kind-icon">options</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-								<a href="omnibox.html#clear" class="tsd-kind-icon">clear</a>
+								<a href="didyoumean.html#doquerywithcorrectedterm" class="tsd-kind-icon">do<wbr>Query<wbr>With<wbr>Corrected<wbr>Term</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="omnibox.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-								<a href="omnibox.html#getinput" class="tsd-kind-icon">get<wbr>Input</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-								<a href="omnibox.html#gettext" class="tsd-kind-icon">get<wbr>Text</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-								<a href="omnibox.html#settext" class="tsd-kind-icon">set<wbr>Text</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-								<a href="omnibox.html#submit" class="tsd-kind-icon">submit</a>
+								<a href="didyoumean.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-								<a href="omnibox.html#get" class="tsd-kind-icon">get</a>
+								<a href="didyoumean.html#get" class="tsd-kind-icon">get</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="omnibox.html#bind" class="tsd-kind-icon">bind</a>
+								<a href="didyoumean.html#bind" class="tsd-kind-icon">bind</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="omnibox.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a>
+								<a href="didyoumean.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="omnibox.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a>
+								<a href="didyoumean.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="omnibox.html#disabled" class="tsd-kind-icon">disabled</a>
+								<a href="didyoumean.html#disabled" class="tsd-kind-icon">disabled</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="omnibox.html#logger" class="tsd-kind-icon">logger</a>
+								<a href="didyoumean.html#logger" class="tsd-kind-icon">logger</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="omnibox.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a>
+								<a href="didyoumean.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="omnibox.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a>
+								<a href="didyoumean.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="omnibox.html#root" class="tsd-kind-icon">root</a>
+								<a href="didyoumean.html#root" class="tsd-kind-icon">root</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="omnibox.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a>
+								<a href="didyoumean.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="omnibox.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a>
+								<a href="didyoumean.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-								<a href="omnibox.html#id" class="tsd-kind-icon">ID</a>
+								<a href="didyoumean.html#id" class="tsd-kind-icon">ID</a>
 							</li>
 							<li class=" tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
-								<a href="omnibox.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="didyoumean.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 						</ul>
 					</li>
