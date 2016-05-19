@@ -2,7 +2,7 @@
 module Coveo {
   describe('HierarchicalFacet', function () {
     let test: Mock.IBasicComponentSetup<HierarchicalFacet>;
-    let results: GroupByResult;
+    let results: IGroupByResult;
 
     function getFacetValue(parentNumber, childNumber?, token = 'foo', delimitingCharacter = '|'): FacetValue {
       if (childNumber == undefined) {
@@ -14,7 +14,7 @@ module Coveo {
 
     function getFacetValueElement(facetValue: string): HTMLElement {
       return $$(_.find<HTMLElement>($$(test.cmp.element).findAll('.coveo-facet-value'), (value) => {
-        return $$($$(value).find('.coveo-facet-value-caption')).text() == facetValue;
+        return $$($$(value).find('.coveo-facet-value-caption')).text().toLowerCase() == facetValue.toLowerCase();
       })).el;
     }
 
@@ -28,7 +28,7 @@ module Coveo {
       test = Mock.optionsComponentSetup<HierarchicalFacet, IHierarchicalFacetOptions>(HierarchicalFacet, {
         field: '@foobar'
       })
-      results = FakeResults.createFakeHierarchicalGroupByResult('@foobar', 'foo', 2, 3);
+      results = FakeResults.createFakeHierarchicalGroupByResult('@foobar', 'foo', 2, 3, '|', false, true);
     })
 
     afterEach(function () {

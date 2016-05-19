@@ -172,6 +172,7 @@ module Coveo {
           if (weirdCasing) {
             groupByValueSubLevel.value = groupByValueSubLevel.lookupValue = _.map(groupByValueSubLevel.lookupValue.split(delimitingCharacter), (value, k) => (i + j + k) % 2 == 0 ? value.toLowerCase() : value.toUpperCase()).join(delimitingCharacter)
           }
+          groupByValues.push(groupByValueSubLevel)
         }
       }
 

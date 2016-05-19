@@ -145,6 +145,8 @@
     "src/ui/ErrorReport/ErrorReport.ts",
     "src/ui/ExportToExcel/ExportToExcel.ts",
     "src/ui/Settings/Settings.ts",
-    "src/ui/Folding/Folding.ts"
+    "src/ui/Folding/Folding.ts",
+    "src/ui/HiddenQuery/HiddenQuery.ts",
+    "src/ui/HierarchicalFacet/HierarchicalFacet.ts"
   ]
 }
