@@ -255,14 +255,7 @@ export class EndpointCaller {
             xmlHttpRequest.setRequestHeader('Authorization',
               'Basic ' + btoa(this.options.username + ":" + this.options.password));
           }
-
-          // Under Phonegap, we must set this special http header that'll prevent the server
-          // from challenging us for Basic Authentication. This avoids a bug where Phonegap
-          // would simply deadlock trying to show a popup.
-          if (DeviceUtils.isPhonegap()) {
-            xmlHttpRequest.setRequestHeader('Basic-Auth-Challenge-Client', 'Phonegap');
-          }
-
+          
           if (requestInfo.method == 'GET') {
             xmlHttpRequest.send();
           } else if (requestInfo.requestDataType.indexOf('application/json') === 0) {

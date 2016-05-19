@@ -308,6 +308,14 @@ export class Dom {
       }
     }
   }
+  
+  /**
+   * Sets the inner html of the element
+   * @param html The html to set
+   */
+  public setHtml(html: string){
+    this.el.innerHTML = html;
+  }
 
   /**
    * Return an array with all the classname on the element. Empty array if the element has not classname
@@ -348,7 +356,7 @@ export class Dom {
   public insertBefore(refNode: HTMLElement): void {
     refNode.parentNode && refNode.parentNode.insertBefore(this.el, refNode);
   }
-
+  
   /**
    * Insert the given node as the first child of the current node
    * @param toPrepend
@@ -500,6 +508,20 @@ export class Dom {
     }
     this.detach();
   }
+  
+  /**
+   * Returns the offset width of the element
+   */
+  public width(){
+    return this.el.offsetWidth;
+  }
+  
+  /**
+   * Returns the offset height of the element
+   */
+  public height(){
+    return this.el.offsetHeight;
+  }
 
   private getJQuery() {
     if (window['jQuery'] != undefined) {
@@ -507,6 +529,7 @@ export class Dom {
     }
     return false;
   }
+  
 }
 
 export class Win {

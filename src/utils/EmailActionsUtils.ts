@@ -128,7 +128,6 @@ export class DefaultMailToOptions extends Options implements MailToOptions {
   cc: string = '';
   bcc: string = '';
   body: string = '';
-  bodyIsHTML: boolean = DeviceUtils.isPhonegap()
 }
 
 export class MailTo {
@@ -142,14 +141,10 @@ export class MailTo {
   static shortenBodyIndicator: string = '\r\n\r\n...';
   // Arbitrary numbers :
   static maxLength: number = 1000;
-  static phonegapMaxLength: number = 15000;
 
   constructor(public options?: MailToOptions) {
     this.options = new DefaultMailToOptions().merge(options);
     this.removeCurrentUserFromParameters();
-    if (DeviceUtils.isPhonegap()) {
-      this.setRecipientsArrays();
-    }
     if (this.options.originalFrom) {
       this.bodyHeader = this.options.bodyIsHTML ? '<p><br/><br/><br/>' + l('From') + ': ' + this.options.originalFrom + '<hr></p>' :
         '\n\n\n' + l('From') + ': ' + this.options.originalFrom + '\n_________________________________\n'
@@ -206,9 +201,6 @@ export class MailTo {
 
   public setMailToBodyFromText(text = '') {
     this.body = text;
-    if (!DeviceUtils.isPhonegap()) {
-      this.body = EmailActionsUtils.encodeMailToBody(this.body);
-    }
   }
 
   private valueBodyIsSet() {

@@ -29,3 +29,4 @@ export {Excerpt} from './ui/Excerpt/Excerpt';
 export {ResultLink} from './ui/ResultLink/ResultLink';
 export {Icon} from './ui/Icon/Icon';
 export {Thumbnail} from './ui/Thumbnail/Thumbnail';
+export {PrintableUri} from './ui/PrintableUri/PrintableUri';
