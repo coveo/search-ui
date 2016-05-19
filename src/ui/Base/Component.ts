@@ -3,7 +3,7 @@ import {Logger} from '../../misc/Logger';
 import {IQueryResult} from '../../rest/QueryResult';
 import {DebugEvents} from '../../events/DebugEvents';
 import {Utils} from '../../utils/Utils';
-import {$$} from '../../utils/Dom';
+import {$$, Dom} from '../../utils/Dom';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import {ComponentStateModel} from '../../models/ComponentStateModel';
 import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
@@ -310,13 +310,13 @@ export class ComponentEvents {
    * @param handler The function to execute when the event is triggered
    */
   public on(el: HTMLElement, event: string, handler: Function);
-  public on(el: JQuery, event: string, handler: Function);
+  public on(el: Dom, event: string, handler: Function);
   public on(arg: any, event: string, handler: Function) {
     if ((window && !window['jQuery']) || !(arg instanceof window['jQuery'])) {
       var htmlEl: HTMLElement = arg;
       $$(htmlEl).on(event, this.wrapToCallIfEnabled(handler));
     } else {
-      var jq: JQuery = arg;
+      var jq: Dom = arg;
       jq.on(event, this.wrapToCallIfEnabled(handler));
     }
   }
@@ -330,13 +330,13 @@ export class ComponentEvents {
    * @param handler The function to execute when the event is triggered
    */
   public one(el: HTMLElement, event: string, handler: Function);
-  public one(el: JQuery, event: string, handler: Function);
+  public one(el: Dom, event: string, handler: Function);
   public one(arg: any, event: string, handler: Function) {
     if (arg instanceof HTMLElement) {
       var htmlEl: HTMLElement = arg;
       $$(htmlEl).one(event, this.wrapToCallIfEnabled(handler));
     } else {
-      var jq: JQuery = arg;
+      var jq: Dom = arg;
       jq.one(event, this.wrapToCallIfEnabled(handler));
     }
   }
@@ -350,7 +350,7 @@ export class ComponentEvents {
    * @param handler The function to execute when the event is triggered
    */
   public onRoot<T>(event: string, handler: (e: JQueryEventObject, args: T) => any) {
-    this.on($(this.owner.root), event, handler);
+    this.on($$(this.owner.root), event, handler);
   }
 
   /**
@@ -406,14 +406,14 @@ export class ComponentEvents {
    * @param args The optional argument to pass to the handlers
    */
   public trigger(el: HTMLElement, event: string, args?: Object);
-  public trigger(el: JQuery, event: string, args?: Object);
+  public trigger(el: Dom, event: string, args?: Object);
   public trigger(arg: any, event: string, args?: Object) {
     this.wrapToCallIfEnabled(() => {
       if (arg instanceof HTMLElement) {
         var htmlEl: HTMLElement = arg;
         $$(htmlEl).trigger(event, args);
       } else {
-        var jq: JQuery = arg;
+        var jq: Dom = arg;
         jq.trigger(event, args);
       }
     })(args);

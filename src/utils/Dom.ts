@@ -58,6 +58,10 @@ export class Dom {
 
     return elem;
   }
+  
+  public append(element: HTMLElement){
+    this.el.appendChild(element);
+  }
 
   public css(propertyValue: string): string {
     return window.getComputedStyle(this.el).getPropertyValue(propertyValue);
@@ -102,6 +106,13 @@ export class Dom {
     while (this.el.firstChild) {
       this.el.removeChild(this.el.firstChild);
     }
+  }
+  
+  /**
+   * Empty the element and all childs from the dom;
+   */
+  public remove(): void {
+    this.el.parentNode.removeChild(this.el);
   }
 
   /**

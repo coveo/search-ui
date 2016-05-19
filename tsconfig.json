@@ -112,6 +112,7 @@
     "src/utils/StringUtils.ts",
     "src/utils/TimeSpanUtils.ts",
     "src/utils/Utils.ts",
+    "src/utils/ModalBox.ts",
     "src/strings/Strings.ts",
     "src/models/ComponentOptionsModel.ts",
     "src/models/ComponentStateModel.ts",
@@ -145,6 +146,8 @@
     "src/ui/ResultLink/ResultLink.ts",
     "src/ui/Icon/Icon.ts",
     "src/ui/Thumbnail/Thumbnail.ts",
-    "src/ui/PrintableUri/PrintableUri.ts"
+    "src/ui/PrintableUri/PrintableUri.ts",
+    "src/ui/Quickview/Quickview.ts",
+    "src/ui/Quickview/QuickviewDocument.ts"
   ]
 }

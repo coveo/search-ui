@@ -5,6 +5,7 @@ export {Logger} from './misc/Logger';
 // UTILS
 export {Dom, $$} from './utils/Dom';
 export {HashUtils} from './utils/HashUtils';
+export {ModalBox} from './utils/ModalBox';
 
 // REST
 export {SearchEndpoint} from './rest/SearchEndpoint';
@@ -30,3 +31,5 @@ export {ResultLink} from './ui/ResultLink/ResultLink';
 export {Icon} from './ui/Icon/Icon';
 export {Thumbnail} from './ui/Thumbnail/Thumbnail';
 export {PrintableUri} from './ui/PrintableUri/PrintableUri';
+export {Quickview} from './ui/Quickview/Quickview';
+export {QuickviewDocument} from './ui/Quickview/QuickviewDocument';
