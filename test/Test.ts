@@ -35,7 +35,7 @@
 /// <reference path="ui/ComponentEventsTest.ts" />
 /// <reference path="ui/ComponentTest.ts" />
 /// <reference path="ui/DidYouMeanTest.ts" />
-
+/// <reference path="ui/ErrorReportTest.ts" />
 /// <reference path="ui/PagerTest.ts" />
 /// <reference path="ui/FacetTest.ts" />
 

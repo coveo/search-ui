@@ -11,6 +11,7 @@ export {Options} from './misc/Options';
 export {SearchEndpoint} from './rest/SearchEndpoint';
 export {AnalyticsEndpoint} from './rest/AnalyticsEndpoint';
 export {EndpointCaller} from './rest/EndpointCaller';
+export {QueryError} from './rest/QueryError';
 
 // EVENTS
 export {AnalyticsEvents} from './events/AnalyticsEvents';
@@ -99,3 +100,4 @@ export {FacetSlider} from './ui/FacetSlider/FacetSlider';
 export {FacetRange} from './ui/FacetRange/FacetRange';
 export {Pager} from './ui/Pager/Pager';
 export {DidYouMean} from './ui/DidYouMean/DidYouMean';
+export {ErrorReport} from './ui/ErrorReport/ErrorReport';

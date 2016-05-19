@@ -141,6 +141,7 @@
     "src/ui/Analytics/PendingSearchEvent.ts",
     "src/ui/Facet/Facet.ts",
     "src/ui/Pager/Pager.ts",
-    "src/ui/DidYouMean/DidYouMean.ts"
+    "src/ui/DidYouMean/DidYouMean.ts",
+    "src/ui/ErrorReport/ErrorReport.ts"
   ]
 }
