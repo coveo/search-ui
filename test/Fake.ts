@@ -133,7 +133,7 @@ module Coveo {
       return fake
     }
 
-    static createFakeGroupByResult(field: string, token: string, count: number, includeComputedValues?: boolean): GroupByResult {
+    static createFakeGroupByResult(field: string, token: string, count: number, includeComputedValues?: boolean): IGroupByResult {
       Assert.isNonEmptyString(field);
       Assert.isNonEmptyString(token);
       Assert.isLargerOrEqualsThan(0, count);
@@ -149,7 +149,7 @@ module Coveo {
       };
     }
 
-    static createFakeRangeGroupByResult(field: string, start = 1, end = 100, steps = 25): GroupByResult {
+    static createFakeRangeGroupByResult(field: string, start = 1, end = 100, steps = 25): IGroupByResult {
       var groupByValues: IGroupByValue[] = [];
       for (var i = start; i <= end; i += (steps)) {
         groupByValues.push(FakeResults.createFakeGroupByRangeValue(i, i + (steps - 1), 'foobar' + i.toString(), i));
@@ -160,7 +160,7 @@ module Coveo {
       }
     }
 
-    static createFakeHierarchicalGroupByResult(field: string, token: string, numberOfLevel = 2, countByLevel = 3, delimitingCharacter = "|", includeComputedValues = false): GroupByResult {
+    static createFakeHierarchicalGroupByResult(field: string, token: string, numberOfLevel = 2, countByLevel = 3, delimitingCharacter = "|", includeComputedValues = false, weirdCasing = true): IGroupByResult {
       var groupByValues: IGroupByValue[] = [];
       for (var i = 0; i < 2; ++i) {
         var groupByValueTopLevel = FakeResults.createFakeGroupByValue(token + i.toString(), i + 1, 100 + 1, includeComputedValues ? 1000 + i : undefined);
@@ -168,8 +168,10 @@ module Coveo {
 
         for (var j = 0; j < countByLevel; j++) {
           var groupByValueSubLevel = FakeResults.createFakeGroupByValue(token + i.toString(), i + 1, 100 + 1, includeComputedValues ? 1000 + i : undefined);
-          groupByValueSubLevel.value = groupByValueSubLevel.lookupValue += delimitingCharacter + FakeResults.createFakeGroupByValue(token + i.toString() + "-" + j.toString(), i + 1, 100 + i, includeComputedValues ? 1000 + i : undefined).value
-          groupByValues.push(groupByValueSubLevel)
+          groupByValueSubLevel.value = groupByValueSubLevel.lookupValue += delimitingCharacter + FakeResults.createFakeGroupByValue(token + i.toString() + "-" + +j.toString(), i + 1, 100 + i, includeComputedValues ? 1000 + i : undefined).value
+          if (weirdCasing) {
+            groupByValueSubLevel.value = groupByValueSubLevel.lookupValue = _.map(groupByValueSubLevel.lookupValue.split(delimitingCharacter), (value, k) => (i + j + k) % 2 == 0 ? value.toLowerCase() : value.toUpperCase()).join(delimitingCharacter)
+          }
         }
       }
 

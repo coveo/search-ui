@@ -1,36 +1,41 @@
 import {Utils} from './Utils';
-import {Highlight} from '../rest/Highlight';
+import {IHighlight} from '../rest/Highlight';
 import {Assert} from '../misc/Assert';
+import _ = require('underscore');
 
-
-export class Hole {
-  constructor(public begin: number, public size: number, public replacementSize: number) {
-  }
+export interface IStringHole {
+  begin: number;
+  size: number;
+  replacementSize: number;
 }
 
 export class StringAndHoles {
   value: string;
-  holes: Hole[];
+  holes: IStringHole[];
 
-  static SHORTEN_END: string = "...";
+  static SHORTEN_END: string = '...';
   static WORD_SHORTER: number = 10;
 
   static replace(str: string, find: string, replace: string): StringAndHoles {
-    var strAndHoles = new StringAndHoles();
+    let strAndHoles = new StringAndHoles();
 
     if (Utils.isNullOrEmptyString(str)) {
       return strAndHoles;
     }
 
-    var index = str.lastIndexOf(find);
+    let index = str.lastIndexOf(find);
     if (index == -1) {
       strAndHoles.value = str;
       return strAndHoles;
     }
 
-    var holes: Hole[] = [];
+    let holes: IStringHole[] = [];
     while (index >= 0) {
-      var hole = new Hole(index, find.length, replace.length);
+      let hole = <IStringHole>{
+        begin: index,
+        size: find.length,
+        replacementSize: replace.length
+      };
       holes.push(hole);
       str = str.slice(0, index) + replace + str.slice(index + find.length);
       index = str.lastIndexOf(find);
@@ -41,44 +46,58 @@ export class StringAndHoles {
     return strAndHoles;
   }
 
+  /**
+   * Shorten the passed path intelligently (path-aware).
+   * Works with *local paths* and *network paths*
+   * @param uriOrig The path to shorten
+   * @param length The length to which the path will be shortened.
+   */
   static shortenPath(uriOrig: string, length: number): StringAndHoles {
-    var uri = uriOrig;
-    var strAndHoles = new StringAndHoles();
+    let uri = uriOrig;
+    let strAndHoles = new StringAndHoles();
 
     if (Utils.isNullOrEmptyString(uri) || (uri.length <= length)) {
       strAndHoles.value = uri;
       return strAndHoles;
     }
 
-    var holes: Hole[] = [];
+    let holes: IStringHole[] = [];
 
-    var first = -1;
-    if (Utils.stringStartsWith(uri, "\\\\")) {
+    let first = -1;
+    if (Utils.stringStartsWith(uri, '\\\\')) {
       first = uri.indexOf('\\', first + 2);
     } else {
       first = uri.indexOf('\\');
     }
 
-    if (first != -1) {
-      var removed = 0;
-      var next = uri.indexOf('\\', first + 1);
-      while (next != -1 && uri.length - removed + StringAndHoles.SHORTEN_END.length > length) {
+    if (first !== -1) {
+      let removed = 0;
+      let next = uri.indexOf('\\', first + 1);
+      while (next !== -1 && uri.length - removed + StringAndHoles.SHORTEN_END.length > length) {
         removed = next - first - 1;
         next = uri.indexOf('\\', next + 1);
       }
 
       if (removed > 0) {
         uri = uri.slice(0, first + 1) + StringAndHoles.SHORTEN_END + uri.slice(removed);
-        var hole = new Hole(first + 1, removed - StringAndHoles.SHORTEN_END.length, StringAndHoles.SHORTEN_END.length);
+        let hole = <IStringHole>{
+          begin: first + 1,
+          size: removed - StringAndHoles.SHORTEN_END.length,
+          replacementSize: StringAndHoles.SHORTEN_END.length
+        };
         holes.push(hole);
       }
     }
 
     if (uri.length > length) {
-      var over = uri.length - length + StringAndHoles.SHORTEN_END.length;
-      var start = uri.length - over;
+      let over = uri.length - length + StringAndHoles.SHORTEN_END.length;
+      let start = uri.length - over;
       uri = uri.slice(0, start) + StringAndHoles.SHORTEN_END;
-      var hole = new Hole(start, over, StringAndHoles.SHORTEN_END.length);
+      let hole = <IStringHole>{
+        begin: start,
+        size: over,
+        replacementSize: StringAndHoles.SHORTEN_END.length
+      };
       holes.push(hole);
     }
 
@@ -87,10 +106,16 @@ export class StringAndHoles {
     return strAndHoles;
   }
 
+  /**
+   * Shorten the passed string.
+   * @param toShortenOrig The string to shorten
+   * @param length The length to which the string will be shortened.
+   * @param toAppend The string to append at the end (usually, it is set to '...')
+   */
   static shortenString(toShortenOrig: string, length: number = 200, toAppend?: string): StringAndHoles {
-    var toShorten = toShortenOrig
+    let toShorten = toShortenOrig
     toAppend = Utils.toNotNullString(toAppend);
-    var strAndHoles = new StringAndHoles();
+    let strAndHoles = new StringAndHoles();
     if (Utils.isNullOrEmptyString(toShorten) || length <= toAppend.length) {
       strAndHoles.value = toShorten;
       return strAndHoles;
@@ -101,59 +126,76 @@ export class StringAndHoles {
       return strAndHoles;
     }
 
-    var str = toShorten;
+    let str = toShorten;
 
     length = length - toAppend.length;
     str = str.slice(0, length);
 
-    if (toShorten.charAt(str.length) != ' ') {
-      var pos = str.lastIndexOf(' ');
-      if (pos != -1 && str.length - pos < StringAndHoles.WORD_SHORTER) {
+    if (toShorten.charAt(str.length) !== ' ') {
+      let pos = str.lastIndexOf(' ');
+      if (pos !== -1 && str.length - pos < StringAndHoles.WORD_SHORTER) {
         str = str.slice(0, pos);
       }
     }
-    var holes: Hole[] = [];
-    holes[0] = new Hole(str.length, toShorten.length - str.length, toAppend.length);
+    let holes: IStringHole[] = [];
+    holes[0] = <IStringHole>{
+      begin: str.length,
+      size: toShorten.length - str.length,
+      replacementSize: toAppend.length
+    };
     str += toAppend;
     strAndHoles.value = str;
     strAndHoles.holes = holes;
     return strAndHoles;
   }
 
+  /**
+   * Shorten the passed URI intelligently (path-aware).
+   * @param toShortenOrig The URI to shorten
+   * @param length The length to which the URI will be shortened.
+   */
   static shortenUri(uri: string, length: number): StringAndHoles {
-    var strAndHoles = new StringAndHoles();
+    let strAndHoles = new StringAndHoles();
     if (Utils.isNullOrEmptyString(uri) || (uri.length <= length)) {
       strAndHoles.value = uri;
       return strAndHoles;
     }
 
-    var holes: Hole[] = [];
+    let holes: IStringHole[] = [];
 
-    var first = uri.indexOf("//");
-    if (first != -1) {
+    let first = uri.indexOf('//');
+    if (first !== -1) {
       first = uri.indexOf('/', first + 2);
     }
 
-    if (first != -1) {
-      var removed = 0;
-      var next = uri.indexOf('/', first + 1);
-      while (next != -1 && uri.length - removed + StringAndHoles.SHORTEN_END.length > length) {
+    if (first !== -1) {
+      let removed = 0;
+      let next = uri.indexOf('/', first + 1);
+      while (next !== -1 && uri.length - removed + StringAndHoles.SHORTEN_END.length > length) {
         removed = next - first - 1;
         next = uri.indexOf('/', next + 1);
       }
 
       if (removed > 0) {
         uri = uri.slice(0, first + 1) + StringAndHoles.SHORTEN_END + uri.slice(first + 1 + removed);
-        var hole = new Hole(first + 1, removed, StringAndHoles.SHORTEN_END.length);
+        let hole = <IStringHole>{
+          begin: first + 1,
+          size: removed,
+          replacementSize: StringAndHoles.SHORTEN_END.length
+        };
         holes.push(hole);
       }
     }
 
     if (uri.length > length) {
-      var over = uri.length - length + StringAndHoles.SHORTEN_END.length;
-      var start = uri.length - over;
+      let over = uri.length - length + StringAndHoles.SHORTEN_END.length;
+      let start = uri.length - over;
       uri = uri.slice(0, start) + StringAndHoles.SHORTEN_END;
-      var hole = new Hole(start, over, StringAndHoles.SHORTEN_END.length);
+      let hole = <IStringHole>{
+        begin: start,
+        size: over,
+        replacementSize: StringAndHoles.SHORTEN_END.length
+      };
       holes.push(hole);
     }
 
@@ -164,31 +206,34 @@ export class StringAndHoles {
 }
 
 export class HighlightUtils {
-  static highlightString(content: string, highlights: Highlight[], holes: Hole[], cssClass: string): string {
-    return HighlightUtils.buildHighlightedString(content, highlights, holes, cssClass);
-  }
-
-  static buildHighlightedString(content: string, highlights: Highlight[], holes: Hole[], cssClass: string): string {
+  /**
+   * Highlight the passed string using specified highlights and holes.
+   * @param content The string to highlight items in.
+   * @param highlights The highlighted positions to highlight in the string.
+   * @param holes Possible holes which are used to skip highlighting.
+   * @param cssClass The css class to use on the highlighting `span`.
+   */
+  static highlightString(content: string, highlights: IHighlight[], holes: IStringHole[], cssClass: string): string {
     Assert.isNotUndefined(highlights);
     Assert.isNotNull(highlights);
     Assert.isNonEmptyString(cssClass);
     if (Utils.isNullOrEmptyString(content)) {
       return content;
     }
-    var last = 0;
-    var maxIndex = content.length;
-    var highlighted = "";
-    for (var i = 0; i < highlights.length; i++) {
-      var highlight = highlights[i];
-      var start = highlight.offset;
-      var end = start + highlight.length;
+    let last = 0;
+    let maxIndex = content.length;
+    let highlighted = '';
+    for (let i = 0; i < highlights.length; i++) {
+      let highlight = highlights[i];
+      let start: number = highlight.offset;
+      let end: number = start + highlight.length;
 
-      if (holes != null) {
-        var skip = false;
-        for (var j = 0; j < holes.length; j++) {
-          var hole = holes[j];
-          var holeBegin = hole.begin;
-          var holeEnd = holeBegin + hole.size;
+      if (holes !== null) {
+        let skip = false;
+        for (let j = 0; j < holes.length; j++) {
+          let hole = holes[j];
+          let holeBegin = hole.begin;
+          let holeEnd = holeBegin + hole.size;
           if (start < holeBegin && end >= holeBegin && end < holeEnd) {
             end = holeBegin;
           } else if (start >= holeBegin && end < holeEnd) {
@@ -200,12 +245,12 @@ export class HighlightUtils {
           } else if (start < holeBegin && end >= holeEnd) {
             end -= hole.size - hole.replacementSize;
           } else if (start >= holeEnd) {
-            var offset = hole.size - hole.replacementSize;
+            let offset = hole.size - hole.replacementSize;
             start -= offset;
             end -= offset;
           }
         }
-        if (skip || start == end) {
+        if (skip || start === end) {
           continue;
         }
       }
@@ -215,16 +260,16 @@ export class HighlightUtils {
       }
 
       highlighted += _.escape(content.slice(last, start));
-      highlighted += "<span class='" + cssClass + "'"
-      if (highlight.dataHighlightGroup) {
-        highlighted += " data-highlight-group='" + highlight.dataHighlightGroup.toString() + "'";
+      highlighted += `<span class="${cssClass}"`;
+      if(highlight.dataHighlightGroup) {
+        highlighted += ` data-highlight-group="${highlight.dataHighlightGroup.toString()}"`;
       }
-      if (highlight.dataHighlightGroupTerm) {
-        highlighted += " data-highlight-group-term='" + highlight.dataHighlightGroupTerm + "'";
+      if(highlight.dataHighlightGroupTerm) {
+        highlighted += ` data-highlight-group-term="${highlight.dataHighlightGroupTerm}"`;
       }
-      highlighted += " >";
+      highlighted += '>';
       highlighted += _.escape(content.slice(start, end));
-      highlighted += "</span>";
+      highlighted += '</span>';
 
       last = end;
     }
@@ -248,9 +293,6 @@ export function highlightString(value: string, search: string) {
     '<% i = value.length; %>' +
     '<% } %>' +
     '<% } %>');
-
-  if (_.isEmpty(search)) {
-    return value;
-  }
+  if (_.isEmpty(search)) return value;
   return hightlightTemplate({ value: value, search: search.toLowerCase() });
-}
+};

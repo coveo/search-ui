@@ -80,7 +80,7 @@ export class ResultLink extends Component {
     Assert.exists(this.componentOptionsModel);
     Assert.exists(this.result);
 
-    if (!this.options.openQuickview) {
+      if (!this.quickviewShouldBeOpened()) {
       $$(element).on("click", () => {
         this.logOpenDocument();
       });
@@ -107,7 +107,7 @@ export class ResultLink extends Component {
   }
 
   private bindOpenQuickviewIfNotUndefined() {
-    if ((this.options.openQuickview || this.isUriThatMustBeOpenedInQuickview()) && QueryUtils.hasHTMLVersion(this.result)) {
+      if (this.quickviewShouldBeOpened()) {
       $$(this.element).on('click', (e: Event) => {
         e.preventDefault();
         $$(this.bindings.resultElement).trigger(ResultListEvents.openQuickview)
@@ -201,6 +201,10 @@ export class ResultLink extends Component {
 
   private isUriThatMustBeOpenedInQuickview(): boolean {
     return this.result.clickUri.toLowerCase().indexOf('ldap://') == 0;
+    }
+
+    private quickviewShouldBeOpened() {
+      return (this.options.openQuickview || this.isUriThatMustBeOpenedInQuickview()) && QueryUtils.hasHTMLVersion(this.result);
   }
 }
 

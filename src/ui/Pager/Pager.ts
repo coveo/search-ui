@@ -1,5 +1,6 @@
-import {Component, IComponentBindings} from '../Base/Component'
-import {ComponentOptions} from '../Base/ComponentOptions'
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {ComponentOptions} from '../Base/ComponentOptions';
 import {DeviceUtils} from '../../utils/DeviceUtils'
 import {QueryEvents, INewQueryEventArgs, IBuildingQueryEventArgs, IQuerySuccessEventArgs, INoResultsEventArgs} from '../../events/QueryEvents'
 import {ModelEvents, IAttributeChangedEventArg} from '../../models/Model'

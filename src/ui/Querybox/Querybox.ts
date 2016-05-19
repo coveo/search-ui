@@ -1,5 +1,6 @@
 import {Initialization} from '../Base/Initialization';
-import {Component, IComponentBindings} from '../Base/Component';
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
 import {ModelEvents, IAttributeChangedEventArg} from '../../models/Model';

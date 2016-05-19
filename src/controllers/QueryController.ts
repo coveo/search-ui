@@ -18,6 +18,7 @@ import {BaseComponent} from '../ui/Base/BaseComponent';
 import _ = require('underscore');
 
 declare const Coveo;
+declare const coveoanalytics: CoveoAnalytics.CoveoUA;
 
 /**
  * Possible options when performing a query with the query controller
@@ -179,6 +180,7 @@ export class QueryController extends RootComponent {
     }
 
     var query = queryBuilder.build();
+    this.logQueryInActionsHistory(query);
     var endpointToUse = this.getEndpoint();
 
     var promise = this.currentPendingQuery = endpointToUse.search(query);
@@ -305,7 +307,6 @@ export class QueryController extends RootComponent {
     var queryBuilder = new QueryBuilder();
     this.continueLastQueryBuilder(queryBuilder, count);
     var query = queryBuilder.build();
-
     var endpointToUse = this.getEndpoint()
     var promise: any = this.currentPendingQuery = endpointToUse.search(query);
     var dataToSendDuringQuery: IDuringQueryEventArgs = {
@@ -592,5 +593,16 @@ export class QueryController extends RootComponent {
       }
     });
     return dom;
+  }
+
+  private logQueryInActionsHistory(query: IQuery) {
+    if (typeof coveoanalytics != 'undefined') {
+      let store = new coveoanalytics.history.HistoryStore()
+      let queryElement: CoveoAnalytics.HistoryQueryElement = {
+        type: "query",
+        q: query.q
+      }
+      store.addElement(queryElement);
+    }
   }
 }

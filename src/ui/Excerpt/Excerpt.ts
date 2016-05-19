@@ -1,21 +1,26 @@
-import {Component, IComponentBindings} from '../Base/Component'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {Assert} from '../../misc/Assert'
-import {IQueryResult} from '../../rest/QueryResult'
-import {Initialization} from '../Base/Initialization';
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {IQueryResult} from '../../rest/QueryResult';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {Assert} from '../../misc/Assert';
 import {HighlightUtils} from '../../utils/HighlightUtils';
-
+import {Initialization} from '../Base/Initialization';
 
 /**
- * You can use the Excerpt component inside @link{ResultTemplates} to take care of rendering the document excerpt, as well as highlight keywords using the correct @link{ResultTemplateHelpers}. 
- */
+ * This component, located in a result template, is used to render the document's excerpt,
+ * as well as highlighting searched **keywords** using the appropriate template helpers.
+*/
 export class Excerpt extends Component {
   static ID = 'Excerpt';
 
-  constructor(public element: HTMLElement,
-    public options?: any,
-    public bindings?: IComponentBindings,
-    public result?: IQueryResult) {
+  /**
+   * Create a new Excerpt component
+   * @param element
+   * @param options
+   * @param bindings
+   * @param result
+   */
+  constructor(public element: HTMLElement, public options?: any, public bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, Excerpt.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, Excerpt, options);
@@ -24,4 +29,5 @@ export class Excerpt extends Component {
     this.element.innerHTML = HighlightUtils.highlightString(this.result.excerpt, this.result.excerptHighlights, null, 'coveo-highlight');
   }
 }
+
 Initialization.registerAutoCreateComponent(Excerpt);

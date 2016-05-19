@@ -1,14 +1,16 @@
 
 
 module Coveo {
-  export enum RatingValues { Undefined, Lowest, Low, Average, Good, Best };
+  export enum RatingValues {Undefined, Lowest, Low, Average, Good, Best};
 
   export interface ResultRatingOptions {
   }
-
+  /**
+   * Component used to render document rating. Allows search users to rate a result with a 5-star representation.
+   * Interactive rating is possible if collaborative rating is enabled.
+   */
   export class ResultRating extends Coveo.Component {
     static ID = 'ResultRating';
-
 
     constructor(public element: HTMLElement, public options?: ResultRatingOptions, public bindings?: IComponentBindings, public result?: IQueryResult) {
       super(element, ResultRating.ID, bindings);
@@ -20,58 +22,68 @@ module Coveo {
     }
 
     private renderComponent(element: HTMLElement, rating: number) {
-      for (var starNumber = 1; starNumber <= 5; starNumber++) {
-        this.renderStars(element, starNumber <= rating, starNumber);
+      for (let starNumber = 1; starNumber <= 5; starNumber++) {
+        this.renderStar(element, starNumber <= rating, starNumber);
       }
     }
 
-    private renderStars(element: HTMLElement, isChecked: boolean, value: number) {
-      var star = $(element).find('a[rating-value="' + value + '"]');
-
-      if (star.length == 0) {
-        star = $("<a>").appendTo(element);
+    private renderStar(element: HTMLElement, isChecked: boolean, value: number) {
+      let star: Dom;
+      let starElement = $$(element).find('a[rating-value="' + value + '"]');
+      if (starElement == null) {
+        star = $$('a');
+        element.appendChild(star.el);
 
         if (this.bindings.searchInterface.options.enableCollaborativeRating) {
-          star.click((e) => {
-            this.rateDocument(+$(e.currentTarget).attr("rating-value"));
+          star.on('click', (e) => {
+            let targetElement: HTMLElement = <HTMLElement>e.currentTarget;
+            this.rateDocument(parseInt(targetElement.getAttribute('rating-value')));
           });
 
-          star.mouseover((e) => {
-            this.renderComponent(element, parseInt($(e.currentTarget).attr("rating-value"), 10));
+          star.on('mouseover', (e) => {
+            let targetElement: HTMLElement = <HTMLElement>e.currentTarget;
+            this.renderComponent(element, parseInt(targetElement.getAttribute('rating-value')));
           });
 
-          star.mouseout(() => {
+          star.on('mouseout', () => {
             this.renderComponent(element, this.result.rating);
           });
         }
 
-        star.attr("rating-value", value);
+        star.el.setAttribute('rating-value', value.toString());
+      } else {
+        star = $$(starElement);
       }
 
-      var basePath: String = "";
+      let basePath: String = '';
       if (this.searchInterface.isNewDesign()) {
-        basePath = "coveo-sprites-";
+        basePath = 'coveo-sprites-';
       } else {
-        basePath = "coveo-sprites-common-";
+        basePath = 'coveo-sprites-common-';
       }
-      star.toggleClass(basePath + "star_placeholder", !isChecked);
-      star.toggleClass(basePath + "star_active", isChecked);
+      star.toggleClass(basePath + 'star_placeholder', !isChecked);
+      star.toggleClass(basePath + 'star_active', isChecked);
     }
 
+    /**
+     * Rates a document with the specified rating value.
+     * @param rating The rating assigned to the document. Specified using the enum RatingValues.
+     * Possible values are: Undefined, Lowest, Low, Average, Good and Best.
+     */
     public rateDocument(rating: RatingValues) {
-      var request: IRatingRequest = {
+      let request: IRatingRequest = {
         rating: RatingValues[rating],
         uniqueId: this.result.uniqueId
       };
 
       this.queryController.getEndpoint().rateDocument(request)
-        .then(() => {
-          this.result.rating = rating;
-          this.renderComponent(this.element, rating);
-        })
-        .catch(() => {
-          this.logger.error("An error occurred while rating the document");
-        });
+          .then(() => {
+            this.result.rating = rating;
+            this.renderComponent(this.element, rating);
+          })
+          .catch(() => {
+            this.logger.error('An error occurred while rating the document');
+          });
     }
   }
 

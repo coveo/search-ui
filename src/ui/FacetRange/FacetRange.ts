@@ -11,6 +11,8 @@ import {FacetRangeQueryController} from '../../controllers/FacetRangeQueryContro
 import {IGroupByResult} from '../../rest/GroupByResult';
 import {Initialization} from '../Base/Initialization';
 
+declare const Globalize;
+
 export interface FacetRangeOptions extends IFacetOptions {
   ranges?: IRangeValue[];
   dateField?: boolean;

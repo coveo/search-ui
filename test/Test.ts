@@ -15,14 +15,37 @@
 
 //***** TEST ON UTILS ******
 /// <reference path="utils/DomTest.ts" />
+/// <reference path="utils/CookieUtilsTest.ts" />
+/// <reference path="utils/L10NTest.ts" />
+
+//***** TEST ON MODELS ******
+/// <reference path="models/ModelTest.ts" />
+/// <reference path="models/QueryStateModelTest.ts" />
+
+//***** TEST ON CONTROLLERS ******
+/// <reference path="controllers/FacetQueryControllerTest.ts" />
+/// <reference path="controllers/HistoryControllerTest.ts" />
+/// <reference path="controllers/QueryControllerTest.ts" />
+
+//***** TEST ON UI ******
+/// <reference path="ui/AggregateTest.ts" />
+/// <reference path="ui/AnalyticsEndpointTest.ts" />
+/// <reference path="ui/PagerTest.ts" />
+/// <reference path="ui/FacetTest.ts" />
 
 
+Coveo.Logger.disable();
 
-// Get a much cleaner output in phantomjs
-if (window['_phantom']) {
-  Coveo.Logger.disable();
+module Coveo {
+  var _ = window['_'];
+  Coveo._ = _;
 }
 
 function isPhantomJs() {
   return navigator.userAgent.indexOf('PhantomJS') != -1;
 }
+
+
+
+
+

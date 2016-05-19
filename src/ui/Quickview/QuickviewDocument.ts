@@ -1,4 +1,5 @@
-import {Component, IComponentBindings} from '../Base/Component'
+import {Component} from '../Base/Component'
+import {IComponentBindings} from '../Base/ComponentBindings'
 import {ComponentOptions} from '../Base/ComponentOptions'
 import {AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
 import {IQueryResult} from '../../rest/QueryResult'
@@ -73,8 +74,14 @@ export class QuickviewDocument extends Component {
 
   public open() {
     this.ensureDom();
+      var documentURL = $(this.element).attr('href');
+      if (documentURL == undefined || documentURL == '') {
+        documentURL = this.result.clickUri;
+      }
     this.usageAnalytics.logClickEvent(AnalyticsActionCauseList.documentQuickview, {
-      author: this.result.raw.author
+        author: this.result.raw.author,
+        documentURL: documentURL,
+        documentTitle: this.result.title
     }, this.result, this.queryController.element);
     var beforeLoad = (new Date()).getTime();
     var iframe = <HTMLIFrameElement>this.iframe.find('iframe');

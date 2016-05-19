@@ -2,7 +2,8 @@
 /// <reference path="../../controllers/FacetSliderQueryController.ts" />
 
 import {ISliderOptions, Slider, IEndSlideEventArgs, IDuringSlideEventArgs, ISliderGraphData} from '../Misc/Slider';
-import {Component, IComponentBindings} from '../Base/Component';
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {FacetHeader} from '../Facet/FacetHeader';
 import {l} from '../../strings/Strings';
@@ -368,7 +369,7 @@ export class FacetSlider extends Component {
   }
 
   private initQueryStateEvents() {
-    this.rangeQueryStateAttribute = QueryStateModel.getFacetId(this.options.id) + ":range";
+    this.rangeQueryStateAttribute = QueryStateModel.getFacetId(this.options.id) + ':range';
     this.queryStateModel.registerNewAttribute(this.rangeQueryStateAttribute, [undefined, undefined]);
     var eventName = this.queryStateModel.getEventName(Model.eventTypes.changeOne + this.rangeQueryStateAttribute);
     this.bind.onRootElement(eventName, (args: IAttributeChangedEventArg) => {
@@ -509,14 +510,14 @@ export class FacetSlider extends Component {
     if (rawGroupByResults) {
       graphData = _.map(rawGroupByResults.values, (value) => {
         totalGraphResults += value.numberOfResults;
-        var start: any = value.value.split("..")[0];
-        var end: any = value.value.split("..")[1];
+        var start: any = value.value.split('..')[0];
+        var end: any = value.value.split('..')[1];
         if (!this.options.dateField) {
           start = Number(start);
           end = Number(end);
         } else {
-          start = new Date(start.split("@")[0]).getTime();
-          end = new Date(end.split("@")[0]).getTime();
+          start = new Date(start.split('@')[0]).getTime();
+          end = new Date(end.split('@')[0]).getTime();
         }
         var y = value.numberOfResults;
         return {
@@ -652,8 +653,8 @@ export class FacetSlider extends Component {
   private trySetSliderBoundaryFromQueryResult(data: IQuerySuccessEventArgs) {
     var groupByResults = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
     if (groupByResults && groupByResults.values.length > 0) {
-      this.setupInitialSliderStateStart(groupByResults.values[0].value.split("..")[0]);
-      this.setupInitialSliderStateEnd(groupByResults.values[groupByResults.values.length - 1].value.split("..")[1]);
+      this.setupInitialSliderStateStart(groupByResults.values[0].value.split('..')[0]);
+      this.setupInitialSliderStateEnd(groupByResults.values[groupByResults.values.length - 1].value.split('..')[1]);
     }
   }
 
@@ -661,7 +662,7 @@ export class FacetSlider extends Component {
     if (this.initialStartOfSlider == undefined) {
       this.initialStartOfSlider = value;
       if (this.options.dateField && isNaN(value)) {
-        this.initialStartOfSlider = new Date(value.replace("@", " ")).getTime();
+        this.initialStartOfSlider = new Date(value.replace('@', ' ')).getTime();
       }
     }
   }
@@ -670,7 +671,7 @@ export class FacetSlider extends Component {
     if (this.initialEndOfSlider == undefined) {
       this.initialEndOfSlider = value;
       if (this.options.dateField && isNaN((value))) {
-        this.initialEndOfSlider = new Date(value.replace("@", " ")).getTime();
+        this.initialEndOfSlider = new Date(value.replace('@', ' ')).getTime();
       }
     }
   }

@@ -1,6 +1,7 @@
 import {IQueryResult} from '../../rest/QueryResult';
 import {Logger} from '../../misc/Logger';
-import {IComponentDefinition, Component, IComponentBindings} from '../Base/Component';
+import {IComponentDefinition, Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
 import {Utils} from '../../utils/Utils';
 import {Assert} from '../../misc/Assert';
 import {DeviceUtils} from '../../utils/DeviceUtils';

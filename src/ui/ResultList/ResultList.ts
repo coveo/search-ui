@@ -1,6 +1,7 @@
 import {Template} from '../Templates/Template'
 import {DefaultResultTemplate} from '../Templates/DefaultResultTemplate'
-import {Component, IComponentBindings} from '../Base/Component'
+import {Component} from '../Base/Component'
+import {IComponentBindings} from '../Base/ComponentBindings'
 import {IResultsComponentBindings} from '../Base/ResultsComponentBindings'
 import {ComponentOptions} from '../Base/ComponentOptions'
 import {IQueryResult} from '../../rest/QueryResult'

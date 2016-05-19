@@ -9,7 +9,8 @@
 /// <reference path="FacetSearchParameters.ts" />
 /// <reference path="../HierarchicalFacet/HierarchicalFacet.ts" />
 
-import {Component, IComponentBindings} from '../Base/Component';
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
 import {FacetValue, FacetValues} from './FacetValues';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {DeviceUtils} from '../../utils/DeviceUtils';
