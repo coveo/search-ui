@@ -143,6 +143,7 @@
     "src/ui/ResultList/ResultList.ts",
     "src/ui/Excerpt/Excerpt.ts",
     "src/ui/ResultLink/ResultLink.ts",
-    "src/ui/Icon/Icon.ts"
+    "src/ui/Icon/Icon.ts",
+    "src/ui/Thumbnail/Thumbnail.ts"
   ]
 }

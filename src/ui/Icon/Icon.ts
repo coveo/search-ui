@@ -68,7 +68,9 @@ export class Icon extends Component {
     this.options = ComponentOptions.initComponentOptions(element, Icon, options);
     this.result = this.result || this.resolveResult();
     Assert.exists(this.result);
+    
     /* TO UNCOMMENT WHEN QUICKVIEW IS SUPPORTED
+    
     var possibleInternalQuickview = $$(this.element).find('.' + Component.computeCssClassNameForType(Quickview.ID));
     if (!Utils.isNullOrUndefined(possibleInternalQuickview) && QueryUtils.hasHTMLVersion(this.result)) {
       $$(this.element).addClass('coveo-with-quickview');
@@ -78,6 +80,7 @@ export class Icon extends Component {
       });
     }
     */
+    
     Icon.createIcon(this.result, this.options, element, bindings);
   }
 
