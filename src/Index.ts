@@ -110,3 +110,4 @@ export {ExportToExcel} from './ui/ExportToExcel/ExportToExcel';
 export {Folding} from './ui/Folding/Folding';
 export {HiddenQuery} from './ui/HiddenQuery/HiddenQuery';
 export {HierarchicalFacet} from './ui/HierarchicalFacet/HierarchicalFacet';
+export {Matrix} from './ui/Matrix/Matrix';

@@ -47,7 +47,10 @@
 /// <reference path="ui/FoldingTest.ts" />
 /// <reference path="ui/HiddenQueryTest.ts" />
 /// <reference path="ui/HierarchicalFacetTest.ts" />
+/// <reference path="ui/InitializationTest.ts" />
 /// <reference path="ui/PagerTest.ts" />
+/// <reference path="ui/LiveAnalyticsClientTest.ts" />
+/// <reference path="ui/MatrixTest.ts" />
 
 
 Coveo.Logger.disable();
