@@ -25,3 +25,4 @@ export {Breadcrumb} from './ui/Breadcrumb/Breadcrumb';
 export {Facet} from './ui/Facet/Facet';
 export {Pager} from './ui/Pager/Pager';
 export {ResultList} from './ui/ResultList/ResultList';
+export {Excerpt} from './ui/Excerpt/Excerpt';
