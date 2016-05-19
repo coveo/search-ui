@@ -36,4 +36,10 @@ export class DomUtils {
     </div>`;
     return dom;
   }
+
+  static getLoadingSpinner(): HTMLElement {
+    let loading = $$('div');
+    loading.addClass("coveo-loading-spinner");
+    return loading.el;
+  }
 }

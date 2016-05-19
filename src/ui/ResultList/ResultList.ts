@@ -463,7 +463,7 @@ export class ResultList extends Component {
   }
 
   private showWaitingAnimationForInfiniteScrolling() {
-    this.options.waitAnimationContainer.appendChild(DomUtils.getBasicLoadingAnimation());
+    this.options.waitAnimationContainer.appendChild(DomUtils.getLoadingSpinner());
   }
 
   private hideWaitingAnimationForInfiniteScrolling() {
