@@ -51,7 +51,6 @@ export {StringUtils} from './utils/StringUtils';
 export {TimeSpan} from './utils/TimeSpanUtils';
 export {Utils} from './utils/Utils';
 
-
 // CONTROLLERS
 export {QueryController} from './controllers/QueryController';
 export {FacetQueryController} from './controllers/FacetQueryController';
@@ -85,6 +84,7 @@ export {Analytics} from './ui/Analytics/Analytics';
 export {AnalyticsActionCauseList} from './ui/Analytics/AnalyticsActionListMeta';
 export {NoopAnalyticsClient} from './ui/Analytics/NoopAnalyticsClient';
 export {LiveAnalyticsClient} from './ui/Analytics/LiveAnalyticsClient';
+export {MultiAnalyticsClient} from './ui/Analytics/MultiAnalyticsClient';
 export {Querybox} from './ui/Querybox/Querybox';
 export {SearchButton} from './ui/SearchButton/SearchButton';
 export {Searchbox} from './ui/Searchbox/Searchbox';
@@ -98,3 +98,4 @@ export {Slider} from './ui/Misc/Slider';
 export {FacetSlider} from './ui/FacetSlider/FacetSlider';
 export {FacetRange} from './ui/FacetRange/FacetRange';
 export {Pager} from './ui/Pager/Pager';
+export {DidYouMean} from './ui/DidYouMean/DidYouMean';

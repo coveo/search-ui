@@ -55,12 +55,6 @@ export interface IComponentDefinition {
  */
 export class Component extends BaseComponent {
   /**
-   * A disabled component will be invisible to the end user<br/>
-   * It will also not participate in the query, or listen to {@link ComponentsEvent}
-   * @type {boolean}
-   */
-  public disabled = false;
-  /**
    * Allows the component to bind events and execute them only when it is enabled.
    * @type {Coveo.ComponentEvents}
    */
