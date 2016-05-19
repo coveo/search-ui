@@ -25,7 +25,8 @@ gulp.task('externalDefs', function () {
         './lib/fastclick.d.ts',
         './lib/promise.d.ts',
         './lib/globalize.d.ts',
-        './lib/jstz.d.ts'
+        './lib/jstz.d.ts',
+        './lib/coveoanalytics.d.ts'
       ])
       .pipe(concat('Externals.d.ts'))
       .pipe(gulp.dest('./bin/ts'));

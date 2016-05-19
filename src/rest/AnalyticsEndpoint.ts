@@ -19,6 +19,7 @@ import _ = require('underscore');
 export interface AnalyticsEndpointOptions {
   token: string;
   serviceUrl: string;
+  organization: string;
 }
 
 export class AnalyticsEndpoint {
@@ -32,6 +33,7 @@ export class AnalyticsEndpoint {
   static pendingRequest: Promise<any>;
 
   private visitId: string;
+  private organization: string;
   public endpointCaller: EndpointCaller;
 
   constructor(public options: AnalyticsEndpointOptions) {
@@ -41,6 +43,7 @@ export class AnalyticsEndpoint {
       accessToken: (this.options.token && this.options.token != "") ? this.options.token : null
     }
     this.endpointCaller = new EndpointCaller(endpointCallerOptions);
+    this.organization = options.organization;
   }
 
   public getCurrentVisitId(): string {
@@ -92,6 +95,10 @@ export class AnalyticsEndpoint {
   private sendToService<D, R>(data: D, path: string, paramName: string): Promise<R> {
     var url = QueryUtils.mergePath(this.options.serviceUrl, '/rest/' + (AnalyticsEndpoint.CUSTOM_ANALYTICS_VERSION || AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION) + '/analytics/' + path);
     var queryString = [];
+
+    if (this.organization) {
+      queryString.push('org=' + this.organization);
+    }
     if (Cookie.get('visitorId')) {
       queryString.push('visitor=' + encodeURIComponent(Cookie.get('visitorId')));
     }
@@ -107,29 +114,29 @@ export class AnalyticsEndpoint {
         url: url,
         responseType: 'text',
         requestDataType: 'application/json'
-      }).then((res: ISuccessResponse<R>) => {
+      }).then((res: ISuccessResponse<R>)=> {
         return this.handleAnalyticsEventResponse(<any>res.data);
-      }).finally(() => {
+      }).finally(()=> {
         AnalyticsEndpoint.pendingRequest = null;
       });
       return AnalyticsEndpoint.pendingRequest;
     } else {
       return AnalyticsEndpoint.pendingRequest.finally(() => {
-        return this.sendToService<D, R>(data, path, paramName)
+        return this.sendToService<D,R>(data, path, paramName)
       });
     }
   }
 
   private getFromService<T>(url: string, params: IStringMap<string>): Promise<T> {
-    var paramsToSend = (this.options.token && this.options.token != "") ? _.extend({ "access_token": this.options.token }, params) : params;
+    var paramsToSend = (this.options.token && this.options.token != "") ? _.extend({"access_token": this.options.token}, params) : params;
     return this.endpointCaller.call<T>({
       errorsAsSuccess: false,
-      method: "GET",
-      queryString: [],
+      method: 'GET',
+      queryString: this.options.organization ? ['org=' + encodeURIComponent(this.options.organization)] : [],
       requestData: paramsToSend,
-      responseType: "json",
+      responseType: 'json',
       url: url
-    }).then((res: ISuccessResponse<T>) => {
+    }).then((res: ISuccessResponse<T>)=> {
       return res.data
     })
   }

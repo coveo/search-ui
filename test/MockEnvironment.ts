@@ -44,6 +44,16 @@ module Coveo.Mock {
       return this;
     }
 
+    public withOldDesign() {
+      this.searchInterface.isNewDesign = () => false;
+      return this;
+    }
+
+    public withCollaborativeRating() {
+      this.searchInterface.options.enableCollaborativeRating = true;
+      return this;
+    }
+
     /*public withLiveAnalyticsComponent(element = Mocks.createMockHtmlElement()) {
      $(element).addClass('CoveoAnalytics').appendTo(this.root);
      var analytics = new Analytics(element);
@@ -104,7 +114,9 @@ module Coveo.Mock {
 
       this.queryController.getEndpoint = () => this.searchEndpoint;
 
-      this.searchInterface.isNewDesign = () => true;
+      if (Utils.isNullOrUndefined(this.searchInterface.isNewDesign())) {
+        this.searchInterface.isNewDesign = () => true;
+      }
 
 
       if (this.result) {

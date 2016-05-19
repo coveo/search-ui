@@ -2,17 +2,42 @@ import {DeviceUtils} from './DeviceUtils';
 import {IQueryResult} from '../rest/QueryResult';
 import {SearchEndpoint} from '../rest/SearchEndpoint';
 
-export interface AnchorUtilsOptions {
+/**
+ * Options for building an `<a>` tag.
+ */
+export interface IAnchorUtilsOptions {
+  /**
+   * The tag's text content.
+   */
   text?: string;
+  /**
+   * The target (`href` attribute).
+   */
   target?: string;
-  class?: string;
+  /**
+   * The CSS class(es) of the tag.
+   */
+      class?: string;
 }
 
-export interface ImageUtilsOptions {
+/**
+ * Options for building an `<img>` tag.
+ */
+export interface IImageUtilsOptions {
+  /**
+   * The alternative text for the image (`alt` attribute).
+   */
   alt?: string;
+  /**
+   * The height of the image
+   */
   height?: string;
+  /**
+   * The width of the image
+   */
   width?: string;
 }
+
 export class HTMLUtils {
   static buildAttributeString(options: any): string {
     var ret = []
@@ -26,7 +51,7 @@ export class HTMLUtils {
 }
 
 export class AnchorUtils {
-  static buildAnchor(href: string, options?: AnchorUtilsOptions) {
+  static buildAnchor(href: string, options?: IAnchorUtilsOptions) {
     var text;
     if (!options || !options.text) {
       text = href;
@@ -39,7 +64,7 @@ export class AnchorUtils {
 }
 
 export class ImageUtils {
-  static buildImage(src?: string, options?: ImageUtilsOptions) {
+  static buildImage(src?: string, options?: IImageUtilsOptions) {
     var ret = "<img ";
     ret += src ? "src='" + src + "' " : "";
     ret += HTMLUtils.buildAttributeString(options) + "/>";
@@ -52,7 +77,7 @@ export class ImageUtils {
 
   static buildImageWithDirectSrcAttribute(endpoint: SearchEndpoint, result: IQueryResult) {
     var image = new Image();
-    var dataStreamUri = endpoint.getViewAsDatastreamUri(result.uniqueId, '$Thumbnail$', { contentType: "image/png" });
+    var dataStreamUri = endpoint.getViewAsDatastreamUri(result.uniqueId, '$Thumbnail$', {contentType: "image/png"});
     image.onload = () => {
       ImageUtils.selectImageFromResult(result).attr('src', dataStreamUri);
     };
@@ -61,19 +86,19 @@ export class ImageUtils {
 
   static buildImageWithBase64SrcAttribute(endpoint: SearchEndpoint, result: IQueryResult) {
     endpoint.getRawDataStream(result.uniqueId, '$Thumbnail$')
-      .then((response) => {
-        var rawBinary = String.fromCharCode.apply(null, new Uint8Array(response));
-        ImageUtils.selectImageFromResult(result).attr("src", "data:image/png;base64, " + btoa(rawBinary));
-      })
-      .catch(() => {
-        ImageUtils.selectImageFromResult(result).remove();
-      })
+            .then((response) => {
+              var rawBinary = String.fromCharCode.apply(null, new Uint8Array(response));
+              ImageUtils.selectImageFromResult(result).attr("src", "data:image/png;base64, " + btoa(rawBinary));
+            })
+            .catch(() => {
+              ImageUtils.selectImageFromResult(result).remove();
+            })
   }
 
-  static buildImageFromResult(result: IQueryResult, endpoint: SearchEndpoint, options?: ImageUtilsOptions) {
-    var options = options ? options : <ImageUtilsOptions>{};
+  static buildImageFromResult(result: IQueryResult, endpoint: SearchEndpoint, options?: IImageUtilsOptions) {
+    var options = options ? options : <IImageUtilsOptions>{};
 
-    var img = ImageUtils.buildImage(undefined, $.extend(options, { "data-coveo-uri-hash": result.raw["urihash"] }));
+    var img = ImageUtils.buildImage(undefined, $.extend(options, {"data-coveo-uri-hash": result.raw["urihash"]}));
     if (endpoint.isJsonp() || DeviceUtils.isIE8or9()) {
       //For jsonp and IE8-9 (XDomain) we can't GET/POST for binary data. We are limited to only setting the src attribute directly on the img.
       ImageUtils.buildImageWithDirectSrcAttribute(endpoint, result);

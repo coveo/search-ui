@@ -1,26 +1,38 @@
 /// <reference path="../Test.ts" />
 
 module Coveo {
-  describe('Analytics', function () {
+  describe('Analytics', () => {
 
-    describe('with default setup', function () {
-      var test: Mock.IBasicComponentSetup<Analytics>;
-      beforeEach(function () {
+    describe('with default setup', () => {
+      let test: Mock.IBasicComponentSetup<Analytics>;
+      beforeEach(() => {
         SearchEndpoint.endpoints['default'] = new SearchEndpoint({
-          accessToken: 'some token'
-        })
+          accessToken: 'some token',
+          queryStringArguments: {workgroup: 'organization'}
+        });
         test = Mock.basicComponentSetup<Analytics>(Analytics);
-      })
-      afterEach(function () {
+      });
+      afterEach(() => {
         SearchEndpoint.endpoints['default'] = null;
         test = null;
-      })
+      });
 
-      it('use access token from default endpoint if not specified', function () {
+      it('use access token from default endpoint if not specified', () => {
         expect(test.cmp.options.token).toBe('some token');
-      })
+      });
 
-      it('log an event on query error', function () {
+      it('uses organization from the search endpoint if not specified', () => {
+        expect(test.cmp.options.organization).toBe('organization');
+      });
+
+      it('uses organization from options when specified', () => {
+        test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
+          organization: 'orgFromOptions'
+        });
+        expect(test.cmp.options.organization).toBe('orgFromOptions');
+      });
+
+      it('log an event on query error', () => {
         spyOn(test.cmp.client, 'logCustomEvent')
         Simulate.query(test.env, {
           error: {
@@ -28,162 +40,162 @@ module Coveo {
             type: 'pretty bad',
             name: 'oops pretty bad'
           }
-        })
+        });
         expect(test.cmp.client.logCustomEvent).toHaveBeenCalledWith(AnalyticsActionCauseList.queryError, jasmine.any(Object), jasmine.any(HTMLElement));
-      })
-    })
+      });
+    });
 
-    describe('using the static create call', function () {
-      var env: Mock.MockEnvironment;
-      var analytics: HTMLDivElement;
+    describe('using the static create call', () => {
+      let env: Mock.MockEnvironment;
+      let analytics: HTMLDivElement;
 
-      beforeEach(function () {
+      beforeEach(() => {
         env = new Mock.MockEnvironmentBuilder().build();
         env.usageAnalytics = null;
         analytics = document.createElement('div');
         analytics.className = 'CoveoAnalytics';
-      })
+      });
 
-      afterEach(function () {
+      afterEach(() => {
         env = null;
         analytics = null;
-      })
+      });
 
-      it('should be Noop if not present in the interface', function () {
+      it('should be Noop if not present in the interface', () => {
         expect(Analytics.create(env.root, undefined, env) instanceof NoopAnalyticsClient).toBe(true);
-      })
+      });
 
-      it('should be a LiveAnalyticsClient if present inside the interface', function () {
+      it('should be a LiveAnalyticsClient if present inside the interface', () => {
         env.root.appendChild(analytics);
         expect(Analytics.create(env.root, undefined, env) instanceof LiveAnalyticsClient).toBe(true);
-      })
+      });
 
-      it('should be a LiveAnalyticsClient if present outside the interface', function () {
+      it('should be a LiveAnalyticsClient if present outside the interface', () => {
         analytics.appendChild(env.root);
         expect(Analytics.create(env.root, undefined, env) instanceof LiveAnalyticsClient).toBe(true);
-      })
+      });
 
-      it('should be a MultiAnalyticsClient if present inside the interface multiple time', function () {
-        var analytics2 = document.createElement('div');
+      it('should be a MultiAnalyticsClient if present inside the interface multiple time', () => {
+        let analytics2 = document.createElement('div');
         analytics2.className = 'CoveoAnalytics';
         env.root.appendChild(analytics);
         env.root.appendChild(analytics2);
         expect(Analytics.create(env.root, undefined, env) instanceof MultiAnalyticsClient).toBe(true);
-      })
+      });
 
-      it('should be a MultiAnalyticsClient if present both inside and outside', function () {
-        var analytics2 = document.createElement('div');
+      it('should be a MultiAnalyticsClient if present both inside and outside', () => {
+        let analytics2 = document.createElement('div');
         analytics2.className = 'CoveoAnalytics';
         env.root.appendChild(analytics2);
         analytics.appendChild(env.root);
         expect(Analytics.create(env.root, undefined, env) instanceof MultiAnalyticsClient).toBe(true);
-      })
+      });
 
-      it('should be a LiveAnalyticsClient if present outside the interface, shared between multiple interface', function () {
-        var env2 = new Mock.MockEnvironmentBuilder().build();
+      it('should be a LiveAnalyticsClient if present outside the interface, shared between multiple interface', () => {
+        let env2 = new Mock.MockEnvironmentBuilder().build();
         analytics.appendChild(env.root);
         analytics.appendChild(env2.root);
-        var client = Analytics.create(env.root, undefined, env);
-        var client2 = Analytics.create(env2.root, undefined, env);
+        let client = Analytics.create(env.root, undefined, env);
+        let client2 = Analytics.create(env2.root, undefined, env);
         expect(client instanceof LiveAnalyticsClient).toBe(true);
         expect(client2 instanceof LiveAnalyticsClient).toBe(true);
         expect(client).toBe(client2);
-      })
+      });
 
-      it('should be LiveAnalyticsClient if present inside the interface, and NoopAnalyticsClient for another interface with no analytics', function () {
-        var env2 = new Mock.MockEnvironmentBuilder().build();
+      it('should be LiveAnalyticsClient if present inside the interface, and NoopAnalyticsClient for another interface with no analytics', () => {
+        let env2 = new Mock.MockEnvironmentBuilder().build();
         env.root.appendChild(analytics);
         expect(Analytics.create(env.root, undefined, env) instanceof LiveAnalyticsClient).toBe(true);
         expect(Analytics.create(env2.root, undefined, env2) instanceof NoopAnalyticsClient).toBe(true);
-      })
-    })
+      });
+    });
 
-    describe('exposes options', function () {
-      var test: Mock.IBasicComponentSetup<Analytics>;
+    describe('exposes options', () => {
+      let test: Mock.IBasicComponentSetup<Analytics>;
 
-      afterEach(function () {
+      afterEach(() => {
         test = null;
-      })
+      });
 
-      it('user can be specified', function () {
+      it('user can be specified', () => {
         test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
           user: 'foobar'
-        })
-        var client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
+        });
+        let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
         expect(client.userId).toBe('foobar');
-      })
+      });
 
-      it('userdisplayname can be specified', function () {
+      it('userdisplayname can be specified', () => {
         test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
           userDisplayName: 'foobar'
-        })
-        var client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
+        });
+        let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
         expect(client.userDisplayName).toBe('foobar');
-      })
+      });
 
-      it('token can be specified', function () {
+      it('token can be specified', () => {
         test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
           token: 'qwerty123'
-        })
-        var client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
+        });
+        let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
         expect(client.endpoint.endpointCaller.options.accessToken).toBe('qwerty123');
-      })
+      });
 
-      it('endpoint can be specified', function () {
+      it('endpoint can be specified', () => {
         test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
           endpoint: 'somewhere.com'
-        })
-        var client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
+        });
+        let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
         expect(client.endpoint.options.serviceUrl).toBe('somewhere.com');
-      })
+      });
 
-      it('anonymous can be specified', function () {
+      it('anonymous can be specified', () => {
         test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
           anonymous: true
-        })
-        var client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
+        });
+        let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
         expect(client.anonymous).toBe(true);
-      })
+      });
 
-      it('searchHub can be specified', function () {
+      it('searchHub can be specified', () => {
         test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
           searchHub: 'foobar'
-        })
-        var client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
+        });
+        let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
         expect(client.originLevel1).toBe('foobar');
-      })
+      });
 
-      it('searchhub will be put in the query params', function () {
+      it('searchhub will be put in the query params', () => {
         test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
           searchHub: 'yoo'
-        })
-        var simulation = Simulate.query(test.env);
+        });
+        let simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().searchHub).toBe('yoo');
-      })
+      });
 
-      it('searchhub should be put in the component options model for other component to see it\'s value', function () {
+      it('searchhub should be put in the component options model for other component to see it\'s value', () => {
         test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
           searchHub: 'mama mia'
-        })
+        });
 
         expect(test.env.componentOptionsModel.set).toHaveBeenCalledWith('searchHub', 'mama mia');
-      })
+      });
 
-      it('splitTestRunName can be specified', function () {
+      it('splitTestRunName can be specified', () => {
         test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
           splitTestRunName: 'foobar'
-        })
-        var client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
+        });
+        let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
         expect(client.splitTestRunName).toBe('foobar');
-      })
+      });
 
-      it('splitTestRunVersion can be specified', function () {
+      it('splitTestRunVersion can be specified', () => {
         test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
           splitTestRunVersion: 'foobar'
-        })
-        var client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
+        });
+        let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
         expect(client.splitTestRunVersion).toBe('foobar');
-      })
-    })
-  })
+      });
+    });
+  });
 }

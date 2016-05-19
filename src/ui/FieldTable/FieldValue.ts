@@ -1,4 +1,4 @@
-
+/// <reference path="../../Base.ts" />
 module Coveo {
   export interface IFieldValueOptions {
     field?: string;
@@ -131,28 +131,26 @@ module Coveo {
 
       this.options.field = this.options.field || '@field';
 
-      var loadedValueFromComponent = this.getValue();
+      let loadedValueFromComponent = this.getValue();
       if (loadedValueFromComponent == null) {
         // Completely remove the element to ease stuff such as adding separators in CSS
         if (this.element.parentElement != null) {
           this.element.parentElement.removeChild(this.element);
         }
       } else {
-        var values: string[];
-        // Multiple value
-        if (this.options.splitValues) {
+        let values: string[];
+
+        if (_.isArray(loadedValueFromComponent)) {
+          values = loadedValueFromComponent;
+        } else if (this.options.splitValues) {
           if (_.isString(loadedValueFromComponent)) {
             values = _.map(loadedValueFromComponent.split(';'), (v: string) => {
               return v.trim();
-            })
+            });
           }
         } else {
-          if (_.isArray(loadedValueFromComponent)) {
-            values = loadedValueFromComponent;
-          } else {
-            loadedValueFromComponent = loadedValueFromComponent.toString();
-            values = [loadedValueFromComponent];
-          }
+          loadedValueFromComponent = loadedValueFromComponent.toString();
+          values = [loadedValueFromComponent];
         }
         this.appendValuesToDom(values);
       }
@@ -163,7 +161,7 @@ module Coveo {
      * Returns <code>null</code> if value is an <code>Object</code>.
      */
     public getValue() {
-      var value = Utils.getFieldValue(this.result, this.options.field);
+      let value = Utils.getFieldValue(this.result, this.options.field);
       if (!_.isArray(value) && _.isObject(value)) {
         value = null;
       }
@@ -175,12 +173,12 @@ module Coveo {
      * Returns an <code>HTMLElement</code> containing the rendered value.
      */
     public renderOneValue(value: string): HTMLElement {
-      var element = $$('span').el;
-      var toRender = value;
+      let element = $$('span').el;
+      let toRender = value;
       if (this.options.helper) {
         toRender = TemplateHelpers.getHelper(this.options.helper).call(this, value, this.getHelperOptions());
 
-        var fullDateStr = this.getFullDate(value, this.options.helper);
+        let fullDateStr = this.getFullDate(value, this.options.helper);
         if (fullDateStr) {
           element.setAttribute('title', fullDateStr);
         }
@@ -200,7 +198,7 @@ module Coveo {
     }
 
     private getHelperOptions() {
-      var inlineOptions = ComponentOptions.loadStringOption(this.element, 'helperOptions', {});
+      let inlineOptions = ComponentOptions.loadStringOption(this.element, 'helperOptions', {});
       if (Utils.isNonEmptyString(inlineOptions)) {
         return _.extend({}, this.options.helperOptions, eval('(' + inlineOptions + ')'));
       }
@@ -208,7 +206,7 @@ module Coveo {
     }
 
     private getFullDate(date: string, helper: string) {
-      var fullDateOptions: DateToStringOptions = {
+      let fullDateOptions: IDateToStringOptions = {
         useLongDateFormat: true,
         useTodayYesterdayAndTomorrow: false,
         useWeekdayIfThisWeek: false,
@@ -235,13 +233,13 @@ module Coveo {
     }
 
     private bindEventOnValue(element: HTMLElement, value: string) {
-      var facetAttributeName = QueryStateModel.getFacetId(this.options.facet);
-      var facets: Component[] = _.filter(this.componentStateModel.get(facetAttributeName), (facet: Component) => !facet.disabled);
-      var atLeastOneFacetIsEnabled = facets.length > 0;
+      let facetAttributeName = QueryStateModel.getFacetId(this.options.facet);
+      let facets: Component[] = _.filter(this.componentStateModel.get(facetAttributeName), (facet: Component) => !facet.disabled);
+      let atLeastOneFacetIsEnabled = facets.length > 0;
 
       if (atLeastOneFacetIsEnabled) {
-        var selected = _.find(facets, (facet: Facet) => {
-          var facetValue = facet.values.get(value);
+        let selected = _.find(facets, (facet: Facet) => {
+          let facetValue = facet.values.get(value);
           return facetValue && facetValue.selected;
         });
         $$(element).on('click', () => {

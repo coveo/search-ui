@@ -160,7 +160,7 @@ module Coveo {
       }
     }
 
-    static createFakeHierarchicalGroupByResult(field: string, token: string, numberOfLevel = 2, countByLevel = 3, delimitingCharacter = "|", includeComputedValues = false): IGroupByResult {
+    static createFakeHierarchicalGroupByResult(field: string, token: string, numberOfLevel = 2, countByLevel = 3, delimitingCharacter = "|", includeComputedValues = false, weirdCasing = true): IGroupByResult {
       var groupByValues: IGroupByValue[] = [];
       for (var i = 0; i < 2; ++i) {
         var groupByValueTopLevel = FakeResults.createFakeGroupByValue(token + i.toString(), i + 1, 100 + 1, includeComputedValues ? 1000 + i : undefined);
@@ -168,8 +168,10 @@ module Coveo {
 
         for (var j = 0; j < countByLevel; j++) {
           var groupByValueSubLevel = FakeResults.createFakeGroupByValue(token + i.toString(), i + 1, 100 + 1, includeComputedValues ? 1000 + i : undefined);
-          groupByValueSubLevel.value = groupByValueSubLevel.lookupValue += delimitingCharacter + FakeResults.createFakeGroupByValue(token + i.toString() + "-" + j.toString(), i + 1, 100 + i, includeComputedValues ? 1000 + i : undefined).value
-          groupByValues.push(groupByValueSubLevel)
+          groupByValueSubLevel.value = groupByValueSubLevel.lookupValue += delimitingCharacter + FakeResults.createFakeGroupByValue(token + i.toString() + "-" + +j.toString(), i + 1, 100 + i, includeComputedValues ? 1000 + i : undefined).value
+          if (weirdCasing) {
+            groupByValueSubLevel.value = groupByValueSubLevel.lookupValue = _.map(groupByValueSubLevel.lookupValue.split(delimitingCharacter), (value, k) => (i + j + k) % 2 == 0 ? value.toLowerCase() : value.toUpperCase()).join(delimitingCharacter)
+          }
         }
       }
 

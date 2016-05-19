@@ -1,6 +1,7 @@
 import {Assert} from '../../misc/Assert';
 import {QueryBuilder} from '../Base/QueryBuilder';
 import {Utils} from '../../utils/Utils';
+import {IQueryResult} from '../../rest/QueryResult';
 
 export class SortCriteria {
   private static validSorts = ['relevancy', 'date', 'qre'];

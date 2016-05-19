@@ -1,4 +1,5 @@
 /// <reference path="../Test.ts" />
+declare var coveoanalytics: CoveoAnalytics.CoveoUA;
 
 module Coveo {
   describe('QueryController', function () {
@@ -168,5 +169,70 @@ module Coveo {
         expect(test.env.searchEndpoint.search).not.toHaveBeenCalled();
       })
     })
+
+    describe('coveoanalytics', function () {
+      var store;
+
+      class HistoryStoreMock {
+        constructor() {
+        }
+
+        public addElement(query: IQuery) {
+          store.addElement(query)
+        }
+
+        public getHistory() {
+          return store.getHistory()
+        }
+
+        public setHistory(history: any[]) {
+          store.setHistory(history)
+        }
+
+        public clear() {
+          store.clear()
+        }
+      }
+
+      beforeEach(function () {
+        store = {
+          addElement: (query: IQuery)=> {
+          },
+          getHistory: ()=> {
+            return []
+          },
+          setHistory: (history: any[])=> {
+          },
+          clear: ()=> {
+          }
+        }
+
+        coveoanalytics = {
+          history: {
+            HistoryStore: HistoryStoreMock
+          }
+        }
+
+        spyOn(store, 'addElement');
+      });
+
+      afterEach(function () {
+        store = null;
+        coveoanalytics = undefined;
+      })
+
+      it('should log the query in the user history', function () {
+        test.cmp.executeQuery();
+        expect(store.addElement).toHaveBeenCalled()
+      })
+
+      it('should work if coveoanalytics is not defined', ()=> {
+        coveoanalytics = undefined;
+        test.cmp.executeQuery();
+        expect(store.addElement).not.toHaveBeenCalled()
+      })
+
+    })
+
   })
 }

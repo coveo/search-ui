@@ -1,4 +1,4 @@
-import {IHighlight} from './Highlight';
+import {IHighlight, IHighlightPhrase, IHighlightTerm} from './Highlight';
 import {Promise} from 'es6-promise';
 
 /**
@@ -69,8 +69,8 @@ export interface IQueryResult {
    * This value specifies whether the result was recommended by Coveo Reveal.
    */
   isRecommendation: boolean;
-  termsToHighlight?: { [originalTerm: string]: string[] };
-  phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } };
+  termsToHighlight?: IHighlightTerm;
+  phrasesToHighlight: IHighlightPhrase;
   rankingModifier?: string;
 
   // Those fields are added by the JS UI framework
