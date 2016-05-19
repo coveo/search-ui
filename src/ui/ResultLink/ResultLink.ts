@@ -9,7 +9,7 @@ import {HighlightUtils} from '../../utils/HighlightUtils'
 import {IQueryResult} from '../../rest/QueryResult'
 import {DeviceUtils} from '../../utils/DeviceUtils'
 import {OS_NAME, OSUtils} from '../../utils/OSUtils'
-import {Initialization} from '../Base/Initialization';
+import {Initialization} from '../Base/Initialization'
 import {QueryUtils} from '../../utils/QueryUtils'
 import {Assert} from '../../misc/Assert'
 import {Utils} from '../../utils/Utils'
