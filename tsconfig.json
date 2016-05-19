@@ -142,6 +142,9 @@
     "src/ui/Facet/Facet.ts",
     "src/ui/Pager/Pager.ts",
     "src/ui/DidYouMean/DidYouMean.ts",
-    "src/ui/ErrorReport/ErrorReport.ts"
+    "src/ui/ErrorReport/ErrorReport.ts",
+    "src/ui/ExportToExcel/ExportToExcel.ts",
+    "src/ui/Settings/Settings.ts",
+    "src/ui/Folding/Folding.ts"
   ]
 }

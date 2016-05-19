@@ -36,8 +36,16 @@
 /// <reference path="ui/ComponentTest.ts" />
 /// <reference path="ui/DidYouMeanTest.ts" />
 /// <reference path="ui/ErrorReportTest.ts" />
-/// <reference path="ui/PagerTest.ts" />
+/// <reference path="ui/ExportToExcelTest.ts" />
+/// <reference path="ui/ExpressionBuilderTest.ts" />
+/// <reference path="ui/FacetHeaderTest.ts" />
+/// <reference path="ui/FacetSearchParametersTest.ts" />
+/// <reference path="ui/FacetSearchTest.ts" />
+/// <reference path="ui/FacetSettingsTest.ts" />
+/// <reference path="ui/FacetSliderTest.ts" />
 /// <reference path="ui/FacetTest.ts" />
+/// <reference path="ui/FoldingTest.ts" />
+/// <reference path="ui/PagerTest.ts" />
 
 
 Coveo.Logger.disable();
