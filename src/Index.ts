@@ -120,4 +120,6 @@ export {QuerySummary} from './ui/QuerySummary/QuerySummary';
 export {Debug} from './ui/Debug/Debug';
 export {Settings} from './ui/Settings/Settings';
 export {ShareQuery} from './ui/ShareQuery/ShareQuery';
-
+export {Sort} from './ui/Sort/Sort';
+export {SortCriteria} from './ui/Sort/SortCriteria';
+export {Tab} from './ui/Tab/Tab';
