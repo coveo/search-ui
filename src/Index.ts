@@ -80,6 +80,10 @@ export {ExpressionBuilder} from './ui/Base/ExpressionBuilder';
 export {Initialization} from './ui/Base/Initialization';
 export {IResultsComponentBindings} from './ui/Base/ResultsComponentBindings';
 
+// TEMPLATES
+export {TemplateCache} from './ui/Templates/TemplateCache';
+
+
 // UI
 export {SearchInterface, StandaloneSearchInterface} from './ui/SearchInterface/SearchInterface';
 export {Aggregate} from './ui/Aggregate/Aggregate';
