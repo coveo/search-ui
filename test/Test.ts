@@ -66,6 +66,8 @@
 /// <reference path="ui/SortCriteriaTest.ts" />
 /// <reference path="ui/SortTest.ts" />
 /// <reference path="ui/TabTest.ts" />
+/// <reference path="ui/TriggersTest.ts" />
+/// <reference path="ui/ValueElementRendererTest.ts" />
 
 Coveo.Logger.disable();
 

@@ -159,6 +159,8 @@
     "src/ui/Misc/Slider.ts",
     "src/ui/Sort/SortCriteria.ts",
     "src/ui/Sort/Sort.ts",
-    "src/ui/Tab/Tab.ts"
+    "src/ui/Tab/Tab.ts",
+    "src/ui/Triggers/Triggers.ts",
+    "src/ui/Facet/ValueElementRenderer.ts"
   ]
 }
