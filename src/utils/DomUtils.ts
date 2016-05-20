@@ -1,4 +1,4 @@
-import {$$} from './Dom';
+import {$$, Dom} from './Dom';
 import {IQueryResult} from '../rest/QueryResult'
 import {IResultsComponentBindings} from '../ui/Base/ResultsComponentBindings'
 import {DateUtils} from './DateUtils'
@@ -47,7 +47,7 @@ export class DomUtils {
     return loading.el;
   }
   
-  static getQuickviewHeader(result: IQueryResult, options: { showDate: boolean; title: string }, bindings: IResultsComponentBindings) {
+  static getQuickviewHeader(result: IQueryResult, options: { showDate: boolean; title: string }, bindings: IResultsComponentBindings): Dom {
     var date = "";
     if (options.showDate) {
       date = DateUtils.dateTimeToString(new Date(result.raw.date));
