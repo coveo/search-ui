@@ -14,6 +14,10 @@ before_script:
 script:
 - npm run build
 - npm run test
+env:
+  global:
+  - ENCRYPTIOL_LABEL: f66a0c6ad864
+  - COMMIT_AUTHOR_EMAIL: "sandbox_JSUI@coveo.com"
 deploy:
   provider: npm
   email: sandbox_JSUI@coveo.com
