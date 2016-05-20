@@ -2,7 +2,7 @@ import {$$} from './Dom';
 import {IQueryResult} from '../rest/QueryResult'
 import {IResultsComponentBindings} from '../ui/Base/ResultsComponentBindings'
 import {DateUtils} from './DateUtils'
-import {FileTypes} from '../ui/misc/FileTypes'
+import {FileTypes} from '../ui/Misc/FileTypes'
 
 export class DomUtils {
   static getPopUpCloseButton(captionForClose: string, captionForReminder: string): string {

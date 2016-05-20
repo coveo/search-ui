@@ -74,10 +74,10 @@ export class QuickviewDocument extends Component {
 
   public open() {
     this.ensureDom();
-      var documentURL = $(this.element).attr('href');
-      if (documentURL == undefined || documentURL == '') {
-        documentURL = this.result.clickUri;
-      }
+    var documentURL = $$(this.element).getAttribute('href');
+    if (documentURL == undefined || documentURL == '') {
+      documentURL = this.result.clickUri;
+    }
     this.usageAnalytics.logClickEvent(AnalyticsActionCauseList.documentQuickview, {
         author: this.result.raw.author,
         documentURL: documentURL,
@@ -174,6 +174,7 @@ export class QuickviewDocument extends Component {
     if (typeof content == "object") {
       toWrite = content.getElementsByTagName("html")[0].outerHTML;
     }
+    
     iframe.contentWindow.document.open();
     iframe.contentWindow.document.write(toWrite);
     iframe.contentWindow.document.close();
@@ -418,22 +419,27 @@ export class QuickviewDocument extends Component {
     quickviewName.on('click', ()=>{
       this.navigate(wordState, false, window);
     })
+    wordHtml.append(quickviewName.el);
     
     let quickviewDownArrow = $$('span');
     quickviewDownArrow.addClass('coveo-term-for-quickview-down-arrow');
     let quickviewDownArrowIcon = $$('span');
     quickviewDownArrowIcon.addClass('coveo-term-for-quickview-down-arrow-icon');
+    quickviewDownArrow.append(quickviewDownArrowIcon.el);
     quickviewDownArrow.on('click', ()=>{
       this.navigate(wordState, false, window);
     })
+    wordHtml.append(quickviewDownArrow.el);
     
     let quickviewUpArrow = $$('span');
     quickviewUpArrow.addClass('coveo-term-for-quickview-up-arrow');
     let quickviewUpArrowIcon = $$('span');
     quickviewUpArrowIcon.addClass('coveo-term-for-quickview-up-arrow-icon');
+    quickviewUpArrow.append(quickviewUpArrowIcon.el);
     quickviewUpArrow.on('click', ()=>{
       this.navigate(wordState, true, window);
     })
+    wordHtml.append(quickviewUpArrow.el)
 
     wordHtml.el.style.backgroundColor = wordState.color;
     wordHtml.el.style.borderColor = this.getSaturatedColor(wordState.color);
@@ -455,7 +461,9 @@ export class QuickviewDocument extends Component {
 
     // Un-highlight any currently selected element
     let current = $$(scroll).find('[id^="' + HIGHLIGHT_PREFIX + ':' + state.word.index + '.' + fromIndex + '"]')
-    current.style.border = '';
+    if(current){
+      current.style.border = '';
+    }
 
     // Find and highlight the new element.
     var element = $$(window.document.body).find('[id^="' + HIGHLIGHT_PREFIX + ':' + state.word.index + '.' + toIndex + '."]');
@@ -477,7 +485,7 @@ export class QuickviewDocument extends Component {
     //
     // Also, mobile devices have troubles with the animation.
     if (this.isNewQuickviewDocument(window) || DeviceUtils.isMobileDevice()) {
-      element[0].scrollIntoView();
+      element.scrollIntoView();
 
       // iOS on Safari might scroll the whole modal box body when we do this,
       // so give it a nudge in the right direction.

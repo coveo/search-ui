@@ -74,6 +74,7 @@ export class Quickview extends Component {
 
   private link: Dom;
   private modalbox: ModalBox;
+  private bindedHandleEscapeEvent = this.handleEscapeEvent.bind(this);
 
   constructor(public element: HTMLElement, public options?: QuickviewOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {
     super(element, Quickview.ID, bindings);
@@ -128,7 +129,7 @@ export class Quickview extends Component {
     if (this.modalbox != null) {
       this.modalbox.close();
       this.modalbox = null;
-      $$("body").el.removeEventListener("keyup.quickviewEscape", this.close);
+      $$(document.body).off("keyup", this.bindedHandleEscapeEvent);
     }
   }
 
@@ -215,22 +216,14 @@ export class Quickview extends Component {
   }
 
   private bindEscape() {
-    $$("body").on("keyup.quickviewEscape", (e: KeyboardEvent) => {
-      if (e.keyCode == KEYBOARD.ESCAPE) {
-        this.closeQuickview();
-      }
-    });
+    $$(document.body).on("keyup", this.bindedHandleEscapeEvent);
   }
 
   private bindIFrameEscape() {
     let quickviewDocument = $$(this.modalbox.content).find("." + Component.computeCssClassName(QuickviewDocument))
     quickviewDocument = $$(quickviewDocument).find("iframe");
     let body = (<HTMLIFrameElement>quickviewDocument).contentWindow.document.body
-    $$(body).on("keyup", (e: KeyboardEvent) => {
-      if (e.keyCode == KEYBOARD.ESCAPE) {
-        this.closeQuickview();
-      }
-    });
+    $$(body).on("keyup", this.bindedHandleEscapeEvent);
   }
 
   private closeQuickview() {
@@ -244,6 +237,13 @@ export class Quickview extends Component {
     wrapper.el.style.height = this.options.size;
     wrapper.el.style.maxWidth = this.options.size;
     wrapper.el.style.maxHeight = this.options.size;
+  }
+  
+  private handleEscapeEvent(e: KeyboardEvent) {
+    if (e.keyCode == KEYBOARD.ESCAPE) {
+      this.closeQuickview();
+      this.close();
+    }
   }
 }
 Initialization.registerAutoCreateComponent(Quickview);

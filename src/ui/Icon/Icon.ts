@@ -7,6 +7,7 @@ import {QueryUtils} from '../../utils/QueryUtils'
 import {Initialization} from '../Base/Initialization'
 import {Utils} from '../../utils/Utils'
 import {FileTypes, FileTypeInfo} from '../Misc/FileTypes'
+import {Quickview} from '../Quickview/Quickview'
 import {$$} from '../../utils/Dom'
 
 export interface IIconOptions {
@@ -70,8 +71,6 @@ export class Icon extends Component {
     this.result = this.result || this.resolveResult();
     Assert.exists(this.result);
     
-    /* TO UNCOMMENT WHEN QUICKVIEW IS SUPPORTED
-    
     var possibleInternalQuickview = $$(this.element).find('.' + Component.computeCssClassNameForType(Quickview.ID));
     if (!Utils.isNullOrUndefined(possibleInternalQuickview) && QueryUtils.hasHTMLVersion(this.result)) {
       $$(this.element).addClass('coveo-with-quickview');
@@ -80,7 +79,6 @@ export class Icon extends Component {
         qv.open();
       });
     }
-    */
     
     Icon.createIcon(this.result, this.options, element, bindings);
   }
