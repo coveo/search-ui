@@ -83,14 +83,13 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @param otherOptions A set of additional options to use when configuring this endpoint
    */
   static configureCloudEndpoint(organization?: string, token?: string, uri: string = 'https://cloudplatform.coveo.com/rest/search', otherOptions?: ISearchEndpointOptions) {
-
-    var merged = SearchEndpoint.mergeConfigOptions({
+    var options: ISearchEndpointOptions= {
       restUri: uri,
       accessToken: token,
-      queryStringArguments: {
-        workgroup: organization
-      }
-    }, otherOptions);
+      queryStringArguments: {organizationId: organization}
+    };
+    
+    var merged = SearchEndpoint.mergeConfigOptions(options, otherOptions);
 
     SearchEndpoint.endpoints["default"] = new SearchEndpoint(SearchEndpoint.removeUndefinedConfigOption(merged))
   }
@@ -117,7 +116,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       }
     });
     return config;
-  }
+  }  
 
   static mergeConfigOptions(first: ISearchEndpointOptions, second: ISearchEndpointOptions): ISearchEndpointOptions {
     first = SearchEndpoint.removeUndefinedConfigOption(first);
@@ -138,6 +137,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    */
   constructor(public options?: ISearchEndpointOptions) {
     Assert.exists(options);
+    Assert.exists(options.restUri);
 
     // For backward compatibility, we set anonymous to true when an access token
     // is specified on a page loaded through the filesystem. This causes withCredentials
@@ -151,7 +151,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     if (SearchEndpoint.isDebugArgumentPresent()) {
       this.options.queryStringArguments['debug'] = 1;
     }
-    this.onUnload = ()=> {
+    this.onUnload = () => {
       this.handleUnload();
     }
     window.addEventListener('beforeunload', this.onUnload);
@@ -180,7 +180,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Get the uri that can be use to authenticate against the given provider
+   * Get the uri that can be used to authenticate against the given provider
    * @param provider The provider name
    * @param returnUri The uri at which to return after the authentication is completed
    * @param message The message for authentication
@@ -208,7 +208,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   public isJsonp(): boolean {
     return this.caller.useJsonp;
   }
-
+  
   /**
    * Perform a search on the index and returns a Promise of {@link IQueryResults}.<br/>
    * Will modify the query results slightly, by adding additional information on each results (an id, the state object, etc.)
@@ -232,7 +232,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       method: 'POST'
     };
 
-    return this.performOneCall(params).then((results?: IQueryResults)=> {
+    return this.performOneCall(params).then((results?: IQueryResults) => {
       this.logger.info('REST query successful', results, query);
 
       // Version check
@@ -266,11 +266,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    */
   public getExportToExcelLink(query: IQuery, numberOfResults: number, callOptions?: IEndpointCallOptions): string {
     var baseUri = this.buildBaseUri('/');
-    var queryString = this.buildCompleteQueryString(callOptions, null, query);
-
-    if (Utils.isNonEmptyString(this.options.accessToken)) {
-      queryString.push('access_token=' + encodeURIComponent(this.options.accessToken));
-    }
+    var queryString = this.buildCompleteQueryString(callOptions, null, query, true);
 
     if (numberOfResults != null) {
       queryString.push("numberOfResults=" + numberOfResults);
@@ -297,14 +293,14 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     var params: IEndpointCallParameters = {
       url: this.buildBaseUri('/datastream'),
-      queryString: this.buildViewAsHtmlQueryString(documentUniqueId, callOptions).concat(["dataStream=" + dataStreamType]),
+      queryString: this.buildViewAsHtmlQueryString(documentUniqueId, callOptions, true, true).concat(["dataStream=" + dataStreamType]),
       requestData: {},
       errorsAsSuccess: false,
       method: 'GET',
       responseType: 'arraybuffer'
     };
     this.logger.info('Performing REST query for datastream ' + dataStreamType + ' on document uniqueID' + documentUniqueId);
-    return this.performOneCall(params).then((results)=> {
+    return this.performOneCall(params).then((results) => {
       this.logger.info('REST query successful', results, documentUniqueId);
       return results;
     })
@@ -362,10 +358,10 @@ export class SearchEndpoint implements ISearchEndpoint {
       errorsAsSuccess: true
     };
 
-    return this.performOneCall<{content:string, duration: number}>(params)
-               .then((data)=> {
-                 return data.content
-               });
+    return this.performOneCall<{ content: string, duration: number }>(params)
+      .then((data) => {
+        return data.content
+      });
   }
 
   /**
@@ -382,7 +378,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       url: this.buildBaseUri('/html'),
       queryString: this.buildViewAsHtmlQueryString(documentUniqueID, callOptions, false),
       method: 'POST',
-      requestData: callOptions.queryObject || {q: callOptions.query},
+      requestData: callOptions.queryObject || { q: callOptions.query },
       responseType: 'document',
       errorsAsSuccess: false
     };
@@ -419,10 +415,10 @@ export class SearchEndpoint implements ISearchEndpoint {
     };
 
     return this.performOneCall<any>(params)
-               .then((data) => {
-                 this.logger.info('REST list field values successful', data.values, request);
-                 return data.values;
-               })
+      .then((data) => {
+        this.logger.info('REST list field values successful', data.values, request);
+        return data.values;
+      })
   }
 
   /**
@@ -447,10 +443,10 @@ export class SearchEndpoint implements ISearchEndpoint {
     };
 
     return this.performOneCall<any>(params)
-               .then((data)=> {
-                 this.logger.info('REST list field values successful', data.values, request);
-                 return data.values
-               })
+      .then((data) => {
+        this.logger.info('REST list field values successful', data.values, request);
+        return data.values
+      })
   }
 
   /**
@@ -471,7 +467,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       errorsAsSuccess: true
     };
 
-    return this.performOneCall<ListFieldsResult>(params).then((data)=> {
+    return this.performOneCall<ListFieldsResult>(params).then((data) => {
       return data.fields;
     })
   }
@@ -517,7 +513,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       responseType: "text"
     }
 
-    return this.performOneCall<any>(params).then(()=> {
+    return this.performOneCall<any>(params).then(() => {
       return true;
     })
   }
@@ -541,7 +537,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       responseType: "text"
     }
 
-    return this.performOneCall<any>(params).then(()=> {
+    return this.performOneCall<any>(params).then(() => {
       return true;
     })
   }
@@ -575,10 +571,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<ISubscription>}
    */
   public follow(request: ISubscriptionRequest): Promise<ISubscription> {
-    var qs = [];
-    if (this.options.accessToken) {
-      qs = ["accessToken=" + this.options.accessToken]
-    }
+    var qs = this.buildBaseQueryString({}, true);
     var params: IEndpointCallParameters = {
       url: this.buildSearchAlertsUri('/subscriptions'),
       queryString: qs,
@@ -601,17 +594,13 @@ export class SearchEndpoint implements ISearchEndpoint {
    */
   public listSubscriptions(page: number) {
     if (this.options.isGuestUser) {
-      return new Promise((resolve, reject)=> {
+      return new Promise((resolve, reject) => {
         reject()
       })
     }
     if (this.currentListSubscriptions == null) {
-      var queryParameters = [
-        "page=" + (page || 0)
-      ];
-      if (this.options.accessToken) {
-        queryParameters.push('accessToken=' + this.options.accessToken);
-      }
+      var queryParameters = this.buildBaseQueryString({}, true);
+      queryParameters.push("page=" + (page || 0));
 
       var params: IEndpointCallParameters = {
         url: this.buildSearchAlertsUri('/subscriptions'),
@@ -624,10 +613,10 @@ export class SearchEndpoint implements ISearchEndpoint {
       };
 
       this.currentListSubscriptions = this.performOneCall<ISubscription[]>(params);
-      this.currentListSubscriptions.then((data: any)=> {
+      this.currentListSubscriptions.then((data: any) => {
         this.currentListSubscriptions = null;
         return data;
-      }).catch((e: AjaxError)=> {
+      }).catch((e: AjaxError) => {
         // Trap 503 error, as the listSubscription call is called on every page initialization
         // to check for current subscriptions. By default, the search alert service is not enabled for most organization
         // Don't want to pollute the console with un-needed noise and confusion
@@ -645,10 +634,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<ISubscription>}
    */
   public updateSubscription(subscription: ISubscription): Promise<ISubscription> {
-    var qs = [];
-    if (this.options.accessToken) {
-      qs = ["accessToken=" + this.options.accessToken];
-    }
+    var qs = this.buildBaseQueryString({}, true);
     var params: IEndpointCallParameters = {
       url: this.buildSearchAlertsUri('/subscriptions/' + subscription.id),
       queryString: qs,
@@ -668,10 +654,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<ISubscription>}
    */
   public deleteSubscription(subscription: ISubscription): Promise<ISubscription> {
-    var qs = [];
-    if (this.options.accessToken) {
-      qs = ["accessToken=" + this.options.accessToken]
-    }
+    var qs = this.buildBaseQueryString({}, true);
     var params: IEndpointCallParameters = {
       url: this.buildSearchAlertsUri('/subscriptions/' + subscription.id),
       queryString: qs,
@@ -710,7 +693,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     var uri = this.options.restUri;
     uri = this.removeTrailingSlash(uri);
 
-    if (this.options.version != null) {
+    if (Utils.isNonEmptyString(this.options.version)) {
       uri += '/' + this.options.version;
     }
     uri += path;
@@ -727,14 +710,21 @@ export class SearchEndpoint implements ISearchEndpoint {
     uri += path;
     return uri;
   }
-
-  private buildBaseQueryString(callOptions?: IEndpointCallOptions): string[] {
+  
+  //Tous les query strings sont initialement construits par cette fonction
+  private buildBaseQueryString(callOptions?: IEndpointCallOptions, addAccessToken: boolean = false): string[] {
     var queryString: string[] = [];
 
     for (var name in this.options.queryStringArguments) {
+      if(name == 'workgroup'){
+        queryString.push('organizationId' + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
+      }
       queryString.push(name + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
     }
-
+    
+    if (addAccessToken && Utils.isNonEmptyString(this.options.accessToken)) {
+      queryString.push('access_token=' + encodeURIComponent(this.options.accessToken));
+    }
 
     if (callOptions && _.isArray(callOptions.authentication) && callOptions.authentication.length != 0) {
       queryString.push('authentication=' + callOptions.authentication.join(','))
@@ -743,8 +733,8 @@ export class SearchEndpoint implements ISearchEndpoint {
     return queryString;
   }
 
-  private buildCompleteQueryString(callOptions?: IEndpointCallOptions, query?: string, queryObject?: IQuery): string[] {
-    var queryString = this.buildBaseQueryString(callOptions);
+  private buildCompleteQueryString(callOptions?: IEndpointCallOptions, query?: string, queryObject?: IQuery, addAccessToken: boolean = false): string[] {
+    var queryString = this.buildBaseQueryString(callOptions, addAccessToken);
 
     // In an ideal parallel reality, the entire query used in the 'search' call is used here.
     // In this reality however, we must support GET calls (ex: GET /html) for CORS/JSONP/IE reasons.
@@ -769,22 +759,18 @@ export class SearchEndpoint implements ISearchEndpoint {
   private buildViewAsHtmlUri(path: string, documentUniqueID: string, callOptions?: IViewAsHtmlOptions): string {
     Assert.isNonEmptyString(documentUniqueID);
 
-    var queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
-
     // Since those uri will be loaded in a frame or tab, we must include any
     // authentication token as a query string argument instead of relying on
     // endpoint caller for this.
-    if (Utils.isNonEmptyString(this.options.accessToken)) {
-      queryString.push('access_token=' + encodeURIComponent(this.options.accessToken));
-    }
+    var queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions, true, true);
 
     var baseUri = this.buildBaseUri(path);
 
     return baseUri + '?' + queryString.join('&');
   }
 
-  private buildViewAsHtmlQueryString(uniqueId: string, callOptions?: IViewAsHtmlOptions, includeQuery: boolean = true): string[] {
-    var queryString = includeQuery ? this.buildCompleteQueryString(callOptions, callOptions.query, callOptions.queryObject) : [];
+  private buildViewAsHtmlQueryString(uniqueId: string, callOptions?: IViewAsHtmlOptions, includeQuery: boolean = true, addAccessToken: boolean = false): string[] {
+    var queryString = includeQuery ? this.buildCompleteQueryString(callOptions, callOptions.query, callOptions.queryObject, addAccessToken) : this.buildBaseQueryString(callOptions, addAccessToken);
 
     queryString.push('uniqueId=' + encodeURIComponent(uniqueId));
 
@@ -805,30 +791,30 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   private performOneCall<T>(params: IEndpointCallParameters, autoRenewToken = true): Promise<T> {
     return this.caller.call(params)
-               .then((response?: ISuccessResponse<T>)=> {
-                 if (response.data != null) {
-                   (<any>response.data).clientDuration = response.duration;
-                 }
-                 return response.data
-               }).catch((error?: IErrorResponse)=> {
-          if (autoRenewToken && this.canRenewAccessToken() && this.isAccessTokenExpiredStatus(error.statusCode)) {
-            this.renewAccessToken()
-                .then(()=> {
-                  return this.performOneCall(params, autoRenewToken);
-                })
-                .catch(()=> {
-                  return Promise.reject(this.handleErrorResponse(error));
-                })
-          } else if (error.statusCode == 0 && this.isRedirecting) {
-            // The page is getting redirected
-            // Set timeout on return with empty string, since it does not really matter
-            _.defer(function () {
-              return '';
-            });
-          } else {
-            return Promise.reject(this.handleErrorResponse(error));
-          }
-        })
+      .then((response?: ISuccessResponse<T>) => {
+        if (response.data != null && (<any>response.data).clientDuration != null) {
+          (<any>response.data).clientDuration = response.duration;
+        }
+        return response.data
+      }).catch((error?: IErrorResponse) => {
+        if (autoRenewToken && this.canRenewAccessToken() && this.isAccessTokenExpiredStatus(error.statusCode)) {
+          this.renewAccessToken()
+            .then(() => {
+              return this.performOneCall(params, autoRenewToken);
+            })
+            .catch(() => {
+              return Promise.reject(this.handleErrorResponse(error));
+            })
+        } else if (error.statusCode == 0 && this.isRedirecting) {
+          // The page is getting redirected
+          // Set timeout on return with empty string, since it does not really matter
+          _.defer(function() {
+            return '';
+          });
+        } else {
+          return Promise.reject(this.handleErrorResponse(error));
+        }
+      })
   }
 
   private handleErrorResponse(errorResponse: IErrorResponse): Error {
@@ -845,18 +831,18 @@ export class SearchEndpoint implements ISearchEndpoint {
     return Utils.isNonEmptyString(this.options.accessToken) && _.isFunction(this.options.renewAccessToken);
   }
 
-  private renewAccessToken(): Promise<string>|Promise<any> {
+  private renewAccessToken(): Promise<string> | Promise<any> {
     this.logger.info('Renewing expired access token');
-    return this.options.renewAccessToken().then((token: string)=> {
-                 Assert.isNonEmptyString(token);
-                 this.options.accessToken = token;
-                 this.createEndpointCaller();
-                 return token;
-               })
-               .catch((e: any)=> {
-                 this.logger.error('Failed to renew access token', e);
-                 return e;
-               })
+    return this.options.renewAccessToken().then((token: string) => {
+      Assert.isNonEmptyString(token);
+      this.options.accessToken = token;
+      this.createEndpointCaller();
+      return token;
+    })
+      .catch((e: any) => {
+        this.logger.error('Failed to renew access token', e);
+        return e;
+      })
   }
 
   private isMissingAuthenticationProviderStatus(status: number): boolean {
