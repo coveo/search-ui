@@ -47,6 +47,10 @@ Now, add tests for your component
 * You should try to test all public API of your component : This means all public methods as well as all available options.
 * Reference your test file in `./test/Test.ts`.
 
+Create a pull request to merge your changes in the master branch.
+
+We are very eager to receive external contributions as well as collaborating with other developers !
+
 ### Tests
 
 Tests are written with [jasmine](http://jasmine.github.io/2.4/introduction.html). To run them you can either call `npm run test` to run tests in phantom js, or open `./test/SpecRunner.html` in a web browser and easier debugging.
