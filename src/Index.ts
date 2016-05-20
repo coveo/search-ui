@@ -117,3 +117,7 @@ export {Omnibox} from './ui/Omnibox/Omnibox';
 export {PreferencesPanel} from './ui/PreferencesPanel/PreferencesPanel';
 export {QueryDuration} from './ui/QueryDuration/QueryDuration';
 export {QuerySummary} from './ui/QuerySummary/QuerySummary';
+export {Debug} from './ui/Debug/Debug';
+export {Settings} from './ui/Settings/Settings';
+export {ShareQuery} from './ui/ShareQuery/ShareQuery';
+

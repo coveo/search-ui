@@ -152,6 +152,9 @@
     "src/ui/Omnibox/Omnibox.ts",
     "src/ui/PreferencesPanel/PreferencesPanel.ts",
     "src/ui/QueryDuration/QueryDuration.ts",
-    "src/ui/QuerySummary/QuerySummary.ts"
+    "src/ui/QuerySummary/QuerySummary.ts",
+    "src/ui/Settings/Settings.ts",
+    "src/ui/Debug/Debug.ts",
+    "src/ui/ShareQuery/ShareQuery.ts"
   ]
 }

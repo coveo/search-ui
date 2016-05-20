@@ -59,7 +59,9 @@
 /// <reference path="ui/QuerySummaryTest.ts" />
 /// <reference path="ui/SearchboxTest.ts" />
 /// <reference path="ui/SearchButtonTest.ts" />
-
+/// <reference path="ui/SearchInterfaceTest.ts" />
+/// <reference path="ui/SettingsTest.ts" />
+/// <reference path="ui/ShareQueryTest.ts" />
 
 Coveo.Logger.disable();
 
