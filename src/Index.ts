@@ -11,6 +11,7 @@ export {Options} from './misc/Options';
 export {SearchEndpoint} from './rest/SearchEndpoint';
 export {AnalyticsEndpoint} from './rest/AnalyticsEndpoint';
 export {EndpointCaller} from './rest/EndpointCaller';
+export {QueryError} from './rest/QueryError';
 
 // EVENTS
 export {AnalyticsEvents} from './events/AnalyticsEvents';
@@ -52,7 +53,6 @@ export {StringUtils} from './utils/StringUtils';
 export {TimeSpan} from './utils/TimeSpanUtils';
 export {Utils} from './utils/Utils';
 
-
 // CONTROLLERS
 export {QueryController} from './controllers/QueryController';
 export {FacetQueryController} from './controllers/FacetQueryController';
@@ -86,15 +86,21 @@ export {Analytics} from './ui/Analytics/Analytics';
 export {AnalyticsActionCauseList} from './ui/Analytics/AnalyticsActionListMeta';
 export {NoopAnalyticsClient} from './ui/Analytics/NoopAnalyticsClient';
 export {LiveAnalyticsClient} from './ui/Analytics/LiveAnalyticsClient';
+export {MultiAnalyticsClient} from './ui/Analytics/MultiAnalyticsClient';
 export {Querybox} from './ui/Querybox/Querybox';
 export {SearchButton} from './ui/SearchButton/SearchButton';
 export {Searchbox} from './ui/Searchbox/Searchbox';
 export {Breadcrumb} from './ui/Breadcrumb/Breadcrumb';
 export {Facet} from './ui/Facet/Facet';
+export {FacetHeader} from './ui/Facet/FacetHeader';
+export {FacetSearchValuesList} from './ui/Facet/FacetSearchValuesList';
+export {FacetSettings} from './ui/Facet/FacetSettings';
+export {FacetSort} from './ui/Facet/FacetSort';
+export {FacetUtils} from './ui/Facet/FacetUtils';
+export {FacetValueElement} from './ui/Facet/FacetValueElement';
 export {FacetValue, FacetValues} from './ui/Facet/FacetValues';
 export {FacetSearch} from './ui/Facet/FacetSearch';
 export {FacetSearchParameters} from './ui/Facet/FacetSearchParameters';
-export {HierarchicalFacet} from './ui/HierarchicalFacet/HierarchicalFacet';
 export {Slider} from './ui/Misc/Slider';
 export {FacetSlider} from './ui/FacetSlider/FacetSlider';
 export {FacetRange} from './ui/FacetRange/FacetRange';
@@ -106,4 +112,11 @@ export {Icon} from './ui/Icon/Icon';
 export {Thumbnail} from './ui/Thumbnail/Thumbnail';
 export {PrintableUri} from './ui/PrintableUri/PrintableUri';
 export {Quickview} from './ui/Quickview/Quickview';
+export {DidYouMean} from './ui/DidYouMean/DidYouMean';
+export {ErrorReport} from './ui/ErrorReport/ErrorReport';
+export {ExportToExcel} from './ui/ExportToExcel/ExportToExcel';
+export {Folding} from './ui/Folding/Folding';
+export {HiddenQuery} from './ui/HiddenQuery/HiddenQuery';
+export {HierarchicalFacet} from './ui/HierarchicalFacet/HierarchicalFacet';
+export {Matrix} from './ui/Matrix/Matrix';
 export {QuickviewDocument} from './ui/Quickview/QuickviewDocument';

@@ -30,8 +30,27 @@
 //***** TEST ON UI ******
 /// <reference path="ui/AggregateTest.ts" />
 /// <reference path="ui/AnalyticsEndpointTest.ts" />
-/// <reference path="ui/PagerTest.ts" />
+/// <reference path="ui/AnalyticsTest.ts" />
+/// <reference path="ui/BreadcrumbTest.ts" />
+/// <reference path="ui/ComponentEventsTest.ts" />
+/// <reference path="ui/ComponentTest.ts" />
+/// <reference path="ui/DidYouMeanTest.ts" />
+/// <reference path="ui/ErrorReportTest.ts" />
+/// <reference path="ui/ExportToExcelTest.ts" />
+/// <reference path="ui/ExpressionBuilderTest.ts" />
+/// <reference path="ui/FacetHeaderTest.ts" />
+/// <reference path="ui/FacetSearchParametersTest.ts" />
+/// <reference path="ui/FacetSearchTest.ts" />
+/// <reference path="ui/FacetSettingsTest.ts" />
+/// <reference path="ui/FacetSliderTest.ts" />
 /// <reference path="ui/FacetTest.ts" />
+/// <reference path="ui/FoldingTest.ts" />
+/// <reference path="ui/HiddenQueryTest.ts" />
+/// <reference path="ui/HierarchicalFacetTest.ts" />
+/// <reference path="ui/InitializationTest.ts" />
+/// <reference path="ui/PagerTest.ts" />
+/// <reference path="ui/LiveAnalyticsClientTest.ts" />
+/// <reference path="ui/MatrixTest.ts" />
 
 
 Coveo.Logger.disable();

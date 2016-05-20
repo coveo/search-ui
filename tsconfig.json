@@ -149,6 +149,14 @@
     "src/ui/Thumbnail/Thumbnail.ts",
     "src/ui/PrintableUri/PrintableUri.ts",
     "src/ui/Quickview/Quickview.ts",
-    "src/ui/Quickview/QuickviewDocument.ts"
+    "src/ui/Quickview/QuickviewDocument.ts",
+    "src/ui/DidYouMean/DidYouMean.ts",
+    "src/ui/ErrorReport/ErrorReport.ts",
+    "src/ui/ExportToExcel/ExportToExcel.ts",
+    "src/ui/Settings/Settings.ts",
+    "src/ui/Folding/Folding.ts",
+    "src/ui/HiddenQuery/HiddenQuery.ts",
+    "src/ui/HierarchicalFacet/HierarchicalFacet.ts",
+    "src/ui/Matrix/Matrix.ts"
   ]
 }

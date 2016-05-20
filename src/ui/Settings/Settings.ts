@@ -1,4 +1,5 @@
-import {Component, IComponentBindings} from '../Base/Component';
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {$$} from '../../utils/Dom';

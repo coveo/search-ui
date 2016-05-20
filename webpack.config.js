@@ -4,7 +4,8 @@ module.exports = {
     path: './bin/js',
     filename: 'CoveoJsSearch.js',
     libraryTarget: 'assign',
-    library: ['Coveo']
+    library: ['Coveo'],
+    publicPath : '/devserver/'
   },
   resolve: {
     extensions: ['', '.ts', '.js'],
