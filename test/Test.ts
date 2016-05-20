@@ -17,6 +17,7 @@
 /// <reference path="utils/DomTest.ts" />
 /// <reference path="utils/CookieUtilsTest.ts" />
 /// <reference path="utils/L10NTest.ts" />
+/// <reference path="utils/HighlightUtilsTest.ts" />
 
 //***** TEST ON MODELS ******
 /// <reference path="models/ModelTest.ts" />
@@ -26,6 +27,10 @@
 /// <reference path="controllers/FacetQueryControllerTest.ts" />
 /// <reference path="controllers/HistoryControllerTest.ts" />
 /// <reference path="controllers/QueryControllerTest.ts" />
+
+//***** TEST ON REST ******
+/// <reference path="rest/EndpointCallerTest.ts" />
+/// <reference path="rest/SearchEndpointTest.ts" />
 
 //***** TEST ON UI ******
 /// <reference path="ui/AggregateTest.ts" />

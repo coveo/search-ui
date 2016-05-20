@@ -42,7 +42,7 @@ export {EmailActionsUtils} from './utils/EmailActionsUtils';
 export {EmailUtils} from './utils/EmailUtils';
 export {FeatureDetectionUtils} from './utils/FeatureDetectionUtils';
 export {HashUtils} from './utils/HashUtils';
-export {HighlightUtils} from './utils/HighlightUtils';
+export {HighlightUtils, StringAndHoles} from './utils/HighlightUtils';
 export {HTMLUtils} from './utils/HtmlUtils';
 export {KEYBOARD, KeyboardUtils} from './utils/KeyboardUtils';
 export {LocalStorageUtils} from './utils/LocalStorageUtils';
