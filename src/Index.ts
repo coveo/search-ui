@@ -1,3 +1,5 @@
+import {defaultLanguage} from './strings/DefaultLanguage';
+defaultLanguage();
 // MISC
 export {version} from './misc/Version';
 export {Assert} from './misc/Assert';
@@ -111,3 +113,7 @@ export {Folding} from './ui/Folding/Folding';
 export {HiddenQuery} from './ui/HiddenQuery/HiddenQuery';
 export {HierarchicalFacet} from './ui/HierarchicalFacet/HierarchicalFacet';
 export {Matrix} from './ui/Matrix/Matrix';
+export {Omnibox} from './ui/Omnibox/Omnibox';
+export {PreferencesPanel} from './ui/PreferencesPanel/PreferencesPanel';
+export {QueryDuration} from './ui/QueryDuration/QueryDuration';
+export {QuerySummary} from './ui/QuerySummary/QuerySummary';

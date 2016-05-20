@@ -48,9 +48,17 @@
 /// <reference path="ui/HiddenQueryTest.ts" />
 /// <reference path="ui/HierarchicalFacetTest.ts" />
 /// <reference path="ui/InitializationTest.ts" />
-/// <reference path="ui/PagerTest.ts" />
 /// <reference path="ui/LiveAnalyticsClientTest.ts" />
 /// <reference path="ui/MatrixTest.ts" />
+/// <reference path="ui/OmniboxTest.ts" />
+/// <reference path="ui/PagerTest.ts" />
+/// <reference path="ui/PreferencesPanelTest.ts" />
+/// <reference path="ui/QueryboxTest.ts" />
+/// <reference path="ui/QueryBuilderTest.ts" />
+/// <reference path="ui/QueryDurationTest.ts" />
+/// <reference path="ui/QuerySummaryTest.ts" />
+/// <reference path="ui/SearchboxTest.ts" />
+/// <reference path="ui/SearchButtonTest.ts" />
 
 
 Coveo.Logger.disable();

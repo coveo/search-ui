@@ -148,6 +148,10 @@
     "src/ui/Folding/Folding.ts",
     "src/ui/HiddenQuery/HiddenQuery.ts",
     "src/ui/HierarchicalFacet/HierarchicalFacet.ts",
-    "src/ui/Matrix/Matrix.ts"
+    "src/ui/Matrix/Matrix.ts",
+    "src/ui/Omnibox/Omnibox.ts",
+    "src/ui/PreferencesPanel/PreferencesPanel.ts",
+    "src/ui/QueryDuration/QueryDuration.ts",
+    "src/ui/QuerySummary/QuerySummary.ts"
   ]
 }

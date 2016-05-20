@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 module.exports = {
   entry: ['./src/Dependencies.js', './src/Index.ts'],
   output: {
@@ -7,6 +8,10 @@ module.exports = {
     library: ['Coveo'],
     publicPath : '/devserver/'
   },
+  /*devtool: 'source-map',
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin()
+  ],*/
   resolve: {
     extensions: ['', '.ts', '.js'],
     alias: {

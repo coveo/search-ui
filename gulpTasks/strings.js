@@ -7,7 +7,7 @@ gulp.task('strings', [ 'fileTypes' ], function (done) {
   dict.merge(strings.load('./bin/strings/filetypesNew.json'));
 
   dict.writeDeclarationFile('./src/strings/Strings.ts');
-  dict.writeLanguageFile('./src/strings/DefaultLanguage.js', 'en', './strings/cultures/globalize.culture.en-US.js', true);
+  dict.writeDefaultLanguage('./src/strings/DefaultLanguage.ts', 'en', './strings/cultures/globalize.culture.en-US.js', true);
   dict.writeLanguageFile('./bin/js/cultures/en.js', 'en', './strings/cultures/globalize.culture.en-US.js', false);
   dict.writeLanguageFile('./bin/js/cultures/fr.js', 'fr', './strings/cultures/globalize.culture.fr-FR.js', false);
   dict.writeLanguageFile('./bin/js/cultures/cs.js', 'cs', './strings/cultures/globalize.culture.cs.js', false);
