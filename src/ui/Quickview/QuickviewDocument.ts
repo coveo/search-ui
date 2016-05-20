@@ -495,19 +495,16 @@ export class QuickviewDocument extends Component {
 
       return;
     }
-
+    
     // For other quick views we use a nicer animation that centers the keyword
     
-    /* UNCOMMENT WHEN ANIMATIONS WITHOUT JQUERY ARE SUPPORTED
-    scroll.stop(true).animate({
-      scrollLeft: element.offsetLeft - scroll.clientWidth / 2 + $$(element).width() / 2,
-      scrollTop: element.offsetTop - scroll.clientHeight / 2 + $$(element).height() / 2
-    });
-    this.iframe.stop(true).animate({
-      scrollLeft: element.offsetLeft - this.iframe.width() / 2 + $$(element).width() / 2,
-      scrollTop: element.offsetTop - this.iframe.height() / 2 + $$(element).height() / 2
-    });
-    */
+    this.animateScroll(scroll, 
+                       element.offsetLeft - scroll.clientWidth / 2 + $$(element).width() / 2, 
+                       element.offsetTop - scroll.clientHeight / 2 + $$(element).height() / 2);
+    
+    this.animateScroll(this.iframe.el, 
+                       element.offsetLeft - this.iframe.width() / 2 + $$(element).width() / 2, 
+                       element.offsetTop - this.iframe.height() / 2 + $$(element).height() / 2);
     
   }
 
@@ -579,6 +576,22 @@ export class QuickviewDocument extends Component {
     var rgb = ColorUtils.hsvToRgb(hsv[0], hsv[1], hsv[2])
     return 'rgb(' + rgb[0].toString() + ', ' + rgb[1].toString() + ', ' + rgb[2].toString() + ')';
   }
+  
+  private animateScroll(scroll: HTMLElement, scrollLeftValue: number, scrollTopValue: number, duration: number = 100){
+    let leftStep = Math.round((scrollLeftValue - scroll.scrollLeft) / duration);
+    let topStep = Math.round((scrollTopValue - scroll.scrollTop) / duration);
+    
+    var interval = setInterval(function() {
+      if (duration != 0){
+        scroll.scrollLeft += leftStep;
+        scroll.scrollTop += topStep;
+        duration -= 1
+      } else {
+        clearInterval(interval);
+      }
+    }, 1);
+  }
+  
 }
 
 Initialization.registerAutoCreateComponent(QuickviewDocument);
