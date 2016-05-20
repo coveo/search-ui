@@ -34,7 +34,7 @@ export class DefaultResultTemplate extends Template {
       }
     }
 
-    return _.template('<div><span class="CoveoQuickview"></span><a class="CoveoResultLink"></a><div class="CoveoExcerpt"></div></div>')(queryResult);
+    return _.template('<div><span class="CoveoYouTubeThumbnail"></span><a class="CoveoResultLink"></a><div class="CoveoExcerpt"></div></div>')(queryResult);
     // If all else fails, use a hard-coded default template
     // return _.template('<div>' +
     //   '<div class="coveo-title"><a class="CoveoResultLink"><%= title?highlight(title, titleHighlights):clickUri %></a></div>' +

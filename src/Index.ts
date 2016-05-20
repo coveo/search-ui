@@ -120,3 +120,4 @@ export {HiddenQuery} from './ui/HiddenQuery/HiddenQuery';
 export {HierarchicalFacet} from './ui/HierarchicalFacet/HierarchicalFacet';
 export {Matrix} from './ui/Matrix/Matrix';
 export {QuickviewDocument} from './ui/Quickview/QuickviewDocument';
+export {YouTubeThumbnail} from './ui/YouTube/YouTubeThumbnail';
