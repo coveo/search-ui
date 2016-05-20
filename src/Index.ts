@@ -121,3 +121,5 @@ export {HierarchicalFacet} from './ui/HierarchicalFacet/HierarchicalFacet';
 export {Matrix} from './ui/Matrix/Matrix';
 export {QuickviewDocument} from './ui/Quickview/QuickviewDocument';
 export {YouTubeThumbnail} from './ui/YouTube/YouTubeThumbnail';
+export {ResultAttachments} from './ui/ResultAttachments/ResultAttachments';
+export {ResultFolding} from './ui/ResultFolding/ResultFolding';
