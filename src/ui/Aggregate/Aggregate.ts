@@ -1,4 +1,5 @@
-import {Component, IComponentBindings} from '../Base/Component';
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs} from '../../events/QueryEvents';
 import {IGroupByRequest} from '../../rest/GroupByRequest';
@@ -28,7 +29,7 @@ export class Aggregate extends Component {
     /**
      * The field on which to do the aggregate operation
      */
-    field: ComponentOptions.buildStringOption({required: true}),
+    field: ComponentOptions.buildStringOption({ required: true }),
     /**
      * The aggregate operation to perform.<br/>
      * The available values are:
@@ -40,7 +41,7 @@ export class Aggregate extends Component {
      * </ul><br/>
      * The default value is sum.
      */
-    operation: ComponentOptions.buildStringOption({defaultValue: 'sum'}),
+    operation: ComponentOptions.buildStringOption({ defaultValue: 'sum' }),
     /**
      * Specifies how to format the value<br/>
      * The formats available are defined by the Globalize library. The most common used formats are:
@@ -52,7 +53,7 @@ export class Aggregate extends Component {
      * See : <a href='https://github.com/klaaspieter/jquery-global#globalizeformat-value-format-culture-'>Globalize</a> for more informations.<br/>
      * Default value is 'c0
      */
-    format: ComponentOptions.buildStringOption({defaultValue: 'c0'})
+    format: ComponentOptions.buildStringOption({ defaultValue: 'c0' })
   }
 
   private index: number;
@@ -68,8 +69,8 @@ export class Aggregate extends Component {
 
     this.options = ComponentOptions.initComponentOptions(element, Aggregate, options);
 
-    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs)=> this.handleBuildingQuery(args));
-    this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs)=> this.handleQuerySuccess(args));
+    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
+    this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     $$(this.element).hide();
   }
 

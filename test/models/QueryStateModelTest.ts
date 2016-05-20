@@ -7,7 +7,7 @@ module Coveo {
     beforeEach(function () {
       div = document.createElement('div');
       env = new Mock.MockEnvironmentBuilder().withRoot(div).build();
-      queryState = new QueryStateModel(div, undefined, env);
+      queryState = new QueryStateModel(div, undefined);
     })
 
     afterEach(function () {

@@ -1,4 +1,5 @@
-import {Component, IComponentBindings} from '../Base/Component';
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
 import {IAnalyticsClient} from './AnalyticsClient';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {AnalyticsEndpoint} from '../../rest/AnalyticsEndpoint';
@@ -17,6 +18,7 @@ import {LiveAnalyticsClient} from './LiveAnalyticsClient';
 import {MultiAnalyticsClient} from './MultiAnalyticsClient';
 import {IAnalyticsQueryErrorMeta, AnalyticsActionCauseList} from './AnalyticsActionListMeta';
 
+
 export interface IAnalyticsOptions {
   user?: string;
   userDisplayName?: string;
@@ -27,6 +29,7 @@ export interface IAnalyticsOptions {
   splitTestRunName?: string;
   splitTestRunVersion?: string;
   sendToCloud?: boolean;
+  organization?: string;
 }
 
 /**
@@ -35,6 +38,9 @@ export interface IAnalyticsOptions {
  */
 export class Analytics extends Component {
   static ID = 'Analytics';
+  // NOTE: The default values for some of those options (organization, endpoint, searchHub) can be
+  // overridden by generated code when using hosted search pages.
+
   /**
    * Options for the component
    * @componentOptions
@@ -81,7 +87,12 @@ export class Analytics extends Component {
      * By default, this value is not specified.
      */
     splitTestRunVersion: ComponentOptions.buildStringOption(),
-    sendToCloud: ComponentOptions.buildBooleanOption({defaultValue: true})
+    sendToCloud: ComponentOptions.buildBooleanOption({defaultValue: true}),
+    /**
+     * Specifies the organization bound to the access token. This is necessary when using an access token because it can be associated with more than organization.
+     * If this parameter is not specified, it will fallback on the organization used for the search endpoint.
+     */
+    organization: ComponentOptions.buildStringOption()
   };
 
   /**
@@ -98,12 +109,8 @@ export class Analytics extends Component {
   constructor(public element: HTMLElement, public options: IAnalyticsOptions = {}, bindings?: IComponentBindings) {
     super(element, Analytics.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Analytics, options);
-    if (this.options.token == null) {
-      var defaultEndpoint = SearchEndpoint.endpoints['default'];
-      if (defaultEndpoint) {
-        this.options.token = defaultEndpoint.options.accessToken;
-      }
-    }
+
+    this.retrieveInfoFromDefaultSearchEndpoint();
     this.initializeAnalyticsClient();
     Assert.exists(this.client);
 
@@ -113,15 +120,15 @@ export class Analytics extends Component {
     // Analytics component is a bit special : It can be higher in the dom tree than the search interface
     // Need to resolve down to find the componentOptionsModel if we need to.
     if (!this.componentOptionsModel) {
-      var cmpOptionElement = $$(element).find('.' + BaseComponent.computeCssClassName(ComponentOptionsModel))
+      let cmpOptionElement = $$(element).find('.' + Component.computeCssClassName(ComponentOptionsModel));
       if (cmpOptionElement) {
-        this.componentOptionsModel = cmpOptionElement[BaseComponent.computeCssClassName(ComponentOptionsModel)];
+        this.componentOptionsModel = cmpOptionElement[Component.computeCssClassName(ComponentOptionsModel)];
       }
     }
 
     if (this.componentOptionsModel) {
       this.componentOptionsModel.set(ComponentOptionsModel.attributesEnum.searchHub, this.options.searchHub);
-      var event = this.componentOptionsModel.getEventName(Model.eventTypes.changeOne + ComponentOptionsModel.attributesEnum.searchHub);
+      let event = this.componentOptionsModel.getEventName(Model.eventTypes.changeOne + ComponentOptionsModel.attributesEnum.searchHub);
       this.bind.onRootElement(event, (args: IAttributeChangedEventArg)=> this.handleSearchHubChanged(args));
     }
   }
@@ -159,7 +166,7 @@ export class Analytics extends Component {
    * @param element The HTMLElement that was interacted with for this custom event.
    */
   public logCustomEvent<T>(actionCause: IAnalyticsActionCause, meta: T, element: HTMLElement = this.element) {
-    this.client.logCustomEvent(actionCause, meta, element)
+    this.client.logCustomEvent(actionCause, meta, element);
   }
 
   /**
@@ -178,14 +185,15 @@ export class Analytics extends Component {
   protected initializeAnalyticsEndpoint(): AnalyticsEndpoint {
     return new AnalyticsEndpoint({
       token: this.options.token,
-      serviceUrl: this.options.endpoint
+      serviceUrl: this.options.endpoint,
+      organization: this.options.organization
     });
   }
 
   private initializeAnalyticsClient() {
     if (Utils.isNonEmptyString(this.options.endpoint)) {
-      var endpoint = this.initializeAnalyticsEndpoint();
-      var elementToInitializeClient: HTMLElement;
+      let endpoint = this.initializeAnalyticsEndpoint();
+      let elementToInitializeClient: HTMLElement;
       if (this.root && this.element) {
         if (this.root.contains(this.element)) {
           elementToInitializeClient = this.root;
@@ -204,6 +212,17 @@ export class Analytics extends Component {
           this.options.sendToCloud);
     } else {
       this.client = new NoopAnalyticsClient();
+    }
+  }
+
+  private retrieveInfoFromDefaultSearchEndpoint() {
+    let defaultEndpoint = SearchEndpoint.endpoints['default'];
+    if (this.options.token == null && defaultEndpoint) {
+      this.options.token = defaultEndpoint.options.accessToken;
+    }
+
+    if (!this.options.organization && defaultEndpoint) {
+      this.options.organization = defaultEndpoint.options.queryStringArguments['workgroup'];
     }
   }
 
@@ -231,9 +250,8 @@ export class Analytics extends Component {
   }
 
   public static create(element: HTMLElement, options: IAnalyticsOptions, bindings: IComponentBindings) {
-    var selector = Component.computeSelectorForType(Analytics.ID);
-    var found: HTMLElement[] = [];
-    //var jqueryElement = $(element);
+    let selector = Component.computeSelectorForType(Analytics.ID);
+    let found: HTMLElement[] = [];
     found = found.concat($$(element).findAll(selector));
     found.push($$(element).closest(Component.computeCssClassName(Analytics)));
     if ($$(element).is(selector)) {
@@ -253,7 +271,7 @@ export class Analytics extends Component {
     // This check if an element is already initialized as an analytics component
     // If that's the case, return the client on that element.
     // Otherwise, init and return.
-    var foundOnElement = Component.get(element, Analytics, true);
+    let foundOnElement = Component.get(element, Analytics, true);
     if (foundOnElement instanceof Analytics) {
       return (<Analytics>foundOnElement).client;
     } else {

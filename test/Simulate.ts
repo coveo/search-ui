@@ -9,7 +9,7 @@ module Coveo {
     error?: EndpointError;
     results?: IQueryResults;
     queryCorrections?: IQueryCorrection[];
-    groupByResults?: GroupByResult[];
+    groupByResults?: IGroupByResult[];
     callbackDuringQuery?: () => void;
     callbackAfterNoResults?: () => void;
     callbackAfterQuery?: () => void;

@@ -15,14 +15,77 @@
 
 //***** TEST ON UTILS ******
 /// <reference path="utils/DomTest.ts" />
+/// <reference path="utils/CookieUtilsTest.ts" />
+/// <reference path="utils/L10NTest.ts" />
+/// <reference path="utils/HighlightUtilsTest.ts" />
 
+//***** TEST ON MODELS ******
+/// <reference path="models/ModelTest.ts" />
+/// <reference path="models/QueryStateModelTest.ts" />
 
+//***** TEST ON CONTROLLERS ******
+/// <reference path="controllers/FacetQueryControllerTest.ts" />
+/// <reference path="controllers/HistoryControllerTest.ts" />
+/// <reference path="controllers/QueryControllerTest.ts" />
 
-// Get a much cleaner output in phantomjs
-if (window['_phantom']) {
-  Coveo.Logger.disable();
+//***** TEST ON REST ******
+/// <reference path="rest/EndpointCallerTest.ts" />
+/// <reference path="rest/SearchEndpointTest.ts" />
+
+//***** TEST ON UI ******
+/// <reference path="ui/AggregateTest.ts" />
+/// <reference path="ui/AnalyticsEndpointTest.ts" />
+/// <reference path="ui/AnalyticsTest.ts" />
+/// <reference path="ui/BreadcrumbTest.ts" />
+/// <reference path="ui/ComponentEventsTest.ts" />
+/// <reference path="ui/ComponentTest.ts" />
+/// <reference path="ui/DidYouMeanTest.ts" />
+/// <reference path="ui/ErrorReportTest.ts" />
+/// <reference path="ui/ExportToExcelTest.ts" />
+/// <reference path="ui/ExpressionBuilderTest.ts" />
+/// <reference path="ui/FacetHeaderTest.ts" />
+/// <reference path="ui/FacetSearchParametersTest.ts" />
+/// <reference path="ui/FacetSearchTest.ts" />
+/// <reference path="ui/FacetSettingsTest.ts" />
+/// <reference path="ui/FacetSliderTest.ts" />
+/// <reference path="ui/FacetTest.ts" />
+/// <reference path="ui/FoldingTest.ts" />
+/// <reference path="ui/HiddenQueryTest.ts" />
+/// <reference path="ui/HierarchicalFacetTest.ts" />
+/// <reference path="ui/InitializationTest.ts" />
+/// <reference path="ui/LiveAnalyticsClientTest.ts" />
+/// <reference path="ui/MatrixTest.ts" />
+/// <reference path="ui/OmniboxTest.ts" />
+/// <reference path="ui/PagerTest.ts" />
+/// <reference path="ui/PreferencesPanelTest.ts" />
+/// <reference path="ui/QueryboxTest.ts" />
+/// <reference path="ui/QueryBuilderTest.ts" />
+/// <reference path="ui/QueryDurationTest.ts" />
+/// <reference path="ui/QuerySummaryTest.ts" />
+/// <reference path="ui/SearchboxTest.ts" />
+/// <reference path="ui/SearchButtonTest.ts" />
+/// <reference path="ui/SearchInterfaceTest.ts" />
+/// <reference path="ui/SettingsTest.ts" />
+/// <reference path="ui/ShareQueryTest.ts" />
+/// <reference path="ui/SliderTest.ts" />
+/// <reference path="ui/SortCriteriaTest.ts" />
+/// <reference path="ui/SortTest.ts" />
+/// <reference path="ui/TabTest.ts" />
+/// <reference path="ui/TriggersTest.ts" />
+/// <reference path="ui/ValueElementRendererTest.ts" />
+
+Coveo.Logger.disable();
+
+module Coveo {
+  var _ = window['_'];
+  Coveo._ = _;
 }
 
 function isPhantomJs() {
   return navigator.userAgent.indexOf('PhantomJS') != -1;
 }
+
+
+
+
+

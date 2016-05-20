@@ -29,7 +29,7 @@ export class TemplateList extends Template {
   }
 
   getFields() {
-    return _.reduce(this.templates, (fields: string[], template: Template)=>fields.concat(template.getFields()), []);
+    return _.reduce(this.templates, (fields: string[], template: Template) => fields.concat(template.getFields()), []);
   }
 
   getType() {

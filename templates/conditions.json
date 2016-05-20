@@ -1,0 +1,102 @@
+{
+  "MobileChatter": {
+    "priority": 2,
+    "value": "(raw.objecttype =='FeedItem' || raw.objecttype == 'FeedComment') && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "Chatter": {
+    "priority": 1,
+    "value": "raw.objecttype =='FeedItem' || raw.objecttype == 'FeedComment'"
+  },
+  "MobileDropbox": {
+    "priority": 1,
+    "value": "raw.connectortype == 'DropboxCrawler' && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "Dropbox": {
+    "priority": 0,
+    "value": "raw.connectortype == 'DropboxCrawler'"
+  },
+  "MobileEmailThread" : {
+    "priority": 1,
+    "value": "raw.mailbox != undefined && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "EmailThread": {
+    "priority": 0,
+    "value": "raw.mailbox != undefined"
+  },
+  "MobileGoogleDrive": {
+    "priority": 1,
+    "value": "raw.connectortype == 'GoogleDriveCrawler' && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "GoogleDrive": {
+    "priority": 0,
+    "value": "raw.connectortype == 'GoogleDriveCrawler'"
+  },
+  "Jira": {
+    "priority": 0,
+    "value": "raw.connectortype == 'JiraCrawler'"
+  },
+  "MobileLithiumThread": {
+    "priority": 1,
+    "value": "raw.connectortype == 'LithiumCrawler' && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "LithiumThread": {
+    "priority": 0,
+    "value": "raw.connectortype == 'LithiumCrawler'"
+  },
+  "MobilePeople": {
+    "priority": 1,
+    "value": "raw.fullname != undefined && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "People": {
+    "priority": 1,
+    "value": "raw.fullname != undefined"
+  },
+  "MobileSalesforce": {
+    "priority": 1,
+    "value": "(raw.sfid != null || raw.sfid != null) && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "Salesforce": {
+    "priority": 0,
+    "value": "raw.sfid != null"
+  },
+  "MobileSalesforceCase": {
+    "priority": 3,
+    "value": "raw.sfcaseid != null && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "SalesforceCase": {
+    "priority": 2,
+    "value": "raw.sfcaseid != null"
+  },
+  "MobileSharePoint": {
+    "priority": 1,
+    "value": "raw.spitemtype != null && raw.spitemtype != 'List' && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "SharePoint": {
+    "priority": 0,
+    "value": "raw.spitemtype != null && raw.spitemtype != 'List'"
+  },
+  "MobileSharePointList": {
+    "priority": 1,
+    "value": "raw.spitemtype != null && raw.spitemtype == 'List' && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "SharePointList": {
+    "priority": 0,
+    "value": "raw.spitemtype != null && raw.spitemtype == 'List'"
+  },
+  "MobileYouTubeVideo": {
+    "priority": 1,
+    "value": "raw.filetype == 'YouTubeVideo' && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "YouTubeVideo" : {
+    "priority": 0,
+    "value": "raw.filetype == 'YouTubeVideo'"
+  },
+  "MobileYouTubePlaylistItem" : {
+    "priority": 1,
+    "value": "raw.filetype== 'YouTubePlaylistItem' && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "YouTubePlaylistItem" : {
+    "priority": 0,
+    "value": "raw.filetype== 'YouTubePlaylistItem'"
+  }
+}

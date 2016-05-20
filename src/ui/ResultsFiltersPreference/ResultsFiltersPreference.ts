@@ -1,4 +1,4 @@
-﻿
+
 
 
 
@@ -39,13 +39,13 @@ module Coveo {
        * Specifies whether to include the active filter(s) in the breadcrumb.<br/>
        * Default is <code>true</code>.
        */
-      includeInBreadcrumb: ComponentOptions.buildBooleanOption({defaultValue: true}),
+      includeInBreadcrumb: ComponentOptions.buildBooleanOption({ defaultValue: true }),
       /**
        * Specifies whether to show or hide the Create button to allow end-users to create their own filters.<br/>
        * If set to false, only pre-populated filter created on initialization using js code will be available to the end user.
        * Default is <code>true</code>.
        */
-      showAdvancedFilters: ComponentOptions.buildBooleanOption({defaultValue: true}),
+      showAdvancedFilters: ComponentOptions.buildBooleanOption({ defaultValue: true }),
       /**
        * Specifies default filters that all users will see.<br/>
        * End-users will not be able to modify or delete them, as they are not customized for each user, but instead created by the creator/developer of the search page.<br/>
@@ -101,9 +101,9 @@ module Coveo {
 
       //We need to wait after all components are initialized before building the dom, because this component interacts with Tab
       //And we don't know if Tab(s) are initialized before or after this component.
-      this.bind.oneRootElement(InitializationEvents.afterComponentsInitialization, ()=> this.createDom());
+      this.bind.oneRootElement(InitializationEvents.afterComponentsInitialization, () => this.createDom());
 
-      this.bind.oneQueryState(ModelEvents.CHANGE_ONE, QueryStateAttributes.T, ()=> this.fromPreferencesToCheckboxInput());
+      this.bind.oneQueryState(ModelEvents.CHANGE_ONE, QueryStateAttributes.T, () => this.fromPreferencesToCheckboxInput());
     }
 
     public createDom() {
@@ -132,13 +132,13 @@ module Coveo {
 
     private bindBreadcrumbEvent() {
       if (this.options.includeInBreadcrumb) {
-        this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs)=> this.handlePopulateBreadcrumb(args));
-        this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, ()=> this.handleClearBreadcrumb());
+        this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) => this.handlePopulateBreadcrumb(args));
+        this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.handleClearBreadcrumb());
       }
     }
 
     private bindQueryEvent() {
-      this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs)=> this.handleBuildingQuery(args));
+      this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     }
 
     private handleBuildingQuery(args: IBuildingQueryEventArgs) {
@@ -150,12 +150,12 @@ module Coveo {
     private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
       var actives = this.getActiveFilters();
       if (Utils.isNonEmptyArray(actives)) {
-        var container = $$('div', {className: 'coveo-results-filter-preferences-breadcrumb'});
-        var title = $$('span', {className: 'coveo-title'});
+        var container = $$('div', { className: 'coveo-results-filter-preferences-breadcrumb' });
+        var title = $$('span', { className: 'coveo-title' });
         title.text(l('FiltersInYourPreferences') + ':');
         container.el.appendChild(title.el);
 
-        var valuesContainer = $$('span', {className: 'coveo-values'});
+        var valuesContainer = $$('span', { className: 'coveo-values' });
         container.el.appendChild(valuesContainer.el);
 
         for (var i = 0; i < actives.length; i++) {
@@ -168,7 +168,7 @@ module Coveo {
           }
           valuesContainer.el.appendChild(this.buildBreadcrumb(actives[i]));
         }
-        args.breadcrumbs.push({element: container.el});
+        args.breadcrumbs.push({ element: container.el });
       }
     }
 
@@ -186,12 +186,12 @@ module Coveo {
     }
 
     private buildAdvancedFilters() {
-      this.advancedFilters = $$('div', {className: 'coveo-advanced-filters'}, l('Create')).el;
+      this.advancedFilters = $$('div', { className: 'coveo-advanced-filters' }, l('Create')).el;
       this.buildAdvancedFilterInput();
       this.buildAdvancedFilterFormValidate();
-      this.advancedFiltersBuilder = $$('div', {className: 'coveo-advanced-filters-builder'}).el;
+      this.advancedFiltersBuilder = $$('div', { className: 'coveo-advanced-filters-builder' }).el;
       this.advancedFiltersBuilder.appendChild(this.advancedFilterFormValidate);
-      $$(this.advancedFilters).on('click', ()=> this.openAdvancedFilterSectionOrSaveFilters());
+      $$(this.advancedFilters).on('click', () => this.openAdvancedFilterSectionOrSaveFilters());
       var onlineHelp = $$('a', {
         href: 'http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10006',
         className: 'coveo-online-help'
@@ -252,12 +252,12 @@ module Coveo {
       var filtersExpression = this.advancedFiltersTextInputExpression.build();
       $$(filtersExpression).addClass('coveo-expression');
 
-      _.each([inputCaption, filtersTabSelect, filtersExpression, saveAndCloseContainer.el, formSubmit.el], (el: HTMLElement)=> {
+      _.each([inputCaption, filtersTabSelect, filtersExpression, saveAndCloseContainer.el, formSubmit.el], (el: HTMLElement) => {
         this.advancedFilterFormValidate.appendChild(el);
       })
 
-      saveFormButton.on('click', ()=> formSubmit.trigger('click'));
-      closeFormButton.on('click', ()=> $$(this.advancedFiltersBuilder).toggleClass('coveo-active'));
+      saveFormButton.on('click', () => formSubmit.trigger('click'));
+      closeFormButton.on('click', () => $$(this.advancedFiltersBuilder).toggleClass('coveo-active'));
 
       $$($$(this.advancedFilterFormValidate).find('textarea')).on('keyup', (e: KeyboardEvent) => {
         if (e.keyCode == KEYBOARD.ENTER) {
@@ -265,7 +265,7 @@ module Coveo {
         }
       })
 
-      $$(this.advancedFilterFormValidate).on('submit', (e: Event)=>this.validateAndSaveAdvancedFilter(e));
+      $$(this.advancedFilterFormValidate).on('submit', (e: Event) => this.validateAndSaveAdvancedFilter(e));
     }
 
     private getAdvancedFiltersTextInputToBuild(): PreferencePanelInputToBuild[] {
@@ -273,8 +273,8 @@ module Coveo {
         label: l('Caption'),
         otherAttribute: 'required'
       }, {
-        label: l('Expression'),
-        otherAttribute: 'required'
+          label: l('Expression'),
+          otherAttribute: 'required'
         }
       ]
     }
@@ -312,16 +312,16 @@ module Coveo {
         }).el;
         this.preferenceContainer.appendChild(this.preferencePanelCheckboxInput.build());
 
-        _.each($$(this.preferenceContainer).findAll('.coveo-choice-container'), (choiceContainer: HTMLElement)=> {
-          choiceContainer.appendChild($$('div', {className: 'coveo-section coveo-section-edit-delete'}).el);
+        _.each($$(this.preferenceContainer).findAll('.coveo-choice-container'), (choiceContainer: HTMLElement) => {
+          choiceContainer.appendChild($$('div', { className: 'coveo-section coveo-section-edit-delete' }).el);
         })
 
         $(this.element).append(this.preferenceContainer);
         this.buildEditAdvancedFilter();
         this.buildDeleteAdvancedFilter();
         this.fromPreferencesToCheckboxInput();
-        _.each($$(this.preferenceContainer).findAll('input'), (input: HTMLElement)=> {
-          $$(input).on('change', (e: Event)=> {
+        _.each($$(this.preferenceContainer).findAll('input'), (input: HTMLElement) => {
+          $$(input).on('change', (e: Event) => {
             this.save();
             var target: HTMLInputElement = <HTMLInputElement>e.target;
             var filter = this.preferences[target.value];
@@ -343,7 +343,7 @@ module Coveo {
           var filterElement = this.getFilterElementByCaption(filter.caption);
           var insertInto = $$($$(filterElement).closest('coveo-section').parentElement).find('.coveo-section-edit-delete');
           insertInto.appendChild(deleteElement);
-          $$(deleteElement).on('click', ()=> this.confirmDelete(filter, filterElement));
+          $$(deleteElement).on('click', () => this.confirmDelete(filter, filterElement));
         }
       })
     }
@@ -353,26 +353,26 @@ module Coveo {
         if (filter.custom) {
           var editElement = $$('span', {
             className: 'coveo-edit'
-          }, $$('span', {className: 'coveo-icon'}));
+          }, $$('span', { className: 'coveo-icon' }));
           var filterElement = this.getFilterElementByCaption(filter.caption);
           var insertInto = $$($$(filterElement).closest('coveo-section').parentElement).find('.coveo-section-edit-delete');
           insertInto.appendChild(editElement.el);
-          editElement.on('click', ()=>this.editElement(filter, filterElement));
+          editElement.on('click', () => this.editElement(filter, filterElement));
         }
       })
     }
 
     private buildBreadcrumb(filter: ResultFilterPreference): HTMLElement {
-      var elem = $$('span', {className: 'coveo-value'});
+      var elem = $$('span', { className: 'coveo-value' });
 
-      var caption = $$('span', {className: 'coveo-caption'})
+      var caption = $$('span', { className: 'coveo-caption' })
       caption.text(filter.caption);
       elem.el.appendChild(caption.el);
 
-      var clear = $$('span', {className: 'coveo-clear'});
+      var clear = $$('span', { className: 'coveo-clear' });
       elem.el.appendChild(clear.el);
 
-      elem.on('click', ()=> {
+      elem.on('click', () => {
         filter.selected = false;
         this.fromFilterToAnalyticsEvent(filter, 'cleared from breadcrumb');
         this.fromPreferencesToCheckboxInput();
@@ -399,10 +399,10 @@ module Coveo {
       var oldExpression = this.preferences[filter.caption].expression;
       this.deleteFilterPreference(filter, filterElement);
       this.openAdvancedFilterSectionOrSaveFilters();
-      this.populateEditSection({tab: oldTab, caption: oldCaption, expression: oldExpression});
+      this.populateEditSection({ tab: oldTab, caption: oldCaption, expression: oldExpression });
     }
 
-    private populateEditSection(toPopulate = {tab: [''], caption: '', expression: ''}) {
+    private populateEditSection(toPopulate = { tab: [''], caption: '', expression: '' }) {
       this.advancedFiltersTextInputCaption.setValue(l('Caption'), toPopulate.caption);
       this.advancedFiltersTextInputExpression.setValue(l('Expression'), toPopulate.expression);
       this.advancedFiltersTabSelect.setValues(toPopulate.tab);
@@ -454,7 +454,7 @@ module Coveo {
       _.each(this.getInactiveFilters(), (filter: ResultFilterPreference) => {
         this.preferencePanelCheckboxInput.unselect(filter.caption);
       })
-      _.each(this.getDormantFilters(), (filter: ResultFilterPreference)=> {
+      _.each(this.getDormantFilters(), (filter: ResultFilterPreference) => {
         this.preferencePanelCheckboxInput.select(filter.caption);
       })
     }
@@ -505,7 +505,7 @@ module Coveo {
     }
 
     private fromResultsFilterOptionToResultsPreferenceInterface() {
-      var ret:{[key:string]:ResultFilterPreference} = {};
+      var ret: { [key: string]: ResultFilterPreference } = {};
       _.each(<any>this.options.filters, (filter: { expression: string; tab?: string[]; }, caption: string) => {
         ret[caption] = {
           expression: filter.expression,
@@ -552,4 +552,4 @@ module Coveo {
   }
 
   Initialization.registerAutoCreateComponent(ResultsFiltersPreferences);
-} 
+}

@@ -5,15 +5,15 @@ export interface IIndexFieldValue {
   /**
    * The value
    */
-  value:string;
+  value: string;
   /**
    * The optional lookupValue, if requested in the {@link IGroupByRequest}
    */
-  lookupValue?:string;
+  lookupValue?: string;
   /**
    * The number of results in the index which have this value
    */
-  numberOfResults:number;
+  numberOfResults: number;
   /**
    * The optional computedFieldResults, if requested in the {@link IGroupByRequest}
    */

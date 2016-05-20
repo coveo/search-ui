@@ -1,4 +1,4 @@
-﻿
+
 
 
 
@@ -13,7 +13,7 @@ module Coveo {
   export class OmniboxResultList extends ResultList {
     static ID = 'OmniboxResultList';
     static options: OmniboxResultListOptions = {
-      omniboxZIndex: ComponentOptions.buildNumberOption({defaultValue: 51, min: 16}),
+      omniboxZIndex: ComponentOptions.buildNumberOption({ defaultValue: 51, min: 16 }),
       headerTitle: ComponentOptions.buildStringOption(),
       queryOverride: ComponentOptions.buildStringOption()
     }
@@ -22,8 +22,8 @@ module Coveo {
     private suggestionForOmnibox: SuggestionForOmnibox;
 
     constructor(public element: HTMLElement,
-                public options?: OmniboxResultListOptions,
-                public bindings?: IComponentBindings) {
+      public options?: OmniboxResultListOptions,
+      public bindings?: IComponentBindings) {
       super(element, options, bindings, OmniboxResultList.ID);
       this.options = ComponentOptions.initComponentOptions(element, OmniboxResultList, options);
       this.setupOptions();
@@ -66,9 +66,9 @@ module Coveo {
       args.rows.push({
         deferred: deferred
       });
-      this.lastOmniboxRequest = {omniboxObject: args, deferred: deferred};
+      this.lastOmniboxRequest = { omniboxObject: args, deferred: deferred };
       this.queryController.executeQuery({
-        beforeExecuteQuery: ()=> this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxSubmit, {}),
+        beforeExecuteQuery: () => this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxSubmit, {}),
         searchAsYouType: true
       });
     }
@@ -81,7 +81,7 @@ module Coveo {
     }
 
     private onRowSelection(result: IQueryResult, resultElement: JQuery, omniboxObject: IPopulateOmniboxEventArgs) {
-      this.usageAnalytics.logClickEvent(AnalyticsActionCauseList.documentOpen, {author: result.raw.author}, result, this.root);
+      this.usageAnalytics.logClickEvent(AnalyticsActionCauseList.documentOpen, { author: result.raw.author }, result, this.root);
       window.location.href = result.clickUri;
     }
   }

@@ -152,7 +152,7 @@ export class MailTo {
     }
     if (this.options.originalFrom) {
       this.bodyHeader = this.options.bodyIsHTML ? '<p><br/><br/><br/>' + l('From') + ': ' + this.options.originalFrom + '<hr></p>' :
-      '\n\n\n' + l('From') + ': ' + this.options.originalFrom + '\n_________________________________\n'
+        '\n\n\n' + l('From') + ': ' + this.options.originalFrom + '\n_________________________________\n'
     }
   }
 

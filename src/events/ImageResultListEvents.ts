@@ -1,10 +1,7 @@
 
+export interface CompletedImageResultsLayoutEventArgs {
+}
 
-module Coveo {
-  export interface CompletedImageResultsLayoutEventArgs {
-  }
-
-  export class ImageResultListEvents {
-    public static imageResultsLayoutComplete = 'imageResultsLayoutComplete';
-  }
+export class ImageResultListEvents {
+  public static imageResultsLayoutComplete = 'imageResultsLayoutComplete';
 }

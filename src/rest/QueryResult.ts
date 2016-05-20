@@ -1,4 +1,4 @@
-import {Highlight} from './Highlight';
+import {IHighlight, IHighlightPhrase, IHighlightTerm} from './Highlight';
 import {Promise} from 'es6-promise';
 
 /**
@@ -9,7 +9,7 @@ export interface IQueryResult {
    * The title of the document
    */
   title: string;
-  titleHighlights: Highlight[];
+  titleHighlights: IHighlight[];
   /**
    * The uri of the document
    */
@@ -18,7 +18,7 @@ export interface IQueryResult {
    * A printable uri, or path to the document
    */
   printableUri: string;
-  printableUriHighlights: Highlight[];
+  printableUriHighlights: IHighlight[];
   /**
    * The clickable uri of the document, which can be set on an href in the interface.
    */
@@ -31,9 +31,9 @@ export interface IQueryResult {
    * The excerpt for the document. Can be empty for some type of documents.
    */
   excerpt: string;
-  excerptHighlights: Highlight[];
+  excerptHighlights: IHighlight[];
   firstSentences: string;
-  firstSentencesHighlights: Highlight[];
+  firstSentencesHighlights: IHighlight[];
   /**
    * Whether the document has an htmlVersion (quickview)
    */
@@ -44,7 +44,7 @@ export interface IQueryResult {
    */
   flags: string;
   summary: string;
-  summaryHighlights: Highlight[];
+  summaryHighlights: IHighlight[];
   /**
    * Returned on a document if the {@link Query.debug} was set to true
    */
@@ -69,8 +69,8 @@ export interface IQueryResult {
    * This value specifies whether the result was recommended by Coveo Reveal.
    */
   isRecommendation: boolean;
-  termsToHighlight?: {[originalTerm: string]: string[]};
-  phrasesToHighlight: {[phrase: string]: {[originalTerm: string]: string[]}};
+  termsToHighlight?: IHighlightTerm;
+  phrasesToHighlight: IHighlightPhrase;
   rankingModifier?: string;
 
   // Those fields are added by the JS UI framework

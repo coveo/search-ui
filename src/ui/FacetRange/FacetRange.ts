@@ -11,6 +11,8 @@ import {FacetRangeQueryController} from '../../controllers/FacetRangeQueryContro
 import {IGroupByResult} from '../../rest/GroupByResult';
 import {Initialization} from '../Base/Initialization';
 
+declare const Globalize;
+
 export interface FacetRangeOptions extends IFacetOptions {
   ranges?: IRangeValue[];
   dateField?: boolean;
@@ -20,7 +22,7 @@ export class FacetRange extends Facet {
   static ID = 'FacetRange';
   static parent = Facet;
   static options = <FacetRangeOptions>{
-    dateField: ComponentOptions.buildBooleanOption({defaultValue: false}),
+    dateField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
   };
 
   public options: FacetRangeOptions;

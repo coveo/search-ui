@@ -15,6 +15,12 @@ export class BaseComponent {
    */
   public logger: Logger;
   /**
+   * A disabled component will be invisible to the end user<br/>
+   * It will also not participate in the query, or listen to {@link ComponentsEvent}
+   * @type {boolean}
+   */
+  public disabled = false;
+  /**
    * The static ID that each component need to be identified.<br/>
    * For example, SearchButton -> static ID : SearchButton -> className : CoveoSearchButton
    */
@@ -34,8 +40,17 @@ export class BaseComponent {
     return info;
   }
 
+  public disable() {
+    this.disabled = true;
+  }
+
+  public enable() {
+    this.disabled = false;
+  }
+
+
   private initDebugInfo() {
-    $$(this.element).on('doubleclick', function (e: MouseEvent) {
+    $$(this.element).on('doubleclick', function(e: MouseEvent) {
       if (e.altKey) {
         var debugInfo = this.debugInfo();
         if (debugInfo != null) {

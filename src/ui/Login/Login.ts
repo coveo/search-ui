@@ -14,11 +14,11 @@ module Coveo {
     static ID = 'Login';
 
     static options: LoginOptions = {
-      id: ComponentOptions.buildStringOption({defaultValue: "default"}),
+      id: ComponentOptions.buildStringOption({ defaultValue: "default" }),
       caption: ComponentOptions.buildLocalizedStringOption(),
-      autoTriggerQuery: ComponentOptions.buildBooleanOption({defaultValue: true}),
-      requireLogin: ComponentOptions.buildBooleanOption({defaultValue: true}),
-      requirePageSettings: ComponentOptions.buildBooleanOption({defaultValue: false})
+      autoTriggerQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+      requireLogin: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+      requirePageSettings: ComponentOptions.buildBooleanOption({ defaultValue: false })
     }
 
     public pageSettings: LoginPageSettings;
@@ -28,7 +28,7 @@ module Coveo {
 
     private loadingAnimation: JQuery;
     private submitButton: JQuery;
-    private logo:JQuery;
+    private logo: JQuery;
     private errorMessage: JQuery;
     private caption: JQuery;
     public combined: JQuery;
@@ -161,7 +161,7 @@ module Coveo {
     }
 
     public submit() {
-      var onSuccess = ()=> {
+      var onSuccess = () => {
         if (this.credentials) {
           this.updateEndpointWithCredentials();
         }
@@ -176,7 +176,7 @@ module Coveo {
       return ((<AjaxError>error).status === 401) || ((<AjaxError>error).status === 403);
     }
 
-    private baseValidationEvent(methodToGather: string, onSuccess: (...args: any[])=>void) {
+    private baseValidationEvent(methodToGather: string, onSuccess: (...args: any[]) => void) {
       MobileUtils.hideIOSKeyboard(document.activeElement);
       this.resetErrorMessage();
       //deferreds is an array of deferred returned by all sub component. When they all resolve correctly, we're good to go.
@@ -190,7 +190,7 @@ module Coveo {
         deferreds.push(this.pageSettings[methodToGather](allValidationPassed));
       }
       $.when.apply(this, deferreds)
-        .fail((error: string)=> {
+        .fail((error: string) => {
           this.show();
           allValidationPassed.reject(false);
           if (this.pageSettings && Utils.isNonEmptyString(this.getPageSettingsUrl())) {
@@ -200,10 +200,10 @@ module Coveo {
             this.setErrorMessage(error);
           }
         })
-        .always(()=> {
+        .always(() => {
           this.submitButton.removeClass("coveo-waiting");
         })
-        .done(()=> {
+        .done(() => {
           allValidationPassed.resolve(true);
           $.proxy(onSuccess, this);
         })

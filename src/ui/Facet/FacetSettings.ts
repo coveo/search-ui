@@ -12,7 +12,7 @@ import {QueryStateModel} from '../../models/QueryStateModel';
 import {FacetHeader} from './FacetHeader';
 import {IAnalyticsFacetMeta, AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {DeviceUtils} from '../../utils/DeviceUtils';
-import {PopupUtils, HorizontalAlignment,VerticalAlignment } from '../../utils/PopupUtils';
+import {PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
 
 export interface IFacetSettingsKlass {
   new (sorts: string[], facet: Facet): FacetSettings;
@@ -71,7 +71,10 @@ export class FacetSettings extends FacetSort {
     $$(this.settingsPopup).addClass('coveo-facet-settings-popup');
     if (Utils.isNonEmptyArray(this.enabledSorts)) {
       this.sortSection = this.buildSortSection();
-      this.directionSection = this.buildDirectionSection();
+
+      if (this.enabledSortsAllowDirection()) {
+        this.directionSection = this.buildDirectionSection();
+      }
     }
     if (this.facet.options.enableSettingsFacetState) {
       this.saveStateSection = this.buildSaveStateSection();
@@ -224,8 +227,14 @@ export class FacetSettings extends FacetSort {
     }
   }
 
+  private enabledSortsAllowDirection() {
+    return _.some(this.enabledSorts, (facetSortDescription: FacetSortDescription) => {
+      return facetSortDescription.directionToggle;
+    })
+  }
 
-  private buildDirectionSection(): HTMLElement[] {
+
+  private buildDirectionSection() {
     if (this.facet.searchInterface.isNewDesign()) {
       var directionAscendingSection = this.buildAscendingOrDescendingSection('Ascending');
       var iconAscending = this.buildIcon();

@@ -3,7 +3,7 @@
 module Coveo {
 
   export interface SuggestionForOmniboxOptionsOnSelect {
-    (value: string, args: IPopulateOmniboxEventArgs):void;
+    (value: string, args: IPopulateOmniboxEventArgs): void;
   }
 
   export interface SuggestionForOmniboxOptions {
@@ -34,7 +34,7 @@ module Coveo {
       var element;
       if (results.length != 0) {
         element = $("<div></div>");
-        if(this.structure.header) {
+        if (this.structure.header) {
           var header = this.buildElementHeader();
           element.append(header);
         }

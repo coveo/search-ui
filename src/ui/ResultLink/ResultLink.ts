@@ -37,7 +37,7 @@ module Coveo {
       Assert.exists(this.componentOptionsModel);
       Assert.exists(this.result);
 
-      if (!this.options.openQuickview) {
+      if (!this.quickviewShouldBeOpened()) {
         $(element).on("click", () => {
           this.logOpenDocument();
         });
@@ -64,7 +64,7 @@ module Coveo {
     }
 
     private bindOpenQuickviewIfNotUndefined() {
-      if ((this.options.openQuickview || this.isUriThatMustBeOpenedInQuickview()) && QueryUtils.hasHTMLVersion(this.result)) {
+      if (this.quickviewShouldBeOpened()) {
         $(this.element).click((e: JQueryEventObject) => {
           e.preventDefault();
           $(this.bindings.resultElement).trigger(ResultListEvents.openQuickview)
@@ -181,6 +181,10 @@ module Coveo {
 
     private isUriThatMustBeOpenedInQuickview(): boolean {
       return this.result.clickUri.toLowerCase().indexOf('ldap://') == 0;
+    }
+
+    private quickviewShouldBeOpened() {
+      return (this.options.openQuickview || this.isUriThatMustBeOpenedInQuickview()) && QueryUtils.hasHTMLVersion(this.result);
     }
   }
 

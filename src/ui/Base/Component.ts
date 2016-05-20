@@ -12,40 +12,7 @@ import {SearchInterface} from '../../ui/SearchInterface/SearchInterface';
 import {IAnalyticsClient} from '../../ui/Analytics/AnalyticsClient';
 import {NoopAnalyticsClient} from '../../ui/Analytics/NoopAnalyticsClient';
 import {BaseComponent} from './BaseComponent';
-
-/**
- * The bindings, or environment in which each component exists.
- */
-export interface IComponentBindings {
-  /**
-   * The root HTMLElement of the {@link SearchInterface} in which the component exists.
-   */
-  root?: HTMLElement;
-  /**
-   * Contains the state of the query. Allows to get/set values. Trigger state event when modified. Each component can listen to those events.
-   */
-  queryStateModel?: QueryStateModel;
-  /**
-   * Contains the state of different component (enabled vs disabled). Allows to get/set values. Trigger component state event when modified. Each component can listen to those events.
-   */
-  componentStateModel?: ComponentStateModel;
-  /**
-   * Contains the singleton that allows to trigger queries.
-   */
-  queryController?: QueryController;
-  /**
-   * A reference to the root of every component, the {@link SearchInterface}
-   */
-  searchInterface?: SearchInterface;
-  /**
-   * A reference to the {@link Analytics.client}. This can be a {@link NoopAnalyticsClient} or a {@link LiveAnalyticsClient}
-   */
-  usageAnalytics?: IAnalyticsClient;
-  /**
-   * Contains the state of options for differents component. Mainly used by {@link ResultLink}
-   */
-  componentOptionsModel?: ComponentOptionsModel;
-}
+import {IComponentBindings} from './ComponentBindings';
 
 /**
  * Definition for a Component.
@@ -87,12 +54,6 @@ export interface IComponentDefinition {
  * The base class for every Component in the framework
  */
 export class Component extends BaseComponent {
-  /**
-   * A disabled component will be invisible to the end user<br/>
-   * It will also not participate in the query, or listen to {@link ComponentsEvent}
-   * @type {boolean}
-   */
-  public disabled = false;
   /**
    * Allows the component to bind events and execute them only when it is enabled.
    * @type {Coveo.ComponentEvents}
@@ -243,8 +204,8 @@ export class Component extends BaseComponent {
     Assert.exists(element);
     Assert.exists(result);
     $(element)
-        .addClass('CoveoResult')
-        .data('CoveoResult', result);
+      .addClass('CoveoResult')
+      .data('CoveoResult', result);
     element['CoveoResult'] = result;
   }
 
@@ -374,7 +335,7 @@ export class ComponentEvents {
    * @param event The event for which to register an handler
    * @param handler The function to execute when the event is triggered
    */
-  public oneRootElement<T>(event: string, handler: (args: T)=> any) {
+  public oneRootElement<T>(event: string, handler: (args: T) => any) {
     this.one(this.owner.root, event, handler);
   }
 
@@ -385,7 +346,7 @@ export class ComponentEvents {
    * @param attribute The attribute for which to register an event
    * @param handler The handler to execute when the query state event is triggered
    */
-  public onQueryState<T>(eventType: string, attribute?: string, handler?: (args: T)=> any) {
+  public onQueryState<T>(eventType: string, attribute?: string, handler?: (args: T) => any) {
     this.onRootElement(this.getQueryStateEventName(eventType, attribute), handler);
   }
 
@@ -397,7 +358,7 @@ export class ComponentEvents {
    * @param attribute The attribute for which to register an event
    * @param handler The handler to execute when the query state event is triggered
    */
-  public oneQueryState<T>(eventType: string, attribute?: string, handler?: (args: T)=> any) {
+  public oneQueryState<T>(eventType: string, attribute?: string, handler?: (args: T) => any) {
     this.oneRootElement(this.getQueryStateEventName(eventType, attribute), handler);
   }
 
@@ -410,7 +371,7 @@ export class ComponentEvents {
   public trigger(el: HTMLElement, event: string, args?: Object);
   public trigger(el: JQuery, event: string, args?: Object);
   public trigger(arg: any, event: string, args?: Object) {
-    this.wrapToCallIfEnabled(()=> {
+    this.wrapToCallIfEnabled(() => {
       if (arg instanceof HTMLElement) {
         var htmlEl: HTMLElement = arg;
         $$(htmlEl).trigger(event, args);

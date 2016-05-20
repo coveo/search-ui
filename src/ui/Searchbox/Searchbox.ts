@@ -1,5 +1,6 @@
 import {IOmniboxOptions} from '../Omnibox/Omnibox';
-import {Component, IComponentBindings} from '../Base/Component';
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
 import {Omnibox} from '../Omnibox/Omnibox';
 import {ComponentOptions} from '../Base/ComponentOptions'
 import {SearchButton} from '../SearchButton/SearchButton';
@@ -31,13 +32,13 @@ export class Searchbox extends Component {
      * Specifies whether the search box instantiates a {@link SearchButton}.<br/>
      * Default value is true.
      */
-    addSearchButton: ComponentOptions.buildBooleanOption({defaultValue: true}),
+    addSearchButton: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies whether the search box instantiates a {@link Omnibox} Component.<br/>
      * Otherwise, the search box instantiates a {@link Querybox} Component.<br/>
      * Default value is false.
      */
-    enableOmnibox: ComponentOptions.buildBooleanOption({defaultValue: false})
+    enableOmnibox: ComponentOptions.buildBooleanOption({ defaultValue: false })
   }
 
   /**
@@ -49,7 +50,7 @@ export class Searchbox extends Component {
    * Instance of compomnent that allows user to input query.<br/>
    * Can be a {@link Querybox} or {@link Omnibox}
    */
-  public searchbox: Querybox|Omnibox;
+  public searchbox: Querybox | Omnibox;
 
   /**
    * Create a new Searchbox<br/>
@@ -88,9 +89,9 @@ export class Searchbox extends Component {
 Searchbox.options = _.extend({}, Searchbox.options, Omnibox.options);
 
 // Only parse omnibox option if omnibox is enabled
-_.each(Searchbox.options, (value, key: string)=> {
+_.each(Searchbox.options, (value, key: string) => {
   if (key in Omnibox.options && !(key in Querybox.options)) {
-    Searchbox.options[key] = _.extend({depend: 'enableOmnibox'}, value);
+    Searchbox.options[key] = _.extend({ depend: 'enableOmnibox' }, value);
   }
 });
 

@@ -33,6 +33,41 @@ exports.convert = function (from, to) {
   fs.writeFileSync(to, JSON.stringify(json, undefined, ' '));
 };
 
+const mergeFunctionAsString = '\tvar merge = function(obj1, obj2) {\n' +
+    '\t\tvar obj3 = {};\n' +
+    '\t\tfor(var attrname in obj1){obj3[attrname] = obj1[attrname]; }\n' +
+    '\t\tfor(var attrname in obj2){obj3[attrname] = obj2[attrname]; }\n' +
+    '\t\treturn obj3;\n' +
+    '}\n'
+
+function dictObjectAsString(json, language) {
+  var dictAsString = '  var dict = {\n';
+
+  _.each(_.keys(json), function (key) {
+    var str = json[key][language];
+    if (str != undefined) {
+      dictAsString += '      ' + JSON.stringify(key) + ': ' + JSON.stringify(json[key][language]) + ',\n';
+    }
+  });
+
+  dictAsString += '  }\n';
+  return dictAsString;
+}
+
+function setPrototypeOnNativeString(language) {
+  // Be careful not to override existing localizations, since we sometimes load many
+  // separate string files for the same language (ex: interface editor).
+  var languageWithQuotes = JSON.stringify(language);
+  var nativeStringPrototype = 'document.addEventListener(\'DOMContentLoaded\', function(event){';
+  nativeStringPrototype += '  var locales = String["locales"] || (String["locales"] = {});\n';
+  nativeStringPrototype += '  locales[' + languageWithQuotes + '] = merge(locales[' + languageWithQuotes + '], dict);\n';
+  nativeStringPrototype += '  String["toLocaleString"].call(this, { ' + languageWithQuotes + ': dict });\n';
+  nativeStringPrototype += '  String["locale"] = ' + languageWithQuotes + ';\n';
+  nativeStringPrototype += '  String["defaultLocale"] = "en";\n';
+  nativeStringPrototype += '})';
+  return nativeStringPrototype;
+}
+
 function Dictionary(from, options) {
   options = _.extend({
     module: 'Strings',
@@ -66,33 +101,21 @@ function Dictionary(from, options) {
     fs.writeFileSync(to, code);
   };
 
+  this.writeDefaultLanguage = function (to, language) {
+    var code = mergeFunctionAsString;
+    code += dictObjectAsString(this.json, language);
+    code += 'export function defaultLanguage() {\n';
+    code += setPrototypeOnNativeString(language);
+    code += '}'
+    utilities.ensureDirectory(path.dirname(to));
+    fs.writeFileSync(to, code);
+  }
+
   this.writeLanguageFile = function (to, language, culture, typed) {
     var code = '(function() {\n';
-    code += '\tvar merge = function(obj1, obj2) {\n' +
-        '\t\tvar obj3 = {};\n' +
-        '\t\tfor(var attrname in obj1){obj3[attrname] = obj1[attrname]; }\n' +
-        '\t\tfor(var attrname in obj2){obj3[attrname] = obj2[attrname]; }\n' +
-        '\t\treturn obj3;\n' +
-        '}\n'
-    code += '  var dict = {\n';
-    var that = this;
-    _.each(_.keys(this.json), function (key) {
-      var str = that.json[key][language];
-      if (str != undefined) {
-        code += '      ' + JSON.stringify(key) + ': ' + JSON.stringify(that.json[key][language]) + ',\n';
-      }
-    });
-
-    code += '  }\n';
-
-    // Be careful not to override existing localizations, since we sometimes load many
-    // separate string files for the same language (ex: interface editor).
-    var languageWithQuotes = JSON.stringify(language);
-    code += '  var locales = String["locales"] || (String["locales"] = {});\n';
-    code += '  locales[' + languageWithQuotes + '] = merge(locales[' + languageWithQuotes + '], dict);\n';
-    code += '  String["toLocaleString"].call(this, { ' + languageWithQuotes + ': dict });\n';
-    code += '  String["locale"] = ' + languageWithQuotes + ';\n';
-    code += '  String["defaultLocale"] = "en";\n';
+    code += mergeFunctionAsString;
+    code += dictObjectAsString(this.json, language);
+    code += setPrototypeOnNativeString(language);
     code += '})();\n';
 
     utilities.ensureDirectory(path.dirname(to));

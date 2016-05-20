@@ -19,9 +19,9 @@ module Coveo {
     static ID = 'ResultTagging';
 
     static options: ResultTaggingOptions = {
-      field: ComponentOptions.buildFieldOption({match: (field: IFieldDescription)=>field.type == 'Tag', required:true}),
-      suggestBoxSize: ComponentOptions.buildNumberOption({defaultValue: 5, min: 0}),
-      autoCompleteTimer: ComponentOptions.buildNumberOption({defaultValue: 2000, min: 0})
+      field: ComponentOptions.buildFieldOption({ match: (field: IFieldDescription) => field.type == 'Tag', required: true }),
+      suggestBoxSize: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0 }),
+      autoCompleteTimer: ComponentOptions.buildNumberOption({ defaultValue: 2000, min: 0 })
     }
 
     static AUTO_COMPLETE_CLASS = 'coveo-result-tagging-auto-complete';
@@ -168,14 +168,14 @@ module Coveo {
         patternType: 'RegularExpression'
       };
       endpoint.listFieldValues(searchOptions)
-          .then((fieldValues: IIndexFieldValue[]) => {
-            this.clearPopup();
-            _.each(fieldValues, (fieldValue: IIndexFieldValue) => {
-              this.autoCompletePopup.append(this.buildSelectableValue(fieldValue.lookupValue));
-            });
-            this.showPopup();
-            this.autoCompletePopup.width(this.textBox.outerWidth());
+        .then((fieldValues: IIndexFieldValue[]) => {
+          this.clearPopup();
+          _.each(fieldValues, (fieldValue: IIndexFieldValue) => {
+            this.autoCompletePopup.append(this.buildSelectableValue(fieldValue.lookupValue));
           });
+          this.showPopup();
+          this.autoCompletePopup.width(this.textBox.outerWidth());
+        });
     }
 
     private manageAutocompleteAutoHide() {
@@ -272,10 +272,10 @@ module Coveo {
         uniqueId: this.result.uniqueId
       };
       this.queryController.getEndpoint().tagDocument(request)
-          .then(() => {
-            this.tags.splice($.inArray(tagValue, this.tags), 1);
-            element.remove()
-          });
+        .then(() => {
+          this.tags.splice($.inArray(tagValue, this.tags), 1);
+          element.remove()
+        });
     }
 
     private doAddTagWithValue(tagValue: string) {
@@ -298,15 +298,15 @@ module Coveo {
         uniqueId: this.result.uniqueId
       };
       this.queryController.getEndpoint().tagDocument(request)
-          .then(() => {
-            this.tagZone.append(this.buildTagValue(tagValue));
-            this.textBox.val('');
-            $(this.element).removeClass('coveo-error');
-          })
-          .catch(() => {
-            //We do this otherwise it's possible to add the same tag while we wait for the server's response
-            this.tags = _.without(this.tags, _.findWhere(this.tags, tagValue));
-          });
+        .then(() => {
+          this.tagZone.append(this.buildTagValue(tagValue));
+          this.textBox.val('');
+          $(this.element).removeClass('coveo-error');
+        })
+        .catch(() => {
+          //We do this otherwise it's possible to add the same tag while we wait for the server's response
+          this.tags = _.without(this.tags, _.findWhere(this.tags, tagValue));
+        });
     }
 
     private doAddTag() {

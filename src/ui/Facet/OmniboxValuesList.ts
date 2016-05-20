@@ -52,7 +52,7 @@ export class OmniboxValuesList {
         className: 'coveo-omnibox-facet-value'
       }).el;
       ret.appendChild(header);
-      _.each(rows, (r)=> {
+      _.each(rows, (r) => {
         ret.appendChild(r);
       })
       FacetUtils.addNoStateCssClassToFacetValues(this.facet, ret);

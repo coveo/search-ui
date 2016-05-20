@@ -21,7 +21,7 @@ export interface IQueryResults {
     /**
      * The type of error
      */
-        type: string;
+    type: string;
     /**
      * A detailed execution report sent by the Search API
      */
@@ -118,11 +118,11 @@ export interface IQueryResults {
   /**
    * Terms to highlight (with stemming) in the results
    */
-  termsToHighlight: {[originalTerm:string]: string[]};
+  termsToHighlight: { [originalTerm: string]: string[] };
   /**
    * Phrases to highlight (with stemming) in the results
    */
-  phrasesToHighlight: {[originalTerm:string]: string[]};
+  phrasesToHighlight: { [originalTerm: string]: string[] };
   /**
    * The Coveo Query Pipeline triggers, if any were configured.
    */

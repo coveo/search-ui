@@ -2,17 +2,42 @@ import {DeviceUtils} from './DeviceUtils';
 import {IQueryResult} from '../rest/QueryResult';
 import {SearchEndpoint} from '../rest/SearchEndpoint';
 
-export interface AnchorUtilsOptions {
+/**
+ * Options for building an `<a>` tag.
+ */
+export interface IAnchorUtilsOptions {
+  /**
+   * The tag's text content.
+   */
   text?: string;
+  /**
+   * The target (`href` attribute).
+   */
   target?: string;
-  class?: string;
+  /**
+   * The CSS class(es) of the tag.
+   */
+      class?: string;
 }
 
-export interface ImageUtilsOptions {
+/**
+ * Options for building an `<img>` tag.
+ */
+export interface IImageUtilsOptions {
+  /**
+   * The alternative text for the image (`alt` attribute).
+   */
   alt?: string;
+  /**
+   * The height of the image
+   */
   height?: string;
+  /**
+   * The width of the image
+   */
   width?: string;
 }
+
 export class HTMLUtils {
   static buildAttributeString(options: any): string {
     var ret = []
@@ -26,7 +51,7 @@ export class HTMLUtils {
 }
 
 export class AnchorUtils {
-  static buildAnchor(href: string, options?: AnchorUtilsOptions) {
+  static buildAnchor(href: string, options?: IAnchorUtilsOptions) {
     var text;
     if (!options || !options.text) {
       text = href;
@@ -39,7 +64,7 @@ export class AnchorUtils {
 }
 
 export class ImageUtils {
-  static buildImage(src?: string, options?: ImageUtilsOptions) {
+  static buildImage(src?: string, options?: IImageUtilsOptions) {
     var ret = "<img ";
     ret += src ? "src='" + src + "' " : "";
     ret += HTMLUtils.buildAttributeString(options) + "/>";
@@ -70,8 +95,8 @@ export class ImageUtils {
             })
   }
 
-  static buildImageFromResult(result: IQueryResult, endpoint: SearchEndpoint, options?: ImageUtilsOptions) {
-    var options = options ? options : <ImageUtilsOptions>{};
+  static buildImageFromResult(result: IQueryResult, endpoint: SearchEndpoint, options?: IImageUtilsOptions) {
+    var options = options ? options : <IImageUtilsOptions>{};
 
     var img = ImageUtils.buildImage(undefined, $.extend(options, {"data-coveo-uri-hash": result.raw["urihash"]}));
     if (endpoint.isJsonp() || DeviceUtils.isIE8or9()) {

@@ -1,4 +1,4 @@
-﻿/// <reference path="../../controllers/HierarchicalFacetQueryController.ts" />
+/// <reference path="../../controllers/HierarchicalFacetQueryController.ts" />
 /// <reference path="HierarchicalFacetValuesList.ts" />
 /// <reference path="HierarchicalFacetSearch.ts" />
 /// <reference path="HierarchicalBreadcrumbValuesList.ts" />
@@ -10,7 +10,7 @@ import {Facet} from '../Facet/Facet';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {HierarchicalFacetValuesList} from './HierarchicalFacetValuesList';
 import {HierarchicalFacetQueryController} from '../../controllers/HierarchicalFacetQueryController';
-import {IComponentBindings} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
 import {IIndexFieldValue} from '../../rest/FieldValue';
 import {Utils} from '../../utils/Utils';
 import {$$} from '../../utils/Dom';
@@ -27,6 +27,7 @@ import {HierarchicalFacetValueElement} from './HierarchicalFacetValueElement';
 import {Initialization} from '../Base/Initialization';
 import {ValueElementRenderer} from '../Facet/ValueElementRenderer';
 import {l} from '../../strings/Strings';
+
 
 export interface IHierarchicalFacetOptions extends IFacetOptions {
   delimitingCharacter?: string;
@@ -362,9 +363,9 @@ export class HierarchicalFacet extends Facet {
   public open(value: any) {
     var getter;
     if (_.isString(value)) {
-      getter = this.valueHierarchy[value];
+      getter = this.getValueHierarchy(value);
     } else if (value instanceof FacetValue) {
-      getter = this.valueHierarchy[value.value];
+      getter = this.getValueHierarchy(value.value);
     } else {
       getter = value;
     }
@@ -372,9 +373,9 @@ export class HierarchicalFacet extends Facet {
       $$(this.getElementFromFacetValueList(getter.facetValue.value)).addClass('coveo-open');
       this.showChilds(getter.childs);
       if (getter.parent != undefined) {
-        this.open(this.valueHierarchy[getter.facetValue.value].parent);
+        this.open(this.getValueHierarchy(getter.facetValue.value).parent);
       }
-      this.valueHierarchy[getter.facetValue.value].keepOpened = true;
+      this.getValueHierarchy(getter.facetValue.value).keepOpened = true;
     }
   }
 
@@ -388,9 +389,9 @@ export class HierarchicalFacet extends Facet {
   public close(value: any) {
     var getter;
     if (_.isString(value)) {
-      getter = this.valueHierarchy[value];
+      getter = this.getValueHierarchy(value);
     } else if (value instanceof FacetValue) {
-      getter = this.valueHierarchy[value.value];
+      getter = this.getValueHierarchy(value.value);
     } else {
       getter = value;
     }
@@ -398,9 +399,9 @@ export class HierarchicalFacet extends Facet {
       $$(this.getElementFromFacetValueList(getter.facetValue)).removeClass('coveo-open');
       this.hideChilds(getter.childs);
       _.each(getter.childs, (child: ValueHierarchy) => {
-        this.close(this.valueHierarchy[child.facetValue.value]);
-      })
-      this.valueHierarchy[getter.facetValue.value].keepOpened = false;
+        this.close(this.getValueHierarchy(child.facetValue.value));
+      });
+      this.getValueHierarchy(getter.facetValue.value).keepOpened = false;
     }
   }
 
@@ -408,7 +409,7 @@ export class HierarchicalFacet extends Facet {
    * Reset the facet state
    */
   public reset() {
-    _.each(this.valueHierarchy, (valueHierarchy) => {
+    _.each(this.getAllValueHierarchy(), (valueHierarchy) => {
       valueHierarchy.hasChildSelected = false;
     })
     super.reset();
@@ -439,7 +440,7 @@ export class HierarchicalFacet extends Facet {
   protected handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
     Assert.exists(args);
     if (this.values.hasSelectedOrExcludedValues()) {
-      var element = new HierarchicalBreadcrumbValuesList(this, this.values.getSelected().concat(this.values.getExcluded()), this.valueHierarchy).build();
+      var element = new HierarchicalBreadcrumbValuesList(this, this.values.getSelected().concat(this.values.getExcluded()), this.getAllValueHierarchy()).build();
       args.breadcrumbs.push({
         element: element
       });
@@ -448,8 +449,7 @@ export class HierarchicalFacet extends Facet {
 
   protected handleOmniboxWithStaticValue(eventArg: IPopulateOmniboxEventArgs) {
     var regex = eventArg.completeQueryExpression.regex;
-    var valueToSearch = eventArg.completeQueryExpression.word;
-    var match = _.first(_.filter<ValueHierarchy>(this.valueHierarchy, (existingValue) => {
+    var match = _.first(_.filter<ValueHierarchy>(this.getAllValueHierarchy(), (existingValue) => {
       return regex.test(this.getValueCaption(existingValue.facetValue))
     }), this.options.numberOfValuesInOmnibox)
     var facetValues = _.compact(_.map(match, (gotAMatch) => {
@@ -533,7 +533,7 @@ export class HierarchicalFacet extends Facet {
     }
     var atLeastOneDoesNotExists = false;
     _.each(facetValues, (facetValue: FacetValue) => {
-      if (this.valueHierarchy == undefined || this.valueHierarchy[facetValue.value] == undefined) {
+      if (this.getValueHierarchy(facetValue.value) == undefined) {
         atLeastOneDoesNotExists = true;
       }
     })
@@ -562,7 +562,7 @@ export class HierarchicalFacet extends Facet {
 
   private placeChildsUnderTheirParent(hierarchy: ValueHierarchy, hierarchyElement: HTMLElement) {
     _.each(hierarchy.childs.reverse(), (child) => {
-      if (this.valueHierarchy[child.facetValue.value]) {
+      if (this.getValueHierarchy(child.facetValue.value)) {
         var childElement = this.getElementFromFacetValueList(child.facetValue);
         $$(childElement).insertAfter(hierarchyElement);
       }
@@ -592,7 +592,7 @@ export class HierarchicalFacet extends Facet {
   }
 
   private buildParentChildRelationship() {
-    var sorted = _.chain(this.valueHierarchy)
+    var sorted = _.chain(this.getAllValueHierarchy())
                   .toArray()
                   .sortBy('level')
                   .value();
@@ -631,7 +631,7 @@ export class HierarchicalFacet extends Facet {
       };
     });
     this.setInHierarchy(flatHierarchy);
-    _.each(this.valueHierarchy, (valueHierarchy) => {
+    _.each(this.getAllValueHierarchy(), (valueHierarchy) => {
       if (valueHierarchy.facetValue.selected) {
         this.flagParentForSelection(valueHierarchy);
       }
@@ -640,10 +640,9 @@ export class HierarchicalFacet extends Facet {
   }
 
   private processHierarchy(facetValues = this.values.getAll()) {
-    this.valueHierarchy = this.valueHierarchy ? this.valueHierarchy : {};
-    _.each(this.valueHierarchy, (hierarchy: ValueHierarchy)=> {
+    _.each(this.getAllValueHierarchy(), (hierarchy: ValueHierarchy)=> {
       if (this.values.get(hierarchy.facetValue.value) == undefined) {
-        delete this.valueHierarchy[this.getLookupOrValue(hierarchy.facetValue)];
+        this.deleteValueHierarchy(this.getLookupOrValue(hierarchy.facetValue));
       }
     });
     this.createHierarchy(facetValues);
@@ -654,10 +653,10 @@ export class HierarchicalFacet extends Facet {
       var isCorrectMinimumLevel = this.options.levelStart == undefined || hierarchy.level >= this.options.levelStart;
       var isCorrectMaximumLevel = this.options.levelEnd == undefined || hierarchy.level < this.options.levelEnd;
       return isCorrectMinimumLevel && isCorrectMaximumLevel;
-    })
-    _.each(this.correctLevels, (hierarchy) => {
+    });
+    _.each(this.correctLevels, (hierarchy: FlatHierarchy) => {
       var childs = _.map(_.filter<FlatHierarchy>(this.correctLevels, (possibleChild) => {
-        return possibleChild.parent == hierarchy.self
+        return possibleChild.parent != null && possibleChild.parent.toLowerCase() == hierarchy.self.toLowerCase()
       }), (child): ValueHierarchy => {
         return {
           facetValue: child.facetValue,
@@ -667,16 +666,16 @@ export class HierarchicalFacet extends Facet {
         }
       })
 
-      var parent = _.find<FlatHierarchy>(this.correctLevels, (possibleParent) => {
-        return possibleParent.self == hierarchy.parent
-      })
+      var parent = hierarchy.parent != null ? _.find<FlatHierarchy>(this.correctLevels, (possibleParent) => {
+        return possibleParent.self.toLowerCase() == hierarchy.parent.toLowerCase()
+      }) : null;
 
-      var hierarchyThatAlreadyExists = this.valueHierarchy[hierarchy.facetValue.value];
+      var hierarchyThatAlreadyExists = this.getValueHierarchy(hierarchy.facetValue.value);
       var hierarchyThatAlreadyExistsAtParent;
       if (parent) {
-        hierarchyThatAlreadyExistsAtParent = this.valueHierarchy[parent.facetValue.value]
+        hierarchyThatAlreadyExistsAtParent = this.getValueHierarchy(parent.facetValue.value)
       }
-      this.valueHierarchy[hierarchy.facetValue.value] = {
+      this.setValueHierarchy(hierarchy.facetValue.value, {
         childs: childs,
         parent: parent == undefined ? undefined : {
           facetValue: parent.facetValue,
@@ -690,7 +689,7 @@ export class HierarchicalFacet extends Facet {
         keepOpened: hierarchyThatAlreadyExists ? hierarchyThatAlreadyExists.keepOpened : false,
         hasChildSelected: hierarchyThatAlreadyExists ? hierarchyThatAlreadyExists.hasChildSelected : false,
         originalPosition: hierarchyThatAlreadyExists ? hierarchyThatAlreadyExists.originalPosition : undefined
-      }
+      });
     });
 
     this.topLevelHierarchy = _.chain(this.values.getAll())
@@ -788,7 +787,7 @@ export class HierarchicalFacet extends Facet {
     if (parent != undefined) {
       this.selectValue(parent.facetValue);
       if (parent.parent) {
-        this.selectParent(this.valueHierarchy[parent.parent.facetValue.value])
+        this.selectParent(this.getValueHierarchy(parent.parent.facetValue.value))
       }
     }
   }
@@ -802,7 +801,7 @@ export class HierarchicalFacet extends Facet {
   private flagParentForSelection(valueHierarchy: ValueHierarchy) {
     var parent = valueHierarchy.parent;
     while (parent) {
-      var parentInHierarchy = this.valueHierarchy[parent.facetValue.value];
+      var parentInHierarchy = this.getValueHierarchy(parent.facetValue.value);
       parentInHierarchy.hasChildSelected = true;
       parent = parentInHierarchy.parent;
     }
@@ -811,9 +810,9 @@ export class HierarchicalFacet extends Facet {
   private unflagParentForSelection(valueHierarchy: ValueHierarchy) {
     var parent = valueHierarchy.parent;
     while (parent) {
-      var parentInHierarchy = this.valueHierarchy[parent.facetValue.value]
+      var parentInHierarchy = this.getValueHierarchy(parent.facetValue.value)
       var otherSelectedChilds = _.filter<ValueHierarchy>(parentInHierarchy.childs, (child) => {
-        var childInHierarchy = this.valueHierarchy[child.facetValue.value];
+        var childInHierarchy = this.getValueHierarchy(child.facetValue.value);
         if (childInHierarchy != undefined) {
           return childInHierarchy.facetValue.value != valueHierarchy.facetValue.value
               && (childInHierarchy.facetValue.selected || childInHierarchy.facetValue.excluded || childInHierarchy.hasChildSelected);
@@ -829,7 +828,7 @@ export class HierarchicalFacet extends Facet {
 
   private getValueFromHierarchy(value: any): ValueHierarchy {
     var getter = value instanceof FacetValue ? value.value : value;
-    return this.valueHierarchy[getter];
+    return this.getValueHierarchy(getter);
   }
 
   private getFacetValueFromHierarchy(value: any): FacetValue {
@@ -861,6 +860,32 @@ export class HierarchicalFacet extends Facet {
   private getLevel(value: FacetValue) {
     return value.value.split(this.options.delimitingCharacter).length - 1
   }
-}
 
+  private getAllValueHierarchy(): { [facetValue: string]: ValueHierarchy } {
+    if (this.valueHierarchy == null) {
+      this.valueHierarchy = {}
+    }
+    return this.valueHierarchy;
+  }
+
+  private deleteValueHierarchy(key: string) {
+    if (this.valueHierarchy != null) {
+      delete this.valueHierarchy[key.toLowerCase()]
+    }
+  }
+
+  private getValueHierarchy(key: string): ValueHierarchy {
+    if (this.valueHierarchy == null) {
+      return undefined;
+    }
+    return this.valueHierarchy[key.toLowerCase()];
+  }
+
+  private setValueHierarchy(key: string, value: ValueHierarchy) {
+    if (this.valueHierarchy == null) {
+      this.valueHierarchy = {}
+    }
+    this.valueHierarchy[key.toLowerCase()] = value;
+  }
+}
 Initialization.registerAutoCreateComponent(HierarchicalFacet);

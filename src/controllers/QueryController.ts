@@ -8,7 +8,7 @@ import {LocalStorageUtils} from '../utils/LocalStorageUtils';
 import {ISearchInterfaceOptions} from '../ui/SearchInterface/SearchInterface';
 import {Assert} from '../misc/Assert';
 import {SearchEndpointWithDefaultCallOptions} from '../rest/SearchEndpointWithDefaultCallOptions';
-import {INewQueryEventArgs, IPreprocessResultsEventArgs, INoResultsEventArgs, IQuerySuccessEventArgs, IQueryErrorEventArgs, IDuringQueryEventArgs, QueryEvents, IFetchMoreSuccessEventArgs, IDoneBuildingQueryEventArgs,IBuildingQueryEventArgs, IBuildingCallOptionsEventArgs} from '../events/QueryEvents';
+import {INewQueryEventArgs, IPreprocessResultsEventArgs, INoResultsEventArgs, IQuerySuccessEventArgs, IQueryErrorEventArgs, IDuringQueryEventArgs, QueryEvents, IFetchMoreSuccessEventArgs, IDoneBuildingQueryEventArgs, IBuildingQueryEventArgs, IBuildingCallOptionsEventArgs} from '../events/QueryEvents';
 import {QueryUtils} from '../utils/QueryUtils';
 import {Defer} from '../misc/Defer';
 import {$$, Dom} from '../utils/Dom';
@@ -18,6 +18,7 @@ import {BaseComponent} from '../ui/Base/BaseComponent';
 import _ = require('underscore');
 
 declare const Coveo;
+declare const coveoanalytics: CoveoAnalytics.CoveoUA;
 
 /**
  * Possible options when performing a query with the query controller
@@ -179,6 +180,7 @@ export class QueryController extends RootComponent {
     }
 
     var query = queryBuilder.build();
+    this.logQueryInActionsHistory(query);
     var endpointToUse = this.getEndpoint();
 
     var promise = this.currentPendingQuery = endpointToUse.search(query);
@@ -305,7 +307,6 @@ export class QueryController extends RootComponent {
     var queryBuilder = new QueryBuilder();
     this.continueLastQueryBuilder(queryBuilder, count);
     var query = queryBuilder.build();
-
     var endpointToUse = this.getEndpoint()
     var promise: any = this.currentPendingQuery = endpointToUse.search(query);
     var dataToSendDuringQuery: IDuringQueryEventArgs = {
@@ -317,7 +318,7 @@ export class QueryController extends RootComponent {
     $$(this.element).trigger(QueryEvents.duringFetchMoreQuery, dataToSendDuringQuery);
     this.lastQueryBuilder = queryBuilder;
     this.lastQuery = query;
-    promise.then((results?: IQueryResults)=> {
+    promise.then((results?: IQueryResults) => {
       // We re-use the search id from the initial search here, even though the
       // server provided us with a new one. "Fetch mores" are considered to be
       // the same query from an analytics point of view.
@@ -569,8 +570,8 @@ export class QueryController extends RootComponent {
   }
 
   private buildQueryDurationSection(queryResults: IQueryResults) {
-    var dom = Dom.createElement('div', {className: 'coveo-debug-queryDuration'});
-    var graph = Dom.createElement('div', {className: 'coveo-debug-durations'});
+    var dom = Dom.createElement('div', { className: 'coveo-debug-queryDuration' });
+    var graph = Dom.createElement('div', { className: 'coveo-debug-durations' });
     var debugRef = BaseComponent.getComponentRef('Debug');
     dom.appendChild(graph);
     _.forEach(debugRef.durationKeys, (key: string) => {
@@ -581,16 +582,27 @@ export class QueryController extends RootComponent {
           style: `width:${duration}px`,
           'data-id': key
         }));
-        var legend = Dom.createElement('div', {className: 'coveo-debug-duration-legend', 'data-id': key});
+        var legend = Dom.createElement('div', { className: 'coveo-debug-duration-legend', 'data-id': key });
         dom.appendChild(legend);
-        var keyDom = Dom.createElement('span', {className: 'coveo-debug-duration-label'});
+        var keyDom = Dom.createElement('span', { className: 'coveo-debug-duration-label' });
         keyDom.appendChild(document.createTextNode(key));
         legend.appendChild(keyDom);
-        var durationDom = Dom.createElement('span', {className: 'coveo-debug-duration-value'});
+        var durationDom = Dom.createElement('span', { className: 'coveo-debug-duration-value' });
         durationDom.appendChild(document.createTextNode(duration));
         legend.appendChild(durationDom);
       }
     });
     return dom;
+  }
+
+  private logQueryInActionsHistory(query: IQuery) {
+    if (typeof coveoanalytics != 'undefined') {
+      let store = new coveoanalytics.history.HistoryStore()
+      let queryElement: CoveoAnalytics.HistoryQueryElement = {
+        type: "query",
+        q: query.q
+      }
+      store.addElement(queryElement);
+    }
   }
 }

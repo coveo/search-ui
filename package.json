@@ -44,6 +44,7 @@
     "gulp-shell": "^0.5.2",
     "gulp-tsc": "^1.1.5",
     "imports-loader": "^0.6.5",
+    "jasmine": "^2.4.1",
     "jasmine-core": "^2.4.1",
     "json5": "^0.5.0",
     "karma": "^0.13.22",
@@ -55,13 +56,15 @@
     "phantomjs-prebuilt": "^2.1.7",
     "png-sprite": "^0.1.1",
     "pretty-typescript": "^1.6.0",
+    "q": "^1.4.1",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.1.5",
     "script-loader": "^0.7.0",
     "ts-loader": "^0.8.2",
     "tsconfig-glob": "^0.4.3",
     "typedoc": "https://github.com/coveord/typedoc/tarball/master",
-    "webpack": "^1.13.0"
+    "webpack": "^1.13.0",
+    "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
     "coveomagicbox": "^1.0.5",

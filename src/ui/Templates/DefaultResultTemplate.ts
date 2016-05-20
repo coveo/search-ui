@@ -14,10 +14,10 @@ export class DefaultResultTemplate extends Template {
     Assert.exists(queryResult);
     queryResult = _.extend({}, queryResult, UnderscoreTemplate.templateHelpers);
 
-    var defaultTemplates = _.map(TemplateCache.getDefaultTemplates(), (name)=>TemplateCache.getTemplate(name));
+    var defaultTemplates = _.map(TemplateCache.getDefaultTemplates(), (name) => TemplateCache.getTemplate(name));
 
     // We want to put templates with conditions first
-    defaultTemplates.sort((a, b)=> {
+    defaultTemplates.sort((a, b) => {
       if (a.condition == null && b.condition != null) {
         return 1;
       } else if (a.condition != null && b.condition == null) {
@@ -35,10 +35,10 @@ export class DefaultResultTemplate extends Template {
 
     // If all else fails, use a hard-coded default template
     return _.template('<div>' +
-        '<div class="coveo-title"><a class="CoveoResultLink"><%= title?highlight(title, titleHighlights):clickUri %></a></div>' +
-        '<% if(excerpt){ %><div class="coveo-excerpt"><%= highlight(excerpt, excerptHighlights) %></div><% } %>' +
-        '<table class="CoveoFieldTable"><%= templateFields() %></table>' +
-        '</div>')(queryResult);
+      '<div class="coveo-title"><a class="CoveoResultLink"><%= title?highlight(title, titleHighlights):clickUri %></a></div>' +
+      '<% if(excerpt){ %><div class="coveo-excerpt"><%= highlight(excerpt, excerptHighlights) %></div><% } %>' +
+      '<table class="CoveoFieldTable"><%= templateFields() %></table>' +
+      '</div>')(queryResult);
   }
 
   instantiateToElement(queryResult?: IQueryResult): HTMLElement {
@@ -49,8 +49,8 @@ export class DefaultResultTemplate extends Template {
 
 
   getFields() {
-    var defaultTemplates = _.map(TemplateCache.getDefaultTemplates(), (name)=>TemplateCache.getTemplate(name));
-    return _.flatten(_.map(defaultTemplates, (template: Template)=>template.getFields()));
+    var defaultTemplates = _.map(TemplateCache.getDefaultTemplates(), (name) => TemplateCache.getTemplate(name));
+    return _.flatten(_.map(defaultTemplates, (template: Template) => template.getFields()));
   }
 
   getType() {

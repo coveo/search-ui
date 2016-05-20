@@ -19,6 +19,7 @@ import _ = require('underscore');
 export interface AnalyticsEndpointOptions {
   token: string;
   serviceUrl: string;
+  organization: string;
 }
 
 export class AnalyticsEndpoint {
@@ -32,6 +33,7 @@ export class AnalyticsEndpoint {
   static pendingRequest: Promise<any>;
 
   private visitId: string;
+  private organization: string;
   public endpointCaller: EndpointCaller;
 
   constructor(public options: AnalyticsEndpointOptions) {
@@ -41,6 +43,7 @@ export class AnalyticsEndpoint {
       accessToken: (this.options.token && this.options.token != "") ? this.options.token : null
     }
     this.endpointCaller = new EndpointCaller(endpointCallerOptions);
+    this.organization = options.organization;
   }
 
   public getCurrentVisitId(): string {
@@ -48,19 +51,19 @@ export class AnalyticsEndpoint {
   }
 
   public getCurrentVisitIdPromise(): Promise<string> {
-    return new Promise((resolve, reject)=> {
+    return new Promise((resolve, reject) => {
       if (this.getCurrentVisitId()) {
         resolve(this.getCurrentVisitId());
       } else {
         var url = this.buildAnalyticsUrl('/analytics/visit');
         this.getFromService<APIAnalyticsVisitResponseRest>(url, {})
-            .then((response: APIAnalyticsVisitResponseRest) => {
-              this.visitId = response.id;
-              resolve(this.visitId);
-            })
-            .catch((response: IErrorResponse) => {
-              reject(response);
-            });
+          .then((response: APIAnalyticsVisitResponseRest) => {
+            this.visitId = response.id;
+            resolve(this.visitId);
+          })
+          .catch((response: IErrorResponse) => {
+            reject(response);
+          });
       }
     })
   }
@@ -92,6 +95,10 @@ export class AnalyticsEndpoint {
   private sendToService<D, R>(data: D, path: string, paramName: string): Promise<R> {
     var url = QueryUtils.mergePath(this.options.serviceUrl, '/rest/' + (AnalyticsEndpoint.CUSTOM_ANALYTICS_VERSION || AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION) + '/analytics/' + path);
     var queryString = [];
+
+    if (this.organization) {
+      queryString.push('org=' + this.organization);
+    }
     if (Cookie.get('visitorId')) {
       queryString.push('visitor=' + encodeURIComponent(Cookie.get('visitorId')));
     }
@@ -124,10 +131,10 @@ export class AnalyticsEndpoint {
     var paramsToSend = (this.options.token && this.options.token != "") ? _.extend({"access_token": this.options.token}, params) : params;
     return this.endpointCaller.call<T>({
       errorsAsSuccess: false,
-      method: "GET",
-      queryString: [],
+      method: 'GET',
+      queryString: this.options.organization ? ['org=' + encodeURIComponent(this.options.organization)] : [],
       requestData: paramsToSend,
-      responseType: "json",
+      responseType: 'json',
       url: url
     }).then((res: ISuccessResponse<T>)=> {
       return res.data

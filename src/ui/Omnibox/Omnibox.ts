@@ -5,7 +5,8 @@
 ///<reference path="OldOmniboxAddon.ts" />
 
 import {IQueryboxOptions} from '../Querybox/Querybox';
-import {Component, IComponentBindings} from '../Base/Component';
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
 import {StandaloneSearchInterfaceEvents} from '../../events/StandaloneSearchInterfaceEvents';
@@ -27,7 +28,7 @@ import _ = require('underscore');
 
 export interface IPopulateOmniboxSuggestionsEventArgs {
   omnibox: Omnibox;
-  suggestions: Array<Coveo.MagicBox.Suggestion[]|Promise<Coveo.MagicBox.Suggestion[]>>;
+  suggestions: Array<Coveo.MagicBox.Suggestion[] | Promise<Coveo.MagicBox.Suggestion[]>>;
 }
 
 export interface IOmniboxSuggestion extends Coveo.MagicBox.Suggestion {
@@ -68,13 +69,13 @@ export class Omnibox extends Component {
      * Activate this as well a searchAsYouType + reveal suggestions for a cool effect !<br/>
      * Default value is false
      */
-    inline: ComponentOptions.buildBooleanOption({defaultValue: false}),
+    inline: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies whether a new query is automatically triggered whenever the user types new text inside the query box.<br/>
      * Activate this as well a inline + reveal suggestions for a cool effect !<br/>
      * The default is false.
      */
-    enableSearchAsYouType: ComponentOptions.buildBooleanOption({defaultValue: false}),
+    enableSearchAsYouType: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * When search as you type is enabled, specifies the delay in milliseconds before a new query is triggered when the user types new text inside the query box.<br/>
      * The default value is 2000 milliseconds.
@@ -89,27 +90,27 @@ export class Omnibox extends Component {
      * The field addon allows the search box to highlight and complete field syntax.<br/>
      * Default value is false
      */
-    enableFieldAddon: ComponentOptions.buildBooleanOption({defaultValue: false, depend: 'enableQuerySyntax'}),
-    enableSimpleFieldAddon: ComponentOptions.buildBooleanOption({defaultValue: false, depend: 'enableFieldAddon'}),
-    listOfFields: ComponentOptions.buildFieldsOption({depend: 'enableFieldAddon'}),
+    enableFieldAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableQuerySyntax' }),
+    enableSimpleFieldAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableFieldAddon' }),
+    listOfFields: ComponentOptions.buildFieldsOption({ depend: 'enableFieldAddon' }),
     /**
      * Specifies whether the Omnibox suggests top queries logged by the Coveo Cloud Analytics.<br/>
      * This implies that your integration has a proper coveo cloud analytics integration configured.<br/>
      * Default value is false
      */
-    enableTopQueryAddon: ComponentOptions.buildBooleanOption({defaultValue: false}),
+    enableTopQueryAddon: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies whether the reveal query suggestions should be enabled.<br/>
      * This implies that your integration has a proper reveal integration configured.<br/>
      * Default value is false
      */
-    enableRevealQuerySuggestAddon: ComponentOptions.buildBooleanOption({defaultValue: false}),
+    enableRevealQuerySuggestAddon: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies whether the query extension addon should be enabled.<br/>
      * This allows the omnibox to complete the syntax for query extensions.<br/>
      * Default value is false
      */
-    enableQueryExtensionAddon: ComponentOptions.buildBooleanOption({defaultValue: false, depend: 'enableQuerySyntax'}),
+    enableQueryExtensionAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableQuerySyntax' }),
     /**
      * Specifies a placeholder for input
      */
@@ -118,7 +119,7 @@ export class Omnibox extends Component {
      * Specifies a timeout before rejecting suggestions in the omnibox.<br/>
      * Default value is 2000 (2 seconds)
      */
-    omniboxTimeout: ComponentOptions.buildNumberOption({defaultValue: 2000})
+    omniboxTimeout: ComponentOptions.buildNumberOption({ defaultValue: 2000 })
   }
 
   public magicBox: Coveo.MagicBox.Instance;
@@ -150,7 +151,7 @@ export class Omnibox extends Component {
         new QueryExtensionAddon(this);
       }
     } else {
-      grammar = {start: 'Any', expressions: {Any: /.*/}};
+      grammar = { start: 'Any', expressions: { Any: /.*/ } };
     }
 
     if (this.options.enableRevealQuerySuggestAddon) {
@@ -172,10 +173,10 @@ export class Omnibox extends Component {
       suggestionTimeout: this.options.omniboxTimeout
     });
 
-    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs)=> this.handleBuildingQuery(args));
-    this.bind.onRootElement(StandaloneSearchInterfaceEvents.beforeRedirect, ()=> this.handleBeforeRedirect());
-    this.bind.onRootElement(QueryEvents.querySuccess, ()=> this.handleQuerySuccess());
-    this.bind.onQueryState(ModelEvents.CHANGE_ONE, QueryStateAttributes.Q, (args: IAttributeChangedEventArg)=> this.handleQueryStateChanged(args))
+    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
+    this.bind.onRootElement(StandaloneSearchInterfaceEvents.beforeRedirect, () => this.handleBeforeRedirect());
+    this.bind.onRootElement(QueryEvents.querySuccess, () => this.handleQuerySuccess());
+    this.bind.onQueryState(ModelEvents.CHANGE_ONE, QueryStateAttributes.Q, (args: IAttributeChangedEventArg) => this.handleQueryStateChanged(args))
 
     this.setupMagicBox();
   }
@@ -241,9 +242,9 @@ export class Omnibox extends Component {
   private setupMagicBox() {
     this.magicBox.onsuggestions = (suggestions: IOmniboxSuggestion[]) => {
       var diff = suggestions.length != this.lastSuggestions.length ||
-          _.filter(suggestions, (suggestion: IOmniboxSuggestion, i: number)=> {
-            return suggestion.text != this.lastSuggestions[i].text;
-          }).length > 0;
+        _.filter(suggestions, (suggestion: IOmniboxSuggestion, i: number) => {
+          return suggestion.text != this.lastSuggestions[i].text;
+        }).length > 0;
       this.lastSuggestions = suggestions;
       if (this.options.enableSearchAsYouType && (diff || suggestions.length == 0)) { // retrigger a new search as you type only if there are diff or if the input is not the same
         this.searchAsYouType();

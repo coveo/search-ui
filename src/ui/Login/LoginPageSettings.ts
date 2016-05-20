@@ -3,36 +3,36 @@
 module Coveo {
 
   export class LoginPageSettings {
-    private pageSettings:JQuery;
+    private pageSettings: JQuery;
 
     private pageSettingsInputTemplate = _.template(
-        "<div class='coveo-input-container'>\
+      "<div class='coveo-input-container'>\
           <span class='coveo-page-settings-icon'></span>\
           <input class='coveo-page-settings' type='text' placeholder='" + l("PageUrl") + "' autocorrect='off' autocapitalize='off' />\
     </div>");
 
-    constructor(public loginPanel:Login) {
+    constructor(public loginPanel: Login) {
     }
 
     public buildDom() {
       var container = $("<div></div>").addClass('coveo-login-page-settings-container');
       this.pageSettings = $(this.pageSettingsInputTemplate());
-      this.pageSettings.keypress((e:JQueryEventObject) => this.handleInputKeypress(e));
+      this.pageSettings.keypress((e: JQueryEventObject) => this.handleInputKeypress(e));
       container.append(this.pageSettings);
       this.pageSettings.find('input').val(this.getPageSettingsUrl());
       this.loginPanel.getOrCreateContainer().append(container);
     }
 
-    public getPageSettingsUrl():string {
+    public getPageSettingsUrl(): string {
       return window.localStorage.getItem(this.getLocalStorageKeyPageUrl());
     }
 
-    public setPageSettingsUrl(pageUrl:string) {
+    public setPageSettingsUrl(pageUrl: string) {
       this.pageSettings.find('input').val(pageUrl);
       window.localStorage.setItem(this.getLocalStorageKeyPageUrl(), pageUrl);
     }
 
-    public submit(allValidationPassed:JQueryDeferred<boolean>) {
+    public submit(allValidationPassed: JQueryDeferred<boolean>) {
       var url = this.pageSettings.find('input').val()
       this.setPageSettingsUrl(url);
       var deferredToReturn = $.Deferred();
@@ -40,7 +40,7 @@ module Coveo {
       return deferredToReturn;
     }
 
-    public validate(allValidationPassed:JQueryDeferred<boolean>) {
+    public validate(allValidationPassed: JQueryDeferred<boolean>) {
       var deferredToReturn = $.Deferred();
       //If this value is set, there is a pretty good chance that the file is also written on disc.
       if (this.getPageSettingsUrl()) {
@@ -55,7 +55,7 @@ module Coveo {
       return "coveo-page-settings-url-" + this.loginPanel.options.id;
     }
 
-    private getSearchApiRootUrl():string {
+    private getSearchApiRootUrl(): string {
       var url = this.getPageSettingsUrl().trim();
 
       // If no page is specified the url is as-is
@@ -67,13 +67,13 @@ module Coveo {
       return url.match(/^(.*)\/[^\/]*$/)[1];
     }
 
-    private handleInputKeypress(e:JQueryEventObject) {
+    private handleInputKeypress(e: JQueryEventObject) {
       if (!this.loginPanel.isHidden && (e.keyCode == 13)) {
         this.loginPanel.submit();
       }
     }
 
-    private loadFromInterfaceEditorUrl(url:string) {
+    private loadFromInterfaceEditorUrl(url: string) {
       var urlObject = document.createElement('a');
       urlObject.href = url;
       if (urlObject.pathname == "/load") {
@@ -90,81 +90,81 @@ module Coveo {
       }
     }
 
-    private tryToWriteFileToDisc(allValidationPassed:JQueryDeferred<boolean>, deferredToReturn:JQueryDeferred<any>, writeDocument = false) {
+    private tryToWriteFileToDisc(allValidationPassed: JQueryDeferred<boolean>, deferredToReturn: JQueryDeferred<any>, writeDocument = false) {
       //allValidationPassed is the deferred sent by the LoginComponent.
       //If the login credentials fail, for example, we don't wanna write the document content. We need a good url + good credentials before doing so.
       //deferredToReturn is what we send back to the login component to signify that we were able to fetch the page and write it
       var url = this.getPageSettingsUrl();
       AjaxUtils.ajaxBasicAuth("GET", this.loadFromInterfaceEditorUrl(url), this.loginPanel.getUser(), this.loginPanel.getPassword(),
-          (res:{body: string; root: string})=> {
-            if (DeviceUtils.isPhonegap()) {
-              new PhonegapFileWriter("SearchPage.html").write(JSON.stringify(res))
-                  .done(()=> {
-                    this.loginPanel.logger.info("Found the page and successfully wrote to disc", this.getPageSettingsUrl());
-                    if (writeDocument) {
-                      allValidationPassed.done(()=> {
-                        this.loginPanel.logger.info("Replacing body content with new search page", this.getPageSettingsUrl());
-                        this.writeDocumentContent(res.body);
-                      })
-                    }
-                    deferredToReturn.resolve();
+        (res: { body: string; root: string }) => {
+          if (DeviceUtils.isPhonegap()) {
+            new PhonegapFileWriter("SearchPage.html").write(JSON.stringify(res))
+              .done(() => {
+                this.loginPanel.logger.info("Found the page and successfully wrote to disc", this.getPageSettingsUrl());
+                if (writeDocument) {
+                  allValidationPassed.done(() => {
+                    this.loginPanel.logger.info("Replacing body content with new search page", this.getPageSettingsUrl());
+                    this.writeDocumentContent(res.body);
                   })
-                  .fail(()=> {
-                    this.loginPanel.logger.error("Found the file but unable to write", this.getPageSettingsUrl());
-                    deferredToReturn.reject(l("ErrorSavingToDevice"));
-                  })
-            } else {
-              this.loginPanel.logger.info("Found the page", this.getPageSettingsUrl());
-              if (writeDocument) {
-                this.writeDocumentContent(res.body);
-              }
-              deferredToReturn.resolve();
+                }
+                deferredToReturn.resolve();
+              })
+              .fail(() => {
+                this.loginPanel.logger.error("Found the file but unable to write", this.getPageSettingsUrl());
+                deferredToReturn.reject(l("ErrorSavingToDevice"));
+              })
+          } else {
+            this.loginPanel.logger.info("Found the page", this.getPageSettingsUrl());
+            if (writeDocument) {
+              this.writeDocumentContent(res.body);
             }
-          },
-          () => {
-            if (this.getPageSettingsUrl() == undefined || this.getPageSettingsUrl() == "") {
-              this.loginPanel.logger.error("Search page url is empty");
-              deferredToReturn.reject(l("PleaseEnterYourSearchPage"))
-            } else {
-              this.loginPanel.logger.error("Unable to find the file", this.getPageSettingsUrl())
-              deferredToReturn.reject(l("CannotConnectSearchPage"));
-            }
-          })
+            deferredToReturn.resolve();
+          }
+        },
+        () => {
+          if (this.getPageSettingsUrl() == undefined || this.getPageSettingsUrl() == "") {
+            this.loginPanel.logger.error("Search page url is empty");
+            deferredToReturn.reject(l("PleaseEnterYourSearchPage"))
+          } else {
+            this.loginPanel.logger.error("Unable to find the file", this.getPageSettingsUrl())
+            deferredToReturn.reject(l("CannotConnectSearchPage"));
+          }
+        })
     }
 
-    private tryToReadFileFomDisc(allValidationPassed:JQueryDeferred<boolean>, deferredToReturn:JQueryDeferred<any>, writeDocument = false) {
+    private tryToReadFileFomDisc(allValidationPassed: JQueryDeferred<boolean>, deferredToReturn: JQueryDeferred<any>, writeDocument = false) {
       if (DeviceUtils.isPhonegap()) {
         new PhonegapFileReader("SearchPage.html").read()
-            .done((fileContent:string)=> {
-              this.loginPanel.logger.info("Found the page on disc", this.getPageSettingsUrl());
-              if (writeDocument) {
-                allValidationPassed.done(()=> {
-                  var body = JSON.parse(fileContent).body
-                  this.writeDocumentContent(body);
-                })
-              }
-              //We still want to rewrite the file each time, so that we get the latest one available at each load
-              //We don't really care if it fails or not, so we pass a 'fake' deferred
-              //If it fails we'll load the one saved on the device anyway at the next restart of the app
-              this.tryToWriteFileToDisc($.Deferred(), $.Deferred(), false);
-              deferredToReturn.resolve();
-            })
-            .fail(()=> {
-              if (this.getPageSettingsUrl()) {
-                this.loginPanel.logger.info("Unable to find the page on disc", this.getPageSettingsUrl());
-                this.loginPanel.logger.info("Trying to fetch it with GET request and write to disc");
-                this.tryToWriteFileToDisc(allValidationPassed, deferredToReturn, false);
-              } else {
-                deferredToReturn.reject(l("ErrorReadingFromDevice"));
-              }
-            })
+          .done((fileContent: string) => {
+            this.loginPanel.logger.info("Found the page on disc", this.getPageSettingsUrl());
+            if (writeDocument) {
+              allValidationPassed.done(() => {
+                var body = JSON.parse(fileContent).body
+                this.writeDocumentContent(body);
+              })
+            }
+            //We still want to rewrite the file each time, so that we get the latest one available at each load
+            //We don't really care if it fails or not, so we pass a 'fake' deferred
+            //If it fails we'll load the one saved on the device anyway at the next restart of the app
+            this.tryToWriteFileToDisc($.Deferred(), $.Deferred(), false);
+            deferredToReturn.resolve();
+          })
+          .fail(() => {
+            if (this.getPageSettingsUrl()) {
+              this.loginPanel.logger.info("Unable to find the page on disc", this.getPageSettingsUrl());
+              this.loginPanel.logger.info("Trying to fetch it with GET request and write to disc");
+              this.tryToWriteFileToDisc(allValidationPassed, deferredToReturn, false);
+            } else {
+              deferredToReturn.reject(l("ErrorReadingFromDevice"));
+            }
+          })
       } else {
         this.tryToWriteFileToDisc(allValidationPassed, deferredToReturn, writeDocument);
       }
 
     }
 
-    private writeDocumentContent(content:string) {
+    private writeDocumentContent(content: string) {
       document.body.outerHTML = content;
       //We need to append a login component if there is none on the landing page
       //otherwise the user will never be able to change it's page manually (other than reloading the app completely)
@@ -195,7 +195,7 @@ module Coveo {
 
     private configureNewEndpoints() {
       var scripts = $('body').find('script.CoveoEndpoint');
-      _.each(scripts, (script)=> {
+      _.each(scripts, (script) => {
         eval($(script).text());
       })
 
@@ -213,7 +213,7 @@ module Coveo {
       var scripts = $('body').find('script.CoveoInit');
       if (scripts.length != 0) {
         Coveo["InitializeFromPhonegap"] = true;
-        _.each(scripts, (script)=> {
+        _.each(scripts, (script) => {
           eval($(script).text());
         })
       } else {

@@ -13,7 +13,7 @@ module Coveo {
     static options = <ToggleButtonOptions>{
       toggleClass: ComponentOptions.buildStringOption(),
       target: ComponentOptions.buildStringOption(),
-      activateGlass: ComponentOptions.buildBooleanOption({defaultValue: true})
+      activateGlass: ComponentOptions.buildBooleanOption({ defaultValue: true })
     };
 
     private classToToggle: string;

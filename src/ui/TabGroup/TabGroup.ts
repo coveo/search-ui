@@ -83,11 +83,11 @@ module Coveo {
 
     private handleQueryStateChange(e: JQueryEventObject, args: IAttributeChangedEventArg) {
       Assert.exists(args);
-        if (args.value == this.options.id) {
-          this.actionOnSelect();
-        } else {
-          this.actionOnUnSelect();
-        }
+      if (args.value == this.options.id) {
+        this.actionOnSelect();
+      } else {
+        this.actionOnUnSelect();
+      }
     }
 
     private hideTabsNotInThisGroup() {

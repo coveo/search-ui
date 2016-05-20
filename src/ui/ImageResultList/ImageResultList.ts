@@ -1,4 +1,4 @@
-﻿
+
 
 module Coveo {
   export interface ImageResultListOptions extends IResultListOptions {
@@ -17,8 +17,8 @@ module Coveo {
         defaultValue: "row",
         postProcessing: (value: string) => value.toLowerCase()
       }),
-      heightThreshold: ComponentOptions.buildNumberOption({defaultValue: 250, min: 16}),
-      columnWidth: ComponentOptions.buildNumberOption({defaultValue: 225, min: 16})
+      heightThreshold: ComponentOptions.buildNumberOption({ defaultValue: 250, min: 16 }),
+      columnWidth: ComponentOptions.buildNumberOption({ defaultValue: 225, min: 16 })
     }
 
     private columnResultsArray: number[] = [];
@@ -28,9 +28,9 @@ module Coveo {
     private lastRowHeight: number = 0;
 
     constructor(public element: HTMLElement,
-                public options?: ImageResultListOptions,
-                bindings?: IComponentBindings,
-                elementClassId: string = Coveo.ResultList.ID) {
+      public options?: ImageResultListOptions,
+      bindings?: IComponentBindings,
+      elementClassId: string = Coveo.ResultList.ID) {
 
       super(element, options, bindings, ImageResultList.ID);
 
@@ -58,15 +58,15 @@ module Coveo {
     private bindWindowResizeEvent() {
       $(window).on('resize', this.resize);
     }
-    
+
     private handleNuke() {
-        $(window).off('resize', this.resize);
+      $(window).off('resize', this.resize);
     }
-    
+
     private resize() {
-        var timeout;
-        clearTimeout(timeout);
-        timeout = setTimeout(this.retrieveLayoutMethod(), 250);
+      var timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(this.retrieveLayoutMethod(), 250);
     }
 
     private handleProcessNewResultsDisplayed() {
@@ -125,11 +125,11 @@ module Coveo {
           }
         }
       }
-      images.each(function (i, e: HTMLImageElement) {
+      images.each(function(i, e: HTMLImageElement) {
         if ((this.src && this.complete) || /*for IE 10-*/ $(e).height() > 0) {
           onImageLoad(e);
         } else {
-          $(e).off('load').one('load', function () {
+          $(e).off('load').one('load', function() {
             onImageLoad(e);
           });
         }

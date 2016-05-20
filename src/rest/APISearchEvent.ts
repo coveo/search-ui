@@ -12,7 +12,7 @@ export interface IAPISearchEvent {
   resultsPerPage: number;
   pageNumber: number;
   type: string;
-  actionCause : string;
+  actionCause: string;
   queryPipeline: string;
   splitTestRunName: string;
   splitTestRunVersion: string;

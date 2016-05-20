@@ -10,7 +10,7 @@ import {StringUtils} from '../../utils/StringUtils';
 declare const Coveo;
 
 export interface FacetSortKlass {
-  new(sorts: string[], facet: Facet): FacetSort;
+  new (sorts: string[], facet: Facet): FacetSort;
 }
 export interface FacetSortDescription {
   label: string;
@@ -120,9 +120,9 @@ export class FacetSort {
 
   private reorderValuesWithCustomOrder(facetValues: FacetValue[]) {
     var notFoundIndex = facetValues.length;
-    var customSortsLowercase = _.map(this.facet.options.customSort, (customSort)=>customSort.toLowerCase());
+    var customSortsLowercase = _.map(this.facet.options.customSort, (customSort) => customSort.toLowerCase());
     var valueIndexPair = _.map(facetValues, (facetValue) => {
-      var index = _.reduce(customSortsLowercase, (memo, customSort, i)=> {
+      var index = _.reduce(customSortsLowercase, (memo, customSort, i) => {
         if (memo != -1) {
           return memo;
         }
@@ -132,7 +132,7 @@ export class FacetSort {
         return -1;
       }, -1);
       index = index == -1 ? ++notFoundIndex : index;
-      return {facetValue: facetValue, index: index};
+      return { facetValue: facetValue, index: index };
     })
     var sorted = _.sortBy(valueIndexPair, 'index');
     sorted = this.customSortDirection == 'ascending' ? sorted : sorted.reverse();

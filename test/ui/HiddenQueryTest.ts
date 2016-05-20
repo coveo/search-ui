@@ -10,7 +10,7 @@ module Coveo {
     })
 
     afterEach(function () {
-      test: null;
+      test = null;
     })
 
     it('should populate breadcrumb if hd and hq is set', function () {

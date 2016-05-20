@@ -10,7 +10,7 @@ export class LazyTemplate extends Template {
 
   instantiateToString(object?: any, checkCondition = true): string {
     if (this.template === undefined) {
-      this.template = this.option.load(this.element, this.attrName, _.extend({}, this.option, {lazy: false}));
+      this.template = this.option.load(this.element, this.attrName, _.extend({}, this.option, { lazy: false }));
       if (this.template == null) {
         if (this.option.defaultValue != null) {
           this.template = this.option.defaultValue;

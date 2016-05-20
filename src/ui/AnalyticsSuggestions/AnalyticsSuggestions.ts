@@ -8,9 +8,9 @@ module Coveo {
   export class AnalyticsSuggestions extends Coveo.Component {
     static ID = "AnalyticsSuggestions";
     static options: AnalyticsSuggestionsOptions = {
-      omniboxZIndex: ComponentOptions.buildNumberOption({defaultValue: 52, min: 0}),
-      headerTitle: ComponentOptions.buildLocalizedStringOption({defaultValue: l("SuggestedQueries")}),
-      numberOfSuggestions: ComponentOptions.buildNumberOption({defaultValue: 5, min: 1})
+      omniboxZIndex: ComponentOptions.buildNumberOption({ defaultValue: 52, min: 0 }),
+      headerTitle: ComponentOptions.buildLocalizedStringOption({ defaultValue: l("SuggestedQueries") }),
+      numberOfSuggestions: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1 })
     };
 
     private suggestionForOmnibox: SuggestionForOmnibox;
@@ -18,20 +18,20 @@ module Coveo {
     private lastSuggestions: string[] = []
 
     private topAnalyticsElementHeaderTemplate = _.template(
-        "<div class='coveo-top-analytics-suggestion-header'>\
+      "<div class='coveo-top-analytics-suggestion-header'>\
           <span class='coveo-icon-top-analytics'></span> \
           <span class='coveo-caption'><%= headerTitle %></span> \
         </div>"
     );
     private topAnalyticsElementRowTemplate = _.template(
-        "<div class='magic-box-suggestion coveo-omnibox-selectable coveo-top-analytics-suggestion-row'> \
+      "<div class='magic-box-suggestion coveo-omnibox-selectable coveo-top-analytics-suggestion-row'> \
           <%= data %> \
         </div>"
     );
 
     constructor(element: HTMLElement,
-                public options: AnalyticsSuggestionsOptions,
-                bindings?: IComponentBindings) {
+      public options: AnalyticsSuggestionsOptions,
+      bindings?: IComponentBindings) {
       super(element, AnalyticsSuggestions.ID, bindings);
 
       // TODO remove on v1
@@ -46,20 +46,20 @@ module Coveo {
       this.options.onSelect = this.options.onSelect || this.onRowSelection;
 
       var suggestionStructure: SuggestionForOmniboxTemplate;
-      if(this.searchInterface.isNewDesign()) {
+      if (this.searchInterface.isNewDesign()) {
         suggestionStructure = {
           row: this.topAnalyticsElementRowTemplate
         };
       } else {
         suggestionStructure = {
-          header: {template: this.topAnalyticsElementHeaderTemplate, title: this.options.headerTitle},
+          header: { template: this.topAnalyticsElementHeaderTemplate, title: this.options.headerTitle },
           row: this.topAnalyticsElementRowTemplate
         };
       }
 
       this.suggestionForOmnibox = new SuggestionForOmnibox(suggestionStructure, $.proxy(this.options.onSelect, this));
       $(this.root).on(OmniboxEvents.populateOmnibox, $.proxy(this.handlePopulateOmnibox, this));
-      this.bind.onRoot(QueryEvents.querySuccess, ()=> this.partialQueries = []);
+      this.bind.onRoot(QueryEvents.querySuccess, () => this.partialQueries = []);
     }
 
     private resultsToBuildWith = [];
@@ -94,7 +94,7 @@ module Coveo {
         searchPromise.catch(() => {
           this.resolveWithUndefined(deferred);
         });
-        args.rows.push({deferred: deferred});
+        args.rows.push({ deferred: deferred });
       }
     }
 
@@ -104,7 +104,7 @@ module Coveo {
       this.queryStateModel.set(QueryStateModel.attributesEnum.q, value);
       this.queryController.deferExecuteQuery({
         beforeExecuteQuery: () => {
-          this.usageAnalytics.logSearchEvent < IAnalyticsTopSuggestionMeta >(AnalyticsActionCauseList.omniboxAnalytics, {
+          this.usageAnalytics.logSearchEvent<IAnalyticsTopSuggestionMeta>(AnalyticsActionCauseList.omniboxAnalytics, {
             partialQueries: this.cleanCustomData(this.partialQueries),
             suggestionRanking: _.indexOf(_.pluck(this.resultsToBuildWith, 'value'), value),
             suggestions: this.cleanCustomData(this.lastSuggestions),
@@ -116,19 +116,19 @@ module Coveo {
 
     private cleanCustomData(toClean: string[], rejectLength = 256) {
       // Filter out only consecutive values that are the identical
-      toClean = _.filter(toClean, (partial: string, pos?: number, array?: string[])=> {
+      toClean = _.filter(toClean, (partial: string, pos?: number, array?: string[]) => {
         return pos === 0 || partial !== array[pos - 1];
       });
 
       // Custom dimensions cannot be an array in analytics service: Send a string joined by ; instead.
       // Need to replace ;
-      toClean = _.map(toClean, (partial)=> {
+      toClean = _.map(toClean, (partial) => {
         return partial.replace(/;/g, '');
       });
 
       // Reduce right to get the last X words that adds to less then rejectLength
       var reducedToRejectLengthOrLess = [];
-      _.reduceRight(toClean, (memo: number, partial: string)=> {
+      _.reduceRight(toClean, (memo: number, partial: string) => {
         var totalSoFar = memo + partial.length;
         if (totalSoFar <= rejectLength) {
           reducedToRejectLengthOrLess.push(partial);

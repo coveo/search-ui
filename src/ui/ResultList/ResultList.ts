@@ -58,7 +58,7 @@ module Coveo {
        * Eg : data-wait-animation-container-selector="#someCssSelector"
        * By default, the animation appears in the the resultContainer.
        */
-      waitAnimationContainer: ComponentOptions.buildChildHtmlElementOption({postProcessing: (value, options: IResultListOptions) => value || options.resultContainer}),
+      waitAnimationContainer: ComponentOptions.buildChildHtmlElementOption({ postProcessing: (value, options: IResultListOptions) => value || options.resultContainer }),
       /**
        * Specifies whether the ResultList automatically retrieves an additional page of results and appends them to those already being displayed whenever the user scrolls to the end of the infiniteScrollContainer.<br/>
        * The waitAnimation will be displayed while additional results are fetched.<br/>
@@ -69,19 +69,19 @@ module Coveo {
        * When infiniteScroll is enabled, specifies the number of additional results that are fetched when the user scrolls to the bottom of the infiniteScrollContainer.<br/>
        * Default value is 10
        */
-      infiniteScrollPageSize: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 1 ,depend : 'enableInfiniteScroll'}),
+      infiniteScrollPageSize: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 1, depend: 'enableInfiniteScroll' }),
       /**
        * When infinite scrolling is enabled, specifies the element whose scrolling is monitored to trigger fetching of additional results.<br/>
        * By default, the framework will try to find the first scrolling parent it encounter, starting from the ResultList itself<br/>
        * This also means that if it encounter no parent that are scrollable (in css this means having overflow-y: scroll), then the window itself will be the scroll container
        */
-      infiniteScrollContainer: ComponentOptions.buildChildHtmlElementOption({ depend : 'enableInfiniteScroll', defaultFunction: (element) => JQueryUtils.findScrollingParent(element) }),
+      infiniteScrollContainer: ComponentOptions.buildChildHtmlElementOption({ depend: 'enableInfiniteScroll', defaultFunction: (element) => JQueryUtils.findScrollingParent(element) }),
       /**
        * Specifies if the wait animation should be displayed when a query is being performed using infinite scroll.<br/>
        * Default value is true
        */
       enableInfiniteScrollWaitingAnimation: ComponentOptions.buildBooleanOption({ depend: 'enableInfiniteScroll', defaultValue: true }),
-      mobileScrollContainer: ComponentOptions.buildSelectorOption({defaultFunction: () => <HTMLElement>document.querySelector('.coveo-results-column')}),
+      mobileScrollContainer: ComponentOptions.buildSelectorOption({ defaultFunction: () => <HTMLElement>document.querySelector('.coveo-results-column') }),
       /**
        * Specifies a list of fields to include in the query.<br/>
        * This is to ensure that fields that are not needed for the UI to function are not sent by the search API.<br/>
@@ -124,16 +124,16 @@ module Coveo {
 
       this.showOrHideElementsDependingOnState(false, false);
 
-      this.bind.onRootElement<INewQueryEventArgs>(QueryEvents.newQuery, (args: INewQueryEventArgs)=>this.handleNewQuery());
-      this.bind.onRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs)=> this.handleBuildingQuery(args));
-      this.bind.onRootElement<IQuerySuccessEventArgs>(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs)=> this.handleQuerySuccess(args));
-      this.bind.onRootElement<IDuringQueryEventArgs>(QueryEvents.duringQuery, (args: IDuringQueryEventArgs)=> this.handleDuringQuery());
-      this.bind.onRootElement<IQueryErrorEventArgs>(QueryEvents.queryError, (args: IQueryErrorEventArgs)=> this.handleQueryError());
+      this.bind.onRootElement<INewQueryEventArgs>(QueryEvents.newQuery, (args: INewQueryEventArgs) => this.handleNewQuery());
+      this.bind.onRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
+      this.bind.onRootElement<IQuerySuccessEventArgs>(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
+      this.bind.onRootElement<IDuringQueryEventArgs>(QueryEvents.duringQuery, (args: IDuringQueryEventArgs) => this.handleDuringQuery());
+      this.bind.onRootElement<IQueryErrorEventArgs>(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError());
 
       if (this.options.enableInfiniteScroll) {
-        this.bind.on(<HTMLElement>this.options.infiniteScrollContainer, 'scroll', (e: Event)=> this.handleScrollOfResultList());
+        this.bind.on(<HTMLElement>this.options.infiniteScrollContainer, 'scroll', (e: Event) => this.handleScrollOfResultList());
       }
-      this.bind.onQueryState(ModelEvents.CHANGE_ONE, QueryStateAttributes.FIRST, ()=> this.handlePageChanged());
+      this.bind.onQueryState(ModelEvents.CHANGE_ONE, QueryStateAttributes.FIRST, () => this.handlePageChanged());
     }
 
     /**
@@ -147,7 +147,7 @@ module Coveo {
       if (!append) {
         this.options.resultContainer.innerHTML = '';
       }
-      _.each(resultsElement, (resultElement)=> {
+      _.each(resultsElement, (resultElement) => {
         this.options.resultContainer.appendChild(resultElement);
         this.triggerNewResultDisplayed(Component.getResult(resultElement), resultElement);
       });
@@ -291,12 +291,12 @@ module Coveo {
     }
 
     private handlePageChanged() {
-      this.bind.oneRootElement(QueryEvents.querySuccess, ()=> {
+      this.bind.oneRootElement(QueryEvents.querySuccess, () => {
         if (this.options.infiniteScrollContainer instanceof Window) {
           var win = <Window>this.options.infiniteScrollContainer;
           win.scrollTo(0);
         } else {
-          var el = <HTMLElement> this.options.infiniteScrollContainer;
+          var el = <HTMLElement>this.options.infiniteScrollContainer;
           if (el.scrollIntoView) {
             el.scrollIntoView();
           }
@@ -335,9 +335,9 @@ module Coveo {
 
     private getAutoSelectedFieldsToInclude() {
       return _.chain(this.options.resultTemplate.getFields())
-          .compact()
-          .unique()
-          .value()
+        .compact()
+        .unique()
+        .value()
     }
 
     private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult) {
@@ -403,16 +403,16 @@ module Coveo {
       var showIfResults = $$(this.element).findAll('.coveo-show-if-results');
       var showIfNoResults = $$(this.element).findAll('.coveo-show-if-no-results');
 
-      _.each(showIfQuery, (s: HTMLElement)=> {
+      _.each(showIfQuery, (s: HTMLElement) => {
         $$(s).toggle(hasQuery);
       })
-      _.each(showIfNoQuery, (s: HTMLElement)=> {
+      _.each(showIfNoQuery, (s: HTMLElement) => {
         $$(s).toggle(!hasQuery);
       })
-      _.each(showIfResults, (s: HTMLElement)=> {
+      _.each(showIfResults, (s: HTMLElement) => {
         $$(s).toggle(hasQuery && hasResults);
       })
-      _.each(showIfNoResults, (s: HTMLElement)=> {
+      _.each(showIfNoResults, (s: HTMLElement) => {
         $$(s).toggle(hasQuery && !hasResults);
       })
     }
@@ -423,7 +423,7 @@ module Coveo {
           $$(this.options.waitAnimationContainer).addClass('coveo-fade-out');
           break;
         case 'spinner':
-          _.each(this.options.resultContainer.children, (child: HTMLElement)=> {
+          _.each(this.options.resultContainer.children, (child: HTMLElement) => {
             $$(child).hide();
           })
           if ($$(this.options.waitAnimationContainer).find('.coveo-wait-animation') == undefined) {

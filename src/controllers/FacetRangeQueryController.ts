@@ -49,7 +49,7 @@ export class FacetRangeQueryController extends FacetQueryController {
         start = this.getISOFormat(start);
         end = this.getISOFormat(end);
       }
-      return <IRangeValue> {
+      return <IRangeValue>{
         start: start,
         end: end,
         endInclusive: true,

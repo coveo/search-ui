@@ -33,14 +33,14 @@ export class KeyboardUtils {
   static isAllowedKeyForOmnibox(e: KeyboardEvent): boolean {
     var keycode = e.keyCode;
     var valid =
-        (KeyboardUtils.isNumberKeyPushed(keycode)) ||
-        (keycode == 32 || keycode == 13) || // spacebar & return key(s)
-        (KeyboardUtils.isLetterKeyPushed(keycode)) ||
-        (keycode > 95 && keycode < 112) || // numpad keys
-        (keycode > 185 && keycode < 193) || // ;=,-./` (in order)
-        (keycode > 218 && keycode < 223) || // [\]' (in order)
-        (keycode == KEYBOARD.BACKSPACE || keycode == KEYBOARD.DELETE) ||
-        (KeyboardUtils.isArrowKeyPushed(keycode));
+      (KeyboardUtils.isNumberKeyPushed(keycode)) ||
+      (keycode == 32 || keycode == 13) || // spacebar & return key(s)
+      (KeyboardUtils.isLetterKeyPushed(keycode)) ||
+      (keycode > 95 && keycode < 112) || // numpad keys
+      (keycode > 185 && keycode < 193) || // ;=,-./` (in order)
+      (keycode > 218 && keycode < 223) || // [\]' (in order)
+      (keycode == KEYBOARD.BACKSPACE || keycode == KEYBOARD.DELETE) ||
+      (KeyboardUtils.isArrowKeyPushed(keycode));
 
     return valid;
   }
@@ -55,9 +55,9 @@ export class KeyboardUtils {
 
   static isArrowKeyPushed(keycode: number): boolean {
     return keycode == KEYBOARD.LEFT_ARROW ||
-        keycode == KEYBOARD.UP_ARROW ||
-        keycode == KEYBOARD.RIGHT_ARROW ||
-        keycode == KEYBOARD.DOWN_ARROW;
+      keycode == KEYBOARD.UP_ARROW ||
+      keycode == KEYBOARD.RIGHT_ARROW ||
+      keycode == KEYBOARD.DOWN_ARROW;
   }
 
   static isNumberKeyPushed(keycode: number): boolean {

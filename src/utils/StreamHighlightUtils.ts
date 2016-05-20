@@ -2,38 +2,41 @@ import {Options} from '../misc/Options';
 import {HighlightUtils} from './HighlightUtils';
 import {StringUtils} from './StringUtils';
 import {Utils} from './Utils';
-import {Highlight} from '../rest/Highlight';
+import {IHighlight} from '../rest/Highlight';
 
 // \u2011: http://graphemica.com/%E2%80%91
 var nonWordBoundary = '[\\.\\-\\u2011\\s~=,.\\|\\/:\'`’;_()]';
 var regexStart = '(' + nonWordBoundary + '|^)(';
-export interface StreamHighlightOptions {
+export interface IStreamHighlightOptions {
   cssClass?: string;
   regexFlags?: string;
 }
 
-class DefaultStreamHighlightOptions extends Options implements StreamHighlightOptions {
-  constructor(public cssClass = 'coveo-highlight', public shorten = 0, public regexFlags = 'gi') {
+class DefaultStreamHighlightOptions extends Options implements IStreamHighlightOptions {
+  constructor(public cssClass = "coveo-highlight", public shorten = 0, public regexFlags = "gi") {
     super();
   }
 }
 
-export function highlightStreamHTML(stream: string, termsToHighlight: {[originalTerm:string]: string[]}, phrasesToHighlight: {[phrase: string]: {[originalTerm:string]: string[]}}, options?: StreamHighlightOptions) {
-  var opts = new DefaultStreamHighlightOptions().merge(options);
-  var container = createStreamHTMLContainer(stream);
-  container.find('*').each((i: number, elem: HTMLElement) => {
-    var text = $(elem).text();
-    $(elem).html(HighlightUtils.highlightString(text, getRestHighlightsForAllTerms(text, termsToHighlight, phrasesToHighlight, opts), [], opts.cssClass));
-  });
-  return container.html();
+export class StreamHighlightUtils {
+  static highlightStreamHTML(stream: string, termsToHighlight: {[originalTerm:string]: string[]}, phrasesToHighlight: {[phrase: string]: {[originalTerm:string]: string[]}}, options?: IStreamHighlightOptions) {
+    var opts = new DefaultStreamHighlightOptions().merge(options);
+    var container = createStreamHTMLContainer(stream);
+    container.find("*").each((i: number, elem: HTMLElement) => {
+      var text = $(elem).text();
+      $(elem).html(HighlightUtils.highlightString(text, getRestHighlightsForAllTerms(text, termsToHighlight, phrasesToHighlight, opts), [], opts.cssClass));
+    });
+    return container.html();
+  }
+
+  static highlightStreamText(stream: string, termsToHighlight: {[originalTerm:string]: string[]}, phrasesToHighlight: {[phrase: string]: {[originalTerm:string]: string[]}}, options?: IStreamHighlightOptions) {
+    var opts = new DefaultStreamHighlightOptions().merge(options);
+    return HighlightUtils.highlightString(stream, getRestHighlightsForAllTerms(stream, termsToHighlight, phrasesToHighlight, opts), [], opts.cssClass)
+  }
 }
 
-export function highlightStreamText(stream: string, termsToHighlight: {[originalTerm:string]: string[]}, phrasesToHighlight: {[phrase: string]: {[originalTerm:string]: string[]}}, options?: StreamHighlightOptions) {
-  var opts = new DefaultStreamHighlightOptions().merge(options);
-  return HighlightUtils.highlightString(stream, getRestHighlightsForAllTerms(stream, termsToHighlight, phrasesToHighlight, opts), [], opts.cssClass)
-}
 
-function getRestHighlightsForAllTerms(toHighlight: string, termsToHighlight: {[originalTerm:string]: string[]}, phrasesToHighlight: {[phrase: string]: {[originalTerm:string]: string[]}}, opts: StreamHighlightOptions): Highlight[] {
+function getRestHighlightsForAllTerms(toHighlight: string, termsToHighlight: {[originalTerm:string]: string[]}, phrasesToHighlight: {[phrase: string]: {[originalTerm:string]: string[]}}, opts: IStreamHighlightOptions): IHighlight[] {
   var indexes = [];
   var sortedTerms = _.keys(termsToHighlight).sort(termsSorting);
   _.each(sortedTerms, (term: string) => {
@@ -72,10 +75,10 @@ function getRestHighlightsForAllTerms(toHighlight: string, termsToHighlight: {[o
   return _.chain(indexes)
           .flatten()
           .compact()
-          .uniq((highlight: Highlight)=> {
+          .uniq((highlight: IHighlight)=> {
             return highlight.offset
           })
-          .sortBy((highlight: Highlight)=> {
+          .sortBy((highlight: IHighlight)=> {
             return highlight.offset
           })
           .map((highlight)=> {
@@ -93,7 +96,7 @@ function termsSorting(first: string, second: string) {
 }
 
 function createStreamHTMLContainer(stream: string) {
-  var container = $('<div />');
+  var container = $("<div />");
   container.get(0).innerHTML = stream;
   return container;
 }

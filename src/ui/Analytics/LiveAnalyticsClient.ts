@@ -121,7 +121,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       if (this.sendToCloud) {
         this.endpoint.sendCustomEvent(customEvent);
       }
-      $$(this.rootElement).trigger(AnalyticsEvents.customEvent, <IAnalyticsCustomEventArgs> {customEvent: APIAnalyticsBuilder.convertCustomEventToAPI(customEvent)});
+      $$(this.rootElement).trigger(AnalyticsEvents.customEvent, <IAnalyticsCustomEventArgs>{ customEvent: APIAnalyticsBuilder.convertCustomEventToAPI(customEvent) });
     });
   }
 
@@ -166,7 +166,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
   private pushClickEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject, result: IQueryResult, element: HTMLElement) {
     var event = this.buildClickEvent(actionCause, metaObject, result, element);
     this.checkToSendAnyPendingSearchAsYouType(actionCause);
-    this.triggerChangeAnalyticsCustomData("ClickEvent", metaObject, event, {resultData: result});
+    this.triggerChangeAnalyticsCustomData("ClickEvent", metaObject, event, { resultData: result });
     Assert.isNonEmptyString(event.searchQueryUid);
     Assert.isNonEmptyString(event.collectionName);
     Assert.isNonEmptyString(event.sourceName);

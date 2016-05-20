@@ -41,7 +41,7 @@ export class EmailUtils {
 
   static buildEmailAddressesAndOthers(excessHyperLinks: string[]) {
     return '<span class="coveo-emails-excess-collapsed coveo-active" onclick="Coveo.TemplateHelpers.getHelper(\'excessEmailToggle\')(this);"> ' + l('AndOthers', excessHyperLinks.length.toString(), excessHyperLinks.length) + '</span>' +
-        '<span class="coveo-emails-excess-expanded"> , ' + excessHyperLinks.join(' , ') + '</span>';
+      '<span class="coveo-emails-excess-expanded"> , ' + excessHyperLinks.join(' , ') + '</span>';
   }
 
   static parseEmail(email: string): string[] {

@@ -1,4 +1,4 @@
-﻿import {IAnalyticsClient} from './AnalyticsClient';
+import {IAnalyticsClient} from './AnalyticsClient';
 import {IAnalyticsActionCause, IAnalyticsDocumentViewMeta} from './AnalyticsActionListMeta';
 import {IQueryResult} from '../../rest/QueryResult';
 import {ITopQueries} from '../../rest/TopQueries';
@@ -10,15 +10,15 @@ export class MultiAnalyticsClient implements IAnalyticsClient {
   }
 
   public isActivated(): boolean {
-    return _.some(this.analyticsClients, (analyticsClient: IAnalyticsClient)=>analyticsClient.isActivated());
+    return _.some(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.isActivated());
   }
 
   public getCurrentEventCause(): string {
     return _.find(_.map(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.getCurrentEventCause()), (currentEventCause: string) => currentEventCause != null);
   }
 
-  public getCurrentEventMeta(): {[key:string]:any} {
-    return _.find(_.map(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.getCurrentEventMeta()), (currentEventMeta: {[key:string]:any}) => currentEventMeta != null);
+  public getCurrentEventMeta(): { [key: string]: any } {
+    return _.find(_.map(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.getCurrentEventMeta()), (currentEventMeta: { [key: string]: any }) => currentEventMeta != null);
   }
 
   public logSearchEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta) {
@@ -38,12 +38,12 @@ export class MultiAnalyticsClient implements IAnalyticsClient {
   }
 
   public getTopQueries(params: ITopQueries): Promise<string[]> {
-    return Promise.all(_.map(this.analyticsClients, (client)=> {
-                    return client.getTopQueries(params)
-                  }))
-                  .then((values: string[][])=> {
-                    return this.mergeTopQueries(values, params.pageSize)
-                  })
+    return Promise.all(_.map(this.analyticsClients, (client) => {
+      return client.getTopQueries(params)
+    }))
+      .then((values: string[][]) => {
+        return this.mergeTopQueries(values, params.pageSize)
+      })
   }
 
   public getCurrentVisitIdPromise(): Promise<string> {
@@ -64,8 +64,8 @@ export class MultiAnalyticsClient implements IAnalyticsClient {
 
   private mergeTopQueries(values: string[][], pageSize: number = 5) {
     return _.chain(values)
-            .flatten()
-            .first(pageSize)
-            .value();
+      .flatten()
+      .first(pageSize)
+      .value();
   }
 }

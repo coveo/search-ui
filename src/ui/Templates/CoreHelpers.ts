@@ -1,19 +1,232 @@
-
-
-
-
-
-
-
-
-
+/// <reference path="../../Base.ts" />
+/// <reference path="../Misc/FileTypes.ts" />
+/// <reference path="../../utils/HtmlUtils.ts" />
+/// <reference path="../../utils/EmailUtils.ts" />
+/// <reference path="../../utils/DateUtils.ts" />
+/// <reference path="../../utils/CurrencyUtils.ts" />
+/// <reference path="../../utils/HighlightUtils.ts" />
+/// <reference path="../../utils/StreamHighlightUtils.ts" />
+/// <reference path="../../utils/ChatterUtils.ts" />
 
 module Coveo {
+
+  /**
+   * The core template helpers provided by default.
+   *
+   * Example usage (using Underscore templating):
+   *
+   * ```
+   * <%= helperName(argument1, argument2) %>
+   * ```
+   */
+  interface ICoreHelpers {
+    /**
+     * Shortens a string so that its length does not exceed a specific number of
+     * characters. An ellipsis is appended to the string if it exceeds the
+     * maximum length.
+     *
+     * - `value`: The string to shorten.
+     * - `length`: The maximum length of the resulting string.
+     * - `highlights`: Optional. If provided, the string will be highlighted
+     *   using this highlight information.
+     * - `cssClass`: Optional. When highlighting, the name of the CSS class to use.
+     */
+    shorten: (content: string, length: number, highlights?: IHighlight[], cssClass?: string) => string;
+    /**
+     * Shortens a string using an algorithm suitable for file paths. The helper
+     * will insert an ellipsis in the string where text has been removed when
+     * the path exceeds the maximum length.
+     *
+     * - `value`: The path to shorten.
+     * - `length`: The maximum length of the resulting string.
+     * - `highlights`: Optional. If provided, the string will be highlighted using
+     *   this highlight information.
+     * - `cssClass`: Optional. When highlighting, the name of the CSS class to use.
+     */
+    shortenPath: (content: string, length: number, highlights?: IHighlight[], cssClass?: string) => string;
+    /**
+     * Shortens a string using an algorithm suitable for URIs. The helper will
+     * insert an ellipsis in the string where text has been removed when the URI
+     * exceeds the maximum length.
+     *
+     * - `value`: The URI to shorten.
+     * - `length`: The maximum length of the resulting string.
+     * - `highlights`: Optional. If provided, the string will be highlighted
+     *   using this highlight information.
+     * - `cssClass`: Optional. When highlighting, the name of the CSS class to use.
+     */
+    shortenUri: (content: string, length: number, highlights?: IHighlight[], cssClass?: string) => string;
+    /**
+     * Highlights a string using the provided highlight information.
+     *
+     * - `highlights`: The highlight information to use.
+     * - `cssClass`: Optional. The name of the CSS class to use for highlighting.
+     */
+    highlight:  (content: string, highlights?: IHighlight[], cssClass?: string) => string;
+    /**
+     * This helper highlights the provided terms in a given string.<br/>
+     * By default, the terms to highlight are the current query and the
+     * associated stemming words from the index.
+     *
+     * - `content`: The string content to highlight
+     * - `termsToHighlight`: The terms to highlight (see {@link IHighlightTerm})
+     * - `phraseToHighlight`: The phrases to highlight (see {@link IHighlightPhrase})
+     * - `options`: Optional. The options defined below as {@link IStreamHighlightOptions}
+     */
+    highlightStreamText: (content: string,
+                          termsToHighlight: IHighlightTerm,
+                          phrasesToHighlight: IHighlightPhrase,
+                          options?: IStreamHighlightOptions) => string;
+    /**
+     * This helper operates exactly like the {@link highlightStreamText} helper, except
+     * that it should be used to highlight HTML content. The helper takes care
+     * of not highlighting the HTML markup.
+     *
+     * - `content`: The string content to highlight
+     * - `termsToHighlight`: The terms to highlight (see {@link IHighlightTerm})
+     * - `phraseToHighlight`: The phrases to highlight (see {@link IHighlightPhrase})
+     * - `options`: Optional. The options defined below as {@link IStreamHighlightOptions}
+     */
+    highlightStreamHTML: (content: string,
+                          termsToHighlight: IHighlightTerm,
+                          phrasesToHighlight: IHighlightPhrase,
+                          options?: IStreamHighlightOptions) => string;
+    /**
+     * Formats a numeric value using the format string.
+     *
+     * - `value`: The numeric value to format.
+     * - `format`: The format string to use. The options available are defined by
+     *   the [Globalize](https://github.com/klaaspieter/jquery-global#numbers) library.
+     */
+        number: (content: string, format: string) => string;
+    /**
+     * Formats a date value to a date-only string using the specified options.
+     *
+     * - `value`: The Date value to format.
+     * - `options`: The options to use (see IDateToStringOptions).
+     */
+    date: (content: any, options?: IDateToStringOptions) => string;
+    /**
+     * Formats a date value to a time-only string using the sepcified options.
+     *
+     * - `value`: The Date value to format.
+     * - `options`: The options to use (see IDateToStringOptions).
+     */
+    time: (content: any, options?: IDateToStringOptions) => string;
+    /**
+     * Formats a date value to a date and time string using the specified
+     * options.
+     *
+     * - `value`: The Date value to format.
+     * - `options`: The options to use (see IDateToStringOptions).
+     */
+    dateTime: (content: any, options?: IDateToStringOptions) => string;
+    /**
+     * Formats a currency value to a string using the specified options.
+     *
+     * - `value`: The number value to format.
+     * - `options`: The options to use (see ICurrencyToStringOptions).
+     */
+    currency: (content: any, options?: ICurrencyToStringOptions) => string;
+    /**
+     * Formats a date value to a date and time string using options suitable for
+     * email dates
+     *
+     * - `value`: The Date value to format.
+     * - `options`: The options to use (see IDateToStringOptions).
+     */
+    emailDateTime: (content: any, options?: IDateToStringOptions) => string;
+    /**
+     * Renders one or several email values in `mailto:` hyperlinks.
+     *
+     * - `value`: The string that contains a list of semicolon-separated email
+     *   values. When multiple values are passed, each value is displayed in a
+     *   separate hyperlink.
+     * - `companyDomain`: The string that contains your own domain (e.g.,
+     *   coveo.com). When specified, this parameter allows email addresses
+     *   coming from your own domain to be displayed in a shortened format
+     *   (e.g., Full Name), whereas email addresses coming from an external
+     *   domain will be displayed in an extended format (e.g., Full Name
+     *   (domain.com)). If this parameter is not specified, then the shortened
+     *   format will automatically be used.
+     * - `me`: The string that contains the current username. If it is
+     *   specified, then the email address containing the current username will
+     *   be replaced by the localized string "Me".
+     * - `lengthLimit`: The number of email addresses that you want to display
+     *   before an ellipse is added (e.g., 'From Joe, John and 5 others').<br/>
+     *   The default value is 2.
+     * - `truncateName`: When the username is available from the email address,
+     *   then you can specify if you want to truncate the full name. (e.g.,
+     *   'John S.' instead of 'John Smith').<br/>
+     *   The default value is `false`.
+     */
+    email: (value: string, companyDomain?: string, me?: string, lengthLimit?: number, truncateName?: boolean) => string;
+    /**
+     * Formats a clickable HTML link (`<a>`).
+     *
+     * - `href`: The link URI
+     * - `options`: The options to use (see {@link IAnchorUtilsOptions})
+     */
+    anchor: (href: string, options?: IAnchorUtilsOptions) => string;
+    /**
+     * Formats an HTML image tag (`<img>`).
+     *
+     * - `src`: The image source URI
+     * - `options`: The options to use (see {@link IImageUtilsOptions})
+     */
+    image: (src: string, options?: IImageUtilsOptions) => string;
+    /**
+     * Formats an HTML image tag (`<img>`), and automatically uses the result
+     * object to query the REST API to get the thumbnail for this result. For
+     * example, this can be used to great effect when designing a template
+     * showing users or preview of files.
+     * - `result`: The current result object inside your template. In
+     *   underscore, it is referenced as `obj`. Optional, by default the result
+     *   will be resolved automatically from your current template function (
+     *   Meaning the nearest result in the current call stack execution inside
+     *   your template)
+     * - `endpoint`: Optional. The name of the endpoint to use for your
+     *   thumbnail. Default is default.
+     * - `options`: The options to use (see {@link IImageUtilsOptions}).
+     */
+    thumbnail: (result?: IQueryResult, endpoint?: string, options?: IImageUtilsOptions) => string;
+    /**
+     * Generates an icon based on the file type of the current result. The icon
+     * will be contained inside a `<span>` element with the appropriate CSS
+     * class.
+     *
+     * - `result`: The current result object inside your template. In
+     *   underscore, it is referenced as `obj`. *Optional*, by default the result
+     *   will be resolved automatically from your current template function (
+     *   Meaning the nearest result in the current call stack execution inside
+     *   your template)
+     * - `options`: The options to use (see {@link IIconOptions}).
+     */
+    fromFileTypeToIcon: (result?: IQueryResult, options?: IIconOptions) => string;
+    /**
+     * Loads a partial template in the current template, by passing the ID of
+     * the template to load, the condition for which this template should be
+     * loaded, and the context object (the object that the loaded template will
+     * use as its data). By default, the context object will be the same as the
+     * template that called this helper function. So, for example, in a
+     * ResultList Component, the contextObject would, by default, be the Query
+     * Results.
+     *
+     * - `templateId`: the ID of the template to load.
+     * - `condition`: The boolean condition to determine if this template should
+     *   load for this result set. Most of the time this would be a condition of
+     *   the type if raw.somefield == "something".
+     * - `contextObject`: The object that should be used by the loaded template
+     *   as its contextObject.
+     */
+    loadTemplate: (templateId: string, condition?: boolean, contextObject?: any) => string;
+  }
+
   TemplateHelpers.registerFieldHelper('javascriptEncode', (value: string) => {
     return Utils.exists(value) ? StringUtils.javascriptEncode(value) : undefined;
   });
 
-  TemplateHelpers.registerTemplateHelper('shorten', (content: string, length: number, highlights?: Highlight[], cssClass?: string) => {
+  TemplateHelpers.registerTemplateHelper('shorten', (content: string, length: number, highlights?: IHighlight[], cssClass?: string) => {
     var strAndHoles = Coveo.StringAndHoles.shortenString(content, length, '...');
 
     if (Utils.exists(highlights)) {
@@ -23,7 +236,7 @@ module Coveo {
     }
   });
 
-  TemplateHelpers.registerTemplateHelper('shortenPath', (content: string, length: number, highlights?: Highlight[], cssClass?: string) => {
+  TemplateHelpers.registerTemplateHelper('shortenPath', (content: string, length: number, highlights?: IHighlight[], cssClass?: string) => {
     var strAndHoles = StringAndHoles.shortenPath(content, length);
 
     if (Utils.exists(highlights)) {
@@ -33,7 +246,7 @@ module Coveo {
     }
   });
 
-  TemplateHelpers.registerTemplateHelper('shortenUri', (content: string, length: number, highlights?: Highlight[], cssClass?: string) => {
+  TemplateHelpers.registerTemplateHelper('shortenUri', (content: string, length: number, highlights?: IHighlight[], cssClass?: string) => {
     var strAndHoles = StringAndHoles.shortenUri(content, length);
 
     if (Utils.exists(highlights)) {
@@ -43,7 +256,7 @@ module Coveo {
     }
   });
 
-  TemplateHelpers.registerTemplateHelper('highlight', (content: string, highlights: Highlight[], cssClass?: string) => {
+  TemplateHelpers.registerTemplateHelper('highlight', (content: string, highlights: IHighlight[], cssClass?: string) => {
     if (Utils.exists(content)) {
       if (Utils.exists(highlights)) {
         return HighlightUtils.highlightString(content, highlights, null, cssClass || 'highlight');
@@ -55,7 +268,7 @@ module Coveo {
     }
   });
 
-  TemplateHelpers.registerTemplateHelper('highlightStreamText', (content: string, termsToHighlight = resolveQueryResultFromCallStack().termsToHighlight, phrasesToHighlight = resolveQueryResultFromCallStack().phrasesToHighlight, opts?: StreamHighlightOptions)=> {
+  TemplateHelpers.registerTemplateHelper('highlightStreamText', (content: string, termsToHighlight = resolveQueryResultFromCallStack().termsToHighlight, phrasesToHighlight = resolveQueryResultFromCallStack().phrasesToHighlight, opts?: IStreamHighlightOptions) => {
     if (Utils.exists(content)) {
       if (Utils.isNonEmptyArray(_.keys(termsToHighlight)) || Utils.isNonEmptyArray(_.keys(phrasesToHighlight))) {
         return highlightStreamText(content, termsToHighlight, phrasesToHighlight, opts)
@@ -67,7 +280,7 @@ module Coveo {
     }
   });
 
-  TemplateHelpers.registerTemplateHelper('highlightStreamHTML', (content: string, termsToHighlight = resolveQueryResultFromCallStack().termsToHighlight, phrasesToHighlight = resolveQueryResultFromCallStack().phrasesToHighlight, opts?: StreamHighlightOptions)=> {
+  TemplateHelpers.registerTemplateHelper('highlightStreamHTML', (content: string, termsToHighlight = resolveQueryResultFromCallStack().termsToHighlight, phrasesToHighlight = resolveQueryResultFromCallStack().phrasesToHighlight, opts?: IStreamHighlightOptions) => {
     if (Utils.exists(content)) {
       if (Utils.isNonEmptyArray(termsToHighlight)) {
         return highlightStreamHTML(content, termsToHighlight, phrasesToHighlight, opts)
@@ -92,26 +305,26 @@ module Coveo {
     }
   });
 
-  TemplateHelpers.registerFieldHelper('date', (value: any, options?: DateToStringOptions) => {
+  TemplateHelpers.registerFieldHelper('date', (value: any, options?: IDateToStringOptions) => {
     return DateUtils.dateToString(DateUtils.convertFromJsonDateIfNeeded(value), options);
   });
 
-  TemplateHelpers.registerFieldHelper('time', (value: any, options?: DateToStringOptions) => {
+  TemplateHelpers.registerFieldHelper('time', (value: any, options?: IDateToStringOptions) => {
     return DateUtils.timeToString(DateUtils.convertFromJsonDateIfNeeded(value), options);
   });
 
-  TemplateHelpers.registerFieldHelper('dateTime', (value: any, options?: DateToStringOptions) => {
+  TemplateHelpers.registerFieldHelper('dateTime', (value: any, options?: IDateToStringOptions) => {
     return DateUtils.dateTimeToString(DateUtils.convertFromJsonDateIfNeeded(value), options);
   });
 
-  TemplateHelpers.registerFieldHelper('emailDateTime', (value: any, options?: DateToStringOptions) => {
-    var defaultOptions = <DateToStringOptions>{};
+  TemplateHelpers.registerFieldHelper('emailDateTime', (value: any, options?: IDateToStringOptions) => {
+    var defaultOptions = <IDateToStringOptions>{};
     defaultOptions.includeTimeIfThisWeek = true;
-    var optionsToUse = <DateToStringOptions>$.extend({}, defaultOptions, options);
+    var optionsToUse = <IDateToStringOptions>$.extend({}, defaultOptions, options);
     return value ? DateUtils.dateTimeToString(DateUtils.convertFromJsonDateIfNeeded(value), optionsToUse) : undefined;
   });
 
-  TemplateHelpers.registerFieldHelper('currency', (value: any, options?: CurrencyToStringOptions) => {
+  TemplateHelpers.registerFieldHelper('currency', (value: any, options?: ICurrencyToStringOptions) => {
     return CurrencyUtils.currencyToString(value, options);
   });
 
@@ -163,15 +376,15 @@ module Coveo {
     return undefined;
   })
 
-  TemplateHelpers.registerFieldHelper('anchor', (href: string, options?: AnchorUtilsOptions) => {
+  TemplateHelpers.registerFieldHelper('anchor', (href: string, options?: IAnchorUtilsOptions) => {
     return AnchorUtils.buildAnchor(href, options);
   });
 
-  TemplateHelpers.registerFieldHelper('image', (src: string, options?: ImageUtilsOptions) => {
+  TemplateHelpers.registerFieldHelper('image', (src: string, options?: IImageUtilsOptions) => {
     return ImageUtils.buildImage(src, options);
   });
 
-  TemplateHelpers.registerTemplateHelper('thumbnail', (result: IQueryResult = resolveQueryResultFromCallStack(), endpoint: string = "default", options?: ImageUtilsOptions) => {
+  TemplateHelpers.registerTemplateHelper('thumbnail', (result: IQueryResult = resolveQueryResultFromCallStack(), endpoint: string = "default", options?: IImageUtilsOptions) => {
     if (QueryUtils.hasThumbnail(result)) {
       return ImageUtils.buildImageFromResult(result, Coveo.SearchEndpoint.endpoints[endpoint], options);
     }
