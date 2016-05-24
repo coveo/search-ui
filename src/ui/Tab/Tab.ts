@@ -116,6 +116,11 @@ export class Tab extends Component {
     this.bind.onQueryState(ModelEvents.CHANGE_ONE, QueryStateAttributes.T, (args: IAttributeChangedEventArg) => this.handleQueryStateChanged(args));
     this.bind.on(element, 'click', (e: Event) => this.handleClick());
     this.render();
+      
+      if(Tab.isFirstTab) {
+        Tab.isFirstTab = false;
+        ResponsiveTabs.init();
+      }
   }
 
   /**
