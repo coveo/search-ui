@@ -79,6 +79,13 @@ export {ExpressionBuilder} from './ui/Base/ExpressionBuilder';
 export {Initialization} from './ui/Base/Initialization';
 export {IResultsComponentBindings} from './ui/Base/ResultsComponentBindings';
 
+// TEMPLATES
+export {CoreHelpers} from './ui/Templates/CoreHelpers';
+export {TemplateHelpers} from './ui/Templates/TemplateHelpers';
+export {HtmlTemplate} from './ui/Templates/HtmlTemplate';
+export {UnderscoreTemplate} from './ui/Templates/UnderscoreTemplate';
+export {TemplateCache} from './ui/Templates/TemplateCache';
+
 // UI
 export {SearchInterface, StandaloneSearchInterface} from './ui/SearchInterface/SearchInterface';
 export {Aggregate} from './ui/Aggregate/Aggregate';
@@ -126,9 +133,4 @@ export {ResultFolding} from './ui/ResultFolding/ResultFolding';
 export {FieldTable} from './ui/FieldTable/FieldTable';
 export {FieldValue} from './ui/FieldTable/FieldValue';
 export {Badge} from './ui/FieldTable/Badge';
-
-export {CoreHelpers} from './ui/Templates/CoreHelpers';
-export {TemplateHelpers} from './ui/Templates/TemplateHelpers';
-export {HtmlTemplate} from './ui/Templates/HtmlTemplate';
-export {UnderscoreTemplate} from './ui/Templates/UnderscoreTemplate';
-export {TemplateCache} from './ui/Templates/TemplateCache';
+export {ResultRating} from './ui/ResultRating/ResultRating';

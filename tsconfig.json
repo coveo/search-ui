@@ -164,6 +164,7 @@
     "src/ui/FieldTable/FieldTable.ts",
     "src/ui/FieldTable/FieldValue.ts",
     "src/ui/FieldTable/Badge.ts",
-    "src/ui/Templates/CoreHelpers.ts"
+    "src/ui/Templates/CoreHelpers.ts",
+    "src/ui/ResultRating/ResultRating.ts"
   ]
 }

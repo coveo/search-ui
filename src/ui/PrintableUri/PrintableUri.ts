@@ -12,6 +12,9 @@ import {$$} from '../../utils/Dom'
 export interface PrintableUriOptions {
 }
 
+/*
+ * This component is meant to be used inside a result template to display the URI or path to access a result.
+ */
 export class PrintableUri extends Component {
   static ID = 'PrintableUri';
   static options: PrintableUriOptions = {};

@@ -806,7 +806,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   private performOneCall<T>(params: IEndpointCallParameters, autoRenewToken = true): Promise<T> {
     return this.caller.call(params)
       .then((response?: ISuccessResponse<T>) => {
-        if (response.data != null) {
+        if ((<any>response.data).clientDuration) {
           (<any>response.data).clientDuration = response.duration;
         }
         return response.data
