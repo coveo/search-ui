@@ -129,3 +129,5 @@ export {Sort} from './ui/Sort/Sort';
 export {SortCriteria} from './ui/Sort/SortCriteria';
 export {Tab} from './ui/Tab/Tab';
 export {Triggers} from './ui/Triggers/Triggers';
+export {TemplateLoader} from './ui/TemplateLoader/TemplateLoader';
+export {Template} from './ui/Templates/Template';

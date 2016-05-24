@@ -161,6 +161,8 @@
     "src/ui/Sort/Sort.ts",
     "src/ui/Tab/Tab.ts",
     "src/ui/Triggers/Triggers.ts",
-    "src/ui/Facet/ValueElementRenderer.ts"
+    "src/ui/Facet/ValueElementRenderer.ts",
+    "src/ui/TemplateLoader/TemplateLoader.ts",
+    "src/ui/Templates/Template.ts"
   ]
 }
