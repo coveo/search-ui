@@ -1,6 +1,7 @@
 import {Template} from './Template';
 import {ComponentOptions, FieldsOption} from '../Base/ComponentOptions';
 import {Assert} from '../../misc/Assert';
+import {$$} from '../../utils/Dom';
 
 
 export class HtmlTemplate extends Template {
@@ -16,7 +17,7 @@ export class HtmlTemplate extends Template {
       return element.innerHTML;
     });
 
-    var condition = $(element).data('condition')
+    var condition = $$(element).getAttribute('data-condition')
     if (condition != null) {
       // Allows to add quotes in data-condition on the templates
       condition = condition.toString().replace(/&quot;/g, '"');
@@ -33,12 +34,11 @@ export class HtmlTemplate extends Template {
   }
 
   toHtmlElement(): HTMLElement {
-    var script = document.createElement('script');
-    $(script)
-      .attr('type', _.first(HtmlTemplate.mimeTypes))
-      .attr('data-condition', $(this.element).data('condition'))
-      .text(this.element.innerHTML);
-    return script;
+    var script = $$('script');
+    script.setAttribute('type', _.first(HtmlTemplate.mimeTypes));
+    script.setAttribute('data-condition', $$(this.element).getAttribute('data-condition'));
+    script.text(this.element.innerHTML);
+    return script.el;
   }
 
   getType() {

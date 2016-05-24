@@ -5,7 +5,7 @@ import {TimeSpan} from './TimeSpanUtils';
 
 declare var Globalize;
 
-export interface DateToStringOptions {
+export interface IDateToStringOptions {
   now?: Date;
   useTodayYesterdayAndTomorrow?: boolean;
   useWeekdayIfThisWeek?: boolean;
@@ -17,7 +17,7 @@ export interface DateToStringOptions {
   predefinedFormat?: string;
 }
 
-class DefaultDateToStringOptions extends Options implements DateToStringOptions {
+class DefaultDateToStringOptions extends Options implements IDateToStringOptions {
   now: Date = new Date();
   useTodayYesterdayAndTomorrow = true;
   useWeekdayIfThisWeek = true;
@@ -56,7 +56,7 @@ export class DateUtils {
     return newDate;
   }
 
-  static dateToString(date: Date, options?: DateToStringOptions): string {
+  static dateToString(date: Date, options?: IDateToStringOptions): string {
     if (Utils.isNullOrUndefined(date)) {
       return '';
     }
@@ -108,7 +108,7 @@ export class DateUtils {
     return Globalize.format(date, 'd');
   }
 
-  static timeToString(date: Date, options?: DateToStringOptions): string {
+  static timeToString(date: Date, options?: IDateToStringOptions): string {
     if (Utils.isNullOrUndefined(date)) {
       return '';
     }
@@ -116,7 +116,7 @@ export class DateUtils {
     return Globalize.format(date, 't');
   }
 
-  static dateTimeToString(date: Date, options?: DateToStringOptions): string {
+  static dateTimeToString(date: Date, options?: IDateToStringOptions): string {
     if (Utils.isNullOrUndefined(date)) {
       return '';
     }

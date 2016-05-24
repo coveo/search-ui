@@ -59,12 +59,22 @@ export class Dom {
     return elem;
   }
   
+  /**
+   * Adds the element to the children of the current element
+   * @param element The element to append
+   * @returns {string}
+   */
   public append(element: HTMLElement){
     this.el.appendChild(element);
   }
 
-  public css(propertyValue: string): string {
-    return window.getComputedStyle(this.el).getPropertyValue(propertyValue);
+   /**
+   * Get the css value of the specified property.<br/>
+   * @param property The property
+   * @returns {string}
+   */
+  public css(property: string): string {
+    return window.getComputedStyle(this.el).getPropertyValue(property);
   }
 
   /**
@@ -236,6 +246,33 @@ export class Dom {
    */
   public children(): HTMLElement[] {
     return this.nodeListToArray(this.el.children);
+  }
+  
+  /**
+   * Return all siblings
+   * @returns {HTMLElement[]}
+   */
+  public siblings(selector: string): HTMLElement[] {
+    let sibs = [];
+    let currentElement = <HTMLElement>this.el.parentNode.firstChild;
+    for (; currentElement; currentElement = <HTMLElement>currentElement.nextSibling){
+      if (currentElement != this.el){
+        if(this.matches(currentElement, selector) || !selector){
+          sibs.push(currentElement);
+        }
+      }
+    } 
+    return sibs;
+  }
+  
+  private matches(element: HTMLElement, selector: string){
+    var all = document.querySelectorAll(selector);
+    for (var i = 0; i < all.length; i++) {
+      if (all[i] === element) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**

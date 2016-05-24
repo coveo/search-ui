@@ -123,3 +123,10 @@ export {QuickviewDocument} from './ui/Quickview/QuickviewDocument';
 export {YouTubeThumbnail} from './ui/YouTube/YouTubeThumbnail';
 export {ResultAttachments} from './ui/ResultAttachments/ResultAttachments';
 export {ResultFolding} from './ui/ResultFolding/ResultFolding';
+export {FieldTable} from './ui/FieldTable/FieldTable';
+export {FieldValue} from './ui/FieldTable/FieldValue';
+export {Badge} from './ui/FieldTable/Badge';
+
+export {CoreHelpers} from './ui/Templates/CoreHelpers';
+export {TemplateHelpers} from './ui/Templates/TemplateHelpers';
+export {HtmlTemplate} from './ui/Templates/HTMLTemplate';
