@@ -58,9 +58,9 @@ export class HtmlTemplate extends Template {
     var script = document.createElement('script');
     script.text = template;
     if (condition != null) {
-      $(script).attr('data-condition', condition);
+      $$(script).setAttribute('data-condition', condition);
     }
-    $(script).attr('type', HtmlTemplate.mimeTypes[0]);
+    $$(script).setAttribute('type', HtmlTemplate.mimeTypes[0]);
     return new HtmlTemplate(script);
   }
 }

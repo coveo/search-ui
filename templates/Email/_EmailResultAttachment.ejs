@@ -1,0 +1,16 @@
+<div class="coveo-attachment-container">
+    <div class="coveo-result-frame">
+        <div class="coveo-result-row">
+            <div class="coveo-result-cell" style="width:60px;text-align: left;padding-right: 10px;">
+                <% if(Coveo.QueryUtils.hasThumbnail(obj)) { %>
+                <img class="CoveoThumbnail"/>
+                <% } else { %>
+                <span class="CoveoIcon" data-small="true"></span>
+                <% } %>
+            </div>
+            <div class="coveo-result-cell">
+                <a class="CoveoResultLink"></a>
+            </div>
+        </div>
+    </div>
+</div>

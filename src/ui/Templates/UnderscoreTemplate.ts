@@ -3,6 +3,7 @@ import {TemplateHelperFunction} from './TemplateHelpers';
 import {Assert} from '../../misc/Assert';
 import {ComponentOptions, FieldsOption} from '../Base/ComponentOptions';
 import {Utils} from '../../utils/Utils';
+import {$$} from '../../utils/Dom';
 import _ = require('underscore');
 
 _.templateSettings = {
@@ -27,10 +28,10 @@ export class UnderscoreTemplate extends Template {
     super();
 
     Assert.exists(element);
-    var templateString = $(element).html();
+    var templateString = element.innerHTML;
     this.template = _.template(templateString);
 
-    var condition = $(element).data('condition');
+    var condition = $$(element).getAttribute('data-condition');
     if (condition != null) {
       this.condition = new Function('obj', 'with(obj||{}){return ' + condition + '}')
     }
@@ -50,12 +51,11 @@ export class UnderscoreTemplate extends Template {
   }
 
   toHtmlElement(): HTMLElement {
-    var script = document.createElement('script');
-    $(script)
-      .attr('type', _.first(UnderscoreTemplate.mimeTypes))
-      .attr('data-condition', $(this.element).data('condition'))
-      .text(this.element.innerHTML);
-    return script;
+    var script = $$('script');
+    script.setAttribute('type', _.first(UnderscoreTemplate.mimeTypes));
+    script.setAttribute('data-condition', $(this.element).data('condition'));
+    script.text(this.element.innerHTML);
+    return script.el;
   }
 
   getType() {
@@ -71,9 +71,9 @@ export class UnderscoreTemplate extends Template {
     var script = document.createElement('script');
     script.text = template;
     if (condition != null) {
-      $(script).attr('data-condition', condition);
+      $$(script).setAttribute('data-condition', condition);
     }
-    $(script).attr('type', UnderscoreTemplate.mimeTypes[0]);
+    $$(script).setAttribute('type', UnderscoreTemplate.mimeTypes[0]);
     return new UnderscoreTemplate(script);
   }
 
