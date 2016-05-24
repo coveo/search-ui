@@ -4,14 +4,10 @@ module.exports = {
   output: {
     path: './bin/js',
     filename: 'CoveoJsSearch.js',
-    libraryTarget: 'assign',
+    libraryTarget: 'var',
     library: ['Coveo'],
     publicPath : '/devserver/'
   },
-  /*devtool: 'source-map',
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin()
-  ],*/
   resolve: {
     extensions: ['', '.ts', '.js'],
     alias: {
@@ -21,7 +17,8 @@ module.exports = {
       'fast-click': __dirname + '/lib/fastclick.min.js',
       'jstz': __dirname + '/lib/jstz.min.js',
       'magic-box': __dirname + '/node_modules/coveomagicbox/bin/MagicBox.js',
-      'default-language' : __dirname + '/src/strings/DefaultLanguage.js'
+      'default-language': __dirname + '/src/strings/DefaultLanguage.js',
+      'finally': __dirname + '/lib/finally.js'
     }
   },
   module: {
