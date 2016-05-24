@@ -2,67 +2,92 @@ import {$$, Dom} from '../../utils/Dom.ts';
 import {InitializationEvents} from '../../events/InitializationEvents.ts';
 
 export class ResponsiveTabs {
+  static coveoRoot = '.CoveoSearchInterface';
+  static coveoSearchBox = '.CoveoSearchbox';
+  static coveoTabSection = '.coveo-tab-section';
+  
   private static dropdownHeader: Dom;
   private static dropdownContent: Dom;
+  private static tabSection: Dom;
+  private static searchBarElement: HTMLElement;
   
   public static init() {
-    $$(document.getElementById('search')).on(InitializationEvents.afterInitialization, () => {
+    $$(<HTMLElement>document.querySelector(this.coveoRoot)).on(InitializationEvents.afterInitialization, () => {
       this.dropdownContent = $$('div');
       this.dropdownHeader = this.buildDropdownHeader();
-      let searchBarElement = <HTMLElement>document.querySelector('.coveo-search-section');
-      let tabSectionElement = <HTMLElement>document.querySelector('.coveo-tab-section');
+      this.searchBarElement = <HTMLElement>document.querySelector(this.coveoSearchBox);
+      let tabSectionElement = <HTMLElement>document.querySelector(this.coveoTabSection);
 
       if (!tabSectionElement) {
         return;
       }
-      let tabSection = $$(tabSectionElement);
+      this.tabSection = $$(tabSectionElement);
 
-      let toggleSmallTabsIfNeeded = () => {
-        let tabSectionIsOverflowing = this.isOverflowing(tabSection.el);
+      let manageResponsiveTabs = () => {
         
-        if (tabSectionIsOverflowing && !tabSection.is('.coveo-small-tab-section')) {
-          this.toggleSmallClass(tabSection);
-          if (searchBarElement) {
-            tabSection.insertAfter(searchBarElement);
-          }
-        } else if (tabSection.is('.coveo-small-tab-section')
-                    && !this.isLargeFormatOverflowing(tabSectionElement)) {
-            this.dropdownHeader.detach();
-            this.toggleSmallClass(tabSection);
-            if (searchBarElement) {
-              tabSection.insertBefore(searchBarElement);
-            }
-        }
+        this.toggleSmallTabsIfNeeded();
         
-        if(tabSectionIsOverflowing && tabSection.is('.coveo-small-tab-section')) {
+        let tabSectionIsOverflowing = this.isOverflowing(this.tabSection.el);
+        if (tabSectionIsOverflowing && this.tabSection.is('.coveo-small-tab-section')) {
           let currentTab;
           let overflowingElements = [];
-          let tabs = tabSection.findAll('.CoveoTab');
+          let tabs = this.tabSection.findAll('.CoveoTab');
           
-          for(let i = tabs.length - 1; i >= 0; i--) {     
+          this.tabSection.el.appendChild(this.dropdownHeader.el);
+          for(let i = tabs.length - 1; i >= 0; i--) {
             currentTab = tabs[i];
             this.dropdownContent.prepend(currentTab);
-            if(!ResponsiveTabs.isOverflowing(tabSection.el)) {
+            if(!this.isOverflowing(this.tabSection.el)) {
               break;
             }
           }
           
-          tabSection.el.appendChild(this.dropdownHeader.el);
-          
           
           //PopupUtils.positionPopup(dropdown.el, this.element, this.root, this.root, this.getPopupPositioning());
           
-        } else if(!tabSectionIsOverflowing && tabSection.is('.coveo-small-tab-section')) {
-          this.dropdownHeader.detach();
+        } else if(!tabSectionIsOverflowing && this.tabSection.is('.coveo-small-tab-section') && !this.isDropdownEmpty()) {
+          let dropdownTabs = this.dropdownContent.findAll('.coveo-small-tab');
+          
+          while (!this.isOverflowing(this.tabSection.el) && !this.isDropdownEmpty()) {
+            let current = dropdownTabs.shift();
+            $$(current).insertBefore(this.dropdownHeader.el);
+          }
+          
+          if (this.isOverflowing(this.tabSection.el)) {
+            let tabs = this.tabSection.findAll('.coveo-small-tab');
+            this.dropdownContent.prepend(tabs.pop());
+          }
+          
+          if (this.isDropdownEmpty()) {
+            this.dropdownHeader.detach();
+            this.toggleSmallTabsIfNeeded();
+          }
         }
         
       };
-      toggleSmallTabsIfNeeded();
-      window.addEventListener('resize', <EventListener>_.debounce(toggleSmallTabsIfNeeded, 200));
+      manageResponsiveTabs();
+      window.addEventListener('resize', <EventListener>_.debounce(manageResponsiveTabs, 200));
     });
   }
 
 
+  private static toggleSmallTabsIfNeeded() {
+    let tabSectionIsOverflowing = this.isOverflowing(this.tabSection.el);
+    if (tabSectionIsOverflowing && !this.tabSection.is('.coveo-small-tab-section')) {
+          this.toggleSmallClass(this.tabSection);
+          if (this.searchBarElement) {
+            this.tabSection.insertAfter(this.searchBarElement);
+          }
+        } else if (this.tabSection.is('.coveo-small-tab-section')
+                   && !this.isLargeFormatOverflowing(this.tabSection.el)
+                   && this.isDropdownEmpty()) {
+            this.toggleSmallClass(this.tabSection);
+            if (this.searchBarElement) {
+              this.tabSection.insertBefore(this.searchBarElement);
+            }
+        }
+  }
+  
   private static isLargeFormatOverflowing(tabSectionElement: HTMLElement){
     let virtualTabSection = $$(<HTMLElement>tabSectionElement.cloneNode(true));
     ResponsiveTabs.toggleSmallClass(virtualTabSection);
@@ -70,7 +95,13 @@ export class ResponsiveTabs {
     virtualTabSection.el.style.position = "absolute";
     virtualTabSection.el.style.visibility = "hidden";
     
-    virtualTabSection.insertBefore(<HTMLElement>document.querySelector('#search'));
+    if (!this.isDropdownEmpty) {
+      _.each(this.dropdownContent.findAll('.coveo-small-tab'), tab => {
+        virtualTabSection.el.appendChild(tab.cloneNode(true));
+      });
+    }
+    
+    virtualTabSection.insertBefore(<HTMLElement>document.querySelector(this.coveoRoot));
     let isOverflowing = ResponsiveTabs.isOverflowing(virtualTabSection.el);
     virtualTabSection.detach();
     return isOverflowing;
@@ -99,13 +130,13 @@ export class ResponsiveTabs {
     });
   }
   
-  private static numberOfElementInDropdown(): number {
+  private static isDropdownEmpty(): boolean {
     if (this.dropdownContent) {
       let tabs = this.dropdownContent.findAll('.coveo-small-tab');
-      return tabs.length;
+      return tabs.length == 0;
     }
     
-    return 0;
+    return false;
   }
 }
 
