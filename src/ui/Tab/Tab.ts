@@ -1,3 +1,4 @@
+import {ResponsiveTabs} from './ResponsiveTabs.ts';
 import {SearchEndpoint} from '../../rest/SearchEndpoint';
 import {Component} from '../Base/Component';
 import {ComponentOptions} from '../Base/ComponentOptions';
@@ -36,6 +37,7 @@ export interface ITabOptions {
  */
 export class Tab extends Component {
   static ID = 'Tab';
+  static isFirstTab = true;
 
   /**
    * The options for a Tab
