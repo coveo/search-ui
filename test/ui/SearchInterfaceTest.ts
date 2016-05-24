@@ -31,8 +31,7 @@ module Coveo {
       expect(cmp.queryStateModel instanceof QueryStateModel).toBe(true);
       expect(cmp.componentOptionsModel instanceof ComponentOptionsModel).toBe(true);
       expect(cmp.componentStateModel instanceof ComponentStateModel).toBe(true);
-      expect(cmp.searchInterface instanceof SearchInterface);
-      expect(cmp.searchInterface).toBe(cmp);
+      expect(cmp instanceof SearchInterface);
       expect(cmp.root).toBe(cmp.element);
     });
 
@@ -69,12 +68,6 @@ module Coveo {
 
       it('should initialize if found inside the root', function () {
         searchInterfaceDiv.appendChild(analyticsDiv);
-        var searchInterface = new SearchInterface(searchInterfaceDiv);
-        expect(searchInterface.usageAnalytics instanceof LiveAnalyticsClient).toBe(true);
-      });
-
-      it('should initialize if found outside the root', function () {
-        analyticsDiv.appendChild(searchInterfaceDiv);
         var searchInterface = new SearchInterface(searchInterfaceDiv);
         expect(searchInterface.usageAnalytics instanceof LiveAnalyticsClient).toBe(true);
       });

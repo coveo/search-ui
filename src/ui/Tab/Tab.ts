@@ -12,7 +12,6 @@ import {Assert} from '../../misc/Assert';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {$$} from '../../utils/Dom';
 
-
 export interface ITabOptions {
   expression?: string;
   constant?: boolean;

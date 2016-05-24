@@ -8,7 +8,6 @@ import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom';
 
-
 export interface IPreferencesPanelOptions {
 }
 

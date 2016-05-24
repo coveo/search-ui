@@ -72,18 +72,18 @@ function parseDirectory(directory, conditions, callback) {
 
 function buildRegisterTemplate(template) {
   template.js = 'Coveo.TemplateCache.registerTemplate(' + [
-    JSON.stringify(template.name),
-    'Coveo.' + template.type + '.fromString(' + JSON.stringify(template.content) + (template.condition != null ? ', ' + JSON.stringify(template.condition.value) : '') + ')',
-    (!template.subtemplate).toString(),
-    (!template.subtemplate).toString()
-  ].join(', ') + ')';
+        JSON.stringify(template.name),
+        'Coveo.' + template.type + '.fromString(' + JSON.stringify(template.content) + (template.condition != null ? ', ' + JSON.stringify(template.condition.value) : '') + ')',
+        (!template.subtemplate).toString(),
+        (!template.subtemplate).toString()
+      ].join(', ') + ')';
 }
 
 function buildTemplateHtml(template) {
   template.html = '<script id=' + JSON.stringify(template.name) +
-  ' class="result-template" type="' + ( template.type == 'HtmlTemplate' ? 'text/html' : 'text/underscore' ) + '" ' +
-  (template.condition != null ? 'data-condition=' + JSON.stringify(template.condition.value) : '') + ' >' +
-  template.content + '</script>';
+      ' class="result-template" type="' + ( template.type == 'HtmlTemplate' ? 'text/html' : 'text/underscore' ) + '" ' +
+      (template.condition != null ? 'data-condition=' + JSON.stringify(template.condition.value) : '') + ' >' +
+      template.content + '</script>';
 }
 
 function compileTemplates(directory, destination, fileName, conditions, done) {
@@ -99,8 +99,8 @@ function compileTemplates(directory, destination, fileName, conditions, done) {
       groupedTemplates[fileName].push(template.js);
     });
     Q.all(Object.keys(groupedTemplates).map(function (key) {
-      return fsWriteFile(path.join(destination, key + '.js'), groupedTemplates[key].join('\n'));
-    }))
+          return fsWriteFile(path.join(destination, key + '.js'), groupedTemplates[key].join('\n'));
+        }))
         .catch(function (e) {
           done(e)
         })

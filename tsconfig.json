@@ -169,6 +169,16 @@
     "src/ui/PreferencesPanel/PreferencesPanelItem.ts",
     "src/ui/PreferencesPanel/PreferencesPanel.ts",
     "src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts",
-    "src/ui/Tab/Tab.ts"
+    "src/ui/Tab/Tab.ts",
+    "src/ui/Omnibox/Omnibox.ts",
+    "src/ui/QueryDuration/QueryDuration.ts",
+    "src/ui/QuerySummary/QuerySummary.ts",
+    "src/ui/Debug/Debug.ts",
+    "src/ui/ShareQuery/ShareQuery.ts",
+    "src/ui/Misc/Slider.ts",
+    "src/ui/Sort/SortCriteria.ts",
+    "src/ui/Sort/Sort.ts",
+    "src/ui/Triggers/Triggers.ts",
+    "src/ui/Facet/ValueElementRenderer.ts"
   ]
 }

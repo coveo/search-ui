@@ -5,4 +5,3 @@ require('globals?o=CoveoJsSearch.dependencies!fast-click');
 require('globals?o=CoveoJsSearch.dependencies!jstz');
 require('globals?o=CoveoJsSearch.dependencies!magic-box');
 require('globals?o=CoveoJsSearch.dependencies!globalize');
-require('globals?o=CoveoJsSearch.dependencies!default-language');
