@@ -120,7 +120,7 @@ export class EmailActionsUtils {
   }
 }
 
-export class DefaultMailToOptions extends Options implements MailToOptions {
+export class DefaultMailToOptions implements MailToOptions {
   currentUserEmail: string = '';
   originalFrom: string = '';
   to: string = '';
