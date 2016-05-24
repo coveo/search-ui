@@ -158,7 +158,7 @@
     "src/ui/HiddenQuery/HiddenQuery.ts",
     "src/ui/HierarchicalFacet/HierarchicalFacet.ts",
     "src/ui/Matrix/Matrix.ts",
-    "src/ui/Youtube/YouTubeThumbnail.ts",
+    "src/ui/YouTube/YouTubeThumbnail.ts",
     "src/ui/ResultAttachments/ResultAttachments.ts",
     "src/ui/ResultFolding/ResultFolding.ts",
     "src/ui/FieldTable/FieldTable.ts",
