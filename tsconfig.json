@@ -165,6 +165,10 @@
     "src/ui/FieldTable/FieldValue.ts",
     "src/ui/FieldTable/Badge.ts",
     "src/ui/Templates/CoreHelpers.ts",
-    "src/ui/ResultRating/ResultRating.ts"
+    "src/ui/ResultRating/ResultRating.ts",
+    "src/ui/PreferencesPanel/PreferencesPanelItem.ts",
+    "src/ui/PreferencesPanel/PreferencesPanel.ts",
+    "src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts",
+    "src/ui/Tab/Tab.ts"
   ]
 }

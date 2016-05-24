@@ -134,3 +134,7 @@ export {FieldTable} from './ui/FieldTable/FieldTable';
 export {FieldValue} from './ui/FieldTable/FieldValue';
 export {Badge} from './ui/FieldTable/Badge';
 export {ResultRating} from './ui/ResultRating/ResultRating';
+export {PreferencesPanel} from './ui/PreferencesPanel/PreferencesPanel';
+export {ResultsFiltersPreferences} from './ui/ResultsFiltersPreferences/ResultsFiltersPreferences';
+export {Tab} from './ui/Tab/Tab';
+export {Settings} from './ui/Settings/Settings';
