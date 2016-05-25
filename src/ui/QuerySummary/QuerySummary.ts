@@ -9,6 +9,8 @@ import {AnalyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/Analytics
 import {Initialization} from '../Base/Initialization';
 import {QueryStateModel} from '../../models/QueryStateModel';
 
+declare const Globalize;
+
 export interface IQuerySummaryOptions {
   enableSearchTips?: boolean;
   onlyDisplaySearchTips?: boolean;

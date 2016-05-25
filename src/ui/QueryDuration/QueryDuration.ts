@@ -7,6 +7,8 @@ import {$$} from '../../utils/Dom';
 import {l} from '../../strings/Strings';
 import {Initialization} from '../Base/Initialization';
 
+declare const Globalize;
+
 export interface IQueryDurationOptions {
 }
 

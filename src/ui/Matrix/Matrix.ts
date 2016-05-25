@@ -16,6 +16,8 @@ import {Initialization, IInitializationParameters} from '../Base/Initialization'
 import {QueryUtils} from '../../utils/QueryUtils';
 import {IQuery} from '../../rest/Query';
 
+declare const Globalize;
+
 export interface IMatrixOptions {
   title?: string;
 

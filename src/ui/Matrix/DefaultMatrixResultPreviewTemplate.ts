@@ -2,6 +2,8 @@ import {Template} from '../Templates/Template';
 import {IQueryResult} from '../../rest/QueryResult';
 import {$$} from '../../utils/Dom';
 
+declare const Globalize;
+
 export class DefaultMatrixResultPreviewTemplate extends Template {
 
   constructor(private computedField: string, private format: string) {
