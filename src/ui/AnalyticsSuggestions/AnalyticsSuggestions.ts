@@ -33,20 +33,20 @@ export class AnalyticsSuggestions extends Component {
      * The index at which the suggestions should render in the omnibox. Higher value = placed first.<br/>
      * The default value is `52`
      */
-    omniboxZIndex: ComponentOptions.buildNumberOption({defaultValue: 52, min: 0}),
-    headerTitle: ComponentOptions.buildLocalizedStringOption({defaultValue: l('SuggestedQueries')}),
+    omniboxZIndex: ComponentOptions.buildNumberOption({ defaultValue: 52, min: 0 }),
+    headerTitle: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('SuggestedQueries') }),
     /**
      * The number of suggestions that should be requested and displayed in the omnibox.<br/>
      * The default value is `5`
      */
-    numberOfSuggestions: ComponentOptions.buildNumberOption({defaultValue: 5, min: 1})
+    numberOfSuggestions: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1 })
   };
 
   private suggestionForOmnibox: SuggestionForOmnibox;
   private partialQueries: string[] = [];
   private lastSuggestions: string[] = [];
   private resultsToBuildWith = [];
-  private currentlyDisplayedSuggestions: {[suggestion: string]: {element: HTMLElement, pos: number}};
+  private currentlyDisplayedSuggestions: { [suggestion: string]: { element: HTMLElement, pos: number } };
 
   constructor(element: HTMLElement, public options: AnalyticsSuggestionsOptions, bindings?: IComponentBindings) {
     super(element, AnalyticsSuggestions.ID, bindings);
@@ -67,15 +67,15 @@ export class AnalyticsSuggestions extends Component {
     } else {
       let headerTemplate = _.template(`<div class='coveo-top-analytics-suggestion-header'><span class='coveo-icon-top-analytics'></span><span class='coveo-caption'><%= headerTitle %></span></div>`);
       suggestionStructure = {
-        header: {template: headerTemplate, title: this.options.headerTitle},
+        header: { template: headerTemplate, title: this.options.headerTitle },
         row: rowTemplate
       };
     }
 
-    this.suggestionForOmnibox = new SuggestionForOmnibox(suggestionStructure, (value: string, args: IPopulateOmniboxEventArgs)=> {
+    this.suggestionForOmnibox = new SuggestionForOmnibox(suggestionStructure, (value: string, args: IPopulateOmniboxEventArgs) => {
       this.options.onSelect.call(this, value, args);
     });
-    this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs)=> this.handlePopulateOmnibox(args));
+    this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs) => this.handlePopulateOmnibox(args));
     this.bind.onRootElement(QueryEvents.querySuccess, () => this.partialQueries = []);
   }
 
@@ -93,7 +93,7 @@ export class AnalyticsSuggestions extends Component {
           $$(this.currentlyDisplayedSuggestions[suggestion].element).trigger('click');
         }
       } else {
-        var currentlySuggested = <{element: HTMLElement, pos: number}>_.findWhere(<any>this.currentlyDisplayedSuggestions, {pos: suggestion});
+        var currentlySuggested = <{ element: HTMLElement, pos: number }>_.findWhere(<any>this.currentlyDisplayedSuggestions, { pos: suggestion });
         if (currentlySuggested) {
           $$(currentlySuggested.element).trigger('click');
         }
@@ -104,7 +104,7 @@ export class AnalyticsSuggestions extends Component {
   private handlePopulateOmnibox(args: IPopulateOmniboxEventArgs) {
     Assert.exists(args);
 
-    var promise = new Promise((resolve, reject)=> {
+    var promise = new Promise((resolve, reject) => {
       let searchPromise = this.usageAnalytics.getTopQueries({
         pageSize: this.options.numberOfSuggestions,
         queryText: args.completeQueryExpression.word
@@ -122,7 +122,7 @@ export class AnalyticsSuggestions extends Component {
         }
         let element = this.suggestionForOmnibox.buildOmniboxElement(this.resultsToBuildWith, args);
         this.currentlyDisplayedSuggestions = {};
-        _.map($$(element).findAll('.coveo-omnibox-selectable'), (selectable, i?)=> {
+        _.map($$(element).findAll('.coveo-omnibox-selectable'), (selectable, i?) => {
           this.currentlyDisplayedSuggestions[$$(selectable).text()] = {
             element: selectable,
             pos: i
@@ -140,7 +140,7 @@ export class AnalyticsSuggestions extends Component {
       });
     })
 
-    args.rows.push({deferred: promise});
+    args.rows.push({ deferred: promise });
   }
 
   private onRowSelection(value: string, args: IPopulateOmniboxEventArgs) {

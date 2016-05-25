@@ -62,19 +62,19 @@ export class Analytics extends Component {
     /**
      * Specifies the URL of the analytics logger for rare cases where it is different from the default usage analytics Coveo Cloud endpoint (https://usageanalytics.coveo.com).
      */
-    endpoint: ComponentOptions.buildStringOption({defaultValue: AnalyticsEndpoint.DEFAULT_ANALYTICS_URI}),
+    endpoint: ComponentOptions.buildStringOption({ defaultValue: AnalyticsEndpoint.DEFAULT_ANALYTICS_URI }),
     /**
      * Specifies whether the search user identities are converted in a unique hash in the logged analytics data to prevent analytics reviewers and managers to identify who performs which queries.<br/>
      * When enabled, the Coveo Analytics Platform can still properly identify sessions made by anonymous users, versus ones from users that are authenticated in some way with the site containing the search page.<br/>
      * The default value is false.
      */
-    anonymous: ComponentOptions.buildBooleanOption({defaultValue: false}),
+    anonymous: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Sets the Search Hub dimension on the search events.<br/>
      * The Search Hub dimension is typically a name that refers to a specific search page. For example, one could use the CommunitySite value to refer to a search page on a company's public community site.<br/>
      * The default value is default.
      */
-    searchHub: ComponentOptions.buildStringOption({defaultValue: 'default'}),
+    searchHub: ComponentOptions.buildStringOption({ defaultValue: 'default' }),
     /**
      * Specifies the name of the split test run that the search page is a part of.<br/>
      * This dimension can be used to perform A/B testing using different search page layouts and features, inside the Coveo Query pipeline.<br/>
@@ -87,7 +87,7 @@ export class Analytics extends Component {
      * By default, this value is not specified.
      */
     splitTestRunVersion: ComponentOptions.buildStringOption(),
-    sendToCloud: ComponentOptions.buildBooleanOption({defaultValue: true}),
+    sendToCloud: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies the organization bound to the access token. This is necessary when using an access token because it can be associated with more than organization.
      * If this parameter is not specified, it will fallback on the organization used for the search endpoint.
@@ -114,8 +114,8 @@ export class Analytics extends Component {
     this.initializeAnalyticsClient();
     Assert.exists(this.client);
 
-    this.bind.onRootElement(QueryEvents.buildingQuery, (data: IBuildingQueryEventArgs)=> this.handleBuildingQuery(data));
-    this.bind.onRootElement(QueryEvents.queryError, (data: IQueryErrorEventArgs)=> this.handleQueryError(data));
+    this.bind.onRootElement(QueryEvents.buildingQuery, (data: IBuildingQueryEventArgs) => this.handleBuildingQuery(data));
+    this.bind.onRootElement(QueryEvents.queryError, (data: IQueryErrorEventArgs) => this.handleQueryError(data));
 
     // Analytics component is a bit special : It can be higher in the dom tree than the search interface
     // Need to resolve down to find the componentOptionsModel if we need to.
@@ -129,7 +129,7 @@ export class Analytics extends Component {
     if (this.componentOptionsModel) {
       this.componentOptionsModel.set(ComponentOptionsModel.attributesEnum.searchHub, this.options.searchHub);
       let event = this.componentOptionsModel.getEventName(Model.eventTypes.changeOne + ComponentOptionsModel.attributesEnum.searchHub);
-      this.bind.onRootElement(event, (args: IAttributeChangedEventArg)=> this.handleSearchHubChanged(args));
+      this.bind.onRootElement(event, (args: IAttributeChangedEventArg) => this.handleSearchHubChanged(args));
     }
   }
 
@@ -203,13 +203,13 @@ export class Analytics extends Component {
 
       }
       this.client = new LiveAnalyticsClient(endpoint, elementToInitializeClient,
-          this.options.user,
-          this.options.userDisplayName,
-          this.options.anonymous,
-          this.options.splitTestRunName,
-          this.options.splitTestRunVersion,
-          this.options.searchHub,
-          this.options.sendToCloud);
+        this.options.user,
+        this.options.userDisplayName,
+        this.options.anonymous,
+        this.options.splitTestRunName,
+        this.options.splitTestRunVersion,
+        this.options.searchHub,
+        this.options.sendToCloud);
     } else {
       this.client = new NoopAnalyticsClient();
     }

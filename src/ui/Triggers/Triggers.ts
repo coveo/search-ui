@@ -68,7 +68,7 @@ export class Triggers extends Component {
       }, this.element);
 
       this.notifications.push(trigger.content);
-      this.element.appendChild($$('div', {className: 'coveo-trigger-notify'}, trigger.content).el);
+      this.element.appendChild($$('div', { className: 'coveo-trigger-notify' }, trigger.content).el);
 
       showElement = true;
     });

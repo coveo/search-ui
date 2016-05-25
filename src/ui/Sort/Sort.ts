@@ -47,12 +47,12 @@ export class Sort extends Component {
           return <SortCriteria>criteria;
         }
       })
-    }, {required: true}),
+    }, { required: true }),
     /**
      * The caption to display on the element<br/>
      * If not specified, the component will use the tag's body
      */
-    caption: ComponentOptions.buildLocalizedStringOption({required: true})
+    caption: ComponentOptions.buildLocalizedStringOption({ required: true })
   };
 
   private currentCriteria: SortCriteria;
@@ -170,7 +170,7 @@ export class Sort extends Component {
     if (oldCriteria != this.currentCriteria) {
       this.queryController.deferExecuteQuery({
         beforeExecuteQuery: () => this.usageAnalytics.logSearchEvent<IAnalyticsResultsSortMeta>(AnalyticsActionCauseList.resultsSort,
-            {resultsSortBy: this.currentCriteria.sort + this.currentCriteria.direction})
+          { resultsSortBy: this.currentCriteria.sort + this.currentCriteria.direction })
       });
     }
   }

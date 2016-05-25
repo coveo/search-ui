@@ -32,12 +32,12 @@ export class HiddenQuery extends Component {
      * After this length, the component will slice the descrption and add [...].<br/>
      * Default value is 100
      */
-    maximumDescriptionLength: ComponentOptions.buildNumberOption({min: 0, defaultValue: 100}),
+    maximumDescriptionLength: ComponentOptions.buildNumberOption({ min: 0, defaultValue: 100 }),
     /**
      * Specifies a title that will appear in the {@link Breadcrumb} when it is populated by the HiddenQuery component.<br/>
      * By default, it is a localized string for 'Additional filters :'
      */
-    title: ComponentOptions.buildLocalizedStringOption({defaultValue: l('AdditionalFilters') + ' : '})
+    title: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('AdditionalFilters') + ' : ' })
   };
 
   /**
@@ -62,7 +62,7 @@ export class HiddenQuery extends Component {
   public clear() {
     this.setStateEmpty();
     let hiddenDescriptionRemoved = this.getDescription();
-    this.usageAnalytics.logSearchEvent<IAnalyticsContextRemoveMeta>(AnalyticsActionCauseList.contextRemove, {contextName: hiddenDescriptionRemoved});
+    this.usageAnalytics.logSearchEvent<IAnalyticsContextRemoveMeta>(AnalyticsActionCauseList.contextRemove, { contextName: hiddenDescriptionRemoved });
     this.queryController.executeQuery();
   }
 

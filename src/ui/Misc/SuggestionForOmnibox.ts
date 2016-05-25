@@ -60,10 +60,10 @@ export class SuggestionForOmnibox {
         rawValue: result.value,
         data: DomUtils.highlightElement(result.value, args.completeQueryExpression.word)
       })).el;
-      $$(row).on('click', ()=> {
+      $$(row).on('click', () => {
         this.onSelect.call(this, result.value, args);
       })
-      $$(row).on('keyboardSelect', ()=> {
+      $$(row).on('keyboardSelect', () => {
         this.onSelect.call(this, result.value, args);
       })
       ret.push(row)

@@ -108,16 +108,16 @@ export class ShareQuery extends Component {
   }
 
   private buildContent(): HTMLElement {
-    let content = $$('div', {className: 'coveo-share-query-summary-info'}).el;
-    content.appendChild($$('span', {className: 'coveo-query-summary-info-title'}).el);
+    let content = $$('div', { className: 'coveo-share-query-summary-info' }).el;
+    content.appendChild($$('span', { className: 'coveo-query-summary-info-title' }).el);
     $$(content).text(l('ShareQuery'))
 
-    let close = $$('div', {className: 'coveo-share-query-summary-info-close'}).el;
+    let close = $$('div', { className: 'coveo-share-query-summary-info-close' }).el;
     close.appendChild($$('span').el);
     $$(close).on('click', () => this.close());
     content.appendChild(close);
 
-    let boxes = $$('div', {className: 'coveo-share-query-summary-info-boxes'}).el;
+    let boxes = $$('div', { className: 'coveo-share-query-summary-info-boxes' }).el;
 
     this.linkToThisQuery = <HTMLInputElement>$$('input', {
       'type': 'text',
@@ -139,7 +139,7 @@ export class ShareQuery extends Component {
   }
 
   private buildTextBoxWithLabel(label: string, input: HTMLInputElement): HTMLElement {
-    let labelElement = $$('span', {className: 'coveo-share-query-summary-info-label'})
+    let labelElement = $$('span', { className: 'coveo-share-query-summary-info-label' })
     labelElement.text(label);
 
     let returnDiv = $$('div').el;

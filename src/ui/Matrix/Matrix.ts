@@ -68,37 +68,37 @@ export class Matrix extends Component {
      * Specifies the field to use for the rows.<br/>
      * Required options, otherwise the component will not work
      */
-    rowField: ComponentOptions.buildFieldOption({required: true}),
+    rowField: ComponentOptions.buildFieldOption({ required: true }),
     /**
      * Specifies the field to use for the columns.<br/>
      * Required options, otherwise the component will not work
      */
-    columnField: ComponentOptions.buildFieldOption({required: true}),
+    columnField: ComponentOptions.buildFieldOption({ required: true }),
     /**
      * Specifies the criteria used to sort the rows. The available sort criteria are the same as those for the Group By parameter (see Group By Parameters - sortCriteria).<br/>
      * The default value is 'ComputedFieldDescending'.
      */
-    sortCriteria: ComponentOptions.buildStringOption({defaultValue: 'ComputedFieldDescending'}),
+    sortCriteria: ComponentOptions.buildStringOption({ defaultValue: 'ComputedFieldDescending' }),
     /**
      * Specifies the maximum number of rows to display in the matrix.<br/>
      * The default value is 10.
      */
-    maximumNumberOfRows: ComponentOptions.buildNumberOption({defaultValue: 10, min: 0}),
+    maximumNumberOfRows: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 0 }),
     /**
      * Specifies whether to add a total column which contains the total for each row.<br/>
      * The default value is true.
      */
-    enableRowTotals: ComponentOptions.buildBooleanOption({defaultValue: true}),
+    enableRowTotals: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies the field values to use for each column.<br/>
      * If not specified, you won't generate any column except one for the 'Total' column.
      */
-    columnFieldValues: ComponentOptions.buildListOption({defaultValue: []}),
+    columnFieldValues: ComponentOptions.buildListOption({ defaultValue: [] }),
     /**
      * Specifies the labels values to use for each column.<br/>
      * The array should match the {@link Matrix.options.columnFieldValues}.
      */
-    columnLabels: ComponentOptions.buildListOption({defaultValue: []}),
+    columnLabels: ComponentOptions.buildListOption({ defaultValue: [] }),
     /**
      * Specifies the label for the first column on the left, as a description of the columnField.
      */
@@ -108,16 +108,16 @@ export class Matrix extends Component {
      * This value should always be greater than {@link Matrix.options.maximumNumberOfRows}. If it is too small, some results won't be displayed in the matrix.<br/>
      * The default value is 100.
      */
-    maximumNumberOfValuesInGroupBy: ComponentOptions.buildNumberOption({defaultValue: 100, min: 0}),
+    maximumNumberOfValuesInGroupBy: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 0 }),
     /**
      * Specifies whether to add a total row which contains the total for each column.<br/>
      * The default value is true.
      */
-    enableColumnTotals: ComponentOptions.buildBooleanOption({defaultValue: true}),
+    enableColumnTotals: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies the field whose computed values are displayed in the cells.
      */
-    computedField: ComponentOptions.buildFieldOption({required: true}),
+    computedField: ComponentOptions.buildFieldOption({ required: true }),
     /**
      * Specifies the type of aggregate operation to use on the computed field.<br/>
      * The available values are the same as those for the {@link Facet.options.computedFieldOperation}.<br/>
@@ -130,7 +130,7 @@ export class Matrix extends Component {
      * </ul>
      * The default value is sum.
      */
-    computedFieldOperation: ComponentOptions.buildStringOption({defaultValue: 'sum'}),
+    computedFieldOperation: ComponentOptions.buildStringOption({ defaultValue: 'sum' }),
     /**
      * Specifies how to format the values resulting from a computed field operation.<br/>
      * The available formats are the same as those for the {@link Facet.options.computedFieldFormat}.<br/>
@@ -142,17 +142,17 @@ export class Matrix extends Component {
      * </ul>
      * The default value is c0.
      */
-    computedFieldFormat: ComponentOptions.buildStringOption({defaultValue: 'c0'}),
+    computedFieldFormat: ComponentOptions.buildStringOption({ defaultValue: 'c0' }),
     /**
      * Specifies the font-size of the cells.<br/>
      * This option is mainly used to reduce the cell font-size when some values are cropped because there are too many columns in the matrix.<br/>
      * Other options to fix this problem are to remove less important columns or modify the CSS to give more place to the matrix.
      */
-    cellFontSize: ComponentOptions.buildStringOption({defaultValue: ''}),
+    cellFontSize: ComponentOptions.buildStringOption({ defaultValue: '' }),
     /**
      * Specifies whether to show a preview popup of cell results on hover. The default value is true.
      */
-    enableHoverPreview: ComponentOptions.buildBooleanOption({defaultValue: true}),
+    enableHoverPreview: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies the criteria to use to sort the results of the hover preview.<br/>
      * The available sort criteria values are the same as those of the {@link Query}.
@@ -166,7 +166,7 @@ export class Matrix extends Component {
      * </ul>
      * The default value is 'FieldDescending'.
      */
-    previewSortCriteria: ComponentOptions.buildStringOption({defaultValue: 'FieldDescending'}),
+    previewSortCriteria: ComponentOptions.buildStringOption({ defaultValue: 'FieldDescending' }),
     /**
      * Specifies the field to use when the previewSortCriteria option is FieldDescending or FieldAscending.<br/>
      * By default, the value of the computedField option is used.
@@ -176,17 +176,17 @@ export class Matrix extends Component {
      * Specifies the maximum width of the preview pop-up.<br/>
      * The default value is 500px.
      */
-    previewMaxWidth: ComponentOptions.buildStringOption({defaultValue: '500px'}),
+    previewMaxWidth: ComponentOptions.buildStringOption({ defaultValue: '500px' }),
     /**
      * Specifies the minimum width of the preview pop-up.<br/>
      * The default value is 0.
      */
-    previewMinWidth: ComponentOptions.buildStringOption({defaultValue: '0'}),
+    previewMinWidth: ComponentOptions.buildStringOption({ defaultValue: '0' }),
     /**
      * Specifies the delay (in milliseconds) before the query used to get the preview results is sent.<br/>
      * The default value is 500.
      */
-    previewDelay: ComponentOptions.buildNumberOption({defaultValue: 500}),
+    previewDelay: ComponentOptions.buildNumberOption({ defaultValue: 500 }),
     /**
      * Specifies the ID or CSS selector of the template to use to render the results of the hover preview.<br/>
      * Eg : <code>data-template-id='TemplateId'</code> , <code>data-template-selector='.templateSelector'</code><br/>

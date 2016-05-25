@@ -1,7 +1,7 @@
 
 
 module Coveo {
-  export enum RatingValues {Undefined, Lowest, Low, Average, Good, Best};
+  export enum RatingValues { Undefined, Lowest, Low, Average, Good, Best };
 
   export interface ResultRatingOptions {
   }
@@ -77,13 +77,13 @@ module Coveo {
       };
 
       this.queryController.getEndpoint().rateDocument(request)
-          .then(() => {
-            this.result.rating = rating;
-            this.renderComponent(this.element, rating);
-          })
-          .catch(() => {
-            this.logger.error('An error occurred while rating the document');
-          });
+        .then(() => {
+          this.result.rating = rating;
+          this.renderComponent(this.element, rating);
+        })
+        .catch(() => {
+          this.logger.error('An error occurred while rating the document');
+        });
     }
   }
 

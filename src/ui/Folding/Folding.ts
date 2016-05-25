@@ -59,23 +59,23 @@ export class Folding extends Component {
      * The name of the field on which the folding is done.<br/>
      * This option is required.
      */
-    field: ComponentOptions.buildFieldOption({required: true}),
+    field: ComponentOptions.buildFieldOption({ required: true }),
     /**
      * Specifies the field that determines that a result is a child of another top result.<br/>
      * The default value is <code>@topparentid</code>
      */
-    childField: ComponentOptions.buildFieldOption({defaultValue: '@topparentid'}),
+    childField: ComponentOptions.buildFieldOption({ defaultValue: '@topparentid' }),
     /**
      * Specifies the field that determines that a result is a top result containing other child results<br/>
      * The default value is <code>@syscontainsattachmen</code>
      */
-    parentField: ComponentOptions.buildFieldOption({defaultValue: '@containsattachment'}),
+    parentField: ComponentOptions.buildFieldOption({ defaultValue: '@containsattachment' }),
     /**
      * The number of child results to fold.<br />
      * The default value is 2.<br/>
      * The minimum value is 0.
      */
-    range: ComponentOptions.buildNumberOption({defaultValue: 2, min: 0}),
+    range: ComponentOptions.buildNumberOption({ defaultValue: 2, min: 0 }),
     /**
      * Specifies how the top result and its related child results, following the {@link SortCriteria} format
      * (<code>date ascending</code>, <code>@somefield ascending</code>, etc.).<br/>
@@ -88,17 +88,17 @@ export class Folding extends Component {
      * Concretely, the {@link ResultFolding} component uses this for its <b>Load full conversation</b> option.<br/>
      * The default value is <code>true</code>
      */
-    enableExpand: ComponentOptions.buildBooleanOption({defaultValue: true}),
+    enableExpand: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies a customized constant expression to send when querying the expanded results.
      */
-    expandExpression: ComponentOptions.buildStringOption({depend: 'enableExpand'}),
+    expandExpression: ComponentOptions.buildStringOption({ depend: 'enableExpand' }),
     /**
      * Specifies the maximum number of expanded results.<br/>
      * The default value is 100.<br/>
      * The minimum value is 1.
      */
-    maximumExpandedResults: ComponentOptions.buildNumberOption({defaultValue: 100, min: 1, depend: 'enableExpand'})
+    maximumExpandedResults: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1, depend: 'enableExpand' })
   }
 
   /**
@@ -307,9 +307,9 @@ export class Folding extends Component {
 
     let builtQuery = query.build();
     return this.queryController.getEndpoint().search(builtQuery)
-               .then((results: IQueryResults) => {
-                 this.handlePreprocessMoreResults(results);
-                 return results.results;
+      .then((results: IQueryResults) => {
+        this.handlePreprocessMoreResults(results);
+        return results.results;
       });
   }
 
