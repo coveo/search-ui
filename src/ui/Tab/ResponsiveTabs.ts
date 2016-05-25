@@ -1,5 +1,6 @@
 import {$$, Dom} from '../../utils/Dom.ts';
 import {InitializationEvents} from '../../events/InitializationEvents.ts';
+import {PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
 
 export class ResponsiveTabs {
   static coveoRoot = '.CoveoSearchInterface';
@@ -13,7 +14,7 @@ export class ResponsiveTabs {
   
   public static init() {
     $$(<HTMLElement>document.querySelector(this.coveoRoot)).on(InitializationEvents.afterInitialization, () => {
-      this.dropdownContent = $$('div');
+      this.dropdownContent = this.buildDropdownContent();
       this.dropdownHeader = this.buildDropdownHeader();
       this.searchBarElement = <HTMLElement>document.querySelector(this.coveoSearchBox);
       let tabSectionElement = <HTMLElement>document.querySelector(this.coveoTabSection);
@@ -36,26 +37,27 @@ export class ResponsiveTabs {
           this.tabSection.el.appendChild(this.dropdownHeader.el);
           for(let i = tabs.length - 1; i >= 0; i--) {
             currentTab = tabs[i];
-            this.dropdownContent.prepend(currentTab);
+            this.addToDropdown(currentTab);
             if(!this.isOverflowing(this.tabSection.el)) {
               break;
             }
           }
           
           
-          //PopupUtils.positionPopup(dropdown.el, this.element, this.root, this.root, this.getPopupPositioning());
+    
           
         } else if(!tabSectionIsOverflowing && this.tabSection.is('.coveo-small-tab-section') && !this.isDropdownEmpty()) {
           let dropdownTabs = this.dropdownContent.findAll('.coveo-small-tab');
           
           while (!this.isOverflowing(this.tabSection.el) && !this.isDropdownEmpty()) {
             let current = dropdownTabs.shift();
+            this.removeFromDropdown(current);
             $$(current).insertBefore(this.dropdownHeader.el);
           }
           
           if (this.isOverflowing(this.tabSection.el)) {
             let tabs = this.tabSection.findAll('.coveo-small-tab');
-            this.dropdownContent.prepend(tabs.pop());
+            this.addToDropdown(tabs.pop());
           }
           
           if (this.isDropdownEmpty()) {
@@ -78,14 +80,14 @@ export class ResponsiveTabs {
           if (this.searchBarElement) {
             this.tabSection.insertAfter(this.searchBarElement);
           }
-        } else if (this.tabSection.is('.coveo-small-tab-section')
+    } else if (this.tabSection.is('.coveo-small-tab-section')
                    && !this.isLargeFormatOverflowing(this.tabSection.el)
                    && this.isDropdownEmpty()) {
-            this.toggleSmallClass(this.tabSection);
-            if (this.searchBarElement) {
-              this.tabSection.insertBefore(this.searchBarElement);
-            }
-        }
+      this.toggleSmallClass(this.tabSection);
+      if (this.searchBarElement) {
+        this.tabSection.insertBefore(this.searchBarElement);
+      }
+    }
   }
   
   private static isLargeFormatOverflowing(tabSectionElement: HTMLElement){
@@ -109,7 +111,6 @@ export class ResponsiveTabs {
 
 
   private static isOverflowing(el: HTMLElement) {
-    console.log([el.clientWidth, el.scrollWidth, el.clientHeight, el.scrollHeight]);
     return el.clientWidth < el.scrollWidth || el.clientHeight < el.scrollHeight;
   }
   
@@ -120,7 +121,34 @@ export class ResponsiveTabs {
     content.text('more tabs');
     content.el.appendChild($$('span', {className: 'coveo-sprites-more-tabs'}).el);
     dropdownHeader.el.appendChild(content.el);
+    dropdownHeader.on('click', () => {
+      PopupUtils.positionPopup(this.dropdownContent.el, this.dropdownHeader.el, <HTMLElement> document.querySelector(this.coveoRoot),
+                             <HTMLElement> document.querySelector(this.coveoRoot),
+                             {horizontal: HorizontalAlignment.CENTER, vertical: VerticalAlignment.BOTTOM});
+    })
     return dropdownHeader;
+  }
+  
+  private static buildDropdownContent() {
+    let dropdownContent = $$('div');
+    let contentList = $$('ol', {className: 'coveo-tab-list'});
+    dropdownContent.el.appendChild(contentList.el);
+    return dropdownContent;
+  }
+  
+  private static addToDropdown(el: HTMLElement) {
+    if (this.dropdownContent) {
+      let list = this.dropdownContent.el.querySelector('ol');
+      let listElement = $$('li');
+      listElement.el.appendChild(el);
+      $$(<HTMLElement>list).prepend(listElement.el);
+    }
+  }
+  
+  private static removeFromDropdown(el: HTMLElement) {
+    if (this.dropdownContent) {
+      $$(el.parentElement).detach();
+    }
   }
   
   private static toggleSmallClass(el: Dom) {
