@@ -47,6 +47,23 @@
   @include defaultRoundedBorder();
   padding: 0;
   white-space: nowrap;
+
+  * {
+    height: 30px;
+    line-height: 30px;
+  }
+  li:first-child {
+    margin-top: 6px;
+  }
+  
+  li:last-child {
+    margin-bottom: 6px;
+  }
+  
+  li:hover {
+    background-color: $color-blueish-white-grey;
+  }
+
  }
  
  .coveo-tab-list-container {
@@ -55,5 +72,10 @@
  
  .coveo-sprites-more-tabs {
    margin-left: 10px;
+ }
+ 
+ @mixin responsiveTabsRoundedBorder() {
+   border: $default-border;
+   border-radius: 3px;
  }
 

@@ -33,6 +33,12 @@
 }
 
 .coveo-tab-section{
+  width: 100%;
+  min-height: 52px;
+  background-color: #f7f8f9;
+  text-align: center;
+  border-bottom: 1px solid $color-light-grey;
+  font-size: 0;
   overflow: hidden;
   white-space: nowrap;
 }
