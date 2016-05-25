@@ -1,3 +1,4 @@
+/// <reference path="../Test.ts" />
 module Coveo {
   import SearchEndpoint = Coveo.SearchEndpoint;
   describe('SearchEndpoint', function () {
