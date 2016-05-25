@@ -160,7 +160,7 @@ export class Omnibox extends Component {
       new TopQueryAddon(this);
     }
 
-    //new OldOmniboxAddon(this);
+    new OldOmniboxAddon(this);
 
     if (this.options.grammar != null) {
       grammar = this.options.grammar(grammar);

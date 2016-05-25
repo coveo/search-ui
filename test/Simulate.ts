@@ -1,6 +1,6 @@
 /// <reference path="Test.ts" />
-
 module Coveo {
+
   export interface SimulateQueryData {
     query?: IQuery;
     queryBuilder?: QueryBuilder;
@@ -17,6 +17,7 @@ module Coveo {
     deferSuccess?: boolean;
     cancel?: boolean;
   }
+
 
   export class Simulate {
     static query(env: Mock.MockEnvironment, options?: SimulateQueryData): SimulateQueryData {
@@ -128,6 +129,31 @@ module Coveo {
       }
 
       return options;
+    }
+
+    static omnibox(env: Mock.MockEnvironment, options?): OmniboxData {
+      let expression = {
+        word: 'foo',
+        regex: /foo/
+      }
+
+      var fakeOmniboxArgs = _.extend({}, {
+        rows: [],
+        completeQueryExpression: expression,
+        allQueryExpression: expression,
+        currentQueryExpression: expression,
+        cursorPosition: 3,
+        clear: jasmine.createSpy('clear'),
+        clearCurrentExpression: jasmine.createSpy('clearCurrent'),
+        replace: jasmine.createSpy('replace'),
+        replaceCurrentExpression: jasmine.createSpy('replaceCurrentExpression'),
+        insertAt: jasmine.createSpy('insertAt'),
+        closeOmnibox: jasmine.createSpy('closeOmnibox')
+      }, options)
+
+      $$(env.root).trigger(OmniboxEvents.populateOmnibox, fakeOmniboxArgs);
+
+      return fakeOmniboxArgs;
     }
 
     static keyDown(element: HTMLElement, key: number, shiftKey?: boolean) {

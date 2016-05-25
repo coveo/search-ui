@@ -19,7 +19,7 @@ export class OldOmniboxAddon {
   private lastSuggestions: Promise<IOmniboxSuggestion[]>[];
 
   public getSuggestion(): Promise<IOmniboxSuggestion[]>[] {
-    var text = this.omnibox.magicBox.getText();
+    let text = this.omnibox.magicBox.getText();
 
     if (text.length == 0) {
       return null;
@@ -31,25 +31,25 @@ export class OldOmniboxAddon {
 
     this.lastQuery = text;
 
-    var eventArgs = this.buildPopulateOmniboxEventArgs();
+    let eventArgs = this.buildPopulateOmniboxEventArgs();
     $$(this.omnibox.element).trigger(OmniboxEvents.populateOmnibox, eventArgs);
 
     return this.lastSuggestions = this.rowsToSuggestions(eventArgs.rows);
   }
 
   private getCurrentQueryExpression() {
-    var cursorPos = this.omnibox.getCursor();
-    var value = this.omnibox.getText();
-    var length = value.length;
-    var start = cursorPos;
-    var end = cursorPos;
-    if (value[start] == " ") {
+    let cursorPos = this.omnibox.getCursor();
+    let value = this.omnibox.getText();
+    let length = value.length;
+    let start = cursorPos;
+    let end = cursorPos;
+    if (value[start] == ' ') {
       start--;
     }
-    while (start > 0 && value[start] != " ") {
+    while (start > 0 && value[start] != ' ') {
       start--;
     }
-    while (end < length && value[end] != " ") {
+    while (end < length && value[end] != ' ') {
       end++;
     }
     return value.substring(start, end);
@@ -59,12 +59,12 @@ export class OldOmniboxAddon {
     if (strValue == null) {
       strValue = this.omnibox.getText();
     }
-    return new RegExp(Utils.escapeRegexCharacter(strValue), "i");
+    return new RegExp(Utils.escapeRegexCharacter(strValue), 'i');
   }
 
   private getQueryExpressionBreakDown() {
-    var ret = [];
-    var queryWords = this.omnibox.getText().split(" ");
+    let ret = [];
+    let queryWords = this.omnibox.getText().split(' ');
     _.each(queryWords, (word) => {
       ret.push({
         word: word,
@@ -79,12 +79,12 @@ export class OldOmniboxAddon {
   }
 
   private clearCurrentExpression() {
-    this.replace(this.getCurrentQueryExpression(), "");
+    this.replace(this.getCurrentQueryExpression(), '');
   }
 
   private insertAt(at: number, toInsert: string) {
-    var oldValue = this.omnibox.getText()
-    var newValue = [oldValue.slice(0, at), toInsert, oldValue.slice(at)].join("");
+    let oldValue = this.omnibox.getText()
+    let newValue = [oldValue.slice(0, at), toInsert, oldValue.slice(at)].join('');
     this.omnibox.setText(newValue);
   }
 
@@ -93,8 +93,8 @@ export class OldOmniboxAddon {
   }
 
   private buildPopulateOmniboxEventArgs() {
-    var currentQueryExpression = this.getCurrentQueryExpression();
-    var ret: IPopulateOmniboxEventArgs = {
+    let currentQueryExpression = this.getCurrentQueryExpression();
+    let ret: IPopulateOmniboxEventArgs = {
       rows: [],
       completeQueryExpression: {
         word: this.omnibox.getText(),

@@ -30,7 +30,8 @@ gulp.task('buildTest', function () {
       .pipe(tsc({
         target: 'ES5',
         out: 'tests.js',
-        module: 'amd'
+        module: 'amd',
+        inlineSourceMap: true
       }))
       .pipe(gulp.dest('./bin/tests'))
 })

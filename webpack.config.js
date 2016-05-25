@@ -21,6 +21,7 @@ module.exports = {
       'finally': __dirname + '/lib/finally.js'
     }
   },
+  devtool: '#inline-source-map',
   module: {
     loaders: [
       {test: /\.ts$/, loader: 'ts-loader'}
