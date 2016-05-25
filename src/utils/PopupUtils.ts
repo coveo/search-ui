@@ -37,6 +37,7 @@ interface ElementBoundary {
 export class PopupUtils {
   static positionPopup(popUp: HTMLElement, nextTo: HTMLElement, appendTo: HTMLElement, boundary: HTMLElement, desiredPosition: Position, checkForBoundary = 0) {
     appendTo.appendChild(popUp);
+    popUp.style.position = 'absolute';
     desiredPosition.verticalOffset = desiredPosition.verticalOffset ? desiredPosition.verticalOffset : 0;
     desiredPosition.horizontalOffset = desiredPosition.horizontalOffset ? desiredPosition.horizontalOffset : 0;
 

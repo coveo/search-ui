@@ -29,5 +29,6 @@ module.exports = {
       {test: /\.ts$/, loader: 'ts-loader'}
     ]
   },
-  bail: true
+  bail: true,
+  devtool: 'inline-source-map'
 }
