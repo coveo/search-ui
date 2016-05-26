@@ -12,7 +12,7 @@ import {AnalyticsActionCauseList, IAnalyticsTopSuggestionMeta} from '../Analytic
 import {Initialization} from '../Base/Initialization';
 import {$$} from '../../utils/Dom';
 
-export interface AnalyticsSuggestionsOptions extends SuggestionForOmniboxOptions {
+export interface IAnalyticsSuggestionsOptions extends SuggestionForOmniboxOptions {
 }
 
 /**
@@ -28,7 +28,7 @@ export class AnalyticsSuggestions extends Component {
    * The options for the component
    * @componentOptions
    */
-  static options: AnalyticsSuggestionsOptions = {
+  static options: IAnalyticsSuggestionsOptions = {
     /**
      * The index at which the suggestions should render in the omnibox. Higher value = placed first.<br/>
      * The default value is `52`
@@ -48,13 +48,15 @@ export class AnalyticsSuggestions extends Component {
   private resultsToBuildWith = [];
   private currentlyDisplayedSuggestions: { [suggestion: string]: { element: HTMLElement, pos: number } };
 
-  constructor(element: HTMLElement, public options: AnalyticsSuggestionsOptions, bindings?: IComponentBindings) {
+  constructor(element: HTMLElement, public options: IAnalyticsSuggestionsOptions, bindings?: IComponentBindings) {
     super(element, AnalyticsSuggestions.ID, bindings);
-    ComponentOptions.initComponentOptions(element, AnalyticsSuggestions, this.options);
+
 
     if (this.options && 'omniboxSuggestionOptions' in this.options) {
       this.options = _.extend(this.options, this.options['omniboxSuggestionOptions'])
     }
+
+    this.options = ComponentOptions.initComponentOptions(element, AnalyticsSuggestions, this.options);
 
     let rowTemplate = _.template(`<div class='magic-box-suggestion coveo-omnibox-selectable coveo-top-analytics-suggestion-row'><%= data %></div>`);
     this.options.onSelect = this.options.onSelect || this.onRowSelection;
@@ -93,7 +95,7 @@ export class AnalyticsSuggestions extends Component {
           $$(this.currentlyDisplayedSuggestions[suggestion].element).trigger('click');
         }
       } else {
-        var currentlySuggested = <{ element: HTMLElement, pos: number }>_.findWhere(<any>this.currentlyDisplayedSuggestions, { pos: suggestion });
+        let currentlySuggested = <{ element: HTMLElement, pos: number }>_.findWhere(<any>this.currentlyDisplayedSuggestions, { pos: suggestion });
         if (currentlySuggested) {
           $$(currentlySuggested.element).trigger('click');
         }

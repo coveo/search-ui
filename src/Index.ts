@@ -131,5 +131,7 @@ export {Tab} from './ui/Tab/Tab';
 export {Triggers} from './ui/Triggers/Triggers';
 export {TemplateLoader} from './ui/TemplateLoader/TemplateLoader';
 export {Template} from './ui/Templates/Template';
-export {AnalyticsSuggestions} from './ui/AnalyticsSuggestions/AnalyticsSuggestions';
 export {SuggestionForOmnibox} from './ui/Misc/SuggestionForOmnibox';
+export {AnalyticsSuggestions} from './ui/AnalyticsSuggestions/AnalyticsSuggestions';
+export {FieldSuggestions} from './ui/FieldSuggestions/FieldSuggestions';
+

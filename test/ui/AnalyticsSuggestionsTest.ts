@@ -144,5 +144,35 @@ module Coveo {
         done();
       })
     })
+
+    describe('exposes options', ()=> {
+      it('omniboxZIndex should be taken into account', (done)=> {
+        test = Mock.optionsComponentSetup<AnalyticsSuggestions, IAnalyticsSuggestionsOptions>(AnalyticsSuggestions, {
+          omniboxZIndex: 333
+        })
+        test.env.usageAnalytics.getTopQueries = jasmine.createSpy('topQuery');
+        (<jasmine.Spy>test.env.usageAnalytics.getTopQueries).and.returnValue(new Promise((resolve)=> {
+          resolve(['foo', 'bar', 'baz'])
+        }));
+        let simulation = Simulate.omnibox(test.env, {
+          completeQueryExpression: {
+            word: _.range(0, 500).join(''),
+            regex: /t;/
+          }
+        });
+        simulation.rows[0].deferred.then((elementResolved)=> {
+          expect(elementResolved.zIndex).toBe(333);
+          done();
+        })
+      })
+
+      it('numberOfSuggestions should be taken into account', ()=> {
+        test = Mock.optionsComponentSetup<AnalyticsSuggestions, IAnalyticsSuggestionsOptions>(AnalyticsSuggestions, {
+          numberOfSuggestions: 333
+        })
+        Simulate.omnibox(test.env);
+        expect(test.env.usageAnalytics.getTopQueries).toHaveBeenCalledWith(jasmine.objectContaining({pageSize: 333}));
+      })
+    })
   })
 }

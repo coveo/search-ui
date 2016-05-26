@@ -167,6 +167,7 @@
     "src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts",
     "src/ui/Omnibox/OldOmniboxAddon.ts",
     "src/ui/Misc/SuggestionForOmnibox.ts",
-    "src/ui/Omnibox/OmniboxInterface.ts"
+    "src/ui/Omnibox/OmniboxInterface.ts",
+    "src/ui/FieldSuggestions/FieldSuggestions.ts"
   ]
 }
