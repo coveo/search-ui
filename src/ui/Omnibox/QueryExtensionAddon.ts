@@ -1,11 +1,11 @@
-///<reference path="Omnibox.ts"/>
+///<reference path='Omnibox.ts'/>
 import {OmniboxEvents} from '../../events/OmniboxEvents';
 import {Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion} from './Omnibox';
 import {IExtension} from '../../rest/Extension';
 import {$$} from '../../utils/Dom';
 import _ = require('underscore');
 
-interface QueryExtensionAddonHash {
+interface IQueryExtensionAddonHash {
   type: string;
   before: string;
   after: string;
@@ -42,7 +42,7 @@ export class QueryExtensionAddon {
     return this.hashValueToSuggestion(hash, values);
   }
 
-  private getHash(magicBox: Coveo.MagicBox.Instance): QueryExtensionAddonHash {
+  private getHash(magicBox: Coveo.MagicBox.Instance): IQueryExtensionAddonHash {
     var queryExtension: Coveo.MagicBox.Result = _.last(magicBox.resultAtCursor('QueryExtension'));
     if (queryExtension != null) {
       var queryExtensionArgumentResults = queryExtension.findAll('QueryExtensionArgument');
@@ -82,14 +82,14 @@ export class QueryExtensionAddon {
     return null;
   }
 
-  private hashToString(hash: QueryExtensionAddonHash) {
+  private hashToString(hash: IQueryExtensionAddonHash) {
     if (hash == null) {
       return null;
     }
     return [hash.type, hash.current, (hash.name || ''), (hash.used ? hash.used.join() : '')].join();
   }
 
-  private hashValueToSuggestion(hash: QueryExtensionAddonHash, promise: Promise<string[]>): Promise<IOmniboxSuggestion[]> {
+  private hashValueToSuggestion(hash: IQueryExtensionAddonHash, promise: Promise<string[]>): Promise<IOmniboxSuggestion[]> {
     return promise.then((values) => {
       var suggestions: IOmniboxSuggestion[] = _.map(values, (value, i) => {
         return {

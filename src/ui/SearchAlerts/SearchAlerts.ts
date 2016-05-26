@@ -78,29 +78,29 @@ module Coveo {
     }
 
     public openPanel() {
-      var title = $(`<div><div class="coveo-subscriptions-panel-close"><span></span></div><div class="coveo-subscriptions-panel-title">${l("SearchAlerts_Panel")}</div>`);
+      var title = $(`<div><div class='coveo-subscriptions-panel-close'><span></span></div><div class='coveo-subscriptions-panel-title'>${l('SearchAlerts_Panel')}</div>`);
       title.find('.coveo-subscriptions-panel-close').on('click', () => {
         this.close();
       });
 
       var container = $(`<div>
-        <table class="coveo-subscriptions-panel-content" cellspacing="0">
+        <table class='coveo-subscriptions-panel-content' cellspacing='0'>
           <thead>
             <tr>
-              <th class="coveo-subscriptions-panel-content-type">${ l("SearchAlerts_Type")}</th>
-              <th>${ l("SearchAlerts_Content")}</th>
-              <th>${ l("SearchAlerts_Frequency")}</th>
-              <th class="coveo-subscriptions-panel-content-actions">${ l("SearchAlerts_Actions")}</th>
+              <th class='coveo-subscriptions-panel-content-type'>${ l('SearchAlerts_Type')}</th>
+              <th>${ l('SearchAlerts_Content')}</th>
+              <th>${ l('SearchAlerts_Frequency')}</th>
+              <th class='coveo-subscriptions-panel-content-actions'>${ l('SearchAlerts_Actions')}</th>
             </tr>
           </thead>
-          <tbody class="coveo-subscriptions-panel-spacer">
+          <tbody class='coveo-subscriptions-panel-spacer'>
             <tr>
-              <td colsspan="3"></td>
+              <td colsspan='3'></td>
             </tr>
           </tbody>
-          <tbody class="coveo-subscriptions-panel-subscriptions">
-            <tr class="coveo-subscriptions-panel-no-subscriptions">
-              <td colsspan="3">${ l("SearchAlerts_PanelNoSearchAlerts")}</td>
+          <tbody class='coveo-subscriptions-panel-subscriptions'>
+            <tr class='coveo-subscriptions-panel-no-subscriptions'>
+              <td colsspan='3'>${ l('SearchAlerts_PanelNoSearchAlerts')}</td>
             </tr>
           </tbody>
         </table>
@@ -113,7 +113,7 @@ module Coveo {
           });
         })
         .catch(() => {
-          container.html('<div class="coveo-subscriptions-panel-fail">' + l("SearchAlerts_Fail") + '</div>');
+          container.html('<div class=\'coveo-subscriptions-panel-fail\'>' + l('SearchAlerts_Fail') + '</div>');
         })
         .finally(() => {
           this.modal = ModalBox.open(container.get(0), {
@@ -128,7 +128,7 @@ module Coveo {
     private handleSearchAlertsFail() {
       this.close();
       if (this.modal != null) {
-        $(this.modal.content).html('<div class="coveo-subscriptions-panel-fail">' + l("SearchAlerts_Fail") + '</div>');
+        $(this.modal.content).html('<div class=\'coveo-subscriptions-panel-fail\'>' + l('SearchAlerts_Fail') + '</div>');
       }
     }
 
@@ -141,42 +141,42 @@ module Coveo {
 
     private addSearchAlert(subscription: ISubscription, container: JQuery) {
       var frequencies = [
-        { value: 'daily', label: l("Daily") },
-        { value: 'monday', label: l("Monday") },
-        { value: 'tuesday', label: l("Tuesday") },
-        { value: 'wednesday', label: l("Wednesday") },
-        { value: 'thursday', label: l("Thursday") },
-        { value: 'friday', label: l("Friday") },
-        { value: 'saturday', label: l("Saturday") },
-        { value: 'sunday', label: l("Sunday") }
+        { value: 'daily', label: l('Daily') },
+        { value: 'monday', label: l('Monday') },
+        { value: 'tuesday', label: l('Tuesday') },
+        { value: 'wednesday', label: l('Wednesday') },
+        { value: 'thursday', label: l('Thursday') },
+        { value: 'friday', label: l('Friday') },
+        { value: 'saturday', label: l('Saturday') },
+        { value: 'sunday', label: l('Sunday') }
       ];
 
       var context: string;
       if (subscription.type == SubscriptionType.followQuery) {
         let typeConfig = <ISubscriptionQueryRequest>subscription.typeConfig;
-        context = _.escape(typeConfig.query.q) || l("EmptyQuery")
+        context = _.escape(typeConfig.query.q) || l('EmptyQuery')
       } else {
         let typeConfig = <ISubscriptionItemRequest>subscription.typeConfig;
         context = _.escape(typeConfig.title || typeConfig.id);
       }
 
-      var element = $(`<tr class="coveo-subscriptions-panel-subscription">
-        <td class="coveo-subscriptions-panel-content-type">${ l("SearchAlerts_Type_" + subscription.type)}</td>
+      var element = $(`<tr class='coveo-subscriptions-panel-subscription'>
+        <td class='coveo-subscriptions-panel-content-type'>${ l('SearchAlerts_Type_' + subscription.type)}</td>
         <td>
-          <div class="coveo-subscriptions-panel-context">
+          <div class='coveo-subscriptions-panel-context'>
             ${ context}
           </div>
         </td>
         <td>
-          <div class="coveo-subscriptions-panel-frequency">
+          <div class='coveo-subscriptions-panel-frequency'>
             <select>
-             ${ _.map(frequencies, (frequency) => `<option value="${frequency.value}">${frequency.label}</option>`)}
+             ${ _.map(frequencies, (frequency) => `<option value='${frequency.value}'>${frequency.label}</option>`)}
             </select>
           </div>
         </td>
-        <td class="coveo-subscriptions-panel-content-actions">
-          <div class="coveo-subscriptions-panel-action coveo-subscriptions-panel-action-unfollow">${ l("SearchAlerts_unFollowing")}</div>
-          <div class="coveo-subscriptions-panel-action coveo-subscriptions-panel-action-follow">${ l("SearchAlerts_follow")}</div>
+        <td class='coveo-subscriptions-panel-content-actions'>
+          <div class='coveo-subscriptions-panel-action coveo-subscriptions-panel-action-unfollow'>${ l('SearchAlerts_unFollowing')}</div>
+          <div class='coveo-subscriptions-panel-action coveo-subscriptions-panel-action-follow'>${ l('SearchAlerts_follow')}</div>
         </td>
       </tr>`)
 

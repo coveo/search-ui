@@ -12,20 +12,20 @@ import {SearchEndpoint} from '../../rest/SearchEndpoint';
 import {Template} from '../Templates/Template';
 import {Initialization} from '../Base/Initialization';
 import {Promise} from 'es6-promise';
-import {RootComponent} from "../Base/RootComponent";
-import {QueryController} from "../../controllers/QueryController";
-import {BaseComponent} from "../Base/BaseComponent";
+import {RootComponent} from '../Base/RootComponent';
+import {QueryController} from '../../controllers/QueryController';
+import {BaseComponent} from '../Base/BaseComponent';
 
 
 declare var ModalBox, Globalize;
 
-export interface DebugOptions {
+export interface IDebugOptions {
   enableDebug?: boolean;
 }
 
 export class Debug extends RootComponent {
   static ID = 'Debug';
-  static options: DebugOptions = {
+  static options: IDebugOptions = {
     enableDebug: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
 
@@ -43,7 +43,7 @@ export class Debug extends RootComponent {
 
   private stackDebug: any;
 
-  constructor(public element: HTMLElement, public queryController: QueryController, public options?: DebugOptions) {
+  constructor(public element: HTMLElement, public queryController: QueryController, public options?: IDebugOptions) {
     super(element, Debug.ID);
     this.options = ComponentOptions.initComponentOptions(element, Debug, options);
     $$(this.element).on(QueryEvents.buildingQuery, (e, args: IBuildingQueryEventArgs) => {
@@ -60,11 +60,7 @@ export class Debug extends RootComponent {
 
   private showDebugPanel(builder: (results?: IQueryResults) => { body: HTMLElement; json: any; }) {
     var build = builder();
-    var bodyBuilder = (results?: IQueryResults) => {
-      var build = builder();
-      downloadLink.el.setAttribute('href', this.downloadHref(build.json));
-      return build.body;
-    };
+
     var modalbox = ModalBox.open(build.body, {
       title: '',
       className: 'coveo-debug',
@@ -73,10 +69,16 @@ export class Debug extends RootComponent {
     });
     var title = $$(modalbox.wrapper).find('.coveo-title');
     var search = this.buildSearchBox(build.body);
+    var downloadLink = $$('a', { download: 'debug.json', 'href': this.downloadHref(build.json) }, 'Download');
+    var bodyBuilder = (results?: IQueryResults) => {
+      var build = builder();
+      downloadLink.el.setAttribute('href', this.downloadHref(build.json));
+      return build.body;
+    };
     title.appendChild(this.buildEnabledHighlightRecommendation());
     title.appendChild(this.buildEnableDebugCheckbox(build.body, search, bodyBuilder));
     title.appendChild(search);
-    var downloadLink = $$('a', { download: 'debug.json', 'href': this.downloadHref(build.json) }, 'Download');
+
     title.appendChild(downloadLink.el)
   }
 
@@ -169,7 +171,7 @@ export class Debug extends RootComponent {
   }
 
   private buildSearchBox(body: HTMLElement) {
-    var dom = Dom.createElement('div', { className: 'coveo-debug-search' }, '<input type="text"/>');
+    var dom = Dom.createElement('div', { className: 'coveo-debug-search' }, '<input type=\'text\'/>');
     dom.onclick = (e) => {
       e.stopPropagation();
     };
@@ -245,7 +247,7 @@ export class Debug extends RootComponent {
   }
 
   private buildEnableDebugCheckbox(body: HTMLElement, search: HTMLElement, bodyBuilder: (results: IQueryResults) => HTMLElement) {
-    var dom = Dom.createElement('div', { className: 'coveo-enabled-debug' }, '<label>Enable query debug <input type="checkbox"/></label>');
+    var dom = Dom.createElement('div', { className: 'coveo-enabled-debug' }, '<label>Enable query debug <input type=\'checkbox\'/></label>');
     $$(dom).on('click', (e) => {
       e.stopPropagation();
     });
@@ -272,7 +274,7 @@ export class Debug extends RootComponent {
   }
 
   private buildEnabledHighlightRecommendation() {
-    var dom = Dom.createElement('div', { className: 'coveo-enabled-highlight-recommendation' }, '<label>Highlight recommendation <input type="checkbox"/></label>');
+    var dom = Dom.createElement('div', { className: 'coveo-enabled-highlight-recommendation' }, '<label>Highlight recommendation <input type=\'checkbox\'/></label>');
     dom.onclick = (e) => {
       e.stopPropagation();
     };
@@ -374,7 +376,7 @@ export class Debug extends RootComponent {
             word[1],
             {
               Correlation: Number(word[2]),
-              "TF-IDF": Number(word[3]),
+              'TF-IDF': Number(word[3]),
             }
           ];
         }));
@@ -412,7 +414,7 @@ export class Debug extends RootComponent {
 
   private buildPromise(promise: Promise<any>, label?: string): HTMLElement {
     var dom: HTMLElement = document.createElement('div');
-    dom.className = "coveo-property coveo-property-promise";
+    dom.className = 'coveo-property coveo-property-promise';
     promise.then((value) => {
       var resolvedDom = this.buildProperty(value, label);
       $$(dom).replaceWith(resolvedDom);
@@ -422,10 +424,10 @@ export class Debug extends RootComponent {
 
   private buildObjectProperty(object: any, label?: string): HTMLElement {
     var dom: HTMLElement = document.createElement('div');
-    dom.className = "coveo-property coveo-property-object";
+    dom.className = 'coveo-property coveo-property-object';
 
     var valueContainer: HTMLElement = document.createElement('div');
-    valueContainer.className = "coveo-property-value";
+    valueContainer.className = 'coveo-property-value';
 
     var keys = _.keys(object);
     if (!_.isArray(object)) {
@@ -450,7 +452,7 @@ export class Debug extends RootComponent {
 
     if (label != null) {
       var labelDom = document.createElement('div');
-      labelDom.className = "coveo-property-label";
+      labelDom.className = 'coveo-property-label';
       labelDom.appendChild(document.createTextNode(label));
       dom['labelDom'] = labelDom;
 
@@ -489,11 +491,11 @@ export class Debug extends RootComponent {
 
   private buildBasicProperty(value: string, label?: string): HTMLElement {
     var dom: HTMLElement = document.createElement('div');
-    dom.className = "coveo-property coveo-property-basic";
+    dom.className = 'coveo-property coveo-property-basic';
 
     if (label != null) {
       var labelDom = document.createElement('div');
-      labelDom.className = "coveo-property-label";
+      labelDom.className = 'coveo-property-label';
       labelDom.appendChild(document.createTextNode(label));
       dom.appendChild(labelDom);
       dom['labelDom'] = labelDom;
@@ -510,7 +512,7 @@ export class Debug extends RootComponent {
     dom.appendChild(valueDom);
     dom['valueDom'] = valueDom;
 
-    var className: string[] = ["coveo-property-value"];
+    var className: string[] = ['coveo-property-value'];
     if (_.isString(value)) {
       className.push('coveo-property-value-string');
     }

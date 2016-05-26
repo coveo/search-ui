@@ -1,6 +1,6 @@
 import {Assert} from '../misc/Assert';
 
-export interface TimeSpanUtilsOptions {
+export interface ITimeSpanUtilsOptions {
   isMilliseconds: boolean;
 }
 

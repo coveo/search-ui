@@ -5,7 +5,7 @@ import {Facet} from './Facet';
 import {FacetSort} from './FacetSort';
 import {$$} from '../../utils/Dom';
 import {LocalStorageUtils} from '../../utils/LocalStorageUtils';
-import {FacetSortDescription} from './FacetSort';
+import {IFacetSortDescription} from './FacetSort';
 import {Utils} from '../../utils/Utils';
 import {l} from '../../strings/Strings';
 import {QueryStateModel} from '../../models/QueryStateModel';
@@ -46,7 +46,7 @@ export class FacetSettings extends FacetSort {
   private sortSection: { element: HTMLElement; sortItems: HTMLElement[] };
   private customSortDirectionChange = false;
 
-  private enabledSortsIgnoreRenderBecauseOfPairs: FacetSortDescription[] = [];
+  private enabledSortsIgnoreRenderBecauseOfPairs: IFacetSortDescription[] = [];
 
   constructor(public sorts: string[], public facet: Facet) {
     super(sorts, facet);
@@ -108,8 +108,8 @@ export class FacetSettings extends FacetSort {
    */
   public loadSavedState() {
     if (this.facetStateLocalStorage) {
-      //set the state from the settings only if there is nothing
-      //in the query state model for the current facet
+      // set the state from the settings only if there is nothing
+      // in the query state model for the current facet
       var state = this.facetStateLocalStorage.load();
       var currentStateIncluded = this.facet.queryStateModel.get(this.includedStateAttribute);
       var currentStateExcluded = this.facet.queryStateModel.get(this.excludedStateAttribute);
@@ -170,7 +170,7 @@ export class FacetSettings extends FacetSort {
     if (this.facet.options.enableSettingsFacetState) {
       $$(this.clearStateSection).toggle(!Utils.isNullOrUndefined(this.facetStateLocalStorage.load()))
     }
-    _.each(this.enabledSorts, (criteria: FacetSortDescription, i) => {
+    _.each(this.enabledSorts, (criteria: IFacetSortDescription, i) => {
       if (!Utils.isNullOrUndefined(this.sortSection.sortItems[i])) {
         if (this.activeSort.name == criteria.name.toLowerCase() || this.activeSort.relatedSort == criteria.name.toLowerCase()) {
           this.selectItem(this.sortSection.sortItems[i]);
@@ -228,7 +228,7 @@ export class FacetSettings extends FacetSort {
   }
 
   private enabledSortsAllowDirection() {
-    return _.some(this.enabledSorts, (facetSortDescription: FacetSortDescription) => {
+    return _.some(this.enabledSorts, (facetSortDescription: IFacetSortDescription) => {
       return facetSortDescription.directionToggle;
     })
   }
@@ -408,7 +408,7 @@ export class FacetSettings extends FacetSort {
     }
   }
 
-  private handleClickSortButton(e: Event, enabledSort: FacetSortDescription) {
+  private handleClickSortButton(e: Event, enabledSort: IFacetSortDescription) {
     if (this.activeSort != enabledSort && this.activeSort.relatedSort != enabledSort.name) {
       this.activeSort = enabledSort;
       if (enabledSort.directionToggle && _.contains(this.enabledSorts, FacetSettings.availableSorts[this.activeSort.relatedSort])) {
@@ -529,7 +529,7 @@ export class FacetSettings extends FacetSort {
   }
 
   private filterDuplicateForRendering() {
-    _.each(this.enabledSorts, (enabledSort: FacetSortDescription, i: number) => {
+    _.each(this.enabledSorts, (enabledSort: IFacetSortDescription, i: number) => {
       if (enabledSort.relatedSort != null) {
         for (var j = i + 1; j < this.enabledSorts.length; j++) {
           if (this.enabledSorts[j].name == enabledSort.relatedSort) {

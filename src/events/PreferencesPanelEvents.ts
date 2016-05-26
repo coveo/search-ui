@@ -1,5 +1,5 @@
 
-export interface SavePreferencesEventArgs {
+export interface ISavePreferencesEventArgs {
 }
 
 export class PreferencesPanelEvents {

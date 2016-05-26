@@ -233,35 +233,35 @@ Initialization.registerNamedMethod('patch', (element?: HTMLElement, methodName?:
 
 export function initBox(element: HTMLElement, ...args: any[]) {
   var type, options: any = {}, injectMarkup;
-  //This means : initBox, no type (no injection) and no options
+  // This means : initBox, no type (no injection) and no options
   if (args.length == 0) {
-    type = "Standard";
+    type = 'Standard';
     injectMarkup = false;
   }
-  //One arg, might be options or type
+  // One arg, might be options or type
   else if (args.length == 1) {
-    //This mean a type (with injection) and no options
-    if (typeof args[0] == "string") {
+    // This mean a type (with injection) and no options
+    if (typeof args[0] == 'string') {
       type = args[0];
       injectMarkup = true;
     }
-    //This means no type(no injection) and with options
-    else if (typeof args[0] == "object") {
-      type = "Standard";
+    // This means no type(no injection) and with options
+    else if (typeof args[0] == 'object') {
+      type = 'Standard';
       injectMarkup = false;
       options = args[0];
     } else {
       Assert.fail('Invalid parameters to init a box');
     }
   }
-  //Two args mean both options and type (with injection);
+  // Two args mean both options and type (with injection);
   else if (args.length == 2) {
     type = args[0];
     options = args[1];
     injectMarkup = true;
   }
   var merged: any = {};
-  merged[type || "Container"] = _.extend({}, options.SearchInterface, options[type]);
+  merged[type || 'Container'] = _.extend({}, options.SearchInterface, options[type]);
   options = _.extend({}, options, merged);
   Initialization.initializeFramework(element, options, () => {
     Initialization.initBoxInterface(element, options, type, injectMarkup)

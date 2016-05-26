@@ -267,16 +267,14 @@ export class Matrix extends Component {
 
     if (rowValue && this.isRowFacetPresent()) {
       this.queryStateModel.set(this.rowId, [rowValue]);
-    }
-    else {
+    } else {
       this.selectedRowValue = rowValue;
       this.queryStateModel.set(this.rowId, []);
     }
 
     if (columnValue && this.isColumnFacetPresent()) {
       this.queryStateModel.set(this.columnId, [columnValue]);
-    }
-    else {
+    } else {
       this.selectedColumnValue = columnValue
       this.queryStateModel.set(this.columnId, []);
     }

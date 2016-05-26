@@ -1,4 +1,4 @@
-export interface MenuItem {
+export interface IMenuItem {
   text: string;
   className: string;
   tooltip?: string;
