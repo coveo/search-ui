@@ -47,7 +47,7 @@ export {ModalBox} from './utils/ModalBox';
 export {HTMLUtils} from './utils/HtmlUtils';
 export {KEYBOARD, KeyboardUtils} from './utils/KeyboardUtils';
 export {LocalStorageUtils} from './utils/LocalStorageUtils';
-export {OSUtils} from './utils/OSUtils';
+export {OSUtils, OS_NAME} from './utils/OSUtils';
 export {PopupUtils} from './utils/PopupUtils';
 export {QueryUtils} from './utils/QueryUtils';
 export {StreamHighlightUtils} from './utils/StreamHighlightUtils';

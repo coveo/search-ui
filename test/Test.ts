@@ -74,6 +74,7 @@
 /// <reference path="ui/TriggersTest.ts" />
 /// <reference path="ui/ValueElementRendererTest.ts" />
 /// <reference path="ui/ExcerptTest.ts" />
+/// <reference path="ui/ResultLinkTest.ts" />
 
 Coveo.Logger.disable();
 

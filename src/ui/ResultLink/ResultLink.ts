@@ -122,18 +122,41 @@ export class ResultLink extends Component {
     if (!this.elementIsAnAnchor()) {
       $$(this.element).on('click', (ev: Event) => {
         if (this.options.alwaysOpenInNewWindow) {
-          if (this.options.openInOutlook && this.hasOutlookField()) {
-            window.location.href = this.getResultUri();
+          if (this.options.openInOutlook) {
+            this.openLinkInOutlook();
           } else {
-            window.open(this.getResultUri(), '_blank');
+            this.openLinkInNewWindow();
           }
         } else {
-          window.location.href = this.getResultUri();
+          this.openLink();
         }
       });
       return true;
     }
     return false;
+  }
+  
+  /**
+   * Opens the result
+   */
+  public openLink(){
+    window.location.href = this.getResultUri();
+  }
+  
+  /**
+   * Opens the result in a new window
+   */
+  public openLinkInNewWindow(){
+    window.open(this.getResultUri(), '_blank');
+  }
+  
+  /**
+   * Opens the result in outlook if the result has an outlook field.
+   */
+  public openLinkInOutlook(){
+    if(this.hasOutlookField()){
+      this.openLink();
+    }
   }
 
   private setHrefIfNotAlready() {

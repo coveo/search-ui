@@ -27,6 +27,7 @@ module Coveo.Mock {
     public componentStateModel = mockComponent<ComponentStateModel>(ComponentStateModel, ComponentStateModel.ID);
     public usageAnalytics = mockUsageAnalytics();
     public componentOptionsModel = mockComponent<ComponentOptionsModel>(ComponentOptionsModel, ComponentOptionsModel.ID);
+    public os: OS_NAME;
     private built = false;
 
     public withRoot(root: HTMLElement) {
@@ -51,6 +52,11 @@ module Coveo.Mock {
 
     public withCollaborativeRating() {
       this.searchInterface.options.enableCollaborativeRating = true;
+      return this;
+    }
+    
+    public withOs(os: OS_NAME){
+      this.os = os;
       return this;
     }
 
@@ -301,7 +307,7 @@ module Coveo.Mock {
     envBuilder = optsMerged.modifyBuilder(envBuilder);
     return {
       env: envBuilder.build(),
-      cmp: <T>new klass(envBuilder.getBindings().element, optsMerged.cmpOptions, envBuilder.getBindings(), envBuilder.result)
+      cmp: <T>new klass(envBuilder.getBindings().element, optsMerged.cmpOptions, envBuilder.getBindings(), envBuilder.result, envBuilder.os)
     }
   }
 }
