@@ -29,8 +29,9 @@ declare module CoveoAnalytics {
     title?: string;
   }
   export interface HistoryQueryElement {
-    type: string;
-    q: string;
+    name: string;
+    value: string;
+    time: string;
   }
 }
 
