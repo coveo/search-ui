@@ -15,6 +15,7 @@ script:
 - npm run build
 - npm run test
 after_success:
+- npm run doc
 - bash ./deploy.doc.sh
 env:
   global:

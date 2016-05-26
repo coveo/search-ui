@@ -5,7 +5,8 @@
   "main": "coveo.search.js",
   "scripts": {
     "test": "gulp buildTest && node_modules/karma/bin/karma start",
-    "build": "gulp"
+    "build": "gulp",
+    "doc": "gulp doc"
   },
   "repository": {
     "type": "git",
