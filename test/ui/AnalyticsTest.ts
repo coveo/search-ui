@@ -8,7 +8,8 @@ module Coveo {
       beforeEach(() => {
         SearchEndpoint.endpoints['default'] = new SearchEndpoint({
           accessToken: 'some token',
-          queryStringArguments: {workgroup: 'organization'}
+          queryStringArguments: {workgroup: 'organization'},
+          restUri: 'some/uri'
         });
         test = Mock.basicComponentSetup<Analytics>(Analytics);
       });

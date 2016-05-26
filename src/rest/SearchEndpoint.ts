@@ -719,7 +719,9 @@ export class SearchEndpoint implements ISearchEndpoint {
       if(name == 'workgroup'){
         queryString.push('organizationId' + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
       }
-      queryString.push(name + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
+      else{
+        queryString.push(name + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
+      }
     }
     
     if (addAccessToken && Utils.isNonEmptyString(this.options.accessToken)) {
