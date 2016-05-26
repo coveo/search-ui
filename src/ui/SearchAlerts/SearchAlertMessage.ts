@@ -31,7 +31,7 @@ module Coveo {
       return 'coveo-subscriptions-messages';
     }
 
-    private showMessage(dom: JQuery, message: string, error: boolean) {
+    public showMessage(dom: JQuery, message: string, error: boolean) {
       this.message = $(`<div class="coveo-subscriptions-messages-message">
           <div class="coveo-subscriptions-messages-info-close"></div>
           <div class="coveo-subscriptions-messages-content">${ message}</div>

@@ -53,7 +53,7 @@ module Coveo {
         .then((subscriptions: ISubscription[]) => {
           var subscription: ISubscription = _.find(subscriptions, (subscription: ISubscription) => {
             var typeConfig = <ISubscriptionItemRequest>subscription.typeConfig;
-            return typeConfig.id != null && typeConfig.id == this.getId();
+            return typeConfig && typeConfig.id != null && typeConfig.id == this.getId();
           });
           if (subscription != null) {
             this.setFollowed(subscription);
@@ -79,8 +79,12 @@ module Coveo {
       this.container.removeClass("coveo-follow-item-followed");
       this.text.text(l('SearchAlerts_follow'));
     }
+    
+    public getText(): string{
+      return this.text.text();
+    }
 
-    private toggleFollow() {
+    public toggleFollow() {
       if (!this.container.hasClass("coveo-follow-item-loading")) {
         this.container.addClass("coveo-follow-item-loading");
         if (this.subscription.id) {

@@ -717,7 +717,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     return uri;
   }
 
-  private buildSearchAlertsUri(path: string): string {
+  public buildSearchAlertsUri(path: string): string {
     Assert.isString(path);
     var uri = this.options.searchAlertsUri || this.options.restUri + '/alerts';
     if (uri == null) {

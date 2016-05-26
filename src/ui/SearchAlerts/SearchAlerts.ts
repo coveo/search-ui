@@ -24,6 +24,7 @@ module Coveo {
     };
 
     private modal: ModalBox.ModalBox;
+    public message: SearchAlertMessage;
 
     constructor(public element: HTMLElement,
       public options: SearchAlertsOptions,
@@ -35,7 +36,19 @@ module Coveo {
 
       if (this.options.enableMessage) {
         new SearchAlertMessage(element, { closeDelay: this.options.messageCloseDelay }, this.getBindings());
+        this.message = new SearchAlertMessage(element, { closeDelay: this.options.messageCloseDelay }, this.getBindings());
       }
+      
+      this.bind.onRoot(SettingsEvents.settingsPopulateMenu, (e, args: SettingsPopulateMenuArgs) => {
+        if (this.options.enableManagePanel) {
+          args.menuData.push({
+            text: l("SearchAlerts_Panel"),
+            className: 'coveo-subscriptions-panel',
+            onOpen: () => this.openPanel(),
+            onClose: () => this.close()
+          });
+        }
+      });
 
       var once = false;
 
@@ -45,14 +58,6 @@ module Coveo {
           this.queryController.getEndpoint().listSubscriptions()
             .then(() => {
               this.bind.onRootElement(SettingsEvents.settingsPopulateMenu, (args: ISettingsPopulateMenuArgs) => {
-                if (this.options.enableManagePanel) {
-                  args.menuData.push({
-                    text: l('SearchAlerts_Panel'),
-                    className: 'coveo-subscriptions-panel',
-                    onOpen: () => this.openPanel(),
-                    onClose: () => this.close()
-                  });
-                }
                 if (this.options.enableFollowQuery) {
                   args.menuData.push({
                     text: l('SearchAlerts_followQuery'),
@@ -252,7 +257,7 @@ module Coveo {
         })
     }
 
-    public findQueryBoxDom() {
+    public findQueryBoxDom(): HTMLElement {
       var dom: HTMLElement;
       var components = this.searchInterface.getComponents<Component>(Querybox.ID);
       if (components && components.length > 0) {
@@ -267,17 +272,17 @@ module Coveo {
     }
 
     private static buildFollowQueryRequest(query: IQuery, options: SearchAlertsOptions): ISubscriptionRequest {
-      var typeCofig: ISubscriptionQueryRequest = {
+      var typeConfig: ISubscriptionQueryRequest = {
         query: query
       }
 
       if (options.modifiedDateField) {
-        typeCofig.modifiedDateField = options.modifiedDateField;
+        typeConfig.modifiedDateField = options.modifiedDateField;
       }
 
       return {
         type: SubscriptionType.followQuery,
-        typeConfig: typeCofig
+        typeConfig: typeConfig
       }
     }
 
