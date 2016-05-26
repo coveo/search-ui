@@ -6,7 +6,7 @@ const express = require('express');
 gulp.task('test', ['buildTest'], function (done) {
   new TestServer({
     configFile: __dirname + '/../karma.conf.js',
-  }, done).start();
+  }, function(){done();}).start();
 });
 
 gulp.task('testDev', ['watchTest'], function (done) {
