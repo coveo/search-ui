@@ -29,7 +29,7 @@ module Coveo {
     it('can receive an onClick option to execute', (done)=>{
       test = Mock.advancedResultComponentSetup<ResultLink>(ResultLink, fakeResult, new Mock.AdvancedComponentSetupOptions($$('div').el, {
         onClick: ()=>{
-          expect(true);
+          expect(true).toBe(true);
           done();
         }
       }));
