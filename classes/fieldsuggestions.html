@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>AnalyticsSuggestions | Coveo JS search</title>
+	<title>FieldSuggestions | Coveo JS search</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -57,10 +57,10 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="analyticssuggestions.html">AnalyticsSuggestions</a>
+					<a href="fieldsuggestions.html">FieldSuggestions</a>
 				</li>
 			</ul>
-			<h1>Class AnalyticsSuggestions</h1>
+			<h1>Class FieldSuggestions</h1>
 		</div>
 	</div>
 </header>
@@ -70,11 +70,8 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>This component is used to provide query suggestions based on the most commonly logged queries by a Coveo Analytics service.
-							In order to provide relevant suggestions, they are shown in order of successful document views: thus, queries resulting in no clicks from users or that require refinements are not suggested if better options exist.
-							These suggestions appear in the Omnibox Component. This component is thus highly related to the <a href="analytics.html">Analytics</a> Component.
-							While a user is typing in a query box, he will be able to see and select the most commonly used queries.
-						See also : {@link Omnibox.enableTopQueryAddon}, which does sensibly the same thing, except with less (none, actually) customization option, but easier to setup.</p>
+						<p>This component provides query suggestions based on a particular facet field.
+						For example, this can be used to provide auto-complete suggestions when you type in document titles.</p>
 					</div>
 				</div>
 			</section>
@@ -85,38 +82,40 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Component Options</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="analyticssuggestions.html#options.numberofsuggestions" class="tsd-kind-icon">number<wbr>OfSuggestions</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="analyticssuggestions.html#options.omniboxzindex" class="tsd-kind-icon">omniboxZIndex</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="fieldsuggestions.html#options.field" class="tsd-kind-icon">field</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="fieldsuggestions.html#options.numberofsuggestions" class="tsd-kind-icon">number<wbr>OfSuggestions</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="fieldsuggestions.html#options.omniboxzindex" class="tsd-kind-icon">omniboxZIndex</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="fieldsuggestions.html#options.queryoverride" class="tsd-kind-icon">query<wbr>Override</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="analyticssuggestions.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="analyticssuggestions.html#selectsuggestion" class="tsd-kind-icon">select<wbr>Suggestion</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external"><a href="analyticssuggestions.html#get" class="tsd-kind-icon">get</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="fieldsuggestions.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="fieldsuggestions.html#selectsuggestion" class="tsd-kind-icon">select<wbr>Suggestion</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external"><a href="fieldsuggestions.html#get" class="tsd-kind-icon">get</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-inherited tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="analyticssuggestions.html#bind" class="tsd-kind-icon">bind</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="analyticssuggestions.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="analyticssuggestions.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="analyticssuggestions.html#disabled" class="tsd-kind-icon">disabled</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="analyticssuggestions.html#logger" class="tsd-kind-icon">logger</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="analyticssuggestions.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="analyticssuggestions.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="analyticssuggestions.html#root" class="tsd-kind-icon">root</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="analyticssuggestions.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="analyticssuggestions.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external"><a href="analyticssuggestions.html#id" class="tsd-kind-icon">ID</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="fieldsuggestions.html#bind" class="tsd-kind-icon">bind</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="fieldsuggestions.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="fieldsuggestions.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="fieldsuggestions.html#disabled" class="tsd-kind-icon">disabled</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="fieldsuggestions.html#logger" class="tsd-kind-icon">logger</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="fieldsuggestions.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="fieldsuggestions.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="fieldsuggestions.html#root" class="tsd-kind-icon">root</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="fieldsuggestions.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="fieldsuggestions.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external"><a href="fieldsuggestions.html#id" class="tsd-kind-icon">ID</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited tsd-is-external">
+						<section class="tsd-index-section tsd-is-external">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="analyticssuggestions.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="fieldsuggestions.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 					</div>
@@ -125,20 +124,38 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Component Options</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
+					<a name="options.field" class="tsd-anchor"></a>
+					<h3>field</h3>
+					<div class="tsd-signature tsd-kind-icon">field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L37">src/ui/FieldSuggestions/FieldSuggestions.ts
+							:37</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the field from which suggestions are provided.<br/>
+							This is a required option</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
 					<a name="options.numberofsuggestions" class="tsd-anchor"></a>
 					<h3>number<wbr>OfSuggestions</h3>
 					<div class="tsd-signature tsd-kind-icon">number<wbr>OfSuggestions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts#L42">src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts
-							:42</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L52">src/ui/FieldSuggestions/FieldSuggestions.ts
+							:52</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The number of suggestions that should be requested and displayed in the omnibox.<br/>
-							The default value is <code>5</code></p>
+							<p>Specifies the number of suggestions that should be rendered in the omnibox.<br/>
+							Default value is <code>5</code></p>
 						</div>
 					</div>
 				</section>
@@ -149,14 +166,31 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts#L36">src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts
-							:36</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L46">src/ui/FieldSuggestions/FieldSuggestions.ts
+							:46</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The index at which the suggestions should render in the omnibox. Higher value = placed first.<br/>
-							The default value is <code>52</code></p>
+							<p>Specifies the position at which the suggestions should render when there are multiple suggestions providers. (eg : <a href="facet.html">Facet</a> or <a href="analyticssuggestions.html">AnalyticsSuggestions</a>).<br/>
+							The default value is <code>51</code></p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
+					<a name="options.queryoverride" class="tsd-anchor"></a>
+					<h3>query<wbr>Override</h3>
+					<div class="tsd-signature tsd-kind-icon">query<wbr>Override<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L41">src/ui/FieldSuggestions/FieldSuggestions.ts
+							:41</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies a query override (any query expression) which should be applied when retrieving suggestions</p>
 						</div>
 					</div>
 				</section>
@@ -199,8 +233,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts#L89">src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts
-									:89</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L103">src/ui/FieldSuggestions/FieldSuggestions.ts
+									:103</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -482,59 +516,46 @@
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited tsd-is-external">
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Analytics<wbr>Suggestions<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="analyticssuggestions.html" class="tsd-signature-type">AnalyticsSuggestions</a></li>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Field<wbr>Suggestions<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IFieldSuggestionsOptions</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="fieldsuggestions.html" class="tsd-signature-type">FieldSuggestions</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="component.html">Component</a>.<a href="component.html#constructor">constructor</a></p>
+								<p>Overwrites <a href="component.html">Component</a>.<a href="component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
-									:90</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L56">src/ui/FieldSuggestions/FieldSuggestions.ts
+									:56</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Create a new Component. Resolve all <a href="../interfaces/icomponentbindings.html">IComponentBindings</a> if not provided.<br/>
-										Create a new {@link Logger} for this component.
-									Attach the component to the <a href="searchinterface.html">SearchInterface</a><br/></p>
+									<p>Create a new FieldSuggestions component</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The HTMLElement on which to create the component. Used to bind data on the element.</p>
-										</div>
-									</div>
 								</li>
 								<li>
-									<h5>type: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The unique identifier for this component. See : <a href="../interfaces/icomponentdefinition.html#id">IComponentDefinition.ID</a>. Used to generate the unique Coveo CSS class associated with every component</p>
-										</div>
-									</div>
+									<h5>options: <span class="tsd-signature-type">IFieldSuggestionsOptions</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The environment for every component. Optional, but omitting to provide one will impact performance.</p>
 										</div>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="analyticssuggestions.html" class="tsd-signature-type">AnalyticsSuggestions</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="fieldsuggestions.html" class="tsd-signature-type">FieldSuggestions</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -554,55 +575,55 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-is-external">
-						<a href="analyticssuggestions.html" class="tsd-kind-icon">Analytics<wbr>Suggestions</a>
+						<a href="fieldsuggestions.html" class="tsd-kind-icon">Field<wbr>Suggestions</a>
 						<ul>
 							<li class=" tsd-kind-object-literal tsd-parent-kind-class tsd-is-static tsd-is-external">
-								<a href="analyticssuggestions.html#options" class="tsd-kind-icon">options</a>
+								<a href="fieldsuggestions.html#options" class="tsd-kind-icon">options</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="analyticssuggestions.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a>
+								<a href="fieldsuggestions.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="analyticssuggestions.html#selectsuggestion" class="tsd-kind-icon">select<wbr>Suggestion</a>
+								<a href="fieldsuggestions.html#selectsuggestion" class="tsd-kind-icon">select<wbr>Suggestion</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external">
-								<a href="analyticssuggestions.html#get" class="tsd-kind-icon">get</a>
+								<a href="fieldsuggestions.html#get" class="tsd-kind-icon">get</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="analyticssuggestions.html#bind" class="tsd-kind-icon">bind</a>
+								<a href="fieldsuggestions.html#bind" class="tsd-kind-icon">bind</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="analyticssuggestions.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a>
+								<a href="fieldsuggestions.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="analyticssuggestions.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a>
+								<a href="fieldsuggestions.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="analyticssuggestions.html#disabled" class="tsd-kind-icon">disabled</a>
+								<a href="fieldsuggestions.html#disabled" class="tsd-kind-icon">disabled</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="analyticssuggestions.html#logger" class="tsd-kind-icon">logger</a>
+								<a href="fieldsuggestions.html#logger" class="tsd-kind-icon">logger</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="analyticssuggestions.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a>
+								<a href="fieldsuggestions.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="analyticssuggestions.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a>
+								<a href="fieldsuggestions.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="analyticssuggestions.html#root" class="tsd-kind-icon">root</a>
+								<a href="fieldsuggestions.html#root" class="tsd-kind-icon">root</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="analyticssuggestions.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a>
+								<a href="fieldsuggestions.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="analyticssuggestions.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a>
+								<a href="fieldsuggestions.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external">
-								<a href="analyticssuggestions.html#id" class="tsd-kind-icon">ID</a>
+								<a href="fieldsuggestions.html#id" class="tsd-kind-icon">ID</a>
 							</li>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="analyticssuggestions.html#constructor" class="tsd-kind-icon">constructor</a>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+								<a href="fieldsuggestions.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 						</ul>
 					</li>
