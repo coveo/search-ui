@@ -37,7 +37,6 @@ interface ElementBoundary {
 export class PopupUtils {
   static positionPopup(popUp: HTMLElement, nextTo: HTMLElement, appendTo: HTMLElement, boundary: HTMLElement, desiredPosition: Position, checkForBoundary = 0) {
     appendTo.appendChild(popUp);
-    popUp.style.position = 'absolute';
     desiredPosition.verticalOffset = desiredPosition.verticalOffset ? desiredPosition.verticalOffset : 0;
     desiredPosition.horizontalOffset = desiredPosition.horizontalOffset ? desiredPosition.horizontalOffset : 0;
 
@@ -134,6 +133,7 @@ export class PopupUtils {
   }
 
   private static offSetToAlignCenter(popUp: HTMLElement, nextTo: HTMLElement) {
+    console.log([nextTo.offsetWidth, popUp.offsetWidth]);
     return (nextTo.offsetWidth - popUp.offsetWidth) / 2;
   }
 
