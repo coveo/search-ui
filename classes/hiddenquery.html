@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ErrorReport | Coveo JS search</title>
+	<title>HiddenQuery | Coveo JS search</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -57,10 +57,10 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="errorreport.html">ErrorReport</a>
+					<a href="hiddenquery.html">HiddenQuery</a>
 				</li>
 			</ul>
-			<h1>Coveo component ErrorReport</h1>
+			<h1>Class HiddenQuery</h1>
 		</div>
 	</div>
 </header>
@@ -70,9 +70,8 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>This component takes care of handling fatal error when doing a query on the index / search API.<br/>
-							For example, it will display a message when the service responds with something like a 401 or 503.<br/>
-						It will also render a small text area with the JSON content of the error response, for debugging purpose.</p>
+						<p>This component job is to handle an &#39;hidden&#39; query parameter.<br/>
+						Concretely, this means that a search interface loaded with #hq=foo&amp;hd=bar will add &#39;foo&#39; as an expression to the query (&#39;hq&#39;=&gt; hidden query) and render &#39;bar&#39; in the <a href="breadcrumb.html">Breadcrumb</a><br/></p>
 					</div>
 				</div>
 			</section>
@@ -80,104 +79,122 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-external">
 							<h3>Component Options</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="errorreport.html#options.showdetailederror" class="tsd-kind-icon">show<wbr>Detailed<wbr>Error</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="hiddenquery.html#options.maximumdescriptionlength" class="tsd-kind-icon">maximum<wbr>Description<wbr>Length</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="hiddenquery.html#options.title" class="tsd-kind-icon">title</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="errorreport.html#back" class="tsd-kind-icon">back</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="errorreport.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="errorreport.html#reset" class="tsd-kind-icon">reset</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="errorreport.html#retry" class="tsd-kind-icon">retry</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="errorreport.html#get" class="tsd-kind-icon">get</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="hiddenquery.html#clear" class="tsd-kind-icon">clear</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="hiddenquery.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external"><a href="hiddenquery.html#get" class="tsd-kind-icon">get</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section tsd-is-inherited tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="errorreport.html#bind" class="tsd-kind-icon">bind</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="errorreport.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="errorreport.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="errorreport.html#disabled" class="tsd-kind-icon">disabled</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="errorreport.html#logger" class="tsd-kind-icon">logger</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="errorreport.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="errorreport.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="errorreport.html#root" class="tsd-kind-icon">root</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="errorreport.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="errorreport.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="errorreport.html#id" class="tsd-kind-icon">ID</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="hiddenquery.html#bind" class="tsd-kind-icon">bind</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="hiddenquery.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="hiddenquery.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="hiddenquery.html#disabled" class="tsd-kind-icon">disabled</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="hiddenquery.html#logger" class="tsd-kind-icon">logger</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="hiddenquery.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="hiddenquery.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="hiddenquery.html#root" class="tsd-kind-icon">root</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="hiddenquery.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="hiddenquery.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external"><a href="hiddenquery.html#id" class="tsd-kind-icon">ID</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-external">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite"><a href="errorreport.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="hiddenquery.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Component Options</h2>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.showdetailederror" class="tsd-anchor"></a>
-					<h3>show<wbr>Detailed<wbr>Error</h3>
-					<div class="tsd-signature tsd-kind-icon">show<wbr>Detailed<wbr>Error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
+					<a name="options.maximumdescriptionlength" class="tsd-anchor"></a>
+					<h3>maximum<wbr>Description<wbr>Length</h3>
+					<div class="tsd-signature tsd-kind-icon">maximum<wbr>Description<wbr>Length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ErrorReport/ErrorReport.ts#L33">src/ui/ErrorReport/ErrorReport.ts
-							:33</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HiddenQuery/HiddenQuery.ts#L35">src/ui/HiddenQuery/HiddenQuery.ts
+							:35</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Display the detailed error message as a JSON in a text content area.<br/>
-							The default value is <code>true</code></p>
+							<p>Specifies a maximum character length for a description.<br/>
+								After this length, the component will slice the descrption and add [...].<br/>
+							Default value is 100</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
+					<a name="options.title" class="tsd-anchor"></a>
+					<h3>title</h3>
+					<div class="tsd-signature tsd-kind-icon">title<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HiddenQuery/HiddenQuery.ts#L40">src/ui/HiddenQuery/HiddenQuery.ts
+							:40</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies a title that will appear in the <a href="breadcrumb.html">Breadcrumb</a> when it is populated by the HiddenQuery component.<br/>
+							By default, it is a localized string for &#39;Additional filters :&#39;</p>
 						</div>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-					<a name="back" class="tsd-anchor"></a>
-					<h3>back</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">back<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="clear" class="tsd-anchor"></a>
+					<h3>clear</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">clear<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ErrorReport/ErrorReport.ts#L73">src/ui/ErrorReport/ErrorReport.ts
-									:73</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HiddenQuery/HiddenQuery.ts#L62">src/ui/HiddenQuery/HiddenQuery.ts
+									:62</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Do the &quot;back&quot; action in the browser</p>
+									<p>Clear any hd or hq set in the <a href="querystatemodel.html">QueryStateModel</a>, log an analytics event and trigger a new query.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="getbindings" class="tsd-anchor"></a>
 					<h3>get<wbr>Bindings</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">get<wbr>Bindings<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
+								<p>Inherited from <a href="component.html">Component</a>.<a href="component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
 										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L120">src/ui/Base/Component.ts
@@ -193,64 +210,16 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-					<a name="reset" class="tsd-anchor"></a>
-					<h3>reset</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">reset<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ErrorReport/ErrorReport.ts#L82">src/ui/ErrorReport/ErrorReport.ts
-									:82</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Reset the current state of the query to &#39;empty&#39;, and trigger a new query</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-					<a name="retry" class="tsd-anchor"></a>
-					<h3>retry</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">retry<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ErrorReport/ErrorReport.ts#L92">src/ui/ErrorReport/ErrorReport.ts
-									:92</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Retry the same query, in case of a temporary service error</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external">
 					<a name="get" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> get</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">get<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, componentClass<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, noThrow<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BaseComponent</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
+								<p>Inherited from <a href="component.html">Component</a>.<a href="component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
 										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L178">src/ui/Base/Component.ts
@@ -289,14 +258,14 @@
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited tsd-is-external">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="bind" class="tsd-anchor"></a>
 					<h3>bind</h3>
-					<div class="tsd-signature tsd-kind-icon">bind<span class="tsd-signature-symbol">:</span> <a href="../classes/componentevents.html" class="tsd-signature-type">ComponentEvents</a></div>
+					<div class="tsd-signature tsd-kind-icon">bind<span class="tsd-signature-symbol">:</span> <a href="componentevents.html" class="tsd-signature-type">ComponentEvents</a></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
+						<p>Inherited from <a href="component.html">Component</a>.<a href="component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
 								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L61">src/ui/Base/Component.ts
@@ -314,12 +283,12 @@
 						</dl>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="componentoptionsmodel" class="tsd-anchor"></a>
 					<h3>component<wbr>Options<wbr>Model</h3>
 					<div class="tsd-signature tsd-kind-icon">component<wbr>Options<wbr>Model<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ComponentOptionsModel</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
+						<p>Inherited from <a href="component.html">Component</a>.<a href="component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
 								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L89">src/ui/Base/Component.ts
@@ -332,12 +301,12 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="componentstatemodel" class="tsd-anchor"></a>
 					<h3>component<wbr>State<wbr>Model</h3>
 					<div class="tsd-signature tsd-kind-icon">component<wbr>State<wbr>Model<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ComponentStateModel</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
+						<p>Inherited from <a href="component.html">Component</a>.<a href="component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
 								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L73">src/ui/Base/Component.ts
@@ -350,7 +319,7 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="disabled" class="tsd-anchor"></a>
 					<h3>disabled</h3>
 					<div class="tsd-signature tsd-kind-icon">disabled<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
@@ -374,7 +343,7 @@
 						</dl>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="logger" class="tsd-anchor"></a>
 					<h3>logger</h3>
 					<div class="tsd-signature tsd-kind-icon">logger<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Logger</span></div>
@@ -392,12 +361,12 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="querycontroller" class="tsd-anchor"></a>
 					<h3>query<wbr>Controller</h3>
-					<div class="tsd-signature tsd-kind-icon">query<wbr>Controller<span class="tsd-signature-symbol">:</span> <a href="../classes/querycontroller.html" class="tsd-signature-type">QueryController</a></div>
+					<div class="tsd-signature tsd-kind-icon">query<wbr>Controller<span class="tsd-signature-symbol">:</span> <a href="querycontroller.html" class="tsd-signature-type">QueryController</a></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
+						<p>Inherited from <a href="component.html">Component</a>.<a href="component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
 								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L77">src/ui/Base/Component.ts
@@ -410,12 +379,12 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="querystatemodel" class="tsd-anchor"></a>
 					<h3>query<wbr>State<wbr>Model</h3>
-					<div class="tsd-signature tsd-kind-icon">query<wbr>State<wbr>Model<span class="tsd-signature-symbol">:</span> <a href="../classes/querystatemodel.html" class="tsd-signature-type">QueryStateModel</a></div>
+					<div class="tsd-signature tsd-kind-icon">query<wbr>State<wbr>Model<span class="tsd-signature-symbol">:</span> <a href="querystatemodel.html" class="tsd-signature-type">QueryStateModel</a></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
+						<p>Inherited from <a href="component.html">Component</a>.<a href="component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
 								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L69">src/ui/Base/Component.ts
@@ -428,12 +397,12 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="root" class="tsd-anchor"></a>
 					<h3>root</h3>
 					<div class="tsd-signature tsd-kind-icon">root<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
+						<p>Inherited from <a href="component.html">Component</a>.<a href="component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
 								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L65">src/ui/Base/Component.ts
@@ -442,16 +411,16 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A reference to the root HTMLElement (the <a href="../classes/searchinterface.html">SearchInterface</a>)</p>
+							<p>A reference to the root HTMLElement (the <a href="searchinterface.html">SearchInterface</a>)</p>
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="searchinterface" class="tsd-anchor"></a>
 					<h3>search<wbr>Interface</h3>
-					<div class="tsd-signature tsd-kind-icon">search<wbr>Interface<span class="tsd-signature-symbol">:</span> <a href="../classes/searchinterface.html" class="tsd-signature-type">SearchInterface</a></div>
+					<div class="tsd-signature tsd-kind-icon">search<wbr>Interface<span class="tsd-signature-symbol">:</span> <a href="searchinterface.html" class="tsd-signature-type">SearchInterface</a></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
+						<p>Inherited from <a href="component.html">Component</a>.<a href="component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
 								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L81">src/ui/Base/Component.ts
@@ -460,16 +429,16 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A reference to the root of every component, the <a href="../classes/searchinterface.html">SearchInterface</a></p>
+							<p>A reference to the root of every component, the <a href="searchinterface.html">SearchInterface</a></p>
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="usageanalytics" class="tsd-anchor"></a>
 					<h3>usage<wbr>Analytics</h3>
 					<div class="tsd-signature tsd-kind-icon">usage<wbr>Analytics<span class="tsd-signature-symbol">:</span> <a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
+						<p>Inherited from <a href="component.html">Component</a>.<a href="component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
 								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L85">src/ui/Base/Component.ts
@@ -482,7 +451,7 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external">
 					<a name="id" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> ID</h3>
 					<div class="tsd-signature tsd-kind-icon">ID<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
@@ -502,27 +471,27 @@
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Error<wbr>Report<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IErrorReportOptions</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="errorreport.html" class="tsd-signature-type">ErrorReport</a></li>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Hidden<wbr>Query<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">HiddenQueryOptions</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="hiddenquery.html" class="tsd-signature-type">HiddenQuery</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
+								<p>Overwrites <a href="component.html">Component</a>.<a href="component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ErrorReport/ErrorReport.ts#L36">src/ui/ErrorReport/ErrorReport.ts
-									:36</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/HiddenQuery/HiddenQuery.ts#L41">src/ui/HiddenQuery/HiddenQuery.ts
+									:41</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Create a new ErrorReport component</p>
+									<p>Create a new HiddenQuery component, which bind multiple events (building query as well as <a href="breadcrumb.html">Breadcrumb</a> events</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -531,7 +500,7 @@
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">IErrorReportOptions</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">HiddenQueryOptions</span></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
@@ -541,10 +510,18 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="errorreport.html" class="tsd-signature-type">ErrorReport</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="hiddenquery.html" class="tsd-signature-type">HiddenQuery</a></h4>
 						</li>
 					</ul>
 				</section>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<a href="component.html" class="tsd-signature-type">Component</a>
+					</li>
+				</ul>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -552,62 +529,56 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class tsd-kind-coveo-component">
-						<a href="errorreport.html" class="tsd-kind-icon">Error<wbr>Report</a>
+					<li class="current tsd-kind-class tsd-is-external">
+						<a href="hiddenquery.html" class="tsd-kind-icon">Hidden<wbr>Query</a>
 						<ul>
-							<li class=" tsd-kind-object-literal tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-static">
-								<a href="errorreport.html#options" class="tsd-kind-icon">options</a>
+							<li class=" tsd-kind-object-literal tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="hiddenquery.html#options" class="tsd-kind-icon">options</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-								<a href="errorreport.html#back" class="tsd-kind-icon">back</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="hiddenquery.html#clear" class="tsd-kind-icon">clear</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="errorreport.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="hiddenquery.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-								<a href="errorreport.html#reset" class="tsd-kind-icon">reset</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external">
+								<a href="hiddenquery.html#get" class="tsd-kind-icon">get</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-								<a href="errorreport.html#retry" class="tsd-kind-icon">retry</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="hiddenquery.html#bind" class="tsd-kind-icon">bind</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-								<a href="errorreport.html#get" class="tsd-kind-icon">get</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="hiddenquery.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="errorreport.html#bind" class="tsd-kind-icon">bind</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="hiddenquery.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="errorreport.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="hiddenquery.html#disabled" class="tsd-kind-icon">disabled</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="errorreport.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="hiddenquery.html#logger" class="tsd-kind-icon">logger</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="errorreport.html#disabled" class="tsd-kind-icon">disabled</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="hiddenquery.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="errorreport.html#logger" class="tsd-kind-icon">logger</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="hiddenquery.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="errorreport.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="hiddenquery.html#root" class="tsd-kind-icon">root</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="errorreport.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="hiddenquery.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="errorreport.html#root" class="tsd-kind-icon">root</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="hiddenquery.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="errorreport.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external">
+								<a href="hiddenquery.html#id" class="tsd-kind-icon">ID</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="errorreport.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-								<a href="errorreport.html#id" class="tsd-kind-icon">ID</a>
-							</li>
-							<li class=" tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
-								<a href="errorreport.html#constructor" class="tsd-kind-icon">constructor</a>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+								<a href="hiddenquery.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 						</ul>
 					</li>

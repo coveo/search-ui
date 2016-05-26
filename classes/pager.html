@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ShareQuery | Coveo JS search</title>
+	<title>Pager | Coveo JS search</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -57,10 +57,10 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="sharequery.html">ShareQuery</a>
+					<a href="pager.html">Pager</a>
 				</li>
 			</ul>
-			<h1>Coveo component ShareQuery</h1>
+			<h1>Class Pager</h1>
 		</div>
 	</div>
 </header>
@@ -70,9 +70,8 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>ShareQuery shows 2 text boxes, one with a shareable link and the
-							other with the complete query expression of the currently performed query.<br/>
-						It populates the <a href="settings.html">Settings</a> component&#39;s menu for easy access.</p>
+						<p>This component attaches itself to a div and allows users to navigate through the different result pages.<br/>
+						It takes care of triggering a query with the correct range whenever a user selects a page or uses the navigation buttons (Previous, Next).</p>
 					</div>
 				</div>
 			</section>
@@ -80,80 +79,120 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-external">
+							<h3>Component Options</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="pager.html#options.enablenavigationbutton" class="tsd-kind-icon">enable<wbr>Navigation<wbr>Button</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="pager.html#options.maxnumberofpages" class="tsd-kind-icon">max<wbr>Number<wbr>OfPages</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="pager.html#options.numberofpages" class="tsd-kind-icon">number<wbr>OfPages</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="sharequery.html#close" class="tsd-kind-icon">close</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="sharequery.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="sharequery.html#getcompletequery" class="tsd-kind-icon">get<wbr>Complete<wbr>Query</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="sharequery.html#getlinktothisquery" class="tsd-kind-icon">get<wbr>Link<wbr>ToThis<wbr>Query</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="sharequery.html#open" class="tsd-kind-icon">open</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="sharequery.html#setcompletequery" class="tsd-kind-icon">set<wbr>Complete<wbr>Query</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="sharequery.html#setlinktothisquery" class="tsd-kind-icon">set<wbr>Link<wbr>ToThis<wbr>Query</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="sharequery.html#get" class="tsd-kind-icon">get</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="pager.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="pager.html#nextpage" class="tsd-kind-icon">next<wbr>Page</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="pager.html#previouspage" class="tsd-kind-icon">previous<wbr>Page</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="pager.html#setpage" class="tsd-kind-icon">set<wbr>Page</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external"><a href="pager.html#get" class="tsd-kind-icon">get</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="sharequery.html#bind" class="tsd-kind-icon">bind</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="sharequery.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="sharequery.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="sharequery.html#disabled" class="tsd-kind-icon">disabled</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="sharequery.html#logger" class="tsd-kind-icon">logger</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="sharequery.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="sharequery.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="sharequery.html#root" class="tsd-kind-icon">root</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="sharequery.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="sharequery.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="sharequery.html#id" class="tsd-kind-icon">ID</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="pager.html#bind" class="tsd-kind-icon">bind</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="pager.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="pager.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="pager.html#currentpage" class="tsd-kind-icon">current<wbr>Page</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="pager.html#disabled" class="tsd-kind-icon">disabled</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="pager.html#logger" class="tsd-kind-icon">logger</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="pager.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="pager.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="pager.html#root" class="tsd-kind-icon">root</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="pager.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="pager.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external"><a href="pager.html#id" class="tsd-kind-icon">ID</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-external">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite"><a href="sharequery.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="pager.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-					<a name="close" class="tsd-anchor"></a>
-					<h3>close</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">close<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ShareQuery/ShareQuery.ts#L60">src/ui/ShareQuery/ShareQuery.ts
-									:60</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Hide the ShareQuery</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+				<h2>Component Options</h2>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
+					<a name="options.enablenavigationbutton" class="tsd-anchor"></a>
+					<h3>enable<wbr>Navigation<wbr>Button</h3>
+					<div class="tsd-signature tsd-kind-icon">enable<wbr>Navigation<wbr>Button<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Pager/Pager.ts#L51">src/ui/Pager/Pager.ts
+							:51</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies whether the Previous and Next buttons appear at each end of the pager when appropriate.<br/>
+							The default value is true.</p>
+						</div>
+					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
+					<a name="options.maxnumberofpages" class="tsd-anchor"></a>
+					<h3>max<wbr>Number<wbr>OfPages</h3>
+					<div class="tsd-signature tsd-kind-icon">max<wbr>Number<wbr>OfPages<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Pager/Pager.ts#L57">src/ui/Pager/Pager.ts
+							:57</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the maximum number of pages that will be displayed if enough results are available.<br/>
+								The default value is 100 pages.<br/>
+							This property is typically set when the default number of accessible results from the index has been changed from it&#39;s default value of 1000. (So 10 per page X 100 maximumNumberOfPage)</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
+					<a name="options.numberofpages" class="tsd-anchor"></a>
+					<h3>number<wbr>OfPages</h3>
+					<div class="tsd-signature tsd-kind-icon">number<wbr>OfPages<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Pager/Pager.ts#L37">src/ui/Pager/Pager.ts
+							:37</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies how many page links to display in the pager.<br/>
+							The default value is 10 pages on desktop, 3 on mobile</p>
+						</div>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="getbindings" class="tsd-anchor"></a>
 					<h3>get<wbr>Bindings</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">get<wbr>Bindings<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
+								<p>Inherited from <a href="component.html">Component</a>.<a href="component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
 										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L120">src/ui/Base/Component.ts
@@ -169,148 +208,102 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-					<a name="getcompletequery" class="tsd-anchor"></a>
-					<h3>get<wbr>Complete<wbr>Query</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Complete<wbr>Query<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="nextpage" class="tsd-anchor"></a>
+					<h3>next<wbr>Page</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">next<wbr>Page<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ShareQuery/ShareQuery.ts#L81">src/ui/ShareQuery/ShareQuery.ts
-									:81</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Pager/Pager.ts#L137">src/ui/Pager/Pager.ts
+									:137</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get the complete query string</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-					<a name="getlinktothisquery" class="tsd-anchor"></a>
-					<h3>get<wbr>Link<wbr>ToThis<wbr>Query</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Link<wbr>ToThis<wbr>Query<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ShareQuery/ShareQuery.ts#L67">src/ui/ShareQuery/ShareQuery.ts
-									:67</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get the link to the current query</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-					<a name="open" class="tsd-anchor"></a>
-					<h3>open</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">open<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ShareQuery/ShareQuery.ts#L53">src/ui/ShareQuery/ShareQuery.ts
-									:53</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Show the ShareQuery</p>
+									<p>Go to the next page, and execute a query.<br/>
+									Log the required analytics event (pagerNext)</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-					<a name="setcompletequery" class="tsd-anchor"></a>
-					<h3>set<wbr>Complete<wbr>Query</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Complete<wbr>Query<span class="tsd-signature-symbol">(</span>completeQuery<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="previouspage" class="tsd-anchor"></a>
+					<h3>previous<wbr>Page</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">previous<wbr>Page<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ShareQuery/ShareQuery.ts#L88">src/ui/ShareQuery/ShareQuery.ts
-									:88</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Pager/Pager.ts#L129">src/ui/Pager/Pager.ts
+									:129</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Set the complete query string</p>
+									<p>Go to the previous page, and execute a query.<br/>
+									Log the required analytics event (pagerPrevious)</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="setpage" class="tsd-anchor"></a>
+					<h3>set<wbr>Page</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Page<span class="tsd-signature-symbol">(</span>pageNumber<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, analyticCause<span class="tsd-signature-symbol">?: </span><a href="../interfaces/ianalyticsactioncause.html" class="tsd-signature-type">IAnalyticsActionCause</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Pager/Pager.ts#L113">src/ui/Pager/Pager.ts
+									:113</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Set the current page, and execute a query.<br/>
+									Log the required analytics event (pagerNumber by default)</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>completeQuery: <span class="tsd-signature-type">string</span></h5>
+									<h5>pageNumber: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> analyticCause: <a href="../interfaces/ianalyticsactioncause.html" class="tsd-signature-type">IAnalyticsActionCause</a><span class="tsd-signature-symbol"> =&nbsp;AnalyticsActionCauseList.pagerNumber</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-					<a name="setlinktothisquery" class="tsd-anchor"></a>
-					<h3>set<wbr>Link<wbr>ToThis<wbr>Query</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Link<wbr>ToThis<wbr>Query<span class="tsd-signature-symbol">(</span>link<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ShareQuery/ShareQuery.ts#L74">src/ui/ShareQuery/ShareQuery.ts
-									:74</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Set the link to the current query</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>link: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external">
 					<a name="get" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> get</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">get<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, componentClass<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, noThrow<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BaseComponent</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
+								<p>Inherited from <a href="component.html">Component</a>.<a href="component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
 										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L178">src/ui/Base/Component.ts
@@ -349,14 +342,14 @@
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="bind" class="tsd-anchor"></a>
 					<h3>bind</h3>
-					<div class="tsd-signature tsd-kind-icon">bind<span class="tsd-signature-symbol">:</span> <a href="../classes/componentevents.html" class="tsd-signature-type">ComponentEvents</a></div>
+					<div class="tsd-signature tsd-kind-icon">bind<span class="tsd-signature-symbol">:</span> <a href="componentevents.html" class="tsd-signature-type">ComponentEvents</a></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
+						<p>Inherited from <a href="component.html">Component</a>.<a href="component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
 								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L61">src/ui/Base/Component.ts
@@ -374,12 +367,12 @@
 						</dl>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="componentoptionsmodel" class="tsd-anchor"></a>
 					<h3>component<wbr>Options<wbr>Model</h3>
 					<div class="tsd-signature tsd-kind-icon">component<wbr>Options<wbr>Model<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ComponentOptionsModel</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
+						<p>Inherited from <a href="component.html">Component</a>.<a href="component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
 								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L89">src/ui/Base/Component.ts
@@ -392,12 +385,12 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="componentstatemodel" class="tsd-anchor"></a>
 					<h3>component<wbr>State<wbr>Model</h3>
 					<div class="tsd-signature tsd-kind-icon">component<wbr>State<wbr>Model<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ComponentStateModel</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
+						<p>Inherited from <a href="component.html">Component</a>.<a href="component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
 								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L73">src/ui/Base/Component.ts
@@ -410,7 +403,24 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
+					<a name="currentpage" class="tsd-anchor"></a>
+					<h3>current<wbr>Page</h3>
+					<div class="tsd-signature tsd-kind-icon">current<wbr>Page<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Pager/Pager.ts#L63">src/ui/Pager/Pager.ts
+							:63</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The current page (1 based index)</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="disabled" class="tsd-anchor"></a>
 					<h3>disabled</h3>
 					<div class="tsd-signature tsd-kind-icon">disabled<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
@@ -434,7 +444,7 @@
 						</dl>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="logger" class="tsd-anchor"></a>
 					<h3>logger</h3>
 					<div class="tsd-signature tsd-kind-icon">logger<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Logger</span></div>
@@ -452,12 +462,12 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="querycontroller" class="tsd-anchor"></a>
 					<h3>query<wbr>Controller</h3>
-					<div class="tsd-signature tsd-kind-icon">query<wbr>Controller<span class="tsd-signature-symbol">:</span> <a href="../classes/querycontroller.html" class="tsd-signature-type">QueryController</a></div>
+					<div class="tsd-signature tsd-kind-icon">query<wbr>Controller<span class="tsd-signature-symbol">:</span> <a href="querycontroller.html" class="tsd-signature-type">QueryController</a></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
+						<p>Inherited from <a href="component.html">Component</a>.<a href="component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
 								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L77">src/ui/Base/Component.ts
@@ -470,12 +480,12 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="querystatemodel" class="tsd-anchor"></a>
 					<h3>query<wbr>State<wbr>Model</h3>
-					<div class="tsd-signature tsd-kind-icon">query<wbr>State<wbr>Model<span class="tsd-signature-symbol">:</span> <a href="../classes/querystatemodel.html" class="tsd-signature-type">QueryStateModel</a></div>
+					<div class="tsd-signature tsd-kind-icon">query<wbr>State<wbr>Model<span class="tsd-signature-symbol">:</span> <a href="querystatemodel.html" class="tsd-signature-type">QueryStateModel</a></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
+						<p>Inherited from <a href="component.html">Component</a>.<a href="component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
 								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L69">src/ui/Base/Component.ts
@@ -488,12 +498,12 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="root" class="tsd-anchor"></a>
 					<h3>root</h3>
 					<div class="tsd-signature tsd-kind-icon">root<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
+						<p>Inherited from <a href="component.html">Component</a>.<a href="component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
 								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L65">src/ui/Base/Component.ts
@@ -502,16 +512,16 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A reference to the root HTMLElement (the <a href="../classes/searchinterface.html">SearchInterface</a>)</p>
+							<p>A reference to the root HTMLElement (the <a href="searchinterface.html">SearchInterface</a>)</p>
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="searchinterface" class="tsd-anchor"></a>
 					<h3>search<wbr>Interface</h3>
-					<div class="tsd-signature tsd-kind-icon">search<wbr>Interface<span class="tsd-signature-symbol">:</span> <a href="../classes/searchinterface.html" class="tsd-signature-type">SearchInterface</a></div>
+					<div class="tsd-signature tsd-kind-icon">search<wbr>Interface<span class="tsd-signature-symbol">:</span> <a href="searchinterface.html" class="tsd-signature-type">SearchInterface</a></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
+						<p>Inherited from <a href="component.html">Component</a>.<a href="component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
 								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L81">src/ui/Base/Component.ts
@@ -520,16 +530,16 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A reference to the root of every component, the <a href="../classes/searchinterface.html">SearchInterface</a></p>
+							<p>A reference to the root of every component, the <a href="searchinterface.html">SearchInterface</a></p>
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="usageanalytics" class="tsd-anchor"></a>
 					<h3>usage<wbr>Analytics</h3>
 					<div class="tsd-signature tsd-kind-icon">usage<wbr>Analytics<span class="tsd-signature-symbol">:</span> <a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
+						<p>Inherited from <a href="component.html">Component</a>.<a href="component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
 								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L85">src/ui/Base/Component.ts
@@ -542,7 +552,7 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external">
 					<a name="id" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> ID</h3>
 					<div class="tsd-signature tsd-kind-icon">ID<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
@@ -562,36 +572,42 @@
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Share<wbr>Query<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IShareQueryOptions</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="sharequery.html" class="tsd-signature-type">ShareQuery</a></li>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Pager<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IPagerOptions</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="pager.html" class="tsd-signature-type">Pager</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
+								<p>Overwrites <a href="component.html">Component</a>.<a href="component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ShareQuery/ShareQuery.ts#L26">src/ui/ShareQuery/ShareQuery.ts
-									:26</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Pager/Pager.ts#L74">src/ui/Pager/Pager.ts
+									:74</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Create a new ShareQuery component.</p>
+									<p>Create a new Pager. Bind multiple query events (new query, building query, query success).<br/>
+									Render itself on every query success.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>HTMLElement on which to instantiate the page (Normally : a div)</p>
+										</div>
+									</div>
 								</li>
 								<li>
-									<h5>options: <span class="tsd-signature-type">IShareQueryOptions</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">IPagerOptions</span></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
@@ -601,10 +617,18 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="sharequery.html" class="tsd-signature-type">ShareQuery</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="pager.html" class="tsd-signature-type">Pager</a></h4>
 						</li>
 					</ul>
 				</section>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<a href="component.html" class="tsd-signature-type">Component</a>
+					</li>
+				</ul>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -612,68 +636,65 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class tsd-kind-coveo-component">
-						<a href="sharequery.html" class="tsd-kind-icon">Share<wbr>Query</a>
+					<li class="current tsd-kind-class tsd-is-external">
+						<a href="pager.html" class="tsd-kind-icon">Pager</a>
 						<ul>
-							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-								<a href="sharequery.html#close" class="tsd-kind-icon">close</a>
+							<li class=" tsd-kind-object-literal tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="pager.html#options" class="tsd-kind-icon">options</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="sharequery.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="pager.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-								<a href="sharequery.html#getcompletequery" class="tsd-kind-icon">get<wbr>Complete<wbr>Query</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="pager.html#nextpage" class="tsd-kind-icon">next<wbr>Page</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-								<a href="sharequery.html#getlinktothisquery" class="tsd-kind-icon">get<wbr>Link<wbr>ToThis<wbr>Query</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="pager.html#previouspage" class="tsd-kind-icon">previous<wbr>Page</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-								<a href="sharequery.html#open" class="tsd-kind-icon">open</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="pager.html#setpage" class="tsd-kind-icon">set<wbr>Page</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-								<a href="sharequery.html#setcompletequery" class="tsd-kind-icon">set<wbr>Complete<wbr>Query</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external">
+								<a href="pager.html#get" class="tsd-kind-icon">get</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-								<a href="sharequery.html#setlinktothisquery" class="tsd-kind-icon">set<wbr>Link<wbr>ToThis<wbr>Query</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="pager.html#bind" class="tsd-kind-icon">bind</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-								<a href="sharequery.html#get" class="tsd-kind-icon">get</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="pager.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="sharequery.html#bind" class="tsd-kind-icon">bind</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="pager.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="sharequery.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+								<a href="pager.html#currentpage" class="tsd-kind-icon">current<wbr>Page</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="sharequery.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="pager.html#disabled" class="tsd-kind-icon">disabled</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="sharequery.html#disabled" class="tsd-kind-icon">disabled</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="pager.html#logger" class="tsd-kind-icon">logger</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="sharequery.html#logger" class="tsd-kind-icon">logger</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="pager.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="sharequery.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="pager.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="sharequery.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="pager.html#root" class="tsd-kind-icon">root</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="sharequery.html#root" class="tsd-kind-icon">root</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="pager.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="sharequery.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="pager.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="sharequery.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external">
+								<a href="pager.html#id" class="tsd-kind-icon">ID</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-								<a href="sharequery.html#id" class="tsd-kind-icon">ID</a>
-							</li>
-							<li class=" tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
-								<a href="sharequery.html#constructor" class="tsd-kind-icon">constructor</a>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+								<a href="pager.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 						</ul>
 					</li>
