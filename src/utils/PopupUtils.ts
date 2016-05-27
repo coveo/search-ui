@@ -1,4 +1,4 @@
-export interface Position {
+export interface IPosition {
   vertical: VerticalAlignment;
   horizontal: HorizontalAlignment;
   verticalOffset?: number;
@@ -35,7 +35,7 @@ interface ElementBoundary {
 }
 
 export class PopupUtils {
-  static positionPopup(popUp: HTMLElement, nextTo: HTMLElement, appendTo: HTMLElement, boundary: HTMLElement, desiredPosition: Position, checkForBoundary = 0) {
+  static positionPopup(popUp: HTMLElement, nextTo: HTMLElement, appendTo: HTMLElement, boundary: HTMLElement, desiredPosition: IPosition, checkForBoundary = 0) {
     appendTo.appendChild(popUp);
     desiredPosition.verticalOffset = desiredPosition.verticalOffset ? desiredPosition.verticalOffset : 0;
     desiredPosition.horizontalOffset = desiredPosition.horizontalOffset ? desiredPosition.horizontalOffset : 0;
@@ -67,14 +67,14 @@ export class PopupUtils {
     }
   }
 
-  private static finalAdjustement(popUpOffSet: Offset, popUpPosition: Offset, popUp: HTMLElement, desiredPosition: Position) {
+  private static finalAdjustement(popUpOffSet: Offset, popUpPosition: Offset, popUp: HTMLElement, desiredPosition: IPosition) {
     var position = popUp.getBoundingClientRect();
     popUp.style.position = 'absolute';
     popUp.style.top = (position.top + desiredPosition.verticalOffset) - (popUpOffSet.top - popUpPosition.top) + 'px';
     popUp.style.left = (position.left + desiredPosition.horizontalOffset) - (popUpOffSet.left - popUpPosition.left) + 'px';
   }
 
-  private static basicVerticalAlignment(popUpPosition: Offset, popUp: HTMLElement, nextTo: HTMLElement, desiredPosition: Position) {
+  private static basicVerticalAlignment(popUpPosition: Offset, popUp: HTMLElement, nextTo: HTMLElement, desiredPosition: IPosition) {
     switch (desiredPosition.vertical) {
       case VerticalAlignment.TOP:
         popUpPosition.top -= popUp.offsetHeight;
@@ -85,7 +85,7 @@ export class PopupUtils {
       case VerticalAlignment.MIDDLE:
         popUpPosition.top -= popUp.offsetHeight / 3;
       case VerticalAlignment.INNERTOP:
-        break; //Nothing to do, it's the default alignment normally
+        break; // Nothing to do, it's the default alignment normally
       case VerticalAlignment.INNERBOTTOM:
         popUpPosition.top -= popUp.offsetHeight - nextTo.offsetHeight;
         break;
@@ -94,7 +94,7 @@ export class PopupUtils {
     }
   }
 
-  private static basicHorizontalAlignment(popUpPosition: Offset, popUp: HTMLElement, nextTo: HTMLElement, desiredPosition: Position) {
+  private static basicHorizontalAlignment(popUpPosition: Offset, popUp: HTMLElement, nextTo: HTMLElement, desiredPosition: IPosition) {
     switch (desiredPosition.horizontal) {
       case HorizontalAlignment.LEFT:
         popUpPosition.left -= popUp.offsetWidth;
@@ -106,7 +106,7 @@ export class PopupUtils {
         popUpPosition.left += PopupUtils.offSetToAlignCenter(popUp, nextTo);
         break;
       case HorizontalAlignment.INNERLEFT:
-        break; //Nothing to do, it's the default alignment normally
+        break; // Nothing to do, it's the default alignment normally
       case HorizontalAlignment.INNERRIGHT:
         popUpPosition.left -= popUp.offsetWidth - nextTo.offsetWidth;
         break;
@@ -115,7 +115,7 @@ export class PopupUtils {
     }
   }
 
-  private static alignInsideBoundary(oldPosition: Position, checkBoundary) {
+  private static alignInsideBoundary(oldPosition: IPosition, checkBoundary) {
     var newDesiredPosition = oldPosition;
     if (checkBoundary.horizontal == 'left') {
       newDesiredPosition.horizontal = HorizontalAlignment.RIGHT;

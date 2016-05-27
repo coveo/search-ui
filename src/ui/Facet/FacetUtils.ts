@@ -1,4 +1,4 @@
-/// <reference path="Facet.ts" />
+/// <reference path='Facet.ts' />
 
 import {Facet} from './Facet';
 import {StringUtils} from '../../utils/StringUtils';
@@ -17,8 +17,8 @@ export class FacetUtils {
   }
 
   static getValuesToUseForSearchInFacet(original: string, facet: Facet): string[] {
-    var ret = [original];
-    var regex = this.getRegexToUseForFacetSearch(original, facet.options.facetSearchIgnoreAccents);
+    let ret = [original];
+    let regex = this.getRegexToUseForFacetSearch(original, facet.options.facetSearchIgnoreAccents);
     if (facet.options.valueCaption) {
       _.chain(facet.options.valueCaption)
         .pairs()
@@ -55,21 +55,21 @@ export class FacetUtils {
     values = _.map(values, (value) => {
       return Utils.escapeRegexCharacter(value);
     });
-    values[0] = ".*" + values[0] + ".*";
-    return values.join("|");
+    values[0] = '.*' + values[0] + '.*';
+    return values.join('|');
   }
 
   static needAnotherFacetSearch(currentSearchLength: number, newSearchLength: number, oldSearchLength: number, desiredSearchLength: number) {
-    //Something was removed (currentSearch < newSearch)
-    //&& we might want to display more facet search result(currentSearch < desiredSearch)
-    //&& the new query returned more stuff than the old one so there's still more results(currentSearchLength > oldLength)
+    // Something was removed (currentSearch < newSearch)
+    // && we might want to display more facet search result(currentSearch < desiredSearch)
+    // && the new query returned more stuff than the old one so there's still more results(currentSearchLength > oldLength)
     return currentSearchLength < newSearchLength && currentSearchLength < desiredSearchLength && currentSearchLength > oldSearchLength;
   }
 
   static addNoStateCssClassToFacetValues(facet: Facet, container: HTMLElement) {
-    //This takes care of adding the correct css class on each facet value checkbox (empty white box) if at least one value is selected in that facet
+    // This takes care of adding the correct css class on each facet value checkbox (empty white box) if at least one value is selected in that facet
     if (facet.values.getSelected().length != 0) {
-      var noStates = $$(container).findAll('li:not(.coveo-selected)');
+      let noStates = $$(container).findAll('li:not(.coveo-selected)');
       _.each(noStates, (noState) => {
         $$(noState).addClass('coveo-no-state');
       })
@@ -77,13 +77,13 @@ export class FacetUtils {
   }
 
   static tryToGetTranslatedCaption(field: string, value: string) {
-    var found: string;
+    let found: string;
 
     if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@filetype')) {
       found = FileTypes.getFileTypeCaptions()[value.toLowerCase()];
     } else if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@month')) {
       try {
-        var month = parseInt(value);
+        let month = parseInt(value);
         found = DateUtils.monthToString(month - 1);
       } catch (ex) {
         // Do nothing
@@ -99,27 +99,27 @@ export class FacetUtils {
     }
     if (!(Coveo.HierarchicalFacet && facet instanceof Coveo.HierarchicalFacet) || forceClip) {
       facet.logger.trace('Clipping captions');
-      //force facet to show to calculate width
+      // force facet to show to calculate width
       $$(facet.element).show();
-      var element = facet.element;
-      var captions = $$(element).findAll('.coveo-facet-value-caption');
-      for (var i = 0; i < captions.length; i++) {
+      let element = facet.element;
+      let captions = $$(element).findAll('.coveo-facet-value-caption');
+      for (let i = 0; i < captions.length; i++) {
         if (captions[i].style.width != '') {
           captions[i].style.width = '';
         }
       }
-      var labels = $$(element).findAll('.coveo-facet-value-label-wrapper');
-      var labelsMaxWidth: { element: HTMLElement; width: number; crop: number; label: HTMLElement; }[] = [];
-      for (var i = 0; i < labels.length; i++) {
-        var label: HTMLElement = labels[i];
-        var caption: HTMLElement = $$(label).find('.coveo-facet-value-caption');
+      let labels = $$(element).findAll('.coveo-facet-value-label-wrapper');
+      let labelsMaxWidth: { element: HTMLElement; width: number; crop: number; label: HTMLElement; }[] = [];
+      for (let i = 0; i < labels.length; i++) {
+        let label: HTMLElement = labels[i];
+        let caption: HTMLElement = $$(label).find('.coveo-facet-value-caption');
 
-        var labelWidth = label.scrollWidth;
-        var labelVisibleWidth = label.clientWidth;
+        let labelWidth = label.scrollWidth;
+        let labelVisibleWidth = label.clientWidth;
 
-        var captionWidth = caption.scrollWidth;
+        let captionWidth = caption.scrollWidth;
 
-        var crop = Math.max(0, labelWidth - labelVisibleWidth);
+        let crop = Math.max(0, labelWidth - labelVisibleWidth);
         if (crop) {
           labelsMaxWidth.push({
             element: caption,
@@ -129,10 +129,10 @@ export class FacetUtils {
           });
         }
       }
-      //remove the specific css class
+      // remove the specific css class
       element.style.display = '';
-      for (var i = 0; i < labelsMaxWidth.length; i++) {
-        var labelMaxWidth = labelsMaxWidth[i];
+      for (let i = 0; i < labelsMaxWidth.length; i++) {
+        let labelMaxWidth = labelsMaxWidth[i];
         labelMaxWidth.element.style.width = labelMaxWidth.width - labelMaxWidth.crop + 'px';
         if (labelMaxWidth.crop > 0) {
           labelMaxWidth.label.setAttribute('title', $$(labelMaxWidth.element).text())

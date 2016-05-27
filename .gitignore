@@ -6,3 +6,4 @@ src/strings
 coverage
 docgen
 npm-debug.log
+*.orig

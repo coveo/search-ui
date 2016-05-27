@@ -4,6 +4,7 @@ import {TemplateCache} from './TemplateCache';
 import {IQueryResult} from '../../rest/QueryResult';
 import {Assert} from '../../misc/Assert';
 
+
 export class DefaultResultTemplate extends Template {
 
   constructor() {
@@ -33,11 +34,10 @@ export class DefaultResultTemplate extends Template {
       }
     }
 
-    // If all else fails, use a hard-coded default template
     return _.template('<div>' +
-      '<div class="coveo-title"><a class="CoveoResultLink"><%= title?highlight(title, titleHighlights):clickUri %></a></div>' +
-      '<% if(excerpt){ %><div class="coveo-excerpt"><%= highlight(excerpt, excerptHighlights) %></div><% } %>' +
-      '<table class="CoveoFieldTable"><%= templateFields() %></table>' +
+      '<div class="coveo-title"><a class="CoveoResultLink"><%= title?Coveo.TemplateHelpers.getHelper("highlight").call(title, titleHighlights):clickUri %></a></div>' +
+      '<% if(excerpt){ %><div class="coveo-excerpt"><%= Coveo.TemplateHelpers.getHelper("highlight").call(excerpt, excerptHighlights) %></div><% } %>' +
+      '<table class="CoveoFieldTable"><%= Coveo.TemplateHelpers.getHelper("highlight").call() %></table>' +
       '</div>')(queryResult);
   }
 

@@ -283,8 +283,8 @@ export class Initialization {
 
     var componentClass;
     if (methodName.indexOf('.') > 0) {
-      var splitArg = methodName.split(".");
-      Assert.check(splitArg.length == 2, "Invalid method name, correct syntax is CoveoComponent.methodName.");
+      var splitArg = methodName.split('.');
+      Assert.check(splitArg.length == 2, 'Invalid method name, correct syntax is CoveoComponent.methodName.');
       componentClass = splitArg[0];
       methodName = <string>splitArg[1];
     }
@@ -411,7 +411,7 @@ export class Initialization {
   }
 
   private static initExternalComponents(element: HTMLElement, options?: any) {
-    if (options && options["externalComponents"]) {
+    if (options && options['externalComponents']) {
       var searchInterface = <SearchInterface>Component.get(element, SearchInterface);
       var queryStateModel = <QueryStateModel>Component.get(element, QueryStateModel);
       var componentStateModel = <ComponentStateModel>Component.get(element, ComponentStateModel);
@@ -454,7 +454,7 @@ export class Initialization {
           if (Utils.exists(initParameters.options)) {
             var optionsForComponentClass = initParameters.options[componentClassId];
             var optionsForElementId = initParameters.options[matchingElement.id];
-            var initOptions = initParameters.options["initOptions"] ? initParameters.options["initOptions"][componentClassId] : {};
+            var initOptions = initParameters.options['initOptions'] ? initParameters.options['initOptions'][componentClassId] : {};
             optionsToUse = Utils.extendDeep(optionsForElementId, initOptions);
             optionsToUse = Utils.extendDeep(optionsForComponentClass, optionsToUse);
           }

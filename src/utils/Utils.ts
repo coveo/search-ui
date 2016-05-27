@@ -22,7 +22,7 @@ export class Utils {
   }
 
   static toNotNullString(str: string): string {
-    return _.isString(str) ? str : "";
+    return _.isString(str) ? str : '';
   }
 
   static anyTypeToString(value: any): string {
@@ -54,9 +54,10 @@ export class Utils {
   }
 
   static isHtmlElement(obj: any): boolean {
-    if (window["HTMLElement"] != undefined) {
+    if (window['HTMLElement'] != undefined) {
       return obj instanceof HTMLElement;
-    } else { //IE 8 FIX
+    } else {
+      //IE 8 FIX
       return obj && obj.nodeType && obj.nodeType == 1
     }
   }
@@ -108,8 +109,8 @@ export class Utils {
   }
 
   static encodeHTMLEntities(rawStr: string) {
-    var ret = [];
-    for (var i = rawStr.length - 1; i >= 0; i--) {
+    let ret = [];
+    for (let i = rawStr.length - 1; i >= 0; i--) {
       if (/^[a-z0-9]/i.test(rawStr[i])) {
         ret.unshift(rawStr[i]);
       } else {
@@ -130,7 +131,7 @@ export class Utils {
       return _.isEqual(array1, array2);
     }
     else {
-      var arrays = [array1, array2]
+      let arrays = [array1, array2]
       return _.all(arrays, (array: any[]) => {
         return array.length == arrays[0].length && _.difference(array, arrays[0]).length == 0;
       });
@@ -147,21 +148,21 @@ export class Utils {
   }
 
   static escapeRegexCharacter(str: string) {
-    var ret = str.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+    let ret = str.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
     return ret;
   }
 
   static getCaseInsensitiveProperty(object: {}, name: string): any {
     // First try using a fast case-sensitive lookup
-    var value = object[name];
+    let value = object[name];
 
     // Then try a fast case-sensitive lookup with lowercase name
     if (value == null) {
-      var lowerCaseName = name.toLowerCase();
+      let lowerCaseName = name.toLowerCase();
       value = object[lowerCaseName];
       // Then try a slow scanning of all the properties
       if (value == null) {
-        var matchingKey = _.find(_.keys(object), (key: string) => key.toLowerCase() == lowerCaseName);
+        let matchingKey = _.find(_.keys(object), (key: string) => key.toLowerCase() == lowerCaseName);
         if (matchingKey != null) {
           value = object[matchingKey];
         }
@@ -186,15 +187,15 @@ export class Utils {
     // At this point the name should be well formed
     Assert.check(Utils.isCoveoField('@' + name));
     // Handle namespace field values of the form sf.Foo.Bar
-    var parts = name.split('.').reverse();
-    var obj = result.raw;
+    let parts = name.split('.').reverse();
+    let obj = result.raw;
     while (parts.length > 1) {
       obj = Utils.getCaseInsensitiveProperty(obj, parts.pop());
       if (Utils.isUndefined(obj)) {
         return undefined;
       }
     }
-    var value = Utils.getCaseInsensitiveProperty(obj, parts[0]);
+    let value = Utils.getCaseInsensitiveProperty(obj, parts[0]);
     // If still nothing, look at the root of the result
     if (value == null) {
       value = Utils.getCaseInsensitiveProperty(result, name);
@@ -203,20 +204,20 @@ export class Utils {
   }
 
   static throttle(func, wait, options: { leading?: boolean; trailing?: boolean; } = {}, context?, args?) {
-    var result;
-    var timeout: number = null;
-    var previous = 0;
-    var later = function() {
+    let result;
+    let timeout: number = null;
+    let previous = 0;
+    let later = function() {
       previous = options.leading === false ? 0 : new Date().getTime();
       timeout = null;
       result = func.apply(context, args);
     };
     return function() {
-      var now = new Date().getTime();
+      let now = new Date().getTime();
       if (!previous && options.leading === false) {
         previous = now;
       }
-      var remaining = wait - (now - previous);
+      let remaining = wait - (now - previous);
       context = this;
       args = arguments;
       if (remaining <= 0) {
@@ -232,11 +233,11 @@ export class Utils {
   }
 
   static extendDeep(target, src): {} {
-    var isArray = _.isArray(src)
-    var toReturn = isArray && [] || {}
+    let isArray = _.isArray(src)
+    let toReturn = isArray && [] || {}
     if (isArray) {
       target = target || []
-      toReturn = toReturn["concat"](target)
+      toReturn = toReturn['concat'](target)
       _.each(src, (e, i, obj) => {
         if (typeof target[i] === 'undefined') {
           toReturn[i] = <any>e
@@ -244,7 +245,7 @@ export class Utils {
           toReturn[i] = Utils.extendDeep(target[i], e)
         } else {
           if (target.indexOf(e) === -1) {
-            toReturn["push"](e)
+            toReturn['push'](e)
           }
         }
       })
@@ -270,17 +271,17 @@ export class Utils {
   }
 
   static getQueryStringValue(key, queryString = window.location.search) {
-    return queryString.replace(new RegExp("^(?:.*[&\\?]" + key.replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1");
+    return queryString.replace(new RegExp('^(?:.*[&\\?]' + key.replace(/[\.\+\*]/g, '\\$&') + '(?:\\=([^&]*))?)?.*$', 'i'), '$1');
   }
 
   static isValidUrl(str: string): boolean {
-    var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+    let regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
     return regexp.test(str);
   }
 
   static debounce(func: Function, wait: number) {
-    var timeout: number;
-    var stackTraceTimeout: number;
+    let timeout: number;
+    let stackTraceTimeout: number;
     return function(...args: any[]) {
       if (timeout == null) {
         timeout = setTimeout(() => {
@@ -301,10 +302,10 @@ export class Utils {
   }
 
   static readCookie(name: string) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-      var c = ca[i];
+    let nameEQ = name + '=';
+    let ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
       while (c.charAt(0) == ' ') {
         c = c.substring(1, c.length);
       }
@@ -318,4 +319,20 @@ export class Utils {
   static toDashCase(camelCased: string) {
     return camelCased.replace(/([a-z][A-Z])/g, (g) => g[0] + '-' + g[1].toLowerCase());
   }
+
+  //http://stackoverflow.com/a/8412989
+  static parseXml(xml: string): XMLDocument {
+    var parseXml;
+    if (typeof DOMParser != "undefined") {
+      return (new DOMParser()).parseFromString(xml, "text/xml");
+    } else if (typeof ActiveXObject != "undefined" && new ActiveXObject("Microsoft.XMLDOM")) {
+      var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+      xmlDoc.async = "false";
+      xmlDoc.loadXML(xml);
+      return xmlDoc;
+    } else {
+      throw new Error("No XML parser found");
+    }
+  }
+
 }

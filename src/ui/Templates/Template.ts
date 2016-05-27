@@ -1,12 +1,12 @@
 import {Logger} from '../../misc/Logger';
 import {StringUtils} from '../../utils/StringUtils';
 import {Initialization} from '../Base/Initialization';
-import {htmlToDom} from '../../utils/Dom';
-import {BaseComponent} from "../Base/BaseComponent";
+import {htmlToDom, $$} from '../../utils/Dom';
+import {BaseComponent} from '../Base/BaseComponent';
 
 export class Template {
   static getFieldFromString(text: string) {
-    var fields: string[] = _.map(StringUtils.match(text, /(?:(?!\b@)@([a-z0-9]+(?:\.[a-z0-9]+)*\b))|\braw.([a-z0-9]+)|\braw\['([^']+)'\]|\braw\["([^"]+)"\]/gi), (field) => {
+    var fields: string[] = _.map(StringUtils.match(text, /(?:(?!\b@)@([a-z0-9]+(?:\.[a-z0-9]+)*\b))|\braw.([a-z0-9]+)|\braw\['([^']+)'\]|\braw\['([^']+)'\]/gi), (field) => {
       return field[1] || field[2] || field[3] || field[4] || null;
     });
 
@@ -37,7 +37,6 @@ export class Template {
     if (html != null) {
       var element = <HTMLElement>htmlToDom(html);
       this.logger.trace('Instantiated result template', object, element);
-      $(element).data('template', this);
       element['template'] = this;
       return element;
     }

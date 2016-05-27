@@ -1,4 +1,4 @@
-export enum NAME {
+export enum OS_NAME {
   WINDOWS,
   MACOSX,
   UNIX,
@@ -10,15 +10,15 @@ export class OSUtils {
   static get(nav = navigator) {
     var osName;
     if (nav.appVersion.indexOf('Win') != -1) {
-      osName = NAME.WINDOWS;
+      osName = OS_NAME.WINDOWS;
     } else if (nav.appVersion.indexOf('Mac') != -1) {
-      osName = NAME.MACOSX;
+      osName = OS_NAME.MACOSX;
     } else if (nav.appVersion.indexOf('X11') != -1) {
-      osName = NAME.UNIX;
+      osName = OS_NAME.UNIX;
     } else if (nav.appVersion.indexOf('Linux') != -1) {
-      osName = NAME.LINUX
+      osName = OS_NAME.LINUX
     } else {
-      osName = NAME.UNKNOWN
+      osName = OS_NAME.UNKNOWN
     }
     return osName;
   }

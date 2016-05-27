@@ -150,7 +150,7 @@ export interface IEndpointCallerOptions {
   password?: string;
 }
 
-//In ie8, XMLHttpRequest has no status property, so let's use this enum instead
+// In ie8, XMLHttpRequest has no status property, so let's use this enum instead
 enum XMLHttpRequestStatus {
   OPENED = XMLHttpRequest.OPENED || 1,
   HEADERS_RECEIVED = XMLHttpRequest.HEADERS_RECEIVED || 2,
@@ -206,7 +206,7 @@ export class EndpointCaller {
 
     this.logger.trace('Performing REST request', requestInfo);
     var urlObject = this.parseURL(requestInfo.url);
-    //In IE8, hostname and port return "" when we are on the same domain.
+    // In IE8, hostname and port return "" when we are on the same domain.
     var isLocalHost = (window.location.hostname === urlObject.hostname) || (urlObject.hostname === '');
 
     var currentPort = (window.location.port != '' ? window.location.port : (window.location.protocol == 'https:' ? '443' : '80'));
@@ -252,15 +252,7 @@ export class EndpointCaller {
           if (this.options.accessToken) {
             xmlHttpRequest.setRequestHeader('Authorization', 'Bearer ' + this.options.accessToken);
           } else if (this.options.username && this.options.password) {
-            xmlHttpRequest.setRequestHeader('Authorization',
-              'Basic ' + btoa(this.options.username + ":" + this.options.password));
-          }
-
-          // Under Phonegap, we must set this special http header that'll prevent the server
-          // from challenging us for Basic Authentication. This avoids a bug where Phonegap
-          // would simply deadlock trying to show a popup.
-          if (DeviceUtils.isPhonegap()) {
-            xmlHttpRequest.setRequestHeader('Basic-Auth-Challenge-Client', 'Phonegap');
+            xmlHttpRequest.setRequestHeader('Authorization', 'Basic ' + btoa(this.options.username + ':' + this.options.password));
           }
 
           if (requestInfo.method == 'GET') {

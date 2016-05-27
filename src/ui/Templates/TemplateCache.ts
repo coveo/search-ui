@@ -64,14 +64,14 @@ export class TemplateCache {
 
   private static scanAndRegisterUnderscoreTemplates() {
     _.each(UnderscoreTemplate.mimeTypes, (type) => {
-      let scriptList = document.querySelectorAll("script[id][type='" + type + "']");
-      var i = scriptList.length;
-      var arr: HTMLElement[] = new Array(i);
+      let scriptList = document.querySelectorAll(`script[id][type='${type}']`);
+      let i = scriptList.length;
+      let arr: HTMLElement[] = new Array(i);
       while (i--) {
         arr[i] = <HTMLElement>scriptList.item(i);
       }
       _.each(arr, (elem: HTMLElement) => {
-        var template = new UnderscoreTemplate(elem);
+        let template = new UnderscoreTemplate(elem);
         TemplateCache.registerTemplate(elem.getAttribute('id'), template);
       })
     });
@@ -79,15 +79,15 @@ export class TemplateCache {
 
   private static scanAndRegisterHtmlTemplates() {
     _.each(HtmlTemplate.mimeTypes, (type) => {
-      let scriptList = document.querySelectorAll("script[id][type='" + type + "']");
-      var i = scriptList.length;
-      var arr: HTMLElement[] = new Array(i);
+      let scriptList = document.querySelectorAll(`script[id][type='${type}']`);
+      let i = scriptList.length;
+      let arr: HTMLElement[] = new Array(i);
       while (i--) {
         arr[i] = <HTMLElement>scriptList.item(i);
       }
 
       _.each(arr, (elem: HTMLElement) => {
-        var template = new HtmlTemplate(elem);
+        let template = new HtmlTemplate(elem);
         TemplateCache.registerTemplate(elem.getAttribute('id'), template);
       })
     });

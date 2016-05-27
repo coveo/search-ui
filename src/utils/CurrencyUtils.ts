@@ -4,18 +4,18 @@ import {Utils} from '../utils/Utils';
 
 declare var Globalize;
 
-export interface CurrencyToStringOptions {
+export interface ICurrencyToStringOptions {
   decimals?: number;
   symbol?: string;
 }
 
-class DefaultCurrencyToStringOptions extends Options implements CurrencyToStringOptions {
+class DefaultCurrencyToStringOptions extends Options implements ICurrencyToStringOptions {
   decimals: number = 0;
   symbol: string;
 }
 
 export class CurrencyUtils {
-  static currencyToString(value: number, options?: CurrencyToStringOptions): string {
+  static currencyToString(value: number, options?: ICurrencyToStringOptions): string {
     if (Utils.isNullOrUndefined(value)) {
       return '';
     }

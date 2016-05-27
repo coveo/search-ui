@@ -4,7 +4,7 @@
 import {l} from '../../Base';
 
 module Coveo {
-  export interface SearchAlertMessageOptions {
+  export interface ISearchAlertMessageOptions {
     closeDelay: number;
   }
 
@@ -15,7 +15,7 @@ module Coveo {
     private closeTimeout: number;
 
     constructor(public element: HTMLElement,
-      public options: SearchAlertMessageOptions,
+      public options: ISearchAlertMessageOptions,
       public bindings?: IComponentBindings) {
 
       super(element, SearchAlertMessage.ID, bindings);
@@ -31,10 +31,10 @@ module Coveo {
       return 'coveo-subscriptions-messages';
     }
 
-    private showMessage(dom: JQuery, message: string, error: boolean) {
-      this.message = $(`<div class="coveo-subscriptions-messages-message">
-          <div class="coveo-subscriptions-messages-info-close"></div>
-          <div class="coveo-subscriptions-messages-content">${ message}</div>
+    public showMessage(dom: JQuery, message: string, error: boolean) {
+      this.message = $(`<div class='coveo-subscriptions-messages-message'>
+          <div class='coveo-subscriptions-messages-info-close'></div>
+          <div class='coveo-subscriptions-messages-content'>${ message}</div>
         </div>`);
 
       this.message.toggleClass('coveo-subscriptions-messages-error', error)
@@ -62,10 +62,10 @@ module Coveo {
       if (args.dom != null) {
         if (args.subscription.type == SubscriptionType.followQuery) {
           let typeConfig = <ISubscriptionQueryRequest>args.subscription.typeConfig;
-          this.showMessage($(args.dom), l("SubscriptionsMessageFollowQuery", _.escape(typeConfig.query.q) || l("EmptyQuery")), false);
+          this.showMessage($(args.dom), l('SubscriptionsMessageFollowQuery', _.escape(typeConfig.query.q) || l('EmptyQuery')), false);
         } else {
           let typeConfig = <ISubscriptionItemRequest>args.subscription.typeConfig;
-          this.showMessage($(args.dom), l("SubscriptionsMessageFollow", _.escape(typeConfig.title)), false);
+          this.showMessage($(args.dom), l('SubscriptionsMessageFollow', _.escape(typeConfig.title)), false);
         }
       }
     }
@@ -73,7 +73,7 @@ module Coveo {
     private handleSearchAlerts_Fail(e: JQueryEventObject, args: SearchAlertsFailEventArgs) {
       this.close();
       if (args.dom != null) {
-        this.showMessage($(args.dom), l("SearchAlerts_Fail"), true);
+        this.showMessage($(args.dom), l('SearchAlerts_Fail'), true);
       }
     }
 

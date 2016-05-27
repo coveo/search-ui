@@ -1,9 +1,9 @@
-import {OmniboxData, OmniboxDataRow} from '../ui/Omnibox/OmniboxInterface';
+import {IOmniboxData, IOmniboxDataRow} from '../ui/Omnibox/OmniboxInterface';
 
-export interface IPopulateOmniboxEventArgs extends OmniboxData {
+export interface IPopulateOmniboxEventArgs extends IOmniboxData {
 }
 
-export interface IPopulateOmniboxEventRow extends OmniboxDataRow {
+export interface IPopulateOmniboxEventRow extends IOmniboxDataRow {
 }
 
 export interface IOmniboxPreprocessResultForQueryEventArgs {

@@ -4,7 +4,7 @@ import {IComponentBindings} from '../Base/ComponentBindings';
 import {Initialization} from '../Base/Initialization';
 import {$$} from '../../utils/Dom';
 
-export interface TextOptions {
+export interface ITextOptions {
   value?: string;
   size?: string;
   style?: string;
@@ -33,7 +33,7 @@ export class Text extends Component {
   /**
    * @componentOptions
    */
-  static options: TextOptions = {
+  static options: ITextOptions = {
     /**
      * The localized string value that the component should render
      */
@@ -88,7 +88,7 @@ export class Text extends Component {
     paddingRight: ComponentOptions.buildStringOption()
   };
 
-  constructor(public element: HTMLElement, public options?: TextOptions, bindings?: IComponentBindings) {
+  constructor(public element: HTMLElement, public options?: ITextOptions, bindings?: IComponentBindings) {
     super(element, Text.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Text, options);
     $$(this.element).text(this.options.value);

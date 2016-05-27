@@ -172,45 +172,45 @@ export class ComponentOptions {
   }
 
   static buildCustomOption<T>(converter: (value: string) => T, optionArgs?: OptionArgs<T>): T {
-    var loadOption: LoadOption<T> = (element: HTMLElement, name: string, option: Option<T>) => {
-      var stringvalue = ComponentOptions.loadStringOption(element, name, option);
+    let loadOption: LoadOption<T> = (element: HTMLElement, name: string, option: Option<T>) => {
+      let stringvalue = ComponentOptions.loadStringOption(element, name, option);
       return converter(stringvalue);
     }
     return ComponentOptions.buildOption<T>(Type.STRING, loadOption, optionArgs);
   }
 
   static buildCustomListOption<T>(converter: (value: string[]) => T, optionArgs?: ListOptionArgs): T {
-    var loadOption: LoadOption<T> = (element: HTMLElement, name: string, option: any) => {
-      var stringvalue = ComponentOptions.loadListOption(element, name, option);
+    let loadOption: LoadOption<T> = (element: HTMLElement, name: string, option: any) => {
+      let stringvalue = ComponentOptions.loadListOption(element, name, option);
       return converter(stringvalue);
     }
     return ComponentOptions.buildOption<any>(Type.LIST, loadOption, optionArgs);
   }
 
   static buildObjectOption(optionArgs?: ObjectOptionArgs): any {
-    var loadOption: LoadOption<{
+    let loadOption: LoadOption<{
       [key: string]: any
     }> = (element: HTMLElement, name: string, option: Option<any>) => {
-      var keys = _.keys(optionArgs.subOptions);
-      var scopedOptions: {
+      let keys = _.keys(optionArgs.subOptions);
+      let scopedOptions: {
         [name: string]: Option<any>
       } = {};
-      var scopedValues: {
+      let scopedValues: {
         [name: string]: any
       } = {};
-      for (var i = 0; i < keys.length; i++) {
-        var key = keys[i];
-        var scopedkey = ComponentOptions.mergeCamelCase(name, key);
+      for (let i = 0; i < keys.length; i++) {
+        let key = keys[i];
+        let scopedkey = ComponentOptions.mergeCamelCase(name, key);
         scopedOptions[scopedkey] = optionArgs.subOptions[key];
       }
       ComponentOptions.initOptions(element, scopedOptions, scopedValues);
-      var resultValues: {
+      let resultValues: {
         [name: string]: any
       } = {};
-      var resultFound = false;
-      for (var i = 0; i < keys.length; i++) {
-        var key = keys[i];
-        var scopedkey = ComponentOptions.mergeCamelCase(name, key);
+      let resultFound = false;
+      for (let i = 0; i < keys.length; i++) {
+        let key = keys[i];
+        let scopedkey = ComponentOptions.mergeCamelCase(name, key);
         if (scopedValues[scopedkey] != null) {
           resultValues[key] = scopedValues[scopedkey];
           resultFound = true;
@@ -224,7 +224,7 @@ export class ComponentOptions {
   }
 
   static buildOption<T>(type: Type, load: LoadOption<T>, optionArg: OptionArgs<T> = {}): T {
-    var option: Option<T> = <any>optionArg;
+    let option: Option<T> = <any>optionArg;
     option.type = type;
     option.load = load;
     return <any>option;
@@ -238,7 +238,7 @@ export class ComponentOptions {
   }
 
   static camelCaseToHyphen(name: string) {
-    return name.replace(camelCaseToHyphenRegex, "-$1$2").toLowerCase();
+    return name.replace(camelCaseToHyphenRegex, '-$1$2').toLowerCase();
   }
 
   static mergeCamelCase(parent: string, name: string) {
@@ -255,13 +255,13 @@ export class ComponentOptions {
     if (values == null) {
       values = {};
     }
-    var names: string[] = _.keys(options);
-    for (var i = 0; i < names.length; i++) {
-      var name = names[i];
-      var optionDefinition = options[name];
-      var attrName = optionDefinition.attrName = optionDefinition.attrName || ComponentOptions.attrNameFromName(name, optionDefinition);
-      var value: any;
-      var loadFromAttribute = optionDefinition.load;
+    let names: string[] = _.keys(options);
+    for (let i = 0; i < names.length; i++) {
+      let name = names[i];
+      let optionDefinition = options[name];
+      let attrName = optionDefinition.attrName = optionDefinition.attrName || ComponentOptions.attrNameFromName(name, optionDefinition);
+      let value: any;
+      let loadFromAttribute = optionDefinition.load;
       if (values[name] != undefined) {
         value = values[name];
       } else if (loadFromAttribute != null) {
@@ -288,9 +288,9 @@ export class ComponentOptions {
         }
       }
     }
-    for (var i = 0; i < names.length; i++) {
-      var name = names[i];
-      var optionDefinition = options[name];
+    for (let i = 0; i < names.length; i++) {
+      let name = names[i];
+      let optionDefinition = options[name];
       if (optionDefinition.postProcessing) {
         values[name] = optionDefinition.postProcessing(values[name], values);
       }
@@ -303,17 +303,17 @@ export class ComponentOptions {
   }
 
   static loadFieldOption(element: HTMLElement, name: string, option: Option<any>): string {
-    var field = ComponentOptions.loadStringOption(element, name, option);
+    let field = ComponentOptions.loadStringOption(element, name, option);
     Assert.check(!Utils.isNonEmptyString(field) || Utils.isCoveoField(field), field + ' is not a valid field');
     return field;
   }
 
   static loadFieldsOption(element: HTMLElement, name: string, option: Option<any>): string[] {
-    var fieldsAttr = ComponentOptions.loadStringOption(element, name, option);
+    let fieldsAttr = ComponentOptions.loadStringOption(element, name, option);
     if (fieldsAttr == null) {
       return null;
     }
-    var fields = fieldsAttr.split(fieldsSeperator);
+    let fields = fieldsAttr.split(fieldsSeperator);
     _.each(fields, (field: string) => {
       Assert.check(Utils.isCoveoField(field), field + ' is not a valid field');
     });
@@ -321,17 +321,17 @@ export class ComponentOptions {
   }
 
   static loadLocalizedStringOption(element: HTMLElement, name: string, option: Option<any>): string {
-    var attributeValue = ComponentOptions.loadStringOption(element, name, option);
-    var locale: string = String['locale'] || String['defaultLocale'];
+    let attributeValue = ComponentOptions.loadStringOption(element, name, option);
+    let locale: string = String['locale'] || String['defaultLocale'];
     if (locale != null && attributeValue != null) {
-      var localeParts = locale.toLowerCase().split("-");
-      var locales = _.map(localeParts, (part, i) => localeParts.slice(0, i + 1).join("-"));
-      var localizers = attributeValue.match(localizer);
+      let localeParts = locale.toLowerCase().split('-');
+      let locales = _.map(localeParts, (part, i) => localeParts.slice(0, i + 1).join('-'));
+      let localizers = attributeValue.match(localizer);
       if (localizers != null) {
-        for (var i = 0; i < localizers.length; i++) {
-          var groups = localizer.exec(localizers[i]);
+        for (let i = 0; i < localizers.length; i++) {
+          let groups = localizer.exec(localizers[i]);
           if (groups != null) {
-            var lang = groups[1].toLowerCase();
+            let lang = groups[1].toLowerCase();
             if (_.contains(locales, lang)) {
               return groups[2].replace(/^\s+|\s+$/g, '');
             }
@@ -344,11 +344,11 @@ export class ComponentOptions {
   }
 
   static loadNumberOption(element: HTMLElement, name: string, option: NumberOption): number {
-    var attributeValue = ComponentOptions.loadStringOption(element, name, option);
+    let attributeValue = ComponentOptions.loadStringOption(element, name, option);
     if (attributeValue == null) {
       return null;
     }
-    var numberValue = option.float === true ? Utils.parseFloatIfNotUndefined(attributeValue) : Utils.parseIntIfNotUndefined(attributeValue);
+    let numberValue = option.float === true ? Utils.parseFloatIfNotUndefined(attributeValue) : Utils.parseIntIfNotUndefined(attributeValue);
     if (option.min != null && option.min > numberValue) {
       numberValue = option.min;
     }
@@ -363,32 +363,32 @@ export class ComponentOptions {
   }
 
   static loadListOption(element: HTMLElement, name: string, option: ListOption): string[] {
-    var separator = option.separator || /\s*,\s*/;
-    var attributeValue = ComponentOptions.loadStringOption(element, name, option);
+    let separator = option.separator || /\s*,\s*/;
+    let attributeValue = ComponentOptions.loadStringOption(element, name, option);
     return Utils.isNonEmptyString(attributeValue) ? attributeValue.split(separator) : null;
   }
 
   static loadEnumOption(element: HTMLElement, name: string, option: Option<any>, _enum: any): number {
-    var enumAsString = ComponentOptions.loadStringOption(element, name, option);
+    let enumAsString = ComponentOptions.loadStringOption(element, name, option);
     return enumAsString != null ? _enum[enumAsString] : null;
   }
 
   static loadSelectorOption(element: HTMLElement, name: string, option: Option<any>): HTMLElement {
-    var attributeValue = ComponentOptions.loadStringOption(element, name, option)
+    let attributeValue = ComponentOptions.loadStringOption(element, name, option)
     return Utils.isNonEmptyString(attributeValue) ? <HTMLElement>document.querySelector(attributeValue) : null;
   }
 
   static loadChildHtmlElementOption(element: HTMLElement, name: string, option: ChildHtmlElementOption): HTMLElement {
-    var htmlElement: HTMLElement;
+    let htmlElement: HTMLElement;
     // Attribute: selector
-    var selectorAttr = option.selectorAttr || ComponentOptions.attrNameFromName(name, option) + '-selector';
-    var selector = element.getAttribute(selectorAttr);
+    let selectorAttr = option.selectorAttr || ComponentOptions.attrNameFromName(name, option) + '-selector';
+    let selector = element.getAttribute(selectorAttr);
     if (selector != null) {
       htmlElement = <HTMLElement>document.body.querySelector(selector);
     }
     // Child
     if (htmlElement == null) {
-      var childSelector = option.childSelector;
+      let childSelector = option.childSelector;
       if (childSelector == null) {
         childSelector = '.' + name;
       }
@@ -415,30 +415,30 @@ export class ComponentOptions {
       return new LazyTemplate(element, name, option);
     }
 
-    var template: Template;
+    let template: Template;
 
     // Attribute: template selector
-    var selectorAttr = option.selectorAttr || ComponentOptions.attrNameFromName(name, option) + '-selector';
-    var selector = element.getAttribute(selectorAttr);
+    let selectorAttr = option.selectorAttr || ComponentOptions.attrNameFromName(name, option) + '-selector';
+    let selector = element.getAttribute(selectorAttr);
     if (selector != null) {
-      var templateElement = <HTMLElement>document.querySelector(selector);
+      let templateElement = <HTMLElement>document.querySelector(selector);
       if (templateElement != null) {
         template = ComponentOptions.createResultTemplateFromElement(templateElement);
       }
     }
     // Attribute: template id
     if (template == null) {
-      var idAttr = option.idAttr || ComponentOptions.attrNameFromName(name, option) + '-id';
-      var id = element.getAttribute(idAttr);
+      let idAttr = option.idAttr || ComponentOptions.attrNameFromName(name, option) + '-id';
+      let id = element.getAttribute(idAttr);
       if (id != null) {
         template = ComponentOptions.loadResultTemplateFromId(id);
       }
     }
     // Child
     if (template == null) {
-      var childSelector = option.childSelector;
+      let childSelector = option.childSelector;
       if (childSelector == null) {
-        childSelector = '.' + name.replace(/([A-Z])/g, "-$1").toLowerCase();
+        childSelector = '.' + name.replace(/([A-Z])/g, '-$1').toLowerCase();
       }
       template = ComponentOptions.loadChildrenResultTemplateFromSelector(element, childSelector);
     }
@@ -450,7 +450,7 @@ export class ComponentOptions {
   }
 
   static loadChildrenResultTemplateFromSelector(element: HTMLElement, selector: string): Template {
-    var foundElements = ComponentOptions.loadChildrenHtmlElementFromSelector(element, selector);
+    let foundElements = ComponentOptions.loadChildrenHtmlElementFromSelector(element, selector);
     if (foundElements.length > 0) {
       return new TemplateList(_.compact(_.map(foundElements, (element) => ComponentOptions.createResultTemplateFromElement(element))));
     }
@@ -471,13 +471,13 @@ export class ComponentOptions {
   }
 
   static isElementScrollable(element: HTMLElement) {
-    return $(element).css("overflow-y") == "scroll";
+    return $$(element).css('overflow-y') == 'scroll';
   }
 
   static createResultTemplateFromElement(element: HTMLElement): Template {
     Assert.exists(element);
-    var type = element.getAttribute('type');
-    var mimeTypes = 'You must specify the type of template. Valid values are :' +
+    let type = element.getAttribute('type');
+    let mimeTypes = 'You must specify the type of template. Valid values are :' +
       ' ' + UnderscoreTemplate.mimeTypes.toString() +
       ' ' + HtmlTemplate.mimeTypes.toString()
     Assert.check(Utils.isNonEmptyString(type), mimeTypes);

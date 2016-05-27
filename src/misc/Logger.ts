@@ -93,8 +93,8 @@ export class Logger {
     if (window['console'] && console.log) {
       console.log([level, this.owner].concat(stuff));
       if (Logger.executionTime) {
-        console.timeEnd("Execution time");
-        console.time("Execution time");
+        console.timeEnd('Execution time');
+        console.time('Execution time');
       }
     }
   }

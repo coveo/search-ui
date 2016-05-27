@@ -5,7 +5,7 @@ import {TimeSpan} from './TimeSpanUtils';
 
 declare var Globalize;
 
-export interface DateToStringOptions {
+export interface IDateToStringOptions {
   now?: Date;
   useTodayYesterdayAndTomorrow?: boolean;
   useWeekdayIfThisWeek?: boolean;
@@ -17,7 +17,7 @@ export interface DateToStringOptions {
   predefinedFormat?: string;
 }
 
-class DefaultDateToStringOptions extends Options implements DateToStringOptions {
+class DefaultDateToStringOptions extends Options implements IDateToStringOptions {
   now: Date = new Date();
   useTodayYesterdayAndTomorrow = true;
   useWeekdayIfThisWeek = true;
@@ -56,59 +56,55 @@ export class DateUtils {
     return newDate;
   }
 
-  static dateToString(date: Date, options?: DateToStringOptions): string {
-    if (Utils.isNullOrUndefined(date)) {
+  static dateToString(d: Date, options?: IDateToStringOptions): string {
+    if (Utils.isNullOrUndefined(d)) {
       return '';
     }
 
     options = new DefaultDateToStringOptions().merge(options);
 
-    if (Utils.isNullOrUndefined(date)) {
-      return '';
-    }
-
-    var date = DateUtils.keepOnlyDatePart(date);
+    var dateOnly = DateUtils.keepOnlyDatePart(d);
 
     if (options.predefinedFormat) {
-      return Globalize.format(date, options.predefinedFormat);
+      return Globalize.format(dateOnly, options.predefinedFormat);
     }
 
     var today = DateUtils.keepOnlyDatePart(options.now);
     if (options.useTodayYesterdayAndTomorrow) {
-      if (date.valueOf() == today.valueOf()) {
+      if (dateOnly.valueOf() == today.valueOf()) {
         return l('Today');
       }
       var tomorrow = DateUtils.offsetDateByDays(today, 1);
-      if (date.valueOf() == tomorrow.valueOf()) {
+      if (dateOnly.valueOf() == tomorrow.valueOf()) {
         return l('Tomorrow');
       }
       var yesterday = DateUtils.offsetDateByDays(today, -1);
-      if (date.valueOf() == yesterday.valueOf()) {
+      if (dateOnly.valueOf() == yesterday.valueOf()) {
         return l('Yesterday');
       }
     }
 
-    var isThisWeek = Math.abs(TimeSpan.fromDates(date, today).getDays()) < 7;
+    var isThisWeek = Math.abs(TimeSpan.fromDates(dateOnly, today).getDays()) < 7;
     if (options.useWeekdayIfThisWeek && isThisWeek) {
-      if (date.valueOf() > today.valueOf()) {
-        return l('Next') + ' ' + Globalize.format(date, 'dddd');
+      if (dateOnly.valueOf() > today.valueOf()) {
+        return l('Next') + ' ' + Globalize.format(dateOnly, 'dddd');
       } else {
-        return l('Last') + ' ' + Globalize.format(date, 'dddd');
+        return l('Last') + ' ' + Globalize.format(dateOnly, 'dddd');
       }
     }
 
-    if (options.omitYearIfCurrentOne && date.getFullYear() === today.getFullYear()) {
-      return Globalize.format(date, 'M');
+    if (options.omitYearIfCurrentOne && dateOnly.getFullYear() === today.getFullYear()) {
+      return Globalize.format(dateOnly, 'M');
     }
 
     if (options.useLongDateFormat) {
-      return Globalize.format(date, 'D');
+      return Globalize.format(dateOnly, 'D');
     }
 
-    return Globalize.format(date, 'd');
+    return Globalize.format(dateOnly, 'd');
   }
 
-  static timeToString(date: Date, options?: DateToStringOptions): string {
+  static timeToString(date: Date, options?: IDateToStringOptions): string {
     if (Utils.isNullOrUndefined(date)) {
       return '';
     }
@@ -116,7 +112,7 @@ export class DateUtils {
     return Globalize.format(date, 't');
   }
 
-  static dateTimeToString(date: Date, options?: DateToStringOptions): string {
+  static dateTimeToString(date: Date, options?: IDateToStringOptions): string {
     if (Utils.isNullOrUndefined(date)) {
       return '';
     }
@@ -158,8 +154,8 @@ export class DateUtils {
   }
 }
 
-//Shim for IE8 Date.toISOString
-//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString
+// Shim for IE8 Date.toISOString
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString
 if (!Date.prototype.toISOString) {
   (function() {
     function pad(number) {

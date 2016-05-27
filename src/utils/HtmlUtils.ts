@@ -43,10 +43,10 @@ export class HTMLUtils {
     var ret = []
     _.each(options, (val: any, key?: string, obj?) => {
       if (val != undefined) {
-        ret.push(key + "=" + JSON.stringify(val.toString()))
+        ret.push(key + '=' + JSON.stringify(val.toString()))
       }
     })
-    return ret.join(" ");
+    return ret.join(' ');
   }
 }
 
@@ -59,27 +59,27 @@ export class AnchorUtils {
       text = options.text;
       options.text = undefined;
     }
-    return "<a href='" + href + "'" + HTMLUtils.buildAttributeString(options) + ">" + text + "</a>";
+    return `<a href='${href} ${HTMLUtils.buildAttributeString(options)} '>${text}</a>`;
   }
 }
 
 export class ImageUtils {
   static buildImage(src?: string, options?: IImageUtilsOptions) {
-    var ret = "<img ";
-    ret += src ? "src='" + src + "' " : "";
-    ret += HTMLUtils.buildAttributeString(options) + "/>";
+    var ret = '<img ';
+    ret += src ? `src='${src}' ` : '';
+    ret += HTMLUtils.buildAttributeString(options) + '/>';
     return ret;
   }
 
-  static selectImageFromResult(result: IQueryResult) {
-    return $("img[data-coveo-uri-hash='" + result.raw["urihash"] + "']");
+  static selectImageFromResult(result: IQueryResult): HTMLElement {
+    return <HTMLElement>document.querySelector(`img[data-coveo-uri-hash=${result.raw['urihash']}]`);
   }
 
   static buildImageWithDirectSrcAttribute(endpoint: SearchEndpoint, result: IQueryResult) {
     var image = new Image();
-    var dataStreamUri = endpoint.getViewAsDatastreamUri(result.uniqueId, '$Thumbnail$', { contentType: "image/png" });
+    var dataStreamUri = endpoint.getViewAsDatastreamUri(result.uniqueId, '$Thumbnail$', { contentType: 'image/png' });
     image.onload = () => {
-      ImageUtils.selectImageFromResult(result).attr('src', dataStreamUri);
+      ImageUtils.selectImageFromResult(result).setAttribute('src', dataStreamUri);
     };
     image.src = dataStreamUri;
   }
@@ -88,7 +88,7 @@ export class ImageUtils {
     endpoint.getRawDataStream(result.uniqueId, '$Thumbnail$')
       .then((response) => {
         var rawBinary = String.fromCharCode.apply(null, new Uint8Array(response));
-        ImageUtils.selectImageFromResult(result).attr("src", "data:image/png;base64, " + btoa(rawBinary));
+        ImageUtils.selectImageFromResult(result).setAttribute('src', 'data:image/png;base64, ' + btoa(rawBinary));
       })
       .catch(() => {
         ImageUtils.selectImageFromResult(result).remove();
@@ -98,7 +98,7 @@ export class ImageUtils {
   static buildImageFromResult(result: IQueryResult, endpoint: SearchEndpoint, options?: IImageUtilsOptions) {
     var options = options ? options : <IImageUtilsOptions>{};
 
-    var img = ImageUtils.buildImage(undefined, $.extend(options, { "data-coveo-uri-hash": result.raw["urihash"] }));
+    var img = ImageUtils.buildImage(undefined, _.extend(options, { 'data-coveo-uri-hash': result.raw['urihash'] }));
     if (endpoint.isJsonp() || DeviceUtils.isIE8or9()) {
       //For jsonp and IE8-9 (XDomain) we can't GET/POST for binary data. We are limited to only setting the src attribute directly on the img.
       ImageUtils.buildImageWithDirectSrcAttribute(endpoint, result);
