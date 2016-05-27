@@ -73,6 +73,9 @@
 /// <reference path="ui/TabTest.ts" />
 /// <reference path="ui/TriggersTest.ts" />
 /// <reference path="ui/ValueElementRendererTest.ts" />
+/// <reference path="ui/TemplateLoaderTest.ts" />
+/// <reference path="ui/AnalyticsSuggestionsTest.ts" />
+/// <reference path="ui/FieldSuggestionsTest.ts" />
 
 Coveo.Logger.disable();
 

@@ -5,7 +5,8 @@
   "main": "coveo.search.js",
   "scripts": {
     "test": "gulp buildTest && node_modules/karma/bin/karma start",
-    "build": "gulp"
+    "build": "gulp",
+    "doc": "gulp doc"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
     "event-stream": "^3.3.2",
     "exports-loader": "^0.6.3",
     "expose-loader": "^0.7.1",
+    "express": "^4.13.4",
     "glob": "^7.0.3",
     "globals-loader": "0.0.3",
     "gulp": "^3.9.1",

@@ -5,14 +5,14 @@ const fs = require('fs');
 const runsequence = require('run-sequence');
 
 gulp.task('definitions', function (done) {
-  runsequence('internalDefs', 'externalDefs', 'cleanDefs', done)
+  runsequence('internalDefs', 'externalDefs', 'cleanDefs', done);
 })
 
 gulp.task('cleanDefs', function () {
   return gulp.src('bin/ts/CoveoJsSearch.d.ts')
       .pipe(replace(/import.*$/gm, ''))
       .pipe(replace(/(declare module )(.*)( {$)/gm, '$1Coveo$3'))
-      .pipe(gulp.dest('bin/ts/'))
+      .pipe(gulp.dest('bin/ts/'));
 })
 
 gulp.task('externalDefs', function () {
@@ -32,8 +32,8 @@ gulp.task('externalDefs', function () {
       .pipe(gulp.dest('./bin/ts'));
 })
 
-gulp.task('internalDefs', function (done) {
-  require('dts-generator').default({
+gulp.task('internalDefs', function () {
+  return require('dts-generator').default({
     name: 'Coveo',
     project: './',
     baseDir: './src/',
@@ -41,7 +41,6 @@ gulp.task('internalDefs', function (done) {
     externs: ['Externals.d.ts'],
     exclude: ['lib/**/*.d.ts', 'node_modules/**/*.d.ts', 'typings/**/*.d.ts', 'src/Index.ts', 'src/Doc,ts', 'bin/**/*.d.ts']
   });
-  done();
 })
 
 

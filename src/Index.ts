@@ -80,6 +80,10 @@ export {ExpressionBuilder} from './ui/Base/ExpressionBuilder';
 export {Initialization} from './ui/Base/Initialization';
 export {IResultsComponentBindings} from './ui/Base/ResultsComponentBindings';
 
+// TEMPLATES
+export {TemplateCache} from './ui/Templates/TemplateCache';
+
+
 // UI
 export {SearchInterface, StandaloneSearchInterface} from './ui/SearchInterface/SearchInterface';
 export {Aggregate} from './ui/Aggregate/Aggregate';
@@ -125,3 +129,9 @@ export {Sort} from './ui/Sort/Sort';
 export {SortCriteria} from './ui/Sort/SortCriteria';
 export {Tab} from './ui/Tab/Tab';
 export {Triggers} from './ui/Triggers/Triggers';
+export {TemplateLoader} from './ui/TemplateLoader/TemplateLoader';
+export {Template} from './ui/Templates/Template';
+export {SuggestionForOmnibox} from './ui/Misc/SuggestionForOmnibox';
+export {AnalyticsSuggestions} from './ui/AnalyticsSuggestions/AnalyticsSuggestions';
+export {FieldSuggestions} from './ui/FieldSuggestions/FieldSuggestions';
+

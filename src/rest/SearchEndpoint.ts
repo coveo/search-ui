@@ -83,14 +83,13 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @param otherOptions A set of additional options to use when configuring this endpoint
    */
   static configureCloudEndpoint(organization?: string, token?: string, uri: string = 'https://cloudplatform.coveo.com/rest/search', otherOptions?: ISearchEndpointOptions) {
-
-    var merged = SearchEndpoint.mergeConfigOptions({
+    var options: ISearchEndpointOptions= {
       restUri: uri,
       accessToken: token,
-      queryStringArguments: {
-        workgroup: organization
-      }
-    }, otherOptions);
+      queryStringArguments: {organizationId: organization}
+    };
+    
+    var merged = SearchEndpoint.mergeConfigOptions(options, otherOptions);
 
     SearchEndpoint.endpoints["default"] = new SearchEndpoint(SearchEndpoint.removeUndefinedConfigOption(merged))
   }
@@ -117,7 +116,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       }
     });
     return config;
-  }
+  }  
 
   static mergeConfigOptions(first: ISearchEndpointOptions, second: ISearchEndpointOptions): ISearchEndpointOptions {
     first = SearchEndpoint.removeUndefinedConfigOption(first);
@@ -138,6 +137,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    */
   constructor(public options?: ISearchEndpointOptions) {
     Assert.exists(options);
+    Assert.exists(options.restUri);
 
     // For backward compatibility, we set anonymous to true when an access token
     // is specified on a page loaded through the filesystem. This causes withCredentials
@@ -180,7 +180,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Get the uri that can be use to authenticate against the given provider
+   * Get the uri that can be used to authenticate against the given provider
    * @param provider The provider name
    * @param returnUri The uri at which to return after the authentication is completed
    * @param message The message for authentication
@@ -208,7 +208,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   public isJsonp(): boolean {
     return this.caller.useJsonp;
   }
-
+  
   /**
    * Perform a search on the index and returns a Promise of {@link IQueryResults}.<br/>
    * Will modify the query results slightly, by adding additional information on each results (an id, the state object, etc.)
@@ -266,11 +266,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    */
   public getExportToExcelLink(query: IQuery, numberOfResults: number, callOptions?: IEndpointCallOptions): string {
     var baseUri = this.buildBaseUri('/');
-    var queryString = this.buildCompleteQueryString(callOptions, null, query);
-
-    if (Utils.isNonEmptyString(this.options.accessToken)) {
-      queryString.push('access_token=' + encodeURIComponent(this.options.accessToken));
-    }
+    var queryString = this.buildCompleteQueryString(callOptions, null, query, true);
 
     if (numberOfResults != null) {
       queryString.push("numberOfResults=" + numberOfResults);
@@ -297,7 +293,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     var params: IEndpointCallParameters = {
       url: this.buildBaseUri('/datastream'),
-      queryString: this.buildViewAsHtmlQueryString(documentUniqueId, callOptions).concat(["dataStream=" + dataStreamType]),
+      queryString: this.buildViewAsHtmlQueryString(documentUniqueId, callOptions, true, true).concat(["dataStream=" + dataStreamType]),
       requestData: {},
       errorsAsSuccess: false,
       method: 'GET',
@@ -575,10 +571,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<ISubscription>}
    */
   public follow(request: ISubscriptionRequest): Promise<ISubscription> {
-    var qs = [];
-    if (this.options.accessToken) {
-      qs = ["accessToken=" + this.options.accessToken]
-    }
+    var qs = this.buildBaseQueryString({}, true);
     var params: IEndpointCallParameters = {
       url: this.buildSearchAlertsUri('/subscriptions'),
       queryString: qs,
@@ -606,12 +599,8 @@ export class SearchEndpoint implements ISearchEndpoint {
       })
     }
     if (this.currentListSubscriptions == null) {
-      var queryParameters = [
-        "page=" + (page || 0)
-      ];
-      if (this.options.accessToken) {
-        queryParameters.push('accessToken=' + this.options.accessToken);
-      }
+      var queryParameters = this.buildBaseQueryString({}, true);
+      queryParameters.push("page=" + (page || 0));
 
       var params: IEndpointCallParameters = {
         url: this.buildSearchAlertsUri('/subscriptions'),
@@ -645,10 +634,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<ISubscription>}
    */
   public updateSubscription(subscription: ISubscription): Promise<ISubscription> {
-    var qs = [];
-    if (this.options.accessToken) {
-      qs = ["accessToken=" + this.options.accessToken];
-    }
+    var qs = this.buildBaseQueryString({}, true);
     var params: IEndpointCallParameters = {
       url: this.buildSearchAlertsUri('/subscriptions/' + subscription.id),
       queryString: qs,
@@ -668,10 +654,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<ISubscription>}
    */
   public deleteSubscription(subscription: ISubscription): Promise<ISubscription> {
-    var qs = [];
-    if (this.options.accessToken) {
-      qs = ["accessToken=" + this.options.accessToken]
-    }
+    var qs = this.buildBaseQueryString({}, true);
     var params: IEndpointCallParameters = {
       url: this.buildSearchAlertsUri('/subscriptions/' + subscription.id),
       queryString: qs,
@@ -710,7 +693,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     var uri = this.options.restUri;
     uri = this.removeTrailingSlash(uri);
 
-    if (this.options.version != null) {
+    if (Utils.isNonEmptyString(this.options.version)) {
       uri += '/' + this.options.version;
     }
     uri += path;
@@ -727,14 +710,24 @@ export class SearchEndpoint implements ISearchEndpoint {
     uri += path;
     return uri;
   }
-
-  private buildBaseQueryString(callOptions?: IEndpointCallOptions): string[] {
+  
+  //All query strings are initially constructed by this function
+  private buildBaseQueryString(callOptions?: IEndpointCallOptions, addAccessToken: boolean = false): string[] {
     var queryString: string[] = [];
 
     for (var name in this.options.queryStringArguments) {
-      queryString.push(name + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
+      //The mapping workgroup --> organizationId is necessary for backward compatibility
+      if(name == 'workgroup'){
+        queryString.push('organizationId' + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
+      }
+      else{
+        queryString.push(name + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
+      }
     }
-
+    
+    if (addAccessToken && Utils.isNonEmptyString(this.options.accessToken)) {
+      queryString.push('access_token=' + encodeURIComponent(this.options.accessToken));
+    }
 
     if (callOptions && _.isArray(callOptions.authentication) && callOptions.authentication.length != 0) {
       queryString.push('authentication=' + callOptions.authentication.join(','))
@@ -743,8 +736,8 @@ export class SearchEndpoint implements ISearchEndpoint {
     return queryString;
   }
 
-  private buildCompleteQueryString(callOptions?: IEndpointCallOptions, query?: string, queryObject?: IQuery): string[] {
-    var queryString = this.buildBaseQueryString(callOptions);
+  private buildCompleteQueryString(callOptions?: IEndpointCallOptions, query?: string, queryObject?: IQuery, addAccessToken: boolean = false): string[] {
+    var queryString = this.buildBaseQueryString(callOptions, addAccessToken);
 
     // In an ideal parallel reality, the entire query used in the 'search' call is used here.
     // In this reality however, we must support GET calls (ex: GET /html) for CORS/JSONP/IE reasons.
@@ -769,22 +762,18 @@ export class SearchEndpoint implements ISearchEndpoint {
   private buildViewAsHtmlUri(path: string, documentUniqueID: string, callOptions?: IViewAsHtmlOptions): string {
     Assert.isNonEmptyString(documentUniqueID);
 
-    var queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
-
     // Since those uri will be loaded in a frame or tab, we must include any
     // authentication token as a query string argument instead of relying on
     // endpoint caller for this.
-    if (Utils.isNonEmptyString(this.options.accessToken)) {
-      queryString.push('access_token=' + encodeURIComponent(this.options.accessToken));
-    }
+    var queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions, true, true);
 
     var baseUri = this.buildBaseUri(path);
 
     return baseUri + '?' + queryString.join('&');
   }
 
-  private buildViewAsHtmlQueryString(uniqueId: string, callOptions?: IViewAsHtmlOptions, includeQuery: boolean = true): string[] {
-    var queryString = includeQuery ? this.buildCompleteQueryString(callOptions, callOptions.query, callOptions.queryObject) : [];
+  private buildViewAsHtmlQueryString(uniqueId: string, callOptions?: IViewAsHtmlOptions, includeQuery: boolean = true, addAccessToken: boolean = false): string[] {
+    var queryString = includeQuery ? this.buildCompleteQueryString(callOptions, callOptions.query, callOptions.queryObject, addAccessToken) : this.buildBaseQueryString(callOptions, addAccessToken);
 
     queryString.push('uniqueId=' + encodeURIComponent(uniqueId));
 
@@ -806,7 +795,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   private performOneCall<T>(params: IEndpointCallParameters, autoRenewToken = true): Promise<T> {
     return this.caller.call(params)
       .then((response?: ISuccessResponse<T>) => {
-        if (response.data != null) {
+        if (response.data != null && (<any>response.data).clientDuration != null) {
           (<any>response.data).clientDuration = response.duration;
         }
         return response.data

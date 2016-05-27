@@ -1,4 +1,4 @@
-# Search-UI
+# Search-UI [![Build Status](https://travis-ci.org/coveo/search-ui.svg?branch=master)](https://travis-ci.org/coveo/search-ui)
 Coveo Search UI framework
 
 ## Work in progress
