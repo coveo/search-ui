@@ -132,6 +132,7 @@
     "src/events/SettingsEvents.ts",
     "src/events/SliderEvents.ts",
     "src/events/StandaloneSearchInterfaceEvents.ts",
+    "src/events/QuickviewEvents.ts",
     "src/controllers/QueryController.ts",
     "src/ui/Templates/TemplateCache.ts",
     "src/ui/Misc/FileTypes.ts",

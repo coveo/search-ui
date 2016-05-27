@@ -5,7 +5,6 @@ import {AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
 import {IQueryResult} from '../../rest/QueryResult'
 import {Assert} from '../../misc/Assert'
 import {$$, Dom} from '../../utils/Dom'
-
 import {IOpenQuickviewEventArgs} from '../../events/ResultListEvents'
 import {QuickviewEvents, IQuickviewLoadedEventArgs} from '../../events/QuickviewEvents'
 import {DeviceUtils} from '../../utils/DeviceUtils'
@@ -161,12 +160,7 @@ export class QuickviewDocument extends Component {
 
 
   private renderErrorReport(iframe: HTMLIFrameElement) {
-    let errorMessage = '<html><body style='
-    font - family
-  :
-    Arimo, \'Helvetica Neue\', Helvetica, Arial, sans-serif; -webkit-text-size-adjust: none;' > ' + l('
-    OopsError
-    ') + ' < / body > < / html > ';
+    let errorMessage = `<html><body style='font-family: Arimo, \'Helvetica Neue\', Helvetica, Arial, sans-serif; -webkit-text-size-adjust: none;' >${l('OopsError')}' </body></html>`;
     this.writeToIFrame(iframe, errorMessage);
   }
 
@@ -194,10 +188,7 @@ export class QuickviewDocument extends Component {
       let cssText = 'html pre { white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; }';
 
       // Some people react strongly when presented with their browser's default font, so let's fix that
-      cssText += 'body, html { font-family: Arimo, '
-      Helvetica
-      Neue
-      ', Helvetica, Arial, sans-serif; -webkit-text-size-adjust: none; }';
+      cssText += 'body, html { font-family: Arimo, \'Helvetica Neue\', Helvetica, Arial, sans-serif; -webkit-text-size-adjust: none; }';
 
       if (DeviceUtils.isIos()) {
         // Safari on iOS forces resize iframes to fit their content, even if an explicit size
@@ -282,7 +273,6 @@ export class QuickviewDocument extends Component {
   // In the previous example, the words 'abcd' and 'bcdef' are highlighted.
   //
   // This method is public for testing purposes.
-  //
   public computeHighlights(window: Window): string[] {
     $$(this.header).empty();
     this.keywordsState = [];
@@ -468,24 +458,14 @@ export class QuickviewDocument extends Component {
     let scroll = this.getScrollingElement(window);
 
     // Un-highlight any currently selected element
-    let current = $$(scroll).find('[id^='
-    ' + HIGHLIGHT_PREFIX + '
-  :
-    ' + state.word.index + '.
-    ' + fromIndex + '
-    ']'
+    let current = $$(scroll).find(`[id^=${HIGHLIGHT_PREFIX}:${state.word.index}.${fromIndex}.]`
   )
     if (current) {
       current.style.border = '';
     }
 
     // Find and highlight the new element.
-    let element = $$(window.document.body).find('[id^='
-    ' + HIGHLIGHT_PREFIX + '
-  :
-    ' + state.word.index + '.
-    ' + toIndex + '.
-    ']'
+    let element = $$(window.document.body).find(`[id^=${HIGHLIGHT_PREFIX}:${state.word.index}.${toIndex}.]`
   )
     ;
     element.style.border = '1px dotted #333';
@@ -562,11 +542,7 @@ export class QuickviewDocument extends Component {
   }
 
   private isNewQuickviewDocument(iframeWindow: Window): boolean {
-    let meta = $$(iframeWindow.document.head).find('meta[name='
-    generator
-    ']'
-    )
-      ;
+    let meta = $$(iframeWindow.document.head).find('meta[name=\'generator\']');
     return meta && meta.getAttribute('content') == 'pdf2htmlEX';
   }
 
