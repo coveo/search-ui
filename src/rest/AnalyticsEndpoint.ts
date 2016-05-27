@@ -114,21 +114,21 @@ export class AnalyticsEndpoint {
         url: url,
         responseType: 'text',
         requestDataType: 'application/json'
-      }).then((res: ISuccessResponse<R>)=> {
+      }).then((res: ISuccessResponse<R>) => {
         return this.handleAnalyticsEventResponse(<any>res.data);
-      }).finally(()=> {
+      }).finally(() => {
         AnalyticsEndpoint.pendingRequest = null;
       });
       return AnalyticsEndpoint.pendingRequest;
     } else {
       return AnalyticsEndpoint.pendingRequest.finally(() => {
-        return this.sendToService<D,R>(data, path, paramName)
+        return this.sendToService<D, R>(data, path, paramName)
       });
     }
   }
 
   private getFromService<T>(url: string, params: IStringMap<string>): Promise<T> {
-    var paramsToSend = (this.options.token && this.options.token != "") ? _.extend({"access_token": this.options.token}, params) : params;
+    var paramsToSend = (this.options.token && this.options.token != "") ? _.extend({ "access_token": this.options.token }, params) : params;
     return this.endpointCaller.call<T>({
       errorsAsSuccess: false,
       method: 'GET',
@@ -136,7 +136,7 @@ export class AnalyticsEndpoint {
       requestData: paramsToSend,
       responseType: 'json',
       url: url
-    }).then((res: ISuccessResponse<T>)=> {
+    }).then((res: ISuccessResponse<T>) => {
       return res.data
     })
   }

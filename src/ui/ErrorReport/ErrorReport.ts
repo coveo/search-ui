@@ -30,7 +30,7 @@ export class ErrorReport extends Component {
      * Display the detailed error message as a JSON in a text content area.<br/>
      * The default value is <code>true</code>
      */
-    showDetailedError: ComponentOptions.buildBooleanOption({defaultValue: true})
+    showDetailedError: ComponentOptions.buildBooleanOption({ defaultValue: true })
   }
   private message: Dom;
   private closePopup: () => void;
@@ -45,11 +45,11 @@ export class ErrorReport extends Component {
     super(element, ErrorReport.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ErrorReport, options);
 
-    let title = $$('div', {className: 'coveo-error-report-title'}, '<h3></h3><h4></h4>');
+    let title = $$('div', { className: 'coveo-error-report-title' }, '<h3></h3><h4></h4>');
     this.element.appendChild(title.el);
 
 
-    let optionsElement = $$('div', {className: 'coveo-error-report-options'});
+    let optionsElement = $$('div', { className: 'coveo-error-report-options' });
     optionsElement.el.appendChild(this.buildPrevious());
     optionsElement.el.appendChild(this.buildReset());
     optionsElement.el.appendChild(this.buildRetry());
@@ -109,7 +109,7 @@ export class ErrorReport extends Component {
   }
 
   private buildPrevious(): HTMLElement {
-    let previous = $$('span', {className: 'coveo-error-report-previous'}, l('GoBack'));
+    let previous = $$('span', { className: 'coveo-error-report-previous' }, l('GoBack'));
     previous.on('click', () => this.back());
     return previous.el;
   }

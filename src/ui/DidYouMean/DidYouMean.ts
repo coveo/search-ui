@@ -33,7 +33,7 @@ export class DidYouMean extends Component {
      * when there are no results and a correction is available <br/>
      * The default value is <code>true</code>
      */
-    enableAutoCorrection: ComponentOptions.buildBooleanOption({defaultValue: true}),
+    enableAutoCorrection: ComponentOptions.buildBooleanOption({ defaultValue: true }),
   };
 
   public correctedTerm: string;
@@ -102,11 +102,11 @@ export class DidYouMean extends Component {
       data.retryTheQuery = true;
       this.hideNext = false;
 
-      let noResultsFor = $$('div', {className: 'coveo-did-you-mean-no-results-for'}).el;
+      let noResultsFor = $$('div', { className: 'coveo-did-you-mean-no-results-for' }).el;
       noResultsFor.innerHTML = l('noResultFor', '<span class="coveo-highlight coveo-did-you-mean-highlight">' + StringUtils.htmlEncode(originalQuery) + '</span>');
       this.element.appendChild(noResultsFor);
 
-      let automaticCorrect = $$('div', {className: 'coveo-did-you-mean-automatic-correct'}).el;
+      let automaticCorrect = $$('div', { className: 'coveo-did-you-mean-automatic-correct' }).el;
       automaticCorrect.innerHTML = l('autoCorrectedQueryTo', '<span class="coveo-highlight">' + correctedSentence + '</span>');
       this.element.appendChild(automaticCorrect);
 
@@ -125,7 +125,7 @@ export class DidYouMean extends Component {
     if (Utils.isNonEmptyArray(results.queryCorrections)) {
       let correctedSentence = this.buildCorrectedSentence(results.queryCorrections[0]);
       this.correctedTerm = results.queryCorrections[0].correctedQuery;
-      let didYouMean = $$('div', {className: 'coveo-did-you-mean-suggestion'}, l('didYouMean', '')).el;
+      let didYouMean = $$('div', { className: 'coveo-did-you-mean-suggestion' }, l('didYouMean', '')).el;
       this.element.appendChild(didYouMean);
 
       let searchTerm = $$('a', {}, correctedSentence).el;

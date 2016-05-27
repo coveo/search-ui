@@ -62,7 +62,7 @@ module Coveo {
      * - `highlights`: The highlight information to use.
      * - `cssClass`: Optional. The name of the CSS class to use for highlighting.
      */
-    highlight:  (content: string, highlights?: IHighlight[], cssClass?: string) => string;
+    highlight: (content: string, highlights?: IHighlight[], cssClass?: string) => string;
     /**
      * This helper highlights the provided terms in a given string.<br/>
      * By default, the terms to highlight are the current query and the
@@ -74,9 +74,9 @@ module Coveo {
      * - `options`: Optional. The options defined below as {@link IStreamHighlightOptions}
      */
     highlightStreamText: (content: string,
-                          termsToHighlight: IHighlightTerm,
-                          phrasesToHighlight: IHighlightPhrase,
-                          options?: IStreamHighlightOptions) => string;
+      termsToHighlight: IHighlightTerm,
+      phrasesToHighlight: IHighlightPhrase,
+      options?: IStreamHighlightOptions) => string;
     /**
      * This helper operates exactly like the {@link highlightStreamText} helper, except
      * that it should be used to highlight HTML content. The helper takes care
@@ -88,9 +88,9 @@ module Coveo {
      * - `options`: Optional. The options defined below as {@link IStreamHighlightOptions}
      */
     highlightStreamHTML: (content: string,
-                          termsToHighlight: IHighlightTerm,
-                          phrasesToHighlight: IHighlightPhrase,
-                          options?: IStreamHighlightOptions) => string;
+      termsToHighlight: IHighlightTerm,
+      phrasesToHighlight: IHighlightPhrase,
+      options?: IStreamHighlightOptions) => string;
     /**
      * Formats a numeric value using the format string.
      *
@@ -98,7 +98,7 @@ module Coveo {
      * - `format`: The format string to use. The options available are defined by
      *   the [Globalize](https://github.com/klaaspieter/jquery-global#numbers) library.
      */
-        number: (content: string, format: string) => string;
+    number: (content: string, format: string) => string;
     /**
      * Formats a date value to a date-only string using the specified options.
      *
@@ -328,7 +328,7 @@ module Coveo {
     return CurrencyUtils.currencyToString(value, options);
   });
 
-  TemplateHelpers.registerFieldHelper('timeSpan', (value: any, options: TimeSpanUtilsOptions = {isMilliseconds: false})=> {
+  TemplateHelpers.registerFieldHelper('timeSpan', (value: any, options: TimeSpanUtilsOptions = { isMilliseconds: false }) => {
     return new TimeSpan(value, options.isMilliseconds).getHHMMSS();
   });
 
@@ -396,30 +396,30 @@ module Coveo {
 
   TemplateHelpers.registerTemplateHelper('attrEncode', (value: string) => {
     return ('' + value)/* Forces the conversion to string. */
-        .replace(/&/g, '&amp;')/* This MUST be the 1st replacement. */
-        .replace(/'/g, '&apos;')/* The 4 other predefined entities, required. */
-        .replace(/"/g, '&quot;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
+      .replace(/&/g, '&amp;')/* This MUST be the 1st replacement. */
+      .replace(/'/g, '&apos;')/* The 4 other predefined entities, required. */
+      .replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
   });
 
   TemplateHelpers.registerTemplateHelper('templateFields', (result: IQueryResult = resolveQueryResultFromCallStack()) => {
-        var rows: string[] = [];
-        if (result.fields != null) {
-          _.forEach(result.fields, (tableField: any)=> {
-            var tr = $(document.createElement('tr'));
-            _.forEach(tableField, (value: any, key: string)=> {
-              if (_.isObject(value)) {
-                tr.attr(ComponentOptions.attrNameFromName(key), JSON.stringify(value));
-              } else {
-                tr.attr(ComponentOptions.attrNameFromName(key), value);
-              }
-            });
-            return rows.push(tr.get(0).outerHTML);
-          });
-        }
-        return rows.join('');
-      }
+    var rows: string[] = [];
+    if (result.fields != null) {
+      _.forEach(result.fields, (tableField: any) => {
+        var tr = $(document.createElement('tr'));
+        _.forEach(tableField, (value: any, key: string) => {
+          if (_.isObject(value)) {
+            tr.attr(ComponentOptions.attrNameFromName(key), JSON.stringify(value));
+          } else {
+            tr.attr(ComponentOptions.attrNameFromName(key), value);
+          }
+        });
+        return rows.push(tr.get(0).outerHTML);
+      });
+    }
+    return rows.join('');
+  }
   );
 
   TemplateHelpers.registerTemplateHelper('loadTemplates', (templatesToLoad: { [id: string]: any }, once = true) => {
@@ -450,7 +450,7 @@ module Coveo {
 
   var byteMeasure = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB'];
 
-  TemplateHelpers.registerFieldHelper('size', (value: any, options?: {base?:number; presision?:number;}) => {
+  TemplateHelpers.registerFieldHelper('size', (value: any, options?: { base?: number; presision?: number; }) => {
     var size = Number(value);
     var presision = (options != null && options.presision != null ? options.presision : 2);
     var base = (options != null && options.base != null ? options.base : 0);
