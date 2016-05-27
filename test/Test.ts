@@ -80,6 +80,7 @@
 /// <reference path="ui/AnalyticsSuggestionsTest.ts" />
 /// <reference path="ui/FieldSuggestionsTest.ts" />
 /// <reference path="ui/RecommendationQueryTest.ts" />
+/// <reference path="ui/ResultsPreferencesTest.ts" />
 
 
 Coveo.Logger.disable();

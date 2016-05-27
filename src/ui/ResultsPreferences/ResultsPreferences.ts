@@ -13,9 +13,6 @@ import {Assert} from '../../misc/Assert';
 import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom';
 
-
-
-
 export interface IResultsPreferencesOptions {
   enableOpenInOutlook?: boolean;
   enableOpenInNewWindow?: boolean;
