@@ -471,6 +471,10 @@ module Coveo {
           var promiseSuccess = ep.updateSubscription({
             id: 'foobar',
             type: 'query',
+            user: {
+              email: 'batman@wayneindustries.com',
+              manageToken: 'thejoker'
+            },
             typeConfig: {
               query: qbuilder.build()
             }
@@ -500,6 +504,10 @@ module Coveo {
           var promiseSuccess = ep.deleteSubscription({
             id: 'foobar',
             type: 'query',
+            user: {
+              email: 'batman@wayneindustries.com',
+              manageToken: 'thejoker'
+            },
             typeConfig: {
               query: qbuilder.build()
             }

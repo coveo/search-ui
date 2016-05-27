@@ -254,7 +254,7 @@ export class EndpointCaller {
           } else if (this.options.username && this.options.password) {
             xmlHttpRequest.setRequestHeader('Authorization', 'Basic ' + btoa(this.options.username + ':' + this.options.password));
           }
-          
+
           if (requestInfo.method == 'GET') {
             xmlHttpRequest.send();
           } else if (requestInfo.requestDataType.indexOf('application/json') === 0) {

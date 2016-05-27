@@ -27,7 +27,7 @@ export interface IQueryboxOptions {
 
 /**
  * A component that allows a user to enter a query inside an input.<br/>
- * The component will trigger a query when submitted (the "Enter" keypress) and log the proper analytics data.<br/>
+ * The component will trigger a query when submitted (the 'Enter' keypress) and log the proper analytics data.<br/>
  * It must be instantiated on a div (and not directly on an input element) : This is for styling purpose (ghost type ahead, for example).
  */
 export class Querybox extends Component {
@@ -221,7 +221,7 @@ export class Querybox extends Component {
 
     if (!_.isEmpty(this.lastQuery)) {
       if (!this.options.enableQuerySyntax) {
-        args.queryBuilder.expression.add("<@- " + this.lastQuery + " -@>");
+        args.queryBuilder.expression.add('<@- ' + this.lastQuery + ' -@>');
       } else {
         args.queryBuilder.expression.add(this.lastQuery);
       }
@@ -241,7 +241,7 @@ export class Querybox extends Component {
 
   private triggerNewQuery(searchAsYouType: boolean): void {
     clearTimeout(this.searchAsYouTypeTimeout);
-    var text = this.magicBox.getText();
+    let text = this.magicBox.getText();
     if (this.lastQuery != text && text != null) {
       this.lastQuery = text;
       this.queryController.executeQuery({
@@ -256,7 +256,7 @@ export class Querybox extends Component {
 
   private handleQueryStateChanged(args: IAttributeChangedEventArg): void {
     Assert.exists(args);
-    var q = <string>args.value;
+    let q = <string>args.value;
     if (q != this.magicBox.getText()) {
       this.magicBox.setText(q);
     }

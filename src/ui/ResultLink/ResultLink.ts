@@ -22,34 +22,34 @@ import {$$} from '../../utils/Dom'
  */
 export class ResultLink extends Component {
   static ID = 'ResultLink';
-  
+
   /**
    * The options for the ResultLink
    * @componentOptions
    */
   static options = <IResultLinkOptions>{
-    
+
     /**
      * Specifies the field that the result link uses to output its href. 
      * By default, the clickUri available on the document is used, but you can override this with this option.
      * Tip:
-     * When you do not include a field option, in your result template, you can include an href attribute on the <a class="CoveoResultLink"> element. When present, the href attribute value overrides the clickUri that is otherwise taken by default.
+     * When you do not include a field option, in your result template, you can include an href attribute on the <a class='CoveoResultLink'> element. When present, the href attribute value overrides the clickUri that is otherwise taken by default.
      * Specifying an href attribute is useful when you want to build the result link using a custom script or by concatenating the content of two or more variables.
      */
     field: ComponentOptions.buildFieldOption(),
-    
+
     /**
      * Specifies whether the result link tries to open in Microsoft Outlook. This is normally intended for ResultLink related to Microsoft Exchange emails.
      * Default value is false.
      */
     openInOutlook: ComponentOptions.buildBooleanOption({ defaultValue: false }),
-    
+
     /**
      * Specifies whether the result link should open in the Quick View rather than loading through the original URL.
      * Default value is false.
      */
     openQuickview: ComponentOptions.buildBooleanOption(),
-    
+
     /**
      * Specifies whether the result link always opens in a new window ( <a target='_blank' /> ).
      * Default is false
@@ -74,14 +74,14 @@ export class ResultLink extends Component {
     this.result = result || this.resolveResult();
 
     if (this.options.openQuickview == null) {
-      this.options.openQuickview = result.raw['connectortype'] == "ExchangeCrawler" && DeviceUtils.isMobileDevice();
+      this.options.openQuickview = result.raw['connectortype'] == 'ExchangeCrawler' && DeviceUtils.isMobileDevice();
     }
 
     Assert.exists(this.componentOptionsModel);
     Assert.exists(this.result);
 
-      if (!this.quickviewShouldBeOpened()) {
-      $$(element).on("click", () => {
+    if (!this.quickviewShouldBeOpened()) {
+      $$(element).on('click', () => {
         this.logOpenDocument();
       });
     }
@@ -107,7 +107,7 @@ export class ResultLink extends Component {
   }
 
   private bindOpenQuickviewIfNotUndefined() {
-      if (this.quickviewShouldBeOpened()) {
+    if (this.quickviewShouldBeOpened()) {
       $$(this.element).on('click', (e: Event) => {
         e.preventDefault();
         $$(this.bindings.resultElement).trigger(ResultListEvents.openQuickview)
@@ -135,26 +135,26 @@ export class ResultLink extends Component {
     }
     return false;
   }
-  
+
   /**
    * Opens the result
    */
-  public openLink(){
+  public openLink() {
     window.location.href = this.getResultUri();
   }
-  
+
   /**
    * Opens the result in a new window
    */
-  public openLinkInNewWindow(){
+  public openLinkInNewWindow() {
     window.open(this.getResultUri(), '_blank');
   }
-  
+
   /**
    * Opens the result in outlook if the result has an outlook field.
    */
-  public openLinkInOutlook(){
-    if(this.hasOutlookField()){
+  public openLinkInOutlook() {
+    if (this.hasOutlookField()) {
       this.openLink();
     }
   }
@@ -176,7 +176,7 @@ export class ResultLink extends Component {
 
   private logOpenDocument = _.debounce(() => {
     this.queryController.saveLastQuery();
-    var documentURL = $$(this.element).getAttribute('href');
+    let documentURL = $$(this.element).getAttribute('href');
     if (documentURL == undefined || documentURL == '') {
       documentURL = this.result.clickUri;
     }
@@ -200,23 +200,23 @@ export class ResultLink extends Component {
   }
 
   private elementIsAnAnchor() {
-    return this.element.tagName == "A"
+    return this.element.tagName == 'A'
   }
 
   private setField() {
-    var os = Utils.exists(this.os) ? this.os : OSUtils.get();
+    let os = Utils.exists(this.os) ? this.os : OSUtils.get();
     if (os == OS_NAME.MACOSX && this.hasOutlookField()) {
-      this.options.field = "@outlookformacuri"
+      this.options.field = '@outlookformacuri'
     } else if (os == OS_NAME.WINDOWS && this.hasOutlookField()) {
-      this.options.field = "@outlookuri";
+      this.options.field = '@outlookuri';
     }
   }
 
   private hasOutlookField() {
-    var os = Utils.exists(this.os) ? this.os : OSUtils.get();
-    if (os == OS_NAME.MACOSX && this.result.raw["outlookformacuri"] != undefined) {
+    let os = Utils.exists(this.os) ? this.os : OSUtils.get();
+    if (os == OS_NAME.MACOSX && this.result.raw['outlookformacuri'] != undefined) {
       return true;
-    } else if (os == OS_NAME.WINDOWS && this.result.raw["outlookuri"] != undefined) {
+    } else if (os == OS_NAME.WINDOWS && this.result.raw['outlookuri'] != undefined) {
       return true;
     }
     return false;
@@ -224,10 +224,10 @@ export class ResultLink extends Component {
 
   private isUriThatMustBeOpenedInQuickview(): boolean {
     return this.result.clickUri.toLowerCase().indexOf('ldap://') == 0;
-    }
+  }
 
-    private quickviewShouldBeOpened() {
-      return (this.options.openQuickview || this.isUriThatMustBeOpenedInQuickview()) && QueryUtils.hasHTMLVersion(this.result);
+  private quickviewShouldBeOpened() {
+    return (this.options.openQuickview || this.isUriThatMustBeOpenedInQuickview()) && QueryUtils.hasHTMLVersion(this.result);
   }
 }
 

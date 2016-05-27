@@ -28,7 +28,7 @@ export interface ISubscription extends ISubscriptionRequest {
    * The id of the subscription
    */
   id: string;
-  
+
   /**
    * The user associated with the subscription
    */
@@ -38,13 +38,13 @@ export interface ISubscription extends ISubscriptionRequest {
 /**
  * Describe a user associated with a subscription to the Coveo Search alerts service
  */
-export interface ISubscriptionUser{
-  
+export interface ISubscriptionUser {
+
   /**
    * The email of the user
    */
   email: string;
-  
+
   /**
    * The token used to manage the alerts via email.
    */

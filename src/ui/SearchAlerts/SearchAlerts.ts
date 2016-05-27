@@ -5,7 +5,7 @@
 
 
 module Coveo {
-  export interface SearchAlertsOptions {
+  export interface ISearchAlertsOptions {
     enableManagePanel?: boolean;
     enableFollowQuery?: boolean;
     modifiedDateField?: string;
@@ -15,7 +15,7 @@ module Coveo {
 
   export class SearchAlerts extends Component {
     static ID = 'SearchAlerts';
-    static options: SearchAlertsOptions = {
+    static options: ISearchAlertsOptions = {
       enableManagePanel: ComponentOptions.buildBooleanOption({ defaultValue: true }),
       enableFollowQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
       modifiedDateField: ComponentOptions.buildStringOption(),
@@ -27,7 +27,7 @@ module Coveo {
     public message: SearchAlertMessage;
 
     constructor(public element: HTMLElement,
-      public options: SearchAlertsOptions,
+      public options: ISearchAlertsOptions,
       bindings?: IComponentBindings) {
 
       super(element, SearchAlerts.ID, bindings);
@@ -38,11 +38,11 @@ module Coveo {
         new SearchAlertMessage(element, { closeDelay: this.options.messageCloseDelay }, this.getBindings());
         this.message = new SearchAlertMessage(element, { closeDelay: this.options.messageCloseDelay }, this.getBindings());
       }
-      
+
       this.bind.onRoot(SettingsEvents.settingsPopulateMenu, (e, args: SettingsPopulateMenuArgs) => {
         if (this.options.enableManagePanel) {
           args.menuData.push({
-            text: l("SearchAlerts_Panel"),
+            text: l('SearchAlerts_Panel'),
             className: 'coveo-subscriptions-panel',
             onOpen: () => this.openPanel(),
             onClose: () => this.close()
@@ -271,7 +271,7 @@ module Coveo {
       return dom;
     }
 
-    private static buildFollowQueryRequest(query: IQuery, options: SearchAlertsOptions): ISubscriptionRequest {
+    private static buildFollowQueryRequest(query: IQuery, options: ISearchAlertsOptions): ISubscriptionRequest {
       var typeConfig: ISubscriptionQueryRequest = {
         query: query
       }
@@ -286,7 +286,7 @@ module Coveo {
       }
     }
 
-    static create(element: HTMLElement, options?: SearchAlertsOptions, root?: HTMLElement): SearchAlerts {
+    static create(element: HTMLElement, options?: ISearchAlertsOptions, root?: HTMLElement): SearchAlerts {
       Assert.exists(element);
       return new SearchAlerts(element, options, root);
     }

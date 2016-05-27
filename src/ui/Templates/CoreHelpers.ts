@@ -10,7 +10,7 @@ import {IQueryResult} from '../../rest/QueryResult'
 import {IIconOptions, Icon} from '../Icon/Icon'
 import {Utils} from '../../utils/Utils'
 import {StringUtils} from '../../utils/StringUtils'
-import {TimeSpan, TimeSpanUtilsOptions} from '../../utils/TimeSpanUtils'
+import {TimeSpan, ITimeSpanUtilsOptions} from '../../utils/TimeSpanUtils'
 import {EmailUtils} from '../../utils/EmailUtils'
 import {QueryUtils} from '../../utils/QueryUtils'
 import {DeviceUtils} from '../../utils/DeviceUtils'
@@ -71,7 +71,7 @@ export interface ICoreHelpers {
    * - `highlights`: The highlight information to use.
    * - `cssClass`: Optional. The name of the CSS class to use for highlighting.
    */
-  highlight:  (content: string, highlights?: IHighlight[], cssClass?: string) => string;
+  highlight: (content: string, highlights?: IHighlight[], cssClass?: string) => string;
   /**
    * This helper highlights the provided terms in a given string.<br/>
    * By default, the terms to highlight are the current query and the
@@ -83,9 +83,9 @@ export interface ICoreHelpers {
    * - `options`: Optional. The options defined below as {@link IStreamHighlightOptions}
    */
   highlightStreamText: (content: string,
-                        termsToHighlight: IHighlightTerm,
-                        phrasesToHighlight: IHighlightPhrase,
-                        options?: IStreamHighlightOptions) => string;
+    termsToHighlight: IHighlightTerm,
+    phrasesToHighlight: IHighlightPhrase,
+    options?: IStreamHighlightOptions) => string;
   /**
    * This helper operates exactly like the {@link highlightStreamText} helper, except
    * that it should be used to highlight HTML content. The helper takes care
@@ -97,9 +97,9 @@ export interface ICoreHelpers {
    * - `options`: Optional. The options defined below as {@link IStreamHighlightOptions}
    */
   highlightStreamHTML: (content: string,
-                        termsToHighlight: IHighlightTerm,
-                        phrasesToHighlight: IHighlightPhrase,
-                        options?: IStreamHighlightOptions) => string;
+    termsToHighlight: IHighlightTerm,
+    phrasesToHighlight: IHighlightPhrase,
+    options?: IStreamHighlightOptions) => string;
   /**
    * Formats a numeric value using the format string.
    *
@@ -107,7 +107,7 @@ export interface ICoreHelpers {
    * - `format`: The format string to use. The options available are defined by
    *   the [Globalize](https://github.com/klaaspieter/jquery-global#numbers) library.
    */
-      number: (content: string, format: string) => string;
+  number: (content: string, format: string) => string;
   /**
    * Formats a date value to a date-only string using the specified options.
    *
@@ -160,7 +160,7 @@ export interface ICoreHelpers {
    *   format will automatically be used.
    * - `me`: The string that contains the current username. If it is
    *   specified, then the email address containing the current username will
-   *   be replaced by the localized string "Me".
+   *   be replaced by the localized string 'Me'.
    * - `lengthLimit`: The number of email addresses that you want to display
    *   before an ellipse is added (e.g., 'From Joe, John and 5 others').<br/>
    *   The default value is 2.
@@ -224,16 +224,16 @@ export interface ICoreHelpers {
    * - `templateId`: the ID of the template to load.
    * - `condition`: The boolean condition to determine if this template should
    *   load for this result set. Most of the time this would be a condition of
-   *   the type if raw.somefield == "something".
+   *   the type if raw.somefield == 'something'.
    * - `contextObject`: The object that should be used by the loaded template
    *   as its contextObject.
    */
   loadTemplate: (templateId: string, condition?: boolean, contextObject?: any) => string;
 }
 
-export class CoreHelpers{
-  public constructor(){
-    
+export class CoreHelpers {
+  public constructor() {
+
   }
 }
 
@@ -343,7 +343,7 @@ TemplateHelpers.registerFieldHelper('currency', (value: any, options?: ICurrency
   return CurrencyUtils.currencyToString(value, options);
 });
 
-TemplateHelpers.registerFieldHelper('timeSpan', (value: any, options: TimeSpanUtilsOptions = {isMilliseconds: false})=> {
+TemplateHelpers.registerFieldHelper('timeSpan', (value: any, options: ITimeSpanUtilsOptions = { isMilliseconds: false }) => {
   return new TimeSpan(value, options.isMilliseconds).getHHMMSS();
 });
 
@@ -380,16 +380,16 @@ TemplateHelpers.registerFieldHelper('email', (value: any, ...args: any[]) => {
   }
 });
 
-TemplateHelpers.registerTemplateHelper("excessEmailToggle", (target: HTMLElement) => {
-  $$(target).removeClass("coveo-active");
-  if ($$(target).hasClass("coveo-emails-excess-collapsed")) {
-    _.each($$(target).siblings(".coveo-emails-excess-expanded"), (sibling)=>{
-      $$(sibling).addClass("coveo-active");
+TemplateHelpers.registerTemplateHelper('excessEmailToggle', (target: HTMLElement) => {
+  $$(target).removeClass('coveo-active');
+  if ($$(target).hasClass('coveo-emails-excess-collapsed')) {
+    _.each($$(target).siblings('.coveo-emails-excess-expanded'), (sibling) => {
+      $$(sibling).addClass('coveo-active');
     })
-  } else if ($$(target).hasClass("coveo-hide-expanded")) {
-    $$(target.parentElement).addClass("coveo-inactive");
-    _.each($$(target.parentElement).siblings(".coveo-emails-excess-collapsed"), (sibling)=>{
-      $$(sibling).addClass("coveo-active");
+  } else if ($$(target).hasClass('coveo-hide-expanded')) {
+    $$(target.parentElement).addClass('coveo-inactive');
+    _.each($$(target.parentElement).siblings('.coveo-emails-excess-collapsed'), (sibling) => {
+      $$(sibling).addClass('coveo-active');
     })
   }
   return undefined;
@@ -403,7 +403,7 @@ TemplateHelpers.registerFieldHelper('image', (src: string, options?: IImageUtils
   return ImageUtils.buildImage(src, options);
 });
 
-TemplateHelpers.registerTemplateHelper('thumbnail', (result: IQueryResult = resolveQueryResultFromCallStack(), endpoint: string = "default", options?: IImageUtilsOptions) => {
+TemplateHelpers.registerTemplateHelper('thumbnail', (result: IQueryResult = resolveQueryResultFromCallStack(), endpoint: string = 'default', options?: IImageUtilsOptions) => {
   if (QueryUtils.hasThumbnail(result)) {
     return ImageUtils.buildImageFromResult(result, SearchEndpoint.endpoints[endpoint], options);
   }
@@ -415,40 +415,40 @@ TemplateHelpers.registerTemplateHelper('fromFileTypeToIcon', (result: IQueryResu
 
 TemplateHelpers.registerTemplateHelper('attrEncode', (value: string) => {
   return ('' + value)/* Forces the conversion to string. */
-      .replace(/&/g, '&amp;')/* This MUST be the 1st replacement. */
-      .replace(/'/g, '&apos;')/* The 4 other predefined entities, required. */
-      .replace(/"/g, '&quot;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
+    .replace(/&/g, '&amp;')/* This MUST be the 1st replacement. */
+    .replace(/'/g, '&apos;')/* The 4 other predefined entities, required. */
+    .replace(/'/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
 });
 
 TemplateHelpers.registerTemplateHelper('templateFields', (result: IQueryResult = resolveQueryResultFromCallStack()) => {
-      var rows: string[] = [];
-      if (result.fields != null) {
-        _.forEach(result.fields, (tableField: any)=> {
-          var tr = $$('tr');
-          _.forEach(tableField, (value: any, key: string)=> {
-            if (_.isObject(value)) {
-              tr.setAttribute(ComponentOptions.attrNameFromName(key), JSON.stringify(value));
-            } else {
-              tr.setAttribute(ComponentOptions.attrNameFromName(key), value);
-            }
-          });
-          return rows.push(tr.el.outerHTML);
-        });
-      }
-      return rows.join('');
-    }
+  var rows: string[] = [];
+  if (result.fields != null) {
+    _.forEach(result.fields, (tableField: any) => {
+      var tr = $$('tr');
+      _.forEach(tableField, (value: any, key: string) => {
+        if (_.isObject(value)) {
+          tr.setAttribute(ComponentOptions.attrNameFromName(key), JSON.stringify(value));
+        } else {
+          tr.setAttribute(ComponentOptions.attrNameFromName(key), value);
+        }
+      });
+      return rows.push(tr.el.outerHTML);
+    });
+  }
+  return rows.join('');
+}
 );
 
 TemplateHelpers.registerTemplateHelper('loadTemplates', (templatesToLoad: { [id: string]: any }, once = true) => {
-  var ret = "";
+  var ret = '';
   var data = resolveQueryResultFromCallStack();
   var atLeastOneWasLoaded = false;
   var toLoad = templatesToLoad;
   var defaultTmpl;
   _.each(templatesToLoad, (value, key?, obj?) => {
-    if (value == "default") {
+    if (value == 'default') {
       defaultTmpl = key;
     }
   })
@@ -458,18 +458,18 @@ TemplateHelpers.registerTemplateHelper('loadTemplates', (templatesToLoad: { [id:
   _.each(toLoad, (condition, id?, obj?) => {
     if (!atLeastOneWasLoaded || !once) {
       atLeastOneWasLoaded = atLeastOneWasLoaded || condition;
-      ret += TemplateHelpers.getHelper("loadTemplate")(id, condition, data);
+      ret += TemplateHelpers.getHelper('loadTemplate')(id, condition, data);
     }
   })
   if (!atLeastOneWasLoaded && defaultTmpl != undefined) {
-    ret += TemplateHelpers.getHelper("loadTemplate")(defaultTmpl, true, data);
+    ret += TemplateHelpers.getHelper('loadTemplate')(defaultTmpl, true, data);
   }
   return ret;
 })
 
 var byteMeasure = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB'];
 
-TemplateHelpers.registerFieldHelper('size', (value: any, options?: {base?:number; presision?:number;}) => {
+TemplateHelpers.registerFieldHelper('size', (value: any, options?: { base?: number; presision?: number; }) => {
   var size = Number(value);
   var presision = (options != null && options.presision != null ? options.presision : 2);
   var base = (options != null && options.base != null ? options.base : 0);
@@ -488,7 +488,7 @@ TemplateHelpers.registerTemplateHelper('loadTemplate', (id: string, condition: b
   if (condition) {
     return TemplateCache.getTemplate(id).instantiateToString(data, false);
   }
-  return "";
+  return '';
 });
 
 TemplateHelpers.registerTemplateHelper('encodeCarriageReturn', (data: string) => {

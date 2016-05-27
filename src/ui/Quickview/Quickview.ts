@@ -1,3 +1,5 @@
+/// <reference path='../../../node_modules/modal-box/bin/ModalBox.d.ts' />
+
 import {Component} from '../Base/Component'
 import {ComponentOptions, Type} from '../Base/ComponentOptions'
 import {IResultsComponentBindings} from '../Base/ResultsComponentBindings'
@@ -9,7 +11,6 @@ import {$$, Dom} from '../../utils/Dom'
 import {DefaultQuickviewTemplate} from './DefaultQuickviewTemplate'
 import {ResultListEvents} from '../../events/ResultListEvents'
 import {StringUtils} from '../../utils/StringUtils'
-import {ModalBox, openModalBox} from '../../utils/ModalBox'
 import {QuickviewDocument} from './QuickviewDocument'
 import {QueryStateModel} from '../../models/QueryStateModel'
 import {Model} from '../../models/Model'
@@ -52,7 +53,7 @@ export class Quickview extends Component {
       idAttr: 'data-template-id'
     }),
     loadingAnimation: ComponentOptions.buildOption<HTMLElement>(Type.NONE, (element: HTMLElement) => {
-      var loadingAnimationSelector = element.getAttribute("data-loading-animation-selector");
+      var loadingAnimationSelector = element.getAttribute('data-loading-animation-selector');
       if (loadingAnimationSelector != null) {
         var loadingAnimation = $$(document.documentElement).find(loadingAnimationSelector);
         if (loadingAnimation != null) {
@@ -73,7 +74,7 @@ export class Quickview extends Component {
   };
 
   private link: Dom;
-  private modalbox: ModalBox;
+  private modalbox: Coveo.ModalBox.ModalBox;
   private bindedHandleEscapeEvent = this.handleEscapeEvent.bind(this);
 
   constructor(public element: HTMLElement, public options?: QuickviewOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {
@@ -109,7 +110,7 @@ export class Quickview extends Component {
 
   public open() {
     if (this.modalbox == null) {
-      //To prevent the keyboard from opening on mobile if the search bar has focus
+      // To prevent the keyboard from opening on mobile if the search bar has focus
       $$(<HTMLElement>document.activeElement).trigger('blur');
 
       var openerObject = this.prepareOpenQuickviewObject();
@@ -129,20 +130,20 @@ export class Quickview extends Component {
     if (this.modalbox != null) {
       this.modalbox.close();
       this.modalbox = null;
-      $$(document.body).off("keyup", this.bindedHandleEscapeEvent);
+      $$(document.body).off('keyup', this.bindedHandleEscapeEvent);
     }
   }
 
   private bindClick(result: IQueryResult) {
     if (typeof result.hasHtmlVersion == 'undefined' || result.hasHtmlVersion || this.options.alwaysShow) {
-      $$(this.element).on('click', ()=>this.open());
+      $$(this.element).on('click', () => this.open());
     } else {
-      this.element.style.display = "none";
+      this.element.style.display = 'none';
     }
   }
 
   private bindQuickviewEvents(openerObject: QuickviewOpenerObject) {
-    
+
     let closeButton = $$(this.modalbox.wrapper).find('.coveo-quickview-close-button');
     $$(closeButton).on('click', () => {
       this.closeQuickview();
@@ -152,7 +153,7 @@ export class Quickview extends Component {
     $$(this.modalbox.overlay).on('click', () => {
       this.closeQuickview();
     })
-    
+
     $$(this.modalbox.content).on(QuickviewEvents.quickviewLoaded, () => {
       $$(openerObject.loadingAnimation).remove();
       this.bindIFrameEscape();
@@ -162,11 +163,11 @@ export class Quickview extends Component {
   }
 
   private animateAndOpen() {
-    var animationDuration = this.modalbox.wrapper.css('animation-duration');
+    var animationDuration = this.modalbox.wrapper.style.animationDuration;
     if (animationDuration) {
       var duration = /^(.+)(ms|s)$/.exec(animationDuration);
       var durationMs = Number(duration[1]) * (duration[2] == 's' ? 1000 : 1);
-      //open the QuickviewDocument
+      // open the QuickviewDocument
       setTimeout(() => {
         if (this.modalbox != null) {
           let quickviewDocument = $$(this.modalbox.modalBox).find('.' + Component.computeCssClassName(QuickviewDocument));
@@ -181,10 +182,13 @@ export class Quickview extends Component {
 
   private createModalBox(openerObject: QuickviewOpenerObject) {
 
-    var computedModalBoxContent = $$("div")
+    var computedModalBoxContent = $$('div')
     computedModalBoxContent.append(openerObject.content.el);
-    this.modalbox = openModalBox(computedModalBoxContent, {
-      title: DomUtils.getQuickviewHeader(this.result, { showDate: this.options.showDate, title: this.options.title }, this.bindings),
+    this.modalbox = Coveo.ModalBox.open(computedModalBoxContent.el, {
+      title: DomUtils.getQuickviewHeader(this.result, {
+        showDate: this.options.showDate,
+        title: this.options.title
+      }, this.bindings).el.outerHTML,
       className: 'coveo-quick-view',
       validation: () => true,
       body: this.element.ownerDocument.body
@@ -209,21 +213,21 @@ export class Quickview extends Component {
       result: this.result
     };
     Initialization.automaticallyCreateComponentsInside(content.el, initParameters);
-    if (content.find("." + Component.computeCssClassName(QuickviewDocument)) != undefined && this.options.enableLoadingAnimation) {
+    if (content.find('.' + Component.computeCssClassName(QuickviewDocument)) != undefined && this.options.enableLoadingAnimation) {
       content.prepend(loadingAnimation);
     }
     return content;
   }
 
   private bindEscape() {
-    $$(document.body).on("keyup", this.bindedHandleEscapeEvent);
+    $$(document.body).on('keyup', this.bindedHandleEscapeEvent);
   }
 
   private bindIFrameEscape() {
-    let quickviewDocument = $$(this.modalbox.content).find("." + Component.computeCssClassName(QuickviewDocument))
-    quickviewDocument = $$(quickviewDocument).find("iframe");
+    let quickviewDocument = $$(this.modalbox.content).find('.' + Component.computeCssClassName(QuickviewDocument))
+    quickviewDocument = $$(quickviewDocument).find('iframe');
     let body = (<HTMLIFrameElement>quickviewDocument).contentWindow.document.body
-    $$(body).on("keyup", this.bindedHandleEscapeEvent);
+    $$(body).on('keyup', this.bindedHandleEscapeEvent);
   }
 
   private closeQuickview() {
@@ -238,7 +242,7 @@ export class Quickview extends Component {
     wrapper.el.style.maxWidth = this.options.size;
     wrapper.el.style.maxHeight = this.options.size;
   }
-  
+
   private handleEscapeEvent(e: KeyboardEvent) {
     if (e.keyCode == KEYBOARD.ESCAPE) {
       this.closeQuickview();

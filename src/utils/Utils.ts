@@ -324,15 +324,15 @@ export class Utils {
   static parseXml(xml: string): XMLDocument {
     var parseXml;
     if (typeof DOMParser != "undefined") {
-      return ( new DOMParser() ).parseFromString(xml, "text/xml");
+      return (new DOMParser()).parseFromString(xml, "text/xml");
     } else if (typeof ActiveXObject != "undefined" && new ActiveXObject("Microsoft.XMLDOM")) {
-        var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-        xmlDoc.async = "false";
-        xmlDoc.loadXML(xml);
-        return xmlDoc;
+      var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+      xmlDoc.async = "false";
+      xmlDoc.loadXML(xml);
+      return xmlDoc;
     } else {
-        throw new Error("No XML parser found");
+      throw new Error("No XML parser found");
     }
   }
-  
+
 }

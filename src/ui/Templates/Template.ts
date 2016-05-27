@@ -2,11 +2,11 @@ import {Logger} from '../../misc/Logger';
 import {StringUtils} from '../../utils/StringUtils';
 import {Initialization} from '../Base/Initialization';
 import {htmlToDom, $$} from '../../utils/Dom';
-import {BaseComponent} from "../Base/BaseComponent";
+import {BaseComponent} from '../Base/BaseComponent';
 
 export class Template {
   static getFieldFromString(text: string) {
-    var fields: string[] = _.map(StringUtils.match(text, /(?:(?!\b@)@([a-z0-9]+(?:\.[a-z0-9]+)*\b))|\braw.([a-z0-9]+)|\braw\['([^']+)'\]|\braw\["([^"]+)"\]/gi), (field) => {
+    var fields: string[] = _.map(StringUtils.match(text, /(?:(?!\b@)@([a-z0-9]+(?:\.[a-z0-9]+)*\b))|\braw.([a-z0-9]+)|\braw\['([^']+)'\]|\braw\['([^']+)'\]/gi), (field) => {
       return field[1] || field[2] || field[3] || field[4] || null;
     });
 

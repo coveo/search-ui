@@ -23,12 +23,12 @@ export interface IResultFoldingOptions {
 
 /**
  * This component is used to render folded result sets. It is intended to be used inside a
- <a href="https://developers.coveo.com/display/public/JsSearchV1/Result+Templates">Result Template</a>
-  when there is an active {@link Folding} component on the page. This component takes care of rendering
-  the parent result and its child results in a coherent manner.
+ * <a href='https://developers.coveo.com/display/public/JsSearchV1/Result+Templates'>Result Template</a>
+ * when there is an active {@link Folding} component on the page. This component takes care of rendering
+ * the parent result and its child results in a coherent manner.
   */
 export class ResultFolding extends Component {
-  static ID = "ResultFolding";
+  static ID = 'ResultFolding';
 
   /**
    * The options for the component
@@ -40,7 +40,7 @@ export class ResultFolding extends Component {
      * By default, it will use the template specified in a child element with a `<script>` tag.<br/>
      * This can be specified directly as an attribute to the element, for example :
      * ```html
-     * <div class="CoveoResultFolding" data-result-template-id="Foo"></div>
+     * <div class='CoveoResultFolding' data-result-template-id='Foo'></div>
      * ```
      * which will use a previously registered template ID (see {@link TemplateCache})
      */
@@ -59,17 +59,17 @@ export class ResultFolding extends Component {
      * Specifies the caption to show on the link to expand / show child results
      * The default value is the localized version of <code>ShowMore</code>.
      */
-    moreCaption: ComponentOptions.buildLocalizedStringOption({ postProcessing: (value) => value || l("ShowMore") }),
+    moreCaption: ComponentOptions.buildLocalizedStringOption({ postProcessing: (value) => value || l('ShowMore') }),
     /**
      * Specifies the caption to show on the link to shrink the loaded conversation back to only the top result.
      * The default value is the localized version of <code>ShowLess</code>.
      */
-    lessCaption: ComponentOptions.buildLocalizedStringOption({ postProcessing: (value) => value || l("ShowLess") }),
+    lessCaption: ComponentOptions.buildLocalizedStringOption({ postProcessing: (value) => value || l('ShowLess') }),
     /**
      * Specifies the caption to show when there is only one result in a conversation.
      * The default value is the localized version of <code>DisplayingTheOnlyMessage</code>.
      */
-    oneResultCaption: ComponentOptions.buildLocalizedStringOption({ postProcessing: (value) => value || l("DisplayingTheOnlyMessage") })
+    oneResultCaption: ComponentOptions.buildLocalizedStringOption({ postProcessing: (value) => value || l('DisplayingTheOnlyMessage') })
   };
 
   private normalCaption: HTMLElement;
@@ -139,7 +139,7 @@ export class ResultFolding extends Component {
   }
 
   private buildHeader() {
-    var header = $$('div', { className: 'coveo-folding-header' }).el;
+    let header = $$('div', { className: 'coveo-folding-header' }).el;
     this.element.appendChild(header);
     if (this.options.normalCaption != undefined && this.options.expandedCaption != undefined) {
       this.normalCaption = $$('div', { className: 'coveo-folding-normal-caption' }, this.options.normalCaption).el;
@@ -158,7 +158,7 @@ export class ResultFolding extends Component {
   }
 
   private buildFooter() {
-    var footer = $$('div', { className: 'coveo-folding-footer' }).el;
+    let footer = $$('div', { className: 'coveo-folding-footer' }).el;
     this.element.parentElement.appendChild(footer);
 
     if (this.result.moreResults) {
@@ -170,10 +170,10 @@ export class ResultFolding extends Component {
       $$(this.showLess).on('click', () => this.showLessResults());
       footer.appendChild(this.showLess);
 
-      var footerIconShowMore = $$('div', { className: 'coveo-more' }, $$('span', { className: 'coveo-folding-footer-icon' }).el).el;
-      var footerIconShowLess = $$('div', { className: 'coveo-less' }, $$('span', { className: 'coveo-folding-footer-icon' }).el).el;
-      var showMoreLink = $$('a', { className: 'coveo-folding-show-more' }, this.options.moreCaption).el;
-      var showLessLink = $$('a', { className: 'coveo-folding-show-less' }, this.options.lessCaption).el;
+      let footerIconShowMore = $$('div', { className: 'coveo-more' }, $$('span', { className: 'coveo-folding-footer-icon' }).el).el;
+      let footerIconShowLess = $$('div', { className: 'coveo-less' }, $$('span', { className: 'coveo-folding-footer-icon' }).el).el;
+      let showMoreLink = $$('a', { className: 'coveo-folding-show-more' }, this.options.moreCaption).el;
+      let showLessLink = $$('a', { className: 'coveo-folding-show-less' }, this.options.lessCaption).el;
       this.showMore.appendChild(showMoreLink);
       this.showLess.appendChild(showLessLink);
       this.showMore.appendChild(footerIconShowMore);
@@ -221,7 +221,7 @@ export class ResultFolding extends Component {
   private renderChildResult(childResult: IQueryResult) {
     QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), childResult);
 
-    var oneChild = this.options.resultTemplate.instantiateToElement(childResult)
+    let oneChild = this.options.resultTemplate.instantiateToElement(childResult)
     $$(oneChild).addClass('coveo-result-folding-child-result');
     this.results.appendChild(oneChild);
 
@@ -233,8 +233,8 @@ export class ResultFolding extends Component {
   private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult) {
     Assert.exists(element);
 
-    var initOptions = this.searchInterface.options;
-    var initParameters: IInitializationParameters = { options: initOptions, bindings: this.getBindings(), result: result }
+    let initOptions = this.searchInterface.options;
+    let initParameters: IInitializationParameters = { options: initOptions, bindings: this.getBindings(), result: result }
     Initialization.automaticallyCreateComponentsInside(element, initParameters);
   }
 

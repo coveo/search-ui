@@ -43,7 +43,6 @@ export {EmailUtils} from './utils/EmailUtils';
 export {FeatureDetectionUtils} from './utils/FeatureDetectionUtils';
 export {HashUtils} from './utils/HashUtils';
 export {HighlightUtils, StringAndHoles} from './utils/HighlightUtils';
-export {ModalBox} from './utils/ModalBox';
 export {HTMLUtils} from './utils/HtmlUtils';
 export {KEYBOARD, KeyboardUtils} from './utils/KeyboardUtils';
 export {LocalStorageUtils} from './utils/LocalStorageUtils';

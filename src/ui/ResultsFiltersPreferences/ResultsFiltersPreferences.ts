@@ -18,7 +18,7 @@ import {l} from '../../strings/Strings';
 import {Utils} from '../../utils/Utils';
 import {$$} from '../../utils/Dom';
 
-export interface ResultFilterPreference {
+export interface IResultFilterPreference {
   selected?: boolean;
   custom?: boolean;
   tab?: string[];
@@ -42,7 +42,7 @@ export interface IResultsFiltersPreferencesOptions {
  * It is usually located, in the DOM, inside the {@link PreferencesPanel} component.
  */
 export class ResultsFiltersPreferences extends Component {
-  static ID = "ResultsFiltersPreferences";
+  static ID = 'ResultsFiltersPreferences';
 
   /**
    * The options for the component
@@ -74,10 +74,10 @@ export class ResultsFiltersPreferences extends Component {
      *     filters : {
      *       'Only google drive stuff' : {
      *         tab: ['Tab1', 'Tab2'],
-     *         expression : "@connectortype == 'GoogleDriveCrawler'"
+     *         expression : '@connectortype == 'GoogleDriveCrawler''
      *       },
      *       'Another filter' : {
-     *         expression : 'another expression"'
+     *         expression : 'another expression''
      *       }
      *     }
      *   }
@@ -88,8 +88,8 @@ export class ResultsFiltersPreferences extends Component {
     filters: <any>ComponentOptions.buildJsonOption()
   };
 
-  public preferences: { [caption: string]: ResultFilterPreference };
-  private preferencePanelLocalStorage: LocalStorageUtils<{ [caption: string]: ResultFilterPreference }>;
+  public preferences: { [caption: string]: IResultFilterPreference };
+  private preferencePanelLocalStorage: LocalStorageUtils<{ [caption: string]: IResultFilterPreference }>;
   private preferencePanel: HTMLElement;
   private preferenceContainer: HTMLElement;
   private preferencePanelCheckboxInput: PreferencesPanelCheckboxInput;
@@ -106,15 +106,15 @@ export class ResultsFiltersPreferences extends Component {
     this.options = ComponentOptions.initComponentOptions(element, ResultsFiltersPreferences, options);
 
     this.preferencePanel = $$(this.element).closest(Component.computeCssClassName(PreferencesPanel));
-    this.preferencePanelLocalStorage = new LocalStorageUtils<{ [caption: string]: ResultFilterPreference }>(ResultsFiltersPreferences.ID);
+    this.preferencePanelLocalStorage = new LocalStorageUtils<{ [caption: string]: IResultFilterPreference }>(ResultsFiltersPreferences.ID);
     this.mergeLocalPreferencesWithStaticPreferences();
 
     this.bindPreferencePanelEvent();
     this.bindBreadcrumbEvent();
     this.bindQueryEvent();
 
-    //We need to wait after all components are initialized before building the dom, because this component interacts with Tab
-    //And we don't know if Tab(s) are initialized before or after this component.
+    // We need to wait after all components are initialized before building the dom, because this component interacts with Tab
+    // And we don't know if Tab(s) are initialized before or after this component.
     this.bind.oneRootElement(InitializationEvents.afterComponentsInitialization, () => this.createDom());
 
     this.bind.oneQueryState(ModelEvents.CHANGE_ONE, QueryStateAttributes.T, () => this.fromPreferencesToCheckboxInput());
@@ -305,7 +305,7 @@ export class ResultsFiltersPreferences extends Component {
   }
 
   private getPreferencesBoxInputToBuild(): PreferencePanelInputToBuild[] {
-    return _.map(this.preferences, (filter: ResultFilterPreference) => {
+    return _.map(this.preferences, (filter: IResultFilterPreference) => {
       return {
         label: filter.caption,
         tab: filter.tab,
@@ -376,7 +376,7 @@ export class ResultsFiltersPreferences extends Component {
     })
   }
 
-  private buildBreadcrumb(filter: ResultFilterPreference): HTMLElement {
+  private buildBreadcrumb(filter: IResultFilterPreference): HTMLElement {
     var elem = $$('span', { className: 'coveo-value' });
 
     var caption = $$('span', { className: 'coveo-caption' })
@@ -396,7 +396,7 @@ export class ResultsFiltersPreferences extends Component {
     return elem.el;
   }
 
-  private confirmDelete(filter: ResultFilterPreference, filterElement: HTMLElement) {
+  private confirmDelete(filter: IResultFilterPreference, filterElement: HTMLElement) {
     if (confirm(l('AreYouSureDeleteFilter', filter.caption, filter.expression))) {
       var isSelected = filter.selected
       this.deleteFilterPreference(filter, filterElement);
@@ -407,7 +407,7 @@ export class ResultsFiltersPreferences extends Component {
     }
   }
 
-  private editElement(filter: ResultFilterPreference, filterElement: HTMLElement) {
+  private editElement(filter: IResultFilterPreference, filterElement: HTMLElement) {
     var oldCaption = this.preferences[filter.caption].caption;
     var oldTab = this.preferences[filter.caption].tab;
     var oldExpression = this.preferences[filter.caption].expression;
@@ -422,7 +422,7 @@ export class ResultsFiltersPreferences extends Component {
     this.advancedFiltersTabSelect.setValues(toPopulate.tab);
   }
 
-  private deleteFilterPreference(filter: ResultFilterPreference, filterElement: HTMLElement) {
+  private deleteFilterPreference(filter: IResultFilterPreference, filterElement: HTMLElement) {
     this.preferencePanelLocalStorage.remove(filter.caption);
     delete this.preferences[filter.caption];
     $$($$(filterElement).closest('.coveo-choice-container')).detach();
@@ -462,20 +462,20 @@ export class ResultsFiltersPreferences extends Component {
   }
 
   private fromPreferencesToCheckboxInput() {
-    _.each(this.getActiveFilters(), (filter: ResultFilterPreference) => {
+    _.each(this.getActiveFilters(), (filter: IResultFilterPreference) => {
       this.preferencePanelCheckboxInput.select(filter.caption);
     })
-    _.each(this.getInactiveFilters(), (filter: ResultFilterPreference) => {
+    _.each(this.getInactiveFilters(), (filter: IResultFilterPreference) => {
       this.preferencePanelCheckboxInput.unselect(filter.caption);
     })
-    _.each(this.getDormantFilters(), (filter: ResultFilterPreference) => {
+    _.each(this.getDormantFilters(), (filter: IResultFilterPreference) => {
       this.preferencePanelCheckboxInput.select(filter.caption);
     })
   }
 
   private fromCheckboxInputToPreferences() {
     var selecteds = this.preferencePanelCheckboxInput.getSelecteds();
-    _.each(this.preferences, (filter: ResultFilterPreference) => {
+    _.each(this.preferences, (filter: IResultFilterPreference) => {
       if (_.contains(selecteds, filter.caption)) {
         filter.selected = true;
       } else {
@@ -486,21 +486,21 @@ export class ResultsFiltersPreferences extends Component {
 
   private getDormantFilters() {
     var activeTab = this.getActiveTab();
-    return _.filter(this.preferences, (filter: ResultFilterPreference) => {
+    return _.filter(this.preferences, (filter: IResultFilterPreference) => {
       return filter.selected && !this.filterIsInActiveTab(filter, activeTab);
     })
   }
 
   private getActiveFilters() {
     var activeTab = this.getActiveTab();
-    return _.filter(this.preferences, (filter: ResultFilterPreference) => {
+    return _.filter(this.preferences, (filter: IResultFilterPreference) => {
       return filter.selected && this.filterIsInActiveTab(filter, activeTab);
     })
   }
 
   private getInactiveFilters() {
     var activeTab = this.getActiveTab();
-    return _.filter(this.preferences, (filter: ResultFilterPreference) => {
+    return _.filter(this.preferences, (filter: IResultFilterPreference) => {
       return !filter.selected || !this.filterIsInActiveTab(filter, activeTab);
     })
   }
@@ -509,7 +509,7 @@ export class ResultsFiltersPreferences extends Component {
     return this.queryStateModel.get(QueryStateModel.attributesEnum.t);
   }
 
-  private filterIsInActiveTab(filter: ResultFilterPreference, tab: string) {
+  private filterIsInActiveTab(filter: IResultFilterPreference, tab: string) {
     filter.tab = _.compact(filter.tab);
     return _.contains(filter.tab, tab) || Utils.isEmptyArray(filter.tab);
   }
@@ -519,7 +519,7 @@ export class ResultsFiltersPreferences extends Component {
   }
 
   private fromResultsFilterOptionToResultsPreferenceInterface() {
-    var ret: { [key: string]: ResultFilterPreference } = {};
+    var ret: { [key: string]: IResultFilterPreference } = {};
     _.each(<any>this.options.filters, (filter: { expression: string; tab?: string[]; }, caption: string) => {
       ret[caption] = {
         expression: filter.expression,
@@ -535,16 +535,16 @@ export class ResultsFiltersPreferences extends Component {
   private mergeLocalPreferencesWithStaticPreferences() {
     var staticPreferences = this.fromResultsFilterOptionToResultsPreferenceInterface();
     var localPreferences = this.preferencePanelLocalStorage.load();
-    var localPreferencesWithoutRemoved = _.filter<ResultFilterPreference>(localPreferences, (preference) => {
+    var localPreferencesWithoutRemoved = _.filter<IResultFilterPreference>(localPreferences, (preference) => {
       var isCustom = preference.custom;
-      var existsInStatic = _.find<ResultFilterPreference>(staticPreferences, (staticPreference) => {
+      var existsInStatic = _.find<IResultFilterPreference>(staticPreferences, (staticPreference) => {
         return staticPreference.caption == preference.caption
       })
       return isCustom || existsInStatic != undefined;
     })
 
     var localToMerge = {};
-    _.each(localPreferencesWithoutRemoved, (filter: ResultFilterPreference) => {
+    _.each(localPreferencesWithoutRemoved, (filter: IResultFilterPreference) => {
       localToMerge[filter.caption] = {
         expression: filter.expression,
         tab: filter.tab,
@@ -553,10 +553,10 @@ export class ResultsFiltersPreferences extends Component {
         caption: filter.caption
       }
     });
-    this.preferences = <{ [caption: string]: ResultFilterPreference; }>Utils.extendDeep(staticPreferences, localToMerge);
+    this.preferences = <{ [caption: string]: IResultFilterPreference; }>Utils.extendDeep(staticPreferences, localToMerge);
   }
 
-  private fromFilterToAnalyticsEvent(filter: ResultFilterPreference, type: string) {
+  private fromFilterToAnalyticsEvent(filter: IResultFilterPreference, type: string) {
     this.usageAnalytics.logSearchEvent<IAnalyticsCustomFiltersChangeMeta>(AnalyticsActionCauseList.customfiltersChange, {
       customFilterName: filter.caption,
       customFilterExpression: filter.expression,

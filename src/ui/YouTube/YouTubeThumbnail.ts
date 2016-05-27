@@ -1,14 +1,15 @@
-import {Component} from '../Base/Component'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {IResultsComponentBindings} from '../Base/ResultsComponentBindings'
-import {IQueryResult} from '../../rest/QueryResult'
-import {ModalBox, openModalBox} from '../../utils/ModalBox'
-import {ResultLink} from '../ResultLink/ResultLink'
-import {Initialization, IInitializationParameters} from '../Base/Initialization';
-import {DomUtils} from '../../utils/DomUtils'
-import {$$, Dom} from '../../utils/Dom'
+/// <reference path="../../../node_modules/modal-box/bin/ModalBox.d.ts" />
 
-export interface YouTubeThumbnailOptions {
+import {Component} from '../Base/Component';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
+import {IQueryResult} from '../../rest/QueryResult';
+import {ResultLink} from '../ResultLink/ResultLink';
+import {Initialization, IInitializationParameters} from '../Base/Initialization';
+import {DomUtils} from '../../utils/DomUtils';
+import {$$, Dom} from '../../utils/Dom';
+
+export interface IYouTubeThumbnailOptions {
   width: string;
   height: string;
   embed: boolean;
@@ -17,7 +18,7 @@ export interface YouTubeThumbnailOptions {
 export class YouTubeThumbnail extends Component {
   static ID = 'YouTubeThumbnail';
 
-  static options: YouTubeThumbnailOptions = {
+  static options: IYouTubeThumbnailOptions = {
     width: ComponentOptions.buildStringOption({ defaultValue: '200px' }),
     height: ComponentOptions.buildStringOption({ defaultValue: '112px' }),
     embed: ComponentOptions.buildBooleanOption({ defaultValue: true })
@@ -27,15 +28,15 @@ export class YouTubeThumbnail extends Component {
     'ytthumbnailurl'
   ]
 
-  private modalbox: ModalBox;
+  private modalbox: Coveo.ModalBox.ModalBox;
 
-  constructor(public element: HTMLElement, public options?: YouTubeThumbnailOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {
+  constructor(public element: HTMLElement, public options?: IYouTubeThumbnailOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {
     super(element, YouTubeThumbnail.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, YouTubeThumbnail, options);
     let resultLink = $$('a');
     resultLink.addClass(Component.computeCssClassName(ResultLink));
 
-    var thumbnailDiv = $$('div');
+    let thumbnailDiv = $$('div');
     thumbnailDiv.addClass('coveo-youtube-thumbnail-container')
     resultLink.append(thumbnailDiv.el);
 
@@ -59,11 +60,11 @@ export class YouTubeThumbnail extends Component {
       })
     }
 
-    var initOptions = this.searchInterface.options.originalOptionsObject;
-    var resultComponentBindings: IResultsComponentBindings = _.extend({}, this.getBindings(), {
+    let initOptions = this.searchInterface.options.originalOptionsObject;
+    let resultComponentBindings: IResultsComponentBindings = _.extend({}, this.getBindings(), {
       resultElement: element
     })
-    var initParameters: IInitializationParameters = {
+    let initParameters: IInitializationParameters = {
       options: _.extend({}, { initOptions: { ResultLink: options } }, initOptions),
       bindings: resultComponentBindings,
       result: result
@@ -74,7 +75,7 @@ export class YouTubeThumbnail extends Component {
 
   private handleOnClick() {
     // need to put iframe inside div : iframe with position absolute and left:0, right : 0 , bottom: 0 is not standard/supported
-    var iframe = $$('iframe'), div = $$('div');
+    let iframe = $$('iframe'), div = $$('div');
     iframe.setAttribute('src', 'https://www.youtube.com/embed/' + this.extractVideoId() + '?autoplay=1');
     iframe.setAttribute('allowfullscreen', 'allowfullscreen');
     iframe.setAttribute('webkitallowfullscreen', 'webkitallowfullscreen');
@@ -83,9 +84,9 @@ export class YouTubeThumbnail extends Component {
 
     div.append(iframe.el);
 
-    this.modalbox = openModalBox(div, {
+    this.modalbox = Coveo.ModalBox.open(div.el, {
       overlayClose: true,
-      title: DomUtils.getQuickviewHeader(this.result, { showDate: true, title: this.result.title }, this.bindings),
+      title: DomUtils.getQuickviewHeader(this.result, { showDate: true, title: this.result.title }, this.bindings).el.outerHTML,
       className: 'coveo-quick-view coveo-youtube-player',
       validation: () => true,
       body: this.element.ownerDocument.body

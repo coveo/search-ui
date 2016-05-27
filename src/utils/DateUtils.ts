@@ -56,7 +56,7 @@ export class DateUtils {
     return newDate;
   }
 
-  static dateToString(d: Date, options?: DateToStringOptions): string {
+  static dateToString(d: Date, options?: IDateToStringOptions): string {
     if (Utils.isNullOrUndefined(d)) {
       return '';
     }

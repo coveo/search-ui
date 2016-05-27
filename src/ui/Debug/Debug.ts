@@ -1,3 +1,5 @@
+/// <reference path="../../../node_modules/modal-box/bin/ModalBox.d.ts" />
+
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {LocalStorageUtils} from '../../utils/LocalStorageUtils';
 import {IFieldDescription} from '../../rest/FieldDescription';
@@ -17,7 +19,7 @@ import {QueryController} from '../../controllers/QueryController';
 import {BaseComponent} from '../Base/BaseComponent';
 
 
-declare var ModalBox, Globalize;
+declare var Globalize;
 
 export interface IDebugOptions {
   enableDebug?: boolean;
@@ -61,7 +63,7 @@ export class Debug extends RootComponent {
   private showDebugPanel(builder: (results?: IQueryResults) => { body: HTMLElement; json: any; }) {
     var build = builder();
 
-    var modalbox = ModalBox.open(build.body, {
+    var modalbox = Coveo.ModalBox.open(build.body, {
       title: '',
       className: 'coveo-debug',
       titleClose: true,

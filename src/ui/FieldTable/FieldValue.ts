@@ -275,16 +275,16 @@ export class FieldValue extends Component {
       $$(element).addClass('coveo-clickable');
     }
   }
-  
-  private static initSimpleOptions(){
+
+  private static initSimpleOptions() {
     let options = {};
-    for (let key in FieldValue.options){
-      if(key != "helperOptions"){
+    for (let key in FieldValue.options) {
+      if (key != "helperOptions") {
         options[key] = FieldValue.options[key];
       }
     }
   }
-  
+
 }
 
 Initialization.registerAutoCreateComponent(FieldValue);

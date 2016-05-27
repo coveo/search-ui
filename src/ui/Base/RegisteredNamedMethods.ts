@@ -10,7 +10,7 @@ import {IAnalyticsActionCause, IAnalyticsDocumentViewMeta} from '../Analytics/An
 import {IStringMap} from '../../rest/GenericParam';
 import {BaseComponent} from '../Base/BaseComponent';
 import {Component} from '../Base/Component';
-import {StandaloneSearchInterfaceOptions} from '../SearchInterface/SearchInterface';
+import {IStandaloneSearchInterfaceOptions} from '../SearchInterface/SearchInterface';
 import {IQueryResults} from '../../rest/QueryResults';
 import _ = require('underscore');
 
@@ -39,7 +39,7 @@ Initialization.registerNamedMethod('init', (element: HTMLElement, options: any =
  */
 export function initSearchbox(element: HTMLElement, searchPageUri: string, options: any = {}) {
   Assert.isNonEmptyString(searchPageUri);
-  var searchInterfaceOptions = <StandaloneSearchInterfaceOptions>{};
+  var searchInterfaceOptions = <IStandaloneSearchInterfaceOptions>{};
   searchInterfaceOptions.searchPageUri = searchPageUri;
   searchInterfaceOptions.autoTriggerQuery = false;
   searchInterfaceOptions.hideUntilFirstQuery = false;

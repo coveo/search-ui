@@ -2,7 +2,7 @@
 
 
 module Coveo {
-  export interface FollowItemOptions {
+  export interface IFollowItemOptions {
     watchedFields?: string[];
     modifiedDateField?: string;
   }
@@ -14,7 +14,7 @@ module Coveo {
       'urihash'
     ];
 
-    static options: FollowItemOptions = {
+    static options: IFollowItemOptions = {
       watchedFields: ComponentOptions.buildFieldsOption(),
       modifiedDateField: ComponentOptions.buildStringOption(),
     };
@@ -24,7 +24,7 @@ module Coveo {
     private subscription: ISubscription;
 
     constructor(public element: HTMLElement,
-      public options?: FollowItemOptions,
+      public options?: IFollowItemOptions,
       public bindings?: IResultsComponentBindings,
       public result?: IQueryResult) {
 
@@ -42,7 +42,7 @@ module Coveo {
       $(this.root).on(SearchAlertEvents.searchAlertDeleted, $.proxy(this.handleSubscriptionDeleted, this));
       $(this.root).on(SearchAlertEvents.searchAlertCreated, $.proxy(this.handleSubscriptionCreated, this));
 
-      this.container.addClass("coveo-follow-item-loading");
+      this.container.addClass('coveo-follow-item-loading');
 
       this.updateIsFollowed();
     }
@@ -67,26 +67,26 @@ module Coveo {
     }
 
     public setFollowed(subscription: ISubscription) {
-      this.container.removeClass("coveo-follow-item-loading");
+      this.container.removeClass('coveo-follow-item-loading');
       this.subscription = subscription;
-      this.container.addClass("coveo-follow-item-followed");
+      this.container.addClass('coveo-follow-item-followed');
       this.text.text(l('SearchAlerts_unFollowing'));
     }
 
     public setNotFollowed() {
-      this.container.removeClass("coveo-follow-item-loading");
+      this.container.removeClass('coveo-follow-item-loading');
       this.subscription = <ISubscription>FollowItem.buildFollowRequest(this.getId(), this.result.title, this.options);
-      this.container.removeClass("coveo-follow-item-followed");
+      this.container.removeClass('coveo-follow-item-followed');
       this.text.text(l('SearchAlerts_follow'));
     }
-    
-    public getText(): string{
+
+    public getText(): string {
       return this.text.text();
     }
 
     public toggleFollow() {
-      if (!this.container.hasClass("coveo-follow-item-loading")) {
-        this.container.addClass("coveo-follow-item-loading");
+      if (!this.container.hasClass('coveo-follow-item-loading')) {
+        this.container.addClass('coveo-follow-item-loading');
         if (this.subscription.id) {
           this.queryController.getEndpoint()
             .deleteSubscription(this.subscription)
@@ -98,7 +98,7 @@ module Coveo {
               $(this.root).trigger(SearchAlertEvents.searchAlertDeleted, eventArgs);
             })
             .catch(() => {
-              this.container.removeClass("coveo-follow-item-loading");
+              this.container.removeClass('coveo-follow-item-loading');
               var eventArgs: SearchAlertsFailEventArgs = {
                 dom: this.element
               };
@@ -114,7 +114,7 @@ module Coveo {
               $(this.root).trigger(SearchAlertEvents.searchAlertCreated, eventArgs);
             })
             .catch(() => {
-              this.container.removeClass("coveo-follow-item-loading");
+              this.container.removeClass('coveo-follow-item-loading');
               var eventArgs: SearchAlertsFailEventArgs = {
                 dom: this.element
               };
@@ -150,7 +150,7 @@ module Coveo {
       return this.result.raw.sysurihash || this.result.raw.urihash;
     }
 
-    private static buildFollowRequest(id: string, title: string, options: FollowItemOptions): ISubscriptionRequest {
+    private static buildFollowRequest(id: string, title: string, options: IFollowItemOptions): ISubscriptionRequest {
       var typeCofig: ISubscriptionItemRequest = {
         id: id,
         title: title

@@ -229,7 +229,7 @@ export class SearchInterface extends RootComponent {
 
     let eventNameQuickview = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.quickview);
     $$(this.element).on(eventNameQuickview, (e, args) => this.handleQuickviewChanged(args));
-    //shows the UI, since it's been hidden while loading
+    // shows the UI, since it's been hidden while loading
     this.element.style.display = 'block';
     this.setupDebugInfo();
     this.isNewDesignAttribute = this.root.getAttribute('data-design') == 'new';
@@ -537,18 +537,18 @@ export class SearchInterface extends RootComponent {
 }
 
 
-export interface StandaloneSearchInterfaceOptions extends ISearchInterfaceOptions {
+export interface IStandaloneSearchInterfaceOptions extends ISearchInterfaceOptions {
   redirectIfEmpty?: boolean;
 }
 
 export class StandaloneSearchInterface extends SearchInterface {
   static ID = 'StandaloneSearchInterface'
 
-  public static options: StandaloneSearchInterfaceOptions = {
+  public static options: IStandaloneSearchInterfaceOptions = {
     redirectIfEmpty: ComponentOptions.buildBooleanOption({ defaultValue: true })
   }
 
-  constructor(public element: HTMLElement, public options?: StandaloneSearchInterfaceOptions, public analyticsOptions?, _window = window) {
+  constructor(public element: HTMLElement, public options?: IStandaloneSearchInterfaceOptions, public analyticsOptions?, _window = window) {
     super(element, ComponentOptions.initComponentOptions(element, StandaloneSearchInterface, options), analyticsOptions, _window);
     $$(this.root).on(QueryEvents.newQuery, (e: Event, args: INewQueryEventArgs) => this.handleRedirect(e, args));
   }

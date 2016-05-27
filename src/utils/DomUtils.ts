@@ -3,6 +3,8 @@ import {IQueryResult} from '../rest/QueryResult'
 import {IResultsComponentBindings} from '../ui/Base/ResultsComponentBindings'
 import {DateUtils} from './DateUtils'
 import {FileTypes} from '../ui/Misc/FileTypes'
+import {Utils} from './Utils';
+import {StringUtils} from './StringUtils';
 
 export class DomUtils {
   static getPopUpCloseButton(captionForClose: string, captionForReminder: string): string {
@@ -48,12 +50,12 @@ export class DomUtils {
     return `${StringUtils.htmlEncode(initialString.slice(0, firstChar))}<span class='coveo-highlight'>${StringUtils.htmlEncode(initialString.slice(firstChar, lastChar))}</span>${StringUtils.htmlEncode(initialString.slice(lastChar))}`;
   }
 
-static getLoadingSpinner(): HTMLElement {
+  static getLoadingSpinner(): HTMLElement {
     let loading = $$('div');
     loading.addClass("coveo-loading-spinner");
     return loading.el;
   }
-  
+
   static getQuickviewHeader(result: IQueryResult, options: { showDate: boolean; title: string }, bindings: IResultsComponentBindings): Dom {
     var date = "";
     if (options.showDate) {
@@ -71,7 +73,7 @@ static getLoadingSpinner(): HTMLElement {
         <span class='coveo-quickview-icon coveo-small ${fileType.icon}'></span>
         <span class='coveo-quickview-pop-up-reminder'> ${options.title || ''}</span>
       </div>`;
-    new Coveo[Coveo['Salesforce']?'SalesforceResultLink':'ResultLink'](header.find('.coveo-quickview-pop-up-reminder'), undefined, bindings, result);
+    new Coveo[Coveo['Salesforce'] ? 'SalesforceResultLink' : 'ResultLink'](header.find('.coveo-quickview-pop-up-reminder'), undefined, bindings, result);
     return header;
   }
 }

@@ -58,21 +58,21 @@ export class Dom {
 
     return elem;
   }
-  
+
   /**
    * Adds the element to the children of the current element
    * @param element The element to append
    * @returns {string}
    */
-  public append(element: HTMLElement){
+  public append(element: HTMLElement) {
     this.el.appendChild(element);
   }
 
-   /**
-   * Get the css value of the specified property.<br/>
-   * @param property The property
-   * @returns {string}
-   */
+  /**
+  * Get the css value of the specified property.<br/>
+  * @param property The property
+  * @returns {string}
+  */
   public css(property: string): string {
     return window.getComputedStyle(this.el).getPropertyValue(property);
   }
@@ -117,7 +117,7 @@ export class Dom {
       this.el.removeChild(this.el.firstChild);
     }
   }
-  
+
   /**
    * Empty the element and all childs from the dom;
    */
@@ -159,7 +159,7 @@ export class Dom {
       }
     }
   }
-  
+
   /**
    * Returns the value of the specified attribute.
    * @param name The name of the attribute
@@ -167,13 +167,13 @@ export class Dom {
   public getAttribute(name: string): string {
     return this.el.getAttribute(name);
   }
-  
+
   /**
    * Sets the value of the specified attribute.
    * @param name The name of the attribute
    * @param value The value to set
    */
-  public setAttribute(name: string, value: string){
+  public setAttribute(name: string, value: string) {
     this.el.setAttribute(name, value);
   }
 
@@ -247,7 +247,7 @@ export class Dom {
   public children(): HTMLElement[] {
     return this.nodeListToArray(this.el.children);
   }
-  
+
   /**
    * Return all siblings
    * @returns {HTMLElement[]}
@@ -255,17 +255,17 @@ export class Dom {
   public siblings(selector: string): HTMLElement[] {
     let sibs = [];
     let currentElement = <HTMLElement>this.el.parentNode.firstChild;
-    for (; currentElement; currentElement = <HTMLElement>currentElement.nextSibling){
-      if (currentElement != this.el){
-        if(this.matches(currentElement, selector) || !selector){
+    for (; currentElement; currentElement = <HTMLElement>currentElement.nextSibling) {
+      if (currentElement != this.el) {
+        if (this.matches(currentElement, selector) || !selector) {
           sibs.push(currentElement);
         }
       }
-    } 
+    }
     return sibs;
   }
-  
-  private matches(element: HTMLElement, selector: string){
+
+  private matches(element: HTMLElement, selector: string) {
     var all = document.querySelectorAll(selector);
     for (var i = 0; i < all.length; i++) {
       if (all[i] === element) {
@@ -356,12 +356,12 @@ export class Dom {
       }
     }
   }
-  
+
   /**
    * Sets the inner html of the element
    * @param html The html to set
    */
-  public setHtml(html: string){
+  public setHtml(html: string) {
     this.el.innerHTML = html;
   }
 
@@ -404,7 +404,7 @@ export class Dom {
   public insertBefore(refNode: HTMLElement): void {
     refNode.parentNode && refNode.parentNode.insertBefore(this.el, refNode);
   }
-  
+
   /**
    * Insert the given node as the first child of the current node
    * @param toPrepend
@@ -556,18 +556,18 @@ export class Dom {
     }
     this.detach();
   }
-  
+
   /**
    * Returns the offset width of the element
    */
-  public width(){
+  public width() {
     return this.el.offsetWidth;
   }
-  
+
   /**
    * Returns the offset height of the element
    */
-  public height(){
+  public height() {
     return this.el.offsetHeight;
   }
 
@@ -577,7 +577,7 @@ export class Dom {
     }
     return false;
   }
-  
+
 }
 
 export class Win {
