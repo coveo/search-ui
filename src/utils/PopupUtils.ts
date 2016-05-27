@@ -50,7 +50,6 @@ export class PopupUtils {
     if (checkForBoundary < 2) {
       var checkBoundary = PopupUtils.checkForOutOfBoundary(popUpBoundary, boundaryPosition);
       if (checkBoundary.horizontal != 'ok' && desiredPosition.horizontalClip === true) {
-        console.log('modify');
         var width = popUp.offsetWidth;
         if (popUpBoundary.left < boundaryPosition.left) {
           width -= boundaryPosition.left - popUpBoundary.left;
@@ -62,7 +61,6 @@ export class PopupUtils {
         checkBoundary.horizontal = 'ok';
       }
       if (checkBoundary.vertical != 'ok' || checkBoundary.horizontal != 'ok') {
-        console.log('redo');
         var newDesiredPosition = PopupUtils.alignInsideBoundary(desiredPosition, checkBoundary);
         PopupUtils.positionPopup(popUp, nextTo, appendTo, boundary, newDesiredPosition, checkForBoundary + 1);
       }
@@ -135,7 +133,6 @@ export class PopupUtils {
   }
 
   private static offSetToAlignCenter(popUp: HTMLElement, nextTo: HTMLElement) {
-    console.log([nextTo.offsetWidth, popUp.offsetWidth]);
     return (nextTo.offsetWidth - popUp.offsetWidth) / 2;
   }
 

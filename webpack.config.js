@@ -28,5 +28,4 @@ module.exports = {
     ]
   },
   bail: true,
-  devtool: 'inline-source-map'
 }

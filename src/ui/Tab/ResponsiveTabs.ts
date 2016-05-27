@@ -76,7 +76,11 @@ export class ResponsiveTabs {
             this.toggleSmallTabsIfNeeded();
           }
         }
-
+        
+        if (this.dropdownHeader.hasClass('coveo-tab-dropdown-header-active')){
+          this.positionPopup();
+        }
+        
       };
       manageResponsiveTabs();
       this.resizeListener = <EventListener>_.debounce(manageResponsiveTabs, 200);
@@ -170,8 +174,7 @@ export class ResponsiveTabs {
   private static bindDropdownHeaderEvents() {
     this.dropdownHeader.on('click', () => {
       if (!this.dropdownHeader.hasClass('coveo-tab-dropdown-header-active')) {
-        PopupUtils.positionPopup(this.dropdownContent.el, this.dropdownHeader.el, this.tabSection.el, this.coveoRoot,
-          { horizontal: HorizontalAlignment.CENTER, vertical: VerticalAlignment.BOTTOM });
+        this.positionPopup();
         this.dropdownHeader.addClass('coveo-tab-dropdown-header-active');
       } else {
         this.dropdownContent.detach();
@@ -263,5 +266,10 @@ export class ResponsiveTabs {
       window.removeEventListener('resize', this.resizeListener);
       $$(document.documentElement).off('click', this.documentClickListener);
     });
+  }
+  
+  private static positionPopup() {
+    PopupUtils.positionPopup(this.dropdownContent.el, this.dropdownHeader.el, this.coveoRoot, this.coveoRoot,
+          { verticalOffset: -69, horizontal: HorizontalAlignment.CENTER, vertical: VerticalAlignment.BOTTOM });
   }
 }
