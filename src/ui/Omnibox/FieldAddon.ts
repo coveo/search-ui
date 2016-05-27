@@ -1,4 +1,4 @@
-///<reference path="Omnibox.ts"/>
+///<reference path='Omnibox.ts'/>
 import {Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion} from './Omnibox';
 import {OmniboxEvents} from '../../events/OmniboxEvents';
 import {IFieldDescription} from '../../rest/FieldDescription';
@@ -57,7 +57,7 @@ export class FieldAddon {
       var currentField = fieldName.toString();
       var before = fieldName.before();
       var after = fieldName.after();
-      return { type: "FieldName", current: currentField, before: before, after: after };
+      return { type: 'FieldName', current: currentField, before: before, after: after };
     }
     var fieldValue: Coveo.MagicBox.Result = _.last(this.omnibox.resultAtCursor('FieldValue'));
     if (fieldValue) {
@@ -175,7 +175,7 @@ export class FieldAddon {
         })
         .sortBy('index')
         .map((value) => {
-          return value.value.replace(/ /g, "\u00A0");
+          return value.value.replace(/ /g, '\u00A0');
         })
         .value();
     })

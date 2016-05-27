@@ -82,7 +82,7 @@ export class Thumbnail extends Component {
   }
 
   private buildThumbnailImage() {
-    var endpoint = this.bindings.queryController.getEndpoint();
+    let endpoint = this.bindings.queryController.getEndpoint();
 
     if (endpoint.isJsonp() || DeviceUtils.isIE8or9()) {
       // For jsonp and IE8-9 (XDomain) we can't GET/POST for binary data. We are limited
@@ -96,15 +96,15 @@ export class Thumbnail extends Component {
   }
 
   private buildImageWithDirectSrcAttribute(endpoint: ISearchEndpoint) {
-    var dataStreamUri = endpoint.getViewAsDatastreamUri(this.result.uniqueId, '$Thumbnail$', { contentType: "image/png" });
+    let dataStreamUri = endpoint.getViewAsDatastreamUri(this.result.uniqueId, '$Thumbnail$', { contentType: 'image/png' });
     this.element.setAttribute('src', dataStreamUri);
   }
 
   private buildImageWithBase64SrcAttribute(endpoint: ISearchEndpoint) {
     endpoint.getRawDataStream(this.result.uniqueId, '$Thumbnail$')
       .then((response) => {
-        var rawBinary = String.fromCharCode.apply(null, new Uint8Array(response));
-        this.element.setAttribute('src', "data:image/png;base64, " + btoa(rawBinary));
+        let rawBinary = String.fromCharCode.apply(null, new Uint8Array(response));
+        this.element.setAttribute('src', 'data:image/png;base64, ' + btoa(rawBinary));
       })
       .catch(() => {
         this.setEmptyThumbnailClass();

@@ -483,7 +483,7 @@ export class ResultList extends Component {
     }
     return new DefaultResultTemplate();
   }
-  
 }
+  
 
 Initialization.registerAutoCreateComponent(ResultList);

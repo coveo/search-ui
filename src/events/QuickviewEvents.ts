@@ -5,4 +5,4 @@ export interface IQuickviewLoadedEventArgs {
 export class QuickviewEvents {
   public static quickviewLoaded = "quickviewLoaded";
   public static openQuickview = "openQuickview";
- }
+}

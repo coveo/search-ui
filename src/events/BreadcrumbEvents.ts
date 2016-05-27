@@ -15,7 +15,7 @@ export interface IPopulateBreadcrumbEventArgs {
   breadcrumbs: IBreadcrumbItem[];
 }
 
-export interface ClearBreadcrumbEventArgs {
+export interface IClearBreadcrumbEventArgs {
 }
 
 export class BreadcrumbEvents {

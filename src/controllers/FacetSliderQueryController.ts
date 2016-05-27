@@ -224,7 +224,7 @@ export class FacetSliderQueryController {
       if (!DateUtils.isValid(date)) {
         date = new Date(this.getBrowserCompatibleFormat(value))
         if (!DateUtils.isValid(date)) {
-          //If we get here, we'll probably get an error further down the line when querying the index anyway ...
+          // If we get here, we'll probably get an error further down the line when querying the index anyway ...
           this.facet.logger.error('Cannot parse this date format.', value, new Date(value))
           return undefined;
         }

@@ -1,9 +1,9 @@
 // Code originally taken from : https://developers.livechatinc.com/blog/setting-cookies-to-subdomains-in-javascript/
 export class Cookie {
-  private static prefix: string = "coveo_";
+  private static prefix: string = 'coveo_';
 
   static set(name: string, value: string, expiration?: number) {
-    var domain: string, domainParts: string[], date, expires: string, host: string;
+    let domain: string, domainParts: string[], date, expires: string, host: string;
 
     if (expiration) {
       date = new Date();
@@ -15,18 +15,18 @@ export class Cookie {
 
     host = location.hostname;
     if (host.split('.').length === 1) {
-      // no "." in a domain - it's localhost or something similar
+      // no '.' in a domain - it's localhost or something similar
       document.cookie = this.prefix + name + '=' + value + expires + '; path=/';
     } else {
       // Remember the cookie on all subdomains.
       //
       // Start with trying to set cookie to the top domain.
       // (example: if user is on foo.com, try to set
-      //  cookie to domain ".com")
+      //  cookie to domain '.com')
       //
-      // If the cookie will not be set, it means ".com"
+      // If the cookie will not be set, it means '.com'
       // is a top level domain and we need to
-      // set the cookie to ".foo.com"
+      // set the cookie to '.foo.com'
       domainParts = host.split('.');
       domainParts.shift();
       domain = '.' + domainParts.join('.');
@@ -36,7 +36,7 @@ export class Cookie {
       // check if cookie was successfuly set to the given domain
       // (otherwise it was a Top-Level Domain)
       if (Cookie.get(name) == null || Cookie.get(name) != value) {
-        // append "." to current domain
+        // append '.' to current domain
         domain = '.' + host;
         document.cookie = this.prefix + name + '=' + value + expires + '; path=/; domain=' + domain;
       }
@@ -44,10 +44,10 @@ export class Cookie {
   }
 
   static get(name: string) {
-    var nameEQ = this.prefix + name + '=';
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-      var c = ca[i];
+    let nameEQ = this.prefix + name + '=';
+    let ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
       while (c.charAt(0) == ' ') {
         c = c.substring(1, c.length);
       }

@@ -2,6 +2,7 @@ import {IQueryResult} from '../rest/QueryResult';
 import {Options} from '../misc/Options';
 import {DeviceUtils} from '../utils/DeviceUtils';
 import {l} from '../strings/Strings';
+import _ = require('underscore');
 
 
 export interface MailToOptions {
@@ -143,6 +144,7 @@ export class MailTo {
   static maxLength: number = 1000;
 
   constructor(public options?: MailToOptions) {
+    this.options = _.extend(new DefaultMailToOptions(), options);
     this.removeCurrentUserFromParameters();
     if (this.options.originalFrom) {
       this.bodyHeader = this.options.bodyIsHTML ? '<p><br/><br/><br/>' + l('From') + ': ' + this.options.originalFrom + '<hr></p>' :

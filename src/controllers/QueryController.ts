@@ -111,7 +111,7 @@ export class QueryController extends RootComponent {
    * @returns {SearchEndpoint}
    */
   public getEndpoint(): ISearchEndpoint {
-    var endpoint = this.overrideEndpoint || this.options.endpoint;
+    let endpoint = this.overrideEndpoint || this.options.endpoint;
 
     // We must wrap the endpoint in a decorator that'll add the call options
     // we obtain by firing the proper event. Those are used for authentication
@@ -135,17 +135,13 @@ export class QueryController extends RootComponent {
    * @returns {Promise<IQueryResults>}
    */
   public executeQuery(options?: IQueryOptions): Promise<IQueryResults> {
-    if (options == null) {
-      options = <IQueryOptions>_.extend(new DefaultQueryOptions(), options);
-    }
+    options = <IQueryOptions>_.extend(new DefaultQueryOptions(), options);
 
     if (options.closeModalBox) {
       Coveo.ModalBox.close(true);
     }
 
     this.logger.debug('Executing new query');
-
-    var options = <IQueryOptions>_.extend(new DefaultQueryOptions(), options);
 
     this.cancelAnyCurrentPendingQuery();
 
@@ -159,7 +155,7 @@ export class QueryController extends RootComponent {
 
     this.showExecutingQueryAnimation();
 
-    var dataToSendOnNewQuery: INewQueryEventArgs = {
+    let dataToSendOnNewQuery: INewQueryEventArgs = {
       searchAsYouType: options.searchAsYouType,
       cancel: options.cancel,
       origin: options.origin
@@ -172,21 +168,21 @@ export class QueryController extends RootComponent {
       return;
     }
 
-    var queryBuilder = this.createQueryBuilder(options);
+    let queryBuilder = this.createQueryBuilder(options);
 
-    //The query was canceled
+    // The query was canceled
     if (!queryBuilder) {
       return;
     }
 
-    var query = queryBuilder.build();
+    let query = queryBuilder.build();
     this.logQueryInActionsHistory(query);
-    var endpointToUse = this.getEndpoint();
+    let endpointToUse = this.getEndpoint();
 
-    var promise = this.currentPendingQuery = endpointToUse.search(query);
+    let promise = this.currentPendingQuery = endpointToUse.search(query);
     promise.then((queryResults) => {
       Assert.exists(queryResults);
-      var firstQuery = this.firstQuery;
+      let firstQuery = this.firstQuery;
       if (this.firstQuery) {
         this.firstQuery = false;
       }
@@ -197,12 +193,12 @@ export class QueryController extends RootComponent {
       }
 
       this.logger.debug('Query results received', query, queryResults);
-      var enableHistory = this.searchInterface && this.searchInterface.options && this.searchInterface.options.enableHistory;
+      let enableHistory = this.searchInterface && this.searchInterface.options && this.searchInterface.options.enableHistory;
 
       if ((!firstQuery || enableHistory) && this.keepLastSearchUid(query, queryResults)) {
         queryResults.searchUid = this.getLastSearchUid();
         queryResults._reusedSearchUid = true;
-        QueryUtils.setPropertyOnResults(queryResults, "queryUid", this.getLastSearchUid());
+        QueryUtils.setPropertyOnResults(queryResults, 'queryUid', this.getLastSearchUid());
       } else {
         this.lastQueryHash = this.queryHash(query, queryResults);
         this.lastSearchUid = queryResults.searchUid;
@@ -212,7 +208,7 @@ export class QueryController extends RootComponent {
       this.lastQueryResults = queryResults;
       this.currentError = null;
 
-      var dataToSendOnPreprocessResult: IPreprocessResultsEventArgs = {
+      let dataToSendOnPreprocessResult: IPreprocessResultsEventArgs = {
         queryBuilder: queryBuilder,
         query: query,
         results: queryResults,
@@ -220,7 +216,7 @@ export class QueryController extends RootComponent {
       };
       this.preprocessResultsEvent(dataToSendOnPreprocessResult);
 
-      var dataToSendOnNoResult: INoResultsEventArgs = {
+      let dataToSendOnNoResult: INoResultsEventArgs = {
         queryBuilder: queryBuilder,
         query: query,
         results: queryResults,
@@ -239,7 +235,7 @@ export class QueryController extends RootComponent {
         this.lastQueryBuilder = queryBuilder;
         this.currentPendingQuery = undefined;
 
-        var dataToSendOnSuccess: IQuerySuccessEventArgs = {
+        let dataToSendOnSuccess: IQuerySuccessEventArgs = {
           queryBuilder: queryBuilder,
           query: query,
           results: queryResults,
@@ -262,9 +258,9 @@ export class QueryController extends RootComponent {
 
       this.logger.error('Query triggered an error', query, error);
 
-      //this.currentPendingQuery.reject(error);
+      // this.currentPendingQuery.reject(error);
       this.currentPendingQuery = undefined;
-      var dataToSendOnError: IQueryErrorEventArgs = {
+      let dataToSendOnError: IQueryErrorEventArgs = {
         queryBuilder: queryBuilder,
         endpoint: endpointToUse,
         query: query,
@@ -280,7 +276,7 @@ export class QueryController extends RootComponent {
       this.hideExecutingQueryAnimation();
     });
 
-    var dataToSendDuringQuery: IDuringQueryEventArgs = {
+    let dataToSendDuringQuery: IDuringQueryEventArgs = {
       queryBuilder: queryBuilder,
       query: query,
       searchAsYouType: options.searchAsYouType,
@@ -304,12 +300,12 @@ export class QueryController extends RootComponent {
     // This allows us to get the real search id for the results when the query returns
     this.usageAnalytics.sendAllPendingEvents();
 
-    var queryBuilder = new QueryBuilder();
+    let queryBuilder = new QueryBuilder();
     this.continueLastQueryBuilder(queryBuilder, count);
-    var query = queryBuilder.build();
-    var endpointToUse = this.getEndpoint()
-    var promise: any = this.currentPendingQuery = endpointToUse.search(query);
-    var dataToSendDuringQuery: IDuringQueryEventArgs = {
+    let query = queryBuilder.build();
+    let endpointToUse = this.getEndpoint()
+    let promise: any = this.currentPendingQuery = endpointToUse.search(query);
+    let dataToSendDuringQuery: IDuringQueryEventArgs = {
       queryBuilder: queryBuilder,
       query: query,
       searchAsYouType: false,
@@ -320,7 +316,7 @@ export class QueryController extends RootComponent {
     this.lastQuery = query;
     promise.then((results?: IQueryResults) => {
       // We re-use the search id from the initial search here, even though the
-      // server provided us with a new one. "Fetch mores" are considered to be
+      // server provided us with a new one. 'Fetch mores' are considered to be
       // the same query from an analytics point of view.
 
       this.currentPendingQuery = undefined;
@@ -333,7 +329,7 @@ export class QueryController extends RootComponent {
         });
       }
 
-      var dataToSendOnPreprocessResult: IPreprocessResultsEventArgs = {
+      let dataToSendOnPreprocessResult: IPreprocessResultsEventArgs = {
         queryBuilder: queryBuilder,
         query: query,
         results: results,
@@ -341,7 +337,7 @@ export class QueryController extends RootComponent {
       };
       this.preprocessResultsEvent(dataToSendOnPreprocessResult);
       QueryUtils.setIndexAndUidOnQueryResults(query, results, this.getLastSearchUid(), results.pipeline, results.splitTestRun);
-      var dataToSendOnFetchMoreSuccess: IFetchMoreSuccessEventArgs = {
+      let dataToSendOnFetchMoreSuccess: IFetchMoreSuccessEventArgs = {
         query: query,
         results: results,
         queryBuilder: queryBuilder,
@@ -376,9 +372,9 @@ export class QueryController extends RootComponent {
 
     this.createdOneQueryBuilder = true;
 
-    var queryBuilder = new QueryBuilder();
+    let queryBuilder = new QueryBuilder();
 
-    //Default values, components will probably override them if they exists
+    // Default values, components will probably override them if they exists
     queryBuilder.language = <string>String['locale'];
     queryBuilder.firstResult = queryBuilder.firstResult || 0;
 
@@ -386,14 +382,14 @@ export class QueryController extends RootComponent {
     // to allow someone to have a peep at the query builder after the first phase
     // and add some stuff depending on what was put in there. The facets are using
     // this mechanism to generate query overrides.
-    var dataToSendDuringBuildingQuery: IBuildingQueryEventArgs = {
+    let dataToSendDuringBuildingQuery: IBuildingQueryEventArgs = {
       queryBuilder: queryBuilder,
       searchAsYouType: options.searchAsYouType,
       cancel: options.cancel
     };
     this.buildingQueryEvent(dataToSendDuringBuildingQuery);
 
-    var dataToSendDuringDoneBuildingQuery: IDoneBuildingQueryEventArgs = {
+    let dataToSendDuringDoneBuildingQuery: IDoneBuildingQueryEventArgs = {
       queryBuilder: queryBuilder,
       searchAsYouType: options.searchAsYouType,
       cancel: options.cancel
@@ -405,7 +401,7 @@ export class QueryController extends RootComponent {
       return;
     }
 
-    var pipeline = this.getPipelineInUrl();
+    let pipeline = this.getPipelineInUrl();
     if (pipeline) {
       queryBuilder.pipeline = pipeline;
     }
@@ -447,7 +443,7 @@ export class QueryController extends RootComponent {
   }
 
   private loadLastQueryHash() {
-    var lastQuery = this.localStorage.load();
+    let lastQuery = this.localStorage.load();
     if (lastQuery != null && new Date().getTime() <= lastQuery.expire) {
       this.lastQueryHash = lastQuery.hash;
       this.lastSearchUid = lastQuery.uid;
@@ -462,7 +458,7 @@ export class QueryController extends RootComponent {
   }
 
   private getPipelineInUrl() {
-    return QueryUtils.getUrlParameter("pipeline");
+    return QueryUtils.getUrlParameter('pipeline');
   }
 
   private cancelAnyCurrentPendingQuery() {
@@ -494,7 +490,7 @@ export class QueryController extends RootComponent {
   }
 
   private queryHash(query: IQuery, queryResults?: IQueryResults): string {
-    var queryHash = JSON.stringify(_.omit(query, 'firstResult', 'groupBy', 'debug'));
+    let queryHash = JSON.stringify(_.omit(query, 'firstResult', 'groupBy', 'debug'));
     if (queryResults != null) {
       queryHash += queryResults.pipeline;
     }
@@ -502,7 +498,7 @@ export class QueryController extends RootComponent {
   }
 
   private getCallOptions(): IEndpointCallOptions {
-    var args: IBuildingCallOptionsEventArgs = {
+    let args: IBuildingCallOptionsEventArgs = {
       options: {
         authentication: []
       }
@@ -553,7 +549,7 @@ export class QueryController extends RootComponent {
   }
 
   public debugInfo() {
-    var info: any = {
+    let info: any = {
       'query': this.lastQuery,
     };
 
@@ -570,24 +566,24 @@ export class QueryController extends RootComponent {
   }
 
   private buildQueryDurationSection(queryResults: IQueryResults) {
-    var dom = Dom.createElement('div', { className: 'coveo-debug-queryDuration' });
-    var graph = Dom.createElement('div', { className: 'coveo-debug-durations' });
-    var debugRef = BaseComponent.getComponentRef('Debug');
+    let dom = Dom.createElement('div', { className: 'coveo-debug-queryDuration' });
+    let graph = Dom.createElement('div', { className: 'coveo-debug-durations' });
+    let debugRef = BaseComponent.getComponentRef('Debug');
     dom.appendChild(graph);
     _.forEach(debugRef.durationKeys, (key: string) => {
-      var duration = queryResults[key];
+      let duration = queryResults[key];
       if (duration != null) {
         graph.appendChild(Dom.createElement('div', {
           className: 'coveo-debug-duration',
           style: `width:${duration}px`,
           'data-id': key
         }));
-        var legend = Dom.createElement('div', { className: 'coveo-debug-duration-legend', 'data-id': key });
+        let legend = Dom.createElement('div', { className: 'coveo-debug-duration-legend', 'data-id': key });
         dom.appendChild(legend);
-        var keyDom = Dom.createElement('span', { className: 'coveo-debug-duration-label' });
+        let keyDom = Dom.createElement('span', { className: 'coveo-debug-duration-label' });
         keyDom.appendChild(document.createTextNode(key));
         legend.appendChild(keyDom);
-        var durationDom = Dom.createElement('span', { className: 'coveo-debug-duration-value' });
+        let durationDom = Dom.createElement('span', { className: 'coveo-debug-duration-value' });
         durationDom.appendChild(document.createTextNode(duration));
         legend.appendChild(durationDom);
       }

@@ -1,10 +1,10 @@
-import {SuggestionForOmniboxOptions, SuggestionForOmnibox, SuggestionForOmniboxTemplate} from '../Misc/SuggestionForOmnibox';
+import {ISuggestionForOmniboxOptions, SuggestionForOmnibox, ISuggestionForOmniboxTemplate} from '../Misc/SuggestionForOmnibox';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {Component} from '../Base/Component';
 import {Assert} from '../../misc/Assert';
 import {OmniboxEvents, IPopulateOmniboxEventArgs} from '../../events/OmniboxEvents';
-import {OmniboxDataRow} from '../Omnibox/OmniboxInterface';
+import {IOmniboxDataRow} from '../Omnibox/OmniboxInterface';
 import {QueryEvents} from '../../events/QueryEvents';
 import {l} from '../../strings/Strings';
 import {QueryStateModel} from '../../models/QueryStateModel';
@@ -12,7 +12,7 @@ import {AnalyticsActionCauseList, IAnalyticsTopSuggestionMeta} from '../Analytic
 import {Initialization} from '../Base/Initialization';
 import {$$} from '../../utils/Dom';
 
-export interface IAnalyticsSuggestionsOptions extends SuggestionForOmniboxOptions {
+export interface IAnalyticsSuggestionsOptions extends ISuggestionForOmniboxOptions {
 }
 
 /**
@@ -61,7 +61,7 @@ export class AnalyticsSuggestions extends Component {
     let rowTemplate = _.template(`<div class='magic-box-suggestion coveo-omnibox-selectable coveo-top-analytics-suggestion-row'><%= data %></div>`);
     this.options.onSelect = this.options.onSelect || this.onRowSelection;
 
-    let suggestionStructure: SuggestionForOmniboxTemplate;
+    let suggestionStructure: ISuggestionForOmniboxTemplate;
     if (this.searchInterface.isNewDesign()) {
       suggestionStructure = {
         row: rowTemplate

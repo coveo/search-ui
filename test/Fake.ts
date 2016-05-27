@@ -357,7 +357,7 @@ module Coveo {
       }
     }
 
-    static createPopulateOmniboxEventArgs(queryboxContent: string, cursorPosition: number, rows: OmniboxDataRow[] = []): IPopulateOmniboxEventArgs {
+    static createPopulateOmniboxEventArgs(queryboxContent: string, cursorPosition: number, rows: IOmniboxDataRow[] = []): IPopulateOmniboxEventArgs {
       return {
         completeQueryExpression: {word: queryboxContent, regex: new RegExp(queryboxContent, "gi")},
         allQueryExpressions: undefined,

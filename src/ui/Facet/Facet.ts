@@ -45,9 +45,9 @@ import {IGroupByResult} from '../../rest/GroupByResult';
 import {IGroupByValue} from '../../rest/GroupByValue';
 import {ValueElementRenderer} from './ValueElementRenderer';
 import {FacetSearchParameters} from './FacetSearchParameters';
-import {OmniboxDataRow} from '../Omnibox/OmniboxInterface';
+import {IOmniboxDataRow} from '../Omnibox/OmniboxInterface';
 import {Initialization} from '../Base/Initialization';
-import {BreadcrumbEvents, ClearBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
+import {BreadcrumbEvents, IClearBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
 
 export interface IFacetOptions {
   title?: string;
@@ -446,9 +446,9 @@ export class Facet extends Component {
     this.initBottomAndTopSpacer();
     this.buildFacetContent();
     this.updateAppearanceDependingOnState();
-    //After the facet has been created (and before the first query is applied)
-    //Try to load a state from the setting, if it's available
-    //Execute only _.once (only the first query, or the first time the user switch to a tab that contains a newly set of active facet)
+    // After the facet has been created (and before the first query is applied)
+    // Try to load a state from the setting, if it's available
+    // Execute only _.once (only the first query, or the first time the user switch to a tab that contains a newly set of active facet)
     if (this.facetSettings && this.options.enableSettingsFacetState) {
       var loadOnce = <(args: INewQueryEventArgs) => any>_.once(() => {
         this.facetSettings.loadSavedState.apply(this.facetSettings);
@@ -901,7 +901,7 @@ export class Facet extends Component {
   protected initBreadCrumbEvents() {
     if (this.options.includeInBreadcrumb) {
       this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) => this.handlePopulateBreadcrumb(args));
-      this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, (args: ClearBreadcrumbEventArgs) => this.handleClearBreadcrumb())
+      this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, (args: IClearBreadcrumbEventArgs) => this.handleClearBreadcrumb())
     }
   }
 

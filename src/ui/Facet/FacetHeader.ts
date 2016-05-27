@@ -4,7 +4,7 @@
 import {Facet} from './Facet';
 import {FacetSlider} from '../FacetSlider/FacetSlider';
 import {IFacetSettingsKlass, FacetSettings} from './FacetSettings';
-import {FacetSortKlass, FacetSort} from './FacetSort';
+import {IFacetSortKlass, FacetSort} from './FacetSort';
 import {$$} from '../../utils/Dom';
 import {FacetUtils} from './FacetUtils';
 import {l} from '../../strings/Strings';
@@ -20,7 +20,7 @@ export interface IFacetHeaderOptions {
   facet?: Facet;
   facetSlider?: FacetSlider;
   settingsKlass?: IFacetSettingsKlass;
-  sortKlass?: FacetSortKlass;
+  sortKlass?: IFacetSortKlass;
   availableSorts?: string[];
   isNewDesign: boolean;
 }

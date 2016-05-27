@@ -488,7 +488,6 @@ module Coveo {
 
         it('for deleteSubscription', function (done) {
           var promiseSuccess = ep.deleteSubscription(getSubscriptionPromiseSuccess());
-
           promiseSuccess
               .then((sub: ISubscription)=> {
                 expect(sub.id).toBe('foobar');
