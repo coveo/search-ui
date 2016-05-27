@@ -1,9 +1,6 @@
 //Not sure about this : In year 2033 who's to say that this list won't be 50 page long !
 const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-// Urls in Phonegap starts with file:///XXX_asset in android, file:///var/mobile in iOS,  file:///[....]CoreSimulator on IOS emulator
-const phonegap = /^file:\/\/\/.*_asset/i.test(document.URL) || /^file:\/\/\/.*var\/mobile/i.test(document.URL) || /^file:\/\/\/.*\/CoreSimulator/.test(document.URL);
-
 export class DeviceUtils {
   static getDeviceName(): string {
     var userAgent = navigator.userAgent;
@@ -65,10 +62,6 @@ export class DeviceUtils {
 
   static isMobileDevice() {
     return mobile;
-  }
-
-  static isPhonegap() {
-    return phonegap;
   }
 
   static isSmallScreenWidth() {

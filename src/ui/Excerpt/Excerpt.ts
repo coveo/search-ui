@@ -9,7 +9,7 @@ import {Initialization} from '../Base/Initialization';
 /**
  * This component, located in a result template, is used to render the document's excerpt,
  * as well as highlighting searched **keywords** using the appropriate template helpers.
- */
+*/
 export class Excerpt extends Component {
   static ID = 'Excerpt';
 

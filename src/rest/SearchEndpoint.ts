@@ -700,7 +700,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     return uri;
   }
 
-  private buildSearchAlertsUri(path: string): string {
+  public buildSearchAlertsUri(path: string): string {
     Assert.isString(path);
     let uri = this.options.searchAlertsUri || this.options.restUri + '/alerts';
     if (uri == null) {
@@ -795,7 +795,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   private performOneCall<T>(params: IEndpointCallParameters, autoRenewToken = true): Promise<T> {
     return this.caller.call(params)
       .then((response?: ISuccessResponse<T>) => {
-        if (response.data != null && (<any>response.data).clientDuration != null) {
+        if (response.data && (<any>response.data).clientDuration) {
           (<any>response.data).clientDuration = response.duration;
         }
         return response.data

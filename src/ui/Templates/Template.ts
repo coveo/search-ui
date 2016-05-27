@@ -1,7 +1,7 @@
 import {Logger} from '../../misc/Logger';
 import {StringUtils} from '../../utils/StringUtils';
 import {Initialization} from '../Base/Initialization';
-import {htmlToDom} from '../../utils/Dom';
+import {htmlToDom, $$} from '../../utils/Dom';
 import {BaseComponent} from "../Base/BaseComponent";
 
 export class Template {
@@ -37,7 +37,6 @@ export class Template {
     if (html != null) {
       var element = <HTMLElement>htmlToDom(html);
       this.logger.trace('Instantiated result template', object, element);
-      $(element).data('template', this);
       element['template'] = this;
       return element;
     }

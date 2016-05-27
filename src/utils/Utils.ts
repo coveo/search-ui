@@ -319,4 +319,20 @@ export class Utils {
   static toDashCase(camelCased: string) {
     return camelCased.replace(/([a-z][A-Z])/g, (g) => g[0] + '-' + g[1].toLowerCase());
   }
+
+  //http://stackoverflow.com/a/8412989
+  static parseXml(xml: string): XMLDocument {
+    var parseXml;
+    if (typeof DOMParser != "undefined") {
+      return ( new DOMParser() ).parseFromString(xml, "text/xml");
+    } else if (typeof ActiveXObject != "undefined" && new ActiveXObject("Microsoft.XMLDOM")) {
+        var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+        xmlDoc.async = "false";
+        xmlDoc.loadXML(xml);
+        return xmlDoc;
+    } else {
+        throw new Error("No XML parser found");
+    }
+  }
+  
 }
