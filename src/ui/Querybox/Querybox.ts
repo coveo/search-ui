@@ -220,11 +220,8 @@ export class Querybox extends Component {
     }
 
     if (!_.isEmpty(this.lastQuery)) {
-      if (!this.options.enableQuerySyntax) {
-        args.queryBuilder.expression.add('<@- ' + this.lastQuery + ' -@>');
-      } else {
-        args.queryBuilder.expression.add(this.lastQuery);
-      }
+      args.queryBuilder.disableQuerySyntax = !this.options.enableQuerySyntax;
+      args.queryBuilder.expression.add(this.lastQuery);
       if (this.options.enablePartialMatch) {
         args.queryBuilder.enablePartialMatch = this.options.enablePartialMatch;
         if (this.options.partialMatchKeywords) {

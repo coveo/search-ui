@@ -43,6 +43,25 @@ module Coveo {
         }, test.cmp.options.searchAsYouTypeDelay)
       })
 
+      it('enableQuerySyntax should modify the disableQuerySyntax parameter', function() {
+        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          enableQuerySyntax: false
+        });
+        test.cmp.setText('@field==Batman');
+
+        var simulation = Simulate.query(test.env);
+        expect(simulation.queryBuilder.disableQuerySyntax).toBe(true);
+
+        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          enableQuerySyntax: true
+        });
+        test.cmp.setText('@field==Batman');
+
+        var simulation = Simulate.query(test.env);
+        expect(simulation.queryBuilder.disableQuerySyntax).toBe(false);
+
+      });
+
       it('enableFieldAddon should create an addon component', function () {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           enableFieldAddon: true
