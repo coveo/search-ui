@@ -280,8 +280,6 @@ export class Analytics extends Component {
     }
     found = _.compact(found);
     
-    found = this.removeClientAlreadyCreated(found);
-    
     if (found.length == 1) {
       return Analytics.getClient(found[0], options, bindings);
     } else if (found.length > 1) {
@@ -289,12 +287,6 @@ export class Analytics extends Component {
     } else {
       return new NoopAnalyticsClient();
     }
-  }
-  
-  private static removeClientAlreadyCreated(found: HTMLElement[]){
-    return _.filter(found, (element)=>{
-      return Component.getBoundComponentsForElement(element).length === 0;
-    })
   }
 
   private static getClient(element: HTMLElement, options: IAnalyticsOptions, bindings: IComponentBindings): IAnalyticsClient {
