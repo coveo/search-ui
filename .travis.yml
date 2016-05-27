@@ -15,7 +15,8 @@ script:
 - npm run build
 - npm run test
 after_success:
-- bash ./deploy_doc.sh
+- npm run doc
+- bash ./deploy.doc.sh
 env:
   global:
   - ENCRYPTIOL_LABEL: f66a0c6ad864

@@ -60,44 +60,15 @@ module Coveo.Mock {
       return this;
     }
 
-    /*public withLiveAnalyticsComponent(element = Mocks.createMockHtmlElement()) {
-     $(element).addClass('CoveoAnalytics').appendTo(this.root);
-     var analytics = new Analytics(element);
-     analytics.client = this.usageAnalytics;
-     return this;
-     }
+    public withResult(result: IQueryResult = FakeResults.createFakeResult()): MockEnvironmentBuilder {
+      this.result = result;
+      return this;
+    }
 
-     public withElements(...elements: JQuery[]) {
-     this.element = (elements && elements.length != 0) ? elements[0] : this.element;
-     _.each(_.last(elements, elements.length - 1), (elem) => {
-     this.root.append(elem);
-     })
-     }
-
-     public withLiveQueryStateModel() {
-     this.queryStateModel = Mocks.createLiveQueryStateModel(this.root.get(0));
-     return this;
-     }
-
-     public withLiveSearchInterface(): MockEnvironmentBuilder {
-     this.searchInterface = Mocks.createLiveSearchInterface(this.root.get(0));
-     return this;
-     }
-      */
-     public withResult(result: IQueryResult = FakeResults.createFakeResult()): MockEnvironmentBuilder {
-       this.result = result;
-       return this;
-     }
-
-     public withEndpoint(endpoint: SearchEndpoint = Mock.mockSearchEndpoint()): MockEnvironmentBuilder {
-       this.searchEndpoint = endpoint;
-       return this;
-     }
-
-     /*
-     public getBindings(): ComponentBindings {
-     return this.build();
-     }*/
+    public withEndpoint(endpoint: SearchEndpoint = Mock.mockSearchEndpoint()): MockEnvironmentBuilder {
+      this.searchEndpoint = endpoint;
+      return this;
+    }
 
     public build(): MockEnvironment {
       if (this.built) {
@@ -149,13 +120,6 @@ module Coveo.Mock {
         componentOptionsModel: this.componentOptionsModel
       }
     }
-
-    /*
-     public buildWith<T>(data: T): MockEnvironmentWithData<T> {
-     var env = <MockEnvironmentWithData<T>>this.build();
-     env.data = data;
-     return env;
-     }*/
   }
 
   export interface IBasicComponentSetup<T extends BaseComponent> {
@@ -259,7 +223,7 @@ module Coveo.Mock {
     var envBuilder = new Mock.MockEnvironmentBuilder();
     return {
       env: envBuilder.build(),
-      cmp: <T>new klass(envBuilder.getBindings().element, undefined, envBuilder.getBindings())
+      cmp: <T>new klass(envBuilder.getBindings().element, {}, envBuilder.getBindings())
     }
   }
 
@@ -267,7 +231,7 @@ module Coveo.Mock {
     var envBuilder = new Mock.MockEnvironmentBuilder().withResult();
     return {
       env: envBuilder.build(),
-      cmp: <T>new klass(envBuilder.getBindings().element, undefined, envBuilder.getBindings(), envBuilder.result)
+      cmp: <T>new klass(envBuilder.getBindings().element, {}, envBuilder.getBindings(), envBuilder.result)
     }
   }
   

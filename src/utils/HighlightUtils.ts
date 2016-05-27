@@ -261,10 +261,10 @@ export class HighlightUtils {
 
       highlighted += _.escape(content.slice(last, start));
       highlighted += `<span class="${cssClass}"`;
-      if(highlight.dataHighlightGroup) {
+      if (highlight.dataHighlightGroup) {
         highlighted += ` data-highlight-group="${highlight.dataHighlightGroup.toString()}"`;
       }
-      if(highlight.dataHighlightGroupTerm) {
+      if (highlight.dataHighlightGroupTerm) {
         highlighted += ` data-highlight-group-term="${highlight.dataHighlightGroupTerm}"`;
       }
       highlighted += '>';
@@ -286,12 +286,12 @@ export function highlightString(value: string, search: string) {
   let hightlightTemplate = _.template('<% var i = 0; var lowercaseValue = value.toLowerCase(); while(i < value.length) { %>' +
     '<% var index = lowercaseValue.indexOf(search, i); if(index != -1) { %>' +
     '<% if(i != index){ %> <span><%- value.substr(i, index) %></span><% } %>' +
-    '<span class="coveo-hightlight"><%- value.substr(index, search.length) %></span>' +
-    '<% i = index + search.length %></span>' +
-    '<% } else { %>' +
-    '<span><%- value.substr(i) %></span>' +
-    '<% i = value.length; %>' +
-    '<% } %>' +
+  '<span class="coveo-hightlight"><%- value.substr(index, search.length) %></span>' +
+  '<% i = index + search.length %></span>' +
+  '<% } else { %>' +
+  '<span><%- value.substr(i) %></span>' +
+  '<% i = value.length; %>' +
+  '<% } %>' +
     '<% } %>');
   if (_.isEmpty(search)) return value;
   return hightlightTemplate({ value: value, search: search.toLowerCase() });

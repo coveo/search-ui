@@ -29,7 +29,7 @@ export class ExportToExcel extends Component {
      * Increasing this value will exponentially increase the time needed to create the Excel file.<br/>
      * It is not recommended to go above the default index limit of 1000 search results.
      */
-    numberOfResults: ComponentOptions.buildNumberOption({defaultValue: 100, min: 1})
+    numberOfResults: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1 })
   };
 
   /**

@@ -151,3 +151,8 @@ export {SortCriteria} from './ui/Sort/SortCriteria';
 export {Triggers} from './ui/Triggers/Triggers';
 export {Recommendation} from './ui/Recommendation/Recommendation';
 export {RecommendationQuery} from './ui/Recommendation/RecommendationQuery';
+export {TemplateLoader} from './ui/TemplateLoader/TemplateLoader';
+export {Template} from './ui/Templates/Template';
+export {SuggestionForOmnibox} from './ui/Misc/SuggestionForOmnibox';
+export {AnalyticsSuggestions} from './ui/AnalyticsSuggestions/AnalyticsSuggestions';
+export {FieldSuggestions} from './ui/FieldSuggestions/FieldSuggestions';

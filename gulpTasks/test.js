@@ -6,7 +6,7 @@ const express = require('express');
 gulp.task('test', ['buildTest'], function (done) {
   new TestServer({
     configFile: __dirname + '/../karma.conf.js',
-  }, done).start();
+  }, function(){done();}).start();
 });
 
 gulp.task('testDev', ['watchTest'], function (done) {
@@ -30,7 +30,8 @@ gulp.task('buildTest', function () {
       .pipe(tsc({
         target: 'ES5',
         out: 'tests.js',
-        module: 'amd'
+        module: 'amd',
+        inlineSourceMap: true
       }))
       .pipe(gulp.dest('./bin/tests'))
 })

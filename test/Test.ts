@@ -76,6 +76,9 @@
 /// <reference path="ui/ExcerptTest.ts" />
 /// <reference path="ui/ResultLinkTest.ts" />
 /// <reference path="ui/RecommendationTest.ts" />
+/// <reference path="ui/TemplateLoaderTest.ts" />
+/// <reference path="ui/AnalyticsSuggestionsTest.ts" />
+/// <reference path="ui/FieldSuggestionsTest.ts" />
 /// <reference path="ui/RecommendationQueryTest.ts" />
 
 

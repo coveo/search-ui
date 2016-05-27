@@ -1,6 +1,8 @@
 import {$$, Dom} from './Dom';
 import {IQueryResult} from '../rest/QueryResult'
 import {IResultsComponentBindings} from '../ui/Base/ResultsComponentBindings'
+import {Utils} from './Utils';
+import {StringUtils} from './StringUtils';
 import {DateUtils} from './DateUtils'
 import {FileTypes} from '../ui/Misc/FileTypes'
 
@@ -39,6 +41,13 @@ export class DomUtils {
       <div class='${loadDotClass}'></div>
     </div>`;
     return dom;
+  }
+
+  static highlightElement(initialString: string, valueToSearch: string): string {
+    var regex = new RegExp(Utils.escapeRegexCharacter(valueToSearch), "i");
+    var firstChar = initialString.search(regex);
+    var lastChar = firstChar + valueToSearch.length;
+    return `${StringUtils.htmlEncode(initialString.slice(0, firstChar))}<span class='coveo-highlight'>${StringUtils.htmlEncode(initialString.slice(firstChar, lastChar))}</span>${StringUtils.htmlEncode(initialString.slice(lastChar))}`;
   }
 
   static getLoadingSpinner(): HTMLElement {

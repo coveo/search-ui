@@ -9,6 +9,8 @@ import {AnalyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/Analytics
 import {Initialization} from '../Base/Initialization';
 import {QueryStateModel} from '../../models/QueryStateModel';
 
+declare const Globalize;
+
 export interface IQuerySummaryOptions {
   enableSearchTips?: boolean;
   onlyDisplaySearchTips?: boolean;
@@ -29,12 +31,12 @@ export class QuerySummary extends Component {
      * Specifies whether the search tips are displayed to the end user when there are no search results.<br/>
      * The default value is <code>true</code>.
      */
-    enableSearchTips: ComponentOptions.buildBooleanOption({defaultValue: true}),
+    enableSearchTips: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies whether to hide the information about the current range of results being displayed and only display the search tips.<br/>
      * The default value is <code>false</code>.
      */
-    onlyDisplaySearchTips: ComponentOptions.buildBooleanOption({defaultValue: false})
+    onlyDisplaySearchTips: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
 
   private textContainer: HTMLElement;
@@ -69,9 +71,9 @@ export class QuerySummary extends Component {
         let last = Globalize.format(data.query.firstResult + data.results.results.length, 'n0');
         let totalCount = Globalize.format(data.results.totalCountFiltered, 'n0');
 
-        let highlightFirst = $$('span', {className: 'coveo-highlight'}, first).el;
-        let highlightLast = $$('span', {className: 'coveo-highlight'}, last).el;
-        let highlightTotal = $$('span', {className: 'coveo-highlight'}, totalCount).el;
+        let highlightFirst = $$('span', { className: 'coveo-highlight' }, first).el;
+        let highlightLast = $$('span', { className: 'coveo-highlight' }, last).el;
+        let highlightTotal = $$('span', { className: 'coveo-highlight' }, totalCount).el;
 
         this.textContainer.innerHTML = l('ShowingResultsOf', highlightFirst.outerHTML, highlightLast.outerHTML, highlightTotal.outerHTML, data.results.results.length);
       }
@@ -92,7 +94,7 @@ export class QuerySummary extends Component {
     if (queryEscaped != '') {
       noResultsForString = $$('div', {
         className: 'coveo-query-summary-no-results-string'
-      }, l('noResultFor', $$('span', {className: 'coveo-highlight'}, queryEscaped).el.outerHTML));
+      }, l('noResultFor', $$('span', { className: 'coveo-highlight' }, queryEscaped).el.outerHTML));
     }
     let cancelLastAction = $$('div', {
       className: 'coveo-query-summary-cancel-last'
