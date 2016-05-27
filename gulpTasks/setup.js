@@ -10,6 +10,6 @@ gulp.task('setupMagicBox', function () {
 })
 
 gulp.task('copy', function () {
-  gulp.src('Index.html')
+  gulp.src('pages/*.html')
       .pipe(gulp.dest('./bin'))
 })
