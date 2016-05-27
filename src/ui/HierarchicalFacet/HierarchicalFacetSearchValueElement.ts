@@ -1,6 +1,6 @@
 import {FacetValueElement} from '../Facet/FacetValueElement';
 import {HierarchicalFacet} from '../HierarchicalFacet/HierarchicalFacet';
-import {ValueElementEventsBinding} from '../Facet/ValueElement';
+import {IValueElementEventsBinding} from '../Facet/ValueElement';
 import {FacetValue} from '../Facet/FacetValues';
 
 export class HierarchicalFacetSearchValueElement extends FacetValueElement {
@@ -8,12 +8,12 @@ export class HierarchicalFacetSearchValueElement extends FacetValueElement {
     super(facet, facetValue, keepDisplayedValueNextTime);
   }
 
-  public _handleSelectValue(eventBindings: ValueElementEventsBinding) {
+  public _handleSelectValue(eventBindings: IValueElementEventsBinding) {
     this.facet.open(this.facetValue);
     super.handleSelectValue(eventBindings);
   }
 
-  public _handleExcludeClick(eventBindings: ValueElementEventsBinding) {
+  public _handleExcludeClick(eventBindings: IValueElementEventsBinding) {
     this.facet.open(this.facetValue);
     super.handleExcludeClick(eventBindings);
   }

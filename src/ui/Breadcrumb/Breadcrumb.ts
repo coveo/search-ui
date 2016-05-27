@@ -2,7 +2,7 @@ import {Component} from '../Base/Component';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {InitializationEvents} from '../../events/InitializationEvents';
-import {BreadcrumbEvents, IBreadcrumbItem, IPopulateBreadcrumbEventArgs, ClearBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
+import {BreadcrumbEvents, IBreadcrumbItem, IPopulateBreadcrumbEventArgs, IClearBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
 import {AnalyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
 import {$$} from '../../utils/Dom';
 import {l} from '../../strings/Strings';
@@ -47,7 +47,7 @@ export class Breadcrumb extends Component {
    * @returns {IBreadcrumbItem[]}
    */
   public getBreadcrumbs(): IBreadcrumbItem[] {
-    var args = <IPopulateBreadcrumbEventArgs>{ breadcrumbs: [] };
+    let args = <IPopulateBreadcrumbEventArgs>{ breadcrumbs: [] };
     this.bind.trigger(this.root, BreadcrumbEvents.populateBreadcrumb, args);
     this.logger.debug('Retrieved breadcrumbs', args.breadcrumbs);
     this.lastBreadcrumbs = args.breadcrumbs;
@@ -59,7 +59,7 @@ export class Breadcrumb extends Component {
    * Trigger a new query, and log a search event
    */
   public clearBreadcrumbs() {
-    var args = <ClearBreadcrumbEventArgs>{};
+    let args = <IClearBreadcrumbEventArgs>{};
     this.bind.trigger(this.root, BreadcrumbEvents.clearBreadcrumb, args);
     this.logger.debug('Clearing breadcrumbs');
     this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.breadcrumbResetAll, {});
@@ -78,25 +78,25 @@ export class Breadcrumb extends Component {
       this.element.style.display = 'none';
     }
 
-    var breadcrumbItems = document.createElement('div');
+    let breadcrumbItems = document.createElement('div');
     $$(breadcrumbItems).addClass('coveo-breadcrumb-items');
     this.element.appendChild(breadcrumbItems);
     _.each(breadcrumbs, (bcrumb: IBreadcrumbItem) => {
-      var elem = bcrumb.element;
+      let elem = bcrumb.element;
       $$(elem).addClass('coveo-breadcrumb-item');
       breadcrumbItems.appendChild(elem);
     })
 
-    var clear = document.createElement('div');
+    let clear = document.createElement('div');
     $$(clear).addClass('coveo-breadcrumb-clear-all');
     clear.setAttribute('title', l('ClearAllFilters'));
 
-    var clearIcon = document.createElement('div');
+    let clearIcon = document.createElement('div');
     $$(clearIcon).addClass('coveo-icon coveo-breadcrumb-icon-clear-all');
     clear.appendChild(clearIcon);
 
     if (this.searchInterface.isNewDesign()) {
-      var clearText = document.createElement('div');
+      let clearText = document.createElement('div');
       $$(clearText).text(l('Clear', ''));
       clear.appendChild(clearText);
       this.element.appendChild(clear);

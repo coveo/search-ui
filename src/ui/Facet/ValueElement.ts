@@ -11,11 +11,11 @@ import {Defer} from '../../misc/Defer';
 
 declare const Coveo;
 
-export interface ValueElementKlass {
+export interface IValueElementKlass {
   new (facet: Facet, facetValue: FacetValue): ValueElement;
 }
 
-export interface ValueElementEventsBinding {
+export interface IValueElementEventsBinding {
   displayNextTime: boolean;
   pinFacet: boolean;
   omniboxObject?: IPopulateOmniboxObject;
@@ -34,7 +34,7 @@ export class ValueElement {
     return this;
   }
 
-  public bindEvent(eventBindings: ValueElementEventsBinding) {
+  public bindEvent(eventBindings: IValueElementEventsBinding) {
     if (!Utils.isNullOrUndefined(eventBindings.omniboxObject)) {
       this.isOmnibox = true;
     } else {
@@ -72,7 +72,7 @@ export class ValueElement {
     this.renderer.setCssClassOnListValueElement();
   }
 
-  protected handleSelectValue(eventBindings: ValueElementEventsBinding) {
+  protected handleSelectValue(eventBindings: IValueElementEventsBinding) {
     this.facet.keepDisplayedValuesNextTime = eventBindings.displayNextTime && !this.facet.options.useAnd;
     var actionCause: IAnalyticsActionCause;
     if (this.facetValue.excluded) {
@@ -93,7 +93,7 @@ export class ValueElement {
     }
   }
 
-  protected handleExcludeClick(eventBindings: ValueElementEventsBinding) {
+  protected handleExcludeClick(eventBindings: IValueElementEventsBinding) {
     this.facet.keepDisplayedValuesNextTime = eventBindings.displayNextTime && !this.facet.options.useAnd;
     var actionCause: IAnalyticsActionCause;
     if (this.facetValue.excluded) {
@@ -109,7 +109,7 @@ export class ValueElement {
     }
   }
 
-  protected handleEventForExcludedValueElement(eventBindings: ValueElementEventsBinding) {
+  protected handleEventForExcludedValueElement(eventBindings: IValueElementEventsBinding) {
     $$(this.renderer.label).on('click', (event) => {
       if (eventBindings.pinFacet) {
         this.facet.pinFacetPosition();
@@ -123,7 +123,7 @@ export class ValueElement {
     })
   }
 
-  protected handleEventForValueElement(eventBindings: ValueElementEventsBinding) {
+  protected handleEventForValueElement(eventBindings: IValueElementEventsBinding) {
     $$(this.renderer.excludeIcon).on('click', (event) => {
       if (eventBindings.omniboxObject) {
         this.omniboxCloseEvent(eventBindings.omniboxObject);
@@ -142,7 +142,7 @@ export class ValueElement {
     })
   }
 
-  protected handleEventForCheckboxChange(eventBindings: ValueElementEventsBinding) {
+  protected handleEventForCheckboxChange(eventBindings: IValueElementEventsBinding) {
     $$(this.renderer.checkbox).on('change', () => {
       if (eventBindings.omniboxObject) {
         this.omniboxCloseEvent(eventBindings.omniboxObject);

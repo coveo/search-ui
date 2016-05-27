@@ -1,6 +1,6 @@
 ///<reference path="Omnibox.ts"/>
 import {Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion} from './Omnibox';
-import {OmniboxDataRow} from './OmniboxInterface';
+import {IOmniboxDataRow} from './OmniboxInterface';
 import {OmniboxEvents, IPopulateOmniboxEventArgs, IPopulateOmniboxEventRow} from '../../events/OmniboxEvents';
 import {$$} from '../../utils/Dom';
 import {Utils} from '../../utils/Utils';
@@ -128,7 +128,7 @@ export class OldOmniboxAddon {
     return ret;
   }
 
-  private rowsToSuggestions(rows: OmniboxDataRow[]): Promise<IOmniboxSuggestion[]>[] {
+  private rowsToSuggestions(rows: IOmniboxDataRow[]): Promise<IOmniboxSuggestion[]>[] {
     return _.map(rows, (row: IPopulateOmniboxEventRow) => {
       if (!Utils.isNullOrUndefined(row.element)) {
         return new Promise<IOmniboxSuggestion[]>((resolve) => {

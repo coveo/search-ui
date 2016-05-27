@@ -3,18 +3,18 @@ import {StringUtils} from '../../utils/StringUtils';
 import {DomUtils} from '../../utils/DomUtils';
 import {$$} from '../../utils/Dom';
 
-export interface SuggestionForOmniboxOptionsOnSelect {
+export interface ISuggestionForOmniboxOptionsOnSelect {
   (value: string, args: IPopulateOmniboxEventArgs): void;
 }
 
-export interface SuggestionForOmniboxOptions {
+export interface ISuggestionForOmniboxOptions {
   omniboxZIndex?: number;
   headerTitle?: string;
-  onSelect?: SuggestionForOmniboxOptionsOnSelect;
+  onSelect?: ISuggestionForOmniboxOptionsOnSelect;
   numberOfSuggestions?: number;
 }
 
-export interface SuggestionForOmniboxTemplate {
+export interface ISuggestionForOmniboxTemplate {
   header?: {
     template: (...args: any[]) => string;
     title: string;
@@ -22,16 +22,16 @@ export interface SuggestionForOmniboxTemplate {
   row: (...args: any[]) => string;
 }
 
-export interface SuggestionForOmniboxResult {
+export interface ISuggestionForOmniboxResult {
   value: string;
 }
 
 export class SuggestionForOmnibox {
 
-  constructor(public structure: SuggestionForOmniboxTemplate, public onSelect: (value: string, args: IPopulateOmniboxEventArgs) => void) {
+  constructor(public structure: ISuggestionForOmniboxTemplate, public onSelect: (value: string, args: IPopulateOmniboxEventArgs) => void) {
   }
 
-  public buildOmniboxElement(results: SuggestionForOmniboxResult[], args: IPopulateOmniboxEventArgs): HTMLElement {
+  public buildOmniboxElement(results: ISuggestionForOmniboxResult[], args: IPopulateOmniboxEventArgs): HTMLElement {
     let element: HTMLElement;
     if (results.length != 0) {
       element = $$('div').el;
@@ -53,7 +53,7 @@ export class SuggestionForOmnibox {
     })).el;
   }
 
-  private buildRowElements(results: SuggestionForOmniboxResult[], args: IPopulateOmniboxEventArgs): HTMLElement[] {
+  private buildRowElements(results: ISuggestionForOmniboxResult[], args: IPopulateOmniboxEventArgs): HTMLElement[] {
     let ret = [];
     _.each(results, (result) => {
       let row = $$('div', undefined, this.structure.row({

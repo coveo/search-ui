@@ -1,7 +1,7 @@
-export interface BeforeInitializationEventArgs {
+export interface IBeforeInitializationEventArgs {
 }
 
-export interface AfterInitializationEventArgs {
+export interface IAfterInitializationEventArgs {
 }
 
 export class InitializationEvents {

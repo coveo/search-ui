@@ -1,9 +1,9 @@
 import {Promise} from 'es6-promise';
 
 export interface IPopulateOmniboxObject {
-  completeQueryExpression: PopulateOmniboxQueryExpression;
-  currentQueryExpression: PopulateOmniboxQueryExpression;
-  allQueryExpressions: PopulateOmniboxQueryExpression[];
+  completeQueryExpression: IPopulateOmniboxQueryExpression;
+  currentQueryExpression: IPopulateOmniboxQueryExpression;
+  allQueryExpressions: IPopulateOmniboxQueryExpression[];
   cursorPosition: number;
   clear(): void;
   clearCurrentExpression(): void;
@@ -13,17 +13,17 @@ export interface IPopulateOmniboxObject {
   closeOmnibox(): void;
 }
 
-export interface PopulateOmniboxQueryExpression {
+export interface IPopulateOmniboxQueryExpression {
   word: string;
   regex: RegExp;
 }
 
-export interface OmniboxData extends IPopulateOmniboxObject {
-  rows: OmniboxDataRow[];
+export interface IOmniboxData extends IPopulateOmniboxObject {
+  rows: IOmniboxDataRow[];
 }
 
-export interface OmniboxDataRow {
+export interface IOmniboxDataRow {
   zIndex?: number;
   element?: HTMLElement;
-  deferred?: Promise<OmniboxDataRow>;
+  deferred?: Promise<IOmniboxDataRow>;
 }

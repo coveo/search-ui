@@ -106,7 +106,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
 
   public warnAboutSearchEvent() {
     if (_.isUndefined(this.pendingSearchEvent) && _.isUndefined(this.pendingSearchAsYouTypeSearchEvent)) {
-      this.logger.warn("A search was triggered, but no analytics event was logged. If you wish to have consistent analytics data, consider logging a search event using the methods provided by the framework", "https://developers.coveo.com/x/TwA5");
+      this.logger.warn('A search was triggered, but no analytics event was logged. If you wish to have consistent analytics data, consider logging a search event using the methods provided by the framework', 'https://developers.coveo.com/x/TwA5');
       if (window['console'] && console.trace) {
         console.trace();
       }
@@ -115,7 +115,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
 
   private pushCustomEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject, element?: HTMLElement) {
     var customEvent = this.buildCustomEvent(actionCause, metaObject, element);
-    this.triggerChangeAnalyticsCustomData("CustomEvent", metaObject, customEvent);
+    this.triggerChangeAnalyticsCustomData('CustomEvent', metaObject, customEvent);
     this.checkToSendAnyPendingSearchAsYouType(actionCause);
     Defer.defer(() => {
       if (this.sendToCloud) {
@@ -135,7 +135,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
 
     if (!this.pendingSearchEvent) {
       var searchEvent = this.buildSearchEvent(actionCause, metaObject);
-      this.triggerChangeAnalyticsCustomData("SearchEvent", metaObject, searchEvent);
+      this.triggerChangeAnalyticsCustomData('SearchEvent', metaObject, searchEvent);
       var pendingSearchEvent = this.pendingSearchEvent = new PendingSearchEvent(this.rootElement, this.endpoint, searchEvent, this.sendToCloud);
 
       Defer.defer(() => {
@@ -166,7 +166,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
   private pushClickEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject, result: IQueryResult, element: HTMLElement) {
     var event = this.buildClickEvent(actionCause, metaObject, result, element);
     this.checkToSendAnyPendingSearchAsYouType(actionCause);
-    this.triggerChangeAnalyticsCustomData("ClickEvent", metaObject, event, { resultData: result });
+    this.triggerChangeAnalyticsCustomData('ClickEvent', metaObject, event, { resultData: result });
     Assert.isNonEmptyString(event.searchQueryUid);
     Assert.isNonEmptyString(event.collectionName);
     Assert.isNonEmptyString(event.sourceName);
@@ -223,10 +223,10 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       splitTestRunName: this.splitTestRunName || result.splitTestRun,
       splitTestRunVersion: this.splitTestRunVersion || (result.splitTestRun != undefined ? result.pipeline : undefined),
       documentUri: result.uri,
-      documentUriHash: result.raw["urihash"],
+      documentUriHash: result.raw['urihash'],
       documentUrl: result.clickUri,
       documentTitle: result.title,
-      originLevel2: this.resolveActiveTabFromElement(element) || "default",
+      originLevel2: this.resolveActiveTabFromElement(element) || 'default',
       collectionName: <string>result.raw['collection'],
       sourceName: <string>result.raw['source'],
       documentPosition: result.index + 1,
@@ -240,14 +240,14 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     return this.merge<ICustomEvent>(this.buildAnalyticsEvent(actionCause, metaObject), {
       eventType: actionCause.type,
       eventValue: actionCause.name,
-      originLevel2: this.resolveActiveTabFromElement(element) || "default",
+      originLevel2: this.resolveActiveTabFromElement(element) || 'default',
       responseTime: 0
     })
   }
 
   private buildMetaObject<TMeta>(meta: TMeta): IChangeableAnalyticsMetaObject {
     var build: IChangeableAnalyticsMetaObject = _.extend({}, meta);
-    build["JSUIVersion"] = version.lib + ";" + version.product;
+    build['JSUIVersion'] = version.lib + ';' + version.product;
     return build;
   }
 
@@ -307,19 +307,19 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     // them all at the root, and if I encounter the older properties I move them to the top
     // level after issuing a warning.
 
-    var metaDataAsString = event.customData["metaDataAsString"];
+    var metaDataAsString = event.customData['metaDataAsString'];
     if (_.keys(metaDataAsString).length > 0) {
-      this.logger.warn("Using deprecated 'metaDataAsString' key to log custom analytics data. Custom meta should now be put at the root of the object.");
+      this.logger.warn('Using deprecated \'metaDataAsString\' key to log custom analytics data. Custom meta should now be put at the root of the object.');
       _.extend(event.customData, metaDataAsString);
     }
-    delete event.customData["metaDataAsString"];
+    delete event.customData['metaDataAsString'];
 
-    var metaDataAsNumber = event.customData["metaDataAsNumber"];
+    var metaDataAsNumber = event.customData['metaDataAsNumber'];
     if (_.keys(metaDataAsNumber).length > 0) {
-      this.logger.warn("Using deprecated 'metaDataAsNumber' key to log custom analytics data. Custom meta should now be put at the root of the object.");
+      this.logger.warn('Using deprecated \'metaDataAsNumber\' key to log custom analytics data. Custom meta should now be put at the root of the object.');
       _.extend(event.customData, metaDataAsNumber);
     }
-    delete event.customData["metaDataAsNumber"];
+    delete event.customData['metaDataAsNumber'];
   }
 
   private merge<T extends IAnalyticsEvent>(first: IAnalyticsEvent, second: any): T {

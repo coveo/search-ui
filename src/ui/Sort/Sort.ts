@@ -188,7 +188,7 @@ export class Sort extends Component {
 
     if (this.isToggle()) {
       var direction = this.currentCriteria ? this.currentCriteria.direction : this.options.sortCriteria[0].direction;
-      $$(this.element).toggleClass('coveo-ascending', direction == "ascending");
+      $$(this.element).toggleClass('coveo-ascending', direction == 'ascending');
     }
   }
 

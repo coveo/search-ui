@@ -28,38 +28,38 @@ export interface IQueryStateExcludedAttribute {
 /**
  * The QueryStateModel is a key->value store of the state of every component that can affect a query.<br/>
  * Component set values in this key -> value store, and listen to event triggered to react accordingly.<br/>
- * For example, when a query is launched, the searchbox will set the "q" attribute, the pager will set the "first" attribute, etc.<br/>
+ * For example, when a query is launched, the searchbox will set the 'q' attribute, the pager will set the 'first' attribute, etc.<br/>
  * At the same time, this class will trigger the associated event when a value is modified.<br/>
  * eg : The user change the content of the searchbox, and submit a query. This will trigger the following events :<br/>
- * -- state:change:q (because the value of "q" changed)</br>
+ * -- state:change:q (because the value of 'q' changed)</br>
  * -- state:change (because at least one value changed in the query state)<br/>
  * Component or external code could hook handler on those events : document.addEventListener('state:change:q', handler);<br/>
  * See : {@link Model}, as all the relevant method are exposed in the base class.<br/>
  * Optionally, the state can be persisted to the query string to allow browser history management : See {@link HistoryController}
  */
 export class QueryStateModel extends Model {
-  static ID = "state";
+  static ID = 'state';
 
   static defaultAttributes = {
-    q: "",
+    q: '',
     first: 0,
-    t: "",
-    hd: "",
-    hq: "",
-    sort: "",
-    tg: "",
-    quickview: ""
+    t: '',
+    hd: '',
+    hq: '',
+    sort: '',
+    tg: '',
+    quickview: ''
   };
 
   static attributesEnum = {
-    q: "q",
-    first: "first",
-    t: "t",
-    sort: "sort",
-    hd: "hd",
-    hq: "hq",
-    tg: "tg",
-    quickview: "quickview"
+    q: 'q',
+    first: 'first',
+    t: 't',
+    sort: 'sort',
+    hd: 'hd',
+    hq: 'hq',
+    tg: 'tg',
+    quickview: 'quickview'
   };
 
   static getFacetId(id: string, include: boolean = true) {
@@ -71,7 +71,7 @@ export class QueryStateModel extends Model {
   }
 
   static getFacetLookupValue(id: string) {
-    return QueryStateModel.getFacetId(id) + ":lookupvalues";
+    return QueryStateModel.getFacetId(id) + ':lookupvalues';
   }
 
   /**
@@ -81,7 +81,7 @@ export class QueryStateModel extends Model {
    * @param bindings
    */
   constructor(element: HTMLElement, attributes?: IStringMap<string>) {
-    var merged = _.extend({}, QueryStateModel.defaultAttributes, attributes);
+    let merged = _.extend({}, QueryStateModel.defaultAttributes, attributes);
     super(element, QueryStateModel.ID, merged);
   }
 
@@ -91,7 +91,7 @@ export class QueryStateModel extends Model {
    */
   public atLeastOneFacetIsActive() {
     return !_.isUndefined(_.find(this.attributes, (value, key: any) => {
-      return key.indexOf("f:") == 0 && Utils.isNonEmptyArray(value) && key.indexOf(':range') < 0;
+      return key.indexOf('f:') == 0 && Utils.isNonEmptyArray(value) && key.indexOf(':range') < 0;
     }))
   }
 
@@ -118,14 +118,14 @@ export function setState(model: Model, args: any[]): any {
     return model.get(args[0]);
   } else if (_.isObject(args[0])) {
     // One dictionary means set multiple values
-    var toSet = args[0];
-    var options = _.extend(<IModelSetOptions>{ customAttribute: true }, <IModelSetOptions>args[1]);
+    let toSet = args[0];
+    let options = _.extend(<IModelSetOptions>{ customAttribute: true }, <IModelSetOptions>args[1]);
     return model.setMultiple(toSet, options);
   } else if (args.length > 1) {
     // Otherwise we're setting a value
-    var name = <string>args[0];
-    var value = args[1];
-    var options = _.extend(<IModelSetOptions>{ customAttribute: true }, <IModelSetOptions>args[2]);
+    let name = <string>args[0];
+    let value = args[1];
+    let options = _.extend(<IModelSetOptions>{ customAttribute: true }, <IModelSetOptions>args[2]);
     Assert.isNonEmptyString(name);
     return model.set(name, value, options);
   }

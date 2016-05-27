@@ -131,7 +131,7 @@ module Coveo {
       return options;
     }
 
-    static omnibox(env: Mock.MockEnvironment, options?): OmniboxData {
+    static omnibox(env: Mock.MockEnvironment, options?): IOmniboxData {
       let expression = {
         word: 'foo',
         regex: /foo/

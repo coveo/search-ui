@@ -3,14 +3,14 @@ import {IComponentBindings} from '../Base/ComponentBindings';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {$$} from '../../utils/Dom';
-import {PopupUtils, Position, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
-import {MenuItem} from '../Menu/MenuItem';
+import {PopupUtils, IPosition, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
+import {IMenuItem} from '../Menu/MenuItem';
 import {SettingsEvents} from '../../events/SettingsEvents';
 import {Initialization} from '../Base/Initialization';
 
 export interface ISettingsPopulateMenuArgs {
   settings: Settings;
-  menuData: MenuItem[];
+  menuData: IMenuItem[];
 }
 
 export interface ISettingsOptions {
@@ -131,7 +131,7 @@ export class Settings extends Component {
     clearTimeout(this.closeTimeout);
   }
 
-  private getPopupPositioning(): Position {
+  private getPopupPositioning(): IPosition {
     return {
       horizontal: HorizontalAlignment.INNERRIGHT,
       vertical: VerticalAlignment.BOTTOM,

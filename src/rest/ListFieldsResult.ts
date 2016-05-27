@@ -1,5 +1,5 @@
 import {IFieldDescription} from '../rest/FieldDescription';
 
-export interface ListFieldsResult {
+export interface IListFieldsResult {
   fields: IFieldDescription[];
 }

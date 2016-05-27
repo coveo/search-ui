@@ -185,7 +185,7 @@ export class QueryBuilder {
    * -- nosort : Do not sort the results. The order in which items are returned is essentially random.<br/>
    * -- @field ascending / @field descending : Sort using the value of a custom field.
    */
-  public sortCriteria: string = "relevancy";
+  public sortCriteria: string = 'relevancy';
   public sortField: string;
   public retrieveFirstSentences: boolean = true;
   public timezone: string;

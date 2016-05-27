@@ -9,10 +9,11 @@ import {StringUtils} from '../../utils/StringUtils';
 
 declare const Coveo;
 
-export interface FacetSortKlass {
+export interface IFacetSortKlass {
   new (sorts: string[], facet: Facet): FacetSort;
 }
-export interface FacetSortDescription {
+
+export interface IFacetSortDescription {
   label: string;
   directionToggle: boolean;
   description: string;
@@ -21,7 +22,7 @@ export interface FacetSortDescription {
 }
 
 export class FacetSort {
-  public static availableSorts: { [name: string]: FacetSortDescription } = {
+  public static availableSorts: { [name: string]: IFacetSortDescription } = {
     score: {
       label: l('Score'),
       directionToggle: false,
@@ -77,8 +78,8 @@ export class FacetSort {
     }
   }
 
-  public enabledSorts: FacetSortDescription[] = [];
-  public activeSort: FacetSortDescription;
+  public enabledSorts: IFacetSortDescription[] = [];
+  public activeSort: IFacetSortDescription;
   public customSortDirection = 'ascending';
 
   constructor(sorts: string[], public facet: Facet) {
@@ -91,7 +92,7 @@ export class FacetSort {
     this.removeEnabledSortsBasedOnFacetType();
     if (Utils.isNonEmptyArray(this.enabledSorts)) {
       if (this.facet.options.sortCriteria != undefined) {
-        this.activeSort = _.find<FacetSortDescription>(this.enabledSorts, (enabledSort) => {
+        this.activeSort = _.find<IFacetSortDescription>(this.enabledSorts, (enabledSort) => {
           return enabledSort.name == this.facet.options.sortCriteria
         })
       }

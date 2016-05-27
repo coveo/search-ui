@@ -46,7 +46,7 @@ export {HighlightUtils, StringAndHoles} from './utils/HighlightUtils';
 export {HTMLUtils} from './utils/HtmlUtils';
 export {KEYBOARD, KeyboardUtils} from './utils/KeyboardUtils';
 export {LocalStorageUtils} from './utils/LocalStorageUtils';
-export {OSUtils} from './utils/OSUtils';
+export {OSUtils, OS_NAME} from './utils/OSUtils';
 export {PopupUtils} from './utils/PopupUtils';
 export {QueryUtils} from './utils/QueryUtils';
 export {StreamHighlightUtils} from './utils/StreamHighlightUtils';
@@ -81,8 +81,11 @@ export {Initialization} from './ui/Base/Initialization';
 export {IResultsComponentBindings} from './ui/Base/ResultsComponentBindings';
 
 // TEMPLATES
+export {CoreHelpers} from './ui/Templates/CoreHelpers';
+export {TemplateHelpers} from './ui/Templates/TemplateHelpers';
+export {HtmlTemplate} from './ui/Templates/HtmlTemplate';
+export {UnderscoreTemplate} from './ui/Templates/UnderscoreTemplate';
 export {TemplateCache} from './ui/Templates/TemplateCache';
-
 
 // UI
 export {SearchInterface, StandaloneSearchInterface} from './ui/SearchInterface/SearchInterface';
@@ -111,6 +114,13 @@ export {Slider} from './ui/Misc/Slider';
 export {FacetSlider} from './ui/FacetSlider/FacetSlider';
 export {FacetRange} from './ui/FacetRange/FacetRange';
 export {Pager} from './ui/Pager/Pager';
+export {ResultList} from './ui/ResultList/ResultList';
+export {Excerpt} from './ui/Excerpt/Excerpt';
+export {ResultLink} from './ui/ResultLink/ResultLink';
+export {Icon} from './ui/Icon/Icon';
+export {Thumbnail} from './ui/Thumbnail/Thumbnail';
+export {PrintableUri} from './ui/PrintableUri/PrintableUri';
+export {Quickview} from './ui/Quickview/Quickview';
 export {DidYouMean} from './ui/DidYouMean/DidYouMean';
 export {ErrorReport} from './ui/ErrorReport/ErrorReport';
 export {ExportToExcel} from './ui/ExportToExcel/ExportToExcel';
@@ -118,8 +128,18 @@ export {Folding} from './ui/Folding/Folding';
 export {HiddenQuery} from './ui/HiddenQuery/HiddenQuery';
 export {HierarchicalFacet} from './ui/HierarchicalFacet/HierarchicalFacet';
 export {Matrix} from './ui/Matrix/Matrix';
-export {Omnibox} from './ui/Omnibox/Omnibox';
+export {QuickviewDocument} from './ui/Quickview/QuickviewDocument';
+export {YouTubeThumbnail} from './ui/YouTube/YouTubeThumbnail';
+export {ResultAttachments} from './ui/ResultAttachments/ResultAttachments';
+export {ResultFolding} from './ui/ResultFolding/ResultFolding';
+export {FieldTable} from './ui/FieldTable/FieldTable';
+export {FieldValue} from './ui/FieldTable/FieldValue';
+export {Badge} from './ui/FieldTable/Badge';
+export {ResultRating} from './ui/ResultRating/ResultRating';
 export {PreferencesPanel} from './ui/PreferencesPanel/PreferencesPanel';
+export {ResultsFiltersPreferences} from './ui/ResultsFiltersPreferences/ResultsFiltersPreferences';
+export {Tab} from './ui/Tab/Tab';
+export {Omnibox} from './ui/Omnibox/Omnibox';
 export {QueryDuration} from './ui/QueryDuration/QueryDuration';
 export {QuerySummary} from './ui/QuerySummary/QuerySummary';
 export {Debug} from './ui/Debug/Debug';
@@ -127,11 +147,9 @@ export {Settings} from './ui/Settings/Settings';
 export {ShareQuery} from './ui/ShareQuery/ShareQuery';
 export {Sort} from './ui/Sort/Sort';
 export {SortCriteria} from './ui/Sort/SortCriteria';
-export {Tab} from './ui/Tab/Tab';
 export {Triggers} from './ui/Triggers/Triggers';
 export {TemplateLoader} from './ui/TemplateLoader/TemplateLoader';
 export {Template} from './ui/Templates/Template';
 export {SuggestionForOmnibox} from './ui/Misc/SuggestionForOmnibox';
 export {AnalyticsSuggestions} from './ui/AnalyticsSuggestions/AnalyticsSuggestions';
 export {FieldSuggestions} from './ui/FieldSuggestions/FieldSuggestions';
-

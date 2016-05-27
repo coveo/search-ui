@@ -35,7 +35,7 @@ export class StringUtils {
 
   static regexEncode(value: string): string {
     Assert.isString(value);
-    return value.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+    return value.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
   }
 
   static stringToRegex(value: string, ignoreAccent = false): string {
@@ -83,7 +83,7 @@ export class StringUtils {
 
   static encodeCarriageReturn(strToEncode: string): string {
     Assert.isString(strToEncode);
-    return strToEncode.replace(/\n/g, "<br/>");
+    return strToEncode.replace(/\n/g, '<br/>');
   }
 
   static equalsCaseInsensitive(str1: string, str2: string) {
@@ -110,7 +110,7 @@ export class StringUtils {
     return hash.toString(16);
   }
 
-  //http://stackoverflow.com/a/25575009
+  // http://stackoverflow.com/a/25575009
   static removePunctuation(str: string) {
     var punctRE = /[\u2000-\u206F\u2E00-\u2E7F\\'!"#\$%&\(\)\*\+,\-\.\/:;<=>\?@\[\]\^_`\{\|\}~]/g;
     var spaceRE = /\s+/g;
