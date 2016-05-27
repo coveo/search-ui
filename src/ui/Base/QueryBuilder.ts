@@ -95,7 +95,7 @@ export class QueryBuilder {
    */
   public enableQuestionMarks: boolean;
   /**
-   * Wheter to disable the special query syntax such as field references for the basic query expression (parameter q). 
+   * Whether to disable the special query syntax such as field references for the basic query expression (parameter q).
    * It is equivalent to a No syntax block applied to the basic query expression.
    * If not specified, the parameter defaults to false
    */
