@@ -34,8 +34,10 @@ export class ResponsiveTabs {
         return;
       }
       this.tabSection = $$(tabSectionElement);
-
+      this.manageTabSwapping();
+      
       let manageResponsiveTabs = () => {
+        
         this.toggleSmallTabsIfNeeded();
 
         let tabSectionIsOverflowing = this.isOverflowing(this.tabSection.el);
@@ -227,6 +229,24 @@ export class ResponsiveTabs {
       return tabs.length == 0;
     }
     return false;
+  }
+  
+  private static manageTabSwapping() {
+    _.each(this.tabSection.findAll('.CoveoTab'), tabElement => {
+      let tab = $$(tabElement);
+      tab.on('click', () => {
+        if (tab.hasClass('coveo-tab-dropdown')) {
+          let tabsInSection = this.tabSection.findAll('.CoveoTab:not(.coveo-tab-dropdown)');
+          let lastTabInSection = tabsInSection.pop();
+          
+          $$(lastTabInSection).addClass('coveo-tab-dropdown');
+          tab.replaceWith(lastTabInSection);
+          
+          tab.removeClass('coveo-tab-dropdown');
+          tab.insertBefore(this.dropdownHeader.el);
+        }
+      })
+    });
   }
   
   private static getSearchBoxElement(): HTMLElement {
