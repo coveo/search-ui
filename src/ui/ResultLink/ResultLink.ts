@@ -22,7 +22,7 @@ import {$$} from '../../utils/Dom'
  */
 export class ResultLink extends Component {
   static ID = 'ResultLink';
-
+  
   /**
    * The options for the ResultLink
    * @componentOptions
@@ -135,7 +135,7 @@ export class ResultLink extends Component {
     }
     return false;
   }
-
+  
   /**
    * Opens the result
    */

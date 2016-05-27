@@ -8,7 +8,6 @@ import {ResultLink} from '../ResultLink/ResultLink';
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
 import {DomUtils} from '../../utils/DomUtils';
 import {$$, Dom} from '../../utils/Dom';
-
 export interface IYouTubeThumbnailOptions {
   width: string;
   height: string;
