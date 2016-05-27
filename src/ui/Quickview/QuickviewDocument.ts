@@ -459,15 +459,15 @@ export class QuickviewDocument extends Component {
 
     // Un-highlight any currently selected element
     let current = $$(scroll).find(`[id^=${HIGHLIGHT_PREFIX}:${state.word.index}.${fromIndex}.]`
-  )
+    )
     if (current) {
       current.style.border = '';
     }
 
     // Find and highlight the new element.
     let element = $$(window.document.body).find(`[id^=${HIGHLIGHT_PREFIX}:${state.word.index}.${toIndex}.]`
-  )
-    ;
+    )
+      ;
     element.style.border = '1px dotted #333';
     state.currentIndex = toIndex;
 
