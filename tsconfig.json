@@ -114,7 +114,6 @@
     "src/utils/StringUtils.ts",
     "src/utils/TimeSpanUtils.ts",
     "src/utils/Utils.ts",
-    "src/utils/ModalBox.ts",
     "src/strings/Strings.ts",
     "src/models/ComponentOptionsModel.ts",
     "src/models/ComponentStateModel.ts",
