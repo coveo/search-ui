@@ -50,7 +50,7 @@
   .coveo-tab-list-container {
     position: absolute;
     overflow: hidden;
-    z-index: 10;
+    z-index: 11;
  }
  
  .coveo-tab-list {
@@ -63,6 +63,8 @@
   * {
     height: 30px;
     line-height: 30px;
+    clear: both;
+    white-space: nowrap;
   }
   li:first-child {
     margin-top: 6px;
@@ -81,4 +83,3 @@
  .coveo-sprites-more-tabs {
    margin-left: 10px;
  }
-

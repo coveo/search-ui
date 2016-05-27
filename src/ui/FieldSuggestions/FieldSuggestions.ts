@@ -1,4 +1,4 @@
-import {SuggestionForOmniboxOptions, SuggestionForOmnibox,SuggestionForOmniboxTemplate} from '../Misc/SuggestionForOmnibox';
+import {SuggestionForOmniboxOptions, SuggestionForOmnibox, SuggestionForOmniboxTemplate} from '../Misc/SuggestionForOmnibox';
 import {Component} from '../Base/Component';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
@@ -34,22 +34,22 @@ export class FieldSuggestions extends Component {
      * Specifies the field from which suggestions are provided.<br/>
      * This is a required option
      */
-    field: ComponentOptions.buildFieldOption({required: true}),
+    field: ComponentOptions.buildFieldOption({ required: true }),
     /**
      * Specifies a query override (any query expression) which should be applied when retrieving suggestions
      */
-    queryOverride: ComponentOptions.buildStringOption({defaultValue: ''}),
+    queryOverride: ComponentOptions.buildStringOption({ defaultValue: '' }),
     /**
      * Specifies the position at which the suggestions should render when there are multiple suggestions providers. (eg : {@link Facet} or {@link AnalyticsSuggestions}).<br/>
      * The default value is `51`
      */
-    omniboxZIndex: ComponentOptions.buildNumberOption({defaultValue: 51, min: 0}),
-    headerTitle: ComponentOptions.buildLocalizedStringOption({defaultValue: l('SuggestedResults')}),
+    omniboxZIndex: ComponentOptions.buildNumberOption({ defaultValue: 51, min: 0 }),
+    headerTitle: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('SuggestedResults') }),
     /**
      * Specifies the number of suggestions that should be rendered in the omnibox.<br/>
      * Default value is `5`
      */
-    numberOfSuggestions: ComponentOptions.buildNumberOption({defaultValue: 5, min: 1})
+    numberOfSuggestions: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1 })
   };
 
   private suggestionForOmnibox: SuggestionForOmnibox;
@@ -84,7 +84,7 @@ export class FieldSuggestions extends Component {
     } else {
       let headerTemplate = _.template(`<div class='coveo-top-field-suggestion-header'><span class='coveo-icon-top-field'></span><span class='coveo-caption'><%= headerTitle %></span></div>`);
       suggestionStructure = {
-        header: {template: headerTemplate, title: this.options.headerTitle},
+        header: { template: headerTemplate, title: this.options.headerTitle },
         row: rowTemplate
       };
     }
@@ -92,7 +92,7 @@ export class FieldSuggestions extends Component {
     this.suggestionForOmnibox = new SuggestionForOmnibox(suggestionStructure, (value: string, args: IPopulateOmniboxEventArgs) => {
       this.options.onSelect.call(this, value, args);
     });
-    this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs)=> this.handlePopulateOmnibox(args));
+    this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs) => this.handlePopulateOmnibox(args));
   }
 
   /**
@@ -109,7 +109,7 @@ export class FieldSuggestions extends Component {
           $$(this.currentlyDisplayedSuggestions[suggestion].element).trigger('click');
         }
       } else {
-        let currentlySuggested = <{ element: HTMLElement, pos: number }>_.findWhere(<any>this.currentlyDisplayedSuggestions, {pos: suggestion});
+        let currentlySuggested = <{ element: HTMLElement, pos: number }>_.findWhere(<any>this.currentlyDisplayedSuggestions, { pos: suggestion });
         if (currentlySuggested) {
           $$(currentlySuggested.element).trigger('click');
         }
@@ -121,7 +121,7 @@ export class FieldSuggestions extends Component {
     Assert.exists(args);
 
     let valueToSearch = args.completeQueryExpression.word;
-    let promise = new Promise((resolve)=> {
+    let promise = new Promise((resolve) => {
       this.queryController.getEndpoint().listFieldValues(this.buildListFieldValueRequest(valueToSearch)).then((results: IIndexFieldValue[]) => {
         let element = this.suggestionForOmnibox.buildOmniboxElement(results, args);
         this.currentlyDisplayedSuggestions = {};
@@ -135,7 +135,7 @@ export class FieldSuggestions extends Component {
           element: element,
           zIndex: this.options.omniboxZIndex
         })
-      }).catch(()=> {
+      }).catch(() => {
         resolve({
           element: undefined
         })

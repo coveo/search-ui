@@ -83,12 +83,12 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @param otherOptions A set of additional options to use when configuring this endpoint
    */
   static configureCloudEndpoint(organization?: string, token?: string, uri: string = 'https://cloudplatform.coveo.com/rest/search', otherOptions?: ISearchEndpointOptions) {
-    var options: ISearchEndpointOptions= {
+    var options: ISearchEndpointOptions = {
       restUri: uri,
       accessToken: token,
-      queryStringArguments: {organizationId: organization}
+      queryStringArguments: { organizationId: organization }
     };
-    
+
     var merged = SearchEndpoint.mergeConfigOptions(options, otherOptions);
 
     SearchEndpoint.endpoints["default"] = new SearchEndpoint(SearchEndpoint.removeUndefinedConfigOption(merged))
@@ -116,7 +116,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       }
     });
     return config;
-  }  
+  }
 
   static mergeConfigOptions(first: ISearchEndpointOptions, second: ISearchEndpointOptions): ISearchEndpointOptions {
     first = SearchEndpoint.removeUndefinedConfigOption(first);
@@ -208,7 +208,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   public isJsonp(): boolean {
     return this.caller.useJsonp;
   }
-  
+
   /**
    * Perform a search on the index and returns a Promise of {@link IQueryResults}.<br/>
    * Will modify the query results slightly, by adding additional information on each results (an id, the state object, etc.)
@@ -710,21 +710,21 @@ export class SearchEndpoint implements ISearchEndpoint {
     uri += path;
     return uri;
   }
-  
+
   //All query strings are initially constructed by this function
   private buildBaseQueryString(callOptions?: IEndpointCallOptions, addAccessToken: boolean = false): string[] {
     var queryString: string[] = [];
 
     for (var name in this.options.queryStringArguments) {
       //The mapping workgroup --> organizationId is necessary for backward compatibility
-      if(name == 'workgroup'){
+      if (name == 'workgroup') {
         queryString.push('organizationId' + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
       }
-      else{
+      else {
         queryString.push(name + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
       }
     }
-    
+
     if (addAccessToken && Utils.isNonEmptyString(this.options.accessToken)) {
       queryString.push('access_token=' + encodeURIComponent(this.options.accessToken));
     }
