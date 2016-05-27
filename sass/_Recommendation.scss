@@ -1,0 +1,56 @@
+.CoveoRecommendation{
+  margin: 10px 0;
+  padding: 0;
+  @include defaultRoundedBorder();
+  position: relative;
+}
+
+.coveo-recommendation-header{
+  margin: 10px 0 0 0;
+  padding: 0 0 10px 0;
+}
+
+.coveo-recommendation-title{
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.coveo-recommendation-body{
+  background: $color-blueish-white;
+  margin-bottom: 1px;
+  
+  .CoveoResultList{
+    margin: 0;
+    
+    .CoveoResult{
+      margin: 0;
+      padding: 5px;
+      border-top: $default-border;
+      border-bottom: none;
+    }
+  }
+  
+}
+
+.coveo-recommendation-column{
+  width: 25%;
+  display: inline-block;
+  vertical-align: top;
+  padding: 5px 15px;
+}
+
+#coveo-recommendation-results-column{
+  width: 49%;
+  display: inline-block;
+}
+
+#coveo-recommendation-facet-column{
+  display: inline-block;
+  width: 22%;
+  vertical-align: top;
+}
+
+#coveo-recommendation-main-section{
+  max-width: 1450px;
+}

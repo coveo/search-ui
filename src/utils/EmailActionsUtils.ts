@@ -143,7 +143,6 @@ export class MailTo {
   static maxLength: number = 1000;
 
   constructor(public options?: MailToOptions) {
-    this.options = new DefaultMailToOptions().merge(options);
     this.removeCurrentUserFromParameters();
     if (this.options.originalFrom) {
       this.bodyHeader = this.options.bodyIsHTML ? '<p><br/><br/><br/>' + l('From') + ': ' + this.options.originalFrom + '<hr></p>' :

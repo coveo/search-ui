@@ -75,6 +75,9 @@
 /// <reference path="ui/ValueElementRendererTest.ts" />
 /// <reference path="ui/ExcerptTest.ts" />
 /// <reference path="ui/ResultLinkTest.ts" />
+/// <reference path="ui/RecommendationTest.ts" />
+/// <reference path="ui/RecommendationQueryTest.ts" />
+
 
 Coveo.Logger.disable();
 

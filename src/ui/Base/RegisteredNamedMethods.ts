@@ -12,7 +12,7 @@ import {BaseComponent} from '../Base/BaseComponent';
 import {Component} from '../Base/Component';
 import {StandaloneSearchInterfaceOptions} from '../SearchInterface/SearchInterface';
 import {IQueryResults} from '../../rest/QueryResults';
-import _ = require('underscore');
+import {IRecommendationOptions} from '../Recommendation/Recommendation';
 
 /**
  * Initialize the framework with a basic search interface. Calls {@link Initialization.initSearchInterface}.<br/>
@@ -53,6 +53,30 @@ export function initSearchbox(element: HTMLElement, searchPageUri: string, optio
 Initialization.registerNamedMethod('initSearchbox', (element: HTMLElement, searchPageUri: string, options: any = {}) => {
   initSearchbox(element, searchPageUri, options);
 });
+
+/**
+ * Initialize the framework with a recommendation interface. Calls {@link Initialization.initRecommendationInterface}.<br/>
+ * If using the jQuery extension, this is called using <code>$('#root').coveo('initRecommendation');</code>
+ * @param element The root of the interface to initialize
+ * @param mainSearchInterface The search interface to link with the recommendation interface. View {@link Recommendation}
+ * @param userContext The user context to pass with the query generated in the recommendation interface. View {@link Recommendation}
+ * @param options JSON options for the framework eg : <code>{Searchbox : {enableSearchAsYouType: true}}</code>
+ */
+export function initRecommendation(element: HTMLElement, mainSearchInterface: HTMLElement, userContext: {[name:string]:any} = {}, options: any = {}) {
+  var recommendationOptions = <IRecommendationOptions>{};
+  recommendationOptions.mainSearchInterface = mainSearchInterface;
+  recommendationOptions.userContext = userContext;
+  recommendationOptions.enableHistory = false;
+  options = _.extend({}, options, {Recommendation: recommendationOptions});
+  Initialization.initializeFramework(element, options, ()=> {
+    Initialization.initRecommendationInterface(element, options);
+  });
+}
+
+Initialization.registerNamedMethod('initRecommendation', (element: HTMLElement, mainSearchInterface: HTMLElement, userContext: any = {}, options: any = {}) => {
+  initRecommendation(element, mainSearchInterface, userContext, options);
+});
+
 
 /**
  * Execute a standard query. Active component in the interface will react to events/ push data in the query / handle the query success or failure as needed.<br/>

@@ -440,15 +440,7 @@ module Coveo {
         })
 
         it('for updateSubscription', function (done) {
-          var qbuilder = new QueryBuilder();
-          qbuilder.expression.add('batman');
-          var promiseSuccess = ep.updateSubscription({
-            id: 'foobar',
-            type: 'query',
-            typeConfig: {
-              query: qbuilder.build()
-            }
-          })
+          var promiseSuccess = ep.updateSubscription(getSubscriptionPromiseSuccess());
           promiseSuccess
               .then((sub: ISubscription)=> {
                 expect(sub.id).toBe('foobar');
@@ -469,15 +461,7 @@ module Coveo {
         })
 
         it('for deleteSubscription', function (done) {
-          var qbuilder = new QueryBuilder();
-          qbuilder.expression.add('batman');
-          var promiseSuccess = ep.deleteSubscription({
-            id: 'foobar',
-            type: 'query',
-            typeConfig: {
-              query: qbuilder.build()
-            }
-          })
+          var promiseSuccess = ep.deleteSubscription(getSubscriptionPromiseSuccess());
 
           promiseSuccess
               .then((sub: ISubscription)=> {
@@ -500,4 +484,21 @@ module Coveo {
       })
     })
   })
+  
+  function getSubscriptionPromiseSuccess(): ISubscription{
+    var qbuilder = new QueryBuilder();
+    qbuilder.expression.add('batman');
+    return {
+      id: 'foobar',
+      type: 'query',
+      typeConfig: {
+        query: qbuilder.build()
+      },
+      user: {
+        manageToken: '1',
+        email: '42@coveo.com'
+      }
+    }
+  }
+  
 }

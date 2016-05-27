@@ -149,3 +149,5 @@ export {ShareQuery} from './ui/ShareQuery/ShareQuery';
 export {Sort} from './ui/Sort/Sort';
 export {SortCriteria} from './ui/Sort/SortCriteria';
 export {Triggers} from './ui/Triggers/Triggers';
+export {Recommendation} from './ui/Recommendation/Recommendation';
+export {RecommendationQuery} from './ui/Recommendation/RecommendationQuery';

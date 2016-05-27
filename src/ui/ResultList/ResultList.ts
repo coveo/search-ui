@@ -1,24 +1,26 @@
-import {Template} from '../Templates/Template'
-import {DefaultResultTemplate} from '../Templates/DefaultResultTemplate'
-import {Component} from '../Base/Component'
-import {IComponentBindings} from '../Base/ComponentBindings'
-import {IResultsComponentBindings} from '../Base/ResultsComponentBindings'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {IQueryResult} from '../../rest/QueryResult'
-import {IQueryResults} from '../../rest/QueryResults'
-import {Assert} from '../../misc/Assert'
-import {QueryEvents, INewQueryEventArgs, IBuildingQueryEventArgs, IQuerySuccessEventArgs, IDuringQueryEventArgs, IQueryErrorEventArgs} from '../../events/QueryEvents'
-import {ModelEvents} from '../../models/Model'
-import {QueryStateAttributes} from '../../models/QueryStateModel'
-import {QueryUtils} from '../../utils/QueryUtils'
-import {$$, Win, Doc} from '../../utils/Dom'
-import {AnalyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta'
+import {Template} from '../Templates/Template';
+import {DefaultResultTemplate} from '../Templates/DefaultResultTemplate';
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {IQueryResult} from '../../rest/QueryResult';
+import {IQueryResults} from '../../rest/QueryResults';
+import {Assert} from '../../misc/Assert';
+import {QueryEvents, INewQueryEventArgs, IBuildingQueryEventArgs, IQuerySuccessEventArgs, IDuringQueryEventArgs, IQueryErrorEventArgs} from '../../events/QueryEvents';
+import {ModelEvents} from '../../models/Model';
+import {QueryStateAttributes} from '../../models/QueryStateModel';
+import {QueryUtils} from '../../utils/QueryUtils';
+import {$$, Win, Doc} from '../../utils/Dom';
+import {AnalyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
-import {Defer} from '../../misc/Defer'
-import {DeviceUtils} from '../../utils/DeviceUtils'
-import {ResultListEvents, IDisplayedNewResultEventArgs} from '../../events/ResultListEvents'
-import {Utils} from '../../utils/Utils'
-import {DomUtils} from '../../utils/DomUtils'
+import {Defer} from '../../misc/Defer';
+import {DeviceUtils} from '../../utils/DeviceUtils';
+import {ResultListEvents, IDisplayedNewResultEventArgs} from '../../events/ResultListEvents';
+import {Utils} from '../../utils/Utils';
+import {DomUtils} from '../../utils/DomUtils';
+import {Recommendation} from '../Recommendation/Recommendation';
+import {DefaultRecommendationTemplate} from '../Templates/DefaultRecommendationTemplate';
 
 export interface IResultListOptions {
   resultContainer?: HTMLElement;
@@ -58,7 +60,7 @@ export class ResultList extends Component {
         return d;
       }
     }),
-    resultTemplate: ComponentOptions.buildTemplateOption({ defaultFunction: (element: HTMLElement) => new DefaultResultTemplate() }),
+    resultTemplate: ComponentOptions.buildTemplateOption({ defaultFunction: ResultList.getDefaultTemplate }),
     /**
      * Specifies the type of animation to display while waiting for a new query to finish executing.<br/>
      * Possible values are :<br/>
@@ -473,6 +475,15 @@ export class ResultList extends Component {
       $$(spinner).detach();
     }
   }
+  
+  private static getDefaultTemplate(e: HTMLElement): Template{
+    let component = <ResultList>Component.get(e, ResultList)
+    if (component.searchInterface instanceof Recommendation){
+      return new DefaultRecommendationTemplate();
+    }
+    return new DefaultResultTemplate();
+  }
+  
 }
 
 Initialization.registerAutoCreateComponent(ResultList);

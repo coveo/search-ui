@@ -230,7 +230,7 @@ export class SearchInterface extends RootComponent {
     var eventNameQuickview = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.quickview);
     $$(this.element).on(eventNameQuickview, (e, args) => this.handleQuickviewChanged(args));
     //shows the UI, since it's been hidden while loading
-    this.element.style.display = 'block';
+    this.element.style.display = element.style.display || 'block';
     this.setupDebugInfo();
     this.isNewDesignAttribute = this.root.getAttribute('data-design') == 'new';
   }

@@ -179,6 +179,8 @@
     "src/ui/Sort/SortCriteria.ts",
     "src/ui/Sort/Sort.ts",
     "src/ui/Triggers/Triggers.ts",
-    "src/ui/Facet/ValueElementRenderer.ts"
+    "src/ui/Facet/ValueElementRenderer.ts",
+    "src/ui/Recommendation/Recommendation.ts",
+    "src/ui/Recommendation/RecommendationQuery.ts"
   ]
 }
