@@ -12,7 +12,7 @@ export interface ISearchButtonOptions {
 /**
  * A component that allows user to trigger a query by clicking on it.<br/>
  * This component will instantiate on an element and add a search icon.<br/>
- * It will also sends an analytics event to the coveo platform when clicked.<br/>
+ * It will also sends an analytics event to the coveo platform when clicked.
  * */
 export class SearchButton extends Component {
   static ID = 'SearchButton';

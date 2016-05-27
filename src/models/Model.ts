@@ -32,7 +32,7 @@ export interface IModelChangedEventArg {
 }
 
 /**
- * A model is basically a key -> value store that trigger various javascript event when one of the value for each of it's key changes.<br/>
+ * A model is basically a key -> value store that trigger letious javascript event when one of the value for each of it's key changes.<br/>
  * This is a class that is meant to be extended : the most important one probably being the {@link QueryStateModel}<br/>
  * Component set values in this key -> value store, and listen to event triggered to react accordingly.<br/>
  */
@@ -44,7 +44,7 @@ export class Model extends BaseComponent {
   public defaultAttributes: { [key: string]: any };
   private eventNameSpace;
 
-  //changeOne: is when one specific attribute change, change is when any attribute change
+  // changeOne: is when one specific attribute change, change is when any attribute change
   /**
    * The event type that can be triggered :<br/>
    * -- preprocess -> triggered before a value is set on an attribute, to allow to modify it before it's set.<br/>
@@ -52,11 +52,11 @@ export class Model extends BaseComponent {
    * @type {{preprocess: string, changeOne: string, change: string, reset: string, all: string}}
    */
   public static eventTypes = {
-    preprocess: "preprocess",
-    changeOne: "change:",
-    change: "change",
-    reset: "reset",
-    all: "all"
+    preprocess: 'preprocess',
+    changeOne: 'change:',
+    change: 'change',
+    reset: 'reset',
+    all: 'all'
   };
 
   constructor(element: HTMLElement, id: string, attributes: { [key: string]: any }) {
@@ -65,17 +65,17 @@ export class Model extends BaseComponent {
 
     this.defaultAttributes = Utils.extendDeep(this.defaultAttributes, attributes);
     this.attributes = attributes;
-    this.logger.debug("Creating model");
+    this.logger.debug('Creating model');
   }
 
   public set(attribute: string, value: any, options?: IModelSetOptions) {
-    var toSet: { [key: string]: any } = {};
+    let toSet: { [key: string]: any } = {};
     toSet[attribute] = value;
     this.setMultiple(toSet, options);
   }
 
   public getAttributes() {
-    var attributes: { [key: string]: any } = {};
+    let attributes: { [key: string]: any } = {};
     _.each(this.attributes, (attribute, key) => {
       if (_.isObject(attribute)) {
         if (!Utils.objectEqual(attribute, this.defaultAttributes[key])) {
@@ -89,7 +89,7 @@ export class Model extends BaseComponent {
   }
 
   public setMultiple(toSet: { [key: string]: any }, options?: IModelSetOptions) {
-    var anythingChanged = false;
+    let anythingChanged = false;
     this.preprocessEvent(toSet);
     _.each(<_.Dictionary<any>>toSet, (value, attribute?) => {
       if (!options || !options.customAttribute) {
@@ -151,7 +151,7 @@ export class Model extends BaseComponent {
   }
 
   public getEventName(event: string) {
-    return this.eventNameSpace + ":" + event;
+    return this.eventNameSpace + ':' + event;
   }
 
   private attributesHasChangedEvent() {
@@ -218,7 +218,7 @@ export class Model extends BaseComponent {
   }
 
   private checkIfAttributeChanged(attribute: string, newValue: any): boolean {
-    var oldValue = this.attributes[attribute];
+    let oldValue = this.attributes[attribute];
     if (_.isNumber(oldValue) || _.isString(oldValue) || _.isBoolean(oldValue)) {
       return oldValue !== newValue
     }

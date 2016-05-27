@@ -10,9 +10,9 @@ import {IAnalyticsActionCause, IAnalyticsDocumentViewMeta} from '../Analytics/An
 import {IStringMap} from '../../rest/GenericParam';
 import {BaseComponent} from '../Base/BaseComponent';
 import {Component} from '../Base/Component';
-import {StandaloneSearchInterfaceOptions} from '../SearchInterface/SearchInterface';
+import {IStandaloneSearchInterfaceOptions} from '../SearchInterface/SearchInterface';
 import {IQueryResults} from '../../rest/QueryResults';
-import _ = require('underscore');
+import {IRecommendationOptions} from '../Recommendation/Recommendation';
 
 /**
  * Initialize the framework with a basic search interface. Calls {@link Initialization.initSearchInterface}.<br/>
@@ -39,7 +39,7 @@ Initialization.registerNamedMethod('init', (element: HTMLElement, options: any =
  */
 export function initSearchbox(element: HTMLElement, searchPageUri: string, options: any = {}) {
   Assert.isNonEmptyString(searchPageUri);
-  var searchInterfaceOptions = <StandaloneSearchInterfaceOptions>{};
+  var searchInterfaceOptions = <IStandaloneSearchInterfaceOptions>{};
   searchInterfaceOptions.searchPageUri = searchPageUri;
   searchInterfaceOptions.autoTriggerQuery = false;
   searchInterfaceOptions.hideUntilFirstQuery = false;
@@ -53,6 +53,30 @@ export function initSearchbox(element: HTMLElement, searchPageUri: string, optio
 Initialization.registerNamedMethod('initSearchbox', (element: HTMLElement, searchPageUri: string, options: any = {}) => {
   initSearchbox(element, searchPageUri, options);
 });
+
+/**
+ * Initialize the framework with a recommendation interface. Calls {@link Initialization.initRecommendationInterface}.<br/>
+ * If using the jQuery extension, this is called using <code>$('#root').coveo('initRecommendation');</code>
+ * @param element The root of the interface to initialize
+ * @param mainSearchInterface The search interface to link with the recommendation interface. View {@link Recommendation}
+ * @param userContext The user context to pass with the query generated in the recommendation interface. View {@link Recommendation}
+ * @param options JSON options for the framework eg : <code>{Searchbox : {enableSearchAsYouType: true}}</code>
+ */
+export function initRecommendation(element: HTMLElement, mainSearchInterface: HTMLElement, userContext: {[name:string]:any} = {}, options: any = {}) {
+  var recommendationOptions = <IRecommendationOptions>{};
+  recommendationOptions.mainSearchInterface = mainSearchInterface;
+  recommendationOptions.userContext = userContext;
+  recommendationOptions.enableHistory = false;
+  options = _.extend({}, options, {Recommendation: recommendationOptions});
+  Initialization.initializeFramework(element, options, ()=> {
+    Initialization.initRecommendationInterface(element, options);
+  });
+}
+
+Initialization.registerNamedMethod('initRecommendation', (element: HTMLElement, mainSearchInterface: HTMLElement, userContext: any = {}, options: any = {}) => {
+  initRecommendation(element, mainSearchInterface, userContext, options);
+});
+
 
 /**
  * Execute a standard query. Active component in the interface will react to events/ push data in the query / handle the query success or failure as needed.<br/>
@@ -233,35 +257,35 @@ Initialization.registerNamedMethod('patch', (element?: HTMLElement, methodName?:
 
 export function initBox(element: HTMLElement, ...args: any[]) {
   var type, options: any = {}, injectMarkup;
-  //This means : initBox, no type (no injection) and no options
+  // This means : initBox, no type (no injection) and no options
   if (args.length == 0) {
-    type = "Standard";
+    type = 'Standard';
     injectMarkup = false;
   }
-  //One arg, might be options or type
+  // One arg, might be options or type
   else if (args.length == 1) {
-    //This mean a type (with injection) and no options
-    if (typeof args[0] == "string") {
+    // This mean a type (with injection) and no options
+    if (typeof args[0] == 'string') {
       type = args[0];
       injectMarkup = true;
     }
-    //This means no type(no injection) and with options
-    else if (typeof args[0] == "object") {
-      type = "Standard";
+    // This means no type(no injection) and with options
+    else if (typeof args[0] == 'object') {
+      type = 'Standard';
       injectMarkup = false;
       options = args[0];
     } else {
       Assert.fail('Invalid parameters to init a box');
     }
   }
-  //Two args mean both options and type (with injection);
+  // Two args mean both options and type (with injection);
   else if (args.length == 2) {
     type = args[0];
     options = args[1];
     injectMarkup = true;
   }
   var merged: any = {};
-  merged[type || "Container"] = _.extend({}, options.SearchInterface, options[type]);
+  merged[type || 'Container'] = _.extend({}, options.SearchInterface, options[type]);
   options = _.extend({}, options, merged);
   Initialization.initializeFramework(element, options, () => {
     Initialization.initBoxInterface(element, options, type, injectMarkup)

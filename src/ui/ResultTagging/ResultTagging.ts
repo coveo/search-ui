@@ -3,7 +3,7 @@
 
 
 module Coveo {
-  export interface ResultTaggingOptions {
+  export interface IResultTaggingOptions {
     field: string;
     suggestBoxSize?: number;
     autoCompleteTimer?: number;
@@ -18,7 +18,7 @@ module Coveo {
   export class ResultTagging extends Component {
     static ID = 'ResultTagging';
 
-    static options: ResultTaggingOptions = {
+    static options: IResultTaggingOptions = {
       field: ComponentOptions.buildFieldOption({ match: (field: IFieldDescription) => field.type == 'Tag', required: true }),
       suggestBoxSize: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0 }),
       autoCompleteTimer: ComponentOptions.buildNumberOption({ defaultValue: 2000, min: 0 })
@@ -32,7 +32,7 @@ module Coveo {
     private tagZone: JQuery;
     private tags: string[];
 
-    constructor(public element: HTMLElement, public options?: ResultTaggingOptions, bindings?: IComponentBindings, public result?: IQueryResult, public os?: OSUtils.NAME) {
+    constructor(public element: HTMLElement, public options?: IResultTaggingOptions, bindings?: IComponentBindings, public result?: IQueryResult, public os?: OSUtils.NAME) {
       super(element, ResultTagging.ID, bindings);
 
       this.options = ComponentOptions.initComponentOptions(element, ResultTagging, options);
@@ -43,7 +43,7 @@ module Coveo {
       Assert.exists(this.result);
 
       if (!this.options.field) {
-        this.logger.error("You must specify a field to the ResultTagging component");
+        this.logger.error('You must specify a field to the ResultTagging component');
       }
 
       this.tags = Utils.getFieldValue(this.result, this.options.field) || [];
@@ -66,10 +66,10 @@ module Coveo {
 
     private buildTagIcon(): JQuery {
       var tagZone = $('<div></div>').addClass('coveo-result-tagging-add-tag');
-      var tagTextBox = $('<span></span>').text(l("EnterTag")).addClass('coveo-result-tagging-add-tag-text');
+      var tagTextBox = $('<span></span>').text(l('EnterTag')).addClass('coveo-result-tagging-add-tag-text');
       tagZone.append($('<span></span>').addClass('coveo-result-tagging-add-tag-icon').click(() => setTimeout($.proxy(this.focusOnTextBox, this), 20)));
       tagZone.append(tagTextBox);
-      tagZone.attr('title', l("EnterTag"));
+      tagZone.attr('title', l('EnterTag'));
       return tagZone;
     }
 
@@ -86,14 +86,14 @@ module Coveo {
     }
 
     private buildShortenedTagWithTitle(tagValue: string): JQuery {
-      var shortenedTag = StringUtils.removeMiddle(tagValue, 16, "...");
+      var shortenedTag = StringUtils.removeMiddle(tagValue, 16, '...');
       var clickableValue = $('<a></a>').text(shortenedTag).attr('title', tagValue).attr('href', 'javascript:void;');
       this.bindFacetEventOnValue(clickableValue, tagValue);
       return clickableValue;
     }
 
     private buildTextBox(): JQuery {
-      this.textBox = $('<input/>').attr('type', 'text').addClass('coveo-add-tag-textbox').attr('placeholder', l("EnterTag"));
+      this.textBox = $('<input/>').attr('type', 'text').addClass('coveo-add-tag-textbox').attr('placeholder', l('EnterTag'));
       this.autoCompletePopup = $('<div></div>').addClass(ResultTagging.AUTO_COMPLETE_CLASS).appendTo($(this.autoCompleteZone));
       this.manageAutocompleteAutoHide();
       this.textBox.keyup((e: JQueryEventObject) => {
@@ -115,7 +115,7 @@ module Coveo {
     }
 
     private buildClearIcon(): JQuery {
-      return $('<div></div>').addClass('coveo-result-tagging-clear-icon').append($('<span></span>')).click(() => this.textBox.val(""));
+      return $('<div></div>').addClass('coveo-result-tagging-clear-icon').append($('<span></span>')).click(() => this.textBox.val(''));
     }
 
     private bindFacetEventOnValue(element: JQuery, value: string) {
@@ -125,7 +125,7 @@ module Coveo {
       var atLeastOneFacetIsEnabled = _.filter(facets, (value: Component) => !value.disabled).length > 0;
 
       if (facetModel != null && atLeastOneFacetIsEnabled) {
-        $(element).on("click", () => {
+        $(element).on('click', () => {
           if (_.contains(facetModel, value)) {
             this.queryStateModel.set(facetAttributeName, _.without(facetModel, value))
           } else {
@@ -198,12 +198,12 @@ module Coveo {
       });
       $(this.element).closest('.CoveoResult').mouseleave(() => {
         this.clearPopup();
-        if (this.textBox.val() == "") {
+        if (this.textBox.val() == '') {
           $(this.element).removeClass('coveo-opened');
         }
       });
       $(this.element).closest('.CoveoResult').focusout((e: JQueryEventObject) => {
-        if (this.textBox.val() != "" && ($(e.target).closest('.CoveoResult') != $(this.element).closest('.CoveoResult'))) {
+        if (this.textBox.val() != '' && ($(e.target).closest('.CoveoResult') != $(this.element).closest('.CoveoResult'))) {
           $(this.element).addClass('coveo-error');
         }
       });
@@ -213,14 +213,14 @@ module Coveo {
     }
 
     /**
-     Exclude tags that are already on the result (Since we can tag with the same value twice)
-     **/
+     * Exclude tags that are already on the result (Since we can tag with the same value twice)
+     * */
     private buildRegEx(searchTerm: string) {
       return '(?=.*' + searchTerm + ')' + _.map(this.tags, (tag: string) => this.buildTermToExclude(tag)).join('') + '.*';
     }
 
     private buildTermToExclude(term: string) {
-      return "(?!^" + term + "$)";
+      return '(?!^' + term + '$)';
     }
 
     private manageUpDownEnter(code: number) {
@@ -304,7 +304,7 @@ module Coveo {
           $(this.element).removeClass('coveo-error');
         })
         .catch(() => {
-          //We do this otherwise it's possible to add the same tag while we wait for the server's response
+          // We do this otherwise it's possible to add the same tag while we wait for the server's response
           this.tags = _.without(this.tags, _.findWhere(this.tags, tagValue));
         });
     }

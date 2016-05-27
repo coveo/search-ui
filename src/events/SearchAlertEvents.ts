@@ -1,11 +1,11 @@
 import {ISubscription} from '../rest/Subscription';
 
-export interface SearchAlertEventArgs {
+export interface ISearchAlertEventArgs {
   subscription: ISubscription;
   dom?: HTMLElement;
 }
 
-export interface SearchAlertsFailEventArgs {
+export interface ISearchAlertsFailEventArgs {
   dom?: HTMLElement;
 }
 

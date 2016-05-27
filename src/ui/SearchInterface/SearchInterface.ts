@@ -23,8 +23,8 @@ import {Debug} from '../Debug/Debug';
 import {HashUtils} from '../../utils/HashUtils';
 import _ = require('underscore');
 
-declare var FastClick;
-declare var jstz;
+declare let FastClick;
+declare let jstz;
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -93,8 +93,8 @@ export class SearchInterface extends RootComponent {
      */
     expression: ComponentOptions.buildStringOption({ defaultValue: '' }),
     /**
-     * Specifies the name of a field to use as a custom filter when executing the query (also referred to as "folding").<br/>
-     * Setting this option causes the index to return only one result having any particular value inside the filter field. Any other matching result is "folded" inside the childResults member of each JSON query result.<br/>
+     * Specifies the name of a field to use as a custom filter when executing the query (also referred to as 'folding').<br/>
+     * Setting this option causes the index to return only one result having any particular value inside the filter field. Any other matching result is 'folded' inside the childResults member of each JSON query result.<br/>
      * This feature is typically used with threaded conversations to include only one top-level result per conversation. Thus, the field specified in this option typically is a value unique to each thread that is shared by all items (e.g., posts, emails, etc.) in the thread.<br/>
      * This is obviously an advanced feature. Instead, look into using the {@link Folding} component, which covers a lot of different use cases.<br/>
      * By default none is added
@@ -110,11 +110,11 @@ export class SearchInterface extends RootComponent {
      * Specifies the animation that you wish to use for your interface.<br/>
      * This can be either a selector, or an element that matches the correct css class.<br/>
      * Eg : firstLoadingAnimation : '.CustomFirstLoadingAnimation' / data-first-loading-animation='.CustomFirstLoadingAnimation'.</br>
-     * Eg : &lt;element class="CoveoSearchInterface"&gt;&lt;element class="coveo-first-loading-animation"/&gt;&lt;/element&gt;<br/>
+     * Eg : &lt;element class='CoveoSearchInterface'&gt;&lt;element class='coveo-first-loading-animation'/&gt;&lt;/element&gt;<br/>
      * By default, this will be a Coveo CSS animation (which can also be customized with css)
      */
     firstLoadingAnimation: ComponentOptions.buildChildHtmlElementOption({
-      childSelector: ".coveo-first-loading-animation",
+      childSelector: '.coveo-first-loading-animation',
       defaultFunction: () => DomUtils.getBasicLoadingAnimation()
     }),
     /**
@@ -152,7 +152,7 @@ export class SearchInterface extends RootComponent {
     /**
      * Specifies the name of the query pipeline to use for the queries. If not specified, the default value is default, which means the default query pipeline will be used.<br/>
      * You can use this parameter for example when your index is in a Coveo Cloud Organization where you created pipelines (see https://onlinehelp.coveo.com/en/cloud/creating_and_managing_query_pipelines.htm).<br/>
-     * Default value is "default".
+     * Default value is 'default'.
      */
     pipeline: ComponentOptions.buildStringOption(),
     /**
@@ -180,7 +180,7 @@ export class SearchInterface extends RootComponent {
   public usageAnalytics: IAnalyticsClient;
 
   /**
-   * Create a new search interface. Initialize various singleton for the interface (eg : Usage analytic, query controller, state model, etc.)<br/>
+   * Create a new search interface. Initialize letious singleton for the interface (eg : Usage analytic, query controller, state model, etc.)<br/>
    * Bind event related to the query.<br/>
    * Will hide and show the loading animation, if activated.<br/>
    * @param element The HTMLElement on which the element will be instantiated. This cannot be an HTMLInputElement for technical reason
@@ -213,7 +213,7 @@ export class SearchInterface extends RootComponent {
     this.queryController = new QueryController(element, this.options, this.usageAnalytics, this);
 
 
-    var eventName = this.queryStateModel.getEventName(Model.eventTypes.preprocess);
+    let eventName = this.queryStateModel.getEventName(Model.eventTypes.preprocess);
     $$(this.element).on(eventName, (e, args) => this.handlePreprocessQueryStateModel(args));
     $$(this.element).on(QueryEvents.buildingQuery, (e, args) => this.handleBuildingQuery(args));
 
@@ -227,10 +227,10 @@ export class SearchInterface extends RootComponent {
       $$(this.element).on(InitializationEvents.restoreHistoryState, () => this.queryStateModel.setMultiple(this.queryStateModel.defaultAttributes))
     }
 
-    var eventNameQuickview = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.quickview);
+    let eventNameQuickview = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.quickview);
     $$(this.element).on(eventNameQuickview, (e, args) => this.handleQuickviewChanged(args));
-    //shows the UI, since it's been hidden while loading
-    this.element.style.display = 'block';
+    // shows the UI, since it's been hidden while loading
+    this.element.style.display = element.style.display || 'block';
     this.setupDebugInfo();
     this.isNewDesignAttribute = this.root.getAttribute('data-design') == 'new';
   }
@@ -269,8 +269,8 @@ export class SearchInterface extends RootComponent {
    * @param component The component instance to detach
    */
   public detachComponent(type: string, component: BaseComponent) {
-    var components = this.getComponents(type);
-    var index = _.indexOf(components, component);
+    let components = this.getComponents(type);
+    let index = _.indexOf(components, component);
     if (index > -1) {
       components.splice(index, 1);
     }
@@ -320,7 +320,7 @@ export class SearchInterface extends RootComponent {
   }
 
   protected initializeAnalytics(): IAnalyticsClient {
-    var analyticsRef = BaseComponent.getComponentRef('Analytics');
+    let analyticsRef = BaseComponent.getComponentRef('Analytics');
     if (analyticsRef) {
       return analyticsRef.create(this.element, this.analyticsOptions);
     }
@@ -345,11 +345,11 @@ export class SearchInterface extends RootComponent {
   }
 
   private handlePreprocessQueryStateModel(args: any) {
-    var tgFromModel = this.queryStateModel.get(QueryStateModel.attributesEnum.tg);
-    var tFromModel = this.queryStateModel.get(QueryStateModel.attributesEnum.t);
+    let tgFromModel = this.queryStateModel.get(QueryStateModel.attributesEnum.tg);
+    let tFromModel = this.queryStateModel.get(QueryStateModel.attributesEnum.t);
 
-    var tg = tgFromModel;
-    var t = tFromModel;
+    let tg = tgFromModel;
+    let t = tFromModel;
 
     // if you want to set the tab group
     if (args.tg !== undefined) {
@@ -379,9 +379,9 @@ export class SearchInterface extends RootComponent {
   }
 
   private getTabGroupId(tabGroupId: string) {
-    var tabGroupRef = BaseComponent.getComponentRef("TabGroup")
+    let tabGroupRef = BaseComponent.getComponentRef('TabGroup')
     if (tabGroupRef) {
-      var tabGroups = this.getComponents<any>(tabGroupRef.ID);
+      let tabGroups = this.getComponents<any>(tabGroupRef.ID);
       // check if the tabgroup is correct
       if (tabGroupId != QueryStateModel.defaultAttributes.tg && _.any(tabGroups, (tabGroup: any) => !tabGroup.disabled && tabGroupId == tabGroup.options.id)) {
         return tabGroupId;
@@ -395,21 +395,21 @@ export class SearchInterface extends RootComponent {
   }
 
   private getTabId(tabGroupId: string, tabId: string) {
-    var tabRef = BaseComponent.getComponentRef("Tab");
-    var tabGroupRef = BaseComponent.getComponentRef("TabGroup");
+    let tabRef = BaseComponent.getComponentRef('Tab');
+    let tabGroupRef = BaseComponent.getComponentRef('TabGroup');
     if (tabRef) {
-      var tabs = this.getComponents<any>(tabRef.ID);
+      let tabs = this.getComponents<any>(tabRef.ID);
       if (tabGroupRef) {
         // if has a tabGroup
         if (tabGroupId != QueryStateModel.defaultAttributes.tg) {
-          var tabGroups = this.getComponents<any>(tabGroupRef.ID);
-          var tabGroup = _.find(tabGroups, (tabGroup: any) => tabGroupId == tabGroup.options.id);
+          let tabGroups = this.getComponents<any>(tabGroupRef.ID);
+          let tabGroup = _.find(tabGroups, (tabGroup: any) => tabGroupId == tabGroup.options.id);
           // check if the tabgroup contain this tab
           if (tabId != QueryStateModel.defaultAttributes.t && _.any(tabs, (tab: any) => tabId == tab.options.id && tabGroup.isElementIncludedInTabGroup(tab.element))) {
             return tabId;
           }
           // select the first tab in the tabGroup
-          var tab = _.find(tabs, (tab: any) => tabGroup.isElementIncludedInTabGroup(tab.element));
+          let tab = _.find(tabs, (tab: any) => tabGroup.isElementIncludedInTabGroup(tab.element));
           if (tab != null) {
             return tab.options.id;
           }
@@ -429,16 +429,16 @@ export class SearchInterface extends RootComponent {
   }
 
   private getSort(tabId: string, sortId: string) {
-    var sortRef = BaseComponent.getComponentRef("Sort");
+    let sortRef = BaseComponent.getComponentRef('Sort');
     if (sortRef) {
-      var sorts = this.getComponents<any>(sortRef.ID);
+      let sorts = this.getComponents<any>(sortRef.ID);
       // if has a selected tab
-      var tabRef = BaseComponent.getComponentRef("Tab");
+      let tabRef = BaseComponent.getComponentRef('Tab');
       if (tabRef) {
         if (tabId != QueryStateModel.defaultAttributes.t) {
-          var tabs = this.getComponents<any>(tabRef.ID);
-          var tab = _.find(tabs, (tab: any) => tabId == tab.options.id);
-          var sortCriteria = tab.options.sort;
+          let tabs = this.getComponents<any>(tabRef.ID);
+          let tab = _.find(tabs, (tab: any) => tabId == tab.options.id);
+          let sortCriteria = tab.options.sort;
 
           // check if the tab contain this sort
           if (sortId != QueryStateModel.defaultAttributes.sort && _.any(sorts, (sort: any) => tab.isElementIncludedInTab(sort.element) && sort.match(sortId))) {
@@ -448,7 +448,7 @@ export class SearchInterface extends RootComponent {
             return sortCriteria.toString();
           }
           // select the first sort in the tab
-          var sort = _.find(sorts, (sort: any) => tab.isElementIncludedInTab(sort.element));
+          let sort = _.find(sorts, (sort: any) => tab.isElementIncludedInTab(sort.element));
           if (sort != null) {
             return sort.options.sortCriteria[0].toString();
           }
@@ -468,9 +468,9 @@ export class SearchInterface extends RootComponent {
   }
 
   private getQuickview(quickviewId: string) {
-    var quickviewRef = BaseComponent.getComponentRef("Quickview");
+    let quickviewRef = BaseComponent.getComponentRef('Quickview');
     if (quickviewRef) {
-      var quickviews = this.getComponents<any>(quickviewRef.ID);
+      let quickviews = this.getComponents<any>(quickviewRef.ID);
       if (_.any(quickviews, (quickview: any) => quickview.getHashId() == quickviewId)) {
         return quickviewId;
       }
@@ -479,11 +479,11 @@ export class SearchInterface extends RootComponent {
   }
 
   private handleQuickviewChanged(args: IAttributeChangedEventArg) {
-    var quickviewRef = BaseComponent.getComponentRef("Quickview");
+    let quickviewRef = BaseComponent.getComponentRef('Quickview');
     if (quickviewRef) {
-      var quickviews = this.getComponents<any>(quickviewRef.ID);
+      let quickviews = this.getComponents<any>(quickviewRef.ID);
       if (args.value != '') {
-        var quickviewsPartition = _.partition(quickviews, (quickview) => quickview.getHashId() == args.value)
+        let quickviewsPartition = _.partition(quickviews, (quickview) => quickview.getHashId() == args.value)
         if (quickviewsPartition[0].length != 0) {
           _.first(quickviewsPartition[0]).open();
           _.forEach(_.tail(quickviewsPartition[0]), (quickview) => quickview.close());
@@ -537,25 +537,25 @@ export class SearchInterface extends RootComponent {
 }
 
 
-export interface StandaloneSearchInterfaceOptions extends ISearchInterfaceOptions {
+export interface IStandaloneSearchInterfaceOptions extends ISearchInterfaceOptions {
   redirectIfEmpty?: boolean;
 }
 
 export class StandaloneSearchInterface extends SearchInterface {
   static ID = 'StandaloneSearchInterface'
 
-  public static options: StandaloneSearchInterfaceOptions = {
+  public static options: IStandaloneSearchInterfaceOptions = {
     redirectIfEmpty: ComponentOptions.buildBooleanOption({ defaultValue: true })
   }
 
-  constructor(public element: HTMLElement, public options?: StandaloneSearchInterfaceOptions, public analyticsOptions?, _window = window) {
+  constructor(public element: HTMLElement, public options?: IStandaloneSearchInterfaceOptions, public analyticsOptions?, _window = window) {
     super(element, ComponentOptions.initComponentOptions(element, StandaloneSearchInterface, options), analyticsOptions, _window);
     $$(this.root).on(QueryEvents.newQuery, (e: Event, args: INewQueryEventArgs) => this.handleRedirect(e, args));
   }
 
   public handleRedirect(e: Event, data: INewQueryEventArgs) {
 
-    var dataToSendOnBeforeRedirect: BeforeRedirectEventArgs = {
+    let dataToSendOnBeforeRedirect: BeforeRedirectEventArgs = {
       searchPageUri: this.options.searchPageUri,
       cancel: false
     }
@@ -574,12 +574,12 @@ export class StandaloneSearchInterface extends SearchInterface {
   }
 
   public redirectToSearchPage(searchPage: string) {
-    var stateValues = this.queryStateModel.getAttributes();
-    var UACauseBy = this.usageAnalytics.getCurrentEventCause();
+    let stateValues = this.queryStateModel.getAttributes();
+    let UACauseBy = this.usageAnalytics.getCurrentEventCause();
     if (UACauseBy != null) {
       stateValues['firstQueryCause'] = UACauseBy;
     }
-    var UAMeta = this.usageAnalytics.getCurrentEventMeta();
+    let UAMeta = this.usageAnalytics.getCurrentEventMeta();
     if (UAMeta != null) {
       stateValues['firstQueryMeta'] = UAMeta;
     }

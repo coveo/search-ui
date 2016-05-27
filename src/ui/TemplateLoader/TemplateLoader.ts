@@ -6,7 +6,7 @@ import {IQueryResult} from '../../rest/QueryResult';
 import {Assert} from '../../misc/Assert';
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
 
-export interface TemplateLoaderOptions {
+export interface ITemplateLoaderOptions {
   template: Template;
   condition?: String;
 }
@@ -14,12 +14,12 @@ export interface TemplateLoaderOptions {
 export class TemplateLoader extends Component {
   static ID = 'TemplateLoader';
 
-  static options: TemplateLoaderOptions = {
+  static options: ITemplateLoaderOptions = {
     template: ComponentOptions.buildTemplateOption(),
     condition: ComponentOptions.buildStringOption()
   };
 
-  constructor(public element: HTMLElement, public options?: TemplateLoaderOptions, public bindings?: IComponentBindings, public result?: IQueryResult) {
+  constructor(public element: HTMLElement, public options?: ITemplateLoaderOptions, public bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, TemplateLoader.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, TemplateLoader, options);
     this.result = this.result || this.resolveResult();
@@ -44,10 +44,10 @@ export class TemplateLoader extends Component {
         result: this.result
       };
 
-      var parents = $(this.element).parents("." + Component.computeCssClassName(TemplateLoader));
+      var parents = $(this.element).parents('.' + Component.computeCssClassName(TemplateLoader));
       _.each(parents, (parent) => {
         var parentHTML = $(parent).clone().children().remove().end().get(0).outerHTML;
-        Assert.check(parentHTML.indexOf(this.element.outerHTML) === -1, "TemplateLoader cannot load a template into itself.")
+        Assert.check(parentHTML.indexOf(this.element.outerHTML) === -1, 'TemplateLoader cannot load a template into itself.')
       })
 
       this.element.innerHTML = this.options.template.instantiateToString(this.result, false);

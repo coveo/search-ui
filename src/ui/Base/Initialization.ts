@@ -15,7 +15,7 @@ import {ComponentStateModel} from '../../models/ComponentStateModel';
 import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
 import {IAnalyticsNoMeta, AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {BaseComponent} from '../Base/BaseComponent';
-import _ = require('underscore');
+import {Recommendation} from '../Recommendation/Recommendation';
 
 /**
  * Represent the initialization parameters required to init a new component
@@ -179,6 +179,19 @@ export class Initialization {
     var initParameters: IInitializationParameters = { options: options, bindings: searchInterface.getBindings() };
     Initialization.automaticallyCreateComponentsInside(element, initParameters);
   }
+  
+  /**
+   * Create a new recommendation search interface. This is the function executed when calling Coveo.initRecommendation
+   * @param element
+   * @param options
+   */
+  public static initRecommendationInterface(element: HTMLElement, options: any = {}) {
+    options = Initialization.resolveDefaultOptions(element, options);
+    var recommendation = new Recommendation(element, options.Recommendation, options.Analytics);
+    recommendation.options.originalOptionsObject = options;
+    var initParameters: IInitializationParameters = {options: options, bindings: recommendation.getBindings()};
+    Initialization.automaticallyCreateComponentsInside(element, initParameters);
+  }
 
   /**
    * Scan the element and all it's children for known component. Initialize every known component found
@@ -283,8 +296,8 @@ export class Initialization {
 
     var componentClass;
     if (methodName.indexOf('.') > 0) {
-      var splitArg = methodName.split(".");
-      Assert.check(splitArg.length == 2, "Invalid method name, correct syntax is CoveoComponent.methodName.");
+      var splitArg = methodName.split('.');
+      Assert.check(splitArg.length == 2, 'Invalid method name, correct syntax is CoveoComponent.methodName.');
       componentClass = splitArg[0];
       methodName = <string>splitArg[1];
     }
@@ -411,7 +424,7 @@ export class Initialization {
   }
 
   private static initExternalComponents(element: HTMLElement, options?: any) {
-    if (options && options["externalComponents"]) {
+    if (options && options['externalComponents']) {
       var searchInterface = <SearchInterface>Component.get(element, SearchInterface);
       var queryStateModel = <QueryStateModel>Component.get(element, QueryStateModel);
       var componentStateModel = <ComponentStateModel>Component.get(element, ComponentStateModel);
@@ -454,7 +467,7 @@ export class Initialization {
           if (Utils.exists(initParameters.options)) {
             var optionsForComponentClass = initParameters.options[componentClassId];
             var optionsForElementId = initParameters.options[matchingElement.id];
-            var initOptions = initParameters.options["initOptions"] ? initParameters.options["initOptions"][componentClassId] : {};
+            var initOptions = initParameters.options['initOptions'] ? initParameters.options['initOptions'][componentClassId] : {};
             optionsToUse = Utils.extendDeep(optionsForElementId, initOptions);
             optionsToUse = Utils.extendDeep(optionsForComponentClass, optionsToUse);
           }

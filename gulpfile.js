@@ -9,7 +9,7 @@ requireDir('./gulpTasks');
 gulp.task('default', ['build', 'buildLegacy']);
 
 gulp.task('build', function (done) {
-  runsequence('clean', ['css', 'fileTypes', 'sprites', 'strings', 'setup'], 'src', done);
+  runsequence('clean', ['css', 'fileTypes', 'sprites', 'strings', 'setup', 'templates'], 'src', done);
 });
 
 gulp.task('src', function (done) {
@@ -17,7 +17,7 @@ gulp.task('src', function (done) {
 })
 
 gulp.task('buildLegacy', function (done) {
-  runsequence(['cssLegacy', 'fileTypesLegacy', 'spritesLegacy'], done)
+  runsequence(['cssLegacy', 'fileTypesLegacy', 'spritesLegacy', 'templatesLegacy'], done)
 });
 
 gulp.task('clean', function (done) {

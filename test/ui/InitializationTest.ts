@@ -122,5 +122,33 @@ module Coveo {
       });
       expect(Component.get(external) instanceof Pager).toBe(true);
     })
+    
+    describe('when initializing recommendation interface', function () {
+      var options;
+      beforeEach(function() {
+        options = {
+          Recommendation: {
+            endpoint: endpoint,
+            mainSearchInterface: root,
+            userContext: {}
+          },
+          SearchInterface: {}
+        }
+        Mock.initPageViewScript(null)
+      })
+      
+      afterEach(function(){
+        options = null;
+        coveoanalytics = undefined
+      })
+      
+      it('should be able to generate to components', function () {
+        expect(Component.get(queryBox) instanceof Querybox).toBe(false);
+        Initialization.initRecommendationInterface(root, options);
+        expect(Component.get(queryBox) instanceof Querybox).toBe(true);
+      })
+      
+    })
+    
   })
 }

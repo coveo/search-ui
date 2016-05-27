@@ -95,6 +95,12 @@ export class QueryBuilder {
    */
   public enableQuestionMarks: boolean;
   /**
+   * Whether to disable the special query syntax such as field references for the basic query expression (parameter q).
+   * It is equivalent to a No syntax block applied to the basic query expression.
+   * If not specified, the parameter defaults to false
+   */
+  public disableQuerySyntax: boolean = false;
+  /**
    * Whether to enable the support for operator in lowercase (AND OR -> and or)
    */
   public enableLowercaseOperators: boolean;
@@ -179,7 +185,7 @@ export class QueryBuilder {
    * -- nosort : Do not sort the results. The order in which items are returned is essentially random.<br/>
    * -- @field ascending / @field descending : Sort using the value of a custom field.
    */
-  public sortCriteria: string = "relevancy";
+  public sortCriteria: string = 'relevancy';
   public sortField: string;
   public retrieveFirstSentences: boolean = true;
   public timezone: string;
@@ -244,6 +250,7 @@ export class QueryBuilder {
       groupBy: this.groupByRequests,
       retrieveFirstSentences: this.retrieveFirstSentences,
       timezone: this.timezone,
+      disableQuerySyntax: this.disableQuerySyntax,
       enableDuplicateFiltering: this.enableDuplicateFiltering,
       enableCollaborativeRating: this.enableCollaborativeRating,
       debug: this.enableDebug,

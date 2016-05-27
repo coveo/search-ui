@@ -1,4 +1,4 @@
-import {SuggestionForOmniboxOptions, SuggestionForOmnibox, SuggestionForOmniboxTemplate} from '../Misc/SuggestionForOmnibox';
+import {ISuggestionForOmniboxOptions, SuggestionForOmnibox, ISuggestionForOmniboxTemplate} from '../Misc/SuggestionForOmnibox';
 import {Component} from '../Base/Component';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
@@ -9,12 +9,12 @@ import {IIndexFieldValue} from '../../rest/FieldValue';
 import {IListFieldValuesRequest} from '../../rest/ListFieldValuesRequest';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import {Initialization} from '../Base/Initialization';
-import {OmniboxDataRow} from '../Omnibox/OmniboxInterface';
+import {IOmniboxDataRow} from '../Omnibox/OmniboxInterface';
 import {AnalyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
 import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom';
 
-export interface IFieldSuggestionsOptions extends SuggestionForOmniboxOptions {
+export interface IFieldSuggestionsOptions extends ISuggestionForOmniboxOptions {
   field?: string;
   queryOverride?: string;
 }
@@ -76,7 +76,7 @@ export class FieldSuggestions extends Component {
 
     let rowTemplate = _.template(`<div class='magic-box-suggestion coveo-omnibox-selectable coveo-top-field-suggestion-row'><%= data %></div>`);
 
-    let suggestionStructure: SuggestionForOmniboxTemplate;
+    let suggestionStructure: ISuggestionForOmniboxTemplate;
     if (this.searchInterface.isNewDesign()) {
       suggestionStructure = {
         row: rowTemplate

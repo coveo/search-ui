@@ -1,16 +1,16 @@
 import {ResponsiveTabs} from './ResponsiveTabs.ts';
-import {SearchEndpoint} from '../../rest/SearchEndpoint';
 import {Component} from '../Base/Component';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
-import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
 import {ModelEvents, IAttributeChangedEventArg} from '../../models/Model';
-import {QueryStateAttributes, QueryStateModel} from '../../models/QueryStateModel';
+import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
+import {QueryStateModel, QueryStateAttributes} from '../../models/QueryStateModel';
 import {AnalyticsActionCauseList, IAnalyticsInterfaceChange} from '../Analytics/AnalyticsActionListMeta';
+import {SearchEndpoint} from '../../rest/SearchEndpoint';
 import {Initialization} from '../Base/Initialization';
+import {Utils} from '../../utils/Utils';
 import {Assert} from '../../misc/Assert';
 import {DeviceUtils} from '../../utils/DeviceUtils';
-import {Utils} from '../../utils/Utils';
 import {$$} from '../../utils/Dom';
 
 export interface ITabOptions {
@@ -31,9 +31,9 @@ export interface ITabOptions {
  * The component attaches itself to an div element and is in charge of adding an advanced expression to the query and thus, modify the outgoing query in order to refine the results in relation to the selected tab.<br/>
  * It also allows to hide and show different parts of the UI. In order to do so, each component of the UI can specify whether or not it wishes to be included or excluded from a specific tab.<br/>
  * Eg : <br/>
- * * &lt;div data-tab='foobar'&gt; -> Include this element only in the tab with the id 'foobar'.<br/>
- * * &lt;div data-tab-not='foobar'&gt; -> DO NOT include this element in the tab id 'foobar'.<br/>
- * * &lt;div data-tab='foobar,somethingelse'&gt; -> Include this element only in the tab with the id 'foobar' or 'somethingelse'.
+ * * &lt;div data-tab="foobar"&gt; -> Include this element only in the tab with the id 'foobar'.<br/>
+ * * &lt;div data-tab-not="foobar"&gt; -> DO NOT include this element in the tab id 'foobar'.<br/>
+ * * &lt;div data-tab="foobar,somethingelse"&gt; -> Include this element only in the tab with the id 'foobar' or 'somethingelse'.
  */
 export class Tab extends Component {
   static ID = 'Tab';
@@ -62,12 +62,12 @@ export class Tab extends Component {
     /**
      * Specifies an advanced expression / filter that this tab adds to any outgoing query.<br/>
      * eg : @objecttype==Message.<br/>
-     * This is optional, normally a 'All Content' tab would not set any filter on the query.
+     * This is optional, normally a "All Content" tab would not set any filter on the query.
      */
     expression: ComponentOptions.buildStringOption(),
     /**
      * Specifies the endpoint that a tab should point to when performing query inside that tab.<br/>
-     * This is optional, by default the tab will use the 'default' endpoint
+     * This is optional, by default the tab will use the "default" endpoint
      */
     endpoint: ComponentOptions.buildCustomOption((endpoint) => endpoint != null ? SearchEndpoint.endpoints[endpoint] : null),
     /**
@@ -148,8 +148,8 @@ export class Tab extends Component {
   public isElementIncludedInTab(element: HTMLElement): boolean {
     Assert.exists(element);
 
-    let includedTabs = this.splitListOfTabs(element.getAttribute('data-tab'));
-    let excludedTabs = this.splitListOfTabs(element.getAttribute('data-tab-not'));
+    var includedTabs = this.splitListOfTabs(element.getAttribute('data-tab'));
+    var excludedTabs = this.splitListOfTabs(element.getAttribute('data-tab-not'));
     Assert.check(!(includedTabs.length != 0 && excludedTabs.length != 0), 'You cannot both explicity include and exclude an element from tabs');
 
     return (includedTabs.length != 0 && _.indexOf(includedTabs, this.options.id) != -1) ||
@@ -162,16 +162,16 @@ export class Tab extends Component {
   }
 
   private render() {
-    let icon = this.options.icon;
+    var icon = this.options.icon;
     if (Utils.isNonEmptyString(icon)) {
-      let icnSpan = document.createElement('span');
+      var icnSpan = document.createElement('span');
       $$(icnSpan).addClass(['coveo-icon', icon]);
       this.element.insertBefore(icnSpan, this.element.firstChild);
     }
 
-    let caption = this.options.caption;
+    var caption = this.options.caption;
     if (Utils.isNonEmptyString(caption)) {
-      let captionP = document.createElement('p');
+      var captionP = document.createElement('p');
       $$(captionP).text(caption);
       this.element.appendChild(captionP);
     }
@@ -217,13 +217,13 @@ export class Tab extends Component {
   }
 
   protected isSelected(): boolean {
-    let activeTab = this.queryStateModel.get(QueryStateModel.attributesEnum.t);
+    var activeTab = this.queryStateModel.get(QueryStateModel.attributesEnum.t);
     return activeTab == this.options.id;
   }
 
   private showAndHideAppropriateElements() {
-    let showElements = [];
-    let hideElements = [];
+    var showElements = [];
+    var hideElements = [];
 
     _.each($$(this.root).findAll('[data-tab],[data-tab-not]'), (element) => {
       if (this.isElementIncludedInTab(element)) {
@@ -252,8 +252,8 @@ export class Tab extends Component {
   private toggleAllComponentsUnder(element: HTMLElement, enable: boolean) {
     Assert.exists(element);
 
-    let togglePossibleComponent = (possibleComponent: HTMLElement) => {
-      let possibleCmp = Component.get(possibleComponent, undefined, true);
+    var togglePossibleComponent = (possibleComponent: HTMLElement) => {
+      var possibleCmp = Component.get(possibleComponent, undefined, true);
       if (possibleCmp) {
         if (enable) {
           possibleCmp.enable();

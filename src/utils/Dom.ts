@@ -58,6 +58,24 @@ export class Dom {
 
     return elem;
   }
+  
+  /**
+   * Adds the element to the children of the current element
+   * @param element The element to append
+   * @returns {string}
+   */
+  public append(element: HTMLElement) {
+    this.el.appendChild(element);
+  }
+
+  /**
+  * Get the css value of the specified property.<br/>
+  * @param property The property
+  * @returns {string}
+  */
+  public css(property: string): string {
+    return window.getComputedStyle(this.el).getPropertyValue(property);
+  }
 
   /**
    * Get or set the text content of the HTMLElement.<br/>
@@ -99,6 +117,13 @@ export class Dom {
       this.el.removeChild(this.el.firstChild);
     }
   }
+  
+  /**
+   * Empty the element and all childs from the dom;
+   */
+  public remove(): void {
+    this.el.parentNode.removeChild(this.el);
+  }
 
   /**
    * Show the element;
@@ -133,6 +158,23 @@ export class Dom {
         this.hide();
       }
     }
+  }
+  
+  /**
+   * Returns the value of the specified attribute.
+   * @param name The name of the attribute
+   */
+  public getAttribute(name: string): string {
+    return this.el.getAttribute(name);
+  }
+
+  /**
+   * Sets the value of the specified attribute.
+   * @param name The name of the attribute
+   * @param value The value to set
+   */
+  public setAttribute(name: string, value: string) {
+    this.el.setAttribute(name, value);
   }
 
   /**
@@ -204,6 +246,33 @@ export class Dom {
    */
   public children(): HTMLElement[] {
     return this.nodeListToArray(this.el.children);
+  }
+  
+  /**
+   * Return all siblings
+   * @returns {HTMLElement[]}
+   */
+  public siblings(selector: string): HTMLElement[] {
+    let sibs = [];
+    let currentElement = <HTMLElement>this.el.parentNode.firstChild;
+    for (; currentElement; currentElement = <HTMLElement>currentElement.nextSibling) {
+      if (currentElement != this.el) {
+        if (this.matches(currentElement, selector) || !selector) {
+          sibs.push(currentElement);
+        }
+      }
+    }
+    return sibs;
+  }
+
+  private matches(element: HTMLElement, selector: string) {
+    var all = document.querySelectorAll(selector);
+    for (var i = 0; i < all.length; i++) {
+      if (all[i] === element) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
@@ -287,6 +356,14 @@ export class Dom {
       }
     }
   }
+  
+  /**
+   * Sets the inner html of the element
+   * @param html The html to set
+   */
+  public setHtml(html: string) {
+    this.el.innerHTML = html;
+  }
 
   /**
    * Return an array with all the classname on the element. Empty array if the element has not classname
@@ -327,7 +404,7 @@ export class Dom {
   public insertBefore(refNode: HTMLElement): void {
     refNode.parentNode && refNode.parentNode.insertBefore(this.el, refNode);
   }
-
+  
   /**
    * Insert the given node as the first child of the current node
    * @param toPrepend
@@ -479,6 +556,20 @@ export class Dom {
     }
     this.detach();
   }
+  
+  /**
+   * Returns the offset width of the element
+   */
+  public width() {
+    return this.el.offsetWidth;
+  }
+
+  /**
+   * Returns the offset height of the element
+   */
+  public height() {
+    return this.el.offsetHeight;
+  }
 
   private getJQuery() {
     if (window['jQuery'] != undefined) {
@@ -486,6 +577,7 @@ export class Dom {
     }
     return false;
   }
+
 }
 
 export class Win {

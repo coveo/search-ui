@@ -4,19 +4,19 @@ import {OmniboxValueElement} from '../Facet/OmniboxValueElement';
 import {HierarchicalFacet} from './HierarchicalFacet';
 import {FacetValue} from '../Facet/FacetValues';
 import {IPopulateOmniboxObject} from '../Omnibox/OmniboxInterface';
-import {ValueElementEventsBinding} from '../Facet/ValueElement';
+import {IValueElementEventsBinding} from '../Facet/ValueElement';
 
 export class OmniboxHierarchicalValueElement extends OmniboxValueElement {
   constructor(public facet: HierarchicalFacet, public facetValue: FacetValue, public eventArg: IPopulateOmniboxObject) {
     super(facet, facetValue, eventArg)
   }
 
-  public _handleSelectValue(eventBindings: ValueElementEventsBinding) {
+  public _handleSelectValue(eventBindings: IValueElementEventsBinding) {
     this.facet.open(this.facetValue);
     super.handleSelectValue(eventBindings);
   }
 
-  public _handleExcludeClick(eventBindings: ValueElementEventsBinding) {
+  public _handleExcludeClick(eventBindings: IValueElementEventsBinding) {
     this.facet.open(this.facetValue);
     super.handleExcludeClick(eventBindings);
   }

@@ -16,7 +16,7 @@ import {IStringMap} from '../rest/GenericParam';
 import {Promise} from 'es6-promise';
 import _ = require('underscore');
 
-export interface AnalyticsEndpointOptions {
+export interface IAnalyticsEndpointOptions {
   token: string;
   serviceUrl: string;
   organization: string;
@@ -36,11 +36,11 @@ export class AnalyticsEndpoint {
   private organization: string;
   public endpointCaller: EndpointCaller;
 
-  constructor(public options: AnalyticsEndpointOptions) {
+  constructor(public options: IAnalyticsEndpointOptions) {
     this.logger = new Logger(this);
 
     var endpointCallerOptions: IEndpointCallerOptions = {
-      accessToken: (this.options.token && this.options.token != "") ? this.options.token : null
+      accessToken: (this.options.token && this.options.token != '') ? this.options.token : null
     }
     this.endpointCaller = new EndpointCaller(endpointCallerOptions);
     this.organization = options.organization;
@@ -128,7 +128,7 @@ export class AnalyticsEndpoint {
   }
 
   private getFromService<T>(url: string, params: IStringMap<string>): Promise<T> {
-    var paramsToSend = (this.options.token && this.options.token != "") ? _.extend({ "access_token": this.options.token }, params) : params;
+    var paramsToSend = (this.options.token && this.options.token != '') ? _.extend({ 'access_token': this.options.token }, params) : params;
     return this.endpointCaller.call<T>({
       errorsAsSuccess: false,
       method: 'GET',

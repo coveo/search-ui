@@ -403,7 +403,7 @@ export class SliderButton {
     if (this.isMouseDown) {
       document.body.style[this.getUserSelect()] = this.origUserSelect;
       document.body.style.cursor = this.origCursor;
-      $$(this.element).removeClass("coveo-active");
+      $$(this.element).removeClass('coveo-active');
       $$(this.element).trigger(SliderEvents.endSlide, <IEndSlideEventArgs>{
         button: this,
         slider: this.slider
@@ -434,8 +434,7 @@ export class SliderButton {
     } else if (e.pageX || e.pageY) {
       posx = e.pageX;
       posy = e.pageY;
-    }
-    else if (e.clientX || e.clientY) {
+    } else if (e.clientX || e.clientY) {
       posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
       posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
     }
@@ -545,8 +544,8 @@ class SliderCaption {
   public separator: string;
 
   constructor(public slider: Slider) {
-    this.separator = "-";
-    this.unitSign = "";
+    this.separator = '-';
+    this.unitSign = '';
     if (this.slider.options.displayAsPercent && this.slider.options.displayAsPercent.enable) {
       this.separator = this.slider.options.displayAsPercent.separator != undefined ? this.slider.options.displayAsPercent.separator : this.separator;
     } else if (this.slider.options.displayAsValue && this.slider.options.displayAsValue.enable) {
@@ -652,7 +651,7 @@ class SliderGraph {
       this.setXAndYRange(width, height);
       this.setXAndYDomain(data);
 
-      var bars = this.svg.selectAll(".coveo-bar").data(data);
+      var bars = this.svg.selectAll('.coveo-bar').data(data);
       var currentSliderValues = this.slider.getValues();
       this.renderGraphBars(bars, width, height, currentSliderValues);
       this.setGraphBarsTransition(bars, height, currentSliderValues);
