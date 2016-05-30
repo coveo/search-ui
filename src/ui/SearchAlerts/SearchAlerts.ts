@@ -49,7 +49,6 @@ export class SearchAlerts extends Component {
     this.options = ComponentOptions.initComponentOptions(element, SearchAlerts, options);
 
     if (this.options.enableMessage) {
-      new SearchAlertsMessage(element, { closeDelay: this.options.messageCloseDelay }, this.getBindings());
       this.message = new SearchAlertsMessage(element, { closeDelay: this.options.messageCloseDelay }, this.getBindings());
     }
     
@@ -96,7 +95,7 @@ export class SearchAlerts extends Component {
     })
   }
 
-  public openPanel() {
+  public openPanel(): Promise<ISubscription> {
     var title = $$('div');
     title.el.innerHTML = `<div class='coveo-subscriptions-panel-close'><span></span></div><div class='coveo-subscriptions-panel-title'>${l('SearchAlerts_Panel')}`;
     $$(title.find('.coveo-subscriptions-panel-close')).on('click', () => {
@@ -126,7 +125,7 @@ export class SearchAlerts extends Component {
         </tbody>
       </table>`;
 
-    this.queryController.getEndpoint().listSubscriptions()
+    return this.queryController.getEndpoint().listSubscriptions()
       .then((subscriptions: ISubscription[]) => {
         _.each(subscriptions, (subscription) => {
           this.addSearchAlert(subscription, container)
