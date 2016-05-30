@@ -49,7 +49,14 @@ export class ResponsiveTabs {
           this.tabSection.el.appendChild(this.dropdownHeader.el);
           for (let i = tabs.length - 1; i >= 0; i--) {
             currentTab = tabs[i];
+            
+            if ($$(currentTab).hasClass('coveo-selected') && i > 0) {
+                currentTab = tabs[--i];
+            }
+            
             this.addToDropdown(currentTab);
+            
+            
             if (!this.isOverflowing(this.tabSection.el)) {
               break;
             }
@@ -193,8 +200,7 @@ export class ResponsiveTabs {
   private static bindDropdownContentEvents() {
     this.documentClickListener = event => {
       let eventTarget = $$(<HTMLElement>event.target);
-      if (!eventTarget.closest('coveo-tab-list-container')
-        && !eventTarget.closest('coveo-tab-dropdown-header')) {
+      if (!eventTarget.closest('coveo-tab-list-container') && !eventTarget.closest('coveo-tab-dropdown-header')) {
         this.dropdownContent.detach();
         this.dropdownHeader.removeClass('coveo-tab-dropdown-header-active');
       }
@@ -270,6 +276,6 @@ export class ResponsiveTabs {
   
   private static positionPopup() {
     PopupUtils.positionPopup(this.dropdownContent.el, this.dropdownHeader.el, this.coveoRoot, this.coveoRoot,
-          { verticalOffset: -69, horizontal: HorizontalAlignment.CENTER, vertical: VerticalAlignment.BOTTOM });
+          { verticalOffset: -54, horizontal: HorizontalAlignment.CENTER, vertical: VerticalAlignment.BOTTOM });
   }
 }
