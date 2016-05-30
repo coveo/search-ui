@@ -376,7 +376,7 @@ export class ResultList extends Component {
   }
 
   private isScrollingOfResultListAlmostAtTheBottom(): boolean {
-    //this is in a try catch because the unit test fail otherwise (Window does not exist for phantom js in the console)
+    // this is in a try catch because the unit test fail otherwise (Window does not exist for phantom js in the console)
     var isWindow;
     try {
       isWindow = this.options.infiniteScrollContainer instanceof Window;

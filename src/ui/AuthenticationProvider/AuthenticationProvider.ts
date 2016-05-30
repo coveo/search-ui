@@ -49,7 +49,7 @@ export class AuthenticationProvider extends Component {
      * displayed in the user interface while logging in.<br/>
      * If not specified, it will default to {@link options.name name}.
      */
-    caption: ComponentOptions.buildStringOption({postProcessing: (value, options) => value || options.name}),
+    caption: ComponentOptions.buildStringOption({ postProcessing: (value, options) => value || options.name }),
     /**
      * Specifies whether an `<iframe>` will be used to host the chain of
      * redirections that make up the authentication process.<br/>
@@ -58,7 +58,7 @@ export class AuthenticationProvider extends Component {
      * Using an `<iframe>` avoids leaving the search page as part of the authentication
      * process, but some login providers will refuse to load in an `<iframe>`.
      */
-    useIFrame: ComponentOptions.buildBooleanOption({defaultValue: false, attrName: 'data-use-iframe'}),
+    useIFrame: ComponentOptions.buildBooleanOption({ defaultValue: false, attrName: 'data-use-iframe' }),
     /**
      * Specifies whether the `<iframe>` used for authentication will be made
      * visible to the user (inside a popup).<br/>

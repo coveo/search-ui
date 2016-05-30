@@ -495,8 +495,8 @@ export class FacetSlider extends Component {
   }
 
   private copyValues(values: number[]) {
-    //Creating a copy of the values prevents an unwanted automatic update of the state while sliding
-    //That's the cleanest way I found to copy that array correctly
+    // Creating a copy of the values prevents an unwanted automatic update of the state while sliding
+    // That's the cleanest way I found to copy that array correctly
     var copyOfValues = [];
     copyOfValues[0] = Number(values[0]) + 0.0;
     copyOfValues[1] = Number(values[1]) + 0.0;
@@ -540,10 +540,10 @@ export class FacetSlider extends Component {
   private generateBoundary(): number[] {
     var start: number, end: number;
     if (!this.slider) {
-      //If the slider is not initialized, the only boundary we can get is from the state.
+      // If the slider is not initialized, the only boundary we can get is from the state.
       return this.generateBoundaryFromState();
     } else {
-      //Else, try to get one from the slider itself. If we cant, try to return one from the state.
+      // Else, try to get one from the slider itself. If we cant, try to return one from the state.
       var boundary = this.generateBoundaryFromSlider();
       if (boundary[0] == undefined && boundary[1] == undefined) {
         return this.generateBoundaryFromState();

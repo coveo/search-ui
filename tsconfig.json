@@ -191,6 +191,9 @@
     "src/ui/Misc/SuggestionForOmnibox.ts",
     "src/ui/Omnibox/OmniboxInterface.ts",
     "src/ui/FieldSuggestions/FieldSuggestions.ts",
-    "src/ui/AuthenticationProvider/AuthenticationProvider.ts"
+    "src/ui/AuthenticationProvider/AuthenticationProvider.ts",
+    "src/ui/ResultTagging/ResultTagging.ts",
+    "src/ui/PipelineContext/PipelineContext.ts",
+    "src/ui/OmniboxResultList/OmniboxResultList.ts"
   ]
 }

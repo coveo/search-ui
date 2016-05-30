@@ -155,3 +155,6 @@ export {SuggestionForOmnibox} from './ui/Misc/SuggestionForOmnibox';
 export {AnalyticsSuggestions} from './ui/AnalyticsSuggestions/AnalyticsSuggestions';
 export {FieldSuggestions} from './ui/FieldSuggestions/FieldSuggestions';
 export {AuthenticationProvider} from './ui/AuthenticationProvider/AuthenticationProvider';
+export {ResultTagging} from './ui/ResultTagging/ResultTagging';
+export {PipelineContext, context} from './ui/PipelineContext/PipelineContext';
+export {OmniboxResultList} from './ui/OmniboxResultList/OmniboxResultList';

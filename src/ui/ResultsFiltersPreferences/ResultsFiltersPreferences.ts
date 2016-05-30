@@ -4,7 +4,7 @@ import {IComponentBindings} from '../Base/ComponentBindings';
 import {LocalStorageUtils} from '../../utils/LocalStorageUtils';
 import {KEYBOARD} from '../../utils/KeyboardUtils';
 import {PreferencesPanel} from '../PreferencesPanel/PreferencesPanel';
-import {PreferencesPanelCheckboxInput, PreferencesPanelTextAreaInput, PreferencePanelMultiSelectInput, PreferencePanelInputToBuild} from '../PreferencesPanel/PreferencesPanelItem';
+import {PreferencesPanelCheckboxInput, PreferencesPanelTextAreaInput, PreferencePanelMultiSelectInput, IPreferencePanelInputToBuild} from '../PreferencesPanel/PreferencesPanelItem';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {PreferencesPanelEvents} from '../../events/PreferencesPanelEvents';
 import {ModelEvents} from '../../models/Model';
@@ -219,12 +219,12 @@ export class ResultsFiltersPreferences extends Component {
   }
 
   private buildAdvancedFilterInput() {
-    this.advancedFiltersTextInputCaption = new PreferencesPanelTextAreaInput(<PreferencePanelInputToBuild[]>[{
+    this.advancedFiltersTextInputCaption = new PreferencesPanelTextAreaInput(<IPreferencePanelInputToBuild[]>[{
       label: l('Caption'),
       placeholder: l('EnterExpressionName'),
       otherAttribute: 'required'
     }], ResultsFiltersPreferences.ID + '-advanced-caption');
-    this.advancedFiltersTextInputExpression = new PreferencesPanelTextAreaInput(<PreferencePanelInputToBuild[]>[{
+    this.advancedFiltersTextInputExpression = new PreferencesPanelTextAreaInput(<IPreferencePanelInputToBuild[]>[{
       label: l('Expression'),
       placeholder: l('EnterExpressionToFilterWith'),
       otherAttribute: 'required'
@@ -282,8 +282,8 @@ export class ResultsFiltersPreferences extends Component {
     $$(this.advancedFilterFormValidate).on('submit', (e: Event) => this.validateAndSaveAdvancedFilter(e));
   }
 
-  private getAdvancedFiltersTextInputToBuild(): PreferencePanelInputToBuild[] {
-    return <PreferencePanelInputToBuild[]>[{
+  private getAdvancedFiltersTextInputToBuild(): IPreferencePanelInputToBuild[] {
+    return <IPreferencePanelInputToBuild[]>[{
       label: l('Caption'),
       otherAttribute: 'required'
     }, {
@@ -304,7 +304,7 @@ export class ResultsFiltersPreferences extends Component {
     }
   }
 
-  private getPreferencesBoxInputToBuild(): PreferencePanelInputToBuild[] {
+  private getPreferencesBoxInputToBuild(): IPreferencePanelInputToBuild[] {
     return _.map(this.preferences, (filter: IResultFilterPreference) => {
       return {
         label: filter.caption,

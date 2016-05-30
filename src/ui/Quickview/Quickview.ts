@@ -18,7 +18,7 @@ import {QuickviewEvents} from '../../events/QuickviewEvents'
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
 import {KEYBOARD} from '../../utils/KeyboardUtils'
 
-export interface QuickviewOptions {
+export interface IQuickviewOptions {
   title?: string;
   showDate?: boolean;
   contentTemplate?: Template;
@@ -28,11 +28,15 @@ export interface QuickviewOptions {
   size?: string;
 }
 
-interface QuickviewOpenerObject {
+interface IQuickviewOpenerObject {
   content: Dom;
   loadingAnimation: HTMLElement
 }
 
+/**
+ * This component is meant to exist within a result template.
+ * It allows to create a button/link inside the result list that opens a modal box for a given result.
+ */
 export class Quickview extends Component {
   static ID = 'Quickview';
 
@@ -43,11 +47,32 @@ export class Quickview extends Component {
     'author' // analytics
   ];
 
-  static options: QuickviewOptions = {
+  /**
+   * @componentOptions
+   */
+  static options: IQuickviewOptions = {
+    /**
+     * Specifies whether the quickview is always shown, even when the index body for a document is empty.<br/>
+     * In such cases, the {@link Quickview.options.contentTemplate} specifies what appears in the quickview.<br/>
+     * If there is no quickview for the document, you *MUST* specify a contentTemplate otherwise the component will throw an error when opened.
+     */
     alwaysShow: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    /**
+     * Specifies the title of your choice that appears at the top of the Quick View modal window.
+     */
     title: ComponentOptions.buildStringOption(),
+    /**
+     * Specifies whether to show the document date in the Quick View modal window header.<br/>
+     * The default value is `true`.
+     */
     showDate: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     enableLoadingAnimation: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    /**
+     * Specifies the template to use to present the Quick View content in the modal window.<br/>
+     * eg : <br/>
+     *     <div class="CoveoQuickview" data-template-id="TemplateId"></div>
+     *     <div class="CoveoQuickview" data-template-selector=".templateSelector"></div>
+     */
     contentTemplate: ComponentOptions.buildTemplateOption({
       selectorAttr: 'data-template-selector',
       idAttr: 'data-template-id'
@@ -70,6 +95,10 @@ export class Quickview extends Component {
       }
       return DomUtils.getBasicLoadingAnimation();
     }),
+    /**
+     * Specifies the Quick View modal window size (width and height) relative to the full window.<br/>
+     * The default value is 95% on a desktop and 100% on a mobile device.
+     */
     size: ComponentOptions.buildStringOption({ defaultValue: DeviceUtils.isMobileDevice() ? '100%' : '95%' })
   };
 
@@ -77,7 +106,7 @@ export class Quickview extends Component {
   private modalbox: Coveo.ModalBox.ModalBox;
   private bindedHandleEscapeEvent = this.handleEscapeEvent.bind(this);
 
-  constructor(public element: HTMLElement, public options?: QuickviewOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {
+  constructor(public element: HTMLElement, public options?: IQuickviewOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {
     super(element, Quickview.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Quickview, options);
 
@@ -108,6 +137,9 @@ export class Quickview extends Component {
     this.bind.on($$(this.bindings.resultElement), ResultListEvents.openQuickview, () => this.open());
   }
 
+  /**
+   * Open the quickview
+   */
   public open() {
     if (this.modalbox == null) {
       // To prevent the keyboard from opening on mobile if the search bar has focus
@@ -122,16 +154,19 @@ export class Quickview extends Component {
     }
   }
 
-  public getHashId() {
-    return this.result.queryUid + '.' + this.result.index + '.' + StringUtils.hashCode(this.result.uniqueId);
-  }
-
+  /**
+   * Close the quickview
+   */
   public close() {
     if (this.modalbox != null) {
       this.modalbox.close();
       this.modalbox = null;
       $$(document.body).off('keyup', this.bindedHandleEscapeEvent);
     }
+  }
+
+  public getHashId() {
+    return this.result.queryUid + '.' + this.result.index + '.' + StringUtils.hashCode(this.result.uniqueId);
   }
 
   private bindClick(result: IQueryResult) {
@@ -142,7 +177,7 @@ export class Quickview extends Component {
     }
   }
 
-  private bindQuickviewEvents(openerObject: QuickviewOpenerObject) {
+  private bindQuickviewEvents(openerObject: IQuickviewOpenerObject) {
 
     let closeButton = $$(this.modalbox.wrapper).find('.coveo-quickview-close-button');
     $$(closeButton).on('click', () => {
@@ -180,7 +215,7 @@ export class Quickview extends Component {
     }
   }
 
-  private createModalBox(openerObject: QuickviewOpenerObject) {
+  private createModalBox(openerObject: IQuickviewOpenerObject) {
 
     var computedModalBoxContent = $$('div')
     computedModalBoxContent.append(openerObject.content.el);

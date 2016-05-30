@@ -1,4 +1,4 @@
-/// <reference path="../Facet/Facet.ts" />
+/// <reference path='../Facet/Facet.ts' />
 
 import {IFacetOptions, Facet} from '../Facet/Facet';
 import {IRangeValue} from '../../rest/RangeValue';
@@ -38,7 +38,7 @@ export class FacetRange extends Facet {
 
   public getValueCaption(facetValue: any): string {
     var ret = super.getValueCaption(facetValue);
-    if (Utils.exists(this.options.valueCaption) && typeof this.options.valueCaption == "string") {
+    if (Utils.exists(this.options.valueCaption) && typeof this.options.valueCaption == 'string') {
       var startEnd = /^(.*)\.\.(.*)$/.exec(facetValue.value);
       if (startEnd != null) {
         var helper = TemplateHelpers.getHelper(this.options.valueCaption);

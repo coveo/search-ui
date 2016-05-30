@@ -2,7 +2,7 @@ import {$$} from '../../utils/Dom';
 import {Assert} from '../../misc/Assert';
 import {Utils} from '../../utils/Utils';
 
-export interface PreferencePanelInputToBuild {
+export interface IPreferencePanelInputToBuild {
   label: string;
   placeholder?: string;
   tab?: string[];
@@ -13,15 +13,15 @@ export interface PreferencePanelInputToBuild {
 export class PreferencesPanelBoxInput {
   public inputs: { [label: string]: HTMLElement } = {};
 
-  private inputTemplate = _.template("<div class='coveo-choice-container'>\
-      <div class='coveo-section coveo-section-input'>\
-        <input <%- otherAttribute %> class='coveo-<%- label %>' id='coveo-<%- label %>' type='<%- type %>' name='<%- name%>' value='<%- label %>' ></input><span class='coveo-input-icon'></span><label class='coveo-preferences-panel-item-label' for='coveo-<%- label %>'><%- label %></label>\
+  private inputTemplate = _.template('<div class=\'coveo-choice-container\'>\
+      <div class=\'coveo-section coveo-section-input\'>\
+        <input <%- otherAttribute %> class=\'coveo-<%- label %>\' id=\'coveo-<%- label %>\' type=\'<%- type %>\' name=\'<%- name%>\' value=\'<%- label %>\' ></input><span class=\'coveo-input-icon\'></span><label class=\'coveo-preferences-panel-item-label\' for=\'coveo-<%- label %>\'><%- label %></label>\
       </div>\
-      <div class='coveo-section coveo-section-tab'><%- tab %></div>\
-    <div class='coveo-section coveo-section-expression'><%- expression %></div>\
-    </div>");
+      <div class=\'coveo-section coveo-section-tab\'><%- tab %></div>\
+    <div class=\'coveo-section coveo-section-expression\'><%- expression %></div>\
+    </div>');
 
-  constructor(private boxInputToBuild: PreferencePanelInputToBuild[], private nameOfInput: string, private type: string) {
+  constructor(private boxInputToBuild: IPreferencePanelInputToBuild[], private nameOfInput: string, private type: string) {
   }
 
   public build(): HTMLElement {
@@ -76,13 +76,13 @@ export class PreferencesPanelBoxInput {
 }
 
 export class PreferencesPanelRadioInput extends PreferencesPanelBoxInput {
-  constructor(private radioElementToBuild: PreferencePanelInputToBuild[], private name: string) {
+  constructor(private radioElementToBuild: IPreferencePanelInputToBuild[], private name: string) {
     super(radioElementToBuild, name, 'radio');
   }
 }
 
 export class PreferencesPanelCheckboxInput extends PreferencesPanelBoxInput {
-  constructor(private checkboxElementToBuild: PreferencePanelInputToBuild[], public name: string) {
+  constructor(private checkboxElementToBuild: IPreferencePanelInputToBuild[], public name: string) {
     super(checkboxElementToBuild, name, 'checkbox');
   }
 
@@ -107,9 +107,9 @@ export class PreferencesPanelCheckboxInput extends PreferencesPanelBoxInput {
 
 export class PreferencesPanelTextInput {
   public inputs: { [label: string]: HTMLElement } = {};
-  public inputTemplate = _.template("<div class='coveo-choice-container'><input <%- otherAttribute %> class='coveo-<%- label %>' id='coveo-<%- label %>' type='<%- type %>' name='<%- name%>' placeholder='<%- placeholder %>' ></input></div>");
+  public inputTemplate = _.template('<div class=\'coveo-choice-container\'><input <%- otherAttribute %> class=\'coveo-<%- label %>\' id=\'coveo-<%- label %>\' type=\'<%- type %>\' name=\'<%- name%>\' placeholder=\'<%- placeholder %>\' ></input></div>');
 
-  constructor(public textElementToBuild: PreferencePanelInputToBuild[], public name: string) {
+  constructor(public textElementToBuild: IPreferencePanelInputToBuild[], public name: string) {
   }
 
   public build(): HTMLElement {
@@ -161,7 +161,7 @@ export class PreferencesPanelTextInput {
 }
 
 export class PreferencesPanelTextAreaInput extends PreferencesPanelTextInput {
-  public inputTemplate = _.template("<div class='coveo-choice-container'><textarea <%- otherAttribute %> class='coveo-<%- label %>' id='coveo-<%- label %>' name='<%- name%>' placeholder='<%- placeholder %>' ></textarea></div>");
+  public inputTemplate = _.template('<div class=\'coveo-choice-container\'><textarea <%- otherAttribute %> class=\'coveo-<%- label %>\' id=\'coveo-<%- label %>\' name=\'<%- name%>\' placeholder=\'<%- placeholder %>\' ></textarea></div>');
 
   public build(): HTMLElement {
     return _.reduce(_.map(this.textElementToBuild, (toBuild) => {
@@ -183,7 +183,7 @@ export class PreferencePanelMultiSelectInput {
   private textInput: PreferencesPanelTextAreaInput;
   private select: HTMLSelectElement;
 
-  constructor(private toBuild: PreferencePanelInputToBuild, public options: string[], public name: string) {
+  constructor(private toBuild: IPreferencePanelInputToBuild, public options: string[], public name: string) {
     this.textInput = new PreferencesPanelTextAreaInput([{ label: toBuild.label, otherAttribute: 'readonly' }], name);
   }
 
