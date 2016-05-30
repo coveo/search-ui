@@ -1,7 +1,15 @@
+import {Component} from '../Base/Component';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
+import {IQueryResult} from '../../rest/QueryResult';
+import {Assert} from '../../misc/Assert';
+import {SearchAlertEvents, ISearchAlertEventArgs, ISearchAlertsFailEventArgs} from '../../events/SearchAlertEvents';
+import {ISubscription, ISubscriptionItemRequest, SubscriptionType, ISubscriptionRequest} from '../../rest/Subscription';
+import {Initialization} from '../Base/Initialization';
+import {l} from '../../strings/Strings';
+import {$$, Dom} from '../../utils/Dom';
 
 
-
-module Coveo {
   export interface IFollowItemOptions {
     watchedFields?: string[];
     modifiedDateField?: string;
@@ -19,8 +27,8 @@ module Coveo {
       modifiedDateField: ComponentOptions.buildStringOption(),
     };
 
-    private container: JQuery;
-    private text: JQuery;
+    private container: Dom;
+    private text: Dom;
     private subscription: ISubscription;
 
     constructor(public element: HTMLElement,
@@ -34,13 +42,13 @@ module Coveo {
 
       Assert.exists(this.result);
 
-      this.container = $(this.element);
-      this.text = $('<span />');
-      this.container.append(this.text);
-      this.container.on('click', $.proxy(this.toggleFollow, this));
+      this.container = $$(this.element);
+      this.text = $$('span');
+      this.container.append(this.text.el);
+      this.container.on('click', ()=>{this.toggleFollow()});
 
-      $(this.root).on(SearchAlertEvents.searchAlertDeleted, $.proxy(this.handleSubscriptionDeleted, this));
-      $(this.root).on(SearchAlertEvents.searchAlertCreated, $.proxy(this.handleSubscriptionCreated, this));
+      $$(this.root).on(SearchAlertEvents.searchAlertDeleted, (e: Event, args: ISearchAlertEventArgs)=>{this.handleSubscriptionDeleted(e, args)});
+      $$(this.root).on(SearchAlertEvents.searchAlertCreated, (e: Event, args: ISearchAlertEventArgs)=>{this.handleSubscriptionCreated(e, args)});
 
       this.container.addClass('coveo-follow-item-loading');
 
@@ -51,14 +59,18 @@ module Coveo {
       this.queryController.getEndpoint()
         .listSubscriptions()
         .then((subscriptions: ISubscription[]) => {
-          var subscription: ISubscription = _.find(subscriptions, (subscription: ISubscription) => {
-            var typeConfig = <ISubscriptionItemRequest>subscription.typeConfig;
-            return typeConfig && typeConfig.id != null && typeConfig.id == this.getId();
-          });
-          if (subscription != null) {
-            this.setFollowed(subscription);
+          if (_.isArray(subscriptions)){
+            var subscription: ISubscription = _.find(subscriptions, (subscription: ISubscription) => {
+              var typeConfig = <ISubscriptionItemRequest>subscription.typeConfig;
+              return typeConfig && typeConfig.id != null && typeConfig.id == this.getId();
+            });
+            if (subscription != null) {
+              this.setFollowed(subscription);
+            } else {
+              this.setNotFollowed();
+            }
           } else {
-            this.setNotFollowed();
+            this.remove();
           }
         })
         .catch(() => {
@@ -91,40 +103,40 @@ module Coveo {
           this.queryController.getEndpoint()
             .deleteSubscription(this.subscription)
             .then(() => {
-              var eventArgs: SearchAlertEventArgs = {
+              var eventArgs: ISearchAlertEventArgs = {
                 subscription: this.subscription,
                 dom: this.element
               };
-              $(this.root).trigger(SearchAlertEvents.searchAlertDeleted, eventArgs);
+              $$(this.root).trigger(SearchAlertEvents.searchAlertDeleted, eventArgs);
             })
             .catch(() => {
               this.container.removeClass('coveo-follow-item-loading');
-              var eventArgs: SearchAlertsFailEventArgs = {
+              var eventArgs: ISearchAlertsFailEventArgs = {
                 dom: this.element
               };
-              $(this.root).trigger(SearchAlertEvents.SearchAlertsFail, eventArgs);
+              $$(this.root).trigger(SearchAlertEvents.SearchAlertsFail, eventArgs);
             })
         } else {
           this.queryController.getEndpoint().follow(this.subscription)
             .then((subscription: ISubscription) => {
-              var eventArgs: SearchAlertEventArgs = {
+              var eventArgs: ISearchAlertEventArgs = {
                 subscription: subscription,
                 dom: this.element
               };
-              $(this.root).trigger(SearchAlertEvents.searchAlertCreated, eventArgs);
+              $$(this.root).trigger(SearchAlertEvents.searchAlertCreated, eventArgs);
             })
             .catch(() => {
               this.container.removeClass('coveo-follow-item-loading');
-              var eventArgs: SearchAlertsFailEventArgs = {
+              var eventArgs: ISearchAlertsFailEventArgs = {
                 dom: this.element
               };
-              $(this.root).trigger(SearchAlertEvents.SearchAlertsFail, eventArgs);
+              $$(this.root).trigger(SearchAlertEvents.SearchAlertsFail, eventArgs);
             })
         }
       }
     }
 
-    private handleSubscriptionDeleted(e: JQueryEventObject, args: SearchAlertEventArgs) {
+    private handleSubscriptionDeleted(e: Event, args: ISearchAlertEventArgs) {
       if (args.subscription.type == SubscriptionType.followDocument) {
         var typeConfig = <ISubscriptionItemRequest>args.subscription.typeConfig;
         if (typeConfig.id == this.getId()) {
@@ -133,7 +145,7 @@ module Coveo {
       }
     }
 
-    private handleSubscriptionCreated(e: JQueryEventObject, args: SearchAlertEventArgs) {
+    private handleSubscriptionCreated(e: Event, args: ISearchAlertEventArgs) {
       if (args.subscription.type == SubscriptionType.followDocument) {
         var typeConfig = <ISubscriptionItemRequest>args.subscription.typeConfig;
         if (typeConfig.id == this.getId()) {
@@ -172,4 +184,3 @@ module Coveo {
   }
 
   Initialization.registerAutoCreateComponent(FollowItem);
-}

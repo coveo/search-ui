@@ -155,3 +155,6 @@ export {Template} from './ui/Templates/Template';
 export {SuggestionForOmnibox} from './ui/Misc/SuggestionForOmnibox';
 export {AnalyticsSuggestions} from './ui/AnalyticsSuggestions/AnalyticsSuggestions';
 export {FieldSuggestions} from './ui/FieldSuggestions/FieldSuggestions';
+export {FollowItem} from './ui/SearchAlerts/FollowItem';
+export {SearchAlertsMessage} from './ui/SearchAlerts/SearchAlertsMessage';
+export {SearchAlerts} from './ui/SearchAlerts/SearchAlerts';

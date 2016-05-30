@@ -192,6 +192,9 @@
     "src/ui/Omnibox/OldOmniboxAddon.ts",
     "src/ui/Misc/SuggestionForOmnibox.ts",
     "src/ui/Omnibox/OmniboxInterface.ts",
-    "src/ui/FieldSuggestions/FieldSuggestions.ts"
+    "src/ui/FieldSuggestions/FieldSuggestions.ts",
+    "src/ui/SearchAlerts/FollowItem.ts",
+    "src/ui/SearchAlerts/SearchAlertsMessage.ts",
+    "src/ui/SearchAlerts/SearchAlerts.ts"
   ]
 }
