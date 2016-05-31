@@ -56,7 +56,7 @@ export class Utils {
   static isHtmlElement(obj: any): boolean {
     if (window['HTMLElement'] != undefined) {
       return obj instanceof HTMLElement;
-    } else { //IE 8 FIX
+    } else { // IE 8 FIX
       return obj && obj.nodeType && obj.nodeType == 1
     }
   }

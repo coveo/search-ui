@@ -196,7 +196,7 @@
     "src/ui/AuthenticationProvider/AuthenticationProvider.ts",
     "src/ui/ResultTagging/ResultTagging.ts",
     "src/ui/PipelineContext/PipelineContext.ts",
-    "src/ui/OmniboxResultList/OmniboxResultList.ts"
+    "src/ui/OmniboxResultList/OmniboxResultList.ts",
     "src/ui/ResultsPreferences/ResultsPreferences.ts"
   ]
 }

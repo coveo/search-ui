@@ -69,10 +69,10 @@ export class Dom {
   }
 
   /**
-  * Get the css value of the specified property.<br/>
-  * @param property The property
-  * @returns {string}
-  */
+   * Get the css value of the specified property.<br/>
+   * @param property The property
+   * @returns {string}
+   */
   public css(property: string): string {
     return window.getComputedStyle(this.el).getPropertyValue(property);
   }
