@@ -11,55 +11,55 @@ import {HtmlTemplate} from '../Templates/HtmlTemplate';
 import {Utils} from '../../utils/Utils';
 import _ = require('underscore');
 
-export interface LoadOption<T> {
-  (element: HTMLElement, name: string, option: Option<T>): T
+export interface IComponentOptionsLoadOption<T> {
+  (element: HTMLElement, name: string, option: IComponentOptionsOption<T>): T
 }
 
-export interface PostProcessing<T> {
+export interface IComponentOptionsPostProcessing<T> {
   (value: T, options: any): T
 }
 
-export interface Option<T> extends OptionArgs<T> {
+export interface IComponentOptionsOption<T> extends IComponentOptions<T> {
   type?: Type;
-  load?: LoadOption<T>;
+  load?: IComponentOptionsLoadOption<T>;
 }
 
-export interface OptionArgs<T> {
+export interface IComponentOptions<T> {
   defaultValue?: T;
   defaultFunction?: (element: HTMLElement) => T;
   required?: boolean;
-  postProcessing?: PostProcessing<T>;
+  postProcessing?: IComponentOptionsPostProcessing<T>;
   attrName?: string;
   section?: string;
   depend?: string;
   priority?: number;
 }
 
-export interface NumberOption extends Option<number>, NumberOptionArgs {
+export interface IComponentOptionsNumberOption extends IComponentOptionsOption<number>, IComponentOptionsNumberOptionArgs {
 }
-export interface NumberOptionArgs extends OptionArgs<number> {
+export interface IComponentOptionsNumberOptionArgs extends IComponentOptions<number> {
   min?: number;
   max?: number;
   float?: boolean;
 }
 
-export interface ListOption extends Option<string[]>, ListOptionArgs {
+export interface IComponentOptionsListOption extends IComponentOptionsOption<string[]>, IComponentOptionsListOptionArgs {
 }
-export interface ListOptionArgs extends OptionArgs<string[]> {
+export interface IComponentOptionsListOptionArgs extends IComponentOptions<string[]> {
   separator?: RegExp;
   values?: any;
 }
 
-export interface ChildHtmlElementOption extends Option<HTMLElement>, ChildHtmlElementOptionArgs {
+export interface IComponentOptionsChildHtmlElementOption extends IComponentOptionsOption<HTMLElement>, IComponentOptionsChildHtmlElementOptionArgs {
 }
-export interface ChildHtmlElementOptionArgs extends OptionArgs<HTMLElement> {
+export interface IComponentOptionsChildHtmlElementOptionArgs extends IComponentOptions<HTMLElement> {
   selectorAttr?: string;
   childSelector?: string;
 }
 
-export interface TemplateOption extends Option<Template>, TemplateOptionArgs {
+export interface IComponentOptionsTemplateOption extends IComponentOptionsOption<Template>, IComponentOptionsTemplateOptionArgs {
 }
-export interface TemplateOptionArgs extends OptionArgs<Template> {
+export interface IComponentOptionsTemplateOptionArgs extends IComponentOptions<Template> {
   selectorAttr?: string;
   childSelector?: string;
   idAttr?: string;
@@ -67,9 +67,9 @@ export interface TemplateOptionArgs extends OptionArgs<Template> {
   lazy?: boolean;
 }
 
-export interface FieldOption extends Option<string>, FieldOptionArgs {
+export interface IComponentOptionsFieldOption extends IComponentOptionsOption<string>, IComponentOptionsFieldOptionArgs {
 }
-export interface FieldOptionArgs extends OptionArgs<string> {
+export interface IComponentOptionsFieldOptionArgs extends IComponentOptions<string> {
   groupByField?: boolean;
   includeInResults?: boolean;
   sortByField?: boolean;
@@ -77,9 +77,9 @@ export interface FieldOptionArgs extends OptionArgs<string> {
   match?: (field: IFieldDescription) => boolean;
 }
 
-export interface FieldsOption extends Option<string[]>, FieldsOptionArgs {
+export interface IComponentOptionsFieldsOption extends IComponentOptionsOption<string[]>, IComponentOptionsFieldsOptionArgs {
 }
-export interface FieldsOptionArgs extends OptionArgs<string[]> {
+export interface IComponentOptionsFieldsOptionArgs extends IComponentOptions<string[]> {
   groupByField?: boolean;
   includeInResults?: boolean;
   sortByField?: boolean;
@@ -87,10 +87,10 @@ export interface FieldsOptionArgs extends OptionArgs<string[]> {
   match?: (field: IFieldDescription) => boolean;
 }
 
-export interface ObjectOption extends Option<{ [key: string]: any }>, ObjectOptionArgs {
+export interface IComponentOptionsObjectOption extends IComponentOptionsOption<{ [key: string]: any }>, IComponentOptionsObjectOptionArgs {
 }
-export interface ObjectOptionArgs extends OptionArgs<{ [key: string]: any }> {
-  subOptions: { [key: string]: Option<any> };
+export interface IComponentOptionsObjectOptionArgs extends IComponentOptions<{ [key: string]: any }> {
+  subOptions: { [key: string]: IComponentOptionsOption<any> };
 }
 
 export enum Type {
@@ -119,81 +119,81 @@ const fieldsSeperator = /\s*,\s*/;
 const localizer = /([a-zA-Z\-]+)\s*:\s*(([^,]|,\s*(?!([a-zA-Z\-]+)\s*:))+)/g;
 
 export class ComponentOptions {
-  static buildBooleanOption(optionArgs?: OptionArgs<boolean>): boolean {
+  static buildBooleanOption(optionArgs?: IComponentOptions<boolean>): boolean {
     return ComponentOptions.buildOption<boolean>(Type.BOOLEAN, ComponentOptions.loadBooleanOption, optionArgs);
   }
 
-  static buildNumberOption(optionArgs?: NumberOptionArgs): number {
+  static buildNumberOption(optionArgs?: IComponentOptionsNumberOptionArgs): number {
     return ComponentOptions.buildOption<number>(Type.NUMBER, ComponentOptions.loadNumberOption, optionArgs);
   }
 
-  static buildStringOption(optionArgs?: OptionArgs<string>): string {
+  static buildStringOption(optionArgs?: IComponentOptions<string>): string {
     return ComponentOptions.buildOption<string>(Type.STRING, ComponentOptions.loadStringOption, optionArgs);
   }
 
-  static buildIconOption(optionArgs?: OptionArgs<string>): string {
+  static buildIconOption(optionArgs?: IComponentOptions<string>): string {
     return ComponentOptions.buildOption<string>(Type.ICON, ComponentOptions.loadStringOption, optionArgs);
   }
 
-  static buildHelperOption(optionArgs?: OptionArgs<string>): string {
+  static buildHelperOption(optionArgs?: IComponentOptions<string>): string {
     return ComponentOptions.buildOption<string>(Type.HELPER, ComponentOptions.loadStringOption, optionArgs);
   }
 
-  static buildJsonOption(optionArgs?: OptionArgs<string>): string {
+  static buildJsonOption(optionArgs?: IComponentOptions<string>): string {
     return ComponentOptions.buildOption<string>(Type.JSON, ComponentOptions.loadStringOption, optionArgs);
   }
 
-  static buildLocalizedStringOption(optionArgs?: OptionArgs<string>): string {
+  static buildLocalizedStringOption(optionArgs?: IComponentOptions<string>): string {
     return ComponentOptions.buildOption<string>(Type.LOCALIZED_STRING, ComponentOptions.loadLocalizedStringOption, optionArgs);
   }
 
-  static buildFieldOption(optionArgs?: FieldOptionArgs): string {
+  static buildFieldOption(optionArgs?: IComponentOptionsFieldOptionArgs): string {
     return ComponentOptions.buildOption<string>(Type.FIELD, ComponentOptions.loadFieldOption, optionArgs);
   }
 
-  static buildFieldsOption(optionArgs?: FieldsOptionArgs): string[] {
+  static buildFieldsOption(optionArgs?: IComponentOptionsFieldsOptionArgs): string[] {
     return ComponentOptions.buildOption<string[]>(Type.FIELDS, ComponentOptions.loadFieldsOption, optionArgs);
   }
 
-  static buildListOption(optionArgs?: ListOptionArgs): string[] {
+  static buildListOption(optionArgs?: IComponentOptionsListOptionArgs): string[] {
     return ComponentOptions.buildOption<string[]>(Type.LIST, ComponentOptions.loadListOption, optionArgs);
   }
 
-  static buildSelectorOption(optionArgs?: OptionArgs<HTMLElement>): HTMLElement {
+  static buildSelectorOption(optionArgs?: IComponentOptions<HTMLElement>): HTMLElement {
     return ComponentOptions.buildOption<HTMLElement>(Type.SELECTOR, ComponentOptions.loadSelectorOption, optionArgs);
   }
 
-  static buildChildHtmlElementOption(optionArgs?: ChildHtmlElementOptionArgs): HTMLElement {
+  static buildChildHtmlElementOption(optionArgs?: IComponentOptionsChildHtmlElementOptionArgs): HTMLElement {
     return ComponentOptions.buildOption<HTMLElement>(Type.CHILD_HTML_ELEMENT, ComponentOptions.loadChildHtmlElementOption, optionArgs);
   }
 
-  static buildTemplateOption(optionArgs?: TemplateOptionArgs): Template {
+  static buildTemplateOption(optionArgs?: IComponentOptionsTemplateOptionArgs): Template {
     return ComponentOptions.buildOption<Template>(Type.TEMPLATE, ComponentOptions.loadTemplateOption, optionArgs);
   }
 
-  static buildCustomOption<T>(converter: (value: string) => T, optionArgs?: OptionArgs<T>): T {
-    let loadOption: LoadOption<T> = (element: HTMLElement, name: string, option: Option<T>) => {
+  static buildCustomOption<T>(converter: (value: string) => T, optionArgs?: IComponentOptions<T>): T {
+    let loadOption: IComponentOptionsLoadOption<T> = (element: HTMLElement, name: string, option: IComponentOptionsOption<T>) => {
       let stringvalue = ComponentOptions.loadStringOption(element, name, option);
       return converter(stringvalue);
     }
     return ComponentOptions.buildOption<T>(Type.STRING, loadOption, optionArgs);
   }
 
-  static buildCustomListOption<T>(converter: (value: string[]) => T, optionArgs?: ListOptionArgs): T {
-    let loadOption: LoadOption<T> = (element: HTMLElement, name: string, option: any) => {
+  static buildCustomListOption<T>(converter: (value: string[]) => T, optionArgs?: IComponentOptionsListOptionArgs): T {
+    let loadOption: IComponentOptionsLoadOption<T> = (element: HTMLElement, name: string, option: any) => {
       let stringvalue = ComponentOptions.loadListOption(element, name, option);
       return converter(stringvalue);
     }
     return ComponentOptions.buildOption<any>(Type.LIST, loadOption, optionArgs);
   }
 
-  static buildObjectOption(optionArgs?: ObjectOptionArgs): any {
-    let loadOption: LoadOption<{
+  static buildObjectOption(optionArgs?: IComponentOptionsObjectOptionArgs): any {
+    let loadOption: IComponentOptionsLoadOption<{
       [key: string]: any
-    }> = (element: HTMLElement, name: string, option: Option<any>) => {
+    }> = (element: HTMLElement, name: string, option: IComponentOptionsOption<any>) => {
       let keys = _.keys(optionArgs.subOptions);
       let scopedOptions: {
-        [name: string]: Option<any>
+        [name: string]: IComponentOptionsOption<any>
       } = {};
       let scopedValues: {
         [name: string]: any
@@ -223,14 +223,14 @@ export class ComponentOptions {
     }>(Type.OBJECT, loadOption, optionArgs);
   }
 
-  static buildOption<T>(type: Type, load: LoadOption<T>, optionArg: OptionArgs<T> = {}): T {
-    let option: Option<T> = <any>optionArg;
+  static buildOption<T>(type: Type, load: IComponentOptionsLoadOption<T>, optionArg: IComponentOptions<T> = {}): T {
+    let option: IComponentOptionsOption<T> = <any>optionArg;
     option.type = type;
     option.load = load;
     return <any>option;
   }
 
-  static attrNameFromName(name: string, optionArgs?: OptionArgs<any>) {
+  static attrNameFromName(name: string, optionArgs?: IComponentOptions<any>) {
     if (optionArgs && optionArgs.attrName) {
       return optionArgs.attrName;
     }
@@ -250,7 +250,7 @@ export class ComponentOptions {
   }
 
   static initOptions(element: HTMLElement, options: {
-    [name: string]: Option<any>
+    [name: string]: IComponentOptionsOption<any>
   }, values?: any) {
     if (values == null) {
       values = {};
@@ -298,17 +298,17 @@ export class ComponentOptions {
     return values;
   }
 
-  static loadStringOption(element: HTMLElement, name: string, option: Option<any>): string {
+  static loadStringOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): string {
     return element.getAttribute(ComponentOptions.attrNameFromName(name, option));
   }
 
-  static loadFieldOption(element: HTMLElement, name: string, option: Option<any>): string {
+  static loadFieldOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): string {
     let field = ComponentOptions.loadStringOption(element, name, option);
     Assert.check(!Utils.isNonEmptyString(field) || Utils.isCoveoField(field), field + ' is not a valid field');
     return field;
   }
 
-  static loadFieldsOption(element: HTMLElement, name: string, option: Option<any>): string[] {
+  static loadFieldsOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): string[] {
     let fieldsAttr = ComponentOptions.loadStringOption(element, name, option);
     if (fieldsAttr == null) {
       return null;
@@ -320,7 +320,7 @@ export class ComponentOptions {
     return fields;
   }
 
-  static loadLocalizedStringOption(element: HTMLElement, name: string, option: Option<any>): string {
+  static loadLocalizedStringOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): string {
     let attributeValue = ComponentOptions.loadStringOption(element, name, option);
     let locale: string = String['locale'] || String['defaultLocale'];
     if (locale != null && attributeValue != null) {
@@ -343,7 +343,7 @@ export class ComponentOptions {
     return attributeValue;
   }
 
-  static loadNumberOption(element: HTMLElement, name: string, option: NumberOption): number {
+  static loadNumberOption(element: HTMLElement, name: string, option: IComponentOptionsNumberOption): number {
     let attributeValue = ComponentOptions.loadStringOption(element, name, option);
     if (attributeValue == null) {
       return null;
@@ -358,27 +358,27 @@ export class ComponentOptions {
     return numberValue;
   }
 
-  static loadBooleanOption(element: HTMLElement, name: string, option: Option<any>): boolean {
+  static loadBooleanOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): boolean {
     return Utils.parseBooleanIfNotUndefined(ComponentOptions.loadStringOption(element, name, option));
   }
 
-  static loadListOption(element: HTMLElement, name: string, option: ListOption): string[] {
+  static loadListOption(element: HTMLElement, name: string, option: IComponentOptionsListOption): string[] {
     let separator = option.separator || /\s*,\s*/;
     let attributeValue = ComponentOptions.loadStringOption(element, name, option);
     return Utils.isNonEmptyString(attributeValue) ? attributeValue.split(separator) : null;
   }
 
-  static loadEnumOption(element: HTMLElement, name: string, option: Option<any>, _enum: any): number {
+  static loadEnumOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>, _enum: any): number {
     let enumAsString = ComponentOptions.loadStringOption(element, name, option);
     return enumAsString != null ? _enum[enumAsString] : null;
   }
 
-  static loadSelectorOption(element: HTMLElement, name: string, option: Option<any>): HTMLElement {
+  static loadSelectorOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): HTMLElement {
     let attributeValue = ComponentOptions.loadStringOption(element, name, option)
     return Utils.isNonEmptyString(attributeValue) ? <HTMLElement>document.querySelector(attributeValue) : null;
   }
 
-  static loadChildHtmlElementOption(element: HTMLElement, name: string, option: ChildHtmlElementOption): HTMLElement {
+  static loadChildHtmlElementOption(element: HTMLElement, name: string, option: IComponentOptionsChildHtmlElementOption): HTMLElement {
     let htmlElement: HTMLElement;
     // Attribute: selector
     let selectorAttr = option.selectorAttr || ComponentOptions.attrNameFromName(name, option) + '-selector';
@@ -410,7 +410,7 @@ export class ComponentOptions {
     return $$(element).findAll(selector);
   }
 
-  static loadTemplateOption(element: HTMLElement, name: string, option: TemplateOption): Template {
+  static loadTemplateOption(element: HTMLElement, name: string, option: IComponentOptionsTemplateOption): Template {
     if (option.lazy) {
       return new LazyTemplate(element, name, option);
     }
