@@ -12,7 +12,7 @@ import {Initialization} from '../Base/Initialization';
 import {IQueryResults} from '../../rest/QueryResults';
 import {IOmniboxDataRow} from '../Omnibox/OmniboxInterface';
 
-export interface OmniboxResultListOptions extends IResultListOptions {
+export interface IOmniboxResultListOptions extends IResultListOptions {
   omniboxZIndex?: number;
   onSelect?: (result: IQueryResult, resultElement: JQuery, omniboxObject: IPopulateOmniboxEventArgs) => void;
   headerTitle?: string;
@@ -21,7 +21,7 @@ export interface OmniboxResultListOptions extends IResultListOptions {
 
 export class OmniboxResultList extends ResultList {
   static ID = 'OmniboxResultList';
-  static options: OmniboxResultListOptions = {
+  static options: IOmniboxResultListOptions = {
     omniboxZIndex: ComponentOptions.buildNumberOption({ defaultValue: 51, min: 16 }),
     headerTitle: ComponentOptions.buildStringOption(),
     queryOverride: ComponentOptions.buildStringOption()
@@ -30,7 +30,7 @@ export class OmniboxResultList extends ResultList {
   private lastOmniboxRequest: { omniboxObject: IPopulateOmniboxEventArgs; resolve: (...args: any[]) => void; };
   private suggestionForOmnibox: SuggestionForOmnibox;
 
-  constructor(public element: HTMLElement, public options?: OmniboxResultListOptions, public bindings?: IComponentBindings) {
+  constructor(public element: HTMLElement, public options?: IOmniboxResultListOptions, public bindings?: IComponentBindings) {
     super(element, options, bindings, OmniboxResultList.ID);
     this.options = ComponentOptions.initComponentOptions(element, OmniboxResultList, options);
     this.setupOptions();

@@ -1,7 +1,7 @@
 import {Template} from './Template';
 import {ITemplateHelperFunction} from './TemplateHelpers';
 import {Assert} from '../../misc/Assert';
-import {ComponentOptions, FieldsOption} from '../Base/ComponentOptions';
+import {ComponentOptions, IFieldsOption} from '../Base/ComponentOptions';
 import {Utils} from '../../utils/Utils';
 import {$$} from '../../utils/Dom';
 import _ = require('underscore');
@@ -43,7 +43,7 @@ export class UnderscoreTemplate extends Template {
 
     this.fields = Template.getFieldFromString(templateString + ' ' + condition);
 
-    var additionalFields = ComponentOptions.loadFieldsOption(element, 'fields', <FieldsOption>{ includeInResults: true });
+    var additionalFields = ComponentOptions.loadFieldsOption(element, 'fields', <IFieldsOption>{ includeInResults: true });
     if (additionalFields != null) {
       // remove the @
       this.fields = this.fields.concat(_.map(additionalFields, (field) => field.substr(1)));

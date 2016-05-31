@@ -7,7 +7,7 @@ import {$$} from '../../utils/Dom';
 import {ValueElement} from './ValueElement';
 
 
-export interface FacetValueElementKlass {
+export interface IFacetValueElementKlass {
   new (facet: Facet, facetValue: FacetValue, displayNextTime?: boolean): FacetValueElement;
 }
 

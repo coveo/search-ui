@@ -1,6 +1,6 @@
-import {EndpointError} from './EndpointError';
+import {IEndpointError} from './EndpointError';
 
-export class MissingAuthenticationError implements EndpointError {
+export class MissingAuthenticationError implements IEndpointError {
   public type: string;
   public message: string;
   public isMissingAuthentication = true;

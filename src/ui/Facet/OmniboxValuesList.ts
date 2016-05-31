@@ -2,7 +2,7 @@
 import {Facet} from './Facet';
 import {FacetValue} from './FacetValues';
 import {IPopulateOmniboxObject} from '../Omnibox/OmniboxInterface';
-import {OmniboxValueElementKlass} from './OmniboxValueElement';
+import {IOmniboxValueElementKlass} from './OmniboxValueElement';
 import {ValueElement} from './ValueElement';
 import {IAnalyticsActionCause, IAnalyticsOmniboxFacetMeta} from '../Analytics/AnalyticsActionListMeta';
 import {$$} from '../../utils/Dom';
@@ -10,7 +10,7 @@ import {Utils} from '../../utils/Utils';
 import {FacetUtils} from './FacetUtils';
 
 export class OmniboxValuesList {
-  constructor(public facet: Facet, public facetValues: FacetValue[], public omniboxObject: IPopulateOmniboxObject, public omniboxValueElementKlass: OmniboxValueElementKlass) {
+  constructor(public facet: Facet, public facetValues: FacetValue[], public omniboxObject: IPopulateOmniboxObject, public omniboxValueElementKlass: IOmniboxValueElementKlass) {
   }
 
   public build() {

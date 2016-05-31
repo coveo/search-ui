@@ -13,7 +13,7 @@ import {Initialization} from '../Base/Initialization';
 
 declare const Globalize;
 
-export interface FacetRangeOptions extends IFacetOptions {
+export interface IFacetRangeOptions extends IFacetOptions {
   ranges?: IRangeValue[];
   dateField?: boolean;
 }
@@ -21,13 +21,13 @@ export interface FacetRangeOptions extends IFacetOptions {
 export class FacetRange extends Facet {
   static ID = 'FacetRange';
   static parent = Facet;
-  static options = <FacetRangeOptions>{
+  static options = <IFacetRangeOptions>{
     dateField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
   };
 
-  public options: FacetRangeOptions;
+  public options: IFacetRangeOptions;
 
-  constructor(public element: HTMLElement, options: FacetRangeOptions, bindings?: IComponentBindings) {
+  constructor(public element: HTMLElement, options: IFacetRangeOptions, bindings?: IComponentBindings) {
     super(element, ComponentOptions.initComponentOptions(element, FacetRange, options), bindings, FacetRange.ID);
 
     this.options.enableFacetSearch = false;

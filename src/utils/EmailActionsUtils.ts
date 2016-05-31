@@ -5,7 +5,7 @@ import {l} from '../strings/Strings';
 import _ = require('underscore');
 
 
-export interface MailToOptions {
+export interface IMailToOptions {
   currentUserEmail?: string;
   originalFrom?: string;
   to?: string;
@@ -17,7 +17,7 @@ export interface MailToOptions {
 }
 
 export class EmailActionsUtils {
-  static buildMailToString(options: MailToOptions): string {
+  static buildMailToString(options: IMailToOptions): string {
     var mailTo = options.to ? 'mailto:' + encodeURIComponent(options.to) : 'mailto:';
     var parameters = EmailActionsUtils.buildMailToParametersString(options.subject, options.cc, options.bcc, options.body, mailTo);
     if (parameters) {
@@ -121,7 +121,7 @@ export class EmailActionsUtils {
   }
 }
 
-export class DefaultMailToOptions implements MailToOptions {
+export class DefaultMailToOptions implements IMailToOptions {
   currentUserEmail: string = '';
   originalFrom: string = '';
   to: string = '';
@@ -143,7 +143,7 @@ export class MailTo {
   // Arbitrary numbers :
   static maxLength: number = 1000;
 
-  constructor(public options?: MailToOptions) {
+  constructor(public options?: IMailToOptions) {
     this.options = _.extend(new DefaultMailToOptions(), options);
     this.removeCurrentUserFromParameters();
     if (this.options.originalFrom) {

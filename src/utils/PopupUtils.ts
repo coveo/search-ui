@@ -22,12 +22,12 @@ export enum HorizontalAlignment {
   INNERRIGHT
 }
 
-interface Offset {
+interface IOffset {
   left: number;
   top: number;
 }
 
-interface ElementBoundary {
+interface IElementBoundary {
   top: number;
   left: number;
   right: number;
@@ -67,14 +67,14 @@ export class PopupUtils {
     }
   }
 
-  private static finalAdjustement(popUpOffSet: Offset, popUpPosition: Offset, popUp: HTMLElement, desiredPosition: IPosition) {
+  private static finalAdjustement(popUpOffSet: IOffset, popUpPosition: IOffset, popUp: HTMLElement, desiredPosition: IPosition) {
     var position = popUp.getBoundingClientRect();
     popUp.style.position = 'absolute';
     popUp.style.top = (position.top + desiredPosition.verticalOffset) - (popUpOffSet.top - popUpPosition.top) + 'px';
     popUp.style.left = (position.left + desiredPosition.horizontalOffset) - (popUpOffSet.left - popUpPosition.left) + 'px';
   }
 
-  private static basicVerticalAlignment(popUpPosition: Offset, popUp: HTMLElement, nextTo: HTMLElement, desiredPosition: IPosition) {
+  private static basicVerticalAlignment(popUpPosition: IOffset, popUp: HTMLElement, nextTo: HTMLElement, desiredPosition: IPosition) {
     switch (desiredPosition.vertical) {
       case VerticalAlignment.TOP:
         popUpPosition.top -= popUp.offsetHeight;
@@ -94,7 +94,7 @@ export class PopupUtils {
     }
   }
 
-  private static basicHorizontalAlignment(popUpPosition: Offset, popUp: HTMLElement, nextTo: HTMLElement, desiredPosition: IPosition) {
+  private static basicHorizontalAlignment(popUpPosition: IOffset, popUp: HTMLElement, nextTo: HTMLElement, desiredPosition: IPosition) {
     switch (desiredPosition.horizontal) {
       case HorizontalAlignment.LEFT:
         popUpPosition.left -= popUp.offsetWidth;
@@ -154,7 +154,7 @@ export class PopupUtils {
     }
   }
 
-  private static checkForOutOfBoundary(popUpBoundary: ElementBoundary, boundary: ElementBoundary) {
+  private static checkForOutOfBoundary(popUpBoundary: IElementBoundary, boundary: IElementBoundary) {
     var ret = {
       vertical: 'ok',
       horizontal: 'ok'

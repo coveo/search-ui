@@ -1,7 +1,7 @@
 
 
 module Coveo {
-  export interface CurrentTabOptions {
+  export interface ICurrentTabOptions {
     tabSectionToOpen: string;
   }
 
@@ -9,11 +9,11 @@ module Coveo {
   export class CurrentTab extends Component {
     static ID = 'CurrentTab';
 
-    static options: CurrentTabOptions = {
+    static options: ICurrentTabOptions = {
       tabSectionToOpen: ComponentOptions.buildStringOption()
     }
 
-    constructor(public element: HTMLElement, public options?: CurrentTabOptions, bindings?: IComponentBindings) {
+    constructor(public element: HTMLElement, public options?: ICurrentTabOptions, bindings?: IComponentBindings) {
       super(element, CurrentTab.ID, bindings);
 
       this.options = ComponentOptions.initComponentOptions(element, CurrentTab, options);

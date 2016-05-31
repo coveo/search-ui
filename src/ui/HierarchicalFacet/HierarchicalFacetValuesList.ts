@@ -3,12 +3,12 @@
 import {FacetValuesList} from '../Facet/FacetValuesList';
 import {FacetValue} from '../Facet/FacetValues';
 import {HierarchicalFacet} from './HierarchicalFacet';
-import {FacetValueElementKlass} from '../Facet/FacetValueElement';
+import {IFacetValueElementKlass} from '../Facet/FacetValueElement';
 
 export class HierarchicalFacetValuesList extends FacetValuesList {
   public hierarchyFacetValues: FacetValue[];
 
-  constructor(public facet: HierarchicalFacet, public facetValueElementKlass: FacetValueElementKlass) {
+  constructor(public facet: HierarchicalFacet, public facetValueElementKlass: IFacetValueElementKlass) {
     super(facet, facetValueElementKlass);
   }
 

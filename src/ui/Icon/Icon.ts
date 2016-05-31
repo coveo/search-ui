@@ -6,7 +6,7 @@ import {Assert} from '../../misc/Assert'
 import {QueryUtils} from '../../utils/QueryUtils'
 import {Initialization} from '../Base/Initialization'
 import {Utils} from '../../utils/Utils'
-import {FileTypes, FileTypeInfo} from '../Misc/FileTypes'
+import {FileTypes, IFileTypeInfo} from '../Misc/FileTypes'
 import {Quickview} from '../Quickview/Quickview'
 import {$$} from '../../utils/Dom'
 
@@ -110,7 +110,7 @@ export class Icon extends Component {
     return bindings && bindings.searchInterface.isNewDesign() && options.withLabel !== false;
   }
 
-  static preprocessIconInfo(options: IIconOptions, info: FileTypeInfo) {
+  static preprocessIconInfo(options: IIconOptions, info: IFileTypeInfo) {
     if (options.labelValue != null) {
       info.caption = options.labelValue;
     }
