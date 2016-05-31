@@ -15,32 +15,37 @@ module Coveo {
       element = null;
     })
     
-    it('will build a open in outlook option if it\'s wanted', () => {
-      test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, {enableOpenInOutlook: true}));
-      expect($$(test.cmp.element).find('input[value="' + l("OpenInOutlookWhenPossible") + '"]')).not.toBeNull();
-    });
-    
-    it('will build a open in new window option if it\'s wanted', () => {
-      test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, {enableOpenInNewWindow: true}));
-      expect($$(test.cmp.element).find('input[value="' + l("AlwaysOpenInNewWindow") + '"]')).not.toBeNull();
-    });
-    
-    it('will not build a open in outlook option if it\'s not wanted', () => {
-      test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, {enableOpenInOutlook: false}));
-      expect($$(test.cmp.element).find('input[value="' + l("OpenInOutlookWhenPossible") + '"]')).toBeNull();
-    });
-    
-    it('will not build a open in new window option if it\'s not wanted', () => {
-      test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el, {enableOpenInNewWindow: false}));
-      expect($$(test.cmp.element).find('input[value="' + l("AlwaysOpenInNewWindow") + '"]')).toBeNull();
-    });
-    
-    it('will save the current preference in the model when it receives the save event', ()=>{
-      test = Mock.advancedComponentSetup<ResultsPreferences>(ResultsPreferences, new Mock.AdvancedComponentSetupOptions(element.el));
-      $$(test.env.root).trigger(PreferencesPanelEvents.savePreferences);
-      expect(test.env.componentOptionsModel.set).toHaveBeenCalled();
+    describe('exposes enableOpenInOutlook', ()=>{
+      it('will build a open in outlook option', () => {
+        test = Mock.optionsComponentSetup<ResultsPreferences, IResultsPreferencesOptions>(ResultsPreferences, {enableOpenInOutlook: true});
+        expect($$(test.cmp.element).find('input[value="' + l("OpenInOutlookWhenPossible") + '"]')).not.toBeNull();
+      });
+      
+      it('will not build a open in outlook option if false', () => {
+        test = Mock.optionsComponentSetup<ResultsPreferences, IResultsPreferencesOptions>(ResultsPreferences, {enableOpenInOutlook: false});
+        expect($$(test.cmp.element).find('input[value="' + l("OpenInOutlookWhenPossible") + '"]')).toBeNull();
+      });
     })
     
+    describe('exposes enableOpenInNewWindow', ()=>{
+      it('will build a open in new window option', () => {
+        test = Mock.optionsComponentSetup<ResultsPreferences, IResultsPreferencesOptions>(ResultsPreferences, {enableOpenInNewWindow: true});
+        expect($$(test.cmp.element).find('input[value="' + l("AlwaysOpenInNewWindow") + '"]')).not.toBeNull();
+      });
+      
+      it('will not build a open in new window option if false', () => {
+        test = Mock.optionsComponentSetup<ResultsPreferences, IResultsPreferencesOptions>(ResultsPreferences, {enableOpenInNewWindow: false});
+        expect($$(test.cmp.element).find('input[value="' + l("AlwaysOpenInNewWindow") + '"]')).toBeNull();
+      });
+    })
+    
+    describe('when it receives the save event', ()=>{
+      it('will save the current preference in the model', ()=>{
+        test = Mock.basicComponentSetup<ResultsPreferences>(ResultsPreferences);
+        $$(test.env.root).trigger(PreferencesPanelEvents.savePreferences);
+        expect(test.env.componentOptionsModel.set).toHaveBeenCalled();
+      })
+    })
     
   });
 };
