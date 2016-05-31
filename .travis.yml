@@ -29,3 +29,4 @@ deploy:
   on:
     tags: false
     repo: coveo/search-ui
+    all_branches: true
