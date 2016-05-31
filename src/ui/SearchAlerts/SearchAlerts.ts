@@ -67,6 +67,11 @@ export class SearchAlerts extends Component {
   };
 
   private modal: Coveo.ModalBox.ModalBox;
+  
+  /**
+   * A reference to a @link{SearchAlertsMessage} component used to display message.
+   * This attribute is set only when the enableMessage option is true.
+   */
   public message: SearchAlertsMessage;
 
   constructor(public element: HTMLElement,
@@ -124,14 +129,19 @@ export class SearchAlerts extends Component {
     })
   }
 
+  /**
+   * Opens the search alerts manage panel.
+   * This panel allows the user to stop following queries or documents.
+   * It also allows the user to change the frequency at which he will receive emails.
+   */
   public openPanel(): Promise<ISubscription> {
-    var title = $$('div');
+    let title = $$('div');
     title.el.innerHTML = `<div class='coveo-subscriptions-panel-close'><span></span></div><div class='coveo-subscriptions-panel-title'>${l('SearchAlerts_Panel')}`;
     $$(title.find('.coveo-subscriptions-panel-close')).on('click', () => {
       this.close();
     });
 
-    var container = $$('div');
+    let container = $$('div');
     container.el.innerHTML = `
       <table class='coveo-subscriptions-panel-content' cellspacing='0'>
         <thead>
@@ -188,7 +198,7 @@ export class SearchAlerts extends Component {
   }
 
   private addSearchAlert(subscription: ISubscription, container: Dom) {
-    var frequencies = [
+    let frequencies = [
       { value: 'daily', label: l('Daily') },
       { value: 'monday', label: l('Monday') },
       { value: 'tuesday', label: l('Tuesday') },
@@ -199,7 +209,7 @@ export class SearchAlerts extends Component {
       { value: 'sunday', label: l('Sunday') }
     ];
 
-    var context: string;
+    let context: string;
     if (subscription.type == SubscriptionType.followQuery) {
       let typeConfig = <ISubscriptionQueryRequest>subscription.typeConfig;
       context = _.escape(typeConfig.query.q) || l('EmptyQuery')
@@ -208,7 +218,7 @@ export class SearchAlerts extends Component {
       context = _.escape(typeConfig.title || typeConfig.id);
     }
 
-    var element = $$('tr')
+    let element = $$('tr')
     element.addClass('coveo-subscriptions-panel-subscription');
     element.el.innerHTML = `
       <td class='coveo-subscriptions-panel-content-type'>${ l('SearchAlerts_Type_' + subscription.type)}</td>
@@ -229,11 +239,11 @@ export class SearchAlerts extends Component {
         <div class='coveo-subscriptions-panel-action coveo-subscriptions-panel-action-follow'>${ l('SearchAlerts_follow')}</div>
       </td>`;
 
-    var noSearchAlerts = container.find('.coveo-subscriptions-panel-no-subscriptions');
+    let noSearchAlerts = container.find('.coveo-subscriptions-panel-no-subscriptions');
 
     element.insertBefore(noSearchAlerts)
 
-    var frequencyInput = <HTMLInputElement>element.find('.coveo-subscriptions-panel-frequency select');
+    let frequencyInput = <HTMLInputElement>element.find('.coveo-subscriptions-panel-frequency select');
 
     frequencyInput.value = subscription.frequency;
 
@@ -248,7 +258,7 @@ export class SearchAlerts extends Component {
         .deleteSubscription(subscription)
         .then(() => {
           delete subscription.id;
-          var eventArgs: ISearchAlertsEventArgs = { subscription: subscription };
+          let eventArgs: ISearchAlertsEventArgs = { subscription: subscription };
           $$(this.root).trigger(SearchAlertsEvents.searchAlertsDeleted, eventArgs);
         })
         .catch(() => {
@@ -262,7 +272,7 @@ export class SearchAlerts extends Component {
         .follow(subscription)
         .then((updatedSearchAlert) => {
           subscription.id = updatedSearchAlert.id;
-          var eventArgs: ISearchAlertsEventArgs = { subscription: subscription };
+          let eventArgs: ISearchAlertsEventArgs = { subscription: subscription };
           $$(this.root).trigger(SearchAlertsEvents.searchAlertsCreated, eventArgs);
         })
         .catch(() => {
@@ -280,15 +290,18 @@ export class SearchAlerts extends Component {
       });
   }
 
-  // FollowQuery
+  /**
+   * Follow the last query.
+   * The user will start to receive emails when the results from that query changes.
+   */
   public followQuery() {
-    var queryBuilder = this.queryController.createQueryBuilder({});
-    var request = SearchAlerts.buildFollowQueryRequest(queryBuilder.build(), this.options);
+    let queryBuilder = this.queryController.createQueryBuilder({});
+    let request = SearchAlerts.buildFollowQueryRequest(queryBuilder.build(), this.options);
 
     this.queryController.getEndpoint().follow(request)
       .then((subscription: ISubscription) => {
         if(subscription){
-          var eventArgs: ISearchAlertsEventArgs = {
+          let eventArgs: ISearchAlertsEventArgs = {
             subscription: subscription,
             dom: this.findQueryBoxDom()
           };
@@ -309,13 +322,13 @@ export class SearchAlerts extends Component {
     $$(this.root).trigger(SearchAlertsEvents.searchAlertsFail, eventArgs);
   }
 
-  public findQueryBoxDom(): HTMLElement {
-    var dom: HTMLElement;
-    var components = this.searchInterface.getComponents<Component>(Querybox.ID);
+  protected findQueryBoxDom(): HTMLElement {
+    let dom: HTMLElement;
+    let components = this.searchInterface.getComponents<Component>(Querybox.ID);
     if (components && components.length > 0) {
       dom = _.first(components).element;
     } else {
-      var components = this.searchInterface.getComponents<Component>(Omnibox.ID);
+      let components = this.searchInterface.getComponents<Component>(Omnibox.ID);
       if (components && components.length > 0) {
         dom = _.first(components).element;
       }
@@ -324,7 +337,7 @@ export class SearchAlerts extends Component {
   }
 
   private static buildFollowQueryRequest(query: IQuery, options: ISearchAlertsOptions): ISubscriptionRequest {
-    var typeConfig: ISubscriptionQueryRequest = {
+    let typeConfig: ISubscriptionQueryRequest = {
       query: query
     }
 

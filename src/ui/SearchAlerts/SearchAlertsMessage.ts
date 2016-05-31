@@ -1,4 +1,5 @@
 import {Component} from '../Base/Component';
+import {ComponentOptions} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {SearchAlertsEvents, ISearchAlertsEventArgs, ISearchAlertsFailEventArgs} from '../../events/SearchAlertEvents';
 import {QueryEvents} from '../../events/QueryEvents';
@@ -11,8 +12,24 @@ export interface ISearchAlertMessageOptions {
   closeDelay: number;
 }
 
+/**
+ * This component allows the @link{SearchAlerts} component to display messages.
+ * This component should not be included in a web page. Instead, use a @link{SearchAlerts} component and access its message attribute.
+ */
 export class SearchAlertsMessage extends Component {
   static ID = 'SubscriptionsMessages';
+  
+  /**
+   * The options for the SearchAlertsMessage component
+   * @componentOptions
+   */
+  static options: ISearchAlertMessageOptions = {
+    /**
+     * Specifies how long to display the search alerts messages (in ms).
+     * This default value is 3000.
+     */
+    closeDelay: ComponentOptions.buildNumberOption({ defaultValue: 3000 }),
+  };
 
   private message: Dom;
   private closeTimeout: number;
@@ -23,17 +40,23 @@ export class SearchAlertsMessage extends Component {
 
     super(element, SearchAlertsMessage.ID, bindings);
 
-    $$(this.root).on(SearchAlertsEvents.searchAlertsCreated, (e: Event, args: ISearchAlertsEventArgs)=>{this.handleSubscriptionCreated(e, args)});
-    $$(this.root).on(SearchAlertsEvents.searchAlertsFail, (e: Event, args: ISearchAlertsEventArgs)=>{this.handleSearchAlerts_Fail(e, args)});
-    $$(this.root).on(SearchAlertsEvents.searchAlertsDeleted, ()=>{this.close()});
+    this.bind.onRootElement(SearchAlertsEvents.searchAlertsCreated, (args: ISearchAlertsEventArgs)=>{this.handleSubscriptionCreated(args)});
+    this.bind.oneRootElement(SearchAlertsEvents.searchAlertsFail, (args: ISearchAlertsEventArgs)=>{this.handleSearchAlertsFail(args)});
+    this.bind.oneRootElement(SearchAlertsEvents.searchAlertsDeleted, ()=>{this.close()});
 
-    $$(this.root).on(QueryEvents.newQuery, ()=>{this.close()});
+    this.bind.oneRootElement(QueryEvents.newQuery, ()=>{this.close()});
   }
 
   public getCssClass(): string {
     return 'coveo-subscriptions-messages';
   }
 
+  /**
+   * Displays a message near the dom attribute.
+   * @param dom Specifies where to display the message.
+   * @param message The message.
+   * @param error Specifies whether this is an error message or not.
+   */
   public showMessage(dom: Dom, message: string, error: boolean) {
     this.message = $$('div');
     this.message.el.innerHTML = `<div class='coveo-subscriptions-messages-message'>
@@ -62,7 +85,7 @@ export class SearchAlertsMessage extends Component {
     })
   }
 
-  private handleSubscriptionCreated(e: Event, args: ISearchAlertsEventArgs) {
+  private handleSubscriptionCreated(args: ISearchAlertsEventArgs) {
     this.close();
     if (args.dom != null) {
       if (args.subscription.type == SubscriptionType.followQuery) {
@@ -75,7 +98,7 @@ export class SearchAlertsMessage extends Component {
     }
   }
 
-  private handleSearchAlerts_Fail(e: Event, args: ISearchAlertsFailEventArgs) {
+  private handleSearchAlertsFail(args: ISearchAlertsFailEventArgs) {
     this.close();
     if (args.dom != null) {
       this.showMessage($$(args.dom), l('SearchAlerts_Fail'), true);

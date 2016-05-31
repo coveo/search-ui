@@ -56,20 +56,6 @@ module Coveo {
       })
     })
     
-    describe('setFollowed', ()=>{
-      it('should add the coveo-follow-item-followed class', ()=>{
-        test.cmp.setFollowed(jasmine.createSpyObj('subscription', [""]));
-        expect($$(test.cmp.element).hasClass('coveo-follow-item-followed')).toBe(true);
-      })
-    })
-    
-    describe('setNotFollowed', ()=>{
-      it('should not add the coveo-follow-item-followed class', ()=>{
-        test.cmp.setNotFollowed();
-        expect($$(test.cmp.element).hasClass('coveo-follow-item-followed')).toBe(false);
-      })
-    })
-    
     describe('toggleFollow', ()=>{
       
       it('should delete the subscription if the document is followed', (done)=>{
