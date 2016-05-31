@@ -21,6 +21,7 @@ export interface IFieldValueOptions {
   helperOptions?: { [key: string]: any };
   splitValues?: boolean;
   separator?: string;
+  viewSeparator?: string;
 }
 
 export interface IAnalyticsFieldValueMeta {
@@ -77,10 +78,16 @@ export class FieldValue extends Component {
      */
     splitValues: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
-     * Specifies the string used to split multi value fields.
+     * Specifies the string used to split multi value fields from the index.
      * The default value is <code>;</code>.
      */
     separator: ComponentOptions.buildStringOption({ defaultValue: ';' }),
+    /**
+     * Specifies the string used to display multi value fields in the UI.
+     * It is inserted between the displayed values.
+     * The default value is <code>, </code>.
+     */
+    viewSeparator: ComponentOptions.buildStringOption({ defaultValue: ', ' }),
     /**
      * Specifies the helper to be used by the FieldValue to display its content.<br/>
      * A few helpers exist by default (see {@link CoreHelpers}), and new ones can be
@@ -245,7 +252,7 @@ export class FieldValue extends Component {
       if (value != undefined) {
         this.getValueContainer().appendChild(this.renderOneValue(value));
         if (index !== values.length - 1) {
-          this.getValueContainer().appendChild(document.createTextNode(', '));
+          this.getValueContainer().appendChild(document.createTextNode(this.options.viewSeparator));
         }
       }
     })
