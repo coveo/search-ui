@@ -57,7 +57,7 @@ export class Utils {
     if (window['HTMLElement'] != undefined) {
       return obj instanceof HTMLElement;
     } else {
-      //IE 8 FIX
+      // IE 8 FIX
       return obj && obj.nodeType && obj.nodeType == 1
     }
   }
@@ -129,8 +129,7 @@ export class Utils {
   static arrayEqual(array1: any[], array2: any[], sameOrder: boolean = true): boolean {
     if (sameOrder) {
       return _.isEqual(array1, array2);
-    }
-    else {
+    } else {
       let arrays = [array1, array2]
       return _.all(arrays, (array: any[]) => {
         return array.length == arrays[0].length && _.difference(array, arrays[0]).length == 0;
@@ -320,18 +319,18 @@ export class Utils {
     return camelCased.replace(/([a-z][A-Z])/g, (g) => g[0] + '-' + g[1].toLowerCase());
   }
 
-  //http://stackoverflow.com/a/8412989
+  // http://stackoverflow.com/a/8412989
   static parseXml(xml: string): XMLDocument {
     var parseXml;
-    if (typeof DOMParser != "undefined") {
-      return (new DOMParser()).parseFromString(xml, "text/xml");
-    } else if (typeof ActiveXObject != "undefined" && new ActiveXObject("Microsoft.XMLDOM")) {
-      var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-      xmlDoc.async = "false";
+    if (typeof DOMParser != 'undefined') {
+      return (new DOMParser()).parseFromString(xml, 'text/xml');
+    } else if (typeof ActiveXObject != 'undefined' && new ActiveXObject('Microsoft.XMLDOM')) {
+      var xmlDoc = new ActiveXObject('Microsoft.XMLDOM');
+      xmlDoc.async = 'false';
       xmlDoc.loadXML(xml);
       return xmlDoc;
     } else {
-      throw new Error("No XML parser found");
+      throw new Error('No XML parser found');
     }
   }
 

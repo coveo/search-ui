@@ -495,7 +495,7 @@ export class Matrix extends Component {
       this.setValue(rowTotal, i, this.numberOfColumns - 1)
     }
 
-    //Fix sort ordering when not all columns field values are present.
+    // Fix sort ordering when not all columns field values are present.
     if (this.options.sortCriteria.toLowerCase() == 'computedfielddescending') {
       this.data.sort((a: Cell[], b: Cell[]): number => {
         return b[this.numberOfColumns - 1].getValue() - a[this.numberOfColumns - 1].getValue()
@@ -651,9 +651,7 @@ export class Matrix extends Component {
   private isCellSelected(rowValue: string, columnValue: string): boolean {
     if (this.isAColumnSelected() && this.isARowSelected()) {
       return this.isRowSelected(rowValue) && this.isColumnSelected(columnValue);
-    }
-
-    else if (this.isAColumnSelected()) {
+    } else if (this.isAColumnSelected()) {
       return this.isColumnSelected(columnValue);
     }
 

@@ -237,25 +237,19 @@ export function initBox(element: HTMLElement, ...args: any[]) {
   if (args.length == 0) {
     type = 'Standard';
     injectMarkup = false;
-  }
-  // One arg, might be options or type
-  else if (args.length == 1) {
+  } else if (args.length == 1) { // 1 arg, might be options or type
     // This mean a type (with injection) and no options
     if (typeof args[0] == 'string') {
       type = args[0];
       injectMarkup = true;
-    }
-    // This means no type(no injection) and with options
-    else if (typeof args[0] == 'object') {
+    } else if (typeof args[0] == 'object') { // This means no type(no injection) and with options
       type = 'Standard';
       injectMarkup = false;
       options = args[0];
     } else {
       Assert.fail('Invalid parameters to init a box');
     }
-  }
-  // Two args mean both options and type (with injection);
-  else if (args.length == 2) {
+  } else if (args.length == 2) { // 2 args means both options and type (with injection);
     type = args[0];
     options = args[1];
     injectMarkup = true;

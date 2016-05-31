@@ -56,7 +56,7 @@ export class QueryExtensionAddon {
         };
       }
 
-      var current = _.last(magicBox.resultAtCursor('QueryExtensionArgumentName'));
+      current = _.last(magicBox.resultAtCursor('QueryExtensionArgumentName'));
       if (current != null) {
 
         var used: string[] = _.chain(queryExtensionArgumentResults)

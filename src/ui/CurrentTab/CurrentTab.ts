@@ -23,7 +23,7 @@ module Coveo {
         $(this.options.tabSectionToOpen).addClass('coveo-targeted-by-current-tab');
         $(this.element).addClass('coveo-targeting-tab-section');
         this.bind.on(this.element, 'click', () => {
-          $('.coveo-glass').toggleClass("coveo-active-glass").toggleClass('coveo-active-glass-for-current-tab');
+          $('.coveo-glass').toggleClass('coveo-active-glass').toggleClass('coveo-active-glass-for-current-tab');
           $(this.element).toggleClass('coveo-opening-tab-section');
           $(this.options.tabSectionToOpen).toggleClass('coveo-opened-by-current-tab');
           if ($(this.element).hasClass('coveo-opening-tab-section')) {
@@ -48,7 +48,7 @@ module Coveo {
             found = true;
           }
         });
-        Assert.check(found, "Cannot find the currently active tab");
+        Assert.check(found, 'Cannot find the currently active tab');
       } else {
         $(this.element).hide();
       }

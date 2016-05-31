@@ -257,7 +257,7 @@ export class Omnibox extends Component {
       };
     }
     if (this.options.placeholder) {
-      (<HTMLInputElement>this.magicBox.element.querySelector("input")).placeholder = this.options.placeholder;
+      (<HTMLInputElement>this.magicBox.element.querySelector('input')).placeholder = this.options.placeholder;
     }
     this.magicBox.onsubmit = () => {
       this.magicBox.clearSuggestion();
@@ -388,7 +388,7 @@ export class Omnibox extends Component {
 
     if (!_.isEmpty(query)) {
       if (!this.options.enableQuerySyntax) {
-        data.queryBuilder.expression.add("<@- " + query + " -@>");
+        data.queryBuilder.expression.add(`<@- ${query} -@>`);
       } else {
         data.queryBuilder.expression.add(query);
       }

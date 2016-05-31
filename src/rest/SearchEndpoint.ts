@@ -711,16 +711,15 @@ export class SearchEndpoint implements ISearchEndpoint {
     return uri;
   }
 
-  //All query strings are initially constructed by this function
+  // All query strings are initially constructed by this function
   private buildBaseQueryString(callOptions?: IEndpointCallOptions, addAccessToken: boolean = false): string[] {
     let queryString: string[] = [];
 
     for (let name in this.options.queryStringArguments) {
-      //The mapping workgroup --> organizationId is necessary for backward compatibility
+      // The mapping workgroup --> organizationId is necessary for backwards compatibility
       if (name == 'workgroup') {
         queryString.push('organizationId' + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
-      }
-      else {
+      } else {
         queryString.push(name + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
       }
     }

@@ -81,7 +81,7 @@ export class OmniboxValuesList {
   private highlightOmniboxMatch(orignalStr: string, regex: RegExp, valueToSearch: string) {
     var firstChar = orignalStr.search(regex);
     var lastChar = firstChar + valueToSearch.length;
-    return orignalStr.slice(0, firstChar) + "<span class='coveo-highlight'>" + orignalStr.slice(firstChar, lastChar) + "</span>" + orignalStr.slice(lastChar);
+    return orignalStr.slice(0, firstChar) + '<span class="coveo-highlight">' + orignalStr.slice(firstChar, lastChar) + '</span>' + orignalStr.slice(lastChar);
   }
 
   private omniboxCloseEvent(eventArg: IPopulateOmniboxObject) {

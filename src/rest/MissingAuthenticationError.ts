@@ -7,7 +7,6 @@ export class MissingAuthenticationError implements IEndpointError {
   public name: string;
 
   constructor(public provider: string) {
-    this.name = this.type = this.message = "Missing Authentication (provider: " + provider + ")";
-
+    this.name = this.type = this.message = `Missing Authentication (provider: ${provider})`;
   }
 }
