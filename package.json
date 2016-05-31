@@ -22,6 +22,9 @@
     "jssearch",
     "jsui"
   ],
+  "files": [
+    "bin"
+  ],
   "author": "Coveo <sandbox_JSUI@coveo.com> (http://source.coveo.com/)",
   "license": "Apache-2.0",
   "bugs": {
