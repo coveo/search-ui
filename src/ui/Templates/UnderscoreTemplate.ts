@@ -43,7 +43,7 @@ export class UnderscoreTemplate extends Template {
 
     this.fields = Template.getFieldFromString(templateString + ' ' + condition);
 
-    var additionalFields = ComponentOptions.loadFieldsOption(element, 'fields', <IComponentOptionsFieldsOption>{ includeInResults: true });
+    var additionalFields = ComponentOptions.loadFieldsOption(element, 'fields', <IFieldsOption>{ includeInResults: true });
     if (additionalFields != null) {
       // remove the @
       this.fields = this.fields.concat(_.map(additionalFields, (field) => field.substr(1)));

@@ -1,8 +1,8 @@
-import {EndpointError} from './EndpointError';
+import {IEndpointError} from './EndpointError';
 import {IErrorResponse} from './EndpointCaller';
 import {Assert} from '../misc/Assert';
 
-export class QueryError implements EndpointError {
+export class QueryError implements IEndpointError {
   public status: number;
   public message: string;
   public type: string;

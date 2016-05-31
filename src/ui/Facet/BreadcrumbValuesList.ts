@@ -1,7 +1,7 @@
 import {FacetValue} from './FacetValues';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {Facet} from './Facet';
-import {BreadcrumbValueElementKlass} from './BreadcrumbValueElement';
+import {IBreadcrumbValueElementKlass} from './BreadcrumbValueElement';
 import {Assert} from '../../misc/Assert';
 import {$$} from '../../utils/Dom';
 
@@ -13,7 +13,7 @@ export class BreadcrumbValueList {
   private elem: HTMLElement;
   private valueContainer: HTMLElement;
 
-  constructor(public facet: Facet, public facetValues: FacetValue[], public breadcrumbValueElementKlass: BreadcrumbValueElementKlass) {
+  constructor(public facet: Facet, public facetValues: FacetValue[], public breadcrumbValueElementKlass: IBreadcrumbValueElementKlass) {
     this.setExpandedAndCollapsed();
     this.elem = $$('div', {
       className: 'coveo-facet-breadcrumb'

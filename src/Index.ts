@@ -8,6 +8,7 @@ export {Defer} from './misc/Defer';
 export {L10N} from './misc/L10N';
 export {Logger} from './misc/Logger';
 export {Options} from './misc/Options';
+export {l} from './strings/Strings';
 
 // REST
 export {SearchEndpoint} from './rest/SearchEndpoint';
@@ -155,4 +156,8 @@ export {Template} from './ui/Templates/Template';
 export {SuggestionForOmnibox} from './ui/Misc/SuggestionForOmnibox';
 export {AnalyticsSuggestions} from './ui/AnalyticsSuggestions/AnalyticsSuggestions';
 export {FieldSuggestions} from './ui/FieldSuggestions/FieldSuggestions';
-export {PipelineContext} from './ui/PipelineContext/PipelineContext';
+export {AuthenticationProvider} from './ui/AuthenticationProvider/AuthenticationProvider';
+export {ResultTagging} from './ui/ResultTagging/ResultTagging';
+export {ResultsPreferences} from './ui/ResultsPreferences/ResultsPreferences';
+export {PipelineContext, context} from './ui/PipelineContext/PipelineContext';
+export {OmniboxResultList} from './ui/OmniboxResultList/OmniboxResultList';

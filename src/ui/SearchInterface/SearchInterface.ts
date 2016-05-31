@@ -10,7 +10,7 @@ import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
 import {QueryController} from '../../controllers/QueryController';
 import {Model, IAttributeChangedEventArg} from '../../models/Model';
 import {QueryEvents, IBuildingQueryEventArgs, INewQueryEventArgs} from '../../events/QueryEvents';
-import {BeforeRedirectEventArgs, StandaloneSearchInterfaceEvents} from '../../events/StandaloneSearchInterfaceEvents';
+import {IBeforeRedirectEventArgs, StandaloneSearchInterfaceEvents} from '../../events/StandaloneSearchInterfaceEvents';
 import {HistoryController} from '../../controllers/HistoryController';
 import {LocalStorageHistoryController} from '../../controllers/LocalStorageHistoryController';
 import {InitializationEvents} from '../../events/InitializationEvents';
@@ -555,7 +555,7 @@ export class StandaloneSearchInterface extends SearchInterface {
 
   public handleRedirect(e: Event, data: INewQueryEventArgs) {
 
-    let dataToSendOnBeforeRedirect: BeforeRedirectEventArgs = {
+    let dataToSendOnBeforeRedirect: IBeforeRedirectEventArgs = {
       searchPageUri: this.options.searchPageUri,
       cancel: false
     }

@@ -3,7 +3,7 @@ import {QueryBuilder} from '../ui/Base/QueryBuilder';
 import {IQueryResults} from '../rest/QueryResults';
 import {IQuery} from '../rest/Query';
 import {ISearchEndpoint, IEndpointCallOptions} from '../rest/SearchEndpointInterface';
-import {EndpointError} from '../rest/EndpointError';
+import {IEndpointError} from '../rest/EndpointError';
 import {Promise} from 'es6-promise';
 
 export interface INewQueryEventArgs {
@@ -49,7 +49,7 @@ export interface IQueryErrorEventArgs {
   queryBuilder: QueryBuilder;
   endpoint: ISearchEndpoint;
   query: IQuery;
-  error: EndpointError;
+  error: IEndpointError;
   searchAsYouType: boolean;
 }
 

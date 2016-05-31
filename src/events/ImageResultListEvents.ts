@@ -1,5 +1,5 @@
 
-export interface CompletedImageResultsLayoutEventArgs {
+export interface ICompletedImageResultsLayoutEventArgs {
 }
 
 export class ImageResultListEvents {

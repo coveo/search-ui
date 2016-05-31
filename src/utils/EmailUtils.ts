@@ -45,8 +45,8 @@ export class EmailUtils {
   }
 
   static parseEmail(email: string): string[] {
-    var email: string, name: string;
-    var match = (<string>email).match(/^\s*(.*)\s+<(.*)>$/);
+    let name: string;
+    let match = (<string>email).match(/^\s*(.*)\s+<(.*)>$/);
     if (match != null) {
       name = match[1];
       if (/^'.*'|'.*'$/.test(name)) {

@@ -96,15 +96,15 @@ export class ImageUtils {
   }
 
   static buildImageFromResult(result: IQueryResult, endpoint: SearchEndpoint, options?: IImageUtilsOptions) {
-    var options = options ? options : <IImageUtilsOptions>{};
+    options = options ? options : <IImageUtilsOptions>{};
 
-    var img = ImageUtils.buildImage(undefined, _.extend(options, { 'data-coveo-uri-hash': result.raw['urihash'] }));
+    let img = ImageUtils.buildImage(undefined, _.extend(options, { 'data-coveo-uri-hash': result.raw['urihash'] }));
     if (endpoint.isJsonp() || DeviceUtils.isIE8or9()) {
-      //For jsonp and IE8-9 (XDomain) we can't GET/POST for binary data. We are limited to only setting the src attribute directly on the img.
+      // For jsonp and IE8-9 (XDomain) we can't GET/POST for binary data. We are limited to only setting the src attribute directly on the img.
       ImageUtils.buildImageWithDirectSrcAttribute(endpoint, result);
     } else {
-      //Base 64 img allows us to GET/POST the image as raw binary, so that we can also pass the credential of the user
-      //Useful for phonegap.
+      // Base 64 img allows us to GET/POST the image as raw binary, so that we can also pass the credential of the user
+      // Useful for phonegap.
       ImageUtils.buildImageWithBase64SrcAttribute(endpoint, result);
     }
     return img
