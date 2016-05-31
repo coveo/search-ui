@@ -7,6 +7,8 @@ module Coveo {
     beforeEach(() => {
       test = Mock.basicComponentSetup<SearchAlertsMessage>(SearchAlertsMessage);
       spyOn(PopupUtils, 'positionPopup');
+      spyOn(test.cmp, 'startCloseDelay');
+      spyOn(test.cmp, 'stopCloseDelay');
     });
     
     afterEach(()=>{
