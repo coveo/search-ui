@@ -1,5 +1,5 @@
 import {Template} from './Template';
-import {TemplateHelperFunction} from './TemplateHelpers';
+import {ITemplateHelperFunction} from './TemplateHelpers';
 import {Assert} from '../../misc/Assert';
 import {ComponentOptions, IComponentOptionsFieldsOption} from '../Base/ComponentOptions';
 import {Utils} from '../../utils/Utils';
@@ -14,7 +14,7 @@ _.templateSettings = {
 
 export class UnderscoreTemplate extends Template {
   private template: (data: any) => string;
-  public static templateHelpers: { [templateName: string]: TemplateHelperFunction; } = {};
+  public static templateHelpers: { [templateName: string]: ITemplateHelperFunction; } = {};
   private fields: string[];
 
   public static mimeTypes = [
@@ -43,7 +43,7 @@ export class UnderscoreTemplate extends Template {
 
     this.fields = Template.getFieldFromString(templateString + ' ' + condition);
 
-    var additionalFields = ComponentOptions.loadFieldsOption(element, 'fields', <IFieldsOption>{ includeInResults: true });
+    var additionalFields = ComponentOptions.loadFieldsOption(element, 'fields', <IComponentOptionsFieldsOption>{ includeInResults: true });
     if (additionalFields != null) {
       // remove the @
       this.fields = this.fields.concat(_.map(additionalFields, (field) => field.substr(1)));
@@ -81,7 +81,7 @@ export class UnderscoreTemplate extends Template {
     return this.fields;
   }
 
-  static registerTemplateHelper(helperName: string, helper: TemplateHelperFunction) {
+  static registerTemplateHelper(helperName: string, helper: ITemplateHelperFunction) {
     UnderscoreTemplate.templateHelpers[helperName] = helper;
   }
 
