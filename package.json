@@ -24,9 +24,6 @@
   ],
   "author": "Coveo <sandbox_JSUI@coveo.com> (http://source.coveo.com/)",
   "license": "Apache-2.0",
-  "files": [
-    "bin"
-  ],
   "bugs": {
     "url": "https://github.com/coveo/coveo.search.js/issues"
   },
