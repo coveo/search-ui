@@ -387,11 +387,8 @@ export class Omnibox extends Component {
     }
 
     if (!_.isEmpty(query)) {
-      if (!this.options.enableQuerySyntax) {
-        data.queryBuilder.expression.add(`<@- ${query} -@>`);
-      } else {
-        data.queryBuilder.expression.add(query);
-      }
+      data.queryBuilder.disableQuerySyntax = !this.options.enableQuerySyntax;
+      data.queryBuilder.expression.add(query);
       this.logger.trace('Adding query to QueryBuilder', query);
     }
   }
