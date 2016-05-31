@@ -3,81 +3,74 @@
 module Coveo {
   describe('SearchAlerts', function () {
     let test: Mock.IBasicComponentSetup<SearchAlerts>;
+    let settingsData: ISettingsPopulateMenuArgs;
 
     beforeEach(() => {
       test = Mock.basicComponentSetup<SearchAlerts>(SearchAlerts);
+      settingsData = {
+        settings: Mock.basicComponentSetup<Settings>(Settings).cmp,
+        menuData: []
+      }
     });
     
     afterEach(()=>{
       test = null;
+      settingsData = null;
     })
 
-    it('should be able to send message if the option is set', () => {
-      expect(test.cmp.message).toBeDefined();
-    });
-    
-    it('should not be able to send message if the option is not set', ()=>{
-      test = Mock.advancedComponentSetup<SearchAlerts>(SearchAlerts, new Mock.AdvancedComponentSetupOptions(null, {enableMessage: false}));
-      expect(test.cmp.message).toBeUndefined();
-    })
-    
-    it('should add the manage alert option in the settings menu', ()=>{
-      let data: ISettingsPopulateMenuArgs = {
-        settings: Mock.basicComponentSetup<Settings>(Settings).cmp,
-        menuData: []
-      }
+    describe('exposes enableMessage option', ()=>{
+      it('should be able to send message', () => {
+        expect(test.cmp.message).toBeDefined();
+      });
       
-      $$(test.env.root).trigger(SettingsEvents.settingsPopulateMenu, data);
-      
-      expect(data.menuData).toContain(jasmine.objectContaining({className: "coveo-subscriptions-panel"}))
-    })
-    
-    it('should not add the manage alert option in the settings menu if the option is false', ()=>{
-      let data: ISettingsPopulateMenuArgs = {
-        settings: Mock.basicComponentSetup<Settings>(Settings).cmp,
-        menuData: []
-      }
-      test = Mock.advancedComponentSetup<SearchAlerts>(SearchAlerts, new Mock.AdvancedComponentSetupOptions(null, {enableManagePanel: false}));
-      $$(test.env.root).trigger(SettingsEvents.settingsPopulateMenu, data);
-      
-      expect(data.menuData).not.toContain(jasmine.objectContaining({className: "coveo-subscriptions-panel"}))
-    })
-    
-    it('should add the follow query option in the settings menu after the first query success', (done)=>{
-      let data: ISettingsPopulateMenuArgs = {
-        settings: Mock.basicComponentSetup<Settings>(Settings).cmp,
-        menuData: []
-      }
-      
-      let promise = Promise.resolve();
-      spyOn(test.env.queryController, 'getEndpoint').and.returnValue({listSubscriptions: ()=>{return promise}});
-      
-      Simulate.query(test.env);
-      
-      Promise.resolve().then(()=>{
-        $$(test.env.root).trigger(SettingsEvents.settingsPopulateMenu, data);
-        expect(data.menuData).toContain(jasmine.objectContaining({className: "coveo-follow-query"}))
-        done();
+      it('should not be able to send message if false', ()=>{
+        test = Mock.optionsComponentSetup<SearchAlerts, ISearchAlertsOptions>(SearchAlerts, {enableMessage: false});
+        expect(test.cmp.message).toBeUndefined();
       })
     })
     
-    it('should not add the follow query option in the settings menu after the first query success if the option is false', (done)=>{
-      let data: ISettingsPopulateMenuArgs = {
-        settings: Mock.basicComponentSetup<Settings>(Settings).cmp,
-        menuData: []
-      }
-      test = Mock.advancedComponentSetup<SearchAlerts>(SearchAlerts, new Mock.AdvancedComponentSetupOptions(null, {enableFollowQuery: false}));
-      let promise = Promise.resolve();
-      spyOn(test.env.queryController, 'getEndpoint').and.returnValue({listSubscriptions: ()=>{return promise}});
+    describe('exposes enableManagePanel option', ()=>{
+      it('should add the option in the settings menu', ()=>{
+        $$(test.env.root).trigger(SettingsEvents.settingsPopulateMenu, settingsData);
+        expect(settingsData.menuData).toContain(jasmine.objectContaining({className: "coveo-subscriptions-panel"}))
+      })
       
-      Simulate.query(test.env);
-      
-      Promise.resolve().then(()=>{
-        $$(test.env.root).trigger(SettingsEvents.settingsPopulateMenu, data);
-        expect(data.menuData).not.toContain(jasmine.objectContaining({className: "coveo-follow-query"}))
-        done();
+      it('should not add option in the settings menu if false', ()=>{
+        test = Mock.optionsComponentSetup<SearchAlerts, ISearchAlertsOptions>(SearchAlerts, {enableManagePanel: false});
+        $$(test.env.root).trigger(SettingsEvents.settingsPopulateMenu, settingsData);
+        expect(settingsData.menuData).not.toContain(jasmine.objectContaining({className: "coveo-subscriptions-panel"}))
       })
     })
+    
+    describe('exposes enableFollowQuery options', ()=>{
+      it('should add the option in the settings menu after the first query success', (done)=>{
+        let promise = Promise.resolve();
+        spyOn(test.env.queryController, 'getEndpoint').and.returnValue({listSubscriptions: ()=>{return promise}});
+        
+        Simulate.query(test.env);
+        
+        Promise.resolve().then(()=>{
+          $$(test.env.root).trigger(SettingsEvents.settingsPopulateMenu, settingsData);
+          expect(settingsData.menuData).toContain(jasmine.objectContaining({className: "coveo-follow-query"}))
+          done();
+        })
+      })
+      
+      it('should not add the option in the settings menu after the first query success if false', (done)=>{
+        test = Mock.optionsComponentSetup<SearchAlerts, ISearchAlertsOptions>(SearchAlerts, {enableFollowQuery: false});
+        let promise = Promise.resolve();
+        spyOn(test.env.queryController, 'getEndpoint').and.returnValue({listSubscriptions: ()=>{return promise}});
+        
+        Simulate.query(test.env);
+        
+        Promise.resolve().then(()=>{
+          $$(test.env.root).trigger(SettingsEvents.settingsPopulateMenu, settingsData);
+          expect(settingsData.menuData).not.toContain(jasmine.objectContaining({className: "coveo-follow-query"}))
+          done();
+        })
+      })
+    })
+    
     
     describe('open panel', ()=>{
       
@@ -106,14 +99,14 @@ module Coveo {
         listSubscriptionsMock.and.returnValue(Promise.reject({}));
         test.cmp.openPanel().then(()=>{
           expect($$((<jasmine.Spy>Coveo.ModalBox.open).calls.argsFor(0)[0]).find('.coveo-subscriptions-panel-content')).toBeNull();
-          expect($$((<jasmine.Spy>Coveo.ModalBox.open).calls.argsFor(0)[0]).find('.coveo-subscriptions-panel-fail')).toBeDefined();
+          expect($$((<jasmine.Spy>Coveo.ModalBox.open).calls.argsFor(0)[0]).find('.coveo-subscriptions-panel-fail')).not.toBeNull();
           done();
         });
       })
       
       it('should list the subscriptions', (done)=>{
         test.cmp.openPanel().then(()=>{
-          expect($$((<jasmine.Spy>Coveo.ModalBox.open).calls.argsFor(0)[0]).find('.coveo-subscriptions-panel-content')).toBeDefined();
+          expect($$((<jasmine.Spy>Coveo.ModalBox.open).calls.argsFor(0)[0]).find('.coveo-subscriptions-panel-content')).not.toBeNull();
           expect($$((<jasmine.Spy>Coveo.ModalBox.open).calls.argsFor(0)[0]).find('.coveo-subscriptions-panel-fail')).toBeNull();
           done();
         });

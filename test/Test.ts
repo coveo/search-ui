@@ -81,7 +81,8 @@
 /// <reference path="ui/FieldSuggestionsTest.ts" />
 /// <reference path="ui/RecommendationQueryTest.ts" />
 /// <reference path="ui/SearchAlertsTest.ts" />
-
+/// <reference path="ui/FollowItemTest.ts" />
+/// <reference path="ui/SearchAlertsMessageTest.ts" />
 
 Coveo.Logger.disable();
 
