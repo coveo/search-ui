@@ -10,177 +10,194 @@ import {l} from '../../strings/Strings';
 import {$$, Dom} from '../../utils/Dom';
 
 
-  export interface IFollowItemOptions {
-    watchedFields?: string[];
-    modifiedDateField?: string;
+export interface IFollowItemOptions {
+  watchedFields?: string[];
+  modifiedDateField?: string;
+}
+
+/**
+ * This component allows the user to follow a particular result. 
+ * By following a result, the user will receive emails informing him when the result has changed.
+ * A @link{SearchAlerts} component must be present in the page for this component to work.
+ */
+export class FollowItem extends Component {
+  static ID = 'FollowItem';
+
+  static fields = [
+    'urihash'
+  ];
+
+  /**
+   * The options for the follow item component
+   * @componentOptions
+   */
+  static options: IFollowItemOptions = {
+    /**
+     * Specifies the watchedFields to use when sending the follow query request.
+     * This default value is undefined.
+     */
+    watchedFields: ComponentOptions.buildFieldsOption(),
+    /**
+     * Specifies the modifiedDateField to use when sending the follow query request.
+     * This default value is undefined.
+     */
+    modifiedDateField: ComponentOptions.buildStringOption(),
+  };
+
+  private container: Dom;
+  private text: Dom;
+  private subscription: ISubscription;
+
+  constructor(public element: HTMLElement,
+    public options?: IFollowItemOptions,
+    public bindings?: IResultsComponentBindings,
+    public result?: IQueryResult) {
+
+    super(element, FollowItem.ID, bindings);
+
+    this.options = ComponentOptions.initComponentOptions(element, FollowItem, options);
+
+    Assert.exists(this.result);
+
+    this.container = $$(this.element);
+    this.text = $$('span');
+    this.container.append(this.text.el);
+    this.container.on('click', ()=>{this.toggleFollow()});
+
+    $$(this.root).on(SearchAlertsEvents.searchAlertsDeleted, (e: Event, args: ISearchAlertsEventArgs)=>{this.handleSubscriptionDeleted(e, args)});
+    $$(this.root).on(SearchAlertsEvents.searchAlertsCreated, (e: Event, args: ISearchAlertsEventArgs)=>{this.handleSubscriptionCreated(e, args)});
+
+    this.container.addClass('coveo-follow-item-loading');
+
+    this.updateIsFollowed();
   }
 
-  export class FollowItem extends Component {
-    static ID = 'FollowItem';
-
-    static fields = [
-      'urihash'
-    ];
-
-    static options: IFollowItemOptions = {
-      watchedFields: ComponentOptions.buildFieldsOption(),
-      modifiedDateField: ComponentOptions.buildStringOption(),
-    };
-
-    private container: Dom;
-    private text: Dom;
-    private subscription: ISubscription;
-
-    constructor(public element: HTMLElement,
-      public options?: IFollowItemOptions,
-      public bindings?: IResultsComponentBindings,
-      public result?: IQueryResult) {
-
-      super(element, FollowItem.ID, bindings);
-
-      this.options = ComponentOptions.initComponentOptions(element, FollowItem, options);
-
-      Assert.exists(this.result);
-
-      this.container = $$(this.element);
-      this.text = $$('span');
-      this.container.append(this.text.el);
-      this.container.on('click', ()=>{this.toggleFollow()});
-
-      $$(this.root).on(SearchAlertsEvents.searchAlertsDeleted, (e: Event, args: ISearchAlertsEventArgs)=>{this.handleSubscriptionDeleted(e, args)});
-      $$(this.root).on(SearchAlertsEvents.searchAlertsCreated, (e: Event, args: ISearchAlertsEventArgs)=>{this.handleSubscriptionCreated(e, args)});
-
-      this.container.addClass('coveo-follow-item-loading');
-
-      this.updateIsFollowed();
-    }
-
-    private updateIsFollowed() {
-      this.queryController.getEndpoint()
-        .listSubscriptions()
-        .then((subscriptions: ISubscription[]) => {
-          if (_.isArray(subscriptions)){
-            var subscription: ISubscription = _.find(subscriptions, (subscription: ISubscription) => {
-              var typeConfig = <ISubscriptionItemRequest>subscription.typeConfig;
-              return typeConfig && typeConfig.id != null && typeConfig.id == this.getId();
-            });
-            if (subscription != null) {
-              this.setFollowed(subscription);
-            } else {
-              this.setNotFollowed();
-            }
+  private updateIsFollowed() {
+    this.queryController.getEndpoint()
+      .listSubscriptions()
+      .then((subscriptions: ISubscription[]) => {
+        if (_.isArray(subscriptions)){
+          var subscription: ISubscription = _.find(subscriptions, (subscription: ISubscription) => {
+            var typeConfig = <ISubscriptionItemRequest>subscription.typeConfig;
+            return typeConfig && typeConfig.id != null && typeConfig.id == this.getId();
+          });
+          if (subscription != null) {
+            this.setFollowed(subscription);
           } else {
-            this.remove();
+            this.setNotFollowed();
           }
-        })
-        .catch(() => {
-          this.remove();
-        })
-    }
-
-    public setFollowed(subscription: ISubscription) {
-      this.container.removeClass('coveo-follow-item-loading');
-      this.subscription = subscription;
-      this.container.addClass('coveo-follow-item-followed');
-      this.text.text(l('SearchAlerts_unFollowing'));
-    }
-
-    public setNotFollowed() {
-      this.container.removeClass('coveo-follow-item-loading');
-      this.subscription = <ISubscription>FollowItem.buildFollowRequest(this.getId(), this.result.title, this.options);
-      this.container.removeClass('coveo-follow-item-followed');
-      this.text.text(l('SearchAlerts_follow'));
-    }
-    
-    public getText(): string {
-      return this.text.text();
-    }
-
-    public toggleFollow() {
-      if (!this.container.hasClass('coveo-follow-item-loading')) {
-        this.container.addClass('coveo-follow-item-loading');
-        if (this.subscription.id) {
-          this.queryController.getEndpoint()
-            .deleteSubscription(this.subscription)
-            .then(() => {
-              var eventArgs: ISearchAlertsEventArgs = {
-                subscription: this.subscription,
-                dom: this.element
-              };
-              $$(this.root).trigger(SearchAlertsEvents.searchAlertsDeleted, eventArgs);
-            })
-            .catch(() => {
-              this.container.removeClass('coveo-follow-item-loading');
-              var eventArgs: ISearchAlertsFailEventArgs = {
-                dom: this.element
-              };
-              $$(this.root).trigger(SearchAlertsEvents.searchAlertsFail, eventArgs);
-            })
         } else {
-          this.queryController.getEndpoint().follow(this.subscription)
-            .then((subscription: ISubscription) => {
-              var eventArgs: ISearchAlertsEventArgs = {
-                subscription: subscription,
-                dom: this.element
-              };
-              $$(this.root).trigger(SearchAlertsEvents.searchAlertsCreated, eventArgs);
-            })
-            .catch(() => {
-              this.container.removeClass('coveo-follow-item-loading');
-              var eventArgs: ISearchAlertsFailEventArgs = {
-                dom: this.element
-              };
-              $$(this.root).trigger(SearchAlertsEvents.searchAlertsFail, eventArgs);
-            })
+          this.remove();
         }
-      }
-    }
+      })
+      .catch(() => {
+        this.remove();
+      })
+  }
 
-    private handleSubscriptionDeleted(e: Event, args: ISearchAlertsEventArgs) {
-      if (args.subscription.type == SubscriptionType.followDocument) {
-        var typeConfig = <ISubscriptionItemRequest>args.subscription.typeConfig;
-        if (typeConfig.id == this.getId()) {
-          this.setNotFollowed();
-        }
-      }
-    }
+  public setFollowed(subscription: ISubscription) {
+    this.container.removeClass('coveo-follow-item-loading');
+    this.subscription = subscription;
+    this.container.addClass('coveo-follow-item-followed');
+    this.text.text(l('SearchAlerts_unFollowing'));
+  }
 
-    private handleSubscriptionCreated(e: Event, args: ISearchAlertsEventArgs) {
-      if (args.subscription.type == SubscriptionType.followDocument) {
-        var typeConfig = <ISubscriptionItemRequest>args.subscription.typeConfig;
-        if (typeConfig.id == this.getId()) {
-          this.setFollowed(args.subscription);
-        }
-      }
-    }
+  public setNotFollowed() {
+    this.container.removeClass('coveo-follow-item-loading');
+    this.subscription = <ISubscription>FollowItem.buildFollowRequest(this.getId(), this.result.title, this.options);
+    this.container.removeClass('coveo-follow-item-followed');
+    this.text.text(l('SearchAlerts_follow'));
+  }
+  
+  public getText(): string {
+    return this.text.text();
+  }
 
-    private remove() {
-      this.element.parentElement && this.element.parentElement.removeChild(this.element);
-    }
-
-    private getId() {
-      return this.result.raw.sysurihash || this.result.raw.urihash;
-    }
-
-    private static buildFollowRequest(id: string, title: string, options: IFollowItemOptions): ISubscriptionRequest {
-      var typeCofig: ISubscriptionItemRequest = {
-        id: id,
-        title: title
-      }
-
-      if (options.modifiedDateField) {
-        typeCofig.modifiedDateField = options.modifiedDateField;
-      }
-
-      if (options.watchedFields) {
-        typeCofig.watchedFields = options.watchedFields;
-      }
-
-      return {
-        type: SubscriptionType.followDocument,
-        typeConfig: typeCofig
+  public toggleFollow() {
+    if (!this.container.hasClass('coveo-follow-item-loading')) {
+      this.container.addClass('coveo-follow-item-loading');
+      if (this.subscription.id) {
+        this.queryController.getEndpoint()
+          .deleteSubscription(this.subscription)
+          .then(() => {
+            var eventArgs: ISearchAlertsEventArgs = {
+              subscription: this.subscription,
+              dom: this.element
+            };
+            $$(this.root).trigger(SearchAlertsEvents.searchAlertsDeleted, eventArgs);
+          })
+          .catch(() => {
+            this.container.removeClass('coveo-follow-item-loading');
+            var eventArgs: ISearchAlertsFailEventArgs = {
+              dom: this.element
+            };
+            $$(this.root).trigger(SearchAlertsEvents.searchAlertsFail, eventArgs);
+          })
+      } else {
+        this.queryController.getEndpoint().follow(this.subscription)
+          .then((subscription: ISubscription) => {
+            var eventArgs: ISearchAlertsEventArgs = {
+              subscription: subscription,
+              dom: this.element
+            };
+            $$(this.root).trigger(SearchAlertsEvents.searchAlertsCreated, eventArgs);
+          })
+          .catch(() => {
+            this.container.removeClass('coveo-follow-item-loading');
+            var eventArgs: ISearchAlertsFailEventArgs = {
+              dom: this.element
+            };
+            $$(this.root).trigger(SearchAlertsEvents.searchAlertsFail, eventArgs);
+          })
       }
     }
   }
 
-  Initialization.registerAutoCreateComponent(FollowItem);
+  private handleSubscriptionDeleted(e: Event, args: ISearchAlertsEventArgs) {
+    if (args.subscription.type == SubscriptionType.followDocument) {
+      var typeConfig = <ISubscriptionItemRequest>args.subscription.typeConfig;
+      if (typeConfig.id == this.getId()) {
+        this.setNotFollowed();
+      }
+    }
+  }
+
+  private handleSubscriptionCreated(e: Event, args: ISearchAlertsEventArgs) {
+    if (args.subscription.type == SubscriptionType.followDocument) {
+      var typeConfig = <ISubscriptionItemRequest>args.subscription.typeConfig;
+      if (typeConfig.id == this.getId()) {
+        this.setFollowed(args.subscription);
+      }
+    }
+  }
+
+  private remove() {
+    this.element.parentElement && this.element.parentElement.removeChild(this.element);
+  }
+
+  private getId() {
+    return this.result.raw.sysurihash || this.result.raw.urihash;
+  }
+
+  private static buildFollowRequest(id: string, title: string, options: IFollowItemOptions): ISubscriptionRequest {
+    var typeCofig: ISubscriptionItemRequest = {
+      id: id,
+      title: title
+    }
+
+    if (options.modifiedDateField) {
+      typeCofig.modifiedDateField = options.modifiedDateField;
+    }
+
+    if (options.watchedFields) {
+      typeCofig.watchedFields = options.watchedFields;
+    }
+
+    return {
+      type: SubscriptionType.followDocument,
+      typeConfig: typeCofig
+    }
+  }
+}
+
+Initialization.registerAutoCreateComponent(FollowItem);

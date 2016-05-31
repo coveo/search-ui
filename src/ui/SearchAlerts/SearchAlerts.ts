@@ -27,13 +27,42 @@ export interface ISearchAlertsOptions {
   messageCloseDelay?: number;
 }
 
+/**
+ * This component allows the user to manage his search alerts and to follow queries by adding menu items in the @link{Settings} component.
+ * By following queries, the user will receive emails informing him when the results of the query have changed.
+ */
 export class SearchAlerts extends Component {
   static ID = 'SearchAlerts';
+  
+  /**
+   * The options for the search alerts
+   * @componentOptions
+   */
   static options: ISearchAlertsOptions = {
+    /**
+     * Specifies whether to add a menu item in the @link{Settings} component to allow the user to manage his search alerts.
+     * The default value is true.
+     */
     enableManagePanel: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    /**
+     * Specifies whether to add a menu item in the @link{Settings} component to allow the user to follow the last query.
+     * The default value is true.
+     */
     enableFollowQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    /**
+     * Specifies the modifiedDateField to use when sending the follow query request.
+     * This default value is undefined.
+     */
     modifiedDateField: ComponentOptions.buildStringOption(),
+    /**
+     * Specifies whether to display info and error messages when search alerts actions are performed.
+     * This default value is true.
+     */
     enableMessage: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    /**
+     * Specifies how long to display the search alerts messages (in ms).
+     * This default value is 3000.
+     */
     messageCloseDelay: ComponentOptions.buildNumberOption({ defaultValue: 3000 }),
   };
 
