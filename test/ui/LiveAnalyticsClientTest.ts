@@ -366,7 +366,7 @@ module Coveo {
       expect(spy).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({
         originLevel1: 'default',
         originLevel2: 'default',
-        originLevel3: undefined,
+        originLevel3: jasmine.any(String),
         language: String['locale'],
         type: 'CustomEvent',
         metaObject: jasmine.any(Object)
