@@ -155,7 +155,7 @@ export class ResultList extends Component {
   /**
    * Empty the current result list content and append the given array of HTMLElement.<br/>
    * Can append to existing elements in the result list, or replace them.<br/>
-   * Trigger the newResultDiplayed and newResultsDisplayed event
+   * Triggers the newResultDiplayed and newResultsDisplayed event
    * @param resultsElement
    * @param append
    */
@@ -174,7 +174,7 @@ export class ResultList extends Component {
    * Build and return an array of HTMLElement with the given result set.
    * @param results
    */
-  public buildResults(results: IQueryResults) {
+  public buildResults(results: IQueryResults): HTMLElement[] {
     var res: HTMLElement[] = [];
     _.each(results.results, (result: IQueryResult) => {
       var resultElement = this.buildResult(result);
@@ -259,6 +259,33 @@ export class ResultList extends Component {
     return $$(this.options.resultContainer).findAll('.CoveoResult');
   }
 
+  protected autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult) {
+    Assert.exists(element);
+
+    var initOptions = this.searchInterface.options.originalOptionsObject;
+    var resultComponentBindings: IResultsComponentBindings = _.extend({}, this.getBindings(), {
+      resultElement: element
+    })
+    var initParameters: IInitializationParameters = {
+      options: initOptions,
+      bindings: resultComponentBindings,
+      result: result
+    }
+    Initialization.automaticallyCreateComponentsInside(element, initParameters);
+  }
+
+  protected triggerNewResultDisplayed(result: IQueryResult, resultElement: HTMLElement) {
+    var args: IDisplayedNewResultEventArgs = {
+      result: result,
+      item: resultElement
+    };
+    $$(this.element).trigger(ResultListEvents.newResultDisplayed, args);
+  }
+
+  protected triggerNewResultsDisplayed() {
+    $$(this.element).trigger(ResultListEvents.newResultsDisplayed, {});
+  }
+
   private handleDuringQuery() {
     this.logger.trace('Emptying the result container');
     this.cancelFetchingMoreResultsIfNeeded();
@@ -337,38 +364,11 @@ export class ResultList extends Component {
     }
   }
 
-  private triggerNewResultDisplayed(result: IQueryResult, resultElement: HTMLElement) {
-    var args: IDisplayedNewResultEventArgs = {
-      result: result,
-      item: resultElement
-    };
-    $$(this.element).trigger(ResultListEvents.newResultDisplayed, args);
-  }
-
-  private triggerNewResultsDisplayed() {
-    $$(this.element).trigger(ResultListEvents.newResultsDisplayed, {});
-  }
-
   private getAutoSelectedFieldsToInclude() {
     return _.chain(this.options.resultTemplate.getFields())
       .compact()
       .unique()
       .value()
-  }
-
-  private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult) {
-    Assert.exists(element);
-
-    var initOptions = this.searchInterface.options.originalOptionsObject;
-    var resultComponentBindings: IResultsComponentBindings = _.extend({}, this.getBindings(), {
-      resultElement: element
-    })
-    var initParameters: IInitializationParameters = {
-      options: initOptions,
-      bindings: resultComponentBindings,
-      result: result
-    }
-    Initialization.automaticallyCreateComponentsInside(element, initParameters);
   }
 
   private isCurrentlyFetchingMoreResults(): boolean {

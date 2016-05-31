@@ -28,7 +28,7 @@ export interface IOptionArgs<T> {
   defaultValue?: T;
   defaultFunction?: (element: HTMLElement) => T;
   required?: boolean;
-  postProcessing?: PostProcessing<T>;
+  postProcessing?: IPostProcessing<T>;
   attrName?: string;
   section?: string;
   depend?: string;
