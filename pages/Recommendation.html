@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Title</title> 
+    <script src="/devserver/CoveoJsSearch.js"></script>
+    <script src="./js/CoveoJsSearch.dependencies.js"></script>
+    <script src="./js/templates/templatesNew.js"></script>
+    <script src="http://localhost:8080/webpack-dev-server.js"></script>
+    <link rel="stylesheet" href="./css/CoveoFullSearchNewDesign.css"/>
+    <script>
+      document.addEventListener('DOMContentLoaded', function(){
+        Coveo.SearchEndpoint.configureSampleEndpoint();
+        Coveo.initRecommendation(document.querySelector('#recommendationYoutube'));
+        Coveo.init(document.querySelector('#search'));
+      })
+    </script>
+  </head>
+  <body >
+    <div id="search" class='CoveoSearchInterface' data-enable-history="true" data-design="new">
+      <div class="CoveoAnalytics"></div>
+      <div class="coveo-tab-section">
+        <a class="CoveoTab" data-id="All" data-caption="All Content"></a>
+      </div>
+      <div class='coveo-search-section'>
+        <div class="CoveoSettings"></div>
+        <div class="CoveoSearchbox" data-enable-omnibox="true"></div>
+      </div>
+      <div id="coveo-recommendation-main-section" class="coveo-main-section">
+        <div id="coveo-recommendation-facet-column" class="coveo-facet-column">
+          <div class="CoveoFacet" data-title="Type" data-field="@objecttype" data-tab="All"></div>
+          <div class="CoveoFacet" data-title="FileType" data-field="@filetype" data-tab="All"></div>
+          <div class="CoveoFacet" data-title="Author" data-field="@author" data-tab="All"></div>
+          <div class="CoveoFacet" data-title="Year" data-field="@year" data-tab="All"></div>
+          <div class="CoveoFacet" data-title="Month" data-field="@month" data-tab="All"></div>
+        </div>
+        <div id="coveo-recommendation-results-column" class="coveo-results-column">
+          <div class="CoveoShareQuery"></div>
+          <div class="CoveoExportToExcel"></div>
+          <div class="CoveoPreferencesPanel">
+            <div class="CoveoResultsPreferences"></div>
+            <div class="CoveoResultsFiltersPreferences"></div>
+          </div>
+          <div class="CoveoSearchAlerts"></div>
+          <div class="CoveoBreadcrumb"></div>
+          <div class="coveo-results-header">
+            <div class="coveo-summary-section">
+              <span class="CoveoQuerySummary"></span>
+              <span class="CoveoQueryDuration"></span>
+            </div>
+            <div class="coveo-sort-section">
+              <span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span>
+              <span class="CoveoSort" data-sort-criteria="date descending,date ascending" data-caption="Date"></span>
+            </div>
+          </div>
+          <div class="CoveoHiddenQuery"></div>
+          <div class="CoveoDidYouMean"></div>
+          <div class="CoveoErrorReport"></div>
+          <div class="CoveoResultList" data-wait-animation="fade" data-auto-select-fields-to-include="true">
+          </div>
+          <div class="CoveoPager"></div>
+        </div>
+        <div class="coveo-recommendation-column">
+          <div id="recommendationYoutube" class="CoveoRecommendation" data-design="new" data-results-per-page="5"> 
+            <div class="CoveoAnalytics"></div>
+            <script class="CoveoRecommendationQuery" type="text/x-query-generic">@sysfiletype=YoutubeVideo</script>
+            <div class="coveo-recommendation-header">
+              <div class="coveo-recommendation-title">Videos</div>
+            </div>
+            <div class="coveo-recommendation-body">
+              <div class="CoveoResultList"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

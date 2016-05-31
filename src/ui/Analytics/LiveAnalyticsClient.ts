@@ -193,7 +193,8 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       language: this.language,
       responseTime: undefined,
       originLevel1: this.originLevel1,
-      originLevel2: this.resolveActiveTabFromElement(this.rootElement),
+      originLevel2: this.getOriginLevel2(this.rootElement),
+      originLevel3: document.referrer,
       customData: _.keys(metaObject).length > 0 ? metaObject : undefined,
       userAgent: navigator.userAgent
     }
@@ -226,7 +227,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       documentUriHash: result.raw['urihash'],
       documentUrl: result.clickUri,
       documentTitle: result.title,
-      originLevel2: this.resolveActiveTabFromElement(element) || 'default',
+      originLevel2: this.getOriginLevel2(element),
       collectionName: <string>result.raw['collection'],
       sourceName: <string>result.raw['source'],
       documentPosition: result.index + 1,
@@ -240,9 +241,13 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     return this.merge<ICustomEvent>(this.buildAnalyticsEvent(actionCause, metaObject), {
       eventType: actionCause.type,
       eventValue: actionCause.name,
-      originLevel2: this.resolveActiveTabFromElement(element) || 'default',
+      originLevel2: this.getOriginLevel2(element),
       responseTime: 0
     })
+  }
+
+  protected getOriginLevel2(element: HTMLElement): string {
+    return this.resolveActiveTabFromElement(element) || "default";
   }
 
   private buildMetaObject<TMeta>(meta: TMeta): IChangeableAnalyticsMetaObject {

@@ -1,11 +1,11 @@
-# Search-UI [![Build Status](https://travis-ci.org/coveo/search-ui.svg?branch=master)](https://travis-ci.org/coveo/search-ui)
+# Search-UI [![Build Status](https://travis-ci.org/coveo/search-ui.svg?branch=master)](https://travis-ci.org/coveo/search-ui) [![TypeScript](https://badges.frapsoft.com/typescript/version/typescript-v18.svg?v=100)](https://github.com/ellerbrock/typescript-badges/)
 Coveo Search UI framework
 
 ## Work in progress
 This repository contain the Coveo Search UI, written in Typescript. 
 We are in the process of moving the old internal repository to github. 
 
-As such, some part are currently not working.
+As such, some parts are currently not working.
 
 We are gradually removing our internal dependencies to jQuery, as well as moving our module pattern to commonjs from AMD, as well as integrating webpack.
 

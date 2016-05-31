@@ -465,9 +465,7 @@ export class QuickviewDocument extends Component {
     }
 
     // Find and highlight the new element.
-    let element = $$(window.document.body).find(`[id^=${HIGHLIGHT_PREFIX}:${state.word.index}.${toIndex}.]`
-    )
-      ;
+    let element = $$(window.document.body).find(`[id^=${HIGHLIGHT_PREFIX}:${state.word.index}.${toIndex}.]`);
     element.style.border = '1px dotted #333';
     state.currentIndex = toIndex;
 

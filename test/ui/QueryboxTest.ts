@@ -169,14 +169,14 @@ module Coveo {
         }, 10);
       });
 
-      it('enableQuerySyntax should modify the query', function() {
+      it('enableQuerySyntax should modify the disableQuerySyntax parameter', function() {
         test = Mock.optionsComponentSetup<Querybox, IQueryboxOptions>(Querybox, {
           enableQuerySyntax: false
         });
         test.cmp.setText('@field==Batman');
 
         var simulation = Simulate.query(test.env);
-        expect(simulation.queryBuilder.build().q).toBe('<@- @field==Batman -@>');
+        expect(simulation.queryBuilder.disableQuerySyntax).toBe(true);
 
         test = Mock.optionsComponentSetup<Querybox, IQueryboxOptions>(Querybox, {
           enableQuerySyntax: true
@@ -184,7 +184,7 @@ module Coveo {
         test.cmp.setText('@field==Batman');
 
         var simulation = Simulate.query(test.env);
-        expect(simulation.queryBuilder.build().q).toBe('@field==Batman');
+        expect(simulation.queryBuilder.disableQuerySyntax).toBe(false);
 
       });
 

@@ -149,6 +149,8 @@ export {ShareQuery} from './ui/ShareQuery/ShareQuery';
 export {Sort} from './ui/Sort/Sort';
 export {SortCriteria} from './ui/Sort/SortCriteria';
 export {Triggers} from './ui/Triggers/Triggers';
+export {Recommendation} from './ui/Recommendation/Recommendation';
+export {RecommendationQuery} from './ui/Recommendation/RecommendationQuery';
 export {TemplateLoader} from './ui/TemplateLoader/TemplateLoader';
 export {Template} from './ui/Templates/Template';
 export {SuggestionForOmnibox} from './ui/Misc/SuggestionForOmnibox';
@@ -156,5 +158,6 @@ export {AnalyticsSuggestions} from './ui/AnalyticsSuggestions/AnalyticsSuggestio
 export {FieldSuggestions} from './ui/FieldSuggestions/FieldSuggestions';
 export {AuthenticationProvider} from './ui/AuthenticationProvider/AuthenticationProvider';
 export {ResultTagging} from './ui/ResultTagging/ResultTagging';
+export {ResultsPreferences} from './ui/ResultsPreferences/ResultsPreferences';
 export {PipelineContext, context} from './ui/PipelineContext/PipelineContext';
 export {OmniboxResultList} from './ui/OmniboxResultList/OmniboxResultList';

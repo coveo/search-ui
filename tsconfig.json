@@ -184,6 +184,8 @@
     "src/ui/Sort/Sort.ts",
     "src/ui/Triggers/Triggers.ts",
     "src/ui/Facet/ValueElementRenderer.ts",
+    "src/ui/Recommendation/Recommendation.ts",
+    "src/ui/Recommendation/RecommendationQuery.ts",
     "src/ui/TemplateLoader/TemplateLoader.ts",
     "src/ui/Templates/Template.ts",
     "src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts",
@@ -195,5 +197,6 @@
     "src/ui/ResultTagging/ResultTagging.ts",
     "src/ui/PipelineContext/PipelineContext.ts",
     "src/ui/OmniboxResultList/OmniboxResultList.ts"
+    "src/ui/ResultsPreferences/ResultsPreferences.ts"
   ]
 }

@@ -1,5 +1,3 @@
-/// <reference path='../../../node_modules/modal-box/bin/ModalBox.d.ts' />
-
 import {Component} from '../Base/Component'
 import {ComponentOptions, Type} from '../Base/ComponentOptions'
 import {IResultsComponentBindings} from '../Base/ResultsComponentBindings'
@@ -11,12 +9,13 @@ import {$$, Dom} from '../../utils/Dom'
 import {DefaultQuickviewTemplate} from './DefaultQuickviewTemplate'
 import {ResultListEvents} from '../../events/ResultListEvents'
 import {StringUtils} from '../../utils/StringUtils'
+import {ModalBox, openModalBox} from '../../utils/ModalBox'
 import {QuickviewDocument} from './QuickviewDocument'
 import {QueryStateModel} from '../../models/QueryStateModel'
 import {Model} from '../../models/Model'
 import {QuickviewEvents} from '../../events/QuickviewEvents'
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
-import {KEYBOARD} from '../../utils/KeyboardUtils'
+import {KEYBOARD} from '../../utils/KeyboardUtils';
 
 export interface IQuickviewOptions {
   title?: string;
