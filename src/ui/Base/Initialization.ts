@@ -15,7 +15,7 @@ import {ComponentStateModel} from '../../models/ComponentStateModel';
 import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
 import {IAnalyticsNoMeta, AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {BaseComponent} from '../Base/BaseComponent';
-import _ = require('underscore');
+import {Recommendation} from '../Recommendation/Recommendation';
 
 /**
  * Represent the initialization parameters required to init a new component
@@ -177,6 +177,19 @@ export class Initialization {
     var searchInterface = new StandaloneSearchInterface(element, options.StandaloneSearchInterface, options.Analytics);
     searchInterface.options.originalOptionsObject = options;
     var initParameters: IInitializationParameters = { options: options, bindings: searchInterface.getBindings() };
+    Initialization.automaticallyCreateComponentsInside(element, initParameters);
+  }
+  
+  /**
+   * Create a new recommendation search interface. This is the function executed when calling Coveo.initRecommendation
+   * @param element
+   * @param options
+   */
+  public static initRecommendationInterface(element: HTMLElement, options: any = {}) {
+    options = Initialization.resolveDefaultOptions(element, options);
+    var recommendation = new Recommendation(element, options.Recommendation, options.Analytics);
+    recommendation.options.originalOptionsObject = options;
+    var initParameters: IInitializationParameters = {options: options, bindings: recommendation.getBindings()};
     Initialization.automaticallyCreateComponentsInside(element, initParameters);
   }
 

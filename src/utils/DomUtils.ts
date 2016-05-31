@@ -1,10 +1,10 @@
 import {$$, Dom} from './Dom';
-import {IQueryResult} from '../rest/QueryResult'
-import {IResultsComponentBindings} from '../ui/Base/ResultsComponentBindings'
-import {DateUtils} from './DateUtils'
-import {FileTypes} from '../ui/Misc/FileTypes'
+import {IQueryResult} from '../rest/QueryResult';
+import {IResultsComponentBindings} from '../ui/Base/ResultsComponentBindings';
 import {Utils} from './Utils';
 import {StringUtils} from './StringUtils';
+import {DateUtils} from './DateUtils';
+import {FileTypes} from '../ui/Misc/FileTypes';
 
 export class DomUtils {
   static getPopUpCloseButton(captionForClose: string, captionForReminder: string): string {
@@ -76,4 +76,5 @@ export class DomUtils {
     new Coveo[Coveo['Salesforce'] ? 'SalesforceResultLink' : 'ResultLink'](header.find('.coveo-quickview-pop-up-reminder'), undefined, bindings, result);
     return header;
   }
+  
 }

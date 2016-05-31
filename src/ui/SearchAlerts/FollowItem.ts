@@ -79,7 +79,7 @@ module Coveo {
       this.container.removeClass('coveo-follow-item-followed');
       this.text.text(l('SearchAlerts_follow'));
     }
-
+    
     public getText(): string {
       return this.text.text();
     }

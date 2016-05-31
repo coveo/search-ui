@@ -290,7 +290,7 @@ export class FieldValue extends Component {
       }
     }
   }
-
+  
 }
 
 Initialization.registerAutoCreateComponent(FieldValue);
