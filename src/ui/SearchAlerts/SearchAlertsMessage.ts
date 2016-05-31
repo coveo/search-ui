@@ -1,6 +1,6 @@
 import {Component} from '../Base/Component';
 import {IComponentBindings} from '../Base/ComponentBindings';
-import {SearchAlertEvents, ISearchAlertEventArgs, ISearchAlertsFailEventArgs} from '../../events/SearchAlertEvents';
+import {SearchAlertsEvents, ISearchAlertsEventArgs, ISearchAlertsFailEventArgs} from '../../events/SearchAlertEvents';
 import {QueryEvents} from '../../events/QueryEvents';
 import {ISubscriptionItemRequest, SubscriptionType, ISubscriptionQueryRequest} from '../../rest/Subscription';
 import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
@@ -23,9 +23,9 @@ export class SearchAlertsMessage extends Component {
 
     super(element, SearchAlertsMessage.ID, bindings);
 
-    $$(this.root).on(SearchAlertEvents.searchAlertCreated, (e: Event, args: ISearchAlertEventArgs)=>{this.handleSubscriptionCreated(e, args)});
-    $$(this.root).on(SearchAlertEvents.SearchAlertsFail, (e: Event, args: ISearchAlertEventArgs)=>{this.handleSearchAlerts_Fail(e, args)});
-    $$(this.root).on(SearchAlertEvents.searchAlertDeleted, ()=>{this.close()});
+    $$(this.root).on(SearchAlertsEvents.searchAlertsCreated, (e: Event, args: ISearchAlertsEventArgs)=>{this.handleSubscriptionCreated(e, args)});
+    $$(this.root).on(SearchAlertsEvents.searchAlertsFail, (e: Event, args: ISearchAlertsEventArgs)=>{this.handleSearchAlerts_Fail(e, args)});
+    $$(this.root).on(SearchAlertsEvents.searchAlertsDeleted, ()=>{this.close()});
 
     $$(this.root).on(QueryEvents.newQuery, ()=>{this.close()});
   }
@@ -62,7 +62,7 @@ export class SearchAlertsMessage extends Component {
     })
   }
 
-  private handleSubscriptionCreated(e: Event, args: ISearchAlertEventArgs) {
+  private handleSubscriptionCreated(e: Event, args: ISearchAlertsEventArgs) {
     this.close();
     if (args.dom != null) {
       if (args.subscription.type == SubscriptionType.followQuery) {

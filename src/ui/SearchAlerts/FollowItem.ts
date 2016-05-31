@@ -3,7 +3,7 @@ import {ComponentOptions} from '../Base/ComponentOptions';
 import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
 import {IQueryResult} from '../../rest/QueryResult';
 import {Assert} from '../../misc/Assert';
-import {SearchAlertEvents, ISearchAlertEventArgs, ISearchAlertsFailEventArgs} from '../../events/SearchAlertEvents';
+import {SearchAlertsEvents, ISearchAlertsEventArgs, ISearchAlertsFailEventArgs} from '../../events/SearchAlertEvents';
 import {ISubscription, ISubscriptionItemRequest, SubscriptionType, ISubscriptionRequest} from '../../rest/Subscription';
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
@@ -47,8 +47,8 @@ import {$$, Dom} from '../../utils/Dom';
       this.container.append(this.text.el);
       this.container.on('click', ()=>{this.toggleFollow()});
 
-      $$(this.root).on(SearchAlertEvents.searchAlertDeleted, (e: Event, args: ISearchAlertEventArgs)=>{this.handleSubscriptionDeleted(e, args)});
-      $$(this.root).on(SearchAlertEvents.searchAlertCreated, (e: Event, args: ISearchAlertEventArgs)=>{this.handleSubscriptionCreated(e, args)});
+      $$(this.root).on(SearchAlertsEvents.searchAlertsDeleted, (e: Event, args: ISearchAlertsEventArgs)=>{this.handleSubscriptionDeleted(e, args)});
+      $$(this.root).on(SearchAlertsEvents.searchAlertsCreated, (e: Event, args: ISearchAlertsEventArgs)=>{this.handleSubscriptionCreated(e, args)});
 
       this.container.addClass('coveo-follow-item-loading');
 
@@ -103,40 +103,40 @@ import {$$, Dom} from '../../utils/Dom';
           this.queryController.getEndpoint()
             .deleteSubscription(this.subscription)
             .then(() => {
-              var eventArgs: ISearchAlertEventArgs = {
+              var eventArgs: ISearchAlertsEventArgs = {
                 subscription: this.subscription,
                 dom: this.element
               };
-              $$(this.root).trigger(SearchAlertEvents.searchAlertDeleted, eventArgs);
+              $$(this.root).trigger(SearchAlertsEvents.searchAlertsDeleted, eventArgs);
             })
             .catch(() => {
               this.container.removeClass('coveo-follow-item-loading');
               var eventArgs: ISearchAlertsFailEventArgs = {
                 dom: this.element
               };
-              $$(this.root).trigger(SearchAlertEvents.SearchAlertsFail, eventArgs);
+              $$(this.root).trigger(SearchAlertsEvents.searchAlertsFail, eventArgs);
             })
         } else {
           this.queryController.getEndpoint().follow(this.subscription)
             .then((subscription: ISubscription) => {
-              var eventArgs: ISearchAlertEventArgs = {
+              var eventArgs: ISearchAlertsEventArgs = {
                 subscription: subscription,
                 dom: this.element
               };
-              $$(this.root).trigger(SearchAlertEvents.searchAlertCreated, eventArgs);
+              $$(this.root).trigger(SearchAlertsEvents.searchAlertsCreated, eventArgs);
             })
             .catch(() => {
               this.container.removeClass('coveo-follow-item-loading');
               var eventArgs: ISearchAlertsFailEventArgs = {
                 dom: this.element
               };
-              $$(this.root).trigger(SearchAlertEvents.SearchAlertsFail, eventArgs);
+              $$(this.root).trigger(SearchAlertsEvents.searchAlertsFail, eventArgs);
             })
         }
       }
     }
 
-    private handleSubscriptionDeleted(e: Event, args: ISearchAlertEventArgs) {
+    private handleSubscriptionDeleted(e: Event, args: ISearchAlertsEventArgs) {
       if (args.subscription.type == SubscriptionType.followDocument) {
         var typeConfig = <ISubscriptionItemRequest>args.subscription.typeConfig;
         if (typeConfig.id == this.getId()) {
@@ -145,7 +145,7 @@ import {$$, Dom} from '../../utils/Dom';
       }
     }
 
-    private handleSubscriptionCreated(e: Event, args: ISearchAlertEventArgs) {
+    private handleSubscriptionCreated(e: Event, args: ISearchAlertsEventArgs) {
       if (args.subscription.type == SubscriptionType.followDocument) {
         var typeConfig = <ISubscriptionItemRequest>args.subscription.typeConfig;
         if (typeConfig.id == this.getId()) {

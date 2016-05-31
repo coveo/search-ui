@@ -25,7 +25,7 @@ export {OmniboxEvents} from './events/OmniboxEvents';
 export {PreferencesPanelEvents} from './events/PreferencesPanelEvents';
 export {QueryEvents} from './events/QueryEvents';
 export {ResultListEvents} from './events/ResultListEvents';
-export {SearchAlertEvents} from './events/SearchAlertEvents';
+export {SearchAlertsEvents} from './events/SearchAlertEvents';
 export {SettingsEvents} from './events/SettingsEvents';
 export {SliderEvents} from './events/SliderEvents';
 export {StandaloneSearchInterfaceEvents} from './events/StandaloneSearchInterfaceEvents';

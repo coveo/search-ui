@@ -135,7 +135,7 @@ module Coveo {
       })
       
       it('should trigger a search alert created event', (done)=>{
-        $$(test.env.root).on(SearchAlertEvents.searchAlertCreated, ()=>{
+        $$(test.env.root).on(SearchAlertsEvents.searchAlertsCreated, ()=>{
           expect(true).toBe(true);
           done();
         });
@@ -144,7 +144,7 @@ module Coveo {
       
       it('should trigger a search alert failed event if there was a problem', (done)=>{
         followMock.and.returnValue(Promise.resolve());
-        $$(test.env.root).on(SearchAlertEvents.SearchAlertsFail, ()=>{
+        $$(test.env.root).on(SearchAlertsEvents.searchAlertsFail, ()=>{
           expect(true).toBe(true);
           done();
         });

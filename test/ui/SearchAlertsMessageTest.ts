@@ -22,12 +22,12 @@ module Coveo {
           }
         }
       };
-      $$(test.env.root).trigger(SearchAlertEvents.searchAlertCreated, {dom: $$('div'), subscription: subscription});
+      $$(test.env.root).trigger(SearchAlertsEvents.searchAlertsCreated, {dom: $$('div'), subscription: subscription});
       expect(PopupUtils.positionPopup).toHaveBeenCalled();
     })
     
     it('should show a message on error', ()=>{
-      $$(test.env.root).trigger(SearchAlertEvents.SearchAlertsFail, {dom: $$('div').el});
+      $$(test.env.root).trigger(SearchAlertsEvents.searchAlertsFail, {dom: $$('div').el});
       expect(PopupUtils.positionPopup).toHaveBeenCalled();
     })
     

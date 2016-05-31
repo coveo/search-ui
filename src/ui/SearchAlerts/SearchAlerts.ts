@@ -12,7 +12,7 @@ import {Omnibox} from '../Omnibox/Omnibox';
 import {IQuery} from '../../rest/Query';
 import {AjaxError} from '../../rest/AjaxError';
 import {ISettingsPopulateMenuArgs} from '../Settings/Settings';
-import {SearchAlertEvents, ISearchAlertEventArgs, ISearchAlertsFailEventArgs} from '../../events/SearchAlertEvents';
+import {SearchAlertsEvents, ISearchAlertsEventArgs, ISearchAlertsFailEventArgs} from '../../events/SearchAlertEvents';
 import {ISubscription, ISubscriptionItemRequest, SubscriptionType, ISubscriptionRequest, ISubscriptionQueryRequest} from '../../rest/Subscription';
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
@@ -219,8 +219,8 @@ export class SearchAlerts extends Component {
         .deleteSubscription(subscription)
         .then(() => {
           delete subscription.id;
-          var eventArgs: ISearchAlertEventArgs = { subscription: subscription };
-          $$(this.root).trigger(SearchAlertEvents.searchAlertDeleted, eventArgs);
+          var eventArgs: ISearchAlertsEventArgs = { subscription: subscription };
+          $$(this.root).trigger(SearchAlertsEvents.searchAlertsDeleted, eventArgs);
         })
         .catch(() => {
           this.handleSearchAlertsFail();
@@ -233,8 +233,8 @@ export class SearchAlerts extends Component {
         .follow(subscription)
         .then((updatedSearchAlert) => {
           subscription.id = updatedSearchAlert.id;
-          var eventArgs: ISearchAlertEventArgs = { subscription: subscription };
-          $$(this.root).trigger(SearchAlertEvents.searchAlertCreated, eventArgs);
+          var eventArgs: ISearchAlertsEventArgs = { subscription: subscription };
+          $$(this.root).trigger(SearchAlertsEvents.searchAlertsCreated, eventArgs);
         })
         .catch(() => {
           this.handleSearchAlertsFail();
@@ -259,11 +259,11 @@ export class SearchAlerts extends Component {
     this.queryController.getEndpoint().follow(request)
       .then((subscription: ISubscription) => {
         if(subscription){
-          var eventArgs: ISearchAlertEventArgs = {
+          var eventArgs: ISearchAlertsEventArgs = {
             subscription: subscription,
             dom: this.findQueryBoxDom()
           };
-          $$(this.root).trigger(SearchAlertEvents.searchAlertCreated, eventArgs);    
+          $$(this.root).trigger(SearchAlertsEvents.searchAlertsCreated, eventArgs);    
         } else {
           this.triggerSearchAlertsFail();
         }
@@ -277,7 +277,7 @@ export class SearchAlerts extends Component {
     let eventArgs: ISearchAlertsFailEventArgs = {
       dom: this.findQueryBoxDom()
     };
-    $$(this.root).trigger(SearchAlertEvents.SearchAlertsFail, eventArgs);
+    $$(this.root).trigger(SearchAlertsEvents.searchAlertsFail, eventArgs);
   }
 
   public findQueryBoxDom(): HTMLElement {

@@ -1,6 +1,6 @@
 import {ISubscription} from '../rest/Subscription';
 
-export interface ISearchAlertEventArgs {
+export interface ISearchAlertsEventArgs {
   subscription: ISubscription;
   dom?: HTMLElement;
 }
@@ -9,8 +9,8 @@ export interface ISearchAlertsFailEventArgs {
   dom?: HTMLElement;
 }
 
-export class SearchAlertEvents {
-  public static searchAlertCreated = 'searchAlertCreated';
-  public static searchAlertDeleted = 'searchAlertDeleted';
-  public static SearchAlertsFail = 'SearchAlertsFail';
+export class SearchAlertsEvents {
+  public static searchAlertsCreated = 'searchAlertsCreated';
+  public static searchAlertsDeleted = 'searchAlertsDeleted';
+  public static searchAlertsFail = 'searchAlertsFail';
 }
