@@ -49,6 +49,9 @@
 /// <reference path="ui/FacetSettingsTest.ts" />
 /// <reference path="ui/FacetSliderTest.ts" />
 /// <reference path="ui/FacetTest.ts" />
+/// <reference path="ui/FieldSuggestionsTest.ts" />
+/// <reference path="ui/FieldTableTest.ts" />
+/// <reference path="ui/FieldValueTest.ts" />
 /// <reference path="ui/FoldingTest.ts" />
 /// <reference path="ui/HiddenQueryTest.ts" />
 /// <reference path="ui/HierarchicalFacetTest.ts" />
@@ -77,7 +80,6 @@
 /// <reference path="ui/ResultLinkTest.ts" />
 /// <reference path="ui/TemplateLoaderTest.ts" />
 /// <reference path="ui/AnalyticsSuggestionsTest.ts" />
-/// <reference path="ui/FieldSuggestionsTest.ts" />
 
 Coveo.Logger.disable();
 
