@@ -22,20 +22,20 @@ export interface OmniboxResultListOptions extends IResultListOptions {
 export class OmniboxResultList extends ResultList {
   static ID = 'OmniboxResultList';
   static options: OmniboxResultListOptions = {
-    omniboxZIndex: ComponentOptions.buildNumberOption({defaultValue: 51, min: 16}),
+    omniboxZIndex: ComponentOptions.buildNumberOption({ defaultValue: 51, min: 16 }),
     headerTitle: ComponentOptions.buildStringOption(),
     queryOverride: ComponentOptions.buildStringOption()
   }
 
-  private lastOmniboxRequest: { omniboxObject: IPopulateOmniboxEventArgs; resolve: (...args: any[])=> void;};
+  private lastOmniboxRequest: { omniboxObject: IPopulateOmniboxEventArgs; resolve: (...args: any[]) => void; };
   private suggestionForOmnibox: SuggestionForOmnibox;
 
   constructor(public element: HTMLElement, public options?: OmniboxResultListOptions, public bindings?: IComponentBindings) {
     super(element, options, bindings, OmniboxResultList.ID);
     this.options = ComponentOptions.initComponentOptions(element, OmniboxResultList, options);
     this.setupOptions();
-    this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs)=> this.handlePopulateOmnibox(args))
-    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs)=> this.handleQueryOverride(args));
+    this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs) => this.handlePopulateOmnibox(args))
+    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleQueryOverride(args));
   }
 
   /**
@@ -46,7 +46,7 @@ export class OmniboxResultList extends ResultList {
     if (this.lastOmniboxRequest) {
       let content = $$('div');
       content.append(
-          "<div class='coveo-omnibox-result-list-header'>\
+        "<div class='coveo-omnibox-result-list-header'>\
             <span class='coveo-icon-omnibox-result-list'></span> \
             <span class='coveo-caption'>" + (this.options.headerTitle || l("SuggestedResults")) + "</span> \
         </div>");
@@ -59,7 +59,7 @@ export class OmniboxResultList extends ResultList {
         this._autoCreateComponentsInsideResult(resultElement, result);
         this.triggerNewResultDisplayed(result, resultElement);
       });
-      this.lastOmniboxRequest.deferred.resolve({element: content.get(0), zIndex: this.options.omniboxZIndex});
+      this.lastOmniboxRequest.deferred.resolve({ element: content.get(0), zIndex: this.options.omniboxZIndex });
     }
   }
 
@@ -70,12 +70,12 @@ export class OmniboxResultList extends ResultList {
   }
 
   private handlePopulateOmnibox(args: IPopulateOmniboxEventArgs) {
-    var promise = new Promise((resolve, reject)=> {
+    var promise = new Promise((resolve, reject) => {
       this.queryController.executeQuery({
         beforeExecuteQuery: () => this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxSubmit, {}),
         searchAsYouType: true
       });
-      this.lastOmniboxRequest = {omniboxObject: args, resolve: resolve};
+      this.lastOmniboxRequest = { omniboxObject: args, resolve: resolve };
     })
     args.rows.push({
       deferred: promise
@@ -92,7 +92,7 @@ export class OmniboxResultList extends ResultList {
   }
 
   private onRowSelection(result: IQueryResult, resultElement: JQuery, omniboxObject: IPopulateOmniboxEventArgs) {
-    this.usageAnalytics.logClickEvent(AnalyticsActionCauseList.documentOpen, {author: result.raw.author}, result, this.root);
+    this.usageAnalytics.logClickEvent(AnalyticsActionCauseList.documentOpen, { author: result.raw.author }, result, this.root);
     window.location.href = result.clickUri;
   }
 }
