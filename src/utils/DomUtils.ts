@@ -1,10 +1,10 @@
 import {$$, Dom} from './Dom';
-import {IQueryResult} from '../rest/QueryResult';
-import {IResultsComponentBindings} from '../ui/Base/ResultsComponentBindings';
+import {IQueryResult} from '../rest/QueryResult'
+import {IResultsComponentBindings} from '../ui/Base/ResultsComponentBindings'
+import {DateUtils} from './DateUtils'
+import {FileTypes} from '../ui/Misc/FileTypes'
 import {Utils} from './Utils';
 import {StringUtils} from './StringUtils';
-import {DateUtils} from './DateUtils';
-import {FileTypes} from '../ui/Misc/FileTypes';
 
 export class DomUtils {
   static getPopUpCloseButton(captionForClose: string, captionForReminder: string): string {
@@ -44,7 +44,7 @@ export class DomUtils {
   }
 
   static highlightElement(initialString: string, valueToSearch: string): string {
-    var regex = new RegExp(Utils.escapeRegexCharacter(valueToSearch), "i");
+    var regex = new RegExp(Utils.escapeRegexCharacter(valueToSearch), 'i');
     var firstChar = initialString.search(regex);
     var lastChar = firstChar + valueToSearch.length;
     return `${StringUtils.htmlEncode(initialString.slice(0, firstChar))}<span class='coveo-highlight'>${StringUtils.htmlEncode(initialString.slice(firstChar, lastChar))}</span>${StringUtils.htmlEncode(initialString.slice(lastChar))}`;
@@ -52,12 +52,12 @@ export class DomUtils {
 
   static getLoadingSpinner(): HTMLElement {
     let loading = $$('div');
-    loading.addClass("coveo-loading-spinner");
+    loading.addClass('coveo-loading-spinner');
     return loading.el;
   }
 
   static getQuickviewHeader(result: IQueryResult, options: { showDate: boolean; title: string }, bindings: IResultsComponentBindings): Dom {
-    var date = "";
+    var date = '';
     if (options.showDate) {
       date = DateUtils.dateTimeToString(new Date(result.raw.date));
     }
@@ -76,5 +76,4 @@ export class DomUtils {
     new Coveo[Coveo['Salesforce'] ? 'SalesforceResultLink' : 'ResultLink'](header.find('.coveo-quickview-pop-up-reminder'), undefined, bindings, result);
     return header;
   }
-
 }

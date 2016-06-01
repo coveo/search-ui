@@ -1,14 +1,14 @@
 /// <reference path="Facet.ts" />
 import {Facet} from './Facet';
-import {FacetValueElementKlass} from './FacetValueElement';
+import {IFacetValueElementKlass} from './FacetValueElement';
 import {FacetValue} from './FacetValues';
 
-export interface FacetSearchValuesListKlass {
-  new (facet: Facet, facetValueElementKlass: FacetValueElementKlass): FacetSearchValuesList;
+export interface IFacetSearchValuesListKlass {
+  new (facet: Facet, facetValueElementKlass: IFacetValueElementKlass): FacetSearchValuesList;
 }
 
 export class FacetSearchValuesList {
-  constructor(public facet: Facet, public facetValueElementKlass: FacetValueElementKlass) {
+  constructor(public facet: Facet, public facetValueElementKlass: IFacetValueElementKlass) {
   }
 
   public build(facetValues: FacetValue[]): HTMLElement[] {

@@ -5,18 +5,18 @@ export const SubscriptionType = {
   followDocument: 'followDocument',
 }
 
-export interface SearchAlertsEndpointOptions {
+export interface ISearchAlertsEndpointOptions {
   restUri: string;
   accessToken?: string;
   errorsAsSuccess?: boolean;
 }
 
-export interface SearchAlertsEndpointCallOptions {
+export interface ISearchAlertsEndpointCallOptions {
   type?: string;
   page?: number;
 }
 
-export interface SearchAlertsEndpointSearchCallOptions {
+export interface ISearchAlertsEndpointSearchCallOptions {
   documentIds: string[];
 }
 

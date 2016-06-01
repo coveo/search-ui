@@ -9,7 +9,7 @@ import {l} from '../../strings/Strings';
 import {Initialization} from '../Base/Initialization';
 import {QueryEvents} from '../../events/QueryEvents';
 
-export interface BreadcrumbOptions {
+export interface IBreadcrumbOptions {
 }
 
 /**
@@ -21,7 +21,7 @@ export interface BreadcrumbOptions {
  */
 export class Breadcrumb extends Component {
   static ID = 'Breadcrumb';
-  static options: BreadcrumbOptions = {}
+  static options: IBreadcrumbOptions = {}
 
   private lastBreadcrumbs: IBreadcrumbItem[];
 
@@ -31,7 +31,7 @@ export class Breadcrumb extends Component {
    * @param options
    * @param bindings
    */
-  constructor(public element: HTMLElement, public options?: BreadcrumbOptions, bindings?: IComponentBindings) {
+  constructor(public element: HTMLElement, public options?: IBreadcrumbOptions, bindings?: IComponentBindings) {
     super(element, Breadcrumb.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, Breadcrumb, options);

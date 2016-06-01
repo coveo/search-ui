@@ -6,7 +6,7 @@ module Coveo {
     queryBuilder?: QueryBuilder;
     searchAsYouType?: boolean;
     promise?: Promise<IQueryResults>;
-    error?: EndpointError;
+    error?: IEndpointError;
     results?: IQueryResults;
     queryCorrections?: IQueryCorrection[];
     groupByResults?: IGroupByResult[];

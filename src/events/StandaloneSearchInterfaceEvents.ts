@@ -1,4 +1,4 @@
-export interface BeforeRedirectEventArgs {
+export interface IBeforeRedirectEventArgs {
   searchPageUri: string;
   cancel: boolean;
 }

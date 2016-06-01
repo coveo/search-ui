@@ -46,7 +46,7 @@ export class Dom {
       }
     }
 
-    _.forEach(children, (child: string | HTMLElement | Dom) => {
+    _.each(children, (child: string | HTMLElement | Dom) => {
       if (child instanceof HTMLElement) {
         elem.appendChild(child);
       } else if (_.isString(child)) {
@@ -69,10 +69,10 @@ export class Dom {
   }
 
   /**
-  * Get the css value of the specified property.<br/>
-  * @param property The property
-  * @returns {string}
-  */
+   * Get the css value of the specified property.<br/>
+   * @param property The property
+   * @returns {string}
+   */
   public css(property: string): string {
     return window.getComputedStyle(this.el).getPropertyValue(property);
   }
@@ -443,7 +443,7 @@ export class Dom {
         })
         this.el.addEventListener(type, fn, false);
       } else if (this.el['on']) {
-        this.el['on']("on" + type, eventHandle);
+        this.el['on']('on' + type, eventHandle);
       }
     }
   }
@@ -499,7 +499,7 @@ export class Dom {
           Dom.handlers.splice(idx, 1);
         }
       } else if (this.el['off']) {
-        this.el['off']("on" + type, eventHandle);
+        this.el['off']('on' + type, eventHandle);
       }
     }
   }

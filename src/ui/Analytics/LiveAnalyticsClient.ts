@@ -194,6 +194,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       responseTime: undefined,
       originLevel1: this.originLevel1,
       originLevel2: this.getOriginLevel2(this.rootElement),
+      originLevel3: document.referrer,
       customData: _.keys(metaObject).length > 0 ? metaObject : undefined,
       userAgent: navigator.userAgent
     }
@@ -246,7 +247,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
   }
 
   protected getOriginLevel2(element: HTMLElement): string {
-    return this.resolveActiveTabFromElement(element) || "default";
+    return this.resolveActiveTabFromElement(element) || 'default';
   }
 
   private buildMetaObject<TMeta>(meta: TMeta): IChangeableAnalyticsMetaObject {

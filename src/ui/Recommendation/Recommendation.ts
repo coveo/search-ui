@@ -28,7 +28,7 @@ export interface IRecommendationOptions extends ISearchInterfaceOptions {
  * This component is a {@link SearchInterface} that will display recommendations based on the user history.
  * To get recommendations, the page view script must also be included in the page. View: https://github.com/coveo/coveo.analytics.js
  * This component listens when the main search interface generates a query and it generates another to get the recommendations at the same time.
- * 
+ *
  * This component can be included in another SearchInterface, but you need to initialize the recommendation component with Coveo('initRecommendation'), before
  * the parent SearchInterface.
  */
@@ -42,35 +42,35 @@ export class Recommendation extends SearchInterface {
   static options: IRecommendationOptions = {
     /**
      * Specifies the main {@link SearchInterface} to listen to.
-    */
+     */
     mainSearchInterface: ComponentOptions.buildSelectorOption(),
 
     /**
      * Specifies the user context to send to Coveo analytics.
      * It will be sent with the query alongside the user history to get the recommendations.
      * If the option is not present, this component will display the same results as the main search interface.
-    */
+     */
     userContext: ComponentOptions.buildObjectOption(),
 
     /**
      * Specifies the id of the inteface.
      * It is used by the analytics to know which recommendation interface was selected.
      * The default value is Recommendation
-    */
-    id: ComponentOptions.buildStringOption({ defaultValue: "Recommendation" }),
+     */
+    id: ComponentOptions.buildStringOption({ defaultValue: 'Recommendation' }),
 
     /**
      * Specifies if the results of the recommendation query should have the same searchUid as the ones from the main search interface query.
      * It is used to give info to the {@link Analytics}
      * The default value is true
-    */
+     */
     linkSearchUid: ComponentOptions.buildBooleanOption({ defaultValue: true, depend: 'mainSearchInterface' }),
 
     /**
      * Specifies which options from the main {@link QueryBuilder} to use in the triggered query.
      * The default value is ["expression", "advancedExpression", "constantExpression", "disjunctionExpression"]
-    */
-    optionsToUse: ComponentOptions.buildListOption({ defaultValue: ["expression", "advancedExpression", "constantExpression", "disjunctionExpression"] })
+     */
+    optionsToUse: ComponentOptions.buildListOption({ defaultValue: ['expression', 'advancedExpression', 'constantExpression', 'disjunctionExpression'] })
 
   };
 
@@ -87,7 +87,7 @@ export class Recommendation extends SearchInterface {
     $$(this.element).on(QueryEvents.buildingQuery, (e: Event, args: IBuildingQueryEventArgs) => this.handleRecommendationBuildingQuery(args));
     $$(this.element).on(QueryEvents.querySuccess, (e: Event, args: IQuerySuccessEventArgs) => this.handleRecommendationQuerySuccess(args));
 
-    //This is done to allow the component to be included in another search interface without triggering the parent events.
+    // This is done to allow the component to be included in another search interface without triggering the parent events.
     this.preventEventPropagation();
 
   }
@@ -129,7 +129,7 @@ export class Recommendation extends SearchInterface {
       data.queryBuilder.addContext(this.options.userContext);
     }
 
-    data.queryBuilder.addContextValue("actions_history", JSON.stringify(this.getHistory()));
+    data.queryBuilder.addContextValue('actions_history', JSON.stringify(this.getHistory()));
   }
 
   private getHistory() {
@@ -171,4 +171,4 @@ export class Recommendation extends SearchInterface {
   }
 
 }
-//We do not register the Recommendation component since it is done with .coveo('initRecommendation')
+// We do not register the Recommendation component since it is done with .coveo('initRecommendation')

@@ -20,6 +20,7 @@ export interface IFieldValueOptions {
   helper?: string;
   helperOptions?: { [key: string]: any };
   splitValues?: boolean;
+  separator?: string;
 }
 
 export interface IAnalyticsFieldValueMeta {
@@ -69,12 +70,17 @@ export class FieldValue extends Component {
      */
     htmlValue: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
-     * Specifies if the field value is to be split at each semicolon (<code>;</code>).
+     * Specifies if the field value is to be split at each separator.
      * This is useful for splitting groups by a facet field.<br/>
      * The values displayed are split by commas (<code>,</code>).<br/>
      * The default value is <code>false</code>.
      */
     splitValues: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    /**
+     * Specifies the string used to split multi value fields.
+     * The default value is <code>;</code>.
+     */
+    separator: ComponentOptions.buildStringOption({ defaultValue: ';' }),
     /**
      * Specifies the helper to be used by the FieldValue to display its content.<br/>
      * A few helpers exist by default (see {@link CoreHelpers}), and new ones can be
@@ -88,7 +94,7 @@ export class FieldValue extends Component {
       subOptions: {
         text: ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
         target: ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
-        "class": ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
+        'class': ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
 
         decimals: ComponentOptions.buildNumberOption(showOnlyWithHelper(['currency'], { min: 0 })),
         symbol: ComponentOptions.buildStringOption(showOnlyWithHelper(['currency'])),
@@ -157,7 +163,7 @@ export class FieldValue extends Component {
         values = loadedValueFromComponent;
       } else if (this.options.splitValues) {
         if (_.isString(loadedValueFromComponent)) {
-          values = _.map(loadedValueFromComponent.split(';'), (v: string) => {
+          values = _.map(loadedValueFromComponent.split(this.options.separator), (v: string) => {
             return v.trim();
           });
         }
@@ -228,7 +234,7 @@ export class FieldValue extends Component {
 
     if (helper == 'date') {
       return DateUtils.dateToString(new Date(parseInt(date)), fullDateOptions);
-    } else if (helper == "dateTime" || helper == "emailDateTime") {
+    } else if (helper == 'dateTime' || helper == 'emailDateTime') {
       return DateUtils.dateTimeToString(new Date(parseInt(date)), fullDateOptions);
     }
     return '';
@@ -279,7 +285,7 @@ export class FieldValue extends Component {
   private static initSimpleOptions() {
     let options = {};
     for (let key in FieldValue.options) {
-      if (key != "helperOptions") {
+      if (key != 'helperOptions') {
         options[key] = FieldValue.options[key];
       }
     }
