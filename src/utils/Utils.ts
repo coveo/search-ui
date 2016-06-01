@@ -335,24 +335,24 @@ export class Utils {
     }
   }
 
-  static copyObject<T>(target: T, src: T){
+  static copyObject<T>(target: T, src: T) {
     _.each(_.keys(src), key => {
       if (typeof src[key] !== 'object' || !src[key]) {
         target[key] = src[key]
-      } else if(!target[key]) {
+      } else if (!target[key]) {
         target[key] = src[key]
       } else {
         this.copyObject(target[key], src[key])
       }
     })
   }
-  
-  static copyObjectAttributes<T>(target: T, src: T, attributes: string[]){
+
+  static copyObjectAttributes<T>(target: T, src: T, attributes: string[]) {
     _.each(_.keys(src), key => {
-      if(_.contains(attributes, key)){
+      if (_.contains(attributes, key)) {
         if (typeof src[key] !== 'object' || !src[key]) {
           target[key] = src[key]
-        } else if(!target[key]) {
+        } else if (!target[key]) {
           target[key] = src[key]
         } else {
           this.copyObject(target[key], src[key])

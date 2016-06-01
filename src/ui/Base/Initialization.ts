@@ -179,7 +179,7 @@ export class Initialization {
     var initParameters: IInitializationParameters = { options: options, bindings: searchInterface.getBindings() };
     Initialization.automaticallyCreateComponentsInside(element, initParameters);
   }
-  
+
   /**
    * Create a new recommendation search interface. This is the function executed when calling Coveo.initRecommendation
    * @param element
@@ -189,7 +189,7 @@ export class Initialization {
     options = Initialization.resolveDefaultOptions(element, options);
     var recommendation = new Recommendation(element, options.Recommendation, options.Analytics);
     recommendation.options.originalOptionsObject = options;
-    var initParameters: IInitializationParameters = {options: options, bindings: recommendation.getBindings()};
+    var initParameters: IInitializationParameters = { options: options, bindings: recommendation.getBindings() };
     Initialization.automaticallyCreateComponentsInside(element, initParameters);
   }
 

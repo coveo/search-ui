@@ -58,7 +58,7 @@ export class Dom {
 
     return elem;
   }
-  
+
   /**
    * Adds the element to the children of the current element
    * @param element The element to append
@@ -117,7 +117,7 @@ export class Dom {
       this.el.removeChild(this.el.firstChild);
     }
   }
-  
+
   /**
    * Empty the element and all childs from the dom;
    */
@@ -159,7 +159,7 @@ export class Dom {
       }
     }
   }
-  
+
   /**
    * Returns the value of the specified attribute.
    * @param name The name of the attribute
@@ -247,7 +247,7 @@ export class Dom {
   public children(): HTMLElement[] {
     return this.nodeListToArray(this.el.children);
   }
-  
+
   /**
    * Return all siblings
    * @returns {HTMLElement[]}
@@ -356,7 +356,7 @@ export class Dom {
       }
     }
   }
-  
+
   /**
    * Sets the inner html of the element
    * @param html The html to set
@@ -404,7 +404,7 @@ export class Dom {
   public insertBefore(refNode: HTMLElement): void {
     refNode.parentNode && refNode.parentNode.insertBefore(this.el, refNode);
   }
-  
+
   /**
    * Insert the given node as the first child of the current node
    * @param toPrepend
@@ -556,7 +556,7 @@ export class Dom {
     }
     this.detach();
   }
-  
+
   /**
    * Returns the offset width of the element
    */

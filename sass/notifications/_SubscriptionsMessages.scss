@@ -12,7 +12,6 @@
   }
   &:before {
     content: '';
-    @extend .coveo-sprites-subscription-info;
     vertical-align: middle;
     margin: 5px 7px 4px 0;
     float: left;
@@ -46,7 +45,6 @@
     &:before {
       content: '';
       vertical-align: middle;
-      @extend .coveo-sprites-subscription-close;
     }
   }
 }

@@ -8,8 +8,6 @@ gulp.task('cssLegacy', ['fullCssLegacy', 'miniCssLegacy', 'minimalistCssLegacy',
 
 gulp.task('prepareSass', ['fileTypes', 'sprites'], function () {
   return event_stream.merge(
-    gulp.src('./sass/**/*')
-      .pipe(gulp.dest('./bin/sass/')),
     gulp.src('./node_modules/modal-box/bin/modalBox.css')
       .pipe(rename('_ModalBox.scss'))
       .pipe(gulp.dest('./bin/sass/')),
@@ -28,12 +26,12 @@ gulp.task('prepareSassLegacy', ['fileTypesLegacy', 'spritesLegacy'], function ()
           .pipe(gulp.dest('./bin/sasslegacy/')),
       gulp.src([
             './node_modules/coveomagicbox/sass/**/*.scss'])
-          .pipe(gulp.dest('./bin/sasslegacy/MagicBox'))
+            .pipe(gulp.dest('./bin/sasslegacy/MagicBox'))
   ).pipe(event_stream.wait())
 });
 
 gulp.task('fullCss', ['prepareSass'], function (done) {
-  return gulp.src('./bin/sass/FullSearch.scss')
+  return gulp.src('./sass/FullSearch.scss')
     .pipe(sass())
     .pipe(rename('CoveoFullSearchNewDesign.css'))
     .pipe(gulp.dest('./bin/css'))

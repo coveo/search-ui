@@ -62,13 +62,13 @@ Initialization.registerNamedMethod('initSearchbox', (element: HTMLElement, searc
  * @param userContext The user context to pass with the query generated in the recommendation interface. View {@link Recommendation}
  * @param options JSON options for the framework eg : <code>{Searchbox : {enableSearchAsYouType: true}}</code>
  */
-export function initRecommendation(element: HTMLElement, mainSearchInterface: HTMLElement, userContext: {[name:string]:any} = {}, options: any = {}) {
+export function initRecommendation(element: HTMLElement, mainSearchInterface: HTMLElement, userContext: { [name: string]: any } = {}, options: any = {}) {
   var recommendationOptions = <IRecommendationOptions>{};
   recommendationOptions.mainSearchInterface = mainSearchInterface;
   recommendationOptions.userContext = userContext;
   recommendationOptions.enableHistory = false;
-  options = _.extend({}, options, {Recommendation: recommendationOptions});
-  Initialization.initializeFramework(element, options, ()=> {
+  options = _.extend({}, options, { Recommendation: recommendationOptions });
+  Initialization.initializeFramework(element, options, () => {
     Initialization.initRecommendationInterface(element, options);
   });
 }

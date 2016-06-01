@@ -3,6 +3,7 @@ const glob = require('glob');
 const _ = require('underscore');
 const pngSprite = require('png-sprite');
 const fs = require('fs');
+const path = require('path');
 
 gulp.task('sprites', ['regularSprites', /*'regularSpritesList',*/ 'retinaSprites', /*'retinaSpritesList',*/ 'validateRetinaSprites']);
 gulp.task('spritesLegacy', ['regularSpritesLegacy', /*'regularSpritesListLegacy',*/ 'retinaSpritesLegacy', /*'retinaSpritesListCore'*/]);

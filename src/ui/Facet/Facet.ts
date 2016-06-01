@@ -407,7 +407,6 @@ export class Facet extends Component {
    */
   constructor(public element: HTMLElement, public options: IFacetOptions, bindings?: IComponentBindings, facetClassId: string = Facet.ID) {
     super(element, facetClassId, bindings);
-
     this.options = ComponentOptions.initComponentOptions(element, Facet, options);
 
     if (this.options.valueCaption != null) {
@@ -428,7 +427,7 @@ export class Facet extends Component {
     this.initOmniboxEvents();
     this.initBreadCrumbEvents();
     this.updateNumberOfValues();
-
+    
     this.resize = () => {
       if (!this.disabled) {
         FacetUtils.clipCaptionsToAvoidOverflowingTheirContainer(this);

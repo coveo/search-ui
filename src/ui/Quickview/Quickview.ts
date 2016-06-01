@@ -143,7 +143,7 @@ export class Quickview extends Component {
   }
 
   private bindQuickviewEvents(openerObject: QuickviewOpenerObject) {
-    
+
     let closeButton = $$(this.modalbox.wrapper).find('.coveo-quickview-close-button');
     $$(closeButton).on('click', () => {
       this.closeQuickview();
@@ -153,7 +153,7 @@ export class Quickview extends Component {
     $$(this.modalbox.overlay).on('click', () => {
       this.closeQuickview();
     })
-    
+
     $$(this.modalbox.content).on(QuickviewEvents.quickviewLoaded, () => {
       $$(openerObject.loadingAnimation).remove();
       this.bindIFrameEscape();

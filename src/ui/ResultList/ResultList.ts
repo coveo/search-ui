@@ -475,15 +475,15 @@ export class ResultList extends Component {
       $$(spinner).detach();
     }
   }
-  
-  private static getDefaultTemplate(e: HTMLElement): Template{
+
+  private static getDefaultTemplate(e: HTMLElement): Template {
     let component = <ResultList>Component.get(e, ResultList)
-    if (component.searchInterface instanceof Recommendation){
+    if (component.searchInterface instanceof Recommendation) {
       return new DefaultRecommendationTemplate();
     }
     return new DefaultResultTemplate();
   }
 }
-  
+
 
 Initialization.registerAutoCreateComponent(ResultList);
