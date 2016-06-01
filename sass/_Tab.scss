@@ -1,5 +1,8 @@
-﻿.CoveoTab {
-  color: $color-blueish-gray;
+﻿@import "_Variables.scss"; 
+
+.CoveoTab {
+  //color: $color-blueish-gray;
+  color: black;
   text-decoration: none;
   cursor: pointer;
   height: 52px;
