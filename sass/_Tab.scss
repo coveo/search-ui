@@ -1,4 +1,6 @@
-﻿.CoveoTab {
+﻿@import "_Variables.scss"; 
+
+.CoveoTab {
   color: $color-blueish-gray;
   text-decoration: none;
   cursor: pointer;

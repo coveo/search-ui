@@ -1,4 +1,4 @@
-/// <reference path="../Facet/Facet.ts" />
+/// <reference path='../Facet/Facet.ts' />
 
 import {IFacetOptions, Facet} from '../Facet/Facet';
 import {IRangeValue} from '../../rest/RangeValue';
@@ -13,7 +13,7 @@ import {Initialization} from '../Base/Initialization';
 
 declare const Globalize;
 
-export interface FacetRangeOptions extends IFacetOptions {
+export interface IFacetRangeOptions extends IFacetOptions {
   ranges?: IRangeValue[];
   dateField?: boolean;
 }
@@ -21,13 +21,13 @@ export interface FacetRangeOptions extends IFacetOptions {
 export class FacetRange extends Facet {
   static ID = 'FacetRange';
   static parent = Facet;
-  static options = <FacetRangeOptions>{
+  static options = <IFacetRangeOptions>{
     dateField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
   };
 
-  public options: FacetRangeOptions;
+  public options: IFacetRangeOptions;
 
-  constructor(public element: HTMLElement, options: FacetRangeOptions, bindings?: IComponentBindings) {
+  constructor(public element: HTMLElement, options: IFacetRangeOptions, bindings?: IComponentBindings) {
     super(element, ComponentOptions.initComponentOptions(element, FacetRange, options), bindings, FacetRange.ID);
 
     this.options.enableFacetSearch = false;
@@ -38,7 +38,7 @@ export class FacetRange extends Facet {
 
   public getValueCaption(facetValue: any): string {
     var ret = super.getValueCaption(facetValue);
-    if (Utils.exists(this.options.valueCaption) && typeof this.options.valueCaption == "string") {
+    if (Utils.exists(this.options.valueCaption) && typeof this.options.valueCaption == 'string') {
       var startEnd = /^(.*)\.\.(.*)$/.exec(facetValue.value);
       if (startEnd != null) {
         var helper = TemplateHelpers.getHelper(this.options.valueCaption);

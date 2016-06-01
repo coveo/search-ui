@@ -8,7 +8,7 @@ import {InitializationEvents} from '../../events/InitializationEvents';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {FacetSearchParameters} from './FacetSearchParameters';
 import {IAnalyticsFacetMeta, AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {EndpointError} from '../../rest/EndpointError';
+import {IEndpointError} from '../../rest/EndpointError';
 import {Component} from '../Base/Component';
 import {DomUtils} from '../../utils/DomUtils';
 import {l} from '../../strings/Strings';
@@ -18,7 +18,7 @@ import {FacetUtils} from './FacetUtils';
 import {FacetValue} from './FacetValues';
 import {StringUtils} from '../../utils/StringUtils';
 import {Defer} from '../../misc/Defer';
-import {FacetSearchValuesListKlass} from './FacetSearchValuesList';
+import {IFacetSearchValuesListKlass} from './FacetSearchValuesList';
 import {FacetValueElement} from './FacetValueElement';
 
 declare const Coveo;
@@ -44,7 +44,7 @@ export class FacetSearch {
   private onResize: (...args: any[]) => void;
   private onDocClick: (e: Event) => void;
 
-  constructor(public facet: Facet, public facetSearchValuesListKlass: FacetSearchValuesListKlass) {
+  constructor(public facet: Facet, public facetSearchValuesListKlass: IFacetSearchValuesListKlass) {
     this.searchResults = document.createElement('ul');
     $$(this.searchResults).addClass('coveo-facet-search-results');
     this.onResize = () => {
@@ -134,7 +134,7 @@ export class FacetSearch {
         this.facetSearchPromise = undefined;
       });
 
-      this.facetSearchPromise.catch((error: EndpointError) => {
+      this.facetSearchPromise.catch((error: IEndpointError) => {
         // The request might be normally cancelled if another search is triggered.
         // In this case we do not hide the animation to prevent flicking.
         if (Utils.exists(error)) {

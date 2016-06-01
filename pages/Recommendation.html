@@ -8,6 +8,13 @@
     <script src="./js/templates/templatesNew.js"></script>
     <script src="http://localhost:8080/webpack-dev-server.js"></script>
     <link rel="stylesheet" href="./css/CoveoFullSearchNewDesign.css"/>
+    <script>
+      document.addEventListener('DOMContentLoaded', function(){
+        Coveo.SearchEndpoint.configureSampleEndpoint();
+        Coveo.initRecommendation(document.querySelector('#recommendationYoutube'));
+        Coveo.init(document.querySelector('#search'));
+      })
+    </script>
   </head>
   <body >
     <div id="search" class='CoveoSearchInterface' data-enable-history="true" data-design="new">
@@ -68,9 +75,4 @@
       </div>
     </div>
   </body>
-  <script>
-    Coveo.SearchEndpoint.configureSampleEndpoint();
-    Coveo.initRecommendation(document.querySelector('#recommendationYoutube'));
-    Coveo.init(document.querySelector('#search'));
-  </script>
 </html>

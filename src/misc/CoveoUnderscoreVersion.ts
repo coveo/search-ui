@@ -1,1 +1,1 @@
-export var _: UnderscoreStatic = window["_"];
+export var _: UnderscoreStatic = window['_'];

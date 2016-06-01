@@ -46,7 +46,7 @@ export class Dom {
       }
     }
 
-    _.forEach(children, (child: string | HTMLElement | Dom) => {
+    _.each(children, (child: string | HTMLElement | Dom) => {
       if (child instanceof HTMLElement) {
         elem.appendChild(child);
       } else if (_.isString(child)) {
@@ -58,7 +58,7 @@ export class Dom {
 
     return elem;
   }
-  
+
   /**
    * Adds the element to the children of the current element
    * @param element The element to append
@@ -69,10 +69,10 @@ export class Dom {
   }
 
   /**
-  * Get the css value of the specified property.<br/>
-  * @param property The property
-  * @returns {string}
-  */
+   * Get the css value of the specified property.<br/>
+   * @param property The property
+   * @returns {string}
+   */
   public css(property: string): string {
     return window.getComputedStyle(this.el).getPropertyValue(property);
   }
@@ -117,7 +117,7 @@ export class Dom {
       this.el.removeChild(this.el.firstChild);
     }
   }
-  
+
   /**
    * Empty the element and all childs from the dom;
    */
@@ -159,7 +159,7 @@ export class Dom {
       }
     }
   }
-  
+
   /**
    * Returns the value of the specified attribute.
    * @param name The name of the attribute
@@ -247,7 +247,7 @@ export class Dom {
   public children(): HTMLElement[] {
     return this.nodeListToArray(this.el.children);
   }
-  
+
   /**
    * Return all siblings
    * @returns {HTMLElement[]}
@@ -356,7 +356,7 @@ export class Dom {
       }
     }
   }
-  
+
   /**
    * Sets the inner html of the element
    * @param html The html to set
@@ -404,7 +404,7 @@ export class Dom {
   public insertBefore(refNode: HTMLElement): void {
     refNode.parentNode && refNode.parentNode.insertBefore(this.el, refNode);
   }
-  
+
   /**
    * Insert the given node as the first child of the current node
    * @param toPrepend
@@ -443,7 +443,7 @@ export class Dom {
         })
         this.el.addEventListener(type, fn, false);
       } else if (this.el['on']) {
-        this.el['on']("on" + type, eventHandle);
+        this.el['on']('on' + type, eventHandle);
       }
     }
   }
@@ -499,7 +499,7 @@ export class Dom {
           Dom.handlers.splice(idx, 1);
         }
       } else if (this.el['off']) {
-        this.el['off']("on" + type, eventHandle);
+        this.el['off']('on' + type, eventHandle);
       }
     }
   }
@@ -556,7 +556,7 @@ export class Dom {
     }
     this.detach();
   }
-  
+
   /**
    * Returns the offset width of the element
    */

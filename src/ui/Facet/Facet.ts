@@ -298,7 +298,7 @@ export class Facet extends Component {
      * The default value is Computed Field.
      */
     computedFieldCaption: ComponentOptions.buildLocalizedStringOption({
-      defaultValue: l("ComputedField"),
+      defaultValue: l('ComputedField'),
       section: 'ComputedField'
     }),
     /**
@@ -407,7 +407,6 @@ export class Facet extends Component {
    */
   constructor(public element: HTMLElement, public options: IFacetOptions, bindings?: IComponentBindings, facetClassId: string = Facet.ID) {
     super(element, facetClassId, bindings);
-
     this.options = ComponentOptions.initComponentOptions(element, Facet, options);
 
     if (this.options.valueCaption != null) {
