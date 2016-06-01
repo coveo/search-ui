@@ -18,7 +18,7 @@ export interface ISearchAlertMessageOptions {
  */
 export class SearchAlertsMessage extends Component {
   static ID = 'SubscriptionsMessages';
-  
+
   /**
    * The options for the SearchAlertsMessage component
    * @componentOptions
@@ -40,11 +40,11 @@ export class SearchAlertsMessage extends Component {
 
     super(element, SearchAlertsMessage.ID, bindings);
 
-    this.bind.onRootElement(SearchAlertsEvents.searchAlertsCreated, (args: ISearchAlertsEventArgs)=>{this.handleSubscriptionCreated(args)});
-    this.bind.oneRootElement(SearchAlertsEvents.searchAlertsFail, (args: ISearchAlertsEventArgs)=>{this.handleSearchAlertsFail(args)});
-    this.bind.oneRootElement(SearchAlertsEvents.searchAlertsDeleted, ()=>{this.close()});
+    this.bind.onRootElement(SearchAlertsEvents.searchAlertsCreated, (args: ISearchAlertsEventArgs) => { this.handleSubscriptionCreated(args) });
+    this.bind.oneRootElement(SearchAlertsEvents.searchAlertsFail, (args: ISearchAlertsEventArgs) => { this.handleSearchAlertsFail(args) });
+    this.bind.oneRootElement(SearchAlertsEvents.searchAlertsDeleted, () => { this.close() });
 
-    this.bind.oneRootElement(QueryEvents.newQuery, ()=>{this.close()});
+    this.bind.oneRootElement(QueryEvents.newQuery, () => { this.close() });
   }
 
   public getCssClass(): string {

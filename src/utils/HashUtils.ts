@@ -174,8 +174,7 @@ export class HashUtils {
       } else {
         if (_.isNumber(val) || _.isBoolean(val)) {
           retValue += encodeURIComponent(val)
-        }
-        else {
+        } else {
           retValue += '\'' + encodeURIComponent(val) + '\''
         }
       }

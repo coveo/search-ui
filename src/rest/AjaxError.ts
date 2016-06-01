@@ -1,7 +1,7 @@
 import {Assert} from '../misc/Assert';
-import {EndpointError} from '../rest/EndpointError';
+import {IEndpointError} from '../rest/EndpointError';
 
-export class AjaxError implements EndpointError {
+export class AjaxError implements IEndpointError {
   public type;
   public name;
 

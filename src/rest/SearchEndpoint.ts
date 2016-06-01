@@ -571,7 +571,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<ISubscription>}
    */
   public follow(request: ISubscriptionRequest): Promise<ISubscription> {
-    let qs = this.buildBaseQueryString({}, true, "accessToken");
+    let qs = this.buildBaseQueryString({}, true, 'accessToken');
     let params: IEndpointCallParameters = {
       url: this.buildSearchAlertsUri('/subscriptions'),
       queryString: qs,
@@ -599,7 +599,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       })
     }
     if (this.currentListSubscriptions == null) {
-      let queryParameters = this.buildBaseQueryString({}, true, "accessToken");
+      let queryParameters = this.buildBaseQueryString({}, true, 'accessToken');
       queryParameters.push('page=' + (page || 0));
 
       let params: IEndpointCallParameters = {
@@ -634,7 +634,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<ISubscription>}
    */
   public updateSubscription(subscription: ISubscription): Promise<ISubscription> {
-    let qs = this.buildBaseQueryString({}, true, "accessToken");
+    let qs = this.buildBaseQueryString({}, true, 'accessToken');
     let params: IEndpointCallParameters = {
       url: this.buildSearchAlertsUri('/subscriptions/' + subscription.id),
       queryString: qs,
@@ -654,7 +654,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<ISubscription>}
    */
   public deleteSubscription(subscription: ISubscription): Promise<ISubscription> {
-    let qs = this.buildBaseQueryString({}, true, "accessToken");
+    let qs = this.buildBaseQueryString({}, true, 'accessToken');
     let params: IEndpointCallParameters = {
       url: this.buildSearchAlertsUri('/subscriptions/' + subscription.id),
       queryString: qs,
@@ -711,16 +711,15 @@ export class SearchEndpoint implements ISearchEndpoint {
     return uri;
   }
 
-  //All query strings are initially constructed by this function
-  private buildBaseQueryString(callOptions?: IEndpointCallOptions, addAccessToken: boolean = false, tokenKey = "access_token"): string[] {
+  // All query strings are initially constructed by this function
+  private buildBaseQueryString(callOptions?: IEndpointCallOptions, addAccessToken: boolean = false, tokenKey = 'access_token'): string[] {
     let queryString: string[] = [];
 
     for (let name in this.options.queryStringArguments) {
-      //The mapping workgroup --> organizationId is necessary for backward compatibility
+      // The mapping workgroup --> organizationId is necessary for backwards compatibility
       if (name == 'workgroup') {
         queryString.push('organizationId' + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
-      }
-      else {
+      } else {
         queryString.push(name + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
       }
     }

@@ -1,4 +1,4 @@
-export interface EndpointError extends Error {
+export interface IEndpointError extends Error {
   message: string;
   type: string;
   name: string;

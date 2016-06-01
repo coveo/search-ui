@@ -16,13 +16,13 @@ import {IViewAsHtmlOptions} from '../../rest/SearchEndpointInterface'
 import {AjaxError} from '../../rest/AjaxError'
 import {l} from '../../strings/Strings'
 
-let HIGHLIGHT_PREFIX = 'CoveoHighlight';
+const HIGHLIGHT_PREFIX = 'CoveoHighlight';
 
-export interface QuickviewDocumentOptions {
+export interface IQuickviewDocumentOptions {
   maximumDocumentSize?: number;
 }
 
-interface Word {
+interface IWord {
   text: string;
   count: number;
   index: number;
@@ -31,8 +31,8 @@ interface Word {
   occurence: number;
 }
 
-interface WordState {
-  word: Word;
+interface IWordState {
+  word: IWord;
   color: string;
   currentIndex: number;
   index: number;
@@ -41,16 +41,16 @@ interface WordState {
 export class QuickviewDocument extends Component {
   static ID = 'QuickviewDocument';
 
-  static options: QuickviewDocumentOptions = {
+  static options: IQuickviewDocumentOptions = {
     maximumDocumentSize: ComponentOptions.buildNumberOption({ defaultValue: 0, min: 0 }),
   };
 
   private iframe: Dom;
   private header: Dom;
   private termsToHighlightWereModified: boolean;
-  private keywordsState: WordState[];
+  private keywordsState: IWordState[];
 
-  constructor(public element: HTMLElement, public options?: QuickviewDocumentOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
+  constructor(public element: HTMLElement, public options?: IQuickviewDocumentOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, QuickviewDocument.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, QuickviewDocument, options);
@@ -277,7 +277,7 @@ export class QuickviewDocument extends Component {
     $$(this.header).empty();
     this.keywordsState = [];
 
-    let words: { [index: string]: Word } = {};
+    let words: { [index: string]: IWord } = {};
     let highlightsCount = 0;
 
     _.each($$(window.document.body).findAll('[id^=' + HIGHLIGHT_PREFIX + ']'), (element: HTMLElement, index: number) => {
@@ -407,7 +407,7 @@ export class QuickviewDocument extends Component {
     return found;
   }
 
-  private buildWordButton(wordState: WordState, window: Window): HTMLElement {
+  private buildWordButton(wordState: IWordState, window: Window): HTMLElement {
     let wordHtml = $$('span')
     wordHtml.addClass('coveo-term-for-quickview');
 
@@ -446,7 +446,7 @@ export class QuickviewDocument extends Component {
     return wordHtml.el;
   }
 
-  private navigate(state: WordState, backward: boolean, window: Window) {
+  private navigate(state: IWordState, backward: boolean, window: Window) {
     let fromIndex = state.currentIndex;
     let toIndex: number;
     if (!backward) {
@@ -459,15 +459,13 @@ export class QuickviewDocument extends Component {
 
     // Un-highlight any currently selected element
     let current = $$(scroll).find(`[id^=${HIGHLIGHT_PREFIX}:${state.word.index}.${fromIndex}.]`
-  )
+    )
     if (current) {
       current.style.border = '';
     }
 
     // Find and highlight the new element.
-    let element = $$(window.document.body).find(`[id^=${HIGHLIGHT_PREFIX}:${state.word.index}.${toIndex}.]`
-  )
-    ;
+    let element = $$(window.document.body).find(`[id^=${HIGHLIGHT_PREFIX}:${state.word.index}.${toIndex}.]`);
     element.style.border = '1px dotted #333';
     state.currentIndex = toIndex;
 

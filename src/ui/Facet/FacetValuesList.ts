@@ -1,6 +1,6 @@
 /// <reference path="Facet.ts" />
 
-import {FacetValueElement, FacetValueElementKlass} from './FacetValueElement';
+import {FacetValueElement, IFacetValueElementKlass} from './FacetValueElement';
 import {Facet} from './Facet';
 import {$$} from '../../utils/Dom';
 import {ValueElement} from './ValueElement';
@@ -14,7 +14,7 @@ export class FacetValuesList {
 
   public valueContainer: HTMLElement;
 
-  constructor(public facet: Facet, public facetValueElementKlass: FacetValueElementKlass) {
+  constructor(public facet: Facet, public facetValueElementKlass: IFacetValueElementKlass) {
   }
 
   public build(): HTMLElement {

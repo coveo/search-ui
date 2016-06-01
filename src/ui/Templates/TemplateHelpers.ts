@@ -2,12 +2,12 @@ import {Assert} from '../../misc/Assert';
 import {UnderscoreTemplate} from './UnderscoreTemplate';
 import {Utils} from '../../utils/Utils';
 
-export interface TemplateHelperFunction {
+export interface ITemplateHelperFunction {
   (...args: any[]): string;
 }
 
 export class TemplateHelpers {
-  private static helpers: { [templateName: string]: TemplateHelperFunction; } = {};
+  private static helpers: { [templateName: string]: ITemplateHelperFunction; } = {};
   public static fieldHelpers: string[] = [];
 
   static registerFieldHelper<T1>(name: string, helper: (value: string, options?: any) => string) {
@@ -21,7 +21,7 @@ export class TemplateHelpers {
   static registerTemplateHelper<T1, T2, T3, T4>(name: string, helper: (arg1: T1, arg2: T2, arg3: T3, arg4: T4) => string);
   static registerTemplateHelper<T1, T2, T3, T4, T5>(name: string, helper: (arg1: T1, arg2: T2, arg3: T3, arg4: T4, arg5: T5) => string);
 
-  static registerTemplateHelper(name: string, helper: TemplateHelperFunction) {
+  static registerTemplateHelper(name: string, helper: ITemplateHelperFunction) {
     Assert.isNonEmptyString(name);
     Assert.exists(helper);
 
@@ -32,7 +32,7 @@ export class TemplateHelpers {
     TemplateHelpers.helpers[name] = helper;
   }
 
-  static getHelper(name: string): TemplateHelperFunction {
+  static getHelper(name: string): ITemplateHelperFunction {
     return Utils.getCaseInsensitiveProperty(TemplateHelpers.helpers, name);
   }
 
@@ -40,7 +40,7 @@ export class TemplateHelpers {
     return TemplateHelpers.helpers;
   }
 
-  private static registerTemplateHelperInUnderscore(name: string, helper: TemplateHelperFunction) {
+  private static registerTemplateHelperInUnderscore(name: string, helper: ITemplateHelperFunction) {
     Assert.isNonEmptyString(name);
     Assert.exists(helper);
     Assert.check(UnderscoreTemplate.isLibraryAvailable());

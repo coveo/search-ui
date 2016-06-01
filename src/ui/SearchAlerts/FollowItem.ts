@@ -62,10 +62,10 @@ export class FollowItem extends Component {
     this.container = $$(this.element);
     this.text = $$('span');
     this.container.append(this.text.el);
-    this.container.on('click', ()=>{this.toggleFollow()});
+    this.container.on('click', () => { this.toggleFollow() });
 
-    this.bind.onRootElement(SearchAlertsEvents.searchAlertsDeleted, (args: ISearchAlertsEventArgs)=>{this.handleSubscriptionDeleted(args)});
-    this.bind.onRootElement(SearchAlertsEvents.searchAlertsCreated, (args: ISearchAlertsEventArgs)=>{this.handleSubscriptionCreated(args)});
+    this.bind.onRootElement(SearchAlertsEvents.searchAlertsDeleted, (args: ISearchAlertsEventArgs) => { this.handleSubscriptionDeleted(args) });
+    this.bind.onRootElement(SearchAlertsEvents.searchAlertsCreated, (args: ISearchAlertsEventArgs) => { this.handleSubscriptionCreated(args) });
 
     this.container.addClass('coveo-follow-item-loading');
 
@@ -76,7 +76,7 @@ export class FollowItem extends Component {
     this.queryController.getEndpoint()
       .listSubscriptions()
       .then((subscriptions: ISubscription[]) => {
-        if (_.isArray(subscriptions)){
+        if (_.isArray(subscriptions)) {
           let subscription: ISubscription = _.find(subscriptions, (subscription: ISubscription) => {
             let typeConfig = <ISubscriptionItemRequest>subscription.typeConfig;
             return typeConfig && typeConfig.id != null && typeConfig.id == this.getId();
@@ -94,7 +94,7 @@ export class FollowItem extends Component {
         this.remove();
       })
   }
-  
+
   private setFollowed(subscription: ISubscription) {
     this.container.removeClass('coveo-follow-item-loading');
     this.subscription = subscription;
@@ -108,7 +108,7 @@ export class FollowItem extends Component {
     this.container.removeClass('coveo-follow-item-followed');
     this.text.text(l('SearchAlerts_follow'));
   }
-  
+
   protected getText(): string {
     return this.text.text();
   }

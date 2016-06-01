@@ -1,5 +1,4 @@
 /// <reference path='../../../node_modules/modal-box/bin/ModalBox.d.ts' />
-
 import {Component} from '../Base/Component';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
@@ -17,8 +16,6 @@ import {ISubscription, ISubscriptionItemRequest, SubscriptionType, ISubscription
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
 import {$$, Dom} from '../../utils/Dom';
-
-
 export interface ISearchAlertsOptions {
   enableManagePanel?: boolean;
   enableFollowQuery?: boolean;
@@ -33,7 +30,7 @@ export interface ISearchAlertsOptions {
  */
 export class SearchAlerts extends Component {
   static ID = 'SearchAlerts';
-  
+
   /**
    * The options for the search alerts
    * @componentOptions
@@ -67,16 +64,14 @@ export class SearchAlerts extends Component {
   };
 
   private modal: Coveo.ModalBox.ModalBox;
-  
+
   /**
    * A reference to a @link{SearchAlertsMessage} component used to display message.
    * This attribute is set only when the enableMessage option is true.
    */
   public message: SearchAlertsMessage;
 
-  constructor(public element: HTMLElement,
-    public options: ISearchAlertsOptions,
-    bindings?: IComponentBindings) {
+  constructor(public element: HTMLElement, public options: ISearchAlertsOptions, bindings?: IComponentBindings) {
 
     super(element, SearchAlerts.ID, bindings);
 
@@ -85,11 +80,11 @@ export class SearchAlerts extends Component {
     if (this.options.enableMessage) {
       this.message = new SearchAlertsMessage(element, { closeDelay: this.options.messageCloseDelay }, this.getBindings());
     }
-    
+
     this.bind.onRootElement(SettingsEvents.settingsPopulateMenu, (args: ISettingsPopulateMenuArgs) => {
       if (this.options.enableManagePanel) {
         args.menuData.push({
-          text: l("SearchAlerts_Panel"),
+          text: l('SearchAlerts_Panel'),
           className: 'coveo-subscriptions-panel',
           onOpen: () => this.openPanel(),
           onClose: () => this.close()
@@ -300,12 +295,12 @@ export class SearchAlerts extends Component {
 
     this.queryController.getEndpoint().follow(request)
       .then((subscription: ISubscription) => {
-        if(subscription){
+        if (subscription) {
           let eventArgs: ISearchAlertsEventArgs = {
             subscription: subscription,
             dom: this.findQueryBoxDom()
           };
-          $$(this.root).trigger(SearchAlertsEvents.searchAlertsCreated, eventArgs);    
+          $$(this.root).trigger(SearchAlertsEvents.searchAlertsCreated, eventArgs);
         } else {
           this.triggerSearchAlertsFail();
         }
@@ -314,8 +309,8 @@ export class SearchAlerts extends Component {
         this.triggerSearchAlertsFail();
       })
   }
-  
-  private triggerSearchAlertsFail(){
+
+  private triggerSearchAlertsFail() {
     let eventArgs: ISearchAlertsFailEventArgs = {
       dom: this.findQueryBoxDom()
     };

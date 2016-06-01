@@ -1,9 +1,9 @@
-import {APIAnalyticsFacetSelection} from './APIAnalyticsFacetSelection';
+import {IAPIAnalyticsFacetSelection} from './APIAnalyticsFacetSelection';
 
-export interface APIAnalyticsFacet {
+export interface IAPIAnalyticsFacet {
   name: string;
   fieldName: string;
   sort: string;
   mode: string;
-  selections: APIAnalyticsFacetSelection[];
+  selections: IAPIAnalyticsFacetSelection[];
 }
