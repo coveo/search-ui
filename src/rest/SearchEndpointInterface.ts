@@ -7,7 +7,7 @@ import {IIndexFieldValue} from '../rest/FieldValue';
 import {IListFieldValuesRequest} from '../rest/ListFieldValuesRequest';
 import {IFieldDescription} from '../rest/FieldDescription';
 import {IExtension} from '../rest/Extension';
-import {EndpointError} from '../rest/EndpointError';
+import {IEndpointError} from '../rest/EndpointError';
 import {ITaggingRequest} from '../rest/TaggingRequest';
 import {IRevealQuerySuggestRequest, IRevealQuerySuggestResponse} from '../rest/RevealQuerySuggest';
 import {IRatingRequest} from '../rest/RatingRequest';
@@ -98,7 +98,7 @@ export interface ISearchEndpoint {
   getViewAsDatastreamUri(documentUniqueID: string, dataStreamType: string, callOptions?: IViewAsHtmlOptions): string;
   listFieldValues(request: IListFieldValuesRequest, callOptions?: IEndpointCallOptions): Promise<IIndexFieldValue[]>;
   listFields(callOptions?: IEndpointCallOptions): Promise<IFieldDescription[]>;
-  extensions(callOptions?: IEndpointCallOptions): Promise<IExtension[]> | Promise<EndpointError>;
+  extensions(callOptions?: IEndpointCallOptions): Promise<IExtension[]> | Promise<IEndpointError>;
   tagDocument(taggingRequest: ITaggingRequest, callOptions?: IEndpointCallOptions): Promise<boolean>;
   getRevealQuerySuggest(request: IRevealQuerySuggestRequest, callOptions?: IEndpointCallOptions): Promise<IRevealQuerySuggestResponse>;
   rateDocument(ratingRequest: IRatingRequest, callOptions?: IEndpointCallOptions): Promise<boolean>;

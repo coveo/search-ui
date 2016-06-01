@@ -4,7 +4,7 @@ import {IComponentBindings} from '../Base/ComponentBindings';
 import {Recommendation} from '../Recommendation/Recommendation';
 
 export class RecommendationAnalyticsClient extends LiveAnalyticsClient {
-  
+
   constructor(public endpoint: AnalyticsEndpoint,
     public rootElement: HTMLElement,
     public userId: string,
@@ -17,8 +17,8 @@ export class RecommendationAnalyticsClient extends LiveAnalyticsClient {
     public bindings: IComponentBindings) {
     super(endpoint, rootElement, userId, userDisplayName, anonymous, splitTestRunName, splitTestRunVersion, originLevel1, sendToCloud);
   }
-    
-  protected getOriginLevel2(element: HTMLElement): string{
+
+  protected getOriginLevel2(element: HTMLElement): string {
     var recommendation = <Recommendation>this.bindings.searchInterface;
     return recommendation.getId();
   }

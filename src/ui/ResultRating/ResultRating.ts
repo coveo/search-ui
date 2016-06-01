@@ -9,7 +9,7 @@ import {IRatingRequest} from '../../rest/RatingRequest';
 
 export enum RatingValues { Undefined, Lowest, Low, Average, Good, Best };
 
-export interface ResultRatingOptions {
+export interface IResultRatingOptions {
 }
 /**
  * Component used to render document rating. Allows search users to rate a result with a 5-star representation.
@@ -18,7 +18,7 @@ export interface ResultRatingOptions {
 export class ResultRating extends Component {
   static ID = 'ResultRating';
 
-  constructor(public element: HTMLElement, public options?: ResultRatingOptions, public bindings?: IComponentBindings, public result?: IQueryResult) {
+  constructor(public element: HTMLElement, public options?: IResultRatingOptions, public bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, ResultRating.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultRating, options);
 

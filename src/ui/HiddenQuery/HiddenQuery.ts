@@ -11,7 +11,7 @@ import {Utils} from '../../utils/Utils';
 import {Initialization} from '../Base/Initialization';
 import {Assert} from '../../misc/Assert';
 
-export interface HiddenQueryOptions {
+export interface IHiddenQueryOptions {
   maximumDescriptionLength: number;
   title: string;
 }
@@ -26,7 +26,7 @@ export class HiddenQuery extends Component {
    * Possible options for the HiddenQuery component
    * @componentOptions
    */
-  static options: HiddenQueryOptions = {
+  static options: IHiddenQueryOptions = {
     /**
      * Specifies a maximum character length for a description.<br/>
      * After this length, the component will slice the descrption and add [...].<br/>
@@ -46,7 +46,7 @@ export class HiddenQuery extends Component {
    * @param options
    * @param bindings
    */
-  constructor(public element: HTMLElement, public options?: HiddenQueryOptions, bindings?: IComponentBindings) {
+  constructor(public element: HTMLElement, public options?: IHiddenQueryOptions, bindings?: IComponentBindings) {
 
     super(element, HiddenQuery.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, HiddenQuery, options);

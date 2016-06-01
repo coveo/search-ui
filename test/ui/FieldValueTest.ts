@@ -64,6 +64,36 @@ module Coveo {
           element: element,
           cmpOptions: <IFieldValueOptions>{
             field: '@foobarde',
+            splitValues: true,
+            separator: ';'
+          }
+        });
+        expect(test.cmp.element.textContent).toBe('this, is, sparta');
+      });
+
+      it('separator should specify the string used to split a multi values field', () => {
+        let result = FakeResults.createFakeResult();
+        result.raw.foobarde = 'this,is,sparta';
+
+        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, result, <Mock.AdvancedComponentSetupOptions>{
+          element: element,
+          cmpOptions: <IFieldValueOptions>{
+            field: '@foobarde',
+            splitValues: true,
+            separator: ','
+          }
+        });
+        expect(test.cmp.element.textContent).toBe('this, is, sparta');
+      });
+
+      it('separator default value must be ;', () => {
+        let result = FakeResults.createFakeResult();
+        result.raw.foobarde = 'this;is;sparta';
+
+        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, result, <Mock.AdvancedComponentSetupOptions>{
+          element: element,
+          cmpOptions: <IFieldValueOptions>{
+            field: '@foobarde',
             splitValues: true
           }
         });

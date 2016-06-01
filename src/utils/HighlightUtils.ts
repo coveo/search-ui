@@ -293,6 +293,8 @@ export function highlightString(value: string, search: string) {
     '<% i = value.length; %>' +
     '<% } %>' +
     '<% } %>');
-  if (_.isEmpty(search)) return value;
+  if (_.isEmpty(search)) {
+    return value;
+  }
   return hightlightTemplate({ value: value, search: search.toLowerCase() });
 };

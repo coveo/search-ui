@@ -1,4 +1,4 @@
-//Not sure about this : In year 2033 who's to say that this list won't be 50 page long !
+// Not sure about this : In year 2033 who's to say that this list won't be 50 pages long !
 const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 export class DeviceUtils {

@@ -130,7 +130,7 @@ export class PendingSearchEvent {
     searchEvent.queryPipeline = queryResults.pipeline;
     searchEvent.splitTestRunName = searchEvent.splitTestRunName || queryResults.splitTestRun;
     searchEvent.splitTestRunVersion = searchEvent.splitTestRunVersion || (queryResults.splitTestRun != undefined ? queryResults.pipeline : undefined);
-    searchEvent.originLevel2 = searchEvent.originLevel2 || searchInterface.queryStateModel.get('t') || "default";
+    searchEvent.originLevel2 = searchEvent.originLevel2 || searchInterface.queryStateModel.get('t') || 'default';
     searchEvent.queryText = currentQuery || query.q || ''; // do not log the query sent to the server if possible; it may contain added syntax depending on options
     searchEvent.advancedQuery = query.aq || '';
     searchEvent.didYouMean = query.enableDidYouMean;

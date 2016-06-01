@@ -1,9 +1,3 @@
-
-
-
-
-
-
 module Coveo {
   export interface ISearchAlertsOptions {
     enableManagePanel?: boolean;
@@ -26,9 +20,7 @@ module Coveo {
     private modal: ModalBox.ModalBox;
     public message: SearchAlertMessage;
 
-    constructor(public element: HTMLElement,
-      public options: ISearchAlertsOptions,
-      bindings?: IComponentBindings) {
+    constructor(public element: HTMLElement, public options: ISearchAlertsOptions, bindings?: IComponentBindings) {
 
       super(element, SearchAlerts.ID, bindings);
 
@@ -38,18 +30,16 @@ module Coveo {
         new SearchAlertMessage(element, { closeDelay: this.options.messageCloseDelay }, this.getBindings());
         this.message = new SearchAlertMessage(element, { closeDelay: this.options.messageCloseDelay }, this.getBindings());
       }
-      
+
       this.bind.onRoot(SettingsEvents.settingsPopulateMenu, (e, args: SettingsPopulateMenuArgs) => {
         if (this.options.enableManagePanel) {
           args.menuData.push({
-            text: l("SearchAlerts_Panel"),
+            text: l('SearchAlerts_Panel'),
             className: 'coveo-subscriptions-panel',
             onOpen: () => this.openPanel(),
             onClose: () => this.close()
           });
         }
-      });
-
       });
 
       var once = false;
