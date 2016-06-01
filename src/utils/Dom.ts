@@ -69,12 +69,17 @@ export class Dom {
   }
 
   /**
-   * Get the css value of the specified property.<br/>
+   * Get or set the css value of the specified property.<br/>
    * @param property The property
+   * @param value Optional, If given, this will set the style property of the element. If not, it will return the property value.
    * @returns {string}
    */
-  public css(property: string): string {
-    return window.getComputedStyle(this.el).getPropertyValue(property);
+  public css(property: string, value?: string): string {
+    if (value && this.el.style != undefined) {
+      this.el.style[property] = value;
+    } else {
+      return window.getComputedStyle(this.el).getPropertyValue(property);
+    }
   }
 
   /**
