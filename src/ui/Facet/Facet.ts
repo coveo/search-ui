@@ -427,7 +427,7 @@ export class Facet extends Component {
     this.initOmniboxEvents();
     this.initBreadCrumbEvents();
     this.updateNumberOfValues();
-    
+
     this.resize = () => {
       if (!this.disabled) {
         FacetUtils.clipCaptionsToAvoidOverflowingTheirContainer(this);
