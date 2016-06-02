@@ -87,7 +87,7 @@ module Coveo {
         expect(test.cmp.element.textContent).toBe('this<->is<->sparta');
       });
 
-      it('separator should specify the string used to split a multi values field from the index', () => {
+      it('separator should specify the string used to split a multi-value field from the index', () => {
         let result = FakeResults.createFakeResult();
         result.raw.foobarde = 'this,is,sparta';
 
