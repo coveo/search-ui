@@ -314,6 +314,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    */
   @url('/datastream')
   @queryString()
+  @searchQueryObject(true)
   @queryDocument()
   @accessToken()
   public getViewAsDatastreamUri(documentUniqueID: string, dataStreamType: string, callOptions?: IViewAsHtmlOptions, callParams?: IEndpointCallParameters): string {
@@ -329,11 +330,11 @@ export class SearchEndpoint implements ISearchEndpoint {
    */
   @url('/document')
   @queryString()
+  @searchQueryObject(true)
   @queryDocument()
   @method('GET')
   @responseType('text')
   @errorsAsSuccess(true)
-  //TODO: Nécessaire d'ajouter les query params au queryString?
   public getDocument(documentUniqueID: string, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IQueryResult> {
     return this.performOneCall<IQueryResult>(callParams);
   }
@@ -348,11 +349,11 @@ export class SearchEndpoint implements ISearchEndpoint {
    */
   @url('/text')
   @queryString()
+  @searchQueryObject(true)
   @queryDocument()
   @method('GET')
   @responseType('text')
   @errorsAsSuccess(true)
-  //TODO: Nécessaire d'ajouter les query params au queryString?
   public getDocumentText(documentUniqueID: string, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<string> {
     return this.performOneCall<{ content: string, duration: number }>(callParams)
       .then((data) => {
@@ -372,9 +373,9 @@ export class SearchEndpoint implements ISearchEndpoint {
   @queryString()
   @queryDocument()
   @method('POST')
+  @requestData(true)
   @responseType('document')
   @errorsAsSuccess(false)
-  //TODO: Nécessaire d'ajouter les query params au requestData?
   public getDocumentHtml(documentUniqueID: string, callOptions?: IViewAsHtmlOptions, callParams?: IEndpointCallParameters): Promise<HTMLDocument> {
     return this.performOneCall<HTMLDocument>(callParams);
   }
@@ -925,13 +926,20 @@ function queryString(){
   }
 }
 
-function searchQueryObject(){
+function searchQueryObject(fromOptions: boolean = false){
   return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
     let nbParams = target[key].prototype.constructor.length;
 
     descriptor.value = function(...args: any[]) {
-      let queryString = this.buildCompleteQueryString(null, args[0]);
+      let queryString;
+      if(fromOptions){
+        let callOptions = _.extend({}, args[nbParams-2]);
+        queryString = this.buildCompleteQueryString(callOptions.query, callOptions.queryObject);
+      }
+      else{
+        queryString = this.buildCompleteQueryString(null, args[0]);
+      }
       if(args[nbParams-1]){
         args[nbParams-1].queryString = args[nbParams-1].queryString.concat(queryString);
       }
@@ -1013,20 +1021,28 @@ function accessToken(){
   }
 }
 
-function requestData(){
+function requestData(fromOptions: boolean = false){
   return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
     let nbParams = target[key].prototype.constructor.length;
 
     descriptor.value = function(...args: any[]) {
+      let data;
+      if(fromOptions){
+        let callOptions = _.extend({}, args[nbParams-2]);
+        data = callOptions.queryObject || { q: callOptions.query };
+      }
+      else{
+        data = args[0];
+      }
       if(args[nbParams-1]){
-        args[nbParams-1].requestData = args[0];
+        args[nbParams-1].requestData = data;
       }
       else{
         let params: IEndpointCallParameters = {
           url: '',
           queryString: [],
-          requestData: args[0],
+          requestData: data,
           method: '',
           responseType: '',
           errorsAsSuccess: false
