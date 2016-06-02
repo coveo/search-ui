@@ -46,6 +46,7 @@ export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
  * If you wish to execute a query that all components will react to (and trigger the corresponding query events), use the {@link QueryController}
  */
 export class SearchEndpoint implements ISearchEndpoint {
+
   /**
    * A map of all the initialized endpoint.<br/>
    * eg : Coveo.SearchEndpoint.endpoints['default'] will return the default endpoint that was created at initialization
@@ -127,7 +128,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   public logger: Logger;
   public isRedirecting: boolean;
   protected caller: EndpointCaller;
-  private onUnload: (...args: any[]) => void
+  private onUnload: (...args: any[]) => void;
 
   /**
    * Create a new SearchEndpoint.<br/>
@@ -216,23 +217,17 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @param callOptions Additional set of options to use for this call.
    * @returns {Promise<IQueryResults>}
    */
-  public search(query: IQuery, callOptions?: IEndpointCallOptions): Promise<IQueryResults> {
+  @url('/')
+  @baseQueryString()
+  @method('POST')
+  @responseType('text')
+  @errorsAsSuccess(true)
+  @requestData()
+  public search(query: IQuery, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IQueryResults> {
     Assert.exists(query);
-
     this.logger.info('Performing REST query', query);
 
-    callOptions = _.extend({}, callOptions);
-
-    let params: IEndpointCallParameters = {
-      url: this.buildBaseUri('/'),
-      queryString: this.buildBaseQueryString(callOptions),
-      requestData: query,
-      errorsAsSuccess: true,
-      responseType: 'text',
-      method: 'POST'
-    };
-
-    return this.performOneCall(params).then((results?: IQueryResults) => {
+    return this.performOneCall(callParams).then((results?: IQueryResults) => {
       this.logger.info('REST query successful', results, query);
 
       // Version check
@@ -255,7 +250,6 @@ export class SearchEndpoint implements ISearchEndpoint {
       return results;
     })
   }
-
   /**
    * Get a link/uri to download a set of results, for a given query, to an xlsx format.<br/>
    * Note : This does not download automatically the documents, merely provide an url at which to download them.
@@ -264,17 +258,18 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @param callOptions Additional set of options to use for this call.
    * @returns {string}
    */
-  public getExportToExcelLink(query: IQuery, numberOfResults: number, callOptions?: IEndpointCallOptions): string {
-    let baseUri = this.buildBaseUri('/');
-    let queryString = this.buildCompleteQueryString(callOptions, null, query, true);
-
+  @url('/')
+  @baseQueryString()
+  @queryObject()
+  @accessToken()
+  public getExportToExcelLink(query: IQuery, numberOfResults: number, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): string {
     if (numberOfResults != null) {
-      queryString.push('numberOfResults=' + numberOfResults);
+      callParams.queryString.push('numberOfResults=' + numberOfResults);
     }
 
-    queryString.push('format=xlsx');
+    callParams.queryString.push('format=xlsx');
 
-    return baseUri + '?' + queryString.join('&');
+    return callParams.url + '?' + callParams.queryString.join('&');
   }
 
   /**
@@ -287,20 +282,19 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @param callOptions Additional set of options to use for this call.
    * @returns {Promise<TResult>|Promise<U>}
    */
-  public getRawDataStream(documentUniqueId: string, dataStreamType: string, callOptions?: IViewAsHtmlOptions): Promise<ArrayBuffer> {
+  @url('/datastream')
+  @baseQueryString()
+  @method('GET')
+  @responseType('arraybuffer')
+  @errorsAsSuccess(false)
+  @accessToken()
+  @viewAsHtml()
+  public getRawDataStream(documentUniqueId: string, dataStreamType: string, callOptions?: IViewAsHtmlOptions, callParams?: IEndpointCallParameters): Promise<ArrayBuffer> {
     Assert.exists(documentUniqueId);
-    callOptions = _.extend({}, callOptions);
-
-    let params: IEndpointCallParameters = {
-      url: this.buildBaseUri('/datastream'),
-      queryString: this.buildViewAsHtmlQueryString(documentUniqueId, callOptions, true, true).concat(['dataStream=' + dataStreamType]),
-      requestData: {},
-      errorsAsSuccess: false,
-      method: 'GET',
-      responseType: 'arraybuffer'
-    };
     this.logger.info('Performing REST query for datastream ' + dataStreamType + ' on document uniqueID' + documentUniqueId);
-    return this.performOneCall(params).then((results) => {
+
+    callParams.queryString.push('dataStream=' + dataStreamType);
+    return this.performOneCall(callParams).then((results) => {
       this.logger.info('REST query successful', results, documentUniqueId);
       return results;
     })
@@ -313,9 +307,13 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @param callOptions Additional set of options to use for this call.
    * @returns {string}
    */
-  public getViewAsDatastreamUri(documentUniqueID: string, dataStreamType: string, callOptions?: IViewAsHtmlOptions): string {
-    callOptions = _.extend({}, callOptions);
-    return this.buildViewAsHtmlUri('/datastream', documentUniqueID, callOptions) + '&dataStream=' + encodeURIComponent(dataStreamType);
+  @url('/datastream')
+  @baseQueryString()
+  @queryObject()
+  @viewAsHtml()
+  @accessToken()
+  public getViewAsDatastreamUri(documentUniqueID: string, dataStreamType: string, callOptions?: IViewAsHtmlOptions, callParams?: IEndpointCallParameters): string {
+    return callParams.url + '?' + callParams.queryString.join('&') + '&dataStream=' + encodeURIComponent(dataStreamType);
   }
 
   /**
@@ -454,20 +452,15 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @param callOptions Additional set of options to use for this call.
    * @returns {Promise<TResult>|Promise<U>}
    */
-  public listFields(callOptions?: IEndpointCallOptions): Promise<IFieldDescription[]> {
-    callOptions = _.extend({}, callOptions);
-
+  @url('/')
+  @baseQueryString()
+  @method('GET')
+  @responseType('text')
+  @errorsAsSuccess(true)
+  public listFields(callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IFieldDescription[]> {
     this.logger.info('Listing fields');
-    let params: IEndpointCallParameters = {
-      url: this.buildBaseUri('/fields'),
-      queryString: this.buildBaseQueryString(callOptions),
-      requestData: {},
-      method: 'GET',
-      responseType: 'text',
-      errorsAsSuccess: true
-    };
 
-    return this.performOneCall<IListFieldsResult>(params).then((data) => {
+    return this.performOneCall<IListFieldsResult>(callParams).then((data) => {
       return data.fields;
     })
   }
@@ -477,21 +470,15 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @param callOptions Additional set of options to use for this call.
    * @returns {Promise<IExtension[]>}
    */
-  public extensions(callOptions?: IEndpointCallOptions): Promise<IExtension[]> {
-    callOptions = _.extend({}, callOptions);
-
+  @url('/extensions')
+  @baseQueryString()
+  @method('GET')
+  @responseType('text')
+  @errorsAsSuccess(true)
+  public extensions(callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IExtension[]> {
     this.logger.info('Listing extensions');
 
-    let params: IEndpointCallParameters = {
-      url: this.buildBaseUri('/extensions'),
-      queryString: this.buildBaseQueryString(callOptions),
-      requestData: {},
-      method: 'GET',
-      responseType: 'text',
-      errorsAsSuccess: true
-    };
-
-    return this.performOneCall<IExtension[]>(params)
+    return this.performOneCall<IExtension[]>(callParams)
   }
 
   /**
@@ -735,6 +722,75 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     return queryString;
   }
+  private buildAccessTokenDec(): string[] {
+    let queryString: string[] = [];
+
+    if (Utils.isNonEmptyString(this.options.accessToken)) {
+      queryString.push('access_token=' + encodeURIComponent(this.options.accessToken));
+    }
+
+    return queryString;
+  }
+  private buildBaseQueryStringDec(callOptions?: IEndpointCallOptions): string[] {
+    let queryString: string[] = [];
+
+    for (let name in this.options.queryStringArguments) {
+      //The mapping workgroup --> organizationId is necessary for backward compatibility
+      if (name == 'workgroup') {
+        queryString.push('organizationId' + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
+      }
+      else {
+        queryString.push(name + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
+      }
+    }
+
+    if (callOptions && _.isArray(callOptions.authentication) && callOptions.authentication.length != 0) {
+      queryString.push('authentication=' + callOptions.authentication.join(','))
+    }
+
+    return queryString;
+  }
+
+  private buildCompleteQueryStringDec(query?: string, queryObject?: IQuery): string[] {
+    // In an ideal parallel reality, the entire query used in the 'search' call is used here.
+    // In this reality however, we must support GET calls (ex: GET /html) for CORS/JSONP/IE reasons.
+    // Therefore, we cherry-pick parts of the query to include in a 'query string' instead of a body payload.
+    let queryString: string[] = [];
+    if (queryObject) {
+      _.each(['q', 'aq', 'cq', 'dq', 'searchHub', 'tab', 'language', 'pipeline', 'lowercaseOperators'], (key) => {
+        if (queryObject[key]) {
+          queryString.push(key + '=' + encodeURIComponent(queryObject[key]));
+        }
+      });
+
+      _.each(queryObject.context, (value, key) => {
+        queryString.push('context[' + key + ']=' + encodeURIComponent(value));
+      });
+    } else if (query) {
+      queryString.push('q=' + encodeURIComponent(query));
+    }
+
+    return queryString;
+  }
+
+  private buildViewAsHtmlQueryStringDec(uniqueId: string, callOptions?: IViewAsHtmlOptions): string[] {
+    let queryString: string[] = [];
+    queryString.push('uniqueId=' + encodeURIComponent(uniqueId));
+
+    if (callOptions.query || callOptions.queryObject) {
+      queryString.push('enableNavigation=true');
+    }
+
+    if (callOptions.requestedOutputSize) {
+      queryString.push('requestedOutputSize=' + encodeURIComponent(callOptions.requestedOutputSize.toString()))
+    }
+
+    if (callOptions.contentType) {
+      queryString.push('contentType=' + encodeURIComponent(callOptions.contentType))
+    }
+
+    return queryString;
+  }
 
   private buildCompleteQueryString(callOptions?: IEndpointCallOptions, query?: string, queryObject?: IQuery, addAccessToken: boolean = false): string[] {
     let queryString = this.buildBaseQueryString(callOptions, addAccessToken);
@@ -848,14 +904,6 @@ export class SearchEndpoint implements ISearchEndpoint {
       })
   }
 
-  private isMissingAuthenticationProviderStatus(status: number): boolean {
-    return status == 402;
-  }
-
-  private isAccessTokenExpiredStatus(status: number): boolean {
-    return status == 419;
-  }
-
   private addTrailingSlash(uri: string) {
     if (!this.hasTrailingSlash(uri)) {
       uri += '/';
@@ -872,5 +920,277 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   private hasTrailingSlash(uri: string) {
     return uri.charAt(uri.length - 1) == '/';
+  }
+
+  private isMissingAuthenticationProviderStatus(status: number): boolean {
+    return status == 402;
+  }
+
+  private isAccessTokenExpiredStatus(status: number): boolean {
+    return status == 419;
+  }
+}
+
+
+// It's taken for granted that methods using decorators have :
+// The object to put in the requestData in the first parameter
+// IEndpointCallOptions as their second to last parameter
+// IEndpointCallParameters as their last parameter
+function url(path: string){
+  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+    let originalMethod = descriptor.value;
+    let nbParams = target[key].prototype.constructor.length;
+
+    descriptor.value = function(...args: any[]) {
+      let uri = this.buildBaseUri(path);
+      if(args[nbParams-1]){
+        args[nbParams-1].url = uri;
+      }
+      else{
+        let params: IEndpointCallParameters = {
+          url: uri,
+          queryString: [],
+          requestData: {},
+          method: '',
+          responseType: '',
+          errorsAsSuccess: false
+        };
+        args[nbParams-1] = params;
+      }
+      let result = originalMethod.apply(this, args);
+      return result;
+    };
+
+    return descriptor;
+  }
+}
+
+function baseQueryString(){
+  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+    let originalMethod = descriptor.value;
+    let nbParams = target[key].prototype.constructor.length;
+
+    descriptor.value = function(...args: any[]) {
+      let callOptions = _.extend({}, args[nbParams-2]);
+      let queryString = this.buildBaseQueryStringDec(callOptions);
+      if(args[nbParams-1]){
+        args[nbParams-1].queryString = args[nbParams-1].queryString.concat(queryString);
+      }
+      else{
+        let params: IEndpointCallParameters = {
+          url: '',
+          queryString: queryString,
+          requestData: {},
+          method: '',
+          responseType: '',
+          errorsAsSuccess: false
+        };
+        args[nbParams-1] = params;
+      }
+      let result = originalMethod.apply(this, args);
+      return result;
+    };
+
+    return descriptor;
+  }
+}
+
+function accessToken(){
+  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+    let originalMethod = descriptor.value;
+    let nbParams = target[key].prototype.constructor.length;
+
+    descriptor.value = function(...args: any[]) {
+      let queryString = this.buildAccessTokenDec();
+      if(args[nbParams-1]){
+        args[nbParams-1].queryString = args[nbParams-1].queryString.concat(queryString);
+      }
+      else{
+        let params: IEndpointCallParameters = {
+          url: '',
+          queryString: queryString,
+          requestData: {},
+          method: '',
+          responseType: '',
+          errorsAsSuccess: false
+        };
+        args[nbParams-1] = params;
+      }
+      let result = originalMethod.apply(this, args);
+      return result;
+    };
+
+    return descriptor;
+  }
+}
+
+function queryObject(){
+  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+    let originalMethod = descriptor.value;
+    let nbParams = target[key].prototype.constructor.length;
+
+    descriptor.value = function(...args: any[]) {
+      let queryString = this.buildCompleteQueryStringDec(null, args[0]);
+      if(args[nbParams-1]){
+        args[nbParams-1].queryString = args[nbParams-1].queryString.concat(queryString);
+      }
+      else{
+        let params: IEndpointCallParameters = {
+          url: '',
+          queryString: queryString,
+          requestData: {},
+          method: '',
+          responseType: '',
+          errorsAsSuccess: false
+        };
+        args[nbParams-1] = params;
+      }
+      let result = originalMethod.apply(this, args);
+      return result;
+    };
+
+    return descriptor;
+  }
+}
+
+function viewAsHtml(){
+  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+    let originalMethod = descriptor.value;
+    let nbParams = target[key].prototype.constructor.length;
+
+    descriptor.value = function(...args: any[]) {
+      let callOptions = _.extend({}, args[nbParams-2]);
+      let queryString = this.buildViewAsHtmlQueryStringDec(args[0], callOptions);
+      if(args[nbParams-1]){
+        args[nbParams-1].queryString = args[nbParams-1].queryString.concat(queryString);
+      }
+      else{
+        let params: IEndpointCallParameters = {
+          url: '',
+          queryString: queryString,
+          requestData: {},
+          method: '',
+          responseType: '',
+          errorsAsSuccess: false
+        };
+        args[nbParams-1] = params;
+      }
+      let result = originalMethod.apply(this, args);
+      return result;
+    };
+
+    return descriptor;
+  }
+}
+
+function requestData(){
+  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+    let originalMethod = descriptor.value;
+    let nbParams = target[key].prototype.constructor.length;
+
+    descriptor.value = function(...args: any[]) {
+      if(args[nbParams-1]){
+        args[nbParams-1].requestData = args[0];
+      }
+      else{
+        let params: IEndpointCallParameters = {
+          url: '',
+          queryString: [],
+          requestData: args[0],
+          method: '',
+          responseType: '',
+          errorsAsSuccess: false
+        };
+        args[nbParams-1] = params;
+      }
+      let result = originalMethod.apply(this, args);
+      return result;
+    };
+
+    return descriptor;
+  }
+}
+
+function method(met: string){
+  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+    let originalMethod = descriptor.value;
+    let nbParams = target[key].prototype.constructor.length;
+
+    descriptor.value = function(...args: any[]) {
+      if(args[nbParams-1]){
+        args[nbParams-1].method = met;
+      }
+      else{
+        let params: IEndpointCallParameters = {
+          url: '',
+          queryString: [],
+          requestData: {},
+          method: met,
+          responseType: '',
+          errorsAsSuccess: false
+        };
+        args[nbParams-1] = params;
+      }
+      let result = originalMethod.apply(this, args);
+      return result;
+    };
+
+    return descriptor;
+  }
+}
+
+function responseType(resp: string){
+  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+    let originalMethod = descriptor.value;
+    let nbParams = target[key].prototype.constructor.length;
+
+    descriptor.value = function(...args: any[]) {
+      if(args[nbParams-1]){
+        args[nbParams-1].responseType = resp;
+      }
+      else{
+        let params: IEndpointCallParameters = {
+          url: '',
+          queryString: [],
+          requestData: {},
+          method: '',
+          responseType: resp,
+          errorsAsSuccess: false
+        };
+        args[nbParams-1] = params;
+      }
+      let result = originalMethod.apply(this, args);
+      return result;
+    };
+
+    return descriptor;
+  }
+}
+
+function errorsAsSuccess(error: boolean){
+  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+    let originalMethod = descriptor.value;
+    let nbParams = target[key].prototype.constructor.length;
+
+    descriptor.value = function(...args: any[]) {
+      if(args[nbParams-1]){
+        args[nbParams-1].errorsAsSuccess = error;
+      }
+      else{
+        let params: IEndpointCallParameters = {
+          url: '',
+          queryString: [],
+          requestData: {},
+          method: '',
+          responseType: '',
+          errorsAsSuccess: error
+        };
+        args[nbParams-1] = params;
+      }
+      let result = originalMethod.apply(this, args);
+      return result;
+    };
+
+    return descriptor;
   }
 }
