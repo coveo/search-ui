@@ -3,8 +3,8 @@ import {TemplateCache} from './TemplateCache';
 import {IQueryResult} from '../../rest/QueryResult';
 
 export class DefaultRecommendationTemplate extends Template {
-  
-  instantiateToString(object?: IQueryResult): string{
+
+  instantiateToString(object?: IQueryResult): string {
     var template = TemplateCache.getDefaultTemplate('Recommendation');
     return template.instantiateToString(object);
   }

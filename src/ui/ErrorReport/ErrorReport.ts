@@ -7,7 +7,7 @@ import {AnalyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/Analytics
 import {l} from '../../strings/Strings';
 import {Assert} from '../../misc/Assert';
 import {Initialization} from '../Base/Initialization';
-import {EndpointError} from '../../rest/EndpointError';
+import {IEndpointError} from '../../rest/EndpointError';
 import {MissingAuthenticationError} from '../../rest/MissingAuthenticationError';
 
 export interface IErrorReportOptions {
@@ -170,7 +170,7 @@ export class ErrorReport extends Component {
     $$(this.element).show();
   }
 
-  private buildErrorInfo(data: EndpointError): HTMLElement {
+  private buildErrorInfo(data: IEndpointError): HTMLElement {
     let errorInfo = $$('div', {
       className: 'coveo-error-info'
     });

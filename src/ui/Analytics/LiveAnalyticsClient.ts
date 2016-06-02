@@ -246,9 +246,9 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       responseTime: 0
     })
   }
-  
-  protected getOriginLevel2(element: HTMLElement): string{
-    return this.resolveActiveTabFromElement(element) || "default";
+
+  protected getOriginLevel2(element: HTMLElement): string {
+    return this.resolveActiveTabFromElement(element) || 'default';
   }
 
   private buildMetaObject<TMeta>(meta: TMeta): IChangeableAnalyticsMetaObject {

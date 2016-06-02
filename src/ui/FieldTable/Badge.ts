@@ -39,27 +39,27 @@ export class Badge extends FieldValue {
      * Specifies the colors for the badge.
      *
      * Colors are specified in a a JSON format like the following:
-     *```json
-      *{
-      *   "values":{
-      *     "foo":{
-      *       "icon":"blue",
-      *       "text":"#222"
-      *     },
-      *     "bar":{
-      *       "icon":"green",
-      *       "text":"lightgreen"
-      *     }
-      *   },
-      *   "icon":"red",
-      *   "text":"#9ab52b"
-      *}
-      *```
-      * This format allows to customize both the icon and text colors for each
-      * field value as well as the default value.
-      *
-      * Colors can be specified in HTML or hexadecimal code format.
-      */
+     * ```json
+     * {
+     *   "values":{
+     *     "foo":{
+     *       "icon":"blue",
+     *       "text":"#222"
+     *     },
+     *     "bar":{
+     *       "icon":"green",
+     *       "text":"lightgreen"
+     *     }
+     *   },
+     *   "icon":"red",
+     *   "text":"#9ab52b"
+     * }
+     * ```
+     * This format allows to customize both the icon and text colors for each
+     * field value as well as the default value.
+     *
+     * Colors can be specified in HTML or hexadecimal code format.
+     */
     colors: ComponentOptions.buildCustomOption<IBadgeColors>((value: string) => Badge.parseColors(value), { defaultValue: { values: {} } })
   };
 

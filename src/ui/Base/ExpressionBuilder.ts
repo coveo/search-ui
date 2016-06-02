@@ -82,7 +82,7 @@ export class ExpressionBuilder {
    * @param exp expression to join the different parts, default to a space
    * @returns {any}
    */
-  public build(exp: string = " "): string {
+  public build(exp: string = ' '): string {
     if (this.parts.length == 0) {
       return undefined;
     } else if (this.parts.length == 1) {
