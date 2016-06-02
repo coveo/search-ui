@@ -50,11 +50,11 @@ export class CurrentTab extends Component {
         $$(this.element).toggleClass('coveo-opening-tab-section');
         $$(tabSection).toggleClass('coveo-opened-by-current-tab');
         if ($$(this.element).hasClass('coveo-opening-tab-section')) {
-          $$(tabSection).css('z-index', '1001');
-          $$(this.element).css('z-index', '1001');
+          tabSection.style.zIndex = '1001';
+          this.element.style.zIndex = '1001';
         } else {
-          $$(tabSection).css('z-index', undefined);
-          $$(this.element).css('z-index', undefined);
+          tabSection.style.zIndex = undefined;
+          this.element.style.zIndex = undefined;
         }
       })
     }
