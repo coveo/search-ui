@@ -71,7 +71,7 @@ module Coveo {
         expect(test.cmp.element.textContent).toBe('this, is, sparta');
       });
 
-      it('viewSeparator should modify the string displayed between values of a multi value field', () => {
+      it('displaySeparator should modify the string displayed between values of a multi-value field', () => {
         let result = FakeResults.createFakeResult();
         result.raw.foobarde = 'this;is;sparta';
 
@@ -81,7 +81,7 @@ module Coveo {
             field: '@foobarde',
             splitValues: true,
             separator: ';',
-            viewSeparator: '<->'
+            displaySeparator: '<->'
           }
         });
         expect(test.cmp.element.textContent).toBe('this<->is<->sparta');
