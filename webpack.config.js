@@ -1,5 +1,4 @@
 const webpack = require('webpack');
-const SpriteSmithPlugin = require('webpack-spritesmith');
 
 module.exports = {
   entry: ['./src/Dependencies.js', './src/Index.ts'],
