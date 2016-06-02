@@ -26,7 +26,7 @@ export interface IResultFoldingOptions {
  * <a href='https://developers.coveo.com/display/public/JsSearchV1/Result+Templates'>Result Template</a>
  * when there is an active {@link Folding} component on the page. This component takes care of rendering
  * the parent result and its child results in a coherent manner.
-  */
+ */
 export class ResultFolding extends Component {
   static ID = 'ResultFolding';
 

@@ -101,7 +101,7 @@ export class FieldValue extends Component {
       subOptions: {
         text: ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
         target: ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
-        "class": ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
+        'class': ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
 
         decimals: ComponentOptions.buildNumberOption(showOnlyWithHelper(['currency'], { min: 0 })),
         symbol: ComponentOptions.buildStringOption(showOnlyWithHelper(['currency'])),
@@ -241,7 +241,7 @@ export class FieldValue extends Component {
 
     if (helper == 'date') {
       return DateUtils.dateToString(new Date(parseInt(date)), fullDateOptions);
-    } else if (helper == "dateTime" || helper == "emailDateTime") {
+    } else if (helper == 'dateTime' || helper == 'emailDateTime') {
       return DateUtils.dateTimeToString(new Date(parseInt(date)), fullDateOptions);
     }
     return '';
@@ -292,12 +292,12 @@ export class FieldValue extends Component {
   private static initSimpleOptions() {
     let options = {};
     for (let key in FieldValue.options) {
-      if (key != "helperOptions") {
+      if (key != 'helperOptions') {
         options[key] = FieldValue.options[key];
       }
     }
   }
-  
+
 }
 
 Initialization.registerAutoCreateComponent(FieldValue);

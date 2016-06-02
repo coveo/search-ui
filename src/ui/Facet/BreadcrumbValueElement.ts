@@ -7,7 +7,7 @@ import {DeviceUtils} from '../../utils/DeviceUtils';
 import {IAnalyticsFacetMeta, AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {$$, Dom} from '../../utils/Dom';
 
-export interface BreadcrumbValueElementKlass {
+export interface IBreadcrumbValueElementKlass {
   new (facet: Facet, facetValue: FacetValue): BreadcrumbValueElement;
 }
 

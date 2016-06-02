@@ -1,6 +1,6 @@
 import {Initialization} from './Initialization';
 
-interface Window {
+interface IWindow {
   $: any;
 }
 

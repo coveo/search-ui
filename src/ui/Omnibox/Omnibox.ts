@@ -257,7 +257,7 @@ export class Omnibox extends Component {
       };
     }
     if (this.options.placeholder) {
-      (<HTMLInputElement>this.magicBox.element.querySelector("input")).placeholder = this.options.placeholder;
+      (<HTMLInputElement>this.magicBox.element.querySelector('input')).placeholder = this.options.placeholder;
     }
     this.magicBox.onsubmit = () => {
       this.magicBox.clearSuggestion();

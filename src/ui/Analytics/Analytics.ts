@@ -204,35 +204,35 @@ export class Analytics extends Component {
         }
 
       }
-      
+
       let isRecommendation = $$(this.root).hasClass(Component.computeCssClassName(Recommendation));
       this.instantiateAnalyticsClient(endpoint, elementToInitializeClient, isRecommendation);
-               
+
     } else {
       this.client = new NoopAnalyticsClient();
     }
   }
-  
-  private instantiateAnalyticsClient(endpoint: AnalyticsEndpoint, elementToInitializeClient: HTMLElement, isRecommendation: boolean){  
-    if(isRecommendation){
+
+  private instantiateAnalyticsClient(endpoint: AnalyticsEndpoint, elementToInitializeClient: HTMLElement, isRecommendation: boolean) {
+    if (isRecommendation) {
       this.client = new RecommendationAnalyticsClient(endpoint, elementToInitializeClient,
-      this.options.user,
-      this.options.userDisplayName,
-      this.options.anonymous,
-      this.options.splitTestRunName,
-      this.options.splitTestRunVersion,
-      this.options.searchHub,
-      this.options.sendToCloud,
-      this.getBindings());
+        this.options.user,
+        this.options.userDisplayName,
+        this.options.anonymous,
+        this.options.splitTestRunName,
+        this.options.splitTestRunVersion,
+        this.options.searchHub,
+        this.options.sendToCloud,
+        this.getBindings());
     } else {
       this.client = new LiveAnalyticsClient(endpoint, elementToInitializeClient,
-      this.options.user,
-      this.options.userDisplayName,
-      this.options.anonymous,
-      this.options.splitTestRunName,
-      this.options.splitTestRunVersion,
-      this.options.searchHub,
-      this.options.sendToCloud);
+        this.options.user,
+        this.options.userDisplayName,
+        this.options.anonymous,
+        this.options.splitTestRunName,
+        this.options.splitTestRunVersion,
+        this.options.searchHub,
+        this.options.sendToCloud);
     }
   }
 
@@ -279,7 +279,7 @@ export class Analytics extends Component {
       found.push(element);
     }
     found = _.compact(found);
-    
+
     if (found.length == 1) {
       return Analytics.getClient(found[0], options, bindings);
     } else if (found.length > 1) {

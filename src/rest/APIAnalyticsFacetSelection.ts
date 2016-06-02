@@ -1,4 +1,4 @@
-export interface APIAnalyticsFacetSelection {
+export interface IAPIAnalyticsFacetSelection {
   entryName: string;
   status: string;
 }

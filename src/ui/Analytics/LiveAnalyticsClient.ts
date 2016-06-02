@@ -227,6 +227,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       documentUriHash: result.raw['urihash'],
       documentUrl: result.clickUri,
       documentTitle: result.title,
+      documentCategory: result.raw['objecttype'],
       originLevel2: this.getOriginLevel2(element),
       collectionName: <string>result.raw['collection'],
       sourceName: <string>result.raw['source'],
@@ -245,9 +246,9 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       responseTime: 0
     })
   }
-  
-  protected getOriginLevel2(element: HTMLElement): string{
-    return this.resolveActiveTabFromElement(element) || "default";
+
+  protected getOriginLevel2(element: HTMLElement): string {
+    return this.resolveActiveTabFromElement(element) || 'default';
   }
 
   private buildMetaObject<TMeta>(meta: TMeta): IChangeableAnalyticsMetaObject {

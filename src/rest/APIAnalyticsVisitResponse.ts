@@ -1,3 +1,3 @@
-export interface APIAnalyticsVisitResponseRest {
+export interface IAPIAnalyticsVisitResponseRest {
   id: string;
 }
