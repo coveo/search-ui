@@ -1,5 +1,6 @@
-import {$$, Dom} from '../../utils/Dom.ts';
-import {InitializationEvents} from '../../events/InitializationEvents.ts';
+import {$$, Dom} from '../../utils/Dom';
+import {WindowResizeListener} from '../../utils/WindowResizeListener';
+import {InitializationEvents} from '../../events/InitializationEvents';
 import {PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
 import {Logger} from '../../misc/Logger';
 import '../../../sass/_ResponsiveTabs.scss';
@@ -12,7 +13,7 @@ export class ResponsiveTabs {
   private static tabSection: Dom;
 
   private static searchBoxElement: HTMLElement;
-  private static coveoRoot: HTMLElement;
+  private static coveoRoot: Dom;
 
   private static resizeListener: EventListener;
   private static documentClickListener: EventListener;
@@ -21,7 +22,7 @@ export class ResponsiveTabs {
 
   public static init(root: HTMLElement) {
     this.logger = new Logger(this);
-    this.coveoRoot = root;
+    this.coveoRoot = $$(root);
     $$(this.coveoRoot).on(InitializationEvents.afterInitialization, () => {
       this.dropdownContent = this.buildDropdownContent();
       this.dropdownHeader = this.buildDropdownHeader();
@@ -29,7 +30,7 @@ export class ResponsiveTabs {
       this.bindDropdownContentEvents();
       this.bindDropdownHeaderEvents();
 
-      let tabSectionElement = <HTMLElement>this.coveoRoot.querySelector(this.coveoTabSection);
+      let tabSectionElement = <HTMLElement>this.coveoRoot.find(this.coveoTabSection);
 
       if (!tabSectionElement) {
         return;
@@ -45,7 +46,7 @@ export class ResponsiveTabs {
         if (this.shouldAddTabsToDropdown()) {
           let currentTab;
           let overflowingElements = [];
-          let tabs = this.tabSection.findAll('.CoveoTab:not(.coveo-tab-dropdown)');
+          let tabs = this.tabSection.findAll('.CoveoTab');
 
           this.tabSection.el.appendChild(this.dropdownHeader.el);
           for (let i = tabs.length - 1; i >= 0; i--) {
@@ -73,7 +74,7 @@ export class ResponsiveTabs {
           }
 
           if (this.isOverflowing(this.tabSection.el)) {
-            let tabs = this.tabSection.findAll('.CoveoTab:not(.coveo-tab-dropdown)');
+            let tabs = this.tabSection.findAll('.CoveoTab');
             this.addToDropdown(tabs.pop());
           }
 
@@ -98,38 +99,31 @@ export class ResponsiveTabs {
   }
 
   private static shouldAddTabsToDropdown() {
-    return this.isOverflowing(this.tabSection.el) && this.tabSection.is('.coveo-small-tab-section');
+    return this.isOverflowing(this.tabSection.el) && this.coveoRoot.is('.coveo-small-search-interface');
   }
 
   private static shouldRemoveTabsFromDropdown() {
-    return !this.isOverflowing(this.tabSection.el) && this.tabSection.is('.coveo-small-tab-section') && !this.isDropdownEmpty();
+    return !this.isOverflowing(this.tabSection.el) && this.coveoRoot.is('.coveo-small-search-interface') && !this.isDropdownEmpty();
   }
 
   private static toggleSmallTabsIfNeeded() {
     let tabSectionIsOverflowing = this.isOverflowing(this.tabSection.el);
-    if (tabSectionIsOverflowing && !this.tabSection.is('.coveo-small-tab-section')) {
+    if (tabSectionIsOverflowing && !this.coveoRoot.is('.coveo-small-search-interface')) {
       this.toggleSmallClass(this.tabSection);
       this.moveTabSectionDown();
-      if ($$(this.searchBoxElement).hasClass('coveo-search-section')) {
-        $$(this.searchBoxElement).addClass('coveo-small-search-section');
-      }
-
+      
     } else if (this.shouldToggleToLargeFormat()) {
       this.toggleSmallClass(this.tabSection);
       this.moveTabSectionUp();
-      if ($$(this.searchBoxElement).hasClass('coveo-small-search-section')) {
-        $$(this.searchBoxElement).removeClass('coveo-small-search-section');
-      }
     }
   }
 
   private static shouldToggleToLargeFormat() {
-    return this.tabSection.is('.coveo-small-tab-section') && !this.isLargeFormatOverflowing(this.tabSection.el) && this.isDropdownEmpty()
+    return this.coveoRoot.is('.coveo-small-search-interface') && !this.isLargeFormatOverflowing(this.tabSection.el) && this.isDropdownEmpty();
   }
 
   private static isLargeFormatOverflowing(tabSectionElement: HTMLElement) {
     let virtualTabSection = $$(<HTMLElement>tabSectionElement.cloneNode(true));
-    this.toggleSmallClass(virtualTabSection);
 
     let dropdownHeader = virtualTabSection.el.querySelector('.coveo-tab-dropdown-header');
     if (dropdownHeader) {
@@ -140,12 +134,12 @@ export class ResponsiveTabs {
     virtualTabSection.el.style.visibility = 'hidden';
 
     if (!this.isDropdownEmpty) {
-      _.each(this.dropdownContent.findAll('.coveo-small-tab'), tab => {
+      _.each(this.dropdownContent.findAll('.CoveoTab'), tab => {
         virtualTabSection.el.appendChild(tab.cloneNode(true));
       });
     }
 
-    virtualTabSection.insertBefore(this.coveoRoot);
+    virtualTabSection.insertBefore(this.coveoRoot.el);
     let isOverflowing = this.isOverflowing(virtualTabSection.el);
     virtualTabSection.detach();
     return isOverflowing;
@@ -196,9 +190,9 @@ export class ResponsiveTabs {
       }
     });
   }
-
+  
   private static buildDropdownContent() {
-    let dropdownContent = $$('div', { className: 'coveo-tab-list-container' });
+    let dropdownContent = $$('div', { className: 'coveo-tab-list-container coveo-small-search-interface' });
     let contentList = $$('ol', { className: 'coveo-tab-list' });
     dropdownContent.el.appendChild(contentList.el);
     return dropdownContent;
@@ -218,7 +212,7 @@ export class ResponsiveTabs {
   private static addToDropdown(el: HTMLElement) {
     if (this.dropdownContent) {
       $$(el).addClass('coveo-tab-dropdown');
-      let list = this.dropdownContent.el.querySelector('ol');
+      let list = this.dropdownContent.find('ol');
       let listElement = $$('li');
       listElement.el.appendChild(el);
       $$(<HTMLElement>list).prepend(listElement.el);
@@ -233,15 +227,12 @@ export class ResponsiveTabs {
   }
 
   private static toggleSmallClass(el: Dom) {
-    el.toggleClass('coveo-small-tab-section');
-    _.each(el.findAll('.CoveoTab'), tab => {
-      $$(tab).toggleClass('coveo-small-tab');
-    });
+    $$(this.coveoRoot).toggleClass('coveo-small-search-interface');
   }
 
   private static isDropdownEmpty(): boolean {
     if (this.dropdownContent) {
-      let tabs = this.dropdownContent.findAll('.coveo-small-tab');
+      let tabs = this.dropdownContent.findAll('.CoveoTab');
       return tabs.length == 0;
     }
     return false;
@@ -252,7 +243,7 @@ export class ResponsiveTabs {
       let tab = $$(tabElement);
       tab.on('click', () => {
         if (tab.hasClass('coveo-tab-dropdown')) {
-          let tabsInSection = this.tabSection.findAll('.CoveoTab:not(.coveo-tab-dropdown)');
+          let tabsInSection = this.tabSection.findAll('.CoveoTab');
           let lastTabInSection = tabsInSection.pop();
 
           $$(lastTabInSection).addClass('coveo-tab-dropdown');
@@ -266,11 +257,11 @@ export class ResponsiveTabs {
   }
 
   private static getSearchBoxElement(): HTMLElement {
-    let searchBoxElement = this.coveoRoot.querySelector('.coveo-search-section');
+    let searchBoxElement = this.coveoRoot.find('.coveo-search-section');
     if (searchBoxElement) {
       return <HTMLElement>searchBoxElement;
     } else {
-      return <HTMLElement>this.coveoRoot.querySelector('.CoveoSearchbox');
+      return <HTMLElement>this.coveoRoot.find('.CoveoSearchbox');
     }
   }
 
@@ -282,7 +273,7 @@ export class ResponsiveTabs {
   }
 
   private static positionPopup() {
-    PopupUtils.positionPopup(this.dropdownContent.el, this.dropdownHeader.el, this.coveoRoot, this.coveoRoot,
+    PopupUtils.positionPopup(this.dropdownContent.el, this.dropdownHeader.el, this.coveoRoot.el, this.coveoRoot.el,
       { horizontal: HorizontalAlignment.CENTER, vertical: VerticalAlignment.BOTTOM });
   }
 }

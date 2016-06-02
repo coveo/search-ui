@@ -54,6 +54,7 @@ export {StreamHighlightUtils} from './utils/StreamHighlightUtils';
 export {StringUtils} from './utils/StringUtils';
 export {TimeSpan} from './utils/TimeSpanUtils';
 export {Utils} from './utils/Utils';
+export {WindowResizeListener} from './utils/WindowResizeListener';
 
 // CONTROLLERS
 export {QueryController} from './controllers/QueryController';
