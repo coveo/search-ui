@@ -85,6 +85,7 @@
 /// <reference path="ui/ResultsPreferencesTest.ts" />
 /// <reference path="ui/FieldSuggestionsTest.ts" />
 /// <reference path="ui/AuthenticationProviderTest.ts" />
+/// <reference path="ui/CurrentTabTest.ts" />
 /// <reference path="ui/SearchAlertsTest.ts" />
 /// <reference path="ui/FollowItemTest.ts" />
 /// <reference path="ui/SearchAlertsMessageTest.ts" />

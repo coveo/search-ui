@@ -349,6 +349,7 @@ module Coveo {
         documentUriHash: token + 'documentUriHash',
         documentUrl: token + 'documentUrl',
         documentTitle: token + 'documentTitle',
+        documentCategory: token + 'documentCategory',
         collectionName: token + 'collectionName',
         sourceName: token + 'sourceName',
         documentPosition: 0,

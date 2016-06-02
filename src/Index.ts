@@ -161,6 +161,7 @@ export {ResultTagging} from './ui/ResultTagging/ResultTagging';
 export {ResultsPreferences} from './ui/ResultsPreferences/ResultsPreferences';
 export {PipelineContext, context} from './ui/PipelineContext/PipelineContext';
 export {OmniboxResultList} from './ui/OmniboxResultList/OmniboxResultList';
+export {CurrentTab} from './ui/CurrentTab/CurrentTab';
 export {FollowItem} from './ui/SearchAlerts/FollowItem';
 export {SearchAlertsMessage} from './ui/SearchAlerts/SearchAlertsMessage';
 export {SearchAlerts} from './ui/SearchAlerts/SearchAlerts';
