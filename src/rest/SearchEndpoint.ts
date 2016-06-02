@@ -190,7 +190,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {string}
    */
   @url('/login/')
-  @accessToken()
+  @accessTokenInUrl()
   public getAuthenticationProviderUri(provider: string, returnUri?: string, message?: string, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): string {
     callParams.url += provider + '?'
 
@@ -220,7 +220,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<IQueryResults>}
    */
   @url('/')
-  @queryString()
+  @queryStringArguments()
   @method('POST')
   @requestData()
   @responseType('text')
@@ -262,9 +262,9 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {string}
    */
   @url('/')
-  @queryString()
-  @searchQueryObject()
-  @accessToken()
+  @queryStringArguments()
+  @requestDataInUrl()
+  @accessTokenInUrl()
   public getExportToExcelLink(query: IQuery, numberOfResults: number, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): string {
     if (numberOfResults != null) {
       callParams.queryString.push('numberOfResults=' + numberOfResults);
@@ -287,9 +287,9 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<TResult>|Promise<U>}
    */
   @url('/datastream')
-  @queryString()
+  @queryStringArguments()
   @queryDocument()
-  @accessToken()
+  @accessTokenInUrl()
   @method('GET')
   @responseType('arraybuffer')
   @errorsAsSuccess(false)
@@ -313,10 +313,10 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {string}
    */
   @url('/datastream')
-  @queryString()
-  @searchQueryObject(true)
+  @queryStringArguments()
+  @requestDataInUrl(true)
   @queryDocument()
-  @accessToken()
+  @accessTokenInUrl()
   public getViewAsDatastreamUri(documentUniqueID: string, dataStreamType: string, callOptions?: IViewAsHtmlOptions, callParams?: IEndpointCallParameters): string {
     return callParams.url + '?' + callParams.queryString.join('&') + '&dataStream=' + encodeURIComponent(dataStreamType);
   }
@@ -329,8 +329,8 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<IQueryResult>}
    */
   @url('/document')
-  @queryString()
-  @searchQueryObject(true)
+  @queryStringArguments()
+  @requestDataInUrl(true)
   @queryDocument()
   @method('GET')
   @responseType('text')
@@ -348,8 +348,8 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<string>}
    */
   @url('/text')
-  @queryString()
-  @searchQueryObject(true)
+  @queryStringArguments()
+  @requestDataInUrl(true)
   @queryDocument()
   @method('GET')
   @responseType('text')
@@ -370,7 +370,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<HTMLDocument>}
    */
   @url('/html')
-  @queryString()
+  @queryStringArguments()
   @queryDocument()
   @method('POST')
   @requestData(true)
@@ -389,21 +389,19 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {string}
    */
   @url('/html')
-  @queryString()
+  @queryStringArguments()
   @queryDocument()
-  @accessToken()
-  //TODO: Why does this need an access token and not the past 3 methods which all return the document's content?
+  @accessTokenInUrl()
   public getViewAsHtmlUri(documentUniqueID: string, callOptions?: IViewAsHtmlOptions, callParams?: IEndpointCallParameters): string {
     return callParams.url + '?' + callParams.queryString.join('&');
   }
 
   @url('/values')
-  @queryString()
+  @queryStringArguments()
   @method('POST')
   @requestData()
   @responseType('text')
   @errorsAsSuccess(true)
-  //TODO: Why does this method do the exact same call as listFieldValues?
   public batchFieldValues(request: IListFieldValuesRequest, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IIndexFieldValue[]> {
     Assert.exists(request);
 
@@ -422,7 +420,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<TResult>|Promise<U>}
    */
   @url('/values')
-  @queryString()
+  @queryStringArguments()
   @method('POST')
   @requestData()
   @responseType('text')
@@ -446,7 +444,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<TResult>|Promise<U>}
    */
   @url('/fields')
-  @queryString()
+  @queryStringArguments()
   @method('GET')
   @responseType('text')
   @errorsAsSuccess(true)
@@ -465,7 +463,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<IExtension[]>}
    */
   @url('/extensions')
-  @queryString()
+  @queryStringArguments()
   @method('GET')
   @responseType('text')
   @errorsAsSuccess(true)
@@ -483,7 +481,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<boolean>|Promise<T>}
    */
   @url('/rating')
-  @queryString()
+  @queryStringArguments()
   @method('POST')
   @requestData()
   @responseType('text')
@@ -504,7 +502,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<boolean>|Promise<T>}
    */
   @url('/tag')
-  @queryString()
+  @queryStringArguments()
   @method('POST')
   @requestData()
   @responseType('text')
@@ -525,7 +523,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<IRevealQuerySuggestResponse>}
    */
   @url('/querySuggest')
-  @queryString()
+  @queryStringArguments()
   @method('GET')
   @requestData()
   @responseType('text')
@@ -544,8 +542,8 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<ISubscription>}
    */
   @alertsUrl('/subscriptions')
-  @queryString()
-  @accessToken()
+  @queryStringArguments()
+  @accessTokenInUrl()
   @method('POST')
   @requestData()
   @requestDataType('application/json')
@@ -565,8 +563,8 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {any}
    */
   @alertsUrl('/subscriptions')
-  @queryString()
-  @accessToken()
+  @queryStringArguments()
+  @accessTokenInUrl()
   @method('GET')
   @requestDataType('application/json')
   @responseType('text')
@@ -604,8 +602,8 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<ISubscription>}
    */
   @alertsUrl('/subscriptions/')
-  @queryString()
-  @accessToken()
+  @queryStringArguments()
+  @accessTokenInUrl()
   @method('PUT')
   @requestData()
   @requestDataType('application/json')
@@ -625,8 +623,8 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<ISubscription>}
    */
   @alertsUrl('/subscriptions/')
-  @queryString()
-  @accessToken()
+  @queryStringArguments()
+  @accessTokenInUrl()
   @method('DELETE')
   @requestDataType('application/json')
   @responseType('text')
@@ -896,7 +894,7 @@ function alertsUrl(path: string){
   }
 }
 
-function queryString(){
+function queryStringArguments(){
   return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
     let nbParams = target[key].prototype.constructor.length;
@@ -904,42 +902,6 @@ function queryString(){
     descriptor.value = function(...args: any[]) {
       let callOptions = _.extend({}, args[nbParams-2]);
       let queryString = this.buildBaseQueryString(callOptions);
-      if(args[nbParams-1]){
-        args[nbParams-1].queryString = args[nbParams-1].queryString.concat(queryString);
-      }
-      else{
-        let params: IEndpointCallParameters = {
-          url: '',
-          queryString: queryString,
-          requestData: {},
-          method: '',
-          responseType: '',
-          errorsAsSuccess: false
-        };
-        args[nbParams-1] = params;
-      }
-      let result = originalMethod.apply(this, args);
-      return result;
-    };
-
-    return descriptor;
-  }
-}
-
-function searchQueryObject(fromOptions: boolean = false){
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
-    let originalMethod = descriptor.value;
-    let nbParams = target[key].prototype.constructor.length;
-
-    descriptor.value = function(...args: any[]) {
-      let queryString;
-      if(fromOptions){
-        let callOptions = _.extend({}, args[nbParams-2]);
-        queryString = this.buildCompleteQueryString(callOptions.query, callOptions.queryObject);
-      }
-      else{
-        queryString = this.buildCompleteQueryString(null, args[0]);
-      }
       if(args[nbParams-1]){
         args[nbParams-1].queryString = args[nbParams-1].queryString.concat(queryString);
       }
@@ -992,13 +954,49 @@ function queryDocument(){
   }
 }
 
-function accessToken(){
+function accessTokenInUrl(){
   return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
     let nbParams = target[key].prototype.constructor.length;
 
     descriptor.value = function(...args: any[]) {
       let queryString = this.buildAccessToken();
+      if(args[nbParams-1]){
+        args[nbParams-1].queryString = args[nbParams-1].queryString.concat(queryString);
+      }
+      else{
+        let params: IEndpointCallParameters = {
+          url: '',
+          queryString: queryString,
+          requestData: {},
+          method: '',
+          responseType: '',
+          errorsAsSuccess: false
+        };
+        args[nbParams-1] = params;
+      }
+      let result = originalMethod.apply(this, args);
+      return result;
+    };
+
+    return descriptor;
+  }
+}
+
+function requestDataInUrl(fromOptions: boolean = false){
+  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+    let originalMethod = descriptor.value;
+    let nbParams = target[key].prototype.constructor.length;
+
+    descriptor.value = function(...args: any[]) {
+      let queryString;
+      if(fromOptions){
+        let callOptions = _.extend({}, args[nbParams-2]);
+        queryString = this.buildCompleteQueryString(callOptions.query, callOptions.queryObject);
+      }
+      else{
+        queryString = this.buildCompleteQueryString(null, args[0]);
+      }
       if(args[nbParams-1]){
         args[nbParams-1].queryString = args[nbParams-1].queryString.concat(queryString);
       }
