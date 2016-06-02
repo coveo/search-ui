@@ -1,22 +1,25 @@
+ @import "_Variables.scss";
+ 
  @mixin responsiveTabsRoundedBorder() {
    border: $default-border;
    border-radius: 3px;
  }
  
-.coveo-small-tab-section {
-  background-color: $color-blueish-white-grey;
-}
-
-.coveo-small-tab {
-  color: $color-greyish-teal-blue;
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.25px;
-  &.coveo-selected, &.coveo-selected:hover{
-    font-weight: 700;
+.CoveoSearchInterface {
+  .coveo-small-tab-section {
+    background-color: $color-blueish-white-grey;
+    
+    .coveo-small-tab {
+      color: $color-greyish-teal-blue;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.25px;
+      &.coveo-selected, &.coveo-selected:hover {
+        font-weight: 700;
+      }
+    }
   }
 }
-
 .coveo-tab-dropdown-header {
     display: inline-block;
     padding: 1px 8px 1px 8px;

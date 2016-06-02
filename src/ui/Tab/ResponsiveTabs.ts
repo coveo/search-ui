@@ -2,6 +2,7 @@ import {$$, Dom} from '../../utils/Dom.ts';
 import {InitializationEvents} from '../../events/InitializationEvents.ts';
 import {PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
 import {Logger} from '../../misc/Logger';
+import '../../../sass/_ResponsiveTabs.scss';
 
 export class ResponsiveTabs {
   static coveoTabSection = '.coveo-tab-section';
@@ -49,14 +50,14 @@ export class ResponsiveTabs {
           this.tabSection.el.appendChild(this.dropdownHeader.el);
           for (let i = tabs.length - 1; i >= 0; i--) {
             currentTab = tabs[i];
-            
+
             if ($$(currentTab).hasClass('coveo-selected') && i > 0) {
-                currentTab = tabs[--i];
+              currentTab = tabs[--i];
             }
-            
+
             this.addToDropdown(currentTab);
-            
-            
+
+
             if (!this.isOverflowing(this.tabSection.el)) {
               break;
             }
@@ -83,11 +84,11 @@ export class ResponsiveTabs {
             this.toggleSmallTabsIfNeeded();
           }
         }
-        
-        if (this.dropdownHeader.hasClass('coveo-tab-dropdown-header-active')){
+
+        if (this.dropdownHeader.hasClass('coveo-tab-dropdown-header-active')) {
           this.positionPopup();
         }
-        
+
       };
       manageResponsiveTabs();
       this.resizeListener = <EventListener>_.debounce(manageResponsiveTabs, 200);
@@ -279,9 +280,9 @@ export class ResponsiveTabs {
       $$(document.documentElement).off('click', this.documentClickListener);
     });
   }
-  
+
   private static positionPopup() {
     PopupUtils.positionPopup(this.dropdownContent.el, this.dropdownHeader.el, this.coveoRoot, this.coveoRoot,
-          { horizontal: HorizontalAlignment.CENTER, vertical: VerticalAlignment.BOTTOM });
+      { horizontal: HorizontalAlignment.CENTER, vertical: VerticalAlignment.BOTTOM });
   }
 }

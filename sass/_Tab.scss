@@ -2,6 +2,7 @@
 
 .CoveoTab {
   color: $color-blueish-gray;
+  //color: black;
   text-decoration: none;
   cursor: pointer;
   height: 52px;
@@ -34,10 +35,10 @@
   }
 }
 
-.coveo-tab-section{
+.coveo-tab-section {
   width: 100%;
   min-height: 52px;
-  background-color: #f7f8f9;
+  background-color: $color-blueish-white;
   text-align: center;
   border-bottom: 1px solid $color-light-grey;
   font-size: 0;
