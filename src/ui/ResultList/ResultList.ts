@@ -477,7 +477,7 @@ export class ResultList extends Component {
   }
 
   private static getDefaultTemplate(e: HTMLElement): Template {
-    let component = <ResultList>Component.get(e, ResultList)
+    let component = <ResultList>Component.get(e)
     if (component.searchInterface instanceof Recommendation) {
       return new DefaultRecommendationTemplate();
     }
