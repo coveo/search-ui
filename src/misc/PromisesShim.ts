@@ -15,7 +15,7 @@ export function shim() {
     });
   }
 
-  let rethrowError = (self)=>{
+  let rethrowError = (self) => {
     self.then(null, function(err) {
       setTimeout(function() {
         throw err
