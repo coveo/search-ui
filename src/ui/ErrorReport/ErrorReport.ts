@@ -3,7 +3,7 @@ import {ComponentOptions} from '../Base/ComponentOptions';
 import {Dom, $$} from '../../utils/Dom';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {QueryEvents, IQueryErrorEventArgs} from '../../events/QueryEvents';
-import {AnalyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
+import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
 import {l} from '../../strings/Strings';
 import {Assert} from '../../misc/Assert';
 import {Initialization} from '../Base/Initialization';
@@ -71,8 +71,8 @@ export class ErrorReport extends Component {
    * Do the "back" action in the browser
    */
   public back(): void {
-    this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.errorBack, {}, this.root);
-    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.errorBack, {})
+    this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.errorBack, {}, this.root);
+    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.errorBack, {})
     history.back();
   }
 
@@ -81,8 +81,8 @@ export class ErrorReport extends Component {
    */
   public reset(): void {
     this.queryStateModel.reset();
-    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.errorClearQuery, {});
-    this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.errorClearQuery, {}, this.root);
+    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.errorClearQuery, {});
+    this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.errorClearQuery, {}, this.root);
     this.queryController.executeQuery();
   }
 
@@ -90,8 +90,8 @@ export class ErrorReport extends Component {
    * Retry the same query, in case of a temporary service error
    */
   public retry(): void {
-    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.errorRetry, {});
-    this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.errorRetry, {}, this.root);
+    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.errorRetry, {});
+    this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.errorRetry, {}, this.root);
     this.queryController.executeQuery();
   }
 

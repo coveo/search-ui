@@ -575,13 +575,13 @@ export class StandaloneSearchInterface extends SearchInterface {
 
   public redirectToSearchPage(searchPage: string) {
     let stateValues = this.queryStateModel.getAttributes();
-    let UaCauseBy = this.usageAnalytics.getCurrentEventCause();
-    if (UaCauseBy != null) {
-      stateValues['firstQueryCause'] = UaCauseBy;
+    let uaCausedBy = this.usageAnalytics.getCurrentEventCause();
+    if (uaCausedBy != null) {
+      stateValues['firstQueryCause'] = uaCausedBy;
     }
-    let UaMeta = this.usageAnalytics.getCurrentEventMeta();
-    if (UaMeta != null) {
-      stateValues['firstQueryMeta'] = UaMeta;
+    let uaMeta = this.usageAnalytics.getCurrentEventMeta();
+    if (uaMeta != null) {
+      stateValues['firstQueryMeta'] = uaMeta;
     }
     window.location.href = searchPage + '#' + HashUtils.encodeValues(stateValues);
   }

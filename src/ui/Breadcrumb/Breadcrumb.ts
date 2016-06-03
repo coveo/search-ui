@@ -3,7 +3,7 @@ import {IComponentBindings} from '../Base/ComponentBindings';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {BreadcrumbEvents, IBreadcrumbItem, IPopulateBreadcrumbEventArgs, IClearBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
-import {AnalyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
+import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
 import {$$} from '../../utils/Dom';
 import {l} from '../../strings/Strings';
 import {Initialization} from '../Base/Initialization';
@@ -62,7 +62,7 @@ export class Breadcrumb extends Component {
     let args = <IClearBreadcrumbEventArgs>{};
     this.bind.trigger(this.root, BreadcrumbEvents.clearBreadcrumb, args);
     this.logger.debug('Clearing breadcrumbs');
-    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.breadcrumbResetAll, {});
+    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.breadcrumbResetAll, {});
     this.queryController.executeQuery();
   }
 

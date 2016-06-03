@@ -16,7 +16,7 @@ module Coveo {
 
     it('should log analytics event on submit', function () {
       test.cmp.submit();
-      expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(AnalyticsActionCauseList.searchboxSubmit, {});
+      expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchboxSubmit, {});
     })
 
     describe('exposes options', function () {
