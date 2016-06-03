@@ -86,7 +86,7 @@
 /// <reference path="ui/FieldSuggestionsTest.ts" />
 /// <reference path="ui/AuthenticationProviderTest.ts" />
 /// <reference path="ui/CurrentTabTest.ts" />
-/// <reference path="ui/QueryBoxQueryParametersTest.ts" />
+/// <reference path="ui/QueryboxQueryParametersTest.ts" />
 
 Coveo.Logger.disable();
 
