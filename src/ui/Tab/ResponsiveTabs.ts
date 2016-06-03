@@ -3,7 +3,6 @@ import {WindowResizeListener} from '../../utils/WindowResizeListener';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
 import {Logger} from '../../misc/Logger';
-import '../../../sass/_ResponsiveTabs.scss';
 
 export class ResponsiveTabs {
   static coveoTabSection = '.coveo-tab-section';
