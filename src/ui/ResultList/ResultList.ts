@@ -339,7 +339,7 @@ export class ResultList extends Component {
     this.bind.oneRootElement(QueryEvents.querySuccess, () => {
       if (this.options.infiniteScrollContainer instanceof Window) {
         var win = <Window>this.options.infiniteScrollContainer;
-        win.scrollTo(0);
+        win.scrollTo(0, 0);
       } else {
         var el = <HTMLElement>this.options.infiniteScrollContainer;
         if (el.scrollIntoView) {
