@@ -198,6 +198,7 @@
     "src/ui/ResultTagging/ResultTagging.ts",
     "src/ui/PipelineContext/PipelineContext.ts",
     "src/ui/OmniboxResultList/OmniboxResultList.ts",
-    "src/ui/ResultsPreferences/ResultsPreferences.ts"
+    "src/ui/ResultsPreferences/ResultsPreferences.ts",
+    "src/ui/CurrentTab/CurrentTab.ts"
   ]
 }
