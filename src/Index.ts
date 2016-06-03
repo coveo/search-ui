@@ -9,6 +9,7 @@ export {L10N} from './misc/L10N';
 export {Logger} from './misc/Logger';
 export {Options} from './misc/Options';
 export {l} from './strings/Strings';
+export {_} from './misc/CoveoUnderscoreVersion.ts';
 
 // REST
 export {SearchEndpoint} from './rest/SearchEndpoint';
