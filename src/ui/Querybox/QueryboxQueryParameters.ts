@@ -5,7 +5,7 @@ import {IBuildingQueryEventArgs} from '../../events/QueryEvents';
 import {Assert} from '../../misc/Assert';
 import {QueryBuilder} from '../Base/QueryBuilder';
 
-export class QueryBoxQueryParameters {
+export class QueryboxQueryParameters {
   constructor(private options: IQueryboxOptions) {
   }
 

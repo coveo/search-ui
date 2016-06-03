@@ -9,7 +9,7 @@ import {StandaloneSearchInterfaceEvents} from '../../events/StandaloneSearchInte
 import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {$$} from '../../utils/Dom';
 import {Assert} from '../../misc/Assert';
-import {QueryboxQueryParameters} from './QueryBoxQueryParameters';
+import {QueryboxQueryParameters} from './QueryboxQueryParameters';
 
 export interface IQueryboxOptions {
   enableSearchAsYouType?: boolean;

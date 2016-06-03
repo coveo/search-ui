@@ -25,7 +25,7 @@ import {QueryExtensionAddon} from './QueryExtensionAddon';
 import {RevealQuerySuggestAddon} from './RevealQuerySuggestAddon';
 import {OldOmniboxAddon} from './OldOmniboxAddon';
 import _ = require('underscore');
-import {QueryboxQueryParameters} from '../Querybox/QueryBoxQueryParameters';
+import {QueryboxQueryParameters} from '../Querybox/QueryboxQueryParameters';
 
 export interface IPopulateOmniboxSuggestionsEventArgs {
   omnibox: Omnibox;
