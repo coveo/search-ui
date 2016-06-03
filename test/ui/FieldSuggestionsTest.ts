@@ -38,7 +38,7 @@ module Coveo {
       test.cmp.selectSuggestion(0);
       simulation.rows[0].deferred.then((elementResolved)=> {
         test.cmp.selectSuggestion(0);
-        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(AnalyticsActionCauseList.omniboxField, {})
+        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.omniboxField, {})
         done();
       })
     })

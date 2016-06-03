@@ -3,10 +3,10 @@ import {IComponentBindings} from '../Base/ComponentBindings';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {DeviceUtils} from '../../utils/DeviceUtils'
 import {QueryEvents, INewQueryEventArgs, IBuildingQueryEventArgs, IQuerySuccessEventArgs, INoResultsEventArgs} from '../../events/QueryEvents'
-import {ModelEvents, IAttributeChangedEventArg} from '../../models/Model'
+import {MODEL_EVENTS, IAttributeChangedEventArg} from '../../models/Model'
 import {QueryStateModel} from '../../models/QueryStateModel'
-import {QueryStateAttributes} from '../../models/QueryStateModel'
-import {AnalyticsActionCauseList, IAnalyticsPagerMeta, IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta'
+import {QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel'
+import {analyticsActionCauseList, IAnalyticsPagerMeta, IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta'
 import {Initialization} from '../Base/Initialization';
 import {Assert} from '../../misc/Assert'
 import {l} from '../../strings/Strings'
@@ -97,7 +97,7 @@ export class Pager extends Component {
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.queryError, () => this.handleQueryError());
     this.bind.onRootElement(QueryEvents.noResults, (args: INoResultsEventArgs) => this.handleNoResults(args));
-    this.bind.onQueryState(ModelEvents.CHANGE_ONE, QueryStateAttributes.FIRST, (data: IAttributeChangedEventArg) => this.handleQueryStateModelChanged(data));
+    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, (data: IAttributeChangedEventArg) => this.handleQueryStateModelChanged(data));
 
     this.list = document.createElement('ul');
     $$(this.list).addClass('coveo-pager-list');
@@ -110,7 +110,7 @@ export class Pager extends Component {
    * @param pageNumber
    * @param analyticCause
    */
-  public setPage(pageNumber: number, analyticCause: IAnalyticsActionCause = AnalyticsActionCauseList.pagerNumber) {
+  public setPage(pageNumber: number, analyticCause: IAnalyticsActionCause = analyticsActionCauseList.pagerNumber) {
     Assert.exists(pageNumber);
     this.currentPage = Math.max(Math.min(pageNumber, 1000), 1);
     this.updateQueryStateModel(this.getFirstResultNumber(this.currentPage));
@@ -127,7 +127,7 @@ export class Pager extends Component {
    * Log the required analytics event (pagerPrevious)
    */
   public previousPage() {
-    this.setPage(this.currentPage - 1, AnalyticsActionCauseList.pagerPrevious);
+    this.setPage(this.currentPage - 1, analyticsActionCauseList.pagerPrevious);
   }
 
   /**
@@ -135,7 +135,7 @@ export class Pager extends Component {
    * Log the required analytics event (pagerNext)
    */
   public nextPage() {
-    this.setPage(this.currentPage + 1, AnalyticsActionCauseList.pagerNext);
+    this.setPage(this.currentPage + 1, analyticsActionCauseList.pagerNext);
   }
 
   private handleNewQuery(data: INewQueryEventArgs) {

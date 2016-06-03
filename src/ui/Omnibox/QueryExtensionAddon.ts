@@ -15,7 +15,7 @@ interface IQueryExtensionAddonHash {
 }
 
 export class QueryExtensionAddon {
-  static Index = 62;
+  static INDEX = 62;
 
   cache: { [hash: string]: Promise<string[]> } = {};
 
@@ -95,7 +95,7 @@ export class QueryExtensionAddon {
         return {
           html: Coveo.MagicBox.Utils.highlightText(value, hash.current, true),
           text: hash.before + value + hash.after,
-          index: QueryExtensionAddon.Index - i / values.length
+          index: QueryExtensionAddon.INDEX - i / values.length
         }
       });
       return suggestions;

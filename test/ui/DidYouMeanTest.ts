@@ -52,7 +52,7 @@ module Coveo {
         arg.beforeExecuteQuery();
       }
       test.cmp.doQueryWithCorrectedTerm();
-      expect(analyticsSpy).toHaveBeenCalledWith(AnalyticsActionCauseList.didyoumeanClick, {});
+      expect(analyticsSpy).toHaveBeenCalledWith(analyticsActionCauseList.didyoumeanClick, {});
     })
 
     describe('exposes options', function () {
@@ -86,7 +86,7 @@ module Coveo {
             queryCorrections: [fakeQueryCorrection]
           });
 
-          expect(analyticsSpy).toHaveBeenCalledWith(AnalyticsActionCauseList.didyoumeanAutomatic, {});
+          expect(analyticsSpy).toHaveBeenCalledWith(analyticsActionCauseList.didyoumeanAutomatic, {});
           expect(analyticsSpy.calls.count()).toBe(1);
         })
 

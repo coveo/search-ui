@@ -4,8 +4,8 @@ import {IComponentBindings} from '../Base/ComponentBindings';
 import {l} from '../../strings/Strings';
 import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
 import {BreadcrumbEvents, IPopulateBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
-import {AnalyticsActionCauseList, IAnalyticsContextRemoveMeta} from '../Analytics/AnalyticsActionListMeta';
-import {QueryStateAttributes, QueryStateModel} from '../../models/QueryStateModel';
+import {analyticsActionCauseList, IAnalyticsContextRemoveMeta} from '../Analytics/AnalyticsActionListMeta';
+import {QUERY_STATE_ATTRIBUTES, QueryStateModel} from '../../models/QueryStateModel';
 import {$$} from '../../utils/Dom';
 import {Utils} from '../../utils/Utils';
 import {Initialization} from '../Base/Initialization';
@@ -62,18 +62,18 @@ export class HiddenQuery extends Component {
   public clear() {
     this.setStateEmpty();
     let hiddenDescriptionRemoved = this.getDescription();
-    this.usageAnalytics.logSearchEvent<IAnalyticsContextRemoveMeta>(AnalyticsActionCauseList.contextRemove, { contextName: hiddenDescriptionRemoved });
+    this.usageAnalytics.logSearchEvent<IAnalyticsContextRemoveMeta>(analyticsActionCauseList.contextRemove, { contextName: hiddenDescriptionRemoved });
     this.queryController.executeQuery();
   }
 
   private setStateEmpty() {
-    this.queryStateModel.set(QueryStateAttributes.HD, '');
-    this.queryStateModel.set(QueryStateAttributes.HQ, '');
+    this.queryStateModel.set(QUERY_STATE_ATTRIBUTES.HD, '');
+    this.queryStateModel.set(QUERY_STATE_ATTRIBUTES.HQ, '');
   }
 
   private handleBuildingQuery(data: IBuildingQueryEventArgs) {
     Assert.exists(data);
-    let hiddenQuery = this.queryStateModel.get(QueryStateAttributes.HQ);
+    let hiddenQuery = this.queryStateModel.get(QUERY_STATE_ATTRIBUTES.HQ);
     if (Utils.isNonEmptyString(hiddenQuery)) {
       data.queryBuilder.advancedExpression.add(hiddenQuery);
     }
@@ -81,7 +81,7 @@ export class HiddenQuery extends Component {
 
   private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
     let description = this.getDescription();
-    if (!_.isEmpty(description) && !_.isEmpty(this.queryStateModel.get(QueryStateAttributes.HQ))) {
+    if (!_.isEmpty(description) && !_.isEmpty(this.queryStateModel.get(QUERY_STATE_ATTRIBUTES.HQ))) {
       let elem = document.createElement('div');
       $$(elem).addClass('coveo-hidden-query-breadcrumb');
 

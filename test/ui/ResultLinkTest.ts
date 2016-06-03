@@ -51,13 +51,13 @@ module Coveo {
         
         $$(test.cmp.element).trigger('click');
         
-        expect(test.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledWith(AnalyticsActionCauseList.documentOpen, jasmine.objectContaining({documentURL: href}), fakeResult, test.cmp.root);
+        expect(test.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledWith(analyticsActionCauseList.documentOpen, jasmine.objectContaining({documentURL: href}), fakeResult, test.cmp.root);
       })
       
       it('should use the clickUri if the href is empty', ()=>{
         $$(test.cmp.element).trigger('click');
         
-        expect(test.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledWith(AnalyticsActionCauseList.documentOpen, jasmine.objectContaining({documentURL: fakeResult.clickUri}), fakeResult, test.cmp.root);
+        expect(test.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledWith(analyticsActionCauseList.documentOpen, jasmine.objectContaining({documentURL: fakeResult.clickUri}), fakeResult, test.cmp.root);
       })
     })
     

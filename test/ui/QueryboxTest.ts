@@ -22,7 +22,7 @@ module Coveo {
 
     it('will log the proper analytics event on submit', function() {
       test.cmp.submit();
-      expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(AnalyticsActionCauseList.searchboxSubmit, {});
+      expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchboxSubmit, {});
     });
 
     it('will not trigger a query on submit if the content has not changed', function () {
@@ -147,7 +147,7 @@ module Coveo {
         expect(test.cmp.magicBox.onchange).toBeDefined();
         test.cmp.magicBox.onchange();
         setTimeout(()=> {
-          expect(test.env.usageAnalytics.logSearchAsYouType).toHaveBeenCalledWith(AnalyticsActionCauseList.searchboxAsYouType, {});
+          expect(test.env.usageAnalytics.logSearchAsYouType).toHaveBeenCalledWith(analyticsActionCauseList.searchboxAsYouType, {});
 
           done();
         }, test.cmp.options.searchAsYouTypeDelay)

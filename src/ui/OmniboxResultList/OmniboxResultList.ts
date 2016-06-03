@@ -8,7 +8,7 @@ import {ComponentOptions} from '../Base/ComponentOptions';
 import {SuggestionForOmnibox} from '../Misc/SuggestionForOmnibox';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {AnalyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
+import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
 import {Assert} from '../../misc/Assert';
 import {Utils} from '../../utils/Utils';
 import {Initialization} from '../Base/Initialization';
@@ -82,7 +82,7 @@ export class OmniboxResultList extends ResultList {
   private handlePopulateOmnibox(args: IPopulateOmniboxEventArgs) {
     let promise = new Promise((resolve, reject) => {
       this.queryController.executeQuery({
-        beforeExecuteQuery: () => this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxSubmit, {}),
+        beforeExecuteQuery: () => this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {}),
         searchAsYouType: true
       });
       this.lastOmniboxRequest = { omniboxObject: args, resolve: resolve };
@@ -100,7 +100,7 @@ export class OmniboxResultList extends ResultList {
   }
 
   private onRowSelection(result: IQueryResult, resultElement: HTMLElement, omniboxObject: IPopulateOmniboxEventArgs) {
-    this.usageAnalytics.logClickEvent(AnalyticsActionCauseList.documentOpen, { author: result.raw.author }, result, this.root);
+    this.usageAnalytics.logClickEvent(analyticsActionCauseList.documentOpen, { author: result.raw.author }, result, this.root);
     window.location.href = result.clickUri;
   }
 }

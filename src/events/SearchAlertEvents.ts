@@ -12,5 +12,5 @@ export interface ISearchAlertsFailEventArgs {
 export class SearchAlertEvents {
   public static searchAlertCreated = 'searchAlertCreated';
   public static searchAlertDeleted = 'searchAlertDeleted';
-  public static SearchAlertsFail = 'SearchAlertsFail';
+  public static searchAlertsFail = 'SearchAlertsFail';
 }
