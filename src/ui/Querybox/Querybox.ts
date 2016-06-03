@@ -9,6 +9,7 @@ import {StandaloneSearchInterfaceEvents} from '../../events/StandaloneSearchInte
 import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {$$} from '../../utils/Dom';
 import {Assert} from '../../misc/Assert';
+import {QueryBoxQueryParameters} from './QueryBoxQueryParameters';
 
 export interface IQueryboxOptions {
   enableSearchAsYouType?: boolean;
@@ -23,7 +24,6 @@ export interface IQueryboxOptions {
   autoFocus?: boolean;
   placeholder?: string;
 }
-
 
 /**
  * A component that allows a user to enter a query inside an input.<br/>
@@ -204,36 +204,8 @@ export class Querybox extends Component {
     Assert.exists(args.queryBuilder);
 
     this.updateQueryState();
-
     this.lastQuery = this.magicBox.getText();
-
-    if (this.options.enableWildcards) {
-      args.queryBuilder.enableWildcards = true;
-    }
-
-    if (this.options.enableQuestionMarks) {
-      args.queryBuilder.enableQuestionMarks = true;
-    }
-
-    if (this.options.enableLowercaseOperators) {
-      args.queryBuilder.enableLowercaseOperators = true;
-    }
-
-    if (!_.isEmpty(this.lastQuery)) {
-      args.queryBuilder.disableQuerySyntax = !this.options.enableQuerySyntax;
-      args.queryBuilder.expression.add(this.lastQuery);
-      if (this.options.enablePartialMatch) {
-        args.queryBuilder.enablePartialMatch = this.options.enablePartialMatch;
-        if (this.options.partialMatchKeywords) {
-          args.queryBuilder.partialMatchKeywords = this.options.partialMatchKeywords;
-        }
-        if (this.options.partialMatchThreshold) {
-          args.queryBuilder.partialMatchThreshold = this.options.partialMatchThreshold;
-        }
-      }
-
-      this.logger.trace('Adding query to QueryBuilder', this.lastQuery);
-    }
+    new QueryBoxQueryParameters(this.options).addParameters(args.queryBuilder, this.lastQuery);
   }
 
   private triggerNewQuery(searchAsYouType: boolean): void {

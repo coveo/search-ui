@@ -25,6 +25,7 @@ import {QueryExtensionAddon} from './QueryExtensionAddon';
 import {RevealQuerySuggestAddon} from './RevealQuerySuggestAddon';
 import {OldOmniboxAddon} from './OldOmniboxAddon';
 import _ = require('underscore');
+import {QueryBoxQueryParameters} from '../Querybox/QueryBoxQueryParameters';
 
 export interface IPopulateOmniboxSuggestionsEventArgs {
   omnibox: Omnibox;
@@ -128,14 +129,14 @@ export class Omnibox extends Component {
   private lastQuery: string;
 
   /**
-   * Create a new omnibox with, enable required addons, and bind events on various query events
+   * Create a new omnibox with, enable required addons, and bind events on letious query events
    */
   constructor(public element: HTMLElement, public options?: IOmniboxOptions, bindings?: IComponentBindings) {
     super(element, Omnibox.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, Omnibox, options);
 
-    var grammar: { start: string; expressions: { [id: string]: Coveo.MagicBox.ExpressionDef } };
+    let grammar: { start: string; expressions: { [id: string]: Coveo.MagicBox.ExpressionDef } };
 
     if (this.options.enableQuerySyntax) {
       grammar = Coveo.MagicBox.Grammars.Expressions(Coveo.MagicBox.Grammars.Complete);
@@ -241,7 +242,7 @@ export class Omnibox extends Component {
 
   private setupMagicBox() {
     this.magicBox.onsuggestions = (suggestions: IOmniboxSuggestion[]) => {
-      var diff = suggestions.length != this.lastSuggestions.length ||
+      let diff = suggestions.length != this.lastSuggestions.length ||
         _.filter(suggestions, (suggestion: IOmniboxSuggestion, i: number) => {
           return suggestion.text != this.lastSuggestions[i].text;
         }).length > 0;
@@ -267,8 +268,8 @@ export class Omnibox extends Component {
     };
 
     this.magicBox.onselect = (suggestion: IOmniboxSuggestion) => {
-      var index = _.indexOf(this.lastSuggestions, suggestion);
-      var suggestions = _.map(this.lastSuggestions, (suggestion) => suggestion.text);
+      let index = _.indexOf(this.lastSuggestions, suggestion);
+      let suggestions = _.map(this.lastSuggestions, (suggestion) => suggestion.text);
       this.magicBox.clearSuggestion();
       this.updateQueryState();
       this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.omniboxAnalytics, {
@@ -314,16 +315,16 @@ export class Omnibox extends Component {
     });
 
     // Reduce right to get the last X words that adds to less then rejectLength
-    var reducedToRejectLengthOrLess = [];
+    let reducedToRejectLengthOrLess = [];
     _.reduceRight(toClean, (memo: number, partial: string) => {
-      var totalSoFar = memo + partial.length;
+      let totalSoFar = memo + partial.length;
       if (totalSoFar <= rejectLength) {
         reducedToRejectLengthOrLess.push(partial);
       }
       return totalSoFar;
     }, 0);
     toClean = reducedToRejectLengthOrLess.reverse();
-    var ret = toClean.join(';');
+    let ret = toClean.join(';');
 
     // analytics service can store max 256 char in a custom event
     // if we're over that, call cleanup again with an arbitrary 10 less char accepted
@@ -335,7 +336,7 @@ export class Omnibox extends Component {
   }
 
   private handleSuggestions() {
-    var suggestionsEventArgs: IPopulateOmniboxSuggestionsEventArgs = {
+    let suggestionsEventArgs: IPopulateOmniboxSuggestionsEventArgs = {
       suggestions: [],
       omnibox: this
     };
@@ -353,18 +354,19 @@ export class Omnibox extends Component {
     Assert.exists(data.queryBuilder);
     this.updateQueryState();
     this.lastQuery = this.getQuery(data.searchAsYouType);
-    var result: Coveo.MagicBox.Result = this.lastQuery == this.magicBox.getDisplayedResult().input ? this.magicBox.getDisplayedResult().clone() : this.magicBox.grammar.parse(this.lastQuery).clean();
-    var preprocessResultForQueryArgs: IOmniboxPreprocessResultForQueryEventArgs = {
+
+    let result: Coveo.MagicBox.Result = this.lastQuery == this.magicBox.getDisplayedResult().input ? this.magicBox.getDisplayedResult().clone() : this.magicBox.grammar.parse(this.lastQuery).clean();
+    let preprocessResultForQueryArgs: IOmniboxPreprocessResultForQueryEventArgs = {
       result: result
     };
 
     if (this.options.enableQuerySyntax) {
-      var notQuotedValues = preprocessResultForQueryArgs.result.findAll('FieldValueNotQuoted');
+      let notQuotedValues = preprocessResultForQueryArgs.result.findAll('FieldValueNotQuoted');
       _.each(notQuotedValues, (value: Coveo.MagicBox.Result) => value.value = '"' + value.value.replace(/"|\u00A0/g, ' ') + '"');
       if (this.options.fieldAlias) {
-        var fieldNames = preprocessResultForQueryArgs.result.findAll((result: Coveo.MagicBox.Result) => result.expression.id == 'FieldName' && result.isSuccess());
+        let fieldNames = preprocessResultForQueryArgs.result.findAll((result: Coveo.MagicBox.Result) => result.expression.id == 'FieldName' && result.isSuccess());
         _.each(fieldNames, (result: Coveo.MagicBox.Result) => {
-          var alias = _.find(_.keys(this.options.fieldAlias), (alias: string) => alias.toLowerCase() == result.value.toLowerCase());
+          let alias = _.find(_.keys(this.options.fieldAlias), (alias: string) => alias.toLowerCase() == result.value.toLowerCase());
           if (alias != null) {
             result.value = this.options.fieldAlias[alias];
           }
@@ -372,31 +374,16 @@ export class Omnibox extends Component {
       }
     }
 
-    if (this.options.enableWildcards) {
-      data.queryBuilder.enableWildcards = true;
-    }
-    if (this.options.enableQuestionMarks) {
-      data.queryBuilder.enableQuestionMarks = true;
-    }
     this.bind.trigger(this.element, OmniboxEvents.omniboxPreprocessResultForQuery, preprocessResultForQueryArgs)
+    let query = preprocessResultForQueryArgs.result.toString();
 
-    var query = preprocessResultForQueryArgs.result.toString();
-
-    if (this.options.enableLowercaseOperators) {
-      data.queryBuilder.enableLowercaseOperators = true;
-    }
-
-    if (!_.isEmpty(query)) {
-      data.queryBuilder.disableQuerySyntax = !this.options.enableQuerySyntax;
-      data.queryBuilder.expression.add(query);
-      this.logger.trace('Adding query to QueryBuilder', query);
-    }
+    new QueryBoxQueryParameters(this.options).addParameters(data.queryBuilder, query);
   }
 
 
   private triggerNewQuery(searchAsYouType: boolean) {
     clearTimeout(this.searchAsYouTypeTimeout);
-    var text = this.getQuery(searchAsYouType);
+    let text = this.getQuery(searchAsYouType);
     if (this.lastQuery != text && text != null) {
       this.lastQuery = text;
       this.queryController.executeQuery({
@@ -406,11 +393,11 @@ export class Omnibox extends Component {
   }
 
   private getQuery(searchAsYouType: boolean) {
-    var query: string
+    let query: string
     if (searchAsYouType) {
       query = this.magicBox.getWordCompletion();
       if (query == null && this.lastSuggestions != null && this.lastSuggestions.length > 0) {
-        var textSuggestion = _.find(this.lastSuggestions, (suggestion: IOmniboxSuggestion) => suggestion.text != null);
+        let textSuggestion = _.find(this.lastSuggestions, (suggestion: IOmniboxSuggestion) => suggestion.text != null);
         if (textSuggestion != null) {
           query = textSuggestion.text;
         }
@@ -425,7 +412,7 @@ export class Omnibox extends Component {
 
   private handleQueryStateChanged(args: IAttributeChangedEventArg) {
     Assert.exists(args);
-    var q = <string>args.value;
+    let q = <string>args.value;
     if (q != this.magicBox.getText()) {
       this.magicBox.setText(q);
     }
@@ -443,8 +430,8 @@ export class Omnibox extends Component {
       this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxAsYouType, {})
       this.triggerNewQuery(true);
     } else if (this.magicBox.getWordCompletion()) {
-      var suggestions = _.map(this.lastSuggestions, (suggestion) => suggestion.text);
-      var index = _.indexOf(suggestions, this.magicBox.getWordCompletion());
+      let suggestions = _.map(this.lastSuggestions, (suggestion) => suggestion.text);
+      let index = _.indexOf(suggestions, this.magicBox.getWordCompletion());
       this.usageAnalytics.logSearchAsYouType<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.searchboxAsYouType, {
         partialQueries: this.cleanCustomData(this.partialQueries),
         suggestionRanking: index,
