@@ -72,7 +72,7 @@ export {ComponentStateModel} from './models/ComponentStateModel';
 
 // UI BASE
 export * from './ui/Base/RegisteredNamedMethods';
-export {ComponentOptions} from './ui/Base/ComponentOptions';
+export {ComponentOptions, ComponentOptionsType} from './ui/Base/ComponentOptions';
 export {Component} from './ui/Base/Component';
 export {BaseComponent} from './ui/Base/BaseComponent';
 export {RootComponent} from './ui/Base/RootComponent';
