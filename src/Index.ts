@@ -162,4 +162,4 @@ export {ResultsPreferences} from './ui/ResultsPreferences/ResultsPreferences';
 export {PipelineContext, context} from './ui/PipelineContext/PipelineContext';
 export {OmniboxResultList} from './ui/OmniboxResultList/OmniboxResultList';
 export {CurrentTab} from './ui/CurrentTab/CurrentTab';
-export {QueryboxQueryParameters} from './ui/Querybox/QueryBoxQueryParameters';
+export {QueryboxQueryParameters} from './ui/Querybox/QueryboxQueryParameters';
