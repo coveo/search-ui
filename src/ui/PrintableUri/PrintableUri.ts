@@ -5,7 +5,7 @@ import {IQueryResult} from '../../rest/QueryResult'
 import {HighlightUtils, StringAndHoles} from '../../utils/HighlightUtils'
 import {Initialization} from '../Base/Initialization'
 import {DeviceUtils} from '../../utils/DeviceUtils'
-import {AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
+import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
 import {Utils} from '../../utils/Utils'
 import {$$} from '../../utils/Dom'
 
@@ -148,7 +148,7 @@ export class PrintableUri extends Component {
     $$(link).on(['mousedown', 'touchend'], (e: Event) => {
       let url = $$(<HTMLElement>e.srcElement).getAttribute('href');
       let title = $$(<HTMLElement>e.srcElement).text();
-      this.usageAnalytics.logClickEvent(AnalyticsActionCauseList.documentOpen, {
+      this.usageAnalytics.logClickEvent(analyticsActionCauseList.documentOpen, {
         documentURL: url,
         documentTitle: title,
         author: this.result.raw.author

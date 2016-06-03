@@ -10,9 +10,9 @@ import {IComponentBindings} from '../Base/ComponentBindings';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
 import {StandaloneSearchInterfaceEvents} from '../../events/StandaloneSearchInterfaceEvents';
-import {ModelEvents, IAttributeChangedEventArg} from '../../models/Model';
-import {QueryStateAttributes} from '../../models/QueryStateModel';
-import {IAnalyticsNoMeta, AnalyticsActionCauseList, IAnalyticsOmniboxSuggestionMeta} from '../Analytics/AnalyticsActionListMeta';
+import {MODEL_EVENTS, IAttributeChangedEventArg} from '../../models/Model';
+import {QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
+import {IAnalyticsNoMeta, analyticsActionCauseList, IAnalyticsOmniboxSuggestionMeta} from '../Analytics/AnalyticsActionListMeta';
 import {OmniboxEvents, IOmniboxPreprocessResultForQueryEventArgs} from '../../events/OmniboxEvents';
 import {$$} from '../../utils/Dom';
 import {Assert} from '../../misc/Assert';
@@ -176,7 +176,7 @@ export class Omnibox extends Component {
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(StandaloneSearchInterfaceEvents.beforeRedirect, () => this.handleBeforeRedirect());
     this.bind.onRootElement(QueryEvents.querySuccess, () => this.handleQuerySuccess());
-    this.bind.onQueryState(ModelEvents.CHANGE_ONE, QueryStateAttributes.Q, (args: IAttributeChangedEventArg) => this.handleQueryStateChanged(args))
+    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.Q, (args: IAttributeChangedEventArg) => this.handleQueryStateChanged(args))
 
     this.setupMagicBox();
   }
@@ -188,7 +188,7 @@ export class Omnibox extends Component {
   public submit() {
     this.magicBox.clearSuggestion();
     this.updateQueryState();
-    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxSubmit, {})
+    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {})
     this.triggerNewQuery(false);
   }
 
@@ -262,7 +262,7 @@ export class Omnibox extends Component {
     this.magicBox.onsubmit = () => {
       this.magicBox.clearSuggestion();
       this.updateQueryState();
-      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxSubmit, {})
+      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {})
       this.triggerNewQuery(false);
     };
 
@@ -271,7 +271,7 @@ export class Omnibox extends Component {
       var suggestions = _.map(this.lastSuggestions, (suggestion) => suggestion.text);
       this.magicBox.clearSuggestion();
       this.updateQueryState();
-      this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(AnalyticsActionCauseList.omniboxAnalytics, {
+      this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.omniboxAnalytics, {
         partialQueries: this.cleanCustomData(this.partialQueries),
         suggestionRanking: index,
         suggestions: this.cleanCustomData(suggestions),
@@ -290,7 +290,7 @@ export class Omnibox extends Component {
 
     this.magicBox.onclear = () => {
       this.updateQueryState();
-      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxClear, {})
+      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxClear, {})
       this.triggerNewQuery(false);
     };
 
@@ -440,12 +440,12 @@ export class Omnibox extends Component {
   private searchAsYouType() {
     clearTimeout(this.searchAsYouTypeTimeout);
     if (this.getText().length == 0) {
-      this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxAsYouType, {})
+      this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxAsYouType, {})
       this.triggerNewQuery(true);
     } else if (this.magicBox.getWordCompletion()) {
       var suggestions = _.map(this.lastSuggestions, (suggestion) => suggestion.text);
       var index = _.indexOf(suggestions, this.magicBox.getWordCompletion());
-      this.usageAnalytics.logSearchAsYouType<IAnalyticsOmniboxSuggestionMeta>(AnalyticsActionCauseList.searchboxAsYouType, {
+      this.usageAnalytics.logSearchAsYouType<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.searchboxAsYouType, {
         partialQueries: this.cleanCustomData(this.partialQueries),
         suggestionRanking: index,
         suggestions: this.cleanCustomData(suggestions),
@@ -453,11 +453,11 @@ export class Omnibox extends Component {
       })
       this.triggerNewQuery(true);
     } else if (this.getQuery(true) != this.getText()) {
-      this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxAsYouType, {})
+      this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxAsYouType, {})
       this.triggerNewQuery(true);
     } else {
       this.searchAsYouTypeTimeout = setTimeout(() => {
-        this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxAsYouType, {})
+        this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxAsYouType, {})
         this.triggerNewQuery(true);
       }, this.options.searchAsYouTypeDelay);
     }

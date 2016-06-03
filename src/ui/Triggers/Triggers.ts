@@ -5,7 +5,7 @@ import {Assert} from '../../misc/Assert';
 import {QueryEvents, IQuerySuccessEventArgs} from '../../events/QueryEvents';
 import {ITriggerNotify, ITriggerExecute, ITriggerRedirect, ITriggerQuery, ITrigger} from '../../rest/Trigger';
 import {$$} from '../../utils/Dom';
-import {IAnalyticsTriggerNotify, AnalyticsActionCauseList, IAnalyticsTriggerRedirect, IAnalyticsTriggerQuery, IAnalyticsTriggerExecute} from '../Analytics/AnalyticsActionListMeta';
+import {IAnalyticsTriggerNotify, analyticsActionCauseList, IAnalyticsTriggerRedirect, IAnalyticsTriggerQuery, IAnalyticsTriggerExecute} from '../Analytics/AnalyticsActionListMeta';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import {Initialization} from '../Base/Initialization';
 
@@ -63,7 +63,7 @@ export class Triggers extends Component {
 
     this.executeTriggers(data.results.triggers, 'notify', (trigger: ITriggerNotify) => {
 
-      this.usageAnalytics.logCustomEvent<IAnalyticsTriggerNotify>(AnalyticsActionCauseList.triggerNotify, {
+      this.usageAnalytics.logCustomEvent<IAnalyticsTriggerNotify>(analyticsActionCauseList.triggerNotify, {
         notification: trigger.content
       }, this.element);
 
@@ -75,7 +75,7 @@ export class Triggers extends Component {
 
     this.executeTriggers(data.results.triggers, 'redirect', (trigger: ITriggerRedirect) => {
 
-      this.usageAnalytics.logCustomEvent<IAnalyticsTriggerRedirect>(AnalyticsActionCauseList.triggerRedirect, {
+      this.usageAnalytics.logCustomEvent<IAnalyticsTriggerRedirect>(analyticsActionCauseList.triggerRedirect, {
         redirectedTo: trigger.content
       }, this.element);
 
@@ -86,7 +86,7 @@ export class Triggers extends Component {
       this.queryStateModel.set(QueryStateModel.attributesEnum.q, trigger.content);
       this.queryController.executeQuery({
         beforeExecuteQuery: () => {
-          this.usageAnalytics.logCustomEvent<IAnalyticsTriggerQuery>(AnalyticsActionCauseList.triggerQuery, {
+          this.usageAnalytics.logCustomEvent<IAnalyticsTriggerQuery>(analyticsActionCauseList.triggerQuery, {
             query: trigger.content
           }, this.element);
         }
@@ -102,7 +102,7 @@ export class Triggers extends Component {
           }));
           params['element'] = this.element;
 
-          this.usageAnalytics.logCustomEvent<IAnalyticsTriggerExecute>(AnalyticsActionCauseList.triggerExecute, {
+          this.usageAnalytics.logCustomEvent<IAnalyticsTriggerExecute>(analyticsActionCauseList.triggerExecute, {
             executed: trigger.content.name
           }, this.element)
 
@@ -119,11 +119,11 @@ export class Triggers extends Component {
 
   }
 
-  private executeTriggers(Triggers: ITrigger<any>[], type: string, func: (trigger: ITrigger<any>) => any, single: boolean = false) {
-    let TriggersOfType = _.filter(Triggers, (trigger: ITrigger<any>) => {
+  private executeTriggers(trigger: ITrigger<any>[], type: string, func: (trigger: ITrigger<any>) => any, single: boolean = false) {
+    let triggersOfType = _.filter(trigger, (trigger: ITrigger<any>) => {
       return trigger.type == type
     });
-    let oneOrAllTriggers = _.take(TriggersOfType, single ? 1 : Number.MAX_VALUE);
+    let oneOrAllTriggers = _.take(triggersOfType, single ? 1 : Number.MAX_VALUE);
 
     _.each(oneOrAllTriggers, func);
   }

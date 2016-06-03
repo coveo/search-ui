@@ -8,7 +8,7 @@ import {IOmniboxDataRow} from '../Omnibox/OmniboxInterface';
 import {QueryEvents} from '../../events/QueryEvents';
 import {l} from '../../strings/Strings';
 import {QueryStateModel} from '../../models/QueryStateModel';
-import {AnalyticsActionCauseList, IAnalyticsTopSuggestionMeta} from '../Analytics/AnalyticsActionListMeta';
+import {analyticsActionCauseList, IAnalyticsTopSuggestionMeta} from '../Analytics/AnalyticsActionListMeta';
 import {Initialization} from '../Base/Initialization';
 import {$$} from '../../utils/Dom';
 
@@ -149,7 +149,7 @@ export class AnalyticsSuggestions extends Component {
     args.clear();
     args.closeOmnibox();
     this.queryStateModel.set(QueryStateModel.attributesEnum.q, value);
-    this.usageAnalytics.logSearchEvent<IAnalyticsTopSuggestionMeta>(AnalyticsActionCauseList.omniboxAnalytics, {
+    this.usageAnalytics.logSearchEvent<IAnalyticsTopSuggestionMeta>(analyticsActionCauseList.omniboxAnalytics, {
       partialQueries: this.cleanCustomData(this.partialQueries),
       suggestionRanking: _.indexOf(_.pluck(this.resultsToBuildWith, 'value'), value),
       suggestions: this.cleanCustomData(this.lastSuggestions),

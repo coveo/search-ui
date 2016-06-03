@@ -9,7 +9,7 @@ import _ = require('underscore');
 
 export class RevealQuerySuggestAddon {
 
-  static Index = 60;
+  static INDEX = 60;
 
   static suggestiontHtmlTemplate = _.template('<span<%= className? \' class="\'+className+\'"\':\'\' %>><%- text %></span>');
 
@@ -105,7 +105,7 @@ export class RevealQuerySuggestAddon {
           return {
             html: RevealQuerySuggestAddon.suggestiontHtml(completion),
             text: completion.expression,
-            index: RevealQuerySuggestAddon.Index - i / completions.length,
+            index: RevealQuerySuggestAddon.INDEX - i / completions.length,
             partial: RevealQuerySuggestAddon.isPartialMatch(completion)
           }
         });

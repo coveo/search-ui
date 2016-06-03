@@ -8,11 +8,11 @@ import {IQueryResult} from '../../rest/QueryResult';
 import {IQueryResults} from '../../rest/QueryResults';
 import {Assert} from '../../misc/Assert';
 import {QueryEvents, INewQueryEventArgs, IBuildingQueryEventArgs, IQuerySuccessEventArgs, IDuringQueryEventArgs, IQueryErrorEventArgs} from '../../events/QueryEvents';
-import {ModelEvents} from '../../models/Model';
-import {QueryStateAttributes} from '../../models/QueryStateModel';
+import {MODEL_EVENTS} from '../../models/Model';
+import {QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
 import {QueryUtils} from '../../utils/QueryUtils';
 import {$$, Win, Doc} from '../../utils/Dom';
-import {AnalyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
+import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
 import {Defer} from '../../misc/Defer';
 import {DeviceUtils} from '../../utils/DeviceUtils';
@@ -151,7 +151,7 @@ export class ResultList extends Component {
     if (this.options.enableInfiniteScroll) {
       this.bind.on(<HTMLElement>this.options.infiniteScrollContainer, 'scroll', (e: Event) => this.handleScrollOfResultList());
     }
-    this.bind.onQueryState(ModelEvents.CHANGE_ONE, QueryStateAttributes.FIRST, () => this.handlePageChanged());
+    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, () => this.handlePageChanged());
   }
 
   /**
@@ -228,7 +228,7 @@ export class ResultList extends Component {
     this.fetchingMoreResults = this.queryController.fetchMore(count);
     this.fetchingMoreResults.then((data: IQueryResults) => {
       Assert.exists(data);
-      this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.pagerScrolling, {}, this.element);
+      this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.pagerScrolling, {}, this.element);
       var results = data.results;
       this.reachedTheEndOfResults = count > data.results.length;
       this.renderResults(this.buildResults(data), true);
