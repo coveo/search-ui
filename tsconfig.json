@@ -90,7 +90,7 @@
     "src/misc/L10N.ts",
     "src/misc/Logger.ts",
     "src/misc/Options.ts",
-    "src/misc/PromiseFinally.ts",
+    "src/misc/PromisesShim.ts",
     "src/misc/Version.ts",
     "src/utils/ColorUtils.ts",
     "src/utils/CookieUtils.ts",
