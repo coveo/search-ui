@@ -85,7 +85,6 @@
     "src/rest/UserIdentity.ts",
     "src/misc/Assert.ts",
     "src/misc/Cache.ts",
-    "src/misc/CoveoUnderscoreVersion.ts",
     "src/misc/Defer.ts",
     "src/misc/L10N.ts",
     "src/misc/Logger.ts",
