@@ -111,7 +111,7 @@ export class ResponsiveTabs {
     if (tabSectionIsOverflowing && !this.coveoRoot.is('.coveo-small-search-interface')) {
       this.toggleSmallClass(this.tabSection);
       this.moveTabSectionDown();
-      
+
     } else if (this.shouldToggleToLargeFormat()) {
       this.toggleSmallClass(this.tabSection);
       this.moveTabSectionUp();
@@ -190,7 +190,7 @@ export class ResponsiveTabs {
       }
     });
   }
-  
+
   private static buildDropdownContent() {
     let dropdownContent = $$('div', { className: 'coveo-tab-list-container coveo-small-search-interface' });
     let contentList = $$('ol', { className: 'coveo-tab-list' });
