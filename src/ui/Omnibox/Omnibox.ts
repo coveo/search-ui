@@ -25,7 +25,7 @@ import {QueryExtensionAddon} from './QueryExtensionAddon';
 import {RevealQuerySuggestAddon} from './RevealQuerySuggestAddon';
 import {OldOmniboxAddon} from './OldOmniboxAddon';
 import _ = require('underscore');
-import {QueryBoxQueryParameters} from '../Querybox/QueryBoxQueryParameters';
+import {QueryboxQueryParameters} from '../Querybox/QueryBoxQueryParameters';
 
 export interface IPopulateOmniboxSuggestionsEventArgs {
   omnibox: Omnibox;
@@ -377,7 +377,7 @@ export class Omnibox extends Component {
     this.bind.trigger(this.element, OmniboxEvents.omniboxPreprocessResultForQuery, preprocessResultForQueryArgs)
     let query = preprocessResultForQueryArgs.result.toString();
 
-    new QueryBoxQueryParameters(this.options).addParameters(data.queryBuilder, query);
+    new QueryboxQueryParameters(this.options).addParameters(data.queryBuilder, query);
   }
 
 

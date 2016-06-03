@@ -9,7 +9,7 @@ import {StandaloneSearchInterfaceEvents} from '../../events/StandaloneSearchInte
 import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {$$} from '../../utils/Dom';
 import {Assert} from '../../misc/Assert';
-import {QueryBoxQueryParameters} from './QueryBoxQueryParameters';
+import {QueryboxQueryParameters} from './QueryBoxQueryParameters';
 
 export interface IQueryboxOptions {
   enableSearchAsYouType?: boolean;
@@ -205,7 +205,7 @@ export class Querybox extends Component {
 
     this.updateQueryState();
     this.lastQuery = this.magicBox.getText();
-    new QueryBoxQueryParameters(this.options).addParameters(args.queryBuilder, this.lastQuery);
+    new QueryboxQueryParameters(this.options).addParameters(args.queryBuilder, this.lastQuery);
   }
 
   private triggerNewQuery(searchAsYouType: boolean): void {
