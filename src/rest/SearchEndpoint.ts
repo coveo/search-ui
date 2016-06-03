@@ -263,7 +263,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    */
   @url('/')
   @queryStringArguments()
-  @requestDataInUrl()
+  @searchObjectInUrl()
   @accessTokenInUrl()
   public getExportToExcelLink(query: IQuery, numberOfResults: number, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): string {
     if (numberOfResults != null) {
@@ -314,7 +314,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    */
   @url('/datastream')
   @queryStringArguments()
-  @requestDataInUrl(true)
+  @searchObjectInUrl(true)
   @queryDocument()
   @accessTokenInUrl()
   public getViewAsDatastreamUri(documentUniqueID: string, dataStreamType: string, callOptions?: IViewAsHtmlOptions, callParams?: IEndpointCallParameters): string {
@@ -330,7 +330,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    */
   @url('/document')
   @queryStringArguments()
-  @requestDataInUrl(true)
+  @searchObjectInUrl(true)
   @queryDocument()
   @method('GET')
   @responseType('text')
@@ -349,7 +349,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    */
   @url('/text')
   @queryStringArguments()
-  @requestDataInUrl(true)
+  @searchObjectInUrl(true)
   @queryDocument()
   @method('GET')
   @responseType('text')
@@ -832,10 +832,24 @@ export class SearchEndpoint implements ISearchEndpoint {
 }
 
 
-// It's taken for granted that methods using decorators have :
-// The object to put in the requestData in the first parameter
-// IEndpointCallOptions as their second to last parameter
-// IEndpointCallParameters as their last parameter
+/**
+ * It's taken for granted that methods using decorators have :
+ * {@link IEndpointCallOptions} as their second to last parameter
+ * {@link IEndpointCallParameters} as their last parameter
+ * The default parameters for each member of the injected {@link IEndpointCallParameters} are the following:
+ * url: '',
+ * queryString: [],
+ * requestData: {},
+ * requestDataType: undefined,
+ * method: '',
+ * responseType: '',
+ * errorsAsSuccess: false
+ */
+
+/**
+ * Add the base url
+ * @param path The path to append to the url
+ */
 function url(path: string){
   return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
@@ -865,6 +879,10 @@ function url(path: string){
   }
 }
 
+/**
+ * Add the alert url
+ * @param path The path to append to the url
+ */
 function alertsUrl(path: string){
   return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
@@ -894,6 +912,9 @@ function alertsUrl(path: string){
   }
 }
 
+/**
+ * Add the base query string arguments
+ */
 function queryStringArguments(){
   return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
@@ -924,6 +945,11 @@ function queryStringArguments(){
   }
 }
 
+/**
+ * Add the document info to the query string arguments
+ * Note : This tag requires the method's first parameter to be the document's unique id as a string
+ * Note : This tag requires the callOptions to be {@Link IViewAsHtmlOptions}
+ */
 function queryDocument(){
   return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
@@ -954,6 +980,9 @@ function queryDocument(){
   }
 }
 
+/**
+ * Add the accessToken to the query string arguments
+ */
 function accessTokenInUrl(){
   return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
@@ -983,7 +1012,12 @@ function accessTokenInUrl(){
   }
 }
 
-function requestDataInUrl(fromOptions: boolean = false){
+/**
+ * Add the search object to the query string arguments
+ * @param fromOptions Take the search object from the callOptions instead of the first parameter of the query
+ * Note : This tag requires the method's first parameter to be the search object as an ISearch if fromOptions is set to false
+ */
+function searchObjectInUrl(fromOptions: boolean = false){
   return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
     let nbParams = target[key].prototype.constructor.length;
@@ -1019,6 +1053,11 @@ function requestDataInUrl(fromOptions: boolean = false){
   }
 }
 
+/**
+ * Add data into que body of the request
+ * @param fromOptions Take the search object from the callOptions instead of the first parameter of the query
+ * Note : This tag requires the method's first parameter to be the data to add if fromOptions is set to true
+ */
 function requestData(fromOptions: boolean = false){
   return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
@@ -1055,6 +1094,10 @@ function requestData(fromOptions: boolean = false){
   }
 }
 
+/**
+ * Set the request data type
+ * @param type The type to set
+ */
 function requestDataType(type: string){
   return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
@@ -1084,6 +1127,10 @@ function requestDataType(type: string){
   }
 }
 
+/**
+ * Set the request data type
+ * @param met The type to set
+ */
 function method(met: string){
   return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
@@ -1112,6 +1159,10 @@ function method(met: string){
   }
 }
 
+/**
+ * Set the response type
+ * @param resp The response type to set
+ */
 function responseType(resp: string){
   return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
@@ -1140,6 +1191,10 @@ function responseType(resp: string){
   }
 }
 
+/**
+ * Set the errorsAsSuccess parameter
+ * @param error The value to set
+ */
 function errorsAsSuccess(error: boolean){
   return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
