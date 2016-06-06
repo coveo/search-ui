@@ -1,4 +1,7 @@
 {
+  "Default": {
+    "priority": 1
+  },
   "MobileDropbox": {
     "priority": 1,
     "value": "raw.connectortype == 'DropboxCrawler' && Coveo.DeviceUtils.isSmallScreenWidth()"
