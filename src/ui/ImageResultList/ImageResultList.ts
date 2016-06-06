@@ -121,11 +121,11 @@ export class ImageResultList extends ResultList {
         }
       }
     }
-    images.each(function (i, e: HTMLImageElement) {
+    images.each(function(i, e: HTMLImageElement) {
       if ((this.src && this.complete) || /*for IE 10-*/ $(e).height() > 0) {
         onImageLoad(e);
       } else {
-        $(e).off('load').one('load', function () {
+        $(e).off('load').one('load', function() {
           onImageLoad(e);
         });
       }

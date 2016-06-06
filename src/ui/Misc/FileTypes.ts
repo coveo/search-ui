@@ -69,7 +69,7 @@ export class FileTypes {
       fileTypeCaptions = {};
       var strings = String['locales'][String['locale']];
       Assert.isNotUndefined(strings);
-      _.each(_.keys(strings), function (key) {
+      _.each(_.keys(strings), function(key) {
         if (key.indexOf('filetype_') == 0) {
           fileTypeCaptions[key.substr('filetype_'.length)] = key.toLocaleString();
         } else if (key.indexOf('objecttype_') == 0) {

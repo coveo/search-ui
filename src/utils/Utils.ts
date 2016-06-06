@@ -120,7 +120,7 @@ export class Utils {
   }
 
   static decodeHTMLEntities(rawString: string) {
-    return rawString.replace(/&#(\d+);/g, function (match, dec) {
+    return rawString.replace(/&#(\d+);/g, function(match, dec) {
       return String.fromCharCode(dec);
     });
   }
@@ -205,12 +205,12 @@ export class Utils {
     let result;
     let timeout: number = null;
     let previous = 0;
-    let later = function () {
+    let later = function() {
       previous = options.leading === false ? 0 : new Date().getTime();
       timeout = null;
       result = func.apply(context, args);
     };
-    return function () {
+    return function() {
       let now = new Date().getTime();
       if (!previous && options.leading === false) {
         previous = now;
@@ -280,7 +280,7 @@ export class Utils {
   static debounce(func: Function, wait: number) {
     let timeout: number;
     let stackTraceTimeout: number;
-    return function (...args: any[]) {
+    return function(...args: any[]) {
       if (timeout == null) {
         timeout = setTimeout(() => {
           timeout = null;

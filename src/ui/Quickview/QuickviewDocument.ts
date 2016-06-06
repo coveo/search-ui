@@ -580,7 +580,7 @@ export class QuickviewDocument extends Component {
     let leftStep = Math.round((scrollLeftValue - scroll.scrollLeft) / duration);
     let topStep = Math.round((scrollTopValue - scroll.scrollTop) / duration);
 
-    let interval = setInterval(function () {
+    let interval = setInterval(function() {
       if (duration != 0) {
         scroll.scrollLeft += leftStep;
         scroll.scrollTop += topStep;
