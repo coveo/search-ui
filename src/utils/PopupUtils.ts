@@ -68,8 +68,8 @@ export class PopupUtils {
   }
 
   private static finalAdjustement(popUpOffSet: IOffset, popUpPosition: IOffset, popUp: HTMLElement, desiredPosition: IPosition) {
-    popUp.style.position = 'absolute';
-    popUp.style.top = (popUpOffSet.top + desiredPosition.verticalOffset) - (popUpOffSet.top - popUpPosition.top) + 'px';
+    popUp.style.position = 'fixed';
+    popUp.style.top = desiredPosition.verticalOffset + popUpPosition.top + 'px';
     popUp.style.left = (popUpOffSet.left + desiredPosition.horizontalOffset) - (popUpOffSet.left - popUpPosition.left) + 'px';
   }
 
