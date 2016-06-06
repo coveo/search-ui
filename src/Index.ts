@@ -162,3 +162,4 @@ export {ResultsPreferences} from './ui/ResultsPreferences/ResultsPreferences';
 export {PipelineContext, context} from './ui/PipelineContext/PipelineContext';
 export {OmniboxResultList} from './ui/OmniboxResultList/OmniboxResultList';
 export {CurrentTab} from './ui/CurrentTab/CurrentTab';
+export {CoveoJQuery} from './ui/Base/CoveoJQuery';
