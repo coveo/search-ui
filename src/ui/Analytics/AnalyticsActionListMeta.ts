@@ -161,7 +161,7 @@ export interface IAnalyticsTriggerExecute {
   executed: string;
 }
 
-export var AnalyticsActionCauseList = {
+export var analyticsActionCauseList = {
   interfaceLoad: <IAnalyticsActionCause>{
     name: 'interfaceLoad',
     type: 'interface'

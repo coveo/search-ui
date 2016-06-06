@@ -12,7 +12,7 @@ import {KEYBOARD, KeyboardUtils} from '../../utils/KeyboardUtils';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import {ITaggingRequest} from '../../rest/TaggingRequest';
 import {$$} from '../../utils/Dom';
-import {AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
+import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {IQueryResult} from '../../rest/QueryResult';
 
 export interface IResultTaggingOptions {
@@ -229,7 +229,7 @@ export class ResultTagging extends Component {
           this.queryStateModel.set(facetAttributeName, _.union(facetModel, [value]))
         }
         this.queryController.deferExecuteQuery({
-          beforeExecuteQuery: () => this.usageAnalytics.logSearchEvent<IAnalyticsResultTaggingMeta>(AnalyticsActionCauseList.documentTag, {
+          beforeExecuteQuery: () => this.usageAnalytics.logSearchEvent<IAnalyticsResultTaggingMeta>(analyticsActionCauseList.documentTag, {
             facetId: this.options.field,
             facetValue: value
           })

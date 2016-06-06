@@ -10,7 +10,7 @@ import {IListFieldValuesRequest} from '../../rest/ListFieldValuesRequest';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import {Initialization} from '../Base/Initialization';
 import {IOmniboxDataRow} from '../Omnibox/OmniboxInterface';
-import {AnalyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
+import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
 import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom';
 
@@ -150,7 +150,7 @@ export class FieldSuggestions extends Component {
     args.clear();
     args.closeOmnibox();
     this.queryStateModel.set(QueryStateModel.attributesEnum.q, value);
-    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.omniboxField, {})
+    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.omniboxField, {})
     this.queryController.executeQuery();
   }
 

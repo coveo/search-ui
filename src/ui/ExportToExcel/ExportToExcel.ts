@@ -3,7 +3,7 @@ import {ComponentOptions} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {SettingsEvents} from '../../events/SettingsEvents';
 import {ISettingsPopulateMenuArgs} from '../Settings/Settings';
-import {IAnalyticsNoMeta, AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
+import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
 
@@ -64,7 +64,7 @@ export class ExportToExcel extends Component {
       this.logger.debug('Performing query following \'Export to Excel\' click');
 
       let endpoint = this.queryController.getEndpoint();
-      this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.exportToExcel, {}, this.element);
+      this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.exportToExcel, {}, this.element);
       this._window.location.replace(endpoint.getExportToExcelLink(query, this.options.numberOfResults));
     }
   }

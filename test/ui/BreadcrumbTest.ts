@@ -49,7 +49,7 @@ module Coveo {
 
     it('should log analytics event after clear', function () {
       test.cmp.clearBreadcrumbs();
-      expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(AnalyticsActionCauseList.breadcrumbResetAll, {});
+      expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.breadcrumbResetAll, {});
     })
 
     describe('when there is a query', function () {

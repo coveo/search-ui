@@ -122,7 +122,7 @@ module Coveo {
       it('for a \'redirect\' trigger', function () {
         results.triggers = [<ITriggerRedirect>{type: 'redirect', content: 'http://www.coveo.com'}];
         Simulate.query(test.env, {results: results});
-        expect(analyticsSpy).toHaveBeenCalledWith(AnalyticsActionCauseList.triggerRedirect, {
+        expect(analyticsSpy).toHaveBeenCalledWith(analyticsActionCauseList.triggerRedirect, {
           redirectedTo: 'http://www.coveo.com'
         }, test.cmp.element)
       })
@@ -131,7 +131,7 @@ module Coveo {
         test.cmp._window['doSomething'] = () => null;
         results.triggers = [<ITriggerExecute>{type: 'execute', content: {name: 'doSomething'}}];
         Simulate.query(test.env, {results: results});
-        expect(analyticsSpy).toHaveBeenCalledWith(AnalyticsActionCauseList.triggerExecute, {
+        expect(analyticsSpy).toHaveBeenCalledWith(analyticsActionCauseList.triggerExecute, {
           executed: 'doSomething'
         }, test.cmp.element)
       })
@@ -139,7 +139,7 @@ module Coveo {
       it('for a \'notify\' trigger', function () {
         results.triggers = [<ITriggerNotify>{type: 'notify', content: 'hello there'}];
         Simulate.query(test.env, {results: results});
-        expect(analyticsSpy).toHaveBeenCalledWith(AnalyticsActionCauseList.triggerNotify, {
+        expect(analyticsSpy).toHaveBeenCalledWith(analyticsActionCauseList.triggerNotify, {
           notification: 'hello there'
         }, test.cmp.element)
       })
@@ -151,7 +151,7 @@ module Coveo {
           return new Promise<IQueryResults>(() => {});
         }
         Simulate.query(test.env, {results: results})
-        expect(analyticsSpy).toHaveBeenCalledWith(AnalyticsActionCauseList.triggerQuery, {
+        expect(analyticsSpy).toHaveBeenCalledWith(analyticsActionCauseList.triggerQuery, {
           query: '@title=foo'
         }, test.cmp.element)
       })

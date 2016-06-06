@@ -199,6 +199,7 @@
     "src/ui/OmniboxResultList/OmniboxResultList.ts",
     "src/ui/ResultsPreferences/ResultsPreferences.ts",
     "src/ui/CurrentTab/CurrentTab.ts",
-    "src/ui/Base/CoveoJQuery.ts"
+    "src/ui/Base/CoveoJQuery.ts",
+    "src/ui/Querybox/QueryboxQueryParameters.ts"
   ]
 }

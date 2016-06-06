@@ -4,7 +4,7 @@ import {Utils} from '../utils/Utils';
 import {BaseComponent} from '../ui/Base/BaseComponent';
 import _ = require('underscore');
 
-export const ModelEvents = {
+export const MODEL_EVENTS = {
   PREPROCESS: 'preprocess',
   CHANGE_ONE: 'change:',
   CHANGE: 'change',

@@ -7,7 +7,7 @@ import {Utils} from '../../utils/Utils';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {FacetSearchParameters} from './FacetSearchParameters';
-import {IAnalyticsFacetMeta, AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
+import {IAnalyticsFacetMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {IEndpointError} from '../../rest/EndpointError';
 import {Component} from '../Base/Component';
 import {DomUtils} from '../../utils/DomUtils';
@@ -124,7 +124,7 @@ export class FacetSearch {
 
     if (this.facetSearchPromise) {
       this.facetSearchPromise.then((fieldValues: IIndexFieldValue[]) => {
-        this.facet.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(AnalyticsActionCauseList.facetSearch, {
+        this.facet.usageAnalytics.logCustomEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetSearch, {
           facetId: this.facet.options.id,
           facetTitle: this.facet.options.title
         }, this.facet.root);
@@ -150,6 +150,7 @@ export class FacetSearch {
    * Trigger the event associated with the focus of the search input
    */
   public focus() {
+    this.input.focus();
     this.handleFacetSearchFocus();
   }
 
@@ -197,12 +198,12 @@ export class FacetSearch {
   }
 
   private buildSearchMobile() {
-    var button = document.createElement('div');
+    let button = document.createElement('div');
     $$(button).addClass('coveo-facet-search-button-mobile');
     $$(button).text(l('Search'));
     this.search = this.buildBaseSearch();
     $$(button).on('click', () => {
-      var toOpen = document.createElement('div');
+      let toOpen = document.createElement('div');
       toOpen.appendChild(this.search);
 
       Coveo.ModalBox.open(toOpen, {
@@ -222,7 +223,7 @@ export class FacetSearch {
 
   private handleFacetSearchKeyUp(event: KeyboardEvent) {
     Assert.exists(event);
-    var isEmpty = this.input.value == '';
+    let isEmpty = this.input.value == '';
     this.showOrHideClearElement(isEmpty);
 
     if (!this.isMobileDevice()) {
@@ -318,7 +319,7 @@ export class FacetSearch {
   private startNewSearchTimeout(params: FacetSearchParameters) {
     this.cancelAnyPendingSearchOperation();
     this.facetSearchTimeout = setTimeout(() => {
-      var valueInInput = this.getValueInInputForFacetSearch();
+      let valueInInput = this.getValueInInputForFacetSearch();
       if (valueInInput == '') {
         if (params.searchEvenIfEmpty) {
           this.triggerNewFacetSearch(params);
@@ -372,8 +373,8 @@ export class FacetSearch {
     if (!facetSearchParameters.fetchMore) {
       $$(this.searchResults).empty();
     }
+    let selectAll = document.createElement('li');
     if (Utils.isNonEmptyString(facetSearchParameters.valueToSearch)) {
-      var selectAll = document.createElement('li');
       $$(selectAll).addClass(['coveo-facet-selectable', 'coveo-facet-search-selectable', 'coveo-facet-search-select-all']);
       $$(selectAll).text('SelectAll');
       $$(selectAll).on('click', () => this.selectAllValuesMatchingSearch());
@@ -381,7 +382,7 @@ export class FacetSearch {
         this.searchResults.appendChild(selectAll);
       }
     }
-    var facetValues = _.map(fieldValues, (fieldValue) => {
+    let facetValues = _.map(fieldValues, (fieldValue) => {
       return FacetValue.create(fieldValue);
     });
     _.each(new this.facetSearchValuesListKlass(this.facet, FacetValueElement).build(facetValues), (listElement: HTMLElement) => {
@@ -394,7 +395,7 @@ export class FacetSearch {
     }
 
     if (this.isMobileDevice()) {
-      var selectAllMobile = document.createElement('span');
+      let selectAllMobile = document.createElement('span');
       $$(selectAllMobile).addClass('coveo-mobile-facet-search-select-all');
       selectAll.appendChild(selectAllMobile);
       this.searchResults.appendChild(selectAll);
@@ -410,26 +411,26 @@ export class FacetSearch {
   }
 
   private setupFacetSearchResultsEvents(elem: HTMLElement) {
-    $(elem).mousemove(() => {
+    $$(elem).on('mousemove', () => {
       this.makeCurrentResult(elem);
     });
 
     // Prevent closing the search results on the end of a touch drag
-    var touchDragging = false;
-    var mouseDragging = false;
-    $(elem)
-      .mousedown(() => mouseDragging = false)
-      .mousemove(() => mouseDragging = true)
-      .on('touchmove', () => touchDragging = true)
-      .on('mouseup touchend', () => {
-        if (!touchDragging && !mouseDragging) {
-          setTimeout(() => {
-            this.completelyDismissSearch();
-          }, 0) // setTimeout is to give time to trigger the click event before hiding the search menu.
-        }
-        touchDragging = false;
-        mouseDragging = false;
-      });
+    let touchDragging = false;
+    let mouseDragging = false;
+    $$(elem).on('mousedown', () => mouseDragging = false);
+    $$(elem).on('mousemove', () => mouseDragging = true);
+    $$(elem).on('touchmove', () => touchDragging = true);
+
+    $$(elem).on('mouseup touchend', () => {
+      if (!touchDragging && !mouseDragging) {
+        setTimeout(() => {
+          this.completelyDismissSearch();
+        }, 0) // setTimeout is to give time to trigger the click event before hiding the search menu.
+      }
+      touchDragging = false;
+      mouseDragging = false;
+    });
   }
 
   private handleFacetSearchResultsScroll() {
@@ -437,29 +438,29 @@ export class FacetSearch {
       return;
     }
 
-    var elementHeight = this.searchResults.clientHeight;
-    var scrollHeight = this.searchResults.scrollHeight;
-    var bottomPosition = this.searchResults.scrollTop + elementHeight;
+    let elementHeight = this.searchResults.clientHeight;
+    let scrollHeight = this.searchResults.scrollHeight;
+    let bottomPosition = this.searchResults.scrollTop + elementHeight;
     if ((scrollHeight - bottomPosition) < elementHeight / 2) {
       this.triggerNewFacetSearch(this.buildParamsForFetchingMore());
     }
   }
 
   private buildParamsForNormalSearch() {
-    var params = new FacetSearchParameters(this.facet);
+    let params = new FacetSearchParameters(this.facet);
     params.setValueToSearch(this.getValueInInputForFacetSearch());
     params.fetchMore = false;
     return params;
   }
 
   private buildParamsForFetchingMore() {
-    var params = this.buildParamsForExcludingCurrentlyDisplayedValues();
+    let params = this.buildParamsForExcludingCurrentlyDisplayedValues();
     params.fetchMore = true;
     return params;
   }
 
   protected buildParamsForExcludingCurrentlyDisplayedValues() {
-    var params = new FacetSearchParameters(this.facet);
+    let params = new FacetSearchParameters(this.facet);
     params.excludeCurrentlyDisplayedValuesInSearch(this.searchResults);
     params.setValueToSearch(this.getValueInInputForFacetSearch());
     return params;
@@ -475,13 +476,13 @@ export class FacetSearch {
   }
 
   private highlightCurrentQueryWithinSearchResults() {
-    var captions = $$(this.searchResults).findAll('.coveo-facet-value-caption');
+    let captions = $$(this.searchResults).findAll('.coveo-facet-value-caption');
     _.each(captions, (captionElement: HTMLElement) => {
-      var search = this.getValueInInputForFacetSearch();
-      var regex = new RegExp('(' + StringUtils.wildcardsToRegex(search, this.facet.options.facetSearchIgnoreAccents) + ')', 'ig');
+      let search = this.getValueInInputForFacetSearch();
+      let regex = new RegExp('(' + StringUtils.wildcardsToRegex(search, this.facet.options.facetSearchIgnoreAccents) + ')', 'ig');
 
-      var text = $$(captionElement).text();
-      var highlighted = text.replace(regex, '<span class="coveo-highlight">$1</span>');
+      let text = $$(captionElement).text();
+      let highlighted = text.replace(regex, '<span class="coveo-highlight">$1</span>');
       captionElement.innerHTML = highlighted;
     })
   }
@@ -498,12 +499,12 @@ export class FacetSearch {
   }
 
   private moveCurrentResultDown() {
-    var current = $$(this.searchResults).find('.coveo-current');
+    let current = $$(this.searchResults).find('.coveo-current');
     _.each(this.getSelectables(), (selectable: HTMLElement) => {
       $$(selectable).removeClass('coveo-current');
     })
-    var allSelectables = this.getSelectables();
-    var idx = _.indexOf(allSelectables, current);
+    let allSelectables = this.getSelectables();
+    let idx = _.indexOf(allSelectables, current);
     if (idx < allSelectables.length - 1) {
       $$(allSelectables[idx + 1]).addClass('coveo-current');
     } else {
@@ -512,13 +513,13 @@ export class FacetSearch {
   }
 
   private moveCurrentResultUp() {
-    var current = $$(this.searchResults).find('.coveo-current');
+    let current = $$(this.searchResults).find('.coveo-current');
     _.each($$(this.searchResults).findAll('.coveo-facet-selectable'), (s) => {
       $$(s).removeClass('coveo-current');
     })
 
-    var allSelectables = this.getSelectables();
-    var idx = _.indexOf(allSelectables, current);
+    let allSelectables = this.getSelectables();
+    let idx = _.indexOf(allSelectables, current);
     if (idx > 0) {
       $$(allSelectables[idx - 1]).addClass('coveo-current');
     } else {
@@ -531,10 +532,10 @@ export class FacetSearch {
   }
 
   private performSelectActionOnCurrentSearchResult() {
-    var current = $$(this.searchResults).find('.coveo-current');
+    let current = $$(this.searchResults).find('.coveo-current');
     Assert.check(current != undefined);
 
-    var checkbox = <HTMLInputElement>$$(current).find('input[type="checkbox"]');
+    let checkbox = <HTMLInputElement>$$(current).find('input[type="checkbox"]');
     if (checkbox != undefined) {
       checkbox.checked = true;
       $$(checkbox).trigger('change');
@@ -544,7 +545,7 @@ export class FacetSearch {
   }
 
   private performExcludeActionOnCurrentSearchResult() {
-    var current = $(this.searchResults).find('.coveo-current');
+    let current = $(this.searchResults).find('.coveo-current');
     Assert.check(current.length == 1);
     current.find('.coveo-facet-value-exclude').click();
   }
@@ -556,14 +557,14 @@ export class FacetSearch {
   private selectAllValuesMatchingSearch() {
     this.facet.showWaitingAnimation();
 
-    var searchParameters = new FacetSearchParameters(this.facet);
+    let searchParameters = new FacetSearchParameters(this.facet);
     searchParameters.nbResults = 1000;
     searchParameters.setValueToSearch(this.getValueInInputForFacetSearch())
     this.facet.facetQueryController.search(searchParameters).then((fieldValues: IIndexFieldValue[]) => {
       this.completelyDismissSearch();
       Coveo.ModalBox.close(true);
-      var facetValues = _.map(fieldValues, (fieldValue) => {
-        var facetValue = this.facet.values.get(fieldValue.value);
+      let facetValues = _.map(fieldValues, (fieldValue) => {
+        let facetValue = this.facet.values.get(fieldValue.value);
         if (!Utils.exists(facetValue)) {
           facetValue = FacetValue.create(fieldValue);
         }
