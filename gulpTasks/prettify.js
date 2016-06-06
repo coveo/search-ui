@@ -7,7 +7,7 @@ gulp.task('prettify', function () {
   var src = gulp.src(['src/**/*.ts', '!src/strings/**/*.ts'])
     .pipe(prettyTypescript())
     .pipe(gulp.dest('src'));
-  var test = gulp.src(['test/**/*.ts', '!test/lib/**/*.ts'])
+  var test = gulp.src(['test/**/*.ts', '!test/lib/**/*.ts', '!test/CustomMatchers.ts'])
     .pipe(prettyTypescript())
     .pipe(gulp.dest('test'));
   return merge(src, test);

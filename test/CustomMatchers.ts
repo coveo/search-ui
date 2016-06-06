@@ -60,27 +60,27 @@ module Coveo {
 
 declare module jasmine {
   import GenericParam = Coveo.IStringMap;
-  interface IMatchers {
+  interface Matchers {
     eventHandlerToHaveBeenCalledWith(data: any);
   }
 
-  interface IAjax {
+  interface Ajax {
     install: () => void;
     uninstall: () => void;
-    requests: IAjaxRequests;
+    requests: AjaxRequests;
   }
 
-  interface IAjaxRequests {
-    at: (idx: number) => IFakeXMLHttpRequest;
+  interface AjaxRequests {
+    at: (idx: number) => FakeXMLHttpRequest;
     count: () => number;
-    filter: (urlToMatch: string) => IFakeXMLHttpRequest[];
-    first: () => IFakeXMLHttpRequest;
-    mostRecent: () => IFakeXMLHttpRequest;
+    filter: (urlToMatch: string) => FakeXMLHttpRequest[];
+    first: () => FakeXMLHttpRequest;
+    mostRecent: () => FakeXMLHttpRequest;
     reset: () => void;
-    track: (request: IFakeXMLHttpRequest) => void;
+    track: (request: FakeXMLHttpRequest) => void;
   }
 
-  interface IFakeXMLHttpRequest {
+  interface FakeXMLHttpRequest {
     method: string;
     onreadystatechange: (ev) => void;
     overrideMimeType: string;
@@ -95,5 +95,5 @@ declare module jasmine {
     respondWith: (data: any) => void;
   }
 
-  var Ajax: IAjax;
+  var Ajax: Ajax;
 }
