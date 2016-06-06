@@ -78,9 +78,9 @@ module Coveo {
       });
 
       it('allow to get the auth provider uri', function () {
-        expect(ep.getAuthenticationProviderUri('ad')).toBe(ep.getBaseUri() + '/login/ad?');
-        expect(ep.getAuthenticationProviderUri('email', 'myreturnurl')).toBe(ep.getBaseUri() + '/login/email?redirectUri=myreturnurl');
-        expect(ep.getAuthenticationProviderUri('troll', undefined, 'msg')).toBe(ep.getBaseUri() + '/login/troll?message=msg');
+        expect(ep.getAuthenticationProviderUri('ad')).toBe(ep.getBaseUri() + '/login/ad?organizationId=myOrgId&potatoe=mashed');
+        expect(ep.getAuthenticationProviderUri('email', 'myreturnurl')).toBe(ep.getBaseUri() + '/login/email?redirectUri=myreturnurl&organizationId=myOrgId&potatoe=mashed');
+        expect(ep.getAuthenticationProviderUri('troll', undefined, 'msg')).toBe(ep.getBaseUri() + '/login/troll?message=msg&organizationId=myOrgId&potatoe=mashed');
       });
 
       it('allow to check if endpoint is jsonp', function () {
@@ -118,7 +118,7 @@ module Coveo {
           qbuilder.numberOfResults = 153;
           qbuilder.enableCollaborativeRating = true;
           var promiseSuccess = ep.search(qbuilder.build());
-          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseUri() + '/?organizationId=myOrgId&potatoe=mashed&errorsAsSuccess=1');
+          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseUri() + '/?organizationId=myOrgId&potatoe=mashed');
           expect(jasmine.Ajax.requests.mostRecent().params).toContain('q=batman');
           expect(jasmine.Ajax.requests.mostRecent().params).toContain('numberOfResults=153');
           expect(jasmine.Ajax.requests.mostRecent().params).toContain('enableCollaborativeRating=true');
@@ -151,7 +151,7 @@ module Coveo {
         it('for getRawDataStream', function (done) {
           var fakeResult = FakeResults.createFakeResult();
           var promiseSuccess = ep.getRawDataStream(fakeResult.uniqueId, '$Thumbnail');
-          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseUri() + '/datastream?organizationId=myOrgId&potatoe=mashed&uniqueId=' + fakeResult.uniqueId + '&dataStream=$Thumbnail');
+          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseUri() + '/datastream?uniqueId=' + fakeResult.uniqueId + '&dataStream=$Thumbnail&organizationId=myOrgId&potatoe=mashed');
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
           promiseSuccess
               .then((data: ArrayBuffer)=> {
@@ -174,7 +174,7 @@ module Coveo {
         it('for getDocument', function (done) {
           var fakeResult = FakeResults.createFakeResult();
           var promiseSuccess = ep.getDocument(fakeResult.uniqueId);
-          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseUri() + '/document?organizationId=myOrgId&potatoe=mashed&uniqueId=' + fakeResult.uniqueId + '&errorsAsSuccess=1');
+          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseUri() + '/document?uniqueId=' + fakeResult.uniqueId + '&organizationId=myOrgId&potatoe=mashed');
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
           promiseSuccess
               .then((data: IQueryResult)=> {
@@ -197,7 +197,7 @@ module Coveo {
         it('for getDocumentText', function (done) {
           var fakeResult = FakeResults.createFakeResult();
           var promiseSuccess = ep.getDocumentText(fakeResult.uniqueId);
-          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseUri() + '/text?organizationId=myOrgId&potatoe=mashed&uniqueId=' + fakeResult.uniqueId + '&errorsAsSuccess=1');
+          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseUri() + '/text?uniqueId=' + fakeResult.uniqueId + '&organizationId=myOrgId&potatoe=mashed');
 
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
           promiseSuccess
@@ -221,7 +221,7 @@ module Coveo {
           var fakeResult = FakeResults.createFakeResult();
           var fakeDocument = document.implementation.createHTMLDocument(fakeResult.title);
           var promiseSuccess = ep.getDocumentHtml(fakeResult.uniqueId);
-          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseUri() + '/html?organizationId=myOrgId&potatoe=mashed&uniqueId=' + fakeResult.uniqueId);
+          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseUri() + '/html?uniqueId=' + fakeResult.uniqueId + '&organizationId=myOrgId&potatoe=mashed');
 
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
           promiseSuccess
@@ -249,7 +249,7 @@ module Coveo {
             patternType: 'regex'
           };
           var promisesSuccess = ep.listFieldValues(request);
-          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseUri() + '/values?organizationId=myOrgId&potatoe=mashed&errorsAsSuccess=1');
+          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseUri() + '/values?organizationId=myOrgId&potatoe=mashed');
 
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
           expect(jasmine.Ajax.requests.mostRecent().params).toContain('field=' + encodeURIComponent('@field'));
@@ -275,7 +275,7 @@ module Coveo {
 
         it('for listFields', function (done) {
           var promiseSuccess = ep.listFields();
-          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseUri() + '/fields?organizationId=myOrgId&potatoe=mashed&errorsAsSuccess=1');
+          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseUri() + '/fields?organizationId=myOrgId&potatoe=mashed');
 
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
 
@@ -299,7 +299,7 @@ module Coveo {
 
         it('for extensions', function (done) {
           var promiseSuccess = ep.extensions();
-          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseUri() + '/extensions?organizationId=myOrgId&potatoe=mashed&errorsAsSuccess=1');
+          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseUri() + '/extensions?organizationId=myOrgId&potatoe=mashed');
 
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
 
@@ -385,7 +385,7 @@ module Coveo {
             count: 10
           });
 
-          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseUri() + '/querySuggest?organizationId=myOrgId&potatoe=mashed&errorsAsSuccess=1&q=foobar&count=10');
+          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseUri() + '/querySuggest?organizationId=myOrgId&potatoe=mashed&q=foobar&count=10');
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
 
           // Not real extensions, but will suffice for test purpose
@@ -425,7 +425,7 @@ module Coveo {
               })
               .finally(()=>done());
 
-          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseAlertsUri() + '/subscriptions?organizationId=myOrgId&potatoe=mashed&errorsAsSuccess=1');
+          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseAlertsUri() + '/subscriptions?organizationId=myOrgId&potatoe=mashed');
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
           expect(JSON.parse(jasmine.Ajax.requests.mostRecent().params).frequency).toBe('weekly');
 
@@ -456,7 +456,7 @@ module Coveo {
           var promiseSuccess2 = ep.listSubscriptions(15);
           expect(promiseSuccess).toBe(promiseSuccess2);
 
-          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseAlertsUri() + '/subscriptions?organizationId=myOrgId&potatoe=mashed&page=15&errorsAsSuccess=1');
+          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseAlertsUri() + '/subscriptions?page=15&organizationId=myOrgId&potatoe=mashed');
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
 
           jasmine.Ajax.requests.mostRecent().respondWith({
@@ -488,7 +488,7 @@ module Coveo {
               })
               .finally(()=> done());
 
-          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseAlertsUri() + '/subscriptions/foobar?organizationId=myOrgId&potatoe=mashed&errorsAsSuccess=1');
+          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseAlertsUri() + '/subscriptions/foobar?organizationId=myOrgId&potatoe=mashed');
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('PUT');
           expect(JSON.parse(jasmine.Ajax.requests.mostRecent().params).type).toBe('query');
 
@@ -522,7 +522,7 @@ module Coveo {
               })
               .finally(()=>done());
 
-          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseAlertsUri() + '/subscriptions/foobar?organizationId=myOrgId&potatoe=mashed&errorsAsSuccess=1');
+          expect(jasmine.Ajax.requests.mostRecent().url).toBe(ep.getBaseAlertsUri() + '/subscriptions/foobar?organizationId=myOrgId&potatoe=mashed');
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('DELETE');
           expect(jasmine.Ajax.requests.mostRecent().params).toBe('{}');
 
