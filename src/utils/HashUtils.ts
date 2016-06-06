@@ -2,7 +2,7 @@ import {Assert} from '../misc/Assert';
 import {Utils} from '../utils/Utils';
 
 export class HashUtils {
-  private static Delimiter = {
+  private static DELIMITER = {
     'objectStart': '{',
     'objectEnd': '}',
     'arrayStart': '[',
@@ -110,11 +110,11 @@ export class HashUtils {
   }
 
   private static isArrayStartNotEncoded(value: string) {
-    return value.substr(0, 1) == HashUtils.Delimiter.arrayStart
+    return value.substr(0, 1) == HashUtils.DELIMITER.arrayStart
   }
 
   private static isArrayStartEncoded(value: string) {
-    return value.indexOf(encodeURIComponent(HashUtils.Delimiter.arrayStart)) == 0;
+    return value.indexOf(encodeURIComponent(HashUtils.DELIMITER.arrayStart)) == 0;
   }
 
   private static isArrayEndNotEncoded(value: string) {
@@ -122,23 +122,23 @@ export class HashUtils {
   }
 
   private static isArrayEndEncoded(value: string) {
-    return value.indexOf(encodeURIComponent(HashUtils.Delimiter.arrayEnd)) == value.length - encodeURIComponent(HashUtils.Delimiter.arrayEnd).length;
+    return value.indexOf(encodeURIComponent(HashUtils.DELIMITER.arrayEnd)) == value.length - encodeURIComponent(HashUtils.DELIMITER.arrayEnd).length;
   }
 
   private static isObjectStartNotEncoded(value: string) {
-    return value.substr(0, 1) == HashUtils.Delimiter.objectStart
+    return value.substr(0, 1) == HashUtils.DELIMITER.objectStart
   }
 
   private static isObjectStartEncoded(value: string) {
-    return value.indexOf(encodeURIComponent(HashUtils.Delimiter.objectStart)) == 0;
+    return value.indexOf(encodeURIComponent(HashUtils.DELIMITER.objectStart)) == 0;
   }
 
   private static isObjectEndNotEncoded(value: string) {
-    return value.substr(value.length - 1) == HashUtils.Delimiter.objectEnd;
+    return value.substr(value.length - 1) == HashUtils.DELIMITER.objectEnd;
   }
 
   private static isObjectEndEncoded(value: string) {
-    return value.indexOf(encodeURIComponent(HashUtils.Delimiter.objectEnd)) == value.length - encodeURIComponent(HashUtils.Delimiter.objectEnd).length;
+    return value.indexOf(encodeURIComponent(HashUtils.DELIMITER.objectEnd)) == value.length - encodeURIComponent(HashUtils.DELIMITER.objectEnd).length;
   }
 
   private static isObject(value: string) {
@@ -158,11 +158,11 @@ export class HashUtils {
     _.each(array, (value) => {
       arrayReturn.push(encodeURIComponent(value));
     });
-    return HashUtils.Delimiter.arrayStart + arrayReturn.join(',') + HashUtils.Delimiter.arrayEnd;
+    return HashUtils.DELIMITER.arrayStart + arrayReturn.join(',') + HashUtils.DELIMITER.arrayEnd;
   }
 
   public static encodeObject(obj: Object): string {
-    var ret = HashUtils.Delimiter.objectStart;
+    var ret = HashUtils.DELIMITER.objectStart;
     var retArray = [];
     _.each(<_.Dictionary<any>>obj, (val, key?, obj?) => {
       var retValue = '';
@@ -181,21 +181,21 @@ export class HashUtils {
       retArray.push(retValue)
     })
     ret += retArray.join(' , ');
-    return ret + HashUtils.Delimiter.objectEnd;
+    return ret + HashUtils.DELIMITER.objectEnd;
   }
 
   private static decodeObject(obj: string): Object {
     if (HashUtils.isObjectStartEncoded(obj) && HashUtils.isObjectEndEncoded(obj)) {
-      obj = obj.replace(/encodeURIComponent(HashUtils.Delimiter.objectStart)/, HashUtils.Delimiter.objectStart);
-      obj = obj.replace(encodeURIComponent(HashUtils.Delimiter.objectEnd), HashUtils.Delimiter.objectEnd);
+      obj = obj.replace(/encodeURIComponent(HashUtils.Delimiter.objectStart)/, HashUtils.DELIMITER.objectStart);
+      obj = obj.replace(encodeURIComponent(HashUtils.DELIMITER.objectEnd), HashUtils.DELIMITER.objectEnd);
     }
     return JSON.parse(decodeURIComponent(obj));
   }
 
   private static decodeArray(value: string): any[] {
     if (HashUtils.isArrayStartEncoded(value) && HashUtils.isArrayEndEncoded(value)) {
-      value = value.replace(encodeURIComponent(HashUtils.Delimiter.arrayStart), HashUtils.Delimiter.arrayStart);
-      value = value.replace(encodeURIComponent(HashUtils.Delimiter.arrayEnd), HashUtils.Delimiter.arrayEnd);
+      value = value.replace(encodeURIComponent(HashUtils.DELIMITER.arrayStart), HashUtils.DELIMITER.arrayStart);
+      value = value.replace(encodeURIComponent(HashUtils.DELIMITER.arrayEnd), HashUtils.DELIMITER.arrayEnd);
     }
     value = value.substr(1);
     value = value.substr(0, value.length - 1);

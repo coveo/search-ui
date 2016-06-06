@@ -4,7 +4,7 @@ import {BaseComponent} from '../ui/Base/BaseComponent';
 export class ComponentStateModel extends Model {
   static ID = 'ComponentState';
 
-  constructor(element: HTMLElement, window_?) {
+  constructor(element: HTMLElement) {
     super(element, ComponentStateModel.ID, {});
   }
 

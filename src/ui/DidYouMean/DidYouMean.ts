@@ -9,7 +9,7 @@ import {Initialization} from '../Base/Initialization';
 import {IQueryCorrection} from '../../rest/QueryCorrection';
 import {StringUtils} from '../../utils/StringUtils';
 import {Utils} from '../../utils/Utils';
-import {AnalyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
+import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
 import {l} from '../../strings/Strings';
 
 export interface IDidYouMeanOptions {
@@ -73,7 +73,7 @@ export class DidYouMean extends Component {
     Assert.exists(this.correctedTerm);
     this.queryStateModel.set(QueryStateModel.attributesEnum.q, this.correctedTerm);
     this.queryController.deferExecuteQuery({
-      beforeExecuteQuery: () => this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.didyoumeanClick, {})
+      beforeExecuteQuery: () => this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.didyoumeanClick, {})
     });
   }
 
@@ -111,7 +111,7 @@ export class DidYouMean extends Component {
       this.element.appendChild(automaticCorrect);
 
       $$(this.element).show();
-      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.didyoumeanAutomatic, {});
+      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.didyoumeanAutomatic, {});
     }
   }
 

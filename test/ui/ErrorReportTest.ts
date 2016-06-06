@@ -72,7 +72,7 @@ module Coveo {
         })
       });
       test.cmp.retry();
-      expect(test.cmp.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(AnalyticsActionCauseList.errorRetry, {});
+      expect(test.cmp.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.errorRetry, {});
     })
 
     it('should send analytics event on reset', function () {
@@ -86,7 +86,7 @@ module Coveo {
         })
       });
       test.cmp.reset();
-      expect(test.cmp.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(AnalyticsActionCauseList.errorClearQuery, {});
+      expect(test.cmp.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.errorClearQuery, {});
     })
   })
 }

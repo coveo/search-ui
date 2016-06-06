@@ -44,6 +44,11 @@ module Coveo.Mock {
       this.queryStateModel = new QueryStateModel(this.root);
       return this;
     }
+    
+    public withQueryStateModel(model: QueryStateModel){
+      this.queryStateModel = model;
+      return this;
+    }
 
     public withOldDesign() {
       this.searchInterface.isNewDesign = () => false;

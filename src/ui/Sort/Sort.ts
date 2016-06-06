@@ -9,7 +9,7 @@ import {Model, IAttributesChangedEventArg} from '../../models/Model';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import {QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs} from '../../events/QueryEvents';
 import {Initialization} from '../Base/Initialization';
-import {AnalyticsActionCauseList, IAnalyticsResultsSortMeta} from '../Analytics/AnalyticsActionListMeta';
+import {analyticsActionCauseList, IAnalyticsResultsSortMeta} from '../Analytics/AnalyticsActionListMeta';
 
 export interface ISortOptions {
   sortCriteria?: SortCriteria[];
@@ -169,7 +169,7 @@ export class Sort extends Component {
     this.select();
     if (oldCriteria != this.currentCriteria) {
       this.queryController.deferExecuteQuery({
-        beforeExecuteQuery: () => this.usageAnalytics.logSearchEvent<IAnalyticsResultsSortMeta>(AnalyticsActionCauseList.resultsSort,
+        beforeExecuteQuery: () => this.usageAnalytics.logSearchEvent<IAnalyticsResultsSortMeta>(analyticsActionCauseList.resultsSort,
           { resultsSortBy: this.currentCriteria.sort + this.currentCriteria.direction })
       });
     }
