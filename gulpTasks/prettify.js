@@ -5,7 +5,7 @@ const path = require('path');
 const sourceFiles = ['src/**/*.ts', '!src/strings/**/*.ts'];
 
 gulp.task('prettify', function () {
-  gulp.src(sourceFiles)
+  return gulp.src(sourceFiles)
     .pipe(prettyTypescript())
     .pipe(gulp.dest('src'));
 });
