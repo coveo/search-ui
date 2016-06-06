@@ -27,31 +27,31 @@ module Coveo {
     describe('exposes options', function () {
 
       describe('menuDelay', function () {
-       it('should wait the duration of \'menuDelay\' before closing the popup on mouseleave', function(done) {
-         test = Mock.optionsComponentSetup<Settings, ISettingsOptions>(Settings, <ISettingsOptions>{
-           menuDelay: 999999
-         })
-         test.cmp.open();
-         $$(test.cmp.element).trigger('mouseleave');
-         setTimeout(() => {
-           expect($$(test.env.root).find('.coveo-settings-advanced-menu')).not.toBeNull();
-           done();
-         }, 0)
-       })
+        it('should wait the duration of \'menuDelay\' before closing the popup on mouseleave', function (done) {
+          test = Mock.optionsComponentSetup<Settings, ISettingsOptions>(Settings, <ISettingsOptions>{
+            menuDelay: 999999
+          })
+          test.cmp.open();
+          $$(test.cmp.element).trigger('mouseleave');
+          setTimeout(() => {
+            expect($$(test.env.root).find('.coveo-settings-advanced-menu')).not.toBeNull();
+            done();
+          }, 0)
+        })
 
-       it('should close the popup after the menuDelay is expired', function(done) {
-         test = Mock.optionsComponentSetup<Settings, ISettingsOptions>(Settings, <ISettingsOptions>{
-           menuDelay: 2
-         })
-         test.cmp.open();
-         $$($$(test.env.root).find('.coveo-settings-advanced-menu')).trigger('mouseleave');
-         setTimeout(() => {
-           expect($$(test.env.root).find('.coveo-settings-advanced-menu')).toBeNull();
-           done();
-         }, 3)
-       })
-     })
+        it('should close the popup after the menuDelay is expired', function (done) {
+          test = Mock.optionsComponentSetup<Settings, ISettingsOptions>(Settings, <ISettingsOptions>{
+            menuDelay: 2
+          })
+          test.cmp.open();
+          $$($$(test.env.root).find('.coveo-settings-advanced-menu')).trigger('mouseleave');
+          setTimeout(() => {
+            expect($$(test.env.root).find('.coveo-settings-advanced-menu')).toBeNull();
+            done();
+          }, 3)
+        })
+      })
 
-   })
+    })
   })
 }

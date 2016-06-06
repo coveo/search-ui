@@ -67,7 +67,7 @@ module Coveo {
         error: {
           message: 'oh noes',
           type: 'very bad',
-          name : 'oh noes very bad'
+          name: 'oh noes very bad'
         }
       })
       expect(test.cmp.getDisplayedResults().length).toBe(0);
@@ -102,10 +102,10 @@ module Coveo {
         })
 
         Simulate.query(test.env, {
-          callbackDuringQuery: ()=> {
+          callbackDuringQuery: () => {
             expect($$(test.cmp.options.waitAnimationContainer).hasClass('coveo-fade-out')).toBe(true)
           },
-          callbackAfterQuery: ()=> {
+          callbackAfterQuery: () => {
             expect($$(test.cmp.options.waitAnimationContainer).hasClass('coveo-fade-out')).not.toBe(true)
           }
         })
@@ -115,10 +115,10 @@ module Coveo {
         })
 
         Simulate.query(test.env, {
-          callbackDuringQuery: ()=> {
+          callbackDuringQuery: () => {
             expect($$(test.cmp.options.waitAnimationContainer).find('.coveo-loading-spinner')).toBeDefined();
           },
-          callbackAfterQuery: ()=> {
+          callbackAfterQuery: () => {
             expect($$(test.cmp.options.waitAnimationContainer).find('.coveo-loading-spinner')).toBeNull();
           }
         })
@@ -131,7 +131,7 @@ module Coveo {
           waitAnimationContainer: aNewContainer
         })
         Simulate.query(test.env, {
-          callbackDuringQuery: ()=> {
+          callbackDuringQuery: () => {
             expect($$(aNewContainer).hasClass('coveo-fade-out')).toBe(true);
           }
         })
@@ -145,7 +145,7 @@ module Coveo {
         Simulate.query(test.env);
         expect(test.env.queryController.fetchMore).not.toHaveBeenCalled();
 
-        test = Mock.optionsComponentSetup <ResultList, IResultListOptions>(ResultList, {
+        test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
           enableInfiniteScroll: true
         })
         Simulate.query(test.env);
@@ -153,7 +153,7 @@ module Coveo {
       })
 
       it('infiniteScrollPageSize allow to specify the number of result to fetch when scrolling', function () {
-        test = Mock.optionsComponentSetup <ResultList, IResultListOptions>(ResultList, {
+        test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
           enableInfiniteScroll: true,
           infiniteScrollPageSize: 26
         })
@@ -162,7 +162,7 @@ module Coveo {
       })
 
       it('fieldsToInclude allow to specify an array of fields to include in the query', function () {
-        test = Mock.optionsComponentSetup <ResultList, IResultListOptions>(ResultList, {
+        test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
           fieldsToInclude: ['@field1', '@field2', '@field3']
         })
         var simulation = Simulate.query(test.env);

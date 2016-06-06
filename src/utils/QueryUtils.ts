@@ -15,7 +15,7 @@ export class QueryUtils {
   // This method is a fallback as it's generate a lot of collisions in Chrome.
   static generateWithRandom(): string {
     // http://stackoverflow.com/a/2117523
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
       return v.toString(16);
     });
@@ -24,7 +24,7 @@ export class QueryUtils {
   static generateWithCrypto(): string {
     let buf = new Uint16Array(8);
     crypto.getRandomValues(buf);
-    let S4 = function(num) {
+    let S4 = function (num) {
       let ret = num.toString(16);
       while (ret.length < 4) {
         ret = '0' + ret;

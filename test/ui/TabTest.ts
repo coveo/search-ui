@@ -20,7 +20,7 @@ module Coveo {
       it('tab id can be set, and is sent in the query, only if selected', function () {
         test = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {
           id: 'niceid'
-        }, (env: Mock.MockEnvironmentBuilder)=> {
+        }, (env: Mock.MockEnvironmentBuilder) => {
           return env.withLiveQueryStateModel();
         }));
 
@@ -35,7 +35,7 @@ module Coveo {
         test = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {
           id: 'niceid',
           expression: '@foo==bar'
-        }, (env: Mock.MockEnvironmentBuilder)=> {
+        }, (env: Mock.MockEnvironmentBuilder) => {
           return env.withLiveQueryStateModel();
         }));
         var simulation = Simulate.query(test.env);
@@ -50,7 +50,7 @@ module Coveo {
           id: 'niceid',
           expression: '@foo==bar',
           constant: false
-        }, (env: Mock.MockEnvironmentBuilder)=> {
+        }, (env: Mock.MockEnvironmentBuilder) => {
           return env.withLiveQueryStateModel();
         }));
         var simulation = Simulate.query(test.env);
@@ -77,7 +77,7 @@ module Coveo {
       })
 
       it('endpoint can be set on a tab, or take default otherwise', function () {
-        var ep = new Coveo.SearchEndpoint({restUri: 'test'});
+        var ep = new Coveo.SearchEndpoint({ restUri: 'test' });
         Coveo.SearchEndpoint.endpoints['testing'] = ep;
         test = Mock.optionsComponentSetup<Tab, ITabOptions>(Tab, {
           endpoint: ep
@@ -90,7 +90,7 @@ module Coveo {
         test = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {
           id: 'niceid',
           enableDuplicateFiltering: true
-        }, (env: Mock.MockEnvironmentBuilder)=> {
+        }, (env: Mock.MockEnvironmentBuilder) => {
           return env.withLiveQueryStateModel();
         }));
 
@@ -107,7 +107,7 @@ module Coveo {
         test = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {
           id: 'niceid',
           pipeline: 'foobar'
-        }, (env: Mock.MockEnvironmentBuilder)=> {
+        }, (env: Mock.MockEnvironmentBuilder) => {
           return env.withLiveQueryStateModel();
         }));
         var simulation = Simulate.query(test.env);
@@ -122,7 +122,7 @@ module Coveo {
         test = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {
           id: 'niceid',
           maximumAge: 321
-        }, (env: Mock.MockEnvironmentBuilder)=> {
+        }, (env: Mock.MockEnvironmentBuilder) => {
           return env.withLiveQueryStateModel();
         }));
 
@@ -146,14 +146,14 @@ module Coveo {
         test = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {
           id: 'testingtabid',
           caption: 'caption test tab'
-        }, (env: Mock.MockEnvironmentBuilder)=> {
+        }, (env: Mock.MockEnvironmentBuilder) => {
           return env.withLiveQueryStateModel();
         }))
 
         test2 = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {
           id: 'testingtabid2',
           caption: 'caption test tab 2'
-        }, (env: Mock.MockEnvironmentBuilder)=> {
+        }, (env: Mock.MockEnvironmentBuilder) => {
           return env.withRoot(test.env.root).withLiveQueryStateModel();
         }))
 
@@ -165,11 +165,11 @@ module Coveo {
         elem.setAttribute('data-tab', 'testingtabid');
         elem2.setAttribute('data-tab', 'testingtabid2');
 
-        dummyCmp = Mock.advancedComponentSetup<NoopComponent>(NoopComponent, new Mock.AdvancedComponentSetupOptions(undefined, undefined, (env: Mock.MockEnvironmentBuilder)=> {
+        dummyCmp = Mock.advancedComponentSetup<NoopComponent>(NoopComponent, new Mock.AdvancedComponentSetupOptions(undefined, undefined, (env: Mock.MockEnvironmentBuilder) => {
           return env.withRoot(test.env.root);
         }));
 
-        dummyCmp2 = Mock.advancedComponentSetup<NoopComponent>(NoopComponent, new Mock.AdvancedComponentSetupOptions(undefined, undefined, (env: Mock.MockEnvironmentBuilder)=> {
+        dummyCmp2 = Mock.advancedComponentSetup<NoopComponent>(NoopComponent, new Mock.AdvancedComponentSetupOptions(undefined, undefined, (env: Mock.MockEnvironmentBuilder) => {
           return env.withRoot(test.env.root);
         }));
 
@@ -277,7 +277,7 @@ module Coveo {
 
     it('should trigger an analytics event on selection', function () {
       test.cmp.select();
-      expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.interfaceChange, {interfaceChangeTo: 'testingtabid'});
+      expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.interfaceChange, { interfaceChangeTo: 'testingtabid' });
     })
   })
 }
