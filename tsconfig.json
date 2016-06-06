@@ -85,7 +85,6 @@
     "src/rest/UserIdentity.ts",
     "src/misc/Assert.ts",
     "src/misc/Cache.ts",
-    "src/misc/CoveoUnderscoreVersion.ts",
     "src/misc/Defer.ts",
     "src/misc/L10N.ts",
     "src/misc/Logger.ts",
@@ -198,6 +197,7 @@
     "src/ui/ResultTagging/ResultTagging.ts",
     "src/ui/PipelineContext/PipelineContext.ts",
     "src/ui/OmniboxResultList/OmniboxResultList.ts",
-    "src/ui/ResultsPreferences/ResultsPreferences.ts"
+    "src/ui/ResultsPreferences/ResultsPreferences.ts",
+    "src/ui/CurrentTab/CurrentTab.ts"
   ]
 }

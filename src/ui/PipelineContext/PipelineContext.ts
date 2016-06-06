@@ -34,7 +34,7 @@ export class PipelineContext extends Component {
         }
       }
     }
-    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs)=> this.handleBuildingQuery(args));
+    this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
   }
 
   private handleBuildingQuery(args: IBuildingQueryEventArgs) {

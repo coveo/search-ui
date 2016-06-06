@@ -72,7 +72,7 @@ export {ComponentStateModel} from './models/ComponentStateModel';
 
 // UI BASE
 export * from './ui/Base/RegisteredNamedMethods';
-export {ComponentOptions} from './ui/Base/ComponentOptions';
+export {ComponentOptions, ComponentOptionsType} from './ui/Base/ComponentOptions';
 export {Component} from './ui/Base/Component';
 export {BaseComponent} from './ui/Base/BaseComponent';
 export {RootComponent} from './ui/Base/RootComponent';
@@ -161,3 +161,4 @@ export {ResultTagging} from './ui/ResultTagging/ResultTagging';
 export {ResultsPreferences} from './ui/ResultsPreferences/ResultsPreferences';
 export {PipelineContext, context} from './ui/PipelineContext/PipelineContext';
 export {OmniboxResultList} from './ui/OmniboxResultList/OmniboxResultList';
+export {CurrentTab} from './ui/CurrentTab/CurrentTab';

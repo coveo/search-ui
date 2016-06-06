@@ -85,12 +85,12 @@
 /// <reference path="ui/ResultsPreferencesTest.ts" />
 /// <reference path="ui/FieldSuggestionsTest.ts" />
 /// <reference path="ui/AuthenticationProviderTest.ts" />
+/// <reference path="ui/CurrentTabTest.ts" />
 
 Coveo.Logger.disable();
 
 module Coveo {
   var _ = window['_'];
-  Coveo._ = _;
 }
 
 function isPhantomJs() {
