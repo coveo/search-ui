@@ -1,6 +1,6 @@
 module Coveo {
   if (DeviceUtils.isMobileDevice()) {
-    var resize = function() {
+    var resize = function () {
       $('html, body').height(window.innerHeight);
       $('html, body').width(window.innerWidth);
       /* Fix for iphone scroll. This force redraw after chanfging orientation */
