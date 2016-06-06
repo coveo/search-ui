@@ -1,3 +1,6 @@
+//@import "../bin/sass/spritesNew";
+//@import "../bin/sass/retinaNew";
+
 // https://app.frontify.com/d/GthysWU8RY0Q/brand-guidelines#/basics/colors
 
 // Corporate Main Colors
@@ -73,17 +76,17 @@ $default-border: 1px solid $color-light-grey;
 @mixin iconWithHoverState($iconBase, $float:'left', $inactive : 'coveo-disabled') {
   $iconActive: '#{$iconBase}-active';
   .coveo-icon {
-    @extend #{$iconBase} !optional;
+    @extend #{$iconBase};
     float: #{$float};
   }
   &:hover {
     .coveo-icon {
-      @extend #{$iconActive} !optional;
+      @extend #{$iconActive};
     }
   }
   &:hover.#{$inactive} {
     .coveo-icon {
-      @extend #{$iconBase} !optional;
+      @extend #{$iconBase};
     }
   }
 }
