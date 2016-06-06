@@ -4,10 +4,10 @@ import {FacetValue} from './FacetValues';
 import {Facet} from './Facet';
 import {Assert} from '../../misc/Assert';
 import {DeviceUtils} from '../../utils/DeviceUtils';
-import {IAnalyticsFacetMeta, AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
+import {IAnalyticsFacetMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {$$, Dom} from '../../utils/Dom';
 
-export interface BreadcrumbValueElementKlass {
+export interface IBreadcrumbValueElementKlass {
   new (facet: Facet, facetValue: FacetValue): BreadcrumbValueElement;
 }
 
@@ -44,7 +44,7 @@ export class BreadcrumbValueElement {
         } else {
           this.facet.deselectValue(this.facetValue.value);
         }
-        this.facet.triggerNewQuery(() => this.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(AnalyticsActionCauseList.breadcrumbFacet, {
+        this.facet.triggerNewQuery(() => this.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.breadcrumbFacet, {
           facetId: this.facet.options.id,
           facetValue: this.facetValue.value,
           facetTitle: this.facet.options.title

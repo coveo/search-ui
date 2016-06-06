@@ -4,14 +4,14 @@ import {IComponentBindings} from '../Base/ComponentBindings';
 import {LocalStorageUtils} from '../../utils/LocalStorageUtils';
 import {KEYBOARD} from '../../utils/KeyboardUtils';
 import {PreferencesPanel} from '../PreferencesPanel/PreferencesPanel';
-import {PreferencesPanelCheckboxInput, PreferencesPanelTextAreaInput, PreferencePanelMultiSelectInput, PreferencePanelInputToBuild} from '../PreferencesPanel/PreferencesPanelItem';
+import {PreferencesPanelCheckboxInput, PreferencesPanelTextAreaInput, PreferencePanelMultiSelectInput, IPreferencePanelInputToBuild} from '../PreferencesPanel/PreferencesPanelItem';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {PreferencesPanelEvents} from '../../events/PreferencesPanelEvents';
-import {ModelEvents} from '../../models/Model';
+import {MODEL_EVENTS} from '../../models/Model';
 import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {QueryStateModel, QueryStateAttributes} from '../../models/QueryStateModel';
+import {QueryStateModel, QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
 import {BreadcrumbEvents, IPopulateBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
-import {AnalyticsActionCauseList, IAnalyticsCustomFiltersChangeMeta} from '../Analytics/AnalyticsActionListMeta'
+import {analyticsActionCauseList, IAnalyticsCustomFiltersChangeMeta} from '../Analytics/AnalyticsActionListMeta'
 import {Tab} from '../Tab/Tab';
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
@@ -117,7 +117,7 @@ export class ResultsFiltersPreferences extends Component {
     // And we don't know if Tab(s) are initialized before or after this component.
     this.bind.oneRootElement(InitializationEvents.afterComponentsInitialization, () => this.createDom());
 
-    this.bind.oneQueryState(ModelEvents.CHANGE_ONE, QueryStateAttributes.T, () => this.fromPreferencesToCheckboxInput());
+    this.bind.oneQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.T, () => this.fromPreferencesToCheckboxInput());
   }
 
   public createDom() {
@@ -219,12 +219,12 @@ export class ResultsFiltersPreferences extends Component {
   }
 
   private buildAdvancedFilterInput() {
-    this.advancedFiltersTextInputCaption = new PreferencesPanelTextAreaInput(<PreferencePanelInputToBuild[]>[{
+    this.advancedFiltersTextInputCaption = new PreferencesPanelTextAreaInput(<IPreferencePanelInputToBuild[]>[{
       label: l('Caption'),
       placeholder: l('EnterExpressionName'),
       otherAttribute: 'required'
     }], ResultsFiltersPreferences.ID + '-advanced-caption');
-    this.advancedFiltersTextInputExpression = new PreferencesPanelTextAreaInput(<PreferencePanelInputToBuild[]>[{
+    this.advancedFiltersTextInputExpression = new PreferencesPanelTextAreaInput(<IPreferencePanelInputToBuild[]>[{
       label: l('Expression'),
       placeholder: l('EnterExpressionToFilterWith'),
       otherAttribute: 'required'
@@ -282,8 +282,8 @@ export class ResultsFiltersPreferences extends Component {
     $$(this.advancedFilterFormValidate).on('submit', (e: Event) => this.validateAndSaveAdvancedFilter(e));
   }
 
-  private getAdvancedFiltersTextInputToBuild(): PreferencePanelInputToBuild[] {
-    return <PreferencePanelInputToBuild[]>[{
+  private getAdvancedFiltersTextInputToBuild(): IPreferencePanelInputToBuild[] {
+    return <IPreferencePanelInputToBuild[]>[{
       label: l('Caption'),
       otherAttribute: 'required'
     }, {
@@ -304,7 +304,7 @@ export class ResultsFiltersPreferences extends Component {
     }
   }
 
-  private getPreferencesBoxInputToBuild(): PreferencePanelInputToBuild[] {
+  private getPreferencesBoxInputToBuild(): IPreferencePanelInputToBuild[] {
     return _.map(this.preferences, (filter: IResultFilterPreference) => {
       return {
         label: filter.caption,
@@ -557,7 +557,7 @@ export class ResultsFiltersPreferences extends Component {
   }
 
   private fromFilterToAnalyticsEvent(filter: IResultFilterPreference, type: string) {
-    this.usageAnalytics.logSearchEvent<IAnalyticsCustomFiltersChangeMeta>(AnalyticsActionCauseList.customfiltersChange, {
+    this.usageAnalytics.logSearchEvent<IAnalyticsCustomFiltersChangeMeta>(analyticsActionCauseList.customfiltersChange, {
       customFilterName: filter.caption,
       customFilterExpression: filter.expression,
       customFilterType: type

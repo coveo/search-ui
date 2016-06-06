@@ -16,7 +16,9 @@ import {Utils} from '../../utils/Utils';
 import {NoopAnalyticsClient} from '../Analytics/NoopAnalyticsClient';
 import {LiveAnalyticsClient} from './LiveAnalyticsClient';
 import {MultiAnalyticsClient} from './MultiAnalyticsClient';
-import {IAnalyticsQueryErrorMeta, AnalyticsActionCauseList} from './AnalyticsActionListMeta';
+import {IAnalyticsQueryErrorMeta, analyticsActionCauseList} from './AnalyticsActionListMeta';
+import {Recommendation} from '../Recommendation/Recommendation';
+import {RecommendationAnalyticsClient} from './RecommendationAnalyticsClient';
 
 
 export interface IAnalyticsOptions {
@@ -106,7 +108,7 @@ export class Analytics extends Component {
    * @param options The options for the Analytics.
    * @param bindings The bindings that the component requires to function normally. If not set, will automatically resolve them (With slower execution time)
    */
-  constructor(public element: HTMLElement, public options: IAnalyticsOptions = {}, bindings?: IComponentBindings) {
+  constructor(public element: HTMLElement, public options: IAnalyticsOptions = {}, public bindings?: IComponentBindings) {
     super(element, Analytics.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Analytics, options);
 
@@ -202,6 +204,27 @@ export class Analytics extends Component {
         }
 
       }
+
+      let isRecommendation = $$(this.root).hasClass(Component.computeCssClassName(Recommendation));
+      this.instantiateAnalyticsClient(endpoint, elementToInitializeClient, isRecommendation);
+
+    } else {
+      this.client = new NoopAnalyticsClient();
+    }
+  }
+
+  private instantiateAnalyticsClient(endpoint: AnalyticsEndpoint, elementToInitializeClient: HTMLElement, isRecommendation: boolean) {
+    if (isRecommendation) {
+      this.client = new RecommendationAnalyticsClient(endpoint, elementToInitializeClient,
+        this.options.user,
+        this.options.userDisplayName,
+        this.options.anonymous,
+        this.options.splitTestRunName,
+        this.options.splitTestRunVersion,
+        this.options.searchHub,
+        this.options.sendToCloud,
+        this.getBindings());
+    } else {
       this.client = new LiveAnalyticsClient(endpoint, elementToInitializeClient,
         this.options.user,
         this.options.userDisplayName,
@@ -210,8 +233,6 @@ export class Analytics extends Component {
         this.options.splitTestRunVersion,
         this.options.searchHub,
         this.options.sendToCloud);
-    } else {
-      this.client = new NoopAnalyticsClient();
     }
   }
 
@@ -239,7 +260,7 @@ export class Analytics extends Component {
   private handleQueryError(data: IQueryErrorEventArgs) {
     Assert.exists(data);
 
-    this.client.logCustomEvent<IAnalyticsQueryErrorMeta>(AnalyticsActionCauseList.queryError, {
+    this.client.logCustomEvent<IAnalyticsQueryErrorMeta>(analyticsActionCauseList.queryError, {
       query: data.query.q,
       aq: data.query.aq,
       cq: data.query.cq,
@@ -258,6 +279,7 @@ export class Analytics extends Component {
       found.push(element);
     }
     found = _.compact(found);
+
     if (found.length == 1) {
       return Analytics.getClient(found[0], options, bindings);
     } else if (found.length > 1) {

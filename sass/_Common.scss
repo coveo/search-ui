@@ -1,18 +1,18 @@
+@import "../bin/sass/spritesNew";
+@import "../bin/sass/ModalBox";
 @import "Variables";
 @import "Icons";
-@import "spritesNew";
 @import "Animations";
 
 @import "mixins/mediaQuery";
 @import "mixins/loader";
-@import "mixins/mobileFacet";
 @import "mixins/preferencePanel";
 @import "mixins/login";
 @import "mixins/resultAttachments";
 @import "mixins/breadcrumb";
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 200 / 100), only screen and (min-device-pixel-ratio: 2) {
-	@import "retinaNew";
+	@import "../bin/sass/retinaNew";
 }
 
 @import "Quickview";
@@ -59,7 +59,6 @@
 @import "Debug";
 @import "TabGroup";
 @import "Text";
-@import "Suggestions";
 @import "Slider";
 @import "EmailActions";
 @import "PreferencesPanel";
@@ -68,7 +67,6 @@
 @import "OmniboxResultList";
 @import "HierarchicalFacet";
 @import "HiddenQuery";
-@import "ModalBox";
 @import "Salesforce";
 @import "SalesforceChatter";
 @import "Triggers";
@@ -78,6 +76,7 @@
 @import "YouTube";
 @import "ExportToExcel";
 @import "FieldTable";
+@import "Recommendation";
 
 @import "notifications/FollowItem";
 @import "notifications/FollowQuery";

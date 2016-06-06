@@ -3,9 +3,10 @@ const glob = require('glob');
 const _ = require('underscore');
 const pngSprite = require('png-sprite');
 const fs = require('fs');
+const path = require('path');
 
-gulp.task('sprites', ['regularSprites', /*'regularSpritesList',*/ 'retinaSprites', /*'retinaSpritesList',*/ 'validateRetinaSprites']);
-gulp.task('spritesLegacy', ['regularSpritesLegacy', /*'regularSpritesListLegacy',*/ 'retinaSpritesLegacy', /*'retinaSpritesListCore'*/]);
+gulp.task('sprites', ['regularSprites', 'retinaSprites', 'validateRetinaSprites']);
+gulp.task('spritesLegacy', ['regularSpritesLegacy', 'retinaSpritesLegacy']);
 
 gulp.task('regularSprites', function (done) {
   return gulp.src('image/sprites/**/*.png')
@@ -26,22 +27,6 @@ gulp.task('regularSpritesLegacy', function (done) {
       }))
       .pipe(gulp.dest('./bin'))
 });
-
-/*gulp.task('regularSpritesListCore', ['regularSpritesCore'], function (done) {
-  BuildUtilities.callBuildSpritesList({
-    sourcePath: 'core/image/sprites',
-    outputPath: './target/jsSearch/package/image',
-    isNew: true
-  }, done)
-});
-
-gulp.task('regularSpritesListCoreLegacy', ['regularSpritesCoreLegacy'], function (done) {
-  BuildUtilities.callBuildSpritesList({
-    sourcePath: 'core/breakingchanges/redesignlightning/image/sprites',
-    outputPath: './target/jsSearch/package/image',
-    isNew: false
-  }, done)
-});*/
 
 gulp.task('retinaSprites', function (done) {
   return gulp.src('image/retina/**/*.png')
@@ -64,22 +49,6 @@ gulp.task('retinaSpritesLegacy', function (done) {
       }))
       .pipe(gulp.dest('./bin'))
 });
-
-/*gulp.task('retinaSpritesListCore', ['retinaSpritesCore'], function (done) {
-  BuildUtilities.callBuildSpritesList({
-    sourcePath: 'core/image/retina',
-    outputPath: './target/jsSearch/package/image',
-    isNew: true
-  }, done)
-});
-
-gulp.task('retinaSpritesListCoreLegacy', ['retinaSpritesCoreLegacy'], function (done) {
-  BuildUtilities.callBuildSpritesList({
-    sourcePath: 'core/breakingchanges/redesignlightning/image/retina',
-    outputPath: './target/jsSearch/package/image',
-    isNew: false
-  }, done)
-});*/
 
 gulp.task('validateRetinaSprites', function (done) {
   glob("image/retina/**", function (err, files) {

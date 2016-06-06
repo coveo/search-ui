@@ -696,16 +696,16 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     return queryString;
   }
+
   private buildBaseQueryString(callOptions?: IEndpointCallOptions): string[] {
     callOptions = _.extend({}, callOptions);
     let queryString: string[] = [];
 
     for (let name in this.options.queryStringArguments) {
-      //The mapping workgroup --> organizationId is necessary for backward compatibility
+      // The mapping workgroup --> organizationId is necessary for backwards compatibility
       if (name == 'workgroup') {
         queryString.push('organizationId' + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
-      }
-      else {
+      } else {
         queryString.push(name + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
       }
     }
@@ -780,7 +780,7 @@ export class SearchEndpoint implements ISearchEndpoint {
         } else if (error.statusCode == 0 && this.isRedirecting) {
           // The page is getting redirected
           // Set timeout on return with empty string, since it does not really matter
-          _.defer(function() {
+          _.defer(function () {
             return '';
           });
         } else {

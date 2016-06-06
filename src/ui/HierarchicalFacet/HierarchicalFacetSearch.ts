@@ -2,11 +2,11 @@
 
 import {FacetSearch} from '../Facet/FacetSearch';
 import {HierarchicalFacet} from './HierarchicalFacet';
-import {FacetSearchValuesListKlass} from '../Facet/FacetSearchValuesList'
+import {IFacetSearchValuesListKlass} from '../Facet/FacetSearchValuesList'
 import {FacetSearchParameters} from '../Facet/FacetSearchParameters';
 
 export class HierarchicalFacetSearch extends FacetSearch {
-  constructor(public facet: HierarchicalFacet, public facetSearchValuesListKlass: FacetSearchValuesListKlass) {
+  constructor(public facet: HierarchicalFacet, public facetSearchValuesListKlass: IFacetSearchValuesListKlass) {
     super(facet, facetSearchValuesListKlass)
   }
 

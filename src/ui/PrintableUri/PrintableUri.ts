@@ -5,11 +5,11 @@ import {IQueryResult} from '../../rest/QueryResult'
 import {HighlightUtils, StringAndHoles} from '../../utils/HighlightUtils'
 import {Initialization} from '../Base/Initialization'
 import {DeviceUtils} from '../../utils/DeviceUtils'
-import {AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
+import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
 import {Utils} from '../../utils/Utils'
 import {$$} from '../../utils/Dom'
 
-export interface PrintableUriOptions {
+export interface IPrintableUriOptions {
 }
 
 /*
@@ -17,7 +17,7 @@ export interface PrintableUriOptions {
  */
 export class PrintableUri extends Component {
   static ID = 'PrintableUri';
-  static options: PrintableUriOptions = {};
+  static options: IPrintableUriOptions = {};
 
   static fields = [
     'parents'
@@ -25,12 +25,12 @@ export class PrintableUri extends Component {
 
   private uri: string;
 
-  constructor(public element: HTMLElement, public options: PrintableUriOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
+  constructor(public element: HTMLElement, public options: IPrintableUriOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, PrintableUri.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, PrintableUri, options);
 
-    var parentsXml = result.raw.parents;
+    let parentsXml = result.raw.parents;
     if (parentsXml) {
       this.renderParentsXml(element, parentsXml);
     } else {
@@ -39,45 +39,45 @@ export class PrintableUri extends Component {
   }
 
   public renderParentsXml(element: HTMLElement, parentsXml: string) {
-    var xmlDoc: XMLDocument = Utils.parseXml(parentsXml);
-    var parents = xmlDoc.getElementsByTagName("parent");
+    let xmlDoc: XMLDocument = Utils.parseXml(parentsXml);
+    let parents = xmlDoc.getElementsByTagName('parent');
 
-    var tokens: HTMLElement[] = [];
-    var seperators: HTMLElement[] = [];
+    let tokens: HTMLElement[] = [];
+    let seperators: HTMLElement[] = [];
 
-    for (var i = 0; i < parents.length; i++) {
+    for (let i = 0; i < parents.length; i++) {
       if (i > 0) {
-        var seperator = this.buildSeperator();
+        let seperator = this.buildSeperator();
         seperators.push(seperator);
         element.appendChild(seperator);
       }
 
-      var parent = <Element>parents.item(i);
-      var token = this.buildHtmlToken(parent.getAttribute('name'), parent.getAttribute('uri'));
+      let parent = <Element>parents.item(i);
+      let token = this.buildHtmlToken(parent.getAttribute('name'), parent.getAttribute('uri'));
       tokens.push(token);
       element.appendChild(token);
     }
 
     if (tokens.length > 1) {
-      var ellipsis: HTMLElement = this.buildEllipsis();
+      let ellipsis: HTMLElement = this.buildEllipsis();
       element.insertBefore(ellipsis, seperators[0]);
-      var ellipsisSeperator: HTMLElement = this.buildSeperator();
+      let ellipsisSeperator: HTMLElement = this.buildSeperator();
       element.insertBefore(ellipsisSeperator, ellipsis);
 
-      var contentWidth = 0;
-      var tokensWidth: number[] = [];
-      for (var i = 0; i < tokens.length; i++) {
+      let contentWidth = 0;
+      let tokensWidth: number[] = [];
+      for (let i = 0; i < tokens.length; i++) {
         tokensWidth[i] = tokens[i].offsetWidth;
         contentWidth += tokensWidth[i];
       }
-      var seperatorWidth = seperators[0].offsetWidth;
-      var ellipsisWidth = ellipsis.offsetWidth;
-      var availableWidth = element.offsetWidth;
+      let seperatorWidth = seperators[0].offsetWidth;
+      let ellipsisWidth = ellipsis.offsetWidth;
+      let availableWidth = element.offsetWidth;
 
       if (availableWidth <= contentWidth) {
         contentWidth += ellipsisWidth + seperatorWidth;
-        var hidden: HTMLElement[] = [];
-        var i = 1;
+        let hidden: HTMLElement[] = [];
+        let i = 1;
         while (i < tokens.length && availableWidth <= contentWidth) {
           element.removeChild(tokens[i]);
           element.removeChild(seperators[i - 1]);
@@ -89,7 +89,7 @@ export class PrintableUri extends Component {
           i++;
         }
         ellipsis.onclick = () => {
-          for (var i = 0; i < hidden.length; i++) {
+          for (let i = 0; i < hidden.length; i++) {
             element.insertBefore(hidden[i], ellipsis);
           }
           element.removeChild(ellipsis);
@@ -103,13 +103,13 @@ export class PrintableUri extends Component {
 
   public renderUri(element: HTMLElement, result?: IQueryResult) {
     this.uri = result.clickUri;
-    var stringAndHoles: StringAndHoles;
-    if (result.printableUri.indexOf("\\") == -1) {
+    let stringAndHoles: StringAndHoles;
+    if (result.printableUri.indexOf('\\') == -1) {
       stringAndHoles = StringAndHoles.shortenUri(result.printableUri, $$(element).width() / 7);
     } else {
       stringAndHoles = StringAndHoles.shortenPath(result.printableUri, $$(element).width() / 7);
     }
-    var uri = HighlightUtils.highlightString(stringAndHoles.value, result.printableUriHighlights, stringAndHoles.holes, 'coveo-highlight');
+    let uri = HighlightUtils.highlightString(stringAndHoles.value, result.printableUriHighlights, stringAndHoles.holes, 'coveo-highlight');
     let link = $$('a');
     link.setAttribute('title', result.printableUri);
     link.addClass('coveo-printable-uri');
@@ -120,22 +120,22 @@ export class PrintableUri extends Component {
   }
 
   public buildSeperator() {
-    var seperator = document.createElement('span');
-    seperator.innerText = ">";
+    let seperator = document.createElement('span');
+    seperator.innerText = '>';
     seperator.className = 'coveo-printable-uri-separator';
     return seperator;
   }
 
   public buildEllipsis() {
-    var ellipsis = document.createElement('span');
-    ellipsis.innerText = "...";
+    let ellipsis = document.createElement('span');
+    ellipsis.innerText = '...';
     ellipsis.className = 'coveo-printable-uri';
     return ellipsis;
   }
 
   public buildHtmlToken(name: string, uri: string) {
-    var modifiedName = name.charAt(0).toUpperCase() + name.slice(1);
-    var link = document.createElement('a');
+    let modifiedName = name.charAt(0).toUpperCase() + name.slice(1);
+    let link = document.createElement('a');
     this.bindLogOpenDocument(link);
     link.href = uri;
     this.uri = uri;
@@ -146,9 +146,9 @@ export class PrintableUri extends Component {
 
   private bindLogOpenDocument(link: HTMLElement) {
     $$(link).on(['mousedown', 'touchend'], (e: Event) => {
-      var url = $$(<HTMLElement>e.srcElement).getAttribute('href');
-      var title = $$(<HTMLElement>e.srcElement).text();
-      this.usageAnalytics.logClickEvent(AnalyticsActionCauseList.documentOpen, {
+      let url = $$(<HTMLElement>e.srcElement).getAttribute('href');
+      let title = $$(<HTMLElement>e.srcElement).text();
+      this.usageAnalytics.logClickEvent(analyticsActionCauseList.documentOpen, {
         documentURL: url,
         documentTitle: title,
         author: this.result.raw.author

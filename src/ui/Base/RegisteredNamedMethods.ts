@@ -13,6 +13,7 @@ import {Component} from '../Base/Component';
 import {IStandaloneSearchInterfaceOptions} from '../SearchInterface/SearchInterface';
 import {IQueryResults} from '../../rest/QueryResults';
 import _ = require('underscore');
+import {IRecommendationOptions} from '../Recommendation/Recommendation';
 
 /**
  * Initialize the framework with a basic search interface. Calls {@link Initialization.initSearchInterface}.<br/>
@@ -53,6 +54,30 @@ export function initSearchbox(element: HTMLElement, searchPageUri: string, optio
 Initialization.registerNamedMethod('initSearchbox', (element: HTMLElement, searchPageUri: string, options: any = {}) => {
   initSearchbox(element, searchPageUri, options);
 });
+
+/**
+ * Initialize the framework with a recommendation interface. Calls {@link Initialization.initRecommendationInterface}.<br/>
+ * If using the jQuery extension, this is called using <code>$('#root').coveo('initRecommendation');</code>
+ * @param element The root of the interface to initialize
+ * @param mainSearchInterface The search interface to link with the recommendation interface. View {@link Recommendation}
+ * @param userContext The user context to pass with the query generated in the recommendation interface. View {@link Recommendation}
+ * @param options JSON options for the framework eg : <code>{Searchbox : {enableSearchAsYouType: true}}</code>
+ */
+export function initRecommendation(element: HTMLElement, mainSearchInterface: HTMLElement, userContext: { [name: string]: any } = {}, options: any = {}) {
+  var recommendationOptions = <IRecommendationOptions>{};
+  recommendationOptions.mainSearchInterface = mainSearchInterface;
+  recommendationOptions.userContext = userContext;
+  recommendationOptions.enableHistory = false;
+  options = _.extend({}, options, { Recommendation: recommendationOptions });
+  Initialization.initializeFramework(element, options, () => {
+    Initialization.initRecommendationInterface(element, options);
+  });
+}
+
+Initialization.registerNamedMethod('initRecommendation', (element: HTMLElement, mainSearchInterface: HTMLElement, userContext: any = {}, options: any = {}) => {
+  initRecommendation(element, mainSearchInterface, userContext, options);
+});
+
 
 /**
  * Execute a standard query. Active component in the interface will react to events/ push data in the query / handle the query success or failure as needed.<br/>
@@ -237,25 +262,19 @@ export function initBox(element: HTMLElement, ...args: any[]) {
   if (args.length == 0) {
     type = 'Standard';
     injectMarkup = false;
-  }
-  // One arg, might be options or type
-  else if (args.length == 1) {
+  } else if (args.length == 1) { // 1 arg, might be options or type
     // This mean a type (with injection) and no options
     if (typeof args[0] == 'string') {
       type = args[0];
       injectMarkup = true;
-    }
-    // This means no type(no injection) and with options
-    else if (typeof args[0] == 'object') {
+    } else if (typeof args[0] == 'object') { // This means no type(no injection) and with options
       type = 'Standard';
       injectMarkup = false;
       options = args[0];
     } else {
       Assert.fail('Invalid parameters to init a box');
     }
-  }
-  // Two args mean both options and type (with injection);
-  else if (args.length == 2) {
+  } else if (args.length == 2) { // 2 args means both options and type (with injection);
     type = args[0];
     options = args[1];
     injectMarkup = true;

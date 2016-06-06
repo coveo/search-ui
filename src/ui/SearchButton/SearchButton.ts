@@ -3,7 +3,7 @@ import {IComponentBindings} from '../Base/ComponentBindings';
 import {Utils} from '../../utils/Utils';
 import {$$} from '../../utils/Dom';
 import {l} from '../../strings/Strings';
-import {IAnalyticsNoMeta, AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
+import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {Initialization} from '../Base/Initialization';
 
 export interface ISearchButtonOptions {
@@ -13,7 +13,7 @@ export interface ISearchButtonOptions {
  * A component that allows user to trigger a query by clicking on it.<br/>
  * This component will instantiate on an element and add a search icon.<br/>
  * It will also sends an analytics event to the coveo platform when clicked.
- * */
+ */
 export class SearchButton extends Component {
   static ID = 'SearchButton';
 
@@ -46,7 +46,7 @@ export class SearchButton extends Component {
 
   private handleClick() {
     this.logger.debug('Performing query following button click');
-    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxSubmit, {});
+    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
     this.queryController.executeQuery();
   }
 }

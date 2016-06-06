@@ -171,28 +171,7 @@ module Coveo {
     })
 
     describe('coveoanalytics', function () {
-      var store;
-
-      class HistoryStoreMock {
-        constructor() {
-        }
-
-        public addElement(query: IQuery) {
-          store.addElement(query)
-        }
-
-        public getHistory() {
-          return store.getHistory()
-        }
-
-        public setHistory(history: any[]) {
-          store.setHistory(history)
-        }
-
-        public clear() {
-          store.clear()
-        }
-      }
+      let store: CoveoAnalytics.HistoryStore;
 
       beforeEach(function () {
         store = {
@@ -207,17 +186,12 @@ module Coveo {
           }
         }
 
-        coveoanalytics = {
-          history: {
-            HistoryStore: HistoryStoreMock
-          }
-        }
-
+        Mock.initPageViewScript(store);
         spyOn(store, 'addElement');
       });
 
       afterEach(function () {
-        store = null;
+        store = undefined;
         coveoanalytics = undefined;
       })
 
@@ -231,8 +205,6 @@ module Coveo {
         test.cmp.executeQuery();
         expect(store.addElement).not.toHaveBeenCalled()
       })
-
     })
-
   })
 }

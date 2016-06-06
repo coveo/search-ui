@@ -1,10 +1,10 @@
 import {Component} from '../Base/Component';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
-import {ModelEvents, IAttributeChangedEventArg} from '../../models/Model';
+import {MODEL_EVENTS, IAttributeChangedEventArg} from '../../models/Model';
 import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {QueryStateModel, QueryStateAttributes} from '../../models/QueryStateModel';
-import {AnalyticsActionCauseList, IAnalyticsInterfaceChange} from '../Analytics/AnalyticsActionListMeta';
+import {QueryStateModel, QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
+import {analyticsActionCauseList, IAnalyticsInterfaceChange} from '../Analytics/AnalyticsActionListMeta';
 import {SearchEndpoint} from '../../rest/SearchEndpoint';
 import {Initialization} from '../Base/Initialization';
 import {Utils} from '../../utils/Utils';
@@ -113,7 +113,7 @@ export class Tab extends Component {
     this.options = ComponentOptions.initComponentOptions(element, Tab, options);
 
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
-    this.bind.onQueryState(ModelEvents.CHANGE_ONE, QueryStateAttributes.T, (args: IAttributeChangedEventArg) => this.handleQueryStateChanged(args));
+    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.T, (args: IAttributeChangedEventArg) => this.handleQueryStateChanged(args));
     this.bind.on(element, 'click', (e: Event) => this.handleClick());
     this.render();
   }
@@ -128,7 +128,7 @@ export class Tab extends Component {
         t: this.options.id,
         sort: this.options.sort || QueryStateModel.defaultAttributes.sort
       });
-      this.usageAnalytics.logSearchEvent<IAnalyticsInterfaceChange>(AnalyticsActionCauseList.interfaceChange, { interfaceChangeTo: this.options.id });
+      this.usageAnalytics.logSearchEvent<IAnalyticsInterfaceChange>(analyticsActionCauseList.interfaceChange, { interfaceChangeTo: this.options.id });
       this.queryController.executeQuery();
     }
   }

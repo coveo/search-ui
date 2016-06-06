@@ -2,10 +2,10 @@
 import {Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion} from './Omnibox';
 import {OmniboxEvents} from '../../events/OmniboxEvents';
 import {IFieldDescription} from '../../rest/FieldDescription';
-import {EndpointError} from '../../rest/EndpointError';
+import {IEndpointError} from '../../rest/EndpointError';
 import _ = require('underscore');
 
-interface FieldAddonHash {
+interface IFieldAddonHash {
   type: string;
   before: string;
   after: string;
@@ -14,7 +14,7 @@ interface FieldAddonHash {
 }
 
 export class FieldAddon {
-  static Index = 64;
+  static INDEX = 64;
 
   cache: { [hash: string]: Promise<string[]> } = {};
 
@@ -50,7 +50,7 @@ export class FieldAddon {
     return this.hashValueToSuggestion(hash, values);
   }
 
-  private getHash(): FieldAddonHash {
+  private getHash(): IFieldAddonHash {
     var fieldName: Coveo.MagicBox.Result = _.last(this.omnibox.resultAtCursor('FieldName'));
     if (fieldName != null) {
       fieldName = fieldName.findParent('Field') || fieldName;
@@ -86,20 +86,20 @@ export class FieldAddon {
     }
   }
 
-  private hashToString(hash: FieldAddonHash) {
+  private hashToString(hash: IFieldAddonHash) {
     if (hash == null) {
       return null;
     }
     return hash.type + hash.current + (hash.field || '');
   }
 
-  private hashValueToSuggestion(hash: FieldAddonHash, promise: Promise<string[]>): Promise<IOmniboxSuggestion[]> {
+  private hashValueToSuggestion(hash: IFieldAddonHash, promise: Promise<string[]>): Promise<IOmniboxSuggestion[]> {
     return promise.then((values) => {
       var suggestions: IOmniboxSuggestion[] = _.map(values, (value: string, i) => {
         return {
           text: hash.before + (hash.current.toLowerCase().indexOf(value.toLowerCase()) == 0 ? hash.current + value.substr(hash.current.length) : value) + hash.after,
           html: Coveo.MagicBox.Utils.highlightText(value, hash.current, true),
-          index: FieldAddon.Index - i / values.length
+          index: FieldAddon.INDEX - i / values.length
         }
       });
       return suggestions;
@@ -114,7 +114,7 @@ export class FieldAddon {
         if (this.omnibox.options.listOfFields != null) {
           resolve(this.omnibox.options.listOfFields);
         } else {
-          var promise: Promise<IFieldDescription[] | EndpointError> = this.omnibox.queryController.getEndpoint().listFields();
+          var promise: Promise<IFieldDescription[] | IEndpointError> = this.omnibox.queryController.getEndpoint().listFields();
           promise.then((fieldDescriptions: IFieldDescription[]) => {
             var fieldNames = _.chain(fieldDescriptions)
               .filter((fieldDescription: IFieldDescription) => fieldDescription.includeInQuery && fieldDescription.groupByField)

@@ -10,7 +10,7 @@ import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
 import {QueryController} from '../../controllers/QueryController';
 import {Model, IAttributeChangedEventArg} from '../../models/Model';
 import {QueryEvents, IBuildingQueryEventArgs, INewQueryEventArgs} from '../../events/QueryEvents';
-import {BeforeRedirectEventArgs, StandaloneSearchInterfaceEvents} from '../../events/StandaloneSearchInterfaceEvents';
+import {IBeforeRedirectEventArgs, StandaloneSearchInterfaceEvents} from '../../events/StandaloneSearchInterfaceEvents';
 import {HistoryController} from '../../controllers/HistoryController';
 import {LocalStorageHistoryController} from '../../controllers/LocalStorageHistoryController';
 import {InitializationEvents} from '../../events/InitializationEvents';
@@ -230,7 +230,7 @@ export class SearchInterface extends RootComponent {
     let eventNameQuickview = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.quickview);
     $$(this.element).on(eventNameQuickview, (e, args) => this.handleQuickviewChanged(args));
     // shows the UI, since it's been hidden while loading
-    this.element.style.display = 'block';
+    this.element.style.display = element.style.display || 'block';
     this.setupDebugInfo();
     this.isNewDesignAttribute = this.root.getAttribute('data-design') == 'new';
   }
@@ -555,7 +555,7 @@ export class StandaloneSearchInterface extends SearchInterface {
 
   public handleRedirect(e: Event, data: INewQueryEventArgs) {
 
-    let dataToSendOnBeforeRedirect: BeforeRedirectEventArgs = {
+    let dataToSendOnBeforeRedirect: IBeforeRedirectEventArgs = {
       searchPageUri: this.options.searchPageUri,
       cancel: false
     }
@@ -575,13 +575,13 @@ export class StandaloneSearchInterface extends SearchInterface {
 
   public redirectToSearchPage(searchPage: string) {
     let stateValues = this.queryStateModel.getAttributes();
-    let UACauseBy = this.usageAnalytics.getCurrentEventCause();
-    if (UACauseBy != null) {
-      stateValues['firstQueryCause'] = UACauseBy;
+    let uaCausedBy = this.usageAnalytics.getCurrentEventCause();
+    if (uaCausedBy != null) {
+      stateValues['firstQueryCause'] = uaCausedBy;
     }
-    let UAMeta = this.usageAnalytics.getCurrentEventMeta();
-    if (UAMeta != null) {
-      stateValues['firstQueryMeta'] = UAMeta;
+    let uaMeta = this.usageAnalytics.getCurrentEventMeta();
+    if (uaMeta != null) {
+      stateValues['firstQueryMeta'] = uaMeta;
     }
     window.location.href = searchPage + '#' + HashUtils.encodeValues(stateValues);
   }

@@ -13,7 +13,7 @@ import {IIndexFieldValue} from '../rest/FieldValue';
 import {FacetUtils} from '../ui/Facet/FacetUtils';
 import {IQueryResults} from '../rest/QueryResults';
 import {IGroupByValue} from '../rest/GroupByValue';
-import {EndpointError} from '../rest/EndpointError';
+import {IEndpointError} from '../rest/EndpointError';
 import {IQueryBuilderExpression} from '../ui/Base/QueryBuilder';
 
 export class FacetQueryController {
@@ -137,7 +137,7 @@ export class FacetQueryController {
             return queryResults.groupByResults[0];
           }
         })
-        .catch((error: EndpointError) => {
+        .catch((error: IEndpointError) => {
           reject(error);
         })
     })

@@ -1,22 +1,22 @@
 import {IQuery} from './Query';
 
-export const SubscriptionType = {
+export const SUBSCRIPTION_TYPE = {
   followQuery: 'followQuery',
   followDocument: 'followDocument',
 }
 
-export interface SearchAlertsEndpointOptions {
+export interface ISearchAlertsEndpointOptions {
   restUri: string;
   accessToken?: string;
   errorsAsSuccess?: boolean;
 }
 
-export interface SearchAlertsEndpointCallOptions {
+export interface ISearchAlertsEndpointCallOptions {
   type?: string;
   page?: number;
 }
 
-export interface SearchAlertsEndpointSearchCallOptions {
+export interface ISearchAlertsEndpointSearchCallOptions {
   documentIds: string[];
 }
 

@@ -13,7 +13,7 @@ import {QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs, IDoneBuild
 import {BreadcrumbEvents, IPopulateBreadcrumbEventArgs, IBreadcrumbItem} from '../../events/BreadcrumbEvents';
 import {IAttributeChangedEventArg, Model} from '../../models/Model';
 import {$$} from '../../utils/Dom';
-import {AnalyticsActionCauseList, IAnalyticsFacetMeta, IAnalyticsFacetSliderChangeMeta, IAnalyticsFacetGraphSelectedMeta} from '../Analytics/AnalyticsActionListMeta';
+import {analyticsActionCauseList, IAnalyticsFacetMeta, IAnalyticsFacetSliderChangeMeta, IAnalyticsFacetGraphSelectedMeta} from '../Analytics/AnalyticsActionListMeta';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import {SliderEvents, IGraphValueSelectedArgs} from '../../events/SliderEvents';
 import {Assert} from '../../misc/Assert';
@@ -353,7 +353,7 @@ export class FacetSlider extends Component {
 
     value.on('click', () => {
       this.reset();
-      this.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(AnalyticsActionCauseList.facetClearAll, {
+      this.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetClearAll, {
         facetId: this.options.id,
         facetTitle: this.options.title
       });
@@ -446,7 +446,7 @@ export class FacetSlider extends Component {
     this.endOfSlider = values[1];
     if (this.updateQueryState(values)) {
       this.updateAppearanceDependingOnState();
-      this.usageAnalytics.logSearchEvent<IAnalyticsFacetSliderChangeMeta>(AnalyticsActionCauseList.facetRangeSlider, {
+      this.usageAnalytics.logSearchEvent<IAnalyticsFacetSliderChangeMeta>(analyticsActionCauseList.facetRangeSlider, {
         facetId: this.options.id,
         facetRangeStart: this.startOfSlider.toString(),
         facetRangeEnd: this.endOfSlider.toString()
@@ -471,7 +471,7 @@ export class FacetSlider extends Component {
       this.endOfSlider = args.end;
       this.slider.setValues([this.startOfSlider, this.endOfSlider]);
       this.updateQueryState();
-      this.usageAnalytics.logSearchEvent<IAnalyticsFacetGraphSelectedMeta>(AnalyticsActionCauseList.facetRangeGraph, {
+      this.usageAnalytics.logSearchEvent<IAnalyticsFacetGraphSelectedMeta>(analyticsActionCauseList.facetRangeGraph, {
         facetId: this.options.id,
         facetRangeStart: this.startOfSlider.toString(),
         facetRangeEnd: this.endOfSlider.toString()
@@ -495,8 +495,8 @@ export class FacetSlider extends Component {
   }
 
   private copyValues(values: number[]) {
-    //Creating a copy of the values prevents an unwanted automatic update of the state while sliding
-    //That's the cleanest way I found to copy that array correctly
+    // Creating a copy of the values prevents an unwanted automatic update of the state while sliding
+    // That's the cleanest way I found to copy that array correctly
     var copyOfValues = [];
     copyOfValues[0] = Number(values[0]) + 0.0;
     copyOfValues[1] = Number(values[1]) + 0.0;
@@ -540,10 +540,10 @@ export class FacetSlider extends Component {
   private generateBoundary(): number[] {
     var start: number, end: number;
     if (!this.slider) {
-      //If the slider is not initialized, the only boundary we can get is from the state.
+      // If the slider is not initialized, the only boundary we can get is from the state.
       return this.generateBoundaryFromState();
     } else {
-      //Else, try to get one from the slider itself. If we cant, try to return one from the state.
+      // Else, try to get one from the slider itself. If we cant, try to return one from the state.
       var boundary = this.generateBoundaryFromSlider();
       if (boundary[0] == undefined && boundary[1] == undefined) {
         return this.generateBoundaryFromState();

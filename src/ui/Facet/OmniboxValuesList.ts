@@ -2,7 +2,7 @@
 import {Facet} from './Facet';
 import {FacetValue} from './FacetValues';
 import {IPopulateOmniboxObject} from '../Omnibox/OmniboxInterface';
-import {OmniboxValueElementKlass} from './OmniboxValueElement';
+import {IOmniboxValueElementKlass} from './OmniboxValueElement';
 import {ValueElement} from './ValueElement';
 import {IAnalyticsActionCause, IAnalyticsOmniboxFacetMeta} from '../Analytics/AnalyticsActionListMeta';
 import {$$} from '../../utils/Dom';
@@ -10,7 +10,7 @@ import {Utils} from '../../utils/Utils';
 import {FacetUtils} from './FacetUtils';
 
 export class OmniboxValuesList {
-  constructor(public facet: Facet, public facetValues: FacetValue[], public omniboxObject: IPopulateOmniboxObject, public omniboxValueElementKlass: OmniboxValueElementKlass) {
+  constructor(public facet: Facet, public facetValues: FacetValue[], public omniboxObject: IPopulateOmniboxObject, public omniboxValueElementKlass: IOmniboxValueElementKlass) {
   }
 
   public build() {
@@ -81,7 +81,7 @@ export class OmniboxValuesList {
   private highlightOmniboxMatch(orignalStr: string, regex: RegExp, valueToSearch: string) {
     var firstChar = orignalStr.search(regex);
     var lastChar = firstChar + valueToSearch.length;
-    return orignalStr.slice(0, firstChar) + "<span class='coveo-highlight'>" + orignalStr.slice(firstChar, lastChar) + "</span>" + orignalStr.slice(lastChar);
+    return orignalStr.slice(0, firstChar) + '<span class="coveo-highlight">' + orignalStr.slice(firstChar, lastChar) + '</span>' + orignalStr.slice(lastChar);
   }
 
   private omniboxCloseEvent(eventArg: IPopulateOmniboxObject) {

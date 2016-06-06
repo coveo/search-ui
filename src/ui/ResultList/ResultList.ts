@@ -1,24 +1,26 @@
-import {Template} from '../Templates/Template'
-import {DefaultResultTemplate} from '../Templates/DefaultResultTemplate'
-import {Component} from '../Base/Component'
-import {IComponentBindings} from '../Base/ComponentBindings'
-import {IResultsComponentBindings} from '../Base/ResultsComponentBindings'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {IQueryResult} from '../../rest/QueryResult'
-import {IQueryResults} from '../../rest/QueryResults'
-import {Assert} from '../../misc/Assert'
-import {QueryEvents, INewQueryEventArgs, IBuildingQueryEventArgs, IQuerySuccessEventArgs, IDuringQueryEventArgs, IQueryErrorEventArgs} from '../../events/QueryEvents'
-import {ModelEvents} from '../../models/Model'
-import {QueryStateAttributes} from '../../models/QueryStateModel'
-import {QueryUtils} from '../../utils/QueryUtils'
-import {$$, Win, Doc} from '../../utils/Dom'
-import {AnalyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta'
+import {Template} from '../Templates/Template';
+import {DefaultResultTemplate} from '../Templates/DefaultResultTemplate';
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {IQueryResult} from '../../rest/QueryResult';
+import {IQueryResults} from '../../rest/QueryResults';
+import {Assert} from '../../misc/Assert';
+import {QueryEvents, INewQueryEventArgs, IBuildingQueryEventArgs, IQuerySuccessEventArgs, IDuringQueryEventArgs, IQueryErrorEventArgs} from '../../events/QueryEvents';
+import {MODEL_EVENTS} from '../../models/Model';
+import {QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
+import {QueryUtils} from '../../utils/QueryUtils';
+import {$$, Win, Doc} from '../../utils/Dom';
+import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
-import {Defer} from '../../misc/Defer'
-import {DeviceUtils} from '../../utils/DeviceUtils'
-import {ResultListEvents, IDisplayedNewResultEventArgs} from '../../events/ResultListEvents'
-import {Utils} from '../../utils/Utils'
-import {DomUtils} from '../../utils/DomUtils'
+import {Defer} from '../../misc/Defer';
+import {DeviceUtils} from '../../utils/DeviceUtils';
+import {ResultListEvents, IDisplayedNewResultEventArgs} from '../../events/ResultListEvents';
+import {Utils} from '../../utils/Utils';
+import {DomUtils} from '../../utils/DomUtils';
+import {Recommendation} from '../Recommendation/Recommendation';
+import {DefaultRecommendationTemplate} from '../Templates/DefaultRecommendationTemplate';
 
 export interface IResultListOptions {
   resultContainer?: HTMLElement;
@@ -58,7 +60,7 @@ export class ResultList extends Component {
         return d;
       }
     }),
-    resultTemplate: ComponentOptions.buildTemplateOption({ defaultFunction: (element: HTMLElement) => new DefaultResultTemplate() }),
+    resultTemplate: ComponentOptions.buildTemplateOption({ defaultFunction: ResultList.getDefaultTemplate }),
     /**
      * Specifies the type of animation to display while waiting for a new query to finish executing.<br/>
      * Possible values are :<br/>
@@ -149,13 +151,13 @@ export class ResultList extends Component {
     if (this.options.enableInfiniteScroll) {
       this.bind.on(<HTMLElement>this.options.infiniteScrollContainer, 'scroll', (e: Event) => this.handleScrollOfResultList());
     }
-    this.bind.onQueryState(ModelEvents.CHANGE_ONE, QueryStateAttributes.FIRST, () => this.handlePageChanged());
+    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, () => this.handlePageChanged());
   }
 
   /**
    * Empty the current result list content and append the given array of HTMLElement.<br/>
    * Can append to existing elements in the result list, or replace them.<br/>
-   * Trigger the newResultDiplayed and newResultsDisplayed event
+   * Triggers the newResultDiplayed and newResultsDisplayed event
    * @param resultsElement
    * @param append
    */
@@ -174,7 +176,7 @@ export class ResultList extends Component {
    * Build and return an array of HTMLElement with the given result set.
    * @param results
    */
-  public buildResults(results: IQueryResults) {
+  public buildResults(results: IQueryResults): HTMLElement[] {
     var res: HTMLElement[] = [];
     _.each(results.results, (result: IQueryResult) => {
       var resultElement = this.buildResult(result);
@@ -226,7 +228,7 @@ export class ResultList extends Component {
     this.fetchingMoreResults = this.queryController.fetchMore(count);
     this.fetchingMoreResults.then((data: IQueryResults) => {
       Assert.exists(data);
-      this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.pagerScrolling, {}, this.element);
+      this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.pagerScrolling, {}, this.element);
       var results = data.results;
       this.reachedTheEndOfResults = count > data.results.length;
       this.renderResults(this.buildResults(data), true);
@@ -257,6 +259,33 @@ export class ResultList extends Component {
    */
   public getDisplayedResultsElements(): HTMLElement[] {
     return $$(this.options.resultContainer).findAll('.CoveoResult');
+  }
+
+  protected autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult) {
+    Assert.exists(element);
+
+    var initOptions = this.searchInterface.options.originalOptionsObject;
+    var resultComponentBindings: IResultsComponentBindings = _.extend({}, this.getBindings(), {
+      resultElement: element
+    })
+    var initParameters: IInitializationParameters = {
+      options: initOptions,
+      bindings: resultComponentBindings,
+      result: result
+    }
+    Initialization.automaticallyCreateComponentsInside(element, initParameters);
+  }
+
+  protected triggerNewResultDisplayed(result: IQueryResult, resultElement: HTMLElement) {
+    var args: IDisplayedNewResultEventArgs = {
+      result: result,
+      item: resultElement
+    };
+    $$(this.element).trigger(ResultListEvents.newResultDisplayed, args);
+  }
+
+  protected triggerNewResultsDisplayed() {
+    $$(this.element).trigger(ResultListEvents.newResultsDisplayed, {});
   }
 
   private handleDuringQuery() {
@@ -310,7 +339,7 @@ export class ResultList extends Component {
     this.bind.oneRootElement(QueryEvents.querySuccess, () => {
       if (this.options.infiniteScrollContainer instanceof Window) {
         var win = <Window>this.options.infiniteScrollContainer;
-        win.scrollTo(0);
+        win.scrollTo(0, 0);
       } else {
         var el = <HTMLElement>this.options.infiniteScrollContainer;
         if (el.scrollIntoView) {
@@ -337,18 +366,6 @@ export class ResultList extends Component {
     }
   }
 
-  private triggerNewResultDisplayed(result: IQueryResult, resultElement: HTMLElement) {
-    var args: IDisplayedNewResultEventArgs = {
-      result: result,
-      item: resultElement
-    };
-    $$(this.element).trigger(ResultListEvents.newResultDisplayed, args);
-  }
-
-  private triggerNewResultsDisplayed() {
-    $$(this.element).trigger(ResultListEvents.newResultsDisplayed, {});
-  }
-
   private getAutoSelectedFieldsToInclude() {
     return _.chain(this.options.resultTemplate.getFields())
       .compact()
@@ -356,27 +373,12 @@ export class ResultList extends Component {
       .value()
   }
 
-  private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult) {
-    Assert.exists(element);
-
-    var initOptions = this.searchInterface.options.originalOptionsObject;
-    var resultComponentBindings: IResultsComponentBindings = _.extend({}, this.getBindings(), {
-      resultElement: element
-    })
-    var initParameters: IInitializationParameters = {
-      options: initOptions,
-      bindings: resultComponentBindings,
-      result: result
-    }
-    Initialization.automaticallyCreateComponentsInside(element, initParameters);
-  }
-
   private isCurrentlyFetchingMoreResults(): boolean {
     return Utils.exists(this.fetchingMoreResults);
   }
 
   private isScrollingOfResultListAlmostAtTheBottom(): boolean {
-    //this is in a try catch because the unit test fail otherwise (Window does not exist for phantom js in the console)
+    // this is in a try catch because the unit test fail otherwise (Window does not exist for phantom js in the console)
     var isWindow;
     try {
       isWindow = this.options.infiniteScrollContainer instanceof Window;
@@ -473,6 +475,15 @@ export class ResultList extends Component {
       $$(spinner).detach();
     }
   }
+
+  private static getDefaultTemplate(e: HTMLElement): Template {
+    let component = <ResultList>Component.get(e, ResultList)
+    if (component.searchInterface instanceof Recommendation) {
+      return new DefaultRecommendationTemplate();
+    }
+    return new DefaultResultTemplate();
+  }
 }
+
 
 Initialization.registerAutoCreateComponent(ResultList);

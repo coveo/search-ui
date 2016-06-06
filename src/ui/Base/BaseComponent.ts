@@ -5,7 +5,7 @@ import {Logger} from '../../misc/Logger';
 
 declare var Coveo;
 
-export interface ComponentHtmlElement extends HTMLElement {
+export interface IComponentHtmlElement extends HTMLElement {
   CoveoBoundComponents?: BaseComponent[];
 }
 
@@ -50,7 +50,7 @@ export class BaseComponent {
 
 
   private initDebugInfo() {
-    $$(this.element).on('doubleclick', function(e: MouseEvent) {
+    $$(this.element).on('doubleclick', function (e: MouseEvent) {
       if (e.altKey) {
         var debugInfo = this.debugInfo();
         if (debugInfo != null) {
@@ -83,7 +83,7 @@ export class BaseComponent {
     return '.' + BaseComponent.computeCssClassNameForType(type);
   }
 
-  static getBoundComponentsForElement(element: ComponentHtmlElement): BaseComponent[] {
+  static getBoundComponentsForElement(element: IComponentHtmlElement): BaseComponent[] {
     Assert.exists(element);
 
     if (element.CoveoBoundComponents == null) {

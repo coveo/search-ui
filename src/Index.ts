@@ -1,5 +1,7 @@
 import {defaultLanguage} from './strings/DefaultLanguage';
 defaultLanguage();
+import {shim} from './misc/PromisesShim';
+shim();
 // MISC
 export {version} from './misc/Version';
 export {Assert} from './misc/Assert';
@@ -8,6 +10,7 @@ export {Defer} from './misc/Defer';
 export {L10N} from './misc/L10N';
 export {Logger} from './misc/Logger';
 export {Options} from './misc/Options';
+export {l} from './strings/Strings';
 
 // REST
 export {SearchEndpoint} from './rest/SearchEndpoint';
@@ -91,7 +94,7 @@ export {TemplateCache} from './ui/Templates/TemplateCache';
 export {SearchInterface, StandaloneSearchInterface} from './ui/SearchInterface/SearchInterface';
 export {Aggregate} from './ui/Aggregate/Aggregate';
 export {Analytics} from './ui/Analytics/Analytics';
-export {AnalyticsActionCauseList} from './ui/Analytics/AnalyticsActionListMeta';
+export {analyticsActionCauseList} from './ui/Analytics/AnalyticsActionListMeta';
 export {NoopAnalyticsClient} from './ui/Analytics/NoopAnalyticsClient';
 export {LiveAnalyticsClient} from './ui/Analytics/LiveAnalyticsClient';
 export {MultiAnalyticsClient} from './ui/Analytics/MultiAnalyticsClient';
@@ -148,8 +151,17 @@ export {ShareQuery} from './ui/ShareQuery/ShareQuery';
 export {Sort} from './ui/Sort/Sort';
 export {SortCriteria} from './ui/Sort/SortCriteria';
 export {Triggers} from './ui/Triggers/Triggers';
+export {Recommendation} from './ui/Recommendation/Recommendation';
+export {RecommendationQuery} from './ui/Recommendation/RecommendationQuery';
 export {TemplateLoader} from './ui/TemplateLoader/TemplateLoader';
 export {Template} from './ui/Templates/Template';
 export {SuggestionForOmnibox} from './ui/Misc/SuggestionForOmnibox';
 export {AnalyticsSuggestions} from './ui/AnalyticsSuggestions/AnalyticsSuggestions';
 export {FieldSuggestions} from './ui/FieldSuggestions/FieldSuggestions';
+export {AuthenticationProvider} from './ui/AuthenticationProvider/AuthenticationProvider';
+export {ResultTagging} from './ui/ResultTagging/ResultTagging';
+export {ResultsPreferences} from './ui/ResultsPreferences/ResultsPreferences';
+export {PipelineContext, context} from './ui/PipelineContext/PipelineContext';
+export {OmniboxResultList} from './ui/OmniboxResultList/OmniboxResultList';
+export {CurrentTab} from './ui/CurrentTab/CurrentTab';
+export {QueryboxQueryParameters} from './ui/Querybox/QueryboxQueryParameters';

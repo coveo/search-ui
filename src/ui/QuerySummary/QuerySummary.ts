@@ -5,7 +5,7 @@ import {IComponentBindings} from '../Base/ComponentBindings';
 import {$$, Dom} from '../../utils/Dom';
 import {Assert} from '../../misc/Assert';
 import {l} from '../../strings/Strings';
-import {AnalyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
+import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
 import {Initialization} from '../Base/Initialization';
 import {QueryStateModel} from '../../models/QueryStateModel';
 
@@ -101,8 +101,8 @@ export class QuerySummary extends Component {
     }, l('CancelLastAction'));
 
     cancelLastAction.on('click', () => {
-      this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.noResultsBack, {}, this.root);
-      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.noResultsBack, {})
+      this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {}, this.root);
+      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {})
       history.back();
     });
 

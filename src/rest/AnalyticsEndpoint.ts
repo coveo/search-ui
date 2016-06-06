@@ -1,6 +1,6 @@
 import {Logger} from '../misc/Logger';
 import {EndpointCaller, IEndpointCallerOptions} from '../rest/EndpointCaller';
-import {APIAnalyticsVisitResponseRest} from './APIAnalyticsVisitResponse';
+import {IAPIAnalyticsVisitResponseRest} from './APIAnalyticsVisitResponse';
 import {IErrorResponse} from '../rest/EndpointCaller'
 import {IAPIAnalyticsSearchEventsResponse} from '../rest/APIAnalyticsSearchEventsResponse';
 import {ISearchEvent} from '../rest/SearchEvent';
@@ -56,8 +56,8 @@ export class AnalyticsEndpoint {
         resolve(this.getCurrentVisitId());
       } else {
         var url = this.buildAnalyticsUrl('/analytics/visit');
-        this.getFromService<APIAnalyticsVisitResponseRest>(url, {})
-          .then((response: APIAnalyticsVisitResponseRest) => {
+        this.getFromService<IAPIAnalyticsVisitResponseRest>(url, {})
+          .then((response: IAPIAnalyticsVisitResponseRest) => {
             this.visitId = response.id;
             resolve(this.visitId);
           })

@@ -86,7 +86,7 @@ export class Searchbox extends Component {
   }
 }
 
-Searchbox.options = _.extend({}, Searchbox.options, Omnibox.options);
+Searchbox.options = _.extend({}, Searchbox.options, Omnibox.options, Querybox.options);
 
 // Only parse omnibox option if omnibox is enabled
 _.each(Searchbox.options, (value, key: string) => {

@@ -7,13 +7,13 @@ import {Assert} from '../../misc/Assert';
 // really like this. Maybe a dedicated filetype facet would be better? Hmm...
 let fileTypeCaptions: { [id: string]: string };
 
-export interface FileTypeInfo {
+export interface IFileTypeInfo {
   icon: string;
   caption: string;
 }
 
 export class FileTypes {
-  static get(result: IQueryResult): FileTypeInfo {
+  static get(result: IQueryResult): IFileTypeInfo {
     var objecttype = <string>result.raw.objecttype;
     var filetype = <string>result.raw.filetype;
 
@@ -31,7 +31,7 @@ export class FileTypes {
     }
   }
 
-  static getObjectType(objecttype: string): FileTypeInfo {
+  static getObjectType(objecttype: string): IFileTypeInfo {
     // We must use lowercase filetypes because that's how the CSS classes
     // are generated (they are case sensitive, alas).
     objecttype = objecttype.toLowerCase();
@@ -45,7 +45,7 @@ export class FileTypes {
     }
   }
 
-  static getFileType(filetype: string): FileTypeInfo {
+  static getFileType(filetype: string): IFileTypeInfo {
     // We must use lowercase filetypes because that's how the CSS classes
     // are generated (they are case sensitive, alas).
     filetype = filetype.toLowerCase();
@@ -69,7 +69,7 @@ export class FileTypes {
       fileTypeCaptions = {};
       var strings = String['locales'][String['locale']];
       Assert.isNotUndefined(strings);
-      _.each(_.keys(strings), function(key) {
+      _.each(_.keys(strings), function (key) {
         if (key.indexOf('filetype_') == 0) {
           fileTypeCaptions[key.substr('filetype_'.length)] = key.toLocaleString();
         } else if (key.indexOf('objecttype_') == 0) {

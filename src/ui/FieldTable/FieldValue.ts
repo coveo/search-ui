@@ -7,7 +7,7 @@ import {TemplateHelpers} from '../Templates/TemplateHelpers'
 import {Assert} from '../../misc/Assert'
 import {DateUtils, IDateToStringOptions} from '../../utils/DateUtils'
 import {QueryStateModel} from '../../models/QueryStateModel'
-import {AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
+import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
 import {Utils} from '../../utils/Utils'
 import {Facet} from '../Facet/Facet'
 import {$$} from '../../utils/Dom'
@@ -21,6 +21,7 @@ export interface IFieldValueOptions {
   helperOptions?: { [key: string]: any };
   splitValues?: boolean;
   separator?: string;
+  displaySeparator?: string;
 }
 
 export interface IAnalyticsFieldValueMeta {
@@ -70,17 +71,23 @@ export class FieldValue extends Component {
      */
     htmlValue: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
-     * Specifies if the field value is to be split at each separator.
+     * Specifies if the field value is to be split at each {@link separator}.
      * This is useful for splitting groups by a facet field.<br/>
-     * The values displayed are split by commas (<code>,</code>).<br/>
+     * The values displayed are split by the {@link displaySeparator}.<br/>
      * The default value is <code>false</code>.
      */
     splitValues: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
-     * Specifies the string used to split multi value fields.
+     * Specifies the string used to split multi-value fields from the index.
      * The default value is <code>;</code>.
      */
     separator: ComponentOptions.buildStringOption({ defaultValue: ';' }),
+    /**
+     * Specifies the string used to display multi-value fields in the UI.
+     * It is inserted between the displayed values.
+     * The default value is <code>, </code>.
+     */
+    displaySeparator: ComponentOptions.buildStringOption({ defaultValue: ', ' }),
     /**
      * Specifies the helper to be used by the FieldValue to display its content.<br/>
      * A few helpers exist by default (see {@link CoreHelpers}), and new ones can be
@@ -94,7 +101,7 @@ export class FieldValue extends Component {
       subOptions: {
         text: ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
         target: ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
-        "class": ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
+        'class': ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
 
         decimals: ComponentOptions.buildNumberOption(showOnlyWithHelper(['currency'], { min: 0 })),
         symbol: ComponentOptions.buildStringOption(showOnlyWithHelper(['currency'])),
@@ -234,7 +241,7 @@ export class FieldValue extends Component {
 
     if (helper == 'date') {
       return DateUtils.dateToString(new Date(parseInt(date)), fullDateOptions);
-    } else if (helper == "dateTime" || helper == "emailDateTime") {
+    } else if (helper == 'dateTime' || helper == 'emailDateTime') {
       return DateUtils.dateTimeToString(new Date(parseInt(date)), fullDateOptions);
     }
     return '';
@@ -245,7 +252,7 @@ export class FieldValue extends Component {
       if (value != undefined) {
         this.getValueContainer().appendChild(this.renderOneValue(value));
         if (index !== values.length - 1) {
-          this.getValueContainer().appendChild(document.createTextNode(', '));
+          this.getValueContainer().appendChild(document.createTextNode(this.options.displaySeparator));
         }
       }
     })
@@ -268,7 +275,7 @@ export class FieldValue extends Component {
           _.each(facets, (facet: Facet) => facet.selectValue(value));
         }
         this.queryController.deferExecuteQuery({
-          beforeExecuteQuery: () => this.usageAnalytics.logSearchEvent<IAnalyticsFieldValueMeta>(AnalyticsActionCauseList.documentField, {
+          beforeExecuteQuery: () => this.usageAnalytics.logSearchEvent<IAnalyticsFieldValueMeta>(analyticsActionCauseList.documentField, {
             facetId: this.options.facet,
             facetValue: value.toLowerCase()
           })
@@ -285,7 +292,7 @@ export class FieldValue extends Component {
   private static initSimpleOptions() {
     let options = {};
     for (let key in FieldValue.options) {
-      if (key != "helperOptions") {
+      if (key != 'helperOptions') {
         options[key] = FieldValue.options[key];
       }
     }

@@ -1,11 +1,11 @@
 import {Initialization} from './Initialization';
 
-interface Window {
+interface IWindow {
   $: any;
 }
 
 if (window['$'] != undefined && window['$'].fn != undefined) {
-  window['$'].fn.coveo = function(...args: any[]) {
+  window['$'].fn.coveo = function (...args: any[]) {
     var returnValue: any;
     this.each((index: number, element: HTMLElement) => {
       var returnValueForThisElement: any;
