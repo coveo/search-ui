@@ -19,6 +19,9 @@
 /// <reference path="utils/L10NTest.ts" />
 /// <reference path="utils/HighlightUtilsTest.ts" />
 
+//***** TEST ON MISC ******
+/// <reference path="misc/PromisesShimTest.ts" />
+
 //***** TEST ON MODELS ******
 /// <reference path="models/ModelTest.ts" />
 /// <reference path="models/QueryStateModelTest.ts" />

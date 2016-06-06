@@ -1,5 +1,7 @@
 import {defaultLanguage} from './strings/DefaultLanguage';
 defaultLanguage();
+import {shim} from './misc/PromisesShim';
+shim();
 // MISC
 export {version} from './misc/Version';
 export {Assert} from './misc/Assert';
