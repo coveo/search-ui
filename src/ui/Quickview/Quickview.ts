@@ -132,7 +132,9 @@ export class Quickview extends Component {
     }
 
     this.bindClick(result);
-    this.bind.on($$(this.bindings.resultElement), ResultListEvents.openQuickview, () => this.open());
+    if (this.bindings.resultElement) {
+      this.bind.on(this.bindings.resultElement, ResultListEvents.openQuickview, () => this.open());
+    }
   }
 
   /**
