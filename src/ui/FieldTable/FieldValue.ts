@@ -7,7 +7,7 @@ import {TemplateHelpers} from '../Templates/TemplateHelpers'
 import {Assert} from '../../misc/Assert'
 import {DateUtils, IDateToStringOptions} from '../../utils/DateUtils'
 import {QueryStateModel} from '../../models/QueryStateModel'
-import {AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
+import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
 import {Utils} from '../../utils/Utils'
 import {Facet} from '../Facet/Facet'
 import {$$} from '../../utils/Dom'
@@ -275,7 +275,7 @@ export class FieldValue extends Component {
           _.each(facets, (facet: Facet) => facet.selectValue(value));
         }
         this.queryController.deferExecuteQuery({
-          beforeExecuteQuery: () => this.usageAnalytics.logSearchEvent<IAnalyticsFieldValueMeta>(AnalyticsActionCauseList.documentField, {
+          beforeExecuteQuery: () => this.usageAnalytics.logSearchEvent<IAnalyticsFieldValueMeta>(analyticsActionCauseList.documentField, {
             facetId: this.options.facet,
             facetValue: value.toLowerCase()
           })

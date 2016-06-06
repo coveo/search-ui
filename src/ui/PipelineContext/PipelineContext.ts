@@ -13,7 +13,7 @@ export interface IPipelineContextOptions {
 
 export class PipelineContext extends Component {
   static ID = 'PipelineContext';
-  static CurrentUrl = 'CurrentUrl';
+  static CURRENT_URL = 'CurrentUrl';
 
   private content: { [id: string]: string };
 
@@ -53,7 +53,7 @@ export class PipelineContext extends Component {
     return this.content[key].replace(/\{\!([^\}]+)\}/g, (all: string, contextKey: string) => {
       if (Coveo.context != null && contextKey in Coveo.context) {
         return Coveo.context[contextKey];
-      } else if (contextKey == PipelineContext.CurrentUrl) {
+      } else if (contextKey == PipelineContext.CURRENT_URL) {
         return window.location.href;
       }
       return '';

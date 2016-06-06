@@ -6,7 +6,7 @@ import _ = require('underscore');
 
 export class TopQueryAddon {
 
-  static Index = 61;
+  static INDEX = 61;
 
   cache: { [hash: string]: Promise<IOmniboxSuggestion[]> } = {};
 
@@ -37,7 +37,7 @@ export class TopQueryAddon {
           return {
             html: Coveo.MagicBox.Utils.highlightText(result, text, true),
             text: result,
-            index: TopQueryAddon.Index - i / results.length
+            index: TopQueryAddon.INDEX - i / results.length
           }
         });
       })

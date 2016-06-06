@@ -86,6 +86,7 @@
 /// <reference path="ui/FieldSuggestionsTest.ts" />
 /// <reference path="ui/AuthenticationProviderTest.ts" />
 /// <reference path="ui/CurrentTabTest.ts" />
+/// <reference path="ui/QueryboxQueryParametersTest.ts" />
 
 Coveo.Logger.disable();
 
@@ -97,8 +98,3 @@ module Coveo {
 function isPhantomJs() {
   return navigator.userAgent.indexOf('PhantomJS') != -1;
 }
-
-
-
-
-

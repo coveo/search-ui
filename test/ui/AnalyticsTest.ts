@@ -42,7 +42,7 @@ module Coveo {
             name: 'oops pretty bad'
           }
         });
-        expect(test.cmp.client.logCustomEvent).toHaveBeenCalledWith(AnalyticsActionCauseList.queryError, jasmine.any(Object), jasmine.any(HTMLElement));
+        expect(test.cmp.client.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.queryError, jasmine.any(Object), jasmine.any(HTMLElement));
       });
     });
 
