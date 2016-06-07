@@ -163,3 +163,6 @@ export {PipelineContext, context} from './ui/PipelineContext/PipelineContext';
 export {OmniboxResultList} from './ui/OmniboxResultList/OmniboxResultList';
 export {CurrentTab} from './ui/CurrentTab/CurrentTab';
 export {QueryboxQueryParameters} from './ui/Querybox/QueryboxQueryParameters';
+export {ResponsiveTabs} from './ui/ResponsiveComponents/ResponsiveTabs';
+export {ResponsiveFacets} from './ui/ResponsiveComponents/ResponsiveFacets';
+export {ResponsiveComponent, ResponsiveComponentsManager} from './ui/ResponsiveComponents/ResponsiveComponentsManager'

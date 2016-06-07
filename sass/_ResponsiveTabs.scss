@@ -5,7 +5,7 @@
    border-radius: 3px;
  }
  
-.coveo-small-search-interface {
+.CoveoSearchInterface.coveo-small-search-interface {
   
   .coveo-search-section {
     margin: 0;
@@ -53,7 +53,7 @@ p {
   
  .coveo-tab-dropdown-header-active {
    @include responsiveTabsRoundedBorder();
-   background-color: $color-blueish-white;
+   background-color: white;
    padding: 0px 7px 0px 7px;
  }
  
