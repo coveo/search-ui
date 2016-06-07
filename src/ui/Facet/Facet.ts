@@ -27,7 +27,7 @@ import {QueryEvents, INewQueryEventArgs, IQuerySuccessEventArgs, IBuildingQueryE
 import {Assert} from '../../misc/Assert';
 import {ISearchEndpoint} from '../../rest/SearchEndpointInterface';
 import {$$} from '../../utils/Dom';
-import {IAnalyticsFacetMeta, AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
+import {IAnalyticsFacetMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {Utils} from '../../utils/Utils';
 import {IIndexFieldValue} from '../../rest/FieldValue';
 import {IPopulateBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
@@ -37,7 +37,7 @@ import {FacetValueElement} from './FacetValueElement';
 import {FacetSearchValuesList} from './FacetSearchValuesList';
 import {Defer} from '../../misc/Defer';
 import {QueryStateModel, IQueryStateIncludedAttribute, IQueryStateExcludedAttribute} from '../../models/QueryStateModel';
-import {ModelEvents, IAttributesChangedEventArg} from '../../models/Model';
+import {MODEL_EVENTS, IAttributesChangedEventArg} from '../../models/Model';
 import {OmniboxEvents, IPopulateOmniboxEventArgs} from '../../events/OmniboxEvents';
 import {OmniboxValueElement} from './OmniboxValueElement';
 import {OmniboxValuesList} from './OmniboxValuesList';
@@ -407,7 +407,6 @@ export class Facet extends Component {
    */
   constructor(public element: HTMLElement, public options: IFacetOptions, bindings?: IComponentBindings, facetClassId: string = Facet.ID) {
     super(element, facetClassId, bindings);
-
     this.options = ComponentOptions.initComponentOptions(element, Facet, options);
 
     if (this.options.valueCaption != null) {
@@ -745,7 +744,7 @@ export class Facet extends Component {
     this.currentPage = Math.floor((this.numberOfValues - this.options.numberOfValues) / this.options.pageSize);
 
     this.updateQueryStateModel();
-    this.triggerNewQuery(() => this.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(AnalyticsActionCauseList.facetSelectAll, {
+    this.triggerNewQuery(() => this.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetSelectAll, {
       facetId: this.options.id,
       facetTitle: this.options.title
     }));
@@ -884,7 +883,7 @@ export class Facet extends Component {
     this.queryStateModel.registerNewAttribute(this.operatorAttributeId, '');
     this.queryStateModel.registerNewAttribute(this.lookupValueAttributeId, {});
 
-    this.bind.onQueryState(ModelEvents.CHANGE, undefined, (args: IAttributesChangedEventArg) => this.handleQueryStateChanged(args));
+    this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, (args: IAttributesChangedEventArg) => this.handleQueryStateChanged(args));
   }
 
   protected initComponentStateEvents() {

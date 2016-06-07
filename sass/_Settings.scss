@@ -87,7 +87,7 @@
   }
 
   &.coveo-authentication-provider {
-    @include iconWithHoverState('.coveo-sprites-dropwdown-authenticate');
+    @include iconWithHoverState('.coveo-sprites-dropdown-authenticate');
   }
 
   &.coveo-export-to-excel {

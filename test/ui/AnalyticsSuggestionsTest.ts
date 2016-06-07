@@ -40,10 +40,10 @@ module Coveo {
       var simulation = Simulate.omnibox(test.env);
       simulation.rows[0].deferred.then((elementResolved)=> {
         test.cmp.selectSuggestion(0);
-        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(AnalyticsActionCauseList.omniboxAnalytics, jasmine.objectContaining({suggestionRanking: 0}))
+        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.omniboxAnalytics, jasmine.objectContaining({suggestionRanking: 0}))
 
         test.cmp.selectSuggestion('baz');
-        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(AnalyticsActionCauseList.omniboxAnalytics, jasmine.objectContaining({suggestionRanking: 2}))
+        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.omniboxAnalytics, jasmine.objectContaining({suggestionRanking: 2}))
         done();
       })
     })
@@ -73,7 +73,7 @@ module Coveo {
       });
       simulation.rows[0].deferred.then((elementResolved)=> {
         test.cmp.selectSuggestion(0);
-        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(AnalyticsActionCauseList.omniboxAnalytics, jasmine.objectContaining({partialQueries: 't;tes;test'}))
+        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.omniboxAnalytics, jasmine.objectContaining({partialQueries: 't;tes;test'}))
         done();
       })
 
@@ -104,7 +104,7 @@ module Coveo {
       });
       simulation.rows[0].deferred.then((elementResolved)=> {
         test.cmp.selectSuggestion(0);
-        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(AnalyticsActionCauseList.omniboxAnalytics, jasmine.objectContaining({partialQueries: 't'}))
+        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.omniboxAnalytics, jasmine.objectContaining({partialQueries: 't'}))
         done();
       })
     })
@@ -122,7 +122,7 @@ module Coveo {
       });
       simulation.rows[0].deferred.then((elementResolved)=> {
         test.cmp.selectSuggestion(0);
-        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(AnalyticsActionCauseList.omniboxAnalytics, jasmine.objectContaining({partialQueries: 't'}))
+        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.omniboxAnalytics, jasmine.objectContaining({partialQueries: 't'}))
         done();
       })
     })
@@ -140,7 +140,7 @@ module Coveo {
       });
       simulation.rows[0].deferred.then((elementResolved)=> {
         test.cmp.selectSuggestion(0);
-        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(AnalyticsActionCauseList.omniboxAnalytics, jasmine.anything());
+        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.omniboxAnalytics, jasmine.anything());
         done();
       })
     })

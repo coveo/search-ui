@@ -3,7 +3,7 @@ import {ComponentOptions} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {SearchAlertsEvents, ISearchAlertsEventArgs, ISearchAlertsFailEventArgs} from '../../events/SearchAlertEvents';
 import {QueryEvents} from '../../events/QueryEvents';
-import {ISubscriptionItemRequest, SubscriptionType, ISubscriptionQueryRequest} from '../../rest/Subscription';
+import {ISubscriptionItemRequest, SUBSCRIPTION_TYPE, ISubscriptionQueryRequest} from '../../rest/Subscription';
 import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
 import {l} from '../../strings/Strings';
 import {$$, Dom} from '../../utils/Dom';
@@ -88,7 +88,7 @@ export class SearchAlertsMessage extends Component {
   private handleSubscriptionCreated(args: ISearchAlertsEventArgs) {
     this.close();
     if (args.dom != null) {
-      if (args.subscription.type == SubscriptionType.followQuery) {
+      if (args.subscription.type == SUBSCRIPTION_TYPE.followQuery) {
         let typeConfig = <ISubscriptionQueryRequest>args.subscription.typeConfig;
         this.showMessage($$(args.dom), l('SubscriptionsMessageFollowQuery', _.escape(typeConfig.query.q) || l('EmptyQuery')), false);
       } else {

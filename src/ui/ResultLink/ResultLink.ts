@@ -2,7 +2,7 @@ import {Component} from '../Base/Component'
 import {ComponentOptions} from '../Base/ComponentOptions'
 import {ComponentOptionsModel} from '../../models/ComponentOptionsModel'
 import {IResultsComponentBindings} from '../Base/ResultsComponentBindings'
-import {AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
+import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
 import {IResultLinkOptions} from './ResultLinkOptions'
 import {ResultListEvents} from '../../events/ResultListEvents'
 import {HighlightUtils} from '../../utils/HighlightUtils'
@@ -180,7 +180,7 @@ export class ResultLink extends Component {
     if (documentURL == undefined || documentURL == '') {
       documentURL = this.result.clickUri;
     }
-    this.usageAnalytics.logClickEvent(AnalyticsActionCauseList.documentOpen, {
+    this.usageAnalytics.logClickEvent(analyticsActionCauseList.documentOpen, {
       documentURL: documentURL,
       documentTitle: this.result.title,
       author: this.result.raw.author

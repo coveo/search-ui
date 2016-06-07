@@ -4,7 +4,7 @@ import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
 import {IQueryResult} from '../../rest/QueryResult';
 import {Assert} from '../../misc/Assert';
 import {SearchAlertsEvents, ISearchAlertsEventArgs, ISearchAlertsFailEventArgs} from '../../events/SearchAlertEvents';
-import {ISubscription, ISubscriptionItemRequest, SubscriptionType, ISubscriptionRequest} from '../../rest/Subscription';
+import {ISubscription, ISubscriptionItemRequest, SUBSCRIPTION_TYPE, ISubscriptionRequest} from '../../rest/Subscription';
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
 import {$$, Dom} from '../../utils/Dom';
@@ -157,7 +157,7 @@ export class FollowItem extends Component {
   }
 
   private handleSubscriptionDeleted(args: ISearchAlertsEventArgs) {
-    if (args.subscription.type == SubscriptionType.followDocument) {
+    if (args.subscription.type == SUBSCRIPTION_TYPE.followDocument) {
       let typeConfig = <ISubscriptionItemRequest>args.subscription.typeConfig;
       if (typeConfig.id == this.getId()) {
         this.setNotFollowed();
@@ -166,7 +166,7 @@ export class FollowItem extends Component {
   }
 
   private handleSubscriptionCreated(args: ISearchAlertsEventArgs) {
-    if (args.subscription.type == SubscriptionType.followDocument) {
+    if (args.subscription.type == SUBSCRIPTION_TYPE.followDocument) {
       let typeConfig = <ISubscriptionItemRequest>args.subscription.typeConfig;
       if (typeConfig.id == this.getId()) {
         this.setFollowed(args.subscription);
@@ -197,7 +197,7 @@ export class FollowItem extends Component {
     }
 
     return {
-      type: SubscriptionType.followDocument,
+      type: SUBSCRIPTION_TYPE.followDocument,
       typeConfig: typeCofig
     }
   }

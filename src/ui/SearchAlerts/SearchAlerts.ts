@@ -12,7 +12,7 @@ import {IQuery} from '../../rest/Query';
 import {AjaxError} from '../../rest/AjaxError';
 import {ISettingsPopulateMenuArgs} from '../Settings/Settings';
 import {SearchAlertsEvents, ISearchAlertsEventArgs, ISearchAlertsFailEventArgs} from '../../events/SearchAlertEvents';
-import {ISubscription, ISubscriptionItemRequest, SubscriptionType, ISubscriptionRequest, ISubscriptionQueryRequest} from '../../rest/Subscription';
+import {ISubscription, ISubscriptionItemRequest, SUBSCRIPTION_TYPE, ISubscriptionRequest, ISubscriptionQueryRequest} from '../../rest/Subscription';
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
 import {$$, Dom} from '../../utils/Dom';
@@ -205,7 +205,7 @@ export class SearchAlerts extends Component {
     ];
 
     let context: string;
-    if (subscription.type == SubscriptionType.followQuery) {
+    if (subscription.type == SUBSCRIPTION_TYPE.followQuery) {
       let typeConfig = <ISubscriptionQueryRequest>subscription.typeConfig;
       context = _.escape(typeConfig.query.q) || l('EmptyQuery')
     } else {
@@ -341,7 +341,7 @@ export class SearchAlerts extends Component {
     }
 
     return {
-      type: SubscriptionType.followQuery,
+      type: SUBSCRIPTION_TYPE.followQuery,
       typeConfig: typeConfig
     }
   }

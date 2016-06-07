@@ -44,7 +44,7 @@ module Coveo {
         var excelSpy = jasmine.createSpy('excelSpy');
         test.env.usageAnalytics.logCustomEvent = excelSpy;
         test.cmp.download();
-        expect(excelSpy).toHaveBeenCalledWith(AnalyticsActionCauseList.exportToExcel, {}, test.env.element);
+        expect(excelSpy).toHaveBeenCalledWith(analyticsActionCauseList.exportToExcel, {}, test.env.element);
       })
       
       it('download should redirect to the link provided by the search endpoint', function () {
