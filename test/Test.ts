@@ -91,6 +91,9 @@
 /// <reference path="ui/CurrentTabTest.ts" />
 /// <reference path="ui/QueryboxQueryParametersTest.ts" />
 /// <reference path="ui/ImageResultListTest.ts" />
+/// <reference path="ui/SearchAlertsTest.ts" />
+/// <reference path="ui/FollowItemTest.ts" />
+/// <reference path="ui/SearchAlertsMessageTest.ts" />
 
 Coveo.Logger.disable();
 
