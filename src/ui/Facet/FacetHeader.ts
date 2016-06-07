@@ -70,7 +70,7 @@ export class FacetHeader {
     if (this.options.facet) {
       this.operatorElement = this.buildOperatorToggle();
       this.element.appendChild(this.operatorElement);
-      $$(this.operatorElement).toggle(this.options.facet.options.allowTogglingOperator);
+      $$(this.operatorElement).toggle(this.options.facet.options.enableTogglingOperator);
     }
 
     this.eraserElement = this.buildEraser();
@@ -120,7 +120,7 @@ export class FacetHeader {
   }
 
   public updateOperatorQueryStateModel(): void {
-    if (this.options.facet && this.options.facet.options.allowTogglingOperator) {
+    if (this.options.facet && this.options.facet.options.enableTogglingOperator) {
       var valueToSet = '';
       if (this.options.facet.getSelectedValues().length != 0 || this.options.facet.getExcludedValues().length != 0) {
         valueToSet = this.options.facet.options.useAnd ? 'and' : 'or';
