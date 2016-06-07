@@ -128,7 +128,7 @@ module Coveo {
 
       it('dateField and dateFormat allow to render the values as date', function () {
         var start = new Date(1, 1, 1),
-            end = new Date(2, 2, 2)
+          end = new Date(2, 2, 2)
         slider = new Slider(el, {
           start: start,
           end: end,
@@ -175,4 +175,3 @@ module Coveo {
     })
   })
 }
-

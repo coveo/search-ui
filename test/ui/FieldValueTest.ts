@@ -4,8 +4,9 @@ module Coveo {
     let test: Mock.IBasicComponentSetup<FieldValue>;
     let element: HTMLElement;
 
-    beforeEach( () =>  {
-      test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{element: $$('span').el,
+    beforeEach(() => {
+      test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
+        element: $$('span').el,
         cmpOptions: <IFieldValueOptions>{
           field: '@string'
         }
@@ -13,7 +14,7 @@ module Coveo {
       element = $$('span').el;
     });
 
-    afterEach( () =>  {
+    afterEach(() => {
       test = null;
       element = null;
     });
@@ -172,7 +173,7 @@ module Coveo {
     describe('with a related facet', () => {
       let facet: Facet;
 
-      beforeEach( () =>  {
+      beforeEach(() => {
         facet = Mock.mock<Facet>(Facet);
 
         facet.values = Mock.mock<FacetValues>(FacetValues);
@@ -183,7 +184,7 @@ module Coveo {
         }
       })
 
-      afterEach( () =>  {
+      afterEach(() => {
         facet = null;
       });
 

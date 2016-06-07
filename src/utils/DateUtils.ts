@@ -157,7 +157,7 @@ export class DateUtils {
 // Shim for IE8 Date.toISOString
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString
 if (!Date.prototype.toISOString) {
-  (function() {
+  (function () {
     function pad(nber) {
       if (nber < 10) {
         return '0' + nber;
@@ -165,7 +165,7 @@ if (!Date.prototype.toISOString) {
       return nber;
     }
 
-    Date.prototype.toISOString = function() {
+    Date.prototype.toISOString = function () {
       return this.getUTCFullYear() +
         '-' + pad(this.getUTCMonth() + 1) +
         '-' + pad(this.getUTCDate()) +

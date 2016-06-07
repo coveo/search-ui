@@ -7,7 +7,7 @@ module Coveo {
       cookie: ''
     }
     var cookieDesc = Object.getOwnPropertyDescriptor(Document.prototype, 'cookie') ||
-        Object.getOwnPropertyDescriptor(HTMLDocument.prototype, 'cookie');
+      Object.getOwnPropertyDescriptor(HTMLDocument.prototype, 'cookie');
     if (cookieDesc && cookieDesc.configurable) {
       Object.defineProperty(document, 'cookie', {
         get: function () {

@@ -6,7 +6,7 @@ module Coveo {
 
     beforeEach(function () {
       modalBoxCloseSpy = jasmine.createSpy('modalBoxClose');
-      spyOn(ModalBox, 'open').and.returnValue({close: modalBoxCloseSpy});
+      spyOn(ModalBox, 'open').and.returnValue({ close: modalBoxCloseSpy });
 
       test = Mock.optionsComponentSetup<AuthenticationProvider, IAuthenticationProviderOptions>(AuthenticationProvider, <IAuthenticationProviderOptions>{
         name: 'foo',
@@ -56,7 +56,7 @@ module Coveo {
             caption: 'foobar',
             useIFrame: true,
           })
-          $$(test.cmp.root).trigger(QueryEvents.queryError, {error: {provider: 'foo'}})
+          $$(test.cmp.root).trigger(QueryEvents.queryError, { error: { provider: 'foo' } })
           expect(ModalBox.open).toHaveBeenCalledWith(jasmine.anything(), jasmine.objectContaining({
             title: l('Authenticating', 'foobar')
           }))
@@ -73,7 +73,7 @@ module Coveo {
         })
         test.cmp._window = fakeWindow;
         test.env.searchEndpoint.getAuthenticationProviderUri = () => 'coveo.com';
-        $$(test.env.root).trigger(QueryEvents.queryError, {error: {provider: 'foo'}});
+        $$(test.env.root).trigger(QueryEvents.queryError, { error: { provider: 'foo' } });
 
         expect(fakeWindow.location.href).toBe('coveo.com');
       })
@@ -86,7 +86,7 @@ module Coveo {
           showIFrame: true
         })
         test.env.searchEndpoint.getAuthenticationProviderUri = () => 'http://coveo.com/';
-        $$(test.env.root).trigger(QueryEvents.queryError, {error: {provider: 'foo'}});
+        $$(test.env.root).trigger(QueryEvents.queryError, { error: { provider: 'foo' } });
 
         expect(ModalBox.open['calls'].mostRecent().args[0].children[0].src).toBe('http://coveo.com/');
       })
@@ -98,7 +98,7 @@ module Coveo {
           useIFrame: true,
           showIFrame: false
         })
-        $$(test.env.root).trigger(QueryEvents.queryError, {error: {provider: 'foo'}});
+        $$(test.env.root).trigger(QueryEvents.queryError, { error: { provider: 'foo' } });
 
         expect(ModalBox.open).toHaveBeenCalledWith(jasmine.objectContaining({
           className: 'coveo-waiting-for-authentication-popup'
@@ -109,16 +109,16 @@ module Coveo {
     it('should close the ModalBox when a "success" message is posted on window', function () {
       let fakeWindow = Mock.mockWindow();
       test.cmp._window = fakeWindow;
-      $$(test.env.root).trigger(QueryEvents.queryError, {error: {provider: 'foo'}});
-      $$(<any>fakeWindow).trigger('message', {data: 'success'});
+      $$(test.env.root).trigger(QueryEvents.queryError, { error: { provider: 'foo' } });
+      $$(<any>fakeWindow).trigger('message', { data: 'success' });
       expect(modalBoxCloseSpy).toHaveBeenCalled();
     })
 
     it('should stop a redirect loop after 3 redirects', function () {
       spyOn(test.cmp.logger, 'error').and.returnValue(null);
-      _.times(3, () => $$(test.env.root).trigger(QueryEvents.queryError, {error: {provider: 'foo'}}));
+      _.times(3, () => $$(test.env.root).trigger(QueryEvents.queryError, { error: { provider: 'foo' } }));
 
-      $$(test.env.root).trigger(QueryEvents.queryError, {error: {provider: 'foo'}});
+      $$(test.env.root).trigger(QueryEvents.queryError, { error: { provider: 'foo' } });
       expect(test.cmp.logger.error).toHaveBeenCalledWith('The AuthenticationProvider is in a redirect loop. This may be due to a back-end configuration problem.');
     })
   })

@@ -1,7 +1,7 @@
 /// <reference path="Test.ts" />
 
 module Coveo.Mock {
-  export interface MockEnvironment extends Coveo.IComponentBindings {
+  export interface IMockEnvironment extends Coveo.IComponentBindings {
     root: HTMLElement;
     element: HTMLElement;
     result: IQueryResult;
@@ -12,7 +12,7 @@ module Coveo.Mock {
     usageAnalytics: IAnalyticsClient;
   }
 
-  export interface MockEnvironmentWithData<T> extends MockEnvironment {
+  export interface IMockEnvironmentWithData<T> extends IMockEnvironment {
     data: T;
   }
 
@@ -44,8 +44,8 @@ module Coveo.Mock {
       this.queryStateModel = new QueryStateModel(this.root);
       return this;
     }
-    
-    public withQueryStateModel(model: QueryStateModel){
+
+    public withQueryStateModel(model: QueryStateModel) {
       this.queryStateModel = model;
       return this;
     }
@@ -59,8 +59,8 @@ module Coveo.Mock {
       this.searchInterface.options.enableCollaborativeRating = true;
       return this;
     }
-    
-    public withOs(os: OS_NAME){
+
+    public withOs(os: OS_NAME) {
       this.os = os;
       return this;
     }
@@ -75,7 +75,7 @@ module Coveo.Mock {
       return this;
     }
 
-    public build(): MockEnvironment {
+    public build(): IMockEnvironment {
       if (this.built) {
         return this.getBindings();
       }
@@ -108,7 +108,7 @@ module Coveo.Mock {
       return this.getBindings();
     }
 
-    public getBindings(): MockEnvironment {
+    public getBindings(): IMockEnvironment {
       if (!this.built) {
         return this.build();
       }
@@ -128,13 +128,13 @@ module Coveo.Mock {
   }
 
   export interface IBasicComponentSetup<T extends BaseComponent> {
-    env: MockEnvironment;
-    cmp:T;
+    env: IMockEnvironment;
+    cmp: T;
   }
 
   export class AdvancedComponentSetupOptions {
 
-    constructor(public element: HTMLElement = $$('div').el, public cmpOptions: any = {}, public modifyBuilder = (env: MockEnvironmentBuilder)=> {
+    constructor(public element: HTMLElement = $$('div').el, public cmpOptions: any = {}, public modifyBuilder = (env: MockEnvironmentBuilder) => {
       return env
     }) {
     }
@@ -209,18 +209,18 @@ module Coveo.Mock {
 
   export function mockSearchEndpoint(): SearchEndpoint {
     var m = mock<any>(SearchEndpoint, 'SearchEndpoint');
-    m.listFields.and.returnValue(new Promise((resolve, reject)=>{}));
-    m.listFieldValues.and.returnValue(new Promise((resolve, reject)=>{}));
-    m.search.and.returnValue(new Promise((resolve,reject)=>{}));
-    m.getRevealQuerySuggest.and.returnValue(new Promise((resolve, reject)=>{}));
-    m.extensions.and.returnValue(new Promise((resolve, reject)=>{}));
+    m.listFields.and.returnValue(new Promise((resolve, reject) => { }));
+    m.listFieldValues.and.returnValue(new Promise((resolve, reject) => { }));
+    m.search.and.returnValue(new Promise((resolve, reject) => { }));
+    m.getRevealQuerySuggest.and.returnValue(new Promise((resolve, reject) => { }));
+    m.extensions.and.returnValue(new Promise((resolve, reject) => { }));
     m.getViewAsDatastreamUri.and.returnValue('http://datastream.uri');
     return m
   }
 
   export function mockUsageAnalytics(): IAnalyticsClient {
     var m = mock<any>(NoopAnalyticsClient, 'AnalyticsClient');
-    m.getTopQueries.and.returnValue(new Promise((resolve, reject)=>{}));
+    m.getTopQueries.and.returnValue(new Promise((resolve, reject) => { }));
     return m;
   }
 
@@ -239,8 +239,8 @@ module Coveo.Mock {
       cmp: <T>new klass(envBuilder.getBindings().element, {}, envBuilder.getBindings(), envBuilder.result)
     }
   }
-  
-  export function basicSearchInterfaceSetup<T extends SearchInterface>(klass){
+
+  export function basicSearchInterfaceSetup<T extends SearchInterface>(klass) {
     var div = $$('div').el;
     var envBuilder = new Mock.MockEnvironmentBuilder().withRoot(div);
     var component = <T>new klass(div)
@@ -250,8 +250,8 @@ module Coveo.Mock {
       cmp: component
     }
   }
-  
-  export function optionsSearchInterfaceSetup<T extends SearchInterface, U>(klass, options: U){
+
+  export function optionsSearchInterfaceSetup<T extends SearchInterface, U>(klass, options: U) {
     var div = $$('div').el;
     var envBuilder = new Mock.MockEnvironmentBuilder().withRoot(div);
     var component = <T>new klass(div, options)
@@ -301,16 +301,16 @@ module Coveo.Mock {
       cmp: <T>new klass(envBuilder.getBindings().element, optsMerged.cmpOptions, envBuilder.getBindings(), envBuilder.result, envBuilder.os)
     }
   }
-  
-  export function initPageViewScript(store: CoveoAnalytics.HistoryStore){
-    class HistoryStoreMock{
-      constructor(){}
-      public addElement(query: IQuery){store.addElement(query)}
-      public getHistory(){return store.getHistory()}
-      public setHistory(history: any[]){store.setHistory(history)}
-      public clear(){store.clear()}
+
+  export function initPageViewScript(store: CoveoAnalytics.HistoryStore) {
+    class HistoryStoreMock {
+      constructor() { }
+      public addElement(query: IQuery) { store.addElement(query) }
+      public getHistory() { return store.getHistory() }
+      public setHistory(history: any[]) { store.setHistory(history) }
+      public clear() { store.clear() }
     }
-    
+
     coveoanalytics = {
       history: {
         HistoryStore: HistoryStoreMock
