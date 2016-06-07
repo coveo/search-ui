@@ -1,10 +1,10 @@
 /// <reference path="../Test.ts" />
 
 module Coveo {
-  describe('DidYouMean', function() {
+  describe('DidYouMean', function () {
     var test: Mock.IBasicComponentSetup<DidYouMean>;
     var fakeQueryCorrection: IQueryCorrection;
-    beforeEach(function() {
+    beforeEach(function () {
       test = Mock.basicComponentSetup<DidYouMean>(DidYouMean);
       fakeQueryCorrection = {
         correctedQuery: 'this is the corrected query',
@@ -20,11 +20,11 @@ module Coveo {
       test.env.queryStateModel.get = () => 'originalquery';
     })
 
-    it('should be hidden before making a query', function() {
+    it('should be hidden before making a query', function () {
       expect(test.cmp.element.style.display).toBe('none');
     })
 
-    it('should be shown when there are both query corrections and results', function() {
+    it('should be shown when there are both query corrections and results', function () {
       Simulate.query(test.env, {
         results: FakeResults.createFakeResults(2),
         queryCorrections: [fakeQueryCorrection]
@@ -33,7 +33,7 @@ module Coveo {
       expect(test.cmp.element.style.display).not.toBe('none');
     })
 
-    it('should be hidden when there are no query corrections', function() {
+    it('should be hidden when there are no query corrections', function () {
       Simulate.query(test.env, {
         results: FakeResults.createFakeResults(0),
         queryCorrections: []
@@ -42,7 +42,7 @@ module Coveo {
       expect(test.cmp.element.style.display).toBe('none');
     })
 
-    it('should send an analytics event when doQueryWithCorrectedTerm is called', function() {
+    it('should send an analytics event when doQueryWithCorrectedTerm is called', function () {
       var analyticsSpy = jasmine.createSpy('analyticsSpy');
       test.env.usageAnalytics.logSearchEvent = analyticsSpy;
       Simulate.query(test.env, <ISimulateQueryData>{
@@ -55,9 +55,9 @@ module Coveo {
       expect(analyticsSpy).toHaveBeenCalledWith(analyticsActionCauseList.didyoumeanClick, {});
     })
 
-    describe('exposes options', function() {
-      describe('enableAutoCorrection', function() {
-        it('set to true should autocorrect the query when no results are found', function() {
+    describe('exposes options', function () {
+      describe('enableAutoCorrection', function () {
+        it('set to true should autocorrect the query when no results are found', function () {
           test = Mock.optionsComponentSetup<DidYouMean, IDidYouMeanOptions>(DidYouMean, <IDidYouMeanOptions>{
             enableAutoCorrection: true
           })
@@ -73,7 +73,7 @@ module Coveo {
           expect(qsmSpy).toHaveBeenCalledWith(QueryStateModel.attributesEnum.q, 'this is the corrected query');
         })
 
-        it('set to true should send an analytics event when query is autocorrected', function() {
+        it('set to true should send an analytics event when query is autocorrected', function () {
           test = Mock.optionsComponentSetup<DidYouMean, IDidYouMeanOptions>(DidYouMean, <IDidYouMeanOptions>{
             enableAutoCorrection: true
           })
@@ -90,7 +90,7 @@ module Coveo {
           expect(analyticsSpy.calls.count()).toBe(1);
         })
 
-        it('set to false should not autocorrect the query when no results are found', function() {
+        it('set to false should not autocorrect the query when no results are found', function () {
           test = Mock.optionsComponentSetup<DidYouMean, IDidYouMeanOptions>(DidYouMean, <IDidYouMeanOptions>{
             enableAutoCorrection: false
           })
@@ -108,7 +108,7 @@ module Coveo {
       })
     })
 
-    it('should not autocorrect search-as-you-type queries', function() {
+    it('should not autocorrect search-as-you-type queries', function () {
       var qsmSpy = jasmine.createSpy('queryStateModelSpy');
       test.env.queryStateModel.set = qsmSpy;
 
@@ -121,11 +121,11 @@ module Coveo {
       expect(qsmSpy).not.toHaveBeenCalled();
     })
 
-    it('correctedTerm should be null before a query', function() {
+    it('correctedTerm should be null before a query', function () {
       expect(test.cmp.correctedTerm).toBeNull();
     })
 
-    it('correctedTerm should be initialized properly from the queryCorrections', function() {
+    it('correctedTerm should be initialized properly from the queryCorrections', function () {
       Simulate.query(test.env, {
         queryCorrections: [fakeQueryCorrection]
       })
@@ -133,12 +133,12 @@ module Coveo {
       expect(test.cmp.correctedTerm).toBe(fakeQueryCorrection.correctedQuery);
     })
 
-    describe('doQueryWithCorrectedTerm', function() {
-      it('should throw an exception if no query was made', function() {
+    describe('doQueryWithCorrectedTerm', function () {
+      it('should throw an exception if no query was made', function () {
         expect(() => test.cmp.doQueryWithCorrectedTerm()).toThrow();
       })
 
-      it('should throw an exception if no corrections were available', function() {
+      it('should throw an exception if no corrections were available', function () {
         Simulate.query(test.env, {
           queryCorrections: []
         })
@@ -146,7 +146,7 @@ module Coveo {
         expect(() => test.cmp.doQueryWithCorrectedTerm()).toThrow();
       })
 
-      it('should execute a query when corrections were available', function() {
+      it('should execute a query when corrections were available', function () {
         Simulate.query(test.env, {
           queryCorrections: [fakeQueryCorrection]
         })
@@ -160,11 +160,11 @@ module Coveo {
       })
     })
 
-    describe('escape the HTML against XSS', function() {
-      beforeEach(function() {
+    describe('escape the HTML against XSS', function () {
+      beforeEach(function () {
       })
 
-      it('when there are results', function() {
+      it('when there are results', function () {
         Simulate.query(test.env, {
           queryCorrections: [<IQueryCorrection>{
             correctedQuery: '<script>alert("hack the internet")</script>'
@@ -174,7 +174,7 @@ module Coveo {
           .toBe('&lt;script&gt;alert("hack the internet")&lt;/script&gt;');
       })
 
-      it('when query is autocorrected', function() {
+      it('when query is autocorrected', function () {
         Simulate.query(test.env, {
           results: FakeResults.createFakeResults(0),
           queryCorrections: [<IQueryCorrection>{

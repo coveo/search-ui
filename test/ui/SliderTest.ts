@@ -1,7 +1,7 @@
 /// <reference path="../Test.ts" />
 
 module Coveo {
-  describe('Slider', function() {
+  describe('Slider', function () {
     var slider: Slider;
     var el: HTMLElement;
     var root: HTMLElement;
@@ -22,21 +22,21 @@ module Coveo {
       return $$(sliderElement).find('svg');
     }
 
-    beforeEach(function() {
+    beforeEach(function () {
       el = document.createElement('div');
       el.style.width = '100px';
       root = document.createElement('div');
     })
 
-    afterEach(function() {
+    afterEach(function () {
       el = null;
       slider = null;
       root = null;
     })
 
-    describe('exposes options', function() {
+    describe('exposes options', function () {
 
-      it('rangeSlider allows to have one or two button', function() {
+      it('rangeSlider allows to have one or two button', function () {
         slider = new Slider(el, {
           start: 0,
           end: 100,
@@ -54,7 +54,7 @@ module Coveo {
         expect(getSliderButton(slider.element).length).toBe(2);
       })
 
-      it('start and end allow to set the max values', function() {
+      it('start and end allow to set the max values', function () {
         slider = new Slider(el, {
           start: 10,
           end: 156
@@ -73,7 +73,7 @@ module Coveo {
         expect(slider.currentValues).toEqual(jasmine.arrayContaining([50, 51]));
       })
 
-      it('step allows to divide the range by a number of steps', function() {
+      it('step allows to divide the range by a number of steps', function () {
         slider = new Slider(el, {
           start: 0,
           end: 100,
@@ -90,7 +90,7 @@ module Coveo {
         expect(slider.steps).toEqual(jasmine.arrayContaining(_.range(0, 104, 4)));
       })
 
-      it('getSteps allow to provide a function to generate steps', function() {
+      it('getSteps allow to provide a function to generate steps', function () {
         var getStep = jasmine.createSpy('getStep');
         slider = new Slider(el, {
           start: 0,
@@ -101,7 +101,7 @@ module Coveo {
         expect(getStep).toHaveBeenCalledWith(0, 100);
       })
 
-      it('displayAsValue allows to modify the caption', function() {
+      it('displayAsValue allows to modify the caption', function () {
         slider = new Slider(el, {
           start: 0,
           end: 100,
@@ -115,7 +115,7 @@ module Coveo {
         expect($$(getSliderCaption(slider.element)).text()).toBe('0 GIGAFLOPETABYTE !! 100 GIGAFLOPETABYTE');
       })
 
-      it('valueCaption allow to provide a function to generate captions', function() {
+      it('valueCaption allow to provide a function to generate captions', function () {
         var valueCaption = jasmine.createSpy('valueCaption');
         slider = new Slider(el, {
           start: 0,
@@ -126,7 +126,7 @@ module Coveo {
         expect(valueCaption).toHaveBeenCalledWith(jasmine.arrayContaining([0, 100]));
       })
 
-      it('dateField and dateFormat allow to render the values as date', function() {
+      it('dateField and dateFormat allow to render the values as date', function () {
         var start = new Date(1, 1, 1),
           end = new Date(2, 2, 2)
         slider = new Slider(el, {
@@ -140,7 +140,7 @@ module Coveo {
         expect($$(getSliderCaption(slider.element)).text()).toBe(Globalize.format(start, 'm/d/yyyy') + '  - ' + Globalize.format(end, 'm/d/yyyy') + ' ');
       })
 
-      it('graph allow to add a svg graph', function() {
+      it('graph allow to add a svg graph', function () {
         slider = new Slider(el, {
           start: 0,
           end: 100,
@@ -152,7 +152,7 @@ module Coveo {
         expect(getSliderGraph(slider.element)).toBeDefined();
       })
 
-      it('graph steps allow draw graph data', function() {
+      it('graph steps allow draw graph data', function () {
         slider = new Slider(el, {
           start: 0,
           end: 100,

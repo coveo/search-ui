@@ -1,7 +1,7 @@
 /// <reference path="../Test.ts" />
 
 module Coveo {
-  describe('ResultsPreferences', function() {
+  describe('ResultsPreferences', function () {
 
     let test: Mock.IBasicComponentSetup<ResultsPreferences>;
     let element: Dom;

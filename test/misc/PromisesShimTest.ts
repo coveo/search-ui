@@ -1,7 +1,7 @@
 /// <reference path="../Test.ts" />
 
 module Coveo {
-  describe('PromisesShim', function() {
+  describe('PromisesShim', function () {
     it('should shim finally', (done) => {
       new Promise((resolve, reject) => {
         resolve(true);

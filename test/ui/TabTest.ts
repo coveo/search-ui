@@ -1,23 +1,23 @@
 /// <reference path="../Test.ts" />
 module Coveo {
   import NoopComponent = Coveo.Components.NoopComponent;
-  describe('Tab', function() {
+  describe('Tab', function () {
     var test: Mock.IBasicComponentSetup<Tab>;
 
-    beforeEach(function() {
+    beforeEach(function () {
       test = Mock.optionsComponentSetup<Tab, ITabOptions>(Tab, {
         id: 'testingtabid',
         caption: 'caption test tab'
       });
     })
 
-    afterEach(function() {
+    afterEach(function () {
       test = null;
     })
 
-    describe('exposes options', function() {
+    describe('exposes options', function () {
 
-      it('tab id can be set, and is sent in the query, only if selected', function() {
+      it('tab id can be set, and is sent in the query, only if selected', function () {
         test = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {
           id: 'niceid'
         }, (env: Mock.MockEnvironmentBuilder) => {
@@ -31,7 +31,7 @@ module Coveo {
         expect(simulation.queryBuilder.build().tab).toBe('niceid');
       })
 
-      it('expression is set on the constant part of the query, only if selected', function() {
+      it('expression is set on the constant part of the query, only if selected', function () {
         test = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {
           id: 'niceid',
           expression: '@foo==bar'
@@ -45,7 +45,7 @@ module Coveo {
         expect(simulation.queryBuilder.build().cq).toBe('@foo==bar');
       })
 
-      it('expression is set on the advanced part of the query, only if selected and constant is false', function() {
+      it('expression is set on the advanced part of the query, only if selected and constant is false', function () {
         test = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {
           id: 'niceid',
           expression: '@foo==bar',
@@ -60,7 +60,7 @@ module Coveo {
         expect(simulation.queryBuilder.build().aq).toBe('@foo==bar');
       })
 
-      it('caption can specify the caption for the element', function() {
+      it('caption can specify the caption for the element', function () {
         test = Mock.optionsComponentSetup<Tab, ITabOptions>(Tab, {
           caption: 'yo man'
         })
@@ -68,7 +68,7 @@ module Coveo {
         expect($$(test.cmp.element).text()).toBe('yo man');
       })
 
-      it('icon can be added on a tab', function() {
+      it('icon can be added on a tab', function () {
         test = Mock.optionsComponentSetup<Tab, ITabOptions>(Tab, {
           icon: 'yoman'
         })
@@ -76,7 +76,7 @@ module Coveo {
         expect($$(icn).hasClass('yoman')).toBe(true);
       })
 
-      it('endpoint can be set on a tab, or take default otherwise', function() {
+      it('endpoint can be set on a tab, or take default otherwise', function () {
         var ep = new Coveo.SearchEndpoint({ restUri: 'test' });
         Coveo.SearchEndpoint.endpoints['testing'] = ep;
         test = Mock.optionsComponentSetup<Tab, ITabOptions>(Tab, {
@@ -86,7 +86,7 @@ module Coveo {
         Coveo.SearchEndpoint.endpoints['testing'] = null;
       })
 
-      it('enableDuplicateFiltering will be set on the query, only if selected', function() {
+      it('enableDuplicateFiltering will be set on the query, only if selected', function () {
         test = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {
           id: 'niceid',
           enableDuplicateFiltering: true
@@ -103,7 +103,7 @@ module Coveo {
         expect(simulation.queryBuilder.build().enableDuplicateFiltering).toBe(true);
       })
 
-      it('pipeline will be set on the query, only if selected', function() {
+      it('pipeline will be set on the query, only if selected', function () {
         test = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {
           id: 'niceid',
           pipeline: 'foobar'
@@ -118,7 +118,7 @@ module Coveo {
         expect(simulation.queryBuilder.build().pipeline).toBe('foobar');
       })
 
-      it('maximumAge will be set on the query, only if selected', function() {
+      it('maximumAge will be set on the query, only if selected', function () {
         test = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {
           id: 'niceid',
           maximumAge: 321
@@ -135,14 +135,14 @@ module Coveo {
       })
     })
 
-    describe('can control inclusion of other elements', function() {
+    describe('can control inclusion of other elements', function () {
       var test2: Mock.IBasicComponentSetup<Tab>;
       var dummyCmp: Mock.IBasicComponentSetup<NoopComponent>;
       var dummyCmp2: Mock.IBasicComponentSetup<NoopComponent>;
       var elem: HTMLElement;
       var elem2: HTMLElement;
 
-      beforeEach(function() {
+      beforeEach(function () {
         test = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {
           id: 'testingtabid',
           caption: 'caption test tab'
@@ -177,7 +177,7 @@ module Coveo {
         dummyCmp2.cmp.element.setAttribute('data-tab', 'testingtabid2');
       })
 
-      afterEach(function() {
+      afterEach(function () {
         test2 = null;
         dummyCmp = null;
         dummyCmp2 = null;
@@ -185,7 +185,7 @@ module Coveo {
         elem2 = null;
       })
 
-      it('should hide and show elements if selected', function() {
+      it('should hide and show elements if selected', function () {
         test.cmp.select();
         Simulate.query(test.env);
         expect($$(elem2).hasClass('coveo-tab-disabled')).toBe(true);
@@ -201,7 +201,7 @@ module Coveo {
         expect($$(elem).hasClass('coveo-tab-disabled')).toBe(true);
       })
 
-      it('should disable or enable component if selected', function() {
+      it('should disable or enable component if selected', function () {
         test.cmp.select();
         Simulate.query(test.env);
         expect(dummyCmp.cmp.disabled).toBe(false);
@@ -213,7 +213,7 @@ module Coveo {
         expect(dummyCmp2.cmp.disabled).toBe(false);
       })
 
-      it('should disable or enable component if created under a div with data-tab', function() {
+      it('should disable or enable component if created under a div with data-tab', function () {
 
         // remove the attribute directly on the component, and put them under another div which has the attribute data-tab
         dummyCmp.cmp.element.removeAttribute('data-tab');
@@ -232,7 +232,7 @@ module Coveo {
         expect(dummyCmp2.cmp.disabled).toBe(false);
       })
 
-      it('can specify multiple tab for one component', function() {
+      it('can specify multiple tab for one component', function () {
         dummyCmp.cmp.element.setAttribute('data-tab', 'testingtabid,testingtabid2');
         test.cmp.select();
         Simulate.query(test.env);
@@ -243,7 +243,7 @@ module Coveo {
         expect(dummyCmp.cmp.disabled).toBe(false);
       })
 
-      it('can specify not to be included in a tab for one component', function() {
+      it('can specify not to be included in a tab for one component', function () {
         dummyCmp.cmp.element.removeAttribute('data-tab');
         dummyCmp.cmp.element.setAttribute('data-tab-not', 'testingtabid');
 
@@ -256,7 +256,7 @@ module Coveo {
         expect(dummyCmp.cmp.disabled).toBe(false);
       })
 
-      it('can specify not to be included in multiple tabs for one component', function() {
+      it('can specify not to be included in multiple tabs for one component', function () {
         dummyCmp.cmp.element.removeAttribute('data-tab');
         dummyCmp.cmp.element.setAttribute('data-tab-not', 'testingtabid,testingtabid2');
 
@@ -270,12 +270,12 @@ module Coveo {
       })
     })
 
-    it('should trigger a query on selection', function() {
+    it('should trigger a query on selection', function () {
       test.cmp.select();
       expect(test.env.queryController.executeQuery).toHaveBeenCalled();
     })
 
-    it('should trigger an analytics event on selection', function() {
+    it('should trigger an analytics event on selection', function () {
       test.cmp.select();
       expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.interfaceChange, { interfaceChangeTo: 'testingtabid' });
     })

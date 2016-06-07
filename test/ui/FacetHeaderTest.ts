@@ -1,10 +1,10 @@
 /// <reference path="../Test.ts"" />
 module Coveo {
-  describe('FacetHeader', function() {
+  describe('FacetHeader', function () {
     var facetHeader: FacetHeader;
     var baseOptions: IFacetHeaderOptions;
 
-    beforeEach(function() {
+    beforeEach(function () {
       baseOptions = {
         facetElement: document.createElement('div'),
         title: 'foo',
@@ -15,12 +15,12 @@ module Coveo {
       }
     })
 
-    afterEach(function() {
+    afterEach(function () {
       baseOptions = null;
       facetHeader = null;
     })
 
-    it('should build a title', function() {
+    it('should build a title', function () {
       facetHeader = new FacetHeader(_.extend(baseOptions, {
         title: 'this is a title'
       }))
@@ -29,7 +29,7 @@ module Coveo {
       expect($$(title).text()).toBe('this is a title');
     })
 
-    it('should build an icon if specified', function() {
+    it('should build an icon if specified', function () {
       facetHeader = new FacetHeader(_.extend(baseOptions, {
         icon: 'this-is-an-icon'
       }))
@@ -37,17 +37,17 @@ module Coveo {
       expect(icon).not.toBeNull();
     })
 
-    describe('with a facet', function() {
+    describe('with a facet', function () {
       var facet: Facet;
 
-      beforeEach(function() {
+      beforeEach(function () {
         facet = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field'
         }).cmp
         registerCustomMatcher();
       })
 
-      it('toggle operator should be available if the facet has the option', function() {
+      it('toggle operator should be available if the facet has the option', function () {
         facet.options.allowTogglingOperator = true;
         facetHeader = new FacetHeader(_.extend(baseOptions, {
           facet: facet
@@ -63,7 +63,7 @@ module Coveo {
         expect(facetHeader.operatorElement.style.display).toEqual('none');
       })
 
-      it('allow to collapse and expand a facet', function() {
+      it('allow to collapse and expand a facet', function () {
         facetHeader = new FacetHeader(_.extend(baseOptions, {
           facet: facet,
           settingsKlass: FacetSettings
@@ -76,7 +76,7 @@ module Coveo {
         expect($$(facetHeader.options.facetElement).hasClass('coveo-facet-collapsed')).not.toBe(true);
       })
 
-      it('allow to switch or and and', function() {
+      it('allow to switch or and and', function () {
         facet.options.allowTogglingOperator = true;
         facet.getSelectedValues = jasmine.createSpy('spy');
         (<jasmine.Spy>facet.getSelectedValues).and.returnValue(['a', 'b']);

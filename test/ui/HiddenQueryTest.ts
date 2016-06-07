@@ -1,19 +1,19 @@
 /// <reference path="../Test.ts" />
 module Coveo {
-  describe('HiddenQuery', function() {
+  describe('HiddenQuery', function () {
     var test: Mock.IBasicComponentSetup<HiddenQuery>;
 
-    beforeEach(function() {
+    beforeEach(function () {
       test = Mock.advancedComponentSetup<HiddenQuery>(HiddenQuery, new Mock.AdvancedComponentSetupOptions(undefined, undefined, (env: Mock.MockEnvironmentBuilder) => {
         return env.withLiveQueryStateModel();
       }));
     })
 
-    afterEach(function() {
+    afterEach(function () {
       test = null;
     })
 
-    it('should populate breadcrumb if hd and hq is set', function() {
+    it('should populate breadcrumb if hd and hq is set', function () {
       var breadcrumbMatcher = jasmine.arrayContaining([jasmine.objectContaining({ element: jasmine.any(HTMLElement) })]);
       var matcher = jasmine.objectContaining({ breadcrumbs: breadcrumbMatcher });
       var spy = jasmine.createSpy('onPopulate');
@@ -45,19 +45,19 @@ module Coveo {
       expect(spy).toHaveBeenCalledWith(jasmine.anything(), matcher);
     })
 
-    it('should push hq in the query if it is set', function() {
+    it('should push hq in the query if it is set', function () {
       test.env.queryStateModel.set('hq', 'test');
       var simulation = Simulate.query(test.env);
       expect(simulation.queryBuilder.build().aq).toBe('test');
     })
 
-    it('should not push hq in the query if not set', function() {
+    it('should not push hq in the query if not set', function () {
       test.env.queryStateModel.set('hq', '');
       var simulation = Simulate.query(test.env);
       expect(simulation.queryBuilder.build().aq).toBe(undefined);
     })
 
-    it('clear should clear the query state', function() {
+    it('clear should clear the query state', function () {
       test.env.queryStateModel.set('hq', 'test');
       test.env.queryStateModel.set('hd', 'test');
       test.cmp.clear();
@@ -65,8 +65,8 @@ module Coveo {
       expect(test.env.queryStateModel.get('hd')).toBe('');
     })
 
-    describe('exposes options', function() {
-      it('maximumDescriptionLength should splice the description in the breadcrumb', function() {
+    describe('exposes options', function () {
+      it('maximumDescriptionLength should splice the description in the breadcrumb', function () {
         test = Mock.advancedComponentSetup<HiddenQuery>(HiddenQuery, new Mock.AdvancedComponentSetupOptions(undefined, {
           maximumDescriptionLength: 56
         }, (env: Mock.MockEnvironmentBuilder) => {
@@ -83,7 +83,7 @@ module Coveo {
         $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, { breadcrumbs: [] });
       })
 
-      it('title allows to specify a breadcrumb title', function() {
+      it('title allows to specify a breadcrumb title', function () {
         test = Mock.advancedComponentSetup<HiddenQuery>(HiddenQuery, new Mock.AdvancedComponentSetupOptions(undefined, {
           title: 'foobar'
         }, (env: Mock.MockEnvironmentBuilder) => {

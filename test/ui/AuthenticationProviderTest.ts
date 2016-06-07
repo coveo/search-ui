@@ -1,10 +1,10 @@
 /// <reference path="../Test.ts" />
 module Coveo {
-  describe('AuthenticationProvider', function() {
+  describe('AuthenticationProvider', function () {
     let test: Mock.IBasicComponentSetup<AuthenticationProvider>;
     let modalBoxCloseSpy: Function;
 
-    beforeEach(function() {
+    beforeEach(function () {
       modalBoxCloseSpy = jasmine.createSpy('modalBoxClose');
       spyOn(ModalBox, 'open').and.returnValue({ close: modalBoxCloseSpy });
 
@@ -15,13 +15,13 @@ module Coveo {
       })
     })
 
-    afterEach(function() {
+    afterEach(function () {
       test = null;
       modalBoxCloseSpy = null;
     })
 
-    describe('exposes options', function() {
-      it('name should push name in buildingCallOptions', function() {
+    describe('exposes options', function () {
+      it('name should push name in buildingCallOptions', function () {
         test = Mock.optionsComponentSetup<AuthenticationProvider, IAuthenticationProviderOptions>(AuthenticationProvider, <IAuthenticationProviderOptions>{
           name: 'testpatate'
         })
@@ -34,8 +34,8 @@ module Coveo {
         expect(eventArgs.options.authentication).toEqual(jasmine.arrayContaining(['testpatate']));
       })
 
-      describe('caption', function() {
-        it('should set itself in the menu', function() {
+      describe('caption', function () {
+        it('should set itself in the menu', function () {
           let populateMenuArgs: ISettingsPopulateMenuArgs = {
             settings: null,
             menuData: []
@@ -50,7 +50,7 @@ module Coveo {
           ]))
         })
 
-        it('should be the title of the modal box when iFrame is enabled', function() {
+        it('should be the title of the modal box when iFrame is enabled', function () {
           test = Mock.optionsComponentSetup<AuthenticationProvider, IAuthenticationProviderOptions>(AuthenticationProvider, {
             name: 'foo',
             caption: 'foobar',
@@ -63,7 +63,7 @@ module Coveo {
         })
       })
 
-      it('useIFrame set to false should redirect to auth provider URL', function() {
+      it('useIFrame set to false should redirect to auth provider URL', function () {
         let fakeWindow = Mock.mockWindow();
 
         test = Mock.optionsComponentSetup<AuthenticationProvider, IAuthenticationProviderOptions>(AuthenticationProvider, {
@@ -78,7 +78,7 @@ module Coveo {
         expect(fakeWindow.location.href).toBe('coveo.com');
       })
 
-      it('useIFrame and showIFrame set to true should display a ModalBox containing iframe', function() {
+      it('useIFrame and showIFrame set to true should display a ModalBox containing iframe', function () {
         test = Mock.optionsComponentSetup<AuthenticationProvider, IAuthenticationProviderOptions>(AuthenticationProvider, {
           name: 'foo',
           caption: 'foobar',
@@ -91,7 +91,7 @@ module Coveo {
         expect(ModalBox.open['calls'].mostRecent().args[0].children[0].src).toBe('http://coveo.com/');
       })
 
-      it('showIFrame set to false should show a waiting popup not containing the iframe', function() {
+      it('showIFrame set to false should show a waiting popup not containing the iframe', function () {
         test = Mock.optionsComponentSetup<AuthenticationProvider, IAuthenticationProviderOptions>(AuthenticationProvider, {
           name: 'foo',
           caption: 'foobar',
@@ -106,7 +106,7 @@ module Coveo {
       })
     })
 
-    it('should close the ModalBox when a "success" message is posted on window', function() {
+    it('should close the ModalBox when a "success" message is posted on window', function () {
       let fakeWindow = Mock.mockWindow();
       test.cmp._window = fakeWindow;
       $$(test.env.root).trigger(QueryEvents.queryError, { error: { provider: 'foo' } });
@@ -114,7 +114,7 @@ module Coveo {
       expect(modalBoxCloseSpy).toHaveBeenCalled();
     })
 
-    it('should stop a redirect loop after 3 redirects', function() {
+    it('should stop a redirect loop after 3 redirects', function () {
       spyOn(test.cmp.logger, 'error').and.returnValue(null);
       _.times(3, () => $$(test.env.root).trigger(QueryEvents.queryError, { error: { provider: 'foo' } }));
 

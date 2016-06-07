@@ -810,7 +810,7 @@ export class SearchEndpoint implements ISearchEndpoint {
         } else if (error.statusCode == 0 && this.isRedirecting) {
           // The page is getting redirected
           // Set timeout on return with empty string, since it does not really matter
-          _.defer(function() {
+          _.defer(function () {
             return '';
           });
         } else {

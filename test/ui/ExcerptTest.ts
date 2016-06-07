@@ -1,7 +1,7 @@
 /// <reference path="../Test.ts" />
 
 module Coveo {
-  describe('Excerpt', function() {
+  describe('Excerpt', function () {
     let test: Mock.IBasicComponentSetup<Excerpt>;
     let fakeResult: IQueryResult;
 
@@ -15,7 +15,7 @@ module Coveo {
       test = Mock.advancedResultComponentSetup<Excerpt>(Excerpt, fakeResult, undefined);
     });
 
-    afterEach(function() {
+    afterEach(function () {
       test = null;
       fakeResult = null;
     })

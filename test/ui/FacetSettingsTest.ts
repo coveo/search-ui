@@ -1,21 +1,21 @@
 module Coveo {
-  describe('FacetSettings', function() {
+  describe('FacetSettings', function () {
     var facet: Facet;
     var facetSettings: FacetSettings;
 
-    beforeEach(function() {
+    beforeEach(function () {
       facet = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
         field: '@field'
       }).cmp;
       registerCustomMatcher();
     })
 
-    afterEach(function() {
+    afterEach(function () {
       facet = null;
       facetSettings = null;
     })
 
-    it('allows to save state', function() {
+    it('allows to save state', function () {
       // settings not enabled : no call to query state
       facetSettings = new FacetSettings(['foo', 'bar'], facet);
       facetSettings.build();
@@ -30,7 +30,7 @@ module Coveo {
       expect(facet.queryStateModel.get).toHaveBeenCalledTimes(3);
     })
 
-    it('allows to load state', function() {
+    it('allows to load state', function () {
       // settings not enabled : no call to query state
       facetSettings = new FacetSettings(['foo', 'bar'], facet);
       facetSettings.build();
@@ -45,7 +45,7 @@ module Coveo {
       expect(facet.queryStateModel.setMultiple).toHaveBeenCalled();
     })
 
-    it('allow to open and close the popup', function() {
+    it('allow to open and close the popup', function () {
       facetSettings = new FacetSettings(['foo', 'bar'], facet);
       var built = facetSettings.build();
       expect($$(facetSettings.facet.root).find('.coveo-facet-settings-popup')).toBeNull();

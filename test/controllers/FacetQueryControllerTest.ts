@@ -3,12 +3,12 @@
 module Coveo {
   import QueryController = Coveo.QueryController;
   import mockQueryController = Coveo.Mock.mockQueryController;
-  describe('FacetQueryController', function() {
+  describe('FacetQueryController', function () {
 
     var mockFacet: Facet;
     var facetQueryController: FacetQueryController;
 
-    beforeEach(function() {
+    beforeEach(function () {
       mockFacet = Mock.mock<Facet>(Facet);
       mockFacet.options = {};
       mockFacet.options.field = '@field';
@@ -19,12 +19,12 @@ module Coveo {
       facetQueryController = new FacetQueryController(mockFacet);
     })
 
-    afterEach(function() {
+    afterEach(function () {
       mockFacet = null;
       facetQueryController = null;
     })
 
-    it('should compute a filter expression', function() {
+    it('should compute a filter expression', function () {
       (<jasmine.Spy>mockFacet.values.getSelected).and.returnValue([FacetValue.create('foo'), FacetValue.create('bar')]);
       (<jasmine.Spy>mockFacet.values.getExcluded).and.returnValue([]);
 
@@ -39,14 +39,14 @@ module Coveo {
       expect(facetQueryController.computeOurFilterExpression()).toBe(expectedBuilder.build());
     })
 
-    describe('should push a group by into a query builder', function() {
-      beforeEach(function() {
+    describe('should push a group by into a query builder', function () {
+      beforeEach(function () {
         (<jasmine.Spy>mockFacet.values.getSelected).and.returnValue([FacetValue.create('foo'), FacetValue.create('bar')]);
         (<jasmine.Spy>mockFacet.values.getExcluded).and.returnValue([]);
         mockFacet.numberOfValues = 5;
       })
 
-      it('should put a group by into a query builder', function() {
+      it('should put a group by into a query builder', function () {
         mockFacet.numberOfValues = 23;
         var queryBuilder = new QueryBuilder();
         facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
@@ -56,7 +56,7 @@ module Coveo {
         expect(groupByRequest.maximumNumberOfValues).toBe(23);
       })
 
-      it('should request 1 more value if more / less is enabled', function() {
+      it('should request 1 more value if more / less is enabled', function () {
         mockFacet.options.enableMoreLess = true;
 
         var queryBuilder = new QueryBuilder();
@@ -65,7 +65,7 @@ module Coveo {
         expect(groupByRequest.maximumNumberOfValues).toBe(6);
       })
 
-      it('should request only allowed values if set on the facet', function() {
+      it('should request only allowed values if set on the facet', function () {
         mockFacet.options.allowedValues = ['a', 'b', 'c']
         var queryBuilder = new QueryBuilder();
         facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
@@ -74,7 +74,7 @@ module Coveo {
         expect(groupByRequest.allowedValues).not.toEqual(jasmine.arrayContaining(['foo', 'bar']));
       })
 
-      it('should use lookupfield if set on facet', function() {
+      it('should use lookupfield if set on facet', function () {
         mockFacet.options.lookupField = '@lookupfield';
         var queryBuilder = new QueryBuilder();
         facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
@@ -82,7 +82,7 @@ module Coveo {
         expect(groupByRequest.lookupField).toBe('@lookupfield');
       })
 
-      it('should use computed field if set on facet', function() {
+      it('should use computed field if set on facet', function () {
         mockFacet.options.computedField = '@computedfield';
         mockFacet.options.computedFieldOperation = 'sum';
 
@@ -95,7 +95,7 @@ module Coveo {
         }));
       })
 
-      it('should use the additional filter if set on facet', function() {
+      it('should use the additional filter if set on facet', function () {
         mockFacet.options.additionalFilter = '@additionalfilter';
 
         var queryBuilder = new QueryBuilder();
@@ -104,7 +104,7 @@ module Coveo {
         expect(groupByRequest.constantQueryOverride).toBe('@additionalfilter');
       })
 
-      it('should keep the expression to use for facet search after building a group by', function() {
+      it('should keep the expression to use for facet search after building a group by', function () {
         var builder = new QueryBuilder();
         builder.expression.add('something');
         builder.constantExpression.add('something constant');
@@ -117,10 +117,10 @@ module Coveo {
       })
     })
 
-    describe('should perform search', function() {
+    describe('should perform search', function () {
       var mockEndpoint: SearchEndpoint;
       var mockQueryController: QueryController;
-      beforeEach(function() {
+      beforeEach(function () {
         mockEndpoint = Mock.mockSearchEndpoint();
         mockQueryController = Mock.mockQueryController();
 
@@ -136,12 +136,12 @@ module Coveo {
         (<jasmine.Spy>mockFacet.queryController.getLastQuery).and.returnValue(new QueryBuilder().build());
       })
 
-      afterEach(function() {
+      afterEach(function () {
         mockEndpoint = null;
         mockQueryController = null;
       })
 
-      it('with params', function() {
+      it('with params', function () {
         var params = new FacetSearchParameters(mockFacet);
         facetQueryController.search(params);
         expect(facetQueryController.facet.getEndpoint().search).toHaveBeenCalled();
@@ -163,7 +163,7 @@ module Coveo {
         }))
       })
 
-      it('by copying last query', function() {
+      it('by copying last query', function () {
         var lastQueryBuilder = new QueryBuilder();
         lastQueryBuilder.pipeline = 'pipeline';
         lastQueryBuilder.enableWildcards = true;

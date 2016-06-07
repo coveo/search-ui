@@ -31,7 +31,7 @@ module Coveo {
         expect(test.cmp.magicBox.options.inline).toBe(false);
       })
 
-      it('enableSearchAsYouType should allow to to trigger a query after a delay', function(done) {
+      it('enableSearchAsYouType should allow to to trigger a query after a delay', function (done) {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           enableSearchAsYouType: true
         })
@@ -43,7 +43,7 @@ module Coveo {
         }, test.cmp.options.searchAsYouTypeDelay)
       })
 
-      it('enableQuerySyntax should modify the disableQuerySyntax parameter', function() {
+      it('enableQuerySyntax should modify the disableQuerySyntax parameter', function () {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           enableQuerySyntax: false
         });

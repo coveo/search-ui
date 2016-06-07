@@ -1,15 +1,15 @@
 /// <reference path="../Test.ts" />
 
 module Coveo {
-  describe('Aggregate', function() {
+  describe('Aggregate', function () {
     let test: Mock.IBasicComponentSetup<Aggregate>;
 
-    afterEach(function() {
+    afterEach(function () {
       test = null;
     })
 
-    describe('exposes options', function() {
-      it('field allows to set a field in the group by request', function() {
+    describe('exposes options', function () {
+      it('field allows to set a field in the group by request', function () {
         test = Mock.optionsComponentSetup<Aggregate, IAggregateOptions>(Aggregate, {
           field: '@foobar'
         })
@@ -19,7 +19,7 @@ module Coveo {
         })]))
       })
 
-      it('operation allows to set an operation in the group by request', function() {
+      it('operation allows to set an operation in the group by request', function () {
         test = Mock.optionsComponentSetup<Aggregate, IAggregateOptions>(Aggregate, {
           field: '@foobar',
           operation: 'something'
@@ -36,7 +36,7 @@ module Coveo {
         })]))
       })
 
-      it('format should allow to render the result using the provided format', function() {
+      it('format should allow to render the result using the provided format', function () {
         test = Mock.optionsComponentSetup<Aggregate, IAggregateOptions>(Aggregate, {
           field: '@foobar',
           format: 'n0'

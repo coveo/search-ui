@@ -1,7 +1,7 @@
 /// <reference path="../Test.ts" />
 
 module Coveo {
-  describe('SearchAlertsMessage', function() {
+  describe('SearchAlertsMessage', function () {
     let test: Mock.IBasicComponentSetup<SearchAlertsMessage>;
 
     beforeEach(() => {

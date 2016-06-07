@@ -5,8 +5,8 @@ module Coveo {
     locale: string;
   }
 
-  describe('L10N', function() {
-    beforeEach(function() {
+  describe('L10N', function () {
+    beforeEach(function () {
       String.toLocaleString({
         'en': {
           'Foo': 'Bar',
@@ -21,21 +21,21 @@ module Coveo {
       })
     })
 
-    it('should work for simple localizations', function() {
+    it('should work for simple localizations', function () {
       String.locale = 'fr';
       expect(L10N.format('Foo')).toBe('Barre');
       String.locale = 'en';
       expect(L10N.format('Foo')).toBe('Bar');
     })
 
-    it('should put parameters in the outputted string properly', function() {
+    it('should put parameters in the outputted string properly', function () {
       String.locale = 'fr';
       expect(L10N.format('TwoNumbers', '37', '42')).toBe('37 et 42');
       String.locale = 'en';
       expect(L10N.format('TwoNumbers', '37', '42')).toBe('37 and 42');
     })
 
-    it('should automatically pluralize values higher than one', function() {
+    it('should automatically pluralize values higher than one', function () {
       String.locale = 'fr';
       expect(L10N.format('baby', 0, 0)).toBe('0 bébé');
       expect(L10N.format('baby', 0.42, 0.42)).toBe('0.42 bébé');
@@ -51,7 +51,7 @@ module Coveo {
       expect(L10N.format('baby', 42, 42)).toBe('42 babies');
     })
 
-    it('should force pluralization or singularization when last argument is boolean', function() {
+    it('should force pluralization or singularization when last argument is boolean', function () {
       String.locale = 'fr';
       expect(L10N.format('baby', 1, true)).toBe('1 bébés');
       expect(L10N.format('baby', 37, false)).toBe('37 bébé');

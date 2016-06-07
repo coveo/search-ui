@@ -1,7 +1,7 @@
 /// <reference path="../Test.ts" />
 
 module Coveo {
-  describe('FollowItem', function() {
+  describe('FollowItem', function () {
     let test: Mock.IBasicComponentSetup<FollowItem>;
     let endpointMock: SearchEndpoint;
     let result: IQueryResult;

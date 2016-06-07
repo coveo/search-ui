@@ -1,18 +1,18 @@
 /// <reference path="../Test.ts" />
 module Coveo {
-  describe('ResultAttachments', function() {
+  describe('ResultAttachments', function () {
     let test: Mock.IBasicComponentSetup<ResultAttachments>;
 
-    beforeEach(function() {
+    beforeEach(function () {
       test = Mock.basicResultComponentSetup<ResultAttachments>(ResultAttachments);
     })
 
-    afterEach(function() {
+    afterEach(function () {
       test = null;
     })
 
-    describe('exposes options', function() {
-      it('resultTemplate should render the top-level attachments using the specified template', function() {
+    describe('exposes options', function () {
+      it('resultTemplate should render the top-level attachments using the specified template', function () {
         let template = UnderscoreTemplate.fromString('foo')
         test = Mock.optionsResultComponentSetup<ResultAttachments, IResultAttachmentsOptions>(ResultAttachments, <IResultAttachmentsOptions>{
           resultTemplate: template
@@ -21,7 +21,7 @@ module Coveo {
         expect($$(test.cmp.element).find('.coveo-result-attachments-container').innerHTML).toEqual(template.instantiateToString());
       })
 
-      it('subResultTemplate should render the sub-attachments using the specified template', function() {
+      it('subResultTemplate should render the sub-attachments using the specified template', function () {
         let subTemplate = UnderscoreTemplate.fromString('foobar');
         test = Mock.optionsResultComponentSetup<ResultAttachments, IResultAttachmentsOptions>(ResultAttachments, <IResultAttachmentsOptions>{
           subResultTemplate: subTemplate
@@ -32,7 +32,7 @@ module Coveo {
         expect((<HTMLElement>subAttachments.firstChild).innerHTML).toEqual(subTemplate.instantiateToString());
       })
 
-      it('maximumAttachmentLevel should render sub-attachments up until the specified level', function() {
+      it('maximumAttachmentLevel should render sub-attachments up until the specified level', function () {
         let fakeResult = FakeResults.createFakeResultWithAttachments('t', 1, undefined, undefined, undefined, true);
         fakeResult.attachments[0] = FakeResults.createFakeResultWithAttachments('t', 1, undefined, undefined, undefined, true);
         fakeResult.attachments[0].attachments[0] = FakeResults.createFakeResultWithAttachments('t', 1, undefined, undefined, undefined, true);
@@ -49,11 +49,11 @@ module Coveo {
       })
     })
 
-    it('should be an empty div when there are no attachments', function() {
+    it('should be an empty div when there are no attachments', function () {
       expect(test.cmp.element.children.length).toBe(0);
     })
 
-    it('should not be an empty div when there are attachments', function() {
+    it('should not be an empty div when there are attachments', function () {
       test = Mock.advancedResultComponentSetup<ResultAttachments>(
         ResultAttachments,
         FakeResults.createFakeResultWithAttachments('t', 3),

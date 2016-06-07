@@ -1,10 +1,10 @@
 /// <reference path="../Test.ts" />
 
 module Coveo {
-  describe('Matrix', function() {
+  describe('Matrix', function () {
     var test: Mock.IBasicComponentSetup<Matrix>;
 
-    beforeEach(function() {
+    beforeEach(function () {
       test = Mock.optionsComponentSetup<Matrix, IMatrixOptions>(Matrix, {
         rowField: '@foo',
         columnField: '@bar',
@@ -16,13 +16,13 @@ module Coveo {
       });
     })
 
-    afterEach(function() {
+    afterEach(function () {
       test = null;
     })
 
-    describe('when fully rendered', function() {
+    describe('when fully rendered', function () {
       var fakeResults: IQueryResults;
-      beforeEach(function() {
+      beforeEach(function () {
         fakeResults = FakeResults.createFakeResults(1);
         fakeResults.groupByResults = _.map(_.range(10), (n: number) => {
           return FakeResults.createFakeGroupByResult('@foo', 'row', 10, true);
@@ -36,31 +36,31 @@ module Coveo {
         }
       })
 
-      afterEach(function() {
+      afterEach(function () {
         fakeResults = null;
       })
 
-      it('should trigger the correct query on cell selection', function() {
+      it('should trigger the correct query on cell selection', function () {
         test.cmp.selectCell(5, 5);
         var simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().aq).toEqual(jasmine.stringMatching('@foo=row5'));
         expect(simulation.queryBuilder.build().aq).toEqual(jasmine.stringMatching('@bar=4'));
       })
 
-      it('should allow to get the cell html element', function() {
+      it('should allow to get the cell html element', function () {
         var elem = test.cmp.getCellElement(5, 5);
         expect($$(elem).text()).toBe(Globalize.format(fakeResults.groupByResults[0].values[5].computedFieldResults[0], 'c0'));
       })
 
-      it('should allow to get the cell value', function() {
+      it('should allow to get the cell value', function () {
         var value = test.cmp.getCellValue(5, 5);
         expect(value).toBe(Globalize.format(fakeResults.groupByResults[0].values[5].computedFieldResults[0], 'c0'));
       })
     })
 
-    describe('exposes options', function() {
+    describe('exposes options', function () {
 
-      it('title will display a title on top of matrix', function() {
+      it('title will display a title on top of matrix', function () {
         test = Mock.optionsComponentSetup<Matrix, IMatrixOptions>(Matrix, {
           title: 'nice title',
           rowField: '@foo',
@@ -71,7 +71,7 @@ module Coveo {
         expect($$(title).text()).toBe('nice title');
       })
 
-      it('rowField should output a group by request', function() {
+      it('rowField should output a group by request', function () {
         test = Mock.optionsComponentSetup<Matrix, IMatrixOptions>(Matrix, {
           rowField: '@foo',
           columnField: '@bar',
@@ -86,7 +86,7 @@ module Coveo {
         ]))
       })
 
-      it('columnField and columnFieldValues operate together to output a group by request', function() {
+      it('columnField and columnFieldValues operate together to output a group by request', function () {
         test = Mock.optionsComponentSetup<Matrix, IMatrixOptions>(Matrix, {
           rowField: '@foo',
           columnField: '@bar',
@@ -111,7 +111,7 @@ module Coveo {
         ]))
       })
 
-      it('columnLabels should allow to set the column titles', function() {
+      it('columnLabels should allow to set the column titles', function () {
         test = Mock.optionsComponentSetup<Matrix, IMatrixOptions>(Matrix, {
           rowField: '@foo',
           columnField: '@bar',
@@ -130,7 +130,7 @@ module Coveo {
 
       })
 
-      it('columnLabels will fallback on columnFieldValues if there is inconsistency (not same length for example)', function() {
+      it('columnLabels will fallback on columnFieldValues if there is inconsistency (not same length for example)', function () {
         test = Mock.optionsComponentSetup<Matrix, IMatrixOptions>(Matrix, {
           rowField: '@foo',
           columnField: '@bar',
@@ -147,7 +147,7 @@ module Coveo {
         expect(cellsValues).toEqual(jasmine.arrayContaining(['a', 'b', 'c']))
       })
 
-      it('columnHeader allow to specify the first column header', function() {
+      it('columnHeader allow to specify the first column header', function () {
         test = Mock.optionsComponentSetup<Matrix, IMatrixOptions>(Matrix, {
           rowField: '@foo',
           columnField: '@bar',
@@ -159,7 +159,7 @@ module Coveo {
         expect(test.cmp.getCellValue(0, 0)).toBe('this is a nice header');
       })
 
-      it('maximumNumberOfValuesInGroupBy should allow to specify the number of value in the group by', function() {
+      it('maximumNumberOfValuesInGroupBy should allow to specify the number of value in the group by', function () {
         test = Mock.optionsComponentSetup<Matrix, IMatrixOptions>(Matrix, {
           rowField: '@foo',
           columnField: '@bar',
@@ -174,7 +174,7 @@ module Coveo {
         })]))
       })
 
-      it('enableColumnTotals should allow to specify if a column should contal the total', function() {
+      it('enableColumnTotals should allow to specify if a column should contal the total', function () {
         test = Mock.optionsComponentSetup<Matrix, IMatrixOptions>(Matrix, {
           rowField: '@foo',
           columnField: '@bar',
@@ -198,7 +198,7 @@ module Coveo {
         expect(test.cmp.getCellValue(test.cmp.data.length - 1, 0)).toBe('Total');
       })
 
-      it('computedField should allow to specify the computed field in the group by', function() {
+      it('computedField should allow to specify the computed field in the group by', function () {
         test = Mock.optionsComponentSetup<Matrix, IMatrixOptions>(Matrix, {
           rowField: '@foo',
           columnField: '@bar',
@@ -214,7 +214,7 @@ module Coveo {
         })]))
       })
 
-      it('computedFieldOperation should allow to specify the computed field operation', function() {
+      it('computedFieldOperation should allow to specify the computed field operation', function () {
         test = Mock.optionsComponentSetup<Matrix, IMatrixOptions>(Matrix, {
           rowField: '@foo',
           columnField: '@bar',

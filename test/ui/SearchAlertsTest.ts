@@ -1,7 +1,7 @@
 /// <reference path="../Test.ts" />
 
 module Coveo {
-  describe('SearchAlerts', function() {
+  describe('SearchAlerts', function () {
     let test: Mock.IBasicComponentSetup<SearchAlerts>;
     let settingsData: ISettingsPopulateMenuArgs;
 

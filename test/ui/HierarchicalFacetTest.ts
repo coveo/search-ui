@@ -1,6 +1,6 @@
 /// <reference path="../Test.ts" />
 module Coveo {
-  describe('HierarchicalFacet', function() {
+  describe('HierarchicalFacet', function () {
     let test: Mock.IBasicComponentSetup<HierarchicalFacet>;
     let results: IGroupByResult;
 
@@ -24,19 +24,19 @@ module Coveo {
       })
     }
 
-    beforeEach(function() {
+    beforeEach(function () {
       test = Mock.optionsComponentSetup<HierarchicalFacet, IHierarchicalFacetOptions>(HierarchicalFacet, {
         field: '@foobar'
       })
       results = FakeResults.createFakeHierarchicalGroupByResult('@foobar', 'foo', 2, 3, '|', false, true);
     })
 
-    afterEach(function() {
+    afterEach(function () {
       test = null;
       results = null;
     })
 
-    it('should flag the parent value when a child value is selected or deselected', function() {
+    it('should flag the parent value when a child value is selected or deselected', function () {
       doQuery();
       expect(getFacetValue(0).selected).toBe(false);
       expect(getFacetValue(0, 0).selected).toBe(false);
@@ -52,12 +52,12 @@ module Coveo {
       expect($$(getFacetValueElement('foo0')).hasClass('coveo-has-childs-selected')).toBe(false);
     })
 
-    it('should hide child value by default', function() {
+    it('should hide child value by default', function () {
       doQuery();
       expect($$(getFacetValueElement('foo0-0')).hasClass('coveo-inactive')).toBe(true);
     })
 
-    it('should show and hide the children if you open/close the parent', function() {
+    it('should show and hide the children if you open/close the parent', function () {
       doQuery();
       test.cmp.open('foo0');
       expect($$(getFacetValueElement('foo0-0')).hasClass('coveo-inactive')).toBe(false);
@@ -65,7 +65,7 @@ module Coveo {
       expect($$(getFacetValueElement('foo0-0')).hasClass('coveo-inactive')).toBe(true);
     })
 
-    it('should keep a value opened after a query', function() {
+    it('should keep a value opened after a query', function () {
       doQuery();
       test.cmp.open('foo0');
       expect($$(getFacetValueElement('foo0-0')).hasClass('coveo-inactive')).toBe(false);
@@ -73,7 +73,7 @@ module Coveo {
       expect($$(getFacetValueElement('foo0-0')).hasClass('coveo-inactive')).toBe(false);
     })
 
-    it('should reset correctly (selection)', function() {
+    it('should reset correctly (selection)', function () {
       doQuery();
       test.cmp.selectValue('foo0');
       var simulation = Simulate.query(test.env, {
@@ -89,12 +89,12 @@ module Coveo {
       expect(simulation.queryBuilder.build().aq).not.toEqual(jasmine.stringMatching('@foobar'))
     })
 
-    it('should set the correct css class for a value with childs', function() {
+    it('should set the correct css class for a value with childs', function () {
       doQuery();
       expect($$(getFacetValueElement('foo0')).hasClass('coveo-has-childs')).toBe(true);
     })
 
-    it('should set the correct css class for a value with childs selected', function() {
+    it('should set the correct css class for a value with childs selected', function () {
       doQuery();
       test.cmp.selectValue('foo0|foo0-0');
       doQuery();
@@ -104,7 +104,7 @@ module Coveo {
       expect($$(getFacetValueElement('foo0')).hasClass('coveo-has-childs-selected')).toBe(false);
     })
 
-    it('should set the correct css class for a value with multiple child selected', function() {
+    it('should set the correct css class for a value with multiple child selected', function () {
       doQuery();
       test.cmp.selectValue('foo0|foo0-0');
       test.cmp.selectValue('foo0|foo0-1');
@@ -118,12 +118,12 @@ module Coveo {
       expect($$(getFacetValueElement('foo0')).hasClass('coveo-has-childs-selected')).toBe(false);
     })
 
-    it('should set the correct css class for a value with no child', function() {
+    it('should set the correct css class for a value with no child', function () {
       doQuery();
       expect($$(getFacetValueElement('foo0-0')).hasClass('coveo-no-childs')).toBe(true);
     })
 
-    it('should request 10000 values but displays only as much as requested', function() {
+    it('should request 10000 values but displays only as much as requested', function () {
 
       expect(test.cmp.numberOfValues).toBe(10000);
       expect(test.cmp.numberOfValuesToShow).toBe(5);

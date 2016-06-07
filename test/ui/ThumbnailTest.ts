@@ -1,13 +1,13 @@
 /// <reference path="../Test.ts" />
 
 module Coveo {
-  describe('Thumbnail', function() {
+  describe('Thumbnail', function () {
 
     var test: Mock.IBasicComponentSetup<Thumbnail>;
     var endpoint: SearchEndpoint;
     var getRawDataStreamPromise: Promise<ArrayBuffer>;
 
-    beforeEach(function() {
+    beforeEach(function () {
       endpoint = Mock.mockSearchEndpoint();
       getRawDataStreamPromise = new Promise<ArrayBuffer>((resolve, reject) => { });
       endpoint.getRawDataStream = () => getRawDataStreamPromise;
@@ -16,8 +16,8 @@ module Coveo {
       })
     })
 
-    describe('without JSONP', function() {
-      beforeEach(function() {
+    describe('without JSONP', function () {
+      beforeEach(function () {
         endpoint.isJsonp = () => false;
         endpoint.getRawDataStream = () => new Promise<ArrayBuffer>((resolve, reject) => resolve(new ArrayBuffer(0)));
         test = Mock.advancedResultComponentSetup<Thumbnail>(Thumbnail, undefined, <Mock.AdvancedComponentSetupOptions>{
@@ -25,28 +25,28 @@ module Coveo {
         })
       })
 
-      it('should use async call by default', function(done) {
-        setTimeout(function() {
+      it('should use async call by default', function (done) {
+        setTimeout(function () {
           expect(test.cmp.element.getAttribute('src')).toBe('data:image/png;base64, ');
           done();
         }, 0);
       })
     })
 
-    describe('with JSONP', function() {
-      beforeEach(function() {
+    describe('with JSONP', function () {
+      beforeEach(function () {
         endpoint.isJsonp = () => true;
         test = Mock.advancedResultComponentSetup<Thumbnail>(Thumbnail, undefined, <Mock.AdvancedComponentSetupOptions>{
           modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => builder.withResult().withEndpoint(endpoint)
         })
       })
 
-      it('should use direct url', function() {
+      it('should use direct url', function () {
         expect(test.cmp.element.getAttribute('src')).toEqual('http://datastream.uri');
       })
     })
 
-    it('should set a CSS class when no thumbnail is available', function() {
+    it('should set a CSS class when no thumbnail is available', function () {
       var result = <IQueryResult>{
         flags: ''
       }
@@ -54,8 +54,8 @@ module Coveo {
       expect($$(test.cmp.element).hasClass('coveo-no-thumbnail')).toBe(true);
     })
 
-    describe('exposes options', function() {
-      it('noThumbnailClass should set the appropriate CSS class when no thumbnail is available', function() {
+    describe('exposes options', function () {
+      it('noThumbnailClass should set the appropriate CSS class when no thumbnail is available', function () {
         test = Mock.optionsResultComponentSetup<Thumbnail, IThumbnailOptions>(Thumbnail, <IThumbnailOptions>{
           noThumbnailClass: 'coveo-heyo-there-is-no-class'
         }, <IQueryResult>{ flags: '' });
@@ -66,7 +66,7 @@ module Coveo {
     })
 
 
-    it('should put in an empty image while loading', function() {
+    it('should put in an empty image while loading', function () {
       expect(test.cmp.element.getAttribute('src')).toEqual('data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==');
     })
   })
