@@ -158,11 +158,11 @@ export class DateUtils {
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString
 if (!Date.prototype.toISOString) {
   (function() {
-    function pad(number) {
-      if (number < 10) {
-        return '0' + number;
+    function pad(nber) {
+      if (nber < 10) {
+        return '0' + nber;
       }
-      return number;
+      return nber;
     }
 
     Date.prototype.toISOString = function() {

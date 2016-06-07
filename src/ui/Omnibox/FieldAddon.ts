@@ -14,7 +14,7 @@ interface IFieldAddonHash {
 }
 
 export class FieldAddon {
-  static Index = 64;
+  static INDEX = 64;
 
   cache: { [hash: string]: Promise<string[]> } = {};
 
@@ -99,7 +99,7 @@ export class FieldAddon {
         return {
           text: hash.before + (hash.current.toLowerCase().indexOf(value.toLowerCase()) == 0 ? hash.current + value.substr(hash.current.length) : value) + hash.after,
           html: Coveo.MagicBox.Utils.highlightText(value, hash.current, true),
-          index: FieldAddon.Index - i / values.length
+          index: FieldAddon.INDEX - i / values.length
         }
       });
       return suggestions;

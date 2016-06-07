@@ -6,7 +6,7 @@ import {LocalStorageUtils} from '../../utils/LocalStorageUtils';
 import {PreferencesPanel} from '../PreferencesPanel/PreferencesPanel';
 import {PreferencesPanelCheckboxInput} from '../PreferencesPanel/PreferencesPanelItem';
 import {PreferencesPanelEvents} from '../../events/PreferencesPanelEvents';
-import {AnalyticsActionCauseList, IAnalyticsPreferencesChangeMeta} from '../Analytics/AnalyticsActionListMeta';
+import {analyticsActionCauseList, IAnalyticsPreferencesChangeMeta} from '../Analytics/AnalyticsActionListMeta';
 import {Initialization} from '../Base/Initialization';
 import {IResultLinkOptions} from '../ResultLink/ResultLinkOptions';
 import {Assert} from '../../misc/Assert';
@@ -157,8 +157,8 @@ export class ResultsPreferences extends Component {
   private fromPreferenceChangeEventToUsageAnalyticsLog(e: Event) {
     var type = (<HTMLInputElement>e.target).checked ? 'selected' : 'unselected';
     var preference = (<HTMLInputElement>e.srcElement).value;
-    this.usageAnalytics.logCustomEvent<IAnalyticsPreferencesChangeMeta>(AnalyticsActionCauseList.preferencesChange, { preferenceName: preference, preferenceType: type }, this.element);
-    this.usageAnalytics.logSearchEvent<IAnalyticsPreferencesChangeMeta>(AnalyticsActionCauseList.preferencesChange, { preferenceName: preference, preferenceType: type });
+    this.usageAnalytics.logCustomEvent<IAnalyticsPreferencesChangeMeta>(analyticsActionCauseList.preferencesChange, { preferenceName: preference, preferenceType: type }, this.element);
+    this.usageAnalytics.logSearchEvent<IAnalyticsPreferencesChangeMeta>(analyticsActionCauseList.preferencesChange, { preferenceName: preference, preferenceType: type });
   }
 }
 

@@ -3,12 +3,13 @@ import {Component} from '../Base/Component';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {ModelEvents, IAttributeChangedEventArg} from '../../models/Model';
-import {QueryStateAttributes, QueryStateModel} from '../../models/QueryStateModel';
+import {MODEL_EVENTS, IAttributeChangedEventArg} from '../../models/Model';
+import {QUERY_STATE_ATTRIBUTES, QueryStateModel} from '../../models/QueryStateModel';
 import {StandaloneSearchInterfaceEvents} from '../../events/StandaloneSearchInterfaceEvents';
-import {IAnalyticsNoMeta, AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
+import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {$$} from '../../utils/Dom';
 import {Assert} from '../../misc/Assert';
+import {QueryboxQueryParameters} from './QueryboxQueryParameters';
 
 export interface IQueryboxOptions {
   enableSearchAsYouType?: boolean;
@@ -23,7 +24,6 @@ export interface IQueryboxOptions {
   autoFocus?: boolean;
   placeholder?: string;
 }
-
 
 /**
  * A component that allows a user to enter a query inside an input.<br/>
@@ -120,7 +120,7 @@ export class Querybox extends Component {
 
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(StandaloneSearchInterfaceEvents.beforeRedirect, () => this.updateQueryState());
-    this.bind.onQueryState(ModelEvents.CHANGE_ONE, QueryStateAttributes.Q, (args: IAttributeChangedEventArg) => this.handleQueryStateChanged(args));
+    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.Q, (args: IAttributeChangedEventArg) => this.handleQueryStateChanged(args));
 
     if (this.options.enableSearchAsYouType) {
       $$(this.element).addClass('coveo-search-as-you-type');
@@ -139,7 +139,7 @@ export class Querybox extends Component {
 
     this.magicBox.onclear = () => {
       this.updateQueryState();
-      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxClear, {})
+      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxClear, {})
       this.triggerNewQuery(false);
     };
 
@@ -155,7 +155,7 @@ export class Querybox extends Component {
   public submit(): void {
     this.magicBox.clearSuggestion();
     this.updateQueryState();
-    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxSubmit, {})
+    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {})
     this.triggerNewQuery(false);
   }
 
@@ -204,36 +204,8 @@ export class Querybox extends Component {
     Assert.exists(args.queryBuilder);
 
     this.updateQueryState();
-
     this.lastQuery = this.magicBox.getText();
-
-    if (this.options.enableWildcards) {
-      args.queryBuilder.enableWildcards = true;
-    }
-
-    if (this.options.enableQuestionMarks) {
-      args.queryBuilder.enableQuestionMarks = true;
-    }
-
-    if (this.options.enableLowercaseOperators) {
-      args.queryBuilder.enableLowercaseOperators = true;
-    }
-
-    if (!_.isEmpty(this.lastQuery)) {
-      args.queryBuilder.disableQuerySyntax = !this.options.enableQuerySyntax;
-      args.queryBuilder.expression.add(this.lastQuery);
-      if (this.options.enablePartialMatch) {
-        args.queryBuilder.enablePartialMatch = this.options.enablePartialMatch;
-        if (this.options.partialMatchKeywords) {
-          args.queryBuilder.partialMatchKeywords = this.options.partialMatchKeywords;
-        }
-        if (this.options.partialMatchThreshold) {
-          args.queryBuilder.partialMatchThreshold = this.options.partialMatchThreshold;
-        }
-      }
-
-      this.logger.trace('Adding query to QueryBuilder', this.lastQuery);
-    }
+    new QueryboxQueryParameters(this.options).addParameters(args.queryBuilder, this.lastQuery);
   }
 
   private triggerNewQuery(searchAsYouType: boolean): void {
@@ -262,7 +234,7 @@ export class Querybox extends Component {
   private searchAsYouType(): void {
     clearTimeout(this.searchAsYouTypeTimeout);
     this.searchAsYouTypeTimeout = setTimeout(() => {
-      this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxAsYouType, {})
+      this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxAsYouType, {})
       this.triggerNewQuery(true);
     }, this.options.searchAsYouTypeDelay);
   }

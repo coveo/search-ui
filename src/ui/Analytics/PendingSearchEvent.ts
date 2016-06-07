@@ -12,10 +12,8 @@ import {Defer} from '../../misc/Defer';
 import {APIAnalyticsBuilder} from '../../rest/APIAnalyticsBuilder';
 import {IAnalyticsSearchEventsArgs, AnalyticsEvents} from '../../events/AnalyticsEvents';
 import {QueryStateModel} from '../../models/QueryStateModel';
-import {shim as PromiseShimWithFinally} from '../../misc/PromiseFinally';
 import _ = require('underscore');
 
-PromiseShimWithFinally();
 export class PendingSearchEvent {
   private handler: (evt: Event, arg: IDuringQueryEventArgs) => void;
   private searchPromises: Promise<IQueryResults>[] = [];

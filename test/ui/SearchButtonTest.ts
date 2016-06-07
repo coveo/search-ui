@@ -23,7 +23,7 @@ module Coveo {
 
     it('will log an analytics event', function() {
       test.cmp.click();
-      expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(AnalyticsActionCauseList.searchboxSubmit, {})
+      expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchboxSubmit, {})
     })
   })
 }

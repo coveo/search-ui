@@ -277,7 +277,7 @@ module Coveo {
 
     it('should trigger an analytics event on selection', function () {
       test.cmp.select();
-      expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(AnalyticsActionCauseList.interfaceChange, {interfaceChangeTo: 'testingtabid'});
+      expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.interfaceChange, {interfaceChangeTo: 'testingtabid'});
     })
   })
 }

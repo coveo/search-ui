@@ -19,6 +19,9 @@
 /// <reference path="utils/L10NTest.ts" />
 /// <reference path="utils/HighlightUtilsTest.ts" />
 
+//***** TEST ON MISC ******
+/// <reference path="misc/PromisesShimTest.ts" />
+
 //***** TEST ON MODELS ******
 /// <reference path="models/ModelTest.ts" />
 /// <reference path="models/QueryStateModelTest.ts" />
@@ -86,6 +89,7 @@
 /// <reference path="ui/FieldSuggestionsTest.ts" />
 /// <reference path="ui/AuthenticationProviderTest.ts" />
 /// <reference path="ui/CurrentTabTest.ts" />
+/// <reference path="ui/QueryboxQueryParametersTest.ts" />
 /// <reference path="ui/ImageResultListTest.ts" />
 
 Coveo.Logger.disable();
@@ -98,8 +102,3 @@ module Coveo {
 function isPhantomJs() {
   return navigator.userAgent.indexOf('PhantomJS') != -1;
 }
-
-
-
-
-
