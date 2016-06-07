@@ -48,14 +48,14 @@ module Coveo {
       })
 
       it('toggle operator should be available if the facet has the option', function () {
-        facet.options.allowTogglingOperator = true;
+        facet.options.enableTogglingOperator = true;
         facetHeader = new FacetHeader(_.extend(baseOptions, {
           facet: facet
         }))
         facetHeader.build();
         expect(facetHeader.operatorElement.style.display).toEqual('block');
 
-        facet.options.allowTogglingOperator = false;
+        facet.options.enableTogglingOperator = false;
         facetHeader = new FacetHeader(_.extend(baseOptions, {
           facet: facet
         }))
@@ -77,7 +77,7 @@ module Coveo {
       })
 
       it('allow to switch or and and', function () {
-        facet.options.allowTogglingOperator = true;
+        facet.options.enableTogglingOperator = true;
         facet.getSelectedValues = jasmine.createSpy('spy');
         (<jasmine.Spy>facet.getSelectedValues).and.returnValue(['a', 'b']);
 
