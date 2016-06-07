@@ -1,18 +1,18 @@
 /// <reference path="../Test.ts" />
 module Coveo {
-  describe('EndpointCaller', function () {
+  describe('EndpointCaller', function() {
 
-    describe('using generic call', function () {
+    describe('using generic call', function() {
 
-      beforeEach(function () {
+      beforeEach(function() {
         jasmine.Ajax.install();
       })
 
-      afterEach(function () {
+      afterEach(function() {
         jasmine.Ajax.uninstall();
       })
 
-      it('should use XMLHTTPRequest by default', function () {
+      it('should use XMLHTTPRequest by default', function() {
         var endpointCaller = new EndpointCaller();
         endpointCaller.call({
           method: 'POST',
@@ -25,7 +25,7 @@ module Coveo {
         expect(jasmine.Ajax.requests.mostRecent().url).toBe('this is an XMLHTTPRequest');
       })
 
-      it('should set the auth if provided', function () {
+      it('should set the auth if provided', function() {
         var endpointCaller = new EndpointCaller({
           accessToken: 'myToken'
         });
@@ -55,16 +55,16 @@ module Coveo {
       })
     })
 
-    describe('using XMLHTTPRequest', function () {
-      beforeEach(function () {
+    describe('using XMLHTTPRequest', function() {
+      beforeEach(function() {
         jasmine.Ajax.install();
       })
 
-      afterEach(function () {
+      afterEach(function() {
         jasmine.Ajax.uninstall();
       })
 
-      it('should set the correct requested params on the XMLHTTPRequest', function () {
+      it('should set the correct requested params on the XMLHTTPRequest', function() {
         var endpointCaller = new EndpointCaller();
         endpointCaller.call({
           method: 'POST',
@@ -118,8 +118,8 @@ module Coveo {
 
       })
 
-      describe('using response type text', function () {
-        beforeEach(function () {
+      describe('using response type text', function() {
+        beforeEach(function() {
           this.endpointCaller = new EndpointCaller();
           this.promise = this.endpointCaller.call({
             method: 'POST',
@@ -134,12 +134,12 @@ module Coveo {
             errorsAsSuccess: false
           })
         })
-        afterEach(function () {
+        afterEach(function() {
           this.endpointCaller = undefined;
           this.promise = undefined;
         })
 
-        it('should work if responseContentType is text', function (done) {
+        it('should work if responseContentType is text', function(done) {
           this.promise.then((response: ISuccessResponse<IQueryResults>) => {
             expect(response.data.results.length).toBe(10);
             expect(response.duration).toBeDefined();
@@ -154,7 +154,7 @@ module Coveo {
           });
         })
 
-        it('should work if responseContentType is application/json', function (done) {
+        it('should work if responseContentType is application/json', function(done) {
           this.promise.then((response: ISuccessResponse<IQueryResults>) => {
             expect(response.data.results.length).toBe(10);
             expect(response.duration).toBeDefined();
@@ -169,7 +169,7 @@ module Coveo {
           });
         })
 
-        it('should behave properly if there is an error', function (done) {
+        it('should behave properly if there is an error', function(done) {
           this.promise
             .then((response: ISuccessResponse<IQueryResults>) => {
               // This should never execute, and always go to the catch statement
@@ -187,7 +187,7 @@ module Coveo {
           });
         })
 
-        it('should behave properly if there is an error in the body', function (done) {
+        it('should behave properly if there is an error in the body', function(done) {
           this.promise
             .then((response: ISuccessResponse<IQueryResults>) => {
               // This should never execute, and always go to the catch statement
@@ -210,8 +210,8 @@ module Coveo {
         })
       })
 
-      describe('using response type json', function () {
-        beforeEach(function () {
+      describe('using response type json', function() {
+        beforeEach(function() {
           this.endpointCaller = new EndpointCaller();
           this.promise = this.endpointCaller.call({
             method: 'POST',
@@ -226,12 +226,12 @@ module Coveo {
             errorsAsSuccess: false
           })
         })
-        afterEach(function () {
+        afterEach(function() {
           this.endpointCaller = undefined;
           this.promise = undefined;
         })
 
-        it('should work if responseContentType is text', function (done) {
+        it('should work if responseContentType is text', function(done) {
           this.promise.then((response: ISuccessResponse<IQueryResults>) => {
             expect(response.data.results.length).toBe(10);
             expect(response.duration).toBeDefined();
@@ -246,7 +246,7 @@ module Coveo {
           });
         })
 
-        it('should work if responseContentType is application/json', function (done) {
+        it('should work if responseContentType is application/json', function(done) {
           this.promise.then((response: ISuccessResponse<IQueryResults>) => {
             expect(response.data.results.length).toBe(10);
             expect(response.duration).toBeDefined();

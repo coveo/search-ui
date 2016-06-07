@@ -2,10 +2,10 @@
 declare var coveoanalytics: CoveoAnalytics.CoveoUA;
 
 module Coveo {
-  describe('QueryController', function () {
+  describe('QueryController', function() {
     var test: Mock.IBasicComponentSetup<QueryController>;
 
-    beforeEach(function () {
+    beforeEach(function() {
       test = <Mock.IBasicComponentSetup<QueryController>>{};
       test.env = new Mock.MockEnvironmentBuilder().build();
       test.cmp = new QueryController(test.env.root, {}, test.env.usageAnalytics, test.env.searchInterface);
@@ -13,7 +13,7 @@ module Coveo {
       test.cmp.element = test.env.root;
     })
 
-    afterEach(function () {
+    afterEach(function() {
       test = null;
     })
 
@@ -37,7 +37,7 @@ module Coveo {
       }))
     })
 
-    it('should allow to fetchMore', function () {
+    it('should allow to fetchMore', function() {
       test.cmp.fetchMore(50);
       expect(test.env.searchEndpoint.search).toHaveBeenCalledWith(jasmine.objectContaining({
         firstResult: 10,
@@ -45,9 +45,9 @@ module Coveo {
       }), jasmine.any(Object));
     })
 
-    describe('trigger query events', function () {
+    describe('trigger query events', function() {
 
-      it('should trigger newQuery', function (done) {
+      it('should trigger newQuery', function(done) {
         var spy = jasmine.createSpy('spy');
         $$(test.env.root).on('newQuery', spy);
         var search = <jasmine.Spy>test.env.searchEndpoint.search;
@@ -65,7 +65,7 @@ module Coveo {
         }, 10)
       })
 
-      it('should trigger buildingQuery', function (done) {
+      it('should trigger buildingQuery', function(done) {
         var spy = jasmine.createSpy('spy');
         $$(test.env.root).on('buildingQuery', spy);
         var search = <jasmine.Spy>test.env.searchEndpoint.search;
@@ -83,7 +83,7 @@ module Coveo {
         }, 10)
       })
 
-      it('should trigger doneBuildingQuery', function (done) {
+      it('should trigger doneBuildingQuery', function(done) {
         var spy = jasmine.createSpy('spy');
         $$(test.env.root).on('doneBuildingQuery', spy);
         var search = <jasmine.Spy>test.env.searchEndpoint.search;
@@ -101,7 +101,7 @@ module Coveo {
         }, 10)
       })
 
-      it('should trigger querySuccess', function (done) {
+      it('should trigger querySuccess', function(done) {
         var spy = jasmine.createSpy('spy');
         $$(test.env.root).on('querySuccess', spy);
         var search = <jasmine.Spy>test.env.searchEndpoint.search;
@@ -120,7 +120,7 @@ module Coveo {
         }, 10)
       })
 
-      it('should trigger preprocessResults', function (done) {
+      it('should trigger preprocessResults', function(done) {
         var spy = jasmine.createSpy('spy');
         $$(test.env.root).on('preprocessResults', spy);
         var search = <jasmine.Spy>test.env.searchEndpoint.search;
@@ -140,7 +140,7 @@ module Coveo {
         }, 10)
       })
 
-      it('should trigger noResults', function (done) {
+      it('should trigger noResults', function(done) {
         var spy = jasmine.createSpy('spy');
         $$(test.env.root).on('noResults', spy);
         var search = <jasmine.Spy>test.env.searchEndpoint.search;
@@ -161,7 +161,7 @@ module Coveo {
         }, 10)
       })
 
-      it('should cancel the query if set during an event', function () {
+      it('should cancel the query if set during an event', function() {
         $$(test.env.root).on('newQuery', (e, args) => {
           args.cancel = true;
         })
@@ -170,10 +170,10 @@ module Coveo {
       })
     })
 
-    describe('coveoanalytics', function () {
+    describe('coveoanalytics', function() {
       let store: CoveoAnalytics.HistoryStore;
 
-      beforeEach(function () {
+      beforeEach(function() {
         store = {
           addElement: (query: IQuery) => {
           },
@@ -190,12 +190,12 @@ module Coveo {
         spyOn(store, 'addElement');
       });
 
-      afterEach(function () {
+      afterEach(function() {
         store = undefined;
         coveoanalytics = undefined;
       })
 
-      it('should log the query in the user history', function () {
+      it('should log the query in the user history', function() {
         test.cmp.executeQuery();
         expect(store.addElement).toHaveBeenCalled()
       })

@@ -1,7 +1,7 @@
 /// <reference path="../Test.ts" />
 
 module Coveo {
-  describe('ResultLink', function () {
+  describe('ResultLink', function() {
     let test: Mock.IBasicComponentSetup<ResultLink>;
     let fakeResult: IQueryResult;
 
@@ -11,7 +11,7 @@ module Coveo {
       spyOn(test.cmp, 'openLink');
     });
 
-    afterEach(function () {
+    afterEach(function() {
       test = null;
       fakeResult = null;
     })

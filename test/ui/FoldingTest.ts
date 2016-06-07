@@ -1,10 +1,10 @@
 /// <reference path="../Test.ts" />
 module Coveo {
-  describe('Folding', function () {
+  describe('Folding', function() {
     var test: Mock.IBasicComponentSetup<Folding>;
     var fakeResults: IQueryResults;
 
-    beforeEach(function () {
+    beforeEach(function() {
       test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
         field: '@fieldname',
         enableExpand: true,
@@ -17,15 +17,15 @@ module Coveo {
       fakeResults.results[0].raw.fieldname = 'fieldvalue';
     })
 
-    afterEach(function () {
+    afterEach(function() {
       test = null;
       fakeResults = null;
     })
 
-    describe('exposes options', function () {
+    describe('exposes options', function() {
 
-      describe('field', function () {
-        it('should send the correct field to the outgoing query', function () {
+      describe('field', function() {
+        it('should send the correct field to the outgoing query', function() {
           test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
             field: '@myfield'
           })
@@ -33,14 +33,14 @@ module Coveo {
           expect(data.queryBuilder.filterField).toBe('@myfield');
         })
 
-        it('should throw an error when not specified', function () {
+        it('should throw an error when not specified', function() {
           expect(() => Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
             field: null
           })).toThrow();
         })
       })
 
-      it('range should set the proper range to the outgoing query', function () {
+      it('range should set the proper range to the outgoing query', function() {
         test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
           field: '@fieldname',
           range: 42
@@ -49,7 +49,7 @@ module Coveo {
         expect(data.queryBuilder.filterFieldRange).toBe(42);
       })
 
-      it('expandExpression should include the custom expand expression to the expand query', function () {
+      it('expandExpression should include the custom expand expression to the expand query', function() {
         test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
           field: '@fieldname',
           expandExpression: 'myExpandExpression'
@@ -62,7 +62,7 @@ module Coveo {
         }))
       })
 
-      it('maximumExpandedResults should set the number of results properly to the expand query', function () {
+      it('maximumExpandedResults should set the number of results properly to the expand query', function() {
         test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
           field: '@fieldname',
           maximumExpandedResults: 42
@@ -76,7 +76,7 @@ module Coveo {
         data.results.results[0].moreResults();
       })
 
-      it('enableExpand set to true should provide an expand function', function () {
+      it('enableExpand set to true should provide an expand function', function() {
         test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
           field: '@fieldname',
           enableExpand: true
@@ -85,7 +85,7 @@ module Coveo {
         expect(data.results.results[0].moreResults).toEqual(jasmine.any(Function));
       })
 
-      it('enableExpand set to false should not provide an expand function', function () {
+      it('enableExpand set to false should not provide an expand function', function() {
         test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
           field: '@fieldname',
           enableExpand: false
@@ -95,10 +95,10 @@ module Coveo {
       })
     })
 
-    describe('expand', function () {
+    describe('expand', function() {
       var queryData: ISimulateQueryData;
 
-      beforeEach(function () {
+      beforeEach(function() {
         test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
           field: '@fieldname',
           maximumExpandedResults: 7
@@ -106,26 +106,26 @@ module Coveo {
         queryData = Simulate.query(test.env, { query: { q: 'foo bar' }, results: fakeResults })
       })
 
-      afterEach(function () {
+      afterEach(function() {
         test = null;
         queryData = null;
       })
 
-      it('should perform query with expected expression when moreResults is called', function () {
+      it('should perform query with expected expression when moreResults is called', function() {
         queryData.results.results[0].moreResults();
         expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
           aq: '@fieldname=fieldvalue'
         }))
       })
 
-      it('should include query keywords for highlighting', function () {
+      it('should include query keywords for highlighting', function() {
         queryData.results.results[0].moreResults();
         expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
           q: '(foo bar) OR @uri'
         }))
       })
 
-      it('should use the specified maximum number of results', function () {
+      it('should use the specified maximum number of results', function() {
         queryData.results.results[0].moreResults();
         expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
           numberOfResults: 7
@@ -133,7 +133,7 @@ module Coveo {
       })
     })
 
-    it('should rearrange a result that is an attachment if it has a parentResult', function () {
+    it('should rearrange a result that is an attachment if it has a parentResult', function() {
       test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
         field: '@fieldname',
         childField: '@childfield',
@@ -149,7 +149,7 @@ module Coveo {
       expect(data.results.results[0].title).toBe('TitleParentResult');
     })
 
-    it('should set the proper childResults and attachments in multiple folded results', function () {
+    it('should set the proper childResults and attachments in multiple folded results', function() {
       var results: IQueryResult[] = [];
       _.times(7, (n) => results.push(FakeResults.createFakeResult(n.toString())));
 
@@ -201,7 +201,7 @@ module Coveo {
       }))
     })
 
-    it('should sort by the original position', function () {
+    it('should sort by the original position', function() {
       var results: IQueryResult[] = [];
       _.times(7, (n) => results.push(FakeResults.createFakeResult(n.toString())));
 
@@ -262,7 +262,7 @@ module Coveo {
       }))
     })
 
-    it('should remove duplicate from the result set if one is loaded through the parentResult field', function () {
+    it('should remove duplicate from the result set if one is loaded through the parentResult field', function() {
       var results: IQueryResult[] = [];
       _.times(7, (n) => results.push(FakeResults.createFakeResult(n.toString())));
 

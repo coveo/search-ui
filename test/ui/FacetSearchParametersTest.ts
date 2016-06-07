@@ -1,9 +1,9 @@
 /// <reference path="../Test.ts" />
 module Coveo {
-  describe('FacetSearchParameters', function () {
+  describe('FacetSearchParameters', function() {
     var mockFacet: Facet;
 
-    beforeEach(function () {
+    beforeEach(function() {
       mockFacet = Mock.mock<Facet>(Facet);
       mockFacet.options = {};
       mockFacet.options.numberOfValuesInFacetSearch = 10;
@@ -14,11 +14,11 @@ module Coveo {
       }
     })
 
-    afterEach(function () {
+    afterEach(function() {
       mockFacet = null;
     })
 
-    it('should allow to set value to search and expand it with different captions', function () {
+    it('should allow to set value to search and expand it with different captions', function() {
       var params = new FacetSearchParameters(mockFacet);
       params.setValueToSearch('test');
       expect(params.alwaysInclude).toContain('test');
@@ -34,7 +34,7 @@ module Coveo {
       expect(params.alwaysInclude).toContain('bar');
     })
 
-    it('should allow to build a group by request', function () {
+    it('should allow to build a group by request', function() {
       var params = new FacetSearchParameters(mockFacet);
 
       params.setValueToSearch('testing');
@@ -52,10 +52,10 @@ module Coveo {
       expect(req.computedFields[0].operation).toBe('sum');
     })
 
-    describe('with facet having displayed values', function () {
+    describe('with facet having displayed values', function() {
       var elem: HTMLElement;
 
-      beforeEach(function () {
+      beforeEach(function() {
         mockFacet.options.valueCaption = {
           'foo': 'test',
           'bar': 'testing'
@@ -74,11 +74,11 @@ module Coveo {
         elem.appendChild(twoValue);
       })
 
-      afterEach(function () {
+      afterEach(function() {
         elem = null;
       })
 
-      it('allows to exclude currently displayed values in search', function () {
+      it('allows to exclude currently displayed values in search', function() {
         var params = new FacetSearchParameters(mockFacet);
         params.excludeCurrentlyDisplayedValuesInSearch(elem);
         expect(params.alwaysExclude.length).toBe(7);
@@ -91,7 +91,7 @@ module Coveo {
         expect(params.alwaysExclude).toContain('c');
       })
 
-      it('allows to create a group by', function () {
+      it('allows to create a group by', function() {
         var params = new FacetSearchParameters(mockFacet);
         params.setValueToSearch('qwerty');
         var groupBy = params.getGroupByRequest();
@@ -106,7 +106,7 @@ module Coveo {
         expect(groupBy.allowedValues).toContain('c');
       })
 
-      it('allow to create a query duplicated from the last one', function () {
+      it('allow to create a query duplicated from the last one', function() {
         var spy = jasmine.createSpy('spy');
         var builder = new QueryBuilder();
         builder.enablePartialMatch = true;

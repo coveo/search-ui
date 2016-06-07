@@ -1,9 +1,9 @@
 /// <reference path="../Test.ts" />
 module Coveo {
-  describe('Facet', function () {
+  describe('Facet', function() {
     var test: Mock.IBasicComponentSetup<Facet>;
 
-    beforeEach(function () {
+    beforeEach(function() {
       test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
         field: '@field'
       });
@@ -12,25 +12,25 @@ module Coveo {
       }
     })
 
-    afterEach(function () {
+    afterEach(function() {
       test = null;
     })
 
-    it('allows to select a value', function () {
+    it('allows to select a value', function() {
       expect(test.cmp.getDisplayedFacetValues()).not.toContain('foobar');
       test.cmp.selectValue('foobar');
       expect(test.cmp.getDisplayedValues()).toContain('foobar');
       expect(test.cmp.values.get('foobar').selected).toBe(true);
     })
 
-    it('allows to select multiple value', function () {
+    it('allows to select multiple value', function() {
       expect(test.cmp.getDisplayedFacetValues()).not.toEqual(jasmine.arrayContaining(['foo', 'bar', 'baz']));
       test.cmp.selectMultipleValues(['foo', 'bar', 'baz']);
       expect(test.cmp.getDisplayedValues()).toEqual(jasmine.arrayContaining(['foo', 'bar', 'baz']));
       expect(test.cmp.values.get('foo').selected).toBe(true);
     })
 
-    it('allows to deselect a value', function () {
+    it('allows to deselect a value', function() {
       expect(test.cmp.getDisplayedFacetValues()).not.toContain('foobar');
       test.cmp.selectValue('foobar');
       expect(test.cmp.getDisplayedValues()).toContain('foobar');
@@ -40,7 +40,7 @@ module Coveo {
       expect(test.cmp.values.get('foobar').selected).not.toBe(true);
     })
 
-    it('allows to deselect multiple values', function () {
+    it('allows to deselect multiple values', function() {
       expect(test.cmp.getDisplayedFacetValues()).not.toEqual(jasmine.arrayContaining(['foo', 'bar', 'baz']));
       test.cmp.selectMultipleValues(['foo', 'bar', 'baz']);
       expect(test.cmp.getDisplayedValues()).toEqual(jasmine.arrayContaining(['foo', 'bar', 'baz']));
@@ -50,21 +50,21 @@ module Coveo {
       expect(test.cmp.values.get('foo').selected).not.toBe(true);
     })
 
-    it('allows to exclude a value', function () {
+    it('allows to exclude a value', function() {
       expect(test.cmp.getDisplayedFacetValues()).not.toContain('foobar');
       test.cmp.excludeValue('foobar');
       expect(test.cmp.getDisplayedValues()).toContain('foobar');
       expect(test.cmp.values.get('foobar').excluded).toBe(true);
     })
 
-    it('allows to exclude multiple value', function () {
+    it('allows to exclude multiple value', function() {
       expect(test.cmp.getDisplayedFacetValues()).not.toEqual(jasmine.arrayContaining(['foo', 'bar', 'baz']));
       test.cmp.excludeMultipleValues(['foo', 'bar', 'baz']);
       expect(test.cmp.getDisplayedValues()).toEqual(jasmine.arrayContaining(['foo', 'bar', 'baz']));
       expect(test.cmp.values.get('foo').excluded).toBe(true);
     })
 
-    it('allows to unexclude a value', function () {
+    it('allows to unexclude a value', function() {
       expect(test.cmp.getDisplayedFacetValues()).not.toContain('foobar');
       test.cmp.excludeValue('foobar');
       expect(test.cmp.getDisplayedValues()).toContain('foobar');
@@ -74,7 +74,7 @@ module Coveo {
       expect(test.cmp.values.get('foobar').excluded).not.toBe(true);
     })
 
-    it('allows to unexclude multiple values', function () {
+    it('allows to unexclude multiple values', function() {
       expect(test.cmp.getDisplayedFacetValues()).not.toEqual(jasmine.arrayContaining(['foo', 'bar', 'baz']));
       test.cmp.excludeMultipleValues(['foo', 'bar', 'baz']);
       expect(test.cmp.getDisplayedValues()).toEqual(jasmine.arrayContaining(['foo', 'bar', 'baz']));
@@ -84,7 +84,7 @@ module Coveo {
       expect(test.cmp.values.get('foo').excluded).not.toBe(true);
     })
 
-    it('allows to toggleSelectValue', function () {
+    it('allows to toggleSelectValue', function() {
       expect(test.cmp.getDisplayedFacetValues()).not.toContain('foobar');
       test.cmp.toggleSelectValue('foobar');
       expect(test.cmp.getDisplayedValues()).toContain('foobar');
@@ -93,7 +93,7 @@ module Coveo {
       expect(test.cmp.values.get('foobar').selected).toBe(false);
     })
 
-    it('allows to toggleExcludeValue', function () {
+    it('allows to toggleExcludeValue', function() {
       expect(test.cmp.getDisplayedFacetValues()).not.toContain('foobar');
       test.cmp.toggleExcludeValue('foobar');
       expect(test.cmp.getDisplayedValues()).toContain('foobar');
@@ -102,19 +102,19 @@ module Coveo {
       expect(test.cmp.values.get('foobar').excluded).toBe(false);
     })
 
-    it('allows to getSelectedValues', function () {
+    it('allows to getSelectedValues', function() {
       expect(test.cmp.getSelectedValues()).not.toEqual(jasmine.arrayContaining(['foo', 'bar']));
       test.cmp.selectMultipleValues(['foo', 'bar']);
       expect(test.cmp.getSelectedValues()).toEqual(jasmine.arrayContaining(['foo', 'bar']));
     })
 
-    it('allows to getExcludedValues', function () {
+    it('allows to getExcludedValues', function() {
       expect(test.cmp.getExcludedValues()).not.toEqual(jasmine.arrayContaining(['foo', 'bar']));
       test.cmp.excludeMultipleValues(['foo', 'bar']);
       expect(test.cmp.getExcludedValues()).toEqual(jasmine.arrayContaining(['foo', 'bar']));
     })
 
-    it('allows to reset', function () {
+    it('allows to reset', function() {
       test.cmp.selectMultipleValues(['foo', 'bar']);
       test.cmp.excludeMultipleValues(['a', 'b']);
       expect(test.cmp.getSelectedValues()).toEqual(jasmine.arrayContaining(['foo', 'bar']));
@@ -124,28 +124,28 @@ module Coveo {
       expect(test.cmp.getExcludedValues()).not.toEqual(jasmine.arrayContaining(['a', 'b']));
     })
 
-    it('allows to update sort', function () {
+    it('allows to update sort', function() {
       expect(test.cmp.options.sortCriteria).not.toBe('score');
       test.cmp.updateSort('score');
       expect(test.cmp.options.sortCriteria).toBe('score');
       expect(test.env.queryController.executeQuery).toHaveBeenCalled();
     })
 
-    it('allows to showWaitingAnimation and hideWaitingAnimation', function () {
+    it('allows to showWaitingAnimation and hideWaitingAnimation', function() {
       test.cmp.showWaitingAnimation()
       expect($$(test.cmp.element).find('.coveo-facet-header-wait-animation').style.display).not.toBe('none');
       test.cmp.hideWaitingAnimation()
       expect($$(test.cmp.element).find('.coveo-facet-header-wait-animation').style.display).toBe('none');
     })
 
-    it('allows to getValueCaption', function () {
+    it('allows to getValueCaption', function() {
       test.cmp.options.field = '@filetype';
       expect(test.cmp.getValueCaption(FacetValue.createFromValue('foo'))).toBe('foo');
       expect(test.cmp.getValueCaption(FacetValue.createFromValue('txt'))).toBe('Text');
     })
 
-    describe('exposes options', function () {
-      it('title should set the title', function () {
+    describe('exposes options', function() {
+      it('title should set the title', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           title: 'My cool facet'
@@ -154,7 +154,7 @@ module Coveo {
         expect(test.cmp.facetHeader.options.title).toBe('My cool facet');
       })
 
-      it('field should set the field in the query', function () {
+      it('field should set the field in the query', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@myfield'
         })
@@ -166,7 +166,7 @@ module Coveo {
         ]))
       })
 
-      it('headerIcon should allow to set an icon in the header', function () {
+      it('headerIcon should allow to set an icon in the header', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           headerIcon: 'my cool icon'
@@ -176,7 +176,7 @@ module Coveo {
         expect(test.cmp.facetHeader.options.icon).toBe('my cool icon');
       })
 
-      it('id should be the field by default, or specified manually', function () {
+      it('id should be the field by default, or specified manually', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@mycoolfield'
         })
@@ -190,7 +190,7 @@ module Coveo {
         expect(test.cmp.options.id).toBe('something else');
       })
 
-      it('isMultiValueField should trigger another query to update delta', function () {
+      it('isMultiValueField should trigger another query to update delta', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           isMultiValueField: false
@@ -219,7 +219,7 @@ module Coveo {
         expect(test.cmp.getEndpoint().search).toHaveBeenCalled();
       })
 
-      it('numberOfValues should specify the number of value requested in the query', function () {
+      it('numberOfValues should specify the number of value requested in the query', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           numberOfValues: 13
@@ -231,7 +231,7 @@ module Coveo {
         })]))
       })
 
-      it('pageSize should specify the number of values for the more option', function () {
+      it('pageSize should specify the number of values for the more option', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           pageSize: 13
@@ -244,7 +244,7 @@ module Coveo {
         }));
       })
 
-      it('lookupField should specify the lookupfield to use in the query', function () {
+      it('lookupField should specify the lookupfield to use in the query', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           lookupField: '@lookupfield'
@@ -256,7 +256,7 @@ module Coveo {
         })]))
       })
 
-      it('enableSettings should specify if the setting component is initialized', function () {
+      it('enableSettings should specify if the setting component is initialized', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           enableSettings: false
@@ -272,7 +272,7 @@ module Coveo {
         expect(test.cmp.facetSettings).toBeDefined();
       })
 
-      it('enableSettingsFacetState should specify if the option is passed to the setting component', function () {
+      it('enableSettingsFacetState should specify if the option is passed to the setting component', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           enableSettingsFacetState: false
@@ -290,7 +290,7 @@ module Coveo {
         expect($$(test.cmp.facetSettings.build()).find('.coveo-facet-settings-section-save-state')).toBeDefined();
       })
 
-      it('availableSorts should specify the available criteria in the setting component', function () {
+      it('availableSorts should specify the available criteria in the setting component', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           availableSorts: ['ChiSquare', 'NoSort']
@@ -299,7 +299,7 @@ module Coveo {
         expect(test.cmp.facetSettings.sorts).toEqual(jasmine.arrayContaining(['ChiSquare', 'NoSort']));
       })
 
-      it('sortCriteria should specify the first available sort if not specified', function () {
+      it('sortCriteria should specify the first available sort if not specified', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           availableSorts: ['ChiSquare', 'NoSort']
@@ -308,7 +308,7 @@ module Coveo {
         expect(test.cmp.options.sortCriteria).toBe('ChiSquare');
       })
 
-      it('sortCriteria should specify the sort group by request', function () {
+      it('sortCriteria should specify the sort group by request', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           sortCriteria: 'score'
@@ -320,7 +320,7 @@ module Coveo {
         })]))
       })
 
-      it('customSort should specify the sort of values when rendered', function () {
+      it('customSort should specify the sort of values when rendered', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           customSort: ['foo3', 'foo1']
@@ -335,7 +335,7 @@ module Coveo {
         expect(test.cmp.getDisplayedFacetValues()[2].value).toBe('foo0');
       })
 
-      it('injectionDepth should specify the injection depth in a group by', function () {
+      it('injectionDepth should specify the injection depth in a group by', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           injectionDepth: 9999
@@ -347,7 +347,7 @@ module Coveo {
         })]))
       })
 
-      it('showIcon should specify if the icon is displayed near each values', function () {
+      it('showIcon should specify if the icon is displayed near each values', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           showIcon: true
@@ -364,7 +364,7 @@ module Coveo {
         expect(test.cmp.facetValuesList.get('foo').renderer.icon).toBeUndefined();
       })
 
-      it('useAnd should specify the filter generated by a facet', function () {
+      it('useAnd should specify the filter generated by a facet', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           useAnd: true
@@ -382,7 +382,7 @@ module Coveo {
         expect(simulation.queryBuilder.build().aq).toBe('@field==(foo,bar)');
       })
 
-      it('allowTogglingOperator should specify if the toggle is rendered in header ', function () {
+      it('allowTogglingOperator should specify if the toggle is rendered in header ', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           allowTogglingOperator: true
@@ -398,7 +398,7 @@ module Coveo {
         expect(test.cmp.facetHeader.operatorElement.style.display).toBe('none');
       })
 
-      it('enableFacetSearch should specify if the facet search is rendered', function () {
+      it('enableFacetSearch should specify if the facet search is rendered', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           enableFacetSearch: true
@@ -416,7 +416,7 @@ module Coveo {
         expect(test.cmp.facetSearch).toBeUndefined();
       })
 
-      it('facetSearchDelay should be passed to the facet search component', function (done) {
+      it('facetSearchDelay should be passed to the facet search component', function(done) {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           facetSearchDelay: 5
@@ -430,7 +430,7 @@ module Coveo {
         }, 6) // one more ms then facetSearchDelay
       })
 
-      it('numberOfValuesInFacetSearch should be passed to the facet search component', function (done) {
+      it('numberOfValuesInFacetSearch should be passed to the facet search component', function(done) {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           numberOfValuesInFacetSearch: 13
@@ -448,7 +448,7 @@ module Coveo {
         }, test.cmp.options.facetSearchDelay + 10)
       })
 
-      it('includeInBreadcrumb should specify if the facet listen to breadcrumb events', function () {
+      it('includeInBreadcrumb should specify if the facet listen to breadcrumb events', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           includeInBreadcrumb: true
@@ -472,7 +472,7 @@ module Coveo {
         expect(args.breadcrumbs.length).toBe(0);
       })
 
-      it('includeInOmnibox should specify if the facet listen to omnibox events', function () {
+      it('includeInOmnibox should specify if the facet listen to omnibox events', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           includeInOmnibox: false
@@ -494,7 +494,7 @@ module Coveo {
         expect(args.rows.length).toBe(1);
       })
 
-      it('computedField should specify the computed field to use in the query', function () {
+      it('computedField should specify the computed field to use in the query', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           computedField: '@computedField'
@@ -508,7 +508,7 @@ module Coveo {
         })]))
       })
 
-      it('computedFieldOperation should specify the computed field to use in the query', function () {
+      it('computedFieldOperation should specify the computed field to use in the query', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           computedField: '@computedField',
@@ -523,7 +523,7 @@ module Coveo {
         })]))
       })
 
-      it('enableMoreLess should specify that the moreLess element should be rendered', function () {
+      it('enableMoreLess should specify that the moreLess element should be rendered', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           enableMoreLess: true
@@ -550,7 +550,7 @@ module Coveo {
         expect(less).toBeNull();
       })
 
-      it('allowedValues should specify the value in the group by request', function () {
+      it('allowedValues should specify the value in the group by request', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           allowedValues: ['a', 'b', 'c']
@@ -562,7 +562,7 @@ module Coveo {
         })]))
       })
 
-      it('additionalFilter should specify a query override in the group by request', function () {
+      it('additionalFilter should specify a query override in the group by request', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           additionalFilter: '@qwerty==foobar'
@@ -574,7 +574,7 @@ module Coveo {
         })]))
       })
 
-      it('dependsOn should specify a facet to depend on another one', function () {
+      it('dependsOn should specify a facet to depend on another one', function() {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           dependsOn: '@masterFacet'

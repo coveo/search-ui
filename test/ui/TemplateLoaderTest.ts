@@ -2,7 +2,7 @@
 module Coveo {
   describe('TemplateLoder', () => {
     let test;
-    it('should not load a template into itself for template-ception', function () {
+    it('should not load a template into itself for template-ception', function() {
       let badTemplateId = 'badTemplate';
       let badTemplate = new Template(() => {
         return `<div class='CoveoTemplateLoader' data-template-id='${badTemplateId}'></div>`;

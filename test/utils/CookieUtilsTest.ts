@@ -2,7 +2,7 @@
 
 module Coveo {
 
-  describe('CookieUtils', function () {
+  describe('CookieUtils', function() {
     var mockDocument = {
       cookie: ''
     }
@@ -10,16 +10,16 @@ module Coveo {
       Object.getOwnPropertyDescriptor(HTMLDocument.prototype, 'cookie');
     if (cookieDesc && cookieDesc.configurable) {
       Object.defineProperty(document, 'cookie', {
-        get: function () {
+        get: function() {
           return mockDocument.cookie;
         },
-        set: function (val) {
+        set: function(val) {
           mockDocument.cookie = val;
         }
       });
     }
 
-    afterEach(function () {
+    afterEach(function() {
       mockDocument.cookie = '';
     })
 

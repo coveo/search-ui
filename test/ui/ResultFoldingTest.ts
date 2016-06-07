@@ -1,20 +1,20 @@
 /// <reference path="../Test.ts" />
 module Coveo {
-  describe('ResultFolding', function () {
+  describe('ResultFolding', function() {
     let test: Mock.IBasicComponentSetup<ResultFolding>;
-    beforeEach(function () {
+    beforeEach(function() {
       test = Mock.basicResultComponentSetup<ResultFolding>(ResultFolding);
     })
 
-    describe('exposes options', function () {
-      it('resultTemplate should use the default result template when not defined', function () {
+    describe('exposes options', function() {
+      it('resultTemplate should use the default result template when not defined', function() {
         test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
           resultTemplate: undefined
         }, undefined);
         expect((<any>test.cmp.options.resultTemplate).constructor.name).toBe('DefaultFoldingTemplate');
       })
 
-      it('normalCaption should be set properly when not expanded and expanded caption is defined', function () {
+      it('normalCaption should be set properly when not expanded and expanded caption is defined', function() {
         test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
           normalCaption: 'foobar',
           expandedCaption: 'obligatory'
@@ -22,7 +22,7 @@ module Coveo {
         expect($$(test.cmp.element).find('.coveo-folding-normal-caption').innerHTML).toContain('foobar');
       })
 
-      it('expandedCaption should be set properly when expanded and normal caption is defined', function () {
+      it('expandedCaption should be set properly when expanded and normal caption is defined', function() {
         test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
           expandedCaption: 'foobar',
           normalCaption: 'obligatory'
@@ -32,7 +32,7 @@ module Coveo {
         expect($$(test.cmp.element).find('.coveo-folding-expanded-caption').innerHTML).toContain('foobar');
       })
 
-      it('normalCaption and extendedCaption should not be shown if one or the other is not defined', function () {
+      it('normalCaption and extendedCaption should not be shown if one or the other is not defined', function() {
         test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
           expandedCaption: 'foobar',
           normalCaption: undefined
@@ -48,7 +48,7 @@ module Coveo {
         expect($$(test.cmp.element).find('.coveo-folding-normal-caption')).toBeNull();
       })
 
-      it('moreCaption should set the appropriate caption on the expand link', function () {
+      it('moreCaption should set the appropriate caption on the expand link', function() {
         let fakeResult = FakeResults.createFakeResult();
         fakeResult.moreResults = () => new Promise((res, rej) => null);
         test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
@@ -57,7 +57,7 @@ module Coveo {
         expect($$(test.cmp.element.parentElement).find('.coveo-folding-show-more').innerHTML).toBe('foobar')
       })
 
-      it('lessCaption should set the appropriate caption on the unexpand link', function () {
+      it('lessCaption should set the appropriate caption on the unexpand link', function() {
         let fakeResult = FakeResults.createFakeResult();
         fakeResult.moreResults = () => new Promise((res, rej) => null);
         test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
@@ -66,7 +66,7 @@ module Coveo {
         expect($$(test.cmp.element.parentElement).find('.coveo-folding-show-less').innerHTML).toBe('foobar')
       })
 
-      it('oneResultCaption should set the appropriate caption when there is only one result', function () {
+      it('oneResultCaption should set the appropriate caption when there is only one result', function() {
         test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
           oneResultCaption: 'foobar'
         }, FakeResults.createFakeResult())
@@ -74,7 +74,7 @@ module Coveo {
       })
     })
 
-    it('should not display any header caption when there are no child results', function () {
+    it('should not display any header caption when there are no child results', function() {
       let fakeResult = FakeResults.createFakeResult();
       fakeResult.childResults = [];
       test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
@@ -85,14 +85,14 @@ module Coveo {
       expect($$(test.cmp.element).find('.coveo-folding-expanded-caption').style.display).toBe('none');
     })
 
-    it('should not display the \'more\' link when moreResults handler is not available', function () {
+    it('should not display the \'more\' link when moreResults handler is not available', function() {
       expect($$(test.cmp.element).find('coveo-folding-show-more')).toBeNull();
     })
 
-    describe('after calling showMoreResults', function () {
+    describe('after calling showMoreResults', function() {
       let fakeResult: IQueryResult;
 
-      beforeEach(function () {
+      beforeEach(function() {
         fakeResult = FakeResults.createFakeResultWithChildResult('rezzult', 4);
         fakeResult.moreResults = () => new Promise<IQueryResult[]>((resolve, reject) => {
           resolve(fakeResult.childResults);
@@ -101,14 +101,14 @@ module Coveo {
         test.cmp.showMoreResults();
       })
 
-      it('should get the appropriate child results', function (done) {
+      it('should get the appropriate child results', function(done) {
         setTimeout(() => {
           expect(test.cmp.childResults).toBe(fakeResult.childResults);
           done();
         }, 0)
       })
 
-      it('should display the appropriate child results', function (done) {
+      it('should display the appropriate child results', function(done) {
         setTimeout(() => {
           let displayedChildResults = $$(test.cmp.element).findAll('.coveo-result-folding-child-result');
           expect(displayedChildResults.length).toBe(4);
@@ -119,7 +119,7 @@ module Coveo {
         }, 0)
       })
 
-      it('should put an \'expanded\' CSS class on the expanded results', function (done) {
+      it('should put an \'expanded\' CSS class on the expanded results', function(done) {
         setTimeout(() => {
           _.each($$(test.cmp.element).findAll('.coveo-result-folding-child-result'), (res: HTMLElement) => {
             expect($$(res).hasClass('coveo-expanded-child-result')).toBe(true);
@@ -128,7 +128,7 @@ module Coveo {
         })
       })
 
-      it('should display the original results when showLessResults is called', function (done) {
+      it('should display the original results when showLessResults is called', function(done) {
         let tempChildResults = fakeResult.childResults
         fakeResult.childResults = [];
         fakeResult.moreResults = () => new Promise((res, rej) => res(tempChildResults));
@@ -145,14 +145,14 @@ module Coveo {
       })
     })
 
-    it('should put a \'normal\' caption on unexpanded search results', function () {
+    it('should put a \'normal\' caption on unexpanded search results', function() {
       test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, undefined, FakeResults.createFakeResultWithChildResult('rez', 10));
       _.each($$(test.cmp.element).findAll('.coveo-result-folding-child-result'), (res: HTMLElement) => {
         expect($$(res).hasClass('coveo-normal-child-result')).toBe(true);
       })
     })
 
-    it('should load template properly', function () {
+    it('should load template properly', function() {
       test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
         resultTemplate: UnderscoreTemplate.fromString('Foo')
       }, FakeResults.createFakeResultWithChildResult('razzza', 2))
@@ -161,7 +161,7 @@ module Coveo {
       })
     })
 
-    it('should automatically initialize components in child results\' templates', function () {
+    it('should automatically initialize components in child results\' templates', function() {
       let fakeResult = FakeResults.createFakeResultWithChildResult('test', 3);
       test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
         resultTemplate: UnderscoreTemplate.fromString('<a class="CoveoResultLink" />')
@@ -171,7 +171,7 @@ module Coveo {
       })
     })
 
-    it('can load an external template from an id', function () {
+    it('can load an external template from an id', function() {
       TemplateCache.registerTemplate('Foo', UnderscoreTemplate.fromString('foubarre'));
       test = Mock.advancedResultComponentSetup<ResultFolding>(ResultFolding, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
         element: $$('div', { 'data-result-template-id': 'Foo' }).el
@@ -179,14 +179,14 @@ module Coveo {
       expect(test.cmp.options.resultTemplate.instantiateToElement({}).innerHTML).toBe('foubarre');
     })
 
-    it('should automatically use the template inside its element', function () {
+    it('should automatically use the template inside its element', function() {
       test = Mock.advancedResultComponentSetup<ResultFolding>(ResultFolding, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
         element: $$('div', {}, $$('script', { className: 'result-template', 'type': 'text/underscore' }, 'heyo')).el,
       })
       expect(test.cmp.options.resultTemplate.instantiateToElement({}).innerHTML).toBe('heyo');
     })
 
-    it('should show or hide elements with special classes when expanding or unexpanding', function (done) {
+    it('should show or hide elements with special classes when expanding or unexpanding', function(done) {
       let templateStr = '<div class="coveo-show-if-normal"></div><div class="coveo-show-if-expanded"></div>';
 
       let result = FakeResults.createFakeResultWithChildResult('foo', 3);

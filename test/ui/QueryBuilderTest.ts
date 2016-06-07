@@ -1,18 +1,18 @@
 /// <reference path="../Test.ts" />
 
 module Coveo {
-  describe('QueryBuilder', function () {
+  describe('QueryBuilder', function() {
     var queryBuilder: QueryBuilder;
 
-    beforeEach(function () {
+    beforeEach(function() {
       queryBuilder = new QueryBuilder();
     })
 
-    afterEach(function () {
+    afterEach(function() {
       queryBuilder = null;
     })
 
-    it('can addContextValue and addContext', function () {
+    it('can addContextValue and addContext', function() {
       queryBuilder.addContextValue('foo', 'bar');
       expect(queryBuilder.build().context['foo']).toBe('bar');
       queryBuilder.addContext({ 'a': 'b', 'c': 'd' });
@@ -20,18 +20,18 @@ module Coveo {
       expect(queryBuilder.build().context['a']).toBe('b');
     })
 
-    it('can addFieldsToInclude', function () {
+    it('can addFieldsToInclude', function() {
       queryBuilder.addFieldsToInclude(['foo', 'bar', 'yo']);
       expect(queryBuilder.build().fieldsToInclude).toEqual(['foo', 'bar', 'yo']);
     })
 
-    it('can addFieldsToExclude', function () {
+    it('can addFieldsToExclude', function() {
       expect(queryBuilder.build().fieldsToExclude).toBeUndefined();
       queryBuilder.addFieldsToExclude(['a', 'b', 'c']);
       expect(queryBuilder.build().fieldsToExclude).toEqual(['a', 'b', 'c']);
     })
 
-    it('can addRequiredFields', function () {
+    it('can addRequiredFields', function() {
       queryBuilder.addRequiredFields(['foo', 'bar', 'yo']);
       // Should not be added, as there is not fieldsToInclude
       expect(queryBuilder.build().fieldsToInclude).toBeNull();
@@ -40,38 +40,38 @@ module Coveo {
       expect(queryBuilder.build().fieldsToInclude).toEqual(['foo', 'bar', 'yo', 'a', 'b', 'c']);
     })
 
-    describe('can compute expression', function () {
+    describe('can compute expression', function() {
 
-      beforeEach(function () {
+      beforeEach(function() {
         queryBuilder.expression.add('basic');
         queryBuilder.advancedExpression.add('advanced');
         queryBuilder.constantExpression.add('constant');
         queryBuilder.disjunctionExpression.add('disjunction');
       })
 
-      it('and computeCompleteExpression', function () {
+      it('and computeCompleteExpression', function() {
         expect(queryBuilder.computeCompleteExpression()).toBe('((basic) (advanced) (constant)) OR (disjunction)');
       })
 
-      it('and computeCompleteExpressionParts', function () {
+      it('and computeCompleteExpressionParts', function() {
         expect(queryBuilder.computeCompleteExpressionParts().constant).toBe('(constant) OR (disjunction)');
         expect(queryBuilder.computeCompleteExpressionParts().withoutConstant).toBe('((basic) (advanced)) OR (disjunction)');
         expect(queryBuilder.computeCompleteExpressionParts().full).toBe('((basic) (advanced) (constant)) OR (disjunction)');
       })
 
-      it('and computeCompleteExpressionExcept', function () {
+      it('and computeCompleteExpressionExcept', function() {
         expect(queryBuilder.computeCompleteExpressionExcept('advanced')).toBe('((basic) (constant)) OR (disjunction)');
         expect(queryBuilder.computeCompleteExpressionExcept('basic')).toBe('((advanced) (constant)) OR (disjunction)');
       })
 
-      it('and computeCompleteExpressionPartsExcept', function () {
+      it('and computeCompleteExpressionPartsExcept', function() {
         expect(queryBuilder.computeCompleteExpressionPartsExcept('advanced').constant).toBe('(constant) OR (disjunction)');
         expect(queryBuilder.computeCompleteExpressionPartsExcept('advanced').withoutConstant).toBe('(basic) OR (disjunction)');
         expect(queryBuilder.computeCompleteExpressionPartsExcept('advanced').full).toBe('((basic) (constant)) OR (disjunction)');
       })
     })
 
-    it('can add properties to query', function () {
+    it('can add properties to query', function() {
       queryBuilder.pipeline = 'pipeline';
       queryBuilder.timezone = 'timezone';
       queryBuilder.searchHub = 'searchHub';

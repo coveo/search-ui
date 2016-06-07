@@ -4,11 +4,11 @@ module Coveo {
   describe('ImageResultList', () => {
     var test: Mock.IBasicComponentSetup<ImageResultList>
 
-    beforeEach(function () {
+    beforeEach(function() {
       test = Mock.basicComponentSetup<ImageResultList>(ImageResultList);
     });
 
-    afterEach(function () {
+    afterEach(function() {
       $$(test.env.root).trigger(InitializationEvents.nuke);
       clearDOM();
       test = null;

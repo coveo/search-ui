@@ -1,33 +1,33 @@
 /// <reference path="../Test.ts" />
 
 module Coveo {
-  describe('ValueElementRenderer', function () {
+  describe('ValueElementRenderer', function() {
     var facet: Facet;
     var valueRenderer: ValueElementRenderer;
 
-    beforeEach(function () {
+    beforeEach(function() {
       facet = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
         field: '@field'
       }).cmp;
     })
 
-    afterEach(function () {
+    afterEach(function() {
       facet = null;
       valueRenderer = null;
     })
 
-    it('should build a list element', function () {
+    it('should build a list element', function() {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 1234)));
       expect(valueRenderer.build().listElement).toBeDefined();
       expect(valueRenderer.build().listElement.getAttribute('data-value')).toBe('foo');
     })
 
-    it('should build a label', function () {
+    it('should build a label', function() {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
       expect(valueRenderer.build().label).toBeDefined();
     })
 
-    it('should build a checkbox', function () {
+    it('should build a checkbox', function() {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
       valueRenderer.facetValue.selected = true;
       valueRenderer.facetValue.excluded = false;
@@ -39,18 +39,18 @@ module Coveo {
       expect(valueRenderer.build().checkbox.getAttribute('disabled')).toBe('disabled');
     })
 
-    it('should build a stylish checkbox', function () {
+    it('should build a stylish checkbox', function() {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
       expect(valueRenderer.build().stylishCheckbox).toBeDefined();
     })
 
-    it('should build a caption', function () {
+    it('should build a caption', function() {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('this is a nice value', 123)));
       expect(valueRenderer.build().valueCaption).toBeDefined();
       expect($$(valueRenderer.build().valueCaption).text()).toBe('this is a nice value');
     })
 
-    it('should build a value count', function () {
+    it('should build a value count', function() {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 1)));
       expect(valueRenderer.build().valueCount).toBeDefined();
       expect($$(valueRenderer.build().valueCount).text()).toBe('1');
@@ -60,12 +60,12 @@ module Coveo {
       expect($$(valueRenderer.build().valueCount).text()).toBe('31,416');
     })
 
-    it('should build an exclude icon', function () {
+    it('should build an exclude icon', function() {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
       expect(valueRenderer.build().excludeIcon).toBeDefined();
     })
 
-    it('should render computed field only if needed', function () {
+    it('should render computed field only if needed', function() {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
       expect(valueRenderer.build().computedField).toBeUndefined();
 
@@ -78,7 +78,7 @@ module Coveo {
       expect($$(valueRenderer.build().computedField).text()).toBe('$9,999');
     })
 
-    it('should allow to remove element from the dom post build', function () {
+    it('should allow to remove element from the dom post build', function() {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 1)));
       var count = valueRenderer.build().valueCount;
       expect(count.parentNode).toBeDefined();

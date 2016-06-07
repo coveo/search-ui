@@ -1,13 +1,13 @@
 /// <reference path="../Test.ts" />
 
 module Coveo {
-  describe('LiveAnalyticsClient', function () {
+  describe('LiveAnalyticsClient', function() {
     var endpoint: AnalyticsEndpoint;
     var env: Mock.IMockEnvironment;
     var client: LiveAnalyticsClient;
     var promise: Promise<IQueryResults>;
 
-    beforeEach(function () {
+    beforeEach(function() {
       env = new Mock.MockEnvironmentBuilder().build();
       endpoint = Mock.mock<AnalyticsEndpoint>(AnalyticsEndpoint);
       client = new LiveAnalyticsClient(endpoint, env.root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true);
@@ -16,14 +16,14 @@ module Coveo {
       })
     })
 
-    afterEach(function () {
+    afterEach(function() {
       env = null;
       endpoint = null;
       client = null;
       promise = null;
     })
 
-    it('should send proper information on logSearchEvent', function (done) {
+    it('should send proper information on logSearchEvent', function(done) {
 
       client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
       var query: IQuery = {
@@ -38,7 +38,7 @@ module Coveo {
         query: query,
         promise: promise
       })
-      _.defer(function () {
+      _.defer(function() {
         var jasmineMatcher = jasmine.arrayContaining([jasmine.objectContaining({
           queryText: 'the query',
           advancedQuery: 'the advanced query',
@@ -76,7 +76,7 @@ module Coveo {
         promise: promise
       })
 
-      _.defer(function () {
+      _.defer(function() {
         var jasmineMatcher = jasmine.arrayContaining([jasmine.objectContaining({
           queryText: 'another query',
           advancedQuery: 'the advanced query',
@@ -94,12 +94,12 @@ module Coveo {
       })
     });
 
-    describe('with multiple (3) search events', function () {
+    describe('with multiple (3) search events', function() {
       var root: HTMLElement
       var env2: Mock.IMockEnvironment;
       var env3: Mock.IMockEnvironment;
 
-      beforeEach(function () {
+      beforeEach(function() {
         root = document.createElement('div');
         env2 = new Mock.MockEnvironmentBuilder().build();
         env3 = new Mock.MockEnvironmentBuilder().build();
@@ -109,7 +109,7 @@ module Coveo {
         client = new LiveAnalyticsClient(endpoint, root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true);
       })
 
-      afterEach(function () {
+      afterEach(function() {
         env = null;
         env2 = null;
         env3 = null;
@@ -141,7 +141,7 @@ module Coveo {
           deferSuccess: true
         });
 
-        _.defer(function () {
+        _.defer(function() {
           var jasmineMatcher = jasmine.arrayContaining([
             jasmine.objectContaining({
               queryText: 'the query 1'
@@ -157,7 +157,7 @@ module Coveo {
         })
       });
 
-      it('should send only the new batch when search events are triggered together multiple times', function (done) {
+      it('should send only the new batch when search events are triggered together multiple times', function(done) {
         client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
         Simulate.query(env, {
           promise: promise,
@@ -181,7 +181,7 @@ module Coveo {
           deferSuccess: true
         });
 
-        _.defer(function () {
+        _.defer(function() {
           var jasmineMatcher = jasmine.arrayContaining([
             jasmine.objectContaining({
               queryText: 'the query 1'
@@ -217,7 +217,7 @@ module Coveo {
           deferSuccess: true
         });
 
-        _.defer(function () {
+        _.defer(function() {
           var jasmineMatcher = jasmine.arrayContaining([
             jasmine.objectContaining({
               queryText: 'the query 3'
@@ -233,7 +233,7 @@ module Coveo {
         })
       })
 
-      it('should not break if a search event is followed by 0 during query', function (done) {
+      it('should not break if a search event is followed by 0 during query', function(done) {
         client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
         Defer.flush();
         client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
@@ -258,7 +258,7 @@ module Coveo {
           },
           deferSuccess: true
         });
-        _.defer(function () {
+        _.defer(function() {
           var jasmineMatcher = jasmine.arrayContaining([
             jasmine.objectContaining({
               queryText: 'the query 1'
@@ -274,7 +274,7 @@ module Coveo {
         })
       })
 
-      it('should only send success events to the endpoint', function (done) {
+      it('should only send success events to the endpoint', function(done) {
         client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
         var promise2 = new Promise((resolve, reject) => {
           reject();
@@ -304,7 +304,7 @@ module Coveo {
           },
           deferSuccess: true
         });
-        _.defer(function () {
+        _.defer(function() {
           var jasmineMatcher = jasmine.arrayContaining([
             jasmine.objectContaining({
               queryText: 'the query 1'
@@ -324,7 +324,7 @@ module Coveo {
       })
     })
 
-    it('should trigger an analytics event on document view', function () {
+    it('should trigger an analytics event on document view', function() {
       var spy = jasmine.createSpy('spy');
       $$(env.root).on(AnalyticsEvents.documentViewEvent, spy);
       client.logClickEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, {}, FakeResults.createFakeResult('foo'), document.createElement('div'));
@@ -332,7 +332,7 @@ module Coveo {
       expect(spy).toHaveBeenCalled();
     })
 
-    it('should trigger an analytics event on search event', function (done) {
+    it('should trigger an analytics event on search event', function(done) {
       var spy = jasmine.createSpy('spy');
       $$(env.root).on(AnalyticsEvents.searchEvent, spy);
       client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
@@ -344,13 +344,13 @@ module Coveo {
           resolve(FakeResults.createFakeResults(3));
         })
       });
-      _.defer(function () {
+      _.defer(function() {
         expect(spy).toHaveBeenCalled();
         done();
       })
     })
 
-    it('should trigger an analytics event on custom event', function () {
+    it('should trigger an analytics event on custom event', function() {
       var spy = jasmine.createSpy('spy');
       $$(env.root).on(AnalyticsEvents.customEvent, spy);
       client.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, {}, document.createElement('div'));
@@ -358,7 +358,7 @@ module Coveo {
       expect(spy).toHaveBeenCalled();
     })
 
-    it('should trigger change analytics metadata event', function () {
+    it('should trigger change analytics metadata event', function() {
       var spy = jasmine.createSpy('spy');
       $$(env.root).on(AnalyticsEvents.changeAnalyticsCustomData, spy);
       client.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, {}, document.createElement('div'));
@@ -373,15 +373,15 @@ module Coveo {
       }));
     })
 
-    describe('search as you type', function () {
-      beforeEach(function () {
+    describe('search as you type', function() {
+      beforeEach(function() {
         jasmine.clock().install();
       })
-      afterEach(function () {
+      afterEach(function() {
         jasmine.clock().uninstall();
       })
 
-      it('should log after 5 seconds have passed since the last duringQueryEvent', function () {
+      it('should log after 5 seconds have passed since the last duringQueryEvent', function() {
         client.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
         Simulate.query(env, {
           query: {
@@ -395,7 +395,7 @@ module Coveo {
         expect(client['pendingSearchAsYouTypeSearchEvent']['searchPromises'].length).toBe(1);
       })
 
-      it('should not log after 5 seconds have passed since the last duringQueryEvent if another event is pushed and it\'s a search box', function () {
+      it('should not log after 5 seconds have passed since the last duringQueryEvent if another event is pushed and it\'s a search box', function() {
         client.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
         Simulate.query(env, {
           query: {
@@ -415,7 +415,7 @@ module Coveo {
         expect(client['pendingSearchAsYouTypeSearchEvent']).toBeUndefined();
       })
 
-      it('should log after 5 seconds have passed since the last duringQueryEvent if another event is pushed and it\'s not a search box', function () {
+      it('should log after 5 seconds have passed since the last duringQueryEvent if another event is pushed and it\'s not a search box', function() {
         client.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
         Simulate.query(env, {
           query: {

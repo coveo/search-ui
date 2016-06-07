@@ -1,7 +1,7 @@
 /// <reference path="../Test.ts" />
 
 module Coveo {
-  describe('ResultRating', function () {
+  describe('ResultRating', function() {
     let test: Mock.IBasicComponentSetup<ResultRating>;
 
     let averageFakeResult: IQueryResult;

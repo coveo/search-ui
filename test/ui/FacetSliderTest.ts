@@ -1,10 +1,10 @@
 /// <reference path="../Test.ts" />
 
 module Coveo {
-  describe('FacetSlider', function () {
+  describe('FacetSlider', function() {
     var test: Mock.IBasicComponentSetup<FacetSlider>;
 
-    beforeEach(function () {
+    beforeEach(function() {
       test = Mock.optionsComponentSetup<FacetSlider, IFacetSliderOptions>(FacetSlider, {
         start: 0,
         end: 100,
@@ -14,23 +14,23 @@ module Coveo {
       (<jasmine.Spy>test.env.queryStateModel.getDefault).and.returnValue([0, 100]);
     })
 
-    afterEach(function () {
+    afterEach(function() {
       test = null;
     })
 
-    it('should not add a query expression if the slider is in it\'s default state', function () {
+    it('should not add a query expression if the slider is in it\'s default state', function() {
       test.cmp.setSelectedValues([0, 100]);
       var simulation = Simulate.query(test.env);
       expect(simulation.queryBuilder.build().aq).toBeUndefined();
     })
 
-    it('should add a query expression if the slider is not in it\'s default state', function () {
+    it('should add a query expression if the slider is not in it\'s default state', function() {
       test.cmp.setSelectedValues([5, 25]);
       var simulation = Simulate.query(test.env);
       expect(simulation.queryBuilder.build().aq).toBe('@foo==5..25');
     })
 
-    it('should request a group by', function () {
+    it('should request a group by', function() {
       var simulation = Simulate.query(test.env);
       expect(simulation.queryBuilder.build().groupBy).toEqual(jasmine.arrayContaining([
         jasmine.objectContaining({
@@ -40,16 +40,16 @@ module Coveo {
       ]))
     })
 
-    it('should return the correct selected values after a query, which is it\'s options', function () {
+    it('should return the correct selected values after a query, which is it\'s options', function() {
       Simulate.query(test.env);
       expect(test.cmp.getSelectedValues()).toEqual(jasmine.arrayContaining([0, 100]));
     })
 
-    it('should return undefined values if there has not been a query yet', function () {
+    it('should return undefined values if there has not been a query yet', function() {
       expect(test.cmp.getSelectedValues()).toEqual(jasmine.arrayContaining([undefined, undefined]));
     })
 
-    it('should return selected values from the query state if available', function () {
+    it('should return selected values from the query state if available', function() {
       var spy: jasmine.Spy = jasmine.createSpy('rangeState');
       spy.and.returnValue([60, 75]);
       test.env.queryStateModel.get = spy;
@@ -57,7 +57,7 @@ module Coveo {
       expect(test.cmp.getSelectedValues()).toEqual(jasmine.arrayContaining([60, 75]));
     })
 
-    it('should populate breadcrumb only if not in default state', function () {
+    it('should populate breadcrumb only if not in default state', function() {
       var breadcrumbs = [];
       $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, <IPopulateBreadcrumbEventArgs>{ breadcrumbs: breadcrumbs })
       expect(breadcrumbs.length).toBe(0);
@@ -68,8 +68,8 @@ module Coveo {
       expect(breadcrumbs.length).toBe(1);
     })
 
-    describe('exposes options', function () {
-      it('dateField should change the query expression to a correct date expression', function () {
+    describe('exposes options', function() {
+      it('dateField should change the query expression to a correct date expression', function() {
         test = Mock.optionsComponentSetup<FacetSlider, IFacetSliderOptions>(FacetSlider, {
           start: '2000/01/01',
           end: '3000/01/01',
@@ -84,7 +84,7 @@ module Coveo {
         expect(simulation.queryBuilder.build().aq).toBe('@foo==2100/01/01@00:00:00..2200/01/01@00:00:00');
       })
 
-      it('queryOverride should output a query override in the group by request', function () {
+      it('queryOverride should output a query override in the group by request', function() {
         test = Mock.optionsComponentSetup<FacetSlider, IFacetSliderOptions>(FacetSlider, {
           start: 0,
           end: 100,
@@ -104,7 +104,7 @@ module Coveo {
         ]));
       })
 
-      it('title should modify the header', function () {
+      it('title should modify the header', function() {
         test = Mock.optionsComponentSetup<FacetSlider, IFacetSliderOptions>(FacetSlider, {
           start: 0,
           end: 100,

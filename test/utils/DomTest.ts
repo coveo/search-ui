@@ -4,27 +4,27 @@ module Coveo {
   describe('Dom', () => {
     var el: HTMLElement;
 
-    beforeEach(function () {
+    beforeEach(function() {
       el = document.createElement('div');
       registerCustomMatcher();
     })
 
-    afterEach(function () {
+    afterEach(function() {
       el = undefined;
     })
 
-    describe('without jquery', function () {
+    describe('without jquery', function() {
       var jqueryOrig = window['jQuery'];
-      beforeEach(function () {
+      beforeEach(function() {
         // we want to test the basic event, not jquery one
         window['jQuery'] = null;
       });
 
-      afterEach(function () {
+      afterEach(function() {
         window['jQuery'] = jqueryOrig;
       });
 
-      it('insert after should work properly', function () {
+      it('insert after should work properly', function() {
         var parent = document.createElement('div')
         var sibling = document.createElement('div');
         parent.appendChild(sibling);
@@ -41,7 +41,7 @@ module Coveo {
         expect(el.previousSibling).toBe(anotherSibling);
       })
 
-      it('insert before should work properly', function () {
+      it('insert before should work properly', function() {
         var parent = document.createElement('div');
         var sibling = document.createElement('div');
         parent.appendChild(sibling);
@@ -59,7 +59,7 @@ module Coveo {
         expect(el.previousSibling).toBe(sibling);
       })
 
-      it('replace should work properly', function () {
+      it('replace should work properly', function() {
         var other = document.createElement('div');
         var sibling = document.createElement('div');
         var otherSibling = document.createElement('div');
@@ -79,8 +79,8 @@ module Coveo {
         expect(other.nextSibling).toBe(otherSibling);
       })
 
-      describe('prepend', function () {
-        it('should work properly', function () {
+      describe('prepend', function() {
+        it('should work properly', function() {
           var firstChild = document.createElement('div');
           el.appendChild(firstChild);
           expect(el.firstChild).toBe(firstChild);
@@ -91,14 +91,14 @@ module Coveo {
           expect(toPrepend.nextSibling).toBe(firstChild);
         })
 
-        it('should work even if there if parent element is empty', function () {
+        it('should work even if there if parent element is empty', function() {
           var parent = $$('div');
           var toPrepend = $$('span', { className: 'foo' }).el;
           parent.prepend(toPrepend);
           expect(parent.el.firstChild).toBe(toPrepend);
         })
 
-        it('should work even if parent element contains text', function () {
+        it('should work even if parent element contains text', function() {
           var parent = $$('div', {}, 'thisissometext');
           var toPrepend = $$('span', { className: 'foo' }).el;
           parent.prepend(toPrepend);
@@ -106,7 +106,7 @@ module Coveo {
         })
       })
 
-      it('should give the correct text content', function () {
+      it('should give the correct text content', function() {
         el.innerHTML = '<div>this is the content</div>'
         expect(new Dom(el).text()).toEqual('this is the content');
         el = document.createElement('div');
@@ -114,7 +114,7 @@ module Coveo {
         expect(new Dom(el).text()).toEqual('this is the content');
       });
 
-      it('should allow to set the text content', function () {
+      it('should allow to set the text content', function() {
         var dom = new Dom(el).text('this is the content');
         expect(el.innerHTML).toEqual('this is the content');
 
@@ -124,8 +124,8 @@ module Coveo {
         expect(el.childNodes[0].nodeValue).toEqual('<div>this is the content</div>');
       });
 
-      describe('createElement', function () {
-        it('should properly create a single HTMLElement', function () {
+      describe('createElement', function() {
+        it('should properly create a single HTMLElement', function() {
           var elem = Dom.createElement('div', {
             id: 'heidi',
             className: 'kloss',
@@ -138,7 +138,7 @@ module Coveo {
           expect(elem.innerHTML).toEqual('foobar2000');
         })
 
-        it('should properly create nested HTMLElement\'s', function () {
+        it('should properly create nested HTMLElement\'s', function() {
           var elem = Dom.createElement('header', undefined,
             Dom.createElement('div', undefined,
               Dom.createElement('span', undefined, 'foo')));
@@ -149,7 +149,7 @@ module Coveo {
         })
       })
 
-      it('should find a child using a query selector', function () {
+      it('should find a child using a query selector', function() {
         var toFind = document.createElement('div');
         toFind.className = 'qwerty';
         el.appendChild(toFind);
@@ -176,7 +176,7 @@ module Coveo {
         expect(new Dom(el).find('#qwerty')).toBe(toFind);
       });
 
-      it('should find all child using a query selector', function () {
+      it('should find all child using a query selector', function() {
         var toFind = document.createElement('div');
         toFind.className = 'qwerty';
         var toFind2 = document.createElement('div');
@@ -187,7 +187,7 @@ module Coveo {
         expect(new Dom(el).findAll('.qwerty')).toContain(toFind2);
       });
 
-      it('using findClass should find the child element', function () {
+      it('using findClass should find the child element', function() {
         var toFind = document.createElement('div');
         toFind.className = 'qwerty';
         var toFind2 = document.createElement('div');
@@ -200,7 +200,7 @@ module Coveo {
         expect(new Dom(el).findClass('shouldNotBeFound').length).toBe(0);
       });
 
-      it('using addClass should work properly', function () {
+      it('using addClass should work properly', function() {
         el.className = 'qwerty';
         new Dom(el).addClass('notqwerty');
         expect(el.className).toBe('qwerty notqwerty');
@@ -219,7 +219,7 @@ module Coveo {
         expect(el.className).toBe('a b c');
       });
 
-      it('using removeClass should work properly', function () {
+      it('using removeClass should work properly', function() {
         el.className = 'qwerty';
         new Dom(el).removeClass('qwerty');
         expect(el.className).toBe('');
@@ -239,7 +239,7 @@ module Coveo {
         expect(el.className).toBe('popoqwerty notqwerty');
       });
 
-      it('using getClass should return the correct array with all classes', function () {
+      it('using getClass should return the correct array with all classes', function() {
         el.className = 'qwerty';
         expect(new Dom(el).getClass()).toContain('qwerty');
 
@@ -249,7 +249,7 @@ module Coveo {
         expect(new Dom(el).getClass()).toContain('notqwerty');
       });
 
-      it('using hasClass should return properly', function () {
+      it('using hasClass should return properly', function() {
         el.className = 'qwerty';
         expect(new Dom(el).hasClass('qwerty')).toBe(true);
 
@@ -276,7 +276,7 @@ module Coveo {
         expect(new Dom(el).hasClass('qwerty')).toBe(false);
       });
 
-      it('using toggleClass without switch should work properly', function () {
+      it('using toggleClass without switch should work properly', function() {
         el.className = 'qwerty';
         var domEl = new Dom(el);
         domEl.toggleClass('qwerty');
@@ -288,7 +288,7 @@ module Coveo {
         expect(domEl.hasClass('foobar2000')).toBe(true);
       });
 
-      it('using toggleClass with switch should work properly', function () {
+      it('using toggleClass with switch should work properly', function() {
         var domEl = new Dom(el);
         domEl.toggleClass('qwerty', false);
         expect(domEl.hasClass('qwerty')).toBe(false);
@@ -300,7 +300,7 @@ module Coveo {
 
       })
 
-      it('using detach should work properly', function () {
+      it('using detach should work properly', function() {
         var parent = document.createElement('div');
         parent.appendChild(el);
         expect(parent.children).toContain(el);
@@ -309,7 +309,7 @@ module Coveo {
         expect(parent.children).not.toContain(el);
       });
 
-      it('using on should work properly', function () {
+      it('using on should work properly', function() {
         var spy = jasmine.createSpy('spy');
         new Dom(el).on('click', spy);
         el.click();
@@ -338,7 +338,7 @@ module Coveo {
         expect(spy3).toHaveBeenCalledTimes(3);
       })
 
-      it('using one should work properly', function () {
+      it('using one should work properly', function() {
         var spy = jasmine.createSpy('spy');
         new Dom(el).one('click', spy);
         el.click();
@@ -349,7 +349,7 @@ module Coveo {
         expect(spy).not.toHaveBeenCalledTimes(3);
       })
 
-      it('using off should work properly', function () {
+      it('using off should work properly', function() {
         var spy = jasmine.createSpy('spy');
         new Dom(el).on('click', spy);
         new Dom(el).off('click', spy);
@@ -368,7 +368,7 @@ module Coveo {
         expect(spy).not.toHaveBeenCalled();
       })
 
-      it('using trigger should work properly', function () {
+      it('using trigger should work properly', function() {
         registerCustomMatcher();
         var spy = jasmine.createSpy('spy');
         new Dom(el).on('click', spy);
@@ -381,7 +381,7 @@ module Coveo {
         expect(spy2).eventHandlerToHaveBeenCalledWith({ bar: 'baz' })
       });
 
-      it('using isEmpty should work properly', function () {
+      it('using isEmpty should work properly', function() {
         expect(new Dom(el).isEmpty()).toBe(true);
         el.appendChild(document.createElement('div'));
         expect(new Dom(el).isEmpty()).toBe(false);
@@ -391,14 +391,14 @@ module Coveo {
         expect(new Dom(el).isEmpty()).toBe(true);
       });
 
-      it('should find ancestor element using closest', function () {
+      it('should find ancestor element using closest', function() {
         var root = document.createElement('div');
         root.className = 'findme';
         root.appendChild(el);
         expect(new Dom(el).closest('findme')).toBe(root);
       });
 
-      it('should be able to tell if an element matches a selector', function () {
+      it('should be able to tell if an element matches a selector', function() {
         el = document.createElement('div');
         el.className = 'foo bar foobar';
         el.setAttribute('id', 'batman');
@@ -418,7 +418,7 @@ module Coveo {
         expect(new Dom(el).is('input')).toBe(false);
       });
 
-      it('should be able to empty an element', function () {
+      it('should be able to empty an element', function() {
         var append1 = document.createElement('div');
         var append2 = document.createElement('div');
         el.appendChild(append1);
@@ -431,8 +431,8 @@ module Coveo {
       })
     })
 
-    describe('with jquery', function () {
-      it('using on should work properly', function () {
+    describe('with jquery', function() {
+      it('using on should work properly', function() {
         var spy = jasmine.createSpy('spy');
         new Dom(el).on('click', spy);
         el.click();
@@ -464,7 +464,7 @@ module Coveo {
         expect(spy3).toHaveBeenCalledTimes(3);
       })
 
-      it('using one should work properly', function () {
+      it('using one should work properly', function() {
         var spy = jasmine.createSpy('spy');
         new Dom(el).one('click', spy);
         el.click();
@@ -475,7 +475,7 @@ module Coveo {
         expect(spy).not.toHaveBeenCalledTimes(3);
       })
 
-      it('using off should work properly', function () {
+      it('using off should work properly', function() {
         var spy = jasmine.createSpy('spy');
         new Dom(el).on('click', spy);
         new Dom(el).off('click', spy);
@@ -491,7 +491,7 @@ module Coveo {
         expect(spy).not.toHaveBeenCalled();
       })
 
-      it('using trigger should work properly', function () {
+      it('using trigger should work properly', function() {
         var spy = jasmine.createSpy('spy');
         new Dom(el).on('click', spy);
         new Dom(el).trigger('click');

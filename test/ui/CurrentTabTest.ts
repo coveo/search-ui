@@ -4,11 +4,11 @@ module Coveo {
   describe('CurrentTab', () => {
     var test: Mock.IBasicComponentSetup<CurrentTab>
 
-    beforeEach(function () {
+    beforeEach(function() {
       test = Mock.basicComponentSetup<CurrentTab>(CurrentTab);
     });
 
-    afterEach(function () {
+    afterEach(function() {
       test = null;
     })
 
