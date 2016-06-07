@@ -17,7 +17,7 @@ module Coveo {
       test = null;
     })
 
-    it('should correctly raise errors from the endpoint', (done)=> {
+    it('should correctly raise errors from the endpoint', (done) => {
       var spy = <jasmine.Spy>test.env.searchEndpoint.search;
       var error = {
         statusCode: 401,
@@ -27,11 +27,11 @@ module Coveo {
           queryExecutionReport: {}
         }
       }
-      spy.and.returnValue(new Promise((resolve, reject)=> {
+      spy.and.returnValue(new Promise((resolve, reject) => {
         reject(error);
       }));
       test.env.searchEndpoint.search = spy;
-      expect(test.cmp.executeQuery().catch((data)=> {
+      expect(test.cmp.executeQuery().catch((data) => {
         expect(data).toEqual(error);
         done();
       }))
@@ -51,11 +51,11 @@ module Coveo {
         var spy = jasmine.createSpy('spy');
         $$(test.env.root).on('newQuery', spy);
         var search = <jasmine.Spy>test.env.searchEndpoint.search;
-        search.and.returnValue(new Promise((resolve, reject)=> {
+        search.and.returnValue(new Promise((resolve, reject) => {
           resolve(FakeResults.createFakeResults());
         }));
         test.cmp.executeQuery();
-        setTimeout(()=> {
+        setTimeout(() => {
           expect(spy).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({
             searchAsYouType: false,
             cancel: false,
@@ -69,11 +69,11 @@ module Coveo {
         var spy = jasmine.createSpy('spy');
         $$(test.env.root).on('buildingQuery', spy);
         var search = <jasmine.Spy>test.env.searchEndpoint.search;
-        search.and.returnValue(new Promise((resolve, reject)=> {
+        search.and.returnValue(new Promise((resolve, reject) => {
           resolve(FakeResults.createFakeResults());
         }));
         test.cmp.executeQuery();
-        setTimeout(()=> {
+        setTimeout(() => {
           expect(spy).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({
             queryBuilder: jasmine.any(QueryBuilder),
             searchAsYouType: false,
@@ -87,11 +87,11 @@ module Coveo {
         var spy = jasmine.createSpy('spy');
         $$(test.env.root).on('doneBuildingQuery', spy);
         var search = <jasmine.Spy>test.env.searchEndpoint.search;
-        search.and.returnValue(new Promise((resolve, reject)=> {
+        search.and.returnValue(new Promise((resolve, reject) => {
           resolve(FakeResults.createFakeResults());
         }));
         test.cmp.executeQuery();
-        setTimeout(()=> {
+        setTimeout(() => {
           expect(spy).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({
             queryBuilder: jasmine.any(QueryBuilder),
             searchAsYouType: false,
@@ -105,11 +105,11 @@ module Coveo {
         var spy = jasmine.createSpy('spy');
         $$(test.env.root).on('querySuccess', spy);
         var search = <jasmine.Spy>test.env.searchEndpoint.search;
-        search.and.returnValue(new Promise((resolve, reject)=> {
+        search.and.returnValue(new Promise((resolve, reject) => {
           resolve(FakeResults.createFakeResults());
         }));
         test.cmp.executeQuery();
-        setTimeout(()=> {
+        setTimeout(() => {
           expect(spy).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({
             queryBuilder: jasmine.any(QueryBuilder),
             query: jasmine.any(Object),
@@ -125,11 +125,11 @@ module Coveo {
         $$(test.env.root).on('preprocessResults', spy);
         var search = <jasmine.Spy>test.env.searchEndpoint.search;
         var results = FakeResults.createFakeResults()
-        search.and.returnValue(new Promise((resolve, reject)=> {
+        search.and.returnValue(new Promise((resolve, reject) => {
           resolve(results);
         }));
         test.cmp.executeQuery();
-        setTimeout(()=> {
+        setTimeout(() => {
           expect(spy).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({
             queryBuilder: jasmine.any(QueryBuilder),
             query: jasmine.any(Object),
@@ -145,11 +145,11 @@ module Coveo {
         $$(test.env.root).on('noResults', spy);
         var search = <jasmine.Spy>test.env.searchEndpoint.search;
         var results = FakeResults.createFakeResults(0)
-        search.and.returnValue(new Promise((resolve, reject)=> {
+        search.and.returnValue(new Promise((resolve, reject) => {
           resolve(results);
         }));
         test.cmp.executeQuery();
-        setTimeout(()=> {
+        setTimeout(() => {
           expect(spy).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({
             queryBuilder: jasmine.any(QueryBuilder),
             query: jasmine.any(Object),
@@ -162,7 +162,7 @@ module Coveo {
       })
 
       it('should cancel the query if set during an event', function () {
-        $$(test.env.root).on('newQuery', (e, args)=> {
+        $$(test.env.root).on('newQuery', (e, args) => {
           args.cancel = true;
         })
         test.cmp.executeQuery();
@@ -175,14 +175,14 @@ module Coveo {
 
       beforeEach(function () {
         store = {
-          addElement: (query: IQuery)=> {
+          addElement: (query: IQuery) => {
           },
-          getHistory: ()=> {
+          getHistory: () => {
             return []
           },
-          setHistory: (history: any[])=> {
+          setHistory: (history: any[]) => {
           },
-          clear: ()=> {
+          clear: () => {
           }
         }
 
@@ -200,7 +200,7 @@ module Coveo {
         expect(store.addElement).toHaveBeenCalled()
       })
 
-      it('should work if coveoanalytics is not defined', ()=> {
+      it('should work if coveoanalytics is not defined', () => {
         coveoanalytics = undefined;
         test.cmp.executeQuery();
         expect(store.addElement).not.toHaveBeenCalled()

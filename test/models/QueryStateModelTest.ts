@@ -2,7 +2,7 @@ module Coveo {
   describe('QueryStateModel', function () {
     var queryState: QueryStateModel;
     var div: HTMLDivElement;
-    var env: Mock.MockEnvironment;
+    var env: Mock.IMockEnvironment;
 
     beforeEach(function () {
       div = document.createElement('div');
@@ -38,10 +38,10 @@ module Coveo {
     })
 
     it('can validate on the first attribute', function () {
-      expect(()=> queryState.set('first', -1)).toThrow();
-      expect(()=> queryState.set('first', 'haha')).toThrow();
-      expect(()=> queryState.set('first', {})).toThrow();
-      expect(()=> queryState.set('first', false)).toThrow();
+      expect(() => queryState.set('first', -1)).toThrow();
+      expect(() => queryState.set('first', 'haha')).toThrow();
+      expect(() => queryState.set('first', {})).toThrow();
+      expect(() => queryState.set('first', false)).toThrow();
     })
   })
 }

@@ -8,18 +8,17 @@ module Coveo {
         return {
           compare: function (actual, expected) {
             var args = Array.prototype.slice.call(arguments, 0),
-                actual = args[0],
-                expectedArgs = args.slice(1),
-                result = {pass: false, message: ''};
+              expectedArgs = args.slice(1),
+              result = { pass: false, message: '' };
             if (!actual.calls.any()) {
               result.message = 'Expected spy ' + actual.and.identity() + ' to be called, but was never called'
               return result;
             }
             var found = _.chain(actual.calls.allArgs())
-                .flatten()
-                .pluck('detail')
-                .findWhere(expected)
-                .value();
+              .flatten()
+              .pluck('detail')
+              .findWhere(expected)
+              .value();
 
             if (found) {
               result.pass = true;
@@ -37,7 +36,7 @@ module Coveo {
           compare: function (actual, expected) {
 
             var args = Array.prototype.slice.call(arguments, 0),
-                result = {pass: false, message : undefined};
+              result = { pass: false, message: undefined };
 
             if (!expected) {
               throw new Error('Expected times failed is required as an argument.');
@@ -48,8 +47,8 @@ module Coveo {
             var timesMessage = expected === 1 ? 'once' : expected + ' times';
             result.pass = calls === expected;
             result.message = result.pass ?
-            'Expected spy ' + actual.and.identity() + ' not to have been called ' + timesMessage + '. It was called ' + calls + ' times.' :
-            'Expected spy ' + actual.and.identity() + ' to have been called ' + timesMessage + '. It was called ' + calls + ' times.';
+              'Expected spy ' + actual.and.identity() + ' not to have been called ' + timesMessage + '. It was called ' + calls + ' times.' :
+              'Expected spy ' + actual.and.identity() + ' to have been called ' + timesMessage + '. It was called ' + calls + ' times.';
             return result;
           }
         };
@@ -65,23 +64,23 @@ declare module jasmine {
     eventHandlerToHaveBeenCalledWith(data: any);
   }
 
-  interface IAjax {
-    install: ()=> void;
-    uninstall: ()=> void;
-    requests: IAjaxRequests;
+  interface Ajax {
+    install: () => void;
+    uninstall: () => void;
+    requests: AjaxRequests;
   }
 
-  interface IAjaxRequests {
-    at: (idx: number)=> IFakeXMLHttpRequest;
-    count: ()=> number;
-    filter: (urlToMatch: string)=> IFakeXMLHttpRequest[];
-    first: ()=> IFakeXMLHttpRequest;
-    mostRecent: ()=> IFakeXMLHttpRequest;
-    reset: ()=> void;
-    track: (request: IFakeXMLHttpRequest) => void;
+  interface AjaxRequests {
+    at: (idx: number) => FakeXMLHttpRequest;
+    count: () => number;
+    filter: (urlToMatch: string) => FakeXMLHttpRequest[];
+    first: () => FakeXMLHttpRequest;
+    mostRecent: () => FakeXMLHttpRequest;
+    reset: () => void;
+    track: (request: FakeXMLHttpRequest) => void;
   }
 
-  interface IFakeXMLHttpRequest {
+  interface FakeXMLHttpRequest {
     method: string;
     onreadystatechange: (ev) => void;
     overrideMimeType: string;
@@ -93,8 +92,8 @@ declare module jasmine {
     responseType: string;
     url: string;
     withCredentials: boolean;
-    respondWith: (data: any)=> void;
+    respondWith: (data: any) => void;
   }
 
-  var Ajax: IAjax;
+  var Ajax: Ajax;
 }
