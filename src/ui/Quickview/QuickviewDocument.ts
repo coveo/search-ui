@@ -106,7 +106,7 @@ export class QuickviewDocument extends Component {
       requestedOutputSize: this.options.maximumDocumentSize
     };
 
-    endpoint.getDocumentHtml(this.result.uniqueId, callOptions)
+    endpoint.getDocumentHtml('sdafasf', callOptions)
       .then((html: HTMLDocument) => {
         // If the contentDocument is null at this point it means that the Quick View
         // was closed before we've finished loading it. In this case do nothing.
@@ -125,7 +125,7 @@ export class QuickviewDocument extends Component {
         }
 
         if (error.status != 0) {
-          this.renderErrorReport(iframe);
+          this.renderErrorReport(iframe, error.status);
           this.triggerQuickviewLoaded(beforeLoad);
         } else {
           iframe.onload = () => {
@@ -159,8 +159,14 @@ export class QuickviewDocument extends Component {
   }
 
 
-  private renderErrorReport(iframe: HTMLIFrameElement) {
-    let errorMessage = `<html><body style='font-family: Arimo, \'Helvetica Neue\', Helvetica, Arial, sans-serif; -webkit-text-size-adjust: none;' >${l('OopsError')}' </body></html>`;
+  private renderErrorReport(iframe: HTMLIFrameElement, errorStatus: number) {
+    let errorString = "";
+    if(errorStatus == 400){
+      errorString = 'NoQuickview';
+    } else {
+      errorString = 'OopsError';
+    }
+    let errorMessage = `<html><body style='font-family: Arimo, \'Helvetica Neue\', Helvetica, Arial, sans-serif; -webkit-text-size-adjust: none;' >${l(errorString)} </body></html>`;
     this.writeToIFrame(iframe, errorMessage);
   }
 
