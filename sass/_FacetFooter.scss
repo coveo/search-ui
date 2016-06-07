@@ -34,7 +34,10 @@
   visibility: hidden;
 
 }
+
 .coveo-facet-footer {
   background: white;
   min-height: 15px;
+  border-bottom-left-radius: $default-border-radius;
+  border-bottom-right-radius: $default-border-radius;
 }

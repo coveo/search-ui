@@ -174,14 +174,14 @@ module Coveo {
     it('can load an external template from an id', function () {
       TemplateCache.registerTemplate('Foo', UnderscoreTemplate.fromString('foubarre'));
       test = Mock.advancedResultComponentSetup<ResultFolding>(ResultFolding, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-        element: $$('div', {'data-result-template-id': 'Foo'}).el
+        element: $$('div', { 'data-result-template-id': 'Foo' }).el
       })
       expect(test.cmp.options.resultTemplate.instantiateToElement({}).innerHTML).toBe('foubarre');
     })
 
     it('should automatically use the template inside its element', function () {
       test = Mock.advancedResultComponentSetup<ResultFolding>(ResultFolding, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-        element: $$('div', {}, $$('script', {className: 'result-template', 'type' : 'text/underscore'}, 'heyo')).el,
+        element: $$('div', {}, $$('script', { className: 'result-template', 'type': 'text/underscore' }, 'heyo')).el,
       })
       expect(test.cmp.options.resultTemplate.instantiateToElement({}).innerHTML).toBe('heyo');
     })

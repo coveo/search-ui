@@ -1,14 +1,14 @@
 /// <reference path="../Test.ts" />
 
 module Coveo {
-  describe('SearchButton', ()=> {
-    var test : Mock.IBasicComponentSetup<SearchButton>
+  describe('SearchButton', () => {
+    var test: Mock.IBasicComponentSetup<SearchButton>
 
     beforeEach(function () {
       test = Mock.basicComponentSetup<SearchButton>(SearchButton);
     });
 
-    afterEach(function() {
+    afterEach(function () {
       test = null;
     })
 
@@ -21,9 +21,9 @@ module Coveo {
       expect(test.env.queryController.executeQuery).toHaveBeenCalled();
     });
 
-    it('will log an analytics event', function() {
+    it('will log an analytics event', function () {
       test.cmp.click();
-      expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(AnalyticsActionCauseList.searchboxSubmit, {})
+      expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchboxSubmit, {})
     })
   })
 }

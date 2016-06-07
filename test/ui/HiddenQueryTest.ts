@@ -4,7 +4,7 @@ module Coveo {
     var test: Mock.IBasicComponentSetup<HiddenQuery>;
 
     beforeEach(function () {
-      test = Mock.advancedComponentSetup<HiddenQuery>(HiddenQuery, new Mock.AdvancedComponentSetupOptions(undefined, undefined, (env: Mock.MockEnvironmentBuilder)=> {
+      test = Mock.advancedComponentSetup<HiddenQuery>(HiddenQuery, new Mock.AdvancedComponentSetupOptions(undefined, undefined, (env: Mock.MockEnvironmentBuilder) => {
         return env.withLiveQueryStateModel();
       }));
     })
@@ -14,34 +14,34 @@ module Coveo {
     })
 
     it('should populate breadcrumb if hd and hq is set', function () {
-      var breadcrumbMatcher = jasmine.arrayContaining([jasmine.objectContaining({element: jasmine.any(HTMLElement)})]);
-      var matcher = jasmine.objectContaining({breadcrumbs: breadcrumbMatcher});
+      var breadcrumbMatcher = jasmine.arrayContaining([jasmine.objectContaining({ element: jasmine.any(HTMLElement) })]);
+      var matcher = jasmine.objectContaining({ breadcrumbs: breadcrumbMatcher });
       var spy = jasmine.createSpy('onPopulate');
       $$(test.env.root).on(BreadcrumbEvents.populateBreadcrumb, spy);
 
       // hd hq not set : no breadcrumbs
-      $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, {breadcrumbs: []});
+      $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, { breadcrumbs: [] });
       expect(spy).not.toHaveBeenCalledWith(jasmine.anything(), matcher);
 
       // only hd set : no breadcrumbs
       test.env.queryStateModel.set('hd', 'test');
       test.env.queryStateModel.set('hq', '');
 
-      $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, {breadcrumbs: []});
+      $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, { breadcrumbs: [] });
       expect(spy).not.toHaveBeenCalledWith(jasmine.anything(), matcher);
 
       // only hq set : breadcrumbs populated
       test.env.queryStateModel.set('hd', '');
       test.env.queryStateModel.set('hq', 'test');
 
-      $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, {breadcrumbs: []});
+      $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, { breadcrumbs: [] });
       expect(spy).toHaveBeenCalledWith(jasmine.anything(), matcher);
 
       // hq and hd are set : breadcrumb populated
       test.env.queryStateModel.set('hd', 'test');
       test.env.queryStateModel.set('hq', 'test');
 
-      $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, {breadcrumbs: []});
+      $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, { breadcrumbs: [] });
       expect(spy).toHaveBeenCalledWith(jasmine.anything(), matcher);
     })
 
@@ -69,33 +69,33 @@ module Coveo {
       it('maximumDescriptionLength should splice the description in the breadcrumb', function () {
         test = Mock.advancedComponentSetup<HiddenQuery>(HiddenQuery, new Mock.AdvancedComponentSetupOptions(undefined, {
           maximumDescriptionLength: 56
-        }, (env: Mock.MockEnvironmentBuilder)=> {
+        }, (env: Mock.MockEnvironmentBuilder) => {
           return env.withLiveQueryStateModel();
         }))
 
         test.env.queryStateModel.set('hq', 'test');
         test.env.queryStateModel.set('hd', _.range(200).toString());
-        $$(test.env.root).on(BreadcrumbEvents.populateBreadcrumb, (e: Event, args: IPopulateBreadcrumbEventArgs)=> {
+        $$(test.env.root).on(BreadcrumbEvents.populateBreadcrumb, (e: Event, args: IPopulateBreadcrumbEventArgs) => {
           // Not an exact comparison, because there's comma, and (...) at the end.
           // We don't need exact number, just that it's way less than 200 that was generated
           expect($$(args.breadcrumbs[0].element).text().length).toBeLessThan(100);
         });
-        $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, {breadcrumbs: []});
+        $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, { breadcrumbs: [] });
       })
 
       it('title allows to specify a breadcrumb title', function () {
         test = Mock.advancedComponentSetup<HiddenQuery>(HiddenQuery, new Mock.AdvancedComponentSetupOptions(undefined, {
           title: 'foobar'
-        }, (env: Mock.MockEnvironmentBuilder)=> {
+        }, (env: Mock.MockEnvironmentBuilder) => {
           return env.withLiveQueryStateModel();
         }))
 
         test.env.queryStateModel.set('hq', 'test');
         test.env.queryStateModel.set('hd', 'test');
-        $$(test.env.root).on(BreadcrumbEvents.populateBreadcrumb, (e: Event, args: IPopulateBreadcrumbEventArgs)=> {
+        $$(test.env.root).on(BreadcrumbEvents.populateBreadcrumb, (e: Event, args: IPopulateBreadcrumbEventArgs) => {
           expect($$(<HTMLElement>args.breadcrumbs[0].element.firstChild).text()).toBe('foobar');
         });
-        $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, {breadcrumbs: []});
+        $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, { breadcrumbs: [] });
       })
     })
   })

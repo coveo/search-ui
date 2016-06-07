@@ -1,8 +1,8 @@
 /// <reference path="../Test.ts" />
 
 module Coveo {
-  describe('Querybox', ()=> {
-    var test : Mock.IBasicComponentSetup<Querybox>;
+  describe('Querybox', () => {
+    var test: Mock.IBasicComponentSetup<Querybox>;
 
     beforeEach(function () {
       test = Mock.basicComponentSetup<Querybox>(Querybox);
@@ -10,7 +10,7 @@ module Coveo {
       registerCustomMatcher();
     });
 
-    afterEach(function() {
+    afterEach(function () {
       test = null;
     });
 
@@ -20,9 +20,9 @@ module Coveo {
       expect(test.env.queryController.executeQuery).toHaveBeenCalled();
     });
 
-    it('will log the proper analytics event on submit', function() {
+    it('will log the proper analytics event on submit', function () {
       test.cmp.submit();
-      expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(AnalyticsActionCauseList.searchboxSubmit, {});
+      expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchboxSubmit, {});
     });
 
     it('will not trigger a query on submit if the content has not changed', function () {
@@ -33,7 +33,7 @@ module Coveo {
       expect(test.env.queryController.executeQuery).toHaveBeenCalledTimes(1);
     });
 
-    it('will trigger a new query if the content change', function() {
+    it('will trigger a new query if the content change', function () {
       test.cmp.submit();
       test.cmp.submit();
       test.cmp.setText('Batman');
@@ -45,25 +45,25 @@ module Coveo {
       expect(test.env.queryController.executeQuery).toHaveBeenCalledTimes(3);
     });
 
-    it('will set the content of the input in the query', function() {
+    it('will set the content of the input in the query', function () {
       test.cmp.setText('Batman');
       var simulation = Simulate.query(test.env);
       expect(simulation.queryBuilder.build().q).toEqual('Batman');
     });
 
-    it('will change the state on building query', function() {
+    it('will change the state on building query', function () {
       test.cmp.setText('Batman');
       Simulate.query(test.env);
       expect(test.env.queryStateModel.set).toHaveBeenCalledWith('q', 'Batman');
     });
 
-    it('will change the state when the content change on blur', function() {
+    it('will change the state when the content change on blur', function () {
       test.cmp.setText('Batman');
       test.cmp.magicBox.onblur();
       expect(test.env.queryStateModel.set).toHaveBeenCalledWith('q', 'Batman');
     });
 
-    it('will change the state if the content is cleared', function() {
+    it('will change the state if the content is cleared', function () {
       test.cmp.setText('Batman');
       expect(test.env.queryStateModel.set).toHaveBeenCalledWith('q', 'Batman');
       test.cmp.setText('');
@@ -75,17 +75,17 @@ module Coveo {
       expect(test.env.queryStateModel.set).toHaveBeenCalledWith('q', '');
     });
 
-    it('will return correctly on getResult', function() {
+    it('will return correctly on getResult', function () {
       test.cmp.setText('Batman');
       expect(test.cmp.getResult().input).toBe('Batman');
     });
 
-    it('will return correctly on getDisplayedResult', function() {
+    it('will return correctly on getDisplayedResult', function () {
       test.cmp.setText('Batman');
       expect(test.cmp.getDisplayedResult().input).toBe('Batman');
     });
 
-    it('will return correctly on getCursor', function() {
+    it('will return correctly on getCursor', function () {
       test.cmp.setText('Batman');
       expect(test.cmp.getCursor()).toBe(6);
 
@@ -93,21 +93,21 @@ module Coveo {
       expect(test.cmp.getCursor()).toBe(0);
     });
 
-    it('will return correctly on resultAtCursor', function() {
+    it('will return correctly on resultAtCursor', function () {
       test.cmp.setText('Batman');
       expect(test.cmp.resultAtCursor().length).toBe(1);
       expect(test.cmp.resultAtCursor()[0].input).toBe('Batman');
     });
 
-    it('will update state before redirecting', function() {
+    it('will update state before redirecting', function () {
       test.cmp.setText('Batman');
       $$(test.env.root).trigger(StandaloneSearchInterfaceEvents.beforeRedirect);
       expect(test.env.queryStateModel.set).toHaveBeenCalledWith('q', 'Batman');
     });
 
-    describe('using a live query state model', function() {
-      beforeEach(function() {
-        test = Mock.advancedComponentSetup<Querybox>(Querybox, new Mock.AdvancedComponentSetupOptions(undefined, undefined, (env: Mock.MockEnvironmentBuilder)=> {
+    describe('using a live query state model', function () {
+      beforeEach(function () {
+        test = Mock.advancedComponentSetup<Querybox>(Querybox, new Mock.AdvancedComponentSetupOptions(undefined, undefined, (env: Mock.MockEnvironmentBuilder) => {
           return env.withLiveQueryStateModel();
         }));
       });
@@ -127,7 +127,7 @@ module Coveo {
         })
         expect(test.cmp.magicBox.onchange).toBeDefined();
         test.cmp.magicBox.onchange();
-        setTimeout(()=> {
+        setTimeout(() => {
           expect(test.env.queryController.executeQuery).toHaveBeenCalled();
           done();
         }, test.cmp.options.searchAsYouTypeDelay)
@@ -146,8 +146,8 @@ module Coveo {
         })
         expect(test.cmp.magicBox.onchange).toBeDefined();
         test.cmp.magicBox.onchange();
-        setTimeout(()=> {
-          expect(test.env.usageAnalytics.logSearchAsYouType).toHaveBeenCalledWith(AnalyticsActionCauseList.searchboxAsYouType, {});
+        setTimeout(() => {
+          expect(test.env.usageAnalytics.logSearchAsYouType).toHaveBeenCalledWith(analyticsActionCauseList.searchboxAsYouType, {});
 
           done();
         }, test.cmp.options.searchAsYouTypeDelay)
@@ -160,16 +160,16 @@ module Coveo {
         })
         expect(test.cmp.magicBox.onchange).toBeDefined();
         test.cmp.magicBox.onchange();
-        setTimeout(()=> {
+        setTimeout(() => {
           expect(test.env.queryController.executeQuery).not.toHaveBeenCalled();
         }, 1)
-        setTimeout(()=>{
+        setTimeout(() => {
           expect(test.env.queryController.executeQuery).toHaveBeenCalled();
           done();
         }, 10);
       });
 
-      it('enableQuerySyntax should modify the disableQuerySyntax parameter', function() {
+      it('enableQuerySyntax should modify the disableQuerySyntax parameter', function () {
         test = Mock.optionsComponentSetup<Querybox, IQueryboxOptions>(Querybox, {
           enableQuerySyntax: false
         });
@@ -183,12 +183,12 @@ module Coveo {
         });
         test.cmp.setText('@field==Batman');
 
-        var simulation = Simulate.query(test.env);
+        simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.disableQuerySyntax).toBe(false);
 
       });
 
-      it('enableWildcards shoud modify the query builder', function(){
+      it('enableWildcards shoud modify the query builder', function () {
         test = Mock.optionsComponentSetup<Querybox, IQueryboxOptions>(Querybox, {
           enableWildcards: false
         });
@@ -200,11 +200,11 @@ module Coveo {
           enableWildcards: true
         });
 
-        var simulation = Simulate.query(test.env);
+        simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().wildcards).toBe(true);
       });
 
-      it('enableQuestionMarks should modify the query builder', function() {
+      it('enableQuestionMarks should modify the query builder', function () {
         test = Mock.optionsComponentSetup<Querybox, IQueryboxOptions>(Querybox, {
           enableQuestionMarks: false
         });
@@ -216,11 +216,11 @@ module Coveo {
           enableQuestionMarks: true
         });
 
-        var simulation = Simulate.query(test.env);
+        simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().questionMark).toBe(true);
       });
 
-      it('enableLowercaseOperators should modify the query builder', function(){
+      it('enableLowercaseOperators should modify the query builder', function () {
         test = Mock.optionsComponentSetup<Querybox, IQueryboxOptions>(Querybox, {
           enableLowercaseOperators: false
         });
@@ -232,11 +232,11 @@ module Coveo {
           enableLowercaseOperators: true
         });
 
-        var simulation = Simulate.query(test.env);
+        simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().lowercaseOperators).toBe(true);
       });
 
-      it('enablePartialMatch should modify the query builder', function() {
+      it('enablePartialMatch should modify the query builder', function () {
         test = Mock.optionsComponentSetup<Querybox, IQueryboxOptions>(Querybox, {
           enablePartialMatch: false
         });
@@ -250,11 +250,11 @@ module Coveo {
         });
         test.cmp.setText('Batman');
 
-        var simulation = Simulate.query(test.env);
+        simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().partialMatch).toBe(true);
       });
 
-      it('enablePartialMatch should not modify the query builder if there is no content in the input', function(){
+      it('enablePartialMatch should not modify the query builder if there is no content in the input', function () {
         test = Mock.optionsComponentSetup<Querybox, IQueryboxOptions>(Querybox, {
           enablePartialMatch: true
         });
@@ -264,10 +264,10 @@ module Coveo {
         expect(simulation.queryBuilder.build().partialMatch).toBeUndefined();
       })
 
-      it('partialMatchKeywords should modify the query builder', function() {
+      it('partialMatchKeywords should modify the query builder', function () {
         test = Mock.optionsComponentSetup<Querybox, IQueryboxOptions>(Querybox, {
           partialMatchKeywords: 999,
-          enablePartialMatch : true
+          enablePartialMatch: true
         });
         test.cmp.setText('Batman');
 
@@ -275,10 +275,10 @@ module Coveo {
         expect(simulation.queryBuilder.build().partialMatchKeywords).toBe(999);
       });
 
-      it('partialMatchKeywords should not modify the query builder if there is no content in the input', function() {
+      it('partialMatchKeywords should not modify the query builder if there is no content in the input', function () {
         test = Mock.optionsComponentSetup<Querybox, IQueryboxOptions>(Querybox, {
           partialMatchKeywords: 999,
-          enablePartialMatch : true
+          enablePartialMatch: true
         });
         test.cmp.setText('');
 
@@ -286,10 +286,10 @@ module Coveo {
         expect(simulation.queryBuilder.build().partialMatchKeywords).toBeUndefined();
       });
 
-      it('partialMatchKeywords should not modify the query builder if enablePartialMatch is disabled', function() {
+      it('partialMatchKeywords should not modify the query builder if enablePartialMatch is disabled', function () {
         test = Mock.optionsComponentSetup<Querybox, IQueryboxOptions>(Querybox, {
           partialMatchKeywords: 999,
-          enablePartialMatch : false
+          enablePartialMatch: false
         });
         test.cmp.setText('Batman');
 

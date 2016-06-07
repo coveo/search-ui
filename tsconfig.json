@@ -90,7 +90,7 @@
     "src/misc/L10N.ts",
     "src/misc/Logger.ts",
     "src/misc/Options.ts",
-    "src/misc/PromiseFinally.ts",
+    "src/misc/PromisesShim.ts",
     "src/misc/Version.ts",
     "src/utils/ColorUtils.ts",
     "src/utils/CookieUtils.ts",
@@ -198,6 +198,11 @@
     "src/ui/PipelineContext/PipelineContext.ts",
     "src/ui/OmniboxResultList/OmniboxResultList.ts",
     "src/ui/ResultsPreferences/ResultsPreferences.ts",
-    "src/ui/CurrentTab/CurrentTab.ts"
+    "src/ui/CurrentTab/CurrentTab.ts",
+    "src/ui/Querybox/QueryboxQueryParameters.ts",
+    "src/ui/ImageResultList/ImageResultList.ts",
+    "src/ui/SearchAlerts/FollowItem.ts",
+    "src/ui/SearchAlerts/SearchAlertsMessage.ts",
+    "src/ui/SearchAlerts/SearchAlerts.ts"
   ]
 }

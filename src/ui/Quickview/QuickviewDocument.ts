@@ -1,7 +1,7 @@
 import {Component} from '../Base/Component'
 import {IComponentBindings} from '../Base/ComponentBindings'
 import {ComponentOptions} from '../Base/ComponentOptions'
-import {AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
+import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
 import {IQueryResult} from '../../rest/QueryResult'
 import {Assert} from '../../misc/Assert'
 import {$$, Dom} from '../../utils/Dom'
@@ -77,7 +77,7 @@ export class QuickviewDocument extends Component {
     if (documentURL == undefined || documentURL == '') {
       documentURL = this.result.clickUri;
     }
-    this.usageAnalytics.logClickEvent(AnalyticsActionCauseList.documentQuickview, {
+    this.usageAnalytics.logClickEvent(analyticsActionCauseList.documentQuickview, {
       author: this.result.raw.author,
       documentURL: documentURL,
       documentTitle: this.result.title
@@ -586,7 +586,7 @@ export class QuickviewDocument extends Component {
     let leftStep = Math.round((scrollLeftValue - scroll.scrollLeft) / duration);
     let topStep = Math.round((scrollTopValue - scroll.scrollTop) / duration);
 
-    let interval = setInterval(function() {
+    let interval = setInterval(function () {
       if (duration != 0) {
         scroll.scrollLeft += leftStep;
         scroll.scrollTop += topStep;

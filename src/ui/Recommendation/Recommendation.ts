@@ -8,7 +8,7 @@ import {PreferencesPanelEvents} from '../../events/PreferencesPanelEvents';
 import {AnalyticsEvents} from '../../events/AnalyticsEvents';
 import {BreadcrumbEvents} from '../../events/BreadcrumbEvents';
 import {QuickviewEvents} from '../../events/QuickviewEvents';
-import {QueryStateAttributes} from '../../models/QueryStateModel';
+import {QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
 import {Model} from '../../models/Model';
 import {IQueryResult} from '../../rest/QueryResult';
 import {Utils} from '../../utils/Utils';
@@ -162,7 +162,7 @@ export class Recommendation extends SearchInterface {
   private getAllModelEvents() {
     let events = {};
     _.each(_.values(Model.eventTypes), (event) => {
-      _.each(_.values(QueryStateAttributes), (attribute) => {
+      _.each(_.values(QUERY_STATE_ATTRIBUTES), (attribute) => {
         let eventName = this.getBindings().queryStateModel.getEventName(event + attribute);
         events[eventName] = eventName;
       })

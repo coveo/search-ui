@@ -10,7 +10,7 @@ import {Utils} from '../../utils/Utils';
 import {l} from '../../strings/Strings';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import {FacetHeader} from './FacetHeader';
-import {IAnalyticsFacetMeta, AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
+import {IAnalyticsFacetMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
 
@@ -445,7 +445,7 @@ export class FacetSettings extends FacetSort {
     this.facetStateLocalStorage.remove();
     this.facet.reset();
     this.close();
-    this.facet.triggerNewQuery(() => this.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(AnalyticsActionCauseList.facetClearAll, {
+    this.facet.triggerNewQuery(() => this.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetClearAll, {
       facetId: this.facet.options.id,
       facetTitle: this.facet.options.title
     }));

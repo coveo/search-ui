@@ -4,7 +4,7 @@ import {FacetValue} from './FacetValues';
 import {IPopulateOmniboxObject} from '../Omnibox/OmniboxInterface';
 import {ValueElementRenderer} from './ValueElementRenderer';
 import {Utils} from '../../utils/Utils';
-import {IAnalyticsActionCause, AnalyticsActionCauseList, IAnalyticsFacetMeta} from '../Analytics/AnalyticsActionListMeta';
+import {IAnalyticsActionCause, analyticsActionCauseList, IAnalyticsFacetMeta} from '../Analytics/AnalyticsActionListMeta';
 import {$$} from '../../utils/Dom';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {Defer} from '../../misc/Defer';
@@ -76,13 +76,13 @@ export class ValueElement {
     this.facet.keepDisplayedValuesNextTime = eventBindings.displayNextTime && !this.facet.options.useAnd;
     var actionCause: IAnalyticsActionCause;
     if (this.facetValue.excluded) {
-      actionCause = this.isOmnibox ? AnalyticsActionCauseList.omniboxFacetUnexclude : AnalyticsActionCauseList.facetUnexclude;
+      actionCause = this.isOmnibox ? analyticsActionCauseList.omniboxFacetUnexclude : analyticsActionCauseList.facetUnexclude;
       this.facet.unexcludeValue(this.facetValue);
     } else {
       if (this.facetValue.selected) {
-        actionCause = this.isOmnibox ? AnalyticsActionCauseList.omniboxFacetDeselect : AnalyticsActionCauseList.facetDeselect;
+        actionCause = this.isOmnibox ? analyticsActionCauseList.omniboxFacetDeselect : analyticsActionCauseList.facetDeselect;
       } else {
-        actionCause = this.isOmnibox ? AnalyticsActionCauseList.omniboxFacetSelect : AnalyticsActionCauseList.facetSelect;
+        actionCause = this.isOmnibox ? analyticsActionCauseList.omniboxFacetSelect : analyticsActionCauseList.facetSelect;
       }
       this.facet.toggleSelectValue(this.facetValue);
     }
@@ -97,9 +97,9 @@ export class ValueElement {
     this.facet.keepDisplayedValuesNextTime = eventBindings.displayNextTime && !this.facet.options.useAnd;
     var actionCause: IAnalyticsActionCause;
     if (this.facetValue.excluded) {
-      actionCause = this.isOmnibox ? AnalyticsActionCauseList.omniboxFacetUnexclude : AnalyticsActionCauseList.facetUnexclude;
+      actionCause = this.isOmnibox ? analyticsActionCauseList.omniboxFacetUnexclude : analyticsActionCauseList.facetUnexclude;
     } else {
-      actionCause = this.isOmnibox ? AnalyticsActionCauseList.omniboxFacetExclude : AnalyticsActionCauseList.facetExclude;
+      actionCause = this.isOmnibox ? analyticsActionCauseList.omniboxFacetExclude : analyticsActionCauseList.facetExclude;
     }
     this.facet.toggleExcludeValue(this.facetValue);
     if (this.onExclude) {

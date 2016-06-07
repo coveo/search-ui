@@ -8,7 +8,7 @@ module Coveo {
       beforeEach(() => {
         SearchEndpoint.endpoints['default'] = new SearchEndpoint({
           accessToken: 'some token',
-          queryStringArguments: {workgroup: 'organization'},
+          queryStringArguments: { workgroup: 'organization' },
           restUri: 'some/uri'
         });
         test = Mock.basicComponentSetup<Analytics>(Analytics);
@@ -42,12 +42,12 @@ module Coveo {
             name: 'oops pretty bad'
           }
         });
-        expect(test.cmp.client.logCustomEvent).toHaveBeenCalledWith(AnalyticsActionCauseList.queryError, jasmine.any(Object), jasmine.any(HTMLElement));
+        expect(test.cmp.client.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.queryError, jasmine.any(Object), jasmine.any(HTMLElement));
       });
     });
 
     describe('using the static create call', () => {
-      let env: Mock.MockEnvironment;
+      let env: Mock.IMockEnvironment;
       let analytics: HTMLDivElement;
 
       beforeEach(() => {
