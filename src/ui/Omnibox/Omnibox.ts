@@ -1,5 +1,4 @@
 ///<reference path="FieldAddon.ts" />
-///<reference path="TopQueryAddon.ts" />
 ///<reference path="QueryExtensionAddon.ts" />
 ///<reference path="RevealQuerySuggestAddon.ts" />
 ///<reference path="OldOmniboxAddon.ts" />
@@ -20,7 +19,6 @@ import {QueryStateModel} from '../../models/QueryStateModel';
 import {Initialization} from '../Base/Initialization';
 import {Querybox} from '../Querybox/Querybox';
 import {FieldAddon} from './FieldAddon';
-import {TopQueryAddon} from './TopQueryAddon';
 import {QueryExtensionAddon} from './QueryExtensionAddon';
 import {RevealQuerySuggestAddon} from './RevealQuerySuggestAddon';
 import {OldOmniboxAddon} from './OldOmniboxAddon';
@@ -41,7 +39,6 @@ export interface IOmniboxOptions extends IQueryboxOptions {
   enableSimpleFieldAddon?: boolean;
   listOfFields?: string[];
   fieldAlias?: { [alias: string]: string };
-  enableTopQueryAddon?: boolean;
   enableRevealQuerySuggestAddon?: boolean;
   enableQueryExtensionAddon?: boolean;
   omniboxTimeout?: number;
@@ -95,17 +92,11 @@ export class Omnibox extends Component {
     enableSimpleFieldAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableFieldAddon' }),
     listOfFields: ComponentOptions.buildFieldsOption({ depend: 'enableFieldAddon' }),
     /**
-     * Specifies whether the Omnibox suggests top queries logged by the Coveo Cloud Analytics.<br/>
-     * This implies that your integration has a proper coveo cloud analytics integration configured.<br/>
-     * Default value is false
-     */
-    enableTopQueryAddon: ComponentOptions.buildBooleanOption({ defaultValue: false }),
-    /**
      * Specifies whether the reveal query suggestions should be enabled.<br/>
      * This implies that your integration has a proper reveal integration configured.<br/>
      * Default value is false
      */
-    enableRevealQuerySuggestAddon: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    enableRevealQuerySuggestAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, alias: 'data-enable-top-query-addon' }),
     /**
      * Specifies whether the query extension addon should be enabled.<br/>
      * This allows the omnibox to complete the syntax for query extensions.<br/>
@@ -157,8 +148,6 @@ export class Omnibox extends Component {
 
     if (this.options.enableRevealQuerySuggestAddon) {
       new RevealQuerySuggestAddon(this);
-    } else if (this.options.enableTopQueryAddon) {
-      new TopQueryAddon(this);
     }
 
     new OldOmniboxAddon(this);
