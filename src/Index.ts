@@ -165,3 +165,4 @@ export {PipelineContext, context} from './ui/PipelineContext/PipelineContext';
 export {OmniboxResultList} from './ui/OmniboxResultList/OmniboxResultList';
 export {CurrentTab} from './ui/CurrentTab/CurrentTab';
 export {QueryboxQueryParameters} from './ui/Querybox/QueryboxQueryParameters';
+export {ImageResultList} from './ui/ImageResultList/ImageResultList';
