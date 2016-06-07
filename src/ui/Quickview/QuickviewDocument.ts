@@ -106,7 +106,7 @@ export class QuickviewDocument extends Component {
       requestedOutputSize: this.options.maximumDocumentSize
     };
 
-    endpoint.getDocumentHtml('sdafasf', callOptions)
+    endpoint.getDocumentHtml(this.result.uniqueId, callOptions)
       .then((html: HTMLDocument) => {
         // If the contentDocument is null at this point it means that the Quick View
         // was closed before we've finished loading it. In this case do nothing.
