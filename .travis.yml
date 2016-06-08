@@ -12,7 +12,7 @@ script:
 - npm run build
 - npm run test
 after_success:
-  if ["TRAVIS_TAG"]; then
+  if [ ! -z "TRAVIS_TAG" ]; then
     npm run doc
     bash ./deploy.doc.sh
   else
