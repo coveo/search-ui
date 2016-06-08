@@ -170,3 +170,4 @@ export {CoveoJQuery} from './ui/Base/CoveoJQuery';
 export {FollowItem} from './ui/SearchAlerts/FollowItem';
 export {SearchAlertsMessage} from './ui/SearchAlerts/SearchAlertsMessage';
 export {SearchAlerts} from './ui/SearchAlerts/SearchAlerts';
+export {Text} from './ui/Text/Text';

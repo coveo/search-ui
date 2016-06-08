@@ -204,6 +204,7 @@
     "src/ui/ImageResultList/ImageResultList.ts",
     "src/ui/SearchAlerts/FollowItem.ts",
     "src/ui/SearchAlerts/SearchAlertsMessage.ts",
-    "src/ui/SearchAlerts/SearchAlerts.ts"
+    "src/ui/SearchAlerts/SearchAlerts.ts",
+    "src/ui/Text/Text.ts"
   ]
 }
