@@ -175,7 +175,6 @@
     "src/ui/Matrix/Matrix.ts",
     "src/ui/Menu/MenuItem.ts",
     "src/ui/Misc/FileTypes.ts",
-    "src/ui/Misc/MobileMisc.ts",
     "src/ui/Misc/Slider.ts",
     "src/ui/Misc/SuggestionForOmnibox.ts",
     "src/ui/Omnibox/FieldAddon.ts",
