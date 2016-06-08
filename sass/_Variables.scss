@@ -158,3 +158,13 @@ $default-border: 1px solid $color-light-grey;
     white-space: nowrap;
   }
 }
+
+@include keyframes(coveo-spin) {
+  from {
+    @include transform(rotate(0deg));
+  }
+
+  to {
+    @include transform(rotate(360deg));
+  }
+}
