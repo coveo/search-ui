@@ -19,6 +19,8 @@ import {$$} from '../../utils/Dom'
 import {SearchEndpoint} from '../../rest/SearchEndpoint'
 import _ = require('underscore');
 
+declare var Globalize;
+
 /**
  * The core template helpers provided by default.
  *
