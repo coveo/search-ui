@@ -16,7 +16,6 @@ after_success:
 - bash ./deploy.doc.sh
 env:
   global:
-  - ENCRYPTIOL_LABEL: f66a0c6ad864
   - COMMIT_AUTHOR_EMAIL: "sandbox_JSUI@coveo.com"
 deploy:
   provider: npm
