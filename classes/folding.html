@@ -92,6 +92,7 @@
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="folding.html#options.parentfield" class="tsd-kind-icon">parent<wbr>Field</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="folding.html#options.range" class="tsd-kind-icon">range</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="folding.html#options.rearrange" class="tsd-kind-icon">rearrange</a></li>
+								<li class="tsd-kind-object-literal tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external"><a href="foldingforthread.html#options" class="tsd-kind-icon">options</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-inherited tsd-is-external">
@@ -161,7 +162,7 @@
 						<div class="lead">
 							<p>Specifies whether to add a callback function on the top result, allowing to make an additional query
 								to load all the conversation of a given thread.<br/>
-								Concretely, the {@link ResultFolding} component uses this for its <b>Load full conversation</b> option.<br/>
+								Concretely, the <a href="resultfolding.html">ResultFolding</a> component uses this for its <b>Load full conversation</b> option.<br/>
 							The default value is <code>true</code></p>
 						</div>
 					</div>
@@ -275,6 +276,176 @@
 							The default value is <code>none</code>, which means that results are displayed in the order that the index returned them.</p>
 						</div>
 					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external">
+					<a name="options" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> options</h3>
+					<div class="tsd-signature tsd-kind-icon">options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="folding.html">Folding</a>.<a href="folding.html#options">options</a></p>
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L57">src/ui/Folding/Folding.ts
+							:57</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The options for the component</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt class="tsd-comment-flag-componentoptions">componentoptions</dt>
+							<dd></dd>
+						</dl>
+					</div>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
+						<a name="options.childfield" class="tsd-anchor"></a>
+						<h3>child<wbr>Field</h3>
+						<div class="tsd-signature tsd-kind-icon">child<wbr>Field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L67">src/ui/Folding/Folding.ts
+								:67</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Specifies the field that determines that a result is a child of another top result.<br/>
+								The default value is <code>@topparentid</code></p>
+							</div>
+						</div>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
+						<a name="options.enableexpand" class="tsd-anchor"></a>
+						<h3>enable<wbr>Expand</h3>
+						<div class="tsd-signature tsd-kind-icon">enable<wbr>Expand<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L91">src/ui/Folding/Folding.ts
+								:91</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Specifies whether to add a callback function on the top result, allowing to make an additional query
+									to load all the conversation of a given thread.<br/>
+									Concretely, the <a href="resultfolding.html">ResultFolding</a> component uses this for its <b>Load full conversation</b> option.<br/>
+								The default value is <code>true</code></p>
+							</div>
+						</div>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
+						<a name="options.expandexpression" class="tsd-anchor"></a>
+						<h3>expand<wbr>Expression</h3>
+						<div class="tsd-signature tsd-kind-icon">expand<wbr>Expression<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L95">src/ui/Folding/Folding.ts
+								:95</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Specifies a customized constant expression to send when querying the expanded results.</p>
+							</div>
+						</div>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
+						<a name="options.field" class="tsd-anchor"></a>
+						<h3>field</h3>
+						<div class="tsd-signature tsd-kind-icon">field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L62">src/ui/Folding/Folding.ts
+								:62</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>The name of the field on which the folding is done.<br/>
+								This option is required.</p>
+							</div>
+						</div>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
+						<a name="options.maximumexpandedresults" class="tsd-anchor"></a>
+						<h3>maximum<wbr>Expanded<wbr>Results</h3>
+						<div class="tsd-signature tsd-kind-icon">maximum<wbr>Expanded<wbr>Results<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L101">src/ui/Folding/Folding.ts
+								:101</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Specifies the maximum number of expanded results.<br/>
+									The default value is 100.<br/>
+								The minimum value is 1.</p>
+							</div>
+						</div>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
+						<a name="options.parentfield" class="tsd-anchor"></a>
+						<h3>parent<wbr>Field</h3>
+						<div class="tsd-signature tsd-kind-icon">parent<wbr>Field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L72">src/ui/Folding/Folding.ts
+								:72</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Specifies the field that determines that a result is a top result containing other child results<br/>
+								The default value is <code>@syscontainsattachmen</code></p>
+							</div>
+						</div>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
+						<a name="options.range" class="tsd-anchor"></a>
+						<h3>range</h3>
+						<div class="tsd-signature tsd-kind-icon">range<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L78">src/ui/Folding/Folding.ts
+								:78</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>The number of child results to fold.<br />
+									The default value is 2.<br/>
+								The minimum value is 0.</p>
+							</div>
+						</div>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
+						<a name="options.rearrange" class="tsd-anchor"></a>
+						<h3>rearrange</h3>
+						<div class="tsd-signature tsd-kind-icon">rearrange<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">SortCriteria</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L84">src/ui/Folding/Folding.ts
+								:84</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Specifies how the top result and its related child results, following the {@link SortCriteria} format
+									(<code>date ascending</code>, <code>@somefield ascending</code>, etc.).<br/>
+								The default value is <code>none</code>, which means that results are displayed in the order that the index returned them.</p>
+							</div>
+						</div>
+					</section>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited tsd-is-external">
@@ -391,7 +562,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains the state of options for differents component. Mainly used by {@link ResultLink}</p>
+							<p>Contains the state of options for differents component. Mainly used by <a href="resultlink.html">ResultLink</a></p>
 						</div>
 					</div>
 				</section>

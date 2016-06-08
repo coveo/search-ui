@@ -72,10 +72,10 @@
 					<div class="lead">
 						<p>The QueryStateModel is a key-&gt;value store of the state of every component that can affect a query.<br/>
 							Component set values in this key -&gt; value store, and listen to event triggered to react accordingly.<br/>
-							For example, when a query is launched, the searchbox will set the &quot;q&quot; attribute, the pager will set the &quot;first&quot; attribute, etc.<br/>
+							For example, when a query is launched, the searchbox will set the &#39;q&#39; attribute, the pager will set the &#39;first&#39; attribute, etc.<br/>
 							At the same time, this class will trigger the associated event when a value is modified.<br/>
 							eg : The user change the content of the searchbox, and submit a query. This will trigger the following events :<br/>
-							-- state:change:q (because the value of &quot;q&quot; changed)</br>
+							-- state:change:q (because the value of &#39;q&#39; changed)</br>
 							-- state:change (because at least one value changed in the query state)<br/>
 							Component or external code could hook handler on those events : document.addEventListener(&#39;state:change:q&#39;, handler);<br/>
 							See : <a href="model.html">Model</a>, as all the relevant method are exposed in the base class.<br/>

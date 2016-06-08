@@ -85,7 +85,6 @@
 							<h3>Component Options</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="facet.html#options.additionalfilter" class="tsd-kind-icon">additional<wbr>Filter</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="facet.html#options.allowtogglingoperator" class="tsd-kind-icon">allow<wbr>Toggling<wbr>Operator</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="facet.html#options.allowedvalues" class="tsd-kind-icon">allowed<wbr>Values</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="facet.html#options.availablesorts" class="tsd-kind-icon">available<wbr>Sorts</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="facet.html#options.computedfield" class="tsd-kind-icon">computed<wbr>Field</a></li>
@@ -99,6 +98,7 @@
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="facet.html#options.enablemoreless" class="tsd-kind-icon">enable<wbr>More<wbr>Less</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="facet.html#options.enablesettings" class="tsd-kind-icon">enable<wbr>Settings</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="facet.html#options.enablesettingsfacetstate" class="tsd-kind-icon">enable<wbr>Settings<wbr>Facet<wbr>State</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="facet.html#options.enabletogglingoperator" class="tsd-kind-icon">enable<wbr>Toggling<wbr>Operator</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="facet.html#options.facetsearchdelay" class="tsd-kind-icon">facet<wbr>Search<wbr>Delay</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="facet.html#options.facetsearchignoreaccents" class="tsd-kind-icon">facet<wbr>Search<wbr>Ignore<wbr>Accents</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external"><a href="facet.html#options.field" class="tsd-kind-icon">field</a></li>
@@ -199,24 +199,6 @@
 							<p>Specifies an additional query expression (query override) to add to each group by that this facet performs.<br/>
 								See : <a href="../interfaces/igroupbyrequest.html">IGroupByRequest</a>.<br/>
 							Example : @date&gt;=2014/01/01</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
-					<a name="options.allowtogglingoperator" class="tsd-anchor"></a>
-					<h3>allow<wbr>Toggling<wbr>Operator</h3>
-					<div class="tsd-signature tsd-kind-icon">allow<wbr>Toggling<wbr>Operator<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L207">src/ui/Facet/Facet.ts
-							:207</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies whether the user is allowed to toggle between OR and AND mode, using an icon in the top right corner of the facet.<br/>
-							The default value is false.</p>
 						</div>
 					</div>
 				</section>
@@ -473,6 +455,24 @@
 							<p>Specifies if the save state menu option is available on the facet setting menu.<br/>
 								Of course <a href="facet.html#options.enablesettings">Facet.options.enableSettings</a> needs to be true.<br/>
 							Default value is false</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-external">
+					<a name="options.enabletogglingoperator" class="tsd-anchor"></a>
+					<h3>enable<wbr>Toggling<wbr>Operator</h3>
+					<div class="tsd-signature tsd-kind-icon">enable<wbr>Toggling<wbr>Operator<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L207">src/ui/Facet/Facet.ts
+							:207</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies whether the user is allowed to toggle between OR and AND mode, using an icon in the top right corner of the facet.<br/>
+							The default value is false.</p>
 						</div>
 					</div>
 				</section>
@@ -903,8 +903,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L509">src/ui/Facet/Facet.ts
-									:509</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L508">src/ui/Facet/Facet.ts
+									:508</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -937,8 +937,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L495">src/ui/Facet/Facet.ts
-									:495</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L494">src/ui/Facet/Facet.ts
+									:494</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -971,8 +971,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L539">src/ui/Facet/Facet.ts
-									:539</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L538">src/ui/Facet/Facet.ts
+									:538</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1005,8 +1005,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L525">src/ui/Facet/Facet.ts
-									:525</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L524">src/ui/Facet/Facet.ts
+									:524</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1064,8 +1064,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L620">src/ui/Facet/Facet.ts
-									:620</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L619">src/ui/Facet/Facet.ts
+									:619</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1088,8 +1088,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L612">src/ui/Facet/Facet.ts
-									:612</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L611">src/ui/Facet/Facet.ts
+									:611</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1112,8 +1112,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L676">src/ui/Facet/Facet.ts
-									:676</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L675">src/ui/Facet/Facet.ts
+									:675</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1136,8 +1136,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L638">src/ui/Facet/Facet.ts
-									:638</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L637">src/ui/Facet/Facet.ts
+									:637</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1160,8 +1160,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L629">src/ui/Facet/Facet.ts
-									:629</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L628">src/ui/Facet/Facet.ts
+									:628</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1184,8 +1184,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L762">src/ui/Facet/Facet.ts
-									:762</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L761">src/ui/Facet/Facet.ts
+									:761</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1216,8 +1216,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L721">src/ui/Facet/Facet.ts
-									:721</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L720">src/ui/Facet/Facet.ts
+									:720</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1240,8 +1240,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L646">src/ui/Facet/Facet.ts
-									:646</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L645">src/ui/Facet/Facet.ts
+									:645</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1264,8 +1264,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L479">src/ui/Facet/Facet.ts
-									:479</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L478">src/ui/Facet/Facet.ts
+									:478</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1298,8 +1298,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L465">src/ui/Facet/Facet.ts
-									:465</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L464">src/ui/Facet/Facet.ts
+									:464</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1332,8 +1332,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L799">src/ui/Facet/Facet.ts
-									:799</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L798">src/ui/Facet/Facet.ts
+									:798</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1356,8 +1356,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L786">src/ui/Facet/Facet.ts
-									:786</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L785">src/ui/Facet/Facet.ts
+									:785</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1381,8 +1381,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L705">src/ui/Facet/Facet.ts
-									:705</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L704">src/ui/Facet/Facet.ts
+									:704</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1405,8 +1405,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L657">src/ui/Facet/Facet.ts
-									:657</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L656">src/ui/Facet/Facet.ts
+									:656</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1429,8 +1429,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L666">src/ui/Facet/Facet.ts
-									:666</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L665">src/ui/Facet/Facet.ts
+									:665</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1453,8 +1453,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L599">src/ui/Facet/Facet.ts
-									:599</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L598">src/ui/Facet/Facet.ts
+									:598</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1487,8 +1487,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L585">src/ui/Facet/Facet.ts
-									:585</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L584">src/ui/Facet/Facet.ts
+									:584</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1521,8 +1521,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L569">src/ui/Facet/Facet.ts
-									:569</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L568">src/ui/Facet/Facet.ts
+									:568</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1555,8 +1555,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L555">src/ui/Facet/Facet.ts
-									:555</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L554">src/ui/Facet/Facet.ts
+									:554</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1589,8 +1589,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L686">src/ui/Facet/Facet.ts
-									:686</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Facet/Facet.ts#L685">src/ui/Facet/Facet.ts
+									:685</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1699,7 +1699,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains the state of options for differents component. Mainly used by {@link ResultLink}</p>
+							<p>Contains the state of options for differents component. Mainly used by <a href="resultlink.html">ResultLink</a></p>
 						</div>
 					</div>
 				</section>

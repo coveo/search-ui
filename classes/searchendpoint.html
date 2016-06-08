@@ -70,7 +70,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A search endpoint allows to execute various actions against the Coveo Search API and index.<br/>
+						<p>A search endpoint allows to execute letious actions against the Coveo Search API and index.<br/>
 							For example, you can search, list field values, get the quickview content for a document, etc.<br/>
 							Any actions that you execute using this class will not trigger a full query cycle for the Coveo components.<br/>
 							This is because this class will not trigger any query events directly.<br/>
@@ -502,7 +502,7 @@
 								<div class="lead">
 									<p>Get the raw datastream for a given document. This is typically used to get a thumbnail for a document.<br/>
 										Return an array buffer : <br/>
-										eg : var rawBinary = String.fromCharCode.apply(null, new Uint8Array(response));<br/>
+										eg : let rawBinary = String.fromCharCode.apply(null, new Uint8Array(response));<br/>
 									img.setAttribute(&#39;src&#39;, &#39;data:image/png;base64,&#39; + btoa(rawBinary));</p>
 								</div>
 							</div>
