@@ -299,7 +299,7 @@ export class ComponentOptions {
     return values;
   }
 
-  static loadStringOption(element: HTMLElement, name: string, option: IOption<any>): string {
+  static loadStringOption(element: HTMLElement, name: string, option: IComponentOptions<any>): string {
     return element.getAttribute(ComponentOptions.attrNameFromName(name, option)) || ComponentOptions.getAttributeFromAlias(element, option);
   }
 
@@ -475,7 +475,7 @@ export class ComponentOptions {
     return $$(element).css('overflow-y') == 'scroll';
   }
 
-  static getAttributeFromAlias(element: HTMLElement, option: IOption<any>) {
+  static getAttributeFromAlias(element: HTMLElement, option: IComponentOptions<any>) {
     if (option.alias) {
       return element.getAttribute(ComponentOptions.attrNameFromName(option.alias));
     }
