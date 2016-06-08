@@ -45,7 +45,7 @@ module Coveo {
     it('should send an analytics event when doQueryWithCorrectedTerm is called', function () {
       var analyticsSpy = jasmine.createSpy('analyticsSpy');
       test.env.usageAnalytics.logSearchEvent = analyticsSpy;
-      Simulate.query(test.env, <SimulateQueryData>{
+      Simulate.query(test.env, <ISimulateQueryData>{
         queryCorrections: [fakeQueryCorrection]
       })
       test.env.queryController.deferExecuteQuery = (arg) => {
@@ -160,7 +160,7 @@ module Coveo {
       })
     })
 
-    describe('escape the HTML against XSS', function () { 
+    describe('escape the HTML against XSS', function () {
       beforeEach(function () {
       })
 
@@ -171,7 +171,7 @@ module Coveo {
           }]
         })
         expect($$(test.cmp.element).find('.coveo-did-you-mean-suggestion a').innerHTML)
-            .toBe('&lt;script&gt;alert("hack the internet")&lt;/script&gt;');
+          .toBe('&lt;script&gt;alert("hack the internet")&lt;/script&gt;');
       })
 
       it('when query is autocorrected', function () {
@@ -182,7 +182,7 @@ module Coveo {
           }]
         })
         expect($$(test.cmp.element).find('.coveo-did-you-mean-suggestion a').innerHTML)
-            .toBe('&lt;script&gt;alert("thou shalt surely die")&lt;/script&gt;');
+          .toBe('&lt;script&gt;alert("thou shalt surely die")&lt;/script&gt;');
       })
     })
   })

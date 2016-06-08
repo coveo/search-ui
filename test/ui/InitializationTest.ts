@@ -12,7 +12,7 @@ module Coveo {
       $$(root).addClass('CoveoSearchInterface');
       endpoint = Mock.mockSearchEndpoint();
       endpoint.options = {};
-      searchInterfaceOptions = {SearchInterface: {endpoint: endpoint}};
+      searchInterfaceOptions = { SearchInterface: { endpoint: endpoint } };
       queryBox = document.createElement('div');
       $$(queryBox).addClass('CoveoQuerybox');
       root.appendChild(queryBox);
@@ -28,7 +28,7 @@ module Coveo {
     it('can initialize search interface and component', function () {
 
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
-      Initialization.initializeFramework(root, searchInterfaceOptions, ()=> {
+      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(Component.get(queryBox) instanceof Querybox).toBe(true);
@@ -47,7 +47,7 @@ module Coveo {
       })
 
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
-      Initialization.initializeFramework(root, searchInterfaceOptions, ()=> {
+      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(Component.get(queryBox) instanceof Querybox).toBe(true);
@@ -63,20 +63,20 @@ module Coveo {
       $$(dummyElem).addClass('CoveoFooBar');
       root.appendChild(dummyElem);
 
-      Initialization.initializeFramework(root, searchInterfaceOptions, ()=> {
+      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(dummyCmp).not.toHaveBeenCalled();
 
       Initialization.registerAutoCreateComponent(dummyCmp);
-      Initialization.initializeFramework(root, searchInterfaceOptions, ()=> {
+      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(dummyCmp).toHaveBeenCalled();
     })
 
     it('allows to check if isComponentClassIdRegistered', function () {
-      var dummyCmp: any = ()=> {
+      var dummyCmp: any = () => {
       }
       dummyCmp.ID = 'CheckRegistration';
       Initialization.registerAutoCreateComponent(dummyCmp);
@@ -102,7 +102,7 @@ module Coveo {
     })
 
     it('allow to monkeyPatchComponentMethod', function () {
-      Initialization.initializeFramework(root, searchInterfaceOptions, ()=> {
+      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       var patch = jasmine.createSpy('patch');
@@ -117,15 +117,15 @@ module Coveo {
       }).el;
 
       searchInterfaceOptions['externalComponents'] = [external];
-      Initialization.initializeFramework(root, searchInterfaceOptions, ()=> {
+      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(Component.get(external) instanceof Pager).toBe(true);
     })
-    
+
     describe('when initializing recommendation interface', function () {
       var options;
-      beforeEach(function() {
+      beforeEach(function () {
         options = {
           Recommendation: {
             endpoint: endpoint,
@@ -136,19 +136,19 @@ module Coveo {
         }
         Mock.initPageViewScript(null)
       })
-      
-      afterEach(function(){
+
+      afterEach(function () {
         options = null;
         coveoanalytics = undefined
       })
-      
+
       it('should be able to generate to components', function () {
         expect(Component.get(queryBox) instanceof Querybox).toBe(false);
         Initialization.initRecommendationInterface(root, options);
         expect(Component.get(queryBox) instanceof Querybox).toBe(true);
       })
-      
+
     })
-    
+
   })
 }

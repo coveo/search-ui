@@ -1,5 +1,7 @@
 import {defaultLanguage} from './strings/DefaultLanguage';
 defaultLanguage();
+import {shim} from './misc/PromisesShim';
+shim();
 // MISC
 export {version} from './misc/Version';
 export {Assert} from './misc/Assert';
@@ -26,7 +28,7 @@ export {OmniboxEvents} from './events/OmniboxEvents';
 export {PreferencesPanelEvents} from './events/PreferencesPanelEvents';
 export {QueryEvents} from './events/QueryEvents';
 export {ResultListEvents} from './events/ResultListEvents';
-export {SearchAlertEvents} from './events/SearchAlertEvents';
+export {SearchAlertsEvents} from './events/SearchAlertEvents';
 export {SettingsEvents} from './events/SettingsEvents';
 export {SliderEvents} from './events/SliderEvents';
 export {StandaloneSearchInterfaceEvents} from './events/StandaloneSearchInterfaceEvents';
@@ -163,6 +165,11 @@ export {PipelineContext, context} from './ui/PipelineContext/PipelineContext';
 export {OmniboxResultList} from './ui/OmniboxResultList/OmniboxResultList';
 export {CurrentTab} from './ui/CurrentTab/CurrentTab';
 export {QueryboxQueryParameters} from './ui/Querybox/QueryboxQueryParameters';
+export {ImageResultList} from './ui/ImageResultList/ImageResultList';
+export {FollowItem} from './ui/SearchAlerts/FollowItem';
+export {SearchAlerts} from './ui/SearchAlerts/SearchAlerts';
+export {SearchAlertsMessage} from './ui/SearchAlerts/SearchAlertsMessage';
 export {ResponsiveTabs} from './ui/ResponsiveComponents/ResponsiveTabs';
 export {ResponsiveFacets} from './ui/ResponsiveComponents/ResponsiveFacets';
 export {ResponsiveComponent, ResponsiveComponentsManager} from './ui/ResponsiveComponents/ResponsiveComponentsManager'
+

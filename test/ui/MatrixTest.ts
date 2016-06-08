@@ -9,7 +9,7 @@ module Coveo {
         rowField: '@foo',
         columnField: '@bar',
         computedField: '@compute',
-        columnFieldValues: _.map(_.range(9), (n: number)=> {
+        columnFieldValues: _.map(_.range(9), (n: number) => {
           return n.toString()
         }),
         maximumNumberOfRows: 10
@@ -24,7 +24,7 @@ module Coveo {
       var fakeResults: IQueryResults;
       beforeEach(function () {
         fakeResults = FakeResults.createFakeResults(1);
-        fakeResults.groupByResults = _.map(_.range(10), (n: number)=> {
+        fakeResults.groupByResults = _.map(_.range(10), (n: number) => {
           return FakeResults.createFakeGroupByResult('@foo', 'row', 10, true);
         })
 
@@ -122,7 +122,7 @@ module Coveo {
 
         Simulate.query(test.env);
 
-        var cellsValue = _.map(test.cmp.data[0], (c: Cell)=> {
+        var cellsValue = _.map(test.cmp.data[0], (c: Cell) => {
           return c.getValue();
         });
 
@@ -140,7 +140,7 @@ module Coveo {
         })
 
         Simulate.query(test.env);
-        var cellsValues = _.map(test.cmp.data[0], (c: Cell)=> {
+        var cellsValues = _.map(test.cmp.data[0], (c: Cell) => {
           return c.getValue();
         });
 

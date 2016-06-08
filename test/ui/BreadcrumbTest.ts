@@ -23,7 +23,7 @@ module Coveo {
     })
 
     it('is displayed if there is at least one breadcrumb item', function () {
-      test.cmp.drawBreadcrumb([{element: document.createElement('div')}]);
+      test.cmp.drawBreadcrumb([{ element: document.createElement('div') }]);
       expect(test.cmp.element.style.display).not.toBe('none');
       expect($$(test.cmp.element).findAll('.coveo-breadcrumb-item').length).toBe(1);
     })
@@ -39,7 +39,7 @@ module Coveo {
       var onPopulate = jasmine.createSpy('onPopulate');
       $$(test.env.root).on(BreadcrumbEvents.populateBreadcrumb, onPopulate);
       test.cmp.getBreadcrumbs();
-      expect(onPopulate).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({'breadcrumbs': []}));
+      expect(onPopulate).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({ 'breadcrumbs': [] }));
     })
 
     it('should execute a query after clear', function () {
@@ -62,7 +62,7 @@ module Coveo {
         var onPopulate = jasmine.createSpy('onPopulate');
         $$(test.env.root).on(BreadcrumbEvents.populateBreadcrumb, onPopulate);
         Simulate.query(test.env);
-        expect(onPopulate).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({'breadcrumbs': []}));
+        expect(onPopulate).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({ 'breadcrumbs': [] }));
       })
     })
   })
