@@ -156,6 +156,12 @@ module Coveo {
       return fakeOmniboxArgs;
     }
 
+    static breadcrumb(env: Mock.IMockEnvironment, options?): IBreadcrumbItem[] {
+      let args = <IPopulateBreadcrumbEventArgs>{ breadcrumbs: [] };
+      $$(env.root).trigger(BreadcrumbEvents.populateBreadcrumb, args);
+      return args.breadcrumbs;
+    }
+
     static keyDown(element: HTMLElement, key: number, shiftKey?: boolean) {
       var event = new jQuery.Event('keydown');
       event.which = key;

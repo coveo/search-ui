@@ -136,5 +136,19 @@ module Coveo {
         maximumNumberOfValues: 10000 + 1 // +1 for more functionnality
       })]))
     })
+
+    it('should populate breadcrumb', () => {
+      doQuery();
+      test.cmp.selectValue('foo0|foo0-0');
+      var breadcrumb = Simulate.breadcrumb(test.env);
+      expect(breadcrumb[0].element.innerText).toContain('foo0');
+    })
+
+    it('should not exec script in breadcrumb', ()=> {
+      doQuery();
+      test.cmp.selectValue('<script>alert(\'foo\')</script>');
+      var breadcrumb = Simulate.breadcrumb(test.env);
+      expect(breadcrumb[0].element.innerHTML).toContain('&lt;script&gt;');
+    })
   })
 }
