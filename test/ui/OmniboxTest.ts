@@ -150,14 +150,15 @@ module Coveo {
         expect(test.env.searchEndpoint.listFieldValues).toHaveBeenCalled();
       })
 
-      it('enableTopQueryAddon should create an addon component', () => {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
-          enableTopQueryAddon: true
-        })
+      it('enableTopQueryAddon should get suggestion from reveal', () => {
+        let element = $$('div');
+        element.addClass('CoveoOmnibox');
+        element.setAttribute('data-enable-top-query-addon', 'true');
+        test = Mock.advancedComponentSetup<Omnibox>(Omnibox, new Mock.AdvancedComponentSetupOptions(element.el));
 
         test.cmp.setText('foobar');
         test.cmp.magicBox.getSuggestions();
-        expect(test.env.usageAnalytics.getTopQueries).toHaveBeenCalled();
+        expect(test.env.searchEndpoint.getRevealQuerySuggest).toHaveBeenCalled();
       })
 
       it('enableRevealQuerySuggestAddon should create an addon component', () => {
