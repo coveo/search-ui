@@ -144,7 +144,7 @@ module Coveo {
       expect(breadcrumb[0].element.innerText).toContain('foo0');
     })
 
-    it('should not exec script in breadcrumb', ()=> {
+    it('should not exec script in breadcrumb', () => {
       doQuery();
       test.cmp.selectValue('<script>alert(\'foo\')</script>');
       var breadcrumb = Simulate.breadcrumb(test.env);
