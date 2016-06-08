@@ -300,7 +300,7 @@ export class ComponentOptions {
   }
 
   static loadStringOption(element: HTMLElement, name: string, option: IOption<any>): string {
-    return element.getAttribute(ComponentOptions.attrNameFromName(name, option)) || element.getAttribute(option.alias);
+    return element.getAttribute(ComponentOptions.attrNameFromName(name, option)) || ComponentOptions.getAttributeFromAlias(element, option);
   }
 
   static loadFieldOption(element: HTMLElement, name: string, option: IOption<any>): string {
@@ -383,7 +383,7 @@ export class ComponentOptions {
     let htmlElement: HTMLElement;
     // Attribute: selector
     let selectorAttr = option.selectorAttr || ComponentOptions.attrNameFromName(name, option) + '-selector';
-    let selector = element.getAttribute(selectorAttr) || element.getAttribute(option.alias);
+    let selector = element.getAttribute(selectorAttr) || ComponentOptions.getAttributeFromAlias(element, option);
     if (selector != null) {
       htmlElement = <HTMLElement>document.body.querySelector(selector);
     }
@@ -420,7 +420,7 @@ export class ComponentOptions {
 
     // Attribute: template selector
     let selectorAttr = option.selectorAttr || ComponentOptions.attrNameFromName(name, option) + '-selector';
-    let selector = element.getAttribute(selectorAttr) || element.getAttribute(option.alias);
+    let selector = element.getAttribute(selectorAttr) || ComponentOptions.getAttributeFromAlias(element, option);
     if (selector != null) {
       let templateElement = <HTMLElement>document.querySelector(selector);
       if (templateElement != null) {
@@ -430,7 +430,7 @@ export class ComponentOptions {
     // Attribute: template id
     if (template == null) {
       let idAttr = option.idAttr || ComponentOptions.attrNameFromName(name, option) + '-id';
-      let id = element.getAttribute(idAttr) || element.getAttribute(option.alias);
+      let id = element.getAttribute(idAttr) || ComponentOptions.getAttributeFromAlias(element, option);
       if (id != null) {
         template = ComponentOptions.loadResultTemplateFromId(id);
       }
@@ -473,6 +473,12 @@ export class ComponentOptions {
 
   static isElementScrollable(element: HTMLElement) {
     return $$(element).css('overflow-y') == 'scroll';
+  }
+
+  static getAttributeFromAlias(element: HTMLElement, option: IOption<any>) {
+    if (option.alias) {
+      return element.getAttribute(ComponentOptions.attrNameFromName(option.alias));
+    }
   }
 
   static createResultTemplateFromElement(element: HTMLElement): Template {

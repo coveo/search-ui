@@ -204,7 +204,7 @@ export class Facet extends Component {
      * Specifies whether the user is allowed to toggle between OR and AND mode, using an icon in the top right corner of the facet.<br/>
      * The default value is false.
      */
-    enableTogglingOperator: ComponentOptions.buildBooleanOption({ defaultValue: false, alias: 'data-allow-toggling-operator' }),
+    enableTogglingOperator: ComponentOptions.buildBooleanOption({ defaultValue: false, alias: 'allowTogglingOperator' }),
     /**
      * Specifies whether the search box for searching inside the available values will be displayed at the bottom of the facet.<br/>
      * The default value is true.
