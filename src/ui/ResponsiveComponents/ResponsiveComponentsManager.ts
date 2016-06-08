@@ -1,15 +1,19 @@
 import {$$, Dom} from '../../utils/Dom';
 import {InitializationEvents} from '../../events/InitializationEvents';
+import {Component} from '../Base/Component';
+import {Tab} from '../Tab/Tab';
+import {Facet} from '../Facet/Facet';
 import _ = require('underscore');
 /*
 * Register takes a class and will instantiate it after framework initialization has completed.
 */
 
 export interface ResponsiveComponentConstructor {
-  new (root: Dom): ResponsiveComponent;
+  new (root: Dom, ID: string): ResponsiveComponent;
 }
 
-export interface ResponsiveComponent {
+export interface ResponsiveComponent{
+  ID: string;
   needSmallMode(): boolean;
   canSwitchToLargeMode?(): boolean;
   changeToSmallMode(): void;
@@ -19,45 +23,43 @@ export interface ResponsiveComponent {
 
 export class ResponsiveComponentsManager {
 
-  private static coveoRoots: Array<Array<any>> = [];
+  private static componentManagers: Array<ResponsiveComponentsManager> = [];
+  private static remainingComponentInitializations: number = 0;
 
   private coveoRoot: Dom;
   private resizeListener;
   private responsiveComponents: Array<ResponsiveComponent> = [];
+  private tabSectionContainer: Dom;
   
-  public static initResponsiveFacets(root: HTMLElement) {
-    
-  }
-  
-  public static initResponsiveTabs(root: HTMLElement) {
-    
-  }
-  
-  public static register(responsiveComponentConstructor: ResponsiveComponentConstructor, root: Dom) {
+  public static register(responsiveComponentConstructor: ResponsiveComponentConstructor, root: Dom, ID: string) {
     root.on(InitializationEvents.afterInitialization, () => {
-      let responsiveComponent = new responsiveComponentConstructor(root);
-      let found = false;
-      let responsiveComponentsManager;
-      _.each(this.coveoRoots, currentRoot => {
-        if (root.el.isSameNode(currentRoot[0])) {
-          responsiveComponentsManager = currentRoot[1];
-          responsiveComponentsManager.register(responsiveComponent);
-          found = true;
-        }
-      });
+      let responsiveComponent = new responsiveComponentConstructor(root, ID);
 
-      if (!found) {
+      let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el.isSameNode(componentManager.coveoRoot.el));
+      if (responsiveComponentsManager){
+          responsiveComponentsManager.register(responsiveComponent);
+      } else {
         responsiveComponentsManager = new ResponsiveComponentsManager(root);
-        this.coveoRoots.push([root, responsiveComponentsManager]);
+        this.componentManagers.push(responsiveComponentsManager);
         responsiveComponentsManager.register(responsiveComponent);
       }
-      responsiveComponentsManager.resizeListener();
+      
+      this.remainingComponentInitializations--;
+      if (this.remainingComponentInitializations == 0) {
+        this.resizeAllComponentsManager();
+      }
+    });
+    this.remainingComponentInitializations++;
+  }
+  
+  private static resizeAllComponentsManager() {
+    _.each(this.componentManagers, componentManager => {
+      componentManager.resizeListener();
     });
   }
 
   constructor(root: Dom) {
     this.coveoRoot = root;
-    //TODO: resize event method for one component
     this.resizeListener = () => {
       for (let i = 0; i < this.responsiveComponents.length; i++) {
         if (this.responsiveComponents[i].needSmallMode()) {
@@ -88,24 +90,51 @@ export class ResponsiveComponentsManager {
   }
 
   public register(responsiveComponent: ResponsiveComponent) {
-    this.responsiveComponents.push(responsiveComponent);
+    
+    if (this.isFacetOrTabs(responsiveComponent)) {
+        this.tabSectionContainer = $$('div', {className: 'coveo-tab-section-container'});
+    }
+      
+    if (this.isTabs(responsiveComponent)) {
+      this.responsiveComponents.unshift(responsiveComponent);
+    } else {
+      this.responsiveComponents.push(responsiveComponent);
+    }
+    
   }
 
-  private changeToSmallMode() {
+  private changeToSmallMode(): void {
     _.each(this.responsiveComponents, responsiveComponent => {
       responsiveComponent.changeToSmallMode();
     });
   }
 
-  private changeToLargeMode() {
+  private changeToLargeMode(): void {
     _.each(this.responsiveComponents, responsiveComponent => {
       responsiveComponent.changeToLargeMode();
     });
   }
   
-  private handleResizeEvent() {
+  private handleResizeEvent(): void {
     _.each(this.responsiveComponents, responsiveComponent => {
         responsiveComponent.handleResizeEvent && responsiveComponent.handleResizeEvent();
     });
+  }
+  
+  private isFacetOrTabs(component: ResponsiveComponent): boolean {
+    return component.ID == Tab.ID || component.ID == Facet.ID;
+  }
+  
+  private isTabs(component: ResponsiveComponent): boolean {
+    return component.ID == Tab.ID;
+  }
+  
+  private getSearchBoxElement(): HTMLElement {
+    let searchBoxElement = this.coveoRoot.find('.coveo-search-section');
+    if (searchBoxElement) {
+      return <HTMLElement>searchBoxElement;
+    } else {
+      return <HTMLElement>this.coveoRoot.find('.CoveoSearchbox');
+    }
   }
 }

@@ -8,6 +8,8 @@ import _ = require('underscore');
 import '../../../sass/_ResponsiveTabs.scss';
 
 export class ResponsiveTabs implements ResponsiveComponent {
+  public ID: string;
+  
   private dropdownHeader: Dom;
   private dropdownContent: Dom;
   private tabSection: Dom;
@@ -20,7 +22,8 @@ export class ResponsiveTabs implements ResponsiveComponent {
 
   private logger: Logger;
 
-  constructor(root: Dom) {
+  constructor(root: Dom, ID: string) {
+    this.ID = ID;
     this.coveoRoot = root;
     this.dropdownContent = this.buildDropdownContent();
     this.dropdownHeader = this.buildDropdownHeader();
@@ -33,11 +36,11 @@ export class ResponsiveTabs implements ResponsiveComponent {
     this.manageTabSwapping();
   }
 
-  public static init(root: HTMLElement) {
+  public static init(root: HTMLElement, ID: string) {
     if (!$$(root).find('.coveo-tab-section')) {
       return;
     }
-    ResponsiveComponentsManager.register(ResponsiveTabs, $$(root));
+    ResponsiveComponentsManager.register(ResponsiveTabs, $$(root), ID);
   }
 
   public handleResizeEvent() {

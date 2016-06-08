@@ -50,6 +50,8 @@ import {Initialization} from '../Base/Initialization';
 import {BreadcrumbEvents, IClearBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
 import {ResponsiveFacets} from '../ResponsiveComponents/ResponsiveFacets';
 
+import '../../../sass/_Facet.scss';
+
 export interface IFacetOptions {
   title?: string;
   field?: string;
@@ -417,7 +419,7 @@ export class Facet extends Component {
     
     if (Facet.isFirstFacet) {
       Facet.isFirstFacet = false;
-      ResponsiveFacets.init(this.root);
+      ResponsiveFacets.init(this.root, Facet.ID);
     }
 
     // Serves as a way to render facet in the omnibox in the order in which they are instantiated

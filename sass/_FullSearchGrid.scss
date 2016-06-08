@@ -9,7 +9,7 @@ $border-box-sizing: false;
 
   .coveo-search-section {
     max-width: 800px;
-    padding: 54px auto 47px auto;
+    margin: 54px auto 47px auto;
     padding: 0 10px;
   }
   
@@ -43,22 +43,6 @@ $border-box-sizing: false;
     margin-bottom: 13px;
   }
   box-shadow: 0 -1px 0px 0px $color-light-grey inset;
-}
-
-
-@include smallMobile {
-
-  .CoveoSearchInterface {
-    
-    .coveo-facet-column {
-      @include span-columns(4 of 4);
-      max-width: 100%;
-    }
-
-    .coveo-results-column {
-      @include span-columns(4 of 4);
-    }
-  }
 }
 
 @include mediaSelector(480) {

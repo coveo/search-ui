@@ -122,7 +122,7 @@ export class Tab extends Component {
 
     if (Tab.isFirstTab) {
       Tab.isFirstTab = false;
-      ResponsiveTabs.init(this.root);
+      ResponsiveTabs.init(this.root, Tab.ID);
     }
   }
 
