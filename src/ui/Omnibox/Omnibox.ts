@@ -96,7 +96,7 @@ export class Omnibox extends Component {
      * This implies that your integration has a proper reveal integration configured.<br/>
      * Default value is false
      */
-    enableRevealQuerySuggestAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, alias: 'data-enable-top-query-addon' }),
+    enableRevealQuerySuggestAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, alias: 'enableTopQueryAddon' }),
     /**
      * Specifies whether the query extension addon should be enabled.<br/>
      * This allows the omnibox to complete the syntax for query extensions.<br/>
