@@ -160,8 +160,8 @@ export class QuickviewDocument extends Component {
 
 
   private renderErrorReport(iframe: HTMLIFrameElement, errorStatus: number) {
-    let errorString = "";
-    if(errorStatus == 400){
+    let errorString = '';
+    if (errorStatus == 400) {
       errorString = 'NoQuickview';
     } else {
       errorString = 'OopsError';
