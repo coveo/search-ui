@@ -28,7 +28,6 @@ import {Initialization} from '../Base/Initialization';
 import {ValueElementRenderer} from '../Facet/ValueElementRenderer';
 import {l} from '../../strings/Strings';
 
-
 export interface IHierarchicalFacetOptions extends IFacetOptions {
   delimitingCharacter?: string;
   levelStart?: number;
@@ -412,12 +411,17 @@ export class HierarchicalFacet extends Facet {
     _.each(this.getAllValueHierarchy(), (valueHierarchy) => {
       valueHierarchy.hasChildSelected = false;
     })
+    // Need to close all values, otherwise we might end up with orphan(s)
+    // if a parent value, after reset, is no longer visible.
+    _.each(this.getAllValueHierarchy(), (valueHierarchy) => {
+      this.close(valueHierarchy);
+    })
     super.reset();
   }
 
   protected updateSearchInNewDesign(moreValuesAvailable = true) {
-    // We always want to show searc for hierarchical facet :
-    // It's usefull since child values are folded under their parent most of the time
+    // We always want to show search for hierarchical facet :
+    // It's useful since child values are folded under their parent most of the time
     super.updateSearchInNewDesign(true);
   }
 
@@ -485,22 +489,9 @@ export class HierarchicalFacet extends Facet {
   }
 
   protected updateMoreLess() {
-    if (!this.searchInterface.isNewDesign()) {
-      if (this.topLevelHierarchy.length > this.numberOfValuesToShow) {
-        $$(this.moreElement).addClass('coveo-active');
-      } else {
-        $$(this.moreElement).removeClass('coveo-active');
-      }
-      if (this.numberOfValuesToShow > this.originalNumberOfValuesToShow) {
-        $$(this.lessElement).show();
-      } else {
-        $$(this.lessElement).hide();
-      }
-    } else {
-      let moreValuesAvailable = this.numberOfValuesToShow < this.topLevelHierarchy.length;
-      let lessIsShown = this.numberOfValuesToShow > this.originalNumberOfValuesToShow;
-      super.updateMoreLess(lessIsShown, moreValuesAvailable);
-    }
+    let moreValuesAvailable = this.numberOfValuesToShow < this.topLevelHierarchy.length;
+    let lessIsShown = this.numberOfValuesToShow > this.originalNumberOfValuesToShow;
+    super.updateMoreLess(lessIsShown, moreValuesAvailable);
   }
 
   protected handleClickMore(): void {
@@ -538,25 +529,18 @@ export class HierarchicalFacet extends Facet {
   }
 
   private crop() {
+    // Partition the top level or the facet to only operate on the values that are not selected or excluded
     let partition = _.partition(this.topLevelHierarchy, (hierarchy: IValueHierarchy) => {
       return hierarchy.facetValue.selected || hierarchy.facetValue.excluded
     });
+
+    // Hide and show the partitionned top level values, depending on the numberOfValuesToShow
     _.each(_.last(partition[1], partition[1].length - (this.numberOfValuesToShow - partition[0].length)), (toHide: IValueHierarchy) => {
       $$(this.getElementFromFacetValueList(toHide.facetValue)).hide();
     })
     _.each(_.first(partition[1], this.numberOfValuesToShow), (toShow: IValueHierarchy) => {
       $$(this.getElementFromFacetValueList(toShow.facetValue)).show();
     })
-    /*
-    if (!this.searchInterface.isNewDesign()) {
-
-    } else {
-      _.each(partition[1], (toHide: IValueHierarchy, i: number) => {
-        if (i >= this.numberOfValuesToShow && !toHide.hasChildSelected) {
-          $$(this.getElementFromFacetValueList(toHide.facetValue)).hide();
-        }
-      });
-     }*/
   }
 
   private placeChildsUnderTheirParent(hierarchy: IValueHierarchy, hierarchyElement: HTMLElement) {
@@ -888,7 +872,7 @@ export class HierarchicalFacet extends Facet {
   }
 
   private checkForOrphans() {
-    _.each(this.valueHierarchy, (v: IValueHierarchy)=> {
+    _.each(this.valueHierarchy, (v: IValueHierarchy) => {
       if (this.getLevel(v.facetValue) != 0) {
         if (this.getValueHierarchy(this.getParent(v.facetValue)) == undefined) {
           this.logger.error(`Orphan value found in HierarchicalFacet : ${v.facetValue.value}`, `Needed : ${this.getParent(v.facetValue)} but not found`);
