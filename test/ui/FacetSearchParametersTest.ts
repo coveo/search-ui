@@ -9,7 +9,7 @@ module Coveo {
       mockFacet.options.numberOfValuesInFacetSearch = 10;
       mockFacet.options.facetSearchIgnoreAccents = false;
       mockFacet.searchInterface = <any>{};
-      mockFacet.searchInterface.isNewDesign = ()=> {
+      mockFacet.searchInterface.isNewDesign = () => {
         return true;
       }
     })

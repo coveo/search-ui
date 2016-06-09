@@ -899,6 +899,9 @@
     "zh-cn": "更多",
     "zh-tw": "更多"
   },
+  "NMore": {
+    "en": "{0} more..."
+  },
   "Less": {
     "en": "Fewer",
     "fr": "Moins",

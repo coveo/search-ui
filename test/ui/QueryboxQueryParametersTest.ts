@@ -1,17 +1,17 @@
 /// <reference path="../Test.ts" />
 module Coveo {
-  describe('QueryBoxQueryParameters', ()=> {
+  describe('QueryBoxQueryParameters', () => {
     let builder: QueryBuilder;
 
-    beforeEach(()=> {
+    beforeEach(() => {
       builder = new QueryBuilder();
     })
 
-    afterEach(()=> {
+    afterEach(() => {
       builder = null;
     })
 
-    it('should add enableLowercaseOperators to builder', ()=> {
+    it('should add enableLowercaseOperators to builder', () => {
       new QueryboxQueryParameters({
         enableLowercaseOperators: true
       }).addParameters(builder, 'foobar');
@@ -19,7 +19,7 @@ module Coveo {
       expect(builder.enableLowercaseOperators).toBe(true)
     })
 
-    it('should add enableQuestionMarks to builder', ()=> {
+    it('should add enableQuestionMarks to builder', () => {
       new QueryboxQueryParameters({
         enableQuestionMarks: true
       }).addParameters(builder, 'foobar');
@@ -27,7 +27,7 @@ module Coveo {
       expect(builder.enableQuestionMarks).toBe(true)
     })
 
-    it('should add enableWildcards to builder', ()=> {
+    it('should add enableWildcards to builder', () => {
       new QueryboxQueryParameters({
         enableWildcards: true
       }).addParameters(builder, 'foobar');
@@ -35,7 +35,7 @@ module Coveo {
       expect(builder.enableWildcards).toBe(true)
     })
 
-    it('should add enableQuerySyntax to builder', ()=> {
+    it('should add enableQuerySyntax to builder', () => {
       new QueryboxQueryParameters({
         enableQuerySyntax: false
       }).addParameters(builder, 'foobar');
@@ -43,7 +43,7 @@ module Coveo {
       expect(builder.disableQuerySyntax).toBe(true)
     })
 
-    it('should add enablePartialMatch to builder', ()=> {
+    it('should add enablePartialMatch to builder', () => {
       new QueryboxQueryParameters({
         enablePartialMatch: true,
         partialMatchKeywords: 123,

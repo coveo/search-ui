@@ -553,7 +553,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<ISubscription>}
    */
   @alertsPath('/subscriptions')
-  @accessTokenInUrl()
+  @accessTokenInUrl('accessToken')
   @method('POST')
   @requestDataType('application/json')
   @responseType('text')
@@ -575,7 +575,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {any}
    */
   @alertsPath('/subscriptions')
-  @accessTokenInUrl()
+  @accessTokenInUrl('accessToken')
   @method('GET')
   @requestDataType('application/json')
   @responseType('text')
@@ -612,7 +612,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<ISubscription>}
    */
   @alertsPath('/subscriptions/')
-  @accessTokenInUrl()
+  @accessTokenInUrl('accessToken')
   @method('PUT')
   @requestDataType('application/json')
   @responseType('text')
@@ -634,7 +634,7 @@ export class SearchEndpoint implements ISearchEndpoint {
    * @returns {Promise<ISubscription>}
    */
   @alertsPath('/subscriptions/')
-  @accessTokenInUrl()
+  @accessTokenInUrl('accessToken')
   @method('DELETE')
   @requestDataType('application/json')
   @responseType('text')
@@ -687,11 +687,11 @@ export class SearchEndpoint implements ISearchEndpoint {
     return uri;
   }
 
-  private buildAccessToken(): string[] {
+  private buildAccessToken(tokenKey: string): string[] {
     let queryString: string[] = [];
 
     if (Utils.isNonEmptyString(this.options.accessToken)) {
-      queryString.push('access_token=' + encodeURIComponent(this.options.accessToken));
+      queryString.push(tokenKey + encodeURIComponent(this.options.accessToken));
     }
 
     return queryString;
@@ -1020,13 +1020,13 @@ function responseType(resp: string){
 /**
  * Add the accessToken to the query string arguments
  */
-function accessTokenInUrl(){
+function accessTokenInUrl(tokenKey: string = 'access_token'){
   return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
     let nbParams = target[key].prototype.constructor.length;
 
     descriptor.value = function(...args: any[]) {
-      let queryString = this.buildAccessToken();
+      let queryString = this.buildAccessToken(tokenKey);
       if(args[nbParams-1]){
         args[nbParams-1].queryString = args[nbParams-1].queryString.concat(queryString);
       }else{

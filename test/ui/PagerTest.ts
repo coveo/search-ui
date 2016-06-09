@@ -16,7 +16,7 @@ module Coveo {
 
     it('should set the correct result number when changing page', function () {
       var currentPage = 1;
-      $$(test.env.root).on('buildingQuery', (e, args: IBuildingQueryEventArgs)=> {
+      $$(test.env.root).on('buildingQuery', (e, args: IBuildingQueryEventArgs) => {
         expect(args.queryBuilder.build().firstResult).toBe(currentPage * 10);
       })
       test.cmp.setPage(++currentPage);
@@ -43,7 +43,7 @@ module Coveo {
     })
 
     it('should update page when state is changed', function () {
-      test = Mock.advancedComponentSetup<Pager>(Pager, new Mock.AdvancedComponentSetupOptions(undefined, undefined, (env)=> {
+      test = Mock.advancedComponentSetup<Pager>(Pager, new Mock.AdvancedComponentSetupOptions(undefined, undefined, (env) => {
         return env.withLiveQueryStateModel();
       }))
       test.cmp.setPage(7);
@@ -53,7 +53,7 @@ module Coveo {
     })
 
     it('should not render anything if only one page of result is returned', function () {
-      Simulate.query(test.env, {results: FakeResults.createFakeResults(5)});
+      Simulate.query(test.env, { results: FakeResults.createFakeResults(5) });
       expect(test.cmp.element.querySelectorAll('li').length).toBe(0);
     })
 
@@ -104,18 +104,18 @@ module Coveo {
 
       it('should log the proper event when selecting a page directly', function () {
         test.cmp.setPage(15);
-        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerNumber, {pagerNumber: 15}, test.cmp.element);
+        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerNumber, { pagerNumber: 15 }, test.cmp.element);
       })
 
       it('should log the proper event when hitting next page', function () {
         test.cmp.nextPage();
-        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerNext, {pagerNumber: 2}, test.cmp.element);
+        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerNext, { pagerNumber: 2 }, test.cmp.element);
       })
 
       it('should log the proper event when hitting previous page', function () {
         test.cmp.setPage(3);
         test.cmp.previousPage();
-        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerPrevious, {pagerNumber: 2}, test.cmp.element);
+        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerPrevious, { pagerNumber: 2 }, test.cmp.element);
       })
     })
 

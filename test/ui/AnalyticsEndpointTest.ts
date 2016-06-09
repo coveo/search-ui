@@ -25,36 +25,36 @@ module Coveo {
 
     it('allow to get the current visit id', (done) => {
       endpoint.getCurrentVisitIdPromise()
-              .then((res: string) => {
-                expect(res).toBe('visitid');
-                // Here, the current visit id is already set, so it should return immediately.
-                expect(endpoint.getCurrentVisitId()).toBe('visitid');
-              })
-              .catch((e: IErrorResponse) => {
-                fail(e)
-              })
-              .finally(()=> done());
+        .then((res: string) => {
+          expect(res).toBe('visitid');
+          // Here, the current visit id is already set, so it should return immediately.
+          expect(endpoint.getCurrentVisitId()).toBe('visitid');
+        })
+        .catch((e: IErrorResponse) => {
+          fail(e)
+        })
+        .finally(() => done());
       expect(jasmine.Ajax.requests.mostRecent().url).toBe(buildUrl(endpoint, '/analytics/visit?org=organization&access_token=token'));
       expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
 
       jasmine.Ajax.requests.mostRecent().respondWith({
         status: '200',
-        response: {id: 'visitid'}
+        response: { id: 'visitid' }
       });
     });
 
     it('allow to sendSearchEvents', (done) => {
       let fakeSearchEvent = FakeResults.createFakeSearchEvent();
       endpoint.sendSearchEvents([fakeSearchEvent])
-              .then((res: IAPIAnalyticsSearchEventsResponse)=> {
-                expect(res.searchEventResponses[0].visitId).toBe('visitid');
-                // Here, the current visit id is already set, so it should return immediately.
-                expect(endpoint.getCurrentVisitId()).toBe('visitid');
-              })
-              .catch((e: IErrorResponse) => {
-                fail(e)
-              })
-              .finally(() => done());
+        .then((res: IAPIAnalyticsSearchEventsResponse) => {
+          expect(res.searchEventResponses[0].visitId).toBe('visitid');
+          // Here, the current visit id is already set, so it should return immediately.
+          expect(endpoint.getCurrentVisitId()).toBe('visitid');
+        })
+        .catch((e: IErrorResponse) => {
+          fail(e)
+        })
+        .finally(() => done());
 
       // Here, the current visit id should be undefined
       expect(endpoint.getCurrentVisitId()).toBeUndefined();
@@ -65,22 +65,22 @@ module Coveo {
       expect(JSON.parse(jasmine.Ajax.requests.mostRecent().params)[0]['queryPipeline']).toBe(fakeSearchEvent.queryPipeline);
       jasmine.Ajax.requests.mostRecent().respondWith({
         status: 200,
-        responseText: JSON.stringify({searchEventResponses: [{visitId: 'visitid'}]})
+        responseText: JSON.stringify({ searchEventResponses: [{ visitId: 'visitid' }] })
       });
     });
 
     it('allow to sendDocumentViewEvent', (done) => {
       let fakeClickEvent = FakeResults.createFakeClickEvent();
       endpoint.sendDocumentViewEvent(fakeClickEvent)
-              .then((res: IAPIAnalyticsEventResponse) => {
-                expect(res.visitId).toBe('visitid');
-                // Here, the current visit id is already set, so it should return immediately.
-                expect(endpoint.getCurrentVisitId()).toBe('visitid');
-              })
-              .catch((e: IErrorResponse) => {
-                fail(e)
-              })
-              .finally(() => done());
+        .then((res: IAPIAnalyticsEventResponse) => {
+          expect(res.visitId).toBe('visitid');
+          // Here, the current visit id is already set, so it should return immediately.
+          expect(endpoint.getCurrentVisitId()).toBe('visitid');
+        })
+        .catch((e: IErrorResponse) => {
+          fail(e)
+        })
+        .finally(() => done());
 
       // Here, the current visit id should be undefined
       expect(endpoint.getCurrentVisitId()).toBeUndefined();
@@ -92,7 +92,7 @@ module Coveo {
 
       jasmine.Ajax.requests.mostRecent().respondWith({
         status: 200,
-        responseText: JSON.stringify({visitId: 'visitid'})
+        responseText: JSON.stringify({ visitId: 'visitid' })
       });
     });
 
@@ -112,15 +112,15 @@ module Coveo {
     });
 
     it('allow to getTopQueries', (done) => {
-      endpoint.getTopQueries({pageSize: 10, queryText: 'foobar'})
-              .then((res: string[]) => {
-                expect(res.length).toBe(3);
-                expect(res[0]).toBe('foo');
-              })
-              .catch((e: IErrorResponse) => {
-                fail(e)
-              })
-              .finally(() => done())
+      endpoint.getTopQueries({ pageSize: 10, queryText: 'foobar' })
+        .then((res: string[]) => {
+          expect(res.length).toBe(3);
+          expect(res[0]).toBe('foo');
+        })
+        .catch((e: IErrorResponse) => {
+          fail(e)
+        })
+        .finally(() => done())
 
       expect(jasmine.Ajax.requests.mostRecent().url).toBe(buildUrl(endpoint, '/stats/topQueries?org=organization&access_token=token&pageSize=10&queryText=foobar'));
       expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');

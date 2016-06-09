@@ -35,7 +35,7 @@ module Coveo {
     });
 
     describe('with a workgroup argument', function () {
-      var ep:SearchEndpoint;
+      var ep: SearchEndpoint;
 
       beforeEach(function () {
         ep = new SearchEndpoint({
@@ -146,9 +146,9 @@ module Coveo {
           expect(jasmine.Ajax.requests.mostRecent().params).toContain('enableCollaborativeRating=true');
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
           promiseSuccess
-              .then((data: IQueryResults)=> {
-                expect(data.results.length).toBe(10);
-              });
+            .then((data: IQueryResults) => {
+              expect(data.results.length).toBe(10);
+            });
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             responseText: JSON.stringify(FakeResults.createFakeResults())
@@ -156,14 +156,14 @@ module Coveo {
 
           var promiseFail = ep.search(qbuilder.build());
           promiseFail
-              .catch((e: AjaxError)=> {
-                expect(e).toBeDefined();
-                expect(e.status).toBe(500);
-              })
-              .catch((e: IErrorResponse)=> {
-                fail(e);
-              })
-              .finally(()=> done());
+            .catch((e: AjaxError) => {
+              expect(e).toBeDefined();
+              expect(e.status).toBe(500);
+            })
+            .catch((e: IErrorResponse) => {
+              fail(e);
+            })
+            .finally(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 500
@@ -180,15 +180,15 @@ module Coveo {
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
           promiseSuccess
-              .then((data: ArrayBuffer)=> {
-                expect(data).toBeDefined();
-                expect(data.byteLength).toBe(123);
-                expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('arraybuffer');
-              })
-              .catch((e: IErrorResponse)=> {
-                fail(e);
-              })
-              .finally(()=>done());
+            .then((data: ArrayBuffer) => {
+              expect(data).toBeDefined();
+              expect(data.byteLength).toBe(123);
+              expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('arraybuffer');
+            })
+            .catch((e: IErrorResponse) => {
+              fail(e);
+            })
+            .finally(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
@@ -206,15 +206,15 @@ module Coveo {
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
           promiseSuccess
-              .then((data: IQueryResult)=> {
-                expect(data.uniqueId).toBe(fakeResult.uniqueId);
-                expect(data.title).toBe(fakeResult.title);
-                expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('text');
-              })
-              .catch((e: IErrorResponse)=> {
-                fail(e);
-              })
-              .finally(()=>done());
+            .then((data: IQueryResult) => {
+              expect(data.uniqueId).toBe(fakeResult.uniqueId);
+              expect(data.title).toBe(fakeResult.title);
+              expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('text');
+            })
+            .catch((e: IErrorResponse) => {
+              fail(e);
+            })
+            .finally(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
@@ -233,18 +233,18 @@ module Coveo {
 
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
           promiseSuccess
-              .then((data: string)=> {
-                expect(data).toBe(fakeResult.excerpt);
-                expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('text');
-              })
-              .catch((e: IErrorResponse)=> {
-                fail(e);
-              })
-              .finally(()=>done());
+            .then((data: string) => {
+              expect(data).toBe(fakeResult.excerpt);
+              expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('text');
+            })
+            .catch((e: IErrorResponse) => {
+              fail(e);
+            })
+            .finally(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
-            responseText: JSON.stringify({content: fakeResult.excerpt}),
+            responseText: JSON.stringify({ content: fakeResult.excerpt }),
             responseType: 'text'
           })
         });
@@ -260,14 +260,14 @@ module Coveo {
 
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
           promiseSuccess
-              .then((data: HTMLDocument)=> {
-                expect(data.title).toBe(fakeResult.title);
-                expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('document');
-              })
-              .catch((e: IErrorResponse)=> {
-                fail(e)
-              })
-              .finally(()=>done());
+            .then((data: HTMLDocument) => {
+              expect(data.title).toBe(fakeResult.title);
+              expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('document');
+            })
+            .catch((e: IErrorResponse) => {
+              fail(e)
+            })
+            .finally(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
@@ -294,18 +294,18 @@ module Coveo {
           expect(jasmine.Ajax.requests.mostRecent().params).toContain('pattern=' + encodeURIComponent('.*$'));
           expect(jasmine.Ajax.requests.mostRecent().params).toContain('patternType=regex');
           promisesSuccess
-              .then((values: IIndexFieldValue[])=> {
-                expect(values.length).toBe(10);
-                expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('text');
-              })
-              .catch((e: IErrorResponse)=> {
-                fail(e)
-              })
-              .finally(()=> done());
+            .then((values: IIndexFieldValue[]) => {
+              expect(values.length).toBe(10);
+              expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('text');
+            })
+            .catch((e: IErrorResponse) => {
+              fail(e)
+            })
+            .finally(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
-            responseText: JSON.stringify({values: FakeResults.createFakeFieldValues('foo', 10)}),
+            responseText: JSON.stringify({ values: FakeResults.createFakeFieldValues('foo', 10) }),
             responseType: 'text'
           })
         });
@@ -319,19 +319,19 @@ module Coveo {
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
 
           promiseSuccess
-              .then((fields: IFieldDescription[])=> {
-                expect(fields.length).toBe(10);
-                expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('text');
-              })
-              .catch((e: IErrorResponse)=> {
-                fail(e);
-              })
-              .finally(()=> done());
+            .then((fields: IFieldDescription[]) => {
+              expect(fields.length).toBe(10);
+              expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('text');
+            })
+            .catch((e: IErrorResponse) => {
+              fail(e);
+            })
+            .finally(() => done());
 
           // Not real field description, but will suffice for test purpose
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
-            responseText: JSON.stringify({fields: _.range(10)}),
+            responseText: JSON.stringify({ fields: _.range(10) }),
             responseType: 'text'
           })
         });
@@ -345,14 +345,14 @@ module Coveo {
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
 
           promiseSuccess
-              .then((extensions: IExtension[])=> {
-                expect(extensions.length).toBe(10);
-                expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('text');
-              })
-              .catch((e: IErrorResponse)=> {
-                fail(e);
-              })
-              .finally(()=> done());
+            .then((extensions: IExtension[]) => {
+              expect(extensions.length).toBe(10);
+              expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('text');
+            })
+            .catch((e: IErrorResponse) => {
+              fail(e);
+            })
+            .finally(() => done());
 
           // Not real extensions, but will suffice for test purpose
           jasmine.Ajax.requests.mostRecent().respondWith({
@@ -375,14 +375,14 @@ module Coveo {
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
 
           promiseSuccess
-              .then((response: boolean)=> {
-                expect(response).toBe(true);
-                expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('text');
-              })
-              .catch((e: IErrorResponse)=> {
-                fail(e);
-              })
-              .finally(()=> done());
+            .then((response: boolean) => {
+              expect(response).toBe(true);
+              expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('text');
+            })
+            .catch((e: IErrorResponse) => {
+              fail(e);
+            })
+            .finally(() => done());
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             responseType: 'text'
@@ -409,14 +409,14 @@ module Coveo {
           expect(jasmine.Ajax.requests.mostRecent().params).toContain('uniqueId=' + encodeURIComponent(fakeResult.uniqueId));
 
           promiseSuccess
-              .then((response: boolean)=> {
-                expect(response).toBe(true);
-                expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('text');
-              })
-              .catch((e: IErrorResponse)=> {
-                fail(e);
-              })
-              .finally(()=> done());
+            .then((response: boolean) => {
+              expect(response).toBe(true);
+              expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('text');
+            })
+            .catch((e: IErrorResponse) => {
+              fail(e);
+            })
+            .finally(() => done());
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
@@ -439,18 +439,18 @@ module Coveo {
 
           // Not real extensions, but will suffice for test purpose
           promiseSuccess
-              .then((response: IRevealQuerySuggestResponse)=> {
-                expect(response.completions.length).toBe(10);
-              })
-              .catch((e: IErrorResponse)=> {
-                fail(e);
-              })
-              .finally(()=> done());
+            .then((response: IRevealQuerySuggestResponse) => {
+              expect(response.completions.length).toBe(10);
+            })
+            .catch((e: IErrorResponse) => {
+              fail(e);
+            })
+            .finally(() => done());
 
           // Not real completions, but will suffice for test purpose
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
-            responseText: JSON.stringify({completions: _.range(10)})
+            responseText: JSON.stringify({ completions: _.range(10) })
           })
         });
 
@@ -466,13 +466,13 @@ module Coveo {
           });
 
           promiseSuccess
-              .then((sub: ISubscription)=> {
-                expect(sub.id).toBeDefined();
-              })
-              .catch((e: IErrorResponse)=> {
-                fail(e)
-              })
-              .finally(()=>done());
+            .then((sub: ISubscription) => {
+              expect(sub.id).toBeDefined();
+            })
+            .catch((e: IErrorResponse) => {
+              fail(e)
+            })
+            .finally(() => done());
 
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseAlertsUri() + '/subscriptions?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
@@ -495,13 +495,13 @@ module Coveo {
         it('for listSubscriptions', function (done) {
           var promiseSuccess = ep.listSubscriptions(15);
           promiseSuccess
-              .then((subs: ISubscription[])=> {
-                expect(subs.length).toBe(44)
-              })
-              .catch((e: IErrorResponse)=> {
-                fail(e)
-              })
-              .finally(()=> done());
+            .then((subs: ISubscription[]) => {
+              expect(subs.length).toBe(44)
+            })
+            .catch((e: IErrorResponse) => {
+              fail(e)
+            })
+            .finally(() => done());
 
           // Should return the same promise, since it's not resolved yet
           var promiseSuccess2 = ep.listSubscriptions(15);
@@ -522,13 +522,13 @@ module Coveo {
         it('for updateSubscription', function (done) {
           var promiseSuccess = ep.updateSubscription(getSubscriptionPromiseSuccess());
           promiseSuccess
-              .then((sub: ISubscription)=> {
-                expect(sub.id).toBe('foobar');
-              })
-              .catch((e: IErrorResponse)=> {
-                fail(e);
-              })
-              .finally(()=> done());
+            .then((sub: ISubscription) => {
+              expect(sub.id).toBe('foobar');
+            })
+            .catch((e: IErrorResponse) => {
+              fail(e);
+            })
+            .finally(() => done());
 
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseAlertsUri() + '/subscriptions/foobar?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
@@ -538,20 +538,20 @@ module Coveo {
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
-            responseText: JSON.stringify({id: 'foobar'})
+            responseText: JSON.stringify({ id: 'foobar' })
           })
         });
 
         it('for deleteSubscription', function (done) {
           var promiseSuccess = ep.deleteSubscription(getSubscriptionPromiseSuccess());
           promiseSuccess
-              .then((sub: ISubscription)=> {
-                expect(sub.id).toBe('foobar');
-              })
-              .catch((e: IErrorResponse)=> {
-                fail(e)
-              })
-              .finally(()=>done());
+            .then((sub: ISubscription) => {
+              expect(sub.id).toBe('foobar');
+            })
+            .catch((e: IErrorResponse) => {
+              fail(e)
+            })
+            .finally(() => done());
 
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseAlertsUri() + '/subscriptions/foobar?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
@@ -561,7 +561,7 @@ module Coveo {
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
-            responseText: JSON.stringify({id: 'foobar'})
+            responseText: JSON.stringify({ id: 'foobar' })
           })
         })
       })
@@ -583,5 +583,5 @@ module Coveo {
       }
     }
   }
-  
+
 }

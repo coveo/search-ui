@@ -11,7 +11,7 @@ module Coveo {
         field: '@field'
       };
       mockFacet.searchInterface = <any>{};
-      mockFacet.searchInterface.isNewDesign = ()=> {
+      mockFacet.searchInterface.isNewDesign = () => {
         return true;
       }
       facetSearch = new FacetSearch(mockFacet, FacetSearchValuesList);
@@ -41,20 +41,20 @@ module Coveo {
       })
 
       it('should display facet search results', function (done) {
-        var pr = new Promise((resolve, reject)=> {
+        var pr = new Promise((resolve, reject) => {
           var results = FakeResults.createFakeFieldValues('foo', 10);
           resolve(results);
         });
 
         (<jasmine.Spy>mockFacet.facetQueryController.search)
-            .and
-            .returnValue(pr);
+          .and
+          .returnValue(pr);
 
         var params = new FacetSearchParameters(mockFacet);
         expect($$(facetSearch.searchResults).findAll('li').length).toBe(0);
         expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
         facetSearch.triggerNewFacetSearch(params);
-        pr.then(()=> {
+        pr.then(() => {
           expect($$(facetSearch.searchResults).findAll('li').length).toBe(10);
           expect(facetSearch.currentlyDisplayedResults.length).toBe(10);
           done();
@@ -62,20 +62,20 @@ module Coveo {
       })
 
       it('should hide facet search results', function (done) {
-        var pr = new Promise((resolve, reject)=> {
+        var pr = new Promise((resolve, reject) => {
           var results = FakeResults.createFakeFieldValues('foo', 10);
           resolve(results);
         });
 
         (<jasmine.Spy>mockFacet.facetQueryController.search)
-            .and
-            .returnValue(pr);
+          .and
+          .returnValue(pr);
 
         var params = new FacetSearchParameters(mockFacet);
         expect($$(facetSearch.searchResults).findAll('li').length).toBe(0);
         expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
         facetSearch.triggerNewFacetSearch(params);
-        pr.then(()=> {
+        pr.then(() => {
           expect($$(facetSearch.searchResults).findAll('li').length).toBe(10);
           expect(facetSearch.currentlyDisplayedResults.length).toBe(10);
           facetSearch.completelyDismissSearch();
@@ -86,18 +86,18 @@ module Coveo {
       })
 
       it('should handle error', function (done) {
-        var pr = new Promise((resolve, reject)=> {
+        var pr = new Promise((resolve, reject) => {
           reject(new Error('woops !'));
         });
 
         (<jasmine.Spy>mockFacet.facetQueryController.search)
-            .and
-            .returnValue(pr);
+          .and
+          .returnValue(pr);
 
         var params = new FacetSearchParameters(mockFacet);
         facetSearch.triggerNewFacetSearch(params);
         expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
-        pr.catch(()=> {
+        pr.catch(() => {
           expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
           done();
         })
@@ -108,14 +108,14 @@ module Coveo {
         var built: HTMLElement;
         beforeEach(function () {
           mockFacet.options.facetSearchDelay = 50;
-          searchPromise = new Promise((resolve, reject)=> {
+          searchPromise = new Promise((resolve, reject) => {
             var results = FakeResults.createFakeFieldValues('foo', 10);
             resolve(results);
           });
 
           (<jasmine.Spy>mockFacet.facetQueryController.search)
-              .and
-              .returnValue(searchPromise);
+            .and
+            .returnValue(searchPromise);
 
           built = facetSearch.build();
           var params = new FacetSearchParameters(mockFacet);
@@ -127,7 +127,7 @@ module Coveo {
         })
 
         it('arrow navigation', function (done) {
-          searchPromise.then(()=> {
+          searchPromise.then(() => {
             expect($$($$(facetSearch.searchResults).findAll('li')[0]).hasClass('coveo-current')).toBe(true);
 
             Simulate.keyUp($$(built).find('input'), KEYBOARD.DOWN_ARROW);
@@ -150,7 +150,7 @@ module Coveo {
         })
 
         it('escape close results', function (done) {
-          searchPromise.then(()=> {
+          searchPromise.then(() => {
             expect(facetSearch.currentlyDisplayedResults.length).toBe(10);
 
             Simulate.keyUp($$(built).find('input'), KEYBOARD.ESCAPE);
@@ -162,7 +162,7 @@ module Coveo {
 
         it('other key should start a search', function (done) {
           Simulate.keyUp($$(built).find('input'), KEYBOARD.CTRL);
-          setTimeout(()=> {
+          setTimeout(() => {
             expect(facetSearch.facet.facetQueryController.search).toHaveBeenCalled();
             done();
           }, 55)

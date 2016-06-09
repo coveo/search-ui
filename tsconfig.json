@@ -200,6 +200,10 @@
     "src/ui/OmniboxResultList/OmniboxResultList.ts",
     "src/ui/ResultsPreferences/ResultsPreferences.ts",
     "src/ui/CurrentTab/CurrentTab.ts",
-    "src/ui/Querybox/QueryboxQueryParameters.ts"
+    "src/ui/Querybox/QueryboxQueryParameters.ts",
+    "src/ui/ImageResultList/ImageResultList.ts",
+    "src/ui/SearchAlerts/FollowItem.ts",
+    "src/ui/SearchAlerts/SearchAlertsMessage.ts",
+    "src/ui/SearchAlerts/SearchAlerts.ts"
   ]
 }

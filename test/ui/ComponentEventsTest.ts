@@ -1,7 +1,7 @@
 /// <reference path="../Test.ts" />
 
 module Coveo {
-  describe('ComponentEvent', ()=> {
+  describe('ComponentEvent', () => {
 
     var test: Mock.IBasicComponentSetup<Components.NoopComponent>;
     var spy: jasmine.Spy;
@@ -25,11 +25,11 @@ module Coveo {
       });
       $$(test.env.root).trigger('foo');
       expect(spy).toHaveBeenCalled();
-      $$(test.env.root).trigger('foo', {bar: 'baz'});
-      expect(spy).toHaveBeenCalledWith({bar: 'baz'});
+      $$(test.env.root).trigger('foo', { bar: 'baz' });
+      expect(spy).toHaveBeenCalledWith({ bar: 'baz' });
     });
 
-    it('should execute handler only once if the component is enabled', function() {
+    it('should execute handler only once if the component is enabled', function () {
       test.cmp.enable();
       var spyOnce = jasmine.createSpy('spyOnce')
       test.cmp.bind.onRootElement('foo', spy);
@@ -46,11 +46,11 @@ module Coveo {
       test.cmp.bind.onRootElement('foo', spy);
       $$(test.env.root).trigger('foo');
       expect(spy).not.toHaveBeenCalled();
-      $$(test.env.root).trigger('foo', {bar: 'baz'});
-      expect(spy).not.toHaveBeenCalledWith({bar: 'baz'});
+      $$(test.env.root).trigger('foo', { bar: 'baz' });
+      expect(spy).not.toHaveBeenCalledWith({ bar: 'baz' });
     });
 
-    it('should not execute handler only once if the component is disabled', function() {
+    it('should not execute handler only once if the component is disabled', function () {
       test.cmp.disable();
       test.cmp.bind.oneRootElement('foo', spy);
       $$(test.env.root).trigger('foo');
@@ -64,8 +64,8 @@ module Coveo {
       test.cmp.bind.onRootElement('foo', spy);
       test.cmp.bind.trigger(test.env.root, 'foo');
       expect(spy).toHaveBeenCalled();
-      test.cmp.bind.trigger(test.env.root, 'foo', {bar: 'baz'});
-      expect(spy).toHaveBeenCalledWith({bar: 'baz'});
+      test.cmp.bind.trigger(test.env.root, 'foo', { bar: 'baz' });
+      expect(spy).toHaveBeenCalledWith({ bar: 'baz' });
     });
 
     it('should not trigger if the component is disabled', function () {
@@ -74,8 +74,8 @@ module Coveo {
       test.cmp.bind.trigger(test.env.root, 'foo');
       expect(spy).not.toHaveBeenCalled();
 
-      test.cmp.bind.trigger(test.env.root, 'foo', {bar: 'baz'});
-      expect(spy).not.eventHandlerToHaveBeenCalledWith({bar: 'baz'});
+      test.cmp.bind.trigger(test.env.root, 'foo', { bar: 'baz' });
+      expect(spy).not.eventHandlerToHaveBeenCalledWith({ bar: 'baz' });
     });
 
     it('trigger and bindOnRoot should work correctly with one another', function () {
@@ -86,4 +86,3 @@ module Coveo {
     });
   })
 }
-

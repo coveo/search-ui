@@ -8,7 +8,7 @@ module Coveo {
       beforeEach(() => {
         SearchEndpoint.endpoints['default'] = new SearchEndpoint({
           accessToken: 'some token',
-          queryStringArguments: {workgroup: 'organization'},
+          queryStringArguments: { workgroup: 'organization' },
           restUri: 'some/uri'
         });
         test = Mock.basicComponentSetup<Analytics>(Analytics);
@@ -47,7 +47,7 @@ module Coveo {
     });
 
     describe('using the static create call', () => {
-      let env: Mock.MockEnvironment;
+      let env: Mock.IMockEnvironment;
       let analytics: HTMLDivElement;
 
       beforeEach(() => {

@@ -125,7 +125,7 @@ module Coveo {
         mockQueryController = Mock.mockQueryController();
 
         mockFacet.searchInterface = <SearchInterface>{};
-        mockFacet.searchInterface.isNewDesign = ()=> {
+        mockFacet.searchInterface.isNewDesign = () => {
           return true;
         }
         mockFacet.queryController = mockQueryController;
