@@ -995,9 +995,7 @@ export class Facet extends Component {
     }
   }
 
-  protected updateMoreLess() {
-    var lessElementIsShown = this.getMinimumNumberOfValuesToDisplay() < this.numberOfValues;
-    var moreValuesAvailable = this.nbAvailableValues > this.numberOfValues;
+  protected updateMoreLess(lessElementIsShown = this.getMinimumNumberOfValuesToDisplay() < this.numberOfValues, moreValuesAvailable = this.nbAvailableValues > this.numberOfValues) {
     if (lessElementIsShown) {
       $$(this.lessElement).show();
     } else {
