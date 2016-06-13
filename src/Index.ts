@@ -173,4 +173,3 @@ export {Text} from './ui/Text/Text';
 export {FoldingForThread} from './ui/Folding/FoldingForThread';
 export {ResponsiveFacets} from './ui/ResponsiveComponents/ResponsiveFacets';
 export {ResponsiveComponent, ResponsiveComponentsManager} from './ui/ResponsiveComponents/ResponsiveComponentsManager'
-

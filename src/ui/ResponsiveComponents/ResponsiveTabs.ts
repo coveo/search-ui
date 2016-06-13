@@ -5,6 +5,7 @@ import {PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/P
 import {Logger} from '../../misc/Logger';
 import {ResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
 import _ = require('underscore');
+import {l} from '../../strings/Strings.ts';
 import '../../../sass/_ResponsiveTabs.scss';
 
 export class ResponsiveTabs implements ResponsiveComponent {
@@ -181,7 +182,7 @@ export class ResponsiveTabs implements ResponsiveComponent {
   private buildDropdownHeader(): Dom {
     let dropdownHeader = $$('a', { className: 'coveo-dropdown-header coveo-tab-dropdown-header' });
     let content = $$('p');
-    content.text('more');
+    content.text(l('More'));
     content.el.appendChild($$('span', { className: 'coveo-sprites-more-tabs' }).el);
     dropdownHeader.el.appendChild(content.el);
     return dropdownHeader;
@@ -233,13 +234,13 @@ export class ResponsiveTabs implements ResponsiveComponent {
       $$(el.parentElement).detach();
     }
   }
-  
+
   private detachDropdown() {
     this.dropdownHeader.removeClass('coveo-dropdown-header-active');
     this.dropdownHeader.detach();
     this.dropdownContent.detach();
   }
-  
+
   private addSmallClass() {
     this.coveoRoot.addClass('coveo-small-search-interface');
   }
@@ -273,7 +274,7 @@ export class ResponsiveTabs implements ResponsiveComponent {
       })
     });
   }
-  
+
   private getSearchBoxElement(): HTMLElement {
     let searchBoxElement = this.coveoRoot.find('.coveo-search-section');
     if (searchBoxElement) {

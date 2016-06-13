@@ -10,7 +10,7 @@ export interface ResponsiveComponentConstructor {
   new (root: Dom, ID: string): ResponsiveComponent;
 }
 
-export interface ResponsiveComponent{
+export interface ResponsiveComponent {
   ID: string;
   needSmallMode(): boolean;
   changeToSmallMode(): void;
@@ -21,7 +21,7 @@ export interface ResponsiveComponent{
 export class ResponsiveComponentsManager {
 
   public static MEDIUM_MOBILE_WIDTH = 640;
-  
+
   private static componentManagers: Array<ResponsiveComponentsManager> = [];
   private static remainingComponentInitializations: number = 0;
 
@@ -33,7 +33,7 @@ export class ResponsiveComponentsManager {
   private isTabActivated: boolean = false;
   private isFacetActivated: boolean = false;
 
-  
+
   //Register takes a class and will instantiate it after framework initialization has completed.
   public static register(responsiveComponentConstructor: ResponsiveComponentConstructor, root: Dom, ID: string) {
 
@@ -42,13 +42,13 @@ export class ResponsiveComponentsManager {
 
       let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el.isSameNode(componentManager.coveoRoot.el));
       if (responsiveComponentsManager) {
-          responsiveComponentsManager.register(responsiveComponent);
+        responsiveComponentsManager.register(responsiveComponent);
       } else {
         responsiveComponentsManager = new ResponsiveComponentsManager(root);
         this.componentManagers.push(responsiveComponentsManager);
         responsiveComponentsManager.register(responsiveComponent);
       }
-      
+
       this.remainingComponentInitializations--;
       if (this.remainingComponentInitializations == 0) {
         this.resizeAllComponentsManager();
@@ -56,7 +56,7 @@ export class ResponsiveComponentsManager {
     });
     this.remainingComponentInitializations++;
   }
-  
+
   private static resizeAllComponentsManager() {
     _.each(this.componentManagers, componentManager => {
       componentManager.resizeListener();
@@ -77,7 +77,7 @@ export class ResponsiveComponentsManager {
           return;
         }
       }
-      
+
       if (this.coveoRoot.hasClass('coveo-small-search-interface')) {
         this.coveoRoot.removeClass('coveo-small-search-interface');
         this.changeToLargeMode();
@@ -89,7 +89,7 @@ export class ResponsiveComponentsManager {
 
   public register(responsiveComponent: ResponsiveComponent) {
 
-    if (!this.isActivated(responsiveComponent)){
+    if (!this.isActivated(responsiveComponent)) {
       if (this.isTabs(responsiveComponent)) {
         this.isTabActivated = true;
         if (this.isFacetActivated) {
@@ -100,7 +100,7 @@ export class ResponsiveComponentsManager {
       if (this.isFacet(responsiveComponent)) {
         this.isFacetActivated = true;
         if (!this.isTabActivated) {
-          this.tabSection = $$('div', {className: 'coveo-tab-section'});
+          this.tabSection = $$('div', { className: 'coveo-tab-section' });
         }
         //facets need to be rendered before tabs, so the facet dropdown header is already there when the responsive tabs check for overflow.
         this.responsiveComponents.unshift(responsiveComponent);
@@ -124,23 +124,23 @@ export class ResponsiveComponentsManager {
       responsiveComponent.changeToLargeMode();
     });
   }
-  
+
   private handleResizeEvent(): void {
     _.each(this.responsiveComponents, responsiveComponent => {
-        responsiveComponent.handleResizeEvent && responsiveComponent.handleResizeEvent();
+      responsiveComponent.handleResizeEvent && responsiveComponent.handleResizeEvent();
     });
   }
-  
+
   private isFacet(component: ResponsiveComponent): boolean {
     return component.ID == Facet.ID;
   }
-  
+
   private isTabs(component: ResponsiveComponent): boolean {
     return component.ID == Tab.ID;
   }
 
   private isActivated(responsiveComponent: ResponsiveComponent): boolean {
-    return _.find(this.responsiveComponents, current => {return current.ID == responsiveComponent.ID}) != undefined
+    return _.find(this.responsiveComponents, current => { return current.ID == responsiveComponent.ID }) != undefined
   }
 
   private getSearchBoxElement(): HTMLElement {
