@@ -6,11 +6,11 @@ import {Facet} from '../Facet/Facet';
 import _ = require('underscore');
 
 //Register takes a class and will instantiate it after framework initialization has completed.
-export interface ResponsiveComponentConstructor {
-  new (root: Dom, ID: string): ResponsiveComponent;
+export interface IResponsiveComponentConstructor {
+  new (root: Dom, ID: string): IResponsiveComponent;
 }
 
-export interface ResponsiveComponent {
+export interface IResponsiveComponent {
   ID: string;
   needSmallMode(): boolean;
   changeToSmallMode(): void;
@@ -27,7 +27,7 @@ export class ResponsiveComponentsManager {
 
   private coveoRoot: Dom;
   private resizeListener;
-  private responsiveComponents: Array<ResponsiveComponent> = [];
+  private responsiveComponents: Array<IResponsiveComponent> = [];
   private tabSection: Dom;
   private searchBoxElement: HTMLElement;
   private isTabActivated: boolean = false;
@@ -35,7 +35,7 @@ export class ResponsiveComponentsManager {
 
 
   //Register takes a class and will instantiate it after framework initialization has completed.
-  public static register(responsiveComponentConstructor: ResponsiveComponentConstructor, root: Dom, ID: string) {
+  public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string) {
 
     root.on(InitializationEvents.afterInitialization, () => {
       let responsiveComponent = new responsiveComponentConstructor(root, ID);
@@ -87,7 +87,7 @@ export class ResponsiveComponentsManager {
     window.addEventListener('resize', _.debounce(this.resizeListener, 200));
   }
 
-  public register(responsiveComponent: ResponsiveComponent) {
+  public register(responsiveComponent: IResponsiveComponent) {
 
     if (!this.isActivated(responsiveComponent)) {
       if (this.isTabs(responsiveComponent)) {
@@ -131,15 +131,15 @@ export class ResponsiveComponentsManager {
     });
   }
 
-  private isFacet(component: ResponsiveComponent): boolean {
+  private isFacet(component: IResponsiveComponent): boolean {
     return component.ID == Facet.ID;
   }
 
-  private isTabs(component: ResponsiveComponent): boolean {
+  private isTabs(component: IResponsiveComponent): boolean {
     return component.ID == Tab.ID;
   }
 
-  private isActivated(responsiveComponent: ResponsiveComponent): boolean {
+  private isActivated(responsiveComponent: IResponsiveComponent): boolean {
     return _.find(this.responsiveComponents, current => { return current.ID == responsiveComponent.ID }) != undefined
   }
 

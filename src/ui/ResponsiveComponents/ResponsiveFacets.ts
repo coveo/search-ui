@@ -1,10 +1,10 @@
 import {$$, Dom} from '../../utils/Dom';
-import {ResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
+import {IResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
 import {Logger} from '../../misc/Logger';
 import "../../../sass/_ResponsiveFacets.scss";
 import {l} from '../../strings/Strings.ts';
 
-export class ResponsiveFacets implements ResponsiveComponent {
+export class ResponsiveFacets implements IResponsiveComponent {
 
   private static ROOT_MIN_WIDTH = 800;
   private static FACETS_NOT_FOUND = 'Could not find element with class coveo-facet-column. Therefore, responsive facets cannot be enabled.';

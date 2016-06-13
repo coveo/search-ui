@@ -3,12 +3,12 @@ import {WindowResizeListener} from '../../utils/WindowResizeListener';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
 import {Logger} from '../../misc/Logger';
-import {ResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
+import {IResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
 import _ = require('underscore');
 import {l} from '../../strings/Strings.ts';
 import '../../../sass/_ResponsiveTabs.scss';
 
-export class ResponsiveTabs implements ResponsiveComponent {
+export class ResponsiveTabs implements IResponsiveComponent {
 
   private static TABS_NOT_FOUND = 'Could not find element with class coveo-tab-section. Therefore, responsive tabs cannot be enabled.';
   private static logger: Logger;

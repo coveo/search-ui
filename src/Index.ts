@@ -169,7 +169,8 @@ export {ImageResultList} from './ui/ImageResultList/ImageResultList';
 export {CoveoJQuery} from './ui/Base/CoveoJQuery';
 export {FollowItem} from './ui/SearchAlerts/FollowItem';
 export {SearchAlerts} from './ui/SearchAlerts/SearchAlerts';
+export {SearchAlertsMessage} from './ui/SearchAlerts/SearchAlertsMessage';
 export {Text} from './ui/Text/Text';
 export {FoldingForThread} from './ui/Folding/FoldingForThread';
 export {ResponsiveFacets} from './ui/ResponsiveComponents/ResponsiveFacets';
-export {ResponsiveComponent, ResponsiveComponentsManager} from './ui/ResponsiveComponents/ResponsiveComponentsManager'
+export {IResponsiveComponent, ResponsiveComponentsManager} from './ui/ResponsiveComponents/ResponsiveComponentsManager'
