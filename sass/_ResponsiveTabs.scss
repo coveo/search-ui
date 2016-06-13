@@ -1,77 +1,73 @@
  @import "_Variables.scss";
  
- @mixin responsiveTabsRoundedBorder() {
-   border: $default-border;
-   border-radius: 3px;
- }
- 
 .CoveoSearchInterface.coveo-small-search-interface {
-  
+
   .coveo-search-section {
     margin: 0;
     padding: 54px 20px 47px 20px;
-    border-bottom: 1px solid white;
     background-color: $color-blueish-white;
+    margin: 0 auto;
+    width: 100%;
   }
   .coveo-tab-section {
+    border-top: 1px solid white;
     background-color: $color-blueish-white;
+    display: inline-block;
+
+    .coveo-dropdown-header {
+      display: inline-block;
+      padding: 1px 8px 1px 8px;
+      height: 22px;
+      font-size: $font-size-smallest;
+      font-weight: 700;
+      line-height: 20px;
+      letter-spacing: 0.09px;
+      vertical-align: middle;
+      white-space: normal;
+      color: $color-greyish-teal-blue;
+      cursor: pointer;
+      text-transform: uppercase;
+      margin-left: 10px;
+
+      * {
+        display: inline-block;
+        margin: 0;
+      }
+
+      p {
+        line-height: 16px;
+      }
+
+      &.coveo-dropdown-header-active {
+        @include defaultRoundedBorder();
+        background-color: white;
+        padding: 0px 7px 0px 7px;
+      }
+
+      .coveo-sprites-more-tabs {
+        margin-left: 10px;
+      }
+    }
+
+    
   }
-  
+
   .CoveoTab {
     color: $color-greyish-teal-blue;
-    font-size: 11px;
+    font-size: $font-size-smallest;
     font-weight: 400;
     letter-spacing: 0.25px;
     &.coveo-selected, &.coveo-selected:hover {
       font-weight: 700;
     }
   }
-}
-.coveo-tab-dropdown-header {
-  display: inline-block;
-  padding: 1px 8px 1px 8px;
-  height: 22px;
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 20px;
-  letter-spacing: 0.09px;
-  vertical-align: middle;
-  white-space: normal;
-  color: $color-greyish-teal-blue;
-  cursor: pointer;
-  text-transform: uppercase;
-  margin-left: 10px;
-  * {
-    display: inline-block;
-    margin: 0;
-  }
 
-p {
-    line-height: 16px;
-  }
- }
   
- .coveo-tab-dropdown-header-active {
-   @include responsiveTabsRoundedBorder();
-   background-color: white;
-   padding: 0px 7px 0px 7px;
- }
- 
- .coveo-tab-list-container {
-  position: absolute;
-  overflow: hidden;
-  z-index: 11;
 
-  ol {
-    margin: 0;
-  }
- }
- 
-.coveo-small-search-interface {
   .coveo-tab-list {
     list-style: none;
     background-color: white;
-    @include responsiveTabsRoundedBorder();
+    @include defaultRoundedBorder();
     padding: 0;
     white-space: nowrap;
     
@@ -94,8 +90,13 @@ p {
     }
   }
 }
-
  
-.coveo-sprites-more-tabs {
-   margin-left: 10px;
+.coveo-tab-list-container {
+  position: absolute;
+  overflow: hidden;
+  z-index: 11;
+
+  ol {
+    margin: 0;
+  }
 }
