@@ -65,6 +65,7 @@ export interface ISearchEndpointOptions extends IEndpointCallerOptions {
  */
 export interface IEndpointCallOptions {
   authentication?: string[];
+  queryString?: IStringMap<string>;
 }
 
 /**

@@ -47,6 +47,8 @@ export interface IQueryOptions {
   origin?: any;
   keepLastSearchUid?: boolean;
   closeModalBox?: boolean;
+  callOptions?: IEndpointCallOptions;
+  logInActionsHistory?: boolean;
 }
 
 interface ILastQueryLocalStorage {
@@ -60,6 +62,8 @@ class DefaultQueryOptions implements IQueryOptions {
   beforeExecuteQuery: () => void;
   closeModalBox = true;
   cancel = false;
+  callOptions = null;
+  logInActionsHistory = false;
 }
 
 /**
@@ -176,10 +180,14 @@ export class QueryController extends RootComponent {
     }
 
     let query = queryBuilder.build();
-    this.logQueryInActionsHistory(query);
+
+    if (options.logInActionsHistory) {
+      this.logQueryInActionsHistory(query);
+    }
+
     let endpointToUse = this.getEndpoint();
 
-    let promise = this.currentPendingQuery = endpointToUse.search(query);
+    let promise = this.currentPendingQuery = endpointToUse.search(query, options.callOptions);
     promise.then((queryResults) => {
       Assert.exists(queryResults);
       let firstQuery = this.firstQuery;

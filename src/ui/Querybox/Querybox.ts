@@ -214,7 +214,8 @@ export class Querybox extends Component {
     if (this.lastQuery != text && text != null) {
       this.lastQuery = text;
       this.queryController.executeQuery({
-        searchAsYouType: searchAsYouType
+        searchAsYouType: searchAsYouType,
+        logInActionsHistory: true
       });
     }
   }

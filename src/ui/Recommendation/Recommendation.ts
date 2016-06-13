@@ -100,7 +100,7 @@ export class Recommendation extends SearchInterface {
     $$(this.options.mainSearchInterface).on(QueryEvents.querySuccess, (e: Event, args: IQuerySuccessEventArgs) => {
       this.mainInterfaceQuery = args;
       this.mainQuerySearchUID = args.results.searchUid;
-      this.queryController.executeQuery({ ignoreWarningSearchEvent: true });
+      this.queryController.executeQuery({ ignoreWarningSearchEvent: true, callOptions: { queryString: { 'actions_history': this.getHistory() } } });
     })
   }
 
@@ -128,16 +128,14 @@ export class Recommendation extends SearchInterface {
     if (!_.isEmpty(this.options.userContext)) {
       data.queryBuilder.addContext(this.options.userContext);
     }
-
-    data.queryBuilder.addContextValue('actions_history', JSON.stringify(this.getHistory()));
   }
 
-  private getHistory() {
+  private getHistory(): string {
     if (typeof coveoanalytics != 'undefined') {
       var store = new coveoanalytics.history.HistoryStore();
-      return store.getHistory();
+      return JSON.stringify(store.getHistory());
     } else {
-      return [];
+      return '[]';
     }
   }
 
