@@ -194,15 +194,20 @@ module Coveo {
         store = undefined;
         coveoanalytics = undefined;
       })
+      
+      it('should not log the query in the user history if not specified', function () {
+        test.cmp.executeQuery({logInActionsHistory: false});
+        expect(store.addElement).not.toHaveBeenCalled()
+      })
 
-      it('should log the query in the user history', function () {
-        test.cmp.executeQuery();
+      it('should log the query in the user history if specified', function () {
+        test.cmp.executeQuery({logInActionsHistory: true});
         expect(store.addElement).toHaveBeenCalled()
       })
 
       it('should work if coveoanalytics is not defined', () => {
         coveoanalytics = undefined;
-        test.cmp.executeQuery();
+        test.cmp.executeQuery({logInActionsHistory: true});
         expect(store.addElement).not.toHaveBeenCalled()
       })
     })
