@@ -5,7 +5,6 @@ import {Tab} from '../Tab/Tab';
 import {Facet} from '../Facet/Facet';
 import _ = require('underscore');
 
-//Register takes a class and will instantiate it after framework initialization has completed.
 export interface IResponsiveComponentConstructor {
   new (root: Dom, ID: string): IResponsiveComponent;
 }
@@ -33,8 +32,7 @@ export class ResponsiveComponentsManager {
   private isTabActivated: boolean = false;
   private isFacetActivated: boolean = false;
 
-
-  //Register takes a class and will instantiate it after framework initialization has completed.
+  // Register takes a class and will instantiate it after framework initialization has completed.
   public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string) {
 
     root.on(InitializationEvents.afterInitialization, () => {
@@ -102,7 +100,7 @@ export class ResponsiveComponentsManager {
         if (!this.isTabActivated) {
           this.tabSection = $$('div', { className: 'coveo-tab-section' });
         }
-        //facets need to be rendered before tabs, so the facet dropdown header is already there when the responsive tabs check for overflow.
+        // Facets need to be rendered before tabs, so the facet dropdown header is already there when the responsive tabs check for overflow.
         this.responsiveComponents.unshift(responsiveComponent);
       } else {
         this.responsiveComponents.push(responsiveComponent);

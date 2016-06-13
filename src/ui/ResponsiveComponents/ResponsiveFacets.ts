@@ -1,7 +1,7 @@
 import {$$, Dom} from '../../utils/Dom';
 import {IResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
 import {Logger} from '../../misc/Logger';
-import "../../../sass/_ResponsiveFacets.scss";
+import '../../../sass/_ResponsiveFacets.scss';
 import {l} from '../../strings/Strings.ts';
 
 export class ResponsiveFacets implements IResponsiveComponent {
