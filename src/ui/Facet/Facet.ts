@@ -64,7 +64,7 @@ export interface IFacetOptions {
   showIcon?: boolean;
   useAnd?: boolean;
   enableCollapse?: boolean;
-  allowTogglingOperator?: boolean;
+  enableTogglingOperator?: boolean;
   enableMoreLess?: boolean;
   valueCaption?: any;
   lookupField?: string;
@@ -207,7 +207,7 @@ export class Facet extends Component {
      * Specifies whether the user is allowed to toggle between OR and AND mode, using an icon in the top right corner of the facet.<br/>
      * The default value is false.
      */
-    allowTogglingOperator: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    enableTogglingOperator: ComponentOptions.buildBooleanOption({ defaultValue: false, alias: 'allowTogglingOperator' }),
     /**
      * Specifies whether the search box for searching inside the available values will be displayed at the bottom of the facet.<br/>
      * The default value is true.
@@ -801,7 +801,7 @@ export class Facet extends Component {
    * Show less element in the facet (up to the original number of values)
    */
   public showLess() {
-    $$(this.lessElement).hide();
+    $$(this.lessElement).removeClass('coveo-active');
     this.currentPage = 0;
     this.updateNumberOfValues();
     $$(this.moreElement).addClass('coveo-active');
@@ -1000,13 +1000,11 @@ export class Facet extends Component {
     }
   }
 
-  protected updateMoreLess() {
-    var lessElementIsShown = this.getMinimumNumberOfValuesToDisplay() < this.numberOfValues;
-    var moreValuesAvailable = this.nbAvailableValues > this.numberOfValues;
+  protected updateMoreLess(lessElementIsShown = this.getMinimumNumberOfValuesToDisplay() < this.numberOfValues, moreValuesAvailable = this.nbAvailableValues > this.numberOfValues) {
     if (lessElementIsShown) {
-      $$(this.lessElement).show();
+      $$(this.lessElement).addClass('coveo-active');
     } else {
-      $$(this.lessElement).hide();
+      $$(this.lessElement).removeClass('coveo-active');
     }
 
     if (moreValuesAvailable) {
@@ -1020,7 +1018,6 @@ export class Facet extends Component {
     } else {
       $$(this.footerElement).addClass('coveo-facet-empty');
     }
-
   }
 
   protected handleClickMore(): void {
@@ -1404,13 +1401,13 @@ export class Facet extends Component {
       var lessIcon = document.createElement('span');
       $$(lessIcon).addClass('coveo-icon');
       less.appendChild(lessIcon);
-      $$(less).hide();
       $$(less).on('click', () => this.handleClickLess());
       return less;
     } else {
       let less = document.createElement('a');
       $$(less).addClass('coveo-facet-less');
       $$(less).text(l('Less'));
+      $$(less).on('click', () => this.handleClickLess());
       return less;
     }
   }

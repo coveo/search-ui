@@ -2152,6 +2152,10 @@
     "zh-cn": "快速查看",
     "zh-tw": "快速檢視"
   },
+  "NoQuickview": {
+    "en": "The Quick View for this document is unavailable",
+    "fr": "Le Coup D'Oeil pour ce document n'est pas disponible"
+  },
   "ErrorReport": {
     "en": "Error Report",
     "fr": "Rapport d'erreur",

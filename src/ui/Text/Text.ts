@@ -1,3 +1,4 @@
+
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {Component} from '../Base/Component';
 import {IComponentBindings} from '../Base/ComponentBindings';

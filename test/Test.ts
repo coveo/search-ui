@@ -99,7 +99,6 @@ Coveo.Logger.disable();
 
 module Coveo {
   var _ = window['_'];
-  Coveo._ = _;
 }
 
 function isPhantomJs() {

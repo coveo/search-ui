@@ -385,14 +385,14 @@ module Coveo {
       it('allowTogglingOperator should specify if the toggle is rendered in header ', function () {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
-          allowTogglingOperator: true
+          enableTogglingOperator: true
         })
         test.cmp.ensureDom();
         expect(test.cmp.facetHeader.operatorElement.style.display).not.toBe('none');
 
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
-          allowTogglingOperator: false
+          enableTogglingOperator: false
         })
         test.cmp.ensureDom();
         expect(test.cmp.facetHeader.operatorElement.style.display).toBe('none');
