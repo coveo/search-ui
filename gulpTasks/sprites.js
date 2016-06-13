@@ -5,7 +5,7 @@ const pngSprite = require('png-sprite');
 const fs = require('fs');
 const buildSpriteList = require('../BuildSpritesList');
 
-gulp.task('sprites', ['regularSprites', 'retinaSprites', 'validateRetinaSprites']);
+gulp.task('sprites', ['regularSprites', 'retinaSprites', 'regularSpriteList', 'retinaSpriteList', 'validateRetinaSprites']);
 gulp.task('spritesLegacy', ['regularSpritesLegacy', 'retinaSpritesLegacy']);
 
 gulp.task('regularSprites', function (done) {
