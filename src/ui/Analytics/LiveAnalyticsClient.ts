@@ -105,6 +105,13 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     }
   }
 
+  public cancelAllPendingEvents() {
+    if(this.pendingSearchAsYouTypeSearchEvent) {
+      this.pendingSearchAsYouTypeSearchEvent.cancel();
+      this.pendingSearchAsYouTypeSearchEvent = null;
+    }
+  }
+
   public warnAboutSearchEvent() {
     if (_.isUndefined(this.pendingSearchEvent) && _.isUndefined(this.pendingSearchAsYouTypeSearchEvent)) {
       this.logger.warn('A search was triggered, but no analytics event was logged. If you wish to have consistent analytics data, consider logging a search event using the methods provided by the framework', 'https://developers.coveo.com/x/TwA5');

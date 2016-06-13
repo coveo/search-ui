@@ -61,6 +61,7 @@ export interface IAnalyticsClient {
    * Get the current visitor id, for tracking purpose in the Coveo Analytics service
    */
   getCurrentVisitIdPromise(): Promise<string>;
+  cancelAllPendingEvents(): void;
   sendAllPendingEvents(): void;
   warnAboutSearchEvent(): void;
 }

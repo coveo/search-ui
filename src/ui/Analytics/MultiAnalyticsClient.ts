@@ -59,7 +59,11 @@ export class MultiAnalyticsClient implements IAnalyticsClient {
   }
 
   public warnAboutSearchEvent() {
-    _.each(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.warnAboutSearchEvent())
+    _.each(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.warnAboutSearchEvent());
+  }
+
+  public cancelAllPendingEvents() {
+    _.each(this.analyticsClients, (analyticsClient: IAnalyticsClient)=> analyticsClient.cancelAllPendingEvents());
   }
 
   private mergeTopQueries(values: string[][], pageSize: number = 5) {

@@ -230,14 +230,25 @@ export class Omnibox extends Component {
   }
 
   private setupMagicBox() {
+    // skipSearchAsYouType is to circumvent something special with the magic box :
+    // the onsuggestion callback is called even on "blur"
+    // This variable is thus used to differentiate between : is it a suggestion callback with really no suggestions
+    // or a suggestion callback purposely set empty to keep the magicbox internal state in sync
+    let skipSearchAsYouType = false;
+
     this.magicBox.onsuggestions = (suggestions: IOmniboxSuggestion[]) => {
       let diff = suggestions.length != this.lastSuggestions.length ||
         _.filter(suggestions, (suggestion: IOmniboxSuggestion, i: number) => {
           return suggestion.text != this.lastSuggestions[i].text;
         }).length > 0;
       this.lastSuggestions = suggestions;
-      if (this.options.enableSearchAsYouType && (diff || suggestions.length == 0)) { // retrigger a new search as you type only if there are diff or if the input is not the same
-        this.searchAsYouType();
+      // retrigger a new search as you type only if there are diff or if the input is not the same
+      if (this.options.enableSearchAsYouType && (diff || suggestions.length == 0)) {
+        if (skipSearchAsYouType) {
+          skipSearchAsYouType = false;
+        } else {
+          this.searchAsYouType();
+        }
       }
     }
     if (this.options.enableSearchAsYouType) {
@@ -261,6 +272,7 @@ export class Omnibox extends Component {
       let suggestions = _.map(this.lastSuggestions, (suggestion) => suggestion.text);
       this.magicBox.clearSuggestion();
       this.updateQueryState();
+      this.usageAnalytics.cancelAllPendingEvents();
       this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.omniboxAnalytics, {
         partialQueries: this.cleanCustomData(this.partialQueries),
         suggestionRanking: index,
@@ -272,9 +284,12 @@ export class Omnibox extends Component {
 
     this.magicBox.onblur = () => {
       if (this.options.enableSearchAsYouType && !this.options.inline) {
-        this.setText(this.lastQuery)
+        this.setText(this.lastQuery);
       } else {
         this.updateQueryState();
+      }
+      if (this.options.enableSearchAsYouType) {
+        skipSearchAsYouType = true;
       }
     };
 
@@ -408,7 +423,11 @@ export class Omnibox extends Component {
   }
 
   private handleQuerySuccess() {
-    this.partialQueries = [];
+    if (!this.options.enableSearchAsYouType) {
+      this.partialQueries = [];
+    } else {
+      //this.usageAnalytics.
+    }
   }
 
   private searchAsYouTypeTimeout: number;
