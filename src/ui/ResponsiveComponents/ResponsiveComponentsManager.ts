@@ -36,11 +36,12 @@ export class ResponsiveComponentsManager {
   
   //Register takes a class and will instantiate it after framework initialization has completed.
   public static register(responsiveComponentConstructor: ResponsiveComponentConstructor, root: Dom, ID: string) {
+
     root.on(InitializationEvents.afterInitialization, () => {
       let responsiveComponent = new responsiveComponentConstructor(root, ID);
 
       let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el.isSameNode(componentManager.coveoRoot.el));
-      if (responsiveComponentsManager){
+      if (responsiveComponentsManager) {
           responsiveComponentsManager.register(responsiveComponent);
       } else {
         responsiveComponentsManager = new ResponsiveComponentsManager(root);
@@ -87,25 +88,27 @@ export class ResponsiveComponentsManager {
   }
 
   public register(responsiveComponent: ResponsiveComponent) {
-    
-    if (this.isFacet(responsiveComponent)) {
-      this.isFacetActivated = true;
-      if (!this.isTabActivated) {
-        this.tabSection = $$('div', {className: 'coveo-tab-section'});
+
+    if (!this.isActivated(responsiveComponent)){
+      if (this.isTabs(responsiveComponent)) {
+        this.isTabActivated = true;
+        if (this.isFacetActivated) {
+          this.tabSection = null;
+        }
+      }
+
+      if (this.isFacet(responsiveComponent)) {
+        this.isFacetActivated = true;
+        if (!this.isTabActivated) {
+          this.tabSection = $$('div', {className: 'coveo-tab-section'});
+        }
+        //facets need to be rendered before tabs, so the facet dropdown header is already there when the responsive tabs check for overflow.
+        this.responsiveComponents.unshift(responsiveComponent);
+      } else {
+        this.responsiveComponents.push(responsiveComponent);
       }
     }
 
-    if (this.isTabs(responsiveComponent)) {
-      this.isTabActivated = true;
-      if (this.isFacetActivated) {
-        this.tabSection = null;
-      }
-
-      this.responsiveComponents.unshift(responsiveComponent);
-    } else {
-      this.responsiveComponents.push(responsiveComponent);
-    }
-    
   }
 
   private changeToSmallMode(): void {
@@ -136,8 +139,8 @@ export class ResponsiveComponentsManager {
     return component.ID == Tab.ID;
   }
 
-  private isActivated(ID: string) {
-    let responsiveComponent = _.find(this.responsiveComponents, responsiveComponent => {return responsiveComponent.ID == ID})
+  private isActivated(responsiveComponent: ResponsiveComponent): boolean {
+    return _.find(this.responsiveComponents, current => {return current.ID == responsiveComponent.ID}) != undefined
   }
 
   private getSearchBoxElement(): HTMLElement {

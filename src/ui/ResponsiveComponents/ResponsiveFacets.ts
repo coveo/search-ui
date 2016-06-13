@@ -1,10 +1,13 @@
 import {$$, Dom} from '../../utils/Dom';
 import {ResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
+import {Logger} from '../../misc/Logger';
 import "../../../sass/_ResponsiveFacets.scss";
 
 export class ResponsiveFacets implements ResponsiveComponent{
  
   private static ROOT_MIN_WIDTH = 800;
+  private static FACETS_NOT_FOUND = 'Could not find element with class coveo-facet-column. Therefore, responsive facets cannot be enabled.';
+  private static logger: Logger;
   
   public ID: string;
   public coveoRoot: Dom;
@@ -15,7 +18,11 @@ export class ResponsiveFacets implements ResponsiveComponent{
   private dropdownHeader: Dom;
   
   public static init(root: HTMLElement, ID: string) {
-    if(!$$(root).find('.coveo-facet-column')) return;
+    this.logger = new Logger(root);
+    if(!$$(root).find('.coveo-facet-column')){
+      this.logger.info(this.FACETS_NOT_FOUND);
+      return;
+    }
     ResponsiveComponentsManager.register(ResponsiveFacets, $$(root), ID);
   }
   

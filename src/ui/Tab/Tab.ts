@@ -38,7 +38,6 @@ export interface ITabOptions {
  */
 export class Tab extends Component {
   static ID = 'Tab';
-  static isFirstTab = true;
 
   /**
    * The options for a Tab
@@ -119,11 +118,7 @@ export class Tab extends Component {
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.T, (args: IAttributeChangedEventArg) => this.handleQueryStateChanged(args));
     this.bind.on(element, 'click', (e: Event) => this.handleClick());
     this.render();
-
-    if (Tab.isFirstTab) {
-      Tab.isFirstTab = false;
-      ResponsiveTabs.init(this.root, Tab.ID);
-    }
+    ResponsiveTabs.init(this.root, Tab.ID);
   }
 
   /**

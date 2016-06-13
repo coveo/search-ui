@@ -101,7 +101,6 @@ export interface IFacetOptions {
  * It is probably the most complex component in the Coveo UI, and as such allows many different options.
  */
 export class Facet extends Component {
-  static isFirstFacet = true;
   static ID = 'Facet';
   static omniboxIndex = 50;
 
@@ -416,11 +415,8 @@ export class Facet extends Component {
     if (this.options.valueCaption != null) {
       this.options.availableSorts = _.filter(this.options.availableSorts, (sort: string) => !/^alpha.*$/.test(sort));
     }
-    
-    if (Facet.isFirstFacet) {
-      Facet.isFirstFacet = false;
-      ResponsiveFacets.init(this.root, Facet.ID);
-    }
+
+    ResponsiveFacets.init(this.root, Facet.ID);
 
     // Serves as a way to render facet in the omnibox in the order in which they are instantiated
     this.omniboxZIndex = Facet.omniboxIndex;

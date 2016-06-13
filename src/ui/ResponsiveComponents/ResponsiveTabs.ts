@@ -8,6 +8,10 @@ import _ = require('underscore');
 import '../../../sass/_ResponsiveTabs.scss';
 
 export class ResponsiveTabs implements ResponsiveComponent {
+
+  private static TABS_NOT_FOUND = 'Could not find element with class coveo-tab-section. Therefore, responsive tabs cannot be enabled.';
+  private static logger: Logger;
+
   public ID: string;
 
   private dropdownHeader: Dom;
@@ -17,11 +21,8 @@ export class ResponsiveTabs implements ResponsiveComponent {
   private parent: Dom;
   private searchBoxElement: HTMLElement;
   private coveoRoot: Dom;
-
   private resizeListener: EventListener;
   private documentClickListener: EventListener;
-
-  private logger: Logger;
 
   constructor(root: Dom, ID: string) {
     this.ID = ID;
@@ -31,14 +32,15 @@ export class ResponsiveTabs implements ResponsiveComponent {
     this.dropdownHeader = this.buildDropdownHeader();
     this.bindDropdownContentEvents();
     this.bindDropdownHeaderEvents();
-    this.logger = new Logger(this);
     this.tabSection = $$(<HTMLElement>this.coveoRoot.find('.coveo-tab-section'));
     this.manageTabSwapping();
     this.savePosition();
   }
 
   public static init(root: HTMLElement, ID: string) {
+    this.logger = new Logger(root);
     if (!$$(root).find('.coveo-tab-section')) {
+      this.logger.info(this.TABS_NOT_FOUND);
       return;
     }
     ResponsiveComponentsManager.register(ResponsiveTabs, $$(root), ID);
@@ -97,14 +99,6 @@ export class ResponsiveTabs implements ResponsiveComponent {
 
   };
 
-  private shouldAddTabsToDropdown(): boolean {
-    return this.isOverflowing(this.tabSection.el) && this.coveoRoot.is('.coveo-small-search-interface');
-  }
-
-  private shouldRemoveTabsFromDropdown(): boolean {
-    return !this.isOverflowing(this.tabSection.el) && this.coveoRoot.is('.coveo-small-search-interface') && !this.isDropdownEmpty();
-  }
-
   public needSmallMode(): boolean {
     let tabSectionIsOverflowing = this.isOverflowing(this.tabSection.el);
     let win = new Win(window);
@@ -130,6 +124,14 @@ export class ResponsiveTabs implements ResponsiveComponent {
 
   public changeToSmallMode() {
     this.tabSection.insertAfter(this.searchBoxElement);
+  }
+
+  private shouldAddTabsToDropdown(): boolean {
+    return this.isOverflowing(this.tabSection.el) && this.coveoRoot.is('.coveo-small-search-interface');
+  }
+
+  private shouldRemoveTabsFromDropdown(): boolean {
+    return !this.isOverflowing(this.tabSection.el) && this.coveoRoot.is('.coveo-small-search-interface') && !this.isDropdownEmpty();
   }
 
   private emptyDropdown() {
@@ -172,7 +174,7 @@ export class ResponsiveTabs implements ResponsiveComponent {
   }
 
   private couldNotFindSearchBoxError() {
-    this.logger.info('While trying to move the tab section around the search box, could not find an element with class \
+    ResponsiveTabs.logger.info('While trying to move the tab section around the search box, could not find an element with class \
                       coveo-search-section or CoveoSearchBox');
   }
 
