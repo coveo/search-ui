@@ -47,6 +47,7 @@
     "gulp-sass": "2.0.4",
     "gulp-shell": "^0.5.2",
     "gulp-tsc": "^1.1.5",
+    "image-size": "^0.5.0",
     "imports-loader": "^0.6.5",
     "jasmine": "^2.4.1",
     "jasmine-core": "^2.4.1",
@@ -72,8 +73,10 @@
     "tsconfig-glob": "^0.4.3",
     "typedoc": "https://github.com/coveord/typedoc/tarball/master",
     "url-loader": "^0.5.7",
+    "walk": "^2.3.9",
     "webpack": "^1.13.0",
-    "webpack-dev-server": "^1.14.1"
+    "webpack-dev-server": "^1.14.1",
+    "yargs": "^4.7.1"
   },
   "dependencies": {
     "coveomagicbox": "^1.0.5",
