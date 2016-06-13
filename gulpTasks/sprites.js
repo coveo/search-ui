@@ -3,6 +3,7 @@ const glob = require('glob');
 const _ = require('underscore');
 const pngSprite = require('png-sprite');
 const fs = require('fs');
+const buildSpriteList = require('../BuildSpritesList');
 
 gulp.task('sprites', ['regularSprites', 'retinaSprites', 'validateRetinaSprites']);
 gulp.task('spritesLegacy', ['regularSpritesLegacy', 'retinaSpritesLegacy']);
@@ -59,3 +60,11 @@ gulp.task('validateRetinaSprites', function (done) {
     done();
   });
 });
+
+gulp.task('regularSpriteList', function (done) {
+  buildSpriteList('image/sprites', 'bin/image', done);
+})
+
+gulp.task('retinaSpriteList', function (done) {
+  buildSpriteList('image/retina', 'bin/image', done);
+})

@@ -14,33 +14,27 @@ let args = require('yargs')
     alias: 'o',
     describe: 'The output directory'
   })
-  .demand(['s', 'o'])
   .help('help')
   .argv;
 
-let sprites = [];
-let prefix;
+function buildSpriteList(spritesDir, outputDir, done) {
+  spritesDir = spritesDir || args.sprites;
+  outputDir = outputDir || args.output;
 
-function buildSpriteList(spritesDir, outputDir) {
-  if (spritesDir != undefined) {
-    args.sprites = sprites;
-  }
-  if (outputDir != undefined) {
-    args.output = outputDir;
-  }
-  if (args.sprites == undefined) throw 'Error. No sprite directory defined';
-  if (args.output == undefined) throw 'Error. No output directory defined';
+  if (spritesDir == undefined) throw 'Error. No sprite directory defined';
+  if (outputDir == undefined) throw 'Error. No output directory defined';
 
-  console.log('Generating sprite list for ' + args.sprites);
+  console.log('Generating sprite list for ' + spritesDir);
 
-  prefix = args.sprites.indexOf('retina') !== -1 ? 'retina' : 'normal';
+  let sprites = [];
+  let prefix = spritesDir.indexOf('retina') !== -1 ? 'retina' : 'normal';
 
-  let walker = walk.walk(args.sprites);
-  walker.on('file', fileHandler);
-  walker.on('end', endHandler);
+  let walker = walk.walk(spritesDir);
+  walker.on('file', (root, fileStats, next) => fileHandler(sprites, root, fileStats, prefix, next));
+  walker.on('end', () => endHandler(sprites, outputDir, prefix, done));
 }
 
-function generateCssClass(filePath) {
+function generateCssClass(filePath, prefix) {
   let prefixToReplace = prefix === 'retina' ? 'image-retina-' : 'image-sprites-';
   let returnValue = '.coveo-' + filePath
     .replace(/\//g, '-')
@@ -51,12 +45,12 @@ function generateCssClass(filePath) {
   return returnValue;
 }
 
-function fileHandler(root, fileStats, next) {
+function fileHandler(sprites, root, fileStats, prefix, next) {
   let fullPath = path.join(root, fileStats.name);
   fs.readFile(fullPath, (err, imgBuffer) => {
     if (err) throw err;
 
-    let cssClass = generateCssClass(fullPath);
+    let cssClass = generateCssClass(fullPath, prefix);
     let imgSize = sizeOf(imgBuffer);
     sprites.push([cssClass, {
       img: imgBuffer.toString('base64'),
@@ -82,11 +76,12 @@ function generateHtmlOutput(sprites) {
   return header + style + rows + footer;
 }
 
-function endHandler() {
-  let outFilename = path.join(args.output, prefix + '-icon-list');
+function endHandler(sprites, outputDir, prefix, done) {
+  let outFilename = path.join(outputDir, prefix + '-icon-list');
   fs.writeFileSync(`${outFilename}.html`, generateHtmlOutput(sprites));
   fs.writeFileSync(`${outFilename}.json`, JSON.stringify(sprites, null, 2));
   console.log('Done. Have a good day !');
+  if (done) done();
 }
 
 if (require.main === module) {
