@@ -60,8 +60,8 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private buildDropdownHeader() {
-    this.dropdownHeaderContainer = $$('div', {className: 'coveo-facet-dropdown-header-container'});
-    this.dropdownHeader = $$('a', {className: 'coveo-dropdown-header coveo-facet-dropdown-header'});
+    this.dropdownHeaderContainer = $$('div', { className: 'coveo-facet-dropdown-header-container' });
+    this.dropdownHeader = $$('a', { className: 'coveo-dropdown-header coveo-facet-dropdown-header' });
     let content = $$('p');
     content.text(l('facets'));
     this.dropdownHeader.el.appendChild(content.el);
@@ -73,7 +73,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
       if (!this.dropdownHeader.hasClass('coveo-dropdown-header-active')) {
         this.positionPopup();
         this.dropdownHeader.addClass('coveo-dropdown-header-active');
-        document.documentElement.appendChild(this.popupBackground.el);
+        //document.documentElement.appendChild(this.popupBackground.el);
       } else {
         this.detachDropdown();
       }
@@ -91,12 +91,12 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private buildPopupBackground() {
-    this.popupBackground = $$('div', {className: 'coveo-facet-dropdown-background'});
+    this.popupBackground = $$('div', { className: 'coveo-facet-dropdown-background' });
   }
-  
+
   private shouldDetachFacetDropdown(eventTarget) {
     return !eventTarget.closest('coveo-facet-column') && !eventTarget.closest('coveo-facet-dropdown-header-container')
-           && this.coveoRoot.hasClass('coveo-small-search-interface');
+      && this.coveoRoot.hasClass('coveo-small-search-interface');
   }
 
   private saveFacetsPosition() {
@@ -114,10 +114,10 @@ export class ResponsiveFacets implements IResponsiveComponent {
 
   private positionPopup() {
     this.facetsColumn.addClass('coveo-facet-dropdown-content');
-    PopupUtils.positionPopup(this.facetsColumn.el, this.dropdownHeaderContainer.el, this.coveoRoot.el, this.coveoRoot.el,
+    PopupUtils.positionPopup(this.facetsColumn.el, this.tabSection.el, this.coveoRoot.el, this.coveoRoot.el,
       { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM });
   }
-  
+
   private detachDropdown() {
     this.popupBackground.detach();
     this.facetsColumn.detach();

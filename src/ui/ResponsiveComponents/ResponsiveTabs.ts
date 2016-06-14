@@ -1,5 +1,4 @@
 import {Win, $$, Dom} from '../../utils/Dom';
-import {WindowResizeListener} from '../../utils/WindowResizeListener';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
 import {Logger} from '../../misc/Logger';
