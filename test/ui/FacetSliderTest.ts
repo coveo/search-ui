@@ -59,12 +59,12 @@ module Coveo {
 
     it('should populate breadcrumb only if not in default state', function () {
       var breadcrumbs = [];
-      $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, <IPopulateBreadcrumbEventArgs>{breadcrumbs: breadcrumbs})
+      $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, <IPopulateBreadcrumbEventArgs>{ breadcrumbs: breadcrumbs })
       expect(breadcrumbs.length).toBe(0);
 
       breadcrumbs = [];
       test.cmp.setSelectedValues([50, 60]);
-      $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, <IPopulateBreadcrumbEventArgs>{breadcrumbs: breadcrumbs})
+      $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, <IPopulateBreadcrumbEventArgs>{ breadcrumbs: breadcrumbs })
       expect(breadcrumbs.length).toBe(1);
     })
 

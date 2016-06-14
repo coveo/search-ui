@@ -1,5 +1,5 @@
 import {Component} from '../Base/Component'
-import {ComponentOptions, Type} from '../Base/ComponentOptions'
+import {ComponentOptions, ComponentOptionsType} from '../Base/ComponentOptions'
 import {IResultsComponentBindings} from '../Base/ResultsComponentBindings'
 import {Template} from '../Templates/Template'
 import {DomUtils} from '../../utils/DomUtils'
@@ -75,7 +75,7 @@ export class Quickview extends Component {
       selectorAttr: 'data-template-selector',
       idAttr: 'data-template-id'
     }),
-    loadingAnimation: ComponentOptions.buildOption<HTMLElement>(Type.NONE, (element: HTMLElement) => {
+    loadingAnimation: ComponentOptions.buildOption<HTMLElement>(ComponentOptionsType.NONE, (element: HTMLElement) => {
       var loadingAnimationSelector = element.getAttribute('data-loading-animation-selector');
       if (loadingAnimationSelector != null) {
         var loadingAnimation = $$(document.documentElement).find(loadingAnimationSelector);
@@ -132,7 +132,9 @@ export class Quickview extends Component {
     }
 
     this.bindClick(result);
-    this.bind.on($$(this.bindings.resultElement), ResultListEvents.openQuickview, () => this.open());
+    if (this.bindings.resultElement) {
+      this.bind.on(this.bindings.resultElement, ResultListEvents.openQuickview, () => this.open());
+    }
   }
 
   /**

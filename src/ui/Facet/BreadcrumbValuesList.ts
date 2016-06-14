@@ -3,6 +3,7 @@ import {DeviceUtils} from '../../utils/DeviceUtils';
 import {Facet} from './Facet';
 import {IBreadcrumbValueElementKlass} from './BreadcrumbValueElement';
 import {Assert} from '../../misc/Assert';
+import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom';
 
 declare var Globalize;
@@ -60,7 +61,7 @@ export class BreadcrumbValueList {
     var elem = $$('div', {
       className: 'coveo-facet-breadcrumb-value'
     })
-    if (!DeviceUtils.isMobileDevice()) {
+    if (!DeviceUtils.isMobileDevice() && !this.facet.searchInterface.isNewDesign()) {
       let sep = $$('span', {
         className: 'coveo-separator'
       });
@@ -71,7 +72,7 @@ export class BreadcrumbValueList {
       let multi = $$('span', {
         className: 'coveo-facet-breadcrumb-multi-count'
       })
-      multi.text(Globalize.format(numberOfSelected, 'n0'));
+      multi.text(l('NMore', Globalize.format(numberOfSelected, 'n0')));
       elem.el.appendChild(multi.el);
 
       let multiIcon = $$('div', {
@@ -83,7 +84,7 @@ export class BreadcrumbValueList {
       let multiExcluded = $$('span', {
         className: 'coveo-facet-breadcrumb-multi-count'
       })
-      multiExcluded.text(Globalize.format(numberOfExcluded, 'n0'));
+      multiExcluded.text(l('NMore', Globalize.format(numberOfExcluded, 'n0')));
       elem.el.appendChild(multiExcluded.el);
 
       let multiExcludedIcon = $$('div', {
@@ -104,7 +105,7 @@ export class BreadcrumbValueList {
     elem.on('click', () => {
       var elements: HTMLElement[] = [];
       _.forEach(valueElements, (valueElement) => {
-        if (!DeviceUtils.isMobileDevice()) {
+        if (!DeviceUtils.isMobileDevice() && !this.facet.searchInterface.isNewDesign()) {
           let separatorsClicked = $$('span', {
             className: 'coveo-facet-breadcrumb-separator'
           });

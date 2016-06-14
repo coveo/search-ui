@@ -3,7 +3,7 @@
 module Coveo {
   describe('HistoryController', function () {
     var historyController: HistoryController;
-    var env: Mock.MockEnvironment;
+    var env: Mock.IMockEnvironment;
 
     beforeEach(function () {
       env = new Mock.MockEnvironmentBuilder().withLiveQueryStateModel().build();

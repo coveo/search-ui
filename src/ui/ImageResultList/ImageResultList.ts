@@ -1,20 +1,52 @@
-export interface ImageResultListOptions extends IResultListOptions {
+import {ResultList, IResultListOptions} from '../ResultList/ResultList';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {ImageResultListEvents} from '../../events/ImageResultListEvents';
+import {ResultListEvents} from '../../events/ResultListEvents';
+import {Initialization} from '../Base/Initialization';
+import {InitializationEvents} from '../../events/InitializationEvents';
+import {$$, Dom} from '../../utils/Dom';
+
+export interface IImageResultListOptions extends IResultListOptions {
   layoutType?: string;
   heightThreshold?: number;
   columnWidth?: number;
 }
 
+/**
+ * This component is an extension of the ResultList component to display image results.
+ */
 export class ImageResultList extends ResultList {
   static ID = 'ImageResultList';
   static rowLayoutTypeStr = 'row';
   static columnLayoutTypeStr = 'column';
 
-  static options: ImageResultListOptions = {
+  /**
+   * The options for the component.
+   * This component inherits the options of the @link{ResultList} component.
+   * @componentOptions
+   */
+  static options: IImageResultListOptions = {
+    /**
+     * Specifies the type of layout used to display images results.
+     * The available values are:
+     *    row - Displays resized images that fit to the width of the container and have the same height for a row.
+     *    column - Displays the images in fixed-size columns.
+     * The default value is row.
+     */
     layoutType: ComponentOptions.buildStringOption({
       defaultValue: 'row',
       postProcessing: (value: string) => value.toLowerCase()
     }),
+    /**
+     * Specifies the maximum height of a row in a row layout.
+     * The default value is 250.
+     */
     heightThreshold: ComponentOptions.buildNumberOption({ defaultValue: 250, min: 16 }),
+    /**
+     * Specifies the width of a column in a column layout.
+     * The default value is 170.
+     */
     columnWidth: ComponentOptions.buildNumberOption({ defaultValue: 225, min: 16 })
   }
 
@@ -24,10 +56,7 @@ export class ImageResultList extends ResultList {
   private resultIndex: number = 0;
   private lastRowHeight: number = 0;
 
-  constructor(public element: HTMLElement,
-    public options?: ImageResultListOptions,
-    bindings?: IComponentBindings,
-    elementClassId: string = Coveo.ResultList.ID) {
+  constructor(public element: HTMLElement, public options?: IImageResultListOptions, bindings?: IComponentBindings, elementClassId: string = ResultList.ID) {
 
     super(element, options, bindings, ImageResultList.ID);
 
@@ -35,29 +64,29 @@ export class ImageResultList extends ResultList {
 
     this.lastRowHeight = this.options.heightThreshold;
 
-    $(this.root).on(ResultListEvents.newResultsDisplayed, $.proxy(this.handleProcessNewResultsDisplayed, this));
-    this.bind.onRoot(InitializationEvents.nuke, this.handleNuke);
+    this.bind.onRootElement(ResultListEvents.newResultsDisplayed, this.handleProcessNewResultsDisplayed);
+    this.bind.onRootElement(InitializationEvents.nuke, this.handleNuke);
     this.bindWindowResizeEvent();
   }
 
-  private getResultsElement(): JQuery {
-    return $(this.element).find('.CoveoResult');
+  private getResultsElement(): HTMLElement[] {
+    return $$(this.element).findAll('.CoveoResult');
   }
 
-  private getResultsElementImages(): JQuery {
-    return $(this.element).find('.CoveoResult img');
+  private getResultsElementImages(): HTMLElement[] {
+    return $$(this.element).findAll('.CoveoResult img');
   }
 
-  private getResultsContainerDiv(): JQuery {
-    return $(this.element).find('> div');
+  private getResultsContainerDiv(): HTMLElement {
+    return $$(this.element).find('div');
   }
 
   private bindWindowResizeEvent() {
-    $(window).on('resize', this.resize);
+    window.addEventListener('resize', this.resize);
   }
 
   private handleNuke() {
-    $(window).off('resize', this.resize);
+    window.removeEventListener('resize', this.resize);
   }
 
   private resize() {
@@ -68,16 +97,18 @@ export class ImageResultList extends ResultList {
 
   private handleProcessNewResultsDisplayed() {
     if (this.disabled) {
-      $(this.element).fadeOut();
+      $$(this.element).hide();
     } else {
-      $(this.element).fadeIn();
+      $$(this.element).show();
     }
     this.onImageProxy(this.retrieveLayoutMethod());
   }
 
-  private addTransitionAllToElement(element: JQuery) {
+  private addTransitionAllToElement(elements: HTMLElement[]) {
     _.defer(() => {
-      element.addClass('coveo-transition-all');
+      _.each(elements, (element) => {
+        $$(element).addClass('coveo-transition-all');
+      })
     });
   }
 
@@ -95,56 +126,58 @@ export class ImageResultList extends ResultList {
   }
 
   private onImageProxy(callback: () => void) {
-    let results = this.getResultsElement().each((i, e) => {
-      if ($(e).find('img').length == 0) {
-        $(e).detach();
+    let results = _.each(this.getResultsElement(), (element: HTMLElement) => {
+      if ($$(element).findAll('img').length == 0) {
+        $$(element).detach();
       }
     });
 
     let images = this.getResultsElementImages();
     let loaded = 0;
     let onImageLoad = (image: HTMLImageElement) => {
-      if ($(image).height() > 0) {
-        if ($(image).attr('width') == null && $(image).attr('height') == null) {
-          $(image).attr('height', $(image).height());
-          $(image).attr('width', $(image).width());
+      if ($$(image).height() > 0) {
+        if ($$(image).getAttribute('width') == null && $$(image).getAttribute('height') == null) {
+          $$(image).setAttribute('height', $$(image).height().toString());
+          $$(image).setAttribute('width', $$(image).width().toString());
         }
         loaded++;
         if (loaded == images.length) {
           callback()
         }
       } else {
-        $(image).parent().detach();
-        images = images.not(image);
+        $$(image.parentElement).detach();
+        images = _.filter(images, (img) => {
+          return !img.isEqualNode(image);
+        })
         if (loaded == images.length) {
           callback()
         }
       }
     }
-    images.each(function(i, e: HTMLImageElement) {
-      if ((this.src && this.complete) || /*for IE 10-*/ $(e).height() > 0) {
+    _.each(images, (e: HTMLImageElement) => {
+      if ((e.src && e.complete) || /*for IE 10-*/ $$(e).height() > 0) {
         onImageLoad(e);
       } else {
-        $(e).off('load').one('load', function() {
-          onImageLoad(e);
-        });
+        $$(e).one('load', () => { onImageLoad(e) });
       }
     });
   }
 
-  private getHorizontalMargin(element: JQuery) {
-    return parseInt(element.css('margin-left')) + parseInt(element.css('margin-right'));
+  private getHorizontalMargin(element: HTMLElement) {
+    let elementDom = $$(element);
+    return parseInt(elementDom.css('margin-left')) + parseInt(elementDom.css('margin-right'));
   }
 
-  private getVerticalMargin(element: JQuery) {
-    return parseInt(element.css('margin-top')) + parseInt(element.css('margin-bottom'));
+  private getVerticalMargin(element: HTMLElement) {
+    let elementDom = $$(element);
+    return parseInt(elementDom.css('margin-top')) + parseInt(elementDom.css('margin-bottom'));
   }
 
   private setupColumns() {
-    let containerWidth = this.getResultsContainerDiv().width();
+    let containerWidth = $$(this.getResultsContainerDiv()).width();
     let result = this.getResultsElement();
     let colWidth = this.options.columnWidth;
-    let margin = this.getHorizontalMargin(result);
+    let margin = this.getHorizontalMargin(result[0]);
 
     let numberOfColumns = Math.floor(containerWidth / (colWidth + margin));
 
@@ -154,7 +187,7 @@ export class ImageResultList extends ResultList {
     }
 
     this.positionColumns(colWidth, margin);
-    $(this.element).trigger(ImageResultListEvents.imageResultsLayoutComplete, {});
+    $$(this.element).trigger(ImageResultListEvents.imageResultsLayoutComplete, {});
 
     if (this.options.enableInfiniteScroll) {
       this.adjustNumberOfResults();
@@ -166,14 +199,12 @@ export class ImageResultList extends ResultList {
 
     _.each(results, result => {
       let minTopOffset = _.min(this.columnResultsArray);
-      let resultIndex = $.inArray(minTopOffset, this.columnResultsArray);
+      let resultIndex = this.columnResultsArray.indexOf(minTopOffset);
       let leftOffset = margin + (resultIndex * (colWidth + margin));
 
-      $(result).css({
-        'left': leftOffset + 'px',
-        'top': minTopOffset + 'px',
-        'width': colWidth + 'px'
-      });
+      result.style.left = leftOffset + 'px';
+      result.style.top = minTopOffset + 'px';
+      result.style.width = colWidth + 'px';
 
       this.columnResultsArray[resultIndex] = minTopOffset + $(result).outerHeight() + margin;
     });
@@ -183,16 +214,14 @@ export class ImageResultList extends ResultList {
   }
 
   private setResultsContainerHeight(height: number) {
-    $(this.element).height(Math.ceil(height));
-    $(this.element).attr('data-height', Math.ceil(height));
+    $$(this.element).setAttribute('height', (Math.ceil(height).toString()));
   }
 
   private setupRows() {
     let results = this.getResultsElement();
-    let containerWidth = $(this.element).width();
+    let containerWidth = $$(this.element).width();
     this.resultIndex = 0;
     let topOffset = 0;
-
     while (this.resultIndex < results.length) {
       this.imagesInCurrentRow = [];
       let rowHeight = this.getCurrentRowHeight(results, containerWidth);
@@ -200,7 +229,7 @@ export class ImageResultList extends ResultList {
       topOffset += rowHeight;
     }
     this.setResultsContainerHeight(topOffset);
-    $(this.element).trigger(ImageResultListEvents.imageResultsLayoutComplete, {});
+    $$(this.element).trigger(ImageResultListEvents.imageResultsLayoutComplete, {});
     this.addTransitionAllToElement(results);
 
     if (this.options.enableInfiniteScroll) {
@@ -208,11 +237,11 @@ export class ImageResultList extends ResultList {
     }
   }
 
-  private getCurrentRowHeight(results: JQuery, containerWidth: number): number {
+  private getCurrentRowHeight(results: HTMLElement[], containerWidth: number): number {
     let divider = 0;
     let height: number = null;
     while ((this.resultIndex < results.length) && (height == null || height >= this.options.heightThreshold)) {
-      let imageDimensions = this.getImageDimensionsFromResult(results.eq(this.resultIndex));
+      let imageDimensions = this.getImageDimensionsFromResult(results[this.resultIndex]);
       if (imageDimensions != null) {
         divider += imageDimensions.width / imageDimensions.height;
         height = containerWidth / divider;
@@ -228,10 +257,10 @@ export class ImageResultList extends ResultList {
     return height;
   }
 
-  private getImageDimensionsFromResult(result: JQuery) {
-    let image = result.find('img');
-    let height = parseInt(image.attr('height'));
-    let width = parseInt(image.attr('width'));
+  private getImageDimensionsFromResult(result: HTMLElement) {
+    let image = $$(result).find('img');
+    let height = parseInt(image.getAttribute('height'));
+    let width = parseInt(image.getAttribute('width'));
 
     return {
       height: height,
@@ -239,37 +268,36 @@ export class ImageResultList extends ResultList {
     };
   }
 
-  private setCurrentRowImagesDimensions(images: JQuery, height: number, top: number) {
+  private setCurrentRowImagesDimensions(images: HTMLElement[], height: number, top: number) {
     let leftOffset = 0;
     _.each(this.imagesInCurrentRow, imageIndex => {
-      let oldWidth = parseInt(images.eq(imageIndex).find('img').attr('width'));
-      let oldHeight = parseInt(images.eq(imageIndex).find('img').attr('height'));
+      let image = $$(images[imageIndex]).find('img');
+      let oldWidth = parseInt(image.getAttribute('width'));
+      let oldHeight = parseInt(image.getAttribute('height'));
       let width = oldWidth * height / oldHeight;
-      let widthMargin = this.getHorizontalMargin(images.eq(imageIndex));
-      let heightMargin = this.getVerticalMargin(images.eq(imageIndex));
+      let widthMargin = this.getHorizontalMargin(image);
+      let heightMargin = this.getVerticalMargin(image);
 
-      images.eq(imageIndex).css({
-        'height': Math.round(height - heightMargin),
-        'width': Math.round(width - widthMargin),
-        'left': Math.round(leftOffset),
-        'top': Math.round(top)
-      });
+      image.setAttribute('height', Math.round(height - heightMargin).toString());
+      image.setAttribute('width', Math.round(width - widthMargin).toString());
+      image.setAttribute('left', Math.round(leftOffset).toString());
+      image.setAttribute('top', Math.round(top).toString());
 
       leftOffset += width;
     });
   }
 
   private adjustNumberOfResults() {
-    let elementHeight = Number($(this.element).attr('data-height'));
+    let elementHeight = Number($$(this.element).getAttribute('data-height'));
 
-    if ($.isNumeric(elementHeight) == false) {
-      elementHeight = $(this.element).height();
+    if (_.isNumber(elementHeight) == false) {
+      elementHeight = $$(this.element).height();
     }
 
-    if ((elementHeight < $(this.options.infiniteScrollContainer).height()) && super.hasPotentiallyMoreResultsToDisplay()) {
+    if ((elementHeight < $$(<HTMLElement>this.options.infiniteScrollContainer).height()) && super.hasPotentiallyMoreResultsToDisplay()) {
       super.displayMoreResults(this.options.infiniteScrollPageSize);
     }
   }
 }
 
-Coveo.Initialization.registerAutoCreateComponent(ImageResultList);
+Initialization.registerAutoCreateComponent(ImageResultList);

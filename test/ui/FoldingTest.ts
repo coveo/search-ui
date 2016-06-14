@@ -54,7 +54,7 @@ module Coveo {
           field: '@fieldname',
           expandExpression: 'myExpandExpression'
         })
-        var data = Simulate.query(test.env, {results: fakeResults});
+        var data = Simulate.query(test.env, { results: fakeResults });
 
         data.results.results[0].moreResults();
         expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
@@ -68,7 +68,7 @@ module Coveo {
           maximumExpandedResults: 42
         })
 
-        var data = Simulate.query(test.env, {results: fakeResults});
+        var data = Simulate.query(test.env, { results: fakeResults });
         test.env.queryController.getEndpoint().search = (query: IQuery) => {
           expect(query.numberOfResults).toBe(42);
           return new Promise((resolve, reject) => null)
@@ -81,7 +81,7 @@ module Coveo {
           field: '@fieldname',
           enableExpand: true
         })
-        var data = Simulate.query(test.env, {results: fakeResults});
+        var data = Simulate.query(test.env, { results: fakeResults });
         expect(data.results.results[0].moreResults).toEqual(jasmine.any(Function));
       })
 
@@ -90,20 +90,20 @@ module Coveo {
           field: '@fieldname',
           enableExpand: false
         })
-        var data = Simulate.query(test.env, {results: fakeResults});
+        var data = Simulate.query(test.env, { results: fakeResults });
         expect(data.results.results[0].moreResults).toBeUndefined();
       })
     })
 
     describe('expand', function () {
-      var queryData: SimulateQueryData;
+      var queryData: ISimulateQueryData;
 
       beforeEach(function () {
         test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
           field: '@fieldname',
           maximumExpandedResults: 7
         })
-        queryData = Simulate.query(test.env, {query: {q: 'foo bar'}, results: fakeResults})
+        queryData = Simulate.query(test.env, { query: { q: 'foo bar' }, results: fakeResults })
       })
 
       afterEach(function () {
@@ -145,7 +145,7 @@ module Coveo {
       fakeResults.results[0].flags = 'IsAttachment';
       fakeResults.results[0].parentResult = parent;
       fakeResults.results[0].raw.childfield = 'abc';
-      var data = Simulate.query(test.env, {results: fakeResults});
+      var data = Simulate.query(test.env, { results: fakeResults });
       expect(data.results.results[0].title).toBe('TitleParentResult');
     })
 
@@ -165,7 +165,7 @@ module Coveo {
       var topResult = results.shift();
       topResult.childResults = results;
 
-      var topResult = Folding.defaultGetResult(topResult);
+      topResult = Folding.defaultGetResult(topResult);
 
       expect(topResult).toEqual(jasmine.objectContaining({
         uniqueId: 'uniqueId0',
@@ -184,7 +184,7 @@ module Coveo {
             ]
           })
         ],
-        childResults : [
+        childResults: [
           jasmine.objectContaining({
             uniqueId: 'uniqueId4',
             attachments: [
@@ -226,7 +226,7 @@ module Coveo {
         results[0],
       ];
 
-      var topResult = Folding.defaultGetResult(topResult);
+      topResult = Folding.defaultGetResult(topResult);
 
       expect(topResult).toEqual(jasmine.objectContaining({
         uniqueId: 'uniqueId6',
@@ -280,7 +280,7 @@ module Coveo {
       var topResult = results.shift();
       topResult.childResults = results;
 
-      var topResult = Folding.defaultGetResult(topResult);
+      topResult = Folding.defaultGetResult(topResult);
 
       expect(topResult).toEqual(jasmine.objectContaining({
         uniqueId: 'uniqueId0',

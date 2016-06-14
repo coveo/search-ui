@@ -3,12 +3,12 @@
 module Coveo {
   describe('ExportToExcel', function () {
     var test: Mock.IBasicComponentSetup<ExportToExcel>;
-    
+
     beforeEach(function () {
       test = Mock.basicComponentSetup<ExportToExcel>(ExportToExcel);
       test.cmp._window = Mock.mockWindow();
     })
-    
+
     describe('exposes options', function () {
       it('numberOfResults calls search endpoint with appropriate number of results', function () {
         test = Mock.optionsComponentSetup<ExportToExcel, IExportToExcelOptions>(ExportToExcel, <IExportToExcelOptions>{
@@ -23,7 +23,7 @@ module Coveo {
         expect(searchEndpointSpy).toHaveBeenCalledWith(_.omit(fakeQuery, 'numberOfResults'), 200);
       })
     })
-    
+
     it('download should do nothing if no query was made', function () {
       var exportToExcelEventSpy = jasmine.createSpy('exportToExcelEventSpy');
       var windowLocationReplaceSpy = jasmine.createSpy('windowLocationReplaceSpy');
@@ -39,14 +39,14 @@ module Coveo {
         test.env.queryController.getLastQuery = () => new QueryBuilder().build();
         test.env.searchEndpoint.getExportToExcelLink = () => 'http://www.excellink.com';
       })
-      
-      it('download should call exportToExcel event if query was made', function() {
+
+      it('download should call exportToExcel event if query was made', function () {
         var excelSpy = jasmine.createSpy('excelSpy');
         test.env.usageAnalytics.logCustomEvent = excelSpy;
         test.cmp.download();
-        expect(excelSpy).toHaveBeenCalledWith(AnalyticsActionCauseList.exportToExcel, {}, test.env.element);
+        expect(excelSpy).toHaveBeenCalledWith(analyticsActionCauseList.exportToExcel, {}, test.env.element);
       })
-      
+
       it('download should redirect to the link provided by the search endpoint', function () {
         var windowLocationReplaceSpy = jasmine.createSpy('windowLocationReplaceSpy');
         test.cmp._window.location.replace = windowLocationReplaceSpy;
@@ -54,6 +54,6 @@ module Coveo {
         expect(test.cmp._window.location.replace).toHaveBeenCalledWith('http://www.excellink.com');
       })
     })
-    
+
   })
 }

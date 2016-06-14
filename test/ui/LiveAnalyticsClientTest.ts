@@ -3,7 +3,7 @@
 module Coveo {
   describe('LiveAnalyticsClient', function () {
     var endpoint: AnalyticsEndpoint;
-    var env: Mock.MockEnvironment;
+    var env: Mock.IMockEnvironment;
     var client: LiveAnalyticsClient;
     var promise: Promise<IQueryResults>;
 
@@ -11,7 +11,7 @@ module Coveo {
       env = new Mock.MockEnvironmentBuilder().build();
       endpoint = Mock.mock<AnalyticsEndpoint>(AnalyticsEndpoint);
       client = new LiveAnalyticsClient(endpoint, env.root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true);
-      promise = new Promise((resolve, reject)=> {
+      promise = new Promise((resolve, reject) => {
         resolve(FakeResults.createFakeResults(3))
       })
     })
@@ -25,7 +25,7 @@ module Coveo {
 
     it('should send proper information on logSearchEvent', function (done) {
 
-      client.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxSubmit, {});
+      client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
       var query: IQuery = {
         q: 'the query',
         aq: 'the advanced query',
@@ -58,7 +58,7 @@ module Coveo {
 
     it('should give precedence to query from the query state model instead of the one sent to the search api', (done) => {
 
-      client.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxSubmit, {});
+      client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
       var query: IQuery = {
         q: 'the query',
         aq: 'the advanced query',
@@ -67,7 +67,7 @@ module Coveo {
         enableDidYouMean: true
       };
 
-      env.queryStateModel.get = ()=> {
+      env.queryStateModel.get = () => {
         return 'another query';
       }
 
@@ -96,8 +96,8 @@ module Coveo {
 
     describe('with multiple (3) search events', function () {
       var root: HTMLElement
-      var env2: Mock.MockEnvironment;
-      var env3: Mock.MockEnvironment;
+      var env2: Mock.IMockEnvironment;
+      var env3: Mock.IMockEnvironment;
 
       beforeEach(function () {
         root = document.createElement('div');
@@ -118,7 +118,7 @@ module Coveo {
       })
 
       it('should support when 3 analytics search events are triggered together, 3 events are pushed to the endpoint at the same time', (done) => {
-        client.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxSubmit, {});
+        client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
         Simulate.query(env, {
           promise: promise,
           query: {
@@ -158,7 +158,7 @@ module Coveo {
       });
 
       it('should send only the new batch when search events are triggered together multiple times', function (done) {
-        client.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxSubmit, {});
+        client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
         Simulate.query(env, {
           promise: promise,
           query: {
@@ -234,9 +234,9 @@ module Coveo {
       })
 
       it('should not break if a search event is followed by 0 during query', function (done) {
-        client.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxSubmit, {});
+        client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
         Defer.flush();
-        client.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxSubmit, {});
+        client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
         Simulate.query(env, {
           promise: promise,
           query: {
@@ -275,12 +275,12 @@ module Coveo {
       })
 
       it('should only send success events to the endpoint', function (done) {
-        client.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxSubmit, {});
-        var promise2 = new Promise((resolve, reject)=> {
+        client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
+        var promise2 = new Promise((resolve, reject) => {
           reject();
         })
 
-        promise2.catch(()=> {
+        promise2.catch(() => {
         })
 
         Simulate.query(env, {
@@ -327,7 +327,7 @@ module Coveo {
     it('should trigger an analytics event on document view', function () {
       var spy = jasmine.createSpy('spy');
       $$(env.root).on(AnalyticsEvents.documentViewEvent, spy);
-      client.logClickEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.documentOpen, {}, FakeResults.createFakeResult('foo'), document.createElement('div'));
+      client.logClickEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, {}, FakeResults.createFakeResult('foo'), document.createElement('div'));
       Defer.flush();
       expect(spy).toHaveBeenCalled();
     })
@@ -335,12 +335,12 @@ module Coveo {
     it('should trigger an analytics event on search event', function (done) {
       var spy = jasmine.createSpy('spy');
       $$(env.root).on(AnalyticsEvents.searchEvent, spy);
-      client.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxSubmit, {});
+      client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
       Simulate.query(env, {
         query: {
           q: 'the query 1'
         },
-        promise: new Promise((resolve, reject)=> {
+        promise: new Promise((resolve, reject) => {
           resolve(FakeResults.createFakeResults(3));
         })
       });
@@ -353,7 +353,7 @@ module Coveo {
     it('should trigger an analytics event on custom event', function () {
       var spy = jasmine.createSpy('spy');
       $$(env.root).on(AnalyticsEvents.customEvent, spy);
-      client.logCustomEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.documentOpen, {}, document.createElement('div'));
+      client.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, {}, document.createElement('div'));
       Defer.flush();
       expect(spy).toHaveBeenCalled();
     })
@@ -361,7 +361,7 @@ module Coveo {
     it('should trigger change analytics metadata event', function () {
       var spy = jasmine.createSpy('spy');
       $$(env.root).on(AnalyticsEvents.changeAnalyticsCustomData, spy);
-      client.logCustomEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.documentOpen, {}, document.createElement('div'));
+      client.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, {}, document.createElement('div'));
       Defer.flush();
       expect(spy).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({
         originLevel1: 'default',
@@ -382,7 +382,7 @@ module Coveo {
       })
 
       it('should log after 5 seconds have passed since the last duringQueryEvent', function () {
-        client.logSearchAsYouType<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxSubmit, {});
+        client.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
         Simulate.query(env, {
           query: {
             q: 'the query 1'
@@ -396,7 +396,7 @@ module Coveo {
       })
 
       it('should not log after 5 seconds have passed since the last duringQueryEvent if another event is pushed and it\'s a search box', function () {
-        client.logSearchAsYouType<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxSubmit, {});
+        client.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
         Simulate.query(env, {
           query: {
             q: 'the query 1'
@@ -405,7 +405,7 @@ module Coveo {
         });
         jasmine.clock().tick(5);
         expect(client['pendingSearchAsYouTypeSearchEvent']).toBeDefined();
-        client.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxSubmit, {});
+        client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
         Simulate.query(env, {
           query: {
             q: 'the query 1'
@@ -416,7 +416,7 @@ module Coveo {
       })
 
       it('should log after 5 seconds have passed since the last duringQueryEvent if another event is pushed and it\'s not a search box', function () {
-        client.logSearchAsYouType<IAnalyticsNoMeta>(AnalyticsActionCauseList.searchboxSubmit, {});
+        client.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
         Simulate.query(env, {
           query: {
             q: 'the query 1'
@@ -425,7 +425,7 @@ module Coveo {
         });
         jasmine.clock().tick(5);
         expect(client['pendingSearchAsYouTypeSearchEvent']).toBeDefined();
-        client.logSearchEvent<IAnalyticsNoMeta>(AnalyticsActionCauseList.facetClearAll, {});
+        client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.facetClearAll, {});
         Simulate.query(env, {
           query: {
             q: 'the query 1'

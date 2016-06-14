@@ -5,9 +5,10 @@ import {PendingSearchAsYouTypeSearchEvent} from './PendingSearchAsYouTypeSearchE
 import {AnalyticsEndpoint} from '../../rest/AnalyticsEndpoint';
 import {Assert} from '../../misc/Assert';
 import {Logger} from '../../misc/Logger';
-import {IAnalyticsActionCause, AnalyticsActionCauseList} from './AnalyticsActionListMeta';
+import {IAnalyticsActionCause, analyticsActionCauseList} from './AnalyticsActionListMeta';
 import {IQueryResult} from '../../rest/QueryResult';
 import {ITopQueries} from '../../rest/TopQueries';
+
 import {IChangeableAnalyticsMetaObject, IChangeableAnalyticsDataObject, IChangeAnalyticsCustomDataEventArgs} from '../../events/AnalyticsEvents';
 import {Defer} from '../../misc/Defer';
 import {$$} from '../../utils/Dom';
@@ -227,6 +228,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       documentUriHash: result.raw['urihash'],
       documentUrl: result.clickUri,
       documentTitle: result.title,
+      documentCategory: result.raw['objecttype'],
       originLevel2: this.getOriginLevel2(element),
       collectionName: <string>result.raw['collection'],
       sourceName: <string>result.raw['source'],
@@ -274,7 +276,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
   }
 
   private eventIsNotRelatedToSearchbox(event: string) {
-    return event !== AnalyticsActionCauseList.searchboxSubmit.name && event !== AnalyticsActionCauseList.searchboxClear.name
+    return event !== analyticsActionCauseList.searchboxSubmit.name && event !== analyticsActionCauseList.searchboxClear.name
   }
 
   private triggerChangeAnalyticsCustomData(type: string, metaObject: IChangeableAnalyticsMetaObject, event: IAnalyticsEvent, data?: any) {

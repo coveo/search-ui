@@ -27,7 +27,7 @@ import {QueryEvents, INewQueryEventArgs, IQuerySuccessEventArgs, IBuildingQueryE
 import {Assert} from '../../misc/Assert';
 import {ISearchEndpoint} from '../../rest/SearchEndpointInterface';
 import {$$} from '../../utils/Dom';
-import {IAnalyticsFacetMeta, AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
+import {IAnalyticsFacetMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {Utils} from '../../utils/Utils';
 import {IIndexFieldValue} from '../../rest/FieldValue';
 import {IPopulateBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
@@ -37,7 +37,7 @@ import {FacetValueElement} from './FacetValueElement';
 import {FacetSearchValuesList} from './FacetSearchValuesList';
 import {Defer} from '../../misc/Defer';
 import {QueryStateModel, IQueryStateIncludedAttribute, IQueryStateExcludedAttribute} from '../../models/QueryStateModel';
-import {ModelEvents, IAttributesChangedEventArg} from '../../models/Model';
+import {MODEL_EVENTS, IAttributesChangedEventArg} from '../../models/Model';
 import {OmniboxEvents, IPopulateOmniboxEventArgs} from '../../events/OmniboxEvents';
 import {OmniboxValueElement} from './OmniboxValueElement';
 import {OmniboxValuesList} from './OmniboxValuesList';
@@ -61,7 +61,7 @@ export interface IFacetOptions {
   showIcon?: boolean;
   useAnd?: boolean;
   enableCollapse?: boolean;
-  allowTogglingOperator?: boolean;
+  enableTogglingOperator?: boolean;
   enableMoreLess?: boolean;
   valueCaption?: any;
   lookupField?: string;
@@ -204,7 +204,7 @@ export class Facet extends Component {
      * Specifies whether the user is allowed to toggle between OR and AND mode, using an icon in the top right corner of the facet.<br/>
      * The default value is false.
      */
-    allowTogglingOperator: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    enableTogglingOperator: ComponentOptions.buildBooleanOption({ defaultValue: false, alias: 'allowTogglingOperator' }),
     /**
      * Specifies whether the search box for searching inside the available values will be displayed at the bottom of the facet.<br/>
      * The default value is true.
@@ -407,7 +407,6 @@ export class Facet extends Component {
    */
   constructor(public element: HTMLElement, public options: IFacetOptions, bindings?: IComponentBindings, facetClassId: string = Facet.ID) {
     super(element, facetClassId, bindings);
-
     this.options = ComponentOptions.initComponentOptions(element, Facet, options);
 
     if (this.options.valueCaption != null) {
@@ -745,7 +744,7 @@ export class Facet extends Component {
     this.currentPage = Math.floor((this.numberOfValues - this.options.numberOfValues) / this.options.pageSize);
 
     this.updateQueryStateModel();
-    this.triggerNewQuery(() => this.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(AnalyticsActionCauseList.facetSelectAll, {
+    this.triggerNewQuery(() => this.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetSelectAll, {
       facetId: this.options.id,
       facetTitle: this.options.title
     }));
@@ -797,7 +796,7 @@ export class Facet extends Component {
    * Show less element in the facet (up to the original number of values)
    */
   public showLess() {
-    $$(this.lessElement).hide();
+    $$(this.lessElement).removeClass('coveo-active');
     this.currentPage = 0;
     this.updateNumberOfValues();
     $$(this.moreElement).addClass('coveo-active');
@@ -884,7 +883,7 @@ export class Facet extends Component {
     this.queryStateModel.registerNewAttribute(this.operatorAttributeId, '');
     this.queryStateModel.registerNewAttribute(this.lookupValueAttributeId, {});
 
-    this.bind.onQueryState(ModelEvents.CHANGE, undefined, (args: IAttributesChangedEventArg) => this.handleQueryStateChanged(args));
+    this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, (args: IAttributesChangedEventArg) => this.handleQueryStateChanged(args));
   }
 
   protected initComponentStateEvents() {
@@ -996,13 +995,11 @@ export class Facet extends Component {
     }
   }
 
-  protected updateMoreLess() {
-    var lessElementIsShown = this.getMinimumNumberOfValuesToDisplay() < this.numberOfValues;
-    var moreValuesAvailable = this.nbAvailableValues > this.numberOfValues;
+  protected updateMoreLess(lessElementIsShown = this.getMinimumNumberOfValuesToDisplay() < this.numberOfValues, moreValuesAvailable = this.nbAvailableValues > this.numberOfValues) {
     if (lessElementIsShown) {
-      $$(this.lessElement).show();
+      $$(this.lessElement).addClass('coveo-active');
     } else {
-      $$(this.lessElement).hide();
+      $$(this.lessElement).removeClass('coveo-active');
     }
 
     if (moreValuesAvailable) {
@@ -1016,7 +1013,6 @@ export class Facet extends Component {
     } else {
       $$(this.footerElement).addClass('coveo-facet-empty');
     }
-
   }
 
   protected handleClickMore(): void {
@@ -1400,13 +1396,13 @@ export class Facet extends Component {
       var lessIcon = document.createElement('span');
       $$(lessIcon).addClass('coveo-icon');
       less.appendChild(lessIcon);
-      $$(less).hide();
       $$(less).on('click', () => this.handleClickLess());
       return less;
     } else {
       let less = document.createElement('a');
       $$(less).addClass('coveo-facet-less');
       $$(less).text(l('Less'));
+      $$(less).on('click', () => this.handleClickLess());
       return less;
     }
   }

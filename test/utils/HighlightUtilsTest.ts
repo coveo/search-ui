@@ -26,7 +26,7 @@ module Coveo {
           { offset: 18, length: 15 },
           { offset: 45, length: 10 }
         ];
-        let expectedHighlight =  'Lor<span class="coveo-highlight">em ip</span>su<span class="coveo-highlight">m do</span>lor <span class="coveo-highlight">sit amet,</span>...';
+        let expectedHighlight = 'Lor<span class="coveo-highlight">em ip</span>su<span class="coveo-highlight">m do</span>lor <span class="coveo-highlight">sit amet,</span>...';
         let highlightedString = HighlightUtils.highlightString(shortenedString.value, highlights, shortenedString.holes, 'coveo-highlight');
         expect(highlightedString).toBe(expectedHighlight);
       })
@@ -39,7 +39,7 @@ module Coveo {
           { offset: 18, length: 15 },
           { offset: 45, length: 10 }
         ];
-        let expectedHighlight =  'C:\\...<span class="coveo-highlight">ces\\</span>sa...';
+        let expectedHighlight = 'C:\\...<span class="coveo-highlight">ces\\</span>sa...';
         let highlightedString = HighlightUtils.highlightString(shortenedString.value, highlights, shortenedString.holes, 'coveo-highlight');
         expect(highlightedString).toBe(expectedHighlight);
 

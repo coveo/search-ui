@@ -71,7 +71,7 @@ $default-border: 1px solid $color-light-grey;
 }
 
 @mixin iconWithHoverState($iconBase, $float:'left', $inactive : 'coveo-disabled') {
-  $iconActive: #{$iconBase} + '-active';
+  $iconActive: '#{$iconBase}-active';
   .coveo-icon {
     @extend #{$iconBase};
     float: #{$float};
@@ -156,5 +156,15 @@ $default-border: 1px solid $color-light-grey;
   a {
     @include clickable();
     white-space: nowrap;
+  }
+}
+
+@include keyframes(coveo-spin) {
+  from {
+    @include transform(rotate(0deg));
+  }
+
+  to {
+    @include transform(rotate(360deg));
   }
 }

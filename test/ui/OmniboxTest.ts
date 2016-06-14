@@ -1,26 +1,26 @@
 /// <reference path="../Test.ts" />
 module Coveo {
-  describe('Omnibox', function () {
+  describe('Omnibox', () => {
     var test: Mock.IBasicComponentSetup<Omnibox>;
-    beforeEach(function () {
+    beforeEach(() => {
       test = Mock.basicComponentSetup<Omnibox>(Omnibox);
     })
-    afterEach(function () {
+    afterEach(() => {
       test = null;
     })
 
-    it('should trigger a query on submit', function () {
+    it('should trigger a query on submit', () => {
       test.cmp.submit();
       expect(test.env.queryController.executeQuery).toHaveBeenCalled();
     })
 
-    it('should log analytics event on submit', function () {
+    it('should log analytics event on submit', () => {
       test.cmp.submit();
-      expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(AnalyticsActionCauseList.searchboxSubmit, {});
+      expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchboxSubmit, {});
     })
 
-    describe('exposes options', function () {
-      it('inline should be passed down to magic box', function () {
+    describe('exposes options', () => {
+      it('inline should be passed down to magic box', () => {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           inline: true
         });
@@ -37,13 +37,13 @@ module Coveo {
         })
         expect(test.cmp.magicBox.onchange).toBeDefined();
         test.cmp.magicBox.onchange();
-        setTimeout(()=> {
+        setTimeout(() => {
           expect(test.env.queryController.executeQuery).toHaveBeenCalled();
           done();
         }, test.cmp.options.searchAsYouTypeDelay)
       })
 
-      it('enableQuerySyntax should modify the disableQuerySyntax parameter', function() {
+      it('enableQuerySyntax should modify the disableQuerySyntax parameter', function () {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           enableQuerySyntax: false
         });
@@ -57,12 +57,82 @@ module Coveo {
         });
         test.cmp.setText('@field==Batman');
 
-        var simulation = Simulate.query(test.env);
+        simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.disableQuerySyntax).toBe(false);
 
       });
 
-      it('enableFieldAddon should create an addon component', function () {
+      it('enablePartialMatch should modify the enablePartialMatch parameters', () => {
+        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          enablePartialMatch: false
+        })
+        test.cmp.setText('@field==Batman');
+
+        var simulation = Simulate.query(test.env);
+        expect(simulation.queryBuilder.enablePartialMatch).toBeFalsy();
+
+        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          enablePartialMatch: true
+        })
+        test.cmp.setText('@field==Batman');
+        simulation = Simulate.query(test.env);
+        expect(simulation.queryBuilder.enablePartialMatch).toBe(true);
+
+      })
+
+      it('partialMatchKeywords should modify the query builder', () => {
+        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          partialMatchKeywords: 123,
+          enablePartialMatch: true
+        })
+        test.cmp.setText('@field==Batman');
+
+        var simulation = Simulate.query(test.env);
+        expect(simulation.queryBuilder.partialMatchKeywords).toBe(123);
+      })
+
+      it('partialMatchThreshold should modify the query builder', () => {
+        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          partialMatchThreshold: '14%',
+          enablePartialMatch: true
+        })
+        test.cmp.setText('@field==Batman');
+
+        var simulation = Simulate.query(test.env);
+        expect(simulation.queryBuilder.partialMatchThreshold).toBe('14%');
+      })
+
+      it('enableWildcards should modify the query builder', () => {
+        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          enableWildcards: true
+        })
+        test.cmp.setText('@field==Batman');
+
+        var simulation = Simulate.query(test.env);
+        expect(simulation.queryBuilder.enableWildcards).toBe(true);
+      })
+
+      it('enableQuestionMarks should modify the query builder', () => {
+        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          enableQuestionMarks: true
+        })
+        test.cmp.setText('@field==Batman');
+
+        var simulation = Simulate.query(test.env);
+        expect(simulation.queryBuilder.enableQuestionMarks).toBe(true);
+      })
+
+      it('enableQuestionMarks should modify the query builder', () => {
+        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          enableLowercaseOperators: true
+        })
+        test.cmp.setText('@field==Batman');
+
+        var simulation = Simulate.query(test.env);
+        expect(simulation.queryBuilder.enableLowercaseOperators).toBe(true);
+      })
+
+      it('enableFieldAddon should create an addon component', () => {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           enableFieldAddon: true
         })
@@ -80,17 +150,18 @@ module Coveo {
         expect(test.env.searchEndpoint.listFieldValues).toHaveBeenCalled();
       })
 
-      it('enableTopQueryAddon should create an addon component', function () {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
-          enableTopQueryAddon: true
-        })
+      it('enableTopQueryAddon should get suggestion from reveal', () => {
+        let element = $$('div');
+        element.addClass('CoveoOmnibox');
+        element.setAttribute('data-enable-top-query-addon', 'true');
+        test = Mock.advancedComponentSetup<Omnibox>(Omnibox, new Mock.AdvancedComponentSetupOptions(element.el));
 
         test.cmp.setText('foobar');
         test.cmp.magicBox.getSuggestions();
-        expect(test.env.usageAnalytics.getTopQueries).toHaveBeenCalled();
+        expect(test.env.searchEndpoint.getRevealQuerySuggest).toHaveBeenCalled();
       })
 
-      it('enableRevealQuerySuggestAddon should create an addon component', function () {
+      it('enableRevealQuerySuggestAddon should create an addon component', () => {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           enableRevealQuerySuggestAddon: true
         })
@@ -100,7 +171,7 @@ module Coveo {
         expect(test.env.searchEndpoint.getRevealQuerySuggest).toHaveBeenCalled();
       })
 
-      it('enableQueryExtensionAddon should create an addon component', function () {
+      it('enableQueryExtensionAddon should create an addon component', () => {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           enableQueryExtensionAddon: true
         })
@@ -110,7 +181,7 @@ module Coveo {
         expect(test.env.searchEndpoint.extensions).toHaveBeenCalled();
       })
 
-      it('placeholder allow to set a placeholder in the input', function () {
+      it('placeholder allow to set a placeholder in the input', () => {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           placeholder: 'trololo'
         })
@@ -120,23 +191,23 @@ module Coveo {
 
     })
 
-    describe('with live query state model', function () {
-      beforeEach(function () {
-        test = Mock.advancedComponentSetup<Omnibox>(Omnibox, new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder: Mock.MockEnvironmentBuilder)=> {
+    describe('with live query state model', () => {
+      beforeEach(() => {
+        test = Mock.advancedComponentSetup<Omnibox>(Omnibox, new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder: Mock.MockEnvironmentBuilder) => {
           return builder.withLiveQueryStateModel();
         }));
       })
-      afterEach(function () {
+      afterEach(() => {
         test = null;
       })
 
-      it('should update the state on building query', function () {
+      it('should update the state on building query', () => {
         test.cmp.setText('foobar');
         Simulate.query(test.env);
         expect(test.env.queryStateModel.get('q')).toBe('foobar');
       })
 
-      it('should update the content on state change', function () {
+      it('should update the content on state change', () => {
         test.env.queryStateModel.set('q', 'trololo');
         expect(test.cmp.getText()).toEqual('trololo');
       })

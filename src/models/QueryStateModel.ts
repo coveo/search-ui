@@ -4,7 +4,7 @@ import {IStringMap} from '../rest/GenericParam';
 import {Utils} from '../utils/Utils';
 import _ = require('underscore');
 
-export const QueryStateAttributes = {
+export const QUERY_STATE_ATTRIBUTES = {
   Q: 'q',
   FIRST: 'first',
   T: 't',

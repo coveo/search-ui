@@ -140,10 +140,10 @@ module Coveo {
         })
 
         it('should work if responseContentType is text', function (done) {
-          this.promise.then((response: ISuccessResponse<IQueryResults>)=> {
+          this.promise.then((response: ISuccessResponse<IQueryResults>) => {
             expect(response.data.results.length).toBe(10);
             expect(response.duration).toBeDefined();
-          }).finally(()=> {
+          }).finally(() => {
             done();
           })
 
@@ -155,10 +155,10 @@ module Coveo {
         })
 
         it('should work if responseContentType is application/json', function (done) {
-          this.promise.then((response: ISuccessResponse<IQueryResults>)=> {
+          this.promise.then((response: ISuccessResponse<IQueryResults>) => {
             expect(response.data.results.length).toBe(10);
             expect(response.duration).toBeDefined();
-          }).finally(()=> {
+          }).finally(() => {
             done();
           })
           var fakeRequest = jasmine.Ajax.requests.mostRecent();
@@ -171,16 +171,16 @@ module Coveo {
 
         it('should behave properly if there is an error', function (done) {
           this.promise
-              .then((response: ISuccessResponse<IQueryResults>)=> {
-                // This should never execute, and always go to the catch statement
-                expect(false).toBe(true)
-              })
-              .catch((error: IErrorResponse)=> {
-                expect(error.statusCode).toBe(500);
-              })
-              .finally(()=> {
-                done();
-              })
+            .then((response: ISuccessResponse<IQueryResults>) => {
+              // This should never execute, and always go to the catch statement
+              expect(false).toBe(true)
+            })
+            .catch((error: IErrorResponse) => {
+              expect(error.statusCode).toBe(500);
+            })
+            .finally(() => {
+              done();
+            })
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 500
@@ -189,16 +189,16 @@ module Coveo {
 
         it('should behave properly if there is an error in the body', function (done) {
           this.promise
-              .then((response: ISuccessResponse<IQueryResults>)=> {
-                // This should never execute, and always go to the catch statement
-                expect(false).toBe(true)
-              })
-              .catch((error: IErrorResponse)=> {
-                expect(error.statusCode).toBe(404);
-              })
-              .finally(()=> {
-                done();
-              })
+            .then((response: ISuccessResponse<IQueryResults>) => {
+              // This should never execute, and always go to the catch statement
+              expect(false).toBe(true)
+            })
+            .catch((error: IErrorResponse) => {
+              expect(error.statusCode).toBe(404);
+            })
+            .finally(() => {
+              done();
+            })
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
@@ -232,10 +232,10 @@ module Coveo {
         })
 
         it('should work if responseContentType is text', function (done) {
-          this.promise.then((response: ISuccessResponse<IQueryResults>)=> {
+          this.promise.then((response: ISuccessResponse<IQueryResults>) => {
             expect(response.data.results.length).toBe(10);
             expect(response.duration).toBeDefined();
-          }).finally(()=> {
+          }).finally(() => {
             done();
           })
 
@@ -247,10 +247,10 @@ module Coveo {
         })
 
         it('should work if responseContentType is application/json', function (done) {
-          this.promise.then((response: ISuccessResponse<IQueryResults>)=> {
+          this.promise.then((response: ISuccessResponse<IQueryResults>) => {
             expect(response.data.results.length).toBe(10);
             expect(response.duration).toBeDefined();
-          }).finally(()=> {
+          }).finally(() => {
             done();
           })
           var fakeRequest = jasmine.Ajax.requests.mostRecent();

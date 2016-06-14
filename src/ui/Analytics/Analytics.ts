@@ -16,7 +16,7 @@ import {Utils} from '../../utils/Utils';
 import {NoopAnalyticsClient} from '../Analytics/NoopAnalyticsClient';
 import {LiveAnalyticsClient} from './LiveAnalyticsClient';
 import {MultiAnalyticsClient} from './MultiAnalyticsClient';
-import {IAnalyticsQueryErrorMeta, AnalyticsActionCauseList} from './AnalyticsActionListMeta';
+import {IAnalyticsQueryErrorMeta, analyticsActionCauseList} from './AnalyticsActionListMeta';
 import {Recommendation} from '../Recommendation/Recommendation';
 import {RecommendationAnalyticsClient} from './RecommendationAnalyticsClient';
 
@@ -260,7 +260,7 @@ export class Analytics extends Component {
   private handleQueryError(data: IQueryErrorEventArgs) {
     Assert.exists(data);
 
-    this.client.logCustomEvent<IAnalyticsQueryErrorMeta>(AnalyticsActionCauseList.queryError, {
+    this.client.logCustomEvent<IAnalyticsQueryErrorMeta>(analyticsActionCauseList.queryError, {
       query: data.query.q,
       aq: data.query.aq,
       cq: data.query.cq,

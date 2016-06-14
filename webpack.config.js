@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+
 module.exports = {
   entry: ['./src/Dependencies.js', './src/Index.ts'],
   output: {
@@ -24,7 +25,9 @@ module.exports = {
   devtool: '#inline-source-map',
   module: {
     loaders: [
-      {test: /\.ts$/, loader: 'ts-loader'}
+      { test: /\.ts$/, loader: 'ts-loader' },
+      { test: /\.scss$/, loaders: ['style?insertAt=bottom', 'css?sourceMap', 'resolve-url', 'sass?sourceMap'] },
+      { test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'url?limit=8182' }
     ]
   },
   bail: true

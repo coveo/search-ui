@@ -8,7 +8,7 @@ import {IFacetSortKlass, FacetSort} from './FacetSort';
 import {$$} from '../../utils/Dom';
 import {FacetUtils} from './FacetUtils';
 import {l} from '../../strings/Strings';
-import {IAnalyticsFacetOperatorMeta, IAnalyticsFacetMeta, AnalyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
+import {IAnalyticsFacetOperatorMeta, IAnalyticsFacetMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 
 export interface IFacetHeaderOptions {
   facetElement: HTMLElement;
@@ -70,7 +70,7 @@ export class FacetHeader {
     if (this.options.facet) {
       this.operatorElement = this.buildOperatorToggle();
       this.element.appendChild(this.operatorElement);
-      $$(this.operatorElement).toggle(this.options.facet.options.allowTogglingOperator);
+      $$(this.operatorElement).toggle(this.options.facet.options.enableTogglingOperator);
     }
 
     this.eraserElement = this.buildEraser();
@@ -120,7 +120,7 @@ export class FacetHeader {
   }
 
   public updateOperatorQueryStateModel(): void {
-    if (this.options.facet && this.options.facet.options.allowTogglingOperator) {
+    if (this.options.facet && this.options.facet.options.enableTogglingOperator) {
       var valueToSet = '';
       if (this.options.facet.getSelectedValues().length != 0 || this.options.facet.getExcludedValues().length != 0) {
         valueToSet = this.options.facet.options.useAnd ? 'and' : 'or';
@@ -205,7 +205,7 @@ export class FacetHeader {
     if (this.options.facet.getSelectedValues().length != 0) {
       var operatorNow = this.options.facet.options.useAnd ? 'AND' : 'OR';
       var operatorBefore = this.options.facet.options.useAnd ? 'OR' : 'AND';
-      this.options.facet.triggerNewQuery(() => this.options.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetOperatorMeta>(AnalyticsActionCauseList.facetToggle, {
+      this.options.facet.triggerNewQuery(() => this.options.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetOperatorMeta>(analyticsActionCauseList.facetToggle, {
         facetId: this.options.facet.options.id,
         facetOperatorBefore: operatorBefore,
         facetOperatorAfter: operatorNow,
@@ -232,7 +232,7 @@ export class FacetHeader {
     $$(eraser).on('click', () => {
       var cmp = this.options.facet || this.options.facetSlider;
       cmp.reset();
-      cmp.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(AnalyticsActionCauseList.facetClearAll, {
+      cmp.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetClearAll, {
         facetId: cmp.options.id,
         facetTitle: cmp.options.title
       })

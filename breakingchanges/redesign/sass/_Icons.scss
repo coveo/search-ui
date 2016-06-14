@@ -81,9 +81,6 @@
   &.language {
     @extend .coveo-sprites-documentType-language;
   }
-  &.licategoryshorttitle, &.liboardshorttitle {
-    @extend .coveo-sprites-documentType-lithium;
-  }
   &.concepts {
     @extend .coveo-sprites-documentType-kb;
   }
