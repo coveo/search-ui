@@ -12,7 +12,7 @@ export class HierarchicalBreadcrumbValueElement extends BreadcrumbValueElement {
     var build = super.build();
     build.addClass('coveo-hierarchical-facet-value');
     var caption = build.find('.coveo-facet-value-caption');
-    caption.innerHTML = this.facetValue.value.split(this.facet.options.delimitingCharacter).join("<span class='coveo-hierarchical-breadcrumb-separator'></span>");
+    caption.innerHTML = this.facetValue.value.split(this.facet.options.delimitingCharacter).join('<span class="coveo-hierarchical-breadcrumb-separator"></span>');
     return build;
   }
 }

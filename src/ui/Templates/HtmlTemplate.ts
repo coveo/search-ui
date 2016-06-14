@@ -1,5 +1,5 @@
 import {Template} from './Template';
-import {ComponentOptions, FieldsOption} from '../Base/ComponentOptions';
+import {ComponentOptions, IFieldsOption} from '../Base/ComponentOptions';
 import {Assert} from '../../misc/Assert';
 import {$$} from '../../utils/Dom';
 
@@ -26,7 +26,7 @@ export class HtmlTemplate extends Template {
 
     this.fields = Template.getFieldFromString(element.innerHTML + ' ' + condition);
 
-    var additionalFields = ComponentOptions.loadFieldsOption(element, 'fields', <FieldsOption>{ includeInResults: true });
+    var additionalFields = ComponentOptions.loadFieldsOption(element, 'fields', <IFieldsOption>{ includeInResults: true });
     if (additionalFields != null) {
       // remove the @
       this.fields = this.fields.concat(_.map(additionalFields, (field) => field.substr(1)));

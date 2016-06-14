@@ -595,7 +595,7 @@ export class QueryController extends RootComponent {
     if (typeof coveoanalytics != 'undefined') {
       let store = new coveoanalytics.history.HistoryStore()
       let queryElement: CoveoAnalytics.HistoryQueryElement = {
-        name: "Query",
+        name: 'Query',
         value: query.q,
         time: JSON.stringify(new Date())
       }

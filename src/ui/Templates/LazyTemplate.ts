@@ -1,10 +1,10 @@
 import {Template} from './Template';
-import {TemplateOption} from '../Base/ComponentOptions';
+import {ITemplateOption} from '../Base/ComponentOptions';
 
 export class LazyTemplate extends Template {
   private template: Template;
 
-  constructor(private element: HTMLElement, private attrName: string, private option: TemplateOption) {
+  constructor(private element: HTMLElement, private attrName: string, private option: ITemplateOption) {
     super();
   }
 

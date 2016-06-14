@@ -1,7 +1,7 @@
 import {Model} from './Model';
 import _ = require('underscore');
 
-export interface ComponentOptionsAttributes {
+export interface IComponentOptionsAttributes {
   resultLink: any;
   searchHub: string;
 }
@@ -9,7 +9,7 @@ export interface ComponentOptionsAttributes {
 export class ComponentOptionsModel extends Model {
   static ID = 'ComponentOptions';
 
-  static defaultAttributes: ComponentOptionsAttributes = {
+  static defaultAttributes: IComponentOptionsAttributes = {
     resultLink: undefined,
     searchHub: undefined
   };
@@ -19,7 +19,7 @@ export class ComponentOptionsModel extends Model {
     searchHub: 'searchHub'
   };
 
-  constructor(element: HTMLElement, attributes?: ComponentOptionsAttributes) {
+  constructor(element: HTMLElement, attributes?: IComponentOptionsAttributes) {
     var merged = _.extend({}, ComponentOptionsModel.defaultAttributes, attributes);
     super(element, ComponentOptionsModel.ID, merged);
   }
