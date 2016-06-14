@@ -2,6 +2,37 @@
 
 .CoveoSearchInterface.coveo-small-search-interface {
   .coveo-facet-dropdown-header-container {
-    height: 100%;
+    display: inline-block;
+    border-left: 1px solid white;
+
+    p {
+      height: 100%;
+    }
   }
+
+  .coveo-facet-column.coveo-facet-dropdown-content {
+    clear: both;
+    white-space: nowrap;
+    padding: 0;
+    min-width: 280px;
+    width: 35%;
+    z-index: 20;
+
+    .CoveoFacet {
+      margin: 0;
+    }
+  }
+}
+.coveo-facet-dropdown-background {
+    @include transition-property(background);
+    @include transition-duration(0.225s);
+    @include transition-timing-function(ease-in);
+    background: rgba(0, 0, 0, 0.5);
+    //opacity: 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 15;
 }

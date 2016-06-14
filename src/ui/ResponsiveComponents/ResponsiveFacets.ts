@@ -3,6 +3,7 @@ import {IResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveCom
 import {Logger} from '../../misc/Logger';
 import '../../../sass/_ResponsiveFacets.scss';
 import {l} from '../../strings/Strings.ts';
+import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
 
 export class ResponsiveFacets implements IResponsiveComponent {
 
@@ -17,6 +18,10 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private previousSibling: Dom;
   private parent: Dom;
   private dropdownHeader: Dom;
+  private dropdownHeaderContainer: Dom;
+  private tabSection: Dom;
+  private popupBackground: Dom;
+  private documentClickListener: EventListener;
 
   public static init(root: HTMLElement, ID: string) {
     this.logger = new Logger(root);
@@ -28,11 +33,15 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   constructor(root: Dom, ID: string) {
-    this.dropdownHeader = this.buildDropdownHeader();
     this.ID = ID;
     this.coveoRoot = root;
+    this.tabSection = $$(this.coveoRoot.find('.coveo-tab-section'));
     this.facetsColumn = $$(this.coveoRoot.find('.coveo-facet-column'));
-    this.savePosition();
+    this.buildDropdownHeader();
+    this.bindDropdownHeaderEvents();
+    this.bindDropdownContentEvents();
+    this.buildPopupBackground();
+    this.saveFacetsPosition();
   }
 
   public needSmallMode(): boolean {
@@ -40,22 +49,81 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   public changeToSmallMode() {
-    let tabSection = this.coveoRoot.find('.coveo-tab-section');
-    tabSection.appendChild(this.dropdownHeader.el);
+    this.tabSection.el.appendChild(this.dropdownHeaderContainer.el);
+    this.facetsColumn.detach();
   }
 
   public changeToLargeMode() {
-    this.dropdownHeader.detach();
+    this.dropdownHeaderContainer.detach();
+    this.facetsColumn.el.removeAttribute('style');
+    this.restoreFacetsPosition();
   }
 
   private buildDropdownHeader() {
-    let dropdownHeader = $$('div', { className: 'coveo-facet-dropdown-header-container coveo-dropdown-header' });
-    dropdownHeader.text(l('Facets'));
-    return dropdownHeader;
+    this.dropdownHeaderContainer = $$('div', {className: 'coveo-facet-dropdown-header-container'});
+    this.dropdownHeader = $$('a', {className: 'coveo-dropdown-header coveo-facet-dropdown-header'});
+    let content = $$('p');
+    content.text(l('facets'));
+    this.dropdownHeader.el.appendChild(content.el);
+    this.dropdownHeaderContainer.el.appendChild(this.dropdownHeader.el);
   }
 
-  private savePosition() {
+  private bindDropdownHeaderEvents() {
+    this.dropdownHeader.on('click', () => {
+      if (!this.dropdownHeader.hasClass('coveo-dropdown-header-active')) {
+        this.positionPopup();
+        this.dropdownHeader.addClass('coveo-dropdown-header-active');
+        document.documentElement.appendChild(this.popupBackground.el);
+      } else {
+        this.detachDropdown();
+      }
+    });
+  }
+
+  private bindDropdownContentEvents() {
+    this.documentClickListener = event => {
+      let eventTarget = $$(<HTMLElement>event.target);
+      if (this.shouldDetachFacetDropdown(eventTarget)) {
+        this.detachDropdown();
+      }
+    };
+    $$(document.documentElement).on('click', this.documentClickListener);
+  }
+
+  private buildPopupBackground() {
+    this.popupBackground = $$('div', {className: 'coveo-facet-dropdown-background'});
+  }
+  
+  private shouldDetachFacetDropdown(eventTarget) {
+    return !eventTarget.closest('coveo-facet-column') && !eventTarget.closest('coveo-facet-dropdown-header-container')
+           && this.coveoRoot.hasClass('coveo-small-search-interface');
+  }
+
+  private saveFacetsPosition() {
     this.previousSibling = this.facetsColumn.el.previousSibling ? $$(<HTMLElement>this.facetsColumn.el.previousSibling) : null;
     this.parent = $$(this.facetsColumn.el.parentElement);
+  }
+
+  private restoreFacetsPosition() {
+    if (this.previousSibling) {
+      this.facetsColumn.insertAfter(this.previousSibling.el);
+    } else {
+      this.parent.prepend(this.facetsColumn.el);
+    }
+  }
+
+  private positionPopup() {
+    this.facetsColumn.addClass('coveo-facet-dropdown-content');
+    PopupUtils.positionPopup(this.facetsColumn.el, this.dropdownHeaderContainer.el, this.coveoRoot.el, this.coveoRoot.el,
+      { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM });
+  }
+  
+  private detachDropdown() {
+    this.popupBackground.detach();
+    this.facetsColumn.detach();
+    this.dropdownHeader.removeClass('coveo-dropdown-header-active');
+  }
+  private nuke() {
+
   }
 }

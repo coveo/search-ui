@@ -1,7 +1,7 @@
 import {Win, $$, Dom} from '../../utils/Dom';
 import {WindowResizeListener} from '../../utils/WindowResizeListener';
 import {InitializationEvents} from '../../events/InitializationEvents';
-import {PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
+import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
 import {Logger} from '../../misc/Logger';
 import {IResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
 import _ = require('underscore');
@@ -35,7 +35,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
     this.bindDropdownHeaderEvents();
     this.tabSection = $$(<HTMLElement>this.coveoRoot.find('.coveo-tab-section'));
     this.manageTabSwapping();
-    this.savePosition();
+    this.saveTabsPosition();
   }
 
   public static init(root: HTMLElement, ID: string) {
@@ -114,11 +114,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   public changeToLargeMode() {
-    if (this.previousSibling) {
-      this.tabSection.insertAfter(this.previousSibling.el);
-    } else {
-      this.parent.prepend(this.tabSection.el);
-    }
+    this.restoreTabsPosition();
     this.emptyDropdown();
     this.detachDropdown();
   }
@@ -284,9 +280,17 @@ export class ResponsiveTabs implements IResponsiveComponent {
     }
   }
 
-  private savePosition() {
+  private saveTabsPosition() {
     this.previousSibling = this.tabSection.el.previousSibling ? $$(<HTMLElement>this.tabSection.el.previousSibling) : null;
     this.parent = $$(this.tabSection.el.parentElement);
+  }
+
+  private restoreTabsPosition() {
+    if (this.previousSibling) {
+      this.tabSection.insertAfter(this.previousSibling.el);
+    } else {
+      this.parent.prepend(this.tabSection.el);
+    }
   }
 
   private bindNukeEvents() {
