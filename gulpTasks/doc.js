@@ -8,8 +8,8 @@ gulp.task('doc', function () {
     module: 'CommonJS',
     includeDeclarations: true,
     theme: 'docs/theme',
-    name: 'Coveo JS search',
-    readme: 'none',
+    name: 'Coveo search ui documentation',
+    readme: 'README.md',
     externalPattern: '**/{typings,lib}/**'
   });
   var src = app.expandInputFiles(['src/Doc.ts']);

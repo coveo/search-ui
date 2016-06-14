@@ -1,6 +1,6 @@
 {
   "name": "coveo-search-ui",
-  "version": "1.0.0",
+  "version": "0.0.22",
   "description": "Coveo JavaScript Search Framework",
   "main": "coveo.search.js",
   "scripts": {
@@ -27,6 +27,19 @@
   "bugs": {
     "url": "https://github.com/coveo/coveo.search.js/issues"
   },
+  "files": [
+    "bin",
+    "pages",
+    "gulpTasks",
+    "docgen",
+    "images",
+    "templates",
+    "strings",
+    "filetypes",
+    "lib",
+    "src",
+    "typings"
+  ],
   "homepage": "https://github.com/coveo/coveo.search.js#readme",
   "devDependencies": {
     "cheerio": "^0.20.0",
