@@ -114,11 +114,15 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.facetsColumn.addClass('coveo-facet-dropdown-content');
     this.dropdownHeader.addClass('coveo-dropdown-header-active');
     document.documentElement.appendChild(this.popupBackground.el);
+    window.getComputedStyle(this.popupBackground.el).opacity;
+    this.popupBackground.el.style.opacity = '1';
     PopupUtils.positionPopup(this.facetsColumn.el, this.tabSection.el, this.coveoRoot.el, this.coveoRoot.el,
       { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM });
   }
 
   private detachDropdown() {
+    this.popupBackground.el.style.opacity = '0';
+    window.getComputedStyle(this.popupBackground.el).opacity;
     this.popupBackground.detach();
     this.facetsColumn.detach();
     this.facetsColumn.removeClass('coveo-facet-dropdown-content');
