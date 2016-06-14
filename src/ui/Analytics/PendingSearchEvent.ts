@@ -17,10 +17,10 @@ import _ = require('underscore');
 export class PendingSearchEvent {
   private handler: (evt: Event, arg: IDuringQueryEventArgs) => void;
   private searchPromises: Promise<IQueryResults>[] = [];
-  private searchEvents: ISearchEvent[] = [];
   private results: IQueryResults[] = [];
   protected cancelled = false;
   protected finished = false;
+  protected searchEvents: ISearchEvent[] = [];
 
   constructor(public root: HTMLElement, public endpoint: AnalyticsEndpoint, public templateSearchEvent: ISearchEvent, public sendToCloud: boolean) {
     Assert.exists(root);

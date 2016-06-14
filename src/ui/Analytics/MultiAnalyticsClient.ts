@@ -63,8 +63,14 @@ export class MultiAnalyticsClient implements IAnalyticsClient {
   }
 
   public cancelAllPendingEvents() {
-    _.each(this.analyticsClients, (analyticsClient: IAnalyticsClient)=> analyticsClient.cancelAllPendingEvents());
+    _.each(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.cancelAllPendingEvents());
   }
+
+  public getPendingSearchEvent() {
+    return _.first(this.analyticsClients).getPendingSearchEvent();
+  }
+
+
 
   private mergeTopQueries(values: string[][], pageSize: number = 5) {
     return _.chain(values)

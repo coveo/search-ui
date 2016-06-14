@@ -55,4 +55,8 @@ export class NoopAnalyticsClient implements IAnalyticsClient {
 
   warnAboutSearchEvent() {
   }
+
+  getPendingSearchEvent(){
+    return null;
+  }
 }

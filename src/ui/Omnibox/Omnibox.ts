@@ -24,6 +24,9 @@ import {RevealQuerySuggestAddon} from './RevealQuerySuggestAddon';
 import {OldOmniboxAddon} from './OldOmniboxAddon';
 import _ = require('underscore');
 import {QueryboxQueryParameters} from '../Querybox/QueryboxQueryParameters';
+import {IAnalyticsActionCause} from "../Analytics/AnalyticsActionListMeta";
+import {IDuringQueryEventArgs} from "../../events/QueryEvents";
+import {PendingSearchAsYouTypeSearchEvent} from "../Analytics/PendingSearchAsYouTypeSearchEvent";
 
 export interface IPopulateOmniboxSuggestionsEventArgs {
   omnibox: Omnibox;
@@ -43,10 +46,8 @@ export interface IOmniboxOptions extends IQueryboxOptions {
   enableQueryExtensionAddon?: boolean;
   omniboxTimeout?: number;
   placeholder?: string;
-
   grammar?: (grammar: { start: string; expressions: { [id: string]: Coveo.MagicBox.ExpressionDef }; }) => { start: string; expressions: { [id: string]: Coveo.MagicBox.ExpressionDef } }
 }
-;
 
 /**
  * This component is very similar to the simpler {@link Querybox} Component and support all the same options/behavior except for the search-as-you-type feature.<br/>
@@ -166,6 +167,7 @@ export class Omnibox extends Component {
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(StandaloneSearchInterfaceEvents.beforeRedirect, () => this.handleBeforeRedirect());
     this.bind.onRootElement(QueryEvents.querySuccess, () => this.handleQuerySuccess());
+    this.bind.onRootElement(QueryEvents.duringQuery, (args: IDuringQueryEventArgs)=> this.handleDuringQuery(args));
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.Q, (args: IAttributeChangedEventArg) => this.handleQueryStateChanged(args))
 
     this.setupMagicBox();
@@ -230,13 +232,14 @@ export class Omnibox extends Component {
   }
 
   private setupMagicBox() {
-    // skipSearchAsYouType is to circumvent something special with the magic box :
-    // the onsuggestion callback is called even on "blur"
-    // This variable is thus used to differentiate between : is it a suggestion callback with really no suggestions
-    // or a suggestion callback purposely set empty to keep the magicbox internal state in sync
+    let userIntendedSelection = false;
     let skipSearchAsYouType = false;
+    this.magicBox.onmove = () => {
+      userIntendedSelection = true;
+    }
 
     this.magicBox.onsuggestions = (suggestions: IOmniboxSuggestion[]) => {
+      userIntendedSelection = false;
       let diff = suggestions.length != this.lastSuggestions.length ||
         _.filter(suggestions, (suggestion: IOmniboxSuggestion, i: number) => {
           return suggestion.text != this.lastSuggestions[i].text;
@@ -254,7 +257,8 @@ export class Omnibox extends Component {
     if (this.options.enableSearchAsYouType) {
       $$(this.element).addClass('coveo-magicbox-search-as-you-type');
       this.magicBox.onchange = () => {
-        this.searchAsYouType();
+        skipSearchAsYouType = true;
+        this.searchAsYouType(userIntendedSelection);
       };
     }
     if (this.options.placeholder) {
@@ -272,24 +276,26 @@ export class Omnibox extends Component {
       let suggestions = _.map(this.lastSuggestions, (suggestion) => suggestion.text);
       this.magicBox.clearSuggestion();
       this.updateQueryState();
-      this.usageAnalytics.cancelAllPendingEvents();
-      this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.omniboxAnalytics, {
-        partialQueries: this.cleanCustomData(this.partialQueries),
-        suggestionRanking: index,
-        suggestions: this.cleanCustomData(suggestions),
-        partialQuery: _.last(this.partialQueries)
-      })
-      this.triggerNewQuery(false);
+      skipSearchAsYouType = true;
+      userIntendedSelection = true;
+      if (this.options.enableSearchAsYouType) {
+        if (index == 0) {
+
+        } else {
+          this.usageAnalytics.sendAllPendingEvents();
+        }
+      } else {
+        this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.omniboxAnalytics, this.buildCustomDataForPartialQueries(index, suggestions, userIntendedSelection));
+        this.triggerNewQuery(false);
+      }
     }
 
     this.magicBox.onblur = () => {
+      skipSearchAsYouType = true;
       if (this.options.enableSearchAsYouType && !this.options.inline) {
         this.setText(this.lastQuery);
       } else {
         this.updateQueryState();
-      }
-      if (this.options.enableSearchAsYouType) {
-        skipSearchAsYouType = true;
       }
     };
 
@@ -304,6 +310,16 @@ export class Omnibox extends Component {
     }
 
     this.magicBox.getSuggestions = () => this.handleSuggestions();
+  }
+
+  private buildCustomDataForPartialQueries(index: number, suggestions: string[], userSelected = false): IAnalyticsOmniboxSuggestionMeta {
+    return {
+      partialQueries: this.cleanCustomData(this.partialQueries),
+      suggestionRanking: index,
+      suggestions: this.cleanCustomData(suggestions),
+      partialQuery: _.last(this.partialQueries),
+      userSelected: userSelected
+    }
   }
 
   private cleanCustomData(toClean: string[], rejectLength = 256) {
@@ -430,29 +446,44 @@ export class Omnibox extends Component {
     }
   }
 
+  private handleDuringQuery(args: IDuringQueryEventArgs) {
+    args.promise.then(()=> {
+      var pendingEvent = this.usageAnalytics.getPendingSearchEvent();
+      /*if (pendingEvent instanceof PendingSearchAsYouTypeSearchEvent) {
+        (<PendingSearchAsYouTypeSearchEvent>pendingEvent).beforeResolve.then((evt)=> {
+          args.promise.then(()=> {
+            //debugger;
+            evt.modifyCustomData('userSelected', 'lolwat');
+            console.log(this);
+          })
+        })
+      }*/
+    })
+  }
+
   private searchAsYouTypeTimeout: number;
 
-  private searchAsYouType() {
+  private searchAsYouType(userIntendedSelection: boolean = false) {
     clearTimeout(this.searchAsYouTypeTimeout);
     if (this.getText().length == 0) {
-      this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxAsYouType, {})
-      this.triggerNewQuery(true);
+      return;
     } else if (this.magicBox.getWordCompletion()) {
       let suggestions = _.map(this.lastSuggestions, (suggestion) => suggestion.text);
       let index = _.indexOf(suggestions, this.magicBox.getWordCompletion());
-      this.usageAnalytics.logSearchAsYouType<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.searchboxAsYouType, {
-        partialQueries: this.cleanCustomData(this.partialQueries),
-        suggestionRanking: index,
-        suggestions: this.cleanCustomData(suggestions),
-        partialQuery: _.last(this.partialQueries)
-      })
+      this.usageAnalytics.logSearchAsYouType<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.searchboxAsYouType, this.buildCustomDataForPartialQueries(index, suggestions, userIntendedSelection));
       this.triggerNewQuery(true);
     } else if (this.getQuery(true) != this.getText()) {
       this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxAsYouType, {})
       this.triggerNewQuery(true);
     } else {
       this.searchAsYouTypeTimeout = setTimeout(() => {
-        this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxAsYouType, {})
+        if (this.magicBox.getWordCompletion()) {
+          let suggestions = _.map(this.lastSuggestions, (suggestion) => suggestion.text);
+          let index = _.indexOf(suggestions, this.magicBox.getWordCompletion());
+          this.usageAnalytics.logSearchAsYouType<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.searchboxAsYouType, this.buildCustomDataForPartialQueries(index, suggestions, userIntendedSelection));
+        } else {
+          this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxAsYouType, {})
+        }
         this.triggerNewQuery(true);
       }, this.options.searchAsYouTypeDelay);
     }
@@ -460,5 +491,4 @@ export class Omnibox extends Component {
 }
 
 Omnibox.options = _.extend({}, Omnibox.options, Querybox.options);
-
 Initialization.registerAutoCreateComponent(Omnibox);

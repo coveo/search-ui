@@ -88,6 +88,7 @@ export interface IAnalyticsOmniboxSuggestionMeta {
   partialQueries: string;
   suggestions: string;
   partialQuery: string;
+  userSelected: boolean;
 }
 
 export interface IAnalyticsFacetSliderChangeMeta {
