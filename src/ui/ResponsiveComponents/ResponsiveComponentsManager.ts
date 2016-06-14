@@ -38,7 +38,7 @@ export class ResponsiveComponentsManager {
     root.on(InitializationEvents.afterInitialization, () => {
       let responsiveComponent = new responsiveComponentConstructor(root, ID);
 
-      let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el.isSameNode(componentManager.coveoRoot.el));
+      let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el == componentManager.coveoRoot.el);
       if (responsiveComponentsManager) {
         responsiveComponentsManager.register(responsiveComponent);
       } else {

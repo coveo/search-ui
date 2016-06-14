@@ -72,8 +72,6 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.dropdownHeader.on('click', () => {
       if (!this.dropdownHeader.hasClass('coveo-dropdown-header-active')) {
         this.positionPopup();
-        this.dropdownHeader.addClass('coveo-dropdown-header-active');
-        //document.documentElement.appendChild(this.popupBackground.el);
       } else {
         this.detachDropdown();
       }
@@ -114,6 +112,8 @@ export class ResponsiveFacets implements IResponsiveComponent {
 
   private positionPopup() {
     this.facetsColumn.addClass('coveo-facet-dropdown-content');
+    this.dropdownHeader.addClass('coveo-dropdown-header-active');
+    document.documentElement.appendChild(this.popupBackground.el);
     PopupUtils.positionPopup(this.facetsColumn.el, this.tabSection.el, this.coveoRoot.el, this.coveoRoot.el,
       { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM });
   }
@@ -121,6 +121,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private detachDropdown() {
     this.popupBackground.detach();
     this.facetsColumn.detach();
+    this.facetsColumn.removeClass('coveo-facet-dropdown-content');
     this.dropdownHeader.removeClass('coveo-dropdown-header-active');
   }
   private nuke() {
