@@ -17,25 +17,25 @@ let args = require('yargs')
   .help('help')
   .argv;
 
-function buildSpriteList(spritesDir, outputDir, done) {
-  spritesDir = spritesDir || args.sprites;
+function buildSpriteList(spriteDir, outputDir, done) {
+  spriteDir = spriteDir || args.sprites;
   outputDir = outputDir || args.output;
 
-  if (spritesDir == undefined) throw 'Error. No sprite directory defined';
+  if (spriteDir == undefined) throw 'Error. No sprite directory defined';
   if (outputDir == undefined) throw 'Error. No output directory defined';
 
-  console.log('Generating sprite list for ' + spritesDir);
+  console.log('Generating sprite list for ' + spriteDir);
 
-  let sprites = [];
-  let prefix = spritesDir.indexOf('retina') !== -1 ? 'retina' : 'normal';
+  let sprites = {};
+  let prefix = spriteDir.indexOf('retina') !== -1 ? 'retina' : 'normal';
 
-  let walker = walk.walk(spritesDir);
+  let walker = walk.walk(spriteDir);
   walker.on('file', (root, fileStats, next) => fileHandler(sprites, root, fileStats, prefix, next));
   walker.on('end', () => endHandler(sprites, outputDir, prefix, done));
 }
 
 function generateCssClass(filePath, prefix) {
-  let prefixToReplace = prefix === 'retina' ? 'image-retina-' : 'image-sprites-';
+  let prefixToReplace = prefix === 'retina' ? 'image-retina-' : 'image-';
   let returnValue = '.coveo-' + filePath
     .replace(/\//g, '-')
     .replace(/\\/, '-')
@@ -52,11 +52,11 @@ function fileHandler(sprites, root, fileStats, prefix, next) {
 
     let cssClass = generateCssClass(fullPath, prefix);
     let imgSize = sizeOf(imgBuffer);
-    sprites.push([cssClass, {
+    sprites[cssClass] = {
       img: imgBuffer.toString('base64'),
       size: imgSize.width * imgSize.height,
       name: cssClass.substring(1)
-    }])
+    }
     next();
   })
 }
@@ -64,14 +64,14 @@ function fileHandler(sprites, root, fileStats, prefix, next) {
 function generateHtmlOutput(sprites) {
   let row = _.template(
     `<tr>
-       <td><code><%= sprite[0] %></code></td>
-       <td><img src="data:image/png;base64,<%= sprite[1].img %>" /></td>
+       <td><code><%= cssClass %></code></td>
+       <td><img src="data:image/png;base64,<%= val.img %>" /></td>
      </tr>`
   );
   let header = '<!DOCTYPE html><html><table>';
   let style = '<style>td { border: 1px solid #ccc; } table { text-align: center; }</style>';
   let footer = '</table></html>';
-  let rows = _.map(sprites, sprite => row({ sprite: sprite })).join('');
+  let rows = _.map(sprites, (val, cssClass) => row({ cssClass: cssClass, val: val })).join('');
 
   return header + style + rows + footer;
 }
