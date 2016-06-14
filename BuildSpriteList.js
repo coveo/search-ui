@@ -1,6 +1,6 @@
 'use strict';
 const sizeOf = require('image-size');
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 const walk = require('walk');
 const _ = require('underscore');
@@ -78,9 +78,8 @@ function generateHtmlOutput(sprites) {
 
 function endHandler(sprites, outputDir, prefix, done) {
   let outFilename = path.join(outputDir, prefix + '-icon-list');
-  fs.writeFileSync(`${outFilename}.html`, generateHtmlOutput(sprites));
-  fs.writeFileSync(`${outFilename}.json`, JSON.stringify(sprites, null, 2));
-  console.log('Done. Have a good day !');
+  fs.outputFileSync(`${outFilename}.html`, generateHtmlOutput(sprites));
+  fs.outputJsonSync(`${outFilename}.json`, sprites);
   if (done) done();
 }
 
