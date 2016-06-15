@@ -15,7 +15,7 @@ import {$$, Dom} from '../utils/Dom';
 import {Utils} from '../utils/Utils';
 import {Promise} from 'es6-promise';
 import {BaseComponent} from '../ui/Base/BaseComponent';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 declare const Coveo;
 declare const coveoanalytics: CoveoAnalytics.CoveoUA;

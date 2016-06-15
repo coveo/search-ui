@@ -6,7 +6,7 @@ import {ComponentOptions} from '../Base/ComponentOptions'
 import {SearchButton} from '../SearchButton/SearchButton';
 import {Querybox} from '../Querybox/Querybox';
 import {$$} from '../../utils/Dom';
-import _ = require('underscore');
+import * as _ from 'underscore';
 import {Initialization} from '../Base/Initialization';
 
 export interface ISearchboxOptions extends IOmniboxOptions {

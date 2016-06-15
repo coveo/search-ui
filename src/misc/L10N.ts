@@ -1,4 +1,4 @@
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 const pluralRegex = /<pl>(((?!<\/pl>).)*)<\/pl>/g;
 const singularRegex = /<sn>(((?!<\/sn>).)*)<\/sn>/g;

@@ -4,7 +4,7 @@ import {DeviceUtils} from '../../utils/DeviceUtils';
 import {SliderEvents, IGraphValueSelectedArgs} from '../../events/SliderEvents';
 import {Utils} from '../../utils/Utils';
 import {InitializationEvents} from '../../events/InitializationEvents';
-import d3 = require('d3');
+import * as d3 from 'd3';
 
 declare var Globalize;
 

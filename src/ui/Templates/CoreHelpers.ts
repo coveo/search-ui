@@ -17,7 +17,7 @@ import {DeviceUtils} from '../../utils/DeviceUtils'
 import {TemplateCache} from './TemplateCache'
 import {$$} from '../../utils/Dom'
 import {SearchEndpoint} from '../../rest/SearchEndpoint'
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 declare var Globalize;
 

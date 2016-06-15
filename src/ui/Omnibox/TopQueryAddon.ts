@@ -2,7 +2,7 @@
 import {IOmniboxSuggestion, Omnibox, IPopulateOmniboxSuggestionsEventArgs} from './Omnibox';
 import {OmniboxEvents} from '../../events/OmniboxEvents';
 import {$$} from '../../utils/Dom';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export class TopQueryAddon {
 

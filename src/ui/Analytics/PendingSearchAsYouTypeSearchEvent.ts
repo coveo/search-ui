@@ -4,7 +4,7 @@ import {$$} from '../../utils/Dom';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {ISearchEvent} from '../../rest/SearchEvent';
 import {IDuringQueryEventArgs} from '../../events/QueryEvents';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
   public delayBeforeSending = 5000;

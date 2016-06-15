@@ -22,7 +22,7 @@ import {FieldAddon} from './FieldAddon';
 import {QueryExtensionAddon} from './QueryExtensionAddon';
 import {RevealQuerySuggestAddon} from './RevealQuerySuggestAddon';
 import {OldOmniboxAddon} from './OldOmniboxAddon';
-import _ = require('underscore');
+import * as _ from 'underscore';
 import {QueryboxQueryParameters} from '../Querybox/QueryboxQueryParameters';
 
 export interface IPopulateOmniboxSuggestionsEventArgs {

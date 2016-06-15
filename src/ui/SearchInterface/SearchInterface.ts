@@ -21,7 +21,7 @@ import {RootComponent} from '../Base/RootComponent';
 import {BaseComponent} from '../Base/BaseComponent';
 import {Debug} from '../Debug/Debug';
 import {HashUtils} from '../../utils/HashUtils';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 declare let FastClick;
 declare let jstz;

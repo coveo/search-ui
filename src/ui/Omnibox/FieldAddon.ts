@@ -3,7 +3,7 @@ import {Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion} from 
 import {OmniboxEvents} from '../../events/OmniboxEvents';
 import {IFieldDescription} from '../../rest/FieldDescription';
 import {IEndpointError} from '../../rest/EndpointError';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 interface IFieldAddonHash {
   type: string;

@@ -5,7 +5,7 @@ import {TimeSpan} from '../utils/TimeSpanUtils';
 import {DeviceUtils} from '../utils/DeviceUtils';
 import {Utils} from '../utils/Utils';
 import {Promise} from 'es6-promise';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 declare var XDomainRequest;
 

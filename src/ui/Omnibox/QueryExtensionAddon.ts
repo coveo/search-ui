@@ -3,7 +3,7 @@ import {OmniboxEvents} from '../../events/OmniboxEvents';
 import {Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion} from './Omnibox';
 import {IExtension} from '../../rest/Extension';
 import {$$} from '../../utils/Dom';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 interface IQueryExtensionAddonHash {
   type: string;
