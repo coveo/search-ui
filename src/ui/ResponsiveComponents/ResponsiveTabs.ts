@@ -301,6 +301,6 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
   private positionPopup() {
     PopupUtils.positionPopup(this.dropdownContent.el, this.dropdownHeader.el, this.coveoRoot.el, this.coveoRoot.el,
-      { horizontal: HorizontalAlignment.CENTER, vertical: VerticalAlignment.BOTTOM });
+      { horizontal: HorizontalAlignment.INNERLEFT, vertical: VerticalAlignment.BOTTOM });
   }
 }

@@ -31,8 +31,8 @@
   }
 }
 .coveo-facet-dropdown-background {
-    @include transition-property(opacity);
-    @include transition-duration(0.150s);
+    @include transition-property(all);
+    @include transition-duration(0.300s);
     @include transition-timing-function(ease-out);
     background: rgba(0, 0, 0, 0.5);
     opacity: 0;
