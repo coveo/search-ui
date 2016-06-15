@@ -78,13 +78,13 @@ export class PendingSearchEvent {
         this.fillSearchEvent(searchEvent, searchInterface, args.query, queryResults);
         this.searchEvents.push(searchEvent);
         this.results.push(queryResults);
-        return queryResults
+        return queryResults;
       }
     }).finally(() => {
       var index = _.indexOf(this.searchPromises, args.promise);
       this.searchPromises.splice(index, 1);
       if (this.searchPromises.length == 0) {
-        this.flush()
+        this.flush();
       }
     })
   }

@@ -2,7 +2,7 @@ import {IAnalyticsActionCause, IAnalyticsDocumentViewMeta} from '../Analytics/An
 import {IQueryResult} from '../../rest/QueryResult';
 import {ITopQueries} from '../../rest/TopQueries';
 import {Promise} from 'es6-promise';
-import {PendingSearchEvent} from "./PendingSearchEvent";
+import {PendingSearchEvent} from './PendingSearchEvent';
 
 /**
  * Describe an analytics client, that can log events or return information from the service

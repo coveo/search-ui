@@ -113,7 +113,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
   }
 
   public getPendingSearchEvent(): PendingSearchEvent {
-    if(this.pendingSearchEvent) {
+    if (this.pendingSearchEvent) {
       return this.pendingSearchEvent
     } else if (this.pendingSearchAsYouTypeSearchEvent) {
       return this.pendingSearchAsYouTypeSearchEvent;

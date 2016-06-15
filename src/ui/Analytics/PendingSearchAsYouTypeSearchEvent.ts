@@ -5,6 +5,7 @@ import {InitializationEvents} from '../../events/InitializationEvents';
 import {ISearchEvent} from '../../rest/SearchEvent';
 import {IDuringQueryEventArgs} from '../../events/QueryEvents';
 import _ = require('underscore');
+import {IAnalyticsActionCause} from './AnalyticsActionListMeta';
 
 export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
   public delayBeforeSending = 5000;
@@ -23,7 +24,7 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
   }
 
   protected handleDuringQuery(e: Event, args: IDuringQueryEventArgs) {
-    this.beforeResolve = new Promise((resolve)=> {
+    this.beforeResolve = new Promise((resolve) => {
       this.toSendRightNow = () => {
         if (!this.isCancelledOrFinished()) {
           resolve(this);
@@ -43,8 +44,15 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
   }
 
   public modifyCustomData(key: string, newData: any) {
-    _.each(this.searchEvents, (sEvents: ISearchEvent)=> {
+    _.each(this.searchEvents, (sEvents: ISearchEvent) => {
       sEvents.customData[key] = newData;
+    })
+  }
+
+  public modifyEventCause(newCause: IAnalyticsActionCause) {
+    _.each(this.searchEvents, (sEvents: ISearchEvent) => {
+      sEvents.actionCause = newCause.name;
+      sEvents.actionType = newCause.type;
     })
   }
 
