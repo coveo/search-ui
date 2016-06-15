@@ -122,6 +122,7 @@ export class Omnibox extends Component {
   private lastQuery: string;
   private modifyEventTo: IAnalyticsActionCause;
   private movedOnce = false;
+  private searchAsYouTypeTimeout: number;
 
   /**
    * Create a new omnibox with, enable required addons, and bind events on letious query events
@@ -238,7 +239,7 @@ export class Omnibox extends Component {
 
   private setupMagicBox() {
     this.magicBox.onmove = () => {
-      // We assume that once the user has moved it's selection : it becomes an explicit omnibox analytics event
+      // We assume that once the user has moved it's selection, it becomes an explicit omnibox analytics event
       if (this.isRevealAutoSuggestion()) {
         this.modifyEventTo = analyticsActionCauseList.omniboxAnalytics;
       }
@@ -360,9 +361,9 @@ export class Omnibox extends Component {
   }
 
   private modifyCustomDataOnPending(index: number, suggestions: string[]) {
-    var pendingEvt = this.usageAnalytics.getPendingSearchEvent();
+    let pendingEvt = this.usageAnalytics.getPendingSearchEvent();
     if (pendingEvt instanceof PendingSearchAsYouTypeSearchEvent) {
-      var newCustomData = this.buildCustomDataForPartialQueries(index, suggestions);
+      let newCustomData = this.buildCustomDataForPartialQueries(index, suggestions);
       _.each(_.keys(newCustomData), (k: string) => {
         (<PendingSearchAsYouTypeSearchEvent>pendingEvt).modifyCustomData(k, newCustomData[k]);
       })
@@ -507,7 +508,7 @@ export class Omnibox extends Component {
     // When the query results returns ... (args.promise)
     args.promise.then(() => {
       // Get a handle on a pending search as you type (those events are delayed, not sent instantly)
-      var pendingEvent = this.usageAnalytics.getPendingSearchEvent();
+      let pendingEvent = this.usageAnalytics.getPendingSearchEvent();
       if (pendingEvent instanceof PendingSearchAsYouTypeSearchEvent) {
         (<PendingSearchAsYouTypeSearchEvent>pendingEvent).beforeResolve.then((evt) => {
           // Check if we need to modify the event type beforeResolving it
@@ -521,8 +522,6 @@ export class Omnibox extends Component {
       }
     })
   }
-
-  private searchAsYouTypeTimeout: number;
 
   private searchAsYouType() {
     clearTimeout(this.searchAsYouTypeTimeout);

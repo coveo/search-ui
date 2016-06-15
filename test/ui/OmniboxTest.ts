@@ -1,4 +1,5 @@
 /// <reference path="../Test.ts" />
+
 module Coveo {
   describe('Omnibox', () => {
     var test: Mock.IBasicComponentSetup<Omnibox>;
@@ -36,9 +37,23 @@ module Coveo {
           enableSearchAsYouType: true
         })
         expect(test.cmp.magicBox.onchange).toBeDefined();
+        test.cmp.setText('foobar');
         test.cmp.magicBox.onchange();
         setTimeout(() => {
           expect(test.env.queryController.executeQuery).toHaveBeenCalled();
+          done();
+        }, test.cmp.options.searchAsYouTypeDelay)
+      })
+
+      it('enableSearchAsYouType should not trigger a query after a delay if there is no text', function (done) {
+        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          enableSearchAsYouType: true
+        })
+        expect(test.cmp.magicBox.onchange).toBeDefined();
+        test.cmp.setText('');
+        test.cmp.magicBox.onchange();
+        setTimeout(() => {
+          expect(test.env.queryController.executeQuery).not.toHaveBeenCalled();
           done();
         }, test.cmp.options.searchAsYouTypeDelay)
       })
@@ -185,8 +200,46 @@ module Coveo {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           placeholder: 'trololo'
         })
-
         expect(test.cmp.getInput().placeholder).toBe('trololo');
+      })
+
+      it('enableSearchAsYouType + enableRevealQuerySuggestAddon should send correct analytics events', () => {
+        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          enableRevealQuerySuggestAddon: true,
+          enableSearchAsYouType: true
+        })
+        let spy = jasmine.createSpy('spy');
+        test.env.searchEndpoint.getRevealQuerySuggest = spy;
+
+        spy.and.returnValue({
+          completions: [
+            {
+              expression: 'a'
+            },
+            {
+              expression: 'b'
+            },
+            {
+              expression: 'c'
+            },
+            {
+              expression: 'd'
+            },
+            {
+              expression: 'e'
+            }
+          ]
+        })
+
+        test.cmp.setText('foobar');
+        expect(test.cmp.magicBox.onchange).toBeDefined();
+        test.cmp.magicBox.onchange();
+        test.cmp.magicBox.onselect(['a']);
+        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.omniboxAnalytics, jasmine.objectContaining({
+          partialQuery: undefined,
+          suggestionRanking: jasmine.any(Number),
+          partialQueries: ''
+        }))
       })
 
     })

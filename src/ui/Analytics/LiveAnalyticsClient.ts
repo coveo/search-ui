@@ -110,6 +110,10 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       this.pendingSearchAsYouTypeSearchEvent.cancel();
       this.pendingSearchAsYouTypeSearchEvent = null;
     }
+    if (this.pendingSearchEvent) {
+      this.pendingSearchEvent.cancel();
+      this.pendingSearchEvent = null;
+    }
   }
 
   public getPendingSearchEvent(): PendingSearchEvent {
