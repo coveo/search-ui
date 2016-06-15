@@ -6,7 +6,8 @@
   "scripts": {
     "test": "gulp buildTest && node_modules/karma/bin/karma start",
     "build": "gulp",
-    "doc": "gulp doc"
+    "doc": "gulp doc",
+    "start": "gulp dev"
   },
   "repository": {
     "type": "git",
