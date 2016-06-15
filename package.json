@@ -43,6 +43,9 @@
     "typings"
   ],
   "homepage": "https://github.com/coveo/coveo.search.js#readme",
+  "engines": {
+    "node": "4.2.2"
+  },
   "devDependencies": {
     "cheerio": "^0.20.0",
     "css-loader": "^0.23.1",
