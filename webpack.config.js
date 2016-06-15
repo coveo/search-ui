@@ -22,7 +22,7 @@ module.exports = {
       'finally': __dirname + '/lib/finally.js'
     }
   },
-  devtool: '#inline-source-map',
+  devtool: 'source-map',
   module: {
     loaders: [
       { test: /\.ts$/, loader: 'ts-loader' },

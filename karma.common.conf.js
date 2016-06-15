@@ -41,6 +41,10 @@ module.exports = {
   },
   reporters: ['progress', 'coverage'],
   coverageReporter: {
-    type: 'text-summary'
+    dir: './bin/coverage',
+    reporters: [
+      { type: 'lcov', subdir: 'lcov' },
+      { type: 'text-summary', subdir: '.', file: 'text-summary.txt' }
+    ]
   }
 }
