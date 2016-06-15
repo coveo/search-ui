@@ -8,7 +8,7 @@
     "build": "gulp",
     "doc": "gulp doc",
     "heroku-postbuild": "npm run build",
-    "start": "gulp dev"
+    "start": "node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --content-base bin/"
   },
   "repository": {
     "type": "git",
