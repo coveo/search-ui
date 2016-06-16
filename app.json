@@ -1,11 +1,5 @@
 {
   "name": "coveo-search-ui",
-  "scripts": {
-    "start": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --content-base bin/"
-  },
-  "engines": {
-    "node": "4.2.2"
-  },
   "buildpacks": [
     {
       "url": "heroku/nodejs"
