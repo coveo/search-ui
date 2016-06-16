@@ -6,7 +6,7 @@ app.use('/', express.static(__dirname + '/../bin'))
 
 
 app.get('/', function(request, response) {
-  response.sendFile(__dirname + '/bin/Index.html');
+  response.sendFile(__dirname + '../bin/Index.html');
 })
 
 app.get(/^(.+)$/, function(req, res){ 
