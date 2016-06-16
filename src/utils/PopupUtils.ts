@@ -68,7 +68,7 @@ export class PopupUtils {
   }
 
   private static finalAdjustement(popUpOffSet: IOffset, popUpPosition: IOffset, popUp: HTMLElement, desiredPosition: IPosition) {
-    popUp.style.position = 'absolute';
+    popUp.style.display = 'absolute';
     popUp.style.top = desiredPosition.verticalOffset + popUpPosition.top + 'px';
     popUp.style.left = (popUpOffSet.left + desiredPosition.horizontalOffset) - (popUpOffSet.left - popUpPosition.left) + 'px';
   }
@@ -176,6 +176,7 @@ export class PopupUtils {
   private static getBoundingRectRelativeToDocument(el: HTMLElement) {
     let rect = _.clone(el.getBoundingClientRect());
     rect.top += window.scrollY;
+    rect.left += window.scrollX;
     return rect;
   }
 }

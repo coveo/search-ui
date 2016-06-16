@@ -5,8 +5,8 @@ module Coveo {
     let element: HTMLElement;
 
     beforeEach(function () {
-      element = $$('table', {className: 'CoveoFieldTable'}).el;
-      element.appendChild($$('tr', {'data-field': '@author', 'data-caption': 'Author'}).el);
+      element = $$('table', { className: 'CoveoFieldTable' }).el;
+      element.appendChild($$('tr', { 'data-field': '@author', 'data-caption': 'Author' }).el);
 
       test = Mock.advancedResultComponentSetup<FieldTable>(FieldTable, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
         element: element

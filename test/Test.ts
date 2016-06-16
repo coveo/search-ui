@@ -1,38 +1,41 @@
 /// <reference path="lib/jasmine.d.ts" />
 
-//***** COVEO SEARCH ******
+// ***** COVEO SEARCH ******
 /// <reference path="../bin/ts/CoveoJsSearch.d.ts" />
 
 
-//***** CUSTOM MATCHER ******
+// ***** CUSTOM MATCHER ******
 /// <reference path="CustomMatchers.ts" />
 
-//***** TEST UTILITIES ******
+// ***** TEST UTILITIES ******
 /// <reference path="Fake.ts" />
 /// <reference path="NoopComponent.ts" />
 /// <reference path="MockEnvironment.ts" />
 /// <reference path="Simulate.ts" />
 
-//***** TEST ON UTILS ******
+// ***** TEST ON UTILS ******
 /// <reference path="utils/DomTest.ts" />
 /// <reference path="utils/CookieUtilsTest.ts" />
 /// <reference path="utils/L10NTest.ts" />
 /// <reference path="utils/HighlightUtilsTest.ts" />
 
-//***** TEST ON MODELS ******
+// ***** TEST ON MISC ******
+/// <reference path="misc/PromisesShimTest.ts" />
+
+// ***** TEST ON MODELS ******
 /// <reference path="models/ModelTest.ts" />
 /// <reference path="models/QueryStateModelTest.ts" />
 
-//***** TEST ON CONTROLLERS ******
+// ***** TEST ON CONTROLLERS ******
 /// <reference path="controllers/FacetQueryControllerTest.ts" />
 /// <reference path="controllers/HistoryControllerTest.ts" />
 /// <reference path="controllers/QueryControllerTest.ts" />
 
-//***** TEST ON REST ******
+// ***** TEST ON REST ******
 /// <reference path="rest/EndpointCallerTest.ts" />
 /// <reference path="rest/SearchEndpointTest.ts" />
 
-//***** TEST ON UI ******
+// ***** TEST ON UI ******
 /// <reference path="ui/AggregateTest.ts" />
 /// <reference path="ui/AnalyticsEndpointTest.ts" />
 /// <reference path="ui/AnalyticsTest.ts" />
@@ -87,12 +90,15 @@
 /// <reference path="ui/AuthenticationProviderTest.ts" />
 /// <reference path="ui/CurrentTabTest.ts" />
 /// <reference path="ui/QueryboxQueryParametersTest.ts" />
+/// <reference path="ui/ImageResultListTest.ts" />
+/// <reference path="ui/SearchAlertsTest.ts" />
+/// <reference path="ui/FollowItemTest.ts" />
+/// <reference path="ui/SearchAlertsMessageTest.ts" />
 
 Coveo.Logger.disable();
 
 module Coveo {
   var _ = window['_'];
-  Coveo._ = _;
 }
 
 function isPhantomJs() {

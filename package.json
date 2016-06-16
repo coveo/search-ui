@@ -1,6 +1,6 @@
 {
   "name": "coveo-search-ui",
-  "version": "1.0.0",
+  "version": "0.0.22",
   "description": "Coveo JavaScript Search Framework",
   "main": "coveo.search.js",
   "scripts": {
@@ -27,6 +27,19 @@
   "bugs": {
     "url": "https://github.com/coveo/coveo.search.js/issues"
   },
+  "files": [
+    "bin",
+    "pages",
+    "gulpTasks",
+    "docgen",
+    "images",
+    "templates",
+    "strings",
+    "filetypes",
+    "lib",
+    "src",
+    "typings"
+  ],
   "homepage": "https://github.com/coveo/coveo.search.js#readme",
   "devDependencies": {
     "cheerio": "^0.20.0",
@@ -56,10 +69,11 @@
     "karma-coverage": "^1.0.0",
     "karma-jasmine": "^1.0.2",
     "karma-phantomjs-launcher": "^1.0.0",
+    "merge-stream": "^1.0.0",
     "node-sass": "^3.7.0",
     "phantomjs-prebuilt": "^2.1.7",
     "png-sprite": "^0.1.1",
-    "pretty-typescript": "^1.10.0",
+    "pretty-typescript": "^1.11.0",
     "q": "^1.4.1",
     "require-dir": "^0.3.0",
     "resolve-url-loader": "^1.4.3",

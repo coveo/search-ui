@@ -1,40 +1,40 @@
 /// <reference path="../Test.ts" />
 
 module Coveo {
-  describe('CurrentTab', ()=> {
-    var test : Mock.IBasicComponentSetup<CurrentTab>
+  describe('CurrentTab', () => {
+    var test: Mock.IBasicComponentSetup<CurrentTab>
 
     beforeEach(function () {
       test = Mock.basicComponentSetup<CurrentTab>(CurrentTab);
     });
 
-    afterEach(function() {
+    afterEach(function () {
       test = null;
     })
-    
-    it('is hidden when no tab is active', ()=>{
+
+    it('is hidden when no tab is active', () => {
       test.env.queryStateModel.set(QueryStateModel.attributesEnum.t, undefined);
       expect($$(test.cmp.element).is(':visible')).toBe(false);
     })
-    
-    it('displays the caption of the current tab when it changes', ()=>{
+
+    it('displays the caption of the current tab when it changes', () => {
       let root = $$('div').el;
       let model = new QueryStateModel(root);
-      let tab1 = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {id: 'first', caption: 'First'}, (builder)=>{
+      let tab1 = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, { id: 'first', caption: 'First' }, (builder) => {
         return builder.withRoot(root).withQueryStateModel(model);
       }));
-      let tab2 = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {id: 'second', caption: 'Second'}, (builder)=>{
+      let tab2 = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, { id: 'second', caption: 'Second' }, (builder) => {
         return builder.withRoot(root).withQueryStateModel(model);
       }));
-      let test = Mock.advancedComponentSetup<CurrentTab>(CurrentTab, new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder)=>{
+      let test = Mock.advancedComponentSetup<CurrentTab>(CurrentTab, new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder) => {
         return builder.withRoot(root).withQueryStateModel(model);
       }));
-      
+
       tab1.cmp.select();
       expect($$(test.cmp.element).text()).toEqual('First');
       tab2.cmp.select();
       expect($$(test.cmp.element).text()).toEqual('Second');
     })
-    
+
   })
 }

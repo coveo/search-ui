@@ -8,6 +8,7 @@ import {Logger} from '../../misc/Logger';
 import {IAnalyticsActionCause, analyticsActionCauseList} from './AnalyticsActionListMeta';
 import {IQueryResult} from '../../rest/QueryResult';
 import {ITopQueries} from '../../rest/TopQueries';
+
 import {IChangeableAnalyticsMetaObject, IChangeableAnalyticsDataObject, IChangeAnalyticsCustomDataEventArgs} from '../../events/AnalyticsEvents';
 import {Defer} from '../../misc/Defer';
 import {$$} from '../../utils/Dom';

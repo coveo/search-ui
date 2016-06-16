@@ -14,10 +14,16 @@
 
 .coveo-facet-more {
   display: none;
+  &.coveo-active {
+    display: inline-block;
+  }
 }
 
-.coveo-facet-more.coveo-active {
-  display: inline-block;
+.coveo-facet-less {
+  display: none;
+  &.coveo-active {
+    display: inline-block;
+  }
 }
 
 .coveo-facet-more.coveo-active + .coveo-facet-less {

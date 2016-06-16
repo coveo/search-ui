@@ -7,7 +7,7 @@ module Coveo {
       test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
         field: '@field'
       });
-      test.cmp.searchInterface.isNewDesign = ()=> {
+      test.cmp.searchInterface.isNewDesign = () => {
         return true;
       }
     })
@@ -220,7 +220,7 @@ module Coveo {
       })
 
       it('numberOfValues should specify the number of value requested in the query', function () {
-        test = Mock.optionsComponentSetup<Facet,IFacetOptions>(Facet, {
+        test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           numberOfValues: 13
         })
@@ -378,21 +378,21 @@ module Coveo {
           useAnd: false
         })
         test.cmp.selectMultipleValues(['foo', 'bar']);
-        var simulation = Simulate.query(test.env);
+        simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().aq).toBe('@field==(foo,bar)');
       })
 
       it('allowTogglingOperator should specify if the toggle is rendered in header ', function () {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
-          allowTogglingOperator: true
+          enableTogglingOperator: true
         })
         test.cmp.ensureDom();
         expect(test.cmp.facetHeader.operatorElement.style.display).not.toBe('none');
 
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
-          allowTogglingOperator: false
+          enableTogglingOperator: false
         })
         test.cmp.ensureDom();
         expect(test.cmp.facetHeader.operatorElement.style.display).toBe('none');
@@ -421,10 +421,10 @@ module Coveo {
           field: '@field',
           facetSearchDelay: 5
         })
-        test.cmp.searchInterface.isNewDesign = ()=> true;
+        test.cmp.searchInterface.isNewDesign = () => true;
         test.cmp.ensureDom();
         test.cmp.facetSearch.focus();
-        setTimeout(()=> {
+        setTimeout(() => {
           expect(test.cmp.getEndpoint().search).toHaveBeenCalled();
           done();
         }, 6) // one more ms then facetSearchDelay
@@ -435,10 +435,10 @@ module Coveo {
           field: '@field',
           numberOfValuesInFacetSearch: 13
         })
-        test.cmp.searchInterface.isNewDesign = ()=> true;
+        test.cmp.searchInterface.isNewDesign = () => true;
         test.cmp.ensureDom();
         test.cmp.facetSearch.focus();
-        setTimeout(()=> {
+        setTimeout(() => {
           expect(test.cmp.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
             groupBy: jasmine.arrayContaining([jasmine.objectContaining({
               maximumNumberOfValues: 13
@@ -582,7 +582,7 @@ module Coveo {
 
         var masterFacet = Mock.advancedComponentSetup<Facet>(Facet, new Mock.AdvancedComponentSetupOptions(undefined, {
           field: '@masterFacet'
-        }, (builder: Mock.MockEnvironmentBuilder)=> {
+        }, (builder: Mock.MockEnvironmentBuilder) => {
           return builder.withRoot(test.env.root)
         }))
 
