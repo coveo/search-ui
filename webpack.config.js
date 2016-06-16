@@ -8,7 +8,7 @@ module.exports = {
     filename: 'CoveoJsSearch.js',
     libraryTarget: 'var',
     library: ['Coveo'],
-    publicPath : '/devserver/'
+    publicPath : '/js/'
   },
   resolve: {
     extensions: ['', '.ts', '.js'],
@@ -31,5 +31,5 @@ module.exports = {
       { test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'url?limit=8182' }
     ]
   },
-  bail: true,
+  bail: true
 }
