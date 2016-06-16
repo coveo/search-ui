@@ -32,7 +32,7 @@
 }
 .coveo-facet-dropdown-background {
     @include transition-property(all);
-    @include transition-duration(0.125s);
+    @include transition-duration(0.300s);
     @include transition-timing-function(ease-out);
     background: rgba(0, 0, 0, 0.5);
     opacity: 0;
