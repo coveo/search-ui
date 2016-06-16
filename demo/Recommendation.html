@@ -6,14 +6,14 @@
     <script src="search/js/CoveoJsSearch.js"></script>
     <script src="search/js/CoveoJsSearch.dependencies.js"></script>
     <script src="search/js/templates/templatesNew.js"></script>
-    <script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/v0.1.0/coveoua.js"></script>
+    <script type="text/javascript" src="coveoua.js"></script>
     <link rel="stylesheet" href="search/css/CoveoFullSearchNewDesign.css"/>
     <script>
       document.addEventListener('DOMContentLoaded', function(){
-        Coveo.SearchEndpoint.configureCloudEndpoint('Coveo Dev', 'cdc796e4-c2b0-48d4-be84-93134b856926', 'https://cloudplatformdev.coveo.com/rest/search');
+        Coveo.SearchEndpoint.configureCloudEndpoint('Coveo Dev', '75a8f974-1d44-43a4-b69b-f4ff00d7c575', 'https://cloudplatformdev.coveo.com/rest/search');
         Coveo.initRecommendation(document.querySelector('#recommendationYoutube'), document.querySelector('#search'));
         Coveo.init(document.querySelector('#search'));
-        coveoua('init','3b1f58a3-c61c-4c39-9ee7-192fc21ec45b', 'https://usageanalyticsstaging.coveo.com/rest/v15');
+        coveoua('init','fbeed392-773c-4a16-9d7b-199bb2617f02', 'https://usageanalyticsdev.coveo.com');
       })
     </script>
   </head>
@@ -23,7 +23,8 @@
       <li><a href="Lorem.html">Lorem</a></li>
       <li><a href="Bacon.html">Bacon</a></li>
    </ul>
-    <div id="search" class='CoveoSearchInterface' data-enable-history="true" data-design="new">
+    <div id="search" class='CoveoSearchInterface' data-enable-history="true" data-design="new" data-pipeline="Recommendation">
+      <div class="CoveoAnalytics" data-endpoint="https://usageanalyticsdev.coveo.com" data-token="fbeed392-773c-4a16-9d7b-199bb2617f02"></div>
       <div class="coveo-tab-section">
         <a class="CoveoTab" data-id="All" data-caption="All Content"></a>
       </div>
@@ -65,7 +66,7 @@
           <div class="CoveoPager"></div>
         </div>
         <div class="coveo-recommendation-column">
-          <div id="recommendationYoutube" class="CoveoRecommendation" data-design="new" data-results-per-page="5">
+          <div id="recommendationYoutube" class="CoveoRecommendation" data-design="new" data-pipeline="Recommendation">
             <div class="coveo-recommendation-header">
               <div class="coveo-recommendation-title">Videos</div>
             </div>

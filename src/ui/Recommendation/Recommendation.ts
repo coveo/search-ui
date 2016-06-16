@@ -100,7 +100,7 @@ export class Recommendation extends SearchInterface {
     $$(this.options.mainSearchInterface).on(QueryEvents.querySuccess, (e: Event, args: IQuerySuccessEventArgs) => {
       this.mainInterfaceQuery = args;
       this.mainQuerySearchUID = args.results.searchUid;
-      this.queryController.executeQuery({ ignoreWarningSearchEvent: true, callOptions: { queryString: { 'actions_history': this.getHistory() } } });
+      this.queryController.executeQuery({ ignoreWarningSearchEvent: true, callOptions: { queryString: { 'actionsHistory': this.getHistory() } } });
     })
   }
 

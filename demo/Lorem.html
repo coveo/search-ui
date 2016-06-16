@@ -3,9 +3,13 @@
   <head>
     <meta charset="UTF-8">
     <title>Lorem</title> 
-    <script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/v0.1.0/coveoua.js"></script>
+    <script type="text/javascript" src="coveoua.js"></script>
     <script>
-      coveoua('init','3b1f58a3-c61c-4c39-9ee7-192fc21ec45b', 'https://usageanalyticsstaging.coveo.com/rest/v15');
+      coveoua('init','fbeed392-773c-4a16-9d7b-199bb2617f02', 'https://usageanalyticsdev.coveo.com');
+      coveoua('send','pageview', {
+        contentIDKey: 'uniqueId',
+        contentIDValue: '-1$0$8807.24389$https://youtube.com/User:CamperiteLeisure/Channel:UCPj7LzUdqdFjHSvgcP6KF0w/Video:-VXmvljfXUU'
+      });
     </script>
   </head>
   <body >
