@@ -240,6 +240,8 @@
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function"><a href="globals.html#__" class="tsd-kind-icon">$$</a></li>
+								<li class="tsd-kind-function tsd-is-not-exported"><a href="globals.html#accesstokeninurl" class="tsd-kind-icon">access<wbr>Token<wbr>InUrl</a></li>
+								<li class="tsd-kind-function tsd-is-not-exported"><a href="globals.html#alertspath" class="tsd-kind-icon">alerts<wbr>Path</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#executequery" class="tsd-kind-icon">execute<wbr>Query</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#get" class="tsd-kind-icon">get</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#init" class="tsd-kind-icon">init</a></li>
@@ -249,8 +251,12 @@
 								<li class="tsd-kind-function"><a href="globals.html#logcustomevent" class="tsd-kind-icon">log<wbr>Custom<wbr>Event</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#logsearchasyoutypeevent" class="tsd-kind-icon">log<wbr>Search<wbr>AsYou<wbr>Type<wbr>Event</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#logsearchevent" class="tsd-kind-icon">log<wbr>Search<wbr>Event</a></li>
+								<li class="tsd-kind-function tsd-is-not-exported"><a href="globals.html#method" class="tsd-kind-icon">method</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#options" class="tsd-kind-icon">options</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#patch" class="tsd-kind-icon">patch</a></li>
+								<li class="tsd-kind-function tsd-is-not-exported"><a href="globals.html#path" class="tsd-kind-icon">path</a></li>
+								<li class="tsd-kind-function tsd-is-not-exported"><a href="globals.html#requestdatatype" class="tsd-kind-icon">request<wbr>Data<wbr>Type</a></li>
+								<li class="tsd-kind-function tsd-is-not-exported"><a href="globals.html#responsetype" class="tsd-kind-icon">response<wbr>Type</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#state" class="tsd-kind-icon">state</a></li>
 							</ul>
 						</section>
@@ -287,6 +293,69 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="classes/dom.html" class="tsd-signature-type">Dom</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-not-exported">
+					<a name="accesstokeninurl" class="tsd-anchor"></a>
+					<h3>access<wbr>Token<wbr>InUrl</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">access<wbr>Token<wbr>InUrl<span class="tsd-signature-symbol">(</span>tokenKey<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">(Anonymous function)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L1023">src/rest/SearchEndpoint.ts
+									:1023</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Add the accessToken to the query string arguments</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> tokenKey: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;access_token&quot;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">(Anonymous function)</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-not-exported">
+					<a name="alertspath" class="tsd-anchor"></a>
+					<h3>alerts<wbr>Path</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">alerts<wbr>Path<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">(Anonymous function)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L898">src/rest/SearchEndpoint.ts
+									:898</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Add the alert url</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>path: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The path to append to the url</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">(Anonymous function)</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -701,6 +770,39 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-not-exported">
+					<a name="method" class="tsd-anchor"></a>
+					<h3>method</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">method<span class="tsd-signature-symbol">(</span>met<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">(Anonymous function)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L962">src/rest/SearchEndpoint.ts
+									:962</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Set the request data type</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>met: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The type to set</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">(Anonymous function)</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function">
 					<a name="options" class="tsd-anchor"></a>
 					<h3>options</h3>
@@ -794,6 +896,105 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-not-exported">
+					<a name="path" class="tsd-anchor"></a>
+					<h3>path</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">path<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">(Anonymous function)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L866">src/rest/SearchEndpoint.ts
+									:866</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Add the base url</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>path: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The path to append to the url</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">(Anonymous function)</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-not-exported">
+					<a name="requestdatatype" class="tsd-anchor"></a>
+					<h3>request<wbr>Data<wbr>Type</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">request<wbr>Data<wbr>Type<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">(Anonymous function)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L930">src/rest/SearchEndpoint.ts
+									:930</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Set the request data type</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>type: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The type to set</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">(Anonymous function)</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-not-exported">
+					<a name="responsetype" class="tsd-anchor"></a>
+					<h3>response<wbr>Type</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">response<wbr>Type<span class="tsd-signature-symbol">(</span>resp<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">(Anonymous function)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L993">src/rest/SearchEndpoint.ts
+									:993</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Set the response type</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>resp: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The response type to set</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">(Anonymous function)</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1257,6 +1458,12 @@
 					<li class=" tsd-kind-function">
 						<a href="globals.html#__" class="tsd-kind-icon">$$</a>
 					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#accesstokeninurl" class="tsd-kind-icon">access<wbr>Token<wbr>InUrl</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#alertspath" class="tsd-kind-icon">alerts<wbr>Path</a>
+					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#executequery" class="tsd-kind-icon">execute<wbr>Query</a>
 					</li>
@@ -1284,11 +1491,23 @@
 					<li class=" tsd-kind-function">
 						<a href="globals.html#logsearchevent" class="tsd-kind-icon">log<wbr>Search<wbr>Event</a>
 					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#method" class="tsd-kind-icon">method</a>
+					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#options" class="tsd-kind-icon">options</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#patch" class="tsd-kind-icon">patch</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#path" class="tsd-kind-icon">path</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#requestdatatype" class="tsd-kind-icon">request<wbr>Data<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#responsetype" class="tsd-kind-icon">response<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#state" class="tsd-kind-icon">state</a>
