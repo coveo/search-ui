@@ -34,6 +34,7 @@ export interface IComponentOptions<T> {
   section?: string;
   depend?: string;
   priority?: number;
+  deprecated?: string;
 }
 
 export interface IComponentOptionsNumberOption extends IComponentOptionsOption<number>, IComponentOptionsNumberOptionArgs {
