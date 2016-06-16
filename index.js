@@ -2,12 +2,12 @@ var express = require('express')
 var app = express()
 
 app.set('port', (process.env.PORT || 8080))
-app.use('/', express.static(__dirname + '/../bin'))
+app.use('/', express.static(__dirname + '/bin'))
 
 
 app.get('/', function(request, response) {
-  console.log('accessing ' + __dirname + '/../bin/Index.html')
-  response.sendFile(__dirname + '/../bin/Index.html');
+  console.log('accessing ' + __dirname + '/bin/Index.html')
+  response.sendFile(__dirname + '/bin/Index.html');
 })
 
 app.get(/^(.+)$/, function(req, res){
