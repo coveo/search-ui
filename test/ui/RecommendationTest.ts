@@ -123,7 +123,7 @@ module Coveo {
         expect(test.cmp.queryController.executeQuery).toHaveBeenCalledWith(jasmine.objectContaining({
           callOptions: {
             queryString: {
-              'actions_history': JSON.stringify(actionsHistory)
+              'actionsHistory': JSON.stringify(actionsHistory)
             }
           }
         }));
@@ -139,7 +139,7 @@ module Coveo {
         expect(test.cmp.queryController.executeQuery).toHaveBeenCalledWith(jasmine.objectContaining({
           callOptions: {
             queryString: {
-              'actions_history': JSON.stringify(actionsHistory)
+              'actionsHistory': JSON.stringify(actionsHistory)
             }
           }
         }));
