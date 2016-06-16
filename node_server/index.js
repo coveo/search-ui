@@ -6,11 +6,13 @@ app.use('/', express.static(__dirname + '/../bin'))
 
 
 app.get('/', function(request, response) {
+  console.log('accessing ' + __dirname + '/../bin/Index.html')
   response.sendFile(__dirname + '/../bin/Index.html');
 })
 
-app.get(/^(.+)$/, function(req, res){ 
-     res.sendfile( __dirname + req.params[0]); 
+app.get(/^(.+)$/, function(req, res){
+  console.log('accessing ' + __dirname + req.params[0])
+     res.sendfile( __dirname + req.params[0]);
 });
 
 app.listen(app.get('port'), function() {
