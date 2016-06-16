@@ -7,8 +7,8 @@
     "test": "gulp buildTest && node_modules/karma/bin/karma start",
     "build": "gulp",
     "doc": "gulp doc",
-    "heroku-prebuild": "env NPM_CONFIG_PRODUCTION=false npm install --only=dev",
-    "heroku-postbuild": "env NPM_CONFIG_PRODUCTION=false npm install --only=dev && npm run build",
+    "heroku-prebuild": "env NPM_CONFIG_PRODUCTION=false npm install",
+    "heroku-postbuild": "env NPM_CONFIG_PRODUCTION=false npm install && npm run build",
     "start": "node index.js"
   },
   "repository": {
