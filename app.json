@@ -1,0 +1,8 @@
+{
+  "name": "coveo-search-ui",
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
