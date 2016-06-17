@@ -12,8 +12,15 @@
   .coveo-tab-section {
     border-top: 1px solid white;
     background-color: $color-blueish-white;
-    display: inline-block;
+    min-height: 40px;
+    
+    > a:last-of-type {
+      margin-right: 20px;
+    }
 
+    .coveo-tab-dropdown-header {
+      margin-left: 10px;
+    }
     .coveo-dropdown-header {
       display: inline-block;
       padding: 1px 8px 1px 8px;
@@ -27,7 +34,6 @@
       color: $color-greyish-teal-blue;
       cursor: pointer;
       text-transform: uppercase;
-      margin-left: 10px;
 
       * {
         display: inline-block;
@@ -60,6 +66,10 @@
     &.coveo-selected, &.coveo-selected:hover {
       font-weight: 700;
     }
+    height: 40px;
+    * {
+      line-height: 40px;
+    }
   }
 
   
@@ -88,6 +98,20 @@
     li:hover {
       background-color: $color-blueish-white-grey;
     }
+  }
+
+  .coveo-facet-settings-popup {
+    z-index: 999;
+  }
+
+  .coveo-facet-footer {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .coveo-facet-more {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
   }
 }
  
