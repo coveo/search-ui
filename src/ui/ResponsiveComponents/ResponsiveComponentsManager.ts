@@ -3,6 +3,7 @@ import {InitializationEvents} from '../../events/InitializationEvents';
 import {Component} from '../Base/Component';
 import {Tab} from '../Tab/Tab';
 import {Facet} from '../Facet/Facet';
+import {ResponsiveFacets} from './ResponsiveFacets';
 import _ = require('underscore');
 
 export interface IResponsiveComponentConstructor {
@@ -31,20 +32,21 @@ export class ResponsiveComponentsManager {
   private searchBoxElement: HTMLElement;
   private isTabActivated: boolean = false;
   private isFacetActivated: boolean = false;
+  private responsiveFacets: ResponsiveFacets;
 
   // Register takes a class and will instantiate it after framework initialization has completed.
-  public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string) {
+  public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component) {
 
     root.on(InitializationEvents.afterInitialization, () => {
       let responsiveComponent = new responsiveComponentConstructor(root, ID);
 
       let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el == componentManager.coveoRoot.el);
       if (responsiveComponentsManager) {
-        responsiveComponentsManager.register(responsiveComponent);
+        responsiveComponentsManager.register(responsiveComponent, component);
       } else {
         responsiveComponentsManager = new ResponsiveComponentsManager(root);
         this.componentManagers.push(responsiveComponentsManager);
-        responsiveComponentsManager.register(responsiveComponent);
+        responsiveComponentsManager.register(responsiveComponent, component);
       }
 
       this.remainingComponentInitializations--;
@@ -85,7 +87,11 @@ export class ResponsiveComponentsManager {
     window.addEventListener('resize', _.debounce(this.resizeListener, 200));
   }
 
-  public register(responsiveComponent: IResponsiveComponent) {
+  public register(responsiveComponent: IResponsiveComponent, component) {
+
+    if (this.isFacet(responsiveComponent) && this.isActivated(responsiveComponent)) {
+      this.responsiveFacets.registerFacet(component);
+    }
 
     if (!this.isActivated(responsiveComponent)) {
       if (this.isTabs(responsiveComponent)) {
@@ -96,6 +102,8 @@ export class ResponsiveComponentsManager {
       }
 
       if (this.isFacet(responsiveComponent)) {
+        this.responsiveFacets = <ResponsiveFacets> responsiveComponent;
+        this.responsiveFacets.registerFacet(component)
         this.isFacetActivated = true;
         if (!this.isTabActivated) {
           this.tabSection = $$('div', { className: 'coveo-tab-section' });

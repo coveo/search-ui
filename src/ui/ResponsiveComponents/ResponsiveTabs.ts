@@ -37,13 +37,13 @@ export class ResponsiveTabs implements IResponsiveComponent {
     this.saveTabsPosition();
   }
 
-  public static init(root: HTMLElement, ID: string) {
+  public static init(root: HTMLElement, ID: string, component) {
     this.logger = new Logger(root);
     if (!$$(root).find('.coveo-tab-section')) {
       this.logger.info(this.TABS_NOT_FOUND);
       return;
     }
-    ResponsiveComponentsManager.register(ResponsiveTabs, $$(root), ID);
+    ResponsiveComponentsManager.register(ResponsiveTabs, $$(root), ID, component);
   }
 
   public handleResizeEvent() {

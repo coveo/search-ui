@@ -23,15 +23,15 @@
     min-width: 280px;
     width: 35%;
     z-index: 20;
-    @include defaultRoundedBorder();
+    border: 0;
+    border-radius: $small-border-radius 0 0 $small-border-radius;
 
     .CoveoFacet {
       margin: 0;
       border: 0;
-      border-radius: 0;
-      border-bottom: $default-border;
-      &:last {
-        border-bottom: 0;
+
+      .coveo-facet-header {
+        border-top: $default-border;
       }
     }
   }

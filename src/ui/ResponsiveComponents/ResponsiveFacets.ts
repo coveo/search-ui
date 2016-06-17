@@ -2,8 +2,9 @@ import {$$, Dom} from '../../utils/Dom';
 import {IResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
 import {Logger} from '../../misc/Logger';
 import '../../../sass/_ResponsiveFacets.scss';
-import {l} from '../../strings/Strings.ts';
+import {l} from '../../strings/Strings';
 import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
+import {Facet} from '../Facet/Facet';
 
 export class ResponsiveFacets implements IResponsiveComponent {
 
@@ -22,14 +23,15 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private tabSection: Dom;
   private popupBackground: Dom;
   private documentClickListener: EventListener;
+  private facets: Array<Facet> = [];
 
-  public static init(root: HTMLElement, ID: string) {
+  public static init(root: HTMLElement, ID: string, component) {
     this.logger = new Logger(root);
     if (!$$(root).find('.coveo-facet-column')) {
       this.logger.info(this.FACETS_NOT_FOUND);
       return;
     }
-    ResponsiveComponentsManager.register(ResponsiveFacets, $$(root), ID);
+    ResponsiveComponentsManager.register(ResponsiveFacets, $$(root), ID, component);
   }
 
   constructor(root: Dom, ID: string) {
@@ -49,15 +51,21 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   public changeToSmallMode() {
+    this.disableFacetPreservePosition();
     this.tabSection.el.appendChild(this.dropdownHeaderContainer.el);
     this.facetsColumn.detach();
   }
 
   public changeToLargeMode() {
+    this.enableFacetPreservePosition();
     this.dropdownHeaderContainer.detach();
     this.facetsColumn.el.removeAttribute('style');
     this.detachDropdown();
     this.restoreFacetsPosition();
+  }
+
+  public registerFacet(facet: Facet) {
+    this.facets.push(facet);
   }
 
   private buildDropdownHeader() {
@@ -129,6 +137,19 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.facetsColumn.removeClass('coveo-facet-dropdown-content');
     this.dropdownHeader.removeClass('coveo-dropdown-header-active');
   }
+
+  private enableFacetPreservePosition() {
+    _.each(this.facets, facet => {
+      facet.options.preservePosition = true;
+    });
+  }
+
+  private disableFacetPreservePosition() {
+    _.each(this.facets, facet => {
+      facet.options.preservePosition = false;
+    });
+  }
+
   private nuke() {
 
   }

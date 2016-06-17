@@ -416,7 +416,7 @@ export class Facet extends Component {
       this.options.availableSorts = _.filter(this.options.availableSorts, (sort: string) => !/^alpha.*$/.test(sort));
     }
 
-    ResponsiveFacets.init(this.root, Facet.ID);
+    ResponsiveFacets.init(this.root, Facet.ID, this);
 
     // Serves as a way to render facet in the omnibox in the order in which they are instantiated
     this.omniboxZIndex = Facet.omniboxIndex;
@@ -756,7 +756,10 @@ export class Facet extends Component {
   }
 
   public pinFacetPosition() {
-    this.pinnedViewportPosition = this.element.getBoundingClientRect().top;
+    if (this.options.preservePosition) {
+      this.pinnedViewportPosition = this.element.getBoundingClientRect().top;
+    }
+    
   }
 
   /**
@@ -1306,7 +1309,7 @@ export class Facet extends Component {
   }
 
   private unpinFacetPosition() {
-    if (this.isFacetPinned()) {
+    if (this.isFacetPinned() && this.options.preservePosition) {
       $$(this.pinnedTopSpace).addClass('coveo-with-animation');
       $$(this.pinnedBottomSpace).addClass('coveo-with-animation');
       this.pinnedTopSpace.style.height = '0px';
