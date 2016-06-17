@@ -102,7 +102,7 @@ export class ResponsiveComponentsManager {
       }
 
       if (this.isFacet(responsiveComponent)) {
-        this.responsiveFacets = <ResponsiveFacets> responsiveComponent;
+        this.responsiveFacets = <ResponsiveFacets>responsiveComponent;
         this.responsiveFacets.registerFacet(component)
         this.isFacetActivated = true;
         if (!this.isTabActivated) {

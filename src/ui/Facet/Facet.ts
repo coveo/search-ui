@@ -759,7 +759,7 @@ export class Facet extends Component {
     if (this.options.preservePosition) {
       this.pinnedViewportPosition = this.element.getBoundingClientRect().top;
     }
-    
+
   }
 
   /**
