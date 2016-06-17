@@ -89,7 +89,7 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
-    "coveomagicbox": "^1.0.5",
+    "coveomagicbox": "1.0.9",
     "d3": "^3.5.17",
     "es6-promise": "^3.1.2",
     "modal-box": "1.0.6",
