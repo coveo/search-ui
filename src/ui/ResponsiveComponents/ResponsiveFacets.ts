@@ -93,9 +93,9 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.popupBackground = $$('div', { className: 'coveo-facet-dropdown-background' });
   }
 
-  private shouldDetachFacetDropdown(eventTarget) {
+  private shouldDetachFacetDropdown(eventTarget: Dom) {
     return !eventTarget.closest('coveo-facet-column') && !eventTarget.closest('coveo-facet-dropdown-header-container')
-      && this.coveoRoot.hasClass('coveo-small-search-interface');
+      && this.coveoRoot.hasClass('coveo-small-search-interface') && !eventTarget.closest('coveo-facet-settings-popup');
   }
 
   private saveFacetsPosition() {
