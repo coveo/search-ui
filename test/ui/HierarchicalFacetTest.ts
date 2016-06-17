@@ -143,11 +143,11 @@ module Coveo {
       test.cmp.open('foo0');
       expect($$(getFacetValueElement('foo0-0')).hasClass('coveo-inactive')).toBe(false);
       results = FakeResults.createFakeHierarchicalGroupByResult('@foobar', 'foo', 2, 3, '|', false, true);
-      //values[0] is foo0 : a parent
+      // values[0] is foo0 : a parent
       results.values[0] = undefined;
       results.values = _.compact(results.values);
       doQuery();
-      //foo0-0 is a child of the value we just deleted
+      // foo0-0 is a child of the value we just deleted
       // it should be hidden
       test.cmp.open('foo0');
       expect($$(getFacetValueElement('foo0-0')).hasClass('coveo-inactive')).toBe(true);
