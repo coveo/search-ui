@@ -44,8 +44,8 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
   }
 
   public modifyCustomData(key: string, newData: any) {
-    _.each(this.searchEvents, (sEvents: ISearchEvent) => {
-      sEvents.customData[key] = newData;
+    _.each(this.searchEvents, (searchEvent: ISearchEvent) => {
+      searchEvent.customData[key] = newData;
     })
     if (!this.templateSearchEvent.customData) {
       this.templateSearchEvent.customData = {};
@@ -54,9 +54,9 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
   }
 
   public modifyEventCause(newCause: IAnalyticsActionCause) {
-    _.each(this.searchEvents, (sEvents: ISearchEvent) => {
-      sEvents.actionCause = newCause.name;
-      sEvents.actionType = newCause.type;
+    _.each(this.searchEvents, (searchEvent: ISearchEvent) => {
+      searchEvent.actionCause = newCause.name;
+      searchEvent.actionType = newCause.type;
     })
     this.templateSearchEvent.actionCause = newCause.name;
     this.templateSearchEvent.actionType = newCause.type;
