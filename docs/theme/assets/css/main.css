@@ -659,11 +659,12 @@ html.minimal .tsd-generator { padding: 0; }
 @media (max-width: 900px) { html.minimal .tsd-navigation { display: none; }
   html.minimal .content-wrap { padding-left: 0; } }
 
-dl.tsd-comment-tags { overflow: hidden; }
-dl.tsd-comment-tags dt { clear: both; float: left; padding: 1px 5px; margin: 0 10px 0 0; border-radius: 4px; border: 1px solid #808080; color: #808080; font-size: 0.8em; font-weight: normal; }
-dl.tsd-comment-tags dt.tsd-is-deprecated { clear: both; float: left; padding: 1px 5px; margin: 0 10px 0 0; border-radius: 4px; border: 1px solid #808080; color: #FF0000; font-size: 1.8em; font-weight: normal; }
-dl.tsd-comment-tags dd { margin: 0 0 10px 0; }
-dl.tsd-comment-tags p { margin: 0; }
+dl.tsd-comment-tags, dl.tsd-deprecated { overflow: hidden; }
+dl.tsd-comment-tags dt, dl.tsd-deprecated dt { clear: both; float: left; padding: 1px 5px; margin: 0 10px 0 0; border-radius: 4px; border: 1px solid #808080; color: #808080; font-size: 0.8em; font-weight: normal; }
+dl.tsd-comment-tags dd, dl.tsd-deprecated dd { margin: 0 0 10px 0;}
+dl.tsd-comment-tags p, dl.tsd-deprecated p { margin: 2px 0 0 0; }
+dl.tsd-deprecated dt { border: 1px solid #FF0000; color: #FF0000; font-size: 0.8em; font-weight: bold; }
+dl.tsd-deprecated dd { color: #FF0000; }
 
 
 .tsd-panel.tsd-comment .lead { font-size: 1.1em; line-height: 1.333em; margin-bottom: 2em; }
