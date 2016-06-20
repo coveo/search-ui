@@ -169,6 +169,7 @@ export {CurrentTab} from './ui/CurrentTab/CurrentTab';
 export {QueryboxQueryParameters} from './ui/Querybox/QueryboxQueryParameters';
 export {ImageResultList} from './ui/ImageResultList/ImageResultList';
 export {CoveoJQuery} from './ui/Base/CoveoJQuery';
+export {jQueryInstance as $} from './ui/Base/CoveoJQuery';
 export {FollowItem} from './ui/SearchAlerts/FollowItem';
 export {SearchAlertsMessage} from './ui/SearchAlerts/SearchAlertsMessage';
 export {SearchAlerts} from './ui/SearchAlerts/SearchAlerts';

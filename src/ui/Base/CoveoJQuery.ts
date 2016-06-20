@@ -12,7 +12,10 @@ export class CoveoJQuery {
   }
 }
 
+export var jQueryInstance: JQuery;
+
 if (window['$'] != undefined && window['$'].fn != undefined) {
+  jQueryInstance = window['$'];
   window['$'].fn.coveo = function (...args: any[]) {
     var returnValue: any;
     this.each((index: number, element: HTMLElement) => {
@@ -28,7 +31,6 @@ if (window['$'] != undefined && window['$'].fn != undefined) {
       // Keep only the first return value we encounter
       returnValue = returnValue || returnValueForThisElement;
     });
-
     return returnValue;
   }
 }
