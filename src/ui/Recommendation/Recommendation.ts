@@ -100,7 +100,7 @@ export class Recommendation extends SearchInterface {
     $$(this.options.mainSearchInterface).on(QueryEvents.querySuccess, (e: Event, args: IQuerySuccessEventArgs) => {
       this.mainInterfaceQuery = args;
       this.mainQuerySearchUID = args.results.searchUid;
-      this.queryController.executeQuery({ ignoreWarningSearchEvent: true, callOptions: { queryString: { 'actionsHistory': this.getHistory() } } });
+      this.queryController.executeQuery({ ignoreWarningSearchEvent: true });
     })
   }
 
@@ -128,6 +128,7 @@ export class Recommendation extends SearchInterface {
     if (!_.isEmpty(this.options.userContext)) {
       data.queryBuilder.addContext(this.options.userContext);
     }
+    data.actionsHistory = this.getHistory();
   }
 
   private getHistory(): string {

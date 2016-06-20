@@ -393,9 +393,12 @@ export class QueryController extends RootComponent {
     let dataToSendDuringBuildingQuery: IBuildingQueryEventArgs = {
       queryBuilder: queryBuilder,
       searchAsYouType: options.searchAsYouType,
-      cancel: options.cancel
+      cancel: options.cancel,
+      actionsHistory: options.callOptions.queryString["actionsHistory"]
     };
     this.buildingQueryEvent(dataToSendDuringBuildingQuery);
+
+    options.callOptions.queryString["actionsHistory"] = dataToSendDuringBuildingQuery.actionsHistory;
 
     let dataToSendDuringDoneBuildingQuery: IDoneBuildingQueryEventArgs = {
       queryBuilder: queryBuilder,

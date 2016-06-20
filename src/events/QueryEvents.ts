@@ -15,6 +15,7 @@ export interface INewQueryEventArgs {
 export interface IBuildingQueryEventArgs {
   queryBuilder: QueryBuilder;
   searchAsYouType: boolean;
+  actionsHistory: any;
   cancel: boolean;
 }
 
