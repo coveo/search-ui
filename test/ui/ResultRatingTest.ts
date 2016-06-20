@@ -9,7 +9,7 @@ module Coveo {
     let fakeResultWithNoStars: IQueryResult;
 
     beforeEach(() => {
-      averageFakeResult  = FakeResults.createFakeResult();
+      averageFakeResult = FakeResults.createFakeResult();
       averageFakeResult.rating = RatingValues.Average;
 
       fakeResultWithNoStars = FakeResults.createFakeResult();
@@ -22,10 +22,10 @@ module Coveo {
       let resultRatings = $$(test.env.element).findAll('a');
       let numberOfActivatedStars = 0;
 
-      for(let i = 0; i < resultRatings.length; i++){
-        if($$(resultRatings[i]).hasClass('coveo-sprites-star_active')){
+      for (let i = 0; i < resultRatings.length; i++) {
+        if ($$(resultRatings[i]).hasClass('coveo-sprites-star_active')) {
           numberOfActivatedStars++;
-        } else{
+        } else {
           break;
         }
       }
@@ -51,9 +51,9 @@ module Coveo {
 
     it('should load old active stars when using old design', () => {
       test = Mock.advancedResultComponentSetup<ResultRating>(ResultRating, FakeResults.createFakeResult(),
-          new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder: Mock.MockEnvironmentBuilder) => {
-            return builder.withOldDesign();
-          }));
+        new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder: Mock.MockEnvironmentBuilder) => {
+          return builder.withOldDesign();
+        }));
 
       let star = $$(test.env.element).find('a');
       expect($$(star).hasClass('coveo-sprites-common-star_active')).toBe(true);
@@ -68,9 +68,9 @@ module Coveo {
 
     it('should load old placeholder stars when using old design', () => {
       test = Mock.advancedResultComponentSetup<ResultRating>(ResultRating, fakeResultWithNoStars,
-          new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder: Mock.MockEnvironmentBuilder) => {
-            return builder.withOldDesign();
-          }));
+        new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder: Mock.MockEnvironmentBuilder) => {
+          return builder.withOldDesign();
+        }));
 
       let star = $$(test.env.element).find('a');
       expect($$(star).hasClass('coveo-sprites-common-star_placeholder')).toBe(true);
@@ -147,9 +147,9 @@ module Coveo {
 
     it('should activate star on mouseover with collaborative rating and placeholder star', () => {
       test = Mock.advancedResultComponentSetup<ResultRating>(ResultRating, fakeResultWithNoStars,
-          new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder: Mock.MockEnvironmentBuilder) => {
-            return builder.withCollaborativeRating();
-          }));
+        new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder: Mock.MockEnvironmentBuilder) => {
+          return builder.withCollaborativeRating();
+        }));
       let firstStar = $$($$(test.env.element).find('a'));
 
       firstStar.trigger('mouseover');
@@ -159,9 +159,9 @@ module Coveo {
 
     it('should activate one star on mouseover with collaborative rating and average rating', () => {
       test = Mock.advancedResultComponentSetup<ResultRating>(ResultRating, averageFakeResult,
-          new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder: Mock.MockEnvironmentBuilder) => {
-            return builder.withCollaborativeRating();
-          }));
+        new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder: Mock.MockEnvironmentBuilder) => {
+          return builder.withCollaborativeRating();
+        }));
       let firstStar = $$($$(test.env.element).find('a'));
 
       firstStar.trigger('mouseover');
@@ -171,9 +171,9 @@ module Coveo {
 
     it('should show three activated stars on mouseleave after mouseover with collaborative rating and average rating', () => {
       test = Mock.advancedResultComponentSetup<ResultRating>(ResultRating, averageFakeResult,
-          new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder: Mock.MockEnvironmentBuilder) => {
-            return builder.withCollaborativeRating();
-          }));
+        new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder: Mock.MockEnvironmentBuilder) => {
+          return builder.withCollaborativeRating();
+        }));
       let firstStar = $$($$(test.env.element).find('a'));
 
       firstStar.trigger('mouseover');
@@ -184,9 +184,9 @@ module Coveo {
 
     it('should deactivate star on mouseleave after mouseover with collaborative rating and placeholder star', () => {
       test = Mock.advancedResultComponentSetup<ResultRating>(ResultRating, fakeResultWithNoStars,
-          new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder: Mock.MockEnvironmentBuilder) => {
-            return builder.withCollaborativeRating();
-          }));
+        new Mock.AdvancedComponentSetupOptions(undefined, undefined, (builder: Mock.MockEnvironmentBuilder) => {
+          return builder.withCollaborativeRating();
+        }));
       let firstStar = $$($$(test.env.element).find('a'));
 
       firstStar.trigger('mouseover');

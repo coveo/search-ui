@@ -13,10 +13,13 @@
     @extend .coveo-sprites-result-follow-active;
   }
   &.coveo-follow-item-loading:before {
-    background: url(../image/wait_facet.gif) no-repeat;
-    background-size: 100%;
-    width: 10px;
-    height: 10px;
+    @extend .coveo-sprites-facet-loading;
+    @include animation-name(coveo-spin);
+    @include animation-timing-function(linear);
+    @include animation-duration(1s);
+    @include animation-iteration-count(infinite);
+    width: 16px;
+    height: 16px;
     margin: 1px 9px 1px 3px;
   }
   span {

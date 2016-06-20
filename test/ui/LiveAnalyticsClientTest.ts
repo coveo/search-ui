@@ -3,7 +3,7 @@
 module Coveo {
   describe('LiveAnalyticsClient', function () {
     var endpoint: AnalyticsEndpoint;
-    var env: Mock.MockEnvironment;
+    var env: Mock.IMockEnvironment;
     var client: LiveAnalyticsClient;
     var promise: Promise<IQueryResults>;
 
@@ -11,7 +11,7 @@ module Coveo {
       env = new Mock.MockEnvironmentBuilder().build();
       endpoint = Mock.mock<AnalyticsEndpoint>(AnalyticsEndpoint);
       client = new LiveAnalyticsClient(endpoint, env.root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true);
-      promise = new Promise((resolve, reject)=> {
+      promise = new Promise((resolve, reject) => {
         resolve(FakeResults.createFakeResults(3))
       })
     })
@@ -21,6 +21,14 @@ module Coveo {
       endpoint = null;
       client = null;
       promise = null;
+    })
+
+    it('should return pending event', () => {
+      client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
+      expect(client.getPendingSearchEvent() instanceof PendingSearchEvent).toBe(true);
+      client.cancelAllPendingEvents();
+      client.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
+      expect(client.getPendingSearchEvent() instanceof PendingSearchAsYouTypeSearchEvent).toBe(true);
     })
 
     it('should send proper information on logSearchEvent', function (done) {
@@ -67,7 +75,7 @@ module Coveo {
         enableDidYouMean: true
       };
 
-      env.queryStateModel.get = ()=> {
+      env.queryStateModel.get = () => {
         return 'another query';
       }
 
@@ -96,8 +104,8 @@ module Coveo {
 
     describe('with multiple (3) search events', function () {
       var root: HTMLElement
-      var env2: Mock.MockEnvironment;
-      var env3: Mock.MockEnvironment;
+      var env2: Mock.IMockEnvironment;
+      var env3: Mock.IMockEnvironment;
 
       beforeEach(function () {
         root = document.createElement('div');
@@ -276,11 +284,11 @@ module Coveo {
 
       it('should only send success events to the endpoint', function (done) {
         client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
-        var promise2 = new Promise((resolve, reject)=> {
+        var promise2 = new Promise((resolve, reject) => {
           reject();
         })
 
-        promise2.catch(()=> {
+        promise2.catch(() => {
         })
 
         Simulate.query(env, {
@@ -340,7 +348,7 @@ module Coveo {
         query: {
           q: 'the query 1'
         },
-        promise: new Promise((resolve, reject)=> {
+        promise: new Promise((resolve, reject) => {
           resolve(FakeResults.createFakeResults(3));
         })
       });

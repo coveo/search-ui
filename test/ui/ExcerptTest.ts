@@ -7,7 +7,7 @@ module Coveo {
 
     beforeEach(() => {
       fakeResult = FakeResults.createFakeResult();
-      fakeResult.excerpt = "This is the excerpt";
+      fakeResult.excerpt = 'This is the excerpt';
       fakeResult.excerptHighlights = [{
         offset: 12,
         length: 7
@@ -19,11 +19,11 @@ module Coveo {
       test = null;
       fakeResult = null;
     })
-    
-    it('should highlight the keywords', ()=>{
-      let expectedExcerpt = HighlightUtils.highlightString(fakeResult.excerpt, fakeResult.excerptHighlights, null, "coveo-highlight")
+
+    it('should highlight the keywords', () => {
+      let expectedExcerpt = HighlightUtils.highlightString(fakeResult.excerpt, fakeResult.excerptHighlights, null, 'coveo-highlight')
       expect(test.cmp.element.innerHTML).toEqual(expectedExcerpt);
     })
-    
+
   })
 }

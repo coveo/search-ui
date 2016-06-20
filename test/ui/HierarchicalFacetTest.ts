@@ -4,6 +4,18 @@ module Coveo {
     let test: Mock.IBasicComponentSetup<HierarchicalFacet>;
     let results: IGroupByResult;
 
+    beforeEach(function () {
+      test = Mock.optionsComponentSetup<HierarchicalFacet, IHierarchicalFacetOptions>(HierarchicalFacet, {
+        field: '@foobar'
+      })
+      results = FakeResults.createFakeHierarchicalGroupByResult('@foobar', 'foo', 2, 3, '|', false, true);
+    })
+
+    afterEach(function () {
+      test = null;
+      results = null;
+    })
+
     function getFacetValue(parentNumber, childNumber?, token = 'foo', delimitingCharacter = '|'): FacetValue {
       if (childNumber == undefined) {
         return test.cmp.values.get(token + parentNumber)
@@ -23,18 +35,6 @@ module Coveo {
         groupByResults: [results]
       })
     }
-
-    beforeEach(function () {
-      test = Mock.optionsComponentSetup<HierarchicalFacet, IHierarchicalFacetOptions>(HierarchicalFacet, {
-        field: '@foobar'
-      })
-      results = FakeResults.createFakeHierarchicalGroupByResult('@foobar', 'foo', 2, 3, '|', false, true);
-    })
-
-    afterEach(function () {
-      test = null;
-      results = null;
-    })
 
     it('should flag the parent value when a child value is selected or deselected', function () {
       doQuery();
@@ -135,6 +135,36 @@ module Coveo {
       expect(simulation.queryBuilder.build().groupBy).toEqual(jasmine.arrayContaining([jasmine.objectContaining({
         maximumNumberOfValues: 10000 + 1 // +1 for more functionnality
       })]))
+    })
+
+    it('should treat orphan values accordingly', () => {
+      doQuery();
+      // open the paren, the child should not be inactive
+      test.cmp.open('foo0');
+      expect($$(getFacetValueElement('foo0-0')).hasClass('coveo-inactive')).toBe(false);
+      results = FakeResults.createFakeHierarchicalGroupByResult('@foobar', 'foo', 2, 3, '|', false, true);
+      // values[0] is foo0 : a parent
+      results.values[0] = undefined;
+      results.values = _.compact(results.values);
+      doQuery();
+      // foo0-0 is a child of the value we just deleted
+      // it should be hidden
+      test.cmp.open('foo0');
+      expect($$(getFacetValueElement('foo0-0')).hasClass('coveo-inactive')).toBe(true);
+    })
+
+    it('should populate breadcrumb', () => {
+      doQuery();
+      test.cmp.selectValue('foo0|foo0-0');
+      var breadcrumb = Simulate.breadcrumb(test.env);
+      expect(breadcrumb[0].element.innerText).toContain('foo0');
+    })
+
+    it('should not exec script in breadcrumb', () => {
+      doQuery();
+      test.cmp.selectValue('<script>alert(\'foo\')</script>');
+      var breadcrumb = Simulate.breadcrumb(test.env);
+      expect(breadcrumb[0].element.innerHTML).toContain('&lt;script&gt;');
     })
   })
 }

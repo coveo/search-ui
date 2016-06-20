@@ -2,7 +2,7 @@ module Coveo {
   describe('Model', function () {
     var model: Model;
     var div: HTMLDivElement;
-    var env: Mock.MockEnvironment;
+    var env: Mock.IMockEnvironment;
     var bindings: IComponentBindings;
 
     beforeEach(function () {
@@ -67,10 +67,10 @@ module Coveo {
       })
 
       it('will throw on type mismatch', function () {
-        expect(()=> model.set('foo', 1)).toThrow();
-        expect(()=> model.set('foo', {})).toThrow();
-        expect(()=> model.set('foo', true)).toThrow();
-        expect(()=> model.set('foo', false)).toThrow();
+        expect(() => model.set('foo', 1)).toThrow();
+        expect(() => model.set('foo', {})).toThrow();
+        expect(() => model.set('foo', true)).toThrow();
+        expect(() => model.set('foo', false)).toThrow();
       })
 
       it('can setMultiple', function () {

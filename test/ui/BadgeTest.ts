@@ -31,14 +31,14 @@ module Coveo {
         it('should throw an error when trying to initialize with an invalid color format', function () {
           expect(() => {
             Mock.advancedResultComponentSetup<Badge>(Badge, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-              element: $$('span', {'data-colors': 'I am quite invalid.'}).el
+              element: $$('span', { 'data-colors': 'I am quite invalid.' }).el
             });
           }).toThrow();
         })
 
         it('should parse the colors using the old format properly', function () {
           test = Mock.advancedResultComponentSetup<Badge>(Badge, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-            element: $$('span', {'data-colors': 'red; foo: green; bar: #123456; foobar: #911'}).el
+            element: $$('span', { 'data-colors': 'red; foo: green; bar: #123456; foobar: #911' }).el
           });
 
           expect(test.cmp.options.colors.icon).toBe('red');
@@ -63,7 +63,7 @@ module Coveo {
             }
           }
           test = Mock.advancedResultComponentSetup<Badge>(Badge, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
-            element: $$('span', {'data-colors': JSON.stringify(jsonColors)}).el
+            element: $$('span', { 'data-colors': JSON.stringify(jsonColors) }).el
           });
           expect(test.cmp.options.colors).toEqual(jsonColors);
         })
@@ -71,10 +71,10 @@ module Coveo {
     })
 
     it('getColor should return the appropriate color corresponding to the passed field value', function () {
-      expect(test.cmp.getColor()).toEqual({icon: '#123', text: '#123456'});
-      expect(test.cmp.getColor('foo')).toEqual({icon: 'pink', text: 'black'});
-      expect(test.cmp.getColor('bar')).toEqual({icon: 'blue', text: 'green'});
-      expect(test.cmp.getColor('I do not exist.')).toEqual({icon: '#123', text: '#123456'});
+      expect(test.cmp.getColor()).toEqual({ icon: '#123', text: '#123456' });
+      expect(test.cmp.getColor('foo')).toEqual({ icon: 'pink', text: 'black' });
+      expect(test.cmp.getColor('bar')).toEqual({ icon: 'blue', text: 'green' });
+      expect(test.cmp.getColor('I do not exist.')).toEqual({ icon: '#123', text: '#123456' });
     })
 
     describe('renderOneValue', function () {

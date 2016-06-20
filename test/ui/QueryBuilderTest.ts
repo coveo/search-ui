@@ -15,7 +15,7 @@ module Coveo {
     it('can addContextValue and addContext', function () {
       queryBuilder.addContextValue('foo', 'bar');
       expect(queryBuilder.build().context['foo']).toBe('bar');
-      queryBuilder.addContext({'a': 'b', 'c': 'd'});
+      queryBuilder.addContext({ 'a': 'b', 'c': 'd' });
       expect(queryBuilder.build().context['foo']).toBe('bar');
       expect(queryBuilder.build().context['a']).toBe('b');
     })

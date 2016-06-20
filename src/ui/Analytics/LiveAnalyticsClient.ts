@@ -8,6 +8,7 @@ import {Logger} from '../../misc/Logger';
 import {IAnalyticsActionCause, analyticsActionCauseList} from './AnalyticsActionListMeta';
 import {IQueryResult} from '../../rest/QueryResult';
 import {ITopQueries} from '../../rest/TopQueries';
+
 import {IChangeableAnalyticsMetaObject, IChangeableAnalyticsDataObject, IChangeAnalyticsCustomDataEventArgs} from '../../events/AnalyticsEvents';
 import {Defer} from '../../misc/Defer';
 import {$$} from '../../utils/Dom';
@@ -102,6 +103,26 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     if (this.pendingSearchAsYouTypeSearchEvent) {
       this.pendingSearchAsYouTypeSearchEvent.sendRightNow();
     }
+  }
+
+  public cancelAllPendingEvents() {
+    if (this.pendingSearchAsYouTypeSearchEvent) {
+      this.pendingSearchAsYouTypeSearchEvent.cancel();
+      this.pendingSearchAsYouTypeSearchEvent = null;
+    }
+    if (this.pendingSearchEvent) {
+      this.pendingSearchEvent.cancel();
+      this.pendingSearchEvent = null;
+    }
+  }
+
+  public getPendingSearchEvent(): PendingSearchEvent {
+    if (this.pendingSearchEvent) {
+      return this.pendingSearchEvent
+    } else if (this.pendingSearchAsYouTypeSearchEvent) {
+      return this.pendingSearchAsYouTypeSearchEvent;
+    }
+    return null;
   }
 
   public warnAboutSearchEvent() {

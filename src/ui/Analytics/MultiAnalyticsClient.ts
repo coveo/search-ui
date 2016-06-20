@@ -2,6 +2,7 @@ import {IAnalyticsClient} from './AnalyticsClient';
 import {IAnalyticsActionCause, IAnalyticsDocumentViewMeta} from './AnalyticsActionListMeta';
 import {IQueryResult} from '../../rest/QueryResult';
 import {ITopQueries} from '../../rest/TopQueries';
+import {PendingSearchEvent} from './PendingSearchEvent';
 
 export class MultiAnalyticsClient implements IAnalyticsClient {
   public isContextual = false;
@@ -59,7 +60,15 @@ export class MultiAnalyticsClient implements IAnalyticsClient {
   }
 
   public warnAboutSearchEvent() {
-    _.each(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.warnAboutSearchEvent())
+    _.each(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.warnAboutSearchEvent());
+  }
+
+  public cancelAllPendingEvents() {
+    _.each(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.cancelAllPendingEvents());
+  }
+
+  public getPendingSearchEvent() {
+    return _.first(this.analyticsClients).getPendingSearchEvent();
   }
 
   private mergeTopQueries(values: string[][], pageSize: number = 5) {

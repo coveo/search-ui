@@ -23,7 +23,7 @@ module Coveo {
 
     describe('with a quickview inside', function () {
       beforeEach(function () {
-        test = Mock.advancedResultComponentSetup<Icon>(Icon, result, new Mock.AdvancedComponentSetupOptions($$('div', undefined, $$('div', {className: 'CoveoQuickview'}).el).el, undefined, undefined));
+        test = Mock.advancedResultComponentSetup<Icon>(Icon, result, new Mock.AdvancedComponentSetupOptions($$('div', undefined, $$('div', { className: 'CoveoQuickview' }).el).el, undefined, undefined));
       })
 
       it('should render properly', function () {

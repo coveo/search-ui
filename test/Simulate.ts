@@ -1,7 +1,7 @@
 /// <reference path="Test.ts" />
 module Coveo {
 
-  export interface SimulateQueryData {
+  export interface ISimulateQueryData {
     query?: IQuery;
     queryBuilder?: QueryBuilder;
     searchAsYouType?: boolean;
@@ -20,13 +20,13 @@ module Coveo {
 
 
   export class Simulate {
-    static query(env: Mock.MockEnvironment, options?: SimulateQueryData): SimulateQueryData {
+    static query(env: Mock.IMockEnvironment, options?: ISimulateQueryData): ISimulateQueryData {
 
       options = _.extend({}, {
         query: new QueryBuilder().build(),
         queryBuilder: new QueryBuilder(),
         searchAsYouType: false,
-        promise: new Promise(()=> {
+        promise: new Promise(() => {
         }),
         results: FakeResults.createFakeResults(),
         callbackDuringQuery: () => {
@@ -78,7 +78,7 @@ module Coveo {
             error: options.error,
             searchAsYouType: options.searchAsYouType
           }
-          Promise.reject(options.promise).catch((e)=> {});
+          Promise.reject(options.promise).catch((e) => { });
           $$(env.root).trigger(QueryEvents.queryError, queryErrorEventArgs);
         } else {
           var preprocessResultsEventArgs: IPreprocessResultsEventArgs = {
@@ -88,7 +88,7 @@ module Coveo {
             searchAsYouType: options.searchAsYouType
           };
           $$(env.root).trigger(QueryEvents.preprocessResults, preprocessResultsEventArgs);
-          Promise.resolve(new Promise((resolve, reject)=> {
+          Promise.resolve(new Promise((resolve, reject) => {
             resolve(options.results);
           }))
 
@@ -131,7 +131,7 @@ module Coveo {
       return options;
     }
 
-    static omnibox(env: Mock.MockEnvironment, options?): IOmniboxData {
+    static omnibox(env: Mock.IMockEnvironment, options?): IOmniboxData {
       let expression = {
         word: 'foo',
         regex: /foo/
@@ -156,8 +156,14 @@ module Coveo {
       return fakeOmniboxArgs;
     }
 
+    static breadcrumb(env: Mock.IMockEnvironment, options?): IBreadcrumbItem[] {
+      let args = <IPopulateBreadcrumbEventArgs>{ breadcrumbs: [] };
+      $$(env.root).trigger(BreadcrumbEvents.populateBreadcrumb, args);
+      return args.breadcrumbs;
+    }
+
     static keyDown(element: HTMLElement, key: number, shiftKey?: boolean) {
-      var event = new jQuery.Event("keydown");
+      var event = new jQuery.Event('keydown');
       event.which = key;
       event.keyCode = key;
       if (shiftKey) {
@@ -169,7 +175,7 @@ module Coveo {
     }
 
     static keyUp(element: HTMLElement, key: number, shiftKey?: boolean) {
-      var event = new jQuery.Event("keyup");
+      var event = new jQuery.Event('keyup');
       event.which = key;
       event.keyCode = key;
       if (shiftKey) {
@@ -180,17 +186,17 @@ module Coveo {
     }
 
     static mouseDown(element: HTMLElement) {
-      var event = new jQuery.Event("mousedown");
+      var event = new jQuery.Event('mousedown');
       $(element).trigger(event);
     }
 
     static mouseUp(element: HTMLElement) {
-      var event = new jQuery.Event("mouseup");
+      var event = new jQuery.Event('mouseup');
       $(element).trigger(event);
     }
 
     static mouseMove(element: HTMLElement, position?: {}) {
-      var event = new jQuery.Event("mousemove");
+      var event = new jQuery.Event('mousemove');
       $(element).trigger(event);
     }
 
@@ -212,11 +218,11 @@ module Coveo {
     }
 
     static touchEventWithPosition(event, position: { clientX: number; clientY: number; }) {
-      event["originalEvent"] = {};
-      event["originalEvent"]["touches"] = [];
-      event["originalEvent"]["touches"][0] = {};
-      event["originalEvent"]["touches"][0]["clientX"] = position.clientX;
-      event["originalEvent"]["touches"][0]["clientY"] = position.clientY;
+      event['originalEvent'] = {};
+      event['originalEvent']['touches'] = [];
+      event['originalEvent']['touches'][0] = {};
+      event['originalEvent']['touches'][0]['clientX'] = position.clientX;
+      event['originalEvent']['touches'][0]['clientY'] = position.clientY;
       return event;
     }
 

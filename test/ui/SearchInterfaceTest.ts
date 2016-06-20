@@ -77,12 +77,12 @@ module Coveo {
       cmp.showWaitAnimation();
       expect(cmp.options.firstLoadingAnimation.parentElement).toBe(cmp.element);
       $$(cmp.root).trigger(QueryEvents.querySuccess);
-      _.defer(()=> {
+      _.defer(() => {
         expect(cmp.options.firstLoadingAnimation.parentElement).toBeNull();
         cmp.showWaitAnimation();
         expect(cmp.options.firstLoadingAnimation.parentElement).toBe(cmp.element);
         $$(cmp.root).trigger(QueryEvents.querySuccess);
-        _.defer(()=> {
+        _.defer(() => {
           expect(cmp.options.firstLoadingAnimation.parentElement).toBe(cmp.element);
           done();
         })
@@ -93,12 +93,12 @@ module Coveo {
       cmp.showWaitAnimation();
       expect(cmp.options.firstLoadingAnimation.parentElement).toBe(cmp.element);
       $$(cmp.root).trigger(QueryEvents.queryError);
-      _.defer(()=> {
+      _.defer(() => {
         expect(cmp.options.firstLoadingAnimation.parentElement).toBeNull();
         cmp.showWaitAnimation();
         expect(cmp.options.firstLoadingAnimation.parentElement).toBe(cmp.element);
         $$(cmp.root).trigger(QueryEvents.queryError);
-        _.defer(()=> {
+        _.defer(() => {
           expect(cmp.options.firstLoadingAnimation.parentElement).toBe(cmp.element);
           done();
         })
@@ -108,15 +108,15 @@ module Coveo {
     describe('exposes options', function () {
       var div: HTMLDivElement;
       var mockWindow: Window;
-      var env: Mock.MockEnvironment;
+      var env: Mock.IMockEnvironment;
 
-      beforeEach(()=> {
+      beforeEach(() => {
         div = document.createElement('div');
         env = new Mock.MockEnvironmentBuilder().withRoot(div).build();
         mockWindow = Mock.mockWindow();
       })
 
-      afterEach(()=> {
+      afterEach(() => {
         div = null;
         env = null;
         mockWindow = null;
@@ -224,7 +224,7 @@ module Coveo {
         }, undefined, mockWindow);
         expect(cmp.options.firstLoadingAnimation.parentElement).toBe(cmp.element);
         Simulate.query(env);
-        _.defer(()=> {
+        _.defer(() => {
           expect(cmp.options.firstLoadingAnimation.parentElement).toBeNull();
           done();
         })
@@ -236,7 +236,7 @@ module Coveo {
         }, undefined, mockWindow);
         expect(cmp.options.firstLoadingAnimation.parentElement).toBeNull();
         Simulate.query(env);
-        _.defer(()=> {
+        _.defer(() => {
           expect(cmp.options.firstLoadingAnimation.parentElement).toBeNull();
           done();
         })
@@ -260,7 +260,7 @@ module Coveo {
         var cmp = new SearchInterface(div, {
           enableDebugInfo: true
         }, undefined, mockWindow);
-        _.defer(()=> {
+        _.defer(() => {
           expect(Component.resolveBinding(cmp.element, Debug)).toBeDefined();
           done();
         })
@@ -270,13 +270,13 @@ module Coveo {
         var cmp = new SearchInterface(div, {
           enableDebugInfo: false
         }, undefined, mockWindow);
-        _.defer(()=> {
+        _.defer(() => {
           expect(Component.resolveBinding(cmp.element, Debug)).toBeUndefined();
           done();
         })
       })
 
-      it('enableCollaborativeRating allow to specify the collaborative rating in the query', function() {
+      it('enableCollaborativeRating allow to specify the collaborative rating in the query', function () {
         var cmp = new SearchInterface(div, {
           enableCollaborativeRating: true
         }, undefined, mockWindow)
@@ -284,7 +284,7 @@ module Coveo {
         expect(simulation.queryBuilder.enableCollaborativeRating).toBe(true);
       })
 
-      it('enableCollaborativeRating to false allow to disable the collaborative rating in the query', function() {
+      it('enableCollaborativeRating to false allow to disable the collaborative rating in the query', function () {
         var cmp = new SearchInterface(div, {
           enableCollaborativeRating: false
         }, undefined, mockWindow)
@@ -292,7 +292,7 @@ module Coveo {
         expect(simulation.queryBuilder.enableCollaborativeRating).toBe(false);
       })
 
-      it('enableDuplicateFiltering allow to filter duplicate in the query', function() {
+      it('enableDuplicateFiltering allow to filter duplicate in the query', function () {
         var cmp = new SearchInterface(div, {
           enableDuplicateFiltering: true
         }, undefined, mockWindow)
@@ -300,7 +300,7 @@ module Coveo {
         expect(simulation.queryBuilder.enableDuplicateFiltering).toBe(true);
       })
 
-      it('enableDuplicateFiltering to false allow to disable the filter duplicate in the query', function() {
+      it('enableDuplicateFiltering to false allow to disable the filter duplicate in the query', function () {
         var cmp = new SearchInterface(div, {
           enableDuplicateFiltering: false
         }, undefined, mockWindow)
@@ -308,7 +308,7 @@ module Coveo {
         expect(simulation.queryBuilder.enableDuplicateFiltering).toBe(false);
       })
 
-      it('pipeline allow to specify the pipeline to use in a query', function() {
+      it('pipeline allow to specify the pipeline to use in a query', function () {
         var cmp = new SearchInterface(div, {
           pipeline: 'foobar'
         }, undefined, mockWindow)
@@ -316,7 +316,7 @@ module Coveo {
         expect(simulation.queryBuilder.pipeline).toBe('foobar');
       })
 
-      it('maximumAge allow to specify the duration of the cache in a query', function() {
+      it('maximumAge allow to specify the duration of the cache in a query', function () {
         var cmp = new SearchInterface(div, {
           maximumAge: 123
         }, undefined, mockWindow)

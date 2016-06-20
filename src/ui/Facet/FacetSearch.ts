@@ -165,6 +165,7 @@ export class FacetSearch {
     this.wait = document.createElement('div');
     $$(this.wait).addClass('coveo-facet-search-wait-animation');
     this.search.appendChild(this.wait);
+    this.hideFacetSearchWaitingAnimation();
 
     this.clear = document.createElement('div');
     $$(this.clear).addClass('coveo-facet-search-clear');
@@ -578,20 +579,14 @@ export class FacetSearch {
   }
 
   private showFacetSearchWaitingAnimation() {
-    Defer.defer(() => {
-      if (!this.showingFacetSearchWaitAnimation) {
-        $$(this.magnifier).hide();
-        $$(this.wait).show();
-        this.showingFacetSearchWaitAnimation = true;
-      }
-    })
+    $$(this.magnifier).hide();
+    $$(this.wait).show();
+    this.showingFacetSearchWaitAnimation = true;
   }
 
   private hideFacetSearchWaitingAnimation() {
-    if (this.showingFacetSearchWaitAnimation) {
-      $$(this.magnifier).show();
-      $$(this.wait).hide();
-      this.showingFacetSearchWaitAnimation = false;
-    }
+    $$(this.magnifier).show();
+    $$(this.wait).hide();
+    this.showingFacetSearchWaitAnimation = false;
   }
 }
