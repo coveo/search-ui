@@ -438,7 +438,7 @@ export class Facet extends Component {
         FacetUtils.clipCaptionsToAvoidOverflowingTheirContainer(this);
       }
     };
-    window.addEventListener('resize', this.resize);
+    window.addEventListener('resize', _.debounce(this.resize, 200));
     this.bind.onRootElement(InitializationEvents.nuke, () => this.handleNuke());
 
     this.bind.oneRootElement(QueryEvents.querySuccess, () => {

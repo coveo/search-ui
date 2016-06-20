@@ -15,7 +15,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   public ID: string;
   public coveoRoot: Dom;
 
-  private facetsColumn: Dom;
+  private dropdownContent: Dom;
   private previousSibling: Dom;
   private parent: Dom;
   private dropdownHeader: Dom;
@@ -38,7 +38,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.ID = ID;
     this.coveoRoot = root;
     this.tabSection = $$(this.coveoRoot.find('.coveo-tab-section'));
-    this.facetsColumn = $$(this.coveoRoot.find('.coveo-facet-column'));
+    this.buildDropdownContent();
     this.buildDropdownHeader();
     this.bindDropdownHeaderEvents();
     this.bindDropdownContentEvents();
@@ -53,19 +53,28 @@ export class ResponsiveFacets implements IResponsiveComponent {
   public changeToSmallMode() {
     this.disableFacetPreservePosition();
     this.tabSection.el.appendChild(this.dropdownHeaderContainer.el);
-    this.facetsColumn.detach();
+    this.dropdownContent.detach();
   }
 
   public changeToLargeMode() {
     this.enableFacetPreservePosition();
     this.dropdownHeaderContainer.detach();
-    this.facetsColumn.el.removeAttribute('style');
+    this.dropdownContent.el.removeAttribute('style');
     this.detachDropdown();
     this.restoreFacetsPosition();
   }
 
   public registerFacet(facet: Facet) {
     this.facets.push(facet);
+  }
+
+  private buildDropdownContent() {
+    this.dropdownContent = $$(this.coveoRoot.find('.coveo-facet-column'));
+    let filterByContainer = $$('div', {className: 'coveo-facet-header-filter-by-container'});
+    let filterBy = $$('div', {className: 'coveo-facet-header-filter-by'});
+    filterBy.text(l('Filter by:'));
+    filterByContainer.append(filterBy.el)
+    this.dropdownContent.prepend(filterByContainer.el);
   }
 
   private buildDropdownHeader() {
@@ -107,34 +116,40 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private saveFacetsPosition() {
-    this.previousSibling = this.facetsColumn.el.previousSibling ? $$(<HTMLElement>this.facetsColumn.el.previousSibling) : null;
-    this.parent = $$(this.facetsColumn.el.parentElement);
+    this.previousSibling = this.dropdownContent.el.previousSibling ? $$(<HTMLElement>this.dropdownContent.el.previousSibling) : null;
+    this.parent = $$(this.dropdownContent.el.parentElement);
   }
 
   private restoreFacetsPosition() {
     if (this.previousSibling) {
-      this.facetsColumn.insertAfter(this.previousSibling.el);
+      this.dropdownContent.insertAfter(this.previousSibling.el);
     } else {
-      this.parent.prepend(this.facetsColumn.el);
+      this.parent.prepend(this.dropdownContent.el);
     }
   }
 
   private positionPopup() {
-    this.facetsColumn.addClass('coveo-facet-dropdown-content');
+    let facetList = this.dropdownContent.findAll('.CoveoFacet');
+    $$(facetList[facetList.length - 1]).addClass('coveo-last-facet');
+
+    this.dropdownContent.addClass('coveo-facet-dropdown-content');
     this.dropdownHeader.addClass('coveo-dropdown-header-active');
     document.documentElement.appendChild(this.popupBackground.el);
     window.getComputedStyle(this.popupBackground.el).opacity;
     this.popupBackground.el.style.opacity = '1';
-    PopupUtils.positionPopup(this.facetsColumn.el, this.tabSection.el, this.coveoRoot.el, this.coveoRoot.el,
+    PopupUtils.positionPopup(this.dropdownContent.el, this.tabSection.el, this.coveoRoot.el, this.coveoRoot.el,
       { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM });
   }
 
   private detachDropdown() {
+    let facetList = this.dropdownContent.findAll('.CoveoFacet');
+    $$(facetList[facetList.length - 1]).removeClass('coveo-last-facet');
+
     this.popupBackground.el.style.opacity = '0';
     window.getComputedStyle(this.popupBackground.el).opacity;
     this.popupBackground.detach();
-    this.facetsColumn.detach();
-    this.facetsColumn.removeClass('coveo-facet-dropdown-content');
+    this.dropdownContent.detach();
+    this.dropdownContent.removeClass('coveo-facet-dropdown-content');
     this.dropdownHeader.removeClass('coveo-dropdown-header-active');
   }
 

@@ -4,6 +4,7 @@ import {Component} from '../Base/Component';
 import {Tab} from '../Tab/Tab';
 import {Facet} from '../Facet/Facet';
 import {ResponsiveFacets} from './ResponsiveFacets';
+import {IComponentDefinition} from '../Base/Component';
 import _ = require('underscore');
 
 export interface IResponsiveComponentConstructor {
@@ -35,20 +36,18 @@ export class ResponsiveComponentsManager {
   private responsiveFacets: ResponsiveFacets;
 
   // Register takes a class and will instantiate it after framework initialization has completed.
-  public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component) {
+  public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component: IComponentDefinition) {
 
     root.on(InitializationEvents.afterInitialization, () => {
-      let responsiveComponent = new responsiveComponentConstructor(root, ID);
-
       let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el == componentManager.coveoRoot.el);
       if (responsiveComponentsManager) {
-        responsiveComponentsManager.register(responsiveComponent, component);
+        responsiveComponentsManager.register(responsiveComponentConstructor, root, ID, component);
       } else {
         responsiveComponentsManager = new ResponsiveComponentsManager(root);
         this.componentManagers.push(responsiveComponentsManager);
-        responsiveComponentsManager.register(responsiveComponent, component);
+        responsiveComponentsManager.register(responsiveComponentConstructor, root, ID, component);
       }
-
+      //extract register
       this.remainingComponentInitializations--;
       if (this.remainingComponentInitializations == 0) {
         this.resizeAllComponentsManager();
@@ -87,21 +86,22 @@ export class ResponsiveComponentsManager {
     window.addEventListener('resize', _.debounce(this.resizeListener, 200));
   }
 
-  public register(responsiveComponent: IResponsiveComponent, component) {
+  public register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component) {
 
-    if (this.isFacet(responsiveComponent) && this.isActivated(responsiveComponent)) {
+    if (this.isFacet(ID) && this.isActivated(ID)) {
       this.responsiveFacets.registerFacet(component);
     }
 
-    if (!this.isActivated(responsiveComponent)) {
-      if (this.isTabs(responsiveComponent)) {
+    if (!this.isActivated(ID)) {
+      let responsiveComponent = new responsiveComponentConstructor(root, ID);
+      if (this.isTabs(responsiveComponent.ID)) {
         this.isTabActivated = true;
         if (this.isFacetActivated) {
           this.tabSection = null;
         }
       }
 
-      if (this.isFacet(responsiveComponent)) {
+      if (this.isFacet(ID)) {
         this.responsiveFacets = <ResponsiveFacets>responsiveComponent;
         this.responsiveFacets.registerFacet(component)
         this.isFacetActivated = true;
@@ -137,16 +137,16 @@ export class ResponsiveComponentsManager {
     });
   }
 
-  private isFacet(component: IResponsiveComponent): boolean {
-    return component.ID == Facet.ID;
+  private isFacet(ID: string): boolean {
+    return ID == Facet.ID;
   }
 
-  private isTabs(component: IResponsiveComponent): boolean {
-    return component.ID == Tab.ID;
+  private isTabs(ID: string): boolean {
+    return ID == Tab.ID;
   }
 
-  private isActivated(responsiveComponent: IResponsiveComponent): boolean {
-    return _.find(this.responsiveComponents, current => { return current.ID == responsiveComponent.ID }) != undefined
+  private isActivated(ID: string): boolean {
+    return _.find(this.responsiveComponents, current => current.ID == ID) != undefined
   }
 
   private getSearchBoxElement(): HTMLElement {
