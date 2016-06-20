@@ -5,9 +5,11 @@ import {InitializationEvents} from '../../events/InitializationEvents';
 import {ISearchEvent} from '../../rest/SearchEvent';
 import {IDuringQueryEventArgs} from '../../events/QueryEvents';
 import _ = require('underscore');
+import {IAnalyticsActionCause} from './AnalyticsActionListMeta';
 
 export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
   public delayBeforeSending = 5000;
+  public beforeResolve: Promise<PendingSearchAsYouTypeSearchEvent>;
   private beforeUnloadHandler: (...args: any[]) => void;
   private armBatchDelay = 50;
   private toSendRightNow: () => void;
@@ -22,21 +24,42 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
   }
 
   protected handleDuringQuery(e: Event, args: IDuringQueryEventArgs) {
-    this.toSendRightNow = () => {
-      if (!this.isCancelledOrFinished()) {
-        super.handleDuringQuery(e, args);
+    this.beforeResolve = new Promise((resolve) => {
+      this.toSendRightNow = () => {
+        if (!this.isCancelledOrFinished()) {
+          resolve(this);
+          super.handleDuringQuery(e, args);
+        }
       }
-    }
-
-    _.delay(() => {
-      this.toSendRightNow();
-    }, this.delayBeforeSending);
+      _.delay(() => {
+        this.toSendRightNow();
+      }, this.delayBeforeSending);
+    })
   }
 
   public sendRightNow() {
     if (this.toSendRightNow) {
       this.toSendRightNow();
     }
+  }
+
+  public modifyCustomData(key: string, newData: any) {
+    _.each(this.searchEvents, (searchEvent: ISearchEvent) => {
+      searchEvent.customData[key] = newData;
+    })
+    if (!this.templateSearchEvent.customData) {
+      this.templateSearchEvent.customData = {};
+    }
+    this.templateSearchEvent.customData[key] = newData;
+  }
+
+  public modifyEventCause(newCause: IAnalyticsActionCause) {
+    _.each(this.searchEvents, (searchEvent: ISearchEvent) => {
+      searchEvent.actionCause = newCause.name;
+      searchEvent.actionType = newCause.type;
+    })
+    this.templateSearchEvent.actionCause = newCause.name;
+    this.templateSearchEvent.actionType = newCause.type;
   }
 
   public stopRecording() {
