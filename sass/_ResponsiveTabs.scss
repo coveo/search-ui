@@ -10,7 +10,6 @@
     width: 100%;
   }
   .coveo-tab-section {
-    border-top: 1px solid white;
     background-color: $color-blueish-white;
     min-height: 40px;
     
@@ -23,7 +22,9 @@
     }
     .coveo-dropdown-header {
       display: inline-block;
-      padding: 1px 8px 1px 8px;
+      @include defaultRoundedBorder();
+      background-color: white;
+      padding: 0px 7px 0px 7px;
       height: 22px;
       font-size: $font-size-smallest;
       font-weight: 700;
@@ -42,12 +43,6 @@
 
       p {
         line-height: 16px;
-      }
-
-      &.coveo-dropdown-header-active {
-        @include defaultRoundedBorder();
-        background-color: white;
-        padding: 0px 7px 0px 7px;
       }
 
       .coveo-sprites-more-tabs {
