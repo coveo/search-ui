@@ -176,6 +176,7 @@ export class PopupUtils {
   private static getBoundingRectRelativeToDocument(el: HTMLElement) {
     let rect = _.clone(el.getBoundingClientRect());
     rect.top += window.scrollY;
+    rect.left += window.scrollX;
     return rect;
   }
 }

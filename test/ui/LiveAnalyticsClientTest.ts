@@ -23,6 +23,14 @@ module Coveo {
       promise = null;
     })
 
+    it('should return pending event', () => {
+      client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
+      expect(client.getPendingSearchEvent() instanceof PendingSearchEvent).toBe(true);
+      client.cancelAllPendingEvents();
+      client.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
+      expect(client.getPendingSearchEvent() instanceof PendingSearchAsYouTypeSearchEvent).toBe(true);
+    })
+
     it('should send proper information on logSearchEvent', function (done) {
 
       client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});

@@ -94,6 +94,8 @@ export {TemplateCache} from './ui/Templates/TemplateCache';
 export {SearchInterface, StandaloneSearchInterface} from './ui/SearchInterface/SearchInterface';
 export {Aggregate} from './ui/Aggregate/Aggregate';
 export {Analytics} from './ui/Analytics/Analytics';
+export {PendingSearchEvent} from './ui/Analytics/PendingSearchEvent';
+export {PendingSearchAsYouTypeSearchEvent} from './ui/Analytics/PendingSearchAsYouTypeSearchEvent';
 export {analyticsActionCauseList} from './ui/Analytics/AnalyticsActionListMeta';
 export {NoopAnalyticsClient} from './ui/Analytics/NoopAnalyticsClient';
 export {LiveAnalyticsClient} from './ui/Analytics/LiveAnalyticsClient';
