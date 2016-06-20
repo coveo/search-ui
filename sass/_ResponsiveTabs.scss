@@ -2,12 +2,17 @@
  
 .CoveoSearchInterface.coveo-small-search-interface {
 
+  .CoveoSearchbox {
+    max-width: 800px;
+  }
+
   .coveo-search-section {
     margin: 0;
     padding: 54px 20px 47px 20px;
     background-color: $color-blueish-white;
     margin: 0 auto;
     width: 100%;
+    max-width: none;
   }
   .coveo-tab-section {
     background-color: $color-blueish-white;
@@ -20,6 +25,7 @@
     .coveo-tab-dropdown-header {
       margin-left: 10px;
     }
+
     .coveo-dropdown-header {
       display: inline-block;
       @include defaultRoundedBorder();

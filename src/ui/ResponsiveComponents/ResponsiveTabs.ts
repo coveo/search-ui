@@ -145,10 +145,12 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private isLargeFormatOverflowing(): boolean {
     let virtualTabSection = $$(<HTMLElement>this.tabSection.el.cloneNode(true));
 
-    let dropdownHeader = virtualTabSection.el.querySelector('.coveo-tab-dropdown-header');
+    let dropdownHeader = virtualTabSection.find('.coveo-tab-dropdown-header');
     if (dropdownHeader) {
       virtualTabSection.el.removeChild(dropdownHeader);
     }
+    let facetDropdownHeader = virtualTabSection.find('.coveo-facet-dropdown-header-container');
+    facetDropdownHeader && virtualTabSection.el.removeChild(facetDropdownHeader);
 
     virtualTabSection.el.style.position = 'absolute';
     virtualTabSection.el.style.visibility = 'hidden';
@@ -159,8 +161,13 @@ export class ResponsiveTabs implements IResponsiveComponent {
       });
     }
 
-    virtualTabSection.insertBefore(this.coveoRoot.el);
+    this.coveoRoot.append(virtualTabSection.el);
+
+    this.coveoRoot.removeClass('coveo-small-search-interface');
     let isOverflowing = this.isOverflowing(virtualTabSection.el);
+    this.coveoRoot.addClass('coveo-small-search-interface');
+    
+
     virtualTabSection.detach();
     return isOverflowing;
   }

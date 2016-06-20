@@ -78,8 +78,7 @@ export class Settings extends Component {
   private init() {
     if (this.searchInterface.isNewDesign()) {
       var square = $$('span', { className: 'coveo-settings-square' }).el;
-      var squares = $$('span', { className: 'coveo-settings-squares' }).el;
-      _.times(3, () => squares.appendChild(square.cloneNode()));
+      var squares = $$('span', { className: 'coveo-sprites-search-options-inactive' }).el;
       this.element.appendChild(squares);
     } else {
       var icon = $$('span', { className: 'coveo-settings-icon' }).el;
