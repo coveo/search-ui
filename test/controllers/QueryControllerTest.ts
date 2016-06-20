@@ -218,7 +218,7 @@ module Coveo {
         })
         test.cmp.executeQuery();
         expect(test.env.searchEndpoint.search).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({
-          queryString: {'actionsHistory': actionsHistory }
+          queryString: { 'actionsHistory': actionsHistory }
         }))
       })
     })
