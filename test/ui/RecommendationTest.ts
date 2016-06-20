@@ -118,31 +118,25 @@ module Coveo {
         expect(simulation.queryBuilder.context).toBeUndefined();
       })
 
-      it('should add the actionsHistory in the queryStringParameters', () => {
-        let simulation = Simulate.query(mainSearchInterface.env);
-        expect(test.cmp.queryController.executeQuery).toHaveBeenCalledWith(jasmine.objectContaining({
-          callOptions: {
-            queryString: {
-              'actionsHistory': JSON.stringify(actionsHistory)
-            }
-          }
-        }));
+      it('should add the actionsHistory in the queryStringParameters', (done) => {
+        $$(test.env.root).on(QueryEvents.buildingQuery, (e, args) => {
+          expect(args.actionsHistory).toEqual(JSON.stringify(actionsHistory));
+          done();
+        })
+        let simulation = Simulate.query(test.env);
       })
 
-      it('should add the actionsHistory even if the user context is not specified', () => {
+      it('should add the actionsHistory even if the user context is not specified', (done) => {
         options = {
           mainSearchInterface: mainSearchInterface.env.root,
           userContext: {}
         }
         test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options)
-        let simulation = Simulate.query(mainSearchInterface.env);
-        expect(test.cmp.queryController.executeQuery).toHaveBeenCalledWith(jasmine.objectContaining({
-          callOptions: {
-            queryString: {
-              'actionsHistory': JSON.stringify(actionsHistory)
-            }
-          }
-        }));
+        $$(test.env.root).on(QueryEvents.buildingQuery, (e, args) => {
+          expect(args.actionsHistory).toEqual(JSON.stringify(actionsHistory));
+          done();
+        })
+        let simulation = Simulate.query(test.env);
       })
 
       it('should modify the results searchUid to match the main query', () => {

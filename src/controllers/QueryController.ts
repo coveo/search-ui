@@ -62,7 +62,9 @@ class DefaultQueryOptions implements IQueryOptions {
   beforeExecuteQuery: () => void;
   closeModalBox = true;
   cancel = false;
-  callOptions = null;
+  callOptions = {
+    queryString: null
+  };
   logInActionsHistory = false;
 }
 
@@ -386,6 +388,10 @@ export class QueryController extends RootComponent {
     queryBuilder.language = <string>String['locale'];
     queryBuilder.firstResult = queryBuilder.firstResult || 0;
 
+    if (!options.callOptions.queryString) {
+      options.callOptions.queryString = { 'actionsHistory': null }
+    }
+
     // Allow outside code to customize the query builder. We provide two events,
     // to allow someone to have a peep at the query builder after the first phase
     // and add some stuff depending on what was put in there. The facets are using
@@ -394,11 +400,11 @@ export class QueryController extends RootComponent {
       queryBuilder: queryBuilder,
       searchAsYouType: options.searchAsYouType,
       cancel: options.cancel,
-      actionsHistory: options.callOptions.queryString["actionsHistory"]
+      actionsHistory: options.callOptions.queryString['actionsHistory']
     };
     this.buildingQueryEvent(dataToSendDuringBuildingQuery);
 
-    options.callOptions.queryString["actionsHistory"] = dataToSendDuringBuildingQuery.actionsHistory;
+    options.callOptions.queryString['actionsHistory'] = dataToSendDuringBuildingQuery.actionsHistory;
 
     let dataToSendDuringDoneBuildingQuery: IDoneBuildingQueryEventArgs = {
       queryBuilder: queryBuilder,
