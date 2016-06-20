@@ -11,7 +11,7 @@
   }
 
   .coveo-facet-dropdown-header {
-    margin-left: 10px;
+    margin: 0 10px 0 10px;
     @include align();
   }
 
@@ -61,7 +61,7 @@
 }
 .coveo-facet-dropdown-background {
     @include transition-property(all);
-    @include transition-duration(0.300s);
+    @include transition-duration(0.150s);
     @include transition-timing-function(ease-out);
     background: rgba(0, 0, 0, 0.5);
     opacity: 0;
