@@ -461,7 +461,7 @@ export class ComponentOptions {
   static findParentScrolling(element: HTMLElement): HTMLElement {
     while (<Node>element != document && element != null) {
       if (ComponentOptions.isElementScrollable(element)) {
-        if (element.tagName == 'body') {
+        if (element.tagName.toLowerCase() !== 'body') {
           return element;
         }
         return <any>window;
