@@ -41,11 +41,9 @@ module.exports = {
   },
   reporters: ['progress', 'coverage'],
   coverageReporter: {
-    dir: './bin/coverage',
+    dir: './coverage',
     reporters: [
-      { type: 'lcov', subdir: 'lcov' },
-      { type: 'json', subdir: '.', file: 'coverage.json' },
-      { type: 'text-summary', subdir: '.', file: 'text-summary.txt' }
+      { type: 'json', subdir: '.', file: 'coverage-without-sourcemaps.json' }
     ]
   }
 }
