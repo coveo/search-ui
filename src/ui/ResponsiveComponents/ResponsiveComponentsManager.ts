@@ -47,7 +47,7 @@ export class ResponsiveComponentsManager {
         this.componentManagers.push(responsiveComponentsManager);
         responsiveComponentsManager.register(responsiveComponentConstructor, root, ID, component);
       }
-      //extract register
+
       this.remainingComponentInitializations--;
       if (this.remainingComponentInitializations == 0) {
         this.resizeAllComponentsManager();

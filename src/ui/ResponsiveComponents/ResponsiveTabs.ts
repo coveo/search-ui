@@ -9,7 +9,7 @@ import '../../../sass/_ResponsiveTabs.scss';
 
 export class ResponsiveTabs implements IResponsiveComponent {
 
-  private static TABS_NOT_FOUND = 'Could not find element with class coveo-tab-section. Therefore, responsive tabs cannot be enabled.';
+  private static TABS_NOT_FOUND = 'No element with class coveo-tab-section. Responsive tabs cannot be enabled.';
   private static logger: Logger;
 
   public ID: string;
@@ -38,7 +38,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   public static init(root: HTMLElement, ID: string, component) {
-    this.logger = new Logger(root);
+    this.logger = new Logger('ResponsiveTabs');
     if (!$$(root).find('.coveo-tab-section')) {
       this.logger.info(this.TABS_NOT_FOUND);
       return;
@@ -166,7 +166,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
     this.coveoRoot.removeClass('coveo-small-search-interface');
     let isOverflowing = this.isOverflowing(virtualTabSection.el);
     this.coveoRoot.addClass('coveo-small-search-interface');
-    
+
 
     virtualTabSection.detach();
     return isOverflowing;

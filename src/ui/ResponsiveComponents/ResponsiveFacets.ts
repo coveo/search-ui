@@ -5,11 +5,13 @@ import '../../../sass/_ResponsiveFacets.scss';
 import {l} from '../../strings/Strings';
 import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
 import {Facet} from '../Facet/Facet';
+import _ = require('underscore');
 
 export class ResponsiveFacets implements IResponsiveComponent {
 
-  private static ROOT_MIN_WIDTH = 800;
-  private static FACETS_NOT_FOUND = 'Could not find element with class coveo-facet-column. Therefore, responsive facets cannot be enabled.';
+  private static TRANSPARENT_BACKGROUND_OPACITY: string = '0.9';
+  private static ROOT_MIN_WIDTH: number = 800;
+  private static FACETS_NOT_FOUND: string = 'No element with class coveo-facet-column. Responsive facets cannot be enabled';
   private static logger: Logger;
 
   public ID: string;
@@ -26,9 +28,10 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private facets: Array<Facet> = [];
 
   public static init(root: HTMLElement, ID: string, component) {
-    this.logger = new Logger(root);
+    this.logger = new Logger('ResponsiveFacets');
     if (!$$(root).find('.coveo-facet-column')) {
       this.logger.info(this.FACETS_NOT_FOUND);
+      console.log(this.FACETS_NOT_FOUND);
       return;
     }
     ResponsiveComponentsManager.register(ResponsiveFacets, $$(root), ID, component);
@@ -70,8 +73,8 @@ export class ResponsiveFacets implements IResponsiveComponent {
 
   private buildDropdownContent() {
     this.dropdownContent = $$(this.coveoRoot.find('.coveo-facet-column'));
-    let filterByContainer = $$('div', {className: 'coveo-facet-header-filter-by-container'});
-    let filterBy = $$('div', {className: 'coveo-facet-header-filter-by'});
+    let filterByContainer = $$('div', { className: 'coveo-facet-header-filter-by-container' });
+    let filterBy = $$('div', { className: 'coveo-facet-header-filter-by' });
     filterBy.text(l('Filter by:'));
     filterByContainer.append(filterBy.el)
     this.dropdownContent.prepend(filterByContainer.el);
@@ -129,6 +132,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private positionPopup() {
+    
     let facetList = this.dropdownContent.findAll('.CoveoFacet');
     $$(facetList[facetList.length - 1]).addClass('coveo-last-facet');
 
@@ -136,7 +140,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.dropdownHeader.addClass('coveo-dropdown-header-active');
     document.documentElement.appendChild(this.popupBackground.el);
     window.getComputedStyle(this.popupBackground.el).opacity;
-    this.popupBackground.el.style.opacity = '1';
+    this.popupBackground.el.style.opacity = ResponsiveFacets.TRANSPARENT_BACKGROUND_OPACITY;
     PopupUtils.positionPopup(this.dropdownContent.el, this.tabSection.el, this.coveoRoot.el, this.coveoRoot.el,
       { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM });
   }
