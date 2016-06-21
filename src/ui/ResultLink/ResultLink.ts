@@ -253,7 +253,7 @@ export class ResultLink extends Component {
     });
   }
 
-  private readFromObject(object: Object, key: string) {
+  private readFromObject(object: Object, key: string): string {
     if (key.indexOf('.') !== -1) {
       let newKey = key.substring(key.indexOf('.') + 1);
       key = key.substring(0, key.indexOf('.'));
