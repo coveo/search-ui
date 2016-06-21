@@ -54,7 +54,16 @@ export class ResultLink extends Component {
      * Specifies whether the result link always opens in a new window ( <a target='_blank' /> ).
      * Default is false
      */
-    alwaysOpenInNewWindow: ComponentOptions.buildBooleanOption({ defaultValue: false })
+    alwaysOpenInNewWindow: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
+    /**
+     * Specifies a template string to use to generate the href.
+     * It is possible to reference fields from the associated result or from the global scope.
+     * Ex: '${clickUri}?id=${title}' will generate something like 'http://uri.com?id=documentTitle'
+     * This option will override the field option.
+     * Default is undefined
+     */
+    hrefTemplate: ComponentOptions.buildStringOption()
   };
 
   static fields = [
@@ -75,6 +84,10 @@ export class ResultLink extends Component {
 
     if (this.options.openQuickview == null) {
       this.options.openQuickview = result.raw['connectortype'] == 'ExchangeCrawler' && DeviceUtils.isMobileDevice();
+    }
+
+    if (this.options.hrefTemplate) {
+      this.parseHrefTemplate();
     }
 
     Assert.exists(this.componentOptionsModel);
@@ -189,6 +202,9 @@ export class ResultLink extends Component {
   }, 1500, true);
 
   private getResultUri(): string {
+    if (this.options.hrefTemplate) {
+      return this.options.hrefTemplate;
+    }
     if (this.options.field == undefined && this.options.openInOutlook) {
       this.setField();
     }
@@ -228,6 +244,26 @@ export class ResultLink extends Component {
 
   private quickviewShouldBeOpened() {
     return (this.options.openQuickview || this.isUriThatMustBeOpenedInQuickview()) && QueryUtils.hasHTMLVersion(this.result);
+  }
+
+  private parseHrefTemplate() {
+    this.options.hrefTemplate = this.options.hrefTemplate.replace(/\$\{(.*?)\}/g, (value: string) => {
+      let key = value.substring(2, value.length - 1);
+      let newValue = this.readFromObject(this.result, key);
+      if (!newValue) {
+        newValue = this.readFromObject(window, key);
+      }
+      return newValue ? newValue : value;
+    });
+  }
+
+  private readFromObject(object: Object, key: string) {
+    if (key.indexOf('.') !== -1) {
+      let newKey = key.substring(key.indexOf('.') + 1);
+      key = key.substring(0, key.indexOf('.'));
+      return this.readFromObject(object[key], newKey);
+    }
+    return object ? object[key] : undefined;
   }
 }
 

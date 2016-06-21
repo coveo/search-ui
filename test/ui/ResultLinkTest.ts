@@ -41,6 +41,42 @@ module Coveo {
       expect(test.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledTimes(1);
     })
 
+    describe('exposes hrefTemplate', () => {
+
+      it('should not modify the href template if there are no field specified', () => {
+        let hrefTemplate = 'test';
+        test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { hrefTemplate: hrefTemplate }, fakeResult);
+        expect(test.cmp.options.hrefTemplate).toEqual(hrefTemplate);
+      })
+
+      it('should replaces fields in the href template by the results equivalent', () => {
+        let hrefTemplate = '${title}';
+        test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { hrefTemplate: hrefTemplate }, fakeResult);
+        expect(test.cmp.options.hrefTemplate).toEqual(fakeResult.title);
+      })
+
+      it('should support nested values in result', () => {
+        let hrefTemplate = '${raw.number}';
+        test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { hrefTemplate: hrefTemplate }, fakeResult);
+        expect(test.cmp.options.hrefTemplate).toEqual(fakeResult.raw['number'].toString());
+      })
+
+      it('should ignore standalone accolades', () => {
+        let hrefTemplate = '${raw.number}{test}';
+        test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { hrefTemplate: hrefTemplate }, fakeResult);
+        expect(test.cmp.options.hrefTemplate).toEqual(fakeResult.raw['number'] + '{test}');
+      })
+
+      it('should support external fields', () => {
+        window['Coveo']['test'] = 'testExternal';
+        let hrefTemplate = '${Coveo.test}';
+        test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { hrefTemplate: hrefTemplate }, fakeResult);
+        expect(test.cmp.options.hrefTemplate).toEqual('testExternal');
+        window['Coveo']['test'] = undefined;
+      })
+
+    })
+
     describe('when logging the analytic event', () => {
       it('should use the href if set', () => {
         let element = $$('a');
