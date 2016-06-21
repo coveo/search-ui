@@ -47,7 +47,6 @@ export interface IQueryOptions {
   origin?: any;
   keepLastSearchUid?: boolean;
   closeModalBox?: boolean;
-  callOptions?: IEndpointCallOptions;
   logInActionsHistory?: boolean;
 }
 
@@ -62,9 +61,6 @@ class DefaultQueryOptions implements IQueryOptions {
   beforeExecuteQuery: () => void;
   closeModalBox = true;
   cancel = false;
-  callOptions = {
-    queryString: null
-  };
   logInActionsHistory = false;
 }
 
@@ -189,7 +185,7 @@ export class QueryController extends RootComponent {
 
     let endpointToUse = this.getEndpoint();
 
-    let promise = this.currentPendingQuery = endpointToUse.search(query, options.callOptions);
+    let promise = this.currentPendingQuery = endpointToUse.search(query);
     promise.then((queryResults) => {
       Assert.exists(queryResults);
       let firstQuery = this.firstQuery;
@@ -388,10 +384,6 @@ export class QueryController extends RootComponent {
     queryBuilder.language = <string>String['locale'];
     queryBuilder.firstResult = queryBuilder.firstResult || 0;
 
-    if (!options.callOptions.queryString) {
-      options.callOptions.queryString = { 'actionsHistory': null }
-    }
-
     // Allow outside code to customize the query builder. We provide two events,
     // to allow someone to have a peep at the query builder after the first phase
     // and add some stuff depending on what was put in there. The facets are using
@@ -399,12 +391,9 @@ export class QueryController extends RootComponent {
     let dataToSendDuringBuildingQuery: IBuildingQueryEventArgs = {
       queryBuilder: queryBuilder,
       searchAsYouType: options.searchAsYouType,
-      cancel: options.cancel,
-      actionsHistory: options.callOptions.queryString['actionsHistory']
+      cancel: options.cancel
     };
     this.buildingQueryEvent(dataToSendDuringBuildingQuery);
-
-    options.callOptions.queryString['actionsHistory'] = dataToSendDuringBuildingQuery.actionsHistory;
 
     let dataToSendDuringDoneBuildingQuery: IDoneBuildingQueryEventArgs = {
       queryBuilder: queryBuilder,

@@ -128,7 +128,7 @@ export class Recommendation extends SearchInterface {
     if (!_.isEmpty(this.options.userContext)) {
       data.queryBuilder.addContext(this.options.userContext);
     }
-    data.actionsHistory = this.getHistory();
+    data.queryBuilder.actionsHistory = this.getHistory();
   }
 
   private getHistory(): string {

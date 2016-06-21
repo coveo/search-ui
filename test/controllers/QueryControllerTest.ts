@@ -210,17 +210,6 @@ module Coveo {
         test.cmp.executeQuery({ logInActionsHistory: true });
         expect(store.addElement).not.toHaveBeenCalled()
       })
-
-      it('should add the actions history in the callOptions after buildingQuery', () => {
-        let actionsHistory = '[1, 2, 3]'
-        $$(test.env.root).on(QueryEvents.buildingQuery, (e, args) => {
-          args.actionsHistory = actionsHistory
-        })
-        test.cmp.executeQuery();
-        expect(test.env.searchEndpoint.search).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({
-          queryString: { 'actionsHistory': actionsHistory }
-        }))
-      })
     })
   })
 }

@@ -232,7 +232,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     this.logger.info('Performing REST query', query);
 
-    return this.performOneCall(callParams, callOptions).then((results?: IQueryResults) => {
+    return this.performOneCall(callParams).then((results?: IQueryResults) => {
       this.logger.info('REST query successful', results, query);
 
       // Version check
@@ -712,12 +712,6 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     if (callOptions && _.isArray(callOptions.authentication) && callOptions.authentication.length != 0) {
       queryString.push('authentication=' + callOptions.authentication.join(','))
-    }
-
-    if (callOptions.queryString) {
-      for (let name in callOptions.queryString) {
-        queryString.push(name + '=' + encodeURIComponent(callOptions.queryString[name]));
-      }
     }
 
     return queryString;

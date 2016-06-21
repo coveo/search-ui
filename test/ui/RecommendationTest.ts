@@ -118,25 +118,19 @@ module Coveo {
         expect(simulation.queryBuilder.context).toBeUndefined();
       })
 
-      it('should add the actionsHistory in the queryStringParameters', (done) => {
-        $$(test.env.root).on(QueryEvents.buildingQuery, (e, args) => {
-          expect(args.actionsHistory).toEqual(JSON.stringify(actionsHistory));
-          done();
-        })
+      it('should add the actionsHistory in the triggered query', () => {
         let simulation = Simulate.query(test.env);
+        expect(simulation.queryBuilder.actionsHistory).toEqual(JSON.stringify(actionsHistory));
       })
 
-      it('should add the actionsHistory even if the user context is not specified', (done) => {
+      it('should add the actionsHistory even if the user context is not specified', () => {
         options = {
           mainSearchInterface: mainSearchInterface.env.root,
           userContext: {}
         }
         test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options)
-        $$(test.env.root).on(QueryEvents.buildingQuery, (e, args) => {
-          expect(args.actionsHistory).toEqual(JSON.stringify(actionsHistory));
-          done();
-        })
         let simulation = Simulate.query(test.env);
+        expect(simulation.queryBuilder.actionsHistory).toEqual(JSON.stringify(actionsHistory));
       })
 
       it('should modify the results searchUid to match the main query', () => {

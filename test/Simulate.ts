@@ -55,8 +55,7 @@ module Coveo {
       var buildingQueryEventArgs: IBuildingQueryEventArgs = {
         queryBuilder: options.queryBuilder,
         searchAsYouType: false,
-        cancel: false,
-        actionsHistory: {}
+        cancel: false
       };
       $$(env.root).trigger(QueryEvents.buildingQuery, buildingQueryEventArgs);
       $$(env.root).trigger(QueryEvents.doneBuildingQuery, buildingQueryEventArgs);

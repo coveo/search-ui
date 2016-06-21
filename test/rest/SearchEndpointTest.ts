@@ -564,20 +564,6 @@ module Coveo {
             responseText: JSON.stringify({ id: 'foobar' })
           })
         })
-
-        it('it is able to add a custom queryString in the call', function (done) {
-          let queryStringValue = '[1, 2, 3]';
-          let qbuilder = new QueryBuilder();
-          qbuilder.enableCollaborativeRating = true;
-
-          let promise = ep.search(qbuilder.build(), { queryString: { 'actionsHistory': queryStringValue } });
-          promise.finally(() => done());
-
-          expect(jasmine.Ajax.requests.mostRecent().url).toContain('actionsHistory=' + encodeURIComponent(queryStringValue))
-          jasmine.Ajax.requests.mostRecent().respondWith({
-            status: 200
-          })
-        })
       })
     })
   });
