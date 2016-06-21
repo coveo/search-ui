@@ -7,7 +7,8 @@ module.exports = {
     filename: 'CoveoJsSearch.js',
     libraryTarget: 'var',
     library: ['Coveo'],
-    publicPath : '/devserver/'
+    publicPath : '/devserver/',
+    devtoolModuleFilenameTemplate: '[resource-path]'
   },
   resolve: {
     extensions: ['', '.ts', '.js'],

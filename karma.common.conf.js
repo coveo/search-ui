@@ -44,6 +44,7 @@ module.exports = {
     dir: './bin/coverage',
     reporters: [
       { type: 'lcov', subdir: 'lcov' },
+      { type: 'json', subdir: '.', file: 'coverage.json' },
       { type: 'text-summary', subdir: '.', file: 'text-summary.txt' }
     ]
   }
