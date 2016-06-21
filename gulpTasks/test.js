@@ -29,7 +29,6 @@ gulp.task('remapCoverage', ['test'], function (done) {
     .pipe(gulp.dest('coverage'));
 })
 
-
 gulp.task('lcovCoverage', ['remapCoverage'], function (done) {
   // Convert JSON coverage from remap-istanbul to lcov format (needed for Sonar).
   combineCoverage({

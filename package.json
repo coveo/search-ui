@@ -76,6 +76,7 @@
     "png-sprite": "^0.1.1",
     "pretty-typescript": "^1.11.0",
     "q": "^1.4.1",
+    "remap-istanbul": "^0.6.4",
     "require-dir": "^0.3.0",
     "resolve-url-loader": "^1.4.3",
     "run-sequence": "^1.1.5",
