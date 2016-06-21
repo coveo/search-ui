@@ -86,10 +86,6 @@ export class ResultLink extends Component {
       this.options.openQuickview = result.raw['connectortype'] == 'ExchangeCrawler' && DeviceUtils.isMobileDevice();
     }
 
-    if (this.options.hrefTemplate) {
-      this.parseHrefTemplate();
-    }
-
     Assert.exists(this.componentOptionsModel);
     Assert.exists(this.result);
 
@@ -203,7 +199,7 @@ export class ResultLink extends Component {
 
   private getResultUri(): string {
     if (this.options.hrefTemplate) {
-      return this.options.hrefTemplate;
+      return this.parseHrefTemplate();
     }
     if (this.options.field == undefined && this.options.openInOutlook) {
       this.setField();
@@ -246,8 +242,8 @@ export class ResultLink extends Component {
     return (this.options.openQuickview || this.isUriThatMustBeOpenedInQuickview()) && QueryUtils.hasHTMLVersion(this.result);
   }
 
-  private parseHrefTemplate() {
-    this.options.hrefTemplate = this.options.hrefTemplate.replace(/\$\{(.*?)\}/g, (value: string) => {
+  private parseHrefTemplate(): string {
+    return this.options.hrefTemplate.replace(/\$\{(.*?)\}/g, (value: string) => {
       let key = value.substring(2, value.length - 1);
       let newValue = this.readFromObject(this.result, key);
       if (!newValue) {

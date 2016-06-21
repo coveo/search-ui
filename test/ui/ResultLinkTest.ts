@@ -9,6 +9,7 @@ module Coveo {
       fakeResult = initFakeResult();
       test = Mock.advancedResultComponentSetup<ResultLink>(ResultLink, fakeResult, undefined);
       spyOn(test.cmp, 'openLink');
+      spyOn(window, 'open');
     });
 
     afterEach(function () {
@@ -46,32 +47,37 @@ module Coveo {
       it('should not modify the href template if there are no field specified', () => {
         let hrefTemplate = 'test';
         test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { hrefTemplate: hrefTemplate }, fakeResult);
-        expect(test.cmp.options.hrefTemplate).toEqual(hrefTemplate);
+        test.cmp.openLinkInNewWindow();
+        expect(window.open).toHaveBeenCalledWith(hrefTemplate, jasmine.anything());
       })
 
       it('should replaces fields in the href template by the results equivalent', () => {
         let hrefTemplate = '${title}';
         test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { hrefTemplate: hrefTemplate }, fakeResult);
-        expect(test.cmp.options.hrefTemplate).toEqual(fakeResult.title);
+        test.cmp.openLinkInNewWindow();
+        expect(window.open).toHaveBeenCalledWith(fakeResult.title, jasmine.anything());
       })
 
       it('should support nested values in result', () => {
         let hrefTemplate = '${raw.number}';
         test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { hrefTemplate: hrefTemplate }, fakeResult);
-        expect(test.cmp.options.hrefTemplate).toEqual(fakeResult.raw['number'].toString());
+        test.cmp.openLinkInNewWindow();
+        expect(window.open).toHaveBeenCalledWith(fakeResult.raw['number'].toString(), jasmine.anything());
       })
 
-      it('should ignore standalone accolades', () => {
+      it('should not parse standalone accolades', () => {
         let hrefTemplate = '${raw.number}{test}';
         test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { hrefTemplate: hrefTemplate }, fakeResult);
-        expect(test.cmp.options.hrefTemplate).toEqual(fakeResult.raw['number'] + '{test}');
+        test.cmp.openLinkInNewWindow();
+        expect(window.open).toHaveBeenCalledWith(fakeResult.raw['number'] + '{test}', jasmine.anything());
       })
 
       it('should support external fields', () => {
         window['Coveo']['test'] = 'testExternal';
         let hrefTemplate = '${Coveo.test}';
         test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { hrefTemplate: hrefTemplate }, fakeResult);
-        expect(test.cmp.options.hrefTemplate).toEqual('testExternal');
+        test.cmp.openLinkInNewWindow();
+        expect(window.open).toHaveBeenCalledWith('testExternal', jasmine.anything());
         window['Coveo']['test'] = undefined;
       })
 
