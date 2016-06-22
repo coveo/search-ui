@@ -95,14 +95,14 @@ export class FollowItem extends Component {
       })
   }
 
-  private setFollowed(subscription: ISubscription) {
+  public setFollowed(subscription: ISubscription) {
     this.container.removeClass('coveo-follow-item-loading');
     this.subscription = subscription;
     this.container.addClass('coveo-follow-item-followed');
     this.text.text(l('SearchAlerts_unFollowing'));
   }
 
-  private setNotFollowed() {
+  public setNotFollowed() {
     this.container.removeClass('coveo-follow-item-loading');
     this.subscription = <ISubscription>FollowItem.buildFollowRequest(this.getId(), this.result.title, this.options);
     this.container.removeClass('coveo-follow-item-followed');

@@ -83,6 +83,11 @@ module Coveo {
 
     })
 
+    it('sends an analytics event on context menu', () => {
+      $$(test.cmp.element).trigger('contextmenu');
+      expect(test.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledTimes(1);
+    })
+
     describe('when logging the analytic event', () => {
       it('should use the href if set', () => {
         let element = $$('a');
