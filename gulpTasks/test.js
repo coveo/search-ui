@@ -21,7 +21,7 @@ gulp.task('testDev', ['watchTest'], function (done) {
 })
 
 gulp.task('remapCoverage', ['test'], function (done) {
-  return gulp.src('coverage/coverage-without-sourcemaps.json')
+  return gulp.src('coverage/coverage-es5.json')
     .pipe(remapIstanbul({
       exclude: /(webpack|~\/d3\/|~\/es6-promise\/dist\/|~\/process\/|~\/underscore\/|vertx)/
     }))

@@ -1,6 +1,9 @@
 const gulp = require('gulp');
 const sonar = require('gulp-sonar');
 const gutil = require('gulp-util');
+const fs = require('fs');
+const path = require('path');
+const version = JSON.parse(fs.readFileSync('./package.json')).version;
 
 gulp.task('sonar', function () {
   var options = {
@@ -15,13 +18,14 @@ gulp.task('sonar', function () {
       },
       projectKey: 'jsui',
       projectName: 'JSUI',
+      projectVersion: version,
       // comma-delimited string of source directories
-      sources: 'src',
+      sources: 'bin/js',
       language: 'js',
       sourceEncoding: 'UTF-8',
       javascript: {
         lcov: {
-          reportPath: 'coverage/lcov.info'
+          reportPath: 'coverage/lcov-es5/lcov.info'
         }
       },
       exec: {
