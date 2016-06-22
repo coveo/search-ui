@@ -13,13 +13,11 @@
   .coveo-result-row {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: stretch;
-    align-content: stretch;
     margin: 0.25em 0;
   }
   .coveo-result-cell {
     line-height: 1.25em;
+    flex-grow: 1;
     vertical-align: top;
     > * {
       vertical-align: middle;
