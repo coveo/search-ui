@@ -58,8 +58,10 @@ export class ResultLink extends Component {
 
     /**
      * Specifies a template string to use to generate the href.
-     * It is possible to reference fields from the associated result or from the global scope.
+     * It is possible to reference fields from the associated result:
      * Ex: '${clickUri}?id=${title}' will generate something like 'http://uri.com?id=documentTitle'
+     * Or from the global scope:
+     * Ex: '${window.location.hostname}/{Coveo.QueryEvents.buildingQuery} will generate something like 'localhost/buildingQuery'
      * This option will override the field option.
      * Default is undefined
      */
@@ -249,7 +251,7 @@ export class ResultLink extends Component {
       if (!newValue) {
         newValue = this.readFromObject(window, key);
       }
-      return newValue ? newValue : value;
+      return newValue || value;
     });
   }
 
