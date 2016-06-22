@@ -8,12 +8,15 @@ gulp.task('cssLegacy', ['fullCssLegacy', 'miniCssLegacy', 'minimalistCssLegacy',
 
 gulp.task('prepareSass', ['fileTypes', 'sprites'], function () {
   return event_stream.merge(
-    gulp.src('./node_modules/modal-box/bin/modalBox.css')
-      .pipe(rename('_ModalBox.scss'))
-      .pipe(gulp.dest('./bin/sass/')),
-    gulp.src([
-      './node_modules/coveomagicbox/sass/**/*.scss'])
-      .pipe(gulp.dest('./bin/sass/MagicBox'))
+      gulp.src('./node_modules/modal-box/bin/modalBox.css')
+          .pipe(rename('_ModalBox.scss'))
+          .pipe(gulp.dest('./bin/sass/')),
+
+      gulp.src('./node_modules/coveomagicbox/sass/**/*.scss')
+          .pipe(gulp.dest('./bin/sass/MagicBox')),
+
+      gulp.src('./sass/**/*')
+          .pipe(gulp.dest('./bin/sass/'))
     ).pipe(event_stream.wait())
 });
 
@@ -21,12 +24,13 @@ gulp.task('prepareSassLegacy', ['fileTypesLegacy', 'spritesLegacy'], function ()
   return event_stream.merge(
       gulp.src('./breakingchanges/redesign/sass/**/*')
           .pipe(gulp.dest('./bin/sasslegacy/')),
+
       gulp.src('./node_modules/modal-box/bin/modalBox.css')
           .pipe(rename('_ModalBox.scss'))
           .pipe(gulp.dest('./bin/sasslegacy/')),
-      gulp.src([
-            './node_modules/coveomagicbox/sass/**/*.scss'])
-            .pipe(gulp.dest('./bin/sasslegacy/MagicBox'))
+
+      gulp.src('./node_modules/coveomagicbox/sass/**/*.scss')
+          .pipe(gulp.dest('./bin/sasslegacy/MagicBox'))
   ).pipe(event_stream.wait())
 });
 

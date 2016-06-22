@@ -567,8 +567,8 @@ module Coveo {
       })
     })
   });
-  
-  function getSubscriptionPromiseSuccess(): ISubscription{
+
+  function getSubscriptionPromiseSuccess(): ISubscription {
     var qbuilder = new QueryBuilder();
     qbuilder.expression.add('batman');
     return {
