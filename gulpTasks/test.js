@@ -6,7 +6,7 @@ const rename = require('gulp-rename');
 const combineCoverage = require('istanbul-combine');
 const remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 
-gulp.task('coverage', ['remapCoverage', 'lcovCoverage']);
+gulp.task('coverage', ['lcovCoverage']);
 
 gulp.task('test', ['buildTest'], function (done) {
   new TestServer({
@@ -29,7 +29,7 @@ gulp.task('remapCoverage', function (done) {
     .pipe(gulp.dest('coverage'));
 })
 
-gulp.task('lcovCoverage', function (done) {
+gulp.task('lcovCoverage', ['remapCoverage'], function (done) {
   // Convert JSON coverage from remap-istanbul to lcov format (needed for Sonar).
   combineCoverage({
     dir: 'coverage',
