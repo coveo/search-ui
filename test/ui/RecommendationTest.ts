@@ -49,8 +49,8 @@ module Coveo {
     it('should work if coveoanalytics is not specified', () => {
       coveoanalytics = undefined;
       test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
-      let simulation = Simulate.query(mainSearchInterface.env);
-      expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+      let simulation = Simulate.query(test.env);
+      expect(simulation.queryBuilder.actionsHistory).toEqual('[]');
     })
 
     it('should not modify the query if it was not triggered by the mainInterface', () => {
