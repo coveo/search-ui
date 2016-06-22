@@ -149,6 +149,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     let facetList = this.dropdownContent.findAll('.CoveoFacet');
     $$(facetList[facetList.length - 1]).removeClass('coveo-last-facet');
 
+    
     this.popupBackground.el.style.opacity = '0';
     window.getComputedStyle(this.popupBackground.el).opacity;
     this.popupBackground.detach();
