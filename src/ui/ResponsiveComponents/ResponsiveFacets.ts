@@ -132,7 +132,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private positionPopup() {
-    
+
     let facetList = this.dropdownContent.findAll('.CoveoFacet');
     $$(facetList[facetList.length - 1]).addClass('coveo-last-facet');
 
