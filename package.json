@@ -4,7 +4,7 @@
   "description": "Coveo JavaScript Search Framework",
   "main": "coveo.search.js",
   "scripts": {
-    "test": "gulp buildTest && node_modules/karma/bin/karma start",
+    "test": "gulp test && gulp coverage && gulp sonar",
     "build": "gulp",
     "doc": "gulp doc"
   },

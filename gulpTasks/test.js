@@ -6,7 +6,7 @@ const rename = require('gulp-rename');
 const combineCoverage = require('istanbul-combine');
 const remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 
-gulp.task('coverage', ['test', 'remapCoverage', 'lcovCoverage']);
+gulp.task('coverage', ['remapCoverage', 'lcovCoverage']);
 
 gulp.task('test', ['buildTest'], function (done) {
   new TestServer({
@@ -20,7 +20,7 @@ gulp.task('testDev', ['watchTest'], function (done) {
   }, done).start();
 })
 
-gulp.task('remapCoverage', ['test'], function (done) {
+gulp.task('remapCoverage', function (done) {
   return gulp.src('coverage/coverage-es5.json')
     .pipe(remapIstanbul({
       exclude: /(webpack|~\/d3\/|~\/es6-promise\/dist\/|~\/process\/|~\/underscore\/|vertx)/
@@ -29,7 +29,7 @@ gulp.task('remapCoverage', ['test'], function (done) {
     .pipe(gulp.dest('coverage'));
 })
 
-gulp.task('lcovCoverage', ['remapCoverage'], function (done) {
+gulp.task('lcovCoverage', function (done) {
   // Convert JSON coverage from remap-istanbul to lcov format (needed for Sonar).
   combineCoverage({
     dir: 'coverage',

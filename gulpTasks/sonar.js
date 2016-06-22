@@ -20,12 +20,12 @@ gulp.task('sonar', function () {
       projectName: 'JSUI',
       projectVersion: version,
       // comma-delimited string of source directories
-      sources: 'bin/js',
-      language: 'js',
+      sources: 'src',
+      language: 'ts',
       sourceEncoding: 'UTF-8',
       javascript: {
         lcov: {
-          reportPath: 'coverage/lcov-es5/lcov.info'
+          reportPath: 'coverage/lcov.info'
         }
       },
       exec: {
