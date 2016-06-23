@@ -79,7 +79,7 @@ export class ResultLink extends Component {
 
     Assert.exists(this.componentOptionsModel);
     Assert.exists(this.result);
-  
+
     if (!this.quickviewShouldBeOpened()) {
       // We assume that anytime the contextual menu is opened on a result link
       // this is do "open in a new tab" or something similar.
