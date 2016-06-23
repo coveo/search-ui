@@ -10,5 +10,10 @@
       "quantity": 1,
       "size": "free"
     }
+  },
+  "env": {
+    "NPM_CONFIG_PRODUCTION": {
+      "value": "false"
+    }
   }
 }
