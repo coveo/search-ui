@@ -6,4 +6,5 @@ export interface IResultLinkOptions {
   openInOutlook?: boolean;
   openQuickview?: boolean;
   alwaysOpenInNewWindow?: boolean;
+  hrefTemplate?: string;
 }
