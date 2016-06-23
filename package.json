@@ -102,5 +102,11 @@
     "modal-box": "1.0.6",
     "typescript": "1.8.x",
     "underscore": "^1.8.3"
+  },
+
+  "env": {
+    "NPM_CONFIG_PRODUCTION": {
+      "value": "false"
+    }
   }
 }
