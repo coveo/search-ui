@@ -12,8 +12,6 @@
     }
   },
   "env": {
-    "NPM_CONFIG_PRODUCTION": {
-      "value": "false"
-    }
+    "NPM_CONFIG_PRODUCTION": "false"
   }
 }
