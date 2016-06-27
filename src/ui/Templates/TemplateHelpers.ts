@@ -25,10 +25,7 @@ export class TemplateHelpers {
     Assert.isNonEmptyString(name);
     Assert.exists(helper);
 
-    if (UnderscoreTemplate.isLibraryAvailable()) {
-      TemplateHelpers.registerTemplateHelperInUnderscore(name, helper);
-    }
-
+    TemplateHelpers.registerTemplateHelperInUnderscore(name, helper);
     TemplateHelpers.helpers[name] = helper;
   }
 
@@ -43,7 +40,6 @@ export class TemplateHelpers {
   private static registerTemplateHelperInUnderscore(name: string, helper: ITemplateHelperFunction) {
     Assert.isNonEmptyString(name);
     Assert.exists(helper);
-    Assert.check(UnderscoreTemplate.isLibraryAvailable());
     UnderscoreTemplate.registerTemplateHelper(name, helper);
   }
 }

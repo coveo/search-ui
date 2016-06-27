@@ -18,6 +18,8 @@ import {TemplateCache} from './TemplateCache'
 import {$$} from '../../utils/Dom'
 import {SearchEndpoint} from '../../rest/SearchEndpoint'
 import _ = require('underscore');
+import {ResultList} from '../ResultList/ResultList';
+import {StreamHighlightUtils} from '../../utils/StreamHighlightUtils';
 
 declare var Globalize;
 
@@ -285,10 +287,10 @@ TemplateHelpers.registerTemplateHelper('highlight', (content: string, highlights
   }
 });
 
-TemplateHelpers.registerTemplateHelper('highlightStreamText', (content: string, termsToHighlight = resolveQueryResultFromCallStack().termsToHighlight, phrasesToHighlight = resolveQueryResultFromCallStack().phrasesToHighlight, opts?: IStreamHighlightOptions) => {
+TemplateHelpers.registerTemplateHelper('highlightStreamText', (content: string, termsToHighlight = resolveQueryResult().termsToHighlight, phrasesToHighlight = resolveQueryResult().phrasesToHighlight, opts?: IStreamHighlightOptions) => {
   if (Utils.exists(content)) {
     if (Utils.isNonEmptyArray(_.keys(termsToHighlight)) || Utils.isNonEmptyArray(_.keys(phrasesToHighlight))) {
-      return TemplateHelpers.getHelper('highlightStreamText')(content, termsToHighlight, phrasesToHighlight, opts)
+      return StreamHighlightUtils.highlightStreamText(content, termsToHighlight, phrasesToHighlight, opts);
     } else {
       return content;
     }
@@ -297,10 +299,10 @@ TemplateHelpers.registerTemplateHelper('highlightStreamText', (content: string, 
   }
 });
 
-TemplateHelpers.registerTemplateHelper('highlightStreamHTML', (content: string, termsToHighlight = resolveQueryResultFromCallStack().termsToHighlight, phrasesToHighlight = resolveQueryResultFromCallStack().phrasesToHighlight, opts?: IStreamHighlightOptions) => {
+TemplateHelpers.registerTemplateHelper('highlightStreamHTML', (content: string, termsToHighlight = resolveQueryResult().termsToHighlight, phrasesToHighlight = resolveQueryResult().phrasesToHighlight, opts?: IStreamHighlightOptions) => {
   if (Utils.exists(content)) {
     if (Utils.isNonEmptyArray(termsToHighlight)) {
-      return TemplateHelpers.getHelper('highlightStreamHTML')(content, termsToHighlight, phrasesToHighlight, opts)
+      return StreamHighlightUtils.highlightStreamHTML(content, termsToHighlight, phrasesToHighlight, opts);
     } else {
       return content;
     }
@@ -405,13 +407,13 @@ TemplateHelpers.registerFieldHelper('image', (src: string, options?: IImageUtils
   return ImageUtils.buildImage(src, options);
 });
 
-TemplateHelpers.registerTemplateHelper('thumbnail', (result: IQueryResult = resolveQueryResultFromCallStack(), endpoint: string = 'default', options?: IImageUtilsOptions) => {
+TemplateHelpers.registerTemplateHelper('thumbnail', (result: IQueryResult = resolveQueryResult(), endpoint: string = 'default', options?: IImageUtilsOptions) => {
   if (QueryUtils.hasThumbnail(result)) {
     return ImageUtils.buildImageFromResult(result, SearchEndpoint.endpoints[endpoint], options);
   }
 });
 
-TemplateHelpers.registerTemplateHelper('fromFileTypeToIcon', (result: IQueryResult = resolveQueryResultFromCallStack(), options: IIconOptions = {}) => {
+TemplateHelpers.registerTemplateHelper('fromFileTypeToIcon', (result: IQueryResult = resolveQueryResult(), options: IIconOptions = {}) => {
   return Icon.createIcon(result, options).outerHTML;
 });
 
@@ -424,7 +426,7 @@ TemplateHelpers.registerTemplateHelper('attrEncode', (value: string) => {
     .replace(/>/g, '&gt;')
 });
 
-TemplateHelpers.registerTemplateHelper('templateFields', (result: IQueryResult = resolveQueryResultFromCallStack()) => {
+TemplateHelpers.registerTemplateHelper('templateFields', (result: IQueryResult = resolveQueryResult()) => {
   var rows: string[] = [];
   if (result.fields != null) {
     _.forEach(result.fields, (tableField: any) => {
@@ -445,7 +447,7 @@ TemplateHelpers.registerTemplateHelper('templateFields', (result: IQueryResult =
 
 TemplateHelpers.registerTemplateHelper('loadTemplates', (templatesToLoad: { [id: string]: any }, once = true) => {
   var ret = '';
-  var data = resolveQueryResultFromCallStack();
+  var data = resolveQueryResult();
   var atLeastOneWasLoaded = false;
   var toLoad = templatesToLoad;
   var defaultTmpl;
@@ -485,7 +487,7 @@ TemplateHelpers.registerFieldHelper('size', (value: any, options?: { base?: numb
 
 TemplateHelpers.registerTemplateHelper('loadTemplate', (id: string, condition: boolean = true, data?: any) => {
   if (Utils.isNullOrUndefined(data)) {
-    data = resolveQueryResultFromCallStack();
+    data = resolveQueryResult();
   }
   if (condition) {
     return TemplateCache.getTemplate(id).instantiateToString(data, false);
@@ -505,14 +507,6 @@ TemplateHelpers.registerTemplateHelper('isMobileDevice', () => {
   return DeviceUtils.isMobileDevice() ? DeviceUtils.getDeviceName() : null;
 });
 
-function resolveQueryResultFromCallStack() {
-  var calledBy = arguments.callee.caller;
-  var queryResult: IQueryResult = calledBy.arguments[0];
-  var numOfCall = 0;
-  while (calledBy != undefined && (queryResult == undefined || queryResult.uri == undefined) && numOfCall < 100) {
-    queryResult = calledBy.arguments[0];
-    calledBy = calledBy.caller;
-    numOfCall++;
-  }
-  return queryResult;
+function resolveQueryResult(): IQueryResult {
+  return ResultList.resultCurrentlyBeingRendered;
 }
