@@ -61,6 +61,9 @@
   }
 
   .CoveoTab {
+    @include transition-property(opacity);
+    @include transition-duration(0.250s);
+    @include transition-timing-function(ease);
     font-size: $font-size-smallest;
     color: $color-greyish-teal-blue;
     font-weight: 400;

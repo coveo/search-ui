@@ -31,7 +31,6 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.logger = new Logger('ResponsiveFacets');
     if (!$$(root).find('.coveo-facet-column')) {
       this.logger.info(this.FACETS_NOT_FOUND);
-      console.log(this.FACETS_NOT_FOUND);
       return;
     }
     ResponsiveComponentsManager.register(ResponsiveFacets, $$(root), ID, component);
@@ -141,6 +140,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     document.documentElement.appendChild(this.popupBackground.el);
     window.getComputedStyle(this.popupBackground.el).opacity;
     this.popupBackground.el.style.opacity = ResponsiveFacets.TRANSPARENT_BACKGROUND_OPACITY;
+    this.dropdownContent.el.style.display = ''; 
     PopupUtils.positionPopup(this.dropdownContent.el, this.tabSection.el, this.coveoRoot.el, this.coveoRoot.el,
       { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM });
   }
@@ -153,7 +153,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.popupBackground.el.style.opacity = '0';
     window.getComputedStyle(this.popupBackground.el).opacity;
     this.popupBackground.detach();
-    this.dropdownContent.detach();
+    this.dropdownContent.el.style.display = 'none';
     this.dropdownContent.removeClass('coveo-facet-dropdown-content');
     this.dropdownHeader.removeClass('coveo-dropdown-header-active');
   }
