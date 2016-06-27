@@ -4,6 +4,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const walk = require('walk');
 const _ = require('underscore');
+const color = require('colors');
 
 let args = require('yargs')
   .option('sprites', {
@@ -24,7 +25,7 @@ function buildSpriteList(spriteDir, outputDir, done) {
   if (spriteDir == undefined) throw 'Error. No sprite directory defined';
   if (outputDir == undefined) throw 'Error. No output directory defined';
 
-  console.log('Generating sprite list for ' + spriteDir);
+  console.log(`Generating sprite list for ${spriteDir}`.green.bgBlue);
 
   let sprites = {};
   let prefix = spriteDir.indexOf('retina') !== -1 ? 'retina' : 'normal';
