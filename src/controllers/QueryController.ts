@@ -45,9 +45,16 @@ export interface IQueryOptions {
    * The component from which the query originated. For example the pager will set the property to tweak it's behaviour
    */
   origin?: any;
+
+  /**
+   * Whether or not to log the query in the user actions history when using the page view script: https://github.com/coveo/coveo.analytics.js.
+   * Only the 'q' part of the query will be logged.
+   * This option is useful, because it prevents the query to be logged twice when a \link{Recommendation} component is present.
+   * It also makes sure that only relevant queries are logged. For exemple, the 'empty' interface load query isn't logged.
+   */
+  logInActionsHistory?: boolean;
   keepLastSearchUid?: boolean;
   closeModalBox?: boolean;
-  logInActionsHistory?: boolean;
 }
 
 interface ILastQueryLocalStorage {
