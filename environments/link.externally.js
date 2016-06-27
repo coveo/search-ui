@@ -58,9 +58,6 @@ if (devConfig.externalsProjects) {
         .then(function () {
           return link(process.env.PWD, path);
         })
-        .then(function () {
-
-        })
         .done(function () {
           console.log(`Link done for ${path}`.black.bgGreen);
         })
