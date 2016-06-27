@@ -54,7 +54,18 @@ export class ResultLink extends Component {
      * Specifies whether the result link always opens in a new window ( <a target='_blank' /> ).
      * Default is false
      */
-    alwaysOpenInNewWindow: ComponentOptions.buildBooleanOption({ defaultValue: false })
+    alwaysOpenInNewWindow: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
+    /**
+     * Specifies a template string to use to generate the href.
+     * It is possible to reference fields from the associated result:
+     * Ex: '${clickUri}?id=${title}' will generate something like 'http://uri.com?id=documentTitle'
+     * Or from the global scope:
+     * Ex: '${window.location.hostname}/{Coveo.QueryEvents.buildingQuery} will generate something like 'localhost/buildingQuery'
+     * This option will override the field option.
+     * Default is undefined
+     */
+    hrefTemplate: ComponentOptions.buildStringOption()
   };
 
   static fields = [
@@ -81,6 +92,12 @@ export class ResultLink extends Component {
     Assert.exists(this.result);
 
     if (!this.quickviewShouldBeOpened()) {
+      // We assume that anytime the contextual menu is opened on a result link
+      // this is do "open in a new tab" or something similar.
+      // This is not 100% accurate, but we estimate it to be the lesser of 2 evils (not logging anything)
+      $$(element).on('contextmenu', () => {
+        this.logOpenDocument();
+      })
       $$(element).on('click', () => {
         this.logOpenDocument();
       });
@@ -189,6 +206,9 @@ export class ResultLink extends Component {
   }, 1500, true);
 
   private getResultUri(): string {
+    if (this.options.hrefTemplate) {
+      return this.parseHrefTemplate();
+    }
     if (this.options.field == undefined && this.options.openInOutlook) {
       this.setField();
     }
@@ -228,6 +248,26 @@ export class ResultLink extends Component {
 
   private quickviewShouldBeOpened() {
     return (this.options.openQuickview || this.isUriThatMustBeOpenedInQuickview()) && QueryUtils.hasHTMLVersion(this.result);
+  }
+
+  private parseHrefTemplate(): string {
+    return this.options.hrefTemplate.replace(/\$\{(.*?)\}/g, (value: string) => {
+      let key = value.substring(2, value.length - 1);
+      let newValue = this.readFromObject(this.result, key);
+      if (!newValue) {
+        newValue = this.readFromObject(window, key);
+      }
+      return newValue || value;
+    });
+  }
+
+  private readFromObject(object: Object, key: string): string {
+    if (key.indexOf('.') !== -1) {
+      let newKey = key.substring(key.indexOf('.') + 1);
+      key = key.substring(0, key.indexOf('.'));
+      return this.readFromObject(object[key], newKey);
+    }
+    return object ? object[key] : undefined;
   }
 }
 
