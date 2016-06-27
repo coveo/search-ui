@@ -1,5 +1,6 @@
 import {defaultLanguage} from './strings/DefaultLanguage';
 defaultLanguage();
+export {setLanguageAfterPageLoaded} from './strings/DefaultLanguage';
 import {shim} from './misc/PromisesShim';
 shim();
 // MISC

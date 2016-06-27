@@ -116,7 +116,8 @@ export class ResultList extends Component {
     autoSelectFieldsToInclude: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
 
-  private currentlyDisplayedResults: IQueryResult[] = [];
+  public static resultCurrentlyBeingRendered: IQueryResult = null;
+  public currentlyDisplayedResults: IQueryResult[] = [];
   private fetchingMoreResults: Promise<IQueryResults>;
   private reachedTheEndOfResults = false;
 
@@ -184,6 +185,7 @@ export class ResultList extends Component {
         res.push(resultElement);
       }
     });
+    ResultList.resultCurrentlyBeingRendered = null;
     return res;
   }
 
@@ -195,6 +197,7 @@ export class ResultList extends Component {
   public buildResult(result: IQueryResult): HTMLElement {
     Assert.exists(result);
     QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), result);
+    ResultList.resultCurrentlyBeingRendered = result;
     var resultElement = this.options.resultTemplate.instantiateToElement(result);
     if (resultElement != null) {
       Component.bindResultToElement(resultElement, result);
@@ -309,6 +312,7 @@ export class ResultList extends Component {
       var results = data.results;
       this.logger.trace('Received query results from new query', results);
       this.hideWaitingAnimation();
+      ResultList.resultCurrentlyBeingRendered = undefined;
       this.currentlyDisplayedResults = [];
       this.renderResults(this.buildResults(data.results));
       this.currentlyDisplayedResults = results.results;
@@ -350,9 +354,8 @@ export class ResultList extends Component {
   }
 
   private handleNewQuery() {
-    if (!this.disabled) {
-      $$(this.element).show();
-    }
+    $$(this.element).show();
+    ResultList.resultCurrentlyBeingRendered = undefined;
   }
 
   private handleBuildingQuery(args: IBuildingQueryEventArgs) {

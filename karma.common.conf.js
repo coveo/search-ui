@@ -22,7 +22,7 @@ module.exports = {
       watched: true
     },
     {
-      pattern: './bin/js/CoveoJsSearch.dependencies.js',
+      pattern: './bin/js/CoveoJsSearch.Dependencies.js',
       watched: false
     },
     {
