@@ -1,5 +1,6 @@
 import {defaultLanguage} from './strings/DefaultLanguage';
 defaultLanguage();
+export {setLanguageAfterPageLoaded} from './strings/DefaultLanguage';
 import {shim} from './misc/PromisesShim';
 shim();
 // MISC
@@ -169,6 +170,7 @@ export {CurrentTab} from './ui/CurrentTab/CurrentTab';
 export {QueryboxQueryParameters} from './ui/Querybox/QueryboxQueryParameters';
 export {ImageResultList} from './ui/ImageResultList/ImageResultList';
 export {CoveoJQuery} from './ui/Base/CoveoJQuery';
+export {jQueryInstance as $} from './ui/Base/CoveoJQuery';
 export {FollowItem} from './ui/SearchAlerts/FollowItem';
 export {SearchAlerts} from './ui/SearchAlerts/SearchAlerts';
 export {SearchAlertsMessage} from './ui/SearchAlerts/SearchAlertsMessage';

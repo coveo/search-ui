@@ -467,7 +467,8 @@ export class Omnibox extends Component {
       this.lastQuery = text;
       analyticsEvent();
       this.queryController.executeQuery({
-        searchAsYouType: searchAsYouType
+        searchAsYouType: searchAsYouType,
+        logInActionsHistory: true
       });
     }
   }
