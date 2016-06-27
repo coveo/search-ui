@@ -10,6 +10,8 @@ import _ = require('underscore');
 
 export class ResponsiveFacets implements IResponsiveComponent {
 
+  private static ACTIVE_FACET_HEADER_Z_INDEX = '20';
+  private static FACET_DROPDOWN_MIN_WIDTH: number = 280;
   private static TRANSPARENT_BACKGROUND_OPACITY: string = '0.9';
   private static ROOT_MIN_WIDTH: number = 800;
   private static FACETS_NOT_FOUND: string = 'No element with class coveo-facet-column. Responsive facets cannot be enabled';
@@ -140,6 +142,8 @@ export class ResponsiveFacets implements IResponsiveComponent {
     let facetList = this.dropdownContent.findAll('.CoveoFacet');
     $$(facetList[facetList.length - 1]).addClass('coveo-last-facet');
 
+    this.dropdownHeader.el.style.zIndex = ResponsiveFacets.ACTIVE_FACET_HEADER_Z_INDEX;
+
     this.dropdownContent.addClass('coveo-facet-dropdown-content');
     this.dropdownHeader.addClass('coveo-dropdown-header-active');
 
@@ -147,6 +151,11 @@ export class ResponsiveFacets implements IResponsiveComponent {
     window.getComputedStyle(this.popupBackground.el).opacity;
     this.popupBackground.el.style.opacity = ResponsiveFacets.TRANSPARENT_BACKGROUND_OPACITY;
     this.dropdownContent.el.style.display = '';
+    let width = 0.35 * this.coveoRoot.el.offsetWidth;
+    if (width <= ResponsiveFacets.FACET_DROPDOWN_MIN_WIDTH) {
+      width = ResponsiveFacets.FACET_DROPDOWN_MIN_WIDTH;
+    }
+    this.dropdownContent.el.style.width = width.toString() + 'px';
 
     PopupUtils.positionPopup(this.dropdownContent.el, this.tabSection.el, this.coveoRoot.el, this.coveoRoot.el,
       { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM });
@@ -155,6 +164,8 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private detachDropdown() {
     let facetList = this.dropdownContent.findAll('.CoveoFacet');
     $$(facetList[facetList.length - 1]).removeClass('coveo-last-facet');
+
+    this.dropdownHeader.el.style.zIndex = '';
 
     window.getComputedStyle(this.popupBackground.el).opacity;
     this.popupBackground.el.style.opacity = '0';
