@@ -60,7 +60,7 @@
   }
 }
 .coveo-facet-dropdown-background {
-    @include transition-property(all);
+    @include transition-property(opacity);
     @include transition-duration(0.300s);
     background: $color-transparent-background;
     opacity: 0;
