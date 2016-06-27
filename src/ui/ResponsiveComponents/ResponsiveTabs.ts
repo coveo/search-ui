@@ -1,11 +1,12 @@
 import {Win, $$, Dom} from '../../utils/Dom';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
+import {EventsUtils} from '../../utils/EventsUtils';
 import {Logger} from '../../misc/Logger';
 import {IResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
-import _ = require('underscore');
 import {l} from '../../strings/Strings.ts';
 import '../../../sass/_ResponsiveTabs.scss';
+import _ = require('underscore');
 
 export class ResponsiveTabs implements IResponsiveComponent {
 
@@ -265,26 +266,25 @@ export class ResponsiveTabs implements IResponsiveComponent {
       let fadeOutFadeIn = (event) => {
         let tabsInSection = this.tabSection.findAll('.CoveoTab');
         let lastTabInSection = tabsInSection.pop();
-        
+
         if (event.propertyName == 'opacity') {
-          if(tab.el.style.opacity == '0') {
-            
+          if (tab.el.style.opacity == '0') {
+
             $$(lastTabInSection).addClass('coveo-tab-dropdown');
             tab.replaceWith(lastTabInSection);
             tab.removeClass('coveo-tab-dropdown');
             tab.insertBefore(this.dropdownHeader.el);
 
-            //Because of the dom manipulation, sometimes the animation will not trigger. Accessing the computed styles makes sure
-            //animation will happen.
+            // Because of the DOM manipulation, sometimes the animation will not trigger. Accessing the computed styles makes sure
+            // the animation will happen.
             window.getComputedStyle(tab.el).opacity;
             window.getComputedStyle(lastTabInSection).opacity;
 
             tab.el.style.opacity = lastTabInSection.style.opacity = '1';
           } else if (tab.el.style.opacity == '1') {
-            console.log('remove');
             this.dropdownContent.detach();
             this.dropdownHeader.removeClass('coveo-dropdown-header-active');
-            tab.el.removeEventListener('transitionend', fadeOutFadeIn);
+            EventsUtils.removePrefixedEvent(tab.el, 'TransitionEnd', fadeOutFadeIn);
           }
         }
       }
@@ -293,8 +293,8 @@ export class ResponsiveTabs implements IResponsiveComponent {
         if (tab.hasClass('coveo-tab-dropdown')) {
           let tabsInSection = this.tabSection.findAll('.CoveoTab');
           let lastTabInSection = tabsInSection.pop();
-          if (lastTabInSection) {     
-            tab.el.addEventListener('transitionend', fadeOutFadeIn);       
+          if (lastTabInSection) {
+            EventsUtils.addPrefixedEvent(tab.el, 'TransitionEnd', fadeOutFadeIn);
             tab.el.style.opacity = lastTabInSection.style.opacity = '0';
           }
         }

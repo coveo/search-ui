@@ -1,5 +1,6 @@
 import {$$, Dom} from '../../utils/Dom';
 import {IResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
+import {EventsUtils} from '../../utils/EventsUtils';
 import {Logger} from '../../misc/Logger';
 import '../../../sass/_ResponsiveFacets.scss';
 import {l} from '../../strings/Strings';
@@ -110,6 +111,11 @@ export class ResponsiveFacets implements IResponsiveComponent {
 
   private buildPopupBackground() {
     this.popupBackground = $$('div', { className: 'coveo-facet-dropdown-background' });
+    EventsUtils.addPrefixedEvent(this.popupBackground.el, 'TransitionEnd', () => {
+      if (this.popupBackground.el.style.opacity == '0') {
+        this.popupBackground.detach();
+      }
+    })
   }
 
   private shouldDetachFacetDropdown(eventTarget: Dom) {
@@ -131,16 +137,17 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private positionPopup() {
-
     let facetList = this.dropdownContent.findAll('.CoveoFacet');
     $$(facetList[facetList.length - 1]).addClass('coveo-last-facet');
 
     this.dropdownContent.addClass('coveo-facet-dropdown-content');
     this.dropdownHeader.addClass('coveo-dropdown-header-active');
+
     document.documentElement.appendChild(this.popupBackground.el);
     window.getComputedStyle(this.popupBackground.el).opacity;
     this.popupBackground.el.style.opacity = ResponsiveFacets.TRANSPARENT_BACKGROUND_OPACITY;
-    this.dropdownContent.el.style.display = ''; 
+    this.dropdownContent.el.style.display = '';
+
     PopupUtils.positionPopup(this.dropdownContent.el, this.tabSection.el, this.coveoRoot.el, this.coveoRoot.el,
       { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM });
   }
@@ -149,10 +156,9 @@ export class ResponsiveFacets implements IResponsiveComponent {
     let facetList = this.dropdownContent.findAll('.CoveoFacet');
     $$(facetList[facetList.length - 1]).removeClass('coveo-last-facet');
 
-    
-    this.popupBackground.el.style.opacity = '0';
     window.getComputedStyle(this.popupBackground.el).opacity;
-    this.popupBackground.detach();
+    this.popupBackground.el.style.opacity = '0';
+
     this.dropdownContent.el.style.display = 'none';
     this.dropdownContent.removeClass('coveo-facet-dropdown-content');
     this.dropdownHeader.removeClass('coveo-dropdown-header-active');
