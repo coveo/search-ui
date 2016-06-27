@@ -22,8 +22,6 @@ import {DomUtils} from '../../utils/DomUtils';
 import {Recommendation} from '../Recommendation/Recommendation';
 import {DefaultRecommendationTemplate} from '../Templates/DefaultRecommendationTemplate';
 
-import '../../../sass/_ResultFrame.scss';
-
 export interface IResultListOptions {
   resultContainer?: HTMLElement;
   resultTemplate?: Template;
