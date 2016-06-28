@@ -1,4 +1,5 @@
 import {$$, Dom} from '../../utils/Dom';
+import {InitializationEvents} from '../../events/InitializationEvents';
 import {IResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
 import {EventsUtils} from '../../utils/EventsUtils';
 import {Logger} from '../../misc/Logger';
@@ -49,7 +50,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.bindDropdownContentEvents();
     this.buildPopupBackground();
     this.saveFacetsPosition();
-    this.bindNukerEvents();
+    this.bindNukeEvents();
   }
 
   public needSmallMode(): boolean {

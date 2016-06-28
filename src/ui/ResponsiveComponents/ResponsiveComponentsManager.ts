@@ -84,6 +84,7 @@ export class ResponsiveComponentsManager {
       this.handleResizeEvent();
     }, 200);
     window.addEventListener('resize', this.resizeListener);
+    this.bindNukeEvents();
   }
 
   public register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component) {
@@ -160,8 +161,7 @@ export class ResponsiveComponentsManager {
 
   private bindNukeEvents() {
     $$(this.coveoRoot).on(InitializationEvents.nuke, () => {
-      $$(window).off('resize', this.resizeListener);
+      window.removeEventListener('resize', this.resizeListener);
     });
   }
-}
 }
