@@ -1,26 +1,27 @@
 # Search-UI [![Build Status](https://travis-ci.org/coveo/search-ui.svg?branch=master)](https://travis-ci.org/coveo/search-ui) [![TypeScript](https://badges.frapsoft.com/typescript/version/typescript-v18.svg?v=100)](https://github.com/ellerbrock/typescript-badges/)
 Coveo Search UI framework
 
-## Work in progress
-This repository contain the Coveo Search UI, written in Typescript. 
-We are in the process of moving the old internal repository to github. 
-
-As such, some parts are currently not working.
-
-We are gradually removing our internal dependencies to jQuery, as well as moving our module pattern to commonjs from AMD, as well as integrating webpack.
+## Install
+    npm install --save coveo-search-ui
+    
+All resources will be available under `node_modules/coveo-search-ui/bin`. 
 
 ## Build
     npm install -g gulp
-    npm install -g typings
     npm install
-    typings install
-    npm run build
-
-You can also install webpack globally (`npm install webpack -g`) and call `webpack` from the top of the repo to compile only the typescript code
+    gulp
+    
+## Important gulp tasks
+* `gulp default` -> Build the whole project (css, templates, typescript, ...)
+* `gulp compile` -> Build only the typescript code and generate it's output in the `./bin` folder
+* `gulp css` -> Build only the sass code and generate it's output in the `./bin` folder
+* `gulp sprites` -> Regenerate the sprites image as well as the generated sass/css code.
+* `gulp test` -> Build and run the unit tests.
+* `gulp doc` -> Generate the documentation website for the project
 
 ## Dev
 
-Ensure that you were able to run `npm run build` completely without any error first. Then you can start the dev-server.
+Ensure that you were able to run `gulp` completely without any error first. Then you can start the dev-server.
 
     gulp dev
 
@@ -59,7 +60,7 @@ To rebuild tests : `gulp buildTest`
 
 To rebuild and run tests : `gulp test`
 
-NB : Calling `gulp test` does *NOT* rebuild the main library code.
+NB : Calling `gulp test` does *NOT* rebuild the main library code. If you change any code under `./src`, you must first recompile using `gulp compile`
 
 ## Documentation
 Generated using typedoc. Available [here](https://coveo.github.io/search-ui/)

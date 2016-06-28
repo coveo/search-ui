@@ -50,6 +50,13 @@ export class NoopAnalyticsClient implements IAnalyticsClient {
   sendAllPendingEvents() {
   }
 
+  cancelAllPendingEvents() {
+  }
+
   warnAboutSearchEvent() {
+  }
+
+  getPendingSearchEvent() {
+    return null;
   }
 }

@@ -1,3 +1,4 @@
+import {ResponsiveTabs} from '../ResponsiveComponents/ResponsiveTabs.ts';
 import {Component} from '../Base/Component';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
@@ -11,6 +12,7 @@ import {Utils} from '../../utils/Utils';
 import {Assert} from '../../misc/Assert';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {$$} from '../../utils/Dom';
+import '../../../sass/_Tab.scss';
 
 export interface ITabOptions {
   expression?: string;
@@ -116,6 +118,7 @@ export class Tab extends Component {
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.T, (args: IAttributeChangedEventArg) => this.handleQueryStateChanged(args));
     this.bind.on(element, 'click', (e: Event) => this.handleClick());
     this.render();
+    ResponsiveTabs.init(this.root, Tab.ID, this);
   }
 
   /**

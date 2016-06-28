@@ -40,10 +40,10 @@ export class PopupUtils {
     desiredPosition.verticalOffset = desiredPosition.verticalOffset ? desiredPosition.verticalOffset : 0;
     desiredPosition.horizontalOffset = desiredPosition.horizontalOffset ? desiredPosition.horizontalOffset : 0;
 
-    let popUpPosition = _.clone(nextTo.getBoundingClientRect());
+    let popUpPosition = this.getBoundingRectRelativeToDocument(nextTo);
     PopupUtils.basicVerticalAlignment(popUpPosition, popUp, nextTo, desiredPosition);
     PopupUtils.basicHorizontalAlignment(popUpPosition, popUp, nextTo, desiredPosition);
-    PopupUtils.finalAdjustement(popUp.getBoundingClientRect(), popUpPosition, popUp, desiredPosition);
+    PopupUtils.finalAdjustement(this.getBoundingRectRelativeToDocument(popUp), popUpPosition, popUp, desiredPosition);
 
     let popUpBoundary = PopupUtils.getBoundary(popUp);
     let boundaryPosition = PopupUtils.getBoundary(boundary);
@@ -68,7 +68,7 @@ export class PopupUtils {
   }
 
   private static finalAdjustement(popUpOffSet: IOffset, popUpPosition: IOffset, popUp: HTMLElement, desiredPosition: IPosition) {
-    popUp.style.position = 'fixed';
+    popUp.style.position = 'absolute';
     popUp.style.top = desiredPosition.verticalOffset + popUpPosition.top + 'px';
     popUp.style.left = (popUpOffSet.left + desiredPosition.horizontalOffset) - (popUpOffSet.left - popUpPosition.left) + 'px';
   }
@@ -136,7 +136,7 @@ export class PopupUtils {
   }
 
   private static getBoundary(element: HTMLElement) {
-    let boundaryOffset = element.getBoundingClientRect();
+    let boundaryOffset = this.getBoundingRectRelativeToDocument(element);
     let toAddVertically;
     if (element.tagName.toLowerCase() == 'body') {
       toAddVertically = Math.max(element.scrollHeight, element.offsetHeight);
@@ -171,5 +171,12 @@ export class PopupUtils {
       ret.horizontal = 'right';
     }
     return ret;
+  }
+
+  private static getBoundingRectRelativeToDocument(el: HTMLElement) {
+    let rect = _.clone(el.getBoundingClientRect());
+    rect.top += window.scrollY;
+    rect.left += window.scrollX;
+    return rect;
   }
 }

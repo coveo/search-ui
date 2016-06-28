@@ -691,7 +691,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     let queryString: string[] = [];
 
     if (Utils.isNonEmptyString(this.options.accessToken)) {
-      queryString.push(tokenKey + encodeURIComponent(this.options.accessToken));
+      queryString.push(tokenKey + '=' + encodeURIComponent(this.options.accessToken));
     }
 
     return queryString;
@@ -863,16 +863,16 @@ export class SearchEndpoint implements ISearchEndpoint {
  * Add the base url
  * @param path The path to append to the url
  */
-function path(path: string){
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+function path(path: string) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
     let nbParams = target[key].prototype.constructor.length;
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       let uri = this.buildBaseUri(path);
-      if(args[nbParams-1]){
-        args[nbParams-1].url = uri;
-      }else{
+      if (args[nbParams - 1]) {
+        args[nbParams - 1].url = uri;
+      } else {
         let params: IEndpointCallParameters = {
           url: uri,
           queryString: [],
@@ -881,7 +881,7 @@ function path(path: string){
           responseType: '',
           errorsAsSuccess: false
         };
-        args[nbParams-1] = params;
+        args[nbParams - 1] = params;
       }
       let result = originalMethod.apply(this, args);
       return result;
@@ -895,16 +895,16 @@ function path(path: string){
  * Add the alert url
  * @param path The path to append to the url
  */
-function alertsPath(path: string){
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+function alertsPath(path: string) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
     let nbParams = target[key].prototype.constructor.length;
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       let uri = this.buildSearchAlertsUri(path);
-      if(args[nbParams-1]){
-        args[nbParams-1].url = uri;
-      }else{
+      if (args[nbParams - 1]) {
+        args[nbParams - 1].url = uri;
+      } else {
         let params: IEndpointCallParameters = {
           url: uri,
           queryString: [],
@@ -913,7 +913,7 @@ function alertsPath(path: string){
           responseType: '',
           errorsAsSuccess: false
         };
-        args[nbParams-1] = params;
+        args[nbParams - 1] = params;
       }
       let result = originalMethod.apply(this, args);
       return result;
@@ -927,15 +927,15 @@ function alertsPath(path: string){
  * Set the request data type
  * @param type The type to set
  */
-function requestDataType(type: string){
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+function requestDataType(type: string) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
     let nbParams = target[key].prototype.constructor.length;
 
-    descriptor.value = function(...args: any[]) {
-      if(args[nbParams-1]){
-        args[nbParams-1].requestDataType = type;
-      }else{
+    descriptor.value = function (...args: any[]) {
+      if (args[nbParams - 1]) {
+        args[nbParams - 1].requestDataType = type;
+      } else {
         let params: IEndpointCallParameters = {
           url: '',
           queryString: [],
@@ -945,7 +945,7 @@ function requestDataType(type: string){
           responseType: '',
           errorsAsSuccess: false
         };
-        args[nbParams-1] = params;
+        args[nbParams - 1] = params;
       }
       let result = originalMethod.apply(this, args);
       return result;
@@ -959,15 +959,15 @@ function requestDataType(type: string){
  * Set the request data type
  * @param met The type to set
  */
-function method(met: string){
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+function method(met: string) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
     let nbParams = target[key].prototype.constructor.length;
 
-    descriptor.value = function(...args: any[]) {
-      if(args[nbParams-1]){
-        args[nbParams-1].method = met;
-      }else{
+    descriptor.value = function (...args: any[]) {
+      if (args[nbParams - 1]) {
+        args[nbParams - 1].method = met;
+      } else {
         let params: IEndpointCallParameters = {
           url: '',
           queryString: [],
@@ -976,7 +976,7 @@ function method(met: string){
           responseType: '',
           errorsAsSuccess: false
         };
-        args[nbParams-1] = params;
+        args[nbParams - 1] = params;
       }
       let result = originalMethod.apply(this, args);
       return result;
@@ -990,15 +990,15 @@ function method(met: string){
  * Set the response type
  * @param resp The response type to set
  */
-function responseType(resp: string){
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+function responseType(resp: string) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
     let nbParams = target[key].prototype.constructor.length;
 
-    descriptor.value = function(...args: any[]) {
-      if(args[nbParams-1]){
-        args[nbParams-1].responseType = resp;
-      }else{
+    descriptor.value = function (...args: any[]) {
+      if (args[nbParams - 1]) {
+        args[nbParams - 1].responseType = resp;
+      } else {
         let params: IEndpointCallParameters = {
           url: '',
           queryString: [],
@@ -1007,7 +1007,7 @@ function responseType(resp: string){
           responseType: resp,
           errorsAsSuccess: false
         };
-        args[nbParams-1] = params;
+        args[nbParams - 1] = params;
       }
       let result = originalMethod.apply(this, args);
       return result;
@@ -1020,16 +1020,16 @@ function responseType(resp: string){
 /**
  * Add the accessToken to the query string arguments
  */
-function accessTokenInUrl(tokenKey: string = 'access_token'){
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+function accessTokenInUrl(tokenKey: string = 'access_token') {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
     let nbParams = target[key].prototype.constructor.length;
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       let queryString = this.buildAccessToken(tokenKey);
-      if(args[nbParams-1]){
-        args[nbParams-1].queryString = args[nbParams-1].queryString.concat(queryString);
-      }else{
+      if (args[nbParams - 1]) {
+        args[nbParams - 1].queryString = args[nbParams - 1].queryString.concat(queryString);
+      } else {
         let params: IEndpointCallParameters = {
           url: '',
           queryString: queryString,
@@ -1038,7 +1038,7 @@ function accessTokenInUrl(tokenKey: string = 'access_token'){
           responseType: '',
           errorsAsSuccess: false
         };
-        args[nbParams-1] = params;
+        args[nbParams - 1] = params;
       }
       let result = originalMethod.apply(this, args);
       return result;

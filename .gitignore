@@ -7,3 +7,4 @@ coverage
 docgen
 npm-debug.log
 *.orig
+environments/conf.js
