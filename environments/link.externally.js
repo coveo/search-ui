@@ -2,7 +2,8 @@
 
 /**
  * Use this script to link the bin folder from this repository to all your external project's node_modules.
- * This mean that
+ * When running the gulp dev task, this will create a symlink between the current repo and all other specified
+ * in ./environments/conf.js
  */
 
 const fs = require('fs');
@@ -43,7 +44,7 @@ if (devConfig.externalsProjects) {
                 if (res && res.status === 200) {
                   return res.text();
                 }
-                return ''
+                return '';
               })
               .then(function (body) {
                 if (body) {
