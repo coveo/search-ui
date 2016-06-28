@@ -65,7 +65,7 @@ export class ResponsiveComponentsManager {
   constructor(root: Dom) {
     this.coveoRoot = root;
     this.searchBoxElement = this.getSearchBoxElement();
-    this.resizeListener = () => {
+    this.resizeListener = _.debounce(() => {
       for (let i = 0; i < this.responsiveComponents.length; i++) {
         if (this.responsiveComponents[i].needSmallMode()) {
           if (!this.coveoRoot.hasClass('coveo-small-search-interface')) {
@@ -82,8 +82,8 @@ export class ResponsiveComponentsManager {
         this.changeToLargeMode();
       }
       this.handleResizeEvent();
-    };
-    window.addEventListener('resize', _.debounce(this.resizeListener, 200));
+    }, 200);
+    window.addEventListener('resize', this.resizeListener);
   }
 
   public register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component) {
@@ -156,5 +156,12 @@ export class ResponsiveComponentsManager {
     } else {
       return <HTMLElement>this.coveoRoot.find('.CoveoSearchbox');
     }
+  }
+
+  private bindNukeEvents() {
+    $$(this.coveoRoot).on(InitializationEvents.nuke, () => {
+      $$(window).off('resize', this.resizeListener);
+    });
+  }
   }
 }

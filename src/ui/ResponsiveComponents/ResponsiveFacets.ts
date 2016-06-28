@@ -12,9 +12,9 @@ export class ResponsiveFacets implements IResponsiveComponent {
 
   private static ACTIVE_FACET_HEADER_Z_INDEX = '20';
   private static FACET_DROPDOWN_MIN_WIDTH: number = 280;
+  private static FACET_DROPDOWN_WIDTH_RATIO: number = 0.35; // Used to have a width relative to the coveo root.
   private static TRANSPARENT_BACKGROUND_OPACITY: string = '0.9';
   private static ROOT_MIN_WIDTH: number = 800;
-  private static FACETS_NOT_FOUND: string = 'No element with class coveo-facet-column. Responsive facets cannot be enabled';
   private static logger: Logger;
 
   public ID: string;
@@ -33,7 +33,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   public static init(root: HTMLElement, ID: string, component) {
     this.logger = new Logger('ResponsiveFacets');
     if (!$$(root).find('.coveo-facet-column')) {
-      this.logger.info(this.FACETS_NOT_FOUND);
+      this.logger.info('No element with class coveo-facet-column. Responsive facets cannot be enabled');
       return;
     }
     ResponsiveComponentsManager.register(ResponsiveFacets, $$(root), ID, component);
@@ -49,6 +49,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.bindDropdownContentEvents();
     this.buildPopupBackground();
     this.saveFacetsPosition();
+    this.bindNukerEvents();
   }
 
   public needSmallMode(): boolean {
@@ -151,7 +152,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     window.getComputedStyle(this.popupBackground.el).opacity;
     this.popupBackground.el.style.opacity = ResponsiveFacets.TRANSPARENT_BACKGROUND_OPACITY;
     this.dropdownContent.el.style.display = '';
-    let width = 0.35 * this.coveoRoot.el.offsetWidth;
+    let width = ResponsiveFacets.FACET_DROPDOWN_WIDTH_RATIO * this.coveoRoot.el.offsetWidth;
     if (width <= ResponsiveFacets.FACET_DROPDOWN_MIN_WIDTH) {
       width = ResponsiveFacets.FACET_DROPDOWN_MIN_WIDTH;
     }
@@ -167,6 +168,8 @@ export class ResponsiveFacets implements IResponsiveComponent {
 
     this.dropdownHeader.el.style.zIndex = '';
 
+    // Because of DOM manipulation, sometimes the animation will not trigger. Accessing the computed styles makes sure
+    // the animation will happen. Adding this here because its possible that this element has recently been manipulated. 
     window.getComputedStyle(this.popupBackground.el).opacity;
     this.popupBackground.el.style.opacity = '0';
 
@@ -187,7 +190,9 @@ export class ResponsiveFacets implements IResponsiveComponent {
     });
   }
 
-  private nuke() {
-
+  private bindNukeEvents() {
+  $$(this.coveoRoot).on(InitializationEvents.nuke, () => {
+      $$(document.documentElement).off('click', this.documentClickListener);
+    });
   }
 }
