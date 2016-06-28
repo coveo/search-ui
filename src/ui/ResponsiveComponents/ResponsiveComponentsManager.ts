@@ -163,5 +163,5 @@ export class ResponsiveComponentsManager {
       $$(window).off('resize', this.resizeListener);
     });
   }
-  }
+}
 }

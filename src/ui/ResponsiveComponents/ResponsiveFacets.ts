@@ -191,7 +191,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private bindNukeEvents() {
-  $$(this.coveoRoot).on(InitializationEvents.nuke, () => {
+    $$(this.coveoRoot).on(InitializationEvents.nuke, () => {
       $$(document.documentElement).off('click', this.documentClickListener);
     });
   }
