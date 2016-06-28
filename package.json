@@ -80,6 +80,7 @@
     "karma-jasmine": "^1.0.2",
     "karma-phantomjs-launcher": "^1.0.0",
     "merge-stream": "^1.0.0",
+    "node-fetch": "^1.5.3",
     "node-sass": "^3.7.0",
     "phantomjs-prebuilt": "^2.1.7",
     "png-sprite": "^0.1.1",

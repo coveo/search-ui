@@ -12,7 +12,7 @@ if (minimize) {
 module.exports = {
   entry: ['./src/Dependencies.js', './src/Index.ts'],
   output: {
-    path: './bin/js',
+    path: require('path').resolve('./bin/js'),
     filename: minimize ? 'CoveoJsSearch.min.js' : 'CoveoJsSearch.js',
     libraryTarget: 'var',
     library: ['Coveo'],

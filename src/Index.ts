@@ -3,6 +3,7 @@ defaultLanguage();
 export {setLanguageAfterPageLoaded} from './strings/DefaultLanguage';
 import {shim} from './misc/PromisesShim';
 shim();
+
 // MISC
 export {version} from './misc/Version';
 export {Assert} from './misc/Assert';
