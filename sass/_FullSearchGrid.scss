@@ -7,6 +7,8 @@ $border-box-sizing: false;
 
 .CoveoSearchInterface {
 
+  min-width: 300px;
+  
   .coveo-search-section {
     max-width: 800px;
     margin: 54px auto 47px auto;

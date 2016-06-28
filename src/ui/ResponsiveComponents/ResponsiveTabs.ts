@@ -1,15 +1,15 @@
 import {Win, $$, Dom} from '../../utils/Dom';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
+import {EventsUtils} from '../../utils/EventsUtils';
 import {Logger} from '../../misc/Logger';
 import {IResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
-import _ = require('underscore');
 import {l} from '../../strings/Strings.ts';
 import '../../../sass/_ResponsiveTabs.scss';
+import _ = require('underscore');
 
 export class ResponsiveTabs implements IResponsiveComponent {
 
-  private static TABS_NOT_FOUND = 'Could not find element with class coveo-tab-section. Therefore, responsive tabs cannot be enabled.';
   private static logger: Logger;
 
   public ID: string;
@@ -37,13 +37,13 @@ export class ResponsiveTabs implements IResponsiveComponent {
     this.saveTabsPosition();
   }
 
-  public static init(root: HTMLElement, ID: string) {
-    this.logger = new Logger(root);
+  public static init(root: HTMLElement, ID: string, component) {
+    this.logger = new Logger('ResponsiveTabs');
     if (!$$(root).find('.coveo-tab-section')) {
-      this.logger.info(this.TABS_NOT_FOUND);
+      this.logger.info('No element with class coveo-tab-section. Responsive tabs cannot be enabled.');
       return;
     }
-    ResponsiveComponentsManager.register(ResponsiveTabs, $$(root), ID);
+    ResponsiveComponentsManager.register(ResponsiveTabs, $$(root), ID, component);
   }
 
   public handleResizeEvent() {
@@ -113,7 +113,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   public changeToLargeMode() {
-    this.restoreTabsPosition();
+    this.restoreTabSectionPosition();
     this.emptyDropdown();
     this.detachDropdown();
   }
@@ -145,10 +145,12 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private isLargeFormatOverflowing(): boolean {
     let virtualTabSection = $$(<HTMLElement>this.tabSection.el.cloneNode(true));
 
-    let dropdownHeader = virtualTabSection.el.querySelector('.coveo-tab-dropdown-header');
+    let dropdownHeader = virtualTabSection.find('.coveo-tab-dropdown-header');
     if (dropdownHeader) {
       virtualTabSection.el.removeChild(dropdownHeader);
     }
+    let facetDropdownHeader = virtualTabSection.find('.coveo-facet-dropdown-header-container');
+    facetDropdownHeader && virtualTabSection.el.removeChild(facetDropdownHeader);
 
     virtualTabSection.el.style.position = 'absolute';
     virtualTabSection.el.style.visibility = 'hidden';
@@ -159,8 +161,13 @@ export class ResponsiveTabs implements IResponsiveComponent {
       });
     }
 
-    virtualTabSection.insertBefore(this.coveoRoot.el);
+    this.coveoRoot.append(virtualTabSection.el);
+
+    this.coveoRoot.removeClass('coveo-small-search-interface');
     let isOverflowing = this.isOverflowing(virtualTabSection.el);
+    this.coveoRoot.addClass('coveo-small-search-interface');
+
+
     virtualTabSection.detach();
     return isOverflowing;
   }
@@ -205,7 +212,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private bindDropdownContentEvents() {
     this.documentClickListener = event => {
       let eventTarget = $$(<HTMLElement>event.target);
-      if (!eventTarget.closest('coveo-tab-list-container') && !eventTarget.closest('coveo-tab-dropdown-header')) {
+      if (!eventTarget.closest('coveo-tab-list-container') && !eventTarget.closest('coveo-tab-dropdown-header') && !eventTarget.closest('coveo-tab-dropdown')) {
         this.dropdownContent.detach();
         this.dropdownHeader.removeClass('coveo-dropdown-header-active');
       }
@@ -255,16 +262,40 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private manageTabSwapping() {
     _.each(this.tabSection.findAll('.CoveoTab'), tabElement => {
       let tab = $$(tabElement);
+      let fadeOutFadeIn = (event) => {
+        let tabsInSection = this.tabSection.findAll('.CoveoTab');
+        let lastTabInSection = tabsInSection.pop();
+
+        if (event.propertyName == 'opacity') {
+          if (tab.el.style.opacity == '0') {
+
+            $$(lastTabInSection).addClass('coveo-tab-dropdown');
+            tab.replaceWith(lastTabInSection);
+            tab.removeClass('coveo-tab-dropdown');
+            tab.insertBefore(this.dropdownHeader.el);
+
+            // Because of the DOM manipulation, sometimes the animation will not trigger. Accessing the computed styles makes sure
+            // the animation will happen.
+            window.getComputedStyle(tab.el).opacity;
+            window.getComputedStyle(lastTabInSection).opacity;
+
+            tab.el.style.opacity = lastTabInSection.style.opacity = '1';
+          } else if (tab.el.style.opacity == '1') {
+            this.dropdownContent.detach();
+            this.dropdownHeader.removeClass('coveo-dropdown-header-active');
+            EventsUtils.removePrefixedEvent(tab.el, 'TransitionEnd', fadeOutFadeIn);
+          }
+        }
+      }
+
       tab.on('click', () => {
         if (tab.hasClass('coveo-tab-dropdown')) {
           let tabsInSection = this.tabSection.findAll('.CoveoTab');
           let lastTabInSection = tabsInSection.pop();
-
-          $$(lastTabInSection).addClass('coveo-tab-dropdown');
-          tab.replaceWith(lastTabInSection);
-
-          tab.removeClass('coveo-tab-dropdown');
-          tab.insertBefore(this.dropdownHeader.el);
+          if (lastTabInSection) {
+            EventsUtils.addPrefixedEvent(tab.el, 'TransitionEnd', fadeOutFadeIn);
+            tab.el.style.opacity = lastTabInSection.style.opacity = '0';
+          }
         }
       })
     });
@@ -284,7 +315,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
     this.parent = $$(this.tabSection.el.parentElement);
   }
 
-  private restoreTabsPosition() {
+  private restoreTabSectionPosition() {
     if (this.previousSibling) {
       this.tabSection.insertAfter(this.previousSibling.el);
     } else {
@@ -294,7 +325,6 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
   private bindNukeEvents() {
     $$(this.coveoRoot).on(InitializationEvents.nuke, () => {
-      window.removeEventListener('resize', this.resizeListener);
       $$(document.documentElement).off('click', this.documentClickListener);
     });
   }

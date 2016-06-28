@@ -28,6 +28,7 @@ $color-coveo-for-sitecore: #DC291E;
 $color-coveo-for-salesforce: #009DDC;
 
 $color-green: #4caf50;
+$color-transparent-background: rgba(28, 79, 118, 0.9);
 
 // Font sizes
 $font-size-huge: 24px;
@@ -39,6 +40,7 @@ $font-size-smallest: 12px;
 
 // Border
 $default-border-radius: 4px;
+$small-border-radius: 2px;
 $default-border: 1px solid $color-light-grey;
 @mixin defaultRoundedBorder {
   border: $default-border;

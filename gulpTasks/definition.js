@@ -42,18 +42,3 @@ gulp.task('internalDefs', function () {
     exclude: ['lib/**/*.d.ts', 'node_modules/**/*.d.ts', 'typings/**/*.d.ts', 'src/Index.ts', 'src/Doc,ts', 'bin/**/*.d.ts']
   });
 })
-
-
-function removeDuplicateDeclarations(content, declaration) {
-  var firstDeclaration = content.indexOf(declaration);
-  console.log(firstDeclaration)
-  while (content.lastIndexOf(declaration) != firstDeclaration) {
-    console.log(content.lastIndexOf(declaration))
-    var lastDeclaration = content.lastIndexOf(declaration);
-    var endOfLastDeclaration = content.indexOf('}', lastDeclaration);
-    console.log(endOfLastDeclaration)
-    content = content.substr(0, lastDeclaration) + content.substr(endOfLastDeclaration + 1);
-  }
-  return content;
-}
-

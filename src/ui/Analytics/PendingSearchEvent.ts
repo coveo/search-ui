@@ -17,10 +17,10 @@ import _ = require('underscore');
 export class PendingSearchEvent {
   private handler: (evt: Event, arg: IDuringQueryEventArgs) => void;
   private searchPromises: Promise<IQueryResults>[] = [];
-  private searchEvents: ISearchEvent[] = [];
   private results: IQueryResults[] = [];
   protected cancelled = false;
   protected finished = false;
+  protected searchEvents: ISearchEvent[] = [];
 
   constructor(public root: HTMLElement, public endpoint: AnalyticsEndpoint, public templateSearchEvent: ISearchEvent, public sendToCloud: boolean) {
     Assert.exists(root);
@@ -58,33 +58,33 @@ export class PendingSearchEvent {
     this.searchPromises.push(args.promise);
 
     // TODO: Maybe a better way to grab the search interface?
-    var eventTarget: HTMLElement;
+    let eventTarget: HTMLElement;
     if (window['jQuery'] && evt instanceof window['jQuery'].Event) {
       eventTarget = <HTMLElement>evt.target;
     } else {
       eventTarget = <HTMLElement>evt.srcElement;
     }
-    var searchInterface = <SearchInterface>Component.get(eventTarget, SearchInterface);
+    let searchInterface = <SearchInterface>Component.get(eventTarget, SearchInterface);
     Assert.exists(searchInterface);
     // TODO: Maybe a better way to grab the query controller?
-    var queryController = Component.get(eventTarget, QueryController);
+    let queryController = Component.get(eventTarget, QueryController);
     Assert.exists(queryController);
 
     args.promise.then((queryResults: IQueryResults) => {
       Assert.exists(queryResults);
       Assert.check(!this.finished);
       if (queryResults._reusedSearchUid !== true) {
-        var searchEvent = <ISearchEvent>_.extend({}, this.templateSearchEvent);
+        let searchEvent = <ISearchEvent>_.extend({}, this.templateSearchEvent);
         this.fillSearchEvent(searchEvent, searchInterface, args.query, queryResults);
         this.searchEvents.push(searchEvent);
         this.results.push(queryResults);
-        return queryResults
+        return queryResults;
       }
     }).finally(() => {
-      var index = _.indexOf(this.searchPromises, args.promise);
+      let index = _.indexOf(this.searchPromises, args.promise);
       this.searchPromises.splice(index, 1);
       if (this.searchPromises.length == 0) {
-        this.flush()
+        this.flush();
       }
     })
   }
@@ -107,7 +107,7 @@ export class PendingSearchEvent {
         if (this.sendToCloud) {
           this.endpoint.sendSearchEvents(this.searchEvents);
         }
-        var apiSearchEvents = _.map(this.searchEvents, (searchEvent: ISearchEvent) => {
+        let apiSearchEvents = _.map(this.searchEvents, (searchEvent: ISearchEvent) => {
           return APIAnalyticsBuilder.convertSearchEventToAPI(searchEvent);
         });
         $$(this.root).trigger(AnalyticsEvents.searchEvent, <IAnalyticsSearchEventsArgs>{ searchEvents: apiSearchEvents });
@@ -124,7 +124,7 @@ export class PendingSearchEvent {
     Assert.exists(query);
     Assert.exists(queryResults);
 
-    var currentQuery = <string>searchInterface.queryStateModel.get(QueryStateModel.attributesEnum.q);
+    let currentQuery = <string>searchInterface.queryStateModel.get(QueryStateModel.attributesEnum.q);
     searchEvent.queryPipeline = queryResults.pipeline;
     searchEvent.splitTestRunName = searchEvent.splitTestRunName || queryResults.splitTestRun;
     searchEvent.splitTestRunVersion = searchEvent.splitTestRunVersion || (queryResults.splitTestRun != undefined ? queryResults.pipeline : undefined);

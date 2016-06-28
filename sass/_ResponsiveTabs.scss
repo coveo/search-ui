@@ -1,6 +1,11 @@
  @import "_Variables.scss";
+ @import "mixins/_mediaQuery.scss";
  
 .CoveoSearchInterface.coveo-small-search-interface {
+
+  .CoveoSearchbox {
+    max-width: 800px;
+  }
 
   .coveo-search-section {
     margin: 0;
@@ -8,17 +13,27 @@
     background-color: $color-blueish-white;
     margin: 0 auto;
     width: 100%;
+    max-width: none;
   }
   .coveo-tab-section {
-    border-top: 1px solid white;
     background-color: $color-blueish-white;
-    display: inline-block;
+    min-height: 40px;
+    
+    > a:last-of-type {
+      margin-right: 20px;
+    }
+
+    .coveo-tab-dropdown-header {
+      margin-left: 10px;
+    }
 
     .coveo-dropdown-header {
-      display: inline-block;
-      padding: 1px 8px 1px 8px;
-      height: 22px;
       font-size: $font-size-smallest;
+      display: inline-block;
+      @include defaultRoundedBorder();
+      background-color: white;
+      padding: 0px 7px 0px 7px;
+      height: 22px;
       font-weight: 700;
       line-height: 20px;
       letter-spacing: 0.09px;
@@ -27,7 +42,6 @@
       color: $color-greyish-teal-blue;
       cursor: pointer;
       text-transform: uppercase;
-      margin-left: 10px;
 
       * {
         display: inline-block;
@@ -36,12 +50,6 @@
 
       p {
         line-height: 16px;
-      }
-
-      &.coveo-dropdown-header-active {
-        @include defaultRoundedBorder();
-        background-color: white;
-        padding: 0px 7px 0px 7px;
       }
 
       .coveo-sprites-more-tabs {
@@ -53,12 +61,19 @@
   }
 
   .CoveoTab {
-    color: $color-greyish-teal-blue;
+    @include transition-property(opacity);
+    @include transition-duration(0.250s);
+    @include transition-timing-function(ease);
     font-size: $font-size-smallest;
+    color: $color-greyish-teal-blue;
     font-weight: 400;
     letter-spacing: 0.25px;
     &.coveo-selected, &.coveo-selected:hover {
       font-weight: 700;
+    }
+    height: 40px;
+    * {
+      line-height: 40px;
     }
   }
 
@@ -88,6 +103,10 @@
     li:hover {
       background-color: $color-blueish-white-grey;
     }
+  }
+
+  .coveo-facet-settings-popup {
+    z-index: 999;
   }
 }
  
