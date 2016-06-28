@@ -691,7 +691,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     let queryString: string[] = [];
 
     if (Utils.isNonEmptyString(this.options.accessToken)) {
-      queryString.push(tokenKey + encodeURIComponent(this.options.accessToken));
+      queryString.push(tokenKey + '=' + encodeURIComponent(this.options.accessToken));
     }
 
     return queryString;
