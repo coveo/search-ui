@@ -10,6 +10,7 @@
   padding: 0px 10px 2px 10px;
   text-transform: uppercase;
   vertical-align: middle;
+  white-space: normal;
   * {
     display: inline-block;
     vertical-align: middle;
@@ -31,4 +32,15 @@
   &:hover {
     color: $color-greyish-dark-blue;
   }
+}
+
+.coveo-tab-section {
+  width: 100%;
+  min-height: 52px;
+  background-color: $color-blueish-white;
+  text-align: center;
+  border-bottom: 1px solid $color-light-grey;
+  font-size: 0;
+  overflow: hidden;
+  white-space: nowrap;
 }

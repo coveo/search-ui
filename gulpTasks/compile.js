@@ -4,7 +4,7 @@ const eol = require('gulp-eol');
 
 
 gulp.task('compile', ['addEolDependencies'], shell.task([
-  'node node_modules/webpack/bin/webpack.js'
+  'NODE_ENV=production node node_modules/webpack/bin/webpack.js -p'
 ]))
 
 gulp.task('minimize', ['addEolDependencies'], shell.task([
