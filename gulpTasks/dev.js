@@ -20,8 +20,7 @@ compiler.plugin('done', function () {
 gulp.task('dev', ['setup', 'prepareSass'], function (done) {
   var server = new WebpackDevServer(compiler, {
     contentBase: 'bin/',
-    publicPath: '/devserver/',
-    filename: 'CoveoJsSearch.js'
+    publicPath: '/js/'
   });
   server.listen(8080, 'localhost', function () {
   });

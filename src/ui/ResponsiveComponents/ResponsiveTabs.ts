@@ -10,7 +10,6 @@ import _ = require('underscore');
 
 export class ResponsiveTabs implements IResponsiveComponent {
 
-  private static TABS_NOT_FOUND = 'No element with class coveo-tab-section. Responsive tabs cannot be enabled.';
   private static logger: Logger;
 
   public ID: string;
@@ -41,7 +40,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   public static init(root: HTMLElement, ID: string, component) {
     this.logger = new Logger('ResponsiveTabs');
     if (!$$(root).find('.coveo-tab-section')) {
-      this.logger.info(this.TABS_NOT_FOUND);
+      this.logger.info('No element with class coveo-tab-section. Responsive tabs cannot be enabled.');
       return;
     }
     ResponsiveComponentsManager.register(ResponsiveTabs, $$(root), ID, component);
@@ -326,7 +325,6 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
   private bindNukeEvents() {
     $$(this.coveoRoot).on(InitializationEvents.nuke, () => {
-      window.removeEventListener('resize', this.resizeListener);
       $$(document.documentElement).off('click', this.documentClickListener);
     });
   }
