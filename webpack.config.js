@@ -8,14 +8,15 @@ if (minimize) {
   console.log('Building non minified version of the library'.bgGreen.red);
 }
 
+
 module.exports = {
   entry: ['./src/Dependencies.js', './src/Index.ts'],
   output: {
-    path: './bin/js',
+    path: require('path').resolve('./bin/js'),
     filename: minimize ? 'CoveoJsSearch.min.js' : 'CoveoJsSearch.js',
     libraryTarget: 'var',
     library: ['Coveo'],
-    publicPath : '/devserver/'
+    publicPath : '/js/'
   },
   resolve: {
     extensions: ['', '.ts', '.js'],
