@@ -8,6 +8,7 @@
     "build": "gulp",
     "minimize": "node node_modules/webpack/bin/webpack.js --minimize",
     "doc": "gulp doc",
+    "injectTag": "gulp injectTag",
     "heroku-postbuild": "npm run build",
     "start": "node index.js"
   },
@@ -99,6 +100,7 @@
     "walk": "^2.3.9",
     "webpack": "^1.13.0",
     "webpack-dev-server": "^1.14.1",
+    "webpack-fail-plugin": "^1.0.4",
     "yargs": "^4.7.1"
   },
   "dependencies": {
