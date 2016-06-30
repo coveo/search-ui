@@ -39,7 +39,7 @@ if (devConfig.externalsProjects) {
           return '';
         })
         .then(function () {
-          return fetch('http://localhost:8080/devserver/CoveoJsSearch.js')
+          return fetch('http://localhost:8080/js/CoveoJsSearch.js')
               .then(function (res) {
                 if (res && res.status === 200) {
                   return res.text();
@@ -48,7 +48,7 @@ if (devConfig.externalsProjects) {
               })
               .then(function (body) {
                 if (body) {
-                  return write(process.env.PWD + '/bin/js/CoveoJsSearch.js', body);
+                  return write(process.cwd() + '/bin/js/CoveoJsSearch.js', body);
                 }
                 return '';
               })
@@ -57,7 +57,7 @@ if (devConfig.externalsProjects) {
               })
         })
         .then(function () {
-          return link(process.env.PWD, path);
+          return link(process.cwd(), path, "dir");
         })
         .done(function () {
           console.log(`Link done for ${path}`.black.bgGreen);
