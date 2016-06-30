@@ -17,15 +17,15 @@ export var jQueryInstance: JQuery;
 if (jQueryIsDefined()) {
   initCoveoJQuery();
 } else {
-  //Adding a check in case jQuery was added after the jsSearch
-  document.addEventListener('DOMContentLoaded', ()=>{
-    if (jQueryIsDefined()){
+  // Adding a check in case jQuery was added after the jsSearch
+  document.addEventListener('DOMContentLoaded', () => {
+    if (jQueryIsDefined()) {
       initCoveoJQuery();
     }
   })
 }
 
-function initCoveoJQuery(){
+function initCoveoJQuery() {
   jQueryInstance = window['$'];
   window['$'].fn.coveo = function (...args: any[]) {
     var returnValue: any;
@@ -46,6 +46,6 @@ function initCoveoJQuery(){
   }
 }
 
-function jQueryIsDefined(): boolean{
+function jQueryIsDefined(): boolean {
   return window['$'] != undefined && window['$'].fn != undefined && window['$'].fn.jquery != undefined;
 }
