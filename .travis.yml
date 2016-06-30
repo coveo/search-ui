@@ -12,6 +12,7 @@ cache:
 before_script:
 - npm install -g gulp
 script:
+- npm run injectTag
 - npm run build
 - npm run minimize
 - npm run test
