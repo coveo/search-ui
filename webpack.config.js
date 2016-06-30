@@ -1,11 +1,17 @@
 const webpack = require('webpack');
 const minimize = process.argv.indexOf('--minimize') !== -1;
 const colors = require('colors');
-
+const failPlugin = require('webpack-fail-plugin');
 if (minimize) {
   console.log('Building minified version of the library'.bgGreen.red);
 } else {
   console.log('Building non minified version of the library'.bgGreen.red);
+}
+
+// Fail plugin will allow the webpack ts-loader to fail correctly when the TS compilation fails
+var plugins = [failPlugin];
+if (minimize) {
+  plugins.push(new webpack.optimize.UglifyJsPlugin());
 }
 
 
@@ -40,6 +46,6 @@ module.exports = {
       { test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'url?limit=8182' }
     ]
   },
-  plugins: minimize ? [new webpack.optimize.UglifyJsPlugin()] : [],
+  plugins: plugins,
   bail: true
 }
