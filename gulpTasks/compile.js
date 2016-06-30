@@ -5,13 +5,14 @@ const os = require("os");
 const isWindows = os.platform() === 'win32';
 
 gulp.task('compile', ['addEolDependencies'], shell.task([
-  // -p is a shortcut for --optimze-minimize --optimize-occurence-order
+
   // NODE_ENV=production sets an environement variable that will allow other tasks to know when we are building for production.
-  (isWindows ? 'set ' : '') + 'NODE_ENV=production', 'node node_modules/webpack/bin/webpack.js -p'
+  (isWindows ? 'set ' : '') + 'NODE_ENV=production', 'node node_modules/webpack/bin/webpack.js'
 ]))
 
 gulp.task('minimize', ['addEolDependencies'], shell.task([
-  'node node_modules/webpack/bin/webpack.js --minimize'
+  // -p is a shortcut for --optimze-minimize --optimize-occurence-order
+  'node node_modules/webpack/bin/webpack.js --p'
 ]))
 
 // This cause an issue when dep are bundled together : the lack of EOL makes it so
