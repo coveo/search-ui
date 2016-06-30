@@ -42,7 +42,6 @@ if (devConfig.externalsProjects) {
           return fetch('http://localhost:8080/js/CoveoJsSearch.js')
               .then(function (res) {
                 if (res && res.status === 200) {
-                  console.log("200 ok");
                   return res.text();
                 }
                 return '';
