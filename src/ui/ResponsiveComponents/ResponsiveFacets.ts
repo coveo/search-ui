@@ -66,8 +66,8 @@ export class ResponsiveFacets implements IResponsiveComponent {
   public changeToLargeMode() {
     this.enableFacetPreservePosition();
     this.dropdownHeaderContainer.detach();
-    this.dropdownContent.el.removeAttribute('style');
     this.detachDropdown();
+    this.dropdownContent.el.removeAttribute('style');
     this.restoreFacetsPosition();
   }
 
