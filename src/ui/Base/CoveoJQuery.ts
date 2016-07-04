@@ -14,7 +14,18 @@ export class CoveoJQuery {
 
 export var jQueryInstance: JQuery;
 
-if (window['$'] != undefined && window['$'].fn != undefined) {
+if (jQueryIsDefined()) {
+  initCoveoJQuery();
+} else {
+  // Adding a check in case jQuery was added after the jsSearch
+  document.addEventListener('DOMContentLoaded', () => {
+    if (jQueryIsDefined()) {
+      initCoveoJQuery();
+    }
+  })
+}
+
+function initCoveoJQuery() {
   jQueryInstance = window['$'];
   window['$'].fn.coveo = function (...args: any[]) {
     var returnValue: any;
@@ -33,4 +44,8 @@ if (window['$'] != undefined && window['$'].fn != undefined) {
     });
     return returnValue;
   }
+}
+
+function jQueryIsDefined(): boolean {
+  return window['$'] != undefined && window['$'].fn != undefined && window['$'].fn.jquery != undefined;
 }
