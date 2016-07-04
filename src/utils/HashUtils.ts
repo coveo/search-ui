@@ -166,7 +166,7 @@ export class HashUtils {
     var retArray = [];
     _.each(<_.Dictionary<any>>obj, (val, key?, obj?) => {
       var retValue = '';
-      retValue += '\'' + encodeURIComponent(key) + '\'' + ' : '
+      retValue += '"' + encodeURIComponent(key) + '"' + ':'
       if (_.isArray(val)) {
         retValue += HashUtils.encodeArray(val)
       } else if (_.isObject(val)) {
@@ -175,7 +175,7 @@ export class HashUtils {
         if (_.isNumber(val) || _.isBoolean(val)) {
           retValue += encodeURIComponent(val)
         } else {
-          retValue += '\'' + encodeURIComponent(val) + '\''
+          retValue += '"' + encodeURIComponent(val) + '"'
         }
       }
       retArray.push(retValue)
