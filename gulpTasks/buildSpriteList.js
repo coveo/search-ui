@@ -48,18 +48,21 @@ function generateCssClass(filePath, prefix) {
 
 function fileHandler(sprites, root, fileStats, prefix, next) {
   let fullPath = path.join(root, fileStats.name);
-  fs.readFile(fullPath, (err, imgBuffer) => {
-    if (err) throw err;
 
-    let cssClass = generateCssClass(fullPath, prefix);
-    let imgSize = sizeOf(imgBuffer);
-    sprites[cssClass] = {
-      img: imgBuffer.toString('base64'),
-      size: imgSize.width * imgSize.height,
-      name: cssClass.substring(1)
-    }
-    next();
-  })
+  //node-walk only supports filters for directories...
+  if (fileStats.name[0] !== '.') {
+    fs.readFile(fullPath, (err, imgBuffer) => {
+      if (err) throw err;
+      let cssClass = generateCssClass(fullPath, prefix);
+      let imgSize = sizeOf(imgBuffer);
+      sprites[cssClass] = {
+        img: imgBuffer.toString('base64'),
+        size: imgSize.width * imgSize.height,
+        name: cssClass.substring(1)
+      }
+      next();
+    })
+  }
 }
 
 function generateHtmlOutput(sprites) {
