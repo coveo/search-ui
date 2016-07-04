@@ -1,6 +1,7 @@
 .coveo-result-frame, .CoveoResult.coveo-result-frame {
   margin-left: 0;
-  display: block;
+  @include display(flex);
+  @include flex-direction(column);
   .coveo-icon {
     margin: 0 0 4px 0;
     float: none;
@@ -10,14 +11,13 @@
     }
   }
   .coveo-result-row {
-    width: 100%;
-    display: table;
-    table-layout: fixed;
+    @include display(flex);
+    @include flex-direction(row);
     margin: 0.25em 0;
   }
   .coveo-result-cell {
+    @include flex-grow(1);
     line-height: 1.25em;
-    display: table-cell;
     vertical-align: top;
     > * {
       vertical-align: middle;
