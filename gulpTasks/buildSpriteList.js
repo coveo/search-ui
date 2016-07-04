@@ -50,7 +50,7 @@ function fileHandler(sprites, root, fileStats, prefix, next) {
   let fullPath = path.join(root, fileStats.name);
 
   //node-walk only supports filters for directories...
-  if (fullPath.indexOf('.DS_Store') === -1) {
+  if (fileStats.name[0] !== '.') {
     fs.readFile(fullPath, (err, imgBuffer) => {
       if (err) throw err;
       let cssClass = generateCssClass(fullPath, prefix);
