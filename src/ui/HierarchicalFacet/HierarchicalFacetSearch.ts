@@ -24,44 +24,44 @@ export class HierarchicalFacetSearch extends FacetSearch {
   }
 
   protected selectAllValuesMatchingSearch() {
-      this.facet.showWaitingAnimation();
+    this.facet.showWaitingAnimation();
 
-      var searchParameters = new FacetSearchParameters(this.facet);
-      searchParameters.nbResults = 1000;
-      searchParameters.setValueToSearch(this.getValueInInputForFacetSearch())
-      this.facet.facetQueryController.search(searchParameters).then((fieldValues: IIndexFieldValue[]) => {
-        this.completelyDismissSearch();
-        Coveo.ModalBox.close(true);
-        var facetValues = this.getFacetValues(fieldValues);
-        this.facet.processFacetSearchAllResultsSelected(facetValues);
-      });
+    var searchParameters = new FacetSearchParameters(this.facet);
+    searchParameters.nbResults = 1000;
+    searchParameters.setValueToSearch(this.getValueInInputForFacetSearch())
+    this.facet.facetQueryController.search(searchParameters).then((fieldValues: IIndexFieldValue[]) => {
       this.completelyDismissSearch();
-    }
+      Coveo.ModalBox.close(true);
+      var facetValues = this.getFacetValues(fieldValues);
+      this.facet.processFacetSearchAllResultsSelected(facetValues);
+    });
+    this.completelyDismissSearch();
+  }
 
-    private getFacetValues(fieldValues: IIndexFieldValue[]): FacetValue[]{
-      var values = [];
-      _.each(fieldValues, (fieldValue) => {
-        var hierarchy = this.facet.getValueFromHierarchy(fieldValue.value);
-        values.push(this.createFacetValuesFromHierarchy(hierarchy));
-      })
-      return _.flatten(values);
-    }
+  private getFacetValues(fieldValues: IIndexFieldValue[]): FacetValue[] {
+    var values = [];
+    _.each(fieldValues, (fieldValue) => {
+      var hierarchy = this.facet.getValueFromHierarchy(fieldValue.value);
+      values.push(this.createFacetValuesFromHierarchy(hierarchy));
+    })
+    return _.flatten(values);
+  }
 
-    private createFacetValuesFromHierarchy(hierarchy: IValueHierarchy): FacetValue[]{
-      var values = [];
-      var fieldValue = hierarchy.facetValue.value;
-      var facetValue = this.facet.values.get(fieldValue);
-      if (!Utils.exists(facetValue)) {
-        facetValue = FacetValue.create(fieldValue);
-      }
-      facetValue.selected = true;
-      facetValue.excluded = false;
-      values.push(facetValue);
-      var childs = hierarchy.childs;
-      _.each(childs, (child)=>{
-        var childHierarchy = this.facet.getValueFromHierarchy(child.facetValue.value);
-        values.push(this.createFacetValuesFromHierarchy(childHierarchy));
-      })
-      return values;
+  private createFacetValuesFromHierarchy(hierarchy: IValueHierarchy): FacetValue[] {
+    var values = [];
+    var fieldValue = hierarchy.facetValue.value;
+    var facetValue = this.facet.values.get(fieldValue);
+    if (!Utils.exists(facetValue)) {
+      facetValue = FacetValue.create(fieldValue);
     }
+    facetValue.selected = true;
+    facetValue.excluded = false;
+    values.push(facetValue);
+    var childs = hierarchy.childs;
+    _.each(childs, (child) => {
+      var childHierarchy = this.facet.getValueFromHierarchy(child.facetValue.value);
+      values.push(this.createFacetValuesFromHierarchy(childHierarchy));
+    })
+    return values;
+  }
 }

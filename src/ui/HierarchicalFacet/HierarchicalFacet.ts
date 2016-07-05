@@ -136,8 +136,8 @@ export class HierarchicalFacet extends Facet {
     super(element, options, bindings, HierarchicalFacet.ID);
     this.options = ComponentOptions.initComponentOptions(element, HierarchicalFacet, this.options);
     this.numberOfValuesToShow = this.originalNumberOfValuesToShow = (this.options.numberOfValues || 5);
-    this.numberOfValues = 15
-    this.options.injectionDepth = 10
+    this.numberOfValues = Math.max(this.options.numberOfValues, 10000);
+    this.options.injectionDepth = Math.max(this.options.injectionDepth, 10000);
     this.logger.info('Hierarchy facet : Set number of values very high in order to build hierarchy', this.numberOfValues, this);
     this.logger.info('Hierarchy facet : Set injection depth very high in order to build hierarchy', this.options.injectionDepth);
   }
