@@ -1,10 +1,9 @@
-interface Window {
-  Event: any;
-  CustomEvent: any; 
-}
 
+//CustomEvent polyfill from MDN
+//https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent#Polyfill
 export function customEventPolyfill() {
-  if (typeof window.CustomEvent === 'function') {
+  //window.CustomEvent is missing from the definitions
+  if (typeof (<any>window).CustomEvent === 'function') {
     return;
   }
 
@@ -15,7 +14,8 @@ export function customEventPolyfill() {
     return customEvent;
   }
 
-  CustomEvent.prototype = window.Event.prototype;
+  //window.Event is specific to IE
+  CustomEvent.prototype = (<any>window).Event.prototype;
 
-  window.CustomEvent = CustomEvent;
+  (<any>window).CustomEvent = CustomEvent;
 }
