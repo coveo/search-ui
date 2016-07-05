@@ -141,7 +141,7 @@ export class FieldAddon {
         .map((field: string) => {
           return {
             index: field.toLowerCase().indexOf(fieldNameLC),
-            field: withAt ? '@' + field : field
+            field: withAt ? field : '@' + field
           };
         })
         .filter((field) => {

@@ -1,7 +1,11 @@
 import {defaultLanguage} from './strings/DefaultLanguage';
 defaultLanguage();
+export {setLanguageAfterPageLoaded} from './strings/DefaultLanguage';
 import {shim} from './misc/PromisesShim';
 shim();
+import {customEventPolyfill} from './misc/CustomEventPolyfill';
+customEventPolyfill();
+
 // MISC
 export {version} from './misc/Version';
 export {Assert} from './misc/Assert';
@@ -169,8 +173,11 @@ export {CurrentTab} from './ui/CurrentTab/CurrentTab';
 export {QueryboxQueryParameters} from './ui/Querybox/QueryboxQueryParameters';
 export {ImageResultList} from './ui/ImageResultList/ImageResultList';
 export {CoveoJQuery} from './ui/Base/CoveoJQuery';
+export {jQueryInstance as $} from './ui/Base/CoveoJQuery';
 export {FollowItem} from './ui/SearchAlerts/FollowItem';
-export {SearchAlertsMessage} from './ui/SearchAlerts/SearchAlertsMessage';
 export {SearchAlerts} from './ui/SearchAlerts/SearchAlerts';
+export {SearchAlertsMessage} from './ui/SearchAlerts/SearchAlertsMessage';
 export {Text} from './ui/Text/Text';
 export {FoldingForThread} from './ui/Folding/FoldingForThread';
+export {ResponsiveFacets} from './ui/ResponsiveComponents/ResponsiveFacets';
+export {IResponsiveComponent, ResponsiveComponentsManager} from './ui/ResponsiveComponents/ResponsiveComponentsManager'
