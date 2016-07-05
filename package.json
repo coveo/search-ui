@@ -1,12 +1,16 @@
 {
   "name": "coveo-search-ui",
-  "version": "0.0.22",
+  "version": "0.0.31",
   "description": "Coveo JavaScript Search Framework",
-  "main": "coveo.search.js",
+  "main": ".bin/js/CoveoJsSearch.js",
   "scripts": {
     "test": "gulp buildTest && node_modules/karma/bin/karma start",
     "build": "gulp",
-    "doc": "gulp doc"
+    "minimize": "node node_modules/webpack/bin/webpack.js --minimize",
+    "doc": "gulp doc",
+    "injectTag": "gulp injectTag",
+    "heroku-postbuild": "npm run build",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -41,8 +45,12 @@
     "typings"
   ],
   "homepage": "https://github.com/coveo/coveo.search.js#readme",
+  "engines": {
+    "node": "4.2.2"
+  },
   "devDependencies": {
     "cheerio": "^0.20.0",
+    "colors": "^1.1.2",
     "css-loader": "^0.23.1",
     "dts-generator": "^1.7.0",
     "event-stream": "^3.3.2",
@@ -50,16 +58,19 @@
     "expose-loader": "^0.7.1",
     "express": "^4.13.4",
     "file-loader": "^0.8.5",
+    "fs-extra": "^0.30.0",
     "glob": "^7.0.3",
     "globals-loader": "0.0.3",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
+    "gulp-eol": "^0.1.2",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
     "gulp-rimraf": "^0.2.0",
     "gulp-sass": "2.0.4",
     "gulp-shell": "^0.5.2",
     "gulp-tsc": "^1.1.5",
+    "image-size": "^0.5.0",
     "imports-loader": "^0.6.5",
     "jasmine": "^2.4.1",
     "jasmine-core": "^2.4.1",
@@ -70,6 +81,7 @@
     "karma-jasmine": "^1.0.2",
     "karma-phantomjs-launcher": "^1.0.0",
     "merge-stream": "^1.0.0",
+    "node-fetch": "^1.5.3",
     "node-sass": "^3.7.0",
     "phantomjs-prebuilt": "^2.1.7",
     "png-sprite": "^0.1.1",
@@ -85,11 +97,14 @@
     "tsconfig-glob": "^0.4.3",
     "typedoc": "https://github.com/coveord/typedoc/tarball/master",
     "url-loader": "^0.5.7",
+    "walk": "^2.3.9",
     "webpack": "^1.13.0",
-    "webpack-dev-server": "^1.14.1"
+    "webpack-dev-server": "^1.14.1",
+    "webpack-fail-plugin": "^1.0.4",
+    "yargs": "^4.7.1"
   },
   "dependencies": {
-    "coveomagicbox": "^1.0.5",
+    "coveomagicbox": "1.0.9",
     "d3": "^3.5.17",
     "es6-promise": "^3.1.2",
     "modal-box": "1.0.6",

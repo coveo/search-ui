@@ -54,17 +54,23 @@ function dictObjectAsString(json, language) {
   return dictAsString;
 }
 
+function bindPrototypeOnNativeStringOnPageReady(language) {
+  var pageReadyString = 'document.addEventListener(\'DOMContentLoaded\', function(event){\n';
+  pageReadyString += setPrototypeOnNativeString(language);
+  pageReadyString += '})';
+  return pageReadyString;
+}
+
 function setPrototypeOnNativeString(language) {
   // Be careful not to override existing localizations, since we sometimes load many
   // separate string files for the same language (ex: interface editor).
   var languageWithQuotes = JSON.stringify(language);
-  var nativeStringPrototype = 'document.addEventListener(\'DOMContentLoaded\', function(event){';
-  nativeStringPrototype += '  var locales = String["locales"] || (String["locales"] = {});\n';
+  var nativeStringPrototype = '  var locales = String["locales"] || (String["locales"] = {});\n';
   nativeStringPrototype += '  locales[' + languageWithQuotes + '] = merge(locales[' + languageWithQuotes + '], dict);\n';
   nativeStringPrototype += '  String["toLocaleString"].call(this, { ' + languageWithQuotes + ': dict });\n';
   nativeStringPrototype += '  String["locale"] = ' + languageWithQuotes + ';\n';
   nativeStringPrototype += '  String["defaultLocale"] = "en";\n';
-  nativeStringPrototype += '})';
+
   return nativeStringPrototype;
 }
 
@@ -105,8 +111,12 @@ function Dictionary(from, options) {
     var code = mergeFunctionAsString;
     code += dictObjectAsString(this.json, language);
     code += 'export function defaultLanguage() {\n';
+    code += bindPrototypeOnNativeStringOnPageReady(language);
+    code += '}\n';
+    code += 'export function setLanguageAfterPageLoaded() {\n';
     code += setPrototypeOnNativeString(language);
-    code += '}'
+    code += '}\n';
+
     utilities.ensureDirectory(path.dirname(to));
     fs.writeFileSync(to, code);
   }
@@ -115,7 +125,7 @@ function Dictionary(from, options) {
     var code = '(function() {\n';
     code += mergeFunctionAsString;
     code += dictObjectAsString(this.json, language);
-    code += setPrototypeOnNativeString(language);
+    code += bindPrototypeOnNativeStringOnPageReady(language);
     code += '})();\n';
 
     utilities.ensureDirectory(path.dirname(to));

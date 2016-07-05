@@ -9,6 +9,7 @@ import {TemplateList} from '../Templates/TemplateList';
 import {UnderscoreTemplate} from '../Templates/UnderscoreTemplate';
 import {HtmlTemplate} from '../Templates/HtmlTemplate';
 import {Utils} from '../../utils/Utils';
+import {l} from '../../strings/Strings';
 import _ = require('underscore');
 
 export interface IComponentOptionsLoadOption<T> {
@@ -288,6 +289,8 @@ export class ComponentOptions {
       if (value != null) {
         if (optionDefinition.type == ComponentOptionsType.OBJECT && values[name] != null) {
           values[name] = _.extend(values[name], value);
+        } else if (optionDefinition.type == ComponentOptionsType.LOCALIZED_STRING) {
+          values[name] = l(value);
         } else {
           values[name] = value;
         }
@@ -465,7 +468,7 @@ export class ComponentOptions {
   static findParentScrolling(element: HTMLElement): HTMLElement {
     while (<Node>element != document && element != null) {
       if (ComponentOptions.isElementScrollable(element)) {
-        if (element.tagName == 'body') {
+        if (element.tagName.toLowerCase() !== 'body') {
           return element;
         }
         return <any>window;
