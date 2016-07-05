@@ -6,6 +6,7 @@ import {Facet} from '../Facet/Facet';
 import {ResponsiveFacets} from './ResponsiveFacets';
 import {IComponentDefinition} from '../Base/Component';
 import _ = require('underscore');
+import {SearchInterface} from '../SearchInterface/SearchInterface';
 
 export interface IResponsiveComponentConstructor {
   new (root: Dom, ID: string): IResponsiveComponent;
@@ -37,23 +38,26 @@ export class ResponsiveComponentsManager {
 
   // Register takes a class and will instantiate it after framework initialization has completed.
   public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component: IComponentDefinition) {
+    var searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, true);
+    if (searchInterface instanceof SearchInterface && searchInterface.options.enableAutomaticResponsiveMode) {
+      root.on(InitializationEvents.afterInitialization, () => {
+        let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el == componentManager.coveoRoot.el);
+        if (responsiveComponentsManager) {
+          responsiveComponentsManager.register(responsiveComponentConstructor, root, ID, component);
+        } else {
+          responsiveComponentsManager = new ResponsiveComponentsManager(root);
+          this.componentManagers.push(responsiveComponentsManager);
+          responsiveComponentsManager.register(responsiveComponentConstructor, root, ID, component);
+        }
 
-    root.on(InitializationEvents.afterInitialization, () => {
-      let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el == componentManager.coveoRoot.el);
-      if (responsiveComponentsManager) {
-        responsiveComponentsManager.register(responsiveComponentConstructor, root, ID, component);
-      } else {
-        responsiveComponentsManager = new ResponsiveComponentsManager(root);
-        this.componentManagers.push(responsiveComponentsManager);
-        responsiveComponentsManager.register(responsiveComponentConstructor, root, ID, component);
-      }
+        this.remainingComponentInitializations--;
+        if (this.remainingComponentInitializations == 0) {
+          this.resizeAllComponentsManager();
+        }
+      });
+      this.remainingComponentInitializations++;
+    }
 
-      this.remainingComponentInitializations--;
-      if (this.remainingComponentInitializations == 0) {
-        this.resizeAllComponentsManager();
-      }
-    });
-    this.remainingComponentInitializations++;
   }
 
   private static resizeAllComponentsManager() {
