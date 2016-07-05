@@ -135,10 +135,13 @@ export interface IAnalyticsCaseDetachMeta extends IAnalyticsCaseAttachMeta {
 
 export interface IAnalyticsCaseCreationInputChangeMeta {
   inputTitle: string;
+  input: string;
+  value: string;
 }
 
 export interface IAnalyticsCaseCreationDeflectionMeta {
   hasClicks: boolean;
+  values: { [field: string]: string };
 }
 
 export interface IAnalyticsPagerMeta {
