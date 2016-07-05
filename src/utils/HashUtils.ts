@@ -154,34 +154,31 @@ export class HashUtils {
   }
 
   public static encodeArray(array: string[]): string {
-    var arrayReturn = [];
-    _.each(array, (value) => {
-      arrayReturn.push(encodeURIComponent(value));
+    var arrayReturn = _.map(array, (value) => {
+      return encodeURIComponent(value);
     });
     return HashUtils.DELIMITER.arrayStart + arrayReturn.join(',') + HashUtils.DELIMITER.arrayEnd;
   }
 
   public static encodeObject(obj: Object): string {
-    var ret = HashUtils.DELIMITER.objectStart;
-    var retArray = [];
-    _.each(<_.Dictionary<any>>obj, (val, key?, obj?) => {
-      var retValue = '';
-      retValue += '\'' + encodeURIComponent(key) + '\'' + ' : '
-      if (_.isArray(val)) {
-        retValue += HashUtils.encodeArray(val)
-      } else if (_.isObject(val)) {
-        retValue += HashUtils.encodeObject(val);
-      } else {
-        if (_.isNumber(val) || _.isBoolean(val)) {
-          retValue += encodeURIComponent(val)
-        } else {
-          retValue += '\'' + encodeURIComponent(val) + '\''
-        }
-      }
-      retArray.push(retValue)
+    var retArray = _.map(<_.Dictionary<any>>obj, (val, key?, obj?) => {
+      return `"${encodeURIComponent(key)}":${this.encodeValue(val)}`;
     })
-    ret += retArray.join(' , ');
-    return ret + HashUtils.DELIMITER.objectEnd;
+    return HashUtils.DELIMITER.objectStart + retArray.join(' , ') + HashUtils.DELIMITER.objectEnd;
+  }
+
+  private static encodeValue(val: any) {
+    var encodedValue = '';
+    if (_.isArray(val)) {
+      encodedValue = HashUtils.encodeArray(val);
+    } else if (_.isObject(val)) {
+      encodedValue = HashUtils.encodeObject(val);
+    } else if (_.isNumber(val) || _.isBoolean(val)) {
+      encodedValue = encodeURIComponent(val);
+    } else {
+      encodedValue = '"' + encodeURIComponent(val) + '"';
+    }
+    return encodedValue;
   }
 
   private static decodeObject(obj: string): Object {

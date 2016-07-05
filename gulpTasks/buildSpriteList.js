@@ -60,9 +60,9 @@ function fileHandler(sprites, root, fileStats, prefix, next) {
         size: imgSize.width * imgSize.height,
         name: cssClass.substring(1)
       }
-      next();
     })
   }
+  next();
 }
 
 function generateHtmlOutput(sprites) {
