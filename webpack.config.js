@@ -36,6 +36,9 @@ module.exports = {
   devtool: 'source-map',
   module: {
     loaders: [
+      { test: /\.ts$/, loader: 'ts-loader' },
+      { test: /\.scss$/, loaders: ['style?insertAt=bottom', 'css?sourceMap', 'resolve-url', 'sass?sourceMap'] },
+      { test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'url?limit=8182' }
     ]
   },
   plugins: plugins,
