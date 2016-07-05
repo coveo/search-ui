@@ -173,7 +173,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   private isOverflowing(el: HTMLElement) {
-    return el.clientWidth < el.scrollWidth || el.clientHeight < el.scrollHeight;
+    return el.clientWidth < el.scrollWidth;
   }
 
   private couldNotFindSearchBoxError() {
