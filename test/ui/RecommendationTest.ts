@@ -70,6 +70,12 @@ module Coveo {
         expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
       })
 
+      it('should send the recommendation id', () => {
+        test.cmp.options.id = 'test';
+        let simulation = Simulate.query(test.env);
+        expect(simulation.queryBuilder.recommendation).toEqual('test');
+      })
+
       it('should modify the triggered query to match the mainInterface query', () => {
         let queryBuilder: QueryBuilder = new QueryBuilder();
         let query = 'test';
