@@ -1,4 +1,12 @@
 {
+  "MobileChatter": {
+    "priority": 2,
+    "value": "(raw.objecttype =='FeedItem' || raw.objecttype == 'FeedComment') && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "Chatter": {
+    "priority": 1,
+    "value": "raw.objecttype =='FeedItem' || raw.objecttype == 'FeedComment'"
+  },
   "MobileDropbox": {
     "priority": 1,
     "value": "raw.connectortype == 'DropboxCrawler' && Coveo.DeviceUtils.isSmallScreenWidth()"
