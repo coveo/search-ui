@@ -96,6 +96,7 @@
 /// <reference path="ui/FollowItemTest.ts" />
 /// <reference path="ui/SearchAlertsMessageTest.ts" />
 /// <reference path="ui/PendingSearchAsYouTypeSearchEventTest.ts" />
+/// <reference path="ui/ChatterLikedByTest.ts" />
 
 Coveo.Logger.disable();
 

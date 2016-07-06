@@ -8,7 +8,7 @@ import {$$} from '../../utils/Dom';
 import {l} from '../../strings/Strings';
 import {ChatterUtils} from '../../utils/ChatterUtils';
 
-export interface IChatterLikedByOption {
+export interface IChatterLikedByOptions {
   nbLikesToRender: number;
   openInPrimaryTab: boolean;
   openInSubTab: boolean;
@@ -17,7 +17,7 @@ export interface IChatterLikedByOption {
 export class ChatterLikedBy extends Component {
   static ID = 'ChatterLikedBy';
 
-  static options: IChatterLikedByOption = {
+  static options: IChatterLikedByOptions = {
     nbLikesToRender: ComponentOptions.buildNumberOption({ defaultValue: 2, min: 0 }),
     openInPrimaryTab: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     openInSubTab: ComponentOptions.buildBooleanOption({ defaultValue: true })
@@ -30,7 +30,7 @@ export class ChatterLikedBy extends Component {
     'sffeeditemid'
   ]
 
-  constructor(public element: HTMLElement, public options?: IChatterLikedByOption, public bindings?: IComponentBindings, public result?: IQueryResult) {
+  constructor(public element: HTMLElement, public options?: IChatterLikedByOptions, public bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, ChatterLikedBy.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ChatterLikedBy, options);
 

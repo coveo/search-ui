@@ -183,3 +183,4 @@ export {ChatterLikedBy} from './ui/ChatterLikedBy/ChatterLikedBy';
 export {ChatterPostAttachment} from './ui/ChatterPostAttachment/ChatterPostAttachment';
 export {ChatterPostedBy} from './ui/ChatterPostedBy/ChatterPostedBy';
 export {ChatterTopic} from './ui/ChatterTopic/ChatterTopic';
+export {ChatterUtils} from './utils/ChatterUtils';
