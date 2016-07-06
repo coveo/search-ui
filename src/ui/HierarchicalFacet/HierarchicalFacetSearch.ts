@@ -1,12 +1,11 @@
 /// <reference path="HierarchicalFacet.ts" />
 
 import {FacetSearch} from '../Facet/FacetSearch';
-import {HierarchicalFacet} from './HierarchicalFacet';
+import {HierarchicalFacet, IValueHierarchy} from './HierarchicalFacet';
 import {IFacetSearchValuesListKlass} from '../Facet/FacetSearchValuesList'
 import {FacetSearchParameters} from '../Facet/FacetSearchParameters';
 import {IIndexFieldValue} from '../../rest/FieldValue';
 import {FacetValue} from '../Facet/FacetValues';
-import {IValueHierarchy} from './HierarchicalFacet';
 import {Utils} from '../../utils/Utils';
 
 export class HierarchicalFacetSearch extends FacetSearch {
@@ -27,7 +26,7 @@ export class HierarchicalFacetSearch extends FacetSearch {
     this.facet.showWaitingAnimation();
 
     var searchParameters = new FacetSearchParameters(this.facet);
-    searchParameters.nbResults = 1000;
+    searchParameters.nbResults = this.facet.numberOfValues;
     searchParameters.setValueToSearch(this.getValueInInputForFacetSearch())
     this.facet.facetQueryController.search(searchParameters).then((fieldValues: IIndexFieldValue[]) => {
       this.completelyDismissSearch();
