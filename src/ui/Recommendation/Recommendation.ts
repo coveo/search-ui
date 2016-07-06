@@ -69,6 +69,7 @@ export class Recommendation extends SearchInterface {
 
     /**
      * Specifies which options from the main {@link QueryBuilder} to use in the triggered query.
+     * Ex: <code data-options-to-use="expression, advancedExpression"></code> would add the expression and the advanced expression parts from the main query in the triggered query.
      * The default value is undefined
      */
     optionsToUse: ComponentOptions.buildListOption(),
