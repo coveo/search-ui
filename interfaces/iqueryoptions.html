@@ -78,22 +78,23 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iqueryoptions.html#beforeexecutequery" class="tsd-kind-icon">before<wbr>Execute<wbr>Query</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iqueryoptions.html#cancel" class="tsd-kind-icon">cancel</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iqueryoptions.html#ignorewarningsearchevent" class="tsd-kind-icon">ignore<wbr>Warning<wbr>Search<wbr>Event</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iqueryoptions.html#origin" class="tsd-kind-icon">origin</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iqueryoptions.html#searchasyoutype" class="tsd-kind-icon">search<wbr>AsYou<wbr>Type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="iqueryoptions.html#beforeexecutequery" class="tsd-kind-icon">before<wbr>Execute<wbr>Query</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="iqueryoptions.html#cancel" class="tsd-kind-icon">cancel</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="iqueryoptions.html#ignorewarningsearchevent" class="tsd-kind-icon">ignore<wbr>Warning<wbr>Search<wbr>Event</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="iqueryoptions.html#loginactionshistory" class="tsd-kind-icon">log<wbr>InActions<wbr>History</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="iqueryoptions.html#origin" class="tsd-kind-icon">origin</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="iqueryoptions.html#searchasyoutype" class="tsd-kind-icon">search<wbr>AsYou<wbr>Type</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
 					<a name="beforeexecutequery" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> before<wbr>Execute<wbr>Query</h3>
 					<div class="tsd-signature tsd-kind-icon">before<wbr>Execute<wbr>Query<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
@@ -125,7 +126,7 @@
 						</ul>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
 					<a name="cancel" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> cancel</h3>
 					<div class="tsd-signature tsd-kind-icon">cancel<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
@@ -142,7 +143,7 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
 					<a name="ignorewarningsearchevent" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> ignore<wbr>Warning<wbr>Search<wbr>Event</h3>
 					<div class="tsd-signature tsd-kind-icon">ignore<wbr>Warning<wbr>Search<wbr>Event<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
@@ -160,7 +161,27 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+					<a name="loginactionshistory" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> log<wbr>InActions<wbr>History</h3>
+					<div class="tsd-signature tsd-kind-icon">log<wbr>InActions<wbr>History<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/controllers/QueryController.ts#L55">src/controllers/QueryController.ts
+							:55</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether or not to log the query in the user actions history when using the page view script: <a href="https://github.com/coveo/coveo.analytics.js">https://github.com/coveo/coveo.analytics.js</a>.
+								Only the &#39;q&#39; part of the query will be logged.
+								This option is useful, because it prevents the query to be logged twice when a <a href="../classes/recommendation.html">Recommendation</a> component is present.
+							It also makes sure that only relevant queries are logged. For exemple, the &#39;empty&#39; interface load query isn&#39;t logged.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
 					<a name="origin" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> origin</h3>
 					<div class="tsd-signature tsd-kind-icon">origin<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
@@ -177,7 +198,7 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
 					<a name="searchasyoutype" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> search<wbr>AsYou<wbr>Type</h3>
 					<div class="tsd-signature tsd-kind-icon">search<wbr>AsYou<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
@@ -209,22 +230,25 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface">
+					<li class="current tsd-kind-interface tsd-is-external">
 						<a href="iqueryoptions.html" class="tsd-kind-icon">IQuery<wbr>Options</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
 								<a href="iqueryoptions.html#beforeexecutequery" class="tsd-kind-icon">before<wbr>Execute<wbr>Query</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
 								<a href="iqueryoptions.html#cancel" class="tsd-kind-icon">cancel</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
 								<a href="iqueryoptions.html#ignorewarningsearchevent" class="tsd-kind-icon">ignore<wbr>Warning<wbr>Search<wbr>Event</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+								<a href="iqueryoptions.html#loginactionshistory" class="tsd-kind-icon">log<wbr>InActions<wbr>History</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
 								<a href="iqueryoptions.html#origin" class="tsd-kind-icon">origin</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
 								<a href="iqueryoptions.html#searchasyoutype" class="tsd-kind-icon">search<wbr>AsYou<wbr>Type</a>
 							</li>
 						</ul>
