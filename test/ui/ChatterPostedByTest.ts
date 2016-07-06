@@ -1,10 +1,10 @@
 /// <reference path="../Test.ts" />
 module Coveo {
-  describe('ChatterPostedBy', ()=> {
+  describe('ChatterPostedBy', () => {
     let test: Mock.IBasicComponentSetup<ChatterPostedBy>;
 
-    it('should behave correctly with no parameters', ()=> {
-      let result = FakeResults.createFakeFeedItemResult("token");
+    it('should behave correctly with no parameters', () => {
+      let result = FakeResults.createFakeFeedItemResult('token');
       result.raw.sfparentid = undefined;
       result.raw.sfparentname = undefined;
       test = Mock.optionsResultComponentSetup<ChatterPostedBy, IChatterPostedByOption>(ChatterPostedBy, <IChatterPostedByOption>{}, result);
@@ -13,7 +13,7 @@ module Coveo {
       expect($$($$(test.cmp.element).find('a')).text()).toContain(result.raw.sfcreatedby);
     })
 
-    it('should behave correctly with no parameters but with a parent relationship', ()=> {
+    it('should behave correctly with no parameters but with a parent relationship', () => {
       let result = FakeResults.createFakeFeedItemResult('token');
       test = Mock.optionsResultComponentSetup<ChatterPostedBy, IChatterPostedByOption>(ChatterPostedBy, <IChatterPostedByOption>{}, result);
       expect($$($$(test.cmp.element).findAll('span')[1]).text()).toContain(` ${l('On').toLowerCase()} `);
@@ -23,7 +23,7 @@ module Coveo {
 
     it('should behave correctly with the enablePostedOn parameter with parent relationship', () => {
       let result = FakeResults.createFakeFeedItemResult('token');
-      test = Mock.optionsResultComponentSetup<ChatterPostedBy, IChatterPostedByOption>(ChatterPostedBy, <IChatterPostedByOption>{enablePostedOn: false}, result);
+      test = Mock.optionsResultComponentSetup<ChatterPostedBy, IChatterPostedByOption>(ChatterPostedBy, <IChatterPostedByOption>{ enablePostedOn: false }, result);
 
       expect($$(test.cmp.element).findAll('span')[0]).toBeDefined();
       expect($$(test.cmp.element).findAll('a')[1]).toBeUndefined();

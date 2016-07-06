@@ -37,13 +37,13 @@ module Coveo {
 
     it('should behave correctly with number of likes greater than max like to show', () => {
       let result = FakeResults.createFakeFeedItemResult('token', 3);
-      test = Mock.optionsResultComponentSetup<ChatterLikedBy, IChatterLikedByOptions>(ChatterLikedBy, <IChatterLikedByOptions>{nbLikesToRender: 2}, result);
+      test = Mock.optionsResultComponentSetup<ChatterLikedBy, IChatterLikedByOptions>(ChatterLikedBy, <IChatterLikedByOptions>{ nbLikesToRender: 2 }, result);
       expect($$($$(test.cmp.element).findAll('a')[2]).text()).toContain(`${l('Others', (result.raw.sflikecount - 2).toString(), result.raw.sflikecount - 2)}`);
     });
 
     it('Test behaviour when nbLikeToRender is set to 0 with multiple likes', () => {
       let result = FakeResults.createFakeFeedItemResult('token', 3);
-      test = Mock.optionsResultComponentSetup<ChatterLikedBy, IChatterLikedByOptions>(ChatterLikedBy, <IChatterLikedByOptions>{nbLikesToRender: 0}, result);
+      test = Mock.optionsResultComponentSetup<ChatterLikedBy, IChatterLikedByOptions>(ChatterLikedBy, <IChatterLikedByOptions>{ nbLikesToRender: 0 }, result);
       expect($$(test.cmp.element).findAll('a')[0].getAttribute('href')).toEqual(ChatterUtils.buildURI(result.clickUri, result.raw.sffeeditemid, 'LikeId1'));
       expect($$($$(test.cmp.element).findAll('a')[0]).text()).toEqual('LikeName1');
       expect($$($$(test.cmp.element).findAll('span')[1]).text()).toContain(', ');
