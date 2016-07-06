@@ -76,19 +76,6 @@ module Coveo {
         expect(simulation.queryBuilder.recommendation).toEqual('test');
       })
 
-      it('should modify the triggered query to match the mainInterface query', () => {
-        let queryBuilder: QueryBuilder = new QueryBuilder();
-        let query = 'test';
-        queryBuilder.expression.add(query);
-
-        Simulate.query(mainSearchInterface.env, {
-          queryBuilder: queryBuilder
-        });
-
-        let simulation = Simulate.query(test.env);
-        expect(simulation.queryBuilder.expression.build()).toEqual(query);
-      })
-
       it('should only copy the optionsToUse', () => {
 
         _.extend(options, { optionsToUse: ['expression'] });
