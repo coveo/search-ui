@@ -69,9 +69,9 @@ export class Recommendation extends SearchInterface {
 
     /**
      * Specifies which options from the main {@link QueryBuilder} to use in the triggered query.
-     * The default value is ["expression", "advancedExpression", "constantExpression", "disjunctionExpression"]
+     * The default value is undefined
      */
-    optionsToUse: ComponentOptions.buildListOption({ defaultValue: ['expression', 'advancedExpression', 'constantExpression', 'disjunctionExpression'] }),
+    optionsToUse: ComponentOptions.buildListOption(),
 
     /**
      * Specifies whether or not to send the actions history along with the triggered query.
