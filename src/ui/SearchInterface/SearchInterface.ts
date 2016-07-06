@@ -28,6 +28,7 @@ declare let jstz;
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
+  enableAutomaticResponsiveMode?: boolean;
   useLocalStorageForHistory?: boolean;
   resultsPerPage?: number;
   excerptLength?: number;
@@ -65,9 +66,15 @@ export class SearchInterface extends RootComponent {
      * Specifies whether your search interface allows users to navigate in the search history using the browser back/forward buttons.<br/>
      * When enabled, the search interface saves the state of the current query in the hash portion of the URL.<br/>
      * For example #q=foobar.<br/>
-     * The default value is false.
+     * The default value is `false`.
      */
     enableHistory: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    /**
+     * Specifies wether the UI should use an automatic responsive mode (eg : The tab(s) and facet(s) being placed automatically under the search box)<br/>
+     * This can be disabled for design reasons, if it does not fit with the implementation needs.<br/>
+     * The default value is `true`
+     */
+    enableAutomaticResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies that you wish to use the local storage of the browser to store the state of the interface.<br/>
      * This can be used for very specific purpose, and only if you know what you are doing.<br/>
