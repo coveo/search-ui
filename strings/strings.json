@@ -5050,5 +5050,9 @@
   "BoxCreateArticle": {
     "en": "Create Article",
     "fr": "Créer un Article"
+  },
+  "Facets": {
+    "en": "Facets",
+    "fr": "Facettes"
   }
 }

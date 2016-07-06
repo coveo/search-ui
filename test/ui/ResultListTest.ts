@@ -1,7 +1,7 @@
 /// <reference path="../Test.ts" />
 module Coveo {
   describe('ResultList', function () {
-    var test: Mock.IBasicComponentSetup<ResultList>;
+    let test: Mock.IBasicComponentSetup<ResultList>;
 
     beforeEach(function () {
       test = Mock.basicComponentSetup<ResultList>(ResultList);
@@ -12,34 +12,55 @@ module Coveo {
       test = null;
     })
 
+    it('should allow to return the currently displayed result', () => {
+      expect(ResultList.resultCurrentlyBeingRendered).toBeNull();
+      let data = FakeResults.createFakeResult();
+      test.cmp.buildResult(data);
+      expect(ResultList.resultCurrentlyBeingRendered).toBe(data);
+    })
+
+    it('should set currently displayed result to undefined when they are all rendered', () => {
+      let data = FakeResults.createFakeResults(13);
+      test.cmp.buildResults(data);
+      expect(ResultList.resultCurrentlyBeingRendered).toBeNull();
+    })
+
+    it('should reset currently displayed on new query', () => {
+      let data = FakeResults.createFakeResult();
+      test.cmp.buildResult(data);
+      expect(ResultList.resultCurrentlyBeingRendered).toBe(data);
+      Simulate.query(test.env);
+      expect(ResultList.resultCurrentlyBeingRendered).toBeNull();
+    })
+
     it('should allow to build a single result element', function () {
-      var data = FakeResults.createFakeResult();
-      var built = test.cmp.buildResult(data);
+      let data = FakeResults.createFakeResult();
+      let built = test.cmp.buildResult(data);
       expect(built).toBeDefined();
-      var rs = $$(built).find('.CoveoResultLink');
+      let rs = $$(built).find('.CoveoResultLink');
       expect($$(rs).text()).toBe(data.title);
     })
 
     it('should allow to build multiple results element', function () {
-      var data = FakeResults.createFakeResults(13);
-      var built = test.cmp.buildResults(data);
+      let data = FakeResults.createFakeResults(13);
+      let built = test.cmp.buildResults(data);
       expect(built.length).toBe(13);
-      var rs = $$(built[0]).find('.CoveoResultLink');
+      let rs = $$(built[0]).find('.CoveoResultLink');
       expect($$(rs).text()).toBe(data.results[0].title);
       rs = $$(built[12]).find('.CoveoResultLink');
       expect($$(rs).text()).toBe(data.results[12].title);
     })
 
     it('should allow to render results inside the result list', function () {
-      var data = FakeResults.createFakeResults(13);
+      let data = FakeResults.createFakeResults(13);
       test.cmp.renderResults(test.cmp.buildResults(data));
       expect($$(test.cmp.element).findAll('.CoveoResult').length).toBe(13);
     })
 
     it('should trigger result displayed event when rendering', function () {
-      var data = FakeResults.createFakeResults(6);
-      var spyResult = jasmine.createSpy('spyResult');
-      var spyResults = jasmine.createSpy('spyResults');
+      let data = FakeResults.createFakeResults(6);
+      let spyResult = jasmine.createSpy('spyResult');
+      let spyResults = jasmine.createSpy('spyResults');
       $$(test.cmp.element).on(ResultListEvents.newResultDisplayed, spyResult);
       $$(test.cmp.element).on(ResultListEvents.newResultsDisplayed, spyResults);
       test.cmp.renderResults(test.cmp.buildResults(data));
@@ -48,8 +69,8 @@ module Coveo {
     })
 
     it('should render itself correctly after a full query', function () {
-      var spyResult = jasmine.createSpy('spyResult');
-      var spyResults = jasmine.createSpy('spyResults');
+      let spyResult = jasmine.createSpy('spyResult');
+      let spyResults = jasmine.createSpy('spyResults');
       $$(test.cmp.element).on(ResultListEvents.newResultDisplayed, spyResult);
       $$(test.cmp.element).on(ResultListEvents.newResultsDisplayed, spyResults);
       Simulate.query(test.env);
@@ -76,7 +97,7 @@ module Coveo {
 
     describe('exposes options', function () {
       it('resultContainer allow to specify where to render results', function () {
-        var aNewContainer = document.createElement('div');
+        let aNewContainer = document.createElement('div');
         expect(aNewContainer.children.length).toBe(0);
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
           resultContainer: aNewContainer
@@ -86,8 +107,8 @@ module Coveo {
       })
 
       it('resultTemplate allow to specify a template manually', function () {
-        var tmpl: UnderscoreTemplate = Mock.mock<UnderscoreTemplate>(UnderscoreTemplate);
-        var asSpy = <any>tmpl;
+        let tmpl: UnderscoreTemplate = Mock.mock<UnderscoreTemplate>(UnderscoreTemplate);
+        let asSpy = <any>tmpl;
         asSpy.instantiateToElement.and.returnValue(document.createElement('div'));
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
           resultTemplate: tmpl
@@ -125,7 +146,7 @@ module Coveo {
       })
 
       it('waitAnimationContainer allow to specify where to display the animation', function () {
-        var aNewContainer = document.createElement('div');
+        let aNewContainer = document.createElement('div');
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
           waitAnimation: 'fade',
           waitAnimationContainer: aNewContainer
@@ -165,7 +186,7 @@ module Coveo {
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
           fieldsToInclude: ['@field1', '@field2', '@field3']
         })
-        var simulation = Simulate.query(test.env);
+        let simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.fieldsToInclude).toContain('field1');
         expect(simulation.queryBuilder.fieldsToInclude).toContain('field2');
         expect(simulation.queryBuilder.fieldsToInclude).toContain('field3');

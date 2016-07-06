@@ -22,6 +22,7 @@ export interface IRecommendationOptions extends ISearchInterfaceOptions {
   id?: string;
   linkSearchUid?: boolean;
   optionsToUse?: string[];
+  sendActionsHistory?: boolean;
 }
 
 /**
@@ -70,7 +71,15 @@ export class Recommendation extends SearchInterface {
      * Specifies which options from the main {@link QueryBuilder} to use in the triggered query.
      * The default value is ["expression", "advancedExpression", "constantExpression", "disjunctionExpression"]
      */
-    optionsToUse: ComponentOptions.buildListOption({ defaultValue: ['expression', 'advancedExpression', 'constantExpression', 'disjunctionExpression'] })
+    optionsToUse: ComponentOptions.buildListOption({ defaultValue: ['expression', 'advancedExpression', 'constantExpression', 'disjunctionExpression'] }),
+
+    /**
+     * Specifies whether or not to send the actions history along with the triggered query.
+     * Disabling this option means this component won't be able to get Reveal recommendations. 
+     * However, it could be useful to display side results in a search page.
+     * The default value is true
+     */
+    sendActionsHistory: ComponentOptions.buildBooleanOption({ defaultValue: true })
 
   };
 
@@ -106,7 +115,7 @@ export class Recommendation extends SearchInterface {
 
   private handleRecommendationBuildingQuery(data: IBuildingQueryEventArgs) {
     this.modifyQueryForRecommendation(data);
-    this.addUserContextInQuery(data);
+    this.addRecommendationInfoInQuery(data);
   }
 
   private handleRecommendationQuerySuccess(data: IQuerySuccessEventArgs) {
@@ -124,20 +133,23 @@ export class Recommendation extends SearchInterface {
     }
   }
 
-  private addUserContextInQuery(data: IBuildingQueryEventArgs) {
+  private addRecommendationInfoInQuery(data: IBuildingQueryEventArgs) {
     if (!_.isEmpty(this.options.userContext)) {
       data.queryBuilder.addContext(this.options.userContext);
     }
+    if (this.options.sendActionsHistory) {
+      data.queryBuilder.actionsHistory = this.getHistory();
+    }
 
-    data.queryBuilder.addContextValue('actions_history', JSON.stringify(this.getHistory()));
+    data.queryBuilder.recommendation = this.options.id;
   }
 
-  private getHistory() {
+  private getHistory(): string {
     if (typeof coveoanalytics != 'undefined') {
       var store = new coveoanalytics.history.HistoryStore();
-      return store.getHistory();
+      return JSON.stringify(store.getHistory());
     } else {
-      return [];
+      return '[]';
     }
   }
 

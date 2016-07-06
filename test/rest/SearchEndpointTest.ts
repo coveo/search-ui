@@ -56,12 +56,34 @@ module Coveo {
       })
     });
 
+    describe('with a search token argument', function () {
+      var ep: SearchEndpoint;
+
+      beforeEach(function () {
+        ep = new SearchEndpoint({
+          restUri: 'foo/rest/search',
+          accessToken: 'token'
+        })
+      });
+
+      afterEach(function () {
+        ep = null;
+      });
+
+      it('will add it in the query string', () => {
+        var fakeResult = FakeResults.createFakeResult();
+        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toBe(ep.getBaseUri() + '/html?access_token=token&uniqueId=' + fakeResult.uniqueId)
+      })
+
+    })
+
     describe('with a basic setup', function () {
       var ep: SearchEndpoint;
 
       beforeEach(function () {
         ep = new SearchEndpoint({
           restUri: 'foo/rest/search',
+          accessToken: 'token',
           queryStringArguments: {
             organizationId: 'myOrgId',
             potatoe: 'mashed'
@@ -477,6 +499,7 @@ module Coveo {
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseAlertsUri() + '/subscriptions?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
+          expect(jasmine.Ajax.requests.mostRecent().url).toContain('accessToken=token');
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
           expect(JSON.parse(jasmine.Ajax.requests.mostRecent().params).frequency).toBe('weekly');
 
@@ -511,6 +534,7 @@ module Coveo {
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('page=15');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
+          expect(jasmine.Ajax.requests.mostRecent().url).toContain('accessToken=token');
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
 
           jasmine.Ajax.requests.mostRecent().respondWith({
@@ -533,6 +557,7 @@ module Coveo {
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseAlertsUri() + '/subscriptions/foobar?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
+          expect(jasmine.Ajax.requests.mostRecent().url).toContain('accessToken=token');
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('PUT');
           expect(JSON.parse(jasmine.Ajax.requests.mostRecent().params).type).toBe('query');
 
@@ -556,6 +581,7 @@ module Coveo {
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseAlertsUri() + '/subscriptions/foobar?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
+          expect(jasmine.Ajax.requests.mostRecent().url).toContain('accessToken=token');
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('DELETE');
           expect(jasmine.Ajax.requests.mostRecent().params).toBe('{}');
 
@@ -567,8 +593,8 @@ module Coveo {
       })
     })
   });
-  
-  function getSubscriptionPromiseSuccess(): ISubscription{
+
+  function getSubscriptionPromiseSuccess(): ISubscription {
     var qbuilder = new QueryBuilder();
     qbuilder.expression.add('batman');
     return {

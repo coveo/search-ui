@@ -143,11 +143,11 @@ module Coveo {
       test.cmp.open('foo0');
       expect($$(getFacetValueElement('foo0-0')).hasClass('coveo-inactive')).toBe(false);
       results = FakeResults.createFakeHierarchicalGroupByResult('@foobar', 'foo', 2, 3, '|', false, true);
-      //values[0] is foo0 : a parent
+      // values[0] is foo0 : a parent
       results.values[0] = undefined;
       results.values = _.compact(results.values);
       doQuery();
-      //foo0-0 is a child of the value we just deleted
+      // foo0-0 is a child of the value we just deleted
       // it should be hidden
       test.cmp.open('foo0');
       expect($$(getFacetValueElement('foo0-0')).hasClass('coveo-inactive')).toBe(true);
@@ -165,6 +165,26 @@ module Coveo {
       test.cmp.selectValue('<script>alert(\'foo\')</script>');
       var breadcrumb = Simulate.breadcrumb(test.env);
       expect(breadcrumb[0].element.innerHTML).toContain('&lt;script&gt;');
+    })
+
+    it('should be able to collapse', () => {
+      doQuery();
+      let facetValues = $$(test.cmp.element).findAll('.coveo-facet-value');
+      expect(facetValues[0].style.display).toEqual('');
+      expect($$(facetValues[0]).hasClass('coveo-inactive')).toBe(false);
+      expect(facetValues[1].style.display).toEqual('');
+      expect($$(facetValues[1]).hasClass('coveo-inactive')).toBe(true);
+    })
+
+    it('should show the correct number of results', () => {
+      test.cmp.numberOfValuesToShow = 1;
+      doQuery();
+      let facetValues = $$(test.cmp.element).findAll('.coveo-facet-value');
+      expect($$(facetValues[0]).hasClass('coveo-inactive')).toBe(false);
+      expect($$(facetValues[1]).hasClass('coveo-inactive')).toBe(true);
+      expect($$(facetValues[4]).hasClass('coveo-has-childs')).toBe(true);
+      expect($$(facetValues[4]).hasClass('coveo-inactive')).toBe(true);
+      expect($$(facetValues[5]).hasClass('coveo-inactive')).toBe(true);
     })
   })
 }

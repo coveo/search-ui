@@ -14,7 +14,7 @@ exports.exec = function(command, args, options, done) {
     failOnError: true
   }, options);
   
-  var p = child_process.spawn(command, args, {
+  var p = require('child_process').spawn(command, args, {
     stdio: 'inherit'
   })
     .on('exit', function (code) {

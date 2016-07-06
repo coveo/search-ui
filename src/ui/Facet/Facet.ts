@@ -48,6 +48,9 @@ import {FacetSearchParameters} from './FacetSearchParameters';
 import {IOmniboxDataRow} from '../Omnibox/OmniboxInterface';
 import {Initialization} from '../Base/Initialization';
 import {BreadcrumbEvents, IClearBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
+import {ResponsiveFacets} from '../ResponsiveComponents/ResponsiveFacets';
+
+import '../../../sass/_Facet.scss';
 
 export interface IFacetOptions {
   title?: string;
@@ -415,6 +418,8 @@ export class Facet extends Component {
       this.options.availableSorts = _.filter(this.options.availableSorts, (sort: string) => !/^alpha.*$/.test(sort));
     }
 
+    ResponsiveFacets.init(this.root, Facet.ID, this);
+
     // Serves as a way to render facet in the omnibox in the order in which they are instantiated
     this.omniboxZIndex = Facet.omniboxIndex;
     Facet.omniboxIndex--;
@@ -435,7 +440,7 @@ export class Facet extends Component {
         FacetUtils.clipCaptionsToAvoidOverflowingTheirContainer(this);
       }
     };
-    window.addEventListener('resize', this.resize);
+    window.addEventListener('resize', _.debounce(this.resize, 200));
     this.bind.onRootElement(InitializationEvents.nuke, () => this.handleNuke());
 
     this.bind.oneRootElement(QueryEvents.querySuccess, () => {
@@ -753,7 +758,10 @@ export class Facet extends Component {
   }
 
   public pinFacetPosition() {
-    this.pinnedViewportPosition = this.element.getBoundingClientRect().top;
+    if (this.options.preservePosition) {
+      this.pinnedViewportPosition = this.element.getBoundingClientRect().top;
+    }
+
   }
 
   /**
@@ -1303,7 +1311,7 @@ export class Facet extends Component {
   }
 
   private unpinFacetPosition() {
-    if (this.isFacetPinned()) {
+    if (this.isFacetPinned() && this.options.preservePosition) {
       $$(this.pinnedTopSpace).addClass('coveo-with-animation');
       $$(this.pinnedBottomSpace).addClass('coveo-with-animation');
       this.pinnedTopSpace.style.height = '0px';
