@@ -215,6 +215,11 @@ export class QueryBuilder {
   public actionsHistory: string;
 
   /**
+   * This is the id of the recommendation interface that generated the query.
+   */
+  public recommendation: string;
+
+  /**
    * Build the current content or state of the query builder and return a {@link IQuery}<br/>
    * build can be called multiple time on the same QueryBuilder.
    * @returns {IQuery}
@@ -261,7 +266,8 @@ export class QueryBuilder {
       enableCollaborativeRating: this.enableCollaborativeRating,
       debug: this.enableDebug,
       context: this.context,
-      actionsHistory: this.actionsHistory
+      actionsHistory: this.actionsHistory,
+      recommendation: this.recommendation
     };
     return query;
   }
