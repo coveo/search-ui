@@ -8,7 +8,6 @@ import {$$} from '../../utils/Dom';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {Component} from '../Base/Component';
 import {QueryController} from '../../controllers/QueryController';
-import {Recommendation} from '../Recommendation/Recommendation';
 import {Defer} from '../../misc/Defer';
 import {APIAnalyticsBuilder} from '../../rest/APIAnalyticsBuilder';
 import {IAnalyticsSearchEventsArgs, AnalyticsEvents} from '../../events/AnalyticsEvents';
