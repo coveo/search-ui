@@ -8,9 +8,11 @@ import {$$} from '../../utils/Dom';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {Component} from '../Base/Component';
 import {QueryController} from '../../controllers/QueryController';
+import {Recommendation} from '../Recommendation/Recommendation';
 import {Defer} from '../../misc/Defer';
 import {APIAnalyticsBuilder} from '../../rest/APIAnalyticsBuilder';
 import {IAnalyticsSearchEventsArgs, AnalyticsEvents} from '../../events/AnalyticsEvents';
+import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import _ = require('underscore');
 
@@ -73,7 +75,7 @@ export class PendingSearchEvent {
     args.promise.then((queryResults: IQueryResults) => {
       Assert.exists(queryResults);
       Assert.check(!this.finished);
-      if (queryResults._reusedSearchUid !== true) {
+      if (queryResults._reusedSearchUid !== true || this.templateSearchEvent.actionCause == analyticsActionCauseList.recommendation.name) {
         let searchEvent = <ISearchEvent>_.extend({}, this.templateSearchEvent);
         this.fillSearchEvent(searchEvent, searchInterface, args.query, queryResults);
         this.searchEvents.push(searchEvent);
