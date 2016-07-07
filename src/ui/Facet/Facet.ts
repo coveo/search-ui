@@ -126,9 +126,9 @@ export class Facet extends Component {
     field: ComponentOptions.buildFieldOption({ required: true, groupByField: true, section: 'Identification' }),
     /**
      * Specifies the css class to change the facet header icon.<br/>
-     * This option is exposed for legacy reason, and the recommendation is to not use this option.
+     * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option.
      */
-    headerIcon: ComponentOptions.buildIconOption(),
+    headerIcon: ComponentOptions.buildIconOption({ deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.' }),
     /**
      * Specifies a unique identifier for a facet. This identifier will be used to save the facet state in the url hash, for example.<br/>
      * Optional, since the default will be the {@link Facet.options.field} option.<br/>
@@ -145,9 +145,9 @@ export class Facet extends Component {
     isMultiValueField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies the field whose values will be displayed in the facet.<br/>
-     * This option is exposed for legacy reason, and the recommendation is to not use this option.
+     * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option.
      */
-    lookupField: ComponentOptions.buildFieldOption(),
+    lookupField: ComponentOptions.buildFieldOption({ deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.' }),
     /**
      * Specifies whether to show the facet settings menu.<br/>
      * The default value is true.
@@ -194,10 +194,10 @@ export class Facet extends Component {
     injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
     /**
      * Specifies whether an icon is displayed next to each facet value.<br/>
-     * This option is exposed for legacy reason, and the recommendation is to not use this option.<br/>
      * The default value is false.
+     * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option.
      */
-    showIcon: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    showIcon: ComponentOptions.buildBooleanOption({ defaultValue: false, deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.' }),
     /**
      * Specifies whether the filter generated when multiple values are selected uses the AND operator, meaning that only documents having all selected values matches the resulting query.<br/>
      * By default filters are using the OR operator, and the resulting query matches all documents with at least one of the selected values.
@@ -245,24 +245,26 @@ export class Facet extends Component {
     }),
     /**
      * Specifies if the facet should push data to the {@link Omnibox}.<br/>
-     * This option is exposed for legacy reason, and the recommendation is to not use this option.<br/>
      * It can have a real negative impact on index performance.<br/>
      * The default value is false.
+     * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option.
      */
     includeInOmnibox: ComponentOptions.buildBooleanOption({
-      defaultValue: false
+      defaultValue: false,
+      deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.'
     }),
     /**
      * Specifies the number of values to populate the {@link Breadcrumb} with.<br/>
      * Of course, the {@link Facet.options.includeInOmnibox} option needs to be "true".<br/>
-     * This option is exposed for legacy reason, and the recommendation is to not use this option.<br/>
      * It can have a real negative impact on index performance.<br/>
      * The default value is 5 on desktop, 3 on mobile.
+     * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option.
      */
     numberOfValuesInOmnibox: ComponentOptions.buildNumberOption({
       defaultFunction: () => DeviceUtils.isMobileDevice() ? 3 : 5,
       min: 0,
-      depend: 'includeInOmnibox'
+      depend: 'includeInOmnibox',
+      deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.'
     }),
     /**
      * Specifies the name of a field on which an aggregate operation should be executed for all distinct values of the facet's field.<br/>
