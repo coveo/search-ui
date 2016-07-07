@@ -69,9 +69,10 @@ export class Recommendation extends SearchInterface {
 
     /**
      * Specifies which options from the main {@link QueryBuilder} to use in the triggered query.
-     * The default value is ["expression", "advancedExpression", "constantExpression", "disjunctionExpression"]
+     * Ex: <code data-options-to-use="expression, advancedExpression"></code> would add the expression and the advanced expression parts from the main query in the triggered query.
+     * The default value is undefined
      */
-    optionsToUse: ComponentOptions.buildListOption({ defaultValue: ['expression', 'advancedExpression', 'constantExpression', 'disjunctionExpression'] }),
+    optionsToUse: ComponentOptions.buildListOption(),
 
     /**
      * Specifies whether or not to send the actions history along with the triggered query.
@@ -115,7 +116,7 @@ export class Recommendation extends SearchInterface {
 
   private handleRecommendationBuildingQuery(data: IBuildingQueryEventArgs) {
     this.modifyQueryForRecommendation(data);
-    this.addUserContextInQuery(data);
+    this.addRecommendationInfoInQuery(data);
   }
 
   private handleRecommendationQuerySuccess(data: IQuerySuccessEventArgs) {
@@ -133,13 +134,15 @@ export class Recommendation extends SearchInterface {
     }
   }
 
-  private addUserContextInQuery(data: IBuildingQueryEventArgs) {
+  private addRecommendationInfoInQuery(data: IBuildingQueryEventArgs) {
     if (!_.isEmpty(this.options.userContext)) {
       data.queryBuilder.addContext(this.options.userContext);
     }
     if (this.options.sendActionsHistory) {
       data.queryBuilder.actionsHistory = this.getHistory();
     }
+
+    data.queryBuilder.recommendation = this.options.id;
   }
 
   private getHistory(): string {
