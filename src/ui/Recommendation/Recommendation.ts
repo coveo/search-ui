@@ -35,7 +35,7 @@ export interface IRecommendationOptions extends ISearchInterfaceOptions {
  */
 export class Recommendation extends SearchInterface {
   static ID = 'Recommendation';
-  private static NEXT_ID = 0;
+  private static NEXT_ID = 1;
 
   /**
    * The options for the recommendation component
@@ -56,9 +56,9 @@ export class Recommendation extends SearchInterface {
     /**
      * Specifies the id of the inteface.
      * It is used by the analytics to know which recommendation interface was selected.
-     * The default value is "Recommendation_{number}" where {number} depends on the number of recommendation interface with default ids in the page. 
+     * The default value is "Recommendation" for the first one and "Recommendation_{number}" where {number} depends on the number of recommendation interface with default ids in the page for the others. 
      */
-    id: ComponentOptions.buildStringOption({ defaultFunction: Recommendation.generateDefaultId }),
+    id: ComponentOptions.buildStringOption(),
 
     /**
      * Specifies if the results of the recommendation query should have the same searchUid as the ones from the main search interface query.
@@ -89,6 +89,10 @@ export class Recommendation extends SearchInterface {
 
   constructor(public element: HTMLElement, public options: IRecommendationOptions = {}, public analyticsOptions = {}, _window = window) {
     super(element, ComponentOptions.initComponentOptions(element, Recommendation, options), analyticsOptions, _window);
+
+    if (!this.options.id) {
+      this.generateDefaultId();
+    }
 
     if (this.options.mainSearchInterface) {
       this.bindToMainSearchInterface();
@@ -183,10 +187,14 @@ export class Recommendation extends SearchInterface {
     return events;
   }
 
-  private static generateDefaultId() {
-    let id = 'Recommendation_' + Recommendation.NEXT_ID;
+  private generateDefaultId() {
+    let id = 'Recommendation';
+    if (Recommendation.NEXT_ID !== 1) {
+      this.logger.warn('Generating another recommendation default id', 'Consider configuring a human friendly / meaningful id for this interface')
+      id = id + '_' + Recommendation.NEXT_ID;
+    }
     Recommendation.NEXT_ID++;
-    return id;
+    this.options.id = id;
   }
 
 }
