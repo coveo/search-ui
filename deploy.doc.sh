@@ -124,6 +124,8 @@ main() {
     return 1
   fi
 
+  echo "Deploying doc"
+
   commit_title=`git log -n 1 --format="%s" HEAD`
   commit_hash=` git log -n 1 --format="%H" HEAD`
   
