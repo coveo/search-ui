@@ -8,11 +8,11 @@ export class DefaultRecommendationTemplate extends Template {
     var template =
       `<div class="coveo-result-frame">
         <div class="coveo-result-row" style="align-items: center">
-          <div class="coveo-result-cell" style="flex-basis:40px;text-align:center;">
+          <div class="coveo-result-cell" style="flex-basis:40px; flex-shrink: 0; flex-grow: 0; text-align:center;">
             <span class="CoveoIcon" data-small="true">
             </span>
           </div>
-          <div class="coveo-result-cell" style="padding:0 0 3px 5px;font-size:10pt; flex-shrink: 1; min-width: 0">
+          <div class="coveo-result-cell" style="padding:0 0 3px 5px;font-size:10pt; min-width: 0">
             <a class="CoveoResultLink" style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
             </a>
           </div>
