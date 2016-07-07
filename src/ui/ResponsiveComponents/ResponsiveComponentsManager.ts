@@ -123,7 +123,9 @@ export class ResponsiveComponentsManager {
   }
 
   private changeToSmallMode(): void {
-    this.tabSection && this.tabSection.insertAfter(this.searchBoxElement);
+    if (this.searchBoxElement) {
+      this.tabSection && this.tabSection.insertAfter(this.searchBoxElement);
+    }
     _.each(this.responsiveComponents, responsiveComponent => {
       responsiveComponent.changeToSmallMode();
     });
