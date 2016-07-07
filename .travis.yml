@@ -21,7 +21,6 @@ after_success:
 - if [ "x$TRAVIS_TAG" != "x" ]; then bash ./deploy.doc.sh ; fi
 env:
   global:
-  - TRAVIS_TAG: "test"
   - COMMIT_AUTHOR_EMAIL: "sandbox_JSUI@coveo.com"
 deploy:
   provider: npm
