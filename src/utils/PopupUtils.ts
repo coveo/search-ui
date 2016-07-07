@@ -35,7 +35,7 @@ interface IElementBoundary {
 }
 
 export class PopupUtils {
-  static positionPopup(popUp: HTMLElement, nextTo: HTMLElement, appendTo: HTMLElement, boundary: HTMLElement, desiredPosition: IPosition, checkForBoundary = 0) {
+  static positionPopup(popUp: HTMLElement, nextTo: HTMLElement, boundary: HTMLElement, desiredPosition: IPosition, checkForBoundary = 0) {
     if (nextTo.parentElement) {
       nextTo.parentElement.appendChild(popUp);
     } else {
