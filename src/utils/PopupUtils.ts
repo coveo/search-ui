@@ -44,8 +44,8 @@ export class PopupUtils {
     desiredPosition.verticalOffset = desiredPosition.verticalOffset ? desiredPosition.verticalOffset : 0;
     desiredPosition.horizontalOffset = desiredPosition.horizontalOffset ? desiredPosition.horizontalOffset : 0;
 
-    let popUpOriginalPosition = this.getBoundingRectRelativeToDocument(popUp);
-    let finalPopUpPosition = this.getBoundingRectRelativeToDocument(nextTo);
+    let popUpOriginalPosition = this.getPositionRelativeToOffsetParent(popUp);
+    let finalPopUpPosition = this.getPositionRelativeToOffsetParent(nextTo);
     PopupUtils.basicVerticalAlignment(finalPopUpPosition, popUp, nextTo, desiredPosition);
     PopupUtils.basicHorizontalAlignment(finalPopUpPosition, popUp, nextTo, desiredPosition);
     PopupUtils.finalAdjustement(popUpOriginalPosition, finalPopUpPosition, popUp, desiredPosition);
@@ -141,7 +141,7 @@ export class PopupUtils {
   }
 
   private static getBoundary(element: HTMLElement) {
-    let boundaryOffset = this.getBoundingRectRelativeToDocument(element);
+    let boundaryOffset = element.getBoundingClientRect();
     let toAddVertically;
     if (element.tagName.toLowerCase() == 'body') {
       toAddVertically = Math.max(element.scrollHeight, element.offsetHeight);
@@ -178,7 +178,7 @@ export class PopupUtils {
     return ret;
   }
 
-  private static getBoundingRectRelativeToDocument(el: HTMLElement) {
+  private static getPositionRelativeToOffsetParent(el: HTMLElement) {
     let rect: IOffset = { left: el.offsetLeft, top: el.offsetTop };
     return rect;
   }
