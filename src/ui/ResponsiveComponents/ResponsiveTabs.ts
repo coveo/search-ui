@@ -305,11 +305,9 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
   private getSearchBoxElement(): HTMLElement {
     let searchBoxSectionElement = this.coveoRoot.find('.coveo-search-section');
-    let searchBoxElement = this.coveoRoot.find('.CoveoSearchbox');
-
     if (searchBoxSectionElement) {
       return <HTMLElement>searchBoxSectionElement;
-    } else if (searchBoxElement) {
+    } else {
       return <HTMLElement>this.coveoRoot.find('.CoveoSearchbox');
     }
   }
