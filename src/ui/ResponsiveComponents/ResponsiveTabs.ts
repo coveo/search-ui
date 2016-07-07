@@ -278,7 +278,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
             $$(lastTabInSection).addClass('coveo-tab-dropdown');
             tab.replaceWith(lastTabInSection);
             tab.removeClass('coveo-tab-dropdown');
-            tab.insertAfter(<HTMLElement>lastTabSibling);
+            tab.insertBefore(this.dropdownHeader.el);
 
             // Because of the DOM manipulation, sometimes the animation will not trigger. Accessing the computed styles makes sure
             // the animation will happen.

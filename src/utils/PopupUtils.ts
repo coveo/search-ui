@@ -36,7 +36,7 @@ interface IElementBoundary {
 
 export class PopupUtils {
   static positionPopup(popUp: HTMLElement, nextTo: HTMLElement, appendTo: HTMLElement, boundary: HTMLElement, desiredPosition: IPosition, checkForBoundary = 0) {
-    appendTo.appendChild(popUp);
+    nextTo.parentElement.appendChild(popUp);
     desiredPosition.verticalOffset = desiredPosition.verticalOffset ? desiredPosition.verticalOffset : 0;
     desiredPosition.horizontalOffset = desiredPosition.horizontalOffset ? desiredPosition.horizontalOffset : 0;
 
@@ -175,9 +175,7 @@ export class PopupUtils {
   }
 
   private static getBoundingRectRelativeToDocument(el: HTMLElement) {
-    let rect = _.clone(el.getBoundingClientRect());
-    rect.left += window.pageXOffset - parseInt(window.getComputedStyle(document.body).marginLeft);
-    rect.top += window.pageYOffset - parseInt(window.getComputedStyle(document.body).marginTop);
+    let rect: IOffset = { left: el.offsetLeft, top: el.offsetTop };
     return rect;
   }
 }
