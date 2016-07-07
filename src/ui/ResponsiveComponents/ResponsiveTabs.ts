@@ -119,7 +119,9 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   public changeToSmallMode() {
-    this.tabSection.insertAfter(this.searchBoxElement);
+    if (this.searchBoxElement) {
+      this.tabSection.insertAfter(this.searchBoxElement);
+    }
   }
 
   private shouldAddTabsToDropdown(): boolean {
@@ -302,10 +304,12 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   private getSearchBoxElement(): HTMLElement {
-    let searchBoxElement = this.coveoRoot.find('.coveo-search-section');
-    if (searchBoxElement) {
-      return <HTMLElement>searchBoxElement;
-    } else {
+    let searchBoxSectionElement = this.coveoRoot.find('.coveo-search-section');
+    let searchBoxElement = this.coveoRoot.find('.CoveoSearchbox');
+
+    if (searchBoxSectionElement) {
+      return <HTMLElement>searchBoxSectionElement;
+    } else if (searchBoxElement) {
       return <HTMLElement>this.coveoRoot.find('.CoveoSearchbox');
     }
   }
