@@ -40,10 +40,11 @@ export class PopupUtils {
     desiredPosition.verticalOffset = desiredPosition.verticalOffset ? desiredPosition.verticalOffset : 0;
     desiredPosition.horizontalOffset = desiredPosition.horizontalOffset ? desiredPosition.horizontalOffset : 0;
 
-    let popUpPosition = this.getBoundingRectRelativeToDocument(nextTo);
-    PopupUtils.basicVerticalAlignment(popUpPosition, popUp, nextTo, desiredPosition);
-    PopupUtils.basicHorizontalAlignment(popUpPosition, popUp, nextTo, desiredPosition);
-    PopupUtils.finalAdjustement(this.getBoundingRectRelativeToDocument(popUp), popUpPosition, popUp, desiredPosition);
+    let popUpOriginalPosition = this.getBoundingRectRelativeToDocument(popUp);
+    let finalPopUpPosition = this.getBoundingRectRelativeToDocument(nextTo);
+    PopupUtils.basicVerticalAlignment(finalPopUpPosition, popUp, nextTo, desiredPosition);
+    PopupUtils.basicHorizontalAlignment(finalPopUpPosition, popUp, nextTo, desiredPosition);
+    PopupUtils.finalAdjustement(popUpOriginalPosition, finalPopUpPosition, popUp, desiredPosition);
 
     let popUpBoundary = PopupUtils.getBoundary(popUp);
     let boundaryPosition = PopupUtils.getBoundary(boundary);
@@ -69,8 +70,8 @@ export class PopupUtils {
 
   private static finalAdjustement(popUpOffSet: IOffset, popUpPosition: IOffset, popUp: HTMLElement, desiredPosition: IPosition) {
     popUp.style.position = 'absolute';
-    popUp.style.top = desiredPosition.verticalOffset + popUpPosition.top + 'px';
-    popUp.style.left = (popUpOffSet.left + desiredPosition.horizontalOffset) - (popUpOffSet.left - popUpPosition.left) + 'px';
+    popUp.style.top = (desiredPosition.verticalOffset + popUpPosition.top) + 'px';
+    popUp.style.left = (desiredPosition.horizontalOffset + popUpPosition.left) + 'px';
   }
 
   private static basicVerticalAlignment(popUpPosition: IOffset, popUp: HTMLElement, nextTo: HTMLElement, desiredPosition: IPosition) {
