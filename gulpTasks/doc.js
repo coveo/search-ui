@@ -5,6 +5,7 @@ gulp.task('doc', function () {
   var app = new TypeDoc.Application({
     mode: 'file',
     target: 'ES5',
+    experimentalDecorators: true,
     module: 'CommonJS',
     includeDeclarations: true,
     theme: 'docs/theme',

@@ -18,7 +18,7 @@ script:
 - npm run test
 after_success:
 - npm run doc
-- bash ./deploy.doc.sh
+- if [ "x$TRAVIS_TAG" != "x" ]; then bash ./deploy.doc.sh ; fi
 env:
   global:
   - COMMIT_AUTHOR_EMAIL: "sandbox_JSUI@coveo.com"
