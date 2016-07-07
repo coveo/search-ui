@@ -535,11 +535,13 @@ export class HierarchicalFacet extends Facet {
     });
 
     // Hide and show the partitionned top level values, depending on the numberOfValuesToShow
-    _.each(_.last(partition[1], partition[1].length - (this.numberOfValuesToShow - partition[0].length)), (toHide: IValueHierarchy) => {
-      $$(this.getElementFromFacetValueList(toHide.facetValue)).hide();
+    let numberOfValuesLeft = this.numberOfValuesToShow - partition[0].length;
+    _.each(_.last(partition[1], partition[1].length - numberOfValuesLeft), (toHide: IValueHierarchy) => {
+      this.hideFacetValue(toHide);
+      this.hideChilds(toHide.childs);
     })
-    _.each(_.first(partition[1], this.numberOfValuesToShow), (toShow: IValueHierarchy) => {
-      $$(this.getElementFromFacetValueList(toShow.facetValue)).show();
+    _.each(_.first(partition[1], numberOfValuesLeft), (toShow: IValueHierarchy) => {
+      this.showFacetValue(toShow);
     })
   }
 
@@ -809,7 +811,7 @@ export class HierarchicalFacet extends Facet {
     }
   }
 
-  private getValueFromHierarchy(value: any): IValueHierarchy {
+  public getValueFromHierarchy(value: any): IValueHierarchy {
     let getter = value instanceof FacetValue ? value.value : value;
     return this.getValueHierarchy(getter);
   }
