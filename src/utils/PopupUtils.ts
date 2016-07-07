@@ -67,7 +67,7 @@ export class PopupUtils {
       }
       if (checkBoundary.vertical != 'ok' || checkBoundary.horizontal != 'ok') {
         let newDesiredPosition = PopupUtils.alignInsideBoundary(desiredPosition, checkBoundary);
-        PopupUtils.positionPopup(popUp, nextTo, appendTo, boundary, newDesiredPosition, checkForBoundary + 1);
+        PopupUtils.positionPopup(popUp, nextTo, boundary, newDesiredPosition, checkForBoundary + 1);
       }
     }
   }
