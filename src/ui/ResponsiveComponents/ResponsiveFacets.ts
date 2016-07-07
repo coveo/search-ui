@@ -2,6 +2,7 @@ import {$$, Dom} from '../../utils/Dom';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {IResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
 import {EventsUtils} from '../../utils/EventsUtils';
+import {Utils} from '../../utils/Utils';
 import {Logger} from '../../misc/Logger';
 import '../../../sass/_ResponsiveFacets.scss';
 import {l} from '../../strings/Strings';
@@ -105,9 +106,11 @@ export class ResponsiveFacets implements IResponsiveComponent {
 
   private bindDropdownContentEvents() {
     this.documentClickListener = event => {
-      let eventTarget = $$(<HTMLElement>event.target);
-      if (this.shouldDetachFacetDropdown(eventTarget)) {
-        this.detachDropdown();
+      if (Utils.isHtmlElement(event.target)) {
+        let eventTarget = $$(<HTMLElement>event.target);
+        if (this.shouldDetachFacetDropdown(eventTarget)) {
+          this.detachDropdown();
+        }
       }
     };
     $$(document.documentElement).on('click', this.documentClickListener);
