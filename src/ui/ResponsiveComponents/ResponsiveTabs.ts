@@ -2,9 +2,10 @@ import {Win, $$, Dom} from '../../utils/Dom';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
 import {EventsUtils} from '../../utils/EventsUtils';
+import {Utils} from '../../utils/Utils';
 import {Logger} from '../../misc/Logger';
 import {IResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
-import {l} from '../../strings/Strings.ts';
+import {l} from '../../strings/Strings';
 import '../../../sass/_ResponsiveTabs.scss';
 import _ = require('underscore');
 
@@ -211,10 +212,12 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
   private bindDropdownContentEvents() {
     this.documentClickListener = event => {
-      let eventTarget = $$(<HTMLElement>event.target);
-      if (!eventTarget.closest('coveo-tab-list-container') && !eventTarget.closest('coveo-tab-dropdown-header') && !eventTarget.closest('coveo-tab-dropdown')) {
-        this.dropdownContent.detach();
-        this.dropdownHeader.removeClass('coveo-dropdown-header-active');
+      if (Utils.isHtmlElement(event.target)) {
+        let eventTarget = $$(<HTMLElement>event.target);
+        if (!eventTarget.closest('coveo-tab-list-container') && !eventTarget.closest('coveo-tab-dropdown-header') && !eventTarget.closest('coveo-tab-dropdown')) {
+          this.dropdownContent.detach();
+          this.dropdownHeader.removeClass('coveo-dropdown-header-active');
+        }
       }
     };
     $$(document.documentElement).on('click', this.documentClickListener);
