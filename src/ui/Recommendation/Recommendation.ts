@@ -50,7 +50,6 @@ export class Recommendation extends SearchInterface {
     /**
      * Specifies the user context to send to Coveo analytics.
      * It will be sent with the query alongside the user history to get the recommendations.
-     * If the option is not present, this component will display the same results as the main search interface.
      */
     userContext: ComponentOptions.buildObjectOption(),
 
@@ -62,13 +61,6 @@ export class Recommendation extends SearchInterface {
     id: ComponentOptions.buildStringOption({ defaultValue: 'Recommendation' }),
 
     /**
-     * Specifies if the results of the recommendation query should have the same searchUid as the ones from the main search interface query.
-     * It is used to give info to the {@link Analytics}
-     * The default value is true
-     */
-    linkSearchUid: ComponentOptions.buildBooleanOption({ defaultValue: true, depend: 'mainSearchInterface' }),
-
-    /**
      * Specifies which options from the main {@link QueryBuilder} to use in the triggered query.
      * Ex: <code data-options-to-use="expression, advancedExpression"></code> would add the expression and the advanced expression parts from the main query in the triggered query.
      * The default value is undefined
@@ -77,11 +69,19 @@ export class Recommendation extends SearchInterface {
 
     /**
      * Specifies whether or not to send the actions history along with the triggered query.
-     * Disabling this option means this component won't be able to get Reveal recommendations. 
+     * Disabling this option means this component won't be able to get Reveal recommendations.
      * However, it could be useful to display side results in a search page.
      * The default value is true
      */
-    sendActionsHistory: ComponentOptions.buildBooleanOption({ defaultValue: true })
+    sendActionsHistory: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
+    /**
+     * Specifies if the results of the recommendation query should have the same searchUid as the ones from the main search interface query.
+     * This options should be true only when sendActionsHistory is false because it will prevent logging the recommendation search event in the analytics.
+     * It is used to give info to the {@link Analytics}
+     * The default value is false
+     */
+    linkSearchUid: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'mainSearchInterface' })
 
   };
 
@@ -111,7 +111,9 @@ export class Recommendation extends SearchInterface {
     $$(this.options.mainSearchInterface).on(QueryEvents.querySuccess, (e: Event, args: IQuerySuccessEventArgs) => {
       this.mainInterfaceQuery = args;
       this.mainQuerySearchUID = args.results.searchUid;
-      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.recommendation, {});
+      if(!this.options.linkSearchUid){
+        this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.recommendation, {});
+      }
       this.queryController.executeQuery();
     })
   }
