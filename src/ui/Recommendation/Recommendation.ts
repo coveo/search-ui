@@ -6,7 +6,7 @@ import {ResultListEvents} from '../../events/ResultListEvents';
 import {SettingsEvents} from '../../events/SettingsEvents';
 import {PreferencesPanelEvents} from '../../events/PreferencesPanelEvents';
 import {AnalyticsEvents} from '../../events/AnalyticsEvents';
-import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
+import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta'
 import {BreadcrumbEvents} from '../../events/BreadcrumbEvents';
 import {QuickviewEvents} from '../../events/QuickviewEvents';
 import {QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
@@ -111,7 +111,7 @@ export class Recommendation extends SearchInterface {
     $$(this.options.mainSearchInterface).on(QueryEvents.querySuccess, (e: Event, args: IQuerySuccessEventArgs) => {
       this.mainInterfaceQuery = args;
       this.mainQuerySearchUID = args.results.searchUid;
-      this.usageAnalytics.logSearchEvent(analyticsActionCauseList.recommendation, {});
+      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.recommendation, {});
       this.queryController.executeQuery();
     })
   }
