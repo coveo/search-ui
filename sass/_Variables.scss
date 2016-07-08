@@ -77,17 +77,17 @@ $default-border: 1px solid $color-light-grey;
 @mixin iconWithHoverState($iconBase, $float:'left', $inactive : 'coveo-disabled') {
   $iconActive: '#{$iconBase}-active';
   .coveo-icon {
-    @extend #{$iconBase} !optional;
+    @extend #{$iconBase};
     float: #{$float};
   }
   &:hover {
     .coveo-icon {
-      @extend #{$iconActive} !optional;
+      @extend #{$iconActive};
     }
   }
   &:hover.#{$inactive} {
     .coveo-icon {
-      @extend #{$iconBase} !optional;
+      @extend #{$iconBase};
     }
   }
 }

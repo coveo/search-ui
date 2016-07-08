@@ -44,7 +44,7 @@ export interface IAnalyticsClient {
    * @param result The result that was clicked
    * @param element The HTMLElement that was clicked in the interface
    */
-  logClickEvent(actionCause: IAnalyticsActionCause, meta: IAnalyticsDocumentViewMeta, result: IQueryResult, element: HTMLElement): void;
+  logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement): void;
   /**
    * Log a custom event on the service. A custom event can be used to create customized report, or to track events which are not queries or document view.
    * @param actionCause
