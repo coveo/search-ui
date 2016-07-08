@@ -2,10 +2,9 @@ const webpack = require('webpack');
 const minimize = process.argv.indexOf('--minimize') !== -1;
 const colors = require('colors');
 const failPlugin = require('webpack-fail-plugin');
-const CircularDepPlugin = require('circular-dependency-plugin');
 
 // Fail plugin will allow the webpack ts-loader to fail correctly when the TS compilation fails
-var plugins = [failPlugin, new CircularDepPlugin()];
+var plugins = [failPlugin];
 if (minimize) {
   plugins.push(new webpack.optimize.UglifyJsPlugin());
 }
