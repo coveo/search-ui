@@ -48,6 +48,9 @@ All resources will be available under `node_modules/coveo-search-ui/bin`.
 
 ```
 
+See more examples of fully configured pages in `./pages`.
+
+
 ## Build
     npm install -g gulp
     npm install
