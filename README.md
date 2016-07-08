@@ -26,12 +26,9 @@ All resources will be available under `node_modules/coveo-search-ui/bin`.
         <div class="CoveoSearchbox"></div>
     </div>
     
-    <div class="coveo-facet-column">
-        
-        <!-- The data- attributes on each component allow to pass option for a specific Component instance -->
-        <div class="CoveoFacet" data-title="Author" data-field="@author" data-tab="All"></div>
-        <div class="CoveoFacet" data-title="Year" data-field="@year" data-tab="All"></div>
-    </div>
+    <!-- The data- attributes on each component allow to pass option for a specific Component instance -->
+    <div class="CoveoFacet" data-title="Author" data-field="@author" data-tab="All"></div>
+    <div class="CoveoFacet" data-title="Year" data-field="@year" data-tab="All"></div>
 
 
     <script>
