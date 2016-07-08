@@ -86,6 +86,7 @@ export class Recommendation extends SearchInterface {
 
   private mainInterfaceQuery: IQuerySuccessEventArgs;
   public mainQuerySearchUID: string;
+  private displayStyle: string;
 
   constructor(public element: HTMLElement, public options: IRecommendationOptions = {}, public analyticsOptions = {}, _window = window) {
     super(element, ComponentOptions.initComponentOptions(element, Recommendation, options), analyticsOptions, _window);
@@ -127,9 +128,10 @@ export class Recommendation extends SearchInterface {
   private handleRecommendationQuerySuccess(data: IQuerySuccessEventArgs) {
     if (this.options.hideIfNoResults) {
       if (data.results.totalCount === 0) {
+        this.displayStyle = this.element.style.display;
         $$(this.element).hide();
       } else {
-        this.element.style.display = '';
+        this.element.style.display = this.displayStyle;
       }
     }
   }
