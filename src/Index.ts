@@ -1,7 +1,11 @@
 import {defaultLanguage} from './strings/DefaultLanguage';
 defaultLanguage();
+export {setLanguageAfterPageLoaded} from './strings/DefaultLanguage';
 import {shim} from './misc/PromisesShim';
 shim();
+import {customEventPolyfill} from './misc/CustomEventPolyfill';
+customEventPolyfill();
+
 // MISC
 export {version} from './misc/Version';
 export {Assert} from './misc/Assert';
@@ -94,6 +98,8 @@ export {TemplateCache} from './ui/Templates/TemplateCache';
 export {SearchInterface, StandaloneSearchInterface} from './ui/SearchInterface/SearchInterface';
 export {Aggregate} from './ui/Aggregate/Aggregate';
 export {Analytics} from './ui/Analytics/Analytics';
+export {PendingSearchEvent} from './ui/Analytics/PendingSearchEvent';
+export {PendingSearchAsYouTypeSearchEvent} from './ui/Analytics/PendingSearchAsYouTypeSearchEvent';
 export {analyticsActionCauseList} from './ui/Analytics/AnalyticsActionListMeta';
 export {NoopAnalyticsClient} from './ui/Analytics/NoopAnalyticsClient';
 export {LiveAnalyticsClient} from './ui/Analytics/LiveAnalyticsClient';
@@ -167,8 +173,16 @@ export {CurrentTab} from './ui/CurrentTab/CurrentTab';
 export {QueryboxQueryParameters} from './ui/Querybox/QueryboxQueryParameters';
 export {ImageResultList} from './ui/ImageResultList/ImageResultList';
 export {CoveoJQuery} from './ui/Base/CoveoJQuery';
+export {jQueryInstance as $} from './ui/Base/CoveoJQuery';
 export {FollowItem} from './ui/SearchAlerts/FollowItem';
-export {SearchAlertsMessage} from './ui/SearchAlerts/SearchAlertsMessage';
 export {SearchAlerts} from './ui/SearchAlerts/SearchAlerts';
+export {SearchAlertsMessage} from './ui/SearchAlerts/SearchAlertsMessage';
 export {Text} from './ui/Text/Text';
 export {FoldingForThread} from './ui/Folding/FoldingForThread';
+export {ResponsiveFacets} from './ui/ResponsiveComponents/ResponsiveFacets';
+export {IResponsiveComponent, ResponsiveComponentsManager} from './ui/ResponsiveComponents/ResponsiveComponentsManager';
+export {ChatterLikedBy} from './ui/ChatterLikedBy/ChatterLikedBy';
+export {ChatterPostAttachment} from './ui/ChatterPostAttachment/ChatterPostAttachment';
+export {ChatterPostedBy} from './ui/ChatterPostedBy/ChatterPostedBy';
+export {ChatterTopic} from './ui/ChatterTopic/ChatterTopic';
+export {ChatterUtils} from './utils/ChatterUtils';

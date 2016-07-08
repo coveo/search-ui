@@ -90,10 +90,15 @@
 /// <reference path="ui/AuthenticationProviderTest.ts" />
 /// <reference path="ui/CurrentTabTest.ts" />
 /// <reference path="ui/QueryboxQueryParametersTest.ts" />
+/// <reference path="ui/ResultListTest.ts" />
 /// <reference path="ui/ImageResultListTest.ts" />
 /// <reference path="ui/SearchAlertsTest.ts" />
 /// <reference path="ui/FollowItemTest.ts" />
 /// <reference path="ui/SearchAlertsMessageTest.ts" />
+/// <reference path="ui/PendingSearchAsYouTypeSearchEventTest.ts" />
+/// <reference path="ui/ChatterLikedByTest.ts" />
+/// <reference path="ui/ChatterPostAttachmentTest.ts" />
+/// <reference path="ui/ChatterPostedByTest.ts" />
 
 Coveo.Logger.disable();
 

@@ -35,15 +35,20 @@ interface IElementBoundary {
 }
 
 export class PopupUtils {
-  static positionPopup(popUp: HTMLElement, nextTo: HTMLElement, appendTo: HTMLElement, boundary: HTMLElement, desiredPosition: IPosition, checkForBoundary = 0) {
-    appendTo.appendChild(popUp);
+  static positionPopup(popUp: HTMLElement, nextTo: HTMLElement, boundary: HTMLElement, desiredPosition: IPosition, checkForBoundary = 0) {
+    if (nextTo.parentElement) {
+      nextTo.parentElement.appendChild(popUp);
+    } else {
+      document.body.appendChild(popUp);
+    }
     desiredPosition.verticalOffset = desiredPosition.verticalOffset ? desiredPosition.verticalOffset : 0;
     desiredPosition.horizontalOffset = desiredPosition.horizontalOffset ? desiredPosition.horizontalOffset : 0;
 
-    let popUpPosition = _.clone(nextTo.getBoundingClientRect());
-    PopupUtils.basicVerticalAlignment(popUpPosition, popUp, nextTo, desiredPosition);
-    PopupUtils.basicHorizontalAlignment(popUpPosition, popUp, nextTo, desiredPosition);
-    PopupUtils.finalAdjustement(popUp.getBoundingClientRect(), popUpPosition, popUp, desiredPosition);
+    let popUpOriginalPosition = this.getPositionRelativeToOffsetParent(popUp);
+    let finalPopUpPosition = this.getPositionRelativeToOffsetParent(nextTo);
+    PopupUtils.basicVerticalAlignment(finalPopUpPosition, popUp, nextTo, desiredPosition);
+    PopupUtils.basicHorizontalAlignment(finalPopUpPosition, popUp, nextTo, desiredPosition);
+    PopupUtils.finalAdjustement(popUpOriginalPosition, finalPopUpPosition, popUp, desiredPosition);
 
     let popUpBoundary = PopupUtils.getBoundary(popUp);
     let boundaryPosition = PopupUtils.getBoundary(boundary);
@@ -62,15 +67,15 @@ export class PopupUtils {
       }
       if (checkBoundary.vertical != 'ok' || checkBoundary.horizontal != 'ok') {
         let newDesiredPosition = PopupUtils.alignInsideBoundary(desiredPosition, checkBoundary);
-        PopupUtils.positionPopup(popUp, nextTo, appendTo, boundary, newDesiredPosition, checkForBoundary + 1);
+        PopupUtils.positionPopup(popUp, nextTo, boundary, newDesiredPosition, checkForBoundary + 1);
       }
     }
   }
 
   private static finalAdjustement(popUpOffSet: IOffset, popUpPosition: IOffset, popUp: HTMLElement, desiredPosition: IPosition) {
-    popUp.style.position = 'fixed';
-    popUp.style.top = desiredPosition.verticalOffset + popUpPosition.top + 'px';
-    popUp.style.left = (popUpOffSet.left + desiredPosition.horizontalOffset) - (popUpOffSet.left - popUpPosition.left) + 'px';
+    popUp.style.position = 'absolute';
+    popUp.style.top = (desiredPosition.verticalOffset + popUpPosition.top) + 'px';
+    popUp.style.left = (desiredPosition.horizontalOffset + popUpPosition.left) + 'px';
   }
 
   private static basicVerticalAlignment(popUpPosition: IOffset, popUp: HTMLElement, nextTo: HTMLElement, desiredPosition: IPosition) {
@@ -171,5 +176,10 @@ export class PopupUtils {
       ret.horizontal = 'right';
     }
     return ret;
+  }
+
+  private static getPositionRelativeToOffsetParent(el: HTMLElement) {
+    let rect: IOffset = { left: el.offsetLeft, top: el.offsetTop };
+    return rect;
   }
 }

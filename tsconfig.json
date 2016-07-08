@@ -200,6 +200,9 @@
     "src/ui/Quickview/QuickviewDocument.ts",
     "src/ui/Recommendation/Recommendation.ts",
     "src/ui/Recommendation/RecommendationQuery.ts",
+    "src/ui/ResponsiveComponents/ResponsiveFacets.ts",
+    "src/ui/ResponsiveComponents/ResponsiveTabs.ts",
+    "src/ui/ResponsiveComponents/ResponsiveComponentsManager.ts",
     "src/ui/ResultAttachments/DefaultResultAttachmentTemplate.ts",
     "src/ui/ResultAttachments/ResultAttachments.ts",
     "src/ui/ResultFolding/DefaultFoldingTemplate.ts",
@@ -238,6 +241,10 @@
     "src/ui/Thumbnail/Thumbnail.ts",
     "src/ui/Triggers/Triggers.ts",
     "src/ui/YouTube/YouTubeThumbnail.ts",
+    "src/ui/ChatterLikedBy/ChatterLikedBy.ts",
+    "src/ui/ChatterPostAttachment/ChatterPostAttachment.ts",
+    "src/ui/ChatterPostedBy/ChatterPostedBy.ts",
+    "src/ui/ChatterTopic/ChatterTopic.ts",
     "src/utils/ColorUtils.ts",
     "src/utils/CookieUtils.ts",
     "src/utils/CurrencyUtils.ts",
@@ -247,6 +254,7 @@
     "src/utils/DomUtils.ts",
     "src/utils/EmailActionsUtils.ts",
     "src/utils/EmailUtils.ts",
+    "src/utils/EventsUtils.ts",
     "src/utils/FeatureDetectionUtils.ts",
     "src/utils/HashUtils.ts",
     "src/utils/HighlightUtils.ts",
@@ -259,6 +267,7 @@
     "src/utils/StreamHighlightUtils.ts",
     "src/utils/StringUtils.ts",
     "src/utils/TimeSpanUtils.ts",
-    "src/utils/Utils.ts"
+    "src/utils/Utils.ts",
+    "src/utils/ChatterUtils.ts"
   ]
 }

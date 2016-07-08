@@ -2,16 +2,16 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Title</title> 
-    <script src="/devserver/CoveoJsSearch.js"></script>
-    <script src="./js/CoveoJsSearch.dependencies.js"></script>
-    <script src="./js/templates/templatesNew.js"></script>
-    <script src="http://localhost:8080/webpack-dev-server.js"></script>
+    <meta name="viewport" content="width=device-width, height=device-height" >
+    <title>Recommendation</title> 
     <link rel="stylesheet" href="./css/CoveoFullSearchNewDesign.css"/>
+    <script src="js/CoveoJsSearch.js"></script>
+    <script src="js/CoveoJsSearch.Dependencies.js"></script>
+    <script src="js/templates/templatesNew.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function(){
         Coveo.SearchEndpoint.configureSampleEndpoint();
-        Coveo.initRecommendation(document.querySelector('#recommendationYoutube'));
+        Coveo.initRecommendation(document.querySelector('#recommendationYoutube'), document.querySelector('#search'));
         Coveo.init(document.querySelector('#search'));
       })
     </script>

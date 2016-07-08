@@ -14,9 +14,9 @@ module Coveo {
       mainSearchInterface = Mock.basicSearchInterfaceSetup(SearchInterface);
       options = {
         mainSearchInterface: mainSearchInterface.env.root,
-        userContext: {
+        userContext: JSON.stringify({
           user_id: userId
-        }
+        })
       }
       store = {
         addElement: (query: IQuery) => { },
@@ -37,8 +37,7 @@ module Coveo {
 
     it('should work if mainInterface is not specified', () => {
       let optionsWithNoMainInterface: IRecommendationOptions = {
-        mainSearchInterface: null,
-        userContext: {}
+        mainSearchInterface: null
       }
 
       expect(() => {
@@ -50,7 +49,7 @@ module Coveo {
       coveoanalytics = undefined;
       test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
       let simulation = Simulate.query(test.env);
-      expect(simulation.queryBuilder.context['actions_history']).toEqual(JSON.stringify([]));
+      expect(simulation.queryBuilder.actionsHistory).toEqual('[]');
     })
 
     it('should not modify the query if it was not triggered by the mainInterface', () => {
@@ -63,6 +62,11 @@ module Coveo {
       expect(simulation.queryBuilder.expression.build()).toEqual('test')
     })
 
+    it('should generate a different id by default for each recommendation component', () => {
+      let secondRecommendation = Mock.basicSearchInterfaceSetup<Recommendation>(Recommendation);
+      expect(test.cmp.options.id).not.toEqual(secondRecommendation.cmp.options.id);
+    })
+
     describe('when the mainInterface triggered a query', () => {
 
       it('should trigger a query', () => {
@@ -70,17 +74,10 @@ module Coveo {
         expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
       })
 
-      it('should modify the triggered query to match the mainInterface query', () => {
-        let queryBuilder: QueryBuilder = new QueryBuilder();
-        let query = 'test';
-        queryBuilder.expression.add(query);
-
-        Simulate.query(mainSearchInterface.env, {
-          queryBuilder: queryBuilder
-        });
-
+      it('should send the recommendation id', () => {
+        test.cmp.options.id = 'test';
         let simulation = Simulate.query(test.env);
-        expect(simulation.queryBuilder.expression.build()).toEqual(query);
+        expect(simulation.queryBuilder.recommendation).toEqual('test');
       })
 
       it('should only copy the optionsToUse', () => {
@@ -110,27 +107,11 @@ module Coveo {
 
       it('should not add the userContext in the triggered query if userContext was not specified', () => {
         options = {
-          mainSearchInterface: mainSearchInterface.env.root,
-          userContext: {}
+          mainSearchInterface: mainSearchInterface.env.root
         }
         test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options)
         let simulation = Simulate.query(test.env);
-        expect(simulation.queryBuilder.context).toEqual({ actions_history: JSON.stringify(actionsHistory) });
-      })
-
-      it('should add the actionsHistory in the userContext', () => {
-        let simulation = Simulate.query(test.env);
-        expect(simulation.queryBuilder.context['actions_history']).toEqual(JSON.stringify(actionsHistory));
-      })
-
-      it('should add the actionsHistory even if the user context is not specified', () => {
-        options = {
-          mainSearchInterface: mainSearchInterface.env.root,
-          userContext: {}
-        }
-        test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options)
-        let simulation = Simulate.query(test.env);
-        expect(simulation.queryBuilder.context['actions_history']).toEqual(JSON.stringify(actionsHistory));
+        expect(simulation.queryBuilder.context).toBeUndefined();
       })
 
       it('should modify the results searchUid to match the main query', () => {
@@ -152,6 +133,29 @@ module Coveo {
         Simulate.query(mainSearchInterface.env, { results: results });
         let simulation = Simulate.query(test.env);
         expect(simulation.results.searchUid).not.toEqual(uid);
+      })
+
+      describe('exposes option sendActionHistory', () => {
+        it('should add the actionsHistory in the triggered query', () => {
+          let simulation = Simulate.query(test.env);
+          expect(simulation.queryBuilder.actionsHistory).toEqual(JSON.stringify(actionsHistory));
+        })
+
+        it('should add the actionsHistory even if the user context is not specified', () => {
+          options = {
+            mainSearchInterface: mainSearchInterface.env.root
+          }
+          test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options)
+          let simulation = Simulate.query(test.env);
+          expect(simulation.queryBuilder.actionsHistory).toEqual(JSON.stringify(actionsHistory));
+        })
+
+        it('should not send the actionsHistory if false', () => {
+          options.sendActionsHistory = false;
+          test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options)
+          let simulation = Simulate.query(test.env);
+          expect(simulation.queryBuilder.actionsHistory).toBeUndefined();
+        })
       })
 
     })
