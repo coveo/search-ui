@@ -8,6 +8,46 @@ Coveo Search UI framework
     
 All resources will be available under `node_modules/coveo-search-ui/bin`. 
 
+## Basic usage
+
+```
+<!-- Include the library scripts -->
+<script src="js/CoveoJsSearch.js"></script>
+<script src="js/CoveoJsSearch.Dependencies.js"></script>
+<script src="js/templates/templatesNew.js"></script>
+
+<!-- Every DOM element with a class starting with Coveo (uppercase) will instantiate a Component -->
+<body id="search" class='CoveoSearchInterface'>
+    
+    <!-- Every DOM element with a class starting with coveo- (lowercase) is only for css/alignment purpose. -->
+    <div class='coveo-search-section'>
+        
+        <!-- Every Coveo Component can be removed (or added) and none are actually required for the page to "load" -->
+        <div class="CoveoSearchbox"></div>
+    </div>
+    
+    <div class="coveo-facet-column">
+        
+        <!-- The data- attributes on each component allow to pass option for a specific Component instance -->
+        <div class="CoveoFacet" data-title="Author" data-field="@author" data-tab="All"></div>
+        <div class="CoveoFacet" data-title="Year" data-field="@year" data-tab="All"></div>
+    </div>
+
+
+    <script>
+        // Configure an endpoint to perform search.
+        // Coveo.SearchEndpoint.configureCloudEndpoint('MyCoveoCloudEnpointName', 'my-authentification-token');
+        
+        // We provide a sample endpoint with public sources for demo purposes.
+        Coveo.SearchEndpoint.configureSampleEndpoint();
+        // Initialize the framework by targeting the root in the interface.
+        // It does not have to be the body of the document.
+        Coveo.init(document.body);
+    </script>
+</body>
+
+```
+
 ## Build
     npm install -g gulp
     npm install
