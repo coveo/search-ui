@@ -20,7 +20,8 @@ compiler.plugin('done', function () {
 gulp.task('dev', ['setup', 'prepareSass'], function (done) {
   var server = new WebpackDevServer(compiler, {
     contentBase: 'bin/',
-    publicPath: '/js/'
+    publicPath: '/js/',
+    compress: true
   });
   server.listen(8080, 'localhost', function () {
   });

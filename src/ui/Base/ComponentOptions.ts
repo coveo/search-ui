@@ -35,6 +35,7 @@ export interface IComponentOptions<T> {
   section?: string;
   depend?: string;
   priority?: number;
+  deprecated?: string;
 }
 
 export interface IComponentOptionsNumberOption extends IComponentOptionsOption<number>, IComponentOptionsNumberOptionArgs {
@@ -248,12 +249,12 @@ export class ComponentOptions {
   }
 
   static initComponentOptions(element: HTMLElement, component: any, values?: any) {
-    return ComponentOptions.initOptions(element, component.options, values);
+    return ComponentOptions.initOptions(element, component.options, values, component.ID);
   }
 
   static initOptions(element: HTMLElement, options: {
     [name: string]: IComponentOptionsOption<any>
-  }, values?: any) {
+  }, values?: any, componentID?: any) {
     if (values == null) {
       values = {};
     }
@@ -268,6 +269,9 @@ export class ComponentOptions {
         value = values[name];
       } else if (loadFromAttribute != null) {
         value = loadFromAttribute(element, name, optionDefinition);
+        if (value && optionDefinition.deprecated) {
+          console.log(componentID + '.' + name + ' : ' + optionDefinition.deprecated);
+        }
       }
       if (value == null && values[name] == undefined) {
         if (optionDefinition.defaultValue != null) {

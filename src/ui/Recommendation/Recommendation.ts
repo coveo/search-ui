@@ -19,7 +19,7 @@ declare var coveoanalytics: CoveoAnalytics.CoveoUA;
 
 export interface IRecommendationOptions extends ISearchInterfaceOptions {
   mainSearchInterface?: HTMLElement;
-  userContext?: { [name: string]: any };
+  userContext?: string;
   id?: string;
   optionsToUse?: string[];
   sendActionsHistory?: boolean;
@@ -35,6 +35,7 @@ export interface IRecommendationOptions extends ISearchInterfaceOptions {
  */
 export class Recommendation extends SearchInterface {
   static ID = 'Recommendation';
+  private static NEXT_ID = 1;
 
   /**
    * The options for the recommendation component
@@ -50,14 +51,14 @@ export class Recommendation extends SearchInterface {
      * Specifies the user context to send to Coveo analytics.
      * It will be sent with the query alongside the user history to get the recommendations.
      */
-    userContext: ComponentOptions.buildObjectOption(),
+    userContext: ComponentOptions.buildJsonOption(),
 
     /**
      * Specifies the id of the inteface.
      * It is used by the analytics to know which recommendation interface was selected.
-     * The default value is Recommendation
+     * The default value is "Recommendation" for the first one and "Recommendation_{number}" where {number} depends on the number of recommendation interface with default ids in the page for the others. 
      */
-    id: ComponentOptions.buildStringOption({ defaultValue: 'Recommendation' }),
+    id: ComponentOptions.buildStringOption(),
 
     /**
      * Specifies which options from the main {@link QueryBuilder} to use in the triggered query.
@@ -79,8 +80,12 @@ export class Recommendation extends SearchInterface {
   private mainInterfaceQuery: IQuerySuccessEventArgs;
   public mainQuerySearchUID: string;
 
-  constructor(public element: HTMLElement, public options?: IRecommendationOptions, public analyticsOptions?, _window = window) {
+  constructor(public element: HTMLElement, public options: IRecommendationOptions = {}, public analyticsOptions = {}, _window = window) {
     super(element, ComponentOptions.initComponentOptions(element, Recommendation, options), analyticsOptions, _window);
+
+    if (!this.options.id) {
+      this.generateDefaultId();
+    }
 
     if (this.options.mainSearchInterface) {
       this.bindToMainSearchInterface();
@@ -119,7 +124,7 @@ export class Recommendation extends SearchInterface {
 
   private addRecommendationInfoInQuery(data: IBuildingQueryEventArgs) {
     if (!_.isEmpty(this.options.userContext)) {
-      data.queryBuilder.addContext(this.options.userContext);
+      data.queryBuilder.addContext(JSON.parse(this.options.userContext));
     }
     if (this.options.sendActionsHistory) {
       data.queryBuilder.actionsHistory = this.getHistory();
@@ -164,6 +169,16 @@ export class Recommendation extends SearchInterface {
       })
     })
     return events;
+  }
+
+  private generateDefaultId() {
+    let id = 'Recommendation';
+    if (Recommendation.NEXT_ID !== 1) {
+      this.logger.warn('Generating another recommendation default id', 'Consider configuring a human friendly / meaningful id for this interface')
+      id = id + '_' + Recommendation.NEXT_ID;
+    }
+    Recommendation.NEXT_ID++;
+    this.options.id = id;
   }
 
 }
