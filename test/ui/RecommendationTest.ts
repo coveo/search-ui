@@ -114,27 +114,6 @@ module Coveo {
         expect(simulation.queryBuilder.context).toBeUndefined();
       })
 
-      it('should modify the results searchUid to match the main query', () => {
-        let results = FakeResults.createFakeResults();
-        let uid = '123';
-        results.searchUid = uid;
-        Simulate.query(mainSearchInterface.env, { results: results });
-        let simulation = Simulate.query(test.env);
-        expect(simulation.results.searchUid).toEqual(uid);
-      })
-
-      it('should not modify the results searchUid if linkSearchUid option is false', () => {
-        options.linkSearchUid = false;
-        test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options)
-
-        let results = FakeResults.createFakeResults();
-        let uid = '123';
-        results.searchUid = uid;
-        Simulate.query(mainSearchInterface.env, { results: results });
-        let simulation = Simulate.query(test.env);
-        expect(simulation.results.searchUid).not.toEqual(uid);
-      })
-
       describe('exposes option sendActionHistory', () => {
         it('should add the actionsHistory in the triggered query', () => {
           let simulation = Simulate.query(test.env);

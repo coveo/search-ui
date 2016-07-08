@@ -103,6 +103,7 @@ export {PendingSearchAsYouTypeSearchEvent} from './ui/Analytics/PendingSearchAsY
 export {analyticsActionCauseList} from './ui/Analytics/AnalyticsActionListMeta';
 export {NoopAnalyticsClient} from './ui/Analytics/NoopAnalyticsClient';
 export {LiveAnalyticsClient} from './ui/Analytics/LiveAnalyticsClient';
+export {RecommendationAnalyticsClient} from './ui/Analytics/RecommendationAnalyticsClient';
 export {MultiAnalyticsClient} from './ui/Analytics/MultiAnalyticsClient';
 export {Querybox} from './ui/Querybox/Querybox';
 export {SearchButton} from './ui/SearchButton/SearchButton';
