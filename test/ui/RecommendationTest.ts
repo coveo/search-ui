@@ -14,9 +14,9 @@ module Coveo {
       mainSearchInterface = Mock.basicSearchInterfaceSetup(SearchInterface);
       options = {
         mainSearchInterface: mainSearchInterface.env.root,
-        userContext: {
+        userContext: JSON.stringify({
           user_id: userId
-        }
+        })
       }
       store = {
         addElement: (query: IQuery) => { },
@@ -37,8 +37,7 @@ module Coveo {
 
     it('should work if mainInterface is not specified', () => {
       let optionsWithNoMainInterface: IRecommendationOptions = {
-        mainSearchInterface: null,
-        userContext: {}
+        mainSearchInterface: null
       }
 
       expect(() => {
@@ -61,6 +60,11 @@ module Coveo {
         queryBuilder: queryBuilder
       });
       expect(simulation.queryBuilder.expression.build()).toEqual('test')
+    })
+
+    it('should generate a different id by default for each recommendation component', () => {
+      let secondRecommendation = Mock.basicSearchInterfaceSetup<Recommendation>(Recommendation);
+      expect(test.cmp.options.id).not.toEqual(secondRecommendation.cmp.options.id);
     })
 
     describe('when the mainInterface triggered a query', () => {
@@ -103,8 +107,7 @@ module Coveo {
 
       it('should not add the userContext in the triggered query if userContext was not specified', () => {
         options = {
-          mainSearchInterface: mainSearchInterface.env.root,
-          userContext: {}
+          mainSearchInterface: mainSearchInterface.env.root
         }
         test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options)
         let simulation = Simulate.query(test.env);
@@ -140,8 +143,7 @@ module Coveo {
 
         it('should add the actionsHistory even if the user context is not specified', () => {
           options = {
-            mainSearchInterface: mainSearchInterface.env.root,
-            userContext: {}
+            mainSearchInterface: mainSearchInterface.env.root
           }
           test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options)
           let simulation = Simulate.query(test.env);
