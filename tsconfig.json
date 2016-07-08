@@ -241,6 +241,10 @@
     "src/ui/Thumbnail/Thumbnail.ts",
     "src/ui/Triggers/Triggers.ts",
     "src/ui/YouTube/YouTubeThumbnail.ts",
+    "src/ui/ChatterLikedBy/ChatterLikedBy.ts",
+    "src/ui/ChatterPostAttachment/ChatterPostAttachment.ts",
+    "src/ui/ChatterPostedBy/ChatterPostedBy.ts",
+    "src/ui/ChatterTopic/ChatterTopic.ts",
     "src/utils/ColorUtils.ts",
     "src/utils/CookieUtils.ts",
     "src/utils/CurrencyUtils.ts",
@@ -263,6 +267,7 @@
     "src/utils/StreamHighlightUtils.ts",
     "src/utils/StringUtils.ts",
     "src/utils/TimeSpanUtils.ts",
-    "src/utils/Utils.ts"
+    "src/utils/Utils.ts",
+    "src/utils/ChatterUtils.ts"
   ]
 }

@@ -120,7 +120,9 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   public changeToSmallMode() {
-    this.tabSection.insertAfter(this.searchBoxElement);
+    if (this.searchBoxElement) {
+      this.tabSection.insertAfter(this.searchBoxElement);
+    }
   }
 
   private shouldAddTabsToDropdown(): boolean {
