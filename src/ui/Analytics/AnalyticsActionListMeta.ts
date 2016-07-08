@@ -442,5 +442,9 @@ export var analyticsActionCauseList = {
   recommendation: <IAnalyticsActionCause>{
     name: 'recommendation',
     type: 'recommendation'
+  },
+  recommendationOpen: <IAnalyticsActionCause>{
+    name: 'recommendationOpen',
+    type: 'recommendation'
   }
 }

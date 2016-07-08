@@ -21,7 +21,6 @@ export interface IRecommendationOptions extends ISearchInterfaceOptions {
   mainSearchInterface?: HTMLElement;
   userContext?: { [name: string]: any };
   id?: string;
-  linkSearchUid?: boolean;
   optionsToUse?: string[];
   sendActionsHistory?: boolean;
 }
@@ -73,20 +72,12 @@ export class Recommendation extends SearchInterface {
      * However, it could be useful to display side results in a search page.
      * The default value is true
      */
-    sendActionsHistory: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-
-    /**
-     * Specifies if the results of the recommendation query should have the same searchUid as the ones from the main search interface query.
-     * This options should be true only when sendActionsHistory is false because it will prevent logging the recommendation search event in the analytics.
-     * It is used to give info to the {@link Analytics}
-     * The default value is false
-     */
-    linkSearchUid: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'mainSearchInterface' })
+    sendActionsHistory: ComponentOptions.buildBooleanOption({ defaultValue: true })
 
   };
 
   private mainInterfaceQuery: IQuerySuccessEventArgs;
-  private mainQuerySearchUID: string;
+  public mainQuerySearchUID: string;
 
   constructor(public element: HTMLElement, public options?: IRecommendationOptions, public analyticsOptions?, _window = window) {
     super(element, ComponentOptions.initComponentOptions(element, Recommendation, options), analyticsOptions, _window);
@@ -96,7 +87,6 @@ export class Recommendation extends SearchInterface {
     }
 
     $$(this.element).on(QueryEvents.buildingQuery, (e: Event, args: IBuildingQueryEventArgs) => this.handleRecommendationBuildingQuery(args));
-    $$(this.element).on(QueryEvents.querySuccess, (e: Event, args: IQuerySuccessEventArgs) => this.handleRecommendationQuerySuccess(args));
 
     // This is done to allow the component to be included in another search interface without triggering the parent events.
     this.preventEventPropagation();
@@ -111,9 +101,7 @@ export class Recommendation extends SearchInterface {
     $$(this.options.mainSearchInterface).on(QueryEvents.querySuccess, (e: Event, args: IQuerySuccessEventArgs) => {
       this.mainInterfaceQuery = args;
       this.mainQuerySearchUID = args.results.searchUid;
-      if(!this.options.linkSearchUid){
-        this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.recommendation, {});
-      }
+      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.recommendation, {});
       this.queryController.executeQuery();
     })
   }
@@ -121,15 +109,6 @@ export class Recommendation extends SearchInterface {
   private handleRecommendationBuildingQuery(data: IBuildingQueryEventArgs) {
     this.modifyQueryForRecommendation(data);
     this.addRecommendationInfoInQuery(data);
-  }
-
-  private handleRecommendationQuerySuccess(data: IQuerySuccessEventArgs) {
-    if (this.mainQuerySearchUID && this.options.linkSearchUid) {
-      data.results.searchUid = this.mainQuerySearchUID;
-      _.each(data.results.results, (result: IQueryResult) => {
-        result.queryUid = this.mainQuerySearchUID
-      })
-    }
   }
 
   private modifyQueryForRecommendation(data: IBuildingQueryEventArgs) {
