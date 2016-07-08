@@ -18,6 +18,7 @@ export {PendingSearchAsYouTypeSearchEvent} from './ui/Analytics/PendingSearchAsY
 export {analyticsActionCauseList} from './ui/Analytics/AnalyticsActionListMeta';
 export {NoopAnalyticsClient} from './ui/Analytics/NoopAnalyticsClient';
 export {LiveAnalyticsClient} from './ui/Analytics/LiveAnalyticsClient';
+export {RecommendationAnalyticsClient} from './ui/Analytics/RecommendationAnalyticsClient';
 export {MultiAnalyticsClient} from './ui/Analytics/MultiAnalyticsClient';
 export {Querybox} from './ui/Querybox/Querybox';
 export {SearchButton} from './ui/SearchButton/SearchButton';
@@ -95,4 +96,9 @@ export {SearchAlertsMessage} from './ui/SearchAlerts/SearchAlertsMessage';
 export {Text} from './ui/Text/Text';
 export {FoldingForThread} from './ui/Folding/FoldingForThread';
 export {ResponsiveFacets} from './ui/ResponsiveComponents/ResponsiveFacets';
-export {IResponsiveComponent, ResponsiveComponentsManager} from './ui/ResponsiveComponents/ResponsiveComponentsManager'
+export {IResponsiveComponent, ResponsiveComponentsManager} from './ui/ResponsiveComponents/ResponsiveComponentsManager';
+export {ChatterLikedBy} from './ui/ChatterLikedBy/ChatterLikedBy';
+export {ChatterPostAttachment} from './ui/ChatterPostAttachment/ChatterPostAttachment';
+export {ChatterPostedBy} from './ui/ChatterPostedBy/ChatterPostedBy';
+export {ChatterTopic} from './ui/ChatterTopic/ChatterTopic';
+export {ChatterUtils} from './utils/ChatterUtils';

@@ -397,9 +397,9 @@ export class Debug extends RootComponent {
   }
 
   private parseWeights(value: string) {
-    var listOfWeight = value.match(/(\w+(?:\s\w+)*): ([0-9]+)/g);
+    var listOfWeight = value.match(/(\w+(?:\s\w+)*): ([-0-9]+)/g);
     return _.object(_.map(listOfWeight, (weight) => {
-      var weightGroup = weight.match(/^(\w+(?:\s\w+)*): ([0-9]+)$/);
+      var weightGroup = weight.match(/^(\w+(?:\s\w+)*): ([-0-9]+)$/);
       return [weightGroup[1], Number(weightGroup[2])];
     }));
   }

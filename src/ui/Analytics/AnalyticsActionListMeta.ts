@@ -438,5 +438,13 @@ export var analyticsActionCauseList = {
   exportToExcel: <IAnalyticsActionCause>{
     name: 'exportToExcel',
     type: 'misc'
+  },
+  recommendation: <IAnalyticsActionCause>{
+    name: 'recommendation',
+    type: 'recommendation'
+  },
+  recommendationOpen: <IAnalyticsActionCause>{
+    name: 'recommendationOpen',
+    type: 'recommendation'
   }
 }

@@ -1,4 +1,5 @@
 import {Initialization, IInitializationParameters} from './Initialization';
+import {IComponentDefinition} from './Component';
 
 interface IWindow {
   $: any;
@@ -9,6 +10,10 @@ interface IWindow {
 export class CoveoJQuery {
   public static automaticallyCreateComponentsInside(element: HTMLElement, initParameters: IInitializationParameters, ignore?: string[]) {
     return Initialization.automaticallyCreateComponentsInside(element, initParameters, ignore);
+  }
+
+  public static registerAutoCreateComponent(cmp: IComponentDefinition) {
+    return Initialization.registerAutoCreateComponent(cmp);
   }
 }
 
