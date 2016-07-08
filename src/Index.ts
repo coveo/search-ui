@@ -9,6 +9,7 @@ export * from './UIBaseModules';
 export * from './TemplatesModules';
 
 // UI
+export {CoreHelpers} from './ui/Templates/CoreHelpers';
 export {SearchInterface, StandaloneSearchInterface} from './ui/SearchInterface/SearchInterface';
 export {Aggregate} from './ui/Aggregate/Aggregate';
 export {Analytics} from './ui/Analytics/Analytics';

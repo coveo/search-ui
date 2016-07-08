@@ -2,7 +2,7 @@
 const Q = require('q');
 const path = require('path');
 const fs = require('fs');
-const pathToBundle = path.resolve('./bin/Plop.Bundle.ts');
+const pathToBundle = path.resolve('../bin/Plop.Bundle.ts');
 
 try {
   const stats = fs.lstatSync(pathToBundle);
@@ -43,7 +43,7 @@ module.exports = function (plop) {
     actions: (data)=> {
       var actions = [];
       if (data.components.length === 0) {
-        actions.push((answers) => {
+        actions.push(() => {
           return `No component were selected : Exiting.`
         });
       } else {
@@ -52,7 +52,7 @@ module.exports = function (plop) {
         actions.push({
           type: 'add',
           path: path.resolve('../bin/Plop.Bundle.ts'),
-          templateFile: path.resolve('../plopTemplates/plop.bundle.template.hbs')
+          templateFile: path.resolve('./plopTemplates/plop.bundle.template.hbs')
         })
       }
       return actions;
