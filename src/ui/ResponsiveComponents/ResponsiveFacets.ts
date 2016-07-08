@@ -162,7 +162,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     }
     this.dropdownContent.el.style.width = width.toString() + 'px';
 
-    PopupUtils.positionPopup(this.dropdownContent.el, this.tabSection.el, this.coveoRoot.el, this.coveoRoot.el,
+    PopupUtils.positionPopup(this.dropdownContent.el, this.tabSection.el, this.coveoRoot.el,
       { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM });
   }
 
