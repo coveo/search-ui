@@ -4,6 +4,7 @@ import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/Po
 import {EventsUtils} from '../../utils/EventsUtils';
 import {Utils} from '../../utils/Utils';
 import {Logger} from '../../misc/Logger';
+import {Component} from '../Base/Component';
 import {IResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
 import {l} from '../../strings/Strings';
 import '../../../sass/_ResponsiveTabs.scss';
@@ -257,7 +258,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   private manageTabSwapping() {
-    _.each(this.coveoRoot.findAll('.CoveoTab'), tabElement => {
+    _.each(this.coveoRoot.findAll('.' + Component.computeCssClassNameForType(this.ID)), tabElement => {
       let tab = $$(tabElement);
       let fadeOutFadeIn = (event) => {
         let tabsInSection = this.getTabsInTabSection();
@@ -332,7 +333,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   private getTabsInTabSection() {
-    let tabsInSection = this.tabSection.findAll('.CoveoTab');
+    let tabsInSection = this.tabSection.findAll('.' + Component.computeCssClassNameForType(this.ID));
     tabsInSection = _.filter(tabsInSection, (tab) => {
       return !$$(tab).hasClass('coveo-tab-dropdown');
     });
