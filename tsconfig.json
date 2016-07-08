@@ -108,6 +108,7 @@
     "src/ui/Analytics/AnalyticsActionListMeta.ts",
     "src/ui/Analytics/AnalyticsClient.ts",
     "src/ui/Analytics/LiveAnalyticsClient.ts",
+    "src/ui/Analytics/RecommendationAnalyticsClient.ts",
     "src/ui/Analytics/MultiAnalyticsClient.ts",
     "src/ui/Analytics/NoopAnalyticsClient.ts",
     "src/ui/Analytics/PendingSearchAsYouTypeSearchEvent.ts",
