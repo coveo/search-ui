@@ -275,7 +275,7 @@ export class Analytics extends Component {
     let selector = Component.computeSelectorForType(Analytics.ID);
     let found: HTMLElement[] = [];
     found = found.concat($$(element).findAll(selector));
-    if(!(Component.get(element, SearchInterface) instanceof Recommendation)){
+    if (!(Component.get(element, SearchInterface) instanceof Recommendation)) {
       found = this.ignoreElementsInsideRecommendationInterface(found);
     }
     found.push($$(element).closest(Component.computeCssClassName(Analytics)));
@@ -293,8 +293,8 @@ export class Analytics extends Component {
     }
   }
 
-  private static ignoreElementsInsideRecommendationInterface(found: HTMLElement[]): HTMLElement[]{
-    return _.filter(found, (element)=>{
+  private static ignoreElementsInsideRecommendationInterface(found: HTMLElement[]): HTMLElement[] {
+    return _.filter(found, (element) => {
       return $$(element).closest(Component.computeCssClassName(Recommendation)) === undefined;
     });
   }
