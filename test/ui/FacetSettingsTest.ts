@@ -48,6 +48,7 @@ module Coveo {
     it('allow to open and close the popup', function () {
       facetSettings = new FacetSettings(['foo', 'bar'], facet);
       var built = facetSettings.build();
+      facet.root.appendChild(built);
       expect($$(facetSettings.facet.root).find('.coveo-facet-settings-popup')).toBeNull();
       facetSettings.open();
       expect($$(facetSettings.facet.root).find('.coveo-facet-settings-popup')).not.toBeNull();
