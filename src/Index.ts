@@ -194,7 +194,7 @@ let swapVar = () => {
   if (window['Coveo'] == undefined) {
     window['Coveo'] = this;
   } else {
-    Object.keys(this).forEach((k)=> {
+    Object.keys(this).forEach((k) => {
       window['Coveo'][k] = this[k];
     })
   }
