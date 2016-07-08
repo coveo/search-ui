@@ -83,6 +83,13 @@
     * {
       line-height: 40px;
     }
+
+    &.coveo-selected, &.coveo-selected:hover {
+      border-bottom: 0;
+      p {
+        border-bottom: 2px solid $color-greyish-dark-blue;
+      }
+    }
   }
 
   
