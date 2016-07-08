@@ -99,6 +99,7 @@ export class Recommendation extends SearchInterface {
     }
 
     $$(this.element).on(QueryEvents.buildingQuery, (e: Event, args: IBuildingQueryEventArgs) => this.handleRecommendationBuildingQuery(args));
+    $$(this.element).on(QueryEvents.querySuccess, (e: Event, args: IQuerySuccessEventArgs) => this.handleRecommendationQuerySuccess(args));
 
     // This is done to allow the component to be included in another search interface without triggering the parent events.
     this.preventEventPropagation();
@@ -123,13 +124,16 @@ export class Recommendation extends SearchInterface {
     this.addRecommendationInfoInQuery(data);
   }
 
-    }
+  private handleRecommendationQuerySuccess(data: IQuerySuccessEventArgs) {
     if (this.options.hideIfNoResults) {
       if (data.results.totalCount === 0) {
         $$(this.element).hide();
       } else {
         this.element.style.display = '';
       }
+    }
+  }
+
   private modifyQueryForRecommendation(data: IBuildingQueryEventArgs) {
     if (this.mainInterfaceQuery) {
       Utils.copyObjectAttributes(data.queryBuilder, this.mainInterfaceQuery.queryBuilder, this.options.optionsToUse);
