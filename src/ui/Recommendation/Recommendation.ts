@@ -87,7 +87,7 @@ export class Recommendation extends SearchInterface {
      * Hides the component if there a no results / recommendations.
      * The default value is false.
      */
-    hideIfNoResults: ComponentOptions.buildBooleanOption({ defaultValue: false })
+    hideIfNoResults: ComponentOptions.buildBooleanOption({ defaultValue: true })
 
   };
 

@@ -159,11 +159,6 @@ module Coveo {
       })
 
       describe('exposes option hideIfNoResults', () => {
-
-        beforeEach(()=>{
-          test.cmp.options.hideIfNoResults = true;
-        })
-
         it('should hide the interface if there are no recommendations', () => {
           let simulation = Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
           expect(test.cmp.element.style.display).toEqual('none');
