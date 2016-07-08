@@ -285,8 +285,7 @@ export class QuickviewDocument extends Component {
 
     let words: { [index: string]: IWord } = {};
     let highlightsCount = 0;
-
-    _.each($$(window.document.body).findAll('[id^=' + HIGHLIGHT_PREFIX + ']'), (element: HTMLElement, index: number) => {
+    _.each($$(window.document.body).findAll('[id^="' + HIGHLIGHT_PREFIX + '"]'), (element: HTMLElement, index: number) => {
       let idParts = this.getHighlightIdParts(element);
 
       if (idParts) {
@@ -425,16 +424,6 @@ export class QuickviewDocument extends Component {
     })
     wordHtml.append(quickviewName.el);
 
-    let quickviewDownArrow = $$('span');
-    quickviewDownArrow.addClass('coveo-term-for-quickview-down-arrow');
-    let quickviewDownArrowIcon = $$('span');
-    quickviewDownArrowIcon.addClass('coveo-term-for-quickview-down-arrow-icon');
-    quickviewDownArrow.append(quickviewDownArrowIcon.el);
-    quickviewDownArrow.on('click', () => {
-      this.navigate(wordState, false, window);
-    })
-    wordHtml.append(quickviewDownArrow.el);
-
     let quickviewUpArrow = $$('span');
     quickviewUpArrow.addClass('coveo-term-for-quickview-up-arrow');
     let quickviewUpArrowIcon = $$('span');
@@ -444,6 +433,16 @@ export class QuickviewDocument extends Component {
       this.navigate(wordState, true, window);
     })
     wordHtml.append(quickviewUpArrow.el)
+
+    let quickviewDownArrow = $$('span');
+    quickviewDownArrow.addClass('coveo-term-for-quickview-down-arrow');
+    let quickviewDownArrowIcon = $$('span');
+    quickviewDownArrowIcon.addClass('coveo-term-for-quickview-down-arrow-icon');
+    quickviewDownArrow.append(quickviewDownArrowIcon.el);
+    quickviewDownArrow.on('click', () => {
+      this.navigate(wordState, false, window);
+    })
+    wordHtml.append(quickviewDownArrow.el);
 
     wordHtml.el.style.backgroundColor = wordState.color;
     wordHtml.el.style.borderColor = this.getSaturatedColor(wordState.color);
@@ -464,14 +463,13 @@ export class QuickviewDocument extends Component {
     let scroll = this.getScrollingElement(window);
 
     // Un-highlight any currently selected element
-    let current = $$(scroll).find(`[id^=${HIGHLIGHT_PREFIX}:${state.word.index}.${fromIndex}.]`
-    )
+    let current = $$(scroll).find('[id^="' + HIGHLIGHT_PREFIX + ':' + state.word.index + '.' + fromIndex + '"]');
     if (current) {
       current.style.border = '';
     }
 
     // Find and highlight the new element.
-    let element = $$(window.document.body).find(`[id^=${HIGHLIGHT_PREFIX}:${state.word.index}.${toIndex}.]`);
+    let element = $$(window.document.body).find('[id^="' + HIGHLIGHT_PREFIX + ':' + state.word.index + '.' + toIndex + '"]');
     element.style.border = '1px dotted #333';
     state.currentIndex = toIndex;
 
