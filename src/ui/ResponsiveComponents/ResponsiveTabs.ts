@@ -55,7 +55,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
       let currentTab;
 
       if (!this.tabSection.find('.coveo-tab-dropdown-header')) {
-        let facetDropdownHeader = this.tabSection.find('.coveo-facet-dropdown-header-container');
+        let facetDropdownHeader = this.tabSection.find('.coveo-facet-dropdown-header');
         if (facetDropdownHeader) {
           this.dropdownHeader.insertBefore(facetDropdownHeader);
         } else {
@@ -163,7 +163,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
     if (dropdownHeader) {
       virtualTabSection.el.removeChild(dropdownHeader);
     }
-    let facetDropdownHeader = virtualTabSection.find('.coveo-facet-dropdown-header-container');
+    let facetDropdownHeader = virtualTabSection.find('.coveo-facet-dropdown-header');
     facetDropdownHeader && virtualTabSection.el.removeChild(facetDropdownHeader);
 
     virtualTabSection.el.style.position = 'absolute';
