@@ -75,6 +75,12 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.facets.push(facet);
   }
 
+  public handleResizeEvent() {
+    if (this.dropdownHeader.hasClass('coveo-dropdown-header-active')) {
+      this.positionPopup();
+    }
+  }
+
   private buildDropdownContent() {
     this.dropdownContent = $$(this.coveoRoot.find('.coveo-facet-column'));
     let filterByContainer = $$('div', { className: 'coveo-facet-header-filter-by-container' });
