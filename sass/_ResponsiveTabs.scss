@@ -7,9 +7,17 @@
     max-width: 800px;
   }
 
+  .CoveoSettings {
+    margin-left: 0;
+  }
+
+  .CoveoSearchbox {
+    margin-right: 50px;
+  }
+
   .coveo-search-section {
     margin: 0;
-    padding: 54px 20px 47px 20px;
+    padding: 20px 10px 20px 10px;
     background-color: $color-blueish-white;
     margin: 0 auto;
     width: 100%;
@@ -74,6 +82,13 @@
     height: 40px;
     * {
       line-height: 40px;
+    }
+
+    &.coveo-selected, &.coveo-selected:hover {
+      border-bottom: 0;
+      p {
+        border-bottom: 2px solid $color-greyish-dark-blue;
+      }
     }
   }
 
