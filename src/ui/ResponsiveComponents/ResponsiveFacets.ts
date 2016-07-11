@@ -26,7 +26,6 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private previousSibling: Dom;
   private parent: Dom;
   private dropdownHeader: Dom;
-  private dropdownHeaderContainer: Dom;
   private tabSection: Dom;
   private popupBackground: Dom;
   private documentClickListener: EventListener;
@@ -60,13 +59,13 @@ export class ResponsiveFacets implements IResponsiveComponent {
 
   public changeToSmallMode() {
     this.disableFacetPreservePosition();
-    this.tabSection.el.appendChild(this.dropdownHeaderContainer.el);
+    this.tabSection.el.appendChild(this.dropdownHeader.el);
     this.dropdownContent.detach();
   }
 
   public changeToLargeMode() {
     this.enableFacetPreservePosition();
-    this.dropdownHeaderContainer.detach();
+    this.dropdownHeader.detach();
     this.detachDropdown();
     this.dropdownContent.el.removeAttribute('style');
     this.restoreFacetsPosition();
@@ -86,12 +85,10 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private buildDropdownHeader() {
-    this.dropdownHeaderContainer = $$('div', { className: 'coveo-facet-dropdown-header-container' });
     this.dropdownHeader = $$('a', { className: 'coveo-dropdown-header coveo-facet-dropdown-header' });
     let content = $$('p');
     content.text(l('facets'));
     this.dropdownHeader.el.appendChild(content.el);
-    this.dropdownHeaderContainer.el.appendChild(this.dropdownHeader.el);
   }
 
   private bindDropdownHeaderEvents() {
@@ -126,7 +123,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private shouldDetachFacetDropdown(eventTarget: Dom) {
-    return !eventTarget.closest('coveo-facet-column') && !eventTarget.closest('coveo-facet-dropdown-header-container')
+    return !eventTarget.closest('coveo-facet-column') && !eventTarget.closest('coveo-facet-dropdown-header')
       && this.coveoRoot.hasClass('coveo-small-search-interface') && !eventTarget.closest('coveo-facet-settings-popup');
   }
 

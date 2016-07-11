@@ -1,18 +1,9 @@
 @import "Variables.scss";
 
 .CoveoSearchInterface.coveo-small-search-interface {
-  .coveo-facet-dropdown-header-container {
-    display: inline-block;
-    height: 40px;
-    vertical-align: top;
-    p {
-      height: 100%;
-    }
-  }
 
   .coveo-facet-dropdown-header {
-    margin: 0 10px 0 10px;
-    @include align();
+    margin-left: 32px;
   }
 
   .coveo-facet-column.coveo-facet-dropdown-content {
