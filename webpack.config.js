@@ -11,10 +11,13 @@ if (minimize) {
 
 
 module.exports = {
-  entry: ['./src/Dependencies.js', './src/Index.ts'],
+  entry: {
+    'CoveoJsSearch': ['./src/Dependencies.js', './src/Index.ts'],
+    'CoveoJsSearch.Searchbox': './src/SearchboxIndex.ts'
+  },
   output: {
     path: require('path').resolve('./bin/js'),
-    filename: minimize ? 'CoveoJsSearch.min.js' : 'CoveoJsSearch.js',
+    filename: minimize ? '[name].min.js' : '[name].js',
     libraryTarget: 'assign',
     // See Index.ts as for why this need to be a temporary variable
     library: ['var Coveo__temporary'],

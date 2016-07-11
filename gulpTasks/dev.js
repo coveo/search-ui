@@ -6,7 +6,7 @@ const WebpackDevServer = require('webpack-dev-server');
 const buildUtilities = require('../gulpTasks/buildUtilities.js');
 
 var webpackConfig = require('../webpack.config.js');
-webpackConfig.entry.unshift('webpack-dev-server/client?http://localhost:8080/');
+webpackConfig.entry['CoveoJsSearch'].unshift('webpack-dev-server/client?http://localhost:8080/');
 const compiler = webpack(webpackConfig);
 
 compiler.plugin('done', function () {
