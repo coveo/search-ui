@@ -349,7 +349,6 @@ export class ResponsiveTabs implements IResponsiveComponent {
         }
       }
     });
-    console.log(tabsInSection);
     return tabsInSection;
   }
 
