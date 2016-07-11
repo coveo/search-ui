@@ -2,7 +2,7 @@
   "name": "coveo-search-ui",
   "version": "0.0.31",
   "description": "Coveo JavaScript Search Framework",
-  "main": ".bin/js/CoveoJsSearch.js",
+  "main": "./bin/js/CoveoJsSearch.js",
   "scripts": {
     "test": "gulp buildTest && node_modules/karma/bin/karma start",
     "build": "gulp",
