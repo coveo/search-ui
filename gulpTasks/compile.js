@@ -5,7 +5,6 @@ const os = require("os");
 const isWindows = os.platform() === 'win32';
 
 gulp.task('compile', ['addEolDependencies'], shell.task([
-
   // NODE_ENV=production sets an environement variable that will allow other tasks to know when we are building for production.
   (isWindows ? 'set ' : '') + 'NODE_ENV=production', 'node node_modules/webpack/bin/webpack.js'
 ]))

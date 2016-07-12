@@ -50,8 +50,6 @@ import {Initialization} from '../Base/Initialization';
 import {BreadcrumbEvents, IClearBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
 import {ResponsiveFacets} from '../ResponsiveComponents/ResponsiveFacets';
 
-import '../../../sass/_Facet.scss';
-
 export interface IFacetOptions {
   title?: string;
   field?: string;
