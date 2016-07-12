@@ -24,6 +24,12 @@ module Coveo {
       clickElement = null;
     })
 
+    it('should change an interfaceLoad event to recommendationInterfaceLoad', function () {
+      spyOn(client, 'pushSearchEvent');
+      client.logSearchEvent(analyticsActionCauseList.interfaceLoad, {});
+      expect((<any>client).pushSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.recommendationInterfaceLoad, jasmine.any(Object));
+    })
+
     it('should change a documentOpen event to recommendationOpen', function () {
       spyOn(client, 'pushClickEvent');
       client.logClickEvent(analyticsActionCauseList.documentOpen, {}, FakeResults.createFakeResult('foo'), clickElement);
