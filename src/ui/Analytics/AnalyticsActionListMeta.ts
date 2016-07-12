@@ -443,6 +443,10 @@ export var analyticsActionCauseList = {
     name: 'recommendation',
     type: 'recommendation'
   },
+  recommendationInterfaceLoad: <IAnalyticsActionCause>{
+    name: 'recommendationInterfaceLoad',
+    type: 'recommendation'
+  },
   recommendationOpen: <IAnalyticsActionCause>{
     name: 'recommendationOpen',
     type: 'recommendation'

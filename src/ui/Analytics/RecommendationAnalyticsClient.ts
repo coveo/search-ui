@@ -25,6 +25,13 @@ export class RecommendationAnalyticsClient extends LiveAnalyticsClient {
     this.recommendation = <Recommendation>this.bindings.searchInterface;
   }
 
+  public logSearchEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta) {
+    if (actionCause == analyticsActionCauseList.interfaceLoad) {
+      actionCause = analyticsActionCauseList.recommendationInterfaceLoad;
+    }
+    super.logSearchEvent(actionCause, meta);
+  }
+
   public logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement) {
     if (actionCause == analyticsActionCauseList.documentOpen) {
       actionCause = analyticsActionCauseList.recommendationOpen;
