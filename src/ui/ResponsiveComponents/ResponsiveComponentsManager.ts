@@ -38,7 +38,7 @@ export class ResponsiveComponentsManager {
 
   // Register takes a class and will instantiate it after framework initialization has completed.
   public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component: IComponentDefinition) {
-    var searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, true);
+    let searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, true);
     if (searchInterface instanceof SearchInterface && searchInterface.options.enableAutomaticResponsiveMode) {
       root.on(InitializationEvents.afterInitialization, () => {
         let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el == componentManager.coveoRoot.el);
@@ -67,13 +67,14 @@ export class ResponsiveComponentsManager {
   }
 
   constructor(root: Dom) {
+    let searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, true);
     this.coveoRoot = root;
     this.searchBoxElement = this.getSearchBoxElement();
     this.resizeListener = _.debounce(() => {
       for (let i = 0; i < this.responsiveComponents.length; i++) {
         if (this.responsiveComponents[i].needSmallMode()) {
-          if (!this.coveoRoot.hasClass('coveo-small-search-interface')) {
-            this.coveoRoot.addClass('coveo-small-search-interface');
+          if (!searchInterface.isSmallInterface()) {
+            searchInterface.setSmallInterface();
             this.changeToSmallMode();
           }
           this.handleResizeEvent();
@@ -81,8 +82,8 @@ export class ResponsiveComponentsManager {
         }
       }
 
-      if (this.coveoRoot.hasClass('coveo-small-search-interface')) {
-        this.coveoRoot.removeClass('coveo-small-search-interface');
+      if (searchInterface.isSmallInterface()) {
+        searchInterface.unsetSmallInterface();
         this.changeToLargeMode();
       }
       this.handleResizeEvent();

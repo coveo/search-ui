@@ -176,6 +176,8 @@ export class SearchInterface extends RootComponent {
     searchPageUri: ComponentOptions.buildStringOption()
   };
 
+  public static SMALL_INTERFACE_CLASS_NAME = 'coveo-small-search-interface';
+
   private attachedComponents: { [type: string]: BaseComponent[] };
   private isNewDesignAttribute = false;
 
@@ -324,6 +326,18 @@ export class SearchInterface extends RootComponent {
    */
   public isNewDesign() {
     return this.isNewDesignAttribute;
+  }
+
+  public isSmallInterface(): boolean {
+    return $$(this.root).hasClass(SearchInterface.SMALL_INTERFACE_CLASS_NAME);
+  }
+
+  public setSmallInterface(): void {
+    $$(this.root).addClass(SearchInterface.SMALL_INTERFACE_CLASS_NAME);
+  }
+
+  public unsetSmallInterface(): void {
+    $$(this.root).addClass(SearchInterface.SMALL_INTERFACE_CLASS_NAME);
   }
 
   protected initializeAnalytics(): IAnalyticsClient {

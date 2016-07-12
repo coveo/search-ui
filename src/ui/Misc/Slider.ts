@@ -4,6 +4,8 @@ import {DeviceUtils} from '../../utils/DeviceUtils';
 import {SliderEvents, IGraphValueSelectedArgs} from '../../events/SliderEvents';
 import {Utils} from '../../utils/Utils';
 import {InitializationEvents} from '../../events/InitializationEvents';
+import {SearchInterface} from '../SearchInterface/SearchInterface';
+import {Component} from '../Base/Component';
 import d3 = require('d3');
 import _ = require('underscore');
 
@@ -74,7 +76,7 @@ export class Slider {
   private sliderCaption: SliderCaption;
   private sliderGraph: SliderGraph;
 
-  constructor(public element: HTMLElement, public options: ISliderOptions, public root: HTMLElement) {
+  constructor(public element: HTMLElement, public options: ISliderOptions, public root: HTMLElement, searchInterface: SearchInterface) {
     if (this.options.dateField) {
       this.options.start = new Date(this.options.start).getTime();
       this.options.end = new Date(this.options.end).getTime();
@@ -644,7 +646,8 @@ class SliderGraph {
   }
 
   public draw(data: ISliderGraphData[] = this.oldData) {
-    if (data && !this.root.hasClass('coveo-small-search-interface')) {
+    let searchInterface = <SearchInterface>Component.get(this.root.el, SearchInterface, true);
+    if (data && !(searchInterface instanceof SearchInterface && !searchInterface.isSmallInterface())) {
       var sliderOuterWidth = this.slider.element.offsetWidth;
       var sliderOuterHeight = this.slider.element.offsetHeight;
       var width = sliderOuterWidth - this.slider.options.graph.margin.left - this.slider.options.graph.margin.right;
