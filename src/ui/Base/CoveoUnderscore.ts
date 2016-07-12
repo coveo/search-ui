@@ -1,3 +1,5 @@
+export var underscoreInstance;
+
 if (underscoreIsDefined()) {
   setCoveoUnderscore();
 } else {
@@ -10,12 +12,16 @@ if (underscoreIsDefined()) {
 }
 
 function setCoveoUnderscore() {
-  window['Coveo']['_'] = window['_'];
+  if (window['Coveo'] == undefined) {
+    window['Coveo'] = {};
+  }
+  if (window['Coveo']['_'] == undefined) {
+    window['Coveo']['_'] = window['_'];
+    underscoreInstance = window['Coveo']['_'];
+  }
 }
 
 
 function underscoreIsDefined(): boolean {
   return window['_'] != undefined && window['_'].VERSION != undefined && window['_'].each != undefined;
 }
-
-export var underscoreInstance = window['Coveo']['_'];
