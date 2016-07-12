@@ -237,7 +237,10 @@ export class ComponentOptions {
     if (optionArgs && optionArgs.attrName) {
       return optionArgs.attrName;
     }
-    return 'data-' + ComponentOptions.camelCaseToHyphen(name);
+    if (name) {
+      return 'data-' + ComponentOptions.camelCaseToHyphen(name);
+    }
+    return name;
   }
 
   static camelCaseToHyphen(name: string) {
