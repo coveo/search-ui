@@ -61,7 +61,7 @@ export class ResultLink extends Component {
      * It is possible to reference fields from the associated result:
      * Ex: '${clickUri}?id=${title}' will generate something like 'http://uri.com?id=documentTitle'
      * Or from the global scope:
-     * Ex: '${window.location.hostname}/{Coveo.QueryEvents.buildingQuery} will generate something like 'localhost/buildingQuery'
+     * Ex: '${window.location.hostname}/{Foo.Bar} will generate something like 'localhost/fooBar'
      * This option will override the field option.
      * Default is undefined
      */
