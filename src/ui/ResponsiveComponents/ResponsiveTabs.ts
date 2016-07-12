@@ -24,9 +24,9 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private parent: Dom;
   private searchBoxElement: HTMLElement;
   private coveoRoot: Dom;
-  private resizeListener: EventListener;
   private documentClickListener: EventListener;
   private searchInterface: SearchInterface;
+  private tabSectionChildren: Array<HTMLElement> = [];
 
   constructor(root: Dom, ID: string) {
     this.ID = ID;
@@ -40,6 +40,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
     this.tabSection = $$(<HTMLElement>this.coveoRoot.find('.coveo-tab-section'));
     this.manageTabSwapping();
     this.saveTabsPosition();
+    this.bindNukeEvents();
   }
 
   public static init(root: HTMLElement, ID: string, component) {
@@ -52,10 +53,9 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   public handleResizeEvent() {
+    let tabs = this.getTabsInTabSection();
     if (this.shouldAddTabsToDropdown()) {
       let currentTab;
-      let overflowingElements = [];
-      let tabs = this.getTabsInTabSection();
 
       if (!this.tabSection.find('.coveo-tab-dropdown-header')) {
         let facetDropdownHeader = this.tabSection.find('.coveo-facet-dropdown-header');
@@ -81,11 +81,16 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
     } else if (this.shouldRemoveTabsFromDropdown()) {
       let dropdownTabs = this.dropdownContent.findAll('.coveo-tab-dropdown');
+      let lastTabInSection: HTMLElement, current: HTMLElement;
+      if (tabs) {
+        lastTabInSection = tabs.pop();
+      }
 
       while (!this.isOverflowing(this.tabSection.el) && !this.isDropdownEmpty()) {
-        let current = dropdownTabs.shift();
+        current = dropdownTabs.shift();
         this.removeFromDropdown(current);
-        $$(current).insertBefore(this.dropdownHeader.el);
+        this.fromDropdownToTabSection($$(current), lastTabInSection);
+        lastTabInSection = _.clone(current);
       }
 
       if (this.isOverflowing(this.tabSection.el)) {
@@ -105,7 +110,6 @@ export class ResponsiveTabs implements IResponsiveComponent {
   };
 
   public needSmallMode(): boolean {
-    let tabSectionIsOverflowing = this.isOverflowing(this.tabSection.el);
     let win = new Win(window);
 
     if (win.width() <= ResponsiveComponentsManager.MEDIUM_MOBILE_WIDTH) {
@@ -140,11 +144,17 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private emptyDropdown() {
     if (!this.isDropdownEmpty()) {
       let dropdownTabs = this.dropdownContent.findAll('.coveo-tab-dropdown');
-
+      let tabs = this.getTabsInTabSection();
+      let lastTabInSection: HTMLElement;
+      if (tabs) {
+        lastTabInSection = tabs.pop();
+      }
       while (!this.isDropdownEmpty()) {
         let current = dropdownTabs.shift();
         this.removeFromDropdown(current);
         $$(current).insertBefore(this.dropdownHeader.el);
+        this.fromDropdownToTabSection($$(current), lastTabInSection);
+        lastTabInSection = _.clone(current);
       }
     }
   }
@@ -181,11 +191,6 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
   private isOverflowing(el: HTMLElement) {
     return el.clientWidth < el.scrollWidth;
-  }
-
-  private couldNotFindSearchBoxError() {
-    ResponsiveTabs.logger.info('While trying to move the tab section around the search box, could not find an element with class \
-                      coveo-search-section or CoveoSearchBox');
   }
 
   private buildDropdownHeader(): Dom {
@@ -266,6 +271,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
       let fadeOutFadeIn = (event) => {
         let tabsInSection = this.getTabsInTabSection();
         let lastTabInSection = tabsInSection.pop();
+        let lastTabSectionSibling = lastTabInSection.previousSibling;
 
         if (event.propertyName == 'opacity') {
           if (tab.el.style.opacity == '0') {
@@ -273,7 +279,8 @@ export class ResponsiveTabs implements IResponsiveComponent {
             $$(lastTabInSection).addClass('coveo-tab-dropdown');
             tab.replaceWith(lastTabInSection);
             tab.removeClass('coveo-tab-dropdown');
-            tab.insertBefore(this.dropdownHeader.el);
+
+            this.fromDropdownToTabSection(tab, <HTMLElement>lastTabSectionSibling);
 
             // Because of the DOM manipulation, sometimes the animation will not trigger. Accessing the computed styles makes sure
             // the animation will happen.
@@ -287,7 +294,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
             EventsUtils.removePrefixedEvent(tab.el, 'TransitionEnd', fadeOutFadeIn);
           }
         }
-      }
+      };
 
       tab.on('click', () => {
         if (tab.hasClass('coveo-tab-dropdown')) {
@@ -335,11 +342,24 @@ export class ResponsiveTabs implements IResponsiveComponent {
       { horizontal: HorizontalAlignment.INNERLEFT, vertical: VerticalAlignment.BOTTOM });
   }
 
-  private getTabsInTabSection() {
-    let tabsInSection = this.tabSection.findAll('.' + Component.computeCssClassNameForType(this.ID));
-    tabsInSection = _.filter(tabsInSection, (tab) => {
-      return !$$(tab).hasClass('coveo-tab-dropdown');
+  private getTabsInTabSection(): HTMLElement[] {
+    let tabsInSection = [];
+    _.each(this.tabSection.el.children, childElement => {
+      if (Utils.isHtmlElement(childElement)) {
+        let child = $$(<HTMLElement>childElement);
+        if (!child.hasClass('coveo-tab-dropdown') && child.hasClass(Component.computeCssClassNameForType(this.ID))) {
+          tabsInSection.push(child.el);
+        }
+      }
     });
     return tabsInSection;
+  }
+
+  private fromDropdownToTabSection(tab: Dom, lastTabInTabSection: HTMLElement) {
+    if (lastTabInTabSection) {
+      tab.insertAfter(<HTMLElement>lastTabInTabSection);
+    } else {
+      this.tabSection.prepend(tab.el);
+    }
   }
 }

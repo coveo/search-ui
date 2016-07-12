@@ -24,12 +24,12 @@ export class ResponsiveComponentsManager {
 
   public static MEDIUM_MOBILE_WIDTH = 640;
 
-  private static componentManagers: Array<ResponsiveComponentsManager> = [];
+  private static componentManagers: ResponsiveComponentsManager[] = [];
   private static remainingComponentInitializations: number = 0;
 
   private coveoRoot: Dom;
   private resizeListener;
-  private responsiveComponents: Array<IResponsiveComponent> = [];
+  private responsiveComponents: IResponsiveComponent[] = [];
   private tabSection: Dom;
   private searchBoxElement: HTMLElement;
   private isTabActivated: boolean = false;
