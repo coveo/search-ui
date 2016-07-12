@@ -93,7 +93,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private buildDropdownHeader() {
     this.dropdownHeader = $$('a', { className: 'coveo-dropdown-header coveo-facet-dropdown-header' });
     let content = $$('p');
-    content.text(l('facets'));
+    content.text(l('Facets'));
     this.dropdownHeader.el.appendChild(content.el);
   }
 
