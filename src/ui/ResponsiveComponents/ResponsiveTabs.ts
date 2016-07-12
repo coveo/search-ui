@@ -7,7 +7,6 @@ import {Logger} from '../../misc/Logger';
 import {Component} from '../Base/Component';
 import {IResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
 import {l} from '../../strings/Strings';
-import '../../../sass/_ResponsiveTabs.scss';
 import _ = require('underscore');
 
 export class ResponsiveTabs implements IResponsiveComponent {
