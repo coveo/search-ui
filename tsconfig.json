@@ -121,6 +121,7 @@
     "src/ui/Base/ComponentBindings.ts",
     "src/ui/Base/ComponentOptions.ts",
     "src/ui/Base/CoveoJQuery.ts",
+    "src/ui/Base/CoveoUnderscore.ts",
     "src/ui/Base/ExpressionBuilder.ts",
     "src/ui/Base/Initialization.ts",
     "src/ui/Base/QueryBuilder.ts",
