@@ -170,9 +170,9 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
     this.coveoRoot.append(virtualTabSection.el);
 
-    this.coveoRoot.removeClass(SearchInterface.SMALL_INTERFACE_CLASS_NAME);
+    this.searchInterface.unsetSmallInterface();
     let isOverflowing = this.isOverflowing(virtualTabSection.el);
-    this.coveoRoot.addClass(SearchInterface.SMALL_INTERFACE_CLASS_NAME);
+    this.searchInterface.setSmallInterface();
 
 
     virtualTabSection.detach();

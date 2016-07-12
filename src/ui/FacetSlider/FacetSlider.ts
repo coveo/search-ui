@@ -391,7 +391,7 @@ export class FacetSlider extends Component {
     }
     var sliderDiv = $$('div').el;
 
-    this.slider = new Slider(sliderDiv, _.extend({}, this.options, { dateField: this.options.dateField }), this.root, this.searchInterface);
+    this.slider = new Slider(sliderDiv, _.extend({}, this.options, { dateField: this.options.dateField }), this.root);
     $$(sliderDiv).on(SliderEvents.endSlide, (e: MouseEvent, args: IEndSlideEventArgs) => {
       this.handleEndSlide(args);
     });

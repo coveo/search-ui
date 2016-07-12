@@ -76,7 +76,7 @@ export class Slider {
   private sliderCaption: SliderCaption;
   private sliderGraph: SliderGraph;
 
-  constructor(public element: HTMLElement, public options: ISliderOptions, public root: HTMLElement, searchInterface: SearchInterface) {
+  constructor(public element: HTMLElement, public options: ISliderOptions, public root: HTMLElement) {
     if (this.options.dateField) {
       this.options.start = new Date(this.options.start).getTime();
       this.options.end = new Date(this.options.end).getTime();
