@@ -8,7 +8,6 @@ import {Component} from '../Base/Component';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {IResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
 import {l} from '../../strings/Strings';
-import '../../../sass/_ResponsiveTabs.scss';
 import _ = require('underscore');
 
 export class ResponsiveTabs implements IResponsiveComponent {
