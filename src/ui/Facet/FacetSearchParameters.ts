@@ -117,6 +117,7 @@ export class FacetSearchParameters {
       .map((v) => {
         return v.toLowerCase()
       })
+      .uniq()
       .value();
   }
 }
