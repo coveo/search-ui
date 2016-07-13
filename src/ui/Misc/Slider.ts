@@ -1,10 +1,13 @@
 /// <reference path="../../../lib/d3.d.ts" />
-import {$$} from '../../utils/Dom';
+import {$$, Dom} from '../../utils/Dom';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {SliderEvents, IGraphValueSelectedArgs} from '../../events/SliderEvents';
 import {Utils} from '../../utils/Utils';
 import {InitializationEvents} from '../../events/InitializationEvents';
+import {SearchInterface} from '../SearchInterface/SearchInterface';
+import {Component} from '../Base/Component';
 import d3 = require('d3');
+import _ = require('underscore');
 
 declare var Globalize;
 
@@ -613,8 +616,10 @@ class SliderGraph {
   private oldData: ISliderGraphData[];
   private tooltip: HTMLElement;
   private resize: (...args: any[]) => void;
+  private root: Dom;
 
   constructor(public slider: Slider, root: HTMLElement) {
+    this.root = $$(root);
     this.svg = d3.select(slider.element).append('svg').append('g');
     this.x = d3.scale.ordinal();
     this.y = d3.scale.linear();
@@ -626,11 +631,11 @@ class SliderGraph {
     }, this.slider.options.graph.margin || {});
     this.slider.options.graph.animationDuration = this.slider.options.graph.animationDuration || 500;
 
-    this.resize = () => {
+    this.resize = _.debounce(() => {
       this.draw();
-    };
+    }, 250);
     window.addEventListener('resize', this.resize);
-    $$(root).on(InitializationEvents.nuke, this.handleNuke);
+    this.root.on(InitializationEvents.nuke, this.handleNuke);
 
     this.tooltip = $$('div', {
       className: 'coveo-slider-tooltip'
@@ -641,7 +646,8 @@ class SliderGraph {
   }
 
   public draw(data: ISliderGraphData[] = this.oldData) {
-    if (data) {
+    let searchInterface = <SearchInterface>Component.get(this.root.el, SearchInterface, true);
+    if (data && !(searchInterface instanceof SearchInterface && !searchInterface.isSmallInterface())) {
       var sliderOuterWidth = this.slider.element.offsetWidth;
       var sliderOuterHeight = this.slider.element.offsetHeight;
       var width = sliderOuterWidth - this.slider.options.graph.margin.left - this.slider.options.graph.margin.right;
