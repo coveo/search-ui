@@ -336,7 +336,7 @@ export class HierarchicalFacet extends Facet {
       let valFromHierarchy = this.getValueFromHierarchy(v);
       if (valFromHierarchy) {
         let elem = this.getElementFromFacetValueList(v)
-        return elem.style.display == 'block' || elem.style.display == '';
+        return !$$(elem).hasClass('coveo-inactive');
       }
       return false;
     })
@@ -417,6 +417,11 @@ export class HierarchicalFacet extends Facet {
       this.close(valueHierarchy);
     })
     super.reset();
+  }
+
+  public processFacetSearchAllResultsSelected(facetValues: FacetValue[]): void {
+    this.selectMultipleValues(facetValues);
+    this.triggerNewQuery();
   }
 
   protected updateSearchInNewDesign(moreValuesAvailable = true) {
