@@ -85,8 +85,8 @@
 						<section class="tsd-index-section ">
 							<h3>Component Options</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="recommendation.html#options.hideifnoresults" class="tsd-kind-icon">hide<wbr>IfNo<wbr>Results</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="recommendation.html#options.id" class="tsd-kind-icon">id</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="recommendation.html#options.linksearchuid" class="tsd-kind-icon">link<wbr>Search<wbr>Uid</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="recommendation.html#options.mainsearchinterface" class="tsd-kind-icon">main<wbr>Search<wbr>Interface</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="recommendation.html#options.optionstouse" class="tsd-kind-icon">options<wbr>ToUse</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="recommendation.html#options.sendactionshistory" class="tsd-kind-icon">send<wbr>Actions<wbr>History</a></li>
@@ -125,40 +125,39 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Component Options</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.hideifnoresults" class="tsd-anchor"></a>
+					<h3>hide<wbr>IfNo<wbr>Results</h3>
+					<div class="tsd-signature tsd-kind-icon">hide<wbr>IfNo<wbr>Results<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Recommendation/Recommendation.ts#L83">src/ui/Recommendation/Recommendation.ts
+							:83</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Hides the component if there a no results / recommendations.
+							The default value is false.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.id" class="tsd-anchor"></a>
 					<h3>id</h3>
 					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Recommendation/Recommendation.ts#L61">src/ui/Recommendation/Recommendation.ts
-							:61</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Recommendation/Recommendation.ts#L62">src/ui/Recommendation/Recommendation.ts
+							:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies the id of the inteface.
 								It is used by the analytics to know which recommendation interface was selected.
-							The default value is Recommendation</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.linksearchuid" class="tsd-anchor"></a>
-					<h3>link<wbr>Search<wbr>Uid</h3>
-					<div class="tsd-signature tsd-kind-icon">link<wbr>Search<wbr>Uid<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Recommendation/Recommendation.ts#L68">src/ui/Recommendation/Recommendation.ts
-							:68</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies if the results of the recommendation query should have the same searchUid as the ones from the main search interface query.
-								It is used to give info to the <a href="../components/analytics.html">Analytics</a>
-							The default value is true</p>
+							The default value is &quot;Recommendation&quot; for the first one and &quot;Recommendation_{number}&quot; where {number} depends on the number of recommendation interface with default ids in the page for the others.</p>
 						</div>
 					</div>
 				</section>
@@ -169,8 +168,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Recommendation/Recommendation.ts#L47">src/ui/Recommendation/Recommendation.ts
-							:47</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Recommendation/Recommendation.ts#L49">src/ui/Recommendation/Recommendation.ts
+							:49</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -186,15 +185,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Recommendation/Recommendation.ts#L75">src/ui/Recommendation/Recommendation.ts
-							:75</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Recommendation/Recommendation.ts#L69">src/ui/Recommendation/Recommendation.ts
+							:69</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies which options from the main <a href="querybuilder.html">QueryBuilder</a> to use in the triggered query.
 								Ex: <code data-options-to-use="expression, advancedExpression"></code> would add the expression and the advanced expression parts from the main query in the triggered query.
-							The default value is undefined</p>
+							The default value is undefined.</p>
 						</div>
 					</div>
 				</section>
@@ -205,8 +204,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Recommendation/Recommendation.ts#L83">src/ui/Recommendation/Recommendation.ts
-							:83</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Recommendation/Recommendation.ts#L77">src/ui/Recommendation/Recommendation.ts
+							:77</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -214,26 +213,25 @@
 							<p>Specifies whether or not to send the actions history along with the triggered query.
 								Disabling this option means this component won&#39;t be able to get Reveal recommendations.
 								However, it could be useful to display side results in a search page.
-							The default value is true</p>
+							The default value is true.</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.usercontext" class="tsd-anchor"></a>
 					<h3>user<wbr>Context</h3>
-					<div class="tsd-signature tsd-kind-icon">user<wbr>Context<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<div class="tsd-signature tsd-kind-icon">user<wbr>Context<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Recommendation/Recommendation.ts#L54">src/ui/Recommendation/Recommendation.ts
-							:54</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Recommendation/Recommendation.ts#L55">src/ui/Recommendation/Recommendation.ts
+							:55</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies the user context to send to Coveo analytics.
-								It will be sent with the query alongside the user history to get the recommendations.
-							If the option is not present, this component will display the same results as the main search interface.</p>
+							It will be sent with the query alongside the user history to get the recommendations.</p>
 						</div>
 					</div>
 				</section>
@@ -252,8 +250,8 @@
 								<p>Inherited from <a href="searchinterface.html">SearchInterface</a>.<a href="searchinterface.html#attachcomponent">attachComponent</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L269">src/ui/SearchInterface/SearchInterface.ts
-									:269</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L271">src/ui/SearchInterface/SearchInterface.ts
+									:271</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -292,8 +290,8 @@
 								<p>Inherited from <a href="searchinterface.html">SearchInterface</a>.<a href="searchinterface.html#detachcomponent">detachComponent</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L278">src/ui/SearchInterface/SearchInterface.ts
-									:278</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L280">src/ui/SearchInterface/SearchInterface.ts
+									:280</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -332,8 +330,8 @@
 								<p>Inherited from <a href="searchinterface.html">SearchInterface</a>.<a href="searchinterface.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L290">src/ui/SearchInterface/SearchInterface.ts
-									:290</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L292">src/ui/SearchInterface/SearchInterface.ts
+									:292</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -359,8 +357,8 @@
 								<p>Inherited from <a href="searchinterface.html">SearchInterface</a>.<a href="searchinterface.html#getcomponents">getComponents</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L306">src/ui/SearchInterface/SearchInterface.ts
-									:306</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L308">src/ui/SearchInterface/SearchInterface.ts
+									:308</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -401,8 +399,8 @@
 								<p>Inherited from <a href="searchinterface.html">SearchInterface</a>.<a href="searchinterface.html#hidewaitanimation">hideWaitAnimation</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L259">src/ui/SearchInterface/SearchInterface.ts
-									:259</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L261">src/ui/SearchInterface/SearchInterface.ts
+									:261</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -427,8 +425,8 @@
 								<p>Inherited from <a href="searchinterface.html">SearchInterface</a>.<a href="searchinterface.html#isnewdesign">isNewDesign</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L325">src/ui/SearchInterface/SearchInterface.ts
-									:325</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L327">src/ui/SearchInterface/SearchInterface.ts
+									:327</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -453,8 +451,8 @@
 								<p>Inherited from <a href="searchinterface.html">SearchInterface</a>.<a href="searchinterface.html#showwaitanimation">showWaitAnimation</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L249">src/ui/SearchInterface/SearchInterface.ts
-									:249</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L251">src/ui/SearchInterface/SearchInterface.ts
+									:251</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -483,14 +481,12 @@
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
 						<div class="lead">
 							<p>A disabled component will be invisible to the end user<br/>
 							It will also not participate in the query, or listen to {@link ComponentsEvent}</p>
 						</div>
 						<dl class="tsd-comment-tags">
-							<dt>type</dt>
+							<dt class="tsd-comment-flag-type">type</dt>
 							<dd><p>{boolean}</p>
 							</dd>
 						</dl>
@@ -548,8 +544,8 @@
 								<p>Inherited from <a href="searchinterface.html">SearchInterface</a>.<a href="searchinterface.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L187">src/ui/SearchInterface/SearchInterface.ts
-									:187</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L189">src/ui/SearchInterface/SearchInterface.ts
+									:189</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

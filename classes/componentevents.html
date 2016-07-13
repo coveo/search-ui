@@ -88,7 +88,6 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="componentevents.html#on" class="tsd-kind-icon">on</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="componentevents.html#onquerystate" class="tsd-kind-icon">on<wbr>Query<wbr>State</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="componentevents.html#onroot" class="tsd-kind-icon">on<wbr>Root</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="componentevents.html#onrootelement" class="tsd-kind-icon">on<wbr>Root<wbr>Element</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="componentevents.html#one" class="tsd-kind-icon">one</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="componentevents.html#onequerystate" class="tsd-kind-icon">one<wbr>Query<wbr>State</a></li>
@@ -165,8 +164,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L347">src/ui/Base/Component.ts
-									:347</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L333">src/ui/Base/Component.ts
+									:333</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -225,74 +224,6 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-					<a name="onroot" class="tsd-anchor"></a>
-					<h3>on<wbr>Root</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Root&lt;T&gt;<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, handler<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L313">src/ui/Base/Component.ts
-									:313</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Bind on the &quot;root&quot; of the Component. The root is typically the <a href="searchinterface.html">SearchInterface</a><br/>
-										Bind an event using jQuery.
-									TODO Replace with onRootElement when jQuery is finally removed</p>
-								</div>
-							</div>
-							<h4 class="tsd-type-parameters-title">Type parameters</h4>
-							<ul class="tsd-type-parameters">
-								<li>
-									<h4>T</h4>
-								</li>
-							</ul>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>event: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The event for which to register an handler</p>
-									</div>
-								</li>
-								<li>
-									<h5>handler: <span class="tsd-signature-type">function</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The function to execute when the event is triggered</p>
-									</div>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">JQueryEventObject</span>, args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>e: <span class="tsd-signature-type">JQueryEventObject</span></h5>
-														</li>
-														<li>
-															<h5>args: <span class="tsd-signature-type">T</span></h5>
-														</li>
-													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 					<a name="onrootelement" class="tsd-anchor"></a>
 					<h3>on<wbr>Root<wbr>Element</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
@@ -303,15 +234,14 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L324">src/ui/Base/Component.ts
-									:324</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L311">src/ui/Base/Component.ts
+									:311</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Bind on the &quot;root&quot; of the Component. The root is typically the <a href="searchinterface.html">SearchInterface</a><br/>
-										Bind an event using native javascript code.
-									TODO Replace with onRoot when jQuery is finally removed</p>
+									Bind an event using native javascript code.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -415,8 +345,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L359">src/ui/Base/Component.ts
-									:359</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L345">src/ui/Base/Component.ts
+									:345</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -486,16 +416,15 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L336">src/ui/Base/Component.ts
-									:336</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L322">src/ui/Base/Component.ts
+									:322</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Bind on the &quot;root&quot; of the Component. The root is typically the <a href="searchinterface.html">SearchInterface</a><br/>
 										Bind an event using native javascript code.
-										The handler will execute only ONE time.
-									TODO Replace with onRoot when jQuery is finally removed</p>
+									The handler will execute only ONE time.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -552,8 +481,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L369">src/ui/Base/Component.ts
-									:369</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L355">src/ui/Base/Component.ts
+									:355</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -597,8 +526,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L388">src/ui/Base/Component.ts
-									:388</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L374">src/ui/Base/Component.ts
+									:374</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -680,9 +609,6 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 								<a href="componentevents.html#onquerystate" class="tsd-kind-icon">on<wbr>Query<wbr>State</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-								<a href="componentevents.html#onroot" class="tsd-kind-icon">on<wbr>Root</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 								<a href="componentevents.html#onrootelement" class="tsd-kind-icon">on<wbr>Root<wbr>Element</a>
