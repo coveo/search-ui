@@ -384,18 +384,18 @@ export class ComponentOptions {
     return enumAsString != null ? _enum[enumAsString] : null;
   }
 
-  static loadSelectorOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): HTMLElement {
+  static loadSelectorOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>, doc: Document = document): HTMLElement {
     let attributeValue = ComponentOptions.loadStringOption(element, name, option)
-    return Utils.isNonEmptyString(attributeValue) ? <HTMLElement>document.querySelector(attributeValue) : null;
+    return Utils.isNonEmptyString(attributeValue) ? <HTMLElement>doc.querySelector(attributeValue) : null;
   }
 
-  static loadChildHtmlElementOption(element: HTMLElement, name: string, option: IComponentOptionsChildHtmlElementOption): HTMLElement {
+  static loadChildHtmlElementOption(element: HTMLElement, name: string, option: IComponentOptionsChildHtmlElementOption, doc: Document = document): HTMLElement {
     let htmlElement: HTMLElement;
     // Attribute: selector
     let selectorAttr = option.selectorAttr || ComponentOptions.attrNameFromName(name, option) + '-selector';
     let selector = element.getAttribute(selectorAttr) || ComponentOptions.getAttributeFromAlias(element, option);
     if (selector != null) {
-      htmlElement = <HTMLElement>document.body.querySelector(selector);
+      htmlElement = <HTMLElement>doc.body.querySelector(selector);
     }
     // Child
     if (htmlElement == null) {
@@ -421,7 +421,7 @@ export class ComponentOptions {
     return $$(element).findAll(selector);
   }
 
-  static loadTemplateOption(element: HTMLElement, name: string, option: IComponentOptionsTemplateOption): Template {
+  static loadTemplateOption(element: HTMLElement, name: string, option: IComponentOptionsTemplateOption, doc: Document = document): Template {
     if (option.lazy) {
       return new LazyTemplate(element, name, option);
     }
@@ -432,7 +432,7 @@ export class ComponentOptions {
     let selectorAttr = option.selectorAttr || ComponentOptions.attrNameFromName(name, option) + '-selector';
     let selector = element.getAttribute(selectorAttr) || ComponentOptions.getAttributeFromAlias(element, option);
     if (selector != null) {
-      let templateElement = <HTMLElement>document.querySelector(selector);
+      let templateElement = <HTMLElement>doc.querySelector(selector);
       if (templateElement != null) {
         template = ComponentOptions.createResultTemplateFromElement(templateElement);
       }
@@ -468,8 +468,8 @@ export class ComponentOptions {
     return null;
   }
 
-  static findParentScrolling(element: HTMLElement): HTMLElement {
-    while (<Node>element != document && element != null) {
+  static findParentScrolling(element: HTMLElement, doc: Document = document): HTMLElement {
+    while (<Node>element != doc && element != null) {
       if (ComponentOptions.isElementScrollable(element)) {
         if (element.tagName.toLowerCase() !== 'body') {
           return element;
@@ -482,7 +482,7 @@ export class ComponentOptions {
   }
 
   static isElementScrollable(element: HTMLElement) {
-    return $$(element).css('overflow-y') == 'scroll';
+    return $$(element).css('overflow-y') == 'scroll' || element.style.overflowY == 'scroll';
   }
 
   static getAttributeFromAlias(element: HTMLElement, option: IComponentOptions<any>) {

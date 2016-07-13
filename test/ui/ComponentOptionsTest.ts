@@ -1,5 +1,4 @@
 /// <reference path="../Test.ts" />
-
 module Coveo {
   describe('ComponentOptions', () => {
 
@@ -118,10 +117,19 @@ module Coveo {
         });
       });
     });
-    
+
     describe('exposes method', () => {
+      let scrillStyle: HTMLElement;
+      let scrollElem: HTMLElement;
       let elem: HTMLElement;
+      let childElem: HTMLElement;
+      let childElem2: HTMLElement;
+      let doc: Document;
+      let testDiv: HTMLElement;
+      let testTemplate: HTMLElement;
       beforeEach(function () {
+        scrollElem = Dom.createElement('div', { id: 'scrollable', class: 'coveoScrollable' });
+        scrollElem.style.overflowY = 'scroll';
         elem = Dom.createElement('div', {
           id: 'heidi',
           className: 'kloss',
@@ -135,11 +143,40 @@ module Coveo {
           'data-my-list': 'foo&bar&brak',
           'data-my-test-enum': 'bar',
           'data-my-selector': '#CoveoSearchbox',
-          'data-my-child-selector': '#CoveoSearchboxChild'
+          'data-my-child-selector': '#CoveoSearchboxChild',
+          'data-my-template-selector': '#CoveoTemplate',
+          'data-my-template-id': 'CoveoTemplateId'
         });
+        scrollElem.appendChild(elem);
+        childElem = Dom.createElement('div', {
+          id: 'CoveoSearchboxChild',
+          className: 'childKloss coveo-child',
+          type: 'text/html'
+        });
+        elem.appendChild(childElem);
+        childElem2 = Dom.createElement('div', {
+          id: 'CoveoSearchboxChild2',
+          className: 'childKloss coveo-child',
+          type: 'text/html'
+        });
+        elem.appendChild(childElem2);
+
+        doc = document.implementation.createHTMLDocument('');
+        testDiv = doc.createElement('div');
+        testDiv.id = 'CoveoSearchbox';
+        doc.body.insertAdjacentElement('beforeend', testDiv);
+        testTemplate = doc.createElement('div');
+        testTemplate.id = 'CoveoTemplate';
+        testTemplate.setAttribute('type', 'text/html');
+        testTemplate.setAttribute('data-condition', 'testcondition');
+        doc.body.insertAdjacentElement('beforeend', testTemplate);
       });
       afterEach(function () {
         elem = null;
+        childElem = null;
+        doc = null;
+        testDiv = null;
+        testTemplate = null;
       });
       describe('initComponentOptions', () => {
         it('which initializes the options of a component', function () {
@@ -248,38 +285,99 @@ module Coveo {
         });
       });
 
-      var testDiv = document.createElement('div');
-      testDiv.id = 'CoveoSearchbox';
-      var textnode = document.createTextNode("foobar");
-      testDiv.appendChild(textnode);
-      document.body.insertAdjacentElement('beforeend', testDiv);
-
       describe('loadSelectorOption', () => {
         it('which loads a selector option', function () {
-          var option = ComponentOptions.loadSelectorOption(elem, 'mySelector', {});
-          expect(option).toEqual(testDiv);
+          var option = ComponentOptions.loadSelectorOption(elem, 'mySelector', {}, doc);
+          expect(option).toBe(testDiv);
         });
       });
 
       describe('loadChildHtmlElementOption', () => {
         it('which loads an html element option', function () {
-          var option = ComponentOptions.loadChildHtmlElementOption(elem, 'my', {});
-          expect(option).toEqual(testDiv);
+          var option = ComponentOptions.loadChildHtmlElementOption(elem, 'my', {}, doc);
+          expect(option).toBe(testDiv);
         });
         it('which loads an html element option from the IComponentOptionsChildHtmlElementOption\'s option selectorAttr', function () {
-          var option = ComponentOptions.loadChildHtmlElementOption(elem, '', {selectorAttr:'data-my-selector'});
-          expect(option).toEqual(testDiv);
+          var option = ComponentOptions.loadChildHtmlElementOption(elem, '', { selectorAttr: 'data-my-selector' }, doc);
+          expect(option).toBe(testDiv);
         });
-        it('which loads a child html element option', function () {
+        it('which loads a child html element option from the IComponentOptionsChildHtmlElementOption\'s option childSelector', function () {
+          var option = ComponentOptions.loadChildHtmlElementOption(elem, '', { childSelector: '#CoveoSearchboxChild' }, doc);
+          expect(option).toBe(childElem);
+        });
+        it('which loads a child html element option from the provided name as a class selector', function () {
+          var option = ComponentOptions.loadChildHtmlElementOption(elem, 'childKloss', {}, doc);
+          expect(option).toBe(childElem);
+        });
+      });
 
-          let childElem: HTMLElement;
-          childElem = Dom.createElement('div', {
-            id: 'CoveoSearchboxChild',
-            className: 'childKloss'
-          });
-          elem.appendChild(childElem);
-          var option = ComponentOptions.loadChildHtmlElementOption(elem, '', {childSelector:'#CoveoSearchboxChild'});
-          expect(option).toEqual(childElem);
+      describe('loadChildHtmlElementFromSelector', () => {
+        it('which loads a child html element corresponding to the selector', function () {
+          var option = ComponentOptions.loadChildHtmlElementFromSelector(elem, '.childKloss');
+          expect(option).toBe(childElem);
+        });
+        it('which directly loads the parent html element if it corresponds to the selector', function () {
+          var option = ComponentOptions.loadChildHtmlElementFromSelector(elem, '#heidi');
+          expect(option).toBe(elem);
+        });
+      });
+
+      describe('loadChildrenHtmlElementFromSelector', () => {
+        it('which loads all children html elements corresponding to the selector', function () {
+          var option = ComponentOptions.loadChildrenHtmlElementFromSelector(elem, '.childKloss');
+          expect(option).toEqual([childElem, childElem2]);
+        });
+      });
+
+      describe('loadTemplateOption', () => {
+        it('which loads a lazy template if the lazy option is set to true', function () {
+          var option = ComponentOptions.loadTemplateOption(elem, 'myTemplate', { lazy: true });
+          expect(option.getType()).toBe('LazyTemplate');
+        });
+        it('which loads an html template from the document matching the selector in the html element option', function () {
+          var option = ComponentOptions.loadTemplateOption(elem, '', { selectorAttr: 'data-my-template-selector' }, doc);
+          var template = ComponentOptions.createResultTemplateFromElement(testTemplate);
+          expect(option.toHtmlElement()).toEqual(template.toHtmlElement());
+        });
+        it('which loads an html template from the cache matching the id in the html element option', function () {
+          var template = ComponentOptions.createResultTemplateFromElement(testTemplate);
+          //Somehow le unregister après? Impact de faire un register?
+          TemplateCache.registerTemplate('CoveoTemplateId', template);
+          var option = ComponentOptions.loadTemplateOption(elem, '', { idAttr: 'data-my-template-id' }, doc);
+          expect(option.toHtmlElement()).toEqual(template.toHtmlElement());
+        });
+        it('which loads html templates from the html elements matching the child selector in the html element option', function () {
+          var option = ComponentOptions.loadTemplateOption(elem, '', { childSelector: '.coveo-child' }, doc);
+          expect(option.getType()).toEqual('TemplateList');
+        });
+        it('which loads an html template from the html element matching the name in the html element option', function () {
+          var option = ComponentOptions.loadTemplateOption(elem, 'coveoChild', {}, doc);
+          expect(option.getType()).toEqual('TemplateList');
+        });
+      });
+
+      describe('loadResultTemplateFromId', () => {
+        it('which loads an html template from the cache matching the id', function () {
+          var template = ComponentOptions.createResultTemplateFromElement(testTemplate);
+          //Somehow le unregister après? Impact de faire un register?
+          TemplateCache.registerTemplate('CoveoTemplateId', template);
+          var option = ComponentOptions.loadResultTemplateFromId('CoveoTemplateId');
+          expect(option.toHtmlElement()).toEqual(template.toHtmlElement());
+        });
+      });
+
+      describe('loadChildrenResultTemplateFromSelector', () => {
+        it('which loads html templates from the html elements matching the selector', function () {
+          var option = ComponentOptions.loadChildrenResultTemplateFromSelector(elem, '.coveo-child');
+          expect(option.getType()).toEqual('TemplateList');
+        });
+      });
+
+      describe('findParentScrolling', () => {
+        it('which finds a scrollable parent', function () {
+          //Logique de faire le changement dans isElementScrollable?
+          var option = ComponentOptions.findParentScrolling(elem, doc);
+          expect(option).toEqual(scrollElem);
         });
       });
 
