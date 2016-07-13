@@ -187,8 +187,6 @@ module Coveo {
 
     })
 
-
-
   })
 
   function initFakeResult(): IQueryResult {
