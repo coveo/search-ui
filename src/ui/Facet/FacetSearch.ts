@@ -339,7 +339,7 @@ export class FacetSearch {
       this.facetSearchTimeout = undefined;
     }
     if (Utils.exists(this.facetSearchPromise)) {
-      Promise.reject(this.facetSearchPromise).catch(()=>{});
+      Promise.reject(this.facetSearchPromise).catch(() => { });
       this.facetSearchPromise = undefined;
     }
 
