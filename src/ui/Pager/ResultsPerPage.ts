@@ -30,7 +30,6 @@ export class ResultsPerPage extends Component {
   public currentResultsPerPage: number;
 
   private list: HTMLElement;
-  private ignoreNextQuerySuccess = false;
 
   /**
    * Create a new ResultsPerPage<br/>
@@ -82,31 +81,26 @@ export class ResultsPerPage extends Component {
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
     this.reset();
-    if (this.ignoreNextQuerySuccess) {
-      this.ignoreNextQuerySuccess = false;
-    } else {
-      Assert.isNotUndefined(data);
-      let numResultsList: string[] = this.options.numberOfResults;
-      for (var i = 0; i < numResultsList.length; i++) {
+    let numResultsList: string[] = this.options.numberOfResults;
+    for (var i = 0; i < numResultsList.length; i++) {
 
-        var listItemValue = document.createElement('a');
-        $$(listItemValue).text(numResultsList[i]);
+      var listItemValue = document.createElement('a');
+      $$(listItemValue).text(numResultsList[i]);
 
-        var listItem = document.createElement('li');
-        $$(listItem).addClass('coveo-results-per-page-list-item');
-        if (+numResultsList[i] == this.currentResultsPerPage) {
-          $$(listItem).addClass('coveo-active');
-        }
-
-        ((resultsPerPage: number) => {
-          $$(listItem).on('click', () => {
-            this.handleClickPage(+numResultsList[resultsPerPage]);
-          })
-        })(i);
-
-        listItem.appendChild(listItemValue);
-        this.list.appendChild(listItem);
+      var listItem = document.createElement('li');
+      $$(listItem).addClass('coveo-results-per-page-list-item');
+      if (+numResultsList[i] == this.currentResultsPerPage) {
+        $$(listItem).addClass('coveo-active');
       }
+
+      ((resultsPerPage: number) => {
+        $$(listItem).on('click', () => {
+          this.handleClickPage(+numResultsList[resultsPerPage]);
+        })
+      })(i);
+
+      listItem.appendChild(listItemValue);
+      this.list.appendChild(listItem);
     }
   }
   private handleClickPage(resultsPerPage: number) {
