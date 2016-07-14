@@ -20,7 +20,6 @@ const fetch = require('node-fetch');
 try {
   devConfig = require('./conf.js');
 } catch (e) {
-  console.log('conf.js not found. Did you forget to rename the sample file in ./environments ?'.black.bgRed);
   process.exit(1);
 }
 
