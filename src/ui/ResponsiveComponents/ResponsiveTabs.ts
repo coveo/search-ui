@@ -98,7 +98,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
       }
 
       if (this.isDropdownEmpty()) {
-        this.detachDropdown();
+        this.cleanUpDropdown();
       }
     }
 
@@ -123,7 +123,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   public changeToLargeMode() {
     this.restoreTabSectionPosition();
     this.emptyDropdown();
-    this.detachDropdown();
+    this.cleanUpDropdown();
   }
 
   public changeToSmallMode() {
@@ -207,8 +207,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
         this.positionPopup();
         this.dropdownHeader.addClass('coveo-dropdown-header-active');
       } else {
-        this.dropdownContent.detach();
-        this.dropdownHeader.removeClass('coveo-dropdown-header-active');
+        this.closeDropdown();
       }
     });
   }
@@ -225,13 +224,17 @@ export class ResponsiveTabs implements IResponsiveComponent {
       if (Utils.isHtmlElement(event.target)) {
         let eventTarget = $$(<HTMLElement>event.target);
         if (!eventTarget.closest('coveo-tab-list-container') && !eventTarget.closest('coveo-tab-dropdown-header') && !eventTarget.closest('coveo-tab-dropdown')) {
-          this.dropdownContent.detach();
-          this.dropdownHeader.removeClass('coveo-dropdown-header-active');
+          this.closeDropdown();
         }
       }
     };
     $$(document.documentElement).on('click', this.documentClickListener);
   }
+
+  private closeDropdown(): void {
+    this.dropdownContent.detach();
+    this.dropdownHeader.removeClass('coveo-dropdown-header-active');
+  } 
 
   private addToDropdown(el: HTMLElement) {
     if (this.dropdownContent) {
@@ -250,7 +253,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
     }
   }
 
-  private detachDropdown() {
+  private cleanUpDropdown() {
     this.dropdownHeader.removeClass('coveo-dropdown-header-active');
     this.dropdownHeader.detach();
     this.dropdownContent.detach();
