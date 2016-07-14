@@ -3,7 +3,6 @@ import {IComponentDefinition} from './Component';
 import {Assert} from '../../misc/Assert';
 import {Template} from '../Templates/Template';
 import {$$} from '../../utils/Dom';
-import {LazyTemplate} from '../Templates/LazyTemplate';
 import {TemplateCache} from '../Templates/TemplateCache';
 import {TemplateList} from '../Templates/TemplateList';
 import {UnderscoreTemplate} from '../Templates/UnderscoreTemplate';
@@ -66,8 +65,6 @@ export interface IComponentOptionsTemplateOptionArgs extends IComponentOptions<T
   selectorAttr?: string;
   childSelector?: string;
   idAttr?: string;
-  // CAREFULL WITH LAZY: This disable the option to use init option for this option
-  lazy?: boolean;
 }
 
 export interface IComponentOptionsFieldOption extends IComponentOptionsOption<string>, IComponentOptionsFieldOptionArgs {
@@ -422,9 +419,6 @@ export class ComponentOptions {
   }
 
   static loadTemplateOption(element: HTMLElement, name: string, option: IComponentOptionsTemplateOption, doc: Document = document): Template {
-    if (option.lazy) {
-      return new LazyTemplate(element, name, option);
-    }
 
     let template: Template;
 

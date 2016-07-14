@@ -330,10 +330,6 @@ module Coveo {
       });
 
       describe('loadTemplateOption', () => {
-        it('which loads a lazy template if the lazy option is set to true', function () {
-          var option = ComponentOptions.loadTemplateOption(elem, 'myTemplate', { lazy: true });
-          expect(option.getType()).toBe('LazyTemplate');
-        });
         it('which loads an html template from the document matching the selector in the html element option', function () {
           var option = ComponentOptions.loadTemplateOption(elem, '', { selectorAttr: 'data-my-template-selector' }, doc);
           var template = ComponentOptions.createResultTemplateFromElement(testTemplate);
@@ -341,25 +337,23 @@ module Coveo {
         });
         it('which loads an html template from the cache matching the id in the html element option', function () {
           var template = ComponentOptions.createResultTemplateFromElement(testTemplate);
-          //Somehow le unregister après? Impact de faire un register?
           TemplateCache.registerTemplate('CoveoTemplateId', template);
           var option = ComponentOptions.loadTemplateOption(elem, '', { idAttr: 'data-my-template-id' }, doc);
           expect(option.toHtmlElement()).toEqual(template.toHtmlElement());
         });
         it('which loads html templates from the html elements matching the child selector in the html element option', function () {
           var option = ComponentOptions.loadTemplateOption(elem, '', { childSelector: '.coveo-child' }, doc);
-          expect(option.getType()).toEqual('TemplateList');
+          expect(option.getType()).toBe('TemplateList');
         });
         it('which loads an html template from the html element matching the name in the html element option', function () {
           var option = ComponentOptions.loadTemplateOption(elem, 'coveoChild', {}, doc);
-          expect(option.getType()).toEqual('TemplateList');
+          expect(option.getType()).toBe('TemplateList');
         });
       });
 
       describe('loadResultTemplateFromId', () => {
         it('which loads an html template from the cache matching the id', function () {
           var template = ComponentOptions.createResultTemplateFromElement(testTemplate);
-          //Somehow le unregister après? Impact de faire un register?
           TemplateCache.registerTemplate('CoveoTemplateId', template);
           var option = ComponentOptions.loadResultTemplateFromId('CoveoTemplateId');
           expect(option.toHtmlElement()).toEqual(template.toHtmlElement());
@@ -369,15 +363,28 @@ module Coveo {
       describe('loadChildrenResultTemplateFromSelector', () => {
         it('which loads html templates from the html elements matching the selector', function () {
           var option = ComponentOptions.loadChildrenResultTemplateFromSelector(elem, '.coveo-child');
-          expect(option.getType()).toEqual('TemplateList');
+          expect(option.getType()).toBe('TemplateList');
         });
       });
 
       describe('findParentScrolling', () => {
         it('which finds a scrollable parent', function () {
-          //Logique de faire le changement dans isElementScrollable?
           var option = ComponentOptions.findParentScrolling(elem, doc);
-          expect(option).toEqual(scrollElem);
+          expect(option).toBe(scrollElem);
+        });
+      });
+
+      describe('getAttributeFromAlias', () => {
+        it('which gets an attribute of the html element matching the alias', function () {
+          var option = ComponentOptions.getAttributeFromAlias(elem, { alias: 'myAttr' });
+          expect(option).toBe('baz');
+        });
+      });
+
+      describe('createResultTemplateFromElement', () => {
+        it('which creates a result template from the given html element', function () {
+          var option = ComponentOptions.createResultTemplateFromElement(testTemplate);
+          expect(option.getType()).toBe('HtmlTemplate');
         });
       });
 
