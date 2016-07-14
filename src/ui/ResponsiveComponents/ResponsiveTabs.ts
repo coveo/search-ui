@@ -234,7 +234,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private closeDropdown(): void {
     this.dropdownContent.detach();
     this.dropdownHeader.removeClass('coveo-dropdown-header-active');
-  } 
+  }
 
   private addToDropdown(el: HTMLElement) {
     if (this.dropdownContent) {
@@ -291,9 +291,9 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
             tab.el.style.opacity = lastTabInSection.style.opacity = '1';
           } else if (tab.el.style.opacity == '1') {
-            this.dropdownContent.detach();
-            this.dropdownHeader.removeClass('coveo-dropdown-header-active');
+            this.closeDropdown();
             EventsUtils.removePrefixedEvent(tab.el, 'TransitionEnd', fadeOutFadeIn);
+            this.handleResizeEvent();
           }
         }
       };
