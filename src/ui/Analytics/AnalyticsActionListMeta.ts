@@ -146,6 +146,7 @@ export interface IAnalyticsCaseCreationDeflectionMeta {
 
 export interface IAnalyticsPagerMeta {
   pagerNumber: number;
+  currentResultsPerPage: number;
 }
 
 export interface IAnalyticsTriggerNotify {
@@ -408,6 +409,10 @@ export var analyticsActionCauseList = {
   },
   pagerScrolling: <IAnalyticsActionCause>{
     name: 'pagerScrolling',
+    type: 'getMoreResults'
+  },
+  pagerResize: <IAnalyticsActionCause>{
+    name: 'pagerResize',
     type: 'getMoreResults'
   },
   searchFromLink: <IAnalyticsActionCause>{

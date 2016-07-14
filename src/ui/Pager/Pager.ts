@@ -39,7 +39,7 @@ export class Pager extends Component {
         if (DeviceUtils.isMobileDevice()) {
           return 3;
         } else {
-          return 10;
+          return 5;
         }
       },
       min: 1
@@ -113,8 +113,9 @@ export class Pager extends Component {
   public setPage(pageNumber: number, analyticCause: IAnalyticsActionCause = analyticsActionCauseList.pagerNumber) {
     Assert.exists(pageNumber);
     this.currentPage = Math.max(Math.min(pageNumber, 1000), 1);
+    this.queryController.options.page = this.currentPage;
     this.updateQueryStateModel(this.getFirstResultNumber(this.currentPage));
-    this.usageAnalytics.logCustomEvent<IAnalyticsPagerMeta>(analyticCause, { pagerNumber: this.currentPage }, this.element);
+    this.usageAnalytics.logCustomEvent<IAnalyticsPagerMeta>(analyticCause, { pagerNumber: this.currentPage, currentResultsPerPage: this.queryController.options.resultsPerPage }, this.element);
     this.queryController.executeQuery({
       ignoreWarningSearchEvent: true,
       keepLastSearchUid: true,
@@ -173,7 +174,6 @@ export class Pager extends Component {
         for (var i = pagerBoundary.start; i <= pagerBoundary.end; i++) {
 
           var listItemValue = document.createElement('a');
-          $$(listItemValue).addClass('coveo-pager-anchor');
           $$(listItemValue).text(i.toString(10));
 
           var listItem = document.createElement('li');
@@ -239,7 +239,7 @@ export class Pager extends Component {
   private renderNavigationButton(pagerBoundary: { start: number; end: number; lastResultPage: number; currentPage: number; }, list: HTMLElement) {
     if (this.currentPage > 1) {
       var previous = document.createElement('li');
-      $$(previous).addClass(['coveo-pager-previous', 'coveo-pager-anchor', 'coveo-pager-list-item']);
+      $$(previous).addClass(['coveo-pager-previous']);
       var buttonLink = document.createElement('a');
       var buttonImg = document.createElement('span');
       buttonLink.appendChild(buttonImg);
@@ -251,7 +251,7 @@ export class Pager extends Component {
 
     if (this.currentPage < pagerBoundary.lastResultPage) {
       var next = document.createElement('li');
-      $$(next).addClass(['coveo-pager-next', 'coveo-pager-anchor', 'coveo-pager-list-item']);
+      $$(next).addClass(['coveo-pager-next']);
       var buttonLink = document.createElement('a');
       var buttonImg = document.createElement('span');
       buttonLink.appendChild(buttonImg);

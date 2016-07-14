@@ -31,6 +31,7 @@ export interface ISearchInterfaceOptions {
   enableAutomaticResponsiveMode?: boolean;
   useLocalStorageForHistory?: boolean;
   resultsPerPage?: number;
+  page?: number;
   excerptLength?: number;
   expression?: string;
   filterField?: string;
@@ -86,6 +87,11 @@ export class SearchInterface extends RootComponent {
      * Default is 10.
      */
     resultsPerPage: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 0 }),
+    /**
+     * Specifies the current page.<br/>
+     * Default is 1.
+     */
+    page: ComponentOptions.buildNumberOption({ defaultValue: 1, min: 1 }),
     /**
      * Specifies the number of characters of the excerpt to get at query time and display for each query result.<br/>
      * This setting is global and can not be modified on a per result basis.<br/>
