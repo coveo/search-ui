@@ -24,6 +24,10 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
     return this.endpoint.getBaseUri();
   }
 
+  public getBaseAlertsUri() {
+    return this.endpoint.getBaseAlertsUri();
+  }
+
   public getAuthenticationProviderUri(provider: string, returnUri: string, message: string): string {
     return this.endpoint.getAuthenticationProviderUri(provider, returnUri, message);
   }
