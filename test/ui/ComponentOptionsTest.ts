@@ -119,7 +119,6 @@ module Coveo {
     });
 
     describe('exposes method', () => {
-      let scrillStyle: HTMLElement;
       let scrollElem: HTMLElement;
       let elem: HTMLElement;
       let childElem: HTMLElement;
@@ -172,8 +171,10 @@ module Coveo {
         doc.body.insertAdjacentElement('beforeend', testTemplate);
       });
       afterEach(function () {
+        scrollElem = null;
         elem = null;
         childElem = null;
+        childElem2 = null;
         doc = null;
         testDiv = null;
         testTemplate = null;
