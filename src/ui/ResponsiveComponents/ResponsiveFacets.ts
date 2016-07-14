@@ -150,7 +150,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private positionPopup() {
-    let facetList = this.dropdownContent.findAll('.CoveoFacet');
+    let facetList = this.dropdownContent.findAll('.CoveoFacet, .CoveoFacetSlider, .CoveoFacetRange, .CoveoHierarchicalFacet');
     $$(facetList[facetList.length - 1]).addClass('coveo-last-facet');
 
     this.dropdownHeader.el.style.zIndex = ResponsiveFacets.ACTIVE_FACET_HEADER_Z_INDEX;
