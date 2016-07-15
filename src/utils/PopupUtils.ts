@@ -1,3 +1,5 @@
+import {$$} from './Dom'
+
 export interface IPosition {
   vertical: VerticalAlignment;
   horizontal: HorizontalAlignment;
@@ -35,17 +37,18 @@ interface IElementBoundary {
 }
 
 export class PopupUtils {
-  static positionPopup(popUp: HTMLElement, nextTo: HTMLElement, boundary: HTMLElement, desiredPosition: IPosition, checkForBoundary = 0) {
-    if (nextTo.parentElement) {
+  static positionPopup(popUp: HTMLElement, nextTo: HTMLElement, appendTo: HTMLElement, boundary: HTMLElement, desiredPosition: IPosition, checkForBoundary = 0) {
+    /*if (nextTo.parentElement) {
       nextTo.parentElement.appendChild(popUp);
     } else {
       document.body.appendChild(popUp);
-    }
+    }*/
+    appendTo.appendChild(popUp);
     desiredPosition.verticalOffset = desiredPosition.verticalOffset ? desiredPosition.verticalOffset : 0;
     desiredPosition.horizontalOffset = desiredPosition.horizontalOffset ? desiredPosition.horizontalOffset : 0;
 
-    let popUpOriginalPosition = this.getPositionRelativeToOffsetParent(popUp);
-    let finalPopUpPosition = this.getPositionRelativeToOffsetParent(nextTo);
+    let popUpOriginalPosition = this.getOffset(popUp);
+    let finalPopUpPosition = this.getOffset(nextTo);
     PopupUtils.basicVerticalAlignment(finalPopUpPosition, popUp, nextTo, desiredPosition);
     PopupUtils.basicHorizontalAlignment(finalPopUpPosition, popUp, nextTo, desiredPosition);
     PopupUtils.finalAdjustement(popUpOriginalPosition, finalPopUpPosition, popUp, desiredPosition);
@@ -67,7 +70,7 @@ export class PopupUtils {
       }
       if (checkBoundary.vertical != 'ok' || checkBoundary.horizontal != 'ok') {
         let newDesiredPosition = PopupUtils.alignInsideBoundary(desiredPosition, checkBoundary);
-        PopupUtils.positionPopup(popUp, nextTo, boundary, newDesiredPosition, checkForBoundary + 1);
+        PopupUtils.positionPopup(popUp, nextTo, boundary, appendTo, newDesiredPosition, checkForBoundary + 1);
       }
     }
   }
@@ -178,8 +181,47 @@ export class PopupUtils {
     return ret;
   }
 
-  private static getPositionRelativeToOffsetParent(el: HTMLElement) {
-    let rect: IOffset = { left: el.offsetLeft, top: el.offsetTop };
-    return rect;
+  private static getOffset(el: HTMLElement) {
+    let rect = el.getBoundingClientRect();
+    let doc = el.ownerDocument;
+    let docElem = doc.documentElement;
+
+    return {
+      top: rect.top + window.pageYOffset - docElem.clientTop,
+      left: rect.left + window.pageXOffset - docElem.clientLeft
+    };
+    //let rect: IOffset = { left: el.offsetLeft, top: el.offsetTop };
+    //return rect;
+  }
+  private static getPosition(el: HTMLElement) {
+    // Get *real* offsetParent
+    let wrappedElement = $$(el);
+    let offsetParent = this.getOffsetParent(el);
+
+    // Get correct offsets
+    let offset = this.getOffset(el);
+    let parentOffset = {top: 0, left: 0};
+			// Add offsetParent borders
+    parentOffset = {
+      top: parentOffset.top + parseInt(wrappedElement.css('borderTopWidth')),
+      left: parentOffset.left + parseInt(wrappedElement.css('borderLeftWidth'))
+    };
+
+		// Subtract parent offsets and element margins
+    return {
+      top: offset.top - parentOffset.top - jQuery.css( elem, "marginTop", true ),
+      left: offset.left - parentOffset.left - jQuery.css( elem, "marginLeft", true )
+    };
+  }
+
+  private static getOffsetParent(el: HTMLElement) {
+  let offsetParent = el.offsetParent;
+
+  while ( offsetParent && $$(el).css('position') === "static" ) {
+    offsetParent = offsetParent.offsetParent;
+  }
+
+  return offsetParent || documentElement;
+
   }
 }
