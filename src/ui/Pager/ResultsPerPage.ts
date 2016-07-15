@@ -24,10 +24,14 @@ export class ResultsPerPage extends Component {
    * @componentOptions
    */
   static options: IResultsPerPageOptions = {
+    /**
+    * Specifies the possible values of the number of results to display per page.<br/>
+    * The default value is 10, 50, 100 
+    */
     numberOfResults: ComponentOptions.buildListOption({ defaultValue: ['10', '50', '100'] })
   }
 
-  public currentResultsPerPage: number;
+  private currentResultsPerPage: number;
 
   private list: HTMLElement;
 
@@ -43,28 +47,22 @@ export class ResultsPerPage extends Component {
     this.options = ComponentOptions.initComponentOptions(element, ResultsPerPage, options);
 
     this.currentResultsPerPage = +this.options.numberOfResults[0];
+    this.queryController.options.resultsPerPage = this.currentResultsPerPage;
 
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.queryError, () => this.handleQueryError());
-
-    var span = document.createElement('span');
-    $$(span).addClass('coveo-results-per-page-text');
-    $$(span).setHtml('Results per page:');
-    element.appendChild(span);
-    this.list = document.createElement('ul');
-    $$(this.list).addClass('coveo-results-per-page-list');
-    element.appendChild(this.list);
+    this.initComponent(element);
   }
 
   /**
-   * Set the current page, and execute a query.<br/>
-   * Log the required analytics event (pagerNumber by default)
-   * @param pageNumber
+   * Set the current number of reults per page, and execute a query.<br/>
+   * Log the required analytics event (pagerResize by default)
+   * @param resultsPerPage
    * @param analyticCause
    */
   public setResultsPerPage(resultsPerPage: number, analyticCause: IAnalyticsActionCause = analyticsActionCauseList.pagerResize) {
     Assert.exists(resultsPerPage);
-    Assert.check(this.options.numberOfResults.indexOf(resultsPerPage.toString(10)) != -1);
+    Assert.check(this.options.numberOfResults.indexOf(resultsPerPage.toString()) != -1);
     this.currentResultsPerPage = resultsPerPage;
     this.queryController.options.resultsPerPage = this.currentResultsPerPage;
     this.usageAnalytics.logCustomEvent<IAnalyticsPagerMeta>(analyticCause, { pagerNumber: this.queryController.options.page, currentResultsPerPage: this.currentResultsPerPage }, this.element);
@@ -73,6 +71,16 @@ export class ResultsPerPage extends Component {
       keepLastSearchUid: true,
       origin: this
     });
+  }
+
+  private initComponent(element: HTMLElement) {
+    var span = document.createElement('span');
+    $$(span).addClass('coveo-results-per-page-text');
+    $$(span).setHtml('Results per page:');
+    element.appendChild(span);
+    this.list = document.createElement('ul');
+    $$(this.list).addClass('coveo-results-per-page-list');
+    element.appendChild(this.list);
   }
 
   private handleQueryError() {
@@ -85,6 +93,7 @@ export class ResultsPerPage extends Component {
     for (var i = 0; i < numResultsList.length; i++) {
 
       var listItemValue = document.createElement('a');
+      $$(listItemValue).addClass('coveo-results-per-page-list-item-text');
       $$(listItemValue).text(numResultsList[i]);
 
       var listItem = document.createElement('li');

@@ -75,6 +75,24 @@ module Coveo {
       expect($$(anchors[anchors.length - 1]).text()).toBe('10');
     })
 
+    it('should render the pager boundary correctly when the number of results per page changes', function () {
+      // First results start at 70.
+      // Pager displays 10 pages by default, and 10 results per page.
+      // So the total range should be from results 20 to results 110 (page #3 to page #12)
+      test.env.queryController.options.resultsPerPage = 20;
+
+      var builder = new QueryBuilder();
+      builder.firstResult = 70;
+      Simulate.query(test.env, {
+        query: builder.build(),
+        results: FakeResults.createFakeResults(1000)
+      })
+
+      var anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
+      expect($$(anchors[0]).text()).toBe('2');
+      expect($$(anchors[anchors.length - 1]).text()).toBe('6');
+    })
+
     it('should reset page number on a new query if the origin is not a pager', function () {
       // origin not available -> reset
       test.cmp.setPage(5);
@@ -108,13 +126,13 @@ module Coveo {
 
       it('should log the proper event when hitting next page', function () {
         test.cmp.nextPage();
-        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerNext, { pagerNumber: 2, currentResultsPerPage: 10  }, test.cmp.element);
+        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerNext, { pagerNumber: 2, currentResultsPerPage: 10 }, test.cmp.element);
       })
 
       it('should log the proper event when hitting previous page', function () {
         test.cmp.setPage(3);
         test.cmp.previousPage();
-        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerPrevious, { pagerNumber: 2, currentResultsPerPage: 10  }, test.cmp.element);
+        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerPrevious, { pagerNumber: 2, currentResultsPerPage: 10 }, test.cmp.element);
       })
     })
 
