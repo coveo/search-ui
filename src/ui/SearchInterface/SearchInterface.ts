@@ -337,7 +337,7 @@ export class SearchInterface extends RootComponent {
   }
 
   public unsetSmallInterface(): void {
-    $$(this.root).addClass(SearchInterface.SMALL_INTERFACE_CLASS_NAME);
+    $$(this.root).removeClass(SearchInterface.SMALL_INTERFACE_CLASS_NAME);
   }
 
   protected initializeAnalytics(): IAnalyticsClient {

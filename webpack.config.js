@@ -5,6 +5,7 @@ const failPlugin = require('webpack-fail-plugin');
 
 // Fail plugin will allow the webpack ts-loader to fail correctly when the TS compilation fails
 var plugins = [failPlugin];
+
 if (minimize) {
   plugins.push(new webpack.optimize.UglifyJsPlugin());
 }
@@ -18,9 +19,9 @@ module.exports = {
   output: {
     path: require('path').resolve('./bin/js'),
     filename: minimize ? '[name].min.js' : '[name].js',
-    libraryTarget: 'assign',
+    libraryTarget: 'umd',
     // See Index.ts as for why this need to be a temporary variable
-    library: ['var Coveo__temporary'],
+    library: 'Coveo__temporary',
     publicPath : '/js/'
   },
   resolve: {
@@ -33,16 +34,13 @@ module.exports = {
       'jstz': __dirname + '/lib/jstz.min.js',
       'magic-box': __dirname + '/node_modules/coveomagicbox/bin/MagicBox.min.js',
       'default-language': __dirname + '/src/strings/DefaultLanguage.js',
-      'finally': __dirname + '/lib/finally.js',
       'underscore': __dirname + '/node_modules/underscore/underscore-min.js'
     }
   },
   devtool: 'source-map',
   module: {
     loaders: [
-      { test: /\.ts$/, loader: 'ts-loader' },
-      { test: /\.scss$/, loaders: ['style?insertAt=bottom', 'css?sourceMap', 'resolve-url', 'sass?sourceMap'] },
-      { test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'url?limit=8182' }
+      { test: /\.ts$/, loader: 'ts-loader' }
     ]
   },
   plugins: plugins,

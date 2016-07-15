@@ -8,7 +8,6 @@ import {Component} from '../Base/Component';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {IResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
 import {l} from '../../strings/Strings';
-import '../../../sass/_ResponsiveTabs.scss';
 import _ = require('underscore');
 
 export class ResponsiveTabs implements IResponsiveComponent {
@@ -99,7 +98,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
       }
 
       if (this.isDropdownEmpty()) {
-        this.detachDropdown();
+        this.cleanUpDropdown();
       }
     }
 
@@ -124,7 +123,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   public changeToLargeMode() {
     this.restoreTabSectionPosition();
     this.emptyDropdown();
-    this.detachDropdown();
+    this.cleanUpDropdown();
   }
 
   public changeToSmallMode() {
@@ -208,8 +207,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
         this.positionPopup();
         this.dropdownHeader.addClass('coveo-dropdown-header-active');
       } else {
-        this.dropdownContent.detach();
-        this.dropdownHeader.removeClass('coveo-dropdown-header-active');
+        this.closeDropdown();
       }
     });
   }
@@ -226,12 +224,16 @@ export class ResponsiveTabs implements IResponsiveComponent {
       if (Utils.isHtmlElement(event.target)) {
         let eventTarget = $$(<HTMLElement>event.target);
         if (!eventTarget.closest('coveo-tab-list-container') && !eventTarget.closest('coveo-tab-dropdown-header') && !eventTarget.closest('coveo-tab-dropdown')) {
-          this.dropdownContent.detach();
-          this.dropdownHeader.removeClass('coveo-dropdown-header-active');
+          this.closeDropdown();
         }
       }
     };
     $$(document.documentElement).on('click', this.documentClickListener);
+  }
+
+  private closeDropdown(): void {
+    this.dropdownContent.detach();
+    this.dropdownHeader.removeClass('coveo-dropdown-header-active');
   }
 
   private addToDropdown(el: HTMLElement) {
@@ -251,7 +253,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
     }
   }
 
-  private detachDropdown() {
+  private cleanUpDropdown() {
     this.dropdownHeader.removeClass('coveo-dropdown-header-active');
     this.dropdownHeader.detach();
     this.dropdownContent.detach();
@@ -289,9 +291,9 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
             tab.el.style.opacity = lastTabInSection.style.opacity = '1';
           } else if (tab.el.style.opacity == '1') {
-            this.dropdownContent.detach();
-            this.dropdownHeader.removeClass('coveo-dropdown-header-active');
+            this.closeDropdown();
             EventsUtils.removePrefixedEvent(tab.el, 'TransitionEnd', fadeOutFadeIn);
+            this.handleResizeEvent();
           }
         }
       };
