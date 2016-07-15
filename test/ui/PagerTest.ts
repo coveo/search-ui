@@ -70,10 +70,9 @@ module Coveo {
         results: FakeResults.createFakeResults(1000)
       })
 
-      var anchors = $$(test.cmp.element).findAll('a.coveo-pager-anchor');
-
-      expect($$(anchors[0]).text()).toBe('3');
-      expect($$(anchors[anchors.length - 1]).text()).toBe('12');
+      var anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
+      expect($$(anchors[0]).text()).toBe('6');
+      expect($$(anchors[anchors.length - 1]).text()).toBe('10');
     })
 
     it('should reset page number on a new query if the origin is not a pager', function () {
@@ -104,18 +103,18 @@ module Coveo {
 
       it('should log the proper event when selecting a page directly', function () {
         test.cmp.setPage(15);
-        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerNumber, { pagerNumber: 15 }, test.cmp.element);
+        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerNumber, { pagerNumber: 15, currentResultsPerPage: 10 }, test.cmp.element);
       })
 
       it('should log the proper event when hitting next page', function () {
         test.cmp.nextPage();
-        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerNext, { pagerNumber: 2 }, test.cmp.element);
+        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerNext, { pagerNumber: 2, currentResultsPerPage: 10  }, test.cmp.element);
       })
 
       it('should log the proper event when hitting previous page', function () {
         test.cmp.setPage(3);
         test.cmp.previousPage();
-        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerPrevious, { pagerNumber: 2 }, test.cmp.element);
+        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerPrevious, { pagerNumber: 2, currentResultsPerPage: 10  }, test.cmp.element);
       })
     })
 
@@ -128,7 +127,7 @@ module Coveo {
         Simulate.query(test.env, {
           results: FakeResults.createFakeResults(1000)
         });
-        expect($$(test.cmp.element).findAll('a.coveo-pager-anchor').length).toBe(22);
+        expect($$(test.cmp.element).findAll('a.coveo-pager-list-item-text').length).toBe(22);
       })
 
       it('enableNavigationButton can enable or disable nav buttons', function () {
@@ -162,14 +161,14 @@ module Coveo {
           maxNumberOfPages: 5
         })
         var builder = new QueryBuilder();
-        builder.firstResult = 70;
+        builder.firstResult = 30;
 
         Simulate.query(test.env, {
           query: builder.build(),
           results: FakeResults.createFakeResults(1000)
         })
 
-        var anchors = $$(test.cmp.element).findAll('a.coveo-pager-anchor')
+        var anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text')
         expect($$(anchors[anchors.length - 1]).text()).toBe('5');
       })
     })

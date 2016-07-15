@@ -174,6 +174,7 @@ export class Pager extends Component {
         for (var i = pagerBoundary.start; i <= pagerBoundary.end; i++) {
 
           var listItemValue = document.createElement('a');
+          $$(listItemValue).addClass('coveo-pager-list-item-text');
           $$(listItemValue).text(i.toString(10));
 
           var listItem = document.createElement('li');
