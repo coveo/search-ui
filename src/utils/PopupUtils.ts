@@ -209,11 +209,14 @@ export class PopupUtils {
 
 		// Subtract parent offsets and element margins
     return {
-      top: offset.top - parentOffset.top - jQuery.css( elem, "marginTop", true ),
+      top: offset.top - parentOffset.top - wrappedElement.css( elem, "marginTop", true ),
       left: offset.left - parentOffset.left - jQuery.css( elem, "marginLeft", true )
     };
   }
 
+  private static parseCssNumberValue(value): number {
+    
+  }
   private static getOffsetParent(el: HTMLElement) {
   let offsetParent = el.offsetParent;
 
