@@ -81,6 +81,15 @@ module Coveo {
         window['Coveo']['test'] = undefined;
       })
 
+      it('should support nested external fields with more than 2 keys', () => {
+        window['Coveo']['test'] = { key: 'testExternal' };
+        let hrefTemplate = '${Coveo.test.key}';
+        test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { hrefTemplate: hrefTemplate }, fakeResult);
+        test.cmp.openLinkInNewWindow();
+        expect(window.open).toHaveBeenCalledWith('testExternal', jasmine.anything());
+        window['Coveo']['test'] = undefined;
+      })
+
     })
 
     it('sends an analytics event on context menu', () => {
