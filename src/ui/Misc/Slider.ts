@@ -652,7 +652,7 @@ class SliderGraph {
 
   public draw(data: ISliderGraphData[] = this.oldData) {
     let searchInterface = <SearchInterface>Component.get(this.root.el, SearchInterface, true);
-    if (data && !(searchInterface instanceof SearchInterface && !searchInterface.isSmallInterface())) {
+    if (data && searchInterface instanceof SearchInterface && !searchInterface.isSmallInterface()) {
       var sliderOuterWidth = this.slider.element.offsetWidth;
       var sliderOuterHeight = this.slider.element.offsetHeight;
       var width = sliderOuterWidth - this.slider.options.graph.margin.left - this.slider.options.graph.margin.right;
