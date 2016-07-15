@@ -27,7 +27,8 @@ export class HierarchicalFacetSearch extends FacetSearch {
 
     var searchParameters = new FacetSearchParameters(this.facet);
     searchParameters.nbResults = this.facet.numberOfValues;
-    searchParameters.setValueToSearch(this.getValueInInputForFacetSearch())
+    searchParameters.alwaysInclude = this.facet.getDisplayedValues();
+    searchParameters.setValueToSearch(this.getValueInInputForFacetSearch());
     this.facet.facetQueryController.search(searchParameters).then((fieldValues: IIndexFieldValue[]) => {
       this.completelyDismissSearch();
       Coveo.ModalBox.close(true);

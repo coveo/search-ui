@@ -34,7 +34,6 @@ module.exports = {
       'jstz': __dirname + '/lib/jstz.min.js',
       'magic-box': __dirname + '/node_modules/coveomagicbox/bin/MagicBox.min.js',
       'default-language': __dirname + '/src/strings/DefaultLanguage.js',
-      'finally': __dirname + '/lib/finally.js',
       'underscore': __dirname + '/node_modules/underscore/underscore-min.js'
     }
   },

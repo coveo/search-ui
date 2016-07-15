@@ -106,11 +106,18 @@ export class FacetSearchParameters {
   }
 
   private lowerCaseAll() {
-    this.alwaysExclude = _.map(this.alwaysExclude, (v) => {
-      return v.toLowerCase()
-    });
-    this.alwaysInclude = _.map(this.alwaysInclude, (v) => {
-      return v.toLowerCase()
-    });
+    this.alwaysExclude = _.chain(this.alwaysExclude)
+      .map((v) => {
+        return v.toLowerCase()
+      })
+      .uniq()
+      .value();
+
+    this.alwaysInclude = _.chain(this.alwaysInclude)
+      .map((v) => {
+        return v.toLowerCase()
+      })
+      .uniq()
+      .value();
   }
 }

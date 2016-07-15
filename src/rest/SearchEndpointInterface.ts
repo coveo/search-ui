@@ -86,6 +86,7 @@ export interface IViewAsHtmlOptions extends IEndpointCallOptions {
 export interface ISearchEndpoint {
   options: ISearchEndpointOptions;
   getBaseUri(): string;
+  getBaseAlertsUri(): string;
   getAuthenticationProviderUri(provider: string, returnUri: string, message: string): string;
   isJsonp(): boolean;
   search(query: IQuery, callOptions?: IEndpointCallOptions): Promise<IQueryResults>;
