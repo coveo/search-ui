@@ -8,7 +8,7 @@ import {Assert} from '../../misc/Assert'
 import {$$} from '../../utils/Dom'
 
 export interface IResultsPerPageOptions {
-  numberOfResults?: string[];
+  numberOfResults?: number[];
 }
 
 /**
@@ -26,8 +26,12 @@ export class ResultsPerPage extends Component {
      * Specifies the possible values of the number of results to display per page.<br/>
      * The default value is 10, 25, 50, 100
      */
-    numberOfResults: ComponentOptions.buildListOption({ defaultValue: ['10', '25', '50', '100'] })
-  }
+    numberOfResults: ComponentOptions.buildCustomListOption<number[]>(function (list: string[]) {
+      return list.map(function (value) {
+        return +value;
+      });
+    }, { defaultValue: ['10', '25', '50', '100'] })
+  };
 
   private currentResultsPerPage: number;
 
@@ -44,7 +48,7 @@ export class ResultsPerPage extends Component {
     super(element, ResultsPerPage.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultsPerPage, options);
 
-    this.currentResultsPerPage = +this.options.numberOfResults[0];
+    this.currentResultsPerPage = this.options.numberOfResults[0];
     this.queryController.options.resultsPerPage = this.currentResultsPerPage;
 
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
@@ -60,7 +64,7 @@ export class ResultsPerPage extends Component {
    */
   public setResultsPerPage(resultsPerPage: number, analyticCause: IAnalyticsActionCause = analyticsActionCauseList.pagerResize) {
     Assert.exists(resultsPerPage);
-    Assert.check(this.options.numberOfResults.indexOf(resultsPerPage.toString()) != -1);
+    Assert.check(this.options.numberOfResults.indexOf(resultsPerPage) != -1);
     this.currentResultsPerPage = resultsPerPage;
     this.queryController.options.resultsPerPage = this.currentResultsPerPage;
     this.usageAnalytics.logCustomEvent<IAnalyticsPagerMeta>(analyticCause, { pagerNumber: this.queryController.options.page, currentResultsPerPage: this.currentResultsPerPage }, this.element);
@@ -87,25 +91,25 @@ export class ResultsPerPage extends Component {
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
     this.reset();
-    let numResultsList: string[] = this.options.numberOfResults;
+    let numResultsList: number[] = this.options.numberOfResults;
     for (var i = 0; i < numResultsList.length; i++) {
 
       var listItem = $$('li', {
         className: 'coveo-results-per-page-list-item'
       });
-      if (+numResultsList[i] == this.currentResultsPerPage) {
+      if (numResultsList[i] == this.currentResultsPerPage) {
         listItem.addClass('coveo-active');
       }
 
       ((resultsPerPage: number) => {
         listItem.on('click', () => {
-          this.handleClickPage(+numResultsList[resultsPerPage]);
+          this.handleClickPage(numResultsList[resultsPerPage]);
         })
       })(i);
 
       listItem.el.appendChild($$('a', {
         className: 'coveo-results-per-page-list-item-text'
-      }, numResultsList[i]).el);
+      }, numResultsList[i].toString()).el);
       this.list.appendChild(listItem.el);
     }
   }
