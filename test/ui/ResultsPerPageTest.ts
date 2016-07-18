@@ -16,7 +16,7 @@ module Coveo {
 
     it('should trigger a query when the number of results per page changes', function () {
       test.cmp.setResultsPerPage(50);
-      expect(test.env.queryController.executeQuery).toHaveBeenCalledTimes(1);
+      expect(test.env.queryController.executeQuery).toHaveBeenCalled();
     })
 
     describe('analytics', function () {

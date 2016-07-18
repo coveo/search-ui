@@ -5,18 +5,17 @@
 }
 
 .coveo-pager-list-item {
-  border: 1px solid #bbc3ca;
-  border-radius: 2px;
+  @include defaultRoundedBorder();
   margin: 5px 6px 5px 6px;
   padding: 4px 8px;
   list-style: none;
   display: inline-block;
   vertical-align: baseline;
-  color: #009fd9;
+  color: $color-vibrant-blue;
   font-size: $font-size-smaller;
   &.coveo-active, &:hover {
-    color: #cdd9e1;
-    background-color: #145174;
+    color: $color-greyish-cyan;
+    background-color: $color-greyish-teal-blue;
   }
   cursor: pointer;
 }

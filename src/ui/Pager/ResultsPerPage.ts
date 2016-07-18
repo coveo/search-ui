@@ -1,12 +1,10 @@
 import {Component} from '../Base/Component';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {ComponentOptions} from '../Base/ComponentOptions';
-import {InitializationEvents} from '../../events/InitializationEvents';
 import {Initialization} from '../Base/Initialization';
-import {QueryEvents, INewQueryEventArgs, IBuildingQueryEventArgs, IQuerySuccessEventArgs, INoResultsEventArgs} from '../../events/QueryEvents'
+import {QueryEvents, IQuerySuccessEventArgs} from '../../events/QueryEvents'
 import {analyticsActionCauseList, IAnalyticsPagerMeta, IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta'
 import {Assert} from '../../misc/Assert'
-import {l} from '../../strings/Strings'
 import {$$} from '../../utils/Dom'
 
 export interface IResultsPerPageOptions {
@@ -25,10 +23,10 @@ export class ResultsPerPage extends Component {
    */
   static options: IResultsPerPageOptions = {
     /**
-    * Specifies the possible values of the number of results to display per page.<br/>
-    * The default value is 10, 50, 100 
-    */
-    numberOfResults: ComponentOptions.buildListOption({ defaultValue: ['10', '50', '100'] })
+     * Specifies the possible values of the number of results to display per page.<br/>
+     * The default value is 10, 25, 50, 100
+     */
+    numberOfResults: ComponentOptions.buildListOption({ defaultValue: ['10', '25', '50', '100'] })
   }
 
   private currentResultsPerPage: number;
@@ -74,12 +72,12 @@ export class ResultsPerPage extends Component {
   }
 
   private initComponent(element: HTMLElement) {
-    var span = document.createElement('span');
-    $$(span).addClass('coveo-results-per-page-text');
-    $$(span).setHtml('Results per page:');
-    element.appendChild(span);
-    this.list = document.createElement('ul');
-    $$(this.list).addClass('coveo-results-per-page-list');
+    element.appendChild($$('span', {
+      className: 'coveo-results-per-page-text'
+    }, 'Results per page').el);
+    this.list = $$('ul', {
+      className: 'coveo-results-per-page-list'
+    }).el;
     element.appendChild(this.list);
   }
 
@@ -92,24 +90,23 @@ export class ResultsPerPage extends Component {
     let numResultsList: string[] = this.options.numberOfResults;
     for (var i = 0; i < numResultsList.length; i++) {
 
-      var listItemValue = document.createElement('a');
-      $$(listItemValue).addClass('coveo-results-per-page-list-item-text');
-      $$(listItemValue).text(numResultsList[i]);
-
-      var listItem = document.createElement('li');
-      $$(listItem).addClass('coveo-results-per-page-list-item');
+      var listItem = $$('li', {
+        className: 'coveo-results-per-page-list-item'
+      });
       if (+numResultsList[i] == this.currentResultsPerPage) {
-        $$(listItem).addClass('coveo-active');
+        listItem.addClass('coveo-active');
       }
 
       ((resultsPerPage: number) => {
-        $$(listItem).on('click', () => {
+        listItem.on('click', () => {
           this.handleClickPage(+numResultsList[resultsPerPage]);
         })
       })(i);
 
-      listItem.appendChild(listItemValue);
-      this.list.appendChild(listItem);
+      listItem.el.appendChild($$('a', {
+        className: 'coveo-results-per-page-list-item-text'
+      }, numResultsList[i]).el);
+      this.list.appendChild(listItem.el);
     }
   }
   private handleClickPage(resultsPerPage: number) {
