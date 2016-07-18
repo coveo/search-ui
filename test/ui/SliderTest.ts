@@ -153,15 +153,16 @@ module Coveo {
       })
 
       it('graph steps allow draw graph data', function () {
-        slider = new Slider(el, {
+        let test = Mock.optionsComponentSetup<Slider, ISliderOptions>(Slider, {
           start: 0,
           end: 100,
           graph: {
             steps: 10
           }
-        }, root)
-        slider.element.style.width = '100px';
-        slider.element.style.height = '100px';
+        });
+
+        test.cmp.element.style.width = '100px';
+        test.cmp.element.style.height = '100px';
         var graphData: ISliderGraphData[] = _.map(_.range(0, 10, 1), (range) => {
           return {
             start: range * 10,
@@ -169,9 +170,11 @@ module Coveo {
             y: Math.random()
           }
         })
-        slider.drawGraph(graphData);
+        test.cmp.drawGraph(graphData);
         expect($$(getSliderGraph(slider.element)).findAll('rect').length).toBe(10);
       })
+
+      it('graph steps does not allow draw graph data when ')
     })
   })
 }

@@ -199,8 +199,8 @@ export class Slider {
     this.displayCaption();
   }
 
-  public drawGraph(data?: ISliderGraphData[]) {
-    this.sliderGraph.draw(data);
+  public drawGraph(data?: ISliderGraphData[], forceDraw: boolean = false) {
+    this.sliderGraph.draw(data, forceDraw);
   }
 
   private setButtonBoundary() {
@@ -650,9 +650,10 @@ class SliderGraph {
     this.slider.options.graph.steps = this.slider.options.graph.steps || 10;
   }
 
-  public draw(data: ISliderGraphData[] = this.oldData) {
+  public draw(data: ISliderGraphData[] = this.oldData, forceDraw: boolean = false) {
     let searchInterface = <SearchInterface>Component.get(this.root.el, SearchInterface, true);
-    if (data && searchInterface instanceof SearchInterface && !searchInterface.isSmallInterface()) {
+    let isNotSmallInterface = searchInterface instanceof SearchInterface && !searchInterface.isSmallInterface();
+    if (data && (isNotSmallInterface || forceDraw)) {
       var sliderOuterWidth = this.slider.element.offsetWidth;
       var sliderOuterHeight = this.slider.element.offsetHeight;
       var width = sliderOuterWidth - this.slider.options.graph.margin.left - this.slider.options.graph.margin.right;

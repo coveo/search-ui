@@ -5,6 +5,7 @@ import {ISliderOptions, Slider, IEndSlideEventArgs, IDuringSlideEventArgs, ISlid
 import {Component} from '../Base/Component';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {ComponentOptions} from '../Base/ComponentOptions';
+import {ResponsiveFacets} from '../ResponsiveComponents/ResponsiveFacets';
 import {FacetHeader} from '../Facet/FacetHeader';
 import {l} from '../../strings/Strings';
 import {FeatureDetectionUtils} from '../../utils/FeatureDetectionUtils';
@@ -175,11 +176,14 @@ export class FacetSlider extends Component {
   private rangeQueryStateAttribute: string;
   private isEmpty = false;
   private rangeFromUrlState: number[];
+  private delayedGraphData: ISliderGraphData[];
 
 
   constructor(public element: HTMLElement, public options: IFacetSliderOptions, bindings?: IComponentBindings) {
     super(element, FacetSlider.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, FacetSlider, options);
+
+    ResponsiveFacets.init(this.root, this);
 
     if (this.options.excludeOuterBounds == null) {
       this.options.excludeOuterBounds = false;
@@ -287,6 +291,16 @@ export class FacetSlider extends Component {
       return this.generateBoundary();
     } else {
       return undefined;
+    }
+  }
+
+ /**
+  * There is delayed graph data if at the time the facet slider tried to draw, graph data was undefined or the facet was hidden in the
+  * facet dropdown. This method will draw delayed graph data if it exists.
+  */
+  public drawDelayedGraphData() {
+    if (this.delayedGraphData != undefined) {
+      this.slider.drawGraph(this.delayedGraphData, true);
     }
   }
 
@@ -531,11 +545,20 @@ export class FacetSlider extends Component {
     if (totalGraphResults == 0) {
       this.isEmpty = true;
       this.updateAppearanceDependingOnState();
-    } else if (graphData != undefined) {
-      this.slider.drawGraph(graphData);
+    } else if (graphData != undefined && !this.isFacetDropdownHidden()) {
+      this.slider.drawGraph(graphData, true);
+    } else if (graphData != undefined && this.isFacetDropdownHidden()) {
+      this.delayedGraphData = graphData;
     }
   }
 
+  private isFacetDropdownHidden() {
+    let facetDropdown = document.querySelector('.coveo-facet-column');
+    if (facetDropdown) {
+      return $$(<HTMLElement>facetDropdown).css('display') == 'none';
+    }
+    return false;
+  }
 
   private generateBoundary(): number[] {
     var start: number, end: number;
