@@ -6,7 +6,9 @@ Coveo Search UI framework
 ## Install
     npm install --save coveo-search-ui
     
-All resources will be available under `node_modules/coveo-search-ui/bin`. 
+All resources will be available under `node_modules/coveo-search-ui/bin`. You can simply include those in your pages as a script tag.
+
+If you are already using a module bundler (browserify, webpack, babel, etc.), then you can simply `require('coveo-search-ui')`
 
 ## Basic usage
 
