@@ -234,7 +234,6 @@
     "src/ui/Templates/DefaultRecommendationTemplate.ts",
     "src/ui/Templates/DefaultResultTemplate.ts",
     "src/ui/Templates/HtmlTemplate.ts",
-    "src/ui/Templates/LazyTemplate.ts",
     "src/ui/Templates/Template.ts",
     "src/ui/Templates/TemplateCache.ts",
     "src/ui/Templates/TemplateHelpers.ts",

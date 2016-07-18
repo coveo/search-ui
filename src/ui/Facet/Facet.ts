@@ -1185,27 +1185,28 @@ export class Facet extends Component {
   }
 
   private handleOmniboxWithSearchInFacet(eventArg: IPopulateOmniboxEventArgs) {
-    /*var regex = new RegExp('^' + eventArg.completeQueryExpression.regex.source, 'i');
-    var deferred = $.Deferred<OmniboxDataRow>();
-    eventArg.rows.push({deferred: deferred});
+    var regex = new RegExp('^' + eventArg.completeQueryExpression.regex.source, 'i');
 
-    var searchParameters = new FacetSearchParameters(this);
-    searchParameters.setValueToSearch(eventArg.completeQueryExpression.word);
-    searchParameters.nbResults = this.options.numberOfValuesInOmnibox;
-    this.facetQueryController.search(searchParameters).then((fieldValues) => {
-      var facetValues = _.map(_.filter(fieldValues, (fieldValue: IIndexFieldValue) => {
-        return regex.test(fieldValue.lookupValue);
-      }), (fieldValue) => {
-        return this.values.get(fieldValue.lookupValue) || FacetValue.create(fieldValue);
-      });
-      var element = new OmniboxValuesList(this, facetValues, eventArg, OmniboxValueElement).build();
-      deferred.resolve({
-        element: element,
-        zIndex: this.omniboxZIndex
-      });
-    }).catch(() => {
-      deferred.resolve({element: undefined});
-    })*/
+    var promise = new Promise<IOmniboxDataRow>((resolve, reject) => {
+      var searchParameters = new FacetSearchParameters(this);
+      searchParameters.setValueToSearch(eventArg.completeQueryExpression.word);
+      searchParameters.nbResults = this.options.numberOfValuesInOmnibox;
+      this.facetQueryController.search(searchParameters).then((fieldValues) => {
+        var facetValues = _.map(_.filter(fieldValues, (fieldValue: IIndexFieldValue) => {
+          return regex.test(fieldValue.lookupValue);
+        }), (fieldValue) => {
+          return this.values.get(fieldValue.lookupValue) || FacetValue.create(fieldValue);
+        });
+        var element = new OmniboxValuesList(this, facetValues, eventArg, OmniboxValueElement).build();
+        resolve({
+          element: element,
+          zIndex: this.omniboxZIndex
+        });
+      }).catch(() => {
+        resolve({ element: undefined });
+      })
+    });
+    eventArg.rows.push({ deferred: promise });
   }
 
   private handleDuringQuery() {

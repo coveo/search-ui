@@ -6,10 +6,10 @@ module Coveo {
     var facetSearch: FacetSearch;
 
     beforeEach(function () {
-      mockFacet = Mock.basicComponentSetup<Facet>(Facet).cmp;
-      mockFacet.options = {
+      let options = {
         field: '@field'
       };
+      mockFacet = Mock.basicComponentSetup<Facet>(Facet, options).cmp;
       mockFacet.searchInterface = <any>{};
       mockFacet.searchInterface.isNewDesign = () => {
         return true;

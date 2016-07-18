@@ -224,11 +224,11 @@ module Coveo.Mock {
     return m;
   }
 
-  export function basicComponentSetup<T>(klass) {
+  export function basicComponentSetup<T>(klass, options = {}) {
     var envBuilder = new Mock.MockEnvironmentBuilder();
     return {
       env: envBuilder.build(),
-      cmp: <T>new klass(envBuilder.getBindings().element, {}, envBuilder.getBindings())
+      cmp: <T>new klass(envBuilder.getBindings().element, options, envBuilder.getBindings())
     }
   }
 

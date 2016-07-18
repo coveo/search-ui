@@ -121,6 +121,7 @@ export class Slider {
       this.sliderRange.setBoundary();
       this.sliderLine.setActiveWidth(this.sliderRange.firstButton, this.sliderRange.secondButton);
     } else {
+      this.setButtonBoundary();
       this.sliderLine.setActiveWidth(this.sliderButton);
     }
     if (this.options.graph) {
@@ -140,8 +141,7 @@ export class Slider {
       } else {
         this.sliderButton.setValue(values[1]);
       }
-      this.sliderButton.leftBoundary = 0;
-      this.sliderButton.rightBoundary = this.element.clientWidth;
+      this.setButtonBoundary();
       this.sliderLine.setActiveWidth(this.sliderButton);
     }
     this.displayCaption();
@@ -201,6 +201,11 @@ export class Slider {
 
   public drawGraph(data?: ISliderGraphData[]) {
     this.sliderGraph.draw(data);
+  }
+
+  private setButtonBoundary() {
+    this.sliderButton.leftBoundary = 0;
+    this.sliderButton.rightBoundary = this.element.clientWidth;
   }
 
   private displayCaption() {
@@ -392,8 +397,8 @@ export class SliderButton {
 
   private handleMoving(e: MouseEvent) {
     if (this.isMouseDown) {
-      this.updatePosition(e);
       this.slider.onMoving();
+      this.updatePosition(e);
       this.handleButtonNearEnd();
       $$(this.element).trigger(SliderEvents.duringSlide, <IDuringSlideEventArgs>{
         button: this,
