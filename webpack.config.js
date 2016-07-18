@@ -5,18 +5,23 @@ const failPlugin = require('webpack-fail-plugin');
 
 // Fail plugin will allow the webpack ts-loader to fail correctly when the TS compilation fails
 var plugins = [failPlugin];
+
 if (minimize) {
   plugins.push(new webpack.optimize.UglifyJsPlugin());
 }
 
 
 module.exports = {
-  entry: ['./src/Dependencies.js', './src/Index.ts'],
+  entry: {
+    'CoveoJsSearch': ['./src/Dependencies.js', './src/Index.ts'],
+    'CoveoJsSearch.Searchbox': './src/SearchboxIndex.ts'
+  },
   output: {
     path: require('path').resolve('./bin/js'),
-    filename: minimize ? 'CoveoJsSearch.min.js' : 'CoveoJsSearch.js',
-    libraryTarget: 'var',
-    library: ['Coveo'],
+    filename: minimize ? '[name].min.js' : '[name].js',
+    libraryTarget: 'umd',
+    // See Index.ts as for why this need to be a temporary variable
+    library: 'Coveo__temporary',
     publicPath : '/js/'
   },
   resolve: {
@@ -29,16 +34,13 @@ module.exports = {
       'jstz': __dirname + '/lib/jstz.min.js',
       'magic-box': __dirname + '/node_modules/coveomagicbox/bin/MagicBox.min.js',
       'default-language': __dirname + '/src/strings/DefaultLanguage.js',
-      'finally': __dirname + '/lib/finally.js',
       'underscore': __dirname + '/node_modules/underscore/underscore-min.js'
     }
   },
   devtool: 'source-map',
   module: {
     loaders: [
-      { test: /\.ts$/, loader: 'ts-loader' },
-      { test: /\.scss$/, loaders: ['style?insertAt=bottom', 'css?sourceMap', 'resolve-url', 'sass?sourceMap'] },
-      { test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'url?limit=8182' }
+      { test: /\.ts$/, loader: 'ts-loader' }
     ]
   },
   plugins: plugins,

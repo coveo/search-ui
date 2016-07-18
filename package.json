@@ -2,7 +2,7 @@
   "name": "coveo-search-ui",
   "version": "0.0.31",
   "description": "Coveo JavaScript Search Framework",
-  "main": ".bin/js/CoveoJsSearch.js",
+  "main": "./bin/js/CoveoJsSearch.js",
   "scripts": {
     "test": "gulp buildTest && node_modules/karma/bin/karma start",
     "build": "gulp",
@@ -50,6 +50,7 @@
   },
   "devDependencies": {
     "cheerio": "^0.20.0",
+    "circular-dependency-plugin": "^1.1.0",
     "colors": "^1.1.2",
     "css-loader": "^0.23.1",
     "dts-generator": "^1.7.0",
@@ -84,6 +85,7 @@
     "node-fetch": "^1.5.3",
     "node-sass": "^3.7.0",
     "phantomjs-prebuilt": "^2.1.7",
+    "plop": "^1.5.0",
     "png-sprite": "^0.1.1",
     "pretty-typescript": "^1.11.0",
     "q": "^1.4.1",

@@ -1,10 +1,54 @@
 # Search-UI [![Build Status](https://travis-ci.org/coveo/search-ui.svg?branch=master)](https://travis-ci.org/coveo/search-ui) [![TypeScript](https://badges.frapsoft.com/typescript/version/typescript-v18.svg?v=100)](https://github.com/ellerbrock/typescript-badges/)
 Coveo Search UI framework
 
+<img src='./docs/readme.png' />
+
 ## Install
     npm install --save coveo-search-ui
     
-All resources will be available under `node_modules/coveo-search-ui/bin`. 
+All resources will be available under `node_modules/coveo-search-ui/bin`. You can simply include those in your pages as a script tag.
+
+If you are already using a module bundler (browserify, webpack, babel, etc.), then you can simply `require('coveo-search-ui')`
+
+## Basic usage
+
+```
+<!-- Include the library scripts -->
+<script src="js/CoveoJsSearch.js"></script>
+<script src="js/CoveoJsSearch.Dependencies.js"></script>
+<script src="js/templates/templatesNew.js"></script>
+
+<!-- Every DOM element with a class starting with Coveo (uppercase) will instantiate a Component -->
+<body id="search" class='CoveoSearchInterface'>
+    
+    <!-- Every DOM element with a class starting with coveo- (lowercase) is only for css/alignment purpose. -->
+    <div class='coveo-search-section'>
+        
+        <!-- Every Coveo Component can be removed (or added) and none are actually required for the page to "load" -->
+        <div class="CoveoSearchbox"></div>
+    </div>
+    
+    <!-- The data- attributes on each component allow to pass option for a specific Component instance -->
+    <div class="CoveoFacet" data-title="Author" data-field="@author" data-tab="All"></div>
+    <div class="CoveoFacet" data-title="Year" data-field="@year" data-tab="All"></div>
+
+
+    <script>
+        // Configure an endpoint to perform search.
+        // Coveo.SearchEndpoint.configureCloudEndpoint('MyCoveoCloudEnpointName', 'my-authentification-token');
+        
+        // We provide a sample endpoint with public sources for demo purposes.
+        Coveo.SearchEndpoint.configureSampleEndpoint();
+        // Initialize the framework by targeting the root in the interface.
+        // It does not have to be the body of the document.
+        Coveo.init(document.body);
+    </script>
+</body>
+
+```
+
+See more examples of fully configured pages in `./pages`.
+
 
 ## Build
     npm install -g gulp
@@ -26,11 +70,25 @@ Ensure that you were able to run `gulp` completely without any error first. Then
     gulp dev
 
 This will start a [webpack-dev-server instance](https://webpack.github.io/docs/webpack-dev-server.html).
-Load [http://localhost:8080/index.html](http://localhost:8080/index.html) in a web browser.
+Load [http://localhost:8080/Index.html](http://localhost:8080/Index.html) in a web browser.
 
 Any time you hit save in a source file, the bundle will be recompiled, and the dev page will reload.
 
 If you need to modify the content of the search page (the markup itself and not the typescript code), modify the Index.html page under `./bin`. This page is not committed in the repository, so don't be afraid to break anything. However, if you need to modify the original `Index.html` for a good reason, feel free to do so.
+
+## Build a custom version of the library.
+
+For advanced users and people concerned with loading speed in their integration, there is a way to compile a completely customized version of the library by including only the component you wish to use.
+
+A classic use case would be someone wanting to display only a search box with a minimal result list, with no facet, no tabs, or any other more "advanced" components.
+
+By building a bundle with only those components, you can cut down the size of the resulting javascript code by a substantial amount, without having to include useless code related to component you do not use.
+
+* Install [plop](https://github.com/amwmedia/plop) globally with `npm install -g plop`
+* Change directory to `./plop`
+* Run `plop` to automatically start the small command line utility, and choose the components you wish to include in your bundle.
+* Run `node plop.build.js` to compile the file created in `./bin/`.
+* Once compilation finished, your new bundle should be available in `./bin/CoveoJsSearch.Custom.js`
 
 ### I want to add a new component !
 
