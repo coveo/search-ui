@@ -22,6 +22,17 @@ module Coveo {
       return $$(sliderElement).find('svg');
     }
 
+    function buildGraphData(): ISliderGraphData[] {
+      let graphData: ISliderGraphData[] = _.map(_.range(0, 10, 1), (range) => {
+          return {
+            start: range * 10,
+            end: (range + 1) * 10,
+            y: Math.random()
+          }
+        })
+      return graphData;
+    }
+
     beforeEach(function () {
       el = document.createElement('div');
       el.style.width = '100px';
@@ -153,28 +164,59 @@ module Coveo {
       })
 
       it('graph steps allow draw graph data', function () {
-        let test = Mock.optionsComponentSetup<Slider, ISliderOptions>(Slider, {
+        slider = new Slider(el, {
           start: 0,
           end: 100,
           graph: {
             steps: 10
           }
-        });
+        }, root)
+        let searchInterface = new SearchInterface(root);
 
-        test.cmp.element.style.width = '100px';
-        test.cmp.element.style.height = '100px';
-        var graphData: ISliderGraphData[] = _.map(_.range(0, 10, 1), (range) => {
-          return {
-            start: range * 10,
-            end: (range + 1) * 10,
-            y: Math.random()
-          }
-        })
-        test.cmp.drawGraph(graphData);
+        slider.element.style.width = '100px';
+        slider.element.style.height = '100px';
+        let graphData: ISliderGraphData[] = buildGraphData();
+        slider.drawGraph(graphData);
         expect($$(getSliderGraph(slider.element)).findAll('rect').length).toBe(10);
       })
 
-      it('graph steps does not allow draw graph data when ')
+      it('graph steps does not allow draw graph data when in small interface', () => {
+        slider = new Slider(el, {
+          start: 0,
+          end: 100,
+          graph: {
+            steps: 10
+          }
+        }, root)
+        let searchInterface = new SearchInterface(root);
+        searchInterface.isSmallInterface = () => true;
+        slider.element.style.width = '100px';
+        slider.element.style.height = '100px';
+        let graphData: ISliderGraphData[] = buildGraphData();
+
+        slider.drawGraph(graphData);
+
+        expect($$(getSliderGraph(slider.element)).findAll('rect').length).toBe(0);
+      })
+
+      it('graph steps allows draw graph data when in small interface and force draw is true', () => {
+        slider = new Slider(el, {
+          start: 0,
+          end: 100,
+          graph: {
+            steps: 10
+          }
+        }, root)
+        let searchInterface = new SearchInterface(root);
+        searchInterface.isSmallInterface = () => true;
+        slider.element.style.width = '100px';
+        slider.element.style.height = '100px';
+        let graphData: ISliderGraphData[] = buildGraphData();
+
+        slider.drawGraph(graphData, true);
+
+        expect($$(getSliderGraph(slider.element)).findAll('rect').length).toBe(10);
+      })
     })
   })
 }

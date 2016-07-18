@@ -55,8 +55,6 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.bindDropdownContentEvents();
     this.buildPopupBackground();
     this.saveFacetsPosition();
-    this.positionPopup();
-    this.closeDropdown();
     this.bindNukeEvents();
   }
 
@@ -65,6 +63,8 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   public changeToSmallMode() {
+    this.positionPopup();
+    this.closeDropdown();
     this.disableFacetPreservePosition();
     this.tabSection.el.appendChild(this.dropdownHeader.el);
     this.dropdownContent.el.style.display = 'none';

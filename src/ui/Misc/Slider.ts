@@ -91,7 +91,7 @@ export class Slider {
     }
 
     if (this.options.graph) {
-      this.sliderGraph = new SliderGraph(this, root);
+      this.sliderGraph = new SliderGraph(this, this.root);
     }
 
     this.sliderLine = new SliderLine(this);
