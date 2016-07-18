@@ -198,7 +198,7 @@ module Coveo {
           let initOptions = ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' });
           expect(initOptions).toEqual({ testString: 'fooBrak', testList: ['fooBrak', 'fooBar'], testObject: { john: 'doe' } });
         });
-        ('which initializes the options of a component with default function', function () {
+        it('which initializes the options of a component with default function', function () {
           let options = {
             testString: ComponentOptions.buildStringOption({
               defaultFunction: function (elem: HTMLElement) {
@@ -214,10 +214,18 @@ module Coveo {
               subOptions: {}, defaultFunction: function (elem: HTMLElement) {
                 return { john: 'doe' };
               }
-            }),
+            })
           };
           let initOptions = ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' });
           expect(initOptions).toEqual({ testString: 'fooBrak', testList: ['fooBrak', 'fooBar'], testObject: { john: 'doe' } });
+        });
+        it('which initializes a component\'s undefined required option', function () {
+          let options = {
+            testRequired: ComponentOptions.buildStringOption({
+              required: true
+            })
+          };
+          expect(function () { ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' }) }).toThrowError('fooID.testRequired is required');
         });
       });
 

@@ -13,7 +13,8 @@ module Coveo {
         'data-sort-criteria': sortCriteria
       })
       return Mock.advancedComponentSetup<Sort>(Sort, <Mock.AdvancedComponentSetupOptions>{
-        element: elem
+        element: elem,
+        cmpOptions: { caption: 'foobarde' }
       })
     }
 
@@ -94,7 +95,7 @@ module Coveo {
         function buildSort(sortCriteria: string) {
           var elem = document.createElement('div');
           elem.dataset['sortCriteria'] = sortCriteria;
-          return Mock.advancedComponentSetup<Sort>(Sort, new Mock.AdvancedComponentSetupOptions(elem, undefined, (builder: Mock.MockEnvironmentBuilder) => {
+          return Mock.advancedComponentSetup<Sort>(Sort, new Mock.AdvancedComponentSetupOptions(elem, { caption: 'foobarde' }, (builder: Mock.MockEnvironmentBuilder) => {
             return builder.withLiveQueryStateModel();
           }))
         }
@@ -196,15 +197,6 @@ module Coveo {
         }).el
       })
       expect(test.env.element.innerText).toEqual('foo');
-    })
-
-    it('should left its body intact if data-caption is not defined', function () {
-      test = Mock.advancedComponentSetup<Sort>(Sort, <Mock.AdvancedComponentSetupOptions>{
-        element: $$('div', {
-          'data-sort-criteria': 'relevancy'
-        }, 'baz').el
-      })
-      expect(test.env.element.innerText).toEqual('baz');
     })
 
     it('should override the body with data-caption if both are defined', function () {

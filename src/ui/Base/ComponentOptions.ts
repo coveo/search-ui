@@ -295,6 +295,9 @@ export class ComponentOptions {
           values[name] = value;
         }
       }
+      if (value == null && values[name] == undefined && optionDefinition.required) {
+        throw new Error(componentID + '.' + name + ' is required');
+      }
     }
     for (let i = 0; i < names.length; i++) {
       let name = names[i];
