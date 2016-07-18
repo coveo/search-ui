@@ -227,6 +227,30 @@ module Coveo {
           };
           expect(function () { ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' }) }).toThrowError('fooID.testRequired is required');
         });
+        it('which initializes the options of a component with postProcessing', function () {
+          let options = {
+            myAttr: ComponentOptions.buildStringOption({
+              postProcessing: function (value: string, options: any): string {
+                return value + ' foo';
+              }
+            })
+          };
+          let initOptions = ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' });
+
+          expect(initOptions).toEqual({ myAttr: 'baz foo' });
+        });
+        it('which initializes the options of a component with attrName', function () {
+          let options = {
+            myAttr: ComponentOptions.buildStringOption({
+              postProcessing: function (value: string, options: any): string {
+                return value + ' foo';
+              }
+            })
+          };
+          let initOptions = ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' });
+
+          expect(initOptions).toEqual({ myAttr: 'baz foo' });
+        });
       });
 
       describe('initOptions', () => {

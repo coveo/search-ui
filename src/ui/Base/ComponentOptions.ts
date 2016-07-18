@@ -262,7 +262,6 @@ export class ComponentOptions {
     for (let i = 0; i < names.length; i++) {
       let name = names[i];
       let optionDefinition = options[name];
-      let attrName = optionDefinition.attrName = optionDefinition.attrName || ComponentOptions.attrNameFromName(name, optionDefinition);
       let value: any;
       let loadFromAttribute = optionDefinition.load;
       if (values[name] != undefined) {
