@@ -175,7 +175,7 @@ export class ComponentOptions {
     let loadOption: IComponentOptionsLoadOption<T> = (element: HTMLElement, name: string, option: IComponentOptionsOption<T>) => {
       let stringvalue = ComponentOptions.loadStringOption(element, name, option);
       return converter(stringvalue);
-    }
+    };
     return ComponentOptions.buildOption<T>(ComponentOptionsType.STRING, loadOption, optionArgs);
   }
 
@@ -183,7 +183,7 @@ export class ComponentOptions {
     let loadOption: IComponentOptionsLoadOption<T> = (element: HTMLElement, name: string, option: any) => {
       let stringvalue = ComponentOptions.loadListOption(element, name, option);
       return converter(stringvalue);
-    }
+    };
     return ComponentOptions.buildOption<any>(ComponentOptionsType.LIST, loadOption, optionArgs);
   }
 

@@ -27,9 +27,10 @@ export class ResultsPerPage extends Component {
      * The default value is 10, 25, 50, 100
      */
     numberOfResults: ComponentOptions.buildCustomListOption<number[]>(function (list: string[]) {
-      return list.map(function (value) {
+      let values = _.map(list, function (value) {
         return +value;
       });
+      return values.length == 0 ? null : values;
     }, { defaultValue: ['10', '25', '50', '100'] })
   };
 
