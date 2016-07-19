@@ -40,6 +40,7 @@ export {FacetSlider} from './ui/FacetSlider/FacetSlider';
 export {FacetRange} from './ui/FacetRange/FacetRange';
 export {Pager} from './ui/Pager/Pager';
 export {ResultList} from './ui/ResultList/ResultList';
+export {DefaultRecommendationTemplate} from './ui/Templates/DefaultRecommendationTemplate';
 export {Excerpt} from './ui/Excerpt/Excerpt';
 export {ResultLink} from './ui/ResultLink/ResultLink';
 export {Icon} from './ui/Icon/Icon';
