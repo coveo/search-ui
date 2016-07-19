@@ -86,7 +86,7 @@ By building a bundle with only those components, you can cut down the size of th
 
 * Install [plop](https://github.com/amwmedia/plop) globally with `npm install -g plop`
 * Change directory to `./plop`
-* Run `plop` to automatically start the small command line utility, and choose the components you wish to include in your bundle.
+* Run `plop` to automatically start the small command line utility, choose the "Create a new bundle" option, and choose the components you wish to include in your bundle.
 * Run `node plop.build.js` to compile the file created in `./bin/`.
 * Once compilation finished, your new bundle should be available in `./bin/CoveoJsSearch.Custom.js`
 
@@ -94,17 +94,18 @@ By building a bundle with only those components, you can cut down the size of th
 
 First, fork our repo.
 
-* Create a new folder under `./src/ui/` that match the name of your component. Then, create a `.ts` file that match the same name.
-* Add your file to the `.tsconfig.json`
-* Create the basic scaffolding of your component. For example copy SearchButton (a very simple component), and change it's ID + various imports
-* Export the class associated with your component in `./src/Index.ts` so that it's available in the global scope.
-* Make it work ! (your mileage may vary)
-
-Now, add tests for your component
-* Create a new file matching your component name under `./test/ui`
-* Follow the same pattern that other components use (Copy SearchButton, for example). 
+* Install [plop](https://github.com/amwmedia/plop) globally with `npm install -g plop`
+* Change directory to `./plop`
+* Run `plop` to automatically start the small command line utility, choose the "Create a new component" option, and choose the component name.
+* This will automatically generate 4 things :
+** Create a new source file under `./src/ui/{{your component name}}/{{your component name}}.ts`. This is where your component logic should be implemented.
+** Export your component in `./src/Index.ts`. This will make it globally available under the Coveo namespace.
+** Add your component to `./tsconfig.json`. This will make it so it's recognized by the project.
+** Create a new file under `./test/ui/{{your component name}}Test.ts`. This is a blank test file, and where you should add your UT.
+** Reference your component in `./test/Test.ts`. This will build your test like the rest of the components.
+* Now, make it work ! (your mileage may vary).
+* Add tests for your component
 * You should try to test all public API of your component : This means all public methods as well as all available options.
-* Reference your test file in `./test/Test.ts`.
 
 Create a pull request to merge your changes in the master branch.
 
