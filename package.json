@@ -4,7 +4,7 @@
   "description": "Coveo JavaScript Search Framework",
   "main": "./bin/js/CoveoJsSearch.js",
   "scripts": {
-    "test": "gulp test && gulp coverage && gulp sonar",
+    "test": "gulp test && gulp coverage",
     "build": "gulp",
     "minimize": "node node_modules/webpack/bin/webpack.js --minimize",
     "doc": "gulp doc",
