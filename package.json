@@ -98,6 +98,7 @@
     "run-sequence": "^1.1.5",
     "sass-loader": "^3.2.0",
     "script-loader": "^0.7.0",
+    "string-replace-loader": "^1.0.2",
     "style-loader": "^0.13.1",
     "ts-loader": "^0.8.2",
     "tsconfig-glob": "^0.4.3",

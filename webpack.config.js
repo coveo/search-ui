@@ -41,7 +41,15 @@ module.exports = {
   devtool: 'source-map',
   module: {
     loaders: [
-      { test: /\.ts$/, loader: 'ts-loader' }
+      { test: /\.ts$/, loader: 'ts-loader' },
+      {
+        test: /underscore-min.js/,
+        loader: 'string-replace-loader',
+        query: {
+          search: '//# sourceMappingURL=underscore-min.map',
+          replace: ''
+        }
+      }
     ]
   },
   plugins: plugins,
