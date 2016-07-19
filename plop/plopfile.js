@@ -58,4 +58,42 @@ module.exports = function (plop) {
       return actions;
     }
   })
+  plop.setGenerator('Create a new component', {
+    description: 'Create the files required to create a new component',
+    prompts: [{
+      message: 'Choose the component name.',
+      type: 'input',
+      name: 'cmpName'
+    }],
+    actions: (data)=> {
+      let actions = [];
+      data.cmpName = plop.renderString('{{pascalCase cmpName}}', data);
+      console.log(data.cmpName);
+      actions.push({
+        type: 'add',
+        path: path.resolve('../src/ui/{{cmpName}}/{{cmpName}}.ts'),
+        templateFile: path.resolve('./plopTemplates/plop.component.template.hbs')
+      })
+      actions.push(()=> {
+        let tsconfig = require(path.resolve('../tsconfig.json'));
+        tsconfig.files.push(plop.renderString('src/ui/{{pascalCase cmpName}}/{{pascalCase cmpName}}.ts', data));
+        fs.writeFileSync(path.resolve('../tsconfig.json'), JSON.stringify(tsconfig, undefined, 2));
+        return 'Modified tsconfig.json';
+      })
+      actions.push(()=> {
+        let newExport = plop.renderString('export \{ {{pascalCase cmpName}} \} from \'./ui/{{pascalCase cmpName}}/{{pascalCase cmpName}}\';', data);
+        fs.appendFileSync(path.resolve('../src/Index.ts'), `\n${newExport}`);
+        return 'Modified Index.ts';
+      })
+      actions.push(()=> {
+        let newReference = plop.renderString('/// <reference path="ui/{{pascalCase cmpName}}Test.ts"');
+        fs.appendFileSync(path.resolve('../test/Test.ts'), `\n${newReference}`);
+        return 'Modified Test.ts';
+      })
+      actions.push(()=>{
+        type : 'add',
+      })
+      return actions;
+    }
+  })
 }

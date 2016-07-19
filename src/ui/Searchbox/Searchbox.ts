@@ -2,7 +2,7 @@ import {IOmniboxOptions} from '../Omnibox/Omnibox';
 import {Component} from '../Base/Component';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {Omnibox} from '../Omnibox/Omnibox';
-import {ComponentOptions} from '../Base/ComponentOptions'
+import {ComponentOptions} from '../Base/ComponentOptions';
 import {SearchButton} from '../SearchButton/SearchButton';
 import {Querybox} from '../Querybox/Querybox';
 import {$$} from '../../utils/Dom';
