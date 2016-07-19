@@ -9,8 +9,8 @@ import {FacetValue} from '../Facet/FacetValues';
 import {Utils} from '../../utils/Utils';
 
 export class HierarchicalFacetSearch extends FacetSearch {
-  constructor(public facet: HierarchicalFacet, public facetSearchValuesListKlass: IFacetSearchValuesListKlass) {
-    super(facet, facetSearchValuesListKlass)
+  constructor(public facet: HierarchicalFacet, public facetSearchValuesListKlass: IFacetSearchValuesListKlass, root: HTMLElement) {
+    super(facet, facetSearchValuesListKlass, root);
   }
 
   protected buildParamsForExcludingCurrentlyDisplayedValues() {

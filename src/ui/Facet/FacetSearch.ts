@@ -6,11 +6,13 @@ import {$$} from '../../utils/Dom';
 import {Utils} from '../../utils/Utils';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {DeviceUtils} from '../../utils/DeviceUtils';
+import {EventsUtils} from '../../utils/EventsUtils';
 import {FacetSearchParameters} from './FacetSearchParameters';
 import {IAnalyticsFacetMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {IEndpointError} from '../../rest/EndpointError';
 import {Component} from '../Base/Component';
 import {DomUtils} from '../../utils/DomUtils';
+import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
 import {l} from '../../strings/Strings';
 import {Assert} from '../../misc/Assert';
 import {KEYBOARD} from '../../utils/KeyboardUtils';
@@ -20,6 +22,7 @@ import {StringUtils} from '../../utils/StringUtils';
 import {Defer} from '../../misc/Defer';
 import {IFacetSearchValuesListKlass} from './FacetSearchValuesList';
 import {FacetValueElement} from './FacetValueElement';
+import _ = require('underscore');
 
 declare const Coveo;
 
@@ -43,22 +46,22 @@ export class FacetSearch {
   private moreValuesToFetch = true;
   private onResize: (...args: any[]) => void;
   private onDocClick: (e: Event) => void;
+  private searchBarIsAnimating: boolean = false;
 
-  constructor(public facet: Facet, public facetSearchValuesListKlass: IFacetSearchValuesListKlass) {
+  constructor(public facet: Facet, public facetSearchValuesListKlass: IFacetSearchValuesListKlass, private root: HTMLElement) {
     this.searchResults = document.createElement('ul');
     $$(this.searchResults).addClass('coveo-facet-search-results');
-    this.onResize = () => {
+    this.onResize = _.debounce(() => {
       if (!this.isMobileDevice()) {
         this.positionSearchResults();
       }
-    };
+    }, 250);
     this.onDocClick = (e: Event) => {
       this.handleClickElsewhere(e);
     }
     window.addEventListener('resize', this.onResize);
     document.addEventListener('click', this.onDocClick);
     $$(facet.root).on(InitializationEvents.nuke, this.handleNuke);
-
   }
 
   public isMobileDevice() {
@@ -81,20 +84,29 @@ export class FacetSearch {
    * Position the search results at the footer of the facet.
    */
   public positionSearchResults() {
-    if (this.searchResults != null && this.searchResults.parentElement) {
-      if (this.isMobileDevice()) {
-        $$(this.searchResults).insertAfter(this.search);
-      } else {
+    if (this.searchResults != null) {
+      if (!this.isMobileDevice()) {
         this.searchResults.style.display = 'block';
-        this.searchResults.style.position = 'absolute';
         this.searchResults.style.width = this.facet.element.clientWidth - 40 + 'px';
-        this.searchResults.style.left = '20px';
-        $$(this.searchResults).insertAfter(this.search);
+      }
+
+      let searchBar = $$(this.search);
+      if (searchBar.css('display') == 'none' || this.searchBarIsAnimating) {
+        let self = this;
+        EventsUtils.addPrefixedEvent(this.search, 'AnimationEnd', function(evt) {
+          PopupUtils.positionPopup(self.searchResults, self.search, self.root, self.root,
+            {horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM}
+          );
+          EventsUtils.removePrefixedEvent(self.search, 'AnimationEnd', this);
+        });
+      } else {
+        PopupUtils.positionPopup(this.searchResults, this.search, this.root, this.root,
+            {horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM}
+          );
       }
     }
   }
-
-  /**
+  /*
    * Dismiss the search results
    */
   public completelyDismissSearch() {
@@ -194,6 +206,8 @@ export class FacetSearch {
     $$(this.input).on('keyup', (e: KeyboardEvent) => this.handleFacetSearchKeyUp(e));
     $$(this.clear).on('click', (e: Event) => this.handleFacetSearchClear());
     $$(this.input).on('focus', (e: Event) => this.handleFacetSearchFocus());
+
+    this.detectSearchBarAnimation();
 
     return this.search;
   }
@@ -468,7 +482,6 @@ export class FacetSearch {
   }
 
   private showSearchResultsElement() {
-    this.facet.root.appendChild(this.searchResults);
     this.positionSearchResults();
   }
 
@@ -588,5 +601,19 @@ export class FacetSearch {
     $$(this.magnifier).show();
     $$(this.wait).hide();
     this.showingFacetSearchWaitAnimation = false;
+  }
+
+  private detectSearchBarAnimation() {
+    EventsUtils.addPrefixedEvent(this.search, 'AnimationStart', (event) => {
+      if (event.animationName == 'grow') {
+        this.searchBarIsAnimating = true;
+      }
+    });
+
+    EventsUtils.addPrefixedEvent(this.search, 'AnimationEnd', (event) => {
+      if (event.animationName == 'grow') {
+        this.searchBarIsAnimating = false;
+      }
+    });
   }
 }

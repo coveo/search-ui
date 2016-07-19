@@ -855,7 +855,7 @@ export class Facet extends Component {
   }
 
   protected initFacetSearch() {
-    this.facetSearch = new FacetSearch(this, FacetSearchValuesList);
+    this.facetSearch = new FacetSearch(this, FacetSearchValuesList, this.root);
     this.element.appendChild(this.facetSearch.build());
   }
 

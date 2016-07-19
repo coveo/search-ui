@@ -76,9 +76,8 @@ export class Dom {
   public css(property: string): string {
     if (this.el.style[property]) {
       return this.el.style[property];
-    } else {
-      return window.getComputedStyle(this.el).getPropertyValue(property);
     }
+    return window.getComputedStyle(this.el).getPropertyValue(property);
   }
 
   /**
