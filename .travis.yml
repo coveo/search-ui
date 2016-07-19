@@ -6,14 +6,19 @@ notifications:
     on_failure: always
 node_js:
 - 4.2.2
+cache:
+  directories:
+    - node_modules
 before_script:
 - npm install -g gulp
 script:
+- npm run injectTag
 - npm run build
+- npm run minimize
 - npm run test
 after_success:
 - npm run doc
-- bash ./deploy.doc.sh
+- if [ "x$TRAVIS_TAG" != "x" ]; then bash ./deploy.doc.sh ; fi
 env:
   global:
   - COMMIT_AUTHOR_EMAIL: sandbox_JSUI@coveo.com
@@ -29,3 +34,7 @@ deploy:
     tags: true
     repo: coveo/search-ui
     all_branches: true
+branches:
+  only:
+    - master
+    - /^.*release-.*$/

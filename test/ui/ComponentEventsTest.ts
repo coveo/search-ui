@@ -77,12 +77,5 @@ module Coveo {
       test.cmp.bind.trigger(test.env.root, 'foo', { bar: 'baz' });
       expect(spy).not.eventHandlerToHaveBeenCalledWith({ bar: 'baz' });
     });
-
-    it('trigger and bindOnRoot should work correctly with one another', function () {
-      test.cmp.enable();
-      test.cmp.bind.onRoot('foo', spy);
-      test.cmp.bind.trigger(test.env.root, 'foo');
-      expect(spy).toHaveBeenCalled();
-    });
   })
 }

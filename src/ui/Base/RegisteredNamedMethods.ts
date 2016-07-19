@@ -63,10 +63,10 @@ Initialization.registerNamedMethod('initSearchbox', (element: HTMLElement, searc
  * @param userContext The user context to pass with the query generated in the recommendation interface. View {@link Recommendation}
  * @param options JSON options for the framework eg : <code>{Searchbox : {enableSearchAsYouType: true}}</code>
  */
-export function initRecommendation(element: HTMLElement, mainSearchInterface: HTMLElement, userContext: { [name: string]: any } = {}, options: any = {}) {
+export function initRecommendation(element: HTMLElement, mainSearchInterface?: HTMLElement, userContext?: { [name: string]: any }, options: any = {}) {
   var recommendationOptions = <IRecommendationOptions>{};
   recommendationOptions.mainSearchInterface = mainSearchInterface;
-  recommendationOptions.userContext = userContext;
+  recommendationOptions.userContext = JSON.stringify(userContext);
   recommendationOptions.enableHistory = false;
   options = _.extend({}, options, { Recommendation: recommendationOptions });
   Initialization.initializeFramework(element, options, () => {
@@ -109,7 +109,7 @@ Initialization.registerNamedMethod('executeQuery', (element: HTMLElement) => {
  * @param args
  * @returns {any}
  */
-export function state(element: HTMLElement, ...args: any[]): any {
+export function state(element: HTMLElement, args: any[]): any {
   Assert.exists(element);
   var model = <QueryStateModel>Component.resolveBinding(element, QueryStateModel);
   return setState(model, args);
@@ -232,14 +232,14 @@ Initialization.registerNamedMethod('logClickEvent', (element: HTMLElement, click
  * Pass options to the framework, before it is initialized ({@link init}).<br/>
  * All the options passed with this calls will be merged together on initialization
  * @param element The root of the interface for which you wish to set options
- * @param options JSON options for the framework eg : <code>{Searchbox : {enableSearchAsYouType: true}}</code>
+ * @param optionsToSet JSON options for the framework eg : <code>{Searchbox : {enableSearchAsYouType: true}}</code>
  */
-export function options(element: HTMLElement, options: any = {}) {
-  Initialization.registerDefaultOptions(element, options);
+export function options(element: HTMLElement, optionsToSet: any = {}) {
+  Initialization.registerDefaultOptions(element, optionsToSet);
 }
 
-Initialization.registerNamedMethod('options', (element: HTMLElement, options: any = {}) => {
-  options(element, options);
+Initialization.registerNamedMethod('options', (element: HTMLElement, optionsToSet: any = {}) => {
+  options(element, optionsToSet);
 });
 
 /**

@@ -339,7 +339,7 @@ export class FacetSearch {
       this.facetSearchTimeout = undefined;
     }
     if (Utils.exists(this.facetSearchPromise)) {
-      Promise.reject(this.facetSearchPromise);
+      Promise.reject(this.facetSearchPromise).catch(() => { });
       this.facetSearchPromise = undefined;
     }
 
@@ -551,11 +551,11 @@ export class FacetSearch {
     current.find('.coveo-facet-value-exclude').click();
   }
 
-  private getValueInInputForFacetSearch() {
+  protected getValueInInputForFacetSearch() {
     return this.input.value;
   }
 
-  private selectAllValuesMatchingSearch() {
+  protected selectAllValuesMatchingSearch() {
     this.facet.showWaitingAnimation();
 
     let searchParameters = new FacetSearchParameters(this.facet);

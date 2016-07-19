@@ -51,7 +51,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding: 0 15px 0 30px;
+    padding: 5px 10px;
     margin: 0;
     &:hover {
       background-color: $color-blueish-white-grey;
@@ -68,7 +68,7 @@
   .coveo-omnibox-facet-header {
     float: left;
     width: 100%;
-    padding: 5px 12px;
+    padding: 5px 5px;
     height: 26px;
     color: #2c5985;
     .coveo-icon {

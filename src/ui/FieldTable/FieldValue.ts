@@ -57,7 +57,7 @@ export class FieldValue extends Component {
      * Specifies the field to be displayed by the FieldValue.<br/>
      * This field is required.
      */
-    field: ComponentOptions.buildFieldOption({ required: true }),
+    field: ComponentOptions.buildFieldOption({ defaultValue: '@field', required: true }),
     /**
      * Specifies the facet to be toggled when the component is clicked on.<br/>
      * When no value is specified, the value of the <code>field</code> option is used.<br/>
@@ -154,8 +154,6 @@ export class FieldValue extends Component {
 
     this.result = this.result || this.resolveResult();
     Assert.exists(this.result);
-
-    this.options.field = this.options.field || '@field';
 
     let loadedValueFromComponent = this.getValue();
     if (loadedValueFromComponent == null) {

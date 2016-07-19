@@ -1,0 +1,136 @@
+ @import "_Variables.scss";
+ @import "mixins/_mediaQuery.scss";
+ 
+.CoveoSearchInterface.coveo-small-search-interface {
+
+  .CoveoSearchbox {
+    max-width: 800px;
+  }
+
+  .CoveoSettings {
+    margin-left: 0;
+  }
+
+  .CoveoSearchbox {
+    margin-right: 50px;
+  }
+
+  .coveo-search-section {
+    margin: 0;
+    padding: 20px 10px 20px 10px;
+    background-color: $color-blueish-white;
+    margin: 0 auto;
+    width: 100%;
+    max-width: none;
+  }
+  .coveo-tab-section {
+    background-color: $color-blueish-white;
+    min-height: 40px;
+    
+    > a:last-of-type {
+      margin-right: 20px;
+    }
+
+    .coveo-tab-dropdown-header {
+      margin-left: 10px;
+    }
+
+    .coveo-dropdown-header {
+      font-size: $font-size-smallest;
+      display: inline-block;
+      @include defaultRoundedBorder();
+      background-color: white;
+      padding: 0px 7px 0px 7px;
+      height: 22px;
+      font-weight: 700;
+      line-height: 20px;
+      letter-spacing: 0.09px;
+      vertical-align: middle;
+      white-space: normal;
+      color: $color-greyish-teal-blue;
+      cursor: pointer;
+      text-transform: uppercase;
+
+      * {
+        display: inline-block;
+        margin: 0;
+      }
+
+      p {
+        line-height: 16px;
+      }
+
+      .coveo-sprites-more-tabs {
+        margin-left: 10px;
+      }
+    }
+
+    
+  }
+
+  .CoveoTab {
+    @include transition-property(opacity);
+    @include transition-duration(0.250s);
+    @include transition-timing-function(ease);
+    font-size: $font-size-smallest;
+    color: $color-greyish-teal-blue;
+    font-weight: 400;
+    letter-spacing: 0.25px;
+    &.coveo-selected, &.coveo-selected:hover {
+      font-weight: 700;
+    }
+    height: 40px;
+    * {
+      line-height: 40px;
+    }
+
+    &.coveo-selected, &.coveo-selected:hover {
+      border-bottom: 0;
+      p {
+        border-bottom: 2px solid $color-greyish-dark-blue;
+      }
+    }
+  }
+
+  
+
+  .coveo-tab-list {
+    list-style: none;
+    background-color: white;
+    @include defaultRoundedBorder();
+    padding: 0;
+    white-space: nowrap;
+    
+    * {
+      height: 30px;
+      line-height: 30px;
+      clear: both;
+      white-space: nowrap;
+    }
+    li:first-child {
+      margin-top: 6px;
+    }
+    
+    li:last-child {
+      margin-bottom: 6px;
+    }
+    
+    li:hover {
+      background-color: $color-blueish-white-grey;
+    }
+  }
+
+  .coveo-facet-settings-popup {
+    z-index: 999;
+  }
+}
+ 
+.coveo-tab-list-container {
+  position: absolute;
+  overflow: hidden;
+  z-index: 11;
+
+  ol {
+    margin: 0;
+  }
+}

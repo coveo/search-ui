@@ -6,6 +6,7 @@ import {ResultListEvents} from '../../events/ResultListEvents';
 import {SettingsEvents} from '../../events/SettingsEvents';
 import {PreferencesPanelEvents} from '../../events/PreferencesPanelEvents';
 import {AnalyticsEvents} from '../../events/AnalyticsEvents';
+import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta'
 import {BreadcrumbEvents} from '../../events/BreadcrumbEvents';
 import {QuickviewEvents} from '../../events/QuickviewEvents';
 import {QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
@@ -18,10 +19,11 @@ declare var coveoanalytics: CoveoAnalytics.CoveoUA;
 
 export interface IRecommendationOptions extends ISearchInterfaceOptions {
   mainSearchInterface?: HTMLElement;
-  userContext?: { [name: string]: any };
+  userContext?: string;
   id?: string;
-  linkSearchUid?: boolean;
   optionsToUse?: string[];
+  sendActionsHistory?: boolean;
+  hideIfNoResults?: boolean;
 }
 
 /**
@@ -34,6 +36,7 @@ export interface IRecommendationOptions extends ISearchInterfaceOptions {
  */
 export class Recommendation extends SearchInterface {
   static ID = 'Recommendation';
+  private static NEXT_ID = 1;
 
   /**
    * The options for the recommendation component
@@ -48,37 +51,49 @@ export class Recommendation extends SearchInterface {
     /**
      * Specifies the user context to send to Coveo analytics.
      * It will be sent with the query alongside the user history to get the recommendations.
-     * If the option is not present, this component will display the same results as the main search interface.
      */
-    userContext: ComponentOptions.buildObjectOption(),
+    userContext: ComponentOptions.buildJsonOption(),
 
     /**
      * Specifies the id of the inteface.
      * It is used by the analytics to know which recommendation interface was selected.
-     * The default value is Recommendation
+     * The default value is "Recommendation" for the first one and "Recommendation_{number}" where {number} depends on the number of recommendation interface with default ids in the page for the others. 
      */
-    id: ComponentOptions.buildStringOption({ defaultValue: 'Recommendation' }),
-
-    /**
-     * Specifies if the results of the recommendation query should have the same searchUid as the ones from the main search interface query.
-     * It is used to give info to the {@link Analytics}
-     * The default value is true
-     */
-    linkSearchUid: ComponentOptions.buildBooleanOption({ defaultValue: true, depend: 'mainSearchInterface' }),
+    id: ComponentOptions.buildStringOption(),
 
     /**
      * Specifies which options from the main {@link QueryBuilder} to use in the triggered query.
-     * The default value is ["expression", "advancedExpression", "constantExpression", "disjunctionExpression"]
+     * Ex: <code data-options-to-use="expression, advancedExpression"></code> would add the expression and the advanced expression parts from the main query in the triggered query.
+     * The default value is undefined.
      */
-    optionsToUse: ComponentOptions.buildListOption({ defaultValue: ['expression', 'advancedExpression', 'constantExpression', 'disjunctionExpression'] })
+    optionsToUse: ComponentOptions.buildListOption(),
+
+    /**
+     * Specifies whether or not to send the actions history along with the triggered query.
+     * Disabling this option means this component won't be able to get Reveal recommendations.
+     * However, it could be useful to display side results in a search page.
+     * The default value is true.
+     */
+    sendActionsHistory: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
+    /**
+     * Hides the component if there a no results / recommendations.
+     * The default value is false.
+     */
+    hideIfNoResults: ComponentOptions.buildBooleanOption({ defaultValue: true })
 
   };
 
   private mainInterfaceQuery: IQuerySuccessEventArgs;
-  private mainQuerySearchUID: string;
+  public mainQuerySearchUID: string;
+  private displayStyle: string;
 
-  constructor(public element: HTMLElement, public options?: IRecommendationOptions, public analyticsOptions?, _window = window) {
+  constructor(public element: HTMLElement, public options: IRecommendationOptions = {}, public analyticsOptions = {}, _window = window) {
     super(element, ComponentOptions.initComponentOptions(element, Recommendation, options), analyticsOptions, _window);
+
+    if (!this.options.id) {
+      this.generateDefaultId();
+    }
 
     if (this.options.mainSearchInterface) {
       this.bindToMainSearchInterface();
@@ -100,21 +115,24 @@ export class Recommendation extends SearchInterface {
     $$(this.options.mainSearchInterface).on(QueryEvents.querySuccess, (e: Event, args: IQuerySuccessEventArgs) => {
       this.mainInterfaceQuery = args;
       this.mainQuerySearchUID = args.results.searchUid;
-      this.queryController.executeQuery({ ignoreWarningSearchEvent: true });
+      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.recommendation, {});
+      this.queryController.executeQuery();
     })
   }
 
   private handleRecommendationBuildingQuery(data: IBuildingQueryEventArgs) {
     this.modifyQueryForRecommendation(data);
-    this.addUserContextInQuery(data);
+    this.addRecommendationInfoInQuery(data);
   }
 
   private handleRecommendationQuerySuccess(data: IQuerySuccessEventArgs) {
-    if (this.mainQuerySearchUID && this.options.linkSearchUid) {
-      data.results.searchUid = this.mainQuerySearchUID;
-      _.each(data.results.results, (result: IQueryResult) => {
-        result.queryUid = this.mainQuerySearchUID
-      })
+    if (this.options.hideIfNoResults) {
+      if (data.results.totalCount === 0) {
+        this.displayStyle = this.element.style.display;
+        $$(this.element).hide();
+      } else {
+        this.element.style.display = this.displayStyle;
+      }
     }
   }
 
@@ -124,20 +142,23 @@ export class Recommendation extends SearchInterface {
     }
   }
 
-  private addUserContextInQuery(data: IBuildingQueryEventArgs) {
+  private addRecommendationInfoInQuery(data: IBuildingQueryEventArgs) {
     if (!_.isEmpty(this.options.userContext)) {
-      data.queryBuilder.addContext(this.options.userContext);
+      data.queryBuilder.addContext(JSON.parse(this.options.userContext));
+    }
+    if (this.options.sendActionsHistory) {
+      data.queryBuilder.actionsHistory = this.getHistory();
     }
 
-    data.queryBuilder.addContextValue('actions_history', JSON.stringify(this.getHistory()));
+    data.queryBuilder.recommendation = this.options.id;
   }
 
-  private getHistory() {
+  private getHistory(): string {
     if (typeof coveoanalytics != 'undefined') {
       var store = new coveoanalytics.history.HistoryStore();
-      return store.getHistory();
+      return JSON.stringify(store.getHistory());
     } else {
-      return [];
+      return '[]';
     }
   }
 
@@ -168,6 +189,16 @@ export class Recommendation extends SearchInterface {
       })
     })
     return events;
+  }
+
+  private generateDefaultId() {
+    let id = 'Recommendation';
+    if (Recommendation.NEXT_ID !== 1) {
+      this.logger.warn('Generating another recommendation default id', 'Consider configuring a human friendly / meaningful id for this interface')
+      id = id + '_' + Recommendation.NEXT_ID;
+    }
+    Recommendation.NEXT_ID++;
+    this.options.id = id;
   }
 
 }

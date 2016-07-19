@@ -115,9 +115,10 @@ export class Initialization {
    */
   public static initializeFramework(element: HTMLElement, options?: any, initSearchInterfaceFunction?: (...args: any[]) => void) {
     Assert.exists(element);
-
-    if (DeviceUtils.isIE8or9()) {
-      $$('html').addClass('ie8or9');
+    let alreadyInitialized = Component.get(element, QueryController, true);
+    if (alreadyInitialized) {
+      this.logger.error('This DOM element has already been initialized as a search interface, skipping initialization', element);
+      return;
     }
 
     options = Initialization.resolveDefaultOptions(element, options);

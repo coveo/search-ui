@@ -3,9 +3,10 @@ const glob = require('glob');
 const _ = require('underscore');
 const pngSprite = require('png-sprite');
 const fs = require('fs');
+const buildSpriteList = require('./buildSpriteList');
 
-gulp.task('sprites', ['regularSprites', 'retinaSprites', 'validateRetinaSprites']);
-gulp.task('spritesLegacy', ['regularSpritesLegacy', 'retinaSpritesLegacy']);
+gulp.task('sprites', ['regularSprites', 'retinaSprites', 'regularSpriteList', 'retinaSpriteList', 'validateRetinaSprites']);
+gulp.task('spritesLegacy', ['regularSpritesLegacy', 'retinaSpritesLegacy', 'regularSpriteListLegacy', 'retinaSpriteListLegacy']);
 
 gulp.task('regularSprites', function (done) {
   return gulp.src('image/sprites/**/*.png')
@@ -59,3 +60,19 @@ gulp.task('validateRetinaSprites', function (done) {
     done();
   });
 });
+
+gulp.task('regularSpriteList', function (done) {
+  buildSpriteList('image/sprites', 'bin/image', 'normal-icon-list-new', done);
+})
+
+gulp.task('regularSpriteListLegacy', function (done) {
+  buildSpriteList('breakingchanges/redesign/image/sprites', 'bin/image', 'normal-icon-list', done);
+})
+
+gulp.task('retinaSpriteList', function (done) {
+  buildSpriteList('image/retina', 'bin/image', 'retina-icon-list-new', done);
+})
+
+gulp.task('retinaSpriteListLegacy', function (done) {
+  buildSpriteList('breakingchanges/redesign/image/retina', 'bin/image', 'retina-icon-list', done);
+})

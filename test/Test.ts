@@ -41,6 +41,7 @@
 /// <reference path="ui/AnalyticsTest.ts" />
 /// <reference path="ui/BreadcrumbTest.ts" />
 /// <reference path="ui/ComponentEventsTest.ts" />
+/// <reference path="ui/ComponentOptionsTest.ts" />
 /// <reference path="ui/ComponentTest.ts" />
 /// <reference path="ui/DidYouMeanTest.ts" />
 /// <reference path="ui/ErrorReportTest.ts" />
@@ -82,6 +83,7 @@
 /// <reference path="ui/ExcerptTest.ts" />
 /// <reference path="ui/ResultLinkTest.ts" />
 /// <reference path="ui/RecommendationTest.ts" />
+/// <reference path="ui/RecommendationAnalyticsClientTest.ts" />
 /// <reference path="ui/TemplateLoaderTest.ts" />
 /// <reference path="ui/AnalyticsSuggestionsTest.ts" />
 /// <reference path="ui/RecommendationQueryTest.ts" />
@@ -90,11 +92,15 @@
 /// <reference path="ui/AuthenticationProviderTest.ts" />
 /// <reference path="ui/CurrentTabTest.ts" />
 /// <reference path="ui/QueryboxQueryParametersTest.ts" />
+/// <reference path="ui/ResultListTest.ts" />
 /// <reference path="ui/ImageResultListTest.ts" />
 /// <reference path="ui/SearchAlertsTest.ts" />
 /// <reference path="ui/FollowItemTest.ts" />
 /// <reference path="ui/SearchAlertsMessageTest.ts" />
 /// <reference path="ui/PendingSearchAsYouTypeSearchEventTest.ts" />
+/// <reference path="ui/ChatterLikedByTest.ts" />
+/// <reference path="ui/ChatterPostAttachmentTest.ts" />
+/// <reference path="ui/ChatterPostedByTest.ts" />
 
 Coveo.Logger.disable();
 

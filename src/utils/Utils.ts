@@ -1,5 +1,4 @@
 import {IQueryResult} from '../rest/QueryResult';
-import {Assert} from '../misc/Assert';
 import * as _ from 'underscore';
 
 const isCoveoFieldRegex = /^@[a-zA-Z0-9_\.]+$/
@@ -182,8 +181,11 @@ export class Utils {
     if (name == '') {
       return undefined;
     }
+
     // At this point the name should be well formed
-    Assert.check(Utils.isCoveoField('@' + name));
+    if (!Utils.isCoveoField('@' + name)) {
+      throw `Not a valid field : ${name}`
+    }
     // Handle namespace field values of the form sf.Foo.Bar
     let parts = name.split('.').reverse();
     let obj = result.raw;

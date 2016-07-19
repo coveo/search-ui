@@ -89,12 +89,12 @@ export class QueryUtils {
 
   static quoteAndEscape(str: string): string {
     Assert.isString(str);
-    return `'${QueryUtils.escapeString(str)}'`;
+    return `"${QueryUtils.escapeString(str)}"`;
   }
 
   static escapeString(str: string): string {
     Assert.isString(str);
-    return str.replace(/'/g, ' ');
+    return str.replace(/"/g, ' ');
   }
 
   static isAtomicString(str: string): boolean {
