@@ -109,6 +109,7 @@
     "coveomagicbox": "1.0.9",
     "d3": "^3.5.17",
     "es6-promise": "^3.1.2",
+    "exports-loader": "^0.6.3",
     "modal-box": "1.0.6",
     "typescript": "1.8.x",
     "underscore": "^1.8.3"

@@ -6,8 +6,7 @@ import {Assert} from '../../misc/Assert';
 import {$$} from '../../utils/Dom';
 import {l} from '../../strings/Strings';
 import {Initialization} from '../Base/Initialization';
-
-declare const Globalize;
+import Globalize = require('globalize');
 
 export interface IQueryDurationOptions {
 }

@@ -14,6 +14,14 @@ module.exports = {
       watched: false
     },
     {
+      pattern: './lib/globalize.min.js',
+      watched: false
+    },
+    {
+      pattern: './node_modules/modal-box/bin/ModalBox.min.js',
+      watched: false
+    },
+    {
       pattern: './test/lib/jquery.js',
       watched: false
     },

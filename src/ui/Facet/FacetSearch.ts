@@ -20,8 +20,7 @@ import {StringUtils} from '../../utils/StringUtils';
 import {Defer} from '../../misc/Defer';
 import {IFacetSearchValuesListKlass} from './FacetSearchValuesList';
 import {FacetValueElement} from './FacetValueElement';
-
-declare const Coveo;
+import {ModalBox} from '../../ExternalModulesShim';
 
 /**
  * Used by the {@link Facet} component to render and handle the facet search part of each facet.
@@ -207,7 +206,7 @@ export class FacetSearch {
       let toOpen = document.createElement('div');
       toOpen.appendChild(this.search);
 
-      Coveo.ModalBox.open(toOpen, {
+      ModalBox.open(toOpen, {
         title: DomUtils.getPopUpCloseButton(l('Close'), l('SearchIn', this.facet.options.title)),
         validation: () => {
           this.completelyDismissSearch();
@@ -563,7 +562,7 @@ export class FacetSearch {
     searchParameters.setValueToSearch(this.getValueInInputForFacetSearch())
     this.facet.facetQueryController.search(searchParameters).then((fieldValues: IIndexFieldValue[]) => {
       this.completelyDismissSearch();
-      Coveo.ModalBox.close(true);
+      ModalBox.close(true);
       let facetValues = _.map(fieldValues, (fieldValue) => {
         let facetValue = this.facet.values.get(fieldValue.value);
         if (!Utils.exists(facetValue)) {

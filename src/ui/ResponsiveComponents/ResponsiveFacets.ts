@@ -9,7 +9,6 @@ import {Logger} from '../../misc/Logger';
 import {l} from '../../strings/Strings';
 import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
 import {Facet} from '../Facet/Facet';
-import _ = require('underscore');
 
 export class ResponsiveFacets implements IResponsiveComponent {
 
