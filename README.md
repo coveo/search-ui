@@ -84,30 +84,29 @@ A classic use case would be someone wanting to display only a search box with a 
 
 By building a bundle with only those components, you can cut down the size of the resulting javascript code by a substantial amount, without having to include useless code related to component you do not use.
 
-* Install [plop](https://github.com/amwmedia/plop) globally with `npm install -g plop`
-* Change directory to `./plop`
-* Run `plop` to automatically start the small command line utility, choose the "Create a new bundle" option, and choose the components you wish to include in your bundle.
-* Run `node plop.build.js` to compile the file created in `./bin/`.
-* Once compilation finished, your new bundle should be available in `./bin/CoveoJsSearch.Custom.js`
+1. Install [plop](https://github.com/amwmedia/plop) globally with `npm install -g plop`
+2. Change directory to `./plop`
+3. Run `plop` to automatically start the small command line utility, choose the "Create a new bundle" option, and choose the components you wish to include in your bundle.
+4. Run `node plop.build.js` to compile the file created in `./bin/`.
+5. Once compilation finished, your new bundle should be available in `./bin/CoveoJsSearch.Custom.js`
 
 ### I want to add a new component !
 
 First, fork our repo.
 
-* Install [plop](https://github.com/amwmedia/plop) globally with `npm install -g plop`
-* Change directory to `./plop`
-* Run `plop` to automatically start the small command line utility, choose the "Create a new component" option, and choose the component name.
-* This will automatically generate 4 things :
-** Create a new source file under `./src/ui/{{your component name}}/{{your component name}}.ts`. This is where your component logic should be implemented.
-** Export your component in `./src/Index.ts`. This will make it globally available under the Coveo namespace.
-** Add your component to `./tsconfig.json`. This will make it so it's recognized by the project.
-** Create a new file under `./test/ui/{{your component name}}Test.ts`. This is a blank test file, and where you should add your UT.
-** Reference your component in `./test/Test.ts`. This will build your test like the rest of the components.
-* Now, make it work ! (your mileage may vary).
-* Add tests for your component
-* You should try to test all public API of your component : This means all public methods as well as all available options.
-
-Create a pull request to merge your changes in the master branch.
+1. Install [plop](https://github.com/amwmedia/plop) globally with `npm install -g plop`
+2. Change directory to `./plop`
+3. Run `plop` to automatically start the small command line utility, choose the "Create a new component" option, and choose the component name.
+4. This will automatically generate 4 things :
+    * Plop will create a new source file under `./src/ui/{{your component name}}/{{your component name}}.ts`. This is where your component logic should be implemented.
+    * Plop will export your component in `./src/Index.ts`. This will make it globally available under the Coveo namespace.
+    * Plop will add your component to `./tsconfig.json`. This will make it so it's recognized by the project.
+    * Plop will create a new file under `./test/ui/{{your component name}}Test.ts`. This is a blank test file, and where you should add your UT.
+    * Pleop will reference your component in `./test/Test.ts`. This will build your test like the rest of the components.
+5. Now, make it work ! (your mileage may vary).
+6. Add tests for your component
+7. You should try to test all public API of your component : This means all public methods as well as all available options.
+8. Create a pull request to merge your changes in the master branch.
 
 We are very eager to receive external contributions as well as collaborating with other developers !
 
