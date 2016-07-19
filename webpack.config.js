@@ -22,7 +22,8 @@ module.exports = {
     libraryTarget: 'umd',
     // See Index.ts as for why this need to be a temporary variable
     library: 'Coveo__temporary',
-    publicPath : '/js/'
+    publicPath : '/js/',
+    devtoolModuleFilenameTemplate: '[resource-path]'
   },
   resolve: {
     extensions: ['', '.ts', '.js'],
