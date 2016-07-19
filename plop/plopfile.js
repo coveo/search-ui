@@ -86,12 +86,14 @@ module.exports = function (plop) {
         return 'Modified Index.ts';
       })
       actions.push(()=> {
-        let newReference = plop.renderString('/// <reference path="ui/{{pascalCase cmpName}}Test.ts"');
+        let newReference = plop.renderString('/// <reference path="ui/{{pascalCase cmpName}}Test.ts"', data);
         fs.appendFileSync(path.resolve('../test/Test.ts'), `\n${newReference}`);
         return 'Modified Test.ts';
       })
-      actions.push(()=>{
+      actions.push({
         type : 'add',
+        path: path.resolve('../test/ui/{{pascalCase cmpName}}Test.ts'),
+        templateFile : path.resolve('./plopTemplates/plop.component.test.template.hbs')
       })
       return actions;
     }

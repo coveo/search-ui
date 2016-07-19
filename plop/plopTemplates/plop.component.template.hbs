@@ -9,20 +9,20 @@ export interface I{{cmpName}}Options  {
 }
 
 /**
-* jsdoc on the component class will generate the documentation automatically.
-* Be as specific as possible on what the component does, and how to use it.
-*/
+ * jsdoc on the component class will generate the documentation automatically.
+ * Be as specific as possible on what the component does, and how to use it.
+ */
 export class {{cmpName}} extends Component {
   static ID = '{{cmpName}}'
 
   /**
-  * @componentOptions
-  */
+   * @componentOptions
+   */
   static options: I{{cmpName}}Options = {
     /**
-    * jsdoc on component options will generate the documentation automatically
-    * Be as specific as possible on what the options does, as well as it's default value, if any.
-    */
+     * jsdoc on component options will generate the documentation automatically
+     * Be as specific as possible on what the options does, as well as it's default value, if any.
+     */
     changeMe: ComponentOptions.buildBooleanOption()
   }
 
