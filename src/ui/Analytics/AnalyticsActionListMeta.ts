@@ -146,6 +146,9 @@ export interface IAnalyticsCaseCreationDeflectionMeta {
 
 export interface IAnalyticsPagerMeta {
   pagerNumber: number;
+}
+
+export interface IAnalyticsResultsPerPageMeta {
   currentResultsPerPage: number;
 }
 

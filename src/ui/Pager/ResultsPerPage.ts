@@ -3,12 +3,12 @@ import {IComponentBindings} from '../Base/ComponentBindings';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {Initialization} from '../Base/Initialization';
 import {QueryEvents, IQuerySuccessEventArgs} from '../../events/QueryEvents'
-import {analyticsActionCauseList, IAnalyticsPagerMeta, IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta'
+import {analyticsActionCauseList, IAnalyticsResultsPerPageMeta, IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta'
 import {Assert} from '../../misc/Assert'
 import {$$} from '../../utils/Dom'
 
 export interface IResultsPerPageOptions {
-  numberOfResults?: number[];
+  choicesDisplayed?: number[];
 }
 
 /**
@@ -26,7 +26,7 @@ export class ResultsPerPage extends Component {
      * Specifies the possible values of the number of results to display per page.<br/>
      * The default value is 10, 25, 50, 100
      */
-    numberOfResults: ComponentOptions.buildCustomListOption<number[]>(function (list: string[]) {
+    choicesDisplayed: ComponentOptions.buildCustomListOption<number[]>(function (list: string[]) {
       let values = _.map(list, function (value) {
         return +value;
       });
@@ -49,7 +49,7 @@ export class ResultsPerPage extends Component {
     super(element, ResultsPerPage.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultsPerPage, options);
 
-    this.currentResultsPerPage = this.options.numberOfResults[0];
+    this.currentResultsPerPage = this.options.choicesDisplayed[0];
     this.queryController.options.resultsPerPage = this.currentResultsPerPage;
 
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
@@ -65,10 +65,10 @@ export class ResultsPerPage extends Component {
    */
   public setResultsPerPage(resultsPerPage: number, analyticCause: IAnalyticsActionCause = analyticsActionCauseList.pagerResize) {
     Assert.exists(resultsPerPage);
-    Assert.check(this.options.numberOfResults.indexOf(resultsPerPage) != -1);
+    Assert.check(this.options.choicesDisplayed.indexOf(resultsPerPage) != -1);
     this.currentResultsPerPage = resultsPerPage;
     this.queryController.options.resultsPerPage = this.currentResultsPerPage;
-    this.usageAnalytics.logCustomEvent<IAnalyticsPagerMeta>(analyticCause, { pagerNumber: this.queryController.options.page, currentResultsPerPage: this.currentResultsPerPage }, this.element);
+    this.usageAnalytics.logCustomEvent<IAnalyticsResultsPerPageMeta>(analyticCause, { currentResultsPerPage: this.currentResultsPerPage }, this.element);
     this.queryController.executeQuery({
       ignoreWarningSearchEvent: true,
       keepLastSearchUid: true,
@@ -92,7 +92,7 @@ export class ResultsPerPage extends Component {
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
     this.reset();
-    let numResultsList: number[] = this.options.numberOfResults;
+    let numResultsList: number[] = this.options.choicesDisplayed;
     for (var i = 0; i < numResultsList.length; i++) {
 
       var listItem = $$('li', {

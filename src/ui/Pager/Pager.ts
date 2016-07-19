@@ -113,9 +113,8 @@ export class Pager extends Component {
   public setPage(pageNumber: number, analyticCause: IAnalyticsActionCause = analyticsActionCauseList.pagerNumber) {
     Assert.exists(pageNumber);
     this.currentPage = Math.max(Math.min(pageNumber, 1000), 1);
-    this.queryController.options.page = this.currentPage;
     this.updateQueryStateModel(this.getFirstResultNumber(this.currentPage));
-    this.usageAnalytics.logCustomEvent<IAnalyticsPagerMeta>(analyticCause, { pagerNumber: this.currentPage, currentResultsPerPage: this.queryController.options.resultsPerPage }, this.element);
+    this.usageAnalytics.logCustomEvent<IAnalyticsPagerMeta>(analyticCause, { pagerNumber: this.currentPage }, this.element);
     this.queryController.executeQuery({
       ignoreWarningSearchEvent: true,
       keepLastSearchUid: true,
