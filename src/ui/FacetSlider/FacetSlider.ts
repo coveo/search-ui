@@ -226,7 +226,7 @@ export class FacetSlider extends Component {
       }
     }, 250);
     window.addEventListener('resize', this.onResize);
-    $$(this.root).on(InitializationEvents.nuke, () => this.handleNuke());
+    $$(this.root).on(InitializationEvents.nuke, this.handleNuke);
   }
 
   public createDom() {
