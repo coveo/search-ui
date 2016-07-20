@@ -28,7 +28,7 @@ export class ResultsPerPage extends Component {
      */
     choicesDisplayed: ComponentOptions.buildCustomListOption<number[]>(function (list: string[]) {
       let values = _.map(list, function (value) {
-        return +value;
+        return parseInt(value, 10);
       });
       return values.length == 0 ? null : values;
     }, { defaultValue: ['10', '25', '50', '100'] })
