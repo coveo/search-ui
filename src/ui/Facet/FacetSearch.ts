@@ -93,16 +93,16 @@ export class FacetSearch {
       let searchBar = $$(this.search);
       if (searchBar.css('display') == 'none' || this.searchBarIsAnimating) {
         let self = this;
-        EventsUtils.addPrefixedEvent(this.search, 'AnimationEnd', function(evt) {
+        EventsUtils.addPrefixedEvent(this.search, 'AnimationEnd', function (evt) {
           PopupUtils.positionPopup(self.searchResults, self.search, self.root, self.root,
-            {horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM}
+            { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM }
           );
           EventsUtils.removePrefixedEvent(self.search, 'AnimationEnd', this);
         });
       } else {
         PopupUtils.positionPopup(this.searchResults, this.search, this.root, this.root,
-            {horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM}
-          );
+          { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM }
+        );
       }
     }
   }

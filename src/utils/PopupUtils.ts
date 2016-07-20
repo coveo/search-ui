@@ -72,7 +72,7 @@ export class PopupUtils {
   private static finalAdjustement(popUpOffSet: IOffset, popUpPosition: IOffset, popUp: HTMLElement, desiredPosition: IPosition) {
     let position = this.getPosition(popUp);
     popUp.style.position = 'absolute';
-    popUp.style.top = (position.top + desiredPosition.verticalOffset) - (popUpOffSet.top - popUpPosition.top) + 'px',
+    popUp.style.top = (position.top + desiredPosition.verticalOffset) - (popUpOffSet.top - popUpPosition.top) + 'px';
     popUp.style.left = (position.left + desiredPosition.horizontalOffset) - (popUpOffSet.left - popUpPosition.left) + 'px'
   }
 
@@ -179,7 +179,7 @@ export class PopupUtils {
   private static getOffset(el: HTMLElement) {
     // In <=IE11, calling getBoundingClientRect on a disconnected node throws an error
     if (!el.getClientRects().length) {
-      return {top: 0, left: 0};
+      return { top: 0, left: 0 };
     }
 
 
@@ -200,7 +200,7 @@ export class PopupUtils {
   private static getPosition(el: HTMLElement) {
     let wrappedElement = $$(el);
     let offsetParent = this.getOffsetParent(el);
-    let parentOffset = {top: 0, left: 0};
+    let parentOffset = { top: 0, left: 0 };
 
     let offset = this.getOffset(el);
     if (!$$(offsetParent).is('html')) {
@@ -231,7 +231,7 @@ export class PopupUtils {
   private static getOffsetParent(el: HTMLElement): HTMLElement {
     let offsetParent = el.offsetParent;
 
-    while (offsetParent instanceof HTMLElement && $$(offsetParent).css('position') === 'static' ) {
+    while (offsetParent instanceof HTMLElement && $$(offsetParent).css('position') === 'static') {
       // Will break out if it stumbles upon an non-HTMLElement and return documentElement
       offsetParent = (<HTMLElement>offsetParent).offsetParent;
     }
