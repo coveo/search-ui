@@ -26,6 +26,12 @@
   display: inline-block;
   vertical-align: baseline;
   cursor: pointer;
+  border: none;
+  padding: 0;
+  &:hover {
+    color: $color-vibrant-blue;
+    background-color: white;
+  }
 }
 
 .coveo-pager-next > a > span {
