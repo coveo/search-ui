@@ -72,7 +72,6 @@ export class ResponsiveFacets implements IResponsiveComponent {
 
   public changeToLargeMode() {
     this.enableFacetPreservePosition();
-    this.closeDropdown();
     this.cleanUpDropdown();
     this.dropdownContent.el.removeAttribute('style');
     this.restoreFacetsPosition();
@@ -167,6 +166,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private openDropdown() {
     this.positionPopup();
     document.documentElement.appendChild(this.popupBackground.el);
+    this.root.el.appendChild(this.popupBackground.el);
     window.getComputedStyle(this.popupBackground.el).opacity;
     this.popupBackground.el.style.opacity = ResponsiveFacets.TRANSPARENT_BACKGROUND_OPACITY;
     this.triggerFacetSliderDraw();
@@ -180,7 +180,6 @@ export class ResponsiveFacets implements IResponsiveComponent {
 
     this.dropdownContent.addClass('coveo-facet-dropdown-content');
     this.dropdownHeader.addClass('coveo-dropdown-header-active');
-    this.root.el.appendChild(this.popupBackground.el);
     this.dropdownContent.el.style.display = '';
     let width = ResponsiveFacets.FACET_DROPDOWN_WIDTH_RATIO * this.coveoRoot.el.offsetWidth;
     if (width <= ResponsiveFacets.FACET_DROPDOWN_MIN_WIDTH) {
@@ -197,7 +196,6 @@ export class ResponsiveFacets implements IResponsiveComponent {
     // the animation will happen. Adding this here because its possible that this element has recently been manipulated. 
     window.getComputedStyle(this.popupBackground.el).opacity;
     this.popupBackground.el.style.opacity = '0';
-    this.popupBackground.el.style.display = 'none';
     this.dropdownHeader.el.style.zIndex = '';
     this.dropdownContent.el.style.display = 'none';
     this.dropdownContent.removeClass('coveo-facet-dropdown-content');
@@ -205,6 +203,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private cleanUpDropdown() {
+    this.closeDropdown();
     this.dropdownHeader.detach();
     let facetList = this.dropdownContent.findAll('.' + Component.computeCssClassNameForType(this.ID));
     $$(facetList[facetList.length - 1]).removeClass('coveo-last-facet');
