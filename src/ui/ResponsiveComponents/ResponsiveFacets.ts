@@ -123,11 +123,10 @@ export class ResponsiveFacets implements IResponsiveComponent {
     $$(document.documentElement).on('click', this.onDocumentClick);
 
     this.dropdownContent.on('scroll', _.debounce(() => {
-      console.log('scroll');
       _.each(this.facets, facet => {
-          if (facet.facetSearch && facet.facetSearch.currentlyDisplayedResults) {
-            facet.facetSearch.positionSearchResults();
-          }
+        if (facet.facetSearch && facet.facetSearch.currentlyDisplayedResults) {
+          facet.facetSearch.positionSearchResults();
+        }
       });
     }, 150));
   }
