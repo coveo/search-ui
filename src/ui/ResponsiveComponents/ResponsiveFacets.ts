@@ -186,6 +186,13 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.dropdownContent.el.style.display = 'none';
     this.dropdownContent.removeClass('coveo-facet-dropdown-content');
     this.dropdownHeader.removeClass('coveo-dropdown-header-active');
+    this.dismissFacetSearches();
+  }
+
+  private dismissFacetSearches() {
+    _.each(this.facets, facet => {
+      facet.facetSearch.completelyDismissSearch();
+    })
   }
 
   private enableFacetPreservePosition() {
