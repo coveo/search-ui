@@ -41,6 +41,7 @@
 /// <reference path="ui/AnalyticsTest.ts" />
 /// <reference path="ui/BreadcrumbTest.ts" />
 /// <reference path="ui/ComponentEventsTest.ts" />
+/// <reference path="ui/ComponentOptionsTest.ts" />
 /// <reference path="ui/ComponentTest.ts" />
 /// <reference path="ui/DidYouMeanTest.ts" />
 /// <reference path="ui/ErrorReportTest.ts" />

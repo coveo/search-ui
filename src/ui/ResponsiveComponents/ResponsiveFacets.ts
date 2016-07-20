@@ -42,7 +42,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     ResponsiveComponentsManager.register(ResponsiveFacets, $$(root), ID, component);
   }
 
-  constructor(root: Dom, ID: string) {
+  constructor(public root: Dom, ID: string) {
     this.ID = ID;
     this.coveoRoot = root;
     this.searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, false);
@@ -158,7 +158,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.dropdownContent.addClass('coveo-facet-dropdown-content');
     this.dropdownHeader.addClass('coveo-dropdown-header-active');
 
-    document.documentElement.appendChild(this.popupBackground.el);
+    this.root.el.appendChild(this.popupBackground.el);
     window.getComputedStyle(this.popupBackground.el).opacity;
     this.popupBackground.el.style.opacity = ResponsiveFacets.TRANSPARENT_BACKGROUND_OPACITY;
     this.dropdownContent.el.style.display = '';
