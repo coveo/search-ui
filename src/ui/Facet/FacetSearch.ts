@@ -110,6 +110,7 @@ export class FacetSearch {
    * Dismiss the search results
    */
   public completelyDismissSearch() {
+    console.log('dismiss');
     this.cancelAnyPendingSearchOperation();
     this.facet.unfadeInactiveValuesInMainList();
     $$(this.searchResults).empty();

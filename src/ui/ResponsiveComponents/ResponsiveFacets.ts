@@ -63,7 +63,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   public changeToSmallMode() {
     this.disableFacetPreservePosition();
     this.tabSection.el.appendChild(this.dropdownHeader.el);
-    this.dropdownContent.detach();
+    this.detachDropdown();
   }
 
   public changeToLargeMode() {
