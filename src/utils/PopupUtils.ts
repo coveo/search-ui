@@ -1,4 +1,4 @@
-import {$$} from './Dom'
+import {$$, IOffset} from './Dom'
 
 export interface IPosition {
   vertical: VerticalAlignment;
@@ -24,11 +24,6 @@ export enum HorizontalAlignment {
   INNERRIGHT
 }
 
-interface IOffset {
-  left: number;
-  top: number;
-}
-
 interface IElementBoundary {
   top: number;
   left: number;
@@ -42,10 +37,10 @@ export class PopupUtils {
     desiredPosition.verticalOffset = desiredPosition.verticalOffset ? desiredPosition.verticalOffset : 0;
     desiredPosition.horizontalOffset = desiredPosition.horizontalOffset ? desiredPosition.horizontalOffset : 0;
 
-    let popUpPosition = this.getOffset(nextTo);
+    let popUpPosition = $$(nextTo).offset();
     PopupUtils.basicVerticalAlignment(popUpPosition, popUp, nextTo, desiredPosition);
     PopupUtils.basicHorizontalAlignment(popUpPosition, popUp, nextTo, desiredPosition);
-    PopupUtils.finalAdjustement(this.getOffset(popUp), popUpPosition, popUp, desiredPosition);
+    PopupUtils.finalAdjustement($$(popUp).offset(), popUpPosition, popUp, desiredPosition);
 
     let popUpBoundary = PopupUtils.getBoundary(popUp);
     let boundaryPosition = PopupUtils.getBoundary(boundary);
@@ -70,7 +65,7 @@ export class PopupUtils {
   }
 
   private static finalAdjustement(popUpOffSet: IOffset, popUpPosition: IOffset, popUp: HTMLElement, desiredPosition: IPosition) {
-    let position = this.getPosition(popUp);
+    let position = $$(popUp).position();
     popUp.style.position = 'absolute';
     popUp.style.top = (position.top + desiredPosition.verticalOffset) - (popUpOffSet.top - popUpPosition.top) + 'px';
     popUp.style.left = (position.left + desiredPosition.horizontalOffset) - (popUpOffSet.left - popUpPosition.left) + 'px'
@@ -139,7 +134,7 @@ export class PopupUtils {
   }
 
   private static getBoundary(element: HTMLElement) {
-    let boundaryOffset = this.getOffset(element);
+    let boundaryOffset = $$(element).offset();
     let toAddVertically;
     if (element.tagName.toLowerCase() == 'body') {
       toAddVertically = Math.max(element.scrollHeight, element.offsetHeight);
@@ -174,73 +169,5 @@ export class PopupUtils {
       ret.horizontal = 'right';
     }
     return ret;
-  }
-
-  // based on http://api.jquery.com/offset/
-  private static getOffset(el: HTMLElement) {
-    // In <=IE11, calling getBoundingClientRect on a disconnected node throws an error
-    if (!el.getClientRects().length) {
-      return { top: 0, left: 0 };
-    }
-
-
-    let rect = el.getBoundingClientRect();
-
-    if (rect.width || rect.height) {
-      let doc = el.ownerDocument;
-      let docElem = doc.documentElement;
-
-      return {
-        top: rect.top + window.pageYOffset - docElem.clientTop,
-        left: rect.left + window.pageXOffset - docElem.clientLeft
-      };
-    }
-    return rect;
-  }
-
-  // based on http://api.jquery.com/position/
-  private static getPosition(el: HTMLElement) {
-    let wrappedElement = $$(el);
-    let offsetParent = this.getOffsetParent(el);
-    let parentOffset = { top: 0, left: 0 };
-
-    let offset = this.getOffset(el);
-    if (!$$(offsetParent).is('html')) {
-      parentOffset = this.getOffset(offsetParent);
-    }
-
-    let borderTopWidth = parseInt($$(offsetParent).css('borderTopWidth'));
-    let borderLeftWidth = parseInt($$(offsetParent).css('borderLeftWidth'));
-    borderTopWidth = isNaN(borderTopWidth) ? 0 : borderTopWidth;
-    borderLeftWidth = isNaN(borderLeftWidth) ? 0 : borderLeftWidth;
-
-    parentOffset = {
-      top: parentOffset.top + borderTopWidth,
-      left: parentOffset.left + borderLeftWidth
-    };
-
-    let marginTop = parseInt(wrappedElement.css('marginTop'));
-    let marginLeft = parseInt(wrappedElement.css('marginLeft'));
-    marginTop = isNaN(marginTop) ? 0 : marginTop;
-    marginLeft = isNaN(marginLeft) ? 0 : marginLeft;
-
-    return {
-      top: offset.top - parentOffset.top - marginTop,
-      left: offset.left - parentOffset.left - marginLeft
-    };
-  }
-  // based on https://api.jquery.com/offsetParent/
-  private static getOffsetParent(el: HTMLElement): HTMLElement {
-    let offsetParent = el.offsetParent;
-
-    while (offsetParent instanceof HTMLElement && $$(offsetParent).css('position') === 'static') {
-      // Will break out if it stumbles upon an non-HTMLElement and return documentElement
-      offsetParent = (<HTMLElement>offsetParent).offsetParent;
-    }
-
-    if (!(offsetParent instanceof HTMLElement)) {
-      return document.documentElement;
-    }
-    return <HTMLElement>offsetParent;
   }
 }

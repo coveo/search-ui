@@ -3,10 +3,15 @@ import {Assert} from '../misc/Assert';
 import {Logger} from '../misc/Logger';
 import _ = require('underscore');
 
+export interface IOffset {
+  left: number;
+  top: number;
+}
+
 /**
  * This is essentially an helper class for dom manipulation.<br/>
  * This is intended to provide some basic functionality normally offered by jQuery.<br/>
- * To minimize the multiple jQuery conflict we have while integrating in various system, we implemented the very small subset that the framework need.<br/>
+ * To minimize the multiple jQuery conflict we have while integrating in various system, we implemented the very small subset that the framework needs.<br/>
  * See {@link $$}, which is a function that wraps this class constructor, for less verbose code.
  */
 export class Dom {
@@ -558,6 +563,84 @@ export class Dom {
       new Dom(otherElem).insertAfter(this.el);
     }
     this.detach();
+  }
+
+  // based on http://api.jquery.com/position/
+  /**
+   * Return the position relative to the offset parent.
+   */
+  public position(): IOffset {
+    let offsetParent = this.offsetParent();
+    let parentOffset: IOffset = { top: 0, left: 0 };
+
+    let offset = this.offset();
+    if (!$$(offsetParent).is('html')) {
+      parentOffset = $$(offsetParent).offset();
+    }
+
+    let borderTopWidth = parseInt($$(offsetParent).css('borderTopWidth'));
+    let borderLeftWidth = parseInt($$(offsetParent).css('borderLeftWidth'));
+    borderTopWidth = isNaN(borderTopWidth) ? 0 : borderTopWidth;
+    borderLeftWidth = isNaN(borderLeftWidth) ? 0 : borderLeftWidth;
+
+    parentOffset = {
+      top: parentOffset.top + borderTopWidth,
+      left: parentOffset.left + borderLeftWidth
+    };
+
+    let marginTop = parseInt(this.css('marginTop'));
+    let marginLeft = parseInt(this.css('marginLeft'));
+    marginTop = isNaN(marginTop) ? 0 : marginTop;
+    marginLeft = isNaN(marginLeft) ? 0 : marginLeft;
+
+    return {
+      top: offset.top - parentOffset.top - marginTop,
+      left: offset.left - parentOffset.left - marginLeft
+    };
+  }
+
+  // based on https://api.jquery.com/offsetParent/
+  /**
+   * Returns the offset parent. The offset parent is the closest parent that is positioned.
+   * An element is positioned when its position property is not 'static', which is the default.
+   */
+  public offsetParent(): HTMLElement {
+    let offsetParent = this.el.offsetParent;
+
+    while (offsetParent instanceof HTMLElement && $$(offsetParent).css('position') === 'static') {
+      // Will break out if it stumbles upon an non-HTMLElement and return documentElement
+      offsetParent = (<HTMLElement>offsetParent).offsetParent;
+    }
+
+    if (!(offsetParent instanceof HTMLElement)) {
+      return document.documentElement;
+    }
+    return <HTMLElement>offsetParent;
+  }
+
+  // based on http://api.jquery.com/offset/
+  /**
+   * Return the position relative to the document.
+   */
+  public offset(): IOffset {
+    // In <=IE11, calling getBoundingClientRect on a disconnected node throws an error
+    if (!this.el.getClientRects().length) {
+      return { top: 0, left: 0 };
+    }
+
+
+    let rect = this.el.getBoundingClientRect();
+
+    if (rect.width || rect.height) {
+      let doc = this.el.ownerDocument;
+      let docElem = doc.documentElement;
+
+      return {
+        top: rect.top + window.pageYOffset - docElem.clientTop,
+        left: rect.left + window.pageXOffset - docElem.clientLeft
+      };
+    }
+    return rect;
   }
 
   /**

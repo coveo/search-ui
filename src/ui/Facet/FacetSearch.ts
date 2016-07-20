@@ -45,7 +45,7 @@ export class FacetSearch {
   private facetSearchPromise: Promise<IIndexFieldValue[]>;
   private moreValuesToFetch = true;
   private onResize: (...args: any[]) => void;
-  private onDocClick: (e: Event) => void;
+  private onDocumentClick: (e: Event) => void;
   private searchBarIsAnimating: boolean = false;
 
   constructor(public facet: Facet, public facetSearchValuesListKlass: IFacetSearchValuesListKlass, private root: HTMLElement) {
@@ -56,11 +56,11 @@ export class FacetSearch {
         this.positionSearchResults();
       }
     }, 250);
-    this.onDocClick = (e: Event) => {
+    this.onDocumentClick = (e: Event) => {
       this.handleClickElsewhere(e);
     }
     window.addEventListener('resize', () => this.onResize());
-    document.addEventListener('click', (e: Event) => this.onDocClick(e));
+    document.addEventListener('click', (e: Event) => this.onDocumentClick(e));
     $$(facet.root).on(InitializationEvents.nuke, () => this.handleNuke());
   }
 
@@ -251,7 +251,7 @@ export class FacetSearch {
 
   private handleNuke() {
     window.removeEventListener('resize', this.onResize);
-    document.removeEventListener('click', this.onDocClick);
+    document.removeEventListener('click', this.onDocumentClick);
   }
 
 
@@ -275,6 +275,12 @@ export class FacetSearch {
     this.input.value = ''
     $$(this.clear).hide();
     this.completelyDismissSearch();
+  }
+
+  private handleDocumentScroll() {
+    if (this.currentlyDisplayedResults) {
+      this.positionSearchResults();
+    }
   }
 
   private showOrHideClearElement(isEmpty: boolean) {

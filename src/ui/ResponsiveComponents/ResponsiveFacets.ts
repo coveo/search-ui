@@ -17,6 +17,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private static FACET_DROPDOWN_MIN_WIDTH: number = 280;
   private static FACET_DROPDOWN_WIDTH_RATIO: number = 0.35; // Necessary to have a width relative to the coveo root.
   private static TRANSPARENT_BACKGROUND_OPACITY: string = '0.9';
+  private static DEBOUNCE_SCROLL_WAIT = 150;
   private static ROOT_MIN_WIDTH: number = 800;
   private static logger: Logger;
 
@@ -29,7 +30,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private dropdownHeader: Dom;
   private tabSection: Dom;
   private popupBackground: Dom;
-  private documentClickListener: EventListener;
+  private onDocumentClick: EventListener;
   private facets: Array<Facet> = [];
   private searchInterface: SearchInterface;
 
@@ -111,7 +112,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private bindDropdownContentEvents() {
-    this.documentClickListener = event => {
+    this.onDocumentClick = event => {
       if (Utils.isHtmlElement(event.target)) {
         let eventTarget = $$(<HTMLElement>event.target);
         if (this.shouldDetachFacetDropdown(eventTarget)) {
@@ -119,7 +120,16 @@ export class ResponsiveFacets implements IResponsiveComponent {
         }
       }
     };
-    $$(document.documentElement).on('click', this.documentClickListener);
+    $$(document.documentElement).on('click', this.onDocumentClick);
+
+    this.dropdownContent.on('scroll', _.debounce(() => {
+      console.log('scroll');
+      _.each(this.facets, facet => {
+          if (facet.facetSearch && facet.facetSearch.currentlyDisplayedResults) {
+            facet.facetSearch.positionSearchResults();
+          }
+      });
+    }, 150));
   }
 
   private buildPopupBackground() {
@@ -128,7 +138,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
       if (this.popupBackground.el.style.opacity == '0') {
         this.popupBackground.detach();
       }
-    })
+    });
   }
 
   private shouldDetachFacetDropdown(eventTarget: Dom) {
@@ -191,7 +201,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
 
   private dismissFacetSearches() {
     _.each(this.facets, facet => {
-      if (facet.facetSearch.currentlyDisplayedResults) {
+      if (facet.facetSearch && facet.facetSearch.currentlyDisplayedResults) {
         facet.facetSearch.completelyDismissSearch();
       }
     })
@@ -211,7 +221,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
 
   private bindNukeEvents() {
     $$(this.coveoRoot).on(InitializationEvents.nuke, () => {
-      $$(document.documentElement).off('click', this.documentClickListener);
+      $$(document.documentElement).off('click', this.onDocumentClick);
     });
   }
 }
