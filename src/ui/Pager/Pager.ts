@@ -177,7 +177,7 @@ export class Pager extends Component {
           $$(listItemValue).text(i.toString(10));
 
           var listItem = document.createElement('li');
-          $$(listItem).addClass('coveo-pager-list-item');
+          $$(listItem).addClass(['coveo-pager-anchor', 'coveo-pager-list-item']);
           if (i == this.currentPage) {
             $$(listItem).addClass('coveo-active');
           }
@@ -239,7 +239,7 @@ export class Pager extends Component {
   private renderNavigationButton(pagerBoundary: { start: number; end: number; lastResultPage: number; currentPage: number; }, list: HTMLElement) {
     if (this.currentPage > 1) {
       var previous = document.createElement('li');
-      $$(previous).addClass('coveo-pager-previous');
+      $$(previous).addClass(['coveo-pager-anchor', 'coveo-pager-previous']);
       var buttonLink = document.createElement('a');
       var buttonImg = document.createElement('span');
       buttonLink.appendChild(buttonImg);
@@ -251,7 +251,7 @@ export class Pager extends Component {
 
     if (this.currentPage < pagerBoundary.lastResultPage) {
       var next = document.createElement('li');
-      $$(next).addClass(['coveo-pager-next']);
+      $$(next).addClass(['coveo-pager-anchor', 'coveo-pager-next']);
       var buttonLink = document.createElement('a');
       var buttonImg = document.createElement('span');
       buttonLink.appendChild(buttonImg);
