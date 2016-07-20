@@ -59,9 +59,9 @@ export class FacetSearch {
     this.onDocClick = (e: Event) => {
       this.handleClickElsewhere(e);
     }
-    window.addEventListener('resize', ()=> this.onResize());
-    document.addEventListener('click', (e: Event)=> this.onDocClick(e));
-    $$(facet.root).on(InitializationEvents.nuke, ()=> this.handleNuke());
+    window.addEventListener('resize', () => this.onResize());
+    document.addEventListener('click', (e: Event) => this.onDocClick(e));
+    $$(facet.root).on(InitializationEvents.nuke, () => this.handleNuke());
   }
 
   public isMobileDevice() {

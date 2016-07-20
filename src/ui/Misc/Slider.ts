@@ -640,7 +640,7 @@ class SliderGraph {
       this.draw();
     }, 250);
     window.addEventListener('resize', this.resize);
-    this.root.on(InitializationEvents.nuke, ()=> this.handleNuke());
+    this.root.on(InitializationEvents.nuke, () => this.handleNuke());
 
     this.tooltip = $$('div', {
       className: 'coveo-slider-tooltip'
