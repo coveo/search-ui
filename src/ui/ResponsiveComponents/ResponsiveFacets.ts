@@ -44,7 +44,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     ResponsiveComponentsManager.register(ResponsiveFacets, $$(root), Facet.ID, component);
   }
 
-  constructor(root: Dom, ID: string) {
+  constructor(public root: Dom, ID: string) {
     this.ID = ID;
     this.coveoRoot = root;
     this.searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, false);
@@ -180,6 +180,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
 
     this.dropdownContent.addClass('coveo-facet-dropdown-content');
     this.dropdownHeader.addClass('coveo-dropdown-header-active');
+    this.root.el.appendChild(this.popupBackground.el);
     this.dropdownContent.el.style.display = '';
     let width = ResponsiveFacets.FACET_DROPDOWN_WIDTH_RATIO * this.coveoRoot.el.offsetWidth;
     if (width <= ResponsiveFacets.FACET_DROPDOWN_MIN_WIDTH) {
