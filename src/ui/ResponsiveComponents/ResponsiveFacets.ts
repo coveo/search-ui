@@ -191,7 +191,9 @@ export class ResponsiveFacets implements IResponsiveComponent {
 
   private dismissFacetSearches() {
     _.each(this.facets, facet => {
-      facet.facetSearch.completelyDismissSearch();
+      if (facet.facetSearch.currentlyDisplayedResults) {
+        facet.facetSearch.completelyDismissSearch();
+      }
     })
   }
 
