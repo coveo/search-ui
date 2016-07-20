@@ -8,6 +8,7 @@ import {ComponentOptions} from '../Base/ComponentOptions';
 import {ResponsiveFacets} from '../ResponsiveComponents/ResponsiveFacets';
 import {FacetHeader} from '../Facet/FacetHeader';
 import {l} from '../../strings/Strings';
+import {InitializationEvents} from '../../events/InitializationEvents';
 import {FeatureDetectionUtils} from '../../utils/FeatureDetectionUtils';
 import {FacetSliderQueryController} from '../../controllers/FacetSliderQueryController';
 import {QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs} from '../../events/QueryEvents';
@@ -177,6 +178,7 @@ export class FacetSlider extends Component {
   private isEmpty = false;
   private rangeFromUrlState: number[];
   private delayedGraphData: ISliderGraphData[];
+  private onResize: EventListener;
 
 
   constructor(public element: HTMLElement, public options: IFacetSliderOptions, bindings?: IComponentBindings) {
@@ -217,6 +219,14 @@ export class FacetSlider extends Component {
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
     this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) => this.handlePopulateBreadcrumb(args));
     this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset())
+
+    this.onResize = _.debounce(() => {
+      if (!this.searchInterface.isSmallInterface()) {
+        this.slider.drawGraph();
+      }
+    }, 250);
+    window.addEventListener('resize', this.onResize);
+    $$(this.root).on(InitializationEvents.nuke, () => this.handleNuke());
   }
 
   public createDom() {
@@ -298,7 +308,7 @@ export class FacetSlider extends Component {
   // facet dropdown. This method will draw delayed graph data if it exists.
   public drawDelayedGraphData() {
     if (this.delayedGraphData != undefined) {
-      this.slider.drawGraph(this.delayedGraphData, true);
+      this.slider.drawGraph(this.delayedGraphData);
     }
   }
 
@@ -544,7 +554,7 @@ export class FacetSlider extends Component {
       this.isEmpty = true;
       this.updateAppearanceDependingOnState();
     } else if (graphData != undefined && !this.isFacetDropdownHidden()) {
-      this.slider.drawGraph(graphData, true);
+      this.slider.drawGraph(graphData);
     } else if (graphData != undefined && this.isFacetDropdownHidden()) {
       this.delayedGraphData = graphData;
     }
@@ -713,6 +723,10 @@ export class FacetSlider extends Component {
     } else {
       $$(this.element).removeClass('coveo-disabled');
     }
+  }
+
+  private handleNuke() {
+    window.removeEventListener('resize', this.onResize);
   }
 }
 Initialization.registerAutoCreateComponent(FacetSlider);
