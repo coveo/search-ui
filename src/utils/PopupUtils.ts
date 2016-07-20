@@ -176,6 +176,7 @@ export class PopupUtils {
     return ret;
   }
 
+  // based on http://api.jquery.com/offset/
   private static getOffset(el: HTMLElement) {
     // In <=IE11, calling getBoundingClientRect on a disconnected node throws an error
     if (!el.getClientRects().length) {
@@ -197,6 +198,7 @@ export class PopupUtils {
     return rect;
   }
 
+  // based on http://api.jquery.com/position/
   private static getPosition(el: HTMLElement) {
     let wrappedElement = $$(el);
     let offsetParent = this.getOffsetParent(el);
@@ -227,7 +229,7 @@ export class PopupUtils {
       left: offset.left - parentOffset.left - marginLeft
     };
   }
-
+  // based on https://api.jquery.com/offsetParent/
   private static getOffsetParent(el: HTMLElement): HTMLElement {
     let offsetParent = el.offsetParent;
 
