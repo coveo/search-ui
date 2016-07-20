@@ -25,7 +25,7 @@ gulp.task('sonar', function () {
       sourceEncoding: 'UTF-8',
       javascript: {
         lcov: {
-          reportPath: 'coverage/lcov.info'
+          reportPath: 'bin/coverage/lcov.info'
         }
       },
       exec: {
