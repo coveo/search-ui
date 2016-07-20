@@ -24,12 +24,12 @@ module Coveo {
 
     function buildGraphData(): ISliderGraphData[] {
       let graphData: ISliderGraphData[] = _.map(_.range(0, 10, 1), (range) => {
-          return {
-            start: range * 10,
-            end: (range + 1) * 10,
-            y: Math.random()
-          }
-        })
+        return {
+          start: range * 10,
+          end: (range + 1) * 10,
+          y: Math.random()
+        }
+      })
       return graphData;
     }
 

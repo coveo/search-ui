@@ -294,12 +294,9 @@ export class FacetSlider extends Component {
     }
   }
 
-  /**
-   * There is delayed graph data if at the time the facet slider tried to draw, graph data was undefined or the facet was hidden in the
-   * facet dropdown. This method will draw delayed graph data if it exists.
-   */
+  // There is delayed graph data if at the time the facet slider tried to draw the facet was hidden in the
+  // facet dropdown. This method will draw delayed graph data if it exists.
   public drawDelayedGraphData() {
-    debugger;
     if (this.delayedGraphData != undefined) {
       this.slider.drawGraph(this.delayedGraphData, true);
     }
@@ -554,7 +551,7 @@ export class FacetSlider extends Component {
   }
 
   private isFacetDropdownHidden() {
-    let facetDropdown = document.querySelector('.coveo-facet-column');
+    let facetDropdown = this.root.querySelector('.coveo-facet-column');
     if (facetDropdown) {
       return $$(<HTMLElement>facetDropdown).css('display') == 'none';
     }

@@ -197,6 +197,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     // the animation will happen. Adding this here because its possible that this element has recently been manipulated. 
     window.getComputedStyle(this.popupBackground.el).opacity;
     this.popupBackground.el.style.opacity = '0';
+    this.popupBackground.el.style.display = 'none';
     this.dropdownHeader.el.style.zIndex = '';
     this.dropdownContent.el.style.display = 'none';
     this.dropdownContent.removeClass('coveo-facet-dropdown-content');
@@ -205,7 +206,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
 
   private cleanUpDropdown() {
     this.dropdownHeader.detach();
-    let facetList = this.dropdownContent.findAll('.CoveoFacet');
+    let facetList = this.dropdownContent.findAll('.' + Component.computeCssClassNameForType(this.ID));
     $$(facetList[facetList.length - 1]).removeClass('coveo-last-facet');
 
     this.dropdownHeader.el.style.zIndex = '';
