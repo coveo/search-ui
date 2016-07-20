@@ -32,7 +32,7 @@ export class Pager extends Component {
   static options: IPagerOptions = {
     /**
      * Specifies how many page links to display in the pager.<br/>
-     * The default value is 10 pages on desktop, 3 on mobile
+     * The default value is 5 pages on desktop, 3 on mobile
      */
     numberOfPages: ComponentOptions.buildNumberOption({
       defaultFunction: () => {
@@ -239,7 +239,7 @@ export class Pager extends Component {
   private renderNavigationButton(pagerBoundary: { start: number; end: number; lastResultPage: number; currentPage: number; }, list: HTMLElement) {
     if (this.currentPage > 1) {
       var previous = document.createElement('li');
-      $$(previous).addClass(['coveo-pager-previous']);
+      $$(previous).addClass('coveo-pager-previous');
       var buttonLink = document.createElement('a');
       var buttonImg = document.createElement('span');
       buttonLink.appendChild(buttonImg);

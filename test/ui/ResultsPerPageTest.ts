@@ -27,7 +27,7 @@ module Coveo {
     })
 
     describe('exposes options', function () {
-      it('numberOfResults allows to chose the number of results per page options', function () {
+      it('numberOfResults allows to choose the number of results per page options', function () {
         test = Mock.optionsComponentSetup<ResultsPerPage, IResultsPerPageOptions>(ResultsPerPage, {
           numberOfResults: ['15', '25', '35', '75']
         });

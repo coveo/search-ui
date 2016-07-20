@@ -6,7 +6,7 @@
 
 .coveo-pager-list-item {
   @include defaultRoundedBorder();
-  margin: 5px 6px 5px 6px;
+  margin: 5px 6px;
   padding: 4px 8px;
   list-style: none;
   display: inline-block;
@@ -20,24 +20,17 @@
   cursor: pointer;
 }
 
-.coveo-pager-next{
-  margin: 5px 6px 5px 6px;
+.coveo-pager-previous, .coveo-pager-next{
+  margin: 5px 6px;
   list-style: none;
   display: inline-block;
   vertical-align: baseline;
   cursor: pointer;
 }
+
 .coveo-pager-next > a > span {
   @extend .coveo-sprites-pager-right-arrow;
   vertical-align: middle;
-}
-
-.coveo-pager-previous{
-  margin: 5px 6px 5px 6px;
-  list-style: none;
-  display: inline-block;
-  vertical-align: baseline;
-  cursor: pointer;
 }
 
 .coveo-pager-previous > a > span {

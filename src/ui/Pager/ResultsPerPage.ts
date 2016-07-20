@@ -95,7 +95,7 @@ export class ResultsPerPage extends Component {
     let numResultsList: number[] = this.options.choicesDisplayed;
     for (var i = 0; i < numResultsList.length; i++) {
 
-      var listItem = $$('li', {
+      let listItem = $$('li', {
         className: 'coveo-results-per-page-list-item'
       });
       if (numResultsList[i] == this.currentResultsPerPage) {
