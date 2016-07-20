@@ -134,7 +134,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private shouldDetachFacetDropdown(eventTarget: Dom) {
     return !eventTarget.closest('coveo-facet-column') && !eventTarget.closest('coveo-facet-dropdown-header')
       && this.searchInterface.isSmallInterface() && !eventTarget.closest('coveo-facet-settings-popup')
-      && !eventTarget.closest('coveo-facet-value-checkbox');
+      && !eventTarget.closest('coveo-facet-value');
   }
 
   private saveFacetsPosition() {
