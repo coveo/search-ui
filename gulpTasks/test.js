@@ -2,6 +2,7 @@ const gulp = require('gulp');
 const tsc = require('gulp-tsc');
 const TestServer = require('karma').Server;
 const express = require('express');
+const path = require('path');
 const rename = require('gulp-rename');
 const combineCoverage = require('istanbul-combine');
 const remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
