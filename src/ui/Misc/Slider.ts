@@ -620,7 +620,6 @@ class SliderGraph {
   private y: any;
   private oldData: ISliderGraphData[];
   private tooltip: HTMLElement;
-  private resize: (...args: any[]) => void;
 
   constructor(public slider: Slider) {
     this.svg = d3.select(slider.element).append('svg').append('g');

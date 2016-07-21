@@ -291,7 +291,7 @@ export class FacetSlider extends Component {
   }
 
   public getSliderBoundaryForQuery(): number[] {
-    var needToReturnABoundary = false;
+    let needToReturnABoundary = false;
     if (!this.slider) {
       needToReturnABoundary = true;
     } else if (this.slider && this.isActive()) {
@@ -329,7 +329,7 @@ export class FacetSlider extends Component {
   }
 
   private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs): void {
-    var populateBreadcrumb = () => {
+    let populateBreadcrumb = () => {
       if (this.isActive()) {
         args.breadcrumbs.push(<IBreadcrumbItem>{
           element: this.buildBreadcrumbFacetSlider()
@@ -347,28 +347,28 @@ export class FacetSlider extends Component {
   }
 
   private buildBreadcrumbFacetSlider(): HTMLElement {
-    var elem = $$('div', {
+    let elem = $$('div', {
       className: 'coveo-facet-slider-breadcrumb'
     }).el;
 
-    var title = $$('span', {
+    let title = $$('span', {
       className: 'coveo-facet-slider-breadcrumb-title'
     });
     title.text(this.options.title + ':');
     elem.appendChild(title.el);
 
-    var values = $$('span', {
+    let values = $$('span', {
       className: 'coveo-facet-slider-breadcrumb-values'
     });
     elem.appendChild(values.el);
 
-    var value = $$('span', {
+    let value = $$('span', {
       className: 'coveo-facet-slider-breadcrumb-value'
     })
     value.text(this.slider.getCaption());
     values.el.appendChild(value.el);
 
-    var clear = $$('span', {
+    let clear = $$('span', {
       className: 'coveo-facet-slider-breadcrumb-clear'
     });
     value.el.appendChild(clear.el);
@@ -393,7 +393,7 @@ export class FacetSlider extends Component {
   private initQueryStateEvents() {
     this.rangeQueryStateAttribute = QueryStateModel.getFacetId(this.options.id) + ':range';
     this.queryStateModel.registerNewAttribute(this.rangeQueryStateAttribute, [undefined, undefined]);
-    var eventName = this.queryStateModel.getEventName(Model.eventTypes.changeOne + this.rangeQueryStateAttribute);
+    let eventName = this.queryStateModel.getEventName(Model.eventTypes.changeOne + this.rangeQueryStateAttribute);
     this.bind.onRootElement(eventName, (args: IAttributeChangedEventArg) => {
       this.slider ? this.handleRangeQueryStateChanged(args) : this.setRangeStateSliderStillNotCreated(args);
     })
@@ -404,14 +404,14 @@ export class FacetSlider extends Component {
   }
 
   private buildSlider() {
-    var sliderContainer = $$('div', {
+    let sliderContainer = $$('div', {
       className: 'coveo-facet-values coveo-slider-container'
     }).el;
 
     if (this.hasAGraph()) {
       $$(sliderContainer).addClass('coveo-with-graph');
     }
-    var sliderDiv = $$('div').el;
+    let sliderDiv = $$('div').el;
 
     this.slider = new Slider(sliderDiv, _.extend({}, this.options, { dateField: this.options.dateField }), this.root);
     $$(sliderDiv).on(SliderEvents.endSlide, (e: MouseEvent, args: IEndSlideEventArgs) => {
@@ -433,10 +433,10 @@ export class FacetSlider extends Component {
   private handleBuildingQuery(data: IBuildingQueryEventArgs) {
     Assert.exists(data);
     Assert.exists(data.queryBuilder);
-    var boundary = this.getSliderBoundaryForQuery();
+    let boundary = this.getSliderBoundaryForQuery();
     if (boundary != undefined) {
       this.facetQueryController.prepareForNewQuery();
-      var expression = this.facetQueryController.computeOurFilterExpression(boundary);
+      let expression = this.facetQueryController.computeOurFilterExpression(boundary);
       if (Utils.isNonEmptyString(expression)) {
         this.logger.trace('Putting filter in query', expression);
         data.queryBuilder.advancedExpression.add(expression);
@@ -445,14 +445,14 @@ export class FacetSlider extends Component {
   }
 
   private handleDoneBuildingQuery(data: IDoneBuildingQueryEventArgs) {
-    var queryBuilder = data.queryBuilder;
+    let queryBuilder = data.queryBuilder;
     this.facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
   }
 
   private handleDeferredQuerySuccess(data: IQuerySuccessEventArgs) {
     this.ensureDom();
     this.setupSliderIfNeeded(data);
-    var groupByResults = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
+    let groupByResults = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
     if (groupByResults == undefined || groupByResults.values[0] == undefined) {
       this.isEmpty = true;
     }
@@ -463,7 +463,7 @@ export class FacetSlider extends Component {
   }
 
   private handleEndSlide(args: IEndSlideEventArgs) {
-    var values = args.slider.getValues();
+    let values = args.slider.getValues();
     this.startOfSlider = values[0];
     this.endOfSlider = values[1];
     if (this.updateQueryState(values)) {
@@ -478,7 +478,7 @@ export class FacetSlider extends Component {
   }
 
   private handleDuringSlide(args: IDuringSlideEventArgs) {
-    var values = args.slider.getValues();
+    let values = args.slider.getValues();
     this.startOfSlider = values[0];
     this.endOfSlider = values[1];
     this.slider.setValues([this.startOfSlider, this.endOfSlider]);
@@ -503,10 +503,10 @@ export class FacetSlider extends Component {
   }
 
   private updateQueryState(values = this.slider.getValues(), silent = false) {
-    var copyOfValues = this.copyValues(values);
-    var start = values[0] + 0.0;
-    var end = values[1] + 0.0;
-    var model: number[] = this.queryStateModel.get(this.rangeQueryStateAttribute);
+    let copyOfValues = this.copyValues(values);
+    let start = values[0] + 0.0;
+    let end = values[1] + 0.0;
+    let model: number[] = this.queryStateModel.get(this.rangeQueryStateAttribute);
     if (model == null || copyOfValues[0] != model[0] || copyOfValues[1] != model[1]) {
       copyOfValues[0] = start;
       copyOfValues[1] = end;
@@ -519,21 +519,21 @@ export class FacetSlider extends Component {
   private copyValues(values: number[]) {
     // Creating a copy of the values prevents an unwanted automatic update of the state while sliding
     // That's the cleanest way I found to copy that array correctly
-    var copyOfValues = [];
+    let copyOfValues = [];
     copyOfValues[0] = Number(values[0]) + 0.0;
     copyOfValues[1] = Number(values[1]) + 0.0;
     return copyOfValues
   }
 
   private renderToSliderGraph(data: IQuerySuccessEventArgs) {
-    var rawGroupByResults = data.results.groupByResults[this.facetQueryController.graphGroupByQueriesIndex];
-    var graphData: ISliderGraphData[];
-    var totalGraphResults = 0;
+    let rawGroupByResults = data.results.groupByResults[this.facetQueryController.graphGroupByQueriesIndex];
+    let graphData: ISliderGraphData[];
+    let totalGraphResults = 0;
     if (rawGroupByResults) {
       graphData = _.map(rawGroupByResults.values, (value) => {
         totalGraphResults += value.numberOfResults;
-        var start: any = value.value.split('..')[0];
-        var end: any = value.value.split('..')[1];
+        let start: any = value.value.split('..')[0];
+        let end: any = value.value.split('..')[1];
         if (!this.options.dateField) {
           start = Number(start);
           end = Number(end);
@@ -541,7 +541,7 @@ export class FacetSlider extends Component {
           start = new Date(start.split('@')[0]).getTime();
           end = new Date(end.split('@')[0]).getTime();
         }
-        var y = value.numberOfResults;
+        let y = value.numberOfResults;
         return {
           start: start,
           y: y,
@@ -569,13 +569,12 @@ export class FacetSlider extends Component {
   }
 
   private generateBoundary(): number[] {
-    var start: number, end: number;
     if (!this.slider) {
       // If the slider is not initialized, the only boundary we can get is from the state.
       return this.generateBoundaryFromState();
     } else {
       // Else, try to get one from the slider itself. If we cant, try to return one from the state.
-      var boundary = this.generateBoundaryFromSlider();
+      let boundary = this.generateBoundaryFromSlider();
       if (boundary[0] == undefined && boundary[1] == undefined) {
         return this.generateBoundaryFromState();
       } else {
@@ -585,7 +584,7 @@ export class FacetSlider extends Component {
   }
 
   private generateBoundaryFromSlider() {
-    var start, end;
+    let start, end;
     if (this.startOfSlider != undefined) {
       start = this.startOfSlider;
     }
@@ -596,12 +595,12 @@ export class FacetSlider extends Component {
   }
 
   private generateBoundaryFromState() {
-    var start, end;
-    var startFromState = this.queryStateModel.get(this.rangeQueryStateAttribute)[0];
+    let start, end;
+    let startFromState = this.queryStateModel.get(this.rangeQueryStateAttribute)[0];
     if (startFromState != undefined) {
       start = startFromState;
     }
-    var endFromState = this.queryStateModel.get(this.rangeQueryStateAttribute)[1];
+    let endFromState = this.queryStateModel.get(this.rangeQueryStateAttribute)[1];
     if (endFromState != undefined) {
       end = endFromState;
     }
@@ -623,7 +622,7 @@ export class FacetSlider extends Component {
       }
       this.trySetSliderBoundaryFromState();
       this.setupSliderStateVariables();
-      var isInError = this.verifySetup();
+      let isInError = this.verifySetup();
       if (isInError) {
         this.logger.warn('Unable to initialize slider with current values', this);
       } else {
@@ -634,7 +633,7 @@ export class FacetSlider extends Component {
   }
 
   private verifySetup() {
-    var isInError = 0;
+    let isInError = 0;
     isInError += this.initialStartOfSlider == undefined ? 1 : 0;
     isInError += isNaN(this.initialStartOfSlider) ? 1 : 0;
     isInError += this.initialEndOfSlider == undefined ? 1 : 0;
@@ -670,7 +669,7 @@ export class FacetSlider extends Component {
   }
 
   private trySetSliderBoundaryFromState() {
-    var stateValues = this.rangeFromUrlState || this.queryStateModel.get(this.rangeQueryStateAttribute);
+    let stateValues = this.rangeFromUrlState || this.queryStateModel.get(this.rangeQueryStateAttribute);
     if (stateValues && stateValues[0] != undefined && stateValues[1] != undefined) {
       stateValues[0] = Number(stateValues[0]);
       stateValues[1] = Number(stateValues[1]);
@@ -682,7 +681,7 @@ export class FacetSlider extends Component {
   }
 
   private trySetSliderBoundaryFromQueryResult(data: IQuerySuccessEventArgs) {
-    var groupByResults = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
+    let groupByResults = data.results.groupByResults[this.facetQueryController.lastGroupByRequestIndex];
     if (groupByResults && groupByResults.values.length > 0) {
       this.setupInitialSliderStateStart(groupByResults.values[0].value.split('..')[0]);
       this.setupInitialSliderStateEnd(groupByResults.values[groupByResults.values.length - 1].value.split('..')[1]);

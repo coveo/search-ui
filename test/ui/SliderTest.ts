@@ -170,51 +170,13 @@ module Coveo {
           graph: {
             steps: 10
           }
-        }, root)
-        let searchInterface = new SearchInterface(root);
+        }, root);
+        new SearchInterface(root);
 
         slider.element.style.width = '100px';
         slider.element.style.height = '100px';
         let graphData: ISliderGraphData[] = buildGraphData();
         slider.drawGraph(graphData);
-        expect($$(getSliderGraph(slider.element)).findAll('rect').length).toBe(10);
-      })
-
-      it('graph steps does not allow draw graph data when in small interface', () => {
-        slider = new Slider(el, {
-          start: 0,
-          end: 100,
-          graph: {
-            steps: 10
-          }
-        }, root)
-        let searchInterface = new SearchInterface(root);
-        searchInterface.isSmallInterface = () => true;
-        slider.element.style.width = '100px';
-        slider.element.style.height = '100px';
-        let graphData: ISliderGraphData[] = buildGraphData();
-
-        slider.drawGraph(graphData);
-
-        expect($$(getSliderGraph(slider.element)).findAll('rect').length).toBe(0);
-      })
-
-      it('graph steps allows draw graph data when in small interface and force draw is true', () => {
-        slider = new Slider(el, {
-          start: 0,
-          end: 100,
-          graph: {
-            steps: 10
-          }
-        }, root)
-        let searchInterface = new SearchInterface(root);
-        searchInterface.isSmallInterface = () => true;
-        slider.element.style.width = '100px';
-        slider.element.style.height = '100px';
-        let graphData: ISliderGraphData[] = buildGraphData();
-
-        slider.drawGraph(graphData, true);
-
         expect($$(getSliderGraph(slider.element)).findAll('rect').length).toBe(10);
       })
     })

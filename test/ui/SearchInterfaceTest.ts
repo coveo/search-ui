@@ -169,7 +169,7 @@ module Coveo {
       })
 
       it('excerptLength allow to specify the excerpt length of results in a query', function () {
-        var cmp = new SearchInterface(div, {
+        new SearchInterface(div, {
           excerptLength: 123
         }, undefined, mockWindow)
         var simulation = Simulate.query(env);
