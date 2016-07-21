@@ -3,6 +3,7 @@ import {IQuery} from './Query';
 import {ITaggingRequest} from './TaggingRequest';
 import {IRatingRequest} from './RatingRequest';
 import {IRevealQuerySuggestRequest} from './RevealQuerySuggest';
+import {IQueryResults} from './QueryResults';
 import {IListFieldValuesRequest} from './ListFieldValuesRequest';
 import {ISubscriptionRequest, ISubscription} from './Subscription';
 
@@ -29,7 +30,7 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
     return this.endpoint.isJsonp();
   }
 
-  public search(query: IQuery, callOptions?: IEndpointCallOptions) {
+  public search(query: IQuery, callOptions?: IEndpointCallOptions): Promise<IQueryResults> {
     return this.endpoint.search(query, this.enrichCallOptions(callOptions));
   }
 
