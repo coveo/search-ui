@@ -2,7 +2,6 @@
 ///<reference path="QueryExtensionAddon.ts" />
 ///<reference path="RevealQuerySuggestAddon.ts" />
 ///<reference path="OldOmniboxAddon.ts" />
-
 import {IQueryboxOptions} from '../Querybox/Querybox';
 import {Component} from '../Base/Component';
 import {IComponentBindings} from '../Base/ComponentBindings';
@@ -22,12 +21,12 @@ import {FieldAddon} from './FieldAddon';
 import {QueryExtensionAddon} from './QueryExtensionAddon';
 import {RevealQuerySuggestAddon} from './RevealQuerySuggestAddon';
 import {OldOmniboxAddon} from './OldOmniboxAddon';
-import _ = require('underscore');
 import {QueryboxQueryParameters} from '../Querybox/QueryboxQueryParameters';
 import {IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta';
 import {IDuringQueryEventArgs} from '../../events/QueryEvents';
 import {PendingSearchAsYouTypeSearchEvent} from '../Analytics/PendingSearchAsYouTypeSearchEvent';
 import {Utils} from '../../utils/Utils';
+import {MagicBox} from '../../ExternalModulesShim';
 
 export interface IPopulateOmniboxSuggestionsEventArgs {
   omnibox: Omnibox;
@@ -135,7 +134,7 @@ export class Omnibox extends Component {
     let grammar: { start: string; expressions: { [id: string]: Coveo.MagicBox.ExpressionDef } };
 
     if (this.options.enableQuerySyntax) {
-      grammar = Coveo.MagicBox.Grammars.Expressions(Coveo.MagicBox.Grammars.Complete);
+      grammar = MagicBox.Grammars.Expressions(MagicBox.Grammars.Complete);
 
       if (this.options.enableFieldAddon) {
         new FieldAddon(this);
@@ -161,7 +160,7 @@ export class Omnibox extends Component {
       grammar = this.options.grammar(grammar);
     }
 
-    this.magicBox = Coveo.MagicBox.create(element, new Coveo.MagicBox.Grammar(grammar.start, grammar.expressions), {
+    this.magicBox = MagicBox.create(element, new MagicBox.Grammar(grammar.start, grammar.expressions), {
       inline: this.options.inline,
       selectableSuggestionClass: 'coveo-omnibox-selectable',
       selectedSuggestionClass: 'coveo-omnibox-selected',

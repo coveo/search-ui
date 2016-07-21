@@ -1,8 +1,7 @@
 import {Template} from '../Templates/Template';
 import {IQueryResult} from '../../rest/QueryResult';
 import {$$} from '../../utils/Dom';
-
-declare const Globalize;
+import Globalize = require('globalize');
 
 export class DefaultMatrixResultPreviewTemplate extends Template {
 

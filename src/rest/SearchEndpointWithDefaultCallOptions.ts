@@ -5,7 +5,6 @@ import {IRatingRequest} from './RatingRequest';
 import {IRevealQuerySuggestRequest} from './RevealQuerySuggest';
 import {IListFieldValuesRequest} from './ListFieldValuesRequest';
 import {ISubscriptionRequest, ISubscription} from './Subscription';
-import _ = require('underscore');
 
 export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
   options: ISearchEndpointOptions;

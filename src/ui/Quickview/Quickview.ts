@@ -14,6 +14,7 @@ import {QueryStateModel} from '../../models/QueryStateModel'
 import {QuickviewEvents} from '../../events/QuickviewEvents'
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
 import {KEYBOARD} from '../../utils/KeyboardUtils';
+import {ModalBox} from '../../ExternalModulesShim';
 
 export interface IQuickviewOptions {
   title?: string;
@@ -216,7 +217,7 @@ export class Quickview extends Component {
 
     let computedModalBoxContent = $$('div')
     computedModalBoxContent.append(openerObject.content.el);
-    this.modalbox = Coveo.ModalBox.open(computedModalBoxContent.el, {
+    this.modalbox = ModalBox.open(computedModalBoxContent.el, {
       title: DomUtils.getQuickviewHeader(this.result, {
         showDate: this.options.showDate,
         title: this.options.title

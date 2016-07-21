@@ -7,4 +7,5 @@ coverage
 docgen
 npm-debug.log
 *.orig
+gulp-tsc-tmp*
 environments/conf.js

@@ -15,7 +15,6 @@ import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
 import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {BaseComponent} from '../Base/BaseComponent';
 import {Recommendation} from '../Recommendation/Recommendation';
-import _ = require('underscore');
 
 /**
  * Represent the initialization parameters required to init a new component
@@ -344,7 +343,12 @@ export class Initialization {
     Assert.exists(namedMethodHandler);
 
     Initialization.logger.trace('Dispatching named method call of ' + methodName, element, args);
-    return namedMethodHandler.apply(null, <any[]>[element].concat(args));
+    if (args.length != 0) {
+      return namedMethodHandler.apply(null, [element].concat(args));
+    } else {
+      return namedMethodHandler.apply(null, [element]);
+    }
+
   }
 
   public static dispatchNamedMethodCallOrComponentCreation(token: string, element: HTMLElement, args: any[]): any {

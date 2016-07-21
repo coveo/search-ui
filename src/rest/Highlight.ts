@@ -9,9 +9,8 @@ export interface IHighlight {
 export interface IHighlightTerm {
   [originalTerm: string]: string[]
 }
-;
+
 
 export interface IHighlightPhrase {
   [phrase: string]: IHighlightTerm
 }
-;

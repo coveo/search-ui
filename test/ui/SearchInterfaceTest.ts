@@ -1,8 +1,6 @@
 /// <reference path="../Test.ts" />
 
 module Coveo {
-
-  import SearchInterface = Coveo.SearchInterface;
   describe('SearchInterface', () => {
 
     let cmp: SearchInterface;
@@ -238,12 +236,6 @@ module Coveo {
         new SearchInterface(div, { timezone: 'aa-bb' }, undefined, mockWindow);
         let simulation = Simulate.query(env);
         expect(simulation.queryBuilder.timezone).toBe('aa-bb');
-      })
-
-      it('timezone should resolve by default using an external library', function () {
-        new SearchInterface(div, undefined, undefined, mockWindow);
-        let simulation = Simulate.query(env);
-        expect(simulation.queryBuilder.timezone).toBe(jstz.determine().name());
       })
 
       it('enableDebugInfo should create a debug component', function (done) {
