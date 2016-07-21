@@ -30,7 +30,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private dropdownHeader: Dom;
   private tabSection: Dom;
   private popupBackground: Dom;
-  private documentClickListener: EventListener;
+  private popupBackgroundClickListener: EventListener;
   private facets: Facet[] = [];
   private facetSliders: FacetSlider[] = [];
   private searchInterface: SearchInterface;
@@ -52,7 +52,6 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.buildDropdownContent();
     this.buildDropdownHeader();
     this.bindDropdownHeaderEvents();
-    this.bindDropdownContentEvents();
     this.buildPopupBackground();
     this.saveFacetsPosition();
     this.bindNukeEvents();
@@ -92,9 +91,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private triggerFacetSliderDraw() {
-    _.each(this.facetSliders, facetSlider => {
-      facetSlider.drawDelayedGraphData();
-    });
+    _.each(this.facetSliders, facetSlider => facetSlider.drawDelayedGraphData());
   }
 
   private buildDropdownContent() {
@@ -124,18 +121,6 @@ export class ResponsiveFacets implements IResponsiveComponent {
     });
   }
 
-  private bindDropdownContentEvents() {
-    this.documentClickListener = event => {
-      if (Utils.isHtmlElement(event.target)) {
-        let eventTarget = $$(<HTMLElement>event.target);
-        if (this.shouldCloseFacetDropdown(eventTarget)) {
-          this.closeDropdown();
-        }
-      }
-    };
-    $$(document.documentElement).on('click', this.documentClickListener);
-  }
-
   private buildPopupBackground() {
     this.popupBackground = $$('div', { className: 'coveo-facet-dropdown-background' });
     EventsUtils.addPrefixedEvent(this.popupBackground.el, 'TransitionEnd', () => {
@@ -143,11 +128,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
         this.popupBackground.detach();
       }
     })
-  }
-
-  private shouldCloseFacetDropdown(eventTarget: Dom) {
-    return !eventTarget.closest('coveo-facet-column') && !eventTarget.closest('coveo-facet-dropdown-header')
-      && this.searchInterface.isSmallInterface() && !eventTarget.closest('coveo-facet-settings-popup');
+    this.popupBackground.on('click', () => this.closeDropdown());
   }
 
   private saveFacetsPosition() {
@@ -193,7 +174,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
 
   private closeDropdown() {
     // Because of DOM manipulation, sometimes the animation will not trigger. Accessing the computed styles makes sure
-    // the animation will happen. Adding this here because its possible that this element has recently been manipulated. 
+    // the animation will happen. Adding this here because its possible that this element has recently been manipulated.
     window.getComputedStyle(this.popupBackground.el).opacity;
     this.popupBackground.el.style.opacity = '0';
     this.dropdownHeader.el.style.zIndex = '';
@@ -212,26 +193,20 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private enableFacetPreservePosition() {
-    _.each(this.facets, facet => {
-      facet.options.preservePosition = true;
-    });
+    _.each(this.facets, facet => facet.options.preservePosition = true);
   }
 
   private disableFacetPreservePosition() {
-    _.each(this.facets, facet => {
-      facet.options.preservePosition = false;
-    });
+    _.each(this.facets, facet => facet.options.preservePosition = false);
   }
 
   private bindNukeEvents() {
     $$(this.coveoRoot).on(InitializationEvents.nuke, () => {
-      $$(document.documentElement).off('click', this.documentClickListener);
+      $$(document.documentElement).off('click', this.popupBackgroundClickListener);
     });
   }
 
   private drawFacetSliderGraphs() {
-    _.each(this.facetSliders, facetSlider => {
-      facetSlider.drawDelayedGraphData();
-    })
+    _.each(this.facetSliders, facetSlider => facetSlider.drawDelayedGraphData());
   }
 }
