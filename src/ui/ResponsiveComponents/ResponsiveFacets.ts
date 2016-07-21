@@ -91,9 +91,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private triggerFacetSliderDraw() {
-    _.each(this.facetSliders, facetSlider => {
-      facetSlider.drawDelayedGraphData();
-    });
+    _.each(this.facetSliders, facetSlider => facetSlider.drawDelayedGraphData());
   }
 
   private buildDropdownContent() {
@@ -209,8 +207,6 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private drawFacetSliderGraphs() {
-    _.each(this.facetSliders, facetSlider => {
-      facetSlider.drawDelayedGraphData();
-    })
+    _.each(this.facetSliders, facetSlider => facetSlider.drawDelayedGraphData());
   }
 }
