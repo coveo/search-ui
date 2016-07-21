@@ -5,7 +5,7 @@ import {IBreadcrumbValueElementKlass} from './BreadcrumbValueElement';
 import {Assert} from '../../misc/Assert';
 import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom';
-import Globalize = require('globalize');
+import * as Globalize from 'globalize';
 
 export class BreadcrumbValueList {
   private expanded: FacetValue[];
