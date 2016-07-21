@@ -230,16 +230,4 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private drawFacetSliderGraphs() {
     _.each(this.facetSliders, facetSlider => facetSlider.drawDelayedGraphData());
   }
-
-  private isFacetSearchScrolledIntoView(facetSearchElement: HTMLElement) {
-    let facetTop = facetSearchElement.getBoundingClientRect().top;
-    let facetBottom = facetSearchElement.getBoundingClientRect().bottom;
-    let dropdownTop = this.dropdownContent.el.getBoundingClientRect().top;
-    let dropdownBottom = this.dropdownContent.el.getBoundingClientRect().bottom;
-
-    dropdownTop = dropdownTop >= 0 ? dropdownTop : 0;
-
-    let isVisible = (facetTop >= dropdownTop) && (facetBottom <= dropdownBottom);
-    return isVisible;
-  }
 }
