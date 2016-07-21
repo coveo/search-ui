@@ -145,7 +145,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
           facet.facetSearch.positionSearchResults();
         }
       });
-    }, 150));
+    }, ResponsiveFacets.DEBOUNCE_SCROLL_WAIT));
   }
 
   private buildPopupBackground() {
