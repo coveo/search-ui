@@ -4,7 +4,6 @@ import {IComponentBindings} from '../Base/ComponentBindings';
 import {Component} from '../Base/Component';
 import {Assert} from '../../misc/Assert';
 import {OmniboxEvents, IPopulateOmniboxEventArgs} from '../../events/OmniboxEvents';
-import {IOmniboxDataRow} from '../Omnibox/OmniboxInterface';
 import {QueryEvents} from '../../events/QueryEvents';
 import {l} from '../../strings/Strings';
 import {QueryStateModel} from '../../models/QueryStateModel';

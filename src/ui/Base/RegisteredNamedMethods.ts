@@ -11,7 +11,6 @@ import {IStringMap} from '../../rest/GenericParam';
 import {BaseComponent} from '../Base/BaseComponent';
 import {Component} from '../Base/Component';
 import {IStandaloneSearchInterfaceOptions} from '../SearchInterface/SearchInterface';
-import {IQueryResults} from '../../rest/QueryResults';
 import {IRecommendationOptions} from '../Recommendation/Recommendation';
 
 /**

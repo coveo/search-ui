@@ -107,7 +107,7 @@ export class Badge extends FieldValue {
         };
         let colors: string[][] = StringUtils.match(colorsOption, Badge.colorRegex);
         _.each(colors, (color: string[]) => {
-          let [fullColor, fieldValue, colorValue] = color;
+          let [ , fieldValue, colorValue] = color;
           if (fieldValue != null) {
             badgeColors.values[fieldValue.replace(/\\(:|;)/g, '$1')] = {
               icon: colorValue

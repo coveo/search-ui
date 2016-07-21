@@ -9,7 +9,6 @@ import {IFacetSortDescription} from './FacetSort';
 import {Utils} from '../../utils/Utils';
 import {l} from '../../strings/Strings';
 import {QueryStateModel} from '../../models/QueryStateModel';
-import {FacetHeader} from './FacetHeader';
 import {IAnalyticsFacetMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';

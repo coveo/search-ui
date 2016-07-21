@@ -17,7 +17,6 @@ import {KEYBOARD} from '../../utils/KeyboardUtils';
 import {FacetUtils} from './FacetUtils';
 import {FacetValue} from './FacetValues';
 import {StringUtils} from '../../utils/StringUtils';
-import {Defer} from '../../misc/Defer';
 import {IFacetSearchValuesListKlass} from './FacetSearchValuesList';
 import {FacetValueElement} from './FacetValueElement';
 import {ModalBox} from '../../ExternalModulesShim';

@@ -124,7 +124,7 @@ export class ImageResultList extends ResultList {
   }
 
   private onImageProxy(callback: () => void) {
-    let results = _.each(this.getResultsElement(), (element: HTMLElement) => {
+    _.each(this.getResultsElement(), (element: HTMLElement) => {
       if ($$(element).findAll('img').length == 0) {
         $$(element).detach();
       }
