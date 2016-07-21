@@ -68,7 +68,7 @@ module.exports = function (plop) {
     actions: (data)=> {
       let actions = [];
       data.cmpName = plop.renderString('{{pascalCase cmpName}}', data);
-      console.log(data.cmpName);
+      console.log(`Creating new component named ${data.cmpName}`);
       actions.push({
         type: 'add',
         path: path.resolve('../src/ui/{{cmpName}}/{{cmpName}}.ts'),

@@ -104,7 +104,7 @@ First, fork our repo.
     * Plop will reference your component in `./test/Test.ts`. This will build your test like the rest of the components.
 5. Now, make it work ! (your mileage may vary).
 6. Add tests for your component
-7. You should try to test all public API of your component : This means all public methods as well as all available options.
+7. You should test the entire public API of your component : This means all public methods as well as all available options.
 8. Create a pull request to merge your changes in the master branch.
 
 We are very eager to receive external contributions as well as collaborating with other developers!
