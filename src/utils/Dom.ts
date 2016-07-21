@@ -1,7 +1,6 @@
 import {Utils} from '../utils/Utils';
 import {Assert} from '../misc/Assert';
 import {Logger} from '../misc/Logger';
-import _ = require('underscore');
 
 /**
  * This is essentially an helper class for dom manipulation.<br/>
@@ -74,6 +73,9 @@ export class Dom {
    * @returns {string}
    */
   public css(property: string): string {
+    if (this.el.style[property]) {
+      return this.el.style[property];
+    }
     return window.getComputedStyle(this.el).getPropertyValue(property);
   }
 

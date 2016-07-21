@@ -57,6 +57,6 @@ function initCoveoJQuery() {
   }
 }
 
-function jQueryIsDefined(): boolean {
+export function jQueryIsDefined(): boolean {
   return window['$'] != undefined && window['$'].fn != undefined && window['$'].fn.jquery != undefined;
 }

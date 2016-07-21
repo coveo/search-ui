@@ -2,7 +2,6 @@ import {$$} from '../utils/Dom';
 import {Assert} from '../misc/Assert';
 import {Utils} from '../utils/Utils';
 import {BaseComponent} from '../ui/Base/BaseComponent';
-import _ = require('underscore');
 
 export const MODEL_EVENTS = {
   PREPROCESS: 'preprocess',

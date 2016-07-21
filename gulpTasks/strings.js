@@ -14,7 +14,7 @@ gulp.task('strings', [ 'fileTypes' ], function (done) {
   dict.writeLanguageFile('./bin/js/cultures/da.js', 'da', './strings/cultures/globalize.culture.da.js', false);
   dict.writeLanguageFile('./bin/js/cultures/de.js', 'de', './strings/cultures/globalize.culture.de.js', false);
   dict.writeLanguageFile('./bin/js/cultures/el.js', 'el', './strings/cultures/globalize.culture.el.js', false);
-  dict.writeLanguageFile('./bin/js/cultures/es-es.js', 'es-es', './strings/cultures/globalize.culture.es-ES.js', false);
+  dict.writeLanguageFile('./bin/js/cultures/es-es.js', 'es-ES', './strings/cultures/globalize.culture.es-ES.js', false);
   dict.writeLanguageFile('./bin/js/cultures/fi.js', 'fi', './strings/cultures/globalize.culture.fi.js', false);
   dict.writeLanguageFile('./bin/js/cultures/hu.js', 'hu', './strings/cultures/globalize.culture.hu.js', false);
   dict.writeLanguageFile('./bin/js/cultures/id.js', 'id', './strings/cultures/globalize.culture.id.js', false);
@@ -24,13 +24,13 @@ gulp.task('strings', [ 'fileTypes' ], function (done) {
   dict.writeLanguageFile('./bin/js/cultures/nl.js', 'nl', './strings/cultures/globalize.culture.nl.js', false);
   dict.writeLanguageFile('./bin/js/cultures/no.js', 'no', './strings/cultures/globalize.culture.no.js', false);
   dict.writeLanguageFile('./bin/js/cultures/pl.js', 'pl', './strings/cultures/globalize.culture.pl.js', false);
-  dict.writeLanguageFile('./bin/js/cultures/pt-br.js', 'pt-br', './strings/cultures/globalize.culture.pt-BR.js', false);
+  dict.writeLanguageFile('./bin/js/cultures/pt-br.js', 'pt-BR', './strings/cultures/globalize.culture.pt-BR.js', false);
   dict.writeLanguageFile('./bin/js/cultures/ru.js', 'ru', './strings/cultures/globalize.culture.ru.js', false);
   dict.writeLanguageFile('./bin/js/cultures/sv.js', 'sv', './strings/cultures/globalize.culture.sv.js', false);
   dict.writeLanguageFile('./bin/js/cultures/th.js', 'th', './strings/cultures/globalize.culture.th.js', false);
   dict.writeLanguageFile('./bin/js/cultures/tr.js', 'tr', './strings/cultures/globalize.culture.tr.js', false);
-  dict.writeLanguageFile('./bin/js/cultures/zh-cn.js', 'zh-cn', './strings/cultures/globalize.culture.zh-CN.js', false);
-  dict.writeLanguageFile('./bin/js/cultures/zh-tw.js', 'zh-tw', './strings/cultures/globalize.culture.zh-TW.js', false);
+  dict.writeLanguageFile('./bin/js/cultures/zh-cn.js', 'zh-CN', './strings/cultures/globalize.culture.zh-CN.js', false);
+  dict.writeLanguageFile('./bin/js/cultures/zh-tw.js', 'zh-TW', './strings/cultures/globalize.culture.zh-TW.js', false);
   done();
 });
 

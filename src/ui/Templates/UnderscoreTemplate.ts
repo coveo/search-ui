@@ -4,7 +4,6 @@ import {Assert} from '../../misc/Assert';
 import {ComponentOptions, IComponentOptionsFieldsOption} from '../Base/ComponentOptions';
 import {Utils} from '../../utils/Utils';
 import {$$} from '../../utils/Dom';
-import _ = require('underscore');
 
 _.templateSettings = {
   evaluate: /(?:<%|{{)([\s\S]+?)(?:%>|}})/g,

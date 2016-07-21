@@ -5,8 +5,7 @@ import {QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs} from '../.
 import {IGroupByRequest} from '../../rest/GroupByRequest';
 import {Initialization} from '../Base/Initialization';
 import {$$} from '../../utils/Dom';
-
-declare var Globalize;
+import Globalize = require('globalize');
 
 export interface IAggregateOptions {
   field: string;
