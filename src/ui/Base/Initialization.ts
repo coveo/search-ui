@@ -344,7 +344,12 @@ export class Initialization {
     Assert.exists(namedMethodHandler);
 
     Initialization.logger.trace('Dispatching named method call of ' + methodName, element, args);
-    return namedMethodHandler.apply(null, <any[]>[element].concat(args));
+    if (args.length != 0) {
+      return namedMethodHandler.apply(null, [element].concat(args));
+    } else {
+      return namedMethodHandler.apply(null, [element]);
+    }
+
   }
 
   public static dispatchNamedMethodCallOrComponentCreation(token: string, element: HTMLElement, args: any[]): any {

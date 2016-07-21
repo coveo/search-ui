@@ -2,7 +2,7 @@
 
 module Coveo {
   describe('FacetSlider', function () {
-    var test: Mock.IBasicComponentSetup<FacetSlider>;
+    let test: Mock.IBasicComponentSetup<FacetSlider>;
 
     beforeEach(function () {
       test = Mock.optionsComponentSetup<FacetSlider, IFacetSliderOptions>(FacetSlider, {
@@ -20,18 +20,18 @@ module Coveo {
 
     it('should not add a query expression if the slider is in it\'s default state', function () {
       test.cmp.setSelectedValues([0, 100]);
-      var simulation = Simulate.query(test.env);
+      let simulation = Simulate.query(test.env);
       expect(simulation.queryBuilder.build().aq).toBeUndefined();
     })
 
     it('should add a query expression if the slider is not in it\'s default state', function () {
       test.cmp.setSelectedValues([5, 25]);
-      var simulation = Simulate.query(test.env);
+      let simulation = Simulate.query(test.env);
       expect(simulation.queryBuilder.build().aq).toBe('@foo==5..25');
     })
 
     it('should request a group by', function () {
-      var simulation = Simulate.query(test.env);
+      let simulation = Simulate.query(test.env);
       expect(simulation.queryBuilder.build().groupBy).toEqual(jasmine.arrayContaining([
         jasmine.objectContaining({
           field: '@foo',
@@ -50,7 +50,7 @@ module Coveo {
     })
 
     it('should return selected values from the query state if available', function () {
-      var spy: jasmine.Spy = jasmine.createSpy('rangeState');
+      let spy: jasmine.Spy = jasmine.createSpy('rangeState');
       spy.and.returnValue([60, 75]);
       test.env.queryStateModel.get = spy;
       Simulate.query(test.env);
@@ -58,7 +58,7 @@ module Coveo {
     })
 
     it('should populate breadcrumb only if not in default state', function () {
-      var breadcrumbs = [];
+      let breadcrumbs = [];
       $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, <IPopulateBreadcrumbEventArgs>{ breadcrumbs: breadcrumbs })
       expect(breadcrumbs.length).toBe(0);
 
@@ -76,11 +76,11 @@ module Coveo {
           field: '@foo',
           dateField: true
         });
-        var startSelected = new Date(Date.UTC(2100, 0, 1));
-        var endSelected = new Date(Date.UTC(2200, 0, 1));
+        let startSelected = new Date(Date.UTC(2100, 0, 1));
+        let endSelected = new Date(Date.UTC(2200, 0, 1));
 
         test.cmp.setSelectedValues([startSelected.getTime(), endSelected.getTime()]);
-        var simulation = Simulate.query(test.env);
+        let simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().aq).toBe('@foo==2100/01/01@00:00:00..2200/01/01@00:00:00');
       })
 
@@ -95,7 +95,7 @@ module Coveo {
         (<jasmine.Spy>test.env.queryStateModel.get).and.returnValue([0, 100]);
         (<jasmine.Spy>test.env.queryStateModel.getDefault).and.returnValue([0, 100]);
 
-        var simulation = Simulate.query(test.env);
+        let simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().groupBy).toEqual(jasmine.arrayContaining([
           jasmine.objectContaining({
             queryOverride: '@foo>50',
