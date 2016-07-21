@@ -3,7 +3,7 @@ import {IQueryResult} from '../rest/QueryResult';
 import {IQuery} from '../rest/Query';
 import {Assert} from '../misc/Assert';
 import {Utils} from '../utils/Utils';
-import * as _ from 'underscore';
+import _ = require('underscore');
 
 declare let crypto: Crypto;
 

@@ -8,8 +8,8 @@ import {TemplateList} from '../Templates/TemplateList';
 import {UnderscoreTemplate} from '../Templates/UnderscoreTemplate';
 import {HtmlTemplate} from '../Templates/HtmlTemplate';
 import {Utils} from '../../utils/Utils';
-import * as _ from 'underscore';
 import {l} from '../../strings/Strings';
+import _ = require('underscore');
 
 export interface IComponentOptionsLoadOption<T> {
   (element: HTMLElement, name: string, option: IComponentOptionsOption<T>): T

@@ -21,7 +21,7 @@ import {ICustomEvent} from '../../rest/CustomEvent';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import {Component} from '../Base/Component';
 import {version} from '../../misc/Version';
-import * as _ from 'underscore';
+import _ = require('underscore');
 
 
 export class LiveAnalyticsClient implements IAnalyticsClient {

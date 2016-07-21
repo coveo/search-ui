@@ -2,7 +2,7 @@ import {Template} from './Template';
 import {Assert} from '../../misc/Assert';
 import {UnderscoreTemplate} from './UnderscoreTemplate';
 import {HtmlTemplate} from './HtmlTemplate';
-import * as _ from 'underscore';
+import _ = require('underscore');
 
 export class TemplateCache {
   private static templates: { [templateName: string]: Template; } = {};

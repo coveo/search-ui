@@ -11,7 +11,7 @@ import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
 import {Utils} from '../../utils/Utils'
 import {Facet} from '../Facet/Facet'
 import {$$} from '../../utils/Dom'
-import * as _ from 'underscore';
+import _ = require('underscore');
 
 export interface IFieldValueOptions {
   field?: string;

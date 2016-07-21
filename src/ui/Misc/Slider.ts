@@ -6,8 +6,8 @@ import {Utils} from '../../utils/Utils';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {Component} from '../Base/Component';
-import * as d3 from 'd3';
-import * as _ from 'underscore';
+import d3 = require('d3');
+import _ = require('underscore');
 
 declare var Globalize;
 

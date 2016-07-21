@@ -17,7 +17,7 @@ import {DeviceUtils} from '../../utils/DeviceUtils'
 import {TemplateCache} from './TemplateCache'
 import {$$} from '../../utils/Dom'
 import {SearchEndpoint} from '../../rest/SearchEndpoint'
-import * as _ from 'underscore';
+import _ = require('underscore');
 import {ResultList} from '../ResultList/ResultList';
 import {StreamHighlightUtils} from '../../utils/StreamHighlightUtils';
 

@@ -5,7 +5,7 @@ import {IRevealQuerySuggestCompletion, IRevealQuerySuggestRequest, IRevealQueryS
 import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
 import {OmniboxEvents} from '../../events/OmniboxEvents';
 import {StringUtils} from '../../utils/StringUtils';
-import * as _ from 'underscore';
+import _ = require('underscore');
 
 export class RevealQuerySuggestAddon {
 

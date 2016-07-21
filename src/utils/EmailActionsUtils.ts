@@ -2,7 +2,7 @@ import {IQueryResult} from '../rest/QueryResult';
 import {Options} from '../misc/Options';
 import {DeviceUtils} from '../utils/DeviceUtils';
 import {l} from '../strings/Strings';
-import * as _ from 'underscore';
+import _ = require('underscore');
 
 
 export interface IMailToOptions {

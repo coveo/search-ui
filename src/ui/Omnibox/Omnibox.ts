@@ -22,7 +22,7 @@ import {FieldAddon} from './FieldAddon';
 import {QueryExtensionAddon} from './QueryExtensionAddon';
 import {RevealQuerySuggestAddon} from './RevealQuerySuggestAddon';
 import {OldOmniboxAddon} from './OldOmniboxAddon';
-import * as _ from 'underscore';
+import _ = require('underscore');
 import {QueryboxQueryParameters} from '../Querybox/QueryboxQueryParameters';
 import {IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta';
 import {IDuringQueryEventArgs} from '../../events/QueryEvents';

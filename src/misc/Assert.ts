@@ -1,6 +1,6 @@
 import {Logger} from '../misc/Logger';
 import {Utils} from '../utils/Utils';
-import * as _ from 'underscore';
+import _ = require('underscore');
 
 export class Assert {
   private static logger = new Logger('Assert');

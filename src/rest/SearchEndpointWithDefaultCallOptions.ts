@@ -11,7 +11,7 @@ import {IIndexFieldValue} from './FieldValue';
 import {IFieldDescription} from './FieldDescription';
 import {IExtension} from './Extension';
 import {IEndpointError} from './EndpointError';
-import * as _ from 'underscore';
+import _ = require('underscore');
 
 export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
   options: ISearchEndpointOptions;

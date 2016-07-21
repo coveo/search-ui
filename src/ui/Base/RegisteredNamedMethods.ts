@@ -12,7 +12,7 @@ import {BaseComponent} from '../Base/BaseComponent';
 import {Component} from '../Base/Component';
 import {IStandaloneSearchInterfaceOptions} from '../SearchInterface/SearchInterface';
 import {IQueryResults} from '../../rest/QueryResults';
-import * as _ from 'underscore';
+import _ = require('underscore');
 import {IRecommendationOptions} from '../Recommendation/Recommendation';
 
 /**

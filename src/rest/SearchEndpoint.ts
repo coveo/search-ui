@@ -23,7 +23,7 @@ import {QueryUtils} from '../utils/QueryUtils';
 import {QueryError} from '../rest/QueryError';
 import {Utils} from '../utils/Utils';
 import {Promise} from 'es6-promise';
-import * as _ from 'underscore';
+import _ = require('underscore');
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;
