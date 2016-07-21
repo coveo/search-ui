@@ -74,6 +74,9 @@ export class Dom {
    * @returns {string}
    */
   public css(property: string): string {
+    if (this.el.style[property]) {
+      return this.el.style[property];
+    }
     return window.getComputedStyle(this.el).getPropertyValue(property);
   }
 
