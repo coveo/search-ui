@@ -133,8 +133,6 @@ export class ResponsiveFacets implements IResponsiveComponent {
     }, ResponsiveFacets.DEBOUNCE_SCROLL_WAIT));
   }
 
-  }
-
   private buildPopupBackground() {
     this.popupBackground = $$('div', { className: 'coveo-facet-dropdown-background' });
     EventsUtils.addPrefixedEvent(this.popupBackground.el, 'TransitionEnd', () => {
