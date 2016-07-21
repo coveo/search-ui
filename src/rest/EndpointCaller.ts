@@ -5,10 +5,8 @@ import {TimeSpan} from '../utils/TimeSpanUtils';
 import {DeviceUtils} from '../utils/DeviceUtils';
 import {Utils} from '../utils/Utils';
 import {Promise} from 'es6-promise';
-import _ = require('underscore');
 
 declare var XDomainRequest;
-
 
 /**
  * Parameters that can be used when calling an {@link EndpointCaller}

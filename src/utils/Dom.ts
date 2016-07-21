@@ -1,7 +1,6 @@
 import {Utils} from '../utils/Utils';
 import {Assert} from '../misc/Assert';
 import {Logger} from '../misc/Logger';
-import _ = require('underscore');
 
 export interface IOffset {
   left: number;

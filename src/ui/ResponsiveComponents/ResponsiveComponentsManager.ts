@@ -6,7 +6,6 @@ import {Facet} from '../Facet/Facet';
 import {FacetSlider} from '../FacetSlider/FacetSlider';
 import {ResponsiveFacets} from './ResponsiveFacets';
 import {IComponentDefinition} from '../Base/Component';
-import _ = require('underscore');
 import {SearchInterface} from '../SearchInterface/SearchInterface';
 
 export interface IResponsiveComponentConstructor {
