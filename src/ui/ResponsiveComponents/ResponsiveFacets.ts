@@ -10,7 +10,6 @@ import {l} from '../../strings/Strings';
 import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
 import {Facet} from '../Facet/Facet';
 import {FacetSlider} from '../FacetSlider/FacetSlider';
-import _ = require('underscore');
 
 export class ResponsiveFacets implements IResponsiveComponent {
 

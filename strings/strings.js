@@ -115,7 +115,8 @@ function Dictionary(from, options) {
   };
 
   this.writeDefaultLanguage = function (to, language) {
-    var code = mergeFunctionAsString;
+    var code = 'import * as Globalize from \'globalize\';\n';
+    code += mergeFunctionAsString;
     code += dictObjectAsString(this.json, language);
     code += 'export function defaultLanguage() {\n';
     code += bindPrototypeOnNativeStringOnPageReady(language);

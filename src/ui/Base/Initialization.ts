@@ -16,7 +16,6 @@ import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
 import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {BaseComponent} from '../Base/BaseComponent';
 import {Recommendation} from '../Recommendation/Recommendation';
-import _ = require('underscore');
 
 /**
  * Represent the initialization parameters required to init a new component
