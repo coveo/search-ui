@@ -5,7 +5,7 @@ import {ImageResultListEvents} from '../../events/ImageResultListEvents';
 import {ResultListEvents} from '../../events/ResultListEvents';
 import {Initialization} from '../Base/Initialization';
 import {InitializationEvents} from '../../events/InitializationEvents';
-import {$$, Dom} from '../../utils/Dom';
+import {$$} from '../../utils/Dom';
 
 export interface IImageResultListOptions extends IResultListOptions {
   layoutType?: string;
@@ -52,7 +52,6 @@ export class ImageResultList extends ResultList {
 
   private columnResultsArray: number[] = [];
   private imagesInCurrentRow: number[] = [];
-  private imagesLoaded = 0;
   private resultIndex: number = 0;
   private lastRowHeight: number = 0;
 
@@ -113,7 +112,6 @@ export class ImageResultList extends ResultList {
   }
 
   private retrieveLayoutMethod(): () => void {
-    let oncomplete: () => any;
     if (!this.disabled) {
       if (this.options.layoutType.toLowerCase() == ImageResultList.columnLayoutTypeStr) {
         return () => this.setupColumns();

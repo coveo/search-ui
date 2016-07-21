@@ -687,6 +687,8 @@ export class SearchEndpoint implements ISearchEndpoint {
     return uri;
   }
 
+  // see https://github.com/palantir/tslint/issues/1421
+  // tslint:disable-next-line:no-unused-variable
   private buildAccessToken(tokenKey: string): string[] {
     let queryString: string[] = [];
 
@@ -815,13 +817,6 @@ export class SearchEndpoint implements ISearchEndpoint {
         this.logger.error('Failed to renew access token', e);
         return e;
       })
-  }
-
-  private addTrailingSlash(uri: string) {
-    if (!this.hasTrailingSlash(uri)) {
-      uri += '/';
-    }
-    return uri;
   }
 
   private removeTrailingSlash(uri: string) {

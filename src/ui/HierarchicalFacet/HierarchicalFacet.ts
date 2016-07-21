@@ -25,8 +25,6 @@ import {IPopulateOmniboxEventArgs} from '../../events/OmniboxEvents';
 import {OmniboxHierarchicalValuesList} from './OmniboxHierarchicalValuesList';
 import {HierarchicalFacetValueElement} from './HierarchicalFacetValueElement';
 import {Initialization} from '../Base/Initialization';
-import {ValueElementRenderer} from '../Facet/ValueElementRenderer';
-import {l} from '../../strings/Strings';
 
 export interface IHierarchicalFacetOptions extends IFacetOptions {
   delimitingCharacter?: string;
@@ -120,7 +118,6 @@ export class HierarchicalFacet extends Facet {
   public numberOfValuesToShow: number;
   public facetQueryController: HierarchicalFacetQueryController;
   private valueHierarchy: { [facetValue: string]: IValueHierarchy };
-  private originalPosition: IValueHierarchy[];
   private firstPlacement = true;
   private originalNumberOfValuesToShow: number;
   private topLevelHierarchy: IValueHierarchy[];
@@ -733,18 +730,6 @@ export class HierarchicalFacet extends Facet {
     _.each(children, (child) => {
       this.showFacetValue(child);
     })
-  }
-
-  private hideParent(parent: IValueHierarchy) {
-    if (parent) {
-      this.hideFacetValue(parent);
-    }
-  }
-
-  private showParent(parent: IValueHierarchy) {
-    if (parent) {
-      this.showFacetValue(parent);
-    }
   }
 
   private selectChilds(parent: IValueHierarchy, children: IValueHierarchy[]) {

@@ -2,15 +2,9 @@ import {ISearchEndpoint, IEndpointCallOptions, IGetDocumentOptions, ISearchEndpo
 import {IQuery} from './Query';
 import {ITaggingRequest} from './TaggingRequest';
 import {IRatingRequest} from './RatingRequest';
-import {IRevealQuerySuggestRequest, IRevealQuerySuggestResponse} from './RevealQuerySuggest';
+import {IRevealQuerySuggestRequest} from './RevealQuerySuggest';
 import {IListFieldValuesRequest} from './ListFieldValuesRequest';
 import {ISubscriptionRequest, ISubscription} from './Subscription';
-import {IQueryResults} from './QueryResults';
-import {IQueryResult} from './QueryResult';
-import {IIndexFieldValue} from './FieldValue';
-import {IFieldDescription} from './FieldDescription';
-import {IExtension} from './Extension';
-import {IEndpointError} from './EndpointError';
 import _ = require('underscore');
 
 export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
