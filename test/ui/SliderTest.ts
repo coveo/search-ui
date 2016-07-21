@@ -22,6 +22,17 @@ module Coveo {
       return $$(sliderElement).find('svg');
     }
 
+    function buildGraphData(): ISliderGraphData[] {
+      let graphData: ISliderGraphData[] = _.map(_.range(0, 10, 1), (range) => {
+        return {
+          start: range * 10,
+          end: (range + 1) * 10,
+          y: Math.random()
+        }
+      })
+      return graphData;
+    }
+
     beforeEach(function () {
       el = document.createElement('div');
       el.style.width = '100px';
@@ -159,16 +170,12 @@ module Coveo {
           graph: {
             steps: 10
           }
-        }, root)
+        }, root);
+        new SearchInterface(root);
+
         slider.element.style.width = '100px';
         slider.element.style.height = '100px';
-        var graphData: ISliderGraphData[] = _.map(_.range(0, 10, 1), (range) => {
-          return {
-            start: range * 10,
-            end: (range + 1) * 10,
-            y: Math.random()
-          }
-        })
+        let graphData: ISliderGraphData[] = buildGraphData();
         slider.drawGraph(graphData);
         expect($$(getSliderGraph(slider.element)).findAll('rect').length).toBe(10);
       })

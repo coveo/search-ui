@@ -91,7 +91,7 @@ export class Slider {
     }
 
     if (this.options.graph) {
-      this.sliderGraph = new SliderGraph(this, root);
+      this.sliderGraph = new SliderGraph(this);
     }
 
     this.sliderLine = new SliderLine(this);
@@ -620,11 +620,8 @@ class SliderGraph {
   private y: any;
   private oldData: ISliderGraphData[];
   private tooltip: HTMLElement;
-  private resize: (...args: any[]) => void;
-  private root: Dom;
 
-  constructor(public slider: Slider, root: HTMLElement) {
-    this.root = $$(root);
+  constructor(public slider: Slider) {
     this.svg = d3.select(slider.element).append('svg').append('g');
     this.x = d3.scale.ordinal();
     this.y = d3.scale.linear();
@@ -636,12 +633,6 @@ class SliderGraph {
     }, this.slider.options.graph.margin || {});
     this.slider.options.graph.animationDuration = this.slider.options.graph.animationDuration || 500;
 
-    this.resize = _.debounce(() => {
-      this.draw();
-    }, 250);
-    window.addEventListener('resize', this.resize);
-    this.root.on(InitializationEvents.nuke, () => this.handleNuke());
-
     this.tooltip = $$('div', {
       className: 'coveo-slider-tooltip'
     }).el;
@@ -651,8 +642,7 @@ class SliderGraph {
   }
 
   public draw(data: ISliderGraphData[] = this.oldData) {
-    let searchInterface = <SearchInterface>Component.get(this.root.el, SearchInterface, true);
-    if (data && !(searchInterface instanceof SearchInterface && !searchInterface.isSmallInterface())) {
+    if (data) {
       var sliderOuterWidth = this.slider.element.offsetWidth;
       var sliderOuterHeight = this.slider.element.offsetHeight;
       var width = sliderOuterWidth - this.slider.options.graph.margin.left - this.slider.options.graph.margin.right;
@@ -668,10 +658,6 @@ class SliderGraph {
       this.setGraphBarsTransition(bars, height, currentSliderValues);
       this.oldData = data;
     }
-  }
-
-  private handleNuke() {
-    window.removeEventListener('resize', this.resize);
   }
 
   private setXAndYRange(width: number, height: number) {
