@@ -40,6 +40,8 @@ const mergeFunctionAsString = '\tvar merge = function(obj1, obj2) {\n' +
     '\t\treturn obj3;\n' +
     '}\n'
 
+const jQueryExistsAsString = `window['$'] != undefined && window['$'].fn != undefined && window['$'].fn.jquery != undefined`;
+
 function dictObjectAsString(json, language) {
   var dictAsString = '  var dict = {\n';
 
@@ -55,9 +57,14 @@ function dictObjectAsString(json, language) {
 }
 
 function bindPrototypeOnNativeStringOnPageReady(language) {
-  var pageReadyString = 'document.addEventListener(\'DOMContentLoaded\', function(event){\n';
-  pageReadyString += setPrototypeOnNativeString(language);
-  pageReadyString += '})';
+  var pageReadyString = `if( ${jQueryExistsAsString} ) { \n
+    $(function(){\n
+      ${setPrototypeOnNativeString(language)} \n
+    })\n
+  } else {
+    document.addEventListener('DOMContentLoaded', function(event){\n
+      ${setPrototypeOnNativeString(language)}
+  })}`;
   return pageReadyString;
 }
 

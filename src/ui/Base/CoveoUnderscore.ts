@@ -1,3 +1,4 @@
+import {jQueryIsDefined} from './CoveoJQuery';
 export var underscoreInstance;
 
 if (underscoreIsDefined()) {
@@ -9,6 +10,13 @@ if (underscoreIsDefined()) {
       setCoveoUnderscore();
     }
   })
+  if (jQueryIsDefined()) {
+    $(function () {
+      if (underscoreIsDefined()) {
+        setCoveoUnderscore();
+      }
+    })
+  }
 }
 
 function setCoveoUnderscore() {

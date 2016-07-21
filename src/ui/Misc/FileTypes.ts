@@ -67,7 +67,7 @@ export class FileTypes {
   static getFileTypeCaptions() {
     if (fileTypeCaptions == undefined) {
       fileTypeCaptions = {};
-      var strings = String['locales'][String['locale']];
+      var strings = String['locales'][String['locale'].toLowerCase()];
       Assert.isNotUndefined(strings);
       _.each(_.keys(strings), function (key) {
         if (key.indexOf('filetype_') == 0) {
