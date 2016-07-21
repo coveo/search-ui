@@ -40,13 +40,15 @@ const mergeFunctionAsString = '\tvar merge = function(obj1, obj2) {\n' +
     '\t\treturn obj3;\n' +
     '}\n'
 
+const jQueryExistsAsString = `window['$'] != undefined && window['$'].fn != undefined && window['$'].fn.jquery != undefined`;
+
 function dictObjectAsString(json, language) {
   var dictAsString = '  var dict = {\n';
 
   _.each(_.keys(json), function (key) {
-    var str = json[key][language];
+    var str = json[key][language.toLowerCase()];
     if (str != undefined) {
-      dictAsString += '      ' + JSON.stringify(key) + ': ' + JSON.stringify(json[key][language]) + ',\n';
+      dictAsString += '      ' + JSON.stringify(key) + ': ' + JSON.stringify(json[key][language.toLowerCase()]) + ',\n';
     }
   });
 
@@ -55,9 +57,14 @@ function dictObjectAsString(json, language) {
 }
 
 function bindPrototypeOnNativeStringOnPageReady(language) {
-  var pageReadyString = 'document.addEventListener(\'DOMContentLoaded\', function(event){\n';
-  pageReadyString += setPrototypeOnNativeString(language);
-  pageReadyString += '})';
+  var pageReadyString = `if( ${jQueryExistsAsString} ) { \n
+    $(function(){\n
+      ${setPrototypeOnNativeString(language)} \n
+    })\n
+  } else {
+    document.addEventListener('DOMContentLoaded', function(event){\n
+      ${setPrototypeOnNativeString(language)}
+  })}`;
   return pageReadyString;
 }
 
@@ -70,7 +77,7 @@ function setPrototypeOnNativeString(language) {
   nativeStringPrototype += '  String["toLocaleString"].call(this, { ' + languageWithQuotes + ': dict });\n';
   nativeStringPrototype += '  String["locale"] = ' + languageWithQuotes + ';\n';
   nativeStringPrototype += '  String["defaultLocale"] = "en";\n';
-
+  nativeStringPrototype += '  Globalize.culture(' + languageWithQuotes + ')';
   return nativeStringPrototype;
 }
 
@@ -122,12 +129,22 @@ function Dictionary(from, options) {
   }
 
   this.writeLanguageFile = function (to, language, culture, typed) {
-    var code = '(function() {\n';
+    var cultureFileAsString = fs.readFileSync(culture).toString();
+    var globalizeAsString = fs.readFileSync(path.resolve('./lib/globalize.min.js')).toString();
+    var code = 'if(window.Globalize == undefined) {\n';
+    code += globalizeAsString + '\n';
+    code += '}\n';
+    code += cultureFileAsString + '\n(function() {\n';
     code += mergeFunctionAsString;
     code += dictObjectAsString(this.json, language);
     code += bindPrototypeOnNativeStringOnPageReady(language);
     code += '})();\n';
-
+    code += 'if(!window.Coveo){window.Coveo = {};}\n';
+    code += 'Coveo.setLanguageAfterPageLoaded = function() {\n';
+    code += mergeFunctionAsString + '\n';
+    code += dictObjectAsString(this.json, language) + '\n';
+    code += setPrototypeOnNativeString(language) + '\n';
+    code += '}';
     utilities.ensureDirectory(path.dirname(to));
     fs.writeFileSync(to, code);
   };

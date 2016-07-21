@@ -1,4 +1,5 @@
 import {IQueryResult} from '../rest/QueryResult';
+import {Assert} from '../misc/Assert';
 import _ = require('underscore');
 
 const isCoveoFieldRegex = /^@[a-zA-Z0-9_\.]+$/
@@ -233,6 +234,9 @@ export class Utils {
   }
 
   static extendDeep(target, src): {} {
+    if (!target) {
+      target = {};
+    }
     let isArray = _.isArray(src)
     let toReturn = isArray && [] || {}
     if (isArray) {

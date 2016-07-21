@@ -3,6 +3,7 @@ import {InitializationEvents} from '../../events/InitializationEvents';
 import {Component} from '../Base/Component';
 import {Tab} from '../Tab/Tab';
 import {Facet} from '../Facet/Facet';
+import {FacetSlider} from '../FacetSlider/FacetSlider';
 import {ResponsiveFacets} from './ResponsiveFacets';
 import {IComponentDefinition} from '../Base/Component';
 import _ = require('underscore');
@@ -95,7 +96,7 @@ export class ResponsiveComponentsManager {
   public register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component) {
 
     if (this.isFacet(ID) && this.isActivated(ID)) {
-      this.responsiveFacets.registerFacet(component);
+      this.responsiveFacets.registerComponent(component);
     }
 
     if (!this.isActivated(ID)) {
@@ -109,7 +110,7 @@ export class ResponsiveComponentsManager {
 
       if (this.isFacet(ID)) {
         this.responsiveFacets = <ResponsiveFacets>responsiveComponent;
-        this.responsiveFacets.registerFacet(component)
+        this.responsiveFacets.registerComponent(component)
         this.isFacetActivated = true;
         if (!this.isTabActivated) {
           this.tabSection = $$('div', { className: 'coveo-tab-section' });
@@ -146,7 +147,7 @@ export class ResponsiveComponentsManager {
   }
 
   private isFacet(ID: string): boolean {
-    return ID == Facet.ID;
+    return ID == Facet.ID || ID == FacetSlider.ID;
   }
 
   private isTabs(ID: string): boolean {

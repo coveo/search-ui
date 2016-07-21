@@ -25,7 +25,6 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private coveoRoot: Dom;
   private documentClickListener: EventListener;
   private searchInterface: SearchInterface;
-  private tabSectionChildren: Array<HTMLElement> = [];
 
   constructor(root: Dom, ID: string) {
     this.ID = ID;
@@ -274,7 +273,6 @@ export class ResponsiveTabs implements IResponsiveComponent {
         let tabsInSection = this.getTabsInTabSection();
         let lastTabInSection = tabsInSection.pop();
         let lastTabSectionSibling = lastTabInSection.previousSibling;
-
         if (event.propertyName == 'opacity') {
           if (tab.el.style.opacity == '0') {
 
