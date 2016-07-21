@@ -22,7 +22,8 @@ module.exports = {
     libraryTarget: 'umd',
     // See Index.ts as for why this need to be a temporary variable
     library: 'Coveo__temporary',
-    publicPath : '/js/'
+    publicPath : '/js/',
+    devtoolModuleFilenameTemplate: '[resource-path]'
   },
   resolve: {
     extensions: ['', '.ts', '.js'],
@@ -40,7 +41,16 @@ module.exports = {
   devtool: 'source-map',
   module: {
     loaders: [
-      { test: /\.ts$/, loader: 'ts-loader' }
+      { test: /\.ts$/, loader: 'ts-loader' },
+      {
+        test: /underscore-min.js/,
+        loader: 'string-replace-loader',
+        query: {
+          // Prevent Underscore from loading adjacent sourcemap (not needed anyways)
+          search: '//# sourceMappingURL=underscore-min.map',
+          replace: ''
+        }
+      }
     ]
   },
   plugins: plugins,
