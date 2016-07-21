@@ -126,9 +126,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.dropdownContent.on('scroll', _.debounce(() => {
       _.each(this.facets, facet => {
         let facetSearch = facet.facetSearch;
-        if (facetSearch && facetSearch.currentlyDisplayedResults && !this.isFacetSearchScrolledIntoView(facetSearch.search)) {
-          //facetSearch.completelyDismissSearch();
-        } else if (facetSearch && facet.facetSearch.currentlyDisplayedResults) {
+        if (facetSearch && facet.facetSearch.currentlyDisplayedResults) {
           facet.facetSearch.positionSearchResults();
         }
       });
