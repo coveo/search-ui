@@ -21,14 +21,14 @@ If you are already using a module bundler (Browserify, webpack, Babel, etc.), th
 <!-- Every DOM element with a class starting with Coveo (uppercase) will instantiate a Component -->
 <body id="search" class='CoveoSearchInterface'>
 
-    <!-- Every DOM element with a class starting with coveo- (lowercase) is only for CSS/alignment purpose. -->
+    <!-- Every DOM element with a class starting with coveo- (lowercase) is only for CSS/alignment purposes. -->
     <div class='coveo-search-section'>
 
         <!-- Every Coveo Component can be removed (or added) and none are actually required for the page to "load" -->
         <div class="CoveoSearchbox"></div>
     </div>
 
-    <!-- The data- attributes on each component allow to pass option for a specific Component instance -->
+    <!-- The data- attributes on each component allow you to pass options to a specific Component instance -->
     <div class="CoveoFacet" data-title="Author" data-field="@author" data-tab="All"></div>
     <div class="CoveoFacet" data-title="Year" data-field="@year" data-tab="All"></div>
 
