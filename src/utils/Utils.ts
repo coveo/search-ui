@@ -234,6 +234,9 @@ export class Utils {
   }
 
   static extendDeep(target, src): {} {
+    if (!target) {
+      target = {};
+    }
     let isArray = _.isArray(src)
     let toReturn = isArray && [] || {}
     if (isArray) {
