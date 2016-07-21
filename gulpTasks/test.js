@@ -6,7 +6,7 @@ const rename = require('gulp-rename');
 const combineCoverage = require('istanbul-combine');
 const remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 
-const COVERAGE_DIR = 'bin/coverage';
+const COVERAGE_DIR = path.resolve('bin/coverage');
 
 gulp.task('coverage', ['lcovCoverage']);
 

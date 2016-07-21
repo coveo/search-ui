@@ -46,6 +46,7 @@ module.exports = {
         test: /underscore-min.js/,
         loader: 'string-replace-loader',
         query: {
+          // Prevent Underscore from loading adjacent sourcemap (not needed anyways)
           search: '//# sourceMappingURL=underscore-min.map',
           replace: ''
         }
