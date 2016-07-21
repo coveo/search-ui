@@ -116,7 +116,7 @@ export function state(element: HTMLElement, args: any[]): any {
 }
 
 Initialization.registerNamedMethod('state', (element: HTMLElement, ...args: any[]): any => {
-  if(args.length != 0) {
+  if (args.length != 0) {
     return state.apply(undefined, [element].concat(args));
   } else {
     return state.apply(undefined, [element]);
