@@ -69,12 +69,12 @@ export class SearchAlertsMessage extends Component {
     let closeButton = this.message.find('.coveo-subscriptions-messages-info-close');
     $$(closeButton).on('click', () => this.close());
 
-    PopupUtils.positionPopup(this.message.el, dom.el, this.root, this.root, {
+    PopupUtils.positionPopup(this.message.el, dom.el, this.root, {
       horizontal: HorizontalAlignment.INNERLEFT,
       vertical: VerticalAlignment.BOTTOM,
       verticalOffset: 12,
       horizontalClip: true
-    });
+    }, this.root);
 
     this.startCloseDelay();
 
