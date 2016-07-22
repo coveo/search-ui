@@ -7,10 +7,16 @@
     "**/**.min.**",
     "**/**jquery.?(ui|effects)-*.*.?(*).?(cs|j)s",
     "**/**jquery-*.*.?(*).?(cs|j)s",
-    "**/**jasmine.js"
+    "**/**jasmine.js",
+    "**/strings/cultures/**",
+    "**/sass/bourbon/**",
+    "**/sass/neat/**",
+    "**/breakingchanges/**",
+    "**/docs/**",
+    "**/typings/**"
   ],
   "critics": {
-    "lint": {"engine": "tslint"},
+    "lint": {"engine": "none"},
     "wc": { "limit": 1000 }
   },
   "test": [
