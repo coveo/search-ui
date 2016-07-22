@@ -127,7 +127,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
       _.each(this.facets, facet => {
         let facetSearch = facet.facetSearch;
         if (facetSearch && facetSearch.currentlyDisplayedResults && !this.isFacetSearchScrolledIntoView(facetSearch.search)) {
-          facetSearch.completelyDismissSearch();
+          facet.facetSearch.positionSearchResults(this.dropdownContent.el);
         } else if (facetSearch && facet.facetSearch.currentlyDisplayedResults) {
           facet.facetSearch.positionSearchResults();
         }
@@ -241,7 +241,6 @@ export class ResponsiveFacets implements IResponsiveComponent {
 
     dropdownTop = dropdownTop >= 0 ? dropdownTop : 0;
 
-    let isVisible = (facetTop >= dropdownTop) && (facetBottom <= dropdownBottom);
-    return isVisible;
+    return (facetTop >= dropdownTop) && (facetBottom <= dropdownBottom);
   }
 }
