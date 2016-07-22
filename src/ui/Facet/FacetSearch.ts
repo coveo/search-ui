@@ -89,7 +89,7 @@ export class FacetSearch {
       }
 
       if ($$(this.searchResults).css('display') == 'none') {
-          this.searchResults.style.display = '';
+        this.searchResults.style.display = '';
       }
       let searchBar = $$(this.search);
       if (searchBar.css('display') == 'none' || this.searchBarIsAnimating) {
