@@ -5,7 +5,6 @@ import {QueryUtils} from '../../utils/QueryUtils'
 import {IQueryResult} from '../../rest/QueryResult'
 import {Initialization} from '../Base/Initialization'
 import {FieldValue, IFieldValueOptions} from './FieldValue'
-import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom'
 
 export interface IFieldTableOptions {
