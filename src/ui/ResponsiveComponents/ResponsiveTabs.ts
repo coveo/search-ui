@@ -8,7 +8,6 @@ import {Component} from '../Base/Component';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {IResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
 import {l} from '../../strings/Strings';
-import _ = require('underscore');
 
 export class ResponsiveTabs implements IResponsiveComponent {
 
@@ -338,7 +337,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   private positionPopup() {
-    PopupUtils.positionPopup(this.dropdownContent.el, this.dropdownHeader.el, this.coveoRoot.el,
+    PopupUtils.positionPopup(this.dropdownContent.el, this.dropdownHeader.el, this.coveoRoot.el, this.coveoRoot.el,
       { horizontal: HorizontalAlignment.INNERLEFT, vertical: VerticalAlignment.BOTTOM });
   }
 

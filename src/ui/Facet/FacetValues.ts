@@ -3,8 +3,7 @@ import {Utils} from '../../utils/Utils';
 import {IGroupByValue} from '../../rest/GroupByValue';
 import {IIndexFieldValue} from '../../rest/FieldValue';
 import {IGroupByResult} from '../../rest/GroupByResult';
-
-declare const Globalize;
+import Globalize = require('globalize');
 
 /**
  * A class which holds information and operation available on a single facet value returned by a {@link IGroupByRequest}.<br/>

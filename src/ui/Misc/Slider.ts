@@ -7,9 +7,7 @@ import {InitializationEvents} from '../../events/InitializationEvents';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {Component} from '../Base/Component';
 import d3 = require('d3');
-import _ = require('underscore');
-
-declare var Globalize;
+import Globalize = require('globalize');
 
 export interface IStartSlideEventArgs {
   slider: Slider;

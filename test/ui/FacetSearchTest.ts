@@ -14,7 +14,7 @@ module Coveo {
       mockFacet.searchInterface.isNewDesign = () => {
         return true;
       }
-      facetSearch = new FacetSearch(mockFacet, FacetSearchValuesList);
+      facetSearch = new FacetSearch(mockFacet, FacetSearchValuesList, mockFacet.root);
     })
 
     afterEach(function () {

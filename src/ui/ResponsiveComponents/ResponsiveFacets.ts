@@ -10,7 +10,6 @@ import {l} from '../../strings/Strings';
 import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
 import {Facet} from '../Facet/Facet';
 import {FacetSlider} from '../FacetSlider/FacetSlider';
-import _ = require('underscore');
 
 export class ResponsiveFacets implements IResponsiveComponent {
 
@@ -18,6 +17,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private static FACET_DROPDOWN_MIN_WIDTH: number = 280;
   private static FACET_DROPDOWN_WIDTH_RATIO: number = 0.35; // Used to set the width relative to the coveo root.
   private static TRANSPARENT_BACKGROUND_OPACITY: string = '0.9';
+  private static DEBOUNCE_SCROLL_WAIT = 150;
   private static ROOT_MIN_WIDTH: number = 800;
   private static logger: Logger;
 
@@ -30,7 +30,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private dropdownHeader: Dom;
   private tabSection: Dom;
   private popupBackground: Dom;
-  private documentClickListener: EventListener;
+  private popupBackgroundClickListener: EventListener;
   private facets: Facet[] = [];
   private facetSliders: FacetSlider[] = [];
   private searchInterface: SearchInterface;
@@ -51,8 +51,8 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.tabSection = $$(this.coveoRoot.find('.coveo-tab-section'));
     this.buildDropdownContent();
     this.buildDropdownHeader();
-    this.bindDropdownHeaderEvents();
     this.bindDropdownContentEvents();
+    this.bindDropdownHeaderEvents();
     this.buildPopupBackground();
     this.saveFacetsPosition();
     this.bindNukeEvents();
@@ -92,9 +92,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private triggerFacetSliderDraw() {
-    _.each(this.facetSliders, facetSlider => {
-      facetSlider.drawDelayedGraphData();
-    });
+    _.each(this.facetSliders, facetSlider => facetSlider.drawDelayedGraphData());
   }
 
   private buildDropdownContent() {
@@ -125,15 +123,16 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private bindDropdownContentEvents() {
-    this.documentClickListener = event => {
-      if (Utils.isHtmlElement(event.target)) {
-        let eventTarget = $$(<HTMLElement>event.target);
-        if (this.shouldCloseFacetDropdown(eventTarget)) {
-          this.closeDropdown();
+    this.dropdownContent.on('scroll', _.debounce(() => {
+      _.each(this.facets, facet => {
+        let facetSearch = facet.facetSearch;
+        if (facetSearch && facetSearch.currentlyDisplayedResults && !this.isFacetSearchScrolledIntoView(facetSearch.search)) {
+          facetSearch.completelyDismissSearch();
+        } else if (facetSearch && facet.facetSearch.currentlyDisplayedResults) {
+          facet.facetSearch.positionSearchResults();
         }
-      }
-    };
-    $$(document.documentElement).on('click', this.documentClickListener);
+      });
+    }, ResponsiveFacets.DEBOUNCE_SCROLL_WAIT));
   }
 
   private buildPopupBackground() {
@@ -142,12 +141,8 @@ export class ResponsiveFacets implements IResponsiveComponent {
       if (this.popupBackground.el.style.opacity == '0') {
         this.popupBackground.detach();
       }
-    })
-  }
-
-  private shouldCloseFacetDropdown(eventTarget: Dom) {
-    return !eventTarget.closest('coveo-facet-column') && !eventTarget.closest('coveo-facet-dropdown-header')
-      && this.searchInterface.isSmallInterface() && !eventTarget.closest('coveo-facet-settings-popup');
+    });
+    this.popupBackground.on('click', () => this.closeDropdown());
   }
 
   private saveFacetsPosition() {
@@ -187,19 +182,28 @@ export class ResponsiveFacets implements IResponsiveComponent {
     }
     this.dropdownContent.el.style.width = width.toString() + 'px';
 
-    PopupUtils.positionPopup(this.dropdownContent.el, this.tabSection.el, this.coveoRoot.el,
+    PopupUtils.positionPopup(this.dropdownContent.el, this.tabSection.el, this.coveoRoot.el, this.coveoRoot.el,
       { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM });
   }
 
   private closeDropdown() {
     // Because of DOM manipulation, sometimes the animation will not trigger. Accessing the computed styles makes sure
-    // the animation will happen. Adding this here because its possible that this element has recently been manipulated. 
+    // the animation will happen. Adding this here because its possible that this element has recently been manipulated.
     window.getComputedStyle(this.popupBackground.el).opacity;
     this.popupBackground.el.style.opacity = '0';
     this.dropdownHeader.el.style.zIndex = '';
     this.dropdownContent.el.style.display = 'none';
     this.dropdownContent.removeClass('coveo-facet-dropdown-content');
     this.dropdownHeader.removeClass('coveo-dropdown-header-active');
+    this.dismissFacetSearches();
+  }
+
+  private dismissFacetSearches() {
+    _.each(this.facets, facet => {
+      if (facet.facetSearch && facet.facetSearch.currentlyDisplayedResults) {
+        facet.facetSearch.completelyDismissSearch();
+      }
+    })
   }
 
   private cleanUpDropdown() {
@@ -212,26 +216,32 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private enableFacetPreservePosition() {
-    _.each(this.facets, facet => {
-      facet.options.preservePosition = true;
-    });
+    _.each(this.facets, facet => facet.options.preservePosition = true);
   }
 
   private disableFacetPreservePosition() {
-    _.each(this.facets, facet => {
-      facet.options.preservePosition = false;
-    });
+    _.each(this.facets, facet => facet.options.preservePosition = false);
   }
 
   private bindNukeEvents() {
     $$(this.coveoRoot).on(InitializationEvents.nuke, () => {
-      $$(document.documentElement).off('click', this.documentClickListener);
+      $$(document.documentElement).off('click', this.popupBackgroundClickListener);
     });
   }
 
   private drawFacetSliderGraphs() {
-    _.each(this.facetSliders, facetSlider => {
-      facetSlider.drawDelayedGraphData();
-    })
+    _.each(this.facetSliders, facetSlider => facetSlider.drawDelayedGraphData());
+  }
+
+  private isFacetSearchScrolledIntoView(facetSearchElement: HTMLElement) {
+    let facetTop = facetSearchElement.getBoundingClientRect().top;
+    let facetBottom = facetSearchElement.getBoundingClientRect().bottom;
+    let dropdownTop = this.dropdownContent.el.getBoundingClientRect().top;
+    let dropdownBottom = this.dropdownContent.el.getBoundingClientRect().bottom;
+
+    dropdownTop = dropdownTop >= 0 ? dropdownTop : 0;
+
+    let isVisible = (facetTop >= dropdownTop) && (facetBottom <= dropdownBottom);
+    return isVisible;
   }
 }

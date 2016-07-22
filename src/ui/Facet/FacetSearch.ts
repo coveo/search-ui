@@ -6,11 +6,13 @@ import {$$} from '../../utils/Dom';
 import {Utils} from '../../utils/Utils';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {DeviceUtils} from '../../utils/DeviceUtils';
+import {EventsUtils} from '../../utils/EventsUtils';
 import {FacetSearchParameters} from './FacetSearchParameters';
 import {IAnalyticsFacetMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {IEndpointError} from '../../rest/EndpointError';
 import {Component} from '../Base/Component';
 import {DomUtils} from '../../utils/DomUtils';
+import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
 import {l} from '../../strings/Strings';
 import {Assert} from '../../misc/Assert';
 import {KEYBOARD} from '../../utils/KeyboardUtils';
@@ -20,8 +22,7 @@ import {StringUtils} from '../../utils/StringUtils';
 import {Defer} from '../../misc/Defer';
 import {IFacetSearchValuesListKlass} from './FacetSearchValuesList';
 import {FacetValueElement} from './FacetValueElement';
-
-declare const Coveo;
+import {ModalBox} from '../../ExternalModulesShim';
 
 /**
  * Used by the {@link Facet} component to render and handle the facet search part of each facet.
@@ -42,23 +43,23 @@ export class FacetSearch {
   private facetSearchPromise: Promise<IIndexFieldValue[]>;
   private moreValuesToFetch = true;
   private onResize: (...args: any[]) => void;
-  private onDocClick: (e: Event) => void;
+  private onDocumentClick: (e: Event) => void;
+  private searchBarIsAnimating: boolean = false;
 
-  constructor(public facet: Facet, public facetSearchValuesListKlass: IFacetSearchValuesListKlass) {
+  constructor(public facet: Facet, public facetSearchValuesListKlass: IFacetSearchValuesListKlass, private root: HTMLElement) {
     this.searchResults = document.createElement('ul');
     $$(this.searchResults).addClass('coveo-facet-search-results');
-    this.onResize = () => {
+    this.onResize = _.debounce(() => {
       if (!this.isMobileDevice()) {
         this.positionSearchResults();
       }
-    };
-    this.onDocClick = (e: Event) => {
+    }, 250);
+    this.onDocumentClick = (e: Event) => {
       this.handleClickElsewhere(e);
     }
     window.addEventListener('resize', () => this.onResize());
-    document.addEventListener('click', (e: Event) => this.onDocClick(e));
+    document.addEventListener('click', (e: Event) => this.onDocumentClick(e));
     $$(facet.root).on(InitializationEvents.nuke, () => this.handleNuke());
-
   }
 
   public isMobileDevice() {
@@ -81,26 +82,36 @@ export class FacetSearch {
    * Position the search results at the footer of the facet.
    */
   public positionSearchResults() {
-    if (this.searchResults != null && this.searchResults.parentElement) {
-      if (this.isMobileDevice()) {
-        $$(this.searchResults).insertAfter(this.search);
-      } else {
+    if (this.searchResults != null) {
+      if (!this.isMobileDevice()) {
         this.searchResults.style.display = 'block';
-        this.searchResults.style.position = 'absolute';
         this.searchResults.style.width = this.facet.element.clientWidth - 40 + 'px';
-        this.searchResults.style.left = '20px';
-        $$(this.searchResults).insertAfter(this.search);
+      }
+
+      let searchBar = $$(this.search);
+      if (searchBar.css('display') == 'none' || this.searchBarIsAnimating) {
+        let self = this;
+        EventsUtils.addPrefixedEvent(this.search, 'AnimationEnd', function (evt) {
+          PopupUtils.positionPopup(self.searchResults, self.search, self.root, self.root,
+            { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM }
+          );
+          EventsUtils.removePrefixedEvent(self.search, 'AnimationEnd', this);
+        });
+      } else {
+        PopupUtils.positionPopup(this.searchResults, this.search, this.root, this.root,
+          { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM }
+        );
       }
     }
   }
-
-  /**
+  /*
    * Dismiss the search results
    */
   public completelyDismissSearch() {
     this.cancelAnyPendingSearchOperation();
     this.facet.unfadeInactiveValuesInMainList();
     $$(this.searchResults).empty();
+    $$(this.searchResults).detach();
     this.moreValuesToFetch = true;
     $$(this.search).removeClass('coveo-facet-search-no-results');
     $$(this.facet.element).removeClass('coveo-facet-searching');
@@ -195,6 +206,8 @@ export class FacetSearch {
     $$(this.clear).on('click', (e: Event) => this.handleFacetSearchClear());
     $$(this.input).on('focus', (e: Event) => this.handleFacetSearchFocus());
 
+    this.detectSearchBarAnimation();
+
     return this.search;
   }
 
@@ -207,7 +220,7 @@ export class FacetSearch {
       let toOpen = document.createElement('div');
       toOpen.appendChild(this.search);
 
-      Coveo.ModalBox.open(toOpen, {
+      ModalBox.open(toOpen, {
         title: DomUtils.getPopUpCloseButton(l('Close'), l('SearchIn', this.facet.options.title)),
         validation: () => {
           this.completelyDismissSearch();
@@ -236,7 +249,7 @@ export class FacetSearch {
 
   private handleNuke() {
     window.removeEventListener('resize', this.onResize);
-    document.removeEventListener('click', this.onDocClick);
+    document.removeEventListener('click', this.onDocumentClick);
   }
 
 
@@ -260,6 +273,12 @@ export class FacetSearch {
     this.input.value = ''
     $$(this.clear).hide();
     this.completelyDismissSearch();
+  }
+
+  private handleDocumentScroll() {
+    if (this.currentlyDisplayedResults) {
+      this.positionSearchResults();
+    }
   }
 
   private showOrHideClearElement(isEmpty: boolean) {
@@ -468,7 +487,6 @@ export class FacetSearch {
   }
 
   private showSearchResultsElement() {
-    this.facet.root.appendChild(this.searchResults);
     this.positionSearchResults();
   }
 
@@ -563,7 +581,7 @@ export class FacetSearch {
     searchParameters.setValueToSearch(this.getValueInInputForFacetSearch())
     this.facet.facetQueryController.search(searchParameters).then((fieldValues: IIndexFieldValue[]) => {
       this.completelyDismissSearch();
-      Coveo.ModalBox.close(true);
+      ModalBox.close(true);
       let facetValues = _.map(fieldValues, (fieldValue) => {
         let facetValue = this.facet.values.get(fieldValue.value);
         if (!Utils.exists(facetValue)) {
@@ -588,5 +606,19 @@ export class FacetSearch {
     $$(this.magnifier).show();
     $$(this.wait).hide();
     this.showingFacetSearchWaitAnimation = false;
+  }
+
+  private detectSearchBarAnimation() {
+    EventsUtils.addPrefixedEvent(this.search, 'AnimationStart', (event) => {
+      if (event.animationName == 'grow') {
+        this.searchBarIsAnimating = true;
+      }
+    });
+
+    EventsUtils.addPrefixedEvent(this.search, 'AnimationEnd', (event) => {
+      if (event.animationName == 'grow') {
+        this.searchBarIsAnimating = false;
+      }
+    });
   }
 }

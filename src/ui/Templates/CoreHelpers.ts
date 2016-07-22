@@ -17,11 +17,9 @@ import {DeviceUtils} from '../../utils/DeviceUtils'
 import {TemplateCache} from './TemplateCache'
 import {$$} from '../../utils/Dom'
 import {SearchEndpoint} from '../../rest/SearchEndpoint'
-import _ = require('underscore');
 import {ResultList} from '../ResultList/ResultList';
 import {StreamHighlightUtils} from '../../utils/StreamHighlightUtils';
-
-declare var Globalize;
+import Globalize = require('globalize');
 
 /**
  * The core template helpers provided by default.
