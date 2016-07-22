@@ -32,7 +32,7 @@ interface IElementBoundary {
 }
 
 export class PopupUtils {
-  static positionPopup(popUp: HTMLElement, nextTo: HTMLElement, appendTo: HTMLElement, boundary: HTMLElement, desiredPosition: IPosition, checkForBoundary = 0) {
+  static positionPopup(popUp: HTMLElement, nextTo: HTMLElement, boundary: HTMLElement, desiredPosition: IPosition, appendTo?: HTMLElement, checkForBoundary = 0) {
     $$(appendTo).prepend(popUp);
     desiredPosition.verticalOffset = desiredPosition.verticalOffset ? desiredPosition.verticalOffset : 0;
     desiredPosition.horizontalOffset = desiredPosition.horizontalOffset ? desiredPosition.horizontalOffset : 0;
@@ -59,7 +59,7 @@ export class PopupUtils {
       }
       if (checkBoundary.vertical != 'ok' || checkBoundary.horizontal != 'ok') {
         let newDesiredPosition = PopupUtils.alignInsideBoundary(desiredPosition, checkBoundary);
-        PopupUtils.positionPopup(popUp, nextTo, boundary, appendTo, newDesiredPosition, checkForBoundary + 1);
+        PopupUtils.positionPopup(popUp, nextTo, boundary, newDesiredPosition, appendTo, checkForBoundary + 1);
       }
     }
   }
