@@ -1,0 +1,29 @@
+{
+  "ignore": [
+    "**/node_modules/**",
+    "**/lib/**",
+    "**/**-min-**",
+    "**/**-min.**",
+    "**/**.min.**",
+    "**/**jquery.?(ui|effects)-*.*.?(*).?(cs|j)s",
+    "**/**jquery-*.*.?(*).?(cs|j)s",
+    "**/**jasmine.js",
+    "**/strings/cultures/**",
+    "**/sass/bourbon/**",
+    "**/sass/neat/**",
+    "**/breakingchanges/**",
+    "**/docs/**",
+    "**/typings/**"
+  ],
+  "critics": {
+    // Disable lint as we are using pretty typescript
+    "lint": {"engine": "none"},
+    "wc": { "limit": 10000 }
+  },
+  "test": [
+    "**/test/**"
+  ],
+  "dependencies": {
+    "unused-ignores": []
+  }
+}
