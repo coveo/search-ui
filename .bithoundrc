@@ -16,8 +16,9 @@
     "**/typings/**"
   ],
   "critics": {
+    // Disable lint as we are using pretty typescript
     "lint": {"engine": "none"},
-    "wc": { "limit": 1000 }
+    "wc": { "limit": 10000 }
   },
   "test": [
     "**/test/**"
