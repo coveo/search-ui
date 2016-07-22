@@ -5,6 +5,7 @@ import {QueryUtils} from '../../utils/QueryUtils'
 import {IQueryResult} from '../../rest/QueryResult'
 import {Initialization} from '../Base/Initialization'
 import {FieldValue, IFieldValueOptions} from './FieldValue'
+import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom'
 
 export interface IFieldTableOptions {
@@ -36,12 +37,12 @@ export class FieldTable extends Component {
      * Specifies the caption to show on the minimize link (when the table is expanded).<br/>
      * By default, it is set to the localized version of "Details".
      */
-    expandedTitle: ComponentOptions.buildStringOption({ defaultValue: 'Details'.toLocaleString(), depend: 'allowMinimization' }),
+    expandedTitle: ComponentOptions.buildStringOption({ defaultValue: l('Details'), depend: 'allowMinimization' }),
     /**
      * Specifies the caption to show on the expand link (when the table is minimized).<br/>
      * By default, it is set to the localized version of "Details".
      */
-    minimizedTitle: ComponentOptions.buildStringOption({ defaultValue: 'Details'.toLocaleString(), depend: 'allowMinimization' }),
+    minimizedTitle: ComponentOptions.buildStringOption({ defaultValue: l('Details'), depend: 'allowMinimization' }),
     /**
      * Specifies whether the table is minimized by default.
      */
