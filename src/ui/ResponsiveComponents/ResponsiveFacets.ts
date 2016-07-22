@@ -126,7 +126,9 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.dropdownContent.on('scroll', _.debounce(() => {
       _.each(this.facets, facet => {
         let facetSearch = facet.facetSearch;
-        if (facetSearch && facet.facetSearch.currentlyDisplayedResults) {
+        if (facetSearch && facetSearch.currentlyDisplayedResults && !this.isFacetSearchScrolledIntoView(facetSearch.search)) {
+          facetSearch.completelyDismissSearch();
+        } else if (facetSearch && facet.facetSearch.currentlyDisplayedResults) {
           facet.facetSearch.positionSearchResults();
         }
       });
@@ -229,5 +231,17 @@ export class ResponsiveFacets implements IResponsiveComponent {
 
   private drawFacetSliderGraphs() {
     _.each(this.facetSliders, facetSlider => facetSlider.drawDelayedGraphData());
+  }
+
+  private isFacetSearchScrolledIntoView(facetSearchElement: HTMLElement) {
+    let facetTop = facetSearchElement.getBoundingClientRect().top;
+    let facetBottom = facetSearchElement.getBoundingClientRect().bottom;
+    let dropdownTop = this.dropdownContent.el.getBoundingClientRect().top;
+    let dropdownBottom = this.dropdownContent.el.getBoundingClientRect().bottom;
+
+    dropdownTop = dropdownTop >= 0 ? dropdownTop : 0;
+
+    let isVisible = (facetTop >= dropdownTop) && (facetBottom <= dropdownBottom);
+    return isVisible;
   }
 }

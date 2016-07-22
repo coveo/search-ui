@@ -33,7 +33,9 @@ interface IElementBoundary {
 
 export class PopupUtils {
   static positionPopup(popUp: HTMLElement, nextTo: HTMLElement, boundary: HTMLElement, desiredPosition: IPosition, appendTo?: HTMLElement, checkForBoundary = 0) {
-    $$(appendTo).prepend(popUp);
+    if (appendTo) {
+      $$(appendTo).prepend(popUp);
+    }
     desiredPosition.verticalOffset = desiredPosition.verticalOffset ? desiredPosition.verticalOffset : 0;
     desiredPosition.horizontalOffset = desiredPosition.horizontalOffset ? desiredPosition.horizontalOffset : 0;
 

@@ -88,24 +88,25 @@ export class FacetSearch {
         this.searchResults.style.width = this.facet.element.clientWidth - 40 + 'px';
       }
 
+      if ($$(this.searchResults).css('display') == 'none') {
+          this.searchResults.style.display = '';
+      }
       let searchBar = $$(this.search);
       if (searchBar.css('display') == 'none' || this.searchBarIsAnimating) {
-        if (this.searchResults.style.display == 'none') {
+        if ($$(this.searchResults).css('display') == 'none') {
           this.searchResults.style.display = '';
         }
         let self = this;
         EventsUtils.addPrefixedEvent(this.search, 'AnimationEnd', function (evt) {
           PopupUtils.positionPopup(self.searchResults, self.search, self.root,
-            { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM }, self.root
+            { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM }
           );
-          this.focus();
           EventsUtils.removePrefixedEvent(self.search, 'AnimationEnd', this);
         });
       } else {
         PopupUtils.positionPopup(this.searchResults, this.search, this.root,
           { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM }
         );
-        this.focus();
       }
     }
   }
