@@ -62,7 +62,7 @@ export class Settings extends Component {
     this.menu = this.buildMenu();
     $$(this.menu).on('mouseleave', () => this.mouseleave());
     $$(this.menu).on('mouseenter', () => this.mouseenter());
-    PopupUtils.positionPopup(this.menu, this.element, this.root, this.root, this.getPopupPositioning());
+    PopupUtils.positionPopup(this.menu, this.element, this.root, this.getPopupPositioning(), this.root);
   }
 
   /**

@@ -50,7 +50,7 @@ export class FacetSearch {
     this.searchResults = document.createElement('ul');
     $$(this.searchResults).addClass('coveo-facet-search-results');
     this.onResize = _.debounce(() => {
-      if (!this.isMobileDevice()) {
+      if (!this.isMobileDevice() && !this.facet.searchInterface.isSmallInterface()) {
         this.positionSearchResults();
       }
     }, 250);
@@ -81,25 +81,31 @@ export class FacetSearch {
   /**
    * Position the search results at the footer of the facet.
    */
-  public positionSearchResults() {
+  public positionSearchResults(nextTo: HTMLElement = this.search) {
     if (this.searchResults != null) {
       if (!this.isMobileDevice()) {
         this.searchResults.style.display = 'block';
         this.searchResults.style.width = this.facet.element.clientWidth - 40 + 'px';
       }
 
+      if ($$(this.searchResults).css('display') == 'none') {
+        this.searchResults.style.display = '';
+      }
       let searchBar = $$(this.search);
       if (searchBar.css('display') == 'none' || this.searchBarIsAnimating) {
+        if ($$(this.searchResults).css('display') == 'none') {
+          this.searchResults.style.display = '';
+        }
         let self = this;
         EventsUtils.addPrefixedEvent(this.search, 'AnimationEnd', function (evt) {
-          PopupUtils.positionPopup(self.searchResults, self.search, self.root, self.root,
-            { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM }
+          PopupUtils.positionPopup(self.searchResults, nextTo, self.root,
+            { horizontal: HorizontalAlignment.CENTER, vertical: VerticalAlignment.BOTTOM }
           );
           EventsUtils.removePrefixedEvent(self.search, 'AnimationEnd', this);
         });
       } else {
-        PopupUtils.positionPopup(this.searchResults, this.search, this.root, this.root,
-          { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM }
+        PopupUtils.positionPopup(this.searchResults, nextTo, this.root,
+          { horizontal: HorizontalAlignment.CENTER, vertical: VerticalAlignment.BOTTOM }
         );
       }
     }
@@ -111,7 +117,6 @@ export class FacetSearch {
     this.cancelAnyPendingSearchOperation();
     this.facet.unfadeInactiveValuesInMainList();
     $$(this.searchResults).empty();
-    $$(this.searchResults).detach();
     this.moreValuesToFetch = true;
     $$(this.search).removeClass('coveo-facet-search-no-results');
     $$(this.facet.element).removeClass('coveo-facet-searching');
@@ -207,6 +212,8 @@ export class FacetSearch {
     $$(this.input).on('focus', (e: Event) => this.handleFacetSearchFocus());
 
     this.detectSearchBarAnimation();
+    this.root.appendChild(this.searchResults);
+    this.searchResults.style.display = 'none';
 
     return this.search;
   }
@@ -491,7 +498,7 @@ export class FacetSearch {
   }
 
   private hideSearchResultsElement() {
-    this.searchResults.remove();
+    this.searchResults.style.display = 'none';
   }
 
   private highlightCurrentQueryWithinSearchResults() {
