@@ -121,18 +121,18 @@ module Coveo {
 
       it('should log the proper event when selecting a page directly', function () {
         test.cmp.setPage(15);
-        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerNumber, { pagerNumber: 15, currentResultsPerPage: 10 }, test.cmp.element);
+        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerNumber, { pagerNumber: 15 }, test.cmp.element);
       })
 
       it('should log the proper event when hitting next page', function () {
         test.cmp.nextPage();
-        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerNext, { pagerNumber: 2, currentResultsPerPage: 10 }, test.cmp.element);
+        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerNext, { pagerNumber: 2 }, test.cmp.element);
       })
 
       it('should log the proper event when hitting previous page', function () {
         test.cmp.setPage(3);
         test.cmp.previousPage();
-        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerPrevious, { pagerNumber: 2, currentResultsPerPage: 10 }, test.cmp.element);
+        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerPrevious, { pagerNumber: 2 }, test.cmp.element);
       })
     })
 

@@ -31,7 +31,7 @@ export class ResultsPerPage extends Component {
         return parseInt(value, 10);
       });
       return values.length == 0 ? null : values;
-    }, { defaultValue: ['10', '25', '50', '100'] })
+    }, { defaultValue: [10, 25, 50, 100] })
   };
 
   private currentResultsPerPage: number;
@@ -48,7 +48,6 @@ export class ResultsPerPage extends Component {
   constructor(public element: HTMLElement, public options?: IResultsPerPageOptions, bindings?: IComponentBindings) {
     super(element, ResultsPerPage.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultsPerPage, options);
-
     this.currentResultsPerPage = this.options.choicesDisplayed[0];
     this.queryController.options.resultsPerPage = this.currentResultsPerPage;
 
@@ -58,14 +57,14 @@ export class ResultsPerPage extends Component {
   }
 
   /**
-   * Set the current number of reults per page, and execute a query.<br/>
+   * Set the current number of results per page, and execute a query.<br/>
    * Log the required analytics event (pagerResize by default)
    * @param resultsPerPage
    * @param analyticCause
    */
   public setResultsPerPage(resultsPerPage: number, analyticCause: IAnalyticsActionCause = analyticsActionCauseList.pagerResize) {
     Assert.exists(resultsPerPage);
-    Assert.check(this.options.choicesDisplayed.indexOf(resultsPerPage) != -1);
+    Assert.check(this.options.choicesDisplayed.indexOf(resultsPerPage) != -1, 'The specified number of results is not available in the options.');
     this.currentResultsPerPage = resultsPerPage;
     this.queryController.options.resultsPerPage = this.currentResultsPerPage;
     this.usageAnalytics.logCustomEvent<IAnalyticsResultsPerPageMeta>(analyticCause, { currentResultsPerPage: this.currentResultsPerPage }, this.element);
