@@ -1,5 +1,8 @@
-/// <reference path="../Test.ts" />
-module Coveo {
+import {IHighlight} from "../../src/rest/Highlight";
+import {HighlightUtils} from "../../src/utils/HighlightUtils";
+import {StringAndHoles} from "../../src/utils/HighlightUtils";
+
+export function HighlightUtilsTest() {
   describe('HighlightUtils', function () {
     const lorem = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut';
     const uri = 'http://onlinehelp.coveo.com/en/CES/7.0/Administrator/Moving_the_Index_to_a_Different_Drive.htm';
@@ -161,3 +164,4 @@ module Coveo {
     })
   })
 }
+

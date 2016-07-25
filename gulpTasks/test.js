@@ -6,12 +6,23 @@ const path = require('path');
 const rename = require('gulp-rename');
 const combineCoverage = require('istanbul-combine');
 const remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
+const event_stream = require('event-stream');
 
 const COVERAGE_DIR = path.resolve('bin/coverage');
 
+gulp.task('setupTests', function () {
+  return event_stream.merge(
+      gulp.src('./test/lib/**/*')
+          .pipe(gulp.dest('./bin/tests/lib')),
+
+      gulp.src('./test/SpecRunner.html')
+          .pipe(gulp.dest('./bin/tests/'))
+  ).pipe(event_stream.wait())
+})
+
 gulp.task('coverage', ['lcovCoverage']);
 
-gulp.task('test', ['buildTest'], function (done) {
+gulp.task('test', ['setupTests', 'buildTest'], function (done) {
   new TestServer({
     configFile: __dirname + '/../karma.conf.js',
   }, () => done()).start();
@@ -41,30 +52,4 @@ gulp.task('lcovCoverage', ['remapCoverage'], function (done) {
       lcov: {}
     }
   }).then(() => done());
-})
-
-gulp.task('serverTest', function (done) {
-  var app = express();
-  app.use('/', express.static(__dirname + '/../test'));
-  app.use('/bin', express.static(__dirname + '/../bin'));
-  app.use('/node_modules', express.static(__dirname + '/../node_modules'));
-  app.listen(8081, function() {
-    console.log('Server started : Available at localhost:8081/SpecRunner.html');
-  });
-})
-
-gulp.task('buildTest', function () {
-  return gulp.src('./test/Test.ts')
-      .pipe(tsc({
-        target: 'ES5',
-        out: 'tests.js',
-        module: 'amd',
-        inlineSourceMap: true
-      }))
-      .pipe(gulp.dest('./bin/tests'))
-})
-
-gulp.task('watchTest', ['buildTest', 'src'], function () {
-  gulp.watch(['./src/**/*.ts'], ['src']);
-  gulp.watch(['./test/**/*.ts'], ['buildTest']);
 })

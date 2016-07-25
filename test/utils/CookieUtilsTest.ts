@@ -1,13 +1,13 @@
-/// <reference path="../Test.ts" />
+import {Cookie} from "../../src/utils/CookieUtils";
+import {Simulate} from '../Simulate';
 
-module Coveo {
-
+export function CookieUtilsTest() {
   describe('CookieUtils', function () {
     var mockDocument = {
       cookie: ''
     }
     var cookieDesc = Object.getOwnPropertyDescriptor(Document.prototype, 'cookie') ||
-      Object.getOwnPropertyDescriptor(HTMLDocument.prototype, 'cookie');
+        Object.getOwnPropertyDescriptor(HTMLDocument.prototype, 'cookie');
     if (cookieDesc && cookieDesc.configurable) {
       Object.defineProperty(document, 'cookie', {
         get: function () {
@@ -39,7 +39,7 @@ module Coveo {
 
     it('erases cookie accordingly', () => {
       // Phantom doesn't handle document.cookie
-      if (isPhantomJs()) {
+      if (Simulate.isPhantomJs()) {
         expect(true).toBe(true);
       } else {
         document.cookie = 'coveo_patate=frite';
@@ -49,3 +49,4 @@ module Coveo {
     })
   })
 }
+

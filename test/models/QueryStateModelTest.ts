@@ -1,4 +1,7 @@
-module Coveo {
+import {QueryStateModel} from "../../src/models/QueryStateModel";
+import * as Mock from '../MockEnvironment';
+
+export function QueryStateModelTest() {
   describe('QueryStateModel', function () {
     var queryState: QueryStateModel;
     var div: HTMLDivElement;
@@ -45,3 +48,4 @@ module Coveo {
     })
   })
 }
+

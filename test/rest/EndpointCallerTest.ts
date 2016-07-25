@@ -1,5 +1,8 @@
-/// <reference path="../Test.ts" />
-module Coveo {
+import {EndpointCaller, IErrorResponse, ISuccessResponse} from "../../src/rest/EndpointCaller";
+import {IQueryResults} from "../../src/rest/QueryResults";
+import {FakeResults} from "../Fake";
+
+export function EndpointCallerTest() {
   describe('EndpointCaller', function () {
 
     describe('using generic call', function () {
@@ -171,16 +174,16 @@ module Coveo {
 
         it('should behave properly if there is an error', function (done) {
           this.promise
-            .then((response: ISuccessResponse<IQueryResults>) => {
-              // This should never execute, and always go to the catch statement
-              expect(false).toBe(true)
-            })
-            .catch((error: IErrorResponse) => {
-              expect(error.statusCode).toBe(500);
-            })
-            .finally(() => {
-              done();
-            })
+              .then((response: ISuccessResponse<IQueryResults>) => {
+                // This should never execute, and always go to the catch statement
+                expect(false).toBe(true)
+              })
+              .catch((error: IErrorResponse) => {
+                expect(error.statusCode).toBe(500);
+              })
+              .finally(() => {
+                done();
+              })
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 500
@@ -189,16 +192,16 @@ module Coveo {
 
         it('should behave properly if there is an error in the body', function (done) {
           this.promise
-            .then((response: ISuccessResponse<IQueryResults>) => {
-              // This should never execute, and always go to the catch statement
-              expect(false).toBe(true)
-            })
-            .catch((error: IErrorResponse) => {
-              expect(error.statusCode).toBe(404);
-            })
-            .finally(() => {
-              done();
-            })
+              .then((response: ISuccessResponse<IQueryResults>) => {
+                // This should never execute, and always go to the catch statement
+                expect(false).toBe(true)
+              })
+              .catch((error: IErrorResponse) => {
+                expect(error.statusCode).toBe(404);
+              })
+              .finally(() => {
+                done();
+              })
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,

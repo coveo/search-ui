@@ -1,6 +1,9 @@
-/// <reference path="../Test.ts" />
+import {registerCustomMatcher} from "../CustomMatchers";
+import {Dom} from "../../src/utils/Dom";
+import {$$} from "../../src/utils/Dom";
+import {JQuery} from '../JQueryModule';
 
-module Coveo {
+export function DomTests() {
   describe('Dom', () => {
     var el: HTMLElement;
 
@@ -140,8 +143,8 @@ module Coveo {
 
         it('should properly create nested HTMLElement\'s', function () {
           var elem = Dom.createElement('header', undefined,
-            Dom.createElement('div', undefined,
-              Dom.createElement('span', undefined, 'foo')));
+              Dom.createElement('div', undefined,
+                  Dom.createElement('span', undefined, 'foo')));
           expect(elem.tagName).toEqual('HEADER');
           expect(elem.firstChild.nodeName).toEqual('DIV');
           expect(elem.firstChild.firstChild.nodeName).toEqual('SPAN');
@@ -432,6 +435,16 @@ module Coveo {
     })
 
     describe('with jquery', function () {
+
+      beforeEach(function () {
+        // we want to test the basic event, not jquery one
+        window['jQuery'] = JQuery;
+      });
+
+      afterEach(function () {
+        window['jQuery'] = null;
+      });
+
       it('using on should work properly', function () {
         var spy = jasmine.createSpy('spy');
         new Dom(el).on('click', spy);

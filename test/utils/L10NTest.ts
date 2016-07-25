@@ -1,9 +1,12 @@
-/// <reference path="../Test.ts" />
-module Coveo {
-  declare var String: {
-    toLocaleString(l10n: any);
-    locale: string;
-  }
+import {L10N} from "../../src/misc/L10N";
+
+declare var String: {
+  toLocaleString(l10n: any);
+  locale: string;
+}
+
+export function L10NTest() {
+
 
   describe('L10N', function () {
     beforeEach(function () {
@@ -61,4 +64,5 @@ module Coveo {
       expect(L10N.format('baby', 37, false)).toBe('37 baby');
     })
   })
+
 }

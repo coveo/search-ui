@@ -15,7 +15,6 @@ import {ComponentStateModel} from '../../models/ComponentStateModel';
 import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
 import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {BaseComponent} from '../Base/BaseComponent';
-import {Recommendation} from '../Recommendation/Recommendation';
 
 /**
  * Represent the initialization parameters required to init a new component
@@ -188,7 +187,7 @@ export class Initialization {
    */
   public static initRecommendationInterface(element: HTMLElement, options: any = {}) {
     options = Initialization.resolveDefaultOptions(element, options);
-    var recommendation = new Recommendation(element, options.Recommendation, options.Analytics);
+    var recommendation = new ['Coveo']['Recommendation'](element, options.Recommendation, options.Analytics);
     recommendation.options.originalOptionsObject = options;
     var initParameters: IInitializationParameters = { options: options, bindings: recommendation.getBindings() };
     Initialization.automaticallyCreateComponentsInside(element, initParameters);

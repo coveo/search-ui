@@ -19,6 +19,7 @@
     "lib/fastclick.d.ts",
     "lib/jstz.d.ts",
     "lib/coveoanalytics.d.ts",
+    "test/lib/jasmine.d.ts",
     "src/controllers/FacetQueryController.ts",
     "src/controllers/FacetRangeQueryController.ts",
     "src/controllers/FacetSliderQueryController.ts",

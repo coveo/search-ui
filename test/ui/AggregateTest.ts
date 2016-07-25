@@ -1,6 +1,12 @@
-/// <reference path="../Test.ts" />
+import {Aggregate} from "../../src/ui/Aggregate/Aggregate";
+import * as Mock from '../MockEnvironment';
+import {IAggregateOptions} from "../../src/ui/Aggregate/Aggregate";
+import {FakeResults} from "../Fake";
+import {$$} from "../../src/utils/Dom";
+import {Simulate} from "../Simulate";
+import * as Globalize from 'globalize';
 
-module Coveo {
+export function AggregateTest() {
   describe('Aggregate', function () {
     let test: Mock.IBasicComponentSetup<Aggregate>;
 

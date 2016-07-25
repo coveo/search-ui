@@ -1,6 +1,11 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {AnalyticsSuggestions} from "../../src/ui/AnalyticsSuggestions/AnalyticsSuggestions";
+import {Simulate} from "../Simulate";
+import {$$} from "../../src/utils/Dom";
+import {analyticsActionCauseList} from "../../src/ui/Analytics/AnalyticsActionListMeta";
+import {IAnalyticsSuggestionsOptions} from "../../src/ui/AnalyticsSuggestions/AnalyticsSuggestions";
 
-module Coveo {
+export function AnalyticsSuggestionsTest() {
   describe('AnalyticsSuggestions', () => {
     let test: Mock.IBasicComponentSetup<AnalyticsSuggestions>;
 
