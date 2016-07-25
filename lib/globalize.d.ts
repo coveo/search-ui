@@ -118,3 +118,7 @@ interface GlobalizeStatic {
 }
 
 declare var Globalize: GlobalizeStatic;
+
+declare module 'globalize' {
+  export = Globalize;
+}

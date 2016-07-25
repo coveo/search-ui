@@ -3,14 +3,12 @@ import {IComponentDefinition} from './Component';
 import {Assert} from '../../misc/Assert';
 import {Template} from '../Templates/Template';
 import {$$} from '../../utils/Dom';
-import {LazyTemplate} from '../Templates/LazyTemplate';
 import {TemplateCache} from '../Templates/TemplateCache';
 import {TemplateList} from '../Templates/TemplateList';
 import {UnderscoreTemplate} from '../Templates/UnderscoreTemplate';
 import {HtmlTemplate} from '../Templates/HtmlTemplate';
 import {Utils} from '../../utils/Utils';
 import {l} from '../../strings/Strings';
-import _ = require('underscore');
 
 export interface IComponentOptionsLoadOption<T> {
   (element: HTMLElement, name: string, option: IComponentOptionsOption<T>): T
@@ -35,6 +33,7 @@ export interface IComponentOptions<T> {
   section?: string;
   depend?: string;
   priority?: number;
+  deprecated?: string;
 }
 
 export interface IComponentOptionsNumberOption extends IComponentOptionsOption<number>, IComponentOptionsNumberOptionArgs {
@@ -65,8 +64,6 @@ export interface IComponentOptionsTemplateOptionArgs extends IComponentOptions<T
   selectorAttr?: string;
   childSelector?: string;
   idAttr?: string;
-  // CAREFULL WITH LAZY: This disable the option to use init option for this option
-  lazy?: boolean;
 }
 
 export interface IComponentOptionsFieldOption extends IComponentOptionsOption<string>, IComponentOptionsFieldOptionArgs {
@@ -236,7 +233,10 @@ export class ComponentOptions {
     if (optionArgs && optionArgs.attrName) {
       return optionArgs.attrName;
     }
-    return 'data-' + ComponentOptions.camelCaseToHyphen(name);
+    if (name) {
+      return 'data-' + ComponentOptions.camelCaseToHyphen(name);
+    }
+    return name;
   }
 
   static camelCaseToHyphen(name: string) {
@@ -248,12 +248,12 @@ export class ComponentOptions {
   }
 
   static initComponentOptions(element: HTMLElement, component: any, values?: any) {
-    return ComponentOptions.initOptions(element, component.options, values);
+    return ComponentOptions.initOptions(element, component.options, values, component.ID);
   }
 
   static initOptions(element: HTMLElement, options: {
     [name: string]: IComponentOptionsOption<any>
-  }, values?: any) {
+  }, values?: any, componentID?: any) {
     if (values == null) {
       values = {};
     }
@@ -261,13 +261,15 @@ export class ComponentOptions {
     for (let i = 0; i < names.length; i++) {
       let name = names[i];
       let optionDefinition = options[name];
-      let attrName = optionDefinition.attrName = optionDefinition.attrName || ComponentOptions.attrNameFromName(name, optionDefinition);
       let value: any;
       let loadFromAttribute = optionDefinition.load;
       if (values[name] != undefined) {
         value = values[name];
       } else if (loadFromAttribute != null) {
         value = loadFromAttribute(element, name, optionDefinition);
+        if (value && optionDefinition.deprecated) {
+          console.log(componentID + '.' + name + ' : ' + optionDefinition.deprecated);
+        }
       }
       if (value == null && values[name] == undefined) {
         if (optionDefinition.defaultValue != null) {
@@ -290,6 +292,9 @@ export class ComponentOptions {
         } else {
           values[name] = value;
         }
+      }
+      if (value == null && values[name] == undefined && optionDefinition.required) {
+        throw new Error(componentID + '.' + name + ' is required');
       }
     }
     for (let i = 0; i < names.length; i++) {
@@ -377,18 +382,18 @@ export class ComponentOptions {
     return enumAsString != null ? _enum[enumAsString] : null;
   }
 
-  static loadSelectorOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>): HTMLElement {
+  static loadSelectorOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>, doc: Document = document): HTMLElement {
     let attributeValue = ComponentOptions.loadStringOption(element, name, option)
-    return Utils.isNonEmptyString(attributeValue) ? <HTMLElement>document.querySelector(attributeValue) : null;
+    return Utils.isNonEmptyString(attributeValue) ? <HTMLElement>doc.querySelector(attributeValue) : null;
   }
 
-  static loadChildHtmlElementOption(element: HTMLElement, name: string, option: IComponentOptionsChildHtmlElementOption): HTMLElement {
+  static loadChildHtmlElementOption(element: HTMLElement, name: string, option: IComponentOptionsChildHtmlElementOption, doc: Document = document): HTMLElement {
     let htmlElement: HTMLElement;
     // Attribute: selector
     let selectorAttr = option.selectorAttr || ComponentOptions.attrNameFromName(name, option) + '-selector';
     let selector = element.getAttribute(selectorAttr) || ComponentOptions.getAttributeFromAlias(element, option);
     if (selector != null) {
-      htmlElement = <HTMLElement>document.body.querySelector(selector);
+      htmlElement = <HTMLElement>doc.body.querySelector(selector);
     }
     // Child
     if (htmlElement == null) {
@@ -414,10 +419,7 @@ export class ComponentOptions {
     return $$(element).findAll(selector);
   }
 
-  static loadTemplateOption(element: HTMLElement, name: string, option: IComponentOptionsTemplateOption): Template {
-    if (option.lazy) {
-      return new LazyTemplate(element, name, option);
-    }
+  static loadTemplateOption(element: HTMLElement, name: string, option: IComponentOptionsTemplateOption, doc: Document = document): Template {
 
     let template: Template;
 
@@ -425,7 +427,7 @@ export class ComponentOptions {
     let selectorAttr = option.selectorAttr || ComponentOptions.attrNameFromName(name, option) + '-selector';
     let selector = element.getAttribute(selectorAttr) || ComponentOptions.getAttributeFromAlias(element, option);
     if (selector != null) {
-      let templateElement = <HTMLElement>document.querySelector(selector);
+      let templateElement = <HTMLElement>doc.querySelector(selector);
       if (templateElement != null) {
         template = ComponentOptions.createResultTemplateFromElement(templateElement);
       }
@@ -461,8 +463,8 @@ export class ComponentOptions {
     return null;
   }
 
-  static findParentScrolling(element: HTMLElement): HTMLElement {
-    while (<Node>element != document && element != null) {
+  static findParentScrolling(element: HTMLElement, doc: Document = document): HTMLElement {
+    while (<Node>element != doc && element != null) {
       if (ComponentOptions.isElementScrollable(element)) {
         if (element.tagName.toLowerCase() !== 'body') {
           return element;
@@ -475,7 +477,7 @@ export class ComponentOptions {
   }
 
   static isElementScrollable(element: HTMLElement) {
-    return $$(element).css('overflow-y') == 'scroll';
+    return $$(element).css('overflow-y') == 'scroll' || element.style.overflowY == 'scroll';
   }
 
   static getAttributeFromAlias(element: HTMLElement, option: IComponentOptions<any>) {

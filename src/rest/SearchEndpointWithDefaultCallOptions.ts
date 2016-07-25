@@ -11,7 +11,6 @@ import {IIndexFieldValue} from './FieldValue';
 import {IFieldDescription} from './FieldDescription';
 import {IExtension} from './Extension';
 import {IEndpointError} from './EndpointError';
-import _ = require('underscore');
 
 export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
   options: ISearchEndpointOptions;
@@ -22,6 +21,10 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
 
   public getBaseUri() {
     return this.endpoint.getBaseUri();
+  }
+
+  public getBaseAlertsUri() {
+    return this.endpoint.getBaseAlertsUri();
   }
 
   public getAuthenticationProviderUri(provider: string, returnUri: string, message: string): string {

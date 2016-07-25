@@ -4,7 +4,8 @@
     "target": "es5",
     "declaration": false,
     "experimentalDecorators": true,
-    "outDir": "./bin"
+    "outDir": "./bin",
+    "sourceMap": true
   },
   "filesGlob": [
     "src/**/*.ts"
@@ -15,8 +16,9 @@
     "lib/MagicBox.d.ts",
     "lib/globalize.d.ts",
     "lib/d3.d.ts",
+    "lib/fastclick.d.ts",
+    "lib/jstz.d.ts",
     "lib/coveoanalytics.d.ts",
-    "node_modules/modal-box/bin/ModalBox.d.ts",
     "src/controllers/FacetQueryController.ts",
     "src/controllers/FacetRangeQueryController.ts",
     "src/controllers/FacetSliderQueryController.ts",
@@ -25,6 +27,7 @@
     "src/controllers/LocalStorageHistoryController.ts",
     "src/controllers/QueryController.ts",
     "src/Doc.ts",
+    "src/ExternalModulesShim.ts",
     "src/events/AnalyticsEvents.ts",
     "src/events/BreadcrumbEvents.ts",
     "src/events/DebugEvents.ts",
@@ -108,6 +111,7 @@
     "src/ui/Analytics/AnalyticsActionListMeta.ts",
     "src/ui/Analytics/AnalyticsClient.ts",
     "src/ui/Analytics/LiveAnalyticsClient.ts",
+    "src/ui/Analytics/RecommendationAnalyticsClient.ts",
     "src/ui/Analytics/MultiAnalyticsClient.ts",
     "src/ui/Analytics/NoopAnalyticsClient.ts",
     "src/ui/Analytics/PendingSearchAsYouTypeSearchEvent.ts",
@@ -120,6 +124,7 @@
     "src/ui/Base/ComponentBindings.ts",
     "src/ui/Base/ComponentOptions.ts",
     "src/ui/Base/CoveoJQuery.ts",
+    "src/ui/Base/CoveoUnderscore.ts",
     "src/ui/Base/ExpressionBuilder.ts",
     "src/ui/Base/Initialization.ts",
     "src/ui/Base/QueryBuilder.ts",
@@ -231,7 +236,6 @@
     "src/ui/Templates/DefaultRecommendationTemplate.ts",
     "src/ui/Templates/DefaultResultTemplate.ts",
     "src/ui/Templates/HtmlTemplate.ts",
-    "src/ui/Templates/LazyTemplate.ts",
     "src/ui/Templates/Template.ts",
     "src/ui/Templates/TemplateCache.ts",
     "src/ui/Templates/TemplateHelpers.ts",
@@ -241,6 +245,10 @@
     "src/ui/Thumbnail/Thumbnail.ts",
     "src/ui/Triggers/Triggers.ts",
     "src/ui/YouTube/YouTubeThumbnail.ts",
+    "src/ui/ChatterLikedBy/ChatterLikedBy.ts",
+    "src/ui/ChatterPostAttachment/ChatterPostAttachment.ts",
+    "src/ui/ChatterPostedBy/ChatterPostedBy.ts",
+    "src/ui/ChatterTopic/ChatterTopic.ts",
     "src/utils/ColorUtils.ts",
     "src/utils/CookieUtils.ts",
     "src/utils/CurrencyUtils.ts",
@@ -263,6 +271,7 @@
     "src/utils/StreamHighlightUtils.ts",
     "src/utils/StringUtils.ts",
     "src/utils/TimeSpanUtils.ts",
-    "src/utils/Utils.ts"
+    "src/utils/Utils.ts",
+    "src/utils/ChatterUtils.ts"
   ]
 }

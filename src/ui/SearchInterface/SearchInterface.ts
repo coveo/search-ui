@@ -21,13 +21,12 @@ import {RootComponent} from '../Base/RootComponent';
 import {BaseComponent} from '../Base/BaseComponent';
 import {Debug} from '../Debug/Debug';
 import {HashUtils} from '../../utils/HashUtils';
-import _ = require('underscore');
-
-declare let FastClick;
-declare let jstz;
+import FastClick = require('fastclick');
+import timezone = require('jstz');
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
+  enableAutomaticResponsiveMode?: boolean;
   useLocalStorageForHistory?: boolean;
   resultsPerPage?: number;
   excerptLength?: number;
@@ -65,9 +64,15 @@ export class SearchInterface extends RootComponent {
      * Specifies whether your search interface allows users to navigate in the search history using the browser back/forward buttons.<br/>
      * When enabled, the search interface saves the state of the current query in the hash portion of the URL.<br/>
      * For example #q=foobar.<br/>
-     * The default value is false.
+     * The default value is `false`.
      */
     enableHistory: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    /**
+     * Specifies wether the UI should use an automatic responsive mode (eg : The tab(s) and facet(s) being placed automatically under the search box)<br/>
+     * This can be disabled for design reasons, if it does not fit with the implementation needs.<br/>
+     * The default value is `true`
+     */
+    enableAutomaticResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies that you wish to use the local storage of the browser to store the state of the interface.<br/>
      * This can be used for very specific purpose, and only if you know what you are doing.<br/>
@@ -129,7 +134,7 @@ export class SearchInterface extends RootComponent {
      * This must be an IANA zone info key (aka the Olson time zone database). For example : 'America/New_York'.<br/>
      * By default, we use a library that tries to detect the timezone automatically.<br/>
      */
-    timezone: ComponentOptions.buildStringOption({ defaultFunction: () => jstz.determine().name() }),
+    timezone: ComponentOptions.buildStringOption({ defaultFunction: () => timezone.jstz.determine().name() }),
     /**
      * Specifies whether to enable the feature that allows users to ALT + double click on any results to get the Debug page with a detailed view of all the properties and fields for a given result.<br/>
      * This has no security concern (as all those informations are visible to users through the browser developer console or by calling the Coveo API directly).<br/>
@@ -168,6 +173,8 @@ export class SearchInterface extends RootComponent {
      */
     searchPageUri: ComponentOptions.buildStringOption()
   };
+
+  public static SMALL_INTERFACE_CLASS_NAME = 'coveo-small-search-interface';
 
   private attachedComponents: { [type: string]: BaseComponent[] };
   private isNewDesignAttribute = false;
@@ -317,6 +324,18 @@ export class SearchInterface extends RootComponent {
    */
   public isNewDesign() {
     return this.isNewDesignAttribute;
+  }
+
+  public isSmallInterface(): boolean {
+    return $$(this.root).hasClass(SearchInterface.SMALL_INTERFACE_CLASS_NAME);
+  }
+
+  public setSmallInterface(): void {
+    $$(this.root).addClass(SearchInterface.SMALL_INTERFACE_CLASS_NAME);
+  }
+
+  public unsetSmallInterface(): void {
+    $$(this.root).removeClass(SearchInterface.SMALL_INTERFACE_CLASS_NAME);
   }
 
   protected initializeAnalytics(): IAnalyticsClient {

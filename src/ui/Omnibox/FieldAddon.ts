@@ -3,7 +3,7 @@ import {Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion} from 
 import {OmniboxEvents} from '../../events/OmniboxEvents';
 import {IFieldDescription} from '../../rest/FieldDescription';
 import {IEndpointError} from '../../rest/EndpointError';
-import _ = require('underscore');
+import {MagicBox} from '../../ExternalModulesShim';
 
 interface IFieldAddonHash {
   type: string;
@@ -98,7 +98,7 @@ export class FieldAddon {
       var suggestions: IOmniboxSuggestion[] = _.map(values, (value: string, i) => {
         return {
           text: hash.before + (hash.current.toLowerCase().indexOf(value.toLowerCase()) == 0 ? hash.current + value.substr(hash.current.length) : value) + hash.after,
-          html: Coveo.MagicBox.Utils.highlightText(value, hash.current, true),
+          html: MagicBox.Utils.highlightText(value, hash.current, true),
           index: FieldAddon.INDEX - i / values.length
         }
       });
@@ -141,7 +141,7 @@ export class FieldAddon {
         .map((field: string) => {
           return {
             index: field.toLowerCase().indexOf(fieldNameLC),
-            field: withAt ? '@' + field : field
+            field: withAt ? field : '@' + field
           };
         })
         .filter((field) => {

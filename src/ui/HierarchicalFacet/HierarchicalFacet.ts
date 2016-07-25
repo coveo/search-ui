@@ -336,7 +336,7 @@ export class HierarchicalFacet extends Facet {
       let valFromHierarchy = this.getValueFromHierarchy(v);
       if (valFromHierarchy) {
         let elem = this.getElementFromFacetValueList(v)
-        return elem.style.display == 'block' || elem.style.display == '';
+        return !$$(elem).hasClass('coveo-inactive');
       }
       return false;
     })
@@ -419,6 +419,11 @@ export class HierarchicalFacet extends Facet {
     super.reset();
   }
 
+  public processFacetSearchAllResultsSelected(facetValues: FacetValue[]): void {
+    this.selectMultipleValues(facetValues);
+    this.triggerNewQuery();
+  }
+
   protected updateSearchInNewDesign(moreValuesAvailable = true) {
     // We always want to show search for hierarchical facet :
     // It's useful since child values are folded under their parent most of the time
@@ -438,7 +443,7 @@ export class HierarchicalFacet extends Facet {
   }
 
   protected initFacetSearch() {
-    this.facetSearch = new HierarchicalFacetSearch(this, HierarchicalFacetSearchValuesList);
+    this.facetSearch = new HierarchicalFacetSearch(this, HierarchicalFacetSearchValuesList, this.root);
     this.element.appendChild(this.facetSearch.build());
   }
 
@@ -535,11 +540,13 @@ export class HierarchicalFacet extends Facet {
     });
 
     // Hide and show the partitionned top level values, depending on the numberOfValuesToShow
-    _.each(_.last(partition[1], partition[1].length - (this.numberOfValuesToShow - partition[0].length)), (toHide: IValueHierarchy) => {
-      $$(this.getElementFromFacetValueList(toHide.facetValue)).hide();
+    let numberOfValuesLeft = this.numberOfValuesToShow - partition[0].length;
+    _.each(_.last(partition[1], partition[1].length - numberOfValuesLeft), (toHide: IValueHierarchy) => {
+      this.hideFacetValue(toHide);
+      this.hideChilds(toHide.childs);
     })
-    _.each(_.first(partition[1], this.numberOfValuesToShow), (toShow: IValueHierarchy) => {
-      $$(this.getElementFromFacetValueList(toShow.facetValue)).show();
+    _.each(_.first(partition[1], numberOfValuesLeft), (toShow: IValueHierarchy) => {
+      this.showFacetValue(toShow);
     })
   }
 
@@ -809,7 +816,7 @@ export class HierarchicalFacet extends Facet {
     }
   }
 
-  private getValueFromHierarchy(value: any): IValueHierarchy {
+  public getValueFromHierarchy(value: any): IValueHierarchy {
     let getter = value instanceof FacetValue ? value.value : value;
     return this.getValueHierarchy(getter);
   }

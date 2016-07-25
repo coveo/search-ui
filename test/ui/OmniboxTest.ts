@@ -165,6 +165,20 @@ module Coveo {
         expect(test.env.searchEndpoint.listFieldValues).toHaveBeenCalled();
       })
 
+      it('listOfFields should show specified fields when field addon is enabled', (done) => {
+        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          enableFieldAddon: true,
+          listOfFields: ['@field', '@another_field']
+        })
+
+        test.cmp.setText('@f');
+        let suggestions = test.cmp.magicBox.getSuggestions();
+        (<Promise<any>>suggestions[0]).then((fields) => {
+          expect(fields[0].text).toEqual('@field');
+          done();
+        })
+      })
+
       it('enableTopQueryAddon should get suggestion from reveal', () => {
         let element = $$('div');
         element.addClass('CoveoOmnibox');

@@ -17,7 +17,7 @@ gulp.task('src', function (done) {
 })
 
 gulp.task('buildLegacy', function (done) {
-  runsequence(['cssLegacy', 'fileTypesLegacy', 'spritesLegacy', 'templatesLegacy'], done)
+  runsequence(['cssLegacy', 'fileTypesLegacy', 'spritesLegacy', 'templatesLegacy'], done);
 });
 
 gulp.task('clean', function (done) {

@@ -1,22 +1,30 @@
 const webpack = require('webpack');
 const minimize = process.argv.indexOf('--minimize') !== -1;
 const colors = require('colors');
+const failPlugin = require('webpack-fail-plugin');
+
+// Fail plugin will allow the webpack ts-loader to fail correctly when the TS compilation fails
+// Provide plugin allows us to use underscore in every module, without having to require underscore everywhere.
+var plugins = [failPlugin, new webpack.ProvidePlugin({_: 'underscore'})];
 
 if (minimize) {
-  console.log('Building minified version of the library'.bgGreen.red);
-} else {
-  console.log('Building non minified version of the library'.bgGreen.red);
+  plugins.push(new webpack.optimize.UglifyJsPlugin());
 }
 
 
 module.exports = {
-  entry: ['./src/Dependencies.js', './src/Index.ts'],
+  entry: {
+    'CoveoJsSearch': ['./src/Index.ts'],
+    'CoveoJsSearch.Searchbox': './src/SearchboxIndex.ts'
+  },
   output: {
     path: require('path').resolve('./bin/js'),
-    filename: minimize ? 'CoveoJsSearch.min.js' : 'CoveoJsSearch.js',
-    libraryTarget: 'var',
-    library: ['Coveo'],
-    publicPath : '/js/'
+    filename: minimize ? '[name].min.js' : '[name].js',
+    libraryTarget: 'umd',
+    // See Index.ts as for why this need to be a temporary variable
+    library: 'Coveo__temporary',
+    publicPath : '/js/',
+    devtoolModuleFilenameTemplate: '[resource-path]'
   },
   resolve: {
     extensions: ['', '.ts', '.js'],
@@ -24,11 +32,10 @@ module.exports = {
       'l10n': __dirname + '/lib/l10n.min.js',
       'globalize': __dirname + '/lib/globalize.min.js',
       'modal-box': __dirname + '/node_modules/modal-box/bin/ModalBox.min.js',
-      'fast-click': __dirname + '/lib/fastclick.min.js',
+      'fastclick': __dirname + '/lib/fastclick.min.js',
       'jstz': __dirname + '/lib/jstz.min.js',
       'magic-box': __dirname + '/node_modules/coveomagicbox/bin/MagicBox.min.js',
       'default-language': __dirname + '/src/strings/DefaultLanguage.js',
-      'finally': __dirname + '/lib/finally.js',
       'underscore': __dirname + '/node_modules/underscore/underscore-min.js'
     }
   },
@@ -36,10 +43,17 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.ts$/, loader: 'ts-loader' },
-      { test: /\.scss$/, loaders: ['style?insertAt=bottom', 'css?sourceMap', 'resolve-url', 'sass?sourceMap'] },
-      { test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'url?limit=8182' }
+      {
+        test: /underscore-min.js/,
+        loader: 'string-replace-loader',
+        query: {
+          // Prevent Underscore from loading adjacent sourcemap (not needed anyways)
+          search: '//# sourceMappingURL=underscore-min.map',
+          replace: ''
+        }
+      }
     ]
   },
-  plugins: minimize ? [new webpack.optimize.UglifyJsPlugin()] : [],
+  plugins: plugins,
   bail: true
 }

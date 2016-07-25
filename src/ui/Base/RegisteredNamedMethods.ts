@@ -12,7 +12,6 @@ import {BaseComponent} from '../Base/BaseComponent';
 import {Component} from '../Base/Component';
 import {IStandaloneSearchInterfaceOptions} from '../SearchInterface/SearchInterface';
 import {IQueryResults} from '../../rest/QueryResults';
-import _ = require('underscore');
 import {IRecommendationOptions} from '../Recommendation/Recommendation';
 
 /**
@@ -63,10 +62,10 @@ Initialization.registerNamedMethod('initSearchbox', (element: HTMLElement, searc
  * @param userContext The user context to pass with the query generated in the recommendation interface. View {@link Recommendation}
  * @param options JSON options for the framework eg : <code>{Searchbox : {enableSearchAsYouType: true}}</code>
  */
-export function initRecommendation(element: HTMLElement, mainSearchInterface: HTMLElement, userContext: { [name: string]: any } = {}, options: any = {}) {
+export function initRecommendation(element: HTMLElement, mainSearchInterface?: HTMLElement, userContext?: { [name: string]: any }, options: any = {}) {
   var recommendationOptions = <IRecommendationOptions>{};
   recommendationOptions.mainSearchInterface = mainSearchInterface;
-  recommendationOptions.userContext = userContext;
+  recommendationOptions.userContext = JSON.stringify(userContext);
   recommendationOptions.enableHistory = false;
   options = _.extend({}, options, { Recommendation: recommendationOptions });
   Initialization.initializeFramework(element, options, () => {
@@ -109,14 +108,18 @@ Initialization.registerNamedMethod('executeQuery', (element: HTMLElement) => {
  * @param args
  * @returns {any}
  */
-export function state(element: HTMLElement, ...args: any[]): any {
+export function state(element: HTMLElement, args: any[]): any {
   Assert.exists(element);
   var model = <QueryStateModel>Component.resolveBinding(element, QueryStateModel);
   return setState(model, args);
 }
 
 Initialization.registerNamedMethod('state', (element: HTMLElement, ...args: any[]): any => {
-  return state(element, args);
+  if (args.length != 0) {
+    return state.apply(undefined, [element].concat(args));
+  } else {
+    return state.apply(undefined, [element]);
+  }
 });
 
 /**

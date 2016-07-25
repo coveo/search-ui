@@ -6,7 +6,7 @@ const WebpackDevServer = require('webpack-dev-server');
 const buildUtilities = require('../gulpTasks/buildUtilities.js');
 
 var webpackConfig = require('../webpack.config.js');
-webpackConfig.entry.unshift('webpack-dev-server/client?http://localhost:8080/');
+webpackConfig.entry['CoveoJsSearch'].unshift('webpack-dev-server/client?http://localhost:8080/');
 const compiler = webpack(webpackConfig);
 
 compiler.plugin('done', function () {
@@ -20,7 +20,8 @@ compiler.plugin('done', function () {
 gulp.task('dev', ['setup', 'prepareSass'], function (done) {
   var server = new WebpackDevServer(compiler, {
     contentBase: 'bin/',
-    publicPath: '/js/'
+    publicPath: '/js/',
+    compress: true
   });
   server.listen(8080, 'localhost', function () {
   });

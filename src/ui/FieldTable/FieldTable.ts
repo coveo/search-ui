@@ -36,12 +36,12 @@ export class FieldTable extends Component {
      * Specifies the caption to show on the minimize link (when the table is expanded).<br/>
      * By default, it is set to the localized version of "Details".
      */
-    expandedTitle: ComponentOptions.buildStringOption({ defaultValue: 'Details'.toLocaleString(), depend: 'allowMinimization' }),
+    expandedTitle: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'Details', depend: 'allowMinimization' }),
     /**
      * Specifies the caption to show on the expand link (when the table is minimized).<br/>
      * By default, it is set to the localized version of "Details".
      */
-    minimizedTitle: ComponentOptions.buildStringOption({ defaultValue: 'Details'.toLocaleString(), depend: 'allowMinimization' }),
+    minimizedTitle: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'Details', depend: 'allowMinimization' }),
     /**
      * Specifies whether the table is minimized by default.
      */

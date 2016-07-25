@@ -1,5 +1,4 @@
 /// <reference path="../../../node_modules/modal-box/bin/ModalBox.d.ts" />
-
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {LocalStorageUtils} from '../../utils/LocalStorageUtils';
 import {IFieldDescription} from '../../rest/FieldDescription';
@@ -17,9 +16,8 @@ import {Promise} from 'es6-promise';
 import {RootComponent} from '../Base/RootComponent';
 import {QueryController} from '../../controllers/QueryController';
 import {BaseComponent} from '../Base/BaseComponent';
-
-
-declare var Globalize;
+import {ModalBox} from '../../ExternalModulesShim';
+import Globalize = require('globalize');
 
 export interface IDebugOptions {
   enableDebug?: boolean;
@@ -63,7 +61,7 @@ export class Debug extends RootComponent {
   private showDebugPanel(builder: (results?: IQueryResults) => { body: HTMLElement; json: any; }) {
     var build = builder();
 
-    var modalbox = Coveo.ModalBox.open(build.body, {
+    var modalbox = ModalBox.open(build.body, {
       title: '',
       className: 'coveo-debug',
       titleClose: true,
@@ -397,9 +395,9 @@ export class Debug extends RootComponent {
   }
 
   private parseWeights(value: string) {
-    var listOfWeight = value.match(/(\w+(?:\s\w+)*): ([0-9]+)/g);
+    var listOfWeight = value.match(/(\w+(?:\s\w+)*): ([-0-9]+)/g);
     return _.object(_.map(listOfWeight, (weight) => {
-      var weightGroup = weight.match(/^(\w+(?:\s\w+)*): ([0-9]+)$/);
+      var weightGroup = weight.match(/^(\w+(?:\s\w+)*): ([-0-9]+)$/);
       return [weightGroup[1], Number(weightGroup[2])];
     }));
   }

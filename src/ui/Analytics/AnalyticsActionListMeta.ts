@@ -135,10 +135,13 @@ export interface IAnalyticsCaseDetachMeta extends IAnalyticsCaseAttachMeta {
 
 export interface IAnalyticsCaseCreationInputChangeMeta {
   inputTitle: string;
+  input: string;
+  value: string;
 }
 
 export interface IAnalyticsCaseCreationDeflectionMeta {
   hasClicks: boolean;
+  values: { [field: string]: string };
 }
 
 export interface IAnalyticsPagerMeta {
@@ -435,5 +438,17 @@ export var analyticsActionCauseList = {
   exportToExcel: <IAnalyticsActionCause>{
     name: 'exportToExcel',
     type: 'misc'
+  },
+  recommendation: <IAnalyticsActionCause>{
+    name: 'recommendation',
+    type: 'recommendation'
+  },
+  recommendationInterfaceLoad: <IAnalyticsActionCause>{
+    name: 'recommendationInterfaceLoad',
+    type: 'recommendation'
+  },
+  recommendationOpen: <IAnalyticsActionCause>{
+    name: 'recommendationOpen',
+    type: 'recommendation'
   }
 }

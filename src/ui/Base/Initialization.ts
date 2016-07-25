@@ -16,7 +16,6 @@ import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
 import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {BaseComponent} from '../Base/BaseComponent';
 import {Recommendation} from '../Recommendation/Recommendation';
-import _ = require('underscore');
 
 /**
  * Represent the initialization parameters required to init a new component
@@ -115,9 +114,10 @@ export class Initialization {
    */
   public static initializeFramework(element: HTMLElement, options?: any, initSearchInterfaceFunction?: (...args: any[]) => void) {
     Assert.exists(element);
-
-    if (DeviceUtils.isIE8or9()) {
-      $$('html').addClass('ie8or9');
+    let alreadyInitialized = Component.get(element, QueryController, true);
+    if (alreadyInitialized) {
+      this.logger.error('This DOM element has already been initialized as a search interface, skipping initialization', element);
+      return;
     }
 
     options = Initialization.resolveDefaultOptions(element, options);
@@ -344,7 +344,12 @@ export class Initialization {
     Assert.exists(namedMethodHandler);
 
     Initialization.logger.trace('Dispatching named method call of ' + methodName, element, args);
-    return namedMethodHandler.apply(null, <any[]>[element].concat(args));
+    if (args.length != 0) {
+      return namedMethodHandler.apply(null, [element].concat(args));
+    } else {
+      return namedMethodHandler.apply(null, [element]);
+    }
+
   }
 
   public static dispatchNamedMethodCallOrComponentCreation(token: string, element: HTMLElement, args: any[]): any {
