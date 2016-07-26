@@ -141,10 +141,10 @@
   .coveo-facet-value-checkbox {
     border-style: dashed;
   }
-  &:hover {
-    .coveo-facet-value-checkbox {
-      border-style: solid;
-    }
+
+  &:hover .coveo-facet-value-checkbox,
+  .coveo-facet-value-checkbox:focus {
+    border-style: solid;
   }
 }
 

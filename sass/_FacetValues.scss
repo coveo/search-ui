@@ -39,11 +39,6 @@
     }
   }
 
-  .coveo-facet-value-checkbox:focus {
-    outline: none;
-    box-shadow: 0 0 2px $color-blueish-gray;
-  }
-
   &.coveo-selected .coveo-facet-value-checkbox {
     > span {
       @extend #{$icon-active};
@@ -53,6 +48,18 @@
   &:hover .coveo-facet-value-checkbox {
     > span {
       @extend #{$icon-active}
+    }
+  }
+
+  .coveo-facet-value-checkbox:focus {
+    outline: none;
+  }
+
+  &:not(.coveo-facet-search-button) {
+    .coveo-facet-value-checkbox:focus {
+      > span {
+        @extend #{$icon-active};
+      }
     }
   }
 
@@ -114,6 +121,7 @@
   &:hover .coveo-facet-value-exclude {
     visibility: visible;
   }
+
 }
 
 .coveo-facet-value-label {
@@ -202,12 +210,8 @@
     left: -1px;
   }
 
-  &:hover {
-    opacity: 1;
-  }
-  &:focus {
+  &:hover, &:focus {
     opacity: 1;
     outline: none;
-    box-shadow: 0 0 2px $color-blueish-gray;
   }
 }
