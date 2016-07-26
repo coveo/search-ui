@@ -33,8 +33,9 @@ interface IElementBoundary {
 
 export class PopupUtils {
   static positionPopup(popUp: HTMLElement, nextTo: HTMLElement, boundary: HTMLElement, desiredPosition: IPosition, appendTo?: HTMLElement, checkForBoundary = 0) {
+    popUp.style.position = 'absolute';
     if (appendTo) {
-      $$(appendTo).prepend(popUp);
+      $$(appendTo).append(popUp);
     }
     desiredPosition.verticalOffset = desiredPosition.verticalOffset ? desiredPosition.verticalOffset : 0;
     desiredPosition.horizontalOffset = desiredPosition.horizontalOffset ? desiredPosition.horizontalOffset : 0;
@@ -68,7 +69,6 @@ export class PopupUtils {
 
   private static finalAdjustement(popUpOffSet: IOffset, popUpPosition: IOffset, popUp: HTMLElement, desiredPosition: IPosition) {
     let position = $$(popUp).position();
-    popUp.style.position = 'absolute';
     popUp.style.top = (position.top + desiredPosition.verticalOffset) - (popUpOffSet.top - popUpPosition.top) + 'px';
     popUp.style.left = (position.left + desiredPosition.horizontalOffset) - (popUpOffSet.left - popUpPosition.left) + 'px'
   }
