@@ -7,7 +7,6 @@ const _ = require('underscore');
 const Q = require('Q');
 const colors = require('colors');
 
-const lstat = Q.denodeify(fs.stat);
 const symlink = Q.denodeify(fs.ensureSymlink);
 const copy = Q.denodeify(fs.copy);
 const readdir = Q.denodeify(fs.readdir);
@@ -28,6 +27,9 @@ gulp.task('linkGitHooks', function() {
             //Need to be admin on windows to create a symlink (╯°□°）╯︵ ┻━┻
             console.log('Couldn\'t create a symlink, trying to copy...'.yellow);
             copy(source, symname)
+                .done(() => {
+                  console.log('Hook successfully copied.');
+                })
                 .catch(err => {
                   console.log(colors.red(err));
                 });
