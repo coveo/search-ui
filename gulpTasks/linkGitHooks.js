@@ -28,7 +28,7 @@ gulp.task('linkGitHooks', function() {
             console.log('Couldn\'t create a symlink, trying to copy...'.yellow);
             copy(source, symname)
                 .done(() => {
-                  console.log('Hook successfully copied.');
+                  console.log('Hook successfully copied');
                 })
                 .catch(err => {
                   console.log(colors.red(err));
