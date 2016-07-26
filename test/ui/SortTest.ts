@@ -229,5 +229,17 @@ module Coveo {
       expect(test.cmp.options.sortCriteria[0].toString()).toEqual('date descending');
       expect(test.cmp.options.sortCriteria[1].toString()).toEqual('date ascending');
     })
+
+    it('should update when enabled', () => {
+      test = buildSort('date descending, date ascending');
+      (<jasmine.Spy>test.env.queryStateModel.get).and.returnValue('date descending');
+
+      test.cmp.select('ascending');
+      expect(test.cmp.getCurrentCriteria().toString()).toEqual('date ascending');
+
+      test.cmp.enable();
+
+      expect(test.cmp.getCurrentCriteria().toString()).toEqual('date descending');
+    })
   })
 }

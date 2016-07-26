@@ -138,7 +138,7 @@ export class Sort extends Component {
     this.update();
   }
 
-  private update(){
+  private update() {
     // Basically, if the criteria in the model fits with one of ours, it'll become our active criteria
     var sortCriteria = <string>this.queryStateModel.get(QueryStateModel.attributesEnum.sort);
     if (Utils.isNonEmptyString(sortCriteria)) {
