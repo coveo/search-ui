@@ -1,6 +1,14 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {Omnibox} from '../../src/ui/Omnibox/Omnibox';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import {IOmniboxOptions} from '../../src/ui/Omnibox/Omnibox';
+import {Simulate} from '../Simulate';
+import {$$} from '../../src/utils/Dom';
+import {Promise} from 'es6-promise';
+import {shim} from '../../src/misc/PromisesShim';
+shim();
 
-module Coveo {
+export function OmniboxTest() {
   describe('Omnibox', () => {
     var test: Mock.IBasicComponentSetup<Omnibox>;
     beforeEach(() => {
@@ -279,6 +287,5 @@ module Coveo {
         expect(test.cmp.getText()).toEqual('trololo');
       })
     })
-
   })
 }

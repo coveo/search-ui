@@ -1,4 +1,4 @@
-import {L10N} from "../../src/misc/L10N";
+import {L10N} from '../../src/misc/L10N';
 
 declare var String: {
   toLocaleString(l10n: any);

@@ -1,4 +1,4 @@
-import {Cookie} from "../../src/utils/CookieUtils";
+import {Cookie} from '../../src/utils/CookieUtils';
 import {Simulate} from '../Simulate';
 
 export function CookieUtilsTest() {
@@ -7,7 +7,7 @@ export function CookieUtilsTest() {
       cookie: ''
     }
     var cookieDesc = Object.getOwnPropertyDescriptor(Document.prototype, 'cookie') ||
-        Object.getOwnPropertyDescriptor(HTMLDocument.prototype, 'cookie');
+      Object.getOwnPropertyDescriptor(HTMLDocument.prototype, 'cookie');
     if (cookieDesc && cookieDesc.configurable) {
       Object.defineProperty(document, 'cookie', {
         get: function () {
@@ -49,4 +49,3 @@ export function CookieUtilsTest() {
     })
   })
 }
-

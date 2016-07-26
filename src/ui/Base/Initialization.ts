@@ -187,7 +187,7 @@ export class Initialization {
    */
   public static initRecommendationInterface(element: HTMLElement, options: any = {}) {
     options = Initialization.resolveDefaultOptions(element, options);
-    var recommendation = new ['Coveo']['Recommendation'](element, options.Recommendation, options.Analytics);
+    var recommendation = new window['Coveo']['Recommendation'](element, options.Recommendation, options.Analytics);
     recommendation.options.originalOptionsObject = options;
     var initParameters: IInitializationParameters = { options: options, bindings: recommendation.getBindings() };
     Initialization.automaticallyCreateComponentsInside(element, initParameters);

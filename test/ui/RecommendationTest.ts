@@ -1,7 +1,13 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {SearchInterface} from '../../src/ui/SearchInterface/SearchInterface';
+import {Recommendation} from '../../src/ui/Recommendation/Recommendation';
+import {IRecommendationOptions} from '../../src/ui/Recommendation/Recommendation';
+import {IQuery} from '../../src/rest/Query';
+import {Simulate} from '../Simulate';
+import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
+import {FakeResults} from '../Fake';
 
-module Coveo {
-
+export function RecommendationTest() {
   describe('Recommendation', () => {
     let mainSearchInterface: Mock.IBasicComponentSetup<SearchInterface>;
     let test: Mock.IBasicComponentSetup<Recommendation>;
@@ -32,7 +38,7 @@ module Coveo {
       mainSearchInterface = null;
       options = null;
       test = null;
-      coveoanalytics = undefined;
+      window['coveoanalytics'] = undefined;
     });
 
     it('should work if mainInterface is not specified', () => {
@@ -46,7 +52,7 @@ module Coveo {
     })
 
     it('should work if coveoanalytics is not specified', () => {
-      coveoanalytics = undefined;
+      window['coveoanalytics'] = undefined;
       test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
       let simulation = Simulate.query(test.env);
       expect(simulation.queryBuilder.actionsHistory).toEqual('[]');

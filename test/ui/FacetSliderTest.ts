@@ -1,6 +1,13 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {FacetSlider} from '../../src/ui/FacetSlider/FacetSlider';
+import {IFacetSliderOptions} from '../../src/ui/FacetSlider/FacetSlider';
+import {Simulate} from '../Simulate';
+import {BreadcrumbEvents} from '../../src/events/BreadcrumbEvents';
+import {IPopulateBreadcrumbEventArgs} from '../../src/events/BreadcrumbEvents';
+import {$$} from '../../src/utils/Dom';
 
-module Coveo {
+
+export function FacetSliderTest() {
   describe('FacetSlider', function () {
     let test: Mock.IBasicComponentSetup<FacetSlider>;
 

@@ -1,4 +1,4 @@
-import {QueryStateModel} from "../../src/models/QueryStateModel";
+import {QueryStateModel} from '../../src/models/QueryStateModel';
 import * as Mock from '../MockEnvironment';
 
 export function QueryStateModelTest() {
@@ -48,4 +48,3 @@ export function QueryStateModelTest() {
     })
   })
 }
-

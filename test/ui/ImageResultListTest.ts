@@ -1,6 +1,13 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {ImageResultList} from '../../src/ui/ImageResultList/ImageResultList';
+import {InitializationEvents} from '../../src/events/InitializationEvents';
+import {$$} from '../../src/utils/Dom';
+import {Simulate} from '../Simulate';
+import {ResultListEvents} from '../../src/events/ResultListEvents';
+import {IImageResultListOptions} from '../../src/ui/ImageResultList/ImageResultList';
+import {Template} from '../../src/ui/Templates/Template';
 
-module Coveo {
+export function ImageResultListTest() {
   describe('ImageResultList', () => {
     var test: Mock.IBasicComponentSetup<ImageResultList>
 

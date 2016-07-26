@@ -14,6 +14,7 @@ import {Defer} from '../src/misc/Defer';
 import {IOmniboxData} from '../src/ui/Omnibox/OmniboxInterface';
 import {OmniboxEvents} from '../src/events/OmniboxEvents';
 import {IBreadcrumbItem, IPopulateBreadcrumbEventArgs, BreadcrumbEvents} from '../src/events/BreadcrumbEvents';
+import {KEYBOARD} from '../src/utils/KeyboardUtils';
 
 export interface ISimulateQueryData {
   query?: IQuery;
@@ -37,7 +38,7 @@ export class Simulate {
   static isPhantomJs() {
     return navigator.userAgent.indexOf('PhantomJS') != -1;
   }
-  
+
   static query(env: Mock.IMockEnvironment, options?: ISimulateQueryData): ISimulateQueryData {
 
     options = _.extend({}, {
@@ -176,8 +177,25 @@ export class Simulate {
   }
 
   static breadcrumb(env: Mock.IMockEnvironment, options?): IBreadcrumbItem[] {
-    let args = <IPopulateBreadcrumbEventArgs>{breadcrumbs: []};
+    let args = <IPopulateBreadcrumbEventArgs>{ breadcrumbs: [] };
     $$(env.root).trigger(BreadcrumbEvents.populateBreadcrumb, args);
     return args.breadcrumbs;
   }
+
+  static keyUp(element: HTMLElement, key: number, shiftKey?: boolean) {
+    var event = new KeyboardEvent('keyup', { shiftKey: shiftKey });
+    Object.defineProperty(event, 'keyCode', {
+      get: () => {
+        return key;
+      }
+    });
+    Object.defineProperty(event, 'which', {
+      get: () => {
+        return key;
+      }
+    });
+    element.dispatchEvent(event);
+    Defer.flush();
+  }
+
 }

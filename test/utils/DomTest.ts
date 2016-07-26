@@ -1,6 +1,6 @@
-import {registerCustomMatcher} from "../CustomMatchers";
-import {Dom} from "../../src/utils/Dom";
-import {$$} from "../../src/utils/Dom";
+import {registerCustomMatcher} from '../CustomMatchers';
+import {Dom} from '../../src/utils/Dom';
+import {$$} from '../../src/utils/Dom';
 import {JQuery} from '../JQueryModule';
 
 export function DomTests() {
@@ -24,7 +24,7 @@ export function DomTests() {
       });
 
       afterEach(function () {
-        window['jQuery'] = jqueryOrig;
+        window['jQuery'] = null;
       });
 
       it('insert after should work properly', function () {
@@ -143,8 +143,8 @@ export function DomTests() {
 
         it('should properly create nested HTMLElement\'s', function () {
           var elem = Dom.createElement('header', undefined,
-              Dom.createElement('div', undefined,
-                  Dom.createElement('span', undefined, 'foo')));
+            Dom.createElement('div', undefined,
+              Dom.createElement('span', undefined, 'foo')));
           expect(elem.tagName).toEqual('HEADER');
           expect(elem.firstChild.nodeName).toEqual('DIV');
           expect(elem.firstChild.firstChild.nodeName).toEqual('SPAN');

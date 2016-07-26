@@ -1,9 +1,9 @@
 import * as Mock from '../MockEnvironment';
-import {AnalyticsSuggestions} from "../../src/ui/AnalyticsSuggestions/AnalyticsSuggestions";
-import {Simulate} from "../Simulate";
-import {$$} from "../../src/utils/Dom";
-import {analyticsActionCauseList} from "../../src/ui/Analytics/AnalyticsActionListMeta";
-import {IAnalyticsSuggestionsOptions} from "../../src/ui/AnalyticsSuggestions/AnalyticsSuggestions";
+import {AnalyticsSuggestions} from '../../src/ui/AnalyticsSuggestions/AnalyticsSuggestions';
+import {Simulate} from '../Simulate';
+import {$$} from '../../src/utils/Dom';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import {IAnalyticsSuggestionsOptions} from '../../src/ui/AnalyticsSuggestions/AnalyticsSuggestions';
 
 export function AnalyticsSuggestionsTest() {
   describe('AnalyticsSuggestions', () => {
@@ -27,6 +27,7 @@ export function AnalyticsSuggestionsTest() {
       (<jasmine.Spy>test.env.usageAnalytics.getTopQueries).and.returnValue(new Promise((resolve) => {
         resolve(['foo', 'bar', 'baz'])
       }));
+
       var simulation = Simulate.omnibox(test.env);
       simulation.rows[0].deferred.then((elementResolved) => {
         expect(simulation.rows.length).toBe(1);

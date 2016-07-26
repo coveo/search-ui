@@ -1,5 +1,5 @@
-import {Component} from "../src/ui/Base/Component";
-import {IComponentBindings} from "../src/ui/Base/ComponentBindings";
+import {Component} from '../src/ui/Base/Component';
+import {IComponentBindings} from '../src/ui/Base/ComponentBindings';
 
 export class NoopComponent extends Component {
   static ID = 'NoopComponent';

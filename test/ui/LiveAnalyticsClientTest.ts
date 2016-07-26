@@ -1,6 +1,22 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {AnalyticsEndpoint} from '../../src/rest/AnalyticsEndpoint';
+import {LiveAnalyticsClient} from '../../src/ui/Analytics/LiveAnalyticsClient';
+import {IQueryResults} from '../../src/rest/QueryResults';
+import {FakeResults} from '../Fake';
+import {IAnalyticsNoMeta} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import {PendingSearchAsYouTypeSearchEvent} from '../../src/ui/Analytics/PendingSearchAsYouTypeSearchEvent';
+import {PendingSearchEvent} from '../../src/ui/Analytics/PendingSearchEvent';
+import {IQuery} from '../../src/rest/Query';
+import {Simulate} from '../Simulate';
+import {$$} from '../../src/utils/Dom';
+import {AnalyticsEvents} from '../../src/events/AnalyticsEvents';
+import {Defer} from '../../src/misc/Defer';
+import {Promise} from 'es6-promise';
+import {shim} from '../../src/misc/PromisesShim';
+shim();
 
-module Coveo {
+export function LiveAnalyticsClientTest() {
   describe('LiveAnalyticsClient', function () {
     var endpoint: AnalyticsEndpoint;
     var env: Mock.IMockEnvironment;
@@ -8,6 +24,7 @@ module Coveo {
     var promise: Promise<IQueryResults>;
 
     beforeEach(function () {
+      window['jQuery'] = null;
       env = new Mock.MockEnvironmentBuilder().build();
       endpoint = Mock.mock<AnalyticsEndpoint>(AnalyticsEndpoint);
       client = new LiveAnalyticsClient(endpoint, env.root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true);

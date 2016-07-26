@@ -1,8 +1,16 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {Facet} from '../../src/ui/Facet/Facet';
+import {FacetQueryController} from '../../src/controllers/FacetQueryController';
+import {FacetValues} from '../../src/ui/Facet/FacetValues';
+import {FacetValue} from '../../src/ui/Facet/FacetValues';
+import {ExpressionBuilder} from '../../src/ui/Base/ExpressionBuilder';
+import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
+import {SearchEndpoint} from '../../src/rest/SearchEndpoint';
+import {QueryController} from '../../src/controllers/QueryController';
+import {SearchInterface} from '../../src/ui/SearchInterface/SearchInterface';
+import {FacetSearchParameters} from '../../src/ui/Facet/FacetSearchParameters';
 
-module Coveo {
-  import QueryController = Coveo.QueryController;
-  import mockQueryController = Coveo.Mock.mockQueryController;
+export function FacetQueryControllerTest() {
   describe('FacetQueryController', function () {
 
     var mockFacet: Facet;

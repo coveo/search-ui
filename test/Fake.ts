@@ -109,16 +109,16 @@ export class FakeResults {
     }
     var ret = FakeResults.createFakeResult(token);
     ret.totalNumberOfChildResults = totalNumberOfChildResult;
-    $.extend(ret, {childResults: childResults});
+    $.extend(ret, { childResults: childResults });
     return ret;
   }
 
   static createFakeResultWithAttachments(token = 'test',
-                                         numberOfAttachments = 3,
-                                         attachmentType = ['xml', 'pdf', 'txt'],
-                                         flags = 'HasThumbnail',
-                                         attachmentsFlags = ['IsAttachment', 'IsAttachment', 'IsAttachment'],
-                                         withSubAttachments = false): IQueryResult {
+    numberOfAttachments = 3,
+    attachmentType = ['xml', 'pdf', 'txt'],
+    flags = 'HasThumbnail',
+    attachmentsFlags = ['IsAttachment', 'IsAttachment', 'IsAttachment'],
+    withSubAttachments = false): IQueryResult {
     var fake = FakeResults.createFakeResult(token);
     fake.flags = flags;
     if (withSubAttachments) {
@@ -245,7 +245,7 @@ export class FakeResults {
       _.each(selectables, (selectable) => {
         element.append(selectable)
       })
-      rows.push({element: element.get(0), zIndex: zIndex + i})
+      rows.push({ element: element.get(0), zIndex: zIndex + i })
     }
     return rows;
   }
@@ -253,7 +253,7 @@ export class FakeResults {
   static createFakeDeferredOmniboxData(numberOfRows: number) {
     var rows = [];
     for (var i = 0; i < numberOfRows; i++) {
-      rows.push({deferred: $.Deferred()})
+      rows.push({ deferred: $.Deferred() })
     }
     return rows;
   }
@@ -370,9 +370,9 @@ export class FakeResults {
 
   static createPopulateOmniboxEventArgs(queryboxContent: string, cursorPosition: number, rows: IOmniboxDataRow[] = []): IPopulateOmniboxEventArgs {
     return {
-      completeQueryExpression: {word: queryboxContent, regex: new RegExp(queryboxContent, 'gi')},
+      completeQueryExpression: { word: queryboxContent, regex: new RegExp(queryboxContent, 'gi') },
       allQueryExpressions: undefined,
-      currentQueryExpression: {word: queryboxContent, regex: new RegExp(queryboxContent, 'gi')},
+      currentQueryExpression: { word: queryboxContent, regex: new RegExp(queryboxContent, 'gi') },
       cursorPosition: cursorPosition,
       rows: [],
       clear: () => {

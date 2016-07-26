@@ -1,6 +1,10 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {FieldSuggestions} from '../../src/ui/FieldSuggestions/FieldSuggestions';
+import {IFieldSuggestionsOptions} from '../../src/ui/FieldSuggestions/FieldSuggestions';
+import {Simulate} from '../Simulate';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
-module Coveo {
+export function FieldSuggestionsTest() {
   describe('FieldSuggestions', () => {
     let test: Mock.IBasicComponentSetup<FieldSuggestions>;
 
@@ -8,6 +12,7 @@ module Coveo {
       test = Mock.optionsComponentSetup<FieldSuggestions, IFieldSuggestionsOptions>(FieldSuggestions, {
         field: '@foobar'
       });
+      window['jQuery'] = null;
     })
 
     afterEach(() => {

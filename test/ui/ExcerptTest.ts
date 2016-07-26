@@ -1,6 +1,10 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {Excerpt} from '../../src/ui/Excerpt/Excerpt';
+import {IQueryResult} from '../../src/rest/QueryResult';
+import {FakeResults} from '../Fake';
+import {HighlightUtils} from '../../src/utils/HighlightUtils';
 
-module Coveo {
+export function ExcerptTest() {
   describe('Excerpt', function () {
     let test: Mock.IBasicComponentSetup<Excerpt>;
     let fakeResult: IQueryResult;

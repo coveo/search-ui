@@ -1,6 +1,13 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {Querybox} from '../../src/ui/Querybox/Querybox';
+import {registerCustomMatcher} from '../CustomMatchers';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import {Simulate} from '../Simulate';
+import {$$} from '../../src/utils/Dom';
+import {StandaloneSearchInterfaceEvents} from '../../src/events/StandaloneSearchInterfaceEvents';
+import {IQueryboxOptions} from '../../src/ui/Querybox/Querybox';
 
-module Coveo {
+export function QueryboxTest() {
   describe('Querybox', () => {
     var test: Mock.IBasicComponentSetup<Querybox>;
 

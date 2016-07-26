@@ -1,8 +1,8 @@
-import {Model} from "../../src/models/Model";
+import {Model} from '../../src/models/Model';
 import * as Mock from '../MockEnvironment';
-import {IComponentBindings} from "../../src/ui/Base/ComponentBindings";
-import {registerCustomMatcher} from "../CustomMatchers";
-import {$$} from "../../src/utils/Dom";
+import {IComponentBindings} from '../../src/ui/Base/ComponentBindings';
+import {registerCustomMatcher} from '../CustomMatchers';
+import {$$} from '../../src/utils/Dom';
 
 export function ModelTest() {
   describe('Model', function () {
