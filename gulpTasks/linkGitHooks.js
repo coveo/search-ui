@@ -31,11 +31,10 @@ gulp.task('linkGitHooks', function() {
                 .catch(err => {
                   console.log(colors.red(err));
                 });
-
           })
-        .finally(() => {
-          process.chdir(cwd);
-        });
+          .finally(() => {
+            process.chdir(cwd);
+          });
     });
   });
 });
