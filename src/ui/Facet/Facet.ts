@@ -1381,7 +1381,7 @@ export class Facet extends Component {
   private buildMore(): HTMLElement {
     if (this.searchInterface.isNewDesign()) {
       let more = $$('div', { className: 'coveo-facet-more', tabindex: 0 },
-                    $$('span', { className: 'coveo-icon' }));
+        $$('span', { className: 'coveo-icon' }));
       more.on('click', () => this.handleClickMore())
       return more.el;
     } else {
@@ -1394,7 +1394,7 @@ export class Facet extends Component {
   private buildLess(): HTMLElement {
     if (this.searchInterface.isNewDesign()) {
       let less = $$('div', { className: 'coveo-facet-less' },
-                    $$('span', { className: 'coveo-icon' }));
+        $$('span', { className: 'coveo-icon' }));
       less.on('click', () => this.handleClickLess());
       return less.el;
     } else {

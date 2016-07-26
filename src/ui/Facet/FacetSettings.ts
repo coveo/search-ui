@@ -159,7 +159,7 @@ export class FacetSettings extends FacetSort {
       this.settingsPopup,
       this.settingsButton,
       this.facet.root,
-      this.getPopupAlignment(), this.facet.root);
+      this.getPopupAlignment(), this.facet.facetHeader.element);
 
     $$(this.hideSection).toggle(!$$(this.facet.element).hasClass('coveo-facet-collapsed'));
     $$(this.showSection).toggle($$(this.facet.element).hasClass('coveo-facet-collapsed'));
@@ -378,11 +378,11 @@ export class FacetSettings extends FacetSort {
   }
 
   private buildItem(label: string, title = label) {
-    var elem = document.createElement('div');
-    $$(elem).addClass('coveo-facet-settings-item')
-    elem.setAttribute('title', _.escape(title));
-    $$(elem).text(_.escape(label));
-    return elem;
+    return $$('div', {
+      className: 'coveo-facet-settings-item',
+      title: _.escape(title),
+      tabindex: 1
+    }, _.escape(label)).el;
   }
 
   private buildItems() {
