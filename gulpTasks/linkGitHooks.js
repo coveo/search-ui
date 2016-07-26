@@ -7,7 +7,8 @@ const _ = require('underscore');
 const Q = require('Q');
 const colors = require('colors');
 
-const lstat = Q.denodeify(fs.lstat);
+const lstat = Q.denodeify(fs.stat);
+const symlink = Q.denodeify(fs.symlink);
 
 gulp.task('linkGitHooks', function() {
   let noSuchFile = -2;
@@ -22,23 +23,12 @@ gulp.task('linkGitHooks', function() {
     _.each(files, filename => {
       let symname = path.resolve(process.cwd(), gitHooksDir + filename);
       let source = path.resolve(process.cwd(), gitHooksSourceDir + filename);
-      let createSymlink = () => {
-        let cwd = process.cwd();
-        process.chdir(gitHooksDir);
-        fs.symlinkSync(source, symname, 'file');
-        process.chdir(cwd);
-      };
-
-      lstat(symname)
-          .then(stats => {
-            if (!stats.isSymbolicLink()) {
-              fs.unlinkSync(symname);
-              createSymlink();
-            }
-          })
-          .catch(err => {
-            console.log(colors.red(err));
-          });
+      let cwd = process.cwd();
+      process.chdir(gitHooksDir);
+      symlink(source, symname, 'file')
+        .finally(err => {
+          process.chdir(cwd);
+        });
     });
   });
 });
