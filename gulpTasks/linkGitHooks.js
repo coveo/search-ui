@@ -4,7 +4,7 @@ const gulp = require('gulp');
 const fs = require('fs-extra');
 const path = require('path');
 const _ = require('underscore');
-const Q = require('Q');
+const Q = require('q');
 const colors = require('colors');
 
 const symlink = Q.denodeify(fs.ensureSymlink);
