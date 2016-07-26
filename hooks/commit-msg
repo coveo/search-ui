@@ -1,0 +1,31 @@
+#!/usr/bin/env node
+
+'use strict'
+
+const childProcess = require('child_process');
+const fs = require('fs');
+const os = require('os');
+
+const urlBase = 'https://coveord.atlassian.net/browse/'; 
+
+let branchName = childProcess.execSync('git symbolic-ref --short HEAD', {encoding: 'utf8'});
+branchName = branchName.trim();
+
+let issueNumber;
+let issueRegex = /JSUI-[\d]+/i;
+let match = branchName.match(issueRegex);
+if (match) {
+  issueNumber = match[0].toUpperCase();
+} else {
+  console.log('Could not find JIRA issue in branch name');
+  process.exit();
+}
+console.log(process.argv);
+let commitMessageFilename = process.argv[2];
+let commitMessage = fs.readFileSync(commitMessageFilename, {encoding: 'utf8'});
+
+if (commitMessage.search(issueRegex) == -1) {
+  fs.appendFileSync(commitMessageFilename, os.EOL + urlBase + issueNumber);
+  console.log(`Appended ${urlBase}${issueNumber} to commit message`);
+}
+
