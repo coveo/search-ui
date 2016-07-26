@@ -17,7 +17,7 @@ gulp.task('linkGitHooks', function() {
   let gitHooksDir = '.git/hooks/';
   let gitHooksSourceDir = 'hooks/';
 
-  readdir(gitHooksSourceDir).then((err, files) => {
+  readdir(gitHooksSourceDir).then((files) => {
     _.each(files, filename => {
       let symname = path.resolve(process.cwd(), gitHooksDir + filename);
       let source = path.resolve(process.cwd(), gitHooksSourceDir + filename);
