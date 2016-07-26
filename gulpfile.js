@@ -14,7 +14,7 @@ gulp.task('build', ['linkGitHooks'], function (done) {
 
 gulp.task('src', function (done) {
   runsequence('compile', 'definitions', done);
-})
+});
 
 gulp.task('buildLegacy', function (done) {
   runsequence(['cssLegacy', 'fileTypesLegacy', 'spritesLegacy', 'templatesLegacy'], done);

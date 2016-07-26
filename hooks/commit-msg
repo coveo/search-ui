@@ -6,9 +6,14 @@ const childProcess = require('child_process');
 const fs = require('fs');
 const os = require('os');
 const colors = require('colors');
+const ini = require('ini');
 
 const urlBase = 'https://coveord.atlassian.net/browse/';
 const projectAcronym = 'JSUI';
+const gitConfig = ini.parse(fs.readFileSync('.git/config', {encoding: 'utf8'}));
+if (gitConfig.jirahook && gitConfig.jirahook.disable) {
+  process.exit();
+}
 
 let issueNumber;
 let branchName = childProcess.execSync('git symbolic-ref --short HEAD', {encoding: 'utf8'});
@@ -19,7 +24,10 @@ let match = branchName.match(issueRegex);
 if (match) {
   issueNumber = match[0].toUpperCase();
 } else {
-  console.log('Could not find JIRA issue in branch name'.red);
+  console.log(colors.red(`Could not find JIRA issue in branch name 
+                          You can disable this hook using the repo git config:
+                          [jirahook]
+                          disable = true`));
   process.exit();
 }
 
