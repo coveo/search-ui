@@ -509,11 +509,11 @@ export class ResultsFiltersPreferences extends Component {
 
   private fromResultsFilterOptionToResultsPreferenceInterface() {
     var ret: { [key: string]: IResultFilterPreference } = {};
-    _.each(<any>this.options.filters, (filter: { expression: string; tab?: string[]; }, caption: string) => {
+    _.each(<any>this.options.filters, (filter: { expression: string; tab?: string[]; selected?: boolean }, caption: string) => {
       ret[caption] = {
         expression: filter.expression,
         tab: filter.tab,
-        selected: false,
+        selected: filter.selected ? filter.selected : false,
         custom: false,
         caption: caption
       }

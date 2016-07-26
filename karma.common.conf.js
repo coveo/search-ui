@@ -42,12 +42,13 @@ module.exports = {
     'karma-jasmine',
     'karma-chrome-launcher',
     'karma-phantomjs-launcher',
-    'karma-coverage'
+    'karma-coverage',
+    'karma-spec-reporter'
   ],
   preprocessors: {
     './bin/js/CoveoJsSearch.js': 'coverage'
   },
-  reporters: ['progress', 'coverage'],
+  reporters: ['coverage', 'spec'],
   coverageReporter: {
     dir: './bin/coverage',
     reporters: [

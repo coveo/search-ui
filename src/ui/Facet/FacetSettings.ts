@@ -160,7 +160,7 @@ export class FacetSettings extends FacetSort {
       this.settingsPopup,
       this.settingsButton,
       this.facet.root,
-      this.getPopupAlignment());
+      this.getPopupAlignment(), this.facet.root);
 
     $$(this.hideSection).toggle(!$$(this.facet.element).hasClass('coveo-facet-collapsed'));
     $$(this.showSection).toggle($$(this.facet.element).hasClass('coveo-facet-collapsed'));

@@ -16,6 +16,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private static FACET_DROPDOWN_MIN_WIDTH: number = 280;
   private static FACET_DROPDOWN_WIDTH_RATIO: number = 0.35; // Used to set the width relative to the coveo root.
   private static TRANSPARENT_BACKGROUND_OPACITY: string = '0.9';
+  private static DEBOUNCE_SCROLL_WAIT = 250;
   private static ROOT_MIN_WIDTH: number = 800;
   private static logger: Logger;
 
@@ -49,6 +50,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.tabSection = $$(this.coveoRoot.find('.coveo-tab-section'));
     this.buildDropdownContent();
     this.buildDropdownHeader();
+    this.bindDropdownContentEvents();
     this.bindDropdownHeaderEvents();
     this.buildPopupBackground();
     this.saveFacetsPosition();
@@ -97,7 +99,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     let filterByContainer = $$('div', { className: 'coveo-facet-header-filter-by-container', style: 'display: none' });
     let filterBy = $$('div', { className: 'coveo-facet-header-filter-by' });
     filterBy.text(l('Filter by:'));
-    filterByContainer.append(filterBy.el)
+    filterByContainer.append(filterBy.el);
     this.dropdownContent.prepend(filterByContainer.el);
   }
 
@@ -119,13 +121,26 @@ export class ResponsiveFacets implements IResponsiveComponent {
     });
   }
 
+  private bindDropdownContentEvents() {
+    this.dropdownContent.on('scroll', _.debounce(() => {
+      _.each(this.facets, facet => {
+        let facetSearch = facet.facetSearch;
+        if (facetSearch && facetSearch.currentlyDisplayedResults && !this.isFacetSearchScrolledIntoView(facetSearch.search)) {
+          facet.facetSearch.positionSearchResults(this.dropdownContent.el);
+        } else if (facetSearch && facet.facetSearch.currentlyDisplayedResults) {
+          facet.facetSearch.positionSearchResults();
+        }
+      });
+    }, ResponsiveFacets.DEBOUNCE_SCROLL_WAIT));
+  }
+
   private buildPopupBackground() {
     this.popupBackground = $$('div', { className: 'coveo-facet-dropdown-background' });
     EventsUtils.addPrefixedEvent(this.popupBackground.el, 'TransitionEnd', () => {
       if (this.popupBackground.el.style.opacity == '0') {
         this.popupBackground.detach();
       }
-    })
+    });
     this.popupBackground.on('click', () => this.closeDropdown());
   }
 
@@ -167,7 +182,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.dropdownContent.el.style.width = width.toString() + 'px';
 
     PopupUtils.positionPopup(this.dropdownContent.el, this.tabSection.el, this.coveoRoot.el,
-      { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM });
+      { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM }, this.coveoRoot.el);
   }
 
   private closeDropdown() {
@@ -179,6 +194,15 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.dropdownContent.el.style.display = 'none';
     this.dropdownContent.removeClass('coveo-facet-dropdown-content');
     this.dropdownHeader.removeClass('coveo-dropdown-header-active');
+    this.dismissFacetSearches();
+  }
+
+  private dismissFacetSearches() {
+    _.each(this.facets, facet => {
+      if (facet.facetSearch && facet.facetSearch.currentlyDisplayedResults) {
+        facet.facetSearch.completelyDismissSearch();
+      }
+    })
   }
 
   private cleanUpDropdown() {
@@ -206,5 +230,16 @@ export class ResponsiveFacets implements IResponsiveComponent {
 
   private drawFacetSliderGraphs() {
     _.each(this.facetSliders, facetSlider => facetSlider.drawDelayedGraphData());
+  }
+
+  private isFacetSearchScrolledIntoView(facetSearchElement: HTMLElement) {
+    let facetTop = facetSearchElement.getBoundingClientRect().top;
+    let facetBottom = facetSearchElement.getBoundingClientRect().bottom;
+    let dropdownTop = this.dropdownContent.el.getBoundingClientRect().top;
+    let dropdownBottom = this.dropdownContent.el.getBoundingClientRect().bottom;
+
+    dropdownTop = dropdownTop >= 0 ? dropdownTop : 0;
+
+    return (facetTop >= dropdownTop) && (facetBottom <= dropdownBottom);
   }
 }
