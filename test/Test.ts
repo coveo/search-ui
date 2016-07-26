@@ -111,3 +111,5 @@ module Coveo {
 function isPhantomJs() {
   return navigator.userAgent.indexOf('PhantomJS') != -1;
 }
+
+/// <reference path="ui/AdvancedSearchTest.ts"

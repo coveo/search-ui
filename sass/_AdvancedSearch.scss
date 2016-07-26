@@ -1,0 +1,38 @@
+.CoveoAdvancedSearch {
+  position: relative;
+}
+
+.coveo-advanced-search-keywords-section {
+  min-width: 500px;
+  margin: 5px;
+}
+
+.coveo-advanced-search-keyword {
+  margin-top: 10px;
+}
+
+.coveo-advanced-search-keywords-title {
+  font-weight: bold;
+  border-bottom: $default-border;
+  padding: 5px 0;
+}
+
+.coveo-advanced-search-label {
+  width: 40%;
+  display: inline-block;
+}
+
+.coveo-advanced-search-input {
+  width: 60%;
+}
+
+.coveo-advanced-search-panel-close {
+  @include coveo-preferences-panel-button();
+  @include clearButton('&');
+  right: 0;
+}
+
+.coveo-advanced-search-panel-title {
+  font-size: $font-size-biggest;
+  display: inline-block;
+}

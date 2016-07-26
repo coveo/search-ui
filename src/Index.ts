@@ -118,3 +118,5 @@ let swapVar = () => {
   }
 }
 swapVar();
+
+export { AdvancedSearch } from './ui/AdvancedSearch/AdvancedSearch';

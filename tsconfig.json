@@ -272,6 +272,7 @@
     "src/utils/StringUtils.ts",
     "src/utils/TimeSpanUtils.ts",
     "src/utils/Utils.ts",
-    "src/utils/ChatterUtils.ts"
+    "src/utils/ChatterUtils.ts",
+    "src/ui/AdvancedSearch/AdvancedSearch.ts"
   ]
 }

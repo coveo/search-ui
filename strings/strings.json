@@ -5058,5 +5058,33 @@
   "Facets": {
     "en": "Facets",
     "fr": "Facettes"
+  },
+  "AdvancedSearch": {
+    "en": "Advanced Search",
+    "fr": "Recherche Avancée"
+  },
+  "AdvancedSearch_Panel": {
+    "en": "Advanced Search",
+    "fr": "Recherche Avancée"
+  },
+  "AdvancedSearchKeywordsSectionTitle": {
+    "en": "Keywords",
+    "fr": "Mot-clés"
+  },
+  "AdvancedSearchAllLabel": {
+    "en": "All these words",
+    "fr": "Tous ces mots"
+  },
+  "AdvancedSearchExactLabel": {
+    "en": "This exact phrase",
+    "fr": "Cette phrase exacte"
+  },
+  "AdvancedSearchAnyLabel": {
+    "en": "Any of these words",
+    "fr": "N'importe lequel de ces mots"
+  },
+  "AdvancedSearchNoneLabel": {
+    "en": "None of these words",
+    "fr": "Aucun de ces mots"
   }
 }
