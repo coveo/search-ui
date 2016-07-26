@@ -39,6 +39,11 @@
     }
   }
 
+  .coveo-facet-value-checkbox:focus {
+    outline: none;
+    box-shadow: 0 0 2px $color-blueish-gray;
+  }
+
   &.coveo-selected .coveo-facet-value-checkbox {
     > span {
       @extend #{$icon-active};
@@ -113,14 +118,9 @@
 
 .coveo-facet-value-label {
   display: block;
-  overflow: hidden;
   white-space: nowrap;
   cursor: pointer;
   padding: 5px 0px 5px 0px;
-}
-
-.coveo-facet-value-label-wrapper {
-  overflow: hidden;
 }
 
 .coveo-facet-value-caption {
@@ -193,7 +193,7 @@
   @include defaultRoundedBorder();
   height: 13px;
   width: 13px;
-  visibility: hidden;
+  opacity: 0;
 
   .coveo-icon {
     @extend .coveo-sprites-exclusion-hover;
@@ -204,5 +204,10 @@
 
   &:hover {
     opacity: 1;
+  }
+  &:focus {
+    opacity: 1;
+    outline: none;
+    box-shadow: 0 0 2px $color-blueish-gray;
   }
 }

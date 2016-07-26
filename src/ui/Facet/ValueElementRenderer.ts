@@ -1,4 +1,3 @@
-/// <reference path="Facet.ts" />
 import {Facet} from './Facet';
 import {FacetValue} from './FacetValues';
 import {$$} from '../../utils/Dom';
@@ -112,7 +111,8 @@ export class ValueElementRenderer {
   protected buildExcludeIcon(): HTMLElement {
     var ret = $$('div', {
       title: l('Exclude', this.facet.getValueCaption(this.facetValue)),
-      className: 'coveo-facet-value-exclude'
+      className: 'coveo-facet-value-exclude',
+      tabindex: 0
     }).el;
 
     if (this.facet.searchInterface.isNewDesign()) {
@@ -159,7 +159,8 @@ export class ValueElementRenderer {
 
   protected buildValueStylishCheckbox(): HTMLElement {
     var checkbox = $$('div', {
-      className: 'coveo-facet-value-checkbox'
+      className: 'coveo-facet-value-checkbox',
+      tabindex: 0
     }, $$('span')).el;
     return checkbox;
   }
