@@ -5,7 +5,7 @@ import {Facet} from './Facet';
 import {Assert} from '../../misc/Assert';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {IAnalyticsFacetMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {$$} from '../../utils/Dom';
+import {$$, Dom} from '../../utils/Dom';
 
 export interface IBreadcrumbValueElementKlass {
   new (facet: Facet, facetValue: FacetValue): BreadcrumbValueElement;
@@ -15,7 +15,7 @@ export class BreadcrumbValueElement {
   constructor(public facet: Facet, public facetValue: FacetValue) {
   }
 
-  public build(tooltip = true) {
+  public build(tooltip = true): Dom {
     Assert.exists(this.facetValue);
 
     var elem = DeviceUtils.isMobileDevice() ? $$('div') : $$('span');

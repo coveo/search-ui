@@ -281,12 +281,6 @@ export class FacetSearch {
     this.completelyDismissSearch();
   }
 
-  private handleDocumentScroll() {
-    if (this.currentlyDisplayedResults) {
-      this.positionSearchResults();
-    }
-  }
-
   private showOrHideClearElement(isEmpty: boolean) {
     if (!isEmpty) {
       $$(this.clear).show();

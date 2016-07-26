@@ -3,7 +3,9 @@ import {Assert} from '../../misc/Assert';
 import {QueryController} from '../../controllers/QueryController';
 import {QueryStateModel, setState} from '../../models/QueryStateModel';
 import {IQueryResult} from '../../rest/QueryResult';
+import {IQueryResults} from '../../rest/QueryResults';
 import {Analytics} from '../Analytics/Analytics';
+import {IAnalyticsClient} from '../Analytics/AnalyticsClient'
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {$$} from '../../utils/Dom';
 import {IAnalyticsActionCause, IAnalyticsDocumentViewMeta} from '../Analytics/AnalyticsActionListMeta';
@@ -36,7 +38,7 @@ Initialization.registerNamedMethod('init', (element: HTMLElement, options: any =
  * @param searchPageUri The search page on which to redirect when there is a query
  * @param options JSON options for the framework eg : <code>{Searchbox : {enableSearchAsYouType: true}}</code>
  */
-export function initSearchbox(element: HTMLElement, searchPageUri: string, options: any = {}) {
+export function initSearchbox(element: HTMLElement, searchPageUri: string, options: any = {}): void {
   Assert.isNonEmptyString(searchPageUri);
   var searchInterfaceOptions = <IStandaloneSearchInterfaceOptions>{};
   searchInterfaceOptions.searchPageUri = searchPageUri;
@@ -61,7 +63,7 @@ Initialization.registerNamedMethod('initSearchbox', (element: HTMLElement, searc
  * @param userContext The user context to pass with the query generated in the recommendation interface. View {@link Recommendation}
  * @param options JSON options for the framework eg : <code>{Searchbox : {enableSearchAsYouType: true}}</code>
  */
-export function initRecommendation(element: HTMLElement, mainSearchInterface?: HTMLElement, userContext?: { [name: string]: any }, options: any = {}) {
+export function initRecommendation(element: HTMLElement, mainSearchInterface?: HTMLElement, userContext?: { [name: string]: any }, options: any = {}): void {
   var recommendationOptions = <IRecommendationOptions>{};
   recommendationOptions.mainSearchInterface = mainSearchInterface;
   recommendationOptions.userContext = JSON.stringify(userContext);
@@ -84,7 +86,7 @@ Initialization.registerNamedMethod('initRecommendation', (element: HTMLElement, 
  * Calling this method is the same as calling {@link QueryController.executeQuery}
  * @param element The root of the interface to initialize
  */
-export function executeQuery(element: HTMLElement) {
+export function executeQuery(element: HTMLElement): Promise<IQueryResults> {
   Assert.exists(element);
 
   var queryController = <QueryController>Component.resolveBinding(element, QueryController);
@@ -142,7 +144,7 @@ Initialization.registerNamedMethod('result', (element: HTMLElement, noThrow?: bo
   return Component.getResult(element, noThrow);
 });
 
-function getCoveoAnalyticsClient(element: HTMLElement) {
+function getCoveoAnalyticsClient(element: HTMLElement): IAnalyticsClient {
   var analytics = getCoveoAnalytics(element);
   if (analytics) {
     return analytics.client;
