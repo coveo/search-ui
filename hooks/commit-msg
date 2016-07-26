@@ -7,12 +7,13 @@ const fs = require('fs');
 const os = require('os');
 const colors = require('colors');
 
-const urlBase = 'https://coveord.atlassian.net/browse/'; 
+const urlBase = 'https://coveord.atlassian.net/browse/';
+const projectAcronym = 'JSUI';
 
 let issueNumber;
 let branchName = childProcess.execSync('git symbolic-ref --short HEAD', {encoding: 'utf8'});
 branchName = branchName.trim();
-let issueRegex = /JSUI-[\d]+/i;
+let issueRegex = new RegExp(projectAcronym + '-[\\d]+','i');
 
 let match = branchName.match(issueRegex);
 if (match) {
