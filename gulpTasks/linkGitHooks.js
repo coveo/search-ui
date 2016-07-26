@@ -26,7 +26,10 @@ gulp.task('linkGitHooks', function() {
       let cwd = process.cwd();
       process.chdir(gitHooksDir);
       symlink(source, symname, 'file')
-        .finally(err => {
+        .catch(err => {
+          console.log(colors.red(err));
+        })
+        .finally(() => {
           process.chdir(cwd);
         });
     });
