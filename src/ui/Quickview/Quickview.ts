@@ -119,12 +119,14 @@ export class Quickview extends Component {
       let iconForQuickview = $$('div');
       iconForQuickview.addClass('coveo-icon-for-quickview')
       if (this.searchInterface.isNewDesign()) {
-        let captionForQuickview = $$('div');
-        captionForQuickview.addClass('coveo-caption-for-quickview')
-        captionForQuickview.text('Quickview'.toLocaleString())
+        let captionForQuickview = $$(
+          'div',
+          { className: 'coveo-caption-for-quickview', tabindex: 0 },
+          'Quickview'.toLocaleString()
+        ).el;
         let div = $$('div');
         div.append(iconForQuickview.el);
-        div.append(captionForQuickview.el);
+        div.append(captionForQuickview);
         $$(this.element).append(div.el);
       } else {
         iconForQuickview.text('Quickview'.toLocaleString());

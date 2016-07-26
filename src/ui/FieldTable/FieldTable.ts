@@ -135,7 +135,7 @@ export class FieldTable extends Component {
 
   private buildToggle() {
     this.toggleIcon = $$('span', { className: 'coveo-field-table-toggle-icon' }).el;
-    this.toggleCaption = $$('span', { className: 'coveo-field-table-toggle-caption' }).el;
+    this.toggleCaption = $$('span', { className: 'coveo-field-table-toggle-caption', tabindex: 0 }).el;
 
     this.toggleButton = $$('div', { className: 'coveo-field-table-toggle' }).el;
     this.toggleButton.appendChild(this.toggleCaption);

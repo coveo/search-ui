@@ -159,9 +159,9 @@ export class Tab extends Component {
   private render() {
     var icon = this.options.icon;
     if (Utils.isNonEmptyString(icon)) {
-      var icnSpan = document.createElement('span');
-      $$(icnSpan).addClass(['coveo-icon', icon]);
-      this.element.insertBefore(icnSpan, this.element.firstChild);
+      var iconSpan = $$('span').el;
+      $$(iconSpan).addClass(['coveo-icon', icon]);
+      this.element.insertBefore(iconSpan, this.element.firstChild);
     }
 
     var caption = this.options.caption;
@@ -170,6 +170,7 @@ export class Tab extends Component {
       $$(captionP).text(caption);
       this.element.appendChild(captionP);
     }
+    this.element.setAttribute('tabindex', '0');
   }
 
   protected handleBuildingQuery(data: IBuildingQueryEventArgs) {
