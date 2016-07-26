@@ -1375,44 +1375,32 @@ export class Facet extends Component {
   }
 
   private buildFooter(): HTMLElement {
-    var footer = document.createElement('div');
-    $$(footer).addClass('coveo-facet-footer');
-    return footer;
+    return $$('div', { className: 'coveo-facet-footer' }).el;
   }
 
   private buildMore(): HTMLElement {
     if (this.searchInterface.isNewDesign()) {
-      let more = document.createElement('div');
-      $$(more).addClass('coveo-facet-more');
-      var moreIcon = document.createElement('span');
-      $$(moreIcon).addClass('coveo-icon');
-      more.appendChild(moreIcon);
-      $$(more).on('click', () => this.handleClickMore())
-      return more;
+      let more = $$('div', { className: 'coveo-facet-more', tabindex: 0 },
+                    $$('span', { className: 'coveo-icon' }));
+      more.on('click', () => this.handleClickMore())
+      return more.el;
     } else {
-      let more = document.createElement('a');
-      $$(more).addClass('coveo-facet-more');
-      $$(more).text(l('More'));
-      $$(more).on('click', () => this.handleClickMore());
-      return more;
+      let more = $$('a', { className: 'coveo-facet-more' }, l('More'));
+      more.on('click', () => this.handleClickMore());
+      return more.el;
     }
   }
 
   private buildLess(): HTMLElement {
     if (this.searchInterface.isNewDesign()) {
-      let less = document.createElement('div');
-      $$(less).addClass('coveo-facet-less');
-      var lessIcon = document.createElement('span');
-      $$(lessIcon).addClass('coveo-icon');
-      less.appendChild(lessIcon);
-      $$(less).on('click', () => this.handleClickLess());
-      return less;
+      let less = $$('div', { className: 'coveo-facet-less' },
+                    $$('span', { className: 'coveo-icon' }));
+      less.on('click', () => this.handleClickLess());
+      return less.el;
     } else {
-      let less = document.createElement('a');
-      $$(less).addClass('coveo-facet-less');
-      $$(less).text(l('Less'));
-      $$(less).on('click', () => this.handleClickLess());
-      return less;
+      let less = $$('a', { className: 'coveo-facet-less' }, l('Less'));
+      less.on('click', () => this.handleClickLess());
+      return less.el;
     }
   }
 
