@@ -4,14 +4,16 @@ import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionLi
 import {IOmniboxOptions} from '../../src/ui/Omnibox/Omnibox';
 import {Simulate} from '../Simulate';
 import {$$} from '../../src/utils/Dom';
-import {Promise} from 'es6-promise';
-import {shim} from '../../src/misc/PromisesShim';
-shim();
+import {JQuery} from '../JQueryModule';
 
 export function OmniboxTest() {
   describe('Omnibox', () => {
     var test: Mock.IBasicComponentSetup<Omnibox>;
     beforeEach(() => {
+      // Thanks phantom js for bad native event support
+      if (Simulate.isPhantomJs()) {
+        window['jQuery'] = JQuery;
+      }
       test = Mock.basicComponentSetup<Omnibox>(Omnibox);
     })
     afterEach(() => {

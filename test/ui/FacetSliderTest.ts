@@ -6,7 +6,6 @@ import {BreadcrumbEvents} from '../../src/events/BreadcrumbEvents';
 import {IPopulateBreadcrumbEventArgs} from '../../src/events/BreadcrumbEvents';
 import {$$} from '../../src/utils/Dom';
 
-
 export function FacetSliderTest() {
   describe('FacetSlider', function () {
     let test: Mock.IBasicComponentSetup<FacetSlider>;

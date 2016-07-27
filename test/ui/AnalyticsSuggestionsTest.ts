@@ -4,17 +4,25 @@ import {Simulate} from '../Simulate';
 import {$$} from '../../src/utils/Dom';
 import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import {IAnalyticsSuggestionsOptions} from '../../src/ui/AnalyticsSuggestions/AnalyticsSuggestions';
+import {JQuery} from '../JQueryModule';
 
 export function AnalyticsSuggestionsTest() {
   describe('AnalyticsSuggestions', () => {
     let test: Mock.IBasicComponentSetup<AnalyticsSuggestions>;
 
     beforeEach(() => {
+      // In phantom js there is a bug with CustomEvent('click'), which is needed to for those tests.
+      // So, use jquery for event in phantom js
+      if (Simulate.isPhantomJs()) {
+        window['jQuery'] = JQuery;
+      }
+
       test = Mock.basicComponentSetup<AnalyticsSuggestions>(AnalyticsSuggestions);
     })
 
     afterEach(() => {
       test = null;
+      window['jQuery'] = null;
     })
 
     it('should trigger a call to get top query from the analytics', () => {

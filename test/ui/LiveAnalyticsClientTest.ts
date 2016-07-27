@@ -12,9 +12,7 @@ import {Simulate} from '../Simulate';
 import {$$} from '../../src/utils/Dom';
 import {AnalyticsEvents} from '../../src/events/AnalyticsEvents';
 import {Defer} from '../../src/misc/Defer';
-import {Promise} from 'es6-promise';
-import {shim} from '../../src/misc/PromisesShim';
-shim();
+import {JQuery} from '../JQueryModule';
 
 export function LiveAnalyticsClientTest() {
   describe('LiveAnalyticsClient', function () {
@@ -24,7 +22,11 @@ export function LiveAnalyticsClientTest() {
     var promise: Promise<IQueryResults>;
 
     beforeEach(function () {
-      window['jQuery'] = null;
+      // Thanks phantom js for bad native event support
+      if (Simulate.isPhantomJs()) {
+        window['jQuery'] = JQuery;
+      }
+
       env = new Mock.MockEnvironmentBuilder().build();
       endpoint = Mock.mock<AnalyticsEndpoint>(AnalyticsEndpoint);
       client = new LiveAnalyticsClient(endpoint, env.root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true);
@@ -38,6 +40,7 @@ export function LiveAnalyticsClientTest() {
       endpoint = null;
       client = null;
       promise = null;
+      window['jQuery'] = null;
     })
 
     it('should return pending event', () => {

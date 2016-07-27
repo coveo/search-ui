@@ -211,6 +211,7 @@ export function mockSearchInterface(): SearchInterface {
   var m = mockComponent<SearchInterface>(SearchInterface, SearchInterface.ID);
   m.options = {};
   m.options.originalOptionsObject = {};
+  m.isSmallInterface = () => { return false };
   return m;
 }
 
@@ -219,7 +220,7 @@ export function mockQueryController(): QueryController {
   var spy = <any>m;
   spy.options = {};
   spy.options.resultsPerPage = 10;
-  spy.fetchMore.and.returnValue(new Promise((resolve, reject)=>{}));
+  spy.fetchMore.and.returnValue(new Promise((resolve, reject) => { }));
   return m;
 }
 

@@ -129,8 +129,8 @@ export function FacetSearchTest() {
             });
 
             (<jasmine.Spy>mockFacet.facetQueryController.search)
-                .and
-                .returnValue(searchPromise);
+              .and
+              .returnValue(searchPromise);
 
             built = facetSearch.build();
             var params = new FacetSearchParameters(mockFacet);

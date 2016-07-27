@@ -5,7 +5,11 @@ Logger.disable();
 import {defaultLanguage} from '../src/strings/DefaultLanguage';
 defaultLanguage();
 
-/*import {CookieUtilsTest} from './utils/CookieUtilsTest';
+import {Promise} from 'es6-promise';
+import {shim} from '../src/misc/PromisesShim';
+shim();
+
+import {CookieUtilsTest} from './utils/CookieUtilsTest';
 CookieUtilsTest();
 
 import {DomTests} from './utils/DomTest';
@@ -115,10 +119,10 @@ FacetSliderTest();
 
 import {FacetTest} from './ui/FacetTest';
 FacetTest();
-*/
+
 import {FieldSuggestionsTest} from './ui/FieldSuggestionsTest';
 FieldSuggestionsTest();
-/*
+
 import {FieldTableTest} from './ui/FieldTableTest';
 FieldTableTest();
 
@@ -247,4 +251,3 @@ TriggersTest();
 
 import {ValueElementRendererTest} from './ui/ValueElementRendererTest';
 ValueElementRendererTest();
-*/
