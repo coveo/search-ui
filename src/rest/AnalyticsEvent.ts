@@ -13,5 +13,5 @@ export interface IAnalyticsEvent {
   responseTime: number;
   userAgent?: string;
   userGroups?: string;
-  customData?: { [key: string]: string };
+  customData?: { [key: string]: any };
 }

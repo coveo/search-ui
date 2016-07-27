@@ -115,10 +115,7 @@ export class PendingSearchEvent {
     }
   }
 
-  private fillSearchEvent(searchEvent: ISearchEvent,
-    searchInterface: SearchInterface,
-    query: IQuery,
-    queryResults: IQueryResults) {
+  private fillSearchEvent(searchEvent: ISearchEvent, searchInterface: SearchInterface, query: IQuery, queryResults: IQueryResults) {
     Assert.exists(searchEvent);
     Assert.exists(searchInterface);
     Assert.exists(query);
@@ -138,5 +135,13 @@ export class PendingSearchEvent {
     searchEvent.resultsPerPage = query.numberOfResults;
     searchEvent.searchQueryUid = queryResults.searchUid;
     searchEvent.queryPipeline = queryResults.pipeline;
+
+    // The coveo_internal_ prefix is important for the Analytics backend
+    // This is what they use to recognize a custom data for which there should be no custom dimension created
+    // but will be used internally by other coveo's service.
+    // In this case, Reveal will be the consumer of this information.
+    if (query.context != undefined) {
+      searchEvent.customData['coveo_internal_userContext'] = query.context;
+    }
   }
 }

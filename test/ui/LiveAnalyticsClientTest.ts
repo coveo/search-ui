@@ -32,14 +32,14 @@ module Coveo {
     })
 
     it('should send proper information on logSearchEvent', function (done) {
-
       client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
       var query: IQuery = {
         q: 'the query',
         aq: 'the advanced query',
         firstResult: 20,
         numberOfResults: 10,
-        enableDidYouMean: true
+        enableDidYouMean: true,
+        context: {'foo': {'bar': 'bazz'}}
       };
 
       Simulate.query(env, {
@@ -57,7 +57,8 @@ module Coveo {
           username: 'foo',
           userDisplayName: 'foo display',
           splitTestRunName: 'foo run name',
-          splitTestRunVersion: 'foo run version'
+          splitTestRunVersion: 'foo run version',
+          coveo_internal_userContext: jasmine.objectContaining({'foo': jasmine.objectContaining({'bar': 'bazz'})})
         })])
         expect(endpoint.sendSearchEvents).toHaveBeenCalledWith(jasmineMatcher);
         done();
