@@ -10,6 +10,7 @@ import {QueryStateModel} from '../../models/QueryStateModel';
 import {QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs} from '../../events/QueryEvents';
 import {Initialization} from '../Base/Initialization';
 import {analyticsActionCauseList, IAnalyticsResultsSortMeta} from '../Analytics/AnalyticsActionListMeta';
+import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
 
 export interface ISortOptions {
   sortCriteria?: SortCriteria[];
@@ -73,7 +74,9 @@ export class Sort extends Component {
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args))
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.on(this.element, 'click', () => this.handleClick());
+    this.bind.on(this.element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.handleClick()));
 
+    this.element.setAttribute('tabindex', '0');
     if (Utils.isNonEmptyString(this.options.caption)) {
       $$(this.element).text(this.options.caption);
     }
@@ -189,7 +192,6 @@ export class Sort extends Component {
       $$(this.element).toggleClass('coveo-ascending', direction == 'ascending');
     }
   }
-
 }
 
 Initialization.registerAutoCreateComponent(Sort);
