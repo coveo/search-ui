@@ -381,7 +381,7 @@ export class FacetSettings extends FacetSort {
     return $$('div', {
       className: 'coveo-facet-settings-item',
       title: _.escape(title),
-      tabindex: 1
+      tabindex: 0
     }, _.escape(label)).el;
   }
 

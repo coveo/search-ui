@@ -49,6 +49,7 @@ import {IOmniboxDataRow} from '../Omnibox/OmniboxInterface';
 import {Initialization} from '../Base/Initialization';
 import {BreadcrumbEvents, IClearBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
 import {ResponsiveFacets} from '../ResponsiveComponents/ResponsiveFacets';
+import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
 
 export interface IFacetOptions {
   title?: string;
@@ -1379,29 +1380,29 @@ export class Facet extends Component {
   }
 
   private buildMore(): HTMLElement {
+    let more: HTMLElement;
     if (this.searchInterface.isNewDesign()) {
-      let more = $$('div', { className: 'coveo-facet-more', tabindex: 0 },
-        $$('span', { className: 'coveo-icon' }));
-      more.on('click', () => this.handleClickMore())
-      return more.el;
+      more = $$('div', { className: 'coveo-facet-more', tabindex: 0 },
+        $$('span', { className: 'coveo-icon' })).el;
     } else {
-      let more = $$('a', { className: 'coveo-facet-more' }, l('More'));
-      more.on('click', () => this.handleClickMore());
-      return more.el;
+      more = $$('a', { className: 'coveo-facet-more' }, l('More')).el;
     }
+    $$(more).on('click', () => this.handleClickMore())
+    $$(more).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.handleClickMore()));
+    return more;
   }
 
   private buildLess(): HTMLElement {
+    let less: HTMLElement;
     if (this.searchInterface.isNewDesign()) {
-      let less = $$('div', { className: 'coveo-facet-less' },
-        $$('span', { className: 'coveo-icon' }));
-      less.on('click', () => this.handleClickLess());
-      return less.el;
+      less = $$('div', { className: 'coveo-facet-less', tabindex: 0 },
+        $$('span', { className: 'coveo-icon' })).el;
     } else {
-      let less = $$('a', { className: 'coveo-facet-less' }, l('Less'));
-      less.on('click', () => this.handleClickLess());
-      return less.el;
+      less = $$('a', { className: 'coveo-facet-less' }, l('Less')).el;
     }
+    $$(less).on('click', () => this.handleClickLess());
+    $$(less).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.handleClickLess()));
+    return less;
   }
 
   private triggerMoreQuery() {
