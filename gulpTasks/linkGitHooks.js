@@ -39,7 +39,7 @@ gulp.task('linkGitHooks', function() {
           });
     });
   })
-  .catch(err, err => {
+  .catch(err => {
     console.log(colors.red(err));
   })
 });
