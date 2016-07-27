@@ -23,6 +23,8 @@ import {Debug} from '../Debug/Debug';
 import {HashUtils} from '../../utils/HashUtils';
 import FastClick = require('fastclick');
 import timezone = require('jstz');
+import {IQuerySuccessEventArgs} from '../../events/QueryEvents';
+import {IQueryErrorEventArgs} from '../../events/QueryEvents';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -223,6 +225,8 @@ export class SearchInterface extends RootComponent {
     let eventName = this.queryStateModel.getEventName(Model.eventTypes.preprocess);
     $$(this.element).on(eventName, (e, args) => this.handlePreprocessQueryStateModel(args));
     $$(this.element).on(QueryEvents.buildingQuery, (e, args) => this.handleBuildingQuery(args));
+    $$(this.element).on(QueryEvents.querySuccess, (e, args) => this.handleQuerySuccess(args));
+    $$(this.element).on(QueryEvents.queryError, (e, args) => this.handleQueryError(args));
 
     if (this.options.enableHistory) {
       if (!this.options.useLocalStorageForHistory) {
@@ -552,6 +556,31 @@ export class SearchInterface extends RootComponent {
     data.queryBuilder.enableCollaborativeRating = this.options.enableCollaborativeRating;
 
     data.queryBuilder.enableDuplicateFiltering = this.options.enableDuplicateFiltering;
+  }
+
+  private handleQuerySuccess(data: IQuerySuccessEventArgs) {
+    let noResults = data.results.results.length == 0;
+    this.toggleSectionState('coveo-no-results', noResults);
+  }
+
+  private handleQueryError(data: IQueryErrorEventArgs) {
+    this.toggleSectionState('coveo-no-results');
+  }
+
+  private toggleSectionState(cssClass, toggle = true) {
+    let facetSection = $$(this.element).find('.coveo-facet-column');
+    let resultsSection = $$(this.element).find('.coveo-results-column');
+    let resultsHeader = $$(this.element).find('.coveo-results-header');
+
+    if (facetSection) {
+      $$(facetSection).toggleClass(cssClass, toggle);
+    }
+    if (resultsSection) {
+      $$(resultsSection).toggleClass(cssClass, toggle);
+    }
+    if (resultsHeader) {
+      $$(resultsHeader).toggleClass(cssClass, toggle);
+    }
   }
 }
 

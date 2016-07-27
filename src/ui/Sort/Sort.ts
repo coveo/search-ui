@@ -10,6 +10,7 @@ import {QueryStateModel} from '../../models/QueryStateModel';
 import {QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs} from '../../events/QueryEvents';
 import {Initialization} from '../Base/Initialization';
 import {analyticsActionCauseList, IAnalyticsResultsSortMeta} from '../Analytics/AnalyticsActionListMeta';
+import {IQueryErrorEventArgs} from '../../events/QueryEvents';
 
 export interface ISortOptions {
   sortCriteria?: SortCriteria[];
@@ -74,6 +75,7 @@ export class Sort extends Component {
     this.bind.onRootElement(eventName, (args: IAttributesChangedEventArg) => this.handleQueryStateChanged(args))
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args))
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
+    this.bind.onRootElement(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError(args));
     this.bind.on(this.element, 'click', () => this.handleClick());
 
     if (Utils.isNonEmptyString(this.options.caption)) {
@@ -162,6 +164,10 @@ export class Sort extends Component {
     } else {
       $$(this.element).removeClass('coveo-sort-hidden');
     }
+  }
+
+  private handleQueryError(data: IQueryErrorEventArgs) {
+    $$(this.element).addClass('coveo-sort-hidden');
   }
 
   private handleClick() {

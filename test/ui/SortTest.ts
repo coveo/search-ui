@@ -63,6 +63,11 @@ module Coveo {
       expect($$(test.cmp.element).hasClass('coveo-sort-hidden')).toBe(false);
     })
 
+    it('should set a \'hidden\' CSS class when there is a query error', function () {
+      $$(test.env.root).trigger(QueryEvents.queryError);
+      expect($$(test.cmp.element).hasClass('coveo-sort-hidden')).toBe(true);
+    })
+
     describe('with a toggle', function () {
       beforeEach(function () {
         test = buildSort('date ascending,date descending');
