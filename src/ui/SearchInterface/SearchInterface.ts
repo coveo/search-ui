@@ -567,7 +567,7 @@ export class SearchInterface extends RootComponent {
     this.toggleSectionState('coveo-no-results');
   }
 
-  private toggleSectionState(cssClass, toggle = true) {
+  private toggleSectionState(cssClass: string, toggle = true) {
     let facetSection = $$(this.element).find('.coveo-facet-column');
     let resultsSection = $$(this.element).find('.coveo-results-column');
     let resultsHeader = $$(this.element).find('.coveo-results-header');
