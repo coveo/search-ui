@@ -148,6 +148,10 @@ export interface IAnalyticsPagerMeta {
   pagerNumber: number;
 }
 
+export interface IAnalyticsResultsPerPageMeta {
+  currentResultsPerPage: number;
+}
+
 export interface IAnalyticsTriggerNotify {
   notification: string;
 }
@@ -408,6 +412,10 @@ export var analyticsActionCauseList = {
   },
   pagerScrolling: <IAnalyticsActionCause>{
     name: 'pagerScrolling',
+    type: 'getMoreResults'
+  },
+  pagerResize: <IAnalyticsActionCause>{
+    name: 'pagerResize',
     type: 'getMoreResults'
   },
   searchFromLink: <IAnalyticsActionCause>{
