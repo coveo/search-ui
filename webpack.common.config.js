@@ -39,6 +39,15 @@ module.exports = {
           search: '//# sourceMappingURL=underscore-min.map',
           replace: ''
         }
+      },
+      {
+        test: /jquery.js/,
+        loader: 'string-replace-loader',
+        query: {
+          // Prevent jQuery from loading adjacent sourcemap (not needed anyways)
+          search: '//@ sourceMappingURL=jquery.min.map',
+          replace: ''
+        }
       }
     ]
   },

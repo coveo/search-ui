@@ -42,7 +42,7 @@ gulp.task('testDev', ['watchTest'], function (done) {
 gulp.task('remapCoverage', function (done) {
   return gulp.src(`${COVERAGE_DIR}/coverage-es5.json`)
     .pipe(remapIstanbul({
-      exclude: /(webpack|~\/d3\/|~\/es6-promise\/dist\/|~\/process\/|~\/underscore\/|vertx|~\/coveomagicbox\/|~\/modal-box\/)/
+      exclude: /(webpack|~\/d3\/|~\/es6-promise\/dist\/|~\/process\/|~\/underscore\/|vertx|~\/coveomagicbox\/|~\/modal-box\/|test\/|lib\/)/
     }))
     .pipe(rename('coverage.json'))
     .pipe(gulp.dest(COVERAGE_DIR));

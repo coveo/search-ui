@@ -8,7 +8,10 @@ conf = _.extend(conf, {
   },
   output: {
     path: require('path').resolve('./bin/tests'),
-    filename: '[name].js'
+    filename: '[name].js',
+    libraryTarget: 'var',
+    library: 'Coveo',
+    devtoolModuleFilenameTemplate: '[resource-path]'
   }
 })
 

@@ -34,7 +34,7 @@ module.exports = {
     'karma-spec-reporter'
   ],
   preprocessors: {
-    './bin/js/CoveoJsSearch.js': 'coverage'
+    './bin/tests/tests.js': 'coverage'
   },
   reporters: ['coverage', 'spec'],
   coverageReporter: {

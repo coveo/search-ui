@@ -1,4 +1,5 @@
 export * from '../src/Index';
+
 import {Logger} from '../src/misc/Logger';
 Logger.disable();
 
