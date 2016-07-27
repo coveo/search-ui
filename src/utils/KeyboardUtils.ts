@@ -69,12 +69,16 @@ export class KeyboardUtils {
     return keycode > 64 && keycode < 91;
   }
 
-  // Return a keyboard event listener that only executes the function if a certain key is pressed.
-  static keypressAction(keyCode: number, action: () => void) {
+  // Return a keyboard event listener that only executes the function if certain keys are pressed.
+  static keypressAction(keyCode: KEYBOARD | KEYBOARD[], action: Function) {
     return (e: KeyboardEvent, ...data: any[]) => {
-      if ((e.charCode || e.keyCode) === keyCode) {
+      const eventCode = (e.charCode || e.keyCode);
+      if (_.isArray(keyCode) && _.contains(keyCode, eventCode)) {
+        action();
+      } else if (eventCode === keyCode) {
         action();
       }
+      return false;
     }
   }
 }

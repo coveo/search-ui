@@ -9,6 +9,7 @@ import {$$} from '../../utils/Dom';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {Defer} from '../../misc/Defer';
 import {ModalBox} from '../../ExternalModulesShim';
+import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
 
 export interface IValueElementKlass {
   new (facet: Facet, facetValue: FacetValue): ValueElement;
@@ -123,14 +124,21 @@ export class ValueElement {
   }
 
   protected handleEventForValueElement(eventBindings: IValueElementEventsBinding) {
-    $$(this.renderer.excludeIcon).on('click', (event) => {
+    let excludeIconClickAction = (event) => {
       if (eventBindings.omniboxObject) {
         this.omniboxCloseEvent(eventBindings.omniboxObject);
       }
       this.handleExcludeClick(eventBindings);
       event.stopPropagation();
       return false;
-    })
+    };
+    $$(this.renderer.excludeIcon).on('click', excludeIconClickAction)
+
+    let keyboardExcludeAction = KeyboardUtils.keypressAction([
+      KEYBOARD.SPACEBAR,
+      KEYBOARD.ENTER
+    ], excludeIconClickAction);
+    $$(this.renderer.excludeIcon).on('keyup', keyboardExcludeAction);
     $$(this.renderer.label).on('click', (event: Event) => {
       if (eventBindings.pinFacet) {
         this.facet.pinFacetPosition();
