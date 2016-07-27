@@ -1,24 +1,37 @@
 .coveo-pager-list {
   padding-left:0;
+  margin:0;
+  display: inline-block;
 }
 
 .coveo-pager-list-item {
-  border: 0;
-  margin: 5px 6px 5px 6px;
-  padding: 0;
+  @include defaultRoundedBorder();
+  margin: 5px 6px;
+  padding: 4px 8px;
   list-style: none;
   display: inline-block;
   vertical-align: baseline;
-  color: #bcc3ca;
-  font-size: $font-size-biggest;
-  &.coveo-active {
-    font-size: $font-size-huge;
-    color: $color-blueish-gray;
-  }
-  &:hover {
-    color: $color-blueish-gray;
+  color: $color-vibrant-blue;
+  font-size: $font-size-smaller;
+  &.coveo-active, &:hover {
+    color: $color-greyish-cyan;
+    background-color: $color-greyish-teal-blue;
   }
   cursor: pointer;
+}
+
+.coveo-pager-previous, .coveo-pager-next{
+  margin: 5px 6px;
+  list-style: none;
+  display: inline-block;
+  vertical-align: baseline;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  &:hover {
+    color: $color-vibrant-blue;
+    background-color: white;
+  }
 }
 
 .coveo-pager-next > a > span {
@@ -29,4 +42,10 @@
 .coveo-pager-previous > a > span {
   @extend .coveo-sprites-pager-left-arrow;
   vertical-align: middle;
+}
+
+.CoveoPager {
+  margin-top: -10px;
+  margin-left: 25px;
+  display: inline-block;
 }
