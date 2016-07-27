@@ -11,7 +11,7 @@ module Coveo {
               expectedArgs = args.slice(1),
               result = { pass: false, message: '' };
             if (!actual.calls.any()) {
-              result.message = 'Expected spy ' + actual.and.identity() + ' to be called, but was never called'
+              result.message = 'Expected spy ' + actual.and.identity() + ' to be called, but was never called';
               return result;
             }
             var found = _.chain(actual.calls.allArgs())
