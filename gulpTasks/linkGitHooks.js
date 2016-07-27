@@ -38,5 +38,8 @@ gulp.task('linkGitHooks', function() {
             process.chdir(cwd);
           });
     });
-  });
+  })
+  .catch(err, err => {
+    console.log(colors.red(err));
+  })
 });
