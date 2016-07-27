@@ -416,7 +416,7 @@ export class Facet extends Component {
       this.options.availableSorts = _.filter(this.options.availableSorts, (sort: string) => !/^alpha.*$/.test(sort));
     }
 
-    ResponsiveFacets.init(this.root, Facet.ID, this);
+    ResponsiveFacets.init(this.root, this);
 
     // Serves as a way to render facet in the omnibox in the order in which they are instantiated
     this.omniboxZIndex = Facet.omniboxIndex;
@@ -855,7 +855,7 @@ export class Facet extends Component {
   }
 
   protected initFacetSearch() {
-    this.facetSearch = new FacetSearch(this, FacetSearchValuesList);
+    this.facetSearch = new FacetSearch(this, FacetSearchValuesList, this.root);
     this.element.appendChild(this.facetSearch.build());
   }
 

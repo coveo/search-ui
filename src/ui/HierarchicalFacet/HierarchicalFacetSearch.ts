@@ -7,10 +7,11 @@ import {FacetSearchParameters} from '../Facet/FacetSearchParameters';
 import {IIndexFieldValue} from '../../rest/FieldValue';
 import {FacetValue} from '../Facet/FacetValues';
 import {Utils} from '../../utils/Utils';
+import {ModalBox} from '../../ExternalModulesShim';
 
 export class HierarchicalFacetSearch extends FacetSearch {
-  constructor(public facet: HierarchicalFacet, public facetSearchValuesListKlass: IFacetSearchValuesListKlass) {
-    super(facet, facetSearchValuesListKlass)
+  constructor(public facet: HierarchicalFacet, public facetSearchValuesListKlass: IFacetSearchValuesListKlass, root: HTMLElement) {
+    super(facet, facetSearchValuesListKlass, root);
   }
 
   protected buildParamsForExcludingCurrentlyDisplayedValues() {
@@ -31,7 +32,7 @@ export class HierarchicalFacetSearch extends FacetSearch {
     searchParameters.setValueToSearch(this.getValueInInputForFacetSearch());
     this.facet.facetQueryController.search(searchParameters).then((fieldValues: IIndexFieldValue[]) => {
       this.completelyDismissSearch();
-      Coveo.ModalBox.close(true);
+      ModalBox.close(true);
       var facetValues = this.getFacetValues(fieldValues);
       this.facet.processFacetSearchAllResultsSelected(facetValues);
     });

@@ -4,7 +4,8 @@
     "target": "es5",
     "declaration": false,
     "experimentalDecorators": true,
-    "outDir": "./bin"
+    "outDir": "./bin",
+    "sourceMap": true
   },
   "filesGlob": [
     "src/**/*.ts"
@@ -15,8 +16,9 @@
     "lib/MagicBox.d.ts",
     "lib/globalize.d.ts",
     "lib/d3.d.ts",
+    "lib/fastclick.d.ts",
+    "lib/jstz.d.ts",
     "lib/coveoanalytics.d.ts",
-    "node_modules/modal-box/bin/ModalBox.d.ts",
     "src/controllers/FacetQueryController.ts",
     "src/controllers/FacetRangeQueryController.ts",
     "src/controllers/FacetSliderQueryController.ts",
@@ -25,6 +27,7 @@
     "src/controllers/LocalStorageHistoryController.ts",
     "src/controllers/QueryController.ts",
     "src/Doc.ts",
+    "src/ExternalModulesShim.ts",
     "src/events/AnalyticsEvents.ts",
     "src/events/BreadcrumbEvents.ts",
     "src/events/DebugEvents.ts",

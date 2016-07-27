@@ -21,10 +21,8 @@ import {RootComponent} from '../Base/RootComponent';
 import {BaseComponent} from '../Base/BaseComponent';
 import {Debug} from '../Debug/Debug';
 import {HashUtils} from '../../utils/HashUtils';
-import _ = require('underscore');
-
-declare let FastClick;
-declare let jstz;
+import FastClick = require('fastclick');
+import timezone = require('jstz');
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -136,7 +134,7 @@ export class SearchInterface extends RootComponent {
      * This must be an IANA zone info key (aka the Olson time zone database). For example : 'America/New_York'.<br/>
      * By default, we use a library that tries to detect the timezone automatically.<br/>
      */
-    timezone: ComponentOptions.buildStringOption({ defaultFunction: () => jstz.determine().name() }),
+    timezone: ComponentOptions.buildStringOption({ defaultFunction: () => timezone.jstz.determine().name() }),
     /**
      * Specifies whether to enable the feature that allows users to ALT + double click on any results to get the Debug page with a detailed view of all the properties and fields for a given result.<br/>
      * This has no security concern (as all those informations are visible to users through the browser developer console or by calling the Coveo API directly).<br/>

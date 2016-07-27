@@ -443,7 +443,7 @@ export class HierarchicalFacet extends Facet {
   }
 
   protected initFacetSearch() {
-    this.facetSearch = new HierarchicalFacetSearch(this, HierarchicalFacetSearchValuesList);
+    this.facetSearch = new HierarchicalFacetSearch(this, HierarchicalFacetSearchValuesList, this.root);
     this.element.appendChild(this.facetSearch.build());
   }
 

@@ -14,6 +14,14 @@ module.exports = {
       watched: false
     },
     {
+      pattern: './lib/globalize.min.js',
+      watched: false
+    },
+    {
+      pattern: './node_modules/modal-box/bin/ModalBox.min.js',
+      watched: false
+    },
+    {
       pattern: './test/lib/jquery.js',
       watched: false
     },
@@ -34,13 +42,18 @@ module.exports = {
     'karma-jasmine',
     'karma-chrome-launcher',
     'karma-phantomjs-launcher',
-    'karma-coverage'
+    'karma-coverage',
+    'karma-spec-reporter'
   ],
   preprocessors: {
     './bin/js/CoveoJsSearch.js': 'coverage'
   },
-  reporters: ['progress', 'coverage'],
+  reporters: ['coverage', 'spec'],
   coverageReporter: {
-    type: 'text-summary'
+    dir: './bin/coverage',
+    reporters: [
+      { type: 'json', subdir: '.', file: 'coverage-es5.json' },
+      { type: 'lcov', subdir: 'lcov-es5' }
+    ]
   }
 }

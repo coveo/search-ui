@@ -1,4 +1,3 @@
-import _ = require('underscore');
 import {Utils} from '../utils/Utils';
 
 export class Options {

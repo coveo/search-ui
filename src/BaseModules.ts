@@ -9,3 +9,4 @@ customEventPolyfill();
 // MISC
 export {version} from './misc/Version';
 export {SearchEndpoint} from './rest/SearchEndpoint';
+export * from './ExternalModulesShim';

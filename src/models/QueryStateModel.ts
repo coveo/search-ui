@@ -2,7 +2,6 @@ import {Model, IModelSetOptions} from './Model';
 import {Assert} from '../misc/Assert';
 import {IStringMap} from '../rest/GenericParam';
 import {Utils} from '../utils/Utils';
-import _ = require('underscore');
 
 export const QUERY_STATE_ATTRIBUTES = {
   Q: 'q',

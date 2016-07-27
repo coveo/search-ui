@@ -1,0 +1,18 @@
+/// <reference path="../Test.ts" />
+
+module Coveo {
+  describe('{{cmpName}}', () => {
+    var test: Mock.IBasicComponentSetup<{{cmpName}}>;
+
+    beforeEach(function () {
+      test = Mock.basicComponentSetup<{{cmpName}}>({{cmpName}});
+    });
+
+    afterEach(function () {
+      test = null;
+    });
+
+    it('should put test here', () => {
+
+    })
+}
