@@ -14,7 +14,7 @@ import {QueryStateModel} from '../../models/QueryStateModel'
 import {Model} from '../../models/Model'
 import {QuickviewEvents} from '../../events/QuickviewEvents'
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
-import {KEYBOARD} from '../../utils/KeyboardUtils';
+import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
 import {ModalBox} from '../../ExternalModulesShim';
 
 export interface IQuickviewOptions {
@@ -175,6 +175,7 @@ export class Quickview extends Component {
   private bindClick(result: IQueryResult) {
     if (typeof result.hasHtmlVersion == 'undefined' || result.hasHtmlVersion || this.options.alwaysShow) {
       $$(this.element).on('click', () => this.open());
+      this.bind.on(this.element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.open()));
     } else {
       this.element.style.display = 'none';
     }
