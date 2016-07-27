@@ -16,7 +16,7 @@ export interface ISortOptions {
   caption?: string;
 }
 /**
- * This component displays a sort criteria for searching.
+ * This component displays a sort criterion for searching.
  */
 export class Sort extends Component {
   static ID = 'Sort';
@@ -26,14 +26,12 @@ export class Sort extends Component {
    */
   static options: ISortOptions = {
     /**
-     * The criteria for sorting<br/>
+     * The criterion for sorting<br/>
      * The available criteria are:
-     * <ul>
-     *   <li><code>relevancy</code></li>
-     *   <li><code>Date</code></li>
-     *   <li><code>qre</code></li>
-     *   <li><code>@fieldname</code> (replace fieldname with an actual field name (e.g. <code>@syssize</code>)</li>
-     * </ul>
+     * - `relevancy`
+     * - `Date`
+     * - `qre`
+     * - `@fieldname` (replace fieldname with an actual field name (e.g. <code>@syssize</code>)
      *
      * A direction (ascending or descending) can be specified, for example "date ascending"<br/>
      * A Sort component can have multiple criteria, passed as a list<br/>
