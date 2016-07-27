@@ -8,7 +8,7 @@ requireDir('./gulpTasks');
 
 gulp.task('default', ['build', 'buildLegacy']);
 
-gulp.task('build', ['linkGitHooks'], function (done) {
+gulp.task('build', function (done) {
   runsequence('clean', ['css', 'fileTypes', 'sprites', 'strings', 'setup', 'templates'], 'prettify', 'src', done);
 });
 
