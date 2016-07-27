@@ -6,6 +6,7 @@ import {IQueryResult} from '../../rest/QueryResult'
 import {Initialization} from '../Base/Initialization'
 import {FieldValue, IFieldValueOptions} from './FieldValue'
 import {$$} from '../../utils/Dom'
+import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
 
 export interface IFieldTableOptions {
   allowMinimization: boolean;
@@ -160,6 +161,7 @@ export class FieldTable extends Component {
 
     $$(this.toggleButton).on('click', () => this.toggle(true));
     $$(this.toggleButtonInsideTable).on('click', () => this.toggle(true));
+    $$(this.toggleButton).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.toggle(true)));
   }
 
   private slideToggle(visible: boolean = true, anim: boolean = true) {

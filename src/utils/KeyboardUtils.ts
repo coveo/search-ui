@@ -69,8 +69,9 @@ export class KeyboardUtils {
     return keycode > 64 && keycode < 91;
   }
 
-  static keypressAction(keyCode: number, action: () => void): Function {
-    return (e: KeyboardEvent) => {
+  // Return a keyboard event listener that only executes the function if a certain key is pressed.
+  static keypressAction(keyCode: number, action: () => void) {
+    return (e: KeyboardEvent, ...data: any[]) => {
       if ((e.charCode || e.keyCode) === keyCode) {
         action();
       }
