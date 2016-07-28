@@ -1,16 +1,21 @@
 import {Component} from '../Base/Component';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
+import {QueryStateModel} from '../../models/QueryStateModel';
 import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
 import {SettingsEvents} from '../../events/SettingsEvents';
 import {ISettingsPopulateMenuArgs} from '../Settings/Settings';
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom';
+import {IAdvancedSearchInput} from './AdvancedSearchInput';
+import {KeywordsInput, AllKeywordsInput, ExactKeywordsInput, AnyKeywordsInput, NoneKeywordsInput} from './KeywordsInput';
+import {DateInput, AnytimeDateInput, InTheLastDateInput, BetweenDateInput} from './DateInput';
 import {ModalBox} from '../../ExternalModulesShim';
 
 export interface IAdvancedSearchOptions {
   includeKeywords?: boolean;
+  includeDate?: boolean;
 }
 
 /**
@@ -23,79 +28,70 @@ export class AdvancedSearch extends Component {
    * @componentOptions
    */
   static options: IAdvancedSearchOptions = {
-    includeKeywords: ComponentOptions.buildBooleanOption({ defaultValue: true })
+    includeKeywords: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    includeDate: ComponentOptions.buildBooleanOption({ defaultValue: true })
   }
 
   private modal: Coveo.ModalBox.ModalBox
+  private keywords: KeywordsInput[] = [];
+  private date: DateInput[] = [];
 
   constructor(public element: HTMLElement, public options?: IAdvancedSearchOptions, bindings?: IComponentBindings) {
     super(element, AdvancedSearch.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, AdvancedSearch, options);
 
     this.bind.onRootElement(SettingsEvents.settingsPopulateMenu, (args: ISettingsPopulateMenuArgs) => {
-        args.menuData.push({
-          text: l('AdvancedSearch_Panel'),
-          className: 'coveo-advanced-search',
-          onOpen: () => this.open(),
-          onClose: () => this.close()
-        });
+      args.menuData.push({
+        text: l('AdvancedSearch_Panel'),
+        className: 'coveo-advanced-search',
+        onOpen: () => this.open(),
+        onClose: () => this.close()
+      });
     });
 
+    this.bind.onRootElement(QueryEvents.buildingQuery, (data: IBuildingQueryEventArgs) => {
+      _.each(this.date, (date) => {
+        if (date.isSelected() && date.getValue()) {
+          data.queryBuilder.advancedExpression.add(date.getValue());
+        }
+      })
+    })
+
     this.buildComponent();
+  }
+
+  public executeAdvancedSearch() {
+    this.updateQueryStateModel();
+    this.queryController.executeQuery();
+    _.each(this.keywords, (keyword) => {
+      keyword.clear();
+    })
   }
 
   private buildComponent() {
     this.buildTitle();
     this.buildCloseButton();
     let component = $$('div');
-    if(this.options.includeKeywords) {
-      component.append(this.buildKeywords());
+    if (this.options.includeKeywords) {
+      component.append(this.buildKeywordsSection());
     }
+    if (this.options.includeDate) {
+      component.append(this.buildDateSection());
+    }
+
+    component.on('keydown', (e: KeyboardEvent) => {
+      if (e.keyCode == 13) { // Enter
+        this.executeAdvancedSearch();
+      }
+    })
+
     this.element.appendChild(component.el);
     $$(this.element).hide();
   }
 
-  private open() {
-    $$(this.element).show();
-  }
-
-  private close() {
-    $$(this.element).hide();
-  }
-
-  private buildKeywords(): HTMLElement {
-    let keywordsSection = $$('div', { className: 'coveo-advanced-search-keywords-section' });
-    let title = $$('div', { className: 'coveo-advanced-search-keywords-title'});
-    title.text(l('AdvancedSearchKeywordsSectionTitle'));
-    keywordsSection.append(title.el);
-
-    let allKeywords = this.buildKeywordSection('AdvancedSearchAll', this.addAllKeywords);
-    let exactKeywords = this.buildKeywordSection('AdvancedSearchExact', this.addExactKeywords);
-    let anyKeywords = this.buildKeywordSection('AdvancedSearchAny', this.addAnyKeywords);
-    let noneKeywords = this.buildKeywordSection('AdvancedSearchNone', this.addNoneKeywords);
-    keywordsSection.append(allKeywords);
-    keywordsSection.append(exactKeywords);
-    keywordsSection.append(anyKeywords);
-    keywordsSection.append(noneKeywords);
-
-    return keywordsSection.el;
-  }
-
-  private buildKeywordSection(sectionName: string, onBuildingQuery: (inputValue: string, data: IBuildingQueryEventArgs)=>void): HTMLElement {
-    let sectionClassName = 'coveo-advanced-search-keyword coveo' + ComponentOptions.camelCaseToHyphen(sectionName).toLowerCase();
-    let keyword = $$('div', { className: sectionClassName});
-    let label = $$('span', { className: 'coveo-advanced-search-label' });
-    let input = $$('input', { className: 'coveo-share-query-summary-info-input coveo-advanced-search-input' });
-    input.on('keydown', (e: KeyboardEvent)=>{
-      if(e.keyCode == 13) { // Enter
-        this.queryController.executeQuery();
-      }
-    })
-    label.text(l(sectionName + 'Label'));
-    keyword.append(label.el);
-    keyword.append(input.el);
-    this.bind.onRootElement(QueryEvents.buildingQuery, (data: IBuildingQueryEventArgs)=>{onBuildingQuery((<HTMLInputElement>input.el).value, data)})
-    return keyword.el;
+  private buildTitle(): void {
+    var title = $$('div', { className: 'coveo-advanced-search-panel-title' }, l('AdvancedSearch')).el;
+    $$(this.element).append(title);
   }
 
   private buildCloseButton(): void {
@@ -106,45 +102,58 @@ export class AdvancedSearch extends Component {
     $$(this.element).append(closeButton.el);
   }
 
-  private buildTitle(): void {
-    var title = $$('div', { className: 'coveo-advanced-search-panel-title' }, l('AdvancedSearch')).el;
-    $$(this.element).append(title);
+  private open() {
+    $$(this.element).show();
   }
 
-  private addAllKeywords(value: string, data: IBuildingQueryEventArgs) {
-    if (value) {
-      data.queryBuilder.advancedExpression.add(value);
-    }
+  private close() {
+    $$(this.element).hide();
   }
 
-  private addExactKeywords(value: string, data: IBuildingQueryEventArgs) {
-    if (value) {
-      data.queryBuilder.advancedExpression.add('"' + value + '"');
-    }
+  private buildKeywordsSection(): HTMLElement {
+    let keywordsSection = $$('div', { className: 'coveo-advanced-search-section coveo-advanced-search-keywords-section' });
+    let title = $$('div', { className: 'coveo-advanced-search-section-title' });
+    title.text(l('AdvancedSearchKeywordsSectionTitle'));
+    keywordsSection.append(title.el);
+
+    this.keywords.push(new AllKeywordsInput());
+    this.keywords.push(new ExactKeywordsInput());
+    this.keywords.push(new AnyKeywordsInput());
+    this.keywords.push(new NoneKeywordsInput());
+
+    _.each(this.keywords, (keyword) => {
+      keywordsSection.append(keyword.buildInput());
+    })
+
+    return keywordsSection.el;
   }
 
-  private addAnyKeywords(value: string, data: IBuildingQueryEventArgs) {
-    if (value) {
-      let splitValues = value.split(' ');
-      let generatedValue = "";
-      _.each(splitValues, (splitValue) => {
-        generatedValue += splitValue + " OR "
-      })
-      generatedValue = generatedValue.substr(0, generatedValue.length - 4);
-      data.queryBuilder.advancedExpression.add(generatedValue);
-    }
+  private buildDateSection(): HTMLElement {
+    let dateSection = $$('div', { className: 'coveo-advanced-search-section coveo-advanced-search-date-section' });
+    let title = $$('div', { className: 'coveo-advanced-search-section-title' });
+    title.text(l('Date'));
+    dateSection.append(title.el);
+
+    this.date.push(new AnytimeDateInput());
+    this.date.push(new InTheLastDateInput());
+    this.date.push(new BetweenDateInput());
+
+    _.each(this.date, (date) => {
+      dateSection.append(date.buildInput());
+    })
+
+    return dateSection.el;
   }
 
-  private addNoneKeywords(value: string, data: IBuildingQueryEventArgs) {
-    if (value) {
-      let splitValues = value.split(' ');
-      let generatedValue = "";
-      _.each(splitValues, (splitValue) => {
-        generatedValue += " NOT " + splitValue
-      })
-      generatedValue = generatedValue.substr(1);
-      data.queryBuilder.advancedExpression.add(generatedValue);
-    }
+  private updateQueryStateModel() {
+    let query = this.queryStateModel.get(QueryStateModel.attributesEnum.q);
+    _.each(this.keywords, (keyword) => {
+      let inputValue = keyword.getValue();
+      if (inputValue) {
+        query += query ? '(' + inputValue + ')' : inputValue;
+      }
+    })
+    this.queryStateModel.set(QueryStateModel.attributesEnum.q, query);
   }
 
 }

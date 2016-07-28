@@ -5086,5 +5086,25 @@
   "AdvancedSearchNoneLabel": {
     "en": "None of these words",
     "fr": "Aucun de ces mots"
+  },
+  "AdvancedSearchAnytimeLabel": {
+    "en": "Anytime",
+    "fr": "N'importe quand"
+  },
+  "AdvancedSearchInTheLastLabel": {
+    "en": "In the last",
+    "fr": "Dans les derniers"
+  },
+  "AdvancedSearchDays": {
+    "en": "days",
+    "fr": "jours"
+  },
+  "AdvancedSearchMonths": {
+    "en": "months",
+    "fr": "mois"
+  },
+  "AdvancedSearchBetweenLabel": {
+    "en": "Between",
+    "fr": "Entre"
   }
 }

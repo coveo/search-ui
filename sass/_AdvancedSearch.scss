@@ -1,20 +1,22 @@
+$spaceBetween: 0 5px;
+
 .CoveoAdvancedSearch {
   position: relative;
 }
 
-.coveo-advanced-search-keywords-section {
+.coveo-advanced-search-section {
   min-width: 500px;
   margin: 5px;
 }
 
-.coveo-advanced-search-keyword {
-  margin-top: 10px;
-}
-
-.coveo-advanced-search-keywords-title {
+.coveo-advanced-search-section-title {
   font-weight: bold;
   border-bottom: $default-border;
   padding: 5px 0;
+}
+
+.coveo-advanced-search-keyword {
+  margin-top: 10px;
 }
 
 .coveo-advanced-search-label {
@@ -26,6 +28,18 @@
   width: 60%;
 }
 
+.coveo-advanced-search-date {
+  margin-top: 10px;
+
+  .coveo-advanced-search-label {
+    width: 20%;
+  }
+}
+
+.coveo-advanced-search-select {
+  margin: $spaceBetween;
+}
+
 .coveo-advanced-search-panel-close {
   @include coveo-preferences-panel-button();
   @include clearButton('&');
@@ -35,4 +49,14 @@
 .coveo-advanced-search-panel-title {
   font-size: $font-size-biggest;
   display: inline-block;
+}
+
+.coveo-advanced-search-and {
+  display: inline-block;
+  margin: $spaceBetween;
+}
+
+.coveo-advanced-search-number-input{
+  max-width: 45px;
+  margin: $spaceBetween;
 }

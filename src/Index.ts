@@ -91,6 +91,7 @@ export {ImageResultList} from './ui/ImageResultList/ImageResultList';
 export {CoveoJQuery} from './ui/Base/CoveoJQuery';
 export {jQueryInstance as $} from './ui/Base/CoveoJQuery';
 export {underscoreInstance as _} from './ui/Base/CoveoUnderscore';
+export {AdvancedSearch} from './ui/AdvancedSearch/AdvancedSearch';
 export {FollowItem} from './ui/SearchAlerts/FollowItem';
 export {SearchAlerts} from './ui/SearchAlerts/SearchAlerts';
 export {SearchAlertsMessage} from './ui/SearchAlerts/SearchAlertsMessage';
@@ -118,5 +119,3 @@ let swapVar = () => {
   }
 }
 swapVar();
-
-export { AdvancedSearch } from './ui/AdvancedSearch/AdvancedSearch';

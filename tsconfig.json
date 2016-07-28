@@ -106,6 +106,9 @@
     "src/rest/UserIdentity.ts",
     "src/strings/DefaultLanguage.ts",
     "src/strings/Strings.ts",
+    "src/ui/AdvancedSearch/AdvancedSearch.ts",
+    "src/ui/AdvancedSearch/AdvancedSearchInput.ts",
+    "src/ui/AdvancedSearch/KeywordsInput.ts",
     "src/ui/Aggregate/Aggregate.ts",
     "src/ui/Analytics/Analytics.ts",
     "src/ui/Analytics/AnalyticsActionListMeta.ts",
@@ -272,7 +275,6 @@
     "src/utils/StringUtils.ts",
     "src/utils/TimeSpanUtils.ts",
     "src/utils/Utils.ts",
-    "src/utils/ChatterUtils.ts",
-    "src/ui/AdvancedSearch/AdvancedSearch.ts"
+    "src/utils/ChatterUtils.ts"
   ]
 }
