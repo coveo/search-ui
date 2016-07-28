@@ -136,12 +136,13 @@ export class PendingSearchEvent {
     searchEvent.searchQueryUid = queryResults.searchUid;
     searchEvent.queryPipeline = queryResults.pipeline;
 
-    // The coveo_internal_ prefix is important for the Analytics backend
-    // This is what they use to recognize a custom data for which there should be no custom dimension created
-    // but will be used internally by other coveo's service.
+    // The content_${key} format is important for the Analytics backend
+    // This is what they use to recognize a custom data that will be used internally by other coveo's service.
     // In this case, Reveal will be the consumer of this information.
     if (query.context != undefined) {
-      searchEvent.customData['coveo_internal_userContext'] = query.context;
+      _.each(query.context, (value: string, key: string) => {
+        searchEvent.customData[`context_${key}`] = value;
+      })
     }
   }
 }
