@@ -7,12 +7,11 @@ import {SettingsEvents} from '../../events/SettingsEvents';
 import {ISettingsPopulateMenuArgs} from '../Settings/Settings';
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
-import {$$} from '../../utils/Dom';
+import {$$, Dom} from '../../utils/Dom';
 import {IAdvancedSearchInput} from './AdvancedSearchInput';
 import {KeywordsInput, AllKeywordsInput, ExactKeywordsInput, AnyKeywordsInput, NoneKeywordsInput} from './KeywordsInput';
 import {DateInput, AnytimeDateInput, InTheLastDateInput, BetweenDateInput} from './DateInput';
 import {SimpleFieldInput, SizeInput, AdvancedFieldInput} from './DocumentInput';
-import {ModalBox} from '../../ExternalModulesShim';
 
 export interface IAdvancedSearchOptions {
   includeKeywords?: boolean;
@@ -35,47 +34,41 @@ export class AdvancedSearch extends Component {
     includeDocument: ComponentOptions.buildBooleanOption({defaultValue: true})
   }
 
-  private modal: Coveo.ModalBox.ModalBox
-  private keywords: KeywordsInput[] = [];
-
-  private advancedInputs: IAdvancedSearchInput[] = [];
+  private inputs: IAdvancedSearchInput[] = [];
 
   constructor(public element: HTMLElement, public options?: IAdvancedSearchOptions, bindings?: IComponentBindings) {
     super(element, AdvancedSearch.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, AdvancedSearch, options);
-
-    this.bind.onRootElement(SettingsEvents.settingsPopulateMenu, (args: ISettingsPopulateMenuArgs) => {
-      args.menuData.push({
-        text: l('AdvancedSearch_Panel'),
-        className: 'coveo-advanced-search',
-        onOpen: () => this.open(),
-        onClose: () => this.close()
-      });
-    });
-
-    this.bind.onRootElement(QueryEvents.buildingQuery, (data: IBuildingQueryEventArgs) => {
-      _.each(this.advancedInputs, (input) => {
-        let value = input.getValue();
-        if (value) {
-          data.queryBuilder.advancedExpression.add(value);
-        }
-      })
-    })
-
+    this.bindEvents();
     this.buildComponent();
   }
 
   public executeAdvancedSearch() {
     this.updateQueryStateModel();
     this.queryController.executeQuery();
-    _.each(this.keywords, (keyword) => {
-      keyword.clear();
-    })
   }
 
   private buildComponent() {
     this.buildTitle();
     this.buildCloseButton();
+    this.buildContent();
+    $$(this.element).hide();
+  }
+
+  private buildTitle() {
+    var title = $$('div', { className: 'coveo-advanced-search-panel-title' }, l('AdvancedSearch')).el;
+    $$(this.element).append(title);
+  }
+
+  private buildCloseButton() {
+    var closeButton = $$('div', { className: 'coveo-advanced-search-panel-close' }, $$('span', { className: 'coveo-icon' }).el)
+    closeButton.on('click', () => {
+      this.close();
+    })
+    $$(this.element).append(closeButton.el);
+  }
+
+  private buildContent() {
     let component = $$('div');
     if (this.options.includeKeywords) {
       component.append(this.buildKeywordsSection());
@@ -86,28 +79,7 @@ export class AdvancedSearch extends Component {
     if(this.options.includeDocument) {
       component.append(this.buildDocumentSection());
     }
-
-    component.on('keydown', (e: KeyboardEvent) => {
-      if (e.keyCode == 13) { // Enter
-        this.executeAdvancedSearch();
-      }
-    })
-
-    this.element.appendChild(component.el);
-    $$(this.element).hide();
-  }
-
-  private buildTitle(): void {
-    var title = $$('div', { className: 'coveo-advanced-search-panel-title' }, l('AdvancedSearch')).el;
-    $$(this.element).append(title);
-  }
-
-  private buildCloseButton(): void {
-    var closeButton = $$('div', { className: 'coveo-advanced-search-panel-close' }, $$('span', { className: 'coveo-icon' }).el)
-    closeButton.on('click', () => {
-      this.close();
-    })
-    $$(this.element).append(closeButton.el);
+    $$(this.element).append(component.el);
   }
 
   private open() {
@@ -151,7 +123,7 @@ export class AdvancedSearch extends Component {
     title.text(l('AdvancedSearch' + sectionName + 'SectionTitle'));
     section.append(title.el);
 
-    this.advancedInputs = _.union(this.advancedInputs, inputs);
+    this.inputs = _.union(this.inputs, inputs);
 
     _.each(inputs, (input)=>{
       section.append(input.build());
@@ -162,13 +134,45 @@ export class AdvancedSearch extends Component {
 
   private updateQueryStateModel() {
     let query = this.queryStateModel.get(QueryStateModel.attributesEnum.q);
-    _.each(this.keywords, (keyword) => {
-      let inputValue = keyword.getValue();
+    let queryStateInput = _.filter(this.inputs, (input)=>{
+      return input.shouldUpdateQueryState();
+    })
+    _.each(queryStateInput, (input) => {
+      let inputValue = input.getValue();
       if (inputValue) {
         query += query ? '(' + inputValue + ')' : inputValue;
       }
     })
     this.queryStateModel.set(QueryStateModel.attributesEnum.q, query);
+  }
+
+  private bindEvents() {
+    this.bind.onRootElement(SettingsEvents.settingsPopulateMenu, (args: ISettingsPopulateMenuArgs) => {
+      args.menuData.push({
+        text: l('AdvancedSearch_Panel'),
+        className: 'coveo-advanced-search',
+        onOpen: () => this.open(),
+        onClose: () => this.close()
+      });
+    });
+
+    this.bind.onRootElement(QueryEvents.buildingQuery, (data: IBuildingQueryEventArgs) => {
+      let buildingQueryInputs = _.filter(this.inputs, (input)=>{
+        return input.shouldUpdateOnBuildingQuery();
+      })
+      _.each(buildingQueryInputs, (input) => {
+        let value = input.getValue();
+        if (value) {
+          data.queryBuilder.advancedExpression.add(value);
+        }
+      })
+    })
+
+    $$(this.element).on('keydown', (e: KeyboardEvent) => {
+      if (e.keyCode == 13) { // Enter
+        this.executeAdvancedSearch();
+      }
+    })
   }
 
 }

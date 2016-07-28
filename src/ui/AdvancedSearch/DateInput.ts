@@ -36,6 +36,14 @@ export class DateInput implements IAdvancedSearchInput {
     return '';
   }
 
+  public shouldUpdateQueryState(): boolean {
+    return false;
+  }
+
+  public shouldUpdateOnBuildingQuery(): boolean {
+    return true;
+  }
+
   protected getRadio(): HTMLInputElement {
     return <HTMLInputElement>$$(this.element).find('input');
   }

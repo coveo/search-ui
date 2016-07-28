@@ -1,4 +1,6 @@
 export interface IAdvancedSearchInput {
   build: () => HTMLElement,
-  getValue: () => string
+  getValue: () => string,
+  shouldUpdateQueryState: ()=>boolean;
+  shouldUpdateOnBuildingQuery: ()=>boolean;
 }

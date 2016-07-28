@@ -24,6 +24,14 @@ export class DocumentInput implements IAdvancedSearchInput {
     })
     return <HTMLSelectElement>select.el;
   }
+
+  public shouldUpdateQueryState(): boolean {
+    return false;
+  }
+
+  public shouldUpdateOnBuildingQuery(): boolean {
+    return true;
+  }
 }
 
 export class SimpleFieldInput extends DocumentInput {

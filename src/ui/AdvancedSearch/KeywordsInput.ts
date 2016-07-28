@@ -31,6 +31,14 @@ export class KeywordsInput implements IAdvancedSearchInput {
     let input = <HTMLInputElement>$$(this.element).find('input');
     input.value = '';
   }
+
+  public shouldUpdateQueryState(): boolean {
+    return true;
+  }
+
+  public shouldUpdateOnBuildingQuery(): boolean {
+    return false;
+  }
 }
 
 export class AllKeywordsInput extends KeywordsInput {
