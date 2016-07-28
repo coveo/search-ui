@@ -38,15 +38,15 @@ export class SimpleFieldInput extends DocumentInput {
 
   protected element: HTMLElement
 
-  constructor(public sectionName: string, public fieldName: string, private endpoint: ISearchEndpoint) {
+  constructor(public inputName: string, public fieldName: string, private endpoint: ISearchEndpoint) {
     super();
   }
 
   public build(): HTMLElement {
-    let sectionClassName = 'coveo-advanced-search-input-section coveo' + ComponentOptions.camelCaseToHyphen(this.sectionName).toLowerCase();
+    let sectionClassName = 'coveo-advanced-search-input-section';
     let document = $$('div', { className: sectionClassName });
     let label = $$('span', { className: 'coveo-advanced-search-label' });
-    label.text(l(this.sectionName + 'Label'));
+    label.text(l(this.inputName + 'Label'));
     document.append(label.el);
     document.append(this.buildFieldSelect());
     this.element = document.el;
@@ -79,15 +79,15 @@ export class AdvancedFieldInput extends DocumentInput {
 
   protected element: HTMLElement
 
-  constructor(public sectionName: string, public fieldName: string) {
+  constructor(public inputName: string, public fieldName: string) {
     super();
   }
 
   public build(): HTMLElement {
-    let sectionClassName = 'coveo-advanced-search-input-section coveo' + ComponentOptions.camelCaseToHyphen(this.sectionName).toLowerCase();
+    let sectionClassName = 'coveo-advanced-search-input-section';
     let document = $$('div', { className: sectionClassName });
     let label = $$('span', { className: 'coveo-advanced-search-label' });
-    label.text(l(this.sectionName + 'Label'));
+    label.text(l(this.inputName + 'Label'));
     document.append(label.el);
     document.append(this.buildSelect(['Contains', 'DoesNotContain', 'Matches']));
     document.append($$('input', { className: 'coveo-advanced-search-input' }).el)

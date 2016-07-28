@@ -7,15 +7,15 @@ export class DateInput implements IAdvancedSearchInput {
 
   protected element: HTMLElement
 
-  constructor(public sectionName: string) {
+  constructor(public inputName: string) {
   }
 
   public build(): HTMLElement {
-    let sectionClassName = 'coveo-advanced-search-input-section coveo' + ComponentOptions.camelCaseToHyphen(this.sectionName).toLowerCase();
+    let sectionClassName = 'coveo-advanced-search-input-section';
     let date = $$('div', { className: sectionClassName });
     let checkbox = $$('input', { type: 'radio', name: 'coveo-advanced-search-date' })
     let label = $$('div', { className: 'coveo-advanced-search-label' })
-    label.text(l(this.sectionName + 'Label'));
+    label.text(l(this.inputName + 'Label'));
 
     checkbox.on('change', () => {
       this.desactivateAllInputs();
