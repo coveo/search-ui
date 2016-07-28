@@ -28,7 +28,7 @@ export function ResultsPerPageTest() {
     describe('analytics', function () {
       it('should log the proper event when changing the number of results per page', function () {
         test.cmp.setResultsPerPage(50);
-        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerResize, {currentResultsPerPage: 50}, test.cmp.element);
+        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.pagerResize, { currentResultsPerPage: 50 }, test.cmp.element);
       });
     });
 

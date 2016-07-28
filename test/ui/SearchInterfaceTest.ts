@@ -14,6 +14,7 @@ import {HistoryController} from '../../src/controllers/HistoryController';
 import {LocalStorageHistoryController} from '../../src/controllers/LocalStorageHistoryController';
 import {Simulate} from '../Simulate';
 import {Debug} from '../../src/ui/Debug/Debug';
+import {FakeResults} from '../Fake';
 
 export function SearchInterfaceTest() {
   describe('SearchInterface', () => {
