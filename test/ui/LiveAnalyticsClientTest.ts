@@ -52,14 +52,14 @@ export function LiveAnalyticsClientTest() {
     })
 
     it('should send proper information on logSearchEvent', function (done) {
-
       client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
       var query: IQuery = {
         q: 'the query',
         aq: 'the advanced query',
         firstResult: 20,
         numberOfResults: 10,
-        enableDidYouMean: true
+        enableDidYouMean: true,
+        context: { 'key1': 'value1', 'key2': 'value2' }
       };
 
       Simulate.query(env, {
@@ -77,7 +77,11 @@ export function LiveAnalyticsClientTest() {
           username: 'foo',
           userDisplayName: 'foo display',
           splitTestRunName: 'foo run name',
-          splitTestRunVersion: 'foo run version'
+          splitTestRunVersion: 'foo run version',
+          customData: jasmine.objectContaining({
+            context_key1: 'value1',
+            context_key2: 'value2'
+          })
         })])
         expect(endpoint.sendSearchEvents).toHaveBeenCalledWith(jasmineMatcher);
         done();
