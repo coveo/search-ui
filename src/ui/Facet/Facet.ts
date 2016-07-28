@@ -390,6 +390,7 @@ export class Facet extends Component {
 
   private showingWaitAnimation = false;
   private pinnedViewportPosition: number;
+  private unpinnedViewportPosition: number;
   private pinnedTopSpace: HTMLElement;
   private pinnedBottomSpace: HTMLElement;
 
@@ -1309,17 +1310,21 @@ export class Facet extends Component {
   }
 
   private unpinFacetPosition() {
-    if (this.isFacetPinned() && this.options.preservePosition) {
+    if (this.shouldFacetUnpin() && this.options.preservePosition) {
       $$(this.pinnedTopSpace).addClass('coveo-with-animation');
       $$(this.pinnedBottomSpace).addClass('coveo-with-animation');
       this.pinnedTopSpace.style.height = '0px';
       this.pinnedBottomSpace.style.height = '0px';
-      this.pinnedViewportPosition = undefined;
+      this.unpinnedViewportPosition = undefined;
     }
   }
 
   private isFacetPinned(): boolean {
     return Utils.exists(this.pinnedViewportPosition);
+  }
+
+  private shouldFacetUnpin(): boolean {
+    return Utils.exists(this.unpinnedViewportPosition);
   }
 
   private ensurePinnedFacetHasntMoved(): void {
@@ -1347,11 +1352,10 @@ export class Facet extends Component {
       currentViewportPosition = this.element.getBoundingClientRect().top;
       offset = currentViewportPosition - this.pinnedViewportPosition;
 
-      // If scrolling worked, were done
-      if (offset == 0) {
-        return;
-      } else if (offset < 0) {
-        // Else, this means the facet element is scrolled up in the viewport,
+      // If scrolling has worked (offset == 0), we're good to go, nothing to do anymore.
+      // Otherwise try other voodoo magic.
+      if (offset < 0) {
+        // This means the facet element is scrolled up in the viewport,
         // scroll it down by adding space in the top container
         this.pinnedTopSpace.style.height = (offset * -1) + 'px';
       } else {
@@ -1370,6 +1374,8 @@ export class Facet extends Component {
           }
         })
       }
+      this.unpinnedViewportPosition = this.pinnedViewportPosition;
+      this.pinnedViewportPosition = null;
     }
   }
 
