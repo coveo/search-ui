@@ -1,6 +1,9 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {PreferencesPanel} from '../../src/ui/PreferencesPanel/PreferencesPanel';
+import {$$} from '../../src/utils/Dom';
+import {PreferencesPanelEvents} from '../../src/events/PreferencesPanelEvents';
 
-module Coveo {
+export function PreferencesPanelTest() {
   describe('PreferencesPanel', function () {
     var test: Mock.IBasicComponentSetup<PreferencesPanel>;
 

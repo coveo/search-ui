@@ -1,6 +1,9 @@
-/// <reference path="../Test.ts" />
+import {HistoryController} from '../../src/controllers/HistoryController';
+import * as Mock from '../MockEnvironment';
+import {$$} from '../../src/utils/Dom';
+import {Defer} from '../../src/misc/Defer';
 
-module Coveo {
+export function HistoryControllerTest() {
   describe('HistoryController', function () {
     var historyController: HistoryController;
     var env: Mock.IMockEnvironment;

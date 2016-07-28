@@ -9,7 +9,6 @@ import {QueryEvents, IBuildingQueryEventArgs, IQueryErrorEventArgs} from '../../
 import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
 import {$$} from '../../utils/Dom';
 import {Model, IAttributeChangedEventArg} from '../../models/Model';
-import {BaseComponent} from '../Base/BaseComponent';
 import {IAnalyticsActionCause, IAnalyticsDocumentViewMeta} from '../Analytics/AnalyticsActionListMeta';
 import {IQueryResult} from '../../rest/QueryResult';
 import {Utils} from '../../utils/Utils';

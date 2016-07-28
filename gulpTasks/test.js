@@ -6,16 +6,32 @@ const path = require('path');
 const rename = require('gulp-rename');
 const combineCoverage = require('istanbul-combine');
 const remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
+const event_stream = require('event-stream');
+const shell = require('gulp-shell');
 
 const COVERAGE_DIR = path.resolve('bin/coverage');
 
+gulp.task('setupTests', function () {
+  return event_stream.merge(
+      gulp.src('./test/lib/**/*')
+          .pipe(gulp.dest('./bin/tests/lib')),
+
+      gulp.src('./test/SpecRunner.html')
+          .pipe(gulp.dest('./bin/tests/'))
+  ).pipe(event_stream.wait())
+})
+
 gulp.task('coverage', ['lcovCoverage']);
 
-gulp.task('test', ['buildTest'], function (done) {
+gulp.task('test', ['setupTests', 'buildTest'], function (done) {
   new TestServer({
     configFile: __dirname + '/../karma.conf.js',
   }, () => done()).start();
 });
+
+gulp.task('buildTest', shell.task([
+  'node node_modules/webpack/bin/webpack.js --config webpack.test.config.js'
+]))
 
 gulp.task('testDev', ['watchTest'], function (done) {
   new TestServer({
@@ -26,7 +42,7 @@ gulp.task('testDev', ['watchTest'], function (done) {
 gulp.task('remapCoverage', function (done) {
   return gulp.src(`${COVERAGE_DIR}/coverage-es5.json`)
     .pipe(remapIstanbul({
-      exclude: /(webpack|~\/d3\/|~\/es6-promise\/dist\/|~\/process\/|~\/underscore\/|vertx|~\/coveomagicbox\/|~\/modal-box\/)/
+      exclude: /(webpack|~\/d3\/|~\/es6-promise\/dist\/|~\/process\/|~\/underscore\/|vertx|~\/coveomagicbox\/|~\/modal-box\/|test\/|lib\/)/
     }))
     .pipe(rename('coverage.json'))
     .pipe(gulp.dest(COVERAGE_DIR));
@@ -41,30 +57,4 @@ gulp.task('lcovCoverage', ['remapCoverage'], function (done) {
       lcov: {}
     }
   }).then(() => done());
-})
-
-gulp.task('serverTest', function (done) {
-  var app = express();
-  app.use('/', express.static(__dirname + '/../test'));
-  app.use('/bin', express.static(__dirname + '/../bin'));
-  app.use('/node_modules', express.static(__dirname + '/../node_modules'));
-  app.listen(8081, function() {
-    console.log('Server started : Available at localhost:8081/SpecRunner.html');
-  });
-})
-
-gulp.task('buildTest', function () {
-  return gulp.src('./test/Test.ts')
-      .pipe(tsc({
-        target: 'ES5',
-        out: 'tests.js',
-        module: 'amd',
-        inlineSourceMap: true
-      }))
-      .pipe(gulp.dest('./bin/tests'))
-})
-
-gulp.task('watchTest', ['buildTest', 'src'], function () {
-  gulp.watch(['./src/**/*.ts'], ['src']);
-  gulp.watch(['./test/**/*.ts'], ['buildTest']);
 })

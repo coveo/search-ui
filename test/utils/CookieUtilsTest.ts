@@ -1,7 +1,7 @@
-/// <reference path="../Test.ts" />
+import {Cookie} from '../../src/utils/CookieUtils';
+import {Simulate} from '../Simulate';
 
-module Coveo {
-
+export function CookieUtilsTest() {
   describe('CookieUtils', function () {
     var mockDocument = {
       cookie: ''
@@ -39,7 +39,7 @@ module Coveo {
 
     it('erases cookie accordingly', () => {
       // Phantom doesn't handle document.cookie
-      if (isPhantomJs()) {
+      if (Simulate.isPhantomJs()) {
         expect(true).toBe(true);
       } else {
         document.cookie = 'coveo_patate=frite';

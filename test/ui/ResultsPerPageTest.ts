@@ -1,5 +1,12 @@
-/// <reference path="../Test.ts" />
-module Coveo {
+import * as Mock from '../MockEnvironment';
+import {ResultsPerPage} from '../../src/ui/Pager/ResultsPerPage';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import {IResultsPerPageOptions} from '../../src/ui/Pager/ResultsPerPage';
+import {Simulate} from '../Simulate';
+import {FakeResults} from '../Fake';
+import {$$} from '../../src/utils/Dom';
+
+export function ResultsPerPageTest() {
   describe('ResultsPerPage', function () {
     let test: Mock.IBasicComponentSetup<ResultsPerPage>;
 
@@ -37,6 +44,5 @@ module Coveo {
         expect(test.env.queryController.options.resultsPerPage).toBe(15);
       });
     });
-
   })
 }

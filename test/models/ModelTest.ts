@@ -1,9 +1,14 @@
-module Coveo {
+import {Model} from '../../src/models/Model';
+import * as Mock from '../MockEnvironment';
+import {IComponentBindings} from '../../src/ui/Base/ComponentBindings';
+import {registerCustomMatcher} from '../CustomMatchers';
+import {$$} from '../../src/utils/Dom';
+
+export function ModelTest() {
   describe('Model', function () {
-    var model: Model;
-    var div: HTMLDivElement;
-    var env: Mock.IMockEnvironment;
-    var bindings: IComponentBindings;
+    let model: Model;
+    let div: HTMLDivElement;
+    let env: Mock.IMockEnvironment;
 
     beforeEach(function () {
       div = document.createElement('div');
@@ -19,7 +24,7 @@ module Coveo {
 
 
     describe('with basic setup', function () {
-      var spy: jasmine.Spy;
+      let spy: jasmine.Spy;
       beforeEach(function () {
         model = new Model(div, 'test', {
           foo: 'bar'

@@ -1,5 +1,5 @@
 import {LiveAnalyticsClient} from './LiveAnalyticsClient';
-import {IAnalyticsActionCause, analyticsActionCauseList, IAnalyticsDocumentViewMeta} from './AnalyticsActionListMeta';
+import {IAnalyticsActionCause, analyticsActionCauseList} from './AnalyticsActionListMeta';
 import {IQueryResult} from '../../rest/QueryResult';
 import {AnalyticsEndpoint} from '../../rest/AnalyticsEndpoint';
 import {Component} from '../Base/Component';

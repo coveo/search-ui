@@ -1,5 +1,10 @@
-/// <reference path="../Test.ts" />
-module Coveo {
+import * as Mock from '../MockEnvironment';
+import {Badge} from '../../src/ui/FieldTable/Badge';
+import {IBadgeOptions} from '../../src/ui/FieldTable/Badge';
+import {FakeResults} from '../Fake';
+import {$$} from '../../src/utils/Dom';
+
+export function BadgeTest() {
   describe('Badge', function () {
     let test: Mock.IBasicComponentSetup<Badge>;
 

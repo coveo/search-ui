@@ -59,11 +59,7 @@ export class PendingSearchEvent {
 
     // TODO: Maybe a better way to grab the search interface?
     let eventTarget: HTMLElement;
-    if (window['jQuery'] && evt instanceof window['jQuery'].Event) {
-      eventTarget = <HTMLElement>evt.target;
-    } else {
-      eventTarget = <HTMLElement>evt.srcElement;
-    }
+    eventTarget = <HTMLElement>evt.target;
     let searchInterface = <SearchInterface>Component.get(eventTarget, SearchInterface);
     Assert.exists(searchInterface);
     // TODO: Maybe a better way to grab the query controller?

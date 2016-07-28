@@ -1,5 +1,4 @@
 import {IFieldDescription} from '../../rest/FieldDescription';
-import {IComponentDefinition} from './Component';
 import {Assert} from '../../misc/Assert';
 import {Template} from '../Templates/Template';
 import {$$} from '../../utils/Dom';

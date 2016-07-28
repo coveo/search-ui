@@ -1,6 +1,8 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {SearchButton} from '../../src/ui/SearchButton/SearchButton';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
-module Coveo {
+export function SearchButtonTest() {
   describe('SearchButton', () => {
     var test: Mock.IBasicComponentSetup<SearchButton>
 
@@ -26,4 +28,5 @@ module Coveo {
       expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchboxSubmit, {})
     })
   })
+
 }

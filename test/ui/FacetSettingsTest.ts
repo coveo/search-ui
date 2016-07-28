@@ -1,4 +1,11 @@
-module Coveo {
+import * as Mock from '../MockEnvironment';
+import {Facet} from '../../src/ui/Facet/Facet';
+import {FacetSettings} from '../../src/ui/Facet/FacetSettings';
+import {IFacetOptions} from '../../src/ui/Facet/Facet';
+import {registerCustomMatcher} from '../CustomMatchers';
+import {$$} from '../../src/utils/Dom';
+
+export function FacetSettingsTest() {
   describe('FacetSettings', function () {
     var facet: Facet;
     var facetSettings: FacetSettings;

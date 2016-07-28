@@ -1,6 +1,6 @@
-/// <reference path="../Test.ts" />
 
-module Coveo {
+import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
+export function QueryBuilderTest() {
   describe('QueryBuilder', function () {
     var queryBuilder: QueryBuilder;
 

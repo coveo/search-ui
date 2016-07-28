@@ -282,17 +282,6 @@ export class ResultsFiltersPreferences extends Component {
     $$(this.advancedFilterFormValidate).on('submit', (e: Event) => this.validateAndSaveAdvancedFilter(e));
   }
 
-  private getAdvancedFiltersTextInputToBuild(): IPreferencePanelInputToBuild[] {
-    return <IPreferencePanelInputToBuild[]>[{
-      label: l('Caption'),
-      otherAttribute: 'required'
-    }, {
-        label: l('Expression'),
-        otherAttribute: 'required'
-      }
-    ]
-  }
-
   private getAllTabs() {
     var tabRef = Component.getComponentRef('Tab');
     if (tabRef) {
