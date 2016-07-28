@@ -5,7 +5,7 @@ import {IQueryResult} from '../../rest/QueryResult';
 import {ResultLink} from '../ResultLink/ResultLink';
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
 import {DomUtils} from '../../utils/DomUtils';
-import {$$, Dom} from '../../utils/Dom';
+import {$$} from '../../utils/Dom';
 import {ModalBox} from '../../ExternalModulesShim';
 
 export interface IYouTubeThumbnailOptions {

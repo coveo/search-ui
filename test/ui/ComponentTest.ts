@@ -4,14 +4,15 @@ import {$$} from '../../src/utils/Dom';
 import {IQueryResult} from '../../src/rest/QueryResult';
 import {FakeResults} from '../Fake';
 
+
 export function ComponentTest() {
   describe('Component', () => {
-    var env: Mock.IMockEnvironment;
-    var cmp: Component;
+    let env: Mock.IMockEnvironment;
+    let cmp: Component;
 
     beforeEach(function () {
       env = new Mock.MockEnvironmentBuilder().build();
-      var el = document.createElement('div');
+      let el = document.createElement('div');
       env.root.appendChild(el);
       cmp = new Component(el, 'Test');
     });
@@ -60,14 +61,14 @@ export function ComponentTest() {
     });
 
     it('should be able to resolve if the element is directly on the root of the interface', function () {
-      var resolveDirectly = new Component(env.root, 'test');
+      let resolveDirectly = new Component(env.root, 'test');
       expect(resolveDirectly.queryController).toBe(env.queryController);
       expect(resolveDirectly.searchInterface).toBe(env.searchInterface);
     });
 
     describe('should allow to point form element to a dummy form', function () {
-      var elementToDummyOut: HTMLInputElement;
-      var elementThatShouldNotBeDummiedOut: HTMLDivElement;
+      let elementToDummyOut: HTMLInputElement;
+      let elementThatShouldNotBeDummiedOut: HTMLDivElement;
 
       beforeEach(function () {
         elementToDummyOut = document.createElement('input');
@@ -87,7 +88,7 @@ export function ComponentTest() {
       })
 
       it('but not on non-input tag', function () {
-        var elementThatShouldNotBeDummiedOut = document.createElement('div');
+        let elementThatShouldNotBeDummiedOut = document.createElement('div');
         Component.pointElementsToDummyForm(elementThatShouldNotBeDummiedOut);
         expect(elementThatShouldNotBeDummiedOut.getAttribute('form')).toBe(null);
       })
@@ -98,7 +99,7 @@ export function ComponentTest() {
       })
 
       it('on multiple child input', function () {
-        var elementToDummyOut2 = document.createElement('input');
+        let elementToDummyOut2 = document.createElement('input');
         elementToDummyOut2.setAttribute('type', 'text');
         elementThatShouldNotBeDummiedOut.appendChild(elementToDummyOut2);
         Component.pointElementsToDummyForm(elementThatShouldNotBeDummiedOut);
@@ -110,7 +111,7 @@ export function ComponentTest() {
 
 
     describe('resolving results', function () {
-      var result: IQueryResult;
+      let result: IQueryResult;
 
       beforeEach(function () {
         result = FakeResults.createFakeResult();
@@ -139,7 +140,7 @@ export function ComponentTest() {
       });
 
       it('should return the component if there is more than one component bound', function () {
-        var cmp2 = new Component(cmp.element, 'Test2');
+        let cmp2 = new Component(cmp.element, 'Test2');
 
         expect(() => Component.get(cmp.element)).toThrow();
         expect(() => Component.get(cmp.element, undefined, true)).not.toThrow();
@@ -150,7 +151,7 @@ export function ComponentTest() {
       });
 
       it('should return undefined and not throw if no component is bound', function () {
-        var notAComponentElement = document.createElement('div');
+        let notAComponentElement = document.createElement('div');
         expect(() => Component.get(notAComponentElement)).not.toThrow();
         expect(Component.get(notAComponentElement)).toBeUndefined();
       });

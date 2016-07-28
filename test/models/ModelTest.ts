@@ -6,10 +6,9 @@ import {$$} from '../../src/utils/Dom';
 
 export function ModelTest() {
   describe('Model', function () {
-    var model: Model;
-    var div: HTMLDivElement;
-    var env: Mock.IMockEnvironment;
-    var bindings: IComponentBindings;
+    let model: Model;
+    let div: HTMLDivElement;
+    let env: Mock.IMockEnvironment;
 
     beforeEach(function () {
       div = document.createElement('div');
@@ -25,7 +24,7 @@ export function ModelTest() {
 
 
     describe('with basic setup', function () {
-      var spy: jasmine.Spy;
+      let spy: jasmine.Spy;
       beforeEach(function () {
         model = new Model(div, 'test', {
           foo: 'bar'

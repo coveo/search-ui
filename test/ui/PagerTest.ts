@@ -81,10 +81,27 @@ export function PagerTest() {
         results: FakeResults.createFakeResults(1000)
       })
 
-      var anchors = $$(test.cmp.element).findAll('a.coveo-pager-anchor');
+      var anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
+      expect($$(anchors[0]).text()).toBe('6');
+      expect($$(anchors[anchors.length - 1]).text()).toBe('10');
+    })
 
-      expect($$(anchors[0]).text()).toBe('3');
-      expect($$(anchors[anchors.length - 1]).text()).toBe('12');
+    it('should render the pager boundary correctly when the number of results per page changes', function () {
+      // First results start at 70.
+      // Pager displays 10 pages by default, and 10 results per page.
+      // So the total range should be from results 20 to results 110 (page #3 to page #12)
+      test.env.queryController.options.resultsPerPage = 20;
+
+      var builder = new QueryBuilder();
+      builder.firstResult = 70;
+      Simulate.query(test.env, {
+        query: builder.build(),
+        results: FakeResults.createFakeResults(1000)
+      })
+
+      var anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
+      expect($$(anchors[0]).text()).toBe('2');
+      expect($$(anchors[anchors.length - 1]).text()).toBe('6');
     })
 
     it('should reset page number on a new query if the origin is not a pager', function () {
@@ -139,7 +156,7 @@ export function PagerTest() {
         Simulate.query(test.env, {
           results: FakeResults.createFakeResults(1000)
         });
-        expect($$(test.cmp.element).findAll('a.coveo-pager-anchor').length).toBe(22);
+        expect($$(test.cmp.element).findAll('a.coveo-pager-list-item-text').length).toBe(22);
       })
 
       it('enableNavigationButton can enable or disable nav buttons', function () {
@@ -173,14 +190,14 @@ export function PagerTest() {
           maxNumberOfPages: 5
         })
         var builder = new QueryBuilder();
-        builder.firstResult = 70;
+        builder.firstResult = 30;
 
         Simulate.query(test.env, {
           query: builder.build(),
           results: FakeResults.createFakeResults(1000)
         })
 
-        var anchors = $$(test.cmp.element).findAll('a.coveo-pager-anchor')
+        var anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text')
         expect($$(anchors[anchors.length - 1]).text()).toBe('5');
       })
     })

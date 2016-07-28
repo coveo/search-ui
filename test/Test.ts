@@ -1,7 +1,12 @@
 export * from '../src/Index';
 
+// Get a cleaner output in phantom js for CI builds
 import {Logger} from '../src/misc/Logger';
-Logger.disable();
+import {Simulate} from './Simulate';
+if (Simulate.isPhantomJs()) {
+  Logger.disable();
+}
+
 
 import {defaultLanguage} from '../src/strings/DefaultLanguage';
 defaultLanguage();
@@ -252,3 +257,6 @@ TriggersTest();
 
 import {ValueElementRendererTest} from './ui/ValueElementRendererTest';
 ValueElementRendererTest();
+
+import {ResultsPerPageTest} from './ui/ResultsPerPageTest';
+ResultsPerPageTest();
