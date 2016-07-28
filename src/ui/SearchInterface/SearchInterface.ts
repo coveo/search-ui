@@ -9,7 +9,7 @@ import {ComponentStateModel} from '../../models/ComponentStateModel';
 import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
 import {QueryController} from '../../controllers/QueryController';
 import {Model, IAttributeChangedEventArg} from '../../models/Model';
-import {QueryEvents, IBuildingQueryEventArgs, INewQueryEventArgs} from '../../events/QueryEvents';
+import {QueryEvents, IBuildingQueryEventArgs, INewQueryEventArgs, IQuerySuccessEventArgs, IQueryErrorEventArgs} from '../../events/QueryEvents';
 import {IBeforeRedirectEventArgs, StandaloneSearchInterfaceEvents} from '../../events/StandaloneSearchInterfaceEvents';
 import {HistoryController} from '../../controllers/HistoryController';
 import {LocalStorageHistoryController} from '../../controllers/LocalStorageHistoryController';
@@ -23,8 +23,6 @@ import {Debug} from '../Debug/Debug';
 import {HashUtils} from '../../utils/HashUtils';
 import FastClick = require('fastclick');
 import timezone = require('jstz');
-import {IQuerySuccessEventArgs} from '../../events/QueryEvents';
-import {IQueryErrorEventArgs} from '../../events/QueryEvents';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
