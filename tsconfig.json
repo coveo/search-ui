@@ -109,6 +109,8 @@
     "src/ui/AdvancedSearch/AdvancedSearch.ts",
     "src/ui/AdvancedSearch/AdvancedSearchInput.ts",
     "src/ui/AdvancedSearch/KeywordsInput.ts",
+    "src/ui/AdvancedSearch/DateInput.ts",
+    "src/ui/AdvancedSearch/DocumentInput.ts",
     "src/ui/Aggregate/Aggregate.ts",
     "src/ui/Analytics/Analytics.ts",
     "src/ui/Analytics/AnalyticsActionListMeta.ts",

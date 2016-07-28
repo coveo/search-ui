@@ -15,25 +15,27 @@ $spaceBetween: 0 5px;
   padding: 5px 0;
 }
 
-.coveo-advanced-search-keyword {
+.coveo-advanced-search-input-section {
   margin-top: 10px;
 }
 
-.coveo-advanced-search-label {
+.coveo-advanced-search-keyword-label {
   width: 40%;
   display: inline-block;
 }
 
-.coveo-advanced-search-input {
+.coveo-advanced-search-keyword-input {
   width: 60%;
+  margin-bottom: 5px;
+  @include defaultRoundedBorder();
+  padding: 5px;
+  height: 35px;
+  font-size: $font-size-smaller;
 }
 
-.coveo-advanced-search-date {
-  margin-top: 10px;
-
-  .coveo-advanced-search-label {
-    width: 20%;
-  }
+.coveo-advanced-search-label {
+  width: 20%;
+  display: inline-block;
 }
 
 .coveo-advanced-search-select {

@@ -11,11 +11,13 @@ import {$$} from '../../utils/Dom';
 import {IAdvancedSearchInput} from './AdvancedSearchInput';
 import {KeywordsInput, AllKeywordsInput, ExactKeywordsInput, AnyKeywordsInput, NoneKeywordsInput} from './KeywordsInput';
 import {DateInput, AnytimeDateInput, InTheLastDateInput, BetweenDateInput} from './DateInput';
+import {SimpleFieldInput, SizeInput, AdvancedFieldInput} from './DocumentInput';
 import {ModalBox} from '../../ExternalModulesShim';
 
 export interface IAdvancedSearchOptions {
   includeKeywords?: boolean;
   includeDate?: boolean;
+  includeDocument?: boolean;
 }
 
 /**
@@ -29,12 +31,14 @@ export class AdvancedSearch extends Component {
    */
   static options: IAdvancedSearchOptions = {
     includeKeywords: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    includeDate: ComponentOptions.buildBooleanOption({ defaultValue: true })
+    includeDate: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    includeDocument: ComponentOptions.buildBooleanOption({defaultValue: true})
   }
 
   private modal: Coveo.ModalBox.ModalBox
   private keywords: KeywordsInput[] = [];
-  private date: DateInput[] = [];
+  private dates: DateInput[] = [];
+  private documents: IAdvancedSearchInput[] = [];
 
   constructor(public element: HTMLElement, public options?: IAdvancedSearchOptions, bindings?: IComponentBindings) {
     super(element, AdvancedSearch.ID, bindings);
@@ -50,9 +54,16 @@ export class AdvancedSearch extends Component {
     });
 
     this.bind.onRootElement(QueryEvents.buildingQuery, (data: IBuildingQueryEventArgs) => {
-      _.each(this.date, (date) => {
-        if (date.isSelected() && date.getValue()) {
-          data.queryBuilder.advancedExpression.add(date.getValue());
+      _.each(this.dates, (date) => {
+        let value = date.getValue();
+        if (date.isSelected() && value) {
+          data.queryBuilder.advancedExpression.add(value);
+        }
+      })
+      _.each(this.documents, (document) => {
+        let value = document.getValue();
+        if (value) {
+          data.queryBuilder.advancedExpression.add(value);
         }
       })
     })
@@ -77,6 +88,9 @@ export class AdvancedSearch extends Component {
     }
     if (this.options.includeDate) {
       component.append(this.buildDateSection());
+    }
+    if(this.options.includeDocument) {
+      component.append(this.buildDocumentSection());
     }
 
     component.on('keydown', (e: KeyboardEvent) => {
@@ -134,15 +148,34 @@ export class AdvancedSearch extends Component {
     title.text(l('Date'));
     dateSection.append(title.el);
 
-    this.date.push(new AnytimeDateInput());
-    this.date.push(new InTheLastDateInput());
-    this.date.push(new BetweenDateInput());
+    this.dates.push(new AnytimeDateInput());
+    this.dates.push(new InTheLastDateInput());
+    this.dates.push(new BetweenDateInput());
 
-    _.each(this.date, (date) => {
+    _.each(this.dates, (date) => {
       dateSection.append(date.buildInput());
     })
 
     return dateSection.el;
+  }
+
+  private buildDocumentSection(): HTMLElement {
+    let documentSection = $$('div', { className: 'coveo-advanced-search-section coveo-advanced-search-document-section' });
+    let title = $$('div', { className: 'coveo-advanced-search-section-title' });
+    title.text(l('AdvancedSearchDocumentSectionTitle'));
+    documentSection.append(title.el);
+
+    this.documents.push(new SimpleFieldInput('FileType', '@filetype', this.queryController.getEndpoint()));
+    this.documents.push(new SimpleFieldInput('Language', '@language', this.queryController.getEndpoint()));
+    this.documents.push(new SizeInput());
+    this.documents.push(new AdvancedFieldInput('Title', '@title'));
+    this.documents.push(new AdvancedFieldInput('Author', '@author'));
+
+    _.each(this.documents, (document) => {
+      documentSection.append(document.buildInput());
+    })
+
+    return documentSection.el;
   }
 
   private updateQueryStateModel() {

@@ -5106,5 +5106,53 @@
   "AdvancedSearchBetweenLabel": {
     "en": "Between",
     "fr": "Entre"
+  },
+  "AdvancedSearchDocumentSectionTitle": {
+    "en": "Document",
+    "fr": "Document"
+  },
+  "FileTypeLabel": {
+    "en": "Type",
+    "fr": "Type"
+  },
+  "LanguageLabel": {
+    "en": "Language",
+    "fr": "Langage"
+  },
+  "SizeLabel": {
+    "en": "Size",
+    "fr": "Taille"
+  },
+  "TitleLabel": {
+    "en": "Title",
+    "fr": "Titre"
+  },
+  "AuthorLabel": {
+    "en": "Author",
+    "fr": "Auteur"
+  },
+  "AtLeast": {
+    "en": "at least",
+    "fr": "au moins"
+  },
+  "AtMost": {
+    "en": "at most",
+    "fr": "au moins"
+  },
+  "Contains": {
+    "en": "contains",
+    "fr": "contient"
+  },
+  "DoesNotContain": {
+    "en": "does not contains",
+    "fr": "ne contient pas"
+  },
+  "Matches": {
+    "en": "matches",
+    "fr": "égale"
+  },
+  "Bytes": {
+    "en": "bytes",
+    "fr": "octets"
   }
 }

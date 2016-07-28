@@ -11,10 +11,10 @@ export class KeywordsInput implements IAdvancedSearchInput {
   }
 
   public buildInput(): HTMLElement {
-    let sectionClassName = 'coveo-advanced-search-keyword coveo' + ComponentOptions.camelCaseToHyphen(this.sectionName).toLowerCase();
+    let sectionClassName = 'coveo-advanced-search-input-section coveo' + ComponentOptions.camelCaseToHyphen(this.sectionName).toLowerCase();
     let keyword = $$('div', { className: sectionClassName });
-    let label = $$('span', { className: 'coveo-advanced-search-label' });
-    let input = $$('input', { className: 'coveo-share-query-summary-info-input coveo-advanced-search-input' });
+    let label = $$('span', { className: 'coveo-advanced-search-keyword-label' });
+    let input = $$('input', { className: 'coveo-advanced-search-keyword-input coveo-advanced-search-input' });
     label.text(l(this.sectionName + 'Label'));
     keyword.append(label.el);
     keyword.append(input.el);
