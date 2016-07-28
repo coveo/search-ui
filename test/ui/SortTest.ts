@@ -1,9 +1,15 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {Sort} from '../../src/ui/Sort/Sort';
+import {Dom} from '../../src/utils/Dom';
+import {$$} from '../../src/utils/Dom';
+import {QueryEvents} from '../../src/events/QueryEvents';
+import {IQuerySuccessEventArgs} from '../../src/events/QueryEvents';
+import {SortCriteria} from '../../src/ui/Sort/SortCriteria';
+import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
+import {QueryStateModel} from '../../src/models/QueryStateModel';
 
-module Coveo {
-
+export function SortTest() {
   describe('Sort', function () {
-
     var test: Mock.IBasicComponentSetup<Sort>;
 
     function buildSort(sortCriteria: string) {

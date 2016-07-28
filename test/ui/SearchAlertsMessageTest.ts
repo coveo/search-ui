@@ -1,6 +1,10 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {SearchAlertsMessage} from '../../src/ui/SearchAlerts/SearchAlertsMessage';
+import {PopupUtils} from '../../src/utils/PopupUtils';
+import {$$} from '../../src/utils/Dom';
+import {SearchAlertsEvents} from '../../src/events/SearchAlertEvents';
 
-module Coveo {
+export function SearchAlertsMessageTest() {
   describe('SearchAlertsMessage', function () {
     let test: Mock.IBasicComponentSetup<SearchAlertsMessage>;
 
@@ -48,8 +52,6 @@ module Coveo {
         test.cmp.showMessage(div, message, true);
         expect($$((<jasmine.Spy>PopupUtils.positionPopup).calls.argsFor(0)[0]).hasClass('coveo-subscriptions-messages-error')).toBe(true);
       })
-
     })
-
   });
-};
+}

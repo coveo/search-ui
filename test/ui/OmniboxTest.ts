@@ -1,9 +1,19 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {Omnibox} from '../../src/ui/Omnibox/Omnibox';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import {IOmniboxOptions} from '../../src/ui/Omnibox/Omnibox';
+import {Simulate} from '../Simulate';
+import {$$} from '../../src/utils/Dom';
+import {JQuery} from '../JQueryModule';
 
-module Coveo {
+export function OmniboxTest() {
   describe('Omnibox', () => {
     var test: Mock.IBasicComponentSetup<Omnibox>;
     beforeEach(() => {
+      // Thanks phantom js for bad native event support
+      if (Simulate.isPhantomJs()) {
+        window['jQuery'] = JQuery;
+      }
       test = Mock.basicComponentSetup<Omnibox>(Omnibox);
     })
     afterEach(() => {
@@ -279,6 +289,5 @@ module Coveo {
         expect(test.cmp.getText()).toEqual('trololo');
       })
     })
-
   })
 }
