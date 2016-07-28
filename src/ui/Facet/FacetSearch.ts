@@ -22,7 +22,7 @@ import {StringUtils} from '../../utils/StringUtils';
 import {IFacetSearchValuesListKlass} from './FacetSearchValuesList';
 import {FacetValueElement} from './FacetValueElement';
 import {ModalBox} from '../../ExternalModulesShim';
-import {SearchInterface} from "../SearchInterface/SearchInterface";
+import {SearchInterface} from '../SearchInterface/SearchInterface';
 
 /**
  * Used by the {@link Facet} component to render and handle the facet search part of each facet.
