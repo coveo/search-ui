@@ -10,7 +10,7 @@ export class DateInput implements IAdvancedSearchInput {
   constructor(public sectionName: string) {
   }
 
-  public buildInput(): HTMLElement {
+  public build(): HTMLElement {
     let sectionClassName = 'coveo-advanced-search-input-section coveo' + ComponentOptions.camelCaseToHyphen(this.sectionName).toLowerCase();
     let date = $$('div', { className: sectionClassName });
     let checkbox = $$('input', { type: 'radio', name: 'coveo-advanced-search-date' })
@@ -76,8 +76,8 @@ export class AnytimeDateInput extends DateInput {
     super('AdvancedSearchAnytime');
   }
 
-  public buildInput(): HTMLElement {
-    super.buildInput();
+  public build(): HTMLElement {
+    super.build();
     this.getRadio().checked = true;
     return this.element;
   }
@@ -89,8 +89,8 @@ export class InTheLastDateInput extends DateInput {
     super('AdvancedSearchInTheLast');
   }
 
-  public buildInput(): HTMLElement {
-    super.buildInput();
+  public build(): HTMLElement {
+    super.build();
     let numberInput = $$('input', { className: 'coveo-advanced-search-number-input' });
     (<HTMLInputElement>numberInput.el).disabled = true;
     let select = $$('select', { className: 'coveo-advanced-search-select' });
@@ -118,7 +118,7 @@ export class InTheLastDateInput extends DateInput {
       date.setDate(currentDate.getDate() - time);
     }
 
-    return '@date>=' + this.dateToString(date);
+    return this.isSelected() ? '@date>=' + this.dateToString(date): '';
   }
 
 }
@@ -132,8 +132,8 @@ export class BetweenDateInput extends DateInput {
     super('AdvancedSearchBetween');
   }
 
-  public buildInput(): HTMLElement {
-    super.buildInput();
+  public build(): HTMLElement {
+    super.build();
     this.element.appendChild(this.buildDaySelect(this.FIRST_DATE_CLASS));
     this.element.appendChild(this.buildMonthSelect(this.FIRST_DATE_CLASS));
     this.element.appendChild(this.buildYearSelect(this.FIRST_DATE_CLASS));
@@ -185,7 +185,7 @@ export class BetweenDateInput extends DateInput {
   public getValue(): string {
     let firstDate = this.getDate(this.FIRST_DATE_CLASS);
     let secondDate = this.getDate(this.SECOND_DATE_CLASS);
-    return '(@date>=' + this.dateToString(firstDate) + ')(@date<=' + this.dateToString(secondDate) + ')';
+    return this.isSelected() ? '(@date>=' + this.dateToString(firstDate) + ')(@date<=' + this.dateToString(secondDate) + ')' : '';
   }
 
   private getDate(className: string): Date {

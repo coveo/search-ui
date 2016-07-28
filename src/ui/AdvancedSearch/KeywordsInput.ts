@@ -10,7 +10,7 @@ export class KeywordsInput implements IAdvancedSearchInput {
   constructor(public sectionName: string) {
   }
 
-  public buildInput(): HTMLElement {
+  public build(): HTMLElement {
     let sectionClassName = 'coveo-advanced-search-input-section coveo' + ComponentOptions.camelCaseToHyphen(this.sectionName).toLowerCase();
     let keyword = $$('div', { className: sectionClassName });
     let label = $$('span', { className: 'coveo-advanced-search-keyword-label' });

@@ -37,8 +37,8 @@ export class AdvancedSearch extends Component {
 
   private modal: Coveo.ModalBox.ModalBox
   private keywords: KeywordsInput[] = [];
-  private dates: DateInput[] = [];
-  private documents: IAdvancedSearchInput[] = [];
+
+  private advancedInputs: IAdvancedSearchInput[] = [];
 
   constructor(public element: HTMLElement, public options?: IAdvancedSearchOptions, bindings?: IComponentBindings) {
     super(element, AdvancedSearch.ID, bindings);
@@ -54,14 +54,8 @@ export class AdvancedSearch extends Component {
     });
 
     this.bind.onRootElement(QueryEvents.buildingQuery, (data: IBuildingQueryEventArgs) => {
-      _.each(this.dates, (date) => {
-        let value = date.getValue();
-        if (date.isSelected() && value) {
-          data.queryBuilder.advancedExpression.add(value);
-        }
-      })
-      _.each(this.documents, (document) => {
-        let value = document.getValue();
+      _.each(this.advancedInputs, (input) => {
+        let value = input.getValue();
         if (value) {
           data.queryBuilder.advancedExpression.add(value);
         }
@@ -125,57 +119,45 @@ export class AdvancedSearch extends Component {
   }
 
   private buildKeywordsSection(): HTMLElement {
-    let keywordsSection = $$('div', { className: 'coveo-advanced-search-section coveo-advanced-search-keywords-section' });
-    let title = $$('div', { className: 'coveo-advanced-search-section-title' });
-    title.text(l('AdvancedSearchKeywordsSectionTitle'));
-    keywordsSection.append(title.el);
-
-    this.keywords.push(new AllKeywordsInput());
-    this.keywords.push(new ExactKeywordsInput());
-    this.keywords.push(new AnyKeywordsInput());
-    this.keywords.push(new NoneKeywordsInput());
-
-    _.each(this.keywords, (keyword) => {
-      keywordsSection.append(keyword.buildInput());
-    })
-
-    return keywordsSection.el;
+    let keywordsInputs = []
+    keywordsInputs.push(new AllKeywordsInput());
+    keywordsInputs.push(new ExactKeywordsInput());
+    keywordsInputs.push(new AnyKeywordsInput());
+    keywordsInputs.push(new NoneKeywordsInput());
+    return this.buildSection('Keywords', keywordsInputs);
   }
 
   private buildDateSection(): HTMLElement {
-    let dateSection = $$('div', { className: 'coveo-advanced-search-section coveo-advanced-search-date-section' });
-    let title = $$('div', { className: 'coveo-advanced-search-section-title' });
-    title.text(l('Date'));
-    dateSection.append(title.el);
-
-    this.dates.push(new AnytimeDateInput());
-    this.dates.push(new InTheLastDateInput());
-    this.dates.push(new BetweenDateInput());
-
-    _.each(this.dates, (date) => {
-      dateSection.append(date.buildInput());
-    })
-
-    return dateSection.el;
+    let dateInputs = [];
+    dateInputs.push(new AnytimeDateInput());
+    dateInputs.push(new InTheLastDateInput());
+    dateInputs.push(new BetweenDateInput());
+    return this.buildSection('Date', dateInputs);
   }
 
   private buildDocumentSection(): HTMLElement {
-    let documentSection = $$('div', { className: 'coveo-advanced-search-section coveo-advanced-search-document-section' });
+    let documentInputs = []
+    documentInputs.push(new SimpleFieldInput('FileType', '@filetype', this.queryController.getEndpoint()));
+    documentInputs.push(new SimpleFieldInput('Language', '@language', this.queryController.getEndpoint()));
+    documentInputs.push(new SizeInput());
+    documentInputs.push(new AdvancedFieldInput('Title', '@title'));
+    documentInputs.push(new AdvancedFieldInput('Author', '@author'));
+    return this.buildSection('Document', documentInputs);
+  }
+
+  private buildSection(sectionName: string, inputs: IAdvancedSearchInput[]): HTMLElement {
+    let section = $$('div', { className: 'coveo-advanced-search-section' });
     let title = $$('div', { className: 'coveo-advanced-search-section-title' });
-    title.text(l('AdvancedSearchDocumentSectionTitle'));
-    documentSection.append(title.el);
+    title.text(l('AdvancedSearch' + sectionName + 'SectionTitle'));
+    section.append(title.el);
 
-    this.documents.push(new SimpleFieldInput('FileType', '@filetype', this.queryController.getEndpoint()));
-    this.documents.push(new SimpleFieldInput('Language', '@language', this.queryController.getEndpoint()));
-    this.documents.push(new SizeInput());
-    this.documents.push(new AdvancedFieldInput('Title', '@title'));
-    this.documents.push(new AdvancedFieldInput('Author', '@author'));
+    this.advancedInputs = _.union(this.advancedInputs, inputs);
 
-    _.each(this.documents, (document) => {
-      documentSection.append(document.buildInput());
+    _.each(inputs, (input)=>{
+      section.append(input.build());
     })
 
-    return documentSection.el;
+    return section.el;
   }
 
   private updateQueryStateModel() {

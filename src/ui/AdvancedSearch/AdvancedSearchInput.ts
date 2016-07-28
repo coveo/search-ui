@@ -1,4 +1,4 @@
 export interface IAdvancedSearchInput {
-  buildInput: () => HTMLElement,
+  build: () => HTMLElement,
   getValue: () => string
 }

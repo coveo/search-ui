@@ -7,7 +7,7 @@ import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom';
 
 export class DocumentInput implements IAdvancedSearchInput {
-  public buildInput(): HTMLElement {
+  public build(): HTMLElement {
     return $$('div').el;
   }
 
@@ -34,7 +34,7 @@ export class SimpleFieldInput extends DocumentInput {
     super();
   }
 
-  public buildInput(): HTMLElement {
+  public build(): HTMLElement {
     let sectionClassName = 'coveo-advanced-search-input-section coveo' + ComponentOptions.camelCaseToHyphen(this.sectionName).toLowerCase();
     let document = $$('div', { className: sectionClassName });
     let label = $$('span', { className: 'coveo-advanced-search-label' });
@@ -75,7 +75,7 @@ export class AdvancedFieldInput extends DocumentInput {
     super();
   }
 
-  public buildInput(): HTMLElement {
+  public build(): HTMLElement {
     let sectionClassName = 'coveo-advanced-search-input-section coveo' + ComponentOptions.camelCaseToHyphen(this.sectionName).toLowerCase();
     let document = $$('div', { className: sectionClassName });
     let label = $$('span', { className: 'coveo-advanced-search-label' });
@@ -112,7 +112,7 @@ export class SizeInput extends DocumentInput {
   protected sizeInput: HTMLInputElement
   protected sizeSelect: HTMLSelectElement
 
-  public buildInput(): HTMLElement{
+  public build(): HTMLElement{
     let sectionClassName = 'coveo-advanced-search-input-section';
     let document = $$('div', { className: sectionClassName });
     let label = $$('span', { className: 'coveo-advanced-search-label' });
