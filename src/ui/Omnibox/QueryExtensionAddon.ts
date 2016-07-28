@@ -2,7 +2,6 @@
 import {OmniboxEvents} from '../../events/OmniboxEvents';
 import {Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion} from './Omnibox';
 import {IExtension} from '../../rest/Extension';
-import {$$} from '../../utils/Dom';
 import {MagicBox} from '../../ExternalModulesShim';
 
 interface IQueryExtensionAddonHash {

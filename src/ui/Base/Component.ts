@@ -1,7 +1,5 @@
 import {Assert} from '../../misc/Assert';
-import {Logger} from '../../misc/Logger';
 import {IQueryResult} from '../../rest/QueryResult';
-import {DebugEvents} from '../../events/DebugEvents';
 import {Utils} from '../../utils/Utils';
 import {$$, Dom} from '../../utils/Dom';
 import {QueryStateModel} from '../../models/QueryStateModel';

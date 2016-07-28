@@ -192,6 +192,7 @@
     "src/ui/Omnibox/TopQueryAddon.ts",
     "src/ui/OmniboxResultList/OmniboxResultList.ts",
     "src/ui/Pager/Pager.ts",
+    "src/ui/Pager/ResultsPerPage.ts",
     "src/ui/PipelineContext/PipelineContext.ts",
     "src/ui/PreferencesPanel/PreferencesPanel.ts",
     "src/ui/PreferencesPanel/PreferencesPanelItem.ts",

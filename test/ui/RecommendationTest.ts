@@ -70,7 +70,7 @@ module Coveo {
     describe('when the mainInterface triggered a query', () => {
 
       it('should trigger a query', () => {
-        let simulation = Simulate.query(mainSearchInterface.env);
+        Simulate.query(mainSearchInterface.env);
         expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
       })
 
@@ -139,12 +139,12 @@ module Coveo {
 
       describe('exposes option hideIfNoResults', () => {
         it('should hide the interface if there are no recommendations', () => {
-          let simulation = Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+          Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
           expect(test.cmp.element.style.display).toEqual('none');
         })
 
         it('should show the interface if there are recommendations', () => {
-          let simulation = Simulate.query(test.env);
+          Simulate.query(test.env);
           expect(test.cmp.element.style.display).not.toEqual('none');
         })
       })

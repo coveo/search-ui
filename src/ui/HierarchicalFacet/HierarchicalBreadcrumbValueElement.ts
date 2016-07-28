@@ -8,7 +8,7 @@ export class HierarchicalBreadcrumbValueElement extends BreadcrumbValueElement {
     super(facet, facetValue);
   }
 
-  public build() {
+  public build(): Dom {
     var build = super.build();
     build.addClass('coveo-hierarchical-facet-value');
     var caption = build.find('.coveo-facet-breadcrumb-caption');

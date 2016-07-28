@@ -64,6 +64,7 @@
 /// <reference path="ui/MatrixTest.ts" />
 /// <reference path="ui/OmniboxTest.ts" />
 /// <reference path="ui/PagerTest.ts" />
+/// <reference path="ui/ResultsPerPageTest.ts" />
 /// <reference path="ui/PreferencesPanelTest.ts" />
 /// <reference path="ui/QueryboxTest.ts" />
 /// <reference path="ui/QueryBuilderTest.ts" />
@@ -104,10 +105,7 @@
 
 Coveo.Logger.disable();
 
-module Coveo {
-  var _ = window['_'];
-}
-
+// tslint:disable-next-line:no-unused-variable
 function isPhantomJs() {
   return navigator.userAgent.indexOf('PhantomJS') != -1;
 }

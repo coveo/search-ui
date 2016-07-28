@@ -1,7 +1,7 @@
 import {Logger} from '../../misc/Logger';
 import {StringUtils} from '../../utils/StringUtils';
 import {Initialization} from '../Base/Initialization';
-import {htmlToDom, $$} from '../../utils/Dom';
+import {htmlToDom} from '../../utils/Dom';
 import {BaseComponent} from '../Base/BaseComponent';
 
 export class Template {
