@@ -110,6 +110,7 @@ export class Sort extends Component {
 
   public enable() {
     $$(this.element).removeClass('coveo-tab-disabled');
+    this.update();
     super.enable();
   }
 
@@ -134,6 +135,10 @@ export class Sort extends Component {
   }
 
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
+    this.update();
+  }
+
+  private update() {
     // Basically, if the criteria in the model fits with one of ours, it'll become our active criteria
     var sortCriteria = <string>this.queryStateModel.get(QueryStateModel.attributesEnum.sort);
     if (Utils.isNonEmptyString(sortCriteria)) {
