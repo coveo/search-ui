@@ -39,7 +39,7 @@ module Coveo {
         firstResult: 20,
         numberOfResults: 10,
         enableDidYouMean: true,
-        context: { 'foo': 'bar', 'bar': 'baz' }
+        context: { 'key1': 'value1', 'key2': 'value2' }
       };
 
       Simulate.query(env, {
@@ -59,8 +59,8 @@ module Coveo {
           splitTestRunName: 'foo run name',
           splitTestRunVersion: 'foo run version',
           customData: jasmine.objectContaining({
-            context_foo: 'bar',
-            context_bar: 'baz'
+            context_key1: 'value1',
+            context_key2: 'value2'
           })
         })])
         expect(endpoint.sendSearchEvents).toHaveBeenCalledWith(jasmineMatcher);

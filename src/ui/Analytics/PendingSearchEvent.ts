@@ -136,7 +136,7 @@ export class PendingSearchEvent {
     searchEvent.searchQueryUid = queryResults.searchUid;
     searchEvent.queryPipeline = queryResults.pipeline;
 
-    // The content_${key} format is important for the Analytics backend
+    // The context_${key} format is important for the Analytics backend
     // This is what they use to recognize a custom data that will be used internally by other coveo's service.
     // In this case, Reveal will be the consumer of this information.
     if (query.context != undefined) {
