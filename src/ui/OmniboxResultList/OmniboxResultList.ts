@@ -5,7 +5,6 @@ import {IResultListOptions, ResultList} from '../ResultList/ResultList';
 import {IQueryResult} from '../../rest/QueryResult';
 import {IPopulateOmniboxEventArgs, OmniboxEvents} from '../../events/OmniboxEvents';
 import {ComponentOptions} from '../Base/ComponentOptions';
-import {SuggestionForOmnibox} from '../Misc/SuggestionForOmnibox';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
 import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
@@ -13,7 +12,6 @@ import {Assert} from '../../misc/Assert';
 import {Utils} from '../../utils/Utils';
 import {Initialization} from '../Base/Initialization';
 import {IQueryResults} from '../../rest/QueryResults';
-import {IOmniboxDataRow} from '../Omnibox/OmniboxInterface';
 
 export interface IOmniboxResultListOptions extends IResultListOptions {
   omniboxZIndex?: number;
@@ -31,7 +29,6 @@ export class OmniboxResultList extends ResultList {
   }
 
   private lastOmniboxRequest: { omniboxObject: IPopulateOmniboxEventArgs; resolve: (...args: any[]) => void; };
-  private suggestionForOmnibox: SuggestionForOmnibox;
 
   constructor(public element: HTMLElement, public options?: IOmniboxResultListOptions, public bindings?: IComponentBindings) {
     super(element, options, bindings, OmniboxResultList.ID);
