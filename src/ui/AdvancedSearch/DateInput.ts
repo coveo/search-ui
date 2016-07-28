@@ -126,7 +126,7 @@ export class InTheLastDateInput extends DateInput {
       date.setDate(currentDate.getDate() - time);
     }
 
-    return this.isSelected() ? '@date>=' + this.dateToString(date): '';
+    return this.isSelected() ? '@date>=' + this.dateToString(date) : '';
   }
 
 }
@@ -145,7 +145,7 @@ export class BetweenDateInput extends DateInput {
     this.element.appendChild(this.buildDaySelect(this.FIRST_DATE_CLASS));
     this.element.appendChild(this.buildMonthSelect(this.FIRST_DATE_CLASS));
     this.element.appendChild(this.buildYearSelect(this.FIRST_DATE_CLASS));
-    
+
     let and = $$('div', { className: 'coveo-advanced-search-and' });
     and.text(l('And').toLowerCase());
     this.element.appendChild(and.el);

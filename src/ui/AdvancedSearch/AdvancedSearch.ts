@@ -3,12 +3,13 @@ import {ComponentOptions} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
+import {AdvancedSearchEvents, IBuildingAdvancedSearchEventArgs} from '../../events/AdvancedSearchEvents';
 import {SettingsEvents} from '../../events/SettingsEvents';
 import {ISettingsPopulateMenuArgs} from '../Settings/Settings';
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
 import {$$, Dom} from '../../utils/Dom';
-import {IAdvancedSearchInput} from './AdvancedSearchInput';
+import {IAdvancedSearchInput, IAdvancedSearchSection} from './AdvancedSearchInput';
 import {KeywordsInput, AllKeywordsInput, ExactKeywordsInput, AnyKeywordsInput, NoneKeywordsInput} from './KeywordsInput';
 import {DateInput, AnytimeDateInput, InTheLastDateInput, BetweenDateInput} from './DateInput';
 import {SimpleFieldInput, SizeInput, AdvancedFieldInput} from './DocumentInput';
@@ -31,7 +32,7 @@ export class AdvancedSearch extends Component {
   static options: IAdvancedSearchOptions = {
     includeKeywords: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     includeDate: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    includeDocument: ComponentOptions.buildBooleanOption({defaultValue: true})
+    includeDocument: ComponentOptions.buildBooleanOption({ defaultValue: true })
   }
 
   private inputs: IAdvancedSearchInput[] = [];
@@ -70,15 +71,29 @@ export class AdvancedSearch extends Component {
 
   private buildContent() {
     let component = $$('div');
+    let inputSections: IAdvancedSearchSection[] = [];
     if (this.options.includeKeywords) {
-      component.append(this.buildKeywordsSection());
+      inputSections.push(this.getKeywordsSection());
     }
     if (this.options.includeDate) {
-      component.append(this.buildDateSection());
+      inputSections.push(this.getDateSection());
     }
-    if(this.options.includeDocument) {
-      component.append(this.buildDocumentSection());
+    if (this.options.includeDocument) {
+      inputSections.push(this.getDocumentSection());
     }
+
+    $$(this.element).trigger(AdvancedSearchEvents.buildingAdvancedSearch, { sections: inputSections })
+
+    _.each(inputSections, (section) => {
+      component.append(this.buildSection(section));
+    })
+
+    component.on('keydown', (e: KeyboardEvent) => {
+      if (e.keyCode == 13) { // Enter
+        this.executeAdvancedSearch();
+      }
+    })
+
     $$(this.element).append(component.el);
   }
 
@@ -90,51 +105,54 @@ export class AdvancedSearch extends Component {
     $$(this.element).hide();
   }
 
-  private buildKeywordsSection(): HTMLElement {
+  private getKeywordsSection(): IAdvancedSearchSection {
+    let sectionName = 'Keywords';
     let keywordsInputs = []
     keywordsInputs.push(new AllKeywordsInput());
     keywordsInputs.push(new ExactKeywordsInput());
     keywordsInputs.push(new AnyKeywordsInput());
     keywordsInputs.push(new NoneKeywordsInput());
-    return this.buildSection('Keywords', keywordsInputs);
+    return { name: sectionName, inputs: keywordsInputs };
   }
 
-  private buildDateSection(): HTMLElement {
+  private getDateSection(): IAdvancedSearchSection {
+    let sectionName = 'Date';
     let dateInputs = [];
     dateInputs.push(new AnytimeDateInput());
     dateInputs.push(new InTheLastDateInput());
     dateInputs.push(new BetweenDateInput());
-    return this.buildSection('Date', dateInputs);
+    return { name: sectionName, inputs: dateInputs };
   }
 
-  private buildDocumentSection(): HTMLElement {
+  private getDocumentSection(): IAdvancedSearchSection {
+    let sectionName = 'Document'
     let documentInputs = []
     documentInputs.push(new SimpleFieldInput('FileType', '@filetype', this.queryController.getEndpoint()));
     documentInputs.push(new SimpleFieldInput('Language', '@language', this.queryController.getEndpoint()));
     documentInputs.push(new SizeInput());
     documentInputs.push(new AdvancedFieldInput('Title', '@title'));
     documentInputs.push(new AdvancedFieldInput('Author', '@author'));
-    return this.buildSection('Document', documentInputs);
+    return { name: sectionName, inputs: documentInputs };
   }
 
-  private buildSection(sectionName: string, inputs: IAdvancedSearchInput[]): HTMLElement {
-    let section = $$('div', { className: 'coveo-advanced-search-section' });
+  private buildSection(section: IAdvancedSearchSection): HTMLElement {
+    let sectionHTML = $$('div', { className: 'coveo-advanced-search-section' });
     let title = $$('div', { className: 'coveo-advanced-search-section-title' });
-    title.text(l('AdvancedSearch' + sectionName + 'SectionTitle'));
-    section.append(title.el);
+    title.text(l('AdvancedSearch' + section.name + 'SectionTitle'));
+    sectionHTML.append(title.el);
 
-    this.inputs = _.union(this.inputs, inputs);
+    this.inputs = _.union(this.inputs, section.inputs);
 
-    _.each(inputs, (input)=>{
-      section.append(input.build());
+    _.each(section.inputs, (input) => {
+      sectionHTML.append(input.build());
     })
 
-    return section.el;
+    return sectionHTML.el;
   }
 
   private updateQueryStateModel() {
     let query = this.queryStateModel.get(QueryStateModel.attributesEnum.q);
-    let queryStateInput = _.filter(this.inputs, (input)=>{
+    let queryStateInput = _.filter(this.inputs, (input) => {
       return input.shouldUpdateQueryState();
     })
     _.each(queryStateInput, (input) => {
@@ -157,7 +175,7 @@ export class AdvancedSearch extends Component {
     });
 
     this.bind.onRootElement(QueryEvents.buildingQuery, (data: IBuildingQueryEventArgs) => {
-      let buildingQueryInputs = _.filter(this.inputs, (input)=>{
+      let buildingQueryInputs = _.filter(this.inputs, (input) => {
         return input.shouldUpdateOnBuildingQuery();
       })
       _.each(buildingQueryInputs, (input) => {
@@ -166,12 +184,6 @@ export class AdvancedSearch extends Component {
           data.queryBuilder.advancedExpression.add(value);
         }
       })
-    })
-
-    $$(this.element).on('keydown', (e: KeyboardEvent) => {
-      if (e.keyCode == 13) { // Enter
-        this.executeAdvancedSearch();
-      }
     })
   }
 

@@ -16,9 +16,9 @@ export class DocumentInput implements IAdvancedSearchInput {
   }
 
   protected buildSelect(options: string[]): HTMLSelectElement {
-    let select = $$('select', {className: 'coveo-advanced-search-select'});
-    _.each(options, (option)=>{
-      let optionHTML = $$('option', {value: option})
+    let select = $$('select', { className: 'coveo-advanced-search-select' });
+    _.each(options, (option) => {
+      let optionHTML = $$('option', { value: option })
       optionHTML.text(l(option))
       select.append(optionHTML.el);
     })
@@ -55,17 +55,17 @@ export class SimpleFieldInput extends DocumentInput {
 
   public getValue(): string {
     let value = (<HTMLSelectElement>$$(this.element).find('select')).value;
-    return value ? this.fieldName + '==\"' + value + '\"': '';
+    return value ? this.fieldName + '==\"' + value + '\"' : '';
   }
 
   private buildFieldSelect() {
-    let select = $$('select', {className: 'coveo-advanced-search-select'});
+    let select = $$('select', { className: 'coveo-advanced-search-select' });
     let defaultOption = <HTMLOptionElement>$$('option').el;
     defaultOption.value = '';
     select.append(defaultOption);
-    this.endpoint.listFieldValues({ field: this.fieldName }).then((values: IIndexFieldValue[])=>{
-      _.each(values, (value: IIndexFieldValue)=>{
-        let option = $$('option', {value: value.value});
+    this.endpoint.listFieldValues({ field: this.fieldName }).then((values: IIndexFieldValue[]) => {
+      _.each(values, (value: IIndexFieldValue) => {
+        let option = $$('option', { value: value.value });
         option.text(FacetUtils.tryToGetTranslatedCaption(this.fieldName, value.lookupValue));
         select.append(option.el);
       })
@@ -90,7 +90,7 @@ export class AdvancedFieldInput extends DocumentInput {
     label.text(l(this.sectionName + 'Label'));
     document.append(label.el);
     document.append(this.buildSelect(['Contains', 'DoesNotContain', 'Matches']));
-    document.append($$('input', {className: 'coveo-advanced-search-input'}).el)
+    document.append($$('input', { className: 'coveo-advanced-search-input' }).el)
     this.element = document.el;
     return this.element;
   }
@@ -120,7 +120,7 @@ export class SizeInput extends DocumentInput {
   protected sizeInput: HTMLInputElement
   protected sizeSelect: HTMLSelectElement
 
-  public build(): HTMLElement{
+  public build(): HTMLElement {
     let sectionClassName = 'coveo-advanced-search-input-section';
     let document = $$('div', { className: sectionClassName });
     let label = $$('span', { className: 'coveo-advanced-search-label' });
@@ -128,7 +128,7 @@ export class SizeInput extends DocumentInput {
     document.append(label.el);
     this.modeSelect = this.buildSelect(['AtLeast', 'AtMost']);
     document.append(this.modeSelect);
-    this.sizeInput = <HTMLInputElement>$$('input', {className: 'coveo-advanced-search-number-input'}).el;
+    this.sizeInput = <HTMLInputElement>$$('input', { className: 'coveo-advanced-search-number-input' }).el;
     document.append(this.sizeInput);
     this.sizeSelect = this.buildSelect(['KB', 'MB', 'Bytes']);
     document.append(this.sizeSelect);
@@ -151,7 +151,7 @@ export class SizeInput extends DocumentInput {
 
   private getSizeInBytes(): number {
     let size = parseFloat(this.sizeInput.value);
-    switch(this.sizeSelect.value) {
+    switch (this.sizeSelect.value) {
       case 'KB':
         return size * 1024;
       case 'MB':
