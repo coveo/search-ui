@@ -6,10 +6,6 @@ module Coveo {
     var el: HTMLElement;
     var root: HTMLElement;
 
-    function getSliderLine(sliderElement: HTMLElement) {
-      return $$(sliderElement).findAll('.coveo-slider-line');
-    }
-
     function getSliderButton(sliderElement: HTMLElement) {
       return $$(sliderElement).findAll('.coveo-slider-button');
     }

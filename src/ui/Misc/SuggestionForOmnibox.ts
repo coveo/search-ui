@@ -1,5 +1,4 @@
 import {IPopulateOmniboxEventArgs} from '../../events/OmniboxEvents';
-import {StringUtils} from '../../utils/StringUtils';
 import {DomUtils} from '../../utils/DomUtils';
 import {$$} from '../../utils/Dom';
 

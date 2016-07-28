@@ -105,10 +105,7 @@
 
 Coveo.Logger.disable();
 
-module Coveo {
-  var _ = window['_'];
-}
-
+// tslint:disable-next-line:no-unused-variable
 function isPhantomJs() {
   return navigator.userAgent.indexOf('PhantomJS') != -1;
 }

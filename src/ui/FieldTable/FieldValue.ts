@@ -286,15 +286,6 @@ export class FieldValue extends Component {
     }
   }
 
-  private static initSimpleOptions() {
-    let options = {};
-    for (let key in FieldValue.options) {
-      if (key != 'helperOptions') {
-        options[key] = FieldValue.options[key];
-      }
-    }
-  }
-
 }
 
 Initialization.registerAutoCreateComponent(FieldValue);

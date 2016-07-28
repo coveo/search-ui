@@ -84,11 +84,6 @@ export class OmniboxValuesList {
     return orignalStr.slice(0, firstChar) + '<span class="coveo-highlight">' + orignalStr.slice(firstChar, lastChar) + '</span>' + orignalStr.slice(lastChar);
   }
 
-  private omniboxCloseEvent(eventArg: IPopulateOmniboxObject) {
-    eventArg.closeOmnibox();
-    eventArg.clear();
-  }
-
   private logAnalyticsEvent(elem: ValueElement, cause: IAnalyticsActionCause) {
     var strippedFacetValues = _.pluck(this.facetValues, 'value');
     elem.facet.usageAnalytics.logSearchEvent<IAnalyticsOmniboxFacetMeta>(cause, {
