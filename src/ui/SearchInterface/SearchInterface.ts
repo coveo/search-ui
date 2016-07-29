@@ -559,25 +559,39 @@ export class SearchInterface extends RootComponent {
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
     let noResults = data.results.results.length == 0;
     this.toggleSectionState('coveo-no-results', noResults);
+    let resultsHeader = $$(this.element).find('.coveo-results-header');
+    if (resultsHeader) {
+      $(resultsHeader).removeClass('coveo-query-error');
+    }
   }
 
   private handleQueryError(data: IQueryErrorEventArgs) {
     this.toggleSectionState('coveo-no-results');
+    let resultsHeader = $$(this.element).find('.coveo-results-header');
+    if (resultsHeader) {
+      $$(resultsHeader).addClass('coveo-query-error');
+    }
   }
 
   private toggleSectionState(cssClass: string, toggle = true) {
     let facetSection = $$(this.element).find('.coveo-facet-column');
     let resultsSection = $$(this.element).find('.coveo-results-column');
     let resultsHeader = $$(this.element).find('.coveo-results-header');
+    let facetSearchs = $$(this.element).findAll('.coveo-facet-search-results');
 
     if (facetSection) {
-      $$(facetSection).toggleClass(cssClass, toggle);
+      $$(facetSection).toggleClass(cssClass, toggle && !this.queryStateModel.atLeastOneFacetIsActive());
     }
     if (resultsSection) {
-      $$(resultsSection).toggleClass(cssClass, toggle);
+      $$(resultsSection).toggleClass(cssClass, toggle && !this.queryStateModel.atLeastOneFacetIsActive());
     }
     if (resultsHeader) {
-      $$(resultsHeader).toggleClass(cssClass, toggle);
+      $$(resultsHeader).toggleClass(cssClass, toggle && !this.queryStateModel.atLeastOneFacetIsActive());
+    }
+    if (facetSearchs && facetSearchs.length > 0) {
+      _.each(facetSearchs, (facetSearch) => {
+        $$(facetSearch).toggleClass(cssClass, toggle && !this.queryStateModel.atLeastOneFacetIsActive());
+      })
     }
   }
 }
