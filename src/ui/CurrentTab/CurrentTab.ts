@@ -44,9 +44,12 @@ export class CurrentTab extends Component {
       $$(tabSection).addClass('coveo-targeted-by-current-tab');
       $$(this.element).addClass('coveo-targeting-tab-section');
       this.bind.on(this.element, 'click', () => {
-        let glass = $$($$(this.root).find('.coveo-glass'));
-        glass.toggleClass('coveo-active-glass')
-        glass.toggleClass('coveo-active-glass-for-current-tab');
+        let glassElement = $$(this.root).find('.coveo-glass');
+        if (glassElement) {
+          let glass = $$(glassElement);
+          glass.toggleClass('coveo-active-glass');
+          glass.toggleClass('coveo-active-glass-for-current-tab');
+        }
         $$(this.element).toggleClass('coveo-opening-tab-section');
         $$(tabSection).toggleClass('coveo-opened-by-current-tab');
         if ($$(this.element).hasClass('coveo-opening-tab-section')) {
