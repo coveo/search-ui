@@ -16,6 +16,8 @@ import {ISubscription, ISubscriptionItemRequest, SUBSCRIPTION_TYPE, ISubscriptio
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
 import {$$, Dom} from '../../utils/Dom';
+import {ModalBox} from '../../ExternalModulesShim';
+
 export interface ISearchAlertsOptions {
   enableManagePanel?: boolean;
   enableFollowQuery?: boolean;
@@ -169,7 +171,7 @@ export class SearchAlerts extends Component {
         container.el.innerHTML = '<div class=\'coveo-subscriptions-panel-fail\'>' + l('SearchAlerts_Fail') + '</div>';
       })
       .finally(() => {
-        this.modal = Coveo.ModalBox.open(container.el, {
+        this.modal = ModalBox.open(container.el, {
           titleClose: true,
           overlayClose: true,
           title: title.text(),

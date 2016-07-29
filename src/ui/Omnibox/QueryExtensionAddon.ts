@@ -2,8 +2,7 @@
 import {OmniboxEvents} from '../../events/OmniboxEvents';
 import {Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion} from './Omnibox';
 import {IExtension} from '../../rest/Extension';
-import {$$} from '../../utils/Dom';
-import _ = require('underscore');
+import {MagicBox} from '../../ExternalModulesShim';
 
 interface IQueryExtensionAddonHash {
   type: string;
@@ -93,7 +92,7 @@ export class QueryExtensionAddon {
     return promise.then((values) => {
       var suggestions: IOmniboxSuggestion[] = _.map(values, (value, i) => {
         return {
-          html: Coveo.MagicBox.Utils.highlightText(value, hash.current, true),
+          html: MagicBox.Utils.highlightText(value, hash.current, true),
           text: hash.before + value + hash.after,
           index: QueryExtensionAddon.INDEX - i / values.length
         }

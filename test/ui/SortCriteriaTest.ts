@@ -1,6 +1,9 @@
-/// <reference path="../Test.ts" />
+import {SortCriteria} from '../../src/ui/Sort/SortCriteria';
+import * as Mock from '../MockEnvironment';
+import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
+import {IQueryResult} from '../../src/rest/QueryResult';
 
-module Coveo {
+export function SortCriteriaTest() {
   describe('SortCriteria', function () {
 
     it('should construct properly without a direction', function () {

@@ -62,7 +62,7 @@ export class FacetSearchParameters {
     var request: IGroupByRequest = {
       allowedValues: typedByUser.concat(this.alwaysInclude).concat(this.alwaysExclude),
       maximumNumberOfValues: nbResults,
-      completeFacetWithStandardValues: true,
+      completeFacetWithStandardValues: this.facet.options.lookupField ? false : true, // See : https://coveord.atlassian.net/browse/JSUI-728
       field: this.facet.options.field,
       sortCriteria: this.facet.options.sortCriteria || this.sortCriteria,
       injectionDepth: this.facet.options.injectionDepth,

@@ -1,5 +1,4 @@
 import {IQueryResult} from '../rest/QueryResult';
-import _ = require('underscore');
 
 const isCoveoFieldRegex = /^@[a-zA-Z0-9_\.]+$/
 
@@ -233,6 +232,9 @@ export class Utils {
   }
 
   static extendDeep(target, src): {} {
+    if (!target) {
+      target = {};
+    }
     let isArray = _.isArray(src)
     let toReturn = isArray && [] || {}
     if (isArray) {
@@ -320,9 +322,8 @@ export class Utils {
     return camelCased.replace(/([a-z][A-Z])/g, (g) => g[0] + '-' + g[1].toLowerCase());
   }
 
-  // http://stackoverflow.com/a/8412989
+  // Based on http://stackoverflow.com/a/8412989
   static parseXml(xml: string): XMLDocument {
-    var parseXml;
     if (typeof DOMParser != 'undefined') {
       return (new DOMParser()).parseFromString(xml, 'text/xml');
     } else if (typeof ActiveXObject != 'undefined' && new ActiveXObject('Microsoft.XMLDOM')) {

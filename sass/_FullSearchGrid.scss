@@ -23,11 +23,19 @@ $border-box-sizing: false;
   .coveo-facet-column {
     @include span-columns(3);
     padding: 5px 15px;
+    &.coveo-no-results {
+      display: none;
+    }
   }
 
   .coveo-results-column {
     overflow: hidden;
     padding: 10px 10px 10px 15px;
+    &.coveo-no-results {
+      max-width: 50%;
+      margin: auto;
+      text-align: center;
+    }
   }
 }
 
@@ -45,6 +53,12 @@ $border-box-sizing: false;
     margin-bottom: 13px;
   }
   box-shadow: 0 -1px 0px 0px $color-light-grey inset;
+  &.coveo-no-results {
+    box-shadow: none;
+  }
+  &.coveo-query-error {
+    box-shadow: none;
+  }
 }
 
 @include mediaSelector(480) {

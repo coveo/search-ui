@@ -1,3 +1,4 @@
+'use strict';
 const gulp = require('gulp');
 const shell = require('gulp-shell');
 const colors = require('colors');
@@ -5,11 +6,15 @@ const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const buildUtilities = require('../gulpTasks/buildUtilities.js');
 
-var webpackConfig = require('../webpack.config.js');
-webpackConfig.entry['CoveoJsSearch'].unshift('webpack-dev-server/client?http://localhost:8080/');
-const compiler = webpack(webpackConfig);
+let webpackConfigSrc = require('../webpack.config.js');
+webpackConfigSrc.entry['CoveoJsSearch'].unshift('webpack-dev-server/client?http://localhost:8080/');
+const compilerSrc = webpack(webpackConfigSrc);
 
-compiler.plugin('done', function () {
+let webpackConfigTest = require('../webpack.test.config');
+webpackConfigSrc.entry['tests'].unshift('webpack-dev-server/client?http://localhost:8081/');
+const compilerTest = webpack(webpackConfigTest);
+
+compilerSrc.plugin('done', function () {
   setTimeout(function () {
     console.log('... Compiler done ... Linking external projects'.black.bgGreen);
     buildUtilities.exec('node', ['./environments/link.externally.js'], undefined, function () {
@@ -17,13 +22,24 @@ compiler.plugin('done', function () {
   }, 1000)
 })
 
-gulp.task('dev', ['setup', 'prepareSass'], function (done) {
-  var server = new WebpackDevServer(compiler, {
+gulp.task('dev', ['setup', 'prepareSass', 'setupTests'], function (done) {
+  var serverSrc = new WebpackDevServer(compilerSrc, {
     contentBase: 'bin/',
     publicPath: '/js/',
     compress: true
   });
-  server.listen(8080, 'localhost', function () {
+  serverSrc.listen(8080, 'localhost', ()=> {
   });
+  done();
+})
+
+gulp.task('devTest', ['setupTests'], function (done) {
+  var serverTests = new WebpackDevServer(compilerTest, {
+    contentBase: 'bin/',
+    publicPath: '/tests/',
+    compress: true
+  });
+  serverTests.listen(8081, 'localhost', ()=> {
+  })
   done();
 })

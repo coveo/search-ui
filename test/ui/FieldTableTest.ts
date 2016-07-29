@@ -1,5 +1,10 @@
-/// <reference path="../Test.ts" />
-module Coveo {
+import * as Mock from '../MockEnvironment';
+import {FieldTable} from '../../src/ui/FieldTable/FieldTable';
+import {$$} from '../../src/utils/Dom';
+import {FakeResults} from '../Fake';
+import {IFieldTableOptions} from '../../src/ui/FieldTable/FieldTable';
+
+export function FieldTableTest() {
   describe('FieldTable', function () {
     let test: Mock.IBasicComponentSetup<FieldTable>;
     let element: HTMLElement;

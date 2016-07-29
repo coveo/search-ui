@@ -9,7 +9,6 @@ import {IIndexFieldValue} from '../../rest/FieldValue';
 import {IListFieldValuesRequest} from '../../rest/ListFieldValuesRequest';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import {Initialization} from '../Base/Initialization';
-import {IOmniboxDataRow} from '../Omnibox/OmniboxInterface';
 import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
 import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom';

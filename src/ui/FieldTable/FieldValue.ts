@@ -11,7 +11,6 @@ import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
 import {Utils} from '../../utils/Utils'
 import {Facet} from '../Facet/Facet'
 import {$$} from '../../utils/Dom'
-import _ = require('underscore');
 
 export interface IFieldValueOptions {
   field?: string;
@@ -284,15 +283,6 @@ export class FieldValue extends Component {
         $$(element).addClass('coveo-selected');
       }
       $$(element).addClass('coveo-clickable');
-    }
-  }
-
-  private static initSimpleOptions() {
-    let options = {};
-    for (let key in FieldValue.options) {
-      if (key != 'helperOptions') {
-        options[key] = FieldValue.options[key];
-      }
     }
   }
 

@@ -6,23 +6,19 @@ module.exports = {
       watched: false
     },
     {
+      pattern: './node_modules/es6-promise/dist/es6-promise.min.js',
+      watched: false
+    },
+    {
+      pattern: './test/lib/promise.polyfill.js',
+      watched: false
+    },
+    {
       pattern: './test/lib/jasmine-2.4.1/jasmine.css',
       watched: false
     },
     {
       pattern: './test/lib/jasmine-ajax/jasmine-ajax.js',
-      watched: false
-    },
-    {
-      pattern: './test/lib/jquery.js',
-      watched: false
-    },
-    {
-      pattern: './bin/js/CoveoJsSearch.js',
-      watched: true
-    },
-    {
-      pattern: './bin/js/CoveoJsSearch.Dependencies.js',
       watched: false
     },
     {
@@ -34,13 +30,18 @@ module.exports = {
     'karma-jasmine',
     'karma-chrome-launcher',
     'karma-phantomjs-launcher',
-    'karma-coverage'
+    'karma-coverage',
+    'karma-spec-reporter'
   ],
   preprocessors: {
-    './bin/js/CoveoJsSearch.js': 'coverage'
+    './bin/tests/tests.js': 'coverage'
   },
-  reporters: ['progress', 'coverage'],
+  reporters: ['coverage', 'spec'],
   coverageReporter: {
-    type: 'text-summary'
+    dir: './bin/coverage',
+    reporters: [
+      { type: 'json', subdir: '.', file: 'coverage-es5.json' },
+      { type: 'lcov', subdir: 'lcov-es5' }
+    ]
   }
 }

@@ -1,9 +1,5 @@
 import {IQueryResult} from '../rest/QueryResult';
-import {Options} from '../misc/Options';
-import {DeviceUtils} from '../utils/DeviceUtils';
 import {l} from '../strings/Strings';
-import _ = require('underscore');
-
 
 export interface IMailToOptions {
   currentUserEmail?: string;
@@ -133,9 +129,6 @@ export class DefaultMailToOptions implements IMailToOptions {
 
 export class MailTo {
   private value: string;
-  private toArray: string[];
-  private ccArray: string[];
-  private bccArray: string[];
   private body: string;
   private bodyHeader: string = '';
   static enter: string = '%0D%0A'; // \r\n
@@ -158,27 +151,9 @@ export class MailTo {
     this.options.bcc = EmailActionsUtils.removeCurrentUserEmailFromString(this.options.currentUserEmail, this.options.bcc);
   }
 
-  private setRecipientsArrays() {
-    this.toArray = this.options.to ? this.options.to.split(';') : [];
-    this.ccArray = this.options.cc ? this.options.cc.split(';') : [];
-    this.bccArray = this.options.bcc ? this.options.bcc.split(';') : [];
-  }
-
   public open() {
     this.ensureValueIsSet();
     window.location.href = this.value;
-  }
-
-  private getEmailOpenerObject(shortenBody: string) {
-    var obj = {
-      to: this.toArray,
-      cc: this.ccArray,
-      bcc: this.bccArray,
-      subject: this.options.subject,
-      body: shortenBody,
-      isHtml: this.options.bodyIsHTML
-    }
-    return obj;
   }
 
   private ensureValueIsSet() {

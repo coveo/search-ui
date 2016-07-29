@@ -14,7 +14,6 @@ import {Cookie} from '../utils/CookieUtils';
 import {ISuccessResponse} from '../rest/EndpointCaller';
 import {IStringMap} from '../rest/GenericParam';
 import {Promise} from 'es6-promise';
-import _ = require('underscore');
 
 export interface IAnalyticsEndpointOptions {
   token: string;

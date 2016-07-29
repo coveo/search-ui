@@ -1,5 +1,16 @@
-/// <reference path="../Test.ts" />
-module Coveo {
+import * as Mock from '../MockEnvironment';
+import {FieldValue} from '../../src/ui/FieldTable/FieldValue';
+import {FakeResults} from '../Fake';
+import {IFieldValueOptions} from '../../src/ui/FieldTable/FieldValue';
+import {$$} from '../../src/utils/Dom';
+import {TemplateHelpers} from '../../src/ui/Templates/TemplateHelpers';
+import {Facet} from '../../src/ui/Facet/Facet';
+import {FacetValues} from '../../src/ui/Facet/FacetValues';
+import {FacetValue} from '../../src/ui/Facet/FacetValues';
+import {IDateToStringOptions} from '../../src/utils/DateUtils';
+import {DateUtils} from '../../src/utils/DateUtils';
+
+export function FieldValueTest() {
   describe('FieldValue', () => {
     let test: Mock.IBasicComponentSetup<FieldValue>;
     let element: HTMLElement;

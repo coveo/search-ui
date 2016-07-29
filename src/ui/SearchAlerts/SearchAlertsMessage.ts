@@ -59,9 +59,10 @@ export class SearchAlertsMessage extends Component {
    */
   public showMessage(dom: Dom, message: string, error: boolean) {
     this.message = $$('div');
-    this.message.el.innerHTML = `<div class='coveo-subscriptions-messages-message'>
+    this.message.el.innerHTML = `
+      <div class='coveo-subscriptions-messages-message'>
         <div class='coveo-subscriptions-messages-info-close'></div>
-        <div class='coveo-subscriptions-messages-content'>${ message}</div>
+        <div class='coveo-subscriptions-messages-content' title='${message}'>${message}</div>
       </div>`;
 
     this.message.toggleClass('coveo-subscriptions-messages-error', error);
@@ -73,7 +74,7 @@ export class SearchAlertsMessage extends Component {
       vertical: VerticalAlignment.BOTTOM,
       verticalOffset: 12,
       horizontalClip: true
-    });
+    }, this.root);
 
     this.startCloseDelay();
 

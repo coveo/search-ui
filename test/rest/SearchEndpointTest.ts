@@ -1,19 +1,31 @@
-/// <reference path="../Test.ts" />
-module Coveo {
-  import SearchEndpoint = Coveo.SearchEndpoint;
+import {SearchEndpoint} from '../../src/rest/SearchEndpoint';
+import {FakeResults} from '../Fake';
+import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
+import {IQueryResults} from '../../src/rest/QueryResults';
+import {IErrorResponse} from '../../src/rest/EndpointCaller';
+import {IQueryResult} from '../../src/rest/QueryResult';
+import {IListFieldValuesRequest} from '../../src/rest/ListFieldValuesRequest';
+import {IIndexFieldValue} from '../../src/rest/FieldValue';
+import {IExtension} from '../../src/rest/Extension';
+import {IFieldDescription} from '../../src/rest/FieldDescription';
+import {IRevealQuerySuggestResponse} from '../../src/rest/RevealQuerySuggest';
+import {ISubscription} from '../../src/rest/Subscription';
+import {AjaxError} from '../../src/rest/AjaxError';
+
+export function SearchEndpointTest() {
   describe('SearchEndpoint', function () {
 
     beforeEach(function () {
-      Coveo.SearchEndpoint.endpoints = {};
+      SearchEndpoint.endpoints = {};
     });
 
     afterEach(function () {
-      Coveo.SearchEndpoint.endpoints = {};
+      SearchEndpoint.endpoints = {};
     });
 
     it('allow to setup easily a search endpoint to point to a sample endpoint', function () {
       SearchEndpoint.configureSampleEndpoint();
-      var ep: SearchEndpoint = Coveo.SearchEndpoint.endpoints['default'];
+      var ep: SearchEndpoint = SearchEndpoint.endpoints['default'];
       expect(ep).toBeDefined();
       expect(ep.options.accessToken).toBeDefined();
       expect(ep.options.restUri).toBeDefined();
@@ -21,7 +33,7 @@ module Coveo {
 
     it('allow to setup easily a cloud endpoint', function () {
       SearchEndpoint.configureCloudEndpoint('foo', 'bar');
-      var ep: SearchEndpoint = Coveo.SearchEndpoint.endpoints['default'];
+      var ep: SearchEndpoint = SearchEndpoint.endpoints['default'];
       expect(ep).toBeDefined();
       expect(ep.options.accessToken).toBe('bar');
       expect(ep.options.queryStringArguments['organizationId']).toBe('foo');
@@ -29,7 +41,7 @@ module Coveo {
 
     it('allow to setup easily a on prem endpoint', function () {
       SearchEndpoint.configureOnPremiseEndpoint('foo.com');
-      var ep: SearchEndpoint = Coveo.SearchEndpoint.endpoints['default'];
+      var ep: SearchEndpoint = SearchEndpoint.endpoints['default'];
       expect(ep).toBeDefined();
       expect(ep.options.restUri).toBe('foo.com');
     });
@@ -609,5 +621,4 @@ module Coveo {
       }
     }
   }
-
 }

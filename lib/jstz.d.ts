@@ -9,4 +9,7 @@ interface timezone {
   name: () => string;
 }
 
-declare var jstz: jsTimeZoneDetect;
+declare module "jstz" {
+  export var jstz: jsTimeZoneDetect;
+}
+

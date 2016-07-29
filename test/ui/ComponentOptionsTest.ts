@@ -1,5 +1,9 @@
-/// <reference path="../Test.ts" />
-module Coveo {
+import {ComponentOptions} from '../../src/ui/Base/ComponentOptions';
+import {ComponentOptionsType} from '../../src/ui/Base/ComponentOptions';
+import {Dom} from '../../src/utils/Dom';
+import {TemplateCache} from '../../src/ui/Templates/TemplateCache';
+
+export function ComponentOptionsTest() {
   describe('ComponentOptions', () => {
 
     describe('can build', () => {

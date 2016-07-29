@@ -8,7 +8,6 @@ import {Component} from '../Base/Component';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {IResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
 import {l} from '../../strings/Strings';
-import _ = require('underscore');
 
 export class ResponsiveTabs implements IResponsiveComponent {
 
@@ -25,7 +24,6 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private coveoRoot: Dom;
   private documentClickListener: EventListener;
   private searchInterface: SearchInterface;
-  private tabSectionChildren: Array<HTMLElement> = [];
 
   constructor(root: Dom, ID: string) {
     this.ID = ID;
@@ -274,7 +272,6 @@ export class ResponsiveTabs implements IResponsiveComponent {
         let tabsInSection = this.getTabsInTabSection();
         let lastTabInSection = tabsInSection.pop();
         let lastTabSectionSibling = lastTabInSection.previousSibling;
-
         if (event.propertyName == 'opacity') {
           if (tab.el.style.opacity == '0') {
 
@@ -341,7 +338,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
   private positionPopup() {
     PopupUtils.positionPopup(this.dropdownContent.el, this.dropdownHeader.el, this.coveoRoot.el,
-      { horizontal: HorizontalAlignment.INNERLEFT, vertical: VerticalAlignment.BOTTOM });
+      { horizontal: HorizontalAlignment.INNERLEFT, vertical: VerticalAlignment.BOTTOM }, this.coveoRoot.el);
   }
 
   private getTabsInTabSection(): HTMLElement[] {
