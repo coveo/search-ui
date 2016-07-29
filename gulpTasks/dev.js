@@ -12,7 +12,7 @@ webpackConfig.entry['CoveoJsSearch'].unshift('webpack-dev-server/client?http://l
 const compiler = webpack(webpackConfig);
 
 let webpackConfigTest = require('../webpack.test.config');
-webpackConfigSrc.entry['tests'].unshift('webpack-dev-server/client?http://localhost:8081/');
+webpackConfigTest.entry['tests'].unshift('webpack-dev-server/client?http://localhost:8081/');
 const compilerTest = webpack(webpackConfigTest);
 
 let debounced = _.debounce(()=> {
