@@ -56,6 +56,9 @@ $border-box-sizing: false;
   &.coveo-no-results {
     box-shadow: none;
   }
+  &.coveo-query-error {
+    box-shadow: none;
+  }
 }
 
 @include mediaSelector(480) {
