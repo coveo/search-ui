@@ -151,17 +151,11 @@ export class AdvancedSearch extends Component {
   }
 
   private updateQueryStateModel() {
-    let query = this.queryStateModel.get(QueryStateModel.attributesEnum.q);
-    let queryStateInput = _.filter(this.inputs, (input) => {
-      return input.shouldUpdateQueryState();
-    })
-    _.each(queryStateInput, (input) => {
-      let inputValue = input.getValue();
-      if (inputValue) {
-        query += query ? '(' + inputValue + ')' : inputValue;
+    _.each(this.inputs, (input) => {
+      if (input.updateQueryState) {
+        input.updateQueryState(this.queryStateModel);
       }
     })
-    this.queryStateModel.set(QueryStateModel.attributesEnum.q, query);
   }
 
   private bindEvents() {
@@ -175,13 +169,9 @@ export class AdvancedSearch extends Component {
     });
 
     this.bind.onRootElement(QueryEvents.buildingQuery, (data: IBuildingQueryEventArgs) => {
-      let buildingQueryInputs = _.filter(this.inputs, (input) => {
-        return input.shouldUpdateOnBuildingQuery();
-      })
-      _.each(buildingQueryInputs, (input) => {
-        let value = input.getValue();
-        if (value) {
-          data.queryBuilder.advancedExpression.add(value);
+      _.each(this.inputs, (input) => {
+        if (input.updateQuery) {
+          input.updateQuery(data.queryBuilder);
         }
       })
     })

@@ -1,5 +1,6 @@
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {IAdvancedSearchInput} from './AdvancedSearchInput';
+import {QueryStateModel} from '../../models/QueryStateModel';
 import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom'
 
@@ -32,12 +33,13 @@ export class KeywordsInput implements IAdvancedSearchInput {
     input.value = '';
   }
 
-  public shouldUpdateQueryState(): boolean {
-    return true;
-  }
-
-  public shouldUpdateOnBuildingQuery(): boolean {
-    return false;
+  public updateQueryState(queryState: QueryStateModel) {
+    let query = queryState.get(QueryStateModel.attributesEnum.q);
+    let value = this.getValue();
+    if (value) {
+      query += query ? ' (' + value + ')' : value;
+    }
+    queryState.set(QueryStateModel.attributesEnum.q, query);
   }
 }
 

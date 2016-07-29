@@ -1,8 +1,10 @@
+import {QueryStateModel} from '../../models/QueryStateModel';
+import {QueryBuilder} from '../Base/QueryBuilder';
+
 export interface IAdvancedSearchInput {
   build: () => HTMLElement,
-  getValue: () => string,
-  shouldUpdateQueryState: () => boolean;
-  shouldUpdateOnBuildingQuery: () => boolean;
+  updateQueryState?: (queryState: QueryStateModel) => void;
+  updateQuery?: (queryBuilder: QueryBuilder) => void;
 }
 
 export interface IAdvancedSearchSection {

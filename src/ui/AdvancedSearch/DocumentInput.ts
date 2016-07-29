@@ -2,6 +2,7 @@ import {ComponentOptions} from '../Base/ComponentOptions';
 import {IAdvancedSearchInput} from './AdvancedSearchInput';
 import {ISearchEndpoint} from '../../rest/SearchEndpointInterface';
 import {IIndexFieldValue} from '../../rest/FieldValue';
+import {QueryBuilder} from '../Base/QueryBuilder';
 import {FacetUtils} from '../Facet/FacetUtils';
 import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom';
@@ -15,6 +16,13 @@ export class DocumentInput implements IAdvancedSearchInput {
     return '';
   }
 
+  public updateQuery(queryBuilder: QueryBuilder): void {
+    let value = this.getValue();
+    if (value) {
+      queryBuilder.expression.add(this.getValue());
+    }
+  }
+
   protected buildSelect(options: string[]): HTMLSelectElement {
     let select = $$('select', { className: 'coveo-advanced-search-select' });
     _.each(options, (option) => {
@@ -23,14 +31,6 @@ export class DocumentInput implements IAdvancedSearchInput {
       select.append(optionHTML.el);
     })
     return <HTMLSelectElement>select.el;
-  }
-
-  public shouldUpdateQueryState(): boolean {
-    return false;
-  }
-
-  public shouldUpdateOnBuildingQuery(): boolean {
-    return true;
   }
 }
 

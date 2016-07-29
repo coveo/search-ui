@@ -1,5 +1,6 @@
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {IAdvancedSearchInput} from './AdvancedSearchInput';
+import {QueryBuilder} from '../Base/QueryBuilder';
 import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom';
 
@@ -28,20 +29,19 @@ export class DateInput implements IAdvancedSearchInput {
     return this.element;
   }
 
-  public isSelected(): boolean {
-    return this.getRadio().checked;
-  }
-
   public getValue(): string {
     return '';
   }
 
-  public shouldUpdateQueryState(): boolean {
-    return false;
+  public isSelected(): boolean {
+    return this.getRadio().checked;
   }
 
-  public shouldUpdateOnBuildingQuery(): boolean {
-    return true;
+  public updateQuery(queryBuilder: QueryBuilder) {
+    let value = this.getValue();
+    if (value) {
+      queryBuilder.expression.add(this.getValue());
+    }
   }
 
   protected getRadio(): HTMLInputElement {
