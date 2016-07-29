@@ -195,7 +195,9 @@ export class Slider {
   }
 
   public drawGraph(data?: ISliderGraphData[]) {
-    this.sliderGraph.draw(data);
+    if (this.sliderGraph) {
+      this.sliderGraph.draw(data);
+    }
   }
 
   private setButtonBoundary() {

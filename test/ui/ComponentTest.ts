@@ -1,9 +1,13 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {Component} from '../../src/ui/Base/Component';
+import {$$} from '../../src/utils/Dom';
+import {IQueryResult} from '../../src/rest/QueryResult';
+import {FakeResults} from '../Fake';
 
-module Coveo {
-  import MockEnvironment = Coveo.Mock.IMockEnvironment;
+
+export function ComponentTest() {
   describe('Component', () => {
-    let env: MockEnvironment;
+    let env: Mock.IMockEnvironment;
     let cmp: Component;
 
     beforeEach(function () {

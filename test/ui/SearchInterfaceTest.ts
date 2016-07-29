@@ -1,6 +1,22 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {SearchInterface} from '../../src/ui/SearchInterface/SearchInterface';
+import {NoopAnalyticsClient} from '../../src/ui/Analytics/NoopAnalyticsClient';
+import {QueryController} from '../../src/controllers/QueryController';
+import {QueryStateModel} from '../../src/models/QueryStateModel';
+import {ComponentOptionsModel} from '../../src/models/ComponentOptionsModel';
+import {ComponentStateModel} from '../../src/models/ComponentStateModel';
+import {Querybox} from '../../src/ui/Querybox/Querybox';
+import {LiveAnalyticsClient} from '../../src/ui/Analytics/LiveAnalyticsClient';
+import {$$} from '../../src/utils/Dom';
+import {QueryEvents} from '../../src/events/QueryEvents';
+import {Component} from '../../src/ui/Base/Component';
+import {HistoryController} from '../../src/controllers/HistoryController';
+import {LocalStorageHistoryController} from '../../src/controllers/LocalStorageHistoryController';
+import {Simulate} from '../Simulate';
+import {Debug} from '../../src/ui/Debug/Debug';
+import {FakeResults} from '../Fake';
 
-module Coveo {
+export function SearchInterfaceTest() {
   describe('SearchInterface', () => {
 
     let cmp: SearchInterface;
@@ -74,12 +90,12 @@ module Coveo {
     it('should hide the animation after a query success, but only once', function (done) {
       cmp.showWaitAnimation();
       expect(cmp.options.firstLoadingAnimation.parentElement).toBe(cmp.element);
-      $$(cmp.root).trigger(QueryEvents.querySuccess);
+      $$(cmp.root).trigger(QueryEvents.querySuccess, { results: FakeResults.createFakeResults(10) });
       _.defer(() => {
         expect(cmp.options.firstLoadingAnimation.parentElement).toBeNull();
         cmp.showWaitAnimation();
         expect(cmp.options.firstLoadingAnimation.parentElement).toBe(cmp.element);
-        $$(cmp.root).trigger(QueryEvents.querySuccess);
+        $$(cmp.root).trigger(QueryEvents.querySuccess, { results: FakeResults.createFakeResults(10) });
         _.defer(() => {
           expect(cmp.options.firstLoadingAnimation.parentElement).toBe(cmp.element);
           done();
@@ -101,6 +117,31 @@ module Coveo {
           done();
         })
       })
+    })
+
+    it('should set the correct css class on multiple section, if available', () => {
+      let facetSection = $$('div', { className: 'coveo-facet-column' });
+      let resultsSection = $$('div', { className: 'coveo-results-column' });
+      cmp.element.appendChild(facetSection.el);
+      cmp.element.appendChild(resultsSection.el);
+      $$(cmp.element).trigger(QueryEvents.querySuccess, {
+        results: FakeResults.createFakeResults(0)
+      })
+      expect(facetSection.hasClass('coveo-no-results')).toBe(true);
+      expect(resultsSection.hasClass('coveo-no-results')).toBe(true);
+      $$(cmp.element).trigger(QueryEvents.querySuccess, {
+        results: FakeResults.createFakeResults(10)
+      })
+      expect(facetSection.hasClass('coveo-no-results')).toBe(false);
+      expect(resultsSection.hasClass('coveo-no-results')).toBe(false);
+      $$(cmp.element).trigger(QueryEvents.queryError)
+      expect(facetSection.hasClass('coveo-no-results')).toBe(true);
+      expect(resultsSection.hasClass('coveo-no-results')).toBe(true);
+      $$(cmp.element).trigger(QueryEvents.querySuccess, {
+        results: FakeResults.createFakeResults(10)
+      })
+      expect(facetSection.hasClass('coveo-no-results')).toBe(false);
+      expect(resultsSection.hasClass('coveo-no-results')).toBe(false);
     })
 
     describe('exposes options', function () {

@@ -1,6 +1,9 @@
-/// <reference path="../Test.ts" />
-
-module Coveo {
+import {AnalyticsEndpoint} from '../../src/rest/AnalyticsEndpoint';
+import {IErrorResponse} from '../../src/rest/EndpointCaller';
+import {FakeResults} from '../Fake';
+import {IAPIAnalyticsSearchEventsResponse} from '../../src/rest/APIAnalyticsSearchEventsResponse';
+import {IAPIAnalyticsEventResponse} from '../../src/rest/APIAnalyticsEventResponse';
+export function AnalyticsEndpointTest() {
   function buildUrl(endpoint: AnalyticsEndpoint, path: string) {
     return endpoint.options.serviceUrl + '/rest/' + AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION + path;
   }

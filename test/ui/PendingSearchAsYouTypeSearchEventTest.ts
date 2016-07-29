@@ -1,6 +1,9 @@
-/// <reference path="../Test.ts" />
+import {PendingSearchAsYouTypeSearchEvent} from '../../src/ui/Analytics/PendingSearchAsYouTypeSearchEvent';
+import {AnalyticsEndpoint} from '../../src/rest/AnalyticsEndpoint';
+import {FakeResults} from '../Fake';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
-module Coveo {
+export function PendingSearchAsYouTypeSearchEventTest() {
   describe('PendingSearchAsYouTypeSearchEvent', () => {
     let pendingEvent: PendingSearchAsYouTypeSearchEvent;
     let root: HTMLElement;

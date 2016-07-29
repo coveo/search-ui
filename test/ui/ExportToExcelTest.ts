@@ -1,6 +1,10 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {ExportToExcel} from '../../src/ui/ExportToExcel/ExportToExcel';
+import {IExportToExcelOptions} from '../../src/ui/ExportToExcel/ExportToExcel';
+import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
-module Coveo {
+export function ExportToExcelTest() {
   describe('ExportToExcel', function () {
     var test: Mock.IBasicComponentSetup<ExportToExcel>;
 

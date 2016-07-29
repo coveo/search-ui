@@ -1,6 +1,15 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {Analytics} from '../../src/ui/Analytics/Analytics';
+import {SearchEndpoint} from '../../src/rest/SearchEndpoint';
+import {IAnalyticsOptions} from '../../src/ui/Analytics/Analytics';
+import {Simulate} from '../Simulate';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import {NoopAnalyticsClient} from '../../src/ui/Analytics/NoopAnalyticsClient';
+import {LiveAnalyticsClient} from '../../src/ui/Analytics/LiveAnalyticsClient';
+import {MultiAnalyticsClient} from '../../src/ui/Analytics/MultiAnalyticsClient';
 
-module Coveo {
+
+export function AnalyticsTest() {
   describe('Analytics', () => {
 
     describe('with default setup', () => {

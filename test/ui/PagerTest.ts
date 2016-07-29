@@ -1,5 +1,16 @@
-/// <reference path="../Test.ts" />
-module Coveo {
+import * as Mock from '../MockEnvironment';
+import {Pager} from '../../src/ui/Pager/Pager';
+import {registerCustomMatcher} from '../CustomMatchers';
+import {$$} from '../../src/utils/Dom';
+import {IBuildingQueryEventArgs} from '../../src/events/QueryEvents';
+import {Simulate} from '../Simulate';
+import {FakeResults} from '../Fake';
+import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
+import {QueryEvents} from '../../src/events/QueryEvents';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import {IPagerOptions} from '../../src/ui/Pager/Pager';
+
+export function PagerTest() {
   describe('Pager', function () {
     var test: Mock.IBasicComponentSetup<Pager>;
 

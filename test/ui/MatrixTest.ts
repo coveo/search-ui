@@ -1,6 +1,14 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {Matrix} from '../../src/ui/Matrix/Matrix';
+import {IMatrixOptions} from '../../src/ui/Matrix/Matrix';
+import {IQueryResults} from '../../src/rest/QueryResults';
+import {FakeResults} from '../Fake';
+import {Simulate} from '../Simulate';
+import {$$} from '../../src/utils/Dom';
+import {Cell} from '../../src/ui/Matrix/Cell';
+import * as Globalize from 'globalize';
 
-module Coveo {
+export function MatrixTest() {
   describe('Matrix', function () {
     var test: Mock.IBasicComponentSetup<Matrix>;
 

@@ -1,5 +1,13 @@
-/// <reference path="../Test.ts"" />
-module Coveo {
+import {FacetHeader} from '../../src/ui/Facet/FacetHeader';
+import {IFacetHeaderOptions} from '../../src/ui/Facet/FacetHeader';
+import {$$} from '../../src/utils/Dom';
+import {Facet} from '../../src/ui/Facet/Facet';
+import {IFacetOptions} from '../../src/ui/Facet/Facet';
+import {registerCustomMatcher} from '../CustomMatchers';
+import * as Mock from '../MockEnvironment';
+import {FacetSettings} from '../../src/ui/Facet/FacetSettings';
+
+export function FacetHeaderTest() {
   describe('FacetHeader', function () {
     var facetHeader: FacetHeader;
     var baseOptions: IFacetHeaderOptions;
