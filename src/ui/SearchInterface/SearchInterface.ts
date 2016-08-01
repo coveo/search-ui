@@ -561,7 +561,7 @@ export class SearchInterface extends RootComponent {
     this.toggleSectionState('coveo-no-results', noResults);
     let resultsHeader = $$(this.element).find('.coveo-results-header');
     if (resultsHeader) {
-      $(resultsHeader).removeClass('coveo-query-error');
+      $$(resultsHeader).removeClass('coveo-query-error');
     }
   }
 
