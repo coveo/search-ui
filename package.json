@@ -113,7 +113,7 @@
     "yargs": "^4.7.1"
   },
   "dependencies": {
-    "coveomagicbox": "1.0.11",
+    "coveomagicbox": "1.0.12",
     "d3": "^3.5.17",
     "es6-promise": "^3.1.2",
     "exports-loader": "^0.6.3",
