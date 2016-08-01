@@ -37,16 +37,19 @@ export class CurrentTab extends Component {
     super(element, CurrentTab.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, CurrentTab, options);
-    var eventName = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.t);
+    let eventName = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.t);
     this.bind.onRootElement(eventName, this.handleTabChange);
     if (this.options.tabSectionToOpen) {
       let tabSection = $$(this.root).find(this.options.tabSectionToOpen);
       $$(tabSection).addClass('coveo-targeted-by-current-tab');
       $$(this.element).addClass('coveo-targeting-tab-section');
       this.bind.on(this.element, 'click', () => {
-        let glass = $$($$(this.root).find('.coveo-glass'));
-        glass.toggleClass('coveo-active-glass')
-        glass.toggleClass('coveo-active-glass-for-current-tab');
+        let glassElement = $$(this.root).find('.coveo-glass');
+        if (glassElement) {
+          let glass = $$(glassElement);
+          glass.toggleClass('coveo-active-glass');
+          glass.toggleClass('coveo-active-glass-for-current-tab');
+        }
         $$(this.element).toggleClass('coveo-opening-tab-section');
         $$(tabSection).toggleClass('coveo-opened-by-current-tab');
         if ($$(this.element).hasClass('coveo-opening-tab-section')) {
@@ -61,12 +64,12 @@ export class CurrentTab extends Component {
   }
 
   private handleTabChange() {
-    var selectedTabId = this.queryStateModel.get(QueryStateModel.attributesEnum.t);
+    let selectedTabId = this.queryStateModel.get(QueryStateModel.attributesEnum.t);
     if (Utils.isNonEmptyString(selectedTabId)) {
-      var found = false;
+      let found = false;
       let tabs = $$(this.root).findAll(Component.computeSelectorForType(Tab.ID))
       _.each(tabs, (elem: HTMLElement) => {
-        var tab = <Tab>Component.get(elem, Tab);
+        let tab = <Tab>Component.get(elem, Tab);
         if (tab.options.id == selectedTabId) {
           this.element.innerHTML = tab.element.innerHTML;
           found = true;
