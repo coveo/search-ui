@@ -17,6 +17,6 @@ conf = _.extend(conf, {
     publicPath : '/js/',
     devtoolModuleFilenameTemplate: '[resource-path]'
   }
-})
+});
 
 module.exports = conf;

@@ -24,7 +24,7 @@ let match = branchName.match(issueRegex);
 if (match) {
   issueNumber = match[0].toUpperCase();
 } else {
-  console.log(colors.red(`Could not find JIRA issue in branch name 
+  console.log(colors.red(`Could not find JIRA issue in branch name
 You can disable this hook using the repo git config:
 [jirahook]
 disable = true`));
