@@ -3,6 +3,7 @@ import {CurrentTab} from '../../src/ui/CurrentTab/CurrentTab';
 import {QueryStateModel} from '../../src/models/QueryStateModel';
 import {$$} from '../../src/utils/Dom';
 import {Tab} from '../../src/ui/Tab/Tab';
+import {Assert} from '../../src/misc/Assert';
 
 export function CurrentTabTest() {
   describe('CurrentTab', () => {
@@ -38,6 +39,27 @@ export function CurrentTabTest() {
       expect($$(test.cmp.element).text()).toEqual('First');
       tab2.cmp.select();
       expect($$(test.cmp.element).text()).toEqual('Second');
+    })
+
+    it('does not explode when a tab section to open is defined and no element has class coveo-glass', () => {
+      let el = $$('div');
+      let tabSection = $$('div', { className: 'tabSection' });
+      let root = $$('div');
+      root.append(tabSection.el);
+
+      let model = new QueryStateModel(root.el);
+      let tab1 = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, { id: 'first', caption: 'First' }, (builder) => {
+        return builder.withRoot(root.el).withQueryStateModel(model);
+      }));
+
+      test = Mock.advancedComponentSetup<CurrentTab>(CurrentTab, new Mock.AdvancedComponentSetupOptions(undefined, { tabSectionToOpen: '.tabSection' }, (builder) => {
+        return builder.withRoot(root.el).withQueryStateModel(model);
+      }));
+
+      spyOn(Assert, 'failureHandler').and.callThrough;
+      test.cmp.element.click();
+
+      expect(Assert.failureHandler).not.toHaveBeenCalled();
     })
 
   })
