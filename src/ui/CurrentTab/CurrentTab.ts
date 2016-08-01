@@ -40,7 +40,7 @@ export class CurrentTab extends Component {
     var eventName = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.t);
     this.bind.onRootElement(eventName, this.handleTabChange);
     if (this.options.tabSectionToOpen) {
-      let tabSection = $$(this.root).find(this.options.tabSectionToOpen);
+      var tabSection = $$(this.root).find(this.options.tabSectionToOpen);
       $$(tabSection).addClass('coveo-targeted-by-current-tab');
       $$(this.element).addClass('coveo-targeting-tab-section');
       this.bind.on(this.element, 'click', () => {
