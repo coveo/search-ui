@@ -979,28 +979,29 @@ export class Facet extends Component {
   protected updateSearchInNewDesign(moreValuesAvailable = true) {
     if (this.searchInterface.isNewDesign() && moreValuesAvailable) {
       let renderer = new ValueElementRenderer(this, FacetValue.create(l('Search')));
-      let built = renderer.build().withNo([renderer.excludeIcon, renderer.icon]);
-      $$(built.listItem).addClass('coveo-facet-search-button');
+      let searchButton = renderer.build().withNo([renderer.excludeIcon, renderer.icon]);
+      $$(searchButton.listItem).addClass('coveo-facet-search-button');
+      searchButton.stylishCheckbox.removeAttribute('tabindex');
 
       // Mobile do not like label. Use click event
       if (DeviceUtils.isMobileDevice()) {
-        $$(built.label).on('click', (e: Event) => {
-          if (built.checkbox.getAttribute('checked')) {
-            built.checkbox.removeAttribute('checked');
+        $$(searchButton.label).on('click', (e: Event) => {
+          if (searchButton.checkbox.getAttribute('checked')) {
+            searchButton.checkbox.removeAttribute('checked');
           } else {
-            built.checkbox.setAttribute('checked', 'checked');
+            searchButton.checkbox.setAttribute('checked', 'checked');
           }
-          $$(built.checkbox).trigger('change');
+          $$(searchButton.checkbox).trigger('change');
           e.stopPropagation();
           e.preventDefault();
         })
       }
 
-      $$(built.checkbox).on('change', () => {
+      $$(searchButton.checkbox).on('change', () => {
         $$(this.element).addClass('coveo-facet-searching');
         this.facetSearch.focus();
       })
-      this.facetValuesList.valueContainer.appendChild(built.listItem);
+      this.facetValuesList.valueContainer.appendChild(searchButton.listItem);
     }
   }
 

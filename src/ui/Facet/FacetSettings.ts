@@ -57,7 +57,6 @@ export class FacetSettings extends FacetSort {
     this.settingsButton = $$('div', {
       className: 'coveo-facet-header-settings',
       title: l('Settings'),
-      tabindex: 0
     }).el;
 
     this.settingsIcon = $$('span', { className: 'coveo-icon' }).el;
@@ -380,7 +379,6 @@ export class FacetSettings extends FacetSort {
     return $$('div', {
       className: 'coveo-facet-settings-item',
       title: _.escape(title),
-      tabindex: 0
     }, _.escape(label)).el;
   }
 
