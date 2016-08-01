@@ -18,7 +18,7 @@ export class FacetSearchValuesList {
       }) || facetValue
     });
     return _.map(valuesToBuildWith, (facetValue) => {
-      return new this.facetValueElementKlass(this.facet, facetValue, this.facet.keepDisplayedValuesNextTime).build().renderer.listElement;
+      return new this.facetValueElementKlass(this.facet, facetValue, this.facet.keepDisplayedValuesNextTime).build().renderer.listItem;
     })
   }
 }

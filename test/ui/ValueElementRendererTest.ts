@@ -25,8 +25,8 @@ export function ValueElementRendererTest() {
 
     it('should build a list element', function () {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 1234)));
-      expect(valueRenderer.build().listElement).toBeDefined();
-      expect(valueRenderer.build().listElement.getAttribute('data-value')).toBe('foo');
+      expect(valueRenderer.build().listItem).toBeDefined();
+      expect(valueRenderer.build().listItem.getAttribute('data-value')).toBe('foo');
     })
 
     it('should build a label', function () {

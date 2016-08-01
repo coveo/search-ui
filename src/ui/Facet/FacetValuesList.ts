@@ -114,7 +114,7 @@ export class FacetValuesList {
       } else if (index < toCompare) {
         var valueElement = new this.facetValueElementKlass(this.facet, facetValue, true);
         this.valueList[facetValue.value.toLowerCase()] = valueElement;
-        var valueListElement = valueElement.build().renderer.listElement;
+        var valueListElement = valueElement.build().renderer.listItem;
         this.valueContainer.appendChild(valueListElement);
       }
     });

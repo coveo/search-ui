@@ -99,7 +99,7 @@
     vertical-align: middle;
   }
 
-  &:hover {
+  &:hover, &.coveo-focused {
     background-color: $color-blueish-white-grey;
   }
 

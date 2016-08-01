@@ -980,7 +980,7 @@ export class Facet extends Component {
     if (this.searchInterface.isNewDesign() && moreValuesAvailable) {
       let renderer = new ValueElementRenderer(this, FacetValue.create(l('Search')));
       let built = renderer.build().withNo([renderer.excludeIcon, renderer.icon]);
-      $$(built.listElement).addClass('coveo-facet-search-button');
+      $$(built.listItem).addClass('coveo-facet-search-button');
 
       // Mobile do not like label. Use click event
       if (DeviceUtils.isMobileDevice()) {
@@ -1000,7 +1000,7 @@ export class Facet extends Component {
         $$(this.element).addClass('coveo-facet-searching');
         this.facetSearch.focus();
       })
-      this.facetValuesList.valueContainer.appendChild(built.listElement);
+      this.facetValuesList.valueContainer.appendChild(built.listItem);
     }
   }
 

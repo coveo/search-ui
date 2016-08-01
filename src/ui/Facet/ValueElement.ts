@@ -110,7 +110,7 @@ export class ValueElement {
   }
 
   protected handleEventForExcludedValueElement(eventBindings: IValueElementEventsBinding) {
-    $$(this.renderer.label).on('click', (event) => {
+    let clickEvent = (event: Event) => {
       if (eventBindings.pinFacet) {
         this.facet.pinFacetPosition();
       }
@@ -118,35 +118,54 @@ export class ValueElement {
         this.omniboxCloseEvent(eventBindings.omniboxObject);
       }
       this.handleSelectValue(eventBindings);
-      event.stopPropagation();
       return false;
+    };
+
+    $$(this.renderer.label).on('click', e => {
+      e.stopPropagation();
+      clickEvent(e);
     })
+
+    $$(this.renderer.stylishCheckbox).on('keyup', KeyboardUtils.keypressAction([
+      KEYBOARD.SPACEBAR,
+      KEYBOARD.ENTER
+    ], clickEvent));
   }
 
   protected handleEventForValueElement(eventBindings: IValueElementEventsBinding) {
-    let excludeIconClickAction = (event) => {
+    let excludeAction = (event: Event) => {
       if (eventBindings.omniboxObject) {
         this.omniboxCloseEvent(eventBindings.omniboxObject);
       }
       this.handleExcludeClick(eventBindings);
-      event.stopPropagation();
       return false;
     };
-    $$(this.renderer.excludeIcon).on('click', excludeIconClickAction)
+    $$(this.renderer.excludeIcon).on('click', e => {
+      e.stopPropagation();
+      excludeAction(e);
+    });
 
-    let keyboardExcludeAction = KeyboardUtils.keypressAction([
+    $$(this.renderer.excludeIcon).on('keyup', KeyboardUtils.keypressAction([
       KEYBOARD.SPACEBAR,
       KEYBOARD.ENTER
-    ], excludeIconClickAction);
-    $$(this.renderer.excludeIcon).on('keyup', keyboardExcludeAction);
-    $$(this.renderer.label).on('click', (event: Event) => {
+    ], excludeAction));
+
+    let selectAction = (event: Event) => {
       if (eventBindings.pinFacet) {
         this.facet.pinFacetPosition();
       }
-      event.preventDefault();
       $$(this.renderer.checkbox).trigger('change');
       return false;
-    })
+    };
+    $$(this.renderer.label).on('click', e => {
+      e.preventDefault();
+      selectAction(e);
+    });
+
+    $$(this.renderer.stylishCheckbox).on('keyup', KeyboardUtils.keypressAction([
+      KEYBOARD.SPACEBAR,
+      KEYBOARD.ENTER
+    ], selectAction));
   }
 
   protected handleEventForCheckboxChange(eventBindings: IValueElementEventsBinding) {
