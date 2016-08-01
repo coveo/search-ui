@@ -6,6 +6,7 @@ import {QueryEvents, IQuerySuccessEventArgs} from '../../events/QueryEvents'
 import {analyticsActionCauseList, IAnalyticsResultsPerPageMeta, IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta'
 import {Assert} from '../../misc/Assert'
 import {$$} from '../../utils/Dom'
+import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
 
 export interface IResultsPerPageOptions {
   choicesDisplayed?: number[];
@@ -95,16 +96,19 @@ export class ResultsPerPage extends Component {
     for (var i = 0; i < numResultsList.length; i++) {
 
       let listItem = $$('li', {
-        className: 'coveo-results-per-page-list-item'
+        className: 'coveo-results-per-page-list-item',
+        tabindex: 0
       });
       if (numResultsList[i] == this.currentResultsPerPage) {
         listItem.addClass('coveo-active');
       }
 
       ((resultsPerPage: number) => {
-        listItem.on('click', () => {
+        let clickAction = () => {
           this.handleClickPage(numResultsList[resultsPerPage]);
-        })
+        };
+        listItem.on('click', clickAction);
+        listItem.on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction));
       })(i);
 
       listItem.el.appendChild($$('a', {
