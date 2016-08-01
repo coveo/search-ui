@@ -37,10 +37,10 @@ export class CurrentTab extends Component {
     super(element, CurrentTab.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, CurrentTab, options);
-    var eventName = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.t);
+    let eventName = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.t);
     this.bind.onRootElement(eventName, this.handleTabChange);
     if (this.options.tabSectionToOpen) {
-      var tabSection = $$(this.root).find(this.options.tabSectionToOpen);
+      let tabSection = $$(this.root).find(this.options.tabSectionToOpen);
       $$(tabSection).addClass('coveo-targeted-by-current-tab');
       $$(this.element).addClass('coveo-targeting-tab-section');
       this.bind.on(this.element, 'click', () => {
@@ -64,12 +64,12 @@ export class CurrentTab extends Component {
   }
 
   private handleTabChange() {
-    var selectedTabId = this.queryStateModel.get(QueryStateModel.attributesEnum.t);
+    let selectedTabId = this.queryStateModel.get(QueryStateModel.attributesEnum.t);
     if (Utils.isNonEmptyString(selectedTabId)) {
-      var found = false;
+      let found = false;
       let tabs = $$(this.root).findAll(Component.computeSelectorForType(Tab.ID))
       _.each(tabs, (elem: HTMLElement) => {
-        var tab = <Tab>Component.get(elem, Tab);
+        let tab = <Tab>Component.get(elem, Tab);
         if (tab.options.id == selectedTabId) {
           this.element.innerHTML = tab.element.innerHTML;
           found = true;
