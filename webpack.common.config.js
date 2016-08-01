@@ -20,7 +20,7 @@ if (live) {
 } else {
   sassLoader['loaders'] = ['style?insertAt=bottom', 'css?sourceMap', 'resolve-url', 'sass?sourceMap'];
 }
-
+console.log(sassLoader);
 module.exports = {
   resolve: {
     extensions: ['', '.ts', '.js'],
