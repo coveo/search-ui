@@ -159,9 +159,10 @@ export class FieldTable extends Component {
       this.isExpanded ? this.expand() : this.minimize()
     }); // Wait until toggleContainer.scrollHeight is computed.
 
-    $$(this.toggleButton).on('click', () => this.toggle(true));
-    $$(this.toggleButtonInsideTable).on('click', () => this.toggle(true));
-    $$(this.toggleButton).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.toggle(true)));
+    const toggleAction = () => this.toggle(true);
+    $$(this.toggleButton).on('click', toggleAction);
+    $$(this.toggleButtonInsideTable).on('click', toggleAction);
+    $$(this.toggleButton).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, toggleAction));
   }
 
   private slideToggle(visible: boolean = true, anim: boolean = true) {

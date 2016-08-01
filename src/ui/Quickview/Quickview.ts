@@ -171,8 +171,9 @@ export class Quickview extends Component {
 
   private bindClick(result: IQueryResult) {
     if (typeof result.hasHtmlVersion == 'undefined' || result.hasHtmlVersion || this.options.alwaysShow) {
-      $$(this.element).on('click', () => this.open());
-      this.bind.on(this.element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.open()));
+      const clickAction = () => this.open();
+      $$(this.element).on('click', clickAction);
+      this.bind.on(this.element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction));
     } else {
       this.element.style.display = 'none';
     }

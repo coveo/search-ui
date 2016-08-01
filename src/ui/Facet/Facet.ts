@@ -1393,8 +1393,9 @@ export class Facet extends Component {
     } else {
       more = $$('a', { className: 'coveo-facet-more' }, l('More')).el;
     }
-    $$(more).on('click', () => this.handleClickMore())
-    $$(more).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.handleClickMore()));
+    const moreAction = () => this.handleClickMore();
+    $$(more).on('click', moreAction)
+    $$(more).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, moreAction));
     return more;
   }
 
@@ -1406,8 +1407,9 @@ export class Facet extends Component {
     } else {
       less = $$('a', { className: 'coveo-facet-less' }, l('Less')).el;
     }
-    $$(less).on('click', () => this.handleClickLess());
-    $$(less).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.handleClickLess()));
+    const lessAction = () => this.handleClickLess();
+    $$(less).on('click', lessAction);
+    $$(less).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, lessAction));
     return less;
   }
 

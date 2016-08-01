@@ -75,8 +75,9 @@ export class Sort extends Component {
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args))
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError(args));
-    this.bind.on(this.element, 'click', () => this.handleClick());
-    this.bind.on(this.element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.handleClick()));
+    const clickAction = () => this.handleClick();
+    this.bind.on(this.element, 'click', clickAction);
+    this.bind.on(this.element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction));
 
     this.element.setAttribute('tabindex', '0');
     if (Utils.isNonEmptyString(this.options.caption)) {

@@ -8,6 +8,7 @@ import {$$} from '../../utils/Dom';
 import {l} from '../../strings/Strings';
 import {Initialization} from '../Base/Initialization';
 import {QueryEvents} from '../../events/QueryEvents';
+import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
 
 export interface IBreadcrumbOptions {
 }
@@ -87,12 +88,13 @@ export class Breadcrumb extends Component {
       breadcrumbItems.appendChild(elem);
     })
 
-    let clear = document.createElement('div');
-    $$(clear).addClass('coveo-breadcrumb-clear-all');
-    clear.setAttribute('title', l('ClearAllFilters'));
+    let clear = $$('div', {
+      className: 'coveo-breadcrumb-clear-all',
+      title: l('ClearAllFilters'),
+      tabindex: 0
+    }).el;
 
-    let clearIcon = document.createElement('div');
-    $$(clearIcon).addClass('coveo-icon coveo-breadcrumb-icon-clear-all');
+    let clearIcon = $$('div', { className: 'coveo-icon coveo-breadcrumb-icon-clear-all' }).el;
     clear.appendChild(clearIcon);
 
     if (this.searchInterface.isNewDesign()) {
@@ -104,9 +106,11 @@ export class Breadcrumb extends Component {
       this.element.insertBefore(clear, this.element.firstChild);
     }
 
-    this.bind.on(clear, 'click', () => {
+    const clearAction = () => {
       this.clearBreadcrumbs();
-    })
+    }
+    this.bind.on(clear, 'click', clearAction);
+    this.bind.on(clear, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clearAction));
   }
 
   private redrawBreadcrumb() {
