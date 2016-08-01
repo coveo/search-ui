@@ -1,18 +1,26 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {Facet} from '../../src/ui/Facet/Facet';
+import {FacetQueryController} from '../../src/controllers/FacetQueryController';
+import {FacetValues} from '../../src/ui/Facet/FacetValues';
+import {FacetValue} from '../../src/ui/Facet/FacetValues';
+import {ExpressionBuilder} from '../../src/ui/Base/ExpressionBuilder';
+import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
+import {SearchEndpoint} from '../../src/rest/SearchEndpoint';
+import {QueryController} from '../../src/controllers/QueryController';
+import {SearchInterface} from '../../src/ui/SearchInterface/SearchInterface';
+import {FacetSearchParameters} from '../../src/ui/Facet/FacetSearchParameters';
 
-module Coveo {
-  import QueryController = Coveo.QueryController;
-  import mockQueryController = Coveo.Mock.mockQueryController;
+export function FacetQueryControllerTest() {
   describe('FacetQueryController', function () {
 
-    var mockFacet: Facet;
-    var facetQueryController: FacetQueryController;
+    let mockFacet: Facet;
+    let facetQueryController: FacetQueryController;
 
     beforeEach(function () {
       mockFacet = Mock.mock<Facet>(Facet);
       mockFacet.options = {};
       mockFacet.options.field = '@field';
-      var values: any = Mock.mock(FacetValues);
+      let values: any = Mock.mock(FacetValues);
       mockFacet.values = values;
       (<jasmine.Spy>mockFacet.values.hasSelectedOrExcludedValues).and.returnValue(true);
 
@@ -29,7 +37,7 @@ module Coveo {
       (<jasmine.Spy>mockFacet.values.getExcluded).and.returnValue([]);
 
 
-      var expectedBuilder = new ExpressionBuilder();
+      let expectedBuilder = new ExpressionBuilder();
       expectedBuilder.addFieldExpression('@field', '==', ['foo', 'bar']);
       expect(facetQueryController.computeOurFilterExpression()).toBe(expectedBuilder.build());
 
@@ -48,9 +56,9 @@ module Coveo {
 
       it('should put a group by into a query builder', function () {
         mockFacet.numberOfValues = 23;
-        var queryBuilder = new QueryBuilder();
+        let queryBuilder = new QueryBuilder();
         facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
-        var groupByRequest = queryBuilder.build().groupBy[0];
+        let groupByRequest = queryBuilder.build().groupBy[0];
         expect(groupByRequest.allowedValues).toEqual(jasmine.arrayContaining(['foo', 'bar']));
         expect(groupByRequest.field).toBe('@field');
         expect(groupByRequest.maximumNumberOfValues).toBe(23);
@@ -59,26 +67,26 @@ module Coveo {
       it('should request 1 more value if more / less is enabled', function () {
         mockFacet.options.enableMoreLess = true;
 
-        var queryBuilder = new QueryBuilder();
+        let queryBuilder = new QueryBuilder();
         facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
-        var groupByRequest = queryBuilder.build().groupBy[0];
+        let groupByRequest = queryBuilder.build().groupBy[0];
         expect(groupByRequest.maximumNumberOfValues).toBe(6);
       })
 
       it('should request only allowed values if set on the facet', function () {
         mockFacet.options.allowedValues = ['a', 'b', 'c']
-        var queryBuilder = new QueryBuilder();
+        let queryBuilder = new QueryBuilder();
         facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
-        var groupByRequest = queryBuilder.build().groupBy[0];
+        let groupByRequest = queryBuilder.build().groupBy[0];
         expect(groupByRequest.allowedValues).toEqual(jasmine.arrayContaining(['a', 'b', 'c']));
         expect(groupByRequest.allowedValues).not.toEqual(jasmine.arrayContaining(['foo', 'bar']));
       })
 
       it('should use lookupfield if set on facet', function () {
         mockFacet.options.lookupField = '@lookupfield';
-        var queryBuilder = new QueryBuilder();
+        let queryBuilder = new QueryBuilder();
         facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
-        var groupByRequest = queryBuilder.build().groupBy[0];
+        let groupByRequest = queryBuilder.build().groupBy[0];
         expect(groupByRequest.lookupField).toBe('@lookupfield');
       })
 
@@ -86,9 +94,9 @@ module Coveo {
         mockFacet.options.computedField = '@computedfield';
         mockFacet.options.computedFieldOperation = 'sum';
 
-        var queryBuilder = new QueryBuilder();
+        let queryBuilder = new QueryBuilder();
         facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
-        var groupByRequest = queryBuilder.build().groupBy[0];
+        let groupByRequest = queryBuilder.build().groupBy[0];
         expect(groupByRequest.computedFields[0]).toEqual(jasmine.objectContaining({
           field: '@computedfield',
           operation: 'sum'
@@ -98,14 +106,14 @@ module Coveo {
       it('should use the additional filter if set on facet', function () {
         mockFacet.options.additionalFilter = '@additionalfilter';
 
-        var queryBuilder = new QueryBuilder();
+        let queryBuilder = new QueryBuilder();
         facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
-        var groupByRequest = queryBuilder.build().groupBy[0];
+        let groupByRequest = queryBuilder.build().groupBy[0];
         expect(groupByRequest.constantQueryOverride).toBe('@additionalfilter');
       })
 
       it('should keep the expression to use for facet search after building a group by', function () {
-        var builder = new QueryBuilder();
+        let builder = new QueryBuilder();
         builder.expression.add('something');
         builder.constantExpression.add('something constant');
         facetQueryController.putGroupByIntoQueryBuilder(builder);
@@ -118,8 +126,8 @@ module Coveo {
     })
 
     describe('should perform search', function () {
-      var mockEndpoint: SearchEndpoint;
-      var mockQueryController: QueryController;
+      let mockEndpoint: SearchEndpoint;
+      let mockQueryController: QueryController;
       beforeEach(function () {
         mockEndpoint = Mock.mockSearchEndpoint();
         mockQueryController = Mock.mockQueryController();
@@ -142,7 +150,7 @@ module Coveo {
       })
 
       it('with params', function () {
-        var params = new FacetSearchParameters(mockFacet);
+        let params = new FacetSearchParameters(mockFacet);
         facetQueryController.search(params);
         expect(facetQueryController.facet.getEndpoint().search).toHaveBeenCalled();
 
@@ -164,7 +172,7 @@ module Coveo {
       })
 
       it('by copying last query', function () {
-        var lastQueryBuilder = new QueryBuilder();
+        let lastQueryBuilder = new QueryBuilder();
         lastQueryBuilder.pipeline = 'pipeline';
         lastQueryBuilder.enableWildcards = true;
         (<jasmine.Spy>mockFacet.queryController.getLastQuery).and.returnValue(lastQueryBuilder.build());

@@ -1,6 +1,10 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {Settings} from '../../src/ui/Settings/Settings';
+import {$$} from '../../src/utils/Dom';
+import {InitializationEvents} from '../../src/events/InitializationEvents';
+import {ISettingsOptions} from '../../src/ui/Settings/Settings';
 
-module Coveo {
+export function SettingsTest() {
   describe('Settings', function () {
     var test: Mock.IBasicComponentSetup<Settings>;
     beforeEach(function () {

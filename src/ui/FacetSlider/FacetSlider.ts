@@ -221,7 +221,7 @@ export class FacetSlider extends Component {
     this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset())
 
     this.onResize = _.debounce(() => {
-      if (!this.searchInterface.isSmallInterface()) {
+      if (!this.searchInterface.isSmallInterface() && this.slider) {
         this.slider.drawGraph();
       }
     }, 250);

@@ -15,7 +15,7 @@ export class BreadcrumbValueElement {
   constructor(public facet: Facet, public facetValue: FacetValue) {
   }
 
-  public build(tooltip = true) {
+  public build(tooltip = true): Dom {
     Assert.exists(this.facetValue);
 
     var elem = DeviceUtils.isMobileDevice() ? $$('div') : $$('span');

@@ -170,19 +170,21 @@ export class AuthenticationProvider extends Component {
     $$(iframe).hide();
     document.body.appendChild(iframe);
 
-    return ModalBox.open(popup, {
+    ModalBox.open(popup, {
       title: l('Authenticating', this.options.caption)
     });
+    return ModalBox;
   }
 
   private createPopupForVisibleIFrame(iframe: HTMLElement): Coveo.ModalBox.ModalBox {
     $$(iframe).addClass('coveo-authentication-iframe');
     let popup = $$('div', {}, iframe).el;
 
-    return ModalBox.open(popup, {
+    ModalBox.open(popup, {
       title: l('Authenticating', this.options.caption),
       className: 'coveo-authentication-popup'
     });
+    return ModalBox;
   }
 
   private getAuthenticationProviderUriForRedirect(): string {

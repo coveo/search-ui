@@ -1,5 +1,11 @@
-/// <reference path="../Test.ts" />
-module Coveo {
+import {HiddenQuery} from '../../src/ui/HiddenQuery/HiddenQuery';
+import * as Mock from '../MockEnvironment';
+import {$$} from '../../src/utils/Dom';
+import {BreadcrumbEvents} from '../../src/events/BreadcrumbEvents';
+import {Simulate} from '../Simulate';
+import {IPopulateBreadcrumbEventArgs} from '../../src/events/BreadcrumbEvents';
+
+export function HiddenQueryTest() {
   describe('HiddenQuery', function () {
     var test: Mock.IBasicComponentSetup<HiddenQuery>;
 

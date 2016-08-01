@@ -1,6 +1,10 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {CurrentTab} from '../../src/ui/CurrentTab/CurrentTab';
+import {QueryStateModel} from '../../src/models/QueryStateModel';
+import {$$} from '../../src/utils/Dom';
+import {Tab} from '../../src/ui/Tab/Tab';
 
-module Coveo {
+export function CurrentTabTest() {
   describe('CurrentTab', () => {
     var test: Mock.IBasicComponentSetup<CurrentTab>
 

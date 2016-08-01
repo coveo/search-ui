@@ -11,6 +11,7 @@ import {QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs} from '../.
 import {Initialization} from '../Base/Initialization';
 import {analyticsActionCauseList, IAnalyticsResultsSortMeta} from '../Analytics/AnalyticsActionListMeta';
 import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
+import {IQueryErrorEventArgs} from '../../events/QueryEvents';
 
 export interface ISortOptions {
   sortCriteria?: SortCriteria[];
@@ -73,6 +74,7 @@ export class Sort extends Component {
     this.bind.onRootElement(eventName, (args: IAttributesChangedEventArg) => this.handleQueryStateChanged(args))
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args))
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
+    this.bind.onRootElement(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError(args));
     this.bind.on(this.element, 'click', () => this.handleClick());
     this.bind.on(this.element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.handleClick()));
 
@@ -111,6 +113,7 @@ export class Sort extends Component {
 
   public enable() {
     $$(this.element).removeClass('coveo-tab-disabled');
+    this.update();
     super.enable();
   }
 
@@ -135,6 +138,10 @@ export class Sort extends Component {
   }
 
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
+    this.update();
+  }
+
+  private update() {
     // Basically, if the criteria in the model fits with one of ours, it'll become our active criteria
     var sortCriteria = <string>this.queryStateModel.get(QueryStateModel.attributesEnum.sort);
     if (Utils.isNonEmptyString(sortCriteria)) {
@@ -163,6 +170,10 @@ export class Sort extends Component {
     } else {
       $$(this.element).removeClass('coveo-sort-hidden');
     }
+  }
+
+  private handleQueryError(data: IQueryErrorEventArgs) {
+    $$(this.element).addClass('coveo-sort-hidden');
   }
 
   private handleClick() {

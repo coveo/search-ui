@@ -1,9 +1,15 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {Sort} from '../../src/ui/Sort/Sort';
+import {Dom} from '../../src/utils/Dom';
+import {$$} from '../../src/utils/Dom';
+import {QueryEvents} from '../../src/events/QueryEvents';
+import {IQuerySuccessEventArgs} from '../../src/events/QueryEvents';
+import {SortCriteria} from '../../src/ui/Sort/SortCriteria';
+import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
+import {QueryStateModel} from '../../src/models/QueryStateModel';
 
-module Coveo {
-
+export function SortTest() {
   describe('Sort', function () {
-
     var test: Mock.IBasicComponentSetup<Sort>;
 
     function buildSort(sortCriteria: string) {
@@ -61,6 +67,11 @@ module Coveo {
         }
       });
       expect($$(test.cmp.element).hasClass('coveo-sort-hidden')).toBe(false);
+    })
+
+    it('should set a \'hidden\' CSS class when there is a query error', function () {
+      $$(test.env.root).trigger(QueryEvents.queryError);
+      expect($$(test.cmp.element).hasClass('coveo-sort-hidden')).toBe(true);
     })
 
     describe('with a toggle', function () {
@@ -228,6 +239,18 @@ module Coveo {
       test = buildSort('date descending   ,    date ascending');
       expect(test.cmp.options.sortCriteria[0].toString()).toEqual('date descending');
       expect(test.cmp.options.sortCriteria[1].toString()).toEqual('date ascending');
+    })
+
+    it('should update when enabled', () => {
+      test = buildSort('date descending, date ascending');
+      (<jasmine.Spy>test.env.queryStateModel.get).and.returnValue('date descending');
+
+      test.cmp.select('ascending');
+      expect(test.cmp.getCurrentCriteria().toString()).toEqual('date ascending');
+
+      test.cmp.enable();
+
+      expect(test.cmp.getCurrentCriteria().toString()).toEqual('date descending');
     })
   })
 }

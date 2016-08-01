@@ -22,6 +22,10 @@
       top: 0px;
     }
   }
+  &.coveo-no-results {
+    display: none;
+    visibility: hidden;
+  }
 
   .coveo-facet-value {
     @include facetValuesCheckboxes('smaller');

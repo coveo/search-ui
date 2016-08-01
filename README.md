@@ -111,13 +111,21 @@ We are very eager to receive external contributions as well as collaborating wit
 
 ### Tests
 
-Tests are written using [Jasmine](http://jasmine.github.io/2.4/introduction.html). To run them you can either call `npm run test` to run tests in PhantomJS, or open `./test/SpecRunner.html` in a web browser and easier debugging.
+Tests are written using [Jasmine](http://jasmine.github.io/2.4/introduction.html). To run them you call `npm run test` to run tests in PhantomJS.
 
-To rebuild tests : `gulp buildTest`
+If you wish to write new UT, you can do so by starting a new [webpack-dev-server instance](https://webpack.github.io/docs/webpack-dev-server.html).
 
-To rebuild and run tests : `gulp test`
+To start the server execute `gulp devTest`.
 
-NB : Calling `gulp test` does *NOT* rebuild the main library code. If you change any code under `./src`, you must first recompile using `gulp compile`.
+Load [http://localhost:8081/tests/SpecRunner.html](http://localhost:8081/tests/SpecRunner.html).
+
+Every time you hit save in a source file, the dev server will reload and re-execute your tests.
+
+The code coverage will be reported in `./bin/coverage`
 
 ## Documentation
 Generated using TypeDoc. Available [here](https://coveo.github.io/search-ui/).
+
+Hand written documentation with more examples available [here](https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Home)
+
+You can also reach [search.coveo.com](https://search.coveo.com) to search for a particular issue and/or question.

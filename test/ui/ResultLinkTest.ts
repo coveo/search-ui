@@ -1,6 +1,14 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {ResultLink} from '../../src/ui/ResultLink/ResultLink';
+import {IQueryResult} from '../../src/rest/QueryResult';
+import {HighlightUtils} from '../../src/utils/HighlightUtils';
+import {$$} from '../../src/utils/Dom';
+import {IResultLinkOptions} from '../../src/ui/ResultLink/ResultLinkOptions';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import {OS_NAME} from '../../src/utils/OSUtils';
+import {FakeResults} from '../Fake';
 
-module Coveo {
+export function ResultLinkTest() {
   describe('ResultLink', function () {
     let test: Mock.IBasicComponentSetup<ResultLink>;
     let fakeResult: IQueryResult;
@@ -100,7 +108,7 @@ module Coveo {
     describe('when logging the analytic event', () => {
       it('should use the href if set', () => {
         let element = $$('a');
-        let href = 'href_test'
+        let href = 'javascript:void(0)';
         element.setAttribute('href', href);
         test = Mock.advancedResultComponentSetup<ResultLink>(ResultLink, fakeResult, new Mock.AdvancedComponentSetupOptions(element.el));
         spyOn(test.cmp, 'openLink');
@@ -129,7 +137,7 @@ module Coveo {
 
       it('should not override the href if it is set before the initialization', () => {
         let element = $$('a');
-        let href = 'href_test'
+        let href = 'javascript:void(0)';
         element.setAttribute('href', href);
         test = Mock.advancedResultComponentSetup<ResultLink>(ResultLink, fakeResult, new Mock.AdvancedComponentSetupOptions(element.el));
 
@@ -182,11 +190,8 @@ module Coveo {
               }));
           expect(test.cmp.element.getAttribute('href')).not.toEqual(fakeResult.raw['outlookformacuri']);
         })
-
       })
-
     })
-
   })
 
   function initFakeResult(): IQueryResult {

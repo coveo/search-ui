@@ -13,7 +13,7 @@ gulp.task('compile', ['addEolDependencies', 'deprecatedDependencies'], shell.tas
 
 gulp.task('minimize', ['addEolDependencies'], shell.task([
   // -p is a shortcut for --optimze-minimize --optimize-occurence-order
-  'node node_modules/webpack/bin/webpack.js --p'
+  'node node_modules/webpack/bin/webpack.js --minimize'
 ]))
 
 gulp.task('deprecatedDependencies', function () {
