@@ -1,4 +1,4 @@
-﻿@import "_Variables.scss"; 
+﻿@import "_Variables.scss";
 
 .CoveoTab {
   color: $color-blueish-gray;
@@ -29,8 +29,9 @@
     padding-bottom: 0px;
   }
 
-  &:hover {
+  &:hover, &:focus {
     color: $color-greyish-dark-blue;
+    outline: none;
   }
 }
 
