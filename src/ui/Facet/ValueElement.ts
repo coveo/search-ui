@@ -126,7 +126,7 @@ export class ValueElement {
       clickEvent(e);
     })
 
-    $$(this.renderer.stylishCheckbox).on('keyup', KeyboardUtils.keypressAction([
+    $$(this.renderer.stylishCheckbox).on('keydown', KeyboardUtils.keypressAction([
       KEYBOARD.SPACEBAR,
       KEYBOARD.ENTER
     ], clickEvent));
@@ -137,15 +137,14 @@ export class ValueElement {
       if (eventBindings.omniboxObject) {
         this.omniboxCloseEvent(eventBindings.omniboxObject);
       }
+      event.stopPropagation();
+      event.preventDefault();
       this.handleExcludeClick(eventBindings);
       return false;
     };
-    $$(this.renderer.excludeIcon).on('click', e => {
-      e.stopPropagation();
-      excludeAction(e);
-    });
+    $$(this.renderer.excludeIcon).on('click', excludeAction);
 
-    $$(this.renderer.excludeIcon).on('keyup', KeyboardUtils.keypressAction([
+    $$(this.renderer.excludeIcon).on('keydown', KeyboardUtils.keypressAction([
       KEYBOARD.SPACEBAR,
       KEYBOARD.ENTER
     ], excludeAction));
@@ -154,15 +153,13 @@ export class ValueElement {
       if (eventBindings.pinFacet) {
         this.facet.pinFacetPosition();
       }
+      event.preventDefault();
       $$(this.renderer.checkbox).trigger('change');
       return false;
     };
-    $$(this.renderer.label).on('click', e => {
-      e.preventDefault();
-      selectAction(e);
-    });
+    $$(this.renderer.label).on('click', selectAction);
 
-    $$(this.renderer.stylishCheckbox).on('keyup', KeyboardUtils.keypressAction([
+    $$(this.renderer.stylishCheckbox).on('keydown', KeyboardUtils.keypressAction([
       KEYBOARD.SPACEBAR,
       KEYBOARD.ENTER
     ], selectAction));

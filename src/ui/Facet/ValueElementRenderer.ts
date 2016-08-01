@@ -4,6 +4,7 @@ import {$$} from '../../utils/Dom';
 import {Utils} from '../../utils/Utils';
 import {l} from '../../strings/Strings';
 import {Component} from '../Base/Component';
+import {KeyboardUtils} from '../../utils/KeyboardUtils';
 
 export class ValueElementRenderer {
   public listItem: HTMLElement;
@@ -114,8 +115,7 @@ export class ValueElementRenderer {
       className: 'coveo-facet-value-exclude',
       tabindex: 0
     }).el;
-    $$(excludeIcon).on('focus', () => $$(this.listItem).addClass('coveo-focused'));
-    $$(excludeIcon).on('blur', () => $$(this.listItem).removeClass('coveo-focused'));
+    this.addFocusAndBlurEventListeners(excludeIcon);
 
     if (this.facet.searchInterface.isNewDesign()) {
       excludeIcon.appendChild($$('span', {
@@ -164,8 +164,7 @@ export class ValueElementRenderer {
       className: 'coveo-facet-value-checkbox',
       tabindex: 0
     }, $$('span')).el;
-    $$(checkbox).on('focus', () => $$(this.listItem).addClass('coveo-focused'));
-    $$(checkbox).on('blur', () => $$(this.listItem).removeClass('coveo-focused'));
+    this.addFocusAndBlurEventListeners(checkbox);
     return checkbox;
   }
 
@@ -217,5 +216,10 @@ export class ValueElementRenderer {
     } else {
       return undefined;
     }
+  }
+
+  private addFocusAndBlurEventListeners(elem: HTMLElement) {
+    $$(elem).on('focus', () => $$(this.listItem).addClass('coveo-focused'));
+    $$(elem).on('blur', () => $$(this.listItem).removeClass('coveo-focused'));
   }
 }
