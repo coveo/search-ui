@@ -14,7 +14,7 @@ import {Defer} from '../src/misc/Defer';
 import {IOmniboxData} from '../src/ui/Omnibox/OmniboxInterface';
 import {OmniboxEvents} from '../src/events/OmniboxEvents';
 import {IBreadcrumbItem, IPopulateBreadcrumbEventArgs, BreadcrumbEvents} from '../src/events/BreadcrumbEvents';
-import {KEYBOARD} from '../src/utils/KeyboardUtils';
+// import {KEYBOARD} from '../src/utils/KeyboardUtils';
 
 export interface ISimulateQueryData {
   query?: IQuery;

@@ -6,7 +6,7 @@ import {FakeResults} from '../Fake';
 import {$$} from '../../src/utils/Dom';
 
 export function FollowItemTest() {
-  /*describe('FollowItem', function () {
+  describe('FollowItem', function () {
     let test: Mock.IBasicComponentSetup<FollowItem>;
     let endpointMock: SearchEndpoint;
     let result: IQueryResult;
@@ -90,5 +90,5 @@ export function FollowItemTest() {
         })
       })
     })
-  });*/
+  });
 }
