@@ -4,12 +4,13 @@ import {ISearchEndpoint} from '../../rest/SearchEndpointInterface';
 import {IIndexFieldValue} from '../../rest/FieldValue';
 import {QueryBuilder} from '../Base/QueryBuilder';
 import {FacetUtils} from '../Facet/FacetUtils';
+import {Dropdown} from './Dropdown';
 import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom';
 
 export class DocumentInput implements IAdvancedSearchInput {
   public build(): HTMLElement {
-    return $$('div').el;
+    return $$('div', {className: 'coveo-advanced-search-document-input-section'}).el;
   }
 
   public getValue(): string {
@@ -22,55 +23,42 @@ export class DocumentInput implements IAdvancedSearchInput {
       queryBuilder.expression.add(this.getValue());
     }
   }
-
-  protected buildSelect(options: string[]): HTMLSelectElement {
-    let select = $$('select', { className: 'coveo-advanced-search-select' });
-    _.each(options, (option) => {
-      let optionHTML = $$('option', { value: option })
-      optionHTML.text(l(option))
-      select.append(optionHTML.el);
-    })
-    return <HTMLSelectElement>select.el;
-  }
 }
 
 export class SimpleFieldInput extends DocumentInput {
 
   protected element: HTMLElement
+  private dropDown: Dropdown;
 
   constructor(public inputName: string, public fieldName: string, private endpoint: ISearchEndpoint) {
     super();
   }
 
   public build(): HTMLElement {
-    let sectionClassName = 'coveo-input coveo-advanced-search-input-section';
-    let document = $$('div', { className: sectionClassName });
+    let document = $$(super.build());
     let label = $$('span', { className: 'coveo-advanced-search-label' });
     label.text(l(this.inputName + 'Label'));
     document.append(label.el);
-    document.append(this.buildFieldSelect());
+    this.buildFieldSelect().then(()=>{
+      document.append(this.dropDown.getElement());
+    })
     this.element = document.el;
     return this.element;
   }
 
   public getValue(): string {
-    let value = (<HTMLSelectElement>$$(this.element).find('select')).value;
+    let value = this.dropDown ? this.dropDown.getValue(): '';
     return value ? this.fieldName + '==\"' + value + '\"' : '';
   }
 
   private buildFieldSelect() {
-    let select = $$('select', { className: 'coveo-advanced-search-select' });
-    let defaultOption = <HTMLOptionElement>$$('option').el;
-    defaultOption.value = '';
-    select.append(defaultOption);
-    this.endpoint.listFieldValues({ field: this.fieldName }).then((values: IIndexFieldValue[]) => {
+    return this.endpoint.listFieldValues({ field: this.fieldName }).then((values: IIndexFieldValue[]) => {
+      let options = [];
       _.each(values, (value: IIndexFieldValue) => {
-        let option = $$('option', { value: value.value });
-        option.text(FacetUtils.tryToGetTranslatedCaption(this.fieldName, value.lookupValue));
-        select.append(option.el);
+        options.push(FacetUtils.tryToGetTranslatedCaption(this.fieldName, value.lookupValue));
       })
+      this.dropDown = new Dropdown(options, this.inputName, true);
     });
-    return select.el;
   }
 
 }
@@ -78,28 +66,27 @@ export class SimpleFieldInput extends DocumentInput {
 export class AdvancedFieldInput extends DocumentInput {
 
   protected element: HTMLElement
+  private mode: Dropdown;
 
   constructor(public inputName: string, public fieldName: string) {
     super();
   }
 
   public build(): HTMLElement {
-    let sectionClassName = 'coveo-advanced-search-input-section';
-    let document = $$('div', { className: sectionClassName });
+    let document = $$(super.build());
     let label = $$('span', { className: 'coveo-advanced-search-label' });
     label.text(l(this.inputName + 'Label'));
     document.append(label.el);
-    document.append(this.buildSelect(['Contains', 'DoesNotContain', 'Matches']));
+    document.append(new Dropdown(['Contains', 'DoesNotContain', 'Matches'], this.inputName, true).getElement());
     document.append($$('input', { className: 'coveo-advanced-search-input' }).el)
     this.element = document.el;
     return this.element;
   }
 
   public getValue(): string {
-    let mode = (<HTMLSelectElement>$$(this.element).find('select')).value
     let inputValue = (<HTMLInputElement>$$(this.element).find('input')).value
     if (inputValue) {
-      switch (mode) {
+      switch (this.mode.getValue()) {
         case 'Contains':
           return this.fieldName + '=' + inputValue;
         case 'DoesNotContain':
@@ -116,22 +103,21 @@ export class AdvancedFieldInput extends DocumentInput {
 export class SizeInput extends DocumentInput {
 
   protected element: HTMLElement
-  protected modeSelect: HTMLSelectElement
+  protected modeSelect: Dropdown
   protected sizeInput: HTMLInputElement
-  protected sizeSelect: HTMLSelectElement
+  protected sizeSelect: Dropdown
 
   public build(): HTMLElement {
-    let sectionClassName = 'coveo-advanced-search-input-section';
-    let document = $$('div', { className: sectionClassName });
+    let document = $$(super.build());
     let label = $$('span', { className: 'coveo-advanced-search-label' });
     label.text(l('SizeLabel'));
     document.append(label.el);
-    this.modeSelect = this.buildSelect(['AtLeast', 'AtMost']);
-    document.append(this.modeSelect);
+    this.modeSelect = new Dropdown(['AtLeast', 'AtMost'], 'coveo-size-input-mode');
+    document.append(this.modeSelect.getElement());
     this.sizeInput = <HTMLInputElement>$$('input', { className: 'coveo-advanced-search-number-input' }).el;
     document.append(this.sizeInput);
-    this.sizeSelect = this.buildSelect(['KB', 'MB', 'Bytes']);
-    document.append(this.sizeSelect);
+    this.sizeSelect = new Dropdown(['KB', 'MB', 'Bytes'], 'coveo-size-input-select');
+    document.append(this.sizeSelect.getElement());
     this.element = document.el;
     return this.element;
   }
@@ -139,7 +125,7 @@ export class SizeInput extends DocumentInput {
   public getValue(): string {
     let size = this.getSizeInBytes();
     if (size) {
-      switch (this.modeSelect.value) {
+      switch (this.modeSelect.getValue()) {
         case 'AtLeast':
           return '@size>=' + this.getSizeInBytes()
         default:
@@ -151,7 +137,7 @@ export class SizeInput extends DocumentInput {
 
   private getSizeInBytes(): number {
     let size = parseFloat(this.sizeInput.value);
-    switch (this.sizeSelect.value) {
+    switch (this.sizeSelect.getValue()) {
       case 'KB':
         return size * 1024;
       case 'MB':

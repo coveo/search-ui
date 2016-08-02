@@ -2,6 +2,8 @@ import {ComponentOptions} from '../Base/ComponentOptions';
 import {IAdvancedSearchInput} from './AdvancedSearchInput';
 import {QueryBuilder} from '../Base/QueryBuilder';
 import {l} from '../../strings/Strings';
+import {Dropdown} from './Dropdown';
+import {NumericSpinner} from './NumericSpinner';
 import {$$} from '../../utils/Dom';
 
 export class DateInput implements IAdvancedSearchInput {
@@ -90,6 +92,10 @@ export class AnytimeDateInput extends DateInput {
 }
 
 export class InTheLastDateInput extends DateInput {
+
+  private dropDown: Dropdown;
+  private spinner: NumericSpinner;
+
   constructor() {
     super('AdvancedSearchInTheLast');
   }
@@ -98,36 +104,21 @@ export class InTheLastDateInput extends DateInput {
     super.build();
     let input = $$('fieldset', {className: 'coveo-advanced-search-date-input'});
     (<HTMLFieldSetElement>input.el).disabled = true;
-    let numericSpinner = $$('div', { className: 'coveo-numeric-spinner'});
-    let numberInput = $$('input', { className: 'coveo-advanced-search-number-input', type: 'text'});
-    let addOn = $$('span', {className: 'coveo-add-on'});
-    addOn.el.innerHTML = `<div id="SpinnerUp">
-                              <i class="coveo-sprites-arrow-up"></i>
-                          </div>
-                          <div id="SpinnerDown">
-                              <i class="coveo-sprites-arrow-down"></i>
-                          </div>`;
-    numericSpinner.append(numberInput.el);
-    numericSpinner.append(addOn.el);
-    let select = $$('select', { className: 'coveo-advanced-search-select' });
-    let daysOption = $$('option', { value: 'days', selected: 'selected' });
-    daysOption.text(l('AdvancedSearchDays'))
-    let monthOption = $$('option', { value: 'months' })
-    monthOption.text(l('AdvancedSearchMonths'))
-    select.append(daysOption.el);
-    select.append(monthOption.el);
-    input.append(numericSpinner.el);
-    input.append(select.el);
-    this.element.appendChild(input.el);
+    
+    this.spinner = new NumericSpinner();
+    input.append(this.spinner.getElement());
+    
+    this.dropDown = new Dropdown(['days', 'months'], 'coveo-advanced-search-in-the-last-select')
+    input.append(this.dropDown.getElement());
 
-    this.bindSpinner();
+    this.element.appendChild(input.el);
     return this.element;
   }
 
   public getValue(): string {
     let currentDate = new Date();
-    let time = parseInt((<HTMLInputElement>$$(this.element).find('.coveo-advanced-search-number-input')).value)
-    let size = (<HTMLSelectElement>$$(this.element).find('.coveo-advanced-search-select')).value
+    let time = this.spinner.getValue();
+    let size = this.dropDown.getValue().toLowerCase();
 
     let date = new Date();
     if (size == 'months') {
@@ -139,36 +130,17 @@ export class InTheLastDateInput extends DateInput {
     return this.isSelected() ? '@date>=' + this.dateToString(date) : '';
   }
 
-  private bindSpinner() {
-    let input = this.getSpinnerInput();
-
-    let up = $$(this.element).find('#SpinnerUp');
-    $$(up).on('click', ()=>{
-      input.value = (this.getSpinnerInputValue() + 1).toString();
-    })
-
-    let down = $$(this.element).find('#SpinnerDown');
-    $$(down).on('click', ()=>{
-      input.value = (this.getSpinnerInputValue() - 1).toString();
-    })
-  }
-
-  private getSpinnerInput(): HTMLInputElement {
-    return (<HTMLInputElement>$$(this.element).find('.coveo-advanced-search-number-input'));
-  }
-
-  private getSpinnerInputValue(): number {
-    let input = this.getSpinnerInput();
-    let value = parseInt(input.value);
-    return value ? value : 0;
-  }
-
 }
 
 export class BetweenDateInput extends DateInput {
 
-  private FIRST_DATE_CLASS: string = 'coveo-date-picker-first';
-  private SECOND_DATE_CLASS: string = 'coveo-date-picker-second';
+  private firstDay: Dropdown;
+  private firstMonth: Dropdown;
+  private firstYear: Dropdown;
+
+  private secondDay: Dropdown;
+  private secondMonth: Dropdown;
+  private secondYear: Dropdown;
 
   constructor() {
     super('AdvancedSearchBetween');
@@ -178,69 +150,55 @@ export class BetweenDateInput extends DateInput {
     super.build();
     let input = $$('fieldset', {className: 'coveo-advanced-search-date-input'});
     (<HTMLFieldSetElement>input.el).disabled = true;
-    input.append(this.buildDaySelect(this.FIRST_DATE_CLASS));
-    input.append(this.buildMonthSelect(this.FIRST_DATE_CLASS));
-    input.append(this.buildYearSelect(this.FIRST_DATE_CLASS));
+    this.firstDay = new Dropdown(this.createIntegerList(31), 'coveo-advanced-search-select-day')
+    this.firstMonth = new Dropdown(this.createIntegerList(12), 'coveo-advanced-search-select-month')
+    this.firstYear = new Dropdown(this.createYearList(), 'coveo-advanced-search-select-year')
+    input.append(this.firstDay.getElement());
+    input.append(this.firstMonth.getElement());
+    input.append(this.firstYear.getElement());
 
     let and = $$('div', { className: 'coveo-advanced-search-and' });
     and.text(l('And').toLowerCase());
     input.append(and.el);
 
-    input.append(this.buildDaySelect(this.SECOND_DATE_CLASS));
-    input.append(this.buildMonthSelect(this.SECOND_DATE_CLASS));
-    input.append(this.buildYearSelect(this.SECOND_DATE_CLASS));
+    this.secondDay = new Dropdown(this.createIntegerList(31), 'coveo-advanced-search-select-day')
+    this.secondMonth = new Dropdown(this.createIntegerList(12), 'coveo-advanced-search-select-month')
+    this.secondYear = new Dropdown(this.createYearList(), 'coveo-advanced-search-select-year')
+    input.append(this.secondDay.getElement());
+    input.append(this.secondMonth.getElement());
+    input.append(this.secondYear.getElement());
     this.element.appendChild(input.el);
     return this.element;
   }
 
-  private buildDaySelect(className: string): HTMLElement {
-    let select = $$('select', { className: 'coveo-advanced-search-select coveo-advanced-search-select-day ' + className });
-    for (let i = 1; i <= 31; i++) {
-      let option = $$('option', { value: i });
-      option.text(i.toString());
-      select.append(option.el);
+  private createIntegerList(end: number, start?: number): string[] {
+    let options: string[] = [];
+    for (let i = 1; i <= end; i++) {
+      options.push(i.toString());
     }
-    (<HTMLInputElement>select.el).disabled = true;
-    return select.el;
+    return options;
   }
 
-  private buildMonthSelect(className: string): HTMLElement {
-    let select = $$('select', { className: 'coveo-advanced-search-select coveo-advanced-search-select-month ' + className });
-    for (let i = 1; i <= 12; i++) {
-      let option = $$('option', { value: i });
-      option.text(i.toString());
-      select.append(option.el);
-    }
-    (<HTMLInputElement>select.el).disabled = true;
-    return select.el;
-  }
-
-  private buildYearSelect(className: string): HTMLElement {
-    let select = $$('select', { className: 'coveo-advanced-search-select coveo-advanced-search-select-year ' + className });
+  private createYearList(): string[] {
     let currentYear = new Date().getFullYear();
+    let options: string[] = [];
     for (let i = 1990; i <= currentYear; i++) {
-      let option = $$('option', { value: i });
-      option.text(i.toString());
-      select.append(option.el);
+      options.push(i.toString());
     }
-    (<HTMLInputElement>select.el).disabled = true;
-    return select.el;
+    return options;
   }
 
   public getValue(): string {
-    let firstDate = this.getDate(this.FIRST_DATE_CLASS);
-    let secondDate = this.getDate(this.SECOND_DATE_CLASS);
+    let firstDate = this.getDate(this.firstDay, this.firstMonth, this.firstYear);
+    let secondDate = this.getDate(this.secondDay, this.secondMonth, this.secondYear);
     return this.isSelected() ? '(@date>=' + this.dateToString(firstDate) + ')(@date<=' + this.dateToString(secondDate) + ')' : '';
   }
 
-  private getDate(className: string): Date {
-    let day = (<HTMLSelectElement>$$(this.element).find('.coveo-advanced-search-select-day.' + className)).value
-    let month = (<HTMLSelectElement>$$(this.element).find('.coveo-advanced-search-select-month.' + className)).value
-    let year = (<HTMLSelectElement>$$(this.element).find('.coveo-advanced-search-select-year.' + className)).value
+  private getDate(day: Dropdown, month: Dropdown, year: Dropdown): Date {
     let date = new Date();
-    date.setDate(parseInt(day));
-    date.setMonth(parseInt(month) - 1);
-    date.setFullYear(parseInt(year));
+    date.setDate(parseInt(day.getValue()));
+    date.setMonth(parseInt(month.getValue()) - 1);
+    date.setFullYear(parseInt(year.getValue()));
     return date;
   }
 }

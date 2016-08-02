@@ -9,6 +9,12 @@ $spaceBetween: 0 5px;
   margin: 5px;
 }
 
+#coveo-advanced-search-in-the-last-select{
+  top: -2px;
+  margin-left: 20px;
+  width: 90px;
+}
+
 .coveo-advanced-search-section-title {
   font-weight: bold;
   border-bottom: $default-border;
@@ -36,13 +42,38 @@ $spaceBetween: 0 5px;
   }
 }
 
-.coveo-numeric-spinner {
-  display: inline-block;
+.coveo-advanced-search-document-input-section {
+  margin: 20px 0;
 
-  input[type='text']{
-    color: $color-grey;
+  .coveo-dropdown {
+    margin: 0 10px;
+    min-width: 90px;
   }
 }
+
+.coveo-advanced-search-date-input {
+  .coveo-numeric-spinner {
+    display: inline-block;
+
+    input[type='text']{
+      color: $color-grey;
+      width: 55px;
+    }
+  }
+}
+
+#coveo-advanced-search-select-day {
+  width:50px
+}
+
+#coveo-advanced-search-select-month {
+  width:50px
+}
+
+#coveo-advanced-search-select-year {
+  width: 70px;
+}
+
 
 .coveo-advanced-search-keyword-label {
   width: 40%;
