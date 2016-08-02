@@ -6,11 +6,10 @@ $spaceBetween: 0 5px;
 
 .coveo-advanced-search-section {
   min-width: 500px;
-  margin: 5px;
+  margin: 20px 5px;
 }
 
 #coveo-advanced-search-in-the-last-select{
-  top: -2px;
   margin-left: 20px;
   width: 90px;
 }
@@ -47,18 +46,29 @@ $spaceBetween: 0 5px;
 
   .coveo-dropdown {
     margin: 0 10px;
-    min-width: 90px;
+    min-width: 100px;
+  }
+
+  .coveo-input {
+    width: 200px;
+    margin: 0 10px;
+    display: inline-block;
   }
 }
 
-.coveo-advanced-search-date-input {
+.coveo-advanced-search-date-input, .coveo-advanced-search-document-input-section {
   .coveo-numeric-spinner {
     display: inline-block;
+    vertical-align: middle;
 
     input[type='text']{
       color: $color-grey;
       width: 55px;
     }
+  }
+
+  .coveo-dropdown {
+    vertical-align: middle;
   }
 }
 

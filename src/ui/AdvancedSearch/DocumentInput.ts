@@ -5,6 +5,8 @@ import {IIndexFieldValue} from '../../rest/FieldValue';
 import {QueryBuilder} from '../Base/QueryBuilder';
 import {FacetUtils} from '../Facet/FacetUtils';
 import {Dropdown} from './Dropdown';
+import {NumericSpinner} from './NumericSpinner';
+import {TextInput} from './TextInput';
 import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom';
 
@@ -77,8 +79,8 @@ export class AdvancedFieldInput extends DocumentInput {
     let label = $$('span', { className: 'coveo-advanced-search-label' });
     label.text(l(this.inputName + 'Label'));
     document.append(label.el);
-    document.append(new Dropdown(['Contains', 'DoesNotContain', 'Matches'], this.inputName, true).getElement());
-    document.append($$('input', { className: 'coveo-advanced-search-input' }).el)
+    document.append(new Dropdown(['Contains', 'DoesNotContain', 'Matches'], this.inputName).getElement());
+    document.append(new TextInput().getElement());
     this.element = document.el;
     return this.element;
   }
@@ -102,10 +104,10 @@ export class AdvancedFieldInput extends DocumentInput {
 
 export class SizeInput extends DocumentInput {
 
-  protected element: HTMLElement
-  protected modeSelect: Dropdown
-  protected sizeInput: HTMLInputElement
-  protected sizeSelect: Dropdown
+  protected element: HTMLElement;
+  protected modeSelect: Dropdown;
+  protected sizeInput: NumericSpinner;
+  protected sizeSelect: Dropdown;
 
   public build(): HTMLElement {
     let document = $$(super.build());
@@ -114,8 +116,8 @@ export class SizeInput extends DocumentInput {
     document.append(label.el);
     this.modeSelect = new Dropdown(['AtLeast', 'AtMost'], 'coveo-size-input-mode');
     document.append(this.modeSelect.getElement());
-    this.sizeInput = <HTMLInputElement>$$('input', { className: 'coveo-advanced-search-number-input' }).el;
-    document.append(this.sizeInput);
+    this.sizeInput = new NumericSpinner();
+    document.append(this.sizeInput.getElement());
     this.sizeSelect = new Dropdown(['KB', 'MB', 'Bytes'], 'coveo-size-input-select');
     document.append(this.sizeSelect.getElement());
     this.element = document.el;
@@ -136,7 +138,7 @@ export class SizeInput extends DocumentInput {
   }
 
   private getSizeInBytes(): number {
-    let size = parseFloat(this.sizeInput.value);
+    let size = this.sizeInput.getValue();
     switch (this.sizeSelect.getValue()) {
       case 'KB':
         return size * 1024;

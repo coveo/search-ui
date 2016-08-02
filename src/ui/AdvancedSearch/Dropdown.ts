@@ -1,4 +1,5 @@
 import {$$} from '../../utils/Dom';
+import {l} from '../../strings/Strings';
 
 export class Dropdown {
 
@@ -25,7 +26,7 @@ export class Dropdown {
   }
 
   public getValue(): string {
-    return $$(this.element).find('.coveo-dropdown-selected-value').innerText;
+    return $$(this.element).find('.coveo-dropdown-selected-value').getAttribute('value');
   }
 
   private build() {
@@ -33,7 +34,7 @@ export class Dropdown {
     let button = $$('button', {className: 'coveo-button coveo-dropdown-toggle', type:'button'});
     button.setAttribute('data-toggle', 'coveo-dropdown');
     let selected = $$('span', {className: 'coveo-dropdown-selected-value'});
-    selected.text(this.listOfValues[0]);
+    selected.text(l(this.listOfValues[0]));
     button.append(selected.el);
     button.append($$('span', {className: 'coveo-dropdown-toggle-arrow'}).el);
     dropdown.append(button.el);
@@ -41,9 +42,10 @@ export class Dropdown {
     _.each(this.listOfValues, (value: string)=>{
       let option = $$('li');
       let content = $$('span');
-      content.text(value);
+      content.text(l(value));
       option.on('click', ()=>{
-        selected.text(value);
+        selected.setAttribute('value', value);
+        selected.text(l(value));
         this.close();
       })
 

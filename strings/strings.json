@@ -5148,7 +5148,7 @@
     "fr": "contient"
   },
   "DoesNotContain": {
-    "en": "does not contains",
+    "en": "does not contain",
     "fr": "ne contient pas"
   },
   "Matches": {

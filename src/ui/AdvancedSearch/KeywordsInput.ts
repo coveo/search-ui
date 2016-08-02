@@ -1,37 +1,28 @@
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {IAdvancedSearchInput} from './AdvancedSearchInput';
 import {QueryStateModel} from '../../models/QueryStateModel';
+import {TextInput} from './TextInput';
 import {l} from '../../strings/Strings';
-import {$$} from '../../utils/Dom'
+import {$$} from '../../utils/Dom';
 
 export class KeywordsInput implements IAdvancedSearchInput {
 
-  protected element: HTMLElement
+  protected input: TextInput;
 
   constructor(public inputName: string) {
   }
 
   public build(): HTMLElement {
-    let sectionClassName = 'coveo-input coveo-advanced-search-input-section';
-    let keyword = $$('div', { className: sectionClassName });
-    let input = $$('input', { className: 'coveo-advanced-search-keyword-input coveo-advanced-search-input', type: 'text' });
-    let label = $$('label', { className: 'coveo-advanced-search-keyword-label' });
-    (<HTMLInputElement>input.el).required = true;
-    label.text(l(this.inputName + 'Label'));
-    keyword.append(input.el);
-    keyword.append(label.el);
-    this.element = keyword.el;
-    return this.element;
+    this.input = new TextInput(l(this.inputName + 'Label'));
+    return this.input.getElement();
   }
 
   public getValue(): string {
-    let input = <HTMLInputElement>$$(this.element).find('input');
-    return input.value;
+    return this.input.getValue();
   }
 
   public clear() {
-    let input = <HTMLInputElement>$$(this.element).find('input');
-    input.value = '';
+    this.input.setValue('');
   }
 
   public updateQueryState(queryState: QueryStateModel) {
