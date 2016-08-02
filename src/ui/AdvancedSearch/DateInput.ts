@@ -12,19 +12,20 @@ export class DateInput implements IAdvancedSearchInput {
   }
 
   public build(): HTMLElement {
-    let sectionClassName = 'coveo-advanced-search-input-section';
-    let date = $$('div', { className: sectionClassName });
-    let checkbox = $$('input', { type: 'radio', name: 'coveo-advanced-search-date' })
-    let label = $$('div', { className: 'coveo-advanced-search-label' })
+    let date = $$('div', { className: 'coveo-advanced-search-date-input-section' });
+    let radioOption = $$('div', { className: 'coveo-radio' })
+    let radio = $$('input', { type: 'radio', name: 'coveo-advanced-search-date', id: this.inputName })
+    let label = $$('label', { className: 'coveo-advanced-search-label', for: this.inputName })
     label.text(l(this.inputName + 'Label'));
 
-    checkbox.on('change', () => {
+    radio.on('change', () => {
       this.desactivateAllInputs();
       this.activateSelectedInput();
     })
 
-    date.append(checkbox.el);
-    date.append(label.el);
+    radioOption.append(radio.el);
+    radioOption.append(label.el);
+    date.append(radioOption.el);
     this.element = date.el;
     return this.element;
   }
@@ -49,18 +50,14 @@ export class DateInput implements IAdvancedSearchInput {
   }
 
   private desactivateAllInputs() {
-    let selectElements = $$(this.element.parentElement).findAll('.coveo-advanced-search-select');
-    let inputElements = $$(this.element.parentElement).findAll('.coveo-advanced-search-number-input');
-    let elements = _.union(selectElements, inputElements);
+    let elements = $$(this.element.parentElement).findAll('fieldset');
     _.each(elements, (element) => {
       (<HTMLInputElement>element).disabled = true;
     })
   }
 
   private activateSelectedInput() {
-    let selectElements = $$(this.element).findAll('.coveo-advanced-search-select');
-    let inputElements = $$(this.element).findAll('.coveo-advanced-search-number-input');
-    let elements = _.union(selectElements, inputElements);
+    let elements = $$(this.element).findAll('fieldset');
     _.each(elements, (element) => {
       (<HTMLInputElement>element).disabled = false;
     });
@@ -99,18 +96,31 @@ export class InTheLastDateInput extends DateInput {
 
   public build(): HTMLElement {
     super.build();
-    let numberInput = $$('input', { className: 'coveo-advanced-search-number-input' });
-    (<HTMLInputElement>numberInput.el).disabled = true;
+    let input = $$('fieldset', {className: 'coveo-advanced-search-date-input'});
+    (<HTMLFieldSetElement>input.el).disabled = true;
+    let numericSpinner = $$('div', { className: 'coveo-numeric-spinner'});
+    let numberInput = $$('input', { className: 'coveo-advanced-search-number-input', type: 'text'});
+    let addOn = $$('span', {className: 'coveo-add-on'});
+    addOn.el.innerHTML = `<div id="SpinnerUp">
+                              <i class="coveo-sprites-arrow-up"></i>
+                          </div>
+                          <div id="SpinnerDown">
+                              <i class="coveo-sprites-arrow-down"></i>
+                          </div>`;
+    numericSpinner.append(numberInput.el);
+    numericSpinner.append(addOn.el);
     let select = $$('select', { className: 'coveo-advanced-search-select' });
-    (<HTMLInputElement>select.el).disabled = true;
     let daysOption = $$('option', { value: 'days', selected: 'selected' });
     daysOption.text(l('AdvancedSearchDays'))
     let monthOption = $$('option', { value: 'months' })
     monthOption.text(l('AdvancedSearchMonths'))
     select.append(daysOption.el);
     select.append(monthOption.el);
-    this.element.appendChild(numberInput.el);
-    this.element.appendChild(select.el);
+    input.append(numericSpinner.el);
+    input.append(select.el);
+    this.element.appendChild(input.el);
+
+    this.bindSpinner();
     return this.element;
   }
 
@@ -129,6 +139,30 @@ export class InTheLastDateInput extends DateInput {
     return this.isSelected() ? '@date>=' + this.dateToString(date) : '';
   }
 
+  private bindSpinner() {
+    let input = this.getSpinnerInput();
+
+    let up = $$(this.element).find('#SpinnerUp');
+    $$(up).on('click', ()=>{
+      input.value = (this.getSpinnerInputValue() + 1).toString();
+    })
+
+    let down = $$(this.element).find('#SpinnerDown');
+    $$(down).on('click', ()=>{
+      input.value = (this.getSpinnerInputValue() - 1).toString();
+    })
+  }
+
+  private getSpinnerInput(): HTMLInputElement {
+    return (<HTMLInputElement>$$(this.element).find('.coveo-advanced-search-number-input'));
+  }
+
+  private getSpinnerInputValue(): number {
+    let input = this.getSpinnerInput();
+    let value = parseInt(input.value);
+    return value ? value : 0;
+  }
+
 }
 
 export class BetweenDateInput extends DateInput {
@@ -142,17 +176,20 @@ export class BetweenDateInput extends DateInput {
 
   public build(): HTMLElement {
     super.build();
-    this.element.appendChild(this.buildDaySelect(this.FIRST_DATE_CLASS));
-    this.element.appendChild(this.buildMonthSelect(this.FIRST_DATE_CLASS));
-    this.element.appendChild(this.buildYearSelect(this.FIRST_DATE_CLASS));
+    let input = $$('fieldset', {className: 'coveo-advanced-search-date-input'});
+    (<HTMLFieldSetElement>input.el).disabled = true;
+    input.append(this.buildDaySelect(this.FIRST_DATE_CLASS));
+    input.append(this.buildMonthSelect(this.FIRST_DATE_CLASS));
+    input.append(this.buildYearSelect(this.FIRST_DATE_CLASS));
 
     let and = $$('div', { className: 'coveo-advanced-search-and' });
     and.text(l('And').toLowerCase());
-    this.element.appendChild(and.el);
+    input.append(and.el);
 
-    this.element.appendChild(this.buildDaySelect(this.SECOND_DATE_CLASS));
-    this.element.appendChild(this.buildMonthSelect(this.SECOND_DATE_CLASS));
-    this.element.appendChild(this.buildYearSelect(this.SECOND_DATE_CLASS));
+    input.append(this.buildDaySelect(this.SECOND_DATE_CLASS));
+    input.append(this.buildMonthSelect(this.SECOND_DATE_CLASS));
+    input.append(this.buildYearSelect(this.SECOND_DATE_CLASS));
+    this.element.appendChild(input.el);
     return this.element;
   }
 

@@ -5087,6 +5087,10 @@
     "en": "None of these words",
     "fr": "Aucun de ces mots"
   },
+  "AdvancedSearchDateSectionTitle": {
+    "en": "Date",
+    "fr": "Date"
+  },
   "AdvancedSearchAnytimeLabel": {
     "en": "Anytime",
     "fr": "N'importe quand"

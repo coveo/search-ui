@@ -15,22 +15,38 @@ $spaceBetween: 0 5px;
   padding: 5px 0;
 }
 
-.coveo-advanced-search-input-section {
-  margin-top: 10px;
+.coveo-advanced-search-date-input-section {
+  display: flex;
+  height: 45px;
+  align-items: center;
+
+  .coveo-radio {
+    input[type='radio'] + label {
+      display: inline;
+    }
+  }
+
+  .coveo-advanced-search-date-input {
+    display: inline-block;
+    border: none;
+
+    &:disabled {
+      visibility: hidden;
+    }
+  }
+}
+
+.coveo-numeric-spinner {
+  display: inline-block;
+
+  input[type='text']{
+    color: $color-grey;
+  }
 }
 
 .coveo-advanced-search-keyword-label {
   width: 40%;
   display: inline-block;
-}
-
-.coveo-advanced-search-keyword-input {
-  width: 60%;
-  margin-bottom: 5px;
-  @include defaultRoundedBorder();
-  padding: 5px;
-  height: 35px;
-  font-size: $font-size-smaller;
 }
 
 .coveo-advanced-search-label {

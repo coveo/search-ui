@@ -43,7 +43,7 @@ export class SimpleFieldInput extends DocumentInput {
   }
 
   public build(): HTMLElement {
-    let sectionClassName = 'coveo-advanced-search-input-section';
+    let sectionClassName = 'coveo-input coveo-advanced-search-input-section';
     let document = $$('div', { className: sectionClassName });
     let label = $$('span', { className: 'coveo-advanced-search-label' });
     label.text(l(this.inputName + 'Label'));
