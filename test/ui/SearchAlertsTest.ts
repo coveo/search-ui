@@ -9,8 +9,6 @@ import {Simulate} from '../Simulate';
 import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
 import {SearchAlertsEvents} from '../../src/events/SearchAlertEvents';
 
-// import {ModalBox} from '../../src/ExternalModulesShim';
-
 export function SearchAlertsTest() {
   describe('SearchAlerts', function () {
     let test: Mock.IBasicComponentSetup<SearchAlerts>;

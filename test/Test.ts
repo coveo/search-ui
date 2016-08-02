@@ -11,7 +11,6 @@ if (Simulate.isPhantomJs()) {
 import {defaultLanguage} from '../src/strings/DefaultLanguage';
 defaultLanguage();
 
-// import {Promise} from 'es6-promise';
 import {shim} from '../src/misc/PromisesShim';
 shim();
 
