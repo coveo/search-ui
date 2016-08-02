@@ -8,7 +8,7 @@ const live = process.env.NODE_ENV === 'production';
 
 // Fail plugin will allow the webpack ts-loader to fail correctly when the TS compilation fails
 // Provide plugin allows us to use underscore in every module, without having to require underscore everywhere.
-let plugins = [failPlugin, new webpack.ProvidePlugin({_: 'underscore'}), new ExtractTextPlugin('CoveoFullSearchNewDesign.css')];
+let plugins = [failPlugin, new webpack.ProvidePlugin({_: 'underscore'}), new ExtractTextPlugin('css/CoveoFullSearchNewDesign.css')];
 
 if (minimize) {
   plugins.push(new webpack.optimize.UglifyJsPlugin());
@@ -16,11 +16,11 @@ if (minimize) {
 
 let sassLoader = { test: /\.scss/ };
 if (live) {
-  sassLoader['loader'] = ExtractTextPlugin.extract(['style?insertAt=bottom', 'css?sourceMap', 'resolve-url', 'sass?sourceMap']);
+  sassLoader['loader'] = ExtractTextPlugin.extract('style-loader', '!css!resolve-url!sass-loader');
 } else {
   sassLoader['loaders'] = ['style?insertAt=bottom', 'css?sourceMap', 'resolve-url', 'sass?sourceMap'];
 }
-console.log(sassLoader);
+
 module.exports = {
   resolve: {
     extensions: ['', '.ts', '.js'],
