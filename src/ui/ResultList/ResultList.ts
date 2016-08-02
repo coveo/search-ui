@@ -50,8 +50,8 @@ export class ResultList extends Component {
   static options: IResultListOptions = {
     /**
      * Specifies the element within which the rendered templates for results are inserted.<br/>
-     * The content of this element is cleared when a new query is performed. If this option is not specified, a &lt;div&gt; element will by dynamically created in javascript and appended to the result list and used as a result container.<br/>
-     * You can change the container by specifying it's selector: Eg  data-result-container-selector="#someCssSelector"
+     * The content of this element is cleared when a new query is performed. If this option is not specified, a &lt;div&gt; element will by dynamically created in JavaScript and appended to the result list and used as a result container.<br/>
+     * You can change the container by specifying its selector: Eg  data-result-container-selector="#someCssSelector"
      */
     resultContainer: ComponentOptions.buildChildHtmlElementOption({
       defaultFunction: (element: HTMLElement) => {
@@ -153,6 +153,8 @@ export class ResultList extends Component {
       this.bind.on(<HTMLElement>this.options.infiniteScrollContainer, 'scroll', (e: Event) => this.handleScrollOfResultList());
     }
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, () => this.handlePageChanged());
+
+    $$(this.options.resultContainer).addClass('coveo-result-list-container');
   }
 
   /**
