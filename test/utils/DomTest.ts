@@ -17,7 +17,6 @@ export function DomTests() {
     })
 
     describe('without jquery', function () {
-      var jqueryOrig = window['jQuery'];
       beforeEach(function () {
         // we want to test the basic event, not jquery one
         window['jQuery'] = null;

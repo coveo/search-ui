@@ -1,3 +1,4 @@
+/* tslint:disable:no-unused-variable */
 import {FollowItem} from '../../src/ui/SearchAlerts/FollowItem';
 import * as Mock from '../MockEnvironment';
 import {SearchEndpoint} from '../../src/rest/SearchEndpoint';
