@@ -43,7 +43,7 @@ export class DateInput implements IAdvancedSearchInput {
   public updateQuery(queryBuilder: QueryBuilder) {
     let value = this.getValue();
     if (value) {
-      queryBuilder.expression.add(this.getValue());
+      queryBuilder.advancedExpression.add(this.getValue());
     }
   }
 

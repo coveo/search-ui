@@ -3,8 +3,8 @@ import {IAdvancedSearchInput} from './AdvancedSearchInput';
 import {ISearchEndpoint} from '../../rest/SearchEndpointInterface';
 import {IIndexFieldValue} from '../../rest/FieldValue';
 import {QueryBuilder} from '../Base/QueryBuilder';
-import {FacetUtils} from '../Facet/FacetUtils';
 import {Dropdown} from './Dropdown';
+import {FacetUtils} from '../../ui/Facet/FacetUtils';
 import {NumericSpinner} from './NumericSpinner';
 import {TextInput} from './TextInput';
 import {l} from '../../strings/Strings';
@@ -22,7 +22,7 @@ export class DocumentInput implements IAdvancedSearchInput {
   public updateQuery(queryBuilder: QueryBuilder): void {
     let value = this.getValue();
     if (value) {
-      queryBuilder.expression.add(this.getValue());
+      queryBuilder.advancedExpression.add(this.getValue());
     }
   }
 }
@@ -55,11 +55,11 @@ export class SimpleFieldInput extends DocumentInput {
 
   private buildFieldSelect() {
     return this.endpoint.listFieldValues({ field: this.fieldName }).then((values: IIndexFieldValue[]) => {
-      let options = [];
+      let options = [''];
       _.each(values, (value: IIndexFieldValue) => {
-        options.push(FacetUtils.tryToGetTranslatedCaption(this.fieldName, value.lookupValue));
+        options.push(value.value);
       })
-      this.dropDown = new Dropdown(options, this.inputName, true);
+      this.dropDown = new Dropdown(options, this.inputName, (str: string)=>{return FacetUtils.tryToGetTranslatedCaption(this.fieldName, str)});
     });
   }
 

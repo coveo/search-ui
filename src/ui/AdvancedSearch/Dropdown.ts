@@ -5,10 +5,7 @@ export class Dropdown {
 
   private element: HTMLElement
 
-  constructor(private listOfValues: string[], private id: string, noValue: boolean = false){
-    if (noValue) {
-      this.listOfValues.splice(0, 0, '');
-    }
+  constructor(protected listOfValues: string[], private id: string, private getDisplayValue: (string)=>string = l){
     this.build();
     this.bindEvents();
   }
@@ -29,12 +26,13 @@ export class Dropdown {
     return $$(this.element).find('.coveo-dropdown-selected-value').getAttribute('value');
   }
 
-  private build() {
+  protected build() {
     let dropdown = $$('div', {className: 'coveo-dropdown', id: this.id});
     let button = $$('button', {className: 'coveo-button coveo-dropdown-toggle', type:'button'});
     button.setAttribute('data-toggle', 'coveo-dropdown');
     let selected = $$('span', {className: 'coveo-dropdown-selected-value'});
-    selected.text(l(this.listOfValues[0]));
+    selected.setAttribute('value', this.listOfValues[0]);
+    selected.text(this.getDisplayValue(this.listOfValues[0]));
     button.append(selected.el);
     button.append($$('span', {className: 'coveo-dropdown-toggle-arrow'}).el);
     dropdown.append(button.el);
@@ -42,10 +40,10 @@ export class Dropdown {
     _.each(this.listOfValues, (value: string)=>{
       let option = $$('li');
       let content = $$('span');
-      content.text(l(value));
+      content.text(this.getDisplayValue(value));
       option.on('click', ()=>{
         selected.setAttribute('value', value);
-        selected.text(l(value));
+        selected.text(this.getDisplayValue(value));
         this.close();
       })
 
