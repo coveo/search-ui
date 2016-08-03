@@ -113,6 +113,7 @@
   },
   "dependencies": {
     "coveomagicbox": "1.0.9",
+    "pikaday": "^1.4.0",
     "d3": "^3.5.17",
     "es6-promise": "^3.1.2",
     "exports-loader": "^0.6.3",

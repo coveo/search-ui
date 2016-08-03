@@ -26,6 +26,8 @@ $spaceBetween: 0 5px;
   align-items: center;
 
   .coveo-radio {
+    width: 20%;
+
     input[type='radio'] + label {
       display: inline;
     }
@@ -33,6 +35,7 @@ $spaceBetween: 0 5px;
 
   .coveo-advanced-search-date-input {
     display: inline-block;
+    padding: 0;
     border: none;
 
     &:disabled {

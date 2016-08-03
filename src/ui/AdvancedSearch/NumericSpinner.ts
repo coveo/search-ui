@@ -4,7 +4,7 @@ export class NumericSpinner {
 
   private element: HTMLElement;
 
-  constructor(private min: number = 0, private max?: number, private isFloat: boolean = false){
+  constructor(private min: number = 0, private max?: number, private isFloat: boolean = false) {
     this.build();
     this.bindEvents();
   }
@@ -22,11 +22,11 @@ export class NumericSpinner {
   }
 
   public getValue(): number {
-    return this.getSpinnerInput().value ? parseInt(this.getSpinnerInput().value): this.min;
+    return this.getSpinnerInput().value ? parseInt(this.getSpinnerInput().value) : this.min;
   }
 
   public getFloatValue(): number {
-    return this.getSpinnerInput().value ? parseFloat(this.getSpinnerInput().value): this.min;
+    return this.getSpinnerInput().value ? parseFloat(this.getSpinnerInput().value) : this.min;
   }
 
   public setValue(value: number) {
@@ -39,10 +39,10 @@ export class NumericSpinner {
     this.getSpinnerInput().value = value.toString();
   }
 
-  private build(){
-    let numericSpinner = $$('div', { className: 'coveo-numeric-spinner'});
-    let numberInput = $$('input', { className: 'coveo-advanced-search-number-input', type: 'text'});
-    let addOn = $$('span', {className: 'coveo-add-on'});
+  private build() {
+    let numericSpinner = $$('div', { className: 'coveo-numeric-spinner' });
+    let numberInput = $$('input', { className: 'coveo-advanced-search-number-input', type: 'text' });
+    let addOn = $$('span', { className: 'coveo-add-on' });
     addOn.el.innerHTML = `<div id="SpinnerUp">
                               <i class="coveo-sprites-arrow-up"></i>
                           </div>
@@ -56,12 +56,12 @@ export class NumericSpinner {
 
   private bindEvents() {
     let up = $$(this.element).find('#SpinnerUp');
-    $$(up).on('click', ()=>{
+    $$(up).on('click', () => {
       this.setValue(this.getValue() + 1)
     })
 
     let down = $$(this.element).find('#SpinnerDown');
-    $$(down).on('click', ()=>{
+    $$(down).on('click', () => {
       this.setValue(this.getValue() - 1);
     })
   }

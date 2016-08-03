@@ -5,6 +5,8 @@ import {l} from '../../strings/Strings';
 import {Dropdown} from './Dropdown';
 import {NumericSpinner} from './NumericSpinner';
 import {$$} from '../../utils/Dom';
+import {DateUtils} from '../../utils/DateUtils';
+import {DatePicker} from './DatePicker';
 
 export class DateInput implements IAdvancedSearchInput {
 
@@ -65,17 +67,6 @@ export class DateInput implements IAdvancedSearchInput {
     });
   }
 
-  protected dateToString(date: Date): string {
-    return date.getFullYear() + '/' + this.padNumber((date.getMonth() + 1).toString()) + '/' + this.padNumber(date.getDate().toString());
-  }
-
-  private padNumber(num: string): string {
-    while (num.length < 2) {
-      num = '0' + num;
-    }
-    return num;
-  }
-
 }
 
 export class AnytimeDateInput extends DateInput {
@@ -102,12 +93,12 @@ export class InTheLastDateInput extends DateInput {
 
   public build(): HTMLElement {
     super.build();
-    let input = $$('fieldset', {className: 'coveo-advanced-search-date-input'});
+    let input = $$('fieldset', { className: 'coveo-advanced-search-date-input' });
     (<HTMLFieldSetElement>input.el).disabled = true;
-    
+
     this.spinner = new NumericSpinner();
     input.append(this.spinner.getElement());
-    
+
     this.dropDown = new Dropdown(['days', 'months'], 'coveo-advanced-search-in-the-last-select')
     input.append(this.dropDown.getElement());
 
@@ -127,20 +118,15 @@ export class InTheLastDateInput extends DateInput {
       date.setDate(currentDate.getDate() - time);
     }
 
-    return this.isSelected() ? '@date>=' + this.dateToString(date) : '';
+    return this.isSelected() ? '@date>=' + DateUtils.dateForQuery(date) : '';
   }
 
 }
 
 export class BetweenDateInput extends DateInput {
 
-  private firstDay: Dropdown;
-  private firstMonth: Dropdown;
-  private firstYear: Dropdown;
-
-  private secondDay: Dropdown;
-  private secondMonth: Dropdown;
-  private secondYear: Dropdown;
+  private firstDatePicker: DatePicker;
+  private secondDatePicker: DatePicker;
 
   constructor() {
     super('AdvancedSearchBetween');
@@ -148,57 +134,24 @@ export class BetweenDateInput extends DateInput {
 
   public build(): HTMLElement {
     super.build();
-    let input = $$('fieldset', {className: 'coveo-advanced-search-date-input'});
-    (<HTMLFieldSetElement>input.el).disabled = true;
-    this.firstDay = new Dropdown(this.createIntegerList(31), 'coveo-advanced-search-select-day')
-    this.firstMonth = new Dropdown(this.createIntegerList(12), 'coveo-advanced-search-select-month')
-    this.firstYear = new Dropdown(this.createYearList(), 'coveo-advanced-search-select-year')
-    input.append(this.firstDay.getElement());
-    input.append(this.firstMonth.getElement());
-    input.append(this.firstYear.getElement());
+    let container = $$('fieldset', { className: 'coveo-advanced-search-date-input' });
+    (<HTMLFieldSetElement>container.el).disabled = true;
+
+    this.firstDatePicker = new DatePicker();
+    container.append(this.firstDatePicker.getElement());
 
     let and = $$('div', { className: 'coveo-advanced-search-and' });
     and.text(l('And').toLowerCase());
-    input.append(and.el);
+    container.append(and.el);
 
-    this.secondDay = new Dropdown(this.createIntegerList(31), 'coveo-advanced-search-select-day')
-    this.secondMonth = new Dropdown(this.createIntegerList(12), 'coveo-advanced-search-select-month')
-    this.secondYear = new Dropdown(this.createYearList(), 'coveo-advanced-search-select-year')
-    input.append(this.secondDay.getElement());
-    input.append(this.secondMonth.getElement());
-    input.append(this.secondYear.getElement());
-    this.element.appendChild(input.el);
+    this.secondDatePicker = new DatePicker();
+    container.append(this.secondDatePicker.getElement());
+
+    this.element.appendChild(container.el);
     return this.element;
   }
 
-  private createIntegerList(end: number, start?: number): string[] {
-    let options: string[] = [];
-    for (let i = 1; i <= end; i++) {
-      options.push(i.toString());
-    }
-    return options;
-  }
-
-  private createYearList(): string[] {
-    let currentYear = new Date().getFullYear();
-    let options: string[] = [];
-    for (let i = 1990; i <= currentYear; i++) {
-      options.push(i.toString());
-    }
-    return options;
-  }
-
   public getValue(): string {
-    let firstDate = this.getDate(this.firstDay, this.firstMonth, this.firstYear);
-    let secondDate = this.getDate(this.secondDay, this.secondMonth, this.secondYear);
-    return this.isSelected() ? '(@date>=' + this.dateToString(firstDate) + ')(@date<=' + this.dateToString(secondDate) + ')' : '';
-  }
-
-  private getDate(day: Dropdown, month: Dropdown, year: Dropdown): Date {
-    let date = new Date();
-    date.setDate(parseInt(day.getValue()));
-    date.setMonth(parseInt(month.getValue()) - 1);
-    date.setFullYear(parseInt(year.getValue()));
-    return date;
+    return this.isSelected() ? '(@date>=' + this.firstDatePicker.getValue() + ')(@date<=' + this.secondDatePicker.getValue() + ')' : '';
   }
 }

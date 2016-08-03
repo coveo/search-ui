@@ -36,7 +36,8 @@ module.exports = {
       'jstz': __dirname + '/lib/jstz.min.js',
       'magic-box': __dirname + '/node_modules/coveomagicbox/bin/MagicBox.min.js',
       'default-language': __dirname + '/src/strings/DefaultLanguage.js',
-      'underscore': __dirname + '/node_modules/underscore/underscore-min.js'
+      'underscore': __dirname + '/node_modules/underscore/underscore-min.js',
+      'pikaday': __dirname + '/node_modules/pikaday/pikaday.js'
     }
   },
   devtool: 'source-map',

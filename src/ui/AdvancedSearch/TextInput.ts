@@ -4,7 +4,7 @@ export class TextInput {
 
   private element: HTMLElement;
 
-  constructor(private label?: string){
+  constructor(private label?: string) {
     this.build();
   }
 

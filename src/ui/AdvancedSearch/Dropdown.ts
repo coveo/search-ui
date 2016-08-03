@@ -5,7 +5,7 @@ export class Dropdown {
 
   private element: HTMLElement;
 
-  constructor(protected listOfValues: string[], private id: string, private getDisplayValue: (string)=>string = l){
+  constructor(protected listOfValues: string[], private id: string, private getDisplayValue: (string) => string = l) {
     this.build();
     this.bindEvents();
   }
@@ -27,30 +27,30 @@ export class Dropdown {
   }
 
   protected build() {
-    let dropdown = $$('div', {className: 'coveo-dropdown', id: this.id});
-    let button = $$('button', {className: 'coveo-button coveo-dropdown-toggle', type:'button'});
+    let dropdown = $$('div', { className: 'coveo-dropdown', id: this.id });
+    let button = $$('button', { className: 'coveo-button coveo-dropdown-toggle', type: 'button' });
     button.setAttribute('data-toggle', 'coveo-dropdown');
-    let selected = $$('span', {className: 'coveo-dropdown-selected-value'});
+    let selected = $$('span', { className: 'coveo-dropdown-selected-value' });
     selected.setAttribute('value', this.listOfValues[0]);
     selected.text(this.getDisplayValue(this.listOfValues[0]));
     button.append(selected.el);
-    button.append($$('span', {className: 'coveo-dropdown-toggle-arrow'}).el);
+    button.append($$('span', { className: 'coveo-dropdown-toggle-arrow' }).el);
     dropdown.append(button.el);
     dropdown.append(this.buildDropdownMenu(selected));
     this.element = dropdown.el;
   }
 
   private buildDropdownMenu(selected: Dom): HTMLElement {
-    let dropdownMenu = $$('ul', {className: 'coveo-dropdown-menu'});
-    let selectedIcon = $$('span', {className: 'coveo-selected-icon coveo-sprites-facet-search-checkbox-hook-active'});
-    _.each(this.listOfValues, (value: string, index: number)=>{
+    let dropdownMenu = $$('ul', { className: 'coveo-dropdown-menu' });
+    let selectedIcon = $$('span', { className: 'coveo-selected-icon coveo-sprites-facet-search-checkbox-hook-active' });
+    _.each(this.listOfValues, (value: string, index: number) => {
       let option = $$('li');
       let content = $$('span');
       content.text(this.getDisplayValue(value));
       if (index == 0) {
         content.prepend(selectedIcon.el);
       }
-      option.on('click', ()=>{
+      option.on('click', () => {
         selectedIcon.detach();
         content.prepend(selectedIcon.el);
         selected.setAttribute('value', value);
@@ -66,7 +66,7 @@ export class Dropdown {
 
   private bindEvents() {
     let button = $$(this.element).find('button');
-    $$(button).on('click', ()=>{
+    $$(button).on('click', () => {
       if ($$(this.element).hasClass('coveo-open')) {
         this.close();
       } else {

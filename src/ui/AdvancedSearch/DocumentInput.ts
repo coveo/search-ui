@@ -12,7 +12,7 @@ import {$$} from '../../utils/Dom';
 
 export class DocumentInput implements IAdvancedSearchInput {
   public build(): HTMLElement {
-    return $$('div', {className: 'coveo-advanced-search-document-input-section'}).el;
+    return $$('div', { className: 'coveo-advanced-search-document-input-section' }).el;
   }
 
   public getValue(): string {
@@ -41,7 +41,7 @@ export class SimpleFieldInput extends DocumentInput {
     let label = $$('span', { className: 'coveo-advanced-search-label' });
     label.text(l(this.inputName + 'Label'));
     document.append(label.el);
-    this.buildFieldSelect().then(()=>{
+    this.buildFieldSelect().then(() => {
       document.append(this.dropDown.getElement());
     })
     this.element = document.el;
@@ -49,7 +49,7 @@ export class SimpleFieldInput extends DocumentInput {
   }
 
   public getValue(): string {
-    let value = this.dropDown ? this.dropDown.getValue(): '';
+    let value = this.dropDown ? this.dropDown.getValue() : '';
     return value ? this.fieldName + '==\"' + value + '\"' : '';
   }
 
@@ -59,7 +59,7 @@ export class SimpleFieldInput extends DocumentInput {
       _.each(values, (value: IIndexFieldValue) => {
         options.push(value.value);
       })
-      this.dropDown = new Dropdown(options, this.inputName, (str: string)=>{return FacetUtils.tryToGetTranslatedCaption(this.fieldName, str)});
+      this.dropDown = new Dropdown(options, this.inputName, (str: string) => { return FacetUtils.tryToGetTranslatedCaption(this.fieldName, str) });
     });
   }
 
