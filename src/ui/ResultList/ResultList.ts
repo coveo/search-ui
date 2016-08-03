@@ -118,7 +118,7 @@ export class ResultList extends Component {
     autoSelectFieldsToInclude: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies the default ResultList layout to use.<br/>
-     * Possible values are `list` and `tiled`.<br/>
+     * Possible values are `list` and `card`.<br/>
      * By default, it is set to `list`.
      */
     defaultLayout: ComponentOptions.buildStringOption({
@@ -133,7 +133,7 @@ export class ResultList extends Component {
   private fetchingMoreResults: Promise<IQueryResults>;
   private reachedTheEndOfResults = false;
 
-  public static validResultListLayouts = ['list', 'tiled'];
+  public static validResultListLayouts = ['list', 'card'];
   private currentLayout: string;
   /**
    * Create a new ResultList.<br/>
@@ -285,7 +285,7 @@ export class ResultList extends Component {
 
   /**
    * Switch the current layout<br/>
-   * @param layout The new layout. Available values are `list` and `tiled`.
+   * @param layout The new layout. Available values are `list` and `card`.
    */
   public switchLayout(layout: string) {
     Assert.check(_.contains(ResultList.validResultListLayouts, layout), 'Invalid layout');

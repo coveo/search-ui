@@ -105,9 +105,9 @@ export function ResultListTest() {
     })
 
     it('switchLayout should switch the layout when entering a valid layout', function () {
-      test.cmp.switchLayout('tiled');
-      expect(test.cmp.getCurrentLayout()).toBe('tiled');
-      expect(test.cmp.options.resultContainer.classList).toContain('coveo-tiled-layout');
+      test.cmp.switchLayout('card');
+      expect(test.cmp.getCurrentLayout()).toBe('card');
+      expect(test.cmp.options.resultContainer.classList).toContain('coveo-card-layout');
       expect(test.cmp.options.resultContainer.classList).not.toContain('coveo-list-layout');
     })
 
@@ -212,7 +212,7 @@ export function ResultListTest() {
         expect(simulation.queryBuilder.fieldsToInclude).toContain('field3');
       })
       it('defaultLayout, when valid, should set the currentLayout correctly', function () {
-        const testLayouts = ['list', 'tiled'];
+        const testLayouts = ['list', 'card'];
         _.each(testLayouts, layout => {
           test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
             defaultLayout: layout
@@ -221,7 +221,7 @@ export function ResultListTest() {
         });
       })
       it('defaultLayout, when valid, should set the appropriate CSS class on the result container', function () {
-        const testLayouts = ['list', 'tiled'];
+        const testLayouts = ['list', 'card'];
         _.each(testLayouts, layout => {
           test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
             defaultLayout: layout
