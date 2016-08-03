@@ -69,6 +69,7 @@ export class AdvancedFieldInput extends DocumentInput {
 
   protected element: HTMLElement
   private mode: Dropdown;
+  private input: TextInput;
 
   constructor(public inputName: string, public fieldName: string) {
     super();
@@ -79,14 +80,16 @@ export class AdvancedFieldInput extends DocumentInput {
     let label = $$('span', { className: 'coveo-advanced-search-label' });
     label.text(l(this.inputName + 'Label'));
     document.append(label.el);
-    document.append(new Dropdown(['Contains', 'DoesNotContain', 'Matches'], this.inputName).getElement());
-    document.append(new TextInput().getElement());
+    this.mode = new Dropdown(['Contains', 'DoesNotContain', 'Matches'], this.inputName)
+    document.append(this.mode.getElement());
+    this.input = new TextInput();
+    document.append(this.input.getElement());
     this.element = document.el;
     return this.element;
   }
 
   public getValue(): string {
-    let inputValue = (<HTMLInputElement>$$(this.element).find('input')).value
+    let inputValue = this.input.getValue();
     if (inputValue) {
       switch (this.mode.getValue()) {
         case 'Contains':

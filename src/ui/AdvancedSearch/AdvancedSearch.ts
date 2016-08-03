@@ -36,6 +36,7 @@ export class AdvancedSearch extends Component {
   }
 
   private inputs: IAdvancedSearchInput[] = [];
+  private handleEnterFunction = this.handleEnter.bind(this);
 
   constructor(public element: HTMLElement, public options?: IAdvancedSearchOptions, bindings?: IComponentBindings) {
     super(element, AdvancedSearch.ID, bindings);
@@ -88,21 +89,23 @@ export class AdvancedSearch extends Component {
       component.append(this.buildSection(section));
     })
 
-    component.on('keydown', (e: KeyboardEvent) => {
-      if (e.keyCode == 13) { // Enter
-        this.executeAdvancedSearch();
-      }
-    })
-
     $$(this.element).append(component.el);
   }
 
   private open() {
     $$(this.element).show();
+    document.addEventListener('keydown', this.handleEnterFunction);
   }
 
   private close() {
     $$(this.element).hide();
+    document.removeEventListener('keydown', this.handleEnterFunction);
+  }
+
+  private handleEnter(e: KeyboardEvent) {
+    if (e.keyCode == 13) { // Enter
+      this.executeAdvancedSearch();
+    }
   }
 
   private getKeywordsSection(): IAdvancedSearchSection {

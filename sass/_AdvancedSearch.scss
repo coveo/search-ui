@@ -11,7 +11,10 @@ $spaceBetween: 0 5px;
 
 #coveo-advanced-search-in-the-last-select{
   margin-left: 20px;
-  width: 90px;
+
+  .coveo-button { 
+    width: auto;
+  }
 }
 
 .coveo-advanced-search-section-title {

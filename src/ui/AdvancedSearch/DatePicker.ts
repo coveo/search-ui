@@ -20,7 +20,7 @@ export class DatePicker {
   }
 
   private build() {
-    this.element = <HTMLInputElement>$$('input', {className: 'coveo-button'}).el;
+    this.element = <HTMLInputElement>$$('input', { className: 'coveo-button' }).el;
     this.element.readOnly = true;
     this.picker = new Pikaday({ field: this.element });
     this.picker.setDate(new Date());
