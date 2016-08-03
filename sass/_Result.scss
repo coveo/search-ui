@@ -1,6 +1,4 @@
 .CoveoResult {
-  border-bottom: $default-border;
-  margin: 20px 0px 20px 20px;
   position: relative; // Allows using absolute positioning for buttons such as Show All Thread, etc.
 
   &.coveo-omnibox-selectable {
@@ -157,4 +155,17 @@
   &.coveo-is-recommendation {
     box-shadow: 0 0 0 5px #263E55;
   }
+}
+
+.coveo-list-layout > .CoveoResult {
+  border-bottom: $default-border;
+  margin: 20px 0px 20px 20px;
+}
+
+.coveo-card-layout > .CoveoResult {
+  width: 300px;
+  @include flex-grow(1);
+  margin: 5px;
+  padding: 5px;
+  @include defaultRoundedBorder();
 }
