@@ -273,7 +273,9 @@ export class ComponentOptions {
         if (value && optionDefinition.deprecated) {
           console.log(componentID + '.' + name + ' : ' + optionDefinition.deprecated);
         }
-      } else if (values[name] != undefined) {
+      }
+
+      if (_.isEmpty(value) && values[name] != undefined) {
         value = values[name];
       }
 
