@@ -35,7 +35,9 @@ export interface IResultListOptions {
   enableInfiniteScrollWaitingAnimation?: boolean;
   fieldsToInclude?: string[];
   autoSelectFieldsToInclude?: boolean;
+  defaultLayout?: string;
 }
+
 
 /**
  * This component is responsible for displaying the results of the current query using one or more result templates.<br/>
@@ -113,7 +115,17 @@ export class ResultList extends Component {
      * Default value is false.<br/>
      * NB: Many interface created by the interface editor will actually explicitly set this option to true.
      */
-    autoSelectFieldsToInclude: ComponentOptions.buildBooleanOption({ defaultValue: false })
+    autoSelectFieldsToInclude: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    /**
+     * Specifies the default ResultList layout to use.<br/>
+     * Possible values are `list` and `tiled`.<br/>
+     * By default, it is set to `list`.
+     */
+    defaultLayout: ComponentOptions.buildStringOption({
+      defaultValue: 'list', postProcessing: (v) => {
+        return _.contains(ResultList.validResultListLayouts, v) ? v : 'list';
+      }
+    })
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
@@ -121,6 +133,8 @@ export class ResultList extends Component {
   private fetchingMoreResults: Promise<IQueryResults>;
   private reachedTheEndOfResults = false;
 
+  public static validResultListLayouts = ['list', 'tiled'];
+  private currentLayout: string;
   /**
    * Create a new ResultList.<br/>
    * Bind various event related to queries (eg : on querySuccess -> renderResults)<br/>
@@ -140,6 +154,7 @@ export class ResultList extends Component {
     Assert.exists(this.options.resultTemplate);
     Assert.exists(this.options.waitAnimationContainer);
     Assert.exists(this.options.infiniteScrollContainer);
+    Assert.exists(this.options.defaultLayout);
 
     this.showOrHideElementsDependingOnState(false, false);
 
@@ -155,6 +170,8 @@ export class ResultList extends Component {
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, () => this.handlePageChanged());
 
     $$(this.options.resultContainer).addClass('coveo-result-list-container');
+    this.currentLayout = this.options.defaultLayout;
+    $$(this.options.resultContainer).addClass(`coveo-${this.currentLayout}-layout`);
   }
 
   /**
@@ -264,6 +281,26 @@ export class ResultList extends Component {
    */
   public getDisplayedResultsElements(): HTMLElement[] {
     return $$(this.options.resultContainer).findAll('.CoveoResult');
+  }
+
+  /**
+   * Switch the current layout<br/>
+   * @param layout The new layout. Available values are `list` and `tiled`.
+   */
+  public switchLayout(layout: string) {
+    Assert.check(_.contains(ResultList.validResultListLayouts, layout), 'Invalid layout');
+    if (layout !== this.currentLayout) {
+      $$(this.options.resultContainer).removeClass(`coveo-${this.currentLayout}-layout`);
+      $$(this.options.resultContainer).addClass(`coveo-${layout}-layout`);
+      this.currentLayout = layout;
+    }
+  }
+
+  /**
+   * Get the current layout
+   */
+  public getCurrentLayout(): string {
+    return this.currentLayout;
   }
 
   protected autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult) {
