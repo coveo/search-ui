@@ -1,9 +1,9 @@
-import {$$} from '../../utils/Dom';
+import {$$, Dom} from '../../utils/Dom';
 import {l} from '../../strings/Strings';
 
 export class Dropdown {
 
-  private element: HTMLElement
+  private element: HTMLElement;
 
   constructor(protected listOfValues: string[], private id: string, private getDisplayValue: (string)=>string = l){
     this.build();
@@ -36,12 +36,23 @@ export class Dropdown {
     button.append(selected.el);
     button.append($$('span', {className: 'coveo-dropdown-toggle-arrow'}).el);
     dropdown.append(button.el);
+    dropdown.append(this.buildDropdownMenu(selected));
+    this.element = dropdown.el;
+  }
+
+  private buildDropdownMenu(selected: Dom): HTMLElement {
     let dropdownMenu = $$('ul', {className: 'coveo-dropdown-menu'});
-    _.each(this.listOfValues, (value: string)=>{
+    let selectedIcon = $$('span', {className: 'coveo-selected-icon coveo-sprites-facet-search-checkbox-hook-active'});
+    _.each(this.listOfValues, (value: string, index: number)=>{
       let option = $$('li');
       let content = $$('span');
       content.text(this.getDisplayValue(value));
+      if (index == 0) {
+        content.prepend(selectedIcon.el);
+      }
       option.on('click', ()=>{
+        selectedIcon.detach();
+        content.prepend(selectedIcon.el);
         selected.setAttribute('value', value);
         selected.text(this.getDisplayValue(value));
         this.close();
@@ -50,8 +61,7 @@ export class Dropdown {
       option.append(content.el);
       dropdownMenu.append(option.el);
     })
-    dropdown.append(dropdownMenu.el);
-    this.element = dropdown.el;
+    return dropdownMenu.el;
   }
 
   private bindEvents() {

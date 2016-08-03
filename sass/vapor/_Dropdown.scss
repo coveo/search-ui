@@ -41,37 +41,16 @@ $form-heading-description-margin-top: 10px;
   position: relative;
 
   display: inline-block;
-}
 
-.coveo-dropdown-toggle {
-  display: inline-block;
-  padding: 0 ($button-padding-x + $dropdown-arrow-icon-size + $dropdown-icon-text-spacing) 0 $button-padding-x;
-  overflow: hidden;
+  .coveo-dropdown-toggle {
+    display: inline-block;
+    padding: 0 ($button-padding-x + $dropdown-arrow-icon-size + $dropdown-icon-text-spacing) 0 $button-padding-x;
+    overflow: hidden;
 
-  font-size: $dropdown-button-font-size;
-  line-height: 16px;
-  text-overflow: ellipsis;
-  text-transform: none;
-  white-space: nowrap;
-
-  &:disabled .dropdown-toggle-arrow {
-    //@include arrow-down-icon($medium-grey);
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
-  .coveo-dropdown-toggle-arrow {
-    position: absolute;
-    top: calc(50% - #{$dropdown-arrow-icon-size} / 2);
-    right: $button-padding-x;
-
-    width: $dropdown-arrow-icon-size;
-    height: $dropdown-arrow-icon-size;
-
-    //@include arrow-down-icon($medium-blue);
-  }
-}
-
-&.coveo-open > .dropdown-toggle .dropdown-toggle-arrow {
-  //@include arrow-up-icon($medium-blue);
 }
 
 .coveo-dropdown-menu {
@@ -117,6 +96,11 @@ $form-heading-description-margin-top: 10px;
 
       cursor: pointer;
 
+      .coveo-selected-icon{
+        margin-right: 5px;
+        vertical-align: middle;
+      }
+
       &:hover, &:focus {
         color: $color-greyish-dark-blue;
 
@@ -154,4 +138,22 @@ $form-heading-description-margin-top: 10px;
 &.coveo-open > .coveo-dropdown-menu {
   display: block;
   margin-bottom: $form-bottom-padding;
+}
+
+.coveo-dropdown-toggle-arrow {
+  position: absolute;
+  top: calc(50% - 2px);
+  right: $button-padding-x;
+
+  width: $dropdown-arrow-icon-size;
+  height: $dropdown-arrow-icon-size;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid $color-teal;
+}
+
+&.coveo-open > .coveo-dropdown-toggle .coveo-dropdown-toggle-arrow {
+  top: calc(50% - #{$dropdown-arrow-icon-size} / 2 - 2px);
+  border-top: none;
+  border-bottom: 5px solid $color-teal;
 }

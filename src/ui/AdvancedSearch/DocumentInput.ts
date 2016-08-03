@@ -138,7 +138,7 @@ export class SizeInput extends DocumentInput {
   }
 
   private getSizeInBytes(): number {
-    let size = this.sizeInput.getValue();
+    let size = this.sizeInput.getFloatValue();
     switch (this.sizeSelect.getValue()) {
       case 'KB':
         return size * 1024;

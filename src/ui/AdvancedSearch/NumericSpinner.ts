@@ -4,9 +4,17 @@ export class NumericSpinner {
 
   private element: HTMLElement;
 
-  constructor(private min: number = 0, private max?: number){
+  constructor(private min: number = 0, private max?: number, private isFloat: boolean = false){
     this.build();
     this.bindEvents();
+  }
+
+  public useFloat() {
+    this.isFloat = true;
+  }
+
+  public useInt() {
+    this.isFloat = false;
   }
 
   public getElement(): HTMLElement {
@@ -15,6 +23,10 @@ export class NumericSpinner {
 
   public getValue(): number {
     return this.getSpinnerInput().value ? parseInt(this.getSpinnerInput().value): this.min;
+  }
+
+  public getFloatValue(): number {
+    return this.getSpinnerInput().value ? parseFloat(this.getSpinnerInput().value): this.min;
   }
 
   public setValue(value: number) {
