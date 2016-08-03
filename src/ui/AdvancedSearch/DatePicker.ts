@@ -4,14 +4,14 @@ import {Pikaday} from '../../ExternalModulesShim';
 
 export class DatePicker {
 
-  private element: HTMLElement;
+  private element: HTMLInputElement;
   private picker: Pikaday;
 
   constructor() {
     this.build();
   }
 
-  public getElement(): HTMLElement {
+  public getElement(): HTMLInputElement {
     return this.element;
   }
 
@@ -20,8 +20,10 @@ export class DatePicker {
   }
 
   private build() {
-    this.element = $$('input').el;
+    this.element = <HTMLInputElement>$$('input', {className: 'coveo-button'}).el;
+    this.element.readOnly = true;
     this.picker = new Pikaday({ field: this.element });
+    this.picker.setDate(new Date());
     return this.element;
   }
 }

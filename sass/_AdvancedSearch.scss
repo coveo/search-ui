@@ -38,6 +38,10 @@ $spaceBetween: 0 5px;
     padding: 0;
     border: none;
 
+    .coveo-button{
+      width: 100px;
+    }
+
     &:disabled {
       visibility: hidden;
     }
