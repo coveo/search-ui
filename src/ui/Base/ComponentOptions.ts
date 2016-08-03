@@ -267,14 +267,16 @@ export class ComponentOptions {
       let optionDefinition = options[name];
       let value: any;
       let loadFromAttribute = optionDefinition.load;
-      if (values[name] != undefined) {
-        value = values[name];
-      } else if (loadFromAttribute != null) {
+
+      if (loadFromAttribute != null) {
         value = loadFromAttribute(element, name, optionDefinition);
         if (value && optionDefinition.deprecated) {
           console.log(componentID + '.' + name + ' : ' + optionDefinition.deprecated);
         }
+      } else if (values[name] != undefined) {
+        value = values[name];
       }
+
       if (value == null && values[name] == undefined) {
         if (optionDefinition.defaultValue != null) {
           if (optionDefinition.type == ComponentOptionsType.LIST) {
