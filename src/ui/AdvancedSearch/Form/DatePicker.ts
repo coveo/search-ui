@@ -1,6 +1,6 @@
-import {$$} from '../../utils/Dom';
-import {DateUtils} from '../../utils/DateUtils';
-import {Pikaday} from '../../ExternalModulesShim';
+import {$$} from '../../../utils/Dom';
+import {DateUtils} from '../../../utils/DateUtils';
+import {Pikaday} from '../../../ExternalModulesShim';
 
 export class DatePicker {
 

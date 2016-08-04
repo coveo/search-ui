@@ -1,4 +1,4 @@
-import {$$} from '../../utils/Dom';
+import {$$} from '../../../utils/Dom';
 
 export class TextInput {
 

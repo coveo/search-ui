@@ -10,9 +10,16 @@ import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
 import {$$, Dom} from '../../utils/Dom';
 import {IAdvancedSearchInput, IAdvancedSearchSection} from './AdvancedSearchInput';
-import {KeywordsInput, AllKeywordsInput, ExactKeywordsInput, AnyKeywordsInput, NoneKeywordsInput} from './KeywordsInput';
-import {DateInput, AnytimeDateInput, InTheLastDateInput, BetweenDateInput} from './DateInput';
-import {SimpleFieldInput, SizeInput, AdvancedFieldInput} from './DocumentInput';
+import {AllKeywordsInput} from './KeywordsInput/AllKeywordsInput';
+import {ExactKeywordsInput} from './KeywordsInput/ExactKeywordsInput';
+import {AnyKeywordsInput} from './KeywordsInput/AnyKeywordsInput';
+import {NoneKeywordsInput} from './KeywordsInput/NoneKeywordsInput';
+import {AnytimeDateInput} from './DateInput/AnytimeDateInput';
+import {InTheLastDateInput} from './DateInput/InTheLastDateInput';
+import {BetweenDateInput} from './DateInput/BetweenDateInput';
+import {SimpleFieldInput} from './DocumentInput/SimpleFieldInput';
+import {SizeInput} from './DocumentInput/SizeInput';
+import {AdvancedFieldInput} from './DocumentInput/AdvancedFieldInput';
 
 export interface IAdvancedSearchOptions {
   includeKeywords?: boolean;
