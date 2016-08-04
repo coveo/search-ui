@@ -9,8 +9,8 @@ conf = _.extend(conf, {
     'CoveoJsSearch.Searchbox': './src/SearchboxIndex.ts'
   },
   output: {
-    path: require('path').resolve('./bin'),
-    filename: minimize ? 'js/[name].min.js' : 'js/[name].js',
+    path: require('path').resolve('./bin/js'),
+    filename: minimize ? '[name].min.js' : '[name].js',
     libraryTarget: 'umd',
     // See Index.ts as for why this need to be a temporary variable
     library: 'Coveo__temporary',
