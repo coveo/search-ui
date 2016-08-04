@@ -15,6 +15,10 @@ export class KeywordsInput implements IAdvancedSearchInput {
     return this.input.getElement();
   }
 
+  public setValue(value: string) {
+    this.input.setValue(value);
+  }
+
   public getValue(): string {
     return this.input.getValue();
   }

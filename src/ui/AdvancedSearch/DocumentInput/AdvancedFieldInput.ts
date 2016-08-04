@@ -7,8 +7,8 @@ import {DocumentInput} from './DocumentInput';
 export class AdvancedFieldInput extends DocumentInput {
 
   protected element: HTMLElement
-  private mode: Dropdown;
-  private input: TextInput;
+  public mode: Dropdown;
+  public input: TextInput;
 
   constructor(public inputName: string, public fieldName: string) {
     super(inputName);

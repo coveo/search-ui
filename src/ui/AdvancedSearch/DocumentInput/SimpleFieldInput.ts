@@ -9,7 +9,7 @@ import {$$} from '../../../utils/Dom';
 export class SimpleFieldInput extends DocumentInput {
 
   protected element: HTMLElement
-  private dropDown: Dropdown;
+  public dropDown: Dropdown;
 
   constructor(public inputName: string, public fieldName: string, private endpoint: ISearchEndpoint) {
     super(inputName);

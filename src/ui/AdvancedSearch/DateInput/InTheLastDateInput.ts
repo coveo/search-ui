@@ -6,8 +6,8 @@ import {DateUtils} from '../../../utils/DateUtils';
 
 export class InTheLastDateInput extends DateInput {
 
-  private dropDown: Dropdown;
-  private spinner: NumericSpinner;
+  public dropdown: Dropdown;
+  public spinner: NumericSpinner;
 
   constructor() {
     super('AdvancedSearchInTheLast');
@@ -21,8 +21,8 @@ export class InTheLastDateInput extends DateInput {
     this.spinner = new NumericSpinner();
     input.append(this.spinner.getElement());
 
-    this.dropDown = new Dropdown(['days', 'months'], 'coveo-advanced-search-in-the-last-select')
-    input.append(this.dropDown.getElement());
+    this.dropdown = new Dropdown(['days', 'months'], 'coveo-advanced-search-in-the-last-select')
+    input.append(this.dropdown.getElement());
 
     this.element.appendChild(input.el);
     return this.element;
@@ -30,8 +30,8 @@ export class InTheLastDateInput extends DateInput {
 
   public getValue(): string {
     let currentDate = new Date();
-    let time = this.spinner.getValue();
-    let size = this.dropDown.getValue().toLowerCase();
+    let time = this.spinner.getIntValue();
+    let size = this.dropdown.getValue().toLowerCase();
 
     let date = new Date();
     if (size == 'months') {

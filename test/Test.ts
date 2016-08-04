@@ -101,6 +101,21 @@
 /// <reference path="ui/ChatterLikedByTest.ts" />
 /// <reference path="ui/ChatterPostAttachmentTest.ts" />
 /// <reference path="ui/ChatterPostedByTest.ts" />
+/// <reference path="ui/AdvancedSearch/AdvancedSearchTest.ts" />
+/// <reference path="ui/AdvancedSearch/Form/TextInputTest.ts" />
+/// <reference path="ui/AdvancedSearch/Form/NumericSpinnerTest.ts" />
+/// <reference path="ui/AdvancedSearch/Form/DropdownTest.ts" />
+/// <reference path="ui/AdvancedSearch/Form/DatePickerTest.ts" />
+/// <reference path="ui/AdvancedSearch/KeywordsInput/KeywordsInputTest.ts" />
+/// <reference path="ui/AdvancedSearch/KeywordsInput/AnyKeywordsInputTest.ts" />
+/// <reference path="ui/AdvancedSearch/KeywordsInput/ExactKeywordsInputTest.ts" />
+/// <reference path="ui/AdvancedSearch/KeywordsInput/NoneKeywordsInputTest.ts" />
+/// <reference path="ui/AdvancedSearch/DateInput/DateInputTest.ts" />
+/// <reference path="ui/AdvancedSearch/DateInput/BetweenDateInputTest.ts" />
+/// <reference path="ui/AdvancedSearch/DateInput/InTheLastDateInputTest.ts" />
+/// <reference path="ui/AdvancedSearch/DocumentInput/DocumentInputTest.ts" />
+/// <reference path="ui/AdvancedSearch/DocumentInput/SimpleFieldInputTest.ts" />
+/// <reference path="ui/AdvancedSearch/DocumentInput/AdvancedFieldInputTest.ts" />
 
 Coveo.Logger.disable();
 
@@ -111,5 +126,3 @@ module Coveo {
 function isPhantomJs() {
   return navigator.userAgent.indexOf('PhantomJS') != -1;
 }
-
-/// <reference path="ui/AdvancedSearchTest.ts"

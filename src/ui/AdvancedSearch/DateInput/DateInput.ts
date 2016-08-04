@@ -29,6 +29,10 @@ export class DateInput implements IAdvancedSearchInput {
     return this.element;
   }
 
+  public getElement(): HTMLElement {
+    return this.element;
+  }
+
   public getValue(): string {
     return '';
   }

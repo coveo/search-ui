@@ -5,8 +5,8 @@ import {$$} from '../../../utils/Dom';
 
 export class BetweenDateInput extends DateInput {
 
-  private firstDatePicker: DatePicker;
-  private secondDatePicker: DatePicker;
+  public firstDatePicker: DatePicker = new DatePicker();
+  public secondDatePicker: DatePicker = new DatePicker();
 
   constructor() {
     super('AdvancedSearchBetween');
@@ -17,14 +17,12 @@ export class BetweenDateInput extends DateInput {
     let container = $$('fieldset', { className: 'coveo-advanced-search-date-input' });
     (<HTMLFieldSetElement>container.el).disabled = true;
 
-    this.firstDatePicker = new DatePicker();
     container.append(this.firstDatePicker.getElement());
 
     let and = $$('div', { className: 'coveo-advanced-search-and' });
     and.text(l('And').toLowerCase());
     container.append(and.el);
 
-    this.secondDatePicker = new DatePicker();
     container.append(this.secondDatePicker.getElement());
 
     this.element.appendChild(container.el);

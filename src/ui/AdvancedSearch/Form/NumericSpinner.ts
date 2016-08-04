@@ -4,24 +4,16 @@ export class NumericSpinner {
 
   private element: HTMLElement;
 
-  constructor(private min: number = 0, private max?: number, private isFloat: boolean = false) {
+  constructor(public min: number = 0, public max?: number) {
     this.build();
     this.bindEvents();
-  }
-
-  public useFloat() {
-    this.isFloat = true;
-  }
-
-  public useInt() {
-    this.isFloat = false;
   }
 
   public getElement(): HTMLElement {
     return this.element;
   }
 
-  public getValue(): number {
+  public getIntValue(): number {
     return this.getSpinnerInput().value ? parseInt(this.getSpinnerInput().value) : this.min;
   }
 
@@ -43,10 +35,10 @@ export class NumericSpinner {
     let numericSpinner = $$('div', { className: 'coveo-numeric-spinner' });
     let numberInput = $$('input', { className: 'coveo-advanced-search-number-input', type: 'text' });
     let addOn = $$('span', { className: 'coveo-add-on' });
-    addOn.el.innerHTML = `<div id="SpinnerUp">
+    addOn.el.innerHTML = `<div class="coveo-spinner-up">
                               <i class="coveo-sprites-arrow-up"></i>
                           </div>
-                          <div id="SpinnerDown">
+                          <div class="coveo-spinner-down">
                               <i class="coveo-sprites-arrow-down"></i>
                           </div>`;
     numericSpinner.append(numberInput.el);
@@ -55,14 +47,14 @@ export class NumericSpinner {
   }
 
   private bindEvents() {
-    let up = $$(this.element).find('#SpinnerUp');
+    let up = $$(this.element).find('.coveo-spinner-up');
     $$(up).on('click', () => {
-      this.setValue(this.getValue() + 1)
+      this.setValue(this.getIntValue() + 1)
     })
 
-    let down = $$(this.element).find('#SpinnerDown');
+    let down = $$(this.element).find('.coveo-spinner-down');
     $$(down).on('click', () => {
-      this.setValue(this.getValue() - 1);
+      this.setValue(this.getIntValue() - 1);
     })
   }
 

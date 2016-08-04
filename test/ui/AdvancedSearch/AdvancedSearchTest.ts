@@ -1,4 +1,4 @@
-/// <reference path="../Test.ts" />
+/// <reference path="../../Test.ts" />
 
 module Coveo {
   describe('AdvancedSearch', () => {
@@ -15,4 +15,5 @@ module Coveo {
     it('should put test here', () => {
 
     })
-  }
+  })
+}
