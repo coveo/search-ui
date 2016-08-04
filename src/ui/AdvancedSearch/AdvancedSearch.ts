@@ -48,6 +48,7 @@ export class AdvancedSearch extends Component {
   public executeAdvancedSearch() {
     this.updateQueryStateModel();
     this.queryController.executeQuery();
+    this.close();
   }
 
   private buildComponent() {

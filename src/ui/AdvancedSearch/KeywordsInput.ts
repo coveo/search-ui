@@ -32,6 +32,7 @@ export class KeywordsInput implements IAdvancedSearchInput {
       query += query ? ' (' + value + ')' : value;
     }
     queryState.set(QueryStateModel.attributesEnum.q, query);
+    this.clear();
   }
 }
 
