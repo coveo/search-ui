@@ -27,7 +27,8 @@ export interface IAdvancedSearchOptions {
 }
 
 /**
- * TODO documentation
+ * The Advanced Search component allows the user to easily create a complex query to send to the index.
+ * The component also allows custom code to modify the content by using the buildingAdvancedSearch event.
  */
 export class AdvancedSearch extends Component {
   static ID = 'AdvancedSearch'
@@ -36,8 +37,22 @@ export class AdvancedSearch extends Component {
    * @componentOptions
    */
   static options: IAdvancedSearchOptions = {
+    /**
+     * Specifies whether or not to include the built-in keywords section.
+     * Default is true
+     */
     includeKeywords: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
+    /**
+     * Specifies whether or not to include the built-in date section.
+     * Default is true
+     */
     includeDate: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
+    /**
+     * Specifies whether or not to include the built-in document section.
+     * Default is true
+     */
     includeDocument: ComponentOptions.buildBooleanOption({ defaultValue: true })
   }
 
@@ -51,6 +66,9 @@ export class AdvancedSearch extends Component {
     this.buildComponent();
   }
 
+  /**
+   * Launch the advanced search query.
+   */
   public executeAdvancedSearch() {
     this.updateQueryStateModel();
     this.queryController.executeQuery();
