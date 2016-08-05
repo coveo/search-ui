@@ -7,10 +7,13 @@ import {DocumentInput} from './DocumentInput';
 
 export class SizeInput extends DocumentInput {
 
+  public static modes = ['AtLeast', 'AtMost'];
+  public static sizes = ['KB', 'MB', 'Bytes'];
+
   protected element: HTMLElement;
-  protected modeSelect: Dropdown;
-  protected sizeInput: NumericSpinner;
-  protected sizeSelect: Dropdown;
+  public modeSelect: Dropdown;
+  public sizeInput: NumericSpinner;
+  public sizeSelect: Dropdown;
 
   constructor() {
     super('Size');
@@ -18,11 +21,11 @@ export class SizeInput extends DocumentInput {
 
   public build(): HTMLElement {
     let document = $$(super.build());
-    this.modeSelect = new Dropdown(['AtLeast', 'AtMost'], 'coveo-size-input-mode');
+    this.modeSelect = new Dropdown(SizeInput.modes, 'coveo-size-input-mode');
     document.append(this.modeSelect.getElement());
     this.sizeInput = new NumericSpinner();
     document.append(this.sizeInput.getElement());
-    this.sizeSelect = new Dropdown(['KB', 'MB', 'Bytes'], 'coveo-size-input-select');
+    this.sizeSelect = new Dropdown(SizeInput.sizes, 'coveo-size-input-select');
     document.append(this.sizeSelect.getElement());
     this.element = document.el;
     return this.element;

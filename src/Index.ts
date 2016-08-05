@@ -107,6 +107,7 @@ export {InTheLastDateInput} from './ui/AdvancedSearch/DateInput/InTheLastDateInp
 export {DocumentInput} from './ui/AdvancedSearch/DocumentInput/DocumentInput';
 export {SimpleFieldInput} from './ui/AdvancedSearch/DocumentInput/SimpleFieldInput';
 export {AdvancedFieldInput} from './ui/AdvancedSearch/DocumentInput/AdvancedFieldInput';
+export {SizeInput} from './ui/AdvancedSearch/DocumentInput/SizeInput';
 export {FollowItem} from './ui/SearchAlerts/FollowItem';
 export {SearchAlerts} from './ui/SearchAlerts/SearchAlerts';
 export {SearchAlertsMessage} from './ui/SearchAlerts/SearchAlertsMessage';

@@ -42,7 +42,7 @@ export class AdvancedSearch extends Component {
     includeDocument: ComponentOptions.buildBooleanOption({ defaultValue: true })
   }
 
-  private inputs: IAdvancedSearchInput[] = [];
+  public inputs: IAdvancedSearchInput[] = [];
   private handleEnterFunction = this.handleEnter.bind(this);
 
   constructor(public element: HTMLElement, public options?: IAdvancedSearchOptions, bindings?: IComponentBindings) {
@@ -118,7 +118,7 @@ export class AdvancedSearch extends Component {
 
   private getKeywordsSection(): IAdvancedSearchSection {
     let sectionName = 'Keywords';
-    let keywordsInputs = []
+    let keywordsInputs = [];
     keywordsInputs.push(new AllKeywordsInput());
     keywordsInputs.push(new ExactKeywordsInput());
     keywordsInputs.push(new AnyKeywordsInput());
@@ -136,8 +136,8 @@ export class AdvancedSearch extends Component {
   }
 
   private getDocumentSection(): IAdvancedSearchSection {
-    let sectionName = 'Document'
-    let documentInputs = []
+    let sectionName = 'Document';
+    let documentInputs = [];
     documentInputs.push(new SimpleFieldInput('FileType', '@filetype', this.queryController.getEndpoint()));
     documentInputs.push(new SimpleFieldInput('Language', '@language', this.queryController.getEndpoint()));
     documentInputs.push(new SizeInput());
@@ -147,7 +147,7 @@ export class AdvancedSearch extends Component {
   }
 
   private buildSection(section: IAdvancedSearchSection): HTMLElement {
-    let sectionHTML = $$('div', { className: 'coveo-advanced-search-section' });
+    let sectionHTML = $$('div', { className: 'coveo-advanced-search-section coveo-advanced-search-' + section.name.toLowerCase() + '-section' });
     let title = $$('div', { className: 'coveo-advanced-search-section-title' });
     title.text(l('AdvancedSearch' + section.name + 'SectionTitle'));
     sectionHTML.append(title.el);

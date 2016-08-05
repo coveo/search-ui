@@ -116,6 +116,7 @@
 /// <reference path="ui/AdvancedSearch/DocumentInput/DocumentInputTest.ts" />
 /// <reference path="ui/AdvancedSearch/DocumentInput/SimpleFieldInputTest.ts" />
 /// <reference path="ui/AdvancedSearch/DocumentInput/AdvancedFieldInputTest.ts" />
+/// <reference path="ui/AdvancedSearch/DocumentInput/SizeInputTest.ts" />
 
 Coveo.Logger.disable();
 
