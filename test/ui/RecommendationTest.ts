@@ -1,7 +1,13 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {SearchInterface} from '../../src/ui/SearchInterface/SearchInterface';
+import {Recommendation} from '../../src/ui/Recommendation/Recommendation';
+import {IRecommendationOptions} from '../../src/ui/Recommendation/Recommendation';
+import {IQuery} from '../../src/rest/Query';
+import {Simulate} from '../Simulate';
+import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
+import {FakeResults} from '../Fake';
 
-module Coveo {
-
+export function RecommendationTest() {
   describe('Recommendation', () => {
     let mainSearchInterface: Mock.IBasicComponentSetup<SearchInterface>;
     let test: Mock.IBasicComponentSetup<Recommendation>;
@@ -32,7 +38,7 @@ module Coveo {
       mainSearchInterface = null;
       options = null;
       test = null;
-      coveoanalytics = undefined;
+      window['coveoanalytics'] = undefined;
     });
 
     it('should work if mainInterface is not specified', () => {
@@ -46,7 +52,7 @@ module Coveo {
     })
 
     it('should work if coveoanalytics is not specified', () => {
-      coveoanalytics = undefined;
+      window['coveoanalytics'] = undefined;
       test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
       let simulation = Simulate.query(test.env);
       expect(simulation.queryBuilder.actionsHistory).toEqual('[]');
@@ -70,7 +76,7 @@ module Coveo {
     describe('when the mainInterface triggered a query', () => {
 
       it('should trigger a query', () => {
-        let simulation = Simulate.query(mainSearchInterface.env);
+        Simulate.query(mainSearchInterface.env);
         expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
       })
 
@@ -139,12 +145,12 @@ module Coveo {
 
       describe('exposes option hideIfNoResults', () => {
         it('should hide the interface if there are no recommendations', () => {
-          let simulation = Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+          Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
           expect(test.cmp.element.style.display).toEqual('none');
         })
 
         it('should show the interface if there are recommendations', () => {
-          let simulation = Simulate.query(test.env);
+          Simulate.query(test.env);
           expect(test.cmp.element.style.display).not.toEqual('none');
         })
       })

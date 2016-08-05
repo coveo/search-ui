@@ -1,5 +1,8 @@
-/// <reference path="../Test.ts" />
-module Coveo {
+import {EndpointCaller, IErrorResponse, ISuccessResponse} from '../../src/rest/EndpointCaller';
+import {IQueryResults} from '../../src/rest/QueryResults';
+import {FakeResults} from '../Fake';
+
+export function EndpointCallerTest() {
   describe('EndpointCaller', function () {
 
     describe('using generic call', function () {
@@ -83,7 +86,6 @@ module Coveo {
         expect(fakeRequest.params).toBe('foo=bar&bar=foo&bahh=bohh');
         expect(fakeRequest.url).toBe('foo.bar.com');
         expect(fakeRequest.requestHeaders['Content-Type']).toBe('application/x-www-form-urlencoded; charset="UTF-8"');
-
 
         endpointCaller.call({
           method: 'GET',

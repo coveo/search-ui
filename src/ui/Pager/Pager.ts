@@ -32,14 +32,14 @@ export class Pager extends Component {
   static options: IPagerOptions = {
     /**
      * Specifies how many page links to display in the pager.<br/>
-     * The default value is 10 pages on desktop, 3 on mobile
+     * The default value is 5 pages on desktop, 3 on mobile
      */
     numberOfPages: ComponentOptions.buildNumberOption({
       defaultFunction: () => {
         if (DeviceUtils.isMobileDevice()) {
           return 3;
         } else {
-          return 10;
+          return 5;
         }
       },
       min: 1
@@ -84,7 +84,6 @@ export class Pager extends Component {
   constructor(public element: HTMLElement, public options?: IPagerOptions, bindings?: IComponentBindings) {
     super(element, Pager.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Pager, options);
-
     this.currentPage = 1;
 
     if (this.options.maxNumberOfPages == null) {
@@ -173,7 +172,7 @@ export class Pager extends Component {
         for (var i = pagerBoundary.start; i <= pagerBoundary.end; i++) {
 
           var listItemValue = document.createElement('a');
-          $$(listItemValue).addClass('coveo-pager-anchor');
+          $$(listItemValue).addClass(['coveo-pager-list-item-text', 'coveo-pager-anchor']);
           $$(listItemValue).text(i.toString(10));
 
           var listItem = document.createElement('li');

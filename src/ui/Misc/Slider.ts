@@ -1,11 +1,8 @@
 /// <reference path="../../../lib/d3.d.ts" />
-import {$$, Dom} from '../../utils/Dom';
+import {$$} from '../../utils/Dom';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {SliderEvents, IGraphValueSelectedArgs} from '../../events/SliderEvents';
 import {Utils} from '../../utils/Utils';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {SearchInterface} from '../SearchInterface/SearchInterface';
-import {Component} from '../Base/Component';
 import d3 = require('d3');
 import Globalize = require('globalize');
 
@@ -198,7 +195,9 @@ export class Slider {
   }
 
   public drawGraph(data?: ISliderGraphData[]) {
-    this.sliderGraph.draw(data);
+    if (this.sliderGraph) {
+      this.sliderGraph.draw(data);
+    }
   }
 
   private setButtonBoundary() {

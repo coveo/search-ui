@@ -319,7 +319,6 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     }, changeableAnalyticsDataObject);
     $$(this.rootElement).trigger(AnalyticsEvents.changeAnalyticsCustomData, args);
 
-
     event.language = args.language;
     event.originLevel1 = args.originLevel1;
     event.originLevel2 = args.originLevel2;

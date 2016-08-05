@@ -24,11 +24,12 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
   }
 
   protected handleDuringQuery(e: Event, args: IDuringQueryEventArgs) {
+    var event = _.clone(e);
     this.beforeResolve = new Promise((resolve) => {
       this.toSendRightNow = () => {
         if (!this.isCancelledOrFinished()) {
           resolve(this);
-          super.handleDuringQuery(e, args);
+          super.handleDuringQuery(event, args);
         }
       }
       _.delay(() => {

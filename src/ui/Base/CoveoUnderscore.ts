@@ -1,5 +1,4 @@
-import {jQueryIsDefined} from './CoveoJQuery';
-export var underscoreInstance;
+export let underscoreInstance;
 underscoreInstance = _;
 setCoveoUnderscore();
 function setCoveoUnderscore() {

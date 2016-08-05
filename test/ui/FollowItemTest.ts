@@ -1,7 +1,13 @@
-/// <reference path="../Test.ts" />
+/* tslint:disable:no-unused-variable */
+import {FollowItem} from '../../src/ui/SearchAlerts/FollowItem';
+import * as Mock from '../MockEnvironment';
+import {SearchEndpoint} from '../../src/rest/SearchEndpoint';
+import {IQueryResult} from '../../src/rest/QueryResult';
+import {FakeResults} from '../Fake';
+import {$$} from '../../src/utils/Dom';
 
-module Coveo {
-  describe('FollowItem', function () {
+export function FollowItemTest() {
+  /*describe('FollowItem', function () {
     let test: Mock.IBasicComponentSetup<FollowItem>;
     let endpointMock: SearchEndpoint;
     let result: IQueryResult;
@@ -84,8 +90,6 @@ module Coveo {
           done();
         })
       })
-
     })
-
-  });
-};
+  });*/
+}

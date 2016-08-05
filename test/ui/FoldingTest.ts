@@ -1,5 +1,14 @@
-/// <reference path="../Test.ts" />
-module Coveo {
+import * as Mock from '../MockEnvironment';
+import {Folding} from '../../src/ui/Folding/Folding';
+import {IQueryResults} from '../../src/rest/QueryResults';
+import {IFoldingOptions} from '../../src/ui/Folding/Folding';
+import {FakeResults} from '../Fake';
+import {Simulate} from '../Simulate';
+import {IQuery} from '../../src/rest/Query';
+import {ISimulateQueryData} from '../Simulate';
+import {IQueryResult} from '../../src/rest/QueryResult';
+
+export function FoldingTest() {
   describe('Folding', function () {
     var test: Mock.IBasicComponentSetup<Folding>;
     var fakeResults: IQueryResults;

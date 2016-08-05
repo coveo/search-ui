@@ -1,6 +1,13 @@
-/// <reference path="../Test.ts" />
-module Coveo {
-  import NoopComponent = Coveo.Components.NoopComponent;
+import * as Mock from '../MockEnvironment';
+import {Tab} from '../../src/ui/Tab/Tab';
+import {ITabOptions} from '../../src/ui/Tab/Tab';
+import {Simulate} from '../Simulate';
+import {$$} from '../../src/utils/Dom';
+import {SearchEndpoint} from '../../src/rest/SearchEndpoint';
+import {NoopComponent} from '../NoopComponent';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+
+export function TabTest() {
   describe('Tab', function () {
     var test: Mock.IBasicComponentSetup<Tab>;
 
@@ -83,15 +90,15 @@ module Coveo {
       })
 
       it('endpoint can be set on a tab, or take default otherwise', function () {
-        var ep = new Coveo.SearchEndpoint({ restUri: 'test' });
-        Coveo.SearchEndpoint.endpoints['testing'] = ep;
+        var ep = new SearchEndpoint({ restUri: 'test' });
+        SearchEndpoint.endpoints['testing'] = ep;
         test = Mock.optionsComponentSetup<Tab, ITabOptions>(Tab, {
           endpoint: ep,
           caption: 'foobarde',
           id: 'foobarde'
         })
         expect(test.cmp.options.endpoint).toBe(ep);
-        Coveo.SearchEndpoint.endpoints['testing'] = null;
+        SearchEndpoint.endpoints['testing'] = null;
       })
 
       it('enableDuplicateFiltering will be set on the query, only if selected', function () {

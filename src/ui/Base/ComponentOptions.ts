@@ -1,5 +1,4 @@
 import {IFieldDescription} from '../../rest/FieldDescription';
-import {IComponentDefinition} from './Component';
 import {Assert} from '../../misc/Assert';
 import {Template} from '../Templates/Template';
 import {$$} from '../../utils/Dom';
@@ -47,6 +46,11 @@ export interface IComponentOptionsNumberOptionArgs extends IComponentOptions<num
 export interface IComponentOptionsListOption extends IComponentOptionsOption<string[]>, IComponentOptionsListOptionArgs {
 }
 export interface IComponentOptionsListOptionArgs extends IComponentOptions<string[]> {
+  separator?: RegExp;
+  values?: any;
+}
+
+export interface IComponentOptionsCustomListOptionArgs<T> extends IComponentOptions<T> {
   separator?: RegExp;
   values?: any;
 }
@@ -174,15 +178,15 @@ export class ComponentOptions {
     let loadOption: IComponentOptionsLoadOption<T> = (element: HTMLElement, name: string, option: IComponentOptionsOption<T>) => {
       let stringvalue = ComponentOptions.loadStringOption(element, name, option);
       return converter(stringvalue);
-    }
+    };
     return ComponentOptions.buildOption<T>(ComponentOptionsType.STRING, loadOption, optionArgs);
   }
 
-  static buildCustomListOption<T>(converter: (value: string[]) => T, optionArgs?: IComponentOptionsListOptionArgs): T {
+  static buildCustomListOption<T>(converter: (value: string[]) => T, optionArgs?: IComponentOptionsCustomListOptionArgs<T>): T {
     let loadOption: IComponentOptionsLoadOption<T> = (element: HTMLElement, name: string, option: any) => {
       let stringvalue = ComponentOptions.loadListOption(element, name, option);
       return converter(stringvalue);
-    }
+    };
     return ComponentOptions.buildOption<any>(ComponentOptionsType.LIST, loadOption, optionArgs);
   }
 
@@ -263,14 +267,18 @@ export class ComponentOptions {
       let optionDefinition = options[name];
       let value: any;
       let loadFromAttribute = optionDefinition.load;
-      if (values[name] != undefined) {
-        value = values[name];
-      } else if (loadFromAttribute != null) {
+
+      if (loadFromAttribute != null) {
         value = loadFromAttribute(element, name, optionDefinition);
         if (value && optionDefinition.deprecated) {
           console.log(componentID + '.' + name + ' : ' + optionDefinition.deprecated);
         }
       }
+
+      if (_.isEmpty(value) && values[name] != undefined) {
+        value = values[name];
+      }
+
       if (value == null && values[name] == undefined) {
         if (optionDefinition.defaultValue != null) {
           if (optionDefinition.type == ComponentOptionsType.LIST) {

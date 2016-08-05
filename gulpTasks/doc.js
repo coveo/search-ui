@@ -16,4 +16,5 @@ gulp.task('doc', function () {
   var src = app.expandInputFiles(['src/Doc.ts']);
   var project = app.convert(src);
   app.generateDocs(project, 'docgen');
+  app.generateJson(project, './bin/docgen/docgen.json');
 })

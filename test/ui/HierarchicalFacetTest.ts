@@ -1,5 +1,13 @@
-/// <reference path="../Test.ts" />
-module Coveo {
+import * as Mock from '../MockEnvironment';
+import {HierarchicalFacet} from '../../src/ui/HierarchicalFacet/HierarchicalFacet';
+import {IGroupByResult} from '../../src/rest/GroupByResult';
+import {IHierarchicalFacetOptions} from '../../src/ui/HierarchicalFacet/HierarchicalFacet';
+import {FakeResults} from '../Fake';
+import {FacetValue} from '../../src/ui/Facet/FacetValues';
+import {$$} from '../../src/utils/Dom';
+import {Simulate} from '../Simulate';
+
+export function HierarchicalFacetTest() {
   describe('HierarchicalFacet', function () {
     let test: Mock.IBasicComponentSetup<HierarchicalFacet>;
     let results: IGroupByResult;

@@ -1,6 +1,9 @@
-/// <reference path="../Test.ts" />
+import {registerCustomMatcher} from '../CustomMatchers';
+import {Dom} from '../../src/utils/Dom';
+import {$$} from '../../src/utils/Dom';
+import {JQuery} from '../JQueryModule';
 
-module Coveo {
+export function DomTests() {
   describe('Dom', () => {
     var el: HTMLElement;
 
@@ -14,14 +17,13 @@ module Coveo {
     })
 
     describe('without jquery', function () {
-      var jqueryOrig = window['jQuery'];
       beforeEach(function () {
         // we want to test the basic event, not jquery one
         window['jQuery'] = null;
       });
 
       afterEach(function () {
-        window['jQuery'] = jqueryOrig;
+        window['jQuery'] = null;
       });
 
       it('insert after should work properly', function () {
@@ -432,6 +434,16 @@ module Coveo {
     })
 
     describe('with jquery', function () {
+
+      beforeEach(function () {
+        // we want to test the basic event, not jquery one
+        window['jQuery'] = JQuery;
+      });
+
+      afterEach(function () {
+        window['jQuery'] = null;
+      });
+
       it('using on should work properly', function () {
         var spy = jasmine.createSpy('spy');
         new Dom(el).on('click', spy);

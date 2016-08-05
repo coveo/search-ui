@@ -50,7 +50,7 @@ module Coveo {
 
     describe('executeAdvancedSearch', () => {
 
-      beforeEach(()=>{
+      beforeEach(() => {
         test.cmp.inputs = [jasmine.createSpyObj('input', ['build', 'updateQueryState'])]
       })
 

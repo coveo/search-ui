@@ -1,8 +1,8 @@
 import {IAnalyticsClient} from './AnalyticsClient';
+import {PendingSearchEvent} from './PendingSearchEvent';
 import {IAnalyticsActionCause, IAnalyticsDocumentViewMeta} from './AnalyticsActionListMeta';
 import {IQueryResult} from '../../rest/QueryResult';
 import {ITopQueries} from '../../rest/TopQueries';
-import {PendingSearchEvent} from './PendingSearchEvent';
 
 export class MultiAnalyticsClient implements IAnalyticsClient {
   public isContextual = false;
@@ -55,19 +55,19 @@ export class MultiAnalyticsClient implements IAnalyticsClient {
     return _.first(this.analyticsClients).getCurrentVisitId();
   }
 
-  public sendAllPendingEvents() {
+  public sendAllPendingEvents(): void {
     _.each(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.sendAllPendingEvents());
   }
 
-  public warnAboutSearchEvent() {
+  public warnAboutSearchEvent(): void {
     _.each(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.warnAboutSearchEvent());
   }
 
-  public cancelAllPendingEvents() {
+  public cancelAllPendingEvents(): void {
     _.each(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.cancelAllPendingEvents());
   }
 
-  public getPendingSearchEvent() {
+  public getPendingSearchEvent(): PendingSearchEvent {
     return _.first(this.analyticsClients).getPendingSearchEvent();
   }
 

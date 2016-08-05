@@ -1,6 +1,11 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {QuerySummary} from '../../src/ui/QuerySummary/QuerySummary';
+import {FakeResults} from '../Fake';
+import {Simulate} from '../Simulate';
+import {$$} from '../../src/utils/Dom';
+import {IQuerySummaryOptions} from '../../src/ui/QuerySummary/QuerySummary';
 
-module Coveo {
+export function QuerySummaryTest() {
   describe('QuerySummary', function () {
     var test: Mock.IBasicComponentSetup<QuerySummary>;
     beforeEach(function () {

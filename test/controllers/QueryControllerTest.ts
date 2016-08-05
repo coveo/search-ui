@@ -1,7 +1,11 @@
-/// <reference path="../Test.ts" />
-declare var coveoanalytics: CoveoAnalytics.CoveoUA;
+import * as Mock from '../MockEnvironment';
+import {QueryController} from '../../src/controllers/QueryController';
+import {$$} from '../../src/utils/Dom';
+import {FakeResults} from '../Fake';
+import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
+import {IQuery} from '../../src/rest/Query';
 
-module Coveo {
+export function QueryControllerTest() {
   describe('QueryController', function () {
     var test: Mock.IBasicComponentSetup<QueryController>;
 
@@ -192,7 +196,7 @@ module Coveo {
 
       afterEach(function () {
         store = undefined;
-        coveoanalytics = undefined;
+        window['coveoanalytics'] = undefined;
       })
 
       it('should not log the query in the user history if not specified', function () {
@@ -206,7 +210,7 @@ module Coveo {
       })
 
       it('should work if coveoanalytics is not defined', () => {
-        coveoanalytics = undefined;
+        window['coveoanalytics'] = undefined;
         test.cmp.executeQuery({ logInActionsHistory: true });
         expect(store.addElement).not.toHaveBeenCalled()
       })
