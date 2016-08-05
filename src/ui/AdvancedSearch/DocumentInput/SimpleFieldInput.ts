@@ -3,7 +3,6 @@ import {FacetUtils} from '../../../ui/Facet/FacetUtils';
 import {IIndexFieldValue} from '../../../rest/FieldValue';
 import {ISearchEndpoint} from '../../../rest/SearchEndpointInterface';
 import {DocumentInput} from './DocumentInput';
-import {l} from '../../../strings/Strings';
 import {$$} from '../../../utils/Dom';
 
 export class SimpleFieldInput extends DocumentInput {

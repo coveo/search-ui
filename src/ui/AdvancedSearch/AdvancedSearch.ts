@@ -1,14 +1,13 @@
 import {Component} from '../Base/Component';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
-import {QueryStateModel} from '../../models/QueryStateModel';
 import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {AdvancedSearchEvents, IBuildingAdvancedSearchEventArgs} from '../../events/AdvancedSearchEvents';
+import {AdvancedSearchEvents} from '../../events/AdvancedSearchEvents';
 import {SettingsEvents} from '../../events/SettingsEvents';
 import {ISettingsPopulateMenuArgs} from '../Settings/Settings';
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
-import {$$, Dom} from '../../utils/Dom';
+import {$$} from '../../utils/Dom';
 import {IAdvancedSearchInput, IAdvancedSearchSection} from './AdvancedSearchInput';
 import {AllKeywordsInput} from './KeywordsInput/AllKeywordsInput';
 import {ExactKeywordsInput} from './KeywordsInput/ExactKeywordsInput';

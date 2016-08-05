@@ -1,6 +1,5 @@
 import {Dropdown} from '../Form/Dropdown';
 import {NumericSpinner} from '../Form/NumericSpinner';
-import {l} from '../../../strings/Strings';
 import {$$} from '../../../utils/Dom';
 import {DocumentInput} from './DocumentInput';
 
