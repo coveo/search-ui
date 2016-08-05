@@ -1,6 +1,6 @@
-/// <reference path="../Test.ts" />
+import {ExpressionBuilder} from '../../src/ui/Base/ExpressionBuilder';
 
-module Coveo {
+export function ExpressionBuilderTest() {
   describe('ExpressionBuilder', function () {
     var expressionBuilder: ExpressionBuilder;
     beforeEach(function () {

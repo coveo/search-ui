@@ -1,15 +1,28 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {AnalyticsSuggestions} from '../../src/ui/AnalyticsSuggestions/AnalyticsSuggestions';
+import {Simulate} from '../Simulate';
+import {$$} from '../../src/utils/Dom';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import {IAnalyticsSuggestionsOptions} from '../../src/ui/AnalyticsSuggestions/AnalyticsSuggestions';
+import {JQuery} from '../JQueryModule';
 
-module Coveo {
+export function AnalyticsSuggestionsTest() {
   describe('AnalyticsSuggestions', () => {
     let test: Mock.IBasicComponentSetup<AnalyticsSuggestions>;
 
     beforeEach(() => {
+      // In phantom js there is a bug with CustomEvent('click'), which is needed to for those tests.
+      // So, use jquery for event in phantom js
+      if (Simulate.isPhantomJs()) {
+        window['jQuery'] = JQuery;
+      }
+
       test = Mock.basicComponentSetup<AnalyticsSuggestions>(AnalyticsSuggestions);
     })
 
     afterEach(() => {
       test = null;
+      window['jQuery'] = null;
     })
 
     it('should trigger a call to get top query from the analytics', () => {
@@ -22,6 +35,7 @@ module Coveo {
       (<jasmine.Spy>test.env.usageAnalytics.getTopQueries).and.returnValue(new Promise((resolve) => {
         resolve(['foo', 'bar', 'baz'])
       }));
+
       var simulation = Simulate.omnibox(test.env);
       simulation.rows[0].deferred.then((elementResolved) => {
         expect(simulation.rows.length).toBe(1);

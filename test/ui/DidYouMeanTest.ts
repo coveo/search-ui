@@ -1,6 +1,16 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {DidYouMean} from '../../src/ui/DidYouMean/DidYouMean';
+import {IQueryCorrection} from '../../src/rest/QueryCorrection';
+import {IWordCorrection} from '../../src/rest/QueryCorrection';
+import {Simulate} from '../Simulate';
+import {FakeResults} from '../Fake';
+import {ISimulateQueryData} from '../Simulate';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import {IDidYouMeanOptions} from '../../src/ui/DidYouMean/DidYouMean';
+import {QueryStateModel} from '../../src/models/QueryStateModel';
+import {$$} from '../../src/utils/Dom';
 
-module Coveo {
+export function DidYouMeanTest() {
   describe('DidYouMean', function () {
     var test: Mock.IBasicComponentSetup<DidYouMean>;
     var fakeQueryCorrection: IQueryCorrection;

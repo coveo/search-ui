@@ -1,6 +1,12 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {ErrorReport} from '../../src/ui/ErrorReport/ErrorReport';
+import {IErrorReportOptions} from '../../src/ui/ErrorReport/ErrorReport';
+import {Simulate} from '../Simulate';
+import {QueryError} from '../../src/rest/QueryError';
+import {$$} from '../../src/utils/Dom';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
-module Coveo {
+export function ErrorReportTest() {
   describe('ErrorReport', function () {
     var test: Mock.IBasicComponentSetup<ErrorReport>;
 

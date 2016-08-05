@@ -4,8 +4,8 @@ import {$$} from '../../utils/Dom';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {ISearchEvent} from '../../rest/SearchEvent';
 import {IDuringQueryEventArgs} from '../../events/QueryEvents';
-import _ = require('underscore');
 import {IAnalyticsActionCause} from './AnalyticsActionListMeta';
+import _ = require('underscore');
 
 export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
   public delayBeforeSending = 5000;
@@ -24,11 +24,12 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
   }
 
   protected handleDuringQuery(e: Event, args: IDuringQueryEventArgs) {
+    var event = _.clone(e);
     this.beforeResolve = new Promise((resolve) => {
       this.toSendRightNow = () => {
         if (!this.isCancelledOrFinished()) {
           resolve(this);
-          super.handleDuringQuery(e, args);
+          super.handleDuringQuery(event, args);
         }
       }
       _.delay(() => {

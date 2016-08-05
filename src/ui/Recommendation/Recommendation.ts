@@ -11,7 +11,6 @@ import {BreadcrumbEvents} from '../../events/BreadcrumbEvents';
 import {QuickviewEvents} from '../../events/QuickviewEvents';
 import {QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
 import {Model} from '../../models/Model';
-import {IQueryResult} from '../../rest/QueryResult';
 import {Utils} from '../../utils/Utils';
 import {$$} from '../../utils/Dom';
 

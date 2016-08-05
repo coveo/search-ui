@@ -1,5 +1,17 @@
-/// <reference path="../Test.ts" />
-module Coveo {
+import * as Mock from '../MockEnvironment';
+import {Triggers} from '../../src/ui/Triggers/Triggers';
+import {IQueryResults} from '../../src/rest/QueryResults';
+import {FakeResults} from '../Fake';
+import {Simulate} from '../Simulate';
+import {$$} from '../../src/utils/Dom';
+import {ITriggerNotify} from '../../src/rest/Trigger';
+import {ITriggerExecute} from '../../src/rest/Trigger';
+import {ITriggerRedirect} from '../../src/rest/Trigger';
+import {ITriggerQuery} from '../../src/rest/Trigger';
+import {QueryStateModel} from '../../src/models/QueryStateModel';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+
+export function TriggersTest() {
   describe('Triggers', function () {
     var test: Mock.IBasicComponentSetup<Triggers>;
     var results: IQueryResults;

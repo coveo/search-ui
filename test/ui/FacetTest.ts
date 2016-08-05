@@ -1,5 +1,16 @@
-/// <reference path="../Test.ts" />
-module Coveo {
+import * as Mock from '../MockEnvironment';
+import {Facet} from '../../src/ui/Facet/Facet';
+import {IFacetOptions} from '../../src/ui/Facet/Facet';
+import {$$} from '../../src/utils/Dom';
+import {FacetValue} from '../../src/ui/Facet/FacetValues';
+import {Simulate} from '../Simulate';
+import {FakeResults} from '../Fake';
+import {OmniboxEvents} from '../../src/events/OmniboxEvents';
+import {BreadcrumbEvents} from '../../src/events/BreadcrumbEvents';
+import {IPopulateBreadcrumbEventArgs} from '../../src/events/BreadcrumbEvents';
+import {IPopulateOmniboxEventArgs} from '../../src/events/OmniboxEvents';
+
+export function FacetTest() {
   describe('Facet', function () {
     var test: Mock.IBasicComponentSetup<Facet>;
 

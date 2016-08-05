@@ -1,8 +1,4 @@
 import {IQueryboxOptions} from './Querybox';
-import {Component} from '../Base/Component';
-import {QueryEvents} from '../../events/QueryEvents';
-import {IBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {Assert} from '../../misc/Assert';
 import {QueryBuilder} from '../Base/QueryBuilder';
 
 export class QueryboxQueryParameters {

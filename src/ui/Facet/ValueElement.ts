@@ -8,8 +8,7 @@ import {IAnalyticsActionCause, analyticsActionCauseList, IAnalyticsFacetMeta} fr
 import {$$} from '../../utils/Dom';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {Defer} from '../../misc/Defer';
-
-declare const Coveo;
+import {ModalBox} from '../../ExternalModulesShim';
 
 export interface IValueElementKlass {
   new (facet: Facet, facetValue: FacetValue): ValueElement;
@@ -151,7 +150,7 @@ export class ValueElement {
       this.handleSelectValue(eventBindings);
       if (DeviceUtils.isMobileDevice() && !this.facet.searchInterface.isNewDesign() && this.facet.options.enableFacetSearch) {
         Defer.defer(() => {
-          Coveo.ModalBox.close(true);
+          ModalBox.close(true);
           this.facet.facetSearch.completelyDismissSearch();
         });
       }

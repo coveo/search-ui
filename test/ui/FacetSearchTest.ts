@@ -1,6 +1,16 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {Facet} from '../../src/ui/Facet/Facet';
+import {FacetSearch} from '../../src/ui/Facet/FacetSearch';
+import {FacetSearchValuesList} from '../../src/ui/Facet/FacetSearchValuesList';
+import {$$} from '../../src/utils/Dom';
+import {FacetQueryController} from '../../src/controllers/FacetQueryController';
+import {FakeResults} from '../Fake';
+import {FacetSearchParameters} from '../../src/ui/Facet/FacetSearchParameters';
+import {IIndexFieldValue} from '../../src/rest/FieldValue';
+import {Simulate} from '../Simulate';
+import {KEYBOARD} from '../../src/utils/KeyboardUtils';
 
-module Coveo {
+export function FacetSearchTest() {
   describe('FacetSearch', function () {
     var mockFacet: Facet;
     var facetSearch: FacetSearch;
@@ -9,12 +19,13 @@ module Coveo {
       let options = {
         field: '@field'
       };
+      window['jQuery'] = null;
       mockFacet = Mock.basicComponentSetup<Facet>(Facet, options).cmp;
       mockFacet.searchInterface = <any>{};
       mockFacet.searchInterface.isNewDesign = () => {
         return true;
       }
-      facetSearch = new FacetSearch(mockFacet, FacetSearchValuesList);
+      facetSearch = new FacetSearch(mockFacet, FacetSearchValuesList, mockFacet.root);
     })
 
     afterEach(function () {
@@ -103,71 +114,77 @@ module Coveo {
         })
       })
 
-      describe('hook user events', function () {
-        var searchPromise: Promise<IIndexFieldValue[]>;
-        var built: HTMLElement;
-        beforeEach(function () {
-          mockFacet.options.facetSearchDelay = 50;
-          searchPromise = new Promise((resolve, reject) => {
-            var results = FakeResults.createFakeFieldValues('foo', 10);
-            resolve(results);
-          });
+      // KeyboardEvent simulation does not work well in phantom js
+      // The KeyboardEvent constructor is not even defined ...
+      if (!Simulate.isPhantomJs()) {
+        describe('hook user events', function () {
+          var searchPromise: Promise<IIndexFieldValue[]>;
+          var built: HTMLElement;
+          beforeEach(function () {
+            window['jQuery'] = null;
+            mockFacet.options.facetSearchDelay = 50;
+            searchPromise = new Promise((resolve, reject) => {
+              var results = FakeResults.createFakeFieldValues('foo', 10);
+              resolve(results);
+            });
 
-          (<jasmine.Spy>mockFacet.facetQueryController.search)
-            .and
-            .returnValue(searchPromise);
+            (<jasmine.Spy>mockFacet.facetQueryController.search)
+              .and
+              .returnValue(searchPromise);
 
-          built = facetSearch.build();
-          var params = new FacetSearchParameters(mockFacet);
-          facetSearch.triggerNewFacetSearch(params);
-        })
+            built = facetSearch.build();
+            var params = new FacetSearchParameters(mockFacet);
+            facetSearch.triggerNewFacetSearch(params);
+          })
 
-        afterEach(function () {
-          searchPromise = null;
-        })
+          afterEach(function () {
+            searchPromise = null;
+          })
 
-        it('arrow navigation', function (done) {
-          searchPromise.then(() => {
-            expect($$($$(facetSearch.searchResults).findAll('li')[0]).hasClass('coveo-current')).toBe(true);
+          it('arrow navigation', function (done) {
 
-            Simulate.keyUp($$(built).find('input'), KEYBOARD.DOWN_ARROW);
-            expect($$($$(facetSearch.searchResults).findAll('li')[1]).hasClass('coveo-current')).toBe(true);
+            searchPromise.then(() => {
+              expect($$($$(facetSearch.searchResults).findAll('li')[0]).hasClass('coveo-current')).toBe(true);
 
-            Simulate.keyUp($$(built).find('input'), KEYBOARD.DOWN_ARROW);
-            expect($$($$(facetSearch.searchResults).findAll('li')[2]).hasClass('coveo-current')).toBe(true);
+              Simulate.keyUp($$(built).find('input'), KEYBOARD.DOWN_ARROW);
+              expect($$($$(facetSearch.searchResults).findAll('li')[1]).hasClass('coveo-current')).toBe(true);
 
-            Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
-            expect($$($$(facetSearch.searchResults).findAll('li')[1]).hasClass('coveo-current')).toBe(true);
+              Simulate.keyUp($$(built).find('input'), KEYBOARD.DOWN_ARROW);
+              expect($$($$(facetSearch.searchResults).findAll('li')[2]).hasClass('coveo-current')).toBe(true);
 
-            Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
-            expect($$($$(facetSearch.searchResults).findAll('li')[0]).hasClass('coveo-current')).toBe(true);
+              Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
+              expect($$($$(facetSearch.searchResults).findAll('li')[1]).hasClass('coveo-current')).toBe(true);
 
-            // loop around !
-            Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
-            expect($$($$(facetSearch.searchResults).findAll('li')[9]).hasClass('coveo-current')).toBe(true);
-            done();
+              Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
+              expect($$($$(facetSearch.searchResults).findAll('li')[0]).hasClass('coveo-current')).toBe(true);
+
+              // loop around !
+              Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
+              expect($$($$(facetSearch.searchResults).findAll('li')[9]).hasClass('coveo-current')).toBe(true);
+              done();
+            })
+          })
+
+          it('escape close results', function (done) {
+            searchPromise.then(() => {
+              expect(facetSearch.currentlyDisplayedResults.length).toBe(10);
+
+              Simulate.keyUp($$(built).find('input'), KEYBOARD.ESCAPE);
+
+              expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
+              done();
+            })
+          })
+
+          it('other key should start a search', function (done) {
+            Simulate.keyUp($$(built).find('input'), KEYBOARD.CTRL);
+            setTimeout(() => {
+              expect(facetSearch.facet.facetQueryController.search).toHaveBeenCalled();
+              done();
+            }, 55)
           })
         })
-
-        it('escape close results', function (done) {
-          searchPromise.then(() => {
-            expect(facetSearch.currentlyDisplayedResults.length).toBe(10);
-
-            Simulate.keyUp($$(built).find('input'), KEYBOARD.ESCAPE);
-
-            expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
-            done();
-          })
-        })
-
-        it('other key should start a search', function (done) {
-          Simulate.keyUp($$(built).find('input'), KEYBOARD.CTRL);
-          setTimeout(() => {
-            expect(facetSearch.facet.facetQueryController.search).toHaveBeenCalled();
-            done();
-          }, 55)
-        })
-      })
+      }
     })
   })
 }

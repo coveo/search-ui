@@ -39,6 +39,7 @@ export {Slider} from './ui/Misc/Slider';
 export {FacetSlider} from './ui/FacetSlider/FacetSlider';
 export {FacetRange} from './ui/FacetRange/FacetRange';
 export {Pager} from './ui/Pager/Pager';
+export {ResultsPerPage} from './ui/Pager/ResultsPerPage';
 export {ResultList} from './ui/ResultList/ResultList';
 export {DefaultRecommendationTemplate} from './ui/Templates/DefaultRecommendationTemplate';
 export {Excerpt} from './ui/Excerpt/Excerpt';
@@ -108,7 +109,7 @@ export {ChatterUtils} from './utils/ChatterUtils';
 // Webpack output a library target with a temporary name.
 // This is to allow end user to put CoveoJsSearch.Dependencie.js before or after the main CoveoJsSearch.js, without breaking
 // This code swap the current module to the "real" Coveo variable.
-import _ = require('underscore');
+
 let swapVar = () => {
   if (window['Coveo'] == undefined) {
     window['Coveo'] = this;

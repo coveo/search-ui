@@ -165,7 +165,6 @@ export class FacetQueryController {
   protected createGroupByAllowedValues() {
     // if you want to keep displayed values next time, take all current values as allowed values
     // otherwise take only the selected value
-    let allowedFacetValues: FacetValue[];
     if (this.facet.options.allowedValues != undefined) {
       return this.facet.options.allowedValues;
     } else if (this.facet.options.customSort != undefined) {

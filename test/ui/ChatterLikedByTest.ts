@@ -1,12 +1,17 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {ChatterLikedBy} from '../../src/ui/ChatterLikedBy/ChatterLikedBy';
+import {FakeResults} from '../Fake';
+import {IChatterLikedByOptions} from '../../src/ui/ChatterLikedBy/ChatterLikedBy';
+import {ChatterUtils} from '../../src/utils/ChatterUtils';
+import {$$} from '../../src/utils/Dom';
+import {l} from '../../src/strings/Strings';
 
-module Coveo {
-
+export function ChatterLikedByTest() {
   describe('ChatterLikedBy', () => {
     let test: Mock.IBasicComponentSetup<ChatterLikedBy>;
 
     beforeEach(() => {
-      test = Mock.basicResultComponentSetup<ChatterLikedBy>(ChatterLikedBy);
+      test = null;
     })
 
     afterEach(() => {
@@ -14,6 +19,7 @@ module Coveo {
     })
 
     it('should behave correctly with no data', () => {
+      test = Mock.basicResultComponentSetup<ChatterLikedBy>(ChatterLikedBy);
       expect(test.cmp.element.innerHTML).toBe('');
     })
 
@@ -54,4 +60,5 @@ module Coveo {
       expect($$($$(test.cmp.element).findAll('a')[2]).text()).toContain('LikeName3');
     });
   })
+
 }

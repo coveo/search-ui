@@ -119,11 +119,11 @@ declare module jasmine {
         compare(actual: any, expected: any): CustomMatcherResult;
     }
 
-    interface CustomMatcherFactory {
+    export interface CustomMatcherFactory {
         (util: MatchersUtil, customEqualityTesters: Array<CustomEqualityTester>): CustomMatcher;
     }
 
-    interface CustomMatcherFactories {
+    export interface CustomMatcherFactories {
         [index: string]: CustomMatcherFactory;
     }
 
@@ -457,6 +457,43 @@ declare module jasmine {
         /** All arguments passed to the call */
         args: any[];
     }
+
+    interface Matchers {
+        eventHandlerToHaveBeenCalledWith(data: any);
+    }
+
+    interface Ajax {
+        install: () => void;
+        uninstall: () => void;
+        requests: AjaxRequests;
+    }
+
+    interface AjaxRequests {
+        at: (idx: number) => FakeXMLHttpRequest;
+        count: () => number;
+        filter: (urlToMatch: string) => FakeXMLHttpRequest[];
+        first: () => FakeXMLHttpRequest;
+        mostRecent: () => FakeXMLHttpRequest;
+        reset: () => void;
+        track: (request: FakeXMLHttpRequest) => void;
+    }
+
+    interface FakeXMLHttpRequest {
+        method: string;
+        onreadystatechange: (ev) => void;
+        overrideMimeType: string;
+        params: string;
+        password: string;
+        username: string;
+        readyState: number;
+        requestHeaders: any;
+        responseType: string;
+        url: string;
+        withCredentials: boolean;
+        respondWith: (data: any) => void;
+    }
+
+    export var Ajax: Ajax;
 
     interface Util {
         inherit(childClass: Function, parentClass: Function): any;

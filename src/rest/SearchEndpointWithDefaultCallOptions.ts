@@ -2,16 +2,16 @@ import {ISearchEndpoint, IEndpointCallOptions, IGetDocumentOptions, ISearchEndpo
 import {IQuery} from './Query';
 import {ITaggingRequest} from './TaggingRequest';
 import {IRatingRequest} from './RatingRequest';
-import {IRevealQuerySuggestRequest, IRevealQuerySuggestResponse} from './RevealQuerySuggest';
+import {IRevealQuerySuggestRequest} from './RevealQuerySuggest';
+import {IRevealQuerySuggestResponse} from './RevealQuerySuggest';
+import {IIndexFieldValue} from '../rest/FieldValue';
+import {IQueryResult} from '../rest/QueryResult';
+import {IEndpointError} from '../rest/EndpointError';
+import {IExtension} from '../rest/Extension'
+import {IQueryResults} from './QueryResults';
+import {IFieldDescription} from '../rest/FieldDescription';
 import {IListFieldValuesRequest} from './ListFieldValuesRequest';
 import {ISubscriptionRequest, ISubscription} from './Subscription';
-import {IQueryResults} from './QueryResults';
-import {IQueryResult} from './QueryResult';
-import {IIndexFieldValue} from './FieldValue';
-import {IFieldDescription} from './FieldDescription';
-import {IExtension} from './Extension';
-import {IEndpointError} from './EndpointError';
-import _ = require('underscore');
 
 export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
   options: ISearchEndpointOptions;
@@ -20,11 +20,11 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
     this.options = endpoint.options;
   }
 
-  public getBaseUri() {
+  public getBaseUri(): string {
     return this.endpoint.getBaseUri();
   }
 
-  public getBaseAlertsUri() {
+  public getBaseAlertsUri(): string {
     return this.endpoint.getBaseAlertsUri();
   }
 
@@ -36,7 +36,7 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
     return this.endpoint.isJsonp();
   }
 
-  public search(query: IQuery, callOptions?: IEndpointCallOptions) {
+  public search(query: IQuery, callOptions?: IEndpointCallOptions): Promise<IQueryResults> {
     return this.endpoint.search(query, this.enrichCallOptions(callOptions));
   }
 
@@ -44,31 +44,31 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
     return this.endpoint.getExportToExcelLink(query, numberOfResults, this.enrichCallOptions(callOptions));
   }
 
-  public tagDocument(taggingRequest: ITaggingRequest, callOptions?: IEndpointCallOptions) {
+  public tagDocument(taggingRequest: ITaggingRequest, callOptions?: IEndpointCallOptions): Promise<boolean> {
     return this.endpoint.tagDocument(taggingRequest, this.enrichCallOptions(taggingRequest));
   }
 
-  public getRevealQuerySuggest(request: IRevealQuerySuggestRequest, callOptions?: IEndpointCallOptions) {
+  public getRevealQuerySuggest(request: IRevealQuerySuggestRequest, callOptions?: IEndpointCallOptions): Promise<IRevealQuerySuggestResponse> {
     return this.endpoint.getRevealQuerySuggest(request, this.enrichCallOptions(callOptions));
   }
 
-  public rateDocument(ratingRequest: IRatingRequest, callOptions?: IEndpointCallOptions) {
+  public rateDocument(ratingRequest: IRatingRequest, callOptions?: IEndpointCallOptions): Promise<boolean> {
     return this.endpoint.rateDocument(ratingRequest, this.enrichCallOptions(callOptions));
   }
 
-  public getRawDataStream(documentUniqueId: string, dataStreamType: string, callOptions?: IViewAsHtmlOptions) {
+  public getRawDataStream(documentUniqueId: string, dataStreamType: string, callOptions?: IViewAsHtmlOptions): Promise<ArrayBuffer> {
     return this.endpoint.getRawDataStream(documentUniqueId, dataStreamType, this.enrichCallOptions(callOptions));
   }
 
-  public getDocument(documentUniqueId: string, callOptions?: IGetDocumentOptions) {
+  public getDocument(documentUniqueId: string, callOptions?: IGetDocumentOptions): Promise<IQueryResult> {
     return this.endpoint.getDocument(documentUniqueId, this.enrichCallOptions(callOptions));
   }
 
-  public getDocumentText(documentUniqueID: string, callOptions?: IEndpointCallOptions) {
+  public getDocumentText(documentUniqueID: string, callOptions?: IEndpointCallOptions): Promise<string> {
     return this.endpoint.getDocumentText(documentUniqueID, this.enrichCallOptions(callOptions));
   }
 
-  public getDocumentHtml(documentUniqueID: string, callOptions?: IViewAsHtmlOptions) {
+  public getDocumentHtml(documentUniqueID: string, callOptions?: IViewAsHtmlOptions): Promise<HTMLDocument> {
     return this.endpoint.getDocumentHtml(documentUniqueID, this.enrichCallOptions(callOptions));
   }
 
@@ -80,31 +80,31 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
     return this.endpoint.getViewAsDatastreamUri(documentUniqueID, dataStreamType, this.enrichCallOptions(callOptions));
   }
 
-  public listFieldValues(request: IListFieldValuesRequest, callOptions?: IEndpointCallOptions) {
+  public listFieldValues(request: IListFieldValuesRequest, callOptions?: IEndpointCallOptions): Promise<IIndexFieldValue[]> {
     return this.endpoint.listFieldValues(request, this.enrichCallOptions(callOptions));
   }
 
-  public listFields(callOptions?: IEndpointCallOptions) {
+  public listFields(callOptions?: IEndpointCallOptions): Promise<IFieldDescription[]> {
     return this.endpoint.listFields(this.enrichCallOptions(callOptions));
   }
 
-  public extensions(callOptions?: IEndpointCallOptions) {
+  public extensions(callOptions?: IEndpointCallOptions): Promise<IExtension[]> | Promise<IEndpointError> {
     return this.endpoint.extensions(this.enrichCallOptions(callOptions));
   }
 
-  public follow(request: ISubscriptionRequest) {
+  public follow(request: ISubscriptionRequest): Promise<ISubscription> {
     return this.endpoint.follow(request);
   }
 
-  public listSubscriptions(page: number) {
+  public listSubscriptions(page: number): Promise<ISubscription[]> {
     return this.endpoint.listSubscriptions(page);
   }
 
-  public updateSubscription(subscription: ISubscription) {
+  public updateSubscription(subscription: ISubscription): Promise<ISubscription> {
     return this.endpoint.updateSubscription(subscription);
   }
 
-  public deleteSubscription(subscription: ISubscription) {
+  public deleteSubscription(subscription: ISubscription): Promise<ISubscription> {
     return this.endpoint.deleteSubscription(subscription);
   }
 

@@ -1,6 +1,11 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {Thumbnail} from '../../src/ui/Thumbnail/Thumbnail';
+import {SearchEndpoint} from '../../src/rest/SearchEndpoint';
+import {IQueryResult} from '../../src/rest/QueryResult';
+import {IThumbnailOptions} from '../../src/ui/Thumbnail/Thumbnail';
+import {$$} from '../../src/utils/Dom';
 
-module Coveo {
+export function ThumbnailTest() {
   describe('Thumbnail', function () {
 
     var test: Mock.IBasicComponentSetup<Thumbnail>;

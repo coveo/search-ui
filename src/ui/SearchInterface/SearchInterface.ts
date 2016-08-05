@@ -9,7 +9,7 @@ import {ComponentStateModel} from '../../models/ComponentStateModel';
 import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
 import {QueryController} from '../../controllers/QueryController';
 import {Model, IAttributeChangedEventArg} from '../../models/Model';
-import {QueryEvents, IBuildingQueryEventArgs, INewQueryEventArgs} from '../../events/QueryEvents';
+import {QueryEvents, IBuildingQueryEventArgs, INewQueryEventArgs, IQuerySuccessEventArgs, IQueryErrorEventArgs} from '../../events/QueryEvents';
 import {IBeforeRedirectEventArgs, StandaloneSearchInterfaceEvents} from '../../events/StandaloneSearchInterfaceEvents';
 import {HistoryController} from '../../controllers/HistoryController';
 import {LocalStorageHistoryController} from '../../controllers/LocalStorageHistoryController';
@@ -21,10 +21,8 @@ import {RootComponent} from '../Base/RootComponent';
 import {BaseComponent} from '../Base/BaseComponent';
 import {Debug} from '../Debug/Debug';
 import {HashUtils} from '../../utils/HashUtils';
-import _ = require('underscore');
-
-declare let FastClick;
-declare let jstz;
+import FastClick = require('fastclick');
+import timezone = require('jstz');
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -136,7 +134,7 @@ export class SearchInterface extends RootComponent {
      * This must be an IANA zone info key (aka the Olson time zone database). For example : 'America/New_York'.<br/>
      * By default, we use a library that tries to detect the timezone automatically.<br/>
      */
-    timezone: ComponentOptions.buildStringOption({ defaultFunction: () => jstz.determine().name() }),
+    timezone: ComponentOptions.buildStringOption({ defaultFunction: () => timezone.jstz.determine().name() }),
     /**
      * Specifies whether to enable the feature that allows users to ALT + double click on any results to get the Debug page with a detailed view of all the properties and fields for a given result.<br/>
      * This has no security concern (as all those informations are visible to users through the browser developer console or by calling the Coveo API directly).<br/>
@@ -225,6 +223,8 @@ export class SearchInterface extends RootComponent {
     let eventName = this.queryStateModel.getEventName(Model.eventTypes.preprocess);
     $$(this.element).on(eventName, (e, args) => this.handlePreprocessQueryStateModel(args));
     $$(this.element).on(QueryEvents.buildingQuery, (e, args) => this.handleBuildingQuery(args));
+    $$(this.element).on(QueryEvents.querySuccess, (e, args) => this.handleQuerySuccess(args));
+    $$(this.element).on(QueryEvents.queryError, (e, args) => this.handleQueryError(args));
 
     if (this.options.enableHistory) {
       if (!this.options.useLocalStorageForHistory) {
@@ -554,6 +554,45 @@ export class SearchInterface extends RootComponent {
     data.queryBuilder.enableCollaborativeRating = this.options.enableCollaborativeRating;
 
     data.queryBuilder.enableDuplicateFiltering = this.options.enableDuplicateFiltering;
+  }
+
+  private handleQuerySuccess(data: IQuerySuccessEventArgs) {
+    let noResults = data.results.results.length == 0;
+    this.toggleSectionState('coveo-no-results', noResults);
+    let resultsHeader = $$(this.element).find('.coveo-results-header');
+    if (resultsHeader) {
+      $$(resultsHeader).removeClass('coveo-query-error');
+    }
+  }
+
+  private handleQueryError(data: IQueryErrorEventArgs) {
+    this.toggleSectionState('coveo-no-results');
+    let resultsHeader = $$(this.element).find('.coveo-results-header');
+    if (resultsHeader) {
+      $$(resultsHeader).addClass('coveo-query-error');
+    }
+  }
+
+  private toggleSectionState(cssClass: string, toggle = true) {
+    let facetSection = $$(this.element).find('.coveo-facet-column');
+    let resultsSection = $$(this.element).find('.coveo-results-column');
+    let resultsHeader = $$(this.element).find('.coveo-results-header');
+    let facetSearchs = $$(this.element).findAll('.coveo-facet-search-results');
+
+    if (facetSection) {
+      $$(facetSection).toggleClass(cssClass, toggle && !this.queryStateModel.atLeastOneFacetIsActive());
+    }
+    if (resultsSection) {
+      $$(resultsSection).toggleClass(cssClass, toggle && !this.queryStateModel.atLeastOneFacetIsActive());
+    }
+    if (resultsHeader) {
+      $$(resultsHeader).toggleClass(cssClass, toggle && !this.queryStateModel.atLeastOneFacetIsActive());
+    }
+    if (facetSearchs && facetSearchs.length > 0) {
+      _.each(facetSearchs, (facetSearch) => {
+        $$(facetSearch).toggleClass(cssClass, toggle && !this.queryStateModel.atLeastOneFacetIsActive());
+      })
+    }
   }
 }
 

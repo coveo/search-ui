@@ -1,5 +1,9 @@
-/// <reference path="../Test.ts" />
-module Coveo {
+import * as Mock from '../MockEnvironment';
+import {QueryDuration} from '../../src/ui/QueryDuration/QueryDuration';
+import {FakeResults} from '../Fake';
+import {Simulate} from '../Simulate';
+
+export function QueryDurationTest() {
   describe('QueryDuration', function () {
     let test: Mock.IBasicComponentSetup<QueryDuration>;
     let results = FakeResults.createFakeResults(10);
