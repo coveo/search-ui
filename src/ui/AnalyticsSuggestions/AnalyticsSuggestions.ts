@@ -33,6 +33,9 @@ export class AnalyticsSuggestions extends Component {
      * The default value is `52`
      */
     omniboxZIndex: ComponentOptions.buildNumberOption({ defaultValue: 52, min: 0 }),
+    /**
+     * Specifies the title in the Omnibox for this group of suggestions. This option is not available when using the Lightning Friendly Theme, which is the default design.
+     */
     headerTitle: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('SuggestedQueries') }),
     /**
      * The number of suggestions that should be requested and displayed in the omnibox.<br/>
