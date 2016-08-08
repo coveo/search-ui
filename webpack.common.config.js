@@ -24,11 +24,10 @@ module.exports = {
       'magic-box': __dirname + '/node_modules/coveomagicbox/bin/MagicBox.min.js',
       'default-language': __dirname + '/src/strings/DefaultLanguage.js',
       'underscore': __dirname + '/node_modules/underscore/underscore-min.js',
-      'pikaday': __dirname + 'node_modules/pikaday/pikaday.js',
       'jQuery': __dirname + '/test/lib/jquery.js'
     }
   },
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
   module: {
     loaders: [
       {test: /\.ts$/, loader: 'ts-loader'},
