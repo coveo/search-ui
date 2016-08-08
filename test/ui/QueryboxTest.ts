@@ -303,6 +303,22 @@ export function QueryboxTest() {
         var simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().partialMatchKeywords).toBeUndefined();
       });
+
+      it('triggerQueryOnClear should trigger a query on clear', () => {
+        test = Mock.optionsComponentSetup<Querybox, IQueryboxOptions>(Querybox, {
+          triggerQueryOnClear: true
+        })
+        test.cmp.magicBox.clear();
+        expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+      })
+
+      it('triggerQueryOnClear should not trigger a query on clear if false', () => {
+        test = Mock.optionsComponentSetup<Querybox, IQueryboxOptions>(Querybox, {
+          triggerQueryOnClear: false
+        })
+        test.cmp.magicBox.clear();
+        expect(test.cmp.queryController.executeQuery).not.toHaveBeenCalled();
+      })
     })
   })
 }
