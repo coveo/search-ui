@@ -217,6 +217,7 @@
     "src/ui/ResultLink/ResultLink.ts",
     "src/ui/ResultLink/ResultLinkOptions.ts",
     "src/ui/ResultList/ResultList.ts",
+    "src/ui/ResultLayout/ResultLayout.ts",
     "src/ui/ResultRating/ResultRating.ts",
     "src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts",
     "src/ui/Pager/ResultsPerPage.ts",
@@ -366,7 +367,6 @@
     "test/utils/DomTest.ts",
     "test/utils/HighlightUtilsTest.ts",
     "test/utils/L10NTest.ts",
-    "test/ui/ResultsPerPageTest.ts",
-    "src/ui/ResultLayout/ResultLayout.ts"
+    "test/ui/ResultsPerPageTest.ts"
   ]
 }

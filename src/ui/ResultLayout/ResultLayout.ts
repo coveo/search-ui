@@ -32,9 +32,7 @@ export class ResultLayout extends Component {
      */
     defaultLayout: ComponentOptions.buildStringOption({
       defaultValue: 'list',
-      postProcessing: (v) => {
-        return _.contains(ResultLayout.validLayouts, v) ? v : 'list';
-      }
+      postProcessing: v => _.contains(ResultLayout.validLayouts, v) ? v : 'list'
     })
   }
 
@@ -42,21 +40,31 @@ export class ResultLayout extends Component {
     super(element, ResultLayout.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultLayout, options);
 
-    // TODO: remove this
+    Assert.exists(this.options.defaultLayout);
+
+    this.currentLayout = this.options.defaultLayout;
+
+    // TODO: remove this --------------------------------------------------
     const switchLayoutBtns = _.map(ResultLayout.validLayouts, l => {
       const btn = $$('button', undefined, l);
       btn.on('click', () => this.changeLayout(l));
       return btn.el;
     })
     _.each(switchLayoutBtns, btn => $$(this.element).prepend(btn));
+    // --------------------------------------------------------------------
   }
 
+  /**
+   * Change the current layout.<br/>
+   * @param layout The new layout. Available values are `list`, `card` and `table`.
+   */
   public changeLayout(layout: string) {
     Assert.check(_.contains(ResultLayout.validLayouts, layout), 'Invalid layout');
     if (layout !== this.currentLayout) {
       this.bind.trigger(this.root, ResultListEvents.changeLayout, <IChangeLayoutEventArgs>{
         layout: layout
       })
+      this.currentLayout = layout;
     }
   }
 

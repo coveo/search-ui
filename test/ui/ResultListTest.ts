@@ -104,6 +104,12 @@ export function ResultListTest() {
       expect(test.cmp.getDisplayedResultsElements().length).toBe(0);
     })
 
+    it('should change CSS layout class when event is called', function () {
+      $$(test.env.root).trigger(ResultListEvents.changeLayout, {
+        layout: 'card'
+      })
+      expect(test.cmp.options.resultContainer.classList).toContain('coveo-card-layout');
+    })
 
     describe('exposes options', function () {
       it('resultContainer allow to specify where to render results', function () {
