@@ -269,15 +269,25 @@ export function ComponentOptionsTest() {
         });
         it('which validates a component option with the specified validator', function () {
           let options = {
+            testString: ComponentOptions.buildStringOption({
+              defaultFunction: function (elem: HTMLElement) {
+                return 'fooBrak';
+              }
+            }),
             myAttr: ComponentOptions.buildStringOption({
               validator: function (value): boolean {
                 return value === 'foo';
+              }
+            }),
+            testList: ComponentOptions.buildListOption({
+              defaultFunction: function (elem: HTMLElement) {
+                return ['fooBrak', 'fooBar'];
               }
             })
           };
           let initOptions = ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' });
 
-          expect(initOptions).toEqual({  });
+          expect(initOptions).toEqual({ testString : 'fooBrak', testList: ['fooBrak', 'fooBar'] });
         });
       });
 
