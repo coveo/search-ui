@@ -118,6 +118,7 @@ export class FollowItem extends Component {
    */
   public toggleFollow() {
     if (!this.container.hasClass('coveo-follow-item-loading')) {
+      this.container.removeClass('coveo-follow-item-followed');
       this.container.addClass('coveo-follow-item-loading');
       if (this.subscription.id) {
         this.queryController.getEndpoint()
