@@ -255,6 +255,18 @@ export function ComponentOptionsTest() {
 
           expect(initOptions).toEqual({ myAttr: 'baz foo' });
         });
+        it('which validates a component option with the specified validator', function () {
+          let options = {
+            myAttr: ComponentOptions.buildStringOption({
+              validator: function (value): boolean {
+                return value === 'baz';
+              }
+            })
+          };
+          let initOptions = ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' });
+
+          expect(initOptions).toEqual({ myAttr: 'baz' });
+        });
       });
 
       describe('initOptions', () => {

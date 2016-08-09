@@ -33,6 +33,7 @@ export interface IComponentOptions<T> {
   depend?: string;
   priority?: number;
   deprecated?: string;
+  validator?: (value: T) => boolean;
 }
 
 export interface IComponentOptionsNumberOption extends IComponentOptionsOption<number>, IComponentOptionsNumberOptionArgs {
@@ -293,6 +294,10 @@ export class ComponentOptions {
         }
       }
       if (value != null) {
+        if (!optionDefinition.validator(value)) {
+          console.log('Option : ' + name + ' has invalid value : ' + value);
+          continue;
+        }
         if (optionDefinition.type == ComponentOptionsType.OBJECT && values[name] != null) {
           values[name] = _.extend(values[name], value);
         } else if (optionDefinition.type == ComponentOptionsType.LOCALIZED_STRING) {
