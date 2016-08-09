@@ -55,7 +55,7 @@ export class Pager extends Component {
      * This property is typically set when the default number of accessible results from the index has been changed from it's default value of 1000. (So 10 per page X 100 maximumNumberOfPage)
      */
     maxNumberOfPages: ComponentOptions.buildNumberOption({ defaultValue: undefined })
-  }
+  };
 
   /**
    * The current page (1 based index)
