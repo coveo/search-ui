@@ -17,7 +17,6 @@ export function DomTests() {
     })
 
     describe('without jquery', function () {
-      var jqueryOrig = window['jQuery'];
       beforeEach(function () {
         // we want to test the basic event, not jquery one
         window['jQuery'] = null;
@@ -231,6 +230,11 @@ export function DomTests() {
         el.className = 'qwerty notqwerty';
         new Dom(el).removeClass('qwerty');
         expect(el.className).toBe('notqwerty');
+
+        el = document.createElement('div');
+        el.className = 'qwerty notqwerty';
+        new Dom(el).removeClass('notqwerty');
+        expect(el.className).toBe('qwerty');
 
         el = document.createElement('div');
         new Dom(el).removeClass('qwerty');

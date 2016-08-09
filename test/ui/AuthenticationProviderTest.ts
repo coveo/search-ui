@@ -12,7 +12,6 @@ import {$$} from '../../src/utils/Dom';
 export function AuthenticationProviderTest() {
   describe('AuthenticationProvider', function () {
     let test: Mock.IBasicComponentSetup<AuthenticationProvider>;
-    let modalBoxCloseSpy: Function;
 
     beforeEach(function () {
       spyOn(ModalBox, 'open').and.callFake(() => { });

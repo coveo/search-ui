@@ -42,13 +42,12 @@ export function CurrentTabTest() {
     })
 
     it('does not explode when a tab section to open is defined and no element has class coveo-glass', () => {
-      let el = $$('div');
       let tabSection = $$('div', { className: 'tabSection' });
       let root = $$('div');
       root.append(tabSection.el);
 
       let model = new QueryStateModel(root.el);
-      let tab1 = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, { id: 'first', caption: 'First' }, (builder) => {
+      Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, { id: 'first', caption: 'First' }, (builder) => {
         return builder.withRoot(root.el).withQueryStateModel(model);
       }));
 

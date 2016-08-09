@@ -42,6 +42,7 @@ export {Pager} from './ui/Pager/Pager';
 export {ResultsPerPage} from './ui/Pager/ResultsPerPage';
 export {ResultList} from './ui/ResultList/ResultList';
 export {ResultLayout} from './ui/ResultLayout/ResultLayout';
+export {DefaultRecommendationTemplate} from './ui/Templates/DefaultRecommendationTemplate';
 export {Excerpt} from './ui/Excerpt/Excerpt';
 export {ResultLink} from './ui/ResultLink/ResultLink';
 export {Icon} from './ui/Icon/Icon';
