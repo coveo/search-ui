@@ -40,6 +40,7 @@ $border-box-sizing: false;
 }
 
 .coveo-results-header {
+  @include display(flex);
   padding: 10px 0px 0px 0px;
   min-height: 35px;
   overflow: hidden;
@@ -49,11 +50,11 @@ $border-box-sizing: false;
     margin-bottom: 10px;
   }
   .coveo-sort-section {
-    float:right;
     margin-bottom: 13px;
   }
   .coveo-result-layout-section {
     display: inline-block;
+    margin-left: auto;
   }
   box-shadow: 0 -1px 0px 0px $color-light-grey inset;
   &.coveo-no-results {
@@ -66,11 +67,13 @@ $border-box-sizing: false;
 
 @include mediaSelector(480) {
   .coveo-results-header {
+    @include flex-direction(column);
     .coveo-sort-section {
-      float:none;
-      display: block;
       text-align: left;
       margin: 10px 0px 10px 0px;
+    }
+    .coveo-result-layout-section {
+      display: none;
     }
   }
 }
