@@ -257,37 +257,34 @@ export function ComponentOptionsTest() {
         });
         it('which validates a component option with the specified validator', function () {
           let options = {
-            myAttr: ComponentOptions.buildStringOption({
-              validator: function (value): boolean {
-                return value === 'baz';
-              }
-            })
-          };
-          let initOptions = ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' });
-
-          expect(initOptions).toEqual({ myAttr: 'baz' });
-        });
-        it('which validates a component option with the specified validator', function () {
-          let options = {
             testString: ComponentOptions.buildStringOption({
               defaultFunction: function (elem: HTMLElement) {
                 return 'fooBrak';
+              },
+              validator: function (value): boolean {
+                return value === 'fooBrak';
               }
             }),
             myAttr: ComponentOptions.buildStringOption({
               validator: function (value): boolean {
-                return value === 'foo';
+                return value === '';
               }
             }),
             testList: ComponentOptions.buildListOption({
-              defaultFunction: function (elem: HTMLElement) {
-                return ['fooBrak', 'fooBar'];
+              defaultValue: ['fooBrak', 'fooBar'],
+              validator: function (value): boolean {
+                return value[0] === 'fooBrak';
+              }
+            }),
+            testParam: ComponentOptions.buildListOption({
+              validator: function (value): boolean {
+                return value[0] === 'fooBrak';
               }
             })
           };
-          let initOptions = ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' });
+          let initOptions = ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' }, { testParam: [] });
 
-          expect(initOptions).toEqual({ testString : 'fooBrak', testList: ['fooBrak', 'fooBar'] });
+          expect(initOptions).toEqual({ testString: 'fooBrak', testList: ['fooBrak', 'fooBar'] });
         });
       });
 
