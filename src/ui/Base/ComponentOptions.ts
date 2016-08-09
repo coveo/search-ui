@@ -294,7 +294,7 @@ export class ComponentOptions {
         }
       }
       if (value != null) {
-        if (!optionDefinition.validator(value)) {
+        if (optionDefinition.validator && !optionDefinition.validator(value)) {
           console.log('Option : ' + name + ' has invalid value : ' + value);
           continue;
         }
