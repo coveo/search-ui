@@ -8,13 +8,13 @@ $border-box-sizing: false;
 .CoveoSearchInterface {
 
   min-width: 300px;
-  
+
   .coveo-search-section {
     max-width: 800px;
     margin: 54px auto 47px auto;
     padding: 0 10px;
   }
-  
+
   .coveo-main-section {
     @include outer-container;
     position: relative;
@@ -51,6 +51,9 @@ $border-box-sizing: false;
   .coveo-sort-section {
     float:right;
     margin-bottom: 13px;
+  }
+  .coveo-result-layout-section {
+    display: inline-block;
   }
   box-shadow: 0 -1px 0px 0px $color-light-grey inset;
   &.coveo-no-results {

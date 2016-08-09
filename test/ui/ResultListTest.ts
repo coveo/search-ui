@@ -104,16 +104,6 @@ export function ResultListTest() {
       expect(test.cmp.getDisplayedResultsElements().length).toBe(0);
     })
 
-    it('switchLayout should switch the layout when entering a valid layout', function () {
-      test.cmp.switchLayout('card');
-      expect(test.cmp.getCurrentLayout()).toBe('card');
-      expect(test.cmp.options.resultContainer.classList).toContain('coveo-card-layout');
-      expect(test.cmp.options.resultContainer.classList).not.toContain('coveo-list-layout');
-    })
-
-    it('switchLayout should throw an error when entering an invalid layout', function () {
-      expect(() => test.cmp.switchLayout('pony-shaped')).toThrow();
-    })
 
     describe('exposes options', function () {
       it('resultContainer allow to specify where to render results', function () {
@@ -210,31 +200,6 @@ export function ResultListTest() {
         expect(simulation.queryBuilder.fieldsToInclude).toContain('field1');
         expect(simulation.queryBuilder.fieldsToInclude).toContain('field2');
         expect(simulation.queryBuilder.fieldsToInclude).toContain('field3');
-      })
-      it('defaultLayout, when valid, should set the currentLayout correctly', function () {
-        const testLayouts = ['list', 'card'];
-        _.each(testLayouts, layout => {
-          test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
-            defaultLayout: layout
-          })
-          expect(test.cmp.getCurrentLayout()).toBe(layout);
-        });
-      })
-      it('defaultLayout, when valid, should set the appropriate CSS class on the result container', function () {
-        const testLayouts = ['list', 'card'];
-        _.each(testLayouts, layout => {
-          test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
-            defaultLayout: layout
-          })
-          expect(test.cmp.options.resultContainer.classList).toContain(`coveo-${layout}-layout`);
-        });
-      })
-      it('defaultLayout, when invalid, should default to the list layout', function () {
-        test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
-          defaultLayout: 'upside-down'
-        })
-        expect(test.cmp.getCurrentLayout()).toBe('list');
-        expect(test.cmp.options.resultContainer.classList).toContain(`coveo-list-layout`);
       })
     })
   })

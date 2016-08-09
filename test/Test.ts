@@ -260,3 +260,6 @@ ValueElementRendererTest();
 
 import {ResultsPerPageTest} from './ui/ResultsPerPageTest';
 ResultsPerPageTest();
+
+import {ResultLayoutTest} from './ui/ResultLayoutTest';
+ResultLayoutTest();

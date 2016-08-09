@@ -16,7 +16,7 @@ import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/Analytics
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
 import {Defer} from '../../misc/Defer';
 import {DeviceUtils} from '../../utils/DeviceUtils';
-import {ResultListEvents, IDisplayedNewResultEventArgs} from '../../events/ResultListEvents';
+import {ResultListEvents, IDisplayedNewResultEventArgs, IChangeLayoutEventArgs} from '../../events/ResultListEvents';
 import {Utils} from '../../utils/Utils';
 import {DomUtils} from '../../utils/DomUtils';
 import {Recommendation} from '../Recommendation/Recommendation';
@@ -35,7 +35,6 @@ export interface IResultListOptions {
   enableInfiniteScrollWaitingAnimation?: boolean;
   fieldsToInclude?: string[];
   autoSelectFieldsToInclude?: boolean;
-  defaultLayout?: string;
 }
 
 
@@ -115,17 +114,7 @@ export class ResultList extends Component {
      * Default value is false.<br/>
      * NB: Many interface created by the interface editor will actually explicitly set this option to true.
      */
-    autoSelectFieldsToInclude: ComponentOptions.buildBooleanOption({ defaultValue: false }),
-    /**
-     * Specifies the default ResultList layout to use.<br/>
-     * Possible values are `list` and `card`.<br/>
-     * By default, it is set to `list`.
-     */
-    defaultLayout: ComponentOptions.buildStringOption({
-      defaultValue: 'list', postProcessing: (v) => {
-        return _.contains(ResultList.validResultListLayouts, v) ? v : 'list';
-      }
-    })
+    autoSelectFieldsToInclude: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
@@ -133,8 +122,8 @@ export class ResultList extends Component {
   private fetchingMoreResults: Promise<IQueryResults>;
   private reachedTheEndOfResults = false;
 
-  public static validResultListLayouts = ['list', 'card'];
   private currentLayout: string;
+
   /**
    * Create a new ResultList.<br/>
    * Bind various event related to queries (eg : on querySuccess -> renderResults)<br/>
@@ -154,7 +143,6 @@ export class ResultList extends Component {
     Assert.exists(this.options.resultTemplate);
     Assert.exists(this.options.waitAnimationContainer);
     Assert.exists(this.options.infiniteScrollContainer);
-    Assert.exists(this.options.defaultLayout);
 
     this.showOrHideElementsDependingOnState(false, false);
 
@@ -164,13 +152,14 @@ export class ResultList extends Component {
     this.bind.onRootElement<IDuringQueryEventArgs>(QueryEvents.duringQuery, (args: IDuringQueryEventArgs) => this.handleDuringQuery());
     this.bind.onRootElement<IQueryErrorEventArgs>(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError());
 
+    this.bind.onRootElement<IChangeLayoutEventArgs>(ResultListEvents.changeLayout, args => this.handleChangeLayout(args));
+
     if (this.options.enableInfiniteScroll) {
       this.bind.on(<HTMLElement>this.options.infiniteScrollContainer, 'scroll', (e: Event) => this.handleScrollOfResultList());
     }
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, () => this.handlePageChanged());
 
     $$(this.options.resultContainer).addClass('coveo-result-list-container');
-    this.currentLayout = this.options.defaultLayout;
     $$(this.options.resultContainer).addClass(`coveo-${this.currentLayout}-layout`);
   }
 
@@ -283,25 +272,6 @@ export class ResultList extends Component {
     return $$(this.options.resultContainer).findAll('.CoveoResult');
   }
 
-  /**
-   * Switch the current layout<br/>
-   * @param layout The new layout. Available values are `list` and `card`.
-   */
-  public switchLayout(layout: string) {
-    Assert.check(_.contains(ResultList.validResultListLayouts, layout), 'Invalid layout');
-    if (layout !== this.currentLayout) {
-      $$(this.options.resultContainer).removeClass(`coveo-${this.currentLayout}-layout`);
-      $$(this.options.resultContainer).addClass(`coveo-${layout}-layout`);
-      this.currentLayout = layout;
-    }
-  }
-
-  /**
-   * Get the current layout
-   */
-  public getCurrentLayout(): string {
-    return this.currentLayout;
-  }
 
   protected autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult) {
     Assert.exists(element);
@@ -406,6 +376,12 @@ export class ResultList extends Component {
       args.queryBuilder.addRequiredFields(this.getAutoSelectedFieldsToInclude());
       args.queryBuilder.includeRequiredFields = true;
     }
+  }
+
+  private handleChangeLayout(args: IChangeLayoutEventArgs) {
+    $$(this.options.resultContainer).removeClass(`coveo-${this.currentLayout}-layout`);
+    $$(this.options.resultContainer).addClass(`coveo-${args.layout}-layout`);
+    this.currentLayout = args.layout;
   }
 
   private getAutoSelectedFieldsToInclude() {

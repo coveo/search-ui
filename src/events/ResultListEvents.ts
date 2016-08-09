@@ -12,8 +12,13 @@ export interface IOpenQuickviewEventArgs {
   termsToHighlight: any;
 }
 
+export interface IChangeLayoutEventArgs {
+  layout: string;
+}
+
 export class ResultListEvents {
   public static newResultsDisplayed = 'newResultsDisplayed';
   public static newResultDisplayed = 'newResultDisplayed';
   public static openQuickview = 'openQuickview';
+  public static changeLayout = 'changeLayout';
 }
