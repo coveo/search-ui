@@ -21,6 +21,8 @@ export class ResultLayout extends Component {
 
   private currentLayout: string;
 
+  private buttons: { string: HTMLElement };
+
   /**
    * @componentOptions
    */
@@ -41,17 +43,23 @@ export class ResultLayout extends Component {
     this.options = ComponentOptions.initComponentOptions(element, ResultLayout, options);
 
     Assert.exists(this.options.defaultLayout);
-
     this.currentLayout = this.options.defaultLayout;
 
-    // TODO: remove this --------------------------------------------------
-    const switchLayoutBtns = _.map(ResultLayout.validLayouts, l => {
-      const btn = $$('button', undefined, l);
-      btn.on('click', () => this.changeLayout(l));
-      return btn.el;
-    })
-    _.each(switchLayoutBtns, btn => $$(this.element).prepend(btn));
-    // --------------------------------------------------------------------
+    this.initializeButtons();
+  }
+
+  public initializeButtons() {
+    this.buttons = <{string: HTMLElement}>_.object(
+      _.map(ResultLayout.validLayouts, layout => {
+        const btn = $$('span', { className: 'coveo-result-layout-selector' }, layout);
+        if (layout === this.currentLayout) {
+          btn.addClass('coveo-selected');
+        }
+        btn.on('click', () => this.changeLayout(layout));
+        return [layout, btn.el];
+      })
+    )
+    _.each(this.buttons, btn => $$(this.element).append(btn));
   }
 
   /**
@@ -64,6 +72,8 @@ export class ResultLayout extends Component {
       this.bind.trigger(this.root, ResultListEvents.changeLayout, <IChangeLayoutEventArgs>{
         layout: layout
       })
+      $$(this.buttons[this.currentLayout]).removeClass('coveo-selected');
+      $$(this.buttons[layout]).addClass('coveo-selected');
       this.currentLayout = layout;
     }
   }
