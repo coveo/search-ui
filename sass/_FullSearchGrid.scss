@@ -48,12 +48,15 @@ $border-box-sizing: false;
     display: inline-block;
     font-size: $font-size-smaller;
   }
-  .coveo-sort-section {
-    @include display(flex);
-  }
   .coveo-result-layout-section {
     @include display(flex);
     margin-left: auto;
+    padding-right: 10px;
+    border-right: 1px solid $color-light-grey;
+  }
+  .coveo-sort-section {
+    @include display(flex);
+    margin-left: 10px;
   }
   box-shadow: 0 -1px 0px 0px $color-light-grey inset;
   &.coveo-no-results {
@@ -70,6 +73,9 @@ $border-box-sizing: false;
     .coveo-sort-section {
       text-align: left;
       margin: 10px 0px 10px 0px;
+    }
+    .coveo-layout-section {
+      display: none;
     }
     .coveo-result-layout-section {
       display: none;
