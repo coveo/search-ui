@@ -56,10 +56,10 @@ export class ResultLayout extends Component {
           btn.addClass('coveo-selected');
         }
         btn.on('click', () => this.changeLayout(layout));
+        $$(this.element).append(btn.el);
         return [layout, btn.el];
       })
     )
-    _.each(this.buttons, btn => $$(this.element).append(btn));
   }
 
   /**
