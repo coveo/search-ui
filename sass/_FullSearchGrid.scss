@@ -41,19 +41,18 @@ $border-box-sizing: false;
 
 .coveo-results-header {
   @include display(flex);
-  padding: 10px 0px 0px 0px;
+  padding-top: 10px;
   min-height: 35px;
   overflow: hidden;
   .coveo-summary-section {
     display: inline-block;
     font-size: $font-size-smaller;
-    margin-bottom: 10px;
   }
   .coveo-sort-section {
-    margin-bottom: 13px;
+    @include display(flex);
   }
   .coveo-result-layout-section {
-    display: inline-block;
+    @include display(flex);
     margin-left: auto;
   }
   box-shadow: 0 -1px 0px 0px $color-light-grey inset;

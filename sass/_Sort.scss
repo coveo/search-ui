@@ -6,25 +6,7 @@ $stop-float: new-breakpoint(max-width 480px 1);
 }
 
 .CoveoSort {
-  font-size: $font-size-smallest;
-  font-weight: bold;
-  padding: 0px 5px 10px 5px;
-  border-bottom: $default-border;
-  text-transform: uppercase;
-
-  border-bottom: 2px solid $color-light-grey;
-  padding-bottom: 11px;
-
-  &.coveo-selected, &.coveo-selected:hover {
-    border-bottom: 2px solid $color-greyish-dark-blue;
-  }
-
-  &:hover {
-    color: $color-greyish-dark-blue;
-  }
-
-  cursor: pointer;
-
+  @include resultsHeaderElement();
   .coveo-icon {
     margin-left: 5px;
     position: relative;
@@ -42,7 +24,7 @@ $stop-float: new-breakpoint(max-width 480px 1);
       @extend .coveo-sprites-arrow-down;
     }
   }
-  
+
   &.coveo-sort-hidden {
     display: none;
   }
