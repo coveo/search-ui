@@ -229,7 +229,7 @@ export function ComponentOptionsTest() {
               required: true
             })
           };
-          expect(function () { ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' }) }).toThrowError('fooID.testRequired is required');
+          expect(function () { ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' }) }).toThrow();
         });
         it('which initializes the options of a component with postProcessing', function () {
           let options = {
@@ -285,6 +285,17 @@ export function ComponentOptionsTest() {
           let initOptions = ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' }, { testParam: [] });
 
           expect(initOptions).toEqual({ testString: 'fooBrak', testList: ['fooBrak', 'fooBar'] });
+        });
+        it('which validates a required component option with the specified validator', function () {
+          let options = {
+            myAttr: ComponentOptions.buildStringOption({
+              validator: function (value): boolean {
+                return value === '';
+              },
+              required: true
+            })
+          };
+          expect(function () { ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' }) }).toThrow();
         });
       });
 

@@ -1,5 +1,6 @@
 import {IFieldDescription} from '../../rest/FieldDescription';
 import {Assert} from '../../misc/Assert';
+import {Logger} from '../../misc/Logger';
 import {Template} from '../Templates/Template';
 import {$$} from '../../utils/Dom';
 import {TemplateCache} from '../Templates/TemplateCache';
@@ -259,6 +260,7 @@ export class ComponentOptions {
   static initOptions(element: HTMLElement, options: {
     [name: string]: IComponentOptionsOption<any>
   }, values?: any, componentID?: any) {
+    let logger = new Logger(this);
     if (values == null) {
       values = {};
     }
@@ -272,7 +274,7 @@ export class ComponentOptions {
       if (loadFromAttribute != null) {
         value = loadFromAttribute(element, name, optionDefinition);
         if (value && optionDefinition.deprecated) {
-          console.log(componentID + '.' + name + ' : ' + optionDefinition.deprecated);
+          logger.warn(componentID + '.' + name + ' : ' + optionDefinition.deprecated);
         }
       }
 
@@ -294,10 +296,14 @@ export class ComponentOptions {
         }
       }
       if (value != null) {
-        if (optionDefinition.validator && !optionDefinition.validator(value)) {
-          console.log('Option : ' + name + ' has invalid value : ' + value);
-          delete values[name];
-          continue;
+        if (optionDefinition.validator) {
+          let isValid = optionDefinition.validator(value);
+          if (!isValid) {
+            Assert.check(!optionDefinition.required, componentID + '.' + name + ' is required and has invalid value : ' + value);
+            logger.warn('Option : ' + name + ' has invalid value : ' + value);
+            delete values[name];
+            continue;
+          }
         }
         if (optionDefinition.type == ComponentOptionsType.OBJECT && values[name] != null) {
           values[name] = _.extend(values[name], value);
@@ -307,9 +313,8 @@ export class ComponentOptions {
           values[name] = value;
         }
       }
-      if (value == null && values[name] == undefined && optionDefinition.required) {
-        throw new Error(componentID + '.' + name + ' is required');
-      }
+      Assert.check(!(values[name] == undefined && optionDefinition.required), componentID + '.' + name + ' is required');
+
     }
     for (let i = 0; i < names.length; i++) {
       let name = names[i];
