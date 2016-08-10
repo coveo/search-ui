@@ -1,6 +1,7 @@
 import {Component} from '../Base/Component';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
+import {QueryEvents} from '../../events/QueryEvents';
 import {Initialization} from '../Base/Initialization';
 import {Assert} from '../../misc/Assert';
 import {ResultListEvents, IChangeLayoutEventArgs} from '../../events/ResultListEvents';
@@ -43,7 +44,7 @@ export class ResultLayout extends Component {
     this.options = ComponentOptions.initComponentOptions(element, ResultLayout, options);
 
     Assert.exists(this.options.defaultLayout);
-    this.currentLayout = this.options.defaultLayout;
+    this.bind.oneRootElement(QueryEvents.querySuccess, () => this.changeLayout(this.options.defaultLayout));
 
     this.initializeButtons();
   }
@@ -74,7 +75,9 @@ export class ResultLayout extends Component {
       this.bind.trigger(this.root, ResultListEvents.changeLayout, <IChangeLayoutEventArgs>{
         layout: layout
       })
-      $$(this.buttons[this.currentLayout]).removeClass('coveo-selected');
+      if (this.currentLayout) {
+        $$(this.buttons[this.currentLayout]).removeClass('coveo-selected');
+      }
       $$(this.buttons[layout]).addClass('coveo-selected');
       this.currentLayout = layout;
     }
