@@ -52,6 +52,8 @@ export class ResultLayout extends Component {
     this.buttons = <{string: HTMLElement}>_.object(
       _.map(ResultLayout.validLayouts, layout => {
         const btn = $$('span', { className: 'coveo-result-layout-selector' }, layout);
+        // TODO: Icon classname temporary
+        btn.prepend($$('span', { className: 'coveo-icon coveo-sprites-checkbox-exclusion' }).el);
         if (layout === this.currentLayout) {
           btn.addClass('coveo-selected');
         }
