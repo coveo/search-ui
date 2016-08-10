@@ -300,7 +300,7 @@ export class ComponentOptions {
           let isValid = optionDefinition.validator(value);
           if (!isValid) {
             Assert.check(!optionDefinition.required, componentID + '.' + name + ' is required and has invalid value : ' + value);
-            logger.warn('Option : ' + name + ' has invalid value : ' + value);
+            logger.warn(componentID + '.' + name + ' has invalid value : ' + value);
             delete values[name];
             continue;
           }
