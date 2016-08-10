@@ -85,7 +85,6 @@ export class Pager extends Component {
   constructor(public element: HTMLElement, public options?: IPagerOptions, bindings?: IComponentBindings) {
     super(element, Pager.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Pager, options);
-
     this.currentPage = 1;
 
     if (this.options.maxNumberOfPages == null) {
