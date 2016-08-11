@@ -39,25 +39,24 @@ export class AdvancedSearch extends Component {
   static options: IAdvancedSearchOptions = {
     /**
      * Specifies whether or not to include the built-in keywords section.
-     * Default is true
+     * Default is `true`
      */
     includeKeywords: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
      * Specifies whether or not to include the built-in date section.
-     * Default is true
+     * Default is `true`
      */
     includeDate: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
      * Specifies whether or not to include the built-in document section.
-     * Default is true
+     * Default is `true`
      */
     includeDocument: ComponentOptions.buildBooleanOption({ defaultValue: true })
   }
 
   public inputs: IAdvancedSearchInput[] = [];
-  private handleEnterFunction = this.handleEnter.bind(this);
 
   constructor(public element: HTMLElement, public options?: IAdvancedSearchOptions, bindings?: IComponentBindings) {
     super(element, AdvancedSearch.ID, bindings);
@@ -90,9 +89,7 @@ export class AdvancedSearch extends Component {
 
   private buildCloseButton() {
     var closeButton = $$('div', { className: 'coveo-advanced-search-panel-close' }, $$('span', { className: 'coveo-icon' }).el)
-    closeButton.on('click', () => {
-      this.close();
-    })
+    closeButton.on('click', () => this.close());
     $$(this.element).append(closeButton.el);
   }
 
@@ -129,18 +126,10 @@ export class AdvancedSearch extends Component {
 
   private open() {
     $$(this.element).show();
-    document.addEventListener('keydown', this.handleEnterFunction);
   }
 
   private close() {
     $$(this.element).hide();
-    document.removeEventListener('keydown', this.handleEnterFunction);
-  }
-
-  private handleEnter(e: KeyboardEvent) {
-    if (e.keyCode == 13) { // Enter
-      this.executeAdvancedSearch();
-    }
   }
 
   private getKeywordsSection(): IAdvancedSearchSection {

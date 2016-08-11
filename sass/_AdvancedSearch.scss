@@ -24,7 +24,7 @@ $spaceBetween: 0 5px;
 }
 
 .coveo-advanced-search-date-input-section {
-  display: flex;
+  @include display(flex);
   height: 45px;
   align-items: center;
 
@@ -53,17 +53,17 @@ $spaceBetween: 0 5px;
 
 .coveo-advanced-search-document-input-section {
   margin: 20px 0;
-  display: flex;
+  @include display(flex);
   align-items: center;
 
   .coveo-dropdown {
     margin: 0 10px;
-    flex-basis: 115px;
+    @include flex-basis(115px);
   }
 
   .coveo-input {
-    flex-basis: 200px;
-    flex: 1;
+    @include flex-basis(200px);
+    @include flex(1);
     margin-left: 10px;
     margin-top: 0;
     display: inline-block;
@@ -87,11 +87,11 @@ $spaceBetween: 0 5px;
 }
 
 #coveo-advanced-search-select-day {
-  width:50px
+  width: 50px;
 }
 
 #coveo-advanced-search-select-month {
-  width:50px
+  width: 50px;
 }
 
 #coveo-advanced-search-select-year {
