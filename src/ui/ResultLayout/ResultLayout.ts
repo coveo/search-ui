@@ -50,7 +50,7 @@ export class ResultLayout extends Component {
   }
 
   public initializeButtons() {
-    this.buttons = <{string: HTMLElement}>_.object(
+    this.buttons = <{ string: HTMLElement }>_.object(
       _.map(ResultLayout.validLayouts, layout => {
         const btn = $$('span', { className: 'coveo-result-layout-selector' }, layout);
         // TODO: Icon classname temporary
