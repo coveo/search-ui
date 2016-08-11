@@ -320,9 +320,11 @@ export class Omnibox extends Component {
 
     this.magicBox.onclear = () => {
       this.updateQueryState();
-      this.triggerNewQuery(false, () => {
-        this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxClear, {})
-      });
+      if (this.options.triggerQueryOnClear) {
+        this.triggerNewQuery(false, () => {
+          this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxClear, {})
+        });
+      }
     };
 
     if (this.options.autoFocus) {

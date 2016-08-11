@@ -266,6 +266,22 @@ export function OmniboxTest() {
         }))
       })
 
+      it('triggerQueryOnClear should trigger a query on clear', () => {
+        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          triggerQueryOnClear: true
+        })
+        test.cmp.magicBox.clear();
+        expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+      })
+
+      it('triggerQueryOnClear should not trigger a query on clear if false', () => {
+        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          triggerQueryOnClear: false
+        })
+        test.cmp.magicBox.clear();
+        expect(test.cmp.queryController.executeQuery).not.toHaveBeenCalled();
+      })
+
     })
 
     describe('with live query state model', () => {
