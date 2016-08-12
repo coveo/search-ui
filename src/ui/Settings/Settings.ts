@@ -93,8 +93,7 @@ export class Settings extends Component {
     $$(this.element).on('click', () => {
       if (this.isOpened) {
         this.close();
-      }
-      else {
+      } else {
         this.open();
       }
     });
