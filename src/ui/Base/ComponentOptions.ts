@@ -278,7 +278,7 @@ export class ComponentOptions {
         }
       }
 
-      if (_.isEmpty(value) && values[name] != undefined) {
+      if (Utils.isNullOrUndefined(value) && values[name] != undefined) {
         value = values[name];
       }
 

@@ -13,8 +13,8 @@ export interface ISearchAlertMessageOptions {
 }
 
 /**
- * This component allows the @link{SearchAlerts} component to display messages.
- * This component should not be included in a web page. Instead, use a @link{SearchAlerts} component and access its message attribute.
+ * This component allows the {@link SearchAlerts} component to display messages.
+ * This component should not be included in a web page. Instead, use a {@link SearchAlerts} component and access its message attribute.
  */
 export class SearchAlertsMessage extends Component {
   static ID = 'SubscriptionsMessages';

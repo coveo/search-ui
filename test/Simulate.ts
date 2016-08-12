@@ -4,7 +4,7 @@ import {IQueryResults} from '../src/rest/QueryResults';
 import {IEndpointError} from '../src/rest/EndpointError';
 import {IQueryCorrection} from '../src/rest/QueryCorrection';
 import {IGroupByResult} from '../src/rest/GroupByResult';
-import * as Mock from './MockEnvironment';
+import {IMockEnvironment} from './MockEnvironment';
 import {FakeResults} from './Fake';
 import {$$} from '../src/utils/Dom';
 import {QueryEvents} from '../src/events/QueryEvents';
@@ -38,7 +38,7 @@ export class Simulate {
     return navigator.userAgent.indexOf('PhantomJS') != -1;
   }
 
-  static query(env: Mock.IMockEnvironment, options?: ISimulateQueryData): ISimulateQueryData {
+  static query(env: IMockEnvironment, options?: ISimulateQueryData): ISimulateQueryData {
 
     options = _.extend({}, {
       query: new QueryBuilder().build(),
@@ -150,7 +150,7 @@ export class Simulate {
     return options;
   }
 
-  static omnibox(env: Mock.IMockEnvironment, options?): IOmniboxData {
+  static omnibox(env: IMockEnvironment, options?): IOmniboxData {
     let expression = {
       word: 'foo',
       regex: /foo/
@@ -175,7 +175,7 @@ export class Simulate {
     return fakeOmniboxArgs;
   }
 
-  static breadcrumb(env: Mock.IMockEnvironment, options?): IBreadcrumbItem[] {
+  static breadcrumb(env: IMockEnvironment, options?): IBreadcrumbItem[] {
     let args = <IPopulateBreadcrumbEventArgs>{ breadcrumbs: [] };
     $$(env.root).trigger(BreadcrumbEvents.populateBreadcrumb, args);
     return args.breadcrumbs;
