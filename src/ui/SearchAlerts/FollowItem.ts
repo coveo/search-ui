@@ -18,7 +18,7 @@ export interface IFollowItemOptions {
 /**
  * This component allows the user to follow a particular result. 
  * By following a result, the user will receive emails informing him when the result has changed.
- * A @link{SearchAlerts} component must be present in the page for this component to work.
+ * A {@link SearchAlerts} component must be present in the page for this component to work.
  */
 export class FollowItem extends Component {
   static ID = 'FollowItem';
@@ -118,6 +118,7 @@ export class FollowItem extends Component {
    */
   public toggleFollow() {
     if (!this.container.hasClass('coveo-follow-item-loading')) {
+      this.container.removeClass('coveo-follow-item-followed');
       this.container.addClass('coveo-follow-item-loading');
       if (this.subscription.id) {
         this.queryController.getEndpoint()

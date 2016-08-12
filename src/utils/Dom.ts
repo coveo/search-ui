@@ -340,7 +340,7 @@ export class Dom {
    * @param className Classname to remove on the the element
    */
   public removeClass(className: string): void {
-    this.el.className = this.el.className.replace(new RegExp(`(^|\\s)${className}(\\s|\\b)`, 'g'), '$1');
+    this.el.className = this.el.className.replace(new RegExp(`(^|\\s)${className}(\\s|\\b)`, 'g'), '$1').trim();
   }
 
   /**

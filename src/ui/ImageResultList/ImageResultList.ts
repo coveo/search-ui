@@ -23,7 +23,7 @@ export class ImageResultList extends ResultList {
 
   /**
    * The options for the component.
-   * This component inherits the options of the @link{ResultList} component.
+   * This component inherits the options of the {@link ResultList} component.
    * @componentOptions
    */
   static options: IImageResultListOptions = {

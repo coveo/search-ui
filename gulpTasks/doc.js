@@ -11,10 +11,11 @@ gulp.task('doc', function () {
     theme: 'docs/theme',
     name: 'Coveo search ui documentation',
     readme: 'README.md',
-    externalPattern: '**/{typings,lib}/**'
+    externalPattern: '**/{typings,lib}/**',
+    ignoreCompilerErrors: true
   });
   var src = app.expandInputFiles(['src/Doc.ts']);
   var project = app.convert(src);
   app.generateDocs(project, 'docgen');
-  app.generateJson(project, './bin/docgen/docgen.json');
+  app.generateJson(project, './bin/docgen/docgen.json', 'https://coveo.github.io/search-ui/');
 })

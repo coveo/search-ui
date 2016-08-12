@@ -2,7 +2,7 @@ import {Component} from '../Base/Component';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {Initialization} from '../Base/Initialization';
-import {QueryEvents, IQuerySuccessEventArgs} from '../../events/QueryEvents'
+import {QueryEvents, IQuerySuccessEventArgs, INoResultsEventArgs} from '../../events/QueryEvents'
 import {analyticsActionCauseList, IAnalyticsResultsPerPageMeta, IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta'
 import {Assert} from '../../misc/Assert'
 import {$$} from '../../utils/Dom'
@@ -35,7 +35,9 @@ export class ResultsPerPage extends Component {
   };
 
   private currentResultsPerPage: number;
+  private ignoreNextQuerySuccess: boolean = false;
 
+  private span: HTMLElement;
   private list: HTMLElement;
 
   /**
@@ -53,6 +55,7 @@ export class ResultsPerPage extends Component {
 
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.queryError, () => this.handleQueryError());
+    this.bind.onRootElement(QueryEvents.noResults, (args: INoResultsEventArgs) => this.handleNoResults(args));
     this.initComponent(element);
   }
 
@@ -76,9 +79,10 @@ export class ResultsPerPage extends Component {
   }
 
   private initComponent(element: HTMLElement) {
-    element.appendChild($$('span', {
+    this.span = $$('span', {
       className: 'coveo-results-per-page-text'
-    }, 'Results per page').el);
+    }, 'Results per page').el;
+    element.appendChild(this.span);
     this.list = $$('ul', {
       className: 'coveo-results-per-page-list'
     }).el;
@@ -89,28 +93,37 @@ export class ResultsPerPage extends Component {
     this.reset();
   }
 
-  private handleQuerySuccess(data: IQuerySuccessEventArgs) {
+  private handleNoResults(data: INoResultsEventArgs) {
     this.reset();
-    let numResultsList: number[] = this.options.choicesDisplayed;
-    for (var i = 0; i < numResultsList.length; i++) {
+  }
 
-      let listItem = $$('li', {
-        className: 'coveo-results-per-page-list-item'
-      });
-      if (numResultsList[i] == this.currentResultsPerPage) {
-        listItem.addClass('coveo-active');
+  private handleQuerySuccess(data: IQuerySuccessEventArgs) {
+    if (this.ignoreNextQuerySuccess) {
+      this.ignoreNextQuerySuccess = false;
+    } else {
+      this.reset();
+      $$(this.span).removeClass('coveo-results-per-page-no-results');
+      let numResultsList: number[] = this.options.choicesDisplayed;
+      for (var i = 0; i < numResultsList.length; i++) {
+
+        let listItem = $$('li', {
+          className: 'coveo-results-per-page-list-item'
+        });
+        if (numResultsList[i] == this.currentResultsPerPage) {
+          listItem.addClass('coveo-active');
+        }
+
+        ((resultsPerPage: number) => {
+          listItem.on('click', () => {
+            this.handleClickPage(numResultsList[resultsPerPage]);
+          })
+        })(i);
+
+        listItem.el.appendChild($$('a', {
+          className: 'coveo-results-per-page-list-item-text'
+        }, numResultsList[i].toString()).el);
+        this.list.appendChild(listItem.el);
       }
-
-      ((resultsPerPage: number) => {
-        listItem.on('click', () => {
-          this.handleClickPage(numResultsList[resultsPerPage]);
-        })
-      })(i);
-
-      listItem.el.appendChild($$('a', {
-        className: 'coveo-results-per-page-list-item-text'
-      }, numResultsList[i].toString()).el);
-      this.list.appendChild(listItem.el);
     }
   }
   private handleClickPage(resultsPerPage: number) {
@@ -119,6 +132,8 @@ export class ResultsPerPage extends Component {
   }
 
   private reset() {
+    this.ignoreNextQuerySuccess = true;
+    $$(this.span).addClass('coveo-results-per-page-no-results');
     $$(this.list).empty();
   }
 }

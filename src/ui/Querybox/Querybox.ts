@@ -23,6 +23,7 @@ export interface IQueryboxOptions {
   partialMatchThreshold?: string;
   autoFocus?: boolean;
   placeholder?: string;
+  triggerQueryOnClear?: boolean;
 }
 
 /**
@@ -84,6 +85,11 @@ export class Querybox extends Component {
      * The default value is 50%.
      */
     partialMatchThreshold: ComponentOptions.buildStringOption({ defaultValue: '50%' }),
+    /**
+     * Specifies whether or not to trigger a query when the searchbox is cleared.
+     * The default value is true.
+     */
+    triggerQueryOnClear: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     placeholder: ComponentOptions.buildStringOption(),
     autoFocus: ComponentOptions.buildBooleanOption({ defaultValue: true })
   }
@@ -139,8 +145,10 @@ export class Querybox extends Component {
 
     this.magicBox.onclear = () => {
       this.updateQueryState();
-      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxClear, {})
-      this.triggerNewQuery(false);
+      if (this.options.triggerQueryOnClear) {
+        this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxClear, {})
+        this.triggerNewQuery(false);
+      }
     };
 
     if (this.options.autoFocus) {
