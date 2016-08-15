@@ -658,7 +658,8 @@ class SliderGraph {
   }
 
   private setXAndYRange(width: number, height: number) {
-    this.x.range([0, width], 0.2, 0);
+    this.x.range([0, width]);
+    this.x.padding(0.2);
     this.y.range([height - this.slider.options.graph.margin.top, 0]);
   }
 
@@ -713,11 +714,9 @@ class SliderGraph {
   }
 
   private renderGraphBars(bars: D3.UpdateSelection, width: number, height: number, currentSliderValues: number[]) {
-    let range = this.x.range();
-    let barWidth = (range[1] - range[0]) / this.slider.options.steps;
     bars.enter().append('rect')
       .attr('class', this.getFunctionForClass(currentSliderValues))
-      .attr('width', barWidth)
+      .attr('width', this.x.bandwidth())
       .attr('height', this.getFunctionForHeight(height))
       .attr('x', this.getFunctionForX())
       .attr('y', this.getFunctionForY())
@@ -727,12 +726,10 @@ class SliderGraph {
   }
 
   private setGraphBarsTransition(bars: D3.UpdateSelection, height: number, currentSliderValues: number[]) {
-    let range = this.x.range();
-    let barWidth = (range[1] - range[0]) / this.slider.options.steps;
     bars
       .transition()
       .attr('x', this.getFunctionForX())
-      .attr('width', barWidth)
+      .attr('width', this.x.bandwidth())
       .attr('class', this.getFunctionForClass(currentSliderValues))
       .transition()
       .duration(this.slider.options.graph.animationDuration)
