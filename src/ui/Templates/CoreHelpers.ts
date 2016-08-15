@@ -1,22 +1,22 @@
-import {TemplateHelpers} from './TemplateHelpers'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {IHighlight, IHighlightPhrase, IHighlightTerm} from '../../rest/Highlight'
-import {HighlightUtils, StringAndHoles} from '../../utils/HighlightUtils'
-import {IStreamHighlightOptions} from '../../utils/StreamHighlightUtils'
-import {IDateToStringOptions, DateUtils} from '../../utils/DateUtils'
-import {ICurrencyToStringOptions, CurrencyUtils} from '../../utils/CurrencyUtils'
-import {IAnchorUtilsOptions, IImageUtilsOptions, AnchorUtils, ImageUtils} from '../../utils/HtmlUtils'
-import {IQueryResult} from '../../rest/QueryResult'
-import {IIconOptions, Icon} from '../Icon/Icon'
-import {Utils} from '../../utils/Utils'
-import {StringUtils} from '../../utils/StringUtils'
-import {TimeSpan, ITimeSpanUtilsOptions} from '../../utils/TimeSpanUtils'
-import {EmailUtils} from '../../utils/EmailUtils'
-import {QueryUtils} from '../../utils/QueryUtils'
-import {DeviceUtils} from '../../utils/DeviceUtils'
-import {TemplateCache} from './TemplateCache'
-import {$$} from '../../utils/Dom'
-import {SearchEndpoint} from '../../rest/SearchEndpoint'
+import {TemplateHelpers} from './TemplateHelpers';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {IHighlight, IHighlightPhrase, IHighlightTerm} from '../../rest/Highlight';
+import {HighlightUtils, StringAndHoles} from '../../utils/HighlightUtils';
+import {IStreamHighlightOptions} from '../../utils/StreamHighlightUtils';
+import {IDateToStringOptions, DateUtils} from '../../utils/DateUtils';
+import {ICurrencyToStringOptions, CurrencyUtils} from '../../utils/CurrencyUtils';
+import {IAnchorUtilsOptions, IImageUtilsOptions, AnchorUtils, ImageUtils} from '../../utils/HtmlUtils';
+import {IQueryResult} from '../../rest/QueryResult';
+import {IIconOptions, Icon} from '../Icon/Icon';
+import {Utils} from '../../utils/Utils';
+import {StringUtils} from '../../utils/StringUtils';
+import {TimeSpan, ITimeSpanUtilsOptions} from '../../utils/TimeSpanUtils';
+import {EmailUtils} from '../../utils/EmailUtils';
+import {QueryUtils} from '../../utils/QueryUtils';
+import {DeviceUtils} from '../../utils/DeviceUtils';
+import {TemplateCache} from './TemplateCache';
+import {$$} from '../../utils/Dom';
+import {SearchEndpoint} from '../../rest/SearchEndpoint';
 import {ResultList} from '../ResultList/ResultList';
 import {StreamHighlightUtils} from '../../utils/StreamHighlightUtils';
 import Globalize = require('globalize');
@@ -310,7 +310,7 @@ TemplateHelpers.registerTemplateHelper('highlightStreamHTML', (content: string, 
 });
 
 TemplateHelpers.registerFieldHelper('number', (value: any, options?: any) => {
-  var numberValue = Number(value)
+  var numberValue = Number(value);
   if (Utils.exists(value)) {
     if (_.isString(options)) {
       return StringUtils.htmlEncode(Globalize.format(numberValue, <string>options));
@@ -387,15 +387,15 @@ TemplateHelpers.registerTemplateHelper('excessEmailToggle', (target: HTMLElement
   if ($$(target).hasClass('coveo-emails-excess-collapsed')) {
     _.each($$(target).siblings('.coveo-emails-excess-expanded'), (sibling) => {
       $$(sibling).addClass('coveo-active');
-    })
+    });
   } else if ($$(target).hasClass('coveo-hide-expanded')) {
     $$(target.parentElement).addClass('coveo-inactive');
     _.each($$(target.parentElement).siblings('.coveo-emails-excess-collapsed'), (sibling) => {
       $$(sibling).addClass('coveo-active');
-    })
+    });
   }
   return undefined;
-})
+});
 
 TemplateHelpers.registerFieldHelper('anchor', (href: string, options?: IAnchorUtilsOptions) => {
   return AnchorUtils.buildAnchor(href, options);
@@ -421,7 +421,7 @@ TemplateHelpers.registerTemplateHelper('attrEncode', (value: string) => {
     .replace(/'/g, '&apos;')/* The 4 other predefined entities, required. */
     .replace(/'/g, '&quot;')
     .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
+    .replace(/>/g, '&gt;');
 });
 
 TemplateHelpers.registerTemplateHelper('templateFields', (result: IQueryResult = resolveQueryResult()) => {
@@ -453,21 +453,21 @@ TemplateHelpers.registerTemplateHelper('loadTemplates', (templatesToLoad: { [id:
     if (value == 'default') {
       defaultTmpl = key;
     }
-  })
+  });
   if (defaultTmpl != undefined) {
-    toLoad = _.omit(templatesToLoad, defaultTmpl)
+    toLoad = _.omit(templatesToLoad, defaultTmpl);
   }
   _.each(toLoad, (condition, id?, obj?) => {
     if (!atLeastOneWasLoaded || !once) {
       atLeastOneWasLoaded = atLeastOneWasLoaded || condition;
       ret += TemplateHelpers.getHelper('loadTemplate')(id, condition, data);
     }
-  })
+  });
   if (!atLeastOneWasLoaded && defaultTmpl != undefined) {
     ret += TemplateHelpers.getHelper('loadTemplate')(defaultTmpl, true, data);
   }
   return ret;
-})
+});
 
 var byteMeasure = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB'];
 

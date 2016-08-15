@@ -202,7 +202,7 @@ export class Tab extends Component {
   private handleQueryStateChanged(data: IAttributeChangedEventArg) {
     Assert.exists(data);
     if (!this.disabled && this.isSelected()) {
-      $$(this.element).addClass('coveo-selected')
+      $$(this.element).addClass('coveo-selected');
       this.queryController.setEndpoint(this.options.endpoint);
       this.showAndHideAppropriateElements();
     } else {
@@ -232,7 +232,7 @@ export class Tab extends Component {
     $$(this.root).one(QueryEvents.querySuccess, () => {
       _.each(showElements, (elem) => $$(elem).removeClass('coveo-tab-disabled'));
       _.each(hideElements, (elem) => $$(elem).addClass('coveo-tab-disabled'));
-    })
+    });
   }
 
   private splitListOfTabs(value: string): string[] {
@@ -255,12 +255,12 @@ export class Tab extends Component {
           possibleCmp.disable();
         }
       }
-    }
+    };
 
     togglePossibleComponent(element);
     _.each($$(element).findAll('*'), (el) => {
       togglePossibleComponent(el);
-    })
+    });
   }
 
   public enable() {

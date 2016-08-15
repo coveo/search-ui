@@ -1,10 +1,10 @@
-import {Component} from '../Base/Component'
-import {IComponentBindings} from '../Base/ComponentBindings'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {IQueryResult} from '../../rest/QueryResult'
-import {$$, Dom} from '../../utils/Dom'
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {IQueryResult} from '../../rest/QueryResult';
+import {$$, Dom} from '../../utils/Dom';
 import {Initialization} from '../Base/Initialization';
-import {Utils} from '../../utils/Utils'
+import {Utils} from '../../utils/Utils';
 import {IRatingRequest} from '../../rest/RatingRequest';
 
 export enum RatingValues { Undefined, Lowest, Low, Average, Good, Best };

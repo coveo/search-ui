@@ -1,14 +1,14 @@
-import {Template} from '../Templates/Template'
-import {Component} from '../Base/Component'
-import {IComponentBindings} from '../Base/ComponentBindings'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {DefaultResultAttachmentTemplate} from './DefaultResultAttachmentTemplate'
-import {IQueryResult} from '../../rest/QueryResult'
-import {Utils} from '../../utils/Utils'
-import {QueryUtils} from '../../utils/QueryUtils'
+import {Template} from '../Templates/Template';
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {DefaultResultAttachmentTemplate} from './DefaultResultAttachmentTemplate';
+import {IQueryResult} from '../../rest/QueryResult';
+import {Utils} from '../../utils/Utils';
+import {QueryUtils} from '../../utils/QueryUtils';
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
-import {Assert} from '../../misc/Assert'
-import {$$} from '../../utils/Dom'
+import {Assert} from '../../misc/Assert';
+import {$$} from '../../utils/Dom';
 
 export interface IResultAttachmentsOptions {
   resultTemplate?: Template;
@@ -51,7 +51,7 @@ export class ResultAttachments extends Component {
      * The default value is 5.
      */
     maximumAttachmentLevel: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0 })
-  }
+  };
 
   private attachments: IQueryResult[];
 
@@ -76,7 +76,7 @@ export class ResultAttachments extends Component {
 
   private renderAttachments() {
     _.each(this.attachments, (attachment) => {
-      QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), attachment)
+      QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), attachment);
       var container = this.attachmentLevel > 0 ? this.options.subResultTemplate.instantiateToElement(attachment) : this.options.resultTemplate.instantiateToElement(attachment);
 
       this.autoCreateComponentsInsideResult(container, _.extend({}, attachment, { attachments: [] }));
@@ -89,7 +89,7 @@ export class ResultAttachments extends Component {
         container.appendChild(childAttachmentContainer);
         new ResultAttachments(childAttachmentContainer, this.options, this.bindings, attachment, this.attachmentLevel + 1);
       }
-    })
+    });
   }
 
   private attachmentHasSubAttachment(attachment: IQueryResult) {
@@ -110,7 +110,7 @@ export class ResultAttachments extends Component {
       options: initOptions,
       bindings: this.getBindings(),
       result: result
-    }
+    };
     Initialization.automaticallyCreateComponentsInside(element, initParameters, [ResultAttachments.ID]);
   }
 }

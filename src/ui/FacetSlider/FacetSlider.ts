@@ -1,5 +1,6 @@
 /// <reference path="../Facet/FacetHeader.ts" />
 /// <reference path="../../controllers/FacetSliderQueryController.ts" />
+/// <reference path="../../../lib/d3.d.ts" />
 
 import {ISliderOptions, Slider, IEndSlideEventArgs, IDuringSlideEventArgs, ISliderGraphData} from '../Misc/Slider';
 import {Component} from '../Base/Component';
@@ -21,6 +22,7 @@ import {SliderEvents, IGraphValueSelectedArgs} from '../../events/SliderEvents';
 import {Assert} from '../../misc/Assert';
 import {Utils} from '../../utils/Utils';
 import {Initialization} from '../Base/Initialization';
+import d3 = require('d3');
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;

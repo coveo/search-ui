@@ -1,8 +1,8 @@
-/// <reference path="../../../lib/d3.d.ts" />
 import {$$} from '../../utils/Dom';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {SliderEvents, IGraphValueSelectedArgs} from '../../events/SliderEvents';
 import {Utils} from '../../utils/Utils';
+import d3Scale = require('d3-scale');
 import d3 = require('d3');
 import Globalize = require('globalize');
 
@@ -620,8 +620,8 @@ class SliderGraph {
 
   constructor(public slider: Slider) {
     this.svg = d3.select(slider.element).append('svg').append('g');
-    this.x = d3.scale.ordinal();
-    this.y = d3.scale.linear();
+    this.x = d3Scale.scaleBand();
+    this.y = d3Scale.scaleLinear();
     this.slider.options.graph.margin = Utils.extendDeep({
       top: 20,
       right: 0,
@@ -658,7 +658,7 @@ class SliderGraph {
   }
 
   private setXAndYRange(width: number, height: number) {
-    this.x.rangeBands([0, width], 0.2, 0);
+    this.x.range([0, width], 0.2, 0);
     this.y.range([height - this.slider.options.graph.margin.top, 0]);
   }
 
@@ -713,9 +713,11 @@ class SliderGraph {
   }
 
   private renderGraphBars(bars: D3.UpdateSelection, width: number, height: number, currentSliderValues: number[]) {
+    let range = this.x.range();
+    let barWidth = (range[1] - range[0]) / this.slider.options.steps;
     bars.enter().append('rect')
       .attr('class', this.getFunctionForClass(currentSliderValues))
-      .attr('width', this.x.rangeBand())
+      .attr('width', barWidth)
       .attr('height', this.getFunctionForHeight(height))
       .attr('x', this.getFunctionForX())
       .attr('y', this.getFunctionForY())
@@ -725,10 +727,12 @@ class SliderGraph {
   }
 
   private setGraphBarsTransition(bars: D3.UpdateSelection, height: number, currentSliderValues: number[]) {
+    let range = this.x.range();
+    let barWidth = (range[1] - range[0]) / this.slider.options.steps;
     bars
       .transition()
       .attr('x', this.getFunctionForX())
-      .attr('width', this.x.rangeBand())
+      .attr('width', barWidth)
       .attr('class', this.getFunctionForClass(currentSliderValues))
       .transition()
       .duration(this.slider.options.graph.animationDuration)

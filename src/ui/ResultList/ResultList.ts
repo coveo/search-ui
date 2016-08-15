@@ -55,7 +55,7 @@ export class ResultList extends Component {
      */
     resultContainer: ComponentOptions.buildChildHtmlElementOption({
       defaultFunction: (element: HTMLElement) => {
-        var d = document.createElement('div')
+        var d = document.createElement('div');
         element.appendChild(d);
         return d;
       }
@@ -270,12 +270,12 @@ export class ResultList extends Component {
     var initOptions = this.searchInterface.options.originalOptionsObject;
     var resultComponentBindings: IResultsComponentBindings = _.extend({}, this.getBindings(), {
       resultElement: element
-    })
+    });
     var initParameters: IInitializationParameters = {
       options: initOptions,
       bindings: resultComponentBindings,
       result: result
-    }
+    };
     Initialization.automaticallyCreateComponentsInside(element, initParameters);
   }
 
@@ -350,7 +350,7 @@ export class ResultList extends Component {
           el.scrollIntoView();
         }
       }
-    })
+    });
   }
 
   private handleNewQuery() {
@@ -373,7 +373,7 @@ export class ResultList extends Component {
     return _.chain(this.options.resultTemplate.getFields())
       .compact()
       .unique()
-      .value()
+      .value();
   }
 
   private isCurrentlyFetchingMoreResults(): boolean {
@@ -426,16 +426,16 @@ export class ResultList extends Component {
 
     _.each(showIfQuery, (s: HTMLElement) => {
       $$(s).toggle(hasQuery);
-    })
+    });
     _.each(showIfNoQuery, (s: HTMLElement) => {
       $$(s).toggle(!hasQuery);
-    })
+    });
     _.each(showIfResults, (s: HTMLElement) => {
       $$(s).toggle(hasQuery && hasResults);
-    })
+    });
     _.each(showIfNoResults, (s: HTMLElement) => {
       $$(s).toggle(hasQuery && !hasResults);
-    })
+    });
   }
 
   private showWaitingAnimation() {
@@ -446,7 +446,7 @@ export class ResultList extends Component {
       case 'spinner':
         _.each(this.options.resultContainer.children, (child: HTMLElement) => {
           $$(child).hide();
-        })
+        });
         if ($$(this.options.waitAnimationContainer).find('.coveo-wait-animation') == undefined) {
           this.options.waitAnimationContainer.appendChild(DomUtils.getBasicLoadingAnimation());
         }
@@ -480,7 +480,7 @@ export class ResultList extends Component {
   }
 
   private static getDefaultTemplate(e: HTMLElement): Template {
-    let component = <ResultList>Component.get(e)
+    let component = <ResultList>Component.get(e);
     if (component.searchInterface instanceof Recommendation) {
       return new DefaultRecommendationTemplate();
     }

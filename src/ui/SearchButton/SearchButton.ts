@@ -17,7 +17,7 @@ export interface ISearchButtonOptions {
 export class SearchButton extends Component {
   static ID = 'SearchButton';
 
-  static options: ISearchButtonOptions = {}
+  static options: ISearchButtonOptions = {};
 
   /**
    * Create a new SearchButton on the given element with the given options
