@@ -77,7 +77,7 @@ export class Folding extends Component {
      */
     range: ComponentOptions.buildNumberOption({ defaultValue: 2, min: 0 }),
     /**
-     * Specifies how the top result and its related child results, following the {@link SortCriteria} format
+     * Specifies how the top result and its related child results, following the {@link Sort.sortCriteria} format
      * (<code>date ascending</code>, <code>@somefield ascending</code>, etc.).<br/>
      * The default value is <code>none</code>, which means that results are displayed in the order that the index returned them.
      */
