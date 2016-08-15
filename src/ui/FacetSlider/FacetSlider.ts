@@ -1,6 +1,5 @@
 /// <reference path="../Facet/FacetHeader.ts" />
 /// <reference path="../../controllers/FacetSliderQueryController.ts" />
-/// <reference path="../../../lib/d3.d.ts" />
 
 import {ISliderOptions, Slider, IEndSlideEventArgs, IDuringSlideEventArgs, ISliderGraphData} from '../Misc/Slider';
 import {Component} from '../Base/Component';
