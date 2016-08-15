@@ -1,20 +1,26 @@
 'use strict';
 const gulp = require('gulp');
-const shell = require('gulp-shell');
+const exec = require('gulp-exec');
 const eol = require('gulp-eol');
 const os = require('os');
 const isWindows = os.platform() === 'win32';
 const rename = require('gulp-rename');
 
-gulp.task('compile', ['addEolDependencies', 'deprecatedDependencies'], shell.task([
-  // NODE_ENV=production sets an environement variable that will allow other tasks to know when we are building for production.
-  (isWindows ? 'set ' : '') + 'NODE_ENV=production', 'node node_modules/webpack/bin/webpack.js'
-]))
+gulp.task('compile', ['addEolDependencies', 'deprecatedDependencies'], function() {
 
-gulp.task('minimize', ['addEolDependencies'], shell.task([
-  // -p is a shortcut for --optimze-minimize --optimize-occurence-order
+  // NODE_ENV=production sets an environement variable that will allow other tasks to know when we are building for production.
+  let setEnv = '';
+  if (isWindows) {
+    setEnv += 'set '
+  } 
+  exec(setEnv + 'NODE_ENV=production')
+  exec('node node_modules/webpack/bin/webpack.js')
+})
+
+gulp.task('minimize', ['addEolDependencies'], function() {
+  exec(
   'node node_modules/webpack/bin/webpack.js --minimize'
-]))
+)})
 
 gulp.task('deprecatedDependencies', function () {
   gulp.src('./src/Dependencies.js')

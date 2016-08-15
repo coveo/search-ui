@@ -1,8 +1,7 @@
 const gulp = require('gulp');
 const requireDir = require('require-dir');
-const rmdir = require('gulp-rimraf');
+const rmdir = require('rimraf');
 const runsequence = require('run-sequence');
-const shell = require('gulp-shell');
 
 requireDir('./gulpTasks');
 
@@ -21,6 +20,7 @@ gulp.task('buildLegacy', function (done) {
 });
 
 gulp.task('clean', function (done) {
-  return gulp.src(['./bin', './zip/**.zip'], {read: false})
-      .pipe(rmdir())
+  rmdir('./bin', function(){});
+  rmdir('./zip/**.zip', function(){})
+  done();
 });

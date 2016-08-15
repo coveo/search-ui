@@ -1,6 +1,5 @@
 'use strict';
 const gulp = require('gulp');
-const shell = require('gulp-shell');
 const colors = require('colors');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
