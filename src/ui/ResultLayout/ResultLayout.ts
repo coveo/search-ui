@@ -16,7 +16,7 @@ export interface IResultLayoutOptions {
  * By default, it provides 3 layouts, `list`, `card` and `table`.
  */
 export class ResultLayout extends Component {
-  static ID = 'ResultLayout'
+  static ID = 'ResultLayout';
 
   public static validLayouts = ['list', 'card', 'table'];
 

@@ -21,6 +21,7 @@ import {Utils} from '../../utils/Utils';
 import {DomUtils} from '../../utils/DomUtils';
 import {Recommendation} from '../Recommendation/Recommendation';
 import {DefaultRecommendationTemplate} from '../Templates/DefaultRecommendationTemplate';
+import {ResultLayout} from '../ResultLayout/ResultLayout';
 
 export interface IResultListOptions {
   resultContainer?: HTMLElement;
@@ -35,6 +36,7 @@ export interface IResultListOptions {
   enableInfiniteScrollWaitingAnimation?: boolean;
   fieldsToInclude?: string[];
   autoSelectFieldsToInclude?: boolean;
+  layout?: string;
 }
 
 
@@ -114,15 +116,19 @@ export class ResultList extends Component {
      * Default value is false.<br/>
      * NB: Many interface created by the interface editor will actually explicitly set this option to true.
      */
-    autoSelectFieldsToInclude: ComponentOptions.buildBooleanOption({ defaultValue: false })
+    autoSelectFieldsToInclude: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    layout: ComponentOptions.buildStringOption({
+      defaultValue: 'list',
+      required: true,
+      // TODO : add validator once @fgagnon's pull request is merged.
+      // validator: v => _.contains(ResultLayout.validLayouts, v)
+    })
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
   public currentlyDisplayedResults: IQueryResult[] = [];
   private fetchingMoreResults: Promise<IQueryResults>;
   private reachedTheEndOfResults = false;
-
-  private currentLayout: string;
 
   /**
    * Create a new ResultList.<br/>
@@ -152,7 +158,7 @@ export class ResultList extends Component {
     this.bind.onRootElement<IDuringQueryEventArgs>(QueryEvents.duringQuery, (args: IDuringQueryEventArgs) => this.handleDuringQuery());
     this.bind.onRootElement<IQueryErrorEventArgs>(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError());
 
-    this.bind.onRootElement<IChangeLayoutEventArgs>(ResultListEvents.changeLayout, args => this.handleChangeLayout(args));
+    $$(this.root).on(ResultListEvents.changeLayout, (e, args: IChangeLayoutEventArgs) => this.handleChangeLayout(args));
 
     if (this.options.enableInfiniteScroll) {
       this.bind.on(<HTMLElement>this.options.infiniteScrollContainer, 'scroll', (e: Event) => this.handleScrollOfResultList());
@@ -160,7 +166,7 @@ export class ResultList extends Component {
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, () => this.handlePageChanged());
 
     $$(this.options.resultContainer).addClass('coveo-result-list-container');
-    $$(this.options.resultContainer).addClass(`coveo-${this.currentLayout}-layout`);
+    $$(this.options.resultContainer).addClass(`coveo-${this.options.layout}-layout`);
   }
 
   /**
@@ -272,6 +278,14 @@ export class ResultList extends Component {
     return $$(this.options.resultContainer).findAll('.CoveoResult');
   }
 
+  public enable() {
+    super.enable();
+    this.element.style.display = 'block';
+  }
+  public disable() {
+    super.disable();
+    this.element.style.display = 'none';
+  }
 
   protected autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult) {
     Assert.exists(element);
@@ -379,9 +393,7 @@ export class ResultList extends Component {
   }
 
   private handleChangeLayout(args: IChangeLayoutEventArgs) {
-    $$(this.options.resultContainer).removeClass(`coveo-${this.currentLayout}-layout`);
-    $$(this.options.resultContainer).addClass(`coveo-${args.layout}-layout`);
-    this.currentLayout = args.layout;
+    args.layout === this.options.layout ? this.enable() : this.disable();
   }
 
   private getAutoSelectedFieldsToInclude() {
