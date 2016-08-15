@@ -70,9 +70,9 @@ export class FieldValue extends Component {
      */
     htmlValue: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
-     * Specifies if the field value is to be split at each {@link separator}.
+     * Specifies if the field value is to be split at each {@link FieldValue.options.separator}.
      * This is useful for splitting groups by a facet field.<br/>
-     * The values displayed are split by the {@link displaySeparator}.<br/>
+     * The values displayed are split by the {@link FieldValue.options.displaySeparator}.<br/>
      * The default value is <code>false</code>.
      */
     splitValues: ComponentOptions.buildBooleanOption({ defaultValue: false }),
