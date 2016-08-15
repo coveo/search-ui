@@ -1,5 +1,4 @@
 const gulp = require('gulp');
-const tsc = require('gulp-tsc');
 const TestServer = require('karma').Server;
 const express = require('express');
 const path = require('path');
