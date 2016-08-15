@@ -394,6 +394,7 @@ export class ResultList extends Component {
 
   private handleChangeLayout(args: IChangeLayoutEventArgs) {
     args.layout === this.options.layout ? this.enable() : this.disable();
+    this.queryController.executeQuery(); 1
   }
 
   private getAutoSelectedFieldsToInclude() {
