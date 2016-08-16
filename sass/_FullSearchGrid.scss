@@ -41,6 +41,7 @@ $border-box-sizing: false;
 
 .coveo-results-header {
   @include display(flex);
+  @include justify-content(space-between);
   padding-top: 10px;
   min-height: 35px;
   overflow: hidden;
@@ -54,7 +55,7 @@ $border-box-sizing: false;
     padding-right: 10px;
     border-right: 1px solid $color-light-grey;
     &.coveo-result-layout-hidden {
-      visibility: hidden;
+      display: none;
     }
   }
   .coveo-sort-section {
