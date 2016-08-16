@@ -1,6 +1,7 @@
-/// <reference path="../../../Test.ts" />
+import {DatePicker} from '../../../../src/ui/AdvancedSearch/Form/DatePicker';
+import {DateUtils} from '../../../../src/utils/DateUtils';
 
-module Coveo {
+export function DatePickerTest() {
   describe('DatePicker', () => {
     let picker: DatePicker;
 

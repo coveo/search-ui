@@ -1,6 +1,7 @@
-/// <reference path="../../../Test.ts" />
+import {NumericSpinner} from '../../../../src/ui/AdvancedSearch/Form/NumericSpinner';
+import {$$} from '../../../../src/utils/Dom';
 
-module Coveo {
+export function NumericSpinnerTest() {
   describe('NumericSpinner', () => {
     let spinner: NumericSpinner;
 

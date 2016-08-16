@@ -1,6 +1,10 @@
-/// <reference path="../../../Test.ts" />
+import {DateInput} from '../../../../src/ui/AdvancedSearch/DateInput/DateInput';
+import {QueryBuilder} from '../../../../src/ui/Base/QueryBuilder';
+import {ExpressionBuilder} from '../../../../src/ui/Base/ExpressionBuilder';
+import {$$} from '../../../../src/utils/Dom';
+import * as Mock from '../../../MockEnvironment';
 
-module Coveo {
+export function DateInputTest() {
   describe('DateInput', () => {
     let input: DateInput;
 

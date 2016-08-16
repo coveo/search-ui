@@ -1,6 +1,7 @@
-/// <reference path="../../../Test.ts" />
+import {Dropdown} from '../../../../src/ui/AdvancedSearch/Form/Dropdown';
+import {$$} from '../../../../src/utils/Dom';
 
-module Coveo {
+export function DropdownTest() {
   describe('Dropdown', () => {
     let dropdown: Dropdown;
     let values: string[];

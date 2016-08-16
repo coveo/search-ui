@@ -188,7 +188,7 @@ export class AdvancedSearch extends Component {
   private bindEvents() {
     this.bind.onRootElement(SettingsEvents.settingsPopulateMenu, (args: ISettingsPopulateMenuArgs) => {
       args.menuData.push({
-        text: l('AdvancedSearch_Panel'),
+        text: l('AdvancedSearch'),
         className: 'coveo-advanced-search',
         onOpen: () => this.open(),
         onClose: () => this.close()

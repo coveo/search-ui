@@ -1,6 +1,6 @@
-/// <reference path="../../../Test.ts" />
+import {AdvancedFieldInput} from '../../../../src/ui/AdvancedSearch/DocumentInput/AdvancedFieldInput';
 
-module Coveo {
+export function AdvancedFieldInputTest() {
   describe('AdvancedFieldInput', () => {
     let input: AdvancedFieldInput;
     let fieldName: string;

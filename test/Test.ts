@@ -31,22 +31,6 @@ PromisesShimTest();
 
 import {ModelTest} from './models/ModelTest';
 ModelTest();
-/// <reference path="ui/AdvancedSearch/AdvancedSearchTest.ts" />
-/// <reference path="ui/AdvancedSearch/Form/TextInputTest.ts" />
-/// <reference path="ui/AdvancedSearch/Form/NumericSpinnerTest.ts" />
-/// <reference path="ui/AdvancedSearch/Form/DropdownTest.ts" />
-/// <reference path="ui/AdvancedSearch/Form/DatePickerTest.ts" />
-/// <reference path="ui/AdvancedSearch/KeywordsInput/KeywordsInputTest.ts" />
-/// <reference path="ui/AdvancedSearch/KeywordsInput/AnyKeywordsInputTest.ts" />
-/// <reference path="ui/AdvancedSearch/KeywordsInput/ExactKeywordsInputTest.ts" />
-/// <reference path="ui/AdvancedSearch/KeywordsInput/NoneKeywordsInputTest.ts" />
-/// <reference path="ui/AdvancedSearch/DateInput/DateInputTest.ts" />
-/// <reference path="ui/AdvancedSearch/DateInput/BetweenDateInputTest.ts" />
-/// <reference path="ui/AdvancedSearch/DateInput/InTheLastDateInputTest.ts" />
-/// <reference path="ui/AdvancedSearch/DocumentInput/DocumentInputTest.ts" />
-/// <reference path="ui/AdvancedSearch/DocumentInput/SimpleFieldInputTest.ts" />
-/// <reference path="ui/AdvancedSearch/DocumentInput/AdvancedFieldInputTest.ts" />
-/// <reference path="ui/AdvancedSearch/DocumentInput/SizeInputTest.ts" />
 
 import {QueryStateModelTest} from './models/QueryStateModelTest';
 QueryStateModelTest();
@@ -65,6 +49,54 @@ HistoryControllerTest();
 
 import {QueryControllerTest} from './controllers/QueryControllerTest';
 QueryControllerTest();
+
+import {AdvancedSearchTest} from './ui/AdvancedSearch/AdvancedSearchTest';
+AdvancedSearchTest();
+
+import {TextInputTest} from './ui/AdvancedSearch/Form/TextInputTest';
+TextInputTest();
+
+import {NumericSpinnerTest} from './ui/AdvancedSearch/Form/NumericSpinnerTest';
+NumericSpinnerTest();
+
+import {DropdownTest} from './ui/AdvancedSearch/Form/DropdownTest';
+DropdownTest();
+
+import {DatePickerTest} from './ui/AdvancedSearch/Form/DatePickerTest';
+DatePickerTest();
+
+import {KeywordsInputTest} from './ui/AdvancedSearch/KeywordsInput/KeywordsInputTest';
+KeywordsInputTest();
+
+import {AnyKeywordsInputTest} from './ui/AdvancedSearch/KeywordsInput/AnyKeywordsInputTest';
+AnyKeywordsInputTest();
+
+import {ExactKeywordsInputTest} from './ui/AdvancedSearch/KeywordsInput/ExactKeywordsInputTest';
+ExactKeywordsInputTest();
+
+import {NoneKeywordsInputTest} from './ui/AdvancedSearch/KeywordsInput/NoneKeywordsInputTest';
+NoneKeywordsInputTest();
+
+import {DateInputTest} from './ui/AdvancedSearch/DateInput/DateInputTest';
+DateInputTest();
+
+import {BetweenDateInputTest} from './ui/AdvancedSearch/DateInput/BetweenDateInputTest';
+BetweenDateInputTest();
+
+import {InTheLastDateInputTest} from './ui/AdvancedSearch/DateInput/InTheLastDateInputTest';
+InTheLastDateInputTest();
+
+import {DocumentInputTest} from './ui/AdvancedSearch/DocumentInput/DocumentInputTest';
+DocumentInputTest();
+
+import {SimpleFieldInputTest} from './ui/AdvancedSearch/DocumentInput/SimpleFieldInputTest';
+SimpleFieldInputTest();
+
+import {AdvancedFieldInputTest} from './ui/AdvancedSearch/DocumentInput/AdvancedFieldInputTest';
+AdvancedFieldInputTest();
+
+import {SizeInputTest} from './ui/AdvancedSearch/DocumentInput/SizeInputTest';
+SizeInputTest();
 
 import {AggregateTest} from './ui/AggregateTest';
 AggregateTest();

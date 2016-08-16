@@ -1,6 +1,6 @@
-/// <reference path="../../../Test.ts" />
+import {NoneKeywordsInput} from '../../../../src/ui/AdvancedSearch/KeywordsInput/NoneKeywordsInput';
 
-module Coveo {
+export function NoneKeywordsInputTest() {
   describe('NoneKeywordsInput', () => {
     let input: NoneKeywordsInput;
 

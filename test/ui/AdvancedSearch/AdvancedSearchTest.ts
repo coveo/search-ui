@@ -1,6 +1,8 @@
-/// <reference path="../../Test.ts" />
+import {AdvancedSearch, IAdvancedSearchOptions} from '../../../src/ui/AdvancedSearch/AdvancedSearch';
+import {$$} from '../../../src/utils/Dom';
+import * as Mock from '../../MockEnvironment';
 
-module Coveo {
+export function AdvancedSearchTest() {
   describe('AdvancedSearch', () => {
     var test: Mock.IBasicComponentSetup<AdvancedSearch>;
 

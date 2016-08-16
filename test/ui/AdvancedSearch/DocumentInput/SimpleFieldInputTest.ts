@@ -1,6 +1,8 @@
-/// <reference path="../../../Test.ts" />
+import {SimpleFieldInput} from '../../../../src/ui/AdvancedSearch/DocumentInput/SimpleFieldInput';
+import {SearchEndpoint} from '../../../../src/rest/SearchEndpoint';
+import * as Mock from '../../../MockEnvironment';
 
-module Coveo {
+export function SimpleFieldInputTest() {
   describe('SimpleFieldInput', () => {
     let input: SimpleFieldInput;
     let endpoint: SearchEndpoint;

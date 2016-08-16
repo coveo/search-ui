@@ -1,6 +1,7 @@
-/// <reference path="../../../Test.ts" />
+import {BetweenDateInput} from '../../../../src/ui/AdvancedSearch/DateInput/BetweenDateInput';
+import {$$} from '../../../../src/utils/Dom';
 
-module Coveo {
+export function BetweenDateInputTest() {
   describe('BetweenDateInput', () => {
     let input: BetweenDateInput;
 

@@ -1,6 +1,7 @@
-/// <reference path="../../../Test.ts" />
+import {TextInput} from '../../../../src/ui/AdvancedSearch/Form/TextInput';
+import {$$} from '../../../../src/utils/Dom';
 
-module Coveo {
+export function TextInputTest() {
   describe('TextInput', () => {
     let textInput: TextInput;
 

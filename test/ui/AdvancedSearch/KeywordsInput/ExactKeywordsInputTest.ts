@@ -1,6 +1,6 @@
-/// <reference path="../../../Test.ts" />
+import {ExactKeywordsInput} from '../../../../src/ui/AdvancedSearch/KeywordsInput/ExactKeywordsInput';
 
-module Coveo {
+export function ExactKeywordsInputTest() {
   describe('ExactKeywordsInput', () => {
     let input: ExactKeywordsInput;
 

@@ -1,6 +1,6 @@
-/// <reference path="../../../Test.ts" />
+import {SizeInput} from '../../../../src/ui/AdvancedSearch/DocumentInput/SizeInput';
 
-module Coveo {
+export function SizeInputTest() {
   describe('SizeInput', () => {
     let input: SizeInput;
 

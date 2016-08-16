@@ -1,6 +1,8 @@
-/// <reference path="../../../Test.ts" />
+import {KeywordsInput} from '../../../../src/ui/AdvancedSearch/KeywordsInput/KeywordsInput';
+import {QueryStateModel} from '../../../../src/models/QueryStateModel';
+import * as Mock from '../../../MockEnvironment';
 
-module Coveo {
+export function KeywordsInputTest() {
   describe('KeywordsInput', () => {
     let input: KeywordsInput;
 
