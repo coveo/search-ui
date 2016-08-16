@@ -109,7 +109,7 @@ Initialization.registerNamedMethod('executeQuery', (element: HTMLElement) => {
  * @param args
  * @returns {any}
  */
-export function state(element: HTMLElement, args: any[]): any {
+export function state(element: HTMLElement, ...args: any[]): any {
   Assert.exists(element);
   var model = <QueryStateModel>Component.resolveBinding(element, QueryStateModel);
   return setState(model, args);
