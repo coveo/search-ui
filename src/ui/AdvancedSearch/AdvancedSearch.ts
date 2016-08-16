@@ -71,14 +71,12 @@ export class AdvancedSearch extends Component {
   public executeAdvancedSearch() {
     this.updateQueryStateModel();
     this.queryController.executeQuery();
-    this.close();
   }
 
   private buildComponent() {
     this.buildTitle();
     this.buildCloseButton();
     this.buildContent();
-    this.buildExecuteQueryButton();
     $$(this.element).hide();
   }
 
@@ -113,15 +111,6 @@ export class AdvancedSearch extends Component {
     })
 
     $$(this.element).append(component.el);
-  }
-  s
-  private buildExecuteQueryButton() {
-    let button = $$('button', { className: 'coveo-button', id: 'coveo-advanced-search-execute-query' });
-    button.text(l('AdvancedSearch'));
-    button.on('click', () => {
-      this.executeAdvancedSearch();
-    })
-    this.element.appendChild(button.el);
   }
 
   private open() {
