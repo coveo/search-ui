@@ -53,6 +53,9 @@ $border-box-sizing: false;
     margin-left: auto;
     padding-right: 10px;
     border-right: 1px solid $color-light-grey;
+    &.coveo-result-layout-hidden {
+      visibility: hidden;
+    }
   }
   .coveo-sort-section {
     @include display(flex);
@@ -73,12 +76,6 @@ $border-box-sizing: false;
     .coveo-sort-section {
       text-align: left;
       margin: 10px 0px 10px 0px;
-    }
-    .coveo-layout-section {
-      display: none;
-    }
-    .coveo-result-layout-section {
-      display: none;
     }
   }
 }
