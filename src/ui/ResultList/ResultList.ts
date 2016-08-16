@@ -17,6 +17,7 @@ import {Initialization, IInitializationParameters} from '../Base/Initialization'
 import {Defer} from '../../misc/Defer';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {ResultListEvents, IDisplayedNewResultEventArgs, IChangeLayoutEventArgs} from '../../events/ResultListEvents';
+import {ResultLayoutEvents, IResultLayoutPopulateArgs} from '../../events/ResultLayoutEvents';
 import {Utils} from '../../utils/Utils';
 import {DomUtils} from '../../utils/DomUtils';
 import {Recommendation} from '../Recommendation/Recommendation';
@@ -168,6 +169,8 @@ export class ResultList extends Component {
 
     $$(this.options.resultContainer).addClass('coveo-result-list-container');
     $$(this.options.resultContainer).addClass(`coveo-${this.options.layout}-layout`);
+
+    setTimeout(() => $$(this.root).trigger(ResultLayoutEvents.resultLayoutPopulate, { layout: this.options.layout }));
   }
 
   /**
