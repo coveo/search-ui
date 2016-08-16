@@ -1,6 +1,7 @@
+declare function require(name: string);
 import {$$} from '../../../utils/Dom';
 import {DateUtils} from '../../../utils/DateUtils';
-import {Pikaday} from '../../../ExternalModulesShim';
+let Pikaday = require('pikaday');
 
 export class DatePicker {
 

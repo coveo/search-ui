@@ -14,12 +14,12 @@ export class AdvancedFieldInput extends DocumentInput {
   }
 
   public build(): HTMLElement {
-    let document = $$(super.build());
+    let fieldInput = $$(super.build());
     this.mode = new Dropdown(['Contains', 'DoesNotContain', 'Matches'], this.inputName)
-    document.append(this.mode.getElement());
+    fieldInput.append(this.mode.getElement());
     this.input = new TextInput();
-    document.append(this.input.getElement());
-    this.element = document.el;
+    fieldInput.append(this.input.getElement());
+    this.element = fieldInput.el;
     return this.element;
   }
 

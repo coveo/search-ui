@@ -1,8 +1,9 @@
 import {KeywordsInput} from './KeywordsInput';
+import {l} from '../../../strings/Strings';
 
 export class NoneKeywordsInput extends KeywordsInput {
   constructor() {
-    super('AdvancedSearchNone')
+    super(l('NoneOfTheseWords'))
   }
 
   public getValue(): string {

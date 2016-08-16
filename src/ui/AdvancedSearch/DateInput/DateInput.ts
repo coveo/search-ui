@@ -15,10 +15,10 @@ export class DateInput implements IAdvancedSearchInput {
     let radioOption = $$('div', { className: 'coveo-radio' })
     let radio = $$('input', { type: 'radio', name: 'coveo-advanced-search-date', id: this.inputName })
     let label = $$('label', { className: 'coveo-advanced-search-label', for: this.inputName })
-    label.text(l(this.inputName + 'Label'));
+    label.text(this.inputName);
 
     radio.on('change', () => {
-      this.desactivateAllInputs();
+      this.deactivateAllInputs();
       this.activateSelectedInput();
     })
 
@@ -52,7 +52,7 @@ export class DateInput implements IAdvancedSearchInput {
     return <HTMLInputElement>$$(this.element).find('input');
   }
 
-  private desactivateAllInputs() {
+  private deactivateAllInputs() {
     let elements = $$(this.element.parentElement).findAll('fieldset');
     _.each(elements, (element) => {
       (<HTMLInputElement>element).disabled = true;

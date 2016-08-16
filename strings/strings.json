@@ -5063,77 +5063,53 @@
     "en": "Advanced Search",
     "fr": "Recherche Avancée"
   },
-  "AdvancedSearch_Panel": {
-    "en": "Advanced Search",
-    "fr": "Recherche Avancée"
-  },
-  "AdvancedSearchKeywordsSectionTitle": {
+  "Keywords": {
     "en": "Keywords",
     "fr": "Mot-clés"
   },
-  "AdvancedSearchAllLabel": {
+  "AllTheseWords": {
     "en": "All these words",
     "fr": "Tous ces mots"
   },
-  "AdvancedSearchExactLabel": {
+  "ExactPhrase": {
     "en": "This exact phrase",
     "fr": "Cette phrase exacte"
   },
-  "AdvancedSearchAnyLabel": {
+  "AnyOfTheseWords": {
     "en": "Any of these words",
     "fr": "N'importe lequel de ces mots"
   },
-  "AdvancedSearchNoneLabel": {
+  "NoneOfTheseWords": {
     "en": "None of these words",
     "fr": "Aucun de ces mots"
   },
-  "AdvancedSearchDateSectionTitle": {
-    "en": "Date",
-    "fr": "Date"
-  },
-  "AdvancedSearchAnytimeLabel": {
+  "Anytime": {
     "en": "Anytime",
     "fr": "N'importe quand"
   },
-  "AdvancedSearchInTheLastLabel": {
+  "InTheLast": {
     "en": "In the last",
     "fr": "Dans les derniers"
   },
-  "AdvancedSearchDays": {
+  "Days": {
     "en": "days",
     "fr": "jours"
   },
-  "AdvancedSearchMonths": {
+  "Months": {
     "en": "months",
     "fr": "mois"
   },
-  "AdvancedSearchBetweenLabel": {
+  "Between": {
     "en": "Between",
     "fr": "Entre"
   },
-  "AdvancedSearchDocumentSectionTitle": {
-    "en": "Document",
-    "fr": "Document"
-  },
-  "FileTypeLabel": {
-    "en": "Type",
-    "fr": "Type"
-  },
-  "LanguageLabel": {
+  "Language": {
     "en": "Language",
     "fr": "Langage"
   },
-  "SizeLabel": {
+  "Size": {
     "en": "Size",
     "fr": "Taille"
-  },
-  "TitleLabel": {
-    "en": "Title",
-    "fr": "Titre"
-  },
-  "AuthorLabel": {
-    "en": "Author",
-    "fr": "Auteur"
   },
   "AtLeast": {
     "en": "at least",

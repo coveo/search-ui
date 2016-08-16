@@ -14,7 +14,7 @@ export class NumericSpinner {
   }
 
   public getIntValue(): number {
-    return this.getSpinnerInput().value ? parseInt(this.getSpinnerInput().value) : this.min;
+    return this.getSpinnerInput().value ? parseInt(this.getSpinnerInput().value, 10) : this.min;
   }
 
   public getFloatValue(): number {

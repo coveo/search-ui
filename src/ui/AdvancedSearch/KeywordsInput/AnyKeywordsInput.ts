@@ -1,8 +1,9 @@
 import {KeywordsInput} from './KeywordsInput';
+import {l} from '../../../strings/Strings';
 
 export class AnyKeywordsInput extends KeywordsInput {
   constructor() {
-    super('AdvancedSearchAny')
+    super(l('AnyOfTheseWords'))
   }
 
   public getValue(): string {

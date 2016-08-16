@@ -1,8 +1,9 @@
 import {DateInput} from './DateInput';
+import {l} from '../../../strings/Strings';
 
 export class AnytimeDateInput extends DateInput {
   constructor() {
-    super('AdvancedSearchAnytime');
+    super(l('Anytime'));
   }
 
   public build(): HTMLElement {

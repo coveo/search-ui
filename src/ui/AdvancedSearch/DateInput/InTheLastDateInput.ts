@@ -1,5 +1,6 @@
 import {DateInput} from './DateInput';
 import {$$} from '../../../utils/Dom';
+import {l} from '../../../strings/Strings';
 import {Dropdown} from '../Form/Dropdown';
 import {NumericSpinner} from '../Form/NumericSpinner';
 import {DateUtils} from '../../../utils/DateUtils';
@@ -10,7 +11,7 @@ export class InTheLastDateInput extends DateInput {
   public spinner: NumericSpinner;
 
   constructor() {
-    super('AdvancedSearchInTheLast');
+    super(l('InTheLast'));
   }
 
   public build(): HTMLElement {

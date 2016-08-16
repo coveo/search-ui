@@ -9,11 +9,11 @@ export class DocumentInput implements IAdvancedSearchInput {
   }
 
   public build(): HTMLElement {
-    let document = $$('div', { className: 'coveo-advanced-search-document-input-section' });
+    let documentInput = $$('div', { className: 'coveo-advanced-search-document-input-section' });
     let label = $$('span', { className: 'coveo-advanced-search-label' });
-    label.text(l(this.inputName + 'Label'));
-    document.append(label.el);
-    return document.el;
+    label.text(this.inputName);
+    documentInput.append(label.el);
+    return documentInput.el;
   }
 
   public getValue(): string {

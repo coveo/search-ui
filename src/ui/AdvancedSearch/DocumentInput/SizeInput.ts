@@ -19,14 +19,14 @@ export class SizeInput extends DocumentInput {
   }
 
   public build(): HTMLElement {
-    let document = $$(super.build());
+    let sizeInput = $$(super.build());
     this.modeSelect = new Dropdown(SizeInput.modes, 'coveo-size-input-mode');
-    document.append(this.modeSelect.getElement());
+    sizeInput.append(this.modeSelect.getElement());
     this.sizeInput = new NumericSpinner();
-    document.append(this.sizeInput.getElement());
+    sizeInput.append(this.sizeInput.getElement());
     this.sizeSelect = new Dropdown(SizeInput.sizes, 'coveo-size-input-select');
-    document.append(this.sizeSelect.getElement());
-    this.element = document.el;
+    sizeInput.append(this.sizeSelect.getElement());
+    this.element = sizeInput.el;
     return this.element;
   }
 

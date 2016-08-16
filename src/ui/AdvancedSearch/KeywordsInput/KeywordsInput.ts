@@ -11,7 +11,7 @@ export class KeywordsInput implements IAdvancedSearchInput {
   }
 
   public build(): HTMLElement {
-    this.input = new TextInput(l(this.inputName + 'Label'));
+    this.input = new TextInput(this.inputName);
     return this.input.getElement();
   }
 

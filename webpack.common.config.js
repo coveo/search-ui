@@ -27,7 +27,7 @@ module.exports = {
       'jQuery': __dirname + '/test/lib/jquery.js'
     }
   },
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   module: {
     loaders: [
       {test: /\.ts$/, loader: 'ts-loader'},

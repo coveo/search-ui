@@ -15,11 +15,11 @@ export class SimpleFieldInput extends DocumentInput {
   }
 
   public build(): HTMLElement {
-    let document = $$(super.build());
+    let fieldInput = $$(super.build());
     this.buildFieldSelect().then(() => {
-      document.append(this.dropDown.getElement());
+      fieldInput.append(this.dropDown.getElement());
     })
-    this.element = document.el;
+    this.element = fieldInput.el;
     return this.element;
   }
 

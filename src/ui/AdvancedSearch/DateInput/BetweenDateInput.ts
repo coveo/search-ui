@@ -9,7 +9,7 @@ export class BetweenDateInput extends DateInput {
   public secondDatePicker: DatePicker = new DatePicker();
 
   constructor() {
-    super('AdvancedSearchBetween');
+    super(l('Between'));
   }
 
   public build(): HTMLElement {

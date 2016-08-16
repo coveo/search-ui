@@ -133,7 +133,7 @@ export class AdvancedSearch extends Component {
   }
 
   private getKeywordsSection(): IAdvancedSearchSection {
-    let sectionName = 'Keywords';
+    let sectionName = l('Keywords');
     let keywordsInputs = [];
     keywordsInputs.push(new AllKeywordsInput());
     keywordsInputs.push(new ExactKeywordsInput());
@@ -143,7 +143,7 @@ export class AdvancedSearch extends Component {
   }
 
   private getDateSection(): IAdvancedSearchSection {
-    let sectionName = 'Date';
+    let sectionName = l('Date');
     let dateInputs = [];
     dateInputs.push(new AnytimeDateInput());
     dateInputs.push(new InTheLastDateInput());
@@ -152,20 +152,20 @@ export class AdvancedSearch extends Component {
   }
 
   private getDocumentSection(): IAdvancedSearchSection {
-    let sectionName = 'Document';
+    let sectionName = l('Document');
     let documentInputs = [];
-    documentInputs.push(new SimpleFieldInput('FileType', '@filetype', this.queryController.getEndpoint()));
-    documentInputs.push(new SimpleFieldInput('Language', '@language', this.queryController.getEndpoint()));
+    documentInputs.push(new SimpleFieldInput(l('FileType'), '@filetype', this.queryController.getEndpoint()));
+    documentInputs.push(new SimpleFieldInput(l('Language'), '@language', this.queryController.getEndpoint()));
     documentInputs.push(new SizeInput());
-    documentInputs.push(new AdvancedFieldInput('Title', '@title'));
-    documentInputs.push(new AdvancedFieldInput('Author', '@author'));
+    documentInputs.push(new AdvancedFieldInput(l('Title'), '@title'));
+    documentInputs.push(new AdvancedFieldInput(l('Author'), '@author'));
     return { name: sectionName, inputs: documentInputs };
   }
 
   private buildSection(section: IAdvancedSearchSection): HTMLElement {
     let sectionHTML = $$('div', { className: 'coveo-advanced-search-section coveo-advanced-search-' + section.name.toLowerCase() + '-section' });
     let title = $$('div', { className: 'coveo-advanced-search-section-title' });
-    title.text(l('AdvancedSearch' + section.name + 'SectionTitle'));
+    title.text(section.name);
     sectionHTML.append(title.el);
 
     this.inputs = _.union(this.inputs, section.inputs);
