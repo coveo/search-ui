@@ -3,9 +3,10 @@ import {InitializationEvents} from '../../events/InitializationEvents';
 import {Component} from '../Base/Component';
 import {Tab} from '../Tab/Tab';
 import {Facet} from '../Facet/Facet';
+import {FacetSlider} from '../FacetSlider/FacetSlider';
 import {ResponsiveFacets} from './ResponsiveFacets';
 import {IComponentDefinition} from '../Base/Component';
-import _ = require('underscore');
+import {SearchInterface} from '../SearchInterface/SearchInterface';
 
 export interface IResponsiveComponentConstructor {
   new (root: Dom, ID: string): IResponsiveComponent;
@@ -23,12 +24,12 @@ export class ResponsiveComponentsManager {
 
   public static MEDIUM_MOBILE_WIDTH = 640;
 
-  private static componentManagers: Array<ResponsiveComponentsManager> = [];
+  private static componentManagers: ResponsiveComponentsManager[] = [];
   private static remainingComponentInitializations: number = 0;
 
   private coveoRoot: Dom;
   private resizeListener;
-  private responsiveComponents: Array<IResponsiveComponent> = [];
+  private responsiveComponents: IResponsiveComponent[] = [];
   private tabSection: Dom;
   private searchBoxElement: HTMLElement;
   private isTabActivated: boolean = false;
@@ -37,23 +38,26 @@ export class ResponsiveComponentsManager {
 
   // Register takes a class and will instantiate it after framework initialization has completed.
   public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component: IComponentDefinition) {
+    let searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, true);
+    if (searchInterface instanceof SearchInterface && searchInterface.options.enableAutomaticResponsiveMode) {
+      root.on(InitializationEvents.afterInitialization, () => {
+        let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el == componentManager.coveoRoot.el);
+        if (responsiveComponentsManager) {
+          responsiveComponentsManager.register(responsiveComponentConstructor, root, ID, component);
+        } else {
+          responsiveComponentsManager = new ResponsiveComponentsManager(root);
+          this.componentManagers.push(responsiveComponentsManager);
+          responsiveComponentsManager.register(responsiveComponentConstructor, root, ID, component);
+        }
 
-    root.on(InitializationEvents.afterInitialization, () => {
-      let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el == componentManager.coveoRoot.el);
-      if (responsiveComponentsManager) {
-        responsiveComponentsManager.register(responsiveComponentConstructor, root, ID, component);
-      } else {
-        responsiveComponentsManager = new ResponsiveComponentsManager(root);
-        this.componentManagers.push(responsiveComponentsManager);
-        responsiveComponentsManager.register(responsiveComponentConstructor, root, ID, component);
-      }
+        this.remainingComponentInitializations--;
+        if (this.remainingComponentInitializations == 0) {
+          this.resizeAllComponentsManager();
+        }
+      });
+      this.remainingComponentInitializations++;
+    }
 
-      this.remainingComponentInitializations--;
-      if (this.remainingComponentInitializations == 0) {
-        this.resizeAllComponentsManager();
-      }
-    });
-    this.remainingComponentInitializations++;
   }
 
   private static resizeAllComponentsManager() {
@@ -63,13 +67,14 @@ export class ResponsiveComponentsManager {
   }
 
   constructor(root: Dom) {
+    let searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, true);
     this.coveoRoot = root;
     this.searchBoxElement = this.getSearchBoxElement();
     this.resizeListener = _.debounce(() => {
       for (let i = 0; i < this.responsiveComponents.length; i++) {
         if (this.responsiveComponents[i].needSmallMode()) {
-          if (!this.coveoRoot.hasClass('coveo-small-search-interface')) {
-            this.coveoRoot.addClass('coveo-small-search-interface');
+          if (!searchInterface.isSmallInterface()) {
+            searchInterface.setSmallInterface();
             this.changeToSmallMode();
           }
           this.handleResizeEvent();
@@ -77,8 +82,8 @@ export class ResponsiveComponentsManager {
         }
       }
 
-      if (this.coveoRoot.hasClass('coveo-small-search-interface')) {
-        this.coveoRoot.removeClass('coveo-small-search-interface');
+      if (searchInterface.isSmallInterface()) {
+        searchInterface.unsetSmallInterface();
         this.changeToLargeMode();
       }
       this.handleResizeEvent();
@@ -90,7 +95,7 @@ export class ResponsiveComponentsManager {
   public register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component) {
 
     if (this.isFacet(ID) && this.isActivated(ID)) {
-      this.responsiveFacets.registerFacet(component);
+      this.responsiveFacets.registerComponent(component);
     }
 
     if (!this.isActivated(ID)) {
@@ -104,7 +109,7 @@ export class ResponsiveComponentsManager {
 
       if (this.isFacet(ID)) {
         this.responsiveFacets = <ResponsiveFacets>responsiveComponent;
-        this.responsiveFacets.registerFacet(component)
+        this.responsiveFacets.registerComponent(component)
         this.isFacetActivated = true;
         if (!this.isTabActivated) {
           this.tabSection = $$('div', { className: 'coveo-tab-section' });
@@ -119,7 +124,9 @@ export class ResponsiveComponentsManager {
   }
 
   private changeToSmallMode(): void {
-    this.tabSection && this.tabSection.insertAfter(this.searchBoxElement);
+    if (this.searchBoxElement) {
+      this.tabSection && this.tabSection.insertAfter(this.searchBoxElement);
+    }
     _.each(this.responsiveComponents, responsiveComponent => {
       responsiveComponent.changeToSmallMode();
     });
@@ -139,7 +146,7 @@ export class ResponsiveComponentsManager {
   }
 
   private isFacet(ID: string): boolean {
-    return ID == Facet.ID;
+    return ID == Facet.ID || ID == FacetSlider.ID;
   }
 
   private isTabs(ID: string): boolean {

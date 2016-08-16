@@ -16,6 +16,8 @@ import {ISubscription, ISubscriptionItemRequest, SUBSCRIPTION_TYPE, ISubscriptio
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
 import {$$, Dom} from '../../utils/Dom';
+import {ModalBox} from '../../ExternalModulesShim';
+
 export interface ISearchAlertsOptions {
   enableManagePanel?: boolean;
   enableFollowQuery?: boolean;
@@ -25,7 +27,7 @@ export interface ISearchAlertsOptions {
 }
 
 /**
- * This component allows the user to manage his search alerts and to follow queries by adding menu items in the @link{Settings} component.
+ * This component allows the user to manage his search alerts and to follow queries by adding menu items in the {@link Settings} component.
  * By following queries, the user will receive emails informing him when the results of the query have changed.
  */
 export class SearchAlerts extends Component {
@@ -37,12 +39,12 @@ export class SearchAlerts extends Component {
    */
   static options: ISearchAlertsOptions = {
     /**
-     * Specifies whether to add a menu item in the @link{Settings} component to allow the user to manage his search alerts.
+     * Specifies whether to add a menu item in the {@link Settings} component to allow the user to manage his search alerts.
      * The default value is true.
      */
     enableManagePanel: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
-     * Specifies whether to add a menu item in the @link{Settings} component to allow the user to follow the last query.
+     * Specifies whether to add a menu item in the {@link Settings} component to allow the user to follow the last query.
      * The default value is true.
      */
     enableFollowQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
@@ -66,7 +68,7 @@ export class SearchAlerts extends Component {
   private modal: Coveo.ModalBox.ModalBox;
 
   /**
-   * A reference to a @link{SearchAlertsMessage} component used to display message.
+   * A reference to a {@link SearchAlertsMessage} component used to display message.
    * This attribute is set only when the enableMessage option is true.
    */
   public message: SearchAlertsMessage;
@@ -169,7 +171,7 @@ export class SearchAlerts extends Component {
         container.el.innerHTML = '<div class=\'coveo-subscriptions-panel-fail\'>' + l('SearchAlerts_Fail') + '</div>';
       })
       .finally(() => {
-        this.modal = Coveo.ModalBox.open(container.el, {
+        this.modal = ModalBox.open(container.el, {
           titleClose: true,
           overlayClose: true,
           title: title.text(),

@@ -1,0 +1,23 @@
+.CoveoResultsPerPage {
+  margin: -10px 15px 0 15px;
+  display: inline-block;
+  float: right;
+}
+
+.coveo-results-per-page-text {
+  padding-left: 0;
+  color: $color-light-grey;
+}
+
+.coveo-results-per-page-list {
+  @extend .coveo-pager-list;
+}
+
+.coveo-results-per-page-list-item {
+  @extend .coveo-pager-list-item;
+  padding: 4px;
+}
+
+.coveo-results-per-page-no-results {
+  display: none;
+}

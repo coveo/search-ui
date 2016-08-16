@@ -1,5 +1,4 @@
 /// <reference path='../../../node_modules/modal-box/bin/ModalBox.d.ts' />
-
 import {Component} from '../Base/Component';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {Assert} from '../../misc/Assert';
@@ -12,6 +11,7 @@ import {DomUtils} from '../../utils/DomUtils';
 import {$$} from '../../utils/Dom';
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
+import {ModalBox} from '../../ExternalModulesShim';
 
 export interface IAuthenticationProviderOptions {
   name?: string;
@@ -170,19 +170,21 @@ export class AuthenticationProvider extends Component {
     $$(iframe).hide();
     document.body.appendChild(iframe);
 
-    return Coveo.ModalBox.open(popup, {
+    ModalBox.open(popup, {
       title: l('Authenticating', this.options.caption)
     });
+    return ModalBox;
   }
 
   private createPopupForVisibleIFrame(iframe: HTMLElement): Coveo.ModalBox.ModalBox {
     $$(iframe).addClass('coveo-authentication-iframe');
     let popup = $$('div', {}, iframe).el;
 
-    return Coveo.ModalBox.open(popup, {
+    ModalBox.open(popup, {
       title: l('Authenticating', this.options.caption),
       className: 'coveo-authentication-popup'
     });
+    return ModalBox;
   }
 
   private getAuthenticationProviderUriForRedirect(): string {

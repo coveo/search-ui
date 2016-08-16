@@ -1,0 +1,28 @@
+export * from '../src/BaseModules';
+export * from '../src/MiscModules';
+export * from '../src/RestModules';
+export * from '../src/EventsModules';
+export * from '../src/UtilsModules';
+export * from '../src/ControllersModules';
+export * from '../src/ModelsModules';
+export * from '../src/UIBaseModules';
+export * from '../src/TemplatesModules';
+
+{{#each components}}
+export { {{this}} } from '../src/ui/{{this}}/{{this}}.ts';
+{{/each}}
+
+// Webpack output a library target with a temporary name.
+// This is to allow end user to put CoveoJsSearch.Dependencie.js before or after the main CoveoJsSearch.js, without breaking
+// This code swap the current module to the "real" Coveo variable.
+import _ = require('underscore');
+let swapVar = () => {
+if (window['Coveo'] == undefined) {
+window['Coveo'] = this;
+} else {
+_.each(_.keys(this), (k) => {
+window['Coveo'][k] = this[k];
+})
+}
+}
+swapVar();

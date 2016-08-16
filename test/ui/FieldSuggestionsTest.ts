@@ -1,17 +1,30 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {FieldSuggestions} from '../../src/ui/FieldSuggestions/FieldSuggestions';
+import {IFieldSuggestionsOptions} from '../../src/ui/FieldSuggestions/FieldSuggestions';
+import {Simulate} from '../Simulate';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import {JQuery} from '../JQueryModule';
 
-module Coveo {
+export function FieldSuggestionsTest() {
   describe('FieldSuggestions', () => {
     let test: Mock.IBasicComponentSetup<FieldSuggestions>;
 
     beforeEach(() => {
+      // In phantom js there is a bug with CustomEvent('click'), which is needed to for those tests.
+      // So, use jquery for event in phantom js
+      if (Simulate.isPhantomJs()) {
+        window['jQuery'] = JQuery;
+      }
+
       test = Mock.optionsComponentSetup<FieldSuggestions, IFieldSuggestionsOptions>(FieldSuggestions, {
         field: '@foobar'
       });
+
     })
 
     afterEach(() => {
       test = null;
+      window['jQuery'] = null;
     })
 
     it('should do a request on the endpoint', () => {

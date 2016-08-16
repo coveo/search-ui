@@ -1,9 +1,15 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {Sort} from '../../src/ui/Sort/Sort';
+import {Dom} from '../../src/utils/Dom';
+import {$$} from '../../src/utils/Dom';
+import {QueryEvents} from '../../src/events/QueryEvents';
+import {IQuerySuccessEventArgs} from '../../src/events/QueryEvents';
+import {SortCriteria} from '../../src/ui/Sort/SortCriteria';
+import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
+import {QueryStateModel} from '../../src/models/QueryStateModel';
 
-module Coveo {
-
+export function SortTest() {
   describe('Sort', function () {
-
     var test: Mock.IBasicComponentSetup<Sort>;
 
     function buildSort(sortCriteria: string) {
@@ -13,7 +19,8 @@ module Coveo {
         'data-sort-criteria': sortCriteria
       })
       return Mock.advancedComponentSetup<Sort>(Sort, <Mock.AdvancedComponentSetupOptions>{
-        element: elem
+        element: elem,
+        cmpOptions: { caption: 'foobarde' }
       })
     }
 
@@ -62,6 +69,11 @@ module Coveo {
       expect($$(test.cmp.element).hasClass('coveo-sort-hidden')).toBe(false);
     })
 
+    it('should set a \'hidden\' CSS class when there is a query error', function () {
+      $$(test.env.root).trigger(QueryEvents.queryError);
+      expect($$(test.cmp.element).hasClass('coveo-sort-hidden')).toBe(true);
+    })
+
     describe('with a toggle', function () {
       beforeEach(function () {
         test = buildSort('date ascending,date descending');
@@ -94,7 +106,7 @@ module Coveo {
         function buildSort(sortCriteria: string) {
           var elem = document.createElement('div');
           elem.dataset['sortCriteria'] = sortCriteria;
-          return Mock.advancedComponentSetup<Sort>(Sort, new Mock.AdvancedComponentSetupOptions(elem, undefined, (builder: Mock.MockEnvironmentBuilder) => {
+          return Mock.advancedComponentSetup<Sort>(Sort, new Mock.AdvancedComponentSetupOptions(elem, { caption: 'foobarde' }, (builder: Mock.MockEnvironmentBuilder) => {
             return builder.withLiveQueryStateModel();
           }))
         }
@@ -198,15 +210,6 @@ module Coveo {
       expect(test.env.element.innerText).toEqual('foo');
     })
 
-    it('should left its body intact if data-caption is not defined', function () {
-      test = Mock.advancedComponentSetup<Sort>(Sort, <Mock.AdvancedComponentSetupOptions>{
-        element: $$('div', {
-          'data-sort-criteria': 'relevancy'
-        }, 'baz').el
-      })
-      expect(test.env.element.innerText).toEqual('baz');
-    })
-
     it('should override the body with data-caption if both are defined', function () {
       test = Mock.advancedComponentSetup<Sort>(Sort, <Mock.AdvancedComponentSetupOptions>{
         element: Dom.createElement('div', {
@@ -236,6 +239,18 @@ module Coveo {
       test = buildSort('date descending   ,    date ascending');
       expect(test.cmp.options.sortCriteria[0].toString()).toEqual('date descending');
       expect(test.cmp.options.sortCriteria[1].toString()).toEqual('date ascending');
+    })
+
+    it('should update when enabled', () => {
+      test = buildSort('date descending, date ascending');
+      (<jasmine.Spy>test.env.queryStateModel.get).and.returnValue('date descending');
+
+      test.cmp.select('ascending');
+      expect(test.cmp.getCurrentCriteria().toString()).toEqual('date ascending');
+
+      test.cmp.enable();
+
+      expect(test.cmp.getCurrentCriteria().toString()).toEqual('date descending');
     })
   })
 }

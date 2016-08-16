@@ -1,9 +1,19 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {Omnibox} from '../../src/ui/Omnibox/Omnibox';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import {IOmniboxOptions} from '../../src/ui/Omnibox/Omnibox';
+import {Simulate} from '../Simulate';
+import {$$} from '../../src/utils/Dom';
+import {JQuery} from '../JQueryModule';
 
-module Coveo {
+export function OmniboxTest() {
   describe('Omnibox', () => {
     var test: Mock.IBasicComponentSetup<Omnibox>;
     beforeEach(() => {
+      // Thanks phantom js for bad native event support
+      if (Simulate.isPhantomJs()) {
+        window['jQuery'] = JQuery;
+      }
       test = Mock.basicComponentSetup<Omnibox>(Omnibox);
     })
     afterEach(() => {
@@ -165,6 +175,20 @@ module Coveo {
         expect(test.env.searchEndpoint.listFieldValues).toHaveBeenCalled();
       })
 
+      it('listOfFields should show specified fields when field addon is enabled', (done) => {
+        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          enableFieldAddon: true,
+          listOfFields: ['@field', '@another_field']
+        })
+
+        test.cmp.setText('@f');
+        let suggestions = test.cmp.magicBox.getSuggestions();
+        (<Promise<any>>suggestions[0]).then((fields) => {
+          expect(fields[0].text).toEqual('@field');
+          done();
+        })
+      })
+
       it('enableTopQueryAddon should get suggestion from reveal', () => {
         let element = $$('div');
         element.addClass('CoveoOmnibox');
@@ -242,6 +266,22 @@ module Coveo {
         }))
       })
 
+      it('triggerQueryOnClear should trigger a query on clear', () => {
+        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          triggerQueryOnClear: true
+        })
+        test.cmp.magicBox.clear();
+        expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+      })
+
+      it('triggerQueryOnClear should not trigger a query on clear if false', () => {
+        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+          triggerQueryOnClear: false
+        })
+        test.cmp.magicBox.clear();
+        expect(test.cmp.queryController.executeQuery).not.toHaveBeenCalled();
+      })
+
     })
 
     describe('with live query state model', () => {
@@ -265,6 +305,5 @@ module Coveo {
         expect(test.cmp.getText()).toEqual('trololo');
       })
     })
-
   })
 }

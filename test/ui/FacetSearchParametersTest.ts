@@ -1,5 +1,13 @@
-/// <reference path="../Test.ts" />
-module Coveo {
+import {Facet} from '../../src/ui/Facet/Facet';
+import * as Mock from '../MockEnvironment';
+import {FacetSearchParameters} from '../../src/ui/Facet/FacetSearchParameters';
+import {FacetValue} from '../../src/ui/Facet/FacetValues';
+import {$$} from '../../src/utils/Dom';
+import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
+import {QueryController} from '../../src/controllers/QueryController';
+import {FacetQueryController} from '../../src/controllers/FacetQueryController';
+
+export function FacetSearchParametersTest() {
   describe('FacetSearchParameters', function () {
     var mockFacet: Facet;
 
@@ -123,6 +131,25 @@ module Coveo {
         expect(params.getQuery().partialMatch).toBe(true);
         expect(params.getQuery().q).toBe('@asdf');
         expect(params.getQuery().cq).toBe('@qwerty');
+      })
+
+      it('should use the same group by parameters as the facet', () => {
+        var spy = jasmine.createSpy('spy');
+        var builder = new QueryBuilder();
+
+        mockFacet.queryController = <QueryController>{};
+        mockFacet.queryController.getLastQuery = spy;
+        spy.and.returnValue(builder.build());
+
+        mockFacet.options.sortCriteria = 'alphaascending';
+        mockFacet.facetQueryController = <FacetQueryController>{};
+        mockFacet.facetQueryController.expressionToUseForFacetSearch = '@asdf';
+        mockFacet.facetQueryController.constantExpressionToUseForFacetSearch = '@qwerty';
+
+        var params = new FacetSearchParameters(mockFacet);
+        expect(params.getQuery().groupBy[0].sortCriteria).toBe('alphaascending');
+        mockFacet.options.sortCriteria = 'occurences';
+        expect(params.getQuery().groupBy[0].sortCriteria).toBe('occurences');
       })
     })
   })

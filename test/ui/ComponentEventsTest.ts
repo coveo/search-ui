@@ -1,14 +1,17 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {NoopComponent} from '../NoopComponent';
+import {registerCustomMatcher} from '../CustomMatchers';
+import {$$} from '../../src/utils/Dom';
 
-module Coveo {
+export function ComponentEventsTest() {
   describe('ComponentEvent', () => {
 
-    var test: Mock.IBasicComponentSetup<Components.NoopComponent>;
+    var test: Mock.IBasicComponentSetup<NoopComponent>;
     var spy: jasmine.Spy;
 
     beforeEach(function () {
       registerCustomMatcher();
-      test = Mock.basicComponentSetup<Components.NoopComponent>(Components.NoopComponent);
+      test = Mock.basicComponentSetup<NoopComponent>(NoopComponent);
       spy = jasmine.createSpy('spy');
     });
 
@@ -20,9 +23,6 @@ module Coveo {
     it('should execute handler if the component is enabled', function () {
       test.cmp.enable();
       test.cmp.bind.onRootElement('foo', spy);
-      test.cmp.bind.onRootElement('foo', function () {
-        console.log(arguments)
-      });
       $$(test.env.root).trigger('foo');
       expect(spy).toHaveBeenCalled();
       $$(test.env.root).trigger('foo', { bar: 'baz' });
@@ -76,13 +76,6 @@ module Coveo {
 
       test.cmp.bind.trigger(test.env.root, 'foo', { bar: 'baz' });
       expect(spy).not.eventHandlerToHaveBeenCalledWith({ bar: 'baz' });
-    });
-
-    it('trigger and bindOnRoot should work correctly with one another', function () {
-      test.cmp.enable();
-      test.cmp.bind.onRoot('foo', spy);
-      test.cmp.bind.trigger(test.env.root, 'foo');
-      expect(spy).toHaveBeenCalled();
     });
   })
 }

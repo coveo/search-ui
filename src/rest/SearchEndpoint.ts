@@ -23,7 +23,6 @@ import {QueryUtils} from '../utils/QueryUtils';
 import {QueryError} from '../rest/QueryError';
 import {Utils} from '../utils/Utils';
 import {Promise} from 'es6-promise';
-import _ = require('underscore');
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;
@@ -687,6 +686,8 @@ export class SearchEndpoint implements ISearchEndpoint {
     return uri;
   }
 
+  // see https://github.com/palantir/tslint/issues/1421
+  // tslint:disable-next-line:no-unused-variable
   private buildAccessToken(tokenKey: string): string[] {
     let queryString: string[] = [];
 
@@ -815,13 +816,6 @@ export class SearchEndpoint implements ISearchEndpoint {
         this.logger.error('Failed to renew access token', e);
         return e;
       })
-  }
-
-  private addTrailingSlash(uri: string) {
-    if (!this.hasTrailingSlash(uri)) {
-      uri += '/';
-    }
-    return uri;
   }
 
   private removeTrailingSlash(uri: string) {

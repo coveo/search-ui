@@ -3,10 +3,8 @@ import {$$} from '../../utils/Dom';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {SliderEvents, IGraphValueSelectedArgs} from '../../events/SliderEvents';
 import {Utils} from '../../utils/Utils';
-import {InitializationEvents} from '../../events/InitializationEvents';
 import d3 = require('d3');
-
-declare var Globalize;
+import Globalize = require('globalize');
 
 export interface IStartSlideEventArgs {
   slider: Slider;
@@ -88,7 +86,7 @@ export class Slider {
     }
 
     if (this.options.graph) {
-      this.sliderGraph = new SliderGraph(this, root);
+      this.sliderGraph = new SliderGraph(this);
     }
 
     this.sliderLine = new SliderLine(this);
@@ -118,6 +116,7 @@ export class Slider {
       this.sliderRange.setBoundary();
       this.sliderLine.setActiveWidth(this.sliderRange.firstButton, this.sliderRange.secondButton);
     } else {
+      this.setButtonBoundary();
       this.sliderLine.setActiveWidth(this.sliderButton);
     }
     if (this.options.graph) {
@@ -137,8 +136,7 @@ export class Slider {
       } else {
         this.sliderButton.setValue(values[1]);
       }
-      this.sliderButton.leftBoundary = 0;
-      this.sliderButton.rightBoundary = this.element.clientWidth;
+      this.setButtonBoundary();
       this.sliderLine.setActiveWidth(this.sliderButton);
     }
     this.displayCaption();
@@ -197,7 +195,14 @@ export class Slider {
   }
 
   public drawGraph(data?: ISliderGraphData[]) {
-    this.sliderGraph.draw(data);
+    if (this.sliderGraph) {
+      this.sliderGraph.draw(data);
+    }
+  }
+
+  private setButtonBoundary() {
+    this.sliderButton.leftBoundary = 0;
+    this.sliderButton.rightBoundary = this.element.clientWidth;
   }
 
   private displayCaption() {
@@ -389,8 +394,8 @@ export class SliderButton {
 
   private handleMoving(e: MouseEvent) {
     if (this.isMouseDown) {
-      this.updatePosition(e);
       this.slider.onMoving();
+      this.updatePosition(e);
       this.handleButtonNearEnd();
       $$(this.element).trigger(SliderEvents.duringSlide, <IDuringSlideEventArgs>{
         button: this,
@@ -612,9 +617,8 @@ class SliderGraph {
   private y: any;
   private oldData: ISliderGraphData[];
   private tooltip: HTMLElement;
-  private resize: (...args: any[]) => void;
 
-  constructor(public slider: Slider, root: HTMLElement) {
+  constructor(public slider: Slider) {
     this.svg = d3.select(slider.element).append('svg').append('g');
     this.x = d3.scale.ordinal();
     this.y = d3.scale.linear();
@@ -625,12 +629,6 @@ class SliderGraph {
       bottom: 20
     }, this.slider.options.graph.margin || {});
     this.slider.options.graph.animationDuration = this.slider.options.graph.animationDuration || 500;
-
-    this.resize = () => {
-      this.draw();
-    };
-    window.addEventListener('resize', this.resize);
-    $$(root).on(InitializationEvents.nuke, this.handleNuke);
 
     this.tooltip = $$('div', {
       className: 'coveo-slider-tooltip'
@@ -657,10 +655,6 @@ class SliderGraph {
       this.setGraphBarsTransition(bars, height, currentSliderValues);
       this.oldData = data;
     }
-  }
-
-  private handleNuke() {
-    window.removeEventListener('resize', this.resize);
   }
 
   private setXAndYRange(width: number, height: number) {

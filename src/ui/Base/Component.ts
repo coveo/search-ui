@@ -1,7 +1,5 @@
 import {Assert} from '../../misc/Assert';
-import {Logger} from '../../misc/Logger';
 import {IQueryResult} from '../../rest/QueryResult';
-import {DebugEvents} from '../../events/DebugEvents';
 import {Utils} from '../../utils/Utils';
 import {$$, Dom} from '../../utils/Dom';
 import {QueryStateModel} from '../../models/QueryStateModel';
@@ -302,22 +300,9 @@ export class ComponentEvents {
     }
   }
 
-  //
-  /**
-   * Bind on the "root" of the Component. The root is typically the {@link SearchInterface}<br/>
-   * Bind an event using jQuery.
-   * TODO Replace with onRootElement when jQuery is finally removed
-   * @param event The event for which to register an handler
-   * @param handler The function to execute when the event is triggered
-   */
-  public onRoot<T>(event: string, handler: (e: JQueryEventObject, args: T) => any) {
-    this.on($$(this.owner.root), event, handler);
-  }
-
   /**
    * Bind on the "root" of the Component. The root is typically the {@link SearchInterface}<br/>
    * Bind an event using native javascript code.
-   * TODO Replace with onRoot when jQuery is finally removed
    * @param event The event for which to register an handler
    * @param handler The function to execute when the event is triggered
    */
@@ -329,7 +314,6 @@ export class ComponentEvents {
    * Bind on the "root" of the Component. The root is typically the {@link SearchInterface}<br/>
    * Bind an event using native javascript code.
    * The handler will execute only ONE time.
-   * TODO Replace with onRoot when jQuery is finally removed
    * @param event The event for which to register an handler
    * @param handler The function to execute when the event is triggered
    */

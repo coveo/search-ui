@@ -8,8 +8,7 @@ import {l} from '../../strings/Strings';
 import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
 import {Initialization} from '../Base/Initialization';
 import {QueryStateModel} from '../../models/QueryStateModel';
-
-declare const Globalize;
+import Globalize = require('globalize');
 
 export interface IQuerySummaryOptions {
   enableSearchTips?: boolean;

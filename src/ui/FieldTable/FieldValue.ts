@@ -11,7 +11,6 @@ import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
 import {Utils} from '../../utils/Utils'
 import {Facet} from '../Facet/Facet'
 import {$$} from '../../utils/Dom'
-import _ = require('underscore');
 
 export interface IFieldValueOptions {
   field?: string;
@@ -57,7 +56,7 @@ export class FieldValue extends Component {
      * Specifies the field to be displayed by the FieldValue.<br/>
      * This field is required.
      */
-    field: ComponentOptions.buildFieldOption({ required: true }),
+    field: ComponentOptions.buildFieldOption({ defaultValue: '@field', required: true }),
     /**
      * Specifies the facet to be toggled when the component is clicked on.<br/>
      * When no value is specified, the value of the <code>field</code> option is used.<br/>
@@ -71,9 +70,9 @@ export class FieldValue extends Component {
      */
     htmlValue: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
-     * Specifies if the field value is to be split at each {@link separator}.
+     * Specifies if the field value is to be split at each {@link FieldValue.options.separator}.
      * This is useful for splitting groups by a facet field.<br/>
-     * The values displayed are split by the {@link displaySeparator}.<br/>
+     * The values displayed are split by the {@link FieldValue.options.displaySeparator}.<br/>
      * The default value is <code>false</code>.
      */
     splitValues: ComponentOptions.buildBooleanOption({ defaultValue: false }),
@@ -154,8 +153,6 @@ export class FieldValue extends Component {
 
     this.result = this.result || this.resolveResult();
     Assert.exists(this.result);
-
-    this.options.field = this.options.field || '@field';
 
     let loadedValueFromComponent = this.getValue();
     if (loadedValueFromComponent == null) {
@@ -286,15 +283,6 @@ export class FieldValue extends Component {
         $$(element).addClass('coveo-selected');
       }
       $$(element).addClass('coveo-clickable');
-    }
-  }
-
-  private static initSimpleOptions() {
-    let options = {};
-    for (let key in FieldValue.options) {
-      if (key != 'helperOptions') {
-        options[key] = FieldValue.options[key];
-      }
     }
   }
 

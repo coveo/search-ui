@@ -1,4 +1,11 @@
-module Coveo {
+import * as Mock from '../MockEnvironment';
+import {Facet} from '../../src/ui/Facet/Facet';
+import {FacetSettings} from '../../src/ui/Facet/FacetSettings';
+import {IFacetOptions} from '../../src/ui/Facet/Facet';
+import {registerCustomMatcher} from '../CustomMatchers';
+import {$$} from '../../src/utils/Dom';
+
+export function FacetSettingsTest() {
   describe('FacetSettings', function () {
     var facet: Facet;
     var facetSettings: FacetSettings;
@@ -48,6 +55,7 @@ module Coveo {
     it('allow to open and close the popup', function () {
       facetSettings = new FacetSettings(['foo', 'bar'], facet);
       var built = facetSettings.build();
+      facet.root.appendChild(built);
       expect($$(facetSettings.facet.root).find('.coveo-facet-settings-popup')).toBeNull();
       facetSettings.open();
       expect($$(facetSettings.facet.root).find('.coveo-facet-settings-popup')).not.toBeNull();

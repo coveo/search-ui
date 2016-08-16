@@ -9,7 +9,6 @@ import {IIndexFieldValue} from '../../rest/FieldValue';
 import {IListFieldValuesRequest} from '../../rest/ListFieldValuesRequest';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import {Initialization} from '../Base/Initialization';
-import {IOmniboxDataRow} from '../Omnibox/OmniboxInterface';
 import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
 import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom';
@@ -44,6 +43,9 @@ export class FieldSuggestions extends Component {
      * The default value is `51`
      */
     omniboxZIndex: ComponentOptions.buildNumberOption({ defaultValue: 51, min: 0 }),
+    /**
+     * Specifies the title in the Omnibox for this group of suggestions. This option is not available when using the Lightning Friendly Theme, which is the default design.
+     */
     headerTitle: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('SuggestedResults') }),
     /**
      * Specifies the number of suggestions that should be rendered in the omnibox.<br/>

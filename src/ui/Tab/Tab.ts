@@ -10,9 +10,7 @@ import {SearchEndpoint} from '../../rest/SearchEndpoint';
 import {Initialization} from '../Base/Initialization';
 import {Utils} from '../../utils/Utils';
 import {Assert} from '../../misc/Assert';
-import {DeviceUtils} from '../../utils/DeviceUtils';
 import {$$} from '../../utils/Dom';
-import '../../../sass/_Tab.scss';
 
 export interface ITabOptions {
   expression?: string;

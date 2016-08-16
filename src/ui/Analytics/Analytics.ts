@@ -9,7 +9,6 @@ import {QueryEvents, IBuildingQueryEventArgs, IQueryErrorEventArgs} from '../../
 import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
 import {$$} from '../../utils/Dom';
 import {Model, IAttributeChangedEventArg} from '../../models/Model';
-import {BaseComponent} from '../Base/BaseComponent';
 import {IAnalyticsActionCause, IAnalyticsDocumentViewMeta} from '../Analytics/AnalyticsActionListMeta';
 import {IQueryResult} from '../../rest/QueryResult';
 import {Utils} from '../../utils/Utils';
@@ -17,6 +16,7 @@ import {NoopAnalyticsClient} from '../Analytics/NoopAnalyticsClient';
 import {LiveAnalyticsClient} from './LiveAnalyticsClient';
 import {MultiAnalyticsClient} from './MultiAnalyticsClient';
 import {IAnalyticsQueryErrorMeta, analyticsActionCauseList} from './AnalyticsActionListMeta';
+import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {Recommendation} from '../Recommendation/Recommendation';
 import {RecommendationAnalyticsClient} from './RecommendationAnalyticsClient';
 
@@ -274,6 +274,9 @@ export class Analytics extends Component {
     let selector = Component.computeSelectorForType(Analytics.ID);
     let found: HTMLElement[] = [];
     found = found.concat($$(element).findAll(selector));
+    if (!(Component.get(element, SearchInterface) instanceof Recommendation)) {
+      found = this.ignoreElementsInsideRecommendationInterface(found);
+    }
     found.push($$(element).closest(Component.computeCssClassName(Analytics)));
     if ($$(element).is(selector)) {
       found.push(element);
@@ -287,6 +290,12 @@ export class Analytics extends Component {
     } else {
       return new NoopAnalyticsClient();
     }
+  }
+
+  private static ignoreElementsInsideRecommendationInterface(found: HTMLElement[]): HTMLElement[] {
+    return _.filter(found, (element) => {
+      return $$(element).closest(Component.computeCssClassName(Recommendation)) === undefined;
+    });
   }
 
   private static getClient(element: HTMLElement, options: IAnalyticsOptions, bindings: IComponentBindings): IAnalyticsClient {

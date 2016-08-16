@@ -1,6 +1,14 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {SearchEndpoint} from '../../src/rest/SearchEndpoint';
+import {$$} from '../../src/utils/Dom';
+import {Querybox} from '../../src/ui/Querybox/Querybox';
+import {Component} from '../../src/ui/Base/Component';
+import {Initialization} from '../../src/ui/Base/Initialization';
+import {Facet} from '../../src/ui/Facet/Facet';
+import {Pager} from '../../src/ui/Pager/Pager';
+declare var coveoanalytics;
 
-module Coveo {
+export function InitializationTest() {
   describe('Initialization', function () {
     var root: HTMLElement;
     var endpoint: SearchEndpoint;
@@ -34,6 +42,24 @@ module Coveo {
       expect(Component.get(queryBox) instanceof Querybox).toBe(true);
     })
 
+    it('should not initialize a search interface twice', function () {
+      expect(Component.get(queryBox) instanceof Querybox).toBe(false);
+      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+        Initialization.initSearchInterface(root, searchInterfaceOptions);
+      });
+      expect(Component.get(queryBox) instanceof Querybox).toBe(true);
+
+
+      let newQueryBox = document.createElement('div');
+      $$(newQueryBox).addClass('CoveoQuerybox');
+      root.appendChild(newQueryBox);
+      expect(Component.get(newQueryBox) instanceof Querybox).toBe(false);
+      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+        Initialization.initSearchInterface(root, searchInterfaceOptions);
+      });
+      expect(Component.get(newQueryBox) instanceof Querybox).toBe(false);
+    })
+
     it('allows to register default options ahead of init call, and merge them', function () {
       Initialization.registerDefaultOptions(root, {
         Querybox: {
@@ -62,11 +88,6 @@ module Coveo {
       var dummyElem = document.createElement('div');
       $$(dummyElem).addClass('CoveoFooBar');
       root.appendChild(dummyElem);
-
-      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        Initialization.initSearchInterface(root, searchInterfaceOptions);
-      });
-      expect(dummyCmp).not.toHaveBeenCalled();
 
       Initialization.registerAutoCreateComponent(dummyCmp);
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {

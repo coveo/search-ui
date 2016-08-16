@@ -17,7 +17,7 @@ import {Defer} from '../../misc/Defer'
 import {$$} from '../../utils/Dom'
 
 /**
- * This component is intended to be placed inside a @link{ResultTemplate}, which itself is used inside a ResultList component. 
+ * This component is intended to be placed inside a {@link ResultTemplate}, which itself is used inside a ResultList component.
  * The ResultLink component automatically transforms a search result title into a clickable link that points to the original document.
  */
 export class ResultLink extends Component {
@@ -61,7 +61,7 @@ export class ResultLink extends Component {
      * It is possible to reference fields from the associated result:
      * Ex: '${clickUri}?id=${title}' will generate something like 'http://uri.com?id=documentTitle'
      * Or from the global scope:
-     * Ex: '${window.location.hostname}/{Coveo.QueryEvents.buildingQuery} will generate something like 'localhost/buildingQuery'
+     * Ex: '${window.location.hostname}/{Foo.Bar} will generate something like 'localhost/fooBar'
      * This option will override the field option.
      * Default is undefined
      */
@@ -262,7 +262,7 @@ export class ResultLink extends Component {
   }
 
   private readFromObject(object: Object, key: string): string {
-    if (key.indexOf('.') !== -1) {
+    if (object && key.indexOf('.') !== -1) {
       let newKey = key.substring(key.indexOf('.') + 1);
       key = key.substring(0, key.indexOf('.'));
       return this.readFromObject(object[key], newKey);

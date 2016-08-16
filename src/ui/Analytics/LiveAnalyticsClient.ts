@@ -8,7 +8,6 @@ import {Logger} from '../../misc/Logger';
 import {IAnalyticsActionCause, analyticsActionCauseList} from './AnalyticsActionListMeta';
 import {IQueryResult} from '../../rest/QueryResult';
 import {ITopQueries} from '../../rest/TopQueries';
-
 import {IChangeableAnalyticsMetaObject, IChangeableAnalyticsDataObject, IChangeAnalyticsCustomDataEventArgs} from '../../events/AnalyticsEvents';
 import {Defer} from '../../misc/Defer';
 import {$$} from '../../utils/Dom';
@@ -21,8 +20,6 @@ import {ICustomEvent} from '../../rest/CustomEvent';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import {Component} from '../Base/Component';
 import {version} from '../../misc/Version';
-import _ = require('underscore');
-
 
 export class LiveAnalyticsClient implements IAnalyticsClient {
   public isContextual: boolean = false;
@@ -321,7 +318,6 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       actionCause: event.actionCause
     }, changeableAnalyticsDataObject);
     $$(this.rootElement).trigger(AnalyticsEvents.changeAnalyticsCustomData, args);
-
 
     event.language = args.language;
     event.originLevel1 = args.originLevel1;

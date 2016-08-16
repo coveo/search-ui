@@ -1,6 +1,6 @@
-/// <reference path="../Test.ts" />
+import {ExpressionBuilder} from '../../src/ui/Base/ExpressionBuilder';
 
-module Coveo {
+export function ExpressionBuilderTest() {
   describe('ExpressionBuilder', function () {
     var expressionBuilder: ExpressionBuilder;
     beforeEach(function () {
@@ -21,12 +21,12 @@ module Coveo {
       expressionBuilder.addFieldExpression('@foo', '==', ['bar1', 'bar2', 'bar3']);
       expect(expressionBuilder.build()).toBe('@foo==(bar1,bar2,bar3)');
       expressionBuilder.addFieldExpression('@foo2', '<>', ['bar 1', 'bar 2', 'bar 3']);
-      expect(expressionBuilder.build()).toBe('(@foo==(bar1,bar2,bar3)) (@foo2<>(\'bar 1\',\'bar 2\',\'bar 3\'))');
+      expect(expressionBuilder.build()).toBe('(@foo==(bar1,bar2,bar3)) (@foo2<>("bar 1","bar 2","bar 3"))');
     })
 
     it('can add a field not equal expression', function () {
       expressionBuilder.addFieldNotEqualExpression('@foo', ['bar 1', 'bar2', 'bar3']);
-      expect(expressionBuilder.build()).toBe('(NOT @foo==(\'bar 1\',bar2,bar3))');
+      expect(expressionBuilder.build()).toBe('(NOT @foo==("bar 1",bar2,bar3))');
     })
 
     it('can be built while empty, and return undefined', function () {

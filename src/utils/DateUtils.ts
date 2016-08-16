@@ -2,8 +2,7 @@ import {Options} from '../misc/Options';
 import {Utils} from './Utils';
 import {l} from '../strings/Strings';
 import {TimeSpan} from './TimeSpanUtils';
-
-declare var Globalize;
+import Globalize = require('globalize');
 
 export interface IDateToStringOptions {
   now?: Date;

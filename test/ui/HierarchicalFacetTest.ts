@@ -1,5 +1,13 @@
-/// <reference path="../Test.ts" />
-module Coveo {
+import * as Mock from '../MockEnvironment';
+import {HierarchicalFacet} from '../../src/ui/HierarchicalFacet/HierarchicalFacet';
+import {IGroupByResult} from '../../src/rest/GroupByResult';
+import {IHierarchicalFacetOptions} from '../../src/ui/HierarchicalFacet/HierarchicalFacet';
+import {FakeResults} from '../Fake';
+import {FacetValue} from '../../src/ui/Facet/FacetValues';
+import {$$} from '../../src/utils/Dom';
+import {Simulate} from '../Simulate';
+
+export function HierarchicalFacetTest() {
   describe('HierarchicalFacet', function () {
     let test: Mock.IBasicComponentSetup<HierarchicalFacet>;
     let results: IGroupByResult;
@@ -165,6 +173,26 @@ module Coveo {
       test.cmp.selectValue('<script>alert(\'foo\')</script>');
       var breadcrumb = Simulate.breadcrumb(test.env);
       expect(breadcrumb[0].element.innerHTML).toContain('&lt;script&gt;');
+    })
+
+    it('should be able to collapse', () => {
+      doQuery();
+      let facetValues = $$(test.cmp.element).findAll('.coveo-facet-value');
+      expect(facetValues[0].style.display).toEqual('');
+      expect($$(facetValues[0]).hasClass('coveo-inactive')).toBe(false);
+      expect(facetValues[1].style.display).toEqual('');
+      expect($$(facetValues[1]).hasClass('coveo-inactive')).toBe(true);
+    })
+
+    it('should show the correct number of results', () => {
+      test.cmp.numberOfValuesToShow = 1;
+      doQuery();
+      let facetValues = $$(test.cmp.element).findAll('.coveo-facet-value');
+      expect($$(facetValues[0]).hasClass('coveo-inactive')).toBe(false);
+      expect($$(facetValues[1]).hasClass('coveo-inactive')).toBe(true);
+      expect($$(facetValues[4]).hasClass('coveo-has-childs')).toBe(true);
+      expect($$(facetValues[4]).hasClass('coveo-inactive')).toBe(true);
+      expect($$(facetValues[5]).hasClass('coveo-inactive')).toBe(true);
     })
   })
 }

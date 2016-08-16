@@ -3,7 +3,6 @@ import {IQueryResult} from '../rest/QueryResult';
 import {IQuery} from '../rest/Query';
 import {Assert} from '../misc/Assert';
 import {Utils} from '../utils/Utils';
-import _ = require('underscore');
 
 declare let crypto: Crypto;
 
@@ -89,12 +88,12 @@ export class QueryUtils {
 
   static quoteAndEscape(str: string): string {
     Assert.isString(str);
-    return `'${QueryUtils.escapeString(str)}'`;
+    return `"${QueryUtils.escapeString(str)}"`;
   }
 
   static escapeString(str: string): string {
     Assert.isString(str);
-    return str.replace(/'/g, ' ');
+    return str.replace(/"/g, ' ');
   }
 
   static isAtomicString(str: string): boolean {

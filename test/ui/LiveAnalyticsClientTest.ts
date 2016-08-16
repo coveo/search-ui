@@ -1,6 +1,20 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {AnalyticsEndpoint} from '../../src/rest/AnalyticsEndpoint';
+import {LiveAnalyticsClient} from '../../src/ui/Analytics/LiveAnalyticsClient';
+import {IQueryResults} from '../../src/rest/QueryResults';
+import {FakeResults} from '../Fake';
+import {IAnalyticsNoMeta} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import {PendingSearchAsYouTypeSearchEvent} from '../../src/ui/Analytics/PendingSearchAsYouTypeSearchEvent';
+import {PendingSearchEvent} from '../../src/ui/Analytics/PendingSearchEvent';
+import {IQuery} from '../../src/rest/Query';
+import {Simulate} from '../Simulate';
+import {$$} from '../../src/utils/Dom';
+import {AnalyticsEvents} from '../../src/events/AnalyticsEvents';
+import {Defer} from '../../src/misc/Defer';
+import {JQuery} from '../JQueryModule';
 
-module Coveo {
+export function LiveAnalyticsClientTest() {
   describe('LiveAnalyticsClient', function () {
     var endpoint: AnalyticsEndpoint;
     var env: Mock.IMockEnvironment;
@@ -8,6 +22,11 @@ module Coveo {
     var promise: Promise<IQueryResults>;
 
     beforeEach(function () {
+      // Thanks phantom js for bad native event support
+      if (Simulate.isPhantomJs()) {
+        window['jQuery'] = JQuery;
+      }
+
       env = new Mock.MockEnvironmentBuilder().build();
       endpoint = Mock.mock<AnalyticsEndpoint>(AnalyticsEndpoint);
       client = new LiveAnalyticsClient(endpoint, env.root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true);
@@ -21,6 +40,7 @@ module Coveo {
       endpoint = null;
       client = null;
       promise = null;
+      window['jQuery'] = null;
     })
 
     it('should return pending event', () => {
@@ -32,14 +52,14 @@ module Coveo {
     })
 
     it('should send proper information on logSearchEvent', function (done) {
-
       client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
       var query: IQuery = {
         q: 'the query',
         aq: 'the advanced query',
         firstResult: 20,
         numberOfResults: 10,
-        enableDidYouMean: true
+        enableDidYouMean: true,
+        context: { 'key1': 'value1', 'key2': 'value2' }
       };
 
       Simulate.query(env, {
@@ -57,7 +77,11 @@ module Coveo {
           username: 'foo',
           userDisplayName: 'foo display',
           splitTestRunName: 'foo run name',
-          splitTestRunVersion: 'foo run version'
+          splitTestRunVersion: 'foo run version',
+          customData: jasmine.objectContaining({
+            context_key1: 'value1',
+            context_key2: 'value2'
+          })
         })])
         expect(endpoint.sendSearchEvents).toHaveBeenCalledWith(jasmineMatcher);
         done();

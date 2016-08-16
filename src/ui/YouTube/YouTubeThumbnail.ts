@@ -1,5 +1,3 @@
-/// <reference path="../../../node_modules/modal-box/bin/ModalBox.d.ts" />
-
 import {Component} from '../Base/Component';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
@@ -7,7 +5,8 @@ import {IQueryResult} from '../../rest/QueryResult';
 import {ResultLink} from '../ResultLink/ResultLink';
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
 import {DomUtils} from '../../utils/DomUtils';
-import {$$, Dom} from '../../utils/Dom';
+import {$$} from '../../utils/Dom';
+import {ModalBox} from '../../ExternalModulesShim';
 
 export interface IYouTubeThumbnailOptions {
   width: string;
@@ -84,7 +83,7 @@ export class YouTubeThumbnail extends Component {
 
     div.append(iframe.el);
 
-    this.modalbox = Coveo.ModalBox.open(div.el, {
+    this.modalbox = ModalBox.open(div.el, {
       overlayClose: true,
       title: DomUtils.getQuickviewHeader(this.result, { showDate: true, title: this.result.title }, this.bindings).el.outerHTML,
       className: 'coveo-quick-view coveo-youtube-player',

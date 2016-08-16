@@ -1,4 +1,4 @@
-import {IAnalyticsActionCause, IAnalyticsDocumentViewMeta} from '../Analytics/AnalyticsActionListMeta';
+import {IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta';
 import {IQueryResult} from '../../rest/QueryResult';
 import {ITopQueries} from '../../rest/TopQueries';
 import {Promise} from 'es6-promise';
@@ -44,7 +44,7 @@ export interface IAnalyticsClient {
    * @param result The result that was clicked
    * @param element The HTMLElement that was clicked in the interface
    */
-  logClickEvent(actionCause: IAnalyticsActionCause, meta: IAnalyticsDocumentViewMeta, result: IQueryResult, element: HTMLElement): void;
+  logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement): void;
   /**
    * Log a custom event on the service. A custom event can be used to create customized report, or to track events which are not queries or document view.
    * @param actionCause

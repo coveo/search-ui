@@ -1,14 +1,14 @@
-/// <reference path="../Test.ts" />
+import {Slider} from '../../src/ui/Misc/Slider';
+import {$$} from '../../src/utils/Dom';
+import {ISliderGraphData} from '../../src/ui/Misc/Slider';
+import {SearchInterface} from '../../src/ui/SearchInterface/SearchInterface';
+import * as Globalize from 'globalize';
 
-module Coveo {
+export function SliderTest() {
   describe('Slider', function () {
     var slider: Slider;
     var el: HTMLElement;
     var root: HTMLElement;
-
-    function getSliderLine(sliderElement: HTMLElement) {
-      return $$(sliderElement).findAll('.coveo-slider-line');
-    }
 
     function getSliderButton(sliderElement: HTMLElement) {
       return $$(sliderElement).findAll('.coveo-slider-button');
@@ -20,6 +20,17 @@ module Coveo {
 
     function getSliderGraph(sliderElement: HTMLElement) {
       return $$(sliderElement).find('svg');
+    }
+
+    function buildGraphData(): ISliderGraphData[] {
+      let graphData: ISliderGraphData[] = _.map(_.range(0, 10, 1), (range) => {
+        return {
+          start: range * 10,
+          end: (range + 1) * 10,
+          y: Math.random()
+        }
+      })
+      return graphData;
     }
 
     beforeEach(function () {
@@ -159,16 +170,12 @@ module Coveo {
           graph: {
             steps: 10
           }
-        }, root)
+        }, root);
+        new SearchInterface(root);
+
         slider.element.style.width = '100px';
         slider.element.style.height = '100px';
-        var graphData: ISliderGraphData[] = _.map(_.range(0, 10, 1), (range) => {
-          return {
-            start: range * 10,
-            end: (range + 1) * 10,
-            y: Math.random()
-          }
-        })
+        let graphData: ISliderGraphData[] = buildGraphData();
         slider.drawGraph(graphData);
         expect($$(getSliderGraph(slider.element)).findAll('rect').length).toBe(10);
       })

@@ -135,14 +135,21 @@ export interface IAnalyticsCaseDetachMeta extends IAnalyticsCaseAttachMeta {
 
 export interface IAnalyticsCaseCreationInputChangeMeta {
   inputTitle: string;
+  input: string;
+  value: string;
 }
 
 export interface IAnalyticsCaseCreationDeflectionMeta {
   hasClicks: boolean;
+  values: { [field: string]: string };
 }
 
 export interface IAnalyticsPagerMeta {
   pagerNumber: number;
+}
+
+export interface IAnalyticsResultsPerPageMeta {
+  currentResultsPerPage: number;
 }
 
 export interface IAnalyticsTriggerNotify {
@@ -407,6 +414,10 @@ export var analyticsActionCauseList = {
     name: 'pagerScrolling',
     type: 'getMoreResults'
   },
+  pagerResize: <IAnalyticsActionCause>{
+    name: 'pagerResize',
+    type: 'getMoreResults'
+  },
   searchFromLink: <IAnalyticsActionCause>{
     name: 'searchFromLink',
     type: 'interface'
@@ -435,5 +446,17 @@ export var analyticsActionCauseList = {
   exportToExcel: <IAnalyticsActionCause>{
     name: 'exportToExcel',
     type: 'misc'
+  },
+  recommendation: <IAnalyticsActionCause>{
+    name: 'recommendation',
+    type: 'recommendation'
+  },
+  recommendationInterfaceLoad: <IAnalyticsActionCause>{
+    name: 'recommendationInterfaceLoad',
+    type: 'recommendation'
+  },
+  recommendationOpen: <IAnalyticsActionCause>{
+    name: 'recommendationOpen',
+    type: 'recommendation'
   }
 }

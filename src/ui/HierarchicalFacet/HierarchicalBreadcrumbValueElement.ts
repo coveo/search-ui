@@ -2,14 +2,13 @@ import {BreadcrumbValueElement} from '../Facet/BreadcrumbValueElement';
 import {FacetValue} from '../Facet/FacetValues';
 import {HierarchicalFacet} from './HierarchicalFacet';
 import {Dom} from '../../utils/Dom';
-import _ = require('underscore');
 
 export class HierarchicalBreadcrumbValueElement extends BreadcrumbValueElement {
   constructor(public facet: HierarchicalFacet, public facetValue: FacetValue) {
     super(facet, facetValue);
   }
 
-  public build() {
+  public build(): Dom {
     var build = super.build();
     build.addClass('coveo-hierarchical-facet-value');
     var caption = build.find('.coveo-facet-breadcrumb-caption');

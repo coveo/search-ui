@@ -1,6 +1,13 @@
-/// <reference path="../Test.ts" />
-module Coveo {
-  import NoopComponent = Coveo.Components.NoopComponent;
+import * as Mock from '../MockEnvironment';
+import {Tab} from '../../src/ui/Tab/Tab';
+import {ITabOptions} from '../../src/ui/Tab/Tab';
+import {Simulate} from '../Simulate';
+import {$$} from '../../src/utils/Dom';
+import {SearchEndpoint} from '../../src/rest/SearchEndpoint';
+import {NoopComponent} from '../NoopComponent';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+
+export function TabTest() {
   describe('Tab', function () {
     var test: Mock.IBasicComponentSetup<Tab>;
 
@@ -19,7 +26,8 @@ module Coveo {
 
       it('tab id can be set, and is sent in the query, only if selected', function () {
         test = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {
-          id: 'niceid'
+          id: 'niceid',
+          caption: 'foobarde'
         }, (env: Mock.MockEnvironmentBuilder) => {
           return env.withLiveQueryStateModel();
         }));
@@ -34,7 +42,8 @@ module Coveo {
       it('expression is set on the constant part of the query, only if selected', function () {
         test = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {
           id: 'niceid',
-          expression: '@foo==bar'
+          expression: '@foo==bar',
+          caption: 'foobarde'
         }, (env: Mock.MockEnvironmentBuilder) => {
           return env.withLiveQueryStateModel();
         }));
@@ -49,7 +58,8 @@ module Coveo {
         test = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {
           id: 'niceid',
           expression: '@foo==bar',
-          constant: false
+          constant: false,
+          caption: 'foobarde'
         }, (env: Mock.MockEnvironmentBuilder) => {
           return env.withLiveQueryStateModel();
         }));
@@ -62,7 +72,8 @@ module Coveo {
 
       it('caption can specify the caption for the element', function () {
         test = Mock.optionsComponentSetup<Tab, ITabOptions>(Tab, {
-          caption: 'yo man'
+          caption: 'yo man',
+          id: 'foobarde'
         })
 
         expect($$(test.cmp.element).text()).toBe('yo man');
@@ -70,26 +81,31 @@ module Coveo {
 
       it('icon can be added on a tab', function () {
         test = Mock.optionsComponentSetup<Tab, ITabOptions>(Tab, {
-          icon: 'yoman'
+          icon: 'yoman',
+          caption: 'foobarde',
+          id: 'foobarde'
         })
         var icn = $$(test.cmp.element).find('.coveo-icon');
         expect($$(icn).hasClass('yoman')).toBe(true);
       })
 
       it('endpoint can be set on a tab, or take default otherwise', function () {
-        var ep = new Coveo.SearchEndpoint({ restUri: 'test' });
-        Coveo.SearchEndpoint.endpoints['testing'] = ep;
+        var ep = new SearchEndpoint({ restUri: 'test' });
+        SearchEndpoint.endpoints['testing'] = ep;
         test = Mock.optionsComponentSetup<Tab, ITabOptions>(Tab, {
-          endpoint: ep
+          endpoint: ep,
+          caption: 'foobarde',
+          id: 'foobarde'
         })
         expect(test.cmp.options.endpoint).toBe(ep);
-        Coveo.SearchEndpoint.endpoints['testing'] = null;
+        SearchEndpoint.endpoints['testing'] = null;
       })
 
       it('enableDuplicateFiltering will be set on the query, only if selected', function () {
         test = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {
           id: 'niceid',
-          enableDuplicateFiltering: true
+          enableDuplicateFiltering: true,
+          caption: 'foobarde'
         }, (env: Mock.MockEnvironmentBuilder) => {
           return env.withLiveQueryStateModel();
         }));
@@ -106,7 +122,8 @@ module Coveo {
       it('pipeline will be set on the query, only if selected', function () {
         test = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {
           id: 'niceid',
-          pipeline: 'foobar'
+          pipeline: 'foobar',
+          caption: 'foobarde'
         }, (env: Mock.MockEnvironmentBuilder) => {
           return env.withLiveQueryStateModel();
         }));
@@ -121,7 +138,8 @@ module Coveo {
       it('maximumAge will be set on the query, only if selected', function () {
         test = Mock.advancedComponentSetup<Tab>(Tab, new Mock.AdvancedComponentSetupOptions(undefined, {
           id: 'niceid',
-          maximumAge: 321
+          maximumAge: 321,
+          caption: 'foobarde'
         }, (env: Mock.MockEnvironmentBuilder) => {
           return env.withLiveQueryStateModel();
         }));

@@ -1,6 +1,13 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import {Querybox} from '../../src/ui/Querybox/Querybox';
+import {registerCustomMatcher} from '../CustomMatchers';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import {Simulate} from '../Simulate';
+import {$$} from '../../src/utils/Dom';
+import {StandaloneSearchInterfaceEvents} from '../../src/events/StandaloneSearchInterfaceEvents';
+import {IQueryboxOptions} from '../../src/ui/Querybox/Querybox';
 
-module Coveo {
+export function QueryboxTest() {
   describe('Querybox', () => {
     var test: Mock.IBasicComponentSetup<Querybox>;
 
@@ -296,6 +303,22 @@ module Coveo {
         var simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().partialMatchKeywords).toBeUndefined();
       });
+
+      it('triggerQueryOnClear should trigger a query on clear', () => {
+        test = Mock.optionsComponentSetup<Querybox, IQueryboxOptions>(Querybox, {
+          triggerQueryOnClear: true
+        })
+        test.cmp.magicBox.clear();
+        expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+      })
+
+      it('triggerQueryOnClear should not trigger a query on clear if false', () => {
+        test = Mock.optionsComponentSetup<Querybox, IQueryboxOptions>(Querybox, {
+          triggerQueryOnClear: false
+        })
+        test.cmp.magicBox.clear();
+        expect(test.cmp.queryController.executeQuery).not.toHaveBeenCalled();
+      })
     })
   })
 }

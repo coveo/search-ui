@@ -1,45 +1,22 @@
-const webpack = require('webpack');
+'use strict';
+const _ = require('underscore');
 const minimize = process.argv.indexOf('--minimize') !== -1;
-const colors = require('colors');
 
-if (minimize) {
-  console.log('Building minified version of the library'.bgGreen.red);
-} else {
-  console.log('Building non minified version of the library'.bgGreen.red);
-}
-
-
-module.exports = {
-  entry: ['./src/Dependencies.js', './src/Index.ts'],
+let conf = require('./webpack.common.config');
+conf = _.extend(conf, {
+  entry: {
+    'CoveoJsSearch': ['./src/Index.ts'],
+    'CoveoJsSearch.Searchbox': './src/SearchboxIndex.ts'
+  },
   output: {
     path: require('path').resolve('./bin/js'),
-    filename: minimize ? 'CoveoJsSearch.min.js' : 'CoveoJsSearch.js',
-    libraryTarget: 'var',
-    library: ['Coveo'],
-    publicPath : '/js/'
-  },
-  resolve: {
-    extensions: ['', '.ts', '.js'],
-    alias: {
-      'l10n': __dirname + '/lib/l10n.min.js',
-      'globalize': __dirname + '/lib/globalize.min.js',
-      'modal-box': __dirname + '/node_modules/modal-box/bin/ModalBox.min.js',
-      'fast-click': __dirname + '/lib/fastclick.min.js',
-      'jstz': __dirname + '/lib/jstz.min.js',
-      'magic-box': __dirname + '/node_modules/coveomagicbox/bin/MagicBox.min.js',
-      'default-language': __dirname + '/src/strings/DefaultLanguage.js',
-      'finally': __dirname + '/lib/finally.js',
-      'underscore': __dirname + '/node_modules/underscore/underscore-min.js'
-    }
-  },
-  devtool: 'source-map',
-  module: {
-    loaders: [
-      { test: /\.ts$/, loader: 'ts-loader' },
-      { test: /\.scss$/, loaders: ['style?insertAt=bottom', 'css?sourceMap', 'resolve-url', 'sass?sourceMap'] },
-      { test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'url?limit=8182' }
-    ]
-  },
-  plugins: minimize ? [new webpack.optimize.UglifyJsPlugin()] : [],
-  bail: true
-}
+    filename: minimize ? '[name].min.js' : '[name].js',
+    libraryTarget: 'umd',
+    // See Index.ts as for why this need to be a temporary variable
+    library: 'Coveo__temporary',
+    publicPath : '/js/',
+    devtoolModuleFilenameTemplate: '[resource-path]'
+  }
+})
+
+module.exports = conf;

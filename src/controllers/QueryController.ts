@@ -15,9 +15,7 @@ import {$$, Dom} from '../utils/Dom';
 import {Utils} from '../utils/Utils';
 import {Promise} from 'es6-promise';
 import {BaseComponent} from '../ui/Base/BaseComponent';
-import _ = require('underscore');
-
-declare const Coveo;
+import {ModalBox} from '../ExternalModulesShim';
 declare const coveoanalytics: CoveoAnalytics.CoveoUA;
 
 /**
@@ -147,7 +145,7 @@ export class QueryController extends RootComponent {
     options = <IQueryOptions>_.extend(new DefaultQueryOptions(), options);
 
     if (options.closeModalBox) {
-      Coveo.ModalBox.close(true);
+      ModalBox.close(true);
     }
 
     this.logger.debug('Executing new query');

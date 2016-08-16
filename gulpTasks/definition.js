@@ -39,6 +39,6 @@ gulp.task('internalDefs', function () {
     baseDir: './src/',
     out: 'bin/ts/CoveoJsSearch.d.ts',
     externs: ['Externals.d.ts'],
-    exclude: ['lib/**/*.d.ts', 'node_modules/**/*.d.ts', 'typings/**/*.d.ts', 'src/Index.ts', 'src/Doc,ts', 'bin/**/*.d.ts']
+    exclude: ['lib/**/*.d.ts', 'node_modules/**/*.d.ts', 'typings/**/*.d.ts', 'src/*.ts', 'bin/**/*.d.ts', 'test/lib/**/*.d.ts', 'test/Test.ts']
   });
 })

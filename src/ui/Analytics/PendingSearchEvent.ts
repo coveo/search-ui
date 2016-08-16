@@ -11,8 +11,8 @@ import {QueryController} from '../../controllers/QueryController';
 import {Defer} from '../../misc/Defer';
 import {APIAnalyticsBuilder} from '../../rest/APIAnalyticsBuilder';
 import {IAnalyticsSearchEventsArgs, AnalyticsEvents} from '../../events/AnalyticsEvents';
+import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {QueryStateModel} from '../../models/QueryStateModel';
-import _ = require('underscore');
 
 export class PendingSearchEvent {
   private handler: (evt: Event, arg: IDuringQueryEventArgs) => void;
@@ -59,11 +59,7 @@ export class PendingSearchEvent {
 
     // TODO: Maybe a better way to grab the search interface?
     let eventTarget: HTMLElement;
-    if (window['jQuery'] && evt instanceof window['jQuery'].Event) {
-      eventTarget = <HTMLElement>evt.target;
-    } else {
-      eventTarget = <HTMLElement>evt.srcElement;
-    }
+    eventTarget = <HTMLElement>evt.target;
     let searchInterface = <SearchInterface>Component.get(eventTarget, SearchInterface);
     Assert.exists(searchInterface);
     // TODO: Maybe a better way to grab the query controller?
@@ -73,7 +69,7 @@ export class PendingSearchEvent {
     args.promise.then((queryResults: IQueryResults) => {
       Assert.exists(queryResults);
       Assert.check(!this.finished);
-      if (queryResults._reusedSearchUid !== true) {
+      if (queryResults._reusedSearchUid !== true || this.templateSearchEvent.actionCause == analyticsActionCauseList.recommendation.name) {
         let searchEvent = <ISearchEvent>_.extend({}, this.templateSearchEvent);
         this.fillSearchEvent(searchEvent, searchInterface, args.query, queryResults);
         this.searchEvents.push(searchEvent);
@@ -115,10 +111,7 @@ export class PendingSearchEvent {
     }
   }
 
-  private fillSearchEvent(searchEvent: ISearchEvent,
-    searchInterface: SearchInterface,
-    query: IQuery,
-    queryResults: IQueryResults) {
+  private fillSearchEvent(searchEvent: ISearchEvent, searchInterface: SearchInterface, query: IQuery, queryResults: IQueryResults) {
     Assert.exists(searchEvent);
     Assert.exists(searchInterface);
     Assert.exists(query);
@@ -138,5 +131,14 @@ export class PendingSearchEvent {
     searchEvent.resultsPerPage = query.numberOfResults;
     searchEvent.searchQueryUid = queryResults.searchUid;
     searchEvent.queryPipeline = queryResults.pipeline;
+
+    // The context_${key} format is important for the Analytics backend
+    // This is what they use to recognize a custom data that will be used internally by other coveo's service.
+    // In this case, Reveal will be the consumer of this information.
+    if (query.context != undefined) {
+      _.each(query.context, (value: string, key: string) => {
+        searchEvent.customData[`context_${key}`] = value;
+      })
+    }
   }
 }
