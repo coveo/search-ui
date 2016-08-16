@@ -4,12 +4,17 @@ const shell = require('gulp-shell');
 const colors = require('colors');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
+var Dashboard = require('webpack-dashboard');
+var DashboardPlugin = require('webpack-dashboard/plugin');
+
 const buildUtilities = require('../gulpTasks/buildUtilities.js');
 const _ = require('underscore');
 
 let webpackConfig = require('../webpack.config.js');
 webpackConfig.entry['CoveoJsSearch'].unshift('webpack-dev-server/client?http://localhost:8080/');
 const compiler = webpack(webpackConfig);
+var dashboard = new Dashboard();
+compiler.apply(new DashboardPlugin((dashboard.setData)));
 
 let webpackConfigTest = require('../webpack.test.config');
 webpackConfigTest.entry['tests'].unshift('webpack-dev-server/client?http://localhost:8081/');
@@ -29,7 +34,8 @@ gulp.task('dev', ['setup', 'prepareSass'], (done)=> {
   let server = new WebpackDevServer(compiler, {
     contentBase: 'bin/',
     publicPath: '/js/',
-    compress: true
+    compress: true,
+    quiet: true
   });
   server.listen(8080, 'localhost', ()=> {
   });

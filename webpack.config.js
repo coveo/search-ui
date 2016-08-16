@@ -2,6 +2,10 @@
 const _ = require('underscore');
 const minimize = process.argv.indexOf('--minimize') !== -1;
 
+var Dashboard = require('webpack-dashboard');
+var DashboardPlugin = require('webpack-dashboard/plugin');
+var dashboard = new Dashboard();
+
 let conf = require('./webpack.common.config');
 conf = _.extend(conf, {
   entry: {
@@ -16,7 +20,10 @@ conf = _.extend(conf, {
     library: 'Coveo__temporary',
     publicPath : '/js/',
     devtoolModuleFilenameTemplate: '[resource-path]'
-  }
+  },
+  plugins: [
+    new DashboardPlugin(dashboard.setData)
+  ]
 })
 
 module.exports = conf;
