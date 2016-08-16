@@ -49,12 +49,13 @@ export class ResultLayout extends Component {
     this.buttons = {};
 
     Assert.exists(this.options.defaultLayout);
-    this.bind.onRootElement(ResultLayoutEvents.resultLayoutPopulate, (args: IResultLayoutPopulateArgs) => this.handlePopulate(args));
 
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError(args));
 
     this.resultLayoutSection = $$(this.element).closest('.coveo-result-layout-section');
+
+    this.populate();
   }
 
   /**
@@ -75,11 +76,7 @@ export class ResultLayout extends Component {
     }
   }
 
-  public handlePopulate(args: IResultLayoutPopulateArgs) {
-    this.addButton(args.layout);
-  }
-
-  public handleQuerySuccess(args: IQuerySuccessEventArgs) {
+  private handleQuerySuccess(args: IQuerySuccessEventArgs) {
     if (args.results.results.length === 0) {
       $$(this.element).addClass('coveo-result-layout-hidden');
       if (this.resultLayoutSection) {
@@ -93,11 +90,17 @@ export class ResultLayout extends Component {
     }
   }
 
-  public handleQueryError(args: IQueryErrorEventArgs) {
+  private handleQueryError(args: IQueryErrorEventArgs) {
     $$(this.element).addClass('coveo-result-layout-hidden');
     if (this.resultLayoutSection) {
       this.resultLayoutSection.style.display = 'none';
     }
+  }
+
+  private populate() {
+    let populateArgs: IResultLayoutPopulateArgs = { layouts: [] };
+    $$(this.root).trigger(ResultLayoutEvents.resultLayoutPopulate, populateArgs);
+    _.each(populateArgs.layouts, l => this.addButton(l));
   }
 
   public getCurrentLayout() {

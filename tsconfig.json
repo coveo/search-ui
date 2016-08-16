@@ -40,6 +40,7 @@
     "src/events/QueryEvents.ts",
     "src/events/QuickviewEvents.ts",
     "src/events/ResultListEvents.ts",
+    "src/events/ResultLayoutEvents.ts",
     "src/events/SearchAlertEvents.ts",
     "src/events/SettingsEvents.ts",
     "src/events/SliderEvents.ts",

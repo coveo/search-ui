@@ -1,5 +1,5 @@
 export interface IResultLayoutPopulateArgs {
-  layout: string;
+  layouts: string[];
 }
 export class ResultLayoutEvents {
   public static resultLayoutPopulate = 'resultLayoutPopulate';
