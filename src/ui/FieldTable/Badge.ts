@@ -62,7 +62,7 @@ export class Badge extends FieldValue {
      *
      * Colors can be specified in HTML or hexadecimal code format.
      */
-    colors: ComponentOptions.buildCustomOption<IBadgeColors>((value: string) => Badge.parseColors(value), {defaultValue: {values: {}}})
+    colors: ComponentOptions.buildCustomOption<IBadgeColors>((value: string) => Badge.parseColors(value), { defaultValue: { values: {} } })
   };
 
   static parent = FieldValue;

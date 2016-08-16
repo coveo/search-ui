@@ -177,7 +177,7 @@ export class ComponentOptions {
   static buildCustomOption<T>(converter: (value: string) => T, optionArgs?: IComponentOptions<T>): T {
     let loadOption: IComponentOptionsLoadOption<T> = (element: HTMLElement, name: string, option: IComponentOptionsOption<T>) => {
       let stringvalue = ComponentOptions.loadStringOption(element, name, option);
-      if(!Utils.isNullOrEmptyString(stringvalue)) {
+      if (!Utils.isNullOrEmptyString(stringvalue)) {
         return converter(stringvalue);
       }
     };
