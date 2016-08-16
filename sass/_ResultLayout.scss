@@ -1,5 +1,8 @@
 .CoveoResultLayout {
   @include display(flex);
+  &.coveo-result-layout-hidden {
+    display: none;
+  }
 }
 
 .coveo-result-layout-selector {

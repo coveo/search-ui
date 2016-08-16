@@ -6,6 +6,7 @@ import {Initialization} from '../Base/Initialization';
 import {Assert} from '../../misc/Assert';
 import {ResultListEvents, IChangeLayoutEventArgs} from '../../events/ResultListEvents';
 import {$$} from '../../utils/Dom';
+import {IQueryErrorEventArgs, IQuerySuccessEventArgs} from '../../events/QueryEvents';
 
 export interface IResultLayoutOptions {
   defaultLayout: string;
@@ -21,8 +22,8 @@ export class ResultLayout extends Component {
   public static validLayouts = ['list', 'card', 'table'];
 
   private currentLayout: string;
-
   private buttons: { string: HTMLElement };
+  private resultLayoutSection: HTMLElement;
 
   /**
    * @componentOptions
@@ -45,6 +46,11 @@ export class ResultLayout extends Component {
 
     Assert.exists(this.options.defaultLayout);
     this.bind.oneRootElement(QueryEvents.querySuccess, () => this.changeLayout(this.options.defaultLayout));
+
+    this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
+    this.bind.onRootElement(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError(args));
+
+    this.resultLayoutSection = $$(this.element).closest('.coveo-result-layout-section');
 
     this.initializeButtons();
   }
@@ -80,6 +86,27 @@ export class ResultLayout extends Component {
       }
       $$(this.buttons[layout]).addClass('coveo-selected');
       this.currentLayout = layout;
+    }
+  }
+
+  public handleQuerySuccess(args: IQuerySuccessEventArgs) {
+    if (args.results.results.length === 0) {
+      $$(this.element).addClass('coveo-result-layout-hidden');
+      if (this.resultLayoutSection) {
+        this.resultLayoutSection.style.display = 'none';
+      }
+    } else {
+      $$(this.element).removeClass('coveo-result-layout-hidden');
+      if (this.resultLayoutSection) {
+        this.resultLayoutSection.style.display = 'block';
+      }
+    }
+  }
+
+  public handleQueryError(args: IQueryErrorEventArgs) {
+    $$(this.element).addClass('coveo-result-layout-hidden');
+    if (this.resultLayoutSection) {
+      this.resultLayoutSection.style.display = 'none';
     }
   }
 
