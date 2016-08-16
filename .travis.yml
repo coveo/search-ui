@@ -38,4 +38,4 @@ deploy:
 branches:
   only:
     - master
-    - /^.*release-.*$/
+    - /^.*release.*$/
