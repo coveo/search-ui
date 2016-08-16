@@ -1,7 +1,7 @@
 {
   "MobileChatter": {
     "priority": 2,
-    "value": "(raw.objecttype =='FeedItem' || raw.objecttype == 'FeedComment') && Coveo.DeviceUtils.isSmallScreenWidth()"
+    "value": "(raw.objecttype =='FeedItem' || raw.objecttype == 'FeedComment') && (Coveo.DeviceUtils.isSmallScreenWidth() || Coveo.ResultList.currentLayout === 'card')"
   },
   "Chatter": {
     "priority": 1,
@@ -9,7 +9,7 @@
   },
   "MobileDropbox": {
     "priority": 1,
-    "value": "raw.connectortype == 'DropboxCrawler' && Coveo.DeviceUtils.isSmallScreenWidth()"
+    "value": "raw.connectortype == 'DropboxCrawler' && (Coveo.DeviceUtils.isSmallScreenWidth() || Coveo.ResultList.currentLayout === 'card')"
   },
   "Dropbox": {
     "priority": 0,
@@ -17,7 +17,7 @@
   },
   "MobileEmailThread" : {
     "priority": 1,
-    "value": "raw.mailbox != undefined && Coveo.DeviceUtils.isSmallScreenWidth()"
+    "value": "raw.mailbox != undefined && (Coveo.DeviceUtils.isSmallScreenWidth() || Coveo.ResultList.currentLayout === 'card')"
   },
   "EmailThread": {
     "priority": 0,
@@ -25,7 +25,7 @@
   },
   "MobileGoogleDrive": {
     "priority": 1,
-    "value": "raw.connectortype == 'GoogleDriveCrawler' && Coveo.DeviceUtils.isSmallScreenWidth()"
+    "value": "raw.connectortype == 'GoogleDriveCrawler' && (Coveo.DeviceUtils.isSmallScreenWidth() || Coveo.ResultList.currentLayout === 'card')"
   },
   "GoogleDrive": {
     "priority": 0,
@@ -37,7 +37,7 @@
   },
   "MobileLithiumThread": {
     "priority": 1,
-    "value": "raw.connectortype == 'LithiumCrawler' && Coveo.DeviceUtils.isSmallScreenWidth()"
+    "value": "raw.connectortype == 'LithiumCrawler' && (Coveo.DeviceUtils.isSmallScreenWidth() || Coveo.ResultList.currentLayout === 'card')"
   },
   "LithiumThread": {
     "priority": 0,
@@ -45,7 +45,7 @@
   },
   "MobilePeople": {
     "priority": 1,
-    "value": "raw.fullname != undefined && Coveo.DeviceUtils.isSmallScreenWidth()"
+    "value": "raw.fullname != undefined && (Coveo.DeviceUtils.isSmallScreenWidth() || Coveo.ResultList.currentLayout === 'card')"
   },
   "People": {
     "priority": 1,
@@ -53,7 +53,7 @@
   },
   "MobileSalesforce": {
     "priority": 1,
-    "value": "(raw.sfid != null || raw.sfid != null) && Coveo.DeviceUtils.isSmallScreenWidth()"
+    "value": "(raw.sfid != null || raw.sfid != null) && (Coveo.DeviceUtils.isSmallScreenWidth() || Coveo.ResultList.currentLayout === 'card')"
   },
   "Salesforce": {
     "priority": 0,
@@ -61,7 +61,7 @@
   },
   "MobileSalesforceCase": {
     "priority": 3,
-    "value": "raw.sfcaseid != null && Coveo.DeviceUtils.isSmallScreenWidth()"
+    "value": "raw.sfcaseid != null && (Coveo.DeviceUtils.isSmallScreenWidth() || Coveo.ResultList.currentLayout === 'card')"
   },
   "SalesforceCase": {
     "priority": 2,
@@ -69,7 +69,7 @@
   },
   "MobileSharePoint": {
     "priority": 1,
-    "value": "raw.spitemtype != null && raw.spitemtype != 'List' && Coveo.DeviceUtils.isSmallScreenWidth()"
+    "value": "raw.spitemtype != null && (raw.spitemtype != 'List' && Coveo.DeviceUtils.isSmallScreenWidth() || Coveo.ResultList.currentLayout === 'card')"
   },
   "SharePoint": {
     "priority": 0,
@@ -77,11 +77,15 @@
   },
   "MobileSharePointList": {
     "priority": 1,
-    "value": "raw.spitemtype != null && raw.spitemtype == 'List' && Coveo.DeviceUtils.isSmallScreenWidth()"
+    "value": "raw.spitemtype != null && (raw.spitemtype == 'List' && Coveo.DeviceUtils.isSmallScreenWidth() || Coveo.ResultList.currentLayout === 'card')"
   },
   "SharePointList": {
     "priority": 0,
     "value": "raw.spitemtype != null && raw.spitemtype == 'List'"
+  },
+  "CardYouTubeVideo": {
+    "priority": 2,
+    "value": "raw.filetype == 'YouTubeVideo' && Coveo.ResultList.currentLayout === 'card'"
   },
   "MobileYouTubeVideo": {
     "priority": 1,
@@ -93,7 +97,7 @@
   },
   "MobileYouTubePlaylistItem" : {
     "priority": 1,
-    "value": "raw.filetype== 'YouTubePlaylistItem' && Coveo.DeviceUtils.isSmallScreenWidth()"
+    "value": "raw.filetype== 'YouTubePlaylistItem' && (Coveo.DeviceUtils.isSmallScreenWidth() || Coveo.ResultList.currentLayout === 'card')"
   },
   "YouTubePlaylistItem" : {
     "priority": 0,

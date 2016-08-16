@@ -126,6 +126,7 @@ export class ResultList extends Component {
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
+  public static currentLayout: string;
   public currentlyDisplayedResults: IQueryResult[] = [];
   private fetchingMoreResults: Promise<IQueryResults>;
   private reachedTheEndOfResults = false;
@@ -393,6 +394,7 @@ export class ResultList extends Component {
   }
 
   private handleChangeLayout(args: IChangeLayoutEventArgs) {
+    ResultList.currentLayout = args.layout;
     args.layout === this.options.layout ? this.enable() : this.disable();
     this.queryController.executeQuery();
   }
