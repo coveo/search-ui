@@ -6,6 +6,8 @@ import {FieldValue, IFieldValueOptions} from './FieldValue'
 import {StringUtils} from '../../utils/StringUtils'
 import {Assert} from '../../misc/Assert'
 import {$$} from '../../utils/Dom'
+import {Utils} from '../../utils/Utils';
+import {ComponentOptionsType} from "../Base/ComponentOptions";
 
 
 export interface IBadgeOptions extends IFieldValueOptions {
@@ -60,7 +62,7 @@ export class Badge extends FieldValue {
      *
      * Colors can be specified in HTML or hexadecimal code format.
      */
-    colors: ComponentOptions.buildCustomOption<IBadgeColors>((value: string) => Badge.parseColors(value), { defaultValue: { values: {} } })
+    colors: ComponentOptions.buildCustomOption<IBadgeColors>((value: string) => Badge.parseColors(value), {defaultValue: {values: {}}})
   };
 
   static parent = FieldValue;
@@ -73,7 +75,7 @@ export class Badge extends FieldValue {
    * @param result
    */
   constructor(element: HTMLElement, public options?: IBadgeOptions, bindings?: IComponentBindings, result?: IQueryResult) {
-    super(element, options = ComponentOptions.initComponentOptions(element, Badge, options), bindings, result, Badge.ID);
+    super(element, ComponentOptions.initComponentOptions(element, Badge, options), bindings, result, Badge.ID);
     if (_.isString(this.options.colors)) {
       // to support the old string options
       this.options.colors = Badge.parseColors(<any>this.options.colors);
