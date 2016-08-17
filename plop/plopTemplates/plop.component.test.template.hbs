@@ -1,6 +1,9 @@
-/// <reference path="../Test.ts" />
+import * as Mock from '../MockEnvironment';
+import { {{cmpName}}, I{{cmpName}}Options } from '../../src/ui/{{cmpName}}/{{cmpName}}';
+import {Simulate} from '../Simulate';
+import {$$} from '../../src/utils/Dom';
 
-module Coveo {
+export function {{cmpName}}Test() {
   describe('{{cmpName}}', () => {
     var test: Mock.IBasicComponentSetup<{{cmpName}}>;
 
@@ -15,4 +18,5 @@ module Coveo {
     it('should put test here', () => {
 
     })
+  })
 }
