@@ -71,7 +71,7 @@ export class ResultLayout extends Component {
   }
 
   private handleQuerySuccess(args: IQuerySuccessEventArgs) {
-    if (args.results.results.length === 0 || _.isEmpty(this.buttons)) {
+    if (args.results.results.length === 0 || !this.shouldShowSelector()) {
       this.hide();
     } else {
       this.show();
@@ -95,10 +95,12 @@ export class ResultLayout extends Component {
   private populate() {
     let populateArgs: IResultLayoutPopulateArgs = { layouts: [] };
     $$(this.root).trigger(ResultLayoutEvents.resultLayoutPopulate, populateArgs);
-    if (populateArgs.layouts.length > 1) {
+    _.each(populateArgs.layouts, l => Assert.check(_.contains(ResultLayout.validLayouts, l), 'Invalid layout'));
+    if (!_.isEmpty(populateArgs.layouts)) {
       _.each(populateArgs.layouts, l => this.addButton(l));
-    } else {
-      this.hide();
+      if (!this.shouldShowSelector()) {
+        this.hide();
+      }
     }
   }
 
@@ -107,7 +109,6 @@ export class ResultLayout extends Component {
   }
 
   private addButton(layout?: string) {
-    Assert.check(_.contains(ResultLayout.validLayouts, layout), 'Invalid layout');
     if (_.keys(this.buttons).length === 0) {
       setTimeout(() => {
         // If the QSM doesn't have any value for layout (doesn't call a state-change), we set the
@@ -144,6 +145,10 @@ export class ResultLayout extends Component {
 
   private setQsmValue(val: string) {
     this.queryStateModel.set(QueryStateModel.attributesEnum.layout, val);
+  }
+
+  private shouldShowSelector() {
+    return _.keys(this.buttons).length > 1;
   }
 }
 
