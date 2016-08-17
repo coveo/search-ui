@@ -12,12 +12,11 @@ import {QueryStateModel} from '../../models/QueryStateModel';
 import {Model, IAttributesChangedEventArg} from '../../models/Model';
 
 export interface IResultLayoutOptions {
-  defaultLayout: string;
 }
 
 /**
- * This component allows to change the ResultList layout.<br/>
- * By default, it provides 3 layouts, `list`, `card` and `table`.
+ * This component allows to switch between multiple {@ ResultList}s with
+ * different layouts.<br/>
  */
 export class ResultLayout extends Component {
   static ID = 'ResultLayout';
@@ -32,15 +31,6 @@ export class ResultLayout extends Component {
    * @componentOptions
    */
   static options: IResultLayoutOptions = {
-    /**
-     * Specifies the default ResultList layout to use.<br/>
-     * Possible values are `list`, `card` and `table`.<br/>
-     * By default, it is set to `list`.
-     */
-    defaultLayout: ComponentOptions.buildStringOption({
-      defaultValue: 'list',
-      postProcessing: v => _.contains(ResultLayout.validLayouts, v) ? v : 'list'
-    })
   }
 
   // TODO: add sticky url parameter
@@ -49,8 +39,6 @@ export class ResultLayout extends Component {
     this.options = ComponentOptions.initComponentOptions(element, ResultLayout, options);
 
     this.buttons = {};
-
-    Assert.exists(this.options.defaultLayout);
 
     const eventName = this.queryStateModel.getEventName(Model.eventTypes.changeOne) + QueryStateModel.attributesEnum.layout;
     this.bind.onRootElement(eventName, this.handleQueryStateChanged.bind(this));
