@@ -8,6 +8,8 @@ import {ResultListEvents, IChangeLayoutEventArgs} from '../../events/ResultListE
 import {ResultLayoutEvents, IResultLayoutPopulateArgs} from '../../events/ResultLayoutEvents';
 import {$$} from '../../utils/Dom';
 import {IQueryErrorEventArgs, IQuerySuccessEventArgs} from '../../events/QueryEvents';
+import {QueryStateModel} from '../../models/QueryStateModel';
+import {Model, IAttributesChangedEventArg} from '../../models/Model';
 
 export interface IResultLayoutOptions {
   defaultLayout: string;
@@ -50,6 +52,8 @@ export class ResultLayout extends Component {
 
     Assert.exists(this.options.defaultLayout);
 
+    const eventName = this.queryStateModel.getEventName(Model.eventTypes.changeOne) + QueryStateModel.attributesEnum.layout;
+    this.bind.onRootElement(eventName, this.handleQueryStateChanged.bind(this));
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError(args));
 
@@ -64,7 +68,7 @@ export class ResultLayout extends Component {
    */
   public changeLayout(layout: string) {
     Assert.check(_.contains(_.keys(this.buttons), layout), 'Layout not available or invalid');
-    if (layout !== this.currentLayout) {
+    if (layout !== this.currentLayout || this.getQsmValue() === '') {
       this.bind.trigger(this.root, ResultListEvents.changeLayout, <IChangeLayoutEventArgs>{
         layout: layout
       })
@@ -72,8 +76,10 @@ export class ResultLayout extends Component {
         $$(this.buttons[this.currentLayout]).removeClass('coveo-selected');
       }
       $$(this.buttons[layout]).addClass('coveo-selected');
+      this.setQsmValue(layout);
       this.currentLayout = layout;
     }
+
   }
 
   private handleQuerySuccess(args: IQuerySuccessEventArgs) {
@@ -81,6 +87,16 @@ export class ResultLayout extends Component {
       this.hide();
     } else {
       this.show();
+    }
+  }
+
+  private handleQueryStateChanged(args: IAttributesChangedEventArg) {
+    const modelLayout = this.getQsmValue();
+    const newLayout = _.find(_.keys(this.buttons), l => l === modelLayout);
+    if (newLayout !== undefined) {
+      this.changeLayout(newLayout);
+    } else {
+      this.changeLayout(_.keys(this.buttons)[0]);
     }
   }
 
@@ -104,8 +120,14 @@ export class ResultLayout extends Component {
 
   private addButton(layout?: string) {
     Assert.check(_.contains(ResultLayout.validLayouts, layout), 'Invalid layout');
-    if (_.keys(this.buttons).length === 0) { // If it's the first layout added, select it as default
-      this.bind.oneRootElement(QueryEvents.querySuccess, () => this.changeLayout(layout));
+    if (_.keys(this.buttons).length === 0) {
+      setTimeout(() => {
+        // If the QSM doesn't have any value for layout (doesn't call a state-change), we set the
+        // active layout to the first one.
+        if (this.getQsmValue() === '') {
+          this.bind.oneRootElement(QueryEvents.querySuccess, () => this.changeLayout(layout));
+        }
+      });
     }
     const btn = $$('span', { className: 'coveo-result-layout-selector' }, layout);
     // TODO: Icon classname temporary
@@ -126,6 +148,14 @@ export class ResultLayout extends Component {
   private show() {
     const elem = this.resultLayoutSection || this.element;
     $$(elem).removeClass('coveo-result-layout-hidden');
+  }
+
+  private getQsmValue(): string {
+    return this.queryStateModel.get(QueryStateModel.attributesEnum.layout);
+  }
+
+  private setQsmValue(val: string) {
+    this.queryStateModel.set(QueryStateModel.attributesEnum.layout, val);
   }
 }
 
