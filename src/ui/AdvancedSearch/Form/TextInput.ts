@@ -3,6 +3,7 @@ import {$$} from '../../../utils/Dom';
 export class TextInput {
 
   private element: HTMLElement;
+  private lastQueryText: string = "";
 
   constructor(private label?: string, private onChange: () => void = () => {}) {
     this.build();
@@ -20,12 +21,16 @@ export class TextInput {
     (<HTMLInputElement>$$(this.element).find('input')).value = value;
   }
 
+  private getInput(): HTMLInputElement {
+    return <HTMLInputElement>$$(this.element).find('input');
+  }
+
   private build() {
     let container = $$('div', { className: 'coveo-input' });
     let input = $$('input', { type: 'text' });
     input.on(['keydown', 'blur'], (e: Event)=>{
       if (e instanceof KeyboardEvent && e.keyCode == 13 || e.type == 'blur') {
-        this.onChange();
+        this.triggerChange();
       }
     });
     (<HTMLInputElement>input.el).required = true;
@@ -37,5 +42,12 @@ export class TextInput {
     }
     this.element = container.el;
     return this.element;
+  }
+
+  private triggerChange() {
+    if (this.lastQueryText != this.getInput().value) {
+      this.onChange();
+      this.lastQueryText = this.getInput().value;
+    }
   }
 }
