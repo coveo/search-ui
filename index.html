@@ -65,56 +65,108 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<h1 id="search-ui-build-status-https-travis-ci-org-coveo-search-ui-svg-branch-master-https-travis-ci-org-coveo-search-ui-typescript-https-badges-frapsoft-com-typescript-version-typescript-v18-svg-v-100-https-github-com-ellerbrock-typescript-badges-">Search-UI <a href="https://travis-ci.org/coveo/search-ui"><img src="https://travis-ci.org/coveo/search-ui.svg?branch=master" alt="Build Status"></a> <a href="https://github.com/ellerbrock/typescript-badges/"><img src="https://badges.frapsoft.com/typescript/version/typescript-v18.svg?v=100" alt="TypeScript"></a></h1>
+				<h1 id="search-ui-build-status-https-travis-ci-org-coveo-search-ui-svg-branch-master-https-travis-ci-org-coveo-search-ui-typescript-https-badges-frapsoft-com-typescript-version-typescript-v18-svg-v-100-https-github-com-ellerbrock-typescript-badges-bithound-overall-score-https-www-bithound-io-github-coveo-search-ui-badges-score-svg-https-www-bithound-io-github-coveo-search-ui-bithound-code-https-www-bithound-io-github-coveo-search-ui-badges-code-svg-https-www-bithound-io-github-coveo-search-ui-">Search-UI <a href="https://travis-ci.org/coveo/search-ui"><img src="https://travis-ci.org/coveo/search-ui.svg?branch=master" alt="Build Status"></a> <a href="https://github.com/ellerbrock/typescript-badges/"><img src="https://badges.frapsoft.com/typescript/version/typescript-v18.svg?v=100" alt="TypeScript"></a> <a href="https://www.bithound.io/github/coveo/search-ui"><img src="https://www.bithound.io/github/coveo/search-ui/badges/score.svg" alt="bitHound Overall Score"></a> <a href="https://www.bithound.io/github/coveo/search-ui"><img src="https://www.bithound.io/github/coveo/search-ui/badges/code.svg" alt="bitHound Code"></a></h1>
 				<p>Coveo Search UI framework</p>
+				<p><img src='./docs/readme.png' /></p>
 				<h2 id="install">Install</h2>
 				<pre><code>npm <span class="hljs-keyword">install</span> <span class="hljs-comment">--save coveo-search-ui</span>
-</code></pre><p>All resources will be available under <code>node_modules/coveo-search-ui/bin</code>. </p>
+</code></pre><p>All resources will be available under <code>node_modules/coveo-search-ui/bin</code>. You can simply include those in your pages as a <code>&lt;script&gt;</code> tag.</p>
+				<p>If you are already using a module bundler (Browserify, webpack, Babel, etc.), then you can simply <code>require(&#39;coveo-search-ui&#39;)</code>.</p>
+				<h2 id="basic-usage">Basic usage</h2>
+				<pre><code><span class="hljs-comment">&lt;!-- Include the library scripts --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"js/CoveoJsSearch.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"js/CoveoJsSearch.Dependencies.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"js/templates/templatesNew.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- Every DOM element with a class starting with Coveo (uppercase) will instantiate a Component --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"search"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoSearchInterface'</span>&gt;</span>
+
+    <span class="hljs-comment">&lt;!-- Every DOM element with a class starting with coveo- (lowercase) is only for CSS/alignment purposes. --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'coveo-search-section'</span>&gt;</span>
+
+        <span class="hljs-comment">&lt;!-- Every Coveo Component can be removed (or added) and none are actually required for the page to "load" --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoSearchbox"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+    <span class="hljs-comment">&lt;!-- The data- attributes on each component allow you to pass options to a specific Component instance --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFacet"</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">"Author"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@author"</span> <span class="hljs-attr">data-tab</span>=<span class="hljs-string">"All"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFacet"</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">"Year"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@year"</span> <span class="hljs-attr">data-tab</span>=<span class="hljs-string">"All"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+        <span class="hljs-comment">// Configure an endpoint to perform search.</span>
+        <span class="hljs-comment">// Coveo.SearchEndpoint.configureCloudEndpoint('MyCoveoCloudEnpointName', 'my-authentification-token');</span>
+
+        <span class="hljs-comment">// We provide a sample endpoint with public sources for demo purposes.</span>
+        Coveo.SearchEndpoint.configureSampleEndpoint();
+        <span class="hljs-comment">// Initialize the framework by targeting the root in the interface.</span>
+        <span class="hljs-comment">// It does not have to be the body of the document.</span>
+        Coveo.init(<span class="hljs-built_in">document</span>.body);
+    </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+</code></pre><p>See more examples of fully configured pages in <code>./pages</code>.</p>
 				<h2 id="build">Build</h2>
 				<pre><code>npm <span class="hljs-keyword">install</span> -g gulp
 npm <span class="hljs-keyword">install</span>
 gulp
 </code></pre><h2 id="important-gulp-tasks">Important gulp tasks</h2>
 				<ul>
-					<li><code>gulp default</code> -&gt; Build the whole project (css, templates, typescript, ...)</li>
-					<li><code>gulp compile</code> -&gt; Build only the typescript code and generate it&#39;s output in the <code>./bin</code> folder</li>
-					<li><code>gulp css</code> -&gt; Build only the sass code and generate it&#39;s output in the <code>./bin</code> folder</li>
-					<li><code>gulp sprites</code> -&gt; Regenerate the sprites image as well as the generated sass/css code.</li>
+					<li><code>gulp default</code> -&gt; Build the whole project (CSS, templates, TypeScript, ...).</li>
+					<li><code>gulp compile</code> -&gt; Build only the TypeScript code and generate its output in the <code>./bin</code> folder.</li>
+					<li><code>gulp css</code> -&gt; Build only the Sass code and generate its output in the <code>./bin</code> folder.</li>
+					<li><code>gulp sprites</code> -&gt; Regenerate the sprites image as well as the generated Sass/CSS code.</li>
 					<li><code>gulp test</code> -&gt; Build and run the unit tests.</li>
-					<li><code>gulp doc</code> -&gt; Generate the documentation website for the project</li>
+					<li><code>gulp doc</code> -&gt; Generate the documentation website for the project.</li>
 				</ul>
 				<h2 id="dev">Dev</h2>
-				<p>Ensure that you were able to run <code>gulp</code> completely without any error first. Then you can start the dev-server.</p>
-				<pre><code><span class="hljs-attribute">gulp</span> dev
+				<p>Ensure that you were able to run <code>gulp</code> completely without any errors first. Then you can start the dev-server.</p>
+				<pre><code><span class="hljs-attribute">gulp dev</span>
 </code></pre><p>This will start a <a href="https://webpack.github.io/docs/webpack-dev-server.html">webpack-dev-server instance</a>.
-				Load <a href="http://localhost:8080/index.html">http://localhost:8080/index.html</a> in a web browser.</p>
+				Load <a href="http://localhost:8080/Index.html">http://localhost:8080/Index.html</a> in a web browser.</p>
 				<p>Any time you hit save in a source file, the bundle will be recompiled, and the dev page will reload.</p>
-				<p>If you need to modify the content of the search page (the markup itself and not the typescript code), modify the Index.html page under <code>./bin</code>. This page is not committed in the repository, so don&#39;t be afraid to break anything. However, if you need to modify the original <code>Index.html</code> for a good reason, feel free to do so.</p>
+				<p>If you need to modify the content of the search page (the markup itself and not the TypeScript code), modify the Index.html page under <code>./bin</code>. This page is not committed in the repository, so don&#39;t be afraid to break anything. However, if you need to modify the original <code>Index.html</code> for a good reason, feel free to do so.</p>
+				<h2 id="build-a-custom-version-of-the-library-">Build a custom version of the library.</h2>
+				<p>For advanced users and people concerned with loading speed in their integration, there is a way to compile a completely customized version of the library by including only the components you wish to use.</p>
+				<p>A classic use case would be someone wanting to display only a search box with a minimal result list, with no facets, tabs, or any other more &quot;advanced&quot; components.</p>
+				<p>By building a bundle with only those components, you can cut down the size of the resulting JavaScript code by a substantial amount, without having to include useless code related to components you do not use.</p>
+				<ol>
+					<li>Install <a href="https://github.com/amwmedia/plop">plop</a> globally with <code>npm install -g plop</code></li>
+					<li>Change directory to <code>./plop</code></li>
+					<li>Run <code>plop</code> to automatically start the small command line utility, choose the &quot;Create a new bundle&quot; option, and choose the components you wish to include in your bundle.</li>
+					<li>Run <code>node plop.build.js</code> to compile the file created in <code>./bin/</code>.</li>
+					<li>Once compilation finished, your new bundle should be available in <code>./bin/CoveoJsSearch.Custom.js</code></li>
+				</ol>
 				<h3 id="i-want-to-add-a-new-component-">I want to add a new component !</h3>
 				<p>First, fork our repo.</p>
-				<ul>
-					<li>Create a new folder under <code>./src/ui/</code> that match the name of your component. Then, create a <code>.ts</code> file that match the same name.</li>
-					<li>Add your file to the <code>.tsconfig.json</code></li>
-					<li>Create the basic scaffolding of your component. For example copy SearchButton (a very simple component), and change it&#39;s ID + various imports</li>
-					<li>Export the class associated with your component in <code>./src/Index.ts</code> so that it&#39;s available in the global scope.</li>
-					<li>Make it work ! (your mileage may vary)</li>
-				</ul>
-				<p>Now, add tests for your component</p>
-				<ul>
-					<li>Create a new file matching your component name under <code>./test/ui</code></li>
-					<li>Follow the same pattern that other components use (Copy SearchButton, for example). </li>
-					<li>You should try to test all public API of your component : This means all public methods as well as all available options.</li>
-					<li>Reference your test file in <code>./test/Test.ts</code>.</li>
-				</ul>
-				<p>Create a pull request to merge your changes in the master branch.</p>
-				<p>We are very eager to receive external contributions as well as collaborating with other developers !</p>
+				<ol>
+					<li>Install <a href="https://github.com/amwmedia/plop">plop</a> globally with <code>npm install -g plop</code></li>
+					<li>Change directory to <code>./plop</code></li>
+					<li>Run <code>plop</code> to automatically start the small command line utility, choose the &quot;Create a new component&quot; option, and choose the component name.</li>
+					<li>This will automatically generate 4 things :<ul>
+							<li>Plop will create a new source file under <code>./src/ui/{{your component name}}/{{your component name}}.ts</code>. This is where your component logic should be implemented.</li>
+							<li>Plop will export your component in <code>./src/Index.ts</code>. This will make it globally available under the Coveo namespace.</li>
+							<li>Plop will add your component to <code>./tsconfig.json</code>. This will make it so it&#39;s recognized by the project.</li>
+							<li>Plop will create a new file under <code>./test/ui/{{your component name}}Test.ts</code>. This is a blank test file, and where you should add your UT.</li>
+							<li>Plop will reference your component in <code>./test/Test.ts</code>. This will build your test like the rest of the components.</li>
+						</ul>
+					</li>
+					<li>Now, make it work ! (your mileage may vary).</li>
+					<li>Add tests for your component</li>
+					<li>You should test the entire public API of your component : This means all public methods as well as all available options.</li>
+					<li>Create a pull request to merge your changes in the master branch.</li>
+				</ol>
+				<p>We are very eager to receive external contributions as well as collaborating with other developers!</p>
 				<h3 id="tests">Tests</h3>
-				<p>Tests are written with <a href="http://jasmine.github.io/2.4/introduction.html">jasmine</a>. To run them you can either call <code>npm run test</code> to run tests in phantom js, or open <code>./test/SpecRunner.html</code> in a web browser and easier debugging.</p>
-				<p>To rebuild tests : <code>gulp buildTest</code></p>
-				<p>To rebuild and run tests : <code>gulp test</code></p>
-				<p>NB : Calling <code>gulp test</code> does <em>NOT</em> rebuild the main library code. If you change any code under <code>./src</code>, you must first recompile using <code>gulp compile</code></p>
+				<p>Tests are written using <a href="http://jasmine.github.io/2.4/introduction.html">Jasmine</a>. To run them you call <code>npm run test</code> to run tests in PhantomJS.</p>
+				<p>If you wish to write new UT, you can do so by starting a new <a href="https://webpack.github.io/docs/webpack-dev-server.html">webpack-dev-server instance</a>.</p>
+				<p>To start the server execute <code>gulp devTest</code>.</p>
+				<p>Load <a href="http://localhost:8081/tests/SpecRunner.html">http://localhost:8081/tests/SpecRunner.html</a>.</p>
+				<p>Every time you hit save in a source file, the dev server will reload and re-execute your tests.</p>
+				<p>The code coverage will be reported in <code>./bin/coverage</code></p>
 				<h2 id="documentation">Documentation</h2>
-				<p>Generated using typedoc. Available <a href="https://coveo.github.io/search-ui/">here</a></p>
+				<p>Generated using TypeDoc. Available <a href="https://coveo.github.io/search-ui/">here</a>.</p>
+				<p>Hand written documentation with more examples available <a href="https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Home">here</a></p>
+				<p>You can also reach <a href="https://search.coveo.com">search.coveo.com</a> to search for a particular issue and/or question.</p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -187,6 +239,9 @@ gulp
 						<a href="components/pager.html" class="tsd-kind-icon">Pager</a>
 					</li>
 					<li class=" tsd-kind-class tsd-kind-coveo-component">
+						<a href="components/preferencespanel.html" class="tsd-kind-icon">Preferences<wbr>Panel</a>
+					</li>
+					<li class=" tsd-kind-class tsd-kind-coveo-component">
 						<a href="components/queryduration.html" class="tsd-kind-icon">Query<wbr>Duration</a>
 					</li>
 					<li class=" tsd-kind-class tsd-kind-coveo-component">
@@ -218,6 +273,9 @@ gulp
 					</li>
 					<li class=" tsd-kind-class tsd-kind-coveo-component">
 						<a href="components/resultsfilterspreferences.html" class="tsd-kind-icon">Results<wbr>Filters<wbr>Preferences</a>
+					</li>
+					<li class=" tsd-kind-class tsd-kind-coveo-component">
+						<a href="components/resultsperpage.html" class="tsd-kind-icon">Results<wbr>Per<wbr>Page</a>
 					</li>
 					<li class=" tsd-kind-class tsd-kind-coveo-component">
 						<a href="components/resultspreferences.html" class="tsd-kind-icon">Results<wbr>Preferences</a>
@@ -259,6 +317,9 @@ gulp
 						<a href="classes/badge.html" class="tsd-kind-icon">Badge</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="classes/basecomponent.html" class="tsd-kind-icon">Base<wbr>Component</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/cell.html" class="tsd-kind-icon">Cell</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -275,6 +336,9 @@ gulp
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/expressionbuilder.html" class="tsd-kind-icon">Expression<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/facetrange.html" class="tsd-kind-icon">Facet<wbr>Range</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/facetsearch.html" class="tsd-kind-icon">Facet<wbr>Search</a>
@@ -313,6 +377,9 @@ gulp
 						<a href="classes/querycontroller.html" class="tsd-kind-icon">Query<wbr>Controller</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="classes/queryevents.html" class="tsd-kind-icon">Query<wbr>Events</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/querystatemodel.html" class="tsd-kind-icon">Query<wbr>State<wbr>Model</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -323,6 +390,12 @@ gulp
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/searchinterface.html" class="tsd-kind-icon">Search<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/templatecache.html" class="tsd-kind-icon">Template<wbr>Cache</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/templatehelpers.html" class="tsd-kind-icon">Template<wbr>Helpers</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external tsd-is-not-exported">
 						<a href="interfaces/basejqueryeventobject.html" class="tsd-kind-icon">BaseJQuery<wbr>Event<wbr>Object</a>
@@ -343,6 +416,9 @@ gulp
 						<a href="interfaces/ibreadcrumbitem.html" class="tsd-kind-icon">IBreadcrumb<wbr>Item</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/ibuildingqueryeventargs.html" class="tsd-kind-icon">IBuilding<wbr>Query<wbr>Event<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/icomponentbindings.html" class="tsd-kind-icon">IComponent<wbr>Bindings</a>
 					</li>
 					<li class=" tsd-kind-interface">
@@ -353,6 +429,12 @@ gulp
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/icorehelpers.html" class="tsd-kind-icon">ICore<wbr>Helpers</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/idonebuildingqueryeventargs.html" class="tsd-kind-icon">IDone<wbr>Building<wbr>Query<wbr>Event<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/iduringqueryeventargs.html" class="tsd-kind-icon">IDuring<wbr>Query<wbr>Event<wbr>Args</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/iendpointcalloptions.html" class="tsd-kind-icon">IEndpoint<wbr>Call<wbr>Options</a>
@@ -370,6 +452,9 @@ gulp
 						<a href="interfaces/iextension.html" class="tsd-kind-icon">IExtension</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/ifetchmoresuccesseventargs.html" class="tsd-kind-icon">IFetch<wbr>More<wbr>Success<wbr>Event<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/ifielddescription.html" class="tsd-kind-icon">IField<wbr>Description</a>
 					</li>
 					<li class=" tsd-kind-interface">
@@ -377,6 +462,12 @@ gulp
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/igroupbyrequest.html" class="tsd-kind-icon">IGroup<wbr>ByRequest</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/igroupbyresult.html" class="tsd-kind-icon">IGroup<wbr>ByResult</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/igroupbyvalue.html" class="tsd-kind-icon">IGroup<wbr>ByValue</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/iimageutilsoptions.html" class="tsd-kind-icon">IImage<wbr>Utils<wbr>Options</a>
@@ -391,7 +482,19 @@ gulp
 						<a href="interfaces/ilistfieldvaluesrequest.html" class="tsd-kind-icon">IList<wbr>Field<wbr>Values<wbr>Request</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/inewqueryeventargs.html" class="tsd-kind-icon">INew<wbr>Query<wbr>Event<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/inoresultseventargs.html" class="tsd-kind-icon">INo<wbr>Results<wbr>Event<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/ipopulatebreadcrumbeventargs.html" class="tsd-kind-icon">IPopulate<wbr>Breadcrumb<wbr>Event<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ipreprocessmoreresultseventargs.html" class="tsd-kind-icon">IPreprocess<wbr>More<wbr>Results<wbr>Event<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ipreprocessresultseventargs.html" class="tsd-kind-icon">IPreprocess<wbr>Results<wbr>Event<wbr>Args</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/iquery.html" class="tsd-kind-icon">IQuery</a>
@@ -401,6 +504,9 @@ gulp
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/iquerycorrection.html" class="tsd-kind-icon">IQuery<wbr>Correction</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/iqueryerroreventargs.html" class="tsd-kind-icon">IQuery<wbr>Error<wbr>Event<wbr>Args</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/iqueryexception.html" class="tsd-kind-icon">IQuery<wbr>Exception</a>
@@ -416,6 +522,9 @@ gulp
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/iqueryresults.html" class="tsd-kind-icon">IQuery<wbr>Results</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/iquerysuccesseventargs.html" class="tsd-kind-icon">IQuery<wbr>Success<wbr>Event<wbr>Args</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/irangevalue.html" class="tsd-kind-icon">IRange<wbr>Value</a>
@@ -470,6 +579,9 @@ gulp
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/itaggingrequest.html" class="tsd-kind-icon">ITagging<wbr>Request</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/itemplatehelperfunction.html" class="tsd-kind-icon">ITemplate<wbr>Helper<wbr>Function</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/itopqueries.html" class="tsd-kind-icon">ITop<wbr>Queries</a>
