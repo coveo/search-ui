@@ -154,7 +154,7 @@ export class Matrix extends Component {
     enableHoverPreview: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies the criteria to use to sort the results of the hover preview.<br/>
-     * The available sort criteria values are the same as those of the {@link Query}.
+     * The available sort criteria values are the same as those of the {@link IQuery}.
      * Possible values are :
      * <ul>
      *    <li> relevancy :  This uses all the configured ranking weights as well as any specified ranking expressions to rank results.</li>

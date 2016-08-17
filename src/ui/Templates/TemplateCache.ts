@@ -3,13 +3,24 @@ import {Assert} from '../../misc/Assert';
 import {UnderscoreTemplate} from './UnderscoreTemplate';
 import {HtmlTemplate} from './HtmlTemplate';
 
+/**
+ * Holds a reference to all template available in the framework
+ */
 export class TemplateCache {
   private static templates: { [templateName: string]: Template; } = {};
   private static templateNames: string[] = [];
   private static defaultTemplates: { [templateName: string]: Template; } = {};
 
+
   public static registerTemplate(name: string, template: Template, publicTemplate?: boolean, defaultTemplate?: boolean);
   public static registerTemplate(name: string, template: (data: {}) => string, publicTemplate?: boolean, defaultTemplate?: boolean);
+  /**
+   * Register a new template in the framework, which will be available to render any results.
+   * @param name
+   * @param template
+   * @param publicTemplate
+   * @param defaultTemplate
+   */
   public static registerTemplate(name: string, template: any, publicTemplate: boolean = true, defaultTemplate: boolean = false) {
     Assert.isNonEmptyString(name);
     Assert.exists(template);
@@ -28,19 +39,36 @@ export class TemplateCache {
     }
   }
 
+  /**
+   * Return a template by it's name/id.
+   * @param name
+   * @returns {Template}
+   */
   public static getTemplate(name: string): Template {
     Assert.exists(TemplateCache.templates[name]);
     return TemplateCache.templates[name];
   }
 
+  /**
+   * Get all templates currently registered in the framework.
+   * @returns {{}}
+   */
   public static getTemplates(): { [templateName: string]: Template; } {
     return TemplateCache.templates;
   }
 
+  /**
+   * Get all templates name currently registered in the framework.
+   * @returns {string[]}
+   */
   public static getTemplateNames(): string[] {
     return TemplateCache.templateNames;
   }
 
+  /**
+   * Get all the "default" templates in the framework.
+   * @returns {string[]}
+   */
   public static getDefaultTemplates(): string[] {
     return _.keys(TemplateCache.defaultTemplates);
   }

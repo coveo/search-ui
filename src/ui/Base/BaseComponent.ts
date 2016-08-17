@@ -9,14 +9,16 @@ export interface IComponentHtmlElement extends HTMLElement {
   CoveoBoundComponents?: BaseComponent[];
 }
 
+/**
+ * Every component in the framework ultimately inherits from this base component class.
+ */
 export class BaseComponent {
   /**
    * Allows component to log in the dev console
    */
   public logger: Logger;
   /**
-   * A disabled component will be invisible to the end user<br/>
-   * It will also not participate in the query, or listen to {@link ComponentsEvent}
+   * A disabled component will not participate in the query, or listen to {@link ComponentEvents}
    * @type {boolean}
    */
   public disabled = false;
@@ -34,16 +36,30 @@ export class BaseComponent {
     BaseComponent.bindComponentToElement(element, this);
   }
 
+  /**
+   * Return the debug info about this component
+   * @returns {any}
+   */
   public debugInfo() {
     var info: any = {};
     info[this['constructor']['ID']] = this;
     return info;
   }
 
+  /**
+   * Disable the component.
+   * Normally this means that the component won't execute handlers for the framework events (query events, for example).
+   * Component are enabled by default on creation.
+   */
   public disable() {
     this.disabled = true;
   }
 
+  /**
+   * Enable the component.
+   * Normally this means that the component will execute handlers for the framework events (query events, for example).
+   * Components are enabled by default on creation.
+   */
   public enable() {
     this.disabled = false;
   }

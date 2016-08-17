@@ -78,7 +78,7 @@ export class Component extends BaseComponent {
    */
   public searchInterface: SearchInterface;
   /**
-   * A reference to the {@link Analytics.client}. This can be a {@link NoopAnalyticsClient} or a {@link LiveAnalyticsClient}
+   * A reference to the {@link Analytics.client}.
    */
   public usageAnalytics: IAnalyticsClient;
   /**
@@ -89,7 +89,7 @@ export class Component extends BaseComponent {
 
   /**
    * Create a new Component. Resolve all {@link IComponentBindings} if not provided.<br/>
-   * Create a new {@link Logger} for this component.
+   * Create a new Logger for this component.
    * Attach the component to the {@link SearchInterface}<br/>
    * @param element The HTMLElement on which to create the component. Used to bind data on the element.
    * @param type The unique identifier for this component. See : {@link IComponentDefinition.ID}. Used to generate the unique Coveo CSS class associated with every component

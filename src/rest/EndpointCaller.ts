@@ -156,13 +156,17 @@ enum XMLHttpRequestStatus {
 }
 
 /**
- * This class is in charge of calling an endpoint (eg: a {@link SearchEndpoint} or a {@link AnalyticsEndpoint}.<br/>
- * This means it's only uses to execute an XMLHttpRequest (for example), massage the response and check if there are errors.<br/>
- * Will execute the call and return a Promise.<br/>
- * Call using one of those options : <br/>
- * -- XMLHttpRequest for recent browser that support CORS, or if the endpoint is on the same origin.<br/>
- * -- XDomainRequest for older IE browser that do not support CORS.<br/>
- * -- Jsonp if all else fails, or is explicitly enabled.
+ * This class is in charge of calling an endpoint (eg: a {@link SearchEndpoint}).
+ *
+ * This means it's only uses to execute an XMLHttpRequest (for example), massage the response and check if there are errors.
+ *
+ * Will execute the call and return a Promise.
+ *
+ * Call using one of those options :
+ *
+ * * XMLHttpRequest for recent browser that support CORS, or if the endpoint is on the same origin.
+ * * XDomainRequest for older IE browser that do not support CORS.
+ * * Jsonp if all else fails, or is explicitly enabled.
  */
 export class EndpointCaller {
   public logger: Logger;

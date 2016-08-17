@@ -10,6 +10,9 @@ const ini = require('ini');
 
 const urlBase = 'https://coveord.atlassian.net/browse/';
 const projectAcronym = 'JSUI';
+if (!fs.existsSync('.git/config')) {
+  process.exit();
+}
 const gitConfig = ini.parse(fs.readFileSync('.git/config', {encoding: 'utf8'}));
 if (gitConfig.jirahook && gitConfig.jirahook.disable) {
   process.exit();
