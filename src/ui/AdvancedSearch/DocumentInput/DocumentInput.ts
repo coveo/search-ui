@@ -31,8 +31,8 @@ export class DocumentInput implements IAdvancedSearchInput {
     }
   }
 
-  protected onChange(){
-    if(this.element) {
+  protected onChange() {
+    if (this.element) {
       $$(this.element).trigger(AdvancedSearchEvents.executeAdvancedSearch);
     }
   }

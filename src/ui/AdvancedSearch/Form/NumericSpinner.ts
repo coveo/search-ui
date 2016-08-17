@@ -4,7 +4,7 @@ export class NumericSpinner {
 
   private element: HTMLElement;
 
-  constructor(private onChange: () => void = () => {}, public min: number = 0, public max?: number) {
+  constructor(private onChange: () => void = () => { }, public min: number = 0, public max?: number) {
     this.build();
     this.bindEvents();
   }

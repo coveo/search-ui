@@ -55,19 +55,9 @@ export function AdvancedSearchTest() {
       beforeEach(() => {
         test.cmp.inputs = [jasmine.createSpyObj('input', ['build', 'updateQueryState'])]
       })
-
-
-      it('should update the query state model', () => {
-        test.cmp.executeAdvancedSearch();
-        expect(test.cmp.inputs[0].updateQueryState).toHaveBeenCalled();
-      })
       it('should execute a query', () => {
         test.cmp.executeAdvancedSearch();
         expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
-      })
-      it('should close itself', () => {
-        test.cmp.executeAdvancedSearch();
-        expect(test.cmp.element.style.display).toEqual('none');
       })
     })
   })

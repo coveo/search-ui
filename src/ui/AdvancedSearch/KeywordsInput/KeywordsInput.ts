@@ -35,8 +35,8 @@ export class KeywordsInput implements IAdvancedSearchInput {
     }
   }
 
-  protected onChange(){
-    if(this.input) {
+  protected onChange() {
+    if (this.input) {
       $$(this.input.getElement()).trigger(AdvancedSearchEvents.executeAdvancedSearch);
     }
   }

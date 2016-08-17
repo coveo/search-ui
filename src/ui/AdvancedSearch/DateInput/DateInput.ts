@@ -68,14 +68,14 @@ export class DateInput implements IAdvancedSearchInput {
     });
   }
 
-  protected onChange(){
-    if(this.element) {
+  protected onChange() {
+    if (this.element) {
       $$(this.element).trigger(AdvancedSearchEvents.executeAdvancedSearch);
     }
   }
 
   private bindRadioEvent() {
-    $$(this.getRadio()).on('change', ()=>{
+    $$(this.getRadio()).on('change', () => {
       $$(this.element).trigger(AdvancedSearchEvents.executeAdvancedSearch);
     })
   }

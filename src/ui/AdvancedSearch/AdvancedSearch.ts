@@ -8,7 +8,7 @@ import {ISettingsPopulateMenuArgs} from '../Settings/Settings';
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom';
-import {IAdvancedSearchInput, IAdvancedSearchSection} from './AdvancedSearchInput';
+import {IAdvancedSearchInput, IAdvancedSearchDefaultInput, IAdvancedSearchSection} from './AdvancedSearchInput';
 import {AllKeywordsInput} from './KeywordsInput/AllKeywordsInput';
 import {ExactKeywordsInput} from './KeywordsInput/ExactKeywordsInput';
 import {AnyKeywordsInput} from './KeywordsInput/AnyKeywordsInput';
@@ -19,6 +19,7 @@ import {BetweenDateInput} from './DateInput/BetweenDateInput';
 import {SimpleFieldInput} from './DocumentInput/SimpleFieldInput';
 import {SizeInput} from './DocumentInput/SizeInput';
 import {AdvancedFieldInput} from './DocumentInput/AdvancedFieldInput';
+import {AdvancedSearchInputFactory} from './AdvancedSearchInputFactory';
 
 export interface IAdvancedSearchOptions {
   includeKeywords?: boolean;
@@ -57,6 +58,7 @@ export class AdvancedSearch extends Component {
   }
 
   public inputs: IAdvancedSearchInput[] = [];
+  private inputFactory = new AdvancedSearchInputFactory(this.queryController.getEndpoint());
 
   constructor(public element: HTMLElement, public options?: IAdvancedSearchOptions, bindings?: IComponentBindings) {
     super(element, AdvancedSearch.ID, bindings);
@@ -123,46 +125,59 @@ export class AdvancedSearch extends Component {
   private getKeywordsSection(): IAdvancedSearchSection {
     let sectionName = l('Keywords');
     let keywordsInputs = [];
-    keywordsInputs.push(new AllKeywordsInput());
-    keywordsInputs.push(new ExactKeywordsInput());
-    keywordsInputs.push(new AnyKeywordsInput());
-    keywordsInputs.push(new NoneKeywordsInput());
+    keywordsInputs.push(this.inputFactory.createAllKeywordsInput());
+    keywordsInputs.push(this.inputFactory.createExactKeywordsInput());
+    keywordsInputs.push(this.inputFactory.createAnyKeywordsInput());
+    keywordsInputs.push(this.inputFactory.createNoneKeywordsInput());
     return { name: sectionName, inputs: keywordsInputs };
   }
 
   private getDateSection(): IAdvancedSearchSection {
     let sectionName = l('Date');
     let dateInputs = [];
-    dateInputs.push(new AnytimeDateInput());
-    dateInputs.push(new InTheLastDateInput());
-    dateInputs.push(new BetweenDateInput());
+    dateInputs.push(this.inputFactory.createAnytimeDateInput());
+    dateInputs.push(this.inputFactory.createInTheLastDateInput());
+    dateInputs.push(this.inputFactory.createBetweenDateInput());
     return { name: sectionName, inputs: dateInputs };
   }
 
   private getDocumentSection(): IAdvancedSearchSection {
     let sectionName = l('Document');
     let documentInputs = [];
-    documentInputs.push(new SimpleFieldInput(l('FileType'), '@filetype', this.queryController.getEndpoint()));
-    documentInputs.push(new SimpleFieldInput(l('Language'), '@language', this.queryController.getEndpoint()));
-    documentInputs.push(new SizeInput());
-    documentInputs.push(new AdvancedFieldInput(l('Title'), '@title'));
-    documentInputs.push(new AdvancedFieldInput(l('Author'), '@author'));
+    documentInputs.push(this.inputFactory.createSimpleFieldInput(l('FileType'), '@filetype'));
+    documentInputs.push(this.inputFactory.createSimpleFieldInput(l('Language'), '@language'));
+    documentInputs.push(this.inputFactory.createSizeInput());
+    documentInputs.push(this.inputFactory.createAdvancedFieldInput(l('Title'), '@title'));
+    documentInputs.push(this.inputFactory.createAdvancedFieldInput(l('Author'), '@author'));
     return { name: sectionName, inputs: documentInputs };
   }
 
   private buildSection(section: IAdvancedSearchSection): HTMLElement {
-    let sectionHTML = $$('div', { className: 'coveo-advanced-search-section coveo-advanced-search-' + section.name.toLowerCase() + '-section' });
+    let sectionHTML = $$('div', { className: 'coveo-advanced-search-section' });
     let title = $$('div', { className: 'coveo-advanced-search-section-title' });
     title.text(section.name);
     sectionHTML.append(title.el);
+    
+    let sectionInputs = []
+    _.each(section.inputs, (input)=>{
+      sectionInputs.push(this.buildDefaultInput(input));
+    });
 
-    this.inputs = _.union(this.inputs, section.inputs);
+    this.inputs = _.union(this.inputs, sectionInputs);
 
-    _.each(section.inputs, (input) => {
+    _.each(sectionInputs, (input) => {
       sectionHTML.append(input.build());
-    })
+    });
 
     return sectionHTML.el;
+  }
+
+  private buildDefaultInput(input: IAdvancedSearchInput | IAdvancedSearchDefaultInput): IAdvancedSearchInput {
+    let name = (<IAdvancedSearchDefaultInput>input).name
+    if (name) {
+      input = this.inputFactory.create(name);
+    }
+    return <IAdvancedSearchInput>input;
   }
 
   private bindEvents() {

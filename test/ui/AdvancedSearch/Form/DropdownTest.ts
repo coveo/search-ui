@@ -8,7 +8,7 @@ export function DropdownTest() {
 
     beforeEach(function () {
       values = ['one', 'two', 'three']
-      dropdown = new Dropdown(values, 'id');
+      dropdown = new Dropdown(values);
     });
 
     afterEach(function () {

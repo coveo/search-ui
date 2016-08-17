@@ -9,7 +9,7 @@ export class Dropdown {
   private selectedIcon: Dom;
   private options: HTMLElement[] = [];
 
-  constructor(protected listOfValues: string[], private onChange: () => void = () => {}, private getDisplayValue: (string) => string = l) {
+  constructor(protected listOfValues: string[], private onChange: () => void = () => { }, private getDisplayValue: (string) => string = l) {
     this.build();
     this.select(0);
     this.bindEvents();
@@ -59,7 +59,7 @@ export class Dropdown {
   }
 
   protected build() {
-    let dropdown = $$('div', { className: 'coveo-dropdown'});
+    let dropdown = $$('div', { className: 'coveo-dropdown' });
     let button = $$('button', { className: 'coveo-button coveo-dropdown-toggle', type: 'button' });
     button.setAttribute('data-toggle', 'coveo-dropdown');
     this.selected = $$('span', { className: 'coveo-dropdown-selected-value' });

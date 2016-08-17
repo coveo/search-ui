@@ -8,7 +8,7 @@ export class DatePicker {
   private element: HTMLInputElement;
   private picker: Pikaday;
 
-  constructor(private onChange: () => void = ()=>{}) {
+  constructor(private onChange: () => void = () => { }) {
     this.build();
   }
 
@@ -18,7 +18,7 @@ export class DatePicker {
 
   public getValue(): string {
     let date = this.picker.getDate();
-    return date ? DateUtils.dateForQuery(this.picker.getDate()): '';
+    return date ? DateUtils.dateForQuery(this.picker.getDate()) : '';
   }
 
   public setValue(date: Date) {

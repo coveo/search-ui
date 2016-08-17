@@ -1,5 +1,5 @@
 import {KeywordsInput} from '../../../../src/ui/AdvancedSearch/KeywordsInput/KeywordsInput';
-import {QueryStateModel} from '../../../../src/models/QueryStateModel';
+import {QueryBuilder} from '../../../../src/ui/Base/QueryBuilder';
 import * as Mock from '../../../MockEnvironment';
 
 export function KeywordsInputTest() {
@@ -15,23 +15,13 @@ export function KeywordsInputTest() {
       input = null;
     });
 
-    describe('updateQueryState', () => {
-      it('should set the query state q attribute to the input value', () => {
+    describe('updateQuery', () => {
+      it('should add the value in the query builder', () => {
         let value = 'test';
-        let queryState = Mock.mockComponent<QueryStateModel>(QueryStateModel, QueryStateModel.ID);
-        (<jasmine.Spy>queryState.get).and.returnValue('');
+        let queryBuilder = Mock.mock<QueryBuilder>(QueryBuilder);
         input.setValue(value);
-        input.updateQueryState(queryState);
-        expect(queryState.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.q, value)
-      })
-      it('should add the input value to the query state if not empty', () => {
-        let value = 'test';
-        let query = 'query';
-        let queryState = Mock.mockComponent<QueryStateModel>(QueryStateModel, QueryStateModel.ID);
-        (<jasmine.Spy>queryState.get).and.returnValue(query);
-        input.setValue(value);
-        input.updateQueryState(queryState);
-        expect(queryState.set).toHaveBeenCalledWith(QueryStateModel.attributesEnum.q, query + ' (' + value + ')');
+        input.updateQuery(queryBuilder);
+        expect(queryBuilder.advancedExpression.add).toHaveBeenCalledWith(value)
       })
     })
   })

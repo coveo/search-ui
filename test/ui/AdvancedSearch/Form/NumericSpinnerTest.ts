@@ -39,14 +39,16 @@ export function NumericSpinnerTest() {
 
       it('should set the value to min if below min', () => {
         let min = 5;
-        spinner = new NumericSpinner(min);
+        spinner = new NumericSpinner();
+        spinner.min = min;
         spinner.setValue(min - 1);
         expect(spinner.getIntValue()).toEqual(min);
       })
 
       it('should set the value to max if over max', () => {
         let max = 5;
-        spinner = new NumericSpinner(0, max);
+        spinner = new NumericSpinner();
+        spinner.max = max;
         spinner.setValue(max + 1);
         expect(spinner.getIntValue()).toEqual(max);
       })
