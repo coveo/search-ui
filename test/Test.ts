@@ -307,3 +307,6 @@ ValueElementRendererTest();
 
 import {ResultsPerPageTest} from './ui/ResultsPerPageTest';
 ResultsPerPageTest();
+
+import { LogoTest } from './ui/LogoTest';
+LogoTest();

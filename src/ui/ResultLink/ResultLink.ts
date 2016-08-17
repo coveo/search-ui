@@ -17,7 +17,7 @@ import {Defer} from '../../misc/Defer'
 import {$$} from '../../utils/Dom'
 
 /**
- * This component is intended to be placed inside a {@link ResultTemplate}, which itself is used inside a ResultList component.
+ * This component is intended to be placed inside a result template, which itself is used inside a {@link ResultList} component.
  * The ResultLink component automatically transforms a search result title into a clickable link that points to the original document.
  */
 export class ResultLink extends Component {

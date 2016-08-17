@@ -46,7 +46,7 @@ export interface IQueryResult {
   summary: string;
   summaryHighlights: IHighlight[];
   /**
-   * Returned on a document if the {@link Query.debug} was set to true
+   * Returned on a document if the {@link IQuery.debug} was set to true
    */
   rankingInfo: string;
   /**

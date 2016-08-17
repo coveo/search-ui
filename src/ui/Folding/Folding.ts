@@ -62,12 +62,12 @@ export class Folding extends Component {
     field: ComponentOptions.buildFieldOption({ required: true }),
     /**
      * Specifies the field that determines that a result is a child of another top result.<br/>
-     * The default value is <code>@topparentid</code>
+     * The default value is `@topparentid`
      */
     childField: ComponentOptions.buildFieldOption({ defaultValue: '@topparentid' }),
     /**
      * Specifies the field that determines that a result is a top result containing other child results<br/>
-     * The default value is <code>@syscontainsattachmen</code>
+     * The default value is `@syscontainsattachment`
      */
     parentField: ComponentOptions.buildFieldOption({ defaultValue: '@containsattachment' }),
     /**
@@ -77,16 +77,19 @@ export class Folding extends Component {
      */
     range: ComponentOptions.buildNumberOption({ defaultValue: 2, min: 0 }),
     /**
-     * Specifies how the top result and its related child results, following the {@link Sort.sortCriteria} format
-     * (<code>date ascending</code>, <code>@somefield ascending</code>, etc.).<br/>
-     * The default value is <code>none</code>, which means that results are displayed in the order that the index returned them.
+     * Specifies how the top result and its related child results, following the sort criteria format
+     * (`date ascending`, `@somefield ascending`, etc.).
+     *
+     * The default value is `none`, which means that results are displayed in the order that the index returned them.
      */
     rearrange: ComponentOptions.buildCustomOption((value) => Utils.isNonEmptyString(value) ? SortCriteria.parse(value) : null),
     /**
      * Specifies whether to add a callback function on the top result, allowing to make an additional query
-     * to load all the conversation of a given thread.<br/>
-     * Concretely, the {@link ResultFolding} component uses this for its <b>Load full conversation</b> option.<br/>
-     * The default value is <code>true</code>
+     * to load all the conversation of a given thread.
+     *
+     * Concretely, the {@link ResultFolding} component uses this for its <b>Load full conversation</b> option.
+     *
+     * The default value is `true`
      */
     enableExpand: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
@@ -94,8 +97,10 @@ export class Folding extends Component {
      */
     expandExpression: ComponentOptions.buildStringOption({ depend: 'enableExpand' }),
     /**
-     * Specifies the maximum number of expanded results.<br/>
-     * The default value is 100.<br/>
+     * Specifies the maximum number of expanded results.
+     *
+     * The default value is 100.
+     *
      * The minimum value is 1.
      */
     maximumExpandedResults: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1, depend: 'enableExpand' })

@@ -89,7 +89,7 @@ export class FieldValue extends Component {
     displaySeparator: ComponentOptions.buildStringOption({ defaultValue: ', ' }),
     /**
      * Specifies the helper to be used by the FieldValue to display its content.<br/>
-     * A few helpers exist by default (see {@link CoreHelpers}), and new ones can be
+     * A few helpers exist by default (see {@link ICoreHelpers}), and new ones can be
      * custom-created (see {@link TemplateHelpers}).
      */
     helper: ComponentOptions.buildHelperOption(),
