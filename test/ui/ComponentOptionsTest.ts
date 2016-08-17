@@ -193,6 +193,7 @@ export function ComponentOptionsTest() {
           let initOptions = ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' });
           expect(initOptions).toEqual({ myAttr: 'baz', myBool: true, myLocalized: 'Filters in your preferences' });
         });
+
         it('which initializes the options of a component with default values', () => {
           let options = {
             testString: ComponentOptions.buildStringOption({ defaultValue: 'fooBrak' }),
@@ -202,6 +203,7 @@ export function ComponentOptionsTest() {
           let initOptions = ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' });
           expect(initOptions).toEqual({ testString: 'fooBrak', testList: ['fooBrak', 'fooBar'], testObject: { john: 'doe' } });
         });
+
         it('which initializes the options of a component with default function', () => {
           let options = {
             testString: ComponentOptions.buildStringOption({
@@ -223,6 +225,7 @@ export function ComponentOptionsTest() {
           let initOptions = ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' });
           expect(initOptions).toEqual({ testString: 'fooBrak', testList: ['fooBrak', 'fooBar'], testObject: { john: 'doe' } });
         });
+
         it('which initializes a component\'s undefined required option', () => {
           let options = {
             testRequired: ComponentOptions.buildStringOption({
@@ -231,6 +234,7 @@ export function ComponentOptionsTest() {
           };
           expect(() => { ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' }) }).toThrow();
         });
+
         it('which initializes the options of a component with postProcessing', () => {
           let options = {
             myAttr: ComponentOptions.buildStringOption({
@@ -240,9 +244,9 @@ export function ComponentOptionsTest() {
             })
           };
           let initOptions = ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' });
-
           expect(initOptions).toEqual({ myAttr: 'baz foo' });
         });
+
         it('which initializes the options of a component with attrName', () => {
           let options = {
             myAttr: ComponentOptions.buildStringOption({
@@ -252,9 +256,9 @@ export function ComponentOptionsTest() {
             })
           };
           let initOptions = ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' });
-
           expect(initOptions).toEqual({ myAttr: 'baz foo' });
         });
+
         it('which validates a component option with the specified validator', () => {
           let options = {
             testString: ComponentOptions.buildStringOption({
@@ -283,9 +287,9 @@ export function ComponentOptionsTest() {
             })
           };
           let initOptions = ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' }, { testParam: [] });
-
           expect(initOptions).toEqual({ testString: 'fooBrak', testList: ['fooBrak', 'fooBar'] });
         });
+
         it('which validates a required component option with the specified validator', () => {
           let options = {
             myAttr: ComponentOptions.buildStringOption({
@@ -295,7 +299,8 @@ export function ComponentOptionsTest() {
               required: true
             })
           };
-          expect(() => { ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' }) }).toThrow();
+          let initOptions = ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' });
+          expect(initOptions.myAttr).toBeUndefined();
         });
       });
 
@@ -497,8 +502,6 @@ export function ComponentOptionsTest() {
           expect(option.getType()).toBe('HtmlTemplate');
         });
       });
-
     });
-
   });
 }
