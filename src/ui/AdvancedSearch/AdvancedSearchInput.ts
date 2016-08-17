@@ -5,9 +5,9 @@ export interface IAdvancedSearchInput {
   updateQuery: (queryBuilder: QueryBuilder) => void;
 }
 
-export interface IAdvancedSearchDefaultInput {
+export interface IAdvancedSearchPrebuiltInput {
   name: string;
-  options: IFieldInputOptions;
+  options?: IFieldInputOptions;
 }
 
 export interface IFieldInputOptions {
@@ -17,5 +17,5 @@ export interface IFieldInputOptions {
 
 export interface IAdvancedSearchSection {
   name: string,
-  inputs: (IAdvancedSearchInput | IAdvancedSearchDefaultInput)[];
+  inputs: (IAdvancedSearchInput | IAdvancedSearchPrebuiltInput)[];
 }

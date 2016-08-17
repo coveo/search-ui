@@ -18,10 +18,5 @@ export function DatePickerTest() {
       expect(element.tagName.toLowerCase()).toEqual('input');
       expect(element.readOnly).toBe(true);
     })
-
-    it('should set the current date as default', () => {
-      let currentDate = new Date();
-      expect(picker.getValue()).toEqual(DateUtils.dateForQuery(currentDate));
-    })
   })
 }

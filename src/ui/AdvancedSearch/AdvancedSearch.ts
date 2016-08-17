@@ -8,7 +8,7 @@ import {ISettingsPopulateMenuArgs} from '../Settings/Settings';
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom';
-import {IAdvancedSearchInput, IAdvancedSearchDefaultInput, IAdvancedSearchSection} from './AdvancedSearchInput';
+import {IAdvancedSearchInput, IAdvancedSearchPrebuiltInput, IAdvancedSearchSection} from './AdvancedSearchInput';
 import {AllKeywordsInput} from './KeywordsInput/AllKeywordsInput';
 import {ExactKeywordsInput} from './KeywordsInput/ExactKeywordsInput';
 import {AnyKeywordsInput} from './KeywordsInput/AnyKeywordsInput';
@@ -157,9 +157,9 @@ export class AdvancedSearch extends Component {
     let title = $$('div', { className: 'coveo-advanced-search-section-title' });
     title.text(section.name);
     sectionHTML.append(title.el);
-    
+
     let sectionInputs = []
-    _.each(section.inputs, (input)=>{
+    _.each(section.inputs, (input) => {
       sectionInputs.push(this.buildDefaultInput(input));
     });
 
@@ -172,12 +172,16 @@ export class AdvancedSearch extends Component {
     return sectionHTML.el;
   }
 
-  private buildDefaultInput(input: IAdvancedSearchInput | IAdvancedSearchDefaultInput): IAdvancedSearchInput {
-    let name = (<IAdvancedSearchDefaultInput>input).name
-    if (name) {
-      input = this.inputFactory.create(name);
+  private buildDefaultInput(input: IAdvancedSearchInput | IAdvancedSearchPrebuiltInput): IAdvancedSearchInput {
+    if (this.isPrebuiltInput(input)) {
+      return this.inputFactory.create(input.name, input.options);
+    } else {
+      return input;
     }
-    return <IAdvancedSearchInput>input;
+  }
+
+  private isPrebuiltInput(input: IAdvancedSearchInput | IAdvancedSearchPrebuiltInput): input is IAdvancedSearchPrebuiltInput {
+    return (<IAdvancedSearchPrebuiltInput>input).name !== undefined;
   }
 
   private bindEvents() {
