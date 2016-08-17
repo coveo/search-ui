@@ -1,5 +1,5 @@
 import {AdvancedSearch, IAdvancedSearchOptions} from '../../../src/ui/AdvancedSearch/AdvancedSearch';
-import {IAdvancedSearchInput} from '../../../src/ui/AdvancedSearch/AdvancedSearchInput';
+import {IAdvancedSearchInput, IAdvancedSearchPrebuiltInput} from '../../../src/ui/AdvancedSearch/AdvancedSearchInput';
 import {AdvancedSearchEvents, IBuildingAdvancedSearchEventArgs} from '../../../src/events/AdvancedSearchEvents';
 import {SizeInput} from '../../../src/ui/AdvancedSearch/DocumentInput/SizeInput';
 import {QueryBuilder} from '../../../src/ui/Base/QueryBuilder';
@@ -31,12 +31,8 @@ export function AdvancedSearchTest() {
           queryBuilder.advancedExpression.add('test');
         }
       }
-      $$(test.env.element).on(AdvancedSearchEvents.buildingAdvancedSearch, (e: Event, data: IBuildingAdvancedSearchEventArgs) => {
-        data.sections.push({
-          name: 'custom',
-          inputs: [customInput]
-        });
-      })
+
+      onBuildingSearch(customInput);
 
       test = Mock.advancedComponentSetup<AdvancedSearch>(AdvancedSearch, new Mock.AdvancedComponentSetupOptions(test.env.element));
 
@@ -49,12 +45,7 @@ export function AdvancedSearchTest() {
         name: 'document_size'
       }
 
-      $$(test.env.element).on(AdvancedSearchEvents.buildingAdvancedSearch, (e: Event, data: IBuildingAdvancedSearchEventArgs) => {
-        data.sections.push({
-          name: 'custom',
-          inputs: [customInput]
-        });
-      })
+      onBuildingSearch(customInput);
 
       test = Mock.advancedComponentSetup<AdvancedSearch>(AdvancedSearch, new Mock.AdvancedComponentSetupOptions(test.env.element, {
         includeKeywords: false,
@@ -68,7 +59,7 @@ export function AdvancedSearchTest() {
       expect(sizeInput).toBeDefined();
     })
 
-    it('can create prebuilt inputs with options', ()=>{
+    it('can create prebuilt inputs with options', () => {
       let customInput = {
         name: 'document_field',
         options: {
@@ -77,12 +68,7 @@ export function AdvancedSearchTest() {
         }
       }
 
-      $$(test.env.element).on(AdvancedSearchEvents.buildingAdvancedSearch, (e: Event, data: IBuildingAdvancedSearchEventArgs) => {
-        data.sections.push({
-          name: 'custom',
-          inputs: [customInput]
-        });
-      })
+      onBuildingSearch(customInput);
 
       test = Mock.advancedComponentSetup<AdvancedSearch>(AdvancedSearch, new Mock.AdvancedComponentSetupOptions(test.env.element, {
         includeKeywords: false,
@@ -141,9 +127,19 @@ export function AdvancedSearchTest() {
 
     function getSection(section: string) {
       let sectionsTitle = $$(test.cmp.element).findAll('.coveo-advanced-search-section-title');
-      return _.find(sectionsTitle, (title) => {
+      let title = _.find(sectionsTitle, (title) => {
         return title.innerText == section
-      }).parentElement
+      })
+      return title ? title.parentElement : undefined;
+    }
+
+    function onBuildingSearch(input: IAdvancedSearchInput | IAdvancedSearchPrebuiltInput) {
+      $$(test.env.element).on(AdvancedSearchEvents.buildingAdvancedSearch, (e: Event, data: IBuildingAdvancedSearchEventArgs) => {
+        data.sections.push({
+          name: 'custom',
+          inputs: [input]
+        });
+      })
     }
   })
 }
