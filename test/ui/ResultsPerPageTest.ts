@@ -33,7 +33,7 @@ export function ResultsPerPageTest() {
     });
 
     describe('exposes options', function () {
-      it('numberOfResults allows to choose the number of results per page options', function () {
+      it('choicesDisplayed allows to choose the number of results per page options', function () {
         test = Mock.optionsComponentSetup<ResultsPerPage, IResultsPerPageOptions>(ResultsPerPage, {
           choicesDisplayed: [15, 25, 35, 75]
         });
@@ -42,6 +42,18 @@ export function ResultsPerPageTest() {
         });
         expect($$(test.cmp.element).findAll('a.coveo-results-per-page-list-item-text').length).toBe(4);
         expect(test.env.queryController.options.resultsPerPage).toBe(15);
+      });
+
+      it('initialChoice allows to choose the first choice of the number of results per page options', function () {
+        test = Mock.optionsComponentSetup<ResultsPerPage, IResultsPerPageOptions>(ResultsPerPage, {
+          initialChoice: 13,
+          choicesDisplayed: [3, 5, 7, 13]
+        });
+        Simulate.query(test.env, {
+          results: FakeResults.createFakeResults(1000)
+        });
+        expect($$(test.cmp.element).findAll('a.coveo-results-per-page-list-item-text').length).toBe(4);
+        expect(test.env.queryController.options.resultsPerPage).toBe(13);
       });
     });
   })

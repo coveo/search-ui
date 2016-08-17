@@ -9,6 +9,7 @@ import {$$} from '../../utils/Dom'
 
 export interface IResultsPerPageOptions {
   choicesDisplayed?: number[];
+  initialChoice?: number;
 }
 
 /**
@@ -31,7 +32,13 @@ export class ResultsPerPage extends Component {
         return parseInt(value, 10);
       });
       return values.length == 0 ? null : values;
-    }, { defaultValue: [10, 25, 50, 100] })
+    }, { defaultValue: [10, 25, 50, 100] }),
+    /**
+     * Specifies the default value for the number of results to display per page.<br/>
+     * A value of 0 will select the first choice of the list.
+     * The default value is 0.
+     */
+    initialChoice: ComponentOptions.buildNumberOption({ defaultValue: 0 })
   };
 
   private currentResultsPerPage: number;
@@ -50,7 +57,7 @@ export class ResultsPerPage extends Component {
   constructor(public element: HTMLElement, public options?: IResultsPerPageOptions, bindings?: IComponentBindings) {
     super(element, ResultsPerPage.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultsPerPage, options);
-    this.currentResultsPerPage = this.options.choicesDisplayed[0];
+    this.currentResultsPerPage = this.options.initialChoice != 0 ? this.options.initialChoice : this.options.choicesDisplayed[0];
     this.queryController.options.resultsPerPage = this.currentResultsPerPage;
 
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
