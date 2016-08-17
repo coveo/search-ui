@@ -54,6 +54,30 @@ export function ResultsPerPageTest() {
         });
         expect(test.env.queryController.options.resultsPerPage).toBe(13);
       });
+
+      it('initialChoice allows to be undefined to set the first of the choicesDisplayed as default', function () {
+        let firstChoice = 3;
+        test = Mock.optionsComponentSetup<ResultsPerPage, IResultsPerPageOptions>(ResultsPerPage, {
+          initialChoice: undefined,
+          choicesDisplayed: [firstChoice, 5, 7, 13]
+        });
+        Simulate.query(test.env, {
+          results: FakeResults.createFakeResults(1000)
+        });
+        expect(test.env.queryController.options.resultsPerPage).toBe(firstChoice);
+      });
+
+      it('initialChoice allows a value that is not in displayed', function () {
+        let aChoiceNotDisplayed = 15;
+        test = Mock.optionsComponentSetup<ResultsPerPage, IResultsPerPageOptions>(ResultsPerPage, {
+          initialChoice: aChoiceNotDisplayed,
+          choicesDisplayed: [3, 5, 7, 13]
+        });
+        Simulate.query(test.env, {
+          results: FakeResults.createFakeResults(1000)
+        });
+        expect(test.env.queryController.options.resultsPerPage).toBe(aChoiceNotDisplayed);
+      });
     });
   })
 }

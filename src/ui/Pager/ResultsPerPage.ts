@@ -35,10 +35,9 @@ export class ResultsPerPage extends Component {
     }, { defaultValue: [10, 25, 50, 100] }),
     /**
      * Specifies the default value for the number of results to display per page.<br/>
-     * A value of 0 will select the first choice of the list.
-     * The default value is 0.
+     * The default value is the first value of the choicesDisplayed parameter.
      */
-    initialChoice: ComponentOptions.buildNumberOption({ defaultValue: 0 })
+    initialChoice: ComponentOptions.buildNumberOption()
   };
 
   private currentResultsPerPage: number;
@@ -57,8 +56,13 @@ export class ResultsPerPage extends Component {
   constructor(public element: HTMLElement, public options?: IResultsPerPageOptions, bindings?: IComponentBindings) {
     super(element, ResultsPerPage.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultsPerPage, options);
-    this.currentResultsPerPage = this.options.initialChoice != 0 ? this.options.initialChoice : this.options.choicesDisplayed[0];
+
+    this.currentResultsPerPage = this.options.initialChoice !== undefined ? this.options.initialChoice : this.options.choicesDisplayed[0];
     this.queryController.options.resultsPerPage = this.currentResultsPerPage;
+
+    if (this.options.choicesDisplayed.indexOf(this.currentResultsPerPage) < 0) {
+      this.logger.warn('The initial number of results is not within the choices displayed. Consider setting a value that can be selected.');
+    }
 
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.queryError, () => this.handleQueryError());
