@@ -52,7 +52,6 @@ export function ResultsPerPageTest() {
         Simulate.query(test.env, {
           results: FakeResults.createFakeResults(1000)
         });
-        expect($$(test.cmp.element).findAll('a.coveo-results-per-page-list-item-text').length).toBe(4);
         expect(test.env.queryController.options.resultsPerPage).toBe(13);
       });
     });
