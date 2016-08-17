@@ -69,7 +69,6 @@ export class AdvancedSearch extends Component {
    * Launch the advanced search query.
    */
   public executeAdvancedSearch() {
-    this.updateQueryStateModel();
     this.queryController.executeQuery();
   }
 
@@ -166,14 +165,6 @@ export class AdvancedSearch extends Component {
     return sectionHTML.el;
   }
 
-  private updateQueryStateModel() {
-    _.each(this.inputs, (input) => {
-      if (input.updateQueryState) {
-        input.updateQueryState(this.queryStateModel);
-      }
-    })
-  }
-
   private bindEvents() {
     this.bind.onRootElement(SettingsEvents.settingsPopulateMenu, (args: ISettingsPopulateMenuArgs) => {
       args.menuData.push({
@@ -190,6 +181,10 @@ export class AdvancedSearch extends Component {
           input.updateQuery(data.queryBuilder);
         }
       })
+    })
+
+    this.bind.onRootElement(AdvancedSearchEvents.executeAdvancedSearch, () => {
+      this.executeAdvancedSearch();
     })
   }
 

@@ -6,4 +6,5 @@ export interface IBuildingAdvancedSearchEventArgs {
 
 export class AdvancedSearchEvents {
   public static buildingAdvancedSearch = 'buildingAdvancedSearch';
+  public static executeAdvancedSearch = 'executeAdvancedSearch';
 }

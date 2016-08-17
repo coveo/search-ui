@@ -8,7 +8,7 @@ export class DatePicker {
   private element: HTMLInputElement;
   private picker: Pikaday;
 
-  constructor() {
+  constructor(private onChange: () => void = ()=>{}) {
     this.build();
   }
 
@@ -17,7 +17,8 @@ export class DatePicker {
   }
 
   public getValue(): string {
-    return DateUtils.dateForQuery(this.picker.getDate());
+    let date = this.picker.getDate();
+    return date ? DateUtils.dateForQuery(this.picker.getDate()): '';
   }
 
   public setValue(date: Date) {
@@ -27,8 +28,10 @@ export class DatePicker {
   private build() {
     this.element = <HTMLInputElement>$$('input', { className: 'coveo-button' }).el;
     this.element.readOnly = true;
-    this.picker = new Pikaday({ field: this.element });
-    this.setValue(new Date());
+    this.picker = new Pikaday({
+      field: this.element,
+      onSelect: this.onChange
+    });
     return this.element;
   }
 }

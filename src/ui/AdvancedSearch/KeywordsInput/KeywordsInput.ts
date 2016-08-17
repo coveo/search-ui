@@ -1,7 +1,8 @@
 import {IAdvancedSearchInput} from '../AdvancedSearchInput';
-import {QueryStateModel} from '../../../models/QueryStateModel';
 import {TextInput} from '../Form/TextInput';
-import {l} from '../../../strings/Strings';
+import {QueryBuilder} from '../../Base/QueryBuilder';
+import {AdvancedSearchEvents} from '../../../events/AdvancedSearchEvents';
+import {$$} from '../../../utils/Dom';
 
 export class KeywordsInput implements IAdvancedSearchInput {
 
@@ -11,7 +12,7 @@ export class KeywordsInput implements IAdvancedSearchInput {
   }
 
   public build(): HTMLElement {
-    this.input = new TextInput(this.inputName);
+    this.input = new TextInput(this.inputName, this.onChange.bind(this));
     return this.input.getElement();
   }
 
@@ -27,13 +28,16 @@ export class KeywordsInput implements IAdvancedSearchInput {
     this.input.setValue('');
   }
 
-  public updateQueryState(queryState: QueryStateModel) {
-    let query = queryState.get(QueryStateModel.attributesEnum.q);
+  public updateQuery(queryBuilder: QueryBuilder) {
     let value = this.getValue();
     if (value) {
-      query += query ? ' (' + value + ')' : value;
+      queryBuilder.advancedExpression.add(value);
     }
-    queryState.set(QueryStateModel.attributesEnum.q, query);
-    this.clear();
+  }
+
+  protected onChange(){
+    if(this.input) {
+      $$(this.input.getElement()).trigger(AdvancedSearchEvents.executeAdvancedSearch);
+    }
   }
 }

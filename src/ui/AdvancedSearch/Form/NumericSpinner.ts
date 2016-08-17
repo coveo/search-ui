@@ -4,7 +4,7 @@ export class NumericSpinner {
 
   private element: HTMLElement;
 
-  constructor(public min: number = 0, public max?: number) {
+  constructor(private onChange: () => void = () => {}, public min: number = 0, public max?: number) {
     this.build();
     this.bindEvents();
   }
@@ -29,6 +29,7 @@ export class NumericSpinner {
       value = this.min;
     }
     this.getSpinnerInput().value = value.toString();
+    this.onChange();
   }
 
   private build() {
@@ -49,12 +50,19 @@ export class NumericSpinner {
   private bindEvents() {
     let up = $$(this.element).find('.coveo-spinner-up');
     $$(up).on('click', () => {
-      this.setValue(this.getIntValue() + 1)
+      this.setValue(this.getFloatValue() + 1)
     })
 
     let down = $$(this.element).find('.coveo-spinner-down');
     $$(down).on('click', () => {
-      this.setValue(this.getIntValue() - 1);
+      this.setValue(this.getFloatValue() - 1);
+    })
+
+    let numberInput = <HTMLInputElement>$$(this.element).find('input');
+    $$(numberInput).on('input', () => {
+      if (numberInput.value.match(/[0-9]*/)) {
+        this.onChange();
+      }
     })
   }
 

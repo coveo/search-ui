@@ -2,8 +2,11 @@ import {IAdvancedSearchInput} from '../AdvancedSearchInput';
 import {QueryBuilder} from '../../Base/QueryBuilder';
 import {l} from '../../../strings/Strings';
 import {$$} from '../../../utils/Dom';
+import {AdvancedSearchEvents} from '../../../events/AdvancedSearchEvents';
 
 export class DocumentInput implements IAdvancedSearchInput {
+
+  protected element: HTMLElement
 
   constructor(public inputName: string) {
   }
@@ -13,7 +16,8 @@ export class DocumentInput implements IAdvancedSearchInput {
     let label = $$('span', { className: 'coveo-advanced-search-label' });
     label.text(this.inputName);
     documentInput.append(label.el);
-    return documentInput.el;
+    this.element = documentInput.el;
+    return this.element;
   }
 
   public getValue(): string {
@@ -24,6 +28,12 @@ export class DocumentInput implements IAdvancedSearchInput {
     let value = this.getValue();
     if (value) {
       queryBuilder.advancedExpression.add(this.getValue());
+    }
+  }
+
+  protected onChange(){
+    if(this.element) {
+      $$(this.element).trigger(AdvancedSearchEvents.executeAdvancedSearch);
     }
   }
 }

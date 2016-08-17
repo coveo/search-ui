@@ -4,7 +4,7 @@ export class TextInput {
 
   private element: HTMLElement;
 
-  constructor(private label?: string) {
+  constructor(private label?: string, private onChange: () => void = () => {}) {
     this.build();
   }
 
@@ -23,6 +23,11 @@ export class TextInput {
   private build() {
     let container = $$('div', { className: 'coveo-input' });
     let input = $$('input', { type: 'text' });
+    input.on(['keydown', 'blur'], (e: Event)=>{
+      if (e instanceof KeyboardEvent && e.keyCode == 13 || e.type == 'blur') {
+        this.onChange();
+      }
+    });
     (<HTMLInputElement>input.el).required = true;
     container.append(input.el);
     if (this.label) {

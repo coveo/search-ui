@@ -34,7 +34,7 @@ export class SimpleFieldInput extends DocumentInput {
       _.each(values, (value: IIndexFieldValue) => {
         options.push(value.value);
       })
-      this.dropDown = new Dropdown(options, this.inputName, (str: string) => { return FacetUtils.tryToGetTranslatedCaption(this.fieldName, str) });
+      this.dropDown = new Dropdown(options, this.onChange.bind(this), (str: string) => { return FacetUtils.tryToGetTranslatedCaption(this.fieldName, str) });
     });
   }
 

@@ -2,11 +2,12 @@ import {DateInput} from './DateInput';
 import {DatePicker} from '../Form/DatePicker';
 import {l} from '../../../strings/Strings';
 import {$$} from '../../../utils/Dom';
+import {AdvancedSearchEvents} from '../../../events/AdvancedSearchEvents';
 
 export class BetweenDateInput extends DateInput {
 
-  public firstDatePicker: DatePicker = new DatePicker();
-  public secondDatePicker: DatePicker = new DatePicker();
+  public firstDatePicker: DatePicker = new DatePicker(this.onChange.bind(this));
+  public secondDatePicker: DatePicker = new DatePicker(this.onChange.bind(this));
 
   constructor() {
     super(l('Between'));
@@ -18,11 +19,7 @@ export class BetweenDateInput extends DateInput {
     (<HTMLFieldSetElement>container.el).disabled = true;
 
     container.append(this.firstDatePicker.getElement());
-
-    let and = $$('div', { className: 'coveo-advanced-search-and' });
-    and.text(l('And').toLowerCase());
-    container.append(and.el);
-
+    container.append(this.buildAnd());
     container.append(this.secondDatePicker.getElement());
 
     this.element.appendChild(container.el);
@@ -30,6 +27,21 @@ export class BetweenDateInput extends DateInput {
   }
 
   public getValue(): string {
-    return this.isSelected() ? '(@date>=' + this.firstDatePicker.getValue() + ')(@date<=' + this.secondDatePicker.getValue() + ')' : '';
+    let firstDate = this.firstDatePicker.getValue();
+    let secondDate = this.secondDatePicker.getValue();
+    let query = "";
+    if (firstDate) {
+      query += '(@date>=' + firstDate + ')';
+    }
+    if (secondDate) {
+      query += '(@date<=' + secondDate + ')'
+    }
+    return this.isSelected() ? query : '';
+  }
+
+  private buildAnd(): HTMLElement {
+    let and = $$('div', { className: 'coveo-advanced-search-and' });
+    and.text(l('And').toLowerCase());
+    return and.el;
   }
 }

@@ -1,4 +1,5 @@
 import {IAdvancedSearchInput} from '../AdvancedSearchInput';
+import {AdvancedSearchEvents} from '../../../events/AdvancedSearchEvents';
 import {QueryBuilder} from '../../Base/QueryBuilder';
 import {l} from '../../../strings/Strings';
 import {$$} from '../../../utils/Dom';
@@ -26,6 +27,7 @@ export class DateInput implements IAdvancedSearchInput {
     radioOption.append(label.el);
     date.append(radioOption.el);
     this.element = date.el;
+    this.bindRadioEvent();
     return this.element;
   }
 
@@ -64,6 +66,18 @@ export class DateInput implements IAdvancedSearchInput {
     _.each(elements, (element) => {
       (<HTMLInputElement>element).disabled = false;
     });
+  }
+
+  protected onChange(){
+    if(this.element) {
+      $$(this.element).trigger(AdvancedSearchEvents.executeAdvancedSearch);
+    }
+  }
+
+  private bindRadioEvent() {
+    $$(this.getRadio()).on('change', ()=>{
+      $$(this.element).trigger(AdvancedSearchEvents.executeAdvancedSearch);
+    })
   }
 
 }

@@ -1,5 +1,6 @@
 import {$$, Dom} from '../../../utils/Dom';
 import {l} from '../../../strings/Strings';
+import {AdvancedSearchEvents} from '../../../events/AdvancedSearchEvents';
 
 export class Dropdown {
 
@@ -8,10 +9,14 @@ export class Dropdown {
   private selectedIcon: Dom;
   private options: HTMLElement[] = [];
 
-  constructor(protected listOfValues: string[], private id: string, private getDisplayValue: (string) => string = l) {
+  constructor(protected listOfValues: string[], private onChange: () => void = () => {}, private getDisplayValue: (string) => string = l) {
     this.build();
     this.select(0);
     this.bindEvents();
+  }
+
+  public setId(id: string) {
+    $$(this.element).setAttribute('id', id);
   }
 
   public open() {
@@ -50,10 +55,11 @@ export class Dropdown {
     this.selected.setAttribute('value', value);
     this.selected.text(this.getDisplayValue(value));
     this.close();
+    this.onChange();
   }
 
   protected build() {
-    let dropdown = $$('div', { className: 'coveo-dropdown', id: this.id });
+    let dropdown = $$('div', { className: 'coveo-dropdown'});
     let button = $$('button', { className: 'coveo-button coveo-dropdown-toggle', type: 'button' });
     button.setAttribute('data-toggle', 'coveo-dropdown');
     this.selected = $$('span', { className: 'coveo-dropdown-selected-value' });
