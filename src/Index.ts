@@ -120,3 +120,5 @@ let swapVar = () => {
   }
 }
 swapVar();
+
+export { Logo } from './ui/Logo/Logo';
