@@ -368,6 +368,7 @@
     "test/utils/L10NTest.ts",
     "test/ui/ResultsPerPageTest.ts",
     "src/ui/Logo/Logo.ts",
-    "test/ui/LogoTest.ts"
+    "test/ui/LogoTest.ts",
+    "test/ui/RegisteredNamedMethodsTest.ts"
   ]
 }
