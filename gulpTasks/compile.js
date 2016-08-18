@@ -1,6 +1,6 @@
 'use strict';
 const gulp = require('gulp');
-const exec = require('gulp-exec');
+const run = require('gulp-run');
 const eol = require('gulp-eol');
 const os = require('os');
 const isWindows = os.platform() === 'win32';
@@ -13,14 +13,12 @@ gulp.task('compile', ['addEolDependencies', 'deprecatedDependencies'], function(
   if (isWindows) {
     setEnv += 'set '
   } 
-  exec(setEnv + 'NODE_ENV=production')
-  exec('node node_modules/webpack/bin/webpack.js')
+  return run(setEnv + 'NODE_ENV=production; node node_modules/webpack/bin/webpack.js').exec();
 })
 
 gulp.task('minimize', ['addEolDependencies'], function() {
-  exec(
-  'node node_modules/webpack/bin/webpack.js --minimize'
-)})
+  return run('node node_modules/webpack/bin/webpack.js --minimize').exec();
+})
 
 gulp.task('deprecatedDependencies', function () {
   gulp.src('./src/Dependencies.js')
