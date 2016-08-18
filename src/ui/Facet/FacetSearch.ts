@@ -28,6 +28,7 @@ import {SearchInterface} from '../SearchInterface/SearchInterface';
  * Used by the {@link Facet} component to render and handle the facet search part of each facet.
  */
 export class FacetSearch {
+  static ctr: number = 0;
   public currentlyDisplayedResults: string[];
   public searchResults: HTMLElement;
   public search: HTMLElement;
@@ -53,7 +54,7 @@ export class FacetSearch {
       // Mitigate issues in UT where the window in phantom js might get resized in the scope of another test.
       // These would point to random instance of a test karma object, and not a real search interface.
       if (this.facet instanceof Facet && this.facet.searchInterface instanceof SearchInterface) {
-        if (!this.isMobileDevice() && !this.facet.searchInterface.isSmallInterface()) {
+        if (!this.isMobileDevice() && !this.facet.searchInterface.isSmallInterface() && $$(this.facet.element).hasClass('coveo-facet-searching')) {
           this.positionSearchResults();
         }
       }
@@ -121,6 +122,7 @@ export class FacetSearch {
     this.cancelAnyPendingSearchOperation();
     this.facet.unfadeInactiveValuesInMainList();
     $$(this.searchResults).empty();
+    this.searchResults.style.display = 'none';
     this.moreValuesToFetch = true;
     $$(this.search).removeClass('coveo-facet-search-no-results');
     $$(this.facet.element).removeClass('coveo-facet-searching');
@@ -217,6 +219,7 @@ export class FacetSearch {
 
     this.detectSearchBarAnimation();
     this.root.appendChild(this.searchResults);
+    this.searchResults.id = '' + FacetSearch.ctr++;
     this.searchResults.style.display = 'none';
 
     return this.search;
