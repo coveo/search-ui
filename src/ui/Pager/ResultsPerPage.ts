@@ -9,6 +9,7 @@ import {$$} from '../../utils/Dom'
 
 export interface IResultsPerPageOptions {
   choicesDisplayed?: number[];
+  initialChoice?: number;
 }
 
 /**
@@ -31,7 +32,12 @@ export class ResultsPerPage extends Component {
         return parseInt(value, 10);
       });
       return values.length == 0 ? null : values;
-    }, { defaultValue: [10, 25, 50, 100] })
+    }, { defaultValue: [10, 25, 50, 100] }),
+    /**
+     * Specifies the default value for the number of results to display per page.<br/>
+     * The default value is the first value of the choicesDisplayed parameter.
+     */
+    initialChoice: ComponentOptions.buildNumberOption()
   };
 
   private currentResultsPerPage: number;
@@ -48,7 +54,8 @@ export class ResultsPerPage extends Component {
   constructor(public element: HTMLElement, public options?: IResultsPerPageOptions, bindings?: IComponentBindings) {
     super(element, ResultsPerPage.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultsPerPage, options);
-    this.currentResultsPerPage = this.options.choicesDisplayed[0];
+
+    this.currentResultsPerPage = this.getInitialChoice();
     this.queryController.options.resultsPerPage = this.currentResultsPerPage;
 
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
@@ -74,6 +81,18 @@ export class ResultsPerPage extends Component {
       keepLastSearchUid: true,
       origin: this
     });
+  }
+
+  private getInitialChoice(): number {
+    let initialChoice = this.options.choicesDisplayed[0];
+    if (this.options.initialChoice !== undefined) {
+      if (this.options.choicesDisplayed.indexOf(this.options.initialChoice) > -1) {
+        initialChoice = this.options.initialChoice;
+      } else {
+        this.logger.warn('The initial number of results is not within the choices displayed. Consider setting a value that can be selected. The first choice will be selected instead.');
+      }
+    }
+    return initialChoice;
   }
 
   private initComponent(element: HTMLElement) {
