@@ -28,7 +28,6 @@ import {SearchInterface} from '../SearchInterface/SearchInterface';
  * Used by the {@link Facet} component to render and handle the facet search part of each facet.
  */
 export class FacetSearch {
-  static ctr: number = 0;
   public currentlyDisplayedResults: string[];
   public searchResults: HTMLElement;
   public search: HTMLElement;
@@ -219,7 +218,6 @@ export class FacetSearch {
 
     this.detectSearchBarAnimation();
     this.root.appendChild(this.searchResults);
-    this.searchResults.id = '' + FacetSearch.ctr++;
     this.searchResults.style.display = 'none';
 
     return this.search;
