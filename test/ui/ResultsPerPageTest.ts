@@ -67,16 +67,17 @@ export function ResultsPerPageTest() {
         expect(test.env.queryController.options.resultsPerPage).toBe(firstChoice);
       });
 
-      it('initialChoice allows a value that is not in displayed', function () {
+      it('initialChoice set as a choice not displayed uses the first choice instead', function () {
         let aChoiceNotDisplayed = 15;
+        let firstChoice = 3;
         test = Mock.optionsComponentSetup<ResultsPerPage, IResultsPerPageOptions>(ResultsPerPage, {
           initialChoice: aChoiceNotDisplayed,
-          choicesDisplayed: [3, 5, 7, 13]
+          choicesDisplayed: [firstChoice, 5, 7, 13]
         });
         Simulate.query(test.env, {
           results: FakeResults.createFakeResults(1000)
         });
-        expect(test.env.queryController.options.resultsPerPage).toBe(aChoiceNotDisplayed);
+        expect(test.env.queryController.options.resultsPerPage).toBe(firstChoice);
       });
     });
   })

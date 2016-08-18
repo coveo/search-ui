@@ -57,12 +57,8 @@ export class ResultsPerPage extends Component {
     super(element, ResultsPerPage.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultsPerPage, options);
 
-    this.currentResultsPerPage = this.options.initialChoice !== undefined ? this.options.initialChoice : this.options.choicesDisplayed[0];
+    this.currentResultsPerPage = this.getInitialChoice();
     this.queryController.options.resultsPerPage = this.currentResultsPerPage;
-
-    if (this.options.choicesDisplayed.indexOf(this.currentResultsPerPage) < 0) {
-      this.logger.warn('The initial number of results is not within the choices displayed. Consider setting a value that can be selected.');
-    }
 
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.queryError, () => this.handleQueryError());
@@ -87,6 +83,18 @@ export class ResultsPerPage extends Component {
       keepLastSearchUid: true,
       origin: this
     });
+  }
+
+  private getInitialChoice(): number {
+    let initialChoice = this.options.choicesDisplayed[0];
+    if (this.options.initialChoice !== undefined) {
+      if (this.options.choicesDisplayed.indexOf(this.options.initialChoice) > -1) {
+        initialChoice = this.options.initialChoice;
+      } else {
+        this.logger.warn('The initial number of results is not within the choices displayed. Consider setting a value that can be selected. The first choice will be selected instead.');
+      }
+    }
+    return initialChoice;
   }
 
   private initComponent(element: HTMLElement) {
