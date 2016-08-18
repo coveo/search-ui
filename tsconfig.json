@@ -13,7 +13,7 @@
   ],
   "files": [
     "typings/browser.d.ts",
-        "typings/index.d.ts",
+    "typings/index.d.ts",
     "lib/promise.d.ts",
     "lib/MagicBox.d.ts",
     "lib/globalize.d.ts",

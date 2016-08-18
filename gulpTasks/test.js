@@ -6,7 +6,7 @@ const rename = require('gulp-rename');
 const combineCoverage = require('istanbul-combine');
 const remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 const event_stream = require('event-stream');
-const run = require('gulp-run');
+const exec = require('child_process').exec;
 const replace = require('gulp-replace');
 
 const COVERAGE_DIR = path.resolve('bin/coverage');
@@ -37,8 +37,10 @@ gulp.task('test', ['setupTests', 'buildTest'], function (done) {
   }).start();
 });
 
-gulp.task('buildTest', function(){
-  return run('node node_modules/webpack/bin/webpack.js --config webpack.test.config.js').exec();
+gulp.task('buildTest', function(done){
+  return exec('node node_modules/webpack/bin/webpack.js --config webpack.test.config.js', function(error) {
+    done(error);
+  });
 })
 
 gulp.task('testDev', ['watchTest'], function (done) {
