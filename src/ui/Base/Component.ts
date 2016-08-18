@@ -86,6 +86,7 @@ export class Component extends BaseComponent {
    */
   public componentOptionsModel: ComponentOptionsModel;
   public ensureDom: Function;
+  public options: any;
 
   /**
    * Create a new Component. Resolve all {@link IComponentBindings} if not provided.<br/>

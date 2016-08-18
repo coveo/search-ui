@@ -186,7 +186,9 @@ export class Initialization {
    */
   public static initRecommendationInterface(element: HTMLElement, options: any = {}) {
     options = Initialization.resolveDefaultOptions(element, options);
-    let recommendation = new window['Coveo']['Recommendation'](element, options.Recommendation, options.Analytics);
+    // Since a recommendation interface inherits from a search interface, we need to merge those if passed on init
+    let optionsForRecommendation = _.extend({}, options.SearchInterface, options.Recommendation);
+    let recommendation = new window['Coveo']['Recommendation'](element, optionsForRecommendation, options.Analytics);
     recommendation.options.originalOptionsObject = options;
     let initParameters: IInitializationParameters = { options: options, bindings: recommendation.getBindings() };
     Initialization.automaticallyCreateComponentsInside(element, initParameters);

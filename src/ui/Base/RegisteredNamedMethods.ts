@@ -139,9 +139,13 @@ Initialization.registerNamedMethod('get', (element: HTMLElement, componentClass?
   return get(element, componentClass, noThrow);
 });
 
-Initialization.registerNamedMethod('result', (element: HTMLElement, noThrow?: boolean): IQueryResult => {
+export function result(element: HTMLElement, noThrow?: boolean): IQueryResult {
   Assert.exists(element);
   return Component.getResult(element, noThrow);
+}
+
+Initialization.registerNamedMethod('result', (element: HTMLElement, noThrow?: boolean): IQueryResult => {
+  return result(element, noThrow);
 });
 
 function getCoveoAnalyticsClient(element: HTMLElement): IAnalyticsClient {
