@@ -22,7 +22,7 @@ export function AdvancedSearchTest() {
       test = null;
     });
 
-    it('allow to customize inputs', () => {
+    it('should allow to customize inputs', () => {
       let customInput = {
         build: () => {
           return $$('div').el;
@@ -34,10 +34,49 @@ export function AdvancedSearchTest() {
 
       onBuildingSearch(customInput);
 
+      $$(test.env.element).empty();
       test = Mock.advancedComponentSetup<AdvancedSearch>(AdvancedSearch, new Mock.AdvancedComponentSetupOptions(test.env.element));
 
       let simulate = Simulate.query(test.env);
       expect(simulate.queryBuilder.advancedExpression.build()).toEqual('test');
+    })
+
+    it('should be able to add a custom input to an existing section', () => {
+      let customInput = {
+        build: () => {
+          return $$('div', { className: 'coveo-test' }).el;
+        },
+        updateQuery: (queryBuilder) => {
+          queryBuilder.advancedExpression.add('test');
+        }
+      }
+
+      $$(test.env.element).on(AdvancedSearchEvents.buildingAdvancedSearch, (e: Event, data: IBuildingAdvancedSearchEventArgs) => {
+        data.sections[0].inputs.push(customInput);
+      })
+
+      $$(test.env.element).empty();
+      test = Mock.advancedComponentSetup<AdvancedSearch>(AdvancedSearch, new Mock.AdvancedComponentSetupOptions(test.env.element));
+
+      let section = getSection(l('Keywords'));
+      expect($$(section).find('.coveo-test')).toBeTruthy();
+    })
+
+    it('should be able to remove a specific input from prebuilt section', ()=>{
+      $$(test.env.element).on(AdvancedSearchEvents.buildingAdvancedSearch, (e: Event, data: IBuildingAdvancedSearchEventArgs) => {
+        data.sections[2].inputs = _.filter(data.sections[2].inputs, (input)=>{
+          return !(input instanceof SizeInput);
+        })
+      })
+
+      $$(test.env.element).empty();
+      test = Mock.advancedComponentSetup<AdvancedSearch>(AdvancedSearch, new Mock.AdvancedComponentSetupOptions(test.env.element));
+      
+      let sizeInput = _.filter(test.cmp.inputs, (input)=>{
+        return input instanceof SizeInput;
+      })
+
+      expect(sizeInput).toBeTruthy();
     })
 
     it('can create prebuilt inputs for custom sections', () => {
@@ -47,6 +86,7 @@ export function AdvancedSearchTest() {
 
       onBuildingSearch(customInput);
 
+      $$(test.env.element).empty();
       test = Mock.advancedComponentSetup<AdvancedSearch>(AdvancedSearch, new Mock.AdvancedComponentSetupOptions(test.env.element, {
         includeKeywords: false,
         includeDate: false,
@@ -56,7 +96,7 @@ export function AdvancedSearchTest() {
       let sizeInput = _.find(test.cmp.inputs, (input) => {
         return input instanceof SizeInput;
       })
-      expect(sizeInput).toBeDefined();
+      expect(sizeInput).toBeTruthy();
     })
 
     it('can create prebuilt inputs with options', () => {
@@ -70,6 +110,7 @@ export function AdvancedSearchTest() {
 
       onBuildingSearch(customInput);
 
+      $$(test.env.element).empty();
       test = Mock.advancedComponentSetup<AdvancedSearch>(AdvancedSearch, new Mock.AdvancedComponentSetupOptions(test.env.element, {
         includeKeywords: false,
         includeDate: false,
