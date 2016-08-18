@@ -10,14 +10,14 @@ import {IAdvancedSearchInput} from './AdvancedSearchInput';
 import {SimpleFieldInput} from './DocumentInput/SimpleFieldInput';
 import {AdvancedFieldInput} from './DocumentInput/AdvancedFieldInput';
 import {SizeInput} from './DocumentInput/SizeInput';
-import {IFieldInputOptions} from './AdvancedSearchInput';
+import {IFieldInputParameters} from './AdvancedSearchInput';
 
 export class AdvancedSearchInputFactory {
 
   constructor(private endpoint: ISearchEndpoint) {
   }
 
-  public create(name: string, options?: IFieldInputOptions): IAdvancedSearchInput {
+  public create(name: string, options?: IFieldInputParameters): IAdvancedSearchInput {
     switch (name) {
       case 'keywords_all':
         return this.createAllKeywordsInput();

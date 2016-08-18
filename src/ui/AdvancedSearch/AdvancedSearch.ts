@@ -174,7 +174,7 @@ export class AdvancedSearch extends Component {
 
   private buildDefaultInput(input: IAdvancedSearchInput | IAdvancedSearchPrebuiltInput): IAdvancedSearchInput {
     if (this.isPrebuiltInput(input)) {
-      return this.inputFactory.create(input.name, input.options);
+      return this.inputFactory.create(input.name, input.parameters);
     } else {
       return input;
     }

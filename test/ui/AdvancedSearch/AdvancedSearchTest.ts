@@ -62,24 +62,24 @@ export function AdvancedSearchTest() {
       expect($$(section).find('.coveo-test')).toBeTruthy();
     })
 
-    it('should be able to remove a specific input from prebuilt section', ()=>{
+    it('should be able to remove a specific input from default section', () => {
       $$(test.env.element).on(AdvancedSearchEvents.buildingAdvancedSearch, (e: Event, data: IBuildingAdvancedSearchEventArgs) => {
-        data.sections[2].inputs = _.filter(data.sections[2].inputs, (input)=>{
+        data.sections[2].inputs = _.filter(data.sections[2].inputs, (input) => {
           return !(input instanceof SizeInput);
         })
       })
 
       $$(test.env.element).empty();
       test = Mock.advancedComponentSetup<AdvancedSearch>(AdvancedSearch, new Mock.AdvancedComponentSetupOptions(test.env.element));
-      
-      let sizeInput = _.filter(test.cmp.inputs, (input)=>{
+
+      let sizeInput = _.filter(test.cmp.inputs, (input) => {
         return input instanceof SizeInput;
       })
 
       expect(sizeInput).toBeTruthy();
     })
 
-    it('can create prebuilt inputs for custom sections', () => {
+    it('can create default inputs for custom sections', () => {
       let customInput = {
         name: 'document_size'
       }
@@ -99,10 +99,10 @@ export function AdvancedSearchTest() {
       expect(sizeInput).toBeTruthy();
     })
 
-    it('can create prebuilt inputs with options', () => {
+    it('can create default inputs with options', () => {
       let customInput = {
         name: 'document_field',
-        options: {
+        parameters: {
           name: 'test',
           field: '@test'
         }

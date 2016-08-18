@@ -7,10 +7,10 @@ export interface IAdvancedSearchInput {
 
 export interface IAdvancedSearchPrebuiltInput {
   name: string;
-  options?: IFieldInputOptions;
+  parameters?: IFieldInputParameters;
 }
 
-export interface IFieldInputOptions {
+export interface IFieldInputParameters {
   name: string;
   field: string;
 }
