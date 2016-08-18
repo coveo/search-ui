@@ -109,7 +109,7 @@ export class AdvancedSearch extends Component {
 
     _.each(inputSections, (section) => {
       component.append(this.buildSection(section));
-    })
+    });
 
     $$(this.element).append(component.el);
   }
