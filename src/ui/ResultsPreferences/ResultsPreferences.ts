@@ -156,7 +156,7 @@ export class ResultsPreferences extends Component {
 
   private fromPreferenceChangeEventToUsageAnalyticsLog(e: Event) {
     var type = (<HTMLInputElement>e.target).checked ? 'selected' : 'unselected';
-    var preference = (<HTMLInputElement>e.srcElement).value;
+    var preference = (<HTMLInputElement>e.target).value;
     this.usageAnalytics.logCustomEvent<IAnalyticsPreferencesChangeMeta>(analyticsActionCauseList.preferencesChange, { preferenceName: preference, preferenceType: type }, this.element);
     this.usageAnalytics.logSearchEvent<IAnalyticsPreferencesChangeMeta>(analyticsActionCauseList.preferencesChange, { preferenceName: preference, preferenceType: type });
   }

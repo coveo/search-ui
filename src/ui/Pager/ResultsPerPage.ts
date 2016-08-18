@@ -35,8 +35,6 @@ export class ResultsPerPage extends Component {
   };
 
   private currentResultsPerPage: number;
-  private ignoreNextQuerySuccess: boolean = false;
-
   private span: HTMLElement;
   private list: HTMLElement;
 
@@ -55,7 +53,7 @@ export class ResultsPerPage extends Component {
 
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.queryError, () => this.handleQueryError());
-    this.bind.onRootElement(QueryEvents.noResults, (args: INoResultsEventArgs) => this.handleNoResults(args));
+    this.bind.onRootElement(QueryEvents.noResults, (args: INoResultsEventArgs) => this.handleNoResults());
     this.initComponent(element);
   }
 
@@ -89,50 +87,52 @@ export class ResultsPerPage extends Component {
     element.appendChild(this.list);
   }
 
+  private render() {
+    $$(this.span).removeClass('coveo-results-per-page-no-results');
+    let numResultsList: number[] = this.options.choicesDisplayed;
+    for (var i = 0; i < numResultsList.length; i++) {
+
+      let listItem = $$('li', {
+        className: 'coveo-results-per-page-list-item'
+      });
+      if (numResultsList[i] == this.currentResultsPerPage) {
+        listItem.addClass('coveo-active');
+      }
+
+      ((resultsPerPage: number) => {
+        listItem.on('click', () => {
+          this.handleClickPage(numResultsList[resultsPerPage]);
+        })
+      })(i);
+
+      listItem.el.appendChild($$('a', {
+        className: 'coveo-results-per-page-list-item-text'
+      }, numResultsList[i].toString()).el);
+      this.list.appendChild(listItem.el);
+    }
+  }
+
   private handleQueryError() {
     this.reset();
   }
 
-  private handleNoResults(data: INoResultsEventArgs) {
+  private handleNoResults() {
     this.reset();
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
-    if (this.ignoreNextQuerySuccess) {
-      this.ignoreNextQuerySuccess = false;
-    } else {
+    if (data.results.results.length != 0) {
       this.reset();
-      $$(this.span).removeClass('coveo-results-per-page-no-results');
-      let numResultsList: number[] = this.options.choicesDisplayed;
-      for (var i = 0; i < numResultsList.length; i++) {
-
-        let listItem = $$('li', {
-          className: 'coveo-results-per-page-list-item'
-        });
-        if (numResultsList[i] == this.currentResultsPerPage) {
-          listItem.addClass('coveo-active');
-        }
-
-        ((resultsPerPage: number) => {
-          listItem.on('click', () => {
-            this.handleClickPage(numResultsList[resultsPerPage]);
-          })
-        })(i);
-
-        listItem.el.appendChild($$('a', {
-          className: 'coveo-results-per-page-list-item-text'
-        }, numResultsList[i].toString()).el);
-        this.list.appendChild(listItem.el);
-      }
+      this.render();
     }
   }
+
   private handleClickPage(resultsPerPage: number) {
     Assert.exists(resultsPerPage);
     this.setResultsPerPage(resultsPerPage);
   }
 
   private reset() {
-    this.ignoreNextQuerySuccess = true;
     $$(this.span).addClass('coveo-results-per-page-no-results');
     $$(this.list).empty();
   }

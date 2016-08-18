@@ -162,6 +162,12 @@ export interface IQuery {
    * This specifies an array of Group By operations that can be performed on the query results to extract facets
    */
   groupBy?: IGroupByRequest[];
+  /**
+   * Setting this property to true will return more debugging information from both the index and the search API.
+   * Use this with care as this will negatively impact the performance of the query.
+   *
+   * It should probably never be set to `true` in production mode...
+   */
   debug?: boolean;
   timezone?: string;
   /**
