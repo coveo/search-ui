@@ -50,6 +50,7 @@ export function RegisteredNamedMethodsTest() {
         SearchInterface: { autoTriggerQuery: false }
       })).not.toThrow();
       expect((<Component>Component.get(searchbox)).options.addSearchButton).toBe(false);
+      expect((<Component>Component.get(searchbox)).options.triggerQueryOnClear).toBe(false);
     })
 
     it('should allow to call init recommendation correctly', () => {
