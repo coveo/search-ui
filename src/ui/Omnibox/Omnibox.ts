@@ -46,7 +46,7 @@ export interface IOmniboxOptions extends IQueryboxOptions {
   enableQueryExtensionAddon?: boolean;
   omniboxTimeout?: number;
   placeholder?: string;
-  grammar?: (grammar: { start: string; expressions: { [id: string]: Coveo.MagicBox.ExpressionDef }; }) => { start: string; expressions: { [id: string]: Coveo.MagicBox.ExpressionDef } }
+  grammar?: (grammar: { start: string; expressions: { [id: string]: Coveo.MagicBox.ExpressionDef }; }) => { start: string; expressions: { [id: string]: Coveo.MagicBox.ExpressionDef } };
 }
 
 /**
@@ -113,7 +113,7 @@ export class Omnibox extends Component {
      * Default value is 2000 (2 seconds)
      */
     omniboxTimeout: ComponentOptions.buildNumberOption({ defaultValue: 2000 })
-  }
+  };
 
   public magicBox: Coveo.MagicBox.Instance;
   private partialQueries: string[] = [];
@@ -185,7 +185,7 @@ export class Omnibox extends Component {
     this.magicBox.clearSuggestion();
     this.updateQueryState();
     this.triggerNewQuery(false, () => {
-      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {})
+      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
     });
   }
 
@@ -243,7 +243,7 @@ export class Omnibox extends Component {
         this.modifyEventTo = analyticsActionCauseList.omniboxAnalytics;
       }
       this.movedOnce = true;
-    }
+    };
 
     this.magicBox.onsuggestions = (suggestions: IOmniboxSuggestion[]) => {
       // If text is empty, this can mean that user selected text from the search box
@@ -261,7 +261,7 @@ export class Omnibox extends Component {
       if (this.options.enableSearchAsYouType && (diff || suggestions.length == 0)) {
         this.searchAsYouType();
       }
-    }
+    };
     if (this.options.enableSearchAsYouType) {
       $$(this.element).addClass('coveo-magicbox-search-as-you-type');
       this.magicBox.onchange = () => {
@@ -275,7 +275,7 @@ export class Omnibox extends Component {
       this.magicBox.clearSuggestion();
       this.updateQueryState();
       this.triggerNewQuery(false, () => {
-        this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {})
+        this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
       });
     };
 
@@ -305,7 +305,7 @@ export class Omnibox extends Component {
       if (this.isRevealAutoSuggestion()) {
         this.partialQueries = [];
       }
-    }
+    };
 
     this.magicBox.onblur = () => {
       if (this.options.enableSearchAsYouType && !this.options.inline) {
@@ -322,7 +322,7 @@ export class Omnibox extends Component {
       this.updateQueryState();
       if (this.options.triggerQueryOnClear) {
         this.triggerNewQuery(false, () => {
-          this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxClear, {})
+          this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxClear, {});
         });
       }
     };
@@ -351,7 +351,7 @@ export class Omnibox extends Component {
       this.usageAnalytics.cancelAllPendingEvents();
       this.triggerNewQuery(false, () => {
         this.usageAnalytics.logSearchEvent(analyticsActionCauseList.omniboxAnalytics, this.buildCustomDataForPartialQueries(index, suggestions));
-      })
+      });
     } else {
       // Same logic as keyboard selection : but when the user select the first suggestion
       // with the mouse, there is no onmove => set the new type, then modify custom data
@@ -367,7 +367,7 @@ export class Omnibox extends Component {
       let newCustomData = this.buildCustomDataForPartialQueries(index, suggestions);
       _.each(_.keys(newCustomData), (k: string) => {
         (<PendingSearchAsYouTypeSearchEvent>pendingEvt).modifyCustomData(k, newCustomData[k]);
-      })
+      });
     }
   }
 
@@ -377,7 +377,7 @@ export class Omnibox extends Component {
       suggestionRanking: index,
       suggestions: this.cleanCustomData(suggestions),
       partialQuery: _.last(this.partialQueries)
-    }
+    };
   }
 
   private cleanCustomData(toClean: string[], rejectLength = 256) {
@@ -455,7 +455,7 @@ export class Omnibox extends Component {
       }
     }
 
-    this.bind.trigger(this.element, OmniboxEvents.omniboxPreprocessResultForQuery, preprocessResultForQueryArgs)
+    this.bind.trigger(this.element, OmniboxEvents.omniboxPreprocessResultForQuery, preprocessResultForQueryArgs);
     let query = preprocessResultForQueryArgs.result.toString();
     new QueryboxQueryParameters(this.options).addParameters(data.queryBuilder, query);
   }
@@ -475,7 +475,7 @@ export class Omnibox extends Component {
   }
 
   private getQuery(searchAsYouType: boolean) {
-    let query: string
+    let query: string;
     if (searchAsYouType) {
       query = this.magicBox.getWordCompletion();
       if (query == null && this.lastSuggestions != null && this.lastSuggestions.length > 0) {
@@ -519,10 +519,10 @@ export class Omnibox extends Component {
               evt.modifyEventCause(this.modifyEventTo);
               this.modifyEventTo = null;
             }
-          })
-        })
+          });
+        });
       }
-    })
+    });
   }
 
   private searchAsYouType() {
@@ -537,7 +537,7 @@ export class Omnibox extends Component {
       });
     } else if (this.getQuery(true) != this.getText()) {
       this.triggerNewQuery(true, () => {
-        this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxAsYouType, {})
+        this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxAsYouType, {});
       });
     } else {
       this.searchAsYouTypeTimeout = setTimeout(() => {
@@ -547,11 +547,11 @@ export class Omnibox extends Component {
           let index = _.indexOf(suggestions, this.magicBox.getWordCompletion());
           analyticsEvent = () => {
             this.usageAnalytics.logSearchAsYouType<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.searchboxAsYouType, this.buildCustomDataForPartialQueries(index, suggestions));
-          }
+          };
         } else {
           analyticsEvent = () => {
-            this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxAsYouType, {})
-          }
+            this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxAsYouType, {});
+          };
         }
         this.triggerNewQuery(true, analyticsEvent);
       }, this.options.searchAsYouTypeDelay);

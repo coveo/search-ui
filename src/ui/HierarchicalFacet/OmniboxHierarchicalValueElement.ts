@@ -8,7 +8,7 @@ import {IValueElementEventsBinding} from '../Facet/ValueElement';
 
 export class OmniboxHierarchicalValueElement extends OmniboxValueElement {
   constructor(public facet: HierarchicalFacet, public facetValue: FacetValue, public eventArg: IPopulateOmniboxObject) {
-    super(facet, facetValue, eventArg)
+    super(facet, facetValue, eventArg);
   }
 
   public _handleSelectValue(eventBindings: IValueElementEventsBinding) {

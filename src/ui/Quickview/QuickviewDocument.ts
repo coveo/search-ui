@@ -431,7 +431,7 @@ export class QuickviewDocument extends Component {
     quickviewUpArrow.append(quickviewUpArrowIcon.el);
     quickviewUpArrow.on('click', () => {
       this.navigate(wordState, true, window);
-    })
+    });
     wordHtml.append(quickviewUpArrow.el);
 
     let quickviewDownArrow = $$('span');

@@ -2,10 +2,10 @@ import {Component} from '../Base/Component';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {Initialization} from '../Base/Initialization';
-import {QueryEvents, IQuerySuccessEventArgs, INoResultsEventArgs} from '../../events/QueryEvents'
-import {analyticsActionCauseList, IAnalyticsResultsPerPageMeta, IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta'
-import {Assert} from '../../misc/Assert'
-import {$$} from '../../utils/Dom'
+import {QueryEvents, IQuerySuccessEventArgs, INoResultsEventArgs} from '../../events/QueryEvents';
+import {analyticsActionCauseList, IAnalyticsResultsPerPageMeta, IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta';
+import {Assert} from '../../misc/Assert';
+import {$$} from '../../utils/Dom';
 
 export interface IResultsPerPageOptions {
   choicesDisplayed?: number[];
@@ -121,7 +121,7 @@ export class ResultsPerPage extends Component {
       ((resultsPerPage: number) => {
         listItem.on('click', () => {
           this.handleClickPage(numResultsList[resultsPerPage]);
-        })
+        });
       })(i);
 
       listItem.el.appendChild($$('a', {

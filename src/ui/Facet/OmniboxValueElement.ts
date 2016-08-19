@@ -12,7 +12,7 @@ export interface IOmniboxValueElementKlass {
 
 export class OmniboxValueElement extends ValueElement {
   constructor(public facet: Facet, public facetValue: FacetValue, public eventArg: IPopulateOmniboxObject, onSelect?: (elem: ValueElement, cause: IAnalyticsActionCause) => void, onExclude?: (elem: ValueElement, cause: IAnalyticsActionCause) => void) {
-    super(facet, facetValue, onSelect, onExclude)
+    super(facet, facetValue, onSelect, onExclude);
   }
 
   public bindEvent() {

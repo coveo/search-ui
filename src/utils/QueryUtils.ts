@@ -58,7 +58,7 @@ export class QueryUtils {
 
   static splitFlags(flags: string, delimiter: string = ';') {
     Assert.exists(flags);
-    return flags.split(delimiter)
+    return flags.split(delimiter);
   }
 
   static isAttachment(result: IQueryResult) {
@@ -158,14 +158,14 @@ export class QueryUtils {
     _.each(results.results, (result: IQueryResult) => {
       QueryUtils.setPropertyOnResult(result, property, value);
       value = afterOneLoop ? afterOneLoop() : value;
-    })
+    });
   }
 
   public static setPropertyOnResult(result: IQueryResult, property: string, value: any) {
     result[property] = value;
     _.each(result.childResults, (child: IQueryResult) => {
       child[property] = value;
-    })
+    });
     if (!Utils.isNullOrUndefined(result.parentResult)) {
       result.parentResult[property] = value;
     }
@@ -177,11 +177,11 @@ export class QueryUtils {
   }
 
   public static isStratusAgnosticField(fieldToVerify: string, fieldToMatch: string): boolean {
-    let checkForSystem = /^(@?)(sys)?(.*)/i
+    let checkForSystem = /^(@?)(sys)?(.*)/i;
     let matchFieldToVerify = checkForSystem.exec(fieldToVerify);
     let matchFieldToMatch = checkForSystem.exec(fieldToMatch);
     if (matchFieldToVerify && matchFieldToMatch) {
-      return (matchFieldToVerify[1] + matchFieldToVerify[3]).toLowerCase() == (matchFieldToMatch[1] + matchFieldToMatch[3]).toLowerCase()
+      return (matchFieldToVerify[1] + matchFieldToVerify[3]).toLowerCase() == (matchFieldToMatch[1] + matchFieldToMatch[3]).toLowerCase();
     }
     return false;
   }

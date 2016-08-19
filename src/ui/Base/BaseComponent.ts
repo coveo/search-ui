@@ -73,7 +73,7 @@ export class BaseComponent {
           $(this.root).trigger(DebugEvents.showDebugPanel, this.debugInfo());
         }
       }
-    })
+    });
   }
 
   static bindComponentToElement(element: HTMLElement, component: BaseComponent) {
@@ -109,7 +109,7 @@ export class BaseComponent {
   }
 
   static getComponentRef(component: string): any {
-    return Coveo[component]
+    return Coveo[component];
   }
 
 }

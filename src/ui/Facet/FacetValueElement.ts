@@ -19,7 +19,7 @@ export class FacetValueElement extends ValueElement {
     // The analytics code expect a first query to be made to link the user action with a query UID
     $$(facet.root).one(QueryEvents.querySuccess, () => {
       this.firstQuery = false;
-    })
+    });
   }
 
   public bindEvent() {

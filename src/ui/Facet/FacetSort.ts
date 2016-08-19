@@ -76,7 +76,7 @@ export class FacetSort {
       name: 'custom',
       relatedSort: 'custom'
     }
-  }
+  };
 
   public enabledSorts: IFacetSortDescription[] = [];
   public activeSort: IFacetSortDescription;
@@ -88,13 +88,13 @@ export class FacetSort {
       if (newSortToEnable != undefined) {
         this.enabledSorts.push(newSortToEnable);
       }
-    })
+    });
     this.removeEnabledSortsBasedOnFacetType();
     if (Utils.isNonEmptyArray(this.enabledSorts)) {
       if (this.facet.options.sortCriteria != undefined) {
         this.activeSort = _.find<IFacetSortDescription>(this.enabledSorts, (enabledSort) => {
-          return enabledSort.name == this.facet.options.sortCriteria
-        })
+          return enabledSort.name == this.facet.options.sortCriteria;
+        });
       }
       if (!this.activeSort) {
         this.activeSort = this.enabledSorts[0];
@@ -115,7 +115,7 @@ export class FacetSort {
     if (this.activeSort.name == 'custom' && this.facet.options.customSort != undefined) {
       return this.reorderValuesWithCustomOrder(facetValues);
     } else {
-      return facetValues
+      return facetValues;
     }
   }
 
@@ -134,7 +134,7 @@ export class FacetSort {
       }, -1);
       index = index == -1 ? ++notFoundIndex : index;
       return { facetValue: facetValue, index: index };
-    })
+    });
     var sorted = _.sortBy(valueIndexPair, 'index');
     sorted = this.customSortDirection == 'ascending' ? sorted : sorted.reverse();
     return _.pluck(sorted, 'facetValue');

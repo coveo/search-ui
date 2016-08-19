@@ -11,7 +11,7 @@ export class HashUtils {
     'objectEndRegExp': '}+$',
     'arrayStartRegExp': '^[',
     'arrayEndRegExp': ']+$'
-  }
+  };
 
   public static getHash(w = window): string {
     Assert.exists(w);
@@ -103,14 +103,14 @@ export class HashUtils {
     if (HashUtils.isObject(paramValue)) {
       return 'object';
     } else if (HashUtils.isArray(paramValue)) {
-      return 'array'
+      return 'array';
     } else {
-      return 'other'
+      return 'other';
     }
   }
 
   private static isArrayStartNotEncoded(value: string) {
-    return value.substr(0, 1) == HashUtils.DELIMITER.arrayStart
+    return value.substr(0, 1) == HashUtils.DELIMITER.arrayStart;
   }
 
   private static isArrayStartEncoded(value: string) {
@@ -126,7 +126,7 @@ export class HashUtils {
   }
 
   private static isObjectStartNotEncoded(value: string) {
-    return value.substr(0, 1) == HashUtils.DELIMITER.objectStart
+    return value.substr(0, 1) == HashUtils.DELIMITER.objectStart;
   }
 
   private static isObjectStartEncoded(value: string) {
@@ -163,7 +163,7 @@ export class HashUtils {
   public static encodeObject(obj: Object): string {
     var retArray = _.map(<_.Dictionary<any>>obj, (val, key?, obj?) => {
       return `"${encodeURIComponent(key)}":${this.encodeValue(val)}`;
-    })
+    });
     return HashUtils.DELIMITER.objectStart + retArray.join(' , ') + HashUtils.DELIMITER.objectEnd;
   }
 
@@ -199,6 +199,6 @@ export class HashUtils {
     var array = value.split(',');
     return _.map(array, (val) => {
       return decodeURIComponent(val);
-    })
+    });
   }
 }

@@ -65,10 +65,10 @@ export class PreferencesPanel extends Component {
   }
 
   private buildCloseButton(): void {
-    var closeButton = $$('div', { className: 'coveo-preferences-panel-close' }, $$('span', { className: 'coveo-icon' }).el)
+    var closeButton = $$('div', { className: 'coveo-preferences-panel-close' }, $$('span', { className: 'coveo-icon' }).el);
     closeButton.on('click', () => {
       this.close();
-    })
+    });
     $$(this.element).prepend(closeButton.el);
   }
 

@@ -1,11 +1,11 @@
-import {Component} from '../Base/Component'
-import {IComponentBindings} from '../Base/ComponentBindings'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {QueryUtils} from '../../utils/QueryUtils'
-import {IQueryResult} from '../../rest/QueryResult'
-import {Initialization} from '../Base/Initialization'
-import {FieldValue, IFieldValueOptions} from './FieldValue'
-import {$$} from '../../utils/Dom'
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {QueryUtils} from '../../utils/QueryUtils';
+import {IQueryResult} from '../../rest/QueryResult';
+import {Initialization} from '../Base/Initialization';
+import {FieldValue, IFieldValueOptions} from './FieldValue';
+import {$$} from '../../utils/Dom';
 
 export interface IFieldTableOptions {
   allowMinimization: boolean;
@@ -69,7 +69,7 @@ export class FieldTable extends Component {
 
     var rows = $$(this.element).findAll('tr[data-field]');
     _.each(rows, (e: HTMLElement) => {
-      new ValueRow(e, {}, bindings, result)
+      new ValueRow(e, {}, bindings, result);
     });
 
     if ($$(this.element).find('tr') == null) {
@@ -155,7 +155,7 @@ export class FieldTable extends Component {
 
     setTimeout(() => {
       this.updateToggleContainerHeight();
-      this.isExpanded ? this.expand() : this.minimize()
+      this.isExpanded ? this.expand() : this.minimize();
     }); // Wait until toggleContainer.scrollHeight is computed.
 
     $$(this.toggleButton).on('click', () => this.toggle(true));
@@ -194,7 +194,7 @@ class ValueRow extends FieldValue {
   static ID = 'ValueRow';
   static options: IValueRowOptions = {
     caption: ComponentOptions.buildStringOption({ postProcessing: (value, options) => value || options.field.substr(1) })
-  }
+  };
 
   static parent = FieldValue;
   private valueContainer: HTMLElement;

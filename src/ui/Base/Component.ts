@@ -219,7 +219,7 @@ export class Component extends BaseComponent {
       if (!findDown || findDown.length == 0) {
         var findUp = $$(element).closest(Component.computeCssClassNameForType(componentClass.ID));
         if (findUp) {
-          found = findUp
+          found = findUp;
         }
       } else {
         found = findDown;
@@ -241,7 +241,7 @@ export class Component extends BaseComponent {
     inputs = inputs.concat($$(element).findAll('input'));
     _.each(_.compact(inputs), (input) => {
       input.setAttribute('form', 'coveo-dummy-form');
-    })
+    });
   }
 }
 
@@ -381,7 +381,7 @@ export class ComponentEvents {
           if (args[1] != undefined) {
             args = [args[1]];
           } else {
-            args = []
+            args = [];
           }
         }
         return func.apply(this.owner, args);

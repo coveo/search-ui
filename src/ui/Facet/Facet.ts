@@ -357,7 +357,7 @@ export class Facet extends Component {
      * Example -> dependsOn : @parentfacetField
      */
     dependsOn: ComponentOptions.buildStringOption()
-  }
+  };
 
   public facetQueryController: FacetQueryController;
   public keepDisplayedValuesNextTime: boolean = false;
@@ -444,7 +444,7 @@ export class Facet extends Component {
 
     this.bind.oneRootElement(QueryEvents.querySuccess, () => {
       this.firstQuery = false;
-    })
+    });
   }
 
   public createDom() {
@@ -548,7 +548,7 @@ export class Facet extends Component {
     this.ensureDom();
     _.each(values, (value) => {
       this.logger.info('Excluding facet value', this.facetValuesList.exclude(value));
-    })
+    });
     this.facetValueHasChanged();
   }
 
@@ -578,7 +578,7 @@ export class Facet extends Component {
     this.ensureDom();
     _.each(values, (value) => {
       this.logger.info('Unexcluding facet value', this.facetValuesList.unExclude(value));
-    })
+    });
     this.facetValueHasChanged();
   }
 
@@ -615,7 +615,7 @@ export class Facet extends Component {
    * @returns {any[]}
    */
   public getDisplayedValues(): string[] {
-    return _.pluck(this.getDisplayedFacetValues(), 'value')
+    return _.pluck(this.getDisplayedFacetValues(), 'value');
   }
 
   /**
@@ -733,9 +733,9 @@ export class Facet extends Component {
   }
 
   public processFacetSearchAllResultsSelected(facetValues: FacetValue[]): void {
-    let valuesForAnalytics = []
+    let valuesForAnalytics = [];
     _.each(facetValues, (facetValue) => {
-      this.ensureFacetValueIsInList(facetValue)
+      this.ensureFacetValueIsInList(facetValue);
       valuesForAnalytics.push(facetValue.value);
     });
     // Calculate the correct number of values from the current selected/excluded values (those will stay no matter what next rendering)
@@ -780,8 +780,8 @@ export class Facet extends Component {
         ret = this.options.valueCaption[lookupValue] || ret;
       }
       if (typeof this.options.valueCaption == 'function') {
-        this.values.get(lookupValue)
-        ret = this.options.valueCaption.call(this, this.facetValuesList.get(lookupValue).facetValue)
+        this.values.get(lookupValue);
+        ret = this.options.valueCaption.call(this, this.facetValuesList.get(lookupValue).facetValue);
       }
     }
     return ret;
@@ -815,7 +815,7 @@ export class Facet extends Component {
 
   public triggerNewQuery(beforeExecuteQuery?: () => void) {
     if (!beforeExecuteQuery) {
-      this.queryController.executeQuery({ ignoreWarningSearchEvent: true })
+      this.queryController.executeQuery({ ignoreWarningSearchEvent: true });
     } else {
       this.queryController.executeQuery({ beforeExecuteQuery: beforeExecuteQuery });
     }
@@ -878,7 +878,7 @@ export class Facet extends Component {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.handleDuringQuery());
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
-    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (args: IQuerySuccessEventArgs) => this.handleDeferredQuerySuccess(args))
+    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (args: IQuerySuccessEventArgs) => this.handleDeferredQuerySuccess(args));
   }
 
   protected initQueryStateEvents() {
@@ -909,7 +909,7 @@ export class Facet extends Component {
   protected initBreadCrumbEvents() {
     if (this.options.includeInBreadcrumb) {
       this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) => this.handlePopulateBreadcrumb(args));
-      this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, (args: IClearBreadcrumbEventArgs) => this.handleClearBreadcrumb())
+      this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, (args: IClearBreadcrumbEventArgs) => this.handleClearBreadcrumb());
     }
   }
 
@@ -918,15 +918,15 @@ export class Facet extends Component {
     let match = _.first(_.filter(this.getDisplayedValues(), (displayedValue: string) => {
       let value = this.getValueCaption(this.facetValuesList.get(displayedValue).facetValue);
       return regex.test(value);
-    }), this.options.numberOfValuesInOmnibox)
+    }), this.options.numberOfValuesInOmnibox);
     let facetValues = _.map(match, (gotAMatch: string) => {
-      return this.facetValuesList.get(gotAMatch).facetValue
+      return this.facetValuesList.get(gotAMatch).facetValue;
     });
     let element = new OmniboxValuesList(this, facetValues, eventArg, OmniboxValueElement).build();
     eventArg.rows.push({
       element: element,
       zIndex: this.omniboxZIndex
-    })
+    });
   }
 
   protected processNewGroupByResults(groupByResult: IGroupByResult) {
@@ -992,13 +992,13 @@ export class Facet extends Component {
           $$(built.checkbox).trigger('change');
           e.stopPropagation();
           e.preventDefault();
-        })
+        });
       }
 
       $$(built.checkbox).on('change', () => {
         $$(this.element).addClass('coveo-facet-searching');
         this.facetSearch.focus();
-      })
+      });
       this.facetValuesList.valueContainer.appendChild(built.listElement);
     }
   }
@@ -1092,7 +1092,7 @@ export class Facet extends Component {
     let excludedValues: IQueryStateExcludedAttribute = {
       title: this.excludedAttributeId,
       excluded: this.getExcludedValues()
-    }
+    };
 
     this.queryStateModel.set(this.excludedAttributeId, excludedValues.excluded);
   }
@@ -1101,8 +1101,8 @@ export class Facet extends Component {
     if (this.options.lookupField) {
       let valueToSet = {};
       _.each(this.values.getSelected().concat(this.values.getExcluded()), (value) => {
-        valueToSet[value.value] = value.lookupValue
-      })
+        valueToSet[value.value] = value.lookupValue;
+      });
       this.queryStateModel.set(this.lookupValueAttributeId, valueToSet);
     }
   }
@@ -1138,7 +1138,7 @@ export class Facet extends Component {
   private handleLookupvalueChanged(lookupFieldChanged: { [value: string]: string }) {
     _.each(lookupFieldChanged, (lookupvalue, value) => {
       this.facetValuesList.get(decodeURIComponent(value)).facetValue.lookupValue = decodeURIComponent(lookupvalue);
-    })
+    });
   }
 
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
@@ -1204,7 +1204,7 @@ export class Facet extends Component {
         });
       }).catch(() => {
         resolve({ element: undefined });
-      })
+      });
     });
     eventArg.rows.push({ deferred: promise });
   }
@@ -1288,7 +1288,7 @@ export class Facet extends Component {
   private buildHeader() {
     let icon = this.options.headerIcon;
     if (this.searchInterface.isNewDesign() && this.options.headerIcon == this.options.field) {
-      icon = undefined
+      icon = undefined;
     }
     this.facetHeader = new FacetHeader({
       facetElement: this.element,
@@ -1346,7 +1346,7 @@ export class Facet extends Component {
         } else {
           (<HTMLElement>elementToScroll).scrollTop = elementToScroll.scrollTop + offset;
         }
-      }
+      };
       // First try to adjust position by scrolling the page
       scrollToOffset();
       currentViewportPosition = this.element.getBoundingClientRect().top;
@@ -1372,7 +1372,7 @@ export class Facet extends Component {
             offset = currentViewportPosition - this.pinnedViewportPosition;
             scrollToOffset();
           }
-        })
+        });
       }
       this.unpinnedViewportPosition = this.pinnedViewportPosition;
       this.pinnedViewportPosition = null;
@@ -1392,7 +1392,7 @@ export class Facet extends Component {
       let moreIcon = document.createElement('span');
       $$(moreIcon).addClass('coveo-icon');
       more.appendChild(moreIcon);
-      $$(more).on('click', () => this.handleClickMore())
+      $$(more).on('click', () => this.handleClickMore());
       return more;
     } else {
       let more = document.createElement('a');
@@ -1467,7 +1467,7 @@ export class Facet extends Component {
       this.values.updateDeltaWithFilteredFacetValues(values);
       this.rebuildValueElements();
       this.hideWaitingAnimation();
-    })
+    });
   }
 
   protected updateNumberOfValues() {
@@ -1509,7 +1509,7 @@ export class Facet extends Component {
   }
 
   private doesParentFacetHasSelectedValue(): boolean {
-    let id = QueryStateModel.getFacetId(this.options.dependsOn)
+    let id = QueryStateModel.getFacetId(this.options.dependsOn);
     let values = this.queryStateModel.get(id);
     return values != null && values.length != 0;
   }
@@ -1528,7 +1528,7 @@ export class Facet extends Component {
       component: this,
       groupByRequest: this.facetQueryController.lastGroupByRequest,
       groupByResult: this.facetQueryController.lastGroupByResult
-    }
+    };
     return info;
   }
 }

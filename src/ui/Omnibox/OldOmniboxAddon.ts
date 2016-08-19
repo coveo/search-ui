@@ -10,11 +10,11 @@ export class OldOmniboxAddon {
     this.omnibox.bind.on(this.omnibox.element, OmniboxEvents.populateOmniboxSuggestions, (args: IPopulateOmniboxSuggestionsEventArgs) => {
       _.each(this.getSuggestion(), (suggestion) => {
         args.suggestions.push(suggestion);
-      })
-    })
+      });
+    });
   }
 
-  private lastQuery: string
+  private lastQuery: string;
   private lastSuggestions: Promise<IOmniboxSuggestion[]>[];
 
   public getSuggestion(): Promise<IOmniboxSuggestion[]>[] {
@@ -82,7 +82,7 @@ export class OldOmniboxAddon {
   }
 
   private insertAt(at: number, toInsert: string) {
-    let oldValue = this.omnibox.getText()
+    let oldValue = this.omnibox.getText();
     let newValue = [oldValue.slice(0, at), toInsert, oldValue.slice(at)].join('');
     this.omnibox.setText(newValue);
   }
@@ -109,21 +109,21 @@ export class OldOmniboxAddon {
         this.omnibox.clear();
       },
       clearCurrentExpression: () => {
-        this.clearCurrentExpression()
+        this.clearCurrentExpression();
       },
       replace: (searchValue: string, newValue: string) => {
-        this.replace(searchValue, newValue)
+        this.replace(searchValue, newValue);
       },
       replaceCurrentExpression: (newValue: string) => {
-        this.replaceCurrentExpression(newValue)
+        this.replaceCurrentExpression(newValue);
       },
       insertAt: (at: number, toInsert: string) => {
-        this.insertAt(at, toInsert)
+        this.insertAt(at, toInsert);
       },
       closeOmnibox: () => {
         this.omnibox.magicBox.blur();
       }
-    }
+    };
     return ret;
   }
 
@@ -134,8 +134,8 @@ export class OldOmniboxAddon {
           resolve([{
             dom: row.element,
             index: row.zIndex
-          }])
-        })
+          }]);
+        });
       } else if (!Utils.isNullOrUndefined(row.deferred)) {
         return new Promise<IOmniboxSuggestion[]>((resolve) => {
           row.deferred.then((row) => {
@@ -143,14 +143,14 @@ export class OldOmniboxAddon {
               resolve([{
                 dom: row.element,
                 index: row.zIndex
-              }])
+              }]);
             } else {
               resolve(null);
             }
-          })
-        })
+          });
+        });
       }
       return null;
-    })
+    });
   }
 }

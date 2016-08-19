@@ -21,7 +21,7 @@ export interface IBreadcrumbOptions {
  */
 export class Breadcrumb extends Component {
   static ID = 'Breadcrumb';
-  static options: IBreadcrumbOptions = {}
+  static options: IBreadcrumbOptions = {};
 
   private lastBreadcrumbs: IBreadcrumbItem[];
 
@@ -85,7 +85,7 @@ export class Breadcrumb extends Component {
       let elem = bcrumb.element;
       $$(elem).addClass('coveo-breadcrumb-item');
       breadcrumbItems.appendChild(elem);
-    })
+    });
 
     let clear = document.createElement('div');
     $$(clear).addClass('coveo-breadcrumb-clear-all');
@@ -106,7 +106,7 @@ export class Breadcrumb extends Component {
 
     this.bind.on(clear, 'click', () => {
       this.clearBreadcrumbs();
-    })
+    });
   }
 
   private redrawBreadcrumb() {

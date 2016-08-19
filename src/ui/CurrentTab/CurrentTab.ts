@@ -31,7 +31,7 @@ export class CurrentTab extends Component {
      * Clicking this component will toggle between opening and closing this section.
      */
     tabSectionToOpen: ComponentOptions.buildStringOption()
-  }
+  };
 
   constructor(public element: HTMLElement, public options?: ICurrentTabOptions, bindings?: IComponentBindings) {
     super(element, CurrentTab.ID, bindings);
@@ -59,7 +59,7 @@ export class CurrentTab extends Component {
           tabSection.style.zIndex = undefined;
           this.element.style.zIndex = undefined;
         }
-      })
+      });
     }
   }
 
@@ -67,7 +67,7 @@ export class CurrentTab extends Component {
     let selectedTabId = this.queryStateModel.get(QueryStateModel.attributesEnum.t);
     if (Utils.isNonEmptyString(selectedTabId)) {
       let found = false;
-      let tabs = $$(this.root).findAll(Component.computeSelectorForType(Tab.ID))
+      let tabs = $$(this.root).findAll(Component.computeSelectorForType(Tab.ID));
       _.each(tabs, (elem: HTMLElement) => {
         let tab = <Tab>Component.get(elem, Tab);
         if (tab.options.id == selectedTabId) {
