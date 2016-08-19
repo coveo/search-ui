@@ -23,7 +23,6 @@ export function QueryboxTest() {
 
     it('will trigger a query on submit', function () {
       test.cmp.submit();
-      test.env
       expect(test.env.queryController.executeQuery).toHaveBeenCalled();
     });
 
@@ -124,14 +123,14 @@ export function QueryboxTest() {
         test.env.queryStateModel.set('q', 'Batman is better then Spiderman');
         expect(test.cmp.getText()).toBe('Batman is better then Spiderman');
       });
-    })
+    });
 
     describe('exposes options', function () {
 
       it('enableSearchAsYouType will trigger a query after a delay', function (done) {
         test = Mock.optionsComponentSetup<Querybox, IQueryboxOptions>(Querybox, {
           enableSearchAsYouType: true
-        })
+        });
         expect(test.cmp.magicBox.onchange).toBeDefined();
         test.cmp.magicBox.onchange();
         setTimeout(() => {
@@ -150,7 +149,7 @@ export function QueryboxTest() {
       it('enableSearchAsYouType will log the proper analytics event', function (done) {
         test = Mock.optionsComponentSetup<Querybox, IQueryboxOptions>(Querybox, {
           enableSearchAsYouType: true
-        })
+        });
         expect(test.cmp.magicBox.onchange).toBeDefined();
         test.cmp.magicBox.onchange();
         setTimeout(() => {
@@ -158,18 +157,18 @@ export function QueryboxTest() {
 
           done();
         }, test.cmp.options.searchAsYouTypeDelay)
-      })
+      });
 
       it('enableSearchAsYouTypeDelay influences the delay before a query', function (done) {
         test = Mock.optionsComponentSetup<Querybox, IQueryboxOptions>(Querybox, {
           enableSearchAsYouType: true,
           searchAsYouTypeDelay: 5
-        })
+        });
         expect(test.cmp.magicBox.onchange).toBeDefined();
         test.cmp.magicBox.onchange();
         setTimeout(() => {
           expect(test.env.queryController.executeQuery).not.toHaveBeenCalled();
-        }, 1)
+        }, 1);
         setTimeout(() => {
           expect(test.env.queryController.executeQuery).toHaveBeenCalled();
           done();
@@ -269,7 +268,7 @@ export function QueryboxTest() {
 
         var simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.build().partialMatch).toBeUndefined();
-      })
+      });
 
       it('partialMatchKeywords should modify the query builder', function () {
         test = Mock.optionsComponentSetup<Querybox, IQueryboxOptions>(Querybox, {
@@ -307,18 +306,18 @@ export function QueryboxTest() {
       it('triggerQueryOnClear should trigger a query on clear', () => {
         test = Mock.optionsComponentSetup<Querybox, IQueryboxOptions>(Querybox, {
           triggerQueryOnClear: true
-        })
+        });
         test.cmp.magicBox.clear();
         expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
-      })
+      });
 
       it('triggerQueryOnClear should not trigger a query on clear if false', () => {
         test = Mock.optionsComponentSetup<Querybox, IQueryboxOptions>(Querybox, {
           triggerQueryOnClear: false
-        })
+        });
         test.cmp.magicBox.clear();
         expect(test.cmp.queryController.executeQuery).not.toHaveBeenCalled();
-      })
-    })
-  })
+      });
+    });
+  });
 }

@@ -48,7 +48,7 @@ export class HistoryController extends RootComponent {
     });
     this.hashchange = () => {
       this.handleHashChange();
-    }
+    };
     this.windoh.addEventListener('hashchange', this.hashchange);
     $$(this.element).on(InitializationEvents.nuke, () => this.handleNuke());
   }
@@ -60,7 +60,7 @@ export class HistoryController extends RootComponent {
   public setHashValues(values: {}) {
     this.logger.trace('Update history hash');
 
-    var hash = '#' + HashUtils.encodeValues(values)
+    var hash = '#' + HashUtils.encodeValues(values);
     this.ignoreNextHashChange = this.windoh.location.hash != hash;
 
     this.logger.trace('ignoreNextHashChange', this.ignoreNextHashChange);
@@ -117,7 +117,7 @@ export class HistoryController extends RootComponent {
     var toSet: { [key: string]: any } = {};
     var diff: string[] = [];
     _.each(<_.Dictionary<any>>this.model.attributes, (value, key?, obj?) => {
-      var valToSet = this.getHashValue(key)
+      var valToSet = this.getHashValue(key);
       if (valToSet == undefined) {
         valToSet = this.model.defaultAttributes[key];
       }

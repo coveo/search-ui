@@ -27,4 +27,4 @@ export var L10N = {
     }
     return value;
   }
-}
+};

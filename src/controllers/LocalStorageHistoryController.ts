@@ -61,7 +61,7 @@ export class LocalStorageHistoryController extends RootComponent {
         valToSet = this.model.defaultAttributes[key];
       }
       toSet[key] = valToSet;
-    })
+    });
     this.model.setMultiple(toSet);
   }
 
