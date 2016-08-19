@@ -1,4 +1,5 @@
 import {$$} from '../../../utils/Dom';
+import {KEYBOARD} from '../../../utils/KeyboardUtils';
 
 export class TextInput {
 
@@ -29,7 +30,7 @@ export class TextInput {
     let container = $$('div', { className: 'coveo-input' });
     let input = $$('input', { type: 'text' });
     input.on(['keydown', 'blur'], (e: Event) => {
-      if (e instanceof KeyboardEvent && e.keyCode == 13 || e.type == 'blur') {
+      if (e.type == 'blur' || (<KeyboardEvent>e).keyCode == KEYBOARD.ENTER) {
         this.triggerChange();
       }
     });
