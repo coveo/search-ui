@@ -6,15 +6,6 @@ interface IWindow {
   $: any;
 }
 
-// This class is essentially only there for legacy reasons : If there is any code in the wild that called this directly,
-// we don't want this to break.
-export class CoveoJQuery {
-}
-
-_.each(<any>_.keys(Initialization), (v: string) => {
-  CoveoJQuery[v] = Initialization[v];
-})
-
 export var jQueryInstance: JQuery;
 
 if (jQueryIsDefined()) {
@@ -28,7 +19,7 @@ if (jQueryIsDefined()) {
   })
 }
 
-function initCoveoJQuery() {
+export function initCoveoJQuery() {
   jQueryInstance = window['$'];
   if (window['Coveo'] == undefined) {
     window['Coveo'] = {};
