@@ -11,7 +11,7 @@ import {MODEL_EVENTS} from '../../models/Model';
 import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
 import {QueryStateModel, QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
 import {BreadcrumbEvents, IPopulateBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
-import {analyticsActionCauseList, IAnalyticsCustomFiltersChangeMeta} from '../Analytics/AnalyticsActionListMeta'
+import {analyticsActionCauseList, IAnalyticsCustomFiltersChangeMeta} from '../Analytics/AnalyticsActionListMeta';
 import {Tab} from '../Tab/Tab';
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
@@ -140,8 +140,8 @@ export class ResultsFiltersPreferences extends Component {
   }
 
   private bindPreferencePanelEvent() {
-    this.bind.on(this.preferencePanel, PreferencesPanelEvents.savePreferences, () => this.save())
-    this.bind.on(this.preferencePanel, PreferencesPanelEvents.exitPreferencesWithoutSave, () => this.exitWithoutSave())
+    this.bind.on(this.preferencePanel, PreferencesPanelEvents.savePreferences, () => this.save());
+    this.bind.on(this.preferencePanel, PreferencesPanelEvents.exitPreferencesWithoutSave, () => this.exitWithoutSave());
   }
 
   private bindBreadcrumbEvent() {
@@ -157,8 +157,8 @@ export class ResultsFiltersPreferences extends Component {
 
   private handleBuildingQuery(args: IBuildingQueryEventArgs) {
     _.each(this.getActiveFilters(), (filter) => {
-      args.queryBuilder.advancedExpression.add(filter.expression)
-    })
+      args.queryBuilder.advancedExpression.add(filter.expression);
+    });
   }
 
   private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
@@ -189,7 +189,7 @@ export class ResultsFiltersPreferences extends Component {
   private handleClearBreadcrumb() {
     _.each(this.getActiveFilters(), (filter) => {
       filter.selected = false;
-    })
+    });
     this.fromPreferencesToCheckboxInput();
   }
 
@@ -240,7 +240,7 @@ export class ResultsFiltersPreferences extends Component {
 
     var formSubmit = $$('input', {
       type: 'submit'
-    })
+    });
 
     var saveFormButton = $$('span', {
       className: 'coveo-save'
@@ -268,7 +268,7 @@ export class ResultsFiltersPreferences extends Component {
 
     _.each([inputCaption, filtersTabSelect, filtersExpression, saveAndCloseContainer.el, formSubmit.el], (el: HTMLElement) => {
       this.advancedFilterFormValidate.appendChild(el);
-    })
+    });
 
     saveFormButton.on('click', () => formSubmit.trigger('click'));
     closeFormButton.on('click', () => $$(this.advancedFiltersBuilder).toggleClass('coveo-active'));
@@ -277,7 +277,7 @@ export class ResultsFiltersPreferences extends Component {
       if (e.keyCode == KEYBOARD.ENTER) {
         formSubmit.trigger('click');
       }
-    })
+    });
 
     $$(this.advancedFilterFormValidate).on('submit', (e: Event) => this.validateAndSaveAdvancedFilter(e));
   }
@@ -289,7 +289,7 @@ export class ResultsFiltersPreferences extends Component {
       return _.map(tabsElement, (tabElement: HTMLElement) => {
         let tab = <Tab>Component.get(tabElement);
         return tab.options.id;
-      })
+      });
     }
   }
 
@@ -299,8 +299,8 @@ export class ResultsFiltersPreferences extends Component {
         label: filter.caption,
         tab: filter.tab,
         expression: filter.expression
-      }
-    })
+      };
+    });
   }
 
   private buildCheckboxesInput() {
@@ -317,7 +317,7 @@ export class ResultsFiltersPreferences extends Component {
 
       _.each($$(this.preferenceContainer).findAll('.coveo-choice-container'), (choiceContainer: HTMLElement) => {
         choiceContainer.appendChild($$('div', { className: 'coveo-section coveo-section-edit-delete' }).el);
-      })
+      });
 
       $$(this.element).append(this.preferenceContainer);
       this.buildEditAdvancedFilter();
@@ -330,8 +330,8 @@ export class ResultsFiltersPreferences extends Component {
           var filter = this.preferences[target.value];
           this.fromFilterToAnalyticsEvent(filter, filter.selected ? 'selected' : 'unselected');
           this.queryController.executeQuery();
-        })
-      })
+        });
+      });
     }
   }
 
@@ -348,7 +348,7 @@ export class ResultsFiltersPreferences extends Component {
         insertInto.appendChild(deleteElement);
         $$(deleteElement).on('click', () => this.confirmDelete(filter, filterElement));
       }
-    })
+    });
   }
 
   private buildEditAdvancedFilter() {
@@ -362,13 +362,13 @@ export class ResultsFiltersPreferences extends Component {
         insertInto.appendChild(editElement.el);
         editElement.on('click', () => this.editElement(filter, filterElement));
       }
-    })
+    });
   }
 
   private buildBreadcrumb(filter: IResultFilterPreference): HTMLElement {
     var elem = $$('span', { className: 'coveo-value' });
 
-    var caption = $$('span', { className: 'coveo-caption' })
+    var caption = $$('span', { className: 'coveo-caption' });
     caption.text(filter.caption);
     elem.el.appendChild(caption.el);
 
@@ -380,14 +380,14 @@ export class ResultsFiltersPreferences extends Component {
       this.fromFilterToAnalyticsEvent(filter, 'cleared from breadcrumb');
       this.fromPreferencesToCheckboxInput();
       this.queryController.executeQuery();
-    })
+    });
 
     return elem.el;
   }
 
   private confirmDelete(filter: IResultFilterPreference, filterElement: HTMLElement) {
     if (confirm(l('AreYouSureDeleteFilter', filter.caption, filter.expression))) {
-      var isSelected = filter.selected
+      var isSelected = filter.selected;
       this.deleteFilterPreference(filter, filterElement);
       if (isSelected) {
         this.fromFilterToAnalyticsEvent(filter, 'deleted');
@@ -431,14 +431,14 @@ export class ResultsFiltersPreferences extends Component {
     $$(this.advancedFiltersBuilder).removeClass('coveo-active');
     var caption = this.advancedFiltersTextInputCaption.getValues()[0];
     var expression = this.advancedFiltersTextInputExpression.getValues()[0];
-    var tabs = this.advancedFiltersTabSelect.getValues()
+    var tabs = this.advancedFiltersTabSelect.getValues();
     this.preferences[caption] = {
       caption: caption,
       custom: true,
       expression: expression,
       tab: tabs,
       selected: true
-    }
+    };
     this.buildCheckboxesInput();
     this.save();
     this.queryStateModel.set(QueryStateModel.attributesEnum.t, this.getActiveTab());
@@ -453,13 +453,13 @@ export class ResultsFiltersPreferences extends Component {
   private fromPreferencesToCheckboxInput() {
     _.each(this.getActiveFilters(), (filter: IResultFilterPreference) => {
       this.preferencePanelCheckboxInput.select(filter.caption);
-    })
+    });
     _.each(this.getInactiveFilters(), (filter: IResultFilterPreference) => {
       this.preferencePanelCheckboxInput.unselect(filter.caption);
-    })
+    });
     _.each(this.getDormantFilters(), (filter: IResultFilterPreference) => {
       this.preferencePanelCheckboxInput.select(filter.caption);
-    })
+    });
   }
 
   private fromCheckboxInputToPreferences() {
@@ -470,28 +470,28 @@ export class ResultsFiltersPreferences extends Component {
       } else {
         filter.selected = false;
       }
-    })
+    });
   }
 
   private getDormantFilters() {
     var activeTab = this.getActiveTab();
     return _.filter(this.preferences, (filter: IResultFilterPreference) => {
       return filter.selected && !this.filterIsInActiveTab(filter, activeTab);
-    })
+    });
   }
 
   private getActiveFilters() {
     var activeTab = this.getActiveTab();
     return _.filter(this.preferences, (filter: IResultFilterPreference) => {
       return filter.selected && this.filterIsInActiveTab(filter, activeTab);
-    })
+    });
   }
 
   private getInactiveFilters() {
     var activeTab = this.getActiveTab();
     return _.filter(this.preferences, (filter: IResultFilterPreference) => {
       return !filter.selected || !this.filterIsInActiveTab(filter, activeTab);
-    })
+    });
   }
 
   private getActiveTab() {
@@ -516,8 +516,8 @@ export class ResultsFiltersPreferences extends Component {
         selected: filter.selected ? filter.selected : false,
         custom: false,
         caption: caption
-      }
-    })
+      };
+    });
     return ret;
   }
 
@@ -527,10 +527,10 @@ export class ResultsFiltersPreferences extends Component {
     var localPreferencesWithoutRemoved = _.filter<IResultFilterPreference>(localPreferences, (preference) => {
       var isCustom = preference.custom;
       var existsInStatic = _.find<IResultFilterPreference>(staticPreferences, (staticPreference) => {
-        return staticPreference.caption == preference.caption
-      })
+        return staticPreference.caption == preference.caption;
+      });
       return isCustom || existsInStatic != undefined;
-    })
+    });
 
     var localToMerge = {};
     _.each(localPreferencesWithoutRemoved, (filter: IResultFilterPreference) => {
@@ -540,7 +540,7 @@ export class ResultsFiltersPreferences extends Component {
         selected: filter.selected,
         custom: filter.custom,
         caption: filter.caption
-      }
+      };
     });
     this.preferences = <{ [caption: string]: IResultFilterPreference; }>Utils.extendDeep(staticPreferences, localToMerge);
   }

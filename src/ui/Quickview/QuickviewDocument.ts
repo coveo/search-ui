@@ -1,20 +1,20 @@
-import {Component} from '../Base/Component'
-import {IComponentBindings} from '../Base/ComponentBindings'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
-import {IQueryResult} from '../../rest/QueryResult'
-import {Assert} from '../../misc/Assert'
-import {$$, Dom} from '../../utils/Dom'
-import {IOpenQuickviewEventArgs} from '../../events/ResultListEvents'
-import {QuickviewEvents, IQuickviewLoadedEventArgs} from '../../events/QuickviewEvents'
-import {DeviceUtils} from '../../utils/DeviceUtils'
-import {Utils} from '../../utils/Utils'
-import {ColorUtils} from '../../utils/ColorUtils'
-import {Initialization} from '../Base/Initialization'
-import {IQuery} from '../../rest/Query'
-import {IViewAsHtmlOptions} from '../../rest/SearchEndpointInterface'
-import {AjaxError} from '../../rest/AjaxError'
-import {l} from '../../strings/Strings'
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
+import {IQueryResult} from '../../rest/QueryResult';
+import {Assert} from '../../misc/Assert';
+import {$$, Dom} from '../../utils/Dom';
+import {IOpenQuickviewEventArgs} from '../../events/ResultListEvents';
+import {QuickviewEvents, IQuickviewLoadedEventArgs} from '../../events/QuickviewEvents';
+import {DeviceUtils} from '../../utils/DeviceUtils';
+import {Utils} from '../../utils/Utils';
+import {ColorUtils} from '../../utils/ColorUtils';
+import {Initialization} from '../Base/Initialization';
+import {IQuery} from '../../rest/Query';
+import {IViewAsHtmlOptions} from '../../rest/SearchEndpointInterface';
+import {AjaxError} from '../../rest/AjaxError';
+import {l} from '../../strings/Strings';
 
 const HIGHLIGHT_PREFIX = 'CoveoHighlight';
 
@@ -90,7 +90,7 @@ export class QuickviewDocument extends Component {
     let termsToHighlight = _.keys(this.result.termsToHighlight);
     let dataToSendOnOpenQuickView: IOpenQuickviewEventArgs = {
       termsToHighlight: termsToHighlight
-    }
+    };
 
     $$(this.element).trigger(QuickviewEvents.openQuickview, dataToSendOnOpenQuickView);
     this.checkIfTermsToHighlightWereModified(dataToSendOnOpenQuickView.termsToHighlight);
@@ -130,7 +130,7 @@ export class QuickviewDocument extends Component {
         } else {
           iframe.onload = () => {
             this.triggerQuickviewLoaded(beforeLoad);
-          }
+          };
           iframe.src = endpoint.getViewAsHtmlUri(this.result.uniqueId, callOptions);
         }
       });
@@ -142,7 +142,7 @@ export class QuickviewDocument extends Component {
 
       // Remove white border for new Quickview
       if (this.isNewQuickviewDocument(iframe.contentWindow)) {
-        let body = $$(this.element).closest('.coveo-body')
+        let body = $$(this.element).closest('.coveo-body');
         body.style.padding = '0';
         let header = $$(this.element).find('.coveo-quickview-header');
         header.style.paddingTop = '10';
@@ -360,7 +360,7 @@ export class QuickviewDocument extends Component {
         color: word.element.style.backgroundColor,
         currentIndex: 0,
         index: word.index
-      }
+      };
 
       this.keywordsState.push(state);
       $$(this.header).append(this.buildWordButton(state, window));
@@ -406,14 +406,14 @@ export class QuickviewDocument extends Component {
         // The expansions do NOT include the original term (makes sense), so be sure to check
         // the original term for a match too.
         return (originalTerm.toLowerCase() == highlight.toLowerCase()) ||
-          (_.find(this.result.termsToHighlight[originalTerm], (expansion: string) => expansion.toLowerCase() == highlight.toLowerCase()) != undefined)
+          (_.find(this.result.termsToHighlight[originalTerm], (expansion: string) => expansion.toLowerCase() == highlight.toLowerCase()) != undefined);
       }) || found;
     }
     return found;
   }
 
   private buildWordButton(wordState: IWordState, window: Window): HTMLElement {
-    let wordHtml = $$('span')
+    let wordHtml = $$('span');
     wordHtml.addClass('coveo-term-for-quickview');
 
     let quickviewName = $$('span');
@@ -421,7 +421,7 @@ export class QuickviewDocument extends Component {
     quickviewName.setHtml(wordState.word.text);
     quickviewName.on('click', () => {
       this.navigate(wordState, false, window);
-    })
+    });
     wordHtml.append(quickviewName.el);
 
     let quickviewUpArrow = $$('span');
@@ -432,7 +432,7 @@ export class QuickviewDocument extends Component {
     quickviewUpArrow.on('click', () => {
       this.navigate(wordState, true, window);
     })
-    wordHtml.append(quickviewUpArrow.el)
+    wordHtml.append(quickviewUpArrow.el);
 
     let quickviewDownArrow = $$('span');
     quickviewDownArrow.addClass('coveo-term-for-quickview-down-arrow');
@@ -441,7 +441,7 @@ export class QuickviewDocument extends Component {
     quickviewDownArrow.append(quickviewDownArrowIcon.el);
     quickviewDownArrow.on('click', () => {
       this.navigate(wordState, false, window);
-    })
+    });
     wordHtml.append(quickviewDownArrow.el);
 
     wordHtml.el.style.backgroundColor = wordState.color;
@@ -477,7 +477,7 @@ export class QuickviewDocument extends Component {
     // But this prevents keyword navigation from working so we must force show it. This
     // is done by adding the 'opened' class to it (defined by pdf2html).
     if (this.isNewQuickviewDocument(window)) {
-      let pdf = $$(element).closest('.pc')
+      let pdf = $$(element).closest('.pc');
       $$(pdf).addClass('opened');
     }
 
@@ -512,7 +512,7 @@ export class QuickviewDocument extends Component {
   }
 
   private buildHeader(): Dom {
-    let header = $$('div')
+    let header = $$('div');
     header.addClass('coveo-quickview-header');
     return header;
   }
@@ -576,7 +576,7 @@ export class QuickviewDocument extends Component {
     if (hsv[1] > 1) {
       hsv[1] = 1;
     }
-    let rgb = ColorUtils.hsvToRgb(hsv[0], hsv[1], hsv[2])
+    let rgb = ColorUtils.hsvToRgb(hsv[0], hsv[1], hsv[2]);
     return 'rgb(' + rgb[0].toString() + ', ' + rgb[1].toString() + ', ' + rgb[2].toString() + ')';
   }
 
@@ -588,7 +588,7 @@ export class QuickviewDocument extends Component {
       if (duration != 0) {
         scroll.scrollLeft += leftStep;
         scroll.scrollTop += topStep;
-        duration -= 1
+        duration -= 1;
       } else {
         clearInterval(interval);
       }

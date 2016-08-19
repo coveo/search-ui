@@ -21,6 +21,7 @@ import {SliderEvents, IGraphValueSelectedArgs} from '../../events/SliderEvents';
 import {Assert} from '../../misc/Assert';
 import {Utils} from '../../utils/Utils';
 import {Initialization} from '../Base/Initialization';
+import d3 = require('d3');
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;

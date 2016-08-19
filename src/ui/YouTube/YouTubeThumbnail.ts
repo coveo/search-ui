@@ -25,7 +25,7 @@ export class YouTubeThumbnail extends Component {
 
   static fields = [
     'ytthumbnailurl'
-  ]
+  ];
 
   private modalbox: Coveo.ModalBox.ModalBox;
 
@@ -36,10 +36,10 @@ export class YouTubeThumbnail extends Component {
     resultLink.addClass(Component.computeCssClassName(ResultLink));
 
     let thumbnailDiv = $$('div');
-    thumbnailDiv.addClass('coveo-youtube-thumbnail-container')
+    thumbnailDiv.addClass('coveo-youtube-thumbnail-container');
     resultLink.append(thumbnailDiv.el);
 
-    let img = $$('img')
+    let img = $$('img');
     img.el.style.width = this.options.width;
     img.el.style.height = this.options.height;
     img.setAttribute('src', result.raw['ytthumbnailurl']);
@@ -47,7 +47,7 @@ export class YouTubeThumbnail extends Component {
     thumbnailDiv.append(img.el);
 
     let span = $$('span');
-    span.addClass('coveo-youtube-thumbnail-play-button')
+    span.addClass('coveo-youtube-thumbnail-play-button');
     thumbnailDiv.append(span.el);
 
 
@@ -56,18 +56,18 @@ export class YouTubeThumbnail extends Component {
     if (this.options.embed) {
       this.options = _.extend(this.options, {
         onClick: () => this.handleOnClick()
-      })
+      });
     }
 
     let initOptions = this.searchInterface.options.originalOptionsObject;
     let resultComponentBindings: IResultsComponentBindings = _.extend({}, this.getBindings(), {
       resultElement: element
-    })
+    });
     let initParameters: IInitializationParameters = {
       options: _.extend({}, { initOptions: { ResultLink: options } }, initOptions),
       bindings: resultComponentBindings,
       result: result
-    }
+    };
     Initialization.automaticallyCreateComponentsInside(element, initParameters);
 
   }
@@ -93,7 +93,7 @@ export class YouTubeThumbnail extends Component {
 
     $$($$(this.modalbox.wrapper).find('.coveo-quickview-close-button')).on('click', () => {
       this.modalbox.close();
-    })
+    });
   }
 
   private extractVideoId() {

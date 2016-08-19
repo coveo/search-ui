@@ -9,12 +9,11 @@ const rename = require('gulp-rename');
 gulp.task('compile', ['addEolDependencies', 'deprecatedDependencies'], shell.task([
   // NODE_ENV=production sets an environement variable that will allow other tasks to know when we are building for production.
   (isWindows ? 'set ' : '') + 'NODE_ENV=production', 'node node_modules/webpack/bin/webpack.js'
-]))
+]));
 
 gulp.task('minimize', ['addEolDependencies'], shell.task([
-  // -p is a shortcut for --optimze-minimize --optimize-occurence-order
   'node node_modules/webpack/bin/webpack.js --minimize'
-]))
+]));
 
 gulp.task('deprecatedDependencies', function () {
   gulp.src('./src/Dependencies.js')

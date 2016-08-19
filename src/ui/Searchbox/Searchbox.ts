@@ -38,7 +38,7 @@ export class Searchbox extends Component {
      * Default value is false.
      */
     enableOmnibox: ComponentOptions.buildBooleanOption({ defaultValue: false })
-  }
+  };
 
   /**
    * Instance of the {@link SearchButton}
@@ -78,9 +78,9 @@ export class Searchbox extends Component {
     this.element.appendChild(div);
 
     if (this.options.enableOmnibox) {
-      this.searchbox = new Omnibox(div, this.options, bindings)
+      this.searchbox = new Omnibox(div, this.options, bindings);
     } else {
-      this.searchbox = new Querybox(div, this.options, bindings)
+      this.searchbox = new Querybox(div, this.options, bindings);
     }
   }
 }

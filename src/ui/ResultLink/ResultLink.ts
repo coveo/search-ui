@@ -1,20 +1,20 @@
-import {Component} from '../Base/Component'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {ComponentOptionsModel} from '../../models/ComponentOptionsModel'
-import {IResultsComponentBindings} from '../Base/ResultsComponentBindings'
-import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
-import {IResultLinkOptions} from './ResultLinkOptions'
-import {ResultListEvents} from '../../events/ResultListEvents'
-import {HighlightUtils} from '../../utils/HighlightUtils'
-import {IQueryResult} from '../../rest/QueryResult'
-import {DeviceUtils} from '../../utils/DeviceUtils'
-import {OS_NAME, OSUtils} from '../../utils/OSUtils'
-import {Initialization} from '../Base/Initialization'
-import {QueryUtils} from '../../utils/QueryUtils'
-import {Assert} from '../../misc/Assert'
-import {Utils} from '../../utils/Utils'
-import {Defer} from '../../misc/Defer'
-import {$$} from '../../utils/Dom'
+import {Component} from '../Base/Component';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
+import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
+import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
+import {IResultLinkOptions} from './ResultLinkOptions';
+import {ResultListEvents} from '../../events/ResultListEvents';
+import {HighlightUtils} from '../../utils/HighlightUtils';
+import {IQueryResult} from '../../rest/QueryResult';
+import {DeviceUtils} from '../../utils/DeviceUtils';
+import {OS_NAME, OSUtils} from '../../utils/OSUtils';
+import {Initialization} from '../Base/Initialization';
+import {QueryUtils} from '../../utils/QueryUtils';
+import {Assert} from '../../misc/Assert';
+import {Utils} from '../../utils/Utils';
+import {Defer} from '../../misc/Defer';
+import {$$} from '../../utils/Dom';
 
 /**
  * This component is intended to be placed inside a result template, which itself is used inside a {@link ResultList} component.
@@ -76,12 +76,12 @@ export class ResultLink extends Component {
     'collection', // analytics
     'source', // analytics
     'author' // analytics
-  ]
+  ];
 
   constructor(public element: HTMLElement, public options?: IResultLinkOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult, public os?: OS_NAME) {
     super(element, ResultLink.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultLink, options);
-    this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.resultLink))
+    this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.resultLink));
     this.result = result || this.resolveResult();
 
     if (this.options.openQuickview == null) {
@@ -97,7 +97,7 @@ export class ResultLink extends Component {
       // This is not 100% accurate, but we estimate it to be the lesser of 2 evils (not logging anything)
       $$(element).on('contextmenu', () => {
         this.logOpenDocument();
-      })
+      });
       $$(element).on('click', () => {
         this.logOpenDocument();
       });
@@ -115,7 +115,7 @@ export class ResultLink extends Component {
   private bindOnClickIfNotUndefined() {
     if (this.options.onClick != undefined) {
       $$(this.element).on('click', (e: Event) => {
-        this.options.onClick.call(this, e, this.result)
+        this.options.onClick.call(this, e, this.result);
       });
       return true;
     } else {
@@ -127,7 +127,7 @@ export class ResultLink extends Component {
     if (this.quickviewShouldBeOpened()) {
       $$(this.element).on('click', (e: Event) => {
         e.preventDefault();
-        $$(this.bindings.resultElement).trigger(ResultListEvents.openQuickview)
+        $$(this.bindings.resultElement).trigger(ResultListEvents.openQuickview);
       });
       return true;
     } else {
@@ -220,13 +220,13 @@ export class ResultLink extends Component {
   }
 
   private elementIsAnAnchor() {
-    return this.element.tagName == 'A'
+    return this.element.tagName == 'A';
   }
 
   private setField() {
     let os = Utils.exists(this.os) ? this.os : OSUtils.get();
     if (os == OS_NAME.MACOSX && this.hasOutlookField()) {
-      this.options.field = '@outlookformacuri'
+      this.options.field = '@outlookformacuri';
     } else if (os == OS_NAME.WINDOWS && this.hasOutlookField()) {
       this.options.field = '@outlookuri';
     }

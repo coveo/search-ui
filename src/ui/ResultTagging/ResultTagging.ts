@@ -57,7 +57,7 @@ export class ResultTagging extends Component {
      * Default valus is 2000
      */
     autoCompleteTimer: ComponentOptions.buildNumberOption({ defaultValue: 2000, min: 0 })
-  }
+  };
 
   static AUTO_COMPLETE_CLASS = 'coveo-result-tagging-auto-complete';
 
@@ -84,7 +84,7 @@ export class ResultTagging extends Component {
       this.tags = fieldValue.split(';');
       this.tags = _.map(this.tags, (t) => {
         return t.trim();
-      })
+      });
     } else {
       this.tags = [];
     }
@@ -125,8 +125,8 @@ export class ResultTagging extends Component {
     });
     tagIcon.on('click', () => {
       _.defer(() => {
-        this.focusOnTextBox()
-      }, 20)
+        this.focusOnTextBox();
+      }, 20);
     });
     tagZone.el.appendChild(tagIcon.el);
     tagZone.append(tagTextBox.el);
@@ -148,7 +148,7 @@ export class ResultTagging extends Component {
     });
     tag.el.appendChild(deleteIcon.el);
     deleteIcon.on('click', () => {
-      this.doRemoveTag(tag.el, tagValue.toLowerCase())
+      this.doRemoveTag(tag.el, tagValue.toLowerCase());
     });
     return tag.el;
   }
@@ -197,7 +197,7 @@ export class ResultTagging extends Component {
     });
     let clickable = $$('span');
     clickable.on('click', () => {
-      this.doAddTag()
+      this.doAddTag();
     });
     icon.el.appendChild(clickable.el);
     return icon.el;
@@ -216,7 +216,7 @@ export class ResultTagging extends Component {
   }
 
   private bindFacetEventOnValue(element: HTMLElement, value: string) {
-    let facetAttributeName = QueryStateModel.getFacetId(this.options.field)
+    let facetAttributeName = QueryStateModel.getFacetId(this.options.field);
     let facetModel: string[] = this.queryStateModel.get(facetAttributeName);
     let facets: Component[] = this.componentStateModel.get(facetAttributeName);
     let atLeastOneFacetIsEnabled = _.filter(facets, (value: Component) => !value.disabled).length > 0;
@@ -224,9 +224,9 @@ export class ResultTagging extends Component {
     if (facetModel != null && atLeastOneFacetIsEnabled) {
       $$(element).on('click', () => {
         if (_.contains(facetModel, value)) {
-          this.queryStateModel.set(facetAttributeName, _.without(facetModel, value))
+          this.queryStateModel.set(facetAttributeName, _.without(facetModel, value));
         } else {
-          this.queryStateModel.set(facetAttributeName, _.union(facetModel, [value]))
+          this.queryStateModel.set(facetAttributeName, _.union(facetModel, [value]));
         }
         this.queryController.deferExecuteQuery({
           beforeExecuteQuery: () => this.usageAnalytics.logSearchEvent<IAnalyticsResultTaggingMeta>(analyticsActionCauseList.documentTag, {
@@ -234,12 +234,12 @@ export class ResultTagging extends Component {
             facetValue: value
           })
         });
-      })
+      });
 
       if (_.contains(facetModel, value)) {
-        $$(element).addClass('coveo-selected')
+        $$(element).addClass('coveo-selected');
       }
-      $$(element).addClass('coveo-clickable')
+      $$(element).addClass('coveo-clickable');
     }
   }
 
@@ -328,7 +328,7 @@ export class ResultTagging extends Component {
   private manageUpDownEnter(code: number) {
     let selectableArray = $$(this.element).findAll('.coveo-selectable');
     if (code == KEYBOARD.ENTER) {
-      this.doAddTag()
+      this.doAddTag();
       return;
     }
 
@@ -364,7 +364,7 @@ export class ResultTagging extends Component {
     line.el.appendChild(this.buildShortenedTagWithTitle(lookupValue));
     line.on('click', () => {
       this.doAddTagWithValue(lookupValue);
-    })
+    });
     return line.el;
   }
 

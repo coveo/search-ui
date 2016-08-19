@@ -1,4 +1,4 @@
-import {IQueryResult} from '../../rest/QueryResult'
+import {IQueryResult} from '../../rest/QueryResult';
 
 export interface IResultLinkOptions {
   onClick?: (e: Event, result: IQueryResult) => any;

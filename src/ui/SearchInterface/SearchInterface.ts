@@ -233,7 +233,7 @@ export class SearchInterface extends RootComponent {
         new LocalStorageHistoryController(element, _window, this.queryStateModel, this.queryController);
       }
     } else {
-      $$(this.element).on(InitializationEvents.restoreHistoryState, () => this.queryStateModel.setMultiple(this.queryStateModel.defaultAttributes))
+      $$(this.element).on(InitializationEvents.restoreHistoryState, () => this.queryStateModel.setMultiple(this.queryStateModel.defaultAttributes));
     }
 
     let eventNameQuickview = this.queryStateModel.getEventName(Model.eventTypes.changeOne + QueryStateModel.attributesEnum.quickview);
@@ -359,10 +359,10 @@ export class SearchInterface extends RootComponent {
     // On first query success or error, wait for call stack to finish, then remove the animation
     $$(this.element).one(QueryEvents.querySuccess, () => {
       _.defer(() => this.hideWaitAnimation());
-    })
+    });
     $$(this.element).one(QueryEvents.queryError, () => {
       _.defer(() => this.hideWaitAnimation());
-    })
+    });
   }
 
   private handlePreprocessQueryStateModel(args: any) {
@@ -400,7 +400,7 @@ export class SearchInterface extends RootComponent {
   }
 
   private getTabGroupId(tabGroupId: string) {
-    let tabGroupRef = BaseComponent.getComponentRef('TabGroup')
+    let tabGroupRef = BaseComponent.getComponentRef('TabGroup');
     if (tabGroupRef) {
       let tabGroups = this.getComponents<any>(tabGroupRef.ID);
       // check if the tabgroup is correct
@@ -409,7 +409,7 @@ export class SearchInterface extends RootComponent {
       }
       // select the first tabGroup
       if (tabGroups.length > 0) {
-        return tabGroups[0].options.id
+        return tabGroups[0].options.id;
       }
     }
     return QueryStateModel.defaultAttributes.tg;
@@ -443,7 +443,7 @@ export class SearchInterface extends RootComponent {
       }
       // select the first tab
       if (tabs.length > 0) {
-        return tabs[0].options.id
+        return tabs[0].options.id;
       }
     }
     return QueryStateModel.defaultAttributes.t;
@@ -504,7 +504,7 @@ export class SearchInterface extends RootComponent {
     if (quickviewRef) {
       let quickviews = this.getComponents<any>(quickviewRef.ID);
       if (args.value != '') {
-        let quickviewsPartition = _.partition(quickviews, (quickview) => quickview.getHashId() == args.value)
+        let quickviewsPartition = _.partition(quickviews, (quickview) => quickview.getHashId() == args.value);
         if (quickviewsPartition[0].length != 0) {
           _.first(quickviewsPartition[0]).open();
           _.forEach(_.tail(quickviewsPartition[0]), (quickview) => quickview.close());
@@ -512,7 +512,7 @@ export class SearchInterface extends RootComponent {
         _.forEach(quickviewsPartition[1], (quickview) => quickview.close());
       } else {
         _.forEach(quickviews, (quickview) => {
-          quickview.close()
+          quickview.close();
         });
       }
     }
@@ -591,7 +591,7 @@ export class SearchInterface extends RootComponent {
     if (facetSearchs && facetSearchs.length > 0) {
       _.each(facetSearchs, (facetSearch) => {
         $$(facetSearch).toggleClass(cssClass, toggle && !this.queryStateModel.atLeastOneFacetIsActive());
-      })
+      });
     }
   }
 }
@@ -602,11 +602,11 @@ export interface IStandaloneSearchInterfaceOptions extends ISearchInterfaceOptio
 }
 
 export class StandaloneSearchInterface extends SearchInterface {
-  static ID = 'StandaloneSearchInterface'
+  static ID = 'StandaloneSearchInterface';
 
   public static options: IStandaloneSearchInterfaceOptions = {
     redirectIfEmpty: ComponentOptions.buildBooleanOption({ defaultValue: true })
-  }
+  };
 
   constructor(public element: HTMLElement, public options?: IStandaloneSearchInterfaceOptions, public analyticsOptions?, _window = window) {
     super(element, ComponentOptions.initComponentOptions(element, StandaloneSearchInterface, options), analyticsOptions, _window);
@@ -618,7 +618,7 @@ export class StandaloneSearchInterface extends SearchInterface {
     let dataToSendOnBeforeRedirect: IBeforeRedirectEventArgs = {
       searchPageUri: this.options.searchPageUri,
       cancel: false
-    }
+    };
 
     $$(this.root).trigger(StandaloneSearchInterfaceEvents.beforeRedirect, dataToSendOnBeforeRedirect);
 
@@ -647,6 +647,6 @@ export class StandaloneSearchInterface extends SearchInterface {
   }
 
   private searchboxIsEmpty(): boolean {
-    return Utils.isEmptyString(this.queryStateModel.get(QueryStateModel.attributesEnum.q))
+    return Utils.isEmptyString(this.queryStateModel.get(QueryStateModel.attributesEnum.q));
   }
 }
