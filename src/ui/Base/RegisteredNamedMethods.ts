@@ -109,7 +109,7 @@ Initialization.registerNamedMethod('executeQuery', (element: HTMLElement) => {
  * @param args
  * @returns {any}
  */
-export function state(element: HTMLElement, args: any[]): any {
+export function state(element: HTMLElement, ...args: any[]): any {
   Assert.exists(element);
   var model = <QueryStateModel>Component.resolveBinding(element, QueryStateModel);
   return setState(model, args);
@@ -139,9 +139,13 @@ Initialization.registerNamedMethod('get', (element: HTMLElement, componentClass?
   return get(element, componentClass, noThrow);
 });
 
-Initialization.registerNamedMethod('result', (element: HTMLElement, noThrow?: boolean): IQueryResult => {
+export function result(element: HTMLElement, noThrow?: boolean): IQueryResult {
   Assert.exists(element);
   return Component.getResult(element, noThrow);
+}
+
+Initialization.registerNamedMethod('result', (element: HTMLElement, noThrow?: boolean): IQueryResult => {
+  return result(element, noThrow);
 });
 
 function getCoveoAnalyticsClient(element: HTMLElement): IAnalyticsClient {
