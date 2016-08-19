@@ -1,5 +1,6 @@
 import {Initialization, IInitializationParameters} from './Initialization';
 import {IComponentDefinition} from './Component';
+export * from './Initialization';
 
 interface IWindow {
   $: any;
@@ -8,14 +9,11 @@ interface IWindow {
 // This class is essentially only there for legacy reasons : If there is any code in the wild that called this directly,
 // we don't want this to break.
 export class CoveoJQuery {
-  public static automaticallyCreateComponentsInside(element: HTMLElement, initParameters: IInitializationParameters, ignore?: string[]) {
-    return Initialization.automaticallyCreateComponentsInside(element, initParameters, ignore);
-  }
-
-  public static registerAutoCreateComponent(cmp: IComponentDefinition) {
-    return Initialization.registerAutoCreateComponent(cmp);
-  }
 }
+
+_.each(<any>_.keys(Initialization), (v: string) => {
+  CoveoJQuery[v] = Initialization[v];
+})
 
 export var jQueryInstance: JQuery;
 
