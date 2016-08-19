@@ -310,3 +310,6 @@ ResultsPerPageTest();
 
 import { LogoTest } from './ui/LogoTest';
 LogoTest();
+
+import {RegisteredNamedMethodsTest} from './ui/RegisteredNamedMethodsTest';
+RegisteredNamedMethodsTest();
