@@ -231,7 +231,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     this.logger.info('Performing REST query', query);
 
-    return this.performOneCall(callParams).then((results?: IQueryResults) => {
+    return this.performOneCall(callParams, callOptions).then((results?: IQueryResults) => {
       this.logger.info('REST query successful', results, query);
 
       // Version check
@@ -703,12 +703,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     let queryString: string[] = [];
 
     for (let name in this.options.queryStringArguments) {
-      // The mapping workgroup --> organizationId is necessary for backwards compatibility
-      if (name == 'workgroup') {
-        queryString.push('organizationId' + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
-      } else {
-        queryString.push(name + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
-      }
+      queryString.push(name + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
     }
 
     if (callOptions && _.isArray(callOptions.authentication) && callOptions.authentication.length != 0) {
