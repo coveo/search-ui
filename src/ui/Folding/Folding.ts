@@ -111,7 +111,7 @@ export class Folding extends Component {
      *
      * The minimum value is 1.
      */
-    maximumExpandedResults: ComponentOptions.buildNumberOption({defaultValue: 100, min: 1, depend: 'enableExpand'}),
+    maximumExpandedResults: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1, depend: 'enableExpand' }),
     /**
      * This function manages folding individually for each result.
      *
@@ -155,7 +155,8 @@ export class Folding extends Component {
      * });
      * ```
      */
-    getResult: ComponentOptions.buildCustomOption<Function>(()=> {
+    getResult: ComponentOptions.buildCustomOption<(result: IQueryResult) => IQueryResult>(() => {
+      return null;
     }),
     /**
      * This function manages folding of all results.
@@ -170,7 +171,8 @@ export class Folding extends Component {
      * ```
      *
      */
-    getMoreResults: ComponentOptions.buildCustomOption<Function>(()=> {
+    getMoreResults: ComponentOptions.buildCustomOption<(results: IQueryResult[]) => IQueryResult[]>(() => {
+      return null;
     })
   };
 

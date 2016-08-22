@@ -22,7 +22,6 @@ import {Assert} from '../../misc/Assert';
 import {Utils} from '../../utils/Utils';
 import {Initialization} from '../Base/Initialization';
 import d3 = require('d3');
-import {IStringMap} from "../../rest/GenericParam";
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;
@@ -77,7 +76,7 @@ export class FacetSlider extends Component {
    * The component options
    * @componentOptions
    */
-  static options = {
+  static options: IFacetSliderOptions = {
     /**
      * The title on top of the facet component.<br/>
      * Default value is the localized string for 'No title'
@@ -223,7 +222,8 @@ export class FacetSlider extends Component {
      * })
      * ```
      */
-    getSteps: ComponentOptions.buildCustomOption<Function>(()=> {
+    getSteps: ComponentOptions.buildCustomOption<(start: number, end: number) => number[]>(() => {
+      return null;
     }),
     /**
      * Specifies a function that will generate the caption for the slider. Receives the current slider values (number[]) and must return the caption (string).
@@ -250,7 +250,8 @@ export class FacetSlider extends Component {
      * })
      * ```
      */
-    valueCaption: ComponentOptions.buildCustomOption<Function>(()=> {
+    valueCaption: ComponentOptions.buildCustomOption<(values: number[]) => string>(() => {
+      return null;
     })
   };
 

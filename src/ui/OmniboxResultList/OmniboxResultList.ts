@@ -91,7 +91,8 @@ export class OmniboxResultList extends ResultList {
      * })
      * ```
      */
-    onSelect: ComponentOptions.buildCustomOption<Function>(()=>{
+    onSelect: ComponentOptions.buildCustomOption<(result: IQueryResult, resultElement: HTMLElement, omniboxObject: IPopulateOmniboxEventArgs) => void>(() => {
+      return null;
     })
   };
 

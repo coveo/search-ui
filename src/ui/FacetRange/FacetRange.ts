@@ -73,7 +73,8 @@ export class FacetRange extends Facet {
      * })
      * ```
      */
-    ranges: ComponentOptions.buildCustomOption<IRangeValue[]>(()=> {
+    ranges: ComponentOptions.buildCustomOption<IRangeValue[]>(() => {
+      return null;
     })
   };
 

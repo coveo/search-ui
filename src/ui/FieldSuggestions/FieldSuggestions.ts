@@ -12,7 +12,7 @@ import {Initialization} from '../Base/Initialization';
 import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
 import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom';
-import {ISuggestionForOmniboxOptionsOnSelect} from "../Misc/SuggestionForOmnibox";
+import {ISuggestionForOmniboxOptionsOnSelect} from '../Misc/SuggestionForOmnibox';
 
 export interface IFieldSuggestionsOptions extends ISuggestionForOmniboxOptions {
   field?: string;
@@ -52,7 +52,7 @@ export class FieldSuggestions extends Component {
      * Specifies the number of suggestions that should be rendered in the omnibox.<br/>
      * Default value is `5`
      */
-    numberOfSuggestions: ComponentOptions.buildNumberOption({defaultValue: 5, min: 1}),
+    numberOfSuggestions: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1 }),
     /**
      * The event handler function to execute when a value is selected in the Omnibox. By default, the query box text is replaced by what was selected and a new query is executed. You can however replace this default text by providing a callback function to execute when the value is selected.
      * For example:
@@ -83,7 +83,8 @@ export class FieldSuggestions extends Component {
      * })
      * ```
      */
-    onSelect: ComponentOptions.buildCustomOption << ISuggestionForOmniboxOptionsOnSelect > Function > (()=> {
+    onSelect: ComponentOptions.buildCustomOption<ISuggestionForOmniboxOptionsOnSelect>(() => {
+      return null;
     })
   };
 

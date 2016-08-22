@@ -27,7 +27,7 @@ export class ResultLink extends Component {
    * The options for the ResultLink
    * @componentOptions
    */
-  static options : IResultLinkOptions = {
+  static options: IResultLinkOptions = {
 
     /**
      * Specifies the field that the result link uses to output its href. 
@@ -115,7 +115,8 @@ export class ResultLink extends Component {
      * });
      * ```
      */
-    onClick: ComponentOptions.buildCustomOption<Function>(()=> {
+    onClick: ComponentOptions.buildCustomOption<(e: Event, result: IQueryResult) => any>(() => {
+      return null;
     })
   };
 

@@ -49,7 +49,7 @@ import {IOmniboxDataRow} from '../Omnibox/OmniboxInterface';
 import {Initialization} from '../Base/Initialization';
 import {BreadcrumbEvents, IClearBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
 import {ResponsiveFacets} from '../ResponsiveComponents/ResponsiveFacets';
-import {IStringMap} from "../../rest/GenericParam";
+import {IStringMap} from '../../rest/GenericParam';
 
 export interface IFacetOptions {
   title?: string;
@@ -378,9 +378,10 @@ export class Facet extends Component {
      *      valueCaption: myValueCaption
      *    }
      * })
-     ```
+     * ```
      */
-    valueCaption: ComponentOptions.buildCustomOption<IStringMap>(()=> {
+    valueCaption: ComponentOptions.buildCustomOption<IStringMap<string>>(() => {
+      return null;
     })
   };
 

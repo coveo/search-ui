@@ -1,5 +1,4 @@
-import {Initialization, IInitializationParameters} from './Initialization';
-import {IComponentDefinition} from './Component';
+import {Initialization} from './Initialization';
 
 interface IWindow {
   $: any;
