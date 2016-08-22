@@ -20,12 +20,80 @@ export interface IOmniboxResultListOptions extends IResultListOptions {
   queryOverride?: string;
 }
 
+/**
+ * This component is exactly like a normal ResultList Component, except that it will render itself inside the Omnibox Component.
+ * This will provide a kind of search as you type functionnality, allowing you to easily render complex Result Templates inside the Omnibox Component.
+ *
+ * # Example
+ * ```
+ *     <div class="CoveoOmniboxResultList">
+ *         <script class="result-template" type="text/x-underscore">
+ *             <div>
+ *                 <a class='CoveoResultLink'></a>
+ *             </div>
+ *         </script>
+ *     </div>
+ * ```
+ */
 export class OmniboxResultList extends ResultList {
   static ID = 'OmniboxResultList';
+  /**
+   * The options for the component
+   * @componentOptions
+   */
   static options: IOmniboxResultListOptions = {
+    /**
+     * Specifies the index at which the result list should render itself inside the Omnibox
+     *
+     * The default value is 51 (Facets are at 50 by default).
+     */
     omniboxZIndex: ComponentOptions.buildNumberOption({ defaultValue: 51, min: 16 }),
+    /**
+     * Specifies the title that you want for this section.
+     *
+     * By default this will be Suggested Results.
+     */
     headerTitle: ComponentOptions.buildStringOption(),
-    queryOverride: ComponentOptions.buildStringOption()
+    /**
+     * Specifies the override you want to use on the query sent to the OmniboxResultList component.
+     *
+     * By default, there's no override applied.
+     */
+    queryOverride: ComponentOptions.buildStringOption(),
+    /**
+     * Specifies the function you wish to execute when a result suggestion is selected.
+     *
+     * By default, it will open the corresponding result uri in your browser.
+     *
+     * ```javascript
+     * Coveo.init(document.querySelector('#search'), {
+     *    OmniboxResultList : {
+     *        //Close the omnibox, change the selected HTMLElement background color and alert the result title.
+     *        onSelect:   function(result, resultElement, omniBoxObject) {
+     *            omniBoxObject.close();
+     *            resultElement.css('background-color', 'red');
+     *            alert(result.title);
+     *        }
+     *     }
+     * })
+     *
+     * // OR using the jquery extension
+     *
+     * $("#search").coveo("init", {
+     *    OmniboxResultList : {
+     *        //Close the omnibox, change the selected HTMLElement background color and alert the result title.
+     *        onSelect:   function(result, resultElement, omniBoxObject) {
+     *            omniBoxObject.close();
+     *            resultElement.css('background-color', 'red');
+     *            alert(result.title);
+     *        }
+     *     }
+     * })
+     * ```
+     */
+    onSelect: ComponentOptions.buildCustomOption<(result: IQueryResult, resultElement: HTMLElement, omniboxObject: IPopulateOmniboxEventArgs) => void>(() => {
+      return null;
+    })
   };
 
   private lastOmniboxRequest: { omniboxObject: IPopulateOmniboxEventArgs; resolve: (...args: any[]) => void; };

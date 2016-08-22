@@ -49,6 +49,7 @@ import {IOmniboxDataRow} from '../Omnibox/OmniboxInterface';
 import {Initialization} from '../Base/Initialization';
 import {BreadcrumbEvents, IClearBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
 import {ResponsiveFacets} from '../ResponsiveComponents/ResponsiveFacets';
+import {IStringMap} from '../../rest/GenericParam';
 
 export interface IFacetOptions {
   title?: string;
@@ -356,7 +357,32 @@ export class Facet extends Component {
      * To specify the parent facet, use it's {@link Facet.options.id}. Remember that be default, the id of a facet is it's {@link Facet.options.field}.<br/>
      * Example -> dependsOn : @parentfacetField
      */
-    dependsOn: ComponentOptions.buildStringOption()
+    dependsOn: ComponentOptions.buildStringOption(),
+    /**
+     * Specifies a JSON object describing a mapping of facet values to desired captions.
+     *
+     * This option can only be set in the init call of your search interface, not directly as an HTML attribute.
+     *
+     * ```
+     * // Example: Using a facet for file types
+     * var myValueCaption = {  "txt": "Text files","html": "Web page", [ etc ... ]};
+     *
+     * Coveo.init(document.querySelector('#search'), {
+     *    Facet : {
+     *      valueCaption: myValueCaption
+     *    }
+     * })
+     * // Or using the jquery extension
+     * $("#search").coveo("init", {
+     *    Facet: {
+     *      valueCaption: myValueCaption
+     *    }
+     * })
+     * ```
+     */
+    valueCaption: ComponentOptions.buildCustomOption<IStringMap<string>>(() => {
+      return null;
+    })
   };
 
   public facetQueryController: FacetQueryController;

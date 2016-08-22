@@ -71,9 +71,14 @@ export class Folding extends Component {
      */
     parentField: ComponentOptions.buildFieldOption({ defaultValue: '@containsattachment' }),
     /**
-     * The number of child results to fold.<br />
-     * The default value is 2.<br/>
+     * The number of child results to fold.
+     *
+     * The default value is 2.
+     *
      * The minimum value is 0.
+     *
+     * > Example:
+     * > For an email thread with 20 messages in total, using the default value means that a maximum of 2 child messages are loaded and displayed under the original message (unless the whole conversation is expanded via the use of a Show all conversation button).
      */
     range: ComponentOptions.buildNumberOption({ defaultValue: 2, min: 0 }),
     /**
@@ -81,6 +86,9 @@ export class Folding extends Component {
      * (`date ascending`, `@somefield ascending`, etc.).
      *
      * The default value is `none`, which means that results are displayed in the order that the index returned them.
+     *
+     * > Example:
+     * > If you specify date descending, the component re-arranges an email conversation so that the newest email is always the top result. Doing the opposite would allow the original email to always be the top result since it is also the oldest.
      */
     rearrange: ComponentOptions.buildCustomOption((value) => Utils.isNonEmptyString(value) ? SortCriteria.parse(value) : null),
     /**
@@ -103,7 +111,69 @@ export class Folding extends Component {
      *
      * The minimum value is 1.
      */
-    maximumExpandedResults: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1, depend: 'enableExpand' })
+    maximumExpandedResults: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1, depend: 'enableExpand' }),
+    /**
+     * This function manages folding individually for each result.
+     *
+     * The default value ( which is implemented in Coveo.Folding.defaultGetResult) :
+     *
+     * ```
+     * var results = result.childResults || [];
+     * // Add the top result at the top of the list
+     * results.unshift(result);
+     * // Empty childResults just to clean it
+     * result.childResults = [];
+     * // Fold those results
+     * results = Coveo.Folding.foldWithParent(results);
+     * // The first result is the top one
+     * var topResult = results.shift();
+     * // All other results are childResults
+     * topResult.childResults = results;
+     * return topResult;
+     * ```
+     *
+     * You can preprocess all the result with this option:
+     * ```
+     * Coveo.init(document.querySelector('#search'), {
+     *    Folding: {
+     *      getResult: function(result) {
+     *        result = Coveo.Folding.defaultGetResult(result);
+     *        // Your code here
+     *      }
+     *    }
+     * })
+     *
+     * // OR using the jquery extension
+     *
+     * Coveo.$('#search').coveo('init', {
+     *    Folding: {
+     *      getResult: function(result) {
+     *        result = Coveo.Folding.defaultGetResult(result);
+     *        // Your code here
+     *      }
+     *    }
+     * });
+     * ```
+     */
+    getResult: ComponentOptions.buildCustomOption<(result: IQueryResult) => IQueryResult>(() => {
+      return null;
+    }),
+    /**
+     * This function manages folding of all results.
+     *
+     * The default value (Coveo.Folding.defaultGetMoreResults):
+     *
+     * ```
+     * Coveo.Folding.defaultGetMoreResults = function(results) {
+     *    // The results are flat, just do the folding
+     *    return Coveo.Folding.foldWithParent(results);
+     * }
+     * ```
+     *
+     */
+    getMoreResults: ComponentOptions.buildCustomOption<(results: IQueryResult[]) => IQueryResult[]>(() => {
+      return null;
+    })
   };
 
   /**

@@ -38,10 +38,24 @@ interface IWordState {
   index: number;
 }
 
+/**
+ * The QuickviewDocument component is meant to exist within Result Templates, more specifically inside a {@link Quickview} Component.
+ * The sole purpose of this component is to include an iframe which will load the correct HTML version of the current document.
+ * By default, this component is included in the default template for a {@link Quickview} Component.
+ */
 export class QuickviewDocument extends Component {
   static ID = 'QuickviewDocument';
 
+  /**
+   * The options for the component
+   * @componentOptions
+   */
   static options: IQuickviewDocumentOptions = {
+    /**
+     * Specifies the maximum document size (the preview) that should be returned by the index.
+     *
+     * By default it's value is 0, and the whole preview is returned.
+     */
     maximumDocumentSize: ComponentOptions.buildNumberOption({ defaultValue: 0, min: 0 }),
   };
 
@@ -50,6 +64,13 @@ export class QuickviewDocument extends Component {
   private termsToHighlightWereModified: boolean;
   private keywordsState: IWordState[];
 
+  /**
+   * Create a new instance of the component
+   * @param element
+   * @param options
+   * @param bindings
+   * @param result
+   */
   constructor(public element: HTMLElement, public options?: IQuickviewDocumentOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, QuickviewDocument.ID, bindings);
 

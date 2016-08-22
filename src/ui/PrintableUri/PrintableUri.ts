@@ -11,7 +11,7 @@ import {$$} from '../../utils/Dom';
 export interface IPrintableUriOptions {
 }
 
-/*
+/**
  * This component is meant to be used inside a result template to display the URI or path to access a result.
  */
 export class PrintableUri extends Component {
@@ -24,6 +24,13 @@ export class PrintableUri extends Component {
 
   private uri: string;
 
+  /**
+   * Create a new PrintableUri
+   * @param element
+   * @param options
+   * @param bindings
+   * @param result
+   */
   constructor(public element: HTMLElement, public options: IPrintableUriOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, PrintableUri.ID, bindings);
 
