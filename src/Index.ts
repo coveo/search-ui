@@ -117,7 +117,7 @@ let swapVar = () => {
   } else {
     _.each(_.keys(this), (k) => {
       window['Coveo'][k] = this[k];
-    })
+    });
   }
-}
+};
 swapVar();

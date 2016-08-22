@@ -136,7 +136,7 @@ export function QueryboxTest() {
         setTimeout(() => {
           expect(test.env.queryController.executeQuery).toHaveBeenCalled();
           done();
-        }, test.cmp.options.searchAsYouTypeDelay)
+        }, test.cmp.options.searchAsYouTypeDelay);
       });
 
       it('enableSearchAsYouType to false will not trigger a query after a delay', function () {
@@ -156,7 +156,7 @@ export function QueryboxTest() {
           expect(test.env.usageAnalytics.logSearchAsYouType).toHaveBeenCalledWith(analyticsActionCauseList.searchboxAsYouType, {});
 
           done();
-        }, test.cmp.options.searchAsYouTypeDelay)
+        }, test.cmp.options.searchAsYouTypeDelay);
       });
 
       it('enableSearchAsYouTypeDelay influences the delay before a query', function (done) {

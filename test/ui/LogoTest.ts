@@ -1,6 +1,5 @@
 import * as Mock from '../MockEnvironment';
-import {Logo, ILogoOptions} from '../../src/ui/Logo/Logo';
-import {Simulate} from '../Simulate';
+import {Logo} from '../../src/ui/Logo/Logo';
 import {$$} from '../../src/utils/Dom';
 
 export function LogoTest() {
@@ -19,6 +18,6 @@ export function LogoTest() {
       let link = $$(test.cmp.element).find('a');
       expect(link.getAttribute('href')).toBe('http://www.coveo.com/');
       expect($$(link).getClass()).toEqual(jasmine.arrayContaining(['coveo-powered-by', 'coveo-footer-logo']));
-    })
-  })
+    });
+  });
 }

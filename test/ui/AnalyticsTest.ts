@@ -43,7 +43,7 @@ export function AnalyticsTest() {
       });
 
       it('log an event on query error', () => {
-        spyOn(test.cmp.client, 'logCustomEvent')
+        spyOn(test.cmp.client, 'logCustomEvent');
         Simulate.query(test.env, {
           error: {
             message: 'oops',
