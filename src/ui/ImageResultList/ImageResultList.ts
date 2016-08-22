@@ -48,7 +48,7 @@ export class ImageResultList extends ResultList {
      * The default value is 170.
      */
     columnWidth: ComponentOptions.buildNumberOption({ defaultValue: 225, min: 16 })
-  }
+  };
 
   private columnResultsArray: number[] = [];
   private imagesInCurrentRow: number[] = [];
@@ -107,7 +107,7 @@ export class ImageResultList extends ResultList {
     _.defer(() => {
       _.each(elements, (element) => {
         $$(element).addClass('coveo-transition-all');
-      })
+      });
     });
   }
 
@@ -140,23 +140,23 @@ export class ImageResultList extends ResultList {
         }
         loaded++;
         if (loaded == images.length) {
-          callback()
+          callback();
         }
       } else {
         $$(image.parentElement).detach();
         images = _.filter(images, (img) => {
           return !img.isEqualNode(image);
-        })
+        });
         if (loaded == images.length) {
-          callback()
+          callback();
         }
       }
-    }
+    };
     _.each(images, (e: HTMLImageElement) => {
       if ((e.src && e.complete) || /*for IE 10-*/ $$(e).height() > 0) {
         onImageLoad(e);
       } else {
-        $$(e).one('load', () => { onImageLoad(e) });
+        $$(e).one('load', () => onImageLoad(e));
       }
     });
   }

@@ -80,5 +80,5 @@ export function ResultsPerPageTest() {
         expect(test.env.queryController.options.resultsPerPage).toBe(firstChoice);
       });
     });
-  })
+  });
 }

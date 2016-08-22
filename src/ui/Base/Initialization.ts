@@ -145,7 +145,7 @@ export class Initialization {
     _.each(elemsHidden, (e: HTMLElement) => {
       $$(e).removeClass('coveo-hide-until-loaded');
       $$(e).addClass('coveo-show-after-loaded');
-    })
+    });
 
     if (searchInterface.options.autoTriggerQuery) {
       Initialization.logFirstQueryCause(searchInterface);
@@ -429,9 +429,9 @@ export class Initialization {
     if (Utils.exists(option)) {
       _.each(option, (func: () => void) => {
         if (typeof func == 'function') {
-          func()
+          func();
         }
-      })
+      });
     }
   }
 
@@ -465,7 +465,7 @@ export class Initialization {
         if (Utils.isHtmlElement(elementToInstantiate)) {
           Initialization.automaticallyCreateComponentsInside(elementToInstantiate, initParameters);
         }
-      })
+      });
     }
   }
 
@@ -487,6 +487,6 @@ export class Initialization {
           Initialization.createComponentOfThisClassOnElement(componentClass['ID'], matchingElement, initParamToUse);
         }
       });
-    }
+    };
   }
 }

@@ -112,7 +112,7 @@ export class StringAndHoles {
    * @param toAppend The string to append at the end (usually, it is set to '...')
    */
   static shortenString(toShortenOrig: string, length: number = 200, toAppend?: string): StringAndHoles {
-    let toShorten = toShortenOrig
+    let toShorten = toShortenOrig;
     toAppend = Utils.toNotNullString(toAppend);
     let strAndHoles = new StringAndHoles();
     if (Utils.isNullOrEmptyString(toShorten) || length <= toAppend.length) {

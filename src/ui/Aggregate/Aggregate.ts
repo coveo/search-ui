@@ -53,7 +53,7 @@ export class Aggregate extends Component {
      * Default value is 'c0
      */
     format: ComponentOptions.buildStringOption({ defaultValue: 'c0' })
-  }
+  };
 
   private index: number;
 

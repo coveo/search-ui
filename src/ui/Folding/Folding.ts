@@ -104,7 +104,7 @@ export class Folding extends Component {
      * The minimum value is 1.
      */
     maximumExpandedResults: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1, depend: 'enableExpand' })
-  }
+  };
 
   /**
    * Create a new Folding component
@@ -133,7 +133,7 @@ export class Folding extends Component {
       result: <IQueryResult>{
         raw: false
       }
-    }
+    };
 
     _.each(queryResults, (queryResult: IQueryResult, i: number) => {
       let resultNode = Folding.findUniqueId(rootNode.children, queryResult.uniqueId);
@@ -160,7 +160,7 @@ export class Folding extends Component {
             result: queryResult,
             score: i,
             children: []
-          }
+          };
         }
 
         let parentResult = Folding.findUniqueId(rootNode.children, queryResult.parentResult.uniqueId);
@@ -186,7 +186,7 @@ export class Folding extends Component {
     });
     let rootResult = Folding.resultNodeToQueryResult(rootNode);
     // Remove the root from all results
-    _.each(rootResult.attachments, (attachment) => attachment.parentResult = null)
+    _.each(rootResult.attachments, (attachment) => attachment.parentResult = null);
     return rootResult.attachments;
   }
 
@@ -270,10 +270,10 @@ export class Folding extends Component {
       if (this.options.enableExpand && !Utils.isNullOrUndefined(Utils.getFieldValue(result, this.options.field))) {
         result.moreResults = () => {
           return this.moreResults(result, originalQuery);
-        }
+        };
       }
       return result;
-    })
+    });
   }
 
 

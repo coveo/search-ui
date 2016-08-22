@@ -48,7 +48,7 @@ export class FacetRange extends Facet {
         } else {
           var start = startEnd[1].match(/^[\+\-]?[0-9]+(\.[0-9]+)?$/) ? <any>Number(startEnd[1]) : <any>DateUtils.convertFromJsonDateIfNeeded(startEnd[1]);
           var end = startEnd[2].match(/^[\+\-]?[0-9]+(\.[0-9]+)?$/) ? <any>Number(startEnd[2]) : <any>DateUtils.convertFromJsonDateIfNeeded(startEnd[2]);
-          ret = Globalize.format(start, this.options.valueCaption) + ' - ' + Globalize.format(end, this.options.valueCaption)
+          ret = Globalize.format(start, this.options.valueCaption) + ' - ' + Globalize.format(end, this.options.valueCaption);
         }
       }
     }
@@ -70,7 +70,7 @@ export class FacetRange extends Facet {
             return Date.parse(startEndA[0]) - Date.parse(startEndB[0]);
           }
           return Number(startEndA[0]) - Number(startEndB[0]);
-        })
+        });
       }
     }
     super.processNewGroupByResults(groupByResult);

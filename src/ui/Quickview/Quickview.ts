@@ -1,17 +1,17 @@
-import {Component} from '../Base/Component'
-import {ComponentOptions, ComponentOptionsType} from '../Base/ComponentOptions'
-import {IResultsComponentBindings} from '../Base/ResultsComponentBindings'
-import {Template} from '../Templates/Template'
-import {DomUtils} from '../../utils/DomUtils'
-import {DeviceUtils} from '../../utils/DeviceUtils'
-import {IQueryResult} from '../../rest/QueryResult'
-import {$$, Dom} from '../../utils/Dom'
-import {DefaultQuickviewTemplate} from './DefaultQuickviewTemplate'
-import {ResultListEvents} from '../../events/ResultListEvents'
-import {StringUtils} from '../../utils/StringUtils'
-import {QuickviewDocument} from './QuickviewDocument'
-import {QueryStateModel} from '../../models/QueryStateModel'
-import {QuickviewEvents} from '../../events/QuickviewEvents'
+import {Component} from '../Base/Component';
+import {ComponentOptions, ComponentOptionsType} from '../Base/ComponentOptions';
+import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
+import {Template} from '../Templates/Template';
+import {DomUtils} from '../../utils/DomUtils';
+import {DeviceUtils} from '../../utils/DeviceUtils';
+import {IQueryResult} from '../../rest/QueryResult';
+import {$$, Dom} from '../../utils/Dom';
+import {DefaultQuickviewTemplate} from './DefaultQuickviewTemplate';
+import {ResultListEvents} from '../../events/ResultListEvents';
+import {StringUtils} from '../../utils/StringUtils';
+import {QuickviewDocument} from './QuickviewDocument';
+import {QueryStateModel} from '../../models/QueryStateModel';
+import {QuickviewEvents} from '../../events/QuickviewEvents';
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
 import {KEYBOARD} from '../../utils/KeyboardUtils';
 import {ModalBox} from '../../ExternalModulesShim';
@@ -28,7 +28,7 @@ export interface IQuickviewOptions {
 
 interface IQuickviewOpenerObject {
   content: Dom;
-  loadingAnimation: HTMLElement
+  loadingAnimation: HTMLElement;
 }
 
 /**
@@ -115,11 +115,11 @@ export class Quickview extends Component {
     // we need to add something that will show up in the result template itself
     if (/^\s*$/.test(this.element.innerHTML)) {
       let iconForQuickview = $$('div');
-      iconForQuickview.addClass('coveo-icon-for-quickview')
+      iconForQuickview.addClass('coveo-icon-for-quickview');
       if (this.searchInterface.isNewDesign()) {
         let captionForQuickview = $$('div');
-        captionForQuickview.addClass('coveo-caption-for-quickview')
-        captionForQuickview.text('Quickview'.toLocaleString())
+        captionForQuickview.addClass('coveo-caption-for-quickview');
+        captionForQuickview.text('Quickview'.toLocaleString());
         let div = $$('div');
         div.append(iconForQuickview.el);
         div.append(captionForQuickview.el);
@@ -181,16 +181,16 @@ export class Quickview extends Component {
     $$(closeButton).on('click', () => {
       this.closeQuickview();
       this.close();
-    })
+    });
 
     $$(this.modalbox.overlay).on('click', () => {
       this.closeQuickview();
-    })
+    });
 
     $$(this.modalbox.content).on(QuickviewEvents.quickviewLoaded, () => {
       $$(openerObject.loadingAnimation).remove();
       this.bindIFrameEscape();
-    })
+    });
 
     this.bindEscape();
   }
@@ -215,7 +215,7 @@ export class Quickview extends Component {
 
   private createModalBox(openerObject: IQuickviewOpenerObject) {
 
-    let computedModalBoxContent = $$('div')
+    let computedModalBoxContent = $$('div');
     computedModalBoxContent.append(openerObject.content.el);
     this.modalbox = ModalBox.open(computedModalBoxContent.el, {
       title: DomUtils.getQuickviewHeader(this.result, {
@@ -234,7 +234,7 @@ export class Quickview extends Component {
     return {
       loadingAnimation: loadingAnimation,
       content: this.prepareQuickviewContent(loadingAnimation)
-    }
+    };
   }
 
   private prepareQuickviewContent(loadingAnimation: HTMLElement) {
@@ -257,9 +257,9 @@ export class Quickview extends Component {
   }
 
   private bindIFrameEscape() {
-    let quickviewDocument = $$(this.modalbox.content).find('.' + Component.computeCssClassName(QuickviewDocument))
+    let quickviewDocument = $$(this.modalbox.content).find('.' + Component.computeCssClassName(QuickviewDocument));
     quickviewDocument = $$(quickviewDocument).find('iframe');
-    let body = (<HTMLIFrameElement>quickviewDocument).contentWindow.document.body
+    let body = (<HTMLIFrameElement>quickviewDocument).contentWindow.document.body;
     $$(body).on('keyup', this.bindedHandleEscapeEvent);
   }
 

@@ -1,4 +1,4 @@
-import {Component} from '../Base/Component'
+import {Component} from '../Base/Component';
 import {$$} from '../../utils/Dom';
 import {l} from '../../strings/Strings';
 import {IResultListOptions, ResultList} from '../ResultList/ResultList';
@@ -26,7 +26,7 @@ export class OmniboxResultList extends ResultList {
     omniboxZIndex: ComponentOptions.buildNumberOption({ defaultValue: 51, min: 16 }),
     headerTitle: ComponentOptions.buildStringOption(),
     queryOverride: ComponentOptions.buildStringOption()
-  }
+  };
 
   private lastOmniboxRequest: { omniboxObject: IPopulateOmniboxEventArgs; resolve: (...args: any[]) => void; };
 
@@ -34,7 +34,7 @@ export class OmniboxResultList extends ResultList {
     super(element, options, bindings, OmniboxResultList.ID);
     this.options = ComponentOptions.initComponentOptions(element, OmniboxResultList, options);
     this.setupOptions();
-    this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs) => this.handlePopulateOmnibox(args))
+    this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs) => this.handlePopulateOmnibox(args));
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleQueryOverride(args));
   }
 
@@ -60,7 +60,7 @@ export class OmniboxResultList extends ResultList {
       content.appendChild($$('div', { className: 'coveo-omnibox-result-list-header' },
         $$('span', { className: 'coveo-icon-omnibox-result-list' }).el,
         $$('span', { className: 'coveo-caption' }, (this.options.headerTitle || l('SuggestedResults'))).el
-      ).el)
+      ).el);
       _.each(resultsElement, (resultElement: HTMLElement) => {
         content.appendChild(resultElement);
         this.triggerNewResultDisplayed(Component.getResult(resultElement), resultElement);
@@ -83,7 +83,7 @@ export class OmniboxResultList extends ResultList {
         searchAsYouType: true
       });
       this.lastOmniboxRequest = { omniboxObject: args, resolve: resolve };
-    })
+    });
     args.rows.push({
       deferred: promise
     });

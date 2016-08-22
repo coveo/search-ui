@@ -24,14 +24,14 @@ export function InitializationTest() {
       queryBox = document.createElement('div');
       $$(queryBox).addClass('CoveoQuerybox');
       root.appendChild(queryBox);
-    })
+    });
 
     afterEach(function () {
       root = null;
       endpoint = null;
       searchInterfaceOptions = null;
       queryBox = null;
-    })
+    });
 
     it('can initialize search interface and component', function () {
 
@@ -40,7 +40,7 @@ export function InitializationTest() {
         Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(Component.get(queryBox) instanceof Querybox).toBe(true);
-    })
+    });
 
     it('should not initialize a search interface twice', function () {
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
@@ -58,19 +58,19 @@ export function InitializationTest() {
         Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(Component.get(newQueryBox) instanceof Querybox).toBe(false);
-    })
+    });
 
     it('allows to register default options ahead of init call, and merge them', function () {
       Initialization.registerDefaultOptions(root, {
         Querybox: {
           enableSearchAsYouType: true
         }
-      })
+      });
       Initialization.registerDefaultOptions(root, {
         Querybox: {
           enablePartialMatch: true
         }
-      })
+      });
 
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
@@ -80,7 +80,7 @@ export function InitializationTest() {
       var sBox = <Querybox>Component.get(queryBox);
       expect(sBox.options.enableSearchAsYouType).toBe(true);
       expect(sBox.options.enablePartialMatch).toBe(true);
-    })
+    });
 
     it('allows to registerAutoCreateComponent', function () {
       var dummyCmp: any = jasmine.createSpy('foobar');
@@ -94,23 +94,23 @@ export function InitializationTest() {
         Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(dummyCmp).toHaveBeenCalled();
-    })
+    });
 
     it('allows to check if isComponentClassIdRegistered', function () {
       var dummyCmp: any = () => {
-      }
+      };
       dummyCmp.ID = 'CheckRegistration';
       Initialization.registerAutoCreateComponent(dummyCmp);
       expect(Initialization.isComponentClassIdRegistered('CheckRegistration')).toBe(true);
-    })
+    });
 
     it('allow to getListOfRegisteredComponents', function () {
       expect(Initialization.getListOfRegisteredComponents()).toEqual(jasmine.arrayContaining(['Facet', 'Pager']));
-    })
+    });
 
     it('allow to getRegisteredComponent', function () {
       expect(Initialization.getRegisteredComponent('Facet')).toBe(Facet);
-    })
+    });
 
     it('allow to automaticallyCreateComponentsInside', function () {
       var env = new Mock.MockEnvironmentBuilder().build();
@@ -120,7 +120,7 @@ export function InitializationTest() {
         bindings: env
       });
       expect(Component.get(queryBox) instanceof Querybox).toBe(true);
-    })
+    });
 
     it('allow to monkeyPatchComponentMethod', function () {
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
@@ -130,7 +130,7 @@ export function InitializationTest() {
       Initialization.monkeyPatchComponentMethod('submit', queryBox, patch);
       (<Querybox>Component.get(queryBox)).submit();
       expect(patch).toHaveBeenCalled();
-    })
+    });
 
     it('can initialize external components', function () {
       var external = $$('div', {
@@ -142,7 +142,7 @@ export function InitializationTest() {
         Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(Component.get(external) instanceof Pager).toBe(true);
-    })
+    });
 
     describe('when initializing recommendation interface', function () {
       var options;
@@ -154,22 +154,20 @@ export function InitializationTest() {
             userContext: {}
           },
           SearchInterface: {}
-        }
-        Mock.initPageViewScript(null)
-      })
+        };
+        Mock.initPageViewScript(null);
+      });
 
       afterEach(function () {
         options = null;
-        coveoanalytics = undefined
-      })
+        coveoanalytics = undefined;
+      });
 
       it('should be able to generate to components', function () {
         expect(Component.get(queryBox) instanceof Querybox).toBe(false);
         Initialization.initRecommendationInterface(root, options);
         expect(Component.get(queryBox) instanceof Querybox).toBe(true);
-      })
-
-    })
-
-  })
+      });
+    });
+  });
 }

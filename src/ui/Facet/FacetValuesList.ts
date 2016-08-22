@@ -29,8 +29,8 @@ export class FacetValuesList {
 
   public getAllFacetValue(): FacetValue[] {
     return _.map(this.getAll(), (v: ValueElement) => {
-      return v.facetValue
-    })
+      return v.facetValue;
+    });
   }
 
   public get(value: FacetValue): ValueElement;
@@ -106,11 +106,11 @@ export class FacetValuesList {
   public rebuild(numberOfValues: number): void {
     $$(this.valueContainer).empty();
     var allValues = this.getValuesToBuildWith();
-    var toCompare = numberOfValues
+    var toCompare = numberOfValues;
     _.each(allValues, (facetValue: FacetValue, index?: number, list?) => {
       if (this.facetValueShouldBeRemoved(facetValue)) {
         this.facet.values.remove(facetValue.value);
-        toCompare += 1
+        toCompare += 1;
       } else if (index < toCompare) {
         var valueElement = new this.facetValueElementKlass(this.facet, facetValue, true);
         this.valueList[facetValue.value.toLowerCase()] = valueElement;
@@ -128,7 +128,7 @@ export class FacetValuesList {
 
   private facetValueShouldBeRemoved(facetValue: FacetValue): boolean {
     return facetValue.occurrences == 0 &&
-      (facetValue.delta == 0 || facetValue.delta == undefined) && !facetValue.selected && !facetValue.excluded && !this.facet.keepDisplayedValuesNextTime
+      (facetValue.delta == 0 || facetValue.delta == undefined) && !facetValue.selected && !facetValue.excluded && !this.facet.keepDisplayedValuesNextTime;
   }
 
   private ensureFacetValueIsInList(value: any) {

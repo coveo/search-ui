@@ -31,7 +31,7 @@ export class StreamHighlightUtils {
 
   static highlightStreamText(stream: string, termsToHighlight: { [originalTerm: string]: string[] }, phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } }, options?: IStreamHighlightOptions) {
     let opts = new DefaultStreamHighlightOptions().merge(options);
-    return HighlightUtils.highlightString(stream, getRestHighlightsForAllTerms(stream, termsToHighlight, phrasesToHighlight, opts), [], opts.cssClass)
+    return HighlightUtils.highlightString(stream, getRestHighlightsForAllTerms(stream, termsToHighlight, phrasesToHighlight, opts), [], opts.cssClass);
   }
 }
 
@@ -43,9 +43,9 @@ function getRestHighlightsForAllTerms(toHighlight: string, termsToHighlight: { [
     let termsToIterate = _.compact([term].concat(termsToHighlight[term]).sort(termsSorting));
     let regex = regexStart;
     regex += termsToIterate.join('|') + ')(?=(?:' + nonWordBoundary + '|$)+)';
-    let indexesFound = StringUtils.getHighlights(toHighlight, new RegExp(regex, opts.regexFlags), term)
+    let indexesFound = StringUtils.getHighlights(toHighlight, new RegExp(regex, opts.regexFlags), term);
     if (indexesFound != undefined && Utils.isNonEmptyArray(indexesFound)) {
-      indexes.push(indexesFound)
+      indexes.push(indexesFound);
     }
   });
 
@@ -55,44 +55,44 @@ function getRestHighlightsForAllTerms(toHighlight: string, termsToHighlight: { [
     _.each(split, (origWord, i) => {
       regex += '(?:' + [origWord].concat(phrase[origWord]).join('|') + ')';
       if (i == split.length - 1) {
-        regex += '(?='
+        regex += '(?=';
       }
       regex += nonWordBoundary;
       if (i == split.length - 1) {
-        regex += ')'
+        regex += ')';
       }
       if (i != split.length - 1) {
         regex += '+';
       }
-    })
+    });
     regex += ')';
-    let indexesFound = StringUtils.getHighlights(toHighlight, new RegExp(regex, opts.regexFlags), origPhrase)
+    let indexesFound = StringUtils.getHighlights(toHighlight, new RegExp(regex, opts.regexFlags), origPhrase);
     if (indexesFound != undefined && Utils.isNonEmptyArray(indexesFound)) {
-      indexes.push(indexesFound)
+      indexes.push(indexesFound);
     }
-  })
+  });
 
   return _.chain(indexes)
     .flatten()
     .compact()
     .uniq((highlight: IHighlight) => {
-      return highlight.offset
+      return highlight.offset;
     })
     .sortBy((highlight: IHighlight) => {
-      return highlight.offset
+      return highlight.offset;
     })
     .map((highlight) => {
       let keysFromTerms = _.keys(termsToHighlight);
       let keysFromPhrases = _.keys(phrasesToHighlight);
       let keys = keysFromTerms.concat(keysFromPhrases);
-      let group = _.indexOf(keys, highlight.dataHighlightGroupTerm) + 1
+      let group = _.indexOf(keys, highlight.dataHighlightGroupTerm) + 1;
       return _.extend(highlight, { dataHighlightGroup: group });
     })
-    .value()
+    .value();
 }
 
 function termsSorting(first: string, second: string) {
-  return first.length - second.length
+  return first.length - second.length;
 }
 
 function createStreamHTMLContainer(stream: string) {

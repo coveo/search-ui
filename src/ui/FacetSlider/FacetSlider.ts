@@ -219,7 +219,7 @@ export class FacetSlider extends Component {
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
     this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) => this.handlePopulateBreadcrumb(args));
-    this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset())
+    this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset());
 
     this.onResize = _.debounce(() => {
       if (!this.searchInterface.isSmallInterface() && this.slider) {
@@ -239,7 +239,7 @@ export class FacetSlider extends Component {
       enableCollapseElement: true,
       isNewDesign: this.getBindings().searchInterface.isNewDesign(),
       facetSlider: this
-    })
+    });
     this.element.appendChild(this.facetHeader.build());
   }
 
@@ -288,7 +288,7 @@ export class FacetSlider extends Component {
       && !isNaN(this.endOfSlider)
       && !isNaN(this.initialStartOfSlider)
       && !isNaN(this.initialEndOfSlider)
-      && (this.startOfSlider != this.initialStartOfSlider || this.endOfSlider != this.initialEndOfSlider)
+      && (this.startOfSlider != this.initialStartOfSlider || this.endOfSlider != this.initialEndOfSlider);
   }
 
   public getSliderBoundaryForQuery(): number[] {
@@ -336,14 +336,14 @@ export class FacetSlider extends Component {
           element: this.buildBreadcrumbFacetSlider()
         });
       }
-    }
+    };
     if (this.slider) {
-      populateBreadcrumb()
+      populateBreadcrumb();
     } else {
       $$(this.root).one(QueryEvents.deferredQuerySuccess, () => {
         populateBreadcrumb();
         $$(this.root).trigger(BreadcrumbEvents.redrawBreadcrumb);
-      })
+      });
     }
   }
 
@@ -365,7 +365,7 @@ export class FacetSlider extends Component {
 
     let value = $$('span', {
       className: 'coveo-facet-slider-breadcrumb-value'
-    })
+    });
     value.text(this.slider.getCaption());
     values.el.appendChild(value.el);
 
@@ -381,7 +381,7 @@ export class FacetSlider extends Component {
         facetTitle: this.options.title
       });
       this.queryController.executeQuery();
-    })
+    });
     return elem;
   }
 
@@ -397,7 +397,7 @@ export class FacetSlider extends Component {
     let eventName = this.queryStateModel.getEventName(Model.eventTypes.changeOne + this.rangeQueryStateAttribute);
     this.bind.onRootElement(eventName, (args: IAttributeChangedEventArg) => {
       this.slider ? this.handleRangeQueryStateChanged(args) : this.setRangeStateSliderStillNotCreated(args);
-    })
+    });
   }
 
   private setRangeStateSliderStillNotCreated(args: IAttributeChangedEventArg) {
@@ -424,7 +424,7 @@ export class FacetSlider extends Component {
     if (this.hasAGraph()) {
       $$(sliderDiv).on(SliderEvents.graphValueSelected, (e: MouseEvent, args: IGraphValueSelectedArgs) => {
         this.handleGraphValueSelected(args);
-      })
+      });
     }
     sliderContainer.appendChild(sliderDiv);
     this.element.appendChild(sliderContainer);
@@ -523,7 +523,7 @@ export class FacetSlider extends Component {
     let copyOfValues = [];
     copyOfValues[0] = Number(values[0]) + 0.0;
     copyOfValues[1] = Number(values[1]) + 0.0;
-    return copyOfValues
+    return copyOfValues;
   }
 
   private renderToSliderGraph(data: IQuerySuccessEventArgs) {
@@ -548,8 +548,8 @@ export class FacetSlider extends Component {
           y: y,
           end: end,
           isDate: this.options.dateField
-        }
-      })
+        };
+      });
     }
     if (totalGraphResults == 0) {
       this.isEmpty = true;
@@ -644,7 +644,7 @@ export class FacetSlider extends Component {
 
   private setupSliderStateVariables() {
     if (isNaN(this.initialStartOfSlider) || isNaN(this.initialEndOfSlider)) {
-      this.logger.warn('Cannnot initialize slider with those values : start: ' + this.initialStartOfSlider + ' end: ' + this.initialEndOfSlider)
+      this.logger.warn('Cannnot initialize slider with those values : start: ' + this.initialStartOfSlider + ' end: ' + this.initialEndOfSlider);
     } else {
       this.initialStartOfSlider = Number(this.initialStartOfSlider);
       this.initialEndOfSlider = Number(this.initialEndOfSlider);
@@ -665,7 +665,7 @@ export class FacetSlider extends Component {
       this.setupInitialSliderStateStart(this.options.start);
     }
     if (!Utils.isNullOrUndefined(this.options.end)) {
-      this.setupInitialSliderStateEnd(this.options.end)
+      this.setupInitialSliderStateEnd(this.options.end);
     }
   }
 

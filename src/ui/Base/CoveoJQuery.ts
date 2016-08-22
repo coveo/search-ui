@@ -15,7 +15,7 @@ if (jQueryIsDefined()) {
     if (jQueryIsDefined()) {
       initCoveoJQuery();
     }
-  })
+  });
 }
 
 export function initCoveoJQuery() {
@@ -42,7 +42,7 @@ export function initCoveoJQuery() {
       returnValue = returnValue || returnValueForThisElement;
     });
     return returnValue;
-  }
+  };
 }
 
 export function jQueryIsDefined(): boolean {

@@ -31,7 +31,7 @@ export function ComponentEventsTest() {
 
     it('should execute handler only once if the component is enabled', function () {
       test.cmp.enable();
-      var spyOnce = jasmine.createSpy('spyOnce')
+      var spyOnce = jasmine.createSpy('spyOnce');
       test.cmp.bind.onRootElement('foo', spy);
       test.cmp.bind.oneRootElement('foo', spyOnce);
       $$(test.env.root).trigger('foo');
@@ -77,5 +77,5 @@ export function ComponentEventsTest() {
       test.cmp.bind.trigger(test.env.root, 'foo', { bar: 'baz' });
       expect(spy).not.eventHandlerToHaveBeenCalledWith({ bar: 'baz' });
     });
-  })
+  });
 }

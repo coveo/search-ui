@@ -2,7 +2,7 @@ import {Component} from '../Base/Component';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {Initialization} from '../Base/Initialization';
-import {$$} from "../../utils/Dom";
+import {$$} from '../../utils/Dom';
 
 export interface ILogoOptions {
 }
@@ -22,7 +22,7 @@ export class Logo extends Component {
     let link = $$('a', {
       className: 'coveo-powered-by coveo-footer-logo',
       href: 'http://www.coveo.com/'
-    })
+    });
 
     this.element.appendChild(link.el);
   }

@@ -12,16 +12,16 @@ export function ChatterLikedByTest() {
 
     beforeEach(() => {
       test = null;
-    })
+    });
 
     afterEach(() => {
       test = null;
-    })
+    });
 
     it('should behave correctly with no data', () => {
       test = Mock.basicResultComponentSetup<ChatterLikedBy>(ChatterLikedBy);
       expect(test.cmp.element.innerHTML).toBe('');
-    })
+    });
 
     it('should behave correctly with a single like', () => {
       let result = FakeResults.createFakeFeedItemResult('token', 1);
@@ -59,6 +59,5 @@ export function ChatterLikedByTest() {
       expect($$(test.cmp.element).findAll('a')[2].getAttribute('href')).toContain(ChatterUtils.buildURI(result.clickUri, result.raw.sffeeditemid, 'LikeId3'));
       expect($$($$(test.cmp.element).findAll('a')[2]).text()).toContain('LikeName3');
     });
-  })
-
+  });
 }

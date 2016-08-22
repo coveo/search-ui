@@ -46,10 +46,10 @@ export class StringUtils {
       return _.map(encoded, (char: string) => {
         var regexp = _.find(StringUtils.accented, (regexp: RegExp) => char.match(regexp) != null);
         if (regexp) {
-          return regexp.source
+          return regexp.source;
         }
         return char;
-      }).join('')
+      }).join('');
     }
 
     return encoded;
@@ -73,7 +73,7 @@ export class StringUtils {
       var desiredMatch = match[2];
       var undesiredMatch = match[1];
       var offset = match.index + undesiredMatch.length;
-      indexes.push({ offset: offset, length: desiredMatch.length, dataHighlightGroupTerm: dataHighlightGroupTerm })
+      indexes.push({ offset: offset, length: desiredMatch.length, dataHighlightGroupTerm: dataHighlightGroupTerm });
       if (!regexToFind.global) {
         break;
       }
@@ -101,7 +101,7 @@ export class StringUtils {
 
   static hashCode(str: string): string {
     var hash = 0;
-    var len = str.length
+    var len = str.length;
     for (var i = 0; i < len; i++) {
       var char = str.charCodeAt(i);
       hash = ((hash << 5) - hash) + char;
@@ -144,5 +144,5 @@ export class StringUtils {
     'X': /[Xx\u02e3\u1e8a-\u1e8d\u2093\u213b\u2168-\u216b\u2178-\u217b\u24b3\u24cd\u24e7\u33d3\uff38\uff58]/g,
     'Y': /[Yy\xdd\xfd\xff\u0176-\u0178\u0232\u0233\u02b8\u1e8e\u1e8f\u1e99\u1ef2-\u1ef9\u24b4\u24ce\u24e8\u33c9\uff39\uff59]/g,
     'Z': /[Zz\u0179-\u017e\u01f1-\u01f3\u1dbb\u1e90-\u1e95\u2124\u2128\u24b5\u24cf\u24e9\u3390-\u3394\uff3a\uff5a]/g
-  }
+  };
 }

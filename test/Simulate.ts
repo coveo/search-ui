@@ -95,7 +95,7 @@ export class Simulate {
           endpoint: env.searchEndpoint,
           error: options.error,
           searchAsYouType: options.searchAsYouType
-        }
+        };
         Promise.reject(options.promise).catch((e) => {
         });
         $$(env.root).trigger(QueryEvents.queryError, queryErrorEventArgs);
@@ -109,7 +109,7 @@ export class Simulate {
         $$(env.root).trigger(QueryEvents.preprocessResults, preprocessResultsEventArgs);
         Promise.resolve(new Promise((resolve, reject) => {
           resolve(options.results);
-        }))
+        }));
 
         if (options.results.totalCount == 0) {
           var noResultsEventArgs: INoResultsEventArgs = {
@@ -139,7 +139,7 @@ export class Simulate {
       }
 
       options.callbackAfterQuery();
-    }
+    };
 
     if (options.deferSuccess) {
       Defer.defer(success);
@@ -154,7 +154,7 @@ export class Simulate {
     let expression = {
       word: 'foo',
       regex: /foo/
-    }
+    };
 
     var fakeOmniboxArgs = _.extend({}, {
       rows: [],
@@ -168,7 +168,7 @@ export class Simulate {
       replaceCurrentExpression: jasmine.createSpy('replaceCurrentExpression'),
       insertAt: jasmine.createSpy('insertAt'),
       closeOmnibox: jasmine.createSpy('closeOmnibox')
-    }, options)
+    }, options);
 
     $$(env.root).trigger(OmniboxEvents.populateOmnibox, fakeOmniboxArgs);
 
@@ -196,5 +196,4 @@ export class Simulate {
     element.dispatchEvent(event);
     Defer.flush();
   }
-
 }

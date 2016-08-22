@@ -12,7 +12,7 @@ export function customEventPolyfill() {
     let customEvent = document.createEvent('CustomEvent');
     customEvent.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
     return customEvent;
-  }
+  };
 
   // window.Event is specific to IE
   CustomEvent.prototype = (<any>window).Event.prototype;

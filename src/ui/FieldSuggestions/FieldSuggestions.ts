@@ -67,7 +67,7 @@ export class FieldSuggestions extends Component {
     super(element, FieldSuggestions.ID, bindings);
 
     if (this.options && 'omniboxSuggestionOptions' in this.options) {
-      this.options = _.extend(this.options, this.options['omniboxSuggestionOptions'])
+      this.options = _.extend(this.options, this.options['omniboxSuggestionOptions']);
     }
 
     this.options = ComponentOptions.initComponentOptions(element, FieldSuggestions, options);
@@ -131,28 +131,28 @@ export class FieldSuggestions extends Component {
           this.currentlyDisplayedSuggestions[$$(selectable).text()] = {
             element: selectable,
             pos: i
-          }
-        })
+          };
+        });
         resolve({
           element: element,
           zIndex: this.options.omniboxZIndex
-        })
+        });
       }).catch(() => {
         resolve({
           element: undefined
-        })
+        });
       });
-    })
+    });
     args.rows.push({
       deferred: promise
-    })
+    });
   }
 
   private onRowSelection(value: string, args: IPopulateOmniboxEventArgs) {
     args.clear();
     args.closeOmnibox();
     this.queryStateModel.set(QueryStateModel.attributesEnum.q, value);
-    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.omniboxField, {})
+    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.omniboxField, {});
     this.queryController.executeQuery();
   }
 

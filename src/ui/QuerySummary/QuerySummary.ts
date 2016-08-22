@@ -101,13 +101,13 @@ export class QuerySummary extends Component {
 
     cancelLastAction.on('click', () => {
       this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {}, this.root);
-      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {})
+      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {});
       history.back();
     });
 
     let searchTipsInfo = $$('div', {
       className: 'coveo-query-summary-search-tips-info'
-    })
+    });
     searchTipsInfo.text(l('SearchTips'));
     let searchTips = $$('ul');
 

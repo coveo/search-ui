@@ -74,8 +74,8 @@ export class EmailActionsUtils {
   static removeCurrentUserEmailFromString(currentUserEmail: string, str: string): string {
     if (str && currentUserEmail) {
       return _.filter<string>(str.split(';'), (email) => {
-        return email.indexOf(currentUserEmail) == -1
-      }).join(';')
+        return email.indexOf(currentUserEmail) == -1;
+      }).join(';');
     } else {
       return str;
     }
@@ -141,7 +141,7 @@ export class MailTo {
     this.removeCurrentUserFromParameters();
     if (this.options.originalFrom) {
       this.bodyHeader = this.options.bodyIsHTML ? '<p><br/><br/><br/>' + l('From') + ': ' + this.options.originalFrom + '<hr></p>' :
-        '\n\n\n' + l('From') + ': ' + this.options.originalFrom + '\n_________________________________\n'
+        '\n\n\n' + l('From') + ': ' + this.options.originalFrom + '\n_________________________________\n';
     }
   }
 

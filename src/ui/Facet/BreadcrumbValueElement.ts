@@ -50,7 +50,7 @@ export class BreadcrumbValueElement {
           facetTitle: this.facet.options.title
         }));
       }
-    })
+    });
 
     return elem;
   }

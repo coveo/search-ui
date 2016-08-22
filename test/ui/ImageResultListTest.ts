@@ -9,7 +9,7 @@ import {Template} from '../../src/ui/Templates/Template';
 
 export function ImageResultListTest() {
   describe('ImageResultList', () => {
-    var test: Mock.IBasicComponentSetup<ImageResultList>
+    var test: Mock.IBasicComponentSetup<ImageResultList>;
 
     beforeEach(function () {
       test = Mock.basicComponentSetup<ImageResultList>(ImageResultList);
@@ -19,11 +19,11 @@ export function ImageResultListTest() {
       $$(test.env.root).trigger(InitializationEvents.nuke);
       clearDOM();
       test = null;
-    })
+    });
 
     it('should put only one div under the ImageResultList element', () => {
       expect($$(test.cmp.element).findAll('div').length).toEqual(1);
-    })
+    });
 
     it('should not put results at the same position', () => {
       createImageResultList('row');
@@ -32,7 +32,7 @@ export function ImageResultListTest() {
       $$(test.cmp.root).trigger(ResultListEvents.newResultsDisplayed);
 
       expectAllDifferentPositions();
-    })
+    });
 
     it('it should not overlap results', () => {
       createImageResultList('row');
@@ -41,7 +41,7 @@ export function ImageResultListTest() {
       $$(test.cmp.root).trigger(ResultListEvents.newResultsDisplayed);
 
       expectResultsAreNotOverlapping();
-    })
+    });
 
     it('should keep the original image ratio', () => {
       let imageWidth = 150.0;
@@ -54,7 +54,7 @@ export function ImageResultListTest() {
 
       let image = $$(test.cmp.element).find('img');
       expect($$(image).width() / $$(image).height()).toBeCloseTo(initialRatio, 0.01);
-    })
+    });
 
     describe('exposes column width option', () => {
       it('should set the width in the column layout', () => {
@@ -65,8 +65,8 @@ export function ImageResultListTest() {
         $$(test.cmp.root).trigger(ResultListEvents.newResultsDisplayed);
 
         expect($$($$(test.cmp.element).find('.CoveoResult')).width()).toEqual(width);
-      })
-    })
+      });
+    });
 
     describe('exposes option heightThreshold', () => {
       it('should set the max height for the row', () => {
@@ -77,8 +77,8 @@ export function ImageResultListTest() {
         $$(test.cmp.root).trigger(ResultListEvents.newResultsDisplayed);
 
         expect($$($$(test.cmp.element).find('.CoveoResult img')).height()).toEqual(maxHeight);
-      })
-    })
+      });
+    });
 
     function createImageResultList(layoutType?: string, columnWidth?: number, heightThreshold?: number, maxImageWidth: number = 200, maxImageHeight: number = 300, resultLayoutElement: string = 'span') {
       test = Mock.optionsComponentSetup<ImageResultList, IImageResultListOptions>(ImageResultList, {
@@ -108,14 +108,14 @@ export function ImageResultListTest() {
         let position = {
           top: image.offsetTop,
           left: image.offsetLeft
-        }
+        };
 
         if (lastPosition != null) {
           expect(position).not.toEqual(lastPosition);
         }
 
         lastPosition = position;
-      })
+      });
 
     }
 
@@ -128,7 +128,7 @@ export function ImageResultListTest() {
         let position = {
           top: image.offsetTop,
           left: image.offsetLeft
-        }
+        };
 
         if (lastPosition != null) {
           expect(position).not.toEqual(lastPosition);
@@ -136,7 +136,7 @@ export function ImageResultListTest() {
           if (lastPosition.top == position.top) {
             expect(position.left + 2).toBeGreaterThan(lastPosition.left + lastWidth);
           } else if (lastPosition.left == position.left) {
-            expect(position.top + 2).toBeGreaterThan(lastPosition.top + lastHeight)
+            expect(position.top + 2).toBeGreaterThan(lastPosition.top + lastHeight);
           }
         }
 
@@ -144,8 +144,7 @@ export function ImageResultListTest() {
         lastWidth = $$(image).width();
         lastHeight = $$(image).height();
 
-      })
+      });
     }
-
-  })
+  });
 }
