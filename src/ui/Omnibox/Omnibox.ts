@@ -88,6 +88,9 @@ export class Omnibox extends Component {
      * Specifies whether the field addon should be enabled.<br/>
      * The field addon allows the search box to highlight and complete field syntax.<br/>
      * Default value is false
+     *
+     * > Example:
+     * > You want to filter on a file type. You start typing @sysf and matching fields are proposed. You select the @sysfiletype suggestion, enter = and the available matching file types are proposed.
      */
     enableFieldAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableQuerySyntax' }),
     enableSimpleFieldAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableFieldAddon' }),

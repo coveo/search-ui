@@ -22,6 +22,7 @@ import {Assert} from '../../misc/Assert';
 import {Utils} from '../../utils/Utils';
 import {Initialization} from '../Base/Initialization';
 import d3 = require('d3');
+import {IStringMap} from "../../rest/GenericParam";
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;
@@ -34,8 +35,41 @@ export interface IFacetSliderOptions extends ISliderOptions {
 /**
  * The FacetSlider component allows to create a facet that renders a slider widget to filter on a range of numerical values
  * rather than the classic multi-select facet with a label and a count for each values.<br/>
- * Note that this component does *NOT* inherit from a standard {@link Facet}, and thus does not offer all the same options.<br/>
- * If you want to have a graph on top of your FacetSlider, then you will need to manually include d3.js, or d3.min.js from the script files included in the package.
+ * Note that this component does *NOT* inherit from a standard {@link Facet}, and thus does not offer all the same options.
+ * Also note that many options for the slider component cannot be set as an HTML attribute on the component, and must be configured in javascript
+ *
+ * ## A generic example on how to initialize a complex slider
+ * ```
+ * // Using a JSON object inside the init call. Note that the JSON object follows the options described in this page.
+ * Coveo.init(document.querySelector('#search'), {
+ *    FacetSlider: {
+ *      field: "@size",
+ *      start: 1000,
+ *      end: 5000,
+ *      rangeSlider: true,
+ *      graph: {
+ *        steps: 10
+ *      }
+ *    }
+ * })
+ *
+ * // OR using the jquery extension
+ *
+ * $('#search').coveo('init', {
+ *    FacetSlider: {
+ *      field: "@size",
+ *      start: 1000,
+ *      end: 5000,
+ *      rangeSlider: true,
+ *      graph: {
+ *        steps: 10
+ *      }
+ *    }
+ * })
+ *
+ * // Same config, but using attribute directly on the element instead
+ * <div class='CoveoFacetSlider' data-field='@syssize' data-start='1000' data-end='5000' data-range-slider='true' data-graph-steps='10'></div>
+ * ```
  */
 export class FacetSlider extends Component {
 
@@ -146,7 +180,7 @@ export class FacetSlider extends Component {
     /**
      * Specifies that you wish to display a small graph on top of the slider.<br/>
      * Available options are :
-     * <ul>
+     *
      *   <li>steps: (data-graph-steps) <code>number</code> : Specifies the number of steps/columns to display in your graph. Default value is 10</li>
      * </ul>
      */
@@ -163,6 +197,60 @@ export class FacetSlider extends Component {
           }
         })
       }
+    }),
+    /**
+     * Specifies a function that will generate the steps for the slider. The function receives the slider boundaries must return an array of number (the steps).
+     *
+     * ```
+     * Coveo.init(document.querySelector('#search'), {
+     *    FacetSlider: {
+     *      field: "@size",
+     *      getSteps: function(start, end) {
+     *        return [0,2,4,6,8,10];
+     *      }
+     *    }
+     * })
+     *
+     * // OR using the jquery extension
+     *
+     * $('#search').coveo('init', {
+     *    FacetSlider: {
+     *        field: "@size",
+     *        getSteps: function(start, end) {
+     *            return [0,2,4,6,8,10];
+     *        }
+     *    }
+     * })
+     * ```
+     */
+    getSteps: ComponentOptions.buildCustomOption<Function>(()=> {
+    }),
+    /**
+     * Specifies a function that will generate the caption for the slider. Receives the current slider values (number[]) and must return the caption (string).
+     *
+     * ```
+     * Coveo.init(document.querySelector('#search'), {
+     *    FacetSlider: {
+     *      field: "@size",
+     *      valueCaption: function(values) {
+     *        return values[0] + " hello" + ", " + values[1] + " world";
+     *      }
+     *    }
+     * })
+     *
+     * // OR using the jquery extension
+     *
+     * $('#search').coveo('init', {
+     *    FacetSlider: {
+     *      field: "@size",
+     *      valueCaption: function(values) {
+     *        return values[0] + " hello" + ", " + values[1] + " world";
+     *      }
+     *    }
+     * })
+     * ```
+     */
+    valueCaption: ComponentOptions.buildCustomOption<Function>(()=> {
     })
   };
 

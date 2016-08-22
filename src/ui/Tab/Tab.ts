@@ -26,13 +26,35 @@ export interface ITabOptions {
 }
 
 /**
- * This component is a bar allowing users to select a search interface.<br/>
- * The component attaches itself to an div element and is in charge of adding an advanced expression to the query and thus, modify the outgoing query in order to refine the results in relation to the selected tab.<br/>
- * It also allows to hide and show different parts of the UI. In order to do so, each component of the UI can specify whether or not it wishes to be included or excluded from a specific tab.<br/>
- * Eg : <br/>
- * * &lt;div data-tab="foobar"&gt; -> Include this element only in the tab with the id 'foobar'.<br/>
- * * &lt;div data-tab-not="foobar"&gt; -> DO NOT include this element in the tab id 'foobar'.<br/>
- * * &lt;div data-tab="foobar,somethingelse"&gt; -> Include this element only in the tab with the id 'foobar' or 'somethingelse'.
+ * This component is a bar allowing users to select a search interface.
+ *
+ * The component attaches itself to an div element and is in charge of adding an advanced expression to the query and thus, modify the outgoing query in order to refine the results in relation to the selected tab.
+ *
+ * It also allows to hide and show different parts of the UI. In order to do so, each component of the UI can specify whether or not it wishes to be included or excluded from a specific tab.
+ *
+ * # Including and excluding other HTML components
+ *
+ * You can hide/show specific HTML components, based on the currently selected search tab by adding the following attributes:
+ *
+ * * `<div data-tab="foobar">` -> Include this element only in the tab with the id 'foobar'.
+ *
+ * * `<div data-tab-not="foobar">` -> DO NOT include this element in the tab id 'foobar'.
+ *
+ * * `<div data-tab="foobar,somethingelse">` -> Include this element only in the tab with the id 'foobar' or 'somethingelse'.
+ *
+ * # Setting a new endpoint for a tab
+ * A tab can use a custom endpoint when performing a query. First, you need to make sure that the endpoint exists in the array of Coveo.SearchEndpoint.endpoints.
+ *
+ * ```
+ * Coveo.SearchEndpoint.endpoints["specialEndpoint"] = new Coveo.SearchEndpoint({
+ *     restUri : 'https://somewhere.com/rest/search'
+ * })
+ *
+ * [...]
+ *
+ * <div class='CoveoTab' data-endpoint='specialEndpoint'></div>
+ *
+ * ```
  */
 export class Tab extends Component {
   static ID = 'Tab';

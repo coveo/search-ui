@@ -34,6 +34,36 @@ interface IQuickviewOpenerObject {
 /**
  * This component is meant to exist within a result template.
  * It allows to create a button/link inside the result list that opens a modal box for a given result.
+ *
+ * Most of the time, this component will reference a {@link QuickviewDocument} in it's content template.
+ *
+ * # Choosing what to display for the Quickview
+ * The Quick View uses any HTML structure you put inside its tag and uses that as the content of the dialog box. This content can thus be any element you decide, using your CSS and your structure.
+ *
+ * > Example
+ * > You can change the appearance of the Quick View link by adding HTML inside the body of the div.
+ * > You can change the content of the Quick View link by specifying a template id.
+ *
+ * ```html
+ * <!-- This would change the appearance of the quickview button itself in the result. -->
+ * <div class="CoveoQuickview" data-template-id="TemplateId">
+ *   <span>Click here for Quickview</span>
+ * </div>
+ *
+ * <!-- This would modify the content of the quickview when it is opened in the modal box -->
+ * <script class='result-template' type='text/underscore' id='TemplateId' >
+ *   <div>
+ *     <span>This is the content that will be displayed when you open the Quick View. You can also include any other Coveo components.</span>
+ *     <table class="CoveoFieldTable">
+ *       <tr data-field="@liboardshorttitle" data-caption="Board" />
+ *       <tr data-field="@licategoryshorttitle" data-caption="Category" />
+ *       <tr data-field="@sysauthor" data-caption="Author" />
+ *     </table>
+ *   </div>
+ * </script>
+ *
+ * <!-- Note that this is all optional : Just including a <div class='CoveoQuickview'></div> will do the job most of the time, and will include a default template and default button appearance -->
+ * ```
  */
 export class Quickview extends Component {
   static ID = 'Quickview';
