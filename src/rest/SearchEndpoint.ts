@@ -737,7 +737,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   private buildViewAsHtmlQueryString(uniqueId: string, callOptions?: IViewAsHtmlOptions): string[] {
     callOptions = _.extend({}, callOptions);
-    let queryString: string[] = [];
+    let queryString: string[] = this.buildBaseQueryString(callOptions);
     queryString.push('uniqueId=' + encodeURIComponent(uniqueId));
 
     if (callOptions.query || callOptions.queryObject) {
