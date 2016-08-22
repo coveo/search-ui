@@ -134,21 +134,19 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts#L88">src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts
-							:88</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts#L94">src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts
+							:94</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies default filters that all users will see.<br/>
-								End-users will not be able to modify or delete them, as they are not customized for each user, but instead created by the creator/developer of the search page.<br/>
-								Filters should follow this definition : <br/>
-								<code>
-  filters: { [caption: string]: { expression: string; tab?: string[]; }};
-</code><br/>
-							eg :</p>
-							<p><pre>
-Coveo.init(root, {
+							<p>Specifies default filters that all users will see.</p>
+						</div>
+						<p>End-users will not be able to modify or delete them, as they are not customized for each user, but instead created by the creator/developer of the search page.</p>
+						<p>Filters should follow this definition :</p>
+						<pre><code>  <span class="hljs-attribute">filters</span>: { [<span class="hljs-attribute">caption</span>: string]: { <span class="hljs-attribute">expression</span>: string; tab?: <span class="hljs-selector-tag">string</span><span class="hljs-selector-attr">[]</span>; }};
+</code></pre><p>eg :</p>
+						<pre><code class="lang-javascript">Coveo.init(root, {
   ResultsFiltersPreferences : {
     filters : {
       &#39;Only google drive stuff&#39; : {
@@ -161,9 +159,8 @@ Coveo.init(root, {
     }
   }
 })
-</pre><br/>
-							This is optional, and by default this option is left &#39;empty&#39;.</p>
-						</div>
+</code></pre>
+						<p>This is optional, and by default this option is left &#39;empty&#39;.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">

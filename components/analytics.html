@@ -73,6 +73,42 @@
 						<p>This component logs all user actions performed in the search interface and sends them to a REST web service exposed through the Coveo Cloud platform.<br/>
 						You can use this data to evaluate how users are interacting with the search interface, improve relevance and produce analytics dashboards in the Coveo platform.</p>
 					</div>
+					<h1 id="sending-custom-events">Sending Custom Events</h1>
+					<p>In some scenarios, you want to send custom data to the Coveo Cloud analytics (see Coveo Cloud Usage Analytics). The Coveo JavaScript Search Framework offers helpers to communicate with the Coveo Analytics REST API, so you do not have to write code to call the API directly.</p>
+					<ol>
+						<li><p>First, you need to craft your custom event cause and meta.</p>
+							<pre><code><span class="hljs-attribute">var customEventCause</span> = {name: <span class="hljs-string">'customEventName'</span>, type:<span class="hljs-string">'customEventType'</span>};
+<span class="hljs-attribute">var metadata</span> = {key1: <span class="hljs-string">"value1"</span>, key2:<span class="hljs-string">"value2"</span>};
+</code></pre></li>
+						<li><p>Sending a custom event.</p>
+							<pre><code>Coveo.logCustomEvent(<span class="hljs-built_in">document</span>.<span class="hljs-built_in">querySelector</span>(<span class="hljs-string">'#search'</span>), customEventCause, metadata);
+  <span class="hljs-comment">// OR (using the jquery extension)</span>
+$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'logCustomEvent'</span>, customEventCause, metadata);
+</code></pre></li>
+						<li><p>Sending a custom search event<br/>(<strong>NB : If you want to log a searchEvent, be sure to always call the helper before you call executeQuery.</strong>)</p>
+							<pre><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">myCustomButtonWasClicked</span>(<span class="hljs-params"></span>) </span>{
+  Coveo.logSearchEvent(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), customEventCause, metadata);
+  Coveo.executeQuery(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>));
+  <span class="hljs-comment">// OR (using the jquery extension)</span>
+  $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'logSearchEvent'</span>, customEventCause, metadata);
+  $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'executeQuery'</span>);
+}
+</code></pre></li>
+						<li><p>Sending a custom searchAsYouType event<br/>(NB : <strong>If you want to log a searchAsYouTypeEvent, be sure to always call the helper before you call executeQuery.</strong>)</p>
+							<pre><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">myCustomButtonWasClicked</span>(<span class="hljs-params"></span>) </span>{
+  Coveo.logSearchAsYouTypeEvent(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), customEventCause, metadata);
+  Coveo.executeQuery(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>));
+  <span class="hljs-comment">// OR (using the jquery extension)</span>
+  $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'logSearchAsYouTypeEvent'</span>, customEventCause, metadata);
+  $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'executeQuery'</span>);
+}
+</code></pre></li>
+						<li><p>Sending a custom click event</p>
+							<pre><code>Coveo.logClickEvent(<span class="hljs-built_in">document</span>.<span class="hljs-built_in">querySelector</span>(<span class="hljs-string">'#search'</span>), customEventCause, metadata, result);
+<span class="hljs-comment">// OR (using the jquery extension)</span>
+$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'logClickEvent'</span>, customEventCause, metadata, result);
+</code></pre></li>
+					</ol>
 				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -142,8 +178,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L73">src/ui/Analytics/Analytics.ts
-							:73</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L118">src/ui/Analytics/Analytics.ts
+							:118</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -161,8 +197,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L67">src/ui/Analytics/Analytics.ts
-							:67</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L112">src/ui/Analytics/Analytics.ts
+							:112</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -178,8 +214,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L97">src/ui/Analytics/Analytics.ts
-							:97</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L142">src/ui/Analytics/Analytics.ts
+							:142</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -196,8 +232,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L79">src/ui/Analytics/Analytics.ts
-							:79</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L124">src/ui/Analytics/Analytics.ts
+							:124</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -215,8 +251,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L85">src/ui/Analytics/Analytics.ts
-							:85</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L130">src/ui/Analytics/Analytics.ts
+							:130</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -234,8 +270,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L91">src/ui/Analytics/Analytics.ts
-							:91</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L136">src/ui/Analytics/Analytics.ts
+							:136</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -253,8 +289,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L63">src/ui/Analytics/Analytics.ts
-							:63</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L108">src/ui/Analytics/Analytics.ts
+							:108</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -271,8 +307,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L54">src/ui/Analytics/Analytics.ts
-							:54</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L99">src/ui/Analytics/Analytics.ts
+							:99</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -288,8 +324,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L58">src/ui/Analytics/Analytics.ts
-							:58</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L103">src/ui/Analytics/Analytics.ts
+							:103</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -416,8 +452,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L183">src/ui/Analytics/Analytics.ts
-									:183</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L228">src/ui/Analytics/Analytics.ts
+									:228</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -466,8 +502,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L170">src/ui/Analytics/Analytics.ts
-									:170</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L215">src/ui/Analytics/Analytics.ts
+									:215</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -511,8 +547,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L160">src/ui/Analytics/Analytics.ts
-									:160</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L205">src/ui/Analytics/Analytics.ts
+									:205</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -556,8 +592,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L148">src/ui/Analytics/Analytics.ts
-									:148</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L193">src/ui/Analytics/Analytics.ts
+									:193</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -674,8 +710,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L103">src/ui/Analytics/Analytics.ts
-							:103</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L148">src/ui/Analytics/Analytics.ts
+							:148</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -887,8 +923,8 @@
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L103">src/ui/Analytics/Analytics.ts
-									:103</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L148">src/ui/Analytics/Analytics.ts
+									:148</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

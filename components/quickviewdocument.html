@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ResultLink | Coveo search ui documentation</title>
+	<title>QuickviewDocument | Coveo search ui documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -57,10 +57,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="resultlink.html">ResultLink</a>
+					<a href="quickviewdocument.html">QuickviewDocument</a>
 				</li>
 			</ul>
-			<h1>Coveo component ResultLink</h1>
+			<h1>Coveo component QuickviewDocument</h1>
 		</div>
 	</div>
 </header>
@@ -70,8 +70,9 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>This component is intended to be placed inside a result template, which itself is used inside a <a href="resultlist.html">ResultList</a> component.
-						The ResultLink component automatically transforms a search result title into a clickable link that points to the original document.</p>
+						<p>The QuickviewDocument component is meant to exist within Result Templates, more specifically inside a <a href="quickview.html">Quickview</a> Component.
+							The sole purpose of this component is to include an iframe which will load the correct HTML version of the current document.
+						By default, this component is included in the default template for a <a href="quickview.html">Quickview</a> Component.</p>
 					</div>
 				</div>
 			</section>
@@ -82,47 +83,39 @@
 						<section class="tsd-index-section ">
 							<h3>Component Options</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="resultlink.html#options.alwaysopeninnewwindow" class="tsd-kind-icon">always<wbr>Open<wbr>InNew<wbr>Window</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="resultlink.html#options.field" class="tsd-kind-icon">field</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="resultlink.html#options.hreftemplate" class="tsd-kind-icon">href<wbr>Template</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="resultlink.html#options.onclick" class="tsd-kind-icon">on<wbr>Click</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="resultlink.html#options.openinoutlook" class="tsd-kind-icon">open<wbr>InOutlook</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="resultlink.html#options.openquickview" class="tsd-kind-icon">open<wbr>Quickview</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="quickviewdocument.html#options.maximumdocumentsize" class="tsd-kind-icon">maximum<wbr>Document<wbr>Size</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="resultlink.html#debuginfo" class="tsd-kind-icon">debug<wbr>Info</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="resultlink.html#disable" class="tsd-kind-icon">disable</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="resultlink.html#enable" class="tsd-kind-icon">enable</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="resultlink.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="resultlink.html#openlink" class="tsd-kind-icon">open<wbr>Link</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="resultlink.html#openlinkinnewwindow" class="tsd-kind-icon">open<wbr>Link<wbr>InNew<wbr>Window</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="resultlink.html#openlinkinoutlook" class="tsd-kind-icon">open<wbr>Link<wbr>InOutlook</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="resultlink.html#get" class="tsd-kind-icon">get</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="quickviewdocument.html#debuginfo" class="tsd-kind-icon">debug<wbr>Info</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="quickviewdocument.html#disable" class="tsd-kind-icon">disable</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="quickviewdocument.html#enable" class="tsd-kind-icon">enable</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="quickviewdocument.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="quickviewdocument.html#get" class="tsd-kind-icon">get</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="resultlink.html#bind" class="tsd-kind-icon">bind</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="resultlink.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="resultlink.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="resultlink.html#disabled" class="tsd-kind-icon">disabled</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="resultlink.html#logger" class="tsd-kind-icon">logger</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="resultlink.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="resultlink.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="resultlink.html#root" class="tsd-kind-icon">root</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="resultlink.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="resultlink.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="resultlink.html#id" class="tsd-kind-icon">ID</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="quickviewdocument.html#bind" class="tsd-kind-icon">bind</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="quickviewdocument.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="quickviewdocument.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="quickviewdocument.html#disabled" class="tsd-kind-icon">disabled</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="quickviewdocument.html#logger" class="tsd-kind-icon">logger</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="quickviewdocument.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="quickviewdocument.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="quickviewdocument.html#root" class="tsd-kind-icon">root</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="quickviewdocument.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="quickviewdocument.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="quickviewdocument.html#id" class="tsd-kind-icon">ID</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="resultlink.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite"><a href="quickviewdocument.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 					</div>
@@ -131,179 +124,25 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Component Options</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.alwaysopeninnewwindow" class="tsd-anchor"></a>
-					<h3>always<wbr>Open<wbr>InNew<wbr>Window</h3>
-					<div class="tsd-signature tsd-kind-icon">always<wbr>Open<wbr>InNew<wbr>Window<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<a name="options.maximumdocumentsize" class="tsd-anchor"></a>
+					<h3>maximum<wbr>Document<wbr>Size</h3>
+					<div class="tsd-signature tsd-kind-icon">maximum<wbr>Document<wbr>Size<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L69">src/ui/ResultLink/ResultLink.ts
-							:69</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/QuickviewDocument.ts#L59">src/ui/Quickview/QuickviewDocument.ts
+							:59</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether the result link always opens in a new window ( <a target='_blank' /> ).
-							Default is false</p>
+							<p>Specifies the maximum document size (the preview) that should be returned by the index.</p>
 						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.field" class="tsd-anchor"></a>
-					<h3>field</h3>
-					<div class="tsd-signature tsd-kind-icon">field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L51">src/ui/ResultLink/ResultLink.ts
-							:51</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies the field that the result link uses to output its href.
-								By default, the clickUri available on the document is used, but you can override this with this option.
-								Tip:
-							When you do not include a field option, in your result template, you can include an href attribute on the ResultLink element.</p>
-						</div>
-						<p>When present, the href attribute value overrides the clickUri that is otherwise taken by default.</p>
-						<p>Specifying an href attribute is useful when you want to build the result link using a custom script or by concatenating the content of two or more variables.</p>
-						<pre><code class="lang-html"><span class="hljs-comment">&lt;!-- In the following result template the link is provided by the custom getMyKBUri() function. --&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"KnowledgeArticle"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/underscore"</span>&gt;</span><span class="javascript">
-   &lt;div <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">'CoveoIcon&gt;'</span>&gt;<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
-   &lt;a <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"CoveoResultLink"</span> href=<span class="hljs-string">"&lt;%=getMyKBUri(raw)%&gt;"</span>&gt;<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></span>
-   &lt;div <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"CoveoExcerpt"</span>&gt;<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
-</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-</code></pre>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.hreftemplate" class="tsd-anchor"></a>
-					<h3>href<wbr>Template</h3>
-					<div class="tsd-signature tsd-kind-icon">href<wbr>Template<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L86">src/ui/ResultLink/ResultLink.ts
-							:86</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies a template string to use to generate the href.</p>
-						</div>
-						<p>It is possible to reference fields from the associated result:</p>
-						<p>Ex: <code>${clickUri}?id=${title}</code> will generate something like <code>http://uri.com?id=documentTitle</code></p>
-						<p>Or from the global scope:</p>
-						<p>Ex: <code>${window.location.hostname}/{Foo.Bar}</code> will generate something like <code>localhost/fooBar</code></p>
-						<p>This option will override the field option.</p>
-						<p>Default is <code>undefined</code></p>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.onclick" class="tsd-anchor"></a>
-					<h3>on<wbr>Click</h3>
-					<div class="tsd-signature tsd-kind-icon">on<wbr>Click<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L118">src/ui/ResultLink/ResultLink.ts
-							:118</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Binds an event handler function that is executed when the component link is clicked. The handler function takes an EventObject and a <a href="../interfaces/iqueryresult.html">IQueryResult</a> as its parameters.</p>
-						</div>
-						<p>Overriding the default behavior of the onClick event allows to execute specific code instead.</p>
-						<pre><code class="lang-javascript"><span class="hljs-comment">// Example: using a ResultLink to open the original document in a special way instead of the normal browser behavior</span>
-
-Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
-  ResultLink : {
-       onClick : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e, result</span>)</span>{
-         e.preventDefault();
-         <span class="hljs-comment">// Custom code to execute with the URI and title of the document</span>
-         openUriInASpecialTab(result.clickUri, result.title)
-       }
-   }
-})
-
-<span class="hljs-comment">// OR using the jquery extension</span>
-
-$(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">'init'</span> , {
-   ResultLink : {
-       onClick : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e, result</span>)</span>{
-         e.preventDefault();
-         <span class="hljs-comment">// Custom code to execute with the URI and title of the document</span>
-         openUriInASpecialTab(result.clickUri, result.title)
-       }
-   }
-});
-</code></pre>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-siganture">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-variable tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Event</span>, result<span class="tsd-signature-symbol">: </span><a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
-								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-parameters-title">Parameters</h4>
-										<ul class="tsd-parameters">
-											<li>
-												<h5>e: <span class="tsd-signature-type">Event</span></h5>
-											</li>
-											<li>
-												<h5>result: <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
-											</li>
-										</ul>
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.openinoutlook" class="tsd-anchor"></a>
-					<h3>open<wbr>InOutlook</h3>
-					<div class="tsd-signature tsd-kind-icon">open<wbr>InOutlook<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L57">src/ui/ResultLink/ResultLink.ts
-							:57</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies whether the result link tries to open in Microsoft Outlook. This is normally intended for ResultLink related to Microsoft Exchange emails.
-							Default value is false.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.openquickview" class="tsd-anchor"></a>
-					<h3>open<wbr>Quickview</h3>
-					<div class="tsd-signature tsd-kind-icon">open<wbr>Quickview<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L63">src/ui/ResultLink/ResultLink.ts
-							:63</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies whether the result link should open in the Quick View rather than loading through the original URL.
-							Default value is false.</p>
-						</div>
+						<p>By default it&#39;s value is 0, and the whole preview is returned.</p>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
 					<a name="debuginfo" class="tsd-anchor"></a>
@@ -406,78 +245,6 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">'i
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-					<a name="openlink" class="tsd-anchor"></a>
-					<h3>open<wbr>Link</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">open<wbr>Link<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L211">src/ui/ResultLink/ResultLink.ts
-									:211</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Opens the result</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-					<a name="openlinkinnewwindow" class="tsd-anchor"></a>
-					<h3>open<wbr>Link<wbr>InNew<wbr>Window</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">open<wbr>Link<wbr>InNew<wbr>Window<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L218">src/ui/ResultLink/ResultLink.ts
-									:218</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Opens the result in a new window</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-					<a name="openlinkinoutlook" class="tsd-anchor"></a>
-					<h3>open<wbr>Link<wbr>InOutlook</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">open<wbr>Link<wbr>InOutlook<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLink/ResultLink.ts#L225">src/ui/ResultLink/ResultLink.ts
-									:225</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Opens the result in outlook if the result has an outlook field.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -745,59 +512,49 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">'i
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Result<wbr>Link<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="resultlink.html" class="tsd-signature-type">ResultLink</a></li>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Quickview<wbr>Document<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IQuickviewDocumentOptions</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a>, result<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="quickviewdocument.html" class="tsd-signature-type">QuickviewDocument</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
+								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L88">src/ui/Base/Component.ts
-									:88</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/QuickviewDocument.ts#L65">src/ui/Quickview/QuickviewDocument.ts
+									:65</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Create a new Component. Resolve all <a href="../interfaces/icomponentbindings.html">IComponentBindings</a> if not provided.<br/>
-										Create a new Logger for this component.
-									Attach the component to the <a href="../classes/searchinterface.html">SearchInterface</a><br/></p>
+									<p>Create a new instance of the component</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The HTMLElement on which to create the component. Used to bind data on the element.</p>
-										</div>
-									</div>
 								</li>
 								<li>
-									<h5>type: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The unique identifier for this component. See : <a href="../interfaces/icomponentdefinition.html#id">IComponentDefinition.ID</a>. Used to generate the unique Coveo CSS class associated with every component</p>
-										</div>
-									</div>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">IQuickviewDocumentOptions</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> result: <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The environment for every component. Optional, but omitting to provide one will impact performance.</p>
 										</div>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="resultlink.html" class="tsd-signature-type">ResultLink</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="quickviewdocument.html" class="tsd-signature-type">QuickviewDocument</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -809,70 +566,61 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">'i
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-kind-coveo-component">
-						<a href="resultlink.html" class="tsd-kind-icon">Result<wbr>Link</a>
+						<a href="quickviewdocument.html" class="tsd-kind-icon">Quickview<wbr>Document</a>
 						<ul>
 							<li class=" tsd-kind-object-literal tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-static">
-								<a href="resultlink.html#options" class="tsd-kind-icon">options</a>
+								<a href="quickviewdocument.html#options" class="tsd-kind-icon">options</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="resultlink.html#debuginfo" class="tsd-kind-icon">debug<wbr>Info</a>
+								<a href="quickviewdocument.html#debuginfo" class="tsd-kind-icon">debug<wbr>Info</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="resultlink.html#disable" class="tsd-kind-icon">disable</a>
+								<a href="quickviewdocument.html#disable" class="tsd-kind-icon">disable</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="resultlink.html#enable" class="tsd-kind-icon">enable</a>
+								<a href="quickviewdocument.html#enable" class="tsd-kind-icon">enable</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="resultlink.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-								<a href="resultlink.html#openlink" class="tsd-kind-icon">open<wbr>Link</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-								<a href="resultlink.html#openlinkinnewwindow" class="tsd-kind-icon">open<wbr>Link<wbr>InNew<wbr>Window</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
-								<a href="resultlink.html#openlinkinoutlook" class="tsd-kind-icon">open<wbr>Link<wbr>InOutlook</a>
+								<a href="quickviewdocument.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-								<a href="resultlink.html#get" class="tsd-kind-icon">get</a>
+								<a href="quickviewdocument.html#get" class="tsd-kind-icon">get</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="resultlink.html#bind" class="tsd-kind-icon">bind</a>
+								<a href="quickviewdocument.html#bind" class="tsd-kind-icon">bind</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="resultlink.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a>
+								<a href="quickviewdocument.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="resultlink.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a>
+								<a href="quickviewdocument.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="resultlink.html#disabled" class="tsd-kind-icon">disabled</a>
+								<a href="quickviewdocument.html#disabled" class="tsd-kind-icon">disabled</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="resultlink.html#logger" class="tsd-kind-icon">logger</a>
+								<a href="quickviewdocument.html#logger" class="tsd-kind-icon">logger</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="resultlink.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a>
+								<a href="quickviewdocument.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="resultlink.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a>
+								<a href="quickviewdocument.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="resultlink.html#root" class="tsd-kind-icon">root</a>
+								<a href="quickviewdocument.html#root" class="tsd-kind-icon">root</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="resultlink.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a>
+								<a href="quickviewdocument.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="resultlink.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a>
+								<a href="quickviewdocument.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-								<a href="resultlink.html#id" class="tsd-kind-icon">ID</a>
+								<a href="quickviewdocument.html#id" class="tsd-kind-icon">ID</a>
 							</li>
-							<li class=" tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-								<a href="resultlink.html#constructor" class="tsd-kind-icon">constructor</a>
+							<li class=" tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
+								<a href="quickviewdocument.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 						</ul>
 					</li>

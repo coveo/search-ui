@@ -71,8 +71,71 @@
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
 						<p>This component is responsible for displaying the results of the current query using one or more result templates.<br/>
-						It supports many additional features such as infinite scrolling.<br/></p>
+						It supports many additional features such as infinite scrolling.</p>
 					</div>
+					<h1 id="examples-samples">Examples / samples</h1>
+					<p>This contains some quick example. Refer to result templates on developers.coveo.com for more information.</p>
+					<pre><code class="lang-html"><span class="hljs-comment">&lt;!-- A very simple result list with a single underscore template.
+The template has no condition : It will load for all results.
+Every results will show the same template. --&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultList"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"result-template"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/underscore"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'MyDefaultTemplate'</span>&gt;</span><span class="handlebars"><span class="xml">
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span>&gt;</span>Hey, click on this ! <span class="hljs-tag">&lt;<span class="hljs-name">%-</span> <span class="hljs-attr">title</span> %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  </span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- 2 different template in the same result list : The first template has a condition attribute, the second one does not.
+
+The first condition will be evaluated against each result. If a result match this condition (in this case if the result.raw.objecttype property in the JSON equals MyObjectType) then the template will be rendered and the next template won't be rendered or evaluated for this result. --&gt;</span>
+
+If the result does not match the first template, the next one will be evaluated. Since the second one has no condition, it is always considered "true" and will load as a fallback.
+
+This process will repeat for each result that was returned by the query to the index. --&gt;
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultList"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"result-template"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/underscore"</span> <span class="hljs-attr">data-condition</span>=<span class="hljs-string">'raw.objecttype==MyObjectType'</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'MyObjectTypeTemplate'</span>&gt;</span><span class="handlebars"><span class="xml">
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span>&gt;</span>Hey, click on this ! <span class="hljs-tag">&lt;<span class="hljs-name">%-</span> <span class="hljs-attr">title</span> %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoExcerpt'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>This is a result for the type : <span class="hljs-tag">&lt;<span class="hljs-name">%-</span> <span class="hljs-attr">raw.objecttype</span> %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  </span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"result-template"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/underscore"</span>&gt;</span><span class="handlebars"><span class="xml">
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span>&gt;</span>Hey, click on this ! <span class="hljs-tag">&lt;<span class="hljs-name">%-</span> <span class="hljs-attr">title</span> %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  </span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- 2 different template in the same result list : Both have a data-condition attribute.
+
+Same as before : the condition will be evaluated against all results.
+
+Since there is no "default" template with no condition specified, the framework will fallback on the default templates included in the framework if no template match a given result. This is to ensure that all results get rendered --&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultList"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"result-template"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/underscore"</span> <span class="hljs-attr">data-condition</span>=<span class="hljs-string">'raw.objecttype==MyObjectType'</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'MyObjectTypeTemplate'</span>&gt;</span><span class="handlebars"><span class="xml">
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span>&gt;</span>Hey, click on this ! <span class="hljs-tag">&lt;<span class="hljs-name">%-</span> <span class="hljs-attr">title</span> %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoExcerpt'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>This is a result for the type : <span class="hljs-tag">&lt;<span class="hljs-name">%-</span> <span class="hljs-attr">raw.objecttype</span> %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+     <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  </span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"result-template"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/underscore"</span> <span class="hljs-attr">data-condition</span>=<span class="hljs-string">'raw.objecttype==MySecondObjectType'</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'MySecondObjectTypeTemplate'</span>&gt;</span><span class="handlebars"><span class="xml">
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoIcon'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoExcerpt'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoPrintableUri'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  </span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
 				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -143,8 +206,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L116">src/ui/ResultList/ResultList.ts
-							:116</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L182">src/ui/ResultList/ResultList.ts
+							:182</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -163,8 +226,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L85">src/ui/ResultList/ResultList.ts
-							:85</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L151">src/ui/ResultList/ResultList.ts
+							:151</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -182,8 +245,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L101">src/ui/ResultList/ResultList.ts
-							:101</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L167">src/ui/ResultList/ResultList.ts
+							:167</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -200,8 +263,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L109">src/ui/ResultList/ResultList.ts
-							:109</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L175">src/ui/ResultList/ResultList.ts
+							:175</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -220,8 +283,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L96">src/ui/ResultList/ResultList.ts
-							:96</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L162">src/ui/ResultList/ResultList.ts
+							:162</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -239,8 +302,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L90">src/ui/ResultList/ResultList.ts
-							:90</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L156">src/ui/ResultList/ResultList.ts
+							:156</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -257,8 +320,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L56">src/ui/ResultList/ResultList.ts
-							:56</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L122">src/ui/ResultList/ResultList.ts
+							:122</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -276,8 +339,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L72">src/ui/ResultList/ResultList.ts
-							:72</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L138">src/ui/ResultList/ResultList.ts
+							:138</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -298,8 +361,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L79">src/ui/ResultList/ResultList.ts
-							:79</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L145">src/ui/ResultList/ResultList.ts
+							:145</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -325,8 +388,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L197">src/ui/ResultList/ResultList.ts
-									:197</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L263">src/ui/ResultList/ResultList.ts
+									:263</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -355,8 +418,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L180">src/ui/ResultList/ResultList.ts
-									:180</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L246">src/ui/ResultList/ResultList.ts
+									:246</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -439,8 +502,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L215">src/ui/ResultList/ResultList.ts
-									:215</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L281">src/ui/ResultList/ResultList.ts
+									:281</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -526,8 +589,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L255">src/ui/ResultList/ResultList.ts
-									:255</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L321">src/ui/ResultList/ResultList.ts
+									:321</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -550,8 +613,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L263">src/ui/ResultList/ResultList.ts
-									:263</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L329">src/ui/ResultList/ResultList.ts
+									:329</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -574,8 +637,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L165">src/ui/ResultList/ResultList.ts
-									:165</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L231">src/ui/ResultList/ResultList.ts
+									:231</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -878,8 +941,8 @@
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L122">src/ui/ResultList/ResultList.ts
-									:122</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L188">src/ui/ResultList/ResultList.ts
+									:188</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

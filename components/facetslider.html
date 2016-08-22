@@ -72,9 +72,40 @@
 					<div class="lead">
 						<p>The FacetSlider component allows to create a facet that renders a slider widget to filter on a range of numerical values
 							rather than the classic multi-select facet with a label and a count for each values.<br/>
-							Note that this component does <em>NOT</em> inherit from a standard <a href="facet.html">Facet</a>, and thus does not offer all the same options.<br/>
-						If you want to have a graph on top of your FacetSlider, then you will need to manually include d3.js, or d3.min.js from the script files included in the package.</p>
+							Note that this component does <em>NOT</em> inherit from a standard <a href="facet.html">Facet</a>, and thus does not offer all the same options.
+						Also note that many options for the slider component cannot be set as an HTML attribute on the component, and must be configured in javascript</p>
 					</div>
+					<h2 id="a-generic-example-on-how-to-initialize-a-complex-slider">A generic example on how to initialize a complex slider</h2>
+					<pre><code>// Using a JSON object inside the init call. Note that the <span class="hljs-keyword">JSON</span> <span class="hljs-keyword">object</span> <span class="hljs-keyword">follows</span> the options described <span class="hljs-keyword">in</span> this page.
+Coveo.init(document.querySelector(<span class="hljs-string">'#search'</span>), {
+   FacetSlider: {
+     <span class="hljs-keyword">field</span>: <span class="hljs-string">"@size"</span>,
+     <span class="hljs-keyword">start</span>: <span class="hljs-number">1000</span>,
+     <span class="hljs-keyword">end</span>: <span class="hljs-number">5000</span>,
+     rangeSlider: <span class="hljs-literal">true</span>,
+     graph: {
+       steps: <span class="hljs-number">10</span>
+     }
+   }
+})
+
+// <span class="hljs-keyword">OR</span> <span class="hljs-keyword">using</span> the jquery extension
+
+$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'init'</span>, {
+   FacetSlider: {
+     <span class="hljs-keyword">field</span>: <span class="hljs-string">"@size"</span>,
+     <span class="hljs-keyword">start</span>: <span class="hljs-number">1000</span>,
+     <span class="hljs-keyword">end</span>: <span class="hljs-number">5000</span>,
+     rangeSlider: <span class="hljs-literal">true</span>,
+     graph: {
+       steps: <span class="hljs-number">10</span>
+     }
+   }
+})
+
+// Same config, but <span class="hljs-keyword">using</span> <span class="hljs-keyword">attribute</span> directly <span class="hljs-keyword">on</span> the <span class="hljs-keyword">element</span> instead
+&lt;<span class="hljs-keyword">div</span> <span class="hljs-keyword">class</span>=<span class="hljs-string">'CoveoFacetSlider'</span> <span class="hljs-keyword">data</span>-<span class="hljs-keyword">field</span>=<span class="hljs-string">'@syssize'</span> <span class="hljs-keyword">data</span>-<span class="hljs-keyword">start</span>=<span class="hljs-string">'1000'</span> <span class="hljs-keyword">data</span>-<span class="hljs-keyword">end</span>=<span class="hljs-string">'5000'</span> <span class="hljs-keyword">data</span>-<span class="hljs-keyword">range</span>-slider=<span class="hljs-string">'true'</span> <span class="hljs-keyword">data</span>-graph-steps=<span class="hljs-string">'10'</span>&gt;&lt;/<span class="hljs-keyword">div</span>&gt;
+</code></pre>
 				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -91,6 +122,7 @@
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="facetslider.html#options.end" class="tsd-kind-icon">end</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="facetslider.html#options.excludeouterbounds" class="tsd-kind-icon">exclude<wbr>Outer<wbr>Bounds</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="facetslider.html#options.field" class="tsd-kind-icon">field</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="facetslider.html#options.getsteps" class="tsd-kind-icon">get<wbr>Steps</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="facetslider.html#options.graph" class="tsd-kind-icon">graph</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="facetslider.html#options.id" class="tsd-kind-icon">id</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="facetslider.html#options.queryoverride" class="tsd-kind-icon">query<wbr>Override</a></li>
@@ -99,6 +131,7 @@
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="facetslider.html#options.start" class="tsd-kind-icon">start</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="facetslider.html#options.steps" class="tsd-kind-icon">steps</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="facetslider.html#options.title" class="tsd-kind-icon">title</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="facetslider.html#options.valuecaption" class="tsd-kind-icon">value<wbr>Caption</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -149,8 +182,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L55">src/ui/FacetSlider/FacetSlider.ts
-							:55</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L88">src/ui/FacetSlider/FacetSlider.ts
+							:88</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -167,8 +200,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L75">src/ui/FacetSlider/FacetSlider.ts
-							:75</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L108">src/ui/FacetSlider/FacetSlider.ts
+							:108</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -185,8 +218,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L139">src/ui/FacetSlider/FacetSlider.ts
-							:139</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L172">src/ui/FacetSlider/FacetSlider.ts
+							:172</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -207,8 +240,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L124">src/ui/FacetSlider/FacetSlider.ts
-							:124</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L157">src/ui/FacetSlider/FacetSlider.ts
+							:157</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -230,8 +263,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L93">src/ui/FacetSlider/FacetSlider.ts
-							:93</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L126">src/ui/FacetSlider/FacetSlider.ts
+							:126</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -249,8 +282,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L98">src/ui/FacetSlider/FacetSlider.ts
-							:98</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L131">src/ui/FacetSlider/FacetSlider.ts
+							:131</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -267,8 +300,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L61">src/ui/FacetSlider/FacetSlider.ts
-							:61</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L94">src/ui/FacetSlider/FacetSlider.ts
+							:94</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -280,24 +313,84 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.getsteps" class="tsd-anchor"></a>
+					<h3>get<wbr>Steps</h3>
+					<div class="tsd-signature tsd-kind-icon">get<wbr>Steps<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L224">src/ui/FacetSlider/FacetSlider.ts
+							:224</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies a function that will generate the steps for the slider. The function receives the slider boundaries must return an array of number (the steps).</p>
+						</div>
+						<pre><code>Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
+   FacetSlider: {
+     field: <span class="hljs-string">"@size"</span>,
+     getSteps: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">start, end</span>) </span>{
+       <span class="hljs-keyword">return</span> [<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>,<span class="hljs-number">8</span>,<span class="hljs-number">10</span>];
+     }
+   }
+})
+
+<span class="hljs-comment">// OR using the jquery extension</span>
+
+$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'init'</span>, {
+   FacetSlider: {
+       field: <span class="hljs-string">"@size"</span>,
+       getSteps: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">start, end</span>) </span>{
+           <span class="hljs-keyword">return</span> [<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>,<span class="hljs-number">8</span>,<span class="hljs-number">10</span>];
+       }
+   }
+})
+</code></pre>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-variable tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>start<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, end<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>start: <span class="tsd-signature-type">number</span></h5>
+											</li>
+											<li>
+												<h5>end: <span class="tsd-signature-type">number</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.graph" class="tsd-anchor"></a>
 					<h3>graph</h3>
 					<div class="tsd-signature tsd-kind-icon">graph<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L152">src/ui/FacetSlider/FacetSlider.ts
-							:152</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L185">src/ui/FacetSlider/FacetSlider.ts
+							:185</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies that you wish to display a small graph on top of the slider.<br/>
 							Available options are :</p>
-							<ul>
-								<li>steps: (data-graph-steps) <code>number</code> : Specifies the number of steps/columns to display in your graph. Default value is 10</li>
-							</ul>
 						</div>
+						<p>  <li>steps: (data-graph-steps) <code>number</code> : Specifies the number of steps/columns to display in your graph. Default value is 10</li>
+						</ul></p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -307,8 +400,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L68">src/ui/FacetSlider/FacetSlider.ts
-							:68</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L101">src/ui/FacetSlider/FacetSlider.ts
+							:101</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -327,8 +420,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L81">src/ui/FacetSlider/FacetSlider.ts
-							:81</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L114">src/ui/FacetSlider/FacetSlider.ts
+							:114</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -346,8 +439,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L114">src/ui/FacetSlider/FacetSlider.ts
-							:114</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L147">src/ui/FacetSlider/FacetSlider.ts
+							:147</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -364,8 +457,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L103">src/ui/FacetSlider/FacetSlider.ts
-							:103</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L136">src/ui/FacetSlider/FacetSlider.ts
+							:136</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -382,8 +475,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L87">src/ui/FacetSlider/FacetSlider.ts
-							:87</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L120">src/ui/FacetSlider/FacetSlider.ts
+							:120</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -401,8 +494,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L109">src/ui/FacetSlider/FacetSlider.ts
-							:109</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L142">src/ui/FacetSlider/FacetSlider.ts
+							:142</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -420,8 +513,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L50">src/ui/FacetSlider/FacetSlider.ts
-							:50</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L83">src/ui/FacetSlider/FacetSlider.ts
+							:83</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -429,6 +522,64 @@
 							<p>The title on top of the facet component.<br/>
 							Default value is the localized string for &#39;No title&#39;</p>
 						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.valuecaption" class="tsd-anchor"></a>
+					<h3>value<wbr>Caption</h3>
+					<div class="tsd-signature tsd-kind-icon">value<wbr>Caption<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L252">src/ui/FacetSlider/FacetSlider.ts
+							:252</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies a function that will generate the caption for the slider. Receives the current slider values (number[]) and must return the caption (string).</p>
+						</div>
+						<pre><code>Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
+   FacetSlider: {
+     field: <span class="hljs-string">"@size"</span>,
+     valueCaption: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">values</span>) </span>{
+       <span class="hljs-keyword">return</span> values[<span class="hljs-number">0</span>] + <span class="hljs-string">" hello"</span> + <span class="hljs-string">", "</span> + values[<span class="hljs-number">1</span>] + <span class="hljs-string">" world"</span>;
+     }
+   }
+})
+
+<span class="hljs-comment">// OR using the jquery extension</span>
+
+$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'init'</span>, {
+   FacetSlider: {
+     field: <span class="hljs-string">"@size"</span>,
+     valueCaption: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">values</span>) </span>{
+       <span class="hljs-keyword">return</span> values[<span class="hljs-number">0</span>] + <span class="hljs-string">" hello"</span> + <span class="hljs-string">", "</span> + values[<span class="hljs-number">1</span>] + <span class="hljs-string">" world"</span>;
+     }
+   }
+})
+</code></pre>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-variable tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>values<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>values: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
 					</div>
 				</section>
 			</section>
@@ -549,8 +700,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L261">src/ui/FacetSlider/FacetSlider.ts
-									:261</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L350">src/ui/FacetSlider/FacetSlider.ts
+									:350</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -574,8 +725,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L285">src/ui/FacetSlider/FacetSlider.ts
-									:285</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L374">src/ui/FacetSlider/FacetSlider.ts
+									:374</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -598,8 +749,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L248">src/ui/FacetSlider/FacetSlider.ts
-									:248</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L337">src/ui/FacetSlider/FacetSlider.ts
+									:337</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -622,8 +773,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L273">src/ui/FacetSlider/FacetSlider.ts
-									:273</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L362">src/ui/FacetSlider/FacetSlider.ts
+									:362</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

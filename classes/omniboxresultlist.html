@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>FoldingForThread | Coveo search ui documentation</title>
+	<title>OmniboxResultList | Coveo search ui documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -57,10 +57,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="foldingforthread.html">FoldingForThread</a>
+					<a href="omniboxresultlist.html">OmniboxResultList</a>
 				</li>
 			</ul>
-			<h1>Class FoldingForThread</h1>
+			<h1>Class OmniboxResultList</h1>
 		</div>
 	</div>
 </header>
@@ -70,11 +70,18 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>This component inherits from the <a href="../components/folding.html">Folding</a> component.
-							Folding conversations and threads requires different processing.
-							When you need to fold children under a parent item, use this component.<br/>
-						<b>This component works well with Chatter and Lithium</b></p>
+						<p>This component is exactly like a normal ResultList Component, except that it will render itself inside the Omnibox Component.
+						This will provide a kind of search as you type functionnality, allowing you to easily render complex Result Templates inside the Omnibox Component.</p>
 					</div>
+					<h1 id="example">Example</h1>
+					<pre><code>    &lt;div <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"CoveoOmniboxResultList"</span>&gt;
+        <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"result-template"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/x-underscore"</span>&gt;</span><span class="handlebars"><span class="xml">
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        </span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+    &lt;<span class="hljs-regexp">/div&gt;</span>
+</code></pre>
 				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -84,48 +91,48 @@
 						<section class="tsd-index-section ">
 							<h3>Component Options</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="foldingforthread.html#options.childfield" class="tsd-kind-icon">child<wbr>Field</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="foldingforthread.html#options.enableexpand" class="tsd-kind-icon">enable<wbr>Expand</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="foldingforthread.html#options.expandexpression" class="tsd-kind-icon">expand<wbr>Expression</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="foldingforthread.html#options.field" class="tsd-kind-icon">field</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="foldingforthread.html#options.getmoreresults" class="tsd-kind-icon">get<wbr>More<wbr>Results</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="foldingforthread.html#options.getresult" class="tsd-kind-icon">get<wbr>Result</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="foldingforthread.html#options.maximumexpandedresults" class="tsd-kind-icon">maximum<wbr>Expanded<wbr>Results</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="foldingforthread.html#options.parentfield" class="tsd-kind-icon">parent<wbr>Field</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="foldingforthread.html#options.range" class="tsd-kind-icon">range</a></li>
-								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="foldingforthread.html#options.rearrange" class="tsd-kind-icon">rearrange</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omniboxresultlist.html#options.headertitle" class="tsd-kind-icon">header<wbr>Title</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omniboxresultlist.html#options.omniboxzindex" class="tsd-kind-icon">omniboxZIndex</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omniboxresultlist.html#options.onselect" class="tsd-kind-icon">on<wbr>Select</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="omniboxresultlist.html#options.queryoverride" class="tsd-kind-icon">query<wbr>Override</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="foldingforthread.html#debuginfo" class="tsd-kind-icon">debug<wbr>Info</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="foldingforthread.html#disable" class="tsd-kind-icon">disable</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="foldingforthread.html#enable" class="tsd-kind-icon">enable</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="foldingforthread.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="foldingforthread.html#get" class="tsd-kind-icon">get</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="omniboxresultlist.html#buildresult" class="tsd-kind-icon">build<wbr>Result</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="omniboxresultlist.html#buildresults" class="tsd-kind-icon">build<wbr>Results</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="omniboxresultlist.html#debuginfo" class="tsd-kind-icon">debug<wbr>Info</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="omniboxresultlist.html#disable" class="tsd-kind-icon">disable</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="omniboxresultlist.html#displaymoreresults" class="tsd-kind-icon">display<wbr>More<wbr>Results</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="omniboxresultlist.html#enable" class="tsd-kind-icon">enable</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="omniboxresultlist.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="omniboxresultlist.html#getdisplayedresults" class="tsd-kind-icon">get<wbr>Displayed<wbr>Results</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="omniboxresultlist.html#getdisplayedresultselements" class="tsd-kind-icon">get<wbr>Displayed<wbr>Results<wbr>Elements</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="omniboxresultlist.html#renderresults" class="tsd-kind-icon">render<wbr>Results</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="omniboxresultlist.html#get" class="tsd-kind-icon">get</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="foldingforthread.html#bind" class="tsd-kind-icon">bind</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="foldingforthread.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="foldingforthread.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="foldingforthread.html#disabled" class="tsd-kind-icon">disabled</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="foldingforthread.html#logger" class="tsd-kind-icon">logger</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="foldingforthread.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="foldingforthread.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="foldingforthread.html#root" class="tsd-kind-icon">root</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="foldingforthread.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="foldingforthread.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="foldingforthread.html#id" class="tsd-kind-icon">ID</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="omniboxresultlist.html#bind" class="tsd-kind-icon">bind</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="omniboxresultlist.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="omniboxresultlist.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="omniboxresultlist.html#disabled" class="tsd-kind-icon">disabled</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="omniboxresultlist.html#logger" class="tsd-kind-icon">logger</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="omniboxresultlist.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="omniboxresultlist.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="omniboxresultlist.html#root" class="tsd-kind-icon">root</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="omniboxresultlist.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="omniboxresultlist.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="omniboxresultlist.html#id" class="tsd-kind-icon">ID</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="foldingforthread.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="omniboxresultlist.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 					</div>
@@ -134,170 +141,80 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Component Options</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.childfield" class="tsd-anchor"></a>
-					<h3>child<wbr>Field</h3>
-					<div class="tsd-signature tsd-kind-icon">child<wbr>Field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="options.headertitle" class="tsd-anchor"></a>
+					<h3>header<wbr>Title</h3>
+					<div class="tsd-signature tsd-kind-icon">header<wbr>Title<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L67">src/ui/Folding/Folding.ts
-							:67</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/OmniboxResultList/OmniboxResultList.ts#L56">src/ui/OmniboxResultList/OmniboxResultList.ts
+							:56</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the field that determines that a result is a child of another top result.<br/>
-							The default value is <code>@topparentid</code></p>
+							<p>Specifies the title that you want for this section.</p>
 						</div>
+						<p>By default this will be Suggested Results.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.enableexpand" class="tsd-anchor"></a>
-					<h3>enable<wbr>Expand</h3>
-					<div class="tsd-signature tsd-kind-icon">enable<wbr>Expand<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<a name="options.omniboxzindex" class="tsd-anchor"></a>
+					<h3>omniboxZIndex</h3>
+					<div class="tsd-signature tsd-kind-icon">omniboxZIndex<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L102">src/ui/Folding/Folding.ts
-							:102</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/OmniboxResultList/OmniboxResultList.ts#L50">src/ui/OmniboxResultList/OmniboxResultList.ts
+							:50</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to add a callback function on the top result, allowing to make an additional query
-							to load all the conversation of a given thread.</p>
+							<p>Specifies the index at which the result list should render itself inside the Omnibox</p>
 						</div>
-						<p>Concretely, the <a href="../components/resultfolding.html">ResultFolding</a> component uses this for its <b>Load full conversation</b> option.</p>
-						<p>The default value is <code>true</code></p>
+						<p>The default value is 51 (Facets are at 50 by default).</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.expandexpression" class="tsd-anchor"></a>
-					<h3>expand<wbr>Expression</h3>
-					<div class="tsd-signature tsd-kind-icon">expand<wbr>Expression<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="options.onselect" class="tsd-anchor"></a>
+					<h3>on<wbr>Select</h3>
+					<div class="tsd-signature tsd-kind-icon">on<wbr>Select<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L106">src/ui/Folding/Folding.ts
-							:106</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/OmniboxResultList/OmniboxResultList.ts#L94">src/ui/OmniboxResultList/OmniboxResultList.ts
+							:94</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies a customized constant expression to send when querying the expanded results.</p>
+							<p>Specifies the function you wish to execute when a result suggestion is selected.</p>
 						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.field" class="tsd-anchor"></a>
-					<h3>field</h3>
-					<div class="tsd-signature tsd-kind-icon">field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L62">src/ui/Folding/Folding.ts
-							:62</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The name of the field on which the folding is done.<br/>
-							This option is required.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.getmoreresults" class="tsd-anchor"></a>
-					<h3>get<wbr>More<wbr>Results</h3>
-					<div class="tsd-signature tsd-kind-icon">get<wbr>More<wbr>Results<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L174">src/ui/Folding/Folding.ts
-							:174</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>This function manages folding of all results.</p>
-						</div>
-						<p>The default value (Coveo.Folding.defaultGetMoreResults):</p>
-						<pre><code>Coveo.Folding.defaultGetMoreResults = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(results)</span> </span>{
-   <span class="hljs-comment">// The results are flat, just do the folding</span>
-   <span class="hljs-keyword">return</span> Coveo.Folding.foldWithParent(results);
-}
-</code></pre>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-siganture">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-variable tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>results<span class="tsd-signature-symbol">: </span><a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a><span class="tsd-signature-symbol">[]</span></li>
-								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-parameters-title">Parameters</h4>
-										<ul class="tsd-parameters">
-											<li>
-												<h5>results: <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a><span class="tsd-signature-symbol">[]</span></h5>
-											</li>
-										</ul>
-										<h4 class="tsd-returns-title">Returns <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a><span class="tsd-signature-symbol">[]</span></h4>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.getresult" class="tsd-anchor"></a>
-					<h3>get<wbr>Result</h3>
-					<div class="tsd-signature tsd-kind-icon">get<wbr>Result<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L158">src/ui/Folding/Folding.ts
-							:158</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>This function manages folding individually for each result.</p>
-						</div>
-						<p>The default value ( which is implemented in Coveo.Folding.defaultGetResult) :</p>
-						<pre><code><span class="hljs-keyword">var</span> results = <span class="hljs-keyword">result</span>.childResults || [];
-<span class="hljs-comment">// Add the top result at the top of the list</span>
-results.unshift(<span class="hljs-keyword">result</span>);
-<span class="hljs-comment">// Empty childResults just to clean it</span>
-<span class="hljs-keyword">result</span>.childResults = [];
-<span class="hljs-comment">// Fold those results</span>
-results = Coveo.Folding.foldWithParent(results);
-<span class="hljs-comment">// The first result is the top one</span>
-<span class="hljs-keyword">var</span> topResult = results.shift();
-<span class="hljs-comment">// All other results are childResults</span>
-topResult.childResults = results;
-return topResult;
-</code></pre><p>You can preprocess all the result with this option:</p>
-						<pre><code>Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
-   Folding: {
-     getResult: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{
-       result = Coveo.Folding.defaultGetResult(result);
-       <span class="hljs-comment">// Your code here</span>
-     }
-   }
+						<p>By default, it will open the corresponding result uri in your browser.</p>
+						<pre><code class="lang-javascript">Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
+   OmniboxResultList : {
+       <span class="hljs-comment">//Close the omnibox, change the selected HTMLElement background color and alert the result title.</span>
+       onSelect:   <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result, resultElement, omniBoxObject</span>) </span>{
+           omniBoxObject.close();
+           resultElement.css(<span class="hljs-string">'background-color'</span>, <span class="hljs-string">'red'</span>);
+           alert(result.title);
+       }
+    }
 })
 
 <span class="hljs-comment">// OR using the jquery extension</span>
 
-Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'init'</span>, {
-   Folding: {
-     getResult: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{
-       result = Coveo.Folding.defaultGetResult(result);
-       <span class="hljs-comment">// Your code here</span>
-     }
-   }
-});
+$(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"init"</span>, {
+   OmniboxResultList : {
+       <span class="hljs-comment">//Close the omnibox, change the selected HTMLElement background color and alert the result title.</span>
+       onSelect:   <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result, resultElement, omniBoxObject</span>) </span>{
+           omniBoxObject.close();
+           resultElement.css(<span class="hljs-string">'background-color'</span>, <span class="hljs-string">'red'</span>);
+           alert(result.title);
+       }
+    }
+})
 </code></pre>
 					</div>
 					<div class="tsd-type-declaration">
@@ -305,7 +222,7 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter-siganture">
 								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-variable tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>result<span class="tsd-signature-symbol">: </span><a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></li>
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>result<span class="tsd-signature-symbol">: </span><a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a>, resultElement<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, omniboxObject<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IPopulateOmniboxEventArgs</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 								</ul>
 								<ul class="tsd-descriptions">
 									<li class="tsd-description">
@@ -314,8 +231,14 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 											<li>
 												<h5>result: <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
 											</li>
+											<li>
+												<h5>resultElement: <span class="tsd-signature-type">HTMLElement</span></h5>
+											</li>
+											<li>
+												<h5>omniboxObject: <span class="tsd-signature-type">IPopulateOmniboxEventArgs</span></h5>
+											</li>
 										</ul>
-										<h4 class="tsd-returns-title">Returns <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h4>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 									</li>
 								</ul>
 							</li>
@@ -323,91 +246,90 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.maximumexpandedresults" class="tsd-anchor"></a>
-					<h3>maximum<wbr>Expanded<wbr>Results</h3>
-					<div class="tsd-signature tsd-kind-icon">maximum<wbr>Expanded<wbr>Results<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="options.queryoverride" class="tsd-anchor"></a>
+					<h3>query<wbr>Override</h3>
+					<div class="tsd-signature tsd-kind-icon">query<wbr>Override<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L114">src/ui/Folding/Folding.ts
-							:114</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/OmniboxResultList/OmniboxResultList.ts#L62">src/ui/OmniboxResultList/OmniboxResultList.ts
+							:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the maximum number of expanded results.</p>
+							<p>Specifies the override you want to use on the query sent to the OmniboxResultList component.</p>
 						</div>
-						<p>The default value is 100.</p>
-						<p>The minimum value is 1.</p>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.parentfield" class="tsd-anchor"></a>
-					<h3>parent<wbr>Field</h3>
-					<div class="tsd-signature tsd-kind-icon">parent<wbr>Field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L72">src/ui/Folding/Folding.ts
-							:72</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies the field that determines that a result is a top result containing other child results<br/>
-							The default value is <code>@syscontainsattachment</code></p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.range" class="tsd-anchor"></a>
-					<h3>range</h3>
-					<div class="tsd-signature tsd-kind-icon">range<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L83">src/ui/Folding/Folding.ts
-							:83</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The number of child results to fold.</p>
-						</div>
-						<p>The default value is 2.</p>
-						<p>The minimum value is 0.</p>
-						<blockquote>
-							<p>Example:
-							For an email thread with 20 messages in total, using the default value means that a maximum of 2 child messages are loaded and displayed under the original message (unless the whole conversation is expanded via the use of a Show all conversation button).</p>
-						</blockquote>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-					<a name="options.rearrange" class="tsd-anchor"></a>
-					<h3>rearrange</h3>
-					<div class="tsd-signature tsd-kind-icon">rearrange<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">SortCriteria</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L93">src/ui/Folding/Folding.ts
-							:93</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies how the top result and its related child results, following the sort criteria format
-							(<code>date ascending</code>, <code>@somefield ascending</code>, etc.).</p>
-						</div>
-						<p>The default value is <code>none</code>, which means that results are displayed in the order that the index returned them.</p>
-						<blockquote>
-							<p>Example:
-							If you specify date descending, the component re-arranges an email conversation so that the newest email is always the top result. Doing the opposite would allow the original email to always be the top result since it is also the oldest.</p>
-						</blockquote>
+						<p>By default, there&#39;s no override applied.</p>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="buildresult" class="tsd-anchor"></a>
+					<h3>build<wbr>Result</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">build<wbr>Result<span class="tsd-signature-symbol">(</span>result<span class="tsd-signature-symbol">: </span><a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="../components/resultlist.html">ResultList</a>.<a href="../components/resultlist.html#buildresult">buildResult</a></p>
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L263">src/ui/ResultList/ResultList.ts
+									:263</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Build and return an HTMLElement for the given result.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>result: <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<a name="buildresults" class="tsd-anchor"></a>
+					<h3>build<wbr>Results</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">build<wbr>Results<span class="tsd-signature-symbol">(</span>results<span class="tsd-signature-symbol">: </span><a href="../interfaces/iqueryresults.html" class="tsd-signature-type">IQueryResults</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overwrites <a href="../components/resultlist.html">ResultList</a>.<a href="../components/resultlist.html#buildresults">buildResults</a></p>
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/OmniboxResultList/OmniboxResultList.ts#L113">src/ui/OmniboxResultList/OmniboxResultList.ts
+									:113</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Build and return an array of HTMLElement with the given result set.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>results: <a href="../interfaces/iqueryresults.html" class="tsd-signature-type">IQueryResults</a></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="debuginfo" class="tsd-anchor"></a>
 					<h3>debug<wbr>Info</h3>
@@ -461,6 +383,42 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="displaymoreresults" class="tsd-anchor"></a>
+					<h3>display<wbr>More<wbr>Results</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">display<wbr>More<wbr>Results<span class="tsd-signature-symbol">(</span>count<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="../components/resultlist.html">ResultList</a>.<a href="../components/resultlist.html#displaymoreresults">displayMoreResults</a></p>
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L281">src/ui/ResultList/ResultList.ts
+									:281</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Execute a query to fetch new results. After the query is done, render those new results.<br/>
+										Assert that there is actually more results to display by checking that the last query returned as many results as requested.<br/>
+									Assert that the result list is not currently fetching results</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>count: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The number of results to fetch and display</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="enable" class="tsd-anchor"></a>
 					<h3>enable</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -509,6 +467,94 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="getdisplayedresults" class="tsd-anchor"></a>
+					<h3>get<wbr>Displayed<wbr>Results</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Displayed<wbr>Results<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="../components/resultlist.html">ResultList</a>.<a href="../components/resultlist.html#getdisplayedresults">getDisplayedResults</a></p>
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L321">src/ui/ResultList/ResultList.ts
+									:321</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get the list of currently displayed result</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="getdisplayedresultselements" class="tsd-anchor"></a>
+					<h3>get<wbr>Displayed<wbr>Results<wbr>Elements</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Displayed<wbr>Results<wbr>Elements<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="../components/resultlist.html">ResultList</a>.<a href="../components/resultlist.html#getdisplayedresultselements">getDisplayedResultsElements</a></p>
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L329">src/ui/ResultList/ResultList.ts
+									:329</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get the list of currently displayed result HTMLElement</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="renderresults" class="tsd-anchor"></a>
+					<h3>render<wbr>Results</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">render<wbr>Results<span class="tsd-signature-symbol">(</span>resultsElement<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span>, append<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="../components/resultlist.html">ResultList</a>.<a href="../components/resultlist.html#renderresults">renderResults</a></p>
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L231">src/ui/ResultList/ResultList.ts
+									:231</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Empty the current result list content and append the given array of HTMLElement.<br/>
+										Can append to existing elements in the result list, or replace them.<br/>
+									Triggers the newResultDiplayed and newResultsDisplayed event</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>resultsElement: <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> append: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -776,46 +822,68 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Folding<wbr>For<wbr>Thread<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IFoldingOptions</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="foldingforthread.html" class="tsd-signature-type">FoldingForThread</a></li>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Omnibox<wbr>Result<wbr>List<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IResultListOptions</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a>, elementClassId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="omniboxresultlist.html" class="tsd-signature-type">OmniboxResultList</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overwrites <a href="../components/folding.html">Folding</a>.<a href="../components/folding.html#constructor">constructor</a></p>
+								<p>Inherited from <a href="../components/resultlist.html">ResultList</a>.<a href="../components/resultlist.html#constructor">constructor</a></p>
+								<p>Overwrites <a href="component.html">Component</a>.<a href="component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/FoldingForThread.ts#L13">src/ui/Folding/FoldingForThread.ts
-									:13</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L188">src/ui/ResultList/ResultList.ts
+									:188</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Create a new FoldingForThread component</p>
+									<p>Create a new ResultList.<br/>
+										Bind various event related to queries (eg : on querySuccess -&gt; renderResults)<br/>
+									Bind scroll event if infinite scrolling is enabled.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The HTMLElement on which the element will be instantiated.</p>
+										</div>
+									</div>
 								</li>
 								<li>
-									<h5>options: <span class="tsd-signature-type">IFoldingOptions</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">IResultListOptions</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The options for the ResultList.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
+											<p>The bindings that the component requires to function normally. If not set, will automatically resolve them (With slower execution time)</p>
+										</div>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> elementClassId: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;ResultList.ID</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The class that this component should instantiate. By default this will be CoveoResultList. This is used by component that extends the base ResultList</p>
 										</div>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="foldingforthread.html" class="tsd-signature-type">FoldingForThread</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="omniboxresultlist.html" class="tsd-signature-type">OmniboxResultList</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -824,7 +892,7 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="../components/folding.html" class="tsd-signature-type">Folding</a>
+						<a href="../components/resultlist.html" class="tsd-signature-type">ResultList</a>
 					</li>
 				</ul>
 			</section>
@@ -835,61 +903,79 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
-						<a href="foldingforthread.html" class="tsd-kind-icon">Folding<wbr>For<wbr>Thread</a>
+						<a href="omniboxresultlist.html" class="tsd-kind-icon">Omnibox<wbr>Result<wbr>List</a>
 						<ul>
-							<li class=" tsd-kind-object-literal tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-								<a href="foldingforthread.html#options" class="tsd-kind-icon">options</a>
+							<li class=" tsd-kind-object-literal tsd-parent-kind-class tsd-is-overwrite tsd-is-static">
+								<a href="omniboxresultlist.html#options" class="tsd-kind-icon">options</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="foldingforthread.html#debuginfo" class="tsd-kind-icon">debug<wbr>Info</a>
+								<a href="omniboxresultlist.html#buildresult" class="tsd-kind-icon">build<wbr>Result</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="omniboxresultlist.html#buildresults" class="tsd-kind-icon">build<wbr>Results</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="foldingforthread.html#disable" class="tsd-kind-icon">disable</a>
+								<a href="omniboxresultlist.html#debuginfo" class="tsd-kind-icon">debug<wbr>Info</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="foldingforthread.html#enable" class="tsd-kind-icon">enable</a>
+								<a href="omniboxresultlist.html#disable" class="tsd-kind-icon">disable</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="foldingforthread.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a>
+								<a href="omniboxresultlist.html#displaymoreresults" class="tsd-kind-icon">display<wbr>More<wbr>Results</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="omniboxresultlist.html#enable" class="tsd-kind-icon">enable</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="omniboxresultlist.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="omniboxresultlist.html#getdisplayedresults" class="tsd-kind-icon">get<wbr>Displayed<wbr>Results</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="omniboxresultlist.html#getdisplayedresultselements" class="tsd-kind-icon">get<wbr>Displayed<wbr>Results<wbr>Elements</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="omniboxresultlist.html#renderresults" class="tsd-kind-icon">render<wbr>Results</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-								<a href="foldingforthread.html#get" class="tsd-kind-icon">get</a>
+								<a href="omniboxresultlist.html#get" class="tsd-kind-icon">get</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="foldingforthread.html#bind" class="tsd-kind-icon">bind</a>
+								<a href="omniboxresultlist.html#bind" class="tsd-kind-icon">bind</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="foldingforthread.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a>
+								<a href="omniboxresultlist.html#componentoptionsmodel" class="tsd-kind-icon">component<wbr>Options<wbr>Model</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="foldingforthread.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a>
+								<a href="omniboxresultlist.html#componentstatemodel" class="tsd-kind-icon">component<wbr>State<wbr>Model</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="foldingforthread.html#disabled" class="tsd-kind-icon">disabled</a>
+								<a href="omniboxresultlist.html#disabled" class="tsd-kind-icon">disabled</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="foldingforthread.html#logger" class="tsd-kind-icon">logger</a>
+								<a href="omniboxresultlist.html#logger" class="tsd-kind-icon">logger</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="foldingforthread.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a>
+								<a href="omniboxresultlist.html#querycontroller" class="tsd-kind-icon">query<wbr>Controller</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="foldingforthread.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a>
+								<a href="omniboxresultlist.html#querystatemodel" class="tsd-kind-icon">query<wbr>State<wbr>Model</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="foldingforthread.html#root" class="tsd-kind-icon">root</a>
+								<a href="omniboxresultlist.html#root" class="tsd-kind-icon">root</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="foldingforthread.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a>
+								<a href="omniboxresultlist.html#searchinterface" class="tsd-kind-icon">search<wbr>Interface</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="foldingforthread.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a>
+								<a href="omniboxresultlist.html#usageanalytics" class="tsd-kind-icon">usage<wbr>Analytics</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-								<a href="foldingforthread.html#id" class="tsd-kind-icon">ID</a>
+								<a href="omniboxresultlist.html#id" class="tsd-kind-icon">ID</a>
 							</li>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-								<a href="foldingforthread.html#constructor" class="tsd-kind-icon">constructor</a>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+								<a href="omniboxresultlist.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 						</ul>
 					</li>

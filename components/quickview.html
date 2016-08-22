@@ -73,6 +73,33 @@
 						<p>This component is meant to exist within a result template.
 						It allows to create a button/link inside the result list that opens a modal box for a given result.</p>
 					</div>
+					<p>Most of the time, this component will reference a <a href="quickviewdocument.html">QuickviewDocument</a> in it&#39;s content template.</p>
+					<h1 id="choosing-what-to-display-for-the-quickview">Choosing what to display for the Quickview</h1>
+					<p>The Quick View uses any HTML structure you put inside its tag and uses that as the content of the dialog box. This content can thus be any element you decide, using your CSS and your structure.</p>
+					<blockquote>
+						<p>Example
+							You can change the appearance of the Quick View link by adding HTML inside the body of the div.
+						You can change the content of the Quick View link by specifying a template id.</p>
+					</blockquote>
+					<pre><code class="lang-html"><span class="hljs-comment">&lt;!-- This would change the appearance of the quickview button itself in the result. --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoQuickview"</span> <span class="hljs-attr">data-template-id</span>=<span class="hljs-string">"TemplateId"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Click here for Quickview<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- This would modify the content of the quickview when it is opened in the modal box --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'result-template'</span> <span class="hljs-attr">type</span>=<span class="hljs-string">'text/underscore'</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'TemplateId'</span> &gt;</span><span class="javascript">
+  &lt;div&gt;
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>This is the content that will be displayed when you open the Quick View. You can also include any other Coveo components.<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
+    &lt;table <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"CoveoFieldTable"</span>&gt;
+      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">tr</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@liboardshorttitle"</span> <span class="hljs-attr">data-caption</span>=<span class="hljs-string">"Board"</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">tr</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@licategoryshorttitle"</span> <span class="hljs-attr">data-caption</span>=<span class="hljs-string">"Category"</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">tr</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@sysauthor"</span> <span class="hljs-attr">data-caption</span>=<span class="hljs-string">"Author"</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">table</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- Note that this is all optional : Just including a &lt;div class='CoveoQuickview'&gt;&lt;/div&gt; will do the job most of the time, and will include a default template and default button appearance --&gt;</span>
+</code></pre>
 				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -135,8 +162,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L57">src/ui/Quickview/Quickview.ts
-							:57</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L87">src/ui/Quickview/Quickview.ts
+							:87</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -154,8 +181,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L74">src/ui/Quickview/Quickview.ts
-							:74</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L104">src/ui/Quickview/Quickview.ts
+							:104</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -174,8 +201,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L66">src/ui/Quickview/Quickview.ts
-							:66</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L96">src/ui/Quickview/Quickview.ts
+							:96</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -192,8 +219,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L100">src/ui/Quickview/Quickview.ts
-							:100</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L130">src/ui/Quickview/Quickview.ts
+							:130</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -210,8 +237,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L61">src/ui/Quickview/Quickview.ts
-							:61</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L91">src/ui/Quickview/Quickview.ts
+							:91</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -234,8 +261,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L158">src/ui/Quickview/Quickview.ts
-									:158</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L188">src/ui/Quickview/Quickview.ts
+									:188</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -362,8 +389,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L142">src/ui/Quickview/Quickview.ts
-									:142</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Quickview/Quickview.ts#L172">src/ui/Quickview/Quickview.ts
+									:172</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

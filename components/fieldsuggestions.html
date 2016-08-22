@@ -86,6 +86,7 @@
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="fieldsuggestions.html#options.headertitle" class="tsd-kind-icon">header<wbr>Title</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="fieldsuggestions.html#options.numberofsuggestions" class="tsd-kind-icon">number<wbr>OfSuggestions</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="fieldsuggestions.html#options.omniboxzindex" class="tsd-kind-icon">omniboxZIndex</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="fieldsuggestions.html#options.onselect" class="tsd-kind-icon">on<wbr>Select</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="fieldsuggestions.html#options.queryoverride" class="tsd-kind-icon">query<wbr>Override</a></li>
 							</ul>
 						</section>
@@ -134,8 +135,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L36">src/ui/FieldSuggestions/FieldSuggestions.ts
-							:36</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L37">src/ui/FieldSuggestions/FieldSuggestions.ts
+							:37</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -152,8 +153,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L49">src/ui/FieldSuggestions/FieldSuggestions.ts
-							:49</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L50">src/ui/FieldSuggestions/FieldSuggestions.ts
+							:50</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -169,8 +170,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L54">src/ui/FieldSuggestions/FieldSuggestions.ts
-							:54</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L55">src/ui/FieldSuggestions/FieldSuggestions.ts
+							:55</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -187,8 +188,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L45">src/ui/FieldSuggestions/FieldSuggestions.ts
-							:45</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L46">src/ui/FieldSuggestions/FieldSuggestions.ts
+							:46</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -199,14 +200,56 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.onselect" class="tsd-anchor"></a>
+					<h3>on<wbr>Select</h3>
+					<div class="tsd-signature tsd-kind-icon">on<wbr>Select<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ISuggestionForOmniboxOptionsOnSelect</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L86">src/ui/FieldSuggestions/FieldSuggestions.ts
+							:86</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The event handler function to execute when a value is selected in the Omnibox. By default, the query box text is replaced by what was selected and a new query is executed. You can however replace this default text by providing a callback function to execute when the value is selected.
+							For example:</p>
+						</div>
+						<pre><code>Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
+   FieldSuggestions : {
+     omniboxSuggestionOptions : {
+       onSelect : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">valueSelected, populateOmniBoxEventArgs</span>)</span>{
+         <span class="hljs-comment">// Do something special when a value is selected.</span>
+         <span class="hljs-comment">// You receive the selected value as the first argument, and the Omnibox object as the second parameter.</span>
+       }
+     }
+   }
+})
+
+<span class="hljs-comment">// OR using the jquery extension</span>
+
+$(<span class="hljs-string">'#mySearch'</span>).coveo(<span class="hljs-string">'init'</span>, {
+   FieldSuggestions : {
+     omniboxSuggestionOptions : {
+       onSelect : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">valueSelected, populateOmniBoxEventArgs</span>)</span>{
+         <span class="hljs-comment">// Do something special when a value is selected.</span>
+         <span class="hljs-comment">// You receive the selected value as the first argument, and the Omnibox object as the second parameter.</span>
+       }
+     }
+   }
+})
+</code></pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.queryoverride" class="tsd-anchor"></a>
 					<h3>query<wbr>Override</h3>
 					<div class="tsd-signature tsd-kind-icon">query<wbr>Override<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L40">src/ui/FieldSuggestions/FieldSuggestions.ts
-							:40</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L41">src/ui/FieldSuggestions/FieldSuggestions.ts
+							:41</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -333,8 +376,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L105">src/ui/FieldSuggestions/FieldSuggestions.ts
-									:105</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L139">src/ui/FieldSuggestions/FieldSuggestions.ts
+									:139</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -633,8 +676,8 @@
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L58">src/ui/FieldSuggestions/FieldSuggestions.ts
-									:58</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldSuggestions/FieldSuggestions.ts#L92">src/ui/FieldSuggestions/FieldSuggestions.ts
+									:92</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

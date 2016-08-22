@@ -70,16 +70,30 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>This component is a bar allowing users to select a search interface.<br/>
-							The component attaches itself to an div element and is in charge of adding an advanced expression to the query and thus, modify the outgoing query in order to refine the results in relation to the selected tab.<br/>
-							It also allows to hide and show different parts of the UI. In order to do so, each component of the UI can specify whether or not it wishes to be included or excluded from a specific tab.<br/>
-						Eg : <br/></p>
-						<ul>
-							<li>&lt;div data-tab=&quot;foobar&quot;&gt; -&gt; Include this element only in the tab with the id &#39;foobar&#39;.<br/></li>
-							<li>&lt;div data-tab-not=&quot;foobar&quot;&gt; -&gt; DO NOT include this element in the tab id &#39;foobar&#39;.<br/></li>
-							<li>&lt;div data-tab=&quot;foobar,somethingelse&quot;&gt; -&gt; Include this element only in the tab with the id &#39;foobar&#39; or &#39;somethingelse&#39;.</li>
-						</ul>
+						<p>This component is a bar allowing users to select a search interface.</p>
 					</div>
+					<p>The component attaches itself to an div element and is in charge of adding an advanced expression to the query and thus, modify the outgoing query in order to refine the results in relation to the selected tab.</p>
+					<p>It also allows to hide and show different parts of the UI. In order to do so, each component of the UI can specify whether or not it wishes to be included or excluded from a specific tab.</p>
+					<h1 id="including-and-excluding-other-html-components">Including and excluding other HTML components</h1>
+					<p>You can hide/show specific HTML components, based on the currently selected search tab by adding the following attributes:</p>
+					<ul>
+						<li><p><code>&lt;div data-tab=&quot;foobar&quot;&gt;</code> -&gt; Include this element only in the tab with the id &#39;foobar&#39;.</p>
+						</li>
+						<li><p><code>&lt;div data-tab-not=&quot;foobar&quot;&gt;</code> -&gt; DO NOT include this element in the tab id &#39;foobar&#39;.</p>
+						</li>
+						<li><p><code>&lt;div data-tab=&quot;foobar,somethingelse&quot;&gt;</code> -&gt; Include this element only in the tab with the id &#39;foobar&#39; or &#39;somethingelse&#39;.</p>
+						</li>
+					</ul>
+					<h1 id="setting-a-new-endpoint-for-a-tab">Setting a new endpoint for a tab</h1>
+					<p>A tab can use a custom endpoint when performing a query. First, you need to make sure that the endpoint exists in the array of Coveo.SearchEndpoint.endpoints.</p>
+					<pre><code>Coveo.SearchEndpoint.endpoints[<span class="hljs-string">"specialEndpoint"</span>] = <span class="hljs-keyword">new</span> Coveo.SearchEndpoint({
+    restUri : <span class="hljs-string">'https://somewhere.com/rest/search'</span>
+})
+
+[...]
+
+&lt;div <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">'CoveoTab'</span> data-endpoint=<span class="hljs-string">'specialEndpoint'</span>&gt;<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+</code></pre>
 				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -147,8 +161,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L54">src/ui/Tab/Tab.ts
-							:54</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L76">src/ui/Tab/Tab.ts
+							:76</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -165,8 +179,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L82">src/ui/Tab/Tab.ts
-							:82</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L104">src/ui/Tab/Tab.ts
+							:104</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -184,8 +198,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L87">src/ui/Tab/Tab.ts
-							:87</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L109">src/ui/Tab/Tab.ts
+							:109</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -202,8 +216,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L70">src/ui/Tab/Tab.ts
-							:70</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L92">src/ui/Tab/Tab.ts
+							:92</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -220,8 +234,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L65">src/ui/Tab/Tab.ts
-							:65</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L87">src/ui/Tab/Tab.ts
+							:87</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -239,8 +253,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L59">src/ui/Tab/Tab.ts
-							:59</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L81">src/ui/Tab/Tab.ts
+							:81</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -257,8 +271,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L49">src/ui/Tab/Tab.ts
-							:49</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L71">src/ui/Tab/Tab.ts
+							:71</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -275,8 +289,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L99">src/ui/Tab/Tab.ts
-							:99</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L121">src/ui/Tab/Tab.ts
+							:121</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -295,8 +309,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L92">src/ui/Tab/Tab.ts
-							:92</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L114">src/ui/Tab/Tab.ts
+							:114</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -313,8 +327,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L76">src/ui/Tab/Tab.ts
-							:76</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L98">src/ui/Tab/Tab.ts
+							:98</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -443,8 +457,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L142">src/ui/Tab/Tab.ts
-									:142</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L164">src/ui/Tab/Tab.ts
+									:164</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -476,8 +490,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L126">src/ui/Tab/Tab.ts
-									:126</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L148">src/ui/Tab/Tab.ts
+									:148</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -768,8 +782,8 @@
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L102">src/ui/Tab/Tab.ts
-									:102</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L124">src/ui/Tab/Tab.ts
+									:124</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

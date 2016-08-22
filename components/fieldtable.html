@@ -74,6 +74,16 @@
 							can be optionally expanded and minimized.<br/>
 						Automatically, it will take care of not displaying empty field values.</p>
 					</div>
+					<h1 id="examples">Examples</h1>
+					<pre><code><span class="hljs-comment">// This is the FieldTable component itself, which holds a list of table row.</span>
+<span class="hljs-comment">// Each row is a FieldValue component</span>
+&lt;table <span class="hljs-class"><span class="hljs-keyword">class</span>='<span class="hljs-title">CoveoFieldTable</span>'&gt;</span>
+   <span class="hljs-comment">// Items</span>
+   &lt;tr <span class="hljs-keyword">data</span>-field=<span class="hljs-string">'@sysdate'</span> <span class="hljs-keyword">data</span>-caption=<span class="hljs-string">'Date'</span> <span class="hljs-keyword">data</span>-helper=<span class="hljs-string">'dateTime'</span> /&gt;
+   &lt;tr <span class="hljs-keyword">data</span>-field=<span class="hljs-string">'@sysauthor'</span> <span class="hljs-keyword">data</span>-caption=<span class="hljs-string">'Author'</span> /&gt;
+   &lt;tr <span class="hljs-keyword">data</span>-field=<span class="hljs-string">'@clickuri'</span> <span class="hljs-keyword">data</span>-html-value=<span class="hljs-string">'true'</span> <span class="hljs-keyword">data</span>-caption=<span class="hljs-string">'URL'</span> <span class="hljs-keyword">data</span>-helper=<span class="hljs-string">'anchor'</span> <span class="hljs-keyword">data</span>-helper-options=<span class="hljs-string">'{text: \"&lt;%= raw.syssource %&gt;\" , target:\"_blank\"}'</span>&gt;
+&lt;/table&gt;
+</code></pre>
 				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -136,8 +146,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L34">src/ui/FieldTable/FieldTable.ts
-							:34</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L47">src/ui/FieldTable/FieldTable.ts
+							:47</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -154,8 +164,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L39">src/ui/FieldTable/FieldTable.ts
-							:39</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L52">src/ui/FieldTable/FieldTable.ts
+							:52</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -172,8 +182,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L48">src/ui/FieldTable/FieldTable.ts
-							:48</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L61">src/ui/FieldTable/FieldTable.ts
+							:61</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -189,8 +199,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L44">src/ui/FieldTable/FieldTable.ts
-							:44</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L57">src/ui/FieldTable/FieldTable.ts
+							:57</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -293,8 +303,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L104">src/ui/FieldTable/FieldTable.ts
-									:104</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L117">src/ui/FieldTable/FieldTable.ts
+									:117</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -351,8 +361,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L118">src/ui/FieldTable/FieldTable.ts
-									:118</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L131">src/ui/FieldTable/FieldTable.ts
+									:131</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -384,8 +394,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L93">src/ui/FieldTable/FieldTable.ts
-									:93</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L106">src/ui/FieldTable/FieldTable.ts
+									:106</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -684,8 +694,8 @@
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L57">src/ui/FieldTable/FieldTable.ts
-									:57</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L70">src/ui/FieldTable/FieldTable.ts
+									:70</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
