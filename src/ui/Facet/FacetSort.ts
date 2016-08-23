@@ -110,33 +110,4 @@ export class FacetSort {
       }
     }
   }
-
-  public reorderValues(facetValues: FacetValue[]): FacetValue[] {
-    if (this.activeSort.name == 'custom' && this.facet.options.customSort != undefined) {
-      return this.reorderValuesWithCustomOrder(facetValues);
-    } else {
-      return facetValues;
-    }
-  }
-
-  private reorderValuesWithCustomOrder(facetValues: FacetValue[]) {
-    var notFoundIndex = facetValues.length;
-    var customSortsLowercase = _.map(this.facet.options.customSort, (customSort) => customSort.toLowerCase());
-    var valueIndexPair = _.map(facetValues, (facetValue) => {
-      var index = _.reduce(customSortsLowercase, (memo, customSort, i) => {
-        if (memo != -1) {
-          return memo;
-        }
-        if (StringUtils.equalsCaseInsensitive(<string>customSort, facetValue.value) || (facetValue.lookupValue != null && StringUtils.equalsCaseInsensitive(<string>customSort, facetValue.lookupValue))) {
-          return i;
-        }
-        return -1;
-      }, -1);
-      index = index == -1 ? ++notFoundIndex : index;
-      return { facetValue: facetValue, index: index };
-    });
-    var sorted = _.sortBy(valueIndexPair, 'index');
-    sorted = this.customSortDirection == 'ascending' ? sorted : sorted.reverse();
-    return _.pluck(sorted, 'facetValue');
-  }
 }

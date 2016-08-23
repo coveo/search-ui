@@ -7,12 +7,14 @@ import {ValueElement} from './ValueElement';
 import {FacetValue} from './FacetValues';
 import {Utils} from '../../utils/Utils';
 import {FacetUtils} from './FacetUtils';
+import {FacetValuesOrder} from './FacetValuesOrder';
 
 export class FacetValuesList {
   // Dictionary of values. The key is always in lowercase.
   private valueList: { [value: string]: FacetValueElement } = {};
 
   public valueContainer: HTMLElement;
+  private currentlyDisplayed: ValueElement[] = [];
 
   constructor(public facet: Facet, public facetValueElementKlass: IFacetValueElementKlass) {
   }
@@ -21,6 +23,10 @@ export class FacetValuesList {
     this.valueContainer = document.createElement('ul');
     $$(this.valueContainer).addClass('coveo-facet-values');
     return this.valueContainer;
+  }
+
+  public getAllCurrentlyDisplayed(): ValueElement[] {
+    return this.currentlyDisplayed;
   }
 
   public getAll(): ValueElement[] {
@@ -105,6 +111,7 @@ export class FacetValuesList {
 
   public rebuild(numberOfValues: number): void {
     $$(this.valueContainer).empty();
+    this.currentlyDisplayed = [];
     var allValues = this.getValuesToBuildWith();
     var toCompare = numberOfValues;
     _.each(allValues, (facetValue: FacetValue, index?: number, list?) => {
@@ -116,6 +123,7 @@ export class FacetValuesList {
         this.valueList[facetValue.value.toLowerCase()] = valueElement;
         var valueListElement = valueElement.build().renderer.listElement;
         this.valueContainer.appendChild(valueListElement);
+        this.currentlyDisplayed.push(valueElement);
       }
     });
     FacetUtils.addNoStateCssClassToFacetValues(this.facet, this.valueContainer);
@@ -123,7 +131,11 @@ export class FacetValuesList {
   }
 
   protected getValuesToBuildWith() {
-    return this.facet.facetSort.reorderValues(this.facet.values.getAll());
+    if (this.facet.facetSort) {
+      return new FacetValuesOrder(this.facet, this.facet.facetSort).reorderValues(this.facet.values.getAll());
+    } else {
+      return this.facet.values.getAll();
+    }
   }
 
   private facetValueShouldBeRemoved(facetValue: FacetValue): boolean {

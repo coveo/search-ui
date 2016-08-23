@@ -150,6 +150,7 @@
     "src/ui/Facet/FacetSearchValuesList.ts",
     "src/ui/Facet/FacetSettings.ts",
     "src/ui/Facet/FacetSort.ts",
+    "src/ui/Facet/FacetValuesOrder.ts",
     "src/ui/Facet/FacetUtils.ts",
     "src/ui/Facet/FacetValueElement.ts",
     "src/ui/Facet/FacetValues.ts",
