@@ -36,7 +36,7 @@ export class FacetValuesOrder {
         return -1;
       }, -1);
       index = index == -1 ? ++notFoundIndex : index;
-      return {facetValue: facetValue, index: index};
+      return { facetValue: facetValue, index: index };
     });
     var sorted = _.sortBy(valueIndexPair, 'index');
     sorted = this.facetSort.customSortDirection == 'ascending' ? sorted : sorted.reverse();
