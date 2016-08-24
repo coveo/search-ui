@@ -23,6 +23,7 @@ import {IFacetSearchValuesListKlass} from './FacetSearchValuesList';
 import {FacetValueElement} from './FacetValueElement';
 import {ModalBox} from '../../ExternalModulesShim';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
+import {FacetValuesOrder} from './FacetValuesOrder';
 
 /**
  * Used by the {@link Facet} component to render and handle the facet search part of each facet.
@@ -372,7 +373,7 @@ export class FacetSearch {
 
   private processNewFacetSearchResults(fieldValues: IIndexFieldValue[], facetSearchParameters: FacetSearchParameters) {
     Assert.exists(fieldValues);
-
+    fieldValues = new FacetValuesOrder(this.facet, this.facet.facetSort).reorderValues(fieldValues);
     if (fieldValues.length > 0) {
       $$(this.search).removeClass('coveo-facet-search-no-results');
       this.facet.fadeInactiveValuesInMainList(this.facet.options.facetSearchDelay);

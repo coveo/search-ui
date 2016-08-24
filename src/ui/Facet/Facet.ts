@@ -50,6 +50,8 @@ import {Initialization} from '../Base/Initialization';
 import {BreadcrumbEvents, IClearBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
 import {ResponsiveFacets} from '../ResponsiveComponents/ResponsiveFacets';
 import {IStringMap} from '../../rest/GenericParam';
+import {FacetValuesOrder} from './FacetValuesOrder';
+import {ValueElement} from './ValueElement';
 
 export interface IFacetOptions {
   title?: string;
@@ -650,7 +652,10 @@ export class Facet extends Component {
    */
   public getDisplayedFacetValues(): FacetValue[] {
     this.ensureDom();
-    return this.facetValuesList.getAllFacetValue();
+    let displayed = this.facetValuesList.getAllCurrentlyDisplayed();
+    return _.map(displayed, (value: ValueElement) => {
+      return value.facetValue;
+    });
   }
 
   /**
@@ -786,7 +791,6 @@ export class Facet extends Component {
     if (this.options.preservePosition) {
       this.pinnedViewportPosition = this.element.getBoundingClientRect().top;
     }
-
   }
 
   /**
@@ -1518,7 +1522,7 @@ export class Facet extends Component {
     // Thus, we must find the last selected value after a reorder and use that value as the number of value.
     if (this.options.customSort != null && this.facetSort != null && this.options.customSort.length > 0) {
       let lastSelectedValueIndex = -1;
-      this.facetSort.reorderValues(this.values.getAll()).forEach((facetValue, index) => {
+      new FacetValuesOrder(this, this.facetSort).reorderValues(this.values.getAll()).forEach((facetValue, index) => {
         if (facetValue.selected) {
           lastSelectedValueIndex = index;
         }
