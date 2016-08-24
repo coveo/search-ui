@@ -19,13 +19,13 @@ export function FacetValuesOrderTest() {
       mockFacetSort.activeSort = <IFacetSortDescription>{};
 
       test = new FacetValuesOrder(mockFacet, mockFacetSort);
-    })
+    });
 
     afterEach(() => {
       test = null;
       mockFacet = null;
       mockFacetSort = null;
-    })
+    });
 
     it('should allow to sort facet values correctly with custom sort', () => {
 
@@ -43,17 +43,17 @@ export function FacetValuesOrderTest() {
       expect(reordered[0]).toEqual(jasmine.objectContaining({ value: 'b' }));
       expect(reordered[1]).toEqual(jasmine.objectContaining({ value: 'a' }));
       expect(reordered[2]).toEqual(jasmine.objectContaining({ value: 'c' }));
-    })
+    });
 
     it('should allow to sort facet values correctly with alpha sort and a value caption', () => {
       mockFacetSort.activeSort.name = 'alphaascending';
       mockFacet.options.valueCaption = {
         'a': 'z',
         'c': 'w'
-      }
+      };
       mockFacet.getValueCaption = (facetValue: any) => {
         return mockFacet.options.valueCaption[facetValue.value] || facetValue.value;
-      }
+      };
 
       let reordered = test.reorderValues([FacetValue.create('a'), FacetValue.create('b'), FacetValue.create('c')]);
       expect(reordered[0]).toEqual(jasmine.objectContaining({ value: 'b' }));
@@ -65,6 +65,6 @@ export function FacetValuesOrderTest() {
       expect(reordered[0]).toEqual(jasmine.objectContaining({ value: 'a' }));
       expect(reordered[1]).toEqual(jasmine.objectContaining({ value: 'c' }));
       expect(reordered[2]).toEqual(jasmine.objectContaining({ value: 'b' }));
-    })
-  })
+    });
+  });
 }

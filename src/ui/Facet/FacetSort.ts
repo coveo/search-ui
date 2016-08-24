@@ -4,8 +4,6 @@ import {Facet} from './Facet';
 import {l} from '../../strings/Strings';
 import {FacetSettings} from './FacetSettings';
 import {Utils} from '../../utils/Utils';
-import {FacetValue} from './FacetValues';
-import {StringUtils} from '../../utils/StringUtils';
 
 declare const Coveo;
 

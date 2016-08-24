@@ -654,7 +654,7 @@ export class Facet extends Component {
     this.ensureDom();
     let displayed = this.facetValuesList.getAllCurrentlyDisplayed();
     return _.map(displayed, (value: ValueElement) => {
-      return value.facetValue
+      return value.facetValue;
     });
   }
 
