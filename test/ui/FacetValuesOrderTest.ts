@@ -1,4 +1,4 @@
-import {FacetValuesOrder} from "../../src/ui/Facet/FacetValuesOrder";
+import {FacetValuesOrder} from '../../src/ui/Facet/FacetValuesOrder';
 import {Facet} from '../../src/ui/Facet/Facet';
 import {FacetSort} from '../../src/ui/Facet/FacetSort';
 import * as Mock from '../MockEnvironment';
@@ -10,6 +10,12 @@ export function FacetValuesOrderTest() {
     let test: FacetValuesOrder;
     let mockFacet: Facet;
     let mockFacetSort: FacetSort;
+
+    let expectEqualOrder = (ordered: FacetValue[], expecteds: string[]) => {
+      _.each(expecteds, (expected, i) => {
+        expect(ordered[i]).toEqual(jasmine.objectContaining({ value: expected }));
+      });
+    };
 
     beforeEach(() => {
       mockFacet = Mock.mock<Facet>(Facet);
@@ -34,15 +40,12 @@ export function FacetValuesOrderTest() {
 
       mockFacet.options.customSort = ['c', 'a', 'b'];
       let reordered = test.reorderValues([FacetValue.create('a'), FacetValue.create('b'), FacetValue.create('c')]);
-      expect(reordered[0]).toEqual(jasmine.objectContaining({ value: 'c' }));
-      expect(reordered[1]).toEqual(jasmine.objectContaining({ value: 'a' }));
-      expect(reordered[2]).toEqual(jasmine.objectContaining({ value: 'b' }));
+      expectEqualOrder(reordered, ['c', 'a', 'b']);
 
       mockFacetSort.customSortDirection = 'descending';
       reordered = test.reorderValues([FacetValue.create('a'), FacetValue.create('b'), FacetValue.create('c')]);
-      expect(reordered[0]).toEqual(jasmine.objectContaining({ value: 'b' }));
-      expect(reordered[1]).toEqual(jasmine.objectContaining({ value: 'a' }));
-      expect(reordered[2]).toEqual(jasmine.objectContaining({ value: 'c' }));
+      expectEqualOrder(reordered, ['b', 'a', 'c']);
+
     });
 
     it('should allow to sort facet values correctly with alpha sort and a value caption', () => {
@@ -56,15 +59,11 @@ export function FacetValuesOrderTest() {
       };
 
       let reordered = test.reorderValues([FacetValue.create('a'), FacetValue.create('b'), FacetValue.create('c')]);
-      expect(reordered[0]).toEqual(jasmine.objectContaining({ value: 'b' }));
-      expect(reordered[1]).toEqual(jasmine.objectContaining({ value: 'c' }));
-      expect(reordered[2]).toEqual(jasmine.objectContaining({ value: 'a' }));
+      expectEqualOrder(reordered, ['b', 'c', 'a']);
 
       mockFacetSort.activeSort.name = 'alphadescending';
       reordered = test.reorderValues([FacetValue.create('a'), FacetValue.create('b'), FacetValue.create('c')]);
-      expect(reordered[0]).toEqual(jasmine.objectContaining({ value: 'a' }));
-      expect(reordered[1]).toEqual(jasmine.objectContaining({ value: 'c' }));
-      expect(reordered[2]).toEqual(jasmine.objectContaining({ value: 'b' }));
+      expectEqualOrder(reordered, ['a', 'c', 'b']);
     });
   });
 }

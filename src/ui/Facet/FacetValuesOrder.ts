@@ -23,22 +23,19 @@ export class FacetValuesOrder {
   }
 
   private reorderValuesWithCustomOrder(facetValues: FacetValue[]) {
-    var notFoundIndex = facetValues.length;
-    var customSortsLowercase = _.map(this.facet.options.customSort, (customSort) => customSort.toLowerCase());
-    var valueIndexPair = _.map(facetValues, (facetValue) => {
-      var index = _.reduce(customSortsLowercase, (memo, customSort, i) => {
-        if (memo != -1) {
-          return memo;
-        }
-        if (StringUtils.equalsCaseInsensitive(<string>customSort, facetValue.value) || (facetValue.lookupValue != null && StringUtils.equalsCaseInsensitive(<string>customSort, facetValue.lookupValue))) {
-          return i;
-        }
-        return -1;
-      }, -1);
-      index = index == -1 ? ++notFoundIndex : index;
+    let customSortsLowercase = _.map(this.facet.options.customSort, (customSort) => customSort.toLowerCase());
+    let valueIndexPair = _.map(facetValues, (facetValue, i) => {
+      // Get the index of the current value in the custom sort array.
+      // If it's not found, put it's index to it's original value + the length of customSort so that's always after the specified custom sort order.
+      let index = _.findIndex(customSortsLowercase, (customSort) => {
+        return StringUtils.equalsCaseInsensitive(<string>customSort, facetValue.value) || (facetValue.lookupValue != null && StringUtils.equalsCaseInsensitive(<string>customSort, facetValue.lookupValue));
+      });
+      if (index == -1) {
+        index = i + customSortsLowercase.length;
+      }
       return { facetValue: facetValue, index: index };
     });
-    var sorted = _.sortBy(valueIndexPair, 'index');
+    let sorted = _.sortBy(valueIndexPair, 'index');
     sorted = this.facetSort.customSortDirection == 'ascending' ? sorted : sorted.reverse();
     return _.pluck(sorted, 'facetValue');
   }
@@ -46,7 +43,7 @@ export class FacetValuesOrder {
   private reorderValuesWithCustomCaption(facetValues: FacetValue[]) {
     let sorted = _.sortBy(facetValues, (facetValue: FacetValue) => {
       return this.facet.getValueCaption(facetValue).toLowerCase();
-    })
+    });
     if (this.facetSort.activeSort.name.indexOf('descending') != -1) {
       sorted = sorted.reverse();
     }
