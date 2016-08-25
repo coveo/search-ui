@@ -32,16 +32,16 @@ export class FieldSuggestions extends Component {
   static options: IFieldSuggestionsOptions = {
     /**
      * Specifies the field from which suggestions are provided.<br/>
-     * This is a required option
+     * This is a required option.
      */
     field: ComponentOptions.buildFieldOption({ required: true }),
     /**
-     * Specifies a query override (any query expression) which should be applied when retrieving suggestions
+     * Specifies a query override (any query expression) which should be applied when retrieving suggestions.
      */
     queryOverride: ComponentOptions.buildStringOption({ defaultValue: '' }),
     /**
      * Specifies the position at which the suggestions should render when there are multiple suggestions providers. (eg : {@link Facet} or {@link AnalyticsSuggestions}).<br/>
-     * The default value is `51`
+     * The default value is 51.
      */
     omniboxZIndex: ComponentOptions.buildNumberOption({ defaultValue: 51, min: 0 }),
     /**
@@ -50,7 +50,7 @@ export class FieldSuggestions extends Component {
     headerTitle: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('SuggestedResults') }),
     /**
      * Specifies the number of suggestions that should be rendered in the omnibox.<br/>
-     * Default value is `5`
+     * Default value is 5.
      */
     numberOfSuggestions: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1 }),
     /**
@@ -69,7 +69,7 @@ export class FieldSuggestions extends Component {
      *    }
      * })
      *
-     * // OR using the jquery extension
+     * // OR using the jQuery extension
      *
      * $('#mySearch').coveo('init', {
      *    FieldSuggestions : {
@@ -92,7 +92,7 @@ export class FieldSuggestions extends Component {
   private currentlyDisplayedSuggestions: { [suggestion: string]: { element: HTMLElement, pos: number } };
 
   /**
-   * Create a new FieldSuggestions component
+   * Create a new `FieldSuggestions` component
    * @param element
    * @param options
    * @param bindings
@@ -133,7 +133,7 @@ export class FieldSuggestions extends Component {
 
   /**
    * Select a currently displayed suggestion. This means that at least one suggestion must have been returned at least once.
-   * The suggestion parameter can either be a number (0 based index of the suggestion to select) or a string that match the suggestion
+   * The suggestion parameter can either be a number (0 based index of the suggestion to select) or a string that match the suggestion.
    * @param suggestion
    */
   public selectSuggestion(suggestion: number);
