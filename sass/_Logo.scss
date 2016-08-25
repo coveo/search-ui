@@ -20,6 +20,14 @@
   }
 }
 
+.coveo-waiting-for-first-query {
+  .CoveoLogo {
+    @media (max-width: 970px) {
+      display: none;
+    }
+  }
+}
+
 .coveo-facet-column {
   .coveo-logo {
     @include align('horizontal');
