@@ -1,20 +1,20 @@
-import {Component} from '../Base/Component'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {ComponentOptionsModel} from '../../models/ComponentOptionsModel'
-import {IResultsComponentBindings} from '../Base/ResultsComponentBindings'
-import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
-import {IResultLinkOptions} from './ResultLinkOptions'
-import {ResultListEvents} from '../../events/ResultListEvents'
-import {HighlightUtils} from '../../utils/HighlightUtils'
-import {IQueryResult} from '../../rest/QueryResult'
-import {DeviceUtils} from '../../utils/DeviceUtils'
-import {OS_NAME, OSUtils} from '../../utils/OSUtils'
-import {Initialization} from '../Base/Initialization'
-import {QueryUtils} from '../../utils/QueryUtils'
-import {Assert} from '../../misc/Assert'
-import {Utils} from '../../utils/Utils'
-import {Defer} from '../../misc/Defer'
-import {$$} from '../../utils/Dom'
+import {Component} from '../Base/Component';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
+import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
+import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
+import {IResultLinkOptions} from './ResultLinkOptions';
+import {ResultListEvents} from '../../events/ResultListEvents';
+import {HighlightUtils} from '../../utils/HighlightUtils';
+import {IQueryResult} from '../../rest/QueryResult';
+import {DeviceUtils} from '../../utils/DeviceUtils';
+import {OS_NAME, OSUtils} from '../../utils/OSUtils';
+import {Initialization} from '../Base/Initialization';
+import {QueryUtils} from '../../utils/QueryUtils';
+import {Assert} from '../../misc/Assert';
+import {Utils} from '../../utils/Utils';
+import {Defer} from '../../misc/Defer';
+import {$$} from '../../utils/Dom';
 
 /**
  * This component is intended to be placed inside a result template, which itself is used inside a {@link ResultList} component.
@@ -27,14 +27,26 @@ export class ResultLink extends Component {
    * The options for the ResultLink
    * @componentOptions
    */
-  static options = <IResultLinkOptions>{
+  static options: IResultLinkOptions = {
 
     /**
      * Specifies the field that the result link uses to output its href. 
      * By default, the clickUri available on the document is used, but you can override this with this option.
      * Tip:
-     * When you do not include a field option, in your result template, you can include an href attribute on the <a class='CoveoResultLink'> element. When present, the href attribute value overrides the clickUri that is otherwise taken by default.
+     * When you do not include a field option, in your result template, you can include an href attribute on the ResultLink element.
+     *
+     * When present, the href attribute value overrides the clickUri that is otherwise taken by default.
+     *
      * Specifying an href attribute is useful when you want to build the result link using a custom script or by concatenating the content of two or more variables.
+     *
+     * ```html
+     * <!-- In the following result template the link is provided by the custom getMyKBUri() function. -->
+     * <script id="KnowledgeArticle" type="text/underscore">
+     *    <div class='CoveoIcon>'></div>
+     *    <a class="CoveoResultLink" href="<%=getMyKBUri(raw)%>"></a>
+     *    <div class="CoveoExcerpt"></div>
+     * </script>
+     * ```
      */
     field: ComponentOptions.buildFieldOption(),
 
@@ -58,14 +70,54 @@ export class ResultLink extends Component {
 
     /**
      * Specifies a template string to use to generate the href.
+     *
      * It is possible to reference fields from the associated result:
-     * Ex: '${clickUri}?id=${title}' will generate something like 'http://uri.com?id=documentTitle'
+     *
+     * Ex: `${clickUri}?id=${title}` will generate something like `http://uri.com?id=documentTitle`
+     *
      * Or from the global scope:
-     * Ex: '${window.location.hostname}/{Foo.Bar} will generate something like 'localhost/fooBar'
+     *
+     * Ex: `${window.location.hostname}/{Foo.Bar}` will generate something like `localhost/fooBar`
+     *
      * This option will override the field option.
-     * Default is undefined
+     *
+     * Default is `undefined`
      */
-    hrefTemplate: ComponentOptions.buildStringOption()
+    hrefTemplate: ComponentOptions.buildStringOption(),
+    /**
+     * Binds an event handler function that is executed when the component link is clicked. The handler function takes an EventObject and a {@link IQueryResult} as its parameters.
+     *
+     * Overriding the default behavior of the onClick event allows to execute specific code instead.
+     *
+     * ```javascript
+     * // Example: using a ResultLink to open the original document in a special way instead of the normal browser behavior
+     *
+     * Coveo.init(document.querySelector('#search'), {
+     *   ResultLink : {
+     *        onClick : function(e, result){
+     *          e.preventDefault();
+     *          // Custom code to execute with the URI and title of the document
+     *          openUriInASpecialTab(result.clickUri, result.title)
+     *        }
+     *    }
+     * })
+     *
+     * // OR using the jquery extension
+     *
+     * $("#search").coveo('init' , {
+     *    ResultLink : {
+     *        onClick : function(e, result){
+     *          e.preventDefault();
+     *          // Custom code to execute with the URI and title of the document
+     *          openUriInASpecialTab(result.clickUri, result.title)
+     *        }
+     *    }
+     * });
+     * ```
+     */
+    onClick: ComponentOptions.buildCustomOption<(e: Event, result: IQueryResult) => any>(() => {
+      return null;
+    })
   };
 
   static fields = [
@@ -76,12 +128,12 @@ export class ResultLink extends Component {
     'collection', // analytics
     'source', // analytics
     'author' // analytics
-  ]
+  ];
 
   constructor(public element: HTMLElement, public options?: IResultLinkOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult, public os?: OS_NAME) {
     super(element, ResultLink.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultLink, options);
-    this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.resultLink))
+    this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.resultLink));
     this.result = result || this.resolveResult();
 
     if (this.options.openQuickview == null) {
@@ -97,7 +149,7 @@ export class ResultLink extends Component {
       // This is not 100% accurate, but we estimate it to be the lesser of 2 evils (not logging anything)
       $$(element).on('contextmenu', () => {
         this.logOpenDocument();
-      })
+      });
       $$(element).on('click', () => {
         this.logOpenDocument();
       });
@@ -115,7 +167,7 @@ export class ResultLink extends Component {
   private bindOnClickIfNotUndefined() {
     if (this.options.onClick != undefined) {
       $$(this.element).on('click', (e: Event) => {
-        this.options.onClick.call(this, e, this.result)
+        this.options.onClick.call(this, e, this.result);
       });
       return true;
     } else {
@@ -127,7 +179,7 @@ export class ResultLink extends Component {
     if (this.quickviewShouldBeOpened()) {
       $$(this.element).on('click', (e: Event) => {
         e.preventDefault();
-        $$(this.bindings.resultElement).trigger(ResultListEvents.openQuickview)
+        $$(this.bindings.resultElement).trigger(ResultListEvents.openQuickview);
       });
       return true;
     } else {
@@ -220,13 +272,13 @@ export class ResultLink extends Component {
   }
 
   private elementIsAnAnchor() {
-    return this.element.tagName == 'A'
+    return this.element.tagName == 'A';
   }
 
   private setField() {
     let os = Utils.exists(this.os) ? this.os : OSUtils.get();
     if (os == OS_NAME.MACOSX && this.hasOutlookField()) {
-      this.options.field = '@outlookformacuri'
+      this.options.field = '@outlookformacuri';
     } else if (os == OS_NAME.WINDOWS && this.hasOutlookField()) {
       this.options.field = '@outlookuri';
     }

@@ -148,7 +148,7 @@ export class DateUtils {
 
   static isValid(date: any) {
     if (date instanceof Date) {
-      return !isNaN(date.getTime())
+      return !isNaN(date.getTime());
     }
     return false;
   }

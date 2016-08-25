@@ -1,0 +1,12 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/iamssen/typings-d3/67a5c6d774ffb6993b515008c296e7bdc3c8b2cb/d3-scale/typings.json",
+    "raw": "registry:npm/d3-scale#1.0.0+20160707082208",
+    "main": "./index.d.ts",
+    "version": "1.0.0",
+    "global": false,
+    "name": "d3-scale",
+    "type": "typings"
+  }
+}

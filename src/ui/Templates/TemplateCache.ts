@@ -100,7 +100,7 @@ export class TemplateCache {
       _.each(arr, (elem: HTMLElement) => {
         let template = new UnderscoreTemplate(elem);
         TemplateCache.registerTemplate(elem.getAttribute('id'), template);
-      })
+      });
     });
   }
 
@@ -116,11 +116,11 @@ export class TemplateCache {
       _.each(arr, (elem: HTMLElement) => {
         let template = new HtmlTemplate(elem);
         TemplateCache.registerTemplate(elem.getAttribute('id'), template);
-      })
+      });
     });
   }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   TemplateCache.scanAndRegisterTemplates();
-})
+});

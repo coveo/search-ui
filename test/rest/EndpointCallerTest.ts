@@ -9,11 +9,11 @@ export function EndpointCallerTest() {
 
       beforeEach(function () {
         jasmine.Ajax.install();
-      })
+      });
 
       afterEach(function () {
         jasmine.Ajax.uninstall();
-      })
+      });
 
       it('should use XMLHTTPRequest by default', function () {
         var endpointCaller = new EndpointCaller();
@@ -24,9 +24,9 @@ export function EndpointCallerTest() {
           queryString: [],
           responseType: 'text',
           errorsAsSuccess: false
-        })
+        });
         expect(jasmine.Ajax.requests.mostRecent().url).toBe('this is an XMLHTTPRequest');
-      })
+      });
 
       it('should set the auth if provided', function () {
         var endpointCaller = new EndpointCaller({
@@ -39,7 +39,7 @@ export function EndpointCallerTest() {
           queryString: [],
           responseType: 'text',
           errorsAsSuccess: false
-        })
+        });
         expect(jasmine.Ajax.requests.mostRecent().requestHeaders['Authorization']).toBe('Bearer myToken');
 
         endpointCaller = new EndpointCaller({
@@ -53,19 +53,19 @@ export function EndpointCallerTest() {
           queryString: [],
           responseType: 'text',
           errorsAsSuccess: false
-        })
+        });
         expect(jasmine.Ajax.requests.mostRecent().requestHeaders['Authorization']).toBe('Basic ' + btoa('john@doe.com:hunter123'));
-      })
-    })
+      });
+    });
 
     describe('using XMLHTTPRequest', function () {
       beforeEach(function () {
         jasmine.Ajax.install();
-      })
+      });
 
       afterEach(function () {
         jasmine.Ajax.uninstall();
-      })
+      });
 
       it('should set the correct requested params on the XMLHTTPRequest', function () {
         var endpointCaller = new EndpointCaller();
@@ -80,7 +80,7 @@ export function EndpointCallerTest() {
           queryString: [],
           responseType: 'text',
           errorsAsSuccess: false
-        })
+        });
         var fakeRequest = jasmine.Ajax.requests.mostRecent();
         expect(fakeRequest.method).toBe('POST');
         expect(fakeRequest.params).toBe('foo=bar&bar=foo&bahh=bohh');
@@ -94,7 +94,7 @@ export function EndpointCallerTest() {
           queryString: ['a=b', 'c=d'],
           responseType: 'arraybuffer',
           errorsAsSuccess: false
-        })
+        });
         fakeRequest = jasmine.Ajax.requests.mostRecent();
         expect(fakeRequest.method).toBe('GET');
         expect(fakeRequest.params).toBeUndefined();
@@ -111,14 +111,13 @@ export function EndpointCallerTest() {
           queryString: ['a=b', 'c=d'],
           responseType: 'json',
           errorsAsSuccess: false
-        })
+        });
         fakeRequest = jasmine.Ajax.requests.mostRecent();
         expect(fakeRequest.method).toBe('GET');
         expect(fakeRequest.params).toBeUndefined();
         expect(fakeRequest.url).toBe('foo.bar.com?a=b&c=d&e=f&g=h');
         expect(Object.keys(fakeRequest.requestHeaders).length).toBe(0);
-
-      })
+      });
 
       describe('using response type text', function () {
         beforeEach(function () {
@@ -134,12 +133,13 @@ export function EndpointCallerTest() {
             queryString: [],
             responseType: 'text',
             errorsAsSuccess: false
-          })
-        })
+          });
+        });
+
         afterEach(function () {
           this.endpointCaller = undefined;
           this.promise = undefined;
-        })
+        });
 
         it('should work if responseContentType is text', function (done) {
           this.promise.then((response: ISuccessResponse<IQueryResults>) => {
@@ -147,14 +147,14 @@ export function EndpointCallerTest() {
             expect(response.duration).toBeDefined();
           }).finally(() => {
             done();
-          })
+          });
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             contentType: 'text',
             responseText: FakeResults.createFakeResults()
           });
-        })
+        });
 
         it('should work if responseContentType is application/json', function (done) {
           this.promise.then((response: ISuccessResponse<IQueryResults>) => {
@@ -162,45 +162,45 @@ export function EndpointCallerTest() {
             expect(response.duration).toBeDefined();
           }).finally(() => {
             done();
-          })
+          });
           var fakeRequest = jasmine.Ajax.requests.mostRecent();
           fakeRequest.respondWith({
             status: 200,
             contentType: 'application/json',
             responseText: JSON.stringify(FakeResults.createFakeResults())
           });
-        })
+        });
 
         it('should behave properly if there is an error', function (done) {
           this.promise
             .then((response: ISuccessResponse<IQueryResults>) => {
               // This should never execute, and always go to the catch statement
-              expect(false).toBe(true)
+              expect(false).toBe(true);
             })
             .catch((error: IErrorResponse) => {
               expect(error.statusCode).toBe(500);
             })
             .finally(() => {
               done();
-            })
+            });
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 500
           });
-        })
+        });
 
         it('should behave properly if there is an error in the body', function (done) {
           this.promise
             .then((response: ISuccessResponse<IQueryResults>) => {
               // This should never execute, and always go to the catch statement
-              expect(false).toBe(true)
+              expect(false).toBe(true);
             })
             .catch((error: IErrorResponse) => {
               expect(error.statusCode).toBe(404);
             })
             .finally(() => {
               done();
-            })
+            });
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
@@ -209,8 +209,8 @@ export function EndpointCallerTest() {
             },
             contentType: 'text'
           });
-        })
-      })
+        });
+      });
 
       describe('using response type json', function () {
         beforeEach(function () {
@@ -226,12 +226,12 @@ export function EndpointCallerTest() {
             queryString: [],
             responseType: 'json',
             errorsAsSuccess: false
-          })
-        })
+          });
+        });
         afterEach(function () {
           this.endpointCaller = undefined;
           this.promise = undefined;
-        })
+        });
 
         it('should work if responseContentType is text', function (done) {
           this.promise.then((response: ISuccessResponse<IQueryResults>) => {
@@ -239,14 +239,14 @@ export function EndpointCallerTest() {
             expect(response.duration).toBeDefined();
           }).finally(() => {
             done();
-          })
+          });
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             contentType: 'text',
             response: FakeResults.createFakeResults()
           });
-        })
+        });
 
         it('should work if responseContentType is application/json', function (done) {
           this.promise.then((response: ISuccessResponse<IQueryResults>) => {
@@ -254,15 +254,16 @@ export function EndpointCallerTest() {
             expect(response.duration).toBeDefined();
           }).finally(() => {
             done();
-          })
+          });
+
           var fakeRequest = jasmine.Ajax.requests.mostRecent();
           fakeRequest.respondWith({
             status: 200,
             contentType: 'application/json',
             response: FakeResults.createFakeResults()
           });
-        })
-      })
-    })
-  })
+        });
+      });
+    });
+  });
 }

@@ -47,7 +47,7 @@ export class Sort extends Component {
         } else {
           return <SortCriteria>criteria;
         }
-      })
+      });
     }, { required: true }),
     /**
      * The caption to display on the element<br/>
@@ -72,8 +72,8 @@ export class Sort extends Component {
     Assert.isLargerOrEqualsThan(1, this.options.sortCriteria.length);
 
     var eventName = this.queryStateModel.getEventName(Model.eventTypes.changeOne) + QueryStateModel.attributesEnum.sort;
-    this.bind.onRootElement(eventName, (args: IAttributesChangedEventArg) => this.handleQueryStateChanged(args))
-    this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args))
+    this.bind.onRootElement(eventName, (args: IAttributesChangedEventArg) => this.handleQueryStateChanged(args));
+    this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError(args));
     this.bind.on(this.element, 'click', () => this.handleClick());
@@ -97,8 +97,8 @@ export class Sort extends Component {
   public select(direction?: string) {
     if (direction) {
       this.currentCriteria = _.find(this.options.sortCriteria, (criteria: SortCriteria) => {
-        return criteria.direction == direction
-      })
+        return criteria.direction == direction;
+      });
     } else if (Utils.exists(this.currentCriteria)) {
       var indexOfCurrentCriteria = _.indexOf(this.options.sortCriteria, this.currentCriteria);
       Assert.check(indexOfCurrentCriteria >= 0);
@@ -133,7 +133,7 @@ export class Sort extends Component {
    * @param sortId The sort criteria to verify with (e.g. 'date descending')
    */
   public match(sortId: string) {
-    return _.any(this.options.sortCriteria, (sortCriteria: SortCriteria) => sortId == sortCriteria.toString())
+    return _.any(this.options.sortCriteria, (sortCriteria: SortCriteria) => sortId == sortCriteria.toString());
   }
 
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
@@ -165,7 +165,7 @@ export class Sort extends Component {
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
     if (data.results.results.length == 0) {
-      $$(this.element).addClass('coveo-sort-hidden')
+      $$(this.element).addClass('coveo-sort-hidden');
     } else {
       $$(this.element).removeClass('coveo-sort-hidden');
     }

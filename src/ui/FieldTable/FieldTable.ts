@@ -1,11 +1,11 @@
-import {Component} from '../Base/Component'
-import {IComponentBindings} from '../Base/ComponentBindings'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {QueryUtils} from '../../utils/QueryUtils'
-import {IQueryResult} from '../../rest/QueryResult'
-import {Initialization} from '../Base/Initialization'
-import {FieldValue, IFieldValueOptions} from './FieldValue'
-import {$$} from '../../utils/Dom'
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {QueryUtils} from '../../utils/QueryUtils';
+import {IQueryResult} from '../../rest/QueryResult';
+import {Initialization} from '../Base/Initialization';
+import {FieldValue, IFieldValueOptions} from './FieldValue';
+import {$$} from '../../utils/Dom';
 
 export interface IFieldTableOptions {
   allowMinimization: boolean;
@@ -18,6 +18,19 @@ export interface IFieldTableOptions {
  * This component is used to display a set of {@link FieldValue} components in a table which
  * can be optionally expanded and minimized.<br/>
  * Automatically, it will take care of not displaying empty field values.
+ *
+ * # Examples
+ *
+ * ```
+ * // This is the FieldTable component itself, which holds a list of table row.
+ * // Each row is a FieldValue component
+ * <table class='CoveoFieldTable'>
+ *    // Items
+ *    <tr data-field='@sysdate' data-caption='Date' data-helper='dateTime' />
+ *    <tr data-field='@sysauthor' data-caption='Author' />
+ *    <tr data-field='@clickuri' data-html-value='true' data-caption='URL' data-helper='anchor' data-helper-options='{text: \"<%= raw.syssource %>\" , target:\"_blank\"}'>
+ * </table>
+ * ```
  */
 export class FieldTable extends Component {
   static ID = 'FieldTable';
@@ -69,7 +82,7 @@ export class FieldTable extends Component {
 
     var rows = $$(this.element).findAll('tr[data-field]');
     _.each(rows, (e: HTMLElement) => {
-      new ValueRow(e, {}, bindings, result)
+      new ValueRow(e, {}, bindings, result);
     });
 
     if ($$(this.element).find('tr') == null) {
@@ -155,7 +168,7 @@ export class FieldTable extends Component {
 
     setTimeout(() => {
       this.updateToggleContainerHeight();
-      this.isExpanded ? this.expand() : this.minimize()
+      this.isExpanded ? this.expand() : this.minimize();
     }); // Wait until toggleContainer.scrollHeight is computed.
 
     $$(this.toggleButton).on('click', () => this.toggle(true));
@@ -194,7 +207,7 @@ class ValueRow extends FieldValue {
   static ID = 'ValueRow';
   static options: IValueRowOptions = {
     caption: ComponentOptions.buildStringOption({ postProcessing: (value, options) => value || options.field.substr(1) })
-  }
+  };
 
   static parent = FieldValue;
   private valueContainer: HTMLElement;

@@ -38,7 +38,7 @@ export class PreferencesPanelBoxInput {
     }), (memo: HTMLElement, input: HTMLElement) => {
       memo.appendChild(input);
       return memo;
-    }, $$('div').el)
+    }, $$('div').el);
   }
 
   public select(toSelect: string) {
@@ -59,7 +59,7 @@ export class PreferencesPanelBoxInput {
     var checked = _.find(this.inputs, (el: HTMLElement) => {
       var input = <HTMLInputElement>$$(el).find('input');
       return input.checked;
-    })
+    });
     return (<HTMLInputElement>$$(checked).find('input')).value;
   }
 
@@ -67,11 +67,11 @@ export class PreferencesPanelBoxInput {
     var checkeds = _.filter(this.inputs, (el: HTMLElement) => {
       var input = <HTMLInputElement>$$(el).find('input');
       return input.checked;
-    })
+    });
 
     return _.map(checkeds, (checked) => {
       return (<HTMLInputElement>$$(checked).find('input')).value;
-    })
+    });
   }
 }
 
@@ -94,13 +94,13 @@ export class PreferencesPanelCheckboxInput extends PreferencesPanelBoxInput {
       $$(input).on('change', () => {
         var checked = input.checked;
         $$(icon).toggleClass('coveo-selected', checked);
-      })
+      });
 
       $$(icon).on('click', () => {
         input.checked = !input.checked;
         $$(input).trigger('change');
-      })
-    })
+      });
+    });
     return build;
   }
 }
@@ -132,7 +132,7 @@ export class PreferencesPanelTextInput {
   public getValues(): string[] {
     return _.map(this.inputs, (input, key) => {
       return (<HTMLInputElement>this.getInput(key)).value;
-    })
+    });
   }
 
   public setValue(input: string, value: string) {
@@ -147,7 +147,7 @@ export class PreferencesPanelTextInput {
         inputElement = (<HTMLTextAreaElement>$$(input).find('textarea'));
       }
       inputElement.value = '';
-    })
+    });
   }
 
   private getInput(input: string): HTMLElement {
@@ -175,7 +175,7 @@ export class PreferencesPanelTextAreaInput extends PreferencesPanelTextInput {
     }), (memo: HTMLElement, input: HTMLElement) => {
       memo.appendChild(input);
       return memo;
-    }, $$('div').el)
+    }, $$('div').el);
   }
 }
 
@@ -209,8 +209,8 @@ export class PreferencePanelMultiSelectInput {
       } else {
         this.reset();
       }
-    })
-    var el = this.textInput.build()
+    });
+    var el = this.textInput.build();
     el.appendChild(this.select);
     return el;
   }

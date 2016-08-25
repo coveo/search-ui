@@ -54,7 +54,7 @@ export class AnalyticsSuggestions extends Component {
 
 
     if (this.options && 'omniboxSuggestionOptions' in this.options) {
-      this.options = _.extend(this.options, this.options['omniboxSuggestionOptions'])
+      this.options = _.extend(this.options, this.options['omniboxSuggestionOptions']);
     }
 
     this.options = ComponentOptions.initComponentOptions(element, AnalyticsSuggestions, this.options);
@@ -117,7 +117,7 @@ export class AnalyticsSuggestions extends Component {
         this.resultsToBuildWith = _.map(results, (result) => {
           return {
             value: result
-          }
+          };
         });
         this.lastSuggestions = results;
         if (!_.isEmpty(this.resultsToBuildWith) && args.completeQueryExpression.word != '') {
@@ -129,19 +129,19 @@ export class AnalyticsSuggestions extends Component {
           this.currentlyDisplayedSuggestions[$$(selectable).text()] = {
             element: selectable,
             pos: i
-          }
-        })
+          };
+        });
         resolve({
           element: element,
           zIndex: this.options.omniboxZIndex
-        })
+        });
       });
       searchPromise.catch(() => {
         resolve({
           element: undefined
-        })
+        });
       });
-    })
+    });
 
     args.rows.push({ deferred: promise });
   }

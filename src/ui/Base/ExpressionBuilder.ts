@@ -24,7 +24,7 @@ export class ExpressionBuilder {
    * @param expression
    */
   public fromExpressionBuilder(expression: ExpressionBuilder) {
-    this.parts = this.parts.concat(expression.parts)
+    this.parts = this.parts.concat(expression.parts);
   }
 
   /**

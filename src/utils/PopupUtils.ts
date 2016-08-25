@@ -1,4 +1,4 @@
-import {$$, IOffset} from './Dom'
+import {$$, IOffset} from './Dom';
 
 export interface IPosition {
   vertical: VerticalAlignment;
@@ -70,7 +70,7 @@ export class PopupUtils {
   private static finalAdjustement(popUpOffSet: IOffset, popUpPosition: IOffset, popUp: HTMLElement, desiredPosition: IPosition) {
     let position = $$(popUp).position();
     popUp.style.top = (position.top + desiredPosition.verticalOffset) - (popUpOffSet.top - popUpPosition.top) + 'px';
-    popUp.style.left = (position.left + desiredPosition.horizontalOffset) - (popUpOffSet.left - popUpPosition.left) + 'px'
+    popUp.style.left = (position.left + desiredPosition.horizontalOffset) - (popUpOffSet.left - popUpPosition.left) + 'px';
   }
 
   private static basicVerticalAlignment(popUpPosition: IOffset, popUp: HTMLElement, nextTo: HTMLElement, desiredPosition: IPosition) {
@@ -150,14 +150,14 @@ export class PopupUtils {
       left: boundaryOffset.left,
       right: boundaryOffset.left + element.offsetWidth,
       bottom: boundaryOffset.top + toAddVertically
-    }
+    };
   }
 
   private static checkForOutOfBoundary(popUpBoundary: IElementBoundary, boundary: IElementBoundary) {
     let ret = {
       vertical: 'ok',
       horizontal: 'ok'
-    }
+    };
     if (popUpBoundary.top < boundary.top) {
       ret.vertical = 'top';
     }

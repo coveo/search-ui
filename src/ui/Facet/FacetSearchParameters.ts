@@ -36,15 +36,15 @@ export class FacetSearchParameters {
     _.each(this.getCurrentlyShowedValueInSearch(searchResults), (v) => {
       var expandedValues = FacetUtils.getValuesToUseForSearchInFacet(v, this.facet);
       _.each(expandedValues, (expanded) => {
-        this.alwaysExclude.push(expanded)
-      })
+        this.alwaysExclude.push(expanded);
+      });
     });
     _.each(this.facet.getDisplayedFacetValues(), (v) => {
       var expandedValues = FacetUtils.getValuesToUseForSearchInFacet(v.value, this.facet);
       _.each(expandedValues, (expanded) => {
         this.alwaysExclude.push(expanded);
-      })
-    })
+      });
+    });
   }
 
   public getGroupByRequest(): IGroupByRequest {
@@ -56,7 +56,7 @@ export class FacetSearchParameters {
 
     var typedByUser = [];
     if (this.valueToSearch) {
-      typedByUser = ['*' + this.valueToSearch + '*']
+      typedByUser = ['*' + this.valueToSearch + '*'];
     }
 
     var request: IGroupByRequest = {
@@ -66,7 +66,7 @@ export class FacetSearchParameters {
       field: this.facet.options.field,
       sortCriteria: this.facet.options.sortCriteria || this.sortCriteria,
       injectionDepth: this.facet.options.injectionDepth,
-    }
+    };
 
     if (this.facet.options.lookupField) {
       request.lookupField = this.facet.options.lookupField;
@@ -76,7 +76,7 @@ export class FacetSearchParameters {
       request.computedFields = [{
         field: this.facet.options.computedField,
         operation: this.facet.options.computedFieldOperation
-      }]
+      }];
     }
     return request;
   }
@@ -102,20 +102,20 @@ export class FacetSearchParameters {
   private getCurrentlyShowedValueInSearch(searchResults: HTMLElement) {
     return _.map($$(searchResults).findAll('.coveo-facet-value-caption'), (val) => {
       return $$(val).text();
-    })
+    });
   }
 
   private lowerCaseAll() {
     this.alwaysExclude = _.chain(this.alwaysExclude)
       .map((v) => {
-        return v.toLowerCase()
+        return v.toLowerCase();
       })
       .uniq()
       .value();
 
     this.alwaysInclude = _.chain(this.alwaysInclude)
       .map((v) => {
-        return v.toLowerCase()
+        return v.toLowerCase();
       })
       .uniq()
       .value();

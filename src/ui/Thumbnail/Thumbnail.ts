@@ -1,13 +1,13 @@
-import {Component} from '../Base/Component'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {IResultsComponentBindings} from '../Base/ResultsComponentBindings'
-import {ResultLink} from '../ResultLink/ResultLink'
-import {IQueryResult} from '../../rest/QueryResult'
-import {QueryUtils} from '../../utils/QueryUtils'
-import {DeviceUtils} from '../../utils/DeviceUtils'
-import {Initialization} from '../Base/Initialization'
-import {ISearchEndpoint} from '../../rest/SearchEndpointInterface'
-import {$$} from '../../utils/Dom'
+import {Component} from '../Base/Component';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
+import {ResultLink} from '../ResultLink/ResultLink';
+import {IQueryResult} from '../../rest/QueryResult';
+import {QueryUtils} from '../../utils/QueryUtils';
+import {DeviceUtils} from '../../utils/DeviceUtils';
+import {Initialization} from '../Base/Initialization';
+import {ISearchEndpoint} from '../../rest/SearchEndpointInterface';
+import {$$} from '../../utils/Dom';
 
 export interface IThumbnailOptions {
   noThumbnailClass?: string;
@@ -49,7 +49,7 @@ export class Thumbnail extends Component {
     'urihash',  //     ⎫
     'collection', //   ⎬--- analytics
     'source' //        ⎭
-  ]
+  ];
 
   /**
    * Create a new Thumbnail component
@@ -108,7 +108,7 @@ export class Thumbnail extends Component {
       })
       .catch(() => {
         this.setEmptyThumbnailClass();
-      })
+      });
   }
 
   private setEmptyThumbnailClass() {

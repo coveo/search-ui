@@ -10,11 +10,11 @@ export function DomTests() {
     beforeEach(function () {
       el = document.createElement('div');
       registerCustomMatcher();
-    })
+    });
 
     afterEach(function () {
       el = undefined;
-    })
+    });
 
     describe('without jquery', function () {
       beforeEach(function () {
@@ -27,7 +27,7 @@ export function DomTests() {
       });
 
       it('insert after should work properly', function () {
-        var parent = document.createElement('div')
+        var parent = document.createElement('div');
         var sibling = document.createElement('div');
         parent.appendChild(sibling);
         expect(sibling.nextSibling).toBeNull();
@@ -41,7 +41,7 @@ export function DomTests() {
         new Dom(el).insertAfter(anotherSibling);
         expect(el.nextSibling).toBeNull();
         expect(el.previousSibling).toBe(anotherSibling);
-      })
+      });
 
       it('insert before should work properly', function () {
         var parent = document.createElement('div');
@@ -59,7 +59,7 @@ export function DomTests() {
         new Dom(el).insertBefore(anotherSibling);
         expect(el.nextSibling).toBe(anotherSibling);
         expect(el.previousSibling).toBe(sibling);
-      })
+      });
 
       it('replace should work properly', function () {
         var other = document.createElement('div');
@@ -79,7 +79,7 @@ export function DomTests() {
         expect(other.parentNode).toBe(parent);
         expect(other.previousSibling).toBe(sibling);
         expect(other.nextSibling).toBe(otherSibling);
-      })
+      });
 
       describe('prepend', function () {
         it('should work properly', function () {
@@ -91,28 +91,28 @@ export function DomTests() {
           new Dom(el).prepend(toPrepend);
           expect(el.firstChild).toBe(toPrepend);
           expect(toPrepend.nextSibling).toBe(firstChild);
-        })
+        });
 
         it('should work even if there if parent element is empty', function () {
           var parent = $$('div');
           var toPrepend = $$('span', { className: 'foo' }).el;
           parent.prepend(toPrepend);
           expect(parent.el.firstChild).toBe(toPrepend);
-        })
+        });
 
         it('should work even if parent element contains text', function () {
           var parent = $$('div', {}, 'thisissometext');
           var toPrepend = $$('span', { className: 'foo' }).el;
           parent.prepend(toPrepend);
           expect(parent.el.firstChild).toBe(toPrepend);
-        })
-      })
+        });
+      });
 
       it('should give the correct text content', function () {
-        el.innerHTML = '<div>this is the content</div>'
+        el.innerHTML = '<div>this is the content</div>';
         expect(new Dom(el).text()).toEqual('this is the content');
         el = document.createElement('div');
-        el.innerHTML = '<div>this <span>is</span> the <div><span>content</span></div></div>'
+        el.innerHTML = '<div>this <span>is</span> the <div><span>content</span></div></div>';
         expect(new Dom(el).text()).toEqual('this is the content');
       });
 
@@ -132,13 +132,13 @@ export function DomTests() {
             id: 'heidi',
             className: 'kloss',
             'data-my-attr': 'baz'
-          }, 'foobar2000')
+          }, 'foobar2000');
           expect(elem.tagName).toEqual('DIV');
           expect(elem.id).toEqual('heidi');
           expect(elem.className).toEqual('kloss');
           expect(elem.dataset['myAttr']).toEqual('baz');
           expect(elem.innerHTML).toEqual('foobar2000');
-        })
+        });
 
         it('should properly create nested HTMLElement\'s', function () {
           var elem = Dom.createElement('header', undefined,
@@ -148,8 +148,8 @@ export function DomTests() {
           expect(elem.firstChild.nodeName).toEqual('DIV');
           expect(elem.firstChild.firstChild.nodeName).toEqual('SPAN');
           expect(elem.firstChild.firstChild['innerHTML']).toEqual('foo');
-        })
-      })
+        });
+      });
 
       it('should find a child using a query selector', function () {
         var toFind = document.createElement('div');
@@ -287,7 +287,7 @@ export function DomTests() {
         el.className = 'qwerty';
         var domEl = new Dom(el);
         domEl.toggleClass('qwerty');
-        expect(domEl.hasClass('qwerty')).toBe(false)
+        expect(domEl.hasClass('qwerty')).toBe(false);
 
         el = document.createElement('div');
         domEl = new Dom(el);
@@ -305,7 +305,7 @@ export function DomTests() {
         domEl.toggleClass('foobar2000', true);
         expect(domEl.hasClass('foobar2000')).toBe(true);
 
-      })
+      });
 
       it('using detach should work properly', function () {
         var parent = document.createElement('div');
@@ -343,7 +343,7 @@ export function DomTests() {
           el.dispatchEvent(evt);
         });
         expect(spy3).toHaveBeenCalledTimes(3);
-      })
+      });
 
       it('using one should work properly', function () {
         var spy = jasmine.createSpy('spy');
@@ -354,7 +354,7 @@ export function DomTests() {
         expect(spy).toHaveBeenCalled();
         expect(spy).toHaveBeenCalledTimes(1);
         expect(spy).not.toHaveBeenCalledTimes(3);
-      })
+      });
 
       it('using off should work properly', function () {
         var spy = jasmine.createSpy('spy');
@@ -373,7 +373,7 @@ export function DomTests() {
           el.dispatchEvent(evt);
         });
         expect(spy).not.toHaveBeenCalled();
-      })
+      });
 
       it('using trigger should work properly', function () {
         registerCustomMatcher();
@@ -385,7 +385,7 @@ export function DomTests() {
         var spy2 = jasmine.createSpy('spy2');
         new Dom(el).on('foo', spy2);
         new Dom(el).trigger('foo', { bar: 'baz' });
-        expect(spy2).eventHandlerToHaveBeenCalledWith({ bar: 'baz' })
+        expect(spy2).eventHandlerToHaveBeenCalledWith({ bar: 'baz' });
       });
 
       it('using isEmpty should work properly', function () {
@@ -435,8 +435,8 @@ export function DomTests() {
         new Dom(el).empty();
         expect(append1.parentElement).toBeNull();
         expect(append2.parentElement).toBeNull();
-      })
-    })
+      });
+    });
 
     describe('with jquery', function () {
 
@@ -461,7 +461,7 @@ export function DomTests() {
           detail: {
             lorem: 'ipsum'
           }
-        })
+        });
 
         expect(spy2).toHaveBeenCalledWith(jasmine.any(jQuery.Event), jasmine.objectContaining({
           detail: {
@@ -479,7 +479,7 @@ export function DomTests() {
           el.dispatchEvent(evt);
         });
         expect(spy3).toHaveBeenCalledTimes(3);
-      })
+      });
 
       it('using one should work properly', function () {
         var spy = jasmine.createSpy('spy');
@@ -490,7 +490,7 @@ export function DomTests() {
         expect(spy).toHaveBeenCalled();
         expect(spy).toHaveBeenCalledTimes(1);
         expect(spy).not.toHaveBeenCalledTimes(3);
-      })
+      });
 
       it('using off should work properly', function () {
         var spy = jasmine.createSpy('spy');
@@ -506,7 +506,7 @@ export function DomTests() {
           new Dom(el).trigger(evt);
         });
         expect(spy).not.toHaveBeenCalled();
-      })
+      });
 
       it('using trigger should work properly', function () {
         var spy = jasmine.createSpy('spy');
@@ -517,8 +517,8 @@ export function DomTests() {
         var spy2 = jasmine.createSpy('spy2');
         new Dom(el).on('foo', spy2);
         new Dom(el).trigger('foo', { bar: 'baz' });
-        expect(spy2).toHaveBeenCalledWith(jasmine.any(jQuery.Event), { bar: 'baz' })
+        expect(spy2).toHaveBeenCalledWith(jasmine.any(jQuery.Event), { bar: 'baz' });
       });
-    })
-  })
+    });
+  });
 }

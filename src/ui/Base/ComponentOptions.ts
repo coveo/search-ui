@@ -11,11 +11,11 @@ import {Utils} from '../../utils/Utils';
 import {l} from '../../strings/Strings';
 
 export interface IComponentOptionsLoadOption<T> {
-  (element: HTMLElement, name: string, option: IComponentOptionsOption<T>): T
+  (element: HTMLElement, name: string, option: IComponentOptionsOption<T>): T;
 }
 
 export interface IComponentOptionsPostProcessing<T> {
-  (value: T, options: any): T
+  (value: T, options: any): T;
 }
 
 export interface IComponentOptionsOption<T> extends IComponentOptions<T> {
@@ -224,7 +224,7 @@ export class ComponentOptions {
         }
       }
       return resultFound ? resultValues : null;
-    }
+    };
     return ComponentOptions.buildOption<{
       [key: string]: any
     }>(ComponentOptionsType.OBJECT, loadOption, optionArgs);
@@ -252,7 +252,7 @@ export class ComponentOptions {
   }
 
   static mergeCamelCase(parent: string, name: string) {
-    return parent + name.substr(0, 1).toUpperCase() + name.substr(1)
+    return parent + name.substr(0, 1).toUpperCase() + name.substr(1);
   }
 
   static initComponentOptions(element: HTMLElement, component: any, values?: any) {
@@ -406,7 +406,7 @@ export class ComponentOptions {
   }
 
   static loadSelectorOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>, doc: Document = document): HTMLElement {
-    let attributeValue = ComponentOptions.loadStringOption(element, name, option)
+    let attributeValue = ComponentOptions.loadStringOption(element, name, option);
     return Utils.isNonEmptyString(attributeValue) ? <HTMLElement>doc.querySelector(attributeValue) : null;
   }
 
@@ -514,7 +514,7 @@ export class ComponentOptions {
     let type = element.getAttribute('type');
     let mimeTypes = 'You must specify the type of template. Valid values are :' +
       ' ' + UnderscoreTemplate.mimeTypes.toString() +
-      ' ' + HtmlTemplate.mimeTypes.toString()
+      ' ' + HtmlTemplate.mimeTypes.toString();
     Assert.check(Utils.isNonEmptyString(type), mimeTypes);
 
     if (_.indexOf(UnderscoreTemplate.mimeTypes, type) != -1) {

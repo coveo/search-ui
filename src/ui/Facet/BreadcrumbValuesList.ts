@@ -59,7 +59,7 @@ export class BreadcrumbValueList {
 
     var elem = $$('div', {
       className: 'coveo-facet-breadcrumb-value'
-    })
+    });
     if (!DeviceUtils.isMobileDevice() && !this.facet.searchInterface.isNewDesign()) {
       let sep = $$('span', {
         className: 'coveo-separator'
@@ -70,19 +70,19 @@ export class BreadcrumbValueList {
     if (numberOfSelected > 0) {
       let multi = $$('span', {
         className: 'coveo-facet-breadcrumb-multi-count'
-      })
+      });
       multi.text(l('NMore', Globalize.format(numberOfSelected, 'n0')));
       elem.el.appendChild(multi.el);
 
       let multiIcon = $$('div', {
         className: 'coveo-selected coveo-facet-breadcrumb-multi-icon'
-      })
+      });
       elem.el.appendChild(multiIcon.el);
     }
     if (numberOfExcluded > 0) {
       let multiExcluded = $$('span', {
         className: 'coveo-facet-breadcrumb-multi-count'
-      })
+      });
       multiExcluded.text(l('NMore', Globalize.format(numberOfExcluded, 'n0')));
       elem.el.appendChild(multiExcluded.el);
 
@@ -94,11 +94,11 @@ export class BreadcrumbValueList {
 
     let valueElements = _.map(this.collapsed, (facetValue) => {
       return new this.breadcrumbValueElementKlass(this.facet, facetValue);
-    })
+    });
 
     let toolTips = _.map(valueElements, (valueElement) => {
       return valueElement.getBreadcrumbTooltip();
-    })
+    });
 
     elem.el.setAttribute('title', toolTips.join('\n'));
     elem.on('click', () => {
@@ -115,7 +115,7 @@ export class BreadcrumbValueList {
       });
       _.each(elements, (el) => {
         $$(el).insertBefore(elem.el);
-      })
+      });
       elem.detach();
     });
 

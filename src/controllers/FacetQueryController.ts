@@ -110,7 +110,7 @@ export class FacetQueryController {
         } else {
           resolve(fieldValues);
         }
-      }
+      };
 
       this.facet.getEndpoint().search(params.getQuery())
         .then((queryResults: IQueryResults) => {
@@ -130,7 +130,7 @@ export class FacetQueryController {
                     valuesCropped.push(v);
                   }
                 }
-              })
+              });
             }
             onResult(_.first(valuesCropped, params.nbResults));
           } else {
@@ -139,8 +139,8 @@ export class FacetQueryController {
         })
         .catch((error: IEndpointError) => {
           reject(error);
-        })
-    })
+        });
+    });
   }
 
   public fetchMore(numberOfValuesToFetch: number) {
@@ -172,10 +172,10 @@ export class FacetQueryController {
       // Filter out duplicates with a lower case comparison on the value
       let toCompare = _.map(this.facet.options.customSort, (val: string) => {
         return val.toLowerCase();
-      })
+      });
       let filtered = _.filter(this.getAllowedValuesFromSelected(), (value: string) => {
         return !_.contains(toCompare, value.toLowerCase());
-      })
+      });
       return this.facet.options.customSort.concat(filtered);
 
     } else {
@@ -233,7 +233,7 @@ export class FacetQueryController {
       if (Utils.isEmptyString(queryOverrideObject[k]) || Utils.isNullOrUndefined(queryOverrideObject[k])) {
         delete queryOverrideObject[k];
       }
-    })
+    });
     if (_.keys(queryOverrideObject).length == 0) {
       queryOverrideObject = undefined;
     }
@@ -280,6 +280,6 @@ export class FacetQueryController {
 
       let value = this.facet.getValueCaption(fieldValue);
       return isAllowed && regex.test(value);
-    })
+    });
   }
 }

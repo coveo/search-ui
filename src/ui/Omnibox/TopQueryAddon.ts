@@ -30,7 +30,7 @@ export class TopQueryAddon {
     var promise = this.omnibox.usageAnalytics.getTopQueries({ queryText: text, pageSize: 5 })
       .then((results) => {
         if (results.length == 1 && results[0].toLowerCase() == text.toLowerCase()) {
-          results = []
+          results = [];
         }
 
         return _.map(results, (result, i) => {
@@ -38,13 +38,13 @@ export class TopQueryAddon {
             html: MagicBox.Utils.highlightText(result, text, true),
             text: result,
             index: TopQueryAddon.INDEX - i / results.length
-          }
+          };
         });
-      })
+      });
 
     promise.catch(() => {
       delete this.cache[text];
-    })
+    });
 
     return promise;
   }

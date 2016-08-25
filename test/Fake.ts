@@ -34,7 +34,7 @@ export class FakeResults {
       termsToHighlight: undefined,
       phrasesToHighlight: undefined,
       triggers: []
-    }
+    };
   }
 
   static createFakeResultsWithChildResults(count = 10, numberOfChildResults = 5, totalNumberOfChildResult = 5): IQueryResults {
@@ -57,7 +57,7 @@ export class FakeResults {
       termsToHighlight: undefined,
       phrasesToHighlight: undefined,
       triggers: []
-    }
+    };
   }
 
   static createFakeResult(token: string = 'foo'): IQueryResult {
@@ -132,15 +132,15 @@ export class FakeResults {
     }
     _.each(attachmentType, (type, index, list) => {
       if (fake.attachments[index] != undefined) {
-        fake.attachments[index].raw['filetype'] = type
+        fake.attachments[index].raw['filetype'] = type;
       }
-    })
+    });
     _.each(attachmentsFlags, (flag, index, list) => {
       if (fake.attachments[index] != undefined) {
-        fake.attachments[index].flags = flag
+        fake.attachments[index].flags = flag;
       }
-    })
-    return fake
+    });
+    return fake;
   }
 
   static createFakeGroupByResult(field: string, token: string, count: number, includeComputedValues?: boolean): IGroupByResult {
@@ -167,7 +167,7 @@ export class FakeResults {
     return {
       field: field,
       values: groupByValues
-    }
+    };
   }
 
   static createFakeHierarchicalGroupByResult(field: string, token: string, numberOfLevel = 2, countByLevel = 3, delimitingCharacter = '|', includeComputedValues = false, weirdCasing = true): IGroupByResult {
@@ -178,11 +178,11 @@ export class FakeResults {
 
       for (var j = 0; j < countByLevel; j++) {
         var groupByValueSubLevel = FakeResults.createFakeGroupByValue(token + i.toString(), i + 1, 100 + 1, includeComputedValues ? 1000 + i : undefined);
-        groupByValueSubLevel.value = groupByValueSubLevel.lookupValue += delimitingCharacter + FakeResults.createFakeGroupByValue(token + i.toString() + '-' + +j.toString(), i + 1, 100 + i, includeComputedValues ? 1000 + i : undefined).value
+        groupByValueSubLevel.value = groupByValueSubLevel.lookupValue += delimitingCharacter + FakeResults.createFakeGroupByValue(token + i.toString() + '-' + +j.toString(), i + 1, 100 + i, includeComputedValues ? 1000 + i : undefined).value;
         if (weirdCasing) {
-          groupByValueSubLevel.value = groupByValueSubLevel.lookupValue = _.map(groupByValueSubLevel.lookupValue.split(delimitingCharacter), (value, k) => (i + j + k) % 2 == 0 ? value.toLowerCase() : value.toUpperCase()).join(delimitingCharacter)
+          groupByValueSubLevel.value = groupByValueSubLevel.lookupValue = _.map(groupByValueSubLevel.lookupValue.split(delimitingCharacter), (value, k) => (i + j + k) % 2 == 0 ? value.toLowerCase() : value.toUpperCase()).join(delimitingCharacter);
         }
-        groupByValues.push(groupByValueSubLevel)
+        groupByValues.push(groupByValueSubLevel);
       }
     }
 
@@ -201,7 +201,7 @@ export class FakeResults {
       numberOfResults: count,
       score: score || count * 2,
       computedFieldResults: computedValue ? [computedValue] : undefined
-    }
+    };
   }
 
   static createFakeGroupByRangeValue(from: number, to: number, token: string, count: number, score?: number, computedValue?: number): IGroupByValue {
@@ -212,7 +212,7 @@ export class FakeResults {
       numberOfResults: count,
       score: score || count * 2,
       computedFieldResults: computedValue ? [computedValue] : undefined
-    }
+    };
   }
 
   static createFakeFieldValue(token: string, count: number): IIndexFieldValue {
@@ -222,7 +222,7 @@ export class FakeResults {
       value: token,
       lookupValue: token,
       numberOfResults: count
-    }
+    };
   }
 
   static createFakeFieldValues(token: string, count: number): IIndexFieldValue[] {
@@ -243,9 +243,9 @@ export class FakeResults {
       var selectables = FakeResults.createFakeOmniboxSelectableData(token + ':' + i, numberOfSelectablePerRow);
       var element = $(`<div class='coveo-omnibox-section'></div>`);
       _.each(selectables, (selectable) => {
-        element.append(selectable)
-      })
-      rows.push({ element: element.get(0), zIndex: zIndex + i })
+        element.append(selectable);
+      });
+      rows.push({ element: element.get(0), zIndex: zIndex + i });
     }
     return rows;
   }
@@ -253,7 +253,7 @@ export class FakeResults {
   static createFakeDeferredOmniboxData(numberOfRows: number) {
     var rows = [];
     for (var i = 0; i < numberOfRows; i++) {
-      rows.push({ deferred: $.Deferred() })
+      rows.push({ deferred: $.Deferred() });
     }
     return rows;
   }
@@ -261,7 +261,7 @@ export class FakeResults {
   static createFakeOmniboxSelectableData(token: string, numberOfSelectables: number) {
     var rows = [];
     for (var i = 0; i < numberOfSelectables; i++) {
-      rows.push($(`<div class='coveo-omnibox-selectable'>${token + ':' + i}</div>`))
+      rows.push($(`<div class='coveo-omnibox-selectable'>${token + ':' + i}</div>`));
     }
     return rows;
   }
@@ -338,7 +338,7 @@ export class FakeResults {
       advancedQuery: token + 'advancedQuery',
       didYouMean: false,
       contextual: false
-    }
+    };
   }
 
   static createFakeClickEvent(token = 'foo'): IClickEvent {
@@ -365,7 +365,7 @@ export class FakeResults {
       documentPosition: 0,
       viewMethod: token + 'viewMethod',
       rankingModifier: token + 'rankingModifier'
-    }
+    };
   }
 
   static createPopulateOmniboxEventArgs(queryboxContent: string, cursorPosition: number, rows: IOmniboxDataRow[] = []): IPopulateOmniboxEventArgs {
@@ -387,6 +387,6 @@ export class FakeResults {
       },
       replaceCurrentExpression: () => {
       }
-    }
+    };
   }
 }

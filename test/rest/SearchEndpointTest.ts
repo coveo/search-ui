@@ -55,7 +55,7 @@ export function SearchEndpointTest() {
           queryStringArguments: {
             workgroup: 'myOrgId'
           }
-        })
+        });
       });
 
       afterEach(function () {
@@ -64,8 +64,8 @@ export function SearchEndpointTest() {
 
       it('map it to organizationId', function () {
         var fakeResult = FakeResults.createFakeResult();
-        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toBe(ep.getBaseUri() + '/html?organizationId=myOrgId&uniqueId=' + fakeResult.uniqueId)
-      })
+        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toBe(ep.getBaseUri() + '/html?organizationId=myOrgId&uniqueId=' + fakeResult.uniqueId);
+      });
     });
 
     describe('with a search token argument', function () {
@@ -75,7 +75,7 @@ export function SearchEndpointTest() {
         ep = new SearchEndpoint({
           restUri: 'foo/rest/search',
           accessToken: 'token'
-        })
+        });
       });
 
       afterEach(function () {
@@ -84,10 +84,9 @@ export function SearchEndpointTest() {
 
       it('will add it in the query string', () => {
         var fakeResult = FakeResults.createFakeResult();
-        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toBe(ep.getBaseUri() + '/html?access_token=token&uniqueId=' + fakeResult.uniqueId)
-      })
-
-    })
+        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toBe(ep.getBaseUri() + '/html?access_token=token&uniqueId=' + fakeResult.uniqueId);
+      });
+    });
 
     describe('with a basic setup', function () {
       var ep: SearchEndpoint;
@@ -100,7 +99,7 @@ export function SearchEndpointTest() {
             organizationId: 'myOrgId',
             potatoe: 'mashed'
           }
-        })
+        });
       });
 
       afterEach(function () {
@@ -108,7 +107,7 @@ export function SearchEndpointTest() {
       });
 
       it('allow to get the base uri', function () {
-        expect(ep.getBaseUri()).toBe('foo/rest/search/v2')
+        expect(ep.getBaseUri()).toBe('foo/rest/search/v2');
       });
 
       it('allow to get the auth provider uri', function () {
@@ -137,7 +136,7 @@ export function SearchEndpointTest() {
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('potatoe=mashed');
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('q=batman');
         expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('numberOfResults=56');
-        expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('format=xlsx')
+        expect(ep.getExportToExcelLink(qbuilder.build(), 56)).toContain('format=xlsx');
       });
 
       it('allow to get an uri to view as datastream', function () {
@@ -201,7 +200,7 @@ export function SearchEndpointTest() {
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 500
-          })
+          });
         });
 
         it('for getRawDataStream', function (done) {
@@ -228,7 +227,7 @@ export function SearchEndpointTest() {
             status: 200,
             response: new ArrayBuffer(123),
             responseType: 'arraybuffer'
-          })
+          });
         });
 
         it('for getDocument', function (done) {
@@ -254,7 +253,7 @@ export function SearchEndpointTest() {
             status: 200,
             responseText: JSON.stringify(fakeResult),
             responseType: 'text'
-          })
+          });
         });
 
         it('for getDocumentText', function (done) {
@@ -280,7 +279,7 @@ export function SearchEndpointTest() {
             status: 200,
             responseText: JSON.stringify({ content: fakeResult.excerpt }),
             responseType: 'text'
-          })
+          });
         });
 
         it('for getDocumentHtml', function (done) {
@@ -299,7 +298,7 @@ export function SearchEndpointTest() {
               expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('document');
             })
             .catch((e: IErrorResponse) => {
-              fail(e)
+              fail(e);
             })
             .finally(() => done());
 
@@ -307,7 +306,7 @@ export function SearchEndpointTest() {
             status: 200,
             response: fakeDocument,
             responseType: 'document'
-          })
+          });
         });
 
         it('for listFieldValues', function (done) {
@@ -333,7 +332,7 @@ export function SearchEndpointTest() {
               expect(jasmine.Ajax.requests.mostRecent().responseType).toBe('text');
             })
             .catch((e: IErrorResponse) => {
-              fail(e)
+              fail(e);
             })
             .finally(() => done());
 
@@ -341,7 +340,7 @@ export function SearchEndpointTest() {
             status: 200,
             responseText: JSON.stringify({ values: FakeResults.createFakeFieldValues('foo', 10) }),
             responseType: 'text'
-          })
+          });
         });
 
         it('for listFields', function (done) {
@@ -367,7 +366,7 @@ export function SearchEndpointTest() {
             status: 200,
             responseText: JSON.stringify({ fields: _.range(10) }),
             responseType: 'text'
-          })
+          });
         });
 
         it('for extensions', function (done) {
@@ -393,7 +392,7 @@ export function SearchEndpointTest() {
             status: 200,
             responseText: JSON.stringify(_.range(10)),
             responseType: 'text'
-          })
+          });
         });
 
         it('for rateDocument', function (done) {
@@ -420,7 +419,7 @@ export function SearchEndpointTest() {
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             responseType: 'text'
-          })
+          });
         });
 
         it('for tagDocument', function (done) {
@@ -455,7 +454,7 @@ export function SearchEndpointTest() {
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             responseType: 'text'
-          })
+          });
         });
 
         it('for getRevealQuerySuggest', function (done) {
@@ -485,7 +484,7 @@ export function SearchEndpointTest() {
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             responseText: JSON.stringify({ completions: _.range(10) })
-          })
+          });
         });
 
         it('for follow', function (done) {
@@ -504,7 +503,7 @@ export function SearchEndpointTest() {
               expect(sub.id).toBeDefined();
             })
             .catch((e: IErrorResponse) => {
-              fail(e)
+              fail(e);
             })
             .finally(() => done());
 
@@ -524,17 +523,17 @@ export function SearchEndpointTest() {
                 query: qbuilder.build()
               }
             })
-          })
+          });
         });
 
         it('for listSubscriptions', function (done) {
           var promiseSuccess = ep.listSubscriptions(15);
           promiseSuccess
             .then((subs: ISubscription[]) => {
-              expect(subs.length).toBe(44)
+              expect(subs.length).toBe(44);
             })
             .catch((e: IErrorResponse) => {
-              fail(e)
+              fail(e);
             })
             .finally(() => done());
 
@@ -552,7 +551,7 @@ export function SearchEndpointTest() {
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             responseText: JSON.stringify(_.range(44))
-          })
+          });
         });
 
         it('for updateSubscription', function (done) {
@@ -576,7 +575,7 @@ export function SearchEndpointTest() {
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             responseText: JSON.stringify({ id: 'foobar' })
-          })
+          });
         });
 
         it('for deleteSubscription', function (done) {
@@ -586,7 +585,7 @@ export function SearchEndpointTest() {
               expect(sub.id).toBe('foobar');
             })
             .catch((e: IErrorResponse) => {
-              fail(e)
+              fail(e);
             })
             .finally(() => done());
 
@@ -600,10 +599,10 @@ export function SearchEndpointTest() {
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
             responseText: JSON.stringify({ id: 'foobar' })
-          })
-        })
-      })
-    })
+          });
+        });
+      });
+    });
   });
 
   function getSubscriptionPromiseSuccess(): ISubscription {
@@ -619,6 +618,6 @@ export function SearchEndpointTest() {
         manageToken: '1',
         email: '42@coveo.com'
       }
-    }
+    };
   }
 }

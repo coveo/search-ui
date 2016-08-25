@@ -294,7 +294,7 @@ export class QueryBuilder {
       basic: ExpressionBuilder.mergeUsingOr(this.expression, this.disjunctionExpression).build(),
       advanced: ExpressionBuilder.mergeUsingOr(this.advancedExpression, this.disjunctionExpression).build(),
       constant: ExpressionBuilder.mergeUsingOr(this.constantExpression, this.disjunctionExpression).build()
-    }
+    };
   }
 
   /**
@@ -331,7 +331,7 @@ export class QueryBuilder {
       basic: ExpressionBuilder.mergeUsingOr(basicAndExcept, this.disjunctionExpression).build(),
       advanced: ExpressionBuilder.mergeUsingOr(advancedAndExcept, this.disjunctionExpression).build(),
       constant: ExpressionBuilder.mergeUsingOr(this.constantExpression, this.disjunctionExpression).build()
-    }
+    };
   }
 
   /**
@@ -340,11 +340,11 @@ export class QueryBuilder {
    * @param fields
    */
   public addFieldsToInclude(fields: string[]) {
-    this.fieldsToInclude = _.uniq((this.fieldsToInclude || []).concat(fields))
+    this.fieldsToInclude = _.uniq((this.fieldsToInclude || []).concat(fields));
   }
 
   public addRequiredFields(fields: string[]) {
-    this.requiredFields = _.uniq(this.requiredFields.concat(fields))
+    this.requiredFields = _.uniq(this.requiredFields.concat(fields));
   }
 
   /**

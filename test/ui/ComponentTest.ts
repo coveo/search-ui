@@ -18,7 +18,7 @@ export function ComponentTest() {
     });
 
     afterEach(function () {
-      env = null
+      env = null;
       cmp = null;
     });
 
@@ -75,28 +75,28 @@ export function ComponentTest() {
         elementToDummyOut.setAttribute('type', 'text');
         elementThatShouldNotBeDummiedOut = document.createElement('div');
         elementThatShouldNotBeDummiedOut.appendChild(elementToDummyOut);
-      })
+      });
 
       afterEach(function () {
         elementToDummyOut = null;
         elementThatShouldNotBeDummiedOut = null;
-      })
+      });
 
       it('directly on an input', function () {
         Component.pointElementsToDummyForm(elementToDummyOut);
         expect(elementToDummyOut.getAttribute('form')).toBe('coveo-dummy-form');
-      })
+      });
 
       it('but not on non-input tag', function () {
         let elementThatShouldNotBeDummiedOut = document.createElement('div');
         Component.pointElementsToDummyForm(elementThatShouldNotBeDummiedOut);
         expect(elementThatShouldNotBeDummiedOut.getAttribute('form')).toBe(null);
-      })
+      });
 
       it('on child input', function () {
         Component.pointElementsToDummyForm(elementThatShouldNotBeDummiedOut);
         expect(elementToDummyOut.getAttribute('form')).toBe('coveo-dummy-form');
-      })
+      });
 
       it('on multiple child input', function () {
         let elementToDummyOut2 = document.createElement('input');
@@ -105,21 +105,19 @@ export function ComponentTest() {
         Component.pointElementsToDummyForm(elementThatShouldNotBeDummiedOut);
         expect(elementToDummyOut.getAttribute('form')).toBe('coveo-dummy-form');
         expect(elementToDummyOut2.getAttribute('form')).toBe('coveo-dummy-form');
-      })
-    })
-
-
+      });
+    });
 
     describe('resolving results', function () {
       let result: IQueryResult;
 
       beforeEach(function () {
         result = FakeResults.createFakeResult();
-      })
+      });
 
       afterEach(function () {
         result = null;
-      })
+      });
 
       it('should allow to bind a result to an element', function () {
         Component.bindResultToElement(cmp.element, result);
@@ -130,7 +128,7 @@ export function ComponentTest() {
         Component.bindResultToElement(env.root, result);
         expect(Component.getResult(cmp.element)).toBe(result);
       });
-    })
+    });
 
     describe('the static get method', function () {
       it('should return the component', function () {
@@ -155,6 +153,6 @@ export function ComponentTest() {
         expect(() => Component.get(notAComponentElement)).not.toThrow();
         expect(Component.get(notAComponentElement)).toBeUndefined();
       });
-    })
-  })
+    });
+  });
 }

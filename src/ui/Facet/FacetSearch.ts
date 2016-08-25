@@ -23,6 +23,7 @@ import {IFacetSearchValuesListKlass} from './FacetSearchValuesList';
 import {FacetValueElement} from './FacetValueElement';
 import {ModalBox} from '../../ExternalModulesShim';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
+import {FacetValuesOrder} from './FacetValuesOrder';
 
 /**
  * Used by the {@link Facet} component to render and handle the facet search part of each facet.
@@ -60,7 +61,7 @@ export class FacetSearch {
     }, 250);
     this.onDocumentClick = (e: Event) => {
       this.handleClickElsewhere(e);
-    }
+    };
     window.addEventListener('resize', () => this.onResize());
     document.addEventListener('click', (e: Event) => this.onDocumentClick(e));
     $$(facet.root).on(InitializationEvents.nuke, () => this.handleNuke());
@@ -242,7 +243,7 @@ export class FacetSearch {
       });
       this.input.value = '';
       this.input.focus();
-    })
+    });
     return button;
   }
 
@@ -281,7 +282,7 @@ export class FacetSearch {
   }
 
   private handleFacetSearchClear() {
-    this.input.value = ''
+    this.input.value = '';
     $$(this.clear).hide();
     this.completelyDismissSearch();
   }
@@ -291,7 +292,7 @@ export class FacetSearch {
       $$(this.clear).show();
     } else {
       $$(this.clear).hide();
-      $$(this.search).removeClass('coveo-facet-search-no-results')
+      $$(this.search).removeClass('coveo-facet-search-no-results');
     }
   }
 
@@ -372,7 +373,7 @@ export class FacetSearch {
 
   private processNewFacetSearchResults(fieldValues: IIndexFieldValue[], facetSearchParameters: FacetSearchParameters) {
     Assert.exists(fieldValues);
-
+    fieldValues = new FacetValuesOrder(this.facet, this.facet.facetSort).reorderValues(fieldValues);
     if (fieldValues.length > 0) {
       $$(this.search).removeClass('coveo-facet-search-no-results');
       this.facet.fadeInactiveValuesInMainList(this.facet.options.facetSearchDelay);
@@ -412,9 +413,9 @@ export class FacetSearch {
     });
     _.each(new this.facetSearchValuesListKlass(this.facet, FacetValueElement).build(facetValues), (listElement: HTMLElement) => {
       this.searchResults.appendChild(listElement);
-    })
+    });
     if (this.currentlyDisplayedResults) {
-      this.currentlyDisplayedResults = this.currentlyDisplayedResults.concat(_.pluck(facetValues, 'value'))
+      this.currentlyDisplayedResults = this.currentlyDisplayedResults.concat(_.pluck(facetValues, 'value'));
     } else {
       this.currentlyDisplayedResults = _.pluck(facetValues, 'value');
     }
@@ -428,7 +429,7 @@ export class FacetSearch {
     _.each($$(this.searchResults).findAll('.coveo-facet-selectable'), (elem: HTMLElement) => {
       $$(elem).addClass('coveo-facet-search-selectable');
       this.setupFacetSearchResultsEvents(elem);
-    })
+    });
 
     if (this.facet.searchInterface.isNewDesign()) {
       $$(this.searchResults).on('scroll', () => this.handleFacetSearchResultsScroll());
@@ -451,7 +452,7 @@ export class FacetSearch {
       if (!touchDragging && !mouseDragging) {
         setTimeout(() => {
           this.completelyDismissSearch();
-        }, 0) // setTimeout is to give time to trigger the click event before hiding the search menu.
+        }, 0); // setTimeout is to give time to trigger the click event before hiding the search menu.
       }
       touchDragging = false;
       mouseDragging = false;
@@ -508,7 +509,7 @@ export class FacetSearch {
       let text = $$(captionElement).text();
       let highlighted = text.replace(regex, '<span class="coveo-highlight">$1</span>');
       captionElement.innerHTML = highlighted;
-    })
+    });
   }
 
   private makeFirstSearchResultTheCurrentOne() {
@@ -518,7 +519,7 @@ export class FacetSearch {
   private makeCurrentResult(result: HTMLElement) {
     _.each(this.getSelectables(), (selectable: HTMLElement) => {
       $$(selectable).removeClass('coveo-current');
-    })
+    });
     $$(result).addClass('coveo-current');
   }
 
@@ -526,7 +527,7 @@ export class FacetSearch {
     let current = $$(this.searchResults).find('.coveo-current');
     _.each(this.getSelectables(), (selectable: HTMLElement) => {
       $$(selectable).removeClass('coveo-current');
-    })
+    });
     let allSelectables = this.getSelectables();
     let idx = _.indexOf(allSelectables, current);
     if (idx < allSelectables.length - 1) {
@@ -540,7 +541,7 @@ export class FacetSearch {
     let current = $$(this.searchResults).find('.coveo-current');
     _.each($$(this.searchResults).findAll('.coveo-facet-selectable'), (s) => {
       $$(s).removeClass('coveo-current');
-    })
+    });
 
     let allSelectables = this.getSelectables();
     let idx = _.indexOf(allSelectables, current);
@@ -583,7 +584,7 @@ export class FacetSearch {
 
     let searchParameters = new FacetSearchParameters(this.facet);
     searchParameters.nbResults = 1000;
-    searchParameters.setValueToSearch(this.getValueInInputForFacetSearch())
+    searchParameters.setValueToSearch(this.getValueInInputForFacetSearch());
     this.facet.facetQueryController.search(searchParameters).then((fieldValues: IIndexFieldValue[]) => {
       this.completelyDismissSearch();
       ModalBox.close(true);
@@ -595,7 +596,7 @@ export class FacetSearch {
         facetValue.selected = true;
         facetValue.excluded = false;
         return facetValue;
-      })
+      });
       this.facet.processFacetSearchAllResultsSelected(facetValues);
     });
     this.completelyDismissSearch();

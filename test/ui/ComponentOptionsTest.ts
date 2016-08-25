@@ -232,7 +232,7 @@ export function ComponentOptionsTest() {
               required: true
             })
           };
-          expect(() => { ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' }) }).toThrow();
+          expect(() => { ComponentOptions.initComponentOptions(elem, { options, ID: 'fooID' }); }).toThrow();
         });
 
         it('which initializes the options of a component with postProcessing', () => {

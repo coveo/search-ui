@@ -304,7 +304,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
             tab.el.style.opacity = lastTabInSection.style.opacity = '0';
           }
         }
-      })
+      });
     });
   }
 

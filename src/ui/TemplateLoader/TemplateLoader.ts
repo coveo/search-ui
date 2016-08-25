@@ -47,8 +47,8 @@ export class TemplateLoader extends Component {
       var parents = $(this.element).parents('.' + Component.computeCssClassName(TemplateLoader));
       _.each(parents, (parent) => {
         var parentHTML = $(parent).clone().children().remove().end().get(0).outerHTML;
-        Assert.check(parentHTML.indexOf(this.element.outerHTML) === -1, 'TemplateLoader cannot load a template into itself.')
-      })
+        Assert.check(parentHTML.indexOf(this.element.outerHTML) === -1, 'TemplateLoader cannot load a template into itself.');
+      });
 
       this.element.innerHTML = this.options.template.instantiateToString(this.result, false);
       Initialization.automaticallyCreateComponentsInside(this.element, initParameters);

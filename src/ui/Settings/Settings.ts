@@ -107,7 +107,7 @@ export class Settings extends Component {
     var settingsPopulateMenuArgs: ISettingsPopulateMenuArgs = {
       settings: this,
       menuData: []
-    }
+    };
     $$(this.root).trigger(SettingsEvents.settingsPopulateMenu, settingsPopulateMenuArgs);
     _.each(settingsPopulateMenuArgs.menuData, (menuItem) => {
       var menuItemDom = $$('div', {
@@ -120,7 +120,7 @@ export class Settings extends Component {
         $$(this.menu).detach();
         _.each(settingsPopulateMenuArgs.menuData, (menuItem) => {
           menuItem.onClose && menuItem.onClose();
-        })
+        });
         menuItem.onOpen();
       });
       menu.appendChild(menuItemDom);
@@ -132,7 +132,7 @@ export class Settings extends Component {
     clearTimeout(this.closeTimeout);
     this.closeTimeout = setTimeout(() => {
       this.close();
-    }, this.options.menuDelay)
+    }, this.options.menuDelay);
   }
 
   private mouseenter() {
@@ -144,7 +144,7 @@ export class Settings extends Component {
       horizontal: HorizontalAlignment.INNERRIGHT,
       vertical: VerticalAlignment.BOTTOM,
       verticalOffset: 8
-    }
+    };
   }
 }
 Initialization.registerAutoCreateComponent(Settings);

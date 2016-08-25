@@ -33,7 +33,7 @@ export class RecommendationQuery extends Component {
         return;
       }
       if (!_.isUndefined(this.content) && this.content != '') {
-        this.bind.onRootElement(QueryEvents.buildingQuery, this.handleBuildingQuery)
+        this.bind.onRootElement(QueryEvents.buildingQuery, this.handleBuildingQuery);
       }
     }
 
@@ -44,4 +44,4 @@ export class RecommendationQuery extends Component {
   }
 }
 
-Initialization.registerAutoCreateComponent(RecommendationQuery)
+Initialization.registerAutoCreateComponent(RecommendationQuery);

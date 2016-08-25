@@ -7,7 +7,7 @@ import {Assert} from '../../src/misc/Assert';
 
 export function CurrentTabTest() {
   describe('CurrentTab', () => {
-    var test: Mock.IBasicComponentSetup<CurrentTab>
+    var test: Mock.IBasicComponentSetup<CurrentTab>;
 
     beforeEach(function () {
       test = Mock.basicComponentSetup<CurrentTab>(CurrentTab);
@@ -15,12 +15,12 @@ export function CurrentTabTest() {
 
     afterEach(function () {
       test = null;
-    })
+    });
 
     it('is hidden when no tab is active', () => {
       test.env.queryStateModel.set(QueryStateModel.attributesEnum.t, undefined);
       expect($$(test.cmp.element).is(':visible')).toBe(false);
-    })
+    });
 
     it('displays the caption of the current tab when it changes', () => {
       let root = $$('div').el;
@@ -39,7 +39,7 @@ export function CurrentTabTest() {
       expect($$(test.cmp.element).text()).toEqual('First');
       tab2.cmp.select();
       expect($$(test.cmp.element).text()).toEqual('Second');
-    })
+    });
 
     it('does not explode when a tab section to open is defined and no element has class coveo-glass', () => {
       let tabSection = $$('div', { className: 'tabSection' });
@@ -59,7 +59,6 @@ export function CurrentTabTest() {
       test.cmp.element.click();
 
       expect(Assert.failureHandler).not.toHaveBeenCalled();
-    })
-
-  })
+    });
+  });
 }

@@ -123,7 +123,7 @@ export class SearchAlerts extends Component {
             }
           });
       }
-    })
+    });
   }
 
   /**
@@ -164,7 +164,7 @@ export class SearchAlerts extends Component {
     return this.queryController.getEndpoint().listSubscriptions()
       .then((subscriptions: ISubscription[]) => {
         _.each(subscriptions, (subscription) => {
-          this.addSearchAlert(subscription, container)
+          this.addSearchAlert(subscription, container);
         });
       })
       .catch(() => {
@@ -177,7 +177,7 @@ export class SearchAlerts extends Component {
           title: title.text(),
           className: 'coveo-subscriptions-panel'
         });
-      })
+      });
   }
 
   private handleSearchAlertsFail() {
@@ -209,13 +209,13 @@ export class SearchAlerts extends Component {
     let context: string;
     if (subscription.type == SUBSCRIPTION_TYPE.followQuery) {
       let typeConfig = <ISubscriptionQueryRequest>subscription.typeConfig;
-      context = _.escape(typeConfig.query.q) || l('EmptyQuery')
+      context = _.escape(typeConfig.query.q) || l('EmptyQuery');
     } else {
       let typeConfig = <ISubscriptionItemRequest>subscription.typeConfig;
       context = _.escape(typeConfig.title || typeConfig.id);
     }
 
-    let element = $$('tr')
+    let element = $$('tr');
     element.addClass('coveo-subscriptions-panel-subscription');
     element.el.innerHTML = `
       <td class='coveo-subscriptions-panel-content-type'>${ l('SearchAlerts_Type_' + subscription.type)}</td>
@@ -238,7 +238,7 @@ export class SearchAlerts extends Component {
 
     let noSearchAlerts = container.find('.coveo-subscriptions-panel-no-subscriptions');
 
-    element.insertBefore(noSearchAlerts)
+    element.insertBefore(noSearchAlerts);
 
     let frequencyInput = <HTMLInputElement>element.find('.coveo-subscriptions-panel-frequency select');
 
@@ -247,7 +247,7 @@ export class SearchAlerts extends Component {
     $$(frequencyInput).on('change', (event) => {
       subscription.frequency = frequencyInput.value;
       this.updateAndSyncSearchAlert(subscription);
-    })
+    });
 
     $$(element.find('.coveo-subscriptions-panel-action-unfollow')).on('click', () => {
       element.addClass('coveo-subscription-unfollowed');
@@ -260,7 +260,7 @@ export class SearchAlerts extends Component {
         })
         .catch(() => {
           this.handleSearchAlertsFail();
-        })
+        });
     });
 
     $$(element.find('.coveo-subscriptions-panel-action-follow')).on('click', () => {
@@ -274,7 +274,7 @@ export class SearchAlerts extends Component {
         })
         .catch(() => {
           this.handleSearchAlertsFail();
-        })
+        });
     });
   }
 
@@ -309,7 +309,7 @@ export class SearchAlerts extends Component {
       })
       .catch(() => {
         this.triggerSearchAlertsFail();
-      })
+      });
   }
 
   private triggerSearchAlertsFail() {
@@ -336,7 +336,7 @@ export class SearchAlerts extends Component {
   private static buildFollowQueryRequest(query: IQuery, options: ISearchAlertsOptions): ISubscriptionRequest {
     let typeConfig: ISubscriptionQueryRequest = {
       query: query
-    }
+    };
 
     if (options.modifiedDateField) {
       typeConfig.modifiedDateField = options.modifiedDateField;
@@ -345,7 +345,7 @@ export class SearchAlerts extends Component {
     return {
       type: SUBSCRIPTION_TYPE.followQuery,
       typeConfig: typeConfig
-    }
+    };
   }
 
   static create(element: HTMLElement, options?: ISearchAlertsOptions, root?: HTMLElement): SearchAlerts {

@@ -21,6 +21,7 @@ import {SliderEvents, IGraphValueSelectedArgs} from '../../events/SliderEvents';
 import {Assert} from '../../misc/Assert';
 import {Utils} from '../../utils/Utils';
 import {Initialization} from '../Base/Initialization';
+import d3 = require('d3');
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;
@@ -33,8 +34,41 @@ export interface IFacetSliderOptions extends ISliderOptions {
 /**
  * The FacetSlider component allows to create a facet that renders a slider widget to filter on a range of numerical values
  * rather than the classic multi-select facet with a label and a count for each values.<br/>
- * Note that this component does *NOT* inherit from a standard {@link Facet}, and thus does not offer all the same options.<br/>
- * If you want to have a graph on top of your FacetSlider, then you will need to manually include d3.js, or d3.min.js from the script files included in the package.
+ * Note that this component does *NOT* inherit from a standard {@link Facet}, and thus does not offer all the same options.
+ * Also note that many options for the slider component cannot be set as an HTML attribute on the component, and must be configured in javascript
+ *
+ * ## A generic example on how to initialize a complex slider
+ * ```
+ * // Using a JSON object inside the init call. Note that the JSON object follows the options described in this page.
+ * Coveo.init(document.querySelector('#search'), {
+ *    FacetSlider: {
+ *      field: "@size",
+ *      start: 1000,
+ *      end: 5000,
+ *      rangeSlider: true,
+ *      graph: {
+ *        steps: 10
+ *      }
+ *    }
+ * })
+ *
+ * // OR using the jquery extension
+ *
+ * $('#search').coveo('init', {
+ *    FacetSlider: {
+ *      field: "@size",
+ *      start: 1000,
+ *      end: 5000,
+ *      rangeSlider: true,
+ *      graph: {
+ *        steps: 10
+ *      }
+ *    }
+ * })
+ *
+ * // Same config, but using attribute directly on the element instead
+ * <div class='CoveoFacetSlider' data-field='@syssize' data-start='1000' data-end='5000' data-range-slider='true' data-graph-steps='10'></div>
+ * ```
  */
 export class FacetSlider extends Component {
 
@@ -42,7 +76,7 @@ export class FacetSlider extends Component {
    * The component options
    * @componentOptions
    */
-  static options = {
+  static options: IFacetSliderOptions = {
     /**
      * The title on top of the facet component.<br/>
      * Default value is the localized string for 'No title'
@@ -145,7 +179,7 @@ export class FacetSlider extends Component {
     /**
      * Specifies that you wish to display a small graph on top of the slider.<br/>
      * Available options are :
-     * <ul>
+     *
      *   <li>steps: (data-graph-steps) <code>number</code> : Specifies the number of steps/columns to display in your graph. Default value is 10</li>
      * </ul>
      */
@@ -162,6 +196,62 @@ export class FacetSlider extends Component {
           }
         })
       }
+    }),
+    /**
+     * Specifies a function that will generate the steps for the slider. The function receives the slider boundaries must return an array of number (the steps).
+     *
+     * ```
+     * Coveo.init(document.querySelector('#search'), {
+     *    FacetSlider: {
+     *      field: "@size",
+     *      getSteps: function(start, end) {
+     *        return [0,2,4,6,8,10];
+     *      }
+     *    }
+     * })
+     *
+     * // OR using the jquery extension
+     *
+     * $('#search').coveo('init', {
+     *    FacetSlider: {
+     *        field: "@size",
+     *        getSteps: function(start, end) {
+     *            return [0,2,4,6,8,10];
+     *        }
+     *    }
+     * })
+     * ```
+     */
+    getSteps: ComponentOptions.buildCustomOption<(start: number, end: number) => number[]>(() => {
+      return null;
+    }),
+    /**
+     * Specifies a function that will generate the caption for the slider. Receives the current slider values (number[]) and must return the caption (string).
+     *
+     * ```
+     * Coveo.init(document.querySelector('#search'), {
+     *    FacetSlider: {
+     *      field: "@size",
+     *      valueCaption: function(values) {
+     *        return values[0] + " hello" + ", " + values[1] + " world";
+     *      }
+     *    }
+     * })
+     *
+     * // OR using the jquery extension
+     *
+     * $('#search').coveo('init', {
+     *    FacetSlider: {
+     *      field: "@size",
+     *      valueCaption: function(values) {
+     *        return values[0] + " hello" + ", " + values[1] + " world";
+     *      }
+     *    }
+     * })
+     * ```
+     */
+    valueCaption: ComponentOptions.buildCustomOption<(values: number[]) => string>(() => {
+      return null;
     })
   };
 
@@ -218,7 +308,7 @@ export class FacetSlider extends Component {
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
     this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) => this.handlePopulateBreadcrumb(args));
-    this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset())
+    this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset());
 
     this.onResize = _.debounce(() => {
       if (!this.searchInterface.isSmallInterface() && this.slider) {
@@ -238,7 +328,7 @@ export class FacetSlider extends Component {
       enableCollapseElement: true,
       isNewDesign: this.getBindings().searchInterface.isNewDesign(),
       facetSlider: this
-    })
+    });
     this.element.appendChild(this.facetHeader.build());
   }
 
@@ -287,7 +377,7 @@ export class FacetSlider extends Component {
       && !isNaN(this.endOfSlider)
       && !isNaN(this.initialStartOfSlider)
       && !isNaN(this.initialEndOfSlider)
-      && (this.startOfSlider != this.initialStartOfSlider || this.endOfSlider != this.initialEndOfSlider)
+      && (this.startOfSlider != this.initialStartOfSlider || this.endOfSlider != this.initialEndOfSlider);
   }
 
   public getSliderBoundaryForQuery(): number[] {
@@ -335,14 +425,14 @@ export class FacetSlider extends Component {
           element: this.buildBreadcrumbFacetSlider()
         });
       }
-    }
+    };
     if (this.slider) {
-      populateBreadcrumb()
+      populateBreadcrumb();
     } else {
       $$(this.root).one(QueryEvents.deferredQuerySuccess, () => {
         populateBreadcrumb();
         $$(this.root).trigger(BreadcrumbEvents.redrawBreadcrumb);
-      })
+      });
     }
   }
 
@@ -364,7 +454,7 @@ export class FacetSlider extends Component {
 
     let value = $$('span', {
       className: 'coveo-facet-slider-breadcrumb-value'
-    })
+    });
     value.text(this.slider.getCaption());
     values.el.appendChild(value.el);
 
@@ -380,7 +470,7 @@ export class FacetSlider extends Component {
         facetTitle: this.options.title
       });
       this.queryController.executeQuery();
-    })
+    });
     return elem;
   }
 
@@ -396,7 +486,7 @@ export class FacetSlider extends Component {
     let eventName = this.queryStateModel.getEventName(Model.eventTypes.changeOne + this.rangeQueryStateAttribute);
     this.bind.onRootElement(eventName, (args: IAttributeChangedEventArg) => {
       this.slider ? this.handleRangeQueryStateChanged(args) : this.setRangeStateSliderStillNotCreated(args);
-    })
+    });
   }
 
   private setRangeStateSliderStillNotCreated(args: IAttributeChangedEventArg) {
@@ -423,7 +513,7 @@ export class FacetSlider extends Component {
     if (this.hasAGraph()) {
       $$(sliderDiv).on(SliderEvents.graphValueSelected, (e: MouseEvent, args: IGraphValueSelectedArgs) => {
         this.handleGraphValueSelected(args);
-      })
+      });
     }
     sliderContainer.appendChild(sliderDiv);
     this.element.appendChild(sliderContainer);
@@ -522,7 +612,7 @@ export class FacetSlider extends Component {
     let copyOfValues = [];
     copyOfValues[0] = Number(values[0]) + 0.0;
     copyOfValues[1] = Number(values[1]) + 0.0;
-    return copyOfValues
+    return copyOfValues;
   }
 
   private renderToSliderGraph(data: IQuerySuccessEventArgs) {
@@ -547,8 +637,8 @@ export class FacetSlider extends Component {
           y: y,
           end: end,
           isDate: this.options.dateField
-        }
-      })
+        };
+      });
     }
     if (totalGraphResults == 0) {
       this.isEmpty = true;
@@ -643,7 +733,7 @@ export class FacetSlider extends Component {
 
   private setupSliderStateVariables() {
     if (isNaN(this.initialStartOfSlider) || isNaN(this.initialEndOfSlider)) {
-      this.logger.warn('Cannnot initialize slider with those values : start: ' + this.initialStartOfSlider + ' end: ' + this.initialEndOfSlider)
+      this.logger.warn('Cannnot initialize slider with those values : start: ' + this.initialStartOfSlider + ' end: ' + this.initialEndOfSlider);
     } else {
       this.initialStartOfSlider = Number(this.initialStartOfSlider);
       this.initialEndOfSlider = Number(this.initialEndOfSlider);
@@ -664,7 +754,7 @@ export class FacetSlider extends Component {
       this.setupInitialSliderStateStart(this.options.start);
     }
     if (!Utils.isNullOrUndefined(this.options.end)) {
-      this.setupInitialSliderStateEnd(this.options.end)
+      this.setupInitialSliderStateEnd(this.options.end);
     }
   }
 
