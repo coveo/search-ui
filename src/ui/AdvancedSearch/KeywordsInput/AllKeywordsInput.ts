@@ -3,6 +3,6 @@ import {l} from '../../../strings/Strings';
 
 export class AllKeywordsInput extends KeywordsInput {
   constructor() {
-    super(l('AllTheseWords'))
+    super(l('AllTheseWords'));
   }
 }

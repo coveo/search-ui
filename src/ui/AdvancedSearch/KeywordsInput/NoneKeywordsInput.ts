@@ -3,7 +3,7 @@ import {l} from '../../../strings/Strings';
 
 export class NoneKeywordsInput extends KeywordsInput {
   constructor() {
-    super(l('NoneOfTheseWords'))
+    super(l('NoneOfTheseWords'));
   }
 
   public getValue(): string {
@@ -13,8 +13,8 @@ export class NoneKeywordsInput extends KeywordsInput {
     if (value) {
       let splitValues = value.split(' ');
       _.each(splitValues, (splitValue) => {
-        generatedValue += ' NOT ' + splitValue
-      })
+        generatedValue += ' NOT ' + splitValue;
+      });
       generatedValue = generatedValue.substr(1);
     }
 

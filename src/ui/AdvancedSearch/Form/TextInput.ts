@@ -4,9 +4,9 @@ import {KEYBOARD} from '../../../utils/KeyboardUtils';
 export class TextInput {
 
   private element: HTMLElement;
-  private lastQueryText: string = "";
+  private lastQueryText: string = '';
 
-  constructor(private label?: string, private onChange: () => void = () => { }) {
+  constructor(public onChange: () => void = () => { }, private label?: string) {
     this.build();
   }
 

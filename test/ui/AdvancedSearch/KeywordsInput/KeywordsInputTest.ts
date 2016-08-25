@@ -23,8 +23,8 @@ export function KeywordsInputTest() {
         queryBuilder.advancedExpression = Mock.mock<ExpressionBuilder>(ExpressionBuilder);
         input.setValue(value);
         input.updateQuery(queryBuilder);
-        expect(queryBuilder.advancedExpression.add).toHaveBeenCalledWith(value)
-      })
-    })
-  })
+        expect(queryBuilder.advancedExpression.add).toHaveBeenCalledWith(value);
+      });
+    });
+  });
 }

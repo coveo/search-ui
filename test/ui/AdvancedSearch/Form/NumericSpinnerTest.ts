@@ -20,7 +20,7 @@ export function NumericSpinnerTest() {
       let up = $$(element).find('.coveo-spinner-up');
       $$(up).trigger('click');
       expect(spinner.getIntValue()).toEqual(initialValue + 1);
-    })
+    });
 
     it('should decrement on click on spinner-down', () => {
       let initialValue = spinner.getIntValue();
@@ -28,14 +28,14 @@ export function NumericSpinnerTest() {
       let down = $$(element).find('.coveo-spinner-down');
       $$(down).trigger('click');
       expect(spinner.getIntValue()).toEqual(initialValue - 1);
-    })
+    });
 
     describe('setValue', () => {
       it('should set the spinner value', () => {
         let value = 8;
         spinner.setValue(value);
         expect(spinner.getIntValue()).toEqual(value);
-      })
+      });
 
       it('should set the value to min if below min', () => {
         let min = 5;
@@ -43,7 +43,7 @@ export function NumericSpinnerTest() {
         spinner.min = min;
         spinner.setValue(min - 1);
         expect(spinner.getIntValue()).toEqual(min);
-      })
+      });
 
       it('should set the value to max if over max', () => {
         let max = 5;
@@ -51,8 +51,7 @@ export function NumericSpinnerTest() {
         spinner.max = max;
         spinner.setValue(max + 1);
         expect(spinner.getIntValue()).toEqual(max);
-      })
-    })
-
-  })
+      });
+    });
+  });
 }

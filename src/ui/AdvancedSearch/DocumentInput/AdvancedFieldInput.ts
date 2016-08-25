@@ -5,7 +5,7 @@ import {DocumentInput} from './DocumentInput';
 
 export class AdvancedFieldInput extends DocumentInput {
 
-  protected element: HTMLElement
+  protected element: HTMLElement;
   public mode: Dropdown;
   public input: TextInput;
 
@@ -15,9 +15,9 @@ export class AdvancedFieldInput extends DocumentInput {
 
   public build(): HTMLElement {
     let fieldInput = $$(super.build());
-    this.mode = new Dropdown(['Contains', 'DoesNotContain', 'Matches'], this.onChange.bind(this));
+    this.mode = new Dropdown(this.onChange.bind(this), ['Contains', 'DoesNotContain', 'Matches']);
     fieldInput.append(this.mode.getElement());
-    this.input = new TextInput('', this.onChange.bind(this));
+    this.input = new TextInput(this.onChange.bind(this), this.onChange.bind(this));
     fieldInput.append(this.input.getElement());
     this.element = fieldInput.el;
     return this.element;

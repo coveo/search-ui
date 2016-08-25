@@ -1,12 +1,11 @@
 import {IAdvancedSearchInput} from '../AdvancedSearchInput';
 import {QueryBuilder} from '../../Base/QueryBuilder';
-import {l} from '../../../strings/Strings';
 import {$$} from '../../../utils/Dom';
 import {AdvancedSearchEvents} from '../../../events/AdvancedSearchEvents';
 
 export class DocumentInput implements IAdvancedSearchInput {
 
-  protected element: HTMLElement
+  protected element: HTMLElement;
 
   constructor(public inputName: string) {
   }

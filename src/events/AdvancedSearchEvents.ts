@@ -1,4 +1,4 @@
-import {IAdvancedSearchSection} from '../ui/AdvancedSearch/AdvancedSearchInput'
+import {IAdvancedSearchSection} from '../ui/AdvancedSearch/AdvancedSearchInput';
 
 export interface IBuildingAdvancedSearchEventArgs {
   sections: IAdvancedSearchSection[];

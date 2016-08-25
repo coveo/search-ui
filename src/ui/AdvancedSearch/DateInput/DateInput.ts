@@ -1,27 +1,26 @@
 import {IAdvancedSearchInput} from '../AdvancedSearchInput';
 import {AdvancedSearchEvents} from '../../../events/AdvancedSearchEvents';
 import {QueryBuilder} from '../../Base/QueryBuilder';
-import {l} from '../../../strings/Strings';
 import {$$} from '../../../utils/Dom';
 
 export class DateInput implements IAdvancedSearchInput {
 
-  protected element: HTMLElement
+  protected element: HTMLElement;
 
   constructor(public inputName: string) {
   }
 
   public build(): HTMLElement {
     let date = $$('div', { className: 'coveo-advanced-search-date-input-section' });
-    let radioOption = $$('div', { className: 'coveo-radio' })
-    let radio = $$('input', { type: 'radio', name: 'coveo-advanced-search-date', id: this.inputName })
-    let label = $$('label', { className: 'coveo-advanced-search-label', for: this.inputName })
+    let radioOption = $$('div', { className: 'coveo-radio' });
+    let radio = $$('input', { type: 'radio', name: 'coveo-advanced-search-date', id: this.inputName });
+    let label = $$('label', { className: 'coveo-advanced-search-label', 'for': this.inputName });
     label.text(this.inputName);
 
     radio.on('change', () => {
       this.deactivateAllInputs();
       this.activateSelectedInput();
-    })
+    });
 
     radioOption.append(radio.el);
     radioOption.append(label.el);
@@ -58,7 +57,7 @@ export class DateInput implements IAdvancedSearchInput {
     let elements = $$(this.element.parentElement).findAll('fieldset');
     _.each(elements, (element) => {
       (<HTMLInputElement>element).disabled = true;
-    })
+    });
   }
 
   private activateSelectedInput() {
@@ -77,7 +76,7 @@ export class DateInput implements IAdvancedSearchInput {
   private bindRadioEvent() {
     $$(this.getRadio()).on('change', () => {
       $$(this.element).trigger(AdvancedSearchEvents.executeAdvancedSearch);
-    })
+    });
   }
 
 }

@@ -20,12 +20,12 @@ export class SizeInput extends DocumentInput {
 
   public build(): HTMLElement {
     let sizeInput = $$(super.build());
-    this.modeSelect = new Dropdown(SizeInput.modes, this.onChange.bind(this));
+    this.modeSelect = new Dropdown(this.onChange.bind(this), SizeInput.modes);
     this.modeSelect.setId('coveo-size-input-mode');
     sizeInput.append(this.modeSelect.getElement());
     this.sizeInput = new NumericSpinner(this.onChange.bind(this));
     sizeInput.append(this.sizeInput.getElement());
-    this.sizeSelect = new Dropdown(SizeInput.sizes, this.onChange.bind(this));
+    this.sizeSelect = new Dropdown(this.onChange.bind(this), SizeInput.sizes);
     this.sizeSelect.setId('coveo-size-input-select');
     sizeInput.append(this.sizeSelect.getElement());
     this.element = sizeInput.el;
@@ -37,7 +37,7 @@ export class SizeInput extends DocumentInput {
     if (size) {
       switch (this.modeSelect.getValue()) {
         case 'AtLeast':
-          return '@size>=' + this.getSizeInBytes()
+          return '@size>=' + this.getSizeInBytes();
         default:
           return '@size<=' + this.getSizeInBytes();
       }
@@ -51,7 +51,7 @@ export class SizeInput extends DocumentInput {
       case 'KB':
         return size * 1024;
       case 'MB':
-        return size * Math.pow(1024, 2)
+        return size * Math.pow(1024, 2);
       default:
         return size;
     }

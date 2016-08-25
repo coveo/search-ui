@@ -8,7 +8,7 @@ export class DatePicker {
   private element: HTMLInputElement;
   private picker: Pikaday;
 
-  constructor(private onChange: () => void = () => { }) {
+  constructor(public onChange: () => void = () => { }) {
     this.build();
   }
 

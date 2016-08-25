@@ -2,7 +2,6 @@ import {DateInput} from './DateInput';
 import {DatePicker} from '../Form/DatePicker';
 import {l} from '../../../strings/Strings';
 import {$$} from '../../../utils/Dom';
-import {AdvancedSearchEvents} from '../../../events/AdvancedSearchEvents';
 
 export class BetweenDateInput extends DateInput {
 
@@ -29,12 +28,12 @@ export class BetweenDateInput extends DateInput {
   public getValue(): string {
     let firstDate = this.firstDatePicker.getValue();
     let secondDate = this.secondDatePicker.getValue();
-    let query = "";
+    let query = '';
     if (firstDate) {
-      query += '(@date>=' + firstDate + ')';
+      query += `(@date>=${firstDate})`;
     }
     if (secondDate) {
-      query += '(@date<=' + secondDate + ')'
+      query += `(@date<=${secondDate})`;
     }
     return this.isSelected() ? query : '';
   }

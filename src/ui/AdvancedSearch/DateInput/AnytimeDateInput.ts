@@ -14,7 +14,7 @@ export class AnytimeDateInput extends DateInput {
     radio.checked = true;
     $$(radio).on('change', () => {
       $$(this.element).trigger(AdvancedSearchEvents.executeAdvancedSearch);
-    })
+    });
     return this.element;
   }
 

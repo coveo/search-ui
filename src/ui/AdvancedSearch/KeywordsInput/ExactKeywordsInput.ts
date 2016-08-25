@@ -3,7 +3,7 @@ import {l} from '../../../strings/Strings';
 
 export class ExactKeywordsInput extends KeywordsInput {
   constructor() {
-    super(l('ExactPhrase'))
+    super(l('ExactPhrase'));
   }
 
   public getValue(): string {

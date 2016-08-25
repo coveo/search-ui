@@ -9,17 +9,13 @@ import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom';
 import {IAdvancedSearchInput, IAdvancedSearchPrebuiltInput, IAdvancedSearchSection} from './AdvancedSearchInput';
-import {AllKeywordsInput} from './KeywordsInput/AllKeywordsInput';
-import {ExactKeywordsInput} from './KeywordsInput/ExactKeywordsInput';
-import {AnyKeywordsInput} from './KeywordsInput/AnyKeywordsInput';
-import {NoneKeywordsInput} from './KeywordsInput/NoneKeywordsInput';
-import {AnytimeDateInput} from './DateInput/AnytimeDateInput';
-import {InTheLastDateInput} from './DateInput/InTheLastDateInput';
-import {BetweenDateInput} from './DateInput/BetweenDateInput';
-import {SimpleFieldInput} from './DocumentInput/SimpleFieldInput';
-import {SizeInput} from './DocumentInput/SizeInput';
-import {AdvancedFieldInput} from './DocumentInput/AdvancedFieldInput';
 import {AdvancedSearchInputFactory} from './AdvancedSearchInputFactory';
+import {NumericSpinner} from './Form/NumericSpinner';
+import {DatePicker} from './Form/DatePicker';
+import {Dropdown} from './Form/Dropdown';
+import {TextInput} from './Form/TextInput';
+import {QueryBuilder} from '../Base/QueryBuilder';
+import {BaseFormTypes} from "./AdvancedSearchInput";
 
 export interface IAdvancedSearchOptions {
   includeKeywords?: boolean;
@@ -27,12 +23,16 @@ export interface IAdvancedSearchOptions {
   includeDocument?: boolean;
 }
 
+export interface IExternalAdvancedSearchSection extends IAdvancedSearchSection {
+  updateQuery: (inputs: BaseFormTypes[], queryBuilder: QueryBuilder) => void;
+}
+
 /**
  * The Advanced Search component allows the user to easily create a complex query to send to the index.
  * The component also allows custom code to modify the content by using the buildingAdvancedSearch event.
  */
 export class AdvancedSearch extends Component {
-  static ID = 'AdvancedSearch'
+  static ID = 'AdvancedSearch';
 
   /**
    * @componentOptions
@@ -55,10 +55,11 @@ export class AdvancedSearch extends Component {
      * Default is `true`
      */
     includeDocument: ComponentOptions.buildBooleanOption({ defaultValue: true })
-  }
+  };
 
   public inputs: IAdvancedSearchInput[] = [];
   private inputFactory = new AdvancedSearchInputFactory(this.queryController.getEndpoint());
+  private externalSections: IExternalAdvancedSearchSection[] = [];
 
   constructor(public element: HTMLElement, public options?: IAdvancedSearchOptions, bindings?: IComponentBindings) {
     super(element, AdvancedSearch.ID, bindings);
@@ -87,7 +88,7 @@ export class AdvancedSearch extends Component {
   }
 
   private buildCloseButton() {
-    var closeButton = $$('div', { className: 'coveo-advanced-search-panel-close' }, $$('span', { className: 'coveo-icon' }).el)
+    var closeButton = $$('div', { className: 'coveo-advanced-search-panel-close' }, $$('span', { className: 'coveo-icon' }).el);
     closeButton.on('click', () => this.close());
     $$(this.element).append(closeButton.el);
   }
@@ -105,7 +106,16 @@ export class AdvancedSearch extends Component {
       inputSections.push(this.getDocumentSection());
     }
 
-    $$(this.element).trigger(AdvancedSearchEvents.buildingAdvancedSearch, { sections: inputSections })
+    this.externalSections = [];
+    $$(this.root).trigger(AdvancedSearchEvents.buildingAdvancedSearch, {
+      sections: this.externalSections,
+      executeQuery: () => this.queryController.executeQuery()
+    });
+
+
+    _.each(this.externalSections, (section: IExternalAdvancedSearchSection) => {
+      component.append(this.buildSection((section)));
+    })
 
     _.each(inputSections, (section) => {
       component.append(this.buildSection(section));
@@ -158,7 +168,7 @@ export class AdvancedSearch extends Component {
     title.text(section.name);
     sectionHTML.append(title.el);
 
-    let sectionInputs = []
+    let sectionInputs = [];
     _.each(section.inputs, (input) => {
       sectionInputs.push(this.buildDefaultInput(input));
     });
@@ -195,16 +205,21 @@ export class AdvancedSearch extends Component {
     });
 
     this.bind.onRootElement(QueryEvents.buildingQuery, (data: IBuildingQueryEventArgs) => {
+      _.each(this.externalSections, (section: IExternalAdvancedSearchSection) => {
+        if (section.updateQuery) {
+          section.updateQuery(<any>section.inputs, data.queryBuilder);
+        }
+      })
       _.each(this.inputs, (input) => {
         if (input.updateQuery) {
           input.updateQuery(data.queryBuilder);
         }
-      })
-    })
+      });
+    });
 
     this.bind.onRootElement(AdvancedSearchEvents.executeAdvancedSearch, () => {
       this.executeAdvancedSearch();
-    })
+    });
   }
 
 }

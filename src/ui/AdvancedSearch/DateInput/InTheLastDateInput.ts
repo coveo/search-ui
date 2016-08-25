@@ -1,14 +1,11 @@
 import {DateInput} from './DateInput';
 import {$$} from '../../../utils/Dom';
-import {Utils} from '../../../utils/Utils';
 import {l} from '../../../strings/Strings';
 import {Dropdown} from '../Form/Dropdown';
 import {NumericSpinner} from '../Form/NumericSpinner';
 import {DateUtils} from '../../../utils/DateUtils';
-import {AdvancedSearchEvents} from '../../../events/AdvancedSearchEvents';
 
 export class InTheLastDateInput extends DateInput {
-
   public dropdown: Dropdown;
   public spinner: NumericSpinner;
 
@@ -24,7 +21,7 @@ export class InTheLastDateInput extends DateInput {
     this.spinner = new NumericSpinner(this.onChange.bind(this));
     input.append(this.spinner.getElement());
 
-    this.dropdown = new Dropdown(['days', 'months'], this.onChange.bind(this));
+    this.dropdown = new Dropdown(this.onChange.bind(this), ['days', 'months']);
     this.dropdown.setId('coveo-advanced-search-in-the-last-select');
     input.append(this.dropdown.getElement());
 

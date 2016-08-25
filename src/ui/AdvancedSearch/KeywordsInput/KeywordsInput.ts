@@ -12,7 +12,7 @@ export class KeywordsInput implements IAdvancedSearchInput {
   }
 
   public build(): HTMLElement {
-    this.input = new TextInput(this.inputName, this.onChange.bind(this));
+    this.input = new TextInput(this.onChange.bind(this), this.inputName);
     return this.input.getElement();
   }
 

@@ -17,8 +17,8 @@ export function AnyKeywordsInputTest() {
       it('should return the values separated by OR', () => {
         let value = 'starcraft starwars startrek';
         input.setValue(value);
-        expect(input.getValue()).toEqual('starcraft OR starwars OR startrek')
-      })
-    })
-  })
+        expect(input.getValue()).toEqual('starcraft OR starwars OR startrek');
+      });
+    });
+  });
 }

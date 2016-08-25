@@ -23,8 +23,8 @@ export function SimpleFieldInputTest() {
       it('should return fieldName == the value', () => {
         input.dropDown.selectValue('what');
         expect(input.getValue()).toEqual('@test=="what"');
-      })
-    })
+      });
+    });
 
     function mockListFieldValues() {
       (<jasmine.Spy>endpoint.listFieldValues).and.callFake(() => {
@@ -35,10 +35,10 @@ export function SimpleFieldInputTest() {
               then: (callback) => {
                 callback();
               }
-            }
+            };
           }
-        }
-      })
+        };
+      });
     }
-  })
+  });
 }

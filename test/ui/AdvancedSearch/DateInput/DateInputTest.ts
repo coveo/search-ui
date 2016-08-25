@@ -20,14 +20,14 @@ export function DateInputTest() {
     describe('updateQuery', () => {
       it('should add the value in the advanced query', () => {
         let value = 'test';
-        spyOn(input, 'getValue').and.returnValue(value)
+        spyOn(input, 'getValue').and.returnValue(value);
         let queryBuilder = Mock.mock<QueryBuilder>(QueryBuilder);
         let advancedExpression = Mock.mock<ExpressionBuilder>(ExpressionBuilder);
         queryBuilder.advancedExpression = advancedExpression;
-        input.updateQuery(queryBuilder)
+        input.updateQuery(queryBuilder);
         expect(advancedExpression.add).toHaveBeenCalledWith(value);
-      })
-    })
+      });
+    });
 
     describe('on change', () => {
 
@@ -43,20 +43,21 @@ export function DateInputTest() {
         secondInput.getElement().appendChild($$('fieldset').el);
         section.appendChild(input.getElement());
         section.appendChild(secondInput.getElement());
-      })
+      });
 
       it('should desactivate all inputs', () => {
         let radio = $$(input.getElement()).find('input');
         $$(radio).trigger('change');
         let fieldset = <HTMLFieldSetElement>$$(secondInput.getElement()).find('fieldset');
         expect(fieldset.disabled).toBe(true);
-      })
+      });
+
       it('should activate selected input', () => {
         let radio = $$(input.getElement()).find('input');
         $$(radio).trigger('change');
         let fieldset = <HTMLFieldSetElement>$$(input.getElement()).find('fieldset');
         expect(fieldset.disabled).toBe(false);
-      })
-    })
-  })
+      });
+    });
+  });
 }

@@ -7,8 +7,8 @@ export function DropdownTest() {
     let values: string[];
 
     beforeEach(function () {
-      values = ['one', 'two', 'three']
-      dropdown = new Dropdown(values);
+      values = ['one', 'two', 'three'];
+      dropdown = new Dropdown(undefined, values);
     });
 
     afterEach(function () {
@@ -21,7 +21,7 @@ export function DropdownTest() {
       let button = $$(element).find('.coveo-dropdown-toggle');
       $$(button).trigger('click');
       expect($$(element).hasClass('coveo-open')).toBe(true);
-    })
+    });
 
     it('should close the menu on click if already open', () => {
       dropdown.open();
@@ -29,35 +29,35 @@ export function DropdownTest() {
       let button = $$(element).find('.coveo-dropdown-toggle');
       $$(button).trigger('click');
       expect($$(element).hasClass('coveo-open')).toBe(false);
-    })
+    });
 
     it('should select the first element by default', () => {
       expect(dropdown.getValue()).toEqual(values[0]);
-    })
+    });
 
     it('should select a value on click', () => {
       let options = $$(dropdown.getElement()).findAll('li');
       $$(options[1]).trigger('click');
       expect(dropdown.getValue()).toEqual(values[1]);
-    })
+    });
 
     describe('select', () => {
       it('should select option at specified index', () => {
         dropdown.select(1);
         expect(dropdown.getValue()).toEqual(values[1]);
-      })
-    })
+      });
+    });
 
     describe('selectValue', () => {
       it('should select option with specified value', () => {
         dropdown.selectValue('three');
         expect(dropdown.getValue()).toEqual('three');
-      })
+      });
+
       it('should not change selection if the value doesn\'t exist', () => {
         dropdown.selectValue('random');
         expect(dropdown.getValue()).toEqual(values[0]);
-      })
-    })
-
-  })
+      });
+    });
+  });
 }

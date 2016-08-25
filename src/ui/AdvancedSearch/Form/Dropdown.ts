@@ -1,6 +1,5 @@
 import {$$, Dom} from '../../../utils/Dom';
 import {l} from '../../../strings/Strings';
-import {AdvancedSearchEvents} from '../../../events/AdvancedSearchEvents';
 
 export class Dropdown {
 
@@ -9,7 +8,7 @@ export class Dropdown {
   private selectedIcon: Dom;
   private options: HTMLElement[] = [];
 
-  constructor(protected listOfValues: string[], private onChange: () => void = () => { }, private getDisplayValue: (string) => string = l) {
+  constructor(public onChange: () => void = () => { }, protected listOfValues: string[], private getDisplayValue: (string) => string = l) {
     this.build();
     this.select(0);
     this.bindEvents();
@@ -44,7 +43,7 @@ export class Dropdown {
       if ($$(option).getAttribute('value') == value) {
         this.selectOption(option);
       }
-    })
+    });
   }
 
   private selectOption(option: HTMLElement) {
@@ -68,6 +67,7 @@ export class Dropdown {
     dropdown.append(button.el);
     dropdown.append(this.buildDropdownMenu(this.selected));
     this.element = dropdown.el;
+    return this.element;
   }
 
   private buildDropdownMenu(selected: Dom): HTMLElement {
@@ -75,7 +75,7 @@ export class Dropdown {
     this.selectedIcon = $$('span', { className: 'coveo-selected-icon coveo-sprites-facet-search-checkbox-hook-active' });
     _.each(this.listOfValues, (value: string) => {
       dropdownMenu.append(this.buildOption(value));
-    })
+    });
     return dropdownMenu.el;
   }
 
@@ -87,7 +87,7 @@ export class Dropdown {
     option.append(content.el);
     option.on('click', () => {
       this.selectOption(option.el);
-    })
+    });
     this.options.push(option.el);
     return option.el;
   }
@@ -100,6 +100,6 @@ export class Dropdown {
       } else {
         this.open();
       }
-    })
+    });
   }
 }

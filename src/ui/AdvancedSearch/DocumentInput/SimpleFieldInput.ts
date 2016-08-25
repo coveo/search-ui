@@ -7,7 +7,7 @@ import {$$} from '../../../utils/Dom';
 
 export class SimpleFieldInput extends DocumentInput {
 
-  protected element: HTMLElement
+  protected element: HTMLElement;
   public dropDown: Dropdown;
 
   constructor(public inputName: string, public fieldName: string, private endpoint: ISearchEndpoint) {
@@ -18,7 +18,7 @@ export class SimpleFieldInput extends DocumentInput {
     let fieldInput = $$(super.build());
     this.buildFieldSelect().then(() => {
       fieldInput.append(this.dropDown.getElement());
-    })
+    });
     this.element = fieldInput.el;
     return this.element;
   }
@@ -33,8 +33,10 @@ export class SimpleFieldInput extends DocumentInput {
       let options = [''];
       _.each(values, (value: IIndexFieldValue) => {
         options.push(value.value);
-      })
-      this.dropDown = new Dropdown(options, this.onChange.bind(this), (str: string) => { return FacetUtils.tryToGetTranslatedCaption(this.fieldName, str) });
+      });
+      this.dropDown = new Dropdown(this.onChange.bind(this), options, (str: string) => {
+        return FacetUtils.tryToGetTranslatedCaption(this.fieldName, str);
+      });
     });
   }
 

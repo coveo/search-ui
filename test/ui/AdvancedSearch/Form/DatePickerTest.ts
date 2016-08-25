@@ -1,5 +1,4 @@
 import {DatePicker} from '../../../../src/ui/AdvancedSearch/Form/DatePicker';
-import {DateUtils} from '../../../../src/utils/DateUtils';
 
 export function DatePickerTest() {
   describe('DatePicker', () => {
@@ -17,6 +16,6 @@ export function DatePickerTest() {
       let element = picker.getElement();
       expect(element.tagName.toLowerCase()).toEqual('input');
       expect(element.readOnly).toBe(true);
-    })
-  })
+    });
+  });
 }
