@@ -13,7 +13,7 @@ export interface IExportToExcelOptions {
 
 /**
  * This component allows users to export the current search results in a Microsoft Excel (.xlsx) format.
- * It populates the {@link Settings} component's menu.
+ * It populates the {@link Settings} component menu.
  */
 export class ExportToExcel extends Component {
   static ID = 'ExportToExcel';
@@ -24,7 +24,7 @@ export class ExportToExcel extends Component {
   static options: IExportToExcelOptions = {
     /**
      * The number of results included in the exported Excel file.<br/>
-     * The default value of <code>100</code> makes the generation and the download of the resulting Excel file
+     * The default value of `<code>100</code>` makes the generation and the download of the resulting Excel file
      * last about 1 second.<br/>
      * Increasing this value will exponentially increase the time needed to create the Excel file.<br/>
      * It is not recommended to go above the default index limit of 1000 search results.
@@ -37,7 +37,7 @@ export class ExportToExcel extends Component {
    * @param element
    * @param options
    * @param bindings
-   * @param _window The global Window object (used to download the Excel link)
+   * @param _window The global Window object (used to download the Excel link).
    */
   constructor(public element: HTMLElement, public options: IExportToExcelOptions, public bindings?: IComponentBindings, public _window?: Window) {
     super(element, ExportToExcel.ID, bindings);
@@ -54,7 +54,7 @@ export class ExportToExcel extends Component {
   }
 
   /**
-   * Download the Excel representation of the current query
+   * Download the Excel representation of the current query.
    */
   public download() {
     let query = this.queryController.getLastQuery();

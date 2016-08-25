@@ -27,7 +27,7 @@ export class CurrentTab extends Component {
    */
   static options: ICurrentTabOptions = {
     /**
-     * Specifies the css selector to the section which contains the tab.
+     * Specifies the CSS selector to the section which contains the tab.
      * Clicking this component will toggle between opening and closing this section.
      */
     tabSectionToOpen: ComponentOptions.buildStringOption()

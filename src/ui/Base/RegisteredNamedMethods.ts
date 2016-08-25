@@ -82,7 +82,7 @@ Initialization.registerNamedMethod('initRecommendation', (element: HTMLElement, 
 /**
  * Execute a standard query. Active component in the interface will react to events/ push data in the query / handle the query success or failure as needed.<br/>
  * It triggers a standard query flow for which the standard component will perform their expected behavior.<br/>
- * If you wish to only perform a query on the index to retrieve results (without the component reacting), look into {@link SearchInterface.search} instead.<br/>
+ * If you wish to only perform a query on the index to retrieve results (without the component reacting), look into {@link SearchInterface} instead.<br/>
  * Calling this method is the same as calling {@link QueryController.executeQuery}.
  * @param element The root of the interface to initialize.
  */
@@ -124,9 +124,9 @@ Initialization.registerNamedMethod('state', (element: HTMLElement, ...args: any[
 });
 
 /**
- * Get the component bound on the given HTMLElement.
- * @param element The HTMLElement for which to get the component instance.
- * @param componentClass If multiple components are bound to a single HTMLElement, you need to specify which components you wish to get.
+ * Get the component bound on the given `HTMLElement`.
+ * @param element The `HTMLElement` for which to get the component instance.
+ * @param componentClass If multiple components are bound to a single `HTMLElement`, you need to specify which components you wish to get.
  * @param noThrow By default, the GET method will throw if there is no component bound, or if there are multiple component and no `componentClass` is specified. This deletes the error if set to true.
  * @returns {Component}
  */
@@ -168,7 +168,7 @@ function getCoveoAnalytics(element: HTMLElement): Analytics {
 
 /**
  * Log a custom event on the Coveo Usage Analytics service.
- * @param element The root of the interface for which to log analytics event.
+ * @param element The root of the interface for which to log analytics events.
  * @param customEventCause The cause of the event.
  * @param metadata The metadata associated with the event (JSON key value).
  */
@@ -184,8 +184,8 @@ Initialization.registerNamedMethod('logCustomEvent', (element: HTMLElement, cust
 });
 
 /**
- * Log a search event on the Coveo Usage Analytics service.
- * @param element The root of the interface for which to log analytics event.
+ * Log a `SearchEvent` on the Coveo Usage Analytics service.
+ * @param element The root of the interface for which to log analytics events.
  * @param searchEventCause The cause of the event.
  * @param metadata The metadata associated with the event (JSON key value).
  */
@@ -201,9 +201,9 @@ Initialization.registerNamedMethod('logSearchEvent', (element: HTMLElement, sear
 });
 
 /**
- * Log a search as you type event on the Coveo Usage Analytics service.<br/>
- * It is a bit different from a standard search event, as it will wait 5 second before sending the final search as you type event.
- * @param element The root of the interface for which to log analytics event.
+ * Log a `SearchAsYouTypeEvent` on the Coveo Usage Analytics service.<br/>
+ * It is a bit different from a standard search event, as it will wait 5 seconds before sending the final `SearchAsYouType` event.
+ * @param element The root of the interface for which to log analytics events.
  * @param searchAsYouTypeEventCause The cause of the event.
  * @param metadata The metadata associated with the event (JSON key value).
  */
@@ -219,8 +219,8 @@ Initialization.registerNamedMethod('logSearchAsYouTypeEvent', (element: HTMLElem
 });
 
 /**
- * Log a click event on the Coveo Usage Analytics service.
- * @param element The root of the interface for which to log analytics event.
+ * Log a `ClickEvent` on the Coveo Usage Analytics service.
+ * @param element The root of the interface for which to log analytics events.
  * @param clickEventCause The cause of the event.
  * @param metadata The metadata associated with the event (JSON key value).
  * @param result The result that was clicked.
@@ -251,7 +251,7 @@ Initialization.registerNamedMethod('options', (element: HTMLElement, optionsToSe
 });
 
 /**
- * Patch the given `methodName` on an instance of a component bound to an HTMLElement with a new handler.
+ * Patch the given `methodName` on an instance of a component bound to an `HTMLElement` with a new handler.
  * @param element
  * @param methodName
  * @param handler
