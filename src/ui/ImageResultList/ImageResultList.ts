@@ -14,7 +14,7 @@ export interface IImageResultListOptions extends IResultListOptions {
 }
 
 /**
- * This component is an extension of the ResultList component to display image results.
+ * This component is an extension of the `ResultList` component to display image results.
  */
 export class ImageResultList extends ResultList {
   static ID = 'ImageResultList';
@@ -22,7 +22,7 @@ export class ImageResultList extends ResultList {
   static columnLayoutTypeStr = 'column';
 
   /**
-   * The options for the component.
+   * The options for the component
    * This component inherits the options of the {@link ResultList} component.
    * @componentOptions
    */
@@ -32,7 +32,7 @@ export class ImageResultList extends ResultList {
      * The available values are:
      *    row - Displays resized images that fit to the width of the container and have the same height for a row.
      *    column - Displays the images in fixed-size columns.
-     * The default value is row.
+     * The default value is `row`.
      */
     layoutType: ComponentOptions.buildStringOption({
       defaultValue: 'row',

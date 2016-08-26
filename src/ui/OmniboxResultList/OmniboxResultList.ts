@@ -21,8 +21,8 @@ export interface IOmniboxResultListOptions extends IResultListOptions {
 }
 
 /**
- * This component is exactly like a normal ResultList Component, except that it will render itself inside the Omnibox Component.
- * This will provide a kind of search as you type functionnality, allowing you to easily render complex Result Templates inside the Omnibox Component.
+ * This component is exactly like a normal ResultList Component, except that it will render itself inside the Omnibox component.
+ * This will provide a kind of search as you type functionnality, allowing you to easily render complex Result Templates inside the Omnibox component.
  *
  * # Example
  * ```
@@ -43,9 +43,9 @@ export class OmniboxResultList extends ResultList {
    */
   static options: IOmniboxResultListOptions = {
     /**
-     * Specifies the index at which the result list should render itself inside the Omnibox
+     * Specifies the index at which the result list should render itself inside the Omnibox.
      *
-     * The default value is 51 (Facets are at 50 by default).
+     * The default value is 51 (facets are at 50 by default).
      */
     omniboxZIndex: ComponentOptions.buildNumberOption({ defaultValue: 51, min: 16 }),
     /**
@@ -63,7 +63,7 @@ export class OmniboxResultList extends ResultList {
     /**
      * Specifies the function you wish to execute when a result suggestion is selected.
      *
-     * By default, it will open the corresponding result uri in your browser.
+     * By default, it will open the corresponding result URI in your browser.
      *
      * ```javascript
      * Coveo.init(document.querySelector('#search'), {
@@ -77,11 +77,11 @@ export class OmniboxResultList extends ResultList {
      *     }
      * })
      *
-     * // OR using the jquery extension
+     * // OR using the jQuery extention
      *
      * $("#search").coveo("init", {
      *    OmniboxResultList : {
-     *        //Close the omnibox, change the selected HTMLElement background color and alert the result title.
+     *        //Close the Omnibox, change the selected HTMLElement background color and alert the result title.
      *        onSelect:   function(result, resultElement, omniBoxObject) {
      *            omniBoxObject.close();
      *            resultElement.css('background-color', 'red');
@@ -107,7 +107,7 @@ export class OmniboxResultList extends ResultList {
   }
 
   /**
-   * Build and return an array of HTMLElement with the given result set.
+   * Build and return an array of `HTMLElement` with the given result set.
    * @param results
    */
   public buildResults(results: IQueryResults): HTMLElement[] {

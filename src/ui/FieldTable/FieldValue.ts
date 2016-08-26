@@ -58,15 +58,15 @@ export class FieldValue extends Component {
      */
     field: ComponentOptions.buildFieldOption({ defaultValue: '@field', required: true }),
     /**
-     * Specifies the facet to be toggled when the component is clicked on.<br/>
+     * Specifies the facet to be toggled when the component is clicked On.<br/>
      * When no value is specified, the value of the <code>field</code> option is used.<br/>
-     * If the facet id is custom (e.g. not the same name as its field), you must specify
+     * If the facet ID is custom (e.g. not the same name as its field), you must specify
      * manually this option in order to link the correct facet.
      */
     facet: ComponentOptions.buildStringOption({ postProcessing: (value, options) => value || options.field }),
     /**
      * Specifies if the content to display is an HTML element.<br/>
-     * The default value is <code>false</code>
+     * The default value is <code>false</code>.
      */
     htmlValue: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
@@ -88,7 +88,7 @@ export class FieldValue extends Component {
      */
     displaySeparator: ComponentOptions.buildStringOption({ defaultValue: ', ' }),
     /**
-     * Specifies the helper to be used by the FieldValue to display its content.<br/>
+     * Specifies the helper to be used by the `FieldValue` to display its content.<br/>
      * A few helpers exist by default (see {@link ICoreHelpers}), and new ones can be
      * custom-created (see {@link TemplateHelpers}).
      */
@@ -192,8 +192,8 @@ export class FieldValue extends Component {
   }
 
   /**
-   * Render the passed value string with all of the component's options.<br/>
-   * Returns an <code>HTMLElement</code> containing the rendered value.
+   * Render the passed value string with all of the component options.<br/>
+   * Returns a <code>HTMLElement</code> containing the rendered value.
    */
   public renderOneValue(value: string): HTMLElement {
     let element = $$('span').el;

@@ -24,7 +24,7 @@ export interface IFacetState {
 }
 
 /**
- * Handle the rendering of the {@link Facet} settings menu (typically the ... in the facet header)
+ * Handle the rendering of the {@link Facet} settings menu (typically the ... in the facet header).
  */
 export class FacetSettings extends FacetSort {
   public loadedFromSettings: { [attribute: string]: any };
@@ -53,7 +53,7 @@ export class FacetSettings extends FacetSort {
   }
 
   /**
-   * Build the menu, hook click events
+   * Build the menu, hook click events.
    * @returns {HTMLElement}
    */
   public build() {
@@ -103,7 +103,7 @@ export class FacetSettings extends FacetSort {
   }
 
   /**
-   * Restore the facet state from local storage, and apply it in the query state model
+   * Restore the facet state from local storage, and apply it in the query state model.
    */
   public loadSavedState() {
     if (this.facetStateLocalStorage) {
@@ -130,7 +130,7 @@ export class FacetSettings extends FacetSort {
   }
 
   /**
-   * Take the current state of the facet and save it in the local storage
+   * Take the current state of the facet and save it in the local storage.
    */
   public saveState() {
     if (this.facetStateLocalStorage) {
