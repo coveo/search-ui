@@ -31,7 +31,7 @@ export class DidYouMean extends Component {
     /**
      * This option allows the `DidYouMean` component to automatically trigger a new query
      * when there are no results and a correction is available.<br/>
-     * The default value is `<code>true</code>`.
+     * The default value is <code>true</code>.
      */
     enableAutoCorrection: ComponentOptions.buildBooleanOption({ defaultValue: true }),
   };
