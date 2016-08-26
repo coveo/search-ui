@@ -17,9 +17,9 @@ import {IRecommendationOptions} from '../Recommendation/Recommendation';
 
 /**
  * Initialize the framework with a basic search interface. Calls {@link Initialization.initSearchInterface}.<br/>
- * If using the jQuery extension, this is called using `<code>$('#root').coveo('init');</code>`.
+ * If using the jQuery extension, this is called using <code>$('#root').coveo('init');</code>.
  * @param element The root of the interface to initialize.
- * @param options JSON options for the framework (e.g.: `<code>{Searchbox : {enableSearchAsYouType : true}}</code>`).
+ * @param options JSON options for the framework (e.g.: <code>{Searchbox : {enableSearchAsYouType : true}}</code>).
  */
 export function init(element: HTMLElement, options: any = {}) {
   Initialization.initializeFramework(element, options, () => {
@@ -33,10 +33,10 @@ Initialization.registerNamedMethod('init', (element: HTMLElement, options: any =
 
 /**
  * Initialize the framework with a standalone search box. Calls {@link Initialize.initStandaloneSearchInterface}.<br/>
- * If using the jQuery extension, this is called using `<code>$('#root').coveo('initSearchbox');</code>`.
+ * If using the jQuery extension, this is called using <code>$('#root').coveo('initSearchbox');</code>.
  * @param element The root of the interface to initialize.
  * @param searchPageUri The search page on which to redirect when there is a query.
- * @param options JSON options for the framework (e.g.: `<code>{Searchbox : {enableSearchAsYouType : true}}</code>`).
+ * @param options JSON options for the framework (e.g.: <code>{Searchbox : {enableSearchAsYouType : true}}</code>).
  */
 export function initSearchbox(element: HTMLElement, searchPageUri: string, options: any = {}): void {
   Assert.isNonEmptyString(searchPageUri);
