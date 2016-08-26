@@ -170,7 +170,7 @@ export class ResultList extends Component {
     $$(this.options.resultContainer).addClass('coveo-result-list-container');
     $$(this.options.resultContainer).addClass(`coveo-${this.options.layout}-layout`);
 
-    $$(this.root).on(ResultLayoutEvents.resultLayoutPopulate, (e, args) => args.layouts.push(this.options.layout));
+    $$(this.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => args.layouts.push(this.options.layout));
   }
 
   /**

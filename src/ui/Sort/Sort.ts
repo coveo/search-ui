@@ -5,8 +5,8 @@ import {IComponentBindings} from '../Base/ComponentBindings';
 import {Assert} from '../../misc/Assert';
 import {Utils} from '../../utils/Utils';
 import {$$} from '../../utils/Dom';
-import {Model, IAttributesChangedEventArg} from '../../models/Model';
-import {QueryStateModel} from '../../models/QueryStateModel';
+import {Model, IAttributesChangedEventArg, MODEL_EVENTS} from '../../models/Model';
+import {QueryStateModel, QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
 import {QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs} from '../../events/QueryEvents';
 import {Initialization} from '../Base/Initialization';
 import {analyticsActionCauseList, IAnalyticsResultsSortMeta} from '../Analytics/AnalyticsActionListMeta';
@@ -71,9 +71,8 @@ export class Sort extends Component {
 
     Assert.isLargerOrEqualsThan(1, this.options.sortCriteria.length);
 
-    var eventName = this.queryStateModel.getEventName(Model.eventTypes.changeOne) + QueryStateModel.attributesEnum.sort;
-    this.bind.onRootElement(eventName, (args: IAttributesChangedEventArg) => this.handleQueryStateChanged(args))
-    this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args))
+    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.SORT, (args: IAttributesChangedEventArg) => this.handleQueryStateChanged(args));
+    this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError(args));
     this.bind.on(this.element, 'click', () => this.handleClick());
