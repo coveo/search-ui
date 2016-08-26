@@ -67,7 +67,7 @@ export class ResultLayout extends Component {
         $$(this.buttons[this.currentLayout]).removeClass('coveo-selected');
       }
       $$(this.buttons[layout]).addClass('coveo-selected');
-      this.setQsmValue(layout);
+      this.setModelValue(layout);
       this.currentLayout = layout;
     }
 
@@ -146,7 +146,7 @@ export class ResultLayout extends Component {
     return this.queryStateModel.get(QueryStateModel.attributesEnum.layout);
   }
 
-  private setQsmValue(val: string) {
+  private setModelValue(val: string) {
     this.queryStateModel.set(QueryStateModel.attributesEnum.layout, val);
   }
 
