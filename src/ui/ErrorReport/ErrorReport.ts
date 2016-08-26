@@ -28,7 +28,7 @@ export class ErrorReport extends Component {
   static options: IErrorReportOptions = {
     /**
      * Display the detailed error message as a JSON in a text content area.<br/>
-     * The default value is `<code>true</code>`.
+     * The default value is <code>true</code>.
      */
     showDetailedError: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
