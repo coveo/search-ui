@@ -1,16 +1,16 @@
-import {Component} from '../Base/Component'
-import {IComponentBindings} from '../Base/ComponentBindings'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {IQueryResult} from '../../rest/QueryResult'
-import {Initialization} from '../Base/Initialization'
-import {TemplateHelpers} from '../Templates/TemplateHelpers'
-import {Assert} from '../../misc/Assert'
-import {DateUtils, IDateToStringOptions} from '../../utils/DateUtils'
-import {QueryStateModel} from '../../models/QueryStateModel'
-import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
-import {Utils} from '../../utils/Utils'
-import {Facet} from '../Facet/Facet'
-import {$$} from '../../utils/Dom'
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {IQueryResult} from '../../rest/QueryResult';
+import {Initialization} from '../Base/Initialization';
+import {TemplateHelpers} from '../Templates/TemplateHelpers';
+import {Assert} from '../../misc/Assert';
+import {DateUtils, IDateToStringOptions} from '../../utils/DateUtils';
+import {QueryStateModel} from '../../models/QueryStateModel';
+import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
+import {Utils} from '../../utils/Utils';
+import {Facet} from '../Facet/Facet';
+import {$$} from '../../utils/Dom';
 
 export interface IFieldValueOptions {
   field?: string;
@@ -33,7 +33,7 @@ function showOnlyWithHelper<T>(helpers: string[], options?: T): T {
   if (options == null) {
     options = <any>{};
   }
-  (<any>options).helpers = helpers
+  (<any>options).helpers = helpers;
   return options;
 }
 
@@ -89,7 +89,7 @@ export class FieldValue extends Component {
     displaySeparator: ComponentOptions.buildStringOption({ defaultValue: ', ' }),
     /**
      * Specifies the helper to be used by the FieldValue to display its content.<br/>
-     * A few helpers exist by default (see {@link CoreHelpers}), and new ones can be
+     * A few helpers exist by default (see {@link ICoreHelpers}), and new ones can be
      * custom-created (see {@link TemplateHelpers}).
      */
     helper: ComponentOptions.buildHelperOption(),
@@ -127,13 +127,13 @@ export class FieldValue extends Component {
         isMilliseconds: ComponentOptions.buildBooleanOption(showOnlyWithHelper(['timeSpan'])),
       }
     })
-  }
+  };
 
   static simpleOptions = _.omit(FieldValue.options, 'helperOptions');
 
   static helperOptions = <any>{
     helperOptions: FieldValue.options.helperOptions
-  }
+  };
 
   /**
    * Build a new FieldValue
@@ -252,7 +252,7 @@ export class FieldValue extends Component {
           this.getValueContainer().appendChild(document.createTextNode(this.options.displaySeparator));
         }
       }
-    })
+    });
   }
 
   private bindEventOnValue(element: HTMLElement, value: string) {
@@ -277,7 +277,7 @@ export class FieldValue extends Component {
             facetValue: value.toLowerCase()
           })
         });
-      })
+      });
 
       if (selected) {
         $$(element).addClass('coveo-selected');

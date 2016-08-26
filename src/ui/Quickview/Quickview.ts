@@ -1,17 +1,17 @@
-import {Component} from '../Base/Component'
-import {ComponentOptions, ComponentOptionsType} from '../Base/ComponentOptions'
-import {IResultsComponentBindings} from '../Base/ResultsComponentBindings'
-import {Template} from '../Templates/Template'
-import {DomUtils} from '../../utils/DomUtils'
-import {DeviceUtils} from '../../utils/DeviceUtils'
-import {IQueryResult} from '../../rest/QueryResult'
-import {$$, Dom} from '../../utils/Dom'
-import {DefaultQuickviewTemplate} from './DefaultQuickviewTemplate'
-import {ResultListEvents} from '../../events/ResultListEvents'
-import {StringUtils} from '../../utils/StringUtils'
-import {QuickviewDocument} from './QuickviewDocument'
-import {QueryStateModel} from '../../models/QueryStateModel'
-import {QuickviewEvents} from '../../events/QuickviewEvents'
+import {Component} from '../Base/Component';
+import {ComponentOptions, ComponentOptionsType} from '../Base/ComponentOptions';
+import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
+import {Template} from '../Templates/Template';
+import {DomUtils} from '../../utils/DomUtils';
+import {DeviceUtils} from '../../utils/DeviceUtils';
+import {IQueryResult} from '../../rest/QueryResult';
+import {$$, Dom} from '../../utils/Dom';
+import {DefaultQuickviewTemplate} from './DefaultQuickviewTemplate';
+import {ResultListEvents} from '../../events/ResultListEvents';
+import {StringUtils} from '../../utils/StringUtils';
+import {QuickviewDocument} from './QuickviewDocument';
+import {QueryStateModel} from '../../models/QueryStateModel';
+import {QuickviewEvents} from '../../events/QuickviewEvents';
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
 import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
 import {ModalBox} from '../../ExternalModulesShim';
@@ -28,12 +28,42 @@ export interface IQuickviewOptions {
 
 interface IQuickviewOpenerObject {
   content: Dom;
-  loadingAnimation: HTMLElement
+  loadingAnimation: HTMLElement;
 }
 
 /**
  * This component is meant to exist within a result template.
  * It allows to create a button/link inside the result list that opens a modal box for a given result.
+ *
+ * Most of the time, this component will reference a {@link QuickviewDocument} in it's content template.
+ *
+ * # Choosing what to display for the Quickview
+ * The Quick View uses any HTML structure you put inside its tag and uses that as the content of the dialog box. This content can thus be any element you decide, using your CSS and your structure.
+ *
+ * > Example
+ * > You can change the appearance of the Quick View link by adding HTML inside the body of the div.
+ * > You can change the content of the Quick View link by specifying a template id.
+ *
+ * ```html
+ * <!-- This would change the appearance of the quickview button itself in the result. -->
+ * <div class="CoveoQuickview" data-template-id="TemplateId">
+ *   <span>Click here for Quickview</span>
+ * </div>
+ *
+ * <!-- This would modify the content of the quickview when it is opened in the modal box -->
+ * <script class='result-template' type='text/underscore' id='TemplateId' >
+ *   <div>
+ *     <span>This is the content that will be displayed when you open the Quick View. You can also include any other Coveo components.</span>
+ *     <table class="CoveoFieldTable">
+ *       <tr data-field="@liboardshorttitle" data-caption="Board" />
+ *       <tr data-field="@licategoryshorttitle" data-caption="Category" />
+ *       <tr data-field="@sysauthor" data-caption="Author" />
+ *     </table>
+ *   </div>
+ * </script>
+ *
+ * <!-- Note that this is all optional : Just including a <div class='CoveoQuickview'></div> will do the job most of the time, and will include a default template and default button appearance -->
+ * ```
  */
 export class Quickview extends Component {
   static ID = 'Quickview';
@@ -115,7 +145,7 @@ export class Quickview extends Component {
     // we need to add something that will show up in the result template itself
     if (/^\s*$/.test(this.element.innerHTML)) {
       let iconForQuickview = $$('div');
-      iconForQuickview.addClass('coveo-icon-for-quickview')
+      iconForQuickview.addClass('coveo-icon-for-quickview');
       if (this.searchInterface.isNewDesign()) {
         let captionForQuickview = $$(
           'div',
@@ -185,16 +215,16 @@ export class Quickview extends Component {
     $$(closeButton).on('click', () => {
       this.closeQuickview();
       this.close();
-    })
+    });
 
     $$(this.modalbox.overlay).on('click', () => {
       this.closeQuickview();
-    })
+    });
 
     $$(this.modalbox.content).on(QuickviewEvents.quickviewLoaded, () => {
       $$(openerObject.loadingAnimation).remove();
       this.bindIFrameEscape();
-    })
+    });
 
     this.bindEscape();
   }
@@ -219,7 +249,7 @@ export class Quickview extends Component {
 
   private createModalBox(openerObject: IQuickviewOpenerObject) {
 
-    let computedModalBoxContent = $$('div')
+    let computedModalBoxContent = $$('div');
     computedModalBoxContent.append(openerObject.content.el);
     this.modalbox = ModalBox.open(computedModalBoxContent.el, {
       title: DomUtils.getQuickviewHeader(this.result, {
@@ -238,7 +268,7 @@ export class Quickview extends Component {
     return {
       loadingAnimation: loadingAnimation,
       content: this.prepareQuickviewContent(loadingAnimation)
-    }
+    };
   }
 
   private prepareQuickviewContent(loadingAnimation: HTMLElement) {
@@ -261,9 +291,9 @@ export class Quickview extends Component {
   }
 
   private bindIFrameEscape() {
-    let quickviewDocument = $$(this.modalbox.content).find('.' + Component.computeCssClassName(QuickviewDocument))
+    let quickviewDocument = $$(this.modalbox.content).find('.' + Component.computeCssClassName(QuickviewDocument));
     quickviewDocument = $$(quickviewDocument).find('iframe');
-    let body = (<HTMLIFrameElement>quickviewDocument).contentWindow.document.body
+    let body = (<HTMLIFrameElement>quickviewDocument).contentWindow.document.body;
     $$(body).on('keyup', this.bindedHandleEscapeEvent);
   }
 

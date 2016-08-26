@@ -124,7 +124,7 @@ export class ValueElement {
     $$(this.renderer.label).on('click', e => {
       e.stopPropagation();
       clickEvent(e);
-    })
+    });
 
     $$(this.renderer.stylishCheckbox).on('keydown', KeyboardUtils.keypressAction([
       KEYBOARD.SPACEBAR,
@@ -178,7 +178,7 @@ export class ValueElement {
           this.facet.facetSearch.completelyDismissSearch();
         });
       }
-    })
+    });
   }
 
   protected omniboxCloseEvent(eventArg: IPopulateOmniboxObject) {
@@ -191,6 +191,6 @@ export class ValueElement {
       facetId: this.facet.options.id,
       facetValue: this.facetValue.value,
       facetTitle: this.facet.options.title
-    }
+    };
   }
 }

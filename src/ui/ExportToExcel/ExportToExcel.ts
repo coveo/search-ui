@@ -3,12 +3,12 @@ import {ComponentOptions} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {SettingsEvents} from '../../events/SettingsEvents';
 import {ISettingsPopulateMenuArgs} from '../Settings/Settings';
-import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
+import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
 
 export interface IExportToExcelOptions {
-  numberOfResults?: number
+  numberOfResults?: number;
 }
 
 /**
@@ -49,7 +49,7 @@ export class ExportToExcel extends Component {
         className: 'coveo-export-to-excel',
         tooltip: l('ExportToExcelDescription'),
         onOpen: () => this.download()
-      })
+      });
     });
   }
 

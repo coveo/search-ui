@@ -27,7 +27,7 @@ export class ChatterTopic extends Component {
 
       let icon = $$('div', {
         className: 'coveo-sprites-common-tagging_tag coveo-chatter-result-box-icon'
-      })
+      });
       rootElement.append(icon.el);
 
       for (let i = 0; i < topics.length; i++) {

@@ -13,7 +13,7 @@ import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/Analytics
 import {l} from '../../strings/Strings';
 
 export interface IDidYouMeanOptions {
-  enableAutoCorrection?: boolean
+  enableAutoCorrection?: boolean;
 }
 
 /**
@@ -151,7 +151,7 @@ export class DidYouMean extends Component {
       toReturn.push(StringUtils.htmlEncode(correction.correctedQuery.slice(currentOffset, wordCorrection.length + currentOffset)));
       toReturn.push(tagEnd);
       currentOffset = wordCorrection.offset + wordCorrection.length;
-    })
+    });
     toReturn.push(StringUtils.htmlEncode(correction.correctedQuery.slice(currentOffset)));
     return toReturn.join('');
   }

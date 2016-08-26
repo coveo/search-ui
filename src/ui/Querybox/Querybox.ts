@@ -23,6 +23,7 @@ export interface IQueryboxOptions {
   partialMatchThreshold?: string;
   autoFocus?: boolean;
   placeholder?: string;
+  triggerQueryOnClear?: boolean;
 }
 
 /**
@@ -84,9 +85,14 @@ export class Querybox extends Component {
      * The default value is 50%.
      */
     partialMatchThreshold: ComponentOptions.buildStringOption({ defaultValue: '50%' }),
+    /**
+     * Specifies whether or not to trigger a query when the searchbox is cleared.
+     * The default value is true.
+     */
+    triggerQueryOnClear: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     placeholder: ComponentOptions.buildStringOption(),
     autoFocus: ComponentOptions.buildBooleanOption({ defaultValue: true })
-  }
+  };
 
   public magicBox: Coveo.MagicBox.Instance;
   private lastQuery: string;
@@ -139,8 +145,10 @@ export class Querybox extends Component {
 
     this.magicBox.onclear = () => {
       this.updateQueryState();
-      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxClear, {})
-      this.triggerNewQuery(false);
+      if (this.options.triggerQueryOnClear) {
+        this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxClear, {});
+        this.triggerNewQuery(false);
+      }
     };
 
     if (this.options.autoFocus) {
@@ -155,7 +163,7 @@ export class Querybox extends Component {
   public submit(): void {
     this.magicBox.clearSuggestion();
     this.updateQueryState();
-    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {})
+    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
     this.triggerNewQuery(false);
   }
 
@@ -235,7 +243,7 @@ export class Querybox extends Component {
   private searchAsYouType(): void {
     clearTimeout(this.searchAsYouTypeTimeout);
     this.searchAsYouTypeTimeout = setTimeout(() => {
-      this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxAsYouType, {})
+      this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxAsYouType, {});
       this.triggerNewQuery(true);
     }, this.options.searchAsYouTypeDelay);
   }

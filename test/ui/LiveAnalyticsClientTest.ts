@@ -31,9 +31,9 @@ export function LiveAnalyticsClientTest() {
       endpoint = Mock.mock<AnalyticsEndpoint>(AnalyticsEndpoint);
       client = new LiveAnalyticsClient(endpoint, env.root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true);
       promise = new Promise((resolve, reject) => {
-        resolve(FakeResults.createFakeResults(3))
-      })
-    })
+        resolve(FakeResults.createFakeResults(3));
+      });
+    });
 
     afterEach(function () {
       env = null;
@@ -41,7 +41,7 @@ export function LiveAnalyticsClientTest() {
       client = null;
       promise = null;
       window['jQuery'] = null;
-    })
+    });
 
     it('should return pending event', () => {
       client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
@@ -49,7 +49,7 @@ export function LiveAnalyticsClientTest() {
       client.cancelAllPendingEvents();
       client.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
       expect(client.getPendingSearchEvent() instanceof PendingSearchAsYouTypeSearchEvent).toBe(true);
-    })
+    });
 
     it('should send proper information on logSearchEvent', function (done) {
       client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
@@ -65,7 +65,7 @@ export function LiveAnalyticsClientTest() {
       Simulate.query(env, {
         query: query,
         promise: promise
-      })
+      });
       _.defer(function () {
         var jasmineMatcher = jasmine.arrayContaining([jasmine.objectContaining({
           queryText: 'the query',
@@ -82,11 +82,11 @@ export function LiveAnalyticsClientTest() {
             context_key1: 'value1',
             context_key2: 'value2'
           })
-        })])
+        })]);
         expect(endpoint.sendSearchEvents).toHaveBeenCalledWith(jasmineMatcher);
         done();
-      })
-    })
+      });
+    });
 
     it('should give precedence to query from the query state model instead of the one sent to the search api', (done) => {
 
@@ -101,12 +101,12 @@ export function LiveAnalyticsClientTest() {
 
       env.queryStateModel.get = () => {
         return 'another query';
-      }
+      };
 
       Simulate.query(env, {
         query: query,
         promise: promise
-      })
+      });
 
       _.defer(function () {
         var jasmineMatcher = jasmine.arrayContaining([jasmine.objectContaining({
@@ -120,14 +120,14 @@ export function LiveAnalyticsClientTest() {
           userDisplayName: 'foo display',
           splitTestRunName: 'foo run name',
           splitTestRunVersion: 'foo run version'
-        })])
+        })]);
         expect(endpoint.sendSearchEvents).toHaveBeenCalledWith(jasmineMatcher);
         done();
-      })
+      });
     });
 
     describe('with multiple (3) search events', function () {
-      var root: HTMLElement
+      var root: HTMLElement;
       var env2: Mock.IMockEnvironment;
       var env3: Mock.IMockEnvironment;
 
@@ -139,7 +139,7 @@ export function LiveAnalyticsClientTest() {
         root.appendChild(env2.root);
         root.appendChild(env3.root);
         client = new LiveAnalyticsClient(endpoint, root, 'foo', 'foo display', false, 'foo run name', 'foo run version', 'default', true);
-      })
+      });
 
       afterEach(function () {
         env = null;
@@ -147,7 +147,7 @@ export function LiveAnalyticsClientTest() {
         env3 = null;
         client = null;
         root = null;
-      })
+      });
 
       it('should support when 3 analytics search events are triggered together, 3 events are pushed to the endpoint at the same time', (done) => {
         client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
@@ -183,10 +183,10 @@ export function LiveAnalyticsClientTest() {
             }),
             jasmine.objectContaining({
               queryText: 'the query 3'
-            })])
+            })]);
           expect(endpoint.sendSearchEvents).toHaveBeenCalledWith(jasmineMatcher);
           done();
-        })
+        });
       });
 
       it('should send only the new batch when search events are triggered together multiple times', function (done) {
@@ -223,9 +223,9 @@ export function LiveAnalyticsClientTest() {
             }),
             jasmine.objectContaining({
               queryText: 'the query 3'
-            })])
+            })]);
           expect(endpoint.sendSearchEvents).toHaveBeenCalledWith(jasmineMatcher);
-        })
+        });
 
         Simulate.query(env, {
           promise: promise,
@@ -259,11 +259,11 @@ export function LiveAnalyticsClientTest() {
             }),
             jasmine.objectContaining({
               queryText: 'the query 5'
-            })])
+            })]);
           expect(endpoint.sendSearchEvents).toHaveBeenCalledWith(jasmineMatcher);
           done();
-        })
-      })
+        });
+      });
 
       it('should not break if a search event is followed by 0 during query', function (done) {
         client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
@@ -300,20 +300,20 @@ export function LiveAnalyticsClientTest() {
             }),
             jasmine.objectContaining({
               queryText: 'the query 3'
-            })])
+            })]);
           expect(endpoint.sendSearchEvents).toHaveBeenCalledWith(jasmineMatcher);
           done();
-        })
-      })
+        });
+      });
 
       it('should only send success events to the endpoint', function (done) {
         client.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
         var promise2 = new Promise((resolve, reject) => {
           reject();
-        })
+        });
 
         promise2.catch(() => {
-        })
+        });
 
         Simulate.query(env, {
           promise: promise,
@@ -343,18 +343,18 @@ export function LiveAnalyticsClientTest() {
             }),
             jasmine.objectContaining({
               queryText: 'the query 3'
-            })])
+            })]);
 
           var jasmineMatcherNot = jasmine.arrayContaining([
             jasmine.objectContaining({
               queryText: 'the query 2'
-            })])
+            })]);
           expect(endpoint.sendSearchEvents).toHaveBeenCalledWith(jasmineMatcher);
           expect(endpoint.sendSearchEvents).not.toHaveBeenCalledWith(jasmineMatcherNot);
           done();
-        })
-      })
-    })
+        });
+      });
+    });
 
     it('should trigger an analytics event on document view', function () {
       var spy = jasmine.createSpy('spy');
@@ -362,7 +362,7 @@ export function LiveAnalyticsClientTest() {
       client.logClickEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, {}, FakeResults.createFakeResult('foo'), document.createElement('div'));
       Defer.flush();
       expect(spy).toHaveBeenCalled();
-    })
+    });
 
     it('should trigger an analytics event on search event', function (done) {
       var spy = jasmine.createSpy('spy');
@@ -379,8 +379,8 @@ export function LiveAnalyticsClientTest() {
       _.defer(function () {
         expect(spy).toHaveBeenCalled();
         done();
-      })
-    })
+      });
+    });
 
     it('should trigger an analytics event on custom event', function () {
       var spy = jasmine.createSpy('spy');
@@ -388,7 +388,7 @@ export function LiveAnalyticsClientTest() {
       client.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, {}, document.createElement('div'));
       Defer.flush();
       expect(spy).toHaveBeenCalled();
-    })
+    });
 
     it('should trigger change analytics metadata event', function () {
       var spy = jasmine.createSpy('spy');
@@ -403,15 +403,15 @@ export function LiveAnalyticsClientTest() {
         type: 'CustomEvent',
         metaObject: jasmine.any(Object)
       }));
-    })
+    });
 
     describe('search as you type', function () {
       beforeEach(function () {
         jasmine.clock().install();
-      })
+      });
       afterEach(function () {
         jasmine.clock().uninstall();
-      })
+      });
 
       it('should log after 5 seconds have passed since the last duringQueryEvent', function () {
         client.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
@@ -425,7 +425,7 @@ export function LiveAnalyticsClientTest() {
         expect(client['pendingSearchAsYouTypeSearchEvent']['searchPromises'].length).toBe(0);
         jasmine.clock().tick(5000);
         expect(client['pendingSearchAsYouTypeSearchEvent']['searchPromises'].length).toBe(1);
-      })
+      });
 
       it('should not log after 5 seconds have passed since the last duringQueryEvent if another event is pushed and it\'s a search box', function () {
         client.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
@@ -445,7 +445,7 @@ export function LiveAnalyticsClientTest() {
           promise: promise
         });
         expect(client['pendingSearchAsYouTypeSearchEvent']).toBeUndefined();
-      })
+      });
 
       it('should log after 5 seconds have passed since the last duringQueryEvent if another event is pushed and it\'s not a search box', function () {
         client.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
@@ -465,7 +465,7 @@ export function LiveAnalyticsClientTest() {
           promise: promise
         });
         expect(client['pendingSearchAsYouTypeSearchEvent']).toBeDefined();
-      })
-    })
-  })
+      });
+    });
+  });
 }

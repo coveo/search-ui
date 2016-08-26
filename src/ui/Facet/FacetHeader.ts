@@ -235,9 +235,9 @@ export class FacetHeader {
       cmp.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(analyticsActionCauseList.facetClearAll, {
         facetId: cmp.options.id,
         facetTitle: cmp.options.title
-      })
+      });
       cmp.queryController.executeQuery();
-    })
+    });
     return eraser;
   }
 }

@@ -22,12 +22,11 @@ export function ExcerptTest() {
     afterEach(function () {
       test = null;
       fakeResult = null;
-    })
+    });
 
     it('should highlight the keywords', () => {
-      let expectedExcerpt = HighlightUtils.highlightString(fakeResult.excerpt, fakeResult.excerptHighlights, null, 'coveo-highlight')
+      let expectedExcerpt = HighlightUtils.highlightString(fakeResult.excerpt, fakeResult.excerptHighlights, null, 'coveo-highlight');
       expect(test.cmp.element.innerHTML).toEqual(expectedExcerpt);
-    })
-
-  })
+    });
+  });
 }

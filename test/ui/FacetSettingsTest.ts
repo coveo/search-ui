@@ -15,12 +15,12 @@ export function FacetSettingsTest() {
         field: '@field'
       }).cmp;
       registerCustomMatcher();
-    })
+    });
 
     afterEach(function () {
       facet = null;
       facetSettings = null;
-    })
+    });
 
     it('allows to save state', function () {
       // settings not enabled : no call to query state
@@ -35,7 +35,7 @@ export function FacetSettingsTest() {
       facetSettings.build();
       facetSettings.saveState();
       expect(facet.queryStateModel.get).toHaveBeenCalledTimes(3);
-    })
+    });
 
     it('allows to load state', function () {
       // settings not enabled : no call to query state
@@ -50,7 +50,7 @@ export function FacetSettingsTest() {
       facetSettings.build();
       facetSettings.loadSavedState();
       expect(facet.queryStateModel.setMultiple).toHaveBeenCalled();
-    })
+    });
 
     it('allow to open and close the popup', function () {
       facetSettings = new FacetSettings(['foo', 'bar'], facet);
@@ -61,6 +61,6 @@ export function FacetSettingsTest() {
       expect($$(facetSettings.facet.root).find('.coveo-facet-settings-popup')).not.toBeNull();
       facetSettings.close();
       expect($$(facetSettings.facet.root).find('.coveo-facet-settings-popup')).toBeNull();
-    })
-  })
+    });
+  });
 }

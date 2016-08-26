@@ -19,17 +19,17 @@ export function FoldingTest() {
         enableExpand: true,
         expandExpression: 'expandExpr',
         range: 2
-      })
+      });
       fakeResults = FakeResults.createFakeResults(1);
       fakeResults.results[0].totalNumberOfChildResults = 3;
       fakeResults.results[0].childResults = [];
       fakeResults.results[0].raw.fieldname = 'fieldvalue';
-    })
+    });
 
     afterEach(function () {
       test = null;
       fakeResults = null;
-    })
+    });
 
     describe('exposes options', function () {
 
@@ -37,72 +37,72 @@ export function FoldingTest() {
         it('should send the correct field to the outgoing query', function () {
           test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
             field: '@myfield'
-          })
+          });
           var data = Simulate.query(test.env);
           expect(data.queryBuilder.filterField).toBe('@myfield');
-        })
+        });
 
         it('should throw an error when not specified', function () {
           expect(() => Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
             field: null
           })).toThrow();
-        })
-      })
+        });
+      });
 
       it('range should set the proper range to the outgoing query', function () {
         test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
           field: '@fieldname',
           range: 42
-        })
+        });
         var data = Simulate.query(test.env);
         expect(data.queryBuilder.filterFieldRange).toBe(42);
-      })
+      });
 
       it('expandExpression should include the custom expand expression to the expand query', function () {
         test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
           field: '@fieldname',
           expandExpression: 'myExpandExpression'
-        })
+        });
         var data = Simulate.query(test.env, { results: fakeResults });
 
         data.results.results[0].moreResults();
         expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
           cq: 'myExpandExpression'
-        }))
-      })
+        }));
+      });
 
       it('maximumExpandedResults should set the number of results properly to the expand query', function () {
         test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
           field: '@fieldname',
           maximumExpandedResults: 42
-        })
+        });
 
         var data = Simulate.query(test.env, { results: fakeResults });
         test.env.queryController.getEndpoint().search = (query: IQuery) => {
           expect(query.numberOfResults).toBe(42);
-          return new Promise((resolve, reject) => null)
-        }
+          return new Promise((resolve, reject) => null);
+        };
         data.results.results[0].moreResults();
-      })
+      });
 
       it('enableExpand set to true should provide an expand function', function () {
         test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
           field: '@fieldname',
           enableExpand: true
-        })
+        });
         var data = Simulate.query(test.env, { results: fakeResults });
         expect(data.results.results[0].moreResults).toEqual(jasmine.any(Function));
-      })
+      });
 
       it('enableExpand set to false should not provide an expand function', function () {
         test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
           field: '@fieldname',
           enableExpand: false
-        })
+        });
         var data = Simulate.query(test.env, { results: fakeResults });
         expect(data.results.results[0].moreResults).toBeUndefined();
-      })
-    })
+      });
+    });
 
     describe('expand', function () {
       var queryData: ISimulateQueryData;
@@ -111,43 +111,43 @@ export function FoldingTest() {
         test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
           field: '@fieldname',
           maximumExpandedResults: 7
-        })
-        queryData = Simulate.query(test.env, { query: { q: 'foo bar' }, results: fakeResults })
-      })
+        });
+        queryData = Simulate.query(test.env, { query: { q: 'foo bar' }, results: fakeResults });
+      });
 
       afterEach(function () {
         test = null;
         queryData = null;
-      })
+      });
 
       it('should perform query with expected expression when moreResults is called', function () {
         queryData.results.results[0].moreResults();
         expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
           aq: '@fieldname=fieldvalue'
-        }))
-      })
+        }));
+      });
 
       it('should include query keywords for highlighting', function () {
         queryData.results.results[0].moreResults();
         expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
           q: '(foo bar) OR @uri'
-        }))
-      })
+        }));
+      });
 
       it('should use the specified maximum number of results', function () {
         queryData.results.results[0].moreResults();
         expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
           numberOfResults: 7
-        }))
-      })
-    })
+        }));
+      });
+    });
 
     it('should rearrange a result that is an attachment if it has a parentResult', function () {
       test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
         field: '@fieldname',
         childField: '@childfield',
         parentField: '@parentfield'
-      })
+      });
       var parent = FakeResults.createFakeResult('ParentResult');
       parent.flags = 'ContainsAttachment';
       parent.raw.parentfield = 'abc';
@@ -156,7 +156,7 @@ export function FoldingTest() {
       fakeResults.results[0].raw.childfield = 'abc';
       var data = Simulate.query(test.env, { results: fakeResults });
       expect(data.results.results[0].title).toBe('TitleParentResult');
-    })
+    });
 
     it('should set the proper childResults and attachments in multiple folded results', function () {
       var results: IQueryResult[] = [];
@@ -207,8 +207,8 @@ export function FoldingTest() {
             attachments: []
           })
         ]
-      }))
-    })
+      }));
+    });
 
     it('should sort by the original position', function () {
       var results: IQueryResult[] = [];
@@ -268,8 +268,8 @@ export function FoldingTest() {
             ]
           })
         ]
-      }))
-    })
+      }));
+    });
 
     it('should remove duplicate from the result set if one is loaded through the parentResult field', function () {
       var results: IQueryResult[] = [];
@@ -321,7 +321,7 @@ export function FoldingTest() {
             attachments: []
           })
         ]
-      }))
-    })
-  })
+      }));
+    });
+  });
 }

@@ -40,11 +40,11 @@ export class SearchAlertsMessage extends Component {
 
     super(element, SearchAlertsMessage.ID, bindings);
 
-    this.bind.onRootElement(SearchAlertsEvents.searchAlertsCreated, (args: ISearchAlertsEventArgs) => { this.handleSubscriptionCreated(args) });
-    this.bind.oneRootElement(SearchAlertsEvents.searchAlertsFail, (args: ISearchAlertsEventArgs) => { this.handleSearchAlertsFail(args) });
-    this.bind.oneRootElement(SearchAlertsEvents.searchAlertsDeleted, () => { this.close() });
+    this.bind.onRootElement(SearchAlertsEvents.searchAlertsCreated, (args: ISearchAlertsEventArgs) => this.handleSubscriptionCreated(args));
+    this.bind.oneRootElement(SearchAlertsEvents.searchAlertsFail, (args: ISearchAlertsEventArgs) => this.handleSearchAlertsFail(args));
+    this.bind.oneRootElement(SearchAlertsEvents.searchAlertsDeleted, () => this.close());
 
-    this.bind.oneRootElement(QueryEvents.newQuery, () => { this.close() });
+    this.bind.oneRootElement(QueryEvents.newQuery, () => this.close());
   }
 
   public getCssClass(): string {
@@ -80,10 +80,10 @@ export class SearchAlertsMessage extends Component {
 
     this.message.on('mouseleave', () => {
       this.startCloseDelay();
-    })
+    });
     this.message.on('mouseenter', () => {
       this.stopCloseDelay();
-    })
+    });
   }
 
   private handleSubscriptionCreated(args: ISearchAlertsEventArgs) {
@@ -114,7 +114,7 @@ export class SearchAlertsMessage extends Component {
   }
 
   private stopCloseDelay() {
-    clearTimeout(this.closeTimeout)
+    clearTimeout(this.closeTimeout);
   }
 
   private close() {

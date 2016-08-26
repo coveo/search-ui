@@ -63,8 +63,8 @@ export class FacetSliderQueryController {
         this.rangeValuesForGraphToUse.push({
           start: this.facet.options.dateField ? this.getISOFormat(rawSplit[0].replace('@', ' ')) : parseInt(rawSplit[0], 10),
           end: this.facet.options.dateField ? this.getISOFormat(rawSplit[1].replace('@', ' ')) : parseInt(rawSplit[1], 10)
-        })
-      })
+        });
+      });
     }
   }
 
@@ -191,8 +191,8 @@ export class FacetSliderQueryController {
         end: value.end,
         endInclusive: basicRangeRequest.endInclusive,
         label: basicRangeRequest.label
-      }
-    })
+      };
+    });
   }
 
   private buildRange(basicRangeRequest: IRangeValue) {
@@ -210,8 +210,8 @@ export class FacetSliderQueryController {
         label: basicRangeRequest.label,
         start: newStart,
         end: newEnd
-      }
-    })
+      };
+    });
   }
 
   private getISOFormat(value: any) {
@@ -221,10 +221,10 @@ export class FacetSliderQueryController {
       }
       let date = new Date(value);
       if (!DateUtils.isValid(date)) {
-        date = new Date(this.getBrowserCompatibleFormat(value))
+        date = new Date(this.getBrowserCompatibleFormat(value));
         if (!DateUtils.isValid(date)) {
           // If we get here, we'll probably get an error further down the line when querying the index anyway ...
-          this.facet.logger.error('Cannot parse this date format.', value, new Date(value))
+          this.facet.logger.error('Cannot parse this date format.', value, new Date(value));
           return undefined;
         }
       }
@@ -243,6 +243,6 @@ export class FacetSliderQueryController {
   }
 
   private getBrowserCompatibleFormat(value: string) {
-    return value.replace('@', 'T').replace(/\//g, '-')
+    return value.replace('@', 'T').replace(/\//g, '-');
   }
 }

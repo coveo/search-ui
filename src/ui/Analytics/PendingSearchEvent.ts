@@ -28,7 +28,7 @@ export class PendingSearchEvent {
     Assert.exists(templateSearchEvent);
 
     this.handler = (evt: Event, arg: IDuringQueryEventArgs) => {
-      this.handleDuringQuery(evt, arg)
+      this.handleDuringQuery(evt, arg);
     };
     $$(root).on(QueryEvents.duringQuery, this.handler);
   }
@@ -82,7 +82,7 @@ export class PendingSearchEvent {
       if (this.searchPromises.length == 0) {
         this.flush();
       }
-    })
+    });
   }
 
   public stopRecording() {
@@ -138,7 +138,7 @@ export class PendingSearchEvent {
     if (query.context != undefined) {
       _.each(query.context, (value: string, key: string) => {
         searchEvent.customData[`context_${key}`] = value;
-      })
+      });
     }
   }
 }

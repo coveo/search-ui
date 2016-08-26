@@ -54,6 +54,6 @@ export class DefaultResultTemplate extends Template {
   }
 
   getType() {
-    return 'DefaultResultTemplate'
+    return 'DefaultResultTemplate';
   }
 }

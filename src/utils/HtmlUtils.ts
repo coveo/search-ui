@@ -40,12 +40,12 @@ export interface IImageUtilsOptions {
 
 export class HTMLUtils {
   static buildAttributeString(options: any): string {
-    var ret = []
+    var ret = [];
     _.each(options, (val: any, key?: string, obj?) => {
       if (val != undefined) {
-        ret.push(key + '=' + JSON.stringify(val.toString()))
+        ret.push(key + '=' + JSON.stringify(val.toString()));
       }
-    })
+    });
     return ret.join(' ');
   }
 }
@@ -92,7 +92,7 @@ export class ImageUtils {
       })
       .catch(() => {
         ImageUtils.selectImageFromResult(result).remove();
-      })
+      });
   }
 
   static buildImageFromResult(result: IQueryResult, endpoint: SearchEndpoint, options?: IImageUtilsOptions) {
@@ -107,6 +107,6 @@ export class ImageUtils {
       // Useful for phonegap.
       ImageUtils.buildImageWithBase64SrcAttribute(endpoint, result);
     }
-    return img
+    return img;
   }
 }

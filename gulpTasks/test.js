@@ -1,5 +1,4 @@
 const gulp = require('gulp');
-const tsc = require('gulp-tsc');
 const TestServer = require('karma').Server;
 const express = require('express');
 const path = require('path');
@@ -8,6 +7,7 @@ const combineCoverage = require('istanbul-combine');
 const remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 const event_stream = require('event-stream');
 const shell = require('gulp-shell');
+const replace = require('gulp-replace');
 
 const COVERAGE_DIR = path.resolve('bin/coverage');
 
@@ -17,6 +17,7 @@ gulp.task('setupTests', function () {
           .pipe(gulp.dest('./bin/tests/lib')),
 
       gulp.src('./test/SpecRunner.html')
+          .pipe(replace(/\.\.\/bin\/tests\/tests\.js/, 'tests.js'))
           .pipe(gulp.dest('./bin/tests/'))
   ).pipe(event_stream.wait())
 })
@@ -26,12 +27,19 @@ gulp.task('coverage', ['lcovCoverage']);
 gulp.task('test', ['setupTests', 'buildTest'], function (done) {
   new TestServer({
     configFile: __dirname + '/../karma.conf.js',
-  }, () => done()).start();
+  }, (exitCode) => {
+    if (exitCode) {
+      // Fail CI builds if any test fails (since karma will exit 1 on any error)
+      throw new Error(exitCode);
+    } else {
+      done()
+    }
+  }).start();
 });
 
 gulp.task('buildTest', shell.task([
   'node node_modules/webpack/bin/webpack.js --config webpack.test.config.js'
-]))
+]));
 
 gulp.task('testDev', ['watchTest'], function (done) {
   new TestServer({
@@ -42,7 +50,7 @@ gulp.task('testDev', ['watchTest'], function (done) {
 gulp.task('remapCoverage', function (done) {
   return gulp.src(`${COVERAGE_DIR}/coverage-es5.json`)
     .pipe(remapIstanbul({
-      exclude: /(webpack|~\/d3\/|~\/es6-promise\/dist\/|~\/process\/|~\/underscore\/|vertx|~\/coveomagicbox\/|~\/modal-box\/|test\/|lib\/)/
+      exclude: /(webpack|~\/d3\/|~\/es6-promise\/dist\/|~\/process\/|~\/underscore\/|vertx|~\/coveomagicbox\/|~\/d3-.*\/|~\/modal-box\/|test\/|lib\/)/
     }))
     .pipe(rename('coverage.json'))
     .pipe(gulp.dest(COVERAGE_DIR));

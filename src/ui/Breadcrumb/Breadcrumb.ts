@@ -14,15 +14,21 @@ export interface IBreadcrumbOptions {
 }
 
 /**
- * This component displays a summary of the filters currently active in the query.<br/>
- * For example, when the user selects a facet value, the value is displayed in the breadcrumbs.<br/>
- * The active filters are obtained by the component by firing an event in the breadcrumb component.<br/>
- * All other components having an active state can answer to this event by providing custom bits of HTML that will be displayed inside the breadcrumb.<br/>
+ * This component displays a summary of the filters currently active in the query.
+ *
+ * For example, when the user selects a facet value, the value is displayed in the breadcrumbs.
+ *
+ * The active filters are obtained by the component by firing an event in the breadcrumb component.
+ *
+ * All other components having an active state can answer to this event by providing custom bits of HTML that will be displayed inside the breadcrumb.
+ *
  * Thus, the breadcrumb can easily be extended by custom code to display information about custom state and filters.
+ *
+ * See {@link BreadcrumbEvents} for the list of events and parameters sent when a breadcrumb is populated.
  */
 export class Breadcrumb extends Component {
   static ID = 'Breadcrumb';
-  static options: IBreadcrumbOptions = {}
+  static options: IBreadcrumbOptions = {};
 
   private lastBreadcrumbs: IBreadcrumbItem[];
 
@@ -86,7 +92,7 @@ export class Breadcrumb extends Component {
       let elem = bcrumb.element;
       $$(elem).addClass('coveo-breadcrumb-item');
       breadcrumbItems.appendChild(elem);
-    })
+    });
 
     let clear = $$('div', {
       className: 'coveo-breadcrumb-clear-all',
@@ -106,9 +112,7 @@ export class Breadcrumb extends Component {
       this.element.insertBefore(clear, this.element.firstChild);
     }
 
-    const clearAction = () => {
-      this.clearBreadcrumbs();
-    }
+    const clearAction = () => this.clearBreadcrumbs();
     this.bind.on(clear, 'click', clearAction);
     this.bind.on(clear, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clearAction));
   }

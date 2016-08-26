@@ -1,16 +1,16 @@
 import {Component} from '../Base/Component';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {ComponentOptions} from '../Base/ComponentOptions';
-import {DeviceUtils} from '../../utils/DeviceUtils'
-import {QueryEvents, INewQueryEventArgs, IBuildingQueryEventArgs, IQuerySuccessEventArgs, INoResultsEventArgs} from '../../events/QueryEvents'
-import {MODEL_EVENTS, IAttributeChangedEventArg} from '../../models/Model'
-import {QueryStateModel} from '../../models/QueryStateModel'
-import {QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel'
-import {analyticsActionCauseList, IAnalyticsPagerMeta, IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta'
+import {DeviceUtils} from '../../utils/DeviceUtils';
+import {QueryEvents, INewQueryEventArgs, IBuildingQueryEventArgs, IQuerySuccessEventArgs, INoResultsEventArgs} from '../../events/QueryEvents';
+import {MODEL_EVENTS, IAttributeChangedEventArg} from '../../models/Model';
+import {QueryStateModel} from '../../models/QueryStateModel';
+import {QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
+import {analyticsActionCauseList, IAnalyticsPagerMeta, IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta';
 import {Initialization} from '../Base/Initialization';
-import {Assert} from '../../misc/Assert'
-import {l} from '../../strings/Strings'
-import {$$} from '../../utils/Dom'
+import {Assert} from '../../misc/Assert';
+import {l} from '../../strings/Strings';
+import {$$} from '../../utils/Dom';
 import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
 
 export interface IPagerOptions {
@@ -56,7 +56,7 @@ export class Pager extends Component {
      * This property is typically set when the default number of accessible results from the index has been changed from it's default value of 1000. (So 10 per page X 100 maximumNumberOfPage)
      */
     maxNumberOfPages: ComponentOptions.buildNumberOption({ defaultValue: undefined })
-  }
+  };
 
   /**
    * The current page (1 based index)
@@ -182,9 +182,7 @@ export class Pager extends Component {
           }
 
           ((pageNumber: number) => {
-            let clickAction = () => {
-              this.handleClickPage(pageNumber);
-            }
+            let clickAction = () => this.handleClickPage(pageNumber);
             $$(listItem).on('click', clickAction);
             $$(listItem).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction));
           })(i);

@@ -10,5 +10,5 @@ export interface IQueryFunction {
   /**
    * The field name on which to store the query function result when the query returns
    */
-  fieldName: string
+  fieldName: string;
 }

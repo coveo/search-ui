@@ -28,7 +28,7 @@ export class ChatterLikedBy extends Component {
     'sflikedbyid',
     'clickableuri',
     'sffeeditemid'
-  ]
+  ];
 
   constructor(public element: HTMLElement, public options?: IChatterLikedByOptions, public bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, ChatterLikedBy.ID, bindings);
@@ -45,7 +45,7 @@ export class ChatterLikedBy extends Component {
 
       let thumbIcon = $$('div', {
         className: 'coveo-sprites-common-thumbup_inactive coveo-chatter-result-box-icon'
-      })
+      });
       rootElement.append(thumbIcon.el);
 
       let fullListElement = $$('div', {
@@ -66,7 +66,7 @@ export class ChatterLikedBy extends Component {
       if ((nbLikesToRender == 0 || i < nbLikesToRender - 1) && i < likeIds.length - 2) {
         tempElement.append($$('span', {}, ', ').el);
       } else if (i < likeIds.length - 1) {
-        tempElement.append($$('span', {}, ` ${l('And').toLowerCase()} `).el)
+        tempElement.append($$('span', {}, ` ${l('And').toLowerCase()} `).el);
       }
     }
 
@@ -80,7 +80,7 @@ export class ChatterLikedBy extends Component {
         e.preventDefault();
         $$(element).empty();
         this.renderLikesList(element, result, likeNames, likeIds, 0);
-      })
+      });
       tempElement.append(clickableLink.el);
     }
 

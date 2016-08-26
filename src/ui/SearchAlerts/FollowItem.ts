@@ -62,10 +62,10 @@ export class FollowItem extends Component {
     this.container = $$(this.element);
     this.text = $$('span');
     this.container.append(this.text.el);
-    this.container.on('click', () => { this.toggleFollow() });
+    this.container.on('click', () => this.toggleFollow());
 
-    this.bind.onRootElement(SearchAlertsEvents.searchAlertsDeleted, (args: ISearchAlertsEventArgs) => { this.handleSubscriptionDeleted(args) });
-    this.bind.onRootElement(SearchAlertsEvents.searchAlertsCreated, (args: ISearchAlertsEventArgs) => { this.handleSubscriptionCreated(args) });
+    this.bind.onRootElement(SearchAlertsEvents.searchAlertsDeleted, (args: ISearchAlertsEventArgs) => this.handleSubscriptionDeleted(args));
+    this.bind.onRootElement(SearchAlertsEvents.searchAlertsCreated, (args: ISearchAlertsEventArgs) => this.handleSubscriptionCreated(args));
 
     this.container.addClass('coveo-follow-item-loading');
 
@@ -92,7 +92,7 @@ export class FollowItem extends Component {
       })
       .catch(() => {
         this.remove();
-      })
+      });
   }
 
   public setFollowed(subscription: ISubscription) {
@@ -136,7 +136,7 @@ export class FollowItem extends Component {
               dom: this.element
             };
             $$(this.root).trigger(SearchAlertsEvents.searchAlertsFail, eventArgs);
-          })
+          });
       } else {
         this.queryController.getEndpoint().follow(this.subscription)
           .then((subscription: ISubscription) => {
@@ -152,7 +152,7 @@ export class FollowItem extends Component {
               dom: this.element
             };
             $$(this.root).trigger(SearchAlertsEvents.searchAlertsFail, eventArgs);
-          })
+          });
       }
     }
   }
@@ -187,7 +187,7 @@ export class FollowItem extends Component {
     let typeCofig: ISubscriptionItemRequest = {
       id: id,
       title: title
-    }
+    };
 
     if (options.modifiedDateField) {
       typeCofig.modifiedDateField = options.modifiedDateField;
@@ -200,7 +200,7 @@ export class FollowItem extends Component {
     return {
       type: SUBSCRIPTION_TYPE.followDocument,
       typeConfig: typeCofig
-    }
+    };
   }
 }
 

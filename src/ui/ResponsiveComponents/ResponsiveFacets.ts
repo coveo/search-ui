@@ -80,7 +80,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     if (component instanceof Facet) {
       this.facets.push(<Facet>component);
     } else if (component instanceof FacetSlider) {
-      this.facetSliders.push(<FacetSlider>component)
+      this.facetSliders.push(<FacetSlider>component);
     }
   }
 
@@ -202,7 +202,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
       if (facet.facetSearch && facet.facetSearch.currentlyDisplayedResults) {
         facet.facetSearch.completelyDismissSearch();
       }
-    })
+    });
   }
 
   private cleanUpDropdown() {

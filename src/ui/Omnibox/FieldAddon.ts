@@ -10,7 +10,7 @@ interface IFieldAddonHash {
   before: string;
   after: string;
   current: string;
-  field?: string
+  field?: string;
 }
 
 export class FieldAddon {
@@ -21,7 +21,7 @@ export class FieldAddon {
   constructor(public omnibox: Omnibox) {
     this.omnibox.bind.on(this.omnibox.element, OmniboxEvents.populateOmniboxSuggestions, (args: IPopulateOmniboxSuggestionsEventArgs) => {
       args.suggestions.push(this.getSuggestion());
-    })
+    });
   }
 
   public getSuggestion(): Promise<IOmniboxSuggestion[]> {
@@ -46,7 +46,7 @@ export class FieldAddon {
     this.cache[hashString] = values;
     values.catch(() => {
       delete this.cache[hashString];
-    })
+    });
     return this.hashValueToSuggestion(hash, values);
   }
 
@@ -100,7 +100,7 @@ export class FieldAddon {
           text: hash.before + (hash.current.toLowerCase().indexOf(value.toLowerCase()) == 0 ? hash.current + value.substr(hash.current.length) : value) + hash.after,
           html: MagicBox.Utils.highlightText(value, hash.current, true),
           index: FieldAddon.INDEX - i / values.length
-        }
+        };
       });
       return suggestions;
     });
@@ -126,13 +126,13 @@ export class FieldAddon {
             reject();
           });
         }
-      })
+      });
     }
     return this.fields;
   }
 
   private fieldNames(current: string): Promise<IOmniboxSuggestion[]> {
-    var withAt = current.length > 0 && current[0] == '@'
+    var withAt = current.length > 0 && current[0] == '@';
     var fieldName = withAt ? current.substr(1) : current;
     var fieldNameLC = fieldName.toLowerCase();
 
@@ -152,7 +152,7 @@ export class FieldAddon {
         .value();
       matchFields = _.first(matchFields, 5);
       return matchFields;
-    })
+    });
   }
 
   private fieldValues(field: string, current: string): Promise<IOmniboxSuggestion[]> {
@@ -178,7 +178,7 @@ export class FieldAddon {
           return value.value.replace(/ /g, '\u00A0');
         })
         .value();
-    })
+    });
   }
 
   private simpleFieldNames(current: string): Promise<IOmniboxSuggestion[]> {
@@ -201,6 +201,6 @@ export class FieldAddon {
         .value();
       matchFields = _.first(matchFields, 5);
       return matchFields;
-    })
+    });
   }
 }

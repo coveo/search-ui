@@ -39,7 +39,73 @@ export interface IResultListOptions {
 
 /**
  * This component is responsible for displaying the results of the current query using one or more result templates.<br/>
- * It supports many additional features such as infinite scrolling.<br/>
+ * It supports many additional features such as infinite scrolling.
+ *
+ * # Examples / samples
+ * This contains some quick example. Refer to result templates on developers.coveo.com for more information.
+ *
+ * ```html
+ * <!-- A very simple result list with a single underscore template.
+ * The template has no condition : It will load for all results.
+ * Every results will show the same template. -->
+ *
+ * <div class="CoveoResultList">
+ *   <script class="result-template" type="text/underscore" id='MyDefaultTemplate'>
+ *     <div>
+ *       <a class='CoveoResultLink'>Hey, click on this ! <%- title %></a>
+ *     </div>
+ *   </script>
+ * </div>
+ *
+ * <!-- 2 different template in the same result list : The first template has a condition attribute, the second one does not.
+ *
+ * The first condition will be evaluated against each result. If a result match this condition (in this case if the result.raw.objecttype property in the JSON equals MyObjectType) then the template will be rendered and the next template won't be rendered or evaluated for this result. -->
+ *
+ * If the result does not match the first template, the next one will be evaluated. Since the second one has no condition, it is always considered "true" and will load as a fallback.
+ *
+ * This process will repeat for each result that was returned by the query to the index. -->
+ *
+ * <div class="CoveoResultList">
+ *   <script class="result-template" type="text/underscore" data-condition='raw.objecttype==MyObjectType' id='MyObjectTypeTemplate'>
+ *     <div>
+ *       <a class='CoveoResultLink'>Hey, click on this ! <%- title %></a>
+ *       <div class='CoveoExcerpt'></div>
+ *       <span>This is a result for the type : <%- raw.objecttype %></span>
+ *     </div>
+ *   </script>
+ *
+ *   <script class="result-template" type="text/underscore">
+ *     <div>
+ *       <a class='CoveoResultLink'>Hey, click on this ! <%- title %></a>
+ *     </div>
+ *   </script>
+ * </div>
+ *
+ * <!-- 2 different template in the same result list : Both have a data-condition attribute.
+ *
+ * Same as before : the condition will be evaluated against all results.
+ *
+ * Since there is no "default" template with no condition specified, the framework will fallback on the default templates included in the framework if no template match a given result. This is to ensure that all results get rendered -->
+ *
+ * <div class="CoveoResultList">
+ *   <script class="result-template" type="text/underscore" data-condition='raw.objecttype==MyObjectType' id='MyObjectTypeTemplate'>
+ *     <div>
+ *       <a class='CoveoResultLink'>Hey, click on this ! <%- title %></a>
+ *       <div class='CoveoExcerpt'></div>
+ *       <span>This is a result for the type : <%- raw.objecttype %></span>
+ *      </div>
+ *   </script>
+ *
+ *   <script class="result-template" type="text/underscore" data-condition='raw.objecttype==MySecondObjectType' id='MySecondObjectTypeTemplate'>
+ *     <div>
+ *       <span class='CoveoIcon'></span>
+ *       <a class='CoveoResultLink'></a>
+ *     </div>
+ *     <div class='CoveoExcerpt'></div>
+ *     <div class='CoveoPrintableUri'></div>
+ *   </script>
+ * </div>
+ * ```
  */
 export class ResultList extends Component {
   static ID = 'ResultList';
@@ -55,7 +121,7 @@ export class ResultList extends Component {
      */
     resultContainer: ComponentOptions.buildChildHtmlElementOption({
       defaultFunction: (element: HTMLElement) => {
-        var d = document.createElement('div')
+        var d = document.createElement('div');
         element.appendChild(d);
         return d;
       }
@@ -270,12 +336,12 @@ export class ResultList extends Component {
     var initOptions = this.searchInterface.options.originalOptionsObject;
     var resultComponentBindings: IResultsComponentBindings = _.extend({}, this.getBindings(), {
       resultElement: element
-    })
+    });
     var initParameters: IInitializationParameters = {
       options: initOptions,
       bindings: resultComponentBindings,
       result: result
-    }
+    };
     Initialization.automaticallyCreateComponentsInside(element, initParameters);
   }
 
@@ -350,7 +416,7 @@ export class ResultList extends Component {
           el.scrollIntoView();
         }
       }
-    })
+    });
   }
 
   private handleNewQuery() {
@@ -373,7 +439,7 @@ export class ResultList extends Component {
     return _.chain(this.options.resultTemplate.getFields())
       .compact()
       .unique()
-      .value()
+      .value();
   }
 
   private isCurrentlyFetchingMoreResults(): boolean {
@@ -426,16 +492,16 @@ export class ResultList extends Component {
 
     _.each(showIfQuery, (s: HTMLElement) => {
       $$(s).toggle(hasQuery);
-    })
+    });
     _.each(showIfNoQuery, (s: HTMLElement) => {
       $$(s).toggle(!hasQuery);
-    })
+    });
     _.each(showIfResults, (s: HTMLElement) => {
       $$(s).toggle(hasQuery && hasResults);
-    })
+    });
     _.each(showIfNoResults, (s: HTMLElement) => {
       $$(s).toggle(hasQuery && !hasResults);
-    })
+    });
   }
 
   private showWaitingAnimation() {
@@ -446,7 +512,7 @@ export class ResultList extends Component {
       case 'spinner':
         _.each(this.options.resultContainer.children, (child: HTMLElement) => {
           $$(child).hide();
-        })
+        });
         if ($$(this.options.waitAnimationContainer).find('.coveo-wait-animation') == undefined) {
           this.options.waitAnimationContainer.appendChild(DomUtils.getBasicLoadingAnimation());
         }
@@ -480,7 +546,7 @@ export class ResultList extends Component {
   }
 
   private static getDefaultTemplate(e: HTMLElement): Template {
-    let component = <ResultList>Component.get(e)
+    let component = <ResultList>Component.get(e);
     if (component.searchInterface instanceof Recommendation) {
       return new DefaultRecommendationTemplate();
     }

@@ -29,7 +29,7 @@ export interface IComponentBindings {
    */
   searchInterface?: SearchInterface;
   /**
-   * A reference to the {@link Analytics.client}. This can be a {@link NoopAnalyticsClient} or a {@link LiveAnalyticsClient}
+   * A reference to the {@link Analytics.client}.
    */
   usageAnalytics?: IAnalyticsClient;
   /**

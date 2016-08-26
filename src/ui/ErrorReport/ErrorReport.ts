@@ -31,7 +31,7 @@ export class ErrorReport extends Component {
      * The default value is <code>true</code>
      */
     showDetailedError: ComponentOptions.buildBooleanOption({ defaultValue: true })
-  }
+  };
   private message: Dom;
   private closePopup: () => void;
 
@@ -72,7 +72,7 @@ export class ErrorReport extends Component {
    */
   public back(): void {
     this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.errorBack, {}, this.root);
-    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.errorBack, {})
+    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.errorBack, {});
     history.back();
   }
 
@@ -99,7 +99,7 @@ export class ErrorReport extends Component {
     let errorTitle = {
       h3: l('OopsError'),
       h4: l('ProblemPersists')
-    }
+    };
     let h3 = $$(this.element).find('h3');
     let h4 = $$(this.element).find('h4');
     if (h3 && h4) {
@@ -152,7 +152,7 @@ export class ErrorReport extends Component {
     }
 
     this.message.empty();
-    this.setErrorTitle()
+    this.setErrorTitle();
 
     if (this.options.showDetailedError) {
       let moreInfo = $$('span', {
@@ -162,7 +162,7 @@ export class ErrorReport extends Component {
       moreInfo.on('click', () => {
         moreInfo.empty();
         this.message.el.appendChild(this.buildErrorInfo(data.error));
-      })
+      });
 
       this.message.el.appendChild(moreInfo.el);
     }

@@ -1,5 +1,6 @@
 import {IFieldDescription} from '../../rest/FieldDescription';
 import {Assert} from '../../misc/Assert';
+import {Logger} from '../../misc/Logger';
 import {Template} from '../Templates/Template';
 import {$$} from '../../utils/Dom';
 import {TemplateCache} from '../Templates/TemplateCache';
@@ -10,11 +11,11 @@ import {Utils} from '../../utils/Utils';
 import {l} from '../../strings/Strings';
 
 export interface IComponentOptionsLoadOption<T> {
-  (element: HTMLElement, name: string, option: IComponentOptionsOption<T>): T
+  (element: HTMLElement, name: string, option: IComponentOptionsOption<T>): T;
 }
 
 export interface IComponentOptionsPostProcessing<T> {
-  (value: T, options: any): T
+  (value: T, options: any): T;
 }
 
 export interface IComponentOptionsOption<T> extends IComponentOptions<T> {
@@ -33,6 +34,7 @@ export interface IComponentOptions<T> {
   depend?: string;
   priority?: number;
   deprecated?: string;
+  validator?: (value: T) => boolean;
 }
 
 export interface IComponentOptionsNumberOption extends IComponentOptionsOption<number>, IComponentOptionsNumberOptionArgs {
@@ -177,7 +179,9 @@ export class ComponentOptions {
   static buildCustomOption<T>(converter: (value: string) => T, optionArgs?: IComponentOptions<T>): T {
     let loadOption: IComponentOptionsLoadOption<T> = (element: HTMLElement, name: string, option: IComponentOptionsOption<T>) => {
       let stringvalue = ComponentOptions.loadStringOption(element, name, option);
-      return converter(stringvalue);
+      if (!Utils.isNullOrEmptyString(stringvalue)) {
+        return converter(stringvalue);
+      }
     };
     return ComponentOptions.buildOption<T>(ComponentOptionsType.STRING, loadOption, optionArgs);
   }
@@ -220,7 +224,7 @@ export class ComponentOptions {
         }
       }
       return resultFound ? resultValues : null;
-    }
+    };
     return ComponentOptions.buildOption<{
       [key: string]: any
     }>(ComponentOptionsType.OBJECT, loadOption, optionArgs);
@@ -248,7 +252,7 @@ export class ComponentOptions {
   }
 
   static mergeCamelCase(parent: string, name: string) {
-    return parent + name.substr(0, 1).toUpperCase() + name.substr(1)
+    return parent + name.substr(0, 1).toUpperCase() + name.substr(1);
   }
 
   static initComponentOptions(element: HTMLElement, component: any, values?: any) {
@@ -258,6 +262,7 @@ export class ComponentOptions {
   static initOptions(element: HTMLElement, options: {
     [name: string]: IComponentOptionsOption<any>
   }, values?: any, componentID?: any) {
+    let logger = new Logger(this);
     if (values == null) {
       values = {};
     }
@@ -271,11 +276,11 @@ export class ComponentOptions {
       if (loadFromAttribute != null) {
         value = loadFromAttribute(element, name, optionDefinition);
         if (value && optionDefinition.deprecated) {
-          console.log(componentID + '.' + name + ' : ' + optionDefinition.deprecated);
+          logger.warn(componentID + '.' + name + ' : ' + optionDefinition.deprecated);
         }
       }
 
-      if (_.isEmpty(value) && values[name] != undefined) {
+      if (Utils.isNullOrUndefined(value) && values[name] != undefined) {
         value = values[name];
       }
 
@@ -293,6 +298,17 @@ export class ComponentOptions {
         }
       }
       if (value != null) {
+        if (optionDefinition.validator) {
+          let isValid = optionDefinition.validator(value);
+          if (!isValid) {
+            logger.warn(`${componentID} .${name} has invalid value :  ${value}`);
+            if (optionDefinition.required) {
+              logger.error(`${componentID} .${name} is required and has an invalid value : ${value}. ***THIS COMPONENT WILL NOT WORK***`);
+            }
+            delete values[name];
+            continue;
+          }
+        }
         if (optionDefinition.type == ComponentOptionsType.OBJECT && values[name] != null) {
           values[name] = _.extend(values[name], value);
         } else if (optionDefinition.type == ComponentOptionsType.LOCALIZED_STRING) {
@@ -301,9 +317,8 @@ export class ComponentOptions {
           values[name] = value;
         }
       }
-      if (value == null && values[name] == undefined && optionDefinition.required) {
-        throw new Error(componentID + '.' + name + ' is required');
-      }
+      Assert.check(!(values[name] == undefined && optionDefinition.required), componentID + '.' + name + ' is required');
+
     }
     for (let i = 0; i < names.length; i++) {
       let name = names[i];
@@ -391,7 +406,7 @@ export class ComponentOptions {
   }
 
   static loadSelectorOption(element: HTMLElement, name: string, option: IComponentOptionsOption<any>, doc: Document = document): HTMLElement {
-    let attributeValue = ComponentOptions.loadStringOption(element, name, option)
+    let attributeValue = ComponentOptions.loadStringOption(element, name, option);
     return Utils.isNonEmptyString(attributeValue) ? <HTMLElement>doc.querySelector(attributeValue) : null;
   }
 
@@ -499,7 +514,7 @@ export class ComponentOptions {
     let type = element.getAttribute('type');
     let mimeTypes = 'You must specify the type of template. Valid values are :' +
       ' ' + UnderscoreTemplate.mimeTypes.toString() +
-      ' ' + HtmlTemplate.mimeTypes.toString()
+      ' ' + HtmlTemplate.mimeTypes.toString();
     Assert.check(Utils.isNonEmptyString(type), mimeTypes);
 
     if (_.indexOf(UnderscoreTemplate.mimeTypes, type) != -1) {

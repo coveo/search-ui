@@ -25,7 +25,7 @@ export class TemplateList extends Template {
       }
     }
 
-    return new DefaultResultTemplate().instantiateToElement(object)
+    return new DefaultResultTemplate().instantiateToElement(object);
   }
 
   getFields() {
@@ -33,6 +33,6 @@ export class TemplateList extends Template {
   }
 
   getType() {
-    return 'TemplateList'
+    return 'TemplateList';
   }
 }

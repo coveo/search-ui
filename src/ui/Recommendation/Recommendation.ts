@@ -6,7 +6,7 @@ import {ResultListEvents} from '../../events/ResultListEvents';
 import {SettingsEvents} from '../../events/SettingsEvents';
 import {PreferencesPanelEvents} from '../../events/PreferencesPanelEvents';
 import {AnalyticsEvents} from '../../events/AnalyticsEvents';
-import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta'
+import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
 import {BreadcrumbEvents} from '../../events/BreadcrumbEvents';
 import {QuickviewEvents} from '../../events/QuickviewEvents';
 import {QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
@@ -116,7 +116,7 @@ export class Recommendation extends SearchInterface {
       this.mainQuerySearchUID = args.results.searchUid;
       this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.recommendation, {});
       this.queryController.executeQuery();
-    })
+    });
   }
 
   private handleRecommendationBuildingQuery(data: IBuildingQueryEventArgs) {
@@ -173,9 +173,9 @@ export class Recommendation extends SearchInterface {
     this.preventEventPropagationOn(this.getAllModelEvents());
   }
 
-  private preventEventPropagationOn(eventType, eventName = (event: string) => { return event }) {
+  private preventEventPropagationOn(eventType, eventName = (event: string) => { return event; }) {
     for (let event in eventType) {
-      $$(this.root).on(eventName(event), (e: Event) => { e.stopPropagation() });
+      $$(this.root).on(eventName(event), (e: Event) => e.stopPropagation());
     }
   }
 
@@ -185,15 +185,15 @@ export class Recommendation extends SearchInterface {
       _.each(_.values(QUERY_STATE_ATTRIBUTES), (attribute) => {
         let eventName = this.getBindings().queryStateModel.getEventName(event + attribute);
         events[eventName] = eventName;
-      })
-    })
+      });
+    });
     return events;
   }
 
   private generateDefaultId() {
     let id = 'Recommendation';
     if (Recommendation.NEXT_ID !== 1) {
-      this.logger.warn('Generating another recommendation default id', 'Consider configuring a human friendly / meaningful id for this interface')
+      this.logger.warn('Generating another recommendation default id', 'Consider configuring a human friendly / meaningful id for this interface');
       id = id + '_' + Recommendation.NEXT_ID;
     }
     Recommendation.NEXT_ID++;

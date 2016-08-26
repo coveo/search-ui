@@ -1,17 +1,17 @@
-import {Component} from '../Base/Component'
-import {IComponentBindings} from '../Base/ComponentBindings'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {IQueryResult} from '../../rest/QueryResult'
-import {HighlightUtils, StringAndHoles} from '../../utils/HighlightUtils'
-import {Initialization} from '../Base/Initialization'
-import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
-import {Utils} from '../../utils/Utils'
-import {$$} from '../../utils/Dom'
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {IQueryResult} from '../../rest/QueryResult';
+import {HighlightUtils, StringAndHoles} from '../../utils/HighlightUtils';
+import {Initialization} from '../Base/Initialization';
+import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
+import {Utils} from '../../utils/Utils';
+import {$$} from '../../utils/Dom';
 
 export interface IPrintableUriOptions {
 }
 
-/*
+/**
  * This component is meant to be used inside a result template to display the URI or path to access a result.
  */
 export class PrintableUri extends Component {
@@ -20,10 +20,17 @@ export class PrintableUri extends Component {
 
   static fields = [
     'parents'
-  ]
+  ];
 
   private uri: string;
 
+  /**
+   * Create a new PrintableUri
+   * @param element
+   * @param options
+   * @param bindings
+   * @param result
+   */
   constructor(public element: HTMLElement, public options: IPrintableUriOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, PrintableUri.ID, bindings);
 
@@ -152,7 +159,7 @@ export class PrintableUri extends Component {
         documentTitle: title,
         author: this.result.raw.author
       }, this.result, this.root);
-    })
+    });
   }
 
 }

@@ -156,13 +156,17 @@ enum XMLHttpRequestStatus {
 }
 
 /**
- * This class is in charge of calling an endpoint (eg: a {@link SearchEndpoint} or a {@link AnalyticsEndpoint}.<br/>
- * This means it's only uses to execute an XMLHttpRequest (for example), massage the response and check if there are errors.<br/>
- * Will execute the call and return a Promise.<br/>
- * Call using one of those options : <br/>
- * -- XMLHttpRequest for recent browser that support CORS, or if the endpoint is on the same origin.<br/>
- * -- XDomainRequest for older IE browser that do not support CORS.<br/>
- * -- Jsonp if all else fails, or is explicitly enabled.
+ * This class is in charge of calling an endpoint (eg: a {@link SearchEndpoint}).
+ *
+ * This means it's only uses to execute an XMLHttpRequest (for example), massage the response and check if there are errors.
+ *
+ * Will execute the call and return a Promise.
+ *
+ * Call using one of those options :
+ *
+ * * XMLHttpRequest for recent browser that support CORS, or if the endpoint is on the same origin.
+ * * XDomainRequest for older IE browser that do not support CORS.
+ * * Jsonp if all else fails, or is explicitly enabled.
  */
 export class EndpointCaller {
   public logger: Logger;
@@ -209,7 +213,7 @@ export class EndpointCaller {
 
     var currentPort = (window.location.port != '' ? window.location.port : (window.location.protocol == 'https:' ? '443' : '80'));
     var isSamePort = currentPort == urlObject.port;
-    var isCrossOrigin = !(isLocalHost && isSamePort)
+    var isCrossOrigin = !(isLocalHost && isSamePort);
     if (!this.useJsonp) {
       if (this.isCORSSupported() || !isCrossOrigin) {
         return this.callUsingXMLHttpRequest(requestInfo, params.responseType);
@@ -321,7 +325,7 @@ export class EndpointCaller {
         queryString = queryString.concat(this.convertJsonToQueryString(requestInfo.requestData));
       }
       xmlHttpRequest.open(requestInfo.method, this.combineUrlAndQueryString(requestInfo.url, queryString));
-    })
+    });
   }
 
   /**
@@ -342,7 +346,7 @@ export class EndpointCaller {
 
       var xDomainRequest = new XDomainRequest();
       if (requestInfo.method == 'GET') {
-        queryString = queryString.concat(this.convertJsonToQueryString(requestInfo.requestData))
+        queryString = queryString.concat(this.convertJsonToQueryString(requestInfo.requestData));
       }
       xDomainRequest.open(requestInfo.method, this.combineUrlAndQueryString(requestInfo.url, queryString));
 
@@ -368,7 +372,7 @@ export class EndpointCaller {
           xDomainRequest.send(this.convertJsonToFormBody(requestInfo.requestData));
         }
       });
-    })
+    });
   }
 
   /**
@@ -394,7 +398,7 @@ export class EndpointCaller {
         success: (data: any) => this.handleSuccessfulResponseThatMightBeAnError(requestInfo, data, resolve, reject),
         error: () => this.handleError(requestInfo, 0, undefined, reject)
       });
-    })
+    });
   }
 
   private parseURL(url: string) {

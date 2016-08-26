@@ -66,7 +66,7 @@ export class DeviceUtils {
 
   static isSmallScreenWidth() {
     if (window['clientWidth'] != null && window['clientWidth'] <= 480) {
-      return true
+      return true;
     }
     return document.body.clientWidth <= 480;
   }
