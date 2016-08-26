@@ -152,7 +152,7 @@ export class FacetSlider extends Component {
      * <ul>
      *   <li>enable : (data-display-as-value-enable) <code>boolean</code> : Specifies whether the caption should be displayed as a value or not. Default is <code>true</code></li>.
      *   <li>unitSign : (data-display-as-value-unit-sign) <code>string</code> : Specifies the unit sign for this value.</li>
-     *   <li>separator : (data-display-as-value-separator) <code>string</code> : Specifies the character(s) to use as a separator in the caption. Default is `-.</li>`.
+     *   <li>separator : (data-display-as-value-separator) <code>string</code> : Specifies the character(s) to use as a separator in the caption. Default is `-.`</li>.
      * </ul>
      */
     displayAsValue: ComponentOptions.buildObjectOption({
@@ -167,7 +167,7 @@ export class FacetSlider extends Component {
      * Available options are :
      * <ul>
      *   <li>enable : (data-display-as-percent-enable) <code>boolean</code> : Specifies whether the caption should be displayed as a percentage. Default is <code>false</code></li>.
-     *   <li>separator : (data-display-as-percent-separator) <code>string</code> : Specifies the character(s) to use as a separator in the caption. Default is `-.</li>`.
+     *   <li>separator : (data-display-as-percent-separator) <code>string</code> : Specifies the character(s) to use as a separator in the caption. Default is `-.`</li>.
      * </ul>
      */
     displayAsPercent: ComponentOptions.buildObjectOption({
@@ -180,7 +180,7 @@ export class FacetSlider extends Component {
      * Specifies that you wish to display a small graph on top of the slider.<br/>
      * Available options are :
      *
-     *   <li>steps: (data-graph-steps) <code>number</code> : Specifies the number of steps/columns to display in your graph. The default value is `10</li>`.
+     *   <li>steps: (data-graph-steps) <code>number</code> : Specifies the number of steps/columns to display in your graph. The default value is `10`</li>.
      * </ul>
      */
     graph: ComponentOptions.buildObjectOption({
