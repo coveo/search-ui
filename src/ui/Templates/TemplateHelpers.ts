@@ -12,7 +12,7 @@ export interface ITemplateHelperFunction {
 }
 
 /**
- * Allow to register and return template helpers (essentially : Utility functions that can be executed in the context of a template to render complex elements)
+ * Allow to register and return template helpers (essentially: Utility functions that can be executed in the context of a template to render complex elements).
  */
 export class TemplateHelpers {
   private static helpers: { [templateName: string]: ITemplateHelperFunction; } = {};

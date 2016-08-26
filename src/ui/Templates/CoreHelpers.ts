@@ -153,21 +153,21 @@ export interface ICoreHelpers {
    * - `value`: The string that contains a list of semicolon-separated email
    *   values. When multiple values are passed, each value is displayed in a
    *   separate hyperlink.
-   * - `companyDomain`: The string that contains your own domain (e.g.,
+   * - `companyDomain`: The string that contains your own domain (e.g.:
    *   coveo.com). When specified, this parameter allows email addresses
    *   coming from your own domain to be displayed in a shortened format
-   *   (e.g., Full Name), whereas email addresses coming from an external
-   *   domain will be displayed in an extended format (e.g., Full Name
+   *   (e.g.: Full Name), whereas email addresses coming from an external
+   *   domain will be displayed in an extended format (e.g.: Full Name
    *   (domain.com)). If this parameter is not specified, then the shortened
    *   format will automatically be used.
    * - `me`: The string that contains the current username. If it is
    *   specified, then the email address containing the current username will
    *   be replaced by the localized string 'Me'.
    * - `lengthLimit`: The number of email addresses that you want to display
-   *   before an ellipse is added (e.g., 'From Joe, John and 5 others').<br/>
+   *   before an ellipse is added (e.g.: 'From Joe, John and 5 others').<br/>
    *   The default value is 2.
    * - `truncateName`: When the username is available from the email address,
-   *   then you can specify if you want to truncate the full name. (e.g.,
+   *   then you can specify if you want to truncate the full name. (e.g.:
    *   'John S.' instead of 'John Smith').<br/>
    *   The default value is `false`.
    */
