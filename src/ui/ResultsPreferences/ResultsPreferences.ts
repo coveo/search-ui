@@ -33,7 +33,7 @@ export class ResultsPreferences extends Component {
    */
   static options: IResultsPreferencesOptions = {
     /**
-     * Enable or disable the options to open results in outlook.<br/>
+     * Enable or disable the options to open results in Outlook.<br/>
      * Default value is <code>true</code>
      */
     enableOpenInOutlook: ComponentOptions.buildBooleanOption({ defaultValue: true }),
