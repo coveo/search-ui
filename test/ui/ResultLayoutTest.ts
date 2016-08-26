@@ -1,6 +1,7 @@
 import * as Mock from '../MockEnvironment';
 import {ResultLayout} from '../../src/ui/ResultLayout/ResultLayout';
 import {ResultLayoutEvents} from '../../src/events/ResultLayoutEvents';
+import {QueryEvents, IQuerySuccessEventArgs} from '../../src/events/QueryEvents';
 import {$$} from '../../src/utils/Dom';
 
 export function ResultLayoutTest() {
@@ -19,7 +20,7 @@ export function ResultLayoutTest() {
       beforeEach(() => {
         test = Mock.advancedComponentSetup<ResultLayout>(ResultLayout, <Mock.AdvancedComponentSetupOptions>{
           modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
-            $$(builder.root).on(ResultLayoutEvents.resultLayoutPopulate, (e, args) => {
+            $$(builder.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => {
               args.layouts.push('card');
               args.layouts.push('list');
             });
@@ -36,12 +37,21 @@ export function ResultLayoutTest() {
       it('changeLayout should throw an error when switching to a valid but unavailable layout', function () {
         expect(() => test.cmp.changeLayout('table')).toThrow();
       });
+
+      it('hides on querySuccess when there are 0 results', function () {
+        $$(test.env.root).trigger(QueryEvents.querySuccess, <IQuerySuccessEventArgs>{
+          results: {
+            results: []
+          }
+        });
+        expect(test.cmp.element.classList).toContain('coveo-result-layout-hidden');
+      });
     });
 
     it('changeLayout should not throw an error when having only one layout and switching to it', function () {
       test = Mock.advancedComponentSetup<ResultLayout>(ResultLayout, <Mock.AdvancedComponentSetupOptions>{
         modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
-          $$(builder.root).on(ResultLayoutEvents.resultLayoutPopulate, (e, args) => {
+          $$(builder.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => {
             args.layouts.push('table');
           });
           return builder;
@@ -53,7 +63,7 @@ export function ResultLayoutTest() {
     it('should throw an error when being populated with invalid result layout names', function () {
       expect(() => Mock.advancedComponentSetup<ResultLayout>(ResultLayout, <Mock.AdvancedComponentSetupOptions>{
         modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
-          $$(builder.root).on(ResultLayoutEvents.resultLayoutPopulate, (e, args) => {
+          $$(builder.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => {
             args.layouts.push('star-shaped');
           });
           return builder;
@@ -61,14 +71,14 @@ export function ResultLayoutTest() {
       })).toThrowError(/Invalid layout/);
     });
 
-    it('changeLayout should throw an error when entering an invalid layout', function () {
-      expect(() => test.cmp.changeLayout('pony-shaped')).toThrow();
+    it('changeLayout should throw an error at runtime when entering an invalid layout', function () {
+      expect(() => test.cmp.changeLayout.call(test.cmp, 'pony-shaped')).toThrow();
     });
 
     it('hides when there are less than 2 layouts available', function () {
       test = Mock.advancedComponentSetup<ResultLayout>(ResultLayout, <Mock.AdvancedComponentSetupOptions>{
         modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
-          $$(builder.root).on(ResultLayoutEvents.resultLayoutPopulate, (e, args) => {
+          $$(builder.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => {
             args.layouts.push('list');
           });
           return builder;
@@ -80,7 +90,7 @@ export function ResultLayoutTest() {
     it('does not hide when there are 2 layouts or more available', function () {
       test = Mock.advancedComponentSetup<ResultLayout>(ResultLayout, <Mock.AdvancedComponentSetupOptions>{
         modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
-          $$(builder.root).on(ResultLayoutEvents.resultLayoutPopulate, (e, args) => {
+          $$(builder.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => {
             args.layouts.push('list');
             args.layouts.push('card');
             args.layouts.push('table');
@@ -95,7 +105,7 @@ export function ResultLayoutTest() {
       let parentSection = $$('div', { className: 'coveo-result-layout-section' });
       test = Mock.advancedComponentSetup<ResultLayout>(ResultLayout, <Mock.AdvancedComponentSetupOptions>{
         modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
-          $$(builder.root).on(ResultLayoutEvents.resultLayoutPopulate, (e, args) => {
+          $$(builder.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => {
             args.layouts.push('list');
           });
           parentSection.append(builder.element);
