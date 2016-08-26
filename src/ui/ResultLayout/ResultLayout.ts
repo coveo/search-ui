@@ -35,7 +35,7 @@ export class ResultLayout extends Component {
    * @componentOptions
    */
   static options: IResultLayoutOptions = {
-  }
+  };
 
   // TODO: add sticky url parameter
   constructor(public element: HTMLElement, public options?: IResultLayoutOptions, bindings?: IComponentBindings) {
@@ -62,7 +62,7 @@ export class ResultLayout extends Component {
     if (layout !== this.currentLayout || this.getModelValue() === '') {
       this.bind.trigger(this.root, ResultListEvents.changeLayout, <IChangeLayoutEventArgs>{
         layout: layout
-      })
+      });
       if (this.currentLayout) {
         $$(this.buttons[this.currentLayout]).removeClass('coveo-selected');
       }

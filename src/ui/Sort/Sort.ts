@@ -5,7 +5,7 @@ import {IComponentBindings} from '../Base/ComponentBindings';
 import {Assert} from '../../misc/Assert';
 import {Utils} from '../../utils/Utils';
 import {$$} from '../../utils/Dom';
-import {Model, IAttributesChangedEventArg, MODEL_EVENTS} from '../../models/Model';
+import {IAttributesChangedEventArg, MODEL_EVENTS} from '../../models/Model';
 import {QueryStateModel, QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
 import {QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs} from '../../events/QueryEvents';
 import {Initialization} from '../Base/Initialization';

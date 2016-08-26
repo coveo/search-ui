@@ -17,12 +17,11 @@ import {Initialization, IInitializationParameters} from '../Base/Initialization'
 import {Defer} from '../../misc/Defer';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {ResultListEvents, IDisplayedNewResultEventArgs, IChangeLayoutEventArgs} from '../../events/ResultListEvents';
-import {ResultLayoutEvents, IResultLayoutPopulateArgs} from '../../events/ResultLayoutEvents';
+import {ResultLayoutEvents} from '../../events/ResultLayoutEvents';
 import {Utils} from '../../utils/Utils';
 import {DomUtils} from '../../utils/DomUtils';
 import {Recommendation} from '../Recommendation/Recommendation';
 import {DefaultRecommendationTemplate} from '../Templates/DefaultRecommendationTemplate';
-import {ResultLayout} from '../ResultLayout/ResultLayout';
 
 export interface IResultListOptions {
   resultContainer?: HTMLElement;
