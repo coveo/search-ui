@@ -18,7 +18,7 @@ export interface IIconOptions {
 }
 
 /**
- * An icon component is a Result template component which outputs the corresponding icon for a give filetype. It uses the
+ * An icon component is a Result template component which outputs the corresponding icon for a given filetype. It uses the
  * available icons in the framework, and if no suitable one are found, it fallback on a generic icon.
  */
 export class Icon extends Component {
@@ -30,7 +30,7 @@ export class Icon extends Component {
    */
   static options: IIconOptions = {
     /**
-     * Setting this value will tell the Icon component to output this value as it's css class, instead of the auto-selected one.<br/>
+     * Setting this value will tell the `Icon` component to output this value as its CSS class, instead of the auto-selected one.<br/>
      * Default is `undefined`, and the framework will determine an icon from the result filetype.
      */
     value: ComponentOptions.buildIconOption(),
