@@ -46,6 +46,11 @@ export function ValueElementRendererTest() {
       expect(valueRenderer.build().checkbox.getAttribute('disabled')).toBe('disabled');
     });
 
+    it('should put the tabindex attribute to 0 on a stylish checkbox', function () {
+      valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
+      expect(valueRenderer.build().stylishCheckbox.getAttribute('tabindex')).toBe('0');
+    });
+
     it('should build a stylish checkbox', function () {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
       expect(valueRenderer.build().stylishCheckbox).toBeDefined();
@@ -70,6 +75,16 @@ export function ValueElementRendererTest() {
     it('should build an exclude icon', function () {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
       expect(valueRenderer.build().excludeIcon).toBeDefined();
+    });
+
+    it('should build an exclude icon', function () {
+      valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
+      expect(valueRenderer.build().excludeIcon).toBeDefined();
+    });
+
+    it('should put the tabindex attribute to 0 on an exclude icon', function () {
+      valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
+      expect(valueRenderer.build().excludeIcon.getAttribute('tabindex')).toBe('0');
     });
 
     it('should render computed field only if needed', function () {

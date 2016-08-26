@@ -67,6 +67,10 @@ export function FieldTableTest() {
           expect($$(test.env.element.parentElement).find('.coveo-field-table-toggle')).not.toBeNull();
         });
 
+        it('should put the tabindex to 0 on the toggle caption', function () {
+          expect($$(test.env.element.parentElement.parentElement).find('.coveo-field-table-toggle-caption').getAttribute('tabindex')).toBe('0');
+        });
+
         it('should wrap the table in a toggle container', function () {
           expect($$(test.env.element.parentElement).hasClass('coveo-field-table-toggle-container')).toBe(true);
         });
