@@ -104,7 +104,7 @@ export class FacetSlider extends Component {
     }),
     /**
      * Specifies the format used to display values if they are dates.<br/>
-     * Default value is `<code>MMM dd, yyyy</code>`.
+     * Default value is <code>MMM dd, yyyy</code>.
      */
     dateFormat: ComponentOptions.buildStringOption(),
     /**
@@ -150,7 +150,7 @@ export class FacetSlider extends Component {
      * Specifies the caption that you want to display the field values.<br/>
      * Available options are :
      * <ul>
-     *   <li>enable : (data-display-as-value-enable) <code>boolean</code> : Specifies whether the caption should be displayed as a value or not. Default is `<code>true</code></li>`.
+     *   <li>enable : (data-display-as-value-enable) <code>boolean</code> : Specifies whether the caption should be displayed as a value or not. Default is <code>true</code></li>.
      *   <li>unitSign : (data-display-as-value-unit-sign) <code>string</code> : Specifies the unit sign for this value.</li>
      *   <li>separator : (data-display-as-value-separator) <code>string</code> : Specifies the character(s) to use as a separator in the caption. Default is `-.</li>`.
      * </ul>
@@ -166,7 +166,7 @@ export class FacetSlider extends Component {
      * Specifies the percentage caption that you want to display the field values.<br/>
      * Available options are :
      * <ul>
-     *   <li>enable : (data-display-as-percent-enable) <code>boolean</code> : Specifies whether the caption should be displayed as a percentage. Default is `<code>false</code></li>`.
+     *   <li>enable : (data-display-as-percent-enable) <code>boolean</code> : Specifies whether the caption should be displayed as a percentage. Default is <code>false</code></li>.
      *   <li>separator : (data-display-as-percent-separator) <code>string</code> : Specifies the character(s) to use as a separator in the caption. Default is `-.</li>`.
      * </ul>
      */
