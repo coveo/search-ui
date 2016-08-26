@@ -2,6 +2,8 @@ import * as Mock from '../MockEnvironment';
 import {ResultLayout} from '../../src/ui/ResultLayout/ResultLayout';
 import {ResultLayoutEvents} from '../../src/events/ResultLayoutEvents';
 import {QueryEvents, IQuerySuccessEventArgs} from '../../src/events/QueryEvents';
+import {FakeResults} from '../Fake';
+import {QueryStateModel} from '../../src/models/QueryStateModel';
 import {$$} from '../../src/utils/Dom';
 
 export function ResultLayoutTest() {
@@ -39,13 +41,59 @@ export function ResultLayoutTest() {
       });
 
       it('hides on querySuccess when there are 0 results', function () {
+        let spy = jasmine.createSpy('hideSpy');
+        test.cmp['hide'] = spy;
         $$(test.env.root).trigger(QueryEvents.querySuccess, <IQuerySuccessEventArgs>{
-          results: {
-            results: []
-          }
+          results: FakeResults.createFakeResults(0)
         });
-        expect(test.cmp.element.classList).toContain('coveo-result-layout-hidden');
+        expect(spy).toHaveBeenCalled();
       });
+
+      it('shows on querySuccess when there are results', function () {
+        let spy = jasmine.createSpy('showSpy');
+        test.cmp['show'] = spy;
+        $$(test.env.root).trigger(QueryEvents.querySuccess, <IQuerySuccessEventArgs>{
+          results: FakeResults.createFakeResults(3)
+        });
+        expect(spy).toHaveBeenCalled();
+      });
+
+      describe('with live queryStateModel', function () {
+        beforeEach(() => {
+          test = Mock.advancedComponentSetup<ResultLayout>(ResultLayout, <Mock.AdvancedComponentSetupOptions>{
+            modifyBuilder: builder => {
+              builder.withLiveQueryStateModel();
+              $$(builder.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => {
+                args.layouts.push('card');
+                args.layouts.push('list');
+              });
+              return builder;
+            }
+          });
+        });
+
+        it('calls changeLayout with the new value on queryStateChanged if it is available', function () {
+          let changeLayoutSpy = jasmine.createSpy('changeLayoutSpy');
+          test.cmp.changeLayout = changeLayoutSpy;
+          test.env.queryStateModel.set(QueryStateModel.attributesEnum.layout, 'list');
+          expect(changeLayoutSpy).toHaveBeenCalledWith('list');
+        });
+        it('calls changeLayout with its first layout if no value is provided', function () {
+          let changeLayoutSpy = jasmine.createSpy('changeLayoutSpy');
+          test.cmp.changeLayout = changeLayoutSpy;
+          test.env.queryStateModel.set(QueryStateModel.attributesEnum.layout, 'list');
+          test.env.queryStateModel.set(QueryStateModel.attributesEnum.layout, '');
+          expect(changeLayoutSpy).toHaveBeenCalledWith('card');
+        });
+        it('calls changeLayout with its first layout if an invalid value is provided', function () {
+          let changeLayoutSpy = jasmine.createSpy('changeLayoutSpy');
+          test.cmp.changeLayout = changeLayoutSpy;
+          test.env.queryStateModel.set(QueryStateModel.attributesEnum.layout, 'list');
+          test.env.queryStateModel.set(QueryStateModel.attributesEnum.layout, 'Emacs <3');
+          expect(changeLayoutSpy).toHaveBeenCalledWith('card');
+        });
+      });
+
     });
 
     it('changeLayout should not throw an error when having only one layout and switching to it', function () {
@@ -114,6 +162,13 @@ export function ResultLayoutTest() {
       });
       expect(parentSection.el.classList).toContain('coveo-result-layout-hidden');
       expect(test.cmp.element.classList).not.toContain('coveo-result-layout-hidden');
+    });
+
+    it('hides on queryError', function () {
+      let hideSpy = jasmine.createSpy('hideSpy');
+      test.cmp['hide'] = hideSpy;
+      $$(test.env.root).trigger(QueryEvents.queryError, {});
+      expect(hideSpy).toHaveBeenCalled();
     });
   });
 }
