@@ -3,7 +3,7 @@ import {L10N} from '../../src/misc/L10N';
 declare var String: {
   toLocaleString(l10n: any);
   locale: string;
-}
+};
 
 export function L10NTest() {
 
@@ -21,22 +21,22 @@ export function L10NTest() {
           'TwoNumbers': '{0} et {1}',
           'baby': '{0} bébé<pl>s</pl>'
         }
-      })
-    })
+      });
+    });
 
     it('should work for simple localizations', function () {
       String.locale = 'fr';
       expect(L10N.format('Foo')).toBe('Barre');
       String.locale = 'en';
       expect(L10N.format('Foo')).toBe('Bar');
-    })
+    });
 
     it('should put parameters in the outputted string properly', function () {
       String.locale = 'fr';
       expect(L10N.format('TwoNumbers', '37', '42')).toBe('37 et 42');
       String.locale = 'en';
       expect(L10N.format('TwoNumbers', '37', '42')).toBe('37 and 42');
-    })
+    });
 
     it('should automatically pluralize values higher than one', function () {
       String.locale = 'fr';
@@ -52,7 +52,7 @@ export function L10NTest() {
       expect(L10N.format('baby', 1, 1)).toBe('1 baby');
       expect(L10N.format('baby', 1.37, 1.37)).toBe('1.37 babies');
       expect(L10N.format('baby', 42, 42)).toBe('42 babies');
-    })
+    });
 
     it('should force pluralization or singularization when last argument is boolean', function () {
       String.locale = 'fr';
@@ -62,7 +62,7 @@ export function L10NTest() {
       String.locale = 'en';
       expect(L10N.format('baby', 1, true)).toBe('1 babies');
       expect(L10N.format('baby', 37, false)).toBe('37 baby');
-    })
-  })
+    });
+  });
 
 }

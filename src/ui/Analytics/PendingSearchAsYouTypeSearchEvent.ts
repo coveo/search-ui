@@ -18,7 +18,7 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
     super(root, endpoint, templateSearchEvent, sendToCloud);
     this.beforeUnloadHandler = () => {
       this.onWindowUnload();
-    }
+    };
     window.addEventListener('beforeunload', this.beforeUnloadHandler);
     $$(root).on(InitializationEvents.nuke, () => this.handleNuke());
   }
@@ -31,11 +31,11 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
           resolve(this);
           super.handleDuringQuery(event, args);
         }
-      }
+      };
       _.delay(() => {
         this.toSendRightNow();
       }, this.delayBeforeSending);
-    })
+    });
   }
 
   public sendRightNow() {
@@ -47,7 +47,7 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
   public modifyCustomData(key: string, newData: any) {
     _.each(this.searchEvents, (searchEvent: ISearchEvent) => {
       searchEvent.customData[key] = newData;
-    })
+    });
     if (!this.templateSearchEvent.customData) {
       this.templateSearchEvent.customData = {};
     }
@@ -58,7 +58,7 @@ export class PendingSearchAsYouTypeSearchEvent extends PendingSearchEvent {
     _.each(this.searchEvents, (searchEvent: ISearchEvent) => {
       searchEvent.actionCause = newCause.name;
       searchEvent.actionType = newCause.type;
-    })
+    });
     this.templateSearchEvent.actionCause = newCause.name;
     this.templateSearchEvent.actionType = newCause.type;
   }

@@ -19,7 +19,6 @@ export interface IAnalyticsSuggestionsOptions extends ISuggestionForOmniboxOptio
  * In order to provide relevant suggestions, they are shown in order of successful document views: thus, queries resulting in no clicks from users or that require refinements are not suggested if better options exist.
  * These suggestions appear in the Omnibox Component. This component is thus highly related to the {@link Analytics} Component.
  * While a user is typing in a query box, he will be able to see and select the most commonly used queries.
- * See also : {@link Omnibox.enableTopQueryAddon}, which does sensibly the same thing, except with less (none, actually) customization option, but easier to setup.
  */
 export class AnalyticsSuggestions extends Component {
   static ID = 'AnalyticsSuggestions';
@@ -55,7 +54,7 @@ export class AnalyticsSuggestions extends Component {
 
 
     if (this.options && 'omniboxSuggestionOptions' in this.options) {
-      this.options = _.extend(this.options, this.options['omniboxSuggestionOptions'])
+      this.options = _.extend(this.options, this.options['omniboxSuggestionOptions']);
     }
 
     this.options = ComponentOptions.initComponentOptions(element, AnalyticsSuggestions, this.options);
@@ -118,7 +117,7 @@ export class AnalyticsSuggestions extends Component {
         this.resultsToBuildWith = _.map(results, (result) => {
           return {
             value: result
-          }
+          };
         });
         this.lastSuggestions = results;
         if (!_.isEmpty(this.resultsToBuildWith) && args.completeQueryExpression.word != '') {
@@ -130,19 +129,19 @@ export class AnalyticsSuggestions extends Component {
           this.currentlyDisplayedSuggestions[$$(selectable).text()] = {
             element: selectable,
             pos: i
-          }
-        })
+          };
+        });
         resolve({
           element: element,
           zIndex: this.options.omniboxZIndex
-        })
+        });
       });
       searchPromise.catch(() => {
         resolve({
           element: undefined
-        })
+        });
       });
-    })
+    });
 
     args.rows.push({ deferred: promise });
   }

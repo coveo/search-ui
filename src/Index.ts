@@ -91,7 +91,6 @@ export {OmniboxResultList} from './ui/OmniboxResultList/OmniboxResultList';
 export {CurrentTab} from './ui/CurrentTab/CurrentTab';
 export {QueryboxQueryParameters} from './ui/Querybox/QueryboxQueryParameters';
 export {ImageResultList} from './ui/ImageResultList/ImageResultList';
-export {CoveoJQuery} from './ui/Base/CoveoJQuery';
 export {jQueryInstance as $} from './ui/Base/CoveoJQuery';
 export {underscoreInstance as _} from './ui/Base/CoveoUnderscore';
 export {FollowItem} from './ui/SearchAlerts/FollowItem';
@@ -106,6 +105,7 @@ export {ChatterPostAttachment} from './ui/ChatterPostAttachment/ChatterPostAttac
 export {ChatterPostedBy} from './ui/ChatterPostedBy/ChatterPostedBy';
 export {ChatterTopic} from './ui/ChatterTopic/ChatterTopic';
 export {ChatterUtils} from './utils/ChatterUtils';
+export { Logo } from './ui/Logo/Logo';
 
 // Webpack output a library target with a temporary name.
 // This is to allow end user to put CoveoJsSearch.Dependencie.js before or after the main CoveoJsSearch.js, without breaking
@@ -117,7 +117,7 @@ let swapVar = () => {
   } else {
     _.each(_.keys(this), (k) => {
       window['Coveo'][k] = this[k];
-    })
+    });
   }
-}
+};
 swapVar();

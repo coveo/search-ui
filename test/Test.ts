@@ -262,3 +262,12 @@ ResultsPerPageTest();
 
 import {ResultLayoutTest} from './ui/ResultLayoutTest';
 ResultLayoutTest();
+
+import { LogoTest } from './ui/LogoTest';
+LogoTest();
+
+import {RegisteredNamedMethodsTest} from './ui/RegisteredNamedMethodsTest';
+RegisteredNamedMethodsTest();
+
+import {FacetValuesOrderTest} from './ui/FacetValuesOrderTest';
+FacetValuesOrderTest();

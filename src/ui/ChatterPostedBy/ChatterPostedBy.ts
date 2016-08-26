@@ -32,7 +32,7 @@ export class ChatterPostedBy extends Component {
     'sfinsertedbyid',
     'sfparentid',
     'sfparentname'
-  ]
+  ];
 
   constructor(public element: HTMLElement, public options?: IChatterPostedByOption, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {
     super(element, ChatterPostedBy.ID, bindings);

@@ -45,7 +45,7 @@ export class Dom {
       if (key === 'className') {
         elem.className = props['className'];
       } else {
-        let attr = key.indexOf('-') !== -1 ? key : Utils.toDashCase(key)
+        let attr = key.indexOf('-') !== -1 ? key : Utils.toDashCase(key);
         elem.setAttribute(attr, props[key]);
       }
     }
@@ -58,7 +58,7 @@ export class Dom {
       } else if (child instanceof Dom) {
         elem.appendChild(child.el);
       }
-    })
+    });
 
     return elem;
   }
@@ -298,7 +298,7 @@ export class Dom {
    */
   public findClass(className: string): HTMLElement[] {
     if ('getElementsByClassName' in this.el) {
-      return this.nodeListToArray(this.el.getElementsByClassName(className))
+      return this.nodeListToArray(this.el.getElementsByClassName(className));
     }
     // For ie 8
     return this.nodeListToArray(this.el.querySelectorAll('.' + className));
@@ -323,7 +323,7 @@ export class Dom {
     if (_.isArray(className)) {
       _.each(className, (name: string) => {
         this.addClass(name);
-      })
+      });
     } else {
       if (!this.hasClass(className)) {
         if (this.el.className) {
@@ -377,7 +377,7 @@ export class Dom {
    * @returns {any|Array}
    */
   public getClass(): string[] {
-    return this.el.className.match(Dom.CLASS_NAME_REGEX) || []
+    return this.el.className.match(Dom.CLASS_NAME_REGEX) || [];
   }
 
   /**
@@ -435,19 +435,19 @@ export class Dom {
     if (_.isArray(type)) {
       _.each(type, (t: string) => {
         this.on(t, eventHandle);
-      })
+      });
     } else {
       var jq = this.getJQuery();
       if (jq) {
         jq(this.el).on(type, eventHandle);
       } else if (this.el.addEventListener) {
         var fn = (e: CustomEvent) => {
-          eventHandle(e, e.detail)
-        }
+          eventHandle(e, e.detail);
+        };
         Dom.handlers.push({
           eventHandle: eventHandle,
           fn: fn
-        })
+        });
         this.el.addEventListener(type, fn, false);
       } else if (this.el['on']) {
         this.el['on']('on' + type, eventHandle);
@@ -467,12 +467,12 @@ export class Dom {
     if (_.isArray(type)) {
       _.each(type, (t: string) => {
         this.one(t, eventHandle);
-      })
+      });
     } else {
       var once = (e: Event, args: any) => {
         this.off(type, once);
         return eventHandle(e, args);
-      }
+      };
       this.on(type, once);
     }
   }
@@ -488,19 +488,19 @@ export class Dom {
     if (_.isArray(type)) {
       _.each(type, (t: string) => {
         this.off(t, eventHandle);
-      })
+      });
     } else {
       var jq = this.getJQuery();
       if (jq) {
         jq(this.el).off(type, eventHandle);
       } else if (this.el.removeEventListener) {
-        var idx = 0
+        var idx = 0;
         var found = _.find(Dom.handlers, (handlerObj: { eventHandle: Function, fn: EventListener }, i) => {
           if (handlerObj.eventHandle == eventHandle) {
             idx = i;
             return true;
           }
-        })
+        });
         if (found) {
           this.el.removeEventListener(type, found.fn, false);
           Dom.handlers.splice(idx, 1);
@@ -519,7 +519,7 @@ export class Dom {
   public trigger(type: string, data?: { [key: string]: any }): void {
     var jq = this.getJQuery();
     if (jq) {
-      jq(this.el).trigger(type, data)
+      jq(this.el).trigger(type, data);
     } else if (CustomEvent !== undefined) {
       var event = new CustomEvent(type, { detail: data, bubbles: true });
       this.el.dispatchEvent(event);
@@ -658,7 +658,7 @@ export class Dom {
 
   private getJQuery() {
     if (window['jQuery'] != undefined) {
-      return window['jQuery']
+      return window['jQuery'];
     }
     return false;
   }

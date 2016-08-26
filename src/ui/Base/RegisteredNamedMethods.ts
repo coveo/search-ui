@@ -5,7 +5,7 @@ import {QueryStateModel, setState} from '../../models/QueryStateModel';
 import {IQueryResult} from '../../rest/QueryResult';
 import {IQueryResults} from '../../rest/QueryResults';
 import {Analytics} from '../Analytics/Analytics';
-import {IAnalyticsClient} from '../Analytics/AnalyticsClient'
+import {IAnalyticsClient} from '../Analytics/AnalyticsClient';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {$$} from '../../utils/Dom';
 import {IAnalyticsActionCause, IAnalyticsDocumentViewMeta} from '../Analytics/AnalyticsActionListMeta';
@@ -109,7 +109,7 @@ Initialization.registerNamedMethod('executeQuery', (element: HTMLElement) => {
  * @param args
  * @returns {any}
  */
-export function state(element: HTMLElement, args: any[]): any {
+export function state(element: HTMLElement, ...args: any[]): any {
   Assert.exists(element);
   var model = <QueryStateModel>Component.resolveBinding(element, QueryStateModel);
   return setState(model, args);
@@ -139,9 +139,13 @@ Initialization.registerNamedMethod('get', (element: HTMLElement, componentClass?
   return get(element, componentClass, noThrow);
 });
 
-Initialization.registerNamedMethod('result', (element: HTMLElement, noThrow?: boolean): IQueryResult => {
+export function result(element: HTMLElement, noThrow?: boolean): IQueryResult {
   Assert.exists(element);
   return Component.getResult(element, noThrow);
+}
+
+Initialization.registerNamedMethod('result', (element: HTMLElement, noThrow?: boolean): IQueryResult => {
+  return result(element, noThrow);
 });
 
 function getCoveoAnalyticsClient(element: HTMLElement): IAnalyticsClient {
@@ -177,7 +181,7 @@ export function logCustomEvent(element: HTMLElement, customEventCause: IAnalytic
 
 Initialization.registerNamedMethod('logCustomEvent', (element: HTMLElement, customEventCause: IAnalyticsActionCause, metadata: any) => {
   logCustomEvent(element, customEventCause, metadata);
-})
+});
 
 /**
  * Log a search event on the Coveo Usage Analytics service
@@ -194,7 +198,7 @@ export function logSearchEvent(element: HTMLElement, searchEventCause: IAnalytic
 
 Initialization.registerNamedMethod('logSearchEvent', (element: HTMLElement, searchEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) => {
   logSearchEvent(element, searchEventCause, metadata);
-})
+});
 
 /**
  * Log a search as you type event on the Coveo Usage Analytics service.<br/>
@@ -212,7 +216,7 @@ export function logSearchAsYouTypeEvent(element: HTMLElement, searchAsYouTypeEve
 
 Initialization.registerNamedMethod('logSearchAsYouTypeEvent', (element: HTMLElement, searchAsYouTypeEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) => {
   logSearchAsYouTypeEvent(element, searchAsYouTypeEventCause, metadata);
-})
+});
 
 /**
  * Log a click event on the Coveo Usage Analytics service.
@@ -229,8 +233,8 @@ export function logClickEvent(element: HTMLElement, clickEventCause: IAnalyticsA
 }
 
 Initialization.registerNamedMethod('logClickEvent', (element: HTMLElement, clickEventCause: IAnalyticsActionCause, metadata: IStringMap<string>, result: IQueryResult) => {
-  logClickEvent(element, clickEventCause, metadata, result)
-})
+  logClickEvent(element, clickEventCause, metadata, result);
+});
 
 /**
  * Pass options to the framework, before it is initialized ({@link init}).<br/>
@@ -287,7 +291,7 @@ export function initBox(element: HTMLElement, ...args: any[]) {
   merged[type || 'Container'] = _.extend({}, options.SearchInterface, options[type]);
   options = _.extend({}, options, merged);
   Initialization.initializeFramework(element, options, () => {
-    Initialization.initBoxInterface(element, options, type, injectMarkup)
+    Initialization.initBoxInterface(element, options, type, injectMarkup);
   });
 }
 
@@ -302,4 +306,4 @@ export function nuke(element: HTMLElement) {
 
 Initialization.registerNamedMethod('nuke', (element: HTMLElement) => {
   nuke(element);
-})
+});

@@ -42,7 +42,7 @@ export class FileTypes {
     return {
       'icon': 'coveo-icon objecttype ' + objecttype,
       caption: localizedString != 'objecttype_' + objecttype ? localizedString : objecttype
-    }
+    };
   }
 
   static getFileType(filetype: string): IFileTypeInfo {
@@ -61,7 +61,7 @@ export class FileTypes {
     return {
       'icon': 'coveo-icon filetype ' + filetype,
       caption: localizedString != 'filetype_' + filetype ? localizedString : filetype
-    }
+    };
   }
 
   static getFileTypeCaptions() {

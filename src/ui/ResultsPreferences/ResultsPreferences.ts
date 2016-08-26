@@ -71,8 +71,8 @@ export class ResultsPreferences extends Component {
 
     this.updateComponentOptionsModel();
 
-    this.bind.on(this.preferencesPanel, PreferencesPanelEvents.savePreferences, () => this.save())
-    this.bind.on(this.preferencesPanel, PreferencesPanelEvents.exitPreferencesWithoutSave, () => this.exitWithoutSave())
+    this.bind.on(this.preferencesPanel, PreferencesPanelEvents.savePreferences, () => this.save());
+    this.bind.on(this.preferencesPanel, PreferencesPanelEvents.exitPreferencesWithoutSave, () => this.exitWithoutSave());
 
     this.buildTitle();
     this.buildCheckboxesInput();
@@ -124,8 +124,8 @@ export class ResultsPreferences extends Component {
         this.fromPreferenceChangeEventToUsageAnalyticsLog(e);
         this.save();
         this.queryController.executeQuery();
-      })
-    })
+      });
+    });
 
     this.element.appendChild(container.el);
     this.fromPreferencesToCheckboxInput();
@@ -138,7 +138,7 @@ export class ResultsPreferences extends Component {
       alwaysOpenInNewWindow: false
     };
     if (_.contains(selected, l('OpenInOutlookWhenPossible'))) {
-      this.preferences.openInOutlook = true
+      this.preferences.openInOutlook = true;
     }
     if (_.contains(selected, l('AlwaysOpenInNewWindow'))) {
       this.preferences.alwaysOpenInNewWindow = true;

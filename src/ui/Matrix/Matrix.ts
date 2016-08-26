@@ -154,7 +154,7 @@ export class Matrix extends Component {
     enableHoverPreview: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies the criteria to use to sort the results of the hover preview.<br/>
-     * The available sort criteria values are the same as those of the {@link Query}.
+     * The available sort criteria values are the same as those of the {@link IQuery}.
      * Possible values are :
      * <ul>
      *    <li> relevancy :  This uses all the configured ranking weights as well as any specified ranking expressions to rank results.</li>
@@ -192,7 +192,7 @@ export class Matrix extends Component {
      *
      */
     previewTemplate: ComponentOptions.buildTemplateOption()
-  }
+  };
 
   /**
    * Holds the data for the matrix
@@ -229,7 +229,7 @@ export class Matrix extends Component {
     }
 
     if (!this.options.previewSortField) {
-      this.options.previewSortField = this.options.computedField
+      this.options.previewSortField = this.options.computedField;
     }
 
     if (this.options.columnFieldValues.length != this.options.columnLabels.length) {
@@ -238,11 +238,11 @@ export class Matrix extends Component {
 
     this.buildMatrix();
     if (this.options.rowField == null) {
-      this.logger.error('\'rowField\' option is required in the Matrix component')
+      this.logger.error('\'rowField\' option is required in the Matrix component');
     } else if (this.options.columnField == null) {
-      this.logger.error('\'columnField\' option is required in the Matrix component')
+      this.logger.error('\'columnField\' option is required in the Matrix component');
     } else if (this.options.computedField == null) {
-      this.logger.error('\'computedField\' option is required in the Matrix component')
+      this.logger.error('\'computedField\' option is required in the Matrix component');
     } else {
       this.bindEvents();
       this.initQueryState();
@@ -274,7 +274,7 @@ export class Matrix extends Component {
     if (columnValue && this.isColumnFacetPresent()) {
       this.queryStateModel.set(this.columnId, [columnValue]);
     } else {
-      this.selectedColumnValue = columnValue
+      this.selectedColumnValue = columnValue;
       this.queryStateModel.set(this.columnId, []);
     }
   }
@@ -317,9 +317,9 @@ export class Matrix extends Component {
   public drawMatrix() {
     let headerRow = $$('div', {
       className: 'coveo-matrix-row matrix-header-row'
-    })
+    });
     this.drawRow(headerRow.el, 0);
-    let numberOfRowsToDraw = this.options.enableColumnTotals ? this.numberOfRows - 1 : this.numberOfRows
+    let numberOfRowsToDraw = this.options.enableColumnTotals ? this.numberOfRows - 1 : this.numberOfRows;
     for (let i = 1; i < numberOfRowsToDraw; i++) {
       let row = $$('div', {
         className: 'coveo-matrix-row'
@@ -339,7 +339,7 @@ export class Matrix extends Component {
       let cells = $$(this.element).findAll('.coveo-matrix-cell');
       _.each(cells, (c: HTMLElement) => {
         c.style.fontSize = this.options.cellFontSize;
-      })
+      });
     }
   }
 
@@ -382,10 +382,10 @@ export class Matrix extends Component {
   private handleBuildingQuery(args: IBuildingQueryEventArgs) {
     if (!this.areFacetsPresent()) {
       if (this.selectedRowValue && !this.isRowFacetPresent()) {
-        args.queryBuilder.advancedExpression.addFieldExpression(this.options.rowField, '=', [this.selectedRowValue])
+        args.queryBuilder.advancedExpression.addFieldExpression(this.options.rowField, '=', [this.selectedRowValue]);
       }
       if (this.selectedColumnValue && !this.isColumnFacetPresent()) {
-        args.queryBuilder.advancedExpression.addFieldExpression(this.options.columnField, '=', [this.selectedColumnValue])
+        args.queryBuilder.advancedExpression.addFieldExpression(this.options.columnField, '=', [this.selectedColumnValue]);
       }
     }
   }
@@ -412,7 +412,7 @@ export class Matrix extends Component {
       sortCriteria: this.options.sortCriteria,
       computedFields: this.getComputedFields(),
       maximumNumberOfValues: this.options.maximumNumberOfRows
-    }
+    };
 
     this.groupByIndex.push(queryBuilder.groupByRequests.length);
     queryBuilder.groupByRequests.push(groupBy);
@@ -426,9 +426,9 @@ export class Matrix extends Component {
         computedFields: this.getComputedFields(),
         queryOverride: '(' + this.buildExpression(queryBuilder) + ')' + '(' + this.options.columnField + '=\'' + this.options.columnFieldValues[i] + '\')',
         maximumNumberOfValues: this.options.maximumNumberOfValuesInGroupBy
-      }
+      };
 
-      this.groupByIndex.push(queryBuilder.groupByRequests.length)
+      this.groupByIndex.push(queryBuilder.groupByRequests.length);
       queryBuilder.groupByRequests.push(groupBy);
     }
   }
@@ -488,32 +488,32 @@ export class Matrix extends Component {
 
   private addRowTotals() {
     this.addColumn();
-    this.setValue('Total', 0, this.numberOfColumns - 1)
+    this.setValue('Total', 0, this.numberOfColumns - 1);
     for (let i = 1; i < this.numberOfRows; i++) {
       let rowTotal = this.computeRowTotal(i);
-      this.setValue(rowTotal, i, this.numberOfColumns - 1)
+      this.setValue(rowTotal, i, this.numberOfColumns - 1);
     }
 
     // Fix sort ordering when not all columns field values are present.
     if (this.options.sortCriteria.toLowerCase() == 'computedfielddescending') {
       this.data.sort((a: Cell[], b: Cell[]): number => {
-        return b[this.numberOfColumns - 1].getValue() - a[this.numberOfColumns - 1].getValue()
-      })
+        return b[this.numberOfColumns - 1].getValue() - a[this.numberOfColumns - 1].getValue();
+      });
     }
 
     if (this.options.sortCriteria.toLowerCase() == 'computedfieldascending') {
       this.data.sort((a: Cell[], b: Cell[]): number => {
-        return a[this.numberOfColumns - 1].getValue() - b[this.numberOfColumns - 1].getValue()
-      })
+        return a[this.numberOfColumns - 1].getValue() - b[this.numberOfColumns - 1].getValue();
+      });
     }
   }
 
   private addColumnTotals() {
     this.addRow();
-    this.setValue('Total', this.numberOfRows - 1, 0)
+    this.setValue('Total', this.numberOfRows - 1, 0);
     for (let i = 1; i < this.numberOfColumns; i++) {
       let columnTotal = this.computeColumnTotal(i);
-      this.setValue(columnTotal, this.numberOfRows - 1, i)
+      this.setValue(columnTotal, this.numberOfRows - 1, i);
     }
   }
 
@@ -537,7 +537,7 @@ export class Matrix extends Component {
     for (let i = 1; i < this.numberOfRows; i++) {
       for (let j = 1; j < this.numberOfColumns; j++) {
         let cellValue = this.getCellValue(i, j);
-        cellValue = Globalize.format(parseInt(cellValue), this.options.computedFieldFormat)
+        cellValue = Globalize.format(parseInt(cellValue), this.options.computedFieldFormat);
         this.setValue(cellValue, i, j);
       }
     }
@@ -557,14 +557,14 @@ export class Matrix extends Component {
     this.data.push(new Array<Cell>());
 
     for (let i = 0; i < this.numberOfColumns; i++) {
-      this.addCellToRow(this.numberOfRows, i)
+      this.addCellToRow(this.numberOfRows, i);
     }
     this.numberOfRows++;
   }
 
   private addColumn() {
     for (let i = 0; i < this.numberOfRows; i++) {
-      this.addCellToRow(i, this.numberOfColumns)
+      this.addCellToRow(i, this.numberOfColumns);
     }
 
     this.numberOfColumns++;
@@ -588,12 +588,12 @@ export class Matrix extends Component {
     }
 
     if (this.isCellSelected(this.getRowValue(rowNumber), this.getColumnValue(columnNumber))) {
-      $$(cell).addClass('coveo-matrix-selected')
+      $$(cell).addClass('coveo-matrix-selected');
     }
 
     if (this.isAColumnSelected() && !this.isColumnSelected(this.getColumnValue(columnNumber))) {
       if (columnNumber != 0 && rowNumber != 0) {
-        $$(cell).addClass('coveo-matrix-unimportant')
+        $$(cell).addClass('coveo-matrix-unimportant');
       }
     }
 
@@ -615,7 +615,7 @@ export class Matrix extends Component {
 
   private isAColumnSelected(): boolean {
     let selectedColumnValues = this.queryStateModel.get(this.columnId) || [];
-    return selectedColumnValues.length !== 0 || this.selectedColumnValue != undefined
+    return selectedColumnValues.length !== 0 || this.selectedColumnValue != undefined;
   }
 
   private isColumnSelected(columnValue: string): boolean {
@@ -663,12 +663,12 @@ export class Matrix extends Component {
 
   private isRowFacetPresent() {
     let facet = this.componentStateModel.get(this.rowId);
-    return facet && !facet[0].disabled
+    return facet && !facet[0].disabled;
   }
 
   private isColumnFacetPresent() {
     let facet = this.componentStateModel.get(this.columnId);
-    return facet && !facet[0].disabled
+    return facet && !facet[0].disabled;
   }
 
   private reset() {
@@ -703,21 +703,21 @@ export class Matrix extends Component {
   }
 
   private drawRow(row: HTMLElement, rowNumber: number) {
-    let body = $$(this.element).find('.coveo-matrix')
+    let body = $$(this.element).find('.coveo-matrix');
     for (let i = 0; i < this.numberOfColumns; i++) {
       let cell = this.data[rowNumber][i].getHTML();
       $$(cell).on('click', () => {
         let handler = (num) => {
           this.handleClick(rowNumber, num);
-        }
+        };
         handler(i);
-      })
+      });
 
       if (this.options.enableHoverPreview) {
         ((num: number) => {
           $$(cell).on('mouseover', () => this.handleHoverIn(rowNumber, num));
           $$(cell).on('mouseout', () => this.handleHoverOut(rowNumber, num));
-        })(i)
+        })(i);
       }
       row.appendChild(cell);
     }
@@ -753,14 +753,14 @@ export class Matrix extends Component {
       }
       let cell = this.data[rowNumber][columnNumber];
       let instantiatedResults = _.map(data.results, (r: IQueryResult) => {
-        return this.instantiateTemplate(r)
-      })
+        return this.instantiateTemplate(r);
+      });
       let html = '';
       _.each(instantiatedResults, (result) => {
         html += result.outerHTML;
       });
       cell.updatePreview(html);
-    })
+    });
   }
 
   private instantiateTemplate(result: IQueryResult): HTMLElement {
@@ -769,9 +769,9 @@ export class Matrix extends Component {
       options: this.options,
       bindings: this.getBindings(),
       result: result
-    }
+    };
 
-    Initialization.automaticallyCreateComponentsInside(content, initParameters)
+    Initialization.automaticallyCreateComponentsInside(content, initParameters);
 
     return content;
   }
@@ -786,8 +786,8 @@ export class Matrix extends Component {
     query.sortField = this.options.previewSortField;
     let fieldSliced = this.options.computedField.slice(1);
     let fieldExists = _.find(query.fieldsToInclude, (field: string) => {
-      return field == fieldSliced
-    })
+      return field == fieldSliced;
+    });
     if (!fieldExists) {
       query.fieldsToInclude.push(fieldSliced);
     }

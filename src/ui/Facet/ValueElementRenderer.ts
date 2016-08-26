@@ -28,7 +28,7 @@ export class ValueElementRenderer {
         if (e) {
           $$(e).detach();
         }
-      })
+      });
     } else {
       if (element) {
         $$(element).detach();
@@ -131,7 +131,7 @@ export class ValueElementRenderer {
     if (Utils.isNonEmptyString(computedField)) {
       var elem = $$('span', {
         className: 'coveo-facet-value-computed-field'
-      }).el
+      }).el;
       $$(elem).text(computedField);
       return elem;
     } else {
@@ -142,7 +142,7 @@ export class ValueElementRenderer {
   protected buildValueCheckbox(): HTMLElement {
     var checkbox = $$('input', {
       type: 'checkbox'
-    }).el
+    }).el;
     if (this.facetValue.selected) {
       checkbox.setAttribute('checked', 'checked');
     } else {
@@ -170,7 +170,7 @@ export class ValueElementRenderer {
       return $$('img', {
         className: 'coveo-facet-value-icon coveo-icon',
         src: this.getValueIcon()
-      }).el
+      }).el;
     } else {
       return this.buildValueIconFromSprite();
     }
@@ -187,7 +187,7 @@ export class ValueElementRenderer {
   protected buildValueIconFromSprite(): HTMLElement {
     return $$('div', {
       className: 'coveo-facet-value-icon coveo-icon ' + this.facet.options.field.substr(1) + ' ' + this.facetValue.value
-    }).el
+    }).el;
   }
 
   protected buildValueCaption(): HTMLElement {
@@ -195,7 +195,7 @@ export class ValueElementRenderer {
     var valueCaption = $$('span', {
       className: 'coveo-facet-value-caption',
       title: caption
-    }).el
+    }).el;
 
     $$(valueCaption).text(caption);
     return valueCaption;

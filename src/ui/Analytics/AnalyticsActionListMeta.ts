@@ -459,4 +459,4 @@ export var analyticsActionCauseList = {
     name: 'recommendationOpen',
     type: 'recommendation'
   }
-}
+};

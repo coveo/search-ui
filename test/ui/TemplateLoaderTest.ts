@@ -11,14 +11,14 @@ export function TemplateLoaderTest() {
       let badTemplateId = 'badTemplate';
       let badTemplate = new Template(() => {
         return `<div class='CoveoTemplateLoader' data-template-id='${badTemplateId}'></div>`;
-      })
+      });
       TemplateCache.registerTemplate(badTemplateId, badTemplate);
 
       expect(() => {
         test = Mock.advancedComponentSetup<TemplateLoader>(TemplateLoader, new Mock.AdvancedComponentSetupOptions($$('div', {
           'data-template-id': badTemplateId
-        }).el))
+        }).el));
       }).toThrow();
-    })
-  })
+    });
+  });
 }

@@ -13,6 +13,7 @@
   ],
   "files": [
     "typings/browser.d.ts",
+    "typings/index.d.ts",
     "lib/promise.d.ts",
     "lib/MagicBox.d.ts",
     "lib/globalize.d.ts",
@@ -150,6 +151,7 @@
     "src/ui/Facet/FacetSearchValuesList.ts",
     "src/ui/Facet/FacetSettings.ts",
     "src/ui/Facet/FacetSort.ts",
+    "src/ui/Facet/FacetValuesOrder.ts",
     "src/ui/Facet/FacetUtils.ts",
     "src/ui/Facet/FacetValueElement.ts",
     "src/ui/Facet/FacetValues.ts",
@@ -368,6 +370,10 @@
     "test/utils/DomTest.ts",
     "test/utils/HighlightUtilsTest.ts",
     "test/utils/L10NTest.ts",
-    "test/ui/ResultsPerPageTest.ts"
+    "test/ui/ResultsPerPageTest.ts",
+    "src/ui/Logo/Logo.ts",
+    "test/ui/LogoTest.ts",
+    "test/ui/RegisteredNamedMethodsTest.ts",
+    "test/ui/FacetValuesOrderTest.ts"
   ]
 }

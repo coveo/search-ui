@@ -52,6 +52,6 @@ export class Template {
   }
 
   getType() {
-    return 'Template'
+    return 'Template';
   }
 }

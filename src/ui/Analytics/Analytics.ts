@@ -37,6 +37,51 @@ export interface IAnalyticsOptions {
 /**
  * This component logs all user actions performed in the search interface and sends them to a REST web service exposed through the Coveo Cloud platform.<br/>
  * You can use this data to evaluate how users are interacting with the search interface, improve relevance and produce analytics dashboards in the Coveo platform.
+ *
+ * # Sending Custom Events
+ * In some scenarios, you want to send custom data to the Coveo Cloud analytics (see Coveo Cloud Usage Analytics). The Coveo JavaScript Search Framework offers helpers to communicate with the Coveo Analytics REST API, so you do not have to write code to call the API directly.
+ *
+ * 1. First, you need to craft your custom event cause and meta.
+ * ```
+ *   var customEventCause = {name: 'customEventName', type:'customEventType'};
+ *   var metadata = {key1: "value1", key2:"value2"};
+ * ```
+ *
+ * 2. Sending a custom event.
+ * ```
+ *   Coveo.logCustomEvent(document.querySelector('#search'), customEventCause, metadata);
+ *      // OR (using the jquery extension)
+ *   $('#search').coveo('logCustomEvent', customEventCause, metadata);
+ * ```
+ *
+ * 3. Sending a custom search event<br/>(**NB : If you want to log a searchEvent, be sure to always call the helper before you call executeQuery.**)
+ * ```
+ * function myCustomButtonWasClicked() {
+ *      Coveo.logSearchEvent(document.querySelector('#search'), customEventCause, metadata);
+ *      Coveo.executeQuery(document.querySelector('#search'));
+ *      // OR (using the jquery extension)
+ *      $('#search').coveo('logSearchEvent', customEventCause, metadata);
+ *      $('#search').coveo('executeQuery');
+ * }
+ * ```
+ *
+ * 4. Sending a custom searchAsYouType event<br/>(NB : **If you want to log a searchAsYouTypeEvent, be sure to always call the helper before you call executeQuery.**)
+ * ```
+ * function myCustomButtonWasClicked() {
+ *      Coveo.logSearchAsYouTypeEvent(document.querySelector('#search'), customEventCause, metadata);
+ *      Coveo.executeQuery(document.querySelector('#search'));
+ *      // OR (using the jquery extension)
+ *      $('#search').coveo('logSearchAsYouTypeEvent', customEventCause, metadata);
+ *      $('#search').coveo('executeQuery');
+ * }
+ * ```
+ *
+ * 5. Sending a custom click event
+ * ```
+ * Coveo.logClickEvent(document.querySelector('#search'), customEventCause, metadata, result);
+ * // OR (using the jquery extension)
+ * $('#search').coveo('logClickEvent', customEventCause, metadata, result);
+ * ```
  */
 export class Analytics extends Component {
   static ID = 'Analytics';

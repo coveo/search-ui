@@ -145,7 +145,7 @@ export class Initialization {
     _.each(elemsHidden, (e: HTMLElement) => {
       $$(e).removeClass('coveo-hide-until-loaded');
       $$(e).addClass('coveo-show-after-loaded');
-    })
+    });
 
     if (searchInterface.options.autoTriggerQuery) {
       Initialization.logFirstQueryCause(searchInterface);
@@ -173,6 +173,24 @@ export class Initialization {
    */
   public static initStandaloneSearchInterface(element: HTMLElement, options: any = {}) {
     options = Initialization.resolveDefaultOptions(element, options);
+
+    // Set trigger query on clear to false for standalone search interface automatically
+    // Take care of not overriding any options that could have been set by external code.
+    if (!options.Querybox) {
+      options.Querybox = {};
+    }
+    if (!options.Omnibox) {
+      options.Omnibox = {};
+    }
+    if (!options.Searchbox) {
+      options.Searchbox = {};
+    }
+    if (!options.Querybox.triggerQueryOnClear || !options.Omnibox.triggerQueryOnClear || !options.Searchbox.triggerOnQueryClear) {
+      options.Querybox.triggerQueryOnClear = false;
+      options.Omnibox.triggerQueryOnClear = false;
+      options.Searchbox.triggerQueryOnClear = false;
+    }
+
     let searchInterface = new StandaloneSearchInterface(element, options.StandaloneSearchInterface, options.Analytics);
     searchInterface.options.originalOptionsObject = options;
     let initParameters: IInitializationParameters = { options: options, bindings: searchInterface.getBindings() };
@@ -186,7 +204,9 @@ export class Initialization {
    */
   public static initRecommendationInterface(element: HTMLElement, options: any = {}) {
     options = Initialization.resolveDefaultOptions(element, options);
-    let recommendation = new window['Coveo']['Recommendation'](element, options.Recommendation, options.Analytics);
+    // Since a recommendation interface inherits from a search interface, we need to merge those if passed on init
+    let optionsForRecommendation = _.extend({}, options.SearchInterface, options.Recommendation);
+    let recommendation = new window['Coveo']['Recommendation'](element, optionsForRecommendation, options.Analytics);
     recommendation.options.originalOptionsObject = options;
     let initParameters: IInitializationParameters = { options: options, bindings: recommendation.getBindings() };
     Initialization.automaticallyCreateComponentsInside(element, initParameters);
@@ -409,9 +429,9 @@ export class Initialization {
     if (Utils.exists(option)) {
       _.each(option, (func: () => void) => {
         if (typeof func == 'function') {
-          func()
+          func();
         }
-      })
+      });
     }
   }
 
@@ -445,7 +465,7 @@ export class Initialization {
         if (Utils.isHtmlElement(elementToInstantiate)) {
           Initialization.automaticallyCreateComponentsInside(elementToInstantiate, initParameters);
         }
-      })
+      });
     }
   }
 
@@ -467,6 +487,6 @@ export class Initialization {
           Initialization.createComponentOfThisClassOnElement(componentClass['ID'], matchingElement, initParamToUse);
         }
       });
-    }
+    };
   }
 }

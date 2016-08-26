@@ -1,13 +1,36 @@
 .coveo-logo{
-	@extend .coveo-sprites-coveo-logo;
+  @extend .coveo-sprites-coveo-logo;
 }
+
 .coveo-powered-by {
-	@extend .coveo-sprites-coveo-powered-by-logo;
+  @extend .coveo-sprites-coveo-powered-by-logo;
+}
+
+.CoveoLogo {
+  float: right;
+  display: inline-block;
+  margin: -10px 0 0 20px;
+  &.coveo-hidden {
+    display: none;
+  }
+  @media (max-width: 970px) {
+    position: absolute;
+    right: 10px;
+    bottom: -30px;
+  }
+}
+
+.coveo-waiting-for-first-query {
+  .CoveoLogo {
+    @media (max-width: 970px) {
+      display: none;
+    }
+  }
 }
 
 .coveo-facet-column {
   .coveo-logo {
-		@include align('horizontal');
-		margin: 10px 0px;
+    @include align('horizontal');
+    margin: 10px 0px;
   }
 }

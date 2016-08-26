@@ -19,7 +19,7 @@ export function HighlightUtilsTest() {
         ];
         let expectedHighlight = 'Lor<span class="coveo-highlight">em ip</span>su<span class="coveo-highlight">m do</span>lor <span class="coveo-highlight">sit amet, conse</span>ctetur adipi<span class="coveo-highlight">sicing eli</span>t, sed do eiusmod tempor incididunt ut';
         expect(HighlightUtils.highlightString(lorem, highlights, null, 'coveo-highlight')).toBe(expectedHighlight);
-      })
+      });
 
       it('should ignore highlights that are out of a shortened string\'s bounds', function () {
         let shortenedString: StringAndHoles = StringAndHoles.shortenString(lorem, 35, '...');
@@ -32,7 +32,7 @@ export function HighlightUtilsTest() {
         let expectedHighlight = 'Lor<span class="coveo-highlight">em ip</span>su<span class="coveo-highlight">m do</span>lor <span class="coveo-highlight">sit amet,</span>...';
         let highlightedString = HighlightUtils.highlightString(shortenedString.value, highlights, shortenedString.holes, 'coveo-highlight');
         expect(highlightedString).toBe(expectedHighlight);
-      })
+      });
 
       it('should ignore highlights that are out of a shortened local path\'s bounds', function () {
         let shortenedString: StringAndHoles = StringAndHoles.shortenPath(localPath, 15);
@@ -50,7 +50,7 @@ export function HighlightUtilsTest() {
         expectedHighlight = 'C:\\...<span class="coveo-highlight">fig\\sources\\</span>salesforce';
         highlightedString = HighlightUtils.highlightString(shortenedString.value, highlights, shortenedString.holes, 'coveo-highlight');
         expect(highlightedString).toBe(expectedHighlight);
-      })
+      });
 
       it('should ignore highlights that are out of a shortened network path\'s bounds', function () {
         let shortenedString: StringAndHoles = StringAndHoles.shortenPath(netPath, 30);
@@ -63,7 +63,7 @@ export function HighlightUtilsTest() {
         let expectedHighlight = '\\\\...<span class="coveo-highlight">ig\\sources\\</span>salesforce';
         let highlightedString = HighlightUtils.highlightString(shortenedString.value, highlights, shortenedString.holes, 'coveo-highlight');
         expect(highlightedString).toBe(expectedHighlight);
-      })
+      });
 
       it('should ignore highlights that are out of a shortened uri\'s bounds', function () {
         let shortenedString: StringAndHoles = StringAndHoles.shortenUri(uri, 60);
@@ -75,8 +75,8 @@ export function HighlightUtilsTest() {
         let expectedHighlight = 'http://onlin<span class="coveo-highlight">ehel</span>p.<span class="coveo-highlight">coveo.com/</span>...<span class="coveo-highlight">/Mo</span>ving_the_Index_to_a_Dif...';
         let highlightedString = HighlightUtils.highlightString(shortenedString.value, highlights, shortenedString.holes, 'coveo-highlight');
         expect(highlightedString).toBe(expectedHighlight);
-      })
-    })
+      });
+    });
 
     describe('shortenString', function () {
       it('should shorten the string to the specified number of characters and append the specified value', function () {
@@ -86,15 +86,15 @@ export function HighlightUtilsTest() {
           holes: [
             { begin: 57, size: 36, replacementSize: 3 }
           ]
-        }))
-      })
+        }));
+      });
 
       it('should not shorten string that is shorter than the specified value', function () {
         let shortenedString = StringAndHoles.shortenString(lorem, 9000, '...');
         expect(shortenedString.value).toBe(lorem);
         expect(shortenedString.holes).toBeUndefined();
-      })
-    })
+      });
+    });
 
     describe('shortenPath', function () {
       it('should shorten local path properly', function () {
@@ -104,8 +104,8 @@ export function HighlightUtilsTest() {
           holes: [
             { begin: 3, size: 18, replacementSize: 3 }
           ]
-        }))
-      })
+        }));
+      });
 
       it('should shorten network path properly', function () {
         let shortenedNetPath = StringAndHoles.shortenPath(netPath, 30);
@@ -114,8 +114,8 @@ export function HighlightUtilsTest() {
           holes: [
             { begin: 2, size: 18, replacementSize: 3 }
           ]
-        }))
-      })
+        }));
+      });
 
       it('should shorten network path to an absurd amount', function () {
         let shortenedNetPath = StringAndHoles.shortenPath(netPath, 15);
@@ -125,9 +125,9 @@ export function HighlightUtilsTest() {
             { begin: 2, size: 26, replacementSize: 3 },
             { begin: 12, size: 6, replacementSize: 3 }
           ]
-        }))
-      })
-    })
+        }));
+      });
+    });
 
     describe('shortenUri', function () {
       it('should shorten an uri properly', function () {
@@ -138,8 +138,8 @@ export function HighlightUtilsTest() {
             { begin: 28, size: 24, replacementSize: 3 },
             { begin: 57, size: 16, replacementSize: 3 }
           ]
-        }))
-      })
+        }));
+      });
 
       it('should shorten an uri to an absurd amount', function () {
         let shortenedUri = StringAndHoles.shortenUri(uri, 15);
@@ -149,8 +149,8 @@ export function HighlightUtilsTest() {
             { begin: 28, size: 24, replacementSize: 3 },
             { begin: 12, size: 61, replacementSize: 3 }
           ]
-        }))
-      })
+        }));
+      });
 
       it('should not strip end characters if there is enough room for them', function () {
         let shortenedUri = StringAndHoles.shortenUri(uri, 80);
@@ -159,8 +159,8 @@ export function HighlightUtilsTest() {
           holes: [
             { begin: 28, size: 24, replacementSize: 3 }
           ]
-        }))
-      })
-    })
-  })
+        }));
+      });
+    });
+  });
 }

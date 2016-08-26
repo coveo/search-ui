@@ -115,7 +115,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
 
   public getPendingSearchEvent(): PendingSearchEvent {
     if (this.pendingSearchEvent) {
-      return this.pendingSearchEvent
+      return this.pendingSearchEvent;
     } else if (this.pendingSearchAsYouTypeSearchEvent) {
       return this.pendingSearchAsYouTypeSearchEvent;
     }
@@ -162,13 +162,13 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
         // all the deferred that were caught terminate.
         this.pendingSearchEvent = undefined;
         pendingSearchEvent.stopRecording();
-      })
+      });
     }
   }
 
   private checkToSendAnyPendingSearchAsYouType(actionCause: IAnalyticsActionCause) {
     if (this.eventIsNotRelatedToSearchbox(actionCause.name)) {
-      this.sendAllPendingEvents()
+      this.sendAllPendingEvents();
     } else {
       this.cancelAnyPendingSearchAsYouTypeEvent();
     }
@@ -195,7 +195,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       }
       $$(this.rootElement).trigger(AnalyticsEvents.documentViewEvent, {
         documentViewEvent: APIAnalyticsBuilder.convertDocumentViewToAPI(event)
-      })
+      });
     });
   }
 
@@ -215,7 +215,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       originLevel3: document.referrer,
       customData: _.keys(metaObject).length > 0 ? metaObject : undefined,
       userAgent: navigator.userAgent
-    }
+    };
   }
 
   private buildSearchEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject): ISearchEvent {
@@ -253,7 +253,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       responseTime: 0,
       viewMethod: actionCause.name,
       rankingModifier: result.rankingModifier
-    })
+    });
   }
 
   private buildCustomEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject, element: HTMLElement): ICustomEvent {
@@ -262,7 +262,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       eventValue: actionCause.name,
       originLevel2: this.getOriginLevel2(element),
       responseTime: 0
-    })
+    });
   }
 
   protected getOriginLevel2(element: HTMLElement): string {
@@ -293,7 +293,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
   }
 
   private eventIsNotRelatedToSearchbox(event: string) {
-    return event !== analyticsActionCauseList.searchboxSubmit.name && event !== analyticsActionCauseList.searchboxClear.name
+    return event !== analyticsActionCauseList.searchboxSubmit.name && event !== analyticsActionCauseList.searchboxClear.name;
   }
 
   private triggerChangeAnalyticsCustomData(type: string, metaObject: IChangeableAnalyticsMetaObject, event: IAnalyticsEvent, data?: any) {

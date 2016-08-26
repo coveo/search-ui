@@ -90,21 +90,21 @@ export class Triggers extends Component {
             query: trigger.content
           }, this.element);
         }
-      })
+      });
     }, true);
 
     this.executeTriggers(data.results.triggers, 'execute', (trigger: ITriggerExecute) => {
       try {
-        let func: Function = this._window['' + trigger.content.name]
+        let func: Function = this._window['' + trigger.content.name];
         if (typeof func === 'function') {
           let params = _.object(_.map(trigger.content.params, (value, index) => {
-            return ['param' + (index + 1), value]
+            return ['param' + (index + 1), value];
           }));
           params['element'] = this.element;
 
           this.usageAnalytics.logCustomEvent<IAnalyticsTriggerExecute>(analyticsActionCauseList.triggerExecute, {
             executed: trigger.content.name
-          }, this.element)
+          }, this.element);
 
           func.apply(this._window, [params]);
         } else {
@@ -121,7 +121,7 @@ export class Triggers extends Component {
 
   private executeTriggers(trigger: ITrigger<any>[], type: string, func: (trigger: ITrigger<any>) => any, single: boolean = false) {
     let triggersOfType = _.filter(trigger, (trigger: ITrigger<any>) => {
-      return trigger.type == type
+      return trigger.type == type;
     });
     let oneOrAllTriggers = _.take(triggersOfType, single ? 1 : Number.MAX_VALUE);
 

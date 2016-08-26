@@ -109,7 +109,7 @@ export class ResponsiveComponentsManager {
 
       if (this.isFacet(ID)) {
         this.responsiveFacets = <ResponsiveFacets>responsiveComponent;
-        this.responsiveFacets.registerComponent(component)
+        this.responsiveFacets.registerComponent(component);
         this.isFacetActivated = true;
         if (!this.isTabActivated) {
           this.tabSection = $$('div', { className: 'coveo-tab-section' });
@@ -154,7 +154,7 @@ export class ResponsiveComponentsManager {
   }
 
   private isActivated(ID: string): boolean {
-    return _.find(this.responsiveComponents, current => current.ID == ID) != undefined
+    return _.find(this.responsiveComponents, current => current.ID == ID) != undefined;
   }
 
   private getSearchBoxElement(): HTMLElement {

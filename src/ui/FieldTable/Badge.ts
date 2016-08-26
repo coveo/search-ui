@@ -1,13 +1,11 @@
-import {IComponentBindings} from '../Base/ComponentBindings'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {IQueryResult} from '../../rest/QueryResult'
-import {Initialization} from '../Base/Initialization'
-import {FieldValue, IFieldValueOptions} from './FieldValue'
-import {StringUtils} from '../../utils/StringUtils'
-import {Assert} from '../../misc/Assert'
-import {$$} from '../../utils/Dom'
-import {Utils} from '../../utils/Utils';
-import {ComponentOptionsType} from "../Base/ComponentOptions";
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {IQueryResult} from '../../rest/QueryResult';
+import {Initialization} from '../Base/Initialization';
+import {FieldValue, IFieldValueOptions} from './FieldValue';
+import {StringUtils} from '../../utils/StringUtils';
+import {Assert} from '../../misc/Assert';
+import {$$} from '../../utils/Dom';
 
 
 export interface IBadgeOptions extends IFieldValueOptions {
@@ -113,12 +111,12 @@ export class Badge extends FieldValue {
           if (fieldValue != null) {
             badgeColors.values[fieldValue.replace(/\\(:|;)/g, '$1')] = {
               icon: colorValue
-            }
+            };
           } else {
             badgeColors.icon = colorValue;
           }
-        })
-        return badgeColors
+        });
+        return badgeColors;
       }
       try {
         return JSON.parse(colorsOption);

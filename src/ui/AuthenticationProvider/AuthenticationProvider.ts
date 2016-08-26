@@ -108,11 +108,11 @@ export class AuthenticationProvider extends Component {
         className: 'coveo-authentication-provider',
         onOpen: () => this.authenticateWithProvider()
       });
-    })
+    });
   }
 
   private handleBuildingCallOptions(args: IBuildingCallOptionsEventArgs) {
-    args.options.authentication.push(this.options.name)
+    args.options.authentication.push(this.options.name);
   }
 
   private handleQueryError(args: IQueryErrorEventArgs) {
@@ -155,7 +155,7 @@ export class AuthenticationProvider extends Component {
       $$(iframe).detach();
       this.logger.info(`Got authentication for provider ${this.options.name}; retrying query.`);
       this.queryController.executeQuery();
-    }
+    };
   }
 
   private handleNuke() {

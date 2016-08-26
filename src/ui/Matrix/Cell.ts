@@ -64,7 +64,7 @@ export class Cell {
     let container = $$(this.element).findAll('.matrix-results-preview-container');
     _.each(container, (c: HTMLElement) => {
       $$(c).hide();
-    })
+    });
   }
 
   /**

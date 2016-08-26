@@ -123,7 +123,7 @@ export class QueryController extends RootComponent {
     // We must wrap the endpoint in a decorator that'll add the call options
     // we obtain by firing the proper event. Those are used for authentication
     // providers, and I guess other stuff later on.
-    return new SearchEndpointWithDefaultCallOptions(endpoint, this.getCallOptions())
+    return new SearchEndpointWithDefaultCallOptions(endpoint, this.getCallOptions());
   }
 
   /**
@@ -314,7 +314,7 @@ export class QueryController extends RootComponent {
     let queryBuilder = new QueryBuilder();
     this.continueLastQueryBuilder(queryBuilder, count);
     let query = queryBuilder.build();
-    let endpointToUse = this.getEndpoint()
+    let endpointToUse = this.getEndpoint();
     let promise: any = this.currentPendingQuery = endpointToUse.search(query);
     let dataToSendDuringQuery: IDuringQueryEventArgs = {
       queryBuilder: queryBuilder,
@@ -353,9 +353,9 @@ export class QueryController extends RootComponent {
         results: results,
         queryBuilder: queryBuilder,
         searchAsYouType: false
-      }
+      };
       this.fetchMoreSuccessEvent(dataToSendOnFetchMoreSuccess);
-    })
+    });
     return this.currentPendingQuery;
   }
 
@@ -604,12 +604,12 @@ export class QueryController extends RootComponent {
 
   private logQueryInActionsHistory(query: IQuery) {
     if (typeof coveoanalytics != 'undefined') {
-      let store = new coveoanalytics.history.HistoryStore()
+      let store = new coveoanalytics.history.HistoryStore();
       let queryElement: CoveoAnalytics.HistoryQueryElement = {
         name: 'Query',
         value: query.q,
         time: JSON.stringify(new Date())
-      }
+      };
       store.addElement(queryElement);
     }
   }

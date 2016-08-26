@@ -107,7 +107,7 @@ export class HiddenQuery extends Component {
 
       args.breadcrumbs.push({
         element: elem
-      })
+      });
     }
   }
 

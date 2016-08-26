@@ -40,11 +40,11 @@ export class MultiAnalyticsClient implements IAnalyticsClient {
 
   public getTopQueries(params: ITopQueries): Promise<string[]> {
     return Promise.all(_.map(this.analyticsClients, (client) => {
-      return client.getTopQueries(params)
+      return client.getTopQueries(params);
     }))
       .then((values: string[][]) => {
-        return this.mergeTopQueries(values, params.pageSize)
-      })
+        return this.mergeTopQueries(values, params.pageSize);
+      });
   }
 
   public getCurrentVisitIdPromise(): Promise<string> {

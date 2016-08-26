@@ -89,7 +89,7 @@ export function ResultRatingTest() {
       let spy = <jasmine.Spy>test.env.searchEndpoint.rateDocument;
       spy.and.returnValue(new Promise((resolve, reject) => {
         resolve();
-      }))
+      }));
 
       test.cmp.rateDocument(RatingValues.Undefined);
 

@@ -34,14 +34,14 @@ export function FieldValueTest() {
       it('field not specified should default to @field', () => {
         test = Mock.optionsResultComponentSetup<FieldValue, IFieldValueOptions>(FieldValue, <IFieldValueOptions>{
           field: undefined
-        }, FakeResults.createFakeResult())
+        }, FakeResults.createFakeResult());
         expect(test.cmp.options.field).toBe('@field');
       });
 
       it('facet should use the field value by default', () => {
         test = Mock.optionsResultComponentSetup<FieldValue, IFieldValueOptions>(FieldValue, <IFieldValueOptions>{
           field: '@foobarde'
-        }, FakeResults.createFakeResult())
+        }, FakeResults.createFakeResult());
         expect(test.cmp.options.facet).toBe('@foobarde');
       });
 
@@ -178,7 +178,7 @@ export function FieldValueTest() {
     });
 
     it('should display the proper field value', () => {
-      expect($$(test.cmp.element).find('span').textContent).toBe('string value')
+      expect($$(test.cmp.element).find('span').textContent).toBe('string value');
     });
 
     describe('with a related facet', () => {
@@ -192,8 +192,8 @@ export function FieldValueTest() {
           let value = Mock.mock<FacetValue>(FacetValue);
           value.selected = true;
           return value;
-        }
-      })
+        };
+      });
 
       afterEach(() => {
         facet = null;
@@ -237,7 +237,7 @@ export function FieldValueTest() {
       let options = {
         field: '@date',
         helper: 'date'
-      }
+      };
 
       let fullDateOptions: IDateToStringOptions = {
         useLongDateFormat: true,
@@ -259,7 +259,7 @@ export function FieldValueTest() {
       options.helper = 'emailDateTime';
       test = Mock.optionsResultComponentSetup<FieldValue, IFieldValueOptions>(FieldValue, options, fakeResult);
       expect($$(test.cmp.element).find('span').getAttribute('title')).toEqual(dateTimeString);
-    })
+    });
 
     it('should not show a full date tooltip if it doesn\'t have the helper is not a date', () => {
       test = Mock.optionsResultComponentSetup<FieldValue, IFieldValueOptions>(FieldValue, <IFieldValueOptions>{

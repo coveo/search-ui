@@ -33,11 +33,11 @@ export class QueryExtensionAddon {
     if (this.cache[hashString] != null) {
       return this.hashValueToSuggestion(hash, this.cache[hashString]);
     }
-    var values = (hash.type == 'QueryExtensionName' ? this.names(hash.current) : this.attributeNames(hash.name, hash.current, hash.used))
+    var values = (hash.type == 'QueryExtensionName' ? this.names(hash.current) : this.attributeNames(hash.name, hash.current, hash.used));
     this.cache[hashString] = values;
     values.catch(() => {
       delete this.cache[hashString];
-    })
+    });
     return this.hashValueToSuggestion(hash, values);
   }
 
@@ -95,10 +95,10 @@ export class QueryExtensionAddon {
           html: MagicBox.Utils.highlightText(value, hash.current, true),
           text: hash.before + value + hash.after,
           index: QueryExtensionAddon.INDEX - i / values.length
-        }
+        };
       });
       return suggestions;
-    })
+    });
   }
 
   private extensions: Promise<any>;
@@ -128,7 +128,7 @@ export class QueryExtensionAddon {
         .value();
       matchExtensions = _.first(matchExtensions, 5);
       return matchExtensions;
-    })
+    });
   }
 
   private attributeNames(name: string, current: string, used: string[]): Promise<string[]> {
@@ -139,10 +139,10 @@ export class QueryExtensionAddon {
       } else {
         return _.filter(_.difference(extension.argumentNames, used), (argumentName: string) => argumentName.indexOf(current) == 0);
       }
-    })
+    });
   }
 
   public hash() {
-    return
+    return;
   }
 }
