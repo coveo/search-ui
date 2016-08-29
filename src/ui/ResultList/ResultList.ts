@@ -22,6 +22,7 @@ import {Utils} from '../../utils/Utils';
 import {DomUtils} from '../../utils/DomUtils';
 import {Recommendation} from '../Recommendation/Recommendation';
 import {DefaultRecommendationTemplate} from '../Templates/DefaultRecommendationTemplate';
+import {ValidLayout} from '../ResultLayout/ResultLayout';
 
 export interface IResultListOptions {
   resultContainer?: HTMLElement;
@@ -192,7 +193,7 @@ export class ResultList extends Component {
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
-  public static currentLayout: string;
+  private currentLayout: string;
   public currentlyDisplayedResults: IQueryResult[] = [];
   private fetchingMoreResults: Promise<IQueryResults>;
   private reachedTheEndOfResults = false;
@@ -281,7 +282,7 @@ export class ResultList extends Component {
     Assert.exists(result);
     QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), result);
     ResultList.resultCurrentlyBeingRendered = result;
-    var resultElement = this.options.resultTemplate.instantiateToElement(result);
+    var resultElement = this.options.resultTemplate.instantiateToElement(result, true, { layout: <ValidLayout>this.currentLayout });
     if (resultElement != null) {
       Component.bindResultToElement(resultElement, result);
     }
@@ -462,7 +463,7 @@ export class ResultList extends Component {
   }
 
   private handleChangeLayout(args: IChangeLayoutEventArgs) {
-    ResultList.currentLayout = args.layout;
+    this.currentLayout = args.layout;
     args.layout === this.options.layout ? this.enable() : this.disable();
     this.queryController.executeQuery();
   }
