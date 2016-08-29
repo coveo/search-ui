@@ -52,7 +52,7 @@ interface IFlatHierarchy {
 
 /**
  * This component inherits all of its options and behavior from the normal {@link Facet} component, but is meant to be used for hierarchical values.<br/>
- * The HierarchicalFacet component could be used to display files in a file system, or categories for documents in a hierarchy.<br/>
+ * The `HierarchicalFacet` component could be used to display files in a file system, or categories for documents in a hierarchy.<br/>
  * This facet require a group by field with a special format in order to work correctly.<br/>
  * Let's say we have the following files indexed on a filesystem:
  * ```
@@ -67,7 +67,7 @@ interface IFlatHierarchy {
  * `@field : c; c|folder1;`<br/>
  * The document `text2.txt` would have a field with the following format:<br/>
  * `@field: c; c|folder2; c|folder2|folder3;`<br/>
- * The | character allows the facet to build its hierarchy (`folder3` inside `folder2` inside `c`)<br/>
+ * The | character allows the facet to build its hierarchy (`folder3` inside `folder2` inside `c`).<br/>
  * Since both documents contain the `c` value, selecting that value in the facet would return both documents.<br/>
  * Selecting the `folder3` value in the facet would only return the `text2.txt` document.
  */
@@ -81,13 +81,13 @@ export class HierarchicalFacet extends Facet {
     /**
      * The character that allows to specify the hierarchy dependency.<br/>
      * The default value is `|`.<br/>
-     * For example, if your field has the following values : @field: c; c>folder2; c>folder2>folder3; Then your delimiting character would be `>`
+     * For example, if your field has the following values: @field: c; c>folder2; c>folder2>folder3; Then your delimiting character would be `>`.
      */
     delimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|' }),
     /**
-     * Specifies at which level (0 based index) of the hierarchy you want your facet to start displaying it's values.<br/>
+     * Specifies at which level (0 based index) of the hierarchy you want your facet to start displaying its values.<br/>
      * The default value is `0`.<br/>
-     * Using this example :
+     * Using this example:
      * ```
      * C:\
      *    folder1\
@@ -100,7 +100,7 @@ export class HierarchicalFacet extends Facet {
      */
     levelStart: ComponentOptions.buildNumberOption({ defaultValue: 0, min: 0 }),
     /**
-     * Specifies at which level (0 based index) of the hierarchy you want your facet to stop displaying it's values.<br/>
+     * Specifies at which level (0 based index) of the hierarchy you want your facet to stop displaying its values.<br/>
      * The default value is undefined, meaning it will render all levels.
      */
     levelEnd: ComponentOptions.buildNumberOption({ min: 0 }),
@@ -141,8 +141,8 @@ export class HierarchicalFacet extends Facet {
 
   /**
    * Select a single value
-   * @param value The value to select
-   * @param selectChilds Determine if the child values (if any) should also be selected. By default, this is the opposite value of the {@link Facet.options.useAnd} value
+   * @param value The value to select.
+   * @param selectChilds Determine if the child values (if any) should also be selected. By default, this is the opposite value of the {@link Facet.options.useAnd} value.
    */
   public selectValue(value: FacetValue, selectChilds?: boolean): void;
   public selectValue(value: string, selectChilds?: boolean): void;
@@ -159,8 +159,8 @@ export class HierarchicalFacet extends Facet {
 
   /**
    * Select multiple values
-   * @param values The array of values to select
-   * @param selectChilds Determine if the child values (if any) should also be selected. By default, this is the opposite value of the {@link Facet.options.useAnd} value
+   * @param values The array of values to select.
+   * @param selectChilds Determine if the child values (if any) should also be selected. By default, this is the opposite value of the {@link Facet.options.useAnd} value.
    */
   public selectMultipleValues(values: FacetValue[], selectChilds?: boolean): void;
   public selectMultipleValues(values: string[], selectChilds?: boolean): void;
@@ -181,8 +181,8 @@ export class HierarchicalFacet extends Facet {
 
   /**
    * Deselect a single value
-   * @param value The value to deselect
-   * @param deselectChilds Determine if the child values (if any) should also be de-selected. By default, this is true
+   * @param value The value to deselect.
+   * @param deselectChilds Determine if the child values (if any) should also be de-selected. By default, this is true.
    */
   public deselectValue(value: FacetValue, deselectChilds?: boolean): void;
   public deselectValue(value: string, deselectChilds?: boolean): void;
@@ -211,7 +211,7 @@ export class HierarchicalFacet extends Facet {
   /**
    * Exclude a single value
    * @param value The value to exclude
-   * @param excludeChilds Determine if the child values (if any) should also be excluded. By default, this is the opposite value of the {@link Facet.options.useAnd} value
+   * @param excludeChilds Determine if the child values (if any) should also be excluded. By default, this is the opposite value of the {@link Facet.options.useAnd} value.
    */
   public excludeValue(value: FacetValue, excludeChilds?: boolean): void;
   public excludeValue(value: string, excludeChilds?: boolean): void;
@@ -231,8 +231,8 @@ export class HierarchicalFacet extends Facet {
 
   /**
    * Unexclude a single value
-   * @param value The value to unexclude
-   * @param unexludeChilds Determine if the child values (if any) should also be un-excluded. By default, this is the opposite value of the {@link Facet.options.useAnd} value
+   * @param value The value to unexclude.
+   * @param unexludeChilds Determine if the child values (if any) should also be un-excluded. By default, this is the opposite value of the {@link Facet.options.useAnd} value.
    */
   public unexcludeValue(value: FacetValue, unexludeChilds?: boolean): void;
   public unexcludeValue(value: string, unexludeChilds?: boolean): void;
@@ -250,7 +250,7 @@ export class HierarchicalFacet extends Facet {
   /**
    * Deselect multiple values
    * @param values The array of values to deselect
-   * @param deselectChilds Determine if the child values (if any) should also be deselected. By default, this is the opposite value of the {@link Facet.options.useAnd} value
+   * @param deselectChilds Determine if the child values (if any) should also be deselected. By default, this is the opposite value of the {@link Facet.options.useAnd} value.
    */
   public deselectMultipleValues(values: FacetValue[], deselectChilds?: boolean): void;
   public deselectMultipleValues(values: string[], deselectChilds?: boolean): void;
@@ -289,7 +289,7 @@ export class HierarchicalFacet extends Facet {
   }
 
   /**
-   * Toggle the exclusion on a single value (exclude / unexclude)
+   * Toggle the exclusion on a single value (exclude / unexclude).
    * @param value
    */
   public toggleExcludeValue(value: FacetValue): void;
@@ -325,7 +325,7 @@ export class HierarchicalFacet extends Facet {
   }
 
   /**
-   * Get the currently displayed values in the facet
+   * Get the currently displayed values in the facet.
    * @returns {any[]}
    */
   public getDisplayedValues(): string[] {
@@ -341,7 +341,7 @@ export class HierarchicalFacet extends Facet {
   }
 
   /**
-   * Update the sort criteria for the facet
+   * Update the sort criteria for the facet.
    * @param criteria
    */
   public updateSort(criteria: string) {
@@ -350,8 +350,8 @@ export class HierarchicalFacet extends Facet {
   }
 
   /**
-   * Open a single value and show all it's child
-   * @param value
+   * Open a single value and show all its child.
+   * @param value.
    */
   public open(value: FacetValue);
   public open(value: IValueHierarchy);
@@ -376,7 +376,7 @@ export class HierarchicalFacet extends Facet {
   }
 
   /**
-   * Close a single value and hide all it's child
+   * Close a single value and hide all its child.
    * @param value
    */
   public close(value: FacetValue);

@@ -7,7 +7,7 @@ import {Initialization} from '../Base/Initialization';
  * This component inherits from the {@link Folding} component.
  * Folding conversations and threads requires different processing.
  * When you need to fold children under a parent item, use this component.<br/>
- * <b>This component works well with Chatter and Lithium</b>
+ * <b>This component works well with Chatter and Lithium.</b>
  */
 export class FoldingForThread extends Folding {
   static ID = 'FoldingForThread';

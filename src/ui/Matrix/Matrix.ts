@@ -48,7 +48,7 @@ export interface IMatrixOptions {
 
 /**
  * This component uses the values of two fields (row and column) to display the results of the specified computed field in a table.<br/>
- * The values to use for the columns are specified by the user while those for the rows are obtained by a groupBy operation performed at the same time as the main query (see {@link IGroupByRequest}).<br/>
+ * The values to use for the columns are specified by the user while those for the rows are obtained by a `groupBy` operation performed at the same time as the main query (see {@link IGroupByRequest}).<br/>
  * Like a {@link Facet}, selecting a cell allows the user to drill down inside results by restricting the row field and the column field to match the values of the selected cell.
  */
 export class Matrix extends Component {
@@ -65,12 +65,12 @@ export class Matrix extends Component {
     title: ComponentOptions.buildStringOption(),
     /**
      * Specifies the field to use for the rows.<br/>
-     * Required options, otherwise the component will not work
+     * Required options, otherwise the component will not work.
      */
     rowField: ComponentOptions.buildFieldOption({ required: true }),
     /**
      * Specifies the field to use for the columns.<br/>
-     * Required options, otherwise the component will not work
+     * Required options, otherwise the component will not work.
      */
     columnField: ComponentOptions.buildFieldOption({ required: true }),
     /**
@@ -85,12 +85,12 @@ export class Matrix extends Component {
     maximumNumberOfRows: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 0 }),
     /**
      * Specifies whether to add a total column which contains the total for each row.<br/>
-     * The default value is true.
+     * The default value is `true`.
      */
     enableRowTotals: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies the field values to use for each column.<br/>
-     * If not specified, you won't generate any column except one for the 'Total' column.
+     * If not specified, you will not generate any column except one for the 'Total' column.
      */
     columnFieldValues: ComponentOptions.buildListOption({ defaultValue: [] }),
     /**
@@ -99,18 +99,18 @@ export class Matrix extends Component {
      */
     columnLabels: ComponentOptions.buildListOption({ defaultValue: [] }),
     /**
-     * Specifies the label for the first column on the left, as a description of the columnField.
+     * Specifies the label for the first column on the left, as a description of the `columnField`.
      */
     columnHeader: ComponentOptions.buildStringOption(),
     /**
      * Specifies the maximum number of results to include in the group by requests for the columns.<br/>
-     * This value should always be greater than {@link Matrix.options.maximumNumberOfRows}. If it is too small, some results won't be displayed in the matrix.<br/>
+     * This value should always be greater than {@link Matrix.options.maximumNumberOfRows}. If it is too small, some results will not be displayed in the matrix.<br/>
      * The default value is 100.
      */
     maximumNumberOfValuesInGroupBy: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 0 }),
     /**
      * Specifies whether to add a total row which contains the total for each column.<br/>
-     * The default value is true.
+     * The default value is `true`.
      */
     enableColumnTotals: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
@@ -127,7 +127,7 @@ export class Matrix extends Component {
      *   <li>minimum - Finds the minimum value of the computed field values.</li>
      *   <li>maximum - Finds the maximum value of the computed field values.</li>
      * </ul>
-     * The default value is sum.
+     * The default value is `sum`.
      */
     computedFieldOperation: ComponentOptions.buildStringOption({ defaultValue: 'sum' }),
     /**
@@ -149,7 +149,7 @@ export class Matrix extends Component {
      */
     cellFontSize: ComponentOptions.buildStringOption({ defaultValue: '' }),
     /**
-     * Specifies whether to show a preview popup of cell results on hover. The default value is true.
+     * Specifies whether to show a preview popup of cell results on hover. The default value is `true`.
      */
     enableHoverPreview: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
@@ -159,7 +159,7 @@ export class Matrix extends Component {
      * <ul>
      *    <li> relevancy :  This uses all the configured ranking weights as well as any specified ranking expressions to rank results.</li>
      *    <li> dateascending / datedescending : Sort using the value of the @date field, which is typically the last modification date of an item in the index.</li>
-     *    <li> qre : Sort using only the weights applied through ranking expressions. This is much like using Relevancy except that automatic weights based on keyword proximity etc, are not computed.<li/>
+     *    <li> qre : Sort using only the weights applied through ranking expressions. This is much like using Relevancy except that automatic weights based on keyword proximity etc., are not computed.<li/>
      *    <li> nosort : Do not sort the results. The order in which items are returned is essentially random.</li>
      *    <li> fieldascending / fielddescending : Sort using the value of a custom field.</li>
      * </ul>
@@ -195,18 +195,18 @@ export class Matrix extends Component {
   };
 
   /**
-   * Holds the data for the matrix
+   * Holds the data for the matrix.
    */
   public data: Cell[][];
   public groupByIndex = [];
   public rowId = '';
   public columnId = '';
   /**
-   * The currently selected row value, or undefined if nothing is selected
+   * The currently selected row value, or undefined if nothing is selected.
    */
   public selectedRowValue: string = undefined;
   /**
-   * The currently selected column value, or undefined if nothing is selected
+   * The currently selected column value, or undefined if nothing is selected.
    */
   public selectedColumnValue = undefined;
 
@@ -250,7 +250,7 @@ export class Matrix extends Component {
   }
 
   /**
-   * Select a cell by it's row and column number. Does not execute a query.
+   * Select a cell by its row and column number. Does not execute a query.
    * @param rowNumber
    * @param columnNumber
    */
@@ -280,21 +280,21 @@ export class Matrix extends Component {
   }
 
   /**
-   * Return the currently selected column value
+   * Return the currently selected column value.
    */
   public getSelectedColumnValue(): string {
     return this.selectedColumnValue;
   }
 
   /**
-   * Return the currently selected row value
+   * Return the currently selected row value.
    */
   public getSelectedRowValue(): string {
     return this.selectedRowValue;
   }
 
   /**
-   * Get the HTMLElement associated to the desired cell
+   * Get the HTMLElement associated to the desired cell.
    * @param rowNumber
    * @param columnNumber
    * @returns {HTMLElement}
@@ -304,7 +304,7 @@ export class Matrix extends Component {
   }
 
   /**
-   * Get the string associated to the desired cell
+   * Get the string associated to the desired cell.
    * @param rowNumber
    * @param columnNumber
    * @returns {string}

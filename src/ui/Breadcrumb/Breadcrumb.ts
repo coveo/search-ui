@@ -32,7 +32,7 @@ export class Breadcrumb extends Component {
   private lastBreadcrumbs: IBreadcrumbItem[];
 
   /**
-   * Create a new breadcrumb element, bind event on deferredQuerySuccess to draw the breadcrumb
+   * Create a new breadcrumb element, bind event on `deferredQuerySuccess` to draw the breadcrumb.
    * @param element
    * @param options
    * @param bindings
@@ -49,7 +49,7 @@ export class Breadcrumb extends Component {
 
   /**
    * Trigger the event to populate breadcrumb, which component such as {@link Facet} can populate.<br/>
-   * Will trigger an event with {@link IPopulateBreadcrumbEventArgs} object (an array) which other component or code can populate.
+   * Will trigger an event with {@link IPopulateBreadcrumbEventArgs} object (an array) which other components or code can populate.
    * @returns {IBreadcrumbItem[]}
    */
   public getBreadcrumbs(): IBreadcrumbItem[] {
@@ -61,8 +61,8 @@ export class Breadcrumb extends Component {
   }
 
   /**
-   * Trigger the event to clear the current breadcrumbs, which component such as {@link Facet} can populate.<br/>
-   * Trigger a new query, and log a search event
+   * Trigger the event to clear the current breadcrumbs, that {@link Facet} can populate.<br/>
+   * Trigger a new query, and log a search event.
    */
   public clearBreadcrumbs() {
     let args = <IClearBreadcrumbEventArgs>{};
@@ -73,7 +73,7 @@ export class Breadcrumb extends Component {
   }
 
   /**
-   * Draw the given breadcrumbs items
+   * Draw the given breadcrumbs items.
    * @param breadcrumbs
    */
   public drawBreadcrumb(breadcrumbs: IBreadcrumbItem[]) {

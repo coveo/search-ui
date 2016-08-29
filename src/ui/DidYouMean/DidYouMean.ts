@@ -29,9 +29,9 @@ export class DidYouMean extends Component {
    */
   static options: IDidYouMeanOptions = {
     /**
-     * This option allows the DidYouMean component to automatically trigger a new query
-     * when there are no results and a correction is available <br/>
-     * The default value is <code>true</code>
+     * This option allows the `DidYouMean` component to automatically trigger a new query
+     * when there are no results and a correction is available.<br/>
+     * The default value is <code>true</code>.
      */
     enableAutoCorrection: ComponentOptions.buildBooleanOption({ defaultValue: true }),
   };
@@ -66,8 +66,8 @@ export class DidYouMean extends Component {
   }
 
   /**
-   * Execute a query with the corrected term <br/>
-   * Will throw an exception if the corrected term has not been initialized
+   * Execute a query with the corrected term. <br/>
+   * Will throw an exception if the corrected term has not been initialized.
    */
   public doQueryWithCorrectedTerm() {
     Assert.exists(this.correctedTerm);

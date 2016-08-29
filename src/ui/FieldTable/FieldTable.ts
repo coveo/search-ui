@@ -22,8 +22,8 @@ export interface IFieldTableOptions {
  * # Examples
  *
  * ```
- * // This is the FieldTable component itself, which holds a list of table row.
- * // Each row is a FieldValue component
+ * // This is the FieldTable component itself, which holds a list of table rows.
+ * // Each row is a `FieldValue` component
  * <table class='CoveoFieldTable'>
  *    // Items
  *    <tr data-field='@sysdate' data-caption='Date' data-helper='dateTime' />
@@ -41,7 +41,7 @@ export class FieldTable extends Component {
    */
   static options: IFieldTableOptions = {
     /**
-     * Specifies whether to allow the minimization (collapsing) of the FieldTable.<br/>
+     * Specifies whether to allow the minimization (collapsing) of the FieldTable or not.<br/>
      * This creates a 'minimize' and 'expand' link above the table.
      */
     allowMinimization: ComponentOptions.buildBooleanOption({ defaultValue: true }),
@@ -100,8 +100,8 @@ export class FieldTable extends Component {
   }
 
   /**
-   * Toggle between expanding and minimizing the FieldTable
-   * @param anim Specifies whether to show a sliding animation when toggling
+   * Toggle between expanding and minimizing the `FieldTable`.
+   * @param anim Specifies whether to show a sliding animation when toggling.
    */
   public toggle(anim = false) {
     if (this.isTogglable()) {

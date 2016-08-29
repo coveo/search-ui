@@ -14,11 +14,11 @@ export interface IComponentHtmlElement extends HTMLElement {
  */
 export class BaseComponent {
   /**
-   * Allows component to log in the dev console
+   * Allows component to log in the dev console.
    */
   public logger: Logger;
   /**
-   * A disabled component will not participate in the query, or listen to {@link ComponentEvents}
+   * A disabled component will not participate in the query, or listen to {@link ComponentEvents}.
    * @type {boolean}
    */
   public disabled = false;
@@ -37,7 +37,7 @@ export class BaseComponent {
   }
 
   /**
-   * Return the debug info about this component
+   * Return the debug info about this component.
    * @returns {any}
    */
   public debugInfo() {
@@ -48,7 +48,7 @@ export class BaseComponent {
 
   /**
    * Disable the component.
-   * Normally this means that the component won't execute handlers for the framework events (query events, for example).
+   * Normally this means that the component will not execute handlers for the framework events (query events, for example).
    * Component are enabled by default on creation.
    */
   public disable() {

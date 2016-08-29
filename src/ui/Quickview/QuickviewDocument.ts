@@ -39,9 +39,9 @@ interface IWordState {
 }
 
 /**
- * The QuickviewDocument component is meant to exist within Result Templates, more specifically inside a {@link Quickview} Component.
+ * The QuickviewDocument component is meant to exist within Result Templates, more specifically inside a {@link Quickview} component.
  * The sole purpose of this component is to include an iframe which will load the correct HTML version of the current document.
- * By default, this component is included in the default template for a {@link Quickview} Component.
+ * By default, this component is included in the default template for a {@link Quickview} component.
  */
 export class QuickviewDocument extends Component {
   static ID = 'QuickviewDocument';
@@ -54,7 +54,7 @@ export class QuickviewDocument extends Component {
     /**
      * Specifies the maximum document size (the preview) that should be returned by the index.
      *
-     * By default it's value is 0, and the whole preview is returned.
+     * By default its value is 0, and the whole preview is returned.
      */
     maximumDocumentSize: ComponentOptions.buildNumberOption({ defaultValue: 0, min: 0 }),
   };

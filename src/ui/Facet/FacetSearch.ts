@@ -72,7 +72,7 @@ export class FacetSearch {
   }
 
   /**
-   * Build the search component and return an HTMLElement which can be appended to the {@link Facet}
+   * Build the search component and return an `HTMLElement` which can be appended to the {@link Facet}.
    * @returns {HTMLElement}
    */
   public build(): HTMLElement {
@@ -132,7 +132,7 @@ export class FacetSearch {
   }
 
   /**
-   * Trigger a new facet search, and display the results
+   * Trigger a new facet search, and display the results.
    * @param params
    */
   public triggerNewFacetSearch(params: FacetSearchParameters) {
@@ -168,7 +168,7 @@ export class FacetSearch {
   }
 
   /**
-   * Trigger the event associated with the focus of the search input
+   * Trigger the event associated with the focus of the search input.
    */
   public focus() {
     this.input.focus();
