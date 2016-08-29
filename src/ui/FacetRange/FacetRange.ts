@@ -31,7 +31,7 @@ export class FacetRange extends Facet {
     /**
      * Specifies whether the field for which you are requesting a range is a date field to allow the facet to correctly build the outgoing group by request.
      *
-     * Default value is `false`;
+     * Default value is `false`.
      */
     dateField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**

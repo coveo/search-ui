@@ -32,7 +32,7 @@ export class Settings extends Component {
   static options: ISettingsOptions = {
     /**
      * The delay before hiding the popup menu when the mouse leaves it.<br/>
-     * The default value is <code>300</code>
+     * The default value is <code>300</code>.
      */
     menuDelay: ComponentOptions.buildNumberOption({ defaultValue: 300, min: 0 })
   };

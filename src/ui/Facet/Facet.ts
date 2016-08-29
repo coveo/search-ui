@@ -112,7 +112,7 @@ export class Facet extends Component {
   static options: IFacetOptions = {
     /**
      * Specifies the title displayed at the top of the facet.<br/>
-     * Default is the localized string for "No Title"
+     * Default is the localized string for "No Title".
      */
     title: ComponentOptions.buildLocalizedStringOption({
       defaultValue: l('NoTitle'),
@@ -120,21 +120,21 @@ export class Facet extends Component {
       priority: 10
     }),
     /**
-     * Specifies the index field whose values will be use in the facet.<br/>
+     * Specifies the index field whose values will be used in the facet.<br/>
      * This require the given field to be configured correctly in the index as a facet field.<br/>
      * This is a required option and cannot be omitted, otherwise the facet component will not work.
      */
     field: ComponentOptions.buildFieldOption({ required: true, groupByField: true, section: 'Identification' }),
     /**
-     * Specifies the css class to change the facet header icon.<br/>
+     * Specifies the CSS class to change the facet header icon.<br/>
      * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option.
      */
     headerIcon: ComponentOptions.buildIconOption({ deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.' }),
     /**
      * Specifies a unique identifier for a facet. This identifier will be used to save the facet state in the url hash, for example.<br/>
      * Optional, since the default will be the {@link Facet.options.field} option.<br/>
-     * If you have two facets with the same field on the same page, you should specify an id for at least one of those two facets.<br/>
-     * That id need to be unique on the page.
+     * If you have two facets with the same field on the same page, you should specify an ID for at least one of those two facets.<br/>
+     * That ID need to be unique on the page.
      */
     id: ComponentOptions.buildStringOption({
       postProcessing: (value, options: IFacetOptions) => value || options.field
@@ -146,25 +146,25 @@ export class Facet extends Component {
     isMultiValueField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies the field whose values will be displayed in the facet.<br/>
-     * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option.
+     * @deprecated This option is exposed for legacy reasons, and the recommendation is to not use this option.
      */
     lookupField: ComponentOptions.buildFieldOption({ deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.' }),
     /**
-     * Specifies whether to show the facet settings menu.<br/>
-     * The default value is true.
+     * Specifies whether to show the facet settings menu or not.<br/>
+     * The default value is `true`.
      */
     enableSettings: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'SettingsMenu', priority: 9 }),
     /**
      * Specifies if the save state menu option is available on the facet setting menu.<br/>
      * Of course {@link Facet.options.enableSettings} needs to be true.<br/>
-     * Default value is false
+     * Default value is `false`.
      */
     enableSettingsFacetState: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableSettings' }),
     /**
-     * Specifies the sort criteria options you want to be displayed in the facet settings menu.<br/>
+     * Specifies the sort criteria options that you want to be displayed in the facet settings menu.<br/>
      * Of course {@link Facet.options.enableSettings} needs to be true.<br/>
-     * Possible values are : occurrences, score, alphaAscending, alphaDescending, computedfieldascending, computedfielddescending, custom
-     * The default value is occurrences,score,alphaAscending,alphaDescending.
+     * Possible values are : `occurrences`, `score`, `alphaAscending`, `alphaDescending`, `computedfieldascending`, `computedfielddescending`, `custom`.
+     * The default value is `occurrences,score,alphaAscending,alphaDescending`.
      */
     availableSorts: ComponentOptions.buildListOption({
       defaultValue: ['occurrences', 'score', 'alphaAscending', 'alphaDescending'],
@@ -174,7 +174,7 @@ export class Facet extends Component {
     /**
      * Specifies the criteria used to sort facet values.<br/>
      * See {@link IGroupByRequest} for the list of available values.<br/>
-     * The default value is the first value of {@link Facet.options.availableSorts} list, or 'occurrences' if there's none specified.
+     * The default value is the first value of {@link Facet.options.availableSorts} list, or 'occurrences' if there is none specified.
      */
     sortCriteria: ComponentOptions.buildStringOption({ postProcessing: (value, options: IFacetOptions) => value || (options.availableSorts.length > 0 ? options.availableSorts[0] : 'occurrences') }),
     /**
@@ -183,7 +183,7 @@ export class Facet extends Component {
      */
     customSort: ComponentOptions.buildListOption({ section: 'Identification' }),
     /**
-     * Specifies the maximum number of field values that will be displayed by default in the facet, before the user click on "More".<br/>
+     * Specifies the maximum number of field values that will be displayed by default in the facet, before the user click **More**.<br/>
      * The default value is 5.
      */
     numberOfValues: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0, section: 'Identification' }),
@@ -201,12 +201,12 @@ export class Facet extends Component {
     showIcon: ComponentOptions.buildBooleanOption({ defaultValue: false, deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.' }),
     /**
      * Specifies whether the filter generated when multiple values are selected uses the AND operator, meaning that only documents having all selected values matches the resulting query.<br/>
-     * By default filters are using the OR operator, and the resulting query matches all documents with at least one of the selected values.
+     * By default, filters are using the OR operator, and the resulting query matches all documents with at least one of the selected values.
      */
     useAnd: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies whether the user is allowed to toggle between OR and AND mode, using an icon in the top right corner of the facet.<br/>
-     * The default value is false.
+     * The default value is `false`.
      */
     enableTogglingOperator: ComponentOptions.buildBooleanOption({ defaultValue: false, alias: 'allowTogglingOperator' }),
     /**
@@ -217,12 +217,12 @@ export class Facet extends Component {
     /**
      * Specifies the delay (in milliseconds) before a search is sent to the server when the user starts typing in the facet search box.<br/>
      * Using a smaller value means that results will arrive faster, but it increases the chances that many of the requests sent to the server get cancelled as the user continues typing in characters.<br/>
-     * Default is 100
+     * The default value is 100.
      */
     facetSearchDelay: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 0, depend: 'enableFacetSearch' }),
     /**
      * Specifies if the accents are ignored in the facet search.<br/>
-     * The default value is false
+     * The default value is `false`.
      */
     facetSearchIgnoreAccents: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableFacetSearch' }),
     /**
@@ -232,12 +232,12 @@ export class Facet extends Component {
     numberOfValuesInFacetSearch: ComponentOptions.buildNumberOption({ defaultValue: 15, min: 1 }),
     /**
      * Specifies if the facet should push data to the {@link Breadcrumb}.<br/>
-     * The default value is true
+     * The default value is `true`.
      */
     includeInBreadcrumb: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies the maximum number of values that the facet should display in the {@link Breadcrumb}, before outputting a "See more" button.<br/>
-     * Default is 5 on desktop, 3 on mobile
+     * Default is 5 on desktop, 3 on mobile.
      */
     numberOfValuesInBreadcrumb: ComponentOptions.buildNumberOption({
       defaultFunction: () => DeviceUtils.isMobileDevice() ? 3 : 5,
@@ -247,7 +247,7 @@ export class Facet extends Component {
     /**
      * Specifies if the facet should push data to the {@link Omnibox}.<br/>
      * It can have a real negative impact on index performance.<br/>
-     * The default value is false.
+     * The default value is `false`.
      * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option.
      */
     includeInOmnibox: ComponentOptions.buildBooleanOption({
@@ -256,7 +256,7 @@ export class Facet extends Component {
     }),
     /**
      * Specifies the number of values to populate the {@link Breadcrumb} with.<br/>
-     * Of course, the {@link Facet.options.includeInOmnibox} option needs to be "true".<br/>
+     * Of course, the {@link Facet.options.includeInOmnibox} option needs to be true.<br/>
      * It can have a real negative impact on index performance.<br/>
      * The default value is 5 on desktop, 3 on mobile.
      * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option.
@@ -268,7 +268,7 @@ export class Facet extends Component {
       deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.'
     }),
     /**
-     * Specifies the name of a field on which an aggregate operation should be executed for all distinct values of the facet's field.<br/>
+     * Specifies the name of a field on which an aggregate operation should be executed for all distinct values of the facet field.<br/>
      * The result of the operation is displayed along with the number of occurrences for each value.<br/>
      * You can use this option to compute the sum of a field (like a money amount) for each facet value that is listed.<br/>
      * Works in conjunction with {@link Facet.options.computedFieldOperation} , {@link Facet.options.computedFieldFormat}, {@link Facet.options.computedFieldCaption}
@@ -283,7 +283,7 @@ export class Facet extends Component {
      *   <li>minimum - Finds the minimum value of the computed field values.</li>
      *   <li>maximum - Finds the maximum value of the computed field values.</li>
      * </ul><br/>
-     * The default value is sum.
+     * The default value is `sum`.
      */
     computedFieldOperation: ComponentOptions.buildStringOption({ defaultValue: 'sum', section: 'ComputedField' }),
     /**
@@ -294,13 +294,13 @@ export class Facet extends Component {
      *   <li>n0 - Formats the value as an integer.</li>
      *   <li>n2 - Formats the value as a floating point with 2 decimal digits.</li>
      * </ul>
-     * See : <a href='https://github.com/klaaspieter/jquery-global#globalizeformat-value-format-culture-'>Globalize</a> for more informations.<br/>
-     * Default value is 'c0
+     * See: <a href='https://github.com/klaaspieter/jquery-global#globalizeformat-value-format-culture-'>Globalize</a> for more informations.<br/>
+     * Default value is `'c0`.
      */
     computedFieldFormat: ComponentOptions.buildStringOption({ defaultValue: 'c0', section: 'ComputedField' }),
     /**
      * Specifies what will be the caption of the {@link Facet.options.computedField} in the settings menu for sort.<br/>
-     * For example, the value Money will be displayed as Money Ascending for computed field ascending.<br/>
+     * For example, the value `Money` will be displayed as `Money Ascending` for computed field ascending.<br/>
      * The default value is Computed Field.
      */
     computedFieldCaption: ComponentOptions.buildLocalizedStringOption({
@@ -313,50 +313,50 @@ export class Facet extends Component {
      * When this option is enabled, the facet will adjust the scroll amount of the page to ensure that it does not move relative to the mouse when the results are updated.<br/>
      * In some cases, the facet will also add margin to the scrollContainer, if scrolling alone is not enough to preserve position.<br/>
      * This is the option that will add a div 'coveo-topSpace' / 'coveo-bottomSpace` around the facet container.
-     * The default value is true.
+     * The default value is `true`.
      */
     preservePosition: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies the parent container of the facets.<br/>
      * Used for the {@link Facet.options.preservePosition}.<br/>
-     * The default value is element.parentElement.
+     * The default value is `element.parentElement`.
      */
     paddingContainer: ComponentOptions.buildSelectorOption({ defaultFunction: (element) => element.parentElement }),
     /**
      * Specifies the HTML element (through a CSS selector) whose scroll amount the facet should adjust to preserve its position {@link Facet.options.preservePosition} when results are updated.<br/>
-     * The default value is document.body.
+     * The default value is `document.body`.
      */
     scrollContainer: ComponentOptions.buildSelectorOption({ defaultFunction: (element) => document.body }),
     /**
      * Specifies if the more/less button is enabled.<br/>
-     * The default value is true.
+     * The default value is `true`.
      */
     enableMoreLess: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
-     * Specifies the number of additional results to fetch when clicking on "More" in the facet search.<br/>
+     * Specifies the number of additional results to fetch when clicking on **More** in the facet search.<br/>
      * The default value is 10.
      */
     pageSize: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 1, depend: 'enableMoreLess' }),
     /**
      * Specifies if the facet is collapsible.<br/>
-     * The default value is true.
+     * The default value is `true`.
      */
     enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: true, depend: 'enableSettings' }),
     /**
-     * Specifies an explicit list of allowedValues in the {@link IGroupByRequest}.<br/>
+     * Specifies an explicit list of `allowedValues` in the {@link IGroupByRequest}.<br/>
      * This will whitelist the facet content to some specific values.<br/>
      * Example  ["File", "People"].
      */
     allowedValues: ComponentOptions.buildListOption(),
     /**
      * Specifies an additional query expression (query override) to add to each group by that this facet performs.<br/>
-     * See : {@link IGroupByRequest}.<br/>
-     * Example : @date>=2014/01/01
+     * See: {@link IGroupByRequest}.<br/>
+     * Example: `@date>=2014/01/01`
      */
     additionalFilter: ComponentOptions.buildStringOption(),
     /**
      * Specifies that the facet appears only when a value is selected in its "parent" facet.<br/>
-     * To specify the parent facet, use it's {@link Facet.options.id}. Remember that be default, the id of a facet is it's {@link Facet.options.field}.<br/>
+     * To specify the parent facet, use its {@link Facet.options.id}. Remember that be default, the ID of a facet is its {@link Facet.options.field}.<br/>
      * Example -> dependsOn : @parentfacetField
      */
     dependsOn: ComponentOptions.buildStringOption(),
@@ -366,7 +366,7 @@ export class Facet extends Component {
      * This option can only be set in the init call of your search interface, not directly as an HTML attribute.
      *
      * ```
-     * // Example: Using a facet for file types
+     * // Example: using a facet for file types
      * var myValueCaption = {  "txt": "Text files","html": "Web page", [ etc ... ]};
      *
      * Coveo.init(document.querySelector('#search'), {
@@ -374,7 +374,7 @@ export class Facet extends Component {
      *      valueCaption: myValueCaption
      *    }
      * })
-     * // Or using the jquery extension
+     * // Or using the jQuery extension
      * $("#search").coveo("init", {
      *    Facet: {
      *      valueCaption: myValueCaption
@@ -435,7 +435,7 @@ export class Facet extends Component {
    * @param element
    * @param options
    * @param bindings
-   * @param facetClassId The id to use for this facet (as Facet inherited from by other component (eg : {@link FacetRange}). Default is "Facet"
+   * @param facetClassId The ID to use for this facet (as Facet inherited from by other component (e.g.: {@link FacetRange}). The default value is `Facet`.
    */
   constructor(public element: HTMLElement, public options: IFacetOptions, bindings?: IComponentBindings, facetClassId: string = Facet.ID) {
     super(element, facetClassId, bindings);
@@ -493,7 +493,7 @@ export class Facet extends Component {
   /**
    * Select a single value.<br/>
    * Does not trigger a query automatically.
-   * @param value Can be a {@link FacetValue} or a string -> eg: selectValue('foobar') or selectValue(new FacetValue('foobar'));
+   * @param value Can be a {@link FacetValue} or a string -> e.g.: `selectValue('foobar') or selectValue(new FacetValue('foobar'));`.
    */
   public selectValue(value: FacetValue): void;
   public selectValue(value: string): void;
@@ -507,7 +507,7 @@ export class Facet extends Component {
   /**
    * Select multiple values.<br/>
    * Does not trigger a query automatically.
-   * @param values Can be an array of {@link FacetValue} or array of string
+   * @param values Can be an array of {@link FacetValue} or array of string.
    */
   public selectMultipleValues(values: FacetValue[]): void;
   public selectMultipleValues(values: string[]): void;
@@ -523,7 +523,7 @@ export class Facet extends Component {
   /**
    * Deselect a single value.<br/>
    * Does not trigger a query automatically.
-   * @param value Can be a {@link FacetValue} or a string
+   * @param value Can be a {@link FacetValue} or a string.
    */
   public deselectValue(value: FacetValue): void;
   public deselectValue(value: string): void;
@@ -535,9 +535,9 @@ export class Facet extends Component {
   }
 
   /**
-   * Deselect multiple value.<br/>
+   * Deselect multiple values.<br/>
    * Does not trigger a query automatically.
-   * @param values Can be an array of {@link FacetValue} or array of string
+   * @param values Can be an array of {@link FacetValue} or array of string.
    */
   public deselectMultipleValues(values: FacetValue[]): void
   public deselectMultipleValues(values: string[]): void
@@ -553,7 +553,7 @@ export class Facet extends Component {
   /**
    * Exclude a single value.<br/>
    * Does not trigger a query automatically.
-   * @param value Can be a {@link FacetValue} or a string
+   * @param value Can be a {@link FacetValue} or a string.
    */
   public excludeValue(value: FacetValue): void;
   public excludeValue(value: string): void;
@@ -567,7 +567,7 @@ export class Facet extends Component {
   /**
    * Exclude multiple values.<br/>
    * Does not trigger a query automatically.
-   * @param values Can be an array of {@link FacetValue} or array of string
+   * @param values Can be an array of {@link FacetValue} or array of string.
    */
   public excludeMultipleValues(values: FacetValue[]): void;
   public excludeMultipleValues(values: string[]): void;
@@ -583,7 +583,7 @@ export class Facet extends Component {
   /**
    * Unexclude a single value.<br/>
    * Does not trigger a query automatically.
-   * @param value Can be a {@link FacetValue} or a string
+   * @param value Can be a {@link FacetValue} or a string.
    */
   public unexcludeValue(value: FacetValue): void;
   public unexcludeValue(value: string): void;
@@ -597,7 +597,7 @@ export class Facet extends Component {
   /**
    * Unexclude multiple values.<br/>
    * Does not trigger a query automatically.
-   * @param values Can be an array of {@link FacetValue} or array of string
+   * @param values Can be an array of {@link FacetValue} or array of string.
    */
   public unexcludeMultipleValues(values: FacetValue[]): void;
   public unexcludeMultipleValues(values: string[]): void;
@@ -613,7 +613,7 @@ export class Facet extends Component {
   /**
    * Toggle the selection state of a single value (select if not already selected, unselect if already selected).<br/>
    * Does not trigger a query automatically.
-   * @param value Can be a {@link FacetValue} or a string
+   * @param value Can be a {@link FacetValue} or a string.
    */
   public toggleSelectValue(value: FacetValue): void;
   public toggleSelectValue(value: string): void;
@@ -627,7 +627,7 @@ export class Facet extends Component {
   /**
    * Toggle the exclusion state of a single value (exclude if not already excluded, unexclude if already excluded).<br/>
    * Does not trigger a query automatically.
-   * @param value Can be a {@link FacetValue} or a string
+   * @param value Can be a {@link FacetValue} or a string.
    */
   public toggleExcludeValue(value: FacetValue): void;
   public toggleExcludeValue(value: string): void;
@@ -639,7 +639,7 @@ export class Facet extends Component {
   }
 
   /**
-   * Return the currently displayed values, as an array of string
+   * Return the currently displayed values, as an array of string.
    * @returns {any[]}
    */
   public getDisplayedValues(): string[] {
@@ -647,7 +647,7 @@ export class Facet extends Component {
   }
 
   /**
-   * Return the currently displayed values, as an array of {@link FacetValue}
+   * Return the currently displayed values, as an array of {@link FacetValue}.
    * @returns {T[]}
    */
   public getDisplayedFacetValues(): FacetValue[] {
@@ -659,7 +659,7 @@ export class Facet extends Component {
   }
 
   /**
-   * Return the currently selected values, as an array of string
+   * Return the currently selected values, as an array of string.
    * @returns {TResult[]}
    */
   public getSelectedValues(): string[] {
@@ -668,7 +668,7 @@ export class Facet extends Component {
   }
 
   /**
-   * Return the currently excluded values, as an array of string
+   * Return the currently excluded values, as an array of string.
    * @returns {TResult[]}
    */
   public getExcludedValues(): string[] {
@@ -688,7 +688,7 @@ export class Facet extends Component {
   }
 
   /**
-   * Switch the facet to AND mode : {@link Facet.options.useAnd}
+   * Switch the facet to AND mode: {@link Facet.options.useAnd}.
    */
   public switchToAnd(): void {
     this.ensureDom();
@@ -697,7 +697,7 @@ export class Facet extends Component {
   }
 
   /**
-   * Switch the facet to OR mode : {@link Facet.options.useAnd}
+   * Switch the facet to OR mode: {@link Facet.options.useAnd}.
    */
   public switchToOr(): void {
     this.ensureDom();
@@ -706,7 +706,7 @@ export class Facet extends Component {
   }
 
   /**
-   * Return the endpoint for the facet
+   * Return the endpoint for the facet.
    * @returns {SearchEndpointInterface|ISearchEndpoint}
    */
   public getEndpoint(): ISearchEndpoint {
@@ -715,8 +715,8 @@ export class Facet extends Component {
 
   /**
    * Change the sort parameter for the facet.<br/>
-   * See : {@link Facet.options.availableSorts} the list of possible value.<br/>
-   * Trigger a new query
+   * See: {@link Facet.options.availableSorts} the list of possible value.<br/>
+   * Trigger a new query.
    * @param criteria
    */
   public updateSort(criteria: string): void {
@@ -736,7 +736,7 @@ export class Facet extends Component {
   }
 
   /**
-   * Show a waiting animation in the facet header (a spinner)
+   * Show a waiting animation in the facet header (a spinner).
    */
   public showWaitingAnimation() {
     this.ensureDom();
@@ -752,7 +752,7 @@ export class Facet extends Component {
   }
 
   /**
-   * Hide the waiting animation in the facet header (a spinner)
+   * Hide the waiting animation in the facet header (a spinner).
    */
   public hideWaitingAnimation(): void {
     this.ensureDom();
@@ -794,7 +794,7 @@ export class Facet extends Component {
   }
 
   /**
-   * Return the configured caption for the given {@link FacetValue} or {
+   * Return the configured caption for the given {@link FacetValue}
    * @param facetValue
    */
   public getValueCaption(facetValue: IIndexFieldValue): string;
@@ -819,7 +819,7 @@ export class Facet extends Component {
 
   /**
    * Show the next page of results in the facet.<br/>
-   * Trigger a query if needed, or display the already available values
+   * Trigger a query if needed, or display the already available values.
    */
   public showMore() {
     this.currentPage++;
@@ -832,7 +832,7 @@ export class Facet extends Component {
   }
 
   /**
-   * Show less element in the facet (up to the original number of values)
+   * Show less element in the facet (up to the original number of values).
    */
   public showLess() {
     $$(this.lessElement).removeClass('coveo-active');
