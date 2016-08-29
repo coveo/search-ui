@@ -37,7 +37,11 @@
   },
   "MobileLithiumThread": {
     "priority": 1,
-    "value": "raw.connectortype == 'LithiumCrawler' && (Coveo.DeviceUtils.isSmallScreenWidth() || options.layout === 'card')"
+    "value": "raw.connectortype == 'LithiumCrawler' && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "CardLithiumThread": {
+    "priority": 1,
+    "value": "raw.connectortype == 'LithiumCrawler' && options.layout === 'card'"
   },
   "LithiumThread": {
     "priority": 0,
@@ -89,7 +93,7 @@
   },
   "MobileYouTubeVideo": {
     "priority": 1,
-    "value": "raw.filetype == 'YouTubeVideo' && (Coveo.DeviceUtils.isSmallScreenWidth() || options.layout === 'card')"
+    "value": "raw.filetype == 'YouTubeVideo' && Coveo.DeviceUtils.isSmallScreenWidth()"
   },
   "YouTubeVideo" : {
     "priority": 0,
@@ -102,5 +106,9 @@
   "YouTubePlaylistItem" : {
     "priority": 0,
     "value": "raw.filetype== 'YouTubePlaylistItem'"
+  },
+  "Card": {
+    "priority": 0,
+    "value": "options.layout === 'card'"
   }
 }

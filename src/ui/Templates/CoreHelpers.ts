@@ -24,8 +24,14 @@ import Globalize = require('globalize');
 /**
  * The core template helpers provided by default.
  *
- * Example usage (using Underscore templating):
+ * Example usage:
  *
+ * ### HTML
+ * ```
+ * <div class="CoveoFieldValue" data-helper="helperName" data-helper-options-optionName="option-value"></div>
+ * ```
+ *
+ * ### Underscore
  * ```
  * <%= helperName(argument1, argument2) %>
  * ```

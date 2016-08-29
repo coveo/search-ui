@@ -163,9 +163,8 @@
 }
 
 .coveo-card-layout > .CoveoResult {
-  width: 300px;
+  width: 200px;
   @include flex-grow(1);
   margin: 5px;
-  padding: 5px;
   @include defaultRoundedBorder();
 }
