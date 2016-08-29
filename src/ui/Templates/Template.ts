@@ -38,7 +38,9 @@ export class Template {
    *
    */
   instantiateToString(object?: any, checkCondition = true, options?: ITemplateOptions): string {
-    object.options = options;
+    if (options) {
+      object.options = options;
+    }
     if (this.dataToString && (!checkCondition || this.condition == null || this.condition(object))) {
       return this.dataToString(object);
     }
