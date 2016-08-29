@@ -89,7 +89,7 @@
   },
   "MobileYouTubeVideo": {
     "priority": 1,
-    "value": "raw.filetype == 'YouTubeVideo' && Coveo.DeviceUtils.isSmallScreenWidth()"
+    "value": "raw.filetype == 'YouTubeVideo' && (Coveo.DeviceUtils.isSmallScreenWidth() || options.layout === 'card')"
   },
   "YouTubeVideo" : {
     "priority": 0,

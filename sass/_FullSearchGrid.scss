@@ -74,9 +74,16 @@ $border-box-sizing: false;
 @include mediaSelector(480) {
   .coveo-results-header {
     @include flex-direction(column);
+    > * {
+      margin-bottom: 10px;
+    }
+    .coveo-result-layout-section {
+      border-right: none;
+      margin-left: 0;
+    }
     .coveo-sort-section {
-      text-align: left;
-      margin: 10px 0px 10px 0px;
+      margin-left: 0;
+      margin-bottom: 0;
     }
   }
 }
