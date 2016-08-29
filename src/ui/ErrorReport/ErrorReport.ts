@@ -15,7 +15,7 @@ export interface IErrorReportOptions {
 }
 
 /**
- * This component takes care of handling fatal error when doing a query on the index / search API.<br/>
+ * This component takes care of handling fatal error when doing a query on the index / Search API.<br/>
  * For example, it will display a message when the service responds with something like a 401 or 503.<br/>
  * It will also render a small text area with the JSON content of the error response, for debugging purpose.
  */
@@ -28,10 +28,10 @@ export class ErrorReport extends Component {
   static options: IErrorReportOptions = {
     /**
      * Display the detailed error message as a JSON in a text content area.<br/>
-     * The default value is <code>true</code>
+     * The default value is <code>true</code>.
      */
     showDetailedError: ComponentOptions.buildBooleanOption({ defaultValue: true })
-  }
+  };
   private message: Dom;
   private closePopup: () => void;
 
@@ -68,16 +68,16 @@ export class ErrorReport extends Component {
   }
 
   /**
-   * Do the "back" action in the browser
+   * Do the "back" action in the browser.
    */
   public back(): void {
     this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.errorBack, {}, this.root);
-    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.errorBack, {})
+    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.errorBack, {});
     history.back();
   }
 
   /**
-   * Reset the current state of the query to 'empty', and trigger a new query
+   * Reset the current state of the query to 'empty', and trigger a new query.
    */
   public reset(): void {
     this.queryStateModel.reset();
@@ -87,7 +87,7 @@ export class ErrorReport extends Component {
   }
 
   /**
-   * Retry the same query, in case of a temporary service error
+   * Retry the same query, in case of a temporary service error.
    */
   public retry(): void {
     this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.errorRetry, {});
@@ -99,7 +99,7 @@ export class ErrorReport extends Component {
     let errorTitle = {
       h3: l('OopsError'),
       h4: l('ProblemPersists')
-    }
+    };
     let h3 = $$(this.element).find('h3');
     let h4 = $$(this.element).find('h4');
     if (h3 && h4) {
@@ -152,7 +152,7 @@ export class ErrorReport extends Component {
     }
 
     this.message.empty();
-    this.setErrorTitle()
+    this.setErrorTitle();
 
     if (this.options.showDetailedError) {
       let moreInfo = $$('span', {
@@ -162,7 +162,7 @@ export class ErrorReport extends Component {
       moreInfo.on('click', () => {
         moreInfo.empty();
         this.message.el.appendChild(this.buildErrorInfo(data.error));
-      })
+      });
 
       this.message.el.appendChild(moreInfo.el);
     }

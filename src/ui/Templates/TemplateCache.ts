@@ -40,7 +40,7 @@ export class TemplateCache {
   }
 
   /**
-   * Return a template by it's name/id.
+   * Return a template by its name/ID.
    * @param name
    * @returns {Template}
    */

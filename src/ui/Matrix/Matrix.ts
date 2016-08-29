@@ -48,7 +48,7 @@ export interface IMatrixOptions {
 
 /**
  * This component uses the values of two fields (row and column) to display the results of the specified computed field in a table.<br/>
- * The values to use for the columns are specified by the user while those for the rows are obtained by a groupBy operation performed at the same time as the main query (see {@link IGroupByRequest}).<br/>
+ * The values to use for the columns are specified by the user while those for the rows are obtained by a `groupBy` operation performed at the same time as the main query (see {@link IGroupByRequest}).<br/>
  * Like a {@link Facet}, selecting a cell allows the user to drill down inside results by restricting the row field and the column field to match the values of the selected cell.
  */
 export class Matrix extends Component {
@@ -65,12 +65,12 @@ export class Matrix extends Component {
     title: ComponentOptions.buildStringOption(),
     /**
      * Specifies the field to use for the rows.<br/>
-     * Required options, otherwise the component will not work
+     * Required options, otherwise the component will not work.
      */
     rowField: ComponentOptions.buildFieldOption({ required: true }),
     /**
      * Specifies the field to use for the columns.<br/>
-     * Required options, otherwise the component will not work
+     * Required options, otherwise the component will not work.
      */
     columnField: ComponentOptions.buildFieldOption({ required: true }),
     /**
@@ -85,12 +85,12 @@ export class Matrix extends Component {
     maximumNumberOfRows: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 0 }),
     /**
      * Specifies whether to add a total column which contains the total for each row.<br/>
-     * The default value is true.
+     * The default value is `true`.
      */
     enableRowTotals: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies the field values to use for each column.<br/>
-     * If not specified, you won't generate any column except one for the 'Total' column.
+     * If not specified, you will not generate any column except one for the 'Total' column.
      */
     columnFieldValues: ComponentOptions.buildListOption({ defaultValue: [] }),
     /**
@@ -99,18 +99,18 @@ export class Matrix extends Component {
      */
     columnLabels: ComponentOptions.buildListOption({ defaultValue: [] }),
     /**
-     * Specifies the label for the first column on the left, as a description of the columnField.
+     * Specifies the label for the first column on the left, as a description of the `columnField`.
      */
     columnHeader: ComponentOptions.buildStringOption(),
     /**
      * Specifies the maximum number of results to include in the group by requests for the columns.<br/>
-     * This value should always be greater than {@link Matrix.options.maximumNumberOfRows}. If it is too small, some results won't be displayed in the matrix.<br/>
+     * This value should always be greater than {@link Matrix.options.maximumNumberOfRows}. If it is too small, some results will not be displayed in the matrix.<br/>
      * The default value is 100.
      */
     maximumNumberOfValuesInGroupBy: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 0 }),
     /**
      * Specifies whether to add a total row which contains the total for each column.<br/>
-     * The default value is true.
+     * The default value is `true`.
      */
     enableColumnTotals: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
@@ -127,7 +127,7 @@ export class Matrix extends Component {
      *   <li>minimum - Finds the minimum value of the computed field values.</li>
      *   <li>maximum - Finds the maximum value of the computed field values.</li>
      * </ul>
-     * The default value is sum.
+     * The default value is `sum`.
      */
     computedFieldOperation: ComponentOptions.buildStringOption({ defaultValue: 'sum' }),
     /**
@@ -149,7 +149,7 @@ export class Matrix extends Component {
      */
     cellFontSize: ComponentOptions.buildStringOption({ defaultValue: '' }),
     /**
-     * Specifies whether to show a preview popup of cell results on hover. The default value is true.
+     * Specifies whether to show a preview popup of cell results on hover. The default value is `true`.
      */
     enableHoverPreview: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
@@ -159,7 +159,7 @@ export class Matrix extends Component {
      * <ul>
      *    <li> relevancy :  This uses all the configured ranking weights as well as any specified ranking expressions to rank results.</li>
      *    <li> dateascending / datedescending : Sort using the value of the @date field, which is typically the last modification date of an item in the index.</li>
-     *    <li> qre : Sort using only the weights applied through ranking expressions. This is much like using Relevancy except that automatic weights based on keyword proximity etc, are not computed.<li/>
+     *    <li> qre : Sort using only the weights applied through ranking expressions. This is much like using Relevancy except that automatic weights based on keyword proximity etc., are not computed.<li/>
      *    <li> nosort : Do not sort the results. The order in which items are returned is essentially random.</li>
      *    <li> fieldascending / fielddescending : Sort using the value of a custom field.</li>
      * </ul>
@@ -192,21 +192,21 @@ export class Matrix extends Component {
      *
      */
     previewTemplate: ComponentOptions.buildTemplateOption()
-  }
+  };
 
   /**
-   * Holds the data for the matrix
+   * Holds the data for the matrix.
    */
   public data: Cell[][];
   public groupByIndex = [];
   public rowId = '';
   public columnId = '';
   /**
-   * The currently selected row value, or undefined if nothing is selected
+   * The currently selected row value, or undefined if nothing is selected.
    */
   public selectedRowValue: string = undefined;
   /**
-   * The currently selected column value, or undefined if nothing is selected
+   * The currently selected column value, or undefined if nothing is selected.
    */
   public selectedColumnValue = undefined;
 
@@ -229,7 +229,7 @@ export class Matrix extends Component {
     }
 
     if (!this.options.previewSortField) {
-      this.options.previewSortField = this.options.computedField
+      this.options.previewSortField = this.options.computedField;
     }
 
     if (this.options.columnFieldValues.length != this.options.columnLabels.length) {
@@ -238,11 +238,11 @@ export class Matrix extends Component {
 
     this.buildMatrix();
     if (this.options.rowField == null) {
-      this.logger.error('\'rowField\' option is required in the Matrix component')
+      this.logger.error('\'rowField\' option is required in the Matrix component');
     } else if (this.options.columnField == null) {
-      this.logger.error('\'columnField\' option is required in the Matrix component')
+      this.logger.error('\'columnField\' option is required in the Matrix component');
     } else if (this.options.computedField == null) {
-      this.logger.error('\'computedField\' option is required in the Matrix component')
+      this.logger.error('\'computedField\' option is required in the Matrix component');
     } else {
       this.bindEvents();
       this.initQueryState();
@@ -250,7 +250,7 @@ export class Matrix extends Component {
   }
 
   /**
-   * Select a cell by it's row and column number. Does not execute a query.
+   * Select a cell by its row and column number. Does not execute a query.
    * @param rowNumber
    * @param columnNumber
    */
@@ -274,27 +274,27 @@ export class Matrix extends Component {
     if (columnValue && this.isColumnFacetPresent()) {
       this.queryStateModel.set(this.columnId, [columnValue]);
     } else {
-      this.selectedColumnValue = columnValue
+      this.selectedColumnValue = columnValue;
       this.queryStateModel.set(this.columnId, []);
     }
   }
 
   /**
-   * Return the currently selected column value
+   * Return the currently selected column value.
    */
   public getSelectedColumnValue(): string {
     return this.selectedColumnValue;
   }
 
   /**
-   * Return the currently selected row value
+   * Return the currently selected row value.
    */
   public getSelectedRowValue(): string {
     return this.selectedRowValue;
   }
 
   /**
-   * Get the HTMLElement associated to the desired cell
+   * Get the HTMLElement associated to the desired cell.
    * @param rowNumber
    * @param columnNumber
    * @returns {HTMLElement}
@@ -304,7 +304,7 @@ export class Matrix extends Component {
   }
 
   /**
-   * Get the string associated to the desired cell
+   * Get the string associated to the desired cell.
    * @param rowNumber
    * @param columnNumber
    * @returns {string}
@@ -317,9 +317,9 @@ export class Matrix extends Component {
   public drawMatrix() {
     let headerRow = $$('div', {
       className: 'coveo-matrix-row matrix-header-row'
-    })
+    });
     this.drawRow(headerRow.el, 0);
-    let numberOfRowsToDraw = this.options.enableColumnTotals ? this.numberOfRows - 1 : this.numberOfRows
+    let numberOfRowsToDraw = this.options.enableColumnTotals ? this.numberOfRows - 1 : this.numberOfRows;
     for (let i = 1; i < numberOfRowsToDraw; i++) {
       let row = $$('div', {
         className: 'coveo-matrix-row'
@@ -339,7 +339,7 @@ export class Matrix extends Component {
       let cells = $$(this.element).findAll('.coveo-matrix-cell');
       _.each(cells, (c: HTMLElement) => {
         c.style.fontSize = this.options.cellFontSize;
-      })
+      });
     }
   }
 
@@ -382,10 +382,10 @@ export class Matrix extends Component {
   private handleBuildingQuery(args: IBuildingQueryEventArgs) {
     if (!this.areFacetsPresent()) {
       if (this.selectedRowValue && !this.isRowFacetPresent()) {
-        args.queryBuilder.advancedExpression.addFieldExpression(this.options.rowField, '=', [this.selectedRowValue])
+        args.queryBuilder.advancedExpression.addFieldExpression(this.options.rowField, '=', [this.selectedRowValue]);
       }
       if (this.selectedColumnValue && !this.isColumnFacetPresent()) {
-        args.queryBuilder.advancedExpression.addFieldExpression(this.options.columnField, '=', [this.selectedColumnValue])
+        args.queryBuilder.advancedExpression.addFieldExpression(this.options.columnField, '=', [this.selectedColumnValue]);
       }
     }
   }
@@ -412,7 +412,7 @@ export class Matrix extends Component {
       sortCriteria: this.options.sortCriteria,
       computedFields: this.getComputedFields(),
       maximumNumberOfValues: this.options.maximumNumberOfRows
-    }
+    };
 
     this.groupByIndex.push(queryBuilder.groupByRequests.length);
     queryBuilder.groupByRequests.push(groupBy);
@@ -426,9 +426,9 @@ export class Matrix extends Component {
         computedFields: this.getComputedFields(),
         queryOverride: '(' + this.buildExpression(queryBuilder) + ')' + '(' + this.options.columnField + '=\'' + this.options.columnFieldValues[i] + '\')',
         maximumNumberOfValues: this.options.maximumNumberOfValuesInGroupBy
-      }
+      };
 
-      this.groupByIndex.push(queryBuilder.groupByRequests.length)
+      this.groupByIndex.push(queryBuilder.groupByRequests.length);
       queryBuilder.groupByRequests.push(groupBy);
     }
   }
@@ -488,32 +488,32 @@ export class Matrix extends Component {
 
   private addRowTotals() {
     this.addColumn();
-    this.setValue('Total', 0, this.numberOfColumns - 1)
+    this.setValue('Total', 0, this.numberOfColumns - 1);
     for (let i = 1; i < this.numberOfRows; i++) {
       let rowTotal = this.computeRowTotal(i);
-      this.setValue(rowTotal, i, this.numberOfColumns - 1)
+      this.setValue(rowTotal, i, this.numberOfColumns - 1);
     }
 
     // Fix sort ordering when not all columns field values are present.
     if (this.options.sortCriteria.toLowerCase() == 'computedfielddescending') {
       this.data.sort((a: Cell[], b: Cell[]): number => {
-        return b[this.numberOfColumns - 1].getValue() - a[this.numberOfColumns - 1].getValue()
-      })
+        return b[this.numberOfColumns - 1].getValue() - a[this.numberOfColumns - 1].getValue();
+      });
     }
 
     if (this.options.sortCriteria.toLowerCase() == 'computedfieldascending') {
       this.data.sort((a: Cell[], b: Cell[]): number => {
-        return a[this.numberOfColumns - 1].getValue() - b[this.numberOfColumns - 1].getValue()
-      })
+        return a[this.numberOfColumns - 1].getValue() - b[this.numberOfColumns - 1].getValue();
+      });
     }
   }
 
   private addColumnTotals() {
     this.addRow();
-    this.setValue('Total', this.numberOfRows - 1, 0)
+    this.setValue('Total', this.numberOfRows - 1, 0);
     for (let i = 1; i < this.numberOfColumns; i++) {
       let columnTotal = this.computeColumnTotal(i);
-      this.setValue(columnTotal, this.numberOfRows - 1, i)
+      this.setValue(columnTotal, this.numberOfRows - 1, i);
     }
   }
 
@@ -537,7 +537,7 @@ export class Matrix extends Component {
     for (let i = 1; i < this.numberOfRows; i++) {
       for (let j = 1; j < this.numberOfColumns; j++) {
         let cellValue = this.getCellValue(i, j);
-        cellValue = Globalize.format(parseInt(cellValue), this.options.computedFieldFormat)
+        cellValue = Globalize.format(parseInt(cellValue), this.options.computedFieldFormat);
         this.setValue(cellValue, i, j);
       }
     }
@@ -557,14 +557,14 @@ export class Matrix extends Component {
     this.data.push(new Array<Cell>());
 
     for (let i = 0; i < this.numberOfColumns; i++) {
-      this.addCellToRow(this.numberOfRows, i)
+      this.addCellToRow(this.numberOfRows, i);
     }
     this.numberOfRows++;
   }
 
   private addColumn() {
     for (let i = 0; i < this.numberOfRows; i++) {
-      this.addCellToRow(i, this.numberOfColumns)
+      this.addCellToRow(i, this.numberOfColumns);
     }
 
     this.numberOfColumns++;
@@ -588,12 +588,12 @@ export class Matrix extends Component {
     }
 
     if (this.isCellSelected(this.getRowValue(rowNumber), this.getColumnValue(columnNumber))) {
-      $$(cell).addClass('coveo-matrix-selected')
+      $$(cell).addClass('coveo-matrix-selected');
     }
 
     if (this.isAColumnSelected() && !this.isColumnSelected(this.getColumnValue(columnNumber))) {
       if (columnNumber != 0 && rowNumber != 0) {
-        $$(cell).addClass('coveo-matrix-unimportant')
+        $$(cell).addClass('coveo-matrix-unimportant');
       }
     }
 
@@ -615,7 +615,7 @@ export class Matrix extends Component {
 
   private isAColumnSelected(): boolean {
     let selectedColumnValues = this.queryStateModel.get(this.columnId) || [];
-    return selectedColumnValues.length !== 0 || this.selectedColumnValue != undefined
+    return selectedColumnValues.length !== 0 || this.selectedColumnValue != undefined;
   }
 
   private isColumnSelected(columnValue: string): boolean {
@@ -663,12 +663,12 @@ export class Matrix extends Component {
 
   private isRowFacetPresent() {
     let facet = this.componentStateModel.get(this.rowId);
-    return facet && !facet[0].disabled
+    return facet && !facet[0].disabled;
   }
 
   private isColumnFacetPresent() {
     let facet = this.componentStateModel.get(this.columnId);
-    return facet && !facet[0].disabled
+    return facet && !facet[0].disabled;
   }
 
   private reset() {
@@ -703,21 +703,21 @@ export class Matrix extends Component {
   }
 
   private drawRow(row: HTMLElement, rowNumber: number) {
-    let body = $$(this.element).find('.coveo-matrix')
+    let body = $$(this.element).find('.coveo-matrix');
     for (let i = 0; i < this.numberOfColumns; i++) {
       let cell = this.data[rowNumber][i].getHTML();
       $$(cell).on('click', () => {
         let handler = (num) => {
           this.handleClick(rowNumber, num);
-        }
+        };
         handler(i);
-      })
+      });
 
       if (this.options.enableHoverPreview) {
         ((num: number) => {
           $$(cell).on('mouseover', () => this.handleHoverIn(rowNumber, num));
           $$(cell).on('mouseout', () => this.handleHoverOut(rowNumber, num));
-        })(i)
+        })(i);
       }
       row.appendChild(cell);
     }
@@ -753,14 +753,14 @@ export class Matrix extends Component {
       }
       let cell = this.data[rowNumber][columnNumber];
       let instantiatedResults = _.map(data.results, (r: IQueryResult) => {
-        return this.instantiateTemplate(r)
-      })
+        return this.instantiateTemplate(r);
+      });
       let html = '';
       _.each(instantiatedResults, (result) => {
         html += result.outerHTML;
       });
       cell.updatePreview(html);
-    })
+    });
   }
 
   private instantiateTemplate(result: IQueryResult): HTMLElement {
@@ -769,9 +769,9 @@ export class Matrix extends Component {
       options: this.options,
       bindings: this.getBindings(),
       result: result
-    }
+    };
 
-    Initialization.automaticallyCreateComponentsInside(content, initParameters)
+    Initialization.automaticallyCreateComponentsInside(content, initParameters);
 
     return content;
   }
@@ -786,8 +786,8 @@ export class Matrix extends Component {
     query.sortField = this.options.previewSortField;
     let fieldSliced = this.options.computedField.slice(1);
     let fieldExists = _.find(query.fieldsToInclude, (field: string) => {
-      return field == fieldSliced
-    })
+      return field == fieldSliced;
+    });
     if (!fieldExists) {
       query.fieldsToInclude.push(fieldSliced);
     }

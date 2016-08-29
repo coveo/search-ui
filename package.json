@@ -66,10 +66,10 @@
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-eol": "^0.1.2",
-    "gulp-shell": "^0.5.2",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
     "gulp-sass": "^2.3.2",
+    "gulp-shell": "^0.5.2",
     "gulp-sonar": "^2.1.0",
     "gulp-util": "^3.0.7",
     "image-size": "^0.5.0",
@@ -96,6 +96,7 @@
     "remap-istanbul": "^0.6.4",
     "require-dir": "^0.3.0",
     "resolve-url-loader": "^1.4.3",
+    "rimraf": "^2.5.4",
     "run-sequence": "^1.1.5",
     "sass-loader": "^3.2.0",
     "script-loader": "^0.7.0",
@@ -104,6 +105,7 @@
     "ts-loader": "^0.8.2",
     "tsconfig-glob": "^0.4.3",
     "typedoc": "https://github.com/coveord/typedoc/tarball/master",
+    "typescript": "1.8.x",
     "url-loader": "^0.5.7",
     "walk": "^2.3.9",
     "webpack": "^1.13.0",
@@ -116,9 +118,7 @@
     "d3": "^4.2.1",
     "d3-scale": "^1.0.3",
     "es6-promise": "^3.1.2",
-    "exports-loader": "^0.6.3",
-    "modal-box": "1.0.6",
-    "typescript": "1.8.x",
+    "modal-box": "1.0.7",
     "underscore": "^1.8.3"
   }
 }

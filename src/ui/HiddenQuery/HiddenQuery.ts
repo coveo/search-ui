@@ -18,30 +18,30 @@ export interface IHiddenQueryOptions {
 
 /**
  * This component job is to handle an 'hidden' query parameter.<br/>
- * Concretely, this means that a search interface loaded with #hq=foo&hd=bar will add 'foo' as an expression to the query ('hq'=> hidden query) and render 'bar' in the {@link Breadcrumb}<br/>
+ * Concretely, this means that a search interface loaded with #hq=foo&hd=bar will add 'foo' as an expression to the query ('hq'=> hidden query) and render 'bar' in the {@link Breadcrumb}.<br/>
  */
 export class HiddenQuery extends Component {
   static ID = 'HiddenQuery';
   /**
-   * Possible options for the HiddenQuery component
+   * Possible options for the `HiddenQuery` component
    * @componentOptions
    */
   static options: IHiddenQueryOptions = {
     /**
      * Specifies a maximum character length for a description.<br/>
      * After this length, the component will slice the descrption and add [...].<br/>
-     * Default value is 100
+     * Default value is 100.
      */
     maximumDescriptionLength: ComponentOptions.buildNumberOption({ min: 0, defaultValue: 100 }),
     /**
-     * Specifies a title that will appear in the {@link Breadcrumb} when it is populated by the HiddenQuery component.<br/>
+     * Specifies a title that will appear in the {@link Breadcrumb} when it is populated by the `HiddenQuery` component.<br/>
      * By default, it is a localized string for 'Additional filters :'
      */
     title: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('AdditionalFilters') + ' : ' })
   };
 
   /**
-   * Create a new HiddenQuery component, which bind multiple events (building query as well as {@link Breadcrumb} events
+   * Create a new HiddenQuery component, which bind multiple events (building query as well as {@link Breadcrumb} events).
    * @param element
    * @param options
    * @param bindings
@@ -107,7 +107,7 @@ export class HiddenQuery extends Component {
 
       args.breadcrumbs.push({
         element: elem
-      })
+      });
     }
   }
 

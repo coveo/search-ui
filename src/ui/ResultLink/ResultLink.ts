@@ -27,14 +27,26 @@ export class ResultLink extends Component {
    * The options for the ResultLink
    * @componentOptions
    */
-  static options = <IResultLinkOptions>{
+  static options: IResultLinkOptions = {
 
     /**
      * Specifies the field that the result link uses to output its href. 
      * By default, the clickUri available on the document is used, but you can override this with this option.
      * Tip:
-     * When you do not include a field option, in your result template, you can include an href attribute on the <a class='CoveoResultLink'> element. When present, the href attribute value overrides the clickUri that is otherwise taken by default.
+     * When you do not include a field option, in your result template, you can include an href attribute on the ResultLink element.
+     *
+     * When present, the href attribute value overrides the clickUri that is otherwise taken by default.
+     *
      * Specifying an href attribute is useful when you want to build the result link using a custom script or by concatenating the content of two or more variables.
+     *
+     * ```html
+     * <!-- In the following result template the link is provided by the custom getMyKBUri() function. -->
+     * <script id="KnowledgeArticle" type="text/underscore">
+     *    <div class='CoveoIcon>'></div>
+     *    <a class="CoveoResultLink" href="<%=getMyKBUri(raw)%>"></a>
+     *    <div class="CoveoExcerpt"></div>
+     * </script>
+     * ```
      */
     field: ComponentOptions.buildFieldOption(),
 
@@ -58,14 +70,54 @@ export class ResultLink extends Component {
 
     /**
      * Specifies a template string to use to generate the href.
+     *
      * It is possible to reference fields from the associated result:
-     * Ex: '${clickUri}?id=${title}' will generate something like 'http://uri.com?id=documentTitle'
+     *
+     * Ex: `${clickUri}?id=${title}` will generate something like `http://uri.com?id=documentTitle`
+     *
      * Or from the global scope:
-     * Ex: '${window.location.hostname}/{Foo.Bar} will generate something like 'localhost/fooBar'
+     *
+     * Ex: `${window.location.hostname}/{Foo.Bar}` will generate something like `localhost/fooBar`
+     *
      * This option will override the field option.
-     * Default is undefined
+     *
+     * Default is `undefined`
      */
-    hrefTemplate: ComponentOptions.buildStringOption()
+    hrefTemplate: ComponentOptions.buildStringOption(),
+    /**
+     * Binds an event handler function that is executed when the component link is clicked. The handler function takes an EventObject and a {@link IQueryResult} as its parameters.
+     *
+     * Overriding the default behavior of the onClick event allows to execute specific code instead.
+     *
+     * ```javascript
+     * // Example: using a ResultLink to open the original document in a special way instead of the normal browser behavior
+     *
+     * Coveo.init(document.querySelector('#search'), {
+     *   ResultLink : {
+     *        onClick : function(e, result){
+     *          e.preventDefault();
+     *          // Custom code to execute with the URI and title of the document
+     *          openUriInASpecialTab(result.clickUri, result.title)
+     *        }
+     *    }
+     * })
+     *
+     * // OR using the jquery extension
+     *
+     * $("#search").coveo('init' , {
+     *    ResultLink : {
+     *        onClick : function(e, result){
+     *          e.preventDefault();
+     *          // Custom code to execute with the URI and title of the document
+     *          openUriInASpecialTab(result.clickUri, result.title)
+     *        }
+     *    }
+     * });
+     * ```
+     */
+    onClick: ComponentOptions.buildCustomOption<(e: Event, result: IQueryResult) => any>(() => {
+      return null;
+    })
   };
 
   static fields = [

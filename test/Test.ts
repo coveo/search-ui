@@ -265,3 +265,6 @@ LogoTest();
 
 import {RegisteredNamedMethodsTest} from './ui/RegisteredNamedMethodsTest';
 RegisteredNamedMethodsTest();
+
+import {FacetValuesOrderTest} from './ui/FacetValuesOrderTest';
+FacetValuesOrderTest();

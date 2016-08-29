@@ -16,7 +16,7 @@ import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/Analytics
 import {BaseComponent} from '../Base/BaseComponent';
 
 /**
- * Represent the initialization parameters required to init a new component
+ * Represent the initialization parameters required to init a new component.
  */
 export interface IInitializationParameters {
   options: any;
@@ -25,9 +25,9 @@ export interface IInitializationParameters {
 }
 
 /**
- * The main purpose of this class is to initialize the framework (a.k.a the code executed when calling Coveo.init).<br/>
+ * The main purpose of this class is to initialize the framework (a.k.a the code executed when calling `Coveo.init`).<br/>
  * It's also in charge or registering the available components, as well as the method that we expost to the global Coveo scope.<br/>
- * For example, the Coveo.executeQuery function will be registed in this class by the {@link QueryController}.
+ * For example, the `Coveo.executeQuery` function will be registed in this class by the {@link QueryController}.
  */
 export class Initialization {
   private static logger = new Logger('Initialization');
@@ -37,7 +37,7 @@ export class Initialization {
   /**
    * Register a new set of options for a given element.<br/>
    * When the element is eventually initialized as a component, those options will be used / merged to create the final option set to use for this component.<br/>
-   * Note that this function should not normally be called directly, but instead using the global Coveo.options function
+   * Note that this function should not normally be called directly, but instead using the global `Coveo.options` function
    * @param element
    * @param options
    */
@@ -66,7 +66,7 @@ export class Initialization {
 
   /**
    * Register a new Component to be recognized by the framework.<br/>
-   * This essentially mean that when we call Coveo.init, the Initialization class will scan the DOM for known component (which have registed themselves with this call) and create a new component on each element.
+   * This essentially mean that when we call `Coveo.init`, the Initialization class will scan the DOM for known component (which have registed themselves with this call) and create a new component on each element.
    * @param componentClass
    */
   public static registerAutoCreateComponent(componentClass: IComponentDefinition): void {
@@ -78,7 +78,7 @@ export class Initialization {
   }
 
   /**
-   * Check if a component is already registed, using it's ID (eg : 'Facet')
+   * Check if a component is already registed, using it's ID (e.g. : 'Facet').
    * @param componentClassId
    * @returns {boolean}
    */
@@ -87,7 +87,7 @@ export class Initialization {
   }
 
   /**
-   * Return the list of all known components (the list of ID for each component)
+   * Return the list of all known components (the list of ID for each component).
    * @returns {string[]}
    */
   public static getListOfRegisteredComponents() {
@@ -95,7 +95,7 @@ export class Initialization {
   }
 
   /**
-   * Return the component class definition, using it's ID (eg : 'CoveoFacet')
+   * Return the component class definition, using it's ID (e.g. : 'CoveoFacet').
    * @param name
    * @returns {IComponentDefinition}
    */
@@ -104,10 +104,10 @@ export class Initialization {
   }
 
   /**
-   * Initialize the framework. Note that this function should not normally be called directly, but instead using a globally registered function (eg: Coveo.init), or {@link Initialization.initSearchInterface} or {@link Initialization.initStandaloneSearchInterface} <br/>
-   * Eg : Coveo.init or Coveo.initSearchbox
-   * @param element The element on which to initialize the interface
-   * @param options The options for all component (eg: {Searchbox : {enableSearchAsYouType : true}})
+   * Initialize the framework. Note that this function should not normally be called directly, but instead using a globally registered function (e.g.: Coveo.init), or {@link Initialization.initSearchInterface} or {@link Initialization.initStandaloneSearchInterface} <br/>
+   * (e.g. : `Coveo.init` or `Coveo.initSearchbox`).
+   * @param element The element on which to initialize the interface.
+   * @param options The options for all components (eg: {Searchbox : {enableSearchAsYouType : true}}).
    * @param initSearchInterfaceFunction The function to execute to create the {@link SearchInterface} component. Different init call will create different {@link SearchInterface}.
    */
   public static initializeFramework(element: HTMLElement, options?: any, initSearchInterfaceFunction?: (...args: any[]) => void) {
@@ -145,7 +145,7 @@ export class Initialization {
     _.each(elemsHidden, (e: HTMLElement) => {
       $$(e).removeClass('coveo-hide-until-loaded');
       $$(e).addClass('coveo-show-after-loaded');
-    })
+    });
 
     if (searchInterface.options.autoTriggerQuery) {
       Initialization.logFirstQueryCause(searchInterface);
@@ -154,7 +154,7 @@ export class Initialization {
   }
 
   /**
-   * Create a new standard search interface. This is the function executed when calling Coveo.init
+   * Create a new standard search interface. This is the function executed when calling `Coveo.init`.
    * @param element
    * @param options
    */
@@ -167,7 +167,7 @@ export class Initialization {
   }
 
   /**
-   * Create a new standalone search interface ( standalone search box ). This is the function executed when calling Coveo.initSearchbox
+   * Create a new standalone search interface (standalone search box). This is the function executed when calling `Coveo.initSearchbox`.
    * @param element
    * @param options
    */
@@ -198,7 +198,7 @@ export class Initialization {
   }
 
   /**
-   * Create a new recommendation search interface. This is the function executed when calling Coveo.initRecommendation
+   * Create a new recommendation search interface. This is the function executed when calling `Coveo.initRecommendation`.
    * @param element
    * @param options
    */
@@ -213,10 +213,10 @@ export class Initialization {
   }
 
   /**
-   * Scan the element and all it's children for known component. Initialize every known component found
-   * @param element The element for which to scan it's children
-   * @param initParameters Needed parameters to initialize all the children components
-   * @param ignore An optional list of component ID to ignore and skip when scanning for known components
+   * Scan the element and all its children for known components. Initialize every known component found.
+   * @param element The element for which to scan it's children.
+   * @param initParameters Needed parameters to initialize all the children components.
+   * @param ignore An optional list of component ID to ignore and skip when scanning for known components.
    */
   public static automaticallyCreateComponentsInside(element: HTMLElement, initParameters: IInitializationParameters, ignore?: string[]) {
     Assert.exists(element);
@@ -252,10 +252,10 @@ export class Initialization {
   }
 
   /**
-   * Create a new component on the given element
-   * @param componentClassId The ID of the component to initialize (eg : 'CoveoFacet')
-   * @param element The HTMLElement on which to initialize
-   * @param initParameters Needed parameters to initialize the component
+   * Create a new component on the given element.
+   * @param componentClassId The ID of the component to initialize (e.g. : 'CoveoFacet').
+   * @param element The HTMLElement on which to initialize.
+   * @param initParameters Needed parameters to initialize the component.
    * @returns {Component}
    */
   public static createComponentOfThisClassOnElement(componentClassId: string, element: HTMLElement, initParameters?: IInitializationParameters): Component {
@@ -282,9 +282,9 @@ export class Initialization {
   }
 
   /**
-   * Register a new globally available method in the Coveo namespace. (eg: Coveo.init)
-   * @param methodName The method name to register
-   * @param handler The function to execute when the method is called
+   * Register a new globally available method in the Coveo namespace (e.g.: `Coveo.init`).
+   * @param methodName The method name to register.
+   * @param handler The function to execute when the method is called.
    */
   public static registerNamedMethod(methodName: string, handler: (element: HTMLElement, ...args: any[]) => any) {
     Assert.isNonEmptyString(methodName);
@@ -295,7 +295,7 @@ export class Initialization {
   }
 
   /**
-   * Check if the method is already registed
+   * Check if the method is already registed.
    * @param methodName
    * @returns {boolean}
    */
@@ -304,7 +304,7 @@ export class Initialization {
   }
 
   /**
-   * 'Monkey patch' (replace the function with a new one) a given method on a component instance
+   * 'Monkey patch' (replace the function with a new one) a given method on a component instance.
    * @param methodName
    * @param element
    * @param handler
@@ -429,9 +429,9 @@ export class Initialization {
     if (Utils.exists(option)) {
       _.each(option, (func: () => void) => {
         if (typeof func == 'function') {
-          func()
+          func();
         }
-      })
+      });
     }
   }
 
@@ -465,7 +465,7 @@ export class Initialization {
         if (Utils.isHtmlElement(elementToInstantiate)) {
           Initialization.automaticallyCreateComponentsInside(elementToInstantiate, initParameters);
         }
-      })
+      });
     }
   }
 
@@ -487,6 +487,6 @@ export class Initialization {
           Initialization.createComponentOfThisClassOnElement(componentClass['ID'], matchingElement, initParamToUse);
         }
       });
-    }
+    };
   }
 }

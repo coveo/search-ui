@@ -64,4 +64,4 @@ export class PipelineContext extends Component {
   }
 }
 
-Initialization.registerAutoCreateComponent(PipelineContext)
+Initialization.registerAutoCreateComponent(PipelineContext);

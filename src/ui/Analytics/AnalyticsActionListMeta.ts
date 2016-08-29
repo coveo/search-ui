@@ -1,5 +1,5 @@
 /**
- * Describe the cause of an event for the analytics service
+ * Describe the cause of an event for the analytics service.
  */
 export interface IAnalyticsActionCause {
   /**
@@ -8,8 +8,8 @@ export interface IAnalyticsActionCause {
    */
   name: string;
   /**
-   * The type of the event. Allow to regroup similar event type together when doing reporting.<br/>
-   * For example, all search box event will be of type "search box"
+   * The type of the event. Allows to regroup similar event types together when doing reporting.<br/>
+   * For example, all search box events will be of type "search box"
    */
   type: string;
   metaMap?: { [name: string]: number };
@@ -35,19 +35,19 @@ export interface IAnalyticsResultsSortMeta {
 }
 
 /**
- * The expected metadata when loggin a click event / document view
+ * The expected metadata when logging a click event / document view
  */
 export interface IAnalyticsDocumentViewMeta {
   /**
-   * The url of the clicked document
+   * The url of the clicked document.
    */
   documentURL?: string;
   /**
-   * The title of the clicked document
+   * The title of the clicked document.
    */
   documentTitle?: string;
   /**
-   * The author of the clicked document
+   * The author of the clicked document.
    */
   author: string;
 }
@@ -459,4 +459,4 @@ export var analyticsActionCauseList = {
     name: 'recommendationOpen',
     type: 'recommendation'
   }
-}
+};

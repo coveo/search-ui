@@ -82,7 +82,7 @@ export interface IQueryResult {
   moreResults?: () => Promise<IQueryResult[]>;
   totalNumberOfChildResults?: number;
   attachments?: IQueryResult[];
-  state: { [attribute: string]: any; }
+  state: { [attribute: string]: any; };
   orphan?: boolean;
 
   fields?: { [name: string]: any };

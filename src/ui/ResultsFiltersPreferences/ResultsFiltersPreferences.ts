@@ -61,14 +61,19 @@ export class ResultsFiltersPreferences extends Component {
      */
     showAdvancedFilters: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
-     * Specifies default filters that all users will see.<br/>
-     * End-users will not be able to modify or delete them, as they are not customized for each user, but instead created by the creator/developer of the search page.<br/>
-     * Filters should follow this definition : <br/>
-     * <code>
+     * Specifies default filters that all users will see.
+     *
+     * End-users will not be able to modify or delete them, as they are not customized for each user, but instead created by the creator/developer of the search page.
+     *
+     * Filters should follow this definition :
+     *
+     * ```
      *   filters: { [caption: string]: { expression: string; tab?: string[]; }};
-     * </code><br/>
+     * ```
+     *
      * eg :
-     * <pre>
+     *
+     * ```javascript
      * Coveo.init(root, {
      *   ResultsFiltersPreferences : {
      *     filters : {
@@ -82,7 +87,8 @@ export class ResultsFiltersPreferences extends Component {
      *     }
      *   }
      * })
-     * </pre><br/>
+     * ```
+     *
      * This is optional, and by default this option is left 'empty'.
      */
     filters: <any>ComponentOptions.buildJsonOption()

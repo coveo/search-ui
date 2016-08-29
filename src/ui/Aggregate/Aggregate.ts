@@ -15,7 +15,7 @@ export interface IAggregateOptions {
 
 /**
  * This simple component allows to display the result on an aggregate operation on the index.<br/>
- * It hook itself on the query to add a new group by request, then display the result.
+ * It hooks itself on the query to add a new group by request, then display the result.
  */
 export class Aggregate extends Component {
   static ID = 'Aggregate';
@@ -26,7 +26,7 @@ export class Aggregate extends Component {
    */
   static options: IAggregateOptions = {
     /**
-     * The field on which to do the aggregate operation
+     * The field on which you do the aggregate operation.
      */
     field: ComponentOptions.buildStringOption({ required: true }),
     /**
@@ -42,7 +42,7 @@ export class Aggregate extends Component {
      */
     operation: ComponentOptions.buildStringOption({ defaultValue: 'sum' }),
     /**
-     * Specifies how to format the value<br/>
+     * Specifies how to format the value.<br/>
      * The formats available are defined by the Globalize library. The most common used formats are:
      * <ul>
      *   <li>c0 - Formats the value as a currency.</li>
@@ -50,15 +50,15 @@ export class Aggregate extends Component {
      *   <li>n2 - Formats the value as a floating point with 2 decimal digits.</li>
      * </ul>
      * See : <a href='https://github.com/klaaspieter/jquery-global#globalizeformat-value-format-culture-'>Globalize</a> for more informations.<br/>
-     * Default value is 'c0
+     * Default value is `'c0`.
      */
     format: ComponentOptions.buildStringOption({ defaultValue: 'c0' })
-  }
+  };
 
   private index: number;
 
   /**
-   * Create a new Aggregate component
+   * Create a new `Aggregate` component
    * @param element
    * @param options
    * @param bindings

@@ -91,7 +91,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     let merged = SearchEndpoint.mergeConfigOptions(options, otherOptions);
 
-    SearchEndpoint.endpoints['default'] = new SearchEndpoint(SearchEndpoint.removeUndefinedConfigOption(merged))
+    SearchEndpoint.endpoints['default'] = new SearchEndpoint(SearchEndpoint.removeUndefinedConfigOption(merged));
   }
 
   /**
@@ -153,7 +153,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     }
     this.onUnload = () => {
       this.handleUnload();
-    }
+    };
     window.addEventListener('beforeunload', this.onUnload);
     this.logger = new Logger(this);
     this.createEndpointCaller();
@@ -194,7 +194,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     let queryString = this.buildBaseQueryString(callOptions);
     callParams.queryString = callParams.queryString.concat(queryString);
 
-    callParams.url += provider + '?'
+    callParams.url += provider + '?';
 
     if (Utils.isNonEmptyString(returnUri)) {
       callParams.url += 'redirectUri=' + encodeURIComponent(returnUri) + '&';
@@ -252,7 +252,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       QueryUtils.setIndexAndUidOnQueryResults(query, results, results.searchUid, results.pipeline, results.splitTestRun);
       QueryUtils.setTermsToHighlightOnQueryResults(query, results);
       return results;
-    })
+    });
   }
   /**
    * Get a link/uri to download a set of results, for a given query, to an xlsx format.<br/>
@@ -308,7 +308,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     return this.performOneCall(callParams).then((results) => {
       this.logger.info('REST query successful', results, documentUniqueId);
       return results;
-    })
+    });
   }
 
   /**
@@ -371,7 +371,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     return this.performOneCall<{ content: string, duration: number }>(callParams)
       .then((data) => {
-        return data.content
+        return data.content;
       });
   }
 
@@ -427,7 +427,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       .then((data) => {
         this.logger.info('REST list field values successful', data.values, request);
         return data.values;
-      })
+      });
   }
 
   /**
@@ -450,8 +450,8 @@ export class SearchEndpoint implements ISearchEndpoint {
     return this.performOneCall<any>(callParams)
       .then((data) => {
         this.logger.info('REST list field values successful', data.values, request);
-        return data.values
-      })
+        return data.values;
+      });
   }
 
   /**
@@ -468,7 +468,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     return this.performOneCall<IListFieldsResult>(callParams).then((data) => {
       return data.fields;
-    })
+    });
   }
 
   /**
@@ -483,7 +483,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   public extensions(callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IExtension[]> {
     this.logger.info('Listing extensions');
 
-    return this.performOneCall<IExtension[]>(callParams)
+    return this.performOneCall<IExtension[]>(callParams);
   }
 
   /**
@@ -503,7 +503,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     return this.performOneCall<any>(callParams).then(() => {
       return true;
-    })
+    });
   }
 
   /**
@@ -523,7 +523,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     return this.performOneCall<any>(callParams).then(() => {
       return true;
-    })
+    });
   }
 
   /**
@@ -581,8 +581,8 @@ export class SearchEndpoint implements ISearchEndpoint {
   public listSubscriptions(page: number, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters) {
     if (this.options.isGuestUser) {
       return new Promise((resolve, reject) => {
-        reject()
-      })
+        reject();
+      });
     }
     if (this.currentListSubscriptions == null) {
       callParams.queryString.push('page=' + (page || 0));
@@ -707,7 +707,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     }
 
     if (callOptions && _.isArray(callOptions.authentication) && callOptions.authentication.length != 0) {
-      queryString.push('authentication=' + callOptions.authentication.join(','))
+      queryString.push('authentication=' + callOptions.authentication.join(','));
     }
 
     return queryString;
@@ -745,11 +745,11 @@ export class SearchEndpoint implements ISearchEndpoint {
     }
 
     if (callOptions.requestedOutputSize) {
-      queryString.push('requestedOutputSize=' + encodeURIComponent(callOptions.requestedOutputSize.toString()))
+      queryString.push('requestedOutputSize=' + encodeURIComponent(callOptions.requestedOutputSize.toString()));
     }
 
     if (callOptions.contentType) {
-      queryString.push('contentType=' + encodeURIComponent(callOptions.contentType))
+      queryString.push('contentType=' + encodeURIComponent(callOptions.contentType));
     }
 
     return queryString;
@@ -763,7 +763,7 @@ export class SearchEndpoint implements ISearchEndpoint {
         if (response.data && (<any>response.data).clientDuration) {
           (<any>response.data).clientDuration = response.duration;
         }
-        return response.data
+        return response.data;
       }).catch((error?: IErrorResponse) => {
         if (autoRenewToken && this.canRenewAccessToken() && this.isAccessTokenExpiredStatus(error.statusCode)) {
           this.renewAccessToken()
@@ -772,7 +772,7 @@ export class SearchEndpoint implements ISearchEndpoint {
             })
             .catch(() => {
               return Promise.reject(this.handleErrorResponse(error));
-            })
+            });
         } else if (error.statusCode == 0 && this.isRedirecting) {
           // The page is getting redirected
           // Set timeout on return with empty string, since it does not really matter
@@ -782,16 +782,16 @@ export class SearchEndpoint implements ISearchEndpoint {
         } else {
           return Promise.reject(this.handleErrorResponse(error));
         }
-      })
+      });
   }
 
   private handleErrorResponse(errorResponse: IErrorResponse): Error {
     if (this.isMissingAuthenticationProviderStatus(errorResponse.statusCode)) {
-      return new MissingAuthenticationError(errorResponse.data['provider'])
+      return new MissingAuthenticationError(errorResponse.data['provider']);
     } else if (errorResponse.data && errorResponse.data.message) {
-      return new QueryError(errorResponse)
+      return new QueryError(errorResponse);
     } else {
-      return new AjaxError('Request Error', errorResponse.statusCode)
+      return new AjaxError('Request Error', errorResponse.statusCode);
     }
   }
 
@@ -810,7 +810,7 @@ export class SearchEndpoint implements ISearchEndpoint {
       .catch((e: any) => {
         this.logger.error('Failed to renew access token', e);
         return e;
-      })
+      });
   }
 
   private removeTrailingSlash(uri: string) {
@@ -877,7 +877,7 @@ function path(path: string) {
     };
 
     return descriptor;
-  }
+  };
 }
 
 /**
@@ -909,7 +909,7 @@ function alertsPath(path: string) {
     };
 
     return descriptor;
-  }
+  };
 }
 
 /**
@@ -941,7 +941,7 @@ function requestDataType(type: string) {
     };
 
     return descriptor;
-  }
+  };
 }
 
 /**
@@ -972,7 +972,7 @@ function method(met: string) {
     };
 
     return descriptor;
-  }
+  };
 }
 
 /**
@@ -1003,7 +1003,7 @@ function responseType(resp: string) {
     };
 
     return descriptor;
-  }
+  };
 }
 
 /**
@@ -1034,5 +1034,5 @@ function accessTokenInUrl(tokenKey: string = 'access_token') {
     };
 
     return descriptor;
-  }
+  };
 }

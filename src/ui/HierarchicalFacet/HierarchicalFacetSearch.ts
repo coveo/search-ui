@@ -2,7 +2,7 @@
 
 import {FacetSearch} from '../Facet/FacetSearch';
 import {HierarchicalFacet, IValueHierarchy} from './HierarchicalFacet';
-import {IFacetSearchValuesListKlass} from '../Facet/FacetSearchValuesList'
+import {IFacetSearchValuesListKlass} from '../Facet/FacetSearchValuesList';
 import {FacetSearchParameters} from '../Facet/FacetSearchParameters';
 import {IIndexFieldValue} from '../../rest/FieldValue';
 import {FacetValue} from '../Facet/FacetValues';
@@ -44,7 +44,7 @@ export class HierarchicalFacetSearch extends FacetSearch {
     _.each(fieldValues, (fieldValue) => {
       var hierarchy = this.facet.getValueFromHierarchy(fieldValue.value);
       values.push(this.createFacetValuesFromHierarchy(hierarchy));
-    })
+    });
     return _.flatten(values);
   }
 
@@ -62,7 +62,7 @@ export class HierarchicalFacetSearch extends FacetSearch {
     _.each(childs, (child) => {
       var childHierarchy = this.facet.getValueFromHierarchy(child.facetValue.value);
       values.push(this.createFacetValuesFromHierarchy(childHierarchy));
-    })
+    });
     return values;
   }
 }

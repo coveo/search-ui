@@ -13,20 +13,26 @@ export interface IBreadcrumbOptions {
 }
 
 /**
- * This component displays a summary of the filters currently active in the query.<br/>
- * For example, when the user selects a facet value, the value is displayed in the breadcrumbs.<br/>
- * The active filters are obtained by the component by firing an event in the breadcrumb component.<br/>
- * All other components having an active state can answer to this event by providing custom bits of HTML that will be displayed inside the breadcrumb.<br/>
+ * This component displays a summary of the filters currently active in the query.
+ *
+ * For example, when the user selects a facet value, the value is displayed in the breadcrumbs.
+ *
+ * The active filters are obtained by the component by firing an event in the breadcrumb component.
+ *
+ * All other components having an active state can answer to this event by providing custom bits of HTML that will be displayed inside the breadcrumb.
+ *
  * Thus, the breadcrumb can easily be extended by custom code to display information about custom state and filters.
+ *
+ * See {@link BreadcrumbEvents} for the list of events and parameters sent when a breadcrumb is populated.
  */
 export class Breadcrumb extends Component {
   static ID = 'Breadcrumb';
-  static options: IBreadcrumbOptions = {}
+  static options: IBreadcrumbOptions = {};
 
   private lastBreadcrumbs: IBreadcrumbItem[];
 
   /**
-   * Create a new breadcrumb element, bind event on deferredQuerySuccess to draw the breadcrumb
+   * Create a new breadcrumb element, bind event on `deferredQuerySuccess` to draw the breadcrumb.
    * @param element
    * @param options
    * @param bindings
@@ -43,7 +49,7 @@ export class Breadcrumb extends Component {
 
   /**
    * Trigger the event to populate breadcrumb, which component such as {@link Facet} can populate.<br/>
-   * Will trigger an event with {@link IPopulateBreadcrumbEventArgs} object (an array) which other component or code can populate.
+   * Will trigger an event with {@link IPopulateBreadcrumbEventArgs} object (an array) which other components or code can populate.
    * @returns {IBreadcrumbItem[]}
    */
   public getBreadcrumbs(): IBreadcrumbItem[] {
@@ -55,8 +61,8 @@ export class Breadcrumb extends Component {
   }
 
   /**
-   * Trigger the event to clear the current breadcrumbs, which component such as {@link Facet} can populate.<br/>
-   * Trigger a new query, and log a search event
+   * Trigger the event to clear the current breadcrumbs, that {@link Facet} can populate.<br/>
+   * Trigger a new query, and log a search event.
    */
   public clearBreadcrumbs() {
     let args = <IClearBreadcrumbEventArgs>{};
@@ -67,7 +73,7 @@ export class Breadcrumb extends Component {
   }
 
   /**
-   * Draw the given breadcrumbs items
+   * Draw the given breadcrumbs items.
    * @param breadcrumbs
    */
   public drawBreadcrumb(breadcrumbs: IBreadcrumbItem[]) {
@@ -85,7 +91,7 @@ export class Breadcrumb extends Component {
       let elem = bcrumb.element;
       $$(elem).addClass('coveo-breadcrumb-item');
       breadcrumbItems.appendChild(elem);
-    })
+    });
 
     let clear = document.createElement('div');
     $$(clear).addClass('coveo-breadcrumb-clear-all');
@@ -106,7 +112,7 @@ export class Breadcrumb extends Component {
 
     this.bind.on(clear, 'click', () => {
       this.clearBreadcrumbs();
-    })
+    });
   }
 
   private redrawBreadcrumb() {

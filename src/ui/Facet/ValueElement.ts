@@ -119,7 +119,7 @@ export class ValueElement {
       this.handleSelectValue(eventBindings);
       event.stopPropagation();
       return false;
-    })
+    });
   }
 
   protected handleEventForValueElement(eventBindings: IValueElementEventsBinding) {
@@ -130,7 +130,7 @@ export class ValueElement {
       this.handleExcludeClick(eventBindings);
       event.stopPropagation();
       return false;
-    })
+    });
     $$(this.renderer.label).on('click', (event: Event) => {
       if (eventBindings.pinFacet) {
         this.facet.pinFacetPosition();
@@ -138,7 +138,7 @@ export class ValueElement {
       event.preventDefault();
       $$(this.renderer.checkbox).trigger('change');
       return false;
-    })
+    });
   }
 
   protected handleEventForCheckboxChange(eventBindings: IValueElementEventsBinding) {
@@ -154,7 +154,7 @@ export class ValueElement {
           this.facet.facetSearch.completelyDismissSearch();
         });
       }
-    })
+    });
   }
 
   protected omniboxCloseEvent(eventArg: IPopulateOmniboxObject) {
@@ -167,6 +167,6 @@ export class ValueElement {
       facetId: this.facet.options.id,
       facetValue: this.facetValue.value,
       facetTitle: this.facet.options.title
-    }
+    };
   }
 }

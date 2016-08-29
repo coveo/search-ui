@@ -1,20 +1,7 @@
-import {Initialization, IInitializationParameters} from './Initialization';
-import {IComponentDefinition} from './Component';
+import {Initialization} from './Initialization';
 
 interface IWindow {
   $: any;
-}
-
-// This class is essentially only there for legacy reasons : If there is any code in the wild that called this directly,
-// we don't want this to break.
-export class CoveoJQuery {
-  public static automaticallyCreateComponentsInside(element: HTMLElement, initParameters: IInitializationParameters, ignore?: string[]) {
-    return Initialization.automaticallyCreateComponentsInside(element, initParameters, ignore);
-  }
-
-  public static registerAutoCreateComponent(cmp: IComponentDefinition) {
-    return Initialization.registerAutoCreateComponent(cmp);
-  }
 }
 
 export var jQueryInstance: JQuery;
@@ -27,10 +14,10 @@ if (jQueryIsDefined()) {
     if (jQueryIsDefined()) {
       initCoveoJQuery();
     }
-  })
+  });
 }
 
-function initCoveoJQuery() {
+export function initCoveoJQuery() {
   jQueryInstance = window['$'];
   if (window['Coveo'] == undefined) {
     window['Coveo'] = {};
@@ -54,7 +41,7 @@ function initCoveoJQuery() {
       returnValue = returnValue || returnValueForThisElement;
     });
     return returnValue;
-  }
+  };
 }
 
 export function jQueryIsDefined(): boolean {

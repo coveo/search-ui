@@ -29,7 +29,7 @@ export interface IQueryboxOptions {
 /**
  * A component that allows a user to enter a query inside an input.<br/>
  * The component will trigger a query when submitted (the 'Enter' keypress) and log the proper analytics data.<br/>
- * It must be instantiated on a div (and not directly on an input element) : This is for styling purpose (ghost type ahead, for example).
+ * It must be instantiated on a div (and not directly on an input element): This is for styling purpose (ghost type ahead, for example).
  */
 export class Querybox extends Component {
   static ID = 'Querybox';
@@ -40,39 +40,38 @@ export class Querybox extends Component {
   public static options: IQueryboxOptions = {
     /**
      * Specify if search as you type should be enabled.<br/>
-     * Default to false.
+     * Default to `false`.
      */
     enableSearchAsYouType: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
-     * If enableSearchAsYouType is enabled, this option specify the delay (in ms) between a keypress and a query being triggered<br/>
-     * Default to 500 ms
+     * If `enableSearchAsYouType` is enabled, this option specify the delay (in ms) between a keypress and a query being triggered<br/>
+     * Default to 500 ms.
      */
     searchAsYouTypeDelay: ComponentOptions.buildNumberOption({ defaultValue: 500, min: 0 }),
     /**
      * Specifies whether the Coveo Platform does try to interpret special query syntax such as field references in the query entered through the query box.<br/>
-     * This means that a
-     * The default value is true.
+     * The default value is `true`.
      */
     enableQuerySyntax: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies whether the Coveo Platform expands keywords containing wildcard characters (*) to the possible matching keywords to broaden the query.<br/>
-     * The default value is false.
+     * The default value is `false`.
      */
     enableWildcards: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies whether the Coveo Platform expands keywords containing question mark characters (?) to the possible matching keywords to broaden the query.<br/>
-     * The default value is false.
+     * The default value is `false`.
      */
     enableQuestionMarks: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * If true, the or and and keywords in the query box will be treated as boolean operators for the query when they are typed in lowercase.<br/>
      * This applies for all operators<br/>
-     * Default value is false
+     * Default value is `false`.
      */
     enableLowercaseOperators: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies whether a query containing a large number of keywords (see partialMatchKeywords) is automatically converted to a partial match expression in order to match documents containing only a subset of the keywords (see partialMatchThreshold for defining the subset).<br/>
-     * The default value is false.
+     * The default value is `false`.
      */
     enablePartialMatch: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
@@ -87,12 +86,12 @@ export class Querybox extends Component {
     partialMatchThreshold: ComponentOptions.buildStringOption({ defaultValue: '50%' }),
     /**
      * Specifies whether or not to trigger a query when the searchbox is cleared.
-     * The default value is true.
+     * The default value is `true`.
      */
     triggerQueryOnClear: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     placeholder: ComponentOptions.buildStringOption(),
     autoFocus: ComponentOptions.buildBooleanOption({ defaultValue: true })
-  }
+  };
 
   public magicBox: Coveo.MagicBox.Instance;
   private lastQuery: string;
@@ -102,9 +101,9 @@ export class Querybox extends Component {
    * Create a new Querybox.<br/>
    * Create a new Coveo.Magicbox instance and wrap magic box method (on blur, on submit etc).<br/>
    * Bind event on buildingQuery and on redirection (for standalone box).
-   * @param element The HTMLElement on which the element will be instantiated. This cannot be an HTMLInputElement for technical reason
+   * @param element The `HTMLElement` on which the element will be instantiated. This cannot be an `HTMLInputElement` for technical reasons.
    * @param options The options for the querybox.
-   * @param bindings The bindings that the component requires to function normally. If not set, will automatically resolve them (With slower execution time)
+   * @param bindings The bindings that the component requires to function normally. If not set, will automatically resolve them (with slower execution time).
    */
   constructor(public element: HTMLElement, public options?: IQueryboxOptions, public bindings?: IComponentBindings) {
     super(element, Querybox.ID, bindings);
@@ -146,7 +145,7 @@ export class Querybox extends Component {
     this.magicBox.onclear = () => {
       this.updateQueryState();
       if (this.options.triggerQueryOnClear) {
-        this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxClear, {})
+        this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxClear, {});
         this.triggerNewQuery(false);
       }
     };
@@ -157,13 +156,13 @@ export class Querybox extends Component {
   }
 
   /**
-   * Trigger a query. The current input content will be added to the query<br/>
+   * Trigger a query. The current input content will be added to the query.<br/>
    * If the content of the input has not changed since the last submit, no new query will be triggered.
    */
   public submit(): void {
     this.magicBox.clearSuggestion();
     this.updateQueryState();
-    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {})
+    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
     this.triggerNewQuery(false);
   }
 
@@ -243,7 +242,7 @@ export class Querybox extends Component {
   private searchAsYouType(): void {
     clearTimeout(this.searchAsYouTypeTimeout);
     this.searchAsYouTypeTimeout = setTimeout(() => {
-      this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxAsYouType, {})
+      this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxAsYouType, {});
       this.triggerNewQuery(true);
     }, this.options.searchAsYouTypeDelay);
   }

@@ -90,7 +90,6 @@ export {OmniboxResultList} from './ui/OmniboxResultList/OmniboxResultList';
 export {CurrentTab} from './ui/CurrentTab/CurrentTab';
 export {QueryboxQueryParameters} from './ui/Querybox/QueryboxQueryParameters';
 export {ImageResultList} from './ui/ImageResultList/ImageResultList';
-export {CoveoJQuery} from './ui/Base/CoveoJQuery';
 export {jQueryInstance as $} from './ui/Base/CoveoJQuery';
 export {underscoreInstance as _} from './ui/Base/CoveoUnderscore';
 export {FollowItem} from './ui/SearchAlerts/FollowItem';
@@ -117,7 +116,7 @@ let swapVar = () => {
   } else {
     _.each(_.keys(this), (k) => {
       window['Coveo'][k] = this[k];
-    })
+    });
   }
-}
+};
 swapVar();

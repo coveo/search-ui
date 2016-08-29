@@ -213,7 +213,7 @@ export class EndpointCaller {
 
     var currentPort = (window.location.port != '' ? window.location.port : (window.location.protocol == 'https:' ? '443' : '80'));
     var isSamePort = currentPort == urlObject.port;
-    var isCrossOrigin = !(isLocalHost && isSamePort)
+    var isCrossOrigin = !(isLocalHost && isSamePort);
     if (!this.useJsonp) {
       if (this.isCORSSupported() || !isCrossOrigin) {
         return this.callUsingXMLHttpRequest(requestInfo, params.responseType);
@@ -325,7 +325,7 @@ export class EndpointCaller {
         queryString = queryString.concat(this.convertJsonToQueryString(requestInfo.requestData));
       }
       xmlHttpRequest.open(requestInfo.method, this.combineUrlAndQueryString(requestInfo.url, queryString));
-    })
+    });
   }
 
   /**
@@ -346,7 +346,7 @@ export class EndpointCaller {
 
       var xDomainRequest = new XDomainRequest();
       if (requestInfo.method == 'GET') {
-        queryString = queryString.concat(this.convertJsonToQueryString(requestInfo.requestData))
+        queryString = queryString.concat(this.convertJsonToQueryString(requestInfo.requestData));
       }
       xDomainRequest.open(requestInfo.method, this.combineUrlAndQueryString(requestInfo.url, queryString));
 
@@ -372,7 +372,7 @@ export class EndpointCaller {
           xDomainRequest.send(this.convertJsonToFormBody(requestInfo.requestData));
         }
       });
-    })
+    });
   }
 
   /**
@@ -398,7 +398,7 @@ export class EndpointCaller {
         success: (data: any) => this.handleSuccessfulResponseThatMightBeAnError(requestInfo, data, resolve, reject),
         error: () => this.handleError(requestInfo, 0, undefined, reject)
       });
-    })
+    });
   }
 
   private parseURL(url: string) {

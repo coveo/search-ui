@@ -26,13 +26,35 @@ export interface ITabOptions {
 }
 
 /**
- * This component is a bar allowing users to select a search interface.<br/>
- * The component attaches itself to an div element and is in charge of adding an advanced expression to the query and thus, modify the outgoing query in order to refine the results in relation to the selected tab.<br/>
- * It also allows to hide and show different parts of the UI. In order to do so, each component of the UI can specify whether or not it wishes to be included or excluded from a specific tab.<br/>
- * Eg : <br/>
- * * &lt;div data-tab="foobar"&gt; -> Include this element only in the tab with the id 'foobar'.<br/>
- * * &lt;div data-tab-not="foobar"&gt; -> DO NOT include this element in the tab id 'foobar'.<br/>
- * * &lt;div data-tab="foobar,somethingelse"&gt; -> Include this element only in the tab with the id 'foobar' or 'somethingelse'.
+ * This component is a bar allowing users to select a search interface.
+ *
+ * The component attaches itself to an div element and is in charge of adding an advanced expression to the query and thus, modify the outgoing query in order to refine the results in relation to the selected tab.
+ *
+ * It also allows to hide and show different parts of the UI. In order to do so, each component of the UI can specify whether or not it wishes to be included or excluded from a specific tab.
+ *
+ * # Including and excluding other HTML components
+ *
+ * You can hide/show specific HTML components, based on the currently selected search tab by adding the following attributes:
+ *
+ * * `<div data-tab="foobar">` -> Include this element only in the tab with the ID 'foobar'.
+ *
+ * * `<div data-tab-not="foobar">` -> DO NOT include this element in the tab ID 'foobar'.
+ *
+ * * `<div data-tab="foobar,somethingelse">` -> Include this element only in the tab with the ID 'foobar' or 'somethingelse'.
+ *
+ * # Setting a new endpoint for a tab
+ * A tab can use a custom endpoint when performing a query. First, you need to make sure that the endpoint exists in the array of Coveo.SearchEndpoint.endpoints.
+ *
+ * ```
+ * Coveo.SearchEndpoint.endpoints["specialEndpoint"] = new Coveo.SearchEndpoint({
+ *     restUri : 'https://somewhere.com/rest/search'
+ * })
+ *
+ * [...]
+ *
+ * <div class='CoveoTab' data-endpoint='specialEndpoint'></div>
+ *
+ * ```
  */
 export class Tab extends Component {
   static ID = 'Tab';
@@ -44,12 +66,12 @@ export class Tab extends Component {
   static options: ITabOptions = {
     /**
      * The unique ID for a tab.<br/>
-     * This is mandatory and required for the tab to function properly
+     * This is mandatory and required for the tab to function properly.
      */
     id: ComponentOptions.buildStringOption({ required: true }),
     /**
      * The caption for the tab.<br/>
-     * This is mandatory and required for the tab to function properly
+     * This is mandatory and required for the tab to function properly.
      */
     caption: ComponentOptions.buildLocalizedStringOption({ required: true }),
     /**
@@ -65,19 +87,19 @@ export class Tab extends Component {
     expression: ComponentOptions.buildStringOption(),
     /**
      * Specifies the endpoint that a tab should point to when performing query inside that tab.<br/>
-     * This is optional, by default the tab will use the "default" endpoint
+     * This is optional, by default the tab will use the "default" endpoint.
      */
     endpoint: ComponentOptions.buildCustomOption((endpoint) => endpoint != null ? SearchEndpoint.endpoints[endpoint] : null),
     /**
-     * Specifies the default sort when this tab is selected. A {@link Sort} Component configured with the same specified parameter needs to be in the interface in order for this this option to function properly.<br/>
-     * eg : relevancy / date descending<br/>
-     * Optional, by default the normal {@link Sort} component behavior will operate
+     * Specifies the default sort when this tab is selected. A {@link Sort} component configured with the same specified parameter needs to be in the interface in order for this this option to function properly.<br/>
+     * e.g.: relevancy / date descending<br/>
+     * Optional, by default the normal {@link Sort} component behavior will operate.
      */
     sort: ComponentOptions.buildStringOption(),
     /**
      * Specifies whether the filter expression should be included in the constant part of the query.<br/>
      * The constant part of the query is specially optimized by the index to execute faster, but you must be careful not to include dynamic query expressions otherwise the cache would lose its efficiency.<br/>
-     * By default, this option is set to true.
+     * By default, this option is set to `true`.
      */
     constant: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
@@ -86,7 +108,7 @@ export class Tab extends Component {
      */
     enableDuplicateFiltering: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
-     * Specifies the name of the query pipeline to use for the queries, in the Coveo platform ( Query Pipeline in the cloud admin).<br/>
+     * Specifies the name of the query pipeline to use for the queries, in the Coveo platform ( Query Pipeline in the Cloud administration).<br/>
      * If not specified, the default value is null, in which case pipeline selection conditions defined in a Coveo Cloud organization apply.
      */
     pipeline: ComponentOptions.buildStringOption(),
@@ -102,8 +124,8 @@ export class Tab extends Component {
   private isFirstQuery = true;
 
   /**
-   * Create a new Tab. Bind on buildingQuery event as well as on click of the element
-   * @param element The HTMLElement on which to create a new tab. Normally a div
+   * Create a new Tab. Bind on buildingQuery event as well as on click of the element.
+   * @param element The `HTMLElement` on which to create a new tab. Normally a div
    * @param options
    * @param bindings
    */
@@ -135,8 +157,8 @@ export class Tab extends Component {
   }
 
   /**
-   * Check if the given HTMLElement is included or not in this tab
-   * @param element The element to verify
+   * Check if the given `HTMLElement` is included or not in this tab.
+   * @param element The element to verify.
    * @returns {boolean}
    */
   public isElementIncludedInTab(element: HTMLElement): boolean {

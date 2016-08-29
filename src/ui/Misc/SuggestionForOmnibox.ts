@@ -41,7 +41,7 @@ export class SuggestionForOmnibox {
       let rows = this.buildRowElements(results, args);
       _.each(rows, (row) => {
         element.appendChild(row);
-      })
+      });
     }
     return element;
   }
@@ -61,12 +61,12 @@ export class SuggestionForOmnibox {
       })).el;
       $$(row).on('click', () => {
         this.onSelect.call(this, result.value, args);
-      })
+      });
       $$(row).on('keyboardSelect', () => {
         this.onSelect.call(this, result.value, args);
-      })
-      ret.push(row)
-    })
+      });
+      ret.push(row);
+    });
     return ret;
   }
 }

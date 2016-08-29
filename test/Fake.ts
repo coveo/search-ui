@@ -245,7 +245,7 @@ export class FakeResults {
       _.each(selectables, (selectable) => {
         element.append(selectable);
       });
-      rows.push({ element: element.get(0), zIndex: zIndex + i })
+      rows.push({ element: element.get(0), zIndex: zIndex + i });
     }
     return rows;
   }

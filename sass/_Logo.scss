@@ -10,6 +10,22 @@
   float: right;
   display: inline-block;
   margin: -10px 0 0 20px;
+  &.coveo-hidden {
+    display: none;
+  }
+  @media (max-width: 970px) {
+    position: absolute;
+    right: 10px;
+    bottom: -30px;
+  }
+}
+
+.coveo-waiting-for-first-query {
+  .CoveoLogo {
+    @media (max-width: 970px) {
+      display: none;
+    }
+  }
 }
 
 .coveo-facet-column {

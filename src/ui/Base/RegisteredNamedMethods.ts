@@ -5,7 +5,7 @@ import {QueryStateModel, setState} from '../../models/QueryStateModel';
 import {IQueryResult} from '../../rest/QueryResult';
 import {IQueryResults} from '../../rest/QueryResults';
 import {Analytics} from '../Analytics/Analytics';
-import {IAnalyticsClient} from '../Analytics/AnalyticsClient'
+import {IAnalyticsClient} from '../Analytics/AnalyticsClient';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {$$} from '../../utils/Dom';
 import {IAnalyticsActionCause, IAnalyticsDocumentViewMeta} from '../Analytics/AnalyticsActionListMeta';
@@ -17,9 +17,9 @@ import {IRecommendationOptions} from '../Recommendation/Recommendation';
 
 /**
  * Initialize the framework with a basic search interface. Calls {@link Initialization.initSearchInterface}.<br/>
- * If using the jQuery extension, this is called using <code>$('#root').coveo('init');</code>
- * @param element The root of the interface to initialize
- * @param options JSON options for the framework eg : <code>{Searchbox : {enableSearchAsYouType: true}}</code>
+ * If using the jQuery extension, this is called using <code>$('#root').coveo('init');</code>.
+ * @param element The root of the interface to initialize.
+ * @param options JSON options for the framework (e.g.: <code>{Searchbox : {enableSearchAsYouType : true}}</code>).
  */
 export function init(element: HTMLElement, options: any = {}) {
   Initialization.initializeFramework(element, options, () => {
@@ -33,10 +33,10 @@ Initialization.registerNamedMethod('init', (element: HTMLElement, options: any =
 
 /**
  * Initialize the framework with a standalone search box. Calls {@link Initialize.initStandaloneSearchInterface}.<br/>
- * If using the jQuery extension, this is called using <code>$('#root').coveo('initSearchbox');</code>
- * @param element The root of the interface to initialize
- * @param searchPageUri The search page on which to redirect when there is a query
- * @param options JSON options for the framework eg : <code>{Searchbox : {enableSearchAsYouType: true}}</code>
+ * If using the jQuery extension, this is called using <code>$('#root').coveo('initSearchbox');</code>.
+ * @param element The root of the interface to initialize.
+ * @param searchPageUri The search page on which to redirect when there is a query.
+ * @param options JSON options for the framework (e.g.: <code>{Searchbox : {enableSearchAsYouType : true}}</code>).
  */
 export function initSearchbox(element: HTMLElement, searchPageUri: string, options: any = {}): void {
   Assert.isNonEmptyString(searchPageUri);
@@ -57,11 +57,11 @@ Initialization.registerNamedMethod('initSearchbox', (element: HTMLElement, searc
 
 /**
  * Initialize the framework with a recommendation interface. Calls {@link Initialization.initRecommendationInterface}.<br/>
- * If using the jQuery extension, this is called using <code>$('#root').coveo('initRecommendation');</code>
- * @param element The root of the interface to initialize
- * @param mainSearchInterface The search interface to link with the recommendation interface. View {@link Recommendation}
- * @param userContext The user context to pass with the query generated in the recommendation interface. View {@link Recommendation}
- * @param options JSON options for the framework eg : <code>{Searchbox : {enableSearchAsYouType: true}}</code>
+ * If using the jQuery extension, this is called using <code>$('#root').coveo('initRecommendation');</code>.
+ * @param element The root of the interface to initialize.
+ * @param mainSearchInterface The search interface to link with the recommendation interface (see {@link Recommendation}).
+ * @param userContext The user context to pass with the query generated in the recommendation interface (see {@link Recommendation}).
+ * @param options JSON options for the framework (e.g.: <code>{Searchbox : {enableSearchAsYouType: true}}</code>).
  */
 export function initRecommendation(element: HTMLElement, mainSearchInterface?: HTMLElement, userContext?: { [name: string]: any }, options: any = {}): void {
   var recommendationOptions = <IRecommendationOptions>{};
@@ -82,9 +82,9 @@ Initialization.registerNamedMethod('initRecommendation', (element: HTMLElement, 
 /**
  * Execute a standard query. Active component in the interface will react to events/ push data in the query / handle the query success or failure as needed.<br/>
  * It triggers a standard query flow for which the standard component will perform their expected behavior.<br/>
- * If you wish to only perform a query on the index to retrieve result (without the component reacting), look into {@link SearchInterface.search} instead.<br/>
- * Calling this method is the same as calling {@link QueryController.executeQuery}
- * @param element The root of the interface to initialize
+ * If you wish to only perform a query on the index to retrieve results (without the component reacting), look into {@link SearchInterface} instead.<br/>
+ * Calling this method is the same as calling {@link QueryController.executeQuery}.
+ * @param element The root of the interface to initialize.
  */
 export function executeQuery(element: HTMLElement): Promise<IQueryResults> {
   Assert.exists(element);
@@ -100,12 +100,12 @@ Initialization.registerNamedMethod('executeQuery', (element: HTMLElement) => {
 
 /**
  * Perform operation on the state ({@link QueryStateModel} of the interface.<br/>
- * Get the complete {@link QueryStateModel} object : <code>Coveo.state(element)</code><br/>
- * Get an attribute from the {@link QueryStateModel} : <code>Coveo.state(element, 'q')</code> Can be any attribute.<br/>
- * Set an attribute on the {@link QueryStateModel} : <code>Coveo.state(element, 'q', 'foobar')</code> Can be any attribute.<br/>
- * Set multiple attribute on the {@link QueryStateModel} : <code>Coveo.state(element, {'q' : 'foobar' , sort : 'relevancy'})</code> Can be any attribute.<br/>
- * If using the jQuery extension, this is called using <code>$('#root').coveo('state');</code>
- * @param element The root of the interface for which to access the {@link QueryStateModel}
+ * Get the complete {@link QueryStateModel} object: <code>Coveo.state(element)</code><br/>.
+ * Get an attribute from the {@link QueryStateModel}: <code>Coveo.state(element, 'q')</code> Can be any attribute.<br/>
+ * Set an attribute on the {@link QueryStateModel}: <code>Coveo.state(element, 'q', 'foobar')</code>. Can be any attribute.<br/>
+ * Set multiple attribute on the {@link QueryStateModel}: <code>Coveo.state(element, {'q' : 'foobar' , sort : 'relevancy'})</code>. Can be any attribute.<br/>
+ * If using the jQuery extension, this is called using <code>$('#root').coveo('state');</code>.
+ * @param element The root of the interface for which to access the {@link QueryStateModel}.
  * @param args
  * @returns {any}
  */
@@ -124,10 +124,10 @@ Initialization.registerNamedMethod('state', (element: HTMLElement, ...args: any[
 });
 
 /**
- * Get the component bound on the given HTMLElement
- * @param element The HTMLElement for which to get the component instance
- * @param componentClass If multiple component are bound to a single HTMLElement, you need to specify which component you wish to get
- * @param noThrow By default, the get method will throw if there is no component bound, or if there are multiple component and no componentClass is specified. This suppress the error if set to true.
+ * Get the component bound on the given `HTMLElement`.
+ * @param element The `HTMLElement` for which to get the component instance.
+ * @param componentClass If multiple components are bound to a single `HTMLElement`, you need to specify which components you wish to get.
+ * @param noThrow By default, the GET method will throw if there is no component bound, or if there are multiple component and no `componentClass` is specified. This deletes the error if set to true.
  * @returns {Component}
  */
 export function get(element: HTMLElement, componentClass?, noThrow?: boolean): BaseComponent {
@@ -168,9 +168,9 @@ function getCoveoAnalytics(element: HTMLElement): Analytics {
 
 /**
  * Log a custom event on the Coveo Usage Analytics service.
- * @param element The root of the interface for which to log analytics event
- * @param customEventCause The cause of the event
- * @param metadata The metadata associated with the event (JSON key value)
+ * @param element The root of the interface for which to log analytics events.
+ * @param customEventCause The cause of the event.
+ * @param metadata The metadata associated with the event (JSON key value).
  */
 export function logCustomEvent(element: HTMLElement, customEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) {
   var client = getCoveoAnalyticsClient(element);
@@ -181,13 +181,13 @@ export function logCustomEvent(element: HTMLElement, customEventCause: IAnalytic
 
 Initialization.registerNamedMethod('logCustomEvent', (element: HTMLElement, customEventCause: IAnalyticsActionCause, metadata: any) => {
   logCustomEvent(element, customEventCause, metadata);
-})
+});
 
 /**
- * Log a search event on the Coveo Usage Analytics service
- * @param element The root of the interface for which to log analytics event
- * @param searchEventCause The cause of the event
- * @param metadata The metadata associated with the event (JSON key value)
+ * Log a `SearchEvent` on the Coveo Usage Analytics service.
+ * @param element The root of the interface for which to log analytics events.
+ * @param searchEventCause The cause of the event.
+ * @param metadata The metadata associated with the event (JSON key value).
  */
 export function logSearchEvent(element: HTMLElement, searchEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) {
   var client = getCoveoAnalyticsClient(element);
@@ -198,14 +198,14 @@ export function logSearchEvent(element: HTMLElement, searchEventCause: IAnalytic
 
 Initialization.registerNamedMethod('logSearchEvent', (element: HTMLElement, searchEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) => {
   logSearchEvent(element, searchEventCause, metadata);
-})
+});
 
 /**
- * Log a search as you type event on the Coveo Usage Analytics service.<br/>
- * It is a bit different from a standard search event, as it will wait 5 second before sending the final search as you type event.
- * @param element The root of the interface for which to log analytics event
- * @param searchAsYouTypeEventCause The cause of the event
- * @param metadata The metadata associated with the event (JSON key value)
+ * Log a `SearchAsYouTypeEvent` on the Coveo Usage Analytics service.<br/>
+ * It is a bit different from a standard search event, as it will wait 5 seconds before sending the final `SearchAsYouType` event.
+ * @param element The root of the interface for which to log analytics events.
+ * @param searchAsYouTypeEventCause The cause of the event.
+ * @param metadata The metadata associated with the event (JSON key value).
  */
 export function logSearchAsYouTypeEvent(element: HTMLElement, searchAsYouTypeEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) {
   var client = getCoveoAnalyticsClient(element);
@@ -216,14 +216,14 @@ export function logSearchAsYouTypeEvent(element: HTMLElement, searchAsYouTypeEve
 
 Initialization.registerNamedMethod('logSearchAsYouTypeEvent', (element: HTMLElement, searchAsYouTypeEventCause: IAnalyticsActionCause, metadata: IStringMap<string>) => {
   logSearchAsYouTypeEvent(element, searchAsYouTypeEventCause, metadata);
-})
+});
 
 /**
- * Log a click event on the Coveo Usage Analytics service.
- * @param element The root of the interface for which to log analytics event
- * @param clickEventCause The cause of the event
- * @param metadata The metadata associated with the event (JSON key value)
- * @param result The result that was clicked
+ * Log a `ClickEvent` on the Coveo Usage Analytics service.
+ * @param element The root of the interface for which to log analytics events.
+ * @param clickEventCause The cause of the event.
+ * @param metadata The metadata associated with the event (JSON key value).
+ * @param result The result that was clicked.
  */
 export function logClickEvent(element: HTMLElement, clickEventCause: IAnalyticsActionCause, metadata: IStringMap<any>, result: IQueryResult) {
   var client = getCoveoAnalyticsClient(element);
@@ -233,14 +233,14 @@ export function logClickEvent(element: HTMLElement, clickEventCause: IAnalyticsA
 }
 
 Initialization.registerNamedMethod('logClickEvent', (element: HTMLElement, clickEventCause: IAnalyticsActionCause, metadata: IStringMap<string>, result: IQueryResult) => {
-  logClickEvent(element, clickEventCause, metadata, result)
-})
+  logClickEvent(element, clickEventCause, metadata, result);
+});
 
 /**
  * Pass options to the framework, before it is initialized ({@link init}).<br/>
- * All the options passed with this calls will be merged together on initialization
- * @param element The root of the interface for which you wish to set options
- * @param optionsToSet JSON options for the framework eg : <code>{Searchbox : {enableSearchAsYouType: true}}</code>
+ * All the options passed with this calls will be merged together on initialization.
+ * @param element The root of the interface for which you wish to set options.
+ * @param optionsToSet JSON options for the framework (e.g.: <code>{Searchbox : {enableSearchAsYouType: true}}</code>).
  */
 export function options(element: HTMLElement, optionsToSet: any = {}) {
   Initialization.registerDefaultOptions(element, optionsToSet);
@@ -251,7 +251,7 @@ Initialization.registerNamedMethod('options', (element: HTMLElement, optionsToSe
 });
 
 /**
- * Patch the given methodName on an instance of a component bound to an HTMLElement with a new handler
+ * Patch the given `methodName` on an instance of a component bound to an `HTMLElement` with a new handler.
  * @param element
  * @param methodName
  * @param handler
@@ -291,7 +291,7 @@ export function initBox(element: HTMLElement, ...args: any[]) {
   merged[type || 'Container'] = _.extend({}, options.SearchInterface, options[type]);
   options = _.extend({}, options, merged);
   Initialization.initializeFramework(element, options, () => {
-    Initialization.initBoxInterface(element, options, type, injectMarkup)
+    Initialization.initBoxInterface(element, options, type, injectMarkup);
   });
 }
 
@@ -306,4 +306,4 @@ export function nuke(element: HTMLElement) {
 
 Initialization.registerNamedMethod('nuke', (element: HTMLElement) => {
   nuke(element);
-})
+});

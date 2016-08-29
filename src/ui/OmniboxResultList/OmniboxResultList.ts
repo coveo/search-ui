@@ -1,4 +1,4 @@
-import {Component} from '../Base/Component'
+import {Component} from '../Base/Component';
 import {$$} from '../../utils/Dom';
 import {l} from '../../strings/Strings';
 import {IResultListOptions, ResultList} from '../ResultList/ResultList';
@@ -20,13 +20,81 @@ export interface IOmniboxResultListOptions extends IResultListOptions {
   queryOverride?: string;
 }
 
+/**
+ * This component is exactly like a normal ResultList Component, except that it will render itself inside the Omnibox component.
+ * This will provide a kind of search as you type functionnality, allowing you to easily render complex Result Templates inside the Omnibox component.
+ *
+ * # Example
+ * ```
+ *     <div class="CoveoOmniboxResultList">
+ *         <script class="result-template" type="text/x-underscore">
+ *             <div>
+ *                 <a class='CoveoResultLink'></a>
+ *             </div>
+ *         </script>
+ *     </div>
+ * ```
+ */
 export class OmniboxResultList extends ResultList {
   static ID = 'OmniboxResultList';
+  /**
+   * The options for the component
+   * @componentOptions
+   */
   static options: IOmniboxResultListOptions = {
+    /**
+     * Specifies the index at which the result list should render itself inside the Omnibox.
+     *
+     * The default value is 51 (facets are at 50 by default).
+     */
     omniboxZIndex: ComponentOptions.buildNumberOption({ defaultValue: 51, min: 16 }),
+    /**
+     * Specifies the title that you want for this section.
+     *
+     * By default this will be Suggested Results.
+     */
     headerTitle: ComponentOptions.buildStringOption(),
-    queryOverride: ComponentOptions.buildStringOption()
-  }
+    /**
+     * Specifies the override you want to use on the query sent to the OmniboxResultList component.
+     *
+     * By default, there's no override applied.
+     */
+    queryOverride: ComponentOptions.buildStringOption(),
+    /**
+     * Specifies the function you wish to execute when a result suggestion is selected.
+     *
+     * By default, it will open the corresponding result URI in your browser.
+     *
+     * ```javascript
+     * Coveo.init(document.querySelector('#search'), {
+     *    OmniboxResultList : {
+     *        //Close the omnibox, change the selected HTMLElement background color and alert the result title.
+     *        onSelect:   function(result, resultElement, omniBoxObject) {
+     *            omniBoxObject.close();
+     *            resultElement.css('background-color', 'red');
+     *            alert(result.title);
+     *        }
+     *     }
+     * })
+     *
+     * // OR using the jQuery extention
+     *
+     * $("#search").coveo("init", {
+     *    OmniboxResultList : {
+     *        //Close the Omnibox, change the selected HTMLElement background color and alert the result title.
+     *        onSelect:   function(result, resultElement, omniBoxObject) {
+     *            omniBoxObject.close();
+     *            resultElement.css('background-color', 'red');
+     *            alert(result.title);
+     *        }
+     *     }
+     * })
+     * ```
+     */
+    onSelect: ComponentOptions.buildCustomOption<(result: IQueryResult, resultElement: HTMLElement, omniboxObject: IPopulateOmniboxEventArgs) => void>(() => {
+      return null;
+    })
+  };
 
   private lastOmniboxRequest: { omniboxObject: IPopulateOmniboxEventArgs; resolve: (...args: any[]) => void; };
 
@@ -34,12 +102,12 @@ export class OmniboxResultList extends ResultList {
     super(element, options, bindings, OmniboxResultList.ID);
     this.options = ComponentOptions.initComponentOptions(element, OmniboxResultList, options);
     this.setupOptions();
-    this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs) => this.handlePopulateOmnibox(args))
+    this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs) => this.handlePopulateOmnibox(args));
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleQueryOverride(args));
   }
 
   /**
-   * Build and return an array of HTMLElement with the given result set.
+   * Build and return an array of `HTMLElement` with the given result set.
    * @param results
    */
   public buildResults(results: IQueryResults): HTMLElement[] {
@@ -60,7 +128,7 @@ export class OmniboxResultList extends ResultList {
       content.appendChild($$('div', { className: 'coveo-omnibox-result-list-header' },
         $$('span', { className: 'coveo-icon-omnibox-result-list' }).el,
         $$('span', { className: 'coveo-caption' }, (this.options.headerTitle || l('SuggestedResults'))).el
-      ).el)
+      ).el);
       _.each(resultsElement, (resultElement: HTMLElement) => {
         content.appendChild(resultElement);
         this.triggerNewResultDisplayed(Component.getResult(resultElement), resultElement);
@@ -83,7 +151,7 @@ export class OmniboxResultList extends ResultList {
         searchAsYouType: true
       });
       this.lastOmniboxRequest = { omniboxObject: args, resolve: resolve };
-    })
+    });
     args.rows.push({
       deferred: promise
     });

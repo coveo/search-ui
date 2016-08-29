@@ -29,7 +29,7 @@ export interface IAuthenticationProviderOptions {
  * that starts the authentication process.
  *
  * Using the standard `data-tab` attribute, you can enable the
- * AuthenticationProvider component only for tabs in which authentication is
+ * `AuthenticationProvider` component only for tabs in which authentication is
  * required (see {@link Tab}).
  */
 export class AuthenticationProvider extends Component {
@@ -42,7 +42,7 @@ export class AuthenticationProvider extends Component {
   static options: IAuthenticationProviderOptions = {
     /**
      * Specifies the name of the authentication provider as specified in the
-     * [Windows Service Configuration File](https://developers.coveo.com/display/public/SearchREST/Windows+Service+Configuration+File)
+     * [Windows Service Configuration File](https://developers.coveo.com/display/public/SearchREST/Windows+Service+Configuration+File).
      */
     name: ComponentOptions.buildStringOption(),
     /**
@@ -82,7 +82,7 @@ export class AuthenticationProvider extends Component {
   private redirectCount: number;
 
   /**
-   * Build a new AuthenticationProvider component
+   * Build a new `AuthenticationProvider` component
    * @param element
    * @param options
    * @param bindings
@@ -109,11 +109,11 @@ export class AuthenticationProvider extends Component {
         className: 'coveo-authentication-provider',
         onOpen: () => this.authenticateWithProvider()
       });
-    })
+    });
   }
 
   private handleBuildingCallOptions(args: IBuildingCallOptionsEventArgs) {
-    args.options.authentication.push(this.options.name)
+    args.options.authentication.push(this.options.name);
   }
 
   private handleQueryError(args: IQueryErrorEventArgs) {
@@ -158,7 +158,7 @@ export class AuthenticationProvider extends Component {
       $$(iframe).detach();
       this.logger.info(`Got authentication for provider ${this.options.name}; retrying query.`);
       this.queryController.executeQuery();
-    }
+    };
   }
 
   private handleNuke() {

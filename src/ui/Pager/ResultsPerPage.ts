@@ -2,10 +2,10 @@ import {Component} from '../Base/Component';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {Initialization} from '../Base/Initialization';
-import {QueryEvents, IQuerySuccessEventArgs, INoResultsEventArgs} from '../../events/QueryEvents'
-import {analyticsActionCauseList, IAnalyticsResultsPerPageMeta, IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta'
-import {Assert} from '../../misc/Assert'
-import {$$} from '../../utils/Dom'
+import {QueryEvents, IQuerySuccessEventArgs, INoResultsEventArgs} from '../../events/QueryEvents';
+import {analyticsActionCauseList, IAnalyticsResultsPerPageMeta, IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta';
+import {Assert} from '../../misc/Assert';
+import {$$} from '../../utils/Dom';
 
 export interface IResultsPerPageOptions {
   choicesDisplayed?: number[];
@@ -25,7 +25,7 @@ export class ResultsPerPage extends Component {
   static options: IResultsPerPageOptions = {
     /**
      * Specifies the possible values of the number of results to display per page.<br/>
-     * The default value is 10, 25, 50, 100
+     * The default value is 10, 25, 50, 100.
      */
     choicesDisplayed: ComponentOptions.buildCustomListOption<number[]>(function (list: string[]) {
       let values = _.map(list, function (value) {
@@ -47,7 +47,7 @@ export class ResultsPerPage extends Component {
   /**
    * Create a new ResultsPerPage<br/>
    * Render itself on every query success.
-   * @param element HTMLElement on which to instantiate the page (Normally : a div)
+   * @param element HTMLElement on which to instantiate the page (Normally : a div).
    * @param options
    * @param bindings
    */
@@ -66,7 +66,7 @@ export class ResultsPerPage extends Component {
 
   /**
    * Set the current number of results per page, and execute a query.<br/>
-   * Log the required analytics event (pagerResize by default)
+   * Log the required analytics event (pagerResize by default).
    * @param resultsPerPage
    * @param analyticCause
    */
@@ -121,7 +121,7 @@ export class ResultsPerPage extends Component {
       ((resultsPerPage: number) => {
         listItem.on('click', () => {
           this.handleClickPage(numResultsList[resultsPerPage]);
-        })
+        });
       })(i);
 
       listItem.el.appendChild($$('a', {

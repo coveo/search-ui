@@ -22,7 +22,7 @@ export class DefaultMatrixResultPreviewTemplate extends Template {
       Globalize.format(parseInt(object.raw[this.computedField.slice(1)]), this.format) +
       '</div>' +
       '</div>' +
-      '</div>'
+      '</div>';
     return preview;
   }
 

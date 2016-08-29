@@ -1,16 +1,16 @@
 import {Component} from '../Base/Component';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {ComponentOptions} from '../Base/ComponentOptions';
-import {DeviceUtils} from '../../utils/DeviceUtils'
-import {QueryEvents, INewQueryEventArgs, IBuildingQueryEventArgs, IQuerySuccessEventArgs, INoResultsEventArgs} from '../../events/QueryEvents'
-import {MODEL_EVENTS, IAttributeChangedEventArg} from '../../models/Model'
-import {QueryStateModel} from '../../models/QueryStateModel'
-import {QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel'
-import {analyticsActionCauseList, IAnalyticsPagerMeta, IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta'
+import {DeviceUtils} from '../../utils/DeviceUtils';
+import {QueryEvents, INewQueryEventArgs, IBuildingQueryEventArgs, IQuerySuccessEventArgs, INoResultsEventArgs} from '../../events/QueryEvents';
+import {MODEL_EVENTS, IAttributeChangedEventArg} from '../../models/Model';
+import {QueryStateModel} from '../../models/QueryStateModel';
+import {QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
+import {analyticsActionCauseList, IAnalyticsPagerMeta, IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta';
 import {Initialization} from '../Base/Initialization';
-import {Assert} from '../../misc/Assert'
-import {l} from '../../strings/Strings'
-import {$$} from '../../utils/Dom'
+import {Assert} from '../../misc/Assert';
+import {l} from '../../strings/Strings';
+import {$$} from '../../utils/Dom';
 
 export interface IPagerOptions {
   numberOfPages?: number;
@@ -20,7 +20,7 @@ export interface IPagerOptions {
 
 /**
  * This component attaches itself to a div and allows users to navigate through the different result pages.<br/>
- * It takes care of triggering a query with the correct range whenever a user selects a page or uses the navigation buttons (Previous, Next).
+ * It takes care of triggering a query with the correct range whenever a user selects a page or uses the navigation buttons (**Previous**, **Next**).
  */
 export class Pager extends Component {
   static ID = 'Pager';
@@ -32,7 +32,7 @@ export class Pager extends Component {
   static options: IPagerOptions = {
     /**
      * Specifies how many page links to display in the pager.<br/>
-     * The default value is 5 pages on desktop, 3 on mobile
+     * The default value is 5 pages on desktop, 3 on mobile.
      */
     numberOfPages: ComponentOptions.buildNumberOption({
       defaultFunction: () => {
@@ -45,14 +45,14 @@ export class Pager extends Component {
       min: 1
     }),
     /**
-     * Specifies whether the Previous and Next buttons appear at each end of the pager when appropriate.<br/>
-     * The default value is true.
+     * Specifies whether the **Previous** and **Next** buttons appear at each end of the pager when appropriate.<br/>
+     * The default value is `true`.
      */
     enableNavigationButton: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies the maximum number of pages that will be displayed if enough results are available.<br/>
      * The default value is 100 pages.<br/>
-     * This property is typically set when the default number of accessible results from the index has been changed from it's default value of 1000. (So 10 per page X 100 maximumNumberOfPage)
+     * This property is typically set when the default number of accessible results from the index has been changed from its default value of 1000. (So 10 per page X 100 maximumNumberOfPage)
      */
     maxNumberOfPages: ComponentOptions.buildNumberOption({ defaultValue: undefined })
   };
@@ -105,7 +105,7 @@ export class Pager extends Component {
 
   /**
    * Set the current page, and execute a query.<br/>
-   * Log the required analytics event (pagerNumber by default)
+   * Log the required analytics event (pagerNumber by default).
    * @param pageNumber
    * @param analyticCause
    */
@@ -123,7 +123,7 @@ export class Pager extends Component {
 
   /**
    * Go to the previous page, and execute a query.<br/>
-   * Log the required analytics event (pagerPrevious)
+   * Log the required analytics event (pagerPrevious).
    */
   public previousPage() {
     this.setPage(this.currentPage - 1, analyticsActionCauseList.pagerPrevious);
@@ -131,7 +131,7 @@ export class Pager extends Component {
 
   /**
    * Go to the next page, and execute a query.<br/>
-   * Log the required analytics event (pagerNext)
+   * Log the required analytics event (pagerNext).
    */
   public nextPage() {
     this.setPage(this.currentPage + 1, analyticsActionCauseList.pagerNext);
@@ -184,7 +184,7 @@ export class Pager extends Component {
           ((pageNumber: number) => {
             $$(listItem).on('click', () => {
               this.handleClickPage(pageNumber);
-            })
+            });
           })(i);
 
           listItem.appendChild(listItemValue);

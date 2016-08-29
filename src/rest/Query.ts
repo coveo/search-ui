@@ -192,7 +192,7 @@ export interface IQuery {
   /**
    * The context is a map of key_value that can be used in the Query pipeline in the Coveo platform.<br/>
    */
-  context?: { [name: string]: any }
+  context?: { [name: string]: any };
 
   /**
    * The actions history represents the past actions a user made and is used by reveal to suggest recommendations.

@@ -7,7 +7,7 @@ import {IRevealQuerySuggestResponse} from './RevealQuerySuggest';
 import {IIndexFieldValue} from '../rest/FieldValue';
 import {IQueryResult} from '../rest/QueryResult';
 import {IEndpointError} from '../rest/EndpointError';
-import {IExtension} from '../rest/Extension'
+import {IExtension} from '../rest/Extension';
 import {IQueryResults} from './QueryResults';
 import {IFieldDescription} from '../rest/FieldDescription';
 import {IListFieldValuesRequest} from './ListFieldValuesRequest';

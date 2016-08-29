@@ -16,10 +16,10 @@ export class RevealQuerySuggestAddon {
     return suggestion.highlighted.replace(/\[(.*?)\]|\{(.*?)\}|\((.*?)\)/g, (part, notMatched, matched, corrected) => {
       var className = '';
       if (matched) {
-        className = 'coveo-omnibox-hightlight'
+        className = 'coveo-omnibox-hightlight';
       }
       if (corrected) {
-        className = 'coveo-omnibox-hightlight2'
+        className = 'coveo-omnibox-hightlight2';
       }
       return RevealQuerySuggestAddon.suggestiontHtmlTemplate({
         className: className,
@@ -52,7 +52,7 @@ export class RevealQuerySuggestAddon {
 
   private waitingRequest: {
     text: string;
-  }
+  };
 
   public getSuggestion(): Promise<IOmniboxSuggestion[]> {
 
@@ -71,7 +71,7 @@ export class RevealQuerySuggestAddon {
       this.cache[text] = promise;
       promise.catch(() => {
         delete this.cache[text];
-      })
+      });
     } else {
       if (this.waitingRequest != null) {
         this.waitingRequest = null;
@@ -87,7 +87,7 @@ export class RevealQuerySuggestAddon {
     var payload = <IRevealQuerySuggestRequest>{ q: text },
       language = <string>String['locale'],
       searchHub = this.omnibox.getBindings().componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchHub),
-      pipeline = this.omnibox.getBindings().searchInterface.options.pipeline
+      pipeline = this.omnibox.getBindings().searchInterface.options.pipeline;
 
     if (language) {
       payload.language = language;
@@ -111,10 +111,10 @@ export class RevealQuerySuggestAddon {
             text: completion.expression,
             index: RevealQuerySuggestAddon.INDEX - i / completions.length,
             partial: RevealQuerySuggestAddon.isPartialMatch(completion)
-          }
+          };
         });
         return results;
-      })
+      });
 
     this.currentPromise.finally(() => {
       this.currentPromise = null;
@@ -122,7 +122,7 @@ export class RevealQuerySuggestAddon {
         this.getRevealQuerySuggest(this.waitingRequest.text);
         this.waitingRequest = null;
       }
-    })
+    });
 
     return this.currentPromise;
   }
