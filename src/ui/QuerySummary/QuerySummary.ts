@@ -17,7 +17,7 @@ export interface IQuerySummaryOptions {
 
 /**
  * This component displays information about the current range of results being displayed (ex: 1-10 of 123).<br/>
- * If the query matches no documents, it will display advices and tip for the end user on how to remedy the problem.
+ * If the query matches no document, it will display advices and tip for the end user on how to remedy the problem.
  */
 export class QuerySummary extends Component {
   static ID = 'QuerySummary';

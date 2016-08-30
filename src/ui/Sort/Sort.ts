@@ -33,11 +33,11 @@ export class Sort extends Component {
      *   <li><code>relevancy</code></li>
      *   <li><code>Date</code></li>
      *   <li><code>qre</code></li>
-     *   <li><code>@fieldname</code> (replace fieldname with an actual field name (e.g. <code>@syssize</code>)</li>
+     *   <li><code>@fieldname</code> (replace fieldname with an actual field name (e.g.: <code>@syssize</code>).</li>
      * </ul>
      *
-     * A direction (ascending or descending) can be specified, for example "date ascending"<br/>
-     * A Sort component can have multiple criteria, passed as a list<br/>
+     * A direction (ascending or descending) can be specified, for example "date ascending".<br/>
+     * A Sort component can have multiple criteria, passed as a list.<br/>
      * This option is required.
      */
     sortCriteria: ComponentOptions.buildCustomListOption((values: string[] | SortCriteria[]) => {
@@ -50,8 +50,8 @@ export class Sort extends Component {
       });
     }, { required: true }),
     /**
-     * The caption to display on the element<br/>
-     * If not specified, the component will use the tag's body
+     * The caption to display on the element.<br/>
+     * If not specified, the component will use the tag body.
      */
     caption: ComponentOptions.buildLocalizedStringOption({ required: true })
   };
@@ -92,7 +92,7 @@ export class Sort extends Component {
   /**
    * Select the Sort component.
    * @param direction The sort direction (e.g. ascending, descending)<br/>
-   * Will trigger a query if the selection made the criteria change (if it was toggled)
+   * Will trigger a query if the selection made the criteria change (if it was toggled).
    */
   public select(direction?: string) {
     if (direction) {

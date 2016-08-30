@@ -36,10 +36,10 @@ export interface IAnalyticsOptions {
 
 /**
  * This component logs all user actions performed in the search interface and sends them to a REST web service exposed through the Coveo Cloud platform.<br/>
- * You can use this data to evaluate how users are interacting with the search interface, improve relevance and produce analytics dashboards in the Coveo platform.
+ * You can use data to evaluate how users are interacting with the search interface, improve relevance and produce analytics dashboards in the Coveo platform.
  *
  * # Sending Custom Events
- * In some scenarios, you want to send custom data to the Coveo Cloud analytics (see Coveo Cloud Usage Analytics). The Coveo JavaScript Search Framework offers helpers to communicate with the Coveo Analytics REST API, so you do not have to write code to call the API directly.
+ * In some scenarios, you want to send custom data to the Coveo Cloud analytics (see [Coveo Cloud Usage Analytics](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=89)). The Coveo JavaScript Search Framework offers helpers to communicate with the Coveo Analytics REST API, so you do not have to write code to call the API directly.
  *
  * 1. First, you need to craft your custom event cause and meta.
  * ```
@@ -47,14 +47,14 @@ export interface IAnalyticsOptions {
  *   var metadata = {key1: "value1", key2:"value2"};
  * ```
  *
- * 2. Sending a custom event.
+ * 2. Send your custom event.
  * ```
  *   Coveo.logCustomEvent(document.querySelector('#search'), customEventCause, metadata);
  *      // OR (using the jquery extension)
  *   $('#search').coveo('logCustomEvent', customEventCause, metadata);
  * ```
  *
- * 3. Sending a custom search event<br/>(**NB : If you want to log a searchEvent, be sure to always call the helper before you call executeQuery.**)
+ * 3. Send your custom search event<br/>**NB: If you want to log a `searchEvent`, be sure to always call the helper before you call `executeQuery`.**
  * ```
  * function myCustomButtonWasClicked() {
  *      Coveo.logSearchEvent(document.querySelector('#search'), customEventCause, metadata);
@@ -65,7 +65,7 @@ export interface IAnalyticsOptions {
  * }
  * ```
  *
- * 4. Sending a custom searchAsYouType event<br/>(NB : **If you want to log a searchAsYouTypeEvent, be sure to always call the helper before you call executeQuery.**)
+ * 4. Send a custom `searchAsYouType` event<br/>**NB: If you want to log a `searchAsYouTypeEvent`, be sure to always call the helper before you call `executeQuery`.**)
  * ```
  * function myCustomButtonWasClicked() {
  *      Coveo.logSearchAsYouTypeEvent(document.querySelector('#search'), customEventCause, metadata);
@@ -76,16 +76,16 @@ export interface IAnalyticsOptions {
  * }
  * ```
  *
- * 5. Sending a custom click event
+ * 5. Send a custom click event.
  * ```
  * Coveo.logClickEvent(document.querySelector('#search'), customEventCause, metadata, result);
- * // OR (using the jquery extension)
+ * // OR (using the jQuery extension)
  * $('#search').coveo('logClickEvent', customEventCause, metadata, result);
  * ```
  */
 export class Analytics extends Component {
   static ID = 'Analytics';
-  // NOTE: The default values for some of those options (organization, endpoint, searchHub) can be
+  // NOTE: The default values for some of those options (`organization`, `endpoint`, `searchHub`) can be
   // overridden by generated code when using hosted search pages.
 
   /**
@@ -113,7 +113,7 @@ export class Analytics extends Component {
     /**
      * Specifies whether the search user identities are converted in a unique hash in the logged analytics data to prevent analytics reviewers and managers to identify who performs which queries.<br/>
      * When enabled, the Coveo Analytics Platform can still properly identify sessions made by anonymous users, versus ones from users that are authenticated in some way with the site containing the search page.<br/>
-     * The default value is false.
+     * The default value is `false`.
      */
     anonymous: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
@@ -143,15 +143,15 @@ export class Analytics extends Component {
   };
 
   /**
-   * A reference to the analyticsClient, which will perform the heavy duty part of logging the actual events on the service.
+   * A reference to the `analyticsClient`, which will perform the heavy duty part of logging the actual events on the service.
    */
   public client: IAnalyticsClient;
 
   /**
-   * Create a new Analytics component. Create the {@link IAnalyticsClient}
+   * Create a new Analytics component. Create the {@link IAnalyticsClient}.
    * @param element The HTMLElement on which the component will be instantiated.
    * @param options The options for the Analytics.
-   * @param bindings The bindings that the component requires to function normally. If not set, will automatically resolve them (With slower execution time)
+   * @param bindings The bindings that the component requires to function normally. If not set, it will automatically resolve them (with slower execution time).
    */
   constructor(public element: HTMLElement, public options: IAnalyticsOptions = {}, public bindings?: IComponentBindings) {
     super(element, Analytics.ID, bindings);
@@ -164,7 +164,7 @@ export class Analytics extends Component {
     this.bind.onRootElement(QueryEvents.buildingQuery, (data: IBuildingQueryEventArgs) => this.handleBuildingQuery(data));
     this.bind.onRootElement(QueryEvents.queryError, (data: IQueryErrorEventArgs) => this.handleQueryError(data));
 
-    // Analytics component is a bit special : It can be higher in the dom tree than the search interface
+    // Analytics component is a bit special: It can be higher in the dom tree than the search interface
     // Need to resolve down to find the componentOptionsModel if we need to.
     if (!this.componentOptionsModel) {
       let cmpOptionElement = $$(element).find('.' + Component.computeCssClassName(ComponentOptionsModel));
@@ -183,12 +183,12 @@ export class Analytics extends Component {
   /**
    * Log a search event on the service, using a cause and a meta object.<br/>
    * Note that the event will be sent on the service when a query successfully return, not immediately after calling this method.<br/>
-   * Normally, this should be called using the following "format" : <br/>
+   * Normally, this should be called using the following "format": <br/>
    * usageAnalytics.logSearchEvent<SomeMeta>({name : 'foo', type : 'bar'}, <SomeMeta>{'key':'value'});<br/>
    * this.queryController.executeQuery();<br/>
-   * This will queue up an analytics search event. Then the query is executed. The search event will be sent to the service when the query successfully complete.<br/>
+   * This will queue up an analytics search event. Then the query is executed. The search event will be sent to the service when the query is successfully completed.<br/>
    * @param actionCause
-   * @param meta Can be an empty object ( {} )
+   * @param meta Can be an empty object ( {} ).
    */
   public logSearchEvent<T>(actionCause: IAnalyticsActionCause, meta: T) {
     this.client.logSearchEvent<T>(actionCause, meta);
@@ -197,17 +197,17 @@ export class Analytics extends Component {
   /**
    * Log a search as you type event on the service, using a cause and a meta object.<br/>
    * This is extremely similar to a search event, except that search as you type, by definition, will be frequently called.<br/>
-   * The {@link PendingSearchAsYouTypeEvent} will take care of logging only the "relevant" last event : After 5 seconds of no event logged, or after another search event is triggered somewhere else in the interface.<br/>
+   * The `PendingSearchAsYouTypeEvent` will take care of logging only the "relevant" last event: After 5 seconds of no event logged, or after another search event is triggered somewhere else in the interface.<br/>
    * This is to ensure that we do not needlessly log every single partial query, which would make the reporting very confusing.
    * @param actionCause
-   * @param meta Can be an empty object ( {} )
+   * @param meta Can be an empty object ( {} ).
    */
   public logSearchAsYouType<T>(actionCause: IAnalyticsActionCause, meta: T) {
     this.client.logSearchAsYouType(actionCause, meta);
   }
 
   /**
-   * Log a custom event on the service. A custom event can be used to create customized report, or to track events which are not queries or document view.
+   * Log a custom event on the service. A custom event can be used to create customized report, or to track events which are not queries or document views.
    * @param actionCause
    * @param meta
    * @param element The HTMLElement that was interacted with for this custom event.
@@ -221,9 +221,9 @@ export class Analytics extends Component {
    * eg : Clicking on a result link of opening a quickview.<br/>
    * This event will be logged immediately on the service.
    * @param actionCause
-   * @param meta Can be an empty object ( {} )
-   * @param result The result that was clicked
-   * @param element The HTMLElement that was clicked in the interface
+   * @param meta Can be an empty object ( {} ).
+   * @param result The result that was clicked.
+   * @param element The HTMLElement that was clicked in the interface.
    */
   public logClickEvent(actionCause: IAnalyticsActionCause, meta: IAnalyticsDocumentViewMeta, result: IQueryResult, element: HTMLElement = this.element) {
     this.client.logClickEvent(actionCause, meta, result, element);
@@ -344,7 +344,7 @@ export class Analytics extends Component {
   }
 
   private static getClient(element: HTMLElement, options: IAnalyticsOptions, bindings: IComponentBindings): IAnalyticsClient {
-    // This check if an element is already initialized as an analytics component
+    // This check if an element is already initialized as an analytics component.
     // If that's the case, return the client on that element.
     // Otherwise, init and return.
     let foundOnElement = Component.get(element, Analytics, true);

@@ -157,8 +157,8 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       var pendingSearchEvent = this.pendingSearchEvent = new PendingSearchEvent(this.rootElement, this.endpoint, searchEvent, this.sendToCloud);
 
       Defer.defer(() => {
-        // At this point all duringQuery events should have been fired, so we can forget
-        // about the pending search event. It'll finish processing automatically when
+        // At this point all `duringQuery` events should have been fired, so we can forget
+        // about the pending search event. It will finish processing automatically when
         // all the deferred that were caught terminate.
         this.pendingSearchEvent = undefined;
         pendingSearchEvent.stopRecording();
@@ -305,8 +305,8 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     };
 
     // This is for backward compatibility. Before the analytics were using either numbered
-    // metas in metaDataAsNumber of later on named metas in metaDataAsString. Thus we still
-    // provide those properties in a deprecated way. Below we're moving any data that's put
+    // metas in `metaDataAsNumber` of later on named metas in `metaDataAsString`. Thus we still
+    // provide those properties in a deprecated way. Below we are moving any data that put
     // in them to the root.
     (<any>metaObject)['metaDataAsString'] = {};
     (<any>metaObject)['metaDataAsNumber'] = {};
@@ -326,7 +326,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     event.customData = metaObject;
 
     // This is for backward compatibility. Before the analytics were using either numbered
-    // metas in metaDataAsNumber of later on named metas in metaDataAsString. I'm now putting
+    // metas in `metaDataAsNumber` of later on named metas in `metaDataAsString`. We are now putting
     // them all at the root, and if I encounter the older properties I move them to the top
     // level after issuing a warning.
 

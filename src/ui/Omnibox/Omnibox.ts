@@ -50,9 +50,9 @@ export interface IOmniboxOptions extends IQueryboxOptions {
 }
 
 /**
- * This component is very similar to the simpler {@link Querybox} Component and support all the same options/behavior except for the search-as-you-type feature.<br/>
+ * This component is very similar to the simpler {@link Querybox} component and support all the same options/behavior except for the search-as-you-type feature.<br/>
  * In addition, it takes care of adding a type-ahead capability. The type-ahead and the suggestions it displays are customizable and extensible by any custom component.<br/>
- * The type-ahead is configurable by activating addon which are provided OOTB (facets, analytics suggestions, reveal suggestions, and advanced coveo syntax suggestions).<br/>
+ * The type-ahead is configurable by activating addon which are provided OOTB (facets, analytics suggestions, Reveal suggestions, and advanced Coveo syntax suggestions).<br/>
  * It is also possible for external code to provide suggestions.
  */
 export class Omnibox extends Component {
@@ -65,14 +65,14 @@ export class Omnibox extends Component {
   static options: IOmniboxOptions = {
     /**
      * Specifies that suggestions appearing in the omnibox should push the result down, instead of appearing over the results.<br/>
-     * Activate this as well a searchAsYouType + reveal suggestions for a cool effect !<br/>
+     * Activate this as well a `SearchAsYouType` + Reveal suggestions for a cool effect!<br/>
      * Default value is false
      */
     inline: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies whether a new query is automatically triggered whenever the user types new text inside the query box.<br/>
-     * Activate this as well a inline + reveal suggestions for a cool effect !<br/>
-     * The default is false.
+     * Activate this as well a inline + Reveal suggestions for a cool effect!<br/>
+     * The default is `false`.
      */
     enableSearchAsYouType: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
@@ -87,7 +87,7 @@ export class Omnibox extends Component {
     /**
      * Specifies whether the field addon should be enabled.<br/>
      * The field addon allows the search box to highlight and complete field syntax.<br/>
-     * Default value is false
+     * Default value is `false`.
      *
      * > Example:
      * > You want to filter on a file type. You start typing @sysf and matching fields are proposed. You select the @sysfiletype suggestion, enter = and the available matching file types are proposed.
@@ -96,15 +96,15 @@ export class Omnibox extends Component {
     enableSimpleFieldAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableFieldAddon' }),
     listOfFields: ComponentOptions.buildFieldsOption({ depend: 'enableFieldAddon' }),
     /**
-     * Specifies whether the reveal query suggestions should be enabled.<br/>
-     * This implies that your integration has a proper reveal integration configured.<br/>
-     * Default value is false
+     * Specifies whether the Reveal query suggestions should be enabled.<br/>
+     * This implies that your integration has a proper Reveal integration configured.<br/>
+     * Default value is `false`.
      */
     enableRevealQuerySuggestAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, alias: 'enableTopQueryAddon' }),
     /**
      * Specifies whether the query extension addon should be enabled.<br/>
      * This allows the omnibox to complete the syntax for query extensions.<br/>
-     * Default value is false
+     * Default value is `false`.
      */
     enableQueryExtensionAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableQuerySyntax' }),
     /**
@@ -113,7 +113,7 @@ export class Omnibox extends Component {
     placeholder: ComponentOptions.buildStringOption(),
     /**
      * Specifies a timeout before rejecting suggestions in the omnibox.<br/>
-     * Default value is 2000 (2 seconds)
+     * Default value is 2000 (2 seconds).
      */
     omniboxTimeout: ComponentOptions.buildNumberOption({ defaultValue: 2000 })
   };
@@ -127,7 +127,7 @@ export class Omnibox extends Component {
   private searchAsYouTypeTimeout: number;
 
   /**
-   * Create a new omnibox with, enable required addons, and bind events on letious query events
+   * Create a new omnibox with, enable required addons, and bind events on letious query events.
    */
   constructor(public element: HTMLElement, public options?: IOmniboxOptions, bindings?: IComponentBindings) {
     super(element, Omnibox.ID, bindings);
@@ -181,7 +181,7 @@ export class Omnibox extends Component {
   }
 
   /**
-   * Trigger a query. The current input content will be added to the query<br/>
+   * Trigger a query. The current input content will be added to the query.<br/>
    * If the content of the input has not changed since the last submit, no new query will be triggered.
    */
   public submit() {
@@ -217,7 +217,7 @@ export class Omnibox extends Component {
   }
 
   /**
-   * Get the HTMLInputElement of the omnibox
+   * Get the `HTMLInputElement` of the omnibox
    */
   public getInput() {
     return <HTMLInputElement>this.magicBox.element.querySelector('input');

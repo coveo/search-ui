@@ -28,7 +28,7 @@ export interface IAnalyticsResultTaggingMeta {
 }
 
 /**
- * This component can be used as part of a result template to list the current tag field values for the search result
+ * This component can be used as part of a result template to list the current tag field values for the search result.
  * and display a control that allows end-users to add a value to a tag field.
  */
 export class ResultTagging extends Component {
@@ -54,7 +54,7 @@ export class ResultTagging extends Component {
     suggestBoxSize: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0 }),
     /**
      * Specifies how long to wait in milliseconds until the suggested item list disappears when you focus out.<br/>
-     * Default valus is 2000
+     * Default valus is 2000.
      */
     autoCompleteTimer: ComponentOptions.buildNumberOption({ defaultValue: 2000, min: 0 })
   };

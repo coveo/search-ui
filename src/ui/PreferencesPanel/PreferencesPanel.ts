@@ -12,7 +12,7 @@ export interface IPreferencesPanelOptions {
 }
 
 /**
- * A panel that is displayed inside the {@link Settings} component, and allows end user to select some customization for their interface, saved in local storage.
+ * A panel that is displayed inside the {@link Settings} component, and allows end user to select some customizations for their interface, saved in local storage.
  */
 export class PreferencesPanel extends Component {
   static ID = 'PreferencesPanel';
