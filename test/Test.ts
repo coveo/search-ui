@@ -65,6 +65,9 @@ DropdownTest();
 import {DatePickerTest} from './ui/AdvancedSearch/Form/DatePickerTest';
 DatePickerTest();
 
+import {RadioButtonTest} from './ui/AdvancedSearch/Form/RadioButtonTest';
+RadioButtonTest();
+
 import {KeywordsInputTest} from './ui/AdvancedSearch/KeywordsInput/KeywordsInputTest';
 KeywordsInputTest();
 

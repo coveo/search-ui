@@ -22,7 +22,7 @@ export function TextInputTest() {
     it('should contain a label if specified', () => {
       let label = 'Label';
 
-      textInput = new TextInput(()=>{}, label);
+      textInput = new TextInput(() => { }, label);
       let element = textInput.getElement();
       let labelHTML = <HTMLInputElement>$$(element).find('label');
       expect($$(labelHTML).text()).toEqual(label);

@@ -97,6 +97,7 @@ export {NumericSpinner} from './ui/AdvancedSearch/Form/NumericSpinner';
 export {DatePicker} from './ui/AdvancedSearch/Form/DatePicker';
 export {Dropdown} from './ui/AdvancedSearch/Form/Dropdown';
 export {TextInput} from './ui/AdvancedSearch/Form/TextInput';
+export {RadioButton} from './ui/AdvancedSearch/Form/RadioButton';
 export {FollowItem} from './ui/SearchAlerts/FollowItem';
 export {SearchAlerts} from './ui/SearchAlerts/SearchAlerts';
 export {SearchAlertsMessage} from './ui/SearchAlerts/SearchAlertsMessage';

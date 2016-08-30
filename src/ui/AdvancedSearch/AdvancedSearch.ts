@@ -8,14 +8,9 @@ import {ISettingsPopulateMenuArgs} from '../Settings/Settings';
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom';
-import {IAdvancedSearchInput, IAdvancedSearchPrebuiltInput, IAdvancedSearchSection} from './AdvancedSearchInput';
+import {IAdvancedSearchInput, IAdvancedSearchPrebuiltInput, IAdvancedSearchSection, IExternalAdvancedSearchSection} from './AdvancedSearchInput';
 import {AdvancedSearchInputFactory} from './AdvancedSearchInputFactory';
-import {NumericSpinner} from './Form/NumericSpinner';
-import {DatePicker} from './Form/DatePicker';
-import {Dropdown} from './Form/Dropdown';
-import {TextInput} from './Form/TextInput';
-import {QueryBuilder} from '../Base/QueryBuilder';
-import {BaseFormTypes} from "./AdvancedSearchInput";
+import {IQueryOptions} from '../../controllers/QueryController';
 
 export interface IAdvancedSearchOptions {
   includeKeywords?: boolean;
@@ -23,13 +18,9 @@ export interface IAdvancedSearchOptions {
   includeDocument?: boolean;
 }
 
-export interface IExternalAdvancedSearchSection extends IAdvancedSearchSection {
-  updateQuery: (inputs: BaseFormTypes[], queryBuilder: QueryBuilder) => void;
-}
-
 /**
  * The Advanced Search component allows the user to easily create a complex query to send to the index.
- * The component also allows custom code to modify the content by using the buildingAdvancedSearch event.
+ * The component also allows custom code to modify the content by using the {@link AdvancedSearchEvents.buildingAdvancedSearch} event.
  */
 export class AdvancedSearch extends Component {
   static ID = 'AdvancedSearch';
@@ -109,16 +100,18 @@ export class AdvancedSearch extends Component {
     this.externalSections = [];
     $$(this.root).trigger(AdvancedSearchEvents.buildingAdvancedSearch, {
       sections: this.externalSections,
-      executeQuery: () => this.queryController.executeQuery()
+      executeQuery: (options: IQueryOptions) => {
+        return this.queryController.executeQuery(options);
+      }
     });
 
 
     _.each(this.externalSections, (section: IExternalAdvancedSearchSection) => {
-      component.append(this.buildSection((section)));
-    })
+      component.append(this.buildExternalSection(section));
+    });
 
     _.each(inputSections, (section) => {
-      component.append(this.buildSection(section));
+      component.append(this.buildInternalSection(section));
     });
 
     $$(this.element).append(component.el);
@@ -162,23 +155,32 @@ export class AdvancedSearch extends Component {
     return { name: sectionName, inputs: documentInputs };
   }
 
-  private buildSection(section: IAdvancedSearchSection): HTMLElement {
-    let sectionHTML = $$('div', { className: 'coveo-advanced-search-section' });
-    let title = $$('div', { className: 'coveo-advanced-search-section-title' });
-    title.text(section.name);
-    sectionHTML.append(title.el);
+  private buildExternalSection(section: IExternalAdvancedSearchSection): HTMLElement {
+    let sectionHTML = this.buildSectionTitle(section);
+    this.inputs = _.union(this.inputs, <any>section.inputs);
+    sectionHTML.appendChild(section.content);
+    return sectionHTML;
+  }
 
+  private buildInternalSection(section: IAdvancedSearchSection): HTMLElement {
+    let sectionHTML = this.buildSectionTitle(section);
     let sectionInputs = [];
     _.each(section.inputs, (input) => {
       sectionInputs.push(this.buildDefaultInput(input));
     });
-
     this.inputs = _.union(this.inputs, sectionInputs);
-
     _.each(sectionInputs, (input) => {
-      sectionHTML.append(input.build());
+      $$(sectionHTML).append(input.build());
     });
 
+    return sectionHTML;
+  }
+
+  private buildSectionTitle(section: IAdvancedSearchSection): HTMLElement {
+    let sectionHTML = $$('div', { className: 'coveo-advanced-search-section' });
+    let title = $$('div', { className: 'coveo-advanced-search-section-title' });
+    title.text(section.name);
+    sectionHTML.append(title.el);
     return sectionHTML.el;
   }
 
@@ -209,7 +211,7 @@ export class AdvancedSearch extends Component {
         if (section.updateQuery) {
           section.updateQuery(<any>section.inputs, data.queryBuilder);
         }
-      })
+      });
       _.each(this.inputs, (input) => {
         if (input.updateQuery) {
           input.updateQuery(data.queryBuilder);

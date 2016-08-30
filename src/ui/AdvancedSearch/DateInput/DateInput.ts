@@ -2,31 +2,17 @@ import {IAdvancedSearchInput} from '../AdvancedSearchInput';
 import {AdvancedSearchEvents} from '../../../events/AdvancedSearchEvents';
 import {QueryBuilder} from '../../Base/QueryBuilder';
 import {$$} from '../../../utils/Dom';
+import {RadioButton} from '../Form/RadioButton';
 
 export class DateInput implements IAdvancedSearchInput {
 
   protected element: HTMLElement;
 
   constructor(public inputName: string) {
+    this.buildContent();
   }
 
   public build(): HTMLElement {
-    let date = $$('div', { className: 'coveo-advanced-search-date-input-section' });
-    let radioOption = $$('div', { className: 'coveo-radio' });
-    let radio = $$('input', { type: 'radio', name: 'coveo-advanced-search-date', id: this.inputName });
-    let label = $$('label', { className: 'coveo-advanced-search-label', 'for': this.inputName });
-    label.text(this.inputName);
-
-    radio.on('change', () => {
-      this.deactivateAllInputs();
-      this.activateSelectedInput();
-    });
-
-    radioOption.append(radio.el);
-    radioOption.append(label.el);
-    date.append(radioOption.el);
-    this.element = date.el;
-    this.bindRadioEvent();
     return this.element;
   }
 
@@ -53,6 +39,17 @@ export class DateInput implements IAdvancedSearchInput {
     return <HTMLInputElement>$$(this.element).find('input');
   }
 
+  private buildContent() {
+    let radio = new RadioButton(() => {
+      this.deactivateAllInputs();
+      this.activateSelectedInput();
+    }, this.inputName);
+    this.element = radio.getElement();
+    $$(this.element).addClass('coveo-advanced-search-date-input-section');
+    $$(radio.getRadio()).addClass('coveo-advanced-search-date');
+    $$(radio.getLabel()).addClass('coveo-advanced-search-label');
+  }
+
   private deactivateAllInputs() {
     let elements = $$(this.element.parentElement).findAll('fieldset');
     _.each(elements, (element) => {
@@ -72,11 +69,4 @@ export class DateInput implements IAdvancedSearchInput {
       $$(this.element).trigger(AdvancedSearchEvents.executeAdvancedSearch);
     }
   }
-
-  private bindRadioEvent() {
-    $$(this.getRadio()).on('change', () => {
-      $$(this.element).trigger(AdvancedSearchEvents.executeAdvancedSearch);
-    });
-  }
-
 }

@@ -131,6 +131,7 @@
     "src/ui/AdvancedSearch/Form/NumericSpinner.ts",
     "src/ui/AdvancedSearch/Form/DatePicker.ts",
     "src/ui/AdvancedSearch/Form/TextInput.ts",
+    "src/ui/AdvancedSearch/Form/RadioButton.ts",
     "src/ui/Aggregate/Aggregate.ts",
     "src/ui/Analytics/Analytics.ts",
     "src/ui/Analytics/AnalyticsActionListMeta.ts",

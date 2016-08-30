@@ -1,14 +1,16 @@
 import {AdvancedSearch, IAdvancedSearchOptions} from '../../../src/ui/AdvancedSearch/AdvancedSearch';
-import {IAdvancedSearchInput, IAdvancedSearchPrebuiltInput} from '../../../src/ui/AdvancedSearch/AdvancedSearchInput';
 import {AdvancedSearchEvents, IBuildingAdvancedSearchEventArgs} from '../../../src/events/AdvancedSearchEvents';
-import {SizeInput} from '../../../src/ui/AdvancedSearch/DocumentInput/SizeInput';
 import {QueryBuilder} from '../../../src/ui/Base/QueryBuilder';
-import {ExpressionBuilder} from '../../../src/ui/Base/ExpressionBuilder';
-import {SimpleFieldInput} from '../../../src/ui/AdvancedSearch/DocumentInput/SimpleFieldInput';
 import {Simulate} from '../../Simulate';
 import {$$} from '../../../src/utils/Dom';
 import {l} from '../../../src/strings/Strings';
 import * as Mock from '../../MockEnvironment';
+import {TextInput} from '../../../src/ui/AdvancedSearch/Form/TextInput';
+import {NumericSpinner} from '../../../src/ui/AdvancedSearch/Form/NumericSpinner';
+import {DatePicker} from '../../../src/ui/AdvancedSearch/Form/DatePicker';
+import {BaseFormTypes} from '../../../src/ui/AdvancedSearch/AdvancedSearchInput';
+import {AdvancedComponentSetupOptions} from '../../MockEnvironment';
+import {MockEnvironmentBuilder} from '../../MockEnvironment';
 
 export function AdvancedSearchTest() {
   describe('AdvancedSearch', () => {
@@ -22,107 +24,42 @@ export function AdvancedSearchTest() {
       test = null;
     });
 
-    it('should allow to customize inputs', () => {
-      let customInput = {
-        build: () => {
-          return $$('div').el;
-        },
-        updateQuery: (queryBuilder) => {
-          queryBuilder.advancedExpression.add('test');
-        }
-      };
+    it('shoud allow to customize inputs', () => {
 
-      onBuildingSearch(customInput);
-
-      $$(test.env.element).empty();
-      test = Mock.advancedComponentSetup<AdvancedSearch>(AdvancedSearch, new Mock.AdvancedComponentSetupOptions(test.env.element));
-
-      let simulate = Simulate.query(test.env);
-      expect(simulate.queryBuilder.advancedExpression.build()).toEqual('test');
-    });
-
-    it('should be able to add a custom input to an existing section', () => {
-      let customInput = {
-        build: () => {
-          return $$('div', { className: 'coveo-test' }).el;
-        },
-        updateQuery: (queryBuilder) => {
-          queryBuilder.advancedExpression.add('test');
-        }
-      };
-
-      $$(test.env.element).on(AdvancedSearchEvents.buildingAdvancedSearch, (e: Event, data: IBuildingAdvancedSearchEventArgs) => {
-        data.sections[0].inputs.push(customInput);
+      let root = $$('div').el;
+      let textInput = new TextInput(() => {
+      }, 'MyTextInput');
+      let numericInput = new NumericSpinner(() => {
+      }, 0, 10);
+      let dpicker = new DatePicker(() => {
       });
 
-      $$(test.env.element).empty();
-      test = Mock.advancedComponentSetup<AdvancedSearch>(AdvancedSearch, new Mock.AdvancedComponentSetupOptions(test.env.element));
+      let sectionElement = $$('div');
 
-      let section = getSection(l('Keywords'));
-      expect($$(section).find('.coveo-test')).toBeTruthy();
-    });
+      sectionElement.append(textInput.build());
+      sectionElement.append(numericInput.build());
+      sectionElement.append(dpicker.build());
 
-    it('should be able to remove a specific input from default section', () => {
-      $$(test.env.element).on(AdvancedSearchEvents.buildingAdvancedSearch, (e: Event, data: IBuildingAdvancedSearchEventArgs) => {
-        data.sections[2].inputs = _.filter(data.sections[2].inputs, (input) => {
-          return !(input instanceof SizeInput);
+      $$(root).on(AdvancedSearchEvents.buildingAdvancedSearch, (e: Event, args: IBuildingAdvancedSearchEventArgs) => {
+        expect(args.executeQuery).toBeDefined();
+        args.sections.push({
+          content: sectionElement.el,
+          name: 'My section',
+          updateQuery: (inputs: BaseFormTypes[], queryBuilder: QueryBuilder) => {
+            expect(inputs).toEqual(jasmine.arrayContaining([textInput, numericInput, dpicker]));
+            expect(queryBuilder).toBeDefined();
+          },
+          inputs: [textInput, numericInput, dpicker]
         });
       });
 
-      $$(test.env.element).empty();
-      test = Mock.advancedComponentSetup<AdvancedSearch>(AdvancedSearch, new Mock.AdvancedComponentSetupOptions(test.env.element));
-
-      let sizeInput = _.filter(test.cmp.inputs, (input) => {
-        return input instanceof SizeInput;
-      });
-
-      expect(sizeInput).toBeTruthy();
-    });
-
-    it('can create default inputs for custom sections', () => {
-      let customInput = {
-        name: 'document_size'
-      };
-
-      onBuildingSearch(customInput);
-
-      $$(test.env.element).empty();
-      test = Mock.advancedComponentSetup<AdvancedSearch>(AdvancedSearch, new Mock.AdvancedComponentSetupOptions(test.env.element, {
-        includeKeywords: false,
-        includeDate: false,
-        includeDocument: false
+      test = Mock.advancedComponentSetup<AdvancedSearch>(AdvancedSearch, new AdvancedComponentSetupOptions(undefined, undefined, (builder: MockEnvironmentBuilder) => {
+        builder.root = root;
+        return builder;
       }));
 
-      let sizeInput = _.find(test.cmp.inputs, (input) => {
-        return input instanceof SizeInput;
-      });
-      expect(sizeInput).toBeTruthy();
-    });
+      Simulate.query(test.env);
 
-    it('can create default inputs with options', () => {
-      let customInput = {
-        name: 'document_field',
-        parameters: {
-          name: 'test',
-          field: '@test'
-        }
-      };
-
-      onBuildingSearch(customInput);
-
-      $$(test.env.element).empty();
-      test = Mock.advancedComponentSetup<AdvancedSearch>(AdvancedSearch, new Mock.AdvancedComponentSetupOptions(test.env.element, {
-        includeKeywords: false,
-        includeDate: false,
-        includeDocument: false
-      }));
-
-      let simpleFieldInput = <SimpleFieldInput>_.find(test.cmp.inputs, (input) => {
-        return input instanceof SimpleFieldInput;
-      });
-      let queryBuilder = Mock.mock<QueryBuilder>(QueryBuilder);
-      queryBuilder.advancedExpression = Mock.mock<ExpressionBuilder>(ExpressionBuilder);
-      expect(simpleFieldInput.fieldName).toEqual('@test');
     });
 
     describe('exposes includeKeywords', () => {
@@ -173,15 +110,6 @@ export function AdvancedSearchTest() {
         return title.innerText == section;
       });
       return title ? title.parentElement : undefined;
-    }
-
-    function onBuildingSearch(input: IAdvancedSearchInput | IAdvancedSearchPrebuiltInput) {
-      $$(test.env.element).on(AdvancedSearchEvents.buildingAdvancedSearch, (e: Event, data: IBuildingAdvancedSearchEventArgs) => {
-        data.sections.push({
-          name: 'custom',
-          inputs: [input]
-        });
-      });
     }
   });
 }

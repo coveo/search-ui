@@ -1,6 +1,11 @@
 import {$$, Dom} from '../../../utils/Dom';
 import {l} from '../../../strings/Strings';
 
+/**
+ * This class will create a dropdown meant to be used inside the {@link AdvancedSearch} component.
+ *
+ * It can be, more specifically, used for external code using the {@link AdvancedSearchEvents.buildingAdvancedSearch}
+ */
 export class Dropdown {
 
   private element: HTMLElement;
@@ -8,8 +13,16 @@ export class Dropdown {
   private selectedIcon: Dom;
   private options: HTMLElement[] = [];
 
-  constructor(public onChange: () => void = () => { }, protected listOfValues: string[], private getDisplayValue: (string) => string = l) {
-    this.build();
+  /**
+   * Create a new dropdown.
+   * @param onChange will be called every time the dropdown change it's value. `this` will be the `Dropdown` instance.
+   * @param listOfValues will be the list of selectable values in the dropdown
+   * @param getDisplayValue An optional function that allow to modify the display value vs the actual value from the `listOfValues`
+   * @param label A label/title to display for this dropdown
+   */
+  constructor(public onChange: () => void = () => {
+  }, protected listOfValues: string[], private getDisplayValue: (string) => string = l, private label?: string) {
+    this.buildContent();
     this.select(0);
     this.bindEvents();
   }
@@ -18,24 +31,62 @@ export class Dropdown {
     $$(this.element).setAttribute('id', id);
   }
 
+  /**
+   * Open the dropdown.
+   */
   public open() {
     $$(this.element).addClass('coveo-open');
   }
 
+  /**
+   * Close the dropdown.
+   */
   public close() {
     $$(this.element).removeClass('coveo-open');
   }
 
+  /**
+   * Return the element on which the dropdown is bound.
+   * @returns {HTMLElement}
+   */
   public getElement(): HTMLElement {
     return this.element;
   }
 
+  /**
+   * Get the currently selected value in the dropdown.
+   * @returns {string}
+   */
   public getValue(): string {
     return $$(this.element).find('.coveo-dropdown-selected-value').getAttribute('value');
   }
 
+  /**
+   * Select a value from it's 0 based index in the {@link Dropdown.listOfValues}.
+   * @param index
+   */
   public select(index: number) {
     this.selectOption(this.options[index]);
+  }
+
+  /**
+   * Return the element on which the dropdown is bound.
+   * @returns {HTMLElement}
+   */
+  public build() {
+    return this.element;
+  }
+
+  private buildContent() {
+    let dropdown = $$('div', { className: 'coveo-dropdown' });
+    let button = $$('button', { className: 'coveo-button coveo-dropdown-toggle', type: 'button' });
+    button.setAttribute('data-toggle', 'coveo-dropdown');
+    this.selected = $$('span', { className: 'coveo-dropdown-selected-value' });
+    button.append(this.selected.el);
+    button.append($$('span', { className: 'coveo-dropdown-toggle-arrow' }).el);
+    dropdown.append(button.el);
+    dropdown.append(this.buildDropdownMenu(this.selected));
+    this.element = dropdown.el;
   }
 
   public selectValue(value: string) {
@@ -57,18 +108,6 @@ export class Dropdown {
     this.onChange();
   }
 
-  protected build() {
-    let dropdown = $$('div', { className: 'coveo-dropdown' });
-    let button = $$('button', { className: 'coveo-button coveo-dropdown-toggle', type: 'button' });
-    button.setAttribute('data-toggle', 'coveo-dropdown');
-    this.selected = $$('span', { className: 'coveo-dropdown-selected-value' });
-    button.append(this.selected.el);
-    button.append($$('span', { className: 'coveo-dropdown-toggle-arrow' }).el);
-    dropdown.append(button.el);
-    dropdown.append(this.buildDropdownMenu(this.selected));
-    this.element = dropdown.el;
-    return this.element;
-  }
 
   private buildDropdownMenu(selected: Dom): HTMLElement {
     let dropdownMenu = $$('ul', { className: 'coveo-dropdown-menu' });
