@@ -59,7 +59,7 @@ export class FieldValue extends Component {
     field: ComponentOptions.buildFieldOption({ defaultValue: '@field', required: true }),
     /**
      * Specifies the facet to be toggled when the component is clicked On.<br/>
-     * When no value is specified, the value of the `<code>field</code>` option is used.<br/>
+     * When no value is specified, the value of the <code>field</code> option is used.<br/>
      * If the facet ID is custom (e.g. not the same name as its field), you must specify
      * manually this option in order to link the correct facet.
      */
@@ -78,7 +78,7 @@ export class FieldValue extends Component {
     splitValues: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies the string used to split multi-value fields from the index.
-     * The default value is `<code>;</code>`.
+     * The default value is <code>;</code>.
      */
     separator: ComponentOptions.buildStringOption({ defaultValue: ';' }),
     /**
@@ -181,7 +181,7 @@ export class FieldValue extends Component {
 
   /**
    * Get the current field value from the current result.<br/>
-   * Returns <code>null</code> if value is an `<code>Object</code>`.
+   * Returns <code>null</code> if value is an <code>Object</code>.
    */
   public getValue() {
     let value = Utils.getFieldValue(this.result, this.options.field);

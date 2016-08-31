@@ -17,9 +17,9 @@ import {IRecommendationOptions} from '../Recommendation/Recommendation';
 
 /**
  * Initialize the framework with a basic search interface. Calls {@link Initialization.initSearchInterface}.<br/>
- * If using the jQuery extension, this is called using `<code>$('#root').coveo('init');</code>`.
+ * If using the jQuery extension, this is called using <code>$('#root').coveo('init');</code>.
  * @param element The root of the interface to initialize.
- * @param options JSON options for the framework (e.g.: `<code>{Searchbox : {enableSearchAsYouType : true}}</code>`).
+ * @param options JSON options for the framework (e.g.: <code>{Searchbox : {enableSearchAsYouType : true}}</code>).
  */
 export function init(element: HTMLElement, options: any = {}) {
   Initialization.initializeFramework(element, options, () => {
@@ -33,10 +33,10 @@ Initialization.registerNamedMethod('init', (element: HTMLElement, options: any =
 
 /**
  * Initialize the framework with a standalone search box. Calls {@link Initialize.initStandaloneSearchInterface}.<br/>
- * If using the jQuery extension, this is called using `<code>$('#root').coveo('initSearchbox');</code>`.
+ * If using the jQuery extension, this is called using <code>$('#root').coveo('initSearchbox');</code>.
  * @param element The root of the interface to initialize.
  * @param searchPageUri The search page on which to redirect when there is a query.
- * @param options JSON options for the framework (e.g.: `<code>{Searchbox : {enableSearchAsYouType : true}}</code>`).
+ * @param options JSON options for the framework (e.g.: <code>{Searchbox : {enableSearchAsYouType : true}}</code>).
  */
 export function initSearchbox(element: HTMLElement, searchPageUri: string, options: any = {}): void {
   Assert.isNonEmptyString(searchPageUri);
@@ -57,11 +57,11 @@ Initialization.registerNamedMethod('initSearchbox', (element: HTMLElement, searc
 
 /**
  * Initialize the framework with a recommendation interface. Calls {@link Initialization.initRecommendationInterface}.<br/>
- * If using the jQuery extension, this is called using `<code>$('#root').coveo('initRecommendation');</code>`.
+ * If using the jQuery extension, this is called using <code>$('#root').coveo('initRecommendation');</code>.
  * @param element The root of the interface to initialize.
  * @param mainSearchInterface The search interface to link with the recommendation interface (see {@link Recommendation}).
  * @param userContext The user context to pass with the query generated in the recommendation interface (see {@link Recommendation}).
- * @param options JSON options for the framework (e.g.: `<code>{Searchbox : {enableSearchAsYouType: true}}</code>`).
+ * @param options JSON options for the framework (e.g.: <code>{Searchbox : {enableSearchAsYouType: true}}</code>).
  */
 export function initRecommendation(element: HTMLElement, mainSearchInterface?: HTMLElement, userContext?: { [name: string]: any }, options: any = {}): void {
   var recommendationOptions = <IRecommendationOptions>{};
@@ -100,11 +100,11 @@ Initialization.registerNamedMethod('executeQuery', (element: HTMLElement) => {
 
 /**
  * Perform operation on the state ({@link QueryStateModel} of the interface.<br/>
- * Get the complete {@link QueryStateModel} object: `<code>Coveo.state(element)</code><br/>`.
- * Get an attribute from the {@link QueryStateModel}: `<code>Coveo.state(element, 'q')</code> Can be any attribute`.<br/>
- * Set an attribute on the {@link QueryStateModel}: `<code>Coveo.state(element, 'q', 'foobar')</code>`. Can be any attribute.<br/>
- * Set multiple attribute on the {@link QueryStateModel}: `<code>Coveo.state(element, {'q' : 'foobar' , sort : 'relevancy'})</code>`. Can be any attribute.<br/>
- * If using the jQuery extension, this is called using `<code>$('#root').coveo('state');</code>`.
+ * Get the complete {@link QueryStateModel} object: <code>Coveo.state(element)</code><br/>.
+ * Get an attribute from the {@link QueryStateModel}: <code>Coveo.state(element, 'q')</code> Can be any attribute.<br/>
+ * Set an attribute on the {@link QueryStateModel}: <code>Coveo.state(element, 'q', 'foobar')</code>. Can be any attribute.<br/>
+ * Set multiple attribute on the {@link QueryStateModel}: <code>Coveo.state(element, {'q' : 'foobar' , sort : 'relevancy'})</code>. Can be any attribute.<br/>
+ * If using the jQuery extension, this is called using <code>$('#root').coveo('state');</code>.
  * @param element The root of the interface for which to access the {@link QueryStateModel}.
  * @param args
  * @returns {any}
@@ -240,7 +240,7 @@ Initialization.registerNamedMethod('logClickEvent', (element: HTMLElement, click
  * Pass options to the framework, before it is initialized ({@link init}).<br/>
  * All the options passed with this calls will be merged together on initialization.
  * @param element The root of the interface for which you wish to set options.
- * @param optionsToSet JSON options for the framework (e.g.: `<code>{Searchbox : {enableSearchAsYouType: true}}</code>`).
+ * @param optionsToSet JSON options for the framework (e.g.: <code>{Searchbox : {enableSearchAsYouType: true}}</code>).
  */
 export function options(element: HTMLElement, optionsToSet: any = {}) {
   Initialization.registerDefaultOptions(element, optionsToSet);

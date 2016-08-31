@@ -24,7 +24,7 @@ export class ExportToExcel extends Component {
   static options: IExportToExcelOptions = {
     /**
      * The number of results included in the exported Excel file.<br/>
-     * The default value of `<code>100</code>` makes the generation and the download of the resulting Excel file
+     * The default value of <code>100</code> makes the generation and the download of the resulting Excel file
      * last about 1 second.<br/>
      * Increasing this value will exponentially increase the time needed to create the Excel file.<br/>
      * It is not recommended to go above the default index limit of 1000 search results.
