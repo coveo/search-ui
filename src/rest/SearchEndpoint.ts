@@ -413,7 +413,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
     callParams.queryString = callParams.queryString.concat(queryString);
-
+    callParams.queryString = _.uniq(callParams.queryString);
     return callParams.url + '?' + callParams.queryString.join('&');
   }
 
@@ -751,13 +751,14 @@ export class SearchEndpoint implements ISearchEndpoint {
     if (callOptions.contentType) {
       queryString.push('contentType=' + encodeURIComponent(callOptions.contentType));
     }
-
     return queryString;
   }
 
   private performOneCall<T>(params: IEndpointCallParameters, callOptions?: IEndpointCallOptions, autoRenewToken = true): Promise<T> {
     let queryString = this.buildBaseQueryString(callOptions);
     params.queryString = params.queryString.concat(queryString);
+    params.queryString = _.uniq(params.queryString);
+
     return this.caller.call(params)
       .then((response?: ISuccessResponse<T>) => {
         if (response.data && (<any>response.data).clientDuration) {

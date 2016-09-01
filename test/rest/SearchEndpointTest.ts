@@ -62,7 +62,29 @@ export function SearchEndpointTest() {
         ep = null;
       });
 
-      it('map it to organizationId', function () {
+      it('should not map it to organizationId', function () {
+        var fakeResult = FakeResults.createFakeResult();
+        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toBe(ep.getBaseUri() + '/html?workgroup=myOrgId&uniqueId=' + fakeResult.uniqueId);
+      });
+    });
+
+    describe('with an orgaganizationId argument', function () {
+      var ep: SearchEndpoint;
+
+      beforeEach(function () {
+        ep = new SearchEndpoint({
+          restUri: 'foo/rest/search',
+          queryStringArguments: {
+            organizationId: 'myOrgId'
+          }
+        });
+      });
+
+      afterEach(function () {
+        ep = null;
+      });
+
+      it('should not map it to workgroup', function () {
         var fakeResult = FakeResults.createFakeResult();
         expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toBe(ep.getBaseUri() + '/html?organizationId=myOrgId&uniqueId=' + fakeResult.uniqueId);
       });
