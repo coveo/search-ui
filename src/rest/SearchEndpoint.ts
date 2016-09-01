@@ -231,7 +231,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     this.logger.info('Performing REST query', query);
 
-    return this.performOneCall(callParams).then((results?: IQueryResults) => {
+    return this.performOneCall(callParams, callOptions).then((results?: IQueryResults) => {
       this.logger.info('REST query successful', results, query);
 
       // Version check
@@ -413,7 +413,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
     callParams.queryString = callParams.queryString.concat(queryString);
-
+    callParams.queryString = _.uniq(callParams.queryString);
     return callParams.url + '?' + callParams.queryString.join('&');
   }
 
@@ -703,12 +703,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     let queryString: string[] = [];
 
     for (let name in this.options.queryStringArguments) {
-      // The mapping workgroup --> organizationId is necessary for backwards compatibility
-      if (name == 'workgroup') {
-        queryString.push('organizationId' + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
-      } else {
-        queryString.push(name + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
-      }
+      queryString.push(name + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
     }
 
     if (callOptions && _.isArray(callOptions.authentication) && callOptions.authentication.length != 0) {
@@ -742,7 +737,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   private buildViewAsHtmlQueryString(uniqueId: string, callOptions?: IViewAsHtmlOptions): string[] {
     callOptions = _.extend({}, callOptions);
-    let queryString: string[] = [];
+    let queryString: string[] = this.buildBaseQueryString(callOptions);
     queryString.push('uniqueId=' + encodeURIComponent(uniqueId));
 
     if (callOptions.query || callOptions.queryObject) {
@@ -756,13 +751,14 @@ export class SearchEndpoint implements ISearchEndpoint {
     if (callOptions.contentType) {
       queryString.push('contentType=' + encodeURIComponent(callOptions.contentType));
     }
-
     return queryString;
   }
 
   private performOneCall<T>(params: IEndpointCallParameters, callOptions?: IEndpointCallOptions, autoRenewToken = true): Promise<T> {
     let queryString = this.buildBaseQueryString(callOptions);
     params.queryString = params.queryString.concat(queryString);
+    params.queryString = _.uniq(params.queryString);
+
     return this.caller.call(params)
       .then((response?: ISuccessResponse<T>) => {
         if (response.data && (<any>response.data).clientDuration) {
