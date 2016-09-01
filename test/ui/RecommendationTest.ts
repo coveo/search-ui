@@ -154,6 +154,11 @@ export function RecommendationTest() {
           expect(test.cmp.element.style.display).not.toEqual('none');
         });
       });
+
+      it('should hide on query error', () => {
+        Simulate.query(test.env, { error: { message: 'oh noes', type: 'bad', name: 'foobar' } });
+        expect(test.cmp.element.style.display).toEqual('none');
+      });
     });
   });
 }

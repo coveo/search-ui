@@ -16,6 +16,9 @@
   &.coveo-active, &:hover {
     color: $color-greyish-cyan;
     background-color: $color-greyish-teal-blue;
+    & a {
+      color: $color-greyish-cyan;
+    }
   }
   cursor: pointer;
 }
