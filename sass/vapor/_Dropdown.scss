@@ -1,0 +1,159 @@
+$button-padding-x: 16px;
+$button-padding-y: 8.5px;
+$dropdown-choices-top-bottom-margin: 8px;
+$dropdown-arrow-icon-size: 10px;
+$dropdown-icon-text-spacing: 10px;
+$dropdown-button-font-size: 13px;
+$dropdown-choice-font-size: 13px;
+$dropdown-menu-max-height: 240px;
+$form-bottom-padding: 30px;
+$form-top-padding: 20px;
+$form-elements-margin: 10px;
+$form-group-margin: 30px;
+$form-control-label-margin: 10px;
+$form-control-label-font-size: 13px;
+$form-section-header-margin-bottom: 20px;
+$form-heading-description-margin-top: 10px;
+
+@mixin slim-scroll($track-color: $color-light-grey, $thumb-color: $color-dark-grey) {
+  &::-webkit-scrollbar, ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track, ::-webkit-scrollbar-track {
+    background-color: $track-color;
+  }
+
+  &::-webkit-scrollbar-thumb, ::-webkit-scrollbar-thumb {
+    background-color: $thumb-color;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-button, ::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+  }
+}
+
+
+.coveo-dropdown {
+  position: relative;
+
+  display: inline-block;
+
+  .coveo-dropdown-toggle {
+    display: inline-block;
+    padding: 0 ($button-padding-x + $dropdown-arrow-icon-size + $dropdown-icon-text-spacing) 0 $button-padding-x;
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+}
+
+.coveo-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+
+  display: none;
+  float: left;
+  max-height: $dropdown-menu-max-height;
+  min-width: 100%;
+  padding: $dropdown-choices-top-bottom-margin 0;
+  margin: 0;
+  overflow-y: auto;
+
+  color: $color-greyish-dark-blue;
+  list-style: none;
+
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.41);
+  border: 1px solid $color-grey;
+  border-radius: 0 0 2px 2px;
+
+  @include slim-scroll($color-light-grey, $color-grey);
+
+  &.mod-right {
+    right: 0;
+    left: auto;
+  }
+
+  li {
+    > a, > span {
+      display: block;
+      padding: 8px $button-padding-x;
+      overflow: hidden;
+
+      color: $color-dark-grey;
+      font-size: $dropdown-choice-font-size;
+      line-height: 16px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      cursor: pointer;
+
+      .coveo-selected-icon{
+        margin-right: 5px;
+        vertical-align: middle;
+      }
+
+      &:hover, &:focus {
+        color: $color-greyish-dark-blue;
+
+        background: $color-light-grey;
+      }
+
+      &.state-selected {
+        font-weight: bold;
+      }
+
+      &.disabled {
+        color: $color-grey;
+
+        cursor: default;
+      }
+    }
+
+    &.active {
+      color: $color-greyish-dark-blue;
+
+      background-color: $color-light-grey;
+    }
+
+    &.divider {
+      height: 1px;
+      margin: 8px 0;
+
+      background-color: $color-grey;
+
+      cursor: default;
+    }
+  }
+}
+
+&.coveo-open > .coveo-dropdown-menu {
+  display: block;
+  margin-bottom: $form-bottom-padding;
+}
+
+.coveo-dropdown-toggle-arrow {
+  position: absolute;
+  top: calc(50% - 2px);
+  right: $button-padding-x;
+
+  width: $dropdown-arrow-icon-size;
+  height: $dropdown-arrow-icon-size;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid $color-teal;
+}
+
+&.coveo-open > .coveo-dropdown-toggle .coveo-dropdown-toggle-arrow {
+  top: calc(50% - #{$dropdown-arrow-icon-size} / 2 - 2px);
+  border-top: none;
+  border-bottom: 5px solid $color-teal;
+}

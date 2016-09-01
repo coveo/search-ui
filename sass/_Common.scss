@@ -80,8 +80,16 @@
 @import "ResponsiveTabs";
 @import "ResponsiveFacets";
 @import "Recommendation";
+@import "AdvancedSearch";
 
 @import "notifications/FollowItem";
 @import "notifications/FollowQuery";
 @import "notifications/SubscriptionsPanel";
 @import "notifications/SubscriptionsMessages";
+
+@import "vapor/Input";
+@import "vapor/NumericSpinner";
+@import "vapor/Radio";
+@import "vapor/Dropdown";
+@import "vapor/Button";
+@import "vapor/DatePicker";
