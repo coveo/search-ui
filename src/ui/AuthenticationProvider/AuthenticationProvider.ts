@@ -12,6 +12,7 @@ import {$$} from '../../utils/Dom';
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
 import {ModalBox} from '../../ExternalModulesShim';
+import {MissingAuthenticationError} from '../../rest/MissingAuthenticationError';
 
 export interface IAuthenticationProviderOptions {
   name?: string;
@@ -116,7 +117,9 @@ export class AuthenticationProvider extends Component {
   }
 
   private handleQueryError(args: IQueryErrorEventArgs) {
-    if (args.error['provider'] === this.options.name && this.redirectCount < 2 && this.redirectCount !== -1) {
+    let missingAuthError = <MissingAuthenticationError>args.error;
+
+    if (missingAuthError.isMissingAuthentication && missingAuthError.provider === this.options.name && this.redirectCount < 2 && this.redirectCount !== -1) {
       ++this.redirectCount;
       this.authenticateWithProvider();
     } else {
