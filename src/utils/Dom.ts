@@ -90,14 +90,14 @@ export class Dom {
    * @returns {string}
    */
   public text(txt?: string): string {
-    if (txt) {
+    if (Utils.isUndefined(txt)) {
+      return this.el.innerText || this.el.textContent;
+    } else {
       if (this.el.innerText != undefined) {
         this.el.innerText = txt;
       } else if (this.el.textContent != undefined) {
         this.el.textContent = txt;
       }
-    } else {
-      return this.el.innerText || this.el.textContent;
     }
   }
 
