@@ -156,7 +156,7 @@ export function RecommendationTest() {
       });
 
       it('should hide on query error', () => {
-        Simulate.query(test.env, {error: {message: 'oh noes', type: 'bad', name: 'foobar'}});
+        Simulate.query(test.env, { error: { message: 'oh noes', type: 'bad', name: 'foobar' } });
         expect(test.cmp.element.style.display).toEqual('none');
       });
     });
