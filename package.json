@@ -115,6 +115,7 @@
   },
   "dependencies": {
     "coveomagicbox": "1.0.9",
+"pikaday": "^1.4.0",
     "d3": "^4.2.1",
     "d3-scale": "^1.0.3",
     "es6-promise": "^3.1.2",

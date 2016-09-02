@@ -315,7 +315,7 @@ export class EndpointCaller {
           if (this.isSuccessHttpStatus(status)) {
             this.handleSuccessfulResponseThatMightBeAnError(requestInfo, data, resolve, reject);
           } else {
-            this.handleError(requestInfo, xmlHttpRequest.status, undefined, reject);
+            this.handleError(requestInfo, xmlHttpRequest.status, data, reject);
           }
         }
       };
