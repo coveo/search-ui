@@ -56,7 +56,7 @@ export class Recommendation extends SearchInterface {
     userContext: ComponentOptions.buildJsonOption(),
 
     /**
-     * Specifies the id of the inteface.
+     * Specifies the id of the interface.
      * It is used by the analytics to know which recommendation interface was selected.
      * The default value is "Recommendation" for the first one and "Recommendation_{number}" where {number} depends on the number of recommendation interface with default ids in the page for the others. 
      */
