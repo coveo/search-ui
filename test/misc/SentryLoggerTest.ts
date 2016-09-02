@@ -40,7 +40,7 @@ export function SentryLoggerTest() {
       );
     });
 
-    it('should not log the error if the on error handler is already set', () => {
+    it('should call any error handler already set', () => {
       let spyError = jasmine.createSpy('error');
       windoh.onerror = spyError;
 
@@ -50,7 +50,7 @@ export function SentryLoggerTest() {
       windoh.onerror('an error happened', 'CoveoJsSearch.min.js', 123, 1, new Error('an error happened'));
 
       expect(spyError).toHaveBeenCalled();
-      expect(endpoint.logError).not.toHaveBeenCalled();
+      expect(endpoint.logError).toHaveBeenCalled();
     });
 
     it('should not log the error if it\'s localhost', () => {

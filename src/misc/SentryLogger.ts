@@ -1,5 +1,4 @@
 import {QueryController} from '../controllers/QueryController';
-import {Utils} from '../utils/Utils';
 import {Logger} from './Logger';
 import {ISentryLog} from '../rest/SentryLog';
 import {DeviceUtils} from '../utils/DeviceUtils';
@@ -13,11 +12,15 @@ export class SentryLogger {
   }
 
   private bindErrorHandler() {
-    // Do not override any onerror function that might be already present in the page.
-    if (Utils.isNullOrUndefined(this.windoh.onerror)) {
-      this.windoh.onerror = this.handleError.bind(this);
+    // take care of not overriding any existing onerror handler that might be already present in the page.
+    let oldHandler = this.windoh.onerror;
+    if (_.isFunction(oldHandler)) {
+      this.windoh.onerror = (...args: any[]) => {
+        oldHandler.apply(oldHandler, args);
+        this.handleError.apply(this, args);
+      };
     } else {
-      this.logger.info('SentryLogger will be deactivated since there is already an onerror function in the page');
+      this.windoh.onerror = this.handleError.bind(this);
     }
   }
 
