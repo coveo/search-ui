@@ -67,6 +67,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.disableFacetPreservePosition();
     this.tabSection.el.appendChild(this.dropdownHeader.el);
     this.dropdownContent.el.style.display = 'none';
+    this.dropdownContent.addClass('coveo-small-facet');
   }
 
   public changeToLargeMode() {
@@ -74,6 +75,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.cleanUpDropdown();
     this.dropdownContent.el.removeAttribute('style');
     this.restoreFacetsPosition();
+    this.dropdownContent.removeClass('coveo-small-facet');
   }
 
   public registerComponent(component: Component) {

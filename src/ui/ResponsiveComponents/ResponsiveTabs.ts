@@ -118,16 +118,18 @@ export class ResponsiveTabs implements IResponsiveComponent {
     }
   }
 
-  public changeToLargeMode() {
+  public changeToLargeMode(): void {
     this.restoreTabSectionPosition();
     this.emptyDropdown();
     this.cleanUpDropdown();
+    this.dropdownContent.addClass('coveo-small-tabs');
   }
 
   public changeToSmallMode() {
     if (this.searchBoxElement) {
       this.tabSection.insertAfter(this.searchBoxElement);
     }
+    this.dropdownContent.removeClass('coveo-small-tabs');
   }
 
   private shouldAddTabsToDropdown(): boolean {
