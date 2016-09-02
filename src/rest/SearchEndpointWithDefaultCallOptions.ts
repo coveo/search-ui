@@ -12,6 +12,7 @@ import {IQueryResults} from './QueryResults';
 import {IFieldDescription} from '../rest/FieldDescription';
 import {IListFieldValuesRequest} from './ListFieldValuesRequest';
 import {ISubscriptionRequest, ISubscription} from './Subscription';
+import {ISentryLog} from './SentryLog';
 
 export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
   options: ISearchEndpointOptions;
@@ -106,6 +107,10 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
 
   public deleteSubscription(subscription: ISubscription): Promise<ISubscription> {
     return this.endpoint.deleteSubscription(subscription);
+  }
+
+  public logError(sentryLog: ISentryLog): Promise<boolean> {
+    return this.endpoint.logError(sentryLog);
   }
 
   private enrichCallOptions<T extends IEndpointCallOptions>(callOptions?: T): T {

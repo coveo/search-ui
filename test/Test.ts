@@ -319,3 +319,6 @@ RegisteredNamedMethodsTest();
 
 import {FacetValuesOrderTest} from './ui/FacetValuesOrderTest';
 FacetValuesOrderTest();
+
+import {SentryLoggerTest} from './misc/SentryLoggerTest';
+SentryLoggerTest();
