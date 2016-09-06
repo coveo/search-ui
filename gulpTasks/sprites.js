@@ -53,14 +53,6 @@ gulp.task('retinaSprites', function (done) {
       .pipe(gulp.dest('./bin'))
 });
 
-gulp.task('retinateSalesforceSprites', function () {
-  return gulp.src('node_modules/@salesforce-ux/design-system/assets/icons/**/*_120.png')
-      .pipe(rename(function (path) {
-        path.basename = path.basename.replace(/_120/, '');
-      }))
-      .pipe(gulp.dest('image/retina/salesforce'))
-})
-
 gulp.task('retinaSpritesLegacy', function (done) {
   return gulp.src('./breakingchanges/redesign/image/retina/**/*.png')
       .pipe(pngSprite.gulp({
