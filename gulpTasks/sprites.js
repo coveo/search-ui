@@ -1,22 +1,36 @@
+'use strict';
 const gulp = require('gulp');
 const glob = require('glob');
 const _ = require('underscore');
 const pngSprite = require('png-sprite');
 const fs = require('fs');
 const buildSpriteList = require('./buildSpriteList');
+const rename = require('gulp-rename');
 
 gulp.task('sprites', ['regularSprites', 'retinaSprites', 'regularSpriteList', 'retinaSpriteList', 'validateRetinaSprites']);
 gulp.task('spritesLegacy', ['regularSpritesLegacy', 'retinaSpritesLegacy', 'regularSpriteListLegacy', 'retinaSpriteListLegacy']);
 
-gulp.task('regularSprites', function (done) {
+gulp.task('regularSprites', ['salesforceSprites'], function (done) {
   return gulp.src('image/sprites/**/*.png')
       .pipe(pngSprite.gulp({
         cssPath: 'sass/spritesNew.scss',
         pngPath: 'image/spritesNew.png',
-        namespace: 'coveo-sprites'
+        namespace: 'coveo-sprites',
       }))
       .pipe(gulp.dest('./bin'))
 });
+
+gulp.task('salesforceSprites', function () {
+  return gulp.src('node_modules/@salesforce-ux/design-system/assets/icons/{custom,doctype,standard}/**/*_60.png')
+      .pipe(rename(function (path) {
+        path.basename = path.basename.replace(/_60/, '');
+        path.basename = path.basename.replace(/_/g, '-');
+        path.basename = path.basename.replace(/email-IQ/, 'email-iq');
+        path.basename = path.basename.replace(/task-2/, 'task2');
+      }))
+      .pipe(gulp.dest('image/sprites/salesforce'))
+})
+
 
 gulp.task('regularSpritesLegacy', function (done) {
   return gulp.src('./breakingchanges/redesign/image/sprites/**/*.png')
@@ -38,6 +52,14 @@ gulp.task('retinaSprites', function (done) {
       }))
       .pipe(gulp.dest('./bin'))
 });
+
+gulp.task('retinateSalesforceSprites', function () {
+  return gulp.src('node_modules/@salesforce-ux/design-system/assets/icons/**/*_120.png')
+      .pipe(rename(function (path) {
+        path.basename = path.basename.replace(/_120/, '');
+      }))
+      .pipe(gulp.dest('image/retina/salesforce'))
+})
 
 gulp.task('retinaSpritesLegacy', function (done) {
   return gulp.src('./breakingchanges/redesign/image/retina/**/*.png')

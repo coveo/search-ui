@@ -1,4 +1,5 @@
 @import "../bin/sass/GeneratedIconsNew";
+@import "../node_modules/@salesforce-ux/design-system/scss/design-tokens";
 
 .coveo-icon {
   @include GeneratedIcons();
@@ -55,5 +56,29 @@
         text-decoration: none;
       }
     }
+  }
+}
+
+@each $name, $color in $bg-standard-map {
+  $id: $name;
+  // Wtf... The only one not following the standard format.
+  @if $id == 'task-2' {
+    $id: 'task2';
+  }
+  .coveo-sprites-salesforce-standard-#{$id} {
+    background-color: $color;
+    border-radius: $default-border-radius;
+  }
+}
+
+@each $name, $color in $bg-custom-map {
+  $prefix-length: str-length('custom-');
+  // In Sass, str-slice's first character is 1 (instead of 0 in other languages)
+  // so we need to add +1 when slicing
+  $id: str-slice($name, $prefix-length + 1);
+
+  .coveo-sprites-salesforce-custom-custom#{$id} {
+    background-color: $color;
+    border-radius: $default-border-radius;
   }
 }

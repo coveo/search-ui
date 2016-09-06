@@ -9,3 +9,5 @@ npm-debug.log
 *.orig
 gulp-tsc-tmp*
 environments/conf.js
+image/sprites/salesforce
+image/retina/salesforce
