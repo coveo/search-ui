@@ -86,6 +86,10 @@
     @include iconWithHoverState('.coveo-sprites-dropdown-preferences');
   }
 
+  &.coveo-advanced-search {
+    @include iconWithHoverState('.coveo-sprites-dropdown-preferences');
+  }
+
   &.coveo-authentication-provider {
     @include iconWithHoverState('.coveo-sprites-dropdown-authenticate');
   }
