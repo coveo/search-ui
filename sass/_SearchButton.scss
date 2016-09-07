@@ -18,6 +18,7 @@
   & > .coveo-icon {
     vertical-align: middle;
     @extend .coveo-sprites-main-search;
+    animation: none;
   }
   &:hover > .coveo-icon {
     @extend .coveo-sprites-main-search-active;
