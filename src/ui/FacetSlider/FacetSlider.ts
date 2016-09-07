@@ -20,6 +20,7 @@ import {QueryStateModel} from '../../models/QueryStateModel';
 import {SliderEvents, IGraphValueSelectedArgs} from '../../events/SliderEvents';
 import {Assert} from '../../misc/Assert';
 import {Utils} from '../../utils/Utils';
+import {ResponsiveComponentsUtils} from '../ResponsiveComponents/ResponsiveComponentsUtils';
 import {Initialization} from '../Base/Initialization';
 import d3 = require('d3');
 
@@ -311,7 +312,7 @@ export class FacetSlider extends Component {
     this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset());
 
     this.onResize = _.debounce(() => {
-      if (!this.searchInterface.isSmallInterface() && this.slider) {
+      if (!ResponsiveComponentsUtils.isSmallFacetActivated($$(this.root)) && this.slider) {
         this.slider.drawGraph();
       }
     }, 250);

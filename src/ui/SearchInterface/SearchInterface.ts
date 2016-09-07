@@ -328,18 +328,6 @@ export class SearchInterface extends RootComponent {
     return this.isNewDesignAttribute;
   }
 
-  public isSmallInterface(): boolean {
-    return $$(this.root).hasClass(SearchInterface.SMALL_INTERFACE_CLASS_NAME);
-  }
-
-  public setSmallInterface(): void {
-    $$(this.root).addClass(SearchInterface.SMALL_INTERFACE_CLASS_NAME);
-  }
-
-  public unsetSmallInterface(): void {
-    $$(this.root).removeClass(SearchInterface.SMALL_INTERFACE_CLASS_NAME);
-  }
-
   protected initializeAnalytics(): IAnalyticsClient {
     let analyticsRef = BaseComponent.getComponentRef('Analytics');
     if (analyticsRef) {

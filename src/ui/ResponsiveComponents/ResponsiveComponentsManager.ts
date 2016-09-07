@@ -14,10 +14,7 @@ export interface IResponsiveComponentConstructor {
 
 export interface IResponsiveComponent {
   ID: string;
-  needSmallMode(): boolean;
-  changeToSmallMode(): void;
-  changeToLargeMode(): void;
-  handleResizeEvent?(): void;
+  handleResizeEvent(): void;
 }
 
 export class ResponsiveComponentsManager {
@@ -71,22 +68,7 @@ export class ResponsiveComponentsManager {
     this.coveoRoot = root;
     this.searchBoxElement = this.getSearchBoxElement();
     this.resizeListener = _.debounce(() => {
-      for (let i = 0; i < this.responsiveComponents.length; i++) {
-        if (this.responsiveComponents[i].needSmallMode()) {
-          if (!searchInterface.isSmallInterface()) {
-            searchInterface.setSmallInterface();
-            this.changeToSmallMode();
-          }
-          this.handleResizeEvent();
-          return;
-        }
-      }
-
-      if (searchInterface.isSmallInterface()) {
-        searchInterface.unsetSmallInterface();
-        this.changeToLargeMode();
-      }
-      this.handleResizeEvent();
+      _.each(this.responsiveComponents, responsiveComponent => responsiveComponent.handleResizeEvent());
     }, 200);
     window.addEventListener('resize', this.resizeListener);
     this.bindNukeEvents();
@@ -121,22 +103,6 @@ export class ResponsiveComponentsManager {
       }
     }
 
-  }
-
-  private changeToSmallMode(): void {
-    if (this.searchBoxElement) {
-      this.tabSection && this.tabSection.insertAfter(this.searchBoxElement);
-    }
-    _.each(this.responsiveComponents, responsiveComponent => {
-      responsiveComponent.changeToSmallMode();
-    });
-  }
-
-  private changeToLargeMode(): void {
-    this.tabSection && this.tabSection.detach();
-    _.each(this.responsiveComponents, responsiveComponent => {
-      responsiveComponent.changeToLargeMode();
-    });
   }
 
   private handleResizeEvent(): void {

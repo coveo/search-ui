@@ -7,6 +7,7 @@ import {Logger} from '../../misc/Logger';
 import {Component} from '../Base/Component';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {IResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
+import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
 import {l} from '../../strings/Strings';
 
 export class ResponsiveTabs implements IResponsiveComponent {
@@ -50,6 +51,12 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   public handleResizeEvent() {
+    if (this.needSmallMode() && !ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot)) {
+      this.changeToSmallMode();
+    } else if (!this.needSmallMode() && ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot)) {
+      this.changeToLargeMode();
+    }
+
     let tabs = this.getTabsInTabSection();
     if (this.shouldAddTabsToDropdown()) {
       let currentTab;
@@ -111,33 +118,34 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
     if (win.width() <= ResponsiveComponentsManager.MEDIUM_MOBILE_WIDTH) {
       return true;
-    } else if (!this.searchInterface.isSmallInterface()) {
+    } else if (!ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot)) {
       return this.isOverflowing(this.tabSection.el);
     } else {
       return this.isLargeFormatOverflowing();
     }
   }
 
-  public changeToLargeMode(): void {
-    this.restoreTabSectionPosition();
-    this.emptyDropdown();
-    this.cleanUpDropdown();
-    this.dropdownContent.addClass('coveo-small-tabs');
-  }
-
   public changeToSmallMode() {
     if (this.searchBoxElement) {
       this.tabSection.insertAfter(this.searchBoxElement);
     }
-    this.dropdownContent.removeClass('coveo-small-tabs');
+    ResponsiveComponentsUtils.activateSmallFacet(this.coveoRoot);
+  }
+
+  public changeToLargeMode(): void {
+    this.restoreTabSectionPosition();
+    this.emptyDropdown();
+    this.cleanUpDropdown();
+    this.coveoRoot.addClass('coveo-small-tabs');
+    ResponsiveComponentsUtils.deactivateSmallTabs(this.coveoRoot);
   }
 
   private shouldAddTabsToDropdown(): boolean {
-    return this.isOverflowing(this.tabSection.el) && this.searchInterface.isSmallInterface();
+    return this.isOverflowing(this.tabSection.el) && ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot);
   }
 
   private shouldRemoveTabsFromDropdown(): boolean {
-    return !this.isOverflowing(this.tabSection.el) && this.searchInterface.isSmallInterface() && !this.isDropdownEmpty();
+    return !this.isOverflowing(this.tabSection.el) && ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot) && !this.isDropdownEmpty();
   }
 
   private emptyDropdown() {
@@ -179,9 +187,9 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
     this.coveoRoot.append(virtualTabSection.el);
 
-    this.searchInterface.unsetSmallInterface();
+    ResponsiveComponentsUtils.deactivateSmallTabs(this.coveoRoot);
     let isOverflowing = this.isOverflowing(virtualTabSection.el);
-    this.searchInterface.setSmallInterface();
+    ResponsiveComponentsUtils.deactivateSmallTabs(this.coveoRoot);
 
 
     virtualTabSection.detach();

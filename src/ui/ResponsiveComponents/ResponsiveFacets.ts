@@ -1,6 +1,7 @@
 import {$$, Dom} from '../../utils/Dom';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {IResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
+import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
 import {EventsUtils} from '../../utils/EventsUtils';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {Component} from '../Base/Component';
@@ -67,7 +68,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.disableFacetPreservePosition();
     this.tabSection.el.appendChild(this.dropdownHeader.el);
     this.dropdownContent.el.style.display = 'none';
-    this.dropdownContent.addClass('coveo-small-facet');
+    ResponsiveComponentsUtils.activateSmallTabs(this.coveoRoot);
   }
 
   public changeToLargeMode() {
@@ -75,7 +76,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.cleanUpDropdown();
     this.dropdownContent.el.removeAttribute('style');
     this.restoreFacetsPosition();
-    this.dropdownContent.removeClass('coveo-small-facet');
+    ResponsiveComponentsUtils.deactivateSmallFacet(this.coveoRoot);
   }
 
   public registerComponent(component: Component) {
@@ -87,6 +88,11 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   public handleResizeEvent() {
+    if (this.needSmallMode() && !ResponsiveComponentsUtils.isSmallFacetActivated(this.coveoRoot)) {
+      this.changeToSmallMode();
+    } else if (!this.needSmallMode() && ResponsiveComponentsUtils.isSmallFacetActivated(this.coveoRoot)) {
+      this.changeToLargeMode();
+    }
     if (this.dropdownHeader.hasClass('coveo-dropdown-header-active')) {
       this.openDropdown();
     }

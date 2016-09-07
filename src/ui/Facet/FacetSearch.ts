@@ -23,6 +23,7 @@ import {IFacetSearchValuesListKlass} from './FacetSearchValuesList';
 import {FacetValueElement} from './FacetValueElement';
 import {ModalBox} from '../../ExternalModulesShim';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
+import {ResponsiveComponentsUtils} from '../ResponsiveComponents/ResponsiveComponentsUtils';
 import {FacetValuesOrder} from './FacetValuesOrder';
 
 /**
@@ -54,7 +55,7 @@ export class FacetSearch {
       // Mitigate issues in UT where the window in phantom js might get resized in the scope of another test.
       // These would point to random instance of a test karma object, and not a real search interface.
       if (this.facet instanceof Facet && this.facet.searchInterface instanceof SearchInterface) {
-        if (!this.isMobileDevice() && !this.facet.searchInterface.isSmallInterface() && $$(this.facet.element).hasClass('coveo-facet-searching')) {
+        if (!this.isMobileDevice() && !ResponsiveComponentsUtils.isSmallFacetActivated($$(this.root)) && $$(this.facet.element).hasClass('coveo-facet-searching')) {
           this.positionSearchResults();
         }
       }

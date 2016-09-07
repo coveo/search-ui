@@ -235,6 +235,7 @@
     "src/ui/ResponsiveComponents/ResponsiveFacets.ts",
     "src/ui/ResponsiveComponents/ResponsiveTabs.ts",
     "src/ui/ResponsiveComponents/ResponsiveComponentsManager.ts",
+    "src/ui/ResponsiveComponents/ResponsiveComponentsUtils.ts",
     "src/ui/ResultAttachments/DefaultResultAttachmentTemplate.ts",
     "src/ui/ResultAttachments/ResultAttachments.ts",
     "src/ui/ResultFolding/DefaultFoldingTemplate.ts",
