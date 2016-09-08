@@ -1,5 +1,5 @@
 import {ISearchEndpointOptions, ISearchEndpoint, IViewAsHtmlOptions} from './SearchEndpointInterface';
-import {EndpointCaller, IEndpointCallParameters, ISuccessResponse, IErrorResponse} from '../rest/EndpointCaller';
+import {EndpointCaller, IEndpointCallParameters, ISuccessResponse, IErrorResponse, IRequestInfo} from '../rest/EndpointCaller';
 import {IEndpointCallOptions} from '../rest/SearchEndpointInterface';
 import {IStringMap} from './GenericParam';
 import {Logger} from '../misc/Logger';
@@ -162,6 +162,16 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   public reset() {
     this.createEndpointCaller();
+  }
+
+  /**
+   * Set a function which will allow external code to modify all endpoint call parameters before they are sent by the browser.
+   *
+   * Used in very specific scenario where the network infrastructure require special request headers to be added or removed, for example.
+   * @param requestModifier
+   */
+  public setRequestModifier(requestModifier: (params: IRequestInfo<any>) => IRequestInfo<any>) {
+    this.caller.options.requestModifier = requestModifier;
   }
 
   /**
