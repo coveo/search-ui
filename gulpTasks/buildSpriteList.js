@@ -4,7 +4,6 @@ const fs = require('fs-extra');
 const path = require('path');
 const walk = require('walk');
 const _ = require('underscore');
-const color = require('colors');
 
 let args = require('yargs')
   .option('sprites', {
