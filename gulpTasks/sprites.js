@@ -1,3 +1,4 @@
+'use strict';
 const gulp = require('gulp');
 const glob = require('glob');
 const _ = require('underscore');
@@ -13,7 +14,7 @@ gulp.task('regularSprites', function (done) {
       .pipe(pngSprite.gulp({
         cssPath: 'sass/spritesNew.scss',
         pngPath: 'image/spritesNew.png',
-        namespace: 'coveo-sprites'
+        namespace: 'coveo-sprites',
       }))
       .pipe(gulp.dest('./bin'))
 });
