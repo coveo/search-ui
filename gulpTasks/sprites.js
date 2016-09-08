@@ -39,7 +39,7 @@ gulp.task('regularSprites', ['resizeSalesforceSprites'], function (done) {
 });
 
 gulp.task('salesforceSprites', ['cleanSpritesFolder'], function () {
-  return gulp.src('node_modules/@salesforce-ux/design-system/assets/icons/{custom,doctype,standard}/**/*_60.png')
+  return gulp.src('node_modules/@salesforce-ux/design-system/assets/icons/{doctype,standard}/**/*_60.png')
       .pipe(rename(function (path) {
         path.basename = path.basename.replace(/_60/, '');
         path.basename = path.basename.replace(/_/g, '-');
