@@ -6,11 +6,29 @@ const pngSprite = require('png-sprite');
 const fs = require('fs');
 const buildSpriteList = require('./buildSpriteList');
 const rename = require('gulp-rename');
+const through = require('through2');
+const lwip = require('lwip');
+const del = require('del');
 
 gulp.task('sprites', ['regularSprites', 'retinaSprites', 'regularSpriteList', 'retinaSpriteList', 'validateRetinaSprites']);
 gulp.task('spritesLegacy', ['regularSpritesLegacy', 'retinaSpritesLegacy', 'regularSpriteListLegacy', 'retinaSpriteListLegacy']);
 
-gulp.task('regularSprites', ['salesforceSprites'], function (done) {
+let imageResize = function () {
+  return through.obj(function (file, encoding, callback) {
+    lwip.open(file.path, function (err, image) {
+      image.batch()
+          .resize(32, 32)
+          .writeFile(file.path.replace(/.png/, '-small.png'), function (err) {
+            if (err) {
+              throw err;
+            }
+            callback();
+          })
+    })
+  });
+}
+
+gulp.task('regularSprites', ['resizeSalesforceSprites'], function (done) {
   return gulp.src('image/sprites/**/*.png')
       .pipe(pngSprite.gulp({
         cssPath: 'sass/spritesNew.scss',
@@ -20,7 +38,7 @@ gulp.task('regularSprites', ['salesforceSprites'], function (done) {
       .pipe(gulp.dest('./bin'))
 });
 
-gulp.task('salesforceSprites', function () {
+gulp.task('salesforceSprites', ['cleanSpritesFolder'], function () {
   return gulp.src('node_modules/@salesforce-ux/design-system/assets/icons/{custom,doctype,standard}/**/*_60.png')
       .pipe(rename(function (path) {
         path.basename = path.basename.replace(/_60/, '');
@@ -31,6 +49,15 @@ gulp.task('salesforceSprites', function () {
       .pipe(gulp.dest('image/sprites/salesforce'))
 })
 
+gulp.task('resizeSalesforceSprites', ['salesforceSprites'], function () {
+  return gulp.src('image/sprites/salesforce/**/*.png')
+      .pipe(imageResize())
+})
+
+
+gulp.task('cleanSpritesFolder', function () {
+  return del(['./image/sprites/salesforce/**/*.png',]);
+});
 
 gulp.task('regularSpritesLegacy', function (done) {
   return gulp.src('./breakingchanges/redesign/image/sprites/**/*.png')
