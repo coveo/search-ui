@@ -41,8 +41,9 @@ export interface IAnalyticsOptions {
  * # Send Custom Events
  * In some scenarios, you want to send custom data to the Coveo Cloud analytics (see [Coveo Cloud Usage Analytics](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=89)). The Coveo JavaScript Search Framework offers helpers to communicate with the Coveo Analytics REST API, so you do not have to write code to call the API directly.
  *
- * 1. First, you need to craft your custom event cause and meta.
+ * 1. First, you need to craft your custom event cause and meta.<br/>**NB: The event names must be unique.**
  * ```
+ *   // customEventType allows to regroup similar event types together when doing reporting (e.g., search box).
  *   var customEventCause = {name: 'customEventName', type:'customEventType'};
  *   var metadata = {key1: "value1", key2:"value2"};
  * ```
@@ -65,7 +66,7 @@ export interface IAnalyticsOptions {
  * }
  * ```
  *
- * 4. Send a custom `searchAsYouType` event<br/>**NB: If you want to log a `searchAsYouTypeEvent`, be sure to always call the helper before you call `executeQuery`.**)
+ * 4. Send a custom `searchAsYouType` event<br/>**NB: If you want to log a `searchAsYouTypeEvent`, be sure to always call the helper before you call `executeQuery`.**
  * ```
  * function myCustomButtonWasClicked() {
  *      Coveo.logSearchAsYouTypeEvent(document.querySelector('#search'), customEventCause, metadata);
