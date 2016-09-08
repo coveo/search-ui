@@ -38,7 +38,7 @@ export class Icon extends Component {
      * Setting this value to true will output the smaller version of the auto-generated icon.<br/>
      * Default is `false`.
      */
-    small: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    small: ComponentOptions.buildBooleanOption(),
     /**
      * Setting this to true will force the caption/label to appear.<br/>
      * Setting this to false will force the caption/label to never appear.<br/>
@@ -86,11 +86,23 @@ export class Icon extends Component {
   static createIcon(result: IQueryResult, options: IIconOptions = {}, element: HTMLElement = $$('div').el, bindings?: IComponentBindings) {
     var info = FileTypes.get(result);
     info = Icon.preprocessIconInfo(options, info);
+    $$(element).toggleClass('coveo-small', options.small === true);
+
+    if (options.value != undefined) {
+      if (options.small === true) {
+        if (options.value.indexOf('-small') == -1) {
+          info.icon += '-small';
+        }
+      }
+      if (options.small === false) {
+        if (options.value.indexOf('-small') != -1) {
+          info.icon = info.icon.replace('-small', '');
+        }
+      }
+    }
     $$(element).addClass(info.icon);
     element.setAttribute('title', info.caption);
-    if (options.small) {
-      $$(element).addClass('coveo-small');
-    }
+
     if (Icon.shouldDisplayLabel(options, bindings)) {
       element.appendChild($$('span', {
         className: 'coveo-icon-caption-overlay'
