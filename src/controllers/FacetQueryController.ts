@@ -134,7 +134,7 @@ export class FacetQueryController {
             }
             onResult(_.first(valuesCropped, params.nbResults));
           } else {
-            return queryResults.groupByResults[0];
+            resolve(queryResults.groupByResults[0].values);
           }
         })
         .catch((error: IEndpointError) => {
