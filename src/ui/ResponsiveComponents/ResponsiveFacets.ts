@@ -40,6 +40,10 @@ export class ResponsiveFacets implements IResponsiveComponent {
       this.logger.info('No element with class coveo-facet-column. Responsive facets cannot be enabled');
       return;
     }
+    if (!$$(root).find('.coveo-tab-section')) {
+      this.logger.info('No element with class coveo-tab-section. Responsive facets cannot be enabled');
+      return;
+    }
     ResponsiveComponentsManager.register(ResponsiveFacets, $$(root), Facet.ID, component);
   }
 
