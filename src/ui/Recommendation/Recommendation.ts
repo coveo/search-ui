@@ -61,13 +61,12 @@ export class Recommendation extends SearchInterface {
      * The default value is "Recommendation" for the first one and "Recommendation_{number}" where {number} depends on the number of recommendation interface with default ids in the page for the others. 
      */
     id: ComponentOptions.buildStringOption(),
-
     /**
      * Specifies which options from the main {@link QueryBuilder} to use in the triggered query.
      * Ex: <code data-options-to-use="expression, advancedExpression"></code> would add the expression and the advanced expression parts from the main query in the triggered query.
      * The default value is undefined.
      */
-    optionsToUse: ComponentOptions.buildListOption(),
+    optionsToUse: ComponentOptions.buildListOption({ defaultValue: ['expression'] }),
 
     /**
      * Specifies whether or not to send the actions history along with the triggered query.

@@ -56,10 +56,12 @@
     "src/misc/Options.ts",
     "src/misc/PromisesShim.ts",
     "src/misc/Version.ts",
+    "src/misc/SentryLogger.ts",
     "src/models/ComponentOptionsModel.ts",
     "src/models/ComponentStateModel.ts",
     "src/models/Model.ts",
     "src/models/QueryStateModel.ts",
+    "src/rest/SentryLog.ts",
     "src/rest/AjaxError.ts",
     "src/rest/AnalyticsEndpoint.ts",
     "src/rest/AnalyticsEvent.ts",
@@ -396,6 +398,7 @@
     "src/ui/Logo/Logo.ts",
     "test/ui/LogoTest.ts",
     "test/ui/RegisteredNamedMethodsTest.ts",
-    "test/ui/FacetValuesOrderTest.ts"
+    "test/ui/FacetValuesOrderTest.ts",
+    "test/misc/SentryLoggerTest.ts"
   ]
 }

@@ -28,7 +28,6 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private previousSibling: Dom;
   private parent: Dom;
   private dropdownHeader: Dom;
-  private tabSection: Dom;
   private popupBackground: Dom;
   private popupBackgroundClickListener: EventListener;
   private facets: Facet[] = [];
@@ -48,7 +47,6 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.ID = ID;
     this.coveoRoot = root;
     this.searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, false);
-    this.tabSection = $$(this.coveoRoot.find('.coveo-tab-section'));
     this.buildDropdownContent();
     this.buildDropdownHeader();
     this.bindDropdownContentEvents();
@@ -63,10 +61,14 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   public changeToSmallMode() {
+    if (!$$(this.coveoRoot).find('.coveo-tab-section')) {
+      ResponsiveFacets.logger.info('No element with class coveo-tab-section. Responsive facets cannot be enabled');
+      return;
+    }
     this.positionPopup();
     this.closeDropdown();
     this.disableFacetPreservePosition();
-    this.tabSection.el.appendChild(this.dropdownHeader.el);
+    $$(this.coveoRoot.find('.coveo-tab-section')).el.appendChild(this.dropdownHeader.el);
     this.dropdownContent.el.style.display = 'none';
     ResponsiveComponentsUtils.activateSmallTabs(this.coveoRoot);
   }
@@ -189,7 +191,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     }
     this.dropdownContent.el.style.width = width.toString() + 'px';
 
-    PopupUtils.positionPopup(this.dropdownContent.el, this.tabSection.el, this.coveoRoot.el,
+    PopupUtils.positionPopup(this.dropdownContent.el, $$(this.coveoRoot.find('.coveo-tab-section')).el, this.coveoRoot.el,
       { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM }, this.coveoRoot.el);
   }
 

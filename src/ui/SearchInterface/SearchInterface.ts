@@ -23,6 +23,7 @@ import {Debug} from '../Debug/Debug';
 import {HashUtils} from '../../utils/HashUtils';
 import FastClick = require('fastclick');
 import timezone = require('jstz');
+import {SentryLogger} from '../../misc/SentryLogger';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -218,7 +219,7 @@ export class SearchInterface extends RootComponent {
     this.componentOptionsModel = new ComponentOptionsModel(element);
     this.usageAnalytics = this.initializeAnalytics();
     this.queryController = new QueryController(element, this.options, this.usageAnalytics, this);
-
+    new SentryLogger(this.queryController);
 
     let eventName = this.queryStateModel.getEventName(Model.eventTypes.preprocess);
     $$(this.element).on(eventName, (e, args) => this.handlePreprocessQueryStateModel(args));
