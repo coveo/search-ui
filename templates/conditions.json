@@ -17,7 +17,11 @@
   },
   "MobileEmailThread" : {
     "priority": 1,
-    "value": "raw.mailbox != undefined && (Coveo.DeviceUtils.isSmallScreenWidth() || options.layout === 'card')"
+    "value": "raw.mailbox != undefined && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "CardEmailThread": {
+    "priority": 1,
+    "value": "raw.mailbox != undefined && options.layout === 'card'"
   },
   "EmailThread": {
     "priority": 0,
