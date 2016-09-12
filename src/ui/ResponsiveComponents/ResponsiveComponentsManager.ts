@@ -19,8 +19,6 @@ export interface IResponsiveComponent {
 
 export class ResponsiveComponentsManager {
 
-  public static MEDIUM_MOBILE_WIDTH = 640;
-
   private static componentManagers: ResponsiveComponentsManager[] = [];
   private static remainingComponentInitializations: number = 0;
 
@@ -103,7 +101,6 @@ export class ResponsiveComponentsManager {
         this.responsiveComponents.push(responsiveComponent);
       }
     }
-
   }
 
   private isFacet(ID: string): boolean {

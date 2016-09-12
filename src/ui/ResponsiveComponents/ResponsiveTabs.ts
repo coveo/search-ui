@@ -116,7 +116,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   public needSmallMode(): boolean {
     let win = new Win(window);
 
-    if (win.width() <= ResponsiveComponentsManager.MEDIUM_MOBILE_WIDTH) {
+    if (win.width() <= ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH) {
       return true;
     } else if (!ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot)) {
       return this.isOverflowing(this.tabSection.el);
