@@ -11,6 +11,7 @@ import {Initialization} from '../Base/Initialization';
 import {Utils} from '../../utils/Utils';
 import {Assert} from '../../misc/Assert';
 import {$$} from '../../utils/Dom';
+import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
 
 export interface ITabOptions {
   expression?: string;
@@ -145,7 +146,9 @@ export class Tab extends Component {
 
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.T, (args: IAttributeChangedEventArg) => this.handleQueryStateChanged(args));
-    this.bind.on(element, 'click', (e: Event) => this.handleClick());
+    const clickAction = () => this.handleClick();
+    this.bind.on(element, 'click', clickAction);
+    this.bind.on(element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction))
     this.render();
     ResponsiveTabs.init(this.root, Tab.ID, this);
   }
@@ -190,9 +193,9 @@ export class Tab extends Component {
   private render() {
     var icon = this.options.icon;
     if (Utils.isNonEmptyString(icon)) {
-      var icnSpan = document.createElement('span');
-      $$(icnSpan).addClass(['coveo-icon', icon]);
-      this.element.insertBefore(icnSpan, this.element.firstChild);
+      var iconSpan = $$('span').el;
+      $$(iconSpan).addClass(['coveo-icon', icon]);
+      this.element.insertBefore(iconSpan, this.element.firstChild);
     }
 
     var caption = this.options.caption;
@@ -201,6 +204,7 @@ export class Tab extends Component {
       $$(captionP).text(caption);
       this.element.appendChild(captionP);
     }
+    this.element.setAttribute('tabindex', '0');
   }
 
   protected handleBuildingQuery(data: IBuildingQueryEventArgs) {

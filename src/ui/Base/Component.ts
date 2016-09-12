@@ -234,10 +234,7 @@ export class Component extends BaseComponent {
 
 
   static pointElementsToDummyForm(element: HTMLElement) {
-    var inputs = [];
-    if ($$(element).is('input')) {
-      inputs.push(element);
-    }
+    let inputs = $$(element).is('input') ? [element] : [];
     inputs = inputs.concat($$(element).findAll('input'));
     _.each(_.compact(inputs), (input) => {
       input.setAttribute('form', 'coveo-dummy-form');

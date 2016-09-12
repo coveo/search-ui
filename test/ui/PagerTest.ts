@@ -83,6 +83,7 @@ export function PagerTest() {
 
       var anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
       expect($$(anchors[0]).text()).toBe('6');
+      expect(anchors[0].parentElement.getAttribute('tabindex')).toBe('0');
       expect($$(anchors[anchors.length - 1]).text()).toBe('10');
     });
 

@@ -13,7 +13,7 @@ import {QuickviewDocument} from './QuickviewDocument';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import {QuickviewEvents} from '../../events/QuickviewEvents';
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
-import {KEYBOARD} from '../../utils/KeyboardUtils';
+import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
 import {ModalBox} from '../../ExternalModulesShim';
 
 export interface IQuickviewOptions {
@@ -147,12 +147,14 @@ export class Quickview extends Component {
       let iconForQuickview = $$('div');
       iconForQuickview.addClass('coveo-icon-for-quickview');
       if (this.searchInterface.isNewDesign()) {
-        let captionForQuickview = $$('div');
-        captionForQuickview.addClass('coveo-caption-for-quickview');
-        captionForQuickview.text('Quickview'.toLocaleString());
+        let captionForQuickview = $$(
+          'div',
+          { className: 'coveo-caption-for-quickview', tabindex: 0 },
+          'Quickview'.toLocaleString()
+        ).el;
         let div = $$('div');
         div.append(iconForQuickview.el);
-        div.append(captionForQuickview.el);
+        div.append(captionForQuickview);
         $$(this.element).append(div.el);
       } else {
         iconForQuickview.text('Quickview'.toLocaleString());
@@ -199,7 +201,9 @@ export class Quickview extends Component {
 
   private bindClick(result: IQueryResult) {
     if (typeof result.hasHtmlVersion == 'undefined' || result.hasHtmlVersion || this.options.alwaysShow) {
-      $$(this.element).on('click', () => this.open());
+      const clickAction = () => this.open();
+      $$(this.element).on('click', clickAction);
+      this.bind.on(this.element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction));
     } else {
       this.element.style.display = 'none';
     }

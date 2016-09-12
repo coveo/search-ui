@@ -25,6 +25,10 @@ export function ResultLinkTest() {
       fakeResult = null;
     });
 
+    it('should have its tabindex value set to 0', () => {
+      expect(test.cmp.element.getAttribute('tabindex')).toBe('0');
+    });
+
     it('should hightlight the result title', () => {
       expect(test.cmp.element.innerHTML).toEqual(HighlightUtils.highlightString(fakeResult.title, fakeResult.titleHighlights, null, 'coveo-highlight'));
     });

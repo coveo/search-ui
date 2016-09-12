@@ -1,13 +1,13 @@
-/// <reference path="Facet.ts" />
 import {Facet} from './Facet';
 import {FacetValue} from './FacetValues';
 import {$$} from '../../utils/Dom';
 import {Utils} from '../../utils/Utils';
 import {l} from '../../strings/Strings';
 import {Component} from '../Base/Component';
+import {KeyboardUtils} from '../../utils/KeyboardUtils';
 
 export class ValueElementRenderer {
-  public listElement: HTMLElement;
+  public listItem: HTMLElement;
   public label: HTMLElement;
   public checkbox: HTMLElement;
   public stylishCheckbox: HTMLElement;
@@ -38,29 +38,29 @@ export class ValueElementRenderer {
   }
 
   public build(): ValueElementRenderer {
-    this.listElement = $$('li', {
+    this.listItem = $$('li', {
       className: 'coveo-facet-value coveo-facet-selectable'
     }).el;
-    this.listElement.setAttribute('data-value', this.facetValue.value);
+    this.listItem.setAttribute('data-value', this.facetValue.value);
     if (!this.facet.searchInterface.isNewDesign()) {
       this.excludeIcon = this.buildExcludeIcon();
-      this.listElement.appendChild(this.excludeIcon);
+      this.listItem.appendChild(this.excludeIcon);
     }
     this.label = $$('label', {
       className: 'coveo-facet-value-label'
     }).el;
-    this.listElement.appendChild(this.label);
+    this.listItem.appendChild(this.label);
 
     if (this.facet.searchInterface.isNewDesign()) {
       this.excludeIcon = this.buildExcludeIcon();
-      this.listElement.appendChild(this.excludeIcon);
+      this.listItem.appendChild(this.excludeIcon);
 
       $$(this.excludeIcon).on('mouseover', () => {
-        $$(this.listElement).addClass('coveo-facet-value-will-exclude');
+        $$(this.listItem).addClass('coveo-facet-value-will-exclude');
       });
 
       $$(this.excludeIcon).on('mouseout', () => {
-        $$(this.listElement).removeClass('coveo-facet-value-will-exclude');
+        $$(this.listItem).removeClass('coveo-facet-value-will-exclude');
       });
     }
     if (Utils.exists(this.facetValue.computedField)) {
@@ -105,25 +105,27 @@ export class ValueElementRenderer {
   }
 
   public setCssClassOnListValueElement(): void {
-    $$(this.listElement).toggleClass('coveo-selected', this.facetValue.selected);
-    $$(this.listElement).toggleClass('coveo-excluded', this.facetValue.excluded);
+    $$(this.listItem).toggleClass('coveo-selected', this.facetValue.selected);
+    $$(this.listItem).toggleClass('coveo-excluded', this.facetValue.excluded);
   }
 
   protected buildExcludeIcon(): HTMLElement {
-    var ret = $$('div', {
+    let excludeIcon = $$('div', {
       title: l('Exclude', this.facet.getValueCaption(this.facetValue)),
-      className: 'coveo-facet-value-exclude'
+      className: 'coveo-facet-value-exclude',
+      tabindex: 0
     }).el;
+    this.addFocusAndBlurEventListeners(excludeIcon);
 
     if (this.facet.searchInterface.isNewDesign()) {
-      ret.appendChild($$('span', {
+      excludeIcon.appendChild($$('span', {
         className: 'coveo-icon'
       }).el);
     }
     if (Utils.exists(this.facetValue.computedField)) {
-      $$(ret).addClass('coveo-facet-value-exclude-with-computed-field');
+      $$(excludeIcon).addClass('coveo-facet-value-exclude-with-computed-field');
     }
-    return ret;
+    return excludeIcon;
   }
 
   protected buildValueComputedField(): HTMLElement {
@@ -158,9 +160,11 @@ export class ValueElementRenderer {
   }
 
   protected buildValueStylishCheckbox(): HTMLElement {
-    var checkbox = $$('div', {
-      className: 'coveo-facet-value-checkbox'
+    let checkbox = $$('div', {
+      className: 'coveo-facet-value-checkbox',
+      tabindex: 0
     }, $$('span')).el;
+    this.addFocusAndBlurEventListeners(checkbox);
     return checkbox;
   }
 
@@ -212,5 +216,10 @@ export class ValueElementRenderer {
     } else {
       return undefined;
     }
+  }
+
+  private addFocusAndBlurEventListeners(elem: HTMLElement) {
+    $$(elem).on('focus', () => $$(this.listItem).addClass('coveo-focused'));
+    $$(elem).on('blur', () => $$(this.listItem).removeClass('coveo-focused'));
   }
 }
