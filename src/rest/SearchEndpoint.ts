@@ -1,5 +1,5 @@
 import {ISearchEndpointOptions, ISearchEndpoint, IViewAsHtmlOptions} from './SearchEndpointInterface';
-import {EndpointCaller, IEndpointCallParameters, ISuccessResponse, IErrorResponse} from '../rest/EndpointCaller';
+import {EndpointCaller, IEndpointCallParameters, ISuccessResponse, IErrorResponse, IRequestInfo} from '../rest/EndpointCaller';
 import {IEndpointCallOptions} from '../rest/SearchEndpointInterface';
 import {IStringMap} from './GenericParam';
 import {Logger} from '../misc/Logger';
@@ -16,6 +16,7 @@ import {IExtension} from '../rest/Extension';
 import {IRatingRequest} from '../rest/RatingRequest';
 import {ITaggingRequest} from '../rest/TaggingRequest';
 import {IRevealQuerySuggestRequest, IRevealQuerySuggestResponse} from '../rest/RevealQuerySuggest';
+import {ISentryLog} from './SentryLog';
 import {ISubscriptionRequest, ISubscription} from '../rest/Subscription';
 import {AjaxError} from '../rest/AjaxError';
 import {MissingAuthenticationError} from '../rest/MissingAuthenticationError';
@@ -164,6 +165,16 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
+   * Set a function which will allow external code to modify all endpoint call parameters before they are sent by the browser.
+   *
+   * Used in very specific scenario where the network infrastructure require special request headers to be added or removed, for example.
+   * @param requestModifier
+   */
+  public setRequestModifier(requestModifier: (params: IRequestInfo<any>) => IRequestInfo<any>) {
+    this.caller.options.requestModifier = requestModifier;
+  }
+
+  /**
    * Return the base uri of the endpoint to perform search
    * @returns {string}
    */
@@ -231,7 +242,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     this.logger.info('Performing REST query', query);
 
-    return this.performOneCall(callParams).then((results?: IQueryResults) => {
+    return this.performOneCall(callParams, callOptions).then((results?: IQueryResults) => {
       this.logger.info('REST query successful', results, query);
 
       // Version check
@@ -413,7 +424,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
     queryString = this.buildViewAsHtmlQueryString(documentUniqueID, callOptions);
     callParams.queryString = callParams.queryString.concat(queryString);
-
+    callParams.queryString = _.uniq(callParams.queryString);
     return callParams.url + '?' + callParams.queryString.join('&');
   }
 
@@ -643,6 +654,19 @@ export class SearchEndpoint implements ISearchEndpoint {
     return this.performOneCall<ISubscription>(callParams);
   }
 
+  @path('/log')
+  @method('POST')
+  public logError(sentryLog: ISentryLog, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters) {
+    callParams.requestData = sentryLog;
+    return this.performOneCall(callParams, callOptions)
+      .then(() => {
+        return true;
+      })
+      .catch(() => {
+        return false;
+      });
+  }
+
   public nuke() {
     window.removeEventListener('beforeunload', this.onUnload);
   }
@@ -703,12 +727,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     let queryString: string[] = [];
 
     for (let name in this.options.queryStringArguments) {
-      // The mapping workgroup --> organizationId is necessary for backwards compatibility
-      if (name == 'workgroup') {
-        queryString.push('organizationId' + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
-      } else {
-        queryString.push(name + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
-      }
+      queryString.push(name + '=' + encodeURIComponent(this.options.queryStringArguments[name]));
     }
 
     if (callOptions && _.isArray(callOptions.authentication) && callOptions.authentication.length != 0) {
@@ -742,7 +761,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   private buildViewAsHtmlQueryString(uniqueId: string, callOptions?: IViewAsHtmlOptions): string[] {
     callOptions = _.extend({}, callOptions);
-    let queryString: string[] = [];
+    let queryString: string[] = this.buildBaseQueryString(callOptions);
     queryString.push('uniqueId=' + encodeURIComponent(uniqueId));
 
     if (callOptions.query || callOptions.queryObject) {
@@ -756,13 +775,14 @@ export class SearchEndpoint implements ISearchEndpoint {
     if (callOptions.contentType) {
       queryString.push('contentType=' + encodeURIComponent(callOptions.contentType));
     }
-
     return queryString;
   }
 
   private performOneCall<T>(params: IEndpointCallParameters, callOptions?: IEndpointCallOptions, autoRenewToken = true): Promise<T> {
     let queryString = this.buildBaseQueryString(callOptions);
     params.queryString = params.queryString.concat(queryString);
+    params.queryString = _.uniq(params.queryString);
+
     return this.caller.call(params)
       .then((response?: ISuccessResponse<T>) => {
         if (response.data && (<any>response.data).clientDuration) {
@@ -793,8 +813,10 @@ export class SearchEndpoint implements ISearchEndpoint {
   private handleErrorResponse(errorResponse: IErrorResponse): Error {
     if (this.isMissingAuthenticationProviderStatus(errorResponse.statusCode)) {
       return new MissingAuthenticationError(errorResponse.data['provider']);
-    } else if (errorResponse.data && errorResponse.data.message) {
+    } else if (errorResponse.data && errorResponse.data.message && errorResponse.data.type) {
       return new QueryError(errorResponse);
+    } else if (errorResponse.data && errorResponse.data.message) {
+      return new AjaxError(`Request Error : ${errorResponse.data.message}`, errorResponse.statusCode);
     } else {
       return new AjaxError('Request Error', errorResponse.statusCode);
     }

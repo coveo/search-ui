@@ -2,7 +2,7 @@ import {SearchEndpoint} from '../../src/rest/SearchEndpoint';
 import {FakeResults} from '../Fake';
 import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
 import {IQueryResults} from '../../src/rest/QueryResults';
-import {IErrorResponse} from '../../src/rest/EndpointCaller';
+import {IErrorResponse, IRequestInfo} from '../../src/rest/EndpointCaller';
 import {IQueryResult} from '../../src/rest/QueryResult';
 import {IListFieldValuesRequest} from '../../src/rest/ListFieldValuesRequest';
 import {IIndexFieldValue} from '../../src/rest/FieldValue';
@@ -62,7 +62,29 @@ export function SearchEndpointTest() {
         ep = null;
       });
 
-      it('map it to organizationId', function () {
+      it('should not map it to organizationId', function () {
+        var fakeResult = FakeResults.createFakeResult();
+        expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toBe(ep.getBaseUri() + '/html?workgroup=myOrgId&uniqueId=' + fakeResult.uniqueId);
+      });
+    });
+
+    describe('with an orgaganizationId argument', function () {
+      var ep: SearchEndpoint;
+
+      beforeEach(function () {
+        ep = new SearchEndpoint({
+          restUri: 'foo/rest/search',
+          queryStringArguments: {
+            organizationId: 'myOrgId'
+          }
+        });
+      });
+
+      afterEach(function () {
+        ep = null;
+      });
+
+      it('should not map it to workgroup', function () {
         var fakeResult = FakeResults.createFakeResult();
         expect(ep.getViewAsHtmlUri(fakeResult.uniqueId)).toBe(ep.getBaseUri() + '/html?organizationId=myOrgId&uniqueId=' + fakeResult.uniqueId);
       });
@@ -163,6 +185,7 @@ export function SearchEndpointTest() {
 
         afterEach(function () {
           jasmine.Ajax.uninstall();
+          ep.reset();
         });
 
         it('for search', function (done) {
@@ -600,6 +623,17 @@ export function SearchEndpointTest() {
             status: 200,
             responseText: JSON.stringify({ id: 'foobar' })
           });
+        });
+
+        it('request can be modified', function () {
+          ep.setRequestModifier((requestInfo: IRequestInfo<any>) => {
+            requestInfo.headers['Potato'] = 'OmgPotatoes';
+            return requestInfo;
+          });
+          ep.search(new QueryBuilder().build());
+          expect(jasmine.Ajax.requests.mostRecent().requestHeaders).toEqual(jasmine.objectContaining({
+            'Potato': 'OmgPotatoes'
+          }));
         });
       });
     });

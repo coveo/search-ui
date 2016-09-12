@@ -1,3 +1,4 @@
+export {AdvancedSearchEvents} from './events/AdvancedSearchEvents';
 export {AnalyticsEvents} from './events/AnalyticsEvents';
 export {BreadcrumbEvents} from './events/BreadcrumbEvents';
 export {DebugEvents} from './events/DebugEvents';

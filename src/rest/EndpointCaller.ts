@@ -74,6 +74,10 @@ export interface IRequestInfo<T> {
    * The method that was used for this request
    */
   method: string;
+  /**
+   * The headers for the request.
+   */
+  headers?: IStringMap<string>;
 }
 
 /**
@@ -146,6 +150,12 @@ export interface IEndpointCallerOptions {
    * Not used if accessToken is provided.
    */
   password?: string;
+  /**
+   * A function which will allow external code to modify all endpoint call parameters before they are sent by the browser.
+   *
+   * Used in very specific scenario where the network infrastructure require special request headers to be added or removed, for example.
+   */
+  requestModifier?: (params: IRequestInfo<any>) => IRequestInfo<any>;
 }
 
 // In ie8, XMLHttpRequest has no status property, so let's use this enum instead
@@ -197,6 +207,7 @@ export class EndpointCaller {
    * @returns {any} A promise of the given type
    */
   public call<T>(params: IEndpointCallParameters): Promise<ISuccessResponse<T>> {
+
     var requestInfo: IRequestInfo<T> = {
       url: params.url,
       queryString: params.errorsAsSuccess ? params.queryString.concat(['errorsAsSuccess=1']) : params.queryString,
@@ -205,6 +216,11 @@ export class EndpointCaller {
       begun: new Date(),
       method: params.method
     };
+    requestInfo.headers = this.buildRequestHeaders(requestInfo);
+    if (_.isFunction(this.options.requestModifier)) {
+      requestInfo = this.options.requestModifier(requestInfo);
+    }
+
 
     this.logger.trace('Performing REST request', requestInfo);
     var urlObject = this.parseURL(requestInfo.url);
@@ -250,20 +266,15 @@ export class EndpointCaller {
           sent = true;
           xmlHttpRequest.withCredentials = true;
 
-          // Set authentication depending on what we're using
-          if (this.options.accessToken) {
-            xmlHttpRequest.setRequestHeader('Authorization', 'Bearer ' + this.options.accessToken);
-          } else if (this.options.username && this.options.password) {
-            xmlHttpRequest.setRequestHeader('Authorization', 'Basic ' + btoa(this.options.username + ':' + this.options.password));
-          }
+          _.each(requestInfo.headers, (headerValue, headerKey) => {
+            xmlHttpRequest.setRequestHeader(headerKey, headerValue);
+          });
 
           if (requestInfo.method == 'GET') {
             xmlHttpRequest.send();
           } else if (requestInfo.requestDataType.indexOf('application/json') === 0) {
-            xmlHttpRequest.setRequestHeader('Content-Type', 'application/json; charset="UTF-8"');
             xmlHttpRequest.send(JSON.stringify(requestInfo.requestData));
           } else {
-            xmlHttpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset="UTF-8"');
             xmlHttpRequest.send(this.convertJsonToFormBody(requestInfo.requestData));
           }
 
@@ -315,7 +326,7 @@ export class EndpointCaller {
           if (this.isSuccessHttpStatus(status)) {
             this.handleSuccessfulResponseThatMightBeAnError(requestInfo, data, resolve, reject);
           } else {
-            this.handleError(requestInfo, xmlHttpRequest.status, undefined, reject);
+            this.handleError(requestInfo, xmlHttpRequest.status, data, reject);
           }
         }
       };
@@ -497,5 +508,26 @@ export class EndpointCaller {
     } else {
       return false;
     }
+  }
+
+  private buildRequestHeaders<T>(requestInfo: IRequestInfo<T>): IStringMap<string> {
+    let headers: IStringMap<string> = {};
+    if (this.options.accessToken) {
+      headers['Authorization'] = `Bearer ${this.options.accessToken}`;
+    } else if (this.options.username && this.options.password) {
+      headers['Authorization'] = `Basic ${btoa(this.options.username + ':' + this.options.password)}`;
+    }
+
+    if (requestInfo.method == 'GET') {
+      return headers;
+    }
+
+    if (requestInfo.requestDataType.indexOf('application/json') === 0) {
+      headers['Content-Type'] = 'application/json; charset="UTF-8"';
+    } else {
+      headers['Content-Type'] = 'application/x-www-form-urlencoded; charset="UTF-8"';
+    }
+
+    return headers;
   }
 }

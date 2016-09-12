@@ -50,6 +50,57 @@ HistoryControllerTest();
 import {QueryControllerTest} from './controllers/QueryControllerTest';
 QueryControllerTest();
 
+import {AdvancedSearchTest} from './ui/AdvancedSearch/AdvancedSearchTest';
+AdvancedSearchTest();
+
+import {TextInputTest} from './ui/AdvancedSearch/Form/TextInputTest';
+TextInputTest();
+
+import {NumericSpinnerTest} from './ui/AdvancedSearch/Form/NumericSpinnerTest';
+NumericSpinnerTest();
+
+import {DropdownTest} from './ui/AdvancedSearch/Form/DropdownTest';
+DropdownTest();
+
+import {DatePickerTest} from './ui/AdvancedSearch/Form/DatePickerTest';
+DatePickerTest();
+
+import {RadioButtonTest} from './ui/AdvancedSearch/Form/RadioButtonTest';
+RadioButtonTest();
+
+import {KeywordsInputTest} from './ui/AdvancedSearch/KeywordsInput/KeywordsInputTest';
+KeywordsInputTest();
+
+import {AnyKeywordsInputTest} from './ui/AdvancedSearch/KeywordsInput/AnyKeywordsInputTest';
+AnyKeywordsInputTest();
+
+import {ExactKeywordsInputTest} from './ui/AdvancedSearch/KeywordsInput/ExactKeywordsInputTest';
+ExactKeywordsInputTest();
+
+import {NoneKeywordsInputTest} from './ui/AdvancedSearch/KeywordsInput/NoneKeywordsInputTest';
+NoneKeywordsInputTest();
+
+import {DateInputTest} from './ui/AdvancedSearch/DateInput/DateInputTest';
+DateInputTest();
+
+import {BetweenDateInputTest} from './ui/AdvancedSearch/DateInput/BetweenDateInputTest';
+BetweenDateInputTest();
+
+import {InTheLastDateInputTest} from './ui/AdvancedSearch/DateInput/InTheLastDateInputTest';
+InTheLastDateInputTest();
+
+import {DocumentInputTest} from './ui/AdvancedSearch/DocumentInput/DocumentInputTest';
+DocumentInputTest();
+
+import {SimpleFieldInputTest} from './ui/AdvancedSearch/DocumentInput/SimpleFieldInputTest';
+SimpleFieldInputTest();
+
+import {AdvancedFieldInputTest} from './ui/AdvancedSearch/DocumentInput/AdvancedFieldInputTest';
+AdvancedFieldInputTest();
+
+import {SizeInputTest} from './ui/AdvancedSearch/DocumentInput/SizeInputTest';
+SizeInputTest();
+
 import {AggregateTest} from './ui/AggregateTest';
 AggregateTest();
 
@@ -271,3 +322,6 @@ RegisteredNamedMethodsTest();
 
 import {FacetValuesOrderTest} from './ui/FacetValuesOrderTest';
 FacetValuesOrderTest();
+
+import {SentryLoggerTest} from './misc/SentryLoggerTest';
+SentryLoggerTest();

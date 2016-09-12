@@ -13,6 +13,7 @@ import {IRevealQuerySuggestRequest, IRevealQuerySuggestResponse} from '../rest/R
 import {IRatingRequest} from '../rest/RatingRequest';
 import {ISubscriptionRequest, ISubscription} from '../rest/Subscription';
 import {Promise} from 'es6-promise';
+import {ISentryLog} from './SentryLog';
 
 /**
  * The possible options when creating a {@link SearchEndpoint}
@@ -107,4 +108,5 @@ export interface ISearchEndpoint {
   listSubscriptions(page?: number): Promise<ISubscription[]>;
   updateSubscription(subscription: ISubscription): Promise<ISubscription>;
   deleteSubscription(subscription: ISubscription): Promise<ISubscription>;
+  logError(sentryLog: ISentryLog): Promise<boolean>;
 }

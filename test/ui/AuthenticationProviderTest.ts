@@ -8,6 +8,7 @@ import {ISettingsPopulateMenuArgs} from '../../src/ui/Settings/Settings';
 import {SettingsEvents} from '../../src/events/SettingsEvents';
 import {l} from '../../src/strings/Strings';
 import {$$} from '../../src/utils/Dom';
+import {MissingAuthenticationError} from '../../src/rest/MissingAuthenticationError';
 
 export function AuthenticationProviderTest() {
   describe('AuthenticationProvider', function () {
@@ -64,7 +65,7 @@ export function AuthenticationProviderTest() {
             caption: 'foobar',
             useIFrame: true,
           });
-          $$(test.cmp.root).trigger(QueryEvents.queryError, { error: { provider: 'foo' } });
+          $$(test.cmp.root).trigger(QueryEvents.queryError, { error: new MissingAuthenticationError('foo') });
           expect(ModalBox.open).toHaveBeenCalledWith(jasmine.anything(), jasmine.objectContaining({
             title: l('Authenticating', 'foobar')
           }));
@@ -81,7 +82,7 @@ export function AuthenticationProviderTest() {
         });
         test.cmp._window = fakeWindow;
         test.env.searchEndpoint.getAuthenticationProviderUri = () => 'coveo.com';
-        $$(test.env.root).trigger(QueryEvents.queryError, { error: { provider: 'foo' } });
+        $$(test.env.root).trigger(QueryEvents.queryError, { error: new MissingAuthenticationError('foo') });
 
         expect(fakeWindow.location.href).toBe('coveo.com');
       });
@@ -94,7 +95,7 @@ export function AuthenticationProviderTest() {
           showIFrame: true
         });
         test.env.searchEndpoint.getAuthenticationProviderUri = () => 'http://coveo.com/';
-        $$(test.env.root).trigger(QueryEvents.queryError, { error: { provider: 'foo' } });
+        $$(test.env.root).trigger(QueryEvents.queryError, { error: new MissingAuthenticationError('foo') });
         expect(ModalBox.open['calls'].mostRecent().args[0].children[0].src).toBe('http://coveo.com/');
       });
 
@@ -105,7 +106,7 @@ export function AuthenticationProviderTest() {
           useIFrame: true,
           showIFrame: false
         });
-        $$(test.env.root).trigger(QueryEvents.queryError, { error: { provider: 'foo' } });
+        $$(test.env.root).trigger(QueryEvents.queryError, { error: new MissingAuthenticationError('foo') });
 
         expect(ModalBox.open).toHaveBeenCalledWith(jasmine.objectContaining({
           className: 'coveo-waiting-for-authentication-popup'
@@ -113,19 +114,11 @@ export function AuthenticationProviderTest() {
       });
     });
 
-    /*it('should close the ModalBox when a "success" message is posted on window', function () {
-      let fakeWindow = Mock.mockWindow();
-      test.cmp._window = fakeWindow;
-      $$(test.env.root).trigger(QueryEvents.queryError, { error: { provider: 'foo' } });
-      $$(<any>test.cmp._window).trigger('message', { 'success': true })
-      expect(ModalBox.close).toHaveBeenCalled();
-    })*/
-
     it('should stop a redirect loop after 3 redirects', function () {
       spyOn(test.cmp.logger, 'error').and.returnValue(null);
       _.times(3, () => $$(test.env.root).trigger(QueryEvents.queryError, { error: { provider: 'foo' } }));
 
-      $$(test.env.root).trigger(QueryEvents.queryError, { error: { provider: 'foo' } });
+      $$(test.env.root).trigger(QueryEvents.queryError, { error: new MissingAuthenticationError('foo') });
       expect(test.cmp.logger.error).toHaveBeenCalledWith('The AuthenticationProvider is in a redirect loop. This may be due to a back-end configuration problem.');
     });
   });
