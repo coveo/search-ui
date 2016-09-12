@@ -4,7 +4,6 @@ import {$$} from '../../utils/Dom';
 import {Utils} from '../../utils/Utils';
 import {l} from '../../strings/Strings';
 import {Component} from '../Base/Component';
-import {KeyboardUtils} from '../../utils/KeyboardUtils';
 
 export class ValueElementRenderer {
   public listItem: HTMLElement;

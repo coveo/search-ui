@@ -139,7 +139,7 @@ export class Tab extends Component {
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.T, (args: IAttributeChangedEventArg) => this.handleQueryStateChanged(args));
     const clickAction = () => this.handleClick();
     this.bind.on(element, 'click', clickAction);
-    this.bind.on(element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction))
+    this.bind.on(element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction));
     this.render();
     ResponsiveTabs.init(this.root, Tab.ID, this);
   }
