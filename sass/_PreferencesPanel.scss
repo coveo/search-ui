@@ -11,6 +11,14 @@
   }
 }
 
+.coveo-no-results {
+  .CoveoPreferencesPanel {
+    &.coveo-active {
+      text-align: left;
+    }
+  }
+}
+
 .CoveoResultsPreferences, .CoveoResultsFiltersPreferences {
   @include coveo-preferences-panel-item;
 }

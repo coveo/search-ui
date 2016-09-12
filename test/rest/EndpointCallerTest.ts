@@ -263,7 +263,28 @@ export function EndpointCallerTest() {
             response: FakeResults.createFakeResults()
           });
         });
+
+        it('should allow to modify the request with an option', function () {
+          let endpointCaller = new EndpointCaller({
+            accessToken: 'myToken',
+            requestModifier: (requestInfo) => {
+              requestInfo.method = 'GET';
+              return requestInfo;
+            }
+          });
+          endpointCaller.call({
+            method: 'POST',
+            requestData: {},
+            url: 'this is an XMLHTTPRequest',
+            queryString: [],
+            responseType: 'text',
+            errorsAsSuccess: false
+          });
+          expect(jasmine.Ajax.requests.mostRecent().method).toBe('GET');
+        });
       });
     });
+
+
   });
 }

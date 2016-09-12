@@ -26,7 +26,7 @@ export class ResultsPerPage extends Component {
   static options: IResultsPerPageOptions = {
     /**
      * Specifies the possible values of the number of results to display per page.<br/>
-     * The default value is 10, 25, 50, 100
+     * The default value is 10, 25, 50, 100.
      */
     choicesDisplayed: ComponentOptions.buildCustomListOption<number[]>(function (list: string[]) {
       let values = _.map(list, function (value) {
@@ -48,7 +48,7 @@ export class ResultsPerPage extends Component {
   /**
    * Create a new ResultsPerPage<br/>
    * Render itself on every query success.
-   * @param element HTMLElement on which to instantiate the page (Normally : a div)
+   * @param element HTMLElement on which to instantiate the page (Normally : a div).
    * @param options
    * @param bindings
    */
@@ -67,7 +67,7 @@ export class ResultsPerPage extends Component {
 
   /**
    * Set the current number of results per page, and execute a query.<br/>
-   * Log the required analytics event (pagerResize by default)
+   * Log the required analytics event (pagerResize by default).
    * @param resultsPerPage
    * @param analyticCause
    */

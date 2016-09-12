@@ -98,5 +98,13 @@
   "YouTubePlaylistItem" : {
     "priority": 0,
     "value": "raw.filetype== 'YouTubePlaylistItem'"
+  },
+  "Slack": {
+    "priority": 0,
+    "value": "raw.connectortype == 'SlackCrawler'"
+  },
+  "MobileSlack": {
+    "priority": 1,
+    "value": "raw.connectortype == 'SlackCrawler' && Coveo.DeviceUtils.isSmallScreenWidth()"
   }
 }

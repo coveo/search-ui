@@ -62,12 +62,12 @@ export class Folding extends Component {
     field: ComponentOptions.buildFieldOption({ required: true }),
     /**
      * Specifies the field that determines that a result is a child of another top result.<br/>
-     * The default value is `@topparentid`
+     * The default value is `@topparentid`.
      */
     childField: ComponentOptions.buildFieldOption({ defaultValue: '@topparentid' }),
     /**
-     * Specifies the field that determines that a result is a top result containing other child results<br/>
-     * The default value is `@syscontainsattachment`
+     * Specifies the field that determines if a result is a top result containing other child results.<br/>
+     * The default value is `@syscontainsattachment`.
      */
     parentField: ComponentOptions.buildFieldOption({ defaultValue: '@containsattachment' }),
     /**
@@ -82,8 +82,8 @@ export class Folding extends Component {
      */
     range: ComponentOptions.buildNumberOption({ defaultValue: 2, min: 0 }),
     /**
-     * Specifies how the top result and its related child results, following the sort criteria format
-     * (`date ascending`, `@somefield ascending`, etc.).
+     * Specifies the top result and its related child results, following the sort criteria format
+     * (`date ascending`, `@somefield ascending`, etc.)
      *
      * The default value is `none`, which means that results are displayed in the order that the index returned them.
      *
@@ -92,12 +92,12 @@ export class Folding extends Component {
      */
     rearrange: ComponentOptions.buildCustomOption((value) => Utils.isNonEmptyString(value) ? SortCriteria.parse(value) : null),
     /**
-     * Specifies whether to add a callback function on the top result, allowing to make an additional query
+     * Specifies whether to add a callback function on the top result, allowing to make an additional query.
      * to load all the conversation of a given thread.
      *
      * Concretely, the {@link ResultFolding} component uses this for its <b>Load full conversation</b> option.
      *
-     * The default value is `true`
+     * The default value is `true`.
      */
     enableExpand: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
@@ -115,7 +115,7 @@ export class Folding extends Component {
     /**
      * This function manages folding individually for each result.
      *
-     * The default value ( which is implemented in Coveo.Folding.defaultGetResult) :
+     * The default value (which is implemented in Coveo.Folding.defaultGetResult):
      *
      * ```
      * var results = result.childResults || [];
@@ -143,7 +143,7 @@ export class Folding extends Component {
      *    }
      * })
      *
-     * // OR using the jquery extension
+     * // OR using the jQuery extension
      *
      * Coveo.$('#search').coveo('init', {
      *    Folding: {

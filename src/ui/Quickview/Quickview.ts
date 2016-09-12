@@ -35,14 +35,14 @@ interface IQuickviewOpenerObject {
  * This component is meant to exist within a result template.
  * It allows to create a button/link inside the result list that opens a modal box for a given result.
  *
- * Most of the time, this component will reference a {@link QuickviewDocument} in it's content template.
+ * Most of the time, this component will reference a {@link QuickviewDocument} in its content template.
  *
  * # Choosing what to display for the Quickview
  * The Quick View uses any HTML structure you put inside its tag and uses that as the content of the dialog box. This content can thus be any element you decide, using your CSS and your structure.
  *
  * > Example
  * > You can change the appearance of the Quick View link by adding HTML inside the body of the div.
- * > You can change the content of the Quick View link by specifying a template id.
+ * > You can change the content of the Quick View link by specifying a template ID.
  *
  * ```html
  * <!-- This would change the appearance of the quickview button itself in the result. -->
@@ -62,7 +62,7 @@ interface IQuickviewOpenerObject {
  *   </div>
  * </script>
  *
- * <!-- Note that this is all optional : Just including a <div class='CoveoQuickview'></div> will do the job most of the time, and will include a default template and default button appearance -->
+ * <!-- Note that this is all optional: Just including a <div class='CoveoQuickview'></div> will do the job most of the time, and will include a default template and default button appearance -->
  * ```
  */
 export class Quickview extends Component {
@@ -97,7 +97,7 @@ export class Quickview extends Component {
     enableLoadingAnimation: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies the template to use to present the Quick View content in the modal window.<br/>
-     * eg : <br/>
+     * e.g.: <br/>
      *     <div class="CoveoQuickview" data-template-id="TemplateId"></div>
      *     <div class="CoveoQuickview" data-template-selector=".templateSelector"></div>
      */

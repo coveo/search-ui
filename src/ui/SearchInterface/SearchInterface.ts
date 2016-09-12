@@ -23,6 +23,7 @@ import {Debug} from '../Debug/Debug';
 import {HashUtils} from '../../utils/HashUtils';
 import FastClick = require('fastclick');
 import timezone = require('jstz');
+import {SentryLogger} from '../../misc/SentryLogger';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -51,7 +52,7 @@ export interface ISearchInterfaceOptions {
  * This component is the root and main component of your search interface.<br/>
  * You should place every other component inside this component.<br/>
  * It is also on this component that you call the initialization function.<br/>
- * Since this component is the root of your search UI, it is recommended that you give it a unique HTML id attribute in order to reference it easily.
+ * Since this component is the root of your Search UI, it is recommended that you give it a unique HTML id attribute in order to reference it easily.
  */
 export class SearchInterface extends RootComponent {
   static ID = 'SearchInterface';
@@ -68,7 +69,7 @@ export class SearchInterface extends RootComponent {
      */
     enableHistory: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
-     * Specifies wether the UI should use an automatic responsive mode (eg : The tab(s) and facet(s) being placed automatically under the search box)<br/>
+     * Specifies whether the UI should use an automatic responsive mode (eg : The tab(s) and facet(s) being placed automatically under the search box)<br/>
      * This can be disabled for design reasons, if it does not fit with the implementation needs.<br/>
      * The default value is `true`
      */
@@ -76,7 +77,7 @@ export class SearchInterface extends RootComponent {
     /**
      * Specifies that you wish to use the local storage of the browser to store the state of the interface.<br/>
      * This can be used for very specific purpose, and only if you know what you are doing.<br/>
-     * Default value is false.
+     * Default value is `false`.
      */
     useLocalStorageForHistory: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
@@ -92,31 +93,31 @@ export class SearchInterface extends RootComponent {
     excerptLength: ComponentOptions.buildNumberOption({ defaultValue: 200, min: 0 }),
     /**
      * Specifies an expression to add to each query.<br/>
-     * This should be use if you wish to add a global filter for your whole search interface that applies for all tab.<br/>
-     * Do not use this for security concern ... (It's javascript after all).<br/>
+     * This should be use if you wish to add a global filter for your whole search interface that applies for all tabs.<br/>
+     * Do not use this for security concern ... (It is JavaScript after all).<br/>
      * By default none is added.
      */
     expression: ComponentOptions.buildStringOption({ defaultValue: '' }),
     /**
      * Specifies the name of a field to use as a custom filter when executing the query (also referred to as 'folding').<br/>
      * Setting this option causes the index to return only one result having any particular value inside the filter field. Any other matching result is 'folded' inside the childResults member of each JSON query result.<br/>
-     * This feature is typically used with threaded conversations to include only one top-level result per conversation. Thus, the field specified in this option typically is a value unique to each thread that is shared by all items (e.g., posts, emails, etc.) in the thread.<br/>
+     * This feature is typically used with threaded conversations to include only one top-level result per conversation. Thus, the field specified in this option typically is a value unique to each thread that is shared by all items (e.g.: posts, emails, etc.) in the thread.<br/>
      * This is obviously an advanced feature. Instead, look into using the {@link Folding} component, which covers a lot of different use cases.<br/>
      * By default none is added
      */
     filterField: ComponentOptions.buildStringOption({ defaultValue: '' }),
     /**
      * Specifies whether the interface should display a loading animation before the first query has completed successfully.<br/>
-     * Note that if you set autoTriggerQuery to false, this means that the loading animation won't go away automatically.<br/>
+     * Note that if you set autoTriggerQuery to false, this means that the loading animation will not go away automatically.<br/>
      * Default is true.
      */
     hideUntilFirstQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies the animation that you wish to use for your interface.<br/>
-     * This can be either a selector, or an element that matches the correct css class.<br/>
+     * This can be a selector or an element that matches the correct CSS class.<br/>
      * Eg : firstLoadingAnimation : '.CustomFirstLoadingAnimation' / data-first-loading-animation='.CustomFirstLoadingAnimation'.</br>
      * Eg : &lt;element class='CoveoSearchInterface'&gt;&lt;element class='coveo-first-loading-animation'/&gt;&lt;/element&gt;<br/>
-     * By default, this will be a Coveo CSS animation (which can also be customized with css)
+     * By default, this will be a Coveo CSS animation (which can also be customized with CSS).
      */
     firstLoadingAnimation: ComponentOptions.buildChildHtmlElementOption({
       childSelector: '.coveo-first-loading-animation',
@@ -125,7 +126,7 @@ export class SearchInterface extends RootComponent {
     /**
      * Specifies whether the init function should trigger the first query automatically when the page is loaded.<br/>
      * Note that if you set this to false, then the hideUntilFirstQuery option still applies. This means that the animation will still show until a query is triggered.<br/>
-     * Default is true.
+     * Default is `true`.
      */
     autoTriggerQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     endpoint: ComponentOptions.buildCustomOption((endpoint) => endpoint != null && endpoint in SearchEndpoint.endpoints ? SearchEndpoint.endpoints[endpoint] : null, { defaultFunction: () => SearchEndpoint.endpoints['default'] }),
@@ -138,25 +139,25 @@ export class SearchInterface extends RootComponent {
     /**
      * Specifies whether to enable the feature that allows users to ALT + double click on any results to get the Debug page with a detailed view of all the properties and fields for a given result.<br/>
      * This has no security concern (as all those informations are visible to users through the browser developer console or by calling the Coveo API directly).<br/>
-     * The default value is true.
+     * The default value is `true`.
      */
     enableDebugInfo: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies whether to enable the collaborative rating for the index and and include the user rating on each results to the normal index ranking.<br/>
      * If activated, this option can be leveraged with the {@link ResultRating} component.<br/>
-     * The default value is false.
+     * The default value is `false`.
      */
     enableCollaborativeRating: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies whether to filter duplicates on the search results.<br/>
      * When true, duplicates do not appear in search results, but they however are included in facet counts, which can be sometimes confusing for the users. This is a limitation of the index.<br/>
      * Example: The user narrows a query to one document that has a duplicate. Only one document appears in search results, but the facet count is 2.<br/>
-     * The default value is false.
+     * The default value is `false`.
      */
     enableDuplicateFiltering: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies the name of the query pipeline to use for the queries. If not specified, the default value is default, which means the default query pipeline will be used.<br/>
-     * You can use this parameter for example when your index is in a Coveo Cloud Organization where you created pipelines (see https://onlinehelp.coveo.com/en/cloud/creating_and_managing_query_pipelines.htm).<br/>
+     * You can use this parameter when your index is in a Coveo Cloud organization where you created pipelines (see https://onlinehelp.coveo.com/en/cloud/creating_and_managing_query_pipelines.htm).<br/>
      * Default value is 'default'.
      */
     pipeline: ComponentOptions.buildStringOption(),
@@ -164,7 +165,7 @@ export class SearchInterface extends RootComponent {
      * Specifies the maximum age in milliseconds that cached query results can have in order to be used (instead of performing a new query on the index).<br/>
      * If cached results are available but are older than the specified age, a new query will be performed on the index.<br/>
      * On high-volume public web sites, having a larger maximum age can greatly improve query response time at the cost of result freshness.<br/>
-     * By default, the Coveo Search API will determine the cache length. This is typically 15 minutes.
+     * By default, the Coveo Search API will determine the cache length. This typically takes 15 minutes.
      */
     maximumAge: ComponentOptions.buildNumberOption(),
     /**
@@ -190,9 +191,9 @@ export class SearchInterface extends RootComponent {
    * Create a new search interface. Initialize letious singleton for the interface (eg : Usage analytic, query controller, state model, etc.)<br/>
    * Bind event related to the query.<br/>
    * Will hide and show the loading animation, if activated.<br/>
-   * @param element The HTMLElement on which the element will be instantiated. This cannot be an HTMLInputElement for technical reason
+   * @param element The `HTMLElement` on which the element will be instantiated. This cannot be an `HTMLInputElement` for technical reasons.
    * @param options The options for the querybox.
-   * @param analyticsOptions The options for the analytics component. Since the analytics component is normally global, it needs to be passed at initialization of the whole interface
+   * @param analyticsOptions The options for the analytics component. Since the analytics component is normally global, it needs to be passed at initialization of the whole interface.
    * @param _window The window object for the search interface. Used for unit tests, which can pass a mock. Default is the global window object.
    */
   constructor(public element: HTMLElement, public options?: ISearchInterfaceOptions, public analyticsOptions?, _window = window) {
@@ -218,7 +219,7 @@ export class SearchInterface extends RootComponent {
     this.componentOptionsModel = new ComponentOptionsModel(element);
     this.usageAnalytics = this.initializeAnalytics();
     this.queryController = new QueryController(element, this.options, this.usageAnalytics, this);
-
+    new SentryLogger(this.queryController);
 
     let eventName = this.queryStateModel.getEventName(Model.eventTypes.preprocess);
     $$(this.element).on(eventName, (e, args) => this.handlePreprocessQueryStateModel(args));
@@ -246,7 +247,7 @@ export class SearchInterface extends RootComponent {
 
   /**
    * Display the first query animation.<br/>
-   * This is normally the Coveo logo with a css animation (which can be customized with options or css)
+   * This is normally the Coveo logo with a CSS animation (which can be customized with options or CSS).
    */
   public showWaitAnimation() {
     $$(this.options.firstLoadingAnimation).detach();
@@ -256,7 +257,7 @@ export class SearchInterface extends RootComponent {
 
   /**
    * Hide the first query animation.<br/>
-   * This is normally the Coveo logo with a css animation (which can be customized with options or css)
+   * This is normally the Coveo logo with a CSS animation (which can be customized with options or CSS).
    */
   public hideWaitAnimation() {
     $$(this.options.firstLoadingAnimation).detach();
@@ -264,9 +265,9 @@ export class SearchInterface extends RootComponent {
   }
 
   /**
-   * Attach a component to the interface. This allows the interface to easily list and traverse it's component.
-   * @param type Normally a unique identifier without the Coveo prefix. Eg : CoveoFacet -> Facet, CoveoPager -> Pager, CoveoQuerybox -> Querybox, etc.
-   * @param component The component instance to attach
+   * Attach a component to the interface. This allows the interface to easily list and traverse its component.
+   * @param type Normally a unique identifier without the Coveo prefix (e.g.: CoveoFacet -> Facet, CoveoPager -> Pager, CoveoQuerybox -> Querybox, etc.)
+   * @param component The component instance to attach.
    */
   public attachComponent(type: string, component: BaseComponent) {
     this.getComponents(type).push(component);
@@ -274,8 +275,8 @@ export class SearchInterface extends RootComponent {
 
   /**
    * Detach a component from the interface.
-   * @param type Normally a unique identifier without the Coveo prefix. Eg : CoveoFacet -> Facet, CoveoPager -> Pager, CoveoQuerybox -> Querybox, etc.
-   * @param component The component instance to detach
+   * @param type Normally a unique identifier without the Coveo prefix (e.g.: CoveoFacet -> Facet, CoveoPager -> Pager, CoveoQuerybox -> Querybox, etc.)
+   * @param component The component instance to detach.
    */
   public detachComponent(type: string, component: BaseComponent) {
     let components = this.getComponents(type);
@@ -303,12 +304,12 @@ export class SearchInterface extends RootComponent {
 
   /**
    * Get all the components for a given type
-   * @param type Normally a unique identifier without the Coveo prefix. Eg : CoveoFacet -> Facet, CoveoPager -> Pager, CoveoQuerybox -> Querybox, etc.
+   * @param type Normally a unique identifier without the Coveo prefix (e.g.: CoveoFacet -> Facet, CoveoPager -> Pager, CoveoQuerybox -> Querybox, etc.)
    */
   public getComponents<T>(type: string): T[];
   /**
    * Get all the components for a given type
-   * @param type Normally a unique identifier without the Coveo prefix. Eg : CoveoFacet -> Facet, CoveoPager -> Pager, CoveoQuerybox -> Querybox, etc.
+   * @param type Normally a unique identifier without the Coveo prefix (e.g.: CoveoFacet -> Facet, CoveoPager -> Pager, CoveoQuerybox -> Querybox, etc.)
    */
   public getComponents(type: string): BaseComponent[] {
     if (this.attachedComponents == null) {

@@ -104,7 +104,7 @@ export class ResultsFiltersPreferences extends Component {
   private advancedFiltersTextInputCaption: PreferencesPanelTextAreaInput;
   private advancedFiltersTextInputExpression: PreferencesPanelTextAreaInput;
   private advancedFiltersTabSelect: PreferencePanelMultiSelectInput;
-  private advancedFilterFormValidate: HTMLElement;
+  private advancedFilterFormValidate: HTMLFormElement;
 
   constructor(public element: HTMLElement, public options: IResultsFiltersPreferencesOptions, public bindings: IComponentBindings) {
     super(element, ResultsFiltersPreferences.ID, bindings);
@@ -242,7 +242,7 @@ export class ResultsFiltersPreferences extends Component {
   }
 
   private buildAdvancedFilterFormValidate() {
-    this.advancedFilterFormValidate = $$('form').el;
+    this.advancedFilterFormValidate = <HTMLFormElement>$$('form').el;
 
     var formSubmit = $$('input', {
       type: 'submit'
@@ -276,7 +276,9 @@ export class ResultsFiltersPreferences extends Component {
       this.advancedFilterFormValidate.appendChild(el);
     });
 
-    saveFormButton.on('click', () => formSubmit.trigger('click'));
+    saveFormButton.on('click', () => {
+      formSubmit.el.click();
+    });
     closeFormButton.on('click', () => $$(this.advancedFiltersBuilder).toggleClass('coveo-active'));
 
     $$($$(this.advancedFilterFormValidate).find('textarea')).on('keyup', (e: KeyboardEvent) => {

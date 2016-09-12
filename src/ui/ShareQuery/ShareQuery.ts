@@ -15,7 +15,7 @@ export interface IShareQueryOptions {
 /**
  * ShareQuery shows 2 text boxes, one with a shareable link and the
  * other with the complete query expression of the currently performed query.<br/>
- * It populates the {@link Settings} component's menu for easy access.
+ * It populates the {@link Settings} components menu for easy access.
  */
 export class ShareQuery extends Component {
   static ID = 'ShareQuery';

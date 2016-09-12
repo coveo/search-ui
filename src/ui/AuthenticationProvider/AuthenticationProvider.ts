@@ -12,6 +12,7 @@ import {$$} from '../../utils/Dom';
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
 import {ModalBox} from '../../ExternalModulesShim';
+import {MissingAuthenticationError} from '../../rest/MissingAuthenticationError';
 
 export interface IAuthenticationProviderOptions {
   name?: string;
@@ -28,7 +29,7 @@ export interface IAuthenticationProviderOptions {
  * that starts the authentication process.
  *
  * Using the standard `data-tab` attribute, you can enable the
- * AuthenticationProvider component only for tabs in which authentication is
+ * `AuthenticationProvider` component only for tabs in which authentication is
  * required (see {@link Tab}).
  */
 export class AuthenticationProvider extends Component {
@@ -41,7 +42,7 @@ export class AuthenticationProvider extends Component {
   static options: IAuthenticationProviderOptions = {
     /**
      * Specifies the name of the authentication provider as specified in the
-     * [Windows Service Configuration File](https://developers.coveo.com/display/public/SearchREST/Windows+Service+Configuration+File)
+     * [Windows Service Configuration File](https://developers.coveo.com/display/public/SearchREST/Windows+Service+Configuration+File).
      */
     name: ComponentOptions.buildStringOption(),
     /**
@@ -81,7 +82,7 @@ export class AuthenticationProvider extends Component {
   private redirectCount: number;
 
   /**
-   * Build a new AuthenticationProvider component
+   * Build a new `AuthenticationProvider` component
    * @param element
    * @param options
    * @param bindings
@@ -116,7 +117,9 @@ export class AuthenticationProvider extends Component {
   }
 
   private handleQueryError(args: IQueryErrorEventArgs) {
-    if (args.error['provider'] === this.options.name && this.redirectCount < 2 && this.redirectCount !== -1) {
+    let missingAuthError = <MissingAuthenticationError>args.error;
+
+    if (missingAuthError.isMissingAuthentication && missingAuthError.provider === this.options.name && this.redirectCount < 2 && this.redirectCount !== -1) {
       ++this.redirectCount;
       this.authenticateWithProvider();
     } else {
