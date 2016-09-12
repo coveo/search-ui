@@ -170,3 +170,7 @@
   margin: 0 10px 20px;
   @include defaultRoundedBorder();
 }
+
+.coveo-table-layout > .CoveoResult {
+  display: table-row;
+}

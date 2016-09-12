@@ -123,6 +123,10 @@
     "priority": 0,
     "value": "options.layout === 'card'"
   },
+  "Table": {
+    "priority": 0,
+    "value": "options.layout === 'table'"
+  },
   "Slack": {
     "priority": 0,
     "value": "raw.connectortype == 'SlackCrawler'"
