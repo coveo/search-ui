@@ -1,6 +1,62 @@
 @import "Variables.scss";
 
-.CoveoSearchInterface.coveo-small-tabs, .CoveoSearchInterface.coveo-small-facet {
+.CoveoSearchInterface.coveo-small-tabs, .CoveoSearchInterface.coveo-small-facets {
+
+  .coveo-dropdown-header {
+    font-size: $font-size-smallest;
+    display: inline-block;
+    @include defaultRoundedBorder();
+    background-color: white;
+    padding: 0px 7px 0px 7px;
+    height: 22px;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: 0.09px;
+    vertical-align: middle;
+    white-space: normal;
+    color: $color-greyish-teal-blue;
+    cursor: pointer;
+    text-transform: uppercase;
+
+    * {
+      display: inline-block;
+      margin: 0;
+    }
+
+    p {
+      line-height: 16px;
+    }
+
+    .coveo-sprites-more-tabs {
+      margin-left: 10px;
+    }
+  }
+
+  .coveo-tab-section {
+    > a:last-of-type {
+      margin-right: 20px;
+    }
+
+    .coveo-tab-dropdown-header {
+      margin-left: 10px;
+    }
+  }
+}
+
+.CoveoSearchInterface.coveo-small-tabs.coveo-small-facets {
+  .coveo-search-section {
+      margin: 0;
+      padding: 20px 10px 20px 10px;
+      background-color: $color-blueish-white;
+      margin: 0 auto;
+      width: 100%;
+      max-width: none;
+  }
+
+  .coveo-tab-section {
+    background-color: $color-blueish-white;
+    min-height: 40px;
+  }
 
   .CoveoSearchbox {
     max-width: 800px;
@@ -13,55 +69,4 @@
   .CoveoSearchbox {
     margin-right: 50px;
   }
-  .coveo-dropdown-header {
-      font-size: $font-size-smallest;
-      display: inline-block;
-      @include defaultRoundedBorder();
-      background-color: white;
-      padding: 0px 7px 0px 7px;
-      height: 22px;
-      font-weight: 700;
-      line-height: 20px;
-      letter-spacing: 0.09px;
-      vertical-align: middle;
-      white-space: normal;
-      color: $color-greyish-teal-blue;
-      cursor: pointer;
-      text-transform: uppercase;
-
-      * {
-        display: inline-block;
-        margin: 0;
-      }
-
-      p {
-        line-height: 16px;
-      }
-
-      .coveo-sprites-more-tabs {
-        margin-left: 10px;
-      }
-  }
-
-    .coveo-search-section {
-      margin: 0;
-      padding: 20px 10px 20px 10px;
-      background-color: $color-blueish-white;
-      margin: 0 auto;
-      width: 100%;
-      max-width: none;
-    }
-
-    .coveo-tab-section {
-      background-color: $color-blueish-white;
-      min-height: 40px;
-      
-      > a:last-of-type {
-        margin-right: 20px;
-      }
-
-      .coveo-tab-dropdown-header {
-        margin-left: 10px;
-      }
-    }
 }

@@ -64,11 +64,12 @@ export class ResponsiveComponentsManager {
   }
 
   constructor(root: Dom) {
-    let searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, true);
     this.coveoRoot = root;
     this.searchBoxElement = this.getSearchBoxElement();
     this.resizeListener = _.debounce(() => {
-      _.each(this.responsiveComponents, responsiveComponent => responsiveComponent.handleResizeEvent());
+      _.each(this.responsiveComponents, responsiveComponent => {
+        responsiveComponent.handleResizeEvent();
+      });
     }, 200);
     window.addEventListener('resize', this.resizeListener);
     this.bindNukeEvents();
@@ -103,12 +104,6 @@ export class ResponsiveComponentsManager {
       }
     }
 
-  }
-
-  private handleResizeEvent(): void {
-    _.each(this.responsiveComponents, responsiveComponent => {
-      responsiveComponent.handleResizeEvent && responsiveComponent.handleResizeEvent();
-    });
   }
 
   private isFacet(ID: string): boolean {

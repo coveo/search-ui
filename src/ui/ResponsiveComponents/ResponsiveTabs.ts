@@ -129,14 +129,13 @@ export class ResponsiveTabs implements IResponsiveComponent {
     if (this.searchBoxElement) {
       this.tabSection.insertAfter(this.searchBoxElement);
     }
-    ResponsiveComponentsUtils.activateSmallFacet(this.coveoRoot);
+    ResponsiveComponentsUtils.activateSmallTabs(this.coveoRoot);
   }
 
   public changeToLargeMode(): void {
     this.restoreTabSectionPosition();
     this.emptyDropdown();
     this.cleanUpDropdown();
-    this.coveoRoot.addClass('coveo-small-tabs');
     ResponsiveComponentsUtils.deactivateSmallTabs(this.coveoRoot);
   }
 
@@ -189,7 +188,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
     ResponsiveComponentsUtils.deactivateSmallTabs(this.coveoRoot);
     let isOverflowing = this.isOverflowing(virtualTabSection.el);
-    ResponsiveComponentsUtils.deactivateSmallTabs(this.coveoRoot);
+    ResponsiveComponentsUtils.activateSmallTabs(this.coveoRoot);
 
 
     virtualTabSection.detach();

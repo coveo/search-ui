@@ -70,7 +70,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.disableFacetPreservePosition();
     $$(this.coveoRoot.find('.coveo-tab-section')).el.appendChild(this.dropdownHeader.el);
     this.dropdownContent.el.style.display = 'none';
-    ResponsiveComponentsUtils.activateSmallTabs(this.coveoRoot);
+    ResponsiveComponentsUtils.activateSmallFacet(this.coveoRoot);
   }
 
   public changeToLargeMode() {
