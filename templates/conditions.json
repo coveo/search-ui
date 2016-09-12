@@ -109,7 +109,11 @@
   },
   "MobileYouTubePlaylistItem" : {
     "priority": 1,
-    "value": "raw.filetype== 'YouTubePlaylistItem' && (Coveo.DeviceUtils.isSmallScreenWidth() || options.layout === 'card')"
+    "value": "raw.filetype== 'YouTubePlaylistItem' && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "CardYouTubePlaylistItem" : {
+    "priority": 1,
+    "value": "raw.filetype== 'YouTubePlaylistItem' && options.layout === 'card'"
   },
   "YouTubePlaylistItem" : {
     "priority": 0,
