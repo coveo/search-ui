@@ -1,5 +1,4 @@
 import {Utils} from './Utils';
-import {Dom, $$} from './Dom';
 
 export enum KEYBOARD {
   BACKSPACE = 8,
@@ -79,6 +78,6 @@ export class KeyboardUtils {
         action(e);
       }
       return false;
-    }
+    };
   }
 }

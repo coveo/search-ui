@@ -1424,7 +1424,7 @@ export class Facet extends Component {
       more = $$('a', { className: 'coveo-facet-more' }, l('More')).el;
     }
     const moreAction = () => this.handleClickMore();
-    $$(more).on('click', moreAction)
+    $$(more).on('click', moreAction);
     $$(more).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, moreAction));
     return more;
   }
