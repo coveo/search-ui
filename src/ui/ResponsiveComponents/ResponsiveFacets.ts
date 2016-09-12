@@ -89,6 +89,10 @@ export class ResponsiveFacets implements IResponsiveComponent {
     }
   }
 
+  public needTabSection() {
+    return this.needSmallMode();
+  }
+
   public handleResizeEvent() {
     if (this.needSmallMode() && !ResponsiveComponentsUtils.isSmallFacetActivated(this.coveoRoot)) {
       this.changeToSmallMode();

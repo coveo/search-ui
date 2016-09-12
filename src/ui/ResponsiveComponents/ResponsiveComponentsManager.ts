@@ -7,6 +7,7 @@ import {FacetSlider} from '../FacetSlider/FacetSlider';
 import {ResponsiveFacets} from './ResponsiveFacets';
 import {IComponentDefinition} from '../Base/Component';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
+import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
 
 export interface IResponsiveComponentConstructor {
   new (root: Dom, ID: string): IResponsiveComponent;
@@ -15,6 +16,7 @@ export interface IResponsiveComponentConstructor {
 export interface IResponsiveComponent {
   ID: string;
   handleResizeEvent(): void;
+  needTabSection?(): boolean;
 }
 
 export class ResponsiveComponentsManager {
@@ -30,6 +32,8 @@ export class ResponsiveComponentsManager {
   private isTabActivated: boolean = false;
   private isFacetActivated: boolean = false;
   private responsiveFacets: ResponsiveFacets;
+  private tabSectionPreviousSibling: Dom;
+  private tabSectionParent: Dom;
 
   // Register takes a class and will instantiate it after framework initialization has completed.
   public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component: IComponentDefinition) {
@@ -64,13 +68,50 @@ export class ResponsiveComponentsManager {
   constructor(root: Dom) {
     this.coveoRoot = root;
     this.searchBoxElement = this.getSearchBoxElement();
+    let tabSection = this.coveoRoot.find('.coveo-tab-section');
+    this.tabSection = tabSection ? $$(tabSection) : $$('div', { className: 'coveo-tab-section' });
+    this.saveTabSectionPosition();
     this.resizeListener = _.debounce(() => {
       _.each(this.responsiveComponents, responsiveComponent => {
+        if (this.needTabSection() || this.searchBoxElement && this.tabSection && this.coveoRoot.width() <= ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH && this.isFacetActivated) {
+          this.coveoRoot.addClass('coveo-small-interface');
+          this.tabSection.insertAfter(this.searchBoxElement);
+        } else if (this.searchBoxElement && this.tabSection && this.coveoRoot.width() > ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH && !this.needTabSection()) {
+          this.coveoRoot.removeClass('coveo-small-interface');
+          this.restoreTabSectionPosition();
+        }
         responsiveComponent.handleResizeEvent();
       });
     }, 200);
     window.addEventListener('resize', this.resizeListener);
     this.bindNukeEvents();
+  }
+
+  private needTabSection() {
+    for (let i = 0; i < this.responsiveComponents.length; i++) {
+      let responsiveComponent = this.responsiveComponents[i];
+      if (responsiveComponent.needTabSection && responsiveComponent.needTabSection()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private restoreTabSectionPosition() {
+    if (this.tabSectionPreviousSibling) {
+      this.tabSection.insertAfter(this.tabSectionPreviousSibling.el);
+    } else if (this.tabSectionParent) {
+      this.tabSectionParent.prepend(this.tabSection.el);
+    } else {
+      this.tabSection && this.tabSection.detach();
+    }
+  }
+
+  private saveTabSectionPosition() {
+    if (this.tabSection) {
+      this.tabSectionPreviousSibling = this.tabSection.el.previousSibling ? $$(<HTMLElement>this.tabSection.el.previousSibling) : null;
+      this.tabSectionParent = this.tabSection.el.parentElement ? $$(this.tabSection.el.parentElement) : null;
+    }
   }
 
   public register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component) {
@@ -83,18 +124,12 @@ export class ResponsiveComponentsManager {
       let responsiveComponent = new responsiveComponentConstructor(root, ID);
       if (this.isTabs(responsiveComponent.ID)) {
         this.isTabActivated = true;
-        if (this.isFacetActivated) {
-          this.tabSection = null;
-        }
       }
 
       if (this.isFacet(ID)) {
         this.responsiveFacets = <ResponsiveFacets>responsiveComponent;
         this.responsiveFacets.registerComponent(component);
         this.isFacetActivated = true;
-        if (!this.isTabActivated) {
-          this.tabSection = $$('div', { className: 'coveo-tab-section' });
-        }
         // Facets need to be rendered before tabs, so the facet dropdown header is already there when the responsive tabs check for overflow.
         this.responsiveComponents.unshift(responsiveComponent);
       } else {

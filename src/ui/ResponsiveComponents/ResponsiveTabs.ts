@@ -1,4 +1,4 @@
-import {Win, $$, Dom} from '../../utils/Dom';
+import {$$, Dom} from '../../utils/Dom';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
 import {EventsUtils} from '../../utils/EventsUtils';
@@ -114,9 +114,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   };
 
   public needSmallMode(): boolean {
-    let win = new Win(window);
-
-    if (win.width() <= ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH) {
+    if (this.coveoRoot.width() <= ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH) {
       return true;
     } else if (!ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot)) {
       return this.isOverflowing(this.tabSection.el);
@@ -126,14 +124,10 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   public changeToSmallMode() {
-    if (this.searchBoxElement) {
-      this.tabSection.insertAfter(this.searchBoxElement);
-    }
     ResponsiveComponentsUtils.activateSmallTabs(this.coveoRoot);
   }
 
   public changeToLargeMode(): void {
-    this.restoreTabSectionPosition();
     this.emptyDropdown();
     this.cleanUpDropdown();
     ResponsiveComponentsUtils.deactivateSmallTabs(this.coveoRoot);
@@ -329,14 +323,6 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private saveTabsPosition() {
     this.previousSibling = this.tabSection.el.previousSibling ? $$(<HTMLElement>this.tabSection.el.previousSibling) : null;
     this.parent = $$(this.tabSection.el.parentElement);
-  }
-
-  private restoreTabSectionPosition() {
-    if (this.previousSibling) {
-      this.tabSection.insertAfter(this.previousSibling.el);
-    } else {
-      this.parent.prepend(this.tabSection.el);
-    }
   }
 
   private bindNukeEvents() {
