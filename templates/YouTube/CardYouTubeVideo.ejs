@@ -1,0 +1,37 @@
+<div class="coveo-result-frame" style="font-size: 0.8em">
+  <div class="coveo-result-row" style="background: linear-gradient(
+      rgba(38, 62, 85, 1.7),
+      rgba(38, 62, 85, 0.3)
+    ), url('<%= raw['ytthumbnailurl'] %>') center center; background-size: cover; margin: 0; color: white;">
+    <div style="padding: 20px">
+      <div class="coveo-result-row" style="margin-bottom: 15px">
+        <div class="coveo-result-cell" style="width:40px; vertical-align:middle; flex-grow:0">
+          <span class="CoveoIcon" data-small="true"></span>
+        </div>
+        <div class="coveo-result-cell" style="padding-left: 1em">
+          <a class="CoveoResultLink" style="font-size: 1.3em; line-height: 1.3; color: white"></a>
+        </div>
+      </div>
+      <div class="coveo-result-row" style="margin-bottom: 20px">
+        <div class="coveo-result-cell" style="padding-top:5px; padding-bottom:5px">
+          <div class="CoveoExcerpt"></div>
+        </div>
+      </div>
+    </div>
+    <div class="coveo-result-row" style="display: flex; justify-content: space-between; margin: 0">
+      <div class="coveo-result-cell" style="background-color: #263E55; padding: 10px 10px 10px 20px;">
+        <span class="CoveoFieldValue" data-field="@ytviewcount" data-helper="number" data-helper-options-format="n"></span>
+        <span class="CoveoText" data-value="views"></span>
+      </div>
+      <div class="coveo-result-cell" style="background-color: #263E55; padding: 10px 20px 10px 10px">
+        <span class="CoveoFieldValue" data-field="@ytvideoduration" data-helper="timeSpan" data-helper-options-is-milliseconds="false"></span>
+      </div>
+    </div>
+  </div>
+  <div class="coveo-result-row" style="padding: 20px">
+    <div class="coveo-result-cell">
+      <div class="CoveoText" data-value="Date" data-weight="bold" style="margin-bottom: .5em"></div>
+      <div class="CoveoFieldValue" data-field="@date" data-helper="emailDateTime" data-helper-options-always-include-time="true"></div>
+    </div>
+  </div>
+</div>

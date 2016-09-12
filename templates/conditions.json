@@ -99,6 +99,10 @@
     "priority": 1,
     "value": "raw.filetype == 'YouTubeVideo' && Coveo.DeviceUtils.isSmallScreenWidth()"
   },
+  "CardYouTubeVideo": {
+    "priority": 1,
+    "value": "raw.filetype == 'YouTubeVideo' && options.layout === 'card'"
+  },
   "YouTubeVideo" : {
     "priority": 0,
     "value": "raw.filetype == 'YouTubeVideo'"
