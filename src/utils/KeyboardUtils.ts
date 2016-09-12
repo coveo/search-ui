@@ -1,4 +1,5 @@
 import {Utils} from './Utils';
+import {Dom, $$} from './Dom';
 
 export enum KEYBOARD {
   BACKSPACE = 8,
@@ -66,5 +67,18 @@ export class KeyboardUtils {
 
   static isLetterKeyPushed(keycode: number): boolean {
     return keycode > 64 && keycode < 91;
+  }
+
+  // Return a keyboard event listener that only executes the function if certain keys are pressed.
+  static keypressAction(keyCode: KEYBOARD | KEYBOARD[], action: Function) {
+    return (e: KeyboardEvent, ...data: any[]) => {
+      const eventCode = (e.charCode || e.keyCode);
+      if (_.isArray(keyCode) && _.contains(keyCode, eventCode)) {
+        action(e);
+      } else if (eventCode === keyCode) {
+        action(e);
+      }
+      return false;
+    }
   }
 }

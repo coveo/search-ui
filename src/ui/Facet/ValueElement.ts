@@ -9,6 +9,7 @@ import {$$} from '../../utils/Dom';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {Defer} from '../../misc/Defer';
 import {ModalBox} from '../../ExternalModulesShim';
+import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
 
 export interface IValueElementKlass {
   new (facet: Facet, facetValue: FacetValue): ValueElement;
@@ -109,7 +110,7 @@ export class ValueElement {
   }
 
   protected handleEventForExcludedValueElement(eventBindings: IValueElementEventsBinding) {
-    $$(this.renderer.label).on('click', (event) => {
+    let clickEvent = (event: Event) => {
       if (eventBindings.pinFacet) {
         this.facet.pinFacetPosition();
       }
@@ -117,28 +118,51 @@ export class ValueElement {
         this.omniboxCloseEvent(eventBindings.omniboxObject);
       }
       this.handleSelectValue(eventBindings);
-      event.stopPropagation();
       return false;
+    };
+
+    $$(this.renderer.label).on('click', e => {
+      e.stopPropagation();
+      clickEvent(e);
     });
+
+    $$(this.renderer.stylishCheckbox).on('keydown', KeyboardUtils.keypressAction([
+      KEYBOARD.SPACEBAR,
+      KEYBOARD.ENTER
+    ], clickEvent));
   }
 
   protected handleEventForValueElement(eventBindings: IValueElementEventsBinding) {
-    $$(this.renderer.excludeIcon).on('click', (event) => {
+    let excludeAction = (event: Event) => {
       if (eventBindings.omniboxObject) {
         this.omniboxCloseEvent(eventBindings.omniboxObject);
       }
-      this.handleExcludeClick(eventBindings);
       event.stopPropagation();
+      event.preventDefault();
+      this.handleExcludeClick(eventBindings);
       return false;
-    });
-    $$(this.renderer.label).on('click', (event: Event) => {
+    };
+    $$(this.renderer.excludeIcon).on('click', excludeAction);
+
+    $$(this.renderer.excludeIcon).on('keydown', KeyboardUtils.keypressAction([
+      KEYBOARD.SPACEBAR,
+      KEYBOARD.ENTER
+    ], excludeAction));
+
+    let selectAction = (event: Event) => {
       if (eventBindings.pinFacet) {
         this.facet.pinFacetPosition();
       }
       event.preventDefault();
       $$(this.renderer.checkbox).trigger('change');
       return false;
-    });
+    };
+    $$(this.renderer.label).on('click', selectAction);
+
+    $$(this.renderer.stylishCheckbox).on('keydown', KeyboardUtils.keypressAction([
+      KEYBOARD.SPACEBAR,
+      KEYBOARD.ENTER
+    ], selectAction));
   }
 
   protected handleEventForCheckboxChange(eventBindings: IValueElementEventsBinding) {

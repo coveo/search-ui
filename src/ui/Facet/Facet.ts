@@ -49,6 +49,7 @@ import {IOmniboxDataRow} from '../Omnibox/OmniboxInterface';
 import {Initialization} from '../Base/Initialization';
 import {BreadcrumbEvents, IClearBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
 import {ResponsiveFacets} from '../ResponsiveComponents/ResponsiveFacets';
+import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
 import {IStringMap} from '../../rest/GenericParam';
 import {FacetValuesOrder} from './FacetValuesOrder';
 import {ValueElement} from './ValueElement';
@@ -1008,28 +1009,29 @@ export class Facet extends Component {
   protected updateSearchInNewDesign(moreValuesAvailable = true) {
     if (this.searchInterface.isNewDesign() && moreValuesAvailable) {
       let renderer = new ValueElementRenderer(this, FacetValue.create(l('Search')));
-      let built = renderer.build().withNo([renderer.excludeIcon, renderer.icon]);
-      $$(built.listElement).addClass('coveo-facet-search-button');
+      let searchButton = renderer.build().withNo([renderer.excludeIcon, renderer.icon]);
+      $$(searchButton.listItem).addClass('coveo-facet-search-button');
+      searchButton.stylishCheckbox.removeAttribute('tabindex');
 
       // Mobile do not like label. Use click event
       if (DeviceUtils.isMobileDevice()) {
-        $$(built.label).on('click', (e: Event) => {
-          if (built.checkbox.getAttribute('checked')) {
-            built.checkbox.removeAttribute('checked');
+        $$(searchButton.label).on('click', (e: Event) => {
+          if (searchButton.checkbox.getAttribute('checked')) {
+            searchButton.checkbox.removeAttribute('checked');
           } else {
-            built.checkbox.setAttribute('checked', 'checked');
+            searchButton.checkbox.setAttribute('checked', 'checked');
           }
-          $$(built.checkbox).trigger('change');
+          $$(searchButton.checkbox).trigger('change');
           e.stopPropagation();
           e.preventDefault();
         });
       }
 
-      $$(built.checkbox).on('change', () => {
+      $$(searchButton.checkbox).on('change', () => {
         $$(this.element).addClass('coveo-facet-searching');
         this.facetSearch.focus();
       });
-      this.facetValuesList.valueContainer.appendChild(built.listElement);
+      this.facetValuesList.valueContainer.appendChild(searchButton.listItem);
     }
   }
 
@@ -1410,45 +1412,35 @@ export class Facet extends Component {
   }
 
   private buildFooter(): HTMLElement {
-    let footer = document.createElement('div');
-    $$(footer).addClass('coveo-facet-footer');
-    return footer;
+    return $$('div', { className: 'coveo-facet-footer' }).el;
   }
 
   private buildMore(): HTMLElement {
+    let more: HTMLElement;
     if (this.searchInterface.isNewDesign()) {
-      let more = document.createElement('div');
-      $$(more).addClass('coveo-facet-more');
-      let moreIcon = document.createElement('span');
-      $$(moreIcon).addClass('coveo-icon');
-      more.appendChild(moreIcon);
-      $$(more).on('click', () => this.handleClickMore());
-      return more;
+      more = $$('div', { className: 'coveo-facet-more', tabindex: 0 },
+        $$('span', { className: 'coveo-icon' })).el;
     } else {
-      let more = document.createElement('a');
-      $$(more).addClass('coveo-facet-more');
-      $$(more).text(l('More'));
-      $$(more).on('click', () => this.handleClickMore());
-      return more;
+      more = $$('a', { className: 'coveo-facet-more' }, l('More')).el;
     }
+    const moreAction = () => this.handleClickMore();
+    $$(more).on('click', moreAction)
+    $$(more).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, moreAction));
+    return more;
   }
 
   private buildLess(): HTMLElement {
+    let less: HTMLElement;
     if (this.searchInterface.isNewDesign()) {
-      let less = document.createElement('div');
-      $$(less).addClass('coveo-facet-less');
-      let lessIcon = document.createElement('span');
-      $$(lessIcon).addClass('coveo-icon');
-      less.appendChild(lessIcon);
-      $$(less).on('click', () => this.handleClickLess());
-      return less;
+      less = $$('div', { className: 'coveo-facet-less', tabindex: 0 },
+        $$('span', { className: 'coveo-icon' })).el;
     } else {
-      let less = document.createElement('a');
-      $$(less).addClass('coveo-facet-less');
-      $$(less).text(l('Less'));
-      $$(less).on('click', () => this.handleClickLess());
-      return less;
+      less = $$('a', { className: 'coveo-facet-less' }, l('Less')).el;
     }
+    const lessAction = () => this.handleClickLess();
+    $$(less).on('click', lessAction);
+    $$(less).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, lessAction));
+    return less;
   }
 
   private triggerMoreQuery() {

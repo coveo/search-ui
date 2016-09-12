@@ -1,6 +1,3 @@
-/// <reference path="Facet.ts" />
-/// <reference path="FacetSort.ts" />
-/// <reference path="FacetHeader.ts" />
 import {Facet} from './Facet';
 import {FacetSort} from './FacetSort';
 import {$$} from '../../utils/Dom';
@@ -57,17 +54,17 @@ export class FacetSettings extends FacetSort {
    * @returns {HTMLElement}
    */
   public build() {
-    this.settingsButton = document.createElement('div');
-    this.settingsButton.setAttribute('title', l('Settings'));
-    $$(this.settingsButton).addClass('coveo-facet-header-settings');
+    this.settingsButton = $$('div', {
+      className: 'coveo-facet-header-settings',
+      title: l('Settings'),
+    }).el;
 
-    this.settingsIcon = document.createElement('span');
-    $$(this.settingsIcon).addClass('coveo-icon');
+    this.settingsIcon = $$('span', { className: 'coveo-icon' }).el;
 
     this.settingsButton.appendChild(this.settingsIcon);
 
-    this.settingsPopup = document.createElement('div');
-    $$(this.settingsPopup).addClass('coveo-facet-settings-popup');
+    this.settingsPopup = $$('div', { className: 'coveo-facet-settings-popup' }).el;
+
     if (Utils.isNonEmptyArray(this.enabledSorts)) {
       this.sortSection = this.buildSortSection();
 
@@ -379,11 +376,10 @@ export class FacetSettings extends FacetSort {
   }
 
   private buildItem(label: string, title = label) {
-    var elem = document.createElement('div');
-    $$(elem).addClass('coveo-facet-settings-item');
-    elem.setAttribute('title', _.escape(title));
-    $$(elem).text(_.escape(label));
-    return elem;
+    return $$('div', {
+      className: 'coveo-facet-settings-item',
+      title: _.escape(title),
+    }, _.escape(label)).el;
   }
 
   private buildItems() {

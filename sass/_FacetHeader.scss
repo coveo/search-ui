@@ -15,10 +15,11 @@
   .coveo-icon {
     @extend .coveo-sprites-more-menu;
   }
-  &:hover {
+  &:hover, &:focus {
     .coveo-icon {
       @extend .coveo-sprites-more-menu-active;
     }
+    outline: none;
   }
 }
 

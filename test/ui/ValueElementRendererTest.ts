@@ -25,8 +25,8 @@ export function ValueElementRendererTest() {
 
     it('should build a list element', function () {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 1234)));
-      expect(valueRenderer.build().listElement).toBeDefined();
-      expect(valueRenderer.build().listElement.getAttribute('data-value')).toBe('foo');
+      expect(valueRenderer.build().listItem).toBeDefined();
+      expect(valueRenderer.build().listItem.getAttribute('data-value')).toBe('foo');
     });
 
     it('should build a label', function () {
@@ -44,6 +44,11 @@ export function ValueElementRendererTest() {
       valueRenderer.facetValue.excluded = true;
       expect(valueRenderer.build().checkbox.getAttribute('checked')).toBeNull();
       expect(valueRenderer.build().checkbox.getAttribute('disabled')).toBe('disabled');
+    });
+
+    it('should put the tabindex attribute to 0 on a stylish checkbox', function () {
+      valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
+      expect(valueRenderer.build().stylishCheckbox.getAttribute('tabindex')).toBe('0');
     });
 
     it('should build a stylish checkbox', function () {
@@ -70,6 +75,16 @@ export function ValueElementRendererTest() {
     it('should build an exclude icon', function () {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
       expect(valueRenderer.build().excludeIcon).toBeDefined();
+    });
+
+    it('should build an exclude icon', function () {
+      valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
+      expect(valueRenderer.build().excludeIcon).toBeDefined();
+    });
+
+    it('should put the tabindex attribute to 0 on an exclude icon', function () {
+      valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
+      expect(valueRenderer.build().excludeIcon.getAttribute('tabindex')).toBe('0');
     });
 
     it('should render computed field only if needed', function () {
