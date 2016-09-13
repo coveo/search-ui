@@ -817,7 +817,7 @@ export class HierarchicalFacet extends Facet {
   private getElementFromFacetValueList(value: any) {
     let ret = this.getFromFacetValueList(value);
     if (ret) {
-      return ret.renderer.listElement;
+      return ret.renderer.listItem;
     } else {
       return $$('div').el;
     }

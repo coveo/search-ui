@@ -121,7 +121,7 @@ export class FacetValuesList {
       } else if (index < toCompare) {
         var valueElement = new this.facetValueElementKlass(this.facet, facetValue, true);
         this.valueList[facetValue.value.toLowerCase()] = valueElement;
-        var valueListElement = valueElement.build().renderer.listElement;
+        var valueListElement = valueElement.build().renderer.listItem;
         this.valueContainer.appendChild(valueListElement);
         this.currentlyDisplayed.push(valueElement);
       }
@@ -140,7 +140,10 @@ export class FacetValuesList {
 
   private facetValueShouldBeRemoved(facetValue: FacetValue): boolean {
     return facetValue.occurrences == 0 &&
-      (facetValue.delta == 0 || facetValue.delta == undefined) && !facetValue.selected && !facetValue.excluded && !this.facet.keepDisplayedValuesNextTime;
+      (facetValue.delta == 0 || facetValue.delta == undefined) &&
+      !facetValue.selected &&
+      !facetValue.excluded &&
+      !this.facet.keepDisplayedValuesNextTime;
   }
 
   private ensureFacetValueIsInList(value: any) {

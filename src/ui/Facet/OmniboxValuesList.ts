@@ -25,7 +25,7 @@ export class OmniboxValuesList {
     var selectCallback = (elem: ValueElement, cause: IAnalyticsActionCause) => this.logAnalyticsEvent(elem, cause);
     var excludeCallback = (elem: ValueElement, cause: IAnalyticsActionCause) => this.logAnalyticsEvent(elem, cause);
     var omniboxValueElement = new this.omniboxValueElementKlass(this.facet, facetValue, omniboxObject, selectCallback, excludeCallback);
-    var omniboxRowContent = omniboxValueElement.build().renderer.listElement;
+    var omniboxRowContent = omniboxValueElement.build().renderer.listItem;
 
     var regex = omniboxObject.completeQueryExpression.regex;
     var valueToSearch = omniboxObject.completeQueryExpression.word;
