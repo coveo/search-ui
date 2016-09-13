@@ -139,5 +139,5 @@ let swapVar = () => {
     };
     window['__extends'] = __extends;
   }
-}
+};
 swapVar();

@@ -48,12 +48,6 @@ export class RevealQuerySuggestAddon {
     });
   }
 
-  private currentPromise: Promise<IOmniboxSuggestion[]>;
-
-  private waitingRequest: {
-    text: string;
-  };
-
   public getSuggestion(): Promise<IOmniboxSuggestion[]> {
 
     var text = this.omnibox.magicBox.getText();
@@ -66,20 +60,11 @@ export class RevealQuerySuggestAddon {
       return this.cache[text];
     }
 
-    if (this.currentPromise == null) {
-      var promise = this.getRevealQuerySuggest(text);
-      this.cache[text] = promise;
-      promise.catch(() => {
-        delete this.cache[text];
-      });
-    } else {
-      if (this.waitingRequest != null) {
-        this.waitingRequest = null;
-      }
-      this.waitingRequest = {
-        text: text
-      };
-    }
+    let promise = this.getRevealQuerySuggest(text);
+    this.cache[text] = promise;
+    promise.catch(() => {
+      delete this.cache[text];
+    });
     return this.cache[text];
   }
 
@@ -101,7 +86,7 @@ export class RevealQuerySuggestAddon {
       payload.pipeline = pipeline;
     }
 
-    this.currentPromise = this.omnibox.queryController.getEndpoint()
+    return this.omnibox.queryController.getEndpoint()
       .getRevealQuerySuggest(payload)
       .then((result: IRevealQuerySuggestResponse) => {
         var completions = result.completions;
@@ -115,15 +100,5 @@ export class RevealQuerySuggestAddon {
         });
         return results;
       });
-
-    this.currentPromise.finally(() => {
-      this.currentPromise = null;
-      if (this.waitingRequest != null) {
-        this.getRevealQuerySuggest(this.waitingRequest.text);
-        this.waitingRequest = null;
-      }
-    });
-
-    return this.currentPromise;
   }
 }
