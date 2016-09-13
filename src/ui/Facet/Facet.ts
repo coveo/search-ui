@@ -164,7 +164,6 @@ export class Facet extends Component {
      * Specifies the sort criteria options that you want to be displayed in the facet settings menu.<br/>
      * Of course {@link Facet.options.enableSettings} needs to be true.<br/>
      * Possible values are : `occurrences`, `score`, `alphaAscending`, `alphaDescending`, `computedfieldascending`, `computedfielddescending`, `custom`.
-	 * **Note: Available `alphaAscending` and `alphaDescending` label sorts will be removed when using the `valueCaption` option.**
      * The default value is `occurrences,score,alphaAscending,alphaDescending`.
      */
     availableSorts: ComponentOptions.buildListOption({
