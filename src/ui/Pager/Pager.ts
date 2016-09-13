@@ -11,6 +11,7 @@ import {Initialization} from '../Base/Initialization';
 import {Assert} from '../../misc/Assert';
 import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom';
+import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
 
 export interface IPagerOptions {
   numberOfPages?: number;
@@ -175,16 +176,15 @@ export class Pager extends Component {
           $$(listItemValue).addClass(['coveo-pager-list-item-text', 'coveo-pager-anchor']);
           $$(listItemValue).text(i.toString(10));
 
-          var listItem = document.createElement('li');
-          $$(listItem).addClass('coveo-pager-list-item');
+          let listItem = $$('li', { className: 'coveo-pager-list-item', tabindex: 0 }).el;
           if (i == this.currentPage) {
             $$(listItem).addClass('coveo-active');
           }
 
           ((pageNumber: number) => {
-            $$(listItem).on('click', () => {
-              this.handleClickPage(pageNumber);
-            });
+            let clickAction = () => this.handleClickPage(pageNumber);
+            $$(listItem).on('click', clickAction);
+            $$(listItem).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction));
           })(i);
 
           listItem.appendChild(listItemValue);

@@ -30,7 +30,7 @@ export class ResultLink extends Component {
   static options: IResultLinkOptions = {
 
     /**
-     * Specifies the field that the result link uses to output its href. 
+     * Specifies the field that the result link uses to output its href.
      * By default, the clickUri available on the document is used, but you can override this with this option.
      * Tip:
      * When you do not include a field option, in your result template, you can include an href attribute on the ResultLink element.
@@ -139,6 +139,8 @@ export class ResultLink extends Component {
     if (this.options.openQuickview == null) {
       this.options.openQuickview = result.raw['connectortype'] == 'ExchangeCrawler' && DeviceUtils.isMobileDevice();
     }
+
+    this.element.setAttribute('tabindex', '0');
 
     Assert.exists(this.componentOptionsModel);
     Assert.exists(this.result);

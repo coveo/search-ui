@@ -4,8 +4,9 @@
   background: white;
   cursor: pointer;
   text-align: center;
-  &:hover {
+  &:hover, &:focus {
     background: $color-light-grey;
+    outline: none;
   }
 }
 
