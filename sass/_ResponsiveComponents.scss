@@ -43,9 +43,19 @@
   }
 }
 
-.CoveoSearchInterface.coveo-small-tabs {
+.CoveoSearchInterface.coveo-small-tabs.coveo-small-facets, .CoveoSearchInterface.coveo-small-tabs {
   .coveo-tab-section {
     min-height: 40px;
+  }
+}
+
+.CoveoSearchInterface.coveo-small-facets {
+  .coveo-tab-section {
+    min-height: 30px;
+  }
+
+  .coveo-dropdown-header {
+    float: right;
   }
 }
 

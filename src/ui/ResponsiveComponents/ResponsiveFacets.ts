@@ -1,6 +1,6 @@
 import {$$, Dom} from '../../utils/Dom';
 import {InitializationEvents} from '../../events/InitializationEvents';
-import {IResponsiveComponent, ResponsiveComponentsManager} from './ResponsiveComponentsManager';
+import {IResponsiveComponent, ResponsiveComponentsManager, IResponsiveComponentOptions} from './ResponsiveComponentsManager';
 import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
 import {EventsUtils} from '../../utils/EventsUtils';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
@@ -8,6 +8,7 @@ import {Component} from '../Base/Component';
 import {Logger} from '../../misc/Logger';
 import {l} from '../../strings/Strings';
 import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
+import {Utils} from '../../utils/Utils';
 import {Facet} from '../Facet/Facet';
 import {FacetSlider} from '../FacetSlider/FacetSlider';
 
@@ -34,10 +35,13 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private facetSliders: FacetSlider[] = [];
   private searchInterface: SearchInterface;
 
-  public static init(root: HTMLElement, component) {
+  public static init(root: HTMLElement, component, options: IResponsiveComponentOptions) {
     this.logger = new Logger('ResponsiveFacets');
     if (!$$(root).find('.coveo-facet-column')) {
       this.logger.info('No element with class coveo-facet-column. Responsive facets cannot be enabled');
+      return;
+    }
+    if (!Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
       return;
     }
     ResponsiveComponentsManager.register(ResponsiveFacets, $$(root), Facet.ID, component);
@@ -182,7 +186,6 @@ export class ResponsiveFacets implements IResponsiveComponent {
 
   private positionPopup() {
     let facetList = this.dropdownContent.findAll('.CoveoFacet, .CoveoFacetSlider, .CoveoFacetRange, .CoveoHierarchicalFacet');
-    $$(facetList[facetList.length - 1]).addClass('coveo-last-facet');
 
     this.dropdownHeader.el.style.zIndex = ResponsiveFacets.ACTIVE_FACET_HEADER_Z_INDEX;
 
@@ -223,7 +226,6 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.closeDropdown();
     this.dropdownHeader.detach();
     let facetList = this.dropdownContent.findAll('.' + Component.computeCssClassNameForType(this.ID));
-    $$(facetList[facetList.length - 1]).removeClass('coveo-last-facet');
 
     this.dropdownHeader.el.style.zIndex = '';
   }

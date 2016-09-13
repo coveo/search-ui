@@ -38,11 +38,6 @@
                 border-top: $default-border;
             }
         }
-        .CoveoFacet.coveo-last-facet {
-            //Since we override facet border and we want the facet column to have a border-radius, we need to set the last facet with the
-            //border-radius or it will not be visible since there's no border-width.
-            border-radius: 0 0 0 2px;
-        }
     }
 }
 

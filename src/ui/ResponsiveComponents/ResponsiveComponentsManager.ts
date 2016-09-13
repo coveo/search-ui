@@ -9,6 +9,11 @@ import {IComponentDefinition} from '../Base/Component';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
 
+export interface IResponsiveComponentOptions {
+  enableResponsiveMode?: boolean;
+  responsiveBreakpoint?: number;
+}
+
 export interface IResponsiveComponentConstructor {
   new (root: Dom, ID: string): IResponsiveComponent;
 }
