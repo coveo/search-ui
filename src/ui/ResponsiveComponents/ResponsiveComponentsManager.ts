@@ -31,6 +31,7 @@ export class ResponsiveComponentsManager {
   private searchBoxElement: HTMLElement;
   private isTabActivated: boolean = false;
   private isFacetActivated: boolean = false;
+  private createdTabSection: boolean = false;
   private responsiveFacets: ResponsiveFacets;
   private tabSectionPreviousSibling: Dom;
   private tabSectionParent: Dom;
@@ -68,15 +69,14 @@ export class ResponsiveComponentsManager {
   constructor(root: Dom) {
     this.coveoRoot = root;
     this.searchBoxElement = this.getSearchBoxElement();
-    let tabSection = this.coveoRoot.find('.coveo-tab-section');
-    this.tabSection = tabSection ? $$(tabSection) : $$('div', { className: 'coveo-tab-section' });
+    this.ensureTabSectionInDom();
     this.saveTabSectionPosition();
     this.resizeListener = _.debounce(() => {
       _.each(this.responsiveComponents, responsiveComponent => {
-        if (this.needTabSection() || this.searchBoxElement && this.tabSection && this.coveoRoot.width() <= ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH && this.isFacetActivated) {
+        if (this.needTabSection() && this.createdTabSection || this.searchBoxElement && this.tabSection && this.coveoRoot.width() <= ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH && this.isFacetActivated) {
           this.coveoRoot.addClass('coveo-small-interface');
           this.tabSection.insertAfter(this.searchBoxElement);
-        } else if (this.searchBoxElement && this.tabSection && this.coveoRoot.width() > ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH && !this.needTabSection()) {
+        } else if (this.searchBoxElement && this.tabSection && this.coveoRoot.width() > ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH) {
           this.coveoRoot.removeClass('coveo-small-interface');
           this.restoreTabSectionPosition();
         }
@@ -97,12 +97,22 @@ export class ResponsiveComponentsManager {
     return false;
   }
 
+  private ensureTabSectionInDom() {
+    let tabSection = this.coveoRoot.find('.coveo-tab-section');
+    if (tabSection) {
+      this.tabSection = $$(tabSection);
+    } else {
+      this.tabSection = $$('div', { className: 'coveo-tab-section' });
+      this.createdTabSection = true;
+    }
+  }
+
   private restoreTabSectionPosition() {
     if (this.tabSectionPreviousSibling) {
       this.tabSection.insertAfter(this.tabSectionPreviousSibling.el);
     } else if (this.tabSectionParent) {
       this.tabSectionParent.prepend(this.tabSection.el);
-    } else {
+    } else if(!this.needTabSection()){
       this.tabSection && this.tabSection.detach();
     }
   }
