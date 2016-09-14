@@ -220,7 +220,9 @@ export class QueryEvents {
   /**
    * Triggered when a new query is launched.
    *
-   * All handlers bound will receive {@link INewQueryEventArgs} as an argument
+   * All handlers bound will receive {@link INewQueryEventArgs} as an argument.
+   *
+   * The string value is `newQuery`.
    * @type {string}
    */
   public static newQuery = 'newQuery';
@@ -229,7 +231,9 @@ export class QueryEvents {
    *
    * This is typically where all components will contribute their part to the {@link IQuery} using the {@link QueryBuilder}
    *
-   * All handlers bound will receive {@link IBuildingQueryEventArgs} as an argument
+   * All handlers bound will receive {@link IBuildingQueryEventArgs} as an argument.
+   *
+   * The string value is `buildingQuery`.
    * @type {string}
    */
   public static buildingQuery = 'buildingQuery';
@@ -238,35 +242,45 @@ export class QueryEvents {
    *
    * This is typically where the facet will add their {@link IGroupByRequest} to the {@link IQuery}.
    *
-   * All handlers bound will receive {@link IDoneBuildingQueryEventArgs} as an argument
+   * All handlers bound will receive {@link IDoneBuildingQueryEventArgs} as an argument.
+   *
+   * The string value is `doneBuildingQuery`.
    * @type {string}
    */
   public static doneBuildingQuery = 'doneBuildingQuery';
   /**
    * Triggered when the query is being executed on the search API.
    *
-   * All handlers bound will receive {@link IDuringQueryEventArgs} as an argument
+   * All handlers bound will receive {@link IDuringQueryEventArgs} as an argument.
+   *
+   * The string value is `duringQuery`.
    * @type {string}
    */
   public static duringQuery = 'duringQuery';
   /**
    * Triggered when more results is being fetched on the search API (think : Infinite scrolling, or pager).
    *
-   * All handlers bound will receive {@link IDuringQueryEventArgs} as an argument
+   * All handlers bound will receive {@link IDuringQueryEventArgs} as an argument.
+   *
+   * The string value is `duringFetchMoreQuery`.
    * @type {string}
    */
   public static duringFetchMoreQuery = 'duringFetchMoreQuery';
   /**
    * Triggered when a query successfully return from the search API.
    *
-   * All handlers bound will receive {@link IQuerySuccessEventArgs} as an argument
+   * All handlers bound will receive {@link IQuerySuccessEventArgs} as an argument.
+   *
+   * The string value is `querySuccess`.
    * @type {string}
    */
   public static querySuccess = 'querySuccess';
   /**
    * Triggered when a more results were successfully returned from the search API. (think : Infinite scrolling, or page).
    *
-   * All handlers bound will receive {@link IFetchMoreSuccessEventArgs} as an argument
+   * All handlers bound will receive {@link IFetchMoreSuccessEventArgs} as an argument.
+   *
+   * The string value is `fetchMoreSuccess`.
    * @type {string}
    */
   public static fetchMoreSuccess = 'fetchMoreSuccess';
@@ -275,14 +289,18 @@ export class QueryEvents {
    *
    * This is typically where facet will process the {@link IGroupByResult} and render themselves.
    *
-   * All handlers bound will receive {@link IQuerySuccessEventArgs} as an argument
+   * All handlers bound will receive {@link IQuerySuccessEventArgs} as an argument.
+   *
+   * The string value is `deferredQuerySuccess`.
    * @type {string}
    */
   public static deferredQuerySuccess = 'deferredQuerySuccess';
   /**
    * Triggered when there was an error executing a query on the search API.
    *
-   * All handlers bound will receive {@link IQueryErrorEventArgs} as an argument
+   * All handlers bound will receive {@link IQueryErrorEventArgs} as an argument.
+   *
+   * The string value is `queryError`.
    * @type {string}
    */
   public static queryError = 'queryError';
@@ -293,7 +311,9 @@ export class QueryEvents {
    *
    * For example, the {@link Folding} component might use this event to construct a coherent parent child relationship between query results.
    *
-   * All handlers bound will receive {@link IPreprocessResultsEventArgs} as an argument
+   * All handlers bound will receive {@link IPreprocessResultsEventArgs} as an argument.
+   *
+   * The string value is `preprocessResults`.
    * @type {string}
    */
   public static preprocessResults = 'preprocessResults';
@@ -304,14 +324,18 @@ export class QueryEvents {
    *
    * For example, the {@link Folding} component might use this event to construct a coherent parent child relationship between query results.
    *
-   * All handlers bound will receive {@link IPreprocessResultsEventArgs} as an argument
+   * All handlers bound will receive {@link IPreprocessResultsEventArgs} as an argument.
+   *
+   * The string value is `preprocessMoreResults`.
    * @type {string}
    */
   public static preprocessMoreResults = 'preprocessMoreResults';
   /**
    * Triggered when there is no results for a particular query.
    *
-   * All handlers bound will receive {@link INoResultsEventArgs} as an argument
+   * All handlers bound will receive {@link INoResultsEventArgs} as an argument.
+   *
+   * The string value is `noResults`.
    * @type {string}
    */
   public static noResults = 'noResults';
