@@ -27,7 +27,7 @@ export class FacetRange extends Facet {
    * The options for the component
    * @componentOptions
    */
-  static options = <IFacetRangeOptions>{
+  static options: IFacetRangeOptions = {
     /**
      * Specifies whether the field for which you are requesting a range is a date field to allow the facet to correctly build the outgoing group by request.
      *
