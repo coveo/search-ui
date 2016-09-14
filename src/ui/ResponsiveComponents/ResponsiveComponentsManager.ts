@@ -46,7 +46,7 @@ export class ResponsiveComponentsManager {
   public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string,
     component: IComponentDefinition, options: IResponsiveComponentOptions) {
     let searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, true);
-    if (searchInterface instanceof SearchInterface && searchInterface.options.enableAutomaticResponsiveMode) {
+    if (this.shouldEnableResponsiveMode(root)) {
       root.on(InitializationEvents.afterInitialization, () => {
         let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el == componentManager.coveoRoot.el);
         if (responsiveComponentsManager) {
@@ -64,6 +64,11 @@ export class ResponsiveComponentsManager {
       });
       this.remainingComponentInitializations++;
     }
+  }
+
+  private static shouldEnableResponsiveMode(root: Dom) {
+    let searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, true);
+    return searchInterface instanceof SearchInterface && searchInterface.options.enableAutomaticResponsiveMode && searchInterface.isNewDesign();
   }
 
   private static resizeAllComponentsManager() {
