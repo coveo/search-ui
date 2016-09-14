@@ -70,7 +70,7 @@ export interface IDuringQueryEventArgs {
    */
   query: IQuery;
   /**
-   * A promises for the results that will be returned by the search API
+   * A promises for the results that will be returned by the Search API
    */
   promise: Promise<IQueryResults>;
   /**
@@ -220,7 +220,7 @@ export class QueryEvents {
   /**
    * Triggered when a new query is launched.
    *
-   * All handlers bound will receive {@link INewQueryEventArgs} as an argument.
+   * All bound handlers will receive {@link INewQueryEventArgs} as an argument.
    *
    * The string value is `newQuery`.
    * @type {string}
@@ -229,9 +229,9 @@ export class QueryEvents {
   /**
    * Triggered when the query is being built.
    *
-   * This is typically where all components will contribute their part to the {@link IQuery} using the {@link QueryBuilder}
+   * This is typically where all components will contribute their part to the {@link IQuery} using the {@link QueryBuilder}.
    *
-   * All handlers bound will receive {@link IBuildingQueryEventArgs} as an argument.
+   * All bound handlers will receive {@link IBuildingQueryEventArgs} as an argument.
    *
    * The string value is `buildingQuery`.
    * @type {string}
@@ -240,45 +240,45 @@ export class QueryEvents {
   /**
    * Triggered when the query is done being built.
    *
-   * This is typically where the facet will add their {@link IGroupByRequest} to the {@link IQuery}.
+   * This is typically where the facet will add it's {@link IGroupByRequest} to the {@link IQuery}.
    *
-   * All handlers bound will receive {@link IDoneBuildingQueryEventArgs} as an argument.
+   * All bound handlers will receive {@link IDoneBuildingQueryEventArgs} as an argument.
    *
    * The string value is `doneBuildingQuery`.
    * @type {string}
    */
   public static doneBuildingQuery = 'doneBuildingQuery';
   /**
-   * Triggered when the query is being executed on the search API.
+   * Triggered when the query is being executed on the Search API.
    *
-   * All handlers bound will receive {@link IDuringQueryEventArgs} as an argument.
+   * All bound handlers will receive {@link IDuringQueryEventArgs} as an argument.
    *
    * The string value is `duringQuery`.
    * @type {string}
    */
   public static duringQuery = 'duringQuery';
   /**
-   * Triggered when more results is being fetched on the search API (think : Infinite scrolling, or pager).
+   * Triggered when more results are being fetched on the Search API (think : infinite scrolling, or pager).
    *
-   * All handlers bound will receive {@link IDuringQueryEventArgs} as an argument.
+   * All bound handlers will receive {@link IDuringQueryEventArgs} as an argument.
    *
    * The string value is `duringFetchMoreQuery`.
    * @type {string}
    */
   public static duringFetchMoreQuery = 'duringFetchMoreQuery';
   /**
-   * Triggered when a query successfully return from the search API.
+   * Triggered when a query successfully returns from the Search API.
    *
-   * All handlers bound will receive {@link IQuerySuccessEventArgs} as an argument.
+   * All bound handlers will receive {@link IQuerySuccessEventArgs} as an argument.
    *
    * The string value is `querySuccess`.
    * @type {string}
    */
   public static querySuccess = 'querySuccess';
   /**
-   * Triggered when a more results were successfully returned from the search API. (think : Infinite scrolling, or page).
+   * Triggered when a more results were successfully returned from the Search API. (think : infinite scrolling, or pager).
    *
-   * All handlers bound will receive {@link IFetchMoreSuccessEventArgs} as an argument.
+   * All bound handlers will receive {@link IFetchMoreSuccessEventArgs} as an argument.
    *
    * The string value is `fetchMoreSuccess`.
    * @type {string}
@@ -287,18 +287,18 @@ export class QueryEvents {
   /**
    * Triggered after the main query success event has finished executing.
    *
-   * This is typically where facet will process the {@link IGroupByResult} and render themselves.
+   * This is typically where facets will process the {@link IGroupByResult} and render themselves.
    *
-   * All handlers bound will receive {@link IQuerySuccessEventArgs} as an argument.
+   * All bound handlers will receive {@link IQuerySuccessEventArgs} as an argument.
    *
    * The string value is `deferredQuerySuccess`.
    * @type {string}
    */
   public static deferredQuerySuccess = 'deferredQuerySuccess';
   /**
-   * Triggered when there was an error executing a query on the search API.
+   * Triggered when there was an error executing a query on the Search API.
    *
-   * All handlers bound will receive {@link IQueryErrorEventArgs} as an argument.
+   * All bound handlers will receive {@link IQueryErrorEventArgs} as an argument.
    *
    * The string value is `queryError`.
    * @type {string}
@@ -307,11 +307,11 @@ export class QueryEvents {
   /**
    * Triggered before the {@link QueryEvents.querySuccess} event.
    *
-   * This allow external code to modify the results before rendering them.
+   * This allows external code to modify the results before rendering them.
    *
    * For example, the {@link Folding} component might use this event to construct a coherent parent child relationship between query results.
    *
-   * All handlers bound will receive {@link IPreprocessResultsEventArgs} as an argument.
+   * All bound handlers will receive {@link IPreprocessResultsEventArgs} as an argument.
    *
    * The string value is `preprocessResults`.
    * @type {string}
@@ -320,20 +320,20 @@ export class QueryEvents {
   /**
    * Triggered before the {@link QueryEvents.fetchMoreSuccess} event.
    *
-   * This allow external code to modify the results before rendering them.
+   * This allows external code to modify the results before rendering them.
    *
    * For example, the {@link Folding} component might use this event to construct a coherent parent child relationship between query results.
    *
-   * All handlers bound will receive {@link IPreprocessResultsEventArgs} as an argument.
+   * All bound handlers will receive {@link IPreprocessResultsEventArgs} as an argument.
    *
    * The string value is `preprocessMoreResults`.
    * @type {string}
    */
   public static preprocessMoreResults = 'preprocessMoreResults';
   /**
-   * Triggered when there is no results for a particular query.
+   * Triggered when there is no result for a particular query.
    *
-   * All handlers bound will receive {@link INoResultsEventArgs} as an argument.
+   * All bound handlers will receive {@link INoResultsEventArgs} as an argument.
    *
    * The string value is `noResults`.
    * @type {string}
