@@ -44,7 +44,7 @@ export class ResponsiveComponentsManager {
 
   // Register takes a class and will instantiate it after framework initialization has completed.
   public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string,
-    component: IComponentDefinition, options: IResponsiveComponentOptions) {
+    component: IComponentDefinition, options: IResponsiveComponentOptions): void {
     let searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, true);
     if (this.shouldEnableResponsiveMode(root)) {
       root.on(InitializationEvents.afterInitialization, () => {
@@ -66,12 +66,12 @@ export class ResponsiveComponentsManager {
     }
   }
 
-  private static shouldEnableResponsiveMode(root: Dom) {
+  private static shouldEnableResponsiveMode(root: Dom): boolean {
     let searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, true);
     return searchInterface instanceof SearchInterface && searchInterface.options.enableAutomaticResponsiveMode && searchInterface.isNewDesign();
   }
 
-  private static resizeAllComponentsManager() {
+  private static resizeAllComponentsManager(): void {
     _.each(this.componentManagers, componentManager => {
       componentManager.resizeListener();
     });
@@ -83,10 +83,10 @@ export class ResponsiveComponentsManager {
     this.ensureTabSectionInDom();
     this.saveTabSectionPosition();
     this.resizeListener = _.debounce(() => {
-      if (this.needTabSection() && this.createdTabSection || this.searchBoxElement && this.tabSection && this.coveoRoot.width() <= ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH) {
-          this.coveoRoot.addClass('coveo-small-interface');
-          this.tabSection.insertAfter(this.searchBoxElement);
-        } else if (this.searchBoxElement && this.tabSection && this.coveoRoot.width() > ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH) {
+      if (this.shouldMoveTabSectionBelowSearchBox()) {
+        this.coveoRoot.addClass('coveo-small-interface');
+        this.tabSection.insertAfter(this.searchBoxElement);
+      } else if (this.searchBoxElement && this.tabSection && this.coveoRoot.width() > ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH) {
           this.coveoRoot.removeClass('coveo-small-interface');
           this.restoreTabSectionPosition();
       }
@@ -98,58 +98,7 @@ export class ResponsiveComponentsManager {
     this.bindNukeEvents();
   }
 
-  private needTabSection() {
-    for (let i = 0; i < this.responsiveComponents.length; i++) {
-      let responsiveComponent = this.responsiveComponents[i];
-      if (responsiveComponent.needTabSection && responsiveComponent.needTabSection()) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private ensureTabSectionInDom() {
-    let tabSection = this.coveoRoot.find('.coveo-tab-section');
-    if (tabSection) {
-      this.tabSection = $$(tabSection);
-    } else {
-      this.tabSection = $$('div', { className: 'coveo-tab-section' });
-      this.createdTabSection = true;
-    }
-  }
-
-  private restoreTabSectionPosition() {
-    if (this.tabSectionPreviousSibling) {
-      this.tabSection.insertAfter(this.tabSectionPreviousSibling.el);
-    } else if (this.tabSectionParent) {
-      this.tabSectionParent.prepend(this.tabSection.el);
-    } else if (!this.needTabSection()) {
-      this.tabSection && this.tabSection.detach();
-    }
-  }
-
-  private saveTabSectionPosition() {
-    if (this.tabSection) {
-      this.tabSectionPreviousSibling = this.tabSection.el.previousSibling ? $$(<HTMLElement>this.tabSection.el.previousSibling) : null;
-      this.tabSectionParent = this.tabSection.el.parentElement ? $$(this.tabSection.el.parentElement) : null;
-    }
-  }
-
-  private shouldRegisterComponent(component: IComponentDefinition, options: IResponsiveComponentOptions) {
-    let componentIsDisabled = _.contains(this.disabledComponents, component.ID);
-    if (componentIsDisabled) {
-      return false;
-    }
-
-    if (!Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
-      this.disabledComponents.push(component.ID);
-      return false;
-    }
-
-    return true;
-  }
-
-  public register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component, options: IResponsiveComponentOptions) {
+  public register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component, options: IResponsiveComponentOptions): void {
     if (!this.shouldRegisterComponent(component, options)) {
       return;
     }
@@ -176,6 +125,68 @@ export class ResponsiveComponentsManager {
     }
   }
 
+  private shouldMoveTabSectionBelowSearchBox(): boolean {
+    // If we had to create the tab section or if we reached the pixel breakpoint, we move the tab section below the search box
+    // to switch to small mode.
+    if (this.searchBoxElement && this.tabSection) {
+      let aComponentNeedsTabSection = this.needTabSection() && this.createdTabSection;
+      let reachedBreakpoint = this.coveoRoot.width() <= ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH;
+      return aComponentNeedsTabSection || reachedBreakpoint;
+    }
+    return false;
+  }
+
+  private needTabSection(): boolean {
+    for (let i = 0; i < this.responsiveComponents.length; i++) {
+      let responsiveComponent = this.responsiveComponents[i];
+      if (responsiveComponent.needTabSection && responsiveComponent.needTabSection()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private ensureTabSectionInDom(): void {
+    let tabSection = this.coveoRoot.find('.coveo-tab-section');
+    if (tabSection) {
+      this.tabSection = $$(tabSection);
+    } else {
+      this.tabSection = $$('div', { className: 'coveo-tab-section' });
+      this.createdTabSection = true;
+    }
+  }
+
+  private restoreTabSectionPosition(): void {
+    if (this.tabSectionPreviousSibling) {
+      this.tabSection.insertAfter(this.tabSectionPreviousSibling.el);
+    } else if (this.tabSectionParent) {
+      this.tabSectionParent.prepend(this.tabSection.el);
+    } else if (!this.needTabSection()) {
+      this.tabSection && this.tabSection.detach();
+    }
+  }
+
+  private saveTabSectionPosition(): void {
+    if (this.tabSection) {
+      this.tabSectionPreviousSibling = this.tabSection.el.previousSibling ? $$(<HTMLElement>this.tabSection.el.previousSibling) : null;
+      this.tabSectionParent = this.tabSection.el.parentElement ? $$(this.tabSection.el.parentElement) : null;
+    }
+  }
+
+  private shouldRegisterComponent(component: IComponentDefinition, options: IResponsiveComponentOptions): boolean {
+    let componentIsDisabled = _.contains(this.disabledComponents, component.ID);
+    if (componentIsDisabled) {
+      return false;
+    }
+
+    if (!Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
+      this.disabledComponents.push(component.ID);
+      return false;
+    }
+
+    return true;
+  }
+
   private isFacet(ID: string): boolean {
     return ID == Facet.ID;
   }
@@ -197,7 +208,7 @@ export class ResponsiveComponentsManager {
     }
   }
 
-  private bindNukeEvents() {
+  private bindNukeEvents(): void {
     $$(this.coveoRoot).on(InitializationEvents.nuke, () => {
       window.removeEventListener('resize', this.resizeListener);
     });

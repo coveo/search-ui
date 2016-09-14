@@ -55,7 +55,7 @@ export class FacetSearch {
       // Mitigate issues in UT where the window in phantom js might get resized in the scope of another test.
       // These would point to random instance of a test karma object, and not a real search interface.
       if (this.facet instanceof Facet && this.facet.searchInterface instanceof SearchInterface) {
-        if (!this.isMobileDevice() && !ResponsiveComponentsUtils.isSmallFacetActivated($$(this.root)) && $$(this.facet.element).hasClass('coveo-facet-searching')) {
+        if (this.shouldPositionSearchResults()) {
           this.positionSearchResults();
         }
       }
@@ -171,9 +171,14 @@ export class FacetSearch {
   /**
    * Trigger the event associated with the focus of the search input.
    */
-  public focus() {
+  public focus(): void {
     this.input.focus();
     this.handleFacetSearchFocus();
+  }
+
+  private shouldPositionSearchResults(): boolean {
+    return !this.isMobileDevice() && !ResponsiveComponentsUtils.isSmallFacetActivated($$(this.root))
+           && $$(this.facet.element).hasClass('coveo-facet-searching')
   }
 
   private buildBaseSearch(): HTMLElement {
