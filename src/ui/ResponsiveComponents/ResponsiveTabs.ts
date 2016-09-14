@@ -50,7 +50,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
     ResponsiveComponentsManager.register(ResponsiveTabs, $$(root), component.ID, component, options);
   }
 
-  public handleResizeEvent() {
+  public handleResizeEvent(): void {
     if (this.needSmallMode() && !ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot)) {
       this.changeToSmallMode();
     } else if (!this.needSmallMode() && ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot)) {
@@ -59,58 +59,14 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
     let tabs = this.getTabsInTabSection();
     if (this.shouldAddTabsToDropdown()) {
-      let currentTab;
-
-      if (!this.tabSection.find('.coveo-tab-dropdown-header')) {
-        let facetDropdownHeader = this.tabSection.find('.coveo-facet-dropdown-header');
-        if (facetDropdownHeader) {
-          this.dropdownHeader.insertBefore(facetDropdownHeader);
-        } else {
-          this.tabSection.el.appendChild(this.dropdownHeader.el);
-        }
-      }
-      for (let i = tabs.length - 1; i >= 0; i--) {
-        currentTab = tabs[i];
-
-        if ($$(currentTab).hasClass('coveo-selected') && i > 0) {
-          currentTab = tabs[--i];
-        }
-
-        this.addToDropdown(currentTab);
-
-        if (!this.isOverflowing(this.tabSection.el)) {
-          break;
-        }
-      }
-
+      this.addTabsToDropdown(tabs);
     } else if (this.shouldRemoveTabsFromDropdown()) {
-      let dropdownTabs = this.dropdownContent.findAll('.coveo-tab-dropdown');
-      let lastTabInSection: HTMLElement, current: HTMLElement;
-      if (tabs) {
-        lastTabInSection = tabs.pop();
-      }
-
-      while (!this.isOverflowing(this.tabSection.el) && !this.isDropdownEmpty()) {
-        current = dropdownTabs.shift();
-        this.removeFromDropdown(current);
-        this.fromDropdownToTabSection($$(current), lastTabInSection);
-        lastTabInSection = _.clone(current);
-      }
-
-      if (this.isOverflowing(this.tabSection.el)) {
-        let tabs = this.getTabsInTabSection();
-        this.addToDropdown(tabs.pop());
-      }
-
-      if (this.isDropdownEmpty()) {
-        this.cleanUpDropdown();
-      }
+      this.removeTabsFromDropdown(tabs);
     }
 
     if (this.dropdownHeader.hasClass('coveo-dropdown-header-active')) {
       this.positionPopup();
     }
-
   };
 
   public needSmallMode(): boolean {
@@ -123,7 +79,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
     }
   }
 
-  public changeToSmallMode() {
+  public changeToSmallMode(): void {
     ResponsiveComponentsUtils.activateSmallTabs(this.coveoRoot);
   }
 
@@ -136,12 +92,61 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private shouldAddTabsToDropdown(): boolean {
     return this.isOverflowing(this.tabSection.el) && ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot);
   }
+  
+  private addTabsToDropdown(tabs: HTMLElement[]): void {
+    let currentTab;
+    if (!this.tabSection.find('.coveo-tab-dropdown-header')) {
+      let facetDropdownHeader = this.tabSection.find('.coveo-facet-dropdown-header');
+      if (facetDropdownHeader) {
+        this.dropdownHeader.insertBefore(facetDropdownHeader);
+      } else {
+        this.tabSection.el.appendChild(this.dropdownHeader.el);
+      }
+    }
+    for (let i = tabs.length - 1; i >= 0; i--) {
+      currentTab = tabs[i];
+
+      if ($$(currentTab).hasClass('coveo-selected') && i > 0) {
+        currentTab = tabs[--i];
+      }
+
+      this.addToDropdown(currentTab);
+
+      if (!this.isOverflowing(this.tabSection.el)) {
+        break;
+      }
+    }
+  }
 
   private shouldRemoveTabsFromDropdown(): boolean {
     return !this.isOverflowing(this.tabSection.el) && ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot) && !this.isDropdownEmpty();
   }
 
-  private emptyDropdown() {
+  private removeTabsFromDropdown(tabs: HTMLElement[]) {
+    let dropdownTabs = this.dropdownContent.findAll('.coveo-tab-dropdown');
+    let lastTabInSection: HTMLElement, current: HTMLElement;
+    if (tabs) {
+      lastTabInSection = tabs.pop();
+    }
+
+    while (!this.isOverflowing(this.tabSection.el) && !this.isDropdownEmpty()) {
+      current = dropdownTabs.shift();
+      this.removeFromDropdown(current);
+      this.fromDropdownToTabSection($$(current), lastTabInSection);
+      lastTabInSection = _.clone(current);
+    }
+
+    if (this.isOverflowing(this.tabSection.el)) {
+      let tabs = this.getTabsInTabSection();
+      this.addToDropdown(tabs.pop());
+    }
+
+    if (this.isDropdownEmpty()) {
+      this.cleanUpDropdown();
+    }
+  }
+
+  private emptyDropdown(): void {
     if (!this.isDropdownEmpty()) {
       let dropdownTabs = this.dropdownContent.findAll('.coveo-tab-dropdown');
       let tabs = this.getTabsInTabSection();
