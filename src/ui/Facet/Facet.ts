@@ -391,7 +391,8 @@ export class Facet extends Component {
     /**
      * Specifies if the responsive mode should be enabled on the facets. Responsive mode will make the facet dissapear and instead be
      * availaible using a dropdown button. Responsive facets are enabled when the width of the element the search interface is bound to
-     * reaches 800 pixels. This value can be modified using {@link Facet..optionsresponsiveBreakpoint}.
+     * reaches 800 pixels. This value can be modified using {@link Facet..optionsresponsiveBreakpoint}. Disabling reponsive mode for one tab will disable it for all tabs.
+     * Therefore, this options only needs to be set on one tab to be effective.
      * The default value is `true`.
      */
     enableResponsiveMode: ComponentOptions.buildBooleanOption({defaultValue: true}),

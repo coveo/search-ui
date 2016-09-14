@@ -8,6 +8,7 @@ import {ResponsiveFacets} from './ResponsiveFacets';
 import {IComponentDefinition} from '../Base/Component';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
+import {Utils} from '../../utils/Utils';
 
 export interface IResponsiveComponentOptions {
   enableResponsiveMode?: boolean;
@@ -15,7 +16,7 @@ export interface IResponsiveComponentOptions {
 }
 
 export interface IResponsiveComponentConstructor {
-  new (root: Dom, ID: string): IResponsiveComponent;
+  new (root: Dom, ID: string, options: IResponsiveComponentOptions): IResponsiveComponent;
 }
 
 export interface IResponsiveComponent {
@@ -40,19 +41,21 @@ export class ResponsiveComponentsManager {
   private responsiveFacets: ResponsiveFacets;
   private tabSectionPreviousSibling: Dom;
   private tabSectionParent: Dom;
+  private disabledComponents: string[] = [];
 
   // Register takes a class and will instantiate it after framework initialization has completed.
-  public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component: IComponentDefinition) {
+  public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string,
+                         component: IComponentDefinition, options:IResponsiveComponentOptions) {
     let searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, true);
     if (searchInterface instanceof SearchInterface && searchInterface.options.enableAutomaticResponsiveMode) {
       root.on(InitializationEvents.afterInitialization, () => {
         let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el == componentManager.coveoRoot.el);
         if (responsiveComponentsManager) {
-          responsiveComponentsManager.register(responsiveComponentConstructor, root, ID, component);
+          responsiveComponentsManager.register(responsiveComponentConstructor, root, ID, component, options);
         } else {
           responsiveComponentsManager = new ResponsiveComponentsManager(root);
           this.componentManagers.push(responsiveComponentsManager);
-          responsiveComponentsManager.register(responsiveComponentConstructor, root, ID, component);
+          responsiveComponentsManager.register(responsiveComponentConstructor, root, ID, component, options);
         }
 
         this.remainingComponentInitializations--;
@@ -62,7 +65,6 @@ export class ResponsiveComponentsManager {
       });
       this.remainingComponentInitializations++;
     }
-
   }
 
   private static resizeAllComponentsManager() {
@@ -129,14 +131,31 @@ export class ResponsiveComponentsManager {
     }
   }
 
-  public register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component) {
+  private shouldRegisterComponent(component: IComponentDefinition, options: IResponsiveComponentOptions) {
+    let componentIsDisabled = _.contains(this.disabledComponents, component.ID);
+    if (componentIsDisabled) {
+      return false;
+    }
+
+    if (Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
+      this.disabledComponents.push(component.ID);
+      return false;
+    }
+
+    return true;
+  }
+
+  public register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component, options: IResponsiveComponentOptions) {
+    if (!this.shouldRegisterComponent(component, options)) {
+      return;
+    }
 
     if (this.isFacet(ID) && this.isActivated(ID)) {
       this.responsiveFacets.registerComponent(component);
     }
 
     if (!this.isActivated(ID)) {
-      let responsiveComponent = new responsiveComponentConstructor(root, ID);
+      let responsiveComponent = new responsiveComponentConstructor(root, ID, options);
       if (this.isTabs(responsiveComponent.ID)) {
         this.isTabActivated = true;
       }
@@ -154,7 +173,7 @@ export class ResponsiveComponentsManager {
   }
 
   private isFacet(ID: string): boolean {
-    return ID == Facet.ID || ID == FacetSlider.ID;
+    return ID == Facet.ID;
   }
 
   private isTabs(ID: string): boolean {

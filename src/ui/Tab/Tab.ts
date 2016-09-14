@@ -124,7 +124,8 @@ export class Tab extends Component {
     /**
      * Specifies if the responsive mode should be enabled for the tabs. Responsive mode will make the overflowing tabs dissapear and instead
      * be availaible using a dropdown button. Responsive tabs are enabled when tabs overflow or when the width of the search interface
-     * becomes too small.
+     * becomes too small. Disabling reponsive mode for one tab will disable it for all tabs.
+     * Therefore, this options only needs to be set on one tab to be effective.
      * The default value is `true`.
      */
     enableResponsiveMode: ComponentOptions.buildBooleanOption({defaultValue: true}),
@@ -150,7 +151,7 @@ export class Tab extends Component {
     this.bind.on(element, 'click', clickAction);
     this.bind.on(element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction));
     this.render();
-    ResponsiveTabs.init(this.root, Tab.ID, this, this.options);
+    ResponsiveTabs.init(this.root, this, this.options);
   }
 
   /**

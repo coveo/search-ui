@@ -34,6 +34,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private facets: Facet[] = [];
   private facetSliders: FacetSlider[] = [];
   private searchInterface: SearchInterface;
+  private breakpoint: number;
 
   public static init(root: HTMLElement, component, options: IResponsiveComponentOptions) {
     this.logger = new Logger('ResponsiveFacets');
@@ -44,10 +45,10 @@ export class ResponsiveFacets implements IResponsiveComponent {
     if (!Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
       return;
     }
-    ResponsiveComponentsManager.register(ResponsiveFacets, $$(root), Facet.ID, component);
+    ResponsiveComponentsManager.register(ResponsiveFacets, $$(root), Facet.ID, component, options);
   }
 
-  constructor(public root: Dom, ID: string) {
+  constructor(public root: Dom, ID: string, options:IResponsiveComponentOptions) {
     this.ID = ID;
     this.coveoRoot = root;
     this.searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, false);
@@ -58,10 +59,16 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.buildPopupBackground();
     this.saveFacetsPosition();
     this.bindNukeEvents();
+    
+    if (Utils.isNullOrUndefined(options.responsiveBreakpoint)) {
+      this.breakpoint = ResponsiveFacets.ROOT_MIN_WIDTH;
+    } else {
+      this.breakpoint = options.responsiveBreakpoint;
+    }
   }
 
   public needSmallMode(): boolean {
-    return this.coveoRoot.width() <= ResponsiveFacets.ROOT_MIN_WIDTH;
+    return this.coveoRoot.width() <= this.breakpoint;
   }
 
   public changeToSmallMode() {

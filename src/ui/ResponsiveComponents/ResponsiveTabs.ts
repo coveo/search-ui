@@ -41,16 +41,13 @@ export class ResponsiveTabs implements IResponsiveComponent {
     this.bindNukeEvents();
   }
 
-  public static init(root: HTMLElement, ID: string, component, options: IResponsiveComponentOptions) {
+  public static init(root: HTMLElement, component, options: IResponsiveComponentOptions) {
     this.logger = new Logger('ResponsiveTabs');
     if (!$$(root).find('.coveo-tab-section')) {
       this.logger.info('No element with class coveo-tab-section. Responsive tabs cannot be enabled.');
       return;
     }
-    if (!Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
-      return;
-    }
-    ResponsiveComponentsManager.register(ResponsiveTabs, $$(root), ID, component);
+    ResponsiveComponentsManager.register(ResponsiveTabs, $$(root), component.ID, component, options);
   }
 
   public handleResizeEvent() {
