@@ -3,7 +3,6 @@ import {InitializationEvents} from '../../events/InitializationEvents';
 import {Component} from '../Base/Component';
 import {Tab} from '../Tab/Tab';
 import {Facet} from '../Facet/Facet';
-import {FacetSlider} from '../FacetSlider/FacetSlider';
 import {ResponsiveFacets} from './ResponsiveFacets';
 import {IComponentDefinition} from '../Base/Component';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
@@ -45,7 +44,7 @@ export class ResponsiveComponentsManager {
 
   // Register takes a class and will instantiate it after framework initialization has completed.
   public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string,
-                         component: IComponentDefinition, options:IResponsiveComponentOptions) {
+    component: IComponentDefinition, options: IResponsiveComponentOptions) {
     let searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, true);
     if (searchInterface instanceof SearchInterface && searchInterface.options.enableAutomaticResponsiveMode) {
       root.on(InitializationEvents.afterInitialization, () => {
@@ -79,14 +78,14 @@ export class ResponsiveComponentsManager {
     this.ensureTabSectionInDom();
     this.saveTabSectionPosition();
     this.resizeListener = _.debounce(() => {
-      _.each(this.responsiveComponents, responsiveComponent => {
-        if (this.needTabSection() && this.createdTabSection || this.searchBoxElement && this.tabSection && this.coveoRoot.width() <= ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH && this.isFacetActivated) {
+      if (this.needTabSection() && this.createdTabSection || this.searchBoxElement && this.tabSection && this.coveoRoot.width() <= ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH) {
           this.coveoRoot.addClass('coveo-small-interface');
           this.tabSection.insertAfter(this.searchBoxElement);
         } else if (this.searchBoxElement && this.tabSection && this.coveoRoot.width() > ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH) {
           this.coveoRoot.removeClass('coveo-small-interface');
           this.restoreTabSectionPosition();
-        }
+      }
+      _.each(this.responsiveComponents, responsiveComponent => {
         responsiveComponent.handleResizeEvent();
       });
     }, 200);
@@ -119,7 +118,7 @@ export class ResponsiveComponentsManager {
       this.tabSection.insertAfter(this.tabSectionPreviousSibling.el);
     } else if (this.tabSectionParent) {
       this.tabSectionParent.prepend(this.tabSection.el);
-    } else if(!this.needTabSection()){
+    } else if (!this.needTabSection()) {
       this.tabSection && this.tabSection.detach();
     }
   }
@@ -137,7 +136,7 @@ export class ResponsiveComponentsManager {
       return false;
     }
 
-    if (Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
+    if (!Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
       this.disabledComponents.push(component.ID);
       return false;
     }

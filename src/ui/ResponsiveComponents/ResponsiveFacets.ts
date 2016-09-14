@@ -4,7 +4,7 @@ import {IResponsiveComponent, ResponsiveComponentsManager, IResponsiveComponentO
 import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
 import {EventsUtils} from '../../utils/EventsUtils';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
-import {Component} from '../Base/Component';
+import {IComponentDefinition, Component} from '../Base/Component';
 import {Logger} from '../../misc/Logger';
 import {l} from '../../strings/Strings';
 import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
@@ -36,19 +36,16 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private searchInterface: SearchInterface;
   private breakpoint: number;
 
-  public static init(root: HTMLElement, component, options: IResponsiveComponentOptions) {
+  public static init(root: HTMLElement, component: IComponentDefinition, options: IResponsiveComponentOptions) {
     this.logger = new Logger('ResponsiveFacets');
     if (!$$(root).find('.coveo-facet-column')) {
       this.logger.info('No element with class coveo-facet-column. Responsive facets cannot be enabled');
       return;
     }
-    if (!Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
-      return;
-    }
     ResponsiveComponentsManager.register(ResponsiveFacets, $$(root), Facet.ID, component, options);
   }
 
-  constructor(public root: Dom, ID: string, options:IResponsiveComponentOptions) {
+  constructor(public root: Dom, ID: string, options: IResponsiveComponentOptions) {
     this.ID = ID;
     this.coveoRoot = root;
     this.searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, false);
@@ -59,7 +56,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.buildPopupBackground();
     this.saveFacetsPosition();
     this.bindNukeEvents();
-    
+
     if (Utils.isNullOrUndefined(options.responsiveBreakpoint)) {
       this.breakpoint = ResponsiveFacets.ROOT_MIN_WIDTH;
     } else {
@@ -192,8 +189,6 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private positionPopup() {
-    let facetList = this.dropdownContent.findAll('.CoveoFacet, .CoveoFacetSlider, .CoveoFacetRange, .CoveoHierarchicalFacet');
-
     this.dropdownHeader.el.style.zIndex = ResponsiveFacets.ACTIVE_FACET_HEADER_Z_INDEX;
 
     this.dropdownContent.addClass('coveo-facet-dropdown-content');
@@ -232,8 +227,6 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private cleanUpDropdown() {
     this.closeDropdown();
     this.dropdownHeader.detach();
-    let facetList = this.dropdownContent.findAll('.' + Component.computeCssClassNameForType(this.ID));
-
     this.dropdownHeader.el.style.zIndex = '';
   }
 

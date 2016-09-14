@@ -4,7 +4,7 @@ import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/Po
 import {EventsUtils} from '../../utils/EventsUtils';
 import {Utils} from '../../utils/Utils';
 import {Logger} from '../../misc/Logger';
-import {Component} from '../Base/Component';
+import {IComponentDefinition, Component} from '../Base/Component';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {IResponsiveComponent, ResponsiveComponentsManager, IResponsiveComponentOptions} from './ResponsiveComponentsManager';
 import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
@@ -41,7 +41,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
     this.bindNukeEvents();
   }
 
-  public static init(root: HTMLElement, component, options: IResponsiveComponentOptions) {
+  public static init(root: HTMLElement, component: IComponentDefinition, options: IResponsiveComponentOptions) {
     this.logger = new Logger('ResponsiveTabs');
     if (!$$(root).find('.coveo-tab-section')) {
       this.logger.info('No element with class coveo-tab-section. Responsive tabs cannot be enabled.');

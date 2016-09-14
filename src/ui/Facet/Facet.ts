@@ -395,14 +395,14 @@ export class Facet extends Component {
      * Therefore, this options only needs to be set on one tab to be effective.
      * The default value is `true`.
      */
-    enableResponsiveMode: ComponentOptions.buildBooleanOption({defaultValue: true}),
+    enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Specifies the width of the search interface, in pixels, at which the facets will go into responsive mode. The responsive mode will
      * be triggered when the width is equal or below this value. The search interface corresponds to the element with the class
      * `CoveoSearchInterface`.
      * The default value is `800`.
      */
-    responsiveBreakpoint: ComponentOptions.buildNumberOption({defaultValue: 800})
+    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 800 })
   };
 
   public facetQueryController: FacetQueryController;
@@ -463,7 +463,7 @@ export class Facet extends Component {
       this.options.availableSorts = _.filter(this.options.availableSorts, (sort: string) => !/^alpha.*$/.test(sort));
     }
 
-    ResponsiveFacets.init(this.root, this, this.options);
+    ResponsiveFacets.init(this.root, Facet, this.options);
 
     // Serves as a way to render facet in the omnibox in the order in which they are instantiated
     this.omniboxZIndex = Facet.omniboxIndex;
