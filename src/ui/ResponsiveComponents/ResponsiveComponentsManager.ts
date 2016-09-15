@@ -83,12 +83,12 @@ export class ResponsiveComponentsManager {
     this.ensureTabSectionInDom();
     this.saveTabSectionPosition();
     this.resizeListener = _.debounce(() => {
-      if (this.shouldMoveTabSectionBelowSearchBox()) {
+      if (this.shouldSwitchToSmallMode()) {
         this.coveoRoot.addClass('coveo-small-interface');
         this.tabSection.insertAfter(this.searchBoxElement);
-      } else if (this.searchBoxElement && this.tabSection && this.coveoRoot.width() > ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH) {
-          this.coveoRoot.removeClass('coveo-small-interface');
-          this.restoreTabSectionPosition();
+      } else if (this.shouldExitSmallMode()) {
+        this.coveoRoot.removeClass('coveo-small-interface');
+        this.restoreTabSectionPosition();
       }
       _.each(this.responsiveComponents, responsiveComponent => {
         responsiveComponent.handleResizeEvent();
@@ -125,7 +125,7 @@ export class ResponsiveComponentsManager {
     }
   }
 
-  private shouldMoveTabSectionBelowSearchBox(): boolean {
+  private shouldSwitchToSmallMode(): boolean {
     // If we had to create the tab section or if we reached the pixel breakpoint, we move the tab section below the search box
     // to switch to small mode.
     if (this.searchBoxElement && this.tabSection) {
@@ -134,6 +134,10 @@ export class ResponsiveComponentsManager {
       return aComponentNeedsTabSection || reachedBreakpoint;
     }
     return false;
+  }
+
+  private shouldExitSmallMode(): boolean {
+    return this.searchBoxElement && this.tabSection && this.coveoRoot.width() > ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH
   }
 
   private needTabSection(): boolean {
