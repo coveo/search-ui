@@ -4,7 +4,6 @@ import {Component} from '../Base/Component';
 import {Tab} from '../Tab/Tab';
 import {Facet} from '../Facet/Facet';
 import {ResponsiveFacets} from './ResponsiveFacets';
-import {IComponentDefinition} from '../Base/Component';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
 import {Utils} from '../../utils/Utils';
@@ -43,7 +42,6 @@ export class ResponsiveComponentsManager {
   // Register takes a class and will instantiate it after framework initialization has completed.
   public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string,
     component: Component, options: IResponsiveComponentOptions): void {
-    let searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, true);
     if (this.shouldEnableResponsiveMode(root)) {
       root.on(InitializationEvents.afterInitialization, () => {
         let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el == componentManager.coveoRoot.el);
@@ -96,7 +94,7 @@ export class ResponsiveComponentsManager {
     this.bindNukeEvents();
   }
 
-  public register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component, options: IResponsiveComponentOptions): void {
+  public register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component: Component, options: IResponsiveComponentOptions): void {
     if (!this.shouldRegisterComponent(ID, options)) {
       return;
     }
@@ -105,13 +103,16 @@ export class ResponsiveComponentsManager {
       let responsiveComponent = new responsiveComponentConstructor(root, ID, options);
       if (this.isFacet(ID)) {
         this.responsiveFacets = <ResponsiveFacets>responsiveComponent;
-        // Facets need to be rendered before tabs, so the facet dropdown header is already there when the responsive tabs check for overflow.
-        this.responsiveComponents.unshift(responsiveComponent);
-      } else {
+      }
+
+      if (this.isTabs(ID)) {
         this.responsiveComponents.push(responsiveComponent);
+      } else {
+        // Tabs need to be rendered last, so any dropdown header(eg: facet) is already there when the responsive tabs check for overflow.
+        this.responsiveComponents.unshift(responsiveComponent);
       }
     }
-    
+
     if (this.isFacet(ID)) {
       this.responsiveFacets.registerComponent(component);
     }

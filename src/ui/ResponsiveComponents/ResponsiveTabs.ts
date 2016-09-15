@@ -4,7 +4,7 @@ import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/Po
 import {EventsUtils} from '../../utils/EventsUtils';
 import {Utils} from '../../utils/Utils';
 import {Logger} from '../../misc/Logger';
-import {IComponentDefinition, Component} from '../Base/Component';
+import {Component} from '../Base/Component';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {Tab} from'../Tab/Tab';
 import {IResponsiveComponent, ResponsiveComponentsManager, IResponsiveComponentOptions} from './ResponsiveComponentsManager';

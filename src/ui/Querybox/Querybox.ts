@@ -90,13 +90,13 @@ export class Querybox extends Component {
      */
     triggerQueryOnClear: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
-    * Specifies a placeholder for input.
-    */
+     * Specifies a placeholder for input.
+     */
     placeholder: ComponentOptions.buildStringOption(),
     /**
-    * Specifies whether the `QueryBox` gets the focus and is selected on initialization.
-    * The default value is `true`.
-    */
+     * Specifies whether the `QueryBox` gets the focus and is selected on initialization.
+     * The default value is `true`.
+     */
     autoFocus: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 

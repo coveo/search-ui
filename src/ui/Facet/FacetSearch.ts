@@ -178,7 +178,7 @@ export class FacetSearch {
 
   private shouldPositionSearchResults(): boolean {
     return !this.isMobileDevice() && !ResponsiveComponentsUtils.isSmallFacetActivated($$(this.root))
-      && $$(this.facet.element).hasClass('coveo-facet-searching')
+      && $$(this.facet.element).hasClass('coveo-facet-searching');
   }
 
   private buildBaseSearch(): HTMLElement {
