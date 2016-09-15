@@ -14,8 +14,6 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
   private static logger: Logger;
 
-  public ID: string;
-
   private dropdownHeader: Dom;
   private dropdownContent: Dom;
   private tabSection: Dom;
@@ -26,8 +24,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private documentClickListener: EventListener;
   private searchInterface: SearchInterface;
 
-  constructor(root: Dom, ID: string) {
-    this.ID = ID;
+  constructor(root: Dom, public ID: string) {
     this.coveoRoot = root;
     this.searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, false);
     this.searchBoxElement = this.getSearchBoxElement();
@@ -92,7 +89,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private shouldAddTabsToDropdown(): boolean {
     return this.isOverflowing(this.tabSection.el) && ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot);
   }
-  
+
   private addTabsToDropdown(tabs: HTMLElement[]): void {
     let currentTab;
     if (!this.tabSection.find('.coveo-tab-dropdown-header')) {
@@ -171,8 +168,6 @@ export class ResponsiveTabs implements IResponsiveComponent {
     if (dropdownHeader) {
       virtualTabSection.el.removeChild(dropdownHeader);
     }
-    let facetDropdownHeader = virtualTabSection.find('.coveo-facet-dropdown-header');
-    facetDropdownHeader && virtualTabSection.el.removeChild(facetDropdownHeader);
 
     virtualTabSection.el.style.position = 'absolute';
     virtualTabSection.el.style.visibility = 'hidden';

@@ -34,8 +34,6 @@ export class ResponsiveComponentsManager {
   private responsiveComponents: IResponsiveComponent[] = [];
   private tabSection: Dom;
   private searchBoxElement: HTMLElement;
-  private isTabActivated: boolean = false;
-  private isFacetActivated: boolean = false;
   private createdTabSection: boolean = false;
   private responsiveFacets: ResponsiveFacets;
   private tabSectionPreviousSibling: Dom;
@@ -103,25 +101,18 @@ export class ResponsiveComponentsManager {
       return;
     }
 
-    if (this.isFacet(ID) && this.isActivated(ID)) {
-      this.responsiveFacets.registerComponent(component);
-    }
-
     if (!this.isActivated(ID)) {
       let responsiveComponent = new responsiveComponentConstructor(root, ID, options);
-      if (this.isTabs(responsiveComponent.ID)) {
-        this.isTabActivated = true;
-      }
-
       if (this.isFacet(ID)) {
         this.responsiveFacets = <ResponsiveFacets>responsiveComponent;
         this.responsiveFacets.registerComponent(component);
-        this.isFacetActivated = true;
         // Facets need to be rendered before tabs, so the facet dropdown header is already there when the responsive tabs check for overflow.
         this.responsiveComponents.unshift(responsiveComponent);
       } else {
         this.responsiveComponents.push(responsiveComponent);
       }
+    } else if (this.isFacet(ID) && this.isActivated(ID)) {
+      this.responsiveFacets.registerComponent(component);
     }
   }
 
