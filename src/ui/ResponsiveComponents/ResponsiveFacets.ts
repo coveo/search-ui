@@ -36,7 +36,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private searchInterface: SearchInterface;
   private breakpoint: number;
 
-  public static init(root: HTMLElement, component: IComponentDefinition, options: IResponsiveComponentOptions) {
+  public static init(root: HTMLElement, component, options: IResponsiveComponentOptions) {
     this.logger = new Logger('ResponsiveFacets');
     if (!$$(root).find('.coveo-facet-column')) {
       this.logger.info('No element with class coveo-facet-column. Responsive facets cannot be enabled');

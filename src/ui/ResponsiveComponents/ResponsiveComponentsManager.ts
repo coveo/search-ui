@@ -42,7 +42,7 @@ export class ResponsiveComponentsManager {
 
   // Register takes a class and will instantiate it after framework initialization has completed.
   public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string,
-    component: IComponentDefinition, options: IResponsiveComponentOptions): void {
+    component: Component, options: IResponsiveComponentOptions): void {
     let searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, true);
     if (this.shouldEnableResponsiveMode(root)) {
       root.on(InitializationEvents.afterInitialization, () => {
@@ -105,13 +105,14 @@ export class ResponsiveComponentsManager {
       let responsiveComponent = new responsiveComponentConstructor(root, ID, options);
       if (this.isFacet(ID)) {
         this.responsiveFacets = <ResponsiveFacets>responsiveComponent;
-        this.responsiveFacets.registerComponent(component);
         // Facets need to be rendered before tabs, so the facet dropdown header is already there when the responsive tabs check for overflow.
         this.responsiveComponents.unshift(responsiveComponent);
       } else {
         this.responsiveComponents.push(responsiveComponent);
       }
-    } else if (this.isFacet(ID)) {
+    }
+    
+    if (this.isFacet(ID)) {
       this.responsiveFacets.registerComponent(component);
     }
   }

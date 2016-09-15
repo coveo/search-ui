@@ -6,6 +6,7 @@ import {Utils} from '../../utils/Utils';
 import {Logger} from '../../misc/Logger';
 import {IComponentDefinition, Component} from '../Base/Component';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
+import {Tab} from'../Tab/Tab';
 import {IResponsiveComponent, ResponsiveComponentsManager, IResponsiveComponentOptions} from './ResponsiveComponentsManager';
 import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
 import {l} from '../../strings/Strings';
@@ -38,13 +39,13 @@ export class ResponsiveTabs implements IResponsiveComponent {
     this.bindNukeEvents();
   }
 
-  public static init(root: HTMLElement, component: IComponentDefinition, options: IResponsiveComponentOptions) {
+  public static init(root: HTMLElement, component: Component, options: IResponsiveComponentOptions) {
     this.logger = new Logger('ResponsiveTabs');
     if (!$$(root).find('.coveo-tab-section')) {
       this.logger.info('No element with class coveo-tab-section. Responsive tabs cannot be enabled.');
       return;
     }
-    ResponsiveComponentsManager.register(ResponsiveTabs, $$(root), component.ID, component, options);
+    ResponsiveComponentsManager.register(ResponsiveTabs, $$(root), Tab.ID, component, options);
   }
 
   public handleResizeEvent(): void {

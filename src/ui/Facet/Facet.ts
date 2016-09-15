@@ -463,7 +463,7 @@ export class Facet extends Component {
       this.options.availableSorts = _.filter(this.options.availableSorts, (sort: string) => !/^alpha.*$/.test(sort));
     }
 
-    ResponsiveFacets.init(this.root, Facet, this.options);
+    ResponsiveFacets.init(this.root, this, this.options);
 
     // Serves as a way to render facet in the omnibox in the order in which they are instantiated
     this.omniboxZIndex = Facet.omniboxIndex;
