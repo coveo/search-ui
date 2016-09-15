@@ -128,7 +128,7 @@ export class ResponsiveComponentsManager {
   }
 
   private shouldExitSmallMode(): boolean {
-    return this.searchBoxElement && this.tabSection && this.coveoRoot.width() > ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH
+    return this.searchBoxElement && this.tabSection && this.coveoRoot.width() > ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH;
   }
 
   private needTabSection(): boolean {
