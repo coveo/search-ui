@@ -97,7 +97,7 @@ export class ResponsiveComponentsManager {
   }
 
   public register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component, options: IResponsiveComponentOptions): void {
-    if (!this.shouldRegisterComponent(component, options)) {
+    if (!this.shouldRegisterComponent(ID, options)) {
       return;
     }
 
@@ -111,7 +111,7 @@ export class ResponsiveComponentsManager {
       } else {
         this.responsiveComponents.push(responsiveComponent);
       }
-    } else if (this.isFacet(ID) && this.isActivated(ID)) {
+    } else if (this.isFacet(ID)) {
       this.responsiveFacets.registerComponent(component);
     }
   }
@@ -168,14 +168,14 @@ export class ResponsiveComponentsManager {
     }
   }
 
-  private shouldRegisterComponent(component: IComponentDefinition, options: IResponsiveComponentOptions): boolean {
-    let componentIsDisabled = _.contains(this.disabledComponents, component.ID);
+  private shouldRegisterComponent(ID: string, options: IResponsiveComponentOptions): boolean {
+    let componentIsDisabled = _.contains(this.disabledComponents, ID);
     if (componentIsDisabled) {
       return false;
     }
 
     if (!Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
-      this.disabledComponents.push(component.ID);
+      this.disabledComponents.push(ID);
       return false;
     }
 
