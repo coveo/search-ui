@@ -139,6 +139,15 @@ export class FieldTable extends Component {
     }
   }
 
+  /**
+   * Update the toggle height if the content was dynamically resized so that the open and close animation can
+   * match the new content size.
+   */
+  public updateToggleHeight() {
+    this.updateToggleContainerHeight();
+    this.isExpanded ? this.expand() : this.minimize();
+  }
+
   protected isTogglable() {
     if (this.searchInterface.isNewDesign() && this.options.allowMinimization) {
       return true;
@@ -168,8 +177,7 @@ export class FieldTable extends Component {
     }
 
     setTimeout(() => {
-      this.updateToggleContainerHeight();
-      this.isExpanded ? this.expand() : this.minimize();
+      this.updateToggleHeight();
     }); // Wait until toggleContainer.scrollHeight is computed.
 
     const toggleAction = () => this.toggle(true);
