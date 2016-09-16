@@ -64,23 +64,6 @@ export function DebugTest() {
           done();
         }, 0);
       });
-
-      it('should unbind escape when it is nuked', (done) => {
-
-        $$(env.root).trigger(DebugEvents.showDebugPanel, {
-          'foo': 'bar'
-        });
-        _.defer(() => {
-          expect(open).toHaveBeenCalled();
-          Simulate.keyUp(document.body, KEYBOARD.ESCAPE);
-          $$(env.root).trigger(InitializationEvents.nuke);
-          Simulate.keyUp(document.body, KEYBOARD.ESCAPE);
-          expect(close).toHaveBeenCalledTimes(1);
-          done();
-        }, 0);
-      });
     }
-
-
   });
 }
