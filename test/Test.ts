@@ -322,3 +322,6 @@ FacetValuesOrderTest();
 
 import {SentryLoggerTest} from './misc/SentryLoggerTest';
 SentryLoggerTest();
+
+import {DebugTest} from './ui/DebugTest';
+DebugTest();

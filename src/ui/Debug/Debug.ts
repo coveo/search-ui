@@ -17,6 +17,9 @@ import {QueryController} from '../../controllers/QueryController';
 import {BaseComponent} from '../Base/BaseComponent';
 import {ModalBox} from '../../ExternalModulesShim';
 import Globalize = require('globalize');
+import {KEYBOARD} from "../../utils/KeyboardUtils";
+import {Initialization} from "../Base/Initialization";
+import {InitializationEvents} from "../../events/InitializationEvents";
 
 export interface IDebugOptions {
   enableDebug?: boolean;
@@ -41,8 +44,9 @@ export class Debug extends RootComponent {
   private fields: { [field: string]: IFieldDescription };
 
   private stackDebug: any;
+  private boundEscapeKey: (evt: Event, arg?: any) => void;
 
-  constructor(public element: HTMLElement, public queryController: QueryController, public options?: IDebugOptions) {
+  constructor(public element: HTMLElement, public queryController: QueryController, public options?: IDebugOptions, public modalBox = ModalBox) {
     super(element, Debug.ID);
     this.options = ComponentOptions.initComponentOptions(element, Debug, options);
     $$(this.element).on(QueryEvents.buildingQuery, (e, args: IBuildingQueryEventArgs) => {
@@ -52,6 +56,9 @@ export class Debug extends RootComponent {
     $$(this.element).on(DebugEvents.showDebugPanel, (e, args) => {
       this.handleShowDebugPanel(args);
     });
+    $$(this.element).on(InitializationEvents.nuke, () => {
+      this.unbindEscapeEvent();
+    })
 
     this.localStorageDebug = new LocalStorageUtils<string[]>('DebugPanel');
     this.collapsedSections = this.localStorageDebug.load() || [];
@@ -60,12 +67,18 @@ export class Debug extends RootComponent {
   private showDebugPanel(builder: (results?: IQueryResults) => { body: HTMLElement; json: any; }) {
     let build = builder();
 
-    let modalbox = ModalBox.open(build.body, {
+    let modalbox = this.modalBox.open(build.body, {
       title: '',
       className: 'coveo-debug',
       titleClose: true,
-      overlayClose: true
+      overlayClose: true,
+      validation: () => {
+        this.unbindEscapeEvent();
+        return true;
+      }
     });
+    this.bindEscapeEvent();
+
     let title = $$(modalbox.wrapper).find('.coveo-title');
     let search = this.buildSearchBox(build.body);
     let downloadLink = $$('a', { download: 'debug.json', 'href': this.downloadHref(build.json) }, 'Download');
@@ -77,8 +90,27 @@ export class Debug extends RootComponent {
     title.appendChild(this.buildEnabledHighlightRecommendation());
     title.appendChild(this.buildEnableDebugCheckbox(build.body, search, bodyBuilder));
     title.appendChild(search);
-
     title.appendChild(downloadLink.el);
+  }
+
+  private handleEscapeEvent(e: KeyboardEvent) {
+    if (e.keyCode == KEYBOARD.ESCAPE) {
+      if (this.modalBox) {
+        this.modalBox.close();
+      }
+    }
+  }
+
+  private bindEscapeEvent() {
+    this.boundEscapeKey = this.handleEscapeEvent.bind(this);
+    $$(document.body).on('keyup', this.boundEscapeKey);
+  }
+
+  private unbindEscapeEvent() {
+    if (this.boundEscapeKey) {
+      $$(document.body).off('keyup', this.boundEscapeKey);
+    }
+    this.boundEscapeKey = null;
   }
 
   private handleShowDebugPanel(info: any) {
