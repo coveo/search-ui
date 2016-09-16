@@ -156,7 +156,7 @@ export function RecommendationTest() {
           test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
           Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
           expect(test.cmp.element.style.display).toEqual('block');
-        })
+        });
 
         it('should show the interface if there are recommendations', () => {
           Simulate.query(test.env);
