@@ -17,9 +17,8 @@ import {QueryController} from '../../controllers/QueryController';
 import {BaseComponent} from '../Base/BaseComponent';
 import {ModalBox} from '../../ExternalModulesShim';
 import Globalize = require('globalize');
-import {KEYBOARD} from "../../utils/KeyboardUtils";
-import {Initialization} from "../Base/Initialization";
-import {InitializationEvents} from "../../events/InitializationEvents";
+import {KEYBOARD} from '../../utils/KeyboardUtils';
+import {InitializationEvents} from '../../events/InitializationEvents';
 
 export interface IDebugOptions {
   enableDebug?: boolean;
@@ -58,7 +57,7 @@ export class Debug extends RootComponent {
     });
     $$(this.element).on(InitializationEvents.nuke, () => {
       this.unbindEscapeEvent();
-    })
+    });
 
     this.localStorageDebug = new LocalStorageUtils<string[]>('DebugPanel');
     this.collapsedSections = this.localStorageDebug.load() || [];
