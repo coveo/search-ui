@@ -90,7 +90,7 @@ export class Querybox extends Component {
      */
     triggerQueryOnClear: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
-     * Specifies a placeholder for input.
+     *  Specifies a placeholder for input.
      */
     placeholder: ComponentOptions.buildStringOption(),
     /**

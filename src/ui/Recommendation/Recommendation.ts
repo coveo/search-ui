@@ -101,7 +101,11 @@ export class Recommendation extends SearchInterface {
 
     $$(this.element).on(QueryEvents.buildingQuery, (e: Event, args: IBuildingQueryEventArgs) => this.handleRecommendationBuildingQuery(args));
     $$(this.element).on(QueryEvents.querySuccess, (e: Event, args: IQuerySuccessEventArgs) => this.handleRecommendationQuerySuccess(args));
-    $$(this.element).on(QueryEvents.noResults, (e: Event, args: INoResultsEventArgs) => this.hide());
+    $$(this.element).on(QueryEvents.noResults, (e: Event, args: INoResultsEventArgs) => {
+      if (this.options.hideIfNoResults) {
+        this.hide();
+      }
+    });
     $$(this.element).on(QueryEvents.queryError, (e: Event, args: IQueryErrorEventArgs) => this.hide());
 
     // This is done to allow the component to be included in another search interface without triggering the parent events.

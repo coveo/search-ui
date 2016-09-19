@@ -48,6 +48,15 @@ module.exports = {
           search: '//@ sourceMappingURL=jquery.min.map',
           replace: ''
         }
+      },
+      {
+        test: /promise|es6-promise/,
+        loader: 'string-replace-loader',
+        query: {
+          // Prevent es6 promise from loading adjacent sourcemap (not needed anyways)
+          search: '//# sourceMappingURL=es6-promise.map',
+          replace: ''
+        }
       }
     ]
   },
