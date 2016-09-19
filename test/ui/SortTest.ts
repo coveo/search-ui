@@ -220,6 +220,15 @@ export function SortTest() {
       expect(test.env.element.innerText).toEqual('overrider');
     });
 
+    it('should use the body if the data-caption is not defined', () => {
+      test = Mock.advancedComponentSetup<Sort>(Sort, <Mock.AdvancedComponentSetupOptions>{
+        element: Dom.createElement('div', {
+          'data-sort-criteria': 'relevancy',
+        }, 'notgettingreplaced')
+      });
+      expect(test.env.element.innerText).toEqual('notgettingreplaced');
+    });
+
     it('should remove unnecessary spaces between sort and direction', function () {
       test = buildSort('date            ascending');
       expect(test.cmp.options.sortCriteria[0].toString()).toEqual('date ascending');

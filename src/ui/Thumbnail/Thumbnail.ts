@@ -8,6 +8,8 @@ import {DeviceUtils} from '../../utils/DeviceUtils';
 import {Initialization} from '../Base/Initialization';
 import {ISearchEndpoint} from '../../rest/SearchEndpointInterface';
 import {$$} from '../../utils/Dom';
+import {FieldTable} from '../FieldTable/FieldTable';
+import {get} from '../Base/RegisteredNamedMethods';
 
 export interface IThumbnailOptions {
   noThumbnailClass?: string;
@@ -51,6 +53,8 @@ export class Thumbnail extends Component {
     'source' //        ⎭
   ];
 
+  public img: HTMLImageElement;
+
   /**
    * Create a new Thumbnail component
    * @param element
@@ -67,18 +71,27 @@ export class Thumbnail extends Component {
       new ResultLink(this.element, this.options, this.bindings, this.result);
     }
 
+    if (this.element.tagName.toLowerCase() != 'img') {
+      this.img = <HTMLImageElement>$$('img').el;
+      this.element.appendChild(this.img);
+    } else {
+      this.img = <HTMLImageElement>this.element;
+    }
+
 
     // We need to set src to a blank image right away to avoid the image from
     // changing size once it's loaded. Also, doing this prevents a border from
     // appearing on some browsers when there is no thumbnail. I've found no other
     // way to get rid of it...
-    this.element.setAttribute('src', 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==');
+    this.img.setAttribute('src', 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==');
 
     if (QueryUtils.hasThumbnail(result)) {
       this.buildThumbnailImage();
     } else {
       this.setEmptyThumbnailClass();
     }
+
+
   }
 
   private buildThumbnailImage() {
@@ -97,22 +110,32 @@ export class Thumbnail extends Component {
 
   private buildImageWithDirectSrcAttribute(endpoint: ISearchEndpoint) {
     let dataStreamUri = endpoint.getViewAsDatastreamUri(this.result.uniqueId, '$Thumbnail$', { contentType: 'image/png' });
-    this.element.setAttribute('src', dataStreamUri);
+    this.img.setAttribute('src', dataStreamUri);
+    this.resizeContainingFieldTable();
   }
 
   private buildImageWithBase64SrcAttribute(endpoint: ISearchEndpoint) {
     endpoint.getRawDataStream(this.result.uniqueId, '$Thumbnail$')
       .then((response) => {
         let rawBinary = String.fromCharCode.apply(null, new Uint8Array(response));
-        this.element.setAttribute('src', 'data:image/png;base64, ' + btoa(rawBinary));
+        this.img.setAttribute('src', 'data:image/png;base64, ' + btoa(rawBinary));
+        this.resizeContainingFieldTable();
       })
       .catch(() => {
         this.setEmptyThumbnailClass();
       });
   }
 
+  private resizeContainingFieldTable() {
+    let closestFieldTableElement = $$(this.element).closest(Component.computeCssClassName(FieldTable));
+    if (closestFieldTableElement != null) {
+      let fieldTable = <FieldTable>get(closestFieldTableElement);
+      fieldTable.updateToggleHeight();
+    }
+  }
+
   private setEmptyThumbnailClass() {
-    $$(this.element).addClass(this.options.noThumbnailClass);
+    $$(this.img).addClass(this.options.noThumbnailClass);
   }
 }
 

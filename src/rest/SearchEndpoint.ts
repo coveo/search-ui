@@ -77,6 +77,21 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
+   * Configure an endpoint that will point to a Coveo Cloud index V2, which contains a set of public sources with no security on them.<br/>
+   * Used for demo purposes and ease of setup.
+   * @param otherOptions A set of additional options to use when configuring this endpoint
+   */
+  static configureSampleEndpointV2(optionsOPtions?: ISearchEndpointOptions) {
+    SearchEndpoint.endpoints['default'] = new SearchEndpoint(_.extend({
+      restUri: 'https://platform.cloud.coveo.com/rest/search',
+      accessToken: 'xx564559b1-0045-48e1-953c-3addd1ee4457',
+      queryStringArguments: {
+        organizationID: 'searchuisamples'
+      }
+    }));
+  }
+
+  /**
    * Configure an endpoint to a Coveo Cloud index.
    * @param organization The organization id of your Coveo cloud index
    * @param token The token to use to execute query. If null, you will most probably need to login when querying.
@@ -93,6 +108,10 @@ export class SearchEndpoint implements ISearchEndpoint {
     let merged = SearchEndpoint.mergeConfigOptions(options, otherOptions);
 
     SearchEndpoint.endpoints['default'] = new SearchEndpoint(SearchEndpoint.removeUndefinedConfigOption(merged));
+  }
+
+  static configureCloudV2Endpoint(organization?: string, token?: string, uri: string = 'https://platform.cloud.coveo.com/rest/search', otherOptions?: ISearchEndpointOptions) {
+    return SearchEndpoint.configureCloudEndpoint(organization, token, uri, otherOptions);
   }
 
   /**

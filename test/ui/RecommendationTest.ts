@@ -144,9 +144,18 @@ export function RecommendationTest() {
       });
 
       describe('exposes option hideIfNoResults', () => {
-        it('should hide the interface if there are no recommendations', () => {
+        it('should hide the interface if there are no recommendations and the option is true', () => {
+          options.hideIfNoResults = true;
+          test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
           Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
           expect(test.cmp.element.style.display).toEqual('none');
+        });
+
+        it('should not hide the interface if there are no recommendations and the option is false', () => {
+          options.hideIfNoResults = false;
+          test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
+          Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+          expect(test.cmp.element.style.display).toEqual('block');
         });
 
         it('should show the interface if there are recommendations', () => {
