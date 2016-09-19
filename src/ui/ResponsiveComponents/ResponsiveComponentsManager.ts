@@ -43,15 +43,15 @@ export class ResponsiveComponentsManager {
   public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component: Component, options: IResponsiveComponentOptions): void {
     if (this.shouldEnableResponsiveMode(root)) {
       let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el == componentManager.coveoRoot.el);
-        if (!responsiveComponentsManager) {
-          responsiveComponentsManager = new ResponsiveComponentsManager(root);
-          this.componentManagers.push(responsiveComponentsManager);
-        }
+      if (!responsiveComponentsManager) {
+        responsiveComponentsManager = new ResponsiveComponentsManager(root);
+        this.componentManagers.push(responsiveComponentsManager);
+      }
 
-        if (!Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
-          responsiveComponentsManager.disableComponent(ID);
-          return;
-        }
+      if (!Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
+        responsiveComponentsManager.disableComponent(ID);
+        return;
+      }
 
       root.on(InitializationEvents.afterInitialization, () => {
         let currentResponsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el == componentManager.coveoRoot.el);
