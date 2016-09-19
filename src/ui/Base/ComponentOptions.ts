@@ -317,8 +317,6 @@ export class ComponentOptions {
           values[name] = value;
         }
       }
-      Assert.check(!(values[name] == undefined && optionDefinition.required), componentID + '.' + name + ' is required');
-
     }
     for (let i = 0; i < names.length; i++) {
       let name = names[i];
