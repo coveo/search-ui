@@ -20,6 +20,7 @@ import {QueryStateModel} from '../../models/QueryStateModel';
 import {SliderEvents, IGraphValueSelectedArgs} from '../../events/SliderEvents';
 import {Assert} from '../../misc/Assert';
 import {Utils} from '../../utils/Utils';
+import {ResponsiveComponentsUtils} from '../ResponsiveComponents/ResponsiveComponentsUtils';
 import {Initialization} from '../Base/Initialization';
 import d3 = require('d3');
 
@@ -29,6 +30,8 @@ export interface IFacetSliderOptions extends ISliderOptions {
   id?: string;
   field?: string;
   title?: string;
+  enableResponsiveMode?: boolean;
+  responsiveBreakpoint?: number;
 }
 
 /**
@@ -252,7 +255,21 @@ export class FacetSlider extends Component {
      */
     valueCaption: ComponentOptions.buildCustomOption<(values: number[]) => string>(() => {
       return null;
-    })
+    }),
+    /**
+     * Specifies if the responsive mode should be enabled on the facets. Responsive mode will make the facet dissapear and instead be
+     * availaible using a dropdown button. Responsive facets are enabled when the width of the element the search interface is bound to
+     * reaches 800 pixels. This value can be modified using {@link Facet..optionsresponsiveBreakpoint}.
+     * The default value is `true`.
+     */
+    enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    /**
+     * Specifies the width of the search interface, in pixels, at which the facets will go into responsive mode. The responsive mode will
+     * be triggered when the width is equal or below this value. The search interface corresponds to the element with the class
+     * `CoveoSearchInterface`.
+     * The default value is `800`.
+     */
+    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 800 })
   };
 
   static ID = 'FacetSlider';
@@ -275,7 +292,7 @@ export class FacetSlider extends Component {
     super(element, FacetSlider.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, FacetSlider, options);
 
-    ResponsiveFacets.init(this.root, this);
+    ResponsiveFacets.init(this.root, this, this.options);
 
     if (this.options.excludeOuterBounds == null) {
       this.options.excludeOuterBounds = false;
@@ -311,7 +328,7 @@ export class FacetSlider extends Component {
     this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset());
 
     this.onResize = _.debounce(() => {
-      if (!this.searchInterface.isSmallInterface() && this.slider) {
+      if (!ResponsiveComponentsUtils.isSmallFacetActivated($$(this.root)) && this.slider) {
         this.slider.drawGraph();
       }
     }, 250);
