@@ -22,7 +22,7 @@ import {Utils} from '../../utils/Utils';
 import {DomUtils} from '../../utils/DomUtils';
 import {Recommendation} from '../Recommendation/Recommendation';
 import {DefaultRecommendationTemplate} from '../Templates/DefaultRecommendationTemplate';
-import {ValidLayout} from '../ResultLayout/ResultLayout';
+import {ResultLayout, ValidLayout} from '../ResultLayout/ResultLayout';
 
 export interface IResultListOptions {
   resultContainer?: HTMLElement;
@@ -187,8 +187,7 @@ export class ResultList extends Component {
     layout: ComponentOptions.buildStringOption({
       defaultValue: 'list',
       required: true,
-      // TODO : add validator once @fgagnon's pull request is merged.
-      // validator: v => _.contains(ResultLayout.validLayouts, v)
+      validator: v => _.contains(ResultLayout.validLayouts, v)
     })
   };
 
