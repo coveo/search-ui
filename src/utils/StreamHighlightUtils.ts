@@ -3,9 +3,10 @@ import {HighlightUtils} from './HighlightUtils';
 import {StringUtils} from './StringUtils';
 import {Utils} from './Utils';
 import {IHighlight} from '../rest/Highlight';
+import {$$} from './Dom';
 
 // \u2011: http://graphemica.com/%E2%80%91
-let nonWordBoundary = '[\\.\\-\\u2011\\s~=,.\\|\\/:\'`’;_()]';
+let nonWordBoundary = '[\\.\\-\\u2011\\s~=,.\\|\\/:\'`’;_()!?]';
 let regexStart = '(' + nonWordBoundary + '|^)(';
 export interface IStreamHighlightOptions {
   cssClass?: string;
@@ -22,11 +23,11 @@ export class StreamHighlightUtils {
   static highlightStreamHTML(stream: string, termsToHighlight: { [originalTerm: string]: string[] }, phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } }, options?: IStreamHighlightOptions) {
     let opts = new DefaultStreamHighlightOptions().merge(options);
     let container = createStreamHTMLContainer(stream);
-    container.find('*').each((i: number, elem: HTMLElement) => {
-      let text = $(elem).text();
-      $(elem).html(HighlightUtils.highlightString(text, getRestHighlightsForAllTerms(text, termsToHighlight, phrasesToHighlight, opts), [], opts.cssClass));
+    _.each($$(container).findAll('*'), (elem: HTMLElement, i: number) => {
+      let text = $$(elem).text();
+      elem.innerHTML = HighlightUtils.highlightString(text, getRestHighlightsForAllTerms(text, termsToHighlight, phrasesToHighlight, opts), [], opts.cssClass);
     });
-    return container.html();
+    return container.innerHTML;
   }
 
   static highlightStreamText(stream: string, termsToHighlight: { [originalTerm: string]: string[] }, phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } }, options?: IStreamHighlightOptions) {
@@ -96,7 +97,7 @@ function termsSorting(first: string, second: string) {
 }
 
 function createStreamHTMLContainer(stream: string) {
-  let container = $('<div />');
-  container.get(0).innerHTML = stream;
+  let container = $$('div').el;
+  container.innerHTML = stream;
   return container;
 }

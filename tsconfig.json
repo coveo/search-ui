@@ -399,6 +399,7 @@
     "test/ui/LogoTest.ts",
     "test/ui/RegisteredNamedMethodsTest.ts",
     "test/ui/FacetValuesOrderTest.ts",
-    "test/misc/SentryLoggerTest.ts"
+    "test/misc/SentryLoggerTest.ts",
+    "test/utils/StreamHighlightUtilsTest.ts"
   ]
 }
