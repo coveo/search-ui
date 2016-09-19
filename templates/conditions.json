@@ -77,7 +77,11 @@
   },
   "MobileSalesforceCase": {
     "priority": 3,
-    "value": "raw.sfcaseid != null && (Coveo.DeviceUtils.isSmallScreenWidth() || options.layout === 'card')"
+    "value": "raw.sfcaseid != null && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "CardSalesforceCase": {
+    "priority": 4,
+    "value": "raw.sfcaseid != null && options.layout === 'card'"
   },
   "SalesforceCase": {
     "priority": 2,
