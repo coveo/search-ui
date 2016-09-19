@@ -40,8 +40,7 @@ export class ResponsiveComponentsManager {
   private disabledComponents: string[] = [];
 
   // Register takes a class and will instantiate it after framework initialization has completed.
-  public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string,
-    component: Component, options: IResponsiveComponentOptions): void {
+  public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component: Component, options: IResponsiveComponentOptions): void {
     if (this.shouldEnableResponsiveMode(root)) {
       root.on(InitializationEvents.afterInitialization, () => {
         let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el == componentManager.coveoRoot.el);

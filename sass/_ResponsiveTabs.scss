@@ -2,59 +2,59 @@
 @import "mixins/_mediaQuery.scss";
 
 .coveo-small-tabs {
-    .CoveoTab {
-        @include transition-property(opacity);
-        @include transition-duration(0.250s);
-        @include transition-timing-function(ease);
-        font-size: $font-size-smallest;
-        color: $color-greyish-teal-blue;
-        font-weight: 400;
-        letter-spacing: 0.25px;
-        &.coveo-selected,
-        &.coveo-selected:hover {
-            font-weight: 700;
-        }
-        height: 40px;
-        * {
-            line-height: 40px;
-        }
-        &.coveo-selected,
-        &.coveo-selected:hover {
-            border-bottom: 0;
-            p {
-                border-bottom: 2px solid $color-greyish-dark-blue;
-            }
-        }
+  .CoveoTab {
+    @include transition-property(opacity);
+    @include transition-duration(0.250s);
+    @include transition-timing-function(ease);
+    font-size: $font-size-smallest;
+    color: $color-greyish-teal-blue;
+    font-weight: 400;
+    letter-spacing: 0.25px;
+    &.coveo-selected,
+    &.coveo-selected:hover {
+      font-weight: 700;
     }
-    .coveo-tab-list {
-        list-style: none;
-        background-color: white;
-        @include defaultRoundedBorder();
-        padding: 0;
-        white-space: nowrap;
-        * {
-            height: 30px;
-            line-height: 30px;
-            clear: both;
-            white-space: nowrap;
-        }
-        li:first-child {
-            margin-top: 6px;
-        }
-        li:last-child {
-            margin-bottom: 6px;
-        }
-        li:hover {
-            background-color: $color-blueish-white-grey;
-        }
+    height: 40px;
+    * {
+      line-height: 40px;
     }
+    &.coveo-selected,
+    &.coveo-selected:hover {
+      border-bottom: 0;
+      p {
+          border-bottom: 2px solid $color-greyish-dark-blue;
+      }
+    }
+  }
+  .coveo-tab-list {
+    list-style: none;
+    background-color: white;
+    @include defaultRoundedBorder();
+    padding: 0;
+    white-space: nowrap;
+    * {
+      height: 30px;
+      line-height: 30px;
+      clear: both;
+      white-space: nowrap;
+    }
+    li:first-child {
+      margin-top: 6px;
+    }
+    li:last-child {
+      margin-bottom: 6px;
+    }
+    li:hover {
+      background-color: $color-blueish-white-grey;
+    }
+  }
 }
 
 .coveo-tab-list-container {
-    position: absolute;
-    overflow: hidden;
-    z-index: 11;
-    ol {
-        margin: 0;
-    }
+  position: absolute;
+  overflow: hidden;
+  z-index: 11;
+  ol {
+    margin: 0;
+  }
 }

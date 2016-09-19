@@ -124,7 +124,9 @@ export class Tab extends Component {
     /**
      * Specifies if the responsive mode should be enabled for the tabs. Responsive mode will make the overflowing tabs dissapear and instead
      * be availaible using a dropdown button. Responsive tabs are enabled when tabs overflow or when the width of the search interface
-     * becomes too small. Disabling reponsive mode for one tab will disable it for all tabs.
+     * becomes too small. 
+     * 
+     * Disabling reponsive mode for one tab will disable it for all tabs.
      * Therefore, this options only needs to be set on one tab to be effective.
      * The default value is `true`.
      */
