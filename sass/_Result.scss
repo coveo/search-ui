@@ -169,6 +169,9 @@
   @include flex-grow(1);
   margin: 0 10px 20px;
   @include defaultRoundedBorder();
+  .coveo-result-row:first-child {
+    margin-top: 0;
+  }
 }
 
 .coveo-table-layout > .CoveoResult {
