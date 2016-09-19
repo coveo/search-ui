@@ -130,19 +130,6 @@ export class ResponsiveComponentsManager {
     return _.indexOf(this.disabledComponents, ID) != -1;
   }
 
-  private shouldRegisterComponent(ID: string, options: IResponsiveComponentOptions): boolean {
-    let componentIsDisabled = _.contains(this.disabledComponents, ID);
-    if (componentIsDisabled) {
-      return false;
-    }
-
-    if (!Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
-      this.disabledComponents.push(ID);
-      return false;
-    }
-
-    return true;
-  }
   private shouldSwitchToSmallMode(): boolean {
     // If we had to create the tab section or if we reached the pixel breakpoint, we move the tab section below the search box
     // to switch to small mode.
