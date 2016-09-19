@@ -23,7 +23,7 @@ export function DebugTest() {
       oldOpen = ModalBox.open;
       oldClose = ModalBox.close;
       ModalBox.open = open.and.returnValue({
-        wrapper: $$('div', undefined, $$('div', {className: 'coveo-title'}))
+        wrapper: $$('div', undefined, $$('div', { className: 'coveo-title' }))
       });
       ModalBox.close = close;
 
