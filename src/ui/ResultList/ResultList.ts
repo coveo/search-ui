@@ -187,7 +187,7 @@ export class ResultList extends Component {
     layout: ComponentOptions.buildStringOption({
       defaultValue: 'list',
       required: true,
-      validator: v => _.contains(ResultLayout.validLayouts, v)
+      // validator: v => _.contains(ResultLayout.validLayouts, v)
     })
   };
 
