@@ -369,6 +369,7 @@
     "test/ui/RecommendationQueryTest.ts",
     "test/ui/RecommendationTest.ts",
     "test/ui/ResultAttachmentsTest.ts",
+    "test/ui/DebugTest.ts",
     "test/ui/ResultFoldingTest.ts",
     "test/ui/ResultLinkTest.ts",
     "test/ui/ResultListTest.ts",
