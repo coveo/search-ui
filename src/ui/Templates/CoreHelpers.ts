@@ -19,6 +19,7 @@ import {$$} from '../../utils/Dom';
 import {SearchEndpoint} from '../../rest/SearchEndpoint';
 import {ResultList} from '../ResultList/ResultList';
 import {StreamHighlightUtils} from '../../utils/StreamHighlightUtils';
+import {FacetUtils} from '../Facet/FacetUtils';
 import Globalize = require('globalize');
 
 /**
@@ -487,6 +488,10 @@ TemplateHelpers.registerFieldHelper('size', (value: any, options?: { base?: numb
   }
   size = Math.floor(size * Math.pow(10, presision)) / Math.pow(10, presision);
   return size + ' ' + byteMeasure[base];
+});
+
+TemplateHelpers.registerFieldHelper('translatedCaption', (value: string) => {
+  return FacetUtils.tryToGetTranslatedCaption('@filetype', value);
 });
 
 TemplateHelpers.registerTemplateHelper('loadTemplate', (id: string, condition: boolean = true, data?: any) => {

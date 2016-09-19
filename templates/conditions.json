@@ -9,7 +9,11 @@
   },
   "MobileDropbox": {
     "priority": 1,
-    "value": "raw.connectortype == 'DropboxCrawler' && (Coveo.DeviceUtils.isSmallScreenWidth() || options.layout === 'card')"
+    "value": "raw.connectortype == 'DropboxCrawler' && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "CardDropbox": {
+    "priority": 1,
+    "value": "raw.connectortype == 'DropboxCrawler' && options.layout === 'card'"
   },
   "Dropbox": {
     "priority": 0,
@@ -29,7 +33,11 @@
   },
   "MobileGoogleDrive": {
     "priority": 1,
-    "value": "raw.connectortype == 'GoogleDriveCrawler' && (Coveo.DeviceUtils.isSmallScreenWidth() || options.layout === 'card')"
+    "value": "raw.connectortype == 'GoogleDriveCrawler' && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "CardGoogleDrive": {
+    "priority": 1,
+    "value": "raw.connectortype == 'GoogleDriveCrawler' && options.layout === 'card'"
   },
   "GoogleDrive": {
     "priority": 0,
