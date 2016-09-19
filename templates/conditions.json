@@ -132,7 +132,7 @@
     "value": "raw.filetype== 'YouTubePlaylistItem'"
   },
   "Card": {
-    "priority": 0,
+    "priority": 1,
     "value": "options.layout === 'card'"
   },
   "Table": {
