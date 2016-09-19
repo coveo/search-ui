@@ -28,6 +28,7 @@ export class ResponsiveComponentsManager {
   private static componentManagers: ResponsiveComponentsManager[] = [];
   private static remainingComponentInitializations: number = 0;
 
+  private disabledComponents: string[] = [];
   private coveoRoot: Dom;
   private resizeListener;
   private responsiveComponents: IResponsiveComponent[] = [];
@@ -37,20 +38,24 @@ export class ResponsiveComponentsManager {
   private responsiveFacets: ResponsiveFacets;
   private tabSectionPreviousSibling: Dom;
   private tabSectionParent: Dom;
-  private disabledComponents: string[] = [];
 
   // Register takes a class and will instantiate it after framework initialization has completed.
   public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component: Component, options: IResponsiveComponentOptions): void {
     if (this.shouldEnableResponsiveMode(root)) {
-      root.on(InitializationEvents.afterInitialization, () => {
-        let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el == componentManager.coveoRoot.el);
-        if (responsiveComponentsManager) {
-          responsiveComponentsManager.register(responsiveComponentConstructor, root, ID, component, options);
-        } else {
+      let responsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el == componentManager.coveoRoot.el);
+        if (!responsiveComponentsManager) {
           responsiveComponentsManager = new ResponsiveComponentsManager(root);
           this.componentManagers.push(responsiveComponentsManager);
-          responsiveComponentsManager.register(responsiveComponentConstructor, root, ID, component, options);
         }
+
+        if (!Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
+          responsiveComponentsManager.disableComponent(ID);
+          return;
+        }
+
+      root.on(InitializationEvents.afterInitialization, () => {
+        let currentResponsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el == componentManager.coveoRoot.el);
+        currentResponsiveComponentsManager.register(responsiveComponentConstructor, root, ID, component, options);
 
         this.remainingComponentInitializations--;
         if (this.remainingComponentInitializations == 0) {
@@ -94,7 +99,7 @@ export class ResponsiveComponentsManager {
   }
 
   public register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component: Component, options: IResponsiveComponentOptions): void {
-    if (!this.shouldRegisterComponent(ID, options)) {
+    if (this.isDisabled(ID)) {
       return;
     }
 
@@ -117,6 +122,27 @@ export class ResponsiveComponentsManager {
     }
   }
 
+  public disableComponent(ID: string) {
+    this.disabledComponents.push(ID);
+  }
+
+  private isDisabled(ID: string) {
+    return _.indexOf(this.disabledComponents, ID) != -1;
+  }
+
+  private shouldRegisterComponent(ID: string, options: IResponsiveComponentOptions): boolean {
+    let componentIsDisabled = _.contains(this.disabledComponents, ID);
+    if (componentIsDisabled) {
+      return false;
+    }
+
+    if (!Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
+      this.disabledComponents.push(ID);
+      return false;
+    }
+
+    return true;
+  }
   private shouldSwitchToSmallMode(): boolean {
     // If we had to create the tab section or if we reached the pixel breakpoint, we move the tab section below the search box
     // to switch to small mode.
@@ -167,20 +193,6 @@ export class ResponsiveComponentsManager {
       this.tabSectionPreviousSibling = this.tabSection.el.previousSibling ? $$(<HTMLElement>this.tabSection.el.previousSibling) : null;
       this.tabSectionParent = this.tabSection.el.parentElement ? $$(this.tabSection.el.parentElement) : null;
     }
-  }
-
-  private shouldRegisterComponent(ID: string, options: IResponsiveComponentOptions): boolean {
-    let componentIsDisabled = _.contains(this.disabledComponents, ID);
-    if (componentIsDisabled) {
-      return false;
-    }
-
-    if (!Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
-      this.disabledComponents.push(ID);
-      return false;
-    }
-
-    return true;
   }
 
   private isFacet(ID: string): boolean {
