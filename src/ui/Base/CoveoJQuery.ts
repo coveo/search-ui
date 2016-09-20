@@ -4,7 +4,7 @@ interface IWindow {
   $: any;
 }
 
-export var jQueryInstance: JQuery;
+export var jQueryInstance: JQueryStatic;
 
 if (jQueryIsDefined()) {
   initCoveoJQuery();
@@ -18,14 +18,19 @@ if (jQueryIsDefined()) {
 }
 
 export function initCoveoJQuery() {
-  jQueryInstance = window['$'];
+  if (window['$']) {
+    jQueryInstance = window['$']
+  } else {
+    jQueryInstance = window['Coveo']['$']
+  }
+
   if (window['Coveo'] == undefined) {
     window['Coveo'] = {};
   }
   if (window['Coveo']['$'] == undefined) {
     window['Coveo']['$'] = jQueryInstance;
   }
-  window['$'].fn.coveo = function (...args: any[]) {
+  jQueryInstance.fn.coveo = function (...args: any[]) {
     var returnValue: any;
     this.each((index: number, element: HTMLElement) => {
       var returnValueForThisElement: any;
@@ -45,5 +50,5 @@ export function initCoveoJQuery() {
 }
 
 export function jQueryIsDefined(): boolean {
-  return window['$'] != undefined && window['$'].fn != undefined && window['$'].fn.jquery != undefined;
+  return window['$'] != undefined && window['$'].fn != undefined && window['$'].fn.jquery != undefined || window['Coveo'] != undefined && window['Coveo']['$'] != undefined;
 }
