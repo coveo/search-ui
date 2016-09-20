@@ -4,7 +4,7 @@ interface IWindow {
   $: any;
 }
 
-export var jQueryInstance: JQuery;
+export var jQueryInstance: JQueryStatic;
 
 if (jQueryIsDefined()) {
   initCoveoJQuery();
@@ -23,7 +23,7 @@ export function initCoveoJQuery() {
   } else {
     jQueryInstance = window['Coveo']['$']
   }
-  
+
   if (window['Coveo'] == undefined) {
     window['Coveo'] = {};
   }
