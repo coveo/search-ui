@@ -13,7 +13,7 @@ export function ResultRatingTest() {
     let fakeResultWithNoStars: IQueryResult;
 
     beforeEach(() => {
-      window['jQuery'] = null;
+      window['Coveo']['$'] = null;
       averageFakeResult = FakeResults.createFakeResult();
       averageFakeResult.rating = RatingValues.Average;
 

@@ -103,8 +103,6 @@ export {SearchAlerts} from './ui/SearchAlerts/SearchAlerts';
 export {SearchAlertsMessage} from './ui/SearchAlerts/SearchAlertsMessage';
 export {Text} from './ui/Text/Text';
 export {FoldingForThread} from './ui/Folding/FoldingForThread';
-export {ResponsiveFacets} from './ui/ResponsiveComponents/ResponsiveFacets';
-export {IResponsiveComponent, ResponsiveComponentsManager} from './ui/ResponsiveComponents/ResponsiveComponentsManager';
 export {ChatterLikedBy} from './ui/ChatterLikedBy/ChatterLikedBy';
 export {ChatterPostAttachment} from './ui/ChatterPostAttachment/ChatterPostAttachment';
 export {ChatterPostedBy} from './ui/ChatterPostedBy/ChatterPostedBy';

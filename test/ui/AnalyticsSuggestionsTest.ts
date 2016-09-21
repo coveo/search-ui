@@ -14,7 +14,7 @@ export function AnalyticsSuggestionsTest() {
       // In phantom js there is a bug with CustomEvent('click'), which is needed to for those tests.
       // So, use jquery for event in phantom js
       if (Simulate.isPhantomJs()) {
-        window['jQuery'] = JQuery;
+        window['Coveo']['$'] = JQuery;
       }
 
       test = Mock.basicComponentSetup<AnalyticsSuggestions>(AnalyticsSuggestions);
@@ -22,7 +22,7 @@ export function AnalyticsSuggestionsTest() {
 
     afterEach(() => {
       test = null;
-      window['jQuery'] = null;
+      window['Coveo']['$'] = null;
     });
 
     it('should trigger a call to get top query from the analytics', () => {

@@ -12,7 +12,7 @@ export function OmniboxTest() {
     beforeEach(() => {
       // Thanks phantom js for bad native event support
       if (Simulate.isPhantomJs()) {
-        window['jQuery'] = JQuery;
+        window['Coveo']['$'] = JQuery;
       }
       test = Mock.basicComponentSetup<Omnibox>(Omnibox);
     });

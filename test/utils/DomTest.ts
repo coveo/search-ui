@@ -19,11 +19,11 @@ export function DomTests() {
     describe('without jquery', function () {
       beforeEach(function () {
         // we want to test the basic event, not jquery one
-        window['jQuery'] = null;
+        window['Coveo']['$'] = null;
       });
 
       afterEach(function () {
-        window['jQuery'] = null;
+        window['Coveo']['$'] = null;
       });
 
       it('insert after should work properly', function () {
@@ -442,11 +442,11 @@ export function DomTests() {
 
       beforeEach(function () {
         // we want to test the basic event, not jquery one
-        window['jQuery'] = JQuery;
+        window['Coveo']['$'] = JQuery;
       });
 
       afterEach(function () {
-        window['jQuery'] = null;
+        window['Coveo']['$'] = null;
       });
 
       it('using on should work properly', function () {

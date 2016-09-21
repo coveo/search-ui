@@ -10,6 +10,7 @@ if (jQueryIsDefined()) {
   initCoveoJQuery();
 } else {
   // Adding a check in case jQuery was added after the jsSearch
+  // Since this event listener is registered before the Coveo.init call, JQuery should always be initiated before the Coveo.init call  
   document.addEventListener('DOMContentLoaded', () => {
     if (jQueryIsDefined()) {
       initCoveoJQuery();
