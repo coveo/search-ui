@@ -657,8 +657,8 @@ export class Dom {
   }
 
   private getJQuery() {
-    if (window['Coveo']['$'] != undefined) {
-      return window['Coveo']['$'];
+    if (window['jQuery'] != undefined) {
+      return window['jQuery'];
     }
     return false;
   }
