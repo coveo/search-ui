@@ -20,9 +20,9 @@ if (jQueryIsDefined()) {
 
 export function initCoveoJQuery() {
   if (window['$']) {
-    jQueryInstance = window['$']
+    jQueryInstance = window['$'];
   } else {
-    jQueryInstance = window['Coveo']['$']
+    jQueryInstance = window['Coveo']['$'];
   }
 
   if (window['Coveo'] == undefined) {

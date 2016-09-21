@@ -3,7 +3,7 @@ export class JQueryUtils {
     if (window && window['Coveo'] && window['Coveo']['$']) {
       return window['Coveo']['$'];
     }
-    return false
+    return false;
   }
 
   static isInstanceOfJQuery(obj: Object): boolean {
