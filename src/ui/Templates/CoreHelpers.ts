@@ -1,4 +1,4 @@
-import {TemplateHelpers} from './TemplateHelpers';
+import {TemplateHelpers, ITemplateHelperFunction} from './TemplateHelpers';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {IHighlight, IHighlightPhrase, IHighlightTerm} from '../../rest/Highlight';
 import {HighlightUtils, StringAndHoles} from '../../utils/HighlightUtils';
@@ -20,6 +20,7 @@ import {SearchEndpoint} from '../../rest/SearchEndpoint';
 import {ResultList} from '../ResultList/ResultList';
 import {StreamHighlightUtils} from '../../utils/StreamHighlightUtils';
 import Globalize = require('globalize');
+import {IStringMap} from '../../rest/GenericParam';
 
 /**
  * The core template helpers provided by default.
@@ -235,7 +236,19 @@ export interface ICoreHelpers {
 
 export class CoreHelpers {
   public constructor() {
+  }
 
+  /**
+   * For backward compatibility reason, the "global" template helper should be available under the
+   * coveo namespace.
+   * @param scope
+   */
+  public static exportAllHelpersGlobally(scope: IStringMap<any>) {
+    _.each(TemplateHelpers.getHelpers(), (helper: ITemplateHelperFunction, name: string) => {
+      if (scope[name] == undefined) {
+        scope[name] = helper;
+      }
+    });
   }
 }
 

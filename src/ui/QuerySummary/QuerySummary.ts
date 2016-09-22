@@ -39,6 +39,7 @@ export class QuerySummary extends Component {
   };
 
   private textContainer: HTMLElement;
+  private lastKnownGoodState: any;
 
   constructor(public element: HTMLElement, public options?: IQuerySummaryOptions, bindings?: IComponentBindings) {
     super(element, QuerySummary.ID, bindings);
@@ -83,6 +84,8 @@ export class QuerySummary extends Component {
       this.textContainer.innerHTML = l('QueryException', code);
     } else if (data.results.results.length == 0) {
       this.displayInfoOnNoResults();
+    } else {
+      this.lastKnownGoodState = this.queryStateModel.getAttributes();
     }
   }
 
@@ -102,7 +105,13 @@ export class QuerySummary extends Component {
     cancelLastAction.on('click', () => {
       this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {}, this.root);
       this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {});
-      history.back();
+      if (this.lastKnownGoodState) {
+        this.queryStateModel.reset();
+        this.queryStateModel.setMultiple(this.lastKnownGoodState);
+        this.queryController.executeQuery();
+      } else {
+        history.back();
+      }
     });
 
     let searchTipsInfo = $$('div', {
