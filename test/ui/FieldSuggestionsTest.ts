@@ -3,7 +3,6 @@ import {FieldSuggestions} from '../../src/ui/FieldSuggestions/FieldSuggestions';
 import {IFieldSuggestionsOptions} from '../../src/ui/FieldSuggestions/FieldSuggestions';
 import {Simulate} from '../Simulate';
 import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import {JQuery} from '../JQueryModule';
 
 export function FieldSuggestionsTest() {
   describe('FieldSuggestions', () => {

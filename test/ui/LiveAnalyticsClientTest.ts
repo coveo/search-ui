@@ -12,7 +12,6 @@ import {Simulate} from '../Simulate';
 import {$$} from '../../src/utils/Dom';
 import {AnalyticsEvents} from '../../src/events/AnalyticsEvents';
 import {Defer} from '../../src/misc/Defer';
-import {JQuery} from '../JQueryModule';
 
 export function LiveAnalyticsClientTest() {
   describe('LiveAnalyticsClient', function () {

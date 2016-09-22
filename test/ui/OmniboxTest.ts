@@ -4,7 +4,6 @@ import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionLi
 import {IOmniboxOptions} from '../../src/ui/Omnibox/Omnibox';
 import {Simulate} from '../Simulate';
 import {$$} from '../../src/utils/Dom';
-import {JQuery} from '../JQueryModule';
 
 export function OmniboxTest() {
   describe('Omnibox', () => {
