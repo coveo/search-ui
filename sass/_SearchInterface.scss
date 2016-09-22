@@ -43,8 +43,8 @@
   @include animation-duration(1s);
 }
 
-body.coveo-modalBox-opened{
-  &, .CoveoSearchInterface{
+body.coveo-modalBox-opened {
+  &, .CoveoSearchInterface {
     overflow: hidden;
   }
 }

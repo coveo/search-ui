@@ -211,9 +211,6 @@ export function mockSearchInterface(): SearchInterface {
   var m = mockComponent<SearchInterface>(SearchInterface, SearchInterface.ID);
   m.options = {};
   m.options.originalOptionsObject = {};
-  m.isSmallInterface = () => {
-    return false;
-  };
   return m;
 }
 
