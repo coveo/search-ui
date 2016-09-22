@@ -109,7 +109,7 @@ export class FakeResults {
     }
     var ret = FakeResults.createFakeResult(token);
     ret.totalNumberOfChildResults = totalNumberOfChildResult;
-    $.extend(ret, { childResults: childResults });
+    ret = _.extend(ret, { childResults: childResults });
     return ret;
   }
 
@@ -235,35 +235,6 @@ export class FakeResults {
     }
 
     return fieldValues;
-  }
-
-  static createFakeOmniboxData(token = 'test', numberOfRows = 1, numberOfSelectablePerRow = 1, zIndex = 1) {
-    var rows = [];
-    for (var i = 0; i < numberOfRows; i++) {
-      var selectables = FakeResults.createFakeOmniboxSelectableData(token + ':' + i, numberOfSelectablePerRow);
-      var element = $(`<div class='coveo-omnibox-section'></div>`);
-      _.each(selectables, (selectable) => {
-        element.append(selectable);
-      });
-      rows.push({ element: element.get(0), zIndex: zIndex + i });
-    }
-    return rows;
-  }
-
-  static createFakeDeferredOmniboxData(numberOfRows: number) {
-    var rows = [];
-    for (var i = 0; i < numberOfRows; i++) {
-      rows.push({ deferred: $.Deferred() });
-    }
-    return rows;
-  }
-
-  static createFakeOmniboxSelectableData(token: string, numberOfSelectables: number) {
-    var rows = [];
-    for (var i = 0; i < numberOfSelectables; i++) {
-      rows.push($(`<div class='coveo-omnibox-selectable'>${token + ':' + i}</div>`));
-    }
-    return rows;
   }
 
   static createFakeFeedItemResult(token: string, nbLikes: number = 0, nbTopics: number = 0, hasAttachment: boolean = false) {
