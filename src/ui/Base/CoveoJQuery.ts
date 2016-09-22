@@ -6,23 +6,18 @@ interface IWindow {
 
 export var jQueryInstance: JQueryStatic;
 
-if (jQueryIsDefined()) {
-  initCoveoJQuery();
-} else {
-  // Adding a check in case jQuery was added after the jsSearch
+if (!initCoveoJQuery()) {
   document.addEventListener('DOMContentLoaded', () => {
-    if (jQueryIsDefined()) {
-      initCoveoJQuery();
-    }
+    initCoveoJQuery();
   });
 }
 
 export function initCoveoJQuery() {
-  if (window['$']) {
-    jQueryInstance = window['$']
-  } else {
-    jQueryInstance = window['Coveo']['$']
+  if (!jQueryIsDefined()) {
+    return false;
   }
+
+  jQueryInstance = getJQuery();
 
   if (window['Coveo'] == undefined) {
     window['Coveo'] = {};
@@ -30,6 +25,7 @@ export function initCoveoJQuery() {
   if (window['Coveo']['$'] == undefined) {
     window['Coveo']['$'] = jQueryInstance;
   }
+
   jQueryInstance.fn.coveo = function (...args: any[]) {
     var returnValue: any;
     this.each((index: number, element: HTMLElement) => {
@@ -47,8 +43,28 @@ export function initCoveoJQuery() {
     });
     return returnValue;
   };
+
+  return true;
 }
 
 export function jQueryIsDefined(): boolean {
-  return window['$'] != undefined && window['$'].fn != undefined && window['$'].fn.jquery != undefined || window['Coveo'] != undefined && window['Coveo']['$'] != undefined;
+  return jQueryDefinedOnWindow() || jQueryDefinedOnCoveoObject();
+}
+
+function jQueryDefinedOnCoveoObject(): boolean {
+  return window['Coveo'] != undefined && window['Coveo']['$'] != undefined;
+}
+
+function jQueryDefinedOnWindow(): boolean {
+  return window['$'] != undefined && window['$'].fn != undefined && window['$'].fn.jquery != undefined;
+}
+
+function getJQuery(): JQueryStatic {
+  let jQueryInstance: JQueryStatic;
+  if (window['$']) {
+    jQueryInstance = window['$'];
+  } else {
+    jQueryInstance = window['Coveo']['$'];
+  }
+  return jQueryInstance;
 }
