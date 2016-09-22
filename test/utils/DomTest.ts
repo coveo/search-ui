@@ -3,7 +3,7 @@
 import {registerCustomMatcher} from '../CustomMatchers';
 import {Dom} from '../../src/utils/Dom';
 import {$$} from '../../src/utils/Dom';
-import {JQuery} from '../JQueryModule';
+import {Simulate} from '../Simulate';
 
 export function DomTests() {
   describe('Dom', () => {
@@ -21,11 +21,11 @@ export function DomTests() {
     describe('without jquery', function () {
       beforeEach(function () {
         // we want to test the basic event, not jquery one
-        window['jQuery'] = null;
+        Simulate.removeJQuery();
       });
 
       afterEach(function () {
-        window['jQuery'] = null;
+        Simulate.removeJQuery();
       });
 
       it('insert after should work properly', function () {
@@ -518,11 +518,11 @@ export function DomTests() {
 
       beforeEach(function () {
         // we want to test the basic event, not jquery one
-        window['jQuery'] = JQuery;
+       Simulate.addJQuery();
       });
 
       afterEach(function () {
-        window['jQuery'] = null;
+        Simulate.removeJQuery();
       });
 
       it('using on should work properly', function () {

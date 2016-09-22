@@ -1,4 +1,5 @@
 import {Utils} from '../utils/Utils';
+import {JQueryUtils} from '../utils/JQueryutils';
 import {Assert} from '../misc/Assert';
 import {Logger} from '../misc/Logger';
 
@@ -447,7 +448,7 @@ export class Dom {
         this.on(t, eventHandle);
       });
     } else {
-      var jq = this.getJQuery();
+      var jq = JQueryUtils.getJQuery();
       if (jq) {
         jq(this.el).on(type, eventHandle);
       } else if (this.el.addEventListener) {
@@ -500,7 +501,7 @@ export class Dom {
         this.off(t, eventHandle);
       });
     } else {
-      var jq = this.getJQuery();
+      var jq = JQueryUtils.getJQuery();
       if (jq) {
         jq(this.el).off(type, eventHandle);
       } else if (this.el.removeEventListener) {
@@ -527,7 +528,7 @@ export class Dom {
    * @param data
    */
   public trigger(type: string, data?: { [key: string]: any }): void {
-    var jq = this.getJQuery();
+    var jq = JQueryUtils.getJQuery();
     if (jq) {
       jq(this.el).trigger(type, data);
     } else if (CustomEvent !== undefined) {
@@ -665,14 +666,6 @@ export class Dom {
   public height() {
     return this.el.offsetHeight;
   }
-
-  private getJQuery() {
-    if (window['jQuery'] != undefined) {
-      return window['jQuery'];
-    }
-    return false;
-  }
-
   private traverseAncestorForClass(current = this.el, className: string): HTMLElement {
     if (className.indexOf('.') == 0) {
       className = className.substr(1);
