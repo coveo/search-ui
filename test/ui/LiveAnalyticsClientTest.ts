@@ -24,7 +24,7 @@ export function LiveAnalyticsClientTest() {
     beforeEach(function () {
       // Thanks phantom js for bad native event support
       if (Simulate.isPhantomJs()) {
-        window['Coveo']['$'] = JQuery;
+        Simulate.addJQuery();
       }
 
       env = new Mock.MockEnvironmentBuilder().build();
@@ -40,7 +40,7 @@ export function LiveAnalyticsClientTest() {
       endpoint = null;
       client = null;
       promise = null;
-      window['Coveo']['$'] = null;
+      Simulate.removeJQuery();
     });
 
     it('should return pending event', () => {

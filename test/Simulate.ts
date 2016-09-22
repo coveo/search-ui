@@ -14,6 +14,7 @@ import {Defer} from '../src/misc/Defer';
 import {IOmniboxData} from '../src/ui/Omnibox/OmniboxInterface';
 import {OmniboxEvents} from '../src/events/OmniboxEvents';
 import {IBreadcrumbItem, IPopulateBreadcrumbEventArgs, BreadcrumbEvents} from '../src/events/BreadcrumbEvents';
+import {JQuery} from '../test/JQueryModule';
 
 export interface ISimulateQueryData {
   query?: IQuery;
@@ -195,5 +196,13 @@ export class Simulate {
     });
     element.dispatchEvent(event);
     Defer.flush();
+  }
+
+  static addJQuery(): void {
+    window['Coveo']['$'] = JQuery;
+  }
+
+  static removeJQuery(): void {
+    window['Coveo']['$'] = null;
   }
 }

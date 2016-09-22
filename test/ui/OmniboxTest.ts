@@ -12,13 +12,14 @@ export function OmniboxTest() {
     beforeEach(() => {
       // Thanks phantom js for bad native event support
       if (Simulate.isPhantomJs()) {
-        window['Coveo']['$'] = JQuery;
+        Simulate.addJQuery();
       }
       test = Mock.basicComponentSetup<Omnibox>(Omnibox);
     });
 
     afterEach(() => {
       test = null;
+      Simulate.removeJQuery();
     });
 
     it('should trigger a query on submit', () => {

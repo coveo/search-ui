@@ -4,7 +4,6 @@ import {Simulate} from '../Simulate';
 import {$$} from '../../src/utils/Dom';
 import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import {IAnalyticsSuggestionsOptions} from '../../src/ui/AnalyticsSuggestions/AnalyticsSuggestions';
-import {JQuery} from '../JQueryModule';
 
 export function AnalyticsSuggestionsTest() {
   describe('AnalyticsSuggestions', () => {
@@ -14,7 +13,7 @@ export function AnalyticsSuggestionsTest() {
       // In phantom js there is a bug with CustomEvent('click'), which is needed to for those tests.
       // So, use jquery for event in phantom js
       if (Simulate.isPhantomJs()) {
-        window['Coveo']['$'] = JQuery;
+        Simulate.addJQuery();
       }
 
       test = Mock.basicComponentSetup<AnalyticsSuggestions>(AnalyticsSuggestions);
@@ -22,7 +21,7 @@ export function AnalyticsSuggestionsTest() {
 
     afterEach(() => {
       test = null;
-      window['Coveo']['$'] = null;
+      Simulate.removeJQuery();
     });
 
     it('should trigger a call to get top query from the analytics', () => {

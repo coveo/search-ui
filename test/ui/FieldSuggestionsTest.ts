@@ -13,7 +13,7 @@ export function FieldSuggestionsTest() {
       // In phantom js there is a bug with CustomEvent('click'), which is needed to for those tests.
       // So, use jquery for event in phantom js
       if (Simulate.isPhantomJs()) {
-        window['Coveo']['$'] = JQuery;
+        Simulate.addJQuery();
       }
 
       test = Mock.optionsComponentSetup<FieldSuggestions, IFieldSuggestionsOptions>(FieldSuggestions, {
@@ -24,7 +24,7 @@ export function FieldSuggestionsTest() {
 
     afterEach(() => {
       test = null;
-      window['Coveo']['$'] = null;
+      Simulate.removeJQuery();
     });
 
     it('should do a request on the endpoint', () => {
