@@ -12,7 +12,7 @@
     "value": "raw.connectortype == 'DropboxCrawler' && Coveo.DeviceUtils.isSmallScreenWidth()"
   },
   "CardDropbox": {
-    "priority": 1,
+    "priority": 2,
     "value": "raw.connectortype == 'DropboxCrawler' && options.layout === 'card'"
   },
   "Dropbox": {
@@ -136,7 +136,7 @@
     "value": "options.layout === 'card'"
   },
   "Table": {
-    "priority": 0,
+    "priority": 1,
     "value": "options.layout === 'table'"
   },
   "Slack": {

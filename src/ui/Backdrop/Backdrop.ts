@@ -6,7 +6,7 @@ import {Initialization, IInitializationParameters} from '../Base/Initialization'
 import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
 import {IQueryResult} from '../../rest/QueryResult';
 
-export interface IBackdropOptions  {
+export interface IBackdropOptions {
   imageField: string;
   overlayColor?: string;
   overlayGradient?: boolean;

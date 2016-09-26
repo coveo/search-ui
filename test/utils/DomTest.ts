@@ -518,7 +518,7 @@ export function DomTests() {
 
       beforeEach(function () {
         // we want to test the basic event, not jquery one
-       Simulate.addJQuery();
+        Simulate.addJQuery();
       });
 
       afterEach(function () {
