@@ -297,13 +297,6 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
   }
 
   private triggerChangeAnalyticsCustomData(type: string, metaObject: IChangeableAnalyticsMetaObject, event: IAnalyticsEvent, data?: any) {
-    var changeableAnalyticsDataObject: IChangeableAnalyticsDataObject = {
-      language: event.language,
-      originLevel1: event.originLevel1,
-      originLevel2: event.originLevel2,
-      originLevel3: event.originLevel3
-    };
-
     // This is for backward compatibility. Before the analytics were using either numbered
     // metas in `metaDataAsNumber` of later on named metas in `metaDataAsString`. Thus we still
     // provide those properties in a deprecated way. Below we are moving any data that put
@@ -311,9 +304,17 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     (<any>metaObject)['metaDataAsString'] = {};
     (<any>metaObject)['metaDataAsNumber'] = {};
 
+    var changeableAnalyticsDataObject: IChangeableAnalyticsDataObject = {
+      language: event.language,
+      originLevel1: event.originLevel1,
+      originLevel2: event.originLevel2,
+      originLevel3: event.originLevel3,
+      metaObject: metaObject
+    };
+
+
     var args: IChangeAnalyticsCustomDataEventArgs = _.extend({}, {
       type: type,
-      metaObject: metaObject,
       actionType: event.actionType,
       actionCause: event.actionCause
     }, changeableAnalyticsDataObject);
