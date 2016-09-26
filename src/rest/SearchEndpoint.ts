@@ -880,24 +880,19 @@ export class SearchEndpoint implements ISearchEndpoint {
 }
 
 
-/**
- * It's taken for granted that methods using decorators have :
- * {@link IEndpointCallOptions} as their second to last parameter
- * {@link IEndpointCallParameters} as their last parameter
- * The default parameters for each member of the injected {@link IEndpointCallParameters} are the following:
- * url: '',
- * queryString: [],
- * requestData: {},
- * requestDataType: undefined,
- * method: '',
- * responseType: '',
- * errorsAsSuccess: false
- */
+// It's taken for granted that methods using decorators have :
+// IEndpointCallOptions as their second to last parameter
+// IEndpointCallParameters as their last parameter
+// The default parameters for each member of the injected {@link IEndpointCallParameters} are the following:
+// url: '',
+// queryString: [],
+// requestData: {},
+// requestDataType: undefined,
+// method: '',
+// responseType: '',
+// errorsAsSuccess: false
 
-/**
- * Add the base url
- * @param path The path to append to the url
- */
+
 function path(path: string) {
   return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
@@ -926,10 +921,6 @@ function path(path: string) {
   };
 }
 
-/**
- * Add the alert url
- * @param path The path to append to the url
- */
 function alertsPath(path: string) {
   return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
@@ -958,10 +949,6 @@ function alertsPath(path: string) {
   };
 }
 
-/**
- * Set the request data type
- * @param type The type to set
- */
 function requestDataType(type: string) {
   return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
@@ -990,10 +977,6 @@ function requestDataType(type: string) {
   };
 }
 
-/**
- * Set the request data type
- * @param met The type to set
- */
 function method(met: string) {
   return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
@@ -1021,10 +1004,6 @@ function method(met: string) {
   };
 }
 
-/**
- * Set the response type
- * @param resp The response type to set
- */
 function responseType(resp: string) {
   return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;
@@ -1052,9 +1031,6 @@ function responseType(resp: string) {
   };
 }
 
-/**
- * Add the accessToken to the query string arguments
- */
 function accessTokenInUrl(tokenKey: string = 'access_token') {
   return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     let originalMethod = descriptor.value;

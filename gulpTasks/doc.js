@@ -11,7 +11,7 @@ gulp.task('doc', function () {
     theme: 'docs/theme',
     name: 'Coveo search ui documentation',
     readme: 'README.md',
-    externalPattern: '**/{typings,lib}/**',
+    externalPattern: '**/{typings,lib,node_modules}/**',
     ignoreCompilerErrors: true
   });
   var src = app.expandInputFiles(['src/Doc.ts']);
