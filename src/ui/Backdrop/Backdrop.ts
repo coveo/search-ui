@@ -1,7 +1,6 @@
 import {Component} from '../Base/Component';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
-import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
 import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
 import {IQueryResult} from '../../rest/QueryResult';
@@ -17,7 +16,7 @@ export interface IBackdropOptions {
  * as a background image.
  */
 export class Backdrop extends Component {
-  static ID = 'Backdrop'
+  static ID = 'Backdrop';
 
   /**
    * @componentOptions
@@ -42,7 +41,7 @@ export class Backdrop extends Component {
      * The default value is `false`.
      */
     overlayGradient: ComponentOptions.buildBooleanOption({ defaultValue: false })
-  }
+  };
 
   constructor(public element: HTMLElement, public options?: IBackdropOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, Backdrop.ID, bindings);
