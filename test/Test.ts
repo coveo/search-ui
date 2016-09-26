@@ -331,3 +331,6 @@ DebugTest();
 
 import {StreamHighlightUtilsTest} from './utils/StreamHighlightUtilsTest';
 StreamHighlightUtilsTest();
+
+import {BackdropTest} from './ui/BackdropTest';
+BackdropTest();

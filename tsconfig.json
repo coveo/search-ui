@@ -403,6 +403,8 @@
     "test/ui/RegisteredNamedMethodsTest.ts",
     "test/ui/FacetValuesOrderTest.ts",
     "test/misc/SentryLoggerTest.ts",
-    "test/utils/StreamHighlightUtilsTest.ts"
+    "test/utils/StreamHighlightUtilsTest.ts",
+    "src/ui/Backdrop/Backdrop.ts",
+    "test/ui/BackdropTest.ts"
   ]
 }

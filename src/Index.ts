@@ -110,6 +110,7 @@ export {ChatterPostedBy} from './ui/ChatterPostedBy/ChatterPostedBy';
 export {ChatterTopic} from './ui/ChatterTopic/ChatterTopic';
 export {ChatterUtils} from './utils/ChatterUtils';
 export { Logo } from './ui/Logo/Logo';
+export { Backdrop } from './ui/Backdrop/Backdrop';
 import {CoreHelpers} from './ui/Templates/CoreHelpers';
 
 // Webpack output a library target with a temporary name.
