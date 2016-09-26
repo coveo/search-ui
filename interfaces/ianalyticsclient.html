@@ -70,7 +70,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Describe an analytics client, that can log events or return information from the service.</p>
+						<p>Describe an analytics client, that can log events or return information from the service</p>
 					</div>
 				</div>
 			</section>
@@ -112,7 +112,7 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get the current visitor ID for tracking purpose in the Coveo Analytics service.</p>
+									<p>Get the current visitor id, for tracking purpose in the Coveo Analytics service</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../modules/promise.html" class="tsd-signature-type">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -211,19 +211,19 @@
 								<li>
 									<h5>meta: <span class="tsd-signature-type">TMeta</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Can be an empty object ( {} ).</p>
+										<p>Can be an empty object ( {} )</p>
 									</div>
 								</li>
 								<li>
 									<h5>result: <a href="iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The result that was clicked.</p>
+										<p>The result that was clicked</p>
 									</div>
 								</li>
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The HTMLElement that was clicked in the interface.</p>
+										<p>The HTMLElement that was clicked in the interface</p>
 									</div>
 								</li>
 							</ul>
@@ -248,7 +248,7 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Log a custom event on the service. A custom event can be used to create customized report, or to track events which are not queries or document views.</p>
+									<p>Log a custom event on the service. A custom event can be used to create customized report, or to track events which are not queries or document view.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -295,7 +295,7 @@
 								<div class="lead">
 									<p>Log a search as you type event on the service, using a cause and a meta object.<br/>
 										This is extremely similar to a search event, except that search as you type, by definition, will be frequently called.<br/>
-										The PendingSearchAsYouTypeEvent will take care of logging only the &quot;relevant&quot; last event: After 5 seconds of no event logged, or after another search event is triggered somewhere else in the interface.<br/>
+										The {@link PendingSearchAsYouTypeEvent} will take care of logging only the &quot;relevant&quot; last event : After 5 seconds of no event logged, or after another search event is triggered somewhere else in the interface.<br/>
 									This is to ensure that we do not needlessly log every single partial query, which would make the reporting very confusing.</p>
 								</div>
 							</div>
@@ -313,7 +313,7 @@
 								<li>
 									<h5>meta: <span class="tsd-signature-type">TMeta</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Can be an empty object ( {} ).</p>
+										<p>Can be an empty object ( {} )</p>
 									</div>
 								</li>
 							</ul>
@@ -340,10 +340,10 @@
 								<div class="lead">
 									<p>Log a search event on the service, using a cause and a meta object.<br/>
 										Note that the event will be sent on the service when a query successfully return, not immediately after calling this method.<br/>
-										Normally, this should be called using the following &quot;format&quot;: <br/>
+										Normally, this should be called using the following &quot;format&quot; : <br/>
 										this.usageAnalytics.logSearchEvent<SomeMeta>({name : &#39;foo&#39;, type : &#39;bar&#39;}, <SomeMeta>{&#39;key&#39;:&#39;value&#39;});<br/>
 												this.queryController.executeQuery();<br/>
-									This will queue up an analytics search event. Then the query is executed. The search event will be sent to the service when the query is successfully completed.<br/></p>
+									This will queue up an analytics search event. Then the query is executed. The search event will be sent to the service when the query successfully complete.<br/></p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>

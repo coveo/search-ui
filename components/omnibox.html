@@ -70,9 +70,9 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>This component is very similar to the simpler <a href="querybox.html">Querybox</a> component and support all the same options/behavior except for the search-as-you-type feature.<br/>
+						<p>This component is very similar to the simpler <a href="querybox.html">Querybox</a> Component and support all the same options/behavior except for the search-as-you-type feature.<br/>
 							In addition, it takes care of adding a type-ahead capability. The type-ahead and the suggestions it displays are customizable and extensible by any custom component.<br/>
-							The type-ahead is configurable by activating addon which are provided OOTB (facets, analytics suggestions, Reveal suggestions, and advanced Coveo syntax suggestions).<br/>
+							The type-ahead is configurable by activating addon which are provided OOTB (facets, analytics suggestions, reveal suggestions, and advanced coveo syntax suggestions).<br/>
 						It is also possible for external code to provide suggestions.</p>
 					</div>
 				</div>
@@ -151,7 +151,7 @@
 						<div class="lead">
 							<p>Specifies whether the field addon should be enabled.<br/>
 								The field addon allows the search box to highlight and complete field syntax.<br/>
-							Default value is <code>false</code>.</p>
+							Default value is false</p>
 						</div>
 						<blockquote>
 							<p>Example:
@@ -174,7 +174,7 @@
 						<div class="lead">
 							<p>Specifies whether the query extension addon should be enabled.<br/>
 								This allows the omnibox to complete the syntax for query extensions.<br/>
-							Default value is <code>false</code>.</p>
+							Default value is false</p>
 						</div>
 					</div>
 				</section>
@@ -191,9 +191,9 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether the Reveal query suggestions should be enabled.<br/>
-								This implies that your integration has a proper Reveal integration configured.<br/>
-							Default value is <code>false</code>.</p>
+							<p>Specifies whether the reveal query suggestions should be enabled.<br/>
+								This implies that your integration has a proper reveal integration configured.<br/>
+							Default value is false</p>
 						</div>
 					</div>
 				</section>
@@ -211,8 +211,8 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies whether a new query is automatically triggered whenever the user types new text inside the query box.<br/>
-								Activate this as well a inline + Reveal suggestions for a cool effect!<br/>
-							The default is <code>false</code>.</p>
+								Activate this as well a inline + reveal suggestions for a cool effect !<br/>
+							The default is false.</p>
 						</div>
 					</div>
 				</section>
@@ -230,7 +230,7 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies that suggestions appearing in the omnibox should push the result down, instead of appearing over the results.<br/>
-								Activate this as well a <code>SearchAsYouType</code> + Reveal suggestions for a cool effect!<br/>
+								Activate this as well a searchAsYouType + reveal suggestions for a cool effect !<br/>
 							Default value is false</p>
 						</div>
 					</div>
@@ -249,7 +249,7 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies a timeout before rejecting suggestions in the omnibox.<br/>
-							Default value is 2000 (2 seconds).</p>
+							Default value is 2000 (2 seconds)</p>
 						</div>
 					</div>
 				</section>
@@ -333,7 +333,7 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Return the debug info about this component.</p>
+									<p>Return the debug info about this component</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
@@ -359,7 +359,7 @@
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Disable the component.
-										Normally this means that the component will not execute handlers for the framework events (query events, for example).
+										Normally this means that the component won&#39;t execute handlers for the framework events (query events, for example).
 									Component are enabled by default on creation.</p>
 								</div>
 							</div>
@@ -406,13 +406,13 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L120">src/ui/Base/Component.ts
-									:120</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L119">src/ui/Base/Component.ts
+									:119</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Return the bindings, or environment, for the current component.</p>
+									<p>Return the bindings, or environment, for the current component</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h4>
@@ -436,7 +436,7 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get the <code>HTMLInputElement</code> of the omnibox</p>
+									<p>Get the HTMLInputElement of the omnibox</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLInputElement</span></h4>
@@ -517,7 +517,7 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Trigger a query. The current input content will be added to the query.<br/>
+									<p>Trigger a query. The current input content will be added to the query<br/>
 									If the content of the input has not changed since the last submit, no new query will be triggered.</p>
 								</div>
 							</div>
@@ -537,14 +537,14 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L178">src/ui/Base/Component.ts
-									:178</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L177">src/ui/Base/Component.ts
+									:177</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument.<br/>
-									If there is multiple component bound to the current HTMLElement, you must specify the component class.</p>
+									<p>Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument<br/>
+									If there is multiple component bound to the current HTMLElement, you must specify the component class</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -552,19 +552,19 @@
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>HTMLElement for which to get the bound component.</p>
+										<p>HTMLElement for which to get the bound component</p>
 									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> componentClass: <span class="tsd-signature-type">any</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting.</p>
+										<p>Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting</p>
 									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> noThrow: <span class="tsd-signature-type">boolean</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Boolean option to tell the method to not throw on error.</p>
+										<p>Boolean option to tell the method to not throw on error</p>
 									</div>
 								</li>
 							</ul>
@@ -614,7 +614,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains the state of options for differents component. Mainly used by <a href="resultlink.html">ResultLink</a>.</p>
+							<p>Contains the state of options for differents component. Mainly used by <a href="resultlink.html">ResultLink</a></p>
 						</div>
 					</div>
 				</section>
@@ -652,7 +652,7 @@
 						<dl class="tsd-deprecated">
 						</dl>
 						<div class="lead">
-							<p>A disabled component will not participate in the query, or listen to <a href="../classes/componentevents.html">ComponentEvents</a>.</p>
+							<p>A disabled component will not participate in the query, or listen to <a href="../classes/componentevents.html">ComponentEvents</a></p>
 						</div>
 						<dl class="tsd-comment-tags">
 							<dt>type</dt>
@@ -675,7 +675,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Allows component to log in the dev console.</p>
+							<p>Allows component to log in the dev console</p>
 						</div>
 					</div>
 				</section>
@@ -729,7 +729,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A reference to the root HTMLElement (the <a href="../classes/searchinterface.html">SearchInterface</a>).</p>
+							<p>A reference to the root HTMLElement (the <a href="../classes/searchinterface.html">SearchInterface</a>)</p>
 						</div>
 					</div>
 				</section>
@@ -747,7 +747,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A reference to the root of every component, the <a href="../classes/searchinterface.html">SearchInterface</a>.</p>
+							<p>A reference to the root of every component, the <a href="../classes/searchinterface.html">SearchInterface</a></p>
 						</div>
 					</div>
 				</section>
@@ -809,7 +809,7 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Create a new omnibox with, enable required addons, and bind events on letious query events.</p>
+									<p>Create a new omnibox with, enable required addons, and bind events on letious query events</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
