@@ -83,6 +83,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iendpointcalleroptions.html#accesstoken" class="tsd-kind-icon">access<wbr>Token</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iendpointcalleroptions.html#password" class="tsd-kind-icon">password</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iendpointcalleroptions.html#requestmodifier" class="tsd-kind-icon">request<wbr>Modifier</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iendpointcalleroptions.html#username" class="tsd-kind-icon">username</a></li>
 							</ul>
 						</section>
@@ -98,8 +99,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L138">src/rest/EndpointCaller.ts
-							:138</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L142">src/rest/EndpointCaller.ts
+							:142</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -115,8 +116,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L148">src/rest/EndpointCaller.ts
-							:148</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L152">src/rest/EndpointCaller.ts
+							:152</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -127,14 +128,53 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="requestmodifier" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> request<wbr>Modifier</h3>
+					<div class="tsd-signature tsd-kind-icon">request<wbr>Modifier<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L158">src/rest/EndpointCaller.ts
+							:158</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A function which will allow external code to modify all endpoint call parameters before they are sent by the browser.</p>
+						</div>
+						<p>Used in very specific scenario where the network infrastructure require special request headers to be added or removed, for example.</p>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><a href="irequestinfo.html" class="tsd-signature-type">IRequestInfo</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="irequestinfo.html" class="tsd-signature-type">IRequestInfo</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>params: <a href="irequestinfo.html" class="tsd-signature-type">IRequestInfo</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <a href="irequestinfo.html" class="tsd-signature-type">IRequestInfo</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="username" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> username</h3>
 					<div class="tsd-signature tsd-kind-icon">username<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L143">src/rest/EndpointCaller.ts
-							:143</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L147">src/rest/EndpointCaller.ts
+							:147</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -167,6 +207,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="iendpointcalleroptions.html#password" class="tsd-kind-icon">password</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="iendpointcalleroptions.html#requestmodifier" class="tsd-kind-icon">request<wbr>Modifier</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="iendpointcalleroptions.html#username" class="tsd-kind-icon">username</a>

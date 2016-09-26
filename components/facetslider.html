@@ -73,7 +73,7 @@
 						<p>The FacetSlider component allows to create a facet that renders a slider widget to filter on a range of numerical values
 							rather than the classic multi-select facet with a label and a count for each values.<br/>
 							Note that this component does <em>NOT</em> inherit from a standard <a href="facet.html">Facet</a>, and thus does not offer all the same options.
-						Also note that many options for the slider component cannot be set as an HTML attribute on the component, and must be configured in javascript</p>
+						Also note that many options for the slider component cannot be set as an HTML attribute on the component, and must be configured in JavaScript.</p>
 					</div>
 					<h2 id="a-generic-example-on-how-to-initialize-a-complex-slider">A generic example on how to initialize a complex slider</h2>
 					<pre><code>// Using a JSON object inside the init call. Note that the <span class="hljs-keyword">JSON</span> <span class="hljs-keyword">object</span> <span class="hljs-keyword">follows</span> the options described <span class="hljs-keyword">in</span> this page.
@@ -103,7 +103,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
    }
 })
 
-// Same config, but <span class="hljs-keyword">using</span> <span class="hljs-keyword">attribute</span> directly <span class="hljs-keyword">on</span> the <span class="hljs-keyword">element</span> instead
+// Same configuration, but <span class="hljs-keyword">using</span> <span class="hljs-keyword">attribute</span> directly <span class="hljs-keyword">on</span> the <span class="hljs-keyword">element</span> instead
 &lt;<span class="hljs-keyword">div</span> <span class="hljs-keyword">class</span>=<span class="hljs-string">'CoveoFacetSlider'</span> <span class="hljs-keyword">data</span>-<span class="hljs-keyword">field</span>=<span class="hljs-string">'@syssize'</span> <span class="hljs-keyword">data</span>-<span class="hljs-keyword">start</span>=<span class="hljs-string">'1000'</span> <span class="hljs-keyword">data</span>-<span class="hljs-keyword">end</span>=<span class="hljs-string">'5000'</span> <span class="hljs-keyword">data</span>-<span class="hljs-keyword">range</span>-slider=<span class="hljs-string">'true'</span> <span class="hljs-keyword">data</span>-graph-steps=<span class="hljs-string">'10'</span>&gt;&lt;/<span class="hljs-keyword">div</span>&gt;
 </code></pre>
 				</div>
@@ -184,14 +184,14 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L91">src/ui/FacetSlider/FacetSlider.ts
-							:91</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L92">src/ui/FacetSlider/FacetSlider.ts
+							:92</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies whether the field for which you are requesting a range is a date field.<br/>
-							This allow the facet to correctly build the outgoing group by request, as well as render it correctly.<br/></p>
+							This allows the facet to correctly build the outgoing group by request, as well as render it correctly.<br/></p>
 						</div>
 					</div>
 				</section>
@@ -202,14 +202,14 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L111">src/ui/FacetSlider/FacetSlider.ts
-							:111</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L112">src/ui/FacetSlider/FacetSlider.ts
+							:112</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the format used to display values if they are date.<br/>
-							Default value is <code>MMM dd, yyyy</code></p>
+							<p>Specifies the format used to display values if they are dates.<br/>
+							Default value is <code>MMM dd, yyyy</code>.</p>
 						</div>
 					</div>
 				</section>
@@ -220,8 +220,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L175">src/ui/FacetSlider/FacetSlider.ts
-							:175</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L176">src/ui/FacetSlider/FacetSlider.ts
+							:176</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -229,8 +229,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 							<p>Specifies the percentage caption that you want to display the field values.<br/>
 							Available options are :</p>
 							<ul>
-								<li>enable : (data-display-as-percent-enable) <code>boolean</code> : Specifies wether the caption should be displayed as a percentage. Default is <code>false</code></li>
-								<li>separator : (data-display-as-percent-separator) <code>string</code> : Specifies the character(s) to use as a separator in the caption. Default is -.</li>
+								<li>enable : (data-display-as-percent-enable) <code>boolean</code> : Specifies whether the caption should be displayed as a percentage. Default is <code>false</code></li>.
+								<li>separator : (data-display-as-percent-separator) <code>string</code> : Specifies the character(s) to use as a separator in the caption. Default is <code>-.</code></li>.
 							</ul>
 						</div>
 					</div>
@@ -242,8 +242,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L160">src/ui/FacetSlider/FacetSlider.ts
-							:160</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L161">src/ui/FacetSlider/FacetSlider.ts
+							:161</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -251,9 +251,9 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 							<p>Specifies the caption that you want to display the field values.<br/>
 							Available options are :</p>
 							<ul>
-								<li>enable : (data-display-as-value-enable) <code>boolean</code> : Specifies wether the caption should be displayed as a value. Default is <code>true</code></li>
+								<li>enable : (data-display-as-value-enable) <code>boolean</code> : Specifies whether the caption should be displayed as a value or not. Default is <code>true</code></li>.
 								<li>unitSign : (data-display-as-value-unit-sign) <code>string</code> : Specifies the unit sign for this value.</li>
-								<li>separator : (data-display-as-value-separator) <code>string</code> : Specifies the character(s) to use as a separator in the caption. Default is -.</li>
+								<li>separator : (data-display-as-value-separator) <code>string</code> : Specifies the character(s) to use as a separator in the caption. Default is <code>-.</code></li>.
 							</ul>
 						</div>
 					</div>
@@ -265,8 +265,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L264">src/ui/FacetSlider/FacetSlider.ts
-							:264</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L265">src/ui/FacetSlider/FacetSlider.ts
+							:265</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -285,8 +285,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L129">src/ui/FacetSlider/FacetSlider.ts
-							:129</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L130">src/ui/FacetSlider/FacetSlider.ts
+							:130</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -304,14 +304,14 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L134">src/ui/FacetSlider/FacetSlider.ts
-							:134</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L135">src/ui/FacetSlider/FacetSlider.ts
+							:135</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies if you want to exclude the outer bounds of your slider in the generated query, when they are not active.<br/>
-							Default value is false</p>
+							Default value is <code>false</code>.</p>
 						</div>
 					</div>
 				</section>
@@ -322,8 +322,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L97">src/ui/FacetSlider/FacetSlider.ts
-							:97</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L98">src/ui/FacetSlider/FacetSlider.ts
+							:98</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -341,13 +341,13 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L227">src/ui/FacetSlider/FacetSlider.ts
-							:227</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L228">src/ui/FacetSlider/FacetSlider.ts
+							:228</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies a function that will generate the steps for the slider. The function receives the slider boundaries must return an array of number (the steps).</p>
+							<p>Specifies a function that will generate the steps for the slider. The function receives the slider boundaries and must return an array of number (the steps).</p>
 						</div>
 						<pre><code>Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
    FacetSlider: {
@@ -358,7 +358,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
    }
 })
 
-<span class="hljs-comment">// OR using the jquery extension</span>
+<span class="hljs-comment">// OR using the jQuery extension</span>
 
 $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'init'</span>, {
    FacetSlider: {
@@ -402,8 +402,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L188">src/ui/FacetSlider/FacetSlider.ts
-							:188</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L189">src/ui/FacetSlider/FacetSlider.ts
+							:189</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -411,7 +411,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 							<p>Specifies that you wish to display a small graph on top of the slider.<br/>
 							Available options are :</p>
 						</div>
-						<p>  <li>steps: (data-graph-steps) <code>number</code> : Specifies the number of steps/columns to display in your graph. Default value is 10</li>
+						<p>  <li>steps: (data-graph-steps) <code>number</code> : Specifies the number of steps/columns to display in your graph. The default value is <code>10</code></li>.
 						</ul></p>
 					</div>
 				</section>
@@ -422,16 +422,16 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L104">src/ui/FacetSlider/FacetSlider.ts
-							:104</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L105">src/ui/FacetSlider/FacetSlider.ts
+							:105</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies a unique identifier for a facet. This identifier will be used to save the facet state in the url hash, for example.<br/>
+							<p>Specifies a unique identifier for a facet. This identifier will be used to save the facet state in the URL hash, for example.<br/>
 								Optional, since the default will be the <a href="facetslider.html#options.field">FacetSlider.options.field</a> option.<br/>
-								If you have two facets with the same field on the same page, you should specify an id for at least one of those two facets.<br/>
-							That id need to be unique on the page.</p>
+								If you have two facets with the same field on the same page, you should specify an ID for at least one of those two facets.<br/>
+							That ID needs to be unique on the page.</p>
 						</div>
 					</div>
 				</section>
@@ -442,15 +442,15 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L117">src/ui/FacetSlider/FacetSlider.ts
-							:117</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L118">src/ui/FacetSlider/FacetSlider.ts
+							:118</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies the query to filter automatic minimum and maximum range of the slider.<br/>
-								This is especially useful for date range, where the index may contain values which are not set, and thus the automatic range will return value from the year 1400 (min date from the boost c++ library)<br/>
-							Can be used to do something like queryOverride : @date&gt;2000/01/01 or some arbitrary date which will filter out unwanted values</p>
+								This is especially useful for date range, where the index may contain values which are not set, and thus the automatic range will return values from the year 1400 (min date from the boost C++ library).<br/>
+							Can be used to do something like queryOverride : @date&gt;2000/01/01 or some arbitrary date which will filter out unwanted values.</p>
 						</div>
 					</div>
 				</section>
@@ -461,14 +461,14 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L150">src/ui/FacetSlider/FacetSlider.ts
-							:150</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L151">src/ui/FacetSlider/FacetSlider.ts
+							:151</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies whether you want a slider with two buttons, or only one.<br/>
-							Optional. By default only one button appears in the slider.</p>
+							Optional: By default only one button appears in the slider.</p>
 						</div>
 					</div>
 				</section>
@@ -479,8 +479,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L271">src/ui/FacetSlider/FacetSlider.ts
-							:271</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L272">src/ui/FacetSlider/FacetSlider.ts
+							:272</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -499,8 +499,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L139">src/ui/FacetSlider/FacetSlider.ts
-							:139</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L140">src/ui/FacetSlider/FacetSlider.ts
+							:140</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -517,8 +517,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L123">src/ui/FacetSlider/FacetSlider.ts
-							:123</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L124">src/ui/FacetSlider/FacetSlider.ts
+							:124</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -536,15 +536,15 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L145">src/ui/FacetSlider/FacetSlider.ts
-							:145</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L146">src/ui/FacetSlider/FacetSlider.ts
+							:146</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies the number of steps that you want in your slider.<br/>
 								For example, if your range is [ 0 , 100 ] and you specify 10 steps, then the end user is allowed to move the slider only to the values [ 0, 10, 20. 30 ... , 100 ].<br/>
-							Optional. By default the slider will allow all values.</p>
+							Optional: By default the slider will allow all values.</p>
 						</div>
 					</div>
 				</section>
@@ -555,14 +555,14 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L86">src/ui/FacetSlider/FacetSlider.ts
-							:86</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L87">src/ui/FacetSlider/FacetSlider.ts
+							:87</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>The title on top of the facet component.<br/>
-							Default value is the localized string for &#39;No title&#39;</p>
+							Default value is the localized string for &#39;No title&#39;.</p>
 						</div>
 					</div>
 				</section>
@@ -573,8 +573,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L255">src/ui/FacetSlider/FacetSlider.ts
-							:255</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L256">src/ui/FacetSlider/FacetSlider.ts
+							:256</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -590,7 +590,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
    }
 })
 
-<span class="hljs-comment">// OR using the jquery extension</span>
+<span class="hljs-comment">// OR using the jQuery extension</span>
 
 $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'init'</span>, {
    FacetSlider: {
@@ -645,7 +645,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Return the debug info about this component</p>
+									<p>Return the debug info about this component.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
@@ -671,7 +671,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Disable the component.
-										Normally this means that the component won&#39;t execute handlers for the framework events (query events, for example).
+										Normally this means that the component will not execute handlers for the framework events (query events, for example).
 									Component are enabled by default on creation.</p>
 								</div>
 							</div>
@@ -718,13 +718,13 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L119">src/ui/Base/Component.ts
-									:119</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L120">src/ui/Base/Component.ts
+									:120</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Return the bindings, or environment, for the current component</p>
+									<p>Return the bindings, or environment, for the current component.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h4>
@@ -742,14 +742,14 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L367">src/ui/FacetSlider/FacetSlider.ts
-									:367</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L368">src/ui/FacetSlider/FacetSlider.ts
+									:368</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Return the current selection in the facet, as an array of number (eg : [start, end] ).<br/>
-									If it&#39;s not available, return [undefined, undefined]</p>
+									<p>Return the current selection in the facet, as an array of number (e.g.: [start, end] ).<br/>
+									If it is not available, return [undefined, undefined]</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -767,13 +767,13 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L391">src/ui/FacetSlider/FacetSlider.ts
-									:391</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L392">src/ui/FacetSlider/FacetSlider.ts
+									:392</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Return true if the slider is &quot;active&quot; (will output an expression in the query when a search is performed)</p>
+									<p>Return true if the slider is &quot;active&quot; (will output an expression in the query when a search is performed).</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -791,13 +791,13 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L354">src/ui/FacetSlider/FacetSlider.ts
-									:354</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L355">src/ui/FacetSlider/FacetSlider.ts
+									:355</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Reset the facet. This means set the range value as inactive.</p>
+									<p>Reset the facet (meaning that you need to set the range value as inactive).</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -815,8 +815,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L379">src/ui/FacetSlider/FacetSlider.ts
-									:379</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FacetSlider/FacetSlider.ts#L380">src/ui/FacetSlider/FacetSlider.ts
+									:380</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -848,14 +848,14 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L177">src/ui/Base/Component.ts
-									:177</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L178">src/ui/Base/Component.ts
+									:178</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument<br/>
-									If there is multiple component bound to the current HTMLElement, you must specify the component class</p>
+									<p>Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument.<br/>
+									If there is multiple component bound to the current HTMLElement, you must specify the component class.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -863,19 +863,19 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>HTMLElement for which to get the bound component</p>
+										<p>HTMLElement for which to get the bound component.</p>
 									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> componentClass: <span class="tsd-signature-type">any</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting</p>
+										<p>Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting.</p>
 									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> noThrow: <span class="tsd-signature-type">boolean</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Boolean option to tell the method to not throw on error</p>
+										<p>Boolean option to tell the method to not throw on error.</p>
 									</div>
 								</li>
 							</ul>
@@ -925,7 +925,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains the state of options for differents component. Mainly used by <a href="resultlink.html">ResultLink</a></p>
+							<p>Contains the state of options for differents component. Mainly used by <a href="resultlink.html">ResultLink</a>.</p>
 						</div>
 					</div>
 				</section>
@@ -963,7 +963,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 						<dl class="tsd-deprecated">
 						</dl>
 						<div class="lead">
-							<p>A disabled component will not participate in the query, or listen to <a href="../classes/componentevents.html">ComponentEvents</a></p>
+							<p>A disabled component will not participate in the query, or listen to <a href="../classes/componentevents.html">ComponentEvents</a>.</p>
 						</div>
 						<dl class="tsd-comment-tags">
 							<dt>type</dt>
@@ -986,7 +986,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Allows component to log in the dev console</p>
+							<p>Allows component to log in the dev console.</p>
 						</div>
 					</div>
 				</section>
@@ -1040,7 +1040,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A reference to the root HTMLElement (the <a href="../classes/searchinterface.html">SearchInterface</a>)</p>
+							<p>A reference to the root HTMLElement (the <a href="../classes/searchinterface.html">SearchInterface</a>).</p>
 						</div>
 					</div>
 				</section>
@@ -1058,7 +1058,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A reference to the root of every component, the <a href="../classes/searchinterface.html">SearchInterface</a></p>
+							<p>A reference to the root of every component, the <a href="../classes/searchinterface.html">SearchInterface</a>.</p>
 						</div>
 					</div>
 				</section>
@@ -1114,15 +1114,15 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L89">src/ui/Base/Component.ts
-									:89</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
+									:90</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Create a new Component. Resolve all <a href="../interfaces/icomponentbindings.html">IComponentBindings</a> if not provided.<br/>
 										Create a new Logger for this component.
-									Attach the component to the <a href="../classes/searchinterface.html">SearchInterface</a><br/></p>
+									Attach the component to the <a href="../classes/searchinterface.html">SearchInterface</a>.<br/></p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1139,7 +1139,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 									<h5>type: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The unique identifier for this component. See : <a href="../interfaces/icomponentdefinition.html#id">IComponentDefinition.ID</a>. Used to generate the unique Coveo CSS class associated with every component</p>
+											<p>The unique identifier for this component. See : <a href="../interfaces/icomponentdefinition.html#id">IComponentDefinition.ID</a>. Used to generate the unique Coveo CSS class associated with every component.</p>
 										</div>
 									</div>
 								</li>

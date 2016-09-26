@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IEndpointCallParameters | Coveo search ui documentation</title>
+	<title>InitializationEvents | Coveo search ui documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -57,10 +57,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="iendpointcallparameters.html">IEndpointCallParameters</a>
+					<a href="initializationevents.html">InitializationEvents</a>
 				</li>
 			</ul>
-			<h1>Interface IEndpointCallParameters</h1>
+			<h1>Class InitializationEvents</h1>
 		</div>
 	</div>
 </header>
@@ -70,8 +70,10 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Parameters that can be used when calling an <a href="../classes/endpointcaller.html">EndpointCaller</a></p>
+						<p>This static class is there to contain the different string definitions for all the events related to initialization.</p>
 					</div>
+					<p>Note that these events will only be triggered when the <a href="../globals.html#init">init</a> function is called.</p>
+					<p>This means these events are normally called only once when the search interface is initialized.</p>
 				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -81,13 +83,11 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iendpointcallparameters.html#errorsassuccess" class="tsd-kind-icon">errors<wbr>AsSuccess</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iendpointcallparameters.html#method" class="tsd-kind-icon">method</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iendpointcallparameters.html#querystring" class="tsd-kind-icon">query<wbr>String</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iendpointcallparameters.html#requestdata" class="tsd-kind-icon">request<wbr>Data</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iendpointcallparameters.html#requestdatatype" class="tsd-kind-icon">request<wbr>Data<wbr>Type</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iendpointcallparameters.html#responsetype" class="tsd-kind-icon">response<wbr>Type</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iendpointcallparameters.html#url" class="tsd-kind-icon">url</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="initializationevents.html#aftercomponentsinitialization" class="tsd-kind-icon">after<wbr>Components<wbr>Initialization</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="initializationevents.html#afterinitialization" class="tsd-kind-icon">after<wbr>Initialization</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="initializationevents.html#beforeinitialization" class="tsd-kind-icon">before<wbr>Initialization</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="initializationevents.html#nuke" class="tsd-kind-icon">nuke</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="initializationevents.html#restorehistorystate" class="tsd-kind-icon">restore<wbr>History<wbr>State</a></li>
 							</ul>
 						</section>
 					</div>
@@ -95,127 +95,135 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="errorsassuccess" class="tsd-anchor"></a>
-					<h3>errors<wbr>AsSuccess</h3>
-					<div class="tsd-signature tsd-kind-icon">errors<wbr>AsSuccess<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="aftercomponentsinitialization" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> after<wbr>Components<wbr>Initialization</h3>
+					<div class="tsd-signature tsd-kind-icon">after<wbr>Components<wbr>Initialization<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L46">src/rest/EndpointCaller.ts
-							:46</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/InitializationEvents.ts#L25">src/events/InitializationEvents.ts
+							:25</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
 						<div class="lead">
-							<p>Flag to specify if the endpoint should return different type of error as actual 200 success for the browser, but with the error code/message contained in the response.</p>
+							<p>Triggered after the components are initialized (eg: After the constructor of each component is executed)
+							but before their state is set from the hash portion of the URL (e.g., <a href="http://mysearchinterface#q=myQuery">http://mysearchinterface#q=myQuery</a> ).</p>
 						</div>
+						<p>This is also before the first query is launched (if the <a href="searchinterface.html#options.autotriggerquery">SearchInterface.options.autoTriggerQuery</a> is <code>true</code>).</p>
+						<p>The string value is <code>afterComponentsInitialization</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string}</p>
+							</dd>
+						</dl>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="method" class="tsd-anchor"></a>
-					<h3>method</h3>
-					<div class="tsd-signature tsd-kind-icon">method<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="afterinitialization" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> after<wbr>Initialization</h3>
+					<div class="tsd-signature tsd-kind-icon">after<wbr>Initialization<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L37">src/rest/EndpointCaller.ts
-							:37</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/InitializationEvents.ts#L45">src/events/InitializationEvents.ts
+							:45</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
 						<div class="lead">
-							<p>Or HTTP verb : GET, POST, PUT, etc.</p>
+							<p>Triggered right after the UI is fully initialized.</p>
 						</div>
+						<p>Concretely this means that the constructor of each component has been executed, and that the state coming for the URL (e.g., <a href="http://mysearchinterface#q=myquery">http://mysearchinterface#q=myquery</a>) has been applied.</p>
+						<p>It is triggered <em>before</em> the first query is launched, and if the <a href="searchinterface.html#options.autotriggerquery">SearchInterface.options.autoTriggerQuery</a> is <code>true</code>.</p>
+						<p>The string value is <code>afterInitialization</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string}</p>
+							</dd>
+						</dl>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="querystring" class="tsd-anchor"></a>
-					<h3>query<wbr>String</h3>
-					<div class="tsd-signature tsd-kind-icon">query<wbr>String<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="beforeinitialization" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> before<wbr>Initialization</h3>
+					<div class="tsd-signature tsd-kind-icon">before<wbr>Initialization<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L23">src/rest/EndpointCaller.ts
-							:23</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/InitializationEvents.ts#L15">src/events/InitializationEvents.ts
+							:15</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
 						<div class="lead">
-							<p>Array of query string params.<br/>
-							eg: [&#39;foo=1&#39;,&#39;bar=2&#39;]</p>
+							<p>This event is triggered right before each components inside the search interface get initialized (eg: Before the constructor of each component is executed).</p>
 						</div>
+						<p>The string value is <code>beforeInitialization</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string}</p>
+							</dd>
+						</dl>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="requestdata" class="tsd-anchor"></a>
-					<h3>request<wbr>Data</h3>
-					<div class="tsd-signature tsd-kind-icon">request<wbr>Data<span class="tsd-signature-symbol">:</span> <a href="istringmap.html" class="tsd-signature-type">IStringMap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="nuke" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> nuke</h3>
+					<div class="tsd-signature tsd-kind-icon">nuke<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L28">src/rest/EndpointCaller.ts
-							:28</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/InitializationEvents.ts#L54">src/events/InitializationEvents.ts
+							:54</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
 						<div class="lead">
-							<p>Body of the request.<br/>
-							key -&gt; value map (JSON)</p>
+							<p>This is triggered when the UI needs to be dynamically removed so that components can unbind any internal handlers they might have set globally on the window or the document.</p>
 						</div>
+						<p>After this event has been executed, the search interface can be dynamically removed and all handlers can be considered cleanly removed.</p>
+						<p>The string value is <code>nuke</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string}</p>
+							</dd>
+						</dl>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="requestdatatype" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> request<wbr>Data<wbr>Type</h3>
-					<div class="tsd-signature tsd-kind-icon">request<wbr>Data<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="restorehistorystate" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> restore<wbr>History<wbr>State</h3>
+					<div class="tsd-signature tsd-kind-icon">restore<wbr>History<wbr>State<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L33">src/rest/EndpointCaller.ts
-							:33</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/InitializationEvents.ts#L34">src/events/InitializationEvents.ts
+							:34</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
 						<div class="lead">
-							<p>Request data type.<br/>
-							eg: &quot;application/json&quot;, &quot;application/x-www-form-urlencoded; charset=\&quot;UTF-8\&quot;&quot;</p>
+							<p>Triggered right before the state from the URL (e.g., <a href="http://mysearchinterface#q=myQuery">http://mysearchinterface#q=myQuery</a> ) gets applied in the interface.</p>
 						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="responsetype" class="tsd-anchor"></a>
-					<h3>response<wbr>Type</h3>
-					<div class="tsd-signature tsd-kind-icon">response<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L42">src/rest/EndpointCaller.ts
-							:42</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>responseType of the request.</br>
-							eg: &quot;text&quot;, &quot;arraybuffer&quot; etc.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="url" class="tsd-anchor"></a>
-					<h3>url</h3>
-					<div class="tsd-signature tsd-kind-icon">url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L18">src/rest/EndpointCaller.ts
-							:18</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Url to target</p>
-						</div>
+						<p>This will typically only be useful if the <a href="searchinterface.html#options.enablehistory">SearchInterface.options.enableHistory</a> is set to <code>true</code>.</p>
+						<p>The string value is <code>restoreHistoryState</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string}</p>
+							</dd>
+						</dl>
 					</div>
 				</section>
 			</section>
@@ -223,7 +231,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">IEndpointCallParameters</span>
+						<span class="target">InitializationEvents</span>
 					</li>
 				</ul>
 			</section>
@@ -233,29 +241,23 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface">
-						<a href="iendpointcallparameters.html" class="tsd-kind-icon">IEndpoint<wbr>Call<wbr>Parameters</a>
+					<li class="current tsd-kind-class">
+						<a href="initializationevents.html" class="tsd-kind-icon">Initialization<wbr>Events</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iendpointcallparameters.html#errorsassuccess" class="tsd-kind-icon">errors<wbr>AsSuccess</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="initializationevents.html#aftercomponentsinitialization" class="tsd-kind-icon">after<wbr>Components<wbr>Initialization</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iendpointcallparameters.html#method" class="tsd-kind-icon">method</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="initializationevents.html#afterinitialization" class="tsd-kind-icon">after<wbr>Initialization</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iendpointcallparameters.html#querystring" class="tsd-kind-icon">query<wbr>String</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="initializationevents.html#beforeinitialization" class="tsd-kind-icon">before<wbr>Initialization</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iendpointcallparameters.html#requestdata" class="tsd-kind-icon">request<wbr>Data</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="initializationevents.html#nuke" class="tsd-kind-icon">nuke</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iendpointcallparameters.html#requestdatatype" class="tsd-kind-icon">request<wbr>Data<wbr>Type</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iendpointcallparameters.html#responsetype" class="tsd-kind-icon">response<wbr>Type</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iendpointcallparameters.html#url" class="tsd-kind-icon">url</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="initializationevents.html#restorehistorystate" class="tsd-kind-icon">restore<wbr>History<wbr>State</a>
 							</li>
 						</ul>
 					</li>
