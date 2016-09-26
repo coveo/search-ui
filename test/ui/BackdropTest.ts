@@ -24,14 +24,14 @@ export function BackdropTest() {
     describe('exposes options', function () {
       it('imageField sets the background image url accordingly', function () {
         let fakeResult = FakeResults.createFakeResult();
-        fakeResult.raw.clubpenguinthumbnailurl = 'https://clubpenguin.com/thumb/af3#3!wewqd$13';
+        fakeResult.raw.clubpenguinthumbnailurl = 'https://epicurl/';
 
         test = Mock.optionsResultComponentSetup<Backdrop, IBackdropOptions>(Backdrop, {
           imageField: 'clubpenguinthumbnailurl'
         }, fakeResult);
 
         expect(test.cmp.element.style.background)
-          .toBe(`url("${fakeResult.raw.clubpenguinthumbnailurl}")`);
+          .toMatch(new RegExp(`url\\(("|')?${fakeResult.raw.clubpenguinthumbnailurl}("|')?\\)`));
       });
 
       it('overlayColor should add an overlay color before image', function () {
