@@ -178,11 +178,12 @@
   display: table;
   border-collapse: collapse;
   width: 100%;
+  margin-bottom: 20px;
   > .CoveoResult {
     display: table-row;
     > * {
       padding: .5em 0;
-      border-bottom: 1px solid $color-light-grey;
+      border-bottom: $default-border;
     }
   }
 }
