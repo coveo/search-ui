@@ -54,9 +54,10 @@ export class Backdrop extends Component {
         + (this.options.overlayGradient ? 'rgba(0,0,0,0)' : this.options.overlayColor) + '), ';
     }
 
-    background += `url('${result.raw[this.options.imageField]}')`;
+    background += `url('${result.raw[this.options.imageField]}') center center`;
 
     this.element.style.background = background;
+    this.element.style.backgroundSize = 'cover';
 
     let initOptions = this.searchInterface.options.originalOptionsObject;
     let resultComponentBindings: IResultsComponentBindings = _.extend({}, this.getBindings(), {
