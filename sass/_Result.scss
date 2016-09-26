@@ -1,8 +1,6 @@
 .CoveoResult {
   position: relative; // Allows using absolute positioning for buttons such as Show All Thread, etc.
 
-  overflow: hidden;
-
   &.coveo-omnibox-selectable {
     padding: 10px 10px 10px 15px;
     margin: 0;
@@ -165,6 +163,7 @@
 }
 
 .coveo-card-layout > .CoveoResult {
+  overflow: hidden;
   width: 300px;
   @include flex-grow(1);
   margin: 0 10px 20px;
