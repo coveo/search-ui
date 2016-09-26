@@ -162,14 +162,23 @@
   margin: 20px 0px 20px 20px;
 }
 
-.coveo-card-layout > .CoveoResult {
-  overflow: hidden;
-  width: 300px;
-  @include flex-grow(1);
-  margin: 0 10px 20px;
-  @include defaultRoundedBorder();
-  .coveo-result-row:first-child {
-    margin-top: 0;
+.coveo-card-layout {
+  margin-right: -20px;
+  > .CoveoResult {
+    overflow: hidden;
+    width: 300px;
+    @include flex-grow(1);
+    margin: 0 20px 20px 0;
+    @include defaultRoundedBorder();
+
+    &:hover {
+      box-shadow: 0 0 0 2px $color-vibrant-blue;
+      border-color: $color-vibrant-blue;
+    }
+
+    .coveo-result-row:first-child {
+      margin-top: 0;
+    }
   }
 }
 
