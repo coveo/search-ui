@@ -5,6 +5,7 @@ interface IWindow {
 }
 
 export var jQueryInstance: JQueryStatic;
+export var swag: Object;
 
 if (!initCoveoJQuery()) {
   // Adding a check in case jQuery was added after the jsSearch

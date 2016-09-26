@@ -576,9 +576,9 @@ export class FacetSearch {
   }
 
   private performExcludeActionOnCurrentSearchResult() {
-    let current = $(this.searchResults).find('.coveo-current');
-    Assert.check(current.length == 1);
-    current.find('.coveo-facet-value-exclude').click();
+    let current = $$(this.searchResults).find('.coveo-current');
+    let valueCaption = $$(current).find('.coveo-facet-value-caption');
+    this.facet.toggleExcludeValue($$(valueCaption).text());
   }
 
   protected getValueInInputForFacetSearch() {
