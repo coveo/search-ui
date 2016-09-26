@@ -328,3 +328,6 @@ SentryLoggerTest();
 
 import {DebugTest} from './ui/DebugTest';
 DebugTest();
+
+import {StreamHighlightUtilsTest} from './utils/StreamHighlightUtilsTest';
+StreamHighlightUtilsTest();

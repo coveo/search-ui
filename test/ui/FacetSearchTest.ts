@@ -19,7 +19,7 @@ export function FacetSearchTest() {
       let options = {
         field: '@field'
       };
-      window['jQuery'] = null;
+      Simulate.removeJQuery();
       mockFacet = Mock.basicComponentSetup<Facet>(Facet, options).cmp;
       mockFacet.searchInterface = <any>{};
       mockFacet.searchInterface.isNewDesign = () => {
@@ -121,7 +121,7 @@ export function FacetSearchTest() {
           var searchPromise: Promise<IIndexFieldValue[]>;
           var built: HTMLElement;
           beforeEach(function () {
-            window['jQuery'] = null;
+            Simulate.removeJQuery();
             mockFacet.options.facetSearchDelay = 50;
             searchPromise = new Promise((resolve, reject) => {
               var results = FakeResults.createFakeFieldValues('foo', 10);

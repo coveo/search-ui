@@ -109,8 +109,7 @@ export class ShareQuery extends Component {
 
   private buildContent(): HTMLElement {
     let content = $$('div', { className: 'coveo-share-query-summary-info' }).el;
-    content.appendChild($$('span', { className: 'coveo-query-summary-info-title' }).el);
-    $$(content).text(l('ShareQuery'));
+    content.appendChild($$('span', { className: 'coveo-query-summary-info-title' }, l('ShareQuery')).el);
 
     let close = $$('div', { className: 'coveo-share-query-summary-info-close' }).el;
     close.appendChild($$('span').el);

@@ -1,6 +1,7 @@
 import {Assert} from '../../misc/Assert';
 import {IQueryResult} from '../../rest/QueryResult';
 import {Utils} from '../../utils/Utils';
+import {JQueryUtils} from '../../utils/JQueryutils';
 import {$$, Dom} from '../../utils/Dom';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import {ComponentStateModel} from '../../models/ComponentStateModel';
@@ -269,7 +270,7 @@ export class ComponentEvents {
   public on(el: HTMLElement | Window | Document, event: string, handler: Function);
   public on(el: Dom, event: string, handler: Function);
   public on(arg: any, event: string, handler: Function) {
-    if ((window && !window['jQuery']) || !(arg instanceof window['jQuery'])) {
+    if (!JQueryUtils.getJQuery() || !JQueryUtils.isInstanceOfJQuery(arg)) {
       var htmlEl: HTMLElement = arg;
       $$(htmlEl).on(event, this.wrapToCallIfEnabled(handler));
     } else {
@@ -374,7 +375,7 @@ export class ComponentEvents {
           if (args[0].detail) {
             args = [args[0].detail];
           }
-        } else if (args && window['jQuery'] && args[0] instanceof window['jQuery'].Event) {
+        } else if (args && JQueryUtils.isInstanceOfJqueryEvent(args[0])) {
           if (args[1] != undefined) {
             args = [args[1]];
           } else {

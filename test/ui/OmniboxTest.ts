@@ -4,7 +4,6 @@ import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionLi
 import {IOmniboxOptions} from '../../src/ui/Omnibox/Omnibox';
 import {Simulate} from '../Simulate';
 import {$$} from '../../src/utils/Dom';
-import {JQuery} from '../JQueryModule';
 
 export function OmniboxTest() {
   describe('Omnibox', () => {
@@ -12,13 +11,14 @@ export function OmniboxTest() {
     beforeEach(() => {
       // Thanks phantom js for bad native event support
       if (Simulate.isPhantomJs()) {
-        window['jQuery'] = JQuery;
+        Simulate.addJQuery();
       }
       test = Mock.basicComponentSetup<Omnibox>(Omnibox);
     });
 
     afterEach(() => {
       test = null;
+      Simulate.removeJQuery();
     });
 
     it('should trigger a query on submit', () => {

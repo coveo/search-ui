@@ -12,7 +12,6 @@ import {Simulate} from '../Simulate';
 import {$$} from '../../src/utils/Dom';
 import {AnalyticsEvents} from '../../src/events/AnalyticsEvents';
 import {Defer} from '../../src/misc/Defer';
-import {JQuery} from '../JQueryModule';
 
 export function LiveAnalyticsClientTest() {
   describe('LiveAnalyticsClient', function () {
@@ -24,7 +23,7 @@ export function LiveAnalyticsClientTest() {
     beforeEach(function () {
       // Thanks phantom js for bad native event support
       if (Simulate.isPhantomJs()) {
-        window['jQuery'] = JQuery;
+        Simulate.addJQuery();
       }
 
       env = new Mock.MockEnvironmentBuilder().build();
@@ -40,7 +39,7 @@ export function LiveAnalyticsClientTest() {
       endpoint = null;
       client = null;
       promise = null;
-      window['jQuery'] = null;
+      Simulate.removeJQuery();
     });
 
     it('should return pending event', () => {

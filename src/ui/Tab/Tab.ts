@@ -25,6 +25,7 @@ export interface ITabOptions {
   enableDuplicateFiltering?: boolean;
   pipeline?: string;
   maximumAge?: number;
+  enableResponsiveMode?: boolean;
 }
 
 /**
@@ -128,7 +129,18 @@ export class Tab extends Component {
      * If cached results are available but are older than the specified age, a new query will be performed on the index.<br/>
      * By default, this is left undefined and the Coveo Search API will decide the cache duration.
      */
-    maximumAge: ComponentOptions.buildNumberOption()
+    maximumAge: ComponentOptions.buildNumberOption(),
+    /**
+     * Specifies if the responsive mode should be enabled for the tabs. Responsive mode will make the overflowing tabs dissapear and instead
+     * be availaible using a dropdown button. Responsive tabs are enabled when tabs overflow or when the width of the search interface
+     * becomes too small. 
+     * 
+     * Disabling reponsive mode for one tab will disable it for all tabs.
+     * Therefore, this options only needs to be set on one tab to be effective.
+     * The default value is `true`.
+     */
+    enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true })
+
   };
 
   private isFirstQuery = true;
@@ -150,7 +162,7 @@ export class Tab extends Component {
     this.bind.on(element, 'click', clickAction);
     this.bind.on(element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction));
     this.render();
-    ResponsiveTabs.init(this.root, Tab.ID, this);
+    ResponsiveTabs.init(this.root, this, this.options);
   }
 
   /**

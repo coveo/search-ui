@@ -104,20 +104,19 @@ export {SearchAlerts} from './ui/SearchAlerts/SearchAlerts';
 export {SearchAlertsMessage} from './ui/SearchAlerts/SearchAlertsMessage';
 export {Text} from './ui/Text/Text';
 export {FoldingForThread} from './ui/Folding/FoldingForThread';
-export {ResponsiveFacets} from './ui/ResponsiveComponents/ResponsiveFacets';
-export {IResponsiveComponent, ResponsiveComponentsManager} from './ui/ResponsiveComponents/ResponsiveComponentsManager';
 export {ChatterLikedBy} from './ui/ChatterLikedBy/ChatterLikedBy';
 export {ChatterPostAttachment} from './ui/ChatterPostAttachment/ChatterPostAttachment';
 export {ChatterPostedBy} from './ui/ChatterPostedBy/ChatterPostedBy';
 export {ChatterTopic} from './ui/ChatterTopic/ChatterTopic';
 export {ChatterUtils} from './utils/ChatterUtils';
 export { Logo } from './ui/Logo/Logo';
+import {CoreHelpers} from './ui/Templates/CoreHelpers';
 
 // Webpack output a library target with a temporary name.
 // This is to allow end user to put CoveoJsSearch.Dependencie.js before or after the main CoveoJsSearch.js, without breaking
 // This code swap the current module to the "real" Coveo variable.
-
 let swapVar = () => {
+
   if (window['Coveo'] == undefined) {
     window['Coveo'] = this;
   } else {
@@ -125,6 +124,7 @@ let swapVar = () => {
       window['Coveo'][k] = this[k];
     });
   }
+  CoreHelpers.exportAllHelpersGlobally(window['Coveo']);
   if (window['__extends'] == undefined) {
     var __extends = function (d, b) {
       for (var p in b) {
@@ -140,5 +140,6 @@ let swapVar = () => {
     };
     window['__extends'] = __extends;
   }
+
 };
 swapVar();

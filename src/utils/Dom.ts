@@ -1,4 +1,5 @@
 import {Utils} from '../utils/Utils';
+import {JQueryUtils} from '../utils/JQueryutils';
 import {Assert} from '../misc/Assert';
 import {Logger} from '../misc/Logger';
 
@@ -218,33 +219,43 @@ export class Dom {
   }
 
   /**
-   * Get the first element that matches the classname by testing the element itself and traversing up through its ancestors in the DOM tree.<br/>
+   * Get the first element that matches the classname by testing the element itself and traversing up through its ancestors in the DOM tree.
+   *
    * Stops at the body of the document
    * @param className A CSS classname
    */
   public closest(className: string): HTMLElement {
-    if (className.indexOf('.') == 0) {
-      className = className.substr(1);
+    return this.traverseAncestorForClass(this.el, className);
+  }
+
+  /**
+   * Get the first element that matches the classname by testing the element itself and traversing up through its ancestors in the DOM tree.
+   *
+   * Stops at the body of the document
+   * @returns {any}
+   */
+  public parent(className: string): HTMLElement {
+    if (this.el.parentElement == undefined) {
+      return undefined;
     }
-    var current = this.el, found = false;
-    while (!found) {
-      if ($$(current).hasClass(className)) {
-        found = true;
-      }
-      if (current.tagName.toLowerCase() == 'body') {
-        break;
-      }
-      if (current.parentElement == null) {
-        break;
-      }
-      if (!found) {
-        current = current.parentElement;
-      }
+    return this.traverseAncestorForClass(this.el.parentElement, className);
+  }
+
+  /**
+   *  Get all the ancestors of the current element that match the given className
+   *
+   *  Return an empty array if none found.
+   * @param className
+   * @returns {HTMLElement[]}
+   */
+  public parents(className: string): HTMLElement[] {
+    let parentsFound = [];
+    let parentFound = this.parent(className);
+    while (parentFound) {
+      parentsFound.push(parentFound);
+      parentFound = new Dom(parentFound).parent(className);
     }
-    if (found) {
-      return current;
-    }
-    return undefined;
+    return parentsFound;
   }
 
   /**
@@ -437,7 +448,7 @@ export class Dom {
         this.on(t, eventHandle);
       });
     } else {
-      var jq = this.getJQuery();
+      var jq = JQueryUtils.getJQuery();
       if (jq) {
         jq(this.el).on(type, eventHandle);
       } else if (this.el.addEventListener) {
@@ -490,7 +501,7 @@ export class Dom {
         this.off(t, eventHandle);
       });
     } else {
-      var jq = this.getJQuery();
+      var jq = JQueryUtils.getJQuery();
       if (jq) {
         jq(this.el).off(type, eventHandle);
       } else if (this.el.removeEventListener) {
@@ -517,7 +528,7 @@ export class Dom {
    * @param data
    */
   public trigger(type: string, data?: { [key: string]: any }): void {
-    var jq = this.getJQuery();
+    var jq = JQueryUtils.getJQuery();
     if (jq) {
       jq(this.el).trigger(type, data);
     } else if (CustomEvent !== undefined) {
@@ -655,14 +666,30 @@ export class Dom {
   public height() {
     return this.el.offsetHeight;
   }
-
-  private getJQuery() {
-    if (window['jQuery'] != undefined) {
-      return window['jQuery'];
+  private traverseAncestorForClass(current = this.el, className: string): HTMLElement {
+    if (className.indexOf('.') == 0) {
+      className = className.substr(1);
     }
-    return false;
+    var found = false;
+    while (!found) {
+      if ($$(current).hasClass(className)) {
+        found = true;
+      }
+      if (current.tagName.toLowerCase() == 'body') {
+        break;
+      }
+      if (current.parentElement == null) {
+        break;
+      }
+      if (!found) {
+        current = current.parentElement;
+      }
+    }
+    if (found) {
+      return current;
+    }
+    return undefined;
   }
-
 }
 
 export class Win {

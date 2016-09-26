@@ -1,7 +1,9 @@
+/// <reference path="../../typings/main/ambient/jquery/index.d.ts" />
+
 import {registerCustomMatcher} from '../CustomMatchers';
 import {Dom} from '../../src/utils/Dom';
 import {$$} from '../../src/utils/Dom';
-import {JQuery} from '../JQueryModule';
+import {Simulate} from '../Simulate';
 
 export function DomTests() {
   describe('Dom', () => {
@@ -19,11 +21,11 @@ export function DomTests() {
     describe('without jquery', function () {
       beforeEach(function () {
         // we want to test the basic event, not jquery one
-        window['jQuery'] = null;
+        Simulate.removeJQuery();
       });
 
       afterEach(function () {
-        window['jQuery'] = null;
+        Simulate.removeJQuery();
       });
 
       it('insert after should work properly', function () {
@@ -405,6 +407,80 @@ export function DomTests() {
         expect(new Dom(el).closest('findme')).toBe(root);
       });
 
+      it('should find the first ancestor element using parent', function () {
+        let root = document.createElement('div');
+        let parentOne = $$('div', { className: 'foo' });
+        let parentTwo = $$('div', { className: 'foo' });
+        let parentThree = $$('div', { className: 'foo' });
+
+        let child = $$('div');
+
+        root.appendChild(parentOne.el);
+        parentOne.append(parentTwo.el);
+        parentTwo.append(parentThree.el);
+        parentThree.append(child.el);
+
+        expect(child.parent('foo')).toEqual(parentThree.el);
+      });
+
+      it('should not throw if there are no parent element using parent', function () {
+        let root = $$('div');
+        expect(() => root.parent('bar')).not.toThrow();
+      });
+
+      it('should return undefined if there is no match using parent', function () {
+        let root = document.createElement('div');
+        let parentOne = $$('div', { className: 'foo' });
+        let parentTwo = $$('div', { className: 'foo' });
+        let parentThree = $$('div', { className: 'foo' });
+
+        let child = $$('div');
+
+        root.appendChild(parentOne.el);
+        parentOne.append(parentTwo.el);
+        parentTwo.append(parentThree.el);
+        parentThree.append(child.el);
+
+        expect(child.parent('bar')).toBeUndefined();
+      });
+
+      it('should find all ancestor elements using parents', function () {
+        let root = document.createElement('div');
+        let parentOne = $$('div', { className: 'foo' });
+        let parentTwo = $$('div', { className: 'foo' });
+        let parentThree = $$('div', { className: 'foo' });
+
+        let child = $$('div');
+
+        root.appendChild(parentOne.el);
+        parentOne.append(parentTwo.el);
+        parentTwo.append(parentThree.el);
+        parentThree.append(child.el);
+
+        expect(child.parents('foo')).toEqual([parentThree.el, parentTwo.el, parentOne.el]);
+      });
+
+      it('should return empty array if there is no match using parents', function () {
+        let root = document.createElement('div');
+        let parentOne = $$('div', { className: 'foo' });
+        let parentTwo = $$('div', { className: 'foo' });
+        let parentThree = $$('div', { className: 'foo' });
+
+        let child = $$('div');
+
+        root.appendChild(parentOne.el);
+        parentOne.append(parentTwo.el);
+        parentTwo.append(parentThree.el);
+        parentThree.append(child.el);
+
+        expect(child.parents('bar')).toEqual([]);
+      });
+
+      it('should not fail if there is no parent element using parents', function () {
+        let root = $$('div');
+        expect(() => root.parents('bar')).not.toThrow();
+      });
+
       it('should be able to tell if an element matches a selector', function () {
         el = document.createElement('div');
         el.className = 'foo bar foobar';
@@ -442,11 +518,11 @@ export function DomTests() {
 
       beforeEach(function () {
         // we want to test the basic event, not jquery one
-        window['jQuery'] = JQuery;
+       Simulate.addJQuery();
       });
 
       afterEach(function () {
-        window['jQuery'] = null;
+        Simulate.removeJQuery();
       });
 
       it('using on should work properly', function () {
