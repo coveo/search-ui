@@ -1,4 +1,4 @@
-/// <reference path="../../typings/main/ambient/jquery/index.d.ts" />
+/// <reference path="../../typings/main/definitions/jquery/index.d.ts" />
 
 import {registerCustomMatcher} from '../CustomMatchers';
 import {Dom} from '../../src/utils/Dom';

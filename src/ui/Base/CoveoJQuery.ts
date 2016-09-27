@@ -1,3 +1,4 @@
+/// <reference path="../../../typings/main/definitions/jquery/index.d.ts" />
 import {Initialization} from './Initialization';
 
 interface IWindow {
