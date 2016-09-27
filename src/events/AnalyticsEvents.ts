@@ -27,7 +27,7 @@ export interface IChangeAnalyticsCustomDataEventArgs extends IChangeableAnalytic
    *
    * This can help external code to discriminate the event that it wishes to modify.
    */
-      type: 'SearchEvent' | 'CustomEvent' | 'ClickEvent';
+  type: 'SearchEvent' | 'CustomEvent' | 'ClickEvent';
   /**
    * The type of the event.
    *
