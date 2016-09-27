@@ -580,7 +580,7 @@ export class FacetSearch {
     Assert.check(current != null);
     let valueCaption = $$(current).find('.coveo-facet-value-caption');
     let valueElement = this.facet.facetValuesList.get($$(valueCaption).text());
-    
+
     this.facet.toggleExcludeValue(valueElement.facetValue);
     valueElement.triggerOnExcludeQuery();
   }
