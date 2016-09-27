@@ -24,6 +24,7 @@ import {HashUtils} from '../../utils/HashUtils';
 import FastClick = require('fastclick');
 import timezone = require('jstz');
 import {SentryLogger} from '../../misc/SentryLogger';
+import {IComponentBindings} from "../Base/ComponentBindings";
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -54,7 +55,7 @@ export interface ISearchInterfaceOptions {
  * It is also on this component that you call the initialization function.<br/>
  * Since this component is the root of your Search UI, it is recommended that you give it a unique HTML id attribute in order to reference it easily.
  */
-export class SearchInterface extends RootComponent {
+export class SearchInterface extends RootComponent implements IComponentBindings {
   static ID = 'SearchInterface';
   /**
    * The options for the search interface

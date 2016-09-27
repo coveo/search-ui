@@ -19,7 +19,7 @@ export interface IFacetRangeOptions extends IFacetOptions {
 /**
  * This component displays a facet with values expressed as ranges. These ranges are computed from the results of the current query. This component inherits from the Facet component.
  */
-export class FacetRange extends Facet {
+export class FacetRange extends Facet implements IComponentBindings {
   static ID = 'FacetRange';
   static parent = Facet;
 

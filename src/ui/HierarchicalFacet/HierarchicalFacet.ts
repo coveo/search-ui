@@ -71,7 +71,7 @@ interface IFlatHierarchy {
  * Since both documents contain the `c` value, selecting that value in the facet would return both documents.<br/>
  * Selecting the `folder3` value in the facet would only return the `text2.txt` document.
  */
-export class HierarchicalFacet extends Facet {
+export class HierarchicalFacet extends Facet implements IComponentBindings {
   static ID = 'HierarchicalFacet';
   /**
    * The options for the component
