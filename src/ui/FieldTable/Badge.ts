@@ -27,7 +27,7 @@ export interface IBadgeColor {
  * It is possible to configure the default colors, but also to set colors specific to
  * the current field value.
  */
-export class Badge extends FieldValue {
+export class Badge extends FieldValue implements IComponentBindings {
   static ID = 'Badge';
 
   /**

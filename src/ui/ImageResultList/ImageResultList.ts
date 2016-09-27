@@ -16,7 +16,7 @@ export interface IImageResultListOptions extends IResultListOptions {
 /**
  * This component is an extension of the `ResultList` component to display image results.
  */
-export class ImageResultList extends ResultList {
+export class ImageResultList extends ResultList implements IComponentBindings {
   static ID = 'ImageResultList';
   static rowLayoutTypeStr = 'row';
   static columnLayoutTypeStr = 'column';

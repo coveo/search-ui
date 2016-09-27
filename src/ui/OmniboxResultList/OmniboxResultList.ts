@@ -35,7 +35,7 @@ export interface IOmniboxResultListOptions extends IResultListOptions {
  *     </div>
  * ```
  */
-export class OmniboxResultList extends ResultList {
+export class OmniboxResultList extends ResultList implements IComponentBindings {
   static ID = 'OmniboxResultList';
   /**
    * The options for the component
