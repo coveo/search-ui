@@ -317,7 +317,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       type: type,
       actionType: event.actionType,
       actionCause: event.actionCause
-    }, changeableAnalyticsDataObject);
+    }, changeableAnalyticsDataObject, data);
     $$(this.rootElement).trigger(AnalyticsEvents.changeAnalyticsCustomData, args);
 
     event.language = args.language;
