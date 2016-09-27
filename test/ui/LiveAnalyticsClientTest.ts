@@ -404,6 +404,23 @@ export function LiveAnalyticsClientTest() {
       }));
     });
 
+    it('should send the result data on click event', () => {
+      var spy = jasmine.createSpy('spy');
+      $$(env.root).on(AnalyticsEvents.changeAnalyticsCustomData, spy);
+      let fakeResult = FakeResults.createFakeResult();
+      client.logClickEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentQuickview, {}, fakeResult, document.createElement('div'));
+      Defer.flush();
+      expect(spy).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({
+        originLevel1: 'default',
+        originLevel2: 'default',
+        originLevel3: jasmine.any(String),
+        language: String['locale'],
+        type: 'ClickEvent',
+        metaObject: jasmine.any(Object),
+        resultData: fakeResult
+      }));
+    });
+
     describe('search as you type', function () {
       beforeEach(function () {
         jasmine.clock().install();
