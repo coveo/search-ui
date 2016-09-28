@@ -15,7 +15,7 @@ import {l} from '../../strings/Strings';
  *
  * The only constraint this type has over a basic string is that it should start with "@".
  */
-export interface IFieldOption extends String {};
+export interface IFieldOption extends String { };
 
 export interface IComponentOptionsLoadOption<T> {
   (element: HTMLElement, name: string, option: IComponentOptionsOption<T>): T;

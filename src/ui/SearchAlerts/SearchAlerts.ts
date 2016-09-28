@@ -339,7 +339,7 @@ export class SearchAlerts extends Component {
     };
 
     if (options.modifiedDateField) {
-      typeConfig.modifiedDateField = options.modifiedDateField;
+      typeConfig.modifiedDateField = <string>options.modifiedDateField;
     }
 
     return {

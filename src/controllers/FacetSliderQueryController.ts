@@ -30,7 +30,7 @@ export class FacetSliderQueryController {
 
   public createBasicGroupByRequest(allowedValues?: string[], addComputedField: boolean = true) {
     let groupByQuery: IGroupByRequest = {
-      field: this.facet.options.field,
+      field: <string>this.facet.options.field,
       completeFacetWithStandardValues: true
     };
     groupByQuery.allowedValues = undefined;
@@ -74,7 +74,7 @@ export class FacetSliderQueryController {
         start = this.getFilterDateFormat(start);
         end = this.getFilterDateFormat(end);
       }
-      builder.addFieldExpression(this.facet.options.field, '==', [start + '..' + end]);
+      builder.addFieldExpression(<string>this.facet.options.field, '==', [start + '..' + end]);
     }
   }
 
@@ -95,9 +95,9 @@ export class FacetSliderQueryController {
       endCompare += '';
     }
     if (startCompared != startCompare && endCompared == endCompare) {
-      builder.addFieldExpression(this.facet.options.field, '>=', [startCompared]);
+      builder.addFieldExpression(<string>this.facet.options.field, '>=', [startCompared]);
     } else if (startCompared == startCompare && endCompared != endCompare) {
-      builder.addFieldExpression(this.facet.options.field, '<=', [endCompared]);
+      builder.addFieldExpression(<string>this.facet.options.field, '<=', [endCompared]);
     } else {
       this.addFilterExpressionWithOuterBoundsIncluded(start, end, builder);
     }

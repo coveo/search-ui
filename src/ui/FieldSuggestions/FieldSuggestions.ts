@@ -106,7 +106,7 @@ export class FieldSuggestions extends Component {
 
     this.options = ComponentOptions.initComponentOptions(element, FieldSuggestions, options);
 
-    Assert.check(Utils.isCoveoField(this.options.field), this.options.field + ' is not a valid field');
+    Assert.check(Utils.isCoveoField(<string>this.options.field), this.options.field + ' is not a valid field');
 
     this.options.onSelect = this.options.onSelect || this.onRowSelection;
 
@@ -192,7 +192,7 @@ export class FieldSuggestions extends Component {
 
   private buildListFieldValueRequest(valueToSearch: string): IListFieldValuesRequest {
     return {
-      field: this.options.field,
+      field: <string>this.options.field,
       ignoreAccents: true,
       sortCriteria: 'occurrences',
       maximumNumberOfValues: this.options.numberOfSuggestions,

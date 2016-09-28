@@ -15,7 +15,7 @@ import {Utils} from '../../utils/Utils';
 import {$$} from '../../utils/Dom';
 import {INoResultsEventArgs} from '../../events/QueryEvents';
 import {IQueryErrorEventArgs} from '../../events/QueryEvents';
-import {IComponentBindings} from "../Base/ComponentBindings";
+import {IComponentBindings} from '../Base/ComponentBindings';
 
 declare var coveoanalytics: CoveoAnalytics.CoveoUA;
 
@@ -67,7 +67,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
      * Ex: <code data-options-to-use="expression,advancedExpression"></code> would add the expression and the advanced expression parts from the main query in the triggered query.
      * The default value is undefined.
      */
-    optionsToUse: ComponentOptions.buildListOption<'expression' | 'advancedExpression' | 'constantExpression' | 'disjunctionExpression'>({defaultValue: ['expression']}),
+    optionsToUse: ComponentOptions.buildListOption<'expression' | 'advancedExpression' | 'constantExpression' | 'disjunctionExpression'>({ defaultValue: ['expression'] }),
 
     /**
      * Specifies whether or not to send the actions history along with the triggered query.

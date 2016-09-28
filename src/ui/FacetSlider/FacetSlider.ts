@@ -338,7 +338,7 @@ export class FacetSlider extends Component {
 
   public createDom() {
     this.facetHeader = new FacetHeader({
-      field: this.options.field,
+      field: <string>this.options.field,
       facetElement: this.element,
       title: this.options.title,
       enableClearElement: true,

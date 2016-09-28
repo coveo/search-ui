@@ -452,7 +452,7 @@ export class Omnibox extends Component {
         _.each(fieldNames, (result: Coveo.MagicBox.Result) => {
           let alias = _.find(_.keys(this.options.fieldAlias), (alias: string) => alias.toLowerCase() == result.value.toLowerCase());
           if (alias != null) {
-            result.value = this.options.fieldAlias[alias];
+            result.value = <string>this.options.fieldAlias[alias];
           }
         });
       }

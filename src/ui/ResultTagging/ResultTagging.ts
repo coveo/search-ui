@@ -79,7 +79,7 @@ export class ResultTagging extends Component {
       this.logger.error('You must specify a field to the ResultTagging component');
       return;
     }
-    let fieldValue = Utils.getFieldValue(this.result, this.options.field);
+    let fieldValue = Utils.getFieldValue(this.result, <string>this.options.field);
     if (fieldValue) {
       this.tags = fieldValue.split(';');
       this.tags = _.map(this.tags, (t) => {
@@ -216,7 +216,7 @@ export class ResultTagging extends Component {
   }
 
   private bindFacetEventOnValue(element: HTMLElement, value: string) {
-    let facetAttributeName = QueryStateModel.getFacetId(this.options.field);
+    let facetAttributeName = QueryStateModel.getFacetId(<string>this.options.field);
     let facetModel: string[] = this.queryStateModel.get(facetAttributeName);
     let facets: Component[] = this.componentStateModel.get(facetAttributeName);
     let atLeastOneFacetIsEnabled = _.filter(facets, (value: Component) => !value.disabled).length > 0;
@@ -230,7 +230,7 @@ export class ResultTagging extends Component {
         }
         this.queryController.deferExecuteQuery({
           beforeExecuteQuery: () => this.usageAnalytics.logSearchEvent<IAnalyticsResultTaggingMeta>(analyticsActionCauseList.documentTag, {
-            facetId: this.options.field,
+            facetId: <string>this.options.field,
             facetValue: value
           })
         });
@@ -256,7 +256,7 @@ export class ResultTagging extends Component {
     let endpoint = this.queryController.getEndpoint();
     let searchText = this.textBox.value;
     let searchOptions = {
-      field: this.options.field,
+      field: <string>this.options.field,
       ignoreAccents: true,
       sortCriteria: 'occurences',
       maximumNumberOfValues: this.options.suggestBoxSize,
@@ -370,7 +370,7 @@ export class ResultTagging extends Component {
 
   private doRemoveTag(element: HTMLElement, tagValue: string) {
     let request: ITaggingRequest = {
-      fieldName: this.options.field,
+      fieldName: <string>this.options.field,
       fieldValue: tagValue,
       doAdd: false,
       uniqueId: this.result.uniqueId
@@ -395,7 +395,7 @@ export class ResultTagging extends Component {
     }
     this.tags.push(tagValue);
     let request: ITaggingRequest = {
-      fieldName: this.options.field,
+      fieldName: <string>this.options.field,
       fieldValue: tagValue,
       doAdd: true,
       uniqueId: this.result.uniqueId

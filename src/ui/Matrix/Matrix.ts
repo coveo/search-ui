@@ -39,7 +39,7 @@ export interface IMatrixOptions {
 
   enableHoverPreview?: boolean;
   previewSortCriteria?: string;
-  previewSortField?: string;
+  previewSortField?: IFieldOption;
   previewMaxWidth?: string;
   previewMinWidth?: string;
   previewDelay?: number;
@@ -225,11 +225,11 @@ export class Matrix extends Component {
     this.options = ComponentOptions.initComponentOptions(element, Matrix, options);
 
     if (!this.options.previewTemplate) {
-      this.options.previewTemplate = new DefaultMatrixResultPreviewTemplate(this.options.computedField, this.options.computedFieldFormat);
+      this.options.previewTemplate = new DefaultMatrixResultPreviewTemplate(<string>this.options.computedField, this.options.computedFieldFormat);
     }
 
     if (!this.options.previewSortField) {
-      this.options.previewSortField = this.options.computedField;
+      this.options.previewSortField = <string>this.options.computedField;
     }
 
     if (this.options.columnFieldValues.length != this.options.columnLabels.length) {
@@ -350,8 +350,8 @@ export class Matrix extends Component {
   }
 
   private initQueryState() {
-    this.rowId = QueryStateModel.getFacetId(this.options.rowField);
-    this.columnId = QueryStateModel.getFacetId(this.options.columnField);
+    this.rowId = QueryStateModel.getFacetId(<string>this.options.rowField);
+    this.columnId = QueryStateModel.getFacetId(<string>this.options.columnField);
 
     this.queryStateModel.registerNewAttribute(this.rowId, []);
     this.queryStateModel.registerNewAttribute(this.columnId, []);
@@ -382,10 +382,10 @@ export class Matrix extends Component {
   private handleBuildingQuery(args: IBuildingQueryEventArgs) {
     if (!this.areFacetsPresent()) {
       if (this.selectedRowValue && !this.isRowFacetPresent()) {
-        args.queryBuilder.advancedExpression.addFieldExpression(this.options.rowField, '=', [this.selectedRowValue]);
+        args.queryBuilder.advancedExpression.addFieldExpression(<string>this.options.rowField, '=', [this.selectedRowValue]);
       }
       if (this.selectedColumnValue && !this.isColumnFacetPresent()) {
-        args.queryBuilder.advancedExpression.addFieldExpression(this.options.columnField, '=', [this.selectedColumnValue]);
+        args.queryBuilder.advancedExpression.addFieldExpression(<string>this.options.columnField, '=', [this.selectedColumnValue]);
       }
     }
   }
@@ -408,7 +408,7 @@ export class Matrix extends Component {
 
   private addMainGroubByRequest(queryBuilder: QueryBuilder) {
     let groupBy: IGroupByRequest = {
-      field: this.options.rowField,
+      field: <string>this.options.rowField,
       sortCriteria: this.options.sortCriteria,
       computedFields: this.getComputedFields(),
       maximumNumberOfValues: this.options.maximumNumberOfRows
@@ -421,7 +421,7 @@ export class Matrix extends Component {
   private addColumnsGroupByRequests(queryBuilder: QueryBuilder) {
     for (let i = 0; i < this.options.columnFieldValues.length; i++) {
       let groupBy = {
-        field: this.options.rowField,
+        field: <string>this.options.rowField,
         sortCriteria: this.options.sortCriteria,
         computedFields: this.getComputedFields(),
         queryOverride: '(' + this.buildExpression(queryBuilder) + ')' + '(' + this.options.columnField + '=\'' + this.options.columnFieldValues[i] + '\')',
@@ -452,7 +452,7 @@ export class Matrix extends Component {
 
   private getComputedFields() {
     let computedFields = [{
-      field: this.options.computedField,
+      field: <string>this.options.computedField,
       operation: this.options.computedFieldOperation
     }];
     return computedFields;
@@ -777,13 +777,13 @@ export class Matrix extends Component {
   }
 
   private createPreviewQuery(rowNumber: number, columnNumber: number): IQuery {
-    let rowFieldExpression = '(' + QueryUtils.buildFieldExpression(this.options.rowField, '=', [this.getRowValue(rowNumber)]) + ')';
-    let columnFieldExpression = '(' + QueryUtils.buildFieldExpression(this.options.columnField, '=', [this.getColumnValue(columnNumber)]) + ')';
+    let rowFieldExpression = '(' + QueryUtils.buildFieldExpression(<string>this.options.rowField, '=', [this.getRowValue(rowNumber)]) + ')';
+    let columnFieldExpression = '(' + QueryUtils.buildFieldExpression(<string>this.options.columnField, '=', [this.getColumnValue(columnNumber)]) + ')';
     let query = this.queryController.getLastQuery();
     query.aq = rowFieldExpression;
     query.aq += columnFieldExpression;
     query.sortCriteria = this.options.previewSortCriteria;
-    query.sortField = this.options.previewSortField;
+    query.sortField = <string>this.options.previewSortField;
     let fieldSliced = this.options.computedField.slice(1);
     let fieldExists = _.find(query.fieldsToInclude, (field: string) => {
       return field == fieldSliced;

@@ -194,7 +194,7 @@ export class FollowItem extends Component {
     }
 
     if (options.watchedFields) {
-      typeCofig.watchedFields = options.watchedFields;
+      typeCofig.watchedFields = <string[]>options.watchedFields;
     }
 
     return {

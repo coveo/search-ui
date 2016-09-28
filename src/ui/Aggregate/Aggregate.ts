@@ -75,10 +75,10 @@ export class Aggregate extends Component {
 
   private handleBuildingQuery(args: IBuildingQueryEventArgs) {
     var request: IGroupByRequest = {
-      field: this.options.field,
+      field: <string>this.options.field,
       maximumNumberOfValues: 0,
       computedFields: [{
-        field: this.options.field,
+        field: <string>this.options.field,
         operation: this.options.operation
       }]
     };

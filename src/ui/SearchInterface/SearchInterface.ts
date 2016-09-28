@@ -24,7 +24,7 @@ import {HashUtils} from '../../utils/HashUtils';
 import FastClick = require('fastclick');
 import timezone = require('jstz');
 import {SentryLogger} from '../../misc/SentryLogger';
-import {IComponentBindings} from "../Base/ComponentBindings";
+import {IComponentBindings} from '../Base/ComponentBindings';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -533,8 +533,8 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       data.queryBuilder.advancedExpression.add(this.options.expression);
     }
 
-    if (Utils.isNonEmptyString(this.options.filterField)) {
-      data.queryBuilder.filterField = this.options.filterField;
+    if (Utils.isNonEmptyString(<string>this.options.filterField)) {
+      data.queryBuilder.filterField = <string>this.options.filterField;
     }
 
     if (Utils.isNonEmptyString(this.options.timezone)) {

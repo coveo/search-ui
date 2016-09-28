@@ -184,7 +184,7 @@ export class FieldValue extends Component {
    * Returns <code>null</code> if value is an <code>Object</code>.
    */
   public getValue() {
-    let value = Utils.getFieldValue(this.result, this.options.field);
+    let value = Utils.getFieldValue(this.result, <string>this.options.field);
     if (!_.isArray(value) && _.isObject(value)) {
       value = null;
     }
