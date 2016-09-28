@@ -1,5 +1,5 @@
 import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
+import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
 import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
 import {IQueryResult} from '../../rest/QueryResult';
 import {Assert} from '../../misc/Assert';
@@ -11,7 +11,7 @@ import {$$, Dom} from '../../utils/Dom';
 
 
 export interface IFollowItemOptions {
-  watchedFields?: string[];
+  watchedFields?: IFieldOption[];
   modifiedDateField?: string;
 }
 
@@ -194,7 +194,7 @@ export class FollowItem extends Component {
     }
 
     if (options.watchedFields) {
-      typeCofig.watchedFields = options.watchedFields;
+      typeCofig.watchedFields = <string[]>options.watchedFields;
     }
 
     return {

@@ -1,6 +1,6 @@
 import {Component} from '../Base/Component';
 import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
+import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
 import {QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs} from '../../events/QueryEvents';
 import {IGroupByRequest} from '../../rest/GroupByRequest';
 import {Initialization} from '../Base/Initialization';
@@ -8,7 +8,7 @@ import {$$} from '../../utils/Dom';
 import Globalize = require('globalize');
 
 export interface IAggregateOptions {
-  field: string;
+  field: IFieldOption;
   operation?: string;
   format?: string;
 }
@@ -28,7 +28,7 @@ export class Aggregate extends Component {
     /**
      * The field on which you do the aggregate operation.
      */
-    field: ComponentOptions.buildStringOption({ required: true }),
+    field: ComponentOptions.buildFieldOption({ required: true }),
     /**
      * The aggregate operation to perform.<br/>
      * The available values are:
@@ -75,10 +75,10 @@ export class Aggregate extends Component {
 
   private handleBuildingQuery(args: IBuildingQueryEventArgs) {
     var request: IGroupByRequest = {
-      field: this.options.field,
+      field: <string>this.options.field,
       maximumNumberOfValues: 0,
       computedFields: [{
-        field: this.options.field,
+        field: <string>this.options.field,
         operation: this.options.operation
       }]
     };

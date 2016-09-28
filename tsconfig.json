@@ -247,7 +247,7 @@
     "src/ui/ResultList/ResultList.ts",
     "src/ui/ResultRating/ResultRating.ts",
     "src/ui/ResultsFiltersPreferences/ResultsFiltersPreferences.ts",
-    "src/ui/Pager/ResultsPerPage.ts",
+    "src/ui/ResultsPerPage/ResultsPerPage.ts",
     "src/ui/ResultsPreferences/ResultsPreferences.ts",
     "src/ui/ResultTagging/ResultTagging.ts",
     "src/ui/SearchAlerts/FollowItem.ts",

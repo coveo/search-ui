@@ -267,7 +267,7 @@ export class ResultLink extends Component {
       this.setField();
     }
     if (this.options.field != undefined) {
-      return Utils.getFieldValue(this.result, this.options.field);
+      return Utils.getFieldValue(this.result, <string>this.options.field);
     } else {
       return this.result.clickUri;
     }
