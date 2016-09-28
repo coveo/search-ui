@@ -1,6 +1,6 @@
 /// <reference path='../../../node_modules/modal-box/bin/ModalBox.d.ts' />
 import {Component} from '../Base/Component';
-import {ComponentOptions, FieldOption} from '../Base/ComponentOptions';
+import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {SearchAlertsMessage} from './SearchAlertsMessage';
 import {SettingsEvents} from '../../events/SettingsEvents';
@@ -21,7 +21,7 @@ import {ModalBox} from '../../ExternalModulesShim';
 export interface ISearchAlertsOptions {
   enableManagePanel?: boolean;
   enableFollowQuery?: boolean;
-  modifiedDateField?: FieldOption;
+  modifiedDateField?: IFieldOption;
   enableMessage?: boolean;
   messageCloseDelay?: number;
 }

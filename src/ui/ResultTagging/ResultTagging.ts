@@ -1,5 +1,5 @@
 import {Component} from '../Base/Component';
-import {ComponentOptions, FieldOption} from '../Base/ComponentOptions';
+import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
 import {IFieldDescription} from '../../rest/FieldDescription';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {Assert} from '../../misc/Assert';
@@ -16,7 +16,7 @@ import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {IQueryResult} from '../../rest/QueryResult';
 
 export interface IResultTaggingOptions {
-  field: FieldOption;
+  field: IFieldOption;
   suggestBoxSize?: number;
   autoCompleteTimer?: number;
 }

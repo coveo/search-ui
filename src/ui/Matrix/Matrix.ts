@@ -1,6 +1,6 @@
 import {Template} from '../Templates/Template';
 import {Component} from '../Base/Component';
-import {ComponentOptions, FieldOption} from '../Base/ComponentOptions';
+import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
 import {Cell} from './Cell';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {DefaultMatrixResultPreviewTemplate} from './DefaultMatrixResultPreviewTemplate';
@@ -20,19 +20,19 @@ import Globalize = require('globalize');
 export interface IMatrixOptions {
   title?: string;
 
-  rowField: FieldOption;
+  rowField: IFieldOption;
   sortCriteria?: string;
   maximumNumberOfRows?: number;
   enableRowTotals?: boolean;
 
-  columnField: FieldOption;
+  columnField: IFieldOption;
   columnFieldValues?: string[];
   columnLabels?: string[];
   columnHeader?: string;
   maximumNumberOfValuesInGroupBy?: number;
   enableColumnTotals?: boolean;
 
-  computedField: FieldOption;
+  computedField: IFieldOption;
   computedFieldOperation?: string;
   computedFieldFormat?: string;
   cellFontSize?: string;
@@ -92,12 +92,12 @@ export class Matrix extends Component {
      * Specifies the field values to use for each column.<br/>
      * If not specified, you will not generate any column except one for the 'Total' column.
      */
-    columnFieldValues: ComponentOptions.buildListOption({ defaultValue: [] }),
+    columnFieldValues: ComponentOptions.buildListOption<string>({ defaultValue: [] }),
     /**
      * Specifies the labels values to use for each column.<br/>
      * The array should match the {@link Matrix.options.columnFieldValues}.
      */
-    columnLabels: ComponentOptions.buildListOption({ defaultValue: [] }),
+    columnLabels: ComponentOptions.buildListOption<string>({ defaultValue: [] }),
     /**
      * Specifies the label for the first column on the left, as a description of the `columnField`.
      */

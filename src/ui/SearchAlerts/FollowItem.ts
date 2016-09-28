@@ -1,5 +1,5 @@
 import {Component} from '../Base/Component';
-import {ComponentOptions, FieldOption} from '../Base/ComponentOptions';
+import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
 import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
 import {IQueryResult} from '../../rest/QueryResult';
 import {Assert} from '../../misc/Assert';
@@ -11,7 +11,7 @@ import {$$, Dom} from '../../utils/Dom';
 
 
 export interface IFollowItemOptions {
-  watchedFields?: FieldOption[];
+  watchedFields?: IFieldOption[];
   modifiedDateField?: string;
 }
 

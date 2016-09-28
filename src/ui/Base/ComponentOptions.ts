@@ -15,7 +15,7 @@ import {l} from '../../strings/Strings';
  *
  * The only constraint this type has over a basic string is that it should start with "@".
  */
-export interface FieldOption extends String {};
+export interface IFieldOption extends String {};
 
 export interface IComponentOptionsLoadOption<T> {
   (element: HTMLElement, name: string, option: IComponentOptionsOption<T>): T;
@@ -330,7 +330,7 @@ export class ComponentOptions {
    *
    * `data-foo="@bar"`.
    */
-  static buildFieldOption(optionArgs?: IComponentOptionsFieldOptionArgs): FieldOption {
+  static buildFieldOption(optionArgs?: IComponentOptionsFieldOptionArgs): IFieldOption {
     return ComponentOptions.buildOption<string>(ComponentOptionsType.FIELD, ComponentOptions.loadFieldOption, optionArgs);
   }
 
@@ -341,7 +341,7 @@ export class ComponentOptions {
    *
    * `data-foo="@bar,@baz"`.
    */
-  static buildFieldsOption(optionArgs?: IComponentOptionsFieldsOptionArgs): FieldOption[] {
+  static buildFieldsOption(optionArgs?: IComponentOptionsFieldsOptionArgs): IFieldOption[] {
     return ComponentOptions.buildOption<string[]>(ComponentOptionsType.FIELDS, ComponentOptions.loadFieldsOption, optionArgs);
   }
 
@@ -352,7 +352,7 @@ export class ComponentOptions {
    *
    * `data-foo="bar,baz"`.
    */
-  static buildListOption(optionArgs?: IComponentOptionsListOptionArgs): string[] {
+  static buildListOption<T>(optionArgs?: IComponentOptionsListOptionArgs): T[] | string[] {
     return ComponentOptions.buildOption<string[]>(ComponentOptionsType.LIST, ComponentOptions.loadListOption, optionArgs);
   }
 

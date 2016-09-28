@@ -1,6 +1,6 @@
 import {Component} from '../Base/Component';
 import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions, FieldOption} from '../Base/ComponentOptions';
+import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
 import {QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs} from '../../events/QueryEvents';
 import {IGroupByRequest} from '../../rest/GroupByRequest';
 import {Initialization} from '../Base/Initialization';
@@ -8,7 +8,7 @@ import {$$} from '../../utils/Dom';
 import Globalize = require('globalize');
 
 export interface IAggregateOptions {
-  field: FieldOption;
+  field: IFieldOption;
   operation?: string;
   format?: string;
 }

@@ -12,7 +12,7 @@
 import {Component} from '../Base/Component';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {FacetValue, FacetValues} from './FacetValues';
-import {ComponentOptions, FieldOption} from '../Base/ComponentOptions';
+import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {l} from '../../strings/Strings';
 import {FacetQueryController} from '../../controllers/FacetQueryController';
@@ -56,7 +56,7 @@ import {ValueElement} from './ValueElement';
 
 export interface IFacetOptions {
   title?: string;
-  field?: FieldOption;
+  field?: IFieldOption;
   isMultiValueField?: boolean;
   numberOfValues?: number;
   pageSize?: number;
@@ -69,7 +69,7 @@ export interface IFacetOptions {
   enableTogglingOperator?: boolean;
   enableMoreLess?: boolean;
   valueCaption?: any;
-  lookupField?: FieldOption;
+  lookupField?: IFieldOption;
   enableFacetSearch?: boolean;
   facetSearchDelay?: number;
   facetSearchIgnoreAccents?: boolean;
@@ -79,7 +79,7 @@ export interface IFacetOptions {
   numberOfValuesInOmnibox?: number;
   numberOfValuesInBreadcrumb?: number;
   id?: string;
-  computedField?: FieldOption;
+  computedField?: IFieldOption;
   computedFieldOperation?: string;
   computedFieldFormat?: string;
   computedFieldCaption?: string;
@@ -169,7 +169,7 @@ export class Facet extends Component {
      * Possible values are : `occurrences`, `score`, `alphaAscending`, `alphaDescending`, `computedfieldascending`, `computedfielddescending`, `custom`.
      * The default value is `occurrences,score,alphaAscending,alphaDescending`.
      */
-    availableSorts: ComponentOptions.buildListOption({
+    availableSorts: ComponentOptions.buildListOption<'occurrences'| 'score' | 'alphaascending' | 'alphadescending' | 'computedfieldascending'| 'computedfielddescending'| 'chisquare'| 'nosort'>({
       defaultValue: ['occurrences', 'score', 'alphaAscending', 'alphaDescending'],
       values: ['Occurrences', 'Score', 'AlphaAscending', 'AlphaDescending', 'ComputedFieldAscending', 'ComputedFieldDescending', 'ChiSquare', 'NoSort'],
       depend: 'enableSettings'
@@ -184,7 +184,7 @@ export class Facet extends Component {
      * Specifies a custom order by which facet values are sorted.<br/>
      * For example, you could use this to specify a logical order for support tickets -> customSort : ["New","Opened","Feedback","Resolved","Feedback"].<br/>
      */
-    customSort: ComponentOptions.buildListOption({ section: 'Identification' }),
+    customSort: ComponentOptions.buildListOption<string>({section: 'Identification'}),
     /**
      * Specifies the maximum number of field values that will be displayed by default in the facet, before the user click **More**.<br/>
      * The default value is 5.
@@ -350,7 +350,7 @@ export class Facet extends Component {
      * This will whitelist the facet content to some specific values.<br/>
      * Example  ["File", "People"].
      */
-    allowedValues: ComponentOptions.buildListOption(),
+    allowedValues: ComponentOptions.buildListOption<string>(),
     /**
      * Specifies an additional query expression (query override) to add to each group by that this facet performs.<br/>
      * See: {@link IGroupByRequest}.<br/>

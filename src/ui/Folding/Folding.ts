@@ -1,7 +1,7 @@
 import {IQueryResult} from '../../rest/QueryResult';
 import {Component} from '../Base/Component';
 import {SortCriteria} from '../Sort/SortCriteria';
-import {ComponentOptions, FieldOption} from '../Base/ComponentOptions';
+import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {Utils} from '../../utils/Utils';
 import {Assert} from '../../misc/Assert';
@@ -13,7 +13,7 @@ import {$$} from '../../utils/Dom';
 import {QueryBuilder} from '../Base/QueryBuilder';
 
 export interface IFoldingOptions {
-  field?: FieldOption;
+  field?: IFieldOption;
 
   childField?: string;
   parentField?: string;

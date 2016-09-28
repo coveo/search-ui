@@ -1,5 +1,5 @@
 import {SearchEndpoint} from '../../rest/SearchEndpoint';
-import {ComponentOptions, FieldOption} from '../Base/ComponentOptions';
+import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {$$} from '../../utils/Dom';
 import {DomUtils} from '../../utils/DomUtils';
@@ -33,7 +33,7 @@ export interface ISearchInterfaceOptions {
   resultsPerPage?: number;
   excerptLength?: number;
   expression?: string;
-  filterField?: FieldOption;
+  filterField?: IFieldOption;
   hideUntilFirstQuery?: boolean;
   firstLoadingAnimation?: HTMLElement;
   autoTriggerQuery?: boolean;

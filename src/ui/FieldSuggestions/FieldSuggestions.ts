@@ -1,6 +1,6 @@
 import {ISuggestionForOmniboxOptions, SuggestionForOmnibox, ISuggestionForOmniboxTemplate} from '../Misc/SuggestionForOmnibox';
 import {Component} from '../Base/Component';
-import {ComponentOptions, FieldOption} from '../Base/ComponentOptions';
+import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {Assert} from '../../misc/Assert';
 import {Utils} from '../../utils/Utils';
@@ -15,7 +15,7 @@ import {$$} from '../../utils/Dom';
 import {ISuggestionForOmniboxOptionsOnSelect} from '../Misc/SuggestionForOmnibox';
 
 export interface IFieldSuggestionsOptions extends ISuggestionForOmniboxOptions {
-  field?: FieldOption;
+  field?: IFieldOption;
   queryOverride?: string;
 }
 
