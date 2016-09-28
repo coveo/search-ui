@@ -5,7 +5,7 @@
 import {IQueryboxOptions} from '../Querybox/Querybox';
 import {Component} from '../Base/Component';
 import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
+import {ComponentOptions, FieldOption} from '../Base/ComponentOptions';
 import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
 import {StandaloneSearchInterfaceEvents} from '../../events/StandaloneSearchInterfaceEvents';
 import {MODEL_EVENTS, IAttributeChangedEventArg} from '../../models/Model';
@@ -40,8 +40,8 @@ export interface IOmniboxOptions extends IQueryboxOptions {
   inline?: boolean;
   enableFieldAddon?: boolean;
   enableSimpleFieldAddon?: boolean;
-  listOfFields?: string[];
-  fieldAlias?: { [alias: string]: string };
+  listOfFields?: FieldOption[];
+  fieldAlias?: { [alias: string]: FieldOption };
   enableRevealQuerySuggestAddon?: boolean;
   enableQueryExtensionAddon?: boolean;
   omniboxTimeout?: number;

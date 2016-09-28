@@ -4,7 +4,7 @@
 import {ISliderOptions, Slider, IEndSlideEventArgs, IDuringSlideEventArgs, ISliderGraphData} from '../Misc/Slider';
 import {Component} from '../Base/Component';
 import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
+import {ComponentOptions, FieldOption} from '../Base/ComponentOptions';
 import {ResponsiveFacets} from '../ResponsiveComponents/ResponsiveFacets';
 import {FacetHeader} from '../Facet/FacetHeader';
 import {l} from '../../strings/Strings';
@@ -28,7 +28,7 @@ export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;
   queryOverride?: string;
   id?: string;
-  field?: string;
+  field?: FieldOption;
   title?: string;
   enableResponsiveMode?: boolean;
   responsiveBreakpoint?: number;

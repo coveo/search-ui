@@ -1,6 +1,6 @@
 import {Template} from '../Templates/Template';
 import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
+import {ComponentOptions, FieldOption} from '../Base/ComponentOptions';
 import {Cell} from './Cell';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {DefaultMatrixResultPreviewTemplate} from './DefaultMatrixResultPreviewTemplate';
@@ -20,19 +20,19 @@ import Globalize = require('globalize');
 export interface IMatrixOptions {
   title?: string;
 
-  rowField: string;
+  rowField: FieldOption;
   sortCriteria?: string;
   maximumNumberOfRows?: number;
   enableRowTotals?: boolean;
 
-  columnField: string;
+  columnField: FieldOption;
   columnFieldValues?: string[];
   columnLabels?: string[];
   columnHeader?: string;
   maximumNumberOfValuesInGroupBy?: number;
   enableColumnTotals?: boolean;
 
-  computedField: string;
+  computedField: FieldOption;
   computedFieldOperation?: string;
   computedFieldFormat?: string;
   cellFontSize?: string;

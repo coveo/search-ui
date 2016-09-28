@@ -3,7 +3,7 @@ import {DefaultResultTemplate} from '../Templates/DefaultResultTemplate';
 import {Component} from '../Base/Component';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
+import {ComponentOptions, FieldOption} from '../Base/ComponentOptions';
 import {IQueryResult} from '../../rest/QueryResult';
 import {IQueryResults} from '../../rest/QueryResults';
 import {Assert} from '../../misc/Assert';
@@ -33,7 +33,7 @@ export interface IResultListOptions {
   waitAnimation?: string;
   mobileScrollContainer?: HTMLElement;
   enableInfiniteScrollWaitingAnimation?: boolean;
-  fieldsToInclude?: string[];
+  fieldsToInclude?: FieldOption[];
   autoSelectFieldsToInclude?: boolean;
 }
 

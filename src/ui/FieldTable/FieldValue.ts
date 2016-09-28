@@ -1,6 +1,6 @@
 import {Component} from '../Base/Component';
 import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
+import {ComponentOptions, FieldOption} from '../Base/ComponentOptions';
 import {IQueryResult} from '../../rest/QueryResult';
 import {Initialization} from '../Base/Initialization';
 import {TemplateHelpers} from '../Templates/TemplateHelpers';
@@ -13,7 +13,7 @@ import {Facet} from '../Facet/Facet';
 import {$$} from '../../utils/Dom';
 
 export interface IFieldValueOptions {
-  field?: string;
+  field?: FieldOption;
   facet?: string;
   htmlValue?: boolean;
   helper?: string;

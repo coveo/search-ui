@@ -12,7 +12,7 @@
 import {Component} from '../Base/Component';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {FacetValue, FacetValues} from './FacetValues';
-import {ComponentOptions} from '../Base/ComponentOptions';
+import {ComponentOptions, FieldOption} from '../Base/ComponentOptions';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {l} from '../../strings/Strings';
 import {FacetQueryController} from '../../controllers/FacetQueryController';
@@ -56,7 +56,7 @@ import {ValueElement} from './ValueElement';
 
 export interface IFacetOptions {
   title?: string;
-  field?: string;
+  field?: FieldOption;
   isMultiValueField?: boolean;
   numberOfValues?: number;
   pageSize?: number;
@@ -69,7 +69,7 @@ export interface IFacetOptions {
   enableTogglingOperator?: boolean;
   enableMoreLess?: boolean;
   valueCaption?: any;
-  lookupField?: string;
+  lookupField?: FieldOption;
   enableFacetSearch?: boolean;
   facetSearchDelay?: number;
   facetSearchIgnoreAccents?: boolean;
@@ -79,7 +79,7 @@ export interface IFacetOptions {
   numberOfValuesInOmnibox?: number;
   numberOfValuesInBreadcrumb?: number;
   id?: string;
-  computedField?: string;
+  computedField?: FieldOption;
   computedFieldOperation?: string;
   computedFieldFormat?: string;
   computedFieldCaption?: string;
