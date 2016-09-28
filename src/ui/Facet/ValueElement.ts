@@ -45,7 +45,6 @@ export class ValueElement {
       this.handleEventForExcludedValueElement(eventBindings);
     } else {
       this.handleEventForValueElement(eventBindings);
-      $();
     }
   }
 
