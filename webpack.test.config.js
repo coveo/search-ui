@@ -12,6 +12,11 @@ conf = _.extend(conf, {
     libraryTarget: 'var',
     library: 'Coveo',
     devtoolModuleFilenameTemplate: '[resource-path]'
+  },
+  ts: {
+    compilerOptions: {
+      project: './tsconfig.test.json'
+    }
   }
 })
 

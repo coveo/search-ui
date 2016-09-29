@@ -637,7 +637,6 @@ export class Dom {
     if (!this.el.getClientRects().length) {
       return { top: 0, left: 0 };
     }
-    $();
 
 
     let rect = this.el.getBoundingClientRect();

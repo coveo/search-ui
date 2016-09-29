@@ -12,6 +12,7 @@
     "src/**/*.ts"
   ],
   "files": [
+    "typings/main/ambient/jquery/index.d.ts",
     "typings/browser.d.ts",
     "typings/index.d.ts",
     "lib/promise.d.ts",
