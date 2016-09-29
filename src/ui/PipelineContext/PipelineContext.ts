@@ -26,7 +26,7 @@ export class PipelineContext extends Component {
     if (this.element.tagName.toLowerCase() == 'script') {
       try {
         // Content can be HTML encoded for special char ({!})
-        this.content = JSON.parse(Utils.decodeHTMLEntities($(this.element).text()));
+        this.content = JSON.parse(Utils.decodeHTMLEntities($$(this.element).text()));
       } catch (e) {
         try {
           this.content = JSON.parse($$(this.element).text());
