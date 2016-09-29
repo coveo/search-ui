@@ -15,6 +15,7 @@ import {Utils} from '../../utils/Utils';
 import {$$} from '../../utils/Dom';
 import {INoResultsEventArgs} from '../../events/QueryEvents';
 import {IQueryErrorEventArgs} from '../../events/QueryEvents';
+import {IComponentBindings} from '../Base/ComponentBindings';
 
 declare var coveoanalytics: CoveoAnalytics.CoveoUA;
 
@@ -35,7 +36,7 @@ export interface IRecommendationOptions extends ISearchInterfaceOptions {
  * This component can be included in another SearchInterface, but you need to initialize the recommendation component with Coveo('initRecommendation'), before
  * the parent SearchInterface.
  */
-export class Recommendation extends SearchInterface {
+export class Recommendation extends SearchInterface implements IComponentBindings {
   static ID = 'Recommendation';
   private static NEXT_ID = 1;
 
@@ -63,10 +64,10 @@ export class Recommendation extends SearchInterface {
     id: ComponentOptions.buildStringOption(),
     /**
      * Specifies which options from the main {@link QueryBuilder} to use in the triggered query.
-     * Ex: <code data-options-to-use="expression, advancedExpression"></code> would add the expression and the advanced expression parts from the main query in the triggered query.
+     * Ex: <code data-options-to-use="expression,advancedExpression"></code> would add the expression and the advanced expression parts from the main query in the triggered query.
      * The default value is undefined.
      */
-    optionsToUse: ComponentOptions.buildListOption({ defaultValue: ['expression'] }),
+    optionsToUse: ComponentOptions.buildListOption<'expression' | 'advancedExpression' | 'constantExpression' | 'disjunctionExpression'>({ defaultValue: ['expression'] }),
 
     /**
      * Specifies whether or not to send the actions history along with the triggered query.

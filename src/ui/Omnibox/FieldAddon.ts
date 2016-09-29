@@ -112,7 +112,7 @@ export class FieldAddon {
     if (this.fields == null) {
       this.fields = new Promise<string[]>((resolve, reject) => {
         if (this.omnibox.options.listOfFields != null) {
-          resolve(this.omnibox.options.listOfFields);
+          resolve(<string[]>this.omnibox.options.listOfFields);
         } else {
           var promise: Promise<IFieldDescription[] | IEndpointError> = this.omnibox.queryController.getEndpoint().listFields();
           promise.then((fieldDescriptions: IFieldDescription[]) => {

@@ -1,6 +1,6 @@
 /// <reference path='../../../node_modules/modal-box/bin/ModalBox.d.ts' />
 import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
+import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {SearchAlertsMessage} from './SearchAlertsMessage';
 import {SettingsEvents} from '../../events/SettingsEvents';
@@ -21,7 +21,7 @@ import {ModalBox} from '../../ExternalModulesShim';
 export interface ISearchAlertsOptions {
   enableManagePanel?: boolean;
   enableFollowQuery?: boolean;
-  modifiedDateField?: string;
+  modifiedDateField?: IFieldOption;
   enableMessage?: boolean;
   messageCloseDelay?: number;
 }
@@ -52,7 +52,7 @@ export class SearchAlerts extends Component {
      * Specifies the modifiedDateField to use when sending the follow query request.
      * This default value is undefined.
      */
-    modifiedDateField: ComponentOptions.buildStringOption(),
+    modifiedDateField: ComponentOptions.buildFieldOption(),
     /**
      * Specifies whether to display info and error messages when search alerts actions are performed.
      * This default value is true.
@@ -339,7 +339,7 @@ export class SearchAlerts extends Component {
     };
 
     if (options.modifiedDateField) {
-      typeConfig.modifiedDateField = options.modifiedDateField;
+      typeConfig.modifiedDateField = <string>options.modifiedDateField;
     }
 
     return {

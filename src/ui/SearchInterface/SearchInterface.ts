@@ -1,5 +1,5 @@
 import {SearchEndpoint} from '../../rest/SearchEndpoint';
-import {ComponentOptions} from '../Base/ComponentOptions';
+import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
 import {DeviceUtils} from '../../utils/DeviceUtils';
 import {$$} from '../../utils/Dom';
 import {DomUtils} from '../../utils/DomUtils';
@@ -24,6 +24,7 @@ import {HashUtils} from '../../utils/HashUtils';
 import FastClick = require('fastclick');
 import timezone = require('jstz');
 import {SentryLogger} from '../../misc/SentryLogger';
+import {IComponentBindings} from '../Base/ComponentBindings';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -32,7 +33,7 @@ export interface ISearchInterfaceOptions {
   resultsPerPage?: number;
   excerptLength?: number;
   expression?: string;
-  filterField?: string;
+  filterField?: IFieldOption;
   hideUntilFirstQuery?: boolean;
   firstLoadingAnimation?: HTMLElement;
   autoTriggerQuery?: boolean;
@@ -54,7 +55,7 @@ export interface ISearchInterfaceOptions {
  * It is also on this component that you call the initialization function.<br/>
  * Since this component is the root of your Search UI, it is recommended that you give it a unique HTML id attribute in order to reference it easily.
  */
-export class SearchInterface extends RootComponent {
+export class SearchInterface extends RootComponent implements IComponentBindings {
   static ID = 'SearchInterface';
   /**
    * The options for the search interface
@@ -105,7 +106,7 @@ export class SearchInterface extends RootComponent {
      * This is obviously an advanced feature. Instead, look into using the {@link Folding} component, which covers a lot of different use cases.<br/>
      * By default none is added
      */
-    filterField: ComponentOptions.buildStringOption({ defaultValue: '' }),
+    filterField: ComponentOptions.buildFieldOption({ defaultValue: '' }),
     /**
      * Specifies whether the interface should display a loading animation before the first query has completed successfully.<br/>
      * Note that if you set autoTriggerQuery to false, this means that the loading animation will not go away automatically.<br/>
@@ -532,8 +533,8 @@ export class SearchInterface extends RootComponent {
       data.queryBuilder.advancedExpression.add(this.options.expression);
     }
 
-    if (Utils.isNonEmptyString(this.options.filterField)) {
-      data.queryBuilder.filterField = this.options.filterField;
+    if (Utils.isNonEmptyString(<string>this.options.filterField)) {
+      data.queryBuilder.filterField = <string>this.options.filterField;
     }
 
     if (Utils.isNonEmptyString(this.options.timezone)) {
