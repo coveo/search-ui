@@ -9,3 +9,4 @@ npm-debug.log
 *.orig
 gulp-tsc-tmp*
 environments/conf.js
+docs/theme/assets/gen

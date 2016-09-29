@@ -401,6 +401,8 @@
     "test/ui/RegisteredNamedMethodsTest.ts",
     "test/ui/FacetValuesOrderTest.ts",
     "test/misc/SentryLoggerTest.ts",
-    "test/utils/StreamHighlightUtilsTest.ts"
+    "test/utils/StreamHighlightUtilsTest.ts",
+    "docs/playground/src/Index.ts",
+    "docs/playground/src/Playground.ts"
   ]
 }

@@ -788,7 +788,7 @@ export class Matrix extends Component {
     let fieldExists = _.find(query.fieldsToInclude, (field: string) => {
       return field == fieldSliced;
     });
-    if (!fieldExists) {
+    if (!fieldExists && query.fieldsToInclude) {
       query.fieldsToInclude.push(fieldSliced);
     }
     return query;
