@@ -168,8 +168,7 @@ export class Playground {
     });
     previewContainer.appendChild(this.showButton.el);
     previewContainer.appendChild(this.hideButton.el);
-    previewContainer.appendChild(this.editButton.el);
-
+    // previewContainer.appendChild(this.editButton.el);
     previewContainer.appendChild(this.componentContainer.el);
   }
 
