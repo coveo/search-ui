@@ -329,5 +329,12 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
     show: true,
     isResultComponent: true,
     advancedExpression: '@filetype=="youtubevideo"'
+  },
+  AdvancedSearch: {
+    show: true,
+    element: $$('div', undefined, `<div class="coveo-search-section"><div class="CoveoSettings"></div><div class="CoveoSearchbox"></div></div><div class="CoveoAdvancedSearch"></div>`),
+    toExecute: ()=> {
+      $$(document.body).find('.CoveoSearchInterface').style.minHeight = '300px';
+    }
   }
 }
