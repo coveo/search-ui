@@ -14,9 +14,7 @@ conf = _.extend(conf, {
     devtoolModuleFilenameTemplate: '[resource-path]'
   },
   ts: {
-    compilerOptions: {
-      project: './tsconfig.test.json'
-    }
+    project: './test/tsconfig.json'
   }
 })
 
