@@ -395,6 +395,10 @@ export var analyticsActionCauseList = {
     type: 'customfilters',
     metaMap: { customFilterName: 1, customFilterType: 2, customFilterExpression: 3 }
   },
+  fetchMoreResultsClick: <IAnalyticsActionCause>{
+    name: 'fetchMoreResultsClick',
+    type: 'getMoreResults'
+  },
   pagerNumber: <IAnalyticsActionCause>{
     name: 'pagerNumber',
     type: 'getMoreResults',

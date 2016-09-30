@@ -191,6 +191,20 @@ export function ResultListTest() {
         expect(test.env.queryController.fetchMore).toHaveBeenCalledWith(26);
       });
 
+      it('fetchMoreResultsElement fetches more results when clicked', function () {
+        let fetchMoreElement = $$('div', { className: 'coveo-more-results' });
+        $$(document.body).append(fetchMoreElement.el);
+
+        test = Mock.basicComponentSetup<ResultList>(ResultList);
+
+        Simulate.query(test.env);
+        fetchMoreElement.el.click();
+
+        expect(test.env.queryController.fetchMore).toHaveBeenCalled();
+
+        fetchMoreElement.remove();
+      });
+
       it('fieldsToInclude allow to specify an array of fields to include in the query', function () {
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
           fieldsToInclude: ['@field1', '@field2', '@field3']

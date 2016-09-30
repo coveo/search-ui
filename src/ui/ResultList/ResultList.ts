@@ -12,7 +12,7 @@ import {MODEL_EVENTS} from '../../models/Model';
 import {QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
 import {QueryUtils} from '../../utils/QueryUtils';
 import {$$, Win, Doc} from '../../utils/Dom';
-import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
+import {analyticsActionCauseList, IAnalyticsNoMeta, IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta';
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
 import {Defer} from '../../misc/Defer';
 import {DeviceUtils} from '../../utils/DeviceUtils';
@@ -35,6 +35,7 @@ export interface IResultListOptions {
   enableInfiniteScrollWaitingAnimation?: boolean;
   fieldsToInclude?: IFieldOption[];
   autoSelectFieldsToInclude?: boolean;
+  fetchMoreElement?: HTMLElement;
 }
 
 /**
@@ -179,7 +180,12 @@ export class ResultList extends Component {
      * Default value is false.<br/>
      * NB: Many interface created by the interface editor will actually explicitly set this option to true.
      */
-    autoSelectFieldsToInclude: ComponentOptions.buildBooleanOption({ defaultValue: false })
+    autoSelectFieldsToInclude: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
+    /**
+     * Specifies the element whose click is monitored to trigger fetching of additional results.
+     */
+    fetchMoreElement: ComponentOptions.buildSelectorOption({ defaultFunction: () => <HTMLElement>document.querySelector('.coveo-more-results') }),
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
@@ -217,6 +223,9 @@ export class ResultList extends Component {
 
     if (this.options.enableInfiniteScroll) {
       this.bind.on(<HTMLElement>this.options.infiniteScrollContainer, 'scroll', (e: Event) => this.handleScrollOfResultList());
+    }
+    if (this.options.fetchMoreElement) {
+      this.bind.on(<HTMLElement>this.options.fetchMoreElement, 'click', (e: Event) => this.handleFetchMoreResultsClicked());
     }
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, () => this.handlePageChanged());
   }
@@ -278,7 +287,8 @@ export class ResultList extends Component {
    * Assert that the result list is not currently fetching results
    * @param count The number of results to fetch and display
    */
-  public displayMoreResults(count: number) {
+  public displayMoreResults(count: number,
+                            actionCause: IAnalyticsActionCause) {
     Assert.isLargerOrEqualsThan(1, count);
 
     if (this.isCurrentlyFetchingMoreResults()) {
@@ -297,7 +307,7 @@ export class ResultList extends Component {
     this.fetchingMoreResults = this.queryController.fetchMore(count);
     this.fetchingMoreResults.then((data: IQueryResults) => {
       Assert.exists(data);
-      this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.pagerScrolling, {}, this.element);
+      this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(actionCause, {}, this.element);
       var results = data.results;
       this.reachedTheEndOfResults = count > data.results.length;
       this.renderResults(this.buildResults(data), true);
@@ -396,12 +406,23 @@ export class ResultList extends Component {
     }
   }
 
+  private handleFetchMoreResultsClicked() {
+    if (this.isCurrentlyFetchingMoreResults()) {
+      return;
+    }
+    if (this.hasPotentiallyMoreResultsToDisplay()) {
+      this.displayMoreResults(this.options.infiniteScrollPageSize,
+                              analyticsActionCauseList.fetchMoreResultsClick);
+    }
+  }
+
   private handleScrollOfResultList() {
     if (this.isCurrentlyFetchingMoreResults() || !this.options.enableInfiniteScroll) {
       return;
     }
     if (this.isScrollingOfResultListAlmostAtTheBottom() && this.hasPotentiallyMoreResultsToDisplay()) {
-      this.displayMoreResults(this.options.infiniteScrollPageSize);
+      this.displayMoreResults(this.options.infiniteScrollPageSize,
+                              analyticsActionCauseList.pagerScrolling);
     }
   }
 
