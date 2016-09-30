@@ -889,7 +889,7 @@ input[type=checkbox]:checked + .tsd-widget:before { background-position: -160px 
     padding: 20px;
 }
 
-.preview-container button.preview-toggle {
+.preview-container button.preview-toggle, .preview-container button.preview-edit {
     color: #222;
     background-color: #fdfdfd;
     padding: 6px 12px;
@@ -898,8 +898,18 @@ input[type=checkbox]:checked + .tsd-widget:before { background-position: -160px 
     box-shadow: 0 0 1px rgba(0, 0, 0, 0.35);
 }
 
-.preview-container button.preview-toggle:hover {
+.preview-container button.preview-toggle:hover, .preview-container button.preview-edit:hover {
     background-color: #eee;
+}
+
+.preview-container button.preview-edit {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.preview-container {
+    position: relative;
 }
 
 .preview-container .CoveoResult {
