@@ -8,7 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="{{relativeURL "assets/css/main.css"}}">
+    <link rel="stylesheet" href="{{relativeURL "assets/gen/css/CoveoFullSearchNewDesign.css"}}">
     <script src="{{relativeURL "assets/js/modernizr.js"}}"></script>
+    <script src="{{relativeURL "assets/gen/js/CoveoJsSearch.js"}}"></script>
+    <script src="{{relativeURL "assets/gen/js/templates/templatesNew.js"}}"></script>
+
 </head>
 <body>
 
@@ -17,6 +21,8 @@
 <div class="container container-main">
     <div class="row">
         <div class="col-8 col-content">
+            <div class="preview-container tsd-panel">
+            </div>
             {{{contents}}}
         </div>
         <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -35,6 +41,7 @@
 
 <div class="overlay"></div>
 <script src="{{relativeURL "assets/js/main.js"}}"></script>
+<script src="{{relativeURL "assets/gen/js/playground.js"}}"></script>
 <script>if (location.protocol == 'file:') document.write('<script src="{{relativeURL "assets/js/search.js"}}"><' + '/script>');</script>
 
 {{> analytics}}
