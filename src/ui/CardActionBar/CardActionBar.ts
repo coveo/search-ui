@@ -32,6 +32,11 @@ export class CardActionBar extends Component {
     super(element, CardActionBar.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, CardActionBar, options);
 
+    if (!this.options.hidden) {
+      this.element.style.transition = "none";
+      this.element.style.transform = "none";
+    }
+
     let initOptions = this.searchInterface.options.originalOptionsObject;
     let resultComponentBindings: IResultsComponentBindings = _.extend({}, this.getBindings(), {
       resultElement: element
