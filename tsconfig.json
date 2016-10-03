@@ -405,6 +405,8 @@
     "test/misc/SentryLoggerTest.ts",
     "test/utils/StreamHighlightUtilsTest.ts",
     "src/ui/Backdrop/Backdrop.ts",
-    "test/ui/BackdropTest.ts"
+    "test/ui/BackdropTest.ts",
+    "src/ui/CardActionBar/CardActionBar.ts",
+    "test/ui/CardActionBarTest.ts"
   ]
 }

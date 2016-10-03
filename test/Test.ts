@@ -334,3 +334,6 @@ StreamHighlightUtilsTest();
 
 import {BackdropTest} from './ui/BackdropTest';
 BackdropTest();
+
+import { CardActionBarTest } from './ui/CardActionBarTest';
+CardActionBarTest();
