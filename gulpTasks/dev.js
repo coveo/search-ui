@@ -14,14 +14,27 @@ let webpackConfigTest = require('../webpack.test.config');
 webpackConfigTest.entry['tests'].unshift('webpack-dev-server/client?http://localhost:8081/');
 const compilerTest = webpack(webpackConfigTest);
 
-let debounced = _.debounce(()=> {
+let webpackConfigPlayground = require('../webpack.playground.config');
+webpackConfigPlayground.entry['playground'].unshift('webpack-dev-server/client?http://localhost:8082/');
+const compilerPlayground = webpack(webpackConfigPlayground);
+
+let debouncedLinkToExternal = _.debounce(()=> {
   console.log('... Compiler done ... Linking external projects'.black.bgGreen);
   buildUtilities.exec('node', ['./environments/link.externally.js'], undefined, function () {
   })
-}, 1000)
+}, 1000);
+
+let debouncedGenerateDoc = _.debounce(()=> {
+  buildUtilities.exec('gulp', ['doc'], undefined, function () {
+  })
+}, 1000);
 
 compiler.plugin('done', ()=> {
-  debounced();
+  debouncedLinkToExternal();
+})
+
+compilerPlayground.plugin('done', ()=> {
+  debouncedGenerateDoc();
 })
 
 gulp.task('dev', ['setup', 'prepareSass'], (done)=> {
@@ -42,6 +55,17 @@ gulp.task('devTest', ['setupTests'], function (done) {
     compress: true
   });
   serverTests.listen(8081, 'localhost', ()=> {
+  })
+  done();
+})
+
+gulp.task('devPlayground', function (done) {
+  var serverPlayground = new WebpackDevServer(compilerPlayground, {
+    contentBase: 'docgen/',
+    publicPath: '/assets/gen/js/',
+    compress: true
+  })
+  serverPlayground.listen(8082, 'localhost', ()=> {
   })
   done();
 })
