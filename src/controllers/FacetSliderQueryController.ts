@@ -8,6 +8,7 @@ import {ExpressionBuilder} from '../ui/Base/ExpressionBuilder';
 import {IRangeValue} from '../rest/RangeValue';
 import {DateUtils} from '../utils/DateUtils';
 import {Logger} from '../misc/Logger';
+import {QueryUtils} from '../utils/QueryUtils';
 
 export class FacetSliderQueryController {
   public graphGroupByQueriesIndex: number;
@@ -80,7 +81,7 @@ export class FacetSliderQueryController {
   private isAValidRangeResponse(args: IQuerySuccessEventArgs) {
     if (this.lastGroupByRequestIndex != undefined && args.results.groupByResults[this.lastGroupByRequestIndex]) {
       let firstValue = args.results.groupByResults[this.lastGroupByRequestIndex].values[0];
-      if (firstValue && firstValue.value.indexOf('..') == -1) {
+      if (firstValue && !QueryUtils.isRangeString(firstValue.value)) {
         return false;
       }
     }
