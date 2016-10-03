@@ -1,4 +1,7 @@
 .CoveoCardActionBar {
+  display: flex;
+  flex-wrap: wrap;
+
   background-color: $color-greyish-dark-blue;
   color: #fff;
   margin: auto -20px -20px -20px;
@@ -10,7 +13,6 @@
   transform: translateY(calc(100% + #{$action-bar-box-shadow-offset}));
   transition: transform 0.2s ease-in-out;
   > * {
-    display: inline-block;
     text-transform: uppercase;
     margin-top: 10px;
     margin-right: 20px;
