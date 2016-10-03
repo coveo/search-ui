@@ -4,10 +4,10 @@
   margin: auto -20px -20px -20px;
   padding: 0 0 10px 20px;
   font-size: 0.9em;
-  box-shadow: 0px 0px 3px 2px rgba(0, 0, 0, 0.2);
+  $action-bar-box-shadow-offset: 3px;
+  box-shadow: 0px 0px $action-bar-box-shadow-offset 2px rgba(0, 0, 0, 0.2);
 
-  transform: scaleY(0);
-  transform-origin: bottom;
+  transform: translateY(calc(100% + #{$action-bar-box-shadow-offset}));
   transition: transform 0.2s ease-in-out;
   > * {
     display: inline-block;
