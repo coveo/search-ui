@@ -184,6 +184,10 @@
       display: flex;
       flex-direction: column;
     }
+
+    &:hover .CoveoCardActionBar {
+      transform: scaleY(1);
+    }
   }
 }
 
