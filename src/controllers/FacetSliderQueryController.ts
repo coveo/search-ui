@@ -56,15 +56,12 @@ export class FacetSliderQueryController {
   }
 
   private handleQuerySuccess(args: IQuerySuccessEventArgs) {
-    if (this.lastGroupByRequestIndex != undefined && args.results.groupByResults[this.lastGroupByRequestIndex]) {
-      let firstValue = args.results.groupByResults[this.lastGroupByRequestIndex].values[0];
-      if (firstValue && firstValue.value.indexOf('..') == -1) {
-        let logger = new Logger(this);
-        logger.error(`Cannot instantiate FacetSlider for this field : ${this.facet.options.field}. It needs to be configured as a numerical field in the index`);
-        logger.error(`Disabling the FacetSlider`, this.facet);
-        this.facet.disable();
-        return;
-      }
+    if (!this.isAValidRangeResponse(args)) {
+      let logger = new Logger(this);
+      logger.error(`Cannot instantiate FacetSlider for this field : ${this.facet.options.field}. It needs to be configured as a numerical field in the index`);
+      logger.error(`Disabling the FacetSlider`, this.facet);
+      this.facet.disable();
+      return;
     }
 
     if (this.facet.options && this.facet.options.graph && this.rangeValuesForGraphToUse == undefined) {
@@ -78,6 +75,16 @@ export class FacetSliderQueryController {
         });
       });
     }
+  }
+
+  private isAValidRangeResponse(args: IQuerySuccessEventArgs) {
+    if (this.lastGroupByRequestIndex != undefined && args.results.groupByResults[this.lastGroupByRequestIndex]) {
+      let firstValue = args.results.groupByResults[this.lastGroupByRequestIndex].values[0];
+      if (firstValue && firstValue.value.indexOf('..') == -1) {
+        return false;
+      }
+    }
+    return true;
   }
 
   private addFilterExpressionWithOuterBoundsIncluded(start: any, end: any, builder: ExpressionBuilder) {
