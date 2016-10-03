@@ -5,7 +5,7 @@
     margin: 0 0 4px 0;
     float: none;
     &.coveo-icon-with-caption-overlay {
-      overflow: visible;
+      overflow: visible !important;
       position: relative;
     }
   }
