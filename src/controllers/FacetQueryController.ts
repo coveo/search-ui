@@ -45,15 +45,15 @@ export class FacetQueryController {
     if (selected.length > 0) {
       if (this.facet.options.useAnd) {
         _.each(selected, (value: FacetValue) => {
-          builder.addFieldExpression(this.facet.options.field, '==', [value.value]);
+          builder.addFieldExpression(<string>this.facet.options.field, '==', [value.value]);
         });
       } else {
-        builder.addFieldExpression(this.facet.options.field, '==', _.map(selected, (value: FacetValue) => value.value));
+        builder.addFieldExpression(<string>this.facet.options.field, '==', _.map(selected, (value: FacetValue) => value.value));
       }
     }
     let excluded = this.facet.values.getExcluded();
     if (excluded.length > 0) {
-      builder.addFieldNotEqualExpression(this.facet.options.field, _.map(excluded, (value: FacetValue) => value.value));
+      builder.addFieldNotEqualExpression(<string>this.facet.options.field, _.map(excluded, (value: FacetValue) => value.value));
     }
     if (Utils.isNonEmptyString(this.facet.options.additionalFilter)) {
       builder.add(this.facet.options.additionalFilter);
@@ -248,22 +248,22 @@ export class FacetQueryController {
     }
 
     let groupByRequest: IGroupByRequest = {
-      field: this.facet.options.field,
+      field: <string>this.facet.options.field,
       maximumNumberOfValues: nbOfRequestedValues + (this.facet.options.enableMoreLess ? 1 : 0),
       sortCriteria: this.facet.options.sortCriteria,
       injectionDepth: this.facet.options.injectionDepth,
       completeFacetWithStandardValues: this.facet.options.allowedValues == undefined ? true : false
     };
     if (this.facet.options.lookupField) {
-      groupByRequest.lookupField = this.facet.options.lookupField;
+      groupByRequest.lookupField = <string>this.facet.options.lookupField;
     }
     if (allowedValues != null) {
       groupByRequest.allowedValues = allowedValues;
     }
 
-    if (addComputedField && Utils.isNonEmptyString(this.facet.options.computedField)) {
+    if (addComputedField && Utils.isNonEmptyString(<string>this.facet.options.computedField)) {
       groupByRequest.computedFields = [{
-        field: this.facet.options.computedField,
+        field: <string>this.facet.options.computedField,
         operation: this.facet.options.computedFieldOperation
       }];
     }

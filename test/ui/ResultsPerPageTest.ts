@@ -1,7 +1,7 @@
 import * as Mock from '../MockEnvironment';
-import {ResultsPerPage} from '../../src/ui/Pager/ResultsPerPage';
+import {ResultsPerPage} from '../../src/ui/ResultsPerPage/ResultsPerPage';
 import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import {IResultsPerPageOptions} from '../../src/ui/Pager/ResultsPerPage';
+import {IResultsPerPageOptions} from '../../src/ui/ResultsPerPage/ResultsPerPage';
 import {Simulate} from '../Simulate';
 import {FakeResults} from '../Fake';
 import {$$} from '../../src/utils/Dom';

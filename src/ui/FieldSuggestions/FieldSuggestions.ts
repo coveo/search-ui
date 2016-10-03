@@ -1,6 +1,6 @@
 import {ISuggestionForOmniboxOptions, SuggestionForOmnibox, ISuggestionForOmniboxTemplate} from '../Misc/SuggestionForOmnibox';
 import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
+import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {Assert} from '../../misc/Assert';
 import {Utils} from '../../utils/Utils';
@@ -15,7 +15,7 @@ import {$$} from '../../utils/Dom';
 import {ISuggestionForOmniboxOptionsOnSelect} from '../Misc/SuggestionForOmnibox';
 
 export interface IFieldSuggestionsOptions extends ISuggestionForOmniboxOptions {
-  field?: string;
+  field?: IFieldOption;
   queryOverride?: string;
 }
 
@@ -106,7 +106,7 @@ export class FieldSuggestions extends Component {
 
     this.options = ComponentOptions.initComponentOptions(element, FieldSuggestions, options);
 
-    Assert.check(Utils.isCoveoField(this.options.field), this.options.field + ' is not a valid field');
+    Assert.check(Utils.isCoveoField(<string>this.options.field), this.options.field + ' is not a valid field');
 
     this.options.onSelect = this.options.onSelect || this.onRowSelection;
 
@@ -192,7 +192,7 @@ export class FieldSuggestions extends Component {
 
   private buildListFieldValueRequest(valueToSearch: string): IListFieldValuesRequest {
     return {
-      field: this.options.field,
+      field: <string>this.options.field,
       ignoreAccents: true,
       sortCriteria: 'occurrences',
       maximumNumberOfValues: this.options.numberOfSuggestions,

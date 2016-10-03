@@ -5,7 +5,7 @@
 import {IQueryboxOptions} from '../Querybox/Querybox';
 import {Component} from '../Base/Component';
 import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
+import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
 import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
 import {StandaloneSearchInterfaceEvents} from '../../events/StandaloneSearchInterfaceEvents';
 import {MODEL_EVENTS, IAttributeChangedEventArg} from '../../models/Model';
@@ -40,8 +40,8 @@ export interface IOmniboxOptions extends IQueryboxOptions {
   inline?: boolean;
   enableFieldAddon?: boolean;
   enableSimpleFieldAddon?: boolean;
-  listOfFields?: string[];
-  fieldAlias?: { [alias: string]: string };
+  listOfFields?: IFieldOption[];
+  fieldAlias?: { [alias: string]: IFieldOption };
   enableRevealQuerySuggestAddon?: boolean;
   enableQueryExtensionAddon?: boolean;
   omniboxTimeout?: number;
@@ -452,7 +452,7 @@ export class Omnibox extends Component {
         _.each(fieldNames, (result: Coveo.MagicBox.Result) => {
           let alias = _.find(_.keys(this.options.fieldAlias), (alias: string) => alias.toLowerCase() == result.value.toLowerCase());
           if (alias != null) {
-            result.value = this.options.fieldAlias[alias];
+            result.value = <string>this.options.fieldAlias[alias];
           }
         });
       }

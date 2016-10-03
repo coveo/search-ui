@@ -1,7 +1,7 @@
 import {IQueryResult} from '../../rest/QueryResult';
 import {Component} from '../Base/Component';
 import {SortCriteria} from '../Sort/SortCriteria';
-import {ComponentOptions} from '../Base/ComponentOptions';
+import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {Utils} from '../../utils/Utils';
 import {Assert} from '../../misc/Assert';
@@ -13,10 +13,10 @@ import {$$} from '../../utils/Dom';
 import {QueryBuilder} from '../Base/QueryBuilder';
 
 export interface IFoldingOptions {
-  field?: string;
+  field?: IFieldOption;
 
-  childField?: string;
-  parentField?: string;
+  childField?: IFieldOption;
+  parentField?: IFieldOption;
 
   range?: number;
   rearrange?: SortCriteria;
@@ -187,7 +187,7 @@ export class Folding extends Component {
 
     this.options = ComponentOptions.initComponentOptions(element, Folding, options);
 
-    Assert.check(Utils.isCoveoField(this.options.field), this.options.field + ' is not a valid field');
+    Assert.check(Utils.isCoveoField(<string>this.options.field), this.options.field + ' is not a valid field');
     Assert.exists(this.options.maximumExpandedResults);
 
     this.bind.onRootElement(QueryEvents.buildingQuery, this.handleBuildingQuery);
@@ -308,17 +308,17 @@ export class Folding extends Component {
     Assert.exists(data);
 
     if (!this.disabled) {
-      data.queryBuilder.childField = this.options.childField;
-      data.queryBuilder.parentField = this.options.parentField;
-      data.queryBuilder.filterField = this.options.field;
+      data.queryBuilder.childField = <string>this.options.childField;
+      data.queryBuilder.parentField = <string>this.options.parentField;
+      data.queryBuilder.filterField = <string>this.options.field;
       data.queryBuilder.filterFieldRange = this.options.range;
 
-      data.queryBuilder.requiredFields.push(this.options.field);
+      data.queryBuilder.requiredFields.push(<string>this.options.field);
       if (this.options.childField != null) {
-        data.queryBuilder.requiredFields.push(this.options.childField);
+        data.queryBuilder.requiredFields.push(<string>this.options.childField);
       }
       if (this.options.parentField != null) {
-        data.queryBuilder.requiredFields.push(this.options.parentField);
+        data.queryBuilder.requiredFields.push(<string>this.options.parentField);
       }
     }
   }
@@ -337,7 +337,7 @@ export class Folding extends Component {
 
   private addLoadMoreHandler(results: IQueryResult[], originalQuery: IQuery) {
     return _.map(results, (result) => {
-      if (this.options.enableExpand && !Utils.isNullOrUndefined(Utils.getFieldValue(result, this.options.field))) {
+      if (this.options.enableExpand && !Utils.isNullOrUndefined(Utils.getFieldValue(result, <string>this.options.field))) {
         result.moreResults = () => {
           return this.moreResults(result, originalQuery);
         };
@@ -351,10 +351,10 @@ export class Folding extends Component {
     let query = new QueryBuilder();
     query.numberOfResults = this.options.maximumExpandedResults;
 
-    let fieldValue = Utils.getFieldValue(result, this.options.field);
+    let fieldValue = Utils.getFieldValue(result, <string>this.options.field);
 
     if (Utils.isNonEmptyString(fieldValue)) {
-      query.advancedExpression.addFieldExpression(this.options.field, '=', [fieldValue]);
+      query.advancedExpression.addFieldExpression(<string>this.options.field, '=', [fieldValue]);
     }
 
     if (Utils.isNonEmptyString(originalQuery.q)) {
@@ -367,10 +367,10 @@ export class Folding extends Component {
     }
 
     if (this.options.parentField != null) {
-      query.parentField = this.options.parentField;
+      query.parentField = <string>this.options.parentField;
     }
     if (this.options.childField != null) {
-      query.childField = this.options.childField;
+      query.childField = <string>this.options.childField;
     }
 
     if (this.options.rearrange) {

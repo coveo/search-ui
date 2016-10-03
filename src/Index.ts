@@ -39,7 +39,7 @@ export {Slider} from './ui/Misc/Slider';
 export {FacetSlider} from './ui/FacetSlider/FacetSlider';
 export {FacetRange} from './ui/FacetRange/FacetRange';
 export {Pager} from './ui/Pager/Pager';
-export {ResultsPerPage} from './ui/Pager/ResultsPerPage';
+export {ResultsPerPage} from './ui/ResultsPerPage/ResultsPerPage';
 export {ResultList} from './ui/ResultList/ResultList';
 export {ResultLayout} from './ui/ResultLayout/ResultLayout';
 export {DefaultRecommendationTemplate} from './ui/Templates/DefaultRecommendationTemplate';

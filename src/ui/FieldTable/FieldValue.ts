@@ -1,6 +1,6 @@
 import {Component} from '../Base/Component';
 import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
+import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
 import {IQueryResult} from '../../rest/QueryResult';
 import {Initialization} from '../Base/Initialization';
 import {TemplateHelpers} from '../Templates/TemplateHelpers';
@@ -13,7 +13,7 @@ import {Facet} from '../Facet/Facet';
 import {$$} from '../../utils/Dom';
 
 export interface IFieldValueOptions {
-  field?: string;
+  field?: IFieldOption;
   facet?: string;
   htmlValue?: boolean;
   helper?: string;
@@ -184,7 +184,7 @@ export class FieldValue extends Component {
    * Returns <code>null</code> if value is an <code>Object</code>.
    */
   public getValue() {
-    let value = Utils.getFieldValue(this.result, this.options.field);
+    let value = Utils.getFieldValue(this.result, <string>this.options.field);
     if (!_.isArray(value) && _.isObject(value)) {
       value = null;
     }

@@ -26,20 +26,20 @@ export class FacetUtils {
         .each((match) => {
           ret.push(match[0]);
         });
-      if (QueryUtils.isStratusAgnosticField(facet.options.field, '@objecttype') || QueryUtils.isStratusAgnosticField(facet.options.field, '@filetype')) {
+      if (QueryUtils.isStratusAgnosticField(<string>facet.options.field, '@objecttype') || QueryUtils.isStratusAgnosticField(<string>facet.options.field, '@filetype')) {
         _.each(FileTypes.getFileTypeCaptions(), (value: string, key: string) => {
           if (!(key in facet.options.valueCaption) && regex.test(value)) {
             ret.push(key);
           }
         });
       }
-    } else if (QueryUtils.isStratusAgnosticField(facet.options.field, '@objecttype') || QueryUtils.isStratusAgnosticField(facet.options.field, '@filetype')) {
+    } else if (QueryUtils.isStratusAgnosticField(<string>facet.options.field, '@objecttype') || QueryUtils.isStratusAgnosticField(<string>facet.options.field, '@filetype')) {
       _.each(_.filter(_.pairs(FileTypes.getFileTypeCaptions()), (pair) => {
         return regex.test(pair[1]);
       }), (match) => {
         ret.push(match[0]);
       });
-    } else if (QueryUtils.isStratusAgnosticField(facet.options.field, '@month')) {
+    } else if (QueryUtils.isStratusAgnosticField(<string>facet.options.field, '@month')) {
       _.each(_.range(1, 13), (month) => {
         if (regex.test(DateUtils.monthToString(month - 1))) {
           ret.push(('0' + month.toString()).substr(-2));
