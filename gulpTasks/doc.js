@@ -2,6 +2,7 @@
 const gulp = require('gulp');
 const TypeDoc = require('typedoc');
 const fs = require('fs');
+const shell = require('gulp-shell');
 
 gulp.task('doc', ['copyBinToDoc', 'buildPlayground'], function () {
 
