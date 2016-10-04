@@ -1,11 +1,11 @@
 interface jsTimeZoneDetect {
-  determine: () => timezone;
+  determine: () => TimeZone;
   date_is_dst: (date: Date) => boolean;
   dst_start_for: (timeZone: string) => Date;
-  TimeZone: (timeZoneName: string) => timezone;
+  TimeZone: (timeZoneName: string) => TimeZone;
 }
 
-interface timezone {
+interface TimeZone {
   name: () => string;
 }
 

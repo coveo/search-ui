@@ -8,6 +8,7 @@ import {Promise} from 'es6-promise';
 import _ = require('underscore');
 
 declare var XDomainRequest;
+declare var $;
 
 /**
  * Parameters that can be used when calling an {@link EndpointCaller}
@@ -394,6 +395,7 @@ export class EndpointCaller {
    * @returns {Promise<T>|Promise}
    */
   public callUsingAjaxJsonP<T>(requestInfo: IRequestInfo<T>): Promise<IResponse<T>> {
+    Assert.check(Utils.isNullOrUndefined($), 'Using jsonp without having included jQuery is not supported.')
     return new Promise((resolve, reject) => {
       var queryString = requestInfo.queryString.concat(this.convertJsonToQueryString(requestInfo.requestData));
 

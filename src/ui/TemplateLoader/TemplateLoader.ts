@@ -46,8 +46,6 @@ export class TemplateLoader extends Component {
         result: this.result
       };
 
-      $(this.element);
-
       var parents = $$(this.element).parents(Component.computeCssClassName(TemplateLoader));
       _.each(parents, (parent: HTMLElement) => {
         let clone = <HTMLElement>parent.cloneNode();

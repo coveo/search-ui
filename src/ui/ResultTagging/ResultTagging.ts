@@ -282,7 +282,7 @@ export class ResultTagging extends Component {
       clearTimeout(timeout);
     });
 
-    $$(this.autoCompletePopup).on('mouseout', ((e: JQueryEventObject) => {
+    $$(this.autoCompletePopup).on('mouseout', ((e) => {
       if ($$(<HTMLElement>e.target).hasClass(ResultTagging.autoCompleteClass)) {
         timeout = setTimeout(() => {
           this.clearPopup();
@@ -306,7 +306,7 @@ export class ResultTagging extends Component {
       }
     }));
 
-    $$($$(this.element).closest('.CoveoResult')).on('focusout', ((e: JQueryEventObject) => {
+    $$($$(this.element).closest('.CoveoResult')).on('focusout', ((e) => {
       if (this.textBox.value != '' && ($$(<HTMLElement>e.target).closest('.CoveoResult') != $$(this.element).closest('.CoveoResult'))) {
         $$(this.element).addClass('coveo-error');
       }
