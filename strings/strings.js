@@ -57,7 +57,6 @@ function dictObjectAsString(json, language) {
 }
 
 function bindPrototypeOnNativeStringOnPageReady(language) {
-  /*
   var pageReadyString = `if( ${jQueryExistsAsString} ) { \n
     $(function(){\n
       ${setPrototypeOnNativeString(language)} \n
@@ -67,8 +66,6 @@ function bindPrototypeOnNativeStringOnPageReady(language) {
       ${setPrototypeOnNativeString(language)}
   })}`;
   return pageReadyString;
-  */
-  return `${setPrototypeOnNativeString(language)}`
 }
 
 function setPrototypeOnNativeString(language) {
