@@ -3,6 +3,11 @@ import {Dom} from '../../src/utils/Dom';
 import {$$} from '../../src/utils/Dom';
 import {Simulate} from '../Simulate';
 
+interface IJQuery {
+  Event: any;
+}
+declare var jQuery: IJQuery;
+
 export function DomTests() {
   describe('Dom', () => {
     var el: HTMLElement;

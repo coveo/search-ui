@@ -4,7 +4,7 @@ interface IWindow {
   $: any;
 }
 
-interface IJQuery {
+export interface IJQuery {
   fn: any;
 }
 
