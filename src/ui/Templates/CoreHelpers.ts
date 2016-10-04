@@ -300,8 +300,8 @@ TemplateHelpers.registerTemplateHelper('highlight', (content: string, highlights
   }
 });
 
-TemplateHelpers.registerTemplateHelper('highlightStreamText', (content: string, termsToHighlight = resolveQueryResult().termsToHighlight, phrasesToHighlight = resolveQueryResult().phrasesToHighlight, opts?: IStreamHighlightOptions) => {
-  if (Utils.exists(content)) {
+TemplateHelpers.registerTemplateHelper('highlightStreamText', (content: string, termsToHighlight = resolveTermsToHighlight(), phrasesToHighlight = resolvePhrasesToHighlight(), opts?: IStreamHighlightOptions) => {
+  if (Utils.exists(content) && Utils.exists(termsToHighlight) && Utils.exists(phrasesToHighlight)) {
     if (Utils.isNonEmptyArray(_.keys(termsToHighlight)) || Utils.isNonEmptyArray(_.keys(phrasesToHighlight))) {
       return StreamHighlightUtils.highlightStreamText(content, termsToHighlight, phrasesToHighlight, opts);
     } else {
@@ -312,8 +312,8 @@ TemplateHelpers.registerTemplateHelper('highlightStreamText', (content: string, 
   }
 });
 
-TemplateHelpers.registerTemplateHelper('highlightStreamHTML', (content: string, termsToHighlight = resolveQueryResult().termsToHighlight, phrasesToHighlight = resolveQueryResult().phrasesToHighlight, opts?: IStreamHighlightOptions) => {
-  if (Utils.exists(content)) {
+TemplateHelpers.registerTemplateHelper('highlightStreamHTML', (content: string, termsToHighlight = resolveTermsToHighlight(), phrasesToHighlight = resolvePhrasesToHighlight(), opts?: IStreamHighlightOptions) => {
+  if (Utils.exists(content) && Utils.exists(termsToHighlight) && Utils.exists(phrasesToHighlight)) {
     if (Utils.isNonEmptyArray(termsToHighlight)) {
       return StreamHighlightUtils.highlightStreamHTML(content, termsToHighlight, phrasesToHighlight, opts);
     } else {
