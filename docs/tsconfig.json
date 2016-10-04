@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "declaration": false,
+    "experimentalDecorators": true,
+    "outDir": "../bin",
+    "sourceMap": true
+  },
+  "files": [
+    "../typings/main/ambient/jquery/index.d.ts",
+    "playground/src/Index.ts",
+    "playground/src/Playground.ts"
+  ]
+}
