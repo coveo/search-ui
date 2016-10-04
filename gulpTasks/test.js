@@ -38,7 +38,7 @@ gulp.task('test', ['setupTests', 'buildTest'], function (done) {
 });
 
 gulp.task('buildTest', shell.task([
-  'node node_modules/webpack/bin/webpack.js --config webpack.test.config.js'
+  'node node_modules/webpack/bin/webpack.js --config ./webpackConfigFiles/webpack.test.config.js'
 ]));
 
 gulp.task('testDev', ['watchTest'], function (done) {

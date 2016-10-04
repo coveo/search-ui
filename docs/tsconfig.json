@@ -8,8 +8,15 @@
     "sourceMap": true
   },
   "files": [
-    "../typings/main/ambient/jquery/index.d.ts",
-    "playground/src/Index.ts",
-    "playground/src/Playground.ts"
+    "../typings/browser.d.ts",
+    "../typings/index.d.ts",
+    "../lib/jstz.d.ts",
+    "../lib/promise.d.ts",
+    "../lib/coveoanalytics.d.ts",
+    "../lib/MagicBox.d.ts",
+    "../lib/fastclick.d.ts",
+    "../lib/globalize.d.ts",
+    "./playground/src/Index.ts",
+    "./playground/src/Playground.ts"
   ]
 }

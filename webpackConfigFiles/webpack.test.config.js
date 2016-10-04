@@ -4,7 +4,7 @@ const _ = require('underscore');
 let conf = require('./webpack.common.config');
 conf = _.extend(conf, {
   entry: {
-    'tests': ['./test/Test.ts'],
+    'tests': ['../test/Test.ts'],
   },
   output: {
     path: require('path').resolve('./bin/tests'),
@@ -14,7 +14,7 @@ conf = _.extend(conf, {
     devtoolModuleFilenameTemplate: '[resource-path]'
   },
   ts: {
-    project: './test/tsconfig.json',
+    project: '../test/tsconfig.json',
     rootDirs: ['../']
   }
 })
