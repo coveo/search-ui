@@ -4,6 +4,7 @@ import {FacetSort} from '../../src/ui/Facet/FacetSort';
 import * as Mock from '../MockEnvironment';
 import {FacetValue} from '../../src/ui/Facet/FacetValues';
 import {IFacetSortDescription} from '../../src/ui/Facet/FacetSort';
+import _ = require('underscore');
 
 export function FacetValuesOrderTest() {
   describe('FacetValuesOrder', () => {

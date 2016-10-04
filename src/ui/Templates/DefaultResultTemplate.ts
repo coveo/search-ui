@@ -3,7 +3,7 @@ import {UnderscoreTemplate} from './UnderscoreTemplate';
 import {TemplateCache} from './TemplateCache';
 import {IQueryResult} from '../../rest/QueryResult';
 import {Assert} from '../../misc/Assert';
-
+import _ = require('underscore');
 
 export class DefaultResultTemplate extends Template {
 

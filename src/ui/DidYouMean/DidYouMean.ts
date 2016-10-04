@@ -11,6 +11,7 @@ import {StringUtils} from '../../utils/StringUtils';
 import {Utils} from '../../utils/Utils';
 import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
 import {l} from '../../strings/Strings';
+import _ = require('underscore');
 
 export interface IDidYouMeanOptions {
   enableAutoCorrection?: boolean;

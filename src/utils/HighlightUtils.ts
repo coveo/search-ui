@@ -1,6 +1,7 @@
 import {Utils} from './Utils';
 import {IHighlight} from '../rest/Highlight';
 import {Assert} from '../misc/Assert';
+import _ = require('underscore');
 
 export interface IStringHole {
   begin: number;

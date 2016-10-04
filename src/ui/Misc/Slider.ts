@@ -5,6 +5,7 @@ import {Utils} from '../../utils/Utils';
 import d3Scale = require('d3-scale');
 import d3 = require('d3');
 import Globalize = require('globalize');
+import _ = require('underscore');
 
 export interface IStartSlideEventArgs {
   slider: Slider;

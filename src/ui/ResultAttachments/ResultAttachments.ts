@@ -9,6 +9,7 @@ import {QueryUtils} from '../../utils/QueryUtils';
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
 import {Assert} from '../../misc/Assert';
 import {$$} from '../../utils/Dom';
+import _ = require('underscore');
 
 export interface IResultAttachmentsOptions {
   resultTemplate?: Template;

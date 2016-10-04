@@ -5,22 +5,19 @@
     "declaration": false,
     "experimentalDecorators": true,
     "outDir": "./bin",
-    "sourceMap": true
+    "sourceMap": true,
+    "types": [
+      "underscore"
+    ]
   },
   "filesGlob": [
     "test/**/*.ts",
     "src/**/*.ts"
   ],
   "files": [
-    "typings/browser.d.ts",
-    "typings/index.d.ts",
     "lib/promise.d.ts",
     "lib/MagicBox.d.ts",
-    "lib/globalize.d.ts",
-    "lib/d3.d.ts",
-    "lib/fastclick.d.ts",
     "lib/jstz.d.ts",
-    "lib/pikaday.d.ts",
     "lib/coveoanalytics.d.ts",
     "test/lib/jasmine.d.ts",
     "src/controllers/FacetQueryController.ts",

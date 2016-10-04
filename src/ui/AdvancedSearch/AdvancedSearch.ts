@@ -11,6 +11,7 @@ import {$$} from '../../utils/Dom';
 import {IAdvancedSearchInput, IAdvancedSearchPrebuiltInput, IAdvancedSearchSection, IExternalAdvancedSearchSection} from './AdvancedSearchInput';
 import {AdvancedSearchInputFactory} from './AdvancedSearchInputFactory';
 import {IQueryOptions} from '../../controllers/QueryController';
+import _ = require('underscore');
 
 export interface IAdvancedSearchOptions {
   includeKeywords?: boolean;

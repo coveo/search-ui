@@ -4,6 +4,7 @@ import {IRankingFunction} from '../../rest/RankingFunction';
 import {IQueryFunction} from '../../rest/QueryFunction';
 import {IGroupByRequest} from '../../rest/GroupByRequest';
 import {IQuery} from '../../rest/Query';
+import _ = require('underscore');
 
 /**
  * Describe the expressions part of a QueryBuilder.

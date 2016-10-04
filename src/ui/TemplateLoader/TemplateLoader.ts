@@ -6,6 +6,7 @@ import {IQueryResult} from '../../rest/QueryResult';
 import {Assert} from '../../misc/Assert';
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
 import {$$} from '../../utils/Dom';
+import _ = require('underscore');
 
 export interface ITemplateLoaderOptions {
   template: Template;

@@ -8,6 +8,7 @@ import {FacetValue} from './FacetValues';
 import {Utils} from '../../utils/Utils';
 import {FacetUtils} from './FacetUtils';
 import {FacetValuesOrder} from './FacetValuesOrder';
+import _ = require('underscore');
 
 export class FacetValuesList {
   // Dictionary of values. The key is always in lowercase.

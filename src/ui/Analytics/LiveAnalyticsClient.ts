@@ -20,6 +20,7 @@ import {ICustomEvent} from '../../rest/CustomEvent';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import {Component} from '../Base/Component';
 import {version} from '../../misc/Version';
+import _ = require('underscore');
 
 export class LiveAnalyticsClient implements IAnalyticsClient {
   public isContextual: boolean = false;

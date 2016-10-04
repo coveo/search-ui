@@ -7,6 +7,7 @@ import {Simulate} from '../Simulate';
 import {$$} from '../../src/utils/Dom';
 import {Cell} from '../../src/ui/Matrix/Cell';
 import * as Globalize from 'globalize';
+import _ = require('underscore');
 
 export function MatrixTest() {
   describe('Matrix', function () {

@@ -4,6 +4,7 @@ import {Simulate} from '../Simulate';
 import {$$} from '../../src/utils/Dom';
 import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import {IAnalyticsSuggestionsOptions} from '../../src/ui/AnalyticsSuggestions/AnalyticsSuggestions';
+import _ = require('underscore');
 
 export function AnalyticsSuggestionsTest() {
   describe('AnalyticsSuggestions', () => {

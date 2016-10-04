@@ -6,6 +6,7 @@ import {Assert} from '../../misc/Assert';
 import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom';
 import * as Globalize from 'globalize';
+import _ = require('underscore');
 
 export class BreadcrumbValueList {
   private expanded: FacetValue[];

@@ -3,6 +3,7 @@ import {$$} from '../../src/utils/Dom';
 import {ISliderGraphData} from '../../src/ui/Misc/Slider';
 import {SearchInterface} from '../../src/ui/SearchInterface/SearchInterface';
 import * as Globalize from 'globalize';
+import _ = require('underscore');
 
 export function SliderTest() {
   describe('Slider', function () {

@@ -16,6 +16,7 @@ import {Initialization, IInitializationParameters} from '../Base/Initialization'
 import {QueryUtils} from '../../utils/QueryUtils';
 import {IQuery} from '../../rest/Query';
 import Globalize = require('globalize');
+import _ = require('underscore');
 
 export interface IMatrixOptions {
   title?: string;

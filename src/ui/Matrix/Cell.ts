@@ -1,4 +1,5 @@
 import {$$} from '../../utils/Dom';
+import _ = require('underscore');
 
 /**
  * Represent a single cell of data in the {@link Matrix} component.

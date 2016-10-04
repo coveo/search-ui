@@ -19,7 +19,7 @@ import {IAnalyticsQueryErrorMeta, analyticsActionCauseList} from './AnalyticsAct
 import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {Recommendation} from '../Recommendation/Recommendation';
 import {RecommendationAnalyticsClient} from './RecommendationAnalyticsClient';
-
+import _ = require('underscore');
 
 export interface IAnalyticsOptions {
   user?: string;

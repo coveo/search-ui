@@ -11,6 +11,7 @@ import {DatePicker} from '../../../src/ui/AdvancedSearch/Form/DatePicker';
 import {BaseFormTypes} from '../../../src/ui/AdvancedSearch/AdvancedSearchInput';
 import {AdvancedComponentSetupOptions} from '../../MockEnvironment';
 import {MockEnvironmentBuilder} from '../../MockEnvironment';
+import _ = require('underscore');
 
 export function AdvancedSearchTest() {
   describe('AdvancedSearch', () => {
@@ -49,7 +50,7 @@ export function AdvancedSearchTest() {
             expect(inputs).toEqual(jasmine.arrayContaining([textInput, numericInput, dpicker]));
             expect(queryBuilder).toBeDefined();
           },
-          inputs: [textInput, numericInput, dpicker]
+          inputs: <any[]>[textInput, numericInput, dpicker]
         });
       });
 

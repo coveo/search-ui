@@ -19,6 +19,7 @@ import {ModalBox} from '../../ExternalModulesShim';
 import Globalize = require('globalize');
 import {KEYBOARD} from '../../utils/KeyboardUtils';
 import {InitializationEvents} from '../../events/InitializationEvents';
+import _ = require('underscore');
 
 export interface IDebugOptions {
   enableDebug?: boolean;
@@ -615,7 +616,7 @@ export class Debug extends RootComponent {
     return stringValue;
   }
 
-  private componentToJson(value: BaseComponent, depth = 0): any {
+  private componentToJson(value: BaseComponent | SearchEndpoint, depth = 0): any {
     let options = _.keys(value['options']);
     if (options.length > 0) {
       return this.toJson(value['options'], depth);

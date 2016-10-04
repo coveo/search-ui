@@ -7,6 +7,7 @@ import {IGroupByRequest} from '../rest/GroupByRequest';
 import {ExpressionBuilder} from '../ui/Base/ExpressionBuilder';
 import {IRangeValue} from '../rest/RangeValue';
 import {DateUtils} from '../utils/DateUtils';
+import _ = require('underscore');
 
 export class FacetSliderQueryController {
   public graphGroupByQueriesIndex: number;

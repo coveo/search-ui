@@ -25,6 +25,7 @@ import {ModalBox} from '../../ExternalModulesShim';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {ResponsiveComponentsUtils} from '../ResponsiveComponents/ResponsiveComponentsUtils';
 import {FacetValuesOrder} from './FacetValuesOrder';
+import _ = require('underscore');
 
 /**
  * Used by the {@link Facet} component to render and handle the facet search part of each facet.

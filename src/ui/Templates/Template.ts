@@ -3,6 +3,7 @@ import {StringUtils} from '../../utils/StringUtils';
 import {Initialization} from '../Base/Initialization';
 import {htmlToDom} from '../../utils/Dom';
 import {BaseComponent} from '../Base/BaseComponent';
+import _ = require('underscore');
 
 export class Template {
   static getFieldFromString(text: string) {

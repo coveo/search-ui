@@ -7,6 +7,7 @@ import {Initialization, IInitializationParameters} from '../Base/Initialization'
 import {DomUtils} from '../../utils/DomUtils';
 import {$$} from '../../utils/Dom';
 import {ModalBox} from '../../ExternalModulesShim';
+import _ = require('underscore');
 
 export interface IYouTubeThumbnailOptions {
   width: string;

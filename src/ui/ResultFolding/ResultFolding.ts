@@ -11,6 +11,7 @@ import {Initialization, IInitializationParameters} from '../Base/Initialization'
 import {Assert} from '../../misc/Assert';
 import {$$} from '../../utils/Dom';
 import {l} from '../../strings/Strings';
+import _ = require('underscore');
 
 export interface IResultFoldingOptions {
   resultTemplate?: Template;

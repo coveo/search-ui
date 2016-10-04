@@ -6,6 +6,7 @@ import {$$} from '../../src/utils/Dom';
 import {IQueryResult} from '../../src/rest/QueryResult';
 import {UnderscoreTemplate} from '../../src/ui/Templates/UnderscoreTemplate';
 import {TemplateCache} from '../../src/ui/Templates/TemplateCache';
+import _ = require('underscore');
 
 export function ResultFoldingTest() {
   describe('ResultFolding', function () {

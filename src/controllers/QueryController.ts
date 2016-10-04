@@ -16,6 +16,7 @@ import {Utils} from '../utils/Utils';
 import {Promise} from 'es6-promise';
 import {BaseComponent} from '../ui/Base/BaseComponent';
 import {ModalBox} from '../ExternalModulesShim';
+import _ = require('underscore');
 declare const coveoanalytics: CoveoAnalytics.CoveoUA;
 
 /**

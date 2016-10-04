@@ -9,6 +9,7 @@ import {ISearchEvent} from '../src/rest/SearchEvent';
 import {IClickEvent} from '../src/rest/ClickEvent';
 import {IOmniboxDataRow} from '../src/ui/Omnibox/OmniboxInterface';
 import {IPopulateOmniboxEventArgs} from '../src/events/OmniboxEvents';
+import _ = require('underscore');
 
 export class FakeResults {
 

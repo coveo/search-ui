@@ -5,6 +5,7 @@ import {DebugEvents} from '../../src/events/DebugEvents';
 import {ModalBox} from '../../src/ExternalModulesShim';
 import {Simulate} from '../Simulate';
 import {KEYBOARD} from '../../src/utils/KeyboardUtils';
+import _ = require('underscore');
 
 export function DebugTest() {
   describe('Debug', () => {

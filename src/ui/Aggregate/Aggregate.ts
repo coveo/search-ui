@@ -6,6 +6,7 @@ import {IGroupByRequest} from '../../rest/GroupByRequest';
 import {Initialization} from '../Base/Initialization';
 import {$$} from '../../utils/Dom';
 import Globalize = require('globalize');
+import _ = require('underscore');
 
 export interface IAggregateOptions {
   field: IFieldOption;

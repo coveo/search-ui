@@ -8,7 +8,7 @@ import {ISubscription, ISubscriptionItemRequest, SUBSCRIPTION_TYPE, ISubscriptio
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
 import {$$, Dom} from '../../utils/Dom';
-
+import _ = require('underscore');
 
 export interface IFollowItemOptions {
   watchedFields?: IFieldOption[];

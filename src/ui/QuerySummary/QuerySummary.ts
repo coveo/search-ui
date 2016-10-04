@@ -9,6 +9,7 @@ import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/Analytics
 import {Initialization} from '../Base/Initialization';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import Globalize = require('globalize');
+import _ = require('underscore');
 
 export interface IQuerySummaryOptions {
   enableSearchTips?: boolean;

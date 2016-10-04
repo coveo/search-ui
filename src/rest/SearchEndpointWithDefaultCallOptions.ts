@@ -13,6 +13,7 @@ import {IFieldDescription} from '../rest/FieldDescription';
 import {IListFieldValuesRequest} from './ListFieldValuesRequest';
 import {ISubscriptionRequest, ISubscription} from './Subscription';
 import {ISentryLog} from './SentryLog';
+import _ = require('underscore');
 
 export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
   options: ISearchEndpointOptions;

@@ -11,6 +11,7 @@ import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/Po
 import {Utils} from '../../utils/Utils';
 import {Facet} from '../Facet/Facet';
 import {FacetSlider} from '../FacetSlider/FacetSlider';
+import _ = require('underscore');
 
 export class ResponsiveFacets implements IResponsiveComponent {
 

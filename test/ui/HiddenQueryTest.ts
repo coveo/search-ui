@@ -4,6 +4,7 @@ import {$$} from '../../src/utils/Dom';
 import {BreadcrumbEvents} from '../../src/events/BreadcrumbEvents';
 import {Simulate} from '../Simulate';
 import {IPopulateBreadcrumbEventArgs} from '../../src/events/BreadcrumbEvents';
+import _ = require('underscore');
 
 export function HiddenQueryTest() {
   describe('HiddenQuery', function () {

@@ -7,6 +7,7 @@ import {ResponsiveFacets} from './ResponsiveFacets';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
 import {Utils} from '../../utils/Utils';
+import _ = require('underscore');
 
 export interface IResponsiveComponentOptions {
   enableResponsiveMode?: boolean;

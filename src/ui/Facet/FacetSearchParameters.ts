@@ -7,6 +7,7 @@ import {IGroupByRequest} from '../../rest/GroupByRequest';
 import {IQuery} from '../../rest/Query';
 import {QueryBuilder} from '../Base/QueryBuilder';
 import {$$} from '../../utils/Dom';
+import _ = require('underscore');
 
 export class FacetSearchParameters {
   public searchEvenIfEmpty: boolean;

@@ -6,6 +6,7 @@ import {Simulate} from '../Simulate';
 import {ResultListEvents} from '../../src/events/ResultListEvents';
 import {IImageResultListOptions} from '../../src/ui/ImageResultList/ImageResultList';
 import {Template} from '../../src/ui/Templates/Template';
+import _ = require('underscore');
 
 export function ImageResultListTest() {
   describe('ImageResultList', () => {

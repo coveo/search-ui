@@ -21,6 +21,7 @@ import {ResultList} from '../ResultList/ResultList';
 import {StreamHighlightUtils} from '../../utils/StreamHighlightUtils';
 import Globalize = require('globalize');
 import {IStringMap} from '../../rest/GenericParam';
+import _ = require('underscore');
 
 /**
  * The core template helpers provided by default.

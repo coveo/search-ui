@@ -17,6 +17,7 @@ import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
 import {$$, Dom} from '../../utils/Dom';
 import {ModalBox} from '../../ExternalModulesShim';
+import _ = require('underscore');
 
 export interface ISearchAlertsOptions {
   enableManagePanel?: boolean;

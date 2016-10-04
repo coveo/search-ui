@@ -6,6 +6,7 @@ import {IQuery} from '../../src/rest/Query';
 import {Simulate} from '../Simulate';
 import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
 import {FakeResults} from '../Fake';
+import _ = require('underscore');
 
 export function RecommendationTest() {
   describe('Recommendation', () => {

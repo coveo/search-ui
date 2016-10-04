@@ -9,6 +9,7 @@ import {SettingsEvents} from '../../src/events/SettingsEvents';
 import {l} from '../../src/strings/Strings';
 import {$$} from '../../src/utils/Dom';
 import {MissingAuthenticationError} from '../../src/rest/MissingAuthenticationError';
+import _ = require('underscore');
 
 export function AuthenticationProviderTest() {
   describe('AuthenticationProvider', function () {

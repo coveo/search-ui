@@ -25,6 +25,7 @@ import {QueryError} from '../rest/QueryError';
 import {Utils} from '../utils/Utils';
 import {Promise} from 'es6-promise';
 import {shim} from '../misc/PromisesShim';
+import _ = require('underscore');
 shim();
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
@@ -812,8 +813,7 @@ export class SearchEndpoint implements ISearchEndpoint {
         return response.data;
       }).catch((error?: IErrorResponse) => {
         if (autoRenewToken && this.canRenewAccessToken() && this.isAccessTokenExpiredStatus(error.statusCode)) {
-          this.renewAccessToken()
-            .then(() => {
+          this.renewAccessToken().then(() => {
               return this.performOneCall(params, callOptions, autoRenewToken);
             })
             .catch(() => {
@@ -847,15 +847,14 @@ export class SearchEndpoint implements ISearchEndpoint {
     return Utils.isNonEmptyString(this.options.accessToken) && _.isFunction(this.options.renewAccessToken);
   }
 
-  private renewAccessToken(): Promise<string> | Promise<any> {
+  private renewAccessToken(): Promise<string> {
     this.logger.info('Renewing expired access token');
     return this.options.renewAccessToken().then((token: string) => {
       Assert.isNonEmptyString(token);
       this.options.accessToken = token;
       this.createEndpointCaller();
       return token;
-    })
-      .catch((e: any) => {
+    }).catch((e: string) => {
         this.logger.error('Failed to renew access token', e);
         return e;
       });

@@ -6,7 +6,7 @@ const failPlugin = require('webpack-fail-plugin');
 
 // Fail plugin will allow the webpack ts-loader to fail correctly when the TS compilation fails
 // Provide plugin allows us to use underscore in every module, without having to require underscore everywhere.
-let plugins = [failPlugin, new webpack.ProvidePlugin({_: 'underscore'})];
+let plugins = [failPlugin];
 
 if (minimize) {
   plugins.push(new webpack.optimize.UglifyJsPlugin());

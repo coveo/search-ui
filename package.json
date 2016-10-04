@@ -106,7 +106,7 @@
     "ts-loader": "^0.8.2",
     "tsconfig-glob": "^0.4.3",
     "typedoc": "https://github.com/coveord/typedoc/tarball/master",
-    "typescript": "1.8.x",
+    "typescript": "2.0.x",
     "url-loader": "^0.5.7",
     "walk": "^2.3.9",
     "webpack": "^1.13.0",
@@ -115,12 +115,15 @@
     "yargs": "^4.7.1"
   },
   "dependencies": {
+    "@types/d3": "^3.5.36",
+    "@types/jquery": "^2.0.32",
+    "@types/underscore": "^1.7.33",
     "coveomagicbox": "1.0.x",
-    "pikaday": "^1.4.0",
     "d3": "^4.2.1",
     "d3-scale": "^1.0.3",
     "es6-promise": "^3.1.2",
     "modal-box": "1.0.7",
+    "pikaday": "^1.4.0",
     "underscore": "^1.8.3"
   }
 }

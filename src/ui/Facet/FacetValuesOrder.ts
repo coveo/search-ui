@@ -3,6 +3,7 @@ import {FacetValue} from './FacetValues';
 import {StringUtils} from '../../utils/StringUtils';
 import {FacetSort} from './FacetSort';
 import {IIndexFieldValue} from '../../rest/FieldValue';
+import _ = require('underscore');
 
 export class FacetValuesOrder {
   constructor(public facet: Facet, public facetSort: FacetSort) {

@@ -1,5 +1,6 @@
 import {Assert} from '../misc/Assert';
 import {Utils} from '../utils/Utils';
+import _ = require('underscore');
 
 export class HashUtils {
   private static DELIMITER = {
@@ -167,14 +168,14 @@ export class HashUtils {
     return HashUtils.DELIMITER.objectStart + retArray.join(' , ') + HashUtils.DELIMITER.objectEnd;
   }
 
-  private static encodeValue(val: any) {
+  private static encodeValue(val: any): string {
     var encodedValue = '';
     if (_.isArray(val)) {
       encodedValue = HashUtils.encodeArray(val);
     } else if (_.isObject(val)) {
       encodedValue = HashUtils.encodeObject(val);
     } else if (_.isNumber(val) || _.isBoolean(val)) {
-      encodedValue = encodeURIComponent(val);
+      encodedValue = encodeURIComponent(val.toString());
     } else {
       encodedValue = '"' + encodeURIComponent(val) + '"';
     }

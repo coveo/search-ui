@@ -8,6 +8,7 @@ import {$$} from '../../utils/Dom';
 import {IAnalyticsTriggerNotify, analyticsActionCauseList, IAnalyticsTriggerRedirect, IAnalyticsTriggerQuery, IAnalyticsTriggerExecute} from '../Analytics/AnalyticsActionListMeta';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import {Initialization} from '../Base/Initialization';
+import _ = require('underscore');
 
 export interface ITriggersOptions {
 }

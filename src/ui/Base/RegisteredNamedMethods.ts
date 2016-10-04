@@ -14,6 +14,7 @@ import {BaseComponent} from '../Base/BaseComponent';
 import {Component} from '../Base/Component';
 import {IStandaloneSearchInterfaceOptions} from '../SearchInterface/SearchInterface';
 import {IRecommendationOptions} from '../Recommendation/Recommendation';
+import _ = require('underscore');
 
 /**
  * Initialize the framework with a basic search interface. Calls {@link Initialization.initSearchInterface}.<br/>

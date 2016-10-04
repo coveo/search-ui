@@ -6,6 +6,7 @@ import {$$} from '../utils/Dom';
 import {HashUtils} from '../utils/HashUtils';
 import {Defer} from '../misc/Defer';
 import {RootComponent} from '../ui/Base/RootComponent';
+import _ = require('underscore');
 
 /**
  * This component is instantiated automatically by the framework on the root if the {@link SearchInterface}.<br/>

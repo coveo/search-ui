@@ -6,6 +6,7 @@ import {FakeResults} from '../Fake';
 import {FacetValue} from '../../src/ui/Facet/FacetValues';
 import {$$} from '../../src/utils/Dom';
 import {Simulate} from '../Simulate';
+import _ = require('underscore');
 
 export function HierarchicalFacetTest() {
   describe('HierarchicalFacet', function () {

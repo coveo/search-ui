@@ -85,7 +85,7 @@ export interface IViewAsHtmlOptions extends IEndpointCallOptions {
 }
 
 export interface ISearchEndpoint {
-  options: ISearchEndpointOptions;
+  options?: ISearchEndpointOptions;
   getBaseUri(): string;
   getBaseAlertsUri(): string;
   getAuthenticationProviderUri(provider: string, returnUri: string, message: string): string;

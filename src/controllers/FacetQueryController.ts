@@ -15,6 +15,7 @@ import {IQueryResults} from '../rest/QueryResults';
 import {IGroupByValue} from '../rest/GroupByValue';
 import {IEndpointError} from '../rest/EndpointError';
 import {IQueryBuilderExpression} from '../ui/Base/QueryBuilder';
+import _ = require('underscore');
 
 export class FacetQueryController {
   public expressionToUseForFacetSearch: string;

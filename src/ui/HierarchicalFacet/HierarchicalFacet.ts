@@ -25,6 +25,7 @@ import {IPopulateOmniboxEventArgs} from '../../events/OmniboxEvents';
 import {OmniboxHierarchicalValuesList} from './OmniboxHierarchicalValuesList';
 import {HierarchicalFacetValueElement} from './HierarchicalFacetValueElement';
 import {Initialization} from '../Base/Initialization';
+import _ = require('underscore');
 
 export interface IHierarchicalFacetOptions extends IFacetOptions {
   delimitingCharacter?: string;

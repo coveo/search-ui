@@ -23,6 +23,7 @@ import {Utils} from '../../utils/Utils';
 import {ResponsiveComponentsUtils} from '../ResponsiveComponents/ResponsiveComponentsUtils';
 import {Initialization} from '../Base/Initialization';
 import d3 = require('d3');
+import _ = require('underscore');
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;

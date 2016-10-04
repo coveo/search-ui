@@ -16,6 +16,7 @@ import {$$} from '../../utils/Dom';
 import {INoResultsEventArgs} from '../../events/QueryEvents';
 import {IQueryErrorEventArgs} from '../../events/QueryEvents';
 import {IComponentBindings} from '../Base/ComponentBindings';
+import _ = require('underscore');
 
 declare var coveoanalytics: CoveoAnalytics.CoveoUA;
 

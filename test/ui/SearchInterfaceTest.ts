@@ -15,6 +15,7 @@ import {LocalStorageHistoryController} from '../../src/controllers/LocalStorageH
 import {Simulate} from '../Simulate';
 import {Debug} from '../../src/ui/Debug/Debug';
 import {FakeResults} from '../Fake';
+import _ = require('underscore');
 
 export function SearchInterfaceTest() {
   describe('SearchInterface', () => {

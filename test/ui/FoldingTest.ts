@@ -7,6 +7,7 @@ import {Simulate} from '../Simulate';
 import {IQuery} from '../../src/rest/Query';
 import {ISimulateQueryData} from '../Simulate';
 import {IQueryResult} from '../../src/rest/QueryResult';
+import _ = require('underscore');
 
 export function FoldingTest() {
   describe('Folding', function () {

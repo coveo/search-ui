@@ -3,6 +3,7 @@ import {Utils} from './Utils';
 import {l} from '../strings/Strings';
 import {TimeSpan} from './TimeSpanUtils';
 import Globalize = require('globalize');
+import _ = require('underscore');
 
 export interface IDateToStringOptions {
   now?: Date;

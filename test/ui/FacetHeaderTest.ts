@@ -6,6 +6,7 @@ import {IFacetOptions} from '../../src/ui/Facet/Facet';
 import {registerCustomMatcher} from '../CustomMatchers';
 import * as Mock from '../MockEnvironment';
 import {FacetSettings} from '../../src/ui/Facet/FacetSettings';
+import _ = require('underscore');
 
 export function FacetHeaderTest() {
   describe('FacetHeader', function () {

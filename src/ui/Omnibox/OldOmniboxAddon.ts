@@ -4,6 +4,7 @@ import {IOmniboxDataRow} from './OmniboxInterface';
 import {OmniboxEvents, IPopulateOmniboxEventArgs, IPopulateOmniboxEventRow} from '../../events/OmniboxEvents';
 import {$$} from '../../utils/Dom';
 import {Utils} from '../../utils/Utils';
+import _ = require('underscore');
 
 export class OldOmniboxAddon {
   constructor(public omnibox: Omnibox) {

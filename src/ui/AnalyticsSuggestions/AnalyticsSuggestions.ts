@@ -10,6 +10,7 @@ import {QueryStateModel} from '../../models/QueryStateModel';
 import {analyticsActionCauseList, IAnalyticsTopSuggestionMeta} from '../Analytics/AnalyticsActionListMeta';
 import {Initialization} from '../Base/Initialization';
 import {$$} from '../../utils/Dom';
+import _ = require('underscore');
 
 export interface IAnalyticsSuggestionsOptions extends ISuggestionForOmniboxOptions {
 }

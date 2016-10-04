@@ -7,6 +7,7 @@ import {PopupUtils, IPosition, HorizontalAlignment, VerticalAlignment} from '../
 import {IMenuItem} from '../Menu/MenuItem';
 import {SettingsEvents} from '../../events/SettingsEvents';
 import {Initialization} from '../Base/Initialization';
+import _ = require('underscore');
 
 export interface ISettingsPopulateMenuArgs {
   settings: Settings;

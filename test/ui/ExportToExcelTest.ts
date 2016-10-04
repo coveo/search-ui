@@ -3,6 +3,7 @@ import {ExportToExcel} from '../../src/ui/ExportToExcel/ExportToExcel';
 import {IExportToExcelOptions} from '../../src/ui/ExportToExcel/ExportToExcel';
 import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
 import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import _ = require('underscore');
 
 export function ExportToExcelTest() {
   describe('ExportToExcel', function () {

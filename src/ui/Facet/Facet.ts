@@ -53,6 +53,7 @@ import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
 import {IStringMap} from '../../rest/GenericParam';
 import {FacetValuesOrder} from './FacetValuesOrder';
 import {ValueElement} from './ValueElement';
+import _ = require('underscore');
 
 export interface IFacetOptions {
   title?: string;

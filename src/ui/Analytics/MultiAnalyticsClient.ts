@@ -3,6 +3,7 @@ import {PendingSearchEvent} from './PendingSearchEvent';
 import {IAnalyticsActionCause, IAnalyticsDocumentViewMeta} from './AnalyticsActionListMeta';
 import {IQueryResult} from '../../rest/QueryResult';
 import {ITopQueries} from '../../rest/TopQueries';
+import _ = require('underscore');
 
 export class MultiAnalyticsClient implements IAnalyticsClient {
   public isContextual = false;

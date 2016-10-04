@@ -11,6 +11,7 @@ import {FacetRangeQueryController} from '../../controllers/FacetRangeQueryContro
 import {IGroupByResult} from '../../rest/GroupByResult';
 import {Initialization} from '../Base/Initialization';
 import Globalize = require('globalize');
+import _ = require('underscore');
 
 export interface IFacetRangeOptions extends IFacetOptions {
   ranges?: IRangeValue[];

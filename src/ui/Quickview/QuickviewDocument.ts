@@ -15,6 +15,7 @@ import {IQuery} from '../../rest/Query';
 import {IViewAsHtmlOptions} from '../../rest/SearchEndpointInterface';
 import {AjaxError} from '../../rest/AjaxError';
 import {l} from '../../strings/Strings';
+import _ = require('underscore');
 
 const HIGHLIGHT_PREFIX = 'CoveoHighlight';
 

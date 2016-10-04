@@ -1,5 +1,6 @@
 import {Utils} from './Utils';
 import {l} from '../strings/Strings';
+import _ = require('underscore');
 
 export class EmailUtils {
   static splitSemicolonSeparatedListOfEmailAddresses(addresses: string): string[] {

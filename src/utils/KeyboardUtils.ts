@@ -1,4 +1,5 @@
 import {Utils} from './Utils';
+import _ = require('underscore');
 
 export enum KEYBOARD {
   BACKSPACE = 8,

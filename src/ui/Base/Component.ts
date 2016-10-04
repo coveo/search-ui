@@ -12,6 +12,7 @@ import {IAnalyticsClient} from '../../ui/Analytics/AnalyticsClient';
 import {NoopAnalyticsClient} from '../../ui/Analytics/NoopAnalyticsClient';
 import {BaseComponent} from './BaseComponent';
 import {IComponentBindings} from './ComponentBindings';
+import _ = require('underscore');
 
 /**
  * Definition for a Component.
@@ -87,7 +88,7 @@ export class Component extends BaseComponent {
    */
   public componentOptionsModel: ComponentOptionsModel;
   public ensureDom: Function;
-  public options: any;
+  public options?: any;
 
   /**
    * Create a new Component. Resolve all {@link IComponentBindings} if not provided.<br/>

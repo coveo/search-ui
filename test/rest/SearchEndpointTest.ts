@@ -11,6 +11,7 @@ import {IFieldDescription} from '../../src/rest/FieldDescription';
 import {IRevealQuerySuggestResponse} from '../../src/rest/RevealQuerySuggest';
 import {ISubscription} from '../../src/rest/Subscription';
 import {AjaxError} from '../../src/rest/AjaxError';
+import _ = require('underscore');
 
 export function SearchEndpointTest() {
   describe('SearchEndpoint', function () {
