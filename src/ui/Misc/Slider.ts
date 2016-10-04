@@ -714,7 +714,7 @@ class SliderGraph {
     this.svg.attr('transform', 'translate(' + this.slider.options.graph.margin.left + ',' + this.slider.options.graph.margin.top + ')');
   }
 
-  private renderGraphBars(bars: D3.UpdateSelection, width: number, height: number, currentSliderValues: number[]) {
+  private renderGraphBars(bars: d3.selection.Update<ISliderGraphData>, width: number, height: number, currentSliderValues: number[]) {
     bars.enter().append('rect')
       .attr('class', this.getFunctionForClass(currentSliderValues))
       .attr('width', this.x.bandwidth())
@@ -726,7 +726,7 @@ class SliderGraph {
       .on('mouseout', this.getFunctionForMouseOut());
   }
 
-  private setGraphBarsTransition(bars: D3.UpdateSelection, height: number, currentSliderValues: number[]) {
+  private setGraphBarsTransition(bars: d3.Transition<ISliderGraphData>, height: number, currentSliderValues: number[]) {
     bars
       .transition()
       .attr('x', this.getFunctionForX())

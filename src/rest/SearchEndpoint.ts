@@ -814,8 +814,8 @@ export class SearchEndpoint implements ISearchEndpoint {
       }).catch((error?: IErrorResponse) => {
         if (autoRenewToken && this.canRenewAccessToken() && this.isAccessTokenExpiredStatus(error.statusCode)) {
           this.renewAccessToken().then(() => {
-              return this.performOneCall(params, callOptions, autoRenewToken);
-            })
+            return this.performOneCall(params, callOptions, autoRenewToken);
+          })
             .catch(() => {
               return Promise.reject(this.handleErrorResponse(error));
             });
@@ -855,9 +855,9 @@ export class SearchEndpoint implements ISearchEndpoint {
       this.createEndpointCaller();
       return token;
     }).catch((e: string) => {
-        this.logger.error('Failed to renew access token', e);
-        return e;
-      });
+      this.logger.error('Failed to renew access token', e);
+      return e;
+    });
   }
 
   private removeTrailingSlash(uri: string) {

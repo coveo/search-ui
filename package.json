@@ -50,6 +50,10 @@
   },
   "devDependencies": {
     "@salesforce-ux/design-system": "2.0.3",
+    "@types/d3": "3.5.36",
+    "@types/d3-scale": "1.0.4",
+    "@types/pikaday": "0.0.31",
+    "@types/underscore": "^1.7.33",
     "cheerio": "^0.20.0",
     "circular-dependency-plugin": "^1.1.0",
     "colors": "^1.1.2",

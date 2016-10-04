@@ -17,7 +17,7 @@ module.exports = {
     extensions: ['', '.ts', '.js'],
     alias: {
       'l10n': __dirname + '/lib/l10n.min.js',
-      'globalize': __dirname + '/lib/globalize.min.js',
+      'globalize': __dirname + '/lib/globalize/globalize.min.js',
       'modal-box': __dirname + '/node_modules/modal-box/bin/ModalBox.min.js',
       'fastclick': __dirname + '/lib/fastclick.min.js',
       'jstz': __dirname + '/lib/jstz.min.js',

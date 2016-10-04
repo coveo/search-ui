@@ -7,7 +7,15 @@
     "outDir": "./bin",
     "sourceMap": true,
     "types": [
-      "underscore"
+      "underscore",
+      "globalize",
+      "pikaday",
+      "d3",
+      "d3-scale"
+    ],
+    "typeRoots": [
+      "lib",
+      "node_modules/@types"
     ]
   },
   "filesGlob": [
