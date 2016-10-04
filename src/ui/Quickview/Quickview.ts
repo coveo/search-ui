@@ -130,6 +130,8 @@ export class Quickview extends Component {
     size: ComponentOptions.buildStringOption({ defaultValue: DeviceUtils.isMobileDevice() ? '100%' : '95%' })
   };
 
+  public static resultCurrentlyBeingRendered: IQueryResult = null;
+
   private modalbox: Coveo.ModalBox.ModalBox;
   private bindedHandleEscapeEvent = this.handleEscapeEvent.bind(this);
 
@@ -174,6 +176,7 @@ export class Quickview extends Component {
   public open() {
     if (this.modalbox == null) {
       // To prevent the keyboard from opening on mobile if the search bar has focus
+      Quickview.resultCurrentlyBeingRendered = this.result;
       $$(<HTMLElement>document.activeElement).trigger('blur');
 
       let openerObject = this.prepareOpenQuickviewObject();
@@ -181,6 +184,7 @@ export class Quickview extends Component {
       this.bindQuickviewEvents(openerObject);
       this.animateAndOpen();
       this.queryStateModel.set(QueryStateModel.attributesEnum.quickview, this.getHashId());
+      Quickview.resultCurrentlyBeingRendered = null;
     }
   }
 
@@ -231,19 +235,20 @@ export class Quickview extends Component {
 
   private animateAndOpen() {
     let animationDuration = this.modalbox.wrapper.style.animationDuration;
-    if (animationDuration) {
-      let duration = /^(.+)(ms|s)$/.exec(animationDuration);
-      let durationMs = Number(duration[1]) * (duration[2] == 's' ? 1000 : 1);
-      // open the QuickviewDocument
-      setTimeout(() => {
-        if (this.modalbox != null) {
-          let quickviewDocument = $$(this.modalbox.modalBox).find('.' + Component.computeCssClassName(QuickviewDocument));
-          Initialization.dispatchNamedMethodCallOrComponentCreation('open', quickviewDocument, null);
-        }
-      }, durationMs);
-    } else {
-      let quickviewDocument = $$(this.modalbox.modalBox).find('.' + Component.computeCssClassName(QuickviewDocument));
-      Initialization.dispatchNamedMethodCallOrComponentCreation('open', quickviewDocument, null);
+    let quickviewDocument = $$(this.modalbox.modalBox).find('.' + Component.computeCssClassName(QuickviewDocument));
+    if (quickviewDocument) {
+      if (animationDuration) {
+        let duration = /^(.+)(ms|s)$/.exec(animationDuration);
+        let durationMs = Number(duration[1]) * (duration[2] == 's' ? 1000 : 1);
+        // open the QuickviewDocument
+        setTimeout(() => {
+          if (this.modalbox != null) {
+            Initialization.dispatchNamedMethodCallOrComponentCreation('open', quickviewDocument, null);
+          }
+        }, durationMs);
+      } else {
+        Initialization.dispatchNamedMethodCallOrComponentCreation('open', quickviewDocument, null);
+      }
     }
   }
 

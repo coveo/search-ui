@@ -21,6 +21,8 @@ import {ResultList} from '../ResultList/ResultList';
 import {StreamHighlightUtils} from '../../utils/StreamHighlightUtils';
 import Globalize = require('globalize');
 import {IStringMap} from '../../rest/GenericParam';
+import {Quickview} from '../Quickview/Quickview';
+import {Logger} from '../../misc/Logger';
 
 /**
  * The core template helpers provided by default.
@@ -519,5 +521,19 @@ TemplateHelpers.registerTemplateHelper('isMobileDevice', () => {
 });
 
 function resolveQueryResult(): IQueryResult {
-  return ResultList.resultCurrentlyBeingRendered;
+  return ResultList.resultCurrentlyBeingRendered || Quickview.resultCurrentlyBeingRendered;
+}
+
+function resolveTermsToHighlight(): IHighlightTerm {
+  let currentQueryResult = resolveQueryResult();
+  if (currentQueryResult) {
+    return currentQueryResult.termsToHighlight;
+  }
+}
+
+function resolvePhrasesToHighlight(): IHighlightPhrase {
+  let currentQueryResult = resolveQueryResult();
+  if (currentQueryResult) {
+    return currentQueryResult.phrasesToHighlight;
+  }
 }
