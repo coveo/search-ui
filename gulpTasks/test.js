@@ -20,13 +20,13 @@ gulp.task('setupTests', function () {
           .pipe(replace(/\.\.\/bin\/tests\/tests\.js/, 'tests.js'))
           .pipe(gulp.dest('./bin/tests/'))
   ).pipe(event_stream.wait())
-})
+});
 
 gulp.task('coverage', ['lcovCoverage']);
 
 gulp.task('test', ['setupTests', 'buildTest'], function (done) {
   new TestServer({
-    configFile: __dirname + '/karma.conf.js',
+    configFile: __dirname + '/../karma.conf.js',
   }, (exitCode) => {
     if (exitCode) {
       // Fail CI builds if any test fails (since karma will exit 1 on any error)
@@ -45,7 +45,7 @@ gulp.task('testDev', ['watchTest'], function (done) {
   new TestServer({
     configFile: __dirname + '/../karma.dev.conf.js',
   }, done).start();
-})
+});
 
 gulp.task('remapCoverage', function (done) {
   return gulp.src(`${COVERAGE_DIR}/coverage-es5.json`)
@@ -54,7 +54,7 @@ gulp.task('remapCoverage', function (done) {
     }))
     .pipe(rename('coverage.json'))
     .pipe(gulp.dest(COVERAGE_DIR));
-})
+});
 
 gulp.task('lcovCoverage', ['remapCoverage'], function (done) {
   // Convert JSON coverage from remap-istanbul to lcov format (needed for Sonar).
@@ -65,4 +65,4 @@ gulp.task('lcovCoverage', ['remapCoverage'], function (done) {
       lcov: {}
     }
   }).then(() => done());
-})
+});
