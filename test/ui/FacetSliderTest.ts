@@ -5,6 +5,7 @@ import {Simulate} from '../Simulate';
 import {BreadcrumbEvents} from '../../src/events/BreadcrumbEvents';
 import {IPopulateBreadcrumbEventArgs} from '../../src/events/BreadcrumbEvents';
 import {$$} from '../../src/utils/Dom';
+import {FakeResults} from '../Fake';
 
 export function FacetSliderTest() {
   describe('FacetSlider', function () {
@@ -72,6 +73,27 @@ export function FacetSliderTest() {
       test.cmp.setSelectedValues([50, 60]);
       $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, <IPopulateBreadcrumbEventArgs>{ breadcrumbs: breadcrumbs });
       expect(breadcrumbs.length).toBe(1);
+    });
+
+    it('should be disabled if the query results is not a range response', () => {
+      let disableSpy = jasmine.createSpy('spy');
+      test.cmp.disable = disableSpy;
+      let correctGroupByValue = FakeResults.createFakeGroupByRangeValue(0, 100, 'foo', 5);
+      let correctGroupBy = FakeResults.createFakeGroupByResult('@foo', 'foo', 10);
+      correctGroupBy.values = [correctGroupByValue];
+      Simulate.query(test.env, {
+        groupByResults: [correctGroupBy]
+      });
+      expect(test.cmp.disable).not.toHaveBeenCalled();
+
+      let badGroupByValue = FakeResults.createFakeGroupByValue('foo', 5);
+      let badGroupBy = FakeResults.createFakeGroupByResult('@foo', 'foo', 10);
+      badGroupBy.values = [badGroupByValue];
+      Simulate.query(test.env, {
+        groupByResults: [badGroupBy]
+      });
+
+      expect(test.cmp.disable).toHaveBeenCalled();
     });
 
     describe('exposes options', function () {
