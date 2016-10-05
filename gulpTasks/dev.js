@@ -10,7 +10,7 @@ let webpackConfig = require('../webpack.config.js');
 webpackConfig.entry['CoveoJsSearch'].unshift('webpack-dev-server/client?http://localhost:8080/');
 const compiler = webpack(webpackConfig);
 
-let webpackConfigTest = require('../webpack.test.config');
+let webpackConfigTest = require('../webpack.test.config.js');
 webpackConfigTest.entry['tests'].unshift('webpack-dev-server/client?http://localhost:8081/');
 const compilerTest = webpack(webpackConfigTest);
 

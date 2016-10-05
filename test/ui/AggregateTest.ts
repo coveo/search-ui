@@ -5,7 +5,6 @@ import {FakeResults} from '../Fake';
 import {$$} from '../../src/utils/Dom';
 import {Simulate} from '../Simulate';
 import * as Globalize from 'globalize';
-import _ = require('underscore');
 
 export function AggregateTest() {
   describe('Aggregate', function () {

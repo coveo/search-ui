@@ -27,5 +27,8 @@
   },
   "include": [
     "src/**/*.ts"
+  ],
+  "files": [
+    "lib/es6-promise/index.d.ts"
   ]
 }

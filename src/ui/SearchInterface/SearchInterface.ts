@@ -21,8 +21,8 @@ import {RootComponent} from '../Base/RootComponent';
 import {BaseComponent} from '../Base/BaseComponent';
 import {Debug} from '../Debug/Debug';
 import {HashUtils} from '../../utils/HashUtils';
-import FastClick = require('fastclick');
-import timezone = require('jstz');
+import * as fastclick from 'fastclick';
+import jstz = require('jstimezonedetect');
 import {SentryLogger} from '../../misc/SentryLogger';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import _ = require('underscore');
@@ -137,7 +137,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * This must be an IANA zone info key (aka the Olson time zone database). For example : 'America/New_York'.<br/>
      * By default, we use a library that tries to detect the timezone automatically.<br/>
      */
-    timezone: ComponentOptions.buildStringOption({ defaultFunction: () => timezone.jstz.determine().name() }),
+    timezone: ComponentOptions.buildStringOption({ defaultFunction: () => jstz.determine().name() }),
     /**
      * Specifies whether to enable the feature that allows users to ALT + double click on any results to get the Debug page with a detailed view of all the properties and fields for a given result.<br/>
      * This has no security concern (as all those informations are visible to users through the browser developer console or by calling the Coveo API directly).<br/>
@@ -205,7 +205,11 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       $$(document.body).addClass('coveo-mobile-device');
     }
 
-    FastClick.attach(element);
+    // The definition file for fastclick does not match the way that fast click gets loaded (AMD)
+    if ((<any>fastclick).attach) {
+      (<any>fastclick).attach(element);
+    }
+
 
     this.options = ComponentOptions.initComponentOptions(element, SearchInterface, options);
     Assert.exists(element);

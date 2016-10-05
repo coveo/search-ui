@@ -6,7 +6,7 @@
     "experimentalDecorators": true,
     "outDir": "./bin",
     "sourceMap": true,
-    "forceConsistentCasingInFileNames": true,
+    "strictNullChecks": false,
     "types": [
       "underscore",
       "globalize",
@@ -26,6 +26,6 @@
     ]
   },
   "include": [
-    "src/**/*.ts"
+    "test/**/*.ts"
   ]
 }

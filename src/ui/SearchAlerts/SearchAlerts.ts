@@ -1,4 +1,3 @@
-/// <reference path='../../../node_modules/modal-box/bin/ModalBox.d.ts' />
 import {Component} from '../Base/Component';
 import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
@@ -162,12 +161,11 @@ export class SearchAlerts extends Component {
         </tbody>
       </table>`;
 
-    return this.queryController.getEndpoint().listSubscriptions()
-      .then((subscriptions: ISubscription[]) => {
-        _.each(subscriptions, (subscription) => {
-          this.addSearchAlert(subscription, container);
-        });
-      })
+    return this.queryController.getEndpoint().listSubscriptions().then((subscriptions: ISubscription[]) => {
+      _.each(subscriptions, (subscription) => {
+        this.addSearchAlert(subscription, container);
+      });
+    })
       .catch(() => {
         container.el.innerHTML = '<div class=\'coveo-subscriptions-panel-fail\'>' + l('SearchAlerts_Fail') + '</div>';
       })

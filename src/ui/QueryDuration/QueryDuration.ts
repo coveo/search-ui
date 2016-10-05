@@ -7,7 +7,6 @@ import {$$} from '../../utils/Dom';
 import {l} from '../../strings/Strings';
 import {Initialization} from '../Base/Initialization';
 import Globalize = require('globalize');
-import _ = require('underscore');
 
 export interface IQueryDurationOptions {
 }

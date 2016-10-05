@@ -1,4 +1,3 @@
-/// <reference path="../../../node_modules/modal-box/bin/ModalBox.d.ts" />
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {LocalStorageUtils} from '../../utils/LocalStorageUtils';
 import {IFieldDescription} from '../../rest/FieldDescription';
