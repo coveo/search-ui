@@ -26,7 +26,7 @@ gulp.task('coverage', ['lcovCoverage']);
 
 gulp.task('test', ['setupTests', 'buildTest'], function (done) {
   new TestServer({
-    configFile: __dirname + '/../karma.conf.js',
+    configFile: __dirname + '/karma.conf.js',
   }, (exitCode) => {
     if (exitCode) {
       // Fail CI builds if any test fails (since karma will exit 1 on any error)
