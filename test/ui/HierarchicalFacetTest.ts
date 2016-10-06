@@ -3,7 +3,6 @@ import {HierarchicalFacet} from '../../src/ui/HierarchicalFacet/HierarchicalFace
 import {IGroupByResult} from '../../src/rest/GroupByResult';
 import {IHierarchicalFacetOptions} from '../../src/ui/HierarchicalFacet/HierarchicalFacet';
 import {FakeResults} from '../Fake';
-import {FacetValue} from '../../src/ui/Facet/FacetValues';
 import {$$} from '../../src/utils/Dom';
 import {Simulate} from '../Simulate';
 
@@ -16,7 +15,7 @@ export function HierarchicalFacetTest() {
       test = Mock.optionsComponentSetup<HierarchicalFacet, IHierarchicalFacetOptions>(HierarchicalFacet, {
         field: '@foobar'
       });
-      results = FakeResults.createFakeHierarchicalGroupByResult('@foobar', 'foo', 2, 3, '|', false, true);
+      results = FakeResults.createFakeHierarchicalGroupByResult('@foobar', 'foo', 4, 3, '|', false, true);
     });
 
     afterEach(function () {
@@ -24,18 +23,16 @@ export function HierarchicalFacetTest() {
       results = null;
     });
 
-    function getFacetValue(parentNumber, childNumber?, token = 'foo', delimitingCharacter = '|'): FacetValue {
-      if (childNumber == undefined) {
-        return test.cmp.values.get(token + parentNumber);
-      } else {
-        return test.cmp.values.get(token + parentNumber + delimitingCharacter + token + parentNumber + '-' + childNumber);
-      }
+    function getFacetValueElement(facetValue: string): HTMLElement {
+      return _.first(getAllFacetValueElement(facetValue));
     }
 
-    function getFacetValueElement(facetValue: string): HTMLElement {
-      return $$(_.find<HTMLElement>($$(test.cmp.element).findAll('.coveo-facet-value'), (value) => {
-        return $$($$(value).find('.coveo-facet-value-caption')).text().toLowerCase() == facetValue.toLowerCase();
-      })).el;
+    function getAllFacetValueElement(facetValue: string) {
+      return _.chain($$(test.cmp.element).findAll('.coveo-facet-value'))
+        .filter((value) => {
+          return $$($$(value).find('.coveo-facet-value-caption')).text().toLowerCase() == facetValue.toLowerCase();
+        })
+        .value();
     }
 
     function doQuery() {
@@ -46,44 +43,44 @@ export function HierarchicalFacetTest() {
 
     it('should flag the parent value when a child value is selected or deselected', function () {
       doQuery();
-      expect(getFacetValue(0).selected).toBe(false);
-      expect(getFacetValue(0, 0).selected).toBe(false);
+      expect(test.cmp.values.get(FakeResults.createFakeHierarchicalValue('foo0', 0)).selected).toBe(false);
+      expect(test.cmp.values.get(FakeResults.createFakeHierarchicalValue('foo0', 1)).selected).toBe(false);
 
-      test.cmp.selectValue('foo0|foo0-0');
+      test.cmp.selectValue('level:0--value:foo0|level:1--value:foo0');
       doQuery();
-      expect(getFacetValue(0, 0).selected).toBe(true);
-      expect($$(getFacetValueElement('foo0')).hasClass('coveo-has-childs-selected')).toBe(true);
+      expect(test.cmp.values.get(FakeResults.createFakeHierarchicalValue('foo0', 1)).selected).toBe(true);
+      expect($$(getFacetValueElement('level:0--value:foo0')).hasClass('coveo-has-childs-selected')).toBe(true);
 
-      test.cmp.deselectValue('foo0|foo0-0');
+      test.cmp.deselectValue('level:0--value:foo0|level:1--value:foo0');
       doQuery();
-      expect(getFacetValue(0, 0).selected).toBe(false);
-      expect($$(getFacetValueElement('foo0')).hasClass('coveo-has-childs-selected')).toBe(false);
+      expect(test.cmp.values.get(FakeResults.createFakeHierarchicalValue('foo0', 1)).selected).toBe(false);
+      expect($$(getFacetValueElement('level:0--value:foo0')).hasClass('coveo-has-childs-selected')).toBe(false);
     });
 
     it('should hide child value by default', function () {
       doQuery();
-      expect($$(getFacetValueElement('foo0-0')).hasClass('coveo-inactive')).toBe(true);
+      expect($$(getFacetValueElement('level:1--value:foo0')).hasClass('coveo-inactive')).toBe(true);
     });
 
     it('should show and hide the children if you open/close the parent', function () {
       doQuery();
-      test.cmp.open('foo0');
-      expect($$(getFacetValueElement('foo0-0')).hasClass('coveo-inactive')).toBe(false);
-      test.cmp.close('foo0');
-      expect($$(getFacetValueElement('foo0-0')).hasClass('coveo-inactive')).toBe(true);
+      test.cmp.open('level:0--value:foo0');
+      expect($$(getFacetValueElement('level:1--value:foo0')).hasClass('coveo-inactive')).toBe(false);
+      test.cmp.close('level:0--value:foo0');
+      expect($$(getFacetValueElement('level:1--value:foo0')).hasClass('coveo-inactive')).toBe(true);
     });
 
     it('should keep a value opened after a query', function () {
       doQuery();
-      test.cmp.open('foo0');
-      expect($$(getFacetValueElement('foo0-0')).hasClass('coveo-inactive')).toBe(false);
+      test.cmp.open('level:0--value:foo0');
+      expect($$(getFacetValueElement('level:1--value:foo0')).hasClass('coveo-inactive')).toBe(false);
       doQuery();
-      expect($$(getFacetValueElement('foo0-0')).hasClass('coveo-inactive')).toBe(false);
+      expect($$(getFacetValueElement('level:1--value:foo0')).hasClass('coveo-inactive')).toBe(false);
     });
 
     it('should reset correctly (selection)', function () {
       doQuery();
-      test.cmp.selectValue('foo0');
+      test.cmp.selectValue('level:0--value:foo0');
       var simulation = Simulate.query(test.env, {
         groupByResults: [results]
       });
@@ -99,36 +96,36 @@ export function HierarchicalFacetTest() {
 
     it('should set the correct css class for a value with childs', function () {
       doQuery();
-      expect($$(getFacetValueElement('foo0')).hasClass('coveo-has-childs')).toBe(true);
+      expect($$(getFacetValueElement('level:0--value:foo0')).hasClass('coveo-has-childs')).toBe(true);
     });
 
     it('should set the correct css class for a value with childs selected', function () {
       doQuery();
-      test.cmp.selectValue('foo0|foo0-0');
+      test.cmp.selectValue('level:0--value:foo0|level:1--value:foo0');
       doQuery();
-      expect($$(getFacetValueElement('foo0')).hasClass('coveo-has-childs-selected')).toBe(true);
-      test.cmp.deselectValue('foo0|foo0-0');
+      expect($$(getFacetValueElement('level:0--value:foo0')).hasClass('coveo-has-childs-selected')).toBe(true);
+      test.cmp.deselectValue('level:0--value:foo0|level:1--value:foo0');
       doQuery();
-      expect($$(getFacetValueElement('foo0')).hasClass('coveo-has-childs-selected')).toBe(false);
+      expect($$(getFacetValueElement('level:0--value:foo0')).hasClass('coveo-has-childs-selected')).toBe(false);
     });
 
     it('should set the correct css class for a value with multiple child selected', function () {
       doQuery();
-      test.cmp.selectValue('foo0|foo0-0');
-      test.cmp.selectValue('foo0|foo0-1');
+      test.cmp.selectValue('level:0--value:foo0|level:1--value:foo0');
+      test.cmp.selectValue('level:0--value:foo0|level:1--value:foo1');
       doQuery();
-      expect($$(getFacetValueElement('foo0')).hasClass('coveo-has-childs-selected')).toBe(true);
-      test.cmp.deselectValue('foo0|foo0-0');
+      expect($$(getFacetValueElement('level:0--value:foo0')).hasClass('coveo-has-childs-selected')).toBe(true);
+      test.cmp.deselectValue('level:0--value:foo0|level:1--value:foo0');
       doQuery();
-      expect($$(getFacetValueElement('foo0')).hasClass('coveo-has-childs-selected')).toBe(true);
-      test.cmp.deselectValue('foo0|foo0-1');
+      expect($$(getFacetValueElement('level:0--value:foo0')).hasClass('coveo-has-childs-selected')).toBe(true);
+      test.cmp.deselectValue('level:0--value:foo0|level:1--value:foo1');
       doQuery();
-      expect($$(getFacetValueElement('foo0')).hasClass('coveo-has-childs-selected')).toBe(false);
+      expect($$(getFacetValueElement('level:0--value:foo0')).hasClass('coveo-has-childs-selected')).toBe(false);
     });
 
     it('should set the correct css class for a value with no child', function () {
       doQuery();
-      expect($$(getFacetValueElement('foo0-0')).hasClass('coveo-no-childs')).toBe(true);
+      expect($$(getFacetValueElement('level:3--value:foo0')).hasClass('coveo-no-childs')).toBe(true);
     });
 
     it('should request 10000 values but displays only as much as requested', function () {
@@ -148,8 +145,8 @@ export function HierarchicalFacetTest() {
     it('should treat orphan values accordingly', () => {
       doQuery();
       // open the paren, the child should not be inactive
-      test.cmp.open('foo0');
-      expect($$(getFacetValueElement('foo0-0')).hasClass('coveo-inactive')).toBe(false);
+      test.cmp.open('level:0--value:foo0');
+      expect($$(getFacetValueElement('level:1--value:foo0')).hasClass('coveo-inactive')).toBe(false);
       results = FakeResults.createFakeHierarchicalGroupByResult('@foobar', 'foo', 2, 3, '|', false, true);
       // values[0] is foo0 : a parent
       results.values[0] = undefined;
@@ -157,8 +154,25 @@ export function HierarchicalFacetTest() {
       doQuery();
       // foo0-0 is a child of the value we just deleted
       // it should be hidden
-      test.cmp.open('foo0');
-      expect($$(getFacetValueElement('foo0-0')).hasClass('coveo-inactive')).toBe(true);
+      test.cmp.open('level:0-value:foo0');
+      expect($$(getFacetValueElement('level:1--value:foo0')).hasClass('coveo-inactive')).toBe(true);
+    });
+
+    it('should treat orphan values accordingly when level start is not 0', () => {
+      test.cmp.options.levelStart = 1;
+      doQuery();
+      // open the paren, the child should not be inactive
+      test.cmp.open('level:0--value:foo0|level:1--value:foo0');
+      expect($$(getFacetValueElement('level:2--value:foo0')).hasClass('coveo-inactive')).toBe(false);
+      results = FakeResults.createFakeHierarchicalGroupByResult('@foobar', 'foo', 3, 3, '|', false, true);
+      // values[3] is level:1-value:foo1 : a parent
+      results.values[3] = undefined;
+      results.values = _.compact(results.values);
+      doQuery();
+      // level:2--value:foo1 is a child of the value we just deleted
+      // it should be hidden
+      test.cmp.open('level:0--value:foo0|level:1--value:foo0');
+      expect($$(getFacetValueElement('level:2--value:foo0')).hasClass('coveo-inactive')).toBe(true);
     });
 
     it('should populate breadcrumb', () => {

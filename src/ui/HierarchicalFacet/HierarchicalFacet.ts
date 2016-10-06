@@ -865,7 +865,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
 
   private checkForOrphans() {
     _.each(this.valueHierarchy, (v: IValueHierarchy) => {
-      if (this.getLevel(v.facetValue) != 0) {
+      if (this.getLevel(v.facetValue) != this.options.levelStart) {
         if (this.getValueHierarchy(this.getParent(v.facetValue)) == undefined) {
           this.logger.error(`Orphan value found in HierarchicalFacet : ${v.facetValue.value}`, `Needed : ${this.getParent(v.facetValue)} but not found`);
           this.logger.warn(`Removing incoherent facet value : ${v.facetValue.value}`);
