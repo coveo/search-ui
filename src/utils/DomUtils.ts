@@ -56,6 +56,19 @@ export class DomUtils {
     return loading.el;
   }
 
+  static getModalBoxHeader(title: string): Dom {
+    var header = $$('div');
+    header.el.innerHTML = `<div class='coveo-modalbox-right-header'>
+        <span class='coveo-modalbox-close-button'>
+          <span class='coveo-icon coveo-sprites-common-clear'></span>
+        </span>
+      </div>
+      <div class='coveo-modalbox-left-header'>
+        <span class='coveo-modalbox-pop-up-reminder'> ${title || ''}</span>
+      </div>`;
+    return header;
+  }
+
   static getQuickviewHeader(result: IQueryResult, options: { showDate: boolean; title: string }, bindings: IResultsComponentBindings): Dom {
     var date = '';
     if (options.showDate) {
