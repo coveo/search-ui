@@ -22,10 +22,10 @@
     background-color: #f7f7f7;
     height: 24px;
     width: 24px;
-  }
-  .coveo-subscriptions-panel-title {
-    font-size: 18px;
-    text-align: left;
+    @include clearButton('.coveo-icon');
+    .coveo-icon {
+      vertical-align: text-top;
+    }
   }
   .coveo-subscriptions-panel-content {
     width: 100%; 
