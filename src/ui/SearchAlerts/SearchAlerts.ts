@@ -186,11 +186,10 @@ export class SearchAlerts extends Component {
           title: title.el.outerHTML,
           className: 'coveo-subscriptions-panel'
         });
-
-        $$($$(this.modal.modalBox).find('.coveo-subscriptions-panel-close')).on('click', ()=> {
+        $$($$(this.modal.modalBox).find('.coveo-subscriptions-panel-close')).on('click', () => {
           this.close();
-        })
-      })
+        });
+      });
   }
 
   private handleSearchAlertsFail() {
