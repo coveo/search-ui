@@ -3,6 +3,12 @@
   margin-top: 10px;
   display: none;
 }
+
+.coveo-modalBox.coveo-subscriptions-panel > .coveo-wrapper > .coveo-title {
+  cursor: inherit;
+}
+
+
 .coveo-subscriptions-panel {
   > .coveo-wrapper {
     overflow: visible;
