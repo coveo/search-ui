@@ -3,8 +3,7 @@ import {HierarchicalFacet} from '../../src/ui/HierarchicalFacet/HierarchicalFace
 import {IGroupByResult} from '../../src/rest/GroupByResult';
 import {IHierarchicalFacetOptions} from '../../src/ui/HierarchicalFacet/HierarchicalFacet';
 import {FakeResults} from '../Fake';
-import {FacetValue} from '../../src/ui/Facet/FacetValues';
-import {$$, Dom} from '../../src/utils/Dom';
+import {$$} from '../../src/utils/Dom';
 import {Simulate} from '../Simulate';
 
 export function HierarchicalFacetTest() {
@@ -23,10 +22,6 @@ export function HierarchicalFacetTest() {
       test = null;
       results = null;
     });
-
-    function getFacetValue(parentNumber, childNumber?, positionInLevel = 0, token = 'foo', delimitingCharacter = '|'): FacetValue {
-      return test.cmp.values.get(FakeResults.createFakeHierarchicalValue(`${token}${positionInLevel}`, parentNumber))
-    }
 
     function getFacetValueElement(facetValue: string): HTMLElement {
       return _.first(getAllFacetValueElement(facetValue));
@@ -178,7 +173,7 @@ export function HierarchicalFacetTest() {
       // it should be hidden
       test.cmp.open('level:0--value:foo0|level:1--value:foo0');
       expect($$(getFacetValueElement('level:2--value:foo0')).hasClass('coveo-inactive')).toBe(true);
-    })
+    });
 
     it('should populate breadcrumb', () => {
       doQuery();
