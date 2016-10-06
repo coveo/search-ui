@@ -14,7 +14,7 @@ export function QuickviewTest() {
 
     beforeEach(() => {
       result = FakeResults.createFakeResult();
-      test = Mock.optionsResultComponentSetup<Quickview, IQuickviewOptions>(Quickview, {contentTemplate: buildTemplate()}, result);
+      test = Mock.optionsResultComponentSetup<Quickview, IQuickviewOptions>(Quickview, { contentTemplate: buildTemplate() }, result);
       test.cmp.element = mockOwnerDocument();
     });
 
@@ -44,11 +44,11 @@ export function QuickviewTest() {
     function mockOwnerDocument() {
       let tmp: any = {};
       _.extend(tmp, test.cmp.element);
-      tmp.ownerDocument = {body: test.cmp.root};
+      tmp.ownerDocument = { body: test.cmp.root };
       return tmp;
     }
 
   });
 
-  
+
 }
