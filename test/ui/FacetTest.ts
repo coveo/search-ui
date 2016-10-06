@@ -1,6 +1,5 @@
 import * as Mock from '../MockEnvironment';
-import {Facet} from '../../src/ui/Facet/Facet';
-import {IFacetOptions} from '../../src/ui/Facet/Facet';
+import {Facet, IFacetOptions} from '../../src/ui/Facet/Facet';
 import {$$} from '../../src/utils/Dom';
 import {FacetValue} from '../../src/ui/Facet/FacetValues';
 import {Simulate} from '../Simulate';
