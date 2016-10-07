@@ -1,38 +1,60 @@
 import * as Mock from '../MockEnvironment';
-import {Quickview, IQuickviewOptions} from '../../src/ui/Quickview/Quickview';
+import {Quickview} from '../../src/ui/Quickview/Quickview';
 import {Dom, $$} from '../../src/utils/Dom';
 import {FakeResults} from '../Fake';
 import {IQueryResult} from '../../src/rest/QueryResult';
+import {IResultsComponentBindings} from '../../src/ui/Base/ResultsComponentBindings';
 import {Template} from '../../src/ui/Templates/Template';
 import {StringUtils} from '../../src/utils/StringUtils';
+import {ModalBox} from '../../src/ExternalModulesShim';
 
 export function QuickviewTest() {
   describe('Quickview', () => {
-    let test: Mock.IBasicComponentSetup<Quickview>;
     let result: IQueryResult;
-    let quickviewTemplateElement: HTMLElement;
+    let quickview: Quickview;
+    let open: jasmine.Spy;
+    let close: jasmine.Spy;
+    let env: Mock.IMockEnvironment;
+    let oldOpen = ModalBox.open;
+    let oldClose = ModalBox.close;
 
     beforeEach(() => {
+      let mockBuilder = new Mock.MockEnvironmentBuilder();
+      env = mockBuilder.build();
       result = FakeResults.createFakeResult();
-      test = Mock.optionsResultComponentSetup<Quickview, IQuickviewOptions>(Quickview, { contentTemplate: buildTemplate() }, result);
-      test.cmp.element = mockOwnerDocument();
+      open = jasmine.createSpy('open');
+      close = jasmine.createSpy('close');
+      oldOpen = ModalBox.open;
+      oldClose = ModalBox.close;
+      ModalBox.open = open.and.returnValue({
+        modalBox: $$('div', {className: 'coveo-wrapper'});
+      });
+      ModalBox.close = close;
+      quickview = new Quickview(env.element, { contentTemplate: buildTemplate() }, <any>mockBuilder.getBindings(), result, ModalBox);
+    });
+
+    afterEach(() => {
+      quickview = null;
+      env = null;
+      open = null;
+      close = null;
+      ModalBox.open = oldOpen;
+      ModalBox.close = oldClose;
     });
 
     it('creates a modal box on open', () => {
-      test.cmp.open();
-      let modal = $$(test.cmp.root).find('.coveo-quick-view-full-height');
-      expect(modal).not.toBe(null);
+      quickview.open();
+      expect(open).toHaveBeenCalled();
     });
 
     it('closes the modal box on close', () => {
-      test.cmp.open();
-      test.cmp.close();
-      let modal = $$(test.cmp.root).find('.coveo-quick-view-full-height');
-      expect(modal).toBe(null);
+      quickview.open();
+      quickview.close();
+      expect(close).toHaveBeenCalled();
     });
 
     it('computes the hash id', () => {
-      let hash = test.cmp.getHashId();
+      let hash = quickview.getHashId();
       expect(hash).toBe(result.queryUid + '.' + result.index + '.' + StringUtils.hashCode(result.uniqueId));
     });
 
@@ -40,14 +62,6 @@ export function QuickviewTest() {
       let template = new Template(() => '<div class="coveo-quick-view-full-height"></div>');
       return template;
     }
-
-    function mockOwnerDocument() {
-      let tmp: any = {};
-      _.extend(tmp, test.cmp.element);
-      tmp.ownerDocument = { body: test.cmp.root };
-      return tmp;
-    }
-
   });
 
 
