@@ -170,19 +170,28 @@ export class FakeResults {
     };
   }
 
+  static createFakeHierarchicalValue(token: string, currentLevel: number, delimitingCharacter = '|') {
+    let value = `level:${currentLevel.toString()}--value:${token}`;
+    if (currentLevel != 0) {
+      for (var i = currentLevel - 1; i >= 0; i--) {
+        value = `level:${i.toString()}--value:${token}${delimitingCharacter}${value}`;
+      }
+    }
+    return value;
+  }
+
   static createFakeHierarchicalGroupByResult(field: string, token: string, numberOfLevel = 2, countByLevel = 3, delimitingCharacter = '|', includeComputedValues = false, weirdCasing = true): IGroupByResult {
     var groupByValues: IGroupByValue[] = [];
-    for (var i = 0; i < 2; ++i) {
-      var groupByValueTopLevel = FakeResults.createFakeGroupByValue(token + i.toString(), i + 1, 100 + 1, includeComputedValues ? 1000 + i : undefined);
-      groupByValues.push(groupByValueTopLevel);
-
+    // i == level
+    for (var i = 0; i < numberOfLevel; ++i) {
+      // j == values on current level
       for (var j = 0; j < countByLevel; j++) {
-        var groupByValueSubLevel = FakeResults.createFakeGroupByValue(token + i.toString(), i + 1, 100 + 1, includeComputedValues ? 1000 + i : undefined);
-        groupByValueSubLevel.value = groupByValueSubLevel.lookupValue += delimitingCharacter + FakeResults.createFakeGroupByValue(token + i.toString() + '-' + +j.toString(), i + 1, 100 + i, includeComputedValues ? 1000 + i : undefined).value;
+        let currentValue = FakeResults.createFakeHierarchicalValue(`${token}${j.toString()}`, i);
         if (weirdCasing) {
-          groupByValueSubLevel.value = groupByValueSubLevel.lookupValue = _.map(groupByValueSubLevel.lookupValue.split(delimitingCharacter), (value, k) => (i + j + k) % 2 == 0 ? value.toLowerCase() : value.toUpperCase()).join(delimitingCharacter);
+          currentValue = _.map(currentValue.split(delimitingCharacter), (value, k) => (i + j + k) % 2 == 0 ? value.toLowerCase() : value.toUpperCase()).join(delimitingCharacter);
         }
-        groupByValues.push(groupByValueSubLevel);
+        var currentGroupByValue = FakeResults.createFakeGroupByValue(currentValue, j + 1, 100, includeComputedValues ? 1000 : undefined);
+        groupByValues.push(currentGroupByValue);
       }
     }
 
