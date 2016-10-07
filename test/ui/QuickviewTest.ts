@@ -1,9 +1,8 @@
 import * as Mock from '../MockEnvironment';
 import {Quickview} from '../../src/ui/Quickview/Quickview';
-import {Dom, $$} from '../../src/utils/Dom';
+import {$$} from '../../src/utils/Dom';
 import {FakeResults} from '../Fake';
 import {IQueryResult} from '../../src/rest/QueryResult';
-import {IResultsComponentBindings} from '../../src/ui/Base/ResultsComponentBindings';
 import {Template} from '../../src/ui/Templates/Template';
 import {StringUtils} from '../../src/utils/StringUtils';
 import {ModalBox} from '../../src/ExternalModulesShim';
@@ -27,9 +26,12 @@ export function QuickviewTest() {
       oldOpen = ModalBox.open;
       oldClose = ModalBox.close;
       ModalBox.open = open.and.returnValue({
-        modalBox: $$('div', {className: 'coveo-wrapper'});
+        modalBox: $$('div', undefined, $$('div', { className: 'coveo-wrapper' })).el,
+        wrapper: $$('div', undefined, $$('div', { className: 'coveo-quickview-close-button' })).el,
+        overlay: $$('div').el,
+        content: $$('div').el,
+        close: close
       });
-      ModalBox.close = close;
       quickview = new Quickview(env.element, { contentTemplate: buildTemplate() }, <any>mockBuilder.getBindings(), result, ModalBox);
     });
 
@@ -39,7 +41,6 @@ export function QuickviewTest() {
       open = null;
       close = null;
       ModalBox.open = oldOpen;
-      ModalBox.close = oldClose;
     });
 
     it('creates a modal box on open', () => {

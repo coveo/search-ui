@@ -22,7 +22,6 @@ import {StreamHighlightUtils} from '../../utils/StreamHighlightUtils';
 import Globalize = require('globalize');
 import {IStringMap} from '../../rest/GenericParam';
 import {Quickview} from '../Quickview/Quickview';
-import {Logger} from '../../misc/Logger';
 
 /**
  * The core template helpers provided by default.
