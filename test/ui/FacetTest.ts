@@ -346,7 +346,7 @@ export function FacetTest() {
         expect(test.cmp.getDisplayedFacetValues()[2].value).toBe('foo0');
       });
 
-      it('customSort should request the correct number of values in the group by', ()=>{
+      it('customSort should request the correct number of values in the group by', () => {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           customSort: ['foo1', 'foo2', 'foo3', 'foo4', 'foo5', 'foo6', 'foo7', 'foo8']

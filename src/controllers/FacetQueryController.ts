@@ -172,7 +172,7 @@ export class FacetQueryController {
       // Filter out duplicates with a lower case comparison on the value
       return this.getUnionWithCustomSortLowercase(this.facet.options.customSort, this.getAllowedValuesFromSelected());
     } else {
-      return _.map(this.getAllowedValuesFromSelected(), (facetValue: FacetValue)=> facetValue.value);
+      return _.map(this.getAllowedValuesFromSelected(), (facetValue: FacetValue) => facetValue.value);
     }
   }
 
@@ -181,13 +181,13 @@ export class FacetQueryController {
       return val.toLowerCase();
     });
     let filtered = _.chain(facetValues)
-                    .filter((facetValue: FacetValue) => {
-                      return !_.contains(toCompare, facetValue.value.toLowerCase());
-                    })
-                    .map((facetValue: FacetValue)=> {
-                      return facetValue.value;
-                    })
-                    .value();
+      .filter((facetValue: FacetValue) => {
+        return !_.contains(toCompare, facetValue.value.toLowerCase());
+      })
+      .map((facetValue: FacetValue) => {
+        return facetValue.value;
+      })
+      .value();
     return _.compact(customSort.concat(filtered));
   }
 
