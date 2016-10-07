@@ -369,6 +369,17 @@ export function FacetTest() {
 
       });
 
+      it('custom sort should not request more values then the default if it\'s not needed', () => {
+        test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
+          field: '@field',
+          customSort: ['foo1', 'foo2']
+        });
+        test.cmp.selectValue('foo3');
+        let simulation = Simulate.query(test.env);
+        // expect to be 5 (default number of values in facet) + 1 for "more values"
+        expect(simulation.queryBuilder.build().groupBy[0].maximumNumberOfValues).toBe(6);
+      });
+
       it('injectionDepth should specify the injection depth in a group by', function () {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',

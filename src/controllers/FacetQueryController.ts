@@ -177,6 +177,10 @@ export class FacetQueryController {
   }
 
   private getUnionWithCustomSortLowercase(customSort: string[], facetValues: FacetValue[]) {
+    // This will take the custom sort, compare it against the passed in facetValues
+    // The comparison is lowercase.
+    // The union of the 2 arrays with duplicated filtered out is returned.
+
     let toCompare = _.map(customSort, (val: string) => {
       return val.toLowerCase();
     });
