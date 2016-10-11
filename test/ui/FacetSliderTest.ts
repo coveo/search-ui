@@ -99,7 +99,7 @@ export function FacetSliderTest() {
       let slider = jasmine.createSpyObj('slider', ['drawGraph']);
       let mockEnvironmentBuilder = new Mock.MockEnvironmentBuilder();
       let env = mockEnvironmentBuilder.build();
-      let facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider)
+      let facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider);
 
       facetSlider.onResize(new Event('resize'));
 
@@ -113,7 +113,7 @@ export function FacetSliderTest() {
       let slider = jasmine.createSpyObj('slider', ['drawGraph']);
       let mockEnvironmentBuilder = new Mock.MockEnvironmentBuilder();
       let env = mockEnvironmentBuilder.build();
-      let facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider)
+      let facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider);
 
       $$(env.root).trigger(QueryEvents.noResults);
       facetSlider.onResize(new Event('resize'));
@@ -122,29 +122,54 @@ export function FacetSliderTest() {
     });
 
     it('should draw the graph when draw delayed graph data is called', () => {
-      let slider = jasmine.createSpyObj('slider', ['drawGraph']);
-      let mockEnvironmentBuilder = new Mock.MockEnvironmentBuilder();
-      let env = mockEnvironmentBuilder.build();
-      let facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider)
-      Simulate.query(env)
-
-      facetSlider.drawDelayedGraphData();
-
-      expect(slider.drawGraph).toHaveBeenCalled();
-    });
-
-    it('should not draw the graph when draw delayed graph data is called and there is no results', () => {
+      facetSliderOptions = { start: 0, end: 100, field: '@foo', graph: { steps: 4 } };
+      let fakeGroupByResult = FakeResults.createFakeRangeGroupByResult('@foo', 0, 100, 25);
+      let fakeResults = FakeResults.createFakeResults();
+      fakeResults.groupByResults = [fakeGroupByResult];
       let slider = jasmine.createSpyObj('slider', ['drawGraph']);
       let mockEnvironmentBuilder = new Mock.MockEnvironmentBuilder();
       let env = mockEnvironmentBuilder.build();
       let facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider);
-      Simulate.query(env, { deferSuccess: true });
+      hideFacetColumn(env);
+      Simulate.query(env, { results: fakeResults });
+      showFacetColumn(env);
+
+      facetSlider.drawDelayedGraphData();
+
+      expect(slider.drawGraph).toHaveBeenCalledTimes(2);
+    });
+
+    it('should not draw the graph when draw delayed graph data is called and there is no results', () => {
+      let slider = jasmine.createSpyObj('slider', ['drawGraph']);
+
+      let fakeGroupByResult = FakeResults.createFakeRangeGroupByResult('@foo', 0, 100, 25);
+      let fakeResults = FakeResults.createFakeResults();
+      fakeResults.groupByResults = [fakeGroupByResult];
+      
+      let mockEnvironmentBuilder = new Mock.MockEnvironmentBuilder();
+      let env = mockEnvironmentBuilder.build();
+
+      facetSliderOptions = { start: 0, end: 100, field: '@foo', graph: { steps: 4 } };
+      let facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider);
+      hideFacetColumn(env);
+      Simulate.query(env, { results: fakeResults });
+      showFacetColumn(env);
 
       $$(env.root).trigger(QueryEvents.noResults);
       facetSlider.drawDelayedGraphData();
 
-      expect(slider.drawGraph).not.toHaveBeenCalled();
+      expect(slider.drawGraph).not.toHaveBeenCalledTimes(1);
     });
+
+    function hideFacetColumn(env: Mock.IMockEnvironment) {
+      let facetColumn = $$(env.root).find('.coveo-facet-column');
+      facetColumn.style.display = 'none';
+    }
+
+    function showFacetColumn(env: Mock.IMockEnvironment) {
+      let facetColumn = $$(env.root).find('.coveo-facet-column');
+      facetColumn.style.display = 'block';
+    }
 
     describe('exposes options', function () {
       it('dateField should change the query expression to a correct date expression', function () {
