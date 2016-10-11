@@ -6,17 +6,16 @@ import {BreadcrumbEvents} from '../../src/events/BreadcrumbEvents';
 import {IPopulateBreadcrumbEventArgs} from '../../src/events/BreadcrumbEvents';
 import {$$} from '../../src/utils/Dom';
 import {FakeResults} from '../Fake';
+import {QueryEvents} from '../../src/events/QueryEvents';
 
 export function FacetSliderTest() {
   describe('FacetSlider', function () {
     let test: Mock.IBasicComponentSetup<FacetSlider>;
+    let facetSliderOptions: IFacetSliderOptions;
 
     beforeEach(function () {
-      test = Mock.optionsComponentSetup<FacetSlider, IFacetSliderOptions>(FacetSlider, {
-        start: 0,
-        end: 100,
-        field: '@foo'
-      });
+      facetSliderOptions = { start: 0, end: 100, field: '@foo' };
+      test = Mock.optionsComponentSetup<FacetSlider, IFacetSliderOptions>(FacetSlider, facetSliderOptions);
       (<jasmine.Spy>test.env.queryStateModel.get).and.returnValue([0, 100]);
       (<jasmine.Spy>test.env.queryStateModel.getDefault).and.returnValue([0, 100]);
     });
@@ -96,6 +95,57 @@ export function FacetSliderTest() {
       expect(test.cmp.disable).toHaveBeenCalled();
     });
 
+    it('should draw the graph on resize when there are results', (done) => {
+      let slider = jasmine.createSpyObj('slider', ['drawGraph']);
+      let mockEnvironmentBuilder = new Mock.MockEnvironmentBuilder();
+      let env = mockEnvironmentBuilder.build();
+      let facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider)
+
+      facetSlider.onResize(new Event('resize'));
+
+      setTimeout(() => {
+        expect(slider.drawGraph).toHaveBeenCalled();
+        done();
+      }, FacetSlider.DEBOUNCED_RESIZE_DELAY + 1);
+    });
+
+    it('should not draw the graph on resize when there are no results', () => {
+      let slider = jasmine.createSpyObj('slider', ['drawGraph']);
+      let mockEnvironmentBuilder = new Mock.MockEnvironmentBuilder();
+      let env = mockEnvironmentBuilder.build();
+      let facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider)
+
+      $$(env.root).trigger(QueryEvents.noResults);
+      facetSlider.onResize(new Event('resize'));
+
+      expect(slider.drawGraph).not.toHaveBeenCalled();
+    });
+
+    it('should draw the graph when draw delayed graph data is called', () => {
+      let slider = jasmine.createSpyObj('slider', ['drawGraph']);
+      let mockEnvironmentBuilder = new Mock.MockEnvironmentBuilder();
+      let env = mockEnvironmentBuilder.build();
+      let facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider)
+      Simulate.query(env)
+
+      facetSlider.drawDelayedGraphData();
+
+      expect(slider.drawGraph).toHaveBeenCalled();
+    });
+
+    it('should not draw the graph when draw delayed graph data is called and there is no results', () => {
+      let slider = jasmine.createSpyObj('slider', ['drawGraph']);
+      let mockEnvironmentBuilder = new Mock.MockEnvironmentBuilder();
+      let env = mockEnvironmentBuilder.build();
+      let facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider);
+      Simulate.query(env, { deferSuccess: true });
+
+      $$(env.root).trigger(QueryEvents.noResults);
+      facetSlider.drawDelayedGraphData();
+
+      expect(slider.drawGraph).not.toHaveBeenCalled();
+    });
+
     describe('exposes options', function () {
       it('dateField should change the query expression to a correct date expression', function () {
         test = Mock.optionsComponentSetup<FacetSlider, IFacetSliderOptions>(FacetSlider, {
@@ -143,6 +193,8 @@ export function FacetSliderTest() {
         test.cmp.ensureDom();
         expect($$($$(test.cmp.facetHeader.build()).find('.coveo-facet-header-title')).text()).toBe('nice title');
       });
+
+
     });
   });
 }
