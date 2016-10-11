@@ -7,6 +7,7 @@ import {ResultList} from "../../../src/ui/ResultList/ResultList";
 import {QueryEvents, IBuildingQueryEventArgs} from "../../../src/events/QueryEvents";
 
 declare var Coveo;
+declare var $;
 
 export class Playground {
   private componentContainer: Dom;

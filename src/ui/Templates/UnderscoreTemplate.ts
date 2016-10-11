@@ -52,7 +52,7 @@ export class UnderscoreTemplate extends Template {
   toHtmlElement(): HTMLElement {
     var script = $$('script');
     script.setAttribute('type', _.first(UnderscoreTemplate.mimeTypes));
-    script.setAttribute('data-condition', $(this.element).data('condition'));
+    script.setAttribute('data-condition', $$(this.element).getAttribute('data-condition'));
     script.text(this.element.innerHTML);
     return script.el;
   }
