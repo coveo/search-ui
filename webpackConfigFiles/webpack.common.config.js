@@ -16,15 +16,15 @@ module.exports = {
   resolve: {
     extensions: ['', '.ts', '.js'],
     alias: {
-      'l10n': __dirname + '/lib/l10n.min.js',
-      'globalize': __dirname + '/lib/globalize.min.js',
-      'modal-box': __dirname + '/node_modules/modal-box/bin/ModalBox.min.js',
-      'fastclick': __dirname + '/lib/fastclick.min.js',
-      'jstz': __dirname + '/lib/jstz.min.js',
-      'magic-box': __dirname + '/node_modules/coveomagicbox/bin/MagicBox.min.js',
-      'default-language': __dirname + '/src/strings/DefaultLanguage.js',
-      'underscore': __dirname + '/node_modules/underscore/underscore-min.js',
-      'jQuery': __dirname + '/test/lib/jquery.js'
+      'l10n': __dirname + '/../lib/l10n.min.js',
+      'globalize': __dirname + '/../lib/globalize.min.js',
+      'modal-box': __dirname + '/../node_modules/modal-box/bin/ModalBox.min.js',
+      'fastclick': __dirname + '/../lib/fastclick.min.js',
+      'jstz': __dirname + '/../lib/jstz.min.js',
+      'magic-box': __dirname + '/../node_modules/coveomagicbox/bin/MagicBox.min.js',
+      'default-language': __dirname + '/../src/strings/DefaultLanguage.js',
+      'underscore': __dirname + '/../node_modules/underscore/underscore-min.js',
+      'jQuery': __dirname + '/../test/lib/jquery.js'
     }
   },
   devtool: 'source-map',

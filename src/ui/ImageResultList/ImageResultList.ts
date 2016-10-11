@@ -204,7 +204,7 @@ export class ImageResultList extends ResultList implements IComponentBindings {
       result.style.top = minTopOffset + 'px';
       result.style.width = colWidth + 'px';
 
-      this.columnResultsArray[resultIndex] = minTopOffset + $(result).outerHeight() + margin;
+      this.columnResultsArray[resultIndex] = minTopOffset + result.offsetHeight + margin;
     });
     this.setResultsContainerHeight(_.max(this.columnResultsArray));
 
