@@ -109,7 +109,7 @@ export function FacetSliderTest() {
       }, FacetSlider.DEBOUNCED_RESIZE_DELAY + 1);
     });
 
-    it('should not draw the graph on resize when there are no results', () => {
+    it('should not draw the graph on resize when there are no results', (done) => {
       let slider = jasmine.createSpyObj('slider', ['drawGraph']);
       let mockEnvironmentBuilder = new Mock.MockEnvironmentBuilder();
       let env = mockEnvironmentBuilder.build();
@@ -118,57 +118,69 @@ export function FacetSliderTest() {
       $$(env.root).trigger(QueryEvents.noResults);
       facetSlider.onResize(new Event('resize'));
 
-      expect(slider.drawGraph).not.toHaveBeenCalled();
+      setTimeout(() => {
+        expect(slider.drawGraph).not.toHaveBeenCalled();
+        done();
+      }, FacetSlider.DEBOUNCED_RESIZE_DELAY + 1);
     });
 
-    it('should draw the graph when draw delayed graph data is called', () => {
-      facetSliderOptions = { start: 0, end: 100, field: '@foo', graph: { steps: 4 } };
-      let fakeGroupByResult = FakeResults.createFakeRangeGroupByResult('@foo', 0, 100, 25);
+    it('should draw the graph when draw delayed graph data is called', (done) => {
+      let fakeGroupByResult = FakeResults.createFakeRangeGroupByResult('@bar', 1, 100, 25);
       let fakeResults = FakeResults.createFakeResults();
-      fakeResults.groupByResults = [fakeGroupByResult];
+      fakeResults.groupByResults = [fakeGroupByResult, fakeGroupByResult]; // need two because the graph is enabled.
+
       let slider = jasmine.createSpyObj('slider', ['drawGraph']);
       let mockEnvironmentBuilder = new Mock.MockEnvironmentBuilder();
       let env = mockEnvironmentBuilder.build();
+      $$(env.element).addClass('coveo-facet-column');
+
+      facetSliderOptions = { start: 0, end: 100, field: '@bar', graph: { steps: 4 } };
       let facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider);
+
       hideFacetColumn(env);
+
+      // wait until delayed graph data has been saved
+      $$(env.root).on(QueryEvents.deferredQuerySuccess, () => {
+        showFacetColumn(env);
+        facetSlider.drawDelayedGraphData();
+        expect(slider.drawGraph).toHaveBeenCalled();
+        done();
+      });
       Simulate.query(env, { results: fakeResults });
-      showFacetColumn(env);
-
-      facetSlider.drawDelayedGraphData();
-
-      expect(slider.drawGraph).toHaveBeenCalledTimes(2);
     });
 
-    it('should not draw the graph when draw delayed graph data is called and there is no results', () => {
-      let slider = jasmine.createSpyObj('slider', ['drawGraph']);
-
-      let fakeGroupByResult = FakeResults.createFakeRangeGroupByResult('@foo', 0, 100, 25);
+    it('should not draw the graph when draw delayed graph data is called and there is no results', (done) => {
+      let fakeGroupByResult = FakeResults.createFakeRangeGroupByResult('@bar', 1, 100, 25);
       let fakeResults = FakeResults.createFakeResults();
-      fakeResults.groupByResults = [fakeGroupByResult];
-      
+      fakeResults.groupByResults = [fakeGroupByResult, fakeGroupByResult]; // need two because the graph is enabled.
+
+      let slider = jasmine.createSpyObj('slider', ['drawGraph']);
       let mockEnvironmentBuilder = new Mock.MockEnvironmentBuilder();
       let env = mockEnvironmentBuilder.build();
+      $$(env.element).addClass('coveo-facet-column');
 
-      facetSliderOptions = { start: 0, end: 100, field: '@foo', graph: { steps: 4 } };
+      facetSliderOptions = { start: 0, end: 100, field: '@bar', graph: { steps: 4 } };
       let facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider);
-      hideFacetColumn(env);
-      Simulate.query(env, { results: fakeResults });
-      showFacetColumn(env);
 
+      hideFacetColumn(env);
+
+      Simulate.query(env, { results: fakeResults });
+      // wait until delayed graph data has been saved and no results event has been fired
+      $$(env.root).on(QueryEvents.noResults, () => {
+        showFacetColumn(env);
+        facetSlider.drawDelayedGraphData();
+        expect(slider.drawGraph).not.toHaveBeenCalled();
+        done();
+      });
       $$(env.root).trigger(QueryEvents.noResults);
-      facetSlider.drawDelayedGraphData();
-
-      expect(slider.drawGraph).not.toHaveBeenCalledTimes(1);
     });
 
     function hideFacetColumn(env: Mock.IMockEnvironment) {
-      let facetColumn = $$(env.root).find('.coveo-facet-column');
-      facetColumn.style.display = 'none';
+      env.element.style.display = 'none';
     }
 
     function showFacetColumn(env: Mock.IMockEnvironment) {
-      let facetColumn = $$(env.root).find('.coveo-facet-column');
-      facetColumn.style.display = 'block';
+      env.element.style.display = 'block';
     }
 
     describe('exposes options', function () {
