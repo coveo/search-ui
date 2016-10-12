@@ -415,7 +415,7 @@ export class EndpointCaller {
         success: (data: any) => this.handleSuccessfulResponseThatMightBeAnError(requestInfo, data, resolve, reject),
         timeout: EndpointCaller.JSONP_ERROR_TIMEOUT,
         error: () => this.handleError(requestInfo, 0, undefined, reject)
-      })
+      });
     });
   }
 

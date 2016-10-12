@@ -328,3 +328,6 @@ DebugTest();
 
 import {StreamHighlightUtilsTest} from './utils/StreamHighlightUtilsTest';
 StreamHighlightUtilsTest();
+
+import {QuickviewTest} from './ui/QuickviewTest';
+QuickviewTest();
