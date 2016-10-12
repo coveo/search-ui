@@ -125,9 +125,7 @@ export function FacetSliderTest() {
     });
 
     it('should draw the graph when draw delayed graph data is called', (done) => {
-      let fakeGroupByResult = FakeResults.createFakeRangeGroupByResult('@bar', 1, 100, 25);
-      let fakeResults = FakeResults.createFakeResults();
-      fakeResults.groupByResults = [fakeGroupByResult, fakeGroupByResult]; // need two because the graph is enabled.
+      let fakeResults = createFacetSliderGraphGroupByResults();
 
       let slider = jasmine.createSpyObj('slider', ['drawGraph']);
       let mockEnvironmentBuilder = new Mock.MockEnvironmentBuilder();
@@ -150,9 +148,7 @@ export function FacetSliderTest() {
     });
 
     it('should not draw the graph when draw delayed graph data is called and there is no results', (done) => {
-      let fakeGroupByResult = FakeResults.createFakeRangeGroupByResult('@bar', 1, 100, 25);
-      let fakeResults = FakeResults.createFakeResults();
-      fakeResults.groupByResults = [fakeGroupByResult, fakeGroupByResult]; // need two because the graph is enabled.
+      let fakeResults = createFacetSliderGraphGroupByResults();
 
       let slider = jasmine.createSpyObj('slider', ['drawGraph']);
       let mockEnvironmentBuilder = new Mock.MockEnvironmentBuilder();
@@ -181,6 +177,13 @@ export function FacetSliderTest() {
 
     function showFacetColumn(env: Mock.IMockEnvironment) {
       env.element.style.display = 'block';
+    }
+
+    function createFacetSliderGraphGroupByResults() {
+      let fakeGroupByResult = FakeResults.createFakeRangeGroupByResult('@bar', 1, 100, 25);
+      let fakeResults = FakeResults.createFakeResults();
+      fakeResults.groupByResults = [fakeGroupByResult, fakeGroupByResult]; // need two because the graph is enabled.
+      return fakeResults;
     }
 
     describe('exposes options', function () {
