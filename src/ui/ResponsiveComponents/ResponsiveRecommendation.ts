@@ -12,7 +12,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   private dropdownContent: Dom;
   private dropdownHeader: Dom;
 
-  public static init (root: HTMLElement, component, options: IResponsiveComponentOptions) {
+  public static init(root: HTMLElement, component, options: IResponsiveComponentOptions) {
     ResponsiveComponentsManager.register(ResponsiveRecommendation, $$(root), Recommendation.ID, component, options);
   }
 
@@ -57,10 +57,4 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
       this.dropdownContent = $$(this.coveoRoot.find('CoveoRecommendation'));
     }
   }
-
-  private buildDropdownHeader() {
-    this.dropdownHeader = $$('div', { className: 'coveo-dropdown-header coveo-recommendation-header' });
-  }
-
-
 }

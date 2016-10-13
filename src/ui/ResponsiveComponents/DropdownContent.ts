@@ -1,0 +1,37 @@
+import {$$, Dom} from '../../utils/Dom';
+import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
+
+export class DropdownContent {
+
+  private cssClassName: string;
+
+  constructor(componentName: string, public element: Dom, private coveoRoot: Dom, private minWidth: number, private widthRatio: number) {
+    this.cssClassName = `coveo-${componentName}-dropdown-content`;
+  }
+
+  public positionDropdown() {
+    this.element.addClass(this.cssClassName);
+    this.element.el.style.display = '';
+
+    let width = this.widthRatio * this.coveoRoot.el.offsetWidth;
+    if (width <= this.minWidth) {
+      width = this.minWidth;
+    }
+    this.element.el.style.width = width.toString() + 'px';
+
+    PopupUtils.positionPopup(this.element.el, $$(this.coveoRoot.find('.coveo-tab-section')).el, this.coveoRoot.el,
+      { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM }, this.coveoRoot.el);
+  }
+
+  public hideDropdown() {
+    this.element.el.style.display = 'none';
+    this.element.removeClass(this.cssClassName);
+  }
+
+  public cleanUp() {
+    this.element.el.removeAttribute('style');
+  }
+
+
+
+}

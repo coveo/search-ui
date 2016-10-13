@@ -1,35 +1,29 @@
 import {$$, Dom} from '../../utils/Dom';
-import {InitializationEvents} from '../../events/InitializationEvents';
 import {IResponsiveComponent, ResponsiveComponentsManager, IResponsiveComponentOptions} from './ResponsiveComponentsManager';
 import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
-import {EventsUtils} from '../../utils/EventsUtils';
 import {Component} from '../Base/Component';
 import {Logger} from '../../misc/Logger';
 import {l} from '../../strings/Strings';
-import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
 import {Utils} from '../../utils/Utils';
 import {Facet} from '../Facet/Facet';
 import {FacetSlider} from '../FacetSlider/FacetSlider';
+import {Dropdown} from './Dropdown';
 
 export class ResponsiveFacets implements IResponsiveComponent {
 
-  private static ACTIVE_FACET_HEADER_Z_INDEX = '20';
   private static FACET_DROPDOWN_MIN_WIDTH: number = 280;
   private static FACET_DROPDOWN_WIDTH_RATIO: number = 0.35; // Used to set the width relative to the coveo root.
-  private static TRANSPARENT_BACKGROUND_OPACITY: string = '0.9';
+
   private static DEBOUNCE_SCROLL_WAIT = 250;
   private static RESPONSIVE_BREAKPOINT: number = 800;
 
-  private dropdownContent: Dom;
   private previousSibling: Dom;
   private parent: Dom;
-  private dropdownHeader: Dom;
-  private popupBackground: Dom;
-  private popupBackgroundClickListener: EventListener;
   private facets: Facet[] = [];
   private facetSliders: FacetSlider[] = [];
   private breakpoint: number;
   private logger: Logger;
+  private dropdown: Dropdown;
 
   public static init(root: HTMLElement, component, options: IResponsiveComponentOptions) {
     if (!$$(root).find('.coveo-facet-column')) {
@@ -41,13 +35,11 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions) {
-    this.buildDropdownContent();
-    this.buildDropdownHeader();
+    this.dropdown = this.buildDropdown();
     this.bindDropdownContentEvents();
-    this.bindDropdownHeaderEvents();
-    this.buildPopupBackground();
+    this.registerOnOpenHandler();
+    this.registerOnCloseHandler();
     this.saveFacetsPosition();
-    this.bindNukeEvents();
     this.logger = new Logger(this);
 
     if (Utils.isNullOrUndefined(options.responsiveBreakpoint)) {
@@ -66,18 +58,16 @@ export class ResponsiveFacets implements IResponsiveComponent {
       this.logger.info('No element with class coveo-tab-section. Responsive facets cannot be enabled');
       return;
     }
-    this.positionPopup();
-    this.closeDropdown();
+    this.dropdown.dropdownContent.positionDropdown();
+    this.dropdown.close();
     this.disableFacetPreservePosition();
-    $$(this.coveoRoot.find('.coveo-tab-section')).el.appendChild(this.dropdownHeader.el);
-    this.dropdownContent.el.style.display = 'none';
+    $$(this.coveoRoot.find('.coveo-tab-section')).el.appendChild(this.dropdown.dropdownHeader.element.el);
     ResponsiveComponentsUtils.activateSmallFacet(this.coveoRoot);
   }
 
   private changeToLargeMode() {
     this.enableFacetPreservePosition();
-    this.cleanUpDropdown();
-    this.dropdownContent.el.removeAttribute('style');
+    this.dropdown.cleanUp();
     this.restoreFacetsPosition();
     ResponsiveComponentsUtils.deactivateSmallFacet(this.coveoRoot);
   }
@@ -100,48 +90,55 @@ export class ResponsiveFacets implements IResponsiveComponent {
     } else if (!this.needSmallMode() && ResponsiveComponentsUtils.isSmallFacetActivated(this.coveoRoot)) {
       this.changeToLargeMode();
     }
-    if (this.dropdownHeader.hasClass('coveo-dropdown-header-active')) {
-      this.openDropdown();
+
+    if(this.dropdown.isOpened) {
+      this.dropdown.dropdownContent.positionDropdown();
     }
   }
 
-  private triggerFacetSliderDraw() {
-    _.each(this.facetSliders, facetSlider => facetSlider.drawDelayedGraphData());
-  }
-
-  private buildDropdownContent() {
-    this.dropdownContent = $$(this.coveoRoot.find('.coveo-facet-column'));
+  private buildDropdownContent(): Dom {
+    let dropdownContent = $$(this.coveoRoot.find('.coveo-facet-column'));
     let filterByContainer = $$('div', { className: 'coveo-facet-header-filter-by-container', style: 'display: none' });
     let filterBy = $$('div', { className: 'coveo-facet-header-filter-by' });
     filterBy.text(l('Filter by:'));
     filterByContainer.append(filterBy.el);
-    this.dropdownContent.prepend(filterByContainer.el);
+    dropdownContent.prepend(filterByContainer.el);
+    return dropdownContent;
+  }
+
+  private buildDropdown() {
+    let dropdownContent = this.buildDropdownContent();
+    let dropdownHeader = this.buildDropdownHeader();
+    let dropdown = new Dropdown('facet', dropdownContent, dropdownHeader, this.coveoRoot, ResponsiveFacets.FACET_DROPDOWN_MIN_WIDTH, ResponsiveFacets.FACET_DROPDOWN_WIDTH_RATIO);
+    return dropdown;
   }
 
   private buildDropdownHeader() {
-    this.dropdownHeader = $$('a', { className: 'coveo-dropdown-header coveo-facet-dropdown-header' });
+    let dropdownHeader = $$('a');
     let content = $$('p');
     content.text(l('Facets'));
-    this.dropdownHeader.el.appendChild(content.el);
+    dropdownHeader.el.appendChild(content.el);
+    return dropdownHeader;
   }
 
-  private bindDropdownHeaderEvents() {
-    this.dropdownHeader.on('click', () => {
-      if (!this.dropdownHeader.hasClass('coveo-dropdown-header-active')) {
-        this.openDropdown();
-        this.drawFacetSliderGraphs();
-      } else {
-        this.closeDropdown();
-      }
+  private registerOnOpenHandler() {
+    this.dropdown.registerOnOpenHandler(() => {
+      this.drawFacetSliderGraphs();
+    });
+  }
+
+  private registerOnCloseHandler() {
+    this.dropdown.registerOnCloseHandler(() => {
+      this.dismissFacetSearches();
     });
   }
 
   private bindDropdownContentEvents() {
-    this.dropdownContent.on('scroll', _.debounce(() => {
+    this.dropdown.dropdownContent.element.on('scroll', _.debounce(() => {
       _.each(this.facets, facet => {
         let facetSearch = facet.facetSearch;
         if (facetSearch && facetSearch.currentlyDisplayedResults && !this.isFacetSearchScrolledIntoView(facetSearch.search)) {
-          facet.facetSearch.positionSearchResults(this.dropdownContent.el);
+          facet.facetSearch.positionSearchResults(this.dropdown.dropdownContent.element.el);
         } else if (facetSearch && facet.facetSearch.currentlyDisplayedResults) {
           facet.facetSearch.positionSearchResults();
         }
@@ -149,64 +146,19 @@ export class ResponsiveFacets implements IResponsiveComponent {
     }, ResponsiveFacets.DEBOUNCE_SCROLL_WAIT));
   }
 
-  private buildPopupBackground() {
-    this.popupBackground = $$('div', { className: 'coveo-facet-dropdown-background' });
-    EventsUtils.addPrefixedEvent(this.popupBackground.el, 'TransitionEnd', () => {
-      if (this.popupBackground.el.style.opacity == '0') {
-        this.popupBackground.detach();
-      }
-    });
-    this.popupBackground.on('click', () => this.closeDropdown());
-  }
-
   private saveFacetsPosition() {
-    this.previousSibling = this.dropdownContent.el.previousSibling ? $$(<HTMLElement>this.dropdownContent.el.previousSibling) : null;
-    this.parent = $$(this.dropdownContent.el.parentElement);
+    let dropdownContentPreviousSibling = this.dropdown.dropdownContent.element.el.previousSibling;
+    let dropdownContentParent = this.dropdown.dropdownContent.element.el.parentElement;
+    this.previousSibling = dropdownContentPreviousSibling ? $$(<HTMLElement>dropdownContentPreviousSibling) : null;
+    this.parent = $$(dropdownContentParent);
   }
 
   private restoreFacetsPosition() {
     if (this.previousSibling) {
-      this.dropdownContent.insertAfter(this.previousSibling.el);
+      this.dropdown.dropdownContent.element.insertAfter(this.previousSibling.el);
     } else {
-      this.parent.prepend(this.dropdownContent.el);
+      this.parent.prepend(this.dropdown.dropdownContent.element.el);
     }
-  }
-
-  private openDropdown() {
-    this.positionPopup();
-    document.documentElement.appendChild(this.popupBackground.el);
-    this.coveoRoot.el.appendChild(this.popupBackground.el);
-    window.getComputedStyle(this.popupBackground.el).opacity;
-    this.popupBackground.el.style.opacity = ResponsiveFacets.TRANSPARENT_BACKGROUND_OPACITY;
-    this.triggerFacetSliderDraw();
-  }
-
-  private positionPopup() {
-    this.dropdownHeader.el.style.zIndex = ResponsiveFacets.ACTIVE_FACET_HEADER_Z_INDEX;
-
-    this.dropdownContent.addClass('coveo-facet-dropdown-content');
-    this.dropdownHeader.addClass('coveo-dropdown-header-active');
-    this.dropdownContent.el.style.display = '';
-    let width = ResponsiveFacets.FACET_DROPDOWN_WIDTH_RATIO * this.coveoRoot.el.offsetWidth;
-    if (width <= ResponsiveFacets.FACET_DROPDOWN_MIN_WIDTH) {
-      width = ResponsiveFacets.FACET_DROPDOWN_MIN_WIDTH;
-    }
-    this.dropdownContent.el.style.width = width.toString() + 'px';
-
-    PopupUtils.positionPopup(this.dropdownContent.el, $$(this.coveoRoot.find('.coveo-tab-section')).el, this.coveoRoot.el,
-      { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM }, this.coveoRoot.el);
-  }
-
-  private closeDropdown() {
-    // Because of DOM manipulation, sometimes the animation will not trigger. Accessing the computed styles makes sure
-    // the animation will happen. Adding this here because its possible that this element has recently been manipulated.
-    window.getComputedStyle(this.popupBackground.el).opacity;
-    this.popupBackground.el.style.opacity = '0';
-    this.dropdownHeader.el.style.zIndex = '';
-    this.dropdownContent.el.style.display = 'none';
-    this.dropdownContent.removeClass('coveo-facet-dropdown-content');
-    this.dropdownHeader.removeClass('coveo-dropdown-header-active');
-    this.dismissFacetSearches();
   }
 
   private dismissFacetSearches() {
@@ -217,24 +169,12 @@ export class ResponsiveFacets implements IResponsiveComponent {
     });
   }
 
-  private cleanUpDropdown() {
-    this.closeDropdown();
-    this.dropdownHeader.detach();
-    this.dropdownHeader.el.style.zIndex = '';
-  }
-
   private enableFacetPreservePosition() {
     _.each(this.facets, facet => facet.options.preservePosition = true);
   }
 
   private disableFacetPreservePosition() {
     _.each(this.facets, facet => facet.options.preservePosition = false);
-  }
-
-  private bindNukeEvents() {
-    $$(this.coveoRoot).on(InitializationEvents.nuke, () => {
-      $$(document.documentElement).off('click', this.popupBackgroundClickListener);
-    });
   }
 
   private drawFacetSliderGraphs() {
@@ -244,8 +184,8 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private isFacetSearchScrolledIntoView(facetSearchElement: HTMLElement) {
     let facetTop = facetSearchElement.getBoundingClientRect().top;
     let facetBottom = facetSearchElement.getBoundingClientRect().bottom;
-    let dropdownTop = this.dropdownContent.el.getBoundingClientRect().top;
-    let dropdownBottom = this.dropdownContent.el.getBoundingClientRect().bottom;
+    let dropdownTop = this.dropdown.dropdownContent.element.el.getBoundingClientRect().top;
+    let dropdownBottom = this.dropdown.dropdownContent.element.el.getBoundingClientRect().bottom;
 
     dropdownTop = dropdownTop >= 0 ? dropdownTop : 0;
 
