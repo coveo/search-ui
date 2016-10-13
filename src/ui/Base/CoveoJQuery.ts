@@ -4,7 +4,11 @@ interface IWindow {
   $: any;
 }
 
-export var jQueryInstance: JQueryStatic;
+export interface IJQuery {
+  fn: any;
+}
+
+export var jQueryInstance: IJQuery;
 
 if (!initCoveoJQuery()) {
   // Adding a check in case jQuery was added after the jsSearch
@@ -61,8 +65,8 @@ function jQueryDefinedOnWindow(): boolean {
   return window['$'] != undefined && window['$'].fn != undefined && window['$'].fn.jquery != undefined;
 }
 
-function getJQuery(): JQueryStatic {
-  let jQueryInstance: JQueryStatic;
+function getJQuery(): IJQuery {
+  let jQueryInstance: IJQuery;
   if (window['$']) {
     jQueryInstance = window['$'];
   } else {

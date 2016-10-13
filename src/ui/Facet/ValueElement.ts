@@ -64,12 +64,37 @@ export class ValueElement {
     this.facetValue.selected = false;
     this.facetValue.excluded = true;
     this.renderer.setCssClassOnListValueElement();
+    var actionCause: IAnalyticsActionCause;
+    if (this.facetValue.excluded) {
+      actionCause = this.isOmnibox ? analyticsActionCauseList.omniboxFacetUnexclude : analyticsActionCauseList.facetUnexclude;
+    } else {
+      actionCause = this.isOmnibox ? analyticsActionCauseList.omniboxFacetExclude : analyticsActionCauseList.facetExclude;
+    }
+    if (this.onExclude) {
+      this.facet.triggerNewQuery(() => this.onExclude(this, actionCause));
+    } else {
+      this.facet.triggerNewQuery(() => this.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(actionCause, this.getAnalyticsFacetMeta()));
+    }
   }
 
   public unexclude() {
     this.facetValue.selected = false;
     this.facetValue.excluded = false;
     this.renderer.setCssClassOnListValueElement();
+  }
+
+  public triggerOnExcludeQuery() {
+    var actionCause: IAnalyticsActionCause;
+    if (this.facetValue.excluded) {
+      actionCause = this.isOmnibox ? analyticsActionCauseList.omniboxFacetUnexclude : analyticsActionCauseList.facetUnexclude;
+    } else {
+      actionCause = this.isOmnibox ? analyticsActionCauseList.omniboxFacetExclude : analyticsActionCauseList.facetExclude;
+    }
+    if (this.onExclude) {
+      this.facet.triggerNewQuery(() => this.onExclude(this, actionCause));
+    } else {
+      this.facet.triggerNewQuery(() => this.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(actionCause, this.getAnalyticsFacetMeta()));
+    }
   }
 
   protected handleSelectValue(eventBindings: IValueElementEventsBinding) {
@@ -95,18 +120,8 @@ export class ValueElement {
 
   protected handleExcludeClick(eventBindings: IValueElementEventsBinding) {
     this.facet.keepDisplayedValuesNextTime = eventBindings.displayNextTime && !this.facet.options.useAnd;
-    var actionCause: IAnalyticsActionCause;
-    if (this.facetValue.excluded) {
-      actionCause = this.isOmnibox ? analyticsActionCauseList.omniboxFacetUnexclude : analyticsActionCauseList.facetUnexclude;
-    } else {
-      actionCause = this.isOmnibox ? analyticsActionCauseList.omniboxFacetExclude : analyticsActionCauseList.facetExclude;
-    }
     this.facet.toggleExcludeValue(this.facetValue);
-    if (this.onExclude) {
-      this.facet.triggerNewQuery(() => this.onExclude(this, actionCause));
-    } else {
-      this.facet.triggerNewQuery(() => this.facet.usageAnalytics.logSearchEvent<IAnalyticsFacetMeta>(actionCause, this.getAnalyticsFacetMeta()));
-    }
+    this.triggerOnExcludeQuery();
   }
 
   protected handleEventForExcludedValueElement(eventBindings: IValueElementEventsBinding) {

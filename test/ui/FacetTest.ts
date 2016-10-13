@@ -1,6 +1,5 @@
 import * as Mock from '../MockEnvironment';
-import {Facet} from '../../src/ui/Facet/Facet';
-import {IFacetOptions} from '../../src/ui/Facet/Facet';
+import {Facet, IFacetOptions} from '../../src/ui/Facet/Facet';
 import {$$} from '../../src/utils/Dom';
 import {FacetValue} from '../../src/ui/Facet/FacetValues';
 import {Simulate} from '../Simulate';
@@ -344,6 +343,40 @@ export function FacetTest() {
         expect(test.cmp.getDisplayedFacetValues()[0].value).toBe('foo3');
         expect(test.cmp.getDisplayedFacetValues()[1].value).toBe('foo1');
         expect(test.cmp.getDisplayedFacetValues()[2].value).toBe('foo0');
+      });
+
+      it('customSort should request the correct number of values in the group by', () => {
+        test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
+          field: '@field',
+          customSort: ['foo1', 'foo2', 'foo3', 'foo4', 'foo5', 'foo6', 'foo7', 'foo8']
+        });
+        test.cmp.selectValue('foo9');
+        let simulation = Simulate.query(test.env);
+        // expect to be custom sort + selection + 1 for "more values"
+        expect(simulation.queryBuilder.build().groupBy[0].maximumNumberOfValues).toBe(10);
+
+        test.cmp.excludeValue('foo10');
+        simulation = Simulate.query(test.env);
+        // expect to be custom sort + selection + exclude + 1 for "more values"
+        expect(simulation.queryBuilder.build().groupBy[0].maximumNumberOfValues).toBe(11);
+
+        test.cmp.selectValue('foo1');
+        simulation = Simulate.query(test.env);
+        // expect to be custom sort + selection + exclude + 1 for "more values"
+        // and foo1 is not duplicated since it's already in the custom value
+        expect(simulation.queryBuilder.build().groupBy[0].maximumNumberOfValues).toBe(11);
+
+      });
+
+      it('custom sort should not request more values then the default if it\'s not needed', () => {
+        test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
+          field: '@field',
+          customSort: ['foo1', 'foo2']
+        });
+        test.cmp.selectValue('foo3');
+        let simulation = Simulate.query(test.env);
+        // expect to be 5 (default number of values in facet) + 1 for "more values"
+        expect(simulation.queryBuilder.build().groupBy[0].maximumNumberOfValues).toBe(6);
       });
 
       it('injectionDepth should specify the injection depth in a group by', function () {

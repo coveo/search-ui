@@ -21,6 +21,7 @@ import {ResultList} from '../ResultList/ResultList';
 import {StreamHighlightUtils} from '../../utils/StreamHighlightUtils';
 import Globalize = require('globalize');
 import {IStringMap} from '../../rest/GenericParam';
+import {Quickview} from '../Quickview/Quickview';
 
 /**
  * The core template helpers provided by default.
@@ -298,8 +299,8 @@ TemplateHelpers.registerTemplateHelper('highlight', (content: string, highlights
   }
 });
 
-TemplateHelpers.registerTemplateHelper('highlightStreamText', (content: string, termsToHighlight = resolveQueryResult().termsToHighlight, phrasesToHighlight = resolveQueryResult().phrasesToHighlight, opts?: IStreamHighlightOptions) => {
-  if (Utils.exists(content)) {
+TemplateHelpers.registerTemplateHelper('highlightStreamText', (content: string, termsToHighlight = resolveTermsToHighlight(), phrasesToHighlight = resolvePhrasesToHighlight(), opts?: IStreamHighlightOptions) => {
+  if (Utils.exists(content) && Utils.exists(termsToHighlight) && Utils.exists(phrasesToHighlight)) {
     if (Utils.isNonEmptyArray(_.keys(termsToHighlight)) || Utils.isNonEmptyArray(_.keys(phrasesToHighlight))) {
       return StreamHighlightUtils.highlightStreamText(content, termsToHighlight, phrasesToHighlight, opts);
     } else {
@@ -310,8 +311,8 @@ TemplateHelpers.registerTemplateHelper('highlightStreamText', (content: string, 
   }
 });
 
-TemplateHelpers.registerTemplateHelper('highlightStreamHTML', (content: string, termsToHighlight = resolveQueryResult().termsToHighlight, phrasesToHighlight = resolveQueryResult().phrasesToHighlight, opts?: IStreamHighlightOptions) => {
-  if (Utils.exists(content)) {
+TemplateHelpers.registerTemplateHelper('highlightStreamHTML', (content: string, termsToHighlight = resolveTermsToHighlight(), phrasesToHighlight = resolvePhrasesToHighlight(), opts?: IStreamHighlightOptions) => {
+  if (Utils.exists(content) && Utils.exists(termsToHighlight) && Utils.exists(phrasesToHighlight)) {
     if (Utils.isNonEmptyArray(termsToHighlight)) {
       return StreamHighlightUtils.highlightStreamHTML(content, termsToHighlight, phrasesToHighlight, opts);
     } else {
@@ -519,5 +520,19 @@ TemplateHelpers.registerTemplateHelper('isMobileDevice', () => {
 });
 
 function resolveQueryResult(): IQueryResult {
-  return ResultList.resultCurrentlyBeingRendered;
+  return ResultList.resultCurrentlyBeingRendered || Quickview.resultCurrentlyBeingRendered;
+}
+
+function resolveTermsToHighlight(): IHighlightTerm {
+  let currentQueryResult = resolveQueryResult();
+  if (currentQueryResult) {
+    return currentQueryResult.termsToHighlight;
+  }
+}
+
+function resolvePhrasesToHighlight(): IHighlightPhrase {
+  let currentQueryResult = resolveQueryResult();
+  if (currentQueryResult) {
+    return currentQueryResult.phrasesToHighlight;
+  }
 }

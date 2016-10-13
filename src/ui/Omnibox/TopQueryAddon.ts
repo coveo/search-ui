@@ -11,7 +11,7 @@ export class TopQueryAddon {
   cache: { [hash: string]: Promise<IOmniboxSuggestion[]> } = {};
 
   constructor(public omnibox: Omnibox) {
-    $$(this.omnibox.element).on(OmniboxEvents.populateOmniboxSuggestions, (e: JQueryEventObject, args: IPopulateOmniboxSuggestionsEventArgs) => {
+    $$(this.omnibox.element).on(OmniboxEvents.populateOmniboxSuggestions, (e, args: IPopulateOmniboxSuggestionsEventArgs) => {
       args.suggestions.push(this.getSuggestion());
     });
   }

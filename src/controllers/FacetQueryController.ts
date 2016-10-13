@@ -170,31 +170,43 @@ export class FacetQueryController {
     } else if (this.facet.options.customSort != undefined) {
       // If there is a custom sort, we still need to add selectedValues to the group by
       // Filter out duplicates with a lower case comparison on the value
-      let toCompare = _.map(this.facet.options.customSort, (val: string) => {
-        return val.toLowerCase();
-      });
-      let filtered = _.filter(this.getAllowedValuesFromSelected(), (value: string) => {
-        return !_.contains(toCompare, value.toLowerCase());
-      });
-      return this.facet.options.customSort.concat(filtered);
-
+      return this.getUnionWithCustomSortLowercase(this.facet.options.customSort, this.getAllowedValuesFromSelected());
     } else {
-      return this.getAllowedValuesFromSelected();
+      return _.map(this.getAllowedValuesFromSelected(), (facetValue: FacetValue) => facetValue.value);
     }
   }
 
+  private getUnionWithCustomSortLowercase(customSort: string[], facetValues: FacetValue[]) {
+    // This will take the custom sort, compare it against the passed in facetValues
+    // The comparison is lowercase.
+    // The union of the 2 arrays with duplicated filtered out is returned.
+
+    let toCompare = _.map(customSort, (val: string) => {
+      return val.toLowerCase();
+    });
+    let filtered = _.chain(facetValues)
+      .filter((facetValue: FacetValue) => {
+        return !_.contains(toCompare, facetValue.value.toLowerCase());
+      })
+      .map((facetValue: FacetValue) => {
+        return facetValue.value;
+      })
+      .value();
+    return _.compact(customSort.concat(filtered));
+  }
+
   private getAllowedValuesFromSelected() {
-    let toMap: FacetValue[] = [];
+    let facetValues: FacetValue[] = [];
     if (this.facet.options.useAnd || !this.facet.keepDisplayedValuesNextTime) {
       let selected = this.facet.values.getSelected();
       if (selected.length == 0) {
         return undefined;
       }
-      toMap = this.facet.values.getSelected();
+      facetValues = this.facet.values.getSelected();
     } else {
-      toMap = this.facet.values.getAll();
+      facetValues = this.facet.values.getAll();
     }
-    return _.map(toMap, (facetValue: FacetValue) => facetValue.value);
+    return facetValues;
   }
 
   private createGroupByQueryOverride(queryBuilder: QueryBuilder): IQueryBuilderExpression {
@@ -243,10 +255,10 @@ export class FacetQueryController {
   protected createBasicGroupByRequest(allowedValues?: string[], addComputedField: boolean = true): IGroupByRequest {
     let nbOfRequestedValues = this.facet.numberOfValues;
     if (this.facet.options.customSort != null) {
-      let usedValues = _.union(_.map(this.facet.values.getSelected(), (facetValue: FacetValue) => facetValue.value), _.map(this.facet.values.getExcluded(), (facetValue: FacetValue) => facetValue.value), this.facet.options.customSort);
+      // If we have a custom sort, we need to make sure that we always request at least enough values to always receive them
+      let usedValues = this.getUnionWithCustomSortLowercase(this.facet.options.customSort, this.facet.values.getSelected().concat(this.facet.values.getExcluded()));
       nbOfRequestedValues = Math.max(nbOfRequestedValues, usedValues.length);
     }
-
     let groupByRequest: IGroupByRequest = {
       field: <string>this.facet.options.field,
       maximumNumberOfValues: nbOfRequestedValues + (this.facet.options.enableMoreLess ? 1 : 0),

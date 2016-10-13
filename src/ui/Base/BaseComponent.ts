@@ -70,7 +70,7 @@ export class BaseComponent {
       if (e.altKey) {
         var debugInfo = this.debugInfo();
         if (debugInfo != null) {
-          $(this.root).trigger(DebugEvents.showDebugPanel, this.debugInfo());
+          $$(this.root).trigger(DebugEvents.showDebugPanel, this.debugInfo());
         }
       }
     });

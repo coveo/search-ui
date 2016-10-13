@@ -2,8 +2,9 @@
 const gulp = require('gulp');
 const TypeDoc = require('typedoc');
 const fs = require('fs');
+const shell = require('gulp-shell');
 
-gulp.task('doc', ['copyBinToDoc'], function () {
+gulp.task('doc', ['copyBinToDoc', 'buildPlayground'], function () {
 
   var app = new TypeDoc.Application({
     mode: 'file',
@@ -27,6 +28,10 @@ gulp.task('copyBinToDoc', function () {
   return gulp.src('./bin/{js,image,css}/**/*')
       .pipe(gulp.dest('./docs/theme/assets/gen'))
 })
+
+gulp.task('buildPlayground', shell.task([
+  'node node_modules/webpack/bin/webpack.js --config webpackConfigFiles/webpack.playground.config.js'
+]));
 
 function copyFile(source, target, cb) {
   var cbCalled = false;
