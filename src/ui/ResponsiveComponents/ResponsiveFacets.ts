@@ -3,7 +3,6 @@ import {InitializationEvents} from '../../events/InitializationEvents';
 import {IResponsiveComponent, ResponsiveComponentsManager, IResponsiveComponentOptions} from './ResponsiveComponentsManager';
 import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
 import {EventsUtils} from '../../utils/EventsUtils';
-import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {Component} from '../Base/Component';
 import {Logger} from '../../misc/Logger';
 import {l} from '../../strings/Strings';
@@ -19,11 +18,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private static FACET_DROPDOWN_WIDTH_RATIO: number = 0.35; // Used to set the width relative to the coveo root.
   private static TRANSPARENT_BACKGROUND_OPACITY: string = '0.9';
   private static DEBOUNCE_SCROLL_WAIT = 250;
-  private static ROOT_MIN_WIDTH: number = 800;
-  private static logger: Logger;
-
-  public ID: string;
-  public coveoRoot: Dom;
+  private static RESPONSIVE_BREAKPOINT: number = 800;
 
   private dropdownContent: Dom;
   private previousSibling: Dom;
@@ -33,22 +28,19 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private popupBackgroundClickListener: EventListener;
   private facets: Facet[] = [];
   private facetSliders: FacetSlider[] = [];
-  private searchInterface: SearchInterface;
   private breakpoint: number;
+  private logger: Logger;
 
   public static init(root: HTMLElement, component, options: IResponsiveComponentOptions) {
-    this.logger = new Logger('ResponsiveFacets');
     if (!$$(root).find('.coveo-facet-column')) {
-      this.logger.info('No element with class coveo-facet-column. Responsive facets cannot be enabled');
+      let logger = new Logger('ResponsiveFacets');
+      logger.info('No element with class coveo-facet-column. Responsive facets cannot be enabled');
       return;
     }
     ResponsiveComponentsManager.register(ResponsiveFacets, $$(root), Facet.ID, component, options);
   }
 
-  constructor(public root: Dom, ID: string, options: IResponsiveComponentOptions) {
-    this.ID = ID;
-    this.coveoRoot = root;
-    this.searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, false);
+  constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions) {
     this.buildDropdownContent();
     this.buildDropdownHeader();
     this.bindDropdownContentEvents();
@@ -56,9 +48,10 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.buildPopupBackground();
     this.saveFacetsPosition();
     this.bindNukeEvents();
+    this.logger = new Logger(this);
 
     if (Utils.isNullOrUndefined(options.responsiveBreakpoint)) {
-      this.breakpoint = ResponsiveFacets.ROOT_MIN_WIDTH;
+      this.breakpoint = ResponsiveFacets.RESPONSIVE_BREAKPOINT;
     } else {
       this.breakpoint = options.responsiveBreakpoint;
     }
@@ -68,9 +61,9 @@ export class ResponsiveFacets implements IResponsiveComponent {
     return this.coveoRoot.width() <= this.breakpoint;
   }
 
-  public changeToSmallMode() {
+  private changeToSmallMode() {
     if (!$$(this.coveoRoot).find('.coveo-tab-section')) {
-      ResponsiveFacets.logger.info('No element with class coveo-tab-section. Responsive facets cannot be enabled');
+      this.logger.info('No element with class coveo-tab-section. Responsive facets cannot be enabled');
       return;
     }
     this.positionPopup();
@@ -81,7 +74,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     ResponsiveComponentsUtils.activateSmallFacet(this.coveoRoot);
   }
 
-  public changeToLargeMode() {
+  private changeToLargeMode() {
     this.enableFacetPreservePosition();
     this.cleanUpDropdown();
     this.dropdownContent.el.removeAttribute('style');
@@ -182,7 +175,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private openDropdown() {
     this.positionPopup();
     document.documentElement.appendChild(this.popupBackground.el);
-    this.root.el.appendChild(this.popupBackground.el);
+    this.coveoRoot.el.appendChild(this.popupBackground.el);
     window.getComputedStyle(this.popupBackground.el).opacity;
     this.popupBackground.el.style.opacity = ResponsiveFacets.TRANSPARENT_BACKGROUND_OPACITY;
     this.triggerFacetSliderDraw();
