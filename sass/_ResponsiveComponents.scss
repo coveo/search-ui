@@ -1,6 +1,12 @@
 @import "Variables.scss";
 
-.CoveoSearchInterface.coveo-small-tabs, .CoveoSearchInterface.coveo-small-facets {
+.CoveoSearchInterface.coveo-small-tabs, .CoveoSearchInterface.coveo-small-facets, .CoveoSearchInterface.coveo-small-recommendations {
+
+  .coveo-dropdown-content {
+    z-index: 20;
+    margin:0;
+    padding: 0;
+  }
 
   .coveo-dropdown-header {
     font-size: $font-size-smallest;
@@ -40,6 +46,12 @@
     .coveo-tab-dropdown-header {
       margin-left: 10px;
     }
+  }
+
+  .coveo-dropdown-header-wrapper {
+    display: inline;
+    margin: 0;
+    padding: 0;
   }
 }
 

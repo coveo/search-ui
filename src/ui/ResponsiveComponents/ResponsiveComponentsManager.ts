@@ -38,6 +38,7 @@ export class ResponsiveComponentsManager {
   private responsiveFacets: ResponsiveFacets;
   private tabSectionPreviousSibling: Dom;
   private tabSectionParent: Dom;
+  private dropdownHeadersWrapper: Dom;
 
   // Register takes a class and will instantiate it after framework initialization has completed.
   public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component: Component, options: IResponsiveComponentOptions): void {
@@ -163,6 +164,8 @@ export class ResponsiveComponentsManager {
       this.tabSection = $$('div', { className: 'coveo-tab-section' });
       this.createdTabSection = true;
     }
+    this.dropdownHeadersWrapper = $$('div', {className: 'coveo-dropdown-header-wrapper'});
+    this.tabSection.append(this.dropdownHeadersWrapper.el);
   }
 
   private restoreTabSectionPosition(): void {

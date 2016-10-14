@@ -11,8 +11,8 @@ import {Dropdown} from './Dropdown';
 
 export class ResponsiveFacets implements IResponsiveComponent {
 
-  private static FACET_DROPDOWN_MIN_WIDTH: number = 280;
-  private static FACET_DROPDOWN_WIDTH_RATIO: number = 0.35; // Used to set the width relative to the coveo root.
+  private static DROPDOWN_MIN_WIDTH: number = 280;
+  private static DROPDOWN_WIDTH_RATIO: number = 0.35; // Used to set the width relative to the coveo root.
 
   private static DEBOUNCE_SCROLL_WAIT = 250;
   private static RESPONSIVE_BREAKPOINT: number = 800;
@@ -54,14 +54,10 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private changeToSmallMode() {
-    if (!$$(this.coveoRoot).find('.coveo-tab-section')) {
-      this.logger.info('No element with class coveo-tab-section. Responsive facets cannot be enabled');
-      return;
-    }
     this.dropdown.dropdownContent.positionDropdown();
     this.dropdown.close();
     this.disableFacetPreservePosition();
-    $$(this.coveoRoot.find('.coveo-tab-section')).el.appendChild(this.dropdown.dropdownHeader.element.el);
+    $$(this.coveoRoot.find('.coveo-dropdown-header-wrapper')).el.appendChild(this.dropdown.dropdownHeader.element.el);
     ResponsiveComponentsUtils.activateSmallFacet(this.coveoRoot);
   }
 
@@ -109,7 +105,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private buildDropdown() {
     let dropdownContent = this.buildDropdownContent();
     let dropdownHeader = this.buildDropdownHeader();
-    let dropdown = new Dropdown('facet', dropdownContent, dropdownHeader, this.coveoRoot, ResponsiveFacets.FACET_DROPDOWN_MIN_WIDTH, ResponsiveFacets.FACET_DROPDOWN_WIDTH_RATIO);
+    let dropdown = new Dropdown('facet', dropdownContent, dropdownHeader, this.coveoRoot, ResponsiveFacets.DROPDOWN_MIN_WIDTH, ResponsiveFacets.DROPDOWN_WIDTH_RATIO);
     return dropdown;
   }
 

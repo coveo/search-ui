@@ -3,6 +3,8 @@ import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/Po
 
 export class DropdownContent {
 
+  public static DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-content';
+  
   private cssClassName: string;
 
   constructor(componentName: string, public element: Dom, private coveoRoot: Dom, private minWidth: number, private widthRatio: number) {
@@ -11,6 +13,7 @@ export class DropdownContent {
 
   public positionDropdown() {
     this.element.addClass(this.cssClassName);
+    this.element.addClass(DropdownContent.DEFAULT_CSS_CLASS_NAME);
     this.element.el.style.display = '';
 
     let width = this.widthRatio * this.coveoRoot.el.offsetWidth;
@@ -26,6 +29,7 @@ export class DropdownContent {
   public hideDropdown() {
     this.element.el.style.display = 'none';
     this.element.removeClass(this.cssClassName);
+    this.element.removeClass(DropdownContent.DEFAULT_CSS_CLASS_NAME);
   }
 
   public cleanUp() {
