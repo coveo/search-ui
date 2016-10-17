@@ -19,19 +19,30 @@ export function CardActionBarTest() {
     afterEach(() => parentResult = null);
 
     describe('exposes option', function () {
-      it('hidden set to true should show when parent result is clicked', function () {
-        test = Mock.advancedComponentSetup<CardActionBar>(CardActionBar, <Mock.AdvancedComponentSetupOptions>{
-          modifyBuilder: b => {
-            parentResult = $$('div', { className: 'CoveoResult'}, $$('div')).el;
-            return b.withElement(<HTMLElement>parentResult.firstChild);
-          },
-          cmpOptions: {
-            hidden: true
-          }
+      describe('hidden set to true', function () {
+        beforeEach(function () {
+          test = Mock.advancedComponentSetup<CardActionBar>(CardActionBar, <Mock.AdvancedComponentSetupOptions>{
+            modifyBuilder: b => {
+              parentResult = $$('div', { className: 'CoveoResult'}, $$('div')).el;
+              return b.withElement(<HTMLElement>parentResult.firstChild);
+            },
+            cmpOptions: {
+              hidden: true
+            }
+          });
         });
-        spyOn(test.cmp, 'show');
-        $$(parentResult).trigger('click');
-        expect(test.cmp.show).toHaveBeenCalledTimes(1);
+
+        it('should show when parent result is clicked', function () {
+          spyOn(test.cmp, 'show');
+          $$(parentResult).trigger('click');
+          expect(test.cmp.show).toHaveBeenCalledTimes(1);
+        });
+
+        it('should hide when mouse leaves parent result', function () {
+          spyOn(test.cmp, 'hide');
+          $$(parentResult).trigger('mouseleave');
+          expect(test.cmp.hide).toHaveBeenCalledTimes(1);
+        });
       });
 
       it('hidden set to false should always be hidden', function () {
