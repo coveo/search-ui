@@ -12,6 +12,18 @@
   }
 }
 
+.CoveoCardActionBar .CoveoQuickview {
+  color: #fff;
+  > * {
+    display: flex;
+    align-items: center;
+  }
+  .coveo-caption-for-quickview {
+    margin-top: 0;
+    margin-left: 3px;
+  }
+}
+
 .CoveoQuickviewDocument {
   overflow: hidden;
   .coveo-quickview-document {

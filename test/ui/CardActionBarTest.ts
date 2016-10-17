@@ -11,7 +11,7 @@ export function CardActionBarTest() {
     beforeEach(function () {
       test = Mock.advancedComponentSetup<CardActionBar>(CardActionBar, <Mock.AdvancedComponentSetupOptions>{
         modifyBuilder: b => {
-          parentResult = $$('div', { className: 'CoveoResult'}, $$('div')).el;
+          parentResult = $$('div', { className: 'CoveoResult' }, $$('div')).el;
           return b.withElement(<HTMLElement>parentResult.firstChild);
         }
       });
@@ -23,7 +23,7 @@ export function CardActionBarTest() {
         beforeEach(function () {
           test = Mock.advancedComponentSetup<CardActionBar>(CardActionBar, <Mock.AdvancedComponentSetupOptions>{
             modifyBuilder: b => {
-              parentResult = $$('div', { className: 'CoveoResult'}, $$('div')).el;
+              parentResult = $$('div', { className: 'CoveoResult' }, $$('div')).el;
               return b.withElement(<HTMLElement>parentResult.firstChild);
             },
             cmpOptions: {
@@ -48,7 +48,7 @@ export function CardActionBarTest() {
       it('hidden set to false should always be hidden', function () {
         test = Mock.advancedComponentSetup<CardActionBar>(CardActionBar, <Mock.AdvancedComponentSetupOptions>{
           modifyBuilder: b => {
-            parentResult = $$('div', { className: 'CoveoResult'}, $$('div')).el;
+            parentResult = $$('div', { className: 'CoveoResult' }, $$('div')).el;
             return b.withElement(<HTMLElement>parentResult.firstChild);
           },
           cmpOptions: {

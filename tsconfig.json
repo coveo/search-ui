@@ -315,8 +315,6 @@
         "src/utils/Utils.ts",
         "src/UtilsModules.ts",
         "src/ui/Backdrop/Backdrop.ts",
-        "test/ui/BackdropTest.ts",
-        "src/ui/CardActionBar/CardActionBar.ts",
-        "test/ui/CardActionBarTest.ts"
+        "src/ui/CardActionBar/CardActionBar.ts"
     ]
 }
