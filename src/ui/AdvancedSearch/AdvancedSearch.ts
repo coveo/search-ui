@@ -21,6 +21,8 @@ export interface IAdvancedSearchOptions {
 /**
  * The Advanced Search component allows the user to easily create a complex query to send to the index.
  * The component also allows custom code to modify the content by using the {@link AdvancedSearchEvents.buildingAdvancedSearch} event.
+ *
+ * This component is meant to render a section in the {@link Settings} menu.
  */
 export class AdvancedSearch extends Component {
   static ID = 'AdvancedSearch';

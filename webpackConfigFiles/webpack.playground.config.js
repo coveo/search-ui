@@ -4,13 +4,13 @@ const _ = require('underscore');
 let conf = require('./webpack.common.config');
 conf = _.extend(conf, {
   entry: {
-    'tests': ['./test/Test.ts'],
+    'playground': ['./docs/playground/src/Index.ts'],
   },
   output: {
-    path: require('path').resolve('./bin/tests'),
+    path: require('path').resolve('./docs/theme/assets/gen/js'),
     filename: '[name].js',
     libraryTarget: 'var',
-    library: 'Coveo',
+    library: 'playground',
     devtoolModuleFilenameTemplate: '[resource-path]'
   }
 })

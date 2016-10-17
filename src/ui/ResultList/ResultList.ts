@@ -228,6 +228,7 @@ export class ResultList extends Component {
     $$(this.root).on(ResultListEvents.changeLayout, (e, args: IChangeLayoutEventArgs) => this.handleChangeLayout(args));
 
     if (this.options.enableInfiniteScroll) {
+      this.handlePageChanged();
       this.bind.on(<HTMLElement>this.options.infiniteScrollContainer, 'scroll', (e: Event) => this.handleScrollOfResultList());
     }
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, () => this.handlePageChanged());
@@ -399,26 +400,24 @@ export class ResultList extends Component {
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
     Assert.exists(data);
     Assert.exists(data.results);
-    $$(this.element).toggle(!this.disabled);
-    if (!this.disabled) {
-      var results = data.results;
-      this.logger.trace('Received query results from new query', results);
-      this.hideWaitingAnimation();
-      ResultList.resultCurrentlyBeingRendered = undefined;
-      this.currentlyDisplayedResults = [];
-      this.renderResults(this.buildResults(data.results));
-      this.currentlyDisplayedResults = results.results;
-      this.reachedTheEndOfResults = false;
-      this.showOrHideElementsDependingOnState(true, this.currentlyDisplayedResults.length != 0);
+    var results = data.results;
+    this.logger.trace('Received query results from new query', results);
+    this.hideWaitingAnimation();
+    ResultList.resultCurrentlyBeingRendered = undefined;
+    this.currentlyDisplayedResults = [];
+    this.renderResults(this.buildResults(data.results));
+    this.currentlyDisplayedResults = results.results;
+    this.reachedTheEndOfResults = false;
+    this.showOrHideElementsDependingOnState(true, this.currentlyDisplayedResults.length != 0);
 
-      if (this.options.enableInfiniteScroll && results.results.length == data.queryBuilder.numberOfResults) {
-        // This will check right away if we need to add more results to make the scroll container full & scrolling.
-        this.handleScrollOfResultList();
-      }
+    if (DeviceUtils.isMobileDevice() && this.options.mobileScrollContainer != undefined) {
+      this.options.mobileScrollContainer.scrollTop = 0;
+    }
 
-      if (DeviceUtils.isMobileDevice() && this.options.mobileScrollContainer != undefined) {
-        this.options.mobileScrollContainer.scrollTop = 0;
-      }
+    if (this.options.enableInfiniteScroll && results.results.length == data.queryBuilder.numberOfResults) {
+      // This will check right away if we need to add more results to make the scroll container full & scrolling.
+      this.scrollBackToTop();
+      this.handleScrollOfResultList();
     }
   }
 
@@ -432,17 +431,21 @@ export class ResultList extends Component {
   }
 
   private handlePageChanged() {
-    this.bind.oneRootElement(QueryEvents.querySuccess, () => {
-      if (this.options.infiniteScrollContainer instanceof Window) {
-        var win = <Window>this.options.infiniteScrollContainer;
-        win.scrollTo(0, 0);
-      } else {
-        var el = <HTMLElement>this.options.infiniteScrollContainer;
-        if (el.scrollIntoView) {
-          el.scrollIntoView();
-        }
-      }
+    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => {
+      setTimeout(() => {
+        this.scrollBackToTop();
+      }, 0);
     });
+  }
+
+  private scrollBackToTop() {
+    if (this.options.infiniteScrollContainer instanceof Window) {
+      var win = <Window>this.options.infiniteScrollContainer;
+      win.scrollTo(0, 0);
+    } else {
+      var el = <HTMLElement>this.options.infiniteScrollContainer;
+      el.scrollTop = 0;
+    }
   }
 
   private handleNewQuery() {

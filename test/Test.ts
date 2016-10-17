@@ -337,3 +337,6 @@ BackdropTest();
 
 import { CardActionBarTest } from './ui/CardActionBarTest';
 CardActionBarTest();
+
+import {QuickviewTest} from './ui/QuickviewTest';
+QuickviewTest();

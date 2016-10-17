@@ -5,8 +5,10 @@ import {TimeSpan} from '../utils/TimeSpanUtils';
 import {DeviceUtils} from '../utils/DeviceUtils';
 import {Utils} from '../utils/Utils';
 import {Promise} from 'es6-promise';
+import {JQueryUtils} from '../utils/JQueryutils';
 
 declare var XDomainRequest;
+declare var $;
 
 /**
  * Parameters that can be used when calling an {@link EndpointCaller}
@@ -189,6 +191,7 @@ export class EndpointCaller {
    */
   public useJsonp = false;
 
+  private static JSONP_ERROR_TIMEOUT = 10000;
   /**
    * Create a new EndpointCaller.
    * @param options Specify the authentication that will be used for this endpoint. Not needed if the endpoint is public and has no authentication
@@ -393,6 +396,8 @@ export class EndpointCaller {
    * @returns {Promise<T>|Promise}
    */
   public callUsingAjaxJsonP<T>(requestInfo: IRequestInfo<T>): Promise<IResponse<T>> {
+    let jQuery = JQueryUtils.getJQuery();
+    Assert.check(jQuery, 'Using jsonp without having included jQuery is not supported.');
     return new Promise((resolve, reject) => {
       var queryString = requestInfo.queryString.concat(this.convertJsonToQueryString(requestInfo.requestData));
 
@@ -404,9 +409,11 @@ export class EndpointCaller {
 
       queryString.push('callback=?');
 
-      $['jsonp']({
+      jQuery.ajax({
         url: this.combineUrlAndQueryString(requestInfo.url, queryString),
+        dataType: 'jsonp',
         success: (data: any) => this.handleSuccessfulResponseThatMightBeAnError(requestInfo, data, resolve, reject),
+        timeout: EndpointCaller.JSONP_ERROR_TIMEOUT,
         error: () => this.handleError(requestInfo, 0, undefined, reject)
       });
     });
