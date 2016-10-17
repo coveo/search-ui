@@ -49,7 +49,8 @@
   }
 
   .coveo-dropdown-header-wrapper {
-    display: inline;
+    display: inline-flex;
+    flex-wrap: nowrap;
     margin: 0;
     padding: 0;
   }
@@ -71,7 +72,6 @@
   .coveo-search-section {
     margin: 0;
     padding: 20px 10px 20px 10px;
-    background-color: $color-blueish-white;
     margin: 0 auto;
     width: 100%;
     max-width: none;

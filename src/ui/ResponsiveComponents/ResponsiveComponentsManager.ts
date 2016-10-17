@@ -32,12 +32,8 @@ export class ResponsiveComponentsManager {
   private coveoRoot: Dom;
   private resizeListener;
   private responsiveComponents: IResponsiveComponent[] = [];
-  private tabSection: Dom;
   private searchBoxElement: HTMLElement;
-  private createdTabSection: boolean = false;
   private responsiveFacets: ResponsiveFacets;
-  private tabSectionPreviousSibling: Dom;
-  private tabSectionParent: Dom;
   private dropdownHeadersWrapper: Dom;
 
   // Register takes a class and will instantiate it after framework initialization has completed.
@@ -80,16 +76,14 @@ export class ResponsiveComponentsManager {
 
   constructor(root: Dom) {
     this.coveoRoot = root;
+    this.dropdownHeadersWrapper = $$('div', { className: 'coveo-dropdown-header-wrapper' });
     this.searchBoxElement = this.getSearchBoxElement();
-    this.ensureTabSectionInDom();
-    this.saveTabSectionPosition();
     this.resizeListener = _.debounce(() => {
+      this.addDropdownHeaderWrapperIfNeeded();
       if (this.shouldSwitchToSmallMode()) {
         this.coveoRoot.addClass('coveo-small-interface');
-        this.tabSection.insertAfter(this.searchBoxElement);
-      } else if (this.shouldExitSmallMode()) {
+      } else if (!this.shouldSwitchToSmallMode()) {
         this.coveoRoot.removeClass('coveo-small-interface');
-        this.restoreTabSectionPosition();
       }
       _.each(this.responsiveComponents, responsiveComponent => {
         responsiveComponent.handleResizeEvent();
@@ -132,18 +126,9 @@ export class ResponsiveComponentsManager {
   }
 
   private shouldSwitchToSmallMode(): boolean {
-    // If we had to create the tab section or if we reached the pixel breakpoint, we move the tab section below the search box
-    // to switch to small mode.
-    if (this.searchBoxElement && this.tabSection) {
-      let aComponentNeedsTabSection = this.needTabSection() && this.createdTabSection;
-      let reachedBreakpoint = this.coveoRoot.width() <= ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH;
-      return aComponentNeedsTabSection || reachedBreakpoint;
-    }
-    return false;
-  }
-
-  private shouldExitSmallMode(): boolean {
-    return this.searchBoxElement && this.tabSection && this.coveoRoot.width() > ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH;
+    let aComponentNeedsTabSection = this.needTabSection();
+    let reachedBreakpoint = this.coveoRoot.width() <= ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH;
+    return aComponentNeedsTabSection || reachedBreakpoint;
   }
 
   private needTabSection(): boolean {
@@ -156,32 +141,16 @@ export class ResponsiveComponentsManager {
     return false;
   }
 
-  private ensureTabSectionInDom(): void {
-    let tabSection = this.coveoRoot.find('.coveo-tab-section');
-    if (tabSection) {
-      this.tabSection = $$(tabSection);
-    } else {
-      this.tabSection = $$('div', { className: 'coveo-tab-section' });
-      this.createdTabSection = true;
-    }
-    this.dropdownHeadersWrapper = $$('div', {className: 'coveo-dropdown-header-wrapper'});
-    this.tabSection.append(this.dropdownHeadersWrapper.el);
-  }
-
-  private restoreTabSectionPosition(): void {
-    if (this.tabSectionPreviousSibling) {
-      this.tabSection.insertAfter(this.tabSectionPreviousSibling.el);
-    } else if (this.tabSectionParent) {
-      this.tabSectionParent.prepend(this.tabSection.el);
-    } else if (!this.needTabSection()) {
-      this.tabSection && this.tabSection.detach();
-    }
-  }
-
-  private saveTabSectionPosition(): void {
-    if (this.tabSection) {
-      this.tabSectionPreviousSibling = this.tabSection.el.previousSibling ? $$(<HTMLElement>this.tabSection.el.previousSibling) : null;
-      this.tabSectionParent = this.tabSection.el.parentElement ? $$(this.tabSection.el.parentElement) : null;
+  private addDropdownHeaderWrapperIfNeeded(): void {
+    if (this.needTabSection()) {
+      let tabSection = $$(this.coveoRoot).find('.coveo-tab-section');
+      if (this.searchBoxElement) {
+        this.dropdownHeadersWrapper.insertAfter(this.searchBoxElement);
+      } else if (tabSection) {
+        this.dropdownHeadersWrapper.insertAfter(tabSection);
+      } else {
+        this.coveoRoot.prepend(tabSection);
+      }
     }
   }
 

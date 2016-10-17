@@ -4,7 +4,7 @@ import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/Po
 export class DropdownContent {
 
   public static DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-content';
-  
+
   private cssClassName: string;
 
   constructor(componentName: string, public element: Dom, private coveoRoot: Dom, private minWidth: number, private widthRatio: number) {

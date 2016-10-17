@@ -85,7 +85,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
      * The default value is false.
      */
     hideIfNoResults: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    
+
     /**
      * Specifies if the responsive mode should be enabled on the recommendation component. Responsive mode will make the recommendation component
      * dissapear and instead be availaible using a dropdown button. The responsive recommendation component is enabled when the width
@@ -96,7 +96,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
      * The default value is `true`.
      */
     enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    
+
     /**
      * Specifies the width of the search interface, in pixels, at which the recommendation component will go into responsive mode. The responsive mode will
      * be triggered when the width is equal or below this value. The search interface corresponds to the element with the class

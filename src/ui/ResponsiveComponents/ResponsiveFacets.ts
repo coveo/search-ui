@@ -87,7 +87,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
       this.changeToLargeMode();
     }
 
-    if(this.dropdown.isOpened) {
+    if (this.dropdown.isOpened) {
       this.dropdown.dropdownContent.positionDropdown();
     }
   }
