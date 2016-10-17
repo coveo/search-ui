@@ -12,6 +12,11 @@
 
   transform: translateY(calc(100% + #{$action-bar-box-shadow-offset}));
   transition: transform 0.2s ease-in-out;
+
+  &.coveo-opened {
+    transform: translateY(0);
+  }
+
   > * {
     text-transform: uppercase;
     margin-top: 10px;

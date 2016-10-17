@@ -5,6 +5,8 @@ import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
 import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
 import {IQueryResult} from '../../rest/QueryResult';
+import {Assert} from '../../misc/Assert';
+import {$$} from '../../utils/Dom';
 
 export interface ICardActionBarOptions {
   hidden?: boolean;
@@ -22,7 +24,7 @@ export class CardActionBar extends Component {
    */
   static options: ICardActionBarOptions = {
     /**
-     * Specifies if the action bar is hidden unless the cursor hovers its parent
+     * Specifies if the action bar is hidden unless the cursor clicks its parent
      * `Result` component.
      */
     hidden: ComponentOptions.buildBooleanOption({ defaultValue: true })
@@ -32,9 +34,11 @@ export class CardActionBar extends Component {
     super(element, CardActionBar.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, CardActionBar, options);
 
-    if (!this.options.hidden) {
-      this.element.style.transition = "none";
-      this.element.style.transform = "none";
+    if (this.options.hidden) {
+      this.bindEvents();
+    } else {
+      this.element.style.transition = 'none';
+      this.element.style.transform = 'none';
     }
 
     let initOptions = this.searchInterface.options.originalOptionsObject;
@@ -48,6 +52,29 @@ export class CardActionBar extends Component {
     };
     Initialization.automaticallyCreateComponentsInside(this.element, initParameters);
   }
+
+  /**
+   * Show the ActionBar
+   */
+  public show() {
+    $$(this.element).addClass('coveo-opened');
+  }
+
+  /**
+   * Hide the ActionBar
+   */
+
+  public hide() {
+    $$(this.element).removeClass('coveo-opened');
+  }
+
+  private bindEvents() {
+    let resultList = $$(this.element).closest('CoveoResult');
+    Assert.check(resultList !== undefined, 'ActionBar needs to be a child of a Result')
+    $$(resultList).on('click', () => this.show());
+    $$(resultList).on('mouseleave', () => this.hide());
+  }
+
 }
 
 Initialization.registerAutoCreateComponent(CardActionBar);
