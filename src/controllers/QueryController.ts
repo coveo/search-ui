@@ -51,6 +51,7 @@ export interface IQueryOptions {
    * It also makes sure that only relevant queries are logged. For exemple, the 'empty' interface load query isn't logged.
    */
   logInActionsHistory?: boolean;
+  isFirstQuery?: boolean;
   keepLastSearchUid?: boolean;
   closeModalBox?: boolean;
 }
@@ -183,9 +184,8 @@ export class QueryController extends RootComponent {
     }
 
     let query = queryBuilder.build();
-
     if (options.logInActionsHistory) {
-      this.logQueryInActionsHistory(query);
+      this.logQueryInActionsHistory(query, options.isFirstQuery);
     }
 
     let endpointToUse = this.getEndpoint();
@@ -602,9 +602,19 @@ export class QueryController extends RootComponent {
     return dom;
   }
 
-  private logQueryInActionsHistory(query: IQuery) {
+  private logQueryInActionsHistory(query: IQuery, isFirstQuery: boolean) {
     if (typeof coveoanalytics != 'undefined') {
       let store = new coveoanalytics.history.HistoryStore();
+      if (isFirstQuery) {
+        // If the current search page. has been logged by coveoanalytics lib as a page view
+        // remove that page view event
+        let currentHistory = store.getHistory();
+        if (this.lastHistoryEventIsCurrentPageView(currentHistory)) {
+          delete currentHistory[0];
+          currentHistory = _.compact(currentHistory);
+          store.setHistory(currentHistory);
+        }
+      }
       let queryElement: CoveoAnalytics.HistoryQueryElement = {
         name: 'Query',
         value: query.q,
@@ -612,5 +622,18 @@ export class QueryController extends RootComponent {
       };
       store.addElement(queryElement);
     }
+  }
+
+  private lastHistoryEventIsCurrentPageView(currentHistory: CoveoAnalytics.HistoryElement) {
+    let validHistory = currentHistory[0] &&
+        currentHistory[0].name &&
+        currentHistory[0].name.toLowerCase() == 'pageview' &&
+        currentHistory[0].value;
+    if (validHistory) {
+      let link = document.createElement('a');
+      link.setAttribute('href', currentHistory[0].value);
+      return link.hostname == window.location.hostname;
+    }
+    return false;
   }
 }
