@@ -4,6 +4,7 @@ export class ResponsiveComponentsUtils {
 
   private static smallTabsClassName: string = 'coveo-small-tabs';
   private static smallFacetClassName: string = 'coveo-small-facets';
+  private static smallRecommendationClassName: string = 'coveo-small-recommendation';
 
   public static MEDIUM_MOBILE_WIDTH = 640;
 
@@ -29,5 +30,13 @@ export class ResponsiveComponentsUtils {
 
   static deactivateSmallFacet(root: Dom) {
     root.removeClass(this.smallFacetClassName);
+  }
+
+  static activateSmallRecommendation(root: Dom) {
+    root.addClass(this.smallRecommendationClassName);
+  }
+
+  static deactivateSmallRecommendation(root: Dom) {
+    root.removeClass(this.smallRecommendationClassName);
   }
 }

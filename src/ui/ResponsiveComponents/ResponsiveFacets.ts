@@ -76,7 +76,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     }
   }
 
-  public needTabSection() {
+  public needDropdownWrapper() {
     return this.needSmallMode();
   }
 
@@ -112,7 +112,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private buildDropdownHeader() {
     let dropdownHeader = $$('a');
     let content = $$('p');
-    content.text(l('Facets'));
+    content.text(l('Filters'));
     dropdownHeader.el.appendChild(content.el);
     return dropdownHeader;
   }

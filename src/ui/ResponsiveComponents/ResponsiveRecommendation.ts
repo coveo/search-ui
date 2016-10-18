@@ -1,4 +1,5 @@
-import {ResponsiveComponentsManager, IResponsiveComponent, IResponsiveComponentOptions} from './ResponsiveComponentsManager'
+import {ResponsiveComponentsManager, IResponsiveComponent, IResponsiveComponentOptions} from './ResponsiveComponentsManager';
+import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
 import {Utils} from '../../utils/Utils';
 import {$$, Dom} from '../../utils/Dom';
 import {Logger} from '../../misc/Logger';
@@ -12,23 +13,30 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   private static DROPDOWN_WIDTH_RATIO: number = 0.35; // Used to set the width relative to the coveo root.
   public static RESPONSIVE_BREAKPOINT = 1000;
 
-  public coveoRoot: Dom;
-
   private breakpoint: number;
   private dropdown: Dropdown;
   private logger: Logger;
 
   public static init(root: HTMLElement, component, options: IResponsiveComponentOptions) {
-    ResponsiveComponentsManager.register(ResponsiveRecommendation, $$(root), Recommendation.ID, component, options);
-  }
-
-  constructor(coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions) {
-    this.logger = new Logger(this);
-    this.coveoRoot = this.findParentRootOfRecommendationComponent(coveoRoot);
-    if (!this.coveoRoot) {
-      this.logger.info('Recommendation component has no parent interface. Disabling responsive mode.');
+    let logger = new Logger('ResponsiveRecommendation');
+    let coveoRoot = this.findParentRootOfRecommendationComponent(root);
+    if (!coveoRoot) {
+      logger.info('Recommendation component has no parent interface. Disabling responsive mode.');
       return;
     }
+    ResponsiveComponentsManager.register(ResponsiveRecommendation, $$(coveoRoot), Recommendation.ID, component, options);
+  }
+  
+  private static findParentRootOfRecommendationComponent(root: HTMLElement): Dom {
+    let coveoRoot = $$(root).parents('CoveoSearchInterface');
+    if (coveoRoot[0]) {
+      return $$(coveoRoot[0]);
+    }
+    return null;
+  }
+
+  constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions) {
+    this.logger = new Logger(this);
     this.dropdown = this.buildDropdown();
     this.breakpoint = this.defineResponsiveBreakpoint(options);
   }
@@ -41,7 +49,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     }
   }
 
-  public needTabSection(): boolean {
+  public needDropdownWrapper(): boolean {
     return this.needSmallMode();
   }
 
@@ -52,10 +60,12 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   private changeToSmallMode() {
     this.dropdown.close();
     $$(this.coveoRoot.find('.coveo-dropdown-header-wrapper')).el.appendChild(this.dropdown.dropdownHeader.element.el);
+    ResponsiveComponentsUtils.activateSmallRecommendation(this.coveoRoot);
   }
 
   private changeToLargeMode() {
     this.dropdown.cleanUp();
+    ResponsiveComponentsUtils.deactivateSmallRecommendation(this.coveoRoot);
   }
 
   private buildDropdown(): Dropdown {
@@ -68,7 +78,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   private buildDropdownHeader(): Dom {
     let dropdownHeader = $$('a');
     let content = $$('p');
-    content.text(l('Recommendation'));
+    content.text(l('Recommendations'));
     dropdownHeader.el.appendChild(content.el);
     return dropdownHeader;
   }
@@ -92,13 +102,5 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
       breakpoint = options.responsiveBreakpoint;
     }
     return breakpoint;
-  }
-
-  private findParentRootOfRecommendationComponent(root: Dom): Dom {
-    let coveoRoot = root.parents('CoveoSearchInterface');
-    if (coveoRoot[0]) {
-      return $$(coveoRoot[0]);
-    }
-    return null;
   }
 }

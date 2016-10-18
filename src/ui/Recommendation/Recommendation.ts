@@ -103,7 +103,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
      * `CoveoSearchInterface`.
      * The default value is `800`.
      */
-    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 800 })
+    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 1000 })
 
   };
 
