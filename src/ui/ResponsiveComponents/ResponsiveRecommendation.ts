@@ -26,7 +26,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     }
     ResponsiveComponentsManager.register(ResponsiveRecommendation, $$(coveoRoot), Recommendation.ID, component, options);
   }
-  
+
   private static findParentRootOfRecommendationComponent(root: HTMLElement): Dom {
     let coveoRoot = $$(root).parents('CoveoSearchInterface');
     if (coveoRoot[0]) {

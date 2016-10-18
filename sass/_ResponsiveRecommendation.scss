@@ -1,0 +1,24 @@
+.coveo-small-recommendation {
+  .coveo-recommendation-dropdown-header {
+    order: 1;
+  }
+
+  .CoveoRecommendation, .coveo-recommendation-facet-column {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.coveo-small-recommendation, .coveo-small-facets {
+  #coveo-recommendation-results-column {
+    width: auto;
+    display: block;
+  }
+  
+  #coveo-recommendation-facet-column {
+    width: 30%
+  }
+}
+
+
+
