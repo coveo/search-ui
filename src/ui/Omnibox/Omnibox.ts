@@ -34,6 +34,7 @@ export interface IPopulateOmniboxSuggestionsEventArgs {
 }
 
 export interface IOmniboxSuggestion extends Coveo.MagicBox.Suggestion {
+  executableConfidence?: number;
 }
 
 export interface IOmniboxOptions extends IQueryboxOptions {
@@ -48,6 +49,8 @@ export interface IOmniboxOptions extends IQueryboxOptions {
   placeholder?: string;
   grammar?: (grammar: { start: string; expressions: { [id: string]: Coveo.MagicBox.ExpressionDef }; }) => { start: string; expressions: { [id: string]: Coveo.MagicBox.ExpressionDef } };
 }
+
+const MINIMUM_EXECUTABLE_CONFIDENCE = 0.8;
 
 /**
  * This component is very similar to the simpler {@link Querybox} component and support all the same options/behavior except for the search-as-you-type feature.<br/>
@@ -255,22 +258,25 @@ export class Omnibox extends Component {
         this.partialQueries = [];
       }
       this.movedOnce = false;
-      let diff = suggestions.length != this.lastSuggestions.length ||
-        _.filter(suggestions, (suggestion: IOmniboxSuggestion, i: number) => {
-          return suggestion.text != this.lastSuggestions[i].text;
-        }).length > 0;
       this.lastSuggestions = suggestions;
-      // retrigger a new search as you type only if there are diff or if the input is not the same
-      if (this.options.enableSearchAsYouType && (diff || suggestions.length == 0)) {
+      if (this.isRevealAutoSuggestion()) {
         this.searchAsYouType();
       }
     };
     if (this.options.enableSearchAsYouType) {
       $$(this.element).addClass('coveo-magicbox-search-as-you-type');
-      this.magicBox.onchange = () => {
-        this.searchAsYouType();
-      };
     }
+
+    this.magicBox.onchange = ()=> {
+      if (this.isRevealAutoSuggestion()) {
+        if (this.movedOnce) {
+          this.searchAsYouType(true);
+        }
+      } else if (this.options.enableSearchAsYouType) {
+        this.searchAsYouType(true);
+      }
+    }
+
     if (this.options.placeholder) {
       (<HTMLInputElement>this.magicBox.element.querySelector('input')).placeholder = this.options.placeholder;
     }
@@ -292,7 +298,6 @@ export class Omnibox extends Component {
       // keyboard selection will automatically do the query (which will log a search as you type event -> further modified by this.modifyEventTo if needed)
       // mouse selection will not "auto" send the query.
       // the movedOnce variable detect the keyboard movement, and is used to differentiate mouse vs keyboard
-
       if (!this.isRevealAutoSuggestion()) {
         this.usageAnalytics.cancelAllPendingEvents();
         this.triggerNewQuery(false, () => {
@@ -337,30 +342,52 @@ export class Omnibox extends Component {
   }
 
   private handleRevealAutoSuggestionWithKeyboard(index: number, suggestions: string[]) {
-    // Here : a selection was made using keyboard
-    // The event type has been modified on magicbox.onmove
-    // Set the new custom data as it can be empty
-    // For example, when the index 0 is selected, the query is already made and would be considered
-    // a search as you type : Modify the custom data after the fact
-    this.modifyCustomDataOnPending(index, suggestions);
-    this.usageAnalytics.sendAllPendingEvents();
+    // Selections made with keyboard should behave correctly 100% of the time : just pass down the information
+    // to
+    this.handleRevealAutoSuggestions(index, suggestions);
   }
 
   private handleRevealAutoSuggestionsWithMouse(index: number, suggestions: string[]) {
-    if (index != 0) {
-      // Here : a selection was made using the mouse
-      // Cancel all search as you type
-      // Then, send omniboxAnalytics and do a query
+    if (!this.searchAsYouTypeTimeout) {
+      this.modifyEventTo = analyticsActionCauseList.omniboxAnalytics;
+    } else if (index != 0) {
       this.usageAnalytics.cancelAllPendingEvents();
+      clearTimeout(this.searchAsYouTypeTimeout);
+      this.searchAsYouTypeTimeout = undefined;
       this.triggerNewQuery(false, () => {
-        this.usageAnalytics.logSearchEvent(analyticsActionCauseList.omniboxAnalytics, this.buildCustomDataForPartialQueries(index, suggestions));
+        this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.omniboxAnalytics, this.buildCustomDataForPartialQueries(index, suggestions));
       });
     } else {
-      // Same logic as keyboard selection : but when the user select the first suggestion
-      // with the mouse, there is no onmove => set the new type, then modify custom data
-      this.modifyEventTo = analyticsActionCauseList.omniboxAnalytics;
+      this.handleRevealAutoSuggestions(index, suggestions);
+    }
+  }
+
+  private handleRevealAutoSuggestions(index: number, suggestions: string[]) {
+    if (this.searchAsYouTypeTimeout) {
+      // Here, there is currently a search as you typed queued up :
+      // Think : user typed very quickly, then very quickly selected a suggestion (without waiting for the search as you type)
+      // Cancel the search as you type query, then immediately do the query with the selection (+analytics event with the selection)
+      this.usageAnalytics.cancelAllPendingEvents();
+      clearTimeout(this.searchAsYouTypeTimeout);
+      this.searchAsYouTypeTimeout = undefined;
+      this.triggerNewQuery(false, () => {
+        this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.omniboxAnalytics, this.buildCustomDataForPartialQueries(index, suggestions));
+      });
+    } else if (index == 0) {
+      // Here, the search as you type query has returned, but the analytics event has not ye been sent.
+      // Think : user typed slowly, the query returned, and then the user selected a suggestion.
+      // Since the analytics event has not yet been sent (search as you type event have a 5 sec delay)
+      // modify the pending event, then send the newly modified analytics event immediately.
       this.modifyCustomDataOnPending(index, suggestions);
       this.usageAnalytics.sendAllPendingEvents();
+    } else {
+      debugger;
+      this.usageAnalytics.cancelAllPendingEvents();
+      clearTimeout(this.searchAsYouTypeTimeout);
+      this.searchAsYouTypeTimeout = undefined;
+      this.triggerNewQuery(false, () => {
+        this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.omniboxAnalytics, this.buildCustomDataForPartialQueries(index, suggestions));
+      });
     }
   }
 
@@ -528,41 +555,48 @@ export class Omnibox extends Component {
     });
   }
 
-  private searchAsYouType() {
-    clearTimeout(this.searchAsYouTypeTimeout);
-    if (this.getText().length == 0) {
-      return;
-    } else if (this.magicBox.getWordCompletion()) {
-      let suggestions = _.map(this.lastSuggestions, (suggestion) => suggestion.text);
-      let index = _.indexOf(suggestions, this.magicBox.getWordCompletion());
-      this.triggerNewQuery(true, () => {
-        this.usageAnalytics.logSearchAsYouType<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.searchboxAsYouType, this.buildCustomDataForPartialQueries(index, suggestions));
-      });
-    } else if (this.getQuery(true) != this.getText()) {
-      this.triggerNewQuery(true, () => {
-        this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxAsYouType, {});
-      });
-    } else {
-      this.searchAsYouTypeTimeout = setTimeout(() => {
-        let analyticsEvent: () => void;
-        if (this.magicBox.getWordCompletion()) {
-          let suggestions = _.map(this.lastSuggestions, (suggestion) => suggestion.text);
-          let index = _.indexOf(suggestions, this.magicBox.getWordCompletion());
-          analyticsEvent = () => {
-            this.usageAnalytics.logSearchAsYouType<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.searchboxAsYouType, this.buildCustomDataForPartialQueries(index, suggestions));
-          };
-        } else {
-          analyticsEvent = () => {
-            this.usageAnalytics.logSearchAsYouType<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxAsYouType, {});
-          };
-        }
-        this.triggerNewQuery(true, analyticsEvent);
-      }, this.options.searchAsYouTypeDelay);
-    }
+  private searchAsYouType(forceExecuteQuery = false) {
+    this.clearSearchAsYouType();
+
+    //if (this.getText().length == 0) {
+    //  this.clear();
+    //} else {
+    this.searchAsYouTypeTimeout = setTimeout(() => {
+      if (this.suggestionShouldTriggerQuery() || forceExecuteQuery) {
+        let suggestions = _.map(this.lastSuggestions, (suggestion) => suggestion.text);
+        let index = _.indexOf(suggestions, this.magicBox.getWordCompletion());
+        this.triggerNewQuery(true, () => {
+          this.usageAnalytics.logSearchAsYouType<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.searchboxAsYouType, this.buildCustomDataForPartialQueries(index, suggestions));
+        });
+        this.clearSearchAsYouType();
+      }
+
+    }, this.options.searchAsYouTypeDelay);
+    //}
   }
 
   private isRevealAutoSuggestion() {
     return this.options.enableSearchAsYouType && this.options.enableRevealQuerySuggestAddon;
+  }
+
+  private suggestionShouldTriggerQuery(suggestions = this.lastSuggestions) {
+    if (suggestions && suggestions[0]) {
+      let suggestion = this.lastSuggestions[0];
+      // If we have access to a confidence level, return true if we are equal or above the minimum confidence level.
+      if (suggestion && suggestion.executableConfidence != undefined) {
+        return suggestion.executableConfidence >= MINIMUM_EXECUTABLE_CONFIDENCE;
+      }
+      // If we don't have access to a confidence level, return true only if it "starts with" the content of the search box
+      if (suggestion.text && suggestion.text.indexOf(this.magicBox.getText()) == 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private clearSearchAsYouType() {
+    clearTimeout(this.searchAsYouTypeTimeout);
+    this.searchAsYouTypeTimeout = undefined;
   }
 }
 

@@ -79,7 +79,7 @@ export class RevealQuerySuggestAddon {
     }
 
     if (searchHub) {
-      payload.searchHub = searchHub;
+      //payload.searchHub = searchHub;
     }
 
     if (pipeline) {
@@ -95,7 +95,8 @@ export class RevealQuerySuggestAddon {
             html: RevealQuerySuggestAddon.suggestiontHtml(completion),
             text: completion.expression,
             index: RevealQuerySuggestAddon.INDEX - i / completions.length,
-            partial: RevealQuerySuggestAddon.isPartialMatch(completion)
+            partial: RevealQuerySuggestAddon.isPartialMatch(completion),
+            executableConfidence: completion.executableConfidence
           };
         });
         return results;
