@@ -193,7 +193,7 @@
 						</div>
 						<p>By default, it will open the corresponding result uri in your browser.</p>
 						<pre><code class="lang-javascript">Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
-   OmniboxResultList : {
+   <span class="hljs-attr">OmniboxResultList</span> : {
        <span class="hljs-comment">//Close the omnibox, change the selected HTMLElement background color and alert the result title.</span>
        onSelect:   <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result, resultElement, omniBoxObject</span>) </span>{
            omniBoxObject.close();
@@ -206,7 +206,7 @@
 <span class="hljs-comment">// OR using the jquery extension</span>
 
 $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"init"</span>, {
-   OmniboxResultList : {
+   <span class="hljs-attr">OmniboxResultList</span> : {
        <span class="hljs-comment">//Close the omnibox, change the selected HTMLElement background color and alert the result title.</span>
        onSelect:   <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result, resultElement, omniBoxObject</span>) </span>{
            omniBoxObject.close();

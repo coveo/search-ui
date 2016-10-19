@@ -281,8 +281,8 @@ topResult.childResults = results;
 return topResult;
 </code></pre><p>You can preprocess all the result with this option:</p>
 						<pre><code>Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
-   Folding: {
-     getResult: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{
+   <span class="hljs-attr">Folding</span>: {
+     <span class="hljs-attr">getResult</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{
        result = Coveo.Folding.defaultGetResult(result);
        <span class="hljs-comment">// Your code here</span>
      }
@@ -292,8 +292,8 @@ return topResult;
 <span class="hljs-comment">// OR using the jquery extension</span>
 
 Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'init'</span>, {
-   Folding: {
-     getResult: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{
+   <span class="hljs-attr">Folding</span>: {
+     <span class="hljs-attr">getResult</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{
        result = Coveo.Folding.defaultGetResult(result);
        <span class="hljs-comment">// Your code here</span>
      }
@@ -576,8 +576,8 @@ topResult.childResults = results;
 return topResult;
 </code></pre><p>You can preprocess all the result with this option:</p>
 							<pre><code>Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
-   Folding: {
-     getResult: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{
+   <span class="hljs-attr">Folding</span>: {
+     <span class="hljs-attr">getResult</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{
        result = Coveo.Folding.defaultGetResult(result);
        <span class="hljs-comment">// Your code here</span>
      }
@@ -587,8 +587,8 @@ return topResult;
 <span class="hljs-comment">// OR using the jquery extension</span>
 
 Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'init'</span>, {
-   Folding: {
-     getResult: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{
+   <span class="hljs-attr">Folding</span>: {
+     <span class="hljs-attr">getResult</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{
        result = Coveo.Folding.defaultGetResult(result);
        <span class="hljs-comment">// Your code here</span>
      }

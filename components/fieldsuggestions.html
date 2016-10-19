@@ -216,9 +216,9 @@
 							For example:</p>
 						</div>
 						<pre><code>Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
-   FieldSuggestions : {
-     omniboxSuggestionOptions : {
-       onSelect : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">valueSelected, populateOmniBoxEventArgs</span>)</span>{
+   <span class="hljs-attr">FieldSuggestions</span> : {
+     <span class="hljs-attr">omniboxSuggestionOptions</span> : {
+       <span class="hljs-attr">onSelect</span> : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">valueSelected, populateOmniBoxEventArgs</span>)</span>{
          <span class="hljs-comment">// Do something special when a value is selected.</span>
          <span class="hljs-comment">// You receive the selected value as the first argument, and the Omnibox object as the second parameter.</span>
        }
@@ -229,9 +229,9 @@
 <span class="hljs-comment">// OR using the jquery extension</span>
 
 $(<span class="hljs-string">'#mySearch'</span>).coveo(<span class="hljs-string">'init'</span>, {
-   FieldSuggestions : {
-     omniboxSuggestionOptions : {
-       onSelect : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">valueSelected, populateOmniBoxEventArgs</span>)</span>{
+   <span class="hljs-attr">FieldSuggestions</span> : {
+     <span class="hljs-attr">omniboxSuggestionOptions</span> : {
+       <span class="hljs-attr">onSelect</span> : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">valueSelected, populateOmniBoxEventArgs</span>)</span>{
          <span class="hljs-comment">// Do something special when a value is selected.</span>
          <span class="hljs-comment">// You receive the selected value as the first argument, and the Omnibox object as the second parameter.</span>
        }

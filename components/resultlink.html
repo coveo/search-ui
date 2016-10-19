@@ -219,8 +219,8 @@
 						<pre><code class="lang-javascript"><span class="hljs-comment">// Example: using a ResultLink to open the original document in a special way instead of the normal browser behavior</span>
 
 Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
-  ResultLink : {
-       onClick : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e, result</span>)</span>{
+  <span class="hljs-attr">ResultLink</span> : {
+       <span class="hljs-attr">onClick</span> : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e, result</span>)</span>{
          e.preventDefault();
          <span class="hljs-comment">// Custom code to execute with the URI and title of the document</span>
          openUriInASpecialTab(result.clickUri, result.title)
@@ -231,8 +231,8 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 <span class="hljs-comment">// OR using the jquery extension</span>
 
 $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">'init'</span> , {
-   ResultLink : {
-       onClick : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e, result</span>)</span>{
+   <span class="hljs-attr">ResultLink</span> : {
+       <span class="hljs-attr">onClick</span> : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e, result</span>)</span>{
          e.preventDefault();
          <span class="hljs-comment">// Custom code to execute with the URI and title of the document</span>
          openUriInASpecialTab(result.clickUri, result.title)

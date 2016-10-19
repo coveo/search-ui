@@ -144,7 +144,7 @@
 						</div>
 						<p>End-users will not be able to modify or delete them, as they are not customized for each user, but instead created by the creator/developer of the search page.</p>
 						<p>Filters should follow this definition :</p>
-						<pre><code>  <span class="hljs-attribute">filters</span>: { [<span class="hljs-attribute">caption</span>: string]: { <span class="hljs-attribute">expression</span>: string; tab?: <span class="hljs-selector-tag">string</span><span class="hljs-selector-attr">[]</span>; }};
+						<pre><code>  filters: { [caption: <span class="hljs-built_in">string</span>]: { expression: <span class="hljs-built_in">string</span>; <span class="hljs-literal">tab</span>?: <span class="hljs-built_in">string</span>[]; }};
 </code></pre><p>eg :</p>
 						<pre><code class="lang-javascript">Coveo.init(root, {
   ResultsFiltersPreferences : {

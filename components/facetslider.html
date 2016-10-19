@@ -350,9 +350,9 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 							<p>Specifies a function that will generate the steps for the slider. The function receives the slider boundaries must return an array of number (the steps).</p>
 						</div>
 						<pre><code>Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
-   FacetSlider: {
-     field: <span class="hljs-string">"@size"</span>,
-     getSteps: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">start, end</span>) </span>{
+   <span class="hljs-attr">FacetSlider</span>: {
+     <span class="hljs-attr">field</span>: <span class="hljs-string">"@size"</span>,
+     <span class="hljs-attr">getSteps</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">start, end</span>) </span>{
        <span class="hljs-keyword">return</span> [<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>,<span class="hljs-number">8</span>,<span class="hljs-number">10</span>];
      }
    }
@@ -361,9 +361,9 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 <span class="hljs-comment">// OR using the jquery extension</span>
 
 $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'init'</span>, {
-   FacetSlider: {
-       field: <span class="hljs-string">"@size"</span>,
-       getSteps: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">start, end</span>) </span>{
+   <span class="hljs-attr">FacetSlider</span>: {
+       <span class="hljs-attr">field</span>: <span class="hljs-string">"@size"</span>,
+       <span class="hljs-attr">getSteps</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">start, end</span>) </span>{
            <span class="hljs-keyword">return</span> [<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>,<span class="hljs-number">8</span>,<span class="hljs-number">10</span>];
        }
    }
@@ -582,9 +582,9 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 							<p>Specifies a function that will generate the caption for the slider. Receives the current slider values (number[]) and must return the caption (string).</p>
 						</div>
 						<pre><code>Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
-   FacetSlider: {
-     field: <span class="hljs-string">"@size"</span>,
-     valueCaption: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">values</span>) </span>{
+   <span class="hljs-attr">FacetSlider</span>: {
+     <span class="hljs-attr">field</span>: <span class="hljs-string">"@size"</span>,
+     <span class="hljs-attr">valueCaption</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">values</span>) </span>{
        <span class="hljs-keyword">return</span> values[<span class="hljs-number">0</span>] + <span class="hljs-string">" hello"</span> + <span class="hljs-string">", "</span> + values[<span class="hljs-number">1</span>] + <span class="hljs-string">" world"</span>;
      }
    }
@@ -593,9 +593,9 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'i
 <span class="hljs-comment">// OR using the jquery extension</span>
 
 $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'init'</span>, {
-   FacetSlider: {
-     field: <span class="hljs-string">"@size"</span>,
-     valueCaption: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">values</span>) </span>{
+   <span class="hljs-attr">FacetSlider</span>: {
+     <span class="hljs-attr">field</span>: <span class="hljs-string">"@size"</span>,
+     <span class="hljs-attr">valueCaption</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">values</span>) </span>{
        <span class="hljs-keyword">return</span> values[<span class="hljs-number">0</span>] + <span class="hljs-string">" hello"</span> + <span class="hljs-string">", "</span> + values[<span class="hljs-number">1</span>] + <span class="hljs-string">" world"</span>;
      }
    }
