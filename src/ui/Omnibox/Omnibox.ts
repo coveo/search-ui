@@ -342,27 +342,6 @@ export class Omnibox extends Component {
   }
 
   private handleRevealAutoSuggestionWithKeyboard(index: number, suggestions: string[]) {
-    // Selections made with keyboard should behave correctly 100% of the time : just pass down the information
-    // to
-    this.handleRevealAutoSuggestions(index, suggestions);
-  }
-
-  private handleRevealAutoSuggestionsWithMouse(index: number, suggestions: string[]) {
-    if (!this.searchAsYouTypeTimeout) {
-      this.modifyEventTo = analyticsActionCauseList.omniboxAnalytics;
-    } else if (index != 0) {
-      this.usageAnalytics.cancelAllPendingEvents();
-      clearTimeout(this.searchAsYouTypeTimeout);
-      this.searchAsYouTypeTimeout = undefined;
-      this.triggerNewQuery(false, () => {
-        this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.omniboxAnalytics, this.buildCustomDataForPartialQueries(index, suggestions));
-      });
-    } else {
-      this.handleRevealAutoSuggestions(index, suggestions);
-    }
-  }
-
-  private handleRevealAutoSuggestions(index: number, suggestions: string[]) {
     if (this.searchAsYouTypeTimeout) {
       // Here, there is currently a search as you typed queued up :
       // Think : user typed very quickly, then very quickly selected a suggestion (without waiting for the search as you type)
@@ -373,21 +352,39 @@ export class Omnibox extends Component {
       this.triggerNewQuery(false, () => {
         this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.omniboxAnalytics, this.buildCustomDataForPartialQueries(index, suggestions));
       });
-    } else if (index == 0) {
+
+    } else {
       // Here, the search as you type query has returned, but the analytics event has not ye been sent.
       // Think : user typed slowly, the query returned, and then the user selected a suggestion.
       // Since the analytics event has not yet been sent (search as you type event have a 5 sec delay)
       // modify the pending event, then send the newly modified analytics event immediately.
+      this.modifyEventTo = analyticsActionCauseList.omniboxAnalytics;
       this.modifyCustomDataOnPending(index, suggestions);
       this.usageAnalytics.sendAllPendingEvents();
-    } else {
-      debugger;
+    }
+  }
+
+  private handleRevealAutoSuggestionsWithMouse(index: number, suggestions: string[]) {
+    if (this.searchAsYouTypeTimeout || index != 0) {
+      // Here : the user either very quickly chose the first suggestion, and the search as you type is still queued up.
+      // OR
+      // the user chose something different then the first suggestion.
+      // Remove the search as you type if it's there, and do the query with the suggestion directly.
+      this.clearSearchAsYouType();
       this.usageAnalytics.cancelAllPendingEvents();
-      clearTimeout(this.searchAsYouTypeTimeout);
-      this.searchAsYouTypeTimeout = undefined;
       this.triggerNewQuery(false, () => {
         this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.omniboxAnalytics, this.buildCustomDataForPartialQueries(index, suggestions));
       });
+
+    } else {
+      // Here : the user either very slowly chose a suggestion, and there is no search as you typed queued up
+      // AND
+      // the user chose the first suggestion.
+      // this means the query is already returned, but the analytics event is still queued up.
+      // modify the analytics event, and send it.
+      this.modifyEventTo = analyticsActionCauseList.omniboxAnalytics;
+      this.modifyCustomDataOnPending(index, suggestions);
+      this.usageAnalytics.sendAllPendingEvents();
     }
   }
 
@@ -561,17 +558,21 @@ export class Omnibox extends Component {
     //if (this.getText().length == 0) {
     //  this.clear();
     //} else {
-    this.searchAsYouTypeTimeout = setTimeout(() => {
-      if (this.suggestionShouldTriggerQuery() || forceExecuteQuery) {
-        let suggestions = _.map(this.lastSuggestions, (suggestion) => suggestion.text);
-        let index = _.indexOf(suggestions, this.magicBox.getWordCompletion());
-        this.triggerNewQuery(true, () => {
-          this.usageAnalytics.logSearchAsYouType<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.searchboxAsYouType, this.buildCustomDataForPartialQueries(index, suggestions));
-        });
-        this.clearSearchAsYouType();
-      }
+    let text = this.getQuery(true);
+    if (this.lastQuery != text && text != null) {
+      this.searchAsYouTypeTimeout = setTimeout(() => {
+        if (this.suggestionShouldTriggerQuery() || forceExecuteQuery) {
+          let suggestions = _.map(this.lastSuggestions, (suggestion) => suggestion.text);
+          let index = _.indexOf(suggestions, this.magicBox.getWordCompletion());
+          this.triggerNewQuery(true, () => {
+            this.usageAnalytics.logSearchAsYouType<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.searchboxAsYouType, this.buildCustomDataForPartialQueries(index, suggestions));
+          });
+          this.clearSearchAsYouType();
+        }
 
-    }, this.options.searchAsYouTypeDelay);
+      }, this.options.searchAsYouTypeDelay);
+    }
+
     //}
   }
 
