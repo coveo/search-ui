@@ -6,6 +6,9 @@ import {Logger} from '../../misc/Logger';
 import {Recommendation} from '../Recommendation/Recommendation';
 import {Dropdown} from './Dropdown';
 import {l} from '../../strings/Strings';
+import {FacetSlider} from '../FacetSlider/FacetSlider';
+import {Facet} from '../Facet/Facet';
+import {Component} from '../Base/Component';
 
 export class ResponsiveRecommendation implements IResponsiveComponent {
 
@@ -16,6 +19,8 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   private breakpoint: number;
   private dropdown: Dropdown;
   private logger: Logger;
+  private facetSliders: FacetSlider[];
+  private facets: Facet[];
 
   public static init(root: HTMLElement, component, options: IResponsiveComponentOptions) {
     let logger = new Logger('ResponsiveRecommendation');
@@ -39,6 +44,10 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     this.logger = new Logger(this);
     this.dropdown = this.buildDropdown();
     this.breakpoint = this.defineResponsiveBreakpoint(options);
+    this.facets = this.getFacets();
+    this.facetSliders = this.getFacetSliders();
+    this.registerOnOpenHandler();
+    this.registerOnCloseHandler();
   }
 
   public handleResizeEvent(): void {
@@ -46,6 +55,10 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
       this.changeToSmallMode();
     } else {
       this.changeToLargeMode();
+    }
+
+    if (this.dropdown.isOpened) {
+      this.dropdown.dropdownContent.positionDropdown();
     }
   }
 
@@ -60,10 +73,12 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   private changeToSmallMode() {
     this.dropdown.close();
     $$(this.coveoRoot.find('.coveo-dropdown-header-wrapper')).el.appendChild(this.dropdown.dropdownHeader.element.el);
+    this.disableFacetPreservePosition();
     ResponsiveComponentsUtils.activateSmallRecommendation(this.coveoRoot);
   }
 
   private changeToLargeMode() {
+    this.enableFacetPreservePosition();
     this.dropdown.cleanUp();
     ResponsiveComponentsUtils.deactivateSmallRecommendation(this.coveoRoot);
   }
@@ -102,5 +117,59 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
       breakpoint = options.responsiveBreakpoint;
     }
     return breakpoint;
+  }
+
+  private getFacetSliders(): FacetSlider[] {
+    let facetSliders = []
+    _.each(this.coveoRoot.findAll('.CoveoFacetSlider'), facetSliderElement => {
+      let facetSlider = Component.get(facetSliderElement, FacetSlider);
+      if (facetSlider instanceof FacetSlider) {
+        facetSliders.push(facetSlider);
+      }
+    })
+    return facetSliders;
+  }
+
+  private getFacets(): Facet[] {
+    let facets = []
+    _.each(this.coveoRoot.findAll('.CoveoFacet'), facetElement => {
+      let facet = Component.get(facetElement, Facet);
+      if (facet instanceof Facet) {
+        facets.push(facet);
+      }
+    })
+    return facets;
+  }
+
+  private dismissFacetSearches() {
+    _.each(this.facets, facet => {
+      if (facet.facetSearch && facet.facetSearch.currentlyDisplayedResults) {
+        facet.facetSearch.completelyDismissSearch();
+      }
+    });
+  }
+
+  private enableFacetPreservePosition() {
+    _.each(this.facets, facet => facet.options.preservePosition = true);
+  }
+
+  private disableFacetPreservePosition() {
+    _.each(this.facets, facet => facet.options.preservePosition = false);
+  }
+
+  private drawFacetSliderGraphs() {
+    _.each(this.facetSliders, facetSlider => facetSlider.drawDelayedGraphData());
+  }
+
+  private registerOnOpenHandler() {
+    this.dropdown.registerOnOpenHandler(() => {
+      this.drawFacetSliderGraphs();
+    });
+  }
+
+  private registerOnCloseHandler() {
+    this.dropdown.registerOnCloseHandler(() => {
+      this.dismissFacetSearches();
+    });
   }
 }

@@ -148,7 +148,7 @@ export class ResponsiveComponentsManager {
       } else if (tabSection) {
         this.dropdownHeadersWrapper.insertAfter(tabSection);
       } else {
-        this.coveoRoot.prepend(tabSection);
+        this.coveoRoot.prepend(this.dropdownHeadersWrapper.el);
       }
     }
   }
