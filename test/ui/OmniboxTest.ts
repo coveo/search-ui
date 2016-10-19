@@ -56,19 +56,6 @@ export function OmniboxTest() {
         }, test.cmp.options.searchAsYouTypeDelay);
       });
 
-      it('enableSearchAsYouType should not trigger a query after a delay if there is no text', function (done) {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
-          enableSearchAsYouType: true
-        });
-        expect(test.cmp.magicBox.onchange).toBeDefined();
-        test.cmp.setText('');
-        test.cmp.magicBox.onchange();
-        setTimeout(() => {
-          expect(test.env.queryController.executeQuery).not.toHaveBeenCalled();
-          done();
-        }, test.cmp.options.searchAsYouTypeDelay);
-      });
-
       it('enableQuerySyntax should modify the disableQuerySyntax parameter', function () {
         test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
           enableQuerySyntax: false

@@ -47,7 +47,7 @@ export class Querybox extends Component {
      * If `enableSearchAsYouType` is enabled, this option specify the delay (in ms) between a keypress and a query being triggered<br/>
      * Default to 500 ms.
      */
-    searchAsYouTypeDelay: ComponentOptions.buildNumberOption({ defaultValue: 500, min: 0}),
+    searchAsYouTypeDelay: ComponentOptions.buildNumberOption({ defaultValue: 500, min: 0 }),
     /**
      * Specifies whether the Coveo Platform does try to interpret special query syntax such as field references in the query entered through the query box.<br/>
      * The default value is `true`.

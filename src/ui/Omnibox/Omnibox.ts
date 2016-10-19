@@ -263,19 +263,26 @@ export class Omnibox extends Component {
         this.searchAsYouType();
       }
     };
+
     if (this.options.enableSearchAsYouType) {
       $$(this.element).addClass('coveo-magicbox-search-as-you-type');
     }
 
-    this.magicBox.onchange = ()=> {
-      if (this.isRevealAutoSuggestion()) {
-        if (this.movedOnce) {
+    this.magicBox.onchange = () => {
+      let text = this.getText();
+      if (text != undefined && text != '') {
+        if (this.isRevealAutoSuggestion()) {
+          if (this.movedOnce) {
+            this.searchAsYouType(true);
+          }
+        } else if (this.options.enableSearchAsYouType) {
           this.searchAsYouType(true);
         }
-      } else if (this.options.enableSearchAsYouType) {
-        this.searchAsYouType(true);
+      } else {
+        this.clear();
       }
-    }
+
+    };
 
     if (this.options.placeholder) {
       (<HTMLInputElement>this.magicBox.element.querySelector('input')).placeholder = this.options.placeholder;
@@ -491,7 +498,7 @@ export class Omnibox extends Component {
   private triggerNewQuery(searchAsYouType: boolean, analyticsEvent: () => void) {
     clearTimeout(this.searchAsYouTypeTimeout);
     let text = this.getQuery(searchAsYouType);
-    if (this.lastQuery != text && text != null) {
+    if (this.shouldExecuteQuery(searchAsYouType)) {
       this.lastQuery = text;
       analyticsEvent();
       this.queryController.executeQuery({
@@ -554,12 +561,7 @@ export class Omnibox extends Component {
 
   private searchAsYouType(forceExecuteQuery = false) {
     this.clearSearchAsYouType();
-
-    //if (this.getText().length == 0) {
-    //  this.clear();
-    //} else {
-    let text = this.getQuery(true);
-    if (this.lastQuery != text && text != null) {
+    if (this.shouldExecuteQuery(true)) {
       this.searchAsYouTypeTimeout = setTimeout(() => {
         if (this.suggestionShouldTriggerQuery() || forceExecuteQuery) {
           let suggestions = _.map(this.lastSuggestions, (suggestion) => suggestion.text);
@@ -572,24 +574,29 @@ export class Omnibox extends Component {
 
       }, this.options.searchAsYouTypeDelay);
     }
-
-    //}
   }
 
   private isRevealAutoSuggestion() {
     return this.options.enableSearchAsYouType && this.options.enableRevealQuerySuggestAddon;
   }
 
+  private shouldExecuteQuery(searchAsYouType: boolean) {
+    let text = this.getQuery(searchAsYouType);
+    return this.lastQuery != text && text != null;
+  }
+
   private suggestionShouldTriggerQuery(suggestions = this.lastSuggestions) {
-    if (suggestions && suggestions[0]) {
-      let suggestion = this.lastSuggestions[0];
-      // If we have access to a confidence level, return true if we are equal or above the minimum confidence level.
-      if (suggestion && suggestion.executableConfidence != undefined) {
-        return suggestion.executableConfidence >= MINIMUM_EXECUTABLE_CONFIDENCE;
-      }
-      // If we don't have access to a confidence level, return true only if it "starts with" the content of the search box
-      if (suggestion.text && suggestion.text.indexOf(this.magicBox.getText()) == 0) {
-        return true;
+    if (this.shouldExecuteQuery(true)) {
+      if (suggestions && suggestions[0]) {
+        let suggestion = this.lastSuggestions[0];
+        // If we have access to a confidence level, return true if we are equal or above the minimum confidence level.
+        if (suggestion && suggestion.executableConfidence != undefined) {
+          return suggestion.executableConfidence >= MINIMUM_EXECUTABLE_CONFIDENCE;
+        }
+        // If we don't have access to a confidence level, return true only if it "starts with" the content of the search box
+        if (suggestion.text && suggestion.text.indexOf(this.magicBox.getText()) == 0) {
+          return true;
+        }
       }
     }
     return false;
