@@ -16,6 +16,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   private static DROPDOWN_WIDTH_RATIO: number = 0.35; // Used to set the width relative to the coveo root.
   public static RESPONSIVE_BREAKPOINT = 1000;
 
+  public recommendationRoot: Dom;
   private breakpoint: number;
   private dropdown: Dropdown;
   private logger: Logger;
@@ -41,6 +42,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   }
 
   constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions) {
+    this.recommendationRoot = this.getRecommendationRoot();
     this.logger = new Logger(this);
     this.dropdown = this.buildDropdown();
     this.breakpoint = this.defineResponsiveBreakpoint(options);
@@ -75,12 +77,14 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     $$(this.coveoRoot.find('.coveo-dropdown-header-wrapper')).el.appendChild(this.dropdown.dropdownHeader.element.el);
     this.disableFacetPreservePosition();
     ResponsiveComponentsUtils.activateSmallRecommendation(this.coveoRoot);
+    ResponsiveComponentsUtils.activateSmallRecommendation(this.recommendationRoot);
   }
 
   private changeToLargeMode() {
     this.enableFacetPreservePosition();
     this.dropdown.cleanUp();
     ResponsiveComponentsUtils.deactivateSmallRecommendation(this.coveoRoot);
+    ResponsiveComponentsUtils.deactivateSmallRecommendation(this.recommendationRoot);
   }
 
   private buildDropdown(): Dropdown {
@@ -171,5 +175,9 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     this.dropdown.registerOnCloseHandler(() => {
       this.dismissFacetSearches();
     });
+  }
+
+  private getRecommendationRoot(): Dom {
+    return $$(this.coveoRoot.find('.CoveoRecommendation'));
   }
 }

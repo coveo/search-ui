@@ -38,8 +38,9 @@
     }
   }
 
-  a:visited {
-    background-color: $color-grey;
+  .coveo-dropdown-header-active {
+    background-color: $color-light-grey;
+    border-color: $color-vibrant-blue;
   }
 
   .coveo-tab-section {

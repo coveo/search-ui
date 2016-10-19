@@ -328,7 +328,7 @@ export class FacetSlider extends Component {
     this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset());
 
     this.onResize = _.debounce(() => {
-      if (!ResponsiveComponentsUtils.isSmallFacetActivated($$(this.root)) && this.slider) {
+      if (ResponsiveComponentsUtils.shouldDrawFacetSlider($$(this.root)) && this.slider) {
         this.slider.drawGraph();
       }
     }, 250);
@@ -660,18 +660,23 @@ export class FacetSlider extends Component {
     if (totalGraphResults == 0) {
       this.isEmpty = true;
       this.updateAppearanceDependingOnState();
-    } else if (graphData != undefined && !this.isFacetDropdownHidden()) {
+    } else if (graphData != undefined && !this.isDropdownHidden()) {
       this.slider.drawGraph(graphData);
-    } else if (graphData != undefined && this.isFacetDropdownHidden()) {
+    } else if (graphData != undefined && this.isDropdownHidden()) {
       this.delayedGraphData = graphData;
     }
   }
 
-  private isFacetDropdownHidden() {
+  private isDropdownHidden() {
     let facetDropdown = this.root.querySelector('.coveo-facet-column');
     if (facetDropdown) {
       return $$(<HTMLElement>facetDropdown).css('display') == 'none';
     }
+    if ($$(this.root).hasClass('.CoveoRecommendation')) {
+      let recommendationDropdown = $$(this.root).parents('.coveo-recommendation-column')[0] || this.root;
+      return $$(<HTMLElement>recommendationDropdown).css('display') == 'none';
+    }
+
     return false;
   }
 

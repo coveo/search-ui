@@ -8,6 +8,10 @@ export class ResponsiveComponentsUtils {
 
   public static MEDIUM_MOBILE_WIDTH = 640;
 
+  static shouldDrawFacetSlider(root: Dom): boolean {
+    return !this.isSmallFacetActivated(root) && !this.isSmallRecommendationActivated(root);
+  }
+
   static isSmallTabsActivated(root: Dom): boolean {
     return root.hasClass(this.smallTabsClassName);
   }
@@ -16,27 +20,31 @@ export class ResponsiveComponentsUtils {
     return root.hasClass(this.smallFacetClassName);
   }
 
-  static activateSmallTabs(root: Dom) {
+  static isSmallRecommendationActivated(root: Dom): boolean {
+    return root.hasClass(this.smallRecommendationClassName);
+  }
+
+  static activateSmallTabs(root: Dom): void {
     root.addClass(this.smallTabsClassName);
   }
 
-  static deactivateSmallTabs(root: Dom) {
+  static deactivateSmallTabs(root: Dom): void {
     root.removeClass(this.smallTabsClassName);
   }
 
-  static activateSmallFacet(root: Dom) {
+  static activateSmallFacet(root: Dom): void {
     root.addClass(this.smallFacetClassName);
   }
 
-  static deactivateSmallFacet(root: Dom) {
+  static deactivateSmallFacet(root: Dom): void {
     root.removeClass(this.smallFacetClassName);
   }
 
-  static activateSmallRecommendation(root: Dom) {
+  static activateSmallRecommendation(root: Dom): void {
     root.addClass(this.smallRecommendationClassName);
   }
 
-  static deactivateSmallRecommendation(root: Dom) {
+  static deactivateSmallRecommendation(root: Dom): void {
     root.removeClass(this.smallRecommendationClassName);
   }
 }
