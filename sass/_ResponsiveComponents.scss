@@ -38,6 +38,10 @@
     }
   }
 
+  a:visited {
+    background-color: $color-grey;
+  }
+
   .coveo-tab-section {
     > a:last-of-type {
       margin-right: 20px;
