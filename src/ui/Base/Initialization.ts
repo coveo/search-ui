@@ -14,6 +14,7 @@ import {ComponentStateModel} from '../../models/ComponentStateModel';
 import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
 import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {BaseComponent} from '../Base/BaseComponent';
+import {Recommendation} from "../Recommendation/Recommendation";
 
 /**
  * Represent the initialization parameters required to init a new component.
@@ -149,7 +150,10 @@ export class Initialization {
 
     if (searchInterface.options.autoTriggerQuery) {
       Initialization.logFirstQueryCause(searchInterface);
-      (<QueryController>Component.get(element, QueryController)).executeQuery();
+      (<QueryController>Component.get(element, QueryController)).executeQuery({
+        logInActionsHistory: searchInterface instanceof Recommendation ? false : true,
+        isFirstQuery: true
+      });
     }
   }
 
@@ -385,6 +389,10 @@ export class Initialization {
     }
   }
 
+  public static isSearchFromLink(searchInterface: SearchInterface) {
+    return Utils.isNonEmptyString(searchInterface.getBindings().queryStateModel.get('q'));
+  }
+
   private static isThereASingleComponentBoundToThisElement(element: HTMLElement): boolean {
     Assert.exists(element);
     return Utils.exists(Component.get(element));
@@ -405,13 +413,14 @@ export class Initialization {
     }
   }
 
+
   private static logFirstQueryCause(searchInterface: SearchInterface) {
     let firstQueryCause = HashUtils.getValue('firstQueryCause', HashUtils.getHash());
     if (firstQueryCause != null) {
       let meta = HashUtils.getValue('firstQueryMeta', HashUtils.getHash()) || {};
       searchInterface.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList[firstQueryCause], meta);
     } else {
-      if (Utils.isNonEmptyString(searchInterface.getBindings().queryStateModel.get('q'))) {
+      if (Initialization.isSearchFromLink(searchInterface)) {
         searchInterface.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchFromLink, {});
       } else {
         searchInterface.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.interfaceLoad, {});
