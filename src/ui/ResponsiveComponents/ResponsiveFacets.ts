@@ -118,7 +118,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     let content = $$('p');
     content.text(l('Filters'));
     dropdownHeaderElement.el.appendChild(content.el);
-    
+
     let dropdownHeader = new ResponsiveDropdownHeader('facet', dropdownHeaderElement);
     return dropdownHeader;
   }

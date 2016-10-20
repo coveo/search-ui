@@ -3,9 +3,9 @@ import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../../utils
 
 export class ResponsiveDropdownContent {
   public static DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-content';
-  
+
   protected coveoRoot: Dom;
-  
+
   private cssClassName: string;
   private widthRatio: number;
   private minWidth: number;

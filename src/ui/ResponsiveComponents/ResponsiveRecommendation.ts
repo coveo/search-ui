@@ -56,13 +56,13 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     this.facetSliders = this.getFacetSliders();
     this.registerOnOpenHandler();
     this.registerOnCloseHandler();
-    this.dropdownContainer = $$('div', {className: ResponsiveRecommendation.DROPDOWN_CONTAINER_CSS_CLASS_NAME});
+    this.dropdownContainer = $$('div', { className: ResponsiveRecommendation.DROPDOWN_CONTAINER_CSS_CLASS_NAME });
   }
 
   public handleResizeEvent(): void {
     if (this.needSmallMode() && !ResponsiveComponentsUtils.isSmallRecommendationActivated(this.coveoRoot)) {
       this.changeToSmallMode();
-    } else if(!this.needSmallMode() && ResponsiveComponentsUtils.isSmallRecommendationActivated(this.coveoRoot)){
+    } else if (!this.needSmallMode() && ResponsiveComponentsUtils.isSmallRecommendationActivated(this.coveoRoot)) {
       this.changeToLargeMode();
     }
 
@@ -97,7 +97,6 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   private buildDropdown(): ResponsiveDropdown {
     let dropdownContent = this.buildDropdownContent();
     let dropdownHeader = this.buildDropdownHeader();
-    let dropdownContainerSelector = '.' + ResponsiveRecommendation.DROPDOWN_CONTAINER_CSS_CLASS_NAME;
     let dropdown = new ResponsiveDropdown(dropdownContent, dropdownHeader, this.coveoRoot);
     dropdown.disablePopupBackground();
     return dropdown;
@@ -136,24 +135,24 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   }
 
   private getFacetSliders(): FacetSlider[] {
-    let facetSliders = []
+    let facetSliders = [];
     _.each(this.coveoRoot.findAll('.CoveoFacetSlider'), facetSliderElement => {
       let facetSlider = Component.get(facetSliderElement, FacetSlider);
       if (facetSlider instanceof FacetSlider) {
         facetSliders.push(facetSlider);
       }
-    })
+    });
     return facetSliders;
   }
 
   private getFacets(): Facet[] {
-    let facets = []
+    let facets = [];
     _.each(this.coveoRoot.findAll('.CoveoFacet'), facetElement => {
       let facet = Component.get(facetElement, Facet);
       if (facet instanceof Facet) {
         facets.push(facet);
       }
-    })
+    });
     return facets;
   }
 

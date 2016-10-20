@@ -14,7 +14,7 @@ export class ResponsiveDropdown {
   private popupBackground: Dom;
   private popupBackgroundIsEnabled: boolean = true;
 
-  constructor(public dropdownContent, public dropdownHeader, public coveoRoot: Dom) {
+  constructor(public dropdownContent: ResponsiveDropdownContent, public dropdownHeader: ResponsiveDropdownHeader, public coveoRoot: Dom) {
     this.popupBackground = this.buildPopupBackground();
     this.bindOnClickDropdownHeaderEvent();
   }
