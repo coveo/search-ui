@@ -1,14 +1,12 @@
-import {DropdownHeader} from './DropdownHeader';
-import {DropdownContent} from './DropdownContent';
-import {$$, Dom} from '../../utils/Dom';
-import {EventsUtils} from '../../utils/EventsUtils';
+import {ResponsiveDropdownHeader} from './ResponsiveDropdownHeader';
+import {ResponsiveDropdownContent} from './ResponsiveDropdownContent';
+import {$$, Dom} from '../../../utils/Dom';
+import {EventsUtils} from '../../../utils/EventsUtils';
 
-export class Dropdown {
+export class ResponsiveDropdown {
 
   public static TRANSPARENT_BACKGROUND_OPACITY: string = '0.9';
 
-  public dropdownContent: DropdownContent;
-  public dropdownHeader: DropdownHeader;
   public isOpened: boolean = false;
 
   private onOpenHandlers: Function[] = [];
@@ -16,10 +14,8 @@ export class Dropdown {
   private popupBackground: Dom;
   private popupBackgroundIsEnabled: boolean = true;
 
-  constructor(componentName: string, content: Dom, header: Dom, private coveoRoot, minWidth: number, widthRatio: number, dropdownContainerSelector: string) {
+  constructor(public dropdownContent, public dropdownHeader, public coveoRoot: Dom) {
     this.popupBackground = this.buildPopupBackground();
-    this.dropdownHeader = new DropdownHeader(componentName, header);
-    this.dropdownContent = new DropdownContent(componentName, content, this.coveoRoot, minWidth, widthRatio, dropdownContainerSelector);
     this.bindOnClickDropdownHeaderEvent();
   }
 
@@ -78,7 +74,7 @@ export class Dropdown {
     if (this.popupBackgroundIsEnabled) {
       this.coveoRoot.el.appendChild(this.popupBackground.el);
       window.getComputedStyle(this.popupBackground.el).opacity;
-      this.popupBackground.el.style.opacity = Dropdown.TRANSPARENT_BACKGROUND_OPACITY;
+      this.popupBackground.el.style.opacity = ResponsiveDropdown.TRANSPARENT_BACKGROUND_OPACITY;
     }
   }
 

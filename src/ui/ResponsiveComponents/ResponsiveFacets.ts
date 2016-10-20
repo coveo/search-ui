@@ -7,7 +7,9 @@ import {l} from '../../strings/Strings';
 import {Utils} from '../../utils/Utils';
 import {Facet} from '../Facet/Facet';
 import {FacetSlider} from '../FacetSlider/FacetSlider';
-import {Dropdown} from './Dropdown';
+import {ResponsiveDropdown} from './ResponsiveDropdown/ResponsiveDropdown';
+import {ResponsiveDropdownContent} from './ResponsiveDropdown/ResponsiveDropdownContent';
+import {ResponsiveDropdownHeader} from './ResponsiveDropdown/ResponsiveDropdownHeader';
 
 export class ResponsiveFacets implements IResponsiveComponent {
 
@@ -23,7 +25,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private facetSliders: FacetSlider[] = [];
   private breakpoint: number;
   private logger: Logger;
-  private dropdown: Dropdown;
+  private dropdown: ResponsiveDropdown;
 
   public static init(root: HTMLElement, component, options: IResponsiveComponentOptions) {
     if (!$$(root).find('.coveo-facet-column')) {
@@ -92,28 +94,32 @@ export class ResponsiveFacets implements IResponsiveComponent {
     }
   }
 
-  private buildDropdownContent(): Dom {
-    let dropdownContent = $$(this.coveoRoot.find('.coveo-facet-column'));
+  private buildDropdown() {
+    let dropdownContent = this.buildDropdownContent();
+    let dropdownHeader = this.buildDropdownHeader();
+    let dropdown = new ResponsiveDropdown(dropdownContent, dropdownHeader, this.coveoRoot);
+    return dropdown;
+  }
+
+  private buildDropdownContent(): ResponsiveDropdownContent {
+    let dropdownContentElement = $$(this.coveoRoot.find('.coveo-facet-column'));
     let filterByContainer = $$('div', { className: 'coveo-facet-header-filter-by-container', style: 'display: none' });
     let filterBy = $$('div', { className: 'coveo-facet-header-filter-by' });
     filterBy.text(l('Filter by:'));
     filterByContainer.append(filterBy.el);
-    dropdownContent.prepend(filterByContainer.el);
+    dropdownContentElement.prepend(filterByContainer.el);
+
+    let dropdownContent = new ResponsiveDropdownContent('facet', dropdownContentElement, this.coveoRoot, ResponsiveFacets.DROPDOWN_MIN_WIDTH, ResponsiveFacets.DROPDOWN_WIDTH_RATIO);
     return dropdownContent;
   }
 
-  private buildDropdown() {
-    let dropdownContent = this.buildDropdownContent();
-    let dropdownHeader = this.buildDropdownHeader();
-    let dropdown = new Dropdown('facet', dropdownContent, dropdownHeader, this.coveoRoot, ResponsiveFacets.DROPDOWN_MIN_WIDTH, ResponsiveFacets.DROPDOWN_WIDTH_RATIO, '.coveo-dropdown-header-wrapper');
-    return dropdown;
-  }
-
-  private buildDropdownHeader() {
-    let dropdownHeader = $$('a');
+  private buildDropdownHeader(): ResponsiveDropdownHeader {
+    let dropdownHeaderElement = $$('a');
     let content = $$('p');
     content.text(l('Filters'));
-    dropdownHeader.el.appendChild(content.el);
+    dropdownHeaderElement.el.appendChild(content.el);
+    
+    let dropdownHeader = new ResponsiveDropdownHeader('facet', dropdownHeaderElement);
     return dropdownHeader;
   }
 

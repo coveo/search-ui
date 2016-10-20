@@ -4,7 +4,9 @@ import {Utils} from '../../utils/Utils';
 import {$$, Dom} from '../../utils/Dom';
 import {Logger} from '../../misc/Logger';
 import {Recommendation} from '../Recommendation/Recommendation';
-import {Dropdown} from './Dropdown';
+import {RecommendationDropdownContent} from './ResponsiveDropdown/RecommendationDropdownContent';
+import {ResponsiveDropdownHeader} from './ResponsiveDropdown/ResponsiveDropdownHeader';
+import {ResponsiveDropdown} from './ResponsiveDropdown/ResponsiveDropdown';
 import {l} from '../../strings/Strings';
 import {FacetSlider} from '../FacetSlider/FacetSlider';
 import {Facet} from '../Facet/Facet';
@@ -19,7 +21,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
 
   public recommendationRoot: Dom;
   private breakpoint: number;
-  private dropdown: Dropdown;
+  private dropdown: ResponsiveDropdown;
   private logger: Logger;
   private facetSliders: FacetSlider[];
   private facets: Facet[];
@@ -79,7 +81,6 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
 
   private changeToSmallMode() {
     this.dropdown.close();
-    this.insertDropdownContainer();
     $$(this.coveoRoot.find('.coveo-dropdown-header-wrapper')).el.appendChild(this.dropdown.dropdownHeader.element.el);
     this.disableFacetPreservePosition();
     ResponsiveComponentsUtils.activateSmallRecommendation(this.coveoRoot);
@@ -89,36 +90,38 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   private changeToLargeMode() {
     this.enableFacetPreservePosition();
     this.dropdown.cleanUp();
-    this.removeDropdownContainer();
     ResponsiveComponentsUtils.deactivateSmallRecommendation(this.coveoRoot);
     ResponsiveComponentsUtils.deactivateSmallRecommendation(this.recommendationRoot);
   }
 
-  private buildDropdown(): Dropdown {
+  private buildDropdown(): ResponsiveDropdown {
     let dropdownContent = this.buildDropdownContent();
     let dropdownHeader = this.buildDropdownHeader();
     let dropdownContainerSelector = '.' + ResponsiveRecommendation.DROPDOWN_CONTAINER_CSS_CLASS_NAME;
-    let dropdown = new Dropdown('recommendation', dropdownContent, dropdownHeader, this.coveoRoot, ResponsiveRecommendation.DROPDOWN_MIN_WIDTH, ResponsiveRecommendation.DROPDOWN_WIDTH_RATIO, dropdownContainerSelector);
+    let dropdown = new ResponsiveDropdown(dropdownContent, dropdownHeader, this.coveoRoot);
     dropdown.disablePopupBackground();
     return dropdown;
   }
 
-  private buildDropdownHeader(): Dom {
-    let dropdownHeader = $$('a');
+  private buildDropdownHeader(): ResponsiveDropdownHeader {
+    let dropdownHeaderElement = $$('a');
     let content = $$('p');
     content.text(l('Recommendations'));
-    dropdownHeader.el.appendChild(content.el);
+    dropdownHeaderElement.el.appendChild(content.el);
+    let dropdownHeader = new ResponsiveDropdownHeader('recommendation', dropdownHeaderElement);
     return dropdownHeader;
   }
 
-  private buildDropdownContent(): Dom {
-    let dropdownContent;
+  private buildDropdownContent(): RecommendationDropdownContent {
+    let dropdownContentElement: Dom;
     let recommendationColumn = this.coveoRoot.find('.coveo-recommendation-column');
     if (recommendationColumn) {
-      dropdownContent = $$(recommendationColumn);
+      dropdownContentElement = $$(recommendationColumn);
     } else {
-      dropdownContent = $$(this.coveoRoot.find('.CoveoRecommendation'));
+      dropdownContentElement = $$(this.coveoRoot.find('.CoveoRecommendation'));
     }
+
+    let dropdownContent = new RecommendationDropdownContent('recommendation', dropdownContentElement, this.coveoRoot, ResponsiveRecommendation.DROPDOWN_MIN_WIDTH, ResponsiveRecommendation.DROPDOWN_WIDTH_RATIO);
     return dropdownContent;
   }
 
@@ -154,7 +157,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     return facets;
   }
 
-  private dismissFacetSearches() {
+  private dismissFacetSearches(): void {
     _.each(this.facets, facet => {
       if (facet.facetSearch && facet.facetSearch.currentlyDisplayedResults) {
         facet.facetSearch.completelyDismissSearch();
@@ -162,25 +165,25 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     });
   }
 
-  private enableFacetPreservePosition() {
+  private enableFacetPreservePosition(): void {
     _.each(this.facets, facet => facet.options.preservePosition = true);
   }
 
-  private disableFacetPreservePosition() {
+  private disableFacetPreservePosition(): void {
     _.each(this.facets, facet => facet.options.preservePosition = false);
   }
 
-  private drawFacetSliderGraphs() {
+  private drawFacetSliderGraphs(): void {
     _.each(this.facetSliders, facetSlider => facetSlider.drawDelayedGraphData());
   }
 
-  private registerOnOpenHandler() {
+  private registerOnOpenHandler(): void {
     this.dropdown.registerOnOpenHandler(() => {
       this.drawFacetSliderGraphs();
     });
   }
 
-  private registerOnCloseHandler() {
+  private registerOnCloseHandler(): void {
     this.dropdown.registerOnCloseHandler(() => {
       this.dismissFacetSearches();
     });
@@ -188,18 +191,5 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
 
   private getRecommendationRoot(): Dom {
     return $$(this.coveoRoot.find('.CoveoRecommendation'));
-  }
-
-  private insertDropdownContainer(): void {
-    let dock = this.coveoRoot.find(this.dockElement);
-    if (!dock) {
-      this.logger.info(`Responsive recommendation could not find docking element ${this.dockElement}`);
-    }
-
-    this.dropdownContainer.insertBefore(dock);
-  }
-
-  private removeDropdownContainer(): void {
-    this.dropdownContainer.detach();
   }
 }
