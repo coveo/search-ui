@@ -128,6 +128,7 @@ export class Omnibox extends Component {
   private modifyEventTo: IAnalyticsActionCause;
   private movedOnce = false;
   private searchAsYouTypeTimeout: number;
+  private skipRevealAutoSuggest = false;
 
   /**
    * Create a new omnibox with, enable required addons, and bind events on letious query events.
@@ -251,6 +252,15 @@ export class Omnibox extends Component {
       this.movedOnce = true;
     };
 
+    this.magicBox.onfocus = () => {
+      if (this.isRevealAutoSuggestion()) {
+        // This flag is used to block the automatic query when the UI is loaded with a query (#q=foo)
+        // and then the input is focused. We want to block that query, even if it match the suggestion
+        // Only when there is an actual change in the input (user typing something) is when we want the automatic query to kick in
+        this.skipRevealAutoSuggest = true;
+      }
+    };
+
     this.magicBox.onsuggestions = (suggestions: IOmniboxSuggestion[]) => {
       // If text is empty, this can mean that user selected text from the search box
       // and hit "delete" : Reset the partial queries in this case
@@ -259,7 +269,7 @@ export class Omnibox extends Component {
       }
       this.movedOnce = false;
       this.lastSuggestions = suggestions;
-      if (this.isRevealAutoSuggestion()) {
+      if (this.isRevealAutoSuggestion() && !this.skipRevealAutoSuggest) {
         this.searchAsYouType();
       }
     };
@@ -269,6 +279,7 @@ export class Omnibox extends Component {
     }
 
     this.magicBox.onchange = () => {
+      this.skipRevealAutoSuggest = false;
       let text = this.getText();
       if (text != undefined && text != '') {
         if (this.isRevealAutoSuggestion()) {
