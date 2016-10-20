@@ -70,8 +70,8 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>This component is exactly like a normal ResultList Component, except that it will render itself inside the Omnibox component.
-						This will provide a kind of search as you type functionnality, allowing you to easily render complex Result Templates inside the Omnibox component.</p>
+						<p>This component is exactly like a normal ResultList Component, except that it will render itself inside the Omnibox Component.
+						This will provide a kind of search as you type functionnality, allowing you to easily render complex Result Templates inside the Omnibox Component.</p>
 					</div>
 					<h1 id="example">Example</h1>
 					<pre><code>    &lt;div <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"CoveoOmniboxResultList"</span>&gt;
@@ -171,9 +171,9 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the index at which the result list should render itself inside the Omnibox.</p>
+							<p>Specifies the index at which the result list should render itself inside the Omnibox</p>
 						</div>
-						<p>The default value is 51 (facets are at 50 by default).</p>
+						<p>The default value is 51 (Facets are at 50 by default).</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -191,7 +191,7 @@
 						<div class="lead">
 							<p>Specifies the function you wish to execute when a result suggestion is selected.</p>
 						</div>
-						<p>By default, it will open the corresponding result URI in your browser.</p>
+						<p>By default, it will open the corresponding result uri in your browser.</p>
 						<pre><code class="lang-javascript">Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
    <span class="hljs-attr">OmniboxResultList</span> : {
        <span class="hljs-comment">//Close the omnibox, change the selected HTMLElement background color and alert the result title.</span>
@@ -203,11 +203,11 @@
     }
 })
 
-<span class="hljs-comment">// OR using the jQuery extention</span>
+<span class="hljs-comment">// OR using the jquery extension</span>
 
 $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"init"</span>, {
    <span class="hljs-attr">OmniboxResultList</span> : {
-       <span class="hljs-comment">//Close the Omnibox, change the selected HTMLElement background color and alert the result title.</span>
+       <span class="hljs-comment">//Close the omnibox, change the selected HTMLElement background color and alert the result title.</span>
        onSelect:   <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result, resultElement, omniBoxObject</span>) </span>{
            omniBoxObject.close();
            resultElement.css(<span class="hljs-string">'background-color'</span>, <span class="hljs-string">'red'</span>);
@@ -315,7 +315,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Build and return an array of <code>HTMLElement</code> with the given result set.</p>
+									<p>Build and return an array of HTMLElement with the given result set.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -348,7 +348,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Return the debug info about this component.</p>
+									<p>Return the debug info about this component</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
@@ -374,7 +374,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Disable the component.
-										Normally this means that the component will not execute handlers for the framework events (query events, for example).
+										Normally this means that the component won&#39;t execute handlers for the framework events (query events, for example).
 									Component are enabled by default on creation.</p>
 								</div>
 							</div>
@@ -457,13 +457,13 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<p>Inherited from <a href="component.html">Component</a>.<a href="component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L120">src/ui/Base/Component.ts
-									:120</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L119">src/ui/Base/Component.ts
+									:119</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Return the bindings, or environment, for the current component.</p>
+									<p>Return the bindings, or environment, for the current component</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h4>
@@ -570,14 +570,14 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<p>Inherited from <a href="component.html">Component</a>.<a href="component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L178">src/ui/Base/Component.ts
-									:178</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L177">src/ui/Base/Component.ts
+									:177</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument.<br/>
-									If there is multiple component bound to the current HTMLElement, you must specify the component class.</p>
+									<p>Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument<br/>
+									If there is multiple component bound to the current HTMLElement, you must specify the component class</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -585,19 +585,19 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>HTMLElement for which to get the bound component.</p>
+										<p>HTMLElement for which to get the bound component</p>
 									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> componentClass: <span class="tsd-signature-type">any</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting.</p>
+										<p>Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting</p>
 									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> noThrow: <span class="tsd-signature-type">boolean</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Boolean option to tell the method to not throw on error.</p>
+										<p>Boolean option to tell the method to not throw on error</p>
 									</div>
 								</li>
 							</ul>
@@ -647,7 +647,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains the state of options for differents component. Mainly used by <a href="../components/resultlink.html">ResultLink</a>.</p>
+							<p>Contains the state of options for differents component. Mainly used by <a href="../components/resultlink.html">ResultLink</a></p>
 						</div>
 					</div>
 				</section>
@@ -685,7 +685,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 						<dl class="tsd-deprecated">
 						</dl>
 						<div class="lead">
-							<p>A disabled component will not participate in the query, or listen to <a href="componentevents.html">ComponentEvents</a>.</p>
+							<p>A disabled component will not participate in the query, or listen to <a href="componentevents.html">ComponentEvents</a></p>
 						</div>
 						<dl class="tsd-comment-tags">
 							<dt>type</dt>
@@ -708,7 +708,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Allows component to log in the dev console.</p>
+							<p>Allows component to log in the dev console</p>
 						</div>
 					</div>
 				</section>
@@ -762,7 +762,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A reference to the root HTMLElement (the <a href="searchinterface.html">SearchInterface</a>).</p>
+							<p>A reference to the root HTMLElement (the <a href="searchinterface.html">SearchInterface</a>)</p>
 						</div>
 					</div>
 				</section>
@@ -780,7 +780,7 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A reference to the root of every component, the <a href="searchinterface.html">SearchInterface</a>.</p>
+							<p>A reference to the root of every component, the <a href="searchinterface.html">SearchInterface</a></p>
 						</div>
 					</div>
 				</section>

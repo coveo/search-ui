@@ -71,22 +71,21 @@
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
 						<p>This component logs all user actions performed in the search interface and sends them to a REST web service exposed through the Coveo Cloud platform.<br/>
-						You can use data to evaluate how users are interacting with the search interface, improve relevance and produce analytics dashboards in the Coveo platform.</p>
+						You can use this data to evaluate how users are interacting with the search interface, improve relevance and produce analytics dashboards in the Coveo platform.</p>
 					</div>
-					<h1 id="send-custom-events">Send Custom Events</h1>
-					<p>In some scenarios, you want to send custom data to the Coveo Cloud analytics (see <a href="http://www.coveo.com/go?dest=cloudhelp&amp;lcid=9&amp;context=89">Coveo Cloud Usage Analytics</a>). The Coveo JavaScript Search Framework offers helpers to communicate with the Coveo Analytics REST API, so you do not have to write code to call the API directly.</p>
+					<h1 id="sending-custom-events">Sending Custom Events</h1>
+					<p>In some scenarios, you want to send custom data to the Coveo Cloud analytics (see Coveo Cloud Usage Analytics). The Coveo JavaScript Search Framework offers helpers to communicate with the Coveo Analytics REST API, so you do not have to write code to call the API directly.</p>
 					<ol>
-						<li><p>First, you need to craft your custom event cause and meta.<br/><strong>NB: The event names must be unique.</strong></p>
-							<pre><code><span class="hljs-comment">// customEventType allows to regroup similar event types together when doing reporting (e.g., search box).</span>
-var customEventCause = {<span class="hljs-string">name:</span> <span class="hljs-string">'customEventName'</span>, <span class="hljs-string">type:</span><span class="hljs-string">'customEventType'</span>};
-var metadata = {<span class="hljs-string">key1:</span> <span class="hljs-string">"value1"</span>, <span class="hljs-string">key2:</span><span class="hljs-string">"value2"</span>};
+						<li><p>First, you need to craft your custom event cause and meta.</p>
+							<pre><code><span class="hljs-attribute">var customEventCause</span> = {name: <span class="hljs-string">'customEventName'</span>, type:<span class="hljs-string">'customEventType'</span>};
+<span class="hljs-attribute">var metadata</span> = {key1: <span class="hljs-string">"value1"</span>, key2:<span class="hljs-string">"value2"</span>};
 </code></pre></li>
-						<li><p>Send your custom event.</p>
+						<li><p>Sending a custom event.</p>
 							<pre><code>Coveo.logCustomEvent(<span class="hljs-built_in">document</span>.<span class="hljs-built_in">querySelector</span>(<span class="hljs-string">'#search'</span>), customEventCause, metadata);
   <span class="hljs-comment">// OR (using the jquery extension)</span>
 $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'logCustomEvent'</span>, customEventCause, metadata);
 </code></pre></li>
-						<li><p>Send your custom search event<br/><strong>NB: If you want to log a <code>searchEvent</code>, be sure to always call the helper before you call <code>executeQuery</code>.</strong></p>
+						<li><p>Sending a custom search event<br/>(<strong>NB : If you want to log a searchEvent, be sure to always call the helper before you call executeQuery.</strong>)</p>
 							<pre><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">myCustomButtonWasClicked</span>(<span class="hljs-params"></span>) </span>{
   Coveo.logSearchEvent(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), customEventCause, metadata);
   Coveo.executeQuery(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>));
@@ -95,7 +94,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
   $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'executeQuery'</span>);
 }
 </code></pre></li>
-						<li><p>Send a custom <code>searchAsYouType</code> event<br/><strong>NB: If you want to log a <code>searchAsYouTypeEvent</code>, be sure to always call the helper before you call <code>executeQuery</code>.</strong></p>
+						<li><p>Sending a custom searchAsYouType event<br/>(NB : <strong>If you want to log a searchAsYouTypeEvent, be sure to always call the helper before you call executeQuery.</strong>)</p>
 							<pre><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">myCustomButtonWasClicked</span>(<span class="hljs-params"></span>) </span>{
   Coveo.logSearchAsYouTypeEvent(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), customEventCause, metadata);
   Coveo.executeQuery(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>));
@@ -104,9 +103,9 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
   $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'executeQuery'</span>);
 }
 </code></pre></li>
-						<li><p>Send a custom click event.</p>
+						<li><p>Sending a custom click event</p>
 							<pre><code>Coveo.logClickEvent(<span class="hljs-built_in">document</span>.<span class="hljs-built_in">querySelector</span>(<span class="hljs-string">'#search'</span>), customEventCause, metadata, result);
-<span class="hljs-comment">// OR (using the jQuery extension)</span>
+<span class="hljs-comment">// OR (using the jquery extension)</span>
 $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'logClickEvent'</span>, customEventCause, metadata, result);
 </code></pre></li>
 					</ol>
@@ -179,15 +178,15 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L119">src/ui/Analytics/Analytics.ts
-							:119</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L118">src/ui/Analytics/Analytics.ts
+							:118</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies whether the search user identities are converted in a unique hash in the logged analytics data to prevent analytics reviewers and managers to identify who performs which queries.<br/>
 								When enabled, the Coveo Analytics Platform can still properly identify sessions made by anonymous users, versus ones from users that are authenticated in some way with the site containing the search page.<br/>
-							The default value is <code>false</code>.</p>
+							The default value is false.</p>
 						</div>
 					</div>
 				</section>
@@ -198,8 +197,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L113">src/ui/Analytics/Analytics.ts
-							:113</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L112">src/ui/Analytics/Analytics.ts
+							:112</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -215,8 +214,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L143">src/ui/Analytics/Analytics.ts
-							:143</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L142">src/ui/Analytics/Analytics.ts
+							:142</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -233,8 +232,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L125">src/ui/Analytics/Analytics.ts
-							:125</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L124">src/ui/Analytics/Analytics.ts
+							:124</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -252,8 +251,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L131">src/ui/Analytics/Analytics.ts
-							:131</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L130">src/ui/Analytics/Analytics.ts
+							:130</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -271,8 +270,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L137">src/ui/Analytics/Analytics.ts
-							:137</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L136">src/ui/Analytics/Analytics.ts
+							:136</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -290,8 +289,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L109">src/ui/Analytics/Analytics.ts
-							:109</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L108">src/ui/Analytics/Analytics.ts
+							:108</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -308,8 +307,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L100">src/ui/Analytics/Analytics.ts
-							:100</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L99">src/ui/Analytics/Analytics.ts
+							:99</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -325,8 +324,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L104">src/ui/Analytics/Analytics.ts
-							:104</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L103">src/ui/Analytics/Analytics.ts
+							:103</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -356,7 +355,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Return the debug info about this component.</p>
+									<p>Return the debug info about this component</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
@@ -382,7 +381,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Disable the component.
-										Normally this means that the component will not execute handlers for the framework events (query events, for example).
+										Normally this means that the component won&#39;t execute handlers for the framework events (query events, for example).
 									Component are enabled by default on creation.</p>
 								</div>
 							</div>
@@ -429,13 +428,13 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L120">src/ui/Base/Component.ts
-									:120</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L119">src/ui/Base/Component.ts
+									:119</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Return the bindings, or environment, for the current component.</p>
+									<p>Return the bindings, or environment, for the current component</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h4>
@@ -453,8 +452,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L229">src/ui/Analytics/Analytics.ts
-									:229</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L228">src/ui/Analytics/Analytics.ts
+									:228</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -472,19 +471,19 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 								<li>
 									<h5>meta: <a href="../interfaces/ianalyticsdocumentviewmeta.html" class="tsd-signature-type">IAnalyticsDocumentViewMeta</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Can be an empty object ( {} ).</p>
+										<p>Can be an empty object ( {} )</p>
 									</div>
 								</li>
 								<li>
 									<h5>result: <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The result that was clicked.</p>
+										<p>The result that was clicked</p>
 									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> element: <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol"> =&nbsp;this.element</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The HTMLElement that was clicked in the interface.</p>
+										<p>The HTMLElement that was clicked in the interface</p>
 									</div>
 								</li>
 							</ul>
@@ -503,13 +502,13 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L216">src/ui/Analytics/Analytics.ts
-									:216</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L215">src/ui/Analytics/Analytics.ts
+									:215</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Log a custom event on the service. A custom event can be used to create customized report, or to track events which are not queries or document views.</p>
+									<p>Log a custom event on the service. A custom event can be used to create customized report, or to track events which are not queries or document view.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -548,15 +547,15 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L206">src/ui/Analytics/Analytics.ts
-									:206</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L205">src/ui/Analytics/Analytics.ts
+									:205</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Log a search as you type event on the service, using a cause and a meta object.<br/>
 										This is extremely similar to a search event, except that search as you type, by definition, will be frequently called.<br/>
-										The <code>PendingSearchAsYouTypeEvent</code> will take care of logging only the &quot;relevant&quot; last event: After 5 seconds of no event logged, or after another search event is triggered somewhere else in the interface.<br/>
+										The {@link PendingSearchAsYouTypeEvent} will take care of logging only the &quot;relevant&quot; last event : After 5 seconds of no event logged, or after another search event is triggered somewhere else in the interface.<br/>
 									This is to ensure that we do not needlessly log every single partial query, which would make the reporting very confusing.</p>
 								</div>
 							</div>
@@ -574,7 +573,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 								<li>
 									<h5>meta: <span class="tsd-signature-type">T</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Can be an empty object ( {} ).</p>
+										<p>Can be an empty object ( {} )</p>
 									</div>
 								</li>
 							</ul>
@@ -593,18 +592,18 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L194">src/ui/Analytics/Analytics.ts
-									:194</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L193">src/ui/Analytics/Analytics.ts
+									:193</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Log a search event on the service, using a cause and a meta object.<br/>
 										Note that the event will be sent on the service when a query successfully return, not immediately after calling this method.<br/>
-										Normally, this should be called using the following &quot;format&quot;: <br/>
+										Normally, this should be called using the following &quot;format&quot; : <br/>
 										usageAnalytics.logSearchEvent<SomeMeta>({name : &#39;foo&#39;, type : &#39;bar&#39;}, <SomeMeta>{&#39;key&#39;:&#39;value&#39;});<br/>
 												this.queryController.executeQuery();<br/>
-									This will queue up an analytics search event. Then the query is executed. The search event will be sent to the service when the query is successfully completed.<br/></p>
+									This will queue up an analytics search event. Then the query is executed. The search event will be sent to the service when the query successfully complete.<br/></p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -621,7 +620,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 								<li>
 									<h5>meta: <span class="tsd-signature-type">T</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Can be an empty object ( {} ).</p>
+										<p>Can be an empty object ( {} )</p>
 									</div>
 								</li>
 							</ul>
@@ -641,14 +640,14 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L178">src/ui/Base/Component.ts
-									:178</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L177">src/ui/Base/Component.ts
+									:177</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument.<br/>
-									If there is multiple component bound to the current HTMLElement, you must specify the component class.</p>
+									<p>Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument<br/>
+									If there is multiple component bound to the current HTMLElement, you must specify the component class</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -656,19 +655,19 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>HTMLElement for which to get the bound component.</p>
+										<p>HTMLElement for which to get the bound component</p>
 									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> componentClass: <span class="tsd-signature-type">any</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting.</p>
+										<p>Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting</p>
 									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> noThrow: <span class="tsd-signature-type">boolean</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Boolean option to tell the method to not throw on error.</p>
+										<p>Boolean option to tell the method to not throw on error</p>
 									</div>
 								</li>
 							</ul>
@@ -711,13 +710,13 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L149">src/ui/Analytics/Analytics.ts
-							:149</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L148">src/ui/Analytics/Analytics.ts
+							:148</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A reference to the <code>analyticsClient</code>, which will perform the heavy duty part of logging the actual events on the service.</p>
+							<p>A reference to the analyticsClient, which will perform the heavy duty part of logging the actual events on the service.</p>
 						</div>
 					</div>
 				</section>
@@ -735,7 +734,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains the state of options for differents component. Mainly used by <a href="resultlink.html">ResultLink</a>.</p>
+							<p>Contains the state of options for differents component. Mainly used by <a href="resultlink.html">ResultLink</a></p>
 						</div>
 					</div>
 				</section>
@@ -773,7 +772,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 						<dl class="tsd-deprecated">
 						</dl>
 						<div class="lead">
-							<p>A disabled component will not participate in the query, or listen to <a href="../classes/componentevents.html">ComponentEvents</a>.</p>
+							<p>A disabled component will not participate in the query, or listen to <a href="../classes/componentevents.html">ComponentEvents</a></p>
 						</div>
 						<dl class="tsd-comment-tags">
 							<dt>type</dt>
@@ -796,7 +795,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Allows component to log in the dev console.</p>
+							<p>Allows component to log in the dev console</p>
 						</div>
 					</div>
 				</section>
@@ -850,7 +849,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A reference to the root HTMLElement (the <a href="../classes/searchinterface.html">SearchInterface</a>).</p>
+							<p>A reference to the root HTMLElement (the <a href="../classes/searchinterface.html">SearchInterface</a>)</p>
 						</div>
 					</div>
 				</section>
@@ -868,7 +867,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A reference to the root of every component, the <a href="../classes/searchinterface.html">SearchInterface</a>.</p>
+							<p>A reference to the root of every component, the <a href="../classes/searchinterface.html">SearchInterface</a></p>
 						</div>
 					</div>
 				</section>
@@ -924,13 +923,13 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L149">src/ui/Analytics/Analytics.ts
-									:149</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/Analytics.ts#L148">src/ui/Analytics/Analytics.ts
+									:148</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Create a new Analytics component. Create the <a href="../interfaces/ianalyticsclient.html">IAnalyticsClient</a>.</p>
+									<p>Create a new Analytics component. Create the <a href="../interfaces/ianalyticsclient.html">IAnalyticsClient</a></p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -955,7 +954,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The bindings that the component requires to function normally. If not set, it will automatically resolve them (with slower execution time).</p>
+											<p>The bindings that the component requires to function normally. If not set, will automatically resolve them (With slower execution time)</p>
 										</div>
 									</div>
 								</li>
