@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ISuccessResponse | Coveo search ui documentation</title>
+	<title>IExternalAdvancedSearchSection | Coveo search ui documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -57,10 +57,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="isuccessresponse.html">ISuccessResponse</a>
+					<a href="iexternaladvancedsearchsection.html">IExternalAdvancedSearchSection</a>
 				</li>
 			</ul>
-			<h1>Interface ISuccessResponse&lt;T&gt;</h1>
+			<h1>Interface IExternalAdvancedSearchSection</h1>
 		</div>
 	</div>
 </header>
@@ -70,8 +70,9 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A generic success response</p>
+						<p>Describe a section populated by external code, using the <a href="../classes/advancedsearchevents.html#buildingadvancedsearch">AdvancedSearchEvents.buildingAdvancedSearch</a></p>
 					</div>
+					<p>See :</p>
 				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -81,8 +82,10 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite"><a href="isuccessresponse.html#data" class="tsd-kind-icon">data</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="isuccessresponse.html#duration" class="tsd-kind-icon">duration</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iexternaladvancedsearchsection.html#content" class="tsd-kind-icon">content</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="iexternaladvancedsearchsection.html#inputs" class="tsd-kind-icon">inputs</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="iexternaladvancedsearchsection.html#name" class="tsd-kind-icon">name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iexternaladvancedsearchsection.html#updatequery" class="tsd-kind-icon">update<wbr>Query</a></li>
 							</ul>
 						</section>
 					</div>
@@ -90,55 +93,116 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite">
-					<a name="data" class="tsd-anchor"></a>
-					<h3>data</h3>
-					<div class="tsd-signature tsd-kind-icon">data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">T</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="content" class="tsd-anchor"></a>
+					<h3>content</h3>
+					<div class="tsd-signature tsd-kind-icon">content<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
 					<aside class="tsd-sources">
-						<p>Overwrites <a href="iresponse.html">IResponse</a>.<a href="iresponse.html#data">data</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L104">src/rest/EndpointCaller.ts
-							:104</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/AdvancedSearchInput.ts#L61">src/ui/AdvancedSearch/AdvancedSearchInput.ts
+							:61</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Data of the response</p>
+							<p>The content to add to the external section, as an HTMLElement.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="inputs" class="tsd-anchor"></a>
+					<h3>inputs</h3>
+					<div class="tsd-signature tsd-kind-icon">inputs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IAdvancedSearchInput</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">IAdvancedSearchPrebuiltInput</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="iadvancedsearchsection.html">IAdvancedSearchSection</a>.<a href="iadvancedsearchsection.html#inputs">inputs</a></p>
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/AdvancedSearchInput.ts#L41">src/ui/AdvancedSearch/AdvancedSearchInput.ts
+							:41</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The array of inputs to populate.</p>
+						</div>
+						<p>External code should only push inputs that match the type <a href="../globals.html#baseformtypes">BaseFormTypes</a>.</p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="name" class="tsd-anchor"></a>
+					<h3>name</h3>
+					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="iadvancedsearchsection.html">IAdvancedSearchSection</a>.<a href="iadvancedsearchsection.html#name">name</a></p>
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/AdvancedSearchInput.ts#L35">src/ui/AdvancedSearch/AdvancedSearchInput.ts
+							:35</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The name of the section.</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="duration" class="tsd-anchor"></a>
-					<h3>duration</h3>
-					<div class="tsd-signature tsd-kind-icon">duration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="updatequery" class="tsd-anchor"></a>
+					<h3>update<wbr>Query</h3>
+					<div class="tsd-signature tsd-kind-icon">update<wbr>Query<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L100">src/rest/EndpointCaller.ts
-							:100</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/AdvancedSearchInput.ts#L57">src/ui/AdvancedSearch/AdvancedSearchInput.ts
+							:57</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
 						<div class="lead">
-							<p>The time that the successfull response took to complete</p>
+							<p>An handler to execute every time a new query is launched.</p>
 						</div>
+						<p>The handler will receive the inputs used to build the external section, as well as the queryBuilder object to allow to modify the query.</p>
+						<dl class="tsd-comment-tags">
+							<dt>param</dt>
+							<dd></dd>
+							<dt>param</dt>
+							<dd></dd>
+						</dl>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>inputs<span class="tsd-signature-symbol">: </span><a href="../globals.html#baseformtypes" class="tsd-signature-type">BaseFormTypes</a><span class="tsd-signature-symbol">[]</span>, queryBuilder<span class="tsd-signature-symbol">: </span><a href="../classes/querybuilder.html" class="tsd-signature-type">QueryBuilder</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>inputs: <a href="../globals.html#baseformtypes" class="tsd-signature-type">BaseFormTypes</a><span class="tsd-signature-symbol">[]</span></h5>
+											</li>
+											<li>
+												<h5>queryBuilder: <a href="../classes/querybuilder.html" class="tsd-signature-type">QueryBuilder</a></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
 					</div>
 				</section>
-			</section>
-			<section class="tsd-panel tsd-type-parameters">
-				<h3>Type parameters</h3>
-				<ul class="tsd-type-parameters">
-					<li>
-						<h4>T</h4>
-					</li>
-				</ul>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="iresponse.html" class="tsd-signature-type">IResponse</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>
+						<a href="iadvancedsearchsection.html" class="tsd-signature-type">IAdvancedSearchSection</a>
 					</li>
 				</ul>
 			</section>
@@ -148,14 +212,20 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-has-type-parameter">
-						<a href="isuccessresponse.html" class="tsd-kind-icon">ISuccess<wbr>Response</a>
+					<li class="current tsd-kind-interface">
+						<a href="iexternaladvancedsearchsection.html" class="tsd-kind-icon">IExternal<wbr>Advanced<wbr>Search<wbr>Section</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite">
-								<a href="isuccessresponse.html#data" class="tsd-kind-icon">data</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="iexternaladvancedsearchsection.html#content" class="tsd-kind-icon">content</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="iexternaladvancedsearchsection.html#inputs" class="tsd-kind-icon">inputs</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="iexternaladvancedsearchsection.html#name" class="tsd-kind-icon">name</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="isuccessresponse.html#duration" class="tsd-kind-icon">duration</a>
+								<a href="iexternaladvancedsearchsection.html#updatequery" class="tsd-kind-icon">update<wbr>Query</a>
 							</li>
 						</ul>
 					</li>

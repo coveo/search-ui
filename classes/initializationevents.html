@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IRevealQuerySuggestRequest | Coveo search ui documentation</title>
+	<title>InitializationEvents | Coveo search ui documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -57,10 +57,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="irevealquerysuggestrequest.html">IRevealQuerySuggestRequest</a>
+					<a href="initializationevents.html">InitializationEvents</a>
 				</li>
 			</ul>
-			<h1>Interface IRevealQuerySuggestRequest</h1>
+			<h1>Class InitializationEvents</h1>
 		</div>
 	</div>
 </header>
@@ -70,8 +70,10 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Describe a request to reveal query suggest</p>
+						<p>This static class is there to contain the different string definitions for all the events related to initialization.</p>
 					</div>
+					<p>Note that these events will only be triggered when the <a href="../globals.html#init">init</a> function is called.</p>
+					<p>This means these events are normally called only once when the search interface is initialized.</p>
 				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -81,10 +83,11 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="irevealquerysuggestrequest.html#count" class="tsd-kind-icon">count</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="irevealquerysuggestrequest.html#pipeline" class="tsd-kind-icon">pipeline</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="irevealquerysuggestrequest.html#q" class="tsd-kind-icon">q</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="irevealquerysuggestrequest.html#searchhub" class="tsd-kind-icon">search<wbr>Hub</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="initializationevents.html#aftercomponentsinitialization" class="tsd-kind-icon">after<wbr>Components<wbr>Initialization</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="initializationevents.html#afterinitialization" class="tsd-kind-icon">after<wbr>Initialization</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="initializationevents.html#beforeinitialization" class="tsd-kind-icon">before<wbr>Initialization</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="initializationevents.html#nuke" class="tsd-kind-icon">nuke</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="initializationevents.html#restorehistorystate" class="tsd-kind-icon">restore<wbr>History<wbr>State</a></li>
 							</ul>
 						</section>
 					</div>
@@ -92,72 +95,135 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="count" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> count</h3>
-					<div class="tsd-signature tsd-kind-icon">count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="aftercomponentsinitialization" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> after<wbr>Components<wbr>Initialization</h3>
+					<div class="tsd-signature tsd-kind-icon">after<wbr>Components<wbr>Initialization<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/RevealQuerySuggest.ts#L48">src/rest/RevealQuerySuggest.ts
-							:48</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/InitializationEvents.ts#L25">src/events/InitializationEvents.ts
+							:25</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
 						<div class="lead">
-							<p>Number of suggestions that the service should return. Default to 5</p>
+							<p>Triggered after the components are initialized (eg: After the constructor of each component is executed)
+							but before their state is set from the hash portion of the URL (e.g., <a href="http://mysearchinterface#q=myQuery">http://mysearchinterface#q=myQuery</a> ).</p>
 						</div>
+						<p>This is also before the first query is launched (if the <a href="searchinterface.html#options.autotriggerquery">SearchInterface.options.autoTriggerQuery</a> is <code>true</code>).</p>
+						<p>The string value is <code>afterComponentsInitialization</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string}</p>
+							</dd>
+						</dl>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="pipeline" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> pipeline</h3>
-					<div class="tsd-signature tsd-kind-icon">pipeline<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="afterinitialization" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> after<wbr>Initialization</h3>
+					<div class="tsd-signature tsd-kind-icon">after<wbr>Initialization<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/RevealQuerySuggest.ts#L52">src/rest/RevealQuerySuggest.ts
-							:52</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/InitializationEvents.ts#L45">src/events/InitializationEvents.ts
+							:45</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
 						<div class="lead">
-							<p>The pipeline to use for the request.</p>
+							<p>Triggered right after the UI is fully initialized.</p>
 						</div>
+						<p>Concretely this means that the constructor of each component has been executed, and that the state coming for the URL (e.g., <a href="http://mysearchinterface#q=myquery">http://mysearchinterface#q=myquery</a>) has been applied.</p>
+						<p>It is triggered <em>before</em> the first query is launched, and if the <a href="searchinterface.html#options.autotriggerquery">SearchInterface.options.autoTriggerQuery</a> is <code>true</code>.</p>
+						<p>The string value is <code>afterInitialization</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string}</p>
+							</dd>
+						</dl>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="q" class="tsd-anchor"></a>
-					<h3>q</h3>
-					<div class="tsd-signature tsd-kind-icon">q<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="beforeinitialization" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> before<wbr>Initialization</h3>
+					<div class="tsd-signature tsd-kind-icon">before<wbr>Initialization<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/RevealQuerySuggest.ts#L40">src/rest/RevealQuerySuggest.ts
-							:40</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/InitializationEvents.ts#L15">src/events/InitializationEvents.ts
+							:15</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
 						<div class="lead">
-							<p>Query / word for which to get completions</p>
+							<p>This event is triggered right before each components inside the search interface get initialized (eg: Before the constructor of each component is executed).</p>
 						</div>
+						<p>The string value is <code>beforeInitialization</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string}</p>
+							</dd>
+						</dl>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="searchhub" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> search<wbr>Hub</h3>
-					<div class="tsd-signature tsd-kind-icon">search<wbr>Hub<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="nuke" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> nuke</h3>
+					<div class="tsd-signature tsd-kind-icon">nuke<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/RevealQuerySuggest.ts#L44">src/rest/RevealQuerySuggest.ts
-							:44</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/InitializationEvents.ts#L54">src/events/InitializationEvents.ts
+							:54</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
 						<div class="lead">
-							<p>The search hub for which to get suggestions</p>
+							<p>This is triggered when the UI needs to be dynamically removed so that components can unbind any internal handlers they might have set globally on the window or the document.</p>
 						</div>
+						<p>After this event has been executed, the search interface can be dynamically removed and all handlers can be considered cleanly removed.</p>
+						<p>The string value is <code>nuke</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string}</p>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="restorehistorystate" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> restore<wbr>History<wbr>State</h3>
+					<div class="tsd-signature tsd-kind-icon">restore<wbr>History<wbr>State<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/events/InitializationEvents.ts#L34">src/events/InitializationEvents.ts
+							:34</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Triggered right before the state from the URL (e.g., <a href="http://mysearchinterface#q=myQuery">http://mysearchinterface#q=myQuery</a> ) gets applied in the interface.</p>
+						</div>
+						<p>This will typically only be useful if the <a href="searchinterface.html#options.enablehistory">SearchInterface.options.enableHistory</a> is set to <code>true</code>.</p>
+						<p>The string value is <code>restoreHistoryState</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string}</p>
+							</dd>
+						</dl>
 					</div>
 				</section>
 			</section>
@@ -165,7 +231,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">IRevealQuerySuggestRequest</span>
+						<span class="target">InitializationEvents</span>
 					</li>
 				</ul>
 			</section>
@@ -175,20 +241,23 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface">
-						<a href="irevealquerysuggestrequest.html" class="tsd-kind-icon">IReveal<wbr>Query<wbr>Suggest<wbr>Request</a>
+					<li class="current tsd-kind-class">
+						<a href="initializationevents.html" class="tsd-kind-icon">Initialization<wbr>Events</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="irevealquerysuggestrequest.html#count" class="tsd-kind-icon">count</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="initializationevents.html#aftercomponentsinitialization" class="tsd-kind-icon">after<wbr>Components<wbr>Initialization</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="irevealquerysuggestrequest.html#pipeline" class="tsd-kind-icon">pipeline</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="initializationevents.html#afterinitialization" class="tsd-kind-icon">after<wbr>Initialization</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="irevealquerysuggestrequest.html#q" class="tsd-kind-icon">q</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="initializationevents.html#beforeinitialization" class="tsd-kind-icon">before<wbr>Initialization</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="irevealquerysuggestrequest.html#searchhub" class="tsd-kind-icon">search<wbr>Hub</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="initializationevents.html#nuke" class="tsd-kind-icon">nuke</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="initializationevents.html#restorehistorystate" class="tsd-kind-icon">restore<wbr>History<wbr>State</a>
 							</li>
 						</ul>
 					</li>
