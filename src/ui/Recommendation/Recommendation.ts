@@ -119,7 +119,9 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   }
 
   public hide(): void {
-    this.displayStyle = this.element.style.display;
+    if (!this.displayStyle) {
+      this.displayStyle = this.element.style.display;
+    }
     $$(this.element).hide();
   }
 

@@ -626,9 +626,9 @@ export class QueryController extends RootComponent {
 
   private lastHistoryEventIsCurrentPageView(currentHistory: CoveoAnalytics.HistoryElement) {
     let validHistory = currentHistory[0] &&
-        currentHistory[0].name &&
-        currentHistory[0].name.toLowerCase() == 'pageview' &&
-        currentHistory[0].value;
+      currentHistory[0].name &&
+      currentHistory[0].name.toLowerCase() == 'pageview' &&
+      currentHistory[0].value;
     if (validHistory) {
       let link = document.createElement('a');
       link.setAttribute('href', currentHistory[0].value);
