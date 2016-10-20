@@ -12,8 +12,9 @@ import {Component} from '../Base/Component';
 
 export class ResponsiveRecommendation implements IResponsiveComponent {
 
-  private static DROPDOWN_MIN_WIDTH: number = 300;
-  private static DROPDOWN_WIDTH_RATIO: number = 0.35; // Used to set the width relative to the coveo root.
+  public static DROPDOWN_MIN_WIDTH: number = 300;
+  public static DROPDOWN_WIDTH_RATIO: number = 0.35; // Used to set the width relative to the coveo root.
+  public static DROPDOWN_CONTAINER_CSS_CLASS_NAME: string = 'coveo-recommendation-dropdown-container';
   public static RESPONSIVE_BREAKPOINT = 1000;
 
   public recommendationRoot: Dom;
@@ -22,6 +23,8 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   private logger: Logger;
   private facetSliders: FacetSlider[];
   private facets: Facet[];
+  private dockElement: string;
+  private dropdownContainer: Dom;
 
   public static init(root: HTMLElement, component, options: IResponsiveComponentOptions) {
     let logger = new Logger('ResponsiveRecommendation');
@@ -42,6 +45,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   }
 
   constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions) {
+    this.dockElement = '.CoveoResultList';
     this.recommendationRoot = this.getRecommendationRoot();
     this.logger = new Logger(this);
     this.dropdown = this.buildDropdown();
@@ -50,12 +54,13 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     this.facetSliders = this.getFacetSliders();
     this.registerOnOpenHandler();
     this.registerOnCloseHandler();
+    this.dropdownContainer = $$('div', {className: ResponsiveRecommendation.DROPDOWN_CONTAINER_CSS_CLASS_NAME});
   }
 
   public handleResizeEvent(): void {
-    if (this.needSmallMode()) {
+    if (this.needSmallMode() && !ResponsiveComponentsUtils.isSmallRecommendationActivated(this.coveoRoot)) {
       this.changeToSmallMode();
-    } else {
+    } else if(!this.needSmallMode() && ResponsiveComponentsUtils.isSmallRecommendationActivated(this.coveoRoot)){
       this.changeToLargeMode();
     }
 
@@ -74,6 +79,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
 
   private changeToSmallMode() {
     this.dropdown.close();
+    this.insertDropdownContainer();
     $$(this.coveoRoot.find('.coveo-dropdown-header-wrapper')).el.appendChild(this.dropdown.dropdownHeader.element.el);
     this.disableFacetPreservePosition();
     ResponsiveComponentsUtils.activateSmallRecommendation(this.coveoRoot);
@@ -83,6 +89,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   private changeToLargeMode() {
     this.enableFacetPreservePosition();
     this.dropdown.cleanUp();
+    this.removeDropdownContainer();
     ResponsiveComponentsUtils.deactivateSmallRecommendation(this.coveoRoot);
     ResponsiveComponentsUtils.deactivateSmallRecommendation(this.recommendationRoot);
   }
@@ -90,7 +97,9 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   private buildDropdown(): Dropdown {
     let dropdownContent = this.buildDropdownContent();
     let dropdownHeader = this.buildDropdownHeader();
-    let dropdown = new Dropdown('recommendation', dropdownContent, dropdownHeader, this.coveoRoot, ResponsiveRecommendation.DROPDOWN_MIN_WIDTH, ResponsiveRecommendation.DROPDOWN_WIDTH_RATIO);
+    let dropdownContainerSelector = '.' + ResponsiveRecommendation.DROPDOWN_CONTAINER_CSS_CLASS_NAME;
+    let dropdown = new Dropdown('recommendation', dropdownContent, dropdownHeader, this.coveoRoot, ResponsiveRecommendation.DROPDOWN_MIN_WIDTH, ResponsiveRecommendation.DROPDOWN_WIDTH_RATIO, dropdownContainerSelector);
+    dropdown.disablePopupBackground();
     return dropdown;
   }
 
@@ -179,5 +188,18 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
 
   private getRecommendationRoot(): Dom {
     return $$(this.coveoRoot.find('.CoveoRecommendation'));
+  }
+
+  private insertDropdownContainer(): void {
+    let dock = this.coveoRoot.find(this.dockElement);
+    if (!dock) {
+      this.logger.info(`Responsive recommendation could not find docking element ${this.dockElement}`);
+    }
+
+    this.dropdownContainer.insertBefore(dock);
+  }
+
+  private removeDropdownContainer(): void {
+    this.dropdownContainer.detach();
   }
 }

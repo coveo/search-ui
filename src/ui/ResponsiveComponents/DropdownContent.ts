@@ -6,10 +6,17 @@ export class DropdownContent {
   public static DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-content';
 
   private cssClassName: string;
-  private dropdownWrapper;
+  private dropdownContainerSelector: string;
+  private coveoRoot: Dom;
+  private widthRatio: number;
+  private minWidth: number;
 
-  constructor(componentName: string, public element: Dom, private coveoRoot: Dom, private minWidth: number, private widthRatio: number) {
+  constructor(componentName: string, public element: Dom, coveoRoot: Dom, minWidth: number, widthRatio: number, dropdownContainerSelector: string) {
     this.cssClassName = `coveo-${componentName}-dropdown-content`;
+    this.coveoRoot = coveoRoot;
+    this.widthRatio = widthRatio;
+    this.minWidth = minWidth;
+    this.dropdownContainerSelector = dropdownContainerSelector;
   }
 
   public positionDropdown() {
@@ -23,7 +30,7 @@ export class DropdownContent {
     }
     this.element.el.style.width = width.toString() + 'px';
 
-    PopupUtils.positionPopup(this.element.el, $$(this.coveoRoot.find('.coveo-dropdown-header-wrapper')).el, this.coveoRoot.el,
+    PopupUtils.positionPopup(this.element.el, $$(this.coveoRoot.find(this.dropdownContainerSelector)).el, this.coveoRoot.el,
       { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM }, this.coveoRoot.el);
   }
 

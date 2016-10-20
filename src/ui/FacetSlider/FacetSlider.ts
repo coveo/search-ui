@@ -672,7 +672,7 @@ export class FacetSlider extends Component {
     if (facetDropdown) {
       return $$(<HTMLElement>facetDropdown).css('display') == 'none';
     }
-    if ($$(this.root).hasClass('.CoveoRecommendation')) {
+    if ($$(this.root).hasClass('CoveoRecommendation')) {
       let recommendationDropdown = $$(this.root).parents('.coveo-recommendation-column')[0] || this.root;
       return $$(<HTMLElement>recommendationDropdown).css('display') == 'none';
     }

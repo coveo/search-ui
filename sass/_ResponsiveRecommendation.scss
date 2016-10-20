@@ -3,7 +3,7 @@
     order: 1;
   }
 
-  .CoveoRecommendation, .coveo-recommendation-facet-column {
+  .CoveoRecommendation, .coveo-recommendation-facet-column, .coveo-recommendation-dropdown-container {
     margin: 0;
     padding: 0;
   }
@@ -15,9 +15,13 @@
     display: block;
   }
   
-  #coveo-recommendation-facet-column {
+  .coveo-recommendation-facet-column {
     width: 30%
   }
+}
+
+.CoveoRecommendation {
+  display: block;
 }
 
 

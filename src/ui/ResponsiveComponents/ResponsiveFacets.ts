@@ -105,7 +105,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private buildDropdown() {
     let dropdownContent = this.buildDropdownContent();
     let dropdownHeader = this.buildDropdownHeader();
-    let dropdown = new Dropdown('facet', dropdownContent, dropdownHeader, this.coveoRoot, ResponsiveFacets.DROPDOWN_MIN_WIDTH, ResponsiveFacets.DROPDOWN_WIDTH_RATIO);
+    let dropdown = new Dropdown('facet', dropdownContent, dropdownHeader, this.coveoRoot, ResponsiveFacets.DROPDOWN_MIN_WIDTH, ResponsiveFacets.DROPDOWN_WIDTH_RATIO, '.coveo-dropdown-header-wrapper');
     return dropdown;
   }
 

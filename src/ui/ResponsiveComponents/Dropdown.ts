@@ -14,11 +14,12 @@ export class Dropdown {
   private onOpenHandlers: Function[] = [];
   private onCloseHandlers: Function[] = [];
   private popupBackground: Dom;
+  private popupBackgroundIsEnabled: boolean = true;
 
-  constructor(componentName: string, content: Dom, header: Dom, private coveoRoot, minWidth: number, widthRatio: number) {
+  constructor(componentName: string, content: Dom, header: Dom, private coveoRoot, minWidth: number, widthRatio: number, dropdownContainerSelector: string) {
     this.popupBackground = this.buildPopupBackground();
     this.dropdownHeader = new DropdownHeader(componentName, header);
-    this.dropdownContent = new DropdownContent(componentName, content, this.coveoRoot, minWidth, widthRatio);
+    this.dropdownContent = new DropdownContent(componentName, content, this.coveoRoot, minWidth, widthRatio, dropdownContainerSelector);
     this.bindOnClickDropdownHeaderEvent();
   }
 
@@ -43,9 +44,7 @@ export class Dropdown {
     _.each(this.onOpenHandlers, handler => {
       handler();
     });
-    this.coveoRoot.el.appendChild(this.popupBackground.el);
-    window.getComputedStyle(this.popupBackground.el).opacity;
-    this.popupBackground.el.style.opacity = Dropdown.TRANSPARENT_BACKGROUND_OPACITY;
+    this.showPopupBackground();
   }
 
   public close() {
@@ -58,8 +57,11 @@ export class Dropdown {
 
     // Because of DOM manipulation, sometimes the animation will not trigger. Accessing the computed styles makes sure
     // the animation will happen. Adding this here because its possible that this element has recently been manipulated.
-    window.getComputedStyle(this.popupBackground.el).opacity;
-    this.popupBackground.el.style.opacity = '0';
+    this.hidePopupBackground();
+  }
+
+  public disablePopupBackground() {
+    this.popupBackgroundIsEnabled = false;
   }
 
   private bindOnClickDropdownHeaderEvent() {
@@ -70,6 +72,21 @@ export class Dropdown {
         this.open();
       }
     });
+  }
+
+  private showPopupBackground() {
+    if (this.popupBackgroundIsEnabled) {
+      this.coveoRoot.el.appendChild(this.popupBackground.el);
+      window.getComputedStyle(this.popupBackground.el).opacity;
+      this.popupBackground.el.style.opacity = Dropdown.TRANSPARENT_BACKGROUND_OPACITY;
+    }
+  }
+
+  private hidePopupBackground() {
+    if (this.popupBackgroundIsEnabled) {
+      window.getComputedStyle(this.popupBackground.el).opacity;
+      this.popupBackground.el.style.opacity = '0';
+    }
   }
 
   private buildPopupBackground(): Dom {
