@@ -328,7 +328,7 @@ export class Omnibox extends Component {
       } else {
         this.updateQueryState();
       }
-      if (this.options.enableSearchAsYouType && this.options.enableRevealQuerySuggestAddon) {
+      if (this.isRevealAutoSuggestion()) {
         this.usageAnalytics.sendAllPendingEvents();
       }
     };
@@ -588,7 +588,7 @@ export class Omnibox extends Component {
   private suggestionShouldTriggerQuery(suggestions = this.lastSuggestions) {
     if (this.shouldExecuteQuery(true)) {
       if (suggestions && suggestions[0]) {
-        let suggestion = this.lastSuggestions[0];
+        let suggestion = suggestions[0];
         // If we have access to a confidence level, return true if we are equal or above the minimum confidence level.
         if (suggestion && suggestion.executableConfidence != undefined) {
           return suggestion.executableConfidence >= MINIMUM_EXECUTABLE_CONFIDENCE;

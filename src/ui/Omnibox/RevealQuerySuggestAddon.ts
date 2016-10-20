@@ -79,7 +79,7 @@ export class RevealQuerySuggestAddon {
     }
 
     if (searchHub) {
-      //payload.searchHub = searchHub;
+      payload.searchHub = searchHub;
     }
 
     if (pipeline) {
