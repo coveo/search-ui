@@ -48,6 +48,7 @@ export class ResponsiveDropdown {
     _.each(this.onCloseHandlers, handler => {
       handler();
     });
+    
     this.dropdownHeader.close();
     this.dropdownContent.hideDropdown();
 
