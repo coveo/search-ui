@@ -81,7 +81,15 @@ export class Recommendation extends SearchInterface implements IComponentBinding
      * Hides the component if there a no results / recommendations.
      * The default value is false.
      */
-    hideIfNoResults: ComponentOptions.buildBooleanOption({ defaultValue: true })
+    hideIfNoResults: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    autoTriggerQuery: ComponentOptions.buildBooleanOption({
+      postProcessing: (value: boolean, options: IRecommendationOptions) => {
+        if (options.mainSearchInterface) {
+          return false;
+        }
+        return value;
+      }
+    })
 
   };
 
@@ -91,7 +99,6 @@ export class Recommendation extends SearchInterface implements IComponentBinding
 
   constructor(public element: HTMLElement, public options: IRecommendationOptions = {}, public analyticsOptions = {}, _window = window) {
     super(element, ComponentOptions.initComponentOptions(element, Recommendation, options), analyticsOptions, _window);
-
     if (!this.options.id) {
       this.generateDefaultId();
     }
@@ -119,7 +126,9 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   }
 
   public hide(): void {
-    this.displayStyle = this.element.style.display;
+    if (!this.displayStyle) {
+      this.displayStyle = this.element.style.display;
+    }
     $$(this.element).hide();
   }
 

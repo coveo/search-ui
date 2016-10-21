@@ -164,8 +164,38 @@ export function RecommendationTest() {
         });
       });
 
+      it('exposes option autoTriggerQuery that should be set to false if there is a main search interface', () => {
+        expect(options.mainSearchInterface).toBeDefined();
+        options.autoTriggerQuery = true;
+        test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
+        expect(test.cmp.options.autoTriggerQuery).toBe(false);
+      });
+
+      it('exposes options autoTriggerQuery that should be left as it is if there is no main search interface', () => {
+        options.mainSearchInterface = null;
+        options.autoTriggerQuery = true;
+        test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
+        expect(test.cmp.options.autoTriggerQuery).toBe(true);
+      })
+
       it('should hide on query error', () => {
         Simulate.query(test.env, { error: { message: 'oh noes', type: 'bad', name: 'foobar' } });
+        expect(test.cmp.element.style.display).toEqual('none');
+      });
+
+      it('should not be stuck in hide mode if hide is called multiple time', () => {
+        test.cmp.hide();
+        test.cmp.hide();
+        expect(test.cmp.element.style.display).toEqual('none');
+        test.cmp.show();
+        expect(test.cmp.element.style.display).toEqual('block');
+      });
+
+      it('should not be stuck in visible mode if show is called multiple time', () => {
+        test.cmp.show();
+        test.cmp.show();
+        expect(test.cmp.element.style.display).toEqual('block');
+        test.cmp.hide();
         expect(test.cmp.element.style.display).toEqual('none');
       });
     });

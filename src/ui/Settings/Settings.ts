@@ -117,7 +117,7 @@ export class Settings extends Component {
       menuItemDom.appendChild($$('div', { className: 'coveo-icon' }).el);
       menuItemDom.appendChild($$('div', { className: 'coveo-settings-text' }, _.escape(menuItem.text)).el);
       $$(menuItemDom).on('click', () => {
-        $$(this.menu).detach();
+        this.close();
         _.each(settingsPopulateMenuArgs.menuData, (menuItem) => {
           menuItem.onClose && menuItem.onClose();
         });
