@@ -182,6 +182,22 @@ export function RecommendationTest() {
         Simulate.query(test.env, { error: { message: 'oh noes', type: 'bad', name: 'foobar' } });
         expect(test.cmp.element.style.display).toEqual('none');
       });
+
+      it('should not be stuck in hide mode if hide is called multiple time', () => {
+        test.cmp.hide();
+        test.cmp.hide();
+        expect(test.cmp.element.style.display).toEqual('none');
+        test.cmp.show();
+        expect(test.cmp.element.style.display).toEqual('block');
+      });
+
+      it('should not be stuck in visible mode if show is called multiple time', () => {
+        test.cmp.show();
+        test.cmp.show();
+        expect(test.cmp.element.style.display).toEqual('block');
+        test.cmp.hide();
+        expect(test.cmp.element.style.display).toEqual('none');
+      });
     });
   });
 }
