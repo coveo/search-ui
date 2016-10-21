@@ -273,22 +273,23 @@ export class FacetSlider extends Component {
   };
 
   static ID = 'FacetSlider';
+  public static DEBOUNCED_RESIZE_DELAY = 250;
+
   public startOfSlider: number;
   public endOfSlider: number;
   public initialStartOfSlider: number;
   public initialEndOfSlider: number;
   public facetQueryController: FacetSliderQueryController;
   public facetHeader: FacetHeader;
+  public onResize: EventListener;
 
-  private slider: Slider;
   private rangeQueryStateAttribute: string;
   private isEmpty = false;
   private rangeFromUrlState: number[];
   private delayedGraphData: ISliderGraphData[];
-  private onResize: EventListener;
 
 
-  constructor(public element: HTMLElement, public options: IFacetSliderOptions, bindings?: IComponentBindings) {
+  constructor(public element: HTMLElement, public options: IFacetSliderOptions, bindings?: IComponentBindings, private slider?: Slider) {
     super(element, FacetSlider.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, FacetSlider, options);
 
@@ -328,10 +329,10 @@ export class FacetSlider extends Component {
     this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset());
 
     this.onResize = _.debounce(() => {
-      if (!ResponsiveComponentsUtils.isSmallFacetActivated($$(this.root)) && this.slider) {
+      if (!ResponsiveComponentsUtils.isSmallFacetActivated($$(this.root)) && this.slider && !this.isEmpty) {
         this.slider.drawGraph();
       }
-    }, 250);
+    }, FacetSlider.DEBOUNCED_RESIZE_DELAY);
     window.addEventListener('resize', this.onResize);
     $$(this.root).on(InitializationEvents.nuke, this.handleNuke);
   }
@@ -414,7 +415,7 @@ export class FacetSlider extends Component {
   // There is delayed graph data if at the time the facet slider tried to draw the facet was hidden in the
   // facet dropdown. This method will draw delayed graph data if it exists.
   public drawDelayedGraphData() {
-    if (this.delayedGraphData != undefined) {
+    if (this.delayedGraphData != undefined && !this.isEmpty) {
       this.slider.drawGraph(this.delayedGraphData);
     }
   }
@@ -520,7 +521,7 @@ export class FacetSlider extends Component {
     }
     let sliderDiv = $$('div').el;
 
-    this.slider = new Slider(sliderDiv, _.extend({}, this.options, { dateField: this.options.dateField }), this.root);
+    this.slider = this.slider ? this.slider : new Slider(sliderDiv, _.extend({}, this.options, { dateField: this.options.dateField }), this.root);
     $$(sliderDiv).on(SliderEvents.endSlide, (e: MouseEvent, args: IEndSlideEventArgs) => {
       this.handleEndSlide(args);
     });
