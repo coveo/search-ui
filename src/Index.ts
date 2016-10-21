@@ -108,37 +108,7 @@ export {ChatterPostAttachment} from './ui/ChatterPostAttachment/ChatterPostAttac
 export {ChatterPostedBy} from './ui/ChatterPostedBy/ChatterPostedBy';
 export {ChatterTopic} from './ui/ChatterTopic/ChatterTopic';
 export {ChatterUtils} from './utils/ChatterUtils';
-export { Logo } from './ui/Logo/Logo';
-import {CoreHelpers} from './ui/Templates/CoreHelpers';
+export {Logo} from './ui/Logo/Logo';
 
-// Webpack output a library target with a temporary name.
-// This is to allow end user to put CoveoJsSearch.Dependencie.js before or after the main CoveoJsSearch.js, without breaking
-// This code swap the current module to the "real" Coveo variable.
-let swapVar = () => {
-
-  if (window['Coveo'] == undefined) {
-    window['Coveo'] = this;
-  } else {
-    _.each(_.keys(this), (k) => {
-      window['Coveo'][k] = this[k];
-    });
-  }
-  CoreHelpers.exportAllHelpersGlobally(window['Coveo']);
-  if (window['__extends'] == undefined) {
-    var __extends = function (d, b) {
-      for (var p in b) {
-        if (b.hasOwnProperty(p)) {
-          d[p] = b[p];
-        }
-      }
-      function __() {
-        this.constructor = d;
-      }
-
-      d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-    window['__extends'] = __extends;
-  }
-
-};
-swapVar();
+import {swapVar} from './SwapVar';
+swapVar(this);
