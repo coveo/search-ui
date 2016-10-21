@@ -81,9 +81,9 @@ export class Recommendation extends SearchInterface implements IComponentBinding
      * Hides the component if there a no results / recommendations.
      * The default value is false.
      */
-    hideIfNoResults: ComponentOptions.buildBooleanOption({defaultValue: true}),
+    hideIfNoResults: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     autoTriggerQuery: ComponentOptions.buildBooleanOption({
-      postProcessing: (value: boolean, options: IRecommendationOptions)=> {
+      postProcessing: (value: boolean, options: IRecommendationOptions) => {
         if (options.mainSearchInterface) {
           return false;
         }
