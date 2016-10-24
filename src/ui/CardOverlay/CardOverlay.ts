@@ -4,6 +4,7 @@ import {IComponentBindings} from '../Base/ComponentBindings';
 import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
 import {Initialization} from '../Base/Initialization';
 import {$$} from '../../utils/Dom';
+import {Assert} from '../../misc/Assert';
 
 export interface ICardOverlayOptions {
   title: string;
@@ -42,6 +43,7 @@ export class CardOverlay extends Component {
     this.options = ComponentOptions.initComponentOptions(element, CardOverlay, options);
 
     this.parentCard = $$(this.element).closest('.CoveoResult');
+    Assert.exists(this.parentCard);
     this.createOverlay();
     this.createButton(this.element);
   }
