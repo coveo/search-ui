@@ -116,7 +116,8 @@ export class FacetSearch {
       }
     }
   }
-  /*
+
+  /**
    * Dismiss the search results
    */
   public completelyDismissSearch() {
