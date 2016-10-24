@@ -8,7 +8,6 @@
   width: 100%;
   top: 0;
   left: 0;
-  overflow: scroll;
 
   display: flex;
   flex-direction: column;
@@ -30,6 +29,9 @@
   text-align: center;
   padding: 14px 0;
   border-bottom: 1px solid $color-light-grey;
+}
+.coveo-card-overlay-body {
+  overflow: auto;
 }
 .coveo-card-overlay-footer {
   text-align: center;
