@@ -21,6 +21,7 @@ export class CardOverlay extends Component {
   static ID = 'CardOverlay';
 
   private parentCard: HTMLElement;
+  private overlay: HTMLElement;
 
   /**
    * @componentOptions
@@ -45,13 +46,17 @@ export class CardOverlay extends Component {
     this.createButton();
   }
 
+  public toggleOverlay(swtch?: boolean) {
+    $$(this.overlay).toggleClass('coveo-opened', swtch);
+  }
+
   private createOverlay() {
-    let overlay = $$('div', { className: 'coveo-card-overlay' }).el;
+    this.overlay = $$('div', { className: 'coveo-card-overlay' }).el;
     // Transfer all of its children to the overlay
     while (this.element.childNodes.length > 0) {
-      overlay.appendChild(this.element.firstChild);
+      this.overlay.appendChild(this.element.firstChild);
     }
-    this.parentCard.appendChild(overlay);
+    this.parentCard.appendChild(this.overlay);
   }
 
   private createButton() {
@@ -59,6 +64,7 @@ export class CardOverlay extends Component {
       $$(this.element).prepend($$('span', { className: 'coveo-icon ' + this.options.icon }).el);
     }
     this.element.appendChild(document.createTextNode(this.options.title));
+    $$(this.element).on('click', () => this.toggleOverlay());
   }
 }
 

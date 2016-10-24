@@ -1,0 +1,22 @@
+.CoveoCardOverlay {
+  cursor: pointer;
+}
+
+.coveo-card-overlay {
+  position: absolute;
+
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+
+  background-color: $color-greyish-dark-blue;
+  color: #fff;
+
+  transition: transform 0.3s ease-in-out;
+  transform: translateY(100%);
+
+  &.coveo-opened {
+    transform: translateY(0);
+  }
+}
