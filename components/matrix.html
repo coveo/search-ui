@@ -71,7 +71,7 @@
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
 						<p>This component uses the values of two fields (row and column) to display the results of the specified computed field in a table.<br/>
-							The values to use for the columns are specified by the user while those for the rows are obtained by a groupBy operation performed at the same time as the main query (see <a href="../interfaces/igroupbyrequest.html">IGroupByRequest</a>).<br/>
+							The values to use for the columns are specified by the user while those for the rows are obtained by a <code>groupBy</code> operation performed at the same time as the main query (see <a href="../interfaces/igroupbyrequest.html">IGroupByRequest</a>).<br/>
 						Like a <a href="facet.html">Facet</a>, selecting a cell allows the user to drill down inside results by restricting the row field and the column field to match the values of the selected cell.</p>
 					</div>
 				</div>
@@ -185,7 +185,7 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies the field to use for the columns.<br/>
-							Required options, otherwise the component will not work</p>
+							Required options, otherwise the component will not work.</p>
 						</div>
 					</div>
 				</section>
@@ -203,7 +203,7 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies the field values to use for each column.<br/>
-							If not specified, you won&#39;t generate any column except one for the &#39;Total&#39; column.</p>
+							If not specified, you will not generate any column except one for the &#39;Total&#39; column.</p>
 						</div>
 					</div>
 				</section>
@@ -220,7 +220,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the label for the first column on the left, as a description of the columnField.</p>
+							<p>Specifies the label for the first column on the left, as a description of the <code>columnField</code>.</p>
 						</div>
 					</div>
 				</section>
@@ -306,7 +306,7 @@
 									<li>minimum - Finds the minimum value of the computed field values.</li>
 									<li>maximum - Finds the maximum value of the computed field values.</li>
 								</ul>
-							The default value is sum.</p>
+							The default value is <code>sum</code>.</p>
 						</div>
 					</div>
 				</section>
@@ -324,7 +324,7 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies whether to add a total row which contains the total for each column.<br/>
-							The default value is true.</p>
+							The default value is <code>true</code>.</p>
 						</div>
 					</div>
 				</section>
@@ -341,7 +341,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to show a preview popup of cell results on hover. The default value is true.</p>
+							<p>Specifies whether to show a preview popup of cell results on hover. The default value is <code>true</code>.</p>
 						</div>
 					</div>
 				</section>
@@ -359,7 +359,7 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies whether to add a total column which contains the total for each row.<br/>
-							The default value is true.</p>
+							The default value is <code>true</code>.</p>
 						</div>
 					</div>
 				</section>
@@ -395,7 +395,7 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies the maximum number of results to include in the group by requests for the columns.<br/>
-								This value should always be greater than <a href="matrix.html#options.maximumnumberofrows">Matrix.options.maximumNumberOfRows</a>. If it is too small, some results won&#39;t be displayed in the matrix.<br/>
+								This value should always be greater than <a href="matrix.html#options.maximumnumberofrows">Matrix.options.maximumNumberOfRows</a>. If it is too small, some results will not be displayed in the matrix.<br/>
 							The default value is 100.</p>
 						</div>
 					</div>
@@ -473,7 +473,7 @@
 							<p><ul>
 									<li> relevancy :  This uses all the configured ranking weights as well as any specified ranking expressions to rank results.</li>
 									<li> dateascending / datedescending : Sort using the value of the @date field, which is typically the last modification date of an item in the index.</li>
-									<li> qre : Sort using only the weights applied through ranking expressions. This is much like using Relevancy except that automatic weights based on keyword proximity etc, are not computed.<li/>
+									<li> qre : Sort using only the weights applied through ranking expressions. This is much like using Relevancy except that automatic weights based on keyword proximity etc., are not computed.<li/>
 											<li> nosort : Do not sort the results. The order in which items are returned is essentially random.</li>
 											<li> fieldascending / fielddescending : Sort using the value of a custom field.</li>
 								</ul>
@@ -531,7 +531,7 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies the field to use for the rows.<br/>
-							Required options, otherwise the component will not work</p>
+							Required options, otherwise the component will not work.</p>
 						</div>
 					</div>
 				</section>
@@ -591,7 +591,7 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Return the debug info about this component</p>
+									<p>Return the debug info about this component.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
@@ -617,7 +617,7 @@
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Disable the component.
-										Normally this means that the component won&#39;t execute handlers for the framework events (query events, for example).
+										Normally this means that the component will not execute handlers for the framework events (query events, for example).
 									Component are enabled by default on creation.</p>
 								</div>
 							</div>
@@ -664,13 +664,13 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L119">src/ui/Base/Component.ts
-									:119</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L120">src/ui/Base/Component.ts
+									:120</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Return the bindings, or environment, for the current component</p>
+									<p>Return the bindings, or environment, for the current component.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h4>
@@ -694,7 +694,7 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get the HTMLElement associated to the desired cell</p>
+									<p>Get the HTMLElement associated to the desired cell.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -727,7 +727,7 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get the string associated to the desired cell</p>
+									<p>Get the string associated to the desired cell.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -760,7 +760,7 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Return the currently selected column value</p>
+									<p>Return the currently selected column value.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -784,7 +784,7 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Return the currently selected row value</p>
+									<p>Return the currently selected row value.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -808,7 +808,7 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Select a cell by it&#39;s row and column number. Does not execute a query.</p>
+									<p>Select a cell by its row and column number. Does not execute a query.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -838,14 +838,14 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L177">src/ui/Base/Component.ts
-									:177</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L178">src/ui/Base/Component.ts
+									:178</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument<br/>
-									If there is multiple component bound to the current HTMLElement, you must specify the component class</p>
+									<p>Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument.<br/>
+									If there is multiple component bound to the current HTMLElement, you must specify the component class.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -853,19 +853,19 @@
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>HTMLElement for which to get the bound component</p>
+										<p>HTMLElement for which to get the bound component.</p>
 									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> componentClass: <span class="tsd-signature-type">any</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting</p>
+										<p>Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting.</p>
 									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> noThrow: <span class="tsd-signature-type">boolean</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Boolean option to tell the method to not throw on error</p>
+										<p>Boolean option to tell the method to not throw on error.</p>
 									</div>
 								</li>
 							</ul>
@@ -915,7 +915,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Contains the state of options for differents component. Mainly used by <a href="resultlink.html">ResultLink</a></p>
+							<p>Contains the state of options for differents component. Mainly used by <a href="resultlink.html">ResultLink</a>.</p>
 						</div>
 					</div>
 				</section>
@@ -950,7 +950,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Holds the data for the matrix</p>
+							<p>Holds the data for the matrix.</p>
 						</div>
 					</div>
 				</section>
@@ -970,7 +970,7 @@
 						<dl class="tsd-deprecated">
 						</dl>
 						<div class="lead">
-							<p>A disabled component will not participate in the query, or listen to <a href="../classes/componentevents.html">ComponentEvents</a></p>
+							<p>A disabled component will not participate in the query, or listen to <a href="../classes/componentevents.html">ComponentEvents</a>.</p>
 						</div>
 						<dl class="tsd-comment-tags">
 							<dt>type</dt>
@@ -993,7 +993,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Allows component to log in the dev console</p>
+							<p>Allows component to log in the dev console.</p>
 						</div>
 					</div>
 				</section>
@@ -1047,7 +1047,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A reference to the root HTMLElement (the <a href="../classes/searchinterface.html">SearchInterface</a>)</p>
+							<p>A reference to the root HTMLElement (the <a href="../classes/searchinterface.html">SearchInterface</a>).</p>
 						</div>
 					</div>
 				</section>
@@ -1065,7 +1065,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A reference to the root of every component, the <a href="../classes/searchinterface.html">SearchInterface</a></p>
+							<p>A reference to the root of every component, the <a href="../classes/searchinterface.html">SearchInterface</a>.</p>
 						</div>
 					</div>
 				</section>
@@ -1082,7 +1082,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The currently selected column value, or undefined if nothing is selected</p>
+							<p>The currently selected column value, or undefined if nothing is selected.</p>
 						</div>
 					</div>
 				</section>
@@ -1099,7 +1099,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The currently selected row value, or undefined if nothing is selected</p>
+							<p>The currently selected row value, or undefined if nothing is selected.</p>
 						</div>
 					</div>
 				</section>
