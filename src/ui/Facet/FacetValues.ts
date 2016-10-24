@@ -190,11 +190,6 @@ export class FacetValues {
       var myValue = this.get(otherValue.value);
       if (Utils.exists(myValue)) {
         myValue.selected = true;
-      } else if (otherValue.occurrences != 0) {
-        var occurrences = otherValue.occurrences;
-        var clone = otherValue.cloneWithZeroOccurrences();
-        clone.occurrences = occurrences;
-        this.values.push(clone);
       } else {
         this.values.push(otherValue.cloneWithZeroOccurrences());
       }
