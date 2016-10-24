@@ -40,17 +40,6 @@ export class CardActionBar extends Component {
       this.element.style.transition = 'none';
       this.element.style.transform = 'none';
     }
-
-    let initOptions = this.searchInterface.options.originalOptionsObject;
-    let resultComponentBindings: IResultsComponentBindings = _.extend({}, this.getBindings(), {
-      resultElement: element
-    });
-    let initParameters: IInitializationParameters = {
-      options: initOptions,
-      bindings: resultComponentBindings,
-      result: result
-    };
-    Initialization.automaticallyCreateComponentsInside(this.element, initParameters);
   }
 
   /**
