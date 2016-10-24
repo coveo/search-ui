@@ -46,6 +46,20 @@ export function DropdownTest() {
         dropdown.select(1);
         expect(dropdown.getValue()).toEqual(values[1]);
       });
+
+      it('should execute the onchange function by default when a selection is made', () => {
+        let onchangeSpy = jasmine.createSpy('onchange');
+        dropdown.onChange = onchangeSpy;
+        dropdown.select(1);
+        expect(onchangeSpy).toHaveBeenCalled();
+      });
+
+      it('should not execute the onchange function if specified', () => {
+        let onchangeSpy = jasmine.createSpy('onchange');
+        dropdown.onChange = onchangeSpy;
+        dropdown.select(1, false);
+        expect(onchangeSpy).not.toHaveBeenCalled();
+      });
     });
 
     describe('selectValue', () => {
