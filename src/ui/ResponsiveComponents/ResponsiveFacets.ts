@@ -41,7 +41,6 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.bindDropdownContentEvents();
     this.registerOnOpenHandler();
     this.registerOnCloseHandler();
-    this.saveFacetsPosition();
     this.logger = new Logger(this);
 
     if (Utils.isNullOrUndefined(options.responsiveBreakpoint)) {
@@ -66,7 +65,6 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private changeToLargeMode() {
     this.enableFacetPreservePosition();
     this.dropdown.cleanUp();
-    this.restoreFacetsPosition();
     ResponsiveComponentsUtils.deactivateSmallFacet(this.coveoRoot);
   }
 
@@ -146,21 +144,6 @@ export class ResponsiveFacets implements IResponsiveComponent {
         }
       });
     }, ResponsiveFacets.DEBOUNCE_SCROLL_WAIT));
-  }
-
-  private saveFacetsPosition() {
-    let dropdownContentPreviousSibling = this.dropdown.dropdownContent.element.el.previousSibling;
-    let dropdownContentParent = this.dropdown.dropdownContent.element.el.parentElement;
-    this.previousSibling = dropdownContentPreviousSibling ? $$(<HTMLElement>dropdownContentPreviousSibling) : null;
-    this.parent = $$(dropdownContentParent);
-  }
-
-  private restoreFacetsPosition() {
-    if (this.previousSibling) {
-      this.dropdown.dropdownContent.element.insertAfter(this.previousSibling.el);
-    } else {
-      this.parent.prepend(this.dropdown.dropdownContent.element.el);
-    }
   }
 
   private dismissFacetSearches() {
