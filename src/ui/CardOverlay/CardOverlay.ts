@@ -46,6 +46,11 @@ export class CardOverlay extends Component {
     this.createButton(this.element);
   }
 
+  /**
+   * Toggle the visibility of the card overlay.
+   *
+   * @param swtch If specified, will force to this value (`true` for visible, `false` for hidden).
+   */
   public toggleOverlay(swtch?: boolean) {
     $$(this.overlay).toggleClass('coveo-opened', swtch);
   }
