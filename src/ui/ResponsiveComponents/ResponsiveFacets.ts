@@ -19,8 +19,6 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private static DEBOUNCE_SCROLL_WAIT = 250;
   private static RESPONSIVE_BREAKPOINT: number = 800;
 
-  private previousSibling: Dom;
-  private parent: Dom;
   private facets: Facet[] = [];
   private facetSliders: FacetSlider[] = [];
   private breakpoint: number;

@@ -51,11 +51,11 @@
 
   .coveo-dropdown-header-wrapper {
     width: 100%;
-    display: inline-flex;
-    flex-wrap: nowrap;
+    @include display(inline-flex);
+    @include flex-wrap(nowrap);
+    @include justify-content(flex-end);
     margin: 0;
     padding: 0;
-    justify-content: flex-end;
   }
 }
 

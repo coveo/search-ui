@@ -1,5 +1,6 @@
 import {ResponsiveComponentsManager, IResponsiveComponent, IResponsiveComponentOptions} from './ResponsiveComponentsManager';
 import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
+import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {Utils} from '../../utils/Utils';
 import {$$, Dom} from '../../utils/Dom';
 import {Logger} from '../../misc/Logger';
@@ -25,7 +26,6 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   private logger: Logger;
   private facetSliders: FacetSlider[];
   private facets: Facet[];
-  private dockElement: string;
   private dropdownContainer: Dom;
 
   public static init(root: HTMLElement, component, options: IResponsiveComponentOptions) {
@@ -39,7 +39,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   }
 
   private static findParentRootOfRecommendationComponent(root: HTMLElement): Dom {
-    let coveoRoot = $$(root).parents('CoveoSearchInterface');
+    let coveoRoot = $$(root).parents(Component.computeCssClassName(SearchInterface));
     if (coveoRoot[0]) {
       return $$(coveoRoot[0]);
     }
@@ -47,7 +47,6 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   }
 
   constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions) {
-    this.dockElement = '.CoveoResultList';
     this.recommendationRoot = this.getRecommendationRoot();
     this.logger = new Logger(this);
     this.dropdown = this.buildDropdown();
@@ -117,7 +116,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     if (recommendationColumn) {
       dropdownContentElement = $$(recommendationColumn);
     } else {
-      dropdownContentElement = $$(this.coveoRoot.find('.CoveoRecommendation'));
+      dropdownContentElement = $$(this.coveoRoot.find('.' + Component.computeCssClassName(Recommendation)));
     }
 
     let dropdownContent = new RecommendationDropdownContent('recommendation', dropdownContentElement, this.coveoRoot, ResponsiveRecommendation.DROPDOWN_MIN_WIDTH, ResponsiveRecommendation.DROPDOWN_WIDTH_RATIO);
@@ -136,7 +135,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
 
   private getFacetSliders(): FacetSlider[] {
     let facetSliders = [];
-    _.each(this.coveoRoot.findAll('.CoveoFacetSlider'), facetSliderElement => {
+    _.each(this.coveoRoot.findAll('.' + Component.computeCssClassName(FacetSlider)), facetSliderElement => {
       let facetSlider = Component.get(facetSliderElement, FacetSlider);
       if (facetSlider instanceof FacetSlider) {
         facetSliders.push(facetSlider);
@@ -147,7 +146,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
 
   private getFacets(): Facet[] {
     let facets = [];
-    _.each(this.coveoRoot.findAll('.CoveoFacet'), facetElement => {
+    _.each(this.coveoRoot.findAll('.' + Component.computeCssClassName(Facet)), facetElement => {
       let facet = Component.get(facetElement, Facet);
       if (facet instanceof Facet) {
         facets.push(facet);
@@ -189,6 +188,6 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   }
 
   private getRecommendationRoot(): Dom {
-    return $$(this.coveoRoot.find('.CoveoRecommendation'));
+    return $$(this.coveoRoot.find('.' + Component.computeCssClassName(Recommendation)));
   }
 }

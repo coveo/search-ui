@@ -35,7 +35,7 @@ export class ResponsiveDropdown {
     this.dropdownHeader.cleanUp();
     this.dropdownContent.cleanUp();
     this.restoreContentPosition();
- }
+  }
 
   public open() {
     this.isOpened = true;

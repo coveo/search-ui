@@ -1,6 +1,6 @@
 .coveo-small-recommendation {
   .coveo-recommendation-dropdown-header {
-    order: 1;
+    @include order(1);
   }
 
   .CoveoRecommendation, .coveo-recommendation-facet-column, .coveo-recommendation-dropdown-container {

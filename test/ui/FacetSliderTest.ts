@@ -100,7 +100,6 @@ export function FacetSliderTest() {
       let slider: Slider;
       let mockEnvironmentBuilder: Mock.MockEnvironmentBuilder;
       let env: Mock.IMockEnvironment;
-      let facetSlider: FacetSlider;
 
       beforeEach(() => {
         slider = jasmine.createSpyObj('slider', ['drawGraph']);
@@ -184,7 +183,7 @@ export function FacetSliderTest() {
         fakeResults.groupByResults = [fakeGroupByResult, fakeGroupByResult]; // need two because the graph is enabled.
         return fakeResults;
       }
-    }); 
+    });
 
     describe('exposes options', function () {
       it('dateField should change the query expression to a correct date expression', function () {

@@ -93,8 +93,8 @@ export class Recommendation extends SearchInterface implements IComponentBinding
         return value;
       }
     }),
-    
-        /**
+
+    /**
      * Specifies if the responsive mode should be enabled on the recommendation component. Responsive mode will make the recommendation component
      * dissapear and instead be availaible using a dropdown button. The responsive recommendation component is enabled when the width
      * of the element the search interface is bound to reaches 800 pixels. This value can be modified using {@link Facet.options.responsiveBreakpoint}.

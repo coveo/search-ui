@@ -329,7 +329,7 @@ export class FacetSlider extends Component {
     this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset());
 
     this.onResize = _.debounce(() => {
-      if (!ResponsiveComponentsUtils.shouldDrawFacetSlider($$(this.root)) && this.slider && !this.isEmpty) {
+      if (ResponsiveComponentsUtils.shouldDrawFacetSlider($$(this.root)) && this.slider && !this.isEmpty) {
         this.slider.drawGraph();
       }
     }, FacetSlider.DEBOUNCED_RESIZE_DELAY);

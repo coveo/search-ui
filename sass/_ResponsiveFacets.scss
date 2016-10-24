@@ -2,7 +2,7 @@
 .coveo-small-facets {
   .coveo-facet-dropdown-header {
     margin-left: 8px;
-    order: 2;
+    @include order(2);
   }
   .coveo-facet-column.coveo-facet-dropdown-content {
     overflow-y: scroll;
