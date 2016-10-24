@@ -24,6 +24,10 @@
 }
 
 .coveo-card-overlay-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   font-size: 0.75rem;
   text-transform: uppercase;
   text-align: center;
