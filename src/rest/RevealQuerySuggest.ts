@@ -14,6 +14,10 @@ export interface IRevealQuerySuggestCompletion {
    * The highlighted expression to complete
    */
   highlighted: string;
+  /**
+   * The confidence level that this suggestion should be executed
+   */
+  executableConfidence: number;
 }
 
 /**

@@ -28,6 +28,20 @@ export function SettingsTest() {
       expect($$(test.env.root).find('.coveo-settings-advanced-menu')).toBeNull();
     });
 
+    it('should be able to execute open 2 times, then close one time', ()=> {
+      test.cmp.open();
+      test.cmp.open();
+      test.cmp.close();
+      expect($$(test.env.root).find('.coveo-settings-advanced-menu')).toBeNull();
+    });
+
+    it('should be able to execute close 2 times, then open one time', ()=> {
+      test.cmp.close();
+      test.cmp.close();
+      test.cmp.open();
+      expect($$(test.env.root).find('.coveo-settings-advanced-menu')).not.toBeNull();
+    });
+
     describe('exposes options', function () {
 
       describe('menuDelay', function () {

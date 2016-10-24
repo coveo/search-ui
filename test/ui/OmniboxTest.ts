@@ -1,7 +1,7 @@
 import * as Mock from '../MockEnvironment';
 import {Omnibox} from '../../src/ui/Omnibox/Omnibox';
 import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import {IOmniboxOptions} from '../../src/ui/Omnibox/Omnibox';
+import {IOmniboxOptions, IOmniboxSuggestion} from '../../src/ui/Omnibox/Omnibox';
 import {Simulate} from '../Simulate';
 import {$$} from '../../src/utils/Dom';
 
@@ -52,19 +52,6 @@ export function OmniboxTest() {
         test.cmp.magicBox.onchange();
         setTimeout(() => {
           expect(test.env.queryController.executeQuery).toHaveBeenCalled();
-          done();
-        }, test.cmp.options.searchAsYouTypeDelay);
-      });
-
-      it('enableSearchAsYouType should not trigger a query after a delay if there is no text', function (done) {
-        test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
-          enableSearchAsYouType: true
-        });
-        expect(test.cmp.magicBox.onchange).toBeDefined();
-        test.cmp.setText('');
-        test.cmp.magicBox.onchange();
-        setTimeout(() => {
-          expect(test.env.queryController.executeQuery).not.toHaveBeenCalled();
           done();
         }, test.cmp.options.searchAsYouTypeDelay);
       });
@@ -283,6 +270,94 @@ export function OmniboxTest() {
         expect(test.cmp.queryController.executeQuery).not.toHaveBeenCalled();
       });
 
+    });
+
+    it('should execute query automatically when confidence level is > 0.8 on suggestion', (done) => {
+      test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        enableSearchAsYouType: true,
+        enableRevealQuerySuggestAddon: true
+      });
+      test.cmp.setText('foobar');
+      expect(test.cmp.magicBox.onsuggestions).toBeDefined();
+      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[{
+        executableConfidence: 1,
+        text: 'foobar'
+      }]);
+
+      setTimeout(() => {
+        expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+        done();
+      }, test.cmp.options.searchAsYouTypeDelay);
+    });
+
+    it('should execute query automatically when confidence level is = 0.8 on suggestion', (done) => {
+      test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        enableSearchAsYouType: true,
+        enableRevealQuerySuggestAddon: true
+      });
+      test.cmp.setText('foobar');
+      expect(test.cmp.magicBox.onsuggestions).toBeDefined();
+      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[{
+        executableConfidence: 0.8,
+        text: 'foobar'
+      }]);
+
+      setTimeout(() => {
+        expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+        done();
+      }, test.cmp.options.searchAsYouTypeDelay);
+    });
+
+    it('should not execute query automatically when confidence level is < 0.8 on suggestion', (done) => {
+      test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        enableSearchAsYouType: true,
+        enableRevealQuerySuggestAddon: true
+      });
+      test.cmp.setText('foobar');
+      expect(test.cmp.magicBox.onsuggestions).toBeDefined();
+      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[{
+        executableConfidence: 0.7,
+        text: 'foobar'
+      }]);
+
+      setTimeout(() => {
+        expect(test.cmp.queryController.executeQuery).not.toHaveBeenCalled();
+        done();
+      }, test.cmp.options.searchAsYouTypeDelay);
+    });
+
+    it('should execute query automatically when confidence level is not provided and the suggestion does not match the typed text', (done) => {
+      test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        enableSearchAsYouType: true,
+        enableRevealQuerySuggestAddon: true
+      });
+      test.cmp.setText('baz');
+      expect(test.cmp.magicBox.onsuggestions).toBeDefined();
+      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[{
+        text: 'foobar'
+      }]);
+
+      setTimeout(() => {
+        expect(test.cmp.queryController.executeQuery).not.toHaveBeenCalled();
+        done();
+      }, test.cmp.options.searchAsYouTypeDelay);
+    });
+
+    it('should not execute query automatically when confidence level is not provided but the suggestion match the typed text', (done) => {
+      test = Mock.optionsComponentSetup<Omnibox, IOmniboxOptions>(Omnibox, {
+        enableSearchAsYouType: true,
+        enableRevealQuerySuggestAddon: true
+      });
+      test.cmp.setText('foo');
+      expect(test.cmp.magicBox.onsuggestions).toBeDefined();
+      test.cmp.magicBox.onsuggestions(<IOmniboxSuggestion[]>[{
+        text: 'foobar'
+      }]);
+
+      setTimeout(() => {
+        expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+        done();
+      }, test.cmp.options.searchAsYouTypeDelay);
     });
 
     describe('with live query state model', () => {

@@ -85,8 +85,16 @@ export class Recommendation extends SearchInterface implements IComponentBinding
      * The default value is false.
      */
     hideIfNoResults: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-
-    /**
+    autoTriggerQuery: ComponentOptions.buildBooleanOption({
+      postProcessing: (value: boolean, options: IRecommendationOptions) => {
+        if (options.mainSearchInterface) {
+          return false;
+        }
+        return value;
+      }
+    }),
+    
+        /**
      * Specifies if the responsive mode should be enabled on the recommendation component. Responsive mode will make the recommendation component
      * dissapear and instead be availaible using a dropdown button. The responsive recommendation component is enabled when the width
      * of the element the search interface is bound to reaches 800 pixels. This value can be modified using {@link Facet.options.responsiveBreakpoint}.
@@ -101,7 +109,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
      * Specifies the width of the search interface, in pixels, at which the recommendation component will go into responsive mode. The responsive mode will
      * be triggered when the width is equal or below this value. The search interface corresponds to the element with the class
      * `CoveoSearchInterface`.
-     * The default value is `800`.
+     * The default value is `1000`.
      */
     responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 1000 })
 
@@ -113,7 +121,6 @@ export class Recommendation extends SearchInterface implements IComponentBinding
 
   constructor(public element: HTMLElement, public options: IRecommendationOptions = {}, public analyticsOptions = {}, _window = window) {
     super(element, ComponentOptions.initComponentOptions(element, Recommendation, options), analyticsOptions, _window);
-
     if (!this.options.id) {
       this.generateDefaultId();
     }
@@ -142,7 +149,9 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   }
 
   public hide(): void {
-    this.displayStyle = this.element.style.display;
+    if (!this.displayStyle) {
+      this.displayStyle = this.element.style.display;
+    }
     $$(this.element).hide();
   }
 
