@@ -146,3 +146,5 @@ let swapVar = () => {
 swapVar();
 
 export { CardActionBar } from './ui/CardActionBar/CardActionBar';
+
+export { CardOverlay } from './ui/CardOverlay/CardOverlay';

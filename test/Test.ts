@@ -340,3 +340,6 @@ CardActionBarTest();
 
 import {QuickviewTest} from './ui/QuickviewTest';
 QuickviewTest();
+
+import { CardOverlayTest } from './ui/CardOverlayTest';
+CardOverlayTest();
