@@ -29,6 +29,10 @@
   text-align: center;
   padding: 14px 0;
   border-bottom: 1px solid $color-light-grey;
+
+  .coveo-icon {
+    margin-right: 3px;
+  }
 }
 .coveo-card-overlay-body {
   overflow: auto;
