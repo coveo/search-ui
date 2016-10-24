@@ -4,19 +4,35 @@
 
 .coveo-card-overlay {
   position: absolute;
-
   height: 100%;
   width: 100%;
   top: 0;
   left: 0;
+  overflow: scroll;
+
+  display: flex;
+  flex-direction: column;
 
   background-color: $color-greyish-dark-blue;
   color: #fff;
 
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.5s ease-in-out;
   transform: translateY(100%);
 
   &.coveo-opened {
     transform: translateY(0);
   }
+}
+
+.coveo-card-overlay-header {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 14px 0;
+  border-bottom: 1px solid $color-light-grey;
+}
+.coveo-card-overlay-footer {
+  text-align: center;
+  margin-top: auto;
+  cursor: pointer;
 }

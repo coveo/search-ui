@@ -43,7 +43,7 @@ export class CardOverlay extends Component {
 
     this.parentCard = $$(this.element).closest('.CoveoResult');
     this.createOverlay();
-    this.createButton();
+    this.createButton(this.element);
   }
 
   public toggleOverlay(swtch?: boolean) {
@@ -52,19 +52,37 @@ export class CardOverlay extends Component {
 
   private createOverlay() {
     this.overlay = $$('div', { className: 'coveo-card-overlay' }).el;
-    // Transfer all of its children to the overlay
+
+    // Create header
+    let overlayHeader = $$('div', { className: 'coveo-card-overlay-header' }).el;
+    this.createButton(overlayHeader, false);
+    this.overlay.appendChild(overlayHeader);
+
+    // Create body
+    let overlayBody = $$('div', { className: 'coveo-card-overlay-body' }).el;
+    // Transfer all of element's children to the overlay
     while (this.element.childNodes.length > 0) {
-      this.overlay.appendChild(this.element.firstChild);
+      overlayBody.appendChild(this.element.firstChild);
     }
+    this.overlay.appendChild(overlayBody);
+
+    // Create footer
+    let overlayFooter = $$('div', { className: 'coveo-card-overlay-footer' },
+      $$('span', { className: 'coveo-icon coveo-sprites-arrow-down' }));
+    overlayFooter.on('click', () => this.toggleOverlay(false));
+    this.overlay.appendChild(overlayFooter.el);
+
     this.parentCard.appendChild(this.overlay);
   }
 
-  private createButton() {
+  private createButton(element: HTMLElement, clickAction: boolean = true) {
     if (this.options.icon) {
-      $$(this.element).prepend($$('span', { className: 'coveo-icon ' + this.options.icon }).el);
+      element.appendChild($$('span', { className: 'coveo-icon ' + this.options.icon }).el);
     }
-    this.element.appendChild(document.createTextNode(this.options.title));
-    $$(this.element).on('click', () => this.toggleOverlay());
+    element.appendChild(document.createTextNode(this.options.title));
+    if (clickAction) {
+      $$(element).on('click', () => this.toggleOverlay());
+    }
   }
 }
 
