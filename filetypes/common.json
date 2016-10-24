@@ -111,6 +111,13 @@
         "en": "Salesforce",
         "fr": "Salesforce"
       }
+    },
+    "dynamicscrmitem": {
+      "icon": "list",
+      "captions": {
+        "en": "Dynamics CRM",
+        "fr": "Dynamics CRM"
+      }
     }
   }
 }
