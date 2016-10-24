@@ -47,7 +47,9 @@ If you are already using a module bundler (Browserify, webpack, Babel, etc.), th
 
 ```
 
-See more examples of fully configured pages in `./pages`.
+* See more examples of fully configured pages in `./pages`.
+
+* We also invite you to consult this [tutorial](https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Getting+Started+Tutorial) which should help newcomers.
 
 ## Build
     npm install -g gulp
@@ -61,6 +63,8 @@ See more examples of fully configured pages in `./pages`.
 * `gulp sprites` -> Regenerate the sprites image as well as the generated Sass/CSS code.
 * `gulp test` -> Build and run the unit tests.
 * `gulp doc` -> Generate the documentation website for the project.
+* `gulp dev` -> Start a webpack dev server for the project.
+* `gulp devTest` -> Start a webpack dev server for the unit tests.
 
 ## Dev
 
@@ -124,8 +128,10 @@ Every time you hit save in a source file, the dev server will reload and re-exec
 The code coverage will be reported in `./bin/coverage`
 
 ## Documentation
-Generated using TypeDoc. Available [here](https://coveo.github.io/search-ui/).
+General reference documentation is generated using TypeDoc. Available [here](https://coveo.github.io/search-ui/). You can see the list of all available options and public method that the framework exposes for each component.
 
-Hand written documentation with more examples available [here](https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Home)
+Hand written documentation with more examples available [here](https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Home).
+
+A tutorial is available [here](https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Getting+Started+Tutorial). If you are new to our project, we strongly recommend you to consult the tutorial, as it can provide you with valuable informations.
 
 You can also reach [search.coveo.com](https://search.coveo.com) to search for a particular issue and/or question.
