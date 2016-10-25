@@ -29,6 +29,7 @@ export interface IRecommendationOptions extends ISearchInterfaceOptions {
   hideIfNoResults?: boolean;
   enableResponsiveMode?: boolean;
   responsiveBreakpoint?: number;
+  dropdownHeaderLabel?: string;
 }
 
 /**
@@ -97,7 +98,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
     /**
      * Specifies if the responsive mode should be enabled on the recommendation component. Responsive mode will make the recommendation component
      * dissapear and instead be availaible using a dropdown button. The responsive recommendation component is enabled when the width
-     * of the element the search interface is bound to reaches 800 pixels. This value can be modified using {@link Facet.options.responsiveBreakpoint}.
+     * of the element the search interface is bound to reaches 800 pixels. This value can be modified using {@link Recommendation.options.responsiveBreakpoint}.
      * 
      * Disabling reponsive mode for one recommendation component will disable it for all of them.
      * Therefore, this option only needs to be set on one recommendation component to be effective.
@@ -111,8 +112,13 @@ export class Recommendation extends SearchInterface implements IComponentBinding
      * `CoveoSearchInterface`.
      * The default value is `1000`.
      */
-    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 1000 })
+    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 1000 }),
 
+    /**
+     * Specifies the label of the button that allows to show the recommendation component when in responsive mode.
+     * The default value is "Recommendations". 
+     */
+    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption({ defaultValue: "Recommendations"})
   };
 
   private mainInterfaceQuery: IQuerySuccessEventArgs;

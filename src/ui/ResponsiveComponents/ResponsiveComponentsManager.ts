@@ -11,6 +11,7 @@ import {ResponsiveFacets} from './ResponsiveFacets';
 export interface IResponsiveComponentOptions {
   enableResponsiveMode?: boolean;
   responsiveBreakpoint?: number;
+  dropdownHeaderLabel?: string;
 }
 
 export interface IResponsiveComponentConstructor {
@@ -23,10 +24,16 @@ export interface IResponsiveComponent {
   needDropdownWrapper?(): boolean;
 }
 
+interface ComponentInitialization {
+  responsiveComponentsManager: ResponsiveComponentsManager;
+  arguments: [IResponsiveComponentConstructor, Dom, string, Component, IResponsiveComponentOptions]; 
+}
+
 export class ResponsiveComponentsManager {
 
   private static componentManagers: ResponsiveComponentsManager[] = [];
   private static remainingComponentInitializations: number = 0;
+  private static componentInitializations: ComponentInitialization[] = [];
 
   private disabledComponents: string[] = [];
   private coveoRoot: Dom;
@@ -50,13 +57,17 @@ export class ResponsiveComponentsManager {
           responsiveComponentsManager.disableComponent(ID);
           return;
         }
-        let currentResponsiveComponentsManager = _.find(this.componentManagers, (componentManager) => root.el == componentManager.coveoRoot.el);
-        currentResponsiveComponentsManager.register(responsiveComponentConstructor, root, ID, component, options);
+
+        this.componentInitializations.push({
+          responsiveComponentsManager: responsiveComponentsManager,
+          arguments: [responsiveComponentConstructor, root, ID, component, options]
+        });
       }
 
       this.remainingComponentInitializations--;
       if (this.remainingComponentInitializations == 0) {
         this.resizeAllComponentsManager();
+        this.instantiateResponsiveComponents(); // necessary to verify if all components are disabled before they are initialized.
       }
     });
     this.remainingComponentInitializations++;
@@ -65,6 +76,13 @@ export class ResponsiveComponentsManager {
   private static shouldEnableResponsiveMode(root: Dom): boolean {
     let searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, true);
     return searchInterface instanceof SearchInterface && searchInterface.options.enableAutomaticResponsiveMode && searchInterface.isNewDesign();
+  }
+
+  private static instantiateResponsiveComponents() {
+    _.each(this.componentInitializations, componentInitialization => {
+      let responsiveComponentsManager = componentInitialization.responsiveComponentsManager;
+      responsiveComponentsManager.register.apply(responsiveComponentsManager, componentInitialization.arguments);
+    });
   }
 
   private static resizeAllComponentsManager(): void {

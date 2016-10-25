@@ -32,6 +32,7 @@ export interface IFacetSliderOptions extends ISliderOptions {
   title?: string;
   enableResponsiveMode?: boolean;
   responsiveBreakpoint?: number;
+  dropdownHeaderLabel?: string;
 }
 
 /**
@@ -269,7 +270,13 @@ export class FacetSlider extends Component {
      * `CoveoSearchInterface`.
      * The default value is `800`.
      */
-    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 800 })
+    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 800 }),
+    /**
+     * Specifies the label of the button that allows to show the facets when in responsive mode. If it is specified more than once, the
+     * first occurence of the option will be used.
+     * The default value is "Filters". 
+     */
+    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption()
   };
 
   static ID = 'FacetSlider';

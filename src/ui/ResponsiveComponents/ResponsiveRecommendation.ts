@@ -27,6 +27,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   private facetSliders: FacetSlider[];
   private facets: Facet[];
   private dropdownContainer: Dom;
+  private dropdownHeaderLabel: string;
 
   public static init(root: HTMLElement, component, options: IResponsiveComponentOptions) {
     let logger = new Logger('ResponsiveRecommendation');
@@ -48,9 +49,10 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
 
   constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions) {
     this.recommendationRoot = this.getRecommendationRoot();
+    this.dropdownHeaderLabel = options.dropdownHeaderLabel;
+    this.breakpoint = this.defineResponsiveBreakpoint(options);
     this.logger = new Logger(this);
     this.dropdown = this.buildDropdown();
-    this.breakpoint = this.defineResponsiveBreakpoint(options);
     this.facets = this.getFacets();
     this.facetSliders = this.getFacetSliders();
     this.registerOnOpenHandler();
@@ -104,7 +106,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   private buildDropdownHeader(): ResponsiveDropdownHeader {
     let dropdownHeaderElement = $$('a');
     let content = $$('p');
-    content.text(l('Recommendations'));
+    content.text(this.dropdownHeaderLabel);
     dropdownHeaderElement.el.appendChild(content.el);
     let dropdownHeader = new ResponsiveDropdownHeader('recommendation', dropdownHeaderElement);
     return dropdownHeader;

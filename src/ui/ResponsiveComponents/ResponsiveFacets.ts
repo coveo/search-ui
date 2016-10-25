@@ -15,6 +15,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
 
   private static DROPDOWN_MIN_WIDTH: number = 280;
   private static DROPDOWN_WIDTH_RATIO: number = 0.35; // Used to set the width relative to the coveo root.
+  private static DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'Filters';
 
   private static DEBOUNCE_SCROLL_WAIT = 250;
   private static RESPONSIVE_BREAKPOINT: number = 800;
@@ -24,6 +25,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private breakpoint: number;
   private logger: Logger;
   private dropdown: ResponsiveDropdown;
+  private dropdownHeaderLabel: string;
 
   public static init(root: HTMLElement, component, options: IResponsiveComponentOptions) {
     if (!$$(root).find('.coveo-facet-column')) {
@@ -35,6 +37,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions) {
+    this.dropdownHeaderLabel = this.getDropdownHeaderLabel();
     this.dropdown = this.buildDropdown();
     this.bindDropdownContentEvents();
     this.registerOnOpenHandler();
@@ -112,7 +115,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private buildDropdownHeader(): ResponsiveDropdownHeader {
     let dropdownHeaderElement = $$('a');
     let content = $$('p');
-    content.text(l('Filters'));
+    content.text(this.dropdownHeaderLabel);
     dropdownHeaderElement.el.appendChild(content.el);
 
     let dropdownHeader = new ResponsiveDropdownHeader('facet', dropdownHeaderElement);
@@ -173,5 +176,27 @@ export class ResponsiveFacets implements IResponsiveComponent {
     dropdownTop = dropdownTop >= 0 ? dropdownTop : 0;
 
     return (facetTop >= dropdownTop) && (facetBottom <= dropdownBottom);
+  }
+
+  private getDropdownHeaderLabel() {
+    let dropdownHeaderLabel: string;
+    let selector = `.${Component.computeCssClassName(Facet)}, .${Component.computeCssClassName(FacetSlider)}`;
+    _.each($$(this.coveoRoot.find('.coveo-facet-column')).findAll(selector), facetElement => {
+      let facet: Facet | FacetSlider;
+      if ($$(facetElement).hasClass(Component.computeCssClassName(Facet))) {
+        facet = <Facet>Component.get(facetElement, Facet); 
+      } else {
+        facet = <FacetSlider>Component.get(facetElement, FacetSlider);
+      }
+      if (!dropdownHeaderLabel && facet.options.dropdownHeaderLabel) {
+        dropdownHeaderLabel = facet.options.dropdownHeaderLabel;
+      }
+    });
+
+    if (!dropdownHeaderLabel) {
+      dropdownHeaderLabel = l(ResponsiveFacets.DROPDOWN_HEADER_LABEL_DEFAULT_VALUE);
+    }
+
+    return dropdownHeaderLabel;
   }
 }
