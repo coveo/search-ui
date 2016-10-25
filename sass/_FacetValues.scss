@@ -171,6 +171,8 @@
   .coveo-facet-value-label-wrapper {
     @include order(1);
     @include display("flex");
+    // This needs to be set, otherwise min-width auto on the elment will make the element overflow it's flex container;
+    min-width: 0;
     .coveo-facet-value-checkbox {
       @include order(1);
       @include flex-shrink(0);
