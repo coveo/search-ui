@@ -176,7 +176,7 @@ export function RecommendationTest() {
         options.autoTriggerQuery = true;
         test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
         expect(test.cmp.options.autoTriggerQuery).toBe(true);
-      })
+      });
 
       it('should hide on query error', () => {
         Simulate.query(test.env, { error: { message: 'oh noes', type: 'bad', name: 'foobar' } });
