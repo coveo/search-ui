@@ -208,6 +208,7 @@ export class SearchAlerts extends Component {
 
   private addSearchAlert(subscription: ISubscription, container: Dom) {
     let frequencies = [
+      { value: 'monthly', label: l('Monthly') },
       { value: 'daily', label: l('Daily') },
       { value: 'monday', label: l('Monday') },
       { value: 'tuesday', label: l('Tuesday') },
