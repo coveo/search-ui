@@ -4999,6 +4999,10 @@
     "en": "Expiration",
     "fr": "Expiration"
   },
+  "Monthly": {
+    "en": "Monthly",
+    "fr": "Mensuel"
+  },
   "Daily": {
     "en": "Daily",
     "fr": "Quotidiennement"
