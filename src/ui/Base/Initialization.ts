@@ -146,7 +146,7 @@ export class Initialization {
       $$(e).removeClass('coveo-hide-until-loaded');
       $$(e).addClass('coveo-show-after-loaded');
     });
-    Coveo.MagicBox
+
     if (searchInterface.options.autoTriggerQuery) {
       Initialization.logFirstQueryCause(searchInterface);
       (<QueryController>Component.get(element, QueryController)).executeQuery({

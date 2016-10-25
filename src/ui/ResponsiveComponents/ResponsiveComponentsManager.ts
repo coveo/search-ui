@@ -4,7 +4,7 @@ import {Component} from '../Base/Component';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
 import {Utils} from '../../utils/Utils';
-import {Facet} from '../Facet/Facet'
+import {Facet} from '../Facet/Facet';
 import {Tab} from '../Tab/Tab';
 import {ResponsiveFacets} from './ResponsiveFacets';
 
