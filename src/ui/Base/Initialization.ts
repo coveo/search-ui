@@ -14,7 +14,6 @@ import {ComponentStateModel} from '../../models/ComponentStateModel';
 import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
 import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {BaseComponent} from '../Base/BaseComponent';
-import {Recommendation} from '../Recommendation/Recommendation';
 
 /**
  * Represent the initialization parameters required to init a new component.
@@ -147,11 +146,11 @@ export class Initialization {
       $$(e).removeClass('coveo-hide-until-loaded');
       $$(e).addClass('coveo-show-after-loaded');
     });
-
+    Coveo.MagicBox
     if (searchInterface.options.autoTriggerQuery) {
       Initialization.logFirstQueryCause(searchInterface);
       (<QueryController>Component.get(element, QueryController)).executeQuery({
-        logInActionsHistory: searchInterface instanceof Recommendation ? false : true,
+        logInActionsHistory: searchInterface instanceof Coveo['Recommendation'] ? false : true,
         isFirstQuery: true
       });
     }
