@@ -10,12 +10,13 @@ All resources will be available under `node_modules/coveo-search-ui/bin`. You ca
 
 If you are already using a module bundler (Browserify, webpack, Babel, etc.), then you can simply `require('coveo-search-ui')`.
 
+You can also download the latest version [here](http://productupdate.coveo.com/go?product=coveo-search-ui&version=1).
+
 ## Basic usage
 
 ```
 <!-- Include the library scripts. -->
 <script src="js/CoveoJsSearch.js"></script>
-<script src="js/CoveoJsSearch.Dependencies.js"></script>
 <script src="js/templates/templatesNew.js"></script>
 
 <!-- Every DOM element with a class starting with Coveo (uppercase) will instantiate a component. -->
