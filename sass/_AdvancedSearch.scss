@@ -5,7 +5,6 @@ $spaceBetween: 0 5px;
 }
 
 .coveo-advanced-search-section {
-  min-width: 500px;
   margin: 20px 0;
 }
 
@@ -54,6 +53,7 @@ $spaceBetween: 0 5px;
 .coveo-advanced-search-document-input-section {
   margin: 20px 0;
   @include display(flex);
+  @include flex-wrap(wrap);
   align-items: center;
 
   .coveo-dropdown {
@@ -139,4 +139,12 @@ $spaceBetween: 0 5px;
   height: 35px;
   display: block;
   margin: 15px 0 15px auto;
+}
+
+.coveo-size-input-mode-section {
+  display: inline-block;
+  width: 80%;
+  & > * {
+    margin: 5px 0px 5px 0px;
+  }
 }
