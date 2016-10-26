@@ -12,7 +12,7 @@ import {IAnalyticsClient} from '../../ui/Analytics/AnalyticsClient';
 import {NoopAnalyticsClient} from '../../ui/Analytics/NoopAnalyticsClient';
 import {BaseComponent} from './BaseComponent';
 import {IComponentBindings} from './ComponentBindings';
-import {DebugEvents} from "../../events/DebugEvents";
+import {DebugEvents} from '../../events/DebugEvents';
 
 /**
  * Definition for a Component.
@@ -171,7 +171,7 @@ export class Component extends BaseComponent {
   }
 
   private initDebugInfo() {
-    $$(this.element).on('dblclick', (e: MouseEvent)=> {
+    $$(this.element).on('dblclick', (e: MouseEvent) => {
       if (e.altKey) {
         var debugInfo = this.debugInfo();
         if (debugInfo != null) {
