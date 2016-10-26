@@ -12,6 +12,7 @@ import {IAnalyticsClient} from '../../ui/Analytics/AnalyticsClient';
 import {NoopAnalyticsClient} from '../../ui/Analytics/NoopAnalyticsClient';
 import {BaseComponent} from './BaseComponent';
 import {IComponentBindings} from './ComponentBindings';
+import {DebugEvents} from "../../events/DebugEvents";
 
 /**
  * Definition for a Component.
@@ -111,6 +112,8 @@ export class Component extends BaseComponent {
     if (this.searchInterface != null) {
       this.searchInterface.attachComponent(type, this);
     }
+
+    this.initDebugInfo();
   }
 
   /**
@@ -165,6 +168,17 @@ export class Component extends BaseComponent {
 
   public resolveResult(): IQueryResult {
     return Component.getResult(this.element);
+  }
+
+  private initDebugInfo() {
+    $$(this.element).on('dblclick', (e: MouseEvent)=> {
+      if (e.altKey) {
+        var debugInfo = this.debugInfo();
+        if (debugInfo != null) {
+          $$(this.root).trigger(DebugEvents.showDebugPanel, this.debugInfo());
+        }
+      }
+    });
   }
 
   /**

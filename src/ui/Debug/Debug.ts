@@ -82,7 +82,7 @@ export class Debug extends RootComponent {
     let search = this.buildSearchBox(build.body);
     let downloadLink = $$('a', { download: 'debug.json', 'href': this.downloadHref(build.json) }, 'Download');
     let bodyBuilder = (results?: IQueryResults) => {
-      let build = builder();
+      let build = builder(results);
       downloadLink.el.setAttribute('href', this.downloadHref(build.json));
       return build.body;
     };
@@ -116,7 +116,7 @@ export class Debug extends RootComponent {
     if (this.stackDebug == null) {
       setTimeout(() => {
         let stackDebug = this.stackDebug;
-        this.showDebugPanel(() => this.buildStackPanel(stackDebug));
+        this.showDebugPanel((results?: IQueryResults) => this.buildStackPanel(stackDebug, results));
         this.stackDebug = null;
       });
       this.stackDebug = {};
@@ -286,7 +286,7 @@ export class Debug extends RootComponent {
     }
     checkbox.onchange = () => {
       this.debug = !this.debug;
-      $$(this.element).one(QueryEvents.querySuccess + ' ' + QueryEvents.queryError, (e: Event, args: IQuerySuccessEventArgs) => {
+      $$(this.element).one([QueryEvents.querySuccess, QueryEvents.queryError], (e: Event, args: IQuerySuccessEventArgs) => {
         $$(body).removeClass('coveo-debug-loading');
         $$(body).empty();
         $$(bodyBuilder(args.results)).children().forEach((child) => {
