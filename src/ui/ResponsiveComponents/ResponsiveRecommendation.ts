@@ -15,8 +15,6 @@ import {Component} from '../Base/Component';
 
 export class ResponsiveRecommendation implements IResponsiveComponent {
 
-  public static DROPDOWN_MIN_WIDTH: number = 300;
-  public static DROPDOWN_WIDTH_RATIO: number = 0.35; // Used to set the width relative to the coveo root.
   public static DROPDOWN_CONTAINER_CSS_CLASS_NAME: string = 'coveo-recommendation-dropdown-container';
   public static RESPONSIVE_BREAKPOINT = 1000;
 
@@ -33,9 +31,14 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     let logger = new Logger('ResponsiveRecommendation');
     let coveoRoot = this.findParentRootOfRecommendationComponent(root);
     if (!coveoRoot) {
-      logger.info('Recommendation component has no parent interface. Disabling responsive mode.');
+      logger.info('Recommendation component has no parent interface. Disabling responsive mode for this component.');
       return;
     }
+    if (!$$(coveoRoot).find('.coveo-results-column')) {
+      logger.info('Cannot find element with class coveo-results-column. Disabling responsive mode for this component.');
+      return;
+    }
+
     ResponsiveComponentsManager.register(ResponsiveRecommendation, $$(coveoRoot), Recommendation.ID, component, options);
   }
 
@@ -106,7 +109,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   private buildDropdownHeader(): ResponsiveDropdownHeader {
     let dropdownHeaderElement = $$('a');
     let content = $$('p');
-    content.text(this.dropdownHeaderLabel);
+    content.text(l(this.dropdownHeaderLabel));
     dropdownHeaderElement.el.appendChild(content.el);
     let dropdownHeader = new ResponsiveDropdownHeader('recommendation', dropdownHeaderElement);
     return dropdownHeader;
@@ -121,7 +124,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
       dropdownContentElement = $$(this.coveoRoot.find('.' + Component.computeCssClassName(Recommendation)));
     }
 
-    let dropdownContent = new RecommendationDropdownContent('recommendation', dropdownContentElement, this.coveoRoot, ResponsiveRecommendation.DROPDOWN_MIN_WIDTH, ResponsiveRecommendation.DROPDOWN_WIDTH_RATIO);
+    let dropdownContent = new RecommendationDropdownContent('recommendation', dropdownContentElement, this.coveoRoot);
     return dropdownContent;
   }
 

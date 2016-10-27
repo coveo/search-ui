@@ -24,16 +24,16 @@ export interface IResponsiveComponent {
   needDropdownWrapper?(): boolean;
 }
 
-interface ComponentInitialization {
+interface IComponentInitialization {
   responsiveComponentsManager: ResponsiveComponentsManager;
-  arguments: [IResponsiveComponentConstructor, Dom, string, Component, IResponsiveComponentOptions]; 
+  arguments: [IResponsiveComponentConstructor, Dom, string, Component, IResponsiveComponentOptions];
 }
 
 export class ResponsiveComponentsManager {
 
   private static componentManagers: ResponsiveComponentsManager[] = [];
   private static remainingComponentInitializations: number = 0;
-  private static componentInitializations: ComponentInitialization[] = [];
+  private static componentInitializations: IComponentInitialization[] = [];
 
   private disabledComponents: string[] = [];
   private coveoRoot: Dom;

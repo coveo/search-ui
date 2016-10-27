@@ -360,7 +360,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   private getDropdownHeaderLabel() {
-    let dropdownHeaderLabel: string; 
+    let dropdownHeaderLabel: string;
     _.each($$(this.coveoRoot.find('.coveo-tab-section')).findAll('.' + Component.computeCssClassName(Tab)), tabElement => {
       let tab = <Tab>Component.get(tabElement, Tab);
       if (!dropdownHeaderLabel && tab.options.dropdownHeaderLabel) {

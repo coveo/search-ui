@@ -184,7 +184,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     _.each($$(this.coveoRoot.find('.coveo-facet-column')).findAll(selector), facetElement => {
       let facet: Facet | FacetSlider;
       if ($$(facetElement).hasClass(Component.computeCssClassName(Facet))) {
-        facet = <Facet>Component.get(facetElement, Facet); 
+        facet = <Facet>Component.get(facetElement, Facet);
       } else {
         facet = <FacetSlider>Component.get(facetElement, FacetSlider);
       }

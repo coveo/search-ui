@@ -118,7 +118,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
      * Specifies the label of the button that allows to show the recommendation component when in responsive mode.
      * The default value is "Recommendations". 
      */
-    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption({ defaultValue: "Recommendations"})
+    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'Recommendations' })
   };
 
   private mainInterfaceQuery: IQuerySuccessEventArgs;

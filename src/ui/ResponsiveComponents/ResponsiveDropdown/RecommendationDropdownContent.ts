@@ -1,15 +1,36 @@
-import {ResponsiveDropdownContent} from './ResponsiveDropdownContent';
-import {Dom} from '../../../utils/Dom';
+import {IResponsiveDropdownContent, ResponsiveDropdownContent} from './ResponsiveDropdownContent';
+import {$$, Dom} from '../../../utils/Dom';
 
-export class RecommendationDropdownContent extends ResponsiveDropdownContent {
+export class RecommendationDropdownContent implements IResponsiveDropdownContent {
 
-  constructor(componentName: string, public element, coveoRoot: Dom, minWidth: number, widthRatio: number) {
-    super(componentName, element, coveoRoot, minWidth, widthRatio);
+  public static OPENED_DROPDOWN_CSS_CLASS_NAME = 'coveo-open-dropdown-content';
+
+  private cssClassName: string;
+
+  constructor(componentName: string, public element: Dom, private coveoRoot: Dom) {
+    this.cssClassName = `coveo-${componentName}-dropdown-content`;
+    this.element.addClass(this.cssClassName);
+    this.element.addClass(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
   }
 
   public positionDropdown() {
-    let dropdownHeaderWrapper = this.coveoRoot.find('.coveo-dropdown-header-wrapper');
-    this.element.insertAfter(dropdownHeaderWrapper);
-    this.element.el.style.display = 'block';
+    this.element.el.style.display = '';
+
+    let dropdownHeaderWrapper = this.coveoRoot.find('.coveo-results-column');
+    $$(dropdownHeaderWrapper).prepend(this.element.el);
+
+    window.getComputedStyle(this.element.el).maxHeight;
+
+    this.element.addClass(RecommendationDropdownContent.OPENED_DROPDOWN_CSS_CLASS_NAME);
+  }
+
+  public hideDropdown() {
+    this.element.removeClass(RecommendationDropdownContent.OPENED_DROPDOWN_CSS_CLASS_NAME);
+    this.element.el.style.display = 'none';
+  }
+
+  public cleanUp() {
+    this.element.removeClass(this.cssClassName);
+    this.element.addClass(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
   }
 }

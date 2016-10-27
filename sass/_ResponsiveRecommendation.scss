@@ -1,11 +1,60 @@
-.coveo-small-recommendation {
+@import "Variables.scss";
+.CoveoSearchInterface.coveo-small-recommendation {
+
   .coveo-recommendation-dropdown-header {
     @include order(1);
+
+    &.coveo-dropdown-header-active {
+      background-color: $color-blueish-white-grey;
+      border-color: $color-vibrant-blue;
+    }
+  }
+
+  .coveo-recommendation-dropdown-content {
+    @include transition(max-height 2000ms cubic-bezier(0.4, 0.0, 0.2, 1));
+    overflow: hidden;
+    max-height: 0;
+
+    &.coveo-open-dropdown-content {
+      max-height: 1000px;
+    }
   }
 
   .CoveoRecommendation, .coveo-recommendation-facet-column, .coveo-recommendation-dropdown-container {
     margin: 0;
     padding: 0;
+  }
+
+  .coveo-recommendation-column {
+    width: 100%;
+    padding: 0;
+  }
+
+  #coveo-recommendation-results-column {
+    padding: 0;
+  }
+
+  .CoveoRecommendation {
+    margin-top: 25px;
+    width: 100%;
+    border: none;
+    border-bottom: 5px solid $color-blueish-white-grey;
+  }
+
+  .CoveoResultlist {
+    .CoveoResult:first-child {
+      border-top: $default-border;
+    }
+  }
+
+  .coveo-recommendation-header {
+    padding: 5px 0 5px 0;
+    background-color: $color-blueish-white-grey;
+    border-bottom: $default-border;
+  }
+
+  .coveo-recommendation-title {
+    color: $color-blueish-gray;
   }
 }
 
@@ -16,12 +65,8 @@
   }
   
   .coveo-recommendation-facet-column {
-    width: 30%
+    width: 30%;
   }
-}
-
-.CoveoRecommendation {
-  display: block;
 }
 
 

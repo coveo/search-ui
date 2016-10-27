@@ -1,5 +1,5 @@
 import {ResponsiveDropdownHeader} from './ResponsiveDropdownHeader';
-import {ResponsiveDropdownContent} from './ResponsiveDropdownContent';
+import {IResponsiveDropdownContent} from './ResponsiveDropdownContent';
 import {$$, Dom} from '../../../utils/Dom';
 import {EventsUtils} from '../../../utils/EventsUtils';
 
@@ -16,7 +16,7 @@ export class ResponsiveDropdown {
   private popupBackground: Dom;
   private popupBackgroundIsEnabled: boolean = true;
 
-  constructor(public dropdownContent: ResponsiveDropdownContent, public dropdownHeader: ResponsiveDropdownHeader, public coveoRoot: Dom) {
+  constructor(public dropdownContent: IResponsiveDropdownContent, public dropdownHeader: ResponsiveDropdownHeader, public coveoRoot: Dom) {
     this.popupBackground = this.buildPopupBackground();
     this.bindOnClickDropdownHeaderEvent();
     this.saveContentPosition();

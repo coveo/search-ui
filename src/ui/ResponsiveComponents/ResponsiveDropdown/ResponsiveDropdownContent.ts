@@ -1,12 +1,20 @@
 import {$$, Dom} from '../../../utils/Dom';
 import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../../utils/PopupUtils';
 
-export class ResponsiveDropdownContent {
+export interface IResponsiveDropdownContent {
+  element: Dom;
+  
+  positionDropdown(): void;
+  hideDropdown(): void;
+  cleanUp(): void;
+}
+
+export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
   public static DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-content';
 
-  protected coveoRoot: Dom;
-
+  private coveoRoot: Dom;
   private cssClassName: string;
+  
   private widthRatio: number;
   private minWidth: number;
 
@@ -29,7 +37,7 @@ export class ResponsiveDropdownContent {
     this.element.el.style.width = width.toString() + 'px';
 
     PopupUtils.positionPopup(this.element.el, $$(this.coveoRoot.find('.coveo-dropdown-header-wrapper')).el, this.coveoRoot.el,
-      { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM }, this.coveoRoot.el);
+      { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM, verticalOffset: 15 }, this.coveoRoot.el);
   }
 
   public hideDropdown() {
