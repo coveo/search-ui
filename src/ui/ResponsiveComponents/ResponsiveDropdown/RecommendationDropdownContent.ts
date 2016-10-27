@@ -1,9 +1,11 @@
 import {IResponsiveDropdownContent, ResponsiveDropdownContent} from './ResponsiveDropdownContent';
 import {$$, Dom} from '../../../utils/Dom';
+import {EventsUtils} from '../../../utils/EventsUtils';
 
 export class RecommendationDropdownContent implements IResponsiveDropdownContent {
 
   public static OPENED_DROPDOWN_CSS_CLASS_NAME = 'coveo-open-dropdown-content';
+  public static CLOSED_DROPDOWN_CSS_CLASS_NAME = 'coveo-close-dropdown-content';
 
   private cssClassName: string;
 
@@ -11,10 +13,12 @@ export class RecommendationDropdownContent implements IResponsiveDropdownContent
     this.cssClassName = `coveo-${componentName}-dropdown-content`;
     this.element.addClass(this.cssClassName);
     this.element.addClass(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
+    this.element.addClass(RecommendationDropdownContent.CLOSED_DROPDOWN_CSS_CLASS_NAME);
   }
 
   public positionDropdown() {
     this.element.el.style.display = '';
+    this.element.removeClass(RecommendationDropdownContent.CLOSED_DROPDOWN_CSS_CLASS_NAME);
 
     let dropdownHeaderWrapper = this.coveoRoot.find('.coveo-results-column');
     $$(dropdownHeaderWrapper).prepend(this.element.el);
@@ -26,10 +30,11 @@ export class RecommendationDropdownContent implements IResponsiveDropdownContent
 
   public hideDropdown() {
     this.element.removeClass(RecommendationDropdownContent.OPENED_DROPDOWN_CSS_CLASS_NAME);
-    this.element.el.style.display = 'none';
+    this.element.addClass(RecommendationDropdownContent.CLOSED_DROPDOWN_CSS_CLASS_NAME);
   }
 
   public cleanUp() {
+    this.element.removeClass(RecommendationDropdownContent.CLOSED_DROPDOWN_CSS_CLASS_NAME);
     this.element.removeClass(this.cssClassName);
     this.element.addClass(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
   }

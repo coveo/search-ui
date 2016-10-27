@@ -163,6 +163,10 @@ $default-border: 1px solid $color-light-grey;
   }
 }
 
+@mixin standardTransition($transition-property, $transition-delay) {
+  @include transition($transition-property $transition-delay cubic-bezier(0.4, 0.0, 0.2, 1));
+}
+
 @include keyframes(coveo-spin) {
   from {
     @include transform(rotate(0deg));
