@@ -3,7 +3,7 @@ import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../../utils
 
 export interface IResponsiveDropdownContent {
   element: Dom;
-  
+
   positionDropdown(): void;
   hideDropdown(): void;
   cleanUp(): void;
@@ -14,7 +14,7 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
 
   private coveoRoot: Dom;
   private cssClassName: string;
-  
+
   private widthRatio: number;
   private minWidth: number;
 

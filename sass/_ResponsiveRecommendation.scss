@@ -3,6 +3,8 @@
 
   .coveo-recommendation-dropdown-header {
     @include order(1);
+    @include defaultRoundedBorder();
+    background-color: white;
 
     &.coveo-dropdown-header-active {
       background-color: $color-blueish-white-grey;
@@ -11,15 +13,14 @@
   }
 
   .coveo-recommendation-dropdown-content {
-    @include standardTransition(max-height, 200ms);
+    @include standardTransition(max-height, 250ms);
     overflow: hidden;
     max-height: 0;
+    width: 100%;
+    padding: 0;
     
     &.coveo-recommendation-column {
       display: block;
-    }
-    
-    &.coveo-close-dropdown-content {
     }
 
     &.coveo-open-dropdown-content {
@@ -32,17 +33,12 @@
     padding: 0;
   }
 
-  .coveo-recommendation-column {
-    width: 100%;
-    padding: 0;
-  }
-
   #coveo-recommendation-results-column {
     padding: 0;
   }
 
   .CoveoRecommendation {
-    margin-top: 25px;
+    margin: 25px 0 15px;
     width: 100%;
     border: none;
     border-bottom: 5px solid $color-blueish-white-grey;

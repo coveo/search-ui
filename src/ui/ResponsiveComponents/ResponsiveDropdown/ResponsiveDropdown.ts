@@ -85,6 +85,7 @@ export class ResponsiveDropdown {
 
   private hidePopupBackground() {
     if (this.popupBackgroundIsEnabled) {
+      // forces the browser to reflow the element, so that the transition is applied.
       window.getComputedStyle(this.popupBackground.el).opacity;
       this.popupBackground.el.style.opacity = '0';
     }

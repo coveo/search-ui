@@ -11,8 +11,6 @@
   .coveo-dropdown-header {
     font-size: $font-size-smallest;
     display: inline-block;
-    @include defaultRoundedBorder();
-    background-color: white;
     padding: 0px 7px 0px 7px;
     height: 22px;
     font-weight: 700;
