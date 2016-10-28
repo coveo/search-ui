@@ -1,5 +1,3 @@
-@import "Variables.scss";
-
 .CoveoSearchInterface.coveo-small-tabs, .CoveoSearchInterface.coveo-small-facets, .CoveoSearchInterface.coveo-small-recommendation {
 
   .coveo-dropdown-content {
@@ -44,11 +42,11 @@
 
   .coveo-dropdown-header-wrapper {
     width: 100%;
+    margin: 0;
+    padding: 0;
     @include display(inline-flex);
     @include flex-wrap(nowrap);
     @include justify-content(flex-end);
-    margin: 0;
-    padding: 0;
   }
 }
 
