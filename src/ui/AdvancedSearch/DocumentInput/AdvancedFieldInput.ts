@@ -13,6 +13,11 @@ export class AdvancedFieldInput extends DocumentInput {
     super(inputName);
   }
 
+  public reset() {
+    this.mode.reset();
+    this.input.reset();
+  }
+
   public build(): HTMLElement {
     let fieldInput = $$(super.build());
     this.mode = new Dropdown(this.onChange.bind(this), ['Contains', 'DoesNotContain', 'Matches']);

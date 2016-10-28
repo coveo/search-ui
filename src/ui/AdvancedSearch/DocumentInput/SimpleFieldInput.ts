@@ -14,6 +14,10 @@ export class SimpleFieldInput extends DocumentInput {
     super(inputName);
   }
 
+  public reset() {
+    this.dropDown.reset();
+  }
+
   public build(): HTMLElement {
     let fieldInput = $$(super.build());
     this.buildFieldSelect().then(() => {
