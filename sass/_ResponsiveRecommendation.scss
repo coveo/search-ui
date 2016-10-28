@@ -13,11 +13,15 @@
   }
 
   .coveo-recommendation-dropdown-content {
-    @include standardTransition(max-height, 250ms);
+    @include standardTransition(max-height, 300ms);
     overflow: hidden;
     max-height: 0;
     width: 100%;
     padding: 0;
+
+    @include smallMobile() {
+      @include standardTransition(max-height, 400ms);
+    }
     
     &.coveo-recommendation-column {
       display: block;
