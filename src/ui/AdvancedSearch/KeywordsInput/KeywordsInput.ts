@@ -11,6 +11,10 @@ export class KeywordsInput implements IAdvancedSearchInput {
   constructor(public inputName: string) {
   }
 
+  public reset() {
+    this.clear();
+  }
+
   public build(): HTMLElement {
     this.input = new TextInput(this.onChange.bind(this), this.inputName);
     return this.input.getElement();

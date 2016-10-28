@@ -27,6 +27,13 @@ export class Dropdown {
     this.bindEvents();
   }
 
+  /**
+   * Reset the dropdown
+   */
+  public reset() {
+    this.select(0, false);
+  }
+
   public setId(id: string) {
     $$(this.element).setAttribute('id', id);
   }

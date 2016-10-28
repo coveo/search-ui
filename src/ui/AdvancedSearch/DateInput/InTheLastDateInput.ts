@@ -13,6 +13,11 @@ export class InTheLastDateInput extends DateInput {
     super(l('InTheLast'));
   }
 
+  public reset() {
+    this.dropdown.reset();
+    this.spinner.reset();
+  }
+
   public build(): HTMLElement {
     super.build();
     let input = $$('fieldset', { className: 'coveo-advanced-search-date-input' });

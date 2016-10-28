@@ -7,9 +7,14 @@ import {RadioButton} from '../Form/RadioButton';
 export class DateInput implements IAdvancedSearchInput {
 
   protected element: HTMLElement;
+  private radio: RadioButton;
 
   constructor(public inputName: string) {
     this.buildContent();
+  }
+
+  public reset() {
+    this.radio.reset();
   }
 
   public build(): HTMLElement {
@@ -40,14 +45,14 @@ export class DateInput implements IAdvancedSearchInput {
   }
 
   private buildContent() {
-    let radio = new RadioButton(() => {
+    this.radio = new RadioButton(() => {
       this.deactivateAllInputs();
       this.activateSelectedInput();
     }, this.inputName);
-    this.element = radio.getElement();
+    this.element = this.radio.getElement();
     $$(this.element).addClass('coveo-advanced-search-date-input-section');
-    $$(radio.getRadio()).addClass('coveo-advanced-search-date');
-    $$(radio.getLabel()).addClass('coveo-advanced-search-label');
+    $$(this.radio.getRadio()).addClass('coveo-advanced-search-date');
+    $$(this.radio.getLabel()).addClass('coveo-advanced-search-label');
   }
 
   private deactivateAllInputs() {

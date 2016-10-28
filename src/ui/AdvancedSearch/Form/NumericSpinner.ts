@@ -24,6 +24,13 @@ export class NumericSpinner {
   }
 
   /**
+   * Reset the spinner
+   */
+  public reset() {
+    this.getSpinnerInput().value = '';
+  }
+
+  /**
    * Return the element on which the spinner is bound.
    * @returns {HTMLInputElement}
    */
