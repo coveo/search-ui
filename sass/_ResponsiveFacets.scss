@@ -1,4 +1,10 @@
 .CoveoSearchInterface.coveo-small-facets {
+
+  .coveo-facet-dropdown-content {
+    z-index: 20;
+    margin: 0;
+  }
+
   .coveo-facet-dropdown-header {
     margin: 0 8px 0 8px;
     @include order(2);
