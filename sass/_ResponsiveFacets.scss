@@ -4,6 +4,10 @@
     @include order(2);
     @include defaultRoundedBorder();
     background-color: white;
+
+    &.coveo-dropdown-header-active {
+      z-index: 20;
+    }
   }
   .coveo-facet-column.coveo-facet-dropdown-content {
     overflow-y: scroll;

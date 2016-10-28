@@ -18,6 +18,8 @@ export class RecommendationDropdownContent implements IResponsiveDropdownContent
 
     let dropdownHeaderWrapper = this.coveoRoot.find('.coveo-results-column');
     $$(dropdownHeaderWrapper).prepend(this.element.el);
+    this.element.addClass(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
+    this.element.addClass(this.cssClassName);
 
     // forces the browser to reflow the element, so that the transition is applied.
     window.getComputedStyle(this.element.el).maxHeight;
