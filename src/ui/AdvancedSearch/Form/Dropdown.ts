@@ -135,6 +135,14 @@ export class Dropdown {
 
   private bindEvents() {
     let button = $$(this.element).find('button');
+
+    $$(this.element).on('mouseleave', (e: MouseEvent) => {
+      setTimeout(() => {
+        if (e.target == this.element && $$(this.element).hasClass('coveo-open')) {
+          this.close();
+        }
+      }, 300);
+    });
     $$(button).on('click', () => {
       if ($$(this.element).hasClass('coveo-open')) {
         this.close();
