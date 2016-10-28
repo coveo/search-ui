@@ -15,7 +15,6 @@ import {IQuery} from '../src/rest/Query';
 import {NoopAnalyticsClient} from '../src/ui/Analytics/NoopAnalyticsClient';
 import {SearchEndpoint} from '../src/rest/SearchEndpoint';
 import {QueryController} from '../src/controllers/QueryController';
-declare var coveoanalytics: CoveoAnalytics.CoveoUA;
 
 export interface IMockEnvironment extends IComponentBindings {
   root: HTMLElement;

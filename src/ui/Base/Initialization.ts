@@ -167,7 +167,7 @@ export class Initialization {
     let searchInterface = new SearchInterface(element, options.SearchInterface, options.Analytics);
     searchInterface.options.originalOptionsObject = options;
     let initParameters: IInitializationParameters = { options: options, bindings: searchInterface.getBindings() };
-    Initialization.automaticallyCreateComponentsInside(element, initParameters);
+    Initialization.automaticallyCreateComponentsInside(element, initParameters, [Recommendation.ID]);
   }
 
   /**
@@ -210,6 +210,9 @@ export class Initialization {
     options = Initialization.resolveDefaultOptions(element, options);
     // Since a recommendation interface inherits from a search interface, we need to merge those if passed on init
     let optionsForRecommendation = _.extend({}, options.SearchInterface, options.Recommendation);
+    if (optionsForRecommendation.mainSearchInterface) {
+      optionsForRecommendation.firstLoadingAnimation = $$('span').el;
+    }
     let recommendation = new window['Coveo']['Recommendation'](element, optionsForRecommendation, options.Analytics);
     recommendation.options.originalOptionsObject = options;
     let initParameters: IInitializationParameters = { options: options, bindings: recommendation.getBindings() };
@@ -227,12 +230,22 @@ export class Initialization {
 
     let codeToExecute: { (): void }[] = [];
 
+    let htmlElementsToIgnore: HTMLElement[] = [];
+    _.each(ignore, (toIgnore)=> {
+      let rootToIgnore = $$(element).find(`.${Component.computeCssClassNameForType(toIgnore)}`);
+      if (rootToIgnore) {
+        let childsElementsToIgnore = $$(rootToIgnore).findAll('*');
+        htmlElementsToIgnore = htmlElementsToIgnore.concat(childsElementsToIgnore);
+      }
+    })
+
     for (let componentClassId in Initialization.autoCreateComponents) {
       if (!_.contains(ignore, componentClassId)) {
         let componentClass = Initialization.autoCreateComponents[componentClassId];
         let classname = Component.computeCssClassName(componentClass);
         let elements = $$(element).findAll('.' + classname);
-        if ($$(element).hasClass(classname)) {
+        elements = _.difference(elements, htmlElementsToIgnore);
+        if ($$(element).hasClass(classname) && !_.contains(htmlElementsToIgnore, element)) {
           elements.push(element);
         }
         if (elements.length != 0) {

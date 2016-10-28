@@ -16,8 +16,9 @@ import {$$} from '../../utils/Dom';
 import {INoResultsEventArgs} from '../../events/QueryEvents';
 import {IQueryErrorEventArgs} from '../../events/QueryEvents';
 import {IComponentBindings} from '../Base/ComponentBindings';
+import {history} from 'coveo.analytics';
 
-declare var coveoanalytics: CoveoAnalytics.CoveoUA;
+
 
 export interface IRecommendationOptions extends ISearchInterfaceOptions {
   mainSearchInterface?: HTMLElement;
@@ -181,12 +182,12 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   }
 
   private getHistory(): string {
-    if (typeof coveoanalytics != 'undefined') {
-      var store = new coveoanalytics.history.HistoryStore();
-      return JSON.stringify(store.getHistory());
-    } else {
-      return '[]';
+    var store = new history.HistoryStore();
+    let historyFromStore = store.getHistory();
+    if (historyFromStore == null) {
+      historyFromStore = [];
     }
+    return JSON.stringify(historyFromStore);
   }
 
   private preventEventPropagation() {

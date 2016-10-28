@@ -16,7 +16,7 @@ import {Utils} from '../utils/Utils';
 import {Promise} from 'es6-promise';
 import {BaseComponent} from '../ui/Base/BaseComponent';
 import {ModalBox} from '../ExternalModulesShim';
-declare const coveoanalytics: CoveoAnalytics.CoveoUA;
+import {history} from 'coveo.analytics';
 
 /**
  * Possible options when performing a query with the query controller
@@ -603,14 +603,12 @@ export class QueryController extends RootComponent {
   }
 
   private logQueryInActionsHistory(query: IQuery, isFirstQuery: boolean) {
-    if (typeof coveoanalytics != 'undefined') {
-      let store = new coveoanalytics.history.HistoryStore();
-      let queryElement: CoveoAnalytics.HistoryQueryElement = {
-        name: 'Query',
-        value: query.q,
-        time: JSON.stringify(new Date())
-      };
-      store.addElement(queryElement);
-    }
+    let store = new history.HistoryStore();
+    let queryElement: CoveoAnalytics.HistoryQueryElement = {
+      name: 'Query',
+      value: query.q,
+      time: JSON.stringify(new Date())
+    };
+    store.addElement(queryElement);
   }
 }
