@@ -110,6 +110,9 @@ export {ChatterPostedBy} from './ui/ChatterPostedBy/ChatterPostedBy';
 export {ChatterTopic} from './ui/ChatterTopic/ChatterTopic';
 export {ChatterUtils} from './utils/ChatterUtils';
 export {Logo} from './ui/Logo/Logo';
+export {Backdrop} from './ui/Backdrop/Backdrop';
+export {CardOverlay} from './ui/CardOverlay/CardOverlay';
+export {CardActionBar} from './ui/CardActionBar/CardActionBar';
 
 import {swapVar} from './SwapVar';
 swapVar(this);
