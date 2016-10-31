@@ -82,7 +82,7 @@ export class Debug extends RootComponent {
     let search = this.buildSearchBox(build.body);
     let downloadLink = $$('a', { download: 'debug.json', 'href': this.downloadHref(build.json) }, 'Download');
     let bodyBuilder = (results?: IQueryResults) => {
-      let build = builder();
+      let build = builder(results);
       downloadLink.el.setAttribute('href', this.downloadHref(build.json));
       return build.body;
     };
@@ -116,7 +116,7 @@ export class Debug extends RootComponent {
     if (this.stackDebug == null) {
       setTimeout(() => {
         let stackDebug = this.stackDebug;
-        this.showDebugPanel(() => this.buildStackPanel(stackDebug));
+        this.showDebugPanel((results?: IQueryResults) => this.buildStackPanel(stackDebug, results));
         this.stackDebug = null;
       });
       this.stackDebug = {};
@@ -286,7 +286,7 @@ export class Debug extends RootComponent {
     }
     checkbox.onchange = () => {
       this.debug = !this.debug;
-      $$(this.element).one(QueryEvents.querySuccess + ' ' + QueryEvents.queryError, (e: Event, args: IQuerySuccessEventArgs) => {
+      $$(this.element).one([QueryEvents.querySuccess, QueryEvents.queryError], (e: Event, args: IQuerySuccessEventArgs) => {
         $$(body).removeClass('coveo-debug-loading');
         $$(body).empty();
         $$(bodyBuilder(args.results)).children().forEach((child) => {
@@ -391,34 +391,41 @@ export class Debug extends RootComponent {
 
   public parseRankingInfo(value: string) {
     let rankingInfo = {};
+    if (value) {
+      let documentWeights = /Document weights:\n((?:.)*?)\n+/g.exec(value);
+      let termsWeight = /Terms weights:\n((?:.|\n)*)\n+/g.exec(value);
+      let totalWeight = /Total weight: ([0-9]+)/g.exec(value);
 
-    let infos = value.match(/^(?:Document weights:\n((?:.)*?)\n)?\n(?:Terms weights:\n((?:.|\n)*))?Total weight: ([0-9]+)$/);
+      if (documentWeights && documentWeights[1]) {
+        rankingInfo['Document weights'] = this.parseWeights(documentWeights[1]);
+      }
 
-    if (infos[1] != null) {
-      rankingInfo['Document weights'] = this.parseWeights(infos[1]);
-    }
-    if (infos[2] != null) {
-      let terms = StringUtils.match(infos[2], /((?:[^:]+: [0-9]+, [0-9]+; )+)\n((?:\w+: [0-9]+; )+)/g);
-      rankingInfo['Terms weights'] = _.object(_.map(terms, (term) => {
-        let words = _.object(_.map(StringUtils.match(term[1], /([^:]+): ([0-9]+), ([0-9]+); /g), (word) => {
+      if (totalWeight && totalWeight[1]) {
+        rankingInfo['Total weight'] = Number(totalWeight[1]);
+      }
+
+      if (termsWeight && termsWeight[1]) {
+        let terms = StringUtils.match(termsWeight[1], /((?:[^:]+: [0-9]+, [0-9]+; )+)\n((?:\w+: [0-9]+; )+)/g);
+        rankingInfo['Terms weights'] = _.object(_.map(terms, (term) => {
+          let words = _.object(_.map(StringUtils.match(term[1], /([^:]+): ([0-9]+), ([0-9]+); /g), (word) => {
+            return [
+              word[1],
+              {
+                Correlation: Number(word[2]),
+                'TF-IDF': Number(word[3]),
+              }
+            ];
+          }));
+          let weights = this.parseWeights(term[2]);
           return [
-            word[1],
+            _.keys(words).join(', '),
             {
-              Correlation: Number(word[2]),
-              'TF-IDF': Number(word[3]),
-            }
-          ];
+              terms: words,
+              Weights: weights
+            }];
         }));
-        let weights = this.parseWeights(term[2]);
-        return [
-          _.keys(words).join(', '),
-          {
-            terms: words,
-            Weights: weights
-          }];
-      }));
+      }
     }
-    rankingInfo['Total weight'] = Number(infos[3]);
 
     return rankingInfo;
   }

@@ -11,6 +11,8 @@ import {$$} from '../../utils/Dom';
 import {IAdvancedSearchInput, IAdvancedSearchPrebuiltInput, IAdvancedSearchSection, IExternalAdvancedSearchSection} from './AdvancedSearchInput';
 import {AdvancedSearchInputFactory} from './AdvancedSearchInputFactory';
 import {IQueryOptions} from '../../controllers/QueryController';
+import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
+import {QuerySummaryEvents} from '../../events/QuerySummaryEvents';
 
 export interface IAdvancedSearchOptions {
   includeKeywords?: boolean;
@@ -65,7 +67,17 @@ export class AdvancedSearch extends Component {
    * Launch the advanced search query.
    */
   public executeAdvancedSearch() {
+    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.advancedSearch, {});
     this.queryController.executeQuery();
+  }
+
+  /**
+   * Reset the state of all form input inside the advanced search component
+   */
+  public reset() {
+    _.each(this.inputs, (input) => {
+      input.reset();
+    });
   }
 
   private buildComponent() {
@@ -223,6 +235,10 @@ export class AdvancedSearch extends Component {
 
     this.bind.onRootElement(AdvancedSearchEvents.executeAdvancedSearch, () => {
       this.executeAdvancedSearch();
+    });
+
+    this.bind.onRootElement(QuerySummaryEvents.cancelLastAction, () => {
+      this.reset();
     });
   }
 

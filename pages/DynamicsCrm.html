@@ -2,12 +2,13 @@
 <html>
 
   <head>
-    <title>Email</title>
-    <meta about="Search Email content" />
+    <title>Dynamics CRM</title>
+    <meta about="Search Dynamics CRM content." />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0,  maximum-scale=1.0, user-scalable=0">
     <script src="js/CoveoJsSearch.js"></script>
+    <script src="js/CoveoJsSearch.Dependencies.js"></script>
     <script src="js/templates/templatesNew.js"></script>
     <link rel="stylesheet" href="css/CoveoFullSearchNewDesign.css" />
     <script>
@@ -16,13 +17,11 @@
         Coveo.init(document.body);
       })
     </script>
-
   </head>
 
   <body id="search" class='CoveoSearchInterface' data-enable-history="true" data-design="new">
-    <div class="CoveoFolding" data-field="@conversationreferenceid" data-tab="Email" data-parent-field="@containsattachment" data-child-field="@isattachment" data-range="0"></div>
     <div class="coveo-tab-section">
-      <a class="CoveoTab" data-id="Email" data-caption="Email" data-expression="@mailbox" data-sort="date descending"></a>
+      <a class="CoveoTab" data-id="DynamicsCRM" data-caption="Dynamics CRM" data-expression="@connectortype==Dynamics2Crawler"></a>
     </div>
     <div class='coveo-search-section'>
       <div class="CoveoSettings" data-include-in-menu=".CoveoShareQuery,.CoveoExportToExcel,.CoveoPreferencesPanel"></div>
@@ -30,12 +29,10 @@
     </div>
     <div class="coveo-main-section">
       <div class="coveo-facet-column">
-        <div class="CoveoFacet" data-title="Mailbox" data-field="@mailbox" data-tab="Email"></div>
-        <div class="CoveoFacet" data-title="From" data-field="@from" data-tab="Email"></div>
-        <div class="CoveoFacet" data-title="To" data-field="@to" data-tab="Email"></div>
-        <div class="CoveoFacet" data-title="File Type" data-field="@filetype" data-tab="Email"></div>
-        <div class="CoveoFacet" data-title="Year" data-field="@year" data-tab="Email"></div>
-        <div class="CoveoFacet" data-title="Month" data-field="@month" data-tab="Email"></div>
+        <div class="CoveoFacet" data-title="Type" data-field="@objecttype" data-tab="DynamicsCRM"></div>
+        <div class="CoveoFacet" data-title="Parent Account" data-field="@dyparentaccountidstring" data-computed-field="@dytotalamount" data-sort-criteria="ComputedFieldDescending" data-number-of-values="7" data-tab="DynamicsCRM"></div>
+        <div class="CoveoFacet" data-title="Status" data-field="@dystatuscodestring" data-tab="DynamicsCRM"></div>
+        <div class="CoveoFacetSlider" data-title="Created" data-field="@dycreatedon" data-slider-graph-steps="20" data-range-slider="true" data-date-field="true" data-tab="DynamicsCRM"></div>
       </div>
       <div class="coveo-results-column">
         <div class="CoveoShareQuery"></div>
@@ -50,9 +47,6 @@
             <span class="CoveoQuerySummary"></span>
             <span class="CoveoQueryDuration"></span>
           </div>
-          <div class="coveo-result-layout-section">
-            <span class="CoveoResultLayout"></span>
-          </div>
           <div class="coveo-sort-section">
             <span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span>
             <span class="CoveoSort" data-sort-criteria="date descending,date ascending" data-caption="Date"></span>
@@ -61,9 +55,7 @@
         <div class="CoveoHiddenQuery"></div>
         <div class="CoveoDidYouMean"></div>
         <div class="CoveoErrorReport"></div>
-        <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
-        <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
-        <div class="CoveoResultList" data-layout="table" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
+        <div class="CoveoResultList" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
         <div class="CoveoPager"></div>
         <div class="CoveoLogo"></div>
         <div class="CoveoResultsPerPage"></div>

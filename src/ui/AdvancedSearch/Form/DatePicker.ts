@@ -14,6 +14,7 @@ export class DatePicker {
   private element: HTMLInputElement;
   private picker: Pikaday;
   public name: string;
+  private wasReset = false;
 
   /**
    * Create a new date picker.
@@ -21,6 +22,14 @@ export class DatePicker {
    */
   constructor(public onChange: () => void = () => { }) {
     this.buildContent();
+  }
+
+  /**
+   * Reset the date picker
+   */
+  public reset() {
+    this.picker.setDate(undefined);
+    this.wasReset = true;
   }
 
   /**
@@ -36,6 +45,9 @@ export class DatePicker {
    * @returns {string}
    */
   public getValue(): string {
+    if (this.wasReset) {
+      return '';
+    }
     let date = this.picker.getDate();
     return date ? DateUtils.dateForQuery(this.picker.getDate()) : '';
   }
@@ -46,6 +58,7 @@ export class DatePicker {
    */
   public setValue(date: Date) {
     this.picker.setDate(date);
+    this.wasReset = false;
   }
 
   /**

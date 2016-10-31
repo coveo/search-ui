@@ -1,6 +1,5 @@
 import {Assert} from '../../misc/Assert';
 import {$$} from '../../utils/Dom';
-import {DebugEvents} from '../../events/DebugEvents';
 import {Logger} from '../../misc/Logger';
 
 declare var Coveo;
@@ -32,7 +31,6 @@ export class BaseComponent {
     Assert.exists(element);
     Assert.isNonEmptyString(type);
     this.logger = new Logger(this);
-    this.initDebugInfo();
     BaseComponent.bindComponentToElement(element, this);
   }
 
@@ -62,18 +60,6 @@ export class BaseComponent {
    */
   public enable() {
     this.disabled = false;
-  }
-
-
-  private initDebugInfo() {
-    $$(this.element).on('doubleclick', function (e: MouseEvent) {
-      if (e.altKey) {
-        var debugInfo = this.debugInfo();
-        if (debugInfo != null) {
-          $$(this.root).trigger(DebugEvents.showDebugPanel, this.debugInfo());
-        }
-      }
-    });
   }
 
   static bindComponentToElement(element: HTMLElement, component: BaseComponent) {

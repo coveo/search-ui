@@ -23,8 +23,15 @@ export class Dropdown {
   constructor(public onChange: () => void = () => {
   }, protected listOfValues: string[], private getDisplayValue: (string) => string = l, private label?: string) {
     this.buildContent();
-    this.select(0);
+    this.select(0, false);
     this.bindEvents();
+  }
+
+  /**
+   * Reset the dropdown
+   */
+  public reset() {
+    this.select(0, false);
   }
 
   public setId(id: string) {
@@ -65,8 +72,8 @@ export class Dropdown {
    * Select a value from it's 0 based index in the {@link Dropdown.listOfValues}.
    * @param index
    */
-  public select(index: number) {
-    this.selectOption(this.options[index]);
+  public select(index: number, executeOnChange = true) {
+    this.selectOption(this.options[index], executeOnChange);
   }
 
   /**
@@ -97,7 +104,7 @@ export class Dropdown {
     });
   }
 
-  private selectOption(option: HTMLElement) {
+  private selectOption(option: HTMLElement, executeOnChange = true) {
     this.selectedIcon.detach();
     let content = $$(option).find('span');
     $$(content).prepend(this.selectedIcon.el);
@@ -105,7 +112,9 @@ export class Dropdown {
     this.selected.setAttribute('value', value);
     this.selected.text(this.getDisplayValue(value));
     this.close();
-    this.onChange();
+    if (executeOnChange) {
+      this.onChange();
+    }
   }
 
 
@@ -133,6 +142,14 @@ export class Dropdown {
 
   private bindEvents() {
     let button = $$(this.element).find('button');
+
+    $$(this.element).on('mouseleave', (e: MouseEvent) => {
+      setTimeout(() => {
+        if (e.target == this.element && $$(this.element).hasClass('coveo-open')) {
+          this.close();
+        }
+      }, 300);
+    });
     $$(button).on('click', () => {
       if ($$(this.element).hasClass('coveo-open')) {
         this.close();

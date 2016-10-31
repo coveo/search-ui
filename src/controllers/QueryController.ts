@@ -51,6 +51,7 @@ export interface IQueryOptions {
    * It also makes sure that only relevant queries are logged. For exemple, the 'empty' interface load query isn't logged.
    */
   logInActionsHistory?: boolean;
+  isFirstQuery?: boolean;
   keepLastSearchUid?: boolean;
   closeModalBox?: boolean;
 }
@@ -183,9 +184,8 @@ export class QueryController extends RootComponent {
     }
 
     let query = queryBuilder.build();
-
     if (options.logInActionsHistory) {
-      this.logQueryInActionsHistory(query);
+      this.logQueryInActionsHistory(query, options.isFirstQuery);
     }
 
     let endpointToUse = this.getEndpoint();
@@ -602,7 +602,7 @@ export class QueryController extends RootComponent {
     return dom;
   }
 
-  private logQueryInActionsHistory(query: IQuery) {
+  private logQueryInActionsHistory(query: IQuery, isFirstQuery: boolean) {
     if (typeof coveoanalytics != 'undefined') {
       let store = new coveoanalytics.history.HistoryStore();
       let queryElement: CoveoAnalytics.HistoryQueryElement = {

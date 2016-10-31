@@ -19,6 +19,22 @@
     "priority": 0,
     "value": "raw.connectortype == 'DropboxCrawler'"
   },
+  "MobileDynamicsCrm": {
+    "priority": 1,
+    "value": "raw.dycoveoid != null && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "DynamicsCrm": {
+    "priority": 0,
+    "value": "raw.dycoveoid != null"
+  },
+  "MobileDynamicsCrmCase": {
+    "priority": 3,
+    "value": "raw.dyincidentid != null && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "DynamicsCrmCase": {
+    "priority": 2,
+    "value": "raw.dyincidentid != null"
+  },
   "MobileEmailThread" : {
     "priority": 1,
     "value": "raw.mailbox != undefined && Coveo.DeviceUtils.isSmallScreenWidth()"

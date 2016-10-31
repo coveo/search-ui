@@ -20,6 +20,13 @@ export class RadioButton {
   }
 
   /**
+   * Reset the radio button
+   */
+  public reset() {
+    (<HTMLInputElement>this.element).checked = false;
+  }
+
+  /**
    * Return the element on which the dropdown is bound.
    * @returns {HTMLElement}
    */
