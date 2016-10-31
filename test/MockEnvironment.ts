@@ -11,7 +11,6 @@ import {FakeResults} from './Fake';
 import {Component} from '../src/ui/Base/Component';
 import {Utils} from '../src/utils/Utils';
 import {BaseComponent} from '../src/ui/Base/BaseComponent';
-import {IQuery} from '../src/rest/Query';
 import {NoopAnalyticsClient} from '../src/ui/Analytics/NoopAnalyticsClient';
 import {SearchEndpoint} from '../src/rest/SearchEndpoint';
 import {QueryController} from '../src/controllers/QueryController';
