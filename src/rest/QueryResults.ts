@@ -130,7 +130,7 @@ export interface IQueryResults {
   /**
    * The keywords selected by Reveal's Refined Query feature
    */
-  refinedKeywords: string[];
+  refinedKeywords?: string[];
   _folded: boolean;
   _reusedSearchUid?: boolean;
 }
