@@ -281,7 +281,7 @@ export class ComponentEvents {
    * @param event The event for which to register an handler.
    * @param handler The function to execute when the event is triggered.
    */
-  public on(el: HTMLElement, event: string, handler: Function);
+  public on(el: HTMLElement | Window | Document, event: string, handler: Function);
   public on(el: Dom, event: string, handler: Function);
   public on(arg: any, event: string, handler: Function) {
     if (!JQueryUtils.getJQuery() || !JQueryUtils.isInstanceOfJQuery(arg)) {

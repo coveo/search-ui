@@ -39,8 +39,8 @@ $font-size-smaller: 14px;
 $font-size-smallest: 12px;
 
 // Border
-$default-border-radius: 4px;
-$small-border-radius: 2px;
+$default-border-radius: 2px;
+$small-border-radius: 1px;
 $default-border: 1px solid $color-light-grey;
 @mixin defaultRoundedBorder {
   border: $default-border;

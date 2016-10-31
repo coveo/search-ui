@@ -81,3 +81,13 @@
     }
   }
 }
+
+.coveo-card-overlay .CoveoFieldTable {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  margin: 10px 0 0;
+  th {
+    color: $color-light-grey;
+  }
+}

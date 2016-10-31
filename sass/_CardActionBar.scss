@@ -1,0 +1,31 @@
+.CoveoCardActionBar {
+  display: flex;
+  flex-wrap: wrap;
+
+  background-color: $color-greyish-dark-blue;
+  color: #fff;
+  margin: auto -20px -20px -20px;
+  padding: 0 0 10px 20px;
+  font-size: 0.75rem;
+  $action-bar-box-shadow-offset: 3px;
+  box-shadow: 0px 0px $action-bar-box-shadow-offset 2px rgba(0, 0, 0, 0.2);
+
+  transform: translateY(calc(100% + #{$action-bar-box-shadow-offset}));
+  transition: transform 0.2s ease-in-out;
+
+  &.coveo-opened {
+    transform: translateY(0);
+  }
+
+  > * {
+    display: flex;
+    align-items: center;
+    text-transform: uppercase;
+    margin-top: 10px;
+    margin-right: 20px;
+  }
+
+  .coveo-icon {
+    margin-right: 3px;
+  }
+}

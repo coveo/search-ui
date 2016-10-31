@@ -19,6 +19,7 @@ import {$$} from '../../utils/Dom';
 import {SearchEndpoint} from '../../rest/SearchEndpoint';
 import {ResultList} from '../ResultList/ResultList';
 import {StreamHighlightUtils} from '../../utils/StreamHighlightUtils';
+import {FacetUtils} from '../Facet/FacetUtils';
 import Globalize = require('globalize');
 import {IStringMap} from '../../rest/GenericParam';
 import {Quickview} from '../Quickview/Quickview';
@@ -26,8 +27,14 @@ import {Quickview} from '../Quickview/Quickview';
 /**
  * The core template helpers provided by default.
  *
- * Example usage (using Underscore templating):
+ * Example usage:
  *
+ * ### HTML
+ * ```
+ * <div class="CoveoFieldValue" data-helper="helperName" data-helper-options-optionName="option-value"></div>
+ * ```
+ *
+ * ### Underscore
  * ```
  * <%= helperName(argument1, argument2) %>
  * ```
@@ -495,6 +502,10 @@ TemplateHelpers.registerFieldHelper('size', (value: any, options?: { base?: numb
   }
   size = Math.floor(size * Math.pow(10, presision)) / Math.pow(10, presision);
   return size + ' ' + byteMeasure[base];
+});
+
+TemplateHelpers.registerFieldHelper('translatedCaption', (value: string) => {
+  return FacetUtils.tryToGetTranslatedCaption('@filetype', value);
 });
 
 TemplateHelpers.registerTemplateHelper('loadTemplate', (id: string, condition: boolean = true, data?: any) => {

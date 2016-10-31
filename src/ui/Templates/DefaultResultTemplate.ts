@@ -1,17 +1,25 @@
-import {Template} from './Template';
+import {Template, ITemplateOptions} from './Template';
 import {UnderscoreTemplate} from './UnderscoreTemplate';
 import {TemplateCache} from './TemplateCache';
 import {IQueryResult} from '../../rest/QueryResult';
 import {Assert} from '../../misc/Assert';
 
 
+/**
+ * This renders the appropriate result template, found in TemplateCache,
+ * according to its condition.
+ *
+ * For example, a result with a filetype of `YoutubeVideo` will get rendered
+ * with the `YoutubeVideo` template, because the latter is registered with a
+ * `condition` of `raw.filetype == 'YoutubeVideo'`.
+ */
 export class DefaultResultTemplate extends Template {
 
   constructor() {
     super();
   }
 
-  instantiateToString(queryResult?: IQueryResult): string {
+  instantiateToString(queryResult?: IQueryResult, checkCondition = true, options?: ITemplateOptions): string {
     Assert.exists(queryResult);
     queryResult = _.extend({}, queryResult, UnderscoreTemplate.templateHelpers);
 
@@ -27,8 +35,8 @@ export class DefaultResultTemplate extends Template {
       return 0;
     });
 
-    for (var i = 0; i < defaultTemplates.length; i++) {
-      var result = defaultTemplates[i].instantiateToString(queryResult);
+    for (let i = 0; i < defaultTemplates.length; i++) {
+      var result = defaultTemplates[i].instantiateToString(queryResult, undefined, options);
       if (result != null) {
         return result;
       }
@@ -41,9 +49,9 @@ export class DefaultResultTemplate extends Template {
       '</div>')(queryResult);
   }
 
-  instantiateToElement(queryResult?: IQueryResult): HTMLElement {
+  instantiateToElement(queryResult?: IQueryResult, checkCondition = true, options?: ITemplateOptions): HTMLElement {
     var div = document.createElement('div');
-    div.innerHTML = this.instantiateToString(queryResult);
+    div.innerHTML = this.instantiateToString(queryResult, checkCondition, options);
     return div;
   }
 

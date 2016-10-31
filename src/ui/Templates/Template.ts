@@ -3,6 +3,11 @@ import {StringUtils} from '../../utils/StringUtils';
 import {Initialization} from '../Base/Initialization';
 import {htmlToDom} from '../../utils/Dom';
 import {BaseComponent} from '../Base/BaseComponent';
+import {ValidLayout} from '../ResultLayout/ResultLayout';
+
+export interface ITemplateOptions {
+  layout: ValidLayout;
+}
 
 export class Template {
   static getFieldFromString(text: string) {
@@ -25,14 +30,24 @@ export class Template {
   constructor(public dataToString?: (object?: any) => string, public condition?: Function) {
   }
 
-  instantiateToString(object?: any, checkCondition = true): string {
+  /**
+   * Instantiate the template to a string if the condition matches
+   * @param object The template data to render
+   * @param checkCondition Whether to check the template condition or not. Default is `true`
+   * @param options The options for instantiation (see @ITemplateOptions)
+   *
+   */
+  instantiateToString(object?: any, checkCondition = true, options?: ITemplateOptions): string {
+    if (options) {
+      object.options = options;
+    }
     if (this.dataToString && (!checkCondition || this.condition == null || this.condition(object))) {
       return this.dataToString(object);
     }
     return null;
   }
 
-  instantiateToElement(object?: any, checkCondition = true): HTMLElement {
+  instantiateToElement(object?: any, checkCondition = true, options?: ITemplateOptions): HTMLElement {
     var html = this.instantiateToString(object, checkCondition);
     if (html != null) {
       var element = <HTMLElement>htmlToDom(html);

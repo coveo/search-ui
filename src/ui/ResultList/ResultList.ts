@@ -16,11 +16,13 @@ import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/Analytics
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
 import {Defer} from '../../misc/Defer';
 import {DeviceUtils} from '../../utils/DeviceUtils';
-import {ResultListEvents, IDisplayedNewResultEventArgs} from '../../events/ResultListEvents';
+import {ResultListEvents, IDisplayedNewResultEventArgs, IChangeLayoutEventArgs} from '../../events/ResultListEvents';
+import {ResultLayoutEvents} from '../../events/ResultLayoutEvents';
 import {Utils} from '../../utils/Utils';
 import {DomUtils} from '../../utils/DomUtils';
 import {Recommendation} from '../Recommendation/Recommendation';
 import {DefaultRecommendationTemplate} from '../Templates/DefaultRecommendationTemplate';
+import {ResultLayout, ValidLayout} from '../ResultLayout/ResultLayout';
 
 export interface IResultListOptions {
   resultContainer?: HTMLElement;
@@ -35,7 +37,9 @@ export interface IResultListOptions {
   enableInfiniteScrollWaitingAnimation?: boolean;
   fieldsToInclude?: IFieldOption[];
   autoSelectFieldsToInclude?: boolean;
+  layout?: string;
 }
+
 
 /**
  * This component is responsible for displaying the results of the current query using one or more result templates.<br/>
@@ -116,8 +120,8 @@ export class ResultList extends Component {
   static options: IResultListOptions = {
     /**
      * Specifies the element within which the rendered templates for results are inserted.<br/>
-     * The content of this element is cleared when a new query is performed. If this option is not specified, a &lt;div&gt; element will by dynamically created in javascript and appended to the result list and used as a result container.<br/>
-     * You can change the container by specifying it's selector: Eg  data-result-container-selector="#someCssSelector"
+     * The content of this element is cleared when a new query is performed. If this option is not specified, a &lt;div&gt; element will by dynamically created in JavaScript and appended to the result list and used as a result container.<br/>
+     * You can change the container by specifying its selector: Eg  data-result-container-selector="#someCssSelector"
      */
     resultContainer: ComponentOptions.buildChildHtmlElementOption({
       defaultFunction: (element: HTMLElement) => {
@@ -179,10 +183,16 @@ export class ResultList extends Component {
      * Default value is false.<br/>
      * NB: Many interface created by the interface editor will actually explicitly set this option to true.
      */
-    autoSelectFieldsToInclude: ComponentOptions.buildBooleanOption({ defaultValue: false })
+    autoSelectFieldsToInclude: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    layout: ComponentOptions.buildStringOption({
+      defaultValue: 'list',
+      required: true,
+      // validator: v => _.contains(ResultLayout.validLayouts, v)
+    })
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
+  private currentLayout: string;
   public currentlyDisplayedResults: IQueryResult[] = [];
   private fetchingMoreResults: Promise<IQueryResults>;
   private reachedTheEndOfResults = false;
@@ -215,11 +225,18 @@ export class ResultList extends Component {
     this.bind.onRootElement<IDuringQueryEventArgs>(QueryEvents.duringQuery, (args: IDuringQueryEventArgs) => this.handleDuringQuery());
     this.bind.onRootElement<IQueryErrorEventArgs>(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError());
 
+    $$(this.root).on(ResultListEvents.changeLayout, (e, args: IChangeLayoutEventArgs) => this.handleChangeLayout(args));
+
     if (this.options.enableInfiniteScroll) {
       this.handlePageChanged();
       this.bind.on(<HTMLElement>this.options.infiniteScrollContainer, 'scroll', (e: Event) => this.handleScrollOfResultList());
     }
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, () => this.handlePageChanged());
+
+    $$(this.options.resultContainer).addClass('coveo-result-list-container');
+    $$(this.options.resultContainer).addClass(`coveo-${this.options.layout}-layout`);
+
+    $$(this.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => args.layouts.push(this.options.layout));
   }
 
   /**
@@ -265,7 +282,7 @@ export class ResultList extends Component {
     Assert.exists(result);
     QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), result);
     ResultList.resultCurrentlyBeingRendered = result;
-    var resultElement = this.options.resultTemplate.instantiateToElement(result);
+    var resultElement = this.options.resultTemplate.instantiateToElement(result, true, { layout: <ValidLayout>this.currentLayout });
     if (resultElement != null) {
       Component.bindResultToElement(resultElement, result);
     }
@@ -329,6 +346,15 @@ export class ResultList extends Component {
    */
   public getDisplayedResultsElements(): HTMLElement[] {
     return $$(this.options.resultContainer).findAll('.CoveoResult');
+  }
+
+  public enable() {
+    super.enable();
+    this.element.style.display = 'block';
+  }
+  public disable() {
+    super.disable();
+    this.element.style.display = 'none';
   }
 
   protected autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult) {
@@ -436,6 +462,12 @@ export class ResultList extends Component {
       args.queryBuilder.addRequiredFields(this.getAutoSelectedFieldsToInclude());
       args.queryBuilder.includeRequiredFields = true;
     }
+  }
+
+  private handleChangeLayout(args: IChangeLayoutEventArgs) {
+    this.currentLayout = args.layout;
+    args.layout === this.options.layout ? this.enable() : this.disable();
+    this.queryController.executeQuery();
   }
 
   private getAutoSelectedFieldsToInclude() {

@@ -20,6 +20,7 @@ export interface ITabOptions {
   icon?: string;
   caption?: string;
   sort?: string;
+  layout?: string;
   endpoint?: SearchEndpoint;
   enableDuplicateFiltering?: boolean;
   pipeline?: string;
@@ -99,6 +100,14 @@ export class Tab extends Component {
      */
     sort: ComponentOptions.buildStringOption(),
     /**
+     * Specifies the default layout when this tab is selected.<br/>
+     * The value must be one of "list", "card", or "table".<br/>
+     * This parameter is overridden by by a URL parameter.<br/>
+     * Optional. If not specified, the first available layout will be choosed.
+     */
+    // TODO: Add validator when merged
+    layout: ComponentOptions.buildStringOption(),
+    /**
      * Specifies whether the filter expression should be included in the constant part of the query.<br/>
      * The constant part of the query is specially optimized by the index to execute faster, but you must be careful not to include dynamic query expressions otherwise the cache would lose its efficiency.<br/>
      * By default, this option is set to `true`.
@@ -164,7 +173,8 @@ export class Tab extends Component {
     if (!this.disabled) {
       this.queryStateModel.setMultiple({
         t: this.options.id,
-        sort: this.options.sort || QueryStateModel.defaultAttributes.sort
+        sort: this.options.sort || QueryStateModel.defaultAttributes.sort,
+        layout: this.options.layout
       });
       this.usageAnalytics.logSearchEvent<IAnalyticsInterfaceChange>(analyticsActionCauseList.interfaceChange, { interfaceChangeTo: this.options.id });
       this.queryController.executeQuery();
