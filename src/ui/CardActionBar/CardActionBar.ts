@@ -19,6 +19,8 @@ export interface ICardActionBarOptions {
 export class CardActionBar extends Component {
   static ID = 'CardActionBar';
 
+  parentResult: HTMLElement;
+
   /**
    * @componentOptions
    */
@@ -34,8 +36,12 @@ export class CardActionBar extends Component {
     super(element, CardActionBar.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, CardActionBar, options);
 
+    this.parentResult = $$(this.element).closest('CoveoResult');
+    Assert.check(this.parentResult !== undefined, 'ActionBar needs to be a child of a Result')
+
     if (this.options.hidden) {
       this.bindEvents();
+      this.appendArrow();
     } else {
       this.element.style.transition = 'none';
       this.element.style.transform = 'none';
@@ -58,12 +64,16 @@ export class CardActionBar extends Component {
   }
 
   private bindEvents() {
-    let resultList = $$(this.element).closest('CoveoResult');
-    Assert.check(resultList !== undefined, 'ActionBar needs to be a child of a Result')
-    $$(resultList).on('click', () => this.show());
-    $$(resultList).on('mouseleave', () => this.hide());
+    $$(this.parentResult).on('click', () => this.show());
+    $$(this.parentResult).on('mouseleave', () => this.hide());
   }
 
+  private appendArrow() {
+    this.parentResult.appendChild(
+      $$('div', { className: 'coveo-card-action-bar-arrow-container' },
+        $$('span', { className: 'coveo-icon coveo-sprites-arrow-up'})).el
+    );
+  }
 }
 
 Initialization.registerAutoCreateComponent(CardActionBar);

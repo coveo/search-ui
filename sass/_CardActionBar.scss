@@ -29,3 +29,11 @@
     margin-right: 3px;
   }
 }
+
+.coveo-card-action-bar-arrow-container {
+  position: absolute;
+  text-align: center;
+  z-index: -1;
+  bottom: 0;
+  width: 100%;
+}

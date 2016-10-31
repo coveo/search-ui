@@ -43,22 +43,36 @@ export function CardActionBarTest() {
           $$(parentResult).trigger('mouseleave');
           expect(test.cmp.hide).toHaveBeenCalledTimes(1);
         });
+
+        it('should display an arrow indicator in its parent CoveoResult', function () {
+          expect($$(parentResult).find('.coveo-card-action-bar-arrow-container')).not.toBeNull();
+        });
       });
 
-      it('hidden set to false should always be hidden', function () {
-        test = Mock.advancedComponentSetup<CardActionBar>(CardActionBar, <Mock.AdvancedComponentSetupOptions>{
-          modifyBuilder: b => {
-            parentResult = $$('div', { className: 'CoveoResult' }, $$('div')).el;
-            return b.withElement(<HTMLElement>parentResult.firstChild);
-          },
-          cmpOptions: {
-            hidden: false
-          }
+      describe('hidden set to false', function () {
+        beforeEach(function() {
+          test = Mock.advancedComponentSetup<CardActionBar>(CardActionBar, <Mock.AdvancedComponentSetupOptions>{
+            modifyBuilder: b => {
+              parentResult = $$('div', { className: 'CoveoResult' }, $$('div')).el;
+              return b.withElement(<HTMLElement>parentResult.firstChild);
+            },
+            cmpOptions: {
+              hidden: false
+            }
+          });
         });
-        spyOn(test.cmp, 'show');
-        $$(parentResult).trigger('click');
-        expect(test.cmp.show).not.toHaveBeenCalled();
+
+        it('should always be hidden', function () {
+          spyOn(test.cmp, 'show');
+          $$(parentResult).trigger('click');
+          expect(test.cmp.show).not.toHaveBeenCalled();
+        });
+
+        it('should not display an arrow indicator in its parent CoveoResult', function () {
+          expect($$(parentResult).find('.coveo-card-action-bar-arrow-container')).toBeNull();
+        });
       });
+
     });
 
     it('show should add coveo-opened class', function () {
