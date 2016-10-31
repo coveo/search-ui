@@ -77,7 +77,11 @@
   },
   "MobilePeople": {
     "priority": 1,
-    "value": "raw.fullname != undefined && (Coveo.DeviceUtils.isSmallScreenWidth() || options.layout === 'card')"
+    "value": "raw.fullname != undefined && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "CardPeople": {
+    "priority": 2,
+    "value": "raw.fullname != undefined && options.layout === 'card'"
   },
   "People": {
     "priority": 1,
@@ -85,7 +89,11 @@
   },
   "MobileSalesforce": {
     "priority": 1,
-    "value": "(raw.sfid != null || raw.sfid != null) && (Coveo.DeviceUtils.isSmallScreenWidth() || options.layout === 'card')"
+    "value": "(raw.sfid != null || raw.sfid != null) && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "CardSalesforce": {
+    "priority": 2,
+    "value": "(raw.sfid != null || raw.sfid != null) && options.layout === 'card'"
   },
   "Salesforce": {
     "priority": 0,
