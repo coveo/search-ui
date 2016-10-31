@@ -35,7 +35,7 @@ export class CardOverlay extends Component {
     /**
      * The icon of the overlay. Will also be displayed as the button's icon.
      */
-    icon: ComponentOptions.buildStringOption()
+    icon: ComponentOptions.buildIconOption()
   };
 
   constructor(public element: HTMLElement, public options?: ICardOverlayOptions, bindings?: IComponentBindings) {
@@ -62,7 +62,7 @@ export class CardOverlay extends Component {
 
     // Create header
     let overlayHeader = $$('div', { className: 'coveo-card-overlay-header' }).el;
-    this.createButton(overlayHeader, false);
+    this.createButton(overlayHeader);
     this.overlay.appendChild(overlayHeader);
 
     // Create body
@@ -82,14 +82,12 @@ export class CardOverlay extends Component {
     this.parentCard.appendChild(this.overlay);
   }
 
-  private createButton(element: HTMLElement, clickAction: boolean = true) {
+  private createButton(element: HTMLElement) {
     if (this.options.icon) {
       element.appendChild($$('span', { className: 'coveo-icon ' + this.options.icon }).el);
     }
     element.appendChild(document.createTextNode(this.options.title));
-    if (clickAction) {
-      $$(element).on('click', () => this.toggleOverlay());
-    }
+    $$(element).on('click', () => this.toggleOverlay());
   }
 }
 
