@@ -210,6 +210,8 @@ export class Initialization {
     options = Initialization.resolveDefaultOptions(element, options);
     // Since a recommendation interface inherits from a search interface, we need to merge those if passed on init
     let optionsForRecommendation = _.extend({}, options.SearchInterface, options.Recommendation);
+    // If there is a main search interface, modify the loading animation for the recommendation interface to a "noop" element
+    // We don't want 2 animation overlapping
     if (optionsForRecommendation.mainSearchInterface) {
       optionsForRecommendation.firstLoadingAnimation = $$('span').el;
     }
