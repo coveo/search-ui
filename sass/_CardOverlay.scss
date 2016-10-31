@@ -15,11 +15,27 @@
   background-color: $color-greyish-dark-blue;
   color: #fff;
 
-  transition: transform 0.5s ease-in-out;
+  $slide-duration: 0.5s;
+  transition: transform $slide-duration ease-in-out;
   transform: translateY(100%);
+
+  @keyframes coveo-card-overlay-fade-out {
+    0% { opacity: 1; }
+    60% { opacity: 1; }
+    80% { opacity: 0; }
+    100% { opacity: 0; }
+  }
+  animation: coveo-card-overlay-fade-out $slide-duration linear;
 
   &.coveo-opened {
     transform: translateY(0);
+    @keyframes coveo-card-overlay-fade-in {
+      0% { opacity: 0; }
+      20% { opacity: 0; }
+      40% { opacity: 1; }
+      100% { opacity: 1; }
+    }
+    animation: coveo-card-overlay-fade-in $slide-duration linear;
   }
 }
 
