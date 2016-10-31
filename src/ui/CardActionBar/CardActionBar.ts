@@ -15,6 +15,8 @@ export interface ICardActionBarOptions {
 /**
  * This component displays an action bar at the bottom of the card results (see
  * {@link ResultLayout}).
+ *
+ * By default, CardActionBar is toggleable, with its default state being hidden.
  */
 export class CardActionBar extends Component {
   static ID = 'CardActionBar';
@@ -28,6 +30,9 @@ export class CardActionBar extends Component {
     /**
      * Specifies if the action bar is hidden unless the cursor clicks its parent
      * `Result` component.
+     *
+     * By default, it is hidden and a visual indicator is appended to the parent
+     * result.
      */
     hidden: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
@@ -58,7 +63,6 @@ export class CardActionBar extends Component {
   /**
    * Hide the ActionBar
    */
-
   public hide() {
     $$(this.element).removeClass('coveo-opened');
   }
