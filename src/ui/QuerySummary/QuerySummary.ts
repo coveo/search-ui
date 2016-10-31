@@ -9,6 +9,7 @@ import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/Analytics
 import {Initialization} from '../Base/Initialization';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import Globalize = require('globalize');
+import {QuerySummaryEvents} from '../../events/QuerySummaryEvents';
 
 export interface IQuerySummaryOptions {
   enableSearchTips?: boolean;
@@ -108,6 +109,7 @@ export class QuerySummary extends Component {
       if (this.lastKnownGoodState) {
         this.queryStateModel.reset();
         this.queryStateModel.setMultiple(this.lastKnownGoodState);
+        $$(this.root).trigger(QuerySummaryEvents.cancelLastAction);
         this.queryController.executeQuery();
       } else {
         history.back();

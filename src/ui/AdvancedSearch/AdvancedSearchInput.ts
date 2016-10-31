@@ -13,6 +13,7 @@ export type BaseFormTypes = NumericSpinner | DatePicker | Dropdown | TextInput |
 export interface IAdvancedSearchInput {
   build: () => HTMLElement;
   updateQuery: (queryBuilder: QueryBuilder) => void;
+  reset: () => void;
 }
 
 export interface IAdvancedSearchPrebuiltInput {

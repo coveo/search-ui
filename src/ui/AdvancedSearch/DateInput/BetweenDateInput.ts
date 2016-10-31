@@ -12,6 +12,11 @@ export class BetweenDateInput extends DateInput {
     super(l('Between'));
   }
 
+  public reset() {
+    this.firstDatePicker.reset();
+    this.secondDatePicker.reset();
+  }
+
   public build(): HTMLElement {
     super.build();
     let container = $$('fieldset', { className: 'coveo-advanced-search-date-input' });
