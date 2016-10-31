@@ -86,7 +86,7 @@ export class CardOverlay extends Component {
     if (this.options.icon) {
       element.appendChild($$('span', { className: 'coveo-icon ' + this.options.icon }).el);
     }
-    element.appendChild(document.createTextNode(this.options.title));
+    element.appendChild($$('span', { className: 'coveo-label' }, this.options.title).el);
     $$(element).on('click', () => this.toggleOverlay());
   }
 }
