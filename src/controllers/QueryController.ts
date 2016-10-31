@@ -78,6 +78,7 @@ class DefaultQueryOptions implements IQueryOptions {
  */
 export class QueryController extends RootComponent {
   static ID = 'QueryController';
+  public historyStore: CoveoAnalytics.HistoryStore;
 
   private currentPendingQuery: Promise<IQueryResults>;
   private lastQueryBuilder: QueryBuilder;
@@ -103,6 +104,7 @@ export class QueryController extends RootComponent {
     Assert.exists(element);
     Assert.exists(options);
     this.firstQuery = true;
+    this.historyStore = new history.HistoryStore();
   }
 
   /**
@@ -603,12 +605,11 @@ export class QueryController extends RootComponent {
   }
 
   private logQueryInActionsHistory(query: IQuery, isFirstQuery: boolean) {
-    let store = new history.HistoryStore();
     let queryElement: CoveoAnalytics.HistoryQueryElement = {
       name: 'Query',
       value: query.q,
       time: JSON.stringify(new Date())
     };
-    store.addElement(queryElement);
+    this.historyStore.addElement(queryElement);
   }
 }

@@ -322,32 +322,3 @@ export function advancedResultComponentSetup<T>(klass, result: IQueryResult, opt
     cmp: <T>new klass(envBuilder.getBindings().element, optsMerged.cmpOptions, envBuilder.getBindings(), envBuilder.result, envBuilder.os)
   };
 }
-
-export function initPageViewScript(store: CoveoAnalytics.HistoryStore) {
-  class HistoryStoreMock {
-    constructor() {
-    }
-
-    public addElement(query: IQuery) {
-      store.addElement(query);
-    }
-
-    public getHistory() {
-      return store.getHistory();
-    }
-
-    public setHistory(history: any[]) {
-      store.setHistory(history);
-    }
-
-    public clear() {
-      store.clear();
-    }
-  }
-
-  window['coveoanalytics'] = {
-    history: {
-      HistoryStore: HistoryStoreMock
-    }
-  };
-}

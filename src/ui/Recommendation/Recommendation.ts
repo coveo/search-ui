@@ -18,8 +18,6 @@ import {IQueryErrorEventArgs} from '../../events/QueryEvents';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {history} from 'coveo.analytics';
 
-
-
 export interface IRecommendationOptions extends ISearchInterfaceOptions {
   mainSearchInterface?: HTMLElement;
   userContext?: string;
@@ -94,8 +92,10 @@ export class Recommendation extends SearchInterface implements IComponentBinding
 
   };
 
-  private mainInterfaceQuery: IQuerySuccessEventArgs;
   public mainQuerySearchUID: string;
+  public historyStore: CoveoAnalytics.HistoryStore;
+
+  private mainInterfaceQuery: IQuerySuccessEventArgs;
   private displayStyle: string;
 
   constructor(public element: HTMLElement, public options: IRecommendationOptions = {}, public analyticsOptions = {}, _window = window) {
@@ -119,7 +119,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
 
     // This is done to allow the component to be included in another search interface without triggering the parent events.
     this.preventEventPropagation();
-
+    this.historyStore = new history.HistoryStore();
   }
 
   public getId(): string {
@@ -182,8 +182,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   }
 
   private getHistory(): string {
-    var store = new history.HistoryStore();
-    let historyFromStore = store.getHistory();
+    let historyFromStore = this.historyStore.getHistory();
     if (historyFromStore == null) {
       historyFromStore = [];
     }

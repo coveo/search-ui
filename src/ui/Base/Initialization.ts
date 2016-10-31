@@ -231,19 +231,23 @@ export class Initialization {
     let codeToExecute: { (): void }[] = [];
 
     let htmlElementsToIgnore: HTMLElement[] = [];
-    _.each(ignore, (toIgnore)=> {
+    // Scan for elements to ignore which can be a container component (with other component inside)
+    // When a component is ignored, all it's children component should be ignored too.
+    // Add them to the array of html elements that should be skipped.
+    _.each(ignore, (toIgnore) => {
       let rootToIgnore = $$(element).find(`.${Component.computeCssClassNameForType(toIgnore)}`);
       if (rootToIgnore) {
         let childsElementsToIgnore = $$(rootToIgnore).findAll('*');
         htmlElementsToIgnore = htmlElementsToIgnore.concat(childsElementsToIgnore);
       }
-    })
+    });
 
     for (let componentClassId in Initialization.autoCreateComponents) {
       if (!_.contains(ignore, componentClassId)) {
         let componentClass = Initialization.autoCreateComponents[componentClassId];
         let classname = Component.computeCssClassName(componentClass);
         let elements = $$(element).findAll('.' + classname);
+        // From all the component we found which match the current className, remove those that should be ignored
         elements = _.difference(elements, htmlElementsToIgnore);
         if ($$(element).hasClass(classname) && !_.contains(htmlElementsToIgnore, element)) {
           elements.push(element);
