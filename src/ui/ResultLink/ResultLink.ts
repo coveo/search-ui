@@ -70,7 +70,6 @@ export class ResultLink extends Component {
 
     /**
      * Specifies a template string to use to generate the href.
-     *
      * It is possible to reference fields from the associated result:
      *
      * Ex: `${clickUri}?id=${title}` will generate something like `http://uri.com?id=documentTitle`
