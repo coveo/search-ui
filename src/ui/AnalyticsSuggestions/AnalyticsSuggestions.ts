@@ -125,12 +125,14 @@ export class AnalyticsSuggestions extends Component {
         }
         let element = this.suggestionForOmnibox.buildOmniboxElement(this.resultsToBuildWith, args);
         this.currentlyDisplayedSuggestions = {};
-        _.map($$(element).findAll('.coveo-omnibox-selectable'), (selectable, i?) => {
-          this.currentlyDisplayedSuggestions[$$(selectable).text()] = {
-            element: selectable,
-            pos: i
-          };
-        });
+        if (element) {
+          _.map($$(element).findAll('.coveo-omnibox-selectable'), (selectable, i?) => {
+            this.currentlyDisplayedSuggestions[$$(selectable).text()] = {
+              element: selectable,
+              pos: i
+            };
+          });
+        }
         resolve({
           element: element,
           zIndex: this.options.omniboxZIndex
@@ -161,9 +163,9 @@ export class AnalyticsSuggestions extends Component {
 
   private cleanCustomData(toClean: string[], rejectLength = 256) {
     // Filter out only consecutive values that are the identical
-    toClean = _.filter(toClean, (partial: string, pos?: number, array?: string[]) => {
+    toClean = _.compact(_.filter(toClean, (partial: string, pos?: number, array?: string[]) => {
       return pos === 0 || partial !== array[pos - 1];
-    });
+    }));
 
     // Custom dimensions cannot be an array in analytics service: Send a string joined by ; instead.
     // Need to replace ;
