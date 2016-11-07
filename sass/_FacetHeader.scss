@@ -1,13 +1,14 @@
 .coveo-facet-header {
   padding: 10px 20px;
-  background: white;
+  background: $color-blueish-white;
   clear: both;
   overflow: hidden;
   @include border-top-radius($default-border-radius);
 }
 
 .coveo-facet-header-title {
-  font-size: $font-size-biggest;
+  color: $color-greyish-teal-blue;
+  font-size: $font-size-regular;
   float:left;
 }
 

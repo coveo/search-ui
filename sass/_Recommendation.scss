@@ -2,8 +2,7 @@
   margin: 10px 0;
   padding: 0;
   position: relative;
-  border: $default-border;
-  border-radius: $small-border-radius;
+  @include defaultRoundedBorder();
 }
 
 .coveo-recommendation-header {
