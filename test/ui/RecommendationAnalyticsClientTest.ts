@@ -46,8 +46,12 @@ export function RecommendationAnalyticsClientTest() {
     it('should log a second click on the main interface', function () {
       spyOn(mainSearchInterface.cmp.usageAnalytics, 'logClickEvent');
       recommendation.cmp.mainQuerySearchUID = '123';
+      recommendation.cmp.mainQueryPipeline = 'main pipeline';
       client.logClickEvent(analyticsActionCauseList.documentOpen, {}, FakeResults.createFakeResult('foo'), clickElement);
-      expect(mainSearchInterface.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledWith(analyticsActionCauseList.recommendationOpen, jasmine.any(Object), jasmine.any(Object), clickElement);
+      expect(mainSearchInterface.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledWith(analyticsActionCauseList.recommendationOpen, jasmine.any(Object), jasmine.objectContaining({
+        pipeline: 'main pipeline',
+        queryUid: '123'
+      }), clickElement);
     });
 
     it('should not log a second click on the main interface if there were no main interface query', function () {

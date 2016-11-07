@@ -18,6 +18,11 @@ export class SizeInput extends DocumentInput {
     super('Size');
   }
 
+  public reset() {
+    this.modeSelect.reset();
+    this.sizeInput.reset();
+  }
+
   public build(): HTMLElement {
     let sizeInput = $$(super.build());
     let sizeInputSection = $$('div', { className: 'coveo-size-input-mode-section' });

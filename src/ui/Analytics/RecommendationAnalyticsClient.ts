@@ -39,10 +39,12 @@ export class RecommendationAnalyticsClient extends LiveAnalyticsClient {
 
     super.logClickEvent(actionCause, meta, result, element);
 
-    if (this.recommendation.mainQuerySearchUID) {
+
+    if (this.recommendation.mainQuerySearchUID && this.recommendation.mainQueryPipeline != null) {
       // We log a second click associated with the main interface query to tell the analytics that the query was a success.
       let mainInterface = <SearchInterface>Component.get(this.recommendation.options.mainSearchInterface, SearchInterface);
       result.queryUid = this.recommendation.mainQuerySearchUID;
+      result.pipeline = this.recommendation.mainQueryPipeline;
       mainInterface.usageAnalytics.logClickEvent(actionCause, meta, result, element);
     }
   }
