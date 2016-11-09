@@ -17,12 +17,15 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
 
   private widthRatio: number;
   private minWidth: number;
+  private previousSibling: Dom;
+  private parent: Dom;
 
   constructor(componentName: string, public element: Dom, coveoRoot: Dom, minWidth: number, widthRatio: number) {
     this.cssClassName = `coveo-${componentName}-dropdown-content`;
     this.coveoRoot = coveoRoot;
     this.widthRatio = widthRatio;
     this.minWidth = minWidth;
+    this.saveContentPosition();
   }
 
   public positionDropdown() {
@@ -48,6 +51,22 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
 
   public cleanUp() {
     this.element.el.removeAttribute('style');
+    this.restoreContentPosition();
+  }
+
+  private saveContentPosition() {
+    let dropdownContentPreviousSibling = this.element.el.previousSibling;
+    let dropdownContentParent = this.element.el.parentElement;
+    this.previousSibling = dropdownContentPreviousSibling ? $$(<HTMLElement>dropdownContentPreviousSibling) : null;
+    this.parent = $$(dropdownContentParent);
+  }
+
+  private restoreContentPosition() {
+    if (this.previousSibling) {
+      this.element.insertAfter(this.previousSibling.el);
+    } else {
+      this.parent.prepend(this.element.el);
+    }
   }
 
 

@@ -6,6 +6,7 @@ import {EventsUtils} from '../../../utils/EventsUtils';
 export class ResponsiveDropdown {
 
   public static TRANSPARENT_BACKGROUND_OPACITY: string = '0.9';
+  public static DROPDOWN_BACKGROUND_CSS_CLASS_NAME: string = 'coveo-dropdown-background';
 
   public isOpened: boolean = false;
 
@@ -19,7 +20,6 @@ export class ResponsiveDropdown {
   constructor(public dropdownContent: IResponsiveDropdownContent, public dropdownHeader: ResponsiveDropdownHeader, public coveoRoot: Dom) {
     this.popupBackground = this.buildPopupBackground();
     this.bindOnClickDropdownHeaderEvent();
-    this.saveContentPosition();
   }
 
   public registerOnOpenHandler(handler: Function) {
@@ -34,7 +34,6 @@ export class ResponsiveDropdown {
     this.close();
     this.dropdownHeader.cleanUp();
     this.dropdownContent.cleanUp();
-    this.restoreContentPosition();
   }
 
   public open() {
@@ -92,28 +91,13 @@ export class ResponsiveDropdown {
   }
 
   private buildPopupBackground(): Dom {
-    let popupBackground = $$('div', { className: 'coveo-facet-dropdown-background' });
+    let popupBackground = $$('div', { className: ResponsiveDropdown.DROPDOWN_BACKGROUND_CSS_CLASS_NAME });
     EventsUtils.addPrefixedEvent(popupBackground.el, 'TransitionEnd', () => {
       if (popupBackground.el.style.opacity == '0') {
         popupBackground.detach();
       }
-    });
+  });
     popupBackground.on('click', () => this.close());
     return popupBackground;
-  }
-
-  private saveContentPosition() {
-    let dropdownContentPreviousSibling = this.dropdownContent.element.el.previousSibling;
-    let dropdownContentParent = this.dropdownContent.element.el.parentElement;
-    this.previousSibling = dropdownContentPreviousSibling ? $$(<HTMLElement>dropdownContentPreviousSibling) : null;
-    this.parent = $$(dropdownContentParent);
-  }
-
-  private restoreContentPosition() {
-    if (this.previousSibling) {
-      this.dropdownContent.element.insertAfter(this.previousSibling.el);
-    } else {
-      this.parent.prepend(this.dropdownContent.element.el);
-    }
   }
 }

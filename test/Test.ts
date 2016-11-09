@@ -331,3 +331,6 @@ StreamHighlightUtilsTest();
 
 import {QuickviewTest} from './ui/QuickviewTest';
 QuickviewTest();
+
+import {ResponsiveDropdownTest} from './ui/ResponsiveComponents/ResponsiveDropdownTest';
+ResponsiveDropdownTest();

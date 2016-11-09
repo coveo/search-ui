@@ -130,6 +130,7 @@
         "../test/ui/ThumbnailTest.ts",
         "../test/ui/TriggersTest.ts",
         "../test/ui/ValueElementRendererTest.ts",
+        "../test/ui//ResponsiveComponents/ResponsiveDropdownTest.ts",
         "../test/utils/CookieUtilsTest.ts",
         "../test/utils/DomTest.ts",
         "../test/utils/HighlightUtilsTest.ts",
