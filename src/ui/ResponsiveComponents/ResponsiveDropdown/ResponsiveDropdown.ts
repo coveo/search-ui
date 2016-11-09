@@ -55,8 +55,6 @@ export class ResponsiveDropdown {
     this.dropdownHeader.close();
     this.dropdownContent.hideDropdown();
 
-    // Because of DOM manipulation, sometimes the animation will not trigger. Accessing the computed styles makes sure
-    // the animation will happen. Adding this here because its possible that this element has recently been manipulated.
     this.hidePopupBackground();
   }
 
@@ -96,7 +94,7 @@ export class ResponsiveDropdown {
       if (popupBackground.el.style.opacity == '0') {
         popupBackground.detach();
       }
-  });
+    });
     popupBackground.on('click', () => this.close());
     return popupBackground;
   }
