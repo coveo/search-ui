@@ -51,24 +51,6 @@ export class ResponsiveFacets implements IResponsiveComponent {
     }
   }
 
-  public needSmallMode(): boolean {
-    return this.coveoRoot.width() <= this.breakpoint;
-  }
-
-  private changeToSmallMode() {
-    this.dropdown.dropdownContent.positionDropdown();
-    this.dropdown.close();
-    this.disableFacetPreservePosition();
-    $$(this.coveoRoot.find('.coveo-dropdown-header-wrapper')).el.appendChild(this.dropdown.dropdownHeader.element.el);
-    ResponsiveComponentsUtils.activateSmallFacet(this.coveoRoot);
-  }
-
-  private changeToLargeMode() {
-    this.enableFacetPreservePosition();
-    this.dropdown.cleanUp();
-    ResponsiveComponentsUtils.deactivateSmallFacet(this.coveoRoot);
-  }
-
   public registerComponent(component: Component) {
     if (component instanceof Facet) {
       this.facets.push(<Facet>component);
@@ -87,10 +69,25 @@ export class ResponsiveFacets implements IResponsiveComponent {
     } else if (!this.needSmallMode() && ResponsiveComponentsUtils.isSmallFacetActivated(this.coveoRoot)) {
       this.changeToLargeMode();
     }
+    this.dropdown.dropdownContent.positionDropdown();
+  }
 
-    if (this.dropdown.isOpened) {
-      this.dropdown.dropdownContent.positionDropdown();
-    }
+  private needSmallMode(): boolean {
+    return this.coveoRoot.width() <= this.breakpoint;
+  }
+  
+  private changeToSmallMode() {
+    this.dropdown.dropdownContent.positionDropdown();
+    this.dropdown.close();
+    this.disableFacetPreservePosition();
+    $$(this.coveoRoot.find('.coveo-dropdown-header-wrapper')).el.appendChild(this.dropdown.dropdownHeader.element.el);
+    ResponsiveComponentsUtils.activateSmallFacet(this.coveoRoot);
+  }
+
+  private changeToLargeMode() {
+    this.enableFacetPreservePosition();
+    this.dropdown.cleanUp();
+    ResponsiveComponentsUtils.deactivateSmallFacet(this.coveoRoot);
   }
 
   private buildDropdown() {

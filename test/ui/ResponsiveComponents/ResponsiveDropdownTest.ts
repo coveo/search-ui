@@ -53,12 +53,14 @@ export function ResponsiveDropdownTest() {
     it('should hide the background when close is called', (done) => {
       responsiveDropdown.open();
       responsiveDropdown.close();
-
-      // wait for the animation to complete.
+      // The element is removed from the page on transtionend. For the test, the elements are not in the dom which causes this event
+      // to not be fired
+      let dropdownBackground = root.find(`.${ResponsiveDropdown.DROPDOWN_BACKGROUND_CSS_CLASS_NAME}`);
+      $$(dropdownBackground).trigger('transitionend');
       setTimeout(() => {
         expect(root.find(`.${ResponsiveDropdown.DROPDOWN_BACKGROUND_CSS_CLASS_NAME}`)).toBeNull();
         done();
-      }, 1000);
+      }, 1000); 
     });
 
     it('should close the dropdown header when close is called', () => {
