@@ -31,7 +31,7 @@ export function RecommendationTest() {
         clear: () => { }
       };
       test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
-      Mock.initPageViewScript(store);
+      test.cmp.historyStore = store;
     });
 
     afterEach(() => {
@@ -49,13 +49,6 @@ export function RecommendationTest() {
       expect(() => {
         new Recommendation(document.createElement('div'), optionsWithNoMainInterface);
       }).not.toThrow();
-    });
-
-    it('should work if coveoanalytics is not specified', () => {
-      window['coveoanalytics'] = undefined;
-      test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
-      let simulation = Simulate.query(test.env);
-      expect(simulation.queryBuilder.actionsHistory).toEqual('[]');
     });
 
     it('should not modify the query if it was not triggered by the mainInterface', () => {
@@ -131,6 +124,7 @@ export function RecommendationTest() {
             mainSearchInterface: mainSearchInterface.env.root
           };
           test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
+          test.cmp.historyStore = store;
           let simulation = Simulate.query(test.env);
           expect(simulation.queryBuilder.actionsHistory).toEqual(JSON.stringify(actionsHistory));
         });
