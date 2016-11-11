@@ -254,6 +254,10 @@ export class ResultList extends Component {
       this.options.resultContainer.appendChild(resultElement);
       this.triggerNewResultDisplayed(Component.getResult(resultElement), resultElement);
     });
+    if (this.currentLayout == 'card') {
+      // Used to prevent last card from spanning the grid's whole width
+      _.times(3, () => this.options.resultContainer.appendChild($$('div').el));
+    }
     this.triggerNewResultsDisplayed();
   }
 

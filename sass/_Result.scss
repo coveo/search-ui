@@ -180,6 +180,12 @@
       flex-direction: column;
     }
   }
+  > div:empty {
+    width: 300px;
+    height: 0;
+    @include flex-grow(1);
+    margin-right: 20px;
+  }
 }
 
 .coveo-table-layout {
