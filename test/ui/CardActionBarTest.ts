@@ -50,7 +50,7 @@ export function CardActionBarTest() {
       });
 
       describe('hidden set to false', function () {
-        beforeEach(function() {
+        beforeEach(function () {
           test = Mock.advancedComponentSetup<CardActionBar>(CardActionBar, <Mock.AdvancedComponentSetupOptions>{
             modifyBuilder: b => {
               parentResult = $$('div', { className: 'CoveoResult' }, $$('div')).el;

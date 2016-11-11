@@ -75,7 +75,7 @@ export class CardActionBar extends Component {
   private appendArrow() {
     this.parentResult.appendChild(
       $$('div', { className: 'coveo-card-action-bar-arrow-container' },
-        $$('span', { className: 'coveo-icon coveo-sprites-arrow-up'})).el
+        $$('span', { className: 'coveo-icon coveo-sprites-arrow-up' })).el
     );
   }
 }
