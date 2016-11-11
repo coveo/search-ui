@@ -164,7 +164,7 @@
     "value": "options.layout === 'card'"
   },
   "Table": {
-    "priority": 1,
+    "priority": 4,
     "value": "options.layout === 'table'"
   }
 }
