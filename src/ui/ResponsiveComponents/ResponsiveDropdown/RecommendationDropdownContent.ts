@@ -30,7 +30,7 @@ export class RecommendationDropdownContent implements IResponsiveDropdownContent
   public hideDropdown() {
     this.element.addClass(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
     this.element.addClass(this.cssClassName);
-    
+
     this.element.removeClass(RecommendationDropdownContent.OPENED_DROPDOWN_CSS_CLASS_NAME);
   }
 
