@@ -8,7 +8,8 @@ export class ResponsiveDropdown {
   public static TRANSPARENT_BACKGROUND_OPACITY: string = '0.9';
   public static DROPDOWN_BACKGROUND_CSS_CLASS_NAME: string = 'coveo-dropdown-background';
 
-  private isOpened: boolean = false;
+  public isOpened: boolean = false;
+  
   private onOpenHandlers: Function[] = [];
   private onCloseHandlers: Function[] = [];
   private previousSibling: Dom;

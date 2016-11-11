@@ -16,10 +16,10 @@ export class ResponsiveFacets implements IResponsiveComponent {
   private static DROPDOWN_MIN_WIDTH: number = 280;
   private static DROPDOWN_WIDTH_RATIO: number = 0.35; // Used to set the width relative to the coveo root.
   private static DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'Filters';
-
-  private static DEBOUNCE_SCROLL_WAIT = 250;
   private static RESPONSIVE_BREAKPOINT: number = 800;
 
+  public static DEBOUNCE_SCROLL_WAIT = 250;
+  
   private facets: Facet[] = [];
   private facetSliders: FacetSlider[] = [];
   private breakpoint: number;
@@ -36,9 +36,9 @@ export class ResponsiveFacets implements IResponsiveComponent {
     ResponsiveComponentsManager.register(ResponsiveFacets, $$(root), Facet.ID, component, options);
   }
 
-  constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions) {
+  constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions, dropdownMock?: ResponsiveDropdown) {
     this.dropdownHeaderLabel = this.getDropdownHeaderLabel();
-    this.dropdown = this.buildDropdown();
+    this.dropdown = this.buildDropdown(dropdownMock);
     this.bindDropdownContentEvents();
     this.registerOnOpenHandler();
     this.registerOnCloseHandler();
@@ -69,7 +69,21 @@ export class ResponsiveFacets implements IResponsiveComponent {
     } else if (!this.needSmallMode() && ResponsiveComponentsUtils.isSmallFacetActivated(this.coveoRoot)) {
       this.changeToLargeMode();
     }
-    this.dropdown.dropdownContent.positionDropdown();
+    if (this.dropdown.isOpened) {
+       this.dropdown.dropdownContent.positionDropdown();
+    }
+  }
+
+  public dismissFacetSearches() {
+    _.each(this.facets, facet => {
+      if (facet.facetSearch && facet.facetSearch.currentlyDisplayedResults) {
+        facet.facetSearch.completelyDismissSearch();
+      }
+    });
+  }
+
+  public drawFacetSliderGraphs() {
+    _.each(this.facetSliders, facetSlider => facetSlider.drawDelayedGraphData());
   }
 
   private needSmallMode(): boolean {
@@ -80,7 +94,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.dropdown.dropdownContent.positionDropdown();
     this.dropdown.close();
     this.disableFacetPreservePosition();
-    $$(this.coveoRoot.find('.coveo-dropdown-header-wrapper')).el.appendChild(this.dropdown.dropdownHeader.element.el);
+    $$(this.coveoRoot.find(`.${ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS}`)).el.appendChild(this.dropdown.dropdownHeader.element.el);
     ResponsiveComponentsUtils.activateSmallFacet(this.coveoRoot);
   }
 
@@ -90,10 +104,10 @@ export class ResponsiveFacets implements IResponsiveComponent {
     ResponsiveComponentsUtils.deactivateSmallFacet(this.coveoRoot);
   }
 
-  private buildDropdown() {
+  private buildDropdown(dropdownMock: ResponsiveDropdown) {
     let dropdownContent = this.buildDropdownContent();
     let dropdownHeader = this.buildDropdownHeader();
-    let dropdown = new ResponsiveDropdown(dropdownContent, dropdownHeader, this.coveoRoot);
+    let dropdown = dropdownMock ? dropdownMock : new ResponsiveDropdown(dropdownContent, dropdownHeader, this.coveoRoot);
     return dropdown;
   }
 
@@ -120,15 +134,11 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private registerOnOpenHandler() {
-    this.dropdown.registerOnOpenHandler(() => {
-      this.drawFacetSliderGraphs();
-    });
+    this.dropdown.registerOnOpenHandler(this.drawFacetSliderGraphs);
   }
 
   private registerOnCloseHandler() {
-    this.dropdown.registerOnCloseHandler(() => {
-      this.dismissFacetSearches();
-    });
+    this.dropdown.registerOnCloseHandler(this.dismissFacetSearches);
   }
 
   private bindDropdownContentEvents() {
@@ -144,24 +154,12 @@ export class ResponsiveFacets implements IResponsiveComponent {
     }, ResponsiveFacets.DEBOUNCE_SCROLL_WAIT));
   }
 
-  private dismissFacetSearches() {
-    _.each(this.facets, facet => {
-      if (facet.facetSearch && facet.facetSearch.currentlyDisplayedResults) {
-        facet.facetSearch.completelyDismissSearch();
-      }
-    });
-  }
-
   private enableFacetPreservePosition() {
     _.each(this.facets, facet => facet.options.preservePosition = true);
   }
 
   private disableFacetPreservePosition() {
     _.each(this.facets, facet => facet.options.preservePosition = false);
-  }
-
-  private drawFacetSliderGraphs() {
-    _.each(this.facetSliders, facetSlider => facetSlider.drawDelayedGraphData());
   }
 
   private isFacetSearchScrolledIntoView(facetSearchElement: HTMLElement) {

@@ -27,7 +27,7 @@ export function ResponsiveDropdownTest() {
 
     it('should position the dropdown content when open is called', () => {
       responsiveDropdown.open();
-      expect(responsiveDropdownContent.positionDropdown());
+      expect(responsiveDropdownContent.positionDropdown).toHaveBeenCalled();
     });
 
     it('should call the on open handler when open is called', () => {

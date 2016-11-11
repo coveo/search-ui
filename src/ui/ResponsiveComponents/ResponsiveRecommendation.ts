@@ -69,7 +69,9 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     } else if (!this.needSmallMode() && ResponsiveComponentsUtils.isSmallRecommendationActivated(this.coveoRoot)) {
       this.changeToLargeMode();
     }
-    this.dropdown.dropdownContent.positionDropdown();
+    if (this.dropdown.isOpened) {
+ +    this.dropdown.dropdownContent.positionDropdown();
+    }
   }
 
   public needDropdownWrapper(): boolean {
@@ -82,7 +84,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
 
   private changeToSmallMode() {
     this.dropdown.close();
-    $$(this.coveoRoot.find('.coveo-dropdown-header-wrapper')).el.appendChild(this.dropdown.dropdownHeader.element.el);
+    $$(this.coveoRoot.find(`.${ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS}`)).el.appendChild(this.dropdown.dropdownHeader.element.el);
     this.disableFacetPreservePosition();
     ResponsiveComponentsUtils.activateSmallRecommendation(this.coveoRoot);
     ResponsiveComponentsUtils.activateSmallRecommendation(this.recommendationRoot);
