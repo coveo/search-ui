@@ -308,7 +308,7 @@ export class Omnibox extends Component {
 
     this.magicBox.onselect = (suggestion: IOmniboxSuggestion) => {
       let index = _.indexOf(this.lastSuggestions, suggestion);
-      let suggestions = _.map(this.lastSuggestions, (suggestion) => suggestion.text);
+      let suggestions = _.compact(_.map(this.lastSuggestions, (suggestion) => suggestion.text));
       this.magicBox.clearSuggestion();
       this.updateQueryState();
       // A bit tricky here : When it's reveal auto suggestions
@@ -427,9 +427,9 @@ export class Omnibox extends Component {
 
   private cleanCustomData(toClean: string[], rejectLength = 256) {
     // Filter out only consecutive values that are the identical
-    toClean = _.filter(toClean, (partial: string, pos?: number, array?: string[]) => {
+    toClean = _.compact(_.filter(toClean, (partial: string, pos?: number, array?: string[]) => {
       return pos === 0 || partial !== array[pos - 1];
-    });
+    }));
 
     // Custom dimensions cannot be an array in analytics service: Send a string joined by ; instead.
     // Need to replace ;
@@ -468,7 +468,7 @@ export class Omnibox extends Component {
     if (!Utils.isNullOrEmptyString(text)) {
       this.partialQueries.push(text);
     }
-    return suggestionsEventArgs.suggestions;
+    return _.compact(suggestionsEventArgs.suggestions);
   }
 
   private handleBeforeRedirect() {
