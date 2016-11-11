@@ -76,9 +76,11 @@ module.exports = function (plop) {
       })
       actions.push(()=> {
         let tsconfig = require(path.resolve('../tsconfig.json'));
+        let testtsconfig = require(path.resolve('../test/tsconfig.json'));
         tsconfig.files.push(plop.renderString('src/ui/{{pascalCase cmpName}}/{{pascalCase cmpName}}.ts', data));
-        tsconfig.files.push(plop.renderString('test/ui/{{pascalCase cmpName}}Test.ts', data));
-        fs.writeFileSync(path.resolve('../tsconfig.json'), JSON.stringify(tsconfig, undefined, 2));
+        testtsconfig.files.push(plop.renderString('../test/ui/{{pascalCase cmpName}}Test.ts', data));
+        fs.writeFileSync(path.resolve('../tsconfig.json'), JSON.stringify(tsconfig, undefined, 4));
+        fs.writeFileSync(path.resolve('../test/tsconfig.json'), JSON.stringify(testtsconfig, undefined, 4));
         return 'Modified tsconfig.json';
       })
       actions.push(()=> {
