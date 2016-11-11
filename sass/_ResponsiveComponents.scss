@@ -45,6 +45,10 @@
     @include display(inline-flex);
     @include flex-wrap(nowrap);
     @include justify-content(flex-end);
+
+    a {
+      margin-right: 8px;
+    }
   }
 }
 

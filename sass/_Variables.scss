@@ -47,6 +47,8 @@ $default-border: 1px solid $color-light-grey;
   border-radius: $default-border-radius;
 }
 
+$standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+
 /*
 * @param direction vertical or horizontal
 * @param position type of positioning to apply (relative/absolute)
@@ -161,10 +163,6 @@ $default-border: 1px solid $color-light-grey;
     @include clickable();
     white-space: nowrap;
   }
-}
-
-@mixin standardTransition($transition-property, $transition-delay) {
-  @include transition($transition-property $transition-delay cubic-bezier(0.4, 0.0, 0.2, 1));
 }
 
 @include keyframes(coveo-spin) {
