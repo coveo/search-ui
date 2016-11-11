@@ -197,7 +197,7 @@ export function QueryControllerTest() {
           }
         };
 
-        Mock.initPageViewScript(store);
+        test.cmp.historyStore = store;
         spyOn(store, 'addElement');
       });
 
@@ -216,11 +216,6 @@ export function QueryControllerTest() {
         expect(store.addElement).toHaveBeenCalled();
       });
 
-      it('should work if coveoanalytics is not defined', () => {
-        window['coveoanalytics'] = undefined;
-        test.cmp.executeQuery({ logInActionsHistory: true });
-        expect(store.addElement).not.toHaveBeenCalled();
-      });
     });
   });
 }
