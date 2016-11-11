@@ -1,14 +1,14 @@
 {
   "MobileChatter": {
     "priority": 2,
-    "value": "(raw.objecttype =='FeedItem' || raw.objecttype == 'FeedComment') && (Coveo.DeviceUtils.isSmallScreenWidth() || options.layout === 'card')"
+    "value": "(raw.objecttype == 'FeedItem' || raw.objecttype == 'FeedComment') && (Coveo.DeviceUtils.isSmallScreenWidth() || options.layout === 'card')"
   },
   "Chatter": {
     "priority": 1,
-    "value": "raw.objecttype =='FeedItem' || raw.objecttype == 'FeedComment'"
+    "value": "raw.objecttype == 'FeedItem' || raw.objecttype == 'FeedComment'"
   },
   "MobileDropbox": {
-    "priority": 1,
+    "priority": 2,
     "value": "raw.connectortype == 'DropboxCrawler' && Coveo.DeviceUtils.isSmallScreenWidth()"
   },
   "CardDropbox": {
@@ -16,15 +16,15 @@
     "value": "raw.connectortype == 'DropboxCrawler' && options.layout === 'card'"
   },
   "Dropbox": {
-    "priority": 0,
+    "priority": 1,
     "value": "raw.connectortype == 'DropboxCrawler'"
   },
   "MobileDynamicsCrm": {
-    "priority": 1,
+    "priority": 2,
     "value": "raw.dycoveoid != null && Coveo.DeviceUtils.isSmallScreenWidth()"
   },
   "DynamicsCrm": {
-    "priority": 0,
+    "priority": 1,
     "value": "raw.dycoveoid != null"
   },
   "MobileDynamicsCrmCase": {
@@ -36,47 +36,47 @@
     "value": "raw.dyincidentid != null"
   },
   "MobileEmailThread" : {
-    "priority": 1,
+    "priority": 2,
     "value": "raw.mailbox != undefined && Coveo.DeviceUtils.isSmallScreenWidth()"
   },
   "CardEmailThread": {
-    "priority": 1,
+    "priority": 2,
     "value": "raw.mailbox != undefined && options.layout === 'card'"
   },
   "EmailThread": {
-    "priority": 0,
+    "priority": 1,
     "value": "raw.mailbox != undefined"
   },
   "MobileGoogleDrive": {
-    "priority": 1,
+    "priority": 2,
     "value": "raw.connectortype == 'GoogleDriveCrawler' && Coveo.DeviceUtils.isSmallScreenWidth()"
   },
   "CardGoogleDrive": {
-    "priority": 1,
+    "priority": 2,
     "value": "raw.connectortype == 'GoogleDriveCrawler' && options.layout === 'card'"
   },
   "GoogleDrive": {
-    "priority": 0,
+    "priority": 1,
     "value": "raw.connectortype == 'GoogleDriveCrawler'"
   },
   "Jira": {
-    "priority": 0,
+    "priority": 1,
     "value": "raw.connectortype == 'JiraCrawler'"
   },
   "MobileLithiumThread": {
-    "priority": 1,
+    "priority": 2,
     "value": "raw.connectortype == 'LithiumCrawler' && Coveo.DeviceUtils.isSmallScreenWidth()"
   },
   "CardLithiumThread": {
-    "priority": 1,
+    "priority": 2,
     "value": "raw.connectortype == 'LithiumCrawler' && options.layout === 'card'"
   },
   "LithiumThread": {
-    "priority": 0,
+    "priority": 1,
     "value": "raw.connectortype == 'LithiumCrawler'"
   },
   "MobilePeople": {
-    "priority": 1,
+    "priority": 2,
     "value": "raw.fullname != undefined && Coveo.DeviceUtils.isSmallScreenWidth()"
   },
   "CardPeople": {
@@ -88,7 +88,7 @@
     "value": "raw.fullname != undefined"
   },
   "MobileSalesforce": {
-    "priority": 1,
+    "priority": 2,
     "value": "(raw.sfid != null || raw.sfid != null) && Coveo.DeviceUtils.isSmallScreenWidth()"
   },
   "CardSalesforce": {
@@ -96,7 +96,7 @@
     "value": "(raw.sfid != null || raw.sfid != null) && options.layout === 'card'"
   },
   "Salesforce": {
-    "priority": 0,
+    "priority": 1,
     "value": "raw.sfid != null"
   },
   "MobileSalesforceCase": {
@@ -104,7 +104,7 @@
     "value": "raw.sfcaseid != null && Coveo.DeviceUtils.isSmallScreenWidth()"
   },
   "CardSalesforceCase": {
-    "priority": 4,
+    "priority": 3,
     "value": "raw.sfcaseid != null && options.layout === 'card'"
   },
   "SalesforceCase": {
@@ -112,48 +112,52 @@
     "value": "raw.sfcaseid != null"
   },
   "MobileSharePoint": {
-    "priority": 1,
+    "priority": 2,
     "value": "raw.spitemtype != null && (raw.spitemtype != 'List' && Coveo.DeviceUtils.isSmallScreenWidth() || options.layout === 'card')"
   },
   "SharePoint": {
-    "priority": 0,
+    "priority": 1,
     "value": "raw.spitemtype != null && raw.spitemtype != 'List'"
   },
   "MobileSharePointList": {
-    "priority": 1,
+    "priority": 2,
     "value": "raw.spitemtype != null && (raw.spitemtype == 'List' && Coveo.DeviceUtils.isSmallScreenWidth() || options.layout === 'card')"
   },
   "SharePointList": {
-    "priority": 0,
+    "priority": 1,
     "value": "raw.spitemtype != null && raw.spitemtype == 'List'"
+  },
+  "MobileYouTubeVideo": {
+    "priority": 2,
+    "value": "raw.filetype == 'YouTubeVideo' && Coveo.DeviceUtils.isSmallScreenWidth()"
   },
   "CardYouTubeVideo": {
     "priority": 2,
     "value": "raw.filetype == 'YouTubeVideo' && options.layout === 'card'"
   },
-  "MobileYouTubeVideo": {
-    "priority": 1,
-    "value": "raw.filetype == 'YouTubeVideo' && Coveo.DeviceUtils.isSmallScreenWidth()"
-  },
-  "CardYouTubeVideo": {
-    "priority": 1,
-    "value": "raw.filetype == 'YouTubeVideo' && options.layout === 'card'"
-  },
   "YouTubeVideo" : {
-    "priority": 0,
+    "priority": 1,
     "value": "raw.filetype == 'YouTubeVideo'"
   },
   "MobileYouTubePlaylistItem" : {
-    "priority": 1,
-    "value": "raw.filetype== 'YouTubePlaylistItem' && Coveo.DeviceUtils.isSmallScreenWidth()"
+    "priority": 2,
+    "value": "raw.filetype == 'YouTubePlaylistItem' && Coveo.DeviceUtils.isSmallScreenWidth()"
   },
   "CardYouTubePlaylistItem" : {
-    "priority": 1,
-    "value": "raw.filetype== 'YouTubePlaylistItem' && options.layout === 'card'"
+    "priority": 2,
+    "value": "raw.filetype == 'YouTubePlaylistItem' && options.layout === 'card'"
   },
   "YouTubePlaylistItem" : {
-    "priority": 0,
-    "value": "raw.filetype== 'YouTubePlaylistItem'"
+    "priority": 1,
+    "value": "raw.filetype == 'YouTubePlaylistItem'"
+  },
+  "MobileSlack": {
+    "priority": 2,
+    "value": "raw.connectortype == 'SlackCrawler' && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "Slack": {
+    "priority": 1,
+    "value": "raw.connectortype == 'SlackCrawler'"
   },
   "Card": {
     "priority": 1,
@@ -162,13 +166,5 @@
   "Table": {
     "priority": 1,
     "value": "options.layout === 'table'"
-  },
-  "Slack": {
-    "priority": 0,
-    "value": "raw.connectortype == 'SlackCrawler'"
-  },
-  "MobileSlack": {
-    "priority": 1,
-    "value": "raw.connectortype == 'SlackCrawler' && Coveo.DeviceUtils.isSmallScreenWidth()"
   }
 }
