@@ -863,6 +863,26 @@ export class Facet extends Component {
     this.rebuildValueElements();
   }
 
+  /**
+   * Collapse the facet.
+   */
+  public collapse() {
+    this.ensureDom();
+    if (this.facetHeader) {
+      this.facetHeader.collapseFacet();
+    }
+  }
+
+  /**
+   * Expand the facet.
+   */
+  public expand() {
+    this.ensureDom();
+    if (this.facetHeader) {
+      this.facetHeader.expandFacet();
+    }
+  }
+
   public triggerNewQuery(beforeExecuteQuery?: () => void) {
     if (!beforeExecuteQuery) {
       this.queryController.executeQuery({ ignoreWarningSearchEvent: true });
