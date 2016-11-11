@@ -32,6 +32,7 @@ export interface IFacetSliderOptions extends ISliderOptions {
   title?: string;
   enableResponsiveMode?: boolean;
   responsiveBreakpoint?: number;
+  dropdownHeaderLabel?: string;
 }
 
 /**
@@ -269,7 +270,13 @@ export class FacetSlider extends Component {
      * `CoveoSearchInterface`.
      * The default value is `800`.
      */
-    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 800 })
+    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 800 }),
+    /**
+     * Specifies the label of the button that allows to show the facets when in responsive mode. If it is specified more than once, the
+     * first occurence of the option will be used.
+     * The default value is "Filters". 
+     */
+    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption()
   };
 
   static ID = 'FacetSlider';
@@ -329,7 +336,7 @@ export class FacetSlider extends Component {
     this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset());
 
     this.onResize = _.debounce(() => {
-      if (!ResponsiveComponentsUtils.isSmallFacetActivated($$(this.root)) && this.slider && !this.isEmpty) {
+      if (ResponsiveComponentsUtils.shouldDrawFacetSlider($$(this.root)) && this.slider && !this.isEmpty) {
         this.slider.drawGraph();
       }
     }, FacetSlider.DEBOUNCED_RESIZE_DELAY);
@@ -661,18 +668,23 @@ export class FacetSlider extends Component {
     if (totalGraphResults == 0) {
       this.isEmpty = true;
       this.updateAppearanceDependingOnState();
-    } else if (graphData != undefined && !this.isFacetDropdownHidden()) {
+    } else if (graphData != undefined && !this.isDropdownHidden()) {
       this.slider.drawGraph(graphData);
-    } else if (graphData != undefined && this.isFacetDropdownHidden()) {
+    } else if (graphData != undefined && this.isDropdownHidden()) {
       this.delayedGraphData = graphData;
     }
   }
 
-  private isFacetDropdownHidden() {
+  private isDropdownHidden() {
     let facetDropdown = this.root.querySelector('.coveo-facet-column');
     if (facetDropdown) {
       return $$(<HTMLElement>facetDropdown).css('display') == 'none';
     }
+    if ($$(this.root).hasClass('CoveoRecommendation')) {
+      let recommendationDropdown = $$(this.root).parents('.coveo-recommendation-column')[0] || this.root;
+      return $$(<HTMLElement>recommendationDropdown).css('display') == 'none';
+    }
+
     return false;
   }
 
