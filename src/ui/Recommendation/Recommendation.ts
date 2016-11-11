@@ -93,8 +93,12 @@ export class Recommendation extends SearchInterface implements IComponentBinding
 
   };
 
-  private mainInterfaceQuery: IQuerySuccessEventArgs;
+  // These are used by the analytics client for recommendation
+  // so that clicks event inside the recommendation component can be modified and attached to the main search interface.
   public mainQuerySearchUID: string;
+  public mainQueryPipeline: string;
+
+  private mainInterfaceQuery: IQuerySuccessEventArgs;
   private displayStyle: string;
 
   constructor(public element: HTMLElement, public options: IRecommendationOptions = {}, public analyticsOptions = {}, _window = window) {
@@ -143,6 +147,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
     $$(this.options.mainSearchInterface).on(QueryEvents.querySuccess, (e: Event, args: IQuerySuccessEventArgs) => {
       this.mainInterfaceQuery = args;
       this.mainQuerySearchUID = args.results.searchUid;
+      this.mainQueryPipeline = args.results.pipeline;
       this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.recommendation, {});
       this.queryController.executeQuery();
     });
