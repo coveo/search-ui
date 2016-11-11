@@ -96,6 +96,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   // so that clicks event inside the recommendation component can be modified and attached to the main search interface.
   public mainQuerySearchUID: string;
   public mainQueryPipeline: string;
+  public historyStore: CoveoAnalytics.HistoryStore;
 
   private mainInterfaceQuery: IQuerySuccessEventArgs;
   private displayStyle: string;

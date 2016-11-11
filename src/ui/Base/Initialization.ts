@@ -166,7 +166,7 @@ export class Initialization {
     let searchInterface = new SearchInterface(element, options.SearchInterface, options.Analytics);
     searchInterface.options.originalOptionsObject = options;
     let initParameters: IInitializationParameters = { options: options, bindings: searchInterface.getBindings() };
-    Initialization.automaticallyCreateComponentsInside(element, initParameters, [Recommendation.ID]);
+    Initialization.automaticallyCreateComponentsInside(element, initParameters, ['Recommendation']);
   }
 
   /**
