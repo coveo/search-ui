@@ -27,7 +27,7 @@ import {IDuringQueryEventArgs} from '../../events/QueryEvents';
 import {PendingSearchAsYouTypeSearchEvent} from '../Analytics/PendingSearchAsYouTypeSearchEvent';
 import {Utils} from '../../utils/Utils';
 import {MagicBox} from '../../ExternalModulesShim';
-import {StandaloneSearchInterface} from "../SearchInterface/SearchInterface";
+import {StandaloneSearchInterface} from '../SearchInterface/SearchInterface';
 
 export interface IPopulateOmniboxSuggestionsEventArgs {
   omnibox: Omnibox;

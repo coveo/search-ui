@@ -1,6 +1,6 @@
 import * as Mock from '../MockEnvironment';
-import {StandaloneSearchInterface} from "../../src/ui/SearchInterface/SearchInterface";
-import {analyticsActionCauseList} from "../../src/ui/Analytics/AnalyticsActionListMeta";
+import {StandaloneSearchInterface} from '../../src/ui/SearchInterface/SearchInterface';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
 export function StandaloneSearchInterfaceTest() {
   describe('StandaloneSearchInterface', () => {
 
@@ -47,5 +47,5 @@ export function StandaloneSearchInterfaceTest() {
       cmp.queryController.executeQuery();
       expect(windoh.location.href).toContain('firstQueryCause=omniboxAnalytics');
     });
-  })
+  });
 }

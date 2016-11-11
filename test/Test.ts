@@ -332,5 +332,5 @@ StreamHighlightUtilsTest();
 import {QuickviewTest} from './ui/QuickviewTest';
 QuickviewTest();
 
-import {StandaloneSearchInterfaceTest} from './ui/StandaloneSearchInterfaceTest'
+import {StandaloneSearchInterfaceTest} from './ui/StandaloneSearchInterfaceTest';
 StandaloneSearchInterfaceTest();
