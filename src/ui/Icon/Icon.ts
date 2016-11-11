@@ -10,6 +10,9 @@ import {FileTypes, IFileTypeInfo} from '../Misc/FileTypes';
 import {Quickview} from '../Quickview/Quickview';
 import {$$} from '../../utils/Dom';
 
+/**
+ * Possible options for an {@link Icon} component.
+ */
 export interface IIconOptions {
   value?: string;
   small?: boolean;

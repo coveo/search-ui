@@ -389,8 +389,8 @@ export class Facet extends Component {
       return null;
     }),
     /**
-     * Specifies if the responsive mode should be enabled on the facets. Responsive mode will make the facet dissapear and instead be
-     * availaible using a dropdown button. Responsive facets are enabled when the width of the element the search interface is bound to
+     * Specifies if the responsive mode should be enabled on the facets. Responsive mode will make the facet disappear and will instead be
+     * available using a dropdown button. Responsive facets are enabled when the width of the element the search interface is bound to
      * reaches 800 pixels. This value can be modified using {@link Facet.options.responsiveBreakpoint}.
      * 
      * Disabling reponsive mode for one facet will disable it for all facets.

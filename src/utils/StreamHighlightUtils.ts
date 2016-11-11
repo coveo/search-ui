@@ -8,8 +8,20 @@ import {$$} from './Dom';
 // \u2011: http://graphemica.com/%E2%80%91
 let nonWordBoundary = '[\\.\\-\\u2011\\s~=,.\\|\\/:\'`’;_()!?]';
 let regexStart = '(' + nonWordBoundary + '|^)(';
+
+/**
+ * The possible options when highlighting a stream.
+ */
 export interface IStreamHighlightOptions {
+  /**
+   * The css class that the highlight will generate.
+   * Defaults to `coveo-highlight`.
+   */
   cssClass?: string;
+  /**
+   * The regex flags that should be applied to generate the highlighting.
+   * Defaults to `gi`.
+   */
   regexFlags?: string;
 }
 
