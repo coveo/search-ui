@@ -13,6 +13,7 @@ import {l} from '../../strings/Strings';
 
 export class ResponsiveTabs implements IResponsiveComponent {
 
+  private static DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'More';
   private static logger: Logger;
 
   private dropdownHeader: Dom;
@@ -21,13 +22,13 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private previousSibling: Dom;
   private parent: Dom;
   private searchBoxElement: HTMLElement;
-  private coveoRoot: Dom;
   private documentClickListener: EventListener;
   private searchInterface: SearchInterface;
+  private dropdownHeaderLabel: string;
 
-  constructor(root: Dom, public ID: string) {
-    this.coveoRoot = root;
-    this.searchInterface = <SearchInterface>Component.get(root.el, SearchInterface, false);
+  constructor(private coveoRoot: Dom, public ID: string) {
+    this.dropdownHeaderLabel = this.getDropdownHeaderLabel();
+    this.searchInterface = <SearchInterface>Component.get(this.coveoRoot.el, SearchInterface, false);
     this.searchBoxElement = this.getSearchBoxElement();
     this.dropdownContent = this.buildDropdownContent();
     this.dropdownHeader = this.buildDropdownHeader();
@@ -197,7 +198,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private buildDropdownHeader(): Dom {
     let dropdownHeader = $$('a', { className: 'coveo-dropdown-header coveo-tab-dropdown-header' });
     let content = $$('p');
-    content.text(l('More'));
+    content.text(this.dropdownHeaderLabel);
     content.el.appendChild($$('span', { className: 'coveo-sprites-more-tabs' }).el);
     dropdownHeader.el.appendChild(content.el);
     return dropdownHeader;
@@ -334,7 +335,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
   private positionPopup() {
     PopupUtils.positionPopup(this.dropdownContent.el, this.dropdownHeader.el, this.coveoRoot.el,
-      { horizontal: HorizontalAlignment.INNERLEFT, vertical: VerticalAlignment.BOTTOM }, this.coveoRoot.el);
+      { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM }, this.coveoRoot.el);
   }
 
   private getTabsInTabSection(): HTMLElement[] {
@@ -356,5 +357,21 @@ export class ResponsiveTabs implements IResponsiveComponent {
     } else {
       this.tabSection.prepend(tab.el);
     }
+  }
+
+  private getDropdownHeaderLabel() {
+    let dropdownHeaderLabel: string;
+    _.each($$(this.coveoRoot.find('.coveo-tab-section')).findAll('.' + Component.computeCssClassName(Tab)), tabElement => {
+      let tab = <Tab>Component.get(tabElement, Tab);
+      if (!dropdownHeaderLabel && tab.options.dropdownHeaderLabel) {
+        dropdownHeaderLabel = tab.options.dropdownHeaderLabel;
+      }
+    });
+
+    if (!dropdownHeaderLabel) {
+      dropdownHeaderLabel = l(ResponsiveTabs.DROPDOWN_HEADER_LABEL_DEFAULT_VALUE);
+    }
+
+    return dropdownHeaderLabel;
   }
 }

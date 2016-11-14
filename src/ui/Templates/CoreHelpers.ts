@@ -80,10 +80,12 @@ export interface ICoreHelpers {
    * This helper highlights the provided terms in a given string.<br/>
    * By default, the terms to highlight are the current query and the
    * associated stemming words from the index.
+   * The only required parameter is the content, which specify the string that needs to be highlighted.
+   * The other parameters will normally be automatically resolved for you from the current result object.
    *
    * - `content`: The string content to highlight
-   * - `termsToHighlight`: The terms to highlight (see {@link IHighlightTerm})
-   * - `phraseToHighlight`: The phrases to highlight (see {@link IHighlightPhrase})
+   * - `termsToHighlight`: Optional. The terms to highlight (see {@link IHighlightTerm})
+   * - `phraseToHighlight`: Optional. The phrases to highlight (see {@link IHighlightPhrase})
    * - `options`: Optional. The options defined below as {@link IStreamHighlightOptions}
    */
   highlightStreamText: (content: string,
@@ -96,8 +98,8 @@ export interface ICoreHelpers {
    * of not highlighting the HTML markup.
    *
    * - `content`: The string content to highlight
-   * - `termsToHighlight`: The terms to highlight (see {@link IHighlightTerm})
-   * - `phraseToHighlight`: The phrases to highlight (see {@link IHighlightPhrase})
+   * - `termsToHighlight`: Optional. The terms to highlight (see {@link IHighlightTerm})
+   * - `phraseToHighlight`: Optional. The phrases to highlight (see {@link IHighlightPhrase})
    * - `options`: Optional. The options defined below as {@link IStreamHighlightOptions}
    */
   highlightStreamHTML: (content: string,

@@ -598,7 +598,7 @@ export class StandaloneSearchInterface extends SearchInterface {
     redirectIfEmpty: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
-  constructor(public element: HTMLElement, public options?: IStandaloneSearchInterfaceOptions, public analyticsOptions?, _window = window) {
+  constructor(public element: HTMLElement, public options?: IStandaloneSearchInterfaceOptions, public analyticsOptions?, public _window = window) {
     super(element, ComponentOptions.initComponentOptions(element, StandaloneSearchInterface, options), analyticsOptions, _window);
     $$(this.root).on(QueryEvents.newQuery, (e: Event, args: INewQueryEventArgs) => this.handleRedirect(e, args));
   }
@@ -633,7 +633,7 @@ export class StandaloneSearchInterface extends SearchInterface {
     if (uaMeta != null) {
       stateValues['firstQueryMeta'] = uaMeta;
     }
-    window.location.href = searchPage + '#' + HashUtils.encodeValues(stateValues);
+    this._window.location.href = searchPage + '#' + HashUtils.encodeValues(stateValues);
   }
 
   private searchboxIsEmpty(): boolean {
