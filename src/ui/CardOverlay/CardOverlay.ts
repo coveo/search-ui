@@ -12,10 +12,11 @@ export interface ICardOverlayOptions {
 
 /**
  * This component is used to display a button which triggers an overlay on a
- * card. It is meant to be used as a child of a {@link CardActionBar} component.
+ * Card result. It is meant to be used as a child of a {@link CardActionBar}
+ * component.
  *
- * Its primary purpose is to display additional information about a result in a
- * card format.
+ * Its primary purpose is to display additional information about a Result in a
+ * format that fits well within a Card.
  */
 export class CardOverlay extends Component {
   static ID = 'CardOverlay';
@@ -48,7 +49,7 @@ export class CardOverlay extends Component {
   }
 
   /**
-   * Toggle the visibility of the card overlay.
+   * Toggle the visibility of the CardOverlay
    *
    * @param swtch If specified, will force to this value (`true` for visible, `false` for hidden).
    */

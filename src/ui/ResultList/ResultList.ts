@@ -22,7 +22,7 @@ import {Utils} from '../../utils/Utils';
 import {DomUtils} from '../../utils/DomUtils';
 import {Recommendation} from '../Recommendation/Recommendation';
 import {DefaultRecommendationTemplate} from '../Templates/DefaultRecommendationTemplate';
-import {ValidLayout} from '../ResultLayout/ResultLayout';
+import {ResultLayout, ValidLayout} from '../ResultLayout/ResultLayout';
 
 export interface IResultListOptions {
   resultContainer?: HTMLElement;
@@ -184,10 +184,18 @@ export class ResultList extends Component {
      * NB: Many interface created by the interface editor will actually explicitly set this option to true.
      */
     autoSelectFieldsToInclude: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    /**
+     * Specifies the layout to use for displaying Results. Specifying this
+     * option will automatically populate a {@link ResultLayout} component with
+     * a switcher for the layout.
+     *
+     * For example, if there are 2 ResultLists in the page, one with a `layout`
+     * of `list` and the other of `card`, the {@link ResultLayout} component
+     * will have 2 buttons titled respectively "List" and "Card".
+     */
     layout: ComponentOptions.buildStringOption({
       defaultValue: 'list',
       required: true,
-      // validator: v => _.contains(ResultLayout.validLayouts, v)
     })
   };
 

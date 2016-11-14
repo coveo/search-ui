@@ -18,8 +18,11 @@ export interface IResultLayoutOptions {
 export type ValidLayout = 'list' | 'card' | 'table';
 
 /**
- * This component allows to switch between multiple {@ ResultList}s with
- * different layouts.<br/>
+ * This component allows to switch between multiple {@link ResultList}s with
+ * different layouts.
+ *
+ * It will automatically populate itself with buttons to switch through {@link
+ * ResultList}s with have a valid `data-layout` attribute.
  */
 export class ResultLayout extends Component {
   static ID = 'ResultLayout';
@@ -37,7 +40,6 @@ export class ResultLayout extends Component {
   static options: IResultLayoutOptions = {
   };
 
-  // TODO: add sticky url parameter
   constructor(public element: HTMLElement, public options?: IResultLayoutOptions, bindings?: IComponentBindings) {
     super(element, ResultLayout.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultLayout, options);
@@ -70,7 +72,6 @@ export class ResultLayout extends Component {
       this.setModelValue(layout);
       this.currentLayout = layout;
     }
-
   }
 
   private handleQuerySuccess(args: IQuerySuccessEventArgs) {

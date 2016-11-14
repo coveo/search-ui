@@ -11,7 +11,7 @@ export interface ICardActionBarOptions {
 }
 
 /**
- * This component displays an action bar at the bottom of the card results (see
+ * This component displays an action bar at the bottom of a Card result (see
  * {@link ResultLayout}).
  *
  * By default, CardActionBar is toggleable, with its default state being hidden.
