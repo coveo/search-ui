@@ -25,6 +25,8 @@ import {IPopulateOmniboxEventArgs} from '../../events/OmniboxEvents';
 import {OmniboxHierarchicalValuesList} from './OmniboxHierarchicalValuesList';
 import {HierarchicalFacetValueElement} from './HierarchicalFacetValueElement';
 import {Initialization} from '../Base/Initialization';
+import {ISearchAlertsPopulateMessageEventArgs} from "../../events/SearchAlertEvents";
+import {HierarchicalBreadcrumbValueElement} from "./HierarchicalBreadcrumbValueElement";
 
 export interface IHierarchicalFacetOptions extends IFacetOptions {
   delimitingCharacter?: string;
@@ -447,6 +449,12 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   protected handleDeferredQuerySuccess(data: IQuerySuccessEventArgs) {
     this.updateAppearanceDependingOnState();
     super.handleDeferredQuerySuccess(data);
+  }
+
+  protected handlePopulateSearchAlerts(args: ISearchAlertsPopulateMessageEventArgs) {
+    if (this.values.hasSelectedOrExcludedValues()) {
+      args.text.push(new HierarchicalBreadcrumbValuesList(this, this.values.getSelected().concat(this.values.getExcluded()), this.getAllValueHierarchy()).buildAsString());
+    }
   }
 
   protected handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {

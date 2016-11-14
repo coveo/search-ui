@@ -9,8 +9,14 @@ export interface ISearchAlertsFailEventArgs {
   dom?: HTMLElement;
 }
 
+export interface ISearchAlertsPopulateMessageEventArgs {
+  dom: HTMLElement[];
+  text: string[];
+}
+
 export class SearchAlertsEvents {
   public static searchAlertsCreated = 'searchAlertsCreated';
   public static searchAlertsDeleted = 'searchAlertsDeleted';
   public static searchAlertsFail = 'searchAlertsFail';
+  public static searchAlertsPopulateMessage = 'searchAlertsPopulateMessage';
 }
