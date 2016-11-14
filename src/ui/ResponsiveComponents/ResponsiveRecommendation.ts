@@ -181,15 +181,11 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   }
 
   private registerOnOpenHandler(): void {
-    this.dropdown.registerOnOpenHandler(() => {
-      this.drawFacetSliderGraphs();
-    });
+    this.dropdown.registerOnOpenHandler(this.drawFacetSliderGraphs, this);
   }
 
   private registerOnCloseHandler(): void {
-    this.dropdown.registerOnCloseHandler(() => {
-      this.dismissFacetSearches();
-    });
+    this.dropdown.registerOnCloseHandler(this.dismissFacetSearches, this);
   }
 
   private getRecommendationRoot(): Dom {

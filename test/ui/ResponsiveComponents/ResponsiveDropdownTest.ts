@@ -32,7 +32,7 @@ export function ResponsiveDropdownTest() {
 
     it('should call the on open handler when open is called', () => {
       let handler = jasmine.createSpy('handler');
-      responsiveDropdown.registerOnOpenHandler(handler);
+      responsiveDropdown.registerOnOpenHandler(handler, this);
 
       responsiveDropdown.open();
 
@@ -75,7 +75,7 @@ export function ResponsiveDropdownTest() {
 
     it('should call the on close handler when close is called', () => {
       let handler = jasmine.createSpy('handler');
-      responsiveDropdown.registerOnCloseHandler(handler);
+      responsiveDropdown.registerOnCloseHandler(handler, this);
 
       responsiveDropdown.close();
 

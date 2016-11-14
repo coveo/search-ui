@@ -3,17 +3,18 @@ import {IResponsiveDropdownContent} from './ResponsiveDropdownContent';
 import {$$, Dom} from '../../../utils/Dom';
 import {EventsUtils} from '../../../utils/EventsUtils';
 
+type HandlerCall = {handler: Function, context: any};
+
 export class ResponsiveDropdown {
+
 
   public static TRANSPARENT_BACKGROUND_OPACITY: string = '0.9';
   public static DROPDOWN_BACKGROUND_CSS_CLASS_NAME: string = 'coveo-dropdown-background';
 
   public isOpened: boolean = false;
 
-  private onOpenHandlers: Function[] = [];
-  private onCloseHandlers: Function[] = [];
-  private previousSibling: Dom;
-  private parent: Dom;
+  private onOpenHandlers: HandlerCall[] = [];
+  private onCloseHandlers: HandlerCall[] = [];
   private popupBackground: Dom;
   private popupBackgroundIsEnabled: boolean = true;
 
@@ -22,12 +23,12 @@ export class ResponsiveDropdown {
     this.bindOnClickDropdownHeaderEvent();
   }
 
-  public registerOnOpenHandler(handler: Function) {
-    this.onOpenHandlers.push(handler);
+  public registerOnOpenHandler(handler: Function, context) {
+    this.onOpenHandlers.push({handler: handler, context: context});
   }
 
-  public registerOnCloseHandler(handler: Function) {
-    this.onCloseHandlers.push(handler);
+  public registerOnCloseHandler(handler: Function, context) {
+    this.onCloseHandlers.push({handler: handler, context: context});
   }
 
   public cleanUp() {
@@ -40,16 +41,16 @@ export class ResponsiveDropdown {
     this.isOpened = true;
     this.dropdownHeader.open();
     this.dropdownContent.positionDropdown();
-    _.each(this.onOpenHandlers, handler => {
-      handler();
+    _.each(this.onOpenHandlers, handlerCall => {
+      handlerCall.handler.apply(handlerCall.context);
     });
     this.showPopupBackground();
   }
 
   public close() {
     this.isOpened = false;
-    _.each(this.onCloseHandlers, handler => {
-      handler();
+    _.each(this.onCloseHandlers, handlerCall => {
+      handlerCall.handler.apply(handlerCall.context);
     });
 
     this.dropdownHeader.close();

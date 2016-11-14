@@ -49,11 +49,11 @@ export function ResponsiveFacetsTest() {
     });
 
     it('registers an on open handler on the responsive dropdown', () => {
-      expect(responsiveDropdown.registerOnOpenHandler).toHaveBeenCalledWith(responsiveFacets.drawFacetSliderGraphs);
+      expect(responsiveDropdown.registerOnOpenHandler).toHaveBeenCalledWith(responsiveFacets.drawFacetSliderGraphs, responsiveFacets);
     });
 
     it('registers an on close handler on the responsive dropdown', () => {
-      expect(responsiveDropdown.registerOnCloseHandler).toHaveBeenCalledWith(responsiveFacets.dismissFacetSearches);
+      expect(responsiveDropdown.registerOnCloseHandler).toHaveBeenCalledWith(responsiveFacets.dismissFacetSearches, responsiveFacets);
     });
 
     it('calls position dropdown when handleResizeEvent is called if the dropdown is opened', () => {
@@ -62,8 +62,10 @@ export function ResponsiveFacetsTest() {
       expect(responsiveDropdownContent.positionDropdown).toHaveBeenCalled();
     });
 
-    describe('changes to small mode', () => {
-
+    it('positions the dropdown when handleResizeEvent is called and it should switch to small mode', () => {
+      spyOn(root, 'width').and.returnValue(ResponsiveFacets.RESPONSIVE_BREAKPOINT - 1);
+      responsiveFacets.handleResizeEvent();
+      expect(responsiveDropdown.dropdownContent.positionDropdown).toHaveBeenCalled();
     });
 
 
