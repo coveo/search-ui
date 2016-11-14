@@ -316,7 +316,7 @@ export class Analytics extends Component {
     }, this.element);
   }
 
-  public static create(element: HTMLElement, options: IAnalyticsOptions, bindings: IComponentBindings) {
+  public static create(element: HTMLElement, options: IAnalyticsOptions, bindings: IComponentBindings): IAnalyticsClient {
     let selector = Component.computeSelectorForType(Analytics.ID);
     let found: HTMLElement[] = [];
     found = found.concat($$(element).findAll(selector));

@@ -10,6 +10,7 @@ import {QueryStateModel} from '../../models/QueryStateModel';
 import {analyticsActionCauseList, IAnalyticsTopSuggestionMeta} from '../Analytics/AnalyticsActionListMeta';
 import {Initialization} from '../Base/Initialization';
 import {$$} from '../../utils/Dom';
+import {StandaloneSearchInterface} from '../SearchInterface/SearchInterface';
 
 export interface IAnalyticsSuggestionsOptions extends ISuggestionForOmniboxOptions {
 }
@@ -152,7 +153,7 @@ export class AnalyticsSuggestions extends Component {
     args.clear();
     args.closeOmnibox();
     this.queryStateModel.set(QueryStateModel.attributesEnum.q, value);
-    this.usageAnalytics.logSearchEvent<IAnalyticsTopSuggestionMeta>(analyticsActionCauseList.omniboxAnalytics, {
+    this.usageAnalytics.logSearchEvent<IAnalyticsTopSuggestionMeta>(this.getOmniboxAnalyticsEventCause(), {
       partialQueries: this.cleanCustomData(this.partialQueries),
       suggestionRanking: _.indexOf(_.pluck(this.resultsToBuildWith, 'value'), value),
       suggestions: this.cleanCustomData(this.lastSuggestions),
@@ -192,6 +193,13 @@ export class AnalyticsSuggestions extends Component {
     }
 
     return toClean.join(';');
+  }
+
+  private getOmniboxAnalyticsEventCause() {
+    if (this.searchInterface instanceof StandaloneSearchInterface) {
+      return analyticsActionCauseList.omniboxFromLink;
+    }
+    return analyticsActionCauseList.omniboxAnalytics;
   }
 }
 Initialization.registerAutoCreateComponent(AnalyticsSuggestions);

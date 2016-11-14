@@ -334,6 +334,8 @@ QuickviewTest();
 
 import {ResponsiveDropdownTest} from './ui/ResponsiveComponents/ResponsiveDropdownTest';
 ResponsiveDropdownTest();
+import {StandaloneSearchInterfaceTest} from './ui/StandaloneSearchInterfaceTest';
+StandaloneSearchInterfaceTest();
 
 import {ResponsiveFacetsTest} from './ui/ResponsiveComponents/ResponsiveFacetsTest';
 ResponsiveFacetsTest();

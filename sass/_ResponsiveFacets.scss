@@ -77,6 +77,18 @@
       padding: 10px 0 10px 20px;
     }
   }
+
+  .coveo-facet-header-filter-by-container {
+    background: $color-blueish-white;
+    font-size: $font-size-bigger;
+    font-weight: 700;
+    letter-spacing: 0.22px;
+    line-height: 22px;
+    .coveo-facet-header-filter-by {
+      display: block;
+      padding: 10px 0 10px 20px;
+    }
+  }
 }
 
 .coveo-facet-header-filter-by {

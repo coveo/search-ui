@@ -69,8 +69,9 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     } else if (!this.needSmallMode() && ResponsiveComponentsUtils.isSmallRecommendationActivated(this.coveoRoot)) {
       this.changeToLargeMode();
     }
+
     if (this.dropdown.isOpened) {
- +    this.dropdown.dropdownContent.positionDropdown();
+      this.dropdown.dropdownContent.positionDropdown();
     }
   }
 
