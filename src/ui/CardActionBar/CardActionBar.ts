@@ -44,6 +44,7 @@ export class CardActionBar extends Component {
 
     if (this.options.hidden) {
       this.bindEvents();
+      $$(this.parentResult).addClass('coveo-clickable');
       this.appendArrow();
     } else {
       this.element.style.transition = 'none';
