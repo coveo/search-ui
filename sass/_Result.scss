@@ -165,6 +165,7 @@
     @include flex-grow(1);
     margin: 0 20px 20px 0;
     @include defaultRoundedBorder();
+    cursor: pointer;
 
     &:hover {
       box-shadow: 0 0 0 2px $color-vibrant-blue;
