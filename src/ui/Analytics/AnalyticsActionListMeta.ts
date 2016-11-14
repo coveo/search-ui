@@ -267,6 +267,16 @@ export var analyticsActionCauseList = {
       suggestions: 4
     }
   },
+  omniboxFromLink: <IAnalyticsActionCause>{
+    name: 'omniboxFromLink',
+    type: 'omnibox',
+    metaMap: {
+      partialQuery: 1,
+      suggestionRanking: 2,
+      partialQueries: 3,
+      suggestions: 4
+    }
+  },
   omniboxField: <IAnalyticsActionCause>{
     name: 'omniboxField',
     type: 'omnibox'
