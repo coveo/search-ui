@@ -60,7 +60,7 @@ export function ResponsiveDropdownTest() {
       setTimeout(() => {
         expect(root.find(`.${ResponsiveDropdown.DROPDOWN_BACKGROUND_CSS_CLASS_NAME}`)).toBeNull();
         done();
-      }, 1000); 
+      }, 1000);
     });
 
     it('should close the dropdown header when close is called', () => {
