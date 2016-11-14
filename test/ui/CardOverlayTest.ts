@@ -1,6 +1,5 @@
 import * as Mock from '../MockEnvironment';
-import { CardOverlay, ICardOverlayOptions } from '../../src/ui/CardOverlay/CardOverlay';
-import { Simulate } from '../Simulate';
+import { CardOverlay } from '../../src/ui/CardOverlay/CardOverlay';
 import { $$ } from '../../src/utils/Dom';
 
 export function CardOverlayTest() {

@@ -1,6 +1,5 @@
 import * as Mock from '../MockEnvironment';
-import { CardActionBar, ICardActionBarOptions } from '../../src/ui/CardActionBar/CardActionBar';
-import { Simulate } from '../Simulate';
+import { CardActionBar } from '../../src/ui/CardActionBar/CardActionBar';
 import { $$ } from '../../src/utils/Dom';
 
 export function CardActionBarTest() {

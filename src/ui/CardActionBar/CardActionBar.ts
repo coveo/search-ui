@@ -1,9 +1,7 @@
 import {Component} from '../Base/Component';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
-import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
-import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {Initialization, IInitializationParameters} from '../Base/Initialization';
+import {Initialization} from '../Base/Initialization';
 import {IQueryResult} from '../../rest/QueryResult';
 import {Assert} from '../../misc/Assert';
 import {$$} from '../../utils/Dom';
@@ -42,7 +40,7 @@ export class CardActionBar extends Component {
     this.options = ComponentOptions.initComponentOptions(element, CardActionBar, options);
 
     this.parentResult = $$(this.element).closest('CoveoResult');
-    Assert.check(this.parentResult !== undefined, 'ActionBar needs to be a child of a Result')
+    Assert.check(this.parentResult !== undefined, 'ActionBar needs to be a child of a Result');
 
     if (this.options.hidden) {
       this.bindEvents();
