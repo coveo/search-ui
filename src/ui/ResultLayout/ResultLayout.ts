@@ -124,7 +124,7 @@ export class ResultLayout extends Component {
     }
     const btn = $$('span', { className: 'coveo-result-layout-selector' }, layout);
     // TODO: Icon classname temporary
-    btn.prepend($$('span', { className: 'coveo-icon coveo-sprites-checkbox-exclusion' }).el);
+    btn.prepend($$('span', { className: `coveo-icon coveo-sprites-${layout}-layout` }).el);
     if (layout === this.currentLayout) {
       btn.addClass('coveo-selected');
     }
