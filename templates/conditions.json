@@ -87,6 +87,18 @@
     "priority": 1,
     "value": "raw.fullname != undefined"
   },
+  "MobileSalesforceCase": {
+    "priority": 3,
+    "value": "(raw.sfcaseid != null) && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "CardSalesforceCase": {
+    "priority": 3,
+    "value": "(raw.sfcaseid != null) && options.layout === 'card'"
+  },
+  "SalesforceCase": {
+    "priority": 2,
+    "value": "raw.sfcaseid != null"
+  },
   "MobileSalesforce": {
     "priority": 2,
     "value": "(raw.sfid != null || raw.sfid != null) && Coveo.DeviceUtils.isSmallScreenWidth()"
@@ -98,18 +110,6 @@
   "Salesforce": {
     "priority": 1,
     "value": "raw.sfid != null"
-  },
-  "MobileSalesforceCase": {
-    "priority": 3,
-    "value": "raw.sfcaseid != null && Coveo.DeviceUtils.isSmallScreenWidth()"
-  },
-  "CardSalesforceCase": {
-    "priority": 3,
-    "value": "raw.sfcaseid != null && options.layout === 'card'"
-  },
-  "SalesforceCase": {
-    "priority": 2,
-    "value": "raw.sfcaseid != null"
   },
   "MobileSharePoint": {
     "priority": 2,
