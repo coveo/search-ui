@@ -17,8 +17,7 @@ import {INoResultsEventArgs} from '../../events/QueryEvents';
 import {IQueryErrorEventArgs} from '../../events/QueryEvents';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {ResponsiveRecommendation} from '../ResponsiveComponents/ResponsiveRecommendation';
-
-declare var coveoanalytics: CoveoAnalytics.CoveoUA;
+import {history} from 'coveo.analytics';
 
 export interface IRecommendationOptions extends ISearchInterfaceOptions {
   mainSearchInterface?: HTMLElement;
@@ -125,6 +124,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   // so that clicks event inside the recommendation component can be modified and attached to the main search interface.
   public mainQuerySearchUID: string;
   public mainQueryPipeline: string;
+  public historyStore: CoveoAnalytics.HistoryStore;
 
   private mainInterfaceQuery: IQuerySuccessEventArgs;
   private displayStyle: string;
@@ -150,7 +150,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
 
     // This is done to allow the component to be included in another search interface without triggering the parent events.
     this.preventEventPropagation();
-
+    this.historyStore = new history.HistoryStore();
     ResponsiveRecommendation.init(this.root, this, options);
   }
 
@@ -215,12 +215,11 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   }
 
   private getHistory(): string {
-    if (typeof coveoanalytics != 'undefined') {
-      var store = new coveoanalytics.history.HistoryStore();
-      return JSON.stringify(store.getHistory());
-    } else {
-      return '[]';
+    let historyFromStore = this.historyStore.getHistory();
+    if (historyFromStore == null) {
+      historyFromStore = [];
     }
+    return JSON.stringify(historyFromStore);
   }
 
   private preventEventPropagation() {
