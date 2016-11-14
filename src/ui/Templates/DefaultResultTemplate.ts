@@ -4,7 +4,6 @@ import {TemplateCache} from './TemplateCache';
 import {IQueryResult} from '../../rest/QueryResult';
 import {Assert} from '../../misc/Assert';
 
-
 /**
  * This renders the appropriate result template, found in TemplateCache,
  * according to its condition.
@@ -23,20 +22,13 @@ export class DefaultResultTemplate extends Template {
     Assert.exists(queryResult);
     queryResult = _.extend({}, queryResult, UnderscoreTemplate.templateHelpers);
 
-    var defaultTemplates = _.map(TemplateCache.getDefaultTemplates(), (name) => TemplateCache.getTemplate(name));
+    var defaultTemplates = _.map(TemplateCache.getDefaultTemplates(), name => TemplateCache.getTemplate(name));
 
     // We want to put templates with conditions first
-    defaultTemplates.sort((a, b) => {
-      if (a.condition == null && b.condition != null) {
-        return 1;
-      } else if (a.condition != null && b.condition == null) {
-        return -1;
-      }
-      return 0;
-    });
+    const sortedTemplates = _.sortBy(defaultTemplates, template => template.condition == null);
 
-    for (let i = 0; i < defaultTemplates.length; i++) {
-      var result = defaultTemplates[i].instantiateToString(queryResult, undefined, options);
+    for (let i = 0; i < sortedTemplates.length; i++) {
+      var result = sortedTemplates[i].instantiateToString(queryResult, undefined, options);
       if (result != null) {
         return result;
       }
