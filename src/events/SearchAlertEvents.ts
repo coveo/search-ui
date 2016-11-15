@@ -10,7 +10,6 @@ export interface ISearchAlertsFailEventArgs {
 }
 
 export interface ISearchAlertsPopulateMessageEventArgs {
-  dom: HTMLElement[];
   text: string[];
 }
 

@@ -56,7 +56,6 @@ export class SearchAlertsMessage extends Component {
 
   public getFollowQueryMessage(query?: string, htmlFormatted = false): string {
     let populateMessageArguments: ISearchAlertsPopulateMessageEventArgs = {
-      dom: [],
       text: []
     };
 
