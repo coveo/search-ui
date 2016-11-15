@@ -41,11 +41,11 @@ export class BreadcrumbValueList {
   public buildAsString(): string {
     this.build();
     if (this.elem) {
-      return `${this.facet.options.title}: ` + _.map($$(this.elem).findAll('.coveo-facet-breadcrumb-value'), (value: HTMLElement)=> {
-            return $$(value).text();
-          }).join(', ');
+      return `${this.facet.options.title}: ` + _.map($$(this.elem).findAll('.coveo-facet-breadcrumb-value'), (value: HTMLElement) => {
+        return $$(value).text();
+      }).join(', ');
     }
-    return ''
+    return '';
   }
 
   private buildExpanded() {

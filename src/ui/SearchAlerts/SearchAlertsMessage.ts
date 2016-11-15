@@ -2,15 +2,14 @@ import {Component} from '../Base/Component';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {
-    SearchAlertsEvents, ISearchAlertsEventArgs, ISearchAlertsFailEventArgs,
-    ISearchAlertsPopulateMessageEventArgs
+  SearchAlertsEvents, ISearchAlertsEventArgs, ISearchAlertsFailEventArgs,
+  ISearchAlertsPopulateMessageEventArgs
 } from '../../events/SearchAlertEvents';
 import {QueryEvents} from '../../events/QueryEvents';
 import {ISubscriptionItemRequest, SUBSCRIPTION_TYPE, ISubscriptionQueryRequest} from '../../rest/Subscription';
 import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
 import {l} from '../../strings/Strings';
 import {$$, Dom} from '../../utils/Dom';
-import {ModalBox} from '../../ExternalModulesShim';
 
 export interface ISearchAlertMessageOptions {
   closeDelay: number;
@@ -61,10 +60,10 @@ export class SearchAlertsMessage extends Component {
       text: []
     };
 
-    let getAdditionalTextFormatted = ()=> {
-      return _.map(populateMessageArguments.text, (text)=> {
-        return `${htmlFormatted ? '<li>' : '('}${_.escape(text)}${htmlFormatted ? '</li>' : ')'}`
-      }).join(' ')
+    let getAdditionalTextFormatted = () => {
+      return _.map(populateMessageArguments.text, (text) => {
+        return `${htmlFormatted ? '<li>' : '('}${_.escape(text)}${htmlFormatted ? '</li>' : ')'}`;
+      }).join(' ');
     };
 
     $$(this.root).trigger(SearchAlertsEvents.searchAlertsPopulateMessage, populateMessageArguments);
@@ -158,10 +157,10 @@ export class SearchAlertsMessage extends Component {
   }
 
   private close() {
-    /*if (this.message != null) {
+    if (this.message != null) {
       clearTimeout(this.closeTimeout);
       this.message.remove();
       this.message = null;
-     }*/
+    }
   }
 }

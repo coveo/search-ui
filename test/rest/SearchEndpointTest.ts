@@ -519,7 +519,7 @@ export function SearchEndpointTest() {
             typeConfig: {
               query: qbuilder.build()
             },
-            name : 'asdasd'
+            name: 'asdasd'
           });
 
           promiseSuccess
@@ -654,7 +654,7 @@ export function SearchEndpointTest() {
         manageToken: '1',
         email: '42@coveo.com'
       },
-      name : 'asdasd'
+      name: 'asdasd'
     };
   }
 }

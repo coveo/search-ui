@@ -53,7 +53,7 @@ import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
 import {IStringMap} from '../../rest/GenericParam';
 import {FacetValuesOrder} from './FacetValuesOrder';
 import {ValueElement} from './ValueElement';
-import {SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs} from "../../events/SearchAlertEvents";
+import {SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs} from '../../events/SearchAlertEvents';
 
 export interface IFacetOptions {
   title?: string;
@@ -1000,7 +1000,7 @@ export class Facet extends Component {
   }
 
   protected initSearchAlertEvents() {
-    this.bind.onRootElement(SearchAlertsEvents.searchAlertsPopulateMessage, (args: ISearchAlertsPopulateMessageEventArgs)=> this.handlePopulateSearchAlerts(args));
+    this.bind.onRootElement(SearchAlertsEvents.searchAlertsPopulateMessage, (args: ISearchAlertsPopulateMessageEventArgs) => this.handlePopulateSearchAlerts(args));
   }
 
   protected handleOmniboxWithStaticValue(eventArg: IPopulateOmniboxEventArgs) {

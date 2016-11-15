@@ -25,8 +25,7 @@ import {IPopulateOmniboxEventArgs} from '../../events/OmniboxEvents';
 import {OmniboxHierarchicalValuesList} from './OmniboxHierarchicalValuesList';
 import {HierarchicalFacetValueElement} from './HierarchicalFacetValueElement';
 import {Initialization} from '../Base/Initialization';
-import {ISearchAlertsPopulateMessageEventArgs} from "../../events/SearchAlertEvents";
-import {HierarchicalBreadcrumbValueElement} from "./HierarchicalBreadcrumbValueElement";
+import {ISearchAlertsPopulateMessageEventArgs} from '../../events/SearchAlertEvents';
 
 export interface IHierarchicalFacetOptions extends IFacetOptions {
   delimitingCharacter?: string;

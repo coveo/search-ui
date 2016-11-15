@@ -127,6 +127,31 @@ export class SearchAlerts extends Component {
   }
 
   /**
+   * Follow the last query.
+   * The user will start to receive emails when the results from that query changes.
+   */
+  public followQuery() {
+    let queryBuilder = this.queryController.createQueryBuilder({});
+    let request = this.buildFollowQueryRequest(queryBuilder.build(), this.options);
+
+    this.queryController.getEndpoint().follow(request)
+      .then((subscription: ISubscription) => {
+        if (subscription) {
+          let eventArgs: ISearchAlertsEventArgs = {
+            subscription: subscription,
+            dom: this.findQueryBoxDom()
+          };
+          $$(this.root).trigger(SearchAlertsEvents.searchAlertsCreated, eventArgs);
+        } else {
+          this.triggerSearchAlertsFail();
+        }
+      })
+      .catch(() => {
+        this.triggerSearchAlertsFail();
+      });
+  }
+
+  /**
    * Opens the search alerts manage panel.
    * This panel allows the user to stop following queries or documents.
    * It also allows the user to change the frequency at which he will receive emails.
@@ -220,7 +245,9 @@ export class SearchAlerts extends Component {
     ];
 
     let context: string;
-    if (subscription.type == SUBSCRIPTION_TYPE.followQuery) {
+    if (subscription.name) {
+      context = _.escape(subscription.name);
+    } else if (subscription.type == SUBSCRIPTION_TYPE.followQuery) {
       let typeConfig = <ISubscriptionQueryRequest>subscription.typeConfig;
       context = _.escape(typeConfig.query.q) || l('EmptyQuery');
     } else {
@@ -297,31 +324,6 @@ export class SearchAlerts extends Component {
       .then((updated: ISubscription) => _.extend(subscription, updated))
       .catch(() => {
         this.handleSearchAlertsFail();
-      });
-  }
-
-  /**
-   * Follow the last query.
-   * The user will start to receive emails when the results from that query changes.
-   */
-  public followQuery() {
-    let queryBuilder = this.queryController.createQueryBuilder({});
-    let request = this.buildFollowQueryRequest(queryBuilder.build(), this.options);
-
-    this.queryController.getEndpoint().follow(request)
-      .then((subscription: ISubscription) => {
-        if (subscription) {
-          let eventArgs: ISearchAlertsEventArgs = {
-            subscription: subscription,
-            dom: this.findQueryBoxDom()
-          };
-          $$(this.root).trigger(SearchAlertsEvents.searchAlertsCreated, eventArgs);
-        } else {
-          this.triggerSearchAlertsFail();
-        }
-      })
-      .catch(() => {
-        this.triggerSearchAlertsFail();
       });
   }
 
