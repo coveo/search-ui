@@ -61,13 +61,14 @@ export class SearchAlertsMessage extends Component {
       text: []
     };
 
+    let getAdditionalTextFormatted = ()=> {
+      return _.map(populateMessageArguments.text, (text)=> {
+        return `${htmlFormatted ? '<li>' : '('}${_.escape(text)}${htmlFormatted ? '</li>' : ')'}`
+      }).join(' ')
+    };
+
     $$(this.root).trigger(SearchAlertsEvents.searchAlertsPopulateMessage, populateMessageArguments);
-    let additionalMessage =
-        `${htmlFormatted ? '<ul>' : ''}
-         ${_.map(populateMessageArguments.text, (text)=> {
-          return `${htmlFormatted ? '<li>' : '('} ${_.escape(text)}${htmlFormatted ? '</li>' : ')'}`
-        }).join(' ')}
-        ${htmlFormatted ? '</ul>' : ''}`;
+    let additionalMessage = `${htmlFormatted ? '<ul>' : ''}${getAdditionalTextFormatted()}${htmlFormatted ? '</ul>' : ''}`;
 
     let automaticallyBuiltMessage;
 

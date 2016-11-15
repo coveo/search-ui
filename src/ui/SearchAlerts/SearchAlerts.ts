@@ -306,7 +306,7 @@ export class SearchAlerts extends Component {
    */
   public followQuery() {
     let queryBuilder = this.queryController.createQueryBuilder({});
-    let request = SearchAlerts.buildFollowQueryRequest(queryBuilder.build(), this.options);
+    let request = this.buildFollowQueryRequest(queryBuilder.build(), this.options);
 
     this.queryController.getEndpoint().follow(request)
       .then((subscription: ISubscription) => {
@@ -346,7 +346,7 @@ export class SearchAlerts extends Component {
     return dom;
   }
 
-  private static buildFollowQueryRequest(query: IQuery, options: ISearchAlertsOptions): ISubscriptionRequest {
+  private buildFollowQueryRequest(query: IQuery, options: ISearchAlertsOptions): ISubscriptionRequest {
     let typeConfig: ISubscriptionQueryRequest = {
       query: query
     };
@@ -357,7 +357,8 @@ export class SearchAlerts extends Component {
 
     return {
       type: SUBSCRIPTION_TYPE.followQuery,
-      typeConfig: typeConfig
+      typeConfig: typeConfig,
+      name: this.message.getFollowQueryMessage(query.q)
     };
   }
 
