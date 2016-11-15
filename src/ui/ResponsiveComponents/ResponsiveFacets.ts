@@ -22,6 +22,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
 
   private facets: Facet[] = [];
   private facetSliders: FacetSlider[] = [];
+  private preservePositionOriginalValues: boolean[] = [];
   private breakpoint: number;
   private logger: Logger;
   private dropdown: ResponsiveDropdown;
@@ -54,6 +55,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
   public registerComponent(component: Component) {
     if (component instanceof Facet) {
       this.facets.push(<Facet>component);
+      this.preservePositionOriginalValues.push((<Facet>component).options.preservePosition);
     } else if (component instanceof FacetSlider) {
       this.facetSliders.push(<FacetSlider>component);
     }
@@ -91,16 +93,14 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private changeToSmallMode() {
-    //this.dropdown.dropdownContent.positionDropdown();
     this.dropdown.close();
     this.disableFacetPreservePosition();
-    $$(this.coveoRoot.find(`.${ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS}`)).el.appendChild(this.dropdown.dropdownHeader.element.el);
+    $$(this.coveoRoot.find(`.${ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS}`)).append(this.dropdown.dropdownHeader.element.el);
     ResponsiveComponentsUtils.activateSmallFacet(this.coveoRoot);
   }
 
-  private 
   private changeToLargeMode() {
-    this.enableFacetPreservePosition();
+    this.restoreFacetPreservePositionValue();
     this.dropdown.cleanUp();
     ResponsiveComponentsUtils.deactivateSmallFacet(this.coveoRoot);
   }
@@ -153,8 +153,8 @@ export class ResponsiveFacets implements IResponsiveComponent {
     }, ResponsiveFacets.DEBOUNCE_SCROLL_WAIT));
   }
 
-  private enableFacetPreservePosition() {
-    _.each(this.facets, facet => facet.options.preservePosition = true);
+  private restoreFacetPreservePositionValue() {
+    _.each(this.facets, (facet, index) => facet.options.preservePosition = this.preservePositionOriginalValues[index]);
   }
 
   private disableFacetPreservePosition() {

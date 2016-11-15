@@ -3,7 +3,7 @@ import {IResponsiveDropdownContent} from './ResponsiveDropdownContent';
 import {$$, Dom} from '../../../utils/Dom';
 import {EventsUtils} from '../../../utils/EventsUtils';
 
-type HandlerCall = {handler: Function, context: any};
+type HandlerCall = { handler: Function, context: any };
 
 export class ResponsiveDropdown {
 
@@ -24,11 +24,11 @@ export class ResponsiveDropdown {
   }
 
   public registerOnOpenHandler(handler: Function, context) {
-    this.onOpenHandlers.push({handler: handler, context: context});
+    this.onOpenHandlers.push({ handler: handler, context: context });
   }
 
   public registerOnCloseHandler(handler: Function, context) {
-    this.onCloseHandlers.push({handler: handler, context: context});
+    this.onCloseHandlers.push({ handler: handler, context: context });
   }
 
   public cleanUp() {
