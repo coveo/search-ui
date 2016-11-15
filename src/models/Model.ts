@@ -31,7 +31,7 @@ export interface IModelChangedEventArg {
 }
 
 /**
- * A model is basically a key -> value store that trigger letious javascript event when one of the value for each of it's key changes.<br/>
+ * A model is basically a key -> value store that triggers various javascript event when one of the value for each of it's key changes.<br/>
  * This is a class that is meant to be extended : the most important one probably being the {@link QueryStateModel}<br/>
  * Component set values in this key -> value store, and listen to event triggered to react accordingly.<br/>
  */

@@ -14,7 +14,7 @@ import * as Mock from '../../MockEnvironment';
 export function ResponsiveFacetsTest() {
   describe('ResponsiveFacets', () => {
     let largeWidth = ResponsiveFacets.RESPONSIVE_BREAKPOINT + 1;
-    let smallWidth = ResponsiveFacets.RESPONSIVE_BREAKPOINT - 1
+    let smallWidth = ResponsiveFacets.RESPONSIVE_BREAKPOINT - 1;
     let dropdownHeaderClassName = 'dropdown-header';
     let root: Dom;
     let responsiveDropdown: ResponsiveDropdown;
