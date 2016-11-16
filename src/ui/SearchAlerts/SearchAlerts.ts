@@ -260,7 +260,7 @@ export class SearchAlerts extends Component {
     element.el.innerHTML = `
       <td class='coveo-subscriptions-panel-content-type'>${ l('SearchAlerts_Type_' + subscription.type)}</td>
       <td>
-        <div class='coveo-subscriptions-panel-context'>
+        <div class='coveo-subscriptions-panel-context' title='${context}'>
           ${ context}
         </div>
       </td>
