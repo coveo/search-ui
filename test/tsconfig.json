@@ -132,6 +132,7 @@
         "../test/ui/ValueElementRendererTest.ts",
         "../test/ui//ResponsiveComponents/ResponsiveDropdownTest.ts",
         "../test/ui/ResponsiveComponents/ResponsiveFacetsTest.ts",
+        "../test/ui/ResponsiveComponents/ResponsiveRecommendationTest.ts",
         "../test/utils/CookieUtilsTest.ts",
         "../test/utils/DomTest.ts",
         "../test/utils/HighlightUtilsTest.ts",

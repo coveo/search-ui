@@ -7,7 +7,6 @@ type HandlerCall = { handler: Function, context: any };
 
 export class ResponsiveDropdown {
 
-
   public static TRANSPARENT_BACKGROUND_OPACITY: string = '0.9';
   public static DROPDOWN_BACKGROUND_CSS_CLASS_NAME: string = 'coveo-dropdown-background';
 

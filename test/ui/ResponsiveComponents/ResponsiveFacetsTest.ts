@@ -185,7 +185,7 @@ export function ResponsiveFacetsTest() {
 
     it('should need the dropdown wrapper when the width is under the breakpoint specified', () => {
       let customResponsiveBreakpoint = 200;
-      facet = new Facet(envBuilder.getBindings().element, {responsiveBreakpoint: customResponsiveBreakpoint}, envBuilder.getBindings());
+      responsiveFacets = new ResponsiveFacets(root, '', {responsiveBreakpoint: customResponsiveBreakpoint}, responsiveDropdown);
       let spy = jasmine.createSpy('width').and.returnValue(customResponsiveBreakpoint - 1);
       root.width = <any>spy;
 
@@ -194,7 +194,7 @@ export function ResponsiveFacetsTest() {
 
     it('should not need the dropdown wrapper when the width is over the breakpoint specified', () => {
       let customResponsiveBreakpoint = 200;
-      facet = new Facet(envBuilder.getBindings().element, {responsiveBreakpoint: customResponsiveBreakpoint}, envBuilder.getBindings());
+      responsiveFacets = new ResponsiveFacets(root, '', {responsiveBreakpoint: customResponsiveBreakpoint}, responsiveDropdown);
       let spy = jasmine.createSpy('width').and.returnValue(customResponsiveBreakpoint + 1);
       root.width = <any>spy;
 
