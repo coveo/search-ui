@@ -132,7 +132,7 @@ export class FieldValue extends Component {
     /**
      * Specify a caption to display before the value. <br/>
      */
-    textCaption: ComponentOptions.buildStringOption();
+    textCaption: ComponentOptions.buildStringOption()
   };
 
   static simpleOptions = _.omit(FieldValue.options, 'helperOptions');
@@ -148,7 +148,7 @@ export class FieldValue extends Component {
    * @param bindings
    * @param result
    */
-  constructor(public element: HTMLElement, public options?: IFieldValueOptions, bindings?: IComponentBindings, public result?: IQueryResult, fieldValueClassId: string = FieldValue.ID) {
+  constructor(public element: HTMLElement, public options: IFieldValueOptions, bindings?: IComponentBindings, public result?: IQueryResult, fieldValueClassId: string = FieldValue.ID) {
     super(element, fieldValueClassId, bindings);
 
     this.options = ComponentOptions.initOptions(element, FieldValue.simpleOptions, options);
