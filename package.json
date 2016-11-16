@@ -92,7 +92,7 @@
     "phantomjs-prebuilt": "^2.1.7",
     "plop": "^1.5.0",
     "png-sprite": "^0.1.1",
-    "pretty-typescript": "^1.12.1",
+    "pretty-typescript": "1.13.x",
     "q": "^1.4.1",
     "remap-istanbul": "^0.6.4",
     "require-dir": "^0.3.0",
