@@ -154,6 +154,29 @@ export function FieldValueTest() {
         expect(test.cmp.renderOneValue('1337').textContent).toEqual('ham1337burger');
       });
 
+      it('textCaption should render a text value', () => {
+         test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
+          element: element,
+          cmpOptions: <IFieldValueOptions>{
+            field: '@title',
+            textCaption: '<script>alert("Potatoes")</script>'
+          }
+        });
+
+        expect(test.cmp.renderTextCaption().textContent).toBe('<script>alert("Potatoes")</script>');
+      });
+
+      it('textCaption should render in front of the fieldValue', () => {
+        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
+          element: element,
+          cmpOptions: <IFieldValueOptions>{
+            field: '@title',
+            textCaption: 'this is a test'
+          }
+        });
+        expect(test.cmp.element.children.item(0).className).toBe('field-caption');
+      });
+
       describe('helperOptions', () => {
         it('should call helper with appropriate options', () => {
           test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{

@@ -21,6 +21,7 @@ export interface IFieldValueOptions {
   splitValues?: boolean;
   separator?: string;
   displaySeparator?: string;
+  textCaption?: string;
 }
 
 export interface IAnalyticsFieldValueMeta {
@@ -126,7 +127,12 @@ export class FieldValue extends Component {
         base: ComponentOptions.buildNumberOption(showOnlyWithHelper(['size'], { min: 0, defaultValue: 0 })),
         isMilliseconds: ComponentOptions.buildBooleanOption(showOnlyWithHelper(['timeSpan'])),
       }
-    })
+    }),
+
+    /**
+     * Specify a caption to display before the value. <br/>
+     */
+    textCaption: ComponentOptions.buildStringOption();
   };
 
   static simpleOptions = _.omit(FieldValue.options, 'helperOptions');
@@ -176,6 +182,9 @@ export class FieldValue extends Component {
         values = [loadedValueFromComponent];
       }
       this.appendValuesToDom(values);
+      if(this.options.textCaption != null) {
+        this.prependTextCaptionToDom();
+      }
     }
   }
 
@@ -216,6 +225,17 @@ export class FieldValue extends Component {
     return element;
   }
 
+  /**
+   * Render the caption with the text defined in the component options.<br/>
+   * Returns a <code>HTMLElement</code> containing the rendered caption as text.
+   */
+  public renderTextCaption(): HTMLElement {
+    let element = $$('span').el;
+    element.className += 'field-caption';
+    element.appendChild(document.createTextNode(this.options.textCaption));
+    return element;
+  }
+
   protected getValueContainer() {
     return this.element;
   }
@@ -253,6 +273,12 @@ export class FieldValue extends Component {
         }
       }
     });
+  }
+
+  private prependTextCaptionToDom(): void {
+    let elem = this.getValueContainer();
+    elem.insertBefore(this.renderTextCaption(), elem.childNodes[0]);
+    elem.style.display = "inline-block";
   }
 
   private bindEventOnValue(element: HTMLElement, value: string) {
