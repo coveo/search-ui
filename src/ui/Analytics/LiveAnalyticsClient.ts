@@ -83,7 +83,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
   }
 
   public logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement) {
-    var metaObject = this.buildMetaObject(meta);
+    let metaObject = this.buildMetaObject(meta, result);
     this.pushClickEvent(actionCause, metaObject, result, element);
   }
 
@@ -242,7 +242,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       splitTestRunName: this.splitTestRunName || result.splitTestRun,
       splitTestRunVersion: this.splitTestRunVersion || (result.splitTestRun != undefined ? result.pipeline : undefined),
       documentUri: result.uri,
-      documentUriHash: result.raw['urihash'],
+      documentUriHash: result.raw['uniqueid'] || result.raw['urihash'],
       documentUrl: result.clickUri,
       documentTitle: result.title,
       documentCategory: result.raw['objecttype'],
@@ -269,10 +269,26 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     return this.resolveActiveTabFromElement(element) || 'default';
   }
 
-  private buildMetaObject<TMeta>(meta: TMeta): IChangeableAnalyticsMetaObject {
-    var build: IChangeableAnalyticsMetaObject = _.extend({}, meta);
-    build['JSUIVersion'] = version.lib + ';' + version.product;
-    return build;
+  private buildMetaObject<TMeta>(meta: TMeta, result?: IQueryResult): IChangeableAnalyticsMetaObject {
+    let modifiedMeta: IChangeableAnalyticsMetaObject = _.extend({}, meta);
+    modifiedMeta['JSUIVersion'] = version.lib + ';' + version.product;
+
+    if (result) {
+      let fieldValue;
+      let fieldUsed;
+      let uniqueId = result.raw['uniqueid'];
+      if (uniqueId) {
+        fieldUsed = 'uniqueid';
+        fieldValue = uniqueId;
+      } else {
+        fieldUsed = 'urihash';
+        fieldValue = result.raw['urihash'];
+      }
+      modifiedMeta['contentIdKey'] = fieldUsed;
+      modifiedMeta['contentIdValue'] = fieldValue;
+    }
+
+    return modifiedMeta;
   }
 
   private cancelAnyPendingSearchAsYouTypeEvent() {
