@@ -278,7 +278,7 @@ export class FieldValue extends Component {
   private prependTextCaptionToDom(): void {
     let elem = this.getValueContainer();
     elem.insertBefore(this.renderTextCaption(), elem.childNodes[0]);
-    elem.style.display = "inline-block";
+    elem.style.display = 'inline-block';
   }
 
   private bindEventOnValue(element: HTMLElement, value: string) {
