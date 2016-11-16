@@ -92,25 +92,25 @@ export function ResponsiveFacetsTest() {
         expect(responsiveFacets.needDropdownWrapper()).toBe(true);
       });
 
-      it('closes dropdown when handleResizeEvent is called and it should switch to small mode', () => {
+      it('closes dropdown when handleResizeEvent is called', () => {
         shouldSwitchToSmallMode();
         responsiveFacets.handleResizeEvent();
         expect(responsiveDropdown.close).toHaveBeenCalled();
       });
 
-      it('disables facet preserve position when handleResizeEvent is called and it should switch to small mode', () => {
+      it('disables facet preserve position when handleResizeEvent is called', () => {
         shouldSwitchToSmallMode();
         responsiveFacets.handleResizeEvent();
         expect(facet.options.preservePosition).toBe(false);
       });
 
-      it('appends the dropdown header when handleResizeEvent is called and it should switch to small mode', () => {
+      it('appends the dropdown header when handleResizeEvent is called', () => {
         shouldSwitchToSmallMode();
         responsiveFacets.handleResizeEvent();
         expect(root.find(`.${dropdownHeaderClassName}`)).not.toBeNull();
       });
 
-      it('activates the small facets when handleResizeEvent is called and it should switch to small mode', () => {
+      it('activates the small facets when handleResizeEvent is called', () => {
         spyOn(ResponsiveComponentsUtils, 'activateSmallFacet');
         shouldSwitchToSmallMode();
         responsiveFacets.handleResizeEvent();
@@ -185,7 +185,7 @@ export function ResponsiveFacetsTest() {
 
     it('should need the dropdown wrapper when the width is under the breakpoint specified', () => {
       let customResponsiveBreakpoint = 200;
-      responsiveFacets = new ResponsiveFacets(root, '', {responsiveBreakpoint: customResponsiveBreakpoint}, responsiveDropdown);
+      responsiveFacets = new ResponsiveFacets(root, '', { responsiveBreakpoint: customResponsiveBreakpoint }, responsiveDropdown);
       let spy = jasmine.createSpy('width').and.returnValue(customResponsiveBreakpoint - 1);
       root.width = <any>spy;
 
@@ -194,7 +194,7 @@ export function ResponsiveFacetsTest() {
 
     it('should not need the dropdown wrapper when the width is over the breakpoint specified', () => {
       let customResponsiveBreakpoint = 200;
-      responsiveFacets = new ResponsiveFacets(root, '', {responsiveBreakpoint: customResponsiveBreakpoint}, responsiveDropdown);
+      responsiveFacets = new ResponsiveFacets(root, '', { responsiveBreakpoint: customResponsiveBreakpoint }, responsiveDropdown);
       let spy = jasmine.createSpy('width').and.returnValue(customResponsiveBreakpoint + 1);
       root.width = <any>spy;
 

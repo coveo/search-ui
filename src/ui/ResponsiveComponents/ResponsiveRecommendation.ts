@@ -50,12 +50,12 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     return null;
   }
 
-  constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions) {
+  constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions, dropdownMock?: ResponsiveDropdown) {
     this.recommendationRoot = this.getRecommendationRoot();
     this.dropdownHeaderLabel = options.dropdownHeaderLabel;
     this.breakpoint = this.defineResponsiveBreakpoint(options);
     this.logger = new Logger(this);
-    this.dropdown = this.buildDropdown();
+    this.dropdown = this.buildDropdown(dropdownMock);
     this.facets = this.getFacets();
     this.facetSliders = this.getFacetSliders();
     this.registerOnOpenHandler();
@@ -98,10 +98,10 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     ResponsiveComponentsUtils.deactivateSmallRecommendation(this.recommendationRoot);
   }
 
-  private buildDropdown(): ResponsiveDropdown {
+  private buildDropdown(dropdownMock: ResponsiveDropdown): ResponsiveDropdown {
     let dropdownContent = this.buildDropdownContent();
     let dropdownHeader = this.buildDropdownHeader();
-    let dropdown = new ResponsiveDropdown(dropdownContent, dropdownHeader, this.coveoRoot);
+    let dropdown = dropdownMock ? dropdownMock : new ResponsiveDropdown(dropdownContent, dropdownHeader, this.coveoRoot);
     dropdown.disablePopupBackground();
     return dropdown;
   }
