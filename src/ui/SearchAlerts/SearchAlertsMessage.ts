@@ -100,7 +100,7 @@ export class SearchAlertsMessage extends Component {
     this.message.el.innerHTML = `
       <div class='coveo-subscriptions-messages-message'>
         <div class='coveo-subscriptions-messages-info-close'></div>
-        <div class='coveo-subscriptions-messages-content' title='${message}'>${message}</span></div>
+        <div class='coveo-subscriptions-messages-content' title='${message}'>${message}</div>
       </div>`;
 
     this.message.toggleClass('coveo-subscriptions-messages-error', error);
