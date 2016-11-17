@@ -7,7 +7,6 @@ import {ResponsiveDropdownHeader} from '../../../src/ui/ResponsiveComponents/Res
 import {ResponsiveDropdownContent} from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownContent';
 import {ResponsiveComponentsManager} from '../../../src/ui/ResponsiveComponents/ResponsiveComponentsManager';
 import {$$, Dom} from '../../../src/utils/Dom';
-import * as Mock from '../../MockEnvironment';
 
 export function ResponsiveRecommendationTest() {
 
@@ -33,7 +32,7 @@ export function ResponsiveRecommendationTest() {
 
     beforeEach(() => {
       root = $$('div');
-      root.append($$('div', {className: Component.computeCssClassName(Recommendation)}).el);
+      root.append($$('div', { className: Component.computeCssClassName(Recommendation) }).el);
       root.append($$('div', { className: ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS }).el);
       responsiveDropdown = jasmine.createSpyObj('responsiveDropdown', ['registerOnOpenHandler', 'registerOnCloseHandler', 'cleanUp', 'open', 'close', 'disablePopupBackground']);
       responsiveDropdownContent = jasmine.createSpyObj('responsiveDropdownContent', ['positionDropdown', 'hideDropdown', 'cleanUp', 'element']);
@@ -44,7 +43,7 @@ export function ResponsiveRecommendationTest() {
       responsiveDropdown.dropdownHeader = responsiveDropdownHeader;
       smallWidth = ResponsiveRecommendation.RESPONSIVE_BREAKPOINT - 1;
       largeWidth = ResponsiveRecommendation.RESPONSIVE_BREAKPOINT + 1;
-      responsiveRecommendation = new ResponsiveRecommendation(root, '', {dropdownHeaderLabel: 'label'}, responsiveDropdown);
+      responsiveRecommendation = new ResponsiveRecommendation(root, '', { dropdownHeaderLabel: 'label' }, responsiveDropdown);
     });
 
     it('calls position dropdown when handleResizeEvent is called if the dropdown is opened', () => {

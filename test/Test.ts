@@ -343,3 +343,9 @@ ResponsiveFacetsTest();
 
 import {ResponsiveRecommendationTest} from './ui/ResponsiveComponents/ResponsiveRecommendationTest';
 ResponsiveRecommendationTest();
+
+import {ResponsiveTabsTest} from './ui/ResponsiveComponents/ResponsiveTabsTest';
+ResponsiveTabsTest();
+
+import {ResponsiveDropdownContentTest} from './ui/ResponsiveComponents/ResponsiveDropdownContentTest';
+ResponsiveDropdownContentTest();

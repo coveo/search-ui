@@ -37,9 +37,9 @@ export class ResponsiveFacets implements IResponsiveComponent {
     ResponsiveComponentsManager.register(ResponsiveFacets, $$(root), Facet.ID, component, options);
   }
 
-  constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions, dropdownMock?: ResponsiveDropdown) {
+  constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions, responsiveDropdown?: ResponsiveDropdown) {
     this.dropdownHeaderLabel = this.getDropdownHeaderLabel();
-    this.dropdown = this.buildDropdown(dropdownMock);
+    this.dropdown = this.buildDropdown(responsiveDropdown);
     this.bindDropdownContentEvents();
     this.registerOnOpenHandler();
     this.registerOnCloseHandler();
@@ -105,10 +105,10 @@ export class ResponsiveFacets implements IResponsiveComponent {
     ResponsiveComponentsUtils.deactivateSmallFacet(this.coveoRoot);
   }
 
-  private buildDropdown(dropdownMock: ResponsiveDropdown) {
+  private buildDropdown(responsiveDropdown?: ResponsiveDropdown) {
     let dropdownContent = this.buildDropdownContent();
     let dropdownHeader = this.buildDropdownHeader();
-    let dropdown = dropdownMock ? dropdownMock : new ResponsiveDropdown(dropdownContent, dropdownHeader, this.coveoRoot);
+    let dropdown = responsiveDropdown ? responsiveDropdown : new ResponsiveDropdown(dropdownContent, dropdownHeader, this.coveoRoot);
     return dropdown;
   }
 
