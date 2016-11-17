@@ -12,7 +12,7 @@ export function ResponsiveTabsTest() {
 
     beforeEach(() => {
       root = $$('div');
-      root.append($$('div', {className: 'coveo-tab-section'}).el);
+      root.append($$('div', { className: 'coveo-tab-section' }).el);
       responsiveTabs = new ResponsiveTabs(root, Tab.ID);
     });
 

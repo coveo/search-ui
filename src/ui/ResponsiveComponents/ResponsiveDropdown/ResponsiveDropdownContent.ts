@@ -36,7 +36,7 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
     this.element.addClass(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
     this.element.el.style.display = '';
 
-    let width = this.widthRatio * this.coveoRoot.el.offsetWidth;
+    let width = this.widthRatio * this.coveoRoot.width();
     if (width <= this.minWidth) {
       width = this.minWidth;
     }
