@@ -349,3 +349,6 @@ ResponsiveTabsTest();
 
 import {ResponsiveDropdownContentTest} from './ui/ResponsiveComponents/ResponsiveDropdownContentTest';
 ResponsiveDropdownContentTest();
+
+import {RecommendationDropdownContentTest} from './ui/ResponsiveComponents/RecommendationDropdownContentTest';
+RecommendationDropdownContentTest();

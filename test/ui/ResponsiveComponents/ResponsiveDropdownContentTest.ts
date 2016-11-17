@@ -47,8 +47,42 @@ export function ResponsiveDropdownContentTest() {
       expect($$(responsiveDropdownContent.element).css('width')).toBe(expectedWidth.toString() + 'px');
     });
 
-    it('restores the content\'s position when clean up is called', () => {
+    it('removes inline styling on clean up', () => {
+      responsiveDropdownContent.hideDropdown();
+      responsiveDropdownContent.cleanUp();
+      expect(responsiveDropdownContent.element.el.style.display).toBe('');
+    });
 
+    it('adds custom css class when position dropdown is called', () => {
+      responsiveDropdownContent.positionDropdown();
+      let expectedClass = `coveo-${componentName}-dropdown-content`;
+
+      expect(responsiveDropdownContent.element.hasClass(expectedClass)).toBe(true);
+    });
+
+    it('adds default css class when position dropdown is called', () => {
+      responsiveDropdownContent.positionDropdown();
+      let expectedClass = ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME;
+
+      expect(responsiveDropdownContent.element.hasClass(expectedClass)).toBe(true);
+    });
+
+    it('removes custom css class when hide dropdown is called', () => {
+      responsiveDropdownContent.positionDropdown();
+      let expectedToBeRemovedClass = `coveo-${componentName}-dropdown-content`;
+
+      responsiveDropdownContent.hideDropdown();
+
+      expect(responsiveDropdownContent.element.hasClass(expectedToBeRemovedClass)).toBe(false);
+    });
+
+    it('removes default css class when hide dropdown is called', () => {
+      responsiveDropdownContent.positionDropdown();
+      let expectedToBeRemovedClass = ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME;
+
+      responsiveDropdownContent.hideDropdown();
+
+      expect(responsiveDropdownContent.element.hasClass(expectedToBeRemovedClass)).toBe(false);
     });
   });
 }

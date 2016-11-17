@@ -16,10 +16,13 @@ export class ResponsiveDropdown {
   private onCloseHandlers: HandlerCall[] = [];
   private popupBackground: Dom;
   private popupBackgroundIsEnabled: boolean = true;
+  private previousSibling: Dom;
+  private parent: Dom;
 
   constructor(public dropdownContent: IResponsiveDropdownContent, public dropdownHeader: ResponsiveDropdownHeader, public coveoRoot: Dom) {
     this.popupBackground = this.buildPopupBackground();
     this.bindOnClickDropdownHeaderEvent();
+    this.saveContentPosition();
   }
 
   public registerOnOpenHandler(handler: Function, context) {
@@ -34,6 +37,7 @@ export class ResponsiveDropdown {
     this.close();
     this.dropdownHeader.cleanUp();
     this.dropdownContent.cleanUp();
+    this.restoreContentPosition();
   }
 
   public open() {
@@ -97,5 +101,20 @@ export class ResponsiveDropdown {
     });
     popupBackground.on('click', () => this.close());
     return popupBackground;
+  }
+
+  private saveContentPosition() {
+    let dropdownContentPreviousSibling = this.dropdownContent.element.el.previousSibling;
+    let dropdownContentParent = this.dropdownContent.element.el.parentElement;
+    this.previousSibling = dropdownContentPreviousSibling ? $$(<HTMLElement>dropdownContentPreviousSibling) : null;
+    this.parent = $$(dropdownContentParent);
+  }
+
+  private restoreContentPosition() {
+    if (this.previousSibling) {
+      this.dropdownContent.element.insertAfter(this.previousSibling.el);
+    } else {
+      this.parent.prepend(this.dropdownContent.element.el);
+    }
   }
 }
