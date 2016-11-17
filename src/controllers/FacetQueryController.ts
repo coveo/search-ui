@@ -114,28 +114,24 @@ export class FacetQueryController {
 
       this.facet.getEndpoint().search(params.getQuery())
         .then((queryResults: IQueryResults) => {
-          if (this.facet.searchInterface.isNewDesign()) {
-            // params.getQuery() will generate a query for all excluded values + some new values
-            // there is no clean way to do a group by and remove some values
-            // so instead we request more values than we need, and crop all the one we don't want
-            let valuesCropped: IGroupByValue[] = [];
-            if (queryResults.groupByResults && queryResults.groupByResults[0]) {
-              _.each(queryResults.groupByResults[0].values, (v: IGroupByValue) => {
-                if (v.lookupValue) {
-                  if (!_.contains(params.alwaysExclude, v.lookupValue.toLowerCase())) {
-                    valuesCropped.push(v);
-                  }
-                } else {
-                  if (!_.contains(params.alwaysExclude, v.value.toLowerCase())) {
-                    valuesCropped.push(v);
-                  }
+          // params.getQuery() will generate a query for all excluded values + some new values
+          // there is no clean way to do a group by and remove some values
+          // so instead we request more values than we need, and crop all the one we don't want
+          let valuesCropped: IGroupByValue[] = [];
+          if (queryResults.groupByResults && queryResults.groupByResults[0]) {
+            _.each(queryResults.groupByResults[0].values, (v: IGroupByValue) => {
+              if (v.lookupValue) {
+                if (!_.contains(params.alwaysExclude, v.lookupValue.toLowerCase())) {
+                  valuesCropped.push(v);
                 }
-              });
-            }
-            onResult(_.first(valuesCropped, params.nbResults));
-          } else {
-            resolve(queryResults.groupByResults[0].values);
+              } else {
+                if (!_.contains(params.alwaysExclude, v.value.toLowerCase())) {
+                  valuesCropped.push(v);
+                }
+              }
+            });
           }
+          onResult(_.first(valuesCropped, params.nbResults));
         })
         .catch((error: IEndpointError) => {
           reject(error);
