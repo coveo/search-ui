@@ -10,7 +10,7 @@ import * as Globalize from 'globalize';
 export class BreadcrumbValueList {
   private expanded: FacetValue[];
   private collapsed: FacetValue[];
-  private elem: HTMLElement;
+  protected elem: HTMLElement;
   private valueContainer: HTMLElement;
 
   constructor(public facet: Facet, public facetValues: FacetValue[], public breadcrumbValueElementKlass: IBreadcrumbValueElementKlass) {
@@ -38,8 +38,18 @@ export class BreadcrumbValueList {
     return this.elem;
   }
 
+  public buildAsString(): string {
+    this.build();
+    if (this.elem) {
+      return `${this.facet.options.title}: ` + _.map($$(this.elem).findAll('.coveo-facet-breadcrumb-value'), (value: HTMLElement) => {
+        return $$(value).text();
+      }).join(', ');
+    }
+    return '';
+  }
+
   private buildExpanded() {
-    _.each(this.expanded, (value: FacetValue, index?: number, list?) => {
+    _.each(this.expanded, (value: FacetValue, index?: number) => {
       if (index != 0 && !DeviceUtils.isMobileDevice() && !this.facet.searchInterface.isNewDesign()) {
         let separator = $$('span', {
           className: 'coveo-facet-breadcrumb-separator'

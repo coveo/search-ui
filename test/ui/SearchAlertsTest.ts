@@ -7,7 +7,7 @@ import {$$} from '../../src/utils/Dom';
 import {SettingsEvents} from '../../src/events/SettingsEvents';
 import {Simulate} from '../Simulate';
 import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
-import {SearchAlertsEvents} from '../../src/events/SearchAlertEvents';
+import {SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs} from '../../src/events/SearchAlertEvents';
 
 export function SearchAlertsTest() {
   describe('SearchAlerts', function () {
@@ -149,6 +149,38 @@ export function SearchAlertsTest() {
           done();
         });
         test.cmp.followQuery();
+      });
+
+      it('should send the query property on follow query', () => {
+        let builder = new QueryBuilder();
+        builder.expression.add('yololo');
+        (<jasmine.Spy>test.cmp.queryController.createQueryBuilder).and.returnValue(builder);
+        test.cmp.followQuery();
+        expect(followMock).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            typeConfig: jasmine.objectContaining({
+              query: jasmine.objectContaining({
+                q: jasmine.stringMatching('yololo')
+              })
+            })
+          }));
+      });
+
+      it('should send the name property on follow query', () => {
+        let builder = new QueryBuilder();
+        builder.expression.add('yololo');
+        (<jasmine.Spy>test.cmp.queryController.createQueryBuilder).and.returnValue(builder);
+
+        $$(test.env.root).on(SearchAlertsEvents.searchAlertsPopulateMessage, (e, args: ISearchAlertsPopulateMessageEventArgs) => {
+          args.text.push('Something');
+          args.text.push('Another thing');
+        });
+
+        test.cmp.followQuery();
+        expect(followMock).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            name: 'yololo (Something) (Another thing)'
+          }));
       });
 
       it('should trigger a search alert failed event if there was a problem', (done) => {

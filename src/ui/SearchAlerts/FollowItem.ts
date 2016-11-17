@@ -199,7 +199,8 @@ export class FollowItem extends Component {
 
     return {
       type: SUBSCRIPTION_TYPE.followDocument,
-      typeConfig: typeCofig
+      typeConfig: typeCofig,
+      name: title
     };
   }
 }
