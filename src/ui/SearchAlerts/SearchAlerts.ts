@@ -127,6 +127,31 @@ export class SearchAlerts extends Component {
   }
 
   /**
+   * Follow the last query.
+   * The user will start to receive emails when the results from that query changes.
+   */
+  public followQuery() {
+    let queryBuilder = this.queryController.createQueryBuilder({});
+    let request = this.buildFollowQueryRequest(queryBuilder.build(), this.options);
+
+    this.queryController.getEndpoint().follow(request)
+      .then((subscription: ISubscription) => {
+        if (subscription) {
+          let eventArgs: ISearchAlertsEventArgs = {
+            subscription: subscription,
+            dom: this.findQueryBoxDom()
+          };
+          $$(this.root).trigger(SearchAlertsEvents.searchAlertsCreated, eventArgs);
+        } else {
+          this.triggerSearchAlertsFail();
+        }
+      })
+      .catch(() => {
+        this.triggerSearchAlertsFail();
+      });
+  }
+
+  /**
    * Opens the search alerts manage panel.
    * This panel allows the user to stop following queries or documents.
    * It also allows the user to change the frequency at which he will receive emails.
@@ -220,7 +245,9 @@ export class SearchAlerts extends Component {
     ];
 
     let context: string;
-    if (subscription.type == SUBSCRIPTION_TYPE.followQuery) {
+    if (subscription.name) {
+      context = _.escape(subscription.name);
+    } else if (subscription.type == SUBSCRIPTION_TYPE.followQuery) {
       let typeConfig = <ISubscriptionQueryRequest>subscription.typeConfig;
       context = _.escape(typeConfig.query.q) || l('EmptyQuery');
     } else {
@@ -233,7 +260,7 @@ export class SearchAlerts extends Component {
     element.el.innerHTML = `
       <td class='coveo-subscriptions-panel-content-type'>${ l('SearchAlerts_Type_' + subscription.type)}</td>
       <td>
-        <div class='coveo-subscriptions-panel-context'>
+        <div class='coveo-subscriptions-panel-context' title='${context}'>
           ${ context}
         </div>
       </td>
@@ -300,31 +327,6 @@ export class SearchAlerts extends Component {
       });
   }
 
-  /**
-   * Follow the last query.
-   * The user will start to receive emails when the results from that query changes.
-   */
-  public followQuery() {
-    let queryBuilder = this.queryController.createQueryBuilder({});
-    let request = SearchAlerts.buildFollowQueryRequest(queryBuilder.build(), this.options);
-
-    this.queryController.getEndpoint().follow(request)
-      .then((subscription: ISubscription) => {
-        if (subscription) {
-          let eventArgs: ISearchAlertsEventArgs = {
-            subscription: subscription,
-            dom: this.findQueryBoxDom()
-          };
-          $$(this.root).trigger(SearchAlertsEvents.searchAlertsCreated, eventArgs);
-        } else {
-          this.triggerSearchAlertsFail();
-        }
-      })
-      .catch(() => {
-        this.triggerSearchAlertsFail();
-      });
-  }
-
   private triggerSearchAlertsFail() {
     let eventArgs: ISearchAlertsFailEventArgs = {
       dom: this.findQueryBoxDom()
@@ -346,7 +348,7 @@ export class SearchAlerts extends Component {
     return dom;
   }
 
-  private static buildFollowQueryRequest(query: IQuery, options: ISearchAlertsOptions): ISubscriptionRequest {
+  private buildFollowQueryRequest(query: IQuery, options: ISearchAlertsOptions): ISubscriptionRequest {
     let typeConfig: ISubscriptionQueryRequest = {
       query: query
     };
@@ -357,7 +359,8 @@ export class SearchAlerts extends Component {
 
     return {
       type: SUBSCRIPTION_TYPE.followQuery,
-      typeConfig: typeConfig
+      typeConfig: typeConfig,
+      name: this.message.getFollowQueryMessage(query.q)
     };
   }
 
