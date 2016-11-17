@@ -352,3 +352,6 @@ ResponsiveDropdownContentTest();
 
 import {RecommendationDropdownContentTest} from './ui/ResponsiveComponents/RecommendationDropdownContentTest';
 RecommendationDropdownContentTest();
+
+import {ResponsiveDropdownHeaderTest} from './ui/ResponsiveComponents/ResponsiveDropdownHeaderTest';
+ResponsiveDropdownHeaderTest();

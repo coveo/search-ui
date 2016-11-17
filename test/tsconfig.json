@@ -136,6 +136,7 @@
         "../test/ui/ResponsiveComponents/ResponsiveTabsTest.ts",
         "../test/ui/ResponsiveComponents/ResponsiveDropdownContentTest.ts",
         "../test/ui/ResponsiveComponents/RecommendationDropdownContentTest.ts",
+        "../test/ui/ResponsiveComponents/ResponsiveDropdownHeaderTest.ts",
         "../test/utils/CookieUtilsTest.ts",
         "../test/utils/DomTest.ts",
         "../test/utils/HighlightUtilsTest.ts",
