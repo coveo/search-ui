@@ -163,7 +163,7 @@ export function FieldValueTest() {
           }
         });
 
-        expect(test.cmp.renderTextCaption().textContent).toBe('<script>alert("Potatoes")</script>');
+        expect($$(test.cmp.element).text()).toContain('<script>alert("Potatoes")</script>');
       });
 
       it('textCaption should render in front of the fieldValue', () => {
@@ -174,7 +174,18 @@ export function FieldValueTest() {
             textCaption: 'this is a test'
           }
         });
-        expect(test.cmp.element.children.item(0).className).toBe('field-caption');
+        expect($$($$(test.cmp.element).children()[0]).hasClass('coveo-field-caption')).toBe(true);
+      });
+
+      it('textCaption option should add the class coveo-with-label to the CoveoFieldValue', () => {
+        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
+          element: element,
+          cmpOptions: <IFieldValueOptions>{
+            field: '@title',
+            textCaption: 'this is a test'
+          }
+        });
+        expect($$(test.cmp.element).hasClass('coveo-with-label')).toBe(true);
       });
 
       describe('helperOptions', () => {

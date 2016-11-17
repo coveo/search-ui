@@ -128,11 +128,10 @@ export class FieldValue extends Component {
         isMilliseconds: ComponentOptions.buildBooleanOption(showOnlyWithHelper(['timeSpan'])),
       }
     }),
-
     /**
      * Specify a caption to display before the value. <br/>
      */
-    textCaption: ComponentOptions.buildStringOption()
+    textCaption: ComponentOptions.buildLocalizedStringOption()
   };
 
   static simpleOptions = _.omit(FieldValue.options, 'helperOptions');
@@ -225,17 +224,6 @@ export class FieldValue extends Component {
     return element;
   }
 
-  /**
-   * Render the caption with the text defined in the component options.<br/>
-   * Returns a <code>HTMLElement</code> containing the rendered caption as text.
-   */
-  public renderTextCaption(): HTMLElement {
-    let element = $$('span').el;
-    element.className += 'field-caption';
-    element.appendChild(document.createTextNode(this.options.textCaption));
-    return element;
-  }
-
   protected getValueContainer() {
     return this.element;
   }
@@ -275,10 +263,16 @@ export class FieldValue extends Component {
     });
   }
 
+  private renderTextCaption(): HTMLElement {
+    let element = $$('span', {className : 'coveo-field-caption'}, _.escape(this.options.textCaption));
+    return element.el;
+  }
+
   private prependTextCaptionToDom(): void {
     let elem = this.getValueContainer();
-    elem.insertBefore(this.renderTextCaption(), elem.childNodes[0]);
-    elem.style.display = 'inline-block';
+    $$(elem).prepend(this.renderTextCaption());
+    // Add a class to the container so the value and the caption wrap together.
+    $$(elem).addClass('coveo-with-label');
   }
 
   private bindEventOnValue(element: HTMLElement, value: string) {
