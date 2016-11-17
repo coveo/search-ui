@@ -70,20 +70,19 @@ export class SearchAlertsMessage extends Component {
 
     let automaticallyBuiltMessage;
 
-    if (query && additionalMessage) {
+    if (query && populateMessageArguments.text.length != 0) {
       automaticallyBuiltMessage = `${_.escape(query)} ${additionalMessage}`;
     }
 
-    if (query && !additionalMessage) {
+    if (query && populateMessageArguments.text.length == 0) {
       automaticallyBuiltMessage = `${_.escape(query)}`;
     }
-
-    if (!query && additionalMessage) {
-      automaticallyBuiltMessage = `${l('EmptyQuery')} ${additionalMessage}`;
+    if (!query && populateMessageArguments.text.length != 0) {
+      automaticallyBuiltMessage = `${additionalMessage}`;
     }
 
-    if (!query && !additionalMessage) {
-      automaticallyBuiltMessage = l('EmptyQuery');
+    if (!query && populateMessageArguments.text.length == 0) {
+      automaticallyBuiltMessage = htmlFormatted ? l('EmptyQuery') : _.unescape(l('EmptyQuery'));
     }
 
     return automaticallyBuiltMessage;
