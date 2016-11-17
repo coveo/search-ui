@@ -1,339 +1,338 @@
 {
-  "objecttype": {
-    "people": {
-      "icon": "user",
-      "captions": {
-        "en": "People",
-        "fr": "Personne"
-      }
-    },
-    "message": {
-      "icon": "mail",
-      "captions": {
-        "en": "Message",
-        "fr": "Message"
-      }
-    },
-    "feed": {
-      "icon": "list",
-      "captions": {
-        "en": "RSS Feed",
-        "fr": "Flux RSS"
-      }
-    },
-    "thread": {
-      "icon": "list",
-      "captions": {
-        "en": "Thread",
-        "fr": "Fil de conversation"
-      }
-    },
-    "file": {
-      "icon": "file",
-      "captions": {
-        "en": "File",
-        "fr": "Fichier"
-      }
-    },
-    "board": {
-      "icon": "list",
-      "captions": {
-        "en": "",
-        "fr": ""
-      }
-    },
-    "category": {
-      "icon": "list",
-      "captions": {
-        "en": "",
-        "fr": ""
-      }
-    },
-    "account": {
-      "icon": "user",
-      "captions": {
-        "en": "Account",
-        "fr": "Compte"
-      }
-    },
-    "annotation": {
-      "icon": "file",
-      "captions": {
-        "en": "Note",
-        "fr": "Note"
-      }
-    },
-    "campaign": {
-      "icon": "calendar",
-      "captions": {
-        "en": "Campaign",
-        "fr": "Campagne"
-      }
-    },
-    "case": {
-      "icon": "case",
-      "captions": {
-        "en": "Case",
-        "fr": "Cas"
-      }
-    },
-    "contact": {
-      "icon": "user",
-      "captions": {
-        "en": "Contact",
-        "fr": "Contact"
-      }
-    },
-    "contract": {
-      "icon": "file",
-      "captions": {
-        "en": "Contract",
-        "fr": "Contrat"
-      }
-    },
-    "event": {
-      "icon": "calendar",
-      "captions": {
-        "en": "Event",
-        "fr": "Évènement"
-      }
-    },
-    "email": {
-      "icon": "mail",
-      "captions": {
-        "en": "Email",
-        "fr": "Email"
-      }
-    },
-    "goal": {
-      "icon": "calendar",
-      "captions": {
-        "en": "Goal",
-        "fr": "Objectif"
-      }
-    },
-    "incident": {
-      "icon": "case",
-      "captions": {
-        "en": "Case",
-        "fr": "Incident"
-      }
-    },
-    "invoice": {
-      "icon": "list",
-      "captions": {
-        "en": "Invoice",
-        "fr": "Facture"
-      }
-    },
-    "lead": {
-      "icon": "case",
-      "captions": {
-        "en": "Lead",
-        "fr": "Piste"
-      },
-      "shouldDisplayLabel": true
-    },
-    "list": {
-      "icon": "list",
-      "captions": {
-        "en": "Marketing List",
-        "fr": "Liste marketing"
-      }
-    },
-    "solution": {
-      "icon": "kb",
-      "captions": {
-        "en": "Solution",
-        "fr": "Solution"
-      },
-      "shouldDisplayLabel": true
-    },
-    "task": {
-      "icon": "case",
-      "captions": {
-        "en": "Task",
-        "fr": "Tâche"
-      },
-      "shouldDisplayLabel": true
-    },
-    "user": {
-      "icon": "user",
-      "captions": {
-        "en": "User",
-        "fr": "Utilisateur"
-      }
-    },
-    "attachment": {
-      "icon": "attachment",
-      "captions": {
-        "en": "Attachment",
-        "fr": "Attachement"
-      }
-    },
-    "casecomment": {
-      "icon": "mail",
-      "captions": {
-        "en": "Case Comment",
-        "fr": "Commentaire sur un cas"
-      }
-    },
-    "opportunity": {
-      "icon": "list",
-      "captions": {
-        "en": "Opportunity",
-        "fr": "Opportunité"
-      },
-      "shouldDisplayLabel": true
-    },
-    "opportunityproduct": {
-      "icon": "product",
-      "captions": {
-        "en": "Opportunity Product",
-        "fr": "Produit d'opportunité"
-      }
-    },
-    "feeditem": {
-      "icon": "mail",
-      "captions": {
-        "en": "Chatter",
-        "fr": "Chatter"
-      }
-    },
-    "feedcomment": {
-      "icon": "mail",
-      "captions": {
-        "en": "Chatter",
-        "fr": "Chatter"
-      }
-    },
-    "note": {
-      "icon": "file",
-      "captions": {
-        "en": "Note",
-        "fr": "Note"
-      },
-      "shouldDisplayLabel": true
-    },
-    "product": {
-      "icon": "product",
-      "captions": {
-        "en": "Product",
-        "fr": "Produit"
-      }
-    },
-    "partner": {
-      "icon": "user",
-      "captions": {
-        "en": "Partner",
-        "fr": "Partenaire"
-      }
-    },
-    "queueitem": {
-      "icon": "list",
-      "captions": {
-        "en": "Queue Item",
-        "fr": "Élément de file d'attente"
-      }
-    },
-    "quote": {
-      "icon": "list",
-      "captions": {
-        "en": "Quote",
-        "fr": "Devis"
-      }
-    },
-    "salesliterature": {
-      "icon": "kb",
-      "captions": {
-        "en": "Sales Literature",
-        "fr": "Documentation commerciale"
-      },
-      "shouldDisplayLabel": true
-    },
-    "salesorder": {
-      "icon": "list",
-      "captions": {
-        "en": "Sales Order",
-        "fr": "Commande"
-      },
-      "shouldDisplayLabel": true
-    },
-    "service": {
-      "icon": "list",
-      "captions": {
-        "en": "Service",
-        "fr": "Service"
-      },
-      "shouldDisplayLabel": true
-    },
-    "socialprofile": {
-      "icon": "user",
-      "captions": {
-        "en": "Social Profile",
-        "fr": "Profile social"
-      },
-      "shouldDisplayLabel": true
-    },
-    "kbdocumentation": {
-      "icon": "kb",
-      "captions": {
-        "en": "Documentation",
-        "fr": "Documentation"
-      },
-      "shouldDisplayLabel": true
-    },
-    "kbtechnicalarticle": {
-      "icon": "kb",
-      "captions": {
-        "en": "Documentation",
-        "fr": "Documentation"
-      },
-      "shouldDisplayLabel": true
-    },
-    "kbsolution": {
-      "icon": "kb",
-      "captions": {
-        "en": "Solution",
-        "fr": "Solution"
-      },
-      "shouldDisplayLabel": true
-    },
-    "kbknowledgearticle": {
-      "icon": "kb",
-      "captions": {
-        "en": "Knowledge Article",
-        "fr": "Article de base de connaissance"
-      },
-      "shouldDisplayLabel": true
-    },
-    "kbattachment": {
-      "icon": "attachment",
-      "captions": {
-        "en": "Attachment",
-        "fr": "Attachement"
-      }
-    },
-    "kbarticle": {
-      "icon": "kb",
-      "captions": {
-        "en": "Article",
-        "fr": "Article"
-      }
-    },
-    "kbarticlecomment": {
-      "icon": "list",
-      "captions": {
-        "en": "Article Comment",
-        "fr": "Commentaire d'article"
-      }
-    },
-    "knowledgearticle": {
-      "icon": "kb",
-      "captions": {
-        "en": "Knowledge Article",
-        "fr": "Article de base de connaissance"
-      }
+    "objecttype": {
+        "people": {
+            "icon": "user",
+            "captions": {
+                "en": "People",
+                "fr": "Personne"
+            }
+        },
+        "message": {
+            "icon": "mail",
+            "captions": {
+                "en": "Message",
+                "fr": "Message"
+            }
+        },
+        "feed": {
+            "icon": "list",
+            "captions": {
+                "en": "RSS Feed",
+                "fr": "Flux RSS"
+            }
+        },
+        "thread": {
+            "icon": "list",
+            "captions": {
+                "en": "Thread",
+                "fr": "Fil de conversation"
+            }
+        },
+        "file": {
+            "icon": "file",
+            "captions": {
+                "en": "File",
+                "fr": "Fichier"
+            }
+        },
+        "board": {
+            "icon": "list",
+            "captions": {
+                "en": "",
+                "fr": ""
+            }
+        },
+        "category": {
+            "icon": "list",
+            "captions": {
+                "en": "",
+                "fr": ""
+            }
+        },
+        "account": {
+            "icon": "user",
+            "captions": {
+                "en": "Account",
+                "fr": "Compte"
+            }
+        },
+        "annotation": {
+            "icon": "file",
+            "captions": {
+                "en": "Note",
+                "fr": "Note"
+            }
+        },
+        "campaign": {
+            "icon": "calendar",
+            "captions": {
+                "en": "Campaign",
+                "fr": "Campagne"
+            }
+        },
+        "case": {
+            "icon": "case",
+            "captions": {
+                "en": "Case",
+                "fr": "Cas"
+            }
+        },
+        "contact": {
+            "icon": "user",
+            "captions": {
+                "en": "Contact",
+                "fr": "Contact"
+            }
+        },
+        "contract": {
+            "icon": "file",
+            "captions": {
+                "en": "Contract",
+                "fr": "Contrat"
+            }
+        },
+        "event": {
+            "icon": "calendar",
+            "captions": {
+                "en": "Event",
+                "fr": "Évènement"
+            }
+        },
+        "email": {
+            "icon": "mail",
+            "captions": {
+                "en": "Email",
+                "fr": "Email"
+            }
+        },
+        "goal": {
+            "icon": "calendar",
+            "captions": {
+                "en": "Goal",
+                "fr": "Objectif"
+            }
+        },
+        "incident": {
+            "icon": "case",
+            "captions": {
+                "en": "Case",
+                "fr": "Incident"
+            }
+        },
+        "invoice": {
+            "icon": "list",
+            "captions": {
+                "en": "Invoice",
+                "fr": "Facture"
+            }
+        },
+        "lead": {
+            "icon": "salesforce-standard-lead",
+            "captions": {
+                "en": "Lead",
+                "fr": "Piste"
+            }
+        },
+        "list": {
+            "icon": "list",
+            "captions": {
+                "en": "Marketing List",
+                "fr": "Liste marketing"
+            }
+        },
+        "solution": {
+            "icon": "kb",
+            "captions": {
+                "en": "Solution",
+                "fr": "Solution"
+            },
+            "shouldDisplayLabel": true
+        },
+        "task": {
+            "icon": "case",
+            "captions": {
+                "en": "Task",
+                "fr": "Tâche"
+            },
+            "shouldDisplayLabel": true
+        },
+        "user": {
+            "icon": "user",
+            "captions": {
+                "en": "User",
+                "fr": "Utilisateur"
+            }
+        },
+        "attachment": {
+            "icon": "attachment",
+            "captions": {
+                "en": "Attachment",
+                "fr": "Attachement"
+            }
+        },
+        "casecomment": {
+            "icon": "mail",
+            "captions": {
+                "en": "Case Comment",
+                "fr": "Commentaire sur un cas"
+            }
+        },
+        "opportunity": {
+            "icon": "list",
+            "captions": {
+                "en": "Opportunity",
+                "fr": "Opportunité"
+            },
+            "shouldDisplayLabel": true
+        },
+        "opportunityproduct": {
+            "icon": "product",
+            "captions": {
+                "en": "Opportunity Product",
+                "fr": "Produit d'opportunité"
+            }
+        },
+        "feeditem": {
+            "icon": "mail",
+            "captions": {
+                "en": "Chatter",
+                "fr": "Chatter"
+            }
+        },
+        "feedcomment": {
+            "icon": "mail",
+            "captions": {
+                "en": "Chatter",
+                "fr": "Chatter"
+            }
+        },
+        "note": {
+            "icon": "file",
+            "captions": {
+                "en": "Note",
+                "fr": "Note"
+            },
+            "shouldDisplayLabel": true
+        },
+        "product": {
+            "icon": "product",
+            "captions": {
+                "en": "Product",
+                "fr": "Produit"
+            }
+        },
+        "partner": {
+            "icon": "user",
+            "captions": {
+                "en": "Partner",
+                "fr": "Partenaire"
+            }
+        },
+        "queueitem": {
+            "icon": "list",
+            "captions": {
+                "en": "Queue Item",
+                "fr": "Élément de file d'attente"
+            }
+        },
+        "quote": {
+            "icon": "list",
+            "captions": {
+                "en": "Quote",
+                "fr": "Devis"
+            }
+        },
+        "salesliterature": {
+            "icon": "kb",
+            "captions": {
+                "en": "Sales Literature",
+                "fr": "Documentation commerciale"
+            },
+            "shouldDisplayLabel": true
+        },
+        "salesorder": {
+            "icon": "list",
+            "captions": {
+                "en": "Sales Order",
+                "fr": "Commande"
+            },
+            "shouldDisplayLabel": true
+        },
+        "service": {
+            "icon": "list",
+            "captions": {
+                "en": "Service",
+                "fr": "Service"
+            },
+            "shouldDisplayLabel": true
+        },
+        "socialprofile": {
+            "icon": "user",
+            "captions": {
+                "en": "Social Profile",
+                "fr": "Profile social"
+            },
+            "shouldDisplayLabel": true
+        },
+        "kbdocumentation": {
+            "icon": "kb",
+            "captions": {
+                "en": "Documentation",
+                "fr": "Documentation"
+            },
+            "shouldDisplayLabel": true
+        },
+        "kbtechnicalarticle": {
+            "icon": "kb",
+            "captions": {
+                "en": "Documentation",
+                "fr": "Documentation"
+            },
+            "shouldDisplayLabel": true
+        },
+        "kbsolution": {
+            "icon": "kb",
+            "captions": {
+                "en": "Solution",
+                "fr": "Solution"
+            },
+            "shouldDisplayLabel": true
+        },
+        "kbknowledgearticle": {
+            "icon": "kb",
+            "captions": {
+                "en": "Knowledge Article",
+                "fr": "Article de base de connaissance"
+            },
+            "shouldDisplayLabel": true
+        },
+        "kbattachment": {
+            "icon": "attachment",
+            "captions": {
+                "en": "Attachment",
+                "fr": "Attachement"
+            }
+        },
+        "kbarticle": {
+            "icon": "kb",
+            "captions": {
+                "en": "Article",
+                "fr": "Article"
+            }
+        },
+        "kbarticlecomment": {
+            "icon": "list",
+            "captions": {
+                "en": "Article Comment",
+                "fr": "Commentaire d'article"
+            }
+        },
+        "knowledgearticle": {
+            "icon": "kb",
+            "captions": {
+                "en": "Knowledge Article",
+                "fr": "Article de base de connaissance"
+            }
+        }
     }
-  }
 }
