@@ -73,7 +73,7 @@ export class Badge extends FieldValue implements IComponentBindings {
    * @param bindings
    * @param result
    */
-  constructor(element: HTMLElement, public options?: IBadgeOptions, bindings?: IComponentBindings, result?: IQueryResult) {
+  constructor(element: HTMLElement, public options: IBadgeOptions, bindings?: IComponentBindings, result?: IQueryResult) {
     super(element, ComponentOptions.initComponentOptions(element, Badge, options), bindings, result, Badge.ID);
     if (_.isString(this.options.colors)) {
       // to support the old string options
