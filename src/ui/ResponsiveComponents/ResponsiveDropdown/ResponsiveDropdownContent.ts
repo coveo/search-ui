@@ -18,7 +18,6 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
 
   private widthRatio: number;
   private minWidth: number;
-  private isOpened: boolean = false;
 
   constructor(componentName: string, public element: Dom, coveoRoot: Dom, minWidth: number, widthRatio: number) {
     this.cssClassName = `coveo-${componentName}-dropdown-content`;
@@ -28,7 +27,6 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
   }
 
   public positionDropdown() {
-    this.isOpened = true;
     this.element.addClass(this.cssClassName);
     this.element.addClass(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
     this.element.el.style.display = '';
@@ -44,7 +42,6 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
   }
 
   public hideDropdown() {
-    this.isOpened = false;
     this.element.el.style.display = 'none';
     this.element.removeClass(this.cssClassName);
     this.element.removeClass(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
