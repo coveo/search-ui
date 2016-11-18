@@ -11,6 +11,7 @@ import {IResponsiveComponent, ResponsiveComponentsManager, IResponsiveComponentO
 import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
 import {l} from '../../strings/Strings';
 import '../../../sass/_ResponsiveTabs.scss';
+
 export class ResponsiveTabs implements IResponsiveComponent {
 
   private static DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'More';
