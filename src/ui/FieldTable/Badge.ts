@@ -177,6 +177,11 @@ export class Badge extends FieldValue implements IComponentBindings {
     valueDom.appendChild(label);
     return valueDom;
   }
+
+  // Override the protected method from FieldValue class to ignore a potential textCaption on a Badge.
+  protected prependTextCaptionToDom(): void {
+    return;
+  }
 }
 
 Badge.options = _.omit(Badge.options, 'textCaption');
