@@ -60,7 +60,8 @@ export class Badge extends FieldValue implements IComponentBindings {
      *
      * Colors can be specified in HTML or hexadecimal code format.
      */
-    colors: ComponentOptions.buildCustomOption<IBadgeColors>((value: string) => Badge.parseColors(value), { defaultValue: { values: {} } })
+    colors: ComponentOptions.buildCustomOption<IBadgeColors>((value: string) => Badge.parseColors(value), { defaultValue: { values: {} } }),
+    textCaption: ComponentOptions.buildLocalizedStringOption()
   };
 
   static parent = FieldValue;
@@ -177,5 +178,7 @@ export class Badge extends FieldValue implements IComponentBindings {
     return valueDom;
   }
 }
+
+Badge.options = _.omit(Badge.options, 'textCaption');
 
 Initialization.registerAutoCreateComponent(Badge);
