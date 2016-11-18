@@ -332,5 +332,26 @@ StreamHighlightUtilsTest();
 import {QuickviewTest} from './ui/QuickviewTest';
 QuickviewTest();
 
+import {ResponsiveDropdownTest} from './ui/ResponsiveComponents/ResponsiveDropdownTest';
+ResponsiveDropdownTest();
+
 import {StandaloneSearchInterfaceTest} from './ui/StandaloneSearchInterfaceTest';
 StandaloneSearchInterfaceTest();
+
+import {ResponsiveFacetsTest} from './ui/ResponsiveComponents/ResponsiveFacetsTest';
+ResponsiveFacetsTest();
+
+import {ResponsiveRecommendationTest} from './ui/ResponsiveComponents/ResponsiveRecommendationTest';
+ResponsiveRecommendationTest();
+
+import {ResponsiveTabsTest} from './ui/ResponsiveComponents/ResponsiveTabsTest';
+ResponsiveTabsTest();
+
+import {ResponsiveDropdownContentTest} from './ui/ResponsiveComponents/ResponsiveDropdownContentTest';
+ResponsiveDropdownContentTest();
+
+import {RecommendationDropdownContentTest} from './ui/ResponsiveComponents/RecommendationDropdownContentTest';
+RecommendationDropdownContentTest();
+
+import {ResponsiveDropdownHeaderTest} from './ui/ResponsiveComponents/ResponsiveDropdownHeaderTest';
+ResponsiveDropdownHeaderTest();

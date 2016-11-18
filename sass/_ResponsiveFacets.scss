@@ -77,19 +77,18 @@
       padding: 10px 0 10px 20px;
     }
   }
-}
 
-.coveo-facet-dropdown-background {
-  @include transition-property(opacity);
-  @include transition-duration(0.300s);
-  background: $color-transparent-background;
-  opacity: 0;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 15;
+  .coveo-facet-header-filter-by-container {
+    background: $color-blueish-white;
+    font-size: $font-size-bigger;
+    font-weight: 700;
+    letter-spacing: 0.22px;
+    line-height: 22px;
+    .coveo-facet-header-filter-by {
+      display: block;
+      padding: 10px 0 10px 20px;
+    }
+  }
 }
 
 .coveo-facet-header-filter-by {
