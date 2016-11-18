@@ -13,7 +13,7 @@ export function RecommendationDropdownContentTest() {
       element = $$('div');
       root = $$('div');
       root.append(element.el);
-      root.append($$('div', {className: 'coveo-results-column'}).el);
+      root.append($$('div', { className: 'coveo-results-column' }).el);
       recommendationDropdownContent = new RecommendationDropdownContent(componentName, element, root);
     });
 
