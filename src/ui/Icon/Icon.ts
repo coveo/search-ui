@@ -1,15 +1,18 @@
-import {Component} from '../Base/Component'
-import {IComponentBindings} from '../Base/ComponentBindings'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {IQueryResult} from '../../rest/QueryResult'
-import {Assert} from '../../misc/Assert'
-import {QueryUtils} from '../../utils/QueryUtils'
-import {Initialization} from '../Base/Initialization'
-import {Utils} from '../../utils/Utils'
-import {FileTypes, IFileTypeInfo} from '../Misc/FileTypes'
-import {Quickview} from '../Quickview/Quickview'
-import {$$} from '../../utils/Dom'
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {IQueryResult} from '../../rest/QueryResult';
+import {Assert} from '../../misc/Assert';
+import {QueryUtils} from '../../utils/QueryUtils';
+import {Initialization} from '../Base/Initialization';
+import {Utils} from '../../utils/Utils';
+import {FileTypes, IFileTypeInfo} from '../Misc/FileTypes';
+import {Quickview} from '../Quickview/Quickview';
+import {$$} from '../../utils/Dom';
 
+/**
+ * Possible options for an {@link Icon} component.
+ */
 export interface IIconOptions {
   value?: string;
   small?: boolean;
@@ -18,7 +21,7 @@ export interface IIconOptions {
 }
 
 /**
- * An icon component is a Result template component which outputs the corresponding icon for a give filetype. It uses the
+ * An icon component is a Result template component which outputs the corresponding icon for a given filetype. It uses the
  * available icons in the framework, and if no suitable one are found, it fallback on a generic icon.
  */
 export class Icon extends Component {
@@ -30,7 +33,7 @@ export class Icon extends Component {
    */
   static options: IIconOptions = {
     /**
-     * Setting this value will tell the Icon component to output this value as it's css class, instead of the auto-selected one.<br/>
+     * Setting this value will tell the `Icon` component to output this value as its CSS class, instead of the auto-selected one.<br/>
      * Default is `undefined`, and the framework will determine an icon from the result filetype.
      */
     value: ComponentOptions.buildIconOption(),
@@ -38,7 +41,7 @@ export class Icon extends Component {
      * Setting this value to true will output the smaller version of the auto-generated icon.<br/>
      * Default is `false`.
      */
-    small: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    small: ComponentOptions.buildBooleanOption(),
     /**
      * Setting this to true will force the caption/label to appear.<br/>
      * Setting this to false will force the caption/label to never appear.<br/>
@@ -86,11 +89,23 @@ export class Icon extends Component {
   static createIcon(result: IQueryResult, options: IIconOptions = {}, element: HTMLElement = $$('div').el, bindings?: IComponentBindings) {
     var info = FileTypes.get(result);
     info = Icon.preprocessIconInfo(options, info);
+    $$(element).toggleClass('coveo-small', options.small === true);
+
+    if (options.value != undefined) {
+      if (options.small === true) {
+        if (options.value.indexOf('-small') == -1) {
+          info.icon += '-small';
+        }
+      }
+      if (options.small === false) {
+        if (options.value.indexOf('-small') != -1) {
+          info.icon = info.icon.replace('-small', '');
+        }
+      }
+    }
     $$(element).addClass(info.icon);
     element.setAttribute('title', info.caption);
-    if (options.small) {
-      $$(element).addClass('coveo-small');
-    }
+
     if (Icon.shouldDisplayLabel(options, bindings)) {
       element.appendChild($$('span', {
         className: 'coveo-icon-caption-overlay'

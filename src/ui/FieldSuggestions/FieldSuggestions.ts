@@ -1,6 +1,6 @@
 import {ISuggestionForOmniboxOptions, SuggestionForOmnibox, ISuggestionForOmniboxTemplate} from '../Misc/SuggestionForOmnibox';
 import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
+import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {Assert} from '../../misc/Assert';
 import {Utils} from '../../utils/Utils';
@@ -12,9 +12,10 @@ import {Initialization} from '../Base/Initialization';
 import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
 import {l} from '../../strings/Strings';
 import {$$} from '../../utils/Dom';
+import {ISuggestionForOmniboxOptionsOnSelect} from '../Misc/SuggestionForOmnibox';
 
 export interface IFieldSuggestionsOptions extends ISuggestionForOmniboxOptions {
-  field?: string;
+  field?: IFieldOption;
   queryOverride?: string;
 }
 
@@ -31,31 +32,67 @@ export class FieldSuggestions extends Component {
   static options: IFieldSuggestionsOptions = {
     /**
      * Specifies the field from which suggestions are provided.<br/>
-     * This is a required option
+     * This is a required option.
      */
     field: ComponentOptions.buildFieldOption({ required: true }),
     /**
-     * Specifies a query override (any query expression) which should be applied when retrieving suggestions
+     * Specifies a query override (any query expression) which should be applied when retrieving suggestions.
      */
     queryOverride: ComponentOptions.buildStringOption({ defaultValue: '' }),
     /**
      * Specifies the position at which the suggestions should render when there are multiple suggestions providers. (eg : {@link Facet} or {@link AnalyticsSuggestions}).<br/>
-     * The default value is `51`
+     * The default value is 51.
      */
     omniboxZIndex: ComponentOptions.buildNumberOption({ defaultValue: 51, min: 0 }),
+    /**
+     * Specifies the title in the Omnibox for this group of suggestions. This option is not available when using the Lightning Friendly Theme, which is the default design.
+     */
     headerTitle: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('SuggestedResults') }),
     /**
      * Specifies the number of suggestions that should be rendered in the omnibox.<br/>
-     * Default value is `5`
+     * Default value is 5.
      */
-    numberOfSuggestions: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1 })
+    numberOfSuggestions: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1 }),
+    /**
+     * The event handler function to execute when a value is selected in the Omnibox. By default, the query box text is replaced by what was selected and a new query is executed. You can however replace this default text by providing a callback function to execute when the value is selected.
+     * For example:
+     *
+     * ```
+     * Coveo.init(document.querySelector('#search'), {
+     *    FieldSuggestions : {
+     *      omniboxSuggestionOptions : {
+     *        onSelect : function(valueSelected, populateOmniBoxEventArgs){
+     *          // Do something special when a value is selected.
+     *          // You receive the selected value as the first argument, and the Omnibox object as the second parameter.
+     *        }
+     *      }
+     *    }
+     * })
+     *
+     * // OR using the jQuery extension
+     *
+     * $('#mySearch').coveo('init', {
+     *    FieldSuggestions : {
+     *      omniboxSuggestionOptions : {
+     *        onSelect : function(valueSelected, populateOmniBoxEventArgs){
+     *          // Do something special when a value is selected.
+     *          // You receive the selected value as the first argument, and the Omnibox object as the second parameter.
+     *        }
+     *      }
+     *    }
+     * })
+     * ```
+     */
+    onSelect: ComponentOptions.buildCustomOption<ISuggestionForOmniboxOptionsOnSelect>(() => {
+      return null;
+    })
   };
 
   private suggestionForOmnibox: SuggestionForOmnibox;
   private currentlyDisplayedSuggestions: { [suggestion: string]: { element: HTMLElement, pos: number } };
 
   /**
-   * Create a new FieldSuggestions component
+   * Create a new `FieldSuggestions` component
    * @param element
    * @param options
    * @param bindings
@@ -64,12 +101,12 @@ export class FieldSuggestions extends Component {
     super(element, FieldSuggestions.ID, bindings);
 
     if (this.options && 'omniboxSuggestionOptions' in this.options) {
-      this.options = _.extend(this.options, this.options['omniboxSuggestionOptions'])
+      this.options = _.extend(this.options, this.options['omniboxSuggestionOptions']);
     }
 
     this.options = ComponentOptions.initComponentOptions(element, FieldSuggestions, options);
 
-    Assert.check(Utils.isCoveoField(this.options.field), this.options.field + ' is not a valid field');
+    Assert.check(Utils.isCoveoField(<string>this.options.field), this.options.field + ' is not a valid field');
 
     this.options.onSelect = this.options.onSelect || this.onRowSelection;
 
@@ -96,7 +133,7 @@ export class FieldSuggestions extends Component {
 
   /**
    * Select a currently displayed suggestion. This means that at least one suggestion must have been returned at least once.
-   * The suggestion parameter can either be a number (0 based index of the suggestion to select) or a string that match the suggestion
+   * The suggestion parameter can either be a number (0 based index of the suggestion to select) or a string that match the suggestion.
    * @param suggestion
    */
   public selectSuggestion(suggestion: number);
@@ -128,34 +165,34 @@ export class FieldSuggestions extends Component {
           this.currentlyDisplayedSuggestions[$$(selectable).text()] = {
             element: selectable,
             pos: i
-          }
-        })
+          };
+        });
         resolve({
           element: element,
           zIndex: this.options.omniboxZIndex
-        })
+        });
       }).catch(() => {
         resolve({
           element: undefined
-        })
+        });
       });
-    })
+    });
     args.rows.push({
       deferred: promise
-    })
+    });
   }
 
   private onRowSelection(value: string, args: IPopulateOmniboxEventArgs) {
     args.clear();
     args.closeOmnibox();
     this.queryStateModel.set(QueryStateModel.attributesEnum.q, value);
-    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.omniboxField, {})
+    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.omniboxField, {});
     this.queryController.executeQuery();
   }
 
   private buildListFieldValueRequest(valueToSearch: string): IListFieldValuesRequest {
     return {
-      field: this.options.field,
+      field: <string>this.options.field,
       ignoreAccents: true,
       sortCriteria: 'occurrences',
       maximumNumberOfValues: this.options.numberOfSuggestions,

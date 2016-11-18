@@ -1,44 +1,38 @@
-import {Initialization, IInitializationParameters} from './Initialization';
-import {IComponentDefinition} from './Component';
+import {Initialization} from './Initialization';
 
 interface IWindow {
   $: any;
 }
 
-// This class is essentially only there for legacy reasons : If there is any code in the wild that called this directly,
-// we don't want this to break.
-export class CoveoJQuery {
-  public static automaticallyCreateComponentsInside(element: HTMLElement, initParameters: IInitializationParameters, ignore?: string[]) {
-    return Initialization.automaticallyCreateComponentsInside(element, initParameters, ignore);
-  }
-
-  public static registerAutoCreateComponent(cmp: IComponentDefinition) {
-    return Initialization.registerAutoCreateComponent(cmp);
-  }
+export interface IJQuery {
+  fn: any;
 }
 
-export var jQueryInstance: JQuery;
+export var jQueryInstance: IJQuery;
 
-if (jQueryIsDefined()) {
-  initCoveoJQuery();
-} else {
+if (!initCoveoJQuery()) {
   // Adding a check in case jQuery was added after the jsSearch
+  // Since this event listener is registered before the Coveo.init call, JQuery should always be initiated before the Coveo.init call  
   document.addEventListener('DOMContentLoaded', () => {
-    if (jQueryIsDefined()) {
-      initCoveoJQuery();
-    }
-  })
+    initCoveoJQuery();
+  });
 }
 
-function initCoveoJQuery() {
-  jQueryInstance = window['$'];
+export function initCoveoJQuery() {
+  if (!jQueryIsDefined()) {
+    return false;
+  }
+
+  jQueryInstance = getJQuery();
+
   if (window['Coveo'] == undefined) {
     window['Coveo'] = {};
   }
   if (window['Coveo']['$'] == undefined) {
     window['Coveo']['$'] = jQueryInstance;
   }
-  window['$'].fn.coveo = function (...args: any[]) {
+
+  jQueryInstance.fn.coveo = function (...args: any[]) {
     var returnValue: any;
     this.each((index: number, element: HTMLElement) => {
       var returnValueForThisElement: any;
@@ -54,9 +48,29 @@ function initCoveoJQuery() {
       returnValue = returnValue || returnValueForThisElement;
     });
     return returnValue;
-  }
+  };
+
+  return true;
 }
 
 export function jQueryIsDefined(): boolean {
+  return jQueryDefinedOnWindow() || jQueryDefinedOnCoveoObject();
+}
+
+function jQueryDefinedOnCoveoObject(): boolean {
+  return window['Coveo'] != undefined && window['Coveo']['$'] != undefined;
+}
+
+function jQueryDefinedOnWindow(): boolean {
   return window['$'] != undefined && window['$'].fn != undefined && window['$'].fn.jquery != undefined;
+}
+
+function getJQuery(): IJQuery {
+  let jQueryInstance: IJQuery;
+  if (window['$']) {
+    jQueryInstance = window['$'];
+  } else {
+    jQueryInstance = window['Coveo']['$'];
+  }
+  return jQueryInstance;
 }

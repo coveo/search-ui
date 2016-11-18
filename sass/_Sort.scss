@@ -23,6 +23,10 @@ $stop-float: new-breakpoint(max-width 480px 1);
     color: $color-greyish-dark-blue;
   }
 
+  &:focus.coveo-selected {
+    outline: none;
+  }
+
   cursor: pointer;
 
   .coveo-icon {
@@ -42,7 +46,7 @@ $stop-float: new-breakpoint(max-width 480px 1);
       @extend .coveo-sprites-arrow-down;
     }
   }
-  
+
   &.coveo-sort-hidden {
     display: none;
   }

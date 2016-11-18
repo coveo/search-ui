@@ -17,11 +17,11 @@ export class HtmlTemplate extends Template {
       return element.innerHTML;
     });
 
-    var condition = $$(element).getAttribute('data-condition')
+    var condition = $$(element).getAttribute('data-condition');
     if (condition != null) {
       // Allows to add quotes in data-condition on the templates
       condition = condition.toString().replace(/&quot;/g, '"');
-      this.condition = new Function('obj', 'with(obj||{}){return ' + condition + '}')
+      this.condition = new Function('obj', 'with(obj||{}){return ' + condition + '}');
     }
 
     this.fields = Template.getFieldFromString(element.innerHTML + ' ' + condition);
@@ -42,7 +42,7 @@ export class HtmlTemplate extends Template {
   }
 
   getType() {
-    return 'HtmlTemplate'
+    return 'HtmlTemplate';
   }
 
   getFields(): string[] {

@@ -1,8 +1,8 @@
 import {$$, Dom} from './Dom';
-import {IQueryResult} from '../rest/QueryResult'
-import {IResultsComponentBindings} from '../ui/Base/ResultsComponentBindings'
-import {DateUtils} from './DateUtils'
-import {FileTypes} from '../ui/Misc/FileTypes'
+import {IQueryResult} from '../rest/QueryResult';
+import {IResultsComponentBindings} from '../ui/Base/ResultsComponentBindings';
+import {DateUtils} from './DateUtils';
+import {FileTypes} from '../ui/Misc/FileTypes';
 import {Utils} from './Utils';
 import {StringUtils} from './StringUtils';
 
@@ -54,6 +54,19 @@ export class DomUtils {
     let loading = $$('div');
     loading.addClass('coveo-loading-spinner');
     return loading.el;
+  }
+
+  static getModalBoxHeader(title: string): Dom {
+    var header = $$('div');
+    header.el.innerHTML = `<div class='coveo-modalbox-right-header'>
+        <span class='coveo-modalbox-close-button'>
+          <span class='coveo-icon coveo-sprites-common-clear'></span>
+        </span>
+      </div>
+      <div class='coveo-modalbox-left-header'>
+        <span class='coveo-modalbox-pop-up-reminder'> ${title || ''}</span>
+      </div>`;
+    return header;
   }
 
   static getQuickviewHeader(result: IQueryResult, options: { showDate: boolean; title: string }, bindings: IResultsComponentBindings): Dom {

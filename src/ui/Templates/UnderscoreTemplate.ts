@@ -9,7 +9,7 @@ _.templateSettings = {
   evaluate: /(?:<%|{{)([\s\S]+?)(?:%>|}})/g,
   interpolate: /(?:<%|{{)=([\s\S]+?)(?:%>|}})/g,
   escape: /(?:<%|{{)-([\s\S]+?)(?:%>|}})/g
-}
+};
 
 export class UnderscoreTemplate extends Template {
   private template: (data: any) => string;
@@ -32,7 +32,7 @@ export class UnderscoreTemplate extends Template {
 
     var condition = $$(element).getAttribute('data-condition');
     if (condition != null) {
-      this.condition = new Function('obj', 'with(obj||{}){return ' + condition + '}')
+      this.condition = new Function('obj', 'with(obj||{}){return ' + condition + '}');
     }
 
     this.dataToString = (object) => {
@@ -52,13 +52,13 @@ export class UnderscoreTemplate extends Template {
   toHtmlElement(): HTMLElement {
     var script = $$('script');
     script.setAttribute('type', _.first(UnderscoreTemplate.mimeTypes));
-    script.setAttribute('data-condition', $(this.element).data('condition'));
+    script.setAttribute('data-condition', $$(this.element).getAttribute('data-condition'));
     script.text(this.element.innerHTML);
     return script.el;
   }
 
   getType() {
-    return 'UnderscoreTemplate'
+    return 'UnderscoreTemplate';
   }
 
   static create(element: HTMLElement): UnderscoreTemplate {

@@ -16,7 +16,7 @@ import {Utils} from '../utils/Utils';
 import {Promise} from 'es6-promise';
 import {BaseComponent} from '../ui/Base/BaseComponent';
 import {ModalBox} from '../ExternalModulesShim';
-declare const coveoanalytics: CoveoAnalytics.CoveoUA;
+import {history} from 'coveo.analytics';
 
 /**
  * Possible options when performing a query with the query controller
@@ -51,6 +51,7 @@ export interface IQueryOptions {
    * It also makes sure that only relevant queries are logged. For exemple, the 'empty' interface load query isn't logged.
    */
   logInActionsHistory?: boolean;
+  isFirstQuery?: boolean;
   keepLastSearchUid?: boolean;
   closeModalBox?: boolean;
 }
@@ -77,6 +78,7 @@ class DefaultQueryOptions implements IQueryOptions {
  */
 export class QueryController extends RootComponent {
   static ID = 'QueryController';
+  public historyStore: CoveoAnalytics.HistoryStore;
 
   private currentPendingQuery: Promise<IQueryResults>;
   private lastQueryBuilder: QueryBuilder;
@@ -102,6 +104,7 @@ export class QueryController extends RootComponent {
     Assert.exists(element);
     Assert.exists(options);
     this.firstQuery = true;
+    this.historyStore = new history.HistoryStore();
   }
 
   /**
@@ -123,7 +126,7 @@ export class QueryController extends RootComponent {
     // We must wrap the endpoint in a decorator that'll add the call options
     // we obtain by firing the proper event. Those are used for authentication
     // providers, and I guess other stuff later on.
-    return new SearchEndpointWithDefaultCallOptions(endpoint, this.getCallOptions())
+    return new SearchEndpointWithDefaultCallOptions(endpoint, this.getCallOptions());
   }
 
   /**
@@ -183,9 +186,8 @@ export class QueryController extends RootComponent {
     }
 
     let query = queryBuilder.build();
-
     if (options.logInActionsHistory) {
-      this.logQueryInActionsHistory(query);
+      this.logQueryInActionsHistory(query, options.isFirstQuery);
     }
 
     let endpointToUse = this.getEndpoint();
@@ -314,7 +316,7 @@ export class QueryController extends RootComponent {
     let queryBuilder = new QueryBuilder();
     this.continueLastQueryBuilder(queryBuilder, count);
     let query = queryBuilder.build();
-    let endpointToUse = this.getEndpoint()
+    let endpointToUse = this.getEndpoint();
     let promise: any = this.currentPendingQuery = endpointToUse.search(query);
     let dataToSendDuringQuery: IDuringQueryEventArgs = {
       queryBuilder: queryBuilder,
@@ -353,9 +355,9 @@ export class QueryController extends RootComponent {
         results: results,
         queryBuilder: queryBuilder,
         searchAsYouType: false
-      }
+      };
       this.fetchMoreSuccessEvent(dataToSendOnFetchMoreSuccess);
-    })
+    });
     return this.currentPendingQuery;
   }
 
@@ -602,15 +604,12 @@ export class QueryController extends RootComponent {
     return dom;
   }
 
-  private logQueryInActionsHistory(query: IQuery) {
-    if (typeof coveoanalytics != 'undefined') {
-      let store = new coveoanalytics.history.HistoryStore()
-      let queryElement: CoveoAnalytics.HistoryQueryElement = {
-        name: 'Query',
-        value: query.q,
-        time: JSON.stringify(new Date())
-      }
-      store.addElement(queryElement);
-    }
+  private logQueryInActionsHistory(query: IQuery, isFirstQuery: boolean) {
+    let queryElement: CoveoAnalytics.HistoryQueryElement = {
+      name: 'Query',
+      value: query.q,
+      time: JSON.stringify(new Date())
+    };
+    this.historyStore.addElement(queryElement);
   }
 }

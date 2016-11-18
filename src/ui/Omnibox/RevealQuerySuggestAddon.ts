@@ -16,10 +16,10 @@ export class RevealQuerySuggestAddon {
     return suggestion.highlighted.replace(/\[(.*?)\]|\{(.*?)\}|\((.*?)\)/g, (part, notMatched, matched, corrected) => {
       var className = '';
       if (matched) {
-        className = 'coveo-omnibox-hightlight'
+        className = 'coveo-omnibox-hightlight';
       }
       if (corrected) {
-        className = 'coveo-omnibox-hightlight2'
+        className = 'coveo-omnibox-hightlight2';
       }
       return RevealQuerySuggestAddon.suggestiontHtmlTemplate({
         className: className,
@@ -48,12 +48,6 @@ export class RevealQuerySuggestAddon {
     });
   }
 
-  private currentPromise: Promise<IOmniboxSuggestion[]>;
-
-  private waitingRequest: {
-    text: string;
-  }
-
   public getSuggestion(): Promise<IOmniboxSuggestion[]> {
 
     var text = this.omnibox.magicBox.getText();
@@ -66,27 +60,19 @@ export class RevealQuerySuggestAddon {
       return this.cache[text];
     }
 
-    if (this.currentPromise == null) {
-      var promise = this.getRevealQuerySuggest(text);
-      this.cache[text] = promise;
-      promise.catch(() => {
-        delete this.cache[text];
-      })
-    } else {
-      if (this.waitingRequest != null) {
-        this.waitingRequest = null;
-      }
-      this.waitingRequest = {
-        text: text
-      };
-    }
+    let promise = this.getRevealQuerySuggest(text);
+    this.cache[text] = promise;
+    promise.catch(() => {
+      delete this.cache[text];
+    });
     return this.cache[text];
   }
 
   private getRevealQuerySuggest(text: string): Promise<IOmniboxSuggestion[]> {
     var payload = <IRevealQuerySuggestRequest>{ q: text },
       language = <string>String['locale'],
-      searchHub = this.omnibox.getBindings().componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchHub);
+      searchHub = this.omnibox.getBindings().componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchHub),
+      pipeline = this.omnibox.getBindings().searchInterface.options.pipeline;
 
     if (language) {
       payload.language = language;
@@ -96,7 +82,11 @@ export class RevealQuerySuggestAddon {
       payload.searchHub = searchHub;
     }
 
-    this.currentPromise = this.omnibox.queryController.getEndpoint()
+    if (pipeline) {
+      payload.pipeline = pipeline;
+    }
+
+    return this.omnibox.queryController.getEndpoint()
       .getRevealQuerySuggest(payload)
       .then((result: IRevealQuerySuggestResponse) => {
         var completions = result.completions;
@@ -105,20 +95,11 @@ export class RevealQuerySuggestAddon {
             html: RevealQuerySuggestAddon.suggestiontHtml(completion),
             text: completion.expression,
             index: RevealQuerySuggestAddon.INDEX - i / completions.length,
-            partial: RevealQuerySuggestAddon.isPartialMatch(completion)
-          }
+            partial: RevealQuerySuggestAddon.isPartialMatch(completion),
+            executableConfidence: completion.executableConfidence
+          };
         });
         return results;
-      })
-
-    this.currentPromise.finally(() => {
-      this.currentPromise = null;
-      if (this.waitingRequest != null) {
-        this.getRevealQuerySuggest(this.waitingRequest.text);
-        this.waitingRequest = null;
-      }
-    })
-
-    return this.currentPromise;
+      });
   }
 }

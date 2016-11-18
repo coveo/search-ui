@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, height=device-height" >
     <title>Title</title> 
     <link rel="stylesheet" href="./css/CoveoFullSearchNewDesign.css"/>
-    <script src="js/CoveoJsSearch.Dependencies.js"></script>
     <script src="js/CoveoJsSearch.js"></script>
     <script src="js/templates/templatesNew.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function(){
-        Coveo.SearchEndpoint.configureSampleEndpoint();
+        Coveo.SearchEndpoint.configureSampleEndpointV2();
         Coveo.init(document.body);
       })
     </script>
@@ -56,6 +55,7 @@
         <div class="CoveoResultList" data-wait-animation="fade" data-auto-select-fields-to-include="true">
         </div>
         <div class="CoveoPager"></div>
+        <div class="CoveoLogo"></div>
         <div class="CoveoResultsPerPage"></div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 /// <reference path='../../../node_modules/modal-box/bin/ModalBox.d.ts' />
 import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
+import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {SearchAlertsMessage} from './SearchAlertsMessage';
 import {SettingsEvents} from '../../events/SettingsEvents';
@@ -21,13 +21,13 @@ import {ModalBox} from '../../ExternalModulesShim';
 export interface ISearchAlertsOptions {
   enableManagePanel?: boolean;
   enableFollowQuery?: boolean;
-  modifiedDateField?: string;
+  modifiedDateField?: IFieldOption;
   enableMessage?: boolean;
   messageCloseDelay?: number;
 }
 
 /**
- * This component allows the user to manage his search alerts and to follow queries by adding menu items in the @link{Settings} component.
+ * This component allows the user to manage his search alerts and to follow queries by adding menu items in the {@link Settings} component.
  * By following queries, the user will receive emails informing him when the results of the query have changed.
  */
 export class SearchAlerts extends Component {
@@ -39,12 +39,12 @@ export class SearchAlerts extends Component {
    */
   static options: ISearchAlertsOptions = {
     /**
-     * Specifies whether to add a menu item in the @link{Settings} component to allow the user to manage his search alerts.
+     * Specifies whether to add a menu item in the {@link Settings} component to allow the user to manage his search alerts.
      * The default value is true.
      */
     enableManagePanel: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
-     * Specifies whether to add a menu item in the @link{Settings} component to allow the user to follow the last query.
+     * Specifies whether to add a menu item in the {@link Settings} component to allow the user to follow the last query.
      * The default value is true.
      */
     enableFollowQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
@@ -52,7 +52,7 @@ export class SearchAlerts extends Component {
      * Specifies the modifiedDateField to use when sending the follow query request.
      * This default value is undefined.
      */
-    modifiedDateField: ComponentOptions.buildStringOption(),
+    modifiedDateField: ComponentOptions.buildFieldOption(),
     /**
      * Specifies whether to display info and error messages when search alerts actions are performed.
      * This default value is true.
@@ -68,7 +68,7 @@ export class SearchAlerts extends Component {
   private modal: Coveo.ModalBox.ModalBox;
 
   /**
-   * A reference to a @link{SearchAlertsMessage} component used to display message.
+   * A reference to a {@link SearchAlertsMessage} component used to display message.
    * This attribute is set only when the enableMessage option is true.
    */
   public message: SearchAlertsMessage;
@@ -123,7 +123,32 @@ export class SearchAlerts extends Component {
             }
           });
       }
-    })
+    });
+  }
+
+  /**
+   * Follow the last query.
+   * The user will start to receive emails when the results from that query changes.
+   */
+  public followQuery() {
+    let queryBuilder = this.queryController.createQueryBuilder({});
+    let request = this.buildFollowQueryRequest(queryBuilder.build(), this.options);
+
+    this.queryController.getEndpoint().follow(request)
+      .then((subscription: ISubscription) => {
+        if (subscription) {
+          let eventArgs: ISearchAlertsEventArgs = {
+            subscription: subscription,
+            dom: this.findQueryBoxDom()
+          };
+          $$(this.root).trigger(SearchAlertsEvents.searchAlertsCreated, eventArgs);
+        } else {
+          this.triggerSearchAlertsFail();
+        }
+      })
+      .catch(() => {
+        this.triggerSearchAlertsFail();
+      });
   }
 
   /**
@@ -133,10 +158,19 @@ export class SearchAlerts extends Component {
    */
   public openPanel(): Promise<ISubscription> {
     let title = $$('div');
-    title.el.innerHTML = `<div class='coveo-subscriptions-panel-close'><span></span></div><div class='coveo-subscriptions-panel-title'>${l('SearchAlerts_Panel')}`;
-    $$(title.find('.coveo-subscriptions-panel-close')).on('click', () => {
-      this.close();
-    });
+
+    let close = $$('div', {
+      className: 'coveo-subscriptions-panel-close'
+    }, $$('span', {
+      className: 'coveo-icon'
+    }));
+
+    let titleInfo = $$('div', {
+      className: 'coveo-subscriptions-panel-title'
+    }, l('SearchAlerts_Panel'));
+
+    title.append(close.el);
+    title.append(titleInfo.el);
 
     let container = $$('div');
     container.el.innerHTML = `
@@ -164,7 +198,7 @@ export class SearchAlerts extends Component {
     return this.queryController.getEndpoint().listSubscriptions()
       .then((subscriptions: ISubscription[]) => {
         _.each(subscriptions, (subscription) => {
-          this.addSearchAlert(subscription, container)
+          this.addSearchAlert(subscription, container);
         });
       })
       .catch(() => {
@@ -172,12 +206,15 @@ export class SearchAlerts extends Component {
       })
       .finally(() => {
         this.modal = ModalBox.open(container.el, {
-          titleClose: true,
+          titleClose: false,
           overlayClose: true,
-          title: title.text(),
+          title: title.el.outerHTML,
           className: 'coveo-subscriptions-panel'
         });
-      })
+        $$($$(this.modal.modalBox).find('.coveo-subscriptions-panel-close')).on('click', () => {
+          this.close();
+        });
+      });
   }
 
   private handleSearchAlertsFail() {
@@ -196,6 +233,7 @@ export class SearchAlerts extends Component {
 
   private addSearchAlert(subscription: ISubscription, container: Dom) {
     let frequencies = [
+      { value: 'monthly', label: l('Monthly') },
       { value: 'daily', label: l('Daily') },
       { value: 'monday', label: l('Monday') },
       { value: 'tuesday', label: l('Tuesday') },
@@ -207,20 +245,22 @@ export class SearchAlerts extends Component {
     ];
 
     let context: string;
-    if (subscription.type == SUBSCRIPTION_TYPE.followQuery) {
+    if (subscription.name) {
+      context = _.escape(subscription.name);
+    } else if (subscription.type == SUBSCRIPTION_TYPE.followQuery) {
       let typeConfig = <ISubscriptionQueryRequest>subscription.typeConfig;
-      context = _.escape(typeConfig.query.q) || l('EmptyQuery')
+      context = _.escape(typeConfig.query.q) || l('EmptyQuery');
     } else {
       let typeConfig = <ISubscriptionItemRequest>subscription.typeConfig;
       context = _.escape(typeConfig.title || typeConfig.id);
     }
 
-    let element = $$('tr')
+    let element = $$('tr');
     element.addClass('coveo-subscriptions-panel-subscription');
     element.el.innerHTML = `
       <td class='coveo-subscriptions-panel-content-type'>${ l('SearchAlerts_Type_' + subscription.type)}</td>
       <td>
-        <div class='coveo-subscriptions-panel-context'>
+        <div class='coveo-subscriptions-panel-context' title='${context}'>
           ${ context}
         </div>
       </td>
@@ -238,7 +278,7 @@ export class SearchAlerts extends Component {
 
     let noSearchAlerts = container.find('.coveo-subscriptions-panel-no-subscriptions');
 
-    element.insertBefore(noSearchAlerts)
+    element.insertBefore(noSearchAlerts);
 
     let frequencyInput = <HTMLInputElement>element.find('.coveo-subscriptions-panel-frequency select');
 
@@ -247,7 +287,7 @@ export class SearchAlerts extends Component {
     $$(frequencyInput).on('change', (event) => {
       subscription.frequency = frequencyInput.value;
       this.updateAndSyncSearchAlert(subscription);
-    })
+    });
 
     $$(element.find('.coveo-subscriptions-panel-action-unfollow')).on('click', () => {
       element.addClass('coveo-subscription-unfollowed');
@@ -260,7 +300,7 @@ export class SearchAlerts extends Component {
         })
         .catch(() => {
           this.handleSearchAlertsFail();
-        })
+        });
     });
 
     $$(element.find('.coveo-subscriptions-panel-action-follow')).on('click', () => {
@@ -274,7 +314,7 @@ export class SearchAlerts extends Component {
         })
         .catch(() => {
           this.handleSearchAlertsFail();
-        })
+        });
     });
   }
 
@@ -285,31 +325,6 @@ export class SearchAlerts extends Component {
       .catch(() => {
         this.handleSearchAlertsFail();
       });
-  }
-
-  /**
-   * Follow the last query.
-   * The user will start to receive emails when the results from that query changes.
-   */
-  public followQuery() {
-    let queryBuilder = this.queryController.createQueryBuilder({});
-    let request = SearchAlerts.buildFollowQueryRequest(queryBuilder.build(), this.options);
-
-    this.queryController.getEndpoint().follow(request)
-      .then((subscription: ISubscription) => {
-        if (subscription) {
-          let eventArgs: ISearchAlertsEventArgs = {
-            subscription: subscription,
-            dom: this.findQueryBoxDom()
-          };
-          $$(this.root).trigger(SearchAlertsEvents.searchAlertsCreated, eventArgs);
-        } else {
-          this.triggerSearchAlertsFail();
-        }
-      })
-      .catch(() => {
-        this.triggerSearchAlertsFail();
-      })
   }
 
   private triggerSearchAlertsFail() {
@@ -333,19 +348,20 @@ export class SearchAlerts extends Component {
     return dom;
   }
 
-  private static buildFollowQueryRequest(query: IQuery, options: ISearchAlertsOptions): ISubscriptionRequest {
+  private buildFollowQueryRequest(query: IQuery, options: ISearchAlertsOptions): ISubscriptionRequest {
     let typeConfig: ISubscriptionQueryRequest = {
       query: query
-    }
+    };
 
     if (options.modifiedDateField) {
-      typeConfig.modifiedDateField = options.modifiedDateField;
+      typeConfig.modifiedDateField = <string>options.modifiedDateField;
     }
 
     return {
       type: SUBSCRIPTION_TYPE.followQuery,
-      typeConfig: typeConfig
-    }
+      typeConfig: typeConfig,
+      name: this.message.getFollowQueryMessage(query.q)
+    };
   }
 
   static create(element: HTMLElement, options?: ISearchAlertsOptions, root?: HTMLElement): SearchAlerts {

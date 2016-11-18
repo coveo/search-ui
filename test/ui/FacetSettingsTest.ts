@@ -15,14 +15,14 @@ export function FacetSettingsTest() {
         field: '@field'
       }).cmp;
       registerCustomMatcher();
-    })
+    });
 
     afterEach(function () {
       facet = null;
       facetSettings = null;
-    })
+    });
 
-    it('allows to save state', function () {
+    it('allows to save state', () => {
       // settings not enabled : no call to query state
       facetSettings = new FacetSettings(['foo', 'bar'], facet);
       facetSettings.build();
@@ -35,9 +35,9 @@ export function FacetSettingsTest() {
       facetSettings.build();
       facetSettings.saveState();
       expect(facet.queryStateModel.get).toHaveBeenCalledTimes(3);
-    })
+    });
 
-    it('allows to load state', function () {
+    it('allows to load state', () => {
       // settings not enabled : no call to query state
       facetSettings = new FacetSettings(['foo', 'bar'], facet);
       facetSettings.build();
@@ -50,9 +50,9 @@ export function FacetSettingsTest() {
       facetSettings.build();
       facetSettings.loadSavedState();
       expect(facet.queryStateModel.setMultiple).toHaveBeenCalled();
-    })
+    });
 
-    it('allow to open and close the popup', function () {
+    it('allow to open and close the popup', () => {
       facetSettings = new FacetSettings(['foo', 'bar'], facet);
       var built = facetSettings.build();
       facet.root.appendChild(built);
@@ -61,6 +61,34 @@ export function FacetSettingsTest() {
       expect($$(facetSettings.facet.root).find('.coveo-facet-settings-popup')).not.toBeNull();
       facetSettings.close();
       expect($$(facetSettings.facet.root).find('.coveo-facet-settings-popup')).toBeNull();
-    })
-  })
+    });
+
+    it('should show collapse/expand section if it is not disabled from the facet', () => {
+      facet.options.enableCollapse = true;
+      facetSettings = new FacetSettings(['foo', 'bar'], facet);
+      let built = facetSettings.build();
+      facetSettings.open();
+      facet.root.appendChild(built);
+      expect($$(facetSettings.facet.root).find('.coveo-facet-settings-section-hide')).not.toBeNull();
+      expect($$(facetSettings.facet.root).find('.coveo-facet-settings-section-show')).not.toBeNull();
+      facet.collapse();
+      facetSettings.open();
+      expect($$(facetSettings.facet.root).find('.coveo-facet-settings-section-hide')).not.toBeNull();
+      expect($$(facetSettings.facet.root).find('.coveo-facet-settings-section-show')).not.toBeNull();
+    });
+
+    it('should not show collapse/expand section if it is disabled from the facet', () => {
+      facet.options.enableCollapse = false;
+      facetSettings = new FacetSettings(['foo', 'bar'], facet);
+      let built = facetSettings.build();
+      facetSettings.open();
+      facet.root.appendChild(built);
+      expect($$(facetSettings.facet.root).find('.coveo-facet-settings-section-hide')).toBeNull();
+      expect($$(facetSettings.facet.root).find('.coveo-facet-settings-section-show')).toBeNull();
+      facet.collapse();
+      facetSettings.open();
+      expect($$(facetSettings.facet.root).find('.coveo-facet-settings-section-hide')).toBeNull();
+      expect($$(facetSettings.facet.root).find('.coveo-facet-settings-section-show')).toBeNull();
+    });
+  });
 }

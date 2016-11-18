@@ -33,39 +33,25 @@ exports.convert = function (from, to) {
   fs.writeFileSync(to, JSON.stringify(json, undefined, ' '));
 };
 
-const mergeFunctionAsString = '\tvar merge = function(obj1, obj2) {\n' +
-    '\t\tvar obj3 = {};\n' +
-    '\t\tfor(var attrname in obj1){obj3[attrname] = obj1[attrname]; }\n' +
-    '\t\tfor(var attrname in obj2){obj3[attrname] = obj2[attrname]; }\n' +
-    '\t\treturn obj3;\n' +
+const mergeFunctionAsString = 'var merge = function(obj1, obj2) {\n' +
+    '  var obj3 = {};\n' +
+    '  for(var attrname in obj1){obj3[attrname] = obj1[attrname]; }\n' +
+    '  for(var attrname in obj2){obj3[attrname] = obj2[attrname]; }\n' +
+    '  return obj3;\n' +
     '}\n'
 
-const jQueryExistsAsString = `window['$'] != undefined && window['$'].fn != undefined && window['$'].fn.jquery != undefined`;
-
 function dictObjectAsString(json, language) {
-  var dictAsString = '  var dict = {\n';
+  var dictAsString = 'var dict = {\n';
 
   _.each(_.keys(json), function (key) {
     var str = json[key][language.toLowerCase()];
     if (str != undefined) {
-      dictAsString += '      ' + JSON.stringify(key) + ': ' + JSON.stringify(json[key][language.toLowerCase()]) + ',\n';
+      dictAsString += '  ' + JSON.stringify(key) + ': ' + JSON.stringify(json[key][language.toLowerCase()]) + ',\n';
     }
   });
 
-  dictAsString += '  }\n';
+  dictAsString += '}\n';
   return dictAsString;
-}
-
-function bindPrototypeOnNativeStringOnPageReady(language) {
-  var pageReadyString = `if( ${jQueryExistsAsString} ) { \n
-    $(function(){\n
-      ${setPrototypeOnNativeString(language)} \n
-    })\n
-  } else {
-    document.addEventListener('DOMContentLoaded', function(event){\n
-      ${setPrototypeOnNativeString(language)}
-  })}`;
-  return pageReadyString;
 }
 
 function setPrototypeOnNativeString(language) {
@@ -116,13 +102,14 @@ function Dictionary(from, options) {
 
   this.writeDefaultLanguage = function (to, language) {
     var code = 'import * as Globalize from \'globalize\';\n';
+    code += 'import {LocaleString} from \'../ExternalModulesShim\';\n';
     code += mergeFunctionAsString;
     code += dictObjectAsString(this.json, language);
     code += 'export function defaultLanguage() {\n';
-    code += bindPrototypeOnNativeStringOnPageReady(language);
+    code += setPrototypeOnNativeString(language) + '\n';
     code += '}\n';
     code += 'export function setLanguageAfterPageLoaded() {\n';
-    code += setPrototypeOnNativeString(language);
+    code += setPrototypeOnNativeString(language) + '\n';
     code += '}\n';
 
     utilities.ensureDirectory(path.dirname(to));
@@ -138,7 +125,7 @@ function Dictionary(from, options) {
     code += cultureFileAsString + '\n(function() {\n';
     code += mergeFunctionAsString;
     code += dictObjectAsString(this.json, language);
-    code += bindPrototypeOnNativeStringOnPageReady(language);
+    code += setPrototypeOnNativeString(language);
     code += '})();\n';
     code += 'if(!window.Coveo){window.Coveo = {};}\n';
     code += 'Coveo.setLanguageAfterPageLoaded = function() {\n';

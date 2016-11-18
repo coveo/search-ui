@@ -1,11 +1,11 @@
-import {IComponentBindings} from '../Base/ComponentBindings'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {IQueryResult} from '../../rest/QueryResult'
-import {Initialization} from '../Base/Initialization'
-import {FieldValue, IFieldValueOptions} from './FieldValue'
-import {StringUtils} from '../../utils/StringUtils'
-import {Assert} from '../../misc/Assert'
-import {$$} from '../../utils/Dom'
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {IQueryResult} from '../../rest/QueryResult';
+import {Initialization} from '../Base/Initialization';
+import {FieldValue, IFieldValueOptions} from './FieldValue';
+import {StringUtils} from '../../utils/StringUtils';
+import {Assert} from '../../misc/Assert';
+import {$$} from '../../utils/Dom';
 
 
 export interface IBadgeOptions extends IFieldValueOptions {
@@ -23,11 +23,11 @@ export interface IBadgeColor {
 
 /**
  * This component is used to easily output a field value with customizable colors and an icon preceding it.<br/>
- * It extends {@link FieldValue}, so any options on that component can be used on Badge.<br/>
+ * It extends {@link FieldValue}, so any option on that component can be used on `Badge`.<br/>
  * It is possible to configure the default colors, but also to set colors specific to
  * the current field value.
  */
-export class Badge extends FieldValue {
+export class Badge extends FieldValue implements IComponentBindings {
   static ID = 'Badge';
 
   /**
@@ -66,14 +66,14 @@ export class Badge extends FieldValue {
   static parent = FieldValue;
 
   /**
-   * Build a new Badge component
+   * Build a new `Badge` component
    * @param element
    * @param options
    * @param bindings
    * @param result
    */
   constructor(element: HTMLElement, public options?: IBadgeOptions, bindings?: IComponentBindings, result?: IQueryResult) {
-    super(element, options = ComponentOptions.initComponentOptions(element, Badge, options), bindings, result, Badge.ID);
+    super(element, ComponentOptions.initComponentOptions(element, Badge, options), bindings, result, Badge.ID);
     if (_.isString(this.options.colors)) {
       // to support the old string options
       this.options.colors = Badge.parseColors(<any>this.options.colors);
@@ -97,7 +97,7 @@ export class Badge extends FieldValue {
   /**
    * Parse the passed color string into a workable format.
    * See {@link Badge.options.colors} for more info on defining colors.
-   * @param colorsOption The color string to parse
+   * @param colorsOption The color string to parse.
    */
   public static parseColors(colorsOption: string): IBadgeColors {
     if (colorsOption) {
@@ -111,12 +111,12 @@ export class Badge extends FieldValue {
           if (fieldValue != null) {
             badgeColors.values[fieldValue.replace(/\\(:|;)/g, '$1')] = {
               icon: colorValue
-            }
+            };
           } else {
             badgeColors.icon = colorValue;
           }
-        })
-        return badgeColors
+        });
+        return badgeColors;
       }
       try {
         return JSON.parse(colorsOption);
@@ -131,7 +131,7 @@ export class Badge extends FieldValue {
    * Get the icon and text color for the passed field value.<br/>
    * Returns an object with the `icon` and `text` keys,
    * representing their respective colors.
-   * @param value The field value for which the colors are returned
+   * @param value The field value for which the colors are returned.
    */
   public getColor(value: string = ''): IBadgeColor {
     var colorKey = _.find(_.keys(this.options.colors.values), (key: string) => value.toLowerCase() == key.toLowerCase());
@@ -144,8 +144,8 @@ export class Badge extends FieldValue {
 
   /**
    * Render one string value with the appropriate colors and icon.<br/>
-   * Returns an HTML `span` containing the rendered value
-   * @param value The field value to render
+   * Returns an HTML `span` containing the rendered value.
+   * @param value The field value to render.
    */
   public renderOneValue(value: string): HTMLElement {
     let valueDom = super.renderOneValue(value);

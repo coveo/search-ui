@@ -1,16 +1,16 @@
-import {Template} from '../Templates/Template'
-import {Component} from '../Base/Component'
-import {IComponentBindings} from '../Base/ComponentBindings'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {DefaultFoldingTemplate} from './DefaultFoldingTemplate'
+import {Template} from '../Templates/Template';
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {DefaultFoldingTemplate} from './DefaultFoldingTemplate';
 import {Promise} from 'es6-promise';
-import {IQueryResult} from '../../rest/QueryResult'
-import {Utils} from '../../utils/Utils'
-import {QueryUtils} from '../../utils/QueryUtils'
+import {IQueryResult} from '../../rest/QueryResult';
+import {Utils} from '../../utils/Utils';
+import {QueryUtils} from '../../utils/QueryUtils';
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
-import {Assert} from '../../misc/Assert'
-import {$$} from '../../utils/Dom'
-import {l} from '../../strings/Strings'
+import {Assert} from '../../misc/Assert';
+import {$$} from '../../utils/Dom';
+import {l} from '../../strings/Strings';
 
 export interface IResultFoldingOptions {
   resultTemplate?: Template;
@@ -221,7 +221,7 @@ export class ResultFolding extends Component {
   private renderChildResult(childResult: IQueryResult) {
     QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), childResult);
 
-    let oneChild = this.options.resultTemplate.instantiateToElement(childResult)
+    let oneChild = this.options.resultTemplate.instantiateToElement(childResult);
     $$(oneChild).addClass('coveo-result-folding-child-result');
     this.results.appendChild(oneChild);
 
@@ -234,7 +234,7 @@ export class ResultFolding extends Component {
     Assert.exists(element);
 
     let initOptions = this.searchInterface.options;
-    let initParameters: IInitializationParameters = { options: initOptions, bindings: this.getBindings(), result: result }
+    let initParameters: IInitializationParameters = { options: initOptions, bindings: this.getBindings(), result: result };
     Initialization.automaticallyCreateComponentsInside(element, initParameters);
   }
 

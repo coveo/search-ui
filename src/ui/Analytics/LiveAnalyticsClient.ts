@@ -115,7 +115,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
 
   public getPendingSearchEvent(): PendingSearchEvent {
     if (this.pendingSearchEvent) {
-      return this.pendingSearchEvent
+      return this.pendingSearchEvent;
     } else if (this.pendingSearchAsYouTypeSearchEvent) {
       return this.pendingSearchAsYouTypeSearchEvent;
     }
@@ -157,18 +157,18 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       var pendingSearchEvent = this.pendingSearchEvent = new PendingSearchEvent(this.rootElement, this.endpoint, searchEvent, this.sendToCloud);
 
       Defer.defer(() => {
-        // At this point all duringQuery events should have been fired, so we can forget
-        // about the pending search event. It'll finish processing automatically when
+        // At this point all `duringQuery` events should have been fired, so we can forget
+        // about the pending search event. It will finish processing automatically when
         // all the deferred that were caught terminate.
         this.pendingSearchEvent = undefined;
         pendingSearchEvent.stopRecording();
-      })
+      });
     }
   }
 
   private checkToSendAnyPendingSearchAsYouType(actionCause: IAnalyticsActionCause) {
     if (this.eventIsNotRelatedToSearchbox(actionCause.name)) {
-      this.sendAllPendingEvents()
+      this.sendAllPendingEvents();
     } else {
       this.cancelAnyPendingSearchAsYouTypeEvent();
     }
@@ -195,7 +195,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       }
       $$(this.rootElement).trigger(AnalyticsEvents.documentViewEvent, {
         documentViewEvent: APIAnalyticsBuilder.convertDocumentViewToAPI(event)
-      })
+      });
     });
   }
 
@@ -215,7 +215,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       originLevel3: document.referrer,
       customData: _.keys(metaObject).length > 0 ? metaObject : undefined,
       userAgent: navigator.userAgent
-    }
+    };
   }
 
   private buildSearchEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject): ISearchEvent {
@@ -253,7 +253,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       responseTime: 0,
       viewMethod: actionCause.name,
       rankingModifier: result.rankingModifier
-    })
+    });
   }
 
   private buildCustomEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject, element: HTMLElement): ICustomEvent {
@@ -262,7 +262,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       eventValue: actionCause.name,
       originLevel2: this.getOriginLevel2(element),
       responseTime: 0
-    })
+    });
   }
 
   protected getOriginLevel2(element: HTMLElement): string {
@@ -293,30 +293,31 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
   }
 
   private eventIsNotRelatedToSearchbox(event: string) {
-    return event !== analyticsActionCauseList.searchboxSubmit.name && event !== analyticsActionCauseList.searchboxClear.name
+    return event !== analyticsActionCauseList.searchboxSubmit.name && event !== analyticsActionCauseList.searchboxClear.name;
   }
 
   private triggerChangeAnalyticsCustomData(type: string, metaObject: IChangeableAnalyticsMetaObject, event: IAnalyticsEvent, data?: any) {
-    var changeableAnalyticsDataObject: IChangeableAnalyticsDataObject = {
-      language: event.language,
-      originLevel1: event.originLevel1,
-      originLevel2: event.originLevel2,
-      originLevel3: event.originLevel3
-    };
-
     // This is for backward compatibility. Before the analytics were using either numbered
-    // metas in metaDataAsNumber of later on named metas in metaDataAsString. Thus we still
-    // provide those properties in a deprecated way. Below we're moving any data that's put
+    // metas in `metaDataAsNumber` of later on named metas in `metaDataAsString`. Thus we still
+    // provide those properties in a deprecated way. Below we are moving any data that put
     // in them to the root.
     (<any>metaObject)['metaDataAsString'] = {};
     (<any>metaObject)['metaDataAsNumber'] = {};
 
+    var changeableAnalyticsDataObject: IChangeableAnalyticsDataObject = {
+      language: event.language,
+      originLevel1: event.originLevel1,
+      originLevel2: event.originLevel2,
+      originLevel3: event.originLevel3,
+      metaObject: metaObject
+    };
+
+
     var args: IChangeAnalyticsCustomDataEventArgs = _.extend({}, {
       type: type,
-      metaObject: metaObject,
       actionType: event.actionType,
       actionCause: event.actionCause
-    }, changeableAnalyticsDataObject);
+    }, changeableAnalyticsDataObject, data);
     $$(this.rootElement).trigger(AnalyticsEvents.changeAnalyticsCustomData, args);
 
     event.language = args.language;
@@ -326,7 +327,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     event.customData = metaObject;
 
     // This is for backward compatibility. Before the analytics were using either numbered
-    // metas in metaDataAsNumber of later on named metas in metaDataAsString. I'm now putting
+    // metas in `metaDataAsNumber` of later on named metas in `metaDataAsString`. We are now putting
     // them all at the root, and if I encounter the older properties I move them to the top
     // level after issuing a warning.
 

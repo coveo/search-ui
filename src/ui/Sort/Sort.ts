@@ -10,6 +10,7 @@ import {QueryStateModel} from '../../models/QueryStateModel';
 import {QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs} from '../../events/QueryEvents';
 import {Initialization} from '../Base/Initialization';
 import {analyticsActionCauseList, IAnalyticsResultsSortMeta} from '../Analytics/AnalyticsActionListMeta';
+import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
 import {IQueryErrorEventArgs} from '../../events/QueryEvents';
 
 export interface ISortOptions {
@@ -17,7 +18,7 @@ export interface ISortOptions {
   caption?: string;
 }
 /**
- * This component displays a sort criteria for searching.
+ * This component displays a sort criterion for searching.
  */
 export class Sort extends Component {
   static ID = 'Sort';
@@ -27,17 +28,18 @@ export class Sort extends Component {
    */
   static options: ISortOptions = {
     /**
-     * The criteria for sorting<br/>
-     * The available criteria are:
-     * <ul>
-     *   <li><code>relevancy</code></li>
-     *   <li><code>Date</code></li>
-     *   <li><code>qre</code></li>
-     *   <li><code>@fieldname</code> (replace fieldname with an actual field name (e.g. <code>@syssize</code>)</li>
-     * </ul>
+     * The criterion for sorting
      *
-     * A direction (ascending or descending) can be specified, for example "date ascending"<br/>
-     * A Sort component can have multiple criteria, passed as a list<br/>
+     * The available criteria are:
+     * - `relevancy`
+     * - `Date`
+     * - `qre`
+     * - `@fieldname` (replace fieldname with an actual field name (e.g. <code>@syssize</code>)
+     *
+     * A direction (ascending or descending) can be specified, for example "date ascending".
+     *
+     * A Sort component can have multiple criteria, passed as a list.
+     *
      * This option is required.
      */
     sortCriteria: ComponentOptions.buildCustomListOption((values: string[] | SortCriteria[]) => {
@@ -47,11 +49,12 @@ export class Sort extends Component {
         } else {
           return <SortCriteria>criteria;
         }
-      })
+      });
     }, { required: true }),
     /**
-     * The caption to display on the element<br/>
-     * If not specified, the component will use the tag's body
+     * The caption to display on the element.
+     *
+     * If not specified, the component will use the tag body.
      */
     caption: ComponentOptions.buildLocalizedStringOption({ required: true })
   };
@@ -72,12 +75,15 @@ export class Sort extends Component {
     Assert.isLargerOrEqualsThan(1, this.options.sortCriteria.length);
 
     var eventName = this.queryStateModel.getEventName(Model.eventTypes.changeOne) + QueryStateModel.attributesEnum.sort;
-    this.bind.onRootElement(eventName, (args: IAttributesChangedEventArg) => this.handleQueryStateChanged(args))
-    this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args))
+    this.bind.onRootElement(eventName, (args: IAttributesChangedEventArg) => this.handleQueryStateChanged(args));
+    this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError(args));
-    this.bind.on(this.element, 'click', () => this.handleClick());
+    const clickAction = () => this.handleClick();
+    this.bind.on(this.element, 'click', clickAction);
+    this.bind.on(this.element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, clickAction));
 
+    this.element.setAttribute('tabindex', '0');
     if (Utils.isNonEmptyString(this.options.caption)) {
       $$(this.element).text(this.options.caption);
     }
@@ -91,14 +97,15 @@ export class Sort extends Component {
 
   /**
    * Select the Sort component.
-   * @param direction The sort direction (e.g. ascending, descending)<br/>
-   * Will trigger a query if the selection made the criteria change (if it was toggled)
+   * @param direction The sort direction (e.g. ascending, descending).
+   *
+   * Will trigger a query if the selection made the criteria change (if it was toggled).
    */
   public select(direction?: string) {
     if (direction) {
       this.currentCriteria = _.find(this.options.sortCriteria, (criteria: SortCriteria) => {
-        return criteria.direction == direction
-      })
+        return criteria.direction == direction;
+      });
     } else if (Utils.exists(this.currentCriteria)) {
       var indexOfCurrentCriteria = _.indexOf(this.options.sortCriteria, this.currentCriteria);
       Assert.check(indexOfCurrentCriteria >= 0);
@@ -133,7 +140,7 @@ export class Sort extends Component {
    * @param sortId The sort criteria to verify with (e.g. 'date descending')
    */
   public match(sortId: string) {
-    return _.any(this.options.sortCriteria, (sortCriteria: SortCriteria) => sortId == sortCriteria.toString())
+    return _.any(this.options.sortCriteria, (sortCriteria: SortCriteria) => sortId == sortCriteria.toString());
   }
 
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
@@ -165,7 +172,7 @@ export class Sort extends Component {
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
     if (data.results.results.length == 0) {
-      $$(this.element).addClass('coveo-sort-hidden')
+      $$(this.element).addClass('coveo-sort-hidden');
     } else {
       $$(this.element).removeClass('coveo-sort-hidden');
     }
@@ -202,7 +209,6 @@ export class Sort extends Component {
       $$(this.element).toggleClass('coveo-ascending', direction == 'ascending');
     }
   }
-
 }
 
 Initialization.registerAutoCreateComponent(Sort);

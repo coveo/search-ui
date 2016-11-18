@@ -44,6 +44,17 @@ export class DateUtils {
     }
   }
 
+  static dateForQuery(date: Date): string {
+    return date.getFullYear() + '/' + DateUtils.padNumber((date.getMonth() + 1).toString()) + '/' + DateUtils.padNumber(date.getDate().toString());
+  }
+
+  private static padNumber(num: string, length: number = 2): string {
+    while (num.length < length) {
+      num = '0' + num;
+    }
+    return num;
+  }
+
   static keepOnlyDatePart(date: Date): Date {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   }
@@ -137,7 +148,7 @@ export class DateUtils {
 
   static isValid(date: any) {
     if (date instanceof Date) {
-      return !isNaN(date.getTime())
+      return !isNaN(date.getTime());
     }
     return false;
   }

@@ -1,8 +1,7 @@
 const gulp = require('gulp');
 const requireDir = require('require-dir');
-const rmdir = require('gulp-rimraf');
+const del = require('del');
 const runsequence = require('run-sequence');
-const shell = require('gulp-shell');
 
 requireDir('./gulpTasks');
 
@@ -20,7 +19,6 @@ gulp.task('buildLegacy', function (done) {
   runsequence(['cssLegacy', 'fileTypesLegacy', 'spritesLegacy', 'templatesLegacy'], done);
 });
 
-gulp.task('clean', function (done) {
-  return gulp.src(['./bin', './zip/**.zip'], {read: false})
-      .pipe(rmdir())
+gulp.task('clean', function () {
+  return del(['./bin', './zip/**.zip']);
 });

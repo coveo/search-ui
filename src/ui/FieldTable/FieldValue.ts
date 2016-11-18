@@ -1,19 +1,19 @@
-import {Component} from '../Base/Component'
-import {IComponentBindings} from '../Base/ComponentBindings'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {IQueryResult} from '../../rest/QueryResult'
-import {Initialization} from '../Base/Initialization'
-import {TemplateHelpers} from '../Templates/TemplateHelpers'
-import {Assert} from '../../misc/Assert'
-import {DateUtils, IDateToStringOptions} from '../../utils/DateUtils'
-import {QueryStateModel} from '../../models/QueryStateModel'
-import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
-import {Utils} from '../../utils/Utils'
-import {Facet} from '../Facet/Facet'
-import {$$} from '../../utils/Dom'
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
+import {IQueryResult} from '../../rest/QueryResult';
+import {Initialization} from '../Base/Initialization';
+import {TemplateHelpers} from '../Templates/TemplateHelpers';
+import {Assert} from '../../misc/Assert';
+import {DateUtils, IDateToStringOptions} from '../../utils/DateUtils';
+import {QueryStateModel} from '../../models/QueryStateModel';
+import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
+import {Utils} from '../../utils/Utils';
+import {Facet} from '../Facet/Facet';
+import {$$} from '../../utils/Dom';
 
 export interface IFieldValueOptions {
-  field?: string;
+  field?: IFieldOption;
   facet?: string;
   htmlValue?: boolean;
   helper?: string;
@@ -33,7 +33,7 @@ function showOnlyWithHelper<T>(helpers: string[], options?: T): T {
   if (options == null) {
     options = <any>{};
   }
-  (<any>options).helpers = helpers
+  (<any>options).helpers = helpers;
   return options;
 }
 
@@ -58,21 +58,21 @@ export class FieldValue extends Component {
      */
     field: ComponentOptions.buildFieldOption({ defaultValue: '@field', required: true }),
     /**
-     * Specifies the facet to be toggled when the component is clicked on.<br/>
+     * Specifies the facet to be toggled when the component is clicked On.<br/>
      * When no value is specified, the value of the <code>field</code> option is used.<br/>
-     * If the facet id is custom (e.g. not the same name as its field), you must specify
+     * If the facet ID is custom (e.g. not the same name as its field), you must specify
      * manually this option in order to link the correct facet.
      */
     facet: ComponentOptions.buildStringOption({ postProcessing: (value, options) => value || options.field }),
     /**
      * Specifies if the content to display is an HTML element.<br/>
-     * The default value is <code>false</code>
+     * The default value is <code>false</code>.
      */
     htmlValue: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
-     * Specifies if the field value is to be split at each {@link separator}.
+     * Specifies if the field value is to be split at each {@link FieldValue.options.separator}.
      * This is useful for splitting groups by a facet field.<br/>
-     * The values displayed are split by the {@link displaySeparator}.<br/>
+     * The values displayed are split by the {@link FieldValue.options.displaySeparator}.<br/>
      * The default value is <code>false</code>.
      */
     splitValues: ComponentOptions.buildBooleanOption({ defaultValue: false }),
@@ -88,8 +88,8 @@ export class FieldValue extends Component {
      */
     displaySeparator: ComponentOptions.buildStringOption({ defaultValue: ', ' }),
     /**
-     * Specifies the helper to be used by the FieldValue to display its content.<br/>
-     * A few helpers exist by default (see {@link CoreHelpers}), and new ones can be
+     * Specifies the helper to be used by the `FieldValue` to display its content.<br/>
+     * A few helpers exist by default (see {@link ICoreHelpers}), and new ones can be
      * custom-created (see {@link TemplateHelpers}).
      */
     helper: ComponentOptions.buildHelperOption(),
@@ -127,13 +127,13 @@ export class FieldValue extends Component {
         isMilliseconds: ComponentOptions.buildBooleanOption(showOnlyWithHelper(['timeSpan'])),
       }
     })
-  }
+  };
 
   static simpleOptions = _.omit(FieldValue.options, 'helperOptions');
 
   static helperOptions = <any>{
     helperOptions: FieldValue.options.helperOptions
-  }
+  };
 
   /**
    * Build a new FieldValue
@@ -184,7 +184,7 @@ export class FieldValue extends Component {
    * Returns <code>null</code> if value is an <code>Object</code>.
    */
   public getValue() {
-    let value = Utils.getFieldValue(this.result, this.options.field);
+    let value = Utils.getFieldValue(this.result, <string>this.options.field);
     if (!_.isArray(value) && _.isObject(value)) {
       value = null;
     }
@@ -192,8 +192,8 @@ export class FieldValue extends Component {
   }
 
   /**
-   * Render the passed value string with all of the component's options.<br/>
-   * Returns an <code>HTMLElement</code> containing the rendered value.
+   * Render the passed value string with all of the component options.<br/>
+   * Returns a <code>HTMLElement</code> containing the rendered value.
    */
   public renderOneValue(value: string): HTMLElement {
     let element = $$('span').el;
@@ -252,7 +252,7 @@ export class FieldValue extends Component {
           this.getValueContainer().appendChild(document.createTextNode(this.options.displaySeparator));
         }
       }
-    })
+    });
   }
 
   private bindEventOnValue(element: HTMLElement, value: string) {
@@ -277,7 +277,7 @@ export class FieldValue extends Component {
             facetValue: value.toLowerCase()
           })
         });
-      })
+      });
 
       if (selected) {
         $$(element).addClass('coveo-selected');

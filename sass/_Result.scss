@@ -97,13 +97,6 @@
         -ms-transform: rotate(-45deg);
         border: 2px solid;
         border-right: none;
-        // YEP A MATRIX FOR IE8. You have to trust me on that want
-        filter: progid:DXImageTransform.Microsoft.Matrix(
-                        M11=0.7071067811865483,
-                        M12=0.7071067811865467,
-                        M21=-0.7071067811865467,
-                        M22=0.7071067811865483,
-                        SizingMethod='auto expand');
         -webkit-backface-visibility: hidden;
         -webkit-border-top-left-radius: 2px;
         -webkit-border-bottom-left-radius: 2px;

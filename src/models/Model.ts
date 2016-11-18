@@ -9,7 +9,7 @@ export const MODEL_EVENTS = {
   CHANGE: 'change',
   RESET: 'reset',
   ALL: 'all'
-}
+};
 
 export interface IModelSetOptions {
   silent?: boolean;
@@ -31,7 +31,7 @@ export interface IModelChangedEventArg {
 }
 
 /**
- * A model is basically a key -> value store that trigger letious javascript event when one of the value for each of it's key changes.<br/>
+ * A model is basically a key -> value store that triggers various javascript event when one of the value for each of it's key changes.<br/>
  * This is a class that is meant to be extended : the most important one probably being the {@link QueryStateModel}<br/>
  * Component set values in this key -> value store, and listen to event triggered to react accordingly.<br/>
  */
@@ -78,12 +78,12 @@ export class Model extends BaseComponent {
     _.each(this.attributes, (attribute, key) => {
       if (_.isObject(attribute)) {
         if (!Utils.objectEqual(attribute, this.defaultAttributes[key])) {
-          attributes[key] = attribute
+          attributes[key] = attribute;
         }
       } else if (attribute != this.defaultAttributes[key]) {
-        attributes[key] = attribute
+        attributes[key] = attribute;
       }
-    })
+    });
     return attributes;
   }
 
@@ -125,7 +125,7 @@ export class Model extends BaseComponent {
 
   public get(attribute?: string): any {
     if (attribute == undefined) {
-      return this.attributes
+      return this.attributes;
     } else {
       return this.attributes[attribute];
     }
@@ -192,7 +192,7 @@ export class Model extends BaseComponent {
   private validateType(attribute: string, value: any) {
     if (!Utils.isNullOrUndefined(this.attributes[attribute]) && !Utils.isUndefined(value)) {
       if (_.isNumber(this.attributes[attribute])) {
-        Assert.check(_.isNumber(value) && !isNaN(value), 'Non-matching type')
+        Assert.check(_.isNumber(value) && !isNaN(value), 'Non-matching type');
       } else if (_.isBoolean(this.attributes[attribute])) {
         Assert.check(_.isBoolean(value) || Utils.parseBooleanIfNotUndefined(value) !== undefined, 'Non-matching type');
       } else {
@@ -219,7 +219,7 @@ export class Model extends BaseComponent {
   private checkIfAttributeChanged(attribute: string, newValue: any): boolean {
     let oldValue = this.attributes[attribute];
     if (_.isNumber(oldValue) || _.isString(oldValue) || _.isBoolean(oldValue)) {
-      return oldValue !== newValue
+      return oldValue !== newValue;
     }
     if (_.isArray(oldValue)) {
       return !Utils.arrayEqual(oldValue, newValue);

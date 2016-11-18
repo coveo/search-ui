@@ -46,7 +46,7 @@ export interface IQueryResult {
   summary: string;
   summaryHighlights: IHighlight[];
   /**
-   * Returned on a document if the {@link Query.debug} was set to true
+   * Returned on a document if the {@link IQuery.debug} was set to true
    */
   rankingInfo: string;
   /**
@@ -82,7 +82,7 @@ export interface IQueryResult {
   moreResults?: () => Promise<IQueryResult[]>;
   totalNumberOfChildResults?: number;
   attachments?: IQueryResult[];
-  state: { [attribute: string]: any; }
+  state: { [attribute: string]: any; };
   orphan?: boolean;
 
   fields?: { [name: string]: any };

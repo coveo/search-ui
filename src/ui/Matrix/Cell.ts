@@ -1,7 +1,7 @@
 import {$$} from '../../utils/Dom';
 
 /**
- * Represent a single cell of data in the {@link Matrix} component
+ * Represent a single cell of data in the {@link Matrix} component.
  */
 export class Cell {
   private value: any;
@@ -14,7 +14,7 @@ export class Cell {
   }
 
   /**
-   * Return the value of the cell
+   * Return the value of the cell.
    * @returns {any}
    */
   public getValue(): any {
@@ -22,7 +22,7 @@ export class Cell {
   }
 
   /**
-   * Return the HTMLElement for the cell
+   * Return the `HTMLElement` for the cell.
    * @returns {HTMLElement}
    */
   public getHTML(): HTMLElement {
@@ -30,7 +30,7 @@ export class Cell {
   }
 
   /**
-   * Set the value if the cell
+   * Set the value if the cell.
    * @param value
    */
   public setValue(value: any) {
@@ -38,7 +38,7 @@ export class Cell {
   }
 
   /**
-   * Set the HTMLElement for the cell
+   * Set the `HTMLElement` for the cell.
    * @param html
    */
   public setHTML(html: HTMLElement) {
@@ -46,7 +46,7 @@ export class Cell {
   }
 
   /**
-   * Show the preview of the cell
+   * Show the preview of the cell.
    * @param minWidth css minWidth property : eg 100px
    * @param maxWidth css maxWidth property : eg 100px
    */
@@ -64,7 +64,7 @@ export class Cell {
     let container = $$(this.element).findAll('.matrix-results-preview-container');
     _.each(container, (c: HTMLElement) => {
       $$(c).hide();
-    })
+    });
   }
 
   /**

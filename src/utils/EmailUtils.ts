@@ -5,13 +5,13 @@ export class EmailUtils {
   static splitSemicolonSeparatedListOfEmailAddresses(addresses: string): string[] {
     var addressesAsList: string[] = addresses.split(/\s*;\s*/);
     return _.filter(addressesAsList, (s: string) => {
-      return Utils.exists(s) && Utils.isNonEmptyString(Utils.trim(s))
+      return Utils.exists(s) && Utils.isNonEmptyString(Utils.trim(s));
     });
   }
 
   static emailAddressesToHyperlinks(addresses: string[], companyDomain?: string, me?: string, lengthLimit = 2, truncateName = false): string {
     addresses = _.filter(addresses, (s: string) => {
-      return Utils.exists(s) && Utils.isNonEmptyString(Utils.trim(s))
+      return Utils.exists(s) && Utils.isNonEmptyString(Utils.trim(s));
     });
     var hyperlinks = _.map(addresses, (item) => {
       var emailArray = EmailUtils.parseEmail(item);

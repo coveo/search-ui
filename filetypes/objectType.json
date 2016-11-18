@@ -56,6 +56,13 @@
         "fr": "Compte"
       }
     },
+    "annotation": {
+      "icon": "file",
+      "captions": {
+        "en": "Note",
+        "fr": "Note"
+      }
+    },
     "campaign": {
       "icon": "calendar",
       "captions": {
@@ -91,6 +98,34 @@
         "fr": "Évènement"
       }
     },
+    "email": {
+      "icon": "mail",
+      "captions": {
+        "en": "Email",
+        "fr": "Email"
+      }
+    },
+    "goal": {
+      "icon": "calendar",
+      "captions": {
+        "en": "Goal",
+        "fr": "Objectif"
+      }
+    },
+    "incident": {
+      "icon": "case",
+      "captions": {
+        "en": "Case",
+        "fr": "Incident"
+      }
+    },
+    "invoice": {
+      "icon": "list",
+      "captions": {
+        "en": "Invoice",
+        "fr": "Facture"
+      }
+    },
     "lead": {
       "icon": "case",
       "captions": {
@@ -98,6 +133,13 @@
         "fr": "Piste"
       },
       "shouldDisplayLabel": true
+    },
+    "list": {
+      "icon": "list",
+      "captions": {
+        "en": "Marketing List",
+        "fr": "Liste marketing"
+      }
     },
     "solution": {
       "icon": "kb",
@@ -144,6 +186,13 @@
       },
       "shouldDisplayLabel": true
     },
+    "opportunityproduct": {
+      "icon": "product",
+      "captions": {
+        "en": "Opportunity Product",
+        "fr": "Produit d'opportunité"
+      }
+    },
     "feeditem": {
       "icon": "mail",
       "captions": {
@@ -179,6 +228,52 @@
         "en": "Partner",
         "fr": "Partenaire"
       }
+    },
+    "queueitem": {
+      "icon": "list",
+      "captions": {
+        "en": "Queue Item",
+        "fr": "Élément de file d'attente"
+      }
+    },
+    "quote": {
+      "icon": "list",
+      "captions": {
+        "en": "Quote",
+        "fr": "Devis"
+      }
+    },
+    "salesliterature": {
+      "icon": "kb",
+      "captions": {
+        "en": "Sales Literature",
+        "fr": "Documentation commerciale"
+      },
+      "shouldDisplayLabel": true
+    },
+    "salesorder": {
+      "icon": "list",
+      "captions": {
+        "en": "Sales Order",
+        "fr": "Commande"
+      },
+      "shouldDisplayLabel": true
+    },
+    "service": {
+      "icon": "list",
+      "captions": {
+        "en": "Service",
+        "fr": "Service"
+      },
+      "shouldDisplayLabel": true
+    },
+    "socialprofile": {
+      "icon": "user",
+      "captions": {
+        "en": "Social Profile",
+        "fr": "Profile social"
+      },
+      "shouldDisplayLabel": true
     },
     "kbdocumentation": {
       "icon": "kb",
@@ -217,6 +312,27 @@
       "captions": {
         "en": "Attachment",
         "fr": "Attachement"
+      }
+    },
+    "kbarticle": {
+      "icon": "kb",
+      "captions": {
+        "en": "Article",
+        "fr": "Article"
+      }
+    },
+    "kbarticlecomment": {
+      "icon": "list",
+      "captions": {
+        "en": "Article Comment",
+        "fr": "Commentaire d'article"
+      }
+    },
+    "knowledgearticle": {
+      "icon": "kb",
+      "captions": {
+        "en": "Knowledge Article",
+        "fr": "Article de base de connaissance"
       }
     }
   }

@@ -16,7 +16,7 @@ import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/Analytics
 import {BaseComponent} from '../Base/BaseComponent';
 
 /**
- * Represent the initialization parameters required to init a new component
+ * Represent the initialization parameters required to init a new component.
  */
 export interface IInitializationParameters {
   options: any;
@@ -25,9 +25,9 @@ export interface IInitializationParameters {
 }
 
 /**
- * The main purpose of this class is to initialize the framework (a.k.a the code executed when calling Coveo.init).<br/>
+ * The main purpose of this class is to initialize the framework (a.k.a the code executed when calling `Coveo.init`).<br/>
  * It's also in charge or registering the available components, as well as the method that we expost to the global Coveo scope.<br/>
- * For example, the Coveo.executeQuery function will be registed in this class by the {@link QueryController}.
+ * For example, the `Coveo.executeQuery` function will be registed in this class by the {@link QueryController}.
  */
 export class Initialization {
   private static logger = new Logger('Initialization');
@@ -37,7 +37,7 @@ export class Initialization {
   /**
    * Register a new set of options for a given element.<br/>
    * When the element is eventually initialized as a component, those options will be used / merged to create the final option set to use for this component.<br/>
-   * Note that this function should not normally be called directly, but instead using the global Coveo.options function
+   * Note that this function should not normally be called directly, but instead using the global `Coveo.options` function
    * @param element
    * @param options
    */
@@ -66,7 +66,7 @@ export class Initialization {
 
   /**
    * Register a new Component to be recognized by the framework.<br/>
-   * This essentially mean that when we call Coveo.init, the Initialization class will scan the DOM for known component (which have registed themselves with this call) and create a new component on each element.
+   * This essentially mean that when we call `Coveo.init`, the Initialization class will scan the DOM for known component (which have registed themselves with this call) and create a new component on each element.
    * @param componentClass
    */
   public static registerAutoCreateComponent(componentClass: IComponentDefinition): void {
@@ -78,7 +78,7 @@ export class Initialization {
   }
 
   /**
-   * Check if a component is already registed, using it's ID (eg : 'Facet')
+   * Check if a component is already registed, using it's ID (e.g. : 'Facet').
    * @param componentClassId
    * @returns {boolean}
    */
@@ -87,7 +87,7 @@ export class Initialization {
   }
 
   /**
-   * Return the list of all known components (the list of ID for each component)
+   * Return the list of all known components (the list of ID for each component).
    * @returns {string[]}
    */
   public static getListOfRegisteredComponents() {
@@ -95,7 +95,7 @@ export class Initialization {
   }
 
   /**
-   * Return the component class definition, using it's ID (eg : 'CoveoFacet')
+   * Return the component class definition, using it's ID (e.g. : 'CoveoFacet').
    * @param name
    * @returns {IComponentDefinition}
    */
@@ -104,10 +104,10 @@ export class Initialization {
   }
 
   /**
-   * Initialize the framework. Note that this function should not normally be called directly, but instead using a globally registered function (eg: Coveo.init), or {@link Initialization.initSearchInterface} or {@link Initialization.initStandaloneSearchInterface} <br/>
-   * Eg : Coveo.init or Coveo.initSearchbox
-   * @param element The element on which to initialize the interface
-   * @param options The options for all component (eg: {Searchbox : {enableSearchAsYouType : true}})
+   * Initialize the framework. Note that this function should not normally be called directly, but instead using a globally registered function (e.g.: Coveo.init), or {@link Initialization.initSearchInterface} or {@link Initialization.initStandaloneSearchInterface} <br/>
+   * (e.g. : `Coveo.init` or `Coveo.initSearchbox`).
+   * @param element The element on which to initialize the interface.
+   * @param options The options for all components (eg: {Searchbox : {enableSearchAsYouType : true}}).
    * @param initSearchInterfaceFunction The function to execute to create the {@link SearchInterface} component. Different init call will create different {@link SearchInterface}.
    */
   public static initializeFramework(element: HTMLElement, options?: any, initSearchInterfaceFunction?: (...args: any[]) => void) {
@@ -145,16 +145,19 @@ export class Initialization {
     _.each(elemsHidden, (e: HTMLElement) => {
       $$(e).removeClass('coveo-hide-until-loaded');
       $$(e).addClass('coveo-show-after-loaded');
-    })
+    });
 
     if (searchInterface.options.autoTriggerQuery) {
       Initialization.logFirstQueryCause(searchInterface);
-      (<QueryController>Component.get(element, QueryController)).executeQuery();
+      (<QueryController>Component.get(element, QueryController)).executeQuery({
+        logInActionsHistory: searchInterface instanceof Coveo['Recommendation'] ? false : true,
+        isFirstQuery: true
+      });
     }
   }
 
   /**
-   * Create a new standard search interface. This is the function executed when calling Coveo.init
+   * Create a new standard search interface. This is the function executed when calling `Coveo.init`.
    * @param element
    * @param options
    */
@@ -163,16 +166,34 @@ export class Initialization {
     let searchInterface = new SearchInterface(element, options.SearchInterface, options.Analytics);
     searchInterface.options.originalOptionsObject = options;
     let initParameters: IInitializationParameters = { options: options, bindings: searchInterface.getBindings() };
-    Initialization.automaticallyCreateComponentsInside(element, initParameters);
+    Initialization.automaticallyCreateComponentsInside(element, initParameters, ['Recommendation']);
   }
 
   /**
-   * Create a new standalone search interface ( standalone search box ). This is the function executed when calling Coveo.initSearchbox
+   * Create a new standalone search interface (standalone search box). This is the function executed when calling `Coveo.initSearchbox`.
    * @param element
    * @param options
    */
   public static initStandaloneSearchInterface(element: HTMLElement, options: any = {}) {
     options = Initialization.resolveDefaultOptions(element, options);
+
+    // Set trigger query on clear to false for standalone search interface automatically
+    // Take care of not overriding any options that could have been set by external code.
+    if (!options.Querybox) {
+      options.Querybox = {};
+    }
+    if (!options.Omnibox) {
+      options.Omnibox = {};
+    }
+    if (!options.Searchbox) {
+      options.Searchbox = {};
+    }
+    if (!options.Querybox.triggerQueryOnClear || !options.Omnibox.triggerQueryOnClear || !options.Searchbox.triggerOnQueryClear) {
+      options.Querybox.triggerQueryOnClear = false;
+      options.Omnibox.triggerQueryOnClear = false;
+      options.Searchbox.triggerQueryOnClear = false;
+    }
+
     let searchInterface = new StandaloneSearchInterface(element, options.StandaloneSearchInterface, options.Analytics);
     searchInterface.options.originalOptionsObject = options;
     let initParameters: IInitializationParameters = { options: options, bindings: searchInterface.getBindings() };
@@ -180,35 +201,56 @@ export class Initialization {
   }
 
   /**
-   * Create a new recommendation search interface. This is the function executed when calling Coveo.initRecommendation
+   * Create a new recommendation search interface. This is the function executed when calling `Coveo.initRecommendation`.
    * @param element
    * @param options
    */
   public static initRecommendationInterface(element: HTMLElement, options: any = {}) {
     options = Initialization.resolveDefaultOptions(element, options);
-    let recommendation = new window['Coveo']['Recommendation'](element, options.Recommendation, options.Analytics);
+    // Since a recommendation interface inherits from a search interface, we need to merge those if passed on init
+    let optionsForRecommendation = _.extend({}, options.SearchInterface, options.Recommendation);
+    // If there is a main search interface, modify the loading animation for the recommendation interface to a "noop" element
+    // We don't want 2 animation overlapping
+    if (optionsForRecommendation.mainSearchInterface) {
+      optionsForRecommendation.firstLoadingAnimation = $$('span').el;
+    }
+    let recommendation = new window['Coveo']['Recommendation'](element, optionsForRecommendation, options.Analytics);
     recommendation.options.originalOptionsObject = options;
     let initParameters: IInitializationParameters = { options: options, bindings: recommendation.getBindings() };
     Initialization.automaticallyCreateComponentsInside(element, initParameters);
   }
 
   /**
-   * Scan the element and all it's children for known component. Initialize every known component found
-   * @param element The element for which to scan it's children
-   * @param initParameters Needed parameters to initialize all the children components
-   * @param ignore An optional list of component ID to ignore and skip when scanning for known components
+   * Scan the element and all its children for known components. Initialize every known component found.
+   * @param element The element for which to scan it's children.
+   * @param initParameters Needed parameters to initialize all the children components.
+   * @param ignore An optional list of component ID to ignore and skip when scanning for known components.
    */
   public static automaticallyCreateComponentsInside(element: HTMLElement, initParameters: IInitializationParameters, ignore?: string[]) {
     Assert.exists(element);
 
     let codeToExecute: { (): void }[] = [];
 
+    let htmlElementsToIgnore: HTMLElement[] = [];
+    // Scan for elements to ignore which can be a container component (with other component inside)
+    // When a component is ignored, all it's children component should be ignored too.
+    // Add them to the array of html elements that should be skipped.
+    _.each(ignore, (toIgnore) => {
+      let rootToIgnore = $$(element).find(`.${Component.computeCssClassNameForType(toIgnore)}`);
+      if (rootToIgnore) {
+        let childsElementsToIgnore = $$(rootToIgnore).findAll('*');
+        htmlElementsToIgnore = htmlElementsToIgnore.concat(childsElementsToIgnore);
+      }
+    });
+
     for (let componentClassId in Initialization.autoCreateComponents) {
       if (!_.contains(ignore, componentClassId)) {
         let componentClass = Initialization.autoCreateComponents[componentClassId];
         let classname = Component.computeCssClassName(componentClass);
         let elements = $$(element).findAll('.' + classname);
-        if ($$(element).hasClass(classname)) {
+        // From all the component we found which match the current className, remove those that should be ignored
+        elements = _.difference(elements, htmlElementsToIgnore);
+        if ($$(element).hasClass(classname) && !_.contains(htmlElementsToIgnore, element)) {
           elements.push(element);
         }
         if (elements.length != 0) {
@@ -232,10 +274,10 @@ export class Initialization {
   }
 
   /**
-   * Create a new component on the given element
-   * @param componentClassId The ID of the component to initialize (eg : 'CoveoFacet')
-   * @param element The HTMLElement on which to initialize
-   * @param initParameters Needed parameters to initialize the component
+   * Create a new component on the given element.
+   * @param componentClassId The ID of the component to initialize (e.g. : 'CoveoFacet').
+   * @param element The HTMLElement on which to initialize.
+   * @param initParameters Needed parameters to initialize the component.
    * @returns {Component}
    */
   public static createComponentOfThisClassOnElement(componentClassId: string, element: HTMLElement, initParameters?: IInitializationParameters): Component {
@@ -262,9 +304,9 @@ export class Initialization {
   }
 
   /**
-   * Register a new globally available method in the Coveo namespace. (eg: Coveo.init)
-   * @param methodName The method name to register
-   * @param handler The function to execute when the method is called
+   * Register a new globally available method in the Coveo namespace (e.g.: `Coveo.init`).
+   * @param methodName The method name to register.
+   * @param handler The function to execute when the method is called.
    */
   public static registerNamedMethod(methodName: string, handler: (element: HTMLElement, ...args: any[]) => any) {
     Assert.isNonEmptyString(methodName);
@@ -275,7 +317,7 @@ export class Initialization {
   }
 
   /**
-   * Check if the method is already registed
+   * Check if the method is already registed.
    * @param methodName
    * @returns {boolean}
    */
@@ -284,7 +326,7 @@ export class Initialization {
   }
 
   /**
-   * 'Monkey patch' (replace the function with a new one) a given method on a component instance
+   * 'Monkey patch' (replace the function with a new one) a given method on a component instance.
    * @param methodName
    * @param element
    * @param handler
@@ -365,6 +407,10 @@ export class Initialization {
     }
   }
 
+  public static isSearchFromLink(searchInterface: SearchInterface) {
+    return Utils.isNonEmptyString(searchInterface.getBindings().queryStateModel.get('q'));
+  }
+
   private static isThereASingleComponentBoundToThisElement(element: HTMLElement): boolean {
     Assert.exists(element);
     return Utils.exists(Component.get(element));
@@ -385,13 +431,14 @@ export class Initialization {
     }
   }
 
+
   private static logFirstQueryCause(searchInterface: SearchInterface) {
     let firstQueryCause = HashUtils.getValue('firstQueryCause', HashUtils.getHash());
     if (firstQueryCause != null) {
       let meta = HashUtils.getValue('firstQueryMeta', HashUtils.getHash()) || {};
       searchInterface.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList[firstQueryCause], meta);
     } else {
-      if (Utils.isNonEmptyString(searchInterface.getBindings().queryStateModel.get('q'))) {
+      if (Initialization.isSearchFromLink(searchInterface)) {
         searchInterface.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchFromLink, {});
       } else {
         searchInterface.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.interfaceLoad, {});
@@ -409,9 +456,9 @@ export class Initialization {
     if (Utils.exists(option)) {
       _.each(option, (func: () => void) => {
         if (typeof func == 'function') {
-          func()
+          func();
         }
-      })
+      });
     }
   }
 
@@ -445,7 +492,7 @@ export class Initialization {
         if (Utils.isHtmlElement(elementToInstantiate)) {
           Initialization.automaticallyCreateComponentsInside(elementToInstantiate, initParameters);
         }
-      })
+      });
     }
   }
 
@@ -467,6 +514,6 @@ export class Initialization {
           Initialization.createComponentOfThisClassOnElement(componentClass['ID'], matchingElement, initParamToUse);
         }
       });
-    }
+    };
   }
 }

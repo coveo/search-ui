@@ -3,17 +3,17 @@ import {ComponentOptions} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {SettingsEvents} from '../../events/SettingsEvents';
 import {ISettingsPopulateMenuArgs} from '../Settings/Settings';
-import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta'
+import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
 
 export interface IExportToExcelOptions {
-  numberOfResults?: number
+  numberOfResults?: number;
 }
 
 /**
  * This component allows users to export the current search results in a Microsoft Excel (.xlsx) format.
- * It populates the {@link Settings} component's menu.
+ * It populates the {@link Settings} component menu.
  */
 export class ExportToExcel extends Component {
   static ID = 'ExportToExcel';
@@ -37,7 +37,7 @@ export class ExportToExcel extends Component {
    * @param element
    * @param options
    * @param bindings
-   * @param _window The global Window object (used to download the Excel link)
+   * @param _window The global Window object (used to download the Excel link).
    */
   constructor(public element: HTMLElement, public options: IExportToExcelOptions, public bindings?: IComponentBindings, public _window?: Window) {
     super(element, ExportToExcel.ID, bindings);
@@ -49,12 +49,12 @@ export class ExportToExcel extends Component {
         className: 'coveo-export-to-excel',
         tooltip: l('ExportToExcelDescription'),
         onOpen: () => this.download()
-      })
+      });
     });
   }
 
   /**
-   * Download the Excel representation of the current query
+   * Download the Excel representation of the current query.
    */
   public download() {
     let query = this.queryController.getLastQuery();

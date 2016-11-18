@@ -10,6 +10,7 @@ import {QueryStateModel} from '../../models/QueryStateModel';
 import {analyticsActionCauseList, IAnalyticsTopSuggestionMeta} from '../Analytics/AnalyticsActionListMeta';
 import {Initialization} from '../Base/Initialization';
 import {$$} from '../../utils/Dom';
+import {StandaloneSearchInterface} from '../SearchInterface/SearchInterface';
 
 export interface IAnalyticsSuggestionsOptions extends ISuggestionForOmniboxOptions {
 }
@@ -19,7 +20,6 @@ export interface IAnalyticsSuggestionsOptions extends ISuggestionForOmniboxOptio
  * In order to provide relevant suggestions, they are shown in order of successful document views: thus, queries resulting in no clicks from users or that require refinements are not suggested if better options exist.
  * These suggestions appear in the Omnibox Component. This component is thus highly related to the {@link Analytics} Component.
  * While a user is typing in a query box, he will be able to see and select the most commonly used queries.
- * See also : {@link Omnibox.enableTopQueryAddon}, which does sensibly the same thing, except with less (none, actually) customization option, but easier to setup.
  */
 export class AnalyticsSuggestions extends Component {
   static ID = 'AnalyticsSuggestions';
@@ -30,13 +30,16 @@ export class AnalyticsSuggestions extends Component {
   static options: IAnalyticsSuggestionsOptions = {
     /**
      * The index at which the suggestions should render in the omnibox. Higher value = placed first.<br/>
-     * The default value is `52`
+     * The default value is `52`.
      */
     omniboxZIndex: ComponentOptions.buildNumberOption({ defaultValue: 52, min: 0 }),
+    /**
+     * Specifies the title in the Omnibox for this group of suggestions. This option is not available when using the Lightning Friendly Theme, which is the default design.
+     */
     headerTitle: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('SuggestedQueries') }),
     /**
      * The number of suggestions that should be requested and displayed in the omnibox.<br/>
-     * The default value is `5`
+     * The default value is `5`.
      */
     numberOfSuggestions: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1 })
   };
@@ -52,7 +55,7 @@ export class AnalyticsSuggestions extends Component {
 
 
     if (this.options && 'omniboxSuggestionOptions' in this.options) {
-      this.options = _.extend(this.options, this.options['omniboxSuggestionOptions'])
+      this.options = _.extend(this.options, this.options['omniboxSuggestionOptions']);
     }
 
     this.options = ComponentOptions.initComponentOptions(element, AnalyticsSuggestions, this.options);
@@ -82,7 +85,7 @@ export class AnalyticsSuggestions extends Component {
 
   /**
    * Select a currently displayed suggestion. This means that at least one suggestion must have been returned at least once.
-   * The suggestion parameter can either be a number (0 based index of the suggestion to select) or a string that match the suggestion
+   * The suggestion parameter can either be a number (0 based index of the suggestion to select) or a string that match the suggestion.
    * @param suggestion
    */
   public selectSuggestion(suggestion: number);
@@ -115,7 +118,7 @@ export class AnalyticsSuggestions extends Component {
         this.resultsToBuildWith = _.map(results, (result) => {
           return {
             value: result
-          }
+          };
         });
         this.lastSuggestions = results;
         if (!_.isEmpty(this.resultsToBuildWith) && args.completeQueryExpression.word != '') {
@@ -123,23 +126,25 @@ export class AnalyticsSuggestions extends Component {
         }
         let element = this.suggestionForOmnibox.buildOmniboxElement(this.resultsToBuildWith, args);
         this.currentlyDisplayedSuggestions = {};
-        _.map($$(element).findAll('.coveo-omnibox-selectable'), (selectable, i?) => {
-          this.currentlyDisplayedSuggestions[$$(selectable).text()] = {
-            element: selectable,
-            pos: i
-          }
-        })
+        if (element) {
+          _.map($$(element).findAll('.coveo-omnibox-selectable'), (selectable, i?) => {
+            this.currentlyDisplayedSuggestions[$$(selectable).text()] = {
+              element: selectable,
+              pos: i
+            };
+          });
+        }
         resolve({
           element: element,
           zIndex: this.options.omniboxZIndex
-        })
+        });
       });
       searchPromise.catch(() => {
         resolve({
           element: undefined
-        })
+        });
       });
-    })
+    });
 
     args.rows.push({ deferred: promise });
   }
@@ -148,7 +153,7 @@ export class AnalyticsSuggestions extends Component {
     args.clear();
     args.closeOmnibox();
     this.queryStateModel.set(QueryStateModel.attributesEnum.q, value);
-    this.usageAnalytics.logSearchEvent<IAnalyticsTopSuggestionMeta>(analyticsActionCauseList.omniboxAnalytics, {
+    this.usageAnalytics.logSearchEvent<IAnalyticsTopSuggestionMeta>(this.getOmniboxAnalyticsEventCause(), {
       partialQueries: this.cleanCustomData(this.partialQueries),
       suggestionRanking: _.indexOf(_.pluck(this.resultsToBuildWith, 'value'), value),
       suggestions: this.cleanCustomData(this.lastSuggestions),
@@ -159,9 +164,9 @@ export class AnalyticsSuggestions extends Component {
 
   private cleanCustomData(toClean: string[], rejectLength = 256) {
     // Filter out only consecutive values that are the identical
-    toClean = _.filter(toClean, (partial: string, pos?: number, array?: string[]) => {
+    toClean = _.compact(_.filter(toClean, (partial: string, pos?: number, array?: string[]) => {
       return pos === 0 || partial !== array[pos - 1];
-    });
+    }));
 
     // Custom dimensions cannot be an array in analytics service: Send a string joined by ; instead.
     // Need to replace ;
@@ -188,6 +193,13 @@ export class AnalyticsSuggestions extends Component {
     }
 
     return toClean.join(';');
+  }
+
+  private getOmniboxAnalyticsEventCause() {
+    if (this.searchInterface instanceof StandaloneSearchInterface) {
+      return analyticsActionCauseList.omniboxFromLink;
+    }
+    return analyticsActionCauseList.omniboxAnalytics;
   }
 }
 Initialization.registerAutoCreateComponent(AnalyticsSuggestions);

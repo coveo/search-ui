@@ -17,7 +17,7 @@ export class ChatterPostAttachment extends Component {
     'sfcontentversionid',
     'sffeeditemid',
     'sfcontentfilename'
-  ]
+  ];
 
   constructor(public element: HTMLElement, public options?: IChatterPostAttachmentOption, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {
     super(element, ChatterPostAttachment.ID, bindings);

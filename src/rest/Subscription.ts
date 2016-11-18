@@ -3,7 +3,7 @@ import {IQuery} from './Query';
 export const SUBSCRIPTION_TYPE = {
   followQuery: 'followQuery',
   followDocument: 'followDocument',
-}
+};
 
 export interface ISearchAlertsEndpointOptions {
   restUri: string;
@@ -68,6 +68,10 @@ export interface ISubscriptionRequest {
    * Frequency of the alerts
    */
   frequency?: string;
+  /**
+   * The name that should be used by the API to identify this subscription
+   */
+  name: string;
 }
 
 /**
@@ -91,11 +95,11 @@ export interface ISubscriptionItemRequest {
   /**
    * Unique id of the document
    */
-  id: string,
+  id: string;
   /**
    * Title of the document
    */
-  title: string,
+  title: string;
   /**
    * Which field on the result represent the modification date for which you wish to receive alerts
    */

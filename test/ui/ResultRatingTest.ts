@@ -5,6 +5,7 @@ import {FakeResults} from '../Fake';
 import {RatingValues} from '../../src/ui/ResultRating/ResultRating';
 import {$$} from '../../src/utils/Dom';
 import {IRatingRequest} from '../../src/rest/RatingRequest';
+import {Simulate} from '../Simulate';
 
 export function ResultRatingTest() {
   describe('ResultRating', function () {
@@ -13,7 +14,7 @@ export function ResultRatingTest() {
     let fakeResultWithNoStars: IQueryResult;
 
     beforeEach(() => {
-      window['jQuery'] = null;
+      Simulate.removeJQuery();
       averageFakeResult = FakeResults.createFakeResult();
       averageFakeResult.rating = RatingValues.Average;
 
@@ -89,7 +90,7 @@ export function ResultRatingTest() {
       let spy = <jasmine.Spy>test.env.searchEndpoint.rateDocument;
       spy.and.returnValue(new Promise((resolve, reject) => {
         resolve();
-      }))
+      }));
 
       test.cmp.rateDocument(RatingValues.Undefined);
 

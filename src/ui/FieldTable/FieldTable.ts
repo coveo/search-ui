@@ -1,11 +1,12 @@
-import {Component} from '../Base/Component'
-import {IComponentBindings} from '../Base/ComponentBindings'
-import {ComponentOptions} from '../Base/ComponentOptions'
-import {QueryUtils} from '../../utils/QueryUtils'
-import {IQueryResult} from '../../rest/QueryResult'
-import {Initialization} from '../Base/Initialization'
-import {FieldValue, IFieldValueOptions} from './FieldValue'
-import {$$} from '../../utils/Dom'
+import {Component} from '../Base/Component';
+import {IComponentBindings} from '../Base/ComponentBindings';
+import {ComponentOptions} from '../Base/ComponentOptions';
+import {QueryUtils} from '../../utils/QueryUtils';
+import {IQueryResult} from '../../rest/QueryResult';
+import {Initialization} from '../Base/Initialization';
+import {FieldValue, IFieldValueOptions} from './FieldValue';
+import {$$} from '../../utils/Dom';
+import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
 
 export interface IFieldTableOptions {
   allowMinimization: boolean;
@@ -18,6 +19,19 @@ export interface IFieldTableOptions {
  * This component is used to display a set of {@link FieldValue} components in a table which
  * can be optionally expanded and minimized.<br/>
  * Automatically, it will take care of not displaying empty field values.
+ *
+ * # Examples
+ *
+ * ```
+ * // This is the FieldTable component itself, which holds a list of table rows.
+ * // Each row is a `FieldValue` component
+ * <table class='CoveoFieldTable'>
+ *    // Items
+ *    <tr data-field='@sysdate' data-caption='Date' data-helper='dateTime' />
+ *    <tr data-field='@sysauthor' data-caption='Author' />
+ *    <tr data-field='@clickuri' data-html-value='true' data-caption='URL' data-helper='anchor' data-helper-options='{text: \"<%= raw.syssource %>\" , target:\"_blank\"}'>
+ * </table>
+ * ```
  */
 export class FieldTable extends Component {
   static ID = 'FieldTable';
@@ -28,7 +42,7 @@ export class FieldTable extends Component {
    */
   static options: IFieldTableOptions = {
     /**
-     * Specifies whether to allow the minimization (collapsing) of the FieldTable.<br/>
+     * Specifies whether to allow the minimization (collapsing) of the FieldTable or not.<br/>
      * This creates a 'minimize' and 'expand' link above the table.
      */
     allowMinimization: ComponentOptions.buildBooleanOption({ defaultValue: true }),
@@ -69,7 +83,7 @@ export class FieldTable extends Component {
 
     var rows = $$(this.element).findAll('tr[data-field]');
     _.each(rows, (e: HTMLElement) => {
-      new ValueRow(e, {}, bindings, result)
+      new ValueRow(e, {}, bindings, result);
     });
 
     if ($$(this.element).find('tr') == null) {
@@ -87,8 +101,8 @@ export class FieldTable extends Component {
   }
 
   /**
-   * Toggle between expanding and minimizing the FieldTable
-   * @param anim Specifies whether to show a sliding animation when toggling
+   * Toggle between expanding and minimizing the `FieldTable`.
+   * @param anim Specifies whether to show a sliding animation when toggling.
    */
   public toggle(anim = false) {
     if (this.isTogglable()) {
@@ -125,6 +139,15 @@ export class FieldTable extends Component {
     }
   }
 
+  /**
+   * Update the toggle height if the content was dynamically resized so that the open and close animation can
+   * match the new content size.
+   */
+  public updateToggleHeight() {
+    this.updateToggleContainerHeight();
+    this.isExpanded ? this.expand() : this.minimize();
+  }
+
   protected isTogglable() {
     if (this.searchInterface.isNewDesign() && this.options.allowMinimization) {
       return true;
@@ -135,7 +158,7 @@ export class FieldTable extends Component {
 
   private buildToggle() {
     this.toggleIcon = $$('span', { className: 'coveo-field-table-toggle-icon' }).el;
-    this.toggleCaption = $$('span', { className: 'coveo-field-table-toggle-caption' }).el;
+    this.toggleCaption = $$('span', { className: 'coveo-field-table-toggle-caption', tabindex: 0 }).el;
 
     this.toggleButton = $$('div', { className: 'coveo-field-table-toggle' }).el;
     this.toggleButton.appendChild(this.toggleCaption);
@@ -154,12 +177,13 @@ export class FieldTable extends Component {
     }
 
     setTimeout(() => {
-      this.updateToggleContainerHeight();
-      this.isExpanded ? this.expand() : this.minimize()
+      this.updateToggleHeight();
     }); // Wait until toggleContainer.scrollHeight is computed.
 
-    $$(this.toggleButton).on('click', () => this.toggle(true));
-    $$(this.toggleButtonInsideTable).on('click', () => this.toggle(true));
+    const toggleAction = () => this.toggle(true);
+    $$(this.toggleButton).on('click', toggleAction);
+    $$(this.toggleButtonInsideTable).on('click', toggleAction);
+    $$(this.toggleButton).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, toggleAction));
   }
 
   private slideToggle(visible: boolean = true, anim: boolean = true) {
@@ -194,7 +218,7 @@ class ValueRow extends FieldValue {
   static ID = 'ValueRow';
   static options: IValueRowOptions = {
     caption: ComponentOptions.buildStringOption({ postProcessing: (value, options) => value || options.field.substr(1) })
-  }
+  };
 
   static parent = FieldValue;
   private valueContainer: HTMLElement;

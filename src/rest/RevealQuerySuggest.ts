@@ -14,6 +14,10 @@ export interface IRevealQuerySuggestCompletion {
    * The highlighted expression to complete
    */
   highlighted: string;
+  /**
+   * The confidence level that this suggestion should be executed
+   */
+  executableConfidence: number;
 }
 
 /**
@@ -42,6 +46,10 @@ export interface IRevealQuerySuggestRequest {
    * Number of suggestions that the service should return. Default to 5
    */
   count?: number;
+  /**
+   * The pipeline to use for the request.
+   */
+  pipeline?: string;
   language?: string;
   autoCompleter?: string;
   additionalData?: any;

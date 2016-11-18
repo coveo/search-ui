@@ -39,8 +39,9 @@ export {Slider} from './ui/Misc/Slider';
 export {FacetSlider} from './ui/FacetSlider/FacetSlider';
 export {FacetRange} from './ui/FacetRange/FacetRange';
 export {Pager} from './ui/Pager/Pager';
-export {ResultsPerPage} from './ui/Pager/ResultsPerPage';
+export {ResultsPerPage} from './ui/ResultsPerPage/ResultsPerPage';
 export {ResultList} from './ui/ResultList/ResultList';
+export {DefaultRecommendationTemplate} from './ui/Templates/DefaultRecommendationTemplate';
 export {Excerpt} from './ui/Excerpt/Excerpt';
 export {ResultLink} from './ui/ResultLink/ResultLink';
 export {Icon} from './ui/Icon/Icon';
@@ -89,33 +90,25 @@ export {OmniboxResultList} from './ui/OmniboxResultList/OmniboxResultList';
 export {CurrentTab} from './ui/CurrentTab/CurrentTab';
 export {QueryboxQueryParameters} from './ui/Querybox/QueryboxQueryParameters';
 export {ImageResultList} from './ui/ImageResultList/ImageResultList';
-export {CoveoJQuery} from './ui/Base/CoveoJQuery';
 export {jQueryInstance as $} from './ui/Base/CoveoJQuery';
 export {underscoreInstance as _} from './ui/Base/CoveoUnderscore';
+export {AdvancedSearch} from './ui/AdvancedSearch/AdvancedSearch';
+export {NumericSpinner} from './ui/AdvancedSearch/Form/NumericSpinner';
+export {DatePicker} from './ui/AdvancedSearch/Form/DatePicker';
+export {Dropdown} from './ui/AdvancedSearch/Form/Dropdown';
+export {TextInput} from './ui/AdvancedSearch/Form/TextInput';
+export {RadioButton} from './ui/AdvancedSearch/Form/RadioButton';
 export {FollowItem} from './ui/SearchAlerts/FollowItem';
 export {SearchAlerts} from './ui/SearchAlerts/SearchAlerts';
 export {SearchAlertsMessage} from './ui/SearchAlerts/SearchAlertsMessage';
 export {Text} from './ui/Text/Text';
 export {FoldingForThread} from './ui/Folding/FoldingForThread';
-export {ResponsiveFacets} from './ui/ResponsiveComponents/ResponsiveFacets';
-export {IResponsiveComponent, ResponsiveComponentsManager} from './ui/ResponsiveComponents/ResponsiveComponentsManager';
 export {ChatterLikedBy} from './ui/ChatterLikedBy/ChatterLikedBy';
 export {ChatterPostAttachment} from './ui/ChatterPostAttachment/ChatterPostAttachment';
 export {ChatterPostedBy} from './ui/ChatterPostedBy/ChatterPostedBy';
 export {ChatterTopic} from './ui/ChatterTopic/ChatterTopic';
 export {ChatterUtils} from './utils/ChatterUtils';
+export {Logo} from './ui/Logo/Logo';
 
-// Webpack output a library target with a temporary name.
-// This is to allow end user to put CoveoJsSearch.Dependencie.js before or after the main CoveoJsSearch.js, without breaking
-// This code swap the current module to the "real" Coveo variable.
-
-let swapVar = () => {
-  if (window['Coveo'] == undefined) {
-    window['Coveo'] = this;
-  } else {
-    _.each(_.keys(this), (k) => {
-      window['Coveo'][k] = this[k];
-    })
-  }
-}
-swapVar();
+import {swapVar} from './SwapVar';
+swapVar(this);

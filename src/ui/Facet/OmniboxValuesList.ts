@@ -17,7 +17,7 @@ export class OmniboxValuesList {
     var rows: HTMLElement[] = [];
     _.each(this.facetValues, (facetValue: FacetValue) => {
       rows.push(this.buildOmniboxForOneRow(facetValue, this.omniboxObject));
-    })
+    });
     return this.buildFinalOmniboxElement(rows);
   }
 
@@ -25,7 +25,7 @@ export class OmniboxValuesList {
     var selectCallback = (elem: ValueElement, cause: IAnalyticsActionCause) => this.logAnalyticsEvent(elem, cause);
     var excludeCallback = (elem: ValueElement, cause: IAnalyticsActionCause) => this.logAnalyticsEvent(elem, cause);
     var omniboxValueElement = new this.omniboxValueElementKlass(this.facet, facetValue, omniboxObject, selectCallback, excludeCallback);
-    var omniboxRowContent = omniboxValueElement.build().renderer.listElement;
+    var omniboxRowContent = omniboxValueElement.build().renderer.listItem;
 
     var regex = omniboxObject.completeQueryExpression.regex;
     var valueToSearch = omniboxObject.completeQueryExpression.word;
@@ -34,7 +34,7 @@ export class OmniboxValuesList {
 
     var omniboxRow = $$('div', {
       className: 'coveo-omnibox-selectable coveo-facet-value coveo-omnibox-facet-value'
-    }).el
+    }).el;
     omniboxRow.appendChild(omniboxRowContent);
     $$(omniboxRow).on('keyboardSelect', () => {
       var input = $$(omniboxRowContent).find('input[type=checkbox]');
@@ -54,7 +54,7 @@ export class OmniboxValuesList {
       ret.appendChild(header);
       _.each(rows, (r) => {
         ret.appendChild(r);
-      })
+      });
       FacetUtils.addNoStateCssClassToFacetValues(this.facet, ret);
       return ret;
     }
@@ -64,15 +64,15 @@ export class OmniboxValuesList {
     var title = this.facet.options.title;
     var header = $$('div', {
       className: 'coveo-omnibox-facet-header'
-    }).el
+    }).el;
     if (this.facet.searchInterface.isNewDesign()) {
       $$(header).text(title);
       return header;
     } else {
       var icon = $$('span', {
         className: 'coveo-icon ' + this.facet.options.field.substr(1)
-      }).el
-      header.appendChild(icon)
+      }).el;
+      header.appendChild(icon);
       $$(header).text(title);
     }
     return header;

@@ -12,7 +12,7 @@ export const QUERY_STATE_ATTRIBUTES = {
   HD: 'hd',
   HQ: 'hq',
   QUICKVIEW: 'quickview'
-}
+};
 
 export interface IQueryStateIncludedAttribute {
   title: string;
@@ -91,7 +91,7 @@ export class QueryStateModel extends Model {
   public atLeastOneFacetIsActive() {
     return !_.isUndefined(_.find(this.attributes, (value, key: any) => {
       return key.indexOf('f:') == 0 && Utils.isNonEmptyArray(value) && key.indexOf(':range') < 0;
-    }))
+    }));
   }
 
   public set(attribute: string, value: any, options?: IModelSetOptions) {

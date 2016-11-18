@@ -14,9 +14,9 @@ export interface ISearchboxOptions extends IOmniboxOptions {
 }
 
 /**
- * This component is mostly used for simplicity purpose because it creates 2 component that are very frequently used together.<br/>
- * This component attaches itself to a div and takes care of instantiating a {@link Querybox} Component or a {@link Omnibox} Component, depending on the options.<br/>
- * Add a {@link SearchButton} Component if desired, and appends them to the same div.
+ * This component is mostly used for simplicity purpose because it creates 2 components that are very frequently used together.<br/>
+ * This component attaches itself to a div and takes care of instantiating a {@link Querybox} component or a {@link Omnibox} component, depending on the options.<br/>
+ * Add a {@link SearchButton} component if desired, and appends them to the same div.
  */
 export class Searchbox extends Component {
   static ID = 'Searchbox';
@@ -29,16 +29,16 @@ export class Searchbox extends Component {
   static options: ISearchboxOptions = {
     /**
      * Specifies whether the search box instantiates a {@link SearchButton}.<br/>
-     * Default value is true.
+     * Default value is `true`.
      */
     addSearchButton: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
-     * Specifies whether the search box instantiates a {@link Omnibox} Component.<br/>
-     * Otherwise, the search box instantiates a {@link Querybox} Component.<br/>
-     * Default value is false.
+     * Specifies whether the search box instantiates a {@link Omnibox} component.<br/>
+     * Otherwise, the search box instantiates a {@link Querybox} component.<br/>
+     * Default value is `false`.
      */
     enableOmnibox: ComponentOptions.buildBooleanOption({ defaultValue: false })
-  }
+  };
 
   /**
    * Instance of the {@link SearchButton}
@@ -53,11 +53,11 @@ export class Searchbox extends Component {
 
   /**
    * Create a new Searchbox<br/>
-   * Create a new Coveo.Magicbox instance and wrap magic box method (on blur, on submit etc)<br/>
-   * Bind event on buildingQuery and on redirection (for standalone box)
-   * @param element The HTMLElement on which the element will be instantiated. This cannot be an HTMLInputElement for technical reason
-   * @param options The options for the component. Will be merged with the options from the component set directly on the HTMLElement
-   * @param bindings The bindings that the component requires to function normally. If not set, will automatically resolve them (With slower execution time)
+   * Create a new Coveo.Magicbox instance and wrap magic box method (on blur, on submit etc).<br/>
+   * Bind event on `buildingQuery` and on redirection (for standalone box).
+   * @param element The `HTMLElement` on which the element will be instantiated. This cannot be an `HTMLInputElement` for technical reason
+   * @param options The options for the component. Will be merged with the options from the component set directly on the `HTMLElement`.
+   * @param bindings The bindings that the component requires to function normally. If not set, will automatically resolve them (with slower execution time).
    */
   constructor(public element: HTMLElement, public options?: ISearchboxOptions, bindings?: IComponentBindings) {
     super(element, Searchbox.ID, bindings);
@@ -78,9 +78,9 @@ export class Searchbox extends Component {
     this.element.appendChild(div);
 
     if (this.options.enableOmnibox) {
-      this.searchbox = new Omnibox(div, this.options, bindings)
+      this.searchbox = new Omnibox(div, this.options, bindings);
     } else {
-      this.searchbox = new Querybox(div, this.options, bindings)
+      this.searchbox = new Querybox(div, this.options, bindings);
     }
   }
 }

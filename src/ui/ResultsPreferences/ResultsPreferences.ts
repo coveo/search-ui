@@ -33,7 +33,7 @@ export class ResultsPreferences extends Component {
    */
   static options: IResultsPreferencesOptions = {
     /**
-     * Enable or disable the options to open results in outlook.<br/>
+     * Enable or disable the options to open results in Outlook.<br/>
      * Default value is <code>true</code>
      */
     enableOpenInOutlook: ComponentOptions.buildBooleanOption({ defaultValue: true }),
@@ -71,8 +71,8 @@ export class ResultsPreferences extends Component {
 
     this.updateComponentOptionsModel();
 
-    this.bind.on(this.preferencesPanel, PreferencesPanelEvents.savePreferences, () => this.save())
-    this.bind.on(this.preferencesPanel, PreferencesPanelEvents.exitPreferencesWithoutSave, () => this.exitWithoutSave())
+    this.bind.on(this.preferencesPanel, PreferencesPanelEvents.savePreferences, () => this.save());
+    this.bind.on(this.preferencesPanel, PreferencesPanelEvents.exitPreferencesWithoutSave, () => this.exitWithoutSave());
 
     this.buildTitle();
     this.buildCheckboxesInput();
@@ -124,8 +124,8 @@ export class ResultsPreferences extends Component {
         this.fromPreferenceChangeEventToUsageAnalyticsLog(e);
         this.save();
         this.queryController.executeQuery();
-      })
-    })
+      });
+    });
 
     this.element.appendChild(container.el);
     this.fromPreferencesToCheckboxInput();
@@ -138,7 +138,7 @@ export class ResultsPreferences extends Component {
       alwaysOpenInNewWindow: false
     };
     if (_.contains(selected, l('OpenInOutlookWhenPossible'))) {
-      this.preferences.openInOutlook = true
+      this.preferences.openInOutlook = true;
     }
     if (_.contains(selected, l('AlwaysOpenInNewWindow'))) {
       this.preferences.alwaysOpenInNewWindow = true;
@@ -156,7 +156,7 @@ export class ResultsPreferences extends Component {
 
   private fromPreferenceChangeEventToUsageAnalyticsLog(e: Event) {
     var type = (<HTMLInputElement>e.target).checked ? 'selected' : 'unselected';
-    var preference = (<HTMLInputElement>e.srcElement).value;
+    var preference = (<HTMLInputElement>e.target).value;
     this.usageAnalytics.logCustomEvent<IAnalyticsPreferencesChangeMeta>(analyticsActionCauseList.preferencesChange, { preferenceName: preference, preferenceType: type }, this.element);
     this.usageAnalytics.logSearchEvent<IAnalyticsPreferencesChangeMeta>(analyticsActionCauseList.preferencesChange, { preferenceName: preference, preferenceType: type });
   }

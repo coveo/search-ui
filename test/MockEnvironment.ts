@@ -11,11 +11,9 @@ import {FakeResults} from './Fake';
 import {Component} from '../src/ui/Base/Component';
 import {Utils} from '../src/utils/Utils';
 import {BaseComponent} from '../src/ui/Base/BaseComponent';
-import {IQuery} from '../src/rest/Query';
 import {NoopAnalyticsClient} from '../src/ui/Analytics/NoopAnalyticsClient';
 import {SearchEndpoint} from '../src/rest/SearchEndpoint';
 import {QueryController} from '../src/controllers/QueryController';
-declare var coveoanalytics: CoveoAnalytics.CoveoUA;
 
 export interface IMockEnvironment extends IComponentBindings {
   root: HTMLElement;
@@ -139,7 +137,7 @@ export class MockEnvironmentBuilder {
       usageAnalytics: this.usageAnalytics,
       componentStateModel: this.componentStateModel,
       componentOptionsModel: this.componentOptionsModel
-    }
+    };
   }
 }
 
@@ -151,7 +149,7 @@ export interface IBasicComponentSetup<T extends BaseComponent> {
 export class AdvancedComponentSetupOptions {
 
   constructor(public element: HTMLElement = $$('div').el, public cmpOptions: any = {}, public modifyBuilder = (env: MockEnvironmentBuilder) => {
-    return env
+    return env;
   }) {
   }
 
@@ -178,9 +176,9 @@ export function mockWindow(): Window {
   mockWindow.location = <Location>{
     'href': '',
     'hash': ''
-  }
+  };
   mockWindow.location.replace = (newHref: string) => {
-    newHref = newHref || ''
+    newHref = newHref || '';
 
     mockWindow.location.href = newHref;
 
@@ -194,7 +192,7 @@ export function mockWindow(): Window {
     if (mockWindow.location.hash != '') {
       mockWindow.location.hash = '#' + mockWindow.location.hash;
     }
-  }
+  };
   mockWindow.addEventListener = jasmine.createSpy('addEventListener');
   mockWindow.removeEventListener = jasmine.createSpy('removeEventListener');
   mockWindow.dispatchEvent = jasmine.createSpy('dispatchEvent');
@@ -211,7 +209,6 @@ export function mockSearchInterface(): SearchInterface {
   var m = mockComponent<SearchInterface>(SearchInterface, SearchInterface.ID);
   m.options = {};
   m.options.originalOptionsObject = {};
-  m.isSmallInterface = () => { return false };
   return m;
 }
 
@@ -237,7 +234,7 @@ export function mockSearchEndpoint(): SearchEndpoint {
   m.extensions.and.returnValue(new Promise((resolve, reject) => {
   }));
   m.getViewAsDatastreamUri.and.returnValue('http://datastream.uri');
-  return m
+  return m;
 }
 
 export function mockUsageAnalytics(): IAnalyticsClient {
@@ -252,7 +249,7 @@ export function basicComponentSetup<T>(klass, options = {}) {
   return {
     env: envBuilder.build(),
     cmp: <T>new klass(envBuilder.getBindings().element, options, envBuilder.getBindings())
-  }
+  };
 }
 
 export function basicResultComponentSetup<T>(klass) {
@@ -260,29 +257,29 @@ export function basicResultComponentSetup<T>(klass) {
   return {
     env: envBuilder.build(),
     cmp: <T>new klass(envBuilder.getBindings().element, {}, envBuilder.getBindings(), envBuilder.result)
-  }
+  };
 }
 
 export function basicSearchInterfaceSetup<T extends SearchInterface>(klass) {
   var div = $$('div').el;
   var envBuilder = new MockEnvironmentBuilder().withRoot(div);
-  var component = <T>new klass(div)
+  var component = <T>new klass(div);
   envBuilder.searchInterface = component;
   return {
     env: envBuilder.build(),
     cmp: component
-  }
+  };
 }
 
 export function optionsSearchInterfaceSetup<T extends SearchInterface, U>(klass, options: U) {
   var div = $$('div').el;
   var envBuilder = new MockEnvironmentBuilder().withRoot(div);
-  var component = <T>new klass(div, options)
+  var component = <T>new klass(div, options);
   envBuilder.searchInterface = component;
   return {
     env: envBuilder.build(),
     cmp: component
-  }
+  };
 }
 
 export function optionsResultComponentSetup<T, U>(klass, options: U, result: IQueryResult) {
@@ -290,7 +287,7 @@ export function optionsResultComponentSetup<T, U>(klass, options: U, result: IQu
   return {
     env: envBuilder.build(),
     cmp: <T>new klass(envBuilder.getBindings().element, options, envBuilder.getBindings(), envBuilder.result)
-  }
+  };
 }
 
 export function optionsComponentSetup<T, U>(klass, options: U) {
@@ -298,7 +295,7 @@ export function optionsComponentSetup<T, U>(klass, options: U) {
   return {
     env: envBuilder.build(),
     cmp: <T>new klass(envBuilder.getBindings().element, options, envBuilder.getBindings())
-  }
+  };
 }
 
 export function advancedComponentSetup<T>(klass, options?: AdvancedComponentSetupOptions) {
@@ -310,7 +307,7 @@ export function advancedComponentSetup<T>(klass, options?: AdvancedComponentSetu
   return {
     env: envBuilder.build(),
     cmp: <T>new klass(envBuilder.getBindings().element, optsMerged.cmpOptions, envBuilder.getBindings())
-  }
+  };
 }
 
 export function advancedResultComponentSetup<T>(klass, result: IQueryResult, options?: AdvancedComponentSetupOptions) {
@@ -322,34 +319,5 @@ export function advancedResultComponentSetup<T>(klass, result: IQueryResult, opt
   return {
     env: envBuilder.build(),
     cmp: <T>new klass(envBuilder.getBindings().element, optsMerged.cmpOptions, envBuilder.getBindings(), envBuilder.result, envBuilder.os)
-  }
-}
-
-export function initPageViewScript(store: CoveoAnalytics.HistoryStore) {
-  class HistoryStoreMock {
-    constructor() {
-    }
-
-    public addElement(query: IQuery) {
-      store.addElement(query)
-    }
-
-    public getHistory() {
-      return store.getHistory()
-    }
-
-    public setHistory(history: any[]) {
-      store.setHistory(history)
-    }
-
-    public clear() {
-      store.clear()
-    }
-  }
-
-  window['coveoanalytics'] = {
-    history: {
-      HistoryStore: HistoryStoreMock
-    }
-  }
+  };
 }

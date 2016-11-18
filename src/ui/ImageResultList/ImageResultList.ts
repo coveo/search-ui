@@ -14,16 +14,16 @@ export interface IImageResultListOptions extends IResultListOptions {
 }
 
 /**
- * This component is an extension of the ResultList component to display image results.
+ * This component is an extension of the `ResultList` component to display image results.
  */
-export class ImageResultList extends ResultList {
+export class ImageResultList extends ResultList implements IComponentBindings {
   static ID = 'ImageResultList';
   static rowLayoutTypeStr = 'row';
   static columnLayoutTypeStr = 'column';
 
   /**
-   * The options for the component.
-   * This component inherits the options of the @link{ResultList} component.
+   * The options for the component
+   * This component inherits the options of the {@link ResultList} component.
    * @componentOptions
    */
   static options: IImageResultListOptions = {
@@ -32,7 +32,7 @@ export class ImageResultList extends ResultList {
      * The available values are:
      *    row - Displays resized images that fit to the width of the container and have the same height for a row.
      *    column - Displays the images in fixed-size columns.
-     * The default value is row.
+     * The default value is `row`.
      */
     layoutType: ComponentOptions.buildStringOption({
       defaultValue: 'row',
@@ -48,7 +48,7 @@ export class ImageResultList extends ResultList {
      * The default value is 170.
      */
     columnWidth: ComponentOptions.buildNumberOption({ defaultValue: 225, min: 16 })
-  }
+  };
 
   private columnResultsArray: number[] = [];
   private imagesInCurrentRow: number[] = [];
@@ -107,7 +107,7 @@ export class ImageResultList extends ResultList {
     _.defer(() => {
       _.each(elements, (element) => {
         $$(element).addClass('coveo-transition-all');
-      })
+      });
     });
   }
 
@@ -140,23 +140,23 @@ export class ImageResultList extends ResultList {
         }
         loaded++;
         if (loaded == images.length) {
-          callback()
+          callback();
         }
       } else {
         $$(image.parentElement).detach();
         images = _.filter(images, (img) => {
           return !img.isEqualNode(image);
-        })
+        });
         if (loaded == images.length) {
-          callback()
+          callback();
         }
       }
-    }
+    };
     _.each(images, (e: HTMLImageElement) => {
       if ((e.src && e.complete) || /*for IE 10-*/ $$(e).height() > 0) {
         onImageLoad(e);
       } else {
-        $$(e).one('load', () => { onImageLoad(e) });
+        $$(e).one('load', () => onImageLoad(e));
       }
     });
   }
@@ -204,7 +204,7 @@ export class ImageResultList extends ResultList {
       result.style.top = minTopOffset + 'px';
       result.style.width = colWidth + 'px';
 
-      this.columnResultsArray[resultIndex] = minTopOffset + $(result).outerHeight() + margin;
+      this.columnResultsArray[resultIndex] = minTopOffset + result.offsetHeight + margin;
     });
     this.setResultsContainerHeight(_.max(this.columnResultsArray));
 

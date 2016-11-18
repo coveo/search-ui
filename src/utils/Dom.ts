@@ -1,4 +1,5 @@
 import {Utils} from '../utils/Utils';
+import {JQueryUtils} from '../utils/JQueryutils';
 import {Assert} from '../misc/Assert';
 import {Logger} from '../misc/Logger';
 
@@ -45,7 +46,7 @@ export class Dom {
       if (key === 'className') {
         elem.className = props['className'];
       } else {
-        let attr = key.indexOf('-') !== -1 ? key : Utils.toDashCase(key)
+        let attr = key.indexOf('-') !== -1 ? key : Utils.toDashCase(key);
         elem.setAttribute(attr, props[key]);
       }
     }
@@ -58,7 +59,7 @@ export class Dom {
       } else if (child instanceof Dom) {
         elem.appendChild(child.el);
       }
-    })
+    });
 
     return elem;
   }
@@ -90,14 +91,14 @@ export class Dom {
    * @returns {string}
    */
   public text(txt?: string): string {
-    if (txt) {
+    if (Utils.isUndefined(txt)) {
+      return this.el.innerText || this.el.textContent;
+    } else {
       if (this.el.innerText != undefined) {
         this.el.innerText = txt;
       } else if (this.el.textContent != undefined) {
         this.el.textContent = txt;
       }
-    } else {
-      return this.el.innerText || this.el.textContent;
     }
   }
 
@@ -218,33 +219,43 @@ export class Dom {
   }
 
   /**
-   * Get the first element that matches the classname by testing the element itself and traversing up through its ancestors in the DOM tree.<br/>
+   * Get the first element that matches the classname by testing the element itself and traversing up through its ancestors in the DOM tree.
+   *
    * Stops at the body of the document
    * @param className A CSS classname
    */
   public closest(className: string): HTMLElement {
-    if (className.indexOf('.') == 0) {
-      className = className.substr(1);
+    return this.traverseAncestorForClass(this.el, className);
+  }
+
+  /**
+   * Get the first element that matches the classname by testing the element itself and traversing up through its ancestors in the DOM tree.
+   *
+   * Stops at the body of the document
+   * @returns {any}
+   */
+  public parent(className: string): HTMLElement {
+    if (this.el.parentElement == undefined) {
+      return undefined;
     }
-    var current = this.el, found = false;
-    while (!found) {
-      if ($$(current).hasClass(className)) {
-        found = true;
-      }
-      if (current.tagName.toLowerCase() == 'body') {
-        break;
-      }
-      if (current.parentElement == null) {
-        break;
-      }
-      if (!found) {
-        current = current.parentElement;
-      }
+    return this.traverseAncestorForClass(this.el.parentElement, className);
+  }
+
+  /**
+   *  Get all the ancestors of the current element that match the given className
+   *
+   *  Return an empty array if none found.
+   * @param className
+   * @returns {HTMLElement[]}
+   */
+  public parents(className: string): HTMLElement[] {
+    let parentsFound = [];
+    let parentFound = this.parent(className);
+    while (parentFound) {
+      parentsFound.push(parentFound);
+      parentFound = new Dom(parentFound).parent(className);
     }
-    if (found) {
-      return current;
-    }
-    return undefined;
+    return parentsFound;
   }
 
   /**
@@ -298,7 +309,7 @@ export class Dom {
    */
   public findClass(className: string): HTMLElement[] {
     if ('getElementsByClassName' in this.el) {
-      return this.nodeListToArray(this.el.getElementsByClassName(className))
+      return this.nodeListToArray(this.el.getElementsByClassName(className));
     }
     // For ie 8
     return this.nodeListToArray(this.el.querySelectorAll('.' + className));
@@ -323,7 +334,7 @@ export class Dom {
     if (_.isArray(className)) {
       _.each(className, (name: string) => {
         this.addClass(name);
-      })
+      });
     } else {
       if (!this.hasClass(className)) {
         if (this.el.className) {
@@ -340,7 +351,7 @@ export class Dom {
    * @param className Classname to remove on the the element
    */
   public removeClass(className: string): void {
-    this.el.className = this.el.className.replace(new RegExp(`(^|\\s)${className}(\\s|\\b)`, 'g'), '$1');
+    this.el.className = this.el.className.replace(new RegExp(`(^|\\s)${className}(\\s|\\b)`, 'g'), '$1').trim();
   }
 
   /**
@@ -377,7 +388,7 @@ export class Dom {
    * @returns {any|Array}
    */
   public getClass(): string[] {
-    return this.el.className.match(Dom.CLASS_NAME_REGEX) || []
+    return this.el.className.match(Dom.CLASS_NAME_REGEX) || [];
   }
 
   /**
@@ -435,19 +446,19 @@ export class Dom {
     if (_.isArray(type)) {
       _.each(type, (t: string) => {
         this.on(t, eventHandle);
-      })
+      });
     } else {
-      var jq = this.getJQuery();
+      var jq = JQueryUtils.getJQuery();
       if (jq) {
         jq(this.el).on(type, eventHandle);
       } else if (this.el.addEventListener) {
         var fn = (e: CustomEvent) => {
-          eventHandle(e, e.detail)
-        }
+          eventHandle(e, e.detail);
+        };
         Dom.handlers.push({
           eventHandle: eventHandle,
           fn: fn
-        })
+        });
         this.el.addEventListener(type, fn, false);
       } else if (this.el['on']) {
         this.el['on']('on' + type, eventHandle);
@@ -467,12 +478,12 @@ export class Dom {
     if (_.isArray(type)) {
       _.each(type, (t: string) => {
         this.one(t, eventHandle);
-      })
+      });
     } else {
       var once = (e: Event, args: any) => {
         this.off(type, once);
         return eventHandle(e, args);
-      }
+      };
       this.on(type, once);
     }
   }
@@ -488,19 +499,19 @@ export class Dom {
     if (_.isArray(type)) {
       _.each(type, (t: string) => {
         this.off(t, eventHandle);
-      })
+      });
     } else {
-      var jq = this.getJQuery();
+      var jq = JQueryUtils.getJQuery();
       if (jq) {
         jq(this.el).off(type, eventHandle);
       } else if (this.el.removeEventListener) {
-        var idx = 0
+        var idx = 0;
         var found = _.find(Dom.handlers, (handlerObj: { eventHandle: Function, fn: EventListener }, i) => {
           if (handlerObj.eventHandle == eventHandle) {
             idx = i;
             return true;
           }
-        })
+        });
         if (found) {
           this.el.removeEventListener(type, found.fn, false);
           Dom.handlers.splice(idx, 1);
@@ -517,9 +528,9 @@ export class Dom {
    * @param data
    */
   public trigger(type: string, data?: { [key: string]: any }): void {
-    var jq = this.getJQuery();
+    var jq = JQueryUtils.getJQuery();
     if (jq) {
-      jq(this.el).trigger(type, data)
+      jq(this.el).trigger(type, data);
     } else if (CustomEvent !== undefined) {
       var event = new CustomEvent(type, { detail: data, bubbles: true });
       this.el.dispatchEvent(event);
@@ -645,24 +656,40 @@ export class Dom {
   /**
    * Returns the offset width of the element
    */
-  public width() {
+  public width(): number {
     return this.el.offsetWidth;
   }
 
   /**
    * Returns the offset height of the element
    */
-  public height() {
+  public height(): number {
     return this.el.offsetHeight;
   }
-
-  private getJQuery() {
-    if (window['jQuery'] != undefined) {
-      return window['jQuery']
+  private traverseAncestorForClass(current = this.el, className: string): HTMLElement {
+    if (className.indexOf('.') == 0) {
+      className = className.substr(1);
     }
-    return false;
+    var found = false;
+    while (!found) {
+      if ($$(current).hasClass(className)) {
+        found = true;
+      }
+      if (current.tagName.toLowerCase() == 'body') {
+        break;
+      }
+      if (current.parentElement == null) {
+        break;
+      }
+      if (!found) {
+        current = current.parentElement;
+      }
+    }
+    if (found) {
+      return current;
+    }
+    return undefined;
   }
-
 }
 
 export class Win {

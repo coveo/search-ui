@@ -24,7 +24,7 @@ export class QueryDuration extends Component {
    * @componentOptions
    */
   static options: IQueryDurationOptions = {
-  }
+  };
 
   private textContainer: HTMLElement;
 
@@ -39,7 +39,7 @@ export class QueryDuration extends Component {
 
     this.options = ComponentOptions.initComponentOptions(element, QueryDuration, options);
 
-    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data))
+    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
     this.bind.onRootElement(QueryEvents.queryError, () => $$(this.element).hide());
     this.element.style.display = 'none';
     this.textContainer = $$('span').el;

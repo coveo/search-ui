@@ -77,7 +77,7 @@ export class FacetValue {
         return FacetValue.createFromFieldValue(value);
       }
     } else {
-      throw new Error('Can\'t create value from ' + value)
+      throw new Error('Can\'t create value from ' + value);
     }
   }
 
@@ -137,7 +137,7 @@ export class FacetValues {
 
   remove(value: string) {
     Assert.isNonEmptyString(value);
-    value = value
+    value = value;
     this.values = _.filter(this.values, (elem: FacetValue) => elem.value != value);
   }
 
@@ -190,11 +190,6 @@ export class FacetValues {
       var myValue = this.get(otherValue.value);
       if (Utils.exists(myValue)) {
         myValue.selected = true;
-      } else if (otherValue.occurrences != 0) {
-        var occurrences = otherValue.occurrences;
-        var clone = otherValue.cloneWithZeroOccurrences();
-        clone.occurrences = occurrences;
-        this.values.push(clone);
       } else {
         this.values.push(otherValue.cloneWithZeroOccurrences());
       }

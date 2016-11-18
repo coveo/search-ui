@@ -23,7 +23,7 @@ export enum KEYBOARD {
 export class KeyboardUtils {
   static keysEqual(key, code) {
     if (!Utils.isNullOrUndefined(key.keyCode)) {
-      return key.keyCode == code
+      return key.keyCode == code;
     } else if (!Utils.isNullOrUndefined(key.which)) {
       return key.which == code;
     }
@@ -66,5 +66,18 @@ export class KeyboardUtils {
 
   static isLetterKeyPushed(keycode: number): boolean {
     return keycode > 64 && keycode < 91;
+  }
+
+  // Return a keyboard event listener that only executes the function if certain keys are pressed.
+  static keypressAction(keyCode: KEYBOARD | KEYBOARD[], action: Function) {
+    return (e: KeyboardEvent, ...data: any[]) => {
+      const eventCode = (e.charCode || e.keyCode);
+      if (_.isArray(keyCode) && _.contains(keyCode, eventCode)) {
+        action(e);
+      } else if (eventCode === keyCode) {
+        action(e);
+      }
+      return false;
+    };
   }
 }

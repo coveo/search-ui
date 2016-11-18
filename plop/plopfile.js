@@ -76,8 +76,11 @@ module.exports = function (plop) {
       })
       actions.push(()=> {
         let tsconfig = require(path.resolve('../tsconfig.json'));
+        let testtsconfig = require(path.resolve('../test/tsconfig.json'));
         tsconfig.files.push(plop.renderString('src/ui/{{pascalCase cmpName}}/{{pascalCase cmpName}}.ts', data));
-        fs.writeFileSync(path.resolve('../tsconfig.json'), JSON.stringify(tsconfig, undefined, 2));
+        testtsconfig.files.push(plop.renderString('../test/ui/{{pascalCase cmpName}}Test.ts', data));
+        fs.writeFileSync(path.resolve('../tsconfig.json'), JSON.stringify(tsconfig, undefined, 4));
+        fs.writeFileSync(path.resolve('../test/tsconfig.json'), JSON.stringify(testtsconfig, undefined, 4));
         return 'Modified tsconfig.json';
       })
       actions.push(()=> {
@@ -86,8 +89,9 @@ module.exports = function (plop) {
         return 'Modified Index.ts';
       })
       actions.push(()=> {
-        let newReference = plop.renderString('/// <reference path="ui/{{pascalCase cmpName}}Test.ts"', data);
-        fs.appendFileSync(path.resolve('../test/Test.ts'), `\n${newReference}`);
+        let newReference = plop.renderString('import { {{pascalCase cmpName}}Test } from \'./ui/{{pascalCase cmpName}}Test\';', data);
+        let newTestExecution = plop.renderString('{{pascalCase cmpName}}Test();', data);
+        fs.appendFileSync(path.resolve('../test/Test.ts'), `\n${newReference}\n${newTestExecution}`);
         return 'Modified Test.ts';
       })
       actions.push({

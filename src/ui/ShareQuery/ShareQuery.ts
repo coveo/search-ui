@@ -15,7 +15,7 @@ export interface IShareQueryOptions {
 /**
  * ShareQuery shows 2 text boxes, one with a shareable link and the
  * other with the complete query expression of the currently performed query.<br/>
- * It populates the {@link Settings} component's menu for easy access.
+ * It populates the {@link Settings} components menu for easy access.
  */
 export class ShareQuery extends Component {
   static ID = 'ShareQuery';
@@ -109,8 +109,7 @@ export class ShareQuery extends Component {
 
   private buildContent(): HTMLElement {
     let content = $$('div', { className: 'coveo-share-query-summary-info' }).el;
-    content.appendChild($$('span', { className: 'coveo-query-summary-info-title' }).el);
-    $$(content).text(l('ShareQuery'))
+    content.appendChild($$('span', { className: 'coveo-query-summary-info-title' }, l('ShareQuery')).el);
 
     let close = $$('div', { className: 'coveo-share-query-summary-info-close' }).el;
     close.appendChild($$('span').el);
@@ -126,7 +125,7 @@ export class ShareQuery extends Component {
     $$(this.linkToThisQuery).on('click', () => this.linkToThisQuery.select());
 
     this.completeQuery = <HTMLInputElement>$$('input').el;
-    this.completeQuery.setAttribute('type', 'text')
+    this.completeQuery.setAttribute('type', 'text');
     $$(this.completeQuery).addClass('coveo-share-query-summary-info-input');
 
     boxes.appendChild(this.buildTextBoxWithLabel(l('Link') + ':', this.linkToThisQuery));
@@ -139,7 +138,7 @@ export class ShareQuery extends Component {
   }
 
   private buildTextBoxWithLabel(label: string, input: HTMLInputElement): HTMLElement {
-    let labelElement = $$('span', { className: 'coveo-share-query-summary-info-label' })
+    let labelElement = $$('span', { className: 'coveo-share-query-summary-info-label' });
     labelElement.text(label);
 
     let returnDiv = $$('div').el;

@@ -13,29 +13,29 @@ export function shim() {
         throw reason;
       });
     });
-  }
+  };
 
   let rethrowError = (self) => {
     self.then(null, function (err) {
       setTimeout(function () {
-        throw err
-      }, 0)
-    })
-  }
+        throw err;
+      }, 0);
+    });
+  };
 
   if (typeof Promise.prototype['done'] !== 'function') {
     Promise.prototype['done'] = function (onFulfilled, onRejected) {
-      let self = arguments.length ? this.then.apply(this, arguments) : this
+      let self = arguments.length ? this.then.apply(this, arguments) : this;
       rethrowError(self);
       return this;
-    }
+    };
   }
 
   if (typeof Promise.prototype['fail'] !== 'function') {
     Promise.prototype['fail'] = function (onFulfilled, onRejected) {
-      let self = arguments.length ? this.catch.apply(this, arguments) : this
+      let self = arguments.length ? this.catch.apply(this, arguments) : this;
       rethrowError(self);
       return this;
-    }
+    };
   }
 }

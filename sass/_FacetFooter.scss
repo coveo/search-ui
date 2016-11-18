@@ -1,11 +1,12 @@
 .coveo-facet-more, .coveo-facet-less {
   width: 100%;
   height: 15px;
-  background: white;
+  background: $color-blueish-white;
   cursor: pointer;
   text-align: center;
-  &:hover {
+  &:hover, &:focus {
     background: $color-light-grey;
+    outline: none;
   }
 }
 
@@ -40,7 +41,7 @@
 }
 
 .coveo-facet-footer {
-  background: white;
+  background: $color-blueish-white;
   min-height: 15px;
   border-bottom-left-radius: $default-border-radius;
   border-bottom-right-radius: $default-border-radius;

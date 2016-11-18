@@ -19,37 +19,37 @@ export function FacetSearchTest() {
       let options = {
         field: '@field'
       };
-      window['jQuery'] = null;
+      Simulate.removeJQuery();
       mockFacet = Mock.basicComponentSetup<Facet>(Facet, options).cmp;
       mockFacet.searchInterface = <any>{};
       mockFacet.searchInterface.isNewDesign = () => {
         return true;
-      }
+      };
       facetSearch = new FacetSearch(mockFacet, FacetSearchValuesList, mockFacet.root);
-    })
+    });
 
     afterEach(function () {
       mockFacet = null;
       facetSearch = null;
-    })
+    });
 
     it('input should have correct attributes', function () {
       var built = facetSearch.build();
       expect($$(built).find('input').getAttribute('autocapitalize')).toBe('off');
       expect($$(built).find('input').getAttribute('autocorrect')).toBe('off');
       expect($$(built).find('input').getAttribute('form')).toBe('coveo-dummy-form');
-    })
+    });
 
     describe('perform search on the index', function () {
       beforeEach(function () {
         mockFacet.facetQueryController = Mock.mock<FacetQueryController>(FacetQueryController);
         facetSearch.build();
-      })
+      });
 
       afterEach(function () {
         mockFacet = null;
         facetSearch = null;
-      })
+      });
 
       it('should display facet search results', function (done) {
         var pr = new Promise((resolve, reject) => {
@@ -69,8 +69,8 @@ export function FacetSearchTest() {
           expect($$(facetSearch.searchResults).findAll('li').length).toBe(10);
           expect(facetSearch.currentlyDisplayedResults.length).toBe(10);
           done();
-        })
-      })
+        });
+      });
 
       it('should hide facet search results', function (done) {
         var pr = new Promise((resolve, reject) => {
@@ -93,8 +93,8 @@ export function FacetSearchTest() {
           expect($$(facetSearch.searchResults).findAll('li').length).toBe(0);
           expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
           done();
-        })
-      })
+        });
+      });
 
       it('should handle error', function (done) {
         var pr = new Promise((resolve, reject) => {
@@ -111,8 +111,8 @@ export function FacetSearchTest() {
         pr.catch(() => {
           expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
           done();
-        })
-      })
+        });
+      });
 
       // KeyboardEvent simulation does not work well in phantom js
       // The KeyboardEvent constructor is not even defined ...
@@ -121,7 +121,7 @@ export function FacetSearchTest() {
           var searchPromise: Promise<IIndexFieldValue[]>;
           var built: HTMLElement;
           beforeEach(function () {
-            window['jQuery'] = null;
+            Simulate.removeJQuery();
             mockFacet.options.facetSearchDelay = 50;
             searchPromise = new Promise((resolve, reject) => {
               var results = FakeResults.createFakeFieldValues('foo', 10);
@@ -135,11 +135,11 @@ export function FacetSearchTest() {
             built = facetSearch.build();
             var params = new FacetSearchParameters(mockFacet);
             facetSearch.triggerNewFacetSearch(params);
-          })
+          });
 
           afterEach(function () {
             searchPromise = null;
-          })
+          });
 
           it('arrow navigation', function (done) {
 
@@ -162,8 +162,8 @@ export function FacetSearchTest() {
               Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
               expect($$($$(facetSearch.searchResults).findAll('li')[9]).hasClass('coveo-current')).toBe(true);
               done();
-            })
-          })
+            });
+          });
 
           it('escape close results', function (done) {
             searchPromise.then(() => {
@@ -173,18 +173,18 @@ export function FacetSearchTest() {
 
               expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
               done();
-            })
-          })
+            });
+          });
 
           it('other key should start a search', function (done) {
             Simulate.keyUp($$(built).find('input'), KEYBOARD.CTRL);
             setTimeout(() => {
               expect(facetSearch.facet.facetQueryController.search).toHaveBeenCalled();
               done();
-            }, 55)
-          })
-        })
+            }, 55);
+          });
+        });
       }
-    })
-  })
+    });
+  });
 }
