@@ -189,6 +189,7 @@ export function InitializationTest() {
         Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(Component.get(external.get(0)) instanceof Pager).toBe(true);
+      Simulate.removeJQuery();
     });
 
     describe('when initializing recommendation interface', function () {
