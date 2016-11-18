@@ -242,7 +242,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       splitTestRunName: this.splitTestRunName || result.splitTestRun,
       splitTestRunVersion: this.splitTestRunVersion || (result.splitTestRun != undefined ? result.pipeline : undefined),
       documentUri: result.uri,
-      documentUriHash: result.raw['uniqueid'] || result.raw['urihash'],
+      documentUriHash: result.raw['urihash'],
       documentUrl: result.clickUri,
       documentTitle: result.title,
       documentCategory: result.raw['objecttype'],
