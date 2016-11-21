@@ -13,6 +13,7 @@ import {AdvancedSearchInputFactory} from './AdvancedSearchInputFactory';
 import {IQueryOptions} from '../../controllers/QueryController';
 import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {QuerySummaryEvents} from '../../events/QuerySummaryEvents';
+import 'styling/_AdvancedSearch';
 
 export interface IAdvancedSearchOptions {
   includeKeywords?: boolean;
