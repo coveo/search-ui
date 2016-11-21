@@ -25,6 +25,7 @@ import FastClick = require('fastclick');
 import timezone = require('jstz');
 import {SentryLogger} from '../../misc/SentryLogger';
 import {IComponentBindings} from '../Base/ComponentBindings';
+import 'styling/Globals'
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
