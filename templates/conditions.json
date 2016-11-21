@@ -137,7 +137,11 @@
   },
   "MobileSharePointList": {
     "priority": 2,
-    "value": "raw.spitemtype != null && (raw.spitemtype == 'List' && Coveo.DeviceUtils.isSmallScreenWidth() || options.layout === 'card')"
+    "value": "raw.spitemtype != null && (raw.spitemtype == 'List' && Coveo.DeviceUtils.isSmallScreenWidth())"
+  },
+  "CardSharePointList": {
+    "priority": 2,
+    "value": "raw.spitemtype != null && (raw.spitemtype == 'List' && options.layout === 'card')"
   },
   "SharePointList": {
     "priority": 1,
