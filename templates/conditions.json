@@ -27,6 +27,10 @@
     "priority": 2,
     "value": "raw.dycoveoid != null && Coveo.DeviceUtils.isSmallScreenWidth()"
   },
+  "CardDynamicsCrm": {
+    "priority": 2,
+    "value": "raw.dycoveoid != null && options.layout === 'card'"
+  },
   "DynamicsCrm": {
     "priority": 1,
     "value": "raw.dycoveoid != null"
