@@ -10,7 +10,7 @@ import {Tab} from'../Tab/Tab';
 import {IResponsiveComponent, ResponsiveComponentsManager, IResponsiveComponentOptions} from './ResponsiveComponentsManager';
 import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
 import {l} from '../../strings/Strings';
-import '../../../sass/_ResponsiveTabs.scss';
+import 'styling/_ResponsiveTabs';
 
 export class ResponsiveTabs implements IResponsiveComponent {
 

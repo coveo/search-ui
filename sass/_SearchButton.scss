@@ -33,6 +33,3 @@
   @include animation-iteration-count(infinite);
 }
 
-.ie8or9 .coveo-executing-query .CoveoSearchButton > .coveo-icon {
-  @extend .coveo-sprites-main-search;
-}

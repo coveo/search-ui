@@ -54,7 +54,7 @@ import {IStringMap} from '../../rest/GenericParam';
 import {FacetValuesOrder} from './FacetValuesOrder';
 import {ValueElement} from './ValueElement';
 import {SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs} from '../../events/SearchAlertEvents';
-import '../../../sass/_Facet.scss'
+import 'styling/_Facet';
 
 export interface IFacetOptions {
   title?: string;

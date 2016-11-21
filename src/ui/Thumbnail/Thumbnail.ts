@@ -97,8 +97,8 @@ export class Thumbnail extends Component {
   private buildThumbnailImage() {
     let endpoint = this.bindings.queryController.getEndpoint();
 
-    if (endpoint.isJsonp() || DeviceUtils.isIE8or9()) {
-      // For jsonp and IE8-9 (XDomain) we can't GET/POST for binary data. We are limited
+    if (endpoint.isJsonp()) {
+      // For jsonp we can't GET/POST for binary data. We are limited
       // to only setting the src attribute directly on the img.
       this.buildImageWithDirectSrcAttribute(endpoint);
     } else {

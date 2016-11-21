@@ -99,8 +99,8 @@ export class ImageUtils {
     options = options ? options : <IImageUtilsOptions>{};
 
     let img = ImageUtils.buildImage(undefined, _.extend(options, { 'data-coveo-uri-hash': result.raw['urihash'] }));
-    if (endpoint.isJsonp() || DeviceUtils.isIE8or9()) {
-      // For jsonp and IE8-9 (XDomain) we can't GET/POST for binary data. We are limited to only setting the src attribute directly on the img.
+    if (endpoint.isJsonp()) {
+      // For jsonp we can't GET/POST for binary data. We are limited to only setting the src attribute directly on the img.
       ImageUtils.buildImageWithDirectSrcAttribute(endpoint, result);
     } else {
       // Base 64 img allows us to GET/POST the image as raw binary, so that we can also pass the credential of the user

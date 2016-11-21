@@ -23,7 +23,7 @@ if (live) {
 
 module.exports = {
   resolve: {
-    extensions: ['', '.ts', '.js'],
+    extensions: ['', '.ts', '.js', '.scss'],
     alias: {
       'l10n': __dirname + '/../lib/l10n.min.js',
       'globalize': __dirname + '/../lib/globalize.min.js',
@@ -33,7 +33,8 @@ module.exports = {
       'magic-box': __dirname + '/../node_modules/coveomagicbox/bin/MagicBox.min.js',
       'default-language': __dirname + '/../src/strings/DefaultLanguage.js',
       'underscore': __dirname + '/../node_modules/underscore/underscore-min.js',
-      'jQuery': __dirname + '/../test/lib/jquery.js'
+      'jQuery': __dirname + '/../test/lib/jquery.js',
+      'styling': __dirname + '/../sass'
     }
   },
   devtool: 'source-map',
@@ -75,7 +76,7 @@ module.exports = {
       },
       sassLoader,
       {
-        test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'url-loader?limit=1'
+      test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'url-loader', query: {limit: '1', name: '[path][name].[ext]'}
       }
     ]
   },
