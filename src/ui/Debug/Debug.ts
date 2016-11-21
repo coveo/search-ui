@@ -19,6 +19,7 @@ import {ModalBox} from '../../ExternalModulesShim';
 import Globalize = require('globalize');
 import {KEYBOARD} from '../../utils/KeyboardUtils';
 import {InitializationEvents} from '../../events/InitializationEvents';
+import 'styling/Debug';
 
 export interface IDebugOptions {
   enableDebug?: boolean;
