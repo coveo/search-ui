@@ -284,8 +284,8 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
         fieldUsed = 'urihash';
         fieldValue = result.raw['urihash'];
       }
-      modifiedMeta['contentIdKey'] = fieldUsed;
-      modifiedMeta['contentIdValue'] = fieldValue;
+      modifiedMeta['contentIDKey'] = fieldUsed;
+      modifiedMeta['contentIDValue'] = fieldValue;
     }
 
     return modifiedMeta;

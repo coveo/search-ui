@@ -439,7 +439,7 @@ export function LiveAnalyticsClientTest() {
         client.logClickEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentQuickview, {}, fakeResult, document.createElement('div'));
         Defer.flush();
         expect(spy).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({
-          metaObject: jasmine.objectContaining({ contentIdKey: 'urihash', contentIdValue: '1234567890' }),
+          metaObject: jasmine.objectContaining({ contentIDKey: 'urihash', contentIDValue: '1234567890' }),
         }));
       });
 
@@ -449,7 +449,7 @@ export function LiveAnalyticsClientTest() {
         client.logClickEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentQuickview, {}, fakeResult, document.createElement('div'));
         Defer.flush();
         expect(spy).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({
-          metaObject: jasmine.objectContaining({ contentIdKey: 'uniqueid', contentIdValue: '0987654321' }),
+          metaObject: jasmine.objectContaining({ contentIDKey: 'uniqueid', contentIDValue: '0987654321' }),
         }));
       });
     });
