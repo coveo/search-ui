@@ -1,336 +1,336 @@
 {
-    "objecttype": {
-        "people": {
-            "icon": "user",
-            "captions": {
-                "en": "People",
-                "fr": "Personne"
-            }
-        },
-        "message": {
-            "icon": "mail",
-            "captions": {
-                "en": "Message",
-                "fr": "Message"
-            }
-        },
-        "feed": {
-            "icon": "list",
-            "captions": {
-                "en": "RSS Feed",
-                "fr": "Flux RSS"
-            }
-        },
-        "thread": {
-            "icon": "list",
-            "captions": {
-                "en": "Thread",
-                "fr": "Fil de conversation"
-            }
-        },
-        "file": {
-            "icon": "file",
-            "captions": {
-                "en": "File",
-                "fr": "Fichier"
-            }
-        },
-        "board": {
-            "icon": "list",
-            "captions": {
-                "en": "",
-                "fr": ""
-            }
-        },
-        "category": {
-            "icon": "list",
-            "captions": {
-                "en": "",
-                "fr": ""
-            }
-        },
-        "account": {
-            "icon": "salesforce-standard-account",
-            "captions": {
-                "en": "Account",
-                "fr": "Compte"
-            }
-        },
-        "annotation": {
-            "icon": "file",
-            "captions": {
-                "en": "Note",
-                "fr": "Note"
-            }
-        },
-        "campaign": {
-            "icon": "calendar",
-            "captions": {
-                "en": "Campaign",
-                "fr": "Campagne"
-            }
-        },
-        "case": {
-            "icon": "salesforce-standard-case",
-            "captions": {
-                "en": "Case",
-                "fr": "Cas"
-            }
-        },
-        "contact": {
-            "icon": "salesforce-standard-contact",
-            "captions": {
-                "en": "Contact",
-                "fr": "Contact"
-            }
-        },
-        "contract": {
-            "icon": "salesforce-standard-contract",
-            "captions": {
-                "en": "Contract",
-                "fr": "Contrat"
-            }
-        },
-        "event": {
-            "icon": "salesforce-standard-event",
-            "captions": {
-                "en": "Event",
-                "fr": "Évènement"
-            }
-        },
-        "email": {
-            "icon": "mail",
-            "captions": {
-                "en": "Email",
-                "fr": "Email"
-            }
-        },
-        "goal": {
-            "icon": "salesforce-standard-goals",
-            "captions": {
-                "en": "Goal",
-                "fr": "Objectif"
-            }
-        },
-        "incident": {
-            "icon": "salesforce-standard-case",
-            "captions": {
-                "en": "Case",
-                "fr": "Incident"
-            }
-        },
-        "invoice": {
-            "icon": "list",
-            "captions": {
-                "en": "Invoice",
-                "fr": "Facture"
-            }
-        },
-        "lead": {
-            "icon": "salesforce-standard-lead",
-            "captions": {
-                "en": "Lead",
-                "fr": "Piste"
-            }
-        },
-        "list": {
-            "icon": "list",
-            "captions": {
-                "en": "Marketing List",
-                "fr": "Liste marketing"
-            }
-        },
-        "solution": {
-            "icon": "salesforce-standard-article",
-            "captions": {
-                "en": "Solution",
-                "fr": "Solution"
-            },
-            "shouldDisplayLabel": true
-        },
-        "task": {
-            "icon": "salesforce-standard-task",
-            "captions": {
-                "en": "Task",
-                "fr": "Tâche"
-            },
-            "shouldDisplayLabel": true
-        },
-        "user": {
-            "icon": "user",
-            "captions": {
-                "en": "User",
-                "fr": "Utilisateur"
-            }
-        },
-        "attachment": {
-            "icon": "attachment",
-            "captions": {
-                "en": "Attachment",
-                "fr": "Attachement"
-            }
-        },
-        "casecomment": {
-            "icon": "salesforce-standard-feedback",
-            "captions": {
-                "en": "Case Comment",
-                "fr": "Commentaire sur un cas"
-            }
-        },
-        "opportunity": {
-            "icon": "salesforce-standard-opportunity",
-            "captions": {
-                "en": "Opportunity",
-                "fr": "Opportunité"
-            }
-        },
-        "opportunityproduct": {
-            "icon": "salesforce-standard-opportunity",
-            "captions": {
-                "en": "Opportunity Product",
-                "fr": "Produit d'opportunité"
-            }
-        },
-        "feeditem": {
-            "icon": "salesforce-standard-post",
-            "captions": {
-                "en": "Chatter",
-                "fr": "Chatter"
-            }
-        },
-        "feedcomment": {
-            "icon": "salesforce-standard-post",
-            "captions": {
-                "en": "Chatter",
-                "fr": "Chatter"
-            }
-        },
-        "note": {
-            "icon": "salesforce-standard-note",
-            "captions": {
-                "en": "Note",
-                "fr": "Note"
-            }
-        },
-        "product": {
-            "icon": "product",
-            "captions": {
-                "en": "Product",
-                "fr": "Produit"
-            }
-        },
-        "partner": {
-            "icon": "user",
-            "captions": {
-                "en": "Partner",
-                "fr": "Partenaire"
-            }
-        },
-        "queueitem": {
-            "icon": "list",
-            "captions": {
-                "en": "Queue Item",
-                "fr": "Élément de file d'attente"
-            }
-        },
-        "quote": {
-            "icon": "salesforce-standard-quotes",
-            "captions": {
-                "en": "Quote",
-                "fr": "Devis"
-            }
-        },
-        "salesliterature": {
-            "icon": "kb",
-            "captions": {
-                "en": "Sales Literature",
-                "fr": "Documentation commerciale"
-            },
-            "shouldDisplayLabel": true
-        },
-        "salesorder": {
-            "icon": "salesforce-standard-orders",
-            "captions": {
-                "en": "Sales Order",
-                "fr": "Commande"
-            },
-            "shouldDisplayLabel": true
-        },
-        "service": {
-            "icon": "list",
-            "captions": {
-                "en": "Service",
-                "fr": "Service"
-            },
-            "shouldDisplayLabel": true
-        },
-        "socialprofile": {
-            "icon": "user",
-            "captions": {
-                "en": "Social Profile",
-                "fr": "Profile social"
-            },
-            "shouldDisplayLabel": true
-        },
-        "kbdocumentation": {
-            "icon": "salesforce-standard-article",
-            "captions": {
-                "en": "Documentation",
-                "fr": "Documentation"
-            },
-            "shouldDisplayLabel": true
-        },
-        "kbtechnicalarticle": {
-            "icon": "salesforce-standard-article",
-            "captions": {
-                "en": "Documentation",
-                "fr": "Documentation"
-            },
-            "shouldDisplayLabel": true
-        },
-        "kbsolution": {
-            "icon": "salesforce-standard-article",
-            "captions": {
-                "en": "Solution",
-                "fr": "Solution"
-            },
-            "shouldDisplayLabel": true
-        },
-        "kbknowledgearticle": {
-            "icon": "salesforce-standard-article",
-            "captions": {
-                "en": "Knowledge Article",
-                "fr": "Article de base de connaissance"
-            },
-            "shouldDisplayLabel": true
-        },
-        "kbattachment": {
-            "icon": "salesforce-standard-article",
-            "captions": {
-                "en": "Attachment",
-                "fr": "Attachement"
-            }
-        },
-        "kbarticle": {
-            "icon": "salesforce-standard-article",
-            "captions": {
-                "en": "Article",
-                "fr": "Article"
-            }
-        },
-        "kbarticlecomment": {
-            "icon": "list",
-            "captions": {
-                "en": "Article Comment",
-                "fr": "Commentaire d'article"
-            }
-        },
-        "knowledgearticle": {
-            "icon": "salesforce-standard-article",
-            "captions": {
-                "en": "Knowledge Article",
-                "fr": "Article de base de connaissance"
-            }
-        }
+  "objecttype": {
+    "people": {
+      "icon": "user",
+      "captions": {
+        "en": "People",
+        "fr": "Personne"
+      }
+    },
+    "message": {
+      "icon": "mail",
+      "captions": {
+        "en": "Message",
+        "fr": "Message"
+      }
+    },
+    "feed": {
+      "icon": "list",
+      "captions": {
+        "en": "RSS Feed",
+        "fr": "Flux RSS"
+      }
+    },
+    "thread": {
+      "icon": "list",
+      "captions": {
+        "en": "Thread",
+        "fr": "Fil de conversation"
+      }
+    },
+    "file": {
+      "icon": "file",
+      "captions": {
+        "en": "File",
+        "fr": "Fichier"
+      }
+    },
+    "board": {
+      "icon": "list",
+      "captions": {
+        "en": "",
+        "fr": ""
+      }
+    },
+    "category": {
+      "icon": "list",
+      "captions": {
+        "en": "",
+        "fr": ""
+      }
+    },
+    "account": {
+      "icon": "salesforce-standard-account",
+      "captions": {
+        "en": "Account",
+        "fr": "Compte"
+      }
+    },
+    "annotation": {
+      "icon": "file",
+      "captions": {
+        "en": "Note",
+        "fr": "Note"
+      }
+    },
+    "campaign": {
+      "icon": "calendar",
+      "captions": {
+        "en": "Campaign",
+        "fr": "Campagne"
+      }
+    },
+    "case": {
+      "icon": "salesforce-standard-case",
+      "captions": {
+        "en": "Case",
+        "fr": "Cas"
+      }
+    },
+    "contact": {
+      "icon": "salesforce-standard-contact",
+      "captions": {
+        "en": "Contact",
+        "fr": "Contact"
+      }
+    },
+    "contract": {
+      "icon": "salesforce-standard-contract",
+      "captions": {
+        "en": "Contract",
+        "fr": "Contrat"
+      }
+    },
+    "event": {
+      "icon": "salesforce-standard-event",
+      "captions": {
+        "en": "Event",
+        "fr": "Évènement"
+      }
+    },
+    "email": {
+      "icon": "mail",
+      "captions": {
+        "en": "Email",
+        "fr": "Email"
+      }
+    },
+    "goal": {
+      "icon": "salesforce-standard-goals",
+      "captions": {
+        "en": "Goal",
+        "fr": "Objectif"
+      }
+    },
+    "incident": {
+      "icon": "salesforce-standard-case",
+      "captions": {
+        "en": "Case",
+        "fr": "Incident"
+      }
+    },
+    "invoice": {
+      "icon": "list",
+      "captions": {
+        "en": "Invoice",
+        "fr": "Facture"
+      }
+    },
+    "lead": {
+      "icon": "salesforce-standard-lead",
+      "captions": {
+        "en": "Lead",
+        "fr": "Piste"
+      }
+    },
+    "list": {
+      "icon": "list",
+      "captions": {
+        "en": "Marketing List",
+        "fr": "Liste marketing"
+      }
+    },
+    "solution": {
+      "icon": "salesforce-standard-article",
+      "captions": {
+        "en": "Solution",
+        "fr": "Solution"
+      },
+      "shouldDisplayLabel": true
+    },
+    "task": {
+      "icon": "salesforce-standard-task",
+      "captions": {
+        "en": "Task",
+        "fr": "Tâche"
+      },
+      "shouldDisplayLabel": true
+    },
+    "user": {
+      "icon": "user",
+      "captions": {
+        "en": "User",
+        "fr": "Utilisateur"
+      }
+    },
+    "attachment": {
+      "icon": "attachment",
+      "captions": {
+        "en": "Attachment",
+        "fr": "Attachement"
+      }
+    },
+    "casecomment": {
+      "icon": "salesforce-standard-feedback",
+      "captions": {
+        "en": "Case Comment",
+        "fr": "Commentaire sur un cas"
+      }
+    },
+    "opportunity": {
+      "icon": "salesforce-standard-opportunity",
+      "captions": {
+        "en": "Opportunity",
+        "fr": "Opportunité"
+      }
+    },
+    "opportunityproduct": {
+      "icon": "salesforce-standard-opportunity",
+      "captions": {
+        "en": "Opportunity Product",
+        "fr": "Produit d'opportunité"
+      }
+    },
+    "feeditem": {
+      "icon": "salesforce-standard-post",
+      "captions": {
+        "en": "Chatter",
+        "fr": "Chatter"
+      }
+    },
+    "feedcomment": {
+      "icon": "salesforce-standard-post",
+      "captions": {
+        "en": "Chatter",
+        "fr": "Chatter"
+      }
+    },
+    "note": {
+      "icon": "salesforce-standard-note",
+      "captions": {
+        "en": "Note",
+        "fr": "Note"
+      }
+    },
+    "product": {
+      "icon": "product",
+      "captions": {
+        "en": "Product",
+        "fr": "Produit"
+      }
+    },
+    "partner": {
+      "icon": "user",
+      "captions": {
+        "en": "Partner",
+        "fr": "Partenaire"
+      }
+    },
+    "queueitem": {
+      "icon": "list",
+      "captions": {
+        "en": "Queue Item",
+        "fr": "Élément de file d'attente"
+      }
+    },
+    "quote": {
+      "icon": "salesforce-standard-quotes",
+      "captions": {
+        "en": "Quote",
+        "fr": "Devis"
+      }
+    },
+    "salesliterature": {
+      "icon": "kb",
+      "captions": {
+        "en": "Sales Literature",
+        "fr": "Documentation commerciale"
+      },
+      "shouldDisplayLabel": true
+    },
+    "salesorder": {
+      "icon": "salesforce-standard-orders",
+      "captions": {
+        "en": "Sales Order",
+        "fr": "Commande"
+      },
+      "shouldDisplayLabel": true
+    },
+    "service": {
+      "icon": "list",
+      "captions": {
+        "en": "Service",
+        "fr": "Service"
+      },
+      "shouldDisplayLabel": true
+    },
+    "socialprofile": {
+      "icon": "user",
+      "captions": {
+        "en": "Social Profile",
+        "fr": "Profile social"
+      },
+      "shouldDisplayLabel": true
+    },
+    "kbdocumentation": {
+      "icon": "salesforce-standard-article",
+      "captions": {
+        "en": "Documentation",
+        "fr": "Documentation"
+      },
+      "shouldDisplayLabel": true
+    },
+    "kbtechnicalarticle": {
+      "icon": "salesforce-standard-article",
+      "captions": {
+        "en": "Documentation",
+        "fr": "Documentation"
+      },
+      "shouldDisplayLabel": true
+    },
+    "kbsolution": {
+      "icon": "salesforce-standard-article",
+      "captions": {
+        "en": "Solution",
+        "fr": "Solution"
+      },
+      "shouldDisplayLabel": true
+    },
+    "kbknowledgearticle": {
+      "icon": "salesforce-standard-article",
+      "captions": {
+        "en": "Knowledge Article",
+        "fr": "Article de base de connaissance"
+      },
+      "shouldDisplayLabel": true
+    },
+    "kbattachment": {
+      "icon": "salesforce-standard-article",
+      "captions": {
+        "en": "Attachment",
+        "fr": "Attachement"
+      }
+    },
+    "kbarticle": {
+      "icon": "salesforce-standard-article",
+      "captions": {
+        "en": "Article",
+        "fr": "Article"
+      }
+    },
+    "kbarticlecomment": {
+      "icon": "list",
+      "captions": {
+        "en": "Article Comment",
+        "fr": "Commentaire d'article"
+      }
+    },
+    "knowledgearticle": {
+      "icon": "salesforce-standard-article",
+      "captions": {
+        "en": "Knowledge Article",
+        "fr": "Article de base de connaissance"
+      }
     }
+  }
 }
