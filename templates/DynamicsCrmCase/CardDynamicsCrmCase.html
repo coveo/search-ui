@@ -10,14 +10,8 @@
   <div class="coveo-result-row">
     <div class="coveo-result-cell" style="padding-top:5px; padding-bottom:5px">
       <div class="CoveoText" data-value="Description" data-weight="bold"></div>
-      <div class="CoveoExcerpt">
-      </div>
-    </div>
-  </div>
-  <div class="coveo-result-row">
-    <div class="coveo-result-cell">
-      <div class="CoveoText" data-value="Modified" data-weight="bold"></div>
-      <div class="CoveoFieldValue" data-field="@date" data-helper="emailDateTime" data-helper-options-always-include-time="true"></div>
+      <span class="CoveoExcerpt">
+      </span>
     </div>
   </div>
   <div class="CoveoCardActionBar">
@@ -25,22 +19,28 @@
     <div class="CoveoCardOverlay" data-title="Details" data-icon="coveo-sprites-main-search-active">
       <table class="CoveoFieldTable" data-allow-minimization="false">
         <tbody>
-          <tr data-field="@dyname" data-caption="Name">
+          <tr data-field="@dysubjectidstring" data-caption="Subject">
           </tr>
-          <tr data-field="@dytotalamount" data-caption="Total" data-helper="currency">
+          <tr data-field="@dyticketnumber" data-caption="Case Number">
           </tr>
-          <tr data-field="@dystatuscodestring" data-caption="Status">
+          <tr data-field="@dyprioritycodestring" data-caption="Priority">
+          </tr>
+          <tr data-field="@dycaseorigincodestring" data-caption="Origin">
           </tr>
           <tr data-field="@dycustomeridstring" data-caption="Customer">
           </tr>
-          <tr data-field="@dyjobtitle" data-caption="Work title">
+          <tr data-field="@dyowneridstring" data-caption="Owner">
           </tr>
-          <tr data-field="@dyemailaddress1" data-caption="Email" data-helper="email" data-html-value="true">
+          <tr data-field="@dystatuscodestring" data-caption="Status">
           </tr>
-          <tr data-field="@dytelephone1" data-caption="Phone">
+          <tr data-field="@dycontactidstring" data-caption="Contact">
           </tr>
         </tbody>
       </table>
+    </div>
+    <div class="CoveoCardOverlay" data-title="Replies" data-icon="coveo-sprites-main-search-active">
+      <div class="CoveoResultFolding" data-result-template-id="MobileChatter" data-more-caption="ShowAllReplies" data-less-caption="ShowOnlyMostRelevantReplies">
+      </div>
     </div>
     <div class="CoveoFollowItem"></div>
   </div>

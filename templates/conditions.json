@@ -39,6 +39,10 @@
     "priority": 3,
     "value": "raw.dyincidentid != null && Coveo.DeviceUtils.isSmallScreenWidth()"
   },
+  "CardDynamicsCrmCase": {
+    "priority": 3,
+    "value": "raw.dyincidentid != null && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
   "DynamicsCrmCase": {
     "priority": 2,
     "value": "raw.dyincidentid != null"
