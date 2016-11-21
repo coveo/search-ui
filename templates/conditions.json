@@ -1,7 +1,11 @@
 {
   "MobileChatter": {
     "priority": 2,
-    "value": "(raw.objecttype == 'FeedItem' || raw.objecttype == 'FeedComment') && (Coveo.DeviceUtils.isSmallScreenWidth() || options.layout === 'card')"
+    "value": "(raw.objecttype == 'FeedItem' || raw.objecttype == 'FeedComment') && Coveo.DeviceUtils.isSmallScreenWidth()"
+  },
+  "CardChatter": {
+    "priority": 2,
+    "value": "(raw.objecttype == 'FeedItem' || raw.objecttype == 'FeedComment') && options.layout === 'card'"
   },
   "Chatter": {
     "priority": 1,
