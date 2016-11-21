@@ -26,11 +26,11 @@ export class CardActionBar extends Component {
    */
   static options: ICardActionBarOptions = {
     /**
-     * Specifies if the action bar is hidden unless the cursor clicks its parent
+     * Specifies if the CardActionBar is hidden unless the cursor clicks its parent
      * `Result` component.
      *
      * By default, it is hidden and a visual indicator is appended to the parent
-     * result.
+     * `Result`.
      */
     hidden: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };

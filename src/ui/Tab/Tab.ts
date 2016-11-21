@@ -102,10 +102,9 @@ export class Tab extends Component {
     /**
      * Specifies the default layout when this tab is selected.<br/>
      * The value must be one of "list", "card", or "table".<br/>
-     * This parameter is overridden by by a URL parameter.<br/>
+     * This parameter is overridden by a URL parameter.<br/>
      * Optional. If not specified, the first available layout will be choosed.
      */
-    // TODO: Add validator when merged
     layout: ComponentOptions.buildStringOption(),
     /**
      * Specifies whether the filter expression should be included in the constant part of the query.<br/>
@@ -133,8 +132,8 @@ export class Tab extends Component {
     /**
      * Specifies if the responsive mode should be enabled for the tabs. Responsive mode will make the overflowing tabs dissapear and instead
      * be availaible using a dropdown button. Responsive tabs are enabled when tabs overflow or when the width of the search interface
-     * becomes too small. 
-     * 
+     * becomes too small.
+     *
      * Disabling reponsive mode for one tab will disable it for all tabs.
      * Therefore, this options only needs to be set on one tab to be effective.
      * The default value is `true`.

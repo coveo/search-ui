@@ -22,7 +22,7 @@ export type ValidLayout = 'list' | 'card' | 'table';
  * different layouts.
  *
  * It will automatically populate itself with buttons to switch through {@link
- * ResultList}s with have a valid `data-layout` attribute.
+ * ResultList}s which each have a valid `data-layout` attribute.
  */
 export class ResultLayout extends Component {
   static ID = 'ResultLayout';
@@ -56,7 +56,7 @@ export class ResultLayout extends Component {
   }
 
   /**
-   * Change the current layout.<br/>
+   * Change the current layout.
    * @param layout The new layout. Available values are `list`, `card` and `table`.
    */
   public changeLayout(layout: ValidLayout) {
@@ -115,15 +115,14 @@ export class ResultLayout extends Component {
   private addButton(layout?: string) {
     if (_.keys(this.buttons).length === 0) {
       setTimeout(() => {
-        // If the QSM doesn't have any value for layout (doesn't call a state-change), we set the
-        // active layout to the first one.
+        // If the QueryStateModel doesn't have any value for layout (doesn't
+        // call a state-change), we set the active layout to the first one.
         if (this.getModelValue() === '') {
           this.bind.oneRootElement(QueryEvents.querySuccess, () => this.changeLayout(<ValidLayout>layout));
         }
       });
     }
     const btn = $$('span', { className: 'coveo-result-layout-selector' }, layout);
-    // TODO: Icon classname temporary
     btn.prepend($$('span', { className: `coveo-icon coveo-sprites-${layout}-layout` }).el);
     if (layout === this.currentLayout) {
       btn.addClass('coveo-selected');

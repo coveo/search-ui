@@ -35,8 +35,8 @@ export class Backdrop extends Component {
      */
     overlayColor: ComponentOptions.buildStringOption(),
     /**
-     * If true, the overlay color will instead be rendered as a gradient from
-     * `overlayColor` to transparent.
+     * If true, the overlay color will instead be rendered as a top-to-bottom
+     * gradient from `overlayColor` to transparent.
      *
      * The default value is `false`.
      */
