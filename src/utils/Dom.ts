@@ -656,14 +656,14 @@ export class Dom {
   /**
    * Returns the offset width of the element
    */
-  public width() {
+  public width(): number {
     return this.el.offsetWidth;
   }
 
   /**
    * Returns the offset height of the element
    */
-  public height() {
+  public height(): number {
     return this.el.offsetHeight;
   }
   private traverseAncestorForClass(current = this.el, className: string): HTMLElement {

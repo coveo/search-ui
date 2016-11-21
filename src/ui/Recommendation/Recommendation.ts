@@ -16,8 +16,8 @@ import {$$} from '../../utils/Dom';
 import {INoResultsEventArgs} from '../../events/QueryEvents';
 import {IQueryErrorEventArgs} from '../../events/QueryEvents';
 import {IComponentBindings} from '../Base/ComponentBindings';
-
-declare var coveoanalytics: CoveoAnalytics.CoveoUA;
+import {ResponsiveRecommendation} from '../ResponsiveComponents/ResponsiveRecommendation';
+import {history} from 'coveo.analytics';
 
 export interface IRecommendationOptions extends ISearchInterfaceOptions {
   mainSearchInterface?: HTMLElement;
@@ -26,6 +26,9 @@ export interface IRecommendationOptions extends ISearchInterfaceOptions {
   optionsToUse?: string[];
   sendActionsHistory?: boolean;
   hideIfNoResults?: boolean;
+  enableResponsiveMode?: boolean;
+  responsiveBreakpoint?: number;
+  dropdownHeaderLabel?: string;
 }
 
 /**
@@ -89,14 +92,39 @@ export class Recommendation extends SearchInterface implements IComponentBinding
         }
         return value;
       }
-    })
+    }),
 
+    /**
+     * Specifies if the responsive mode should be enabled on the recommendation component. Responsive mode will make the recommendation component
+     * dissapear and instead be availaible using a dropdown button. The responsive recommendation component is enabled when the width
+     * of the element the search interface is bound to reaches 800 pixels. This value can be modified using {@link Recommendation.options.responsiveBreakpoint}.
+     * 
+     * Disabling reponsive mode for one recommendation component will disable it for all of them.
+     * Therefore, this option only needs to be set on one recommendation component to be effective.
+     * The default value is `true`.
+     */
+    enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
+    /**
+     * Specifies the width of the search interface, in pixels, at which the recommendation component will go into responsive mode. The responsive mode will
+     * be triggered when the width is equal or below this value. The search interface corresponds to the element with the class
+     * `CoveoSearchInterface`.
+     * The default value is `1000`.
+     */
+    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 1000 }),
+
+    /**
+     * Specifies the label of the button that allows to show the recommendation component when in responsive mode.
+     * The default value is "Recommendations". 
+     */
+    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'Recommendations' })
   };
 
   // These are used by the analytics client for recommendation
   // so that clicks event inside the recommendation component can be modified and attached to the main search interface.
   public mainQuerySearchUID: string;
   public mainQueryPipeline: string;
+  public historyStore: CoveoAnalytics.HistoryStore;
 
   private mainInterfaceQuery: IQuerySuccessEventArgs;
   private displayStyle: string;
@@ -122,7 +150,8 @@ export class Recommendation extends SearchInterface implements IComponentBinding
 
     // This is done to allow the component to be included in another search interface without triggering the parent events.
     this.preventEventPropagation();
-
+    this.historyStore = new history.HistoryStore();
+    ResponsiveRecommendation.init(this.root, this, options);
   }
 
   public getId(): string {
@@ -186,12 +215,11 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   }
 
   private getHistory(): string {
-    if (typeof coveoanalytics != 'undefined') {
-      var store = new coveoanalytics.history.HistoryStore();
-      return JSON.stringify(store.getHistory());
-    } else {
-      return '[]';
+    let historyFromStore = this.historyStore.getHistory();
+    if (historyFromStore == null) {
+      historyFromStore = [];
     }
+    return JSON.stringify(historyFromStore);
   }
 
   private preventEventPropagation() {

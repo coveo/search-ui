@@ -27,6 +27,7 @@ import {IDuringQueryEventArgs} from '../../events/QueryEvents';
 import {PendingSearchAsYouTypeSearchEvent} from '../Analytics/PendingSearchAsYouTypeSearchEvent';
 import {Utils} from '../../utils/Utils';
 import {MagicBox} from '../../ExternalModulesShim';
+import {StandaloneSearchInterface} from '../SearchInterface/SearchInterface';
 
 export interface IPopulateOmniboxSuggestionsEventArgs {
   omnibox: Omnibox;
@@ -131,7 +132,7 @@ export class Omnibox extends Component {
   private skipRevealAutoSuggest = false;
 
   /**
-   * Create a new omnibox with, enable required addons, and bind events on letious query events.
+   * Create a new omnibox with, enable required addons, and bind events on various query events.
    */
   constructor(public element: HTMLElement, public options?: IOmniboxOptions, bindings?: IComponentBindings) {
     super(element, Omnibox.ID, bindings);
@@ -247,7 +248,7 @@ export class Omnibox extends Component {
     this.magicBox.onmove = () => {
       // We assume that once the user has moved it's selection, it becomes an explicit omnibox analytics event
       if (this.isRevealAutoSuggestion()) {
-        this.modifyEventTo = analyticsActionCauseList.omniboxAnalytics;
+        this.modifyEventTo = this.getOmniboxAnalyticsEventCause();
       }
       this.movedOnce = true;
     };
@@ -319,7 +320,7 @@ export class Omnibox extends Component {
       if (!this.isRevealAutoSuggestion()) {
         this.usageAnalytics.cancelAllPendingEvents();
         this.triggerNewQuery(false, () => {
-          this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.omniboxAnalytics, this.buildCustomDataForPartialQueries(index, suggestions));
+          this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(this.getOmniboxAnalyticsEventCause(), this.buildCustomDataForPartialQueries(index, suggestions));
         });
       } else if (this.isRevealAutoSuggestion() && this.movedOnce) {
         this.handleRevealAutoSuggestionWithKeyboard(index, suggestions);
@@ -368,7 +369,7 @@ export class Omnibox extends Component {
       clearTimeout(this.searchAsYouTypeTimeout);
       this.searchAsYouTypeTimeout = undefined;
       this.triggerNewQuery(false, () => {
-        this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.omniboxAnalytics, this.buildCustomDataForPartialQueries(index, suggestions));
+        this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(this.getOmniboxAnalyticsEventCause(), this.buildCustomDataForPartialQueries(index, suggestions));
       });
 
     } else {
@@ -376,7 +377,7 @@ export class Omnibox extends Component {
       // Think : user typed slowly, the query returned, and then the user selected a suggestion.
       // Since the analytics event has not yet been sent (search as you type event have a 5 sec delay)
       // modify the pending event, then send the newly modified analytics event immediately.
-      this.modifyEventTo = analyticsActionCauseList.omniboxAnalytics;
+      this.modifyEventTo = this.getOmniboxAnalyticsEventCause();
       this.modifyCustomDataOnPending(index, suggestions);
       this.usageAnalytics.sendAllPendingEvents();
     }
@@ -391,7 +392,7 @@ export class Omnibox extends Component {
       this.clearSearchAsYouType();
       this.usageAnalytics.cancelAllPendingEvents();
       this.triggerNewQuery(false, () => {
-        this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(analyticsActionCauseList.omniboxAnalytics, this.buildCustomDataForPartialQueries(index, suggestions));
+        this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(this.getOmniboxAnalyticsEventCause(), this.buildCustomDataForPartialQueries(index, suggestions));
       });
 
     } else {
@@ -400,7 +401,7 @@ export class Omnibox extends Component {
       // the user chose the first suggestion.
       // this means the query is already returned, but the analytics event is still queued up.
       // modify the analytics event, and send it.
-      this.modifyEventTo = analyticsActionCauseList.omniboxAnalytics;
+      this.modifyEventTo = this.getOmniboxAnalyticsEventCause();
       this.modifyCustomDataOnPending(index, suggestions);
       this.usageAnalytics.sendAllPendingEvents();
     }
@@ -616,6 +617,13 @@ export class Omnibox extends Component {
   private clearSearchAsYouType() {
     clearTimeout(this.searchAsYouTypeTimeout);
     this.searchAsYouTypeTimeout = undefined;
+  }
+
+  private getOmniboxAnalyticsEventCause() {
+    if (this.searchInterface instanceof StandaloneSearchInterface) {
+      return analyticsActionCauseList.omniboxFromLink;
+    }
+    return analyticsActionCauseList.omniboxAnalytics;
   }
 }
 

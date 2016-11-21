@@ -53,6 +53,7 @@ import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
 import {IStringMap} from '../../rest/GenericParam';
 import {FacetValuesOrder} from './FacetValuesOrder';
 import {ValueElement} from './ValueElement';
+import {SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs} from '../../events/SearchAlertEvents';
 
 export interface IFacetOptions {
   title?: string;
@@ -96,6 +97,7 @@ export interface IFacetOptions {
   dependsOn?: string;
   enableResponsiveMode?: boolean;
   responsiveBreakpoint?: number;
+  dropdownHeaderLabel?: string;
 }
 
 /**
@@ -389,8 +391,8 @@ export class Facet extends Component {
       return null;
     }),
     /**
-     * Specifies if the responsive mode should be enabled on the facets. Responsive mode will make the facet dissapear and instead be
-     * availaible using a dropdown button. Responsive facets are enabled when the width of the element the search interface is bound to
+     * Specifies if the responsive mode should be enabled on the facets. Responsive mode will make the facet disappear and will instead be
+     * available using a dropdown button. Responsive facets are enabled when the width of the element the search interface is bound to
      * reaches 800 pixels. This value can be modified using {@link Facet.options.responsiveBreakpoint}.
      * 
      * Disabling reponsive mode for one facet will disable it for all facets.
@@ -404,7 +406,13 @@ export class Facet extends Component {
      * `CoveoSearchInterface`.
      * The default value is `800`.
      */
-    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 800 })
+    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 800 }),
+    /**
+     * Specifies the label of the button that allows to show the facets when in responsive mode. If it is specified more than once, the
+     * first occurence of the option will be used.
+     * The default value is "Filters".
+     */
+    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption()
   };
 
   public facetQueryController: FacetQueryController;
@@ -480,7 +488,9 @@ export class Facet extends Component {
     this.initComponentStateEvents();
     this.initOmniboxEvents();
     this.initBreadCrumbEvents();
+    this.initSearchAlertEvents();
     this.updateNumberOfValues();
+
 
     this.resize = () => {
       if (!this.disabled) {
@@ -863,6 +873,26 @@ export class Facet extends Component {
     this.rebuildValueElements();
   }
 
+  /**
+   * Collapse the facet.
+   */
+  public collapse() {
+    this.ensureDom();
+    if (this.facetHeader) {
+      this.facetHeader.collapseFacet();
+    }
+  }
+
+  /**
+   * Expand the facet.
+   */
+  public expand() {
+    this.ensureDom();
+    if (this.facetHeader) {
+      this.facetHeader.expandFacet();
+    }
+  }
+
   public triggerNewQuery(beforeExecuteQuery?: () => void) {
     if (!beforeExecuteQuery) {
       this.queryController.executeQuery({ ignoreWarningSearchEvent: true });
@@ -893,6 +923,12 @@ export class Facet extends Component {
       args.breadcrumbs.push({
         element: element
       });
+    }
+  }
+
+  protected handlePopulateSearchAlerts(args: ISearchAlertsPopulateMessageEventArgs) {
+    if (this.values.hasSelectedOrExcludedValues()) {
+      args.text.push(new BreadcrumbValueList(this, this.values.getSelected().concat(this.values.getExcluded()), BreadcrumbValueElement).buildAsString());
     }
   }
 
@@ -961,6 +997,10 @@ export class Facet extends Component {
       this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) => this.handlePopulateBreadcrumb(args));
       this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, (args: IClearBreadcrumbEventArgs) => this.handleClearBreadcrumb());
     }
+  }
+
+  protected initSearchAlertEvents() {
+    this.bind.onRootElement(SearchAlertsEvents.searchAlertsPopulateMessage, (args: ISearchAlertsPopulateMessageEventArgs) => this.handlePopulateSearchAlerts(args));
   }
 
   protected handleOmniboxWithStaticValue(eventArg: IPopulateOmniboxEventArgs) {

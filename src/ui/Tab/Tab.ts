@@ -26,6 +26,7 @@ export interface ITabOptions {
   pipeline?: string;
   maximumAge?: number;
   enableResponsiveMode?: boolean;
+  dropdownHeaderLabel?: string;
 }
 
 /**
@@ -138,7 +139,14 @@ export class Tab extends Component {
      * Therefore, this options only needs to be set on one tab to be effective.
      * The default value is `true`.
      */
-    enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true })
+    enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
+    /**
+     * Specifies the label of the button that allows to show the hidden tabs when in responsive mode. If it is specified more than once, the
+     * first occurence of the option will be used.
+     * The default value is "More". 
+     */
+    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption()
 
   };
 

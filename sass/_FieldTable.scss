@@ -80,6 +80,13 @@
       font-weight: bold;
     }
   }
+  &.coveo-with-label {
+    display: inline-block;
+  }
+  .coveo-field-caption {
+    color: $color-blueish-gray;
+    margin-right: 10px;
+  }
 }
 
 .coveo-card-overlay .CoveoFieldTable {

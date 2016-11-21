@@ -153,6 +153,7 @@
     "src/ui/Analytics/RecommendationAnalyticsClient.ts",
     "src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts",
     "src/ui/AuthenticationProvider/AuthenticationProvider.ts",
+    "src/ui/Backdrop/Backdrop.ts",
     "src/ui/Base/BaseComponent.ts",
     "src/ui/Base/Component.ts",
     "src/ui/Base/ComponentBindings.ts",
@@ -166,6 +167,8 @@
     "src/ui/Base/ResultsComponentBindings.ts",
     "src/ui/Base/RootComponent.ts",
     "src/ui/Breadcrumb/Breadcrumb.ts",
+    "src/ui/CardActionBar/CardActionBar.ts",
+    "src/ui/CardOverlay/CardOverlay.ts",
     "src/ui/ChatterLikedBy/ChatterLikedBy.ts",
     "src/ui/ChatterPostAttachment/ChatterPostAttachment.ts",
     "src/ui/ChatterPostedBy/ChatterPostedBy.ts",
@@ -249,6 +252,9 @@
     "src/ui/ResponsiveComponents/ResponsiveComponentsUtils.ts",
     "src/ui/ResponsiveComponents/ResponsiveFacets.ts",
     "src/ui/ResponsiveComponents/ResponsiveTabs.ts",
+    "src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdown.ts",
+    "src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownHeader.ts",
+    "src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownContent.ts",
     "src/ui/ResultAttachments/DefaultResultAttachmentTemplate.ts",
     "src/ui/ResultAttachments/ResultAttachments.ts",
     "src/ui/ResultFolding/DefaultFoldingTemplate.ts",
@@ -313,9 +319,6 @@
     "src/utils/StringUtils.ts",
     "src/utils/TimeSpanUtils.ts",
     "src/utils/Utils.ts",
-    "src/UtilsModules.ts",
-    "src/ui/Backdrop/Backdrop.ts",
-    "src/ui/CardActionBar/CardActionBar.ts",
-    "src/ui/CardOverlay/CardOverlay.ts"
+    "src/UtilsModules.ts"
   ]
 }
