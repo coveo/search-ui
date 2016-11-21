@@ -68,6 +68,10 @@ export interface ISubscriptionRequest {
    * Frequency of the alerts
    */
   frequency?: string;
+  /**
+   * The name that should be used by the API to identify this subscription
+   */
+  name: string;
 }
 
 /**
