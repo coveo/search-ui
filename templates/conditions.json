@@ -175,6 +175,10 @@
     "priority": 2,
     "value": "raw.connectortype == 'SlackCrawler' && Coveo.DeviceUtils.isSmallScreenWidth()"
   },
+  "CardSlack": {
+    "priority": 2,
+    "value": "raw.connectortype == 'SlackCrawler' && options.layout === 'card'"
+  },
   "Slack": {
     "priority": 1,
     "value": "raw.connectortype == 'SlackCrawler'"
