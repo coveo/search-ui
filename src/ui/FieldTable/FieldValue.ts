@@ -268,7 +268,7 @@ export class FieldValue extends Component {
     return element.el;
   }
 
-  private prependTextCaptionToDom(): void {
+  protected prependTextCaptionToDom(): void {
     let elem = this.getValueContainer();
     $$(elem).prepend(this.renderTextCaption());
     // Add a class to the container so the value and the caption wrap together.

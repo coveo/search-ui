@@ -83,7 +83,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
   }
 
   public logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement) {
-    var metaObject = this.buildMetaObject(meta);
+    let metaObject = this.buildMetaObject(meta, result);
     this.pushClickEvent(actionCause, metaObject, result, element);
   }
 
@@ -269,10 +269,26 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     return this.resolveActiveTabFromElement(element) || 'default';
   }
 
-  private buildMetaObject<TMeta>(meta: TMeta): IChangeableAnalyticsMetaObject {
-    var build: IChangeableAnalyticsMetaObject = _.extend({}, meta);
-    build['JSUIVersion'] = version.lib + ';' + version.product;
-    return build;
+  private buildMetaObject<TMeta>(meta: TMeta, result?: IQueryResult): IChangeableAnalyticsMetaObject {
+    let modifiedMeta: IChangeableAnalyticsMetaObject = _.extend({}, meta);
+    modifiedMeta['JSUIVersion'] = version.lib + ';' + version.product;
+
+    if (result) {
+      let fieldValue;
+      let fieldUsed;
+      let uniqueId = result.raw['uniqueid'];
+      if (uniqueId) {
+        fieldUsed = 'uniqueid';
+        fieldValue = uniqueId;
+      } else {
+        fieldUsed = 'urihash';
+        fieldValue = result.raw['urihash'];
+      }
+      modifiedMeta['contentIDKey'] = fieldUsed;
+      modifiedMeta['contentIDValue'] = fieldValue;
+    }
+
+    return modifiedMeta;
   }
 
   private cancelAnyPendingSearchAsYouTypeEvent() {

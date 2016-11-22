@@ -31,6 +31,7 @@ interface IComponentInitialization {
 
 export class ResponsiveComponentsManager {
 
+  public static DROPDOWN_HEADER_WRAPPER_CSS_CLASS = 'coveo-dropdown-header-wrapper';
   private static componentManagers: ResponsiveComponentsManager[] = [];
   private static remainingComponentInitializations: number = 0;
   private static componentInitializations: IComponentInitialization[] = [];
@@ -93,7 +94,7 @@ export class ResponsiveComponentsManager {
 
   constructor(root: Dom) {
     this.coveoRoot = root;
-    this.dropdownHeadersWrapper = $$('div', { className: 'coveo-dropdown-header-wrapper' });
+    this.dropdownHeadersWrapper = $$('div', { className: ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS });
     this.searchBoxElement = this.getSearchBoxElement();
     this.resizeListener = _.debounce(() => {
       this.addDropdownHeaderWrapperIfNeeded();

@@ -50,12 +50,12 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     return null;
   }
 
-  constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions) {
+  constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions, responsiveDropdown?: ResponsiveDropdown) {
     this.recommendationRoot = this.getRecommendationRoot();
     this.dropdownHeaderLabel = options.dropdownHeaderLabel;
     this.breakpoint = this.defineResponsiveBreakpoint(options);
     this.logger = new Logger(this);
-    this.dropdown = this.buildDropdown();
+    this.dropdown = this.buildDropdown(responsiveDropdown);
     this.facets = this.getFacets();
     this.facetSliders = this.getFacetSliders();
     this.registerOnOpenHandler();
@@ -85,7 +85,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
 
   private changeToSmallMode() {
     this.dropdown.close();
-    $$(this.coveoRoot.find('.coveo-dropdown-header-wrapper')).el.appendChild(this.dropdown.dropdownHeader.element.el);
+    $$(this.coveoRoot.find(`.${ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS}`)).el.appendChild(this.dropdown.dropdownHeader.element.el);
     this.disableFacetPreservePosition();
     ResponsiveComponentsUtils.activateSmallRecommendation(this.coveoRoot);
     ResponsiveComponentsUtils.activateSmallRecommendation(this.recommendationRoot);
@@ -98,10 +98,10 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     ResponsiveComponentsUtils.deactivateSmallRecommendation(this.recommendationRoot);
   }
 
-  private buildDropdown(): ResponsiveDropdown {
+  private buildDropdown(responsiveDropdown?: ResponsiveDropdown): ResponsiveDropdown {
     let dropdownContent = this.buildDropdownContent();
     let dropdownHeader = this.buildDropdownHeader();
-    let dropdown = new ResponsiveDropdown(dropdownContent, dropdownHeader, this.coveoRoot);
+    let dropdown = responsiveDropdown ? responsiveDropdown : new ResponsiveDropdown(dropdownContent, dropdownHeader, this.coveoRoot);
     dropdown.disablePopupBackground();
     return dropdown;
   }
@@ -181,15 +181,11 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
   }
 
   private registerOnOpenHandler(): void {
-    this.dropdown.registerOnOpenHandler(() => {
-      this.drawFacetSliderGraphs();
-    });
+    this.dropdown.registerOnOpenHandler(this.drawFacetSliderGraphs, this);
   }
 
   private registerOnCloseHandler(): void {
-    this.dropdown.registerOnCloseHandler(() => {
-      this.dismissFacetSearches();
-    });
+    this.dropdown.registerOnCloseHandler(this.dismissFacetSearches, this);
   }
 
   private getRecommendationRoot(): Dom {
