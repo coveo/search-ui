@@ -6,7 +6,7 @@ const os = require('os');
 const isWindows = os.platform() === 'win32';
 const rename = require('gulp-rename');
 
-gulp.task('compile', ['addEolDependencies', 'deprecatedDependencies'], shell.task([
+gulp.task('compile', ['addEolDependencies', 'deprecatedDependencies', 'prepareSass'], shell.task([
   'node node_modules/webpack/bin/webpack.js'
 ]));
 

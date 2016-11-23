@@ -1,4 +1,4 @@
-/*import {Component} from '../Base/Component';
+import {Component} from '../Base/Component';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
@@ -12,7 +12,7 @@ import {IAdvancedSearchInput, IAdvancedSearchPrebuiltInput, IAdvancedSearchSecti
 import {AdvancedSearchInputFactory} from './AdvancedSearchInputFactory';
 import {IQueryOptions} from '../../controllers/QueryController';
 import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {QuerySummaryEvents} from '../../events/QuerySummaryEvents';*/
+import {QuerySummaryEvents} from '../../events/QuerySummaryEvents';
 import 'styling/_AdvancedSearch';
 
 // export interface IAdvancedSearchOptions {
