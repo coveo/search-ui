@@ -1,4 +1,3 @@
-import {DeviceUtils} from './DeviceUtils';
 import {IQueryResult} from '../rest/QueryResult';
 import {SearchEndpoint} from '../rest/SearchEndpoint';
 

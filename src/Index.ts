@@ -1,4 +1,4 @@
-export * from './BaseModules';
+/*export * from './BaseModules';
 export * from './MiscModules';
 export * from './RestModules';
 export * from './EventsModules';
@@ -92,7 +92,7 @@ export {QueryboxQueryParameters} from './ui/Querybox/QueryboxQueryParameters';
 export {ImageResultList} from './ui/ImageResultList/ImageResultList';
 export {jQueryInstance as $} from './ui/Base/CoveoJQuery';
 export {underscoreInstance as _} from './ui/Base/CoveoUnderscore';
-export {AdvancedSearch} from './ui/AdvancedSearch/AdvancedSearch';
+*/export {AdvancedSearch} from './ui/AdvancedSearch/AdvancedSearch';/*
 export {NumericSpinner} from './ui/AdvancedSearch/Form/NumericSpinner';
 export {DatePicker} from './ui/AdvancedSearch/Form/DatePicker';
 export {Dropdown} from './ui/AdvancedSearch/Form/Dropdown';
@@ -111,4 +111,4 @@ export {ChatterUtils} from './utils/ChatterUtils';
 export {Logo} from './ui/Logo/Logo';
 
 import {swapVar} from './SwapVar';
-swapVar(this);
+swapVar(this);*/

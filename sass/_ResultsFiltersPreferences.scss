@@ -71,7 +71,7 @@
     top: 2px;
     left: 25px;
     .coveo-icon {
-      @extend .coveo-sprites-clear-active-filters;
+      @extend .coveo-sprites-clear-active-filters !optional;
     }
     &:hover {
       cursor: pointer;

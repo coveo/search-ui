@@ -143,11 +143,11 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
   }
 
   #{$selector} {
-    @extend #{$icon};
+    @extend #{$icon} !optional;
   }
   &:hover {
     #{$selector} {
-      @extend #{$icon-clear};
+      @extend #{$icon-clear} !optional;
     }
   }
 }
