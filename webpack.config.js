@@ -7,7 +7,8 @@ let conf = require('./webpackConfigFiles/webpack.common.config');
 conf = _.extend(conf, {
   entry: {
     'CoveoJsSearch': ['./src/Index.ts'],
-    'CoveoJsSearch.Searchbox': './src/SearchboxIndex.ts'
+    'CoveoJsSearch.Searchbox': './src/SearchboxIndex.ts',
+    'Minimalist': './sass/Minimalist.scss'  
   },
   output: {
     path: require('path').resolve('./bin/js'),
