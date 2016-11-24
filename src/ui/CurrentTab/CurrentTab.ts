@@ -8,6 +8,7 @@ import {Tab} from '../Tab/Tab';
 import {Assert} from '../../misc/Assert';
 import {Initialization} from '../Base/Initialization';
 import {$$} from '../../utils/Dom';
+import 'styling/_CurrentTab';
 
 
 export interface ICurrentTabOptions {

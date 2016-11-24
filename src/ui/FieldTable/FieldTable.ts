@@ -7,6 +7,7 @@ import {Initialization} from '../Base/Initialization';
 import {FieldValue, IFieldValueOptions} from './FieldValue';
 import {$$} from '../../utils/Dom';
 import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
+import 'styling/_FieldTable';
 
 export interface IFieldTableOptions {
   allowMinimization: boolean;

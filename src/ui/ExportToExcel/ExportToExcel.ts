@@ -6,6 +6,7 @@ import {ISettingsPopulateMenuArgs} from '../Settings/Settings';
 import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
+import 'styling/_ExportToExcel';
 
 export interface IExportToExcelOptions {
   numberOfResults?: number;

@@ -10,6 +10,7 @@ import {$$} from '../../utils/Dom';
 import {Utils} from '../../utils/Utils';
 import {Initialization} from '../Base/Initialization';
 import {Assert} from '../../misc/Assert';
+import 'styling/_HiddenQuery';
 
 export interface IHiddenQueryOptions {
   maximumDescriptionLength: number;

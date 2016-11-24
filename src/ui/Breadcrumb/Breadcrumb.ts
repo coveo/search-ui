@@ -9,6 +9,7 @@ import {l} from '../../strings/Strings';
 import {Initialization} from '../Base/Initialization';
 import {QueryEvents} from '../../events/QueryEvents';
 import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
+import 'styling/_Breadcrumb';
 
 export interface IBreadcrumbOptions {
 }

@@ -1,4 +1,6 @@
-﻿$image-transition-time: 0.7s;
+﻿@import "bourbon/bourbon";
+
+$image-transition-time: 0.7s;
 
 .CoveoSearchInterface {
   .CoveoImageResultList {

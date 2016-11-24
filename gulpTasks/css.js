@@ -13,10 +13,8 @@ gulp.task('prepareSass', ['fileTypes', 'sprites'], function () {
           .pipe(gulp.dest('./bin/sass/')),
 
       gulp.src('./node_modules/coveomagicbox/sass/**/*.scss')
-          .pipe(gulp.dest('./bin/sass/MagicBox')),
+          .pipe(gulp.dest('./bin/sass/MagicBox'))
 
-      gulp.src('./sass/**/*')
-          .pipe(gulp.dest('./bin/sass/'))
     ).pipe(event_stream.wait())
 });
 

@@ -24,6 +24,7 @@ import {ResponsiveComponentsUtils} from '../ResponsiveComponents/ResponsiveCompo
 import {Initialization} from '../Base/Initialization';
 import d3 = require('d3');
 import {SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs} from '../../events/SearchAlertEvents';
+import 'styling/_FacetSlider';
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;

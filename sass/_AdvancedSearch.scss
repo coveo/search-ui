@@ -1,6 +1,3 @@
-@import "mixins/preferencePanel";
-@import "Variables";
-
 $spaceBetween: 0 5px;
 
 .CoveoAdvancedSearch {
@@ -15,7 +12,7 @@ $spaceBetween: 0 5px;
 #coveo-advanced-search-in-the-last-select{
   margin-left: 20px;
 
-  .coveo-button {
+  .coveo-button { 
     width: auto;
   }
 }
@@ -53,9 +50,7 @@ $spaceBetween: 0 5px;
     }
   }
 }
-.lmao {
- padding: 5px; 
-}
+
 .coveo-advanced-search-document-input-section {
   margin: 20px 0;
   @include display(flex);
@@ -153,15 +148,4 @@ $spaceBetween: 0 5px;
   & > * {
     margin: 5px 0px 5px 0px;
   }
-}
-
-.message {
-  border: 1px solid #ccc;
-  padding: 10px;
-  color: #333;
-}
-
-.success {
-  @extend .message;
-  border-color: green;
 }

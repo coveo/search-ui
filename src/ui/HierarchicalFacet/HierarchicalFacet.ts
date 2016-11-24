@@ -26,6 +26,7 @@ import {OmniboxHierarchicalValuesList} from './OmniboxHierarchicalValuesList';
 import {HierarchicalFacetValueElement} from './HierarchicalFacetValueElement';
 import {Initialization} from '../Base/Initialization';
 import {ISearchAlertsPopulateMessageEventArgs} from '../../events/SearchAlertEvents';
+import 'styling/_HierarchicalFacet';
 
 export interface IHierarchicalFacetOptions extends IFacetOptions {
   delimitingCharacter?: string;

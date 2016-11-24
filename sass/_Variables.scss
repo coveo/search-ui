@@ -79,17 +79,17 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
 @mixin iconWithHoverState($iconBase, $float:'left', $inactive : 'coveo-disabled') {
   $iconActive: '#{$iconBase}-active';
   .coveo-icon {
-    @extend #{$iconBase};
+    @extend #{$iconBase} !optional;
     float: #{$float};
   }
   &:hover {
     .coveo-icon {
-      @extend #{$iconActive};
+      @extend #{$iconActive} !optional;
     }
   }
   &:hover.#{$inactive} {
     .coveo-icon {
-      @extend #{$iconBase};
+      @extend #{$iconBase} !optional;
     }
   }
 }

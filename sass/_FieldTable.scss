@@ -1,3 +1,4 @@
+@import 'Variables';
 
 .CoveoFieldTable {
   @include defaultRoundedBorder();
@@ -53,7 +54,7 @@
   position: relative;
   top: 2px;
 
-  @extend .coveo-sprites-arrow-down;
+  @extend .coveo-sprites-arrow-down !optional;
   @include transition(opacity 0.5s);
   opacity: 1;
   &.coveo-opened {
@@ -66,7 +67,7 @@
   bottom: 10px;
   right: 10px;
   margin: 0;
-  @extend .coveo-sprites-arrow-up;
+  @extend .coveo-sprites-arrow-up !optional;
   display: none;
   &.coveo-opened {
     display: inline-block;

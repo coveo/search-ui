@@ -49,11 +49,15 @@ function generateSass(json, legacy) {
   // Be careful to output lowercase object types, since the JS UI helpers do the same,
   // and CSS class names are case sensitive. I do that because I can't expect to
   // match all the time the casing output by the connectors.
-
+  var sass = '';
   if (legacy == undefined) {
     legacy = false;
   }
-  var sass = '@mixin GeneratedIcons() {\n';
+
+  if (!legacy) {
+    sass += '@import "./retinaNew";\n@import "./spritesNew";\n';
+  }
+  sass += '@mixin GeneratedIcons() {\n';
   sass += '  .coveo-icon-caption-overlay { display: none; }';
 
   var defaultIcon = legacy ? '.coveo-sprites-fileType-default' : '.coveo-sprites-custom';
@@ -65,7 +69,7 @@ function generateSass(json, legacy) {
 
   if (!legacy) {
     sass += '  &.objecttype.coveo-small {\n';
-    sass += '    @extend ' + defaultIcon + '-small;\n';
+    sass += '    @extend ' + defaultIcon + '-small !optional;\n';
     sass += generateInnerObjecttype(json, legacy, true);
     sass += '  }\n';
   }
@@ -77,7 +81,7 @@ function generateSass(json, legacy) {
 
   if (!legacy) {
     sass += '  &.filetype.coveo-small, &.sysfiletype.coveo-small {\n';
-    sass += '    @extend ' + defaultIcon + '-small;\n';
+    sass += '    @extend ' + defaultIcon + '-small !optional;\n';
     sass += generateInnerFiletype(json, legacy, true);
     sass += '  }\n';
   }
@@ -98,7 +102,7 @@ function generateInnerObjecttype(json, legacy, small) {
     ret += '    &.' + capitalizeFirstLetter(objecttype) + " , ";
     ret += '    &.' + objecttype.toLowerCase() +
         ' { @extend .coveo-sprites-' + (legacy ? 'fileType-' : '' ) +
-        json.objecttype[objecttype].icon + (small ? '-small; ' : '; ') +
+        json.objecttype[objecttype].icon + (small ? '-small; ' : ' !optional; ') +
         generateShouldDisplayLabel(json.objecttype[objecttype].shouldDisplayLabel) +
         ' }\n';
   });
@@ -114,7 +118,7 @@ function generateInnerFiletype(json, legacy, small) {
     ensureImageIsValid(filetype, json.filetype[filetype].icon, legacy);
     ret += '    &.' + filetype.toLowerCase() +
         ' { @extend .coveo-sprites-' + (legacy ? 'fileType-' : '' ) +
-        json.filetype[filetype].icon + (small ? '-small; ' : '; ') +
+        json.filetype[filetype].icon + (small ? '-small; ' : ' !optional; ') +
         generateShouldDisplayLabel(json.filetype[filetype].shouldDisplayLabel) +
         '}\n';
 

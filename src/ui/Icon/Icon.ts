@@ -9,6 +9,7 @@ import {Utils} from '../../utils/Utils';
 import {FileTypes, IFileTypeInfo} from '../Misc/FileTypes';
 import {Quickview} from '../Quickview/Quickview';
 import {$$} from '../../utils/Dom';
+import 'styling/_Icons';
 
 /**
  * Possible options for an {@link Icon} component.

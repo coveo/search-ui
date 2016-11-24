@@ -6,6 +6,7 @@ import {ResultListEvents} from '../../events/ResultListEvents';
 import {Initialization} from '../Base/Initialization';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {$$} from '../../utils/Dom';
+import 'styling/_ImageResultList';
 
 export interface IImageResultListOptions extends IResultListOptions {
   layoutType?: string;

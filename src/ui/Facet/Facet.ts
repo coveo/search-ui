@@ -55,6 +55,7 @@ import {FacetValuesOrder} from './FacetValuesOrder';
 import {ValueElement} from './ValueElement';
 import {SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs} from '../../events/SearchAlertEvents';
 import 'styling/_Facet';
+import 'styling/_FacetFooter';
 
 export interface IFacetOptions {
   title?: string;

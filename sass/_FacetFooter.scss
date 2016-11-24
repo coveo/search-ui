@@ -1,3 +1,5 @@
+@import 'Variables';
+
 .coveo-facet-more, .coveo-facet-less {
   width: 100%;
   height: 15px;
@@ -14,9 +16,9 @@
   border-bottom-left-radius: $default-border-radius;
   border-bottom-right-radius: $default-border-radius;
   .coveo-icon {
-    @extend .coveo-sprites-arrow-down;
+    @extend .coveo-sprites-arrow-down !optional;
     position: relative;
-    top:1px;
+    top: 1px;
   }
   display: none;
   &.coveo-active {
@@ -26,7 +28,7 @@
 
 .coveo-facet-less {
   .coveo-icon {
-    @extend .coveo-sprites-arrow-up;
+    @extend .coveo-sprites-arrow-up !optional;
   }
   display: none;
   &.coveo-active {

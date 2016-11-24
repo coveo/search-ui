@@ -5,6 +5,7 @@ import {ComponentOptions} from '../Base/ComponentOptions';
 import {Assert} from '../../misc/Assert';
 import {HighlightUtils} from '../../utils/HighlightUtils';
 import {Initialization} from '../Base/Initialization';
+import 'styling/_Excerpt';
 
 /**
  * This component, located in a result template, is used to render the document excerpt,

@@ -16,7 +16,7 @@ if (minimize) {
 
 let sassLoader = { test: /\.scss/ };
 if (live) {
-  sassLoader['loader'] = ExtractTextPlugin.extract('style-loader', '!css!resolve-url!sass-loader');
+  sassLoader['loader'] = ExtractTextPlugin.extract('style-loader', '!css!resolve-url!sass-loader?sourceMap');
 } else {
   sassLoader['loaders'] = ['style?insertAt=bottom', 'css?sourceMap', 'resolve-url', 'sass?sourceMap'];
 }
@@ -76,7 +76,7 @@ module.exports = {
       },
       sassLoader,
       {
-      test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'url-loader', query: {limit: '1', name: '[path][name].[ext]'}
+        test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'url-loader', query: {limit: '1', name: '[path][name].[ext]'}
       }
     ]
   },

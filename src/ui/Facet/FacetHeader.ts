@@ -9,6 +9,7 @@ import {$$} from '../../utils/Dom';
 import {FacetUtils} from './FacetUtils';
 import {l} from '../../strings/Strings';
 import {IAnalyticsFacetOperatorMeta, IAnalyticsFacetMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
+import 'styling/_FacetHeader';
 
 export interface IFacetHeaderOptions {
   facetElement: HTMLElement;

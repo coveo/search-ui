@@ -9,6 +9,7 @@ import {Assert} from '../../misc/Assert';
 import {Initialization} from '../Base/Initialization';
 import {IEndpointError} from '../../rest/EndpointError';
 import {MissingAuthenticationError} from '../../rest/MissingAuthenticationError';
+import 'styling/_ErrorReport';
 
 export interface IErrorReportOptions {
   showDetailedError: boolean;

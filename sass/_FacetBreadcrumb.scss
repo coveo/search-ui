@@ -1,3 +1,5 @@
+@import './mixins/breadcrumb';
+
 .coveo-facet-breadcrumb, .coveo-facet-slider-breadcrumb {
 
   * {
@@ -33,13 +35,13 @@
 .coveo-facet-breadcrumb-multi-icon {
   margin: 0;
   &.coveo-selected {
-    @extend .coveo-sprites-checkbox-hook-active;
+    @extend .coveo-sprites-checkbox-hook-active !optional;
     vertical-align: middle;
     margin-left: 0px;
     margin-right: 5px;
   }
   &.coveo-excluded {
-    @extend .coveo-sprites-facet-checkbox-exclusion;
+    @extend .coveo-sprites-facet-checkbox-exclusion !optional;
     vertical-align: middle;
     margin-left: 0px;
     margin-right: 5px;

@@ -55,7 +55,7 @@
   display: inline-block;
   vertical-align: middle;
   .coveo-folding-footer-icon {
-    @extend .coveo-sprites-arrow-down;
+    @extend .coveo-sprites-arrow-down !optional;
     position: relative;
     top: 1px;
   }
@@ -67,7 +67,7 @@
   }
   display: inline-block;
   .coveo-folding-footer-icon {
-    @extend .coveo-sprites-arrow-up;
+    @extend .coveo-sprites-arrow-up !optional;
     position: relative;
     top: 1px;
   }
