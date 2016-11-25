@@ -23,6 +23,8 @@ export class FacetQueryController {
   public lastGroupByRequest: IGroupByRequest;
   public lastGroupByResult: IGroupByResult;
 
+  private currentSearchPromise: Promise<IQueryResults>;
+
   constructor(public facet: Facet) {
   }
 
@@ -98,7 +100,6 @@ export class FacetQueryController {
    * @returns {Promise|Promise<T>}
    */
   public search(params: FacetSearchParameters, oldLength = params.nbResults): Promise<IIndexFieldValue[]> {
-
     return new Promise((resolve, reject) => {
       let onResult = (fieldValues?: IIndexFieldValue[]) => {
         let newLength = fieldValues.length;
@@ -112,8 +113,11 @@ export class FacetQueryController {
         }
       };
 
-      this.facet.getEndpoint().search(params.getQuery())
-        .then((queryResults: IQueryResults) => {
+      let searchPromise = this.facet.getEndpoint().search(params.getQuery());
+      this.currentSearchPromise = searchPromise;
+
+      searchPromise.then((queryResults: IQueryResults)=> {
+        if (this.currentSearchPromise == searchPromise) {
           // params.getQuery() will generate a query for all excluded values + some new values
           // there is no clean way to do a group by and remove some values
           // so instead we request more values than we need, and crop all the one we don't want
@@ -132,10 +136,13 @@ export class FacetQueryController {
             });
           }
           onResult(_.first(valuesCropped, params.nbResults));
-        })
-        .catch((error: IEndpointError) => {
-          reject(error);
-        });
+        } else {
+          reject();
+        }
+      })
+     .catch((error: IEndpointError) => {
+       reject(error);
+     });
     });
   }
 
