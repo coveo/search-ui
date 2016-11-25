@@ -7,7 +7,9 @@ import {Initialization} from '../../src/ui/Base/Initialization';
 import {Facet} from '../../src/ui/Facet/Facet';
 import {Pager} from '../../src/ui/Pager/Pager';
 import {ResultList} from '../../src/ui/ResultList/ResultList';
+import {Simulate} from '../Simulate';
 declare let coveoanalytics;
+declare let $;
 
 export function InitializationTest() {
   describe('Initialization', () => {
@@ -177,6 +179,17 @@ export function InitializationTest() {
         Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(Component.get(external) instanceof Pager).toBe(true);
+    });
+
+    it('can initialize external components passed in as a jquery instance', () => {
+      Simulate.addJQuery();
+      let external = $('<div class="CoveoPager"></div>');
+      searchInterfaceOptions['externalComponents'] = [external];
+      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+        Initialization.initSearchInterface(root, searchInterfaceOptions);
+      });
+      expect(Component.get(external.get(0)) instanceof Pager).toBe(true);
+      Simulate.removeJQuery();
     });
 
     describe('when initializing recommendation interface', function () {

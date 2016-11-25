@@ -68,7 +68,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
     }
   };
 
-  public needSmallMode(): boolean {
+  private needSmallMode(): boolean {
     if (this.coveoRoot.width() <= ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH) {
       return true;
     } else if (!ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot)) {
@@ -78,11 +78,11 @@ export class ResponsiveTabs implements IResponsiveComponent {
     }
   }
 
-  public changeToSmallMode(): void {
+  private changeToSmallMode(): void {
     ResponsiveComponentsUtils.activateSmallTabs(this.coveoRoot);
   }
 
-  public changeToLargeMode(): void {
+  private changeToLargeMode(): void {
     this.emptyDropdown();
     this.cleanUpDropdown();
     ResponsiveComponentsUtils.deactivateSmallTabs(this.coveoRoot);

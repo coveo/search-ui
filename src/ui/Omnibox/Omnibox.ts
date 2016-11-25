@@ -132,7 +132,7 @@ export class Omnibox extends Component {
   private skipRevealAutoSuggest = false;
 
   /**
-   * Create a new omnibox with, enable required addons, and bind events on letious query events.
+   * Create a new omnibox with, enable required addons, and bind events on various query events.
    */
   constructor(public element: HTMLElement, public options?: IOmniboxOptions, bindings?: IComponentBindings) {
     super(element, Omnibox.ID, bindings);

@@ -154,6 +154,40 @@ export function FieldValueTest() {
         expect(test.cmp.renderOneValue('1337').textContent).toEqual('ham1337burger');
       });
 
+      it('textCaption should render a text value', () => {
+         test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
+          element: element,
+          cmpOptions: <IFieldValueOptions>{
+            field: '@title',
+            textCaption: '<script>alert("Potatoes")</script>'
+          }
+        });
+
+        expect($$(test.cmp.element).text()).toContain('<script>alert("Potatoes")</script>');
+      });
+
+      it('textCaption should render in front of the fieldValue', () => {
+        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
+          element: element,
+          cmpOptions: <IFieldValueOptions>{
+            field: '@title',
+            textCaption: 'this is a test'
+          }
+        });
+        expect($$($$(test.cmp.element).children()[0]).hasClass('coveo-field-caption')).toBe(true);
+      });
+
+      it('textCaption option should add the class coveo-with-label to the CoveoFieldValue', () => {
+        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
+          element: element,
+          cmpOptions: <IFieldValueOptions>{
+            field: '@title',
+            textCaption: 'this is a test'
+          }
+        });
+        expect($$(test.cmp.element).hasClass('coveo-with-label')).toBe(true);
+      });
+
       describe('helperOptions', () => {
         it('should call helper with appropriate options', () => {
           test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
