@@ -17,16 +17,16 @@ export class HierarchicalFacetQueryController extends FacetQueryController {
     let regex = FacetUtils.getRegexToUseForFacetSearch(this.facet.facetSearch.getValueInInputForFacetSearch(), this.facet.options.facetSearchIgnoreAccents);
     return new Promise((resolve) => {
       let match = _.chain(this.facet.getAllValueHierarchy())
-                   .toArray()
-                   .filter((v: IValueHierarchy) => {
-                     return this.facet.getValueCaption(v.facetValue).match(regex) != null;
-                   })
-                   .first(this.facet.options.numberOfValuesInFacetSearch)
-                   .value();
+        .toArray()
+        .filter((v: IValueHierarchy) => {
+          return this.facet.getValueCaption(v.facetValue).match(regex) != null;
+        })
+        .first(this.facet.options.numberOfValuesInFacetSearch)
+        .value();
       resolve(_.map(match, (v: IValueHierarchy) => {
         return v.facetValue;
-      }))
-    })
+      }));
+    });
   }
 
   protected getAllowedValuesFromSelected() {

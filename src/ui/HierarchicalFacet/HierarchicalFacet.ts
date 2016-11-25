@@ -5,7 +5,7 @@
 /// <reference path="HierarchicalFacetValueElement.ts" />
 
 import {IFacetOptions} from '../Facet/Facet';
-import {FacetValue, FacetValues} from '../Facet/FacetValues';
+import {FacetValue} from '../Facet/FacetValues';
 import {Facet} from '../Facet/Facet';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {HierarchicalFacetValuesList} from './HierarchicalFacetValuesList';
@@ -915,7 +915,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
           this.queryController.deferExecuteQuery();
         }
       }
-    })
+    });
   }
 }
 Initialization.registerAutoCreateComponent(HierarchicalFacet);
