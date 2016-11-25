@@ -26,6 +26,8 @@ import timezone = require('jstz');
 import {SentryLogger} from '../../misc/SentryLogger';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import 'styling/Globals';
+import 'styling/_SearchInterface';
+import 'styling/_SearchModalBox';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;

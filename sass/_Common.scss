@@ -1,5 +1,5 @@
-@import "../bin/sass/spritesNew";
-@import "../bin/sass/ModalBox";
+@import "/bin/sass/spritesNew";
+@import "/bin/sass/ModalBox";
 @import "Variables";
 @import "Icons";
 @import "Animations";
@@ -12,7 +12,7 @@
 @import "mixins/breadcrumb";
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 200 / 100), only screen and (min-device-pixel-ratio: 2) {
-	@import "../bin/sass/retinaNew";
+	@import "/bin/sass/retinaNew";
 }
 
 @import "Quickview";

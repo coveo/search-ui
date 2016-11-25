@@ -69,7 +69,7 @@ function generateSass(json, legacy) {
 
   if (!legacy) {
     sass += '  &.objecttype.coveo-small {\n';
-    sass += '    @extend ' + defaultIcon + '-small !optional;\n';
+    sass += '    @extend ' + defaultIcon + '-small;\n';
     sass += generateInnerObjecttype(json, legacy, true);
     sass += '  }\n';
   }
@@ -81,7 +81,7 @@ function generateSass(json, legacy) {
 
   if (!legacy) {
     sass += '  &.filetype.coveo-small, &.sysfiletype.coveo-small {\n';
-    sass += '    @extend ' + defaultIcon + '-small !optional;\n';
+    sass += '    @extend ' + defaultIcon + '-small;\n';
     sass += generateInnerFiletype(json, legacy, true);
     sass += '  }\n';
   }
@@ -102,7 +102,7 @@ function generateInnerObjecttype(json, legacy, small) {
     ret += '    &.' + capitalizeFirstLetter(objecttype) + " , ";
     ret += '    &.' + objecttype.toLowerCase() +
         ' { @extend .coveo-sprites-' + (legacy ? 'fileType-' : '' ) +
-        json.objecttype[objecttype].icon + (small ? '-small; ' : ' !optional; ') +
+        json.objecttype[objecttype].icon + (small ? '-small; ' : '; ') +
         generateShouldDisplayLabel(json.objecttype[objecttype].shouldDisplayLabel) +
         ' }\n';
   });
@@ -118,7 +118,7 @@ function generateInnerFiletype(json, legacy, small) {
     ensureImageIsValid(filetype, json.filetype[filetype].icon, legacy);
     ret += '    &.' + filetype.toLowerCase() +
         ' { @extend .coveo-sprites-' + (legacy ? 'fileType-' : '' ) +
-        json.filetype[filetype].icon + (small ? '-small; ' : ' !optional; ') +
+        json.filetype[filetype].icon + (small ? '-small; ' : '; ') +
         generateShouldDisplayLabel(json.filetype[filetype].shouldDisplayLabel) +
         '}\n';
 
