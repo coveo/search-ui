@@ -114,6 +114,7 @@ export class FacetValuesList {
     this.currentlyDisplayed = [];
     var allValues = this.getValuesToBuildWith();
     var toCompare = numberOfValues;
+    let docFragment = document.createDocumentFragment();
     _.each(allValues, (facetValue: FacetValue, index?: number, list?) => {
       if (this.facetValueShouldBeRemoved(facetValue)) {
         this.facet.values.remove(facetValue.value);
@@ -122,10 +123,12 @@ export class FacetValuesList {
         var valueElement = new this.facetValueElementKlass(this.facet, facetValue, true);
         this.valueList[facetValue.value.toLowerCase()] = valueElement;
         var valueListElement = valueElement.build().renderer.listItem;
-        this.valueContainer.appendChild(valueListElement);
+        docFragment.appendChild(valueListElement);
         this.currentlyDisplayed.push(valueElement);
       }
     });
+    this.valueContainer.appendChild(docFragment);
+
     FacetUtils.addNoStateCssClassToFacetValues(this.facet, this.valueContainer);
     FacetUtils.clipCaptionsToAvoidOverflowingTheirContainer(this.facet);
   }
