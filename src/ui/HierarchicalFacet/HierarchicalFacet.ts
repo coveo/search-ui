@@ -5,7 +5,7 @@
 /// <reference path="HierarchicalFacetValueElement.ts" />
 
 import {IFacetOptions} from '../Facet/Facet';
-import {FacetValue} from '../Facet/FacetValues';
+import {FacetValue, FacetValues} from '../Facet/FacetValues';
 import {Facet} from '../Facet/Facet';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {HierarchicalFacetValuesList} from './HierarchicalFacetValuesList';
@@ -492,7 +492,6 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
     this.buildParentChildRelationship();
     this.checkForOrphans();
     this.checkForNewUnselectedChild();
-    this.shuffleParentWithSelection();
     this.crop();
   }
 
@@ -558,8 +557,12 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
     });
   }
 
-  private placeChildsUnderTheirParent(hierarchy: IValueHierarchy, hierarchyElement: HTMLElement) {
-    _.each(hierarchy.childs.reverse(), (child) => {
+  private placeChildsUnderTheirParent(hierarchy: IValueHierarchy, hierarchyElement: HTMLElement, reverse = true) {
+    let toIterateOver = hierarchy.childs;
+    if (reverse) {
+      toIterateOver = toIterateOver.reverse();
+    }
+    _.each(toIterateOver, (child) => {
       if (this.getValueHierarchy(child.facetValue.value)) {
         let childElement = this.getElementFromFacetValueList(child.facetValue);
         $$(childElement).insertAfter(hierarchyElement);
@@ -609,38 +612,6 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
       }
       hierarchyElement.style.marginLeft = (this.options.marginByLevel * (hierarchy.level - this.options.levelStart)) + 'px';
     });
-  }
-
-  private shuffleParentWithSelection() {
-    let topLevelSelectedPartition = _.partition(this.topLevelHierarchy, (top: IValueHierarchy)=> {
-      return top.facetValue.selected;
-    });
-
-    if (topLevelSelectedPartition[1] && topLevelSelectedPartition[1].length != 0) {
-      let topLevelNotSelectedHasChildSelected = _.filter(topLevelSelectedPartition[1], (top: IValueHierarchy)=> {
-        return top.hasChildSelected && !top.facetValue.selected && !top.facetValue.excluded;
-      });
-
-      let toInsertAfter: HTMLElement;
-      let toInsertBefore: HTMLElement;
-      if (topLevelSelectedPartition[0] && topLevelSelectedPartition[0].length != 0) {
-        toInsertAfter = this.getElementFromFacetValueList(topLevelSelectedPartition[0][topLevelSelectedPartition[0].length - 1].facetValue);
-      } else {
-        toInsertBefore = <HTMLElement>this.facetValuesList.valueContainer.children[0];
-      }
-
-      _.each(topLevelNotSelectedHasChildSelected, (hasChildSelected: IValueHierarchy)=> {
-        let hasChildSelectedElement = this.getElementFromFacetValueList(hasChildSelected.facetValue);
-        if (hasChildSelectedElement) {
-          if (toInsertAfter) {
-            $$(hasChildSelectedElement).insertAfter(toInsertAfter);
-          } else if (toInsertBefore) {
-            $$(hasChildSelectedElement).insertBefore(toInsertBefore);
-          }
-          this.placeChildsUnderTheirParent(hasChildSelected, hasChildSelectedElement);
-        }
-      });
-    }
   }
 
   private setValueListContent() {
@@ -852,6 +823,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
       if (otherSelectedChilds.length == 0) {
         parentInHierarchy.hasChildSelected = false;
       }
+      parentInHierarchy.allChildShouldBeSelected = false;
       parent = parentInHierarchy.parent;
     }
   }
@@ -932,10 +904,9 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
 
   private checkForNewUnselectedChild() {
     // It's possible that after checking a facet value, the index returns new facet values (because of injection depth);
-
-    _.each(this.valueHierarchy, (v: IValueHierarchy)=> {
+    _.each(this.valueHierarchy, (v: IValueHierarchy) => {
       if (v.allChildShouldBeSelected) {
-        let notAlreadySelected = _.find((v.childs), (child: IValueHierarchy)=> {
+        let notAlreadySelected = _.find((v.childs), (child: IValueHierarchy) => {
           return child.facetValue.selected != true;
         });
         if (notAlreadySelected) {

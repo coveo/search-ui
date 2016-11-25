@@ -116,7 +116,7 @@ export class FacetQueryController {
       let searchPromise = this.facet.getEndpoint().search(params.getQuery());
       this.currentSearchPromise = searchPromise;
 
-      searchPromise.then((queryResults: IQueryResults)=> {
+      searchPromise.then((queryResults: IQueryResults) => {
         if (this.currentSearchPromise == searchPromise) {
           // params.getQuery() will generate a query for all excluded values + some new values
           // there is no clean way to do a group by and remove some values
@@ -140,9 +140,9 @@ export class FacetQueryController {
           reject();
         }
       })
-     .catch((error: IEndpointError) => {
-       reject(error);
-     });
+        .catch((error: IEndpointError) => {
+          reject(error);
+        });
     });
   }
 
@@ -198,7 +198,7 @@ export class FacetQueryController {
     return _.compact(customSort.concat(filtered));
   }
 
-  private getAllowedValuesFromSelected() {
+  protected getAllowedValuesFromSelected() {
     let facetValues: FacetValue[] = [];
     if (this.facet.options.useAnd || !this.facet.keepDisplayedValuesNextTime) {
       let selected = this.facet.values.getSelected();
