@@ -1,3 +1,5 @@
+@import "../bin/sass/GeneratedIconsNew";
+//@import "../bin/sass/GeneratedIconsNew";
 @import 'Variables';
 
 .coveo-facet-header {
@@ -11,12 +13,12 @@
 .coveo-facet-header-title {
   color: $color-greyish-teal-blue;
   font-size: $font-size-regular;
-  float:left;
+  float: left;
 }
 
 .coveo-facet-header-settings {
   .coveo-icon {
-    @extend .coveo-sprites-more-menu !optional;
+    @extend .coveo-sprites-more-menu;
   }
   &:hover, &:focus {
     .coveo-icon {
