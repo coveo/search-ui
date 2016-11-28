@@ -11,12 +11,17 @@ export interface ICardOverlayOptions {
 }
 
 /**
- * This component is used to display a button which triggers an overlay on a
- * Card result. It is meant to be used as a child of a {@link CardActionBar}
+ * This component is used to display a button which, when clicked, triggers an
+ * overlay on top of a Result. It is usually found inside a {@link
+ * CardActionBar} component, although it can be used in any {@link Result}
  * component.
  *
  * Its primary purpose is to display additional information about a Result in a
  * format that fits well within a Card.
+ *
+ * When initialized, it will create a `<div class="coveo-card-overlay">` element
+ * as the last child of its parent {@link Result} component, and will display a
+ * button which toggles the visibility of the overlay.
  */
 export class CardOverlay extends Component {
   static ID = 'CardOverlay';
