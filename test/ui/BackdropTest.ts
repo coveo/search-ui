@@ -34,6 +34,28 @@ export function BackdropTest() {
           .toMatch(new RegExp(`url\\(("|')?${fakeResult.raw.clubpenguinthumbnailurl}("|')?\\)`));
       });
 
+      it('imageUrl sets the background image url accordingly', function () {
+        test = Mock.optionsResultComponentSetup<Backdrop, IBackdropOptions>(Backdrop, {
+          imageUrl: 'https://foo.com/bar.png'
+        }, fakeResult);
+
+        expect(test.cmp.element.style.background)
+          .toMatch(new RegExp(`url\\(("|')?https://foo.com/bar.png("|')?\\)`));
+      });
+
+      it('imageUrl overrides imageField', function () {
+        let fakeResult = FakeResults.createFakeResult();
+        fakeResult.raw.clubpenguinthumbnailurl = 'https://epicurl/';
+
+        test = Mock.optionsResultComponentSetup<Backdrop, IBackdropOptions>(Backdrop, {
+          imageField: 'clubpenguinthumbnailurl',
+          imageUrl: 'https://foo.com/baz.png'
+        }, fakeResult);
+
+        expect(test.cmp.element.style.background)
+          .toMatch(new RegExp(`url\\(("|')?https://foo.com/baz.png("|')?\\)`));
+      });
+
       it('overlayColor should add an overlay color before image', function () {
         test = Mock.optionsResultComponentSetup<Backdrop, IBackdropOptions>(Backdrop, {
           imageField: 'thumbnailurl',
