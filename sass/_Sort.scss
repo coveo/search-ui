@@ -33,17 +33,17 @@ $stop-float: new-breakpoint(max-width 480px 1);
     margin-left: 5px;
     position: relative;
     top: 3px;
-    @extend .coveo-sprites-arrow-down !optional;
+    @extend .coveo-sprites-arrow-down;
   }
 
   &.coveo-ascending {
     .coveo-icon {
-      @extend .coveo-sprites-arrow-up !optional;
+      @extend .coveo-sprites-arrow-up;
     }
   }
   &.coveo-descending {
     .coveo-icon {
-      @extend .coveo-sprites-arrow-down !optional;
+      @extend .coveo-sprites-arrow-down;
     }
   }
 
