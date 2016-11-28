@@ -14,7 +14,6 @@ import {MODEL_EVENTS, IAttributesChangedEventArg} from '../../models/Model';
 export interface IResultLayoutOptions {
 }
 
-// Please keep ResultLayout.validLayouts in sync with this
 export type ValidLayout = 'list' | 'card' | 'table';
 
 /**
@@ -27,8 +26,7 @@ export type ValidLayout = 'list' | 'card' | 'table';
 export class ResultLayout extends Component {
   static ID = 'ResultLayout';
 
-  // Please keep ValidLayout in sync with this
-  public static validLayouts = ['list', 'card', 'table'];
+  public static validLayouts: ValidLayout[] = ['list', 'card', 'table'];
 
   private currentLayout: string;
   private buttons: { [key: string]: HTMLElement };
