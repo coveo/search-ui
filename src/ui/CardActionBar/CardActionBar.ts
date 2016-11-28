@@ -12,7 +12,21 @@ export interface ICardActionBarOptions {
 
 /**
  * This component displays an action bar at the bottom of a Card result (see
- * {@link ResultLayout}).
+ * {@link ResultLayout}). It is a simple container for buttons or other
+ * complementary information.
+ *
+ * It is meant to be placed at the **bottom** of a Card result. E.g. as the last
+ * child of the surrounding `result-frame`.
+ *
+ * ```html
+ * <div class="coveo-result-frame">
+ *   ...content...
+ *   <div class="CoveoCardActionBar">
+ *     <some-button></some-button>
+ *     <some-additional-info></some-additional-info>
+ *   </div>
+ * </div>
+ * ```
  *
  * By default, CardActionBar is toggleable, with its default state being hidden.
  */
