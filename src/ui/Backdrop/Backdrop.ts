@@ -49,7 +49,7 @@ export class Backdrop extends Component {
      *
      * Example value : "`rgba(101, 123, 76, 0.5)`"
      */
-    overlayColor: ComponentOptions.buildStringOption(),
+    overlayColor: ComponentOptions.buildColorOption(),
     /**
      * If true, the overlay color will instead be rendered as a top-to-bottom
      * gradient from `overlayColor` to transparent.
