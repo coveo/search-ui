@@ -155,7 +155,7 @@ export function FieldValueTest() {
       });
 
       it('textCaption should render a text value', () => {
-         test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
+        test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
           element: element,
           cmpOptions: <IFieldValueOptions>{
             field: '@title',
