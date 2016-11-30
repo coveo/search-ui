@@ -189,7 +189,7 @@ export class ResultList extends Component {
 
   /**
    * Create a new ResultList.<br/>
-   * Bind letious event related to queries (eg : on querySuccess -> renderResults)<br/>
+   * Bind various event related to queries (eg : on querySuccess -> renderResults)<br/>
    * Bind scroll event if infinite scrolling is enabled.
    * @param element The HTMLElement on which the element will be instantiated.
    * @param options The options for the ResultList.
@@ -463,7 +463,7 @@ export class ResultList extends Component {
   private isScrollAtBottomForWindowElement() {
     let win = new Win(window);
     let windowHeight = win.height();
-    let scrollTop =  win.scrollY();
+    let scrollTop = win.scrollY();
     let bodyHeight = new Doc(document).height();
     return bodyHeight - (windowHeight + scrollTop) < windowHeight / 2;
   }
