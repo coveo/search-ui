@@ -1,3 +1,4 @@
+@import '../bin/sass/GeneratedIconsNew';
 @import 'Variables';
 
 @mixin facetValuesCheckboxes($size: 'normal') {
@@ -43,13 +44,13 @@
 
   &.coveo-selected .coveo-facet-value-checkbox {
     > span {
-      @extend #{$icon-active} !optional;
+      @extend #{$icon-active};
     }
   }
 
   &:hover .coveo-facet-value-checkbox {
     > span {
-      @extend #{$icon-active} !optional;
+      @extend #{$icon-active};
     }
   }
 
@@ -60,7 +61,7 @@
   &:not(.coveo-facet-search-button) {
     .coveo-facet-value-checkbox:focus {
       > span {
-        @extend #{$icon-active} !optional;
+        @extend #{$icon-active};
       }
     }
   }
@@ -69,13 +70,13 @@
   &.coveo-selected.coveo-facet-value-will-exclude .coveo-facet-value-checkbox,
   &:hover.coveo-facet-value-will-exclude .coveo-facet-value-checkbox {
     > span {
-      @extend #{$icon-exclusion} !optional;
+      @extend #{$icon-exclusion};
     }
   }
 
   &.coveo-excluded .coveo-facet-value-checkbox {
     > span {
-      @extend #{$icon-exclusion} !optional;
+      @extend #{$icon-exclusion};
     }
   }
 }
@@ -208,7 +209,7 @@
   opacity: 0;
 
   .coveo-icon {
-    @extend .coveo-sprites-exclusion-hover !optional;
+    @extend .coveo-sprites-exclusion-hover;
     position: absolute;
     top: -1px;
     left: -1px;

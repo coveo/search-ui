@@ -1,5 +1,4 @@
-@import "../bin/sass/GeneratedIconsNew";
-//@import "../bin/sass/GeneratedIconsNew";
+@import '../bin/sass/GeneratedIconsNew';
 @import 'Variables';
 
 .coveo-facet-header {
@@ -18,7 +17,7 @@
 
 .coveo-facet-header-settings {
   .coveo-icon {
-    @extend .coveo-sprites-more-menu;
+    @extend .coveo-sprites-more-menu !optional;
   }
   &:hover, &:focus {
     .coveo-icon {

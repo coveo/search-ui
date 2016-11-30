@@ -17,9 +17,6 @@ gulp.task('regularSprites', function (done) {
         pngPath: 'image/spritesNew.png',
         namespace: 'coveo-sprites',
       }))
-      .pipe(insert.prepend('@include exports("spritesNew") {\n'))
-      .pipe(insert.prepend('@import "~sass-import-once";\n'))      
-      .pipe(insert.append('}'))
       .pipe(gulp.dest('./bin'))
 });
 
@@ -41,9 +38,6 @@ gulp.task('retinaSprites', function (done) {
         namespace: 'coveo-sprites',
         ratio: 2
       }))
-      .pipe(insert.prepend('@include exports("retinaNew") {\n'))
-      .pipe(insert.prepend('@import "~sass-import-once";\n'))      
-      .pipe(insert.append('}'))
       .pipe(gulp.dest('./bin'))
 });
 
