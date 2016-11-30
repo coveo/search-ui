@@ -73,6 +73,11 @@ export class Model extends BaseComponent {
     this.setMultiple(toSet, options);
   }
 
+  /**
+   * Gets all current model active attributes.</br>
+   * An attribute is considered *active* when its value is not in its default state.
+   * @returns {{object}}
+   */
   public getAttributes() {
     let attributes: { [key: string]: any } = {};
     _.each(this.attributes, (attribute, key) => {
