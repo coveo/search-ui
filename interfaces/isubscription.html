@@ -7,7 +7,10 @@
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
+	<link rel="stylesheet" href="../assets/gen/css/CoveoFullSearchNewDesign.css">
 	<script src="../assets/js/modernizr.js"></script>
+	<script src="../assets/gen/js/CoveoJsSearch.js"></script>
+	<script src="../assets/gen/js/templates/templatesNew.js"></script>
 </head>
 <body>
 <header>
@@ -67,6 +70,8 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<div class="preview-container tsd-panel">
+			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
@@ -83,6 +88,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="isubscription.html#frequency" class="tsd-kind-icon">frequency</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="isubscription.html#id" class="tsd-kind-icon">id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="isubscription.html#name" class="tsd-kind-icon">name</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="isubscription.html#type" class="tsd-kind-icon">type</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="isubscription.html#typeconfig" class="tsd-kind-icon">type<wbr>Config</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="isubscription.html#user" class="tsd-kind-icon">user</a></li>
@@ -125,6 +131,24 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>The id of the subscription</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="name" class="tsd-anchor"></a>
+					<h3>name</h3>
+					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="isubscriptionrequest.html">ISubscriptionRequest</a>.<a href="isubscriptionrequest.html#name">name</a></p>
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Subscription.ts#L74">src/rest/Subscription.ts
+							:74</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The name that should be used by the API to identify this subscription</p>
 						</div>
 					</div>
 				</section>
@@ -205,6 +229,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="isubscription.html#id" class="tsd-kind-icon">id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="isubscription.html#name" class="tsd-kind-icon">name</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="isubscription.html#type" class="tsd-kind-icon">type</a>
@@ -288,6 +315,7 @@
 </div>
 <div class="overlay"></div>
 <script src="../assets/js/main.js"></script>
+<script src="../assets/gen/js/playground.js"></script>
 <script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
 </body>
 </html>

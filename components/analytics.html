@@ -7,7 +7,10 @@
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
+	<link rel="stylesheet" href="../assets/gen/css/CoveoFullSearchNewDesign.css">
 	<script src="../assets/js/modernizr.js"></script>
+	<script src="../assets/gen/js/CoveoJsSearch.js"></script>
+	<script src="../assets/gen/js/templates/templatesNew.js"></script>
 </head>
 <body>
 <header>
@@ -67,6 +70,8 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<div class="preview-container tsd-panel">
+			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
@@ -190,6 +195,11 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 							The default value is <code>false</code>.</p>
 						</div>
 					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-anonymous&#x3D;&#x27;true&#x27;
+data-anonymous&#x3D;&#x27;false&#x27;</pre>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.endpoint" class="tsd-anchor"></a>
@@ -206,6 +216,10 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 						<div class="lead">
 							<p>Specifies the URL of the analytics logger for rare cases where it is different from the default usage analytics Coveo Cloud endpoint (<a href="https://usageanalytics.coveo.com">https://usageanalytics.coveo.com</a>).</p>
 						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-endpoint&#x3D;&#x27;foo&#x27;</pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -224,6 +238,10 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 							<p>Specifies the organization bound to the access token. This is necessary when using an access token because it can be associated with more than organization.
 							If this parameter is not specified, it will fallback on the organization used for the search endpoint.</p>
 						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-organization&#x3D;&#x27;foo&#x27;</pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -244,6 +262,10 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 							The default value is default.</p>
 						</div>
 					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-search-hub&#x3D;&#x27;foo&#x27;</pre>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.splittestrunname" class="tsd-anchor"></a>
@@ -262,6 +284,10 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 								This dimension can be used to perform A/B testing using different search page layouts and features, inside the Coveo Query pipeline.<br/>
 							By default, this value is not specified and no split test run name is reported to the Coveo Analytics Platform.</p>
 						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-split-test-run-name&#x3D;&#x27;foo&#x27;</pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -282,6 +308,10 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 							By default, this value is not specified.</p>
 						</div>
 					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-split-test-run-version&#x3D;&#x27;foo&#x27;</pre>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.token" class="tsd-anchor"></a>
@@ -300,6 +330,10 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 							This attribute is optional, the component will use the search token by default.</p>
 						</div>
 					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-token&#x3D;&#x27;foo&#x27;</pre>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.user" class="tsd-anchor"></a>
@@ -316,6 +350,10 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 						<div class="lead">
 							<p>Specifies the name of the user for usage analytics logs.</p>
 						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-user&#x3D;&#x27;foo&#x27;</pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -334,6 +372,10 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 							<p>Specifies the name of the user display name for usage analytics logs.</p>
 						</div>
 					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-user-display-name&#x3D;&#x27;foo&#x27;</pre>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -350,8 +392,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 								<p>Inherited from <a href="../classes/basecomponent.html">BaseComponent</a>.<a href="../classes/basecomponent.html#debuginfo">debugInfo</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L43">src/ui/Base/BaseComponent.ts
-									:43</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L41">src/ui/Base/BaseComponent.ts
+									:41</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -375,8 +417,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 								<p>Inherited from <a href="../classes/basecomponent.html">BaseComponent</a>.<a href="../classes/basecomponent.html#disable">disable</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L54">src/ui/Base/BaseComponent.ts
-									:54</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L52">src/ui/Base/BaseComponent.ts
+									:52</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -402,8 +444,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 								<p>Inherited from <a href="../classes/basecomponent.html">BaseComponent</a>.<a href="../classes/basecomponent.html#enable">enable</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L63">src/ui/Base/BaseComponent.ts
-									:63</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L61">src/ui/Base/BaseComponent.ts
+									:61</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -429,8 +471,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L120">src/ui/Base/Component.ts
-									:120</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L123">src/ui/Base/Component.ts
+									:123</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -641,8 +683,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L178">src/ui/Base/Component.ts
-									:178</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L192">src/ui/Base/Component.ts
+									:192</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -687,8 +729,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L60">src/ui/Base/Component.ts
-							:60</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L61">src/ui/Base/Component.ts
+							:61</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -729,8 +771,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L88">src/ui/Base/Component.ts
-							:88</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L89">src/ui/Base/Component.ts
+							:89</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -747,8 +789,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L72">src/ui/Base/Component.ts
-							:72</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L73">src/ui/Base/Component.ts
+							:73</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -765,8 +807,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 						<p>Inherited from <a href="../classes/basecomponent.html">BaseComponent</a>.<a href="../classes/basecomponent.html#disabled">disabled</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L24">src/ui/Base/BaseComponent.ts
-							:24</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L23">src/ui/Base/BaseComponent.ts
+							:23</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -790,8 +832,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 						<p>Inherited from <a href="../classes/basecomponent.html">BaseComponent</a>.<a href="../classes/basecomponent.html#logger">logger</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L19">src/ui/Base/BaseComponent.ts
-							:19</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L18">src/ui/Base/BaseComponent.ts
+							:18</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -808,8 +850,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L76">src/ui/Base/Component.ts
-							:76</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L77">src/ui/Base/Component.ts
+							:77</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -826,8 +868,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L68">src/ui/Base/Component.ts
-							:68</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L69">src/ui/Base/Component.ts
+							:69</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -844,31 +886,31 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L64">src/ui/Base/Component.ts
-							:64</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L65">src/ui/Base/Component.ts
+							:65</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A reference to the root HTMLElement (the <a href="../classes/searchinterface.html">SearchInterface</a>).</p>
+							<p>A reference to the root HTMLElement (the <a href="searchinterface.html">SearchInterface</a>).</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
 					<a name="searchinterface" class="tsd-anchor"></a>
 					<h3>search<wbr>Interface</h3>
-					<div class="tsd-signature tsd-kind-icon">search<wbr>Interface<span class="tsd-signature-symbol">:</span> <a href="../classes/searchinterface.html" class="tsd-signature-type">SearchInterface</a></div>
+					<div class="tsd-signature tsd-kind-icon">search<wbr>Interface<span class="tsd-signature-symbol">:</span> <a href="searchinterface.html" class="tsd-signature-type">SearchInterface</a></div>
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L80">src/ui/Base/Component.ts
-							:80</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L81">src/ui/Base/Component.ts
+							:81</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A reference to the root of every component, the <a href="../classes/searchinterface.html">SearchInterface</a>.</p>
+							<p>A reference to the root of every component, the <a href="searchinterface.html">SearchInterface</a>.</p>
 						</div>
 					</div>
 				</section>
@@ -880,8 +922,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L84">src/ui/Base/Component.ts
-							:84</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L85">src/ui/Base/Component.ts
+							:85</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -898,8 +940,8 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 						<p>Inherited from <a href="../classes/basecomponent.html">BaseComponent</a>.<a href="../classes/basecomponent.html#id">ID</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L29">src/ui/Base/BaseComponent.ts
-							:29</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L28">src/ui/Base/BaseComponent.ts
+							:28</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1116,6 +1158,7 @@ $(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'l
 </div>
 <div class="overlay"></div>
 <script src="../assets/js/main.js"></script>
+<script src="../assets/gen/js/playground.js"></script>
 <script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
 </body>
 </html>

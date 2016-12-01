@@ -7,7 +7,10 @@
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
+	<link rel="stylesheet" href="../assets/gen/css/CoveoFullSearchNewDesign.css">
 	<script src="../assets/js/modernizr.js"></script>
+	<script src="../assets/gen/js/CoveoJsSearch.js"></script>
+	<script src="../assets/gen/js/templates/templatesNew.js"></script>
 </head>
 <body>
 <header>
@@ -67,12 +70,15 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<div class="preview-container tsd-panel">
+			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
 						<p>The Advanced Search component allows the user to easily create a complex query to send to the index.
 						The component also allows custom code to modify the content by using the <a href="../classes/advancedsearchevents.html#buildingadvancedsearch">AdvancedSearchEvents.buildingAdvancedSearch</a> event.</p>
 					</div>
+					<p>This component is meant to render a section in the <a href="settings.html">Settings</a> menu.</p>
 				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -95,6 +101,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="advancedsearch.html#enable" class="tsd-kind-icon">enable</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="advancedsearch.html#executeadvancedsearch" class="tsd-kind-icon">execute<wbr>Advanced<wbr>Search</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="advancedsearch.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="advancedsearch.html#reset" class="tsd-kind-icon">reset</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="advancedsearch.html#get" class="tsd-kind-icon">get</a></li>
 							</ul>
 						</section>
@@ -132,8 +139,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/AdvancedSearch.ts#L43">src/ui/AdvancedSearch/AdvancedSearch.ts
-							:43</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/AdvancedSearch.ts#L47">src/ui/AdvancedSearch/AdvancedSearch.ts
+							:47</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -141,6 +148,11 @@
 							<p>Specifies whether or not to include the built-in date section.
 							Default is <code>true</code></p>
 						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-include-date&#x3D;&#x27;true&#x27;
+data-include-date&#x3D;&#x27;false&#x27;</pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -150,8 +162,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/AdvancedSearch.ts#L49">src/ui/AdvancedSearch/AdvancedSearch.ts
-							:49</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/AdvancedSearch.ts#L53">src/ui/AdvancedSearch/AdvancedSearch.ts
+							:53</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -159,6 +171,11 @@
 							<p>Specifies whether or not to include the built-in document section.
 							Default is <code>true</code></p>
 						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-include-document&#x3D;&#x27;true&#x27;
+data-include-document&#x3D;&#x27;false&#x27;</pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -168,8 +185,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/AdvancedSearch.ts#L37">src/ui/AdvancedSearch/AdvancedSearch.ts
-							:37</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/AdvancedSearch.ts#L41">src/ui/AdvancedSearch/AdvancedSearch.ts
+							:41</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -177,6 +194,11 @@
 							<p>Specifies whether or not to include the built-in keywords section.
 							Default is <code>true</code></p>
 						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-include-keywords&#x3D;&#x27;true&#x27;
+data-include-keywords&#x3D;&#x27;false&#x27;</pre>
 					</div>
 				</section>
 			</section>
@@ -194,8 +216,8 @@
 								<p>Inherited from <a href="../classes/basecomponent.html">BaseComponent</a>.<a href="../classes/basecomponent.html#debuginfo">debugInfo</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L43">src/ui/Base/BaseComponent.ts
-									:43</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L41">src/ui/Base/BaseComponent.ts
+									:41</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -219,8 +241,8 @@
 								<p>Inherited from <a href="../classes/basecomponent.html">BaseComponent</a>.<a href="../classes/basecomponent.html#disable">disable</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L54">src/ui/Base/BaseComponent.ts
-									:54</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L52">src/ui/Base/BaseComponent.ts
+									:52</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -246,8 +268,8 @@
 								<p>Inherited from <a href="../classes/basecomponent.html">BaseComponent</a>.<a href="../classes/basecomponent.html#enable">enable</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L63">src/ui/Base/BaseComponent.ts
-									:63</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L61">src/ui/Base/BaseComponent.ts
+									:61</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -272,8 +294,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/AdvancedSearch.ts#L66">src/ui/AdvancedSearch/AdvancedSearch.ts
-									:66</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/AdvancedSearch.ts#L70">src/ui/AdvancedSearch/AdvancedSearch.ts
+									:70</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -297,8 +319,8 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L120">src/ui/Base/Component.ts
-									:120</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L123">src/ui/Base/Component.ts
+									:123</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -307,6 +329,30 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+					<a name="reset" class="tsd-anchor"></a>
+					<h3>reset</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">reset<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AdvancedSearch/AdvancedSearch.ts#L78">src/ui/AdvancedSearch/AdvancedSearch.ts
+									:78</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Reset the state of all form input inside the advanced search component</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -322,8 +368,8 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L178">src/ui/Base/Component.ts
-									:178</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L192">src/ui/Base/Component.ts
+									:192</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -368,8 +414,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L60">src/ui/Base/Component.ts
-							:60</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L61">src/ui/Base/Component.ts
+							:61</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -393,8 +439,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L88">src/ui/Base/Component.ts
-							:88</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L89">src/ui/Base/Component.ts
+							:89</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -411,8 +457,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L72">src/ui/Base/Component.ts
-							:72</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L73">src/ui/Base/Component.ts
+							:73</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -429,8 +475,8 @@
 						<p>Inherited from <a href="../classes/basecomponent.html">BaseComponent</a>.<a href="../classes/basecomponent.html#disabled">disabled</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L24">src/ui/Base/BaseComponent.ts
-							:24</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L23">src/ui/Base/BaseComponent.ts
+							:23</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -454,8 +500,8 @@
 						<p>Inherited from <a href="../classes/basecomponent.html">BaseComponent</a>.<a href="../classes/basecomponent.html#logger">logger</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L19">src/ui/Base/BaseComponent.ts
-							:19</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L18">src/ui/Base/BaseComponent.ts
+							:18</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -472,8 +518,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L76">src/ui/Base/Component.ts
-							:76</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L77">src/ui/Base/Component.ts
+							:77</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -490,8 +536,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L68">src/ui/Base/Component.ts
-							:68</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L69">src/ui/Base/Component.ts
+							:69</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -508,31 +554,31 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L64">src/ui/Base/Component.ts
-							:64</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L65">src/ui/Base/Component.ts
+							:65</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A reference to the root HTMLElement (the <a href="../classes/searchinterface.html">SearchInterface</a>).</p>
+							<p>A reference to the root HTMLElement (the <a href="searchinterface.html">SearchInterface</a>).</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
 					<a name="searchinterface" class="tsd-anchor"></a>
 					<h3>search<wbr>Interface</h3>
-					<div class="tsd-signature tsd-kind-icon">search<wbr>Interface<span class="tsd-signature-symbol">:</span> <a href="../classes/searchinterface.html" class="tsd-signature-type">SearchInterface</a></div>
+					<div class="tsd-signature tsd-kind-icon">search<wbr>Interface<span class="tsd-signature-symbol">:</span> <a href="searchinterface.html" class="tsd-signature-type">SearchInterface</a></div>
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L80">src/ui/Base/Component.ts
-							:80</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L81">src/ui/Base/Component.ts
+							:81</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A reference to the root of every component, the <a href="../classes/searchinterface.html">SearchInterface</a>.</p>
+							<p>A reference to the root of every component, the <a href="searchinterface.html">SearchInterface</a>.</p>
 						</div>
 					</div>
 				</section>
@@ -544,8 +590,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L84">src/ui/Base/Component.ts
-							:84</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L85">src/ui/Base/Component.ts
+							:85</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -562,8 +608,8 @@
 						<p>Inherited from <a href="../classes/basecomponent.html">BaseComponent</a>.<a href="../classes/basecomponent.html#id">ID</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L29">src/ui/Base/BaseComponent.ts
-							:29</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L28">src/ui/Base/BaseComponent.ts
+							:28</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -588,15 +634,15 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
-									:90</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L91">src/ui/Base/Component.ts
+									:91</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Create a new Component. Resolve all <a href="../interfaces/icomponentbindings.html">IComponentBindings</a> if not provided.<br/>
 										Create a new Logger for this component.
-									Attach the component to the <a href="../classes/searchinterface.html">SearchInterface</a>.<br/></p>
+									Attach the component to the <a href="searchinterface.html">SearchInterface</a>.<br/></p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -657,6 +703,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
 								<a href="advancedsearch.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+								<a href="advancedsearch.html#reset" class="tsd-kind-icon">reset</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
 								<a href="advancedsearch.html#get" class="tsd-kind-icon">get</a>
@@ -770,6 +819,7 @@
 </div>
 <div class="overlay"></div>
 <script src="../assets/js/main.js"></script>
+<script src="../assets/gen/js/playground.js"></script>
 <script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
 </body>
 </html>

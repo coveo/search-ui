@@ -7,7 +7,10 @@
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
+	<link rel="stylesheet" href="../assets/gen/css/CoveoFullSearchNewDesign.css">
 	<script src="../assets/js/modernizr.js"></script>
+	<script src="../assets/gen/js/CoveoJsSearch.js"></script>
+	<script src="../assets/gen/js/templates/templatesNew.js"></script>
 </head>
 <body>
 <header>
@@ -67,6 +70,8 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<div class="preview-container tsd-panel">
+			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
@@ -113,7 +118,7 @@
 							<p>Triggered after the components are initialized (eg: After the constructor of each component is executed)
 							but before their state is set from the hash portion of the URL (e.g., <a href="http://mysearchinterface#q=myQuery">http://mysearchinterface#q=myQuery</a> ).</p>
 						</div>
-						<p>This is also before the first query is launched (if the <a href="searchinterface.html#options.autotriggerquery">SearchInterface.options.autoTriggerQuery</a> is <code>true</code>).</p>
+						<p>This is also before the first query is launched (if the <a href="../components/searchinterface.html#options.autotriggerquery">SearchInterface.options.autoTriggerQuery</a> is <code>true</code>).</p>
 						<p>The string value is <code>afterComponentsInitialization</code>.</p>
 						<dl class="tsd-comment-tags">
 							<dt>type</dt>
@@ -140,7 +145,7 @@
 							<p>Triggered right after the UI is fully initialized.</p>
 						</div>
 						<p>Concretely this means that the constructor of each component has been executed, and that the state coming for the URL (e.g., <a href="http://mysearchinterface#q=myquery">http://mysearchinterface#q=myquery</a>) has been applied.</p>
-						<p>It is triggered <em>before</em> the first query is launched, and if the <a href="searchinterface.html#options.autotriggerquery">SearchInterface.options.autoTriggerQuery</a> is <code>true</code>.</p>
+						<p>It is triggered <em>before</em> the first query is launched, and if the <a href="../components/searchinterface.html#options.autotriggerquery">SearchInterface.options.autoTriggerQuery</a> is <code>true</code>.</p>
 						<p>The string value is <code>afterInitialization</code>.</p>
 						<dl class="tsd-comment-tags">
 							<dt>type</dt>
@@ -217,7 +222,7 @@
 						<div class="lead">
 							<p>Triggered right before the state from the URL (e.g., <a href="http://mysearchinterface#q=myQuery">http://mysearchinterface#q=myQuery</a> ) gets applied in the interface.</p>
 						</div>
-						<p>This will typically only be useful if the <a href="searchinterface.html#options.enablehistory">SearchInterface.options.enableHistory</a> is set to <code>true</code>.</p>
+						<p>This will typically only be useful if the <a href="../components/searchinterface.html#options.enablehistory">SearchInterface.options.enableHistory</a> is set to <code>true</code>.</p>
 						<p>The string value is <code>restoreHistoryState</code>.</p>
 						<dl class="tsd-comment-tags">
 							<dt>type</dt>
@@ -332,6 +337,7 @@
 </div>
 <div class="overlay"></div>
 <script src="../assets/js/main.js"></script>
+<script src="../assets/gen/js/playground.js"></script>
 <script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
 </body>
 </html>

@@ -1,0 +1,1114 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>SearchInterface | Coveo search ui documentation</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<link rel="stylesheet" href="../assets/gen/css/CoveoFullSearchNewDesign.css">
+	<script src="../assets/js/modernizr.js"></script>
+	<script src="../assets/gen/js/CoveoJsSearch.js"></script>
+	<script src="../assets/gen/js/templates/templatesNew.js"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.js" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">Coveo search ui documentation</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../globals.html">Globals</a>
+				</li>
+				<li>
+					<a href="searchinterface.html">SearchInterface</a>
+				</li>
+			</ul>
+			<h1>Coveo component SearchInterface</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="preview-container tsd-panel">
+			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>This component is the root and main component of your search interface.<br/>
+							You should place every other component inside this component.<br/>
+							It is also on this component that you call the initialization function.<br/>
+						Since this component is the root of your Search UI, it is recommended that you give it a unique HTML id attribute in order to reference it easily.</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Component Options</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="searchinterface.html#options.autotriggerquery" class="tsd-kind-icon">auto<wbr>Trigger<wbr>Query</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="searchinterface.html#options.enableautomaticresponsivemode" class="tsd-kind-icon">enable<wbr>Automatic<wbr>Responsive<wbr>Mode</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="searchinterface.html#options.enablecollaborativerating" class="tsd-kind-icon">enable<wbr>Collaborative<wbr>Rating</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="searchinterface.html#options.enabledebuginfo" class="tsd-kind-icon">enable<wbr>Debug<wbr>Info</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="searchinterface.html#options.enableduplicatefiltering" class="tsd-kind-icon">enable<wbr>Duplicate<wbr>Filtering</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="searchinterface.html#options.enablehistory" class="tsd-kind-icon">enable<wbr>History</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="searchinterface.html#options.excerptlength" class="tsd-kind-icon">excerpt<wbr>Length</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="searchinterface.html#options.expression" class="tsd-kind-icon">expression</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="searchinterface.html#options.filterfield" class="tsd-kind-icon">filter<wbr>Field</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="searchinterface.html#options.firstloadinganimation" class="tsd-kind-icon">first<wbr>Loading<wbr>Animation</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="searchinterface.html#options.hideuntilfirstquery" class="tsd-kind-icon">hide<wbr>Until<wbr>First<wbr>Query</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="searchinterface.html#options.maximumage" class="tsd-kind-icon">maximum<wbr>Age</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="searchinterface.html#options.pipeline" class="tsd-kind-icon">pipeline</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="searchinterface.html#options.resultsperpage" class="tsd-kind-icon">results<wbr>Per<wbr>Page</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="searchinterface.html#options.searchpageuri" class="tsd-kind-icon">search<wbr>Page<wbr>Uri</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="searchinterface.html#options.timezone" class="tsd-kind-icon">timezone</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="searchinterface.html#options.uselocalstorageforhistory" class="tsd-kind-icon">use<wbr>Local<wbr>Storage<wbr>For<wbr>History</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="searchinterface.html#attachcomponent" class="tsd-kind-icon">attach<wbr>Component</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="searchinterface.html#debuginfo" class="tsd-kind-icon">debug<wbr>Info</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="searchinterface.html#detachcomponent" class="tsd-kind-icon">detach<wbr>Component</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="searchinterface.html#disable" class="tsd-kind-icon">disable</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="searchinterface.html#enable" class="tsd-kind-icon">enable</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="searchinterface.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-has-type-parameter"><a href="searchinterface.html#getcomponents" class="tsd-kind-icon">get<wbr>Components</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="searchinterface.html#hidewaitanimation" class="tsd-kind-icon">hide<wbr>Wait<wbr>Animation</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="searchinterface.html#isnewdesign" class="tsd-kind-icon">is<wbr>New<wbr>Design</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="searchinterface.html#showwaitanimation" class="tsd-kind-icon">show<wbr>Wait<wbr>Animation</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-inherited">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="searchinterface.html#disabled" class="tsd-kind-icon">disabled</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="searchinterface.html#logger" class="tsd-kind-icon">logger</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="searchinterface.html#id" class="tsd-kind-icon">ID</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="searchinterface.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Component Options</h2>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.autotriggerquery" class="tsd-anchor"></a>
+					<h3>auto<wbr>Trigger<wbr>Query</h3>
+					<div class="tsd-signature tsd-kind-icon">auto<wbr>Trigger<wbr>Query<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L132">src/ui/SearchInterface/SearchInterface.ts
+							:132</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies whether the init function should trigger the first query automatically when the page is loaded.<br/>
+								Note that if you set this to false, then the hideUntilFirstQuery option still applies. This means that the animation will still show until a query is triggered.<br/>
+							Default is <code>true</code>.</p>
+						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-auto-trigger-query&#x3D;&#x27;true&#x27;
+data-auto-trigger-query&#x3D;&#x27;false&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.enableautomaticresponsivemode" class="tsd-anchor"></a>
+					<h3>enable<wbr>Automatic<wbr>Responsive<wbr>Mode</h3>
+					<div class="tsd-signature tsd-kind-icon">enable<wbr>Automatic<wbr>Responsive<wbr>Mode<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L77">src/ui/SearchInterface/SearchInterface.ts
+							:77</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies whether the UI should use an automatic responsive mode (eg : The tab(s) and facet(s) being placed automatically under the search box)<br/>
+								This can be disabled for design reasons, if it does not fit with the implementation needs.<br/>
+							The default value is <code>true</code></p>
+						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-enable-automatic-responsive-mode&#x3D;&#x27;true&#x27;
+data-enable-automatic-responsive-mode&#x3D;&#x27;false&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.enablecollaborativerating" class="tsd-anchor"></a>
+					<h3>enable<wbr>Collaborative<wbr>Rating</h3>
+					<div class="tsd-signature tsd-kind-icon">enable<wbr>Collaborative<wbr>Rating<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L151">src/ui/SearchInterface/SearchInterface.ts
+							:151</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies whether to enable the collaborative rating for the index and and include the user rating on each results to the normal index ranking.<br/>
+								If activated, this option can be leveraged with the <a href="resultrating.html">ResultRating</a> component.<br/>
+							The default value is <code>false</code>.</p>
+						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-enable-collaborative-rating&#x3D;&#x27;true&#x27;
+data-enable-collaborative-rating&#x3D;&#x27;false&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.enabledebuginfo" class="tsd-anchor"></a>
+					<h3>enable<wbr>Debug<wbr>Info</h3>
+					<div class="tsd-signature tsd-kind-icon">enable<wbr>Debug<wbr>Info<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L145">src/ui/SearchInterface/SearchInterface.ts
+							:145</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies whether to enable the feature that allows users to ALT + double click on any results to get the Debug page with a detailed view of all the properties and fields for a given result.<br/>
+								This has no security concern (as all those informations are visible to users through the browser developer console or by calling the Coveo API directly).<br/>
+							The default value is <code>true</code>.</p>
+						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-enable-debug-info&#x3D;&#x27;true&#x27;
+data-enable-debug-info&#x3D;&#x27;false&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.enableduplicatefiltering" class="tsd-anchor"></a>
+					<h3>enable<wbr>Duplicate<wbr>Filtering</h3>
+					<div class="tsd-signature tsd-kind-icon">enable<wbr>Duplicate<wbr>Filtering<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L158">src/ui/SearchInterface/SearchInterface.ts
+							:158</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies whether to filter duplicates on the search results.<br/>
+								When true, duplicates do not appear in search results, but they however are included in facet counts, which can be sometimes confusing for the users. This is a limitation of the index.<br/>
+								Example: The user narrows a query to one document that has a duplicate. Only one document appears in search results, but the facet count is 2.<br/>
+							The default value is <code>false</code>.</p>
+						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-enable-duplicate-filtering&#x3D;&#x27;true&#x27;
+data-enable-duplicate-filtering&#x3D;&#x27;false&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.enablehistory" class="tsd-anchor"></a>
+					<h3>enable<wbr>History</h3>
+					<div class="tsd-signature tsd-kind-icon">enable<wbr>History<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L71">src/ui/SearchInterface/SearchInterface.ts
+							:71</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies whether your search interface allows users to navigate in the search history using the browser back/forward buttons.<br/>
+								When enabled, the search interface saves the state of the current query in the hash portion of the URL.<br/>
+								For example #q=foobar.<br/>
+							The default value is <code>false</code>.</p>
+						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-enable-history&#x3D;&#x27;true&#x27;
+data-enable-history&#x3D;&#x27;false&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.excerptlength" class="tsd-anchor"></a>
+					<h3>excerpt<wbr>Length</h3>
+					<div class="tsd-signature tsd-kind-icon">excerpt<wbr>Length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L94">src/ui/SearchInterface/SearchInterface.ts
+							:94</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the number of characters of the excerpt to get at query time and display for each query result.<br/>
+								This setting is global and can not be modified on a per result basis.<br/>
+							The default value is 200.</p>
+						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-excerpt-length&#x3D;&#x27;10&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.expression" class="tsd-anchor"></a>
+					<h3>expression</h3>
+					<div class="tsd-signature tsd-kind-icon">expression<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L101">src/ui/SearchInterface/SearchInterface.ts
+							:101</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies an expression to add to each query.<br/>
+								This should be use if you wish to add a global filter for your whole search interface that applies for all tabs.<br/>
+								Do not use this for security concern ... (It is JavaScript after all).<br/>
+							By default none is added.</p>
+						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-expression&#x3D;&#x27;foo&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.filterfield" class="tsd-anchor"></a>
+					<h3>filter<wbr>Field</h3>
+					<div class="tsd-signature tsd-kind-icon">filter<wbr>Field<span class="tsd-signature-symbol">:</span> <a href="../interfaces/ifieldoption.html" class="tsd-signature-type">IFieldOption</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L109">src/ui/SearchInterface/SearchInterface.ts
+							:109</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the name of a field to use as a custom filter when executing the query (also referred to as &#39;folding&#39;).<br/>
+								Setting this option causes the index to return only one result having any particular value inside the filter field. Any other matching result is &#39;folded&#39; inside the childResults member of each JSON query result.<br/>
+								This feature is typically used with threaded conversations to include only one top-level result per conversation. Thus, the field specified in this option typically is a value unique to each thread that is shared by all items (e.g.: posts, emails, etc.) in the thread.<br/>
+								This is obviously an advanced feature. Instead, look into using the <a href="folding.html">Folding</a> component, which covers a lot of different use cases.<br/>
+							By default none is added</p>
+						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-filter-field&#x3D;&#x27;@foo&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.firstloadinganimation" class="tsd-anchor"></a>
+					<h3>first<wbr>Loading<wbr>Animation</h3>
+					<div class="tsd-signature tsd-kind-icon">first<wbr>Loading<wbr>Animation<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L123">src/ui/SearchInterface/SearchInterface.ts
+							:123</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the animation that you wish to use for your interface.<br/>
+								This can be a selector or an element that matches the correct CSS class.<br/>
+								Eg : firstLoadingAnimation : &#39;.CustomFirstLoadingAnimation&#39; / data-first-loading-animation=&#39;.CustomFirstLoadingAnimation&#39;.</br>
+								Eg : &lt;element class=&#39;CoveoSearchInterface&#39;&gt;&lt;element class=&#39;coveo-first-loading-animation&#39;/&gt;&lt;/element&gt;<br/>
+							By default, this will be a Coveo CSS animation (which can also be customized with CSS).</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.hideuntilfirstquery" class="tsd-anchor"></a>
+					<h3>hide<wbr>Until<wbr>First<wbr>Query</h3>
+					<div class="tsd-signature tsd-kind-icon">hide<wbr>Until<wbr>First<wbr>Query<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L115">src/ui/SearchInterface/SearchInterface.ts
+							:115</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies whether the interface should display a loading animation before the first query has completed successfully.<br/>
+								Note that if you set autoTriggerQuery to false, this means that the loading animation will not go away automatically.<br/>
+							Default is true.</p>
+						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-hide-until-first-query&#x3D;&#x27;true&#x27;
+data-hide-until-first-query&#x3D;&#x27;false&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.maximumage" class="tsd-anchor"></a>
+					<h3>maximum<wbr>Age</h3>
+					<div class="tsd-signature tsd-kind-icon">maximum<wbr>Age<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L171">src/ui/SearchInterface/SearchInterface.ts
+							:171</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the maximum age in milliseconds that cached query results can have in order to be used (instead of performing a new query on the index).<br/>
+								If cached results are available but are older than the specified age, a new query will be performed on the index.<br/>
+								On high-volume public web sites, having a larger maximum age can greatly improve query response time at the cost of result freshness.<br/>
+							By default, the Coveo Search API will determine the cache length. This typically takes 15 minutes.</p>
+						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-maximum-age&#x3D;&#x27;10&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.pipeline" class="tsd-anchor"></a>
+					<h3>pipeline</h3>
+					<div class="tsd-signature tsd-kind-icon">pipeline<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L164">src/ui/SearchInterface/SearchInterface.ts
+							:164</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the name of the query pipeline to use for the queries. If not specified, the default value is default, which means the default query pipeline will be used.<br/>
+								You can use this parameter when your index is in a Coveo Cloud organization where you created pipelines (see <a href="https://onlinehelp.coveo.com/en/cloud/creating_and_managing_query_pipelines.htm">https://onlinehelp.coveo.com/en/cloud/creating_and_managing_query_pipelines.htm</a>).<br/>
+							Default value is &#39;default&#39;.</p>
+						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-pipeline&#x3D;&#x27;foo&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.resultsperpage" class="tsd-anchor"></a>
+					<h3>results<wbr>Per<wbr>Page</h3>
+					<div class="tsd-signature tsd-kind-icon">results<wbr>Per<wbr>Page<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L88">src/ui/SearchInterface/SearchInterface.ts
+							:88</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the number of results that each page displays.<br/>
+							Default is 10.</p>
+						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-results-per-page&#x3D;&#x27;10&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.searchpageuri" class="tsd-anchor"></a>
+					<h3>search<wbr>Page<wbr>Uri</h3>
+					<div class="tsd-signature tsd-kind-icon">search<wbr>Page<wbr>Uri<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L176">src/ui/SearchInterface/SearchInterface.ts
+							:176</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the search page you wish to navigate to when instantiating a standalone search box interface.<br/>
+							By default this is undefined, meaning the search interface will not redirect.</p>
+						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-search-page-uri&#x3D;&#x27;foo&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.timezone" class="tsd-anchor"></a>
+					<h3>timezone</h3>
+					<div class="tsd-signature tsd-kind-icon">timezone<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L139">src/ui/SearchInterface/SearchInterface.ts
+							:139</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the timezone in which the search interface is loaded. This allows the index to recognize some special query syntax.<br/>
+								This must be an IANA zone info key (aka the Olson time zone database). For example : &#39;America/New_York&#39;.<br/>
+							By default, we use a library that tries to detect the timezone automatically.<br/></p>
+						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-timezone&#x3D;&#x27;foo&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.uselocalstorageforhistory" class="tsd-anchor"></a>
+					<h3>use<wbr>Local<wbr>Storage<wbr>For<wbr>History</h3>
+					<div class="tsd-signature tsd-kind-icon">use<wbr>Local<wbr>Storage<wbr>For<wbr>History<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L83">src/ui/SearchInterface/SearchInterface.ts
+							:83</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies that you wish to use the local storage of the browser to store the state of the interface.<br/>
+								This can be used for very specific purpose, and only if you know what you are doing.<br/>
+							Default value is <code>false</code>.</p>
+						</div>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-use-local-storage-for-history&#x3D;&#x27;true&#x27;
+data-use-local-storage-for-history&#x3D;&#x27;false&#x27;</pre>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+					<a name="attachcomponent" class="tsd-anchor"></a>
+					<h3>attach<wbr>Component</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">attach<wbr>Component<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, component<span class="tsd-signature-symbol">: </span><a href="../classes/basecomponent.html" class="tsd-signature-type">BaseComponent</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L273">src/ui/SearchInterface/SearchInterface.ts
+									:273</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Attach a component to the interface. This allows the interface to easily list and traverse its component.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>type: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Normally a unique identifier without the Coveo prefix (e.g.: CoveoFacet -&gt; Facet, CoveoPager -&gt; Pager, CoveoQuerybox -&gt; Querybox, etc.)</p>
+									</div>
+								</li>
+								<li>
+									<h5>component: <a href="../classes/basecomponent.html" class="tsd-signature-type">BaseComponent</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The component instance to attach.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+					<a name="debuginfo" class="tsd-anchor"></a>
+					<h3>debug<wbr>Info</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">debug<wbr>Info<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="../classes/basecomponent.html">BaseComponent</a>.<a href="../classes/basecomponent.html#debuginfo">debugInfo</a></p>
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L41">src/ui/Base/BaseComponent.ts
+									:41</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return the debug info about this component.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+					<a name="detachcomponent" class="tsd-anchor"></a>
+					<h3>detach<wbr>Component</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">detach<wbr>Component<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, component<span class="tsd-signature-symbol">: </span><a href="../classes/basecomponent.html" class="tsd-signature-type">BaseComponent</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L282">src/ui/SearchInterface/SearchInterface.ts
+									:282</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Detach a component from the interface.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>type: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Normally a unique identifier without the Coveo prefix (e.g.: CoveoFacet -&gt; Facet, CoveoPager -&gt; Pager, CoveoQuerybox -&gt; Querybox, etc.)</p>
+									</div>
+								</li>
+								<li>
+									<h5>component: <a href="../classes/basecomponent.html" class="tsd-signature-type">BaseComponent</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The component instance to detach.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+					<a name="disable" class="tsd-anchor"></a>
+					<h3>disable</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">disable<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="../classes/basecomponent.html">BaseComponent</a>.<a href="../classes/basecomponent.html#disable">disable</a></p>
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L52">src/ui/Base/BaseComponent.ts
+									:52</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Disable the component.
+										Normally this means that the component will not execute handlers for the framework events (query events, for example).
+									Component are enabled by default on creation.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+					<a name="enable" class="tsd-anchor"></a>
+					<h3>enable</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">enable<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="../classes/basecomponent.html">BaseComponent</a>.<a href="../classes/basecomponent.html#enable">enable</a></p>
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L61">src/ui/Base/BaseComponent.ts
+									:61</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Enable the component.
+										Normally this means that the component will execute handlers for the framework events (query events, for example).
+									Components are enabled by default on creation.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+					<a name="getbindings" class="tsd-anchor"></a>
+					<h3>get<wbr>Bindings</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Bindings<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L294">src/ui/SearchInterface/SearchInterface.ts
+									:294</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return the bindings, or environment, for the current component</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
+							<ul class="tsd-parameters">
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-has-type-parameter">
+					<a name="getcomponents" class="tsd-anchor"></a>
+					<h3>get<wbr>Components</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Components&lt;T&gt;<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L310">src/ui/SearchInterface/SearchInterface.ts
+									:310</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get all the components for a given type</p>
+								</div>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>type: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>Normally a unique identifier without the Coveo prefix (e.g.: CoveoFacet -&gt; Facet, CoveoPager -&gt; Pager, CoveoQuerybox -&gt; Querybox, etc.)</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+					<a name="hidewaitanimation" class="tsd-anchor"></a>
+					<h3>hide<wbr>Wait<wbr>Animation</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">hide<wbr>Wait<wbr>Animation<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L263">src/ui/SearchInterface/SearchInterface.ts
+									:263</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Hide the first query animation.<br/>
+									This is normally the Coveo logo with a CSS animation (which can be customized with options or CSS).</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+					<a name="isnewdesign" class="tsd-anchor"></a>
+					<h3>is<wbr>New<wbr>Design</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>New<wbr>Design<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L329">src/ui/SearchInterface/SearchInterface.ts
+									:329</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Determines whether the interface is using the new design.<br/>
+									This changes the rendering of multiple components.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+					<a name="showwaitanimation" class="tsd-anchor"></a>
+					<h3>show<wbr>Wait<wbr>Animation</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">show<wbr>Wait<wbr>Animation<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L253">src/ui/SearchInterface/SearchInterface.ts
+									:253</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Display the first query animation.<br/>
+									This is normally the Coveo logo with a CSS animation (which can be customized with options or CSS).</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+					<a name="disabled" class="tsd-anchor"></a>
+					<h3>disabled</h3>
+					<div class="tsd-signature tsd-kind-icon">disabled<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="../classes/basecomponent.html">BaseComponent</a>.<a href="../classes/basecomponent.html#disabled">disabled</a></p>
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L23">src/ui/Base/BaseComponent.ts
+							:23</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>A disabled component will not participate in the query, or listen to <a href="../classes/componentevents.html">ComponentEvents</a>.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{boolean}</p>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+					<a name="logger" class="tsd-anchor"></a>
+					<h3>logger</h3>
+					<div class="tsd-signature tsd-kind-icon">logger<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Logger</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="../classes/basecomponent.html">BaseComponent</a>.<a href="../classes/basecomponent.html#logger">logger</a></p>
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L18">src/ui/Base/BaseComponent.ts
+							:18</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Allows component to log in the dev console.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
+					<a name="id" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> ID</h3>
+					<div class="tsd-signature tsd-kind-icon">ID<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="../classes/basecomponent.html">BaseComponent</a>.<a href="../classes/basecomponent.html#id">ID</a></p>
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/BaseComponent.ts#L28">src/ui/Base/BaseComponent.ts
+							:28</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The static ID that each component need to be identified.<br/>
+							For example, SearchButton -&gt; static ID : SearchButton -&gt; className : CoveoSearchButton</p>
+						</div>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Search<wbr>Interface<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ISearchInterfaceOptions</span>, analyticsOptions<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, _window<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Window</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="searchinterface.html" class="tsd-signature-type">SearchInterface</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L189">src/ui/SearchInterface/SearchInterface.ts
+									:189</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Create a new search interface. Initialize various singleton for the interface (eg : Usage analytic, query controller, state model, etc.)<br/>
+										Bind event related to the query.<br/>
+									Will hide and show the loading animation, if activated.<br/></p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The <code>HTMLElement</code> on which the element will be instantiated. This cannot be an <code>HTMLInputElement</code> for technical reasons.</p>
+										</div>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">ISearchInterfaceOptions</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The options for the querybox.</p>
+										</div>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> analyticsOptions: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The options for the analytics component. Since the analytics component is normally global, it needs to be passed at initialization of the whole interface.</p>
+										</div>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> _window: <span class="tsd-signature-type">Window</span><span class="tsd-signature-symbol"> =&nbsp;window</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The window object for the search interface. Used for unit tests, which can pass a mock. Default is the global window object.</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="searchinterface.html" class="tsd-signature-type">SearchInterface</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implements</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></li>
+				</ul>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-kind-coveo-component">
+						<a href="searchinterface.html" class="tsd-kind-icon">Search<wbr>Interface</a>
+						<ul>
+							<li class=" tsd-kind-object-literal tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-static">
+								<a href="searchinterface.html#options" class="tsd-kind-icon">options</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+								<a href="searchinterface.html#attachcomponent" class="tsd-kind-icon">attach<wbr>Component</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+								<a href="searchinterface.html#debuginfo" class="tsd-kind-icon">debug<wbr>Info</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+								<a href="searchinterface.html#detachcomponent" class="tsd-kind-icon">detach<wbr>Component</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+								<a href="searchinterface.html#disable" class="tsd-kind-icon">disable</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+								<a href="searchinterface.html#enable" class="tsd-kind-icon">enable</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+								<a href="searchinterface.html#getbindings" class="tsd-kind-icon">get<wbr>Bindings</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="searchinterface.html#getcomponents" class="tsd-kind-icon">get<wbr>Components</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+								<a href="searchinterface.html#hidewaitanimation" class="tsd-kind-icon">hide<wbr>Wait<wbr>Animation</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+								<a href="searchinterface.html#isnewdesign" class="tsd-kind-icon">is<wbr>New<wbr>Design</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class">
+								<a href="searchinterface.html#showwaitanimation" class="tsd-kind-icon">show<wbr>Wait<wbr>Animation</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+								<a href="searchinterface.html#disabled" class="tsd-kind-icon">disabled</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+								<a href="searchinterface.html#logger" class="tsd-kind-icon">logger</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
+								<a href="searchinterface.html#id" class="tsd-kind-icon">ID</a>
+							</li>
+							<li class=" tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class">
+								<a href="searchinterface.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.io" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+<script src="../assets/gen/js/playground.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>

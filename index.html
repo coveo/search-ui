@@ -7,7 +7,10 @@
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
+	<link rel="stylesheet" href="assets/gen/css/CoveoFullSearchNewDesign.css">
 	<script src="assets/js/modernizr.js"></script>
+	<script src="assets/gen/js/CoveoJsSearch.js"></script>
+	<script src="assets/gen/js/templates/templatesNew.js"></script>
 </head>
 <body>
 <header>
@@ -64,6 +67,8 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<div class="preview-container tsd-panel">
+			</div>
 			<div class="tsd-panel tsd-typography">
 				<h1 id="search-ui-build-status-https-travis-ci-org-coveo-search-ui-svg-branch-master-https-travis-ci-org-coveo-search-ui-typescript-https-badges-frapsoft-com-typescript-version-typescript-v18-svg-v-100-https-github-com-ellerbrock-typescript-badges-bithound-overall-score-https-www-bithound-io-github-coveo-search-ui-badges-score-svg-https-www-bithound-io-github-coveo-search-ui-bithound-code-https-www-bithound-io-github-coveo-search-ui-badges-code-svg-https-www-bithound-io-github-coveo-search-ui-">Search-UI <a href="https://travis-ci.org/coveo/search-ui"><img src="https://travis-ci.org/coveo/search-ui.svg?branch=master" alt="Build Status"></a> <a href="https://github.com/ellerbrock/typescript-badges/"><img src="https://badges.frapsoft.com/typescript/version/typescript-v18.svg?v=100" alt="TypeScript"></a> <a href="https://www.bithound.io/github/coveo/search-ui"><img src="https://www.bithound.io/github/coveo/search-ui/badges/score.svg" alt="bitHound Overall Score"></a> <a href="https://www.bithound.io/github/coveo/search-ui"><img src="https://www.bithound.io/github/coveo/search-ui/badges/code.svg" alt="bitHound Code"></a></h1>
 				<p>Coveo Search UI Framework</p>
@@ -72,10 +77,10 @@
 				<pre><code>npm <span class="hljs-keyword">install</span> <span class="hljs-comment">--save coveo-search-ui</span>
 </code></pre><p>All resources will be available under <code>node_modules/coveo-search-ui/bin</code>. You can simply include those in your pages as a <code>&lt;script&gt;</code> tag.</p>
 				<p>If you are already using a module bundler (Browserify, webpack, Babel, etc.), then you can simply <code>require(&#39;coveo-search-ui&#39;)</code>.</p>
+				<p>You can also download the latest version <a href="http://productupdate.coveo.com/?product=coveo-search-ui&amp;version=1">here</a>.</p>
 				<h2 id="basic-usage">Basic usage</h2>
 				<pre><code><span class="hljs-comment">&lt;!-- Include the library scripts. --&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"js/CoveoJsSearch.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"js/CoveoJsSearch.Dependencies.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"js/templates/templatesNew.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 
 <span class="hljs-comment">&lt;!-- Every DOM element with a class starting with Coveo (uppercase) will instantiate a component. --&gt;</span>
@@ -104,7 +109,12 @@
         Coveo.init(<span class="hljs-built_in">document</span>.body);
     </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
-</code></pre><p>See more examples of fully configured pages in <code>./pages</code>.</p>
+</code></pre><ul>
+					<li><p>See more examples of fully configured pages in <code>./pages</code>.</p>
+					</li>
+					<li><p>We also invite you to consult this <a href="https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Getting+Started+Tutorial">tutorial</a> which should help newcomers.</p>
+					</li>
+				</ul>
 				<h2 id="build">Build</h2>
 				<pre><code>npm <span class="hljs-keyword">install</span> -g gulp
 npm <span class="hljs-keyword">install</span>
@@ -117,6 +127,8 @@ gulp
 					<li><code>gulp sprites</code> -&gt; Regenerate the sprites image as well as the generated Sass/CSS code.</li>
 					<li><code>gulp test</code> -&gt; Build and run the unit tests.</li>
 					<li><code>gulp doc</code> -&gt; Generate the documentation website for the project.</li>
+					<li><code>gulp dev</code> -&gt; Start a webpack dev server for the project.</li>
+					<li><code>gulp devTest</code> -&gt; Start a webpack dev server for the unit tests.</li>
 				</ul>
 				<h2 id="dev">Dev</h2>
 				<p>Ensure that you were able to run <code>gulp</code> completely without any errors first. Then you can start the dev-server.</p>
@@ -164,8 +176,9 @@ gulp
 				<p>Every time you hit save in a source file, the dev server will reload and re-execute your tests.</p>
 				<p>The code coverage will be reported in <code>./bin/coverage</code></p>
 				<h2 id="documentation">Documentation</h2>
-				<p>Generated using TypeDoc. Available <a href="https://coveo.github.io/search-ui/">here</a>.</p>
-				<p>Hand written documentation with more examples available <a href="https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Home">here</a></p>
+				<p>General reference documentation is generated using TypeDoc. Available <a href="https://coveo.github.io/search-ui/">here</a>. You can see the list of all available options and public method that the framework exposes for each component.</p>
+				<p>Hand written documentation with more examples available <a href="https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Home">here</a>.</p>
+				<p>A tutorial is available <a href="https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Getting+Started+Tutorial">here</a>. If you are new to our project, we strongly recommend you to consult the tutorial, as it can provide you with valuable informations.</p>
 				<p>You can also reach <a href="https://search.coveo.com">search.coveo.com</a> to search for a particular issue and/or question.</p>
 			</div>
 		</div>
@@ -186,6 +199,9 @@ gulp
 					</li>
 					<li class=" tsd-kind-class tsd-kind-coveo-component">
 						<a href="components/authenticationprovider.html" class="tsd-kind-icon">Authentication<wbr>Provider</a>
+					</li>
+					<li class=" tsd-kind-class tsd-kind-coveo-component">
+						<a href="components/badge.html" class="tsd-kind-icon">Badge</a>
 					</li>
 					<li class=" tsd-kind-class tsd-kind-coveo-component">
 						<a href="components/breadcrumb.html" class="tsd-kind-icon">Breadcrumb</a>
@@ -209,6 +225,9 @@ gulp
 						<a href="components/facet.html" class="tsd-kind-icon">Facet</a>
 					</li>
 					<li class=" tsd-kind-class tsd-kind-coveo-component">
+						<a href="components/facetrange.html" class="tsd-kind-icon">Facet<wbr>Range</a>
+					</li>
+					<li class=" tsd-kind-class tsd-kind-coveo-component">
 						<a href="components/facetslider.html" class="tsd-kind-icon">Facet<wbr>Slider</a>
 					</li>
 					<li class=" tsd-kind-class tsd-kind-coveo-component">
@@ -230,7 +249,13 @@ gulp
 						<a href="components/hiddenquery.html" class="tsd-kind-icon">Hidden<wbr>Query</a>
 					</li>
 					<li class=" tsd-kind-class tsd-kind-coveo-component">
+						<a href="components/hierarchicalfacet.html" class="tsd-kind-icon">Hierarchical<wbr>Facet</a>
+					</li>
+					<li class=" tsd-kind-class tsd-kind-coveo-component">
 						<a href="components/icon.html" class="tsd-kind-icon">Icon</a>
+					</li>
+					<li class=" tsd-kind-class tsd-kind-coveo-component">
+						<a href="components/imageresultlist.html" class="tsd-kind-icon">Image<wbr>Result<wbr>List</a>
 					</li>
 					<li class=" tsd-kind-class tsd-kind-coveo-component">
 						<a href="components/logo.html" class="tsd-kind-icon">Logo</a>
@@ -240,6 +265,9 @@ gulp
 					</li>
 					<li class=" tsd-kind-class tsd-kind-coveo-component">
 						<a href="components/omnibox.html" class="tsd-kind-icon">Omnibox</a>
+					</li>
+					<li class=" tsd-kind-class tsd-kind-coveo-component">
+						<a href="components/omniboxresultlist.html" class="tsd-kind-icon">Omnibox<wbr>Result<wbr>List</a>
 					</li>
 					<li class=" tsd-kind-class tsd-kind-coveo-component">
 						<a href="components/pager.html" class="tsd-kind-icon">Pager</a>
@@ -264,6 +292,9 @@ gulp
 					</li>
 					<li class=" tsd-kind-class tsd-kind-coveo-component">
 						<a href="components/quickviewdocument.html" class="tsd-kind-icon">Quickview<wbr>Document</a>
+					</li>
+					<li class=" tsd-kind-class tsd-kind-coveo-component">
+						<a href="components/recommendation.html" class="tsd-kind-icon">Recommendation</a>
 					</li>
 					<li class=" tsd-kind-class tsd-kind-coveo-component">
 						<a href="components/resultattachments.html" class="tsd-kind-icon">Result<wbr>Attachments</a>
@@ -302,6 +333,9 @@ gulp
 						<a href="components/searchbutton.html" class="tsd-kind-icon">Search<wbr>Button</a>
 					</li>
 					<li class=" tsd-kind-class tsd-kind-coveo-component">
+						<a href="components/searchinterface.html" class="tsd-kind-icon">Search<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-class tsd-kind-coveo-component">
 						<a href="components/searchbox.html" class="tsd-kind-icon">Searchbox</a>
 					</li>
 					<li class=" tsd-kind-class tsd-kind-coveo-component">
@@ -317,6 +351,9 @@ gulp
 						<a href="components/tab.html" class="tsd-kind-icon">Tab</a>
 					</li>
 					<li class=" tsd-kind-class tsd-kind-coveo-component">
+						<a href="components/templateloader.html" class="tsd-kind-icon">Template<wbr>Loader</a>
+					</li>
+					<li class=" tsd-kind-class tsd-kind-coveo-component">
 						<a href="components/text.html" class="tsd-kind-icon">Text</a>
 					</li>
 					<li class=" tsd-kind-class tsd-kind-coveo-component">
@@ -325,11 +362,14 @@ gulp
 					<li class=" tsd-kind-class tsd-kind-coveo-component">
 						<a href="components/triggers.html" class="tsd-kind-icon">Triggers</a>
 					</li>
+					<li class=" tsd-kind-class tsd-kind-coveo-component">
+						<a href="components/youtubethumbnail.html" class="tsd-kind-icon">You<wbr>Tube<wbr>Thumbnail</a>
+					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/advancedsearchevents.html" class="tsd-kind-icon">Advanced<wbr>Search<wbr>Events</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/badge.html" class="tsd-kind-icon">Badge</a>
+						<a href="classes/analyticsevents.html" class="tsd-kind-icon">Analytics<wbr>Events</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/basecomponent.html" class="tsd-kind-icon">Base<wbr>Component</a>
@@ -347,6 +387,9 @@ gulp
 						<a href="classes/componentevents.html" class="tsd-kind-icon">Component<wbr>Events</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="classes/componentoptions.html" class="tsd-kind-icon">Component<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/datepicker.html" class="tsd-kind-icon">Date<wbr>Picker</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -362,9 +405,6 @@ gulp
 						<a href="classes/expressionbuilder.html" class="tsd-kind-icon">Expression<wbr>Builder</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/facetrange.html" class="tsd-kind-icon">Facet<wbr>Range</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="classes/facetsearch.html" class="tsd-kind-icon">Facet<wbr>Search</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -377,13 +417,7 @@ gulp
 						<a href="classes/foldingforthread.html" class="tsd-kind-icon">Folding<wbr>For<wbr>Thread</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/hierarchicalfacet.html" class="tsd-kind-icon">Hierarchical<wbr>Facet</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="classes/historycontroller.html" class="tsd-kind-icon">History<wbr>Controller</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/imageresultlist.html" class="tsd-kind-icon">Image<wbr>Result<wbr>List</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/initialization.html" class="tsd-kind-icon">Initialization</a>
@@ -401,9 +435,6 @@ gulp
 						<a href="classes/numericspinner.html" class="tsd-kind-icon">Numeric<wbr>Spinner</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/omniboxresultlist.html" class="tsd-kind-icon">Omnibox<wbr>Result<wbr>List</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="classes/querybuilder.html" class="tsd-kind-icon">Query<wbr>Builder</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -416,16 +447,13 @@ gulp
 						<a href="classes/querystatemodel.html" class="tsd-kind-icon">Query<wbr>State<wbr>Model</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="classes/querysummaryevents.html" class="tsd-kind-icon">Query<wbr>Summary<wbr>Events</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/radiobutton.html" class="tsd-kind-icon">Radio<wbr>Button</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/recommendation.html" class="tsd-kind-icon">Recommendation</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="classes/searchendpoint.html" class="tsd-kind-icon">Search<wbr>Endpoint</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/searchinterface.html" class="tsd-kind-icon">Search<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/templatecache.html" class="tsd-kind-icon">Template<wbr>Cache</a>
@@ -461,10 +489,37 @@ gulp
 						<a href="interfaces/ibuildingqueryeventargs.html" class="tsd-kind-icon">IBuilding<wbr>Query<wbr>Event<wbr>Args</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/ichangeanalyticscustomdataeventargs.html" class="tsd-kind-icon">IChange<wbr>Analytics<wbr>Custom<wbr>Data<wbr>Event<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ichangeableanalyticsdataobject.html" class="tsd-kind-icon">IChangeable<wbr>Analytics<wbr>Data<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ichangeableanalyticsmetaobject.html" class="tsd-kind-icon">IChangeable<wbr>Analytics<wbr>Meta<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/icomponentbindings.html" class="tsd-kind-icon">IComponent<wbr>Bindings</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/icomponentdefinition.html" class="tsd-kind-icon">IComponent<wbr>Definition</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/icomponentoptions.html" class="tsd-kind-icon">IComponent<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/icomponentoptionsfieldoptionargs.html" class="tsd-kind-icon">IComponent<wbr>Options<wbr>Field<wbr>Option<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/icomponentoptionsfieldsoptionargs.html" class="tsd-kind-icon">IComponent<wbr>Options<wbr>Fields<wbr>Option<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/icomponentoptionslistoptionargs.html" class="tsd-kind-icon">IComponent<wbr>Options<wbr>List<wbr>Option<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/icomponentoptionsnumberoptionargs.html" class="tsd-kind-icon">IComponent<wbr>Options<wbr>Number<wbr>Option<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/icomponentoptionspostprocessing.html" class="tsd-kind-icon">IComponent<wbr>Options<wbr>Post<wbr>Processing</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/icomputedfieldrequest.html" class="tsd-kind-icon">IComputed<wbr>Field<wbr>Request</a>
@@ -503,6 +558,9 @@ gulp
 						<a href="interfaces/ifielddescription.html" class="tsd-kind-icon">IField<wbr>Description</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/ifieldoption.html" class="tsd-kind-icon">IField<wbr>Option</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/igetdocumentoptions.html" class="tsd-kind-icon">IGet<wbr>Document<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-interface">
@@ -513,6 +571,18 @@ gulp
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/igroupbyvalue.html" class="tsd-kind-icon">IGroup<wbr>ByValue</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ihighlight.html" class="tsd-kind-icon">IHighlight</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ihighlightphrase.html" class="tsd-kind-icon">IHighlight<wbr>Phrase</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ihighlightterm.html" class="tsd-kind-icon">IHighlight<wbr>Term</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/iiconoptions.html" class="tsd-kind-icon">IIcon<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/iimageutilsoptions.html" class="tsd-kind-icon">IImage<wbr>Utils<wbr>Options</a>
@@ -581,6 +651,9 @@ gulp
 						<a href="interfaces/iquerysuccesseventargs.html" class="tsd-kind-icon">IQuery<wbr>Success<wbr>Event<wbr>Args</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/iquerysummarycancellastactionargs.html" class="tsd-kind-icon">IQuery<wbr>Summary<wbr>Cancel<wbr>Last<wbr>Action<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/irangevalue.html" class="tsd-kind-icon">IRange<wbr>Value</a>
 					</li>
 					<li class=" tsd-kind-interface">
@@ -612,6 +685,9 @@ gulp
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/isearchendpointoptions.html" class="tsd-kind-icon">ISearch<wbr>Endpoint<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/istreamhighlightoptions.html" class="tsd-kind-icon">IStream<wbr>Highlight<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/istringmap.html" class="tsd-kind-icon">IString<wbr>Map</a>
@@ -670,12 +746,6 @@ gulp
 					<li class=" tsd-kind-function">
 						<a href="globals.html#__" class="tsd-kind-icon">$$</a>
 					</li>
-					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="globals.html#accesstokeninurl" class="tsd-kind-icon">access<wbr>Token<wbr>InUrl</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="globals.html#alertspath" class="tsd-kind-icon">alerts<wbr>Path</a>
-					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#executequery" class="tsd-kind-icon">execute<wbr>Query</a>
 					</li>
@@ -703,26 +773,14 @@ gulp
 					<li class=" tsd-kind-function">
 						<a href="globals.html#logsearchevent" class="tsd-kind-icon">log<wbr>Search<wbr>Event</a>
 					</li>
-					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="globals.html#method" class="tsd-kind-icon">method</a>
-					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#options" class="tsd-kind-icon">options</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#patch" class="tsd-kind-icon">patch</a>
 					</li>
-					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="globals.html#path" class="tsd-kind-icon">path</a>
-					</li>
-					<li class=" tsd-kind-function">
+					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#polyfill" class="tsd-kind-icon">polyfill</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="globals.html#requestdatatype" class="tsd-kind-icon">request<wbr>Data<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-not-exported">
-						<a href="globals.html#responsetype" class="tsd-kind-icon">response<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#state" class="tsd-kind-icon">state</a>
@@ -796,6 +854,7 @@ gulp
 </div>
 <div class="overlay"></div>
 <script src="assets/js/main.js"></script>
+<script src="assets/gen/js/playground.js"></script>
 <script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
 </body>
 </html>
