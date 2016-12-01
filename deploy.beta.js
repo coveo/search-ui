@@ -4,6 +4,8 @@ const exec = require('child_process').exec;
 login('coveo', process.env.NPM_PW, 'sandbox_JSUI@coveo.com');
 
 console.log('executing deploy script beta');
-setTimeout(exec('npm publish --tag beta', function (error, stdout, stderr) {
-  console.log(error, stdout, stderr);
-}), 2000);
+setTimeout(function () {
+  exec('npm publish --tag beta', function (error, stdout, stderr) {
+    console.log(error, stdout, stderr);
+  })
+}, 2000);
