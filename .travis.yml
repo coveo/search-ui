@@ -39,6 +39,7 @@ deploy:
 deploy:
   provider: script
   script: node deploy.beta.js
+  skip_cleanup: true
   on:
     tags: true
     repo: coveo/search-ui
