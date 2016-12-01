@@ -703,6 +703,22 @@ export class Win {
   public width(): number {
     return this.win.innerWidth;
   }
+
+  public scrollY(): number {
+    return this.supportPageOffset() ? this.win.pageYOffset : this.isCSS1Compat() ? this.win.document.documentElement.scrollTop : this.win.document.body.scrollTop;
+  }
+
+  public scrollX(): number {
+    return this.supportPageOffset() ? window.pageXOffset : this.isCSS1Compat() ? document.documentElement.scrollLeft : document.body.scrollLeft;
+  }
+
+  private isCSS1Compat() {
+    return (this.win.document.compatMode || '') === 'CSS1Compat';
+  }
+
+  private supportPageOffset() {
+    return this.win.pageXOffset !== undefined;
+  }
 }
 
 export class Doc {

@@ -181,7 +181,7 @@ export class FieldValue extends Component {
         values = [loadedValueFromComponent];
       }
       this.appendValuesToDom(values);
-      if(this.options.textCaption != null) {
+      if (this.options.textCaption != null) {
         this.prependTextCaptionToDom();
       }
     }
@@ -264,7 +264,7 @@ export class FieldValue extends Component {
   }
 
   private renderTextCaption(): HTMLElement {
-    let element = $$('span', {className : 'coveo-field-caption'}, _.escape(this.options.textCaption));
+    let element = $$('span', { className: 'coveo-field-caption' }, _.escape(this.options.textCaption));
     return element.el;
   }
 
