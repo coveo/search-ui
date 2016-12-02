@@ -1,6 +1,5 @@
 @import 'Variables';
 @import "../node_modules/@salesforce-ux/design-system/scss/design-tokens";
-@import '../bin/sass/GeneratedIconsNew';
 
 .coveo-icon {
   @include GeneratedIcons();
