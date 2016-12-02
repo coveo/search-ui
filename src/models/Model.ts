@@ -161,7 +161,6 @@ export class Model extends BaseComponent {
     this.defaultAttributes[attribute] = value;
   }
 
-  // I removed the unused 'options' parameter in the setDefault method. FB
   /**
    * Sets a single specific attribute to its default value.</br>
    * Note: this method calls the {@link setMultiple} method without specifying any option.
