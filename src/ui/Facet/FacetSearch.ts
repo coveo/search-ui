@@ -156,9 +156,7 @@ export class FacetSearch {
         this.processNewFacetSearchResults(fieldValues, params);
         this.hideFacetSearchWaitingAnimation();
         this.facetSearchPromise = undefined;
-      });
-
-      this.facetSearchPromise.catch((error: IEndpointError) => {
+      }).catch((error: IEndpointError) => {
         // The request might be normally cancelled if another search is triggered.
         // In this case we do not hide the animation to prevent flicking.
         if (Utils.exists(error)) {
@@ -166,6 +164,7 @@ export class FacetSearch {
           this.hideFacetSearchWaitingAnimation();
         }
         this.facetSearchPromise = undefined;
+        return null;
       });
     }
   }
@@ -372,7 +371,8 @@ export class FacetSearch {
       this.facetSearchTimeout = undefined;
     }
     if (Utils.exists(this.facetSearchPromise)) {
-      Promise.reject(this.facetSearchPromise).catch(() => { });
+      Promise.reject(this.facetSearchPromise).catch(() => {
+      });
       this.facetSearchPromise = undefined;
     }
 
@@ -587,7 +587,7 @@ export class FacetSearch {
     valueElement.triggerOnExcludeQuery();
   }
 
-  protected getValueInInputForFacetSearch() {
+  public getValueInInputForFacetSearch() {
     return this.input.value;
   }
 

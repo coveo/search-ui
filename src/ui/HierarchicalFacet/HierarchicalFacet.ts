@@ -43,6 +43,7 @@ export interface IValueHierarchy {
   level: number;
   keepOpened: boolean;
   hasChildSelected: boolean;
+  allChildShouldBeSelected: boolean;
 }
 
 interface IFlatHierarchy {
@@ -409,6 +410,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   public reset() {
     _.each(this.getAllValueHierarchy(), (valueHierarchy) => {
       valueHierarchy.hasChildSelected = false;
+      valueHierarchy.allChildShouldBeSelected = false;
     });
     // Need to close all values, otherwise we might end up with orphan(s)
     // if a parent value, after reset, is no longer visible.
@@ -490,6 +492,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
     super.rebuildValueElements();
     this.buildParentChildRelationship();
     this.checkForOrphans();
+    this.checkForNewUnselectedChild();
     this.crop();
   }
 
@@ -541,7 +544,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   private crop() {
     // Partition the top level or the facet to only operate on the values that are not selected or excluded
     let partition = _.partition(this.topLevelHierarchy, (hierarchy: IValueHierarchy) => {
-      return hierarchy.facetValue.selected || hierarchy.facetValue.excluded;
+      return hierarchy.facetValue.selected || hierarchy.facetValue.excluded || hierarchy.hasChildSelected;
     });
 
     // Hide and show the partitionned top level values, depending on the numberOfValuesToShow
@@ -555,11 +558,19 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
     });
   }
 
-  private placeChildsUnderTheirParent(hierarchy: IValueHierarchy, hierarchyElement: HTMLElement) {
-    _.each(hierarchy.childs.reverse(), (child) => {
+  private placeChildsUnderTheirParent(hierarchy: IValueHierarchy, hierarchyElement: HTMLElement, reverse = true) {
+    let toIterateOver = hierarchy.childs;
+    if (reverse) {
+      toIterateOver = toIterateOver.reverse();
+    }
+    _.each(toIterateOver, (child) => {
       if (this.getValueHierarchy(child.facetValue.value)) {
         let childElement = this.getElementFromFacetValueList(child.facetValue);
         $$(childElement).insertAfter(hierarchyElement);
+        let childFromHierarchy = this.getValueFromHierarchy(child.facetValue);
+        if (childFromHierarchy.childs && childFromHierarchy.childs.length != 0) {
+          this.placeChildsUnderTheirParent(childFromHierarchy, childElement);
+        }
       }
     });
     if (hierarchy.keepOpened) {
@@ -650,14 +661,15 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
       return isCorrectMinimumLevel && isCorrectMaximumLevel;
     });
     _.each(this.correctLevels, (hierarchy: IFlatHierarchy) => {
-      let childs = _.map(_.filter<IFlatHierarchy>(this.correctLevels, (possibleChild) => {
+      let childs = _.map(_.filter<IFlatHierarchy>(this.correctLevels, (possibleChild: IFlatHierarchy) => {
         return possibleChild.parent != null && possibleChild.parent.toLowerCase() == hierarchy.self.toLowerCase();
       }), (child): IValueHierarchy => {
         return {
           facetValue: child.facetValue,
           level: child.level,
           keepOpened: false,
-          hasChildSelected: false
+          hasChildSelected: false,
+          allChildShouldBeSelected: false
         };
       });
 
@@ -666,6 +678,9 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
       }) : null;
 
       let hierarchyThatAlreadyExists = this.getValueHierarchy(hierarchy.facetValue.value);
+      if (hierarchyThatAlreadyExists && hierarchyThatAlreadyExists.childs.length != childs.length) {
+        hierarchyThatAlreadyExists.childs = childs;
+      }
       let hierarchyThatAlreadyExistsAtParent;
       if (parent) {
         hierarchyThatAlreadyExistsAtParent = this.getValueHierarchy(parent.facetValue.value);
@@ -678,12 +693,14 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
           keepOpened: hierarchyThatAlreadyExistsAtParent ? hierarchyThatAlreadyExistsAtParent.keepOpened : false,
           hasChildSelected: hierarchyThatAlreadyExistsAtParent ? hierarchyThatAlreadyExistsAtParent.hasChildSelected : false,
           originalPosition: hierarchyThatAlreadyExistsAtParent ? hierarchyThatAlreadyExistsAtParent.originalPosition : undefined,
+          allChildShouldBeSelected: hierarchyThatAlreadyExistsAtParent ? hierarchyThatAlreadyExistsAtParent.allChildShouldBeSelected : false
         },
         facetValue: hierarchy.facetValue,
         level: hierarchy.level,
         keepOpened: hierarchyThatAlreadyExists ? hierarchyThatAlreadyExists.keepOpened : false,
         hasChildSelected: hierarchyThatAlreadyExists ? hierarchyThatAlreadyExists.hasChildSelected : false,
-        originalPosition: hierarchyThatAlreadyExists ? hierarchyThatAlreadyExists.originalPosition : undefined
+        originalPosition: hierarchyThatAlreadyExists ? hierarchyThatAlreadyExists.originalPosition : undefined,
+        allChildShouldBeSelected: hierarchyThatAlreadyExists ? hierarchyThatAlreadyExists.allChildShouldBeSelected : false
       });
     });
 
@@ -742,6 +759,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
 
   private selectChilds(parent: IValueHierarchy, children: IValueHierarchy[]) {
     this.flagParentForSelection(parent);
+    parent.allChildShouldBeSelected = true;
     this.selectMultipleValues(_.map(children, (child) => {
       return child.facetValue;
     }));
@@ -749,6 +767,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
 
   private deselectChilds(parent: IValueHierarchy, children: IValueHierarchy[]) {
     parent.hasChildSelected = false;
+    parent.allChildShouldBeSelected = false;
     this.deselectMultipleValues(_.map(children, (child) => {
       return child.facetValue;
     }));
@@ -805,6 +824,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
       if (otherSelectedChilds.length == 0) {
         parentInHierarchy.hasChildSelected = false;
       }
+      parentInHierarchy.allChildShouldBeSelected = false;
       parent = parentInHierarchy.parent;
     }
   }
@@ -844,7 +864,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
     return value.value.split(this.options.delimitingCharacter).length - 1;
   }
 
-  private getAllValueHierarchy(): { [facetValue: string]: IValueHierarchy } {
+  public getAllValueHierarchy(): { [facetValue: string]: IValueHierarchy } {
     if (this.valueHierarchy == null) {
       this.valueHierarchy = {};
     }
@@ -878,6 +898,22 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
           this.logger.error(`Orphan value found in HierarchicalFacet : ${v.facetValue.value}`, `Needed : ${this.getParent(v.facetValue)} but not found`);
           this.logger.warn(`Removing incoherent facet value : ${v.facetValue.value}`);
           this.hideFacetValue(v);
+        }
+      }
+    });
+  }
+
+  private checkForNewUnselectedChild() {
+    // It's possible that after checking a facet value, the index returns new facet values (because of injection depth);
+    _.each(this.valueHierarchy, (v: IValueHierarchy) => {
+      if (v.allChildShouldBeSelected) {
+        let notAlreadySelected = _.find((v.childs), (child: IValueHierarchy) => {
+          return child.facetValue.selected != true;
+        });
+        if (notAlreadySelected) {
+          this.selectValue(v.facetValue, true);
+          this.logger.info('Re-executing query with new facet values returned by index');
+          this.queryController.deferExecuteQuery();
         }
       }
     });

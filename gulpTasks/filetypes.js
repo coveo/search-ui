@@ -153,7 +153,7 @@ function generateShouldDisplayLabel(shouldDisplayLabel) {
 }
 
 function ensureImageIsValid(filetype, image, legacy) {
-  var path = './image/sprites/' + image.replace('-', '/') + '.png';
+  var path = './image/sprites/' + image.replace(/-/g, '/') + '.png';
 
   // DO not validate legacy because this pollutes the build console
   // with useless stuff

@@ -508,7 +508,7 @@ export class QuickviewDocument extends Component {
     // on a page-based quick view in an upcoming hackaton anyway :)
     //
     // Also, mobile devices have troubles with the animation.
-    if (this.isNewQuickviewDocument(window) || DeviceUtils.isMobileDevice()) {
+    if (!this.isNewQuickviewDocument(window) || DeviceUtils.isMobileDevice()) {
       element.scrollIntoView();
 
       // iOS on Safari might scroll the whole modal box body when we do this,

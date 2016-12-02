@@ -14,6 +14,7 @@ import {IQueryOptions} from '../../controllers/QueryController';
 import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {QuerySummaryEvents} from '../../events/QuerySummaryEvents';
 
+
 export interface IAdvancedSearchOptions {
   includeKeywords?: boolean;
   includeDate?: boolean;
