@@ -47,7 +47,7 @@ export class QueryStateModel extends Model {
     hd: '',
     hq: '',
     sort: '',
-    layout: '',
+    layout: 'list',
     tg: '',
     quickview: ''
   };

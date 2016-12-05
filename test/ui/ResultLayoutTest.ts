@@ -64,8 +64,8 @@ export function ResultLayoutTest() {
             modifyBuilder: builder => {
               builder.withLiveQueryStateModel();
               $$(builder.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => {
-                args.layouts.push('card');
                 args.layouts.push('list');
+                args.layouts.push('card');
               });
               return builder;
             }
@@ -75,25 +75,26 @@ export function ResultLayoutTest() {
         it('calls changeLayout with the new value on queryStateChanged if it is available', function () {
           let changeLayoutSpy = jasmine.createSpy('changeLayoutSpy');
           test.cmp.changeLayout = changeLayoutSpy;
-          test.env.queryStateModel.set(QueryStateModel.attributesEnum.layout, 'list');
-          expect(changeLayoutSpy).toHaveBeenCalledWith('list');
+          test.env.queryStateModel.set(QueryStateModel.attributesEnum.layout, 'card');
+          expect(changeLayoutSpy).toHaveBeenCalledWith('card');
         });
+
         it('calls changeLayout with its first layout if no value is provided', function () {
           let changeLayoutSpy = jasmine.createSpy('changeLayoutSpy');
           test.cmp.changeLayout = changeLayoutSpy;
           test.env.queryStateModel.set(QueryStateModel.attributesEnum.layout, 'list');
           test.env.queryStateModel.set(QueryStateModel.attributesEnum.layout, '');
-          expect(changeLayoutSpy).toHaveBeenCalledWith('card');
+          expect(changeLayoutSpy).toHaveBeenCalledWith('list');
         });
+
         it('calls changeLayout with its first layout if an invalid value is provided', function () {
           let changeLayoutSpy = jasmine.createSpy('changeLayoutSpy');
           test.cmp.changeLayout = changeLayoutSpy;
           test.env.queryStateModel.set(QueryStateModel.attributesEnum.layout, 'list');
           test.env.queryStateModel.set(QueryStateModel.attributesEnum.layout, 'Emacs <3');
-          expect(changeLayoutSpy).toHaveBeenCalledWith('card');
+          expect(changeLayoutSpy).toHaveBeenCalledWith('list');
         });
       });
-
     });
 
     it('changeLayout should not throw an error when having only one layout and switching to it', function () {
