@@ -20,6 +20,7 @@ import Globalize = require('globalize');
 import {KEYBOARD} from '../../utils/KeyboardUtils';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import 'styling/Debug';
+import '../../../bin/sass/_ModalBox';
 
 export interface IDebugOptions {
   enableDebug?: boolean;

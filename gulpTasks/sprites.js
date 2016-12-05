@@ -4,7 +4,6 @@ const glob = require('glob');
 const _ = require('underscore');
 const pngSprite = require('png-sprite');
 const fs = require('fs');
-const insert = require('gulp-insert');
 const buildSpriteList = require('./buildSpriteList');
 
 gulp.task('sprites', ['regularSprites', 'retinaSprites', 'regularSpriteList', 'retinaSpriteList', 'validateRetinaSprites']);
