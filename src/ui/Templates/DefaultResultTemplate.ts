@@ -4,7 +4,7 @@ import {TemplateCache} from './TemplateCache';
 import {IQueryResult} from '../../rest/QueryResult';
 import {Assert} from '../../misc/Assert';
 
-/**
+/*
  * This renders the appropriate result template, found in TemplateCache,
  * according to its condition.
  *

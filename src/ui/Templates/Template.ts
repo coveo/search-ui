@@ -30,12 +30,8 @@ export class Template {
   constructor(public dataToString?: (object?: any) => string, public condition?: Function) {
   }
 
-  /**
+  /*
    * Instantiate the template to a string if the condition matches
-   * @param object The template data to render
-   * @param checkCondition Whether to check the template condition or not. Default is `true`
-   * @param options The options for instantiation (see @ITemplateOptions)
-   *
    */
   instantiateToString(object?: any, checkCondition = true, options?: ITemplateOptions): string {
     if (options) {
