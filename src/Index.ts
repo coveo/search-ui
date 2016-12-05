@@ -113,6 +113,12 @@ export {Logo} from './ui/Logo/Logo';
 export {Backdrop} from './ui/Backdrop/Backdrop';
 export {CardOverlay} from './ui/CardOverlay/CardOverlay';
 export {CardActionBar} from './ui/CardActionBar/CardActionBar';
+export {HashUtils} from './utils/HashUtils';
+export {DeviceUtils} from './utils/DeviceUtils';
+export {ColorUtils} from './utils/ColorUtils';
+export {Cookie} from './utils/CookieUtils';
+export {CurrencyUtils} from './utils/CurrencyUtils';
+export {DateUtils} from './utils/DateUtils';
 
 import {swapVar} from './SwapVar';
 swapVar(this);

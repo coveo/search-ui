@@ -125,7 +125,7 @@ export class ResultList extends Component {
      */
     resultContainer: ComponentOptions.buildChildHtmlElementOption({
       defaultFunction: (element: HTMLElement) => {
-        var d = document.createElement('div');
+        let d = document.createElement('div');
         element.appendChild(d);
         return d;
       }
@@ -273,9 +273,9 @@ export class ResultList extends Component {
    * @param results
    */
   public buildResults(results: IQueryResults): HTMLElement[] {
-    var res: HTMLElement[] = [];
+    let res: HTMLElement[] = [];
     _.each(results.results, (result: IQueryResult) => {
-      var resultElement = this.buildResult(result);
+      let resultElement = this.buildResult(result);
       if (resultElement != null) {
         res.push(resultElement);
       }
@@ -293,7 +293,7 @@ export class ResultList extends Component {
     Assert.exists(result);
     QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), result);
     ResultList.resultCurrentlyBeingRendered = result;
-    var resultElement = this.options.resultTemplate.instantiateToElement(result, true, { layout: <ValidLayout>this.options.layout });
+    let resultElement = this.options.resultTemplate.instantiateToElement(result, true, { layout: <ValidLayout>this.options.layout });
     if (resultElement != null) {
       Component.bindResultToElement(resultElement, result);
     }
@@ -327,7 +327,7 @@ export class ResultList extends Component {
     this.fetchingMoreResults.then((data: IQueryResults) => {
       Assert.exists(data);
       this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.pagerScrolling, {}, this.element);
-      var results = data.results;
+      let results = data.results;
       this.reachedTheEndOfResults = count > data.results.length;
       this.renderResults(this.buildResults(data), true);
       _.each(results, (result) => {
@@ -371,11 +371,11 @@ export class ResultList extends Component {
   protected autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult) {
     Assert.exists(element);
 
-    var initOptions = this.searchInterface.options.originalOptionsObject;
-    var resultComponentBindings: IResultsComponentBindings = _.extend({}, this.getBindings(), {
+    let initOptions = this.searchInterface.options.originalOptionsObject;
+    let resultComponentBindings: IResultsComponentBindings = _.extend({}, this.getBindings(), {
       resultElement: element
     });
-    var initParameters: IInitializationParameters = {
+    let initParameters: IInitializationParameters = {
       options: initOptions,
       bindings: resultComponentBindings,
       result: result
@@ -384,7 +384,7 @@ export class ResultList extends Component {
   }
 
   protected triggerNewResultDisplayed(result: IQueryResult, resultElement: HTMLElement) {
-    var args: IDisplayedNewResultEventArgs = {
+    let args: IDisplayedNewResultEventArgs = {
       result: result,
       item: resultElement
     };
@@ -411,7 +411,7 @@ export class ResultList extends Component {
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
     Assert.exists(data);
     Assert.exists(data.results);
-    var results = data.results;
+    let results = data.results;
     this.logger.trace('Received query results from new query', results);
     this.hideWaitingAnimation();
     ResultList.resultCurrentlyBeingRendered = undefined;
@@ -451,10 +451,10 @@ export class ResultList extends Component {
 
   private scrollBackToTop() {
     if (this.options.infiniteScrollContainer instanceof Window) {
-      var win = <Window>this.options.infiniteScrollContainer;
+      let win = <Window>this.options.infiniteScrollContainer;
       win.scrollTo(0, 0);
     } else {
-      var el = <HTMLElement>this.options.infiniteScrollContainer;
+      let el = <HTMLElement>this.options.infiniteScrollContainer;
       el.scrollTop = 0;
     }
   }
@@ -493,7 +493,7 @@ export class ResultList extends Component {
 
   private isScrollingOfResultListAlmostAtTheBottom(): boolean {
     // this is in a try catch because the unit test fail otherwise (Window does not exist for phantom js in the console)
-    var isWindow;
+    let isWindow;
     try {
       isWindow = this.options.infiniteScrollContainer instanceof Window;
     } catch (e) {
@@ -503,17 +503,18 @@ export class ResultList extends Component {
   }
 
   private isScrollAtBottomForWindowElement() {
-    var windowHeight = new Win(window).height();
-    var scrollTop = window.scrollY;
-    var bodyHeight = new Doc(document).height();
+    let win = new Win(window);
+    let windowHeight = win.height();
+    let scrollTop = win.scrollY();
+    let bodyHeight = new Doc(document).height();
     return bodyHeight - (windowHeight + scrollTop) < windowHeight / 2;
   }
 
   private isScrollAtBottomForHtmlElement() {
-    var el = <HTMLElement>this.options.infiniteScrollContainer;
-    var elementHeight = el.clientHeight;
-    var scrollHeight = el.scrollHeight;
-    var bottomPosition = el.scrollTop + elementHeight;
+    let el = <HTMLElement>this.options.infiniteScrollContainer;
+    let elementHeight = el.clientHeight;
+    let scrollHeight = el.scrollHeight;
+    let bottomPosition = el.scrollTop + elementHeight;
     return (scrollHeight - bottomPosition) < elementHeight / 2;
   }
 
@@ -530,10 +531,10 @@ export class ResultList extends Component {
   }
 
   private showOrHideElementsDependingOnState(hasQuery: boolean, hasResults: boolean) {
-    var showIfQuery = $$(this.element).findAll('.coveo-show-if-query');
-    var showIfNoQuery = $$(this.element).findAll('.coveo-show-if-no-query');
-    var showIfResults = $$(this.element).findAll('.coveo-show-if-results');
-    var showIfNoResults = $$(this.element).findAll('.coveo-show-if-no-results');
+    let showIfQuery = $$(this.element).findAll('.coveo-show-if-query');
+    let showIfNoQuery = $$(this.element).findAll('.coveo-show-if-no-query');
+    let showIfResults = $$(this.element).findAll('.coveo-show-if-results');
+    let showIfNoResults = $$(this.element).findAll('.coveo-show-if-no-results');
 
     _.each(showIfQuery, (s: HTMLElement) => {
       $$(s).toggle(hasQuery);
@@ -571,7 +572,7 @@ export class ResultList extends Component {
         $$(this.options.waitAnimationContainer).removeClass('coveo-fade-out');
         break;
       case 'spinner':
-        var spinner = $$(this.options.waitAnimationContainer).find('.coveo-loading-spinner');
+        let spinner = $$(this.options.waitAnimationContainer).find('.coveo-loading-spinner');
         if (spinner) {
           $$(spinner).detach();
         }
@@ -584,7 +585,7 @@ export class ResultList extends Component {
   }
 
   private hideWaitingAnimationForInfiniteScrolling() {
-    var spinner = $$(this.options.waitAnimationContainer).find('.coveo-loading-spinner');
+    let spinner = $$(this.options.waitAnimationContainer).find('.coveo-loading-spinner');
     if (spinner) {
       $$(spinner).detach();
     }
