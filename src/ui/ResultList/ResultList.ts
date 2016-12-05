@@ -200,7 +200,6 @@ export class ResultList extends Component {
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
-  private currentLayout: string;
   public currentlyDisplayedResults: IQueryResult[] = [];
   private fetchingMoreResults: Promise<IQueryResults>;
   private reachedTheEndOfResults = false;
@@ -262,7 +261,7 @@ export class ResultList extends Component {
       this.options.resultContainer.appendChild(resultElement);
       this.triggerNewResultDisplayed(Component.getResult(resultElement), resultElement);
     });
-    if (this.currentLayout == 'card') {
+    if (this.options.layout == 'card') {
       // Used to prevent last card from spanning the grid's whole width
       _.times(3, () => this.options.resultContainer.appendChild($$('div').el));
     }
@@ -294,7 +293,7 @@ export class ResultList extends Component {
     Assert.exists(result);
     QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), result);
     ResultList.resultCurrentlyBeingRendered = result;
-    var resultElement = this.options.resultTemplate.instantiateToElement(result, true, { layout: <ValidLayout>this.currentLayout });
+    var resultElement = this.options.resultTemplate.instantiateToElement(result, true, { layout: <ValidLayout>this.options.layout });
     if (resultElement != null) {
       Component.bindResultToElement(resultElement, result);
     }
@@ -362,11 +361,11 @@ export class ResultList extends Component {
 
   public enable() {
     super.enable();
-    this.element.style.display = 'block';
+    $$(this.element).removeClass('coveo-hidden');
   }
   public disable() {
     super.disable();
-    this.element.style.display = 'none';
+    $$(this.element).addClass('coveo-hidden');
   }
 
   protected autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult) {
@@ -461,7 +460,7 @@ export class ResultList extends Component {
   }
 
   private handleNewQuery() {
-    $$(this.element).show();
+    $$(this.element).removeClass('coveo-hidden');
     ResultList.resultCurrentlyBeingRendered = undefined;
   }
 
@@ -477,7 +476,6 @@ export class ResultList extends Component {
   }
 
   private handleChangeLayout(args: IChangeLayoutEventArgs) {
-    this.currentLayout = args.layout;
     args.layout === this.options.layout ? this.enable() : this.disable();
     this.queryController.executeQuery();
   }
