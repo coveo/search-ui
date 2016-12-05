@@ -79,6 +79,13 @@ export function RecommendationTest() {
         expect(simulation.queryBuilder.recommendation).toEqual('test');
       });
 
+      it('should not send the recommendation id if disabled', () => {
+        test.cmp.options.id = 'test';
+        test.cmp.disable();
+        let simulation = Simulate.query(test.env);
+        expect(simulation.queryBuilder.recommendation).not.toEqual('test');
+      });
+
       it('should only copy the optionsToUse', () => {
 
         _.extend(options, { optionsToUse: ['expression'] });
@@ -102,6 +109,12 @@ export function RecommendationTest() {
       it('should add the userContext in the triggered query', () => {
         let simulation = Simulate.query(test.env);
         expect(simulation.queryBuilder.context['user_id']).toEqual(userId);
+      });
+
+      it('should not add the userContext in the triggered query if disabled', () => {
+        test.cmp.disable();
+        let simulation = Simulate.query(test.env);
+        expect(simulation.queryBuilder.context).toBeUndefined();
       });
 
       it('should not add the userContext in the triggered query if userContext was not specified', () => {
@@ -191,6 +204,20 @@ export function RecommendationTest() {
         expect(test.cmp.element.style.display).toEqual('block');
         test.cmp.hide();
         expect(test.cmp.element.style.display).toEqual('none');
+      });
+
+      it('should hide on being disabled', () => {
+        test.cmp.show();
+        expect(test.cmp.element.style.display).toEqual('block');
+        test.cmp.disable();
+        expect(test.cmp.element.style.display).toEqual('none');
+      });
+
+      it('should show on being enabled', () => {
+        test.cmp.hide();
+        expect(test.cmp.element.style.display).toEqual('none');
+        test.cmp.enable();
+        expect(test.cmp.element.style.display).toEqual('block');
       });
     });
   });
