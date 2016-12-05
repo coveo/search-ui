@@ -154,6 +154,9 @@
   margin-right: -20px;
   > .CoveoResult {
     overflow: hidden;
+
+    font-size: 0.9em;
+
     width: 300px;
     @include flex-grow(1);
     margin: 0 20px 20px 0;
@@ -175,6 +178,11 @@
     .coveo-result-frame {
       display: flex;
       flex-direction: column;
+    }
+
+    .CoveoResultLink {
+      font-size: 16px;
+      line-height: 21px;
     }
   }
   // These divs are used for filling the space when the number of cards is not even
