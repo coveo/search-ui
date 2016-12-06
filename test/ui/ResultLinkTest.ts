@@ -104,6 +104,56 @@ export function ResultLinkTest() {
 
     });
 
+    describe('exposes the titleTemplate', ()=> {
+
+      it('should replaces fields in the title template by the results equivalent', () => {
+        let titleTemplate = '${clickUri}';
+        test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { titleTemplate: titleTemplate }, fakeResult);
+        expect($$(test.cmp.element).text()).toEqual(fakeResult.clickUri);
+      });
+
+      it('should support nested values in result', () => {
+        let titleTemplate = '${raw.number}';
+        test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { titleTemplate: titleTemplate }, fakeResult);
+        expect(test.cmp.element.innerHTML).toEqual(fakeResult.raw['number'].toString());
+      });
+
+      it('should not parse standalone accolades', () => {
+        let titleTemplate = '${raw.number}{test}';
+        test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { titleTemplate: titleTemplate }, fakeResult);
+        expect(test.cmp.element.innerHTML).toEqual(fakeResult.raw['number'].toString() + '{test}');
+      });
+
+      it('should support external fields', () => {
+        window['Coveo']['test'] = 'testExternal';
+        let titleTemplate = '${Coveo.test}';
+        test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { titleTemplate: titleTemplate }, fakeResult);
+        expect(test.cmp.element.innerHTML).toEqual('testExternal');
+        window['Coveo']['test'] = undefined;
+      });
+
+      it('should support external fields', () => {
+        window['Coveo']['test'] = { key: 'testExternal' };
+        let titleTemplate = '${Coveo.test.key}';
+        test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, {titleTemplate: titleTemplate}, fakeResult);
+        expect(test.cmp.element.innerHTML).toEqual('testExternal');
+        window['Coveo']['test'] = undefined;
+      });
+
+      it('should print the title if the option is set but the template is empty', () => {
+        let titleTemplate = '';
+        test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { titleTemplate: titleTemplate }, fakeResult);
+        expect($$(test.cmp.element).text()).toEqual(fakeResult.title);
+      });
+
+      it('should print the template if the key used in the template is undefined', () => {
+        let titleTemplate = '${doesNotExist}';
+        test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { titleTemplate: titleTemplate }, fakeResult);
+        expect($$(test.cmp.element).text()).toEqual('${doesNotExist}');
+      });
+      
+    });
+
     it('sends an analytics event on context menu', () => {
       $$(test.cmp.element).trigger('contextmenu');
       expect(test.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledTimes(1);

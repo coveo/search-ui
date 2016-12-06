@@ -8,4 +8,5 @@ export interface IResultLinkOptions {
   openQuickview?: boolean;
   alwaysOpenInNewWindow?: boolean;
   hrefTemplate?: string;
+  titleTemplate?: string;
 }
