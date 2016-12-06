@@ -18,3 +18,6 @@ export {Searchbox} from './ui/Searchbox/Searchbox';
 
 import {swapVar} from './SwapVar';
 swapVar(this);
+
+import Globalize = require('globalize');
+window['Coveo']['Globalize'] = Globalize;

@@ -63,7 +63,7 @@ function setPrototypeOnNativeString(language) {
   nativeStringPrototype += '  String["toLocaleString"].call(this, { ' + languageWithQuotes + ': dict });\n';
   nativeStringPrototype += '  String["locale"] = ' + languageWithQuotes + ';\n';
   nativeStringPrototype += '  String["defaultLocale"] = "en";\n';
-  nativeStringPrototype += '  Globalize.culture(' + languageWithQuotes + ')';
+  nativeStringPrototype += '  Coveo.Globalize.culture(' + languageWithQuotes + ')';
   return nativeStringPrototype;
 }
 
@@ -118,10 +118,6 @@ function Dictionary(from, options) {
 
   this.writeLanguageFile = function (to, language, culture, typed) {
     var cultureFileAsString = fs.readFileSync(culture).toString();
-    var globalizeAsString = fs.readFileSync(path.resolve('./lib/globalize.min.js')).toString();
-    var code = 'if(window.Globalize == undefined) {\n';
-    code += globalizeAsString + '\n';
-    code += '}\n';
     code += cultureFileAsString + '\n(function() {\n';
     code += mergeFunctionAsString;
     code += dictObjectAsString(this.json, language);
