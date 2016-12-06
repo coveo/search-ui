@@ -120,7 +120,7 @@ function Dictionary(from, options) {
     var cultureFileAsString = fs.readFileSync(culture).toString();
     var code = 'if(window.Globalize == undefined) {\n';
     // The culture file will look in the local scope for the globalize instance.
-    code += 'var Globalize = window[\'Coveo\'][\'Globalize\']' + '\n';
+    code += 'var Globalize = window[\'Coveo\'][\'Globalize\'];' + '\n';
     code += '}\n';
     code += cultureFileAsString + '\n(function() {\n';
     code += mergeFunctionAsString;
