@@ -1,3 +1,9 @@
+if (window['Coveo'] == undefined) {
+  window['Coveo'] = {};
+}
+import Globalize = require('globalize');
+window['Coveo']['Globalize'] = Globalize;
+
 export * from './BaseModules';
 export * from './MiscModules';
 export * from './RestModules';
@@ -118,6 +124,3 @@ export {DateUtils} from './utils/DateUtils';
 
 import {swapVar} from './SwapVar';
 swapVar(this);
-
-import Globalize = require('globalize');
-window['Coveo']['Globalize'] = Globalize;
