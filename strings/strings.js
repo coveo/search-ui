@@ -118,11 +118,7 @@ function Dictionary(from, options) {
 
   this.writeLanguageFile = function (to, language, culture, typed) {
     var cultureFileAsString = fs.readFileSync(culture).toString();
-    var code = 'if(window.Globalize == undefined) {\n';
-    // The culture file will look in the local scope for the globalize instance.
-    code += 'var Globalize = window[\'Coveo\'][\'Globalize\'];' + '\n';
-    code += '}\n';
-    code += cultureFileAsString + '\n(function() {\n';
+    var code = cultureFileAsString + '(function() {\n';
     code += mergeFunctionAsString;
     code += dictObjectAsString(this.json, language);
     code += setPrototypeOnNativeString(language);
