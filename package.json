@@ -101,7 +101,7 @@
     "resolve-url-loader": "^1.4.3",
     "rimraf": "^2.5.4",
     "run-sequence": "^1.1.5",
-    "sass-loader": "4.0.2",
+    "sass-loader": "https://github.com/coveord/sass-loader/tarball/master",
     "script-loader": "^0.7.0",
     "string-replace-loader": "^1.0.2",
     "style-loader": "^0.13.1",
