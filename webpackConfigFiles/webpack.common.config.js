@@ -12,12 +12,14 @@ if (minimize) {
   plugins.push(new webpack.optimize.UglifyJsPlugin());
 }
 
+let globalizePath = __dirname + '/../lib/globalize.min.js';
+
 module.exports = {
   resolve: {
     extensions: ['', '.ts', '.js'],
     alias: {
       'l10n': __dirname + '/../lib/l10n.min.js',
-      'globalize': __dirname + '/../lib/globalize.min.js',
+      'globalize': globalizePath,
       'modal-box': __dirname + '/../node_modules/modal-box/bin/ModalBox.min.js',
       'fastclick': __dirname + '/../lib/fastclick.min.js',
       'jstz': __dirname + '/../lib/jstz.min.js',
@@ -30,7 +32,8 @@ module.exports = {
   devtool: 'source-map',
   module: {
     loaders: [
-      {test: /\.ts$/, loader: 'ts-loader'},
+      { test: /\.ts$/, loader: 'ts-loader' },
+      { test: require.resolve(globalizePath), loader: 'expose-loader?Globalize' },
       {
         test: /underscore-min.js/,
         loader: 'string-replace-loader',
