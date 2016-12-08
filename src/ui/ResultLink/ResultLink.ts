@@ -331,16 +331,16 @@ export class ResultLink extends Component {
 
   private parseStringTemplate(template: string): string {
     if (!template) {
-      return "";
+      return '';
     }
     return template.replace(/\$\{(.*?)\}/g, (value: string) => {
-      let key = value.substring(2, value.length-1);
+      let key = value.substring(2, value.length - 1);
       let newValue = this.readFromObject(this.result, key);
       if (!newValue) {
         newValue = this.readFromObject(window, key);
       }
       if(!newValue) {
-        this.logger.warn(`${key} is undefined for this result, please verify your syntax.`);
+        this.logger.warn(`${key} used in the ResultLink template is undefined for this result: ${this.result.title}`);
       }
       return newValue || value;
     });

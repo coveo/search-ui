@@ -132,7 +132,7 @@ export function ResultLinkTest() {
         window['Coveo']['test'] = undefined;
       });
 
-      it('should support external fields', () => {
+      it('should support external fields with more than 2 keys', () => {
         window['Coveo']['test'] = { key: 'testExternal' };
         let titleTemplate = '${Coveo.test.key}';
         test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, {titleTemplate: titleTemplate}, fakeResult);
