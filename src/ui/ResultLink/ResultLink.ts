@@ -140,7 +140,6 @@ export class ResultLink extends Component {
     }
 
     this.element.setAttribute('tabindex', '0');
-
     Assert.exists(this.componentOptionsModel);
     Assert.exists(this.result);
 
@@ -191,6 +190,7 @@ export class ResultLink extends Component {
   private openLinkThatIsNotAnAnchor() {
     if (!this.elementIsAnAnchor()) {
       $$(this.element).on('click', (ev: Event) => {
+        console.log('test');
         if (this.options.alwaysOpenInNewWindow) {
           if (this.options.openInOutlook) {
             this.openLinkInOutlook();

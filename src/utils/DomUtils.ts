@@ -87,6 +87,7 @@ export class DomUtils {
         <span class='coveo-quickview-pop-up-reminder'> ${options.title || ''}</span>
       </div>`;
     new Coveo[Coveo['Salesforce'] ? 'SalesforceResultLink' : 'ResultLink'](header.find('.coveo-quickview-pop-up-reminder'), undefined, bindings, result);
+    header.find('.coveo-quickview-pop-up-reminder').setAttribute('id', 'rl');
     return header;
   }
 }
