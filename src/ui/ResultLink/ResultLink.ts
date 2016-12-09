@@ -190,7 +190,6 @@ export class ResultLink extends Component {
   private openLinkThatIsNotAnAnchor() {
     if (!this.elementIsAnAnchor()) {
       $$(this.element).on('click', (ev: Event) => {
-        console.log('test');
         if (this.options.alwaysOpenInNewWindow) {
           if (this.options.openInOutlook) {
             this.openLinkInOutlook();
