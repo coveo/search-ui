@@ -140,6 +140,7 @@ export class ResultLink extends Component {
     }
 
     this.element.setAttribute('tabindex', '0');
+
     Assert.exists(this.componentOptionsModel);
     Assert.exists(this.result);
 
