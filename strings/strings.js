@@ -118,11 +118,7 @@ function Dictionary(from, options) {
 
   this.writeLanguageFile = function (to, language, culture, typed) {
     var cultureFileAsString = fs.readFileSync(culture).toString();
-    var globalizeAsString = fs.readFileSync(path.resolve('./lib/globalize.min.js')).toString();
-    var code = 'if(window.Globalize == undefined) {\n';
-    code += globalizeAsString + '\n';
-    code += '}\n';
-    code += cultureFileAsString + '\n(function() {\n';
+    var code = cultureFileAsString + '(function() {\n';
     code += mergeFunctionAsString;
     code += dictObjectAsString(this.json, language);
     code += setPrototypeOnNativeString(language);

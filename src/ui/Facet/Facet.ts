@@ -1055,13 +1055,19 @@ export class Facet extends Component {
   protected rebuildValueElements() {
     this.updateNumberOfValues();
     this.facetValuesList.rebuild(this.numberOfValues);
-    if (this.shouldRenderMoreLess()) {
-      this.updateMoreLess();
-      if (this.shouldRenderFacetSearch() && this.searchInterface.isNewDesign()) {
-        this.updateSearchInNewDesign(this.nbAvailableValues > this.numberOfValues);
+    if (this.searchInterface.isNewDesign()) {
+      if (this.shouldRenderMoreLess()) {
+        this.updateMoreLess();
+        if (this.shouldRenderFacetSearch()) {
+          this.updateSearchInNewDesign(this.nbAvailableValues > this.numberOfValues);
+        }
+      } else if (this.shouldRenderFacetSearch()) {
+        this.updateSearchInNewDesign();
       }
-    } else if (this.shouldRenderFacetSearch() && this.searchInterface.isNewDesign()) {
-      this.updateSearchInNewDesign();
+    } else {
+      if (this.shouldRenderMoreLess()) {
+        this.updateMoreLess();
+      }
     }
   }
 

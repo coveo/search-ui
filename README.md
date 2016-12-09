@@ -10,7 +10,7 @@ All resources will be available under `node_modules/coveo-search-ui/bin`. You ca
 
 If you are already using a module bundler (Browserify, webpack, Babel, etc.), then you can simply `require('coveo-search-ui')`.
 
-You can also download the latest version [here](http://productupdate.coveo.com/analytics?id=36346).
+You can also download the latest version [here](http://productupdate.coveo.com/?product=coveo-search-ui&version=1).
 
 ## Basic usage
 
@@ -53,6 +53,8 @@ You can also download the latest version [here](http://productupdate.coveo.com/a
 * We also invite you to consult this [tutorial](https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Getting+Started+Tutorial) which should help newcomers.
 
 ## Build
+You should have node 6.9.1 installed to build this project.
+
     npm install -g gulp
     npm install
     gulp

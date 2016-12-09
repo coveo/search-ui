@@ -109,6 +109,12 @@ export {ChatterPostedBy} from './ui/ChatterPostedBy/ChatterPostedBy';
 export {ChatterTopic} from './ui/ChatterTopic/ChatterTopic';
 export {ChatterUtils} from './utils/ChatterUtils';
 export {Logo} from './ui/Logo/Logo';
+export {HashUtils} from './utils/HashUtils';
+export {DeviceUtils} from './utils/DeviceUtils';
+export {ColorUtils} from './utils/ColorUtils';
+export {Cookie} from './utils/CookieUtils';
+export {CurrencyUtils} from './utils/CurrencyUtils';
+export {DateUtils} from './utils/DateUtils';
 
 import {swapVar} from './SwapVar';
 swapVar(this);

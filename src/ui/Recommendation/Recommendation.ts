@@ -141,12 +141,8 @@ export class Recommendation extends SearchInterface implements IComponentBinding
 
     $$(this.element).on(QueryEvents.buildingQuery, (e: Event, args: IBuildingQueryEventArgs) => this.handleRecommendationBuildingQuery(args));
     $$(this.element).on(QueryEvents.querySuccess, (e: Event, args: IQuerySuccessEventArgs) => this.handleRecommendationQuerySuccess(args));
-    $$(this.element).on(QueryEvents.noResults, (e: Event, args: INoResultsEventArgs) => {
-      if (this.options.hideIfNoResults) {
-        this.hide();
-      }
-    });
-    $$(this.element).on(QueryEvents.queryError, (e: Event, args: IQueryErrorEventArgs) => this.hide());
+    $$(this.element).on(QueryEvents.noResults, (e: Event, args: INoResultsEventArgs) => this.handleRecommendationNoResults());
+    $$(this.element).on(QueryEvents.queryError, (e: Event, args: IQueryErrorEventArgs) => this.handleRecommendationQueryError());
 
     // This is done to allow the component to be included in another search interface without triggering the parent events.
     this.preventEventPropagation();
@@ -156,6 +152,16 @@ export class Recommendation extends SearchInterface implements IComponentBinding
 
   public getId(): string {
     return this.options.id;
+  }
+
+  public enable() {
+    super.enable();
+    this.show();
+  }
+
+  public disable() {
+    super.disable();
+    this.hide();
   }
 
   public hide(): void {
@@ -183,17 +189,36 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   }
 
   private handleRecommendationBuildingQuery(data: IBuildingQueryEventArgs) {
-    this.modifyQueryForRecommendation(data);
-    this.addRecommendationInfoInQuery(data);
+    if (!this.disabled) {
+      this.modifyQueryForRecommendation(data);
+      this.addRecommendationInfoInQuery(data);
+    }
+
   }
 
   private handleRecommendationQuerySuccess(data: IQuerySuccessEventArgs) {
-    if (this.options.hideIfNoResults) {
-      if (data.results.totalCount === 0) {
-        this.hide();
-      } else {
-        this.show();
+    if (!this.disabled) {
+      if (this.options.hideIfNoResults) {
+        if (data.results.totalCount === 0) {
+          this.hide();
+        } else {
+          this.show();
+        }
       }
+    }
+  }
+
+  private handleRecommendationNoResults() {
+    if (!this.disabled) {
+      if (this.options.hideIfNoResults) {
+        this.hide();
+      }
+    }
+  }
+
+  private handleRecommendationQueryError() {
+    if (!this.disabled) {
+      this.hide();
     }
   }
 
