@@ -131,9 +131,15 @@ export class HistoryController extends RootComponent {
     return diff;
   }
 
-  private getHashValue(value: string): any {
-    Assert.isNonEmptyString(value);
-    return HashUtils.getValue(value, HashUtils.getHash(this.windoh));
+  private getHashValue(key: string): any {
+    Assert.isNonEmptyString(key);
+    let value;
+    try {
+    value = HashUtils.getValue(key, HashUtils.getHash(this.windoh));
+    } catch (e) {
+      this.logger.error(`Could not parse parameter ${key} from URI`);
+    }
+    return value;
   }
 
   public debugInfo() {

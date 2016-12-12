@@ -23,13 +23,13 @@ export class HashUtils {
     return HashUtils.getAjaxcrawlableHash(ret);
   }
 
-  public static getValue(value: string, toParse: string): any {
-    Assert.isNonEmptyString(value);
+  public static getValue(key: string, toParse: string): any {
+    Assert.isNonEmptyString(key);
     Assert.exists(toParse);
     toParse = HashUtils.getAjaxcrawlableHash(toParse);
-    var paramValue = HashUtils.getRawValue(value, toParse);
+    var paramValue = HashUtils.getRawValue(key, toParse);
     if (paramValue != undefined) {
-      paramValue = HashUtils.getValueDependingOnType(value, paramValue);
+      paramValue = HashUtils.getValueDependingOnType(key, paramValue);
     }
     return paramValue;
   }
@@ -61,8 +61,8 @@ export class HashUtils {
     }
   }
 
-  private static getRawValue(value: string, toParse: string): string {
-    Assert.exists(value);
+  private static getRawValue(key: string, toParse: string): string {
+    Assert.exists(key);
     Assert.exists(toParse);
     Assert.check(toParse.indexOf('#') == 0 || toParse == '');
 
@@ -72,7 +72,7 @@ export class HashUtils {
     var paramValue: string = undefined;
     while (loop) {
       var paramValuePair = toParseArray[paramPos].split('=');
-      if (paramValuePair[0] == value) {
+      if (paramValuePair[0] == key) {
         loop = false;
         paramValue = paramValuePair[1];
       } else {
@@ -86,13 +86,11 @@ export class HashUtils {
     return paramValue;
   }
 
-  private static getValueDependingOnType(value: string, paramValue: string): any {
-    var type = HashUtils.getValueType(value, paramValue);
+  private static getValueDependingOnType(key: string, paramValue: string): any {
+    var type = HashUtils.getValueType(key, paramValue);
     var returnValue;
 
-    if (value == 'q') {
-      returnValue = decodeURIComponent(paramValue);
-    }   else if (type == 'object') {
+    if (type == 'object') {
       returnValue = HashUtils.decodeObject(paramValue);
     } else if (type == 'array') {
       returnValue = HashUtils.decodeArray(paramValue);
@@ -102,8 +100,10 @@ export class HashUtils {
     return returnValue;
   }
 
-  private static getValueType(value: string, paramValue: string): string {
-    if (HashUtils.isObject(paramValue)) {
+  private static getValueType(key: string, paramValue: string): string {
+    if (key == 'q') {
+      return 'other';
+    } else if (HashUtils.isObject(paramValue)) {
       return 'object';
     } else if (HashUtils.isArray(paramValue)) {
       return 'array';
