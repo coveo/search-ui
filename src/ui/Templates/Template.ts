@@ -43,10 +43,13 @@ export class Template {
     return null;
   }
 
-  instantiateToElement(object?: any, checkCondition = true, options?: ITemplateOptions): HTMLElement {
+  instantiateToElement(object?: any, checkCondition = true, wrapInDiv = true, options?: ITemplateOptions): HTMLElement {
     var html = this.instantiateToString(object, checkCondition, options);
     if (html != null) {
       var element = $$('div', {}, html).el;
+      if (!wrapInDiv && element.children.length === 1) {
+        element = <HTMLElement>element.firstChild;
+      }
       this.logger.trace('Instantiated result template', object, element);
       element['template'] = this;
       return element;
