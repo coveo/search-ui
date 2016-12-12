@@ -136,7 +136,7 @@ export class HistoryController extends RootComponent {
     let value;
     try {
       value = HashUtils.getValue(key, HashUtils.getHash(this.windoh));
-    } catch (e) {
+    } catch (error) {
       this.logger.error(`Could not parse parameter ${key} from URI`);
     }
     return value;
