@@ -60,7 +60,7 @@ export class HistoryController extends RootComponent {
   public setHashValues(values: {}) {
     this.logger.trace('Update history hash');
 
-    var hash = '#' + HashUtils.encodeValues(values);
+    let hash = '#' + HashUtils.encodeValues(values);
     this.ignoreNextHashChange = this.windoh.location.hash != hash;
 
     this.logger.trace('ignoreNextHashChange', this.ignoreNextHashChange);
@@ -90,7 +90,7 @@ export class HistoryController extends RootComponent {
       return;
     }
 
-    var diff = this.updateModelFromHash();
+    let diff = this.updateModelFromHash();
 
     if (_.difference(diff, HistoryController.attributesThatDoNotTriggerQuery).length > 0) {
       this.queryController.executeQuery();
@@ -102,7 +102,7 @@ export class HistoryController extends RootComponent {
 
     if (!this.willUpdateHash) {
       Defer.defer(() => {
-        var attributes = this.model.getAttributes();
+        let attributes = this.model.getAttributes();
         this.setHashValues(attributes);
         this.logger.debug('Saving state to hash', attributes);
         this.willUpdateHash = false;
@@ -114,10 +114,10 @@ export class HistoryController extends RootComponent {
   private updateModelFromHash() {
     this.logger.trace('History hash -> model');
 
-    var toSet: { [key: string]: any } = {};
-    var diff: string[] = [];
+    let toSet: { [key: string]: any } = {};
+    let diff: string[] = [];
     _.each(<_.Dictionary<any>>this.model.attributes, (value, key?, obj?) => {
-      var valToSet = this.getHashValue(key);
+      let valToSet = this.getHashValue(key);
       if (valToSet == undefined) {
         valToSet = this.model.defaultAttributes[key];
       }
@@ -135,7 +135,7 @@ export class HistoryController extends RootComponent {
     Assert.isNonEmptyString(key);
     let value;
     try {
-    value = HashUtils.getValue(key, HashUtils.getHash(this.windoh));
+      value = HashUtils.getValue(key, HashUtils.getHash(this.windoh));
     } catch (e) {
       this.logger.error(`Could not parse parameter ${key} from URI`);
     }

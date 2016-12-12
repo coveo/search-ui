@@ -9,8 +9,8 @@ export function HashUtilsTest() {
       expect(typeof value == 'string').toBe(true);
     });
 
-    it ('parses the q parameter as a string when the value looks like an object', () => {
-      let toParse = '#q={test}';
+    it('parses the q parameter as a string when the value looks like an object', () => {
+      let toParse = '#q={test: \'test\'}';
       let value = HashUtils.getValue('q', toParse);
       expect(typeof value == 'string').toBe(true);
     });
