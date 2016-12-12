@@ -142,6 +142,7 @@
         "../test/utils/HighlightUtilsTest.ts",
         "../test/utils/L10NTest.ts",
         "../test/utils/StreamHighlightUtilsTest.ts",
-        "../test/utils/KeyboardUtilsTest.ts"
+        "../test/utils/KeyboardUtilsTest.ts",
+        "../test/utils/HashUtilsTest.ts"
     ]
 }
