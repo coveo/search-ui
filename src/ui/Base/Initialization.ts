@@ -152,7 +152,7 @@ export class Initialization {
     if (searchInterface.options.autoTriggerQuery) {
       Initialization.logFirstQueryCause(searchInterface);
       (<QueryController>Component.get(element, QueryController)).executeQuery({
-        logInActionsHistory: searchInterface instanceof Coveo['Recommendation'] ? false : true,
+        logInActionsHistory: Coveo['Recommendation'] && searchInterface instanceof Coveo['Recommendation'],
         isFirstQuery: true
       });
     }

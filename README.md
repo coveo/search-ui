@@ -53,6 +53,8 @@ You can also download the latest version [here](http://productupdate.coveo.com/?
 * We also invite you to consult this [tutorial](https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Getting+Started+Tutorial) which should help newcomers.
 
 ## Build
+You should have node 6.9.1 installed to build this project.
+
     npm install -g gulp
     npm install
     gulp

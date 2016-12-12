@@ -15,6 +15,7 @@ import {Assert} from '../../misc/Assert';
 import {Utils} from '../../utils/Utils';
 import {Defer} from '../../misc/Defer';
 import {$$} from '../../utils/Dom';
+import {StreamHighlightUtils} from '../../utils/StreamHighlightUtils'
 
 /**
  * This component is intended to be placed inside a result template, which itself is used inside a {@link ResultList} component.
@@ -83,6 +84,26 @@ export class ResultLink extends Component {
      * Default is `undefined`
      */
     hrefTemplate: ComponentOptions.buildStringOption(),
+
+    /**
+     * Specifies a template string to use to generate the display title.
+     * Just like in the hrefTemplate it is possible to reference fields from the associated result:
+     * 
+     * Ex: `${raw.objecttype} number: ${raw.objectnumber}` will generate something like `Case number: 123456`
+     * 
+     * This option will override the default behavior of displaying the `title` of the result.
+     * 
+     * If the value of the key in the template is undefined, it will display the key instead:
+     * 
+     * Ex `${doesNotExist}` will display: "${doesNotExist}"
+     * 
+     * This option is ignored if there is any content as the innerHTML of the ResultLink.
+     * 
+     * Ex `<a class="CoveoResultLink" data-title-template="This is ignored">This will be displayed</a>`
+     * 
+     * Default is `undefined`
+     */
+    titleTemplate: ComponentOptions.buildStringOption(),
     /**
      * Binds an event handler function that is executed when the component link is clicked. The handler function takes an EventObject and a {@link IQueryResult} as its parameters.
      *
@@ -129,7 +150,7 @@ export class ResultLink extends Component {
     'author' // analytics
   ];
 
-  constructor(public element: HTMLElement, public options?: IResultLinkOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult, public os?: OS_NAME) {
+  constructor(public element: HTMLElement, public options: IResultLinkOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult, public os?: OS_NAME) {
     super(element, ResultLink.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultLink, options);
     this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.resultLink));
@@ -156,7 +177,12 @@ export class ResultLink extends Component {
       });
     }
     if (/^\s*$/.test(this.element.innerHTML)) {
-      this.element.innerHTML = this.result.title ? HighlightUtils.highlightString(this.result.title, this.result.titleHighlights, null, 'coveo-highlight') : this.result.clickUri;
+      if (!this.options.titleTemplate) {
+        this.element.innerHTML = this.result.title ? HighlightUtils.highlightString(this.result.title, this.result.titleHighlights, null, 'coveo-highlight') : this.result.clickUri;
+      } else {
+        let newTitle = this.parseStringTemplate(this.options.titleTemplate);
+        this.element.innerHTML = newTitle ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight): this.result.clickUri;
+      }
     }
     this.bindEventToOpen();
   }
@@ -260,7 +286,7 @@ export class ResultLink extends Component {
 
   private getResultUri(): string {
     if (this.options.hrefTemplate) {
-      return this.parseHrefTemplate();
+      return this.parseStringTemplate(this.options.hrefTemplate);
     }
     if (this.options.field == undefined && this.options.openInOutlook) {
       this.setField();
@@ -303,12 +329,18 @@ export class ResultLink extends Component {
     return (this.options.openQuickview || this.isUriThatMustBeOpenedInQuickview()) && QueryUtils.hasHTMLVersion(this.result);
   }
 
-  private parseHrefTemplate(): string {
-    return this.options.hrefTemplate.replace(/\$\{(.*?)\}/g, (value: string) => {
+  private parseStringTemplate(template: string): string {
+    if (!template) {
+      return '';
+    }
+    return template.replace(/\$\{(.*?)\}/g, (value: string) => {
       let key = value.substring(2, value.length - 1);
       let newValue = this.readFromObject(this.result, key);
       if (!newValue) {
         newValue = this.readFromObject(window, key);
+      }
+      if(!newValue) {
+        this.logger.warn(`${key} used in the ResultLink template is undefined for this result: ${this.result.title}`);
       }
       return newValue || value;
     });
