@@ -1,9 +1,9 @@
 import {Logger} from '../../misc/Logger';
 import {StringUtils} from '../../utils/StringUtils';
 import {Initialization} from '../Base/Initialization';
-import {htmlToDom} from '../../utils/Dom';
 import {BaseComponent} from '../Base/BaseComponent';
 import {ValidLayout} from '../ResultLayout/ResultLayout';
+import {$$} from '../../utils/Dom';
 
 export interface ITemplateOptions {
   layout: ValidLayout;
@@ -44,9 +44,9 @@ export class Template {
   }
 
   instantiateToElement(object?: any, checkCondition = true, options?: ITemplateOptions): HTMLElement {
-    var html = this.instantiateToString(object, checkCondition);
+    var html = this.instantiateToString(object, checkCondition, options);
     if (html != null) {
-      var element = <HTMLElement>htmlToDom(html);
+      var element = $$('div', {}, html).el;
       this.logger.trace('Instantiated result template', object, element);
       element['template'] = this;
       return element;

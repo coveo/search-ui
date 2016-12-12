@@ -41,13 +41,6 @@ export class DefaultResultTemplate extends Template {
       '</div>')(queryResult);
   }
 
-  instantiateToElement(queryResult?: IQueryResult, checkCondition = true, options?: ITemplateOptions): HTMLElement {
-    var div = document.createElement('div');
-    div.innerHTML = this.instantiateToString(queryResult, checkCondition, options);
-    return div;
-  }
-
-
   getFields() {
     var defaultTemplates = _.map(TemplateCache.getDefaultTemplates(), (name) => TemplateCache.getTemplate(name));
     return _.flatten(_.map(defaultTemplates, (template: Template) => template.getFields()));
