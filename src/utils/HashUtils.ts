@@ -29,7 +29,7 @@ export class HashUtils {
     toParse = HashUtils.getAjaxcrawlableHash(toParse);
     var paramValue = HashUtils.getRawValue(value, toParse);
     if (paramValue != undefined) {
-      paramValue = HashUtils.getValueDependingOnType(paramValue);
+      paramValue = HashUtils.getValueDependingOnType(value, paramValue);
     }
     return paramValue;
   }
@@ -86,10 +86,13 @@ export class HashUtils {
     return paramValue;
   }
 
-  private static getValueDependingOnType(paramValue: string): any {
-    var type = HashUtils.getValueType(paramValue);
+  private static getValueDependingOnType(value: string, paramValue: string): any {
+    var type = HashUtils.getValueType(value, paramValue);
     var returnValue;
-    if (type == 'object') {
+
+    if (value == 'q') {
+      returnValue = decodeURIComponent(paramValue);
+    }   else if (type == 'object') {
       returnValue = HashUtils.decodeObject(paramValue);
     } else if (type == 'array') {
       returnValue = HashUtils.decodeArray(paramValue);
@@ -99,7 +102,7 @@ export class HashUtils {
     return returnValue;
   }
 
-  private static getValueType(paramValue: string): string {
+  private static getValueType(value: string, paramValue: string): string {
     if (HashUtils.isObject(paramValue)) {
       return 'object';
     } else if (HashUtils.isArray(paramValue)) {
