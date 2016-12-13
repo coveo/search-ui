@@ -2229,14 +2229,14 @@
     "size": 156,
     "name": "coveo-breakingchanges-redesign-sprites-box-icon_external"
   },
-  ".coveo-breakingchanges-redesign-sprites-box-settings_gray": {
-    "img": "iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAAXNSR0IArs4c6QAAAPJJREFUKBVjZCAAVq1aFQVUUgrExWFhYfsY8alfsWKF5r9//1iZmZn3MjIycgPV+jPh0gBUnAVUdIWJicnm////jkB1n4F4KTM2DUDFuUCFU4AaQMAbqOEGkK4Hqv2I4SSg4gKg4n50g4Ca7MPDww+xIEsAPVgE5Pcii0HZfSDFIDbcD0DFoJDAprgbGDrFUI0MYCcBFecABSbDBJHoDqDiSiQ+A+OSJUv42NjYngMFuZAlgOxWoOIaNDEGJqDiICyKm7ApBmkGedoXxAABYEh8BVK1QA9ihBJYAZAAaVACKlwBDOdtX7582ZCcnAyKIJwAAEe6S4AZe3rAAAAAAElFTkSuQmCC",
-    "size": 144,
-    "name": "coveo-breakingchanges-redesign-sprites-box-settings_gray"
-  },
   ".coveo-breakingchanges-redesign-sprites-box-settings": {
     "img": "iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYBFQoI9pmXvAAAAg1JREFUKM+Nk0tIlGEUhp/z/f84lpeZ0UmSiGgbROFqWrltoQZK7VLRvHaRFl1cCGHgyohazJilVhSJ5HVs0yKwaBfUyl1BBRLOP2OOmxqd77QYES8j9O3O4TznfTnnfMJ/Prdx0gn63EqMLHuP6zIAZt/q8xOcffFpKwwUFYzid37imrHyrngQQPJx4ZZZvNFzOag77rpZWyWOEwOqAFT1lQodzm4w1D5B6kkDAMVNM6UFPtOHsG6zOmmMnAIqReSkwrcdtoPN06wMXwCgrH0mUHjQ7ReRXhHz0hiO2qztAb4AKVGWtmwHuuZZjdXk1NumQ8Z174jItW29M6h2WmXJCCEvVjsuAKWtE6RHNhU75kNitF9ErmwDdXM+X9dtJrI6VO8BuCWNU6RH6nO2L70OGKMDiHTuGoUAy8CA3ylMA9A8hnSubzDkcylpmirxF/nug7TmWUBC0RtJfjwjeplw9zxetCa3qvDVNw4bGkVo34MpCYWbWd/f578fNtjy7jjJaG3OTnnbnGDkjDjyMY9iUq3eyiwlxtbmWnaAAK4U+UQz2Yt5wBVUe5PvB0dZXNBwzwLeg+odBY5NR4z/WPApIge25ddQe9uL1Q2T+E5F72cSg5G9915cffw0Qlnu7ECEWZvVe6lHdR8ADvct8uvuifyfBdEjIOMWGzd/9K1WFCY1lQHg0PV3+4IA/wCe6L1hGdnJwwAAAABJRU5ErkJggg==",
     "size": 225,
     "name": "coveo-breakingchanges-redesign-sprites-box-settings"
+  },
+  ".coveo-breakingchanges-redesign-sprites-box-settings_gray": {
+    "img": "iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAAXNSR0IArs4c6QAAAPJJREFUKBVjZCAAVq1aFQVUUgrExWFhYfsY8alfsWKF5r9//1iZmZn3MjIycgPV+jPh0gBUnAVUdIWJicnm////jkB1n4F4KTM2DUDFuUCFU4AaQMAbqOEGkK4Hqv2I4SSg4gKg4n50g4Ca7MPDww+xIEsAPVgE5Pcii0HZfSDFIDbcD0DFoJDAprgbGDrFUI0MYCcBFecABSbDBJHoDqDiSiQ+A+OSJUv42NjYngMFuZAlgOxWoOIaNDEGJqDiICyKm7ApBmkGedoXxAABYEh8BVK1QA9ihBJYAZAAaVACKlwBDOdtX7582ZCcnAyKIJwAAEe6S4AZe3rAAAAAAElFTkSuQmCC",
+    "size": 144,
+    "name": "coveo-breakingchanges-redesign-sprites-box-settings_gray"
   }
 }
