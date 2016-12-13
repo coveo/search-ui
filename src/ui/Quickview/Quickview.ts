@@ -253,7 +253,6 @@ export class Quickview extends Component {
   }
 
   private createModalBox(openerObject: IQuickviewOpenerObject) {
-
     let computedModalBoxContent = $$('div');
     computedModalBoxContent.append(openerObject.content.el);
     this.modalbox = this.ModalBox.open(computedModalBoxContent.el, {

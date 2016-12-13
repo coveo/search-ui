@@ -84,7 +84,7 @@ export class DomUtils {
       </div>
       <div class='coveo-quickview-left-header'>
         <span class='coveo-quickview-icon coveo-small ${fileType.icon}'></span>
-        <span class='coveo-quickview-pop-up-reminder'> ${options.title || ''}</span>
+        <a class='coveo-quickview-pop-up-reminder'> ${options.title || ''}</a>
       </div>`;
     new Coveo[Coveo['Salesforce'] ? 'SalesforceResultLink' : 'ResultLink'](header.find('.coveo-quickview-pop-up-reminder'), undefined, bindings, result);
     return header;
