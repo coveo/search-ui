@@ -69,11 +69,11 @@ export function ModelTest() {
         expect(spy).toHaveBeenCalledTimes(4);
       });
 
-      it('will throw on type mismatch', function () {
-        expect(() => model.set('foo', 1)).toThrow();
-        expect(() => model.set('foo', {})).toThrow();
-        expect(() => model.set('foo', true)).toThrow();
-        expect(() => model.set('foo', false)).toThrow();
+      it('will not throw on type mismatch', function () {
+        expect(() => model.set('foo', 1)).not.toThrow();
+        expect(() => model.set('foo', {})).not.toThrow();
+        expect(() => model.set('foo', true)).not.toThrow();
+        expect(() => model.set('foo', false)).not.toThrow();
       });
 
       it('can setMultiple', function () {
@@ -92,6 +92,30 @@ export function ModelTest() {
         expect(model.getAttributes()).toEqual({
           'foo': 'new stuff'
         });
+      });
+
+      it('keeps setting values after seeing a value with the wrong type', () => {
+        model = new Model(div, 'test', {
+          first: 'first',
+          second: 'second',
+          third: 'third'
+        });
+        let toSet = {
+          first: [1],
+          second: '2',
+          third: '3'
+        };
+
+        model.setMultiple(toSet);
+
+        expect(model.get('second')).toBe('2');
+        expect(model.get('third')).toBe('3');
+      });
+
+      it('keeps the original value if the type is not correct', () => {
+        let toSet = { foo: 1};
+        model.setMultiple(toSet);
+        expect(model.get('foo')).toBe('bar');
       });
     });
   });
