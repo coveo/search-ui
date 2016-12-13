@@ -17,7 +17,7 @@ export function HashUtilsTest() {
 
     it('parses objects correctly', () => {
       let toParse = '#a={"test": 1}';
-      let expectedValue = {test: 1};
+      let expectedValue = { test: 1 };
 
       let value = HashUtils.getValue('a', toParse);
 
@@ -42,10 +42,10 @@ export function HashUtilsTest() {
     });
 
     it('encodes objects correctly', () => {
-      let toEncode = {test: 1};
+      let toEncode = { test: 1 };
       let expectedEncodedValue = 'a={"test":1}';
 
-      let encodedValue = HashUtils.encodeValues({a: toEncode});
+      let encodedValue = HashUtils.encodeValues({ a: toEncode });
 
       expect(encodedValue).toEqual(expectedEncodedValue);
     });
@@ -54,7 +54,7 @@ export function HashUtilsTest() {
       let toEncode = [1];
       let expectEncodedValue = 'a=[1]';
 
-      let encodedValue = HashUtils.encodeValues({a: toEncode});
+      let encodedValue = HashUtils.encodeValues({ a: toEncode });
 
       expect(encodedValue).toEqual(expectEncodedValue);
     });
@@ -63,7 +63,7 @@ export function HashUtilsTest() {
       let toEncode = 'test';
       let expectedEncodedValue = 'a=test';
 
-      let encodedValue = HashUtils.encodeValues({a: toEncode});
+      let encodedValue = HashUtils.encodeValues({ a: toEncode });
 
       expect(encodedValue).toEqual(expectedEncodedValue);
     });

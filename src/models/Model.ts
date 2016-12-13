@@ -128,7 +128,9 @@ export class Model extends BaseComponent {
       }
       value = this.parseToCorrectType(attribute, value);
       if (!options || options.validateType) {
-        this.validateType(attribute, value);
+        if (!this.typeIsValid(attribute, value)) {
+          return;
+        }
       }
       if (this.checkIfAttributeChanged(attribute, value)) {
         this.attributes[attribute] = value;
@@ -271,18 +273,43 @@ export class Model extends BaseComponent {
     Assert.check(_.has(this.attributes, attribute));
   }
 
-  private validateType(attribute: string, value: any) {
+  private typeIsValid(attribute: string, value: any): boolean {
     if (!Utils.isNullOrUndefined(this.attributes[attribute]) && !Utils.isUndefined(value)) {
       if (_.isNumber(this.attributes[attribute])) {
-        Assert.check(_.isNumber(value) && !isNaN(value), 'Non-matching type');
+        return this.validateNumber(attribute, value);
       } else if (_.isBoolean(this.attributes[attribute])) {
-        Assert.check(_.isBoolean(value) || Utils.parseBooleanIfNotUndefined(value) !== undefined, 'Non-matching type');
+        return this.validateBoolean(attribute, value);
       } else {
-        if (!Utils.isNullOrUndefined(this.defaultAttributes[attribute])) {
-          Assert.check(typeof value === typeof this.defaultAttributes[attribute], 'Non-matching type');
-        }
+        return this.validateOther(attribute, value);
       }
     }
+    return true;
+  }
+
+  private validateNumber(attribute: string, value: any): boolean {
+    if (!_.isNumber(value) || isNaN(value)) {
+      this.logger.error(`Non-matching type for ${attribute}. Expected number and got ${value}`);
+      return false;
+    }
+    return true;
+  }
+
+  private validateBoolean(attribute: string, value: any) {
+    if (!_.isBoolean(value) && !Utils.parseBooleanIfNotUndefined(value) !== undefined) {
+      this.logger.error(`Non matching type for ${attribute}. Expected boolean and got ${value}`);
+      return false;
+    }
+    return true;
+  }
+
+  private validateOther(attribute: string, value: any) {
+    if (!Utils.isNullOrUndefined(this.defaultAttributes[attribute])) {
+      if (typeof value !== typeof this.defaultAttributes[attribute]) {
+        this.logger.error(`Non-matching type for ${attribute}. Expected ${typeof this.defaultAttributes[attribute]} and got ${value}`);
+        return false;
+      }
+    }
+    return true;
   }
 
   private parseToCorrectType(attribute: string, value: any): any {

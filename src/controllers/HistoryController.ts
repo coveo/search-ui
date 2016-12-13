@@ -6,6 +6,7 @@ import {$$} from '../utils/Dom';
 import {HashUtils} from '../utils/HashUtils';
 import {Defer} from '../misc/Defer';
 import {RootComponent} from '../ui/Base/RootComponent';
+import {Utils} from '../utils/Utils';
 
 /**
  * This component is instantiated automatically by the framework on the root if the {@link SearchInterface}.<br/>
@@ -118,9 +119,6 @@ export class HistoryController extends RootComponent {
     let diff: string[] = [];
     _.each(<_.Dictionary<any>>this.model.attributes, (value, key?, obj?) => {
       let valToSet = this.getHashValue(key);
-      if (valToSet == undefined) {
-        valToSet = this.model.defaultAttributes[key];
-      }
       toSet[key] = valToSet;
       if (this.model.get(key) != valToSet) {
         diff.push(key);
@@ -139,6 +137,11 @@ export class HistoryController extends RootComponent {
     } catch (error) {
       this.logger.error(`Could not parse parameter ${key} from URI`);
     }
+
+    if (Utils.isUndefined(value)) {
+      value = this.model.defaultAttributes[key];
+    }
+
     return value;
   }
 
