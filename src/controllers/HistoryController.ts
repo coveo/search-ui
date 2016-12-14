@@ -37,7 +37,6 @@ export class HistoryController extends RootComponent {
    */
   constructor(element: HTMLElement, public windoh: Window, public model: Model, public queryController: QueryController, hashUtilsModule?: typeof HashUtils) {
     super(element, HistoryController.ID);
-    latinize('test');
     if (hashUtilsModule) {
       hashUtils.HashUtils = hashUtilsModule;
     } else {
