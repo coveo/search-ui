@@ -33,7 +33,7 @@
   }
   &.coveo-search-as-you-type {
     .magic-box-ghost-text {
-      visibility: visible;
+      display: none;
     }
   }
   .coveo-omnibox-selectable {
