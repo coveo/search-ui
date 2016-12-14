@@ -29,9 +29,10 @@ export class HistoryController extends RootComponent {
   /**
    * Create a new history controller
    * @param element
-   * @param windoh For mock / test purpose.
+   * @param windoh For mock / test purposes.
    * @param model
    * @param queryController
+   * @param hashUtilsModule For mock / test purposes.
    */
   constructor(element: HTMLElement, public windoh: Window, public model: Model, public queryController: QueryController, hashUtilsModule?: typeof hashUtils.HashUtils) {
     super(element, HistoryController.ID);
