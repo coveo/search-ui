@@ -78,6 +78,8 @@ export class AnalyticsSuggestions extends Component {
 
     this.suggestionForOmnibox = new SuggestionForOmnibox(suggestionStructure, (value: string, args: IPopulateOmniboxEventArgs) => {
       this.options.onSelect.call(this, value, args);
+    }, (value: string, args: IPopulateOmniboxEventArgs) => {
+      this.onRowTab.call(this, value, args);
     });
     this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs) => this.handlePopulateOmnibox(args));
     this.bind.onRootElement(QueryEvents.querySuccess, () => this.partialQueries = []);
@@ -160,6 +162,18 @@ export class AnalyticsSuggestions extends Component {
       partialQuery: args.completeQueryExpression.word
     });
     this.queryController.executeQuery();
+  }
+
+  private onRowTab(value: string, args: IPopulateOmniboxEventArgs) {
+    args.clear();
+    args.closeOmnibox();
+    this.queryStateModel.set(QueryStateModel.attributesEnum.q, `${value}`);
+    this.usageAnalytics.logCustomEvent<IAnalyticsTopSuggestionMeta>(this.getOmniboxAnalyticsEventCause(), {
+      partialQueries: this.cleanCustomData(this.partialQueries),
+      suggestionRanking: _.indexOf(_.pluck(this.resultsToBuildWith, 'value'), value),
+      suggestions: this.cleanCustomData(this.lastSuggestions),
+      partialQuery: args.completeQueryExpression.word
+    }, this.element);
   }
 
   private cleanCustomData(toClean: string[], rejectLength = 256) {
