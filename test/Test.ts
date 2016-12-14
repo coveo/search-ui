@@ -358,3 +358,6 @@ ResponsiveDropdownHeaderTest();
 
 import {KeyboardUtilsTests} from './utils/KeyboardUtilsTest';
 KeyboardUtilsTests();
+
+import {StringUtilsTests} from './utils/StringUtilsTest';
+StringUtilsTests();

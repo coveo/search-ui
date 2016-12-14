@@ -21,6 +21,7 @@
         "lib/jstz.d.ts",
         "lib/pikaday.d.ts",
         "lib/coveoanalytics.d.ts",
+        "lib/latinize.d.ts",
         "src/BaseModules.ts",
         "src/controllers/FacetQueryController.ts",
         "src/controllers/FacetRangeQueryController.ts",
