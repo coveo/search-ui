@@ -21,6 +21,7 @@
         "../lib/jstz.d.ts",
         "../lib/pikaday.d.ts",
         "../lib/coveoanalytics.d.ts",
+        "../lib/latinize.d.ts",
         "../test/lib/jasmine.d.ts",
         "../test/controllers/FacetQueryControllerTest.ts",
         "../test/controllers/HistoryControllerTest.ts",
@@ -143,6 +144,7 @@
         "../test/utils/L10NTest.ts",
         "../test/utils/StreamHighlightUtilsTest.ts",
         "../test/utils/KeyboardUtilsTest.ts",
+        "../test/utils/StringUtilsTest.ts",
         "../test/utils/HashUtilsTest.ts"
     ]
 }
