@@ -181,7 +181,7 @@ export class ResultLink extends Component {
         this.element.innerHTML = this.result.title ? HighlightUtils.highlightString(this.result.title, this.result.titleHighlights, null, 'coveo-highlight') : this.result.clickUri;
       } else {
         let newTitle = this.parseStringTemplate(this.options.titleTemplate);
-        this.element.innerHTML = newTitle ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight): this.result.clickUri;
+        this.element.innerHTML = newTitle ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight) : this.result.clickUri;
       }
     }
     this.bindEventToOpen();
@@ -339,7 +339,7 @@ export class ResultLink extends Component {
       if (!newValue) {
         newValue = this.readFromObject(window, key);
       }
-      if(!newValue) {
+      if (!newValue) {
         this.logger.warn(`${key} used in the ResultLink template is undefined for this result: ${this.result.title}`);
       }
       return newValue || value;

@@ -65,7 +65,7 @@ export class SuggestionForOmnibox {
       $$(row).on('keyboardSelect', () => {
         this.onSelect.call(this, result.value, args);
       });
-      $$(row).on('tabSelect', ()=> {
+      $$(row).on('tabSelect', () => {
         this.onTabPress.call(this, result.value, args);
       });
       ret.push(row);

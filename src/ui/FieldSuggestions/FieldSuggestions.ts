@@ -127,7 +127,7 @@ export class FieldSuggestions extends Component {
 
     this.suggestionForOmnibox = new SuggestionForOmnibox(suggestionStructure, (value: string, args: IPopulateOmniboxEventArgs) => {
       this.options.onSelect.call(this, value, args);
-    }, (value: string, args: IPopulateOmniboxEventArgs)=> {
+    }, (value: string, args: IPopulateOmniboxEventArgs) => {
       this.onRowTab(value, args);
     });
     this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs) => this.handlePopulateOmnibox(args));

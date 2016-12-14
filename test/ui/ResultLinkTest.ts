@@ -104,7 +104,7 @@ export function ResultLinkTest() {
 
     });
 
-    describe('exposes the titleTemplate', ()=> {
+    describe('exposes the titleTemplate', () => {
 
       it('should replaces fields in the title template by the results equivalent', () => {
         let titleTemplate = '${clickUri}';
@@ -135,7 +135,7 @@ export function ResultLinkTest() {
       it('should support external fields with more than 2 keys', () => {
         window['Coveo']['test'] = { key: 'testExternal' };
         let titleTemplate = '${Coveo.test.key}';
-        test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, {titleTemplate: titleTemplate}, fakeResult);
+        test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { titleTemplate: titleTemplate }, fakeResult);
         expect(test.cmp.element.innerHTML).toEqual('testExternal');
         window['Coveo']['test'] = undefined;
       });
@@ -151,7 +151,7 @@ export function ResultLinkTest() {
         test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { titleTemplate: titleTemplate }, fakeResult);
         expect($$(test.cmp.element).text()).toEqual('${doesNotExist}');
       });
-      
+
     });
 
     it('sends an analytics event on context menu', () => {
