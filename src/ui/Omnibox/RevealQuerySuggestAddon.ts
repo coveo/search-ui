@@ -69,7 +69,7 @@ export class RevealQuerySuggestAddon {
   }
 
   private getRevealQuerySuggest(text: string): Promise<IOmniboxSuggestion[]> {
-    let payload = <IRevealQuerySuggestRequest>{q: text};
+    let payload = <IRevealQuerySuggestRequest>{ q: text };
     let language = <string>String['locale'];
     let searchHub = this.omnibox.getBindings().componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchHub);
     let pipeline = this.omnibox.getBindings().searchInterface.options.pipeline;
