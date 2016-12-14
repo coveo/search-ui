@@ -113,7 +113,7 @@ export function ModelTest() {
       });
 
       it('keeps the original value if the type is not correct', () => {
-        let toSet = { foo: 1};
+        let toSet = { foo: 1 };
         model.setMultiple(toSet);
         expect(model.get('foo')).toBe('bar');
       });

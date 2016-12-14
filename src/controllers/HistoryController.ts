@@ -17,6 +17,7 @@ import {Utils} from '../utils/Utils';
 export class HistoryController extends RootComponent {
   static ID = 'HistoryController';
 
+  static HashUtilsCopy = _.clone(hashUtils.HashUtils);
   static attributesThatDoNotTriggerQuery = ['quickview'];
 
   private ignoreNextHashChange = false;
@@ -37,6 +38,8 @@ export class HistoryController extends RootComponent {
 
     if (hashUtilsModule) {
       hashUtils.HashUtils = hashUtilsModule;
+    } else {
+      hashUtils.HashUtils = HistoryController.HashUtilsCopy;
     }
     this.hashUtils = hashUtils.HashUtils;
 
@@ -67,7 +70,7 @@ export class HistoryController extends RootComponent {
   public setHashValues(values: {}) {
     this.logger.trace('Update history hash');
 
-    let hash = '#' + hashUtils.HashUtils.encodeValues(values);
+    let hash = '#' + this.hashUtils.encodeValues(values);
     this.ignoreNextHashChange = this.windoh.location.hash != hash;
 
     this.logger.trace('ignoreNextHashChange', this.ignoreNextHashChange);
@@ -139,7 +142,7 @@ export class HistoryController extends RootComponent {
     Assert.isNonEmptyString(key);
     let value;
     try {
-      value = this.hashUtils['getValue'](key, this.hashUtils['getHash'](this.windoh));
+      value = this.hashUtils.getValue(key, this.hashUtils.getHash(this.windoh));
     } catch (error) {
       this.logger.error(`Could not parse parameter ${key} from URI`);
     }
