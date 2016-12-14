@@ -1,6 +1,12 @@
 import {Assert} from '../misc/Assert';
 import {Utils} from '../utils/Utils';
 
+interface IHashUtils {
+  getHash(w: any);
+  getValue();
+  encodeValues();
+}
+
 export class HashUtils {
   private static DELIMITER = {
     'objectStart': '{',

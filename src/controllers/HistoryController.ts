@@ -3,7 +3,7 @@ import {QueryController} from '../controllers/QueryController';
 import {Model} from '../models/Model';
 import {InitializationEvents} from '../events/InitializationEvents';
 import {$$} from '../utils/Dom';
-import {HashUtils} from '../utils/HashUtils';
+import * as hashUtils from '../utils/HashUtils';
 import {Defer} from '../misc/Defer';
 import {RootComponent} from '../ui/Base/RootComponent';
 import {Utils} from '../utils/Utils';
@@ -23,6 +23,7 @@ export class HistoryController extends RootComponent {
   private initialHashChange = false;
   private willUpdateHash: boolean = false;
   private hashchange: (...args: any[]) => void;
+  private hashUtils: typeof hashUtils.HashUtils;
 
   /**
    * Create a new history controller
@@ -31,8 +32,13 @@ export class HistoryController extends RootComponent {
    * @param model
    * @param queryController
    */
-  constructor(element: HTMLElement, public windoh: Window, public model: Model, public queryController: QueryController) {
+  constructor(element: HTMLElement, public windoh: Window, public model: Model, public queryController: QueryController, hashUtilsModule?: typeof hashUtils.HashUtils) {
     super(element, HistoryController.ID);
+
+    if (hashUtilsModule) {
+      hashUtils.HashUtils = hashUtilsModule;
+    }
+    this.hashUtils = hashUtils.HashUtils;
 
     this.windoh = this.windoh || window;
     Assert.exists(this.model);
@@ -61,7 +67,7 @@ export class HistoryController extends RootComponent {
   public setHashValues(values: {}) {
     this.logger.trace('Update history hash');
 
-    let hash = '#' + HashUtils.encodeValues(values);
+    let hash = '#' + hashUtils.HashUtils.encodeValues(values);
     this.ignoreNextHashChange = this.windoh.location.hash != hash;
 
     this.logger.trace('ignoreNextHashChange', this.ignoreNextHashChange);
@@ -133,7 +139,7 @@ export class HistoryController extends RootComponent {
     Assert.isNonEmptyString(key);
     let value;
     try {
-      value = HashUtils.getValue(key, HashUtils.getHash(this.windoh));
+      value = this.hashUtils['getValue'](key, this.hashUtils['getHash'](this.windoh));
     } catch (error) {
       this.logger.error(`Could not parse parameter ${key} from URI`);
     }
