@@ -27,7 +27,7 @@ export interface ISuggestionForOmniboxResult {
 
 export class SuggestionForOmnibox {
 
-  constructor(public structure: ISuggestionForOmniboxTemplate, public onSelect: (value: string, args: IPopulateOmniboxEventArgs) => void) {
+  constructor(public structure: ISuggestionForOmniboxTemplate, public onSelect: (value: string, args: IPopulateOmniboxEventArgs) => void, public onTabPress: (value: string, args: IPopulateOmniboxEventArgs) => void) {
   }
 
   public buildOmniboxElement(results: ISuggestionForOmniboxResult[], args: IPopulateOmniboxEventArgs): HTMLElement {
@@ -64,6 +64,9 @@ export class SuggestionForOmnibox {
       });
       $$(row).on('keyboardSelect', () => {
         this.onSelect.call(this, result.value, args);
+      });
+      $$(row).on('tabSelect', () => {
+        this.onTabPress.call(this, result.value, args);
       });
       ret.push(row);
     });

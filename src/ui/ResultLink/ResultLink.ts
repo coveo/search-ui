@@ -15,7 +15,7 @@ import {Assert} from '../../misc/Assert';
 import {Utils} from '../../utils/Utils';
 import {Defer} from '../../misc/Defer';
 import {$$} from '../../utils/Dom';
-import {StreamHighlightUtils} from '../../utils/StreamHighlightUtils'
+import {StreamHighlightUtils} from '../../utils/StreamHighlightUtils';
 
 /**
  * This component is intended to be placed inside a result template, which itself is used inside a {@link ResultList} component.
