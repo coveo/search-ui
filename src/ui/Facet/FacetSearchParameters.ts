@@ -88,9 +88,9 @@ export class FacetSearchParameters {
       // If not, just create an empty one.
       lastQuery = new QueryBuilder().build();
     }
-    lastQuery.q = this.facet.facetQueryController.expressionToUseForFacetSearch;
+    lastQuery.q = this.facet.facetQueryController.basicExpressionToUseForFacetSearch;
     lastQuery.cq = this.facet.facetQueryController.constantExpressionToUseForFacetSearch;
-    lastQuery.aq = null;
+    lastQuery.aq = this.facet.facetQueryController.advancedExpressionToUseForFacetSearch;
     lastQuery.enableDidYouMean = false;
     lastQuery.firstResult = 0;
     lastQuery.numberOfResults = 0;
