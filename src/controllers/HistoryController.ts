@@ -23,7 +23,6 @@ export class HistoryController extends RootComponent {
   private initialHashChange = false;
   private willUpdateHash: boolean = false;
   private hashchange: (...args: any[]) => void;
-  private hashUtils: typeof HashUtils;
 
   /**
    * Create a new history controller
@@ -33,9 +32,8 @@ export class HistoryController extends RootComponent {
    * @param queryController
    * @param hashUtilsModule For mock / test purposes.
    */
-  constructor(element: HTMLElement, public windoh: Window, public model: Model, public queryController: QueryController, hashUtilsModule?: typeof HashUtils) {
+  constructor(element: HTMLElement, public windoh: Window, public model: Model, public queryController: QueryController, private hashUtilsModule: typeof HashUtils = HashUtils) {
     super(element, HistoryController.ID);
-    this.hashUtils = hashUtilsModule ? hashUtilsModule : HashUtils;
 
     this.windoh = this.windoh || window;
     Assert.exists(this.model);
