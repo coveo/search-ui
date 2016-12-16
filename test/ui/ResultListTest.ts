@@ -67,7 +67,7 @@ export function ResultListTest() {
       expect(built[0]['CoveoResult']).toEqual(jasmine.objectContaining({ title: 'Title0' }));
       let jQuery = Simulate.addJQuery();
       built = test.cmp.buildResults(data);
-      expect(jQuery(built[3]).data()).toEqual(jasmine.objectContaining({ title: 'Title3' }));\
+      expect(jQuery(built[3]).data()).toEqual(jasmine.objectContaining({ title: 'Title3' }));
       Simulate.removeJQuery();
     });
 
