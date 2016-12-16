@@ -3,7 +3,7 @@ import {QueryController} from '../controllers/QueryController';
 import {Model} from '../models/Model';
 import {InitializationEvents} from '../events/InitializationEvents';
 import {$$} from '../utils/Dom';
-import * as hashUtils from '../utils/HashUtils';
+import {HashUtils} from '../utils/HashUtils';
 import {Defer} from '../misc/Defer';
 import {RootComponent} from '../ui/Base/RootComponent';
 import {Utils} from '../utils/Utils';
@@ -17,14 +17,13 @@ import {Utils} from '../utils/Utils';
 export class HistoryController extends RootComponent {
   static ID = 'HistoryController';
 
-  static HashUtilsCopy: typeof hashUtils.HashUtils = _.clone(hashUtils.HashUtils);
   static attributesThatDoNotTriggerQuery = ['quickview'];
 
   private ignoreNextHashChange = false;
   private initialHashChange = false;
   private willUpdateHash: boolean = false;
   private hashchange: (...args: any[]) => void;
-  private hashUtils: typeof hashUtils.HashUtils;
+  private hashUtils: typeof HashUtils;
 
   /**
    * Create a new history controller
@@ -34,14 +33,9 @@ export class HistoryController extends RootComponent {
    * @param queryController
    * @param hashUtilsModule For mock / test purposes.
    */
-  constructor(element: HTMLElement, public windoh: Window, public model: Model, public queryController: QueryController, hashUtilsModule?: typeof hashUtils.HashUtils) {
+  constructor(element: HTMLElement, public windoh: Window, public model: Model, public queryController: QueryController, hashUtilsModule?: typeof HashUtils) {
     super(element, HistoryController.ID);
-    if (hashUtilsModule) {
-      hashUtils.HashUtils = hashUtilsModule;
-    } else {
-      hashUtils.HashUtils = HistoryController.HashUtilsCopy;
-    }
-    this.hashUtils = hashUtils.HashUtils;
+    this.hashUtils = hashUtilsModule ? hashUtilsModule : HashUtils;
 
     this.windoh = this.windoh || window;
     Assert.exists(this.model);
