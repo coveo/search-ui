@@ -18,6 +18,8 @@ import {IQueryBuilderExpression} from '../ui/Base/QueryBuilder';
 
 export class FacetQueryController {
   public expressionToUseForFacetSearch: string;
+  public basicExpressionToUseForFacetSearch: string;
+  public advancedExpressionToUseForFacetSearch: string;
   public constantExpressionToUseForFacetSearch: string;
   public lastGroupByRequestIndex: number;
   public lastGroupByRequest: IGroupByRequest;
@@ -79,13 +81,14 @@ export class FacetQueryController {
       groupByRequest.advancedQueryOverride = queryOverrideObject.advanced;
       groupByRequest.constantQueryOverride = queryOverrideObject.constant;
       this.expressionToUseForFacetSearch = queryOverrideObject.withoutConstant;
+      this.basicExpressionToUseForFacetSearch = queryOverrideObject.basic;
+      this.advancedExpressionToUseForFacetSearch = queryOverrideObject.advanced;
       this.constantExpressionToUseForFacetSearch = queryOverrideObject.constant;
     } else {
       let parts = queryBuilder.computeCompleteExpressionParts();
-      this.expressionToUseForFacetSearch = parts.withoutConstant;
-      if (this.expressionToUseForFacetSearch == null) {
-        this.expressionToUseForFacetSearch = '@uri';
-      }
+      this.expressionToUseForFacetSearch = parts.withoutConstant == null ? '@uri' : parts.withoutConstant;
+      this.basicExpressionToUseForFacetSearch = parts.basic == null ? '@uri' : parts.basic;
+      this.advancedExpressionToUseForFacetSearch = parts.advanced;
       this.constantExpressionToUseForFacetSearch = parts.constant;
     }
     this.lastGroupByRequestIndex = queryBuilder.groupByRequests.length;
