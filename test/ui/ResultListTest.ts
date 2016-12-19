@@ -9,15 +9,15 @@ import {IResultListOptions} from '../../src/ui/ResultList/ResultList';
 import {UnderscoreTemplate} from '../../src/ui/Templates/UnderscoreTemplate';
 
 export function ResultListTest() {
-  describe('ResultList', function () {
+  describe('ResultList', () => {
     let test: Mock.IBasicComponentSetup<ResultList>;
 
-    beforeEach(function () {
+    beforeEach(() => {
       test = Mock.basicComponentSetup<ResultList>(ResultList);
       registerCustomMatcher();
     });
 
-    afterEach(function () {
+    afterEach(() => {
       test = null;
     });
 
@@ -42,7 +42,7 @@ export function ResultListTest() {
       expect(ResultList.resultCurrentlyBeingRendered).toBeNull();
     });
 
-    it('should allow to build a single result element', function () {
+    it('should allow to build a single result element', () => {
       let data = FakeResults.createFakeResult();
       let built = test.cmp.buildResult(data);
       expect(built).toBeDefined();
@@ -50,7 +50,7 @@ export function ResultListTest() {
       expect($$(rs).text()).toBe(data.title);
     });
 
-    it('should allow to build multiple results element', function () {
+    it('should allow to build multiple results element', () => {
       let data = FakeResults.createFakeResults(13);
       let built = test.cmp.buildResults(data);
       expect(built.length).toBe(13);
@@ -60,13 +60,24 @@ export function ResultListTest() {
       expect($$(rs).text()).toBe(data.results[12].title);
     });
 
-    it('should allow to render results inside the result list', function () {
+    it('should bind result on the HTMLElement', () => {
+      let data = FakeResults.createFakeResults(13);
+      let built = test.cmp.buildResults(data);
+
+      expect(built[0]['CoveoResult']).toEqual(jasmine.objectContaining({ title: 'Title0' }));
+      let jQuery = Simulate.addJQuery();
+      built = test.cmp.buildResults(data);
+      expect(jQuery(built[3]).data()).toEqual(jasmine.objectContaining({ title: 'Title3' }));
+      Simulate.removeJQuery();
+    });
+
+    it('should allow to render results inside the result list', () => {
       let data = FakeResults.createFakeResults(13);
       test.cmp.renderResults(test.cmp.buildResults(data));
       expect($$(test.cmp.element).findAll('.CoveoResult').length).toBe(13);
     });
 
-    it('should trigger result displayed event when rendering', function () {
+    it('should trigger result displayed event when rendering', () => {
       let data = FakeResults.createFakeResults(6);
       let spyResult = jasmine.createSpy('spyResult');
       let spyResults = jasmine.createSpy('spyResults');
@@ -77,7 +88,7 @@ export function ResultListTest() {
       expect(spyResults).toHaveBeenCalledTimes(1);
     });
 
-    it('should render itself correctly after a full query', function () {
+    it('should render itself correctly after a full query', () => {
       let spyResult = jasmine.createSpy('spyResult');
       let spyResults = jasmine.createSpy('spyResults');
       $$(test.cmp.element).on(ResultListEvents.newResultDisplayed, spyResult);
@@ -89,7 +100,8 @@ export function ResultListTest() {
       expect(spyResults).toHaveBeenCalledTimes(1);
     });
 
-    it('should clear itself on query error', function () {
+
+    it('should clear itself on query error', () => {
       Simulate.query(test.env);
       expect(test.cmp.getDisplayedResults().length).toBe(10);
       expect(test.cmp.getDisplayedResultsElements().length).toBe(10);
@@ -104,8 +116,8 @@ export function ResultListTest() {
       expect(test.cmp.getDisplayedResultsElements().length).toBe(0);
     });
 
-    describe('exposes options', function () {
-      it('resultContainer allow to specify where to render results', function () {
+    describe('exposes options', () => {
+      it('resultContainer allow to specify where to render results', () => {
         let aNewContainer = document.createElement('div');
         expect(aNewContainer.children.length).toBe(0);
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
@@ -115,7 +127,7 @@ export function ResultListTest() {
         expect(aNewContainer.children.length).toBe(10);
       });
 
-      it('resultTemplate allow to specify a template manually', function () {
+      it('resultTemplate allow to specify a template manually', () => {
         let tmpl: UnderscoreTemplate = Mock.mock<UnderscoreTemplate>(UnderscoreTemplate);
         let asSpy = <any>tmpl;
         asSpy.instantiateToElement.and.returnValue(document.createElement('div'));
@@ -126,7 +138,7 @@ export function ResultListTest() {
         expect(tmpl.instantiateToElement).toHaveBeenCalledTimes(10);
       });
 
-      it('waitAnimation allow to specify a different animation such as spin or fade', function () {
+      it('waitAnimation allow to specify a different animation such as spin or fade', () => {
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
           waitAnimation: 'fade'
         });
@@ -154,7 +166,7 @@ export function ResultListTest() {
         });
       });
 
-      it('waitAnimationContainer allow to specify where to display the animation', function () {
+      it('waitAnimationContainer allow to specify where to display the animation', () => {
         let aNewContainer = document.createElement('div');
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
           waitAnimation: 'fade',
@@ -167,7 +179,7 @@ export function ResultListTest() {
         });
       });
 
-      it('enableInfiniteScroll allow to enable infinite scrolling', function () {
+      it('enableInfiniteScroll allow to enable infinite scrolling', () => {
 
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
           enableInfiniteScroll: false
@@ -182,7 +194,7 @@ export function ResultListTest() {
         expect(test.env.queryController.fetchMore).toHaveBeenCalled();
       });
 
-      it('infiniteScrollPageSize allow to specify the number of result to fetch when scrolling', function () {
+      it('infiniteScrollPageSize allow to specify the number of result to fetch when scrolling', () => {
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
           enableInfiniteScroll: true,
           infiniteScrollPageSize: 26
@@ -191,7 +203,7 @@ export function ResultListTest() {
         expect(test.env.queryController.fetchMore).toHaveBeenCalledWith(26);
       });
 
-      it('fieldsToInclude allow to specify an array of fields to include in the query', function () {
+      it('fieldsToInclude allow to specify an array of fields to include in the query', () => {
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
           fieldsToInclude: ['@field1', '@field2', '@field3']
         });
