@@ -678,11 +678,26 @@ export class ComponentOptions {
       }
       template = ComponentOptions.loadChildrenResultTemplateFromSelector(element, childSelector);
     }
+
+    if (template == null) {
+      template = ComponentOptions.loadResultTemplateFromTemplateCache();
+    }
+
     return template;
   }
 
   static loadResultTemplateFromId(templateId: string): Template {
     return Utils.isNonEmptyString(templateId) ? TemplateCache.getTemplate(templateId) : null;
+  }
+
+  static loadResultTemplateFromTemplateCache(): Template {
+    if (TemplateCache) {
+      var nonDefaultTemplateNames = _.difference(TemplateCache.getTemplateNames(), TemplateCache.getDefaultTemplates());
+      if (nonDefaultTemplateNames.length > 0) {
+        return new TemplateList(_.compact(_.map(nonDefaultTemplateNames, (templateName) => TemplateCache.getTemplate(templateName))));
+      }
+    }
+    return null;
   }
 
   static loadChildrenResultTemplateFromSelector(element: HTMLElement, selector: string): Template {
