@@ -375,7 +375,7 @@ export class Debug extends RootComponent {
             fields['@' + key] = value;
           } else if (fieldDescription.fieldType == 'Date') {
             fields['@' + key] = new Date(value);
-          } else if (fieldDescription.splitGroupByField) {
+          } else if (fieldDescription.splitGroupByField && _.isString(value)) {
             fields['@' + key] = value.split(/\s*;\s*/);
           } else {
             fields['@' + key] = value;
