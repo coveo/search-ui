@@ -19,6 +19,7 @@ script:
 after_success:
 - npm run doc
 - if [ "x$TRAVIS_TAG" != "x" ]; then bash ./deploy.doc.sh ; fi
+- npm run docsitemap
 env:
   global:
   - COMMIT_AUTHOR_EMAIL: sandbox_JSUI@coveo.com
