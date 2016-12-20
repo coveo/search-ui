@@ -2,6 +2,7 @@ import {Component} from '../Base/Component';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {Initialization} from '../Base/Initialization';
+import {CardOverlayEvents} from '../../events/CardOverlayEvents';
 import {$$} from '../../utils/Dom';
 import {Assert} from '../../misc/Assert';
 
@@ -59,7 +60,31 @@ export class CardOverlay extends Component {
    * @param swtch If specified, will force to this value (`true` for visible, `false` for hidden).
    */
   public toggleOverlay(swtch?: boolean) {
-    $$(this.overlay).toggleClass('coveo-opened', swtch);
+    if (swtch !== undefined) {
+      swtch ? this.openOverlay() : this.closeOverlay();
+    } else {
+      if ($$(this.overlay).hasClass('coveo-opened')) {
+        this.closeOverlay();
+      } else {
+        this.openOverlay();
+      }
+    }
+  }
+
+  /**
+   * Open the CardOverlay
+   */
+  public openOverlay() {
+    $$(this.overlay).addClass('coveo-opened');
+    this.bind.trigger(this.element, CardOverlayEvents.openCardOverlay);
+  }
+
+  /**
+   * Close the CardOverlay
+   */
+  public closeOverlay() {
+    $$(this.overlay).removeClass('coveo-opened');
+    this.bind.trigger(this.element, CardOverlayEvents.closeCardOverlay);
   }
 
   private createOverlay() {

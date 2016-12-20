@@ -7,6 +7,7 @@ import {Promise} from 'es6-promise';
 import {IQueryResult} from '../../rest/QueryResult';
 import {Utils} from '../../utils/Utils';
 import {QueryUtils} from '../../utils/QueryUtils';
+import {CardOverlay} from '../CardOverlay/CardOverlay';
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
 import {Assert} from '../../misc/Assert';
 import {$$} from '../../utils/Dom';
@@ -94,6 +95,10 @@ export class ResultFolding extends Component {
     this.buildElements();
     this.displayThoseResults(this.result.childResults);
     this.updateElementVisibility();
+
+    if ($$(this.element.parentElement).hasClass('CoveoCardOverlay')) {
+      this.bindOverlayEvents();
+    }
 
     if (this.result.childResults.length == 0 && !this.result.moreResults) {
       $$(this.element).hide();
@@ -245,6 +250,10 @@ export class ResultFolding extends Component {
 
     Assert.doesNotExists(this.moreResultsPromise);
     Assert.doesNotExists(this.waitAnimation);
+  }
+
+  private bindOverlayEvents() {
+    this.bind.one(this.element.parentElement, 'openCardOverlay', () => this.showMoreResults());
   }
 }
 
