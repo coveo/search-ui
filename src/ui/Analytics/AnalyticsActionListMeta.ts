@@ -179,6 +179,8 @@ export interface IAnalyticsSearchAlertsUpdateMeta extends IAnalyticsSearchAlerts
 export interface IAnalyticsSearchAlertsFollowDocumentMeta extends IAnalyticsDocumentViewMeta {
   documentSource: string;
   documentLanguage: string;
+  contentIDKey: string;
+  contentIDValue: string;
 }
 
 export var analyticsActionCauseList = {

@@ -107,7 +107,9 @@ export function FollowItemTest() {
             author: QueryUtils.getAuthor(fake),
             documentLanguage: QueryUtils.getLanguage(fake),
             documentSource: QueryUtils.getSource(fake),
-            documentTitle: fake.title
+            documentTitle: fake.title,
+            contentIDKey: QueryUtils.getUniqueId(fake).fieldUsed,
+            contentIDValue: jasmine.any(String)
           }), test.cmp.element);
           done();
         });

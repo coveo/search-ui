@@ -215,7 +215,9 @@ export class FollowItem extends Component {
       author: QueryUtils.getAuthor(this.result),
       documentLanguage: QueryUtils.getLanguage(this.result),
       documentSource: QueryUtils.getSource(this.result),
-      documentTitle: this.result.title
+      documentTitle: this.result.title,
+      contentIDValue: QueryUtils.getUniqueId(this.result).fieldValue,
+      contentIDKey: QueryUtils.getUniqueId(this.result).fieldUsed
     }, this.element);
   }
 }
