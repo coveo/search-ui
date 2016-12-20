@@ -89,15 +89,17 @@
   }
 }
 
-.coveo-card-overlay .CoveoFieldTable {
-  background-color: transparent;
-  border: none;
-  padding: 0;
-  margin: 10px 0 0;
-  th {
-    color: $color-light-grey;
+.coveo-card-overlay {
+  .CoveoFieldTable {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 10px 0 0;
+    th {
+      color: $color-light-grey;
+    }
   }
-  .coveo-clickable:hover {
-    color: $color-vibrant-blue;
+  .coveo-clickable {
+    @include clickable($dark-background: true);
   }
 }

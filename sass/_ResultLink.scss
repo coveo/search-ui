@@ -2,3 +2,7 @@
   @include clickableVibrant();
   word-wrap: break-word;
 }
+
+.coveo-card-overlay a.CoveoResultLink {
+  @include clickableVibrant($dark-background: true);
+}
