@@ -219,6 +219,11 @@ export class Component extends BaseComponent {
     Assert.exists(result);
     $$(element).addClass('CoveoResult');
     element['CoveoResult'] = result;
+    let jQuery = JQueryUtils.getJQuery();
+    if (jQuery) {
+      jQuery(element).data(result);
+    }
+
   }
 
   static resolveBinding(element: HTMLElement, componentClass: any): BaseComponent {

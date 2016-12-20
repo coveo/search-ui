@@ -104,6 +104,7 @@ export class QueryStateModel extends Model {
 
   private validate(attribute: string, value: any) {
     if (attribute == QueryStateModel.attributesEnum.first) {
+      Assert.isNumber(value);
       Assert.isLargerOrEqualsThan(0, value);
     }
   }
