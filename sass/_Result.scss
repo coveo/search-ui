@@ -207,3 +207,7 @@
     }
   }
 }
+
+.coveo-card-overlay a {
+  @include clickable($dark-background: true);
+}
