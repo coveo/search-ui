@@ -150,14 +150,14 @@ export function DebugTest() {
 
     describe('parses the correctly when splitGroupByField is true', () => {
       beforeEach(() => {
-        let fieldDescription = [{name: '@test', splitGroupByField: true}];
+        let fieldDescription = [{ name: '@test', splitGroupByField: true }];
         let endpoint = jasmine.createSpyObj('endpoint', ['listFields']);
         endpoint.listFields.and.returnValue(Promise.resolve(fieldDescription));
         env.queryController.getEndpoint = () => endpoint;
       });
 
       it('when the field is an array', (done) => {
-        let result: any = {raw: {test: ['value1', 'value2']}};
+        let result: any = { raw: { test: ['value1', 'value2'] } };
         let expectValue = ['value1', 'value2'];
 
         cmp.buildFieldsSection(result).then((fields) => {
@@ -167,7 +167,7 @@ export function DebugTest() {
       });
 
       it('when the field is a string', (done) => {
-        let result: any = {raw: {test: 'value1 ; value2'}};
+        let result: any = { raw: { test: 'value1 ; value2' } };
         let expectValue = ['value1', 'value2'];
 
         cmp.buildFieldsSection(result).then((fields) => {

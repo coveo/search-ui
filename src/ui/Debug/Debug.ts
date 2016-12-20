@@ -19,6 +19,7 @@ import {ModalBox} from '../../ExternalModulesShim';
 import Globalize = require('globalize');
 import {KEYBOARD} from '../../utils/KeyboardUtils';
 import {InitializationEvents} from '../../events/InitializationEvents';
+import {IStringMap} from '../../rest/GenericParam';
 
 export interface IDebugOptions {
   enableDebug?: boolean;
@@ -65,7 +66,7 @@ export class Debug extends RootComponent {
 
   public buildFieldsSection(result: IQueryResult) {
     return this.fetchFields()
-      .then((fieldDescriptions: { [field: string]: IFieldDescription }) => {
+      .then((fieldDescriptions: IStringMap<IFieldDescription>) => {
         let fields = {};
         _.each(result.raw, (value: any, key: string) => {
           let fieldDescription = fieldDescriptions['@' + key];
