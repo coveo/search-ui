@@ -1,4 +1,3 @@
-/* tslint:disable:no-unused-variable */
 import {FollowItem} from '../../src/ui/SearchAlerts/FollowItem';
 import * as Mock from '../MockEnvironment';
 import {SearchEndpoint} from '../../src/rest/SearchEndpoint';
@@ -7,7 +6,7 @@ import {FakeResults} from '../Fake';
 import {$$} from '../../src/utils/Dom';
 
 export function FollowItemTest() {
-  /*describe('FollowItem', function () {
+  describe('FollowItem', function () {
     let test: Mock.IBasicComponentSetup<FollowItem>;
     let endpointMock: SearchEndpoint;
     let result: IQueryResult;
@@ -91,5 +90,5 @@ export function FollowItemTest() {
         })
       })
     })
-  });*/
+  });
 }
