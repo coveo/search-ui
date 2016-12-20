@@ -98,6 +98,11 @@
     th {
       color: $color-light-grey;
     }
+    td {
+      .coveo-clickable {
+        @include clickable($dark-background: true);
+      }
+    }
   }
   .coveo-clickable {
     @include clickable($dark-background: true);
