@@ -45,6 +45,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0;
 
   font-size: 11px;
   text-transform: uppercase;
@@ -65,4 +66,5 @@
   text-align: center;
   margin-top: auto;
   cursor: pointer;
+  flex-shrink: 0;
 }
