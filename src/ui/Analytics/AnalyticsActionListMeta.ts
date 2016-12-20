@@ -486,27 +486,27 @@ export var analyticsActionCauseList = {
     name: 'advancedSearch',
     type: 'advancedSearch'
   },
-  searchAlertsFollowDocument: <IAnalyticsActionCause> {
+  searchAlertsFollowDocument: <IAnalyticsActionCause>{
     name: 'followDocument',
     type: 'searchAlerts'
   },
-  searchAlertsFollowQuery: <IAnalyticsActionCause> {
+  searchAlertsFollowQuery: <IAnalyticsActionCause>{
     name: 'followQuery',
     type: 'searchAlerts'
   },
-  searchAlertsUpdateSubscription: <IAnalyticsActionCause> {
+  searchAlertsUpdateSubscription: <IAnalyticsActionCause>{
     name: 'updateSubscription',
     type: 'searchAlerts'
   },
-  searchAlertsDeleteSubscription: <IAnalyticsActionCause> {
+  searchAlertsDeleteSubscription: <IAnalyticsActionCause>{
     name: 'deleteSubscription',
     type: 'searchAlerts'
   },
-  searchAlertsUnfollowDocument: <IAnalyticsActionCause> {
+  searchAlertsUnfollowDocument: <IAnalyticsActionCause>{
     name: 'unfollowDocument',
     type: 'searchAlerts'
   },
-  searchAlertsUnfollowQuery: <IAnalyticsActionCause> {
+  searchAlertsUnfollowQuery: <IAnalyticsActionCause>{
     name: 'unfollowQuery',
     type: 'searchAlerts'
   }

@@ -440,7 +440,7 @@ export class ResultList extends Component {
 
   private getAutoSelectedFieldsToInclude() {
     return _.chain(this.options.resultTemplate.getFields())
-            .concat(this.getMinimalFieldsToInclude())
+      .concat(this.getMinimalFieldsToInclude())
       .compact()
       .unique()
       .value();

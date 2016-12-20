@@ -105,7 +105,7 @@ export class QueryUtils {
     return result.raw['language'];
   }
 
-  static getUniqueId(result: IQueryResult): {fieldValue: string, fieldUsed: string} {
+  static getUniqueId(result: IQueryResult): { fieldValue: string, fieldUsed: string } {
     let fieldValue;
     let fieldUsed;
     let uniqueId = result.raw['uniqueid'];
@@ -119,7 +119,7 @@ export class QueryUtils {
     return {
       fieldValue: fieldValue,
       fieldUsed: fieldUsed
-    }
+    };
   }
 
   static quoteAndEscapeIfNeeded(str: string): string {

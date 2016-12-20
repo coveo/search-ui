@@ -18,8 +18,7 @@ import {l} from '../../strings/Strings';
 import {$$, Dom} from '../../utils/Dom';
 import {ModalBox} from '../../ExternalModulesShim';
 import {
-    analyticsActionCauseList, IAnalyticsSearchAlertsUpdateMeta, IAnalyticsSearchAlertsMeta,
-    IAnalyticsSearchAlertsFollowDocumentMeta, IAnalyticsNoMeta, IAnalyticsActionCause
+  analyticsActionCauseList, IAnalyticsSearchAlertsUpdateMeta, IAnalyticsSearchAlertsMeta, IAnalyticsActionCause
 } from '../Analytics/AnalyticsActionListMeta';
 
 export interface ISearchAlertsOptions {

@@ -4,6 +4,8 @@ import {SearchEndpoint} from '../../src/rest/SearchEndpoint';
 import {IQueryResult} from '../../src/rest/QueryResult';
 import {FakeResults} from '../Fake';
 import {$$} from '../../src/utils/Dom';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import {QueryUtils} from '../../src/utils/QueryUtils';
 
 export function FollowItemTest() {
   describe('FollowItem', function () {
@@ -26,7 +28,7 @@ export function FollowItemTest() {
       test = null;
       endpointMock = null;
       result = null;
-    })
+    });
 
     it('should set the item as followed if it is followed', (done) => {
       (<jasmine.Spy>endpointMock.listSubscriptions).and.returnValue(Promise.resolve([{ typeConfig: { id: result.raw.urihash } }]));
@@ -37,14 +39,14 @@ export function FollowItemTest() {
       Promise.resolve().then(() => {
         expect($$(test.cmp.element).hasClass('coveo-follow-item-followed')).toBe(true);
         done();
-      })
+      });
     });
 
     it('should set the item as not followed if it is not followed', (done) => {
       Promise.resolve().then(() => {
         expect($$(test.cmp.element).hasClass('coveo-follow-item-followed')).toBe(false);
         done();
-      })
+      });
     });
 
     it('should remove the component if the search alerts service is unavailable', (done) => {
@@ -58,8 +60,8 @@ export function FollowItemTest() {
       Promise.resolve({}).then(() => {
         expect(root.removeChild).toHaveBeenCalled();
         done();
-      })
-    })
+      });
+    });
 
     describe('toggleFollow', () => {
 
@@ -74,8 +76,8 @@ export function FollowItemTest() {
           test.cmp.toggleFollow();
           expect(endpointMock.deleteSubscription).toHaveBeenCalled();
           done();
-        })
-      })
+        });
+      });
 
       it('should create a subscription if the document is not followed', (done) => {
         (<jasmine.Spy>endpointMock.follow).and.returnValue(Promise.resolve());
@@ -87,8 +89,50 @@ export function FollowItemTest() {
           test.cmp.toggleFollow();
           expect(endpointMock.follow).toHaveBeenCalled();
           done();
-        })
-      })
-    })
+        });
+      });
+
+      it('should log an analytics event if the document is followed', (done) => {
+
+        let fake = FakeResults.createFakeResult();
+
+        (<jasmine.Spy>endpointMock.follow).and.returnValue(Promise.resolve());
+        test = Mock.advancedResultComponentSetup<FollowItem>(FollowItem, result, new Mock.AdvancedComponentSetupOptions(null, null, (env) => {
+          return env.withEndpoint(endpointMock);
+        }));
+
+        Promise.resolve().then(() => {
+          test.cmp.toggleFollow();
+          expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchAlertsFollowDocument, jasmine.objectContaining({
+            author: QueryUtils.getAuthor(fake),
+            documentLanguage: QueryUtils.getLanguage(fake),
+            documentSource: QueryUtils.getSource(fake),
+            documentTitle: fake.title
+          }), test.cmp.element);
+          done();
+        });
+      });
+
+      it('should log an analytics event if the document is unfollowed', (done) => {
+        let fake = FakeResults.createFakeResult();
+
+        (<jasmine.Spy>endpointMock.listSubscriptions).and.returnValue(Promise.resolve([{ id: '123', typeConfig: { id: result.raw.urihash } }]));
+        (<jasmine.Spy>endpointMock.deleteSubscription).and.returnValue(Promise.resolve());
+        test = Mock.advancedResultComponentSetup<FollowItem>(FollowItem, result, new Mock.AdvancedComponentSetupOptions(null, null, (env) => {
+          return env.withEndpoint(endpointMock);
+        }));
+
+        Promise.resolve().then(() => {
+          test.cmp.toggleFollow();
+          expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchAlertsUnfollowDocument, jasmine.objectContaining({
+            author: QueryUtils.getAuthor(fake),
+            documentLanguage: QueryUtils.getLanguage(fake),
+            documentSource: QueryUtils.getSource(fake),
+            documentTitle: fake.title
+          }), test.cmp.element);
+          done();
+        });
+      });
+    });
   });
 }
