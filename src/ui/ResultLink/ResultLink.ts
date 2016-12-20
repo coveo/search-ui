@@ -70,7 +70,8 @@ export class ResultLink extends Component {
     alwaysOpenInNewWindow: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies a template string to use to generate the href.
+     * Specifies a template literal from which to generate the ResultLink href.
+     * This option overrides the default
      * It is possible to reference fields from the associated result:
      *
      * Ex: `${clickUri}?id=${title}` will generate something like `http://uri.com?id=documentTitle`
@@ -86,24 +87,41 @@ export class ResultLink extends Component {
     hrefTemplate: ComponentOptions.buildStringOption(),
 
     /**
-     * Specifies a template string to use to generate the display title.
-     * Just like in the hrefTemplate it is possible to reference fields from the associated result:
-     * 
-     * Ex: `${raw.objecttype} number: ${raw.objectnumber}` will generate something like `Case number: 123456`
-     * 
-     * This option will override the default behavior of displaying the `title` of the result.
-     * 
-     * If the value of the key in the template is undefined, it will display the key instead:
-     * 
-     * Ex `${doesNotExist}` will display: "${doesNotExist}"
-     * 
-     * This option is ignored if there is any content as the innerHTML of the ResultLink.
-     * 
-     * Ex `<a class="CoveoResultLink" data-title-template="This is ignored">This will be displayed</a>`
-     * 
+     * Specifies a template literal from which to generate the ResultLink display title.
+     *
+     * This option overrides the default ResultLink display title behavior.</br>
+     * The template literal can reference any number of fields from the associated result.
+     * However, if the template literal references a key whose value is undefined in the associated result
+     * fields, then the name of this key will be displayed instead.</br>
+     * This option is ignored if the ResultLink innerHTML contains any value.
+     *
      * Default is `undefined`
+     * 
+     * #### Examples
+     *
+     * The following markup will generate a ResultLink display title such as `Case number: 123456` if both the
+     * `raw.objecttype` and `raw.objectnumber` keys are defined in the associated result fields:
+     *
+     * ```html
+     * <a class="CoveoResultLink" data-title-template="${raw.objecttype} number: ${raw.objectnumber}"></a>
+     * ```
+     *
+     * The following markup will generate `${myField}` as a ResultLink display title if the `myField` key is undefined
+     * in the associated result fields:
+     *
+     * ```html
+     * <a class="CoveoResultLink" data-title-template="${myField}"></a>
+     * ```
+     *
+     * The following markup will generate `This will be displayed` as a ResultLink display title, because the ResultLink
+     * innterHTML is not empty:
+     * 
+     * ```html
+     * <a class="CoveoResultLink" data-title-template="${will} ${be} ${ignored}">This will be displayed</a>
+     * ```
      */
     titleTemplate: ComponentOptions.buildStringOption(),
+
     /**
      * Binds an event handler function that is executed when the component link is clicked. The handler function takes an EventObject and a {@link IQueryResult} as its parameters.
      *
