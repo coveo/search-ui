@@ -148,6 +148,35 @@ export function DebugTest() {
       }));
     });
 
+    describe('parses the correctly when splitGroupByField is true', () => {
+      beforeEach(() => {
+        let fieldDescription = [{ name: '@test', splitGroupByField: true }];
+        let endpoint = jasmine.createSpyObj('endpoint', ['listFields']);
+        endpoint.listFields.and.returnValue(Promise.resolve(fieldDescription));
+        env.queryController.getEndpoint = () => endpoint;
+      });
+
+      it('when the field is an array', (done) => {
+        let result: any = { raw: { test: ['value1', 'value2'] } };
+        let expectValue = ['value1', 'value2'];
+
+        cmp.buildFieldsSection(result).then((fields) => {
+          expect(fields['@test']).toEqual(expectValue);
+          done();
+        });
+      });
+
+      it('when the field is a string', (done) => {
+        let result: any = { raw: { test: 'value1 ; value2' } };
+        let expectValue = ['value1', 'value2'];
+
+        cmp.buildFieldsSection(result).then((fields) => {
+          expect(fields['@test']).toEqual(expectValue);
+          done();
+        });
+      });
+    });
+
     // KeyboardEvent constructor does not exist in phantomjs
     if (!Simulate.isPhantomJs()) {
       it('should close on escape', (done) => {
