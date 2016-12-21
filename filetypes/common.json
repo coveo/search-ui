@@ -17,8 +17,8 @@
     "webscraperwebpage": {
       "icon": "webpage",
       "captions": {
-        "en": "Web page",
-        "fr": "Web page"
+        "en": "Web Page",
+        "fr": "Page Web"
       }
     },
     "image": {
@@ -47,7 +47,7 @@
       "icon": "file",
       "captions": {
         "en": "Zip File",
-        "fr": "Fichier compressé"
+        "fr": "Fichier Zip"
       },
       "shouldDisplayLabel": true
     },
@@ -79,7 +79,7 @@
       "icon": "file",
       "captions": {
         "en": "Spreadsheet Document",
-        "fr": "Chiffrier"
+        "fr": "Feuille de calcul"
       },
       "shouldDisplayLabel": true
     },

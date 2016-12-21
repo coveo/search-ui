@@ -38,15 +38,15 @@
     "board": {
       "icon": "list",
       "captions": {
-        "en": "",
-        "fr": ""
+        "en": "Board",
+        "fr": "Tableau"
       }
     },
     "category": {
       "icon": "list",
       "captions": {
-        "en": "",
-        "fr": ""
+        "en": "Category",
+        "fr": "Catégorie"
       }
     },
     "account": {
@@ -95,7 +95,7 @@
       "icon": "salesforce-standard-event",
       "captions": {
         "en": "Event",
-        "fr": "Évènement"
+        "fr": "Événement"
       }
     },
     "email": {
@@ -116,7 +116,7 @@
       "icon": "salesforce-standard-case",
       "captions": {
         "en": "Case",
-        "fr": "Incident"
+        "fr": "Cas"
       }
     },
     "invoice": {
@@ -130,7 +130,7 @@
       "icon": "salesforce-standard-lead",
       "captions": {
         "en": "Lead",
-        "fr": "Piste"
+        "fr": "Lead"
       }
     },
     "list": {
@@ -167,7 +167,7 @@
       "icon": "attachment",
       "captions": {
         "en": "Attachment",
-        "fr": "Attachement"
+        "fr": "Pièce jointe"
       }
     },
     "casecomment": {
@@ -268,7 +268,7 @@
       "icon": "user",
       "captions": {
         "en": "Social Profile",
-        "fr": "Profile social"
+        "fr": "Profil social"
       },
       "shouldDisplayLabel": true
     },
@@ -308,7 +308,7 @@
       "icon": "salesforce-standard-article",
       "captions": {
         "en": "Attachment",
-        "fr": "Attachement"
+        "fr": "Pièce jointe"
       }
     },
     "kbarticle": {
