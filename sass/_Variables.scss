@@ -165,12 +165,3 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
   }
 }
 
-@include keyframes(coveo-spin) {
-  from {
-    @include transform(rotate(0deg));
-  }
-
-  to {
-    @include transform(rotate(360deg));
-  }
-}
