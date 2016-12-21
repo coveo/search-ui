@@ -1,7 +1,7 @@
 # Search-UI [![Build Status](https://travis-ci.org/coveo/search-ui.svg?branch=master)](https://travis-ci.org/coveo/search-ui) [![TypeScript](https://badges.frapsoft.com/typescript/version/typescript-v18.svg?v=100)](https://github.com/ellerbrock/typescript-badges/) [![bitHound Overall Score](https://www.bithound.io/github/coveo/search-ui/badges/score.svg)](https://www.bithound.io/github/coveo/search-ui) [![bitHound Code](https://www.bithound.io/github/coveo/search-ui/badges/code.svg)](https://www.bithound.io/github/coveo/search-ui)
 Coveo Search UI Framework
 
-<img src='./docs/readme.png' />
+<img id='readme-image' src='./docs/readme.png' />
 
 ## Install
     npm install --save coveo-search-ui
