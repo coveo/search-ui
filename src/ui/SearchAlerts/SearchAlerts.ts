@@ -17,6 +17,9 @@ import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
 import {$$, Dom} from '../../utils/Dom';
 import {ModalBox} from '../../ExternalModulesShim';
+import {
+  analyticsActionCauseList, IAnalyticsSearchAlertsUpdateMeta, IAnalyticsSearchAlertsMeta, IAnalyticsActionCause
+} from '../Analytics/AnalyticsActionListMeta';
 
 export interface ISearchAlertsOptions {
   enableManagePanel?: boolean;
@@ -133,6 +136,10 @@ export class SearchAlerts extends Component {
   public followQuery() {
     let queryBuilder = this.queryController.createQueryBuilder({});
     let request = this.buildFollowQueryRequest(queryBuilder.build(), this.options);
+
+    this.usageAnalytics.logCustomEvent<IAnalyticsSearchAlertsMeta>(analyticsActionCauseList.searchAlertsFollowQuery, {
+      subscription: request.name
+    }, this.element);
 
     this.queryController.getEndpoint().follow(request)
       .then((subscription: ISubscription) => {
@@ -286,14 +293,24 @@ export class SearchAlerts extends Component {
 
     $$(frequencyInput).on('change', (event) => {
       subscription.frequency = frequencyInput.value;
+      this.usageAnalytics.logCustomEvent<IAnalyticsSearchAlertsUpdateMeta>(analyticsActionCauseList.searchAlertsUpdateSubscription, {
+        subscription: subscription.name,
+        frequency: subscription.frequency
+      }, this.element);
       this.updateAndSyncSearchAlert(subscription);
     });
 
     $$(element.find('.coveo-subscriptions-panel-action-unfollow')).on('click', () => {
       element.addClass('coveo-subscription-unfollowed');
+
       this.queryController.getEndpoint()
         .deleteSubscription(subscription)
         .then(() => {
+          if (subscription.type == SUBSCRIPTION_TYPE.followDocument) {
+            this.logAnalyticsEvent(analyticsActionCauseList.searchAlertsUnfollowDocument, subscription);
+          } else if (subscription.type == SUBSCRIPTION_TYPE.followQuery) {
+            this.logAnalyticsEvent(analyticsActionCauseList.searchAlertsUnfollowQuery, subscription);
+          }
           delete subscription.id;
           let eventArgs: ISearchAlertsEventArgs = { subscription: subscription };
           $$(this.root).trigger(SearchAlertsEvents.searchAlertsDeleted, eventArgs);
@@ -305,9 +322,15 @@ export class SearchAlerts extends Component {
 
     $$(element.find('.coveo-subscriptions-panel-action-follow')).on('click', () => {
       element.removeClass('coveo-subscription-unfollowed');
+
       this.queryController.getEndpoint()
         .follow(subscription)
         .then((updatedSearchAlert) => {
+          if (subscription.type == SUBSCRIPTION_TYPE.followDocument) {
+            this.logAnalyticsEvent(analyticsActionCauseList.searchAlertsFollowDocument, subscription);
+          } else if (subscription.type == SUBSCRIPTION_TYPE.followQuery) {
+            this.logAnalyticsEvent(analyticsActionCauseList.searchAlertsFollowQuery, subscription);
+          }
           subscription.id = updatedSearchAlert.id;
           let eventArgs: ISearchAlertsEventArgs = { subscription: subscription };
           $$(this.root).trigger(SearchAlertsEvents.searchAlertsCreated, eventArgs);
@@ -362,6 +385,12 @@ export class SearchAlerts extends Component {
       typeConfig: typeConfig,
       name: this.message.getFollowQueryMessage(query.q)
     };
+  }
+
+  private logAnalyticsEvent(cause: IAnalyticsActionCause, subscription: ISubscription) {
+    this.usageAnalytics.logCustomEvent<IAnalyticsSearchAlertsMeta>(cause, {
+      subscription: subscription.name
+    }, this.element);
   }
 
   static create(element: HTMLElement, options?: ISearchAlertsOptions, root?: HTMLElement): SearchAlerts {

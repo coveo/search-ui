@@ -81,6 +81,47 @@ export class QueryUtils {
     return result.excerpt != undefined && result.excerpt != '';
   }
 
+  static getAuthor(result: IQueryResult): string {
+    return result.raw['author'];
+  }
+
+  static getUriHash(result: IQueryResult): string {
+    return result.raw['urihash'];
+  }
+
+  static getObjectType(result: IQueryResult): string {
+    return result.raw['objecttype'];
+  }
+
+  static getCollection(result: IQueryResult): string {
+    return result.raw['collection'];
+  }
+
+  static getSource(result: IQueryResult): string {
+    return result.raw['source'];
+  }
+
+  static getLanguage(result: IQueryResult): string {
+    return result.raw['language'];
+  }
+
+  static getUniqueId(result: IQueryResult): { fieldValue: string, fieldUsed: string } {
+    let fieldValue;
+    let fieldUsed;
+    let uniqueId = result.raw['uniqueid'];
+    if (uniqueId) {
+      fieldUsed = 'uniqueid';
+      fieldValue = uniqueId;
+    } else {
+      fieldUsed = 'urihash';
+      fieldValue = result.raw['urihash'];
+    }
+    return {
+      fieldValue: fieldValue,
+      fieldUsed: fieldUsed
+    };
+  }
+
   static quoteAndEscapeIfNeeded(str: string): string {
     Assert.isString(str);
     return QueryUtils.isAtomicString(str) || (QueryUtils.isRangeString(str) || QueryUtils.isRangeWithoutOuterBoundsString(str)) ? str : QueryUtils.quoteAndEscape(str);
