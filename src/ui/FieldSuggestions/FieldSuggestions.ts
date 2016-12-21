@@ -110,7 +110,7 @@ export class FieldSuggestions extends Component {
 
     this.options.onSelect = this.options.onSelect || this.onRowSelection;
 
-    let rowTemplate = _.template(`<div class='magic-box-suggestion coveo-omnibox-selectable coveo-top-field-suggestion-row'><%= data %></div>`);
+    let rowTemplate = this.rowTemplate;
 
     let suggestionStructure: ISuggestionForOmniboxTemplate;
     if (this.searchInterface.isNewDesign()) {
@@ -118,7 +118,7 @@ export class FieldSuggestions extends Component {
         row: rowTemplate
       };
     } else {
-      let headerTemplate = _.template(`<div class='coveo-top-field-suggestion-header'><span class='coveo-icon-top-field'></span><span class='coveo-caption'><%= headerTitle %></span></div>`);
+      let headerTemplate = this.headerTemplate;
       suggestionStructure = {
         header: { template: headerTemplate, title: this.options.headerTitle },
         row: rowTemplate
@@ -131,6 +131,25 @@ export class FieldSuggestions extends Component {
       this.onRowTab(value, args);
     });
     this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs) => this.handlePopulateOmnibox(args));
+  }
+
+  private rowTemplate(obj) {
+    var __t, __p = '', __j = Array.prototype.join, print = function () { __p += __j.call(arguments, ''); };
+    var obj = obj || {}
+    __p += '<div class=\'magic-box-suggestion coveo-omnibox-selectable coveo-top-field-suggestion-row\'>' +
+      ((__t = (obj.data)) == null ? '' : __t) +
+      '</div>';
+    return __p;
+  }
+
+  private headerTemplate(obj) {
+    var __t, __p = '', __j = Array.prototype.join, print = function () { __p += __j.call(arguments, ''); };
+    var obj = (obj || {})
+    __p += '<div class=\'coveo-top-field-suggestion-header\'><span class=\'coveo-icon-top-field\'></span><span class=\'coveo-caption\'>' +
+      ((__t = (obj.headerTitle)) == null ? '' : __t) +
+      '</span></div>';
+
+    return __p;
   }
 
   /**

@@ -3,6 +3,8 @@ import {UnderscoreTemplate} from './UnderscoreTemplate';
 import {TemplateCache} from './TemplateCache';
 import {IQueryResult} from '../../rest/QueryResult';
 import {Assert} from '../../misc/Assert';
+import {TemplateHelpers} from './templateHelpers';
+
 
 
 export class DefaultResultTemplate extends Template {
@@ -34,11 +36,24 @@ export class DefaultResultTemplate extends Template {
       }
     }
 
-    return _.template('<div>' +
-      '<div class="coveo-title"><a class="CoveoResultLink"><%= title?Coveo.TemplateHelpers.getHelper("highlight").call(title, titleHighlights):clickUri %></a></div>' +
-      '<% if(excerpt){ %><div class="coveo-excerpt"><%= Coveo.TemplateHelpers.getHelper("highlight").call(excerpt, excerptHighlights) %></div><% } %>' +
-      '<table class="CoveoFieldTable"><%= Coveo.TemplateHelpers.getHelper("highlight").call() %></table>' +
-      '</div>')(queryResult);
+
+    return function (obj) {
+      var __t, __p = '', __j = Array.prototype.join, print = function () { __p += __j.call(arguments, ''); };
+      var obj = (obj || {});
+      __p += '<div><div class="coveo-title"><a class="CoveoResultLink">' +
+        ((__t = (obj.title ? TemplateHelpers.getHelper("highlight").call(obj.title, obj.titleHighlights) : obj.clickUri)) == null ? '' : __t) +
+        '</a></div>';
+      if (obj.excerpt) {
+        __p += '<div class="coveo-excerpt">' +
+          ((__t = (TemplateHelpers.getHelper("highlight").call(obj.excerpt, obj.excerptHighlights))) == null ? '' : __t) +
+          '</div>';
+      }
+      __p += '<table class="CoveoFieldTable">' +
+        ((__t = (TemplateHelpers.getHelper("highlight").call(null))) == null ? '' : __t) +
+        '</table></div>';
+
+      return __p;
+    } (queryResult);
   }
 
   instantiateToElement(queryResult?: IQueryResult): HTMLElement {
