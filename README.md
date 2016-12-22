@@ -8,13 +8,7 @@ Coveo JavaScript Search UI Framework
 
 You should install the Coveo JavaScript Search UI Framework as an npm package:
 
-
     npm install --save coveo-search-ui
-
-Although not recommended, you can also fetch the latest beta (unstable) build:
-
-
-    npm install --save coveo-search-ui@beta
 
 All resources will be available under `node_modules/coveo-search-ui/bin`. You can include those in your pages with 
 `<script>` tags.
