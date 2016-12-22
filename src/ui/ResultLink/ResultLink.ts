@@ -18,8 +18,15 @@ import {$$} from '../../utils/Dom';
 import {StreamHighlightUtils} from '../../utils/StreamHighlightUtils';
 
 /**
- * This component is intended to be placed inside a result template, which itself is used inside a {@link ResultList} component.
- * The ResultLink component automatically transforms a search result title into a clickable link that points to the original document.
+ * This component is intended to be used inside a result template, which must in turn be used inside a
+ * {@link ResultList} component.
+ *
+ * By default, the ResultLink component automatically transforms a search result title into a clickable link pointing
+ * to the original document.
+ *
+ * For more information on result templates, see
+ * <a target="_blank" href="https://developers.coveo.com/x/v4okAg">Step 6 - Result Templates</a> of the Getting Started
+ * with the JavaScript Search Framework V1 tutorial.
  */
 export class ResultLink extends Component {
   static ID = 'ResultLink';
@@ -31,107 +38,162 @@ export class ResultLink extends Component {
   static options: IResultLinkOptions = {
 
     /**
-     * Specifies the field that the result link uses to output its href.
-     * By default, the clickUri available on the document is used, but you can override this with this option.
-     * Tip:
-     * When you do not include a field option, in your result template, you can include an href attribute on the ResultLink element.
+     * Specifies the field which the ResultLink should use to output its href.
      *
-     * When present, the href attribute value overrides the clickUri that is otherwise taken by default.
+     * By default, the `clickUri` field available on the document is used, but you can override this field with this
+     * option.
      *
-     * Specifying an href attribute is useful when you want to build the result link using a custom script or by concatenating the content of two or more variables.
+     * #### Tip
+     *
+     * When you do not include a field option in your result template, you can include an href attribute on the
+     * ResultLink element. When present, the href attribute value overrides the `clickUri` field, which is otherwise
+     * used by default.
+     *
+     * Specifying an href attribute is useful when you want to build the ResultLink using a custom script or by
+     * concatenating the content of two or more variables.
+     *
+     * #### Examples
+     *
+     * With the following markup, the ResultLink will output its href using the `uri` field instead of the default
+     * `clickUri` field:
      *
      * ```html
-     * <!-- In the following result template the link is provided by the custom getMyKBUri() function. -->
-     * <script id="KnowledgeArticle" type="text/underscore">
-     *    <div class='CoveoIcon>'></div>
-     *    <a class="CoveoResultLink" href="<%=getMyKBUri(raw)%>"></a>
-     *    <div class="CoveoExcerpt"></div>
+     * <a class="CoveoResultLink" field="@uri"></a>
+     * ```
+     *
+     * In the following result template, the link is provided by the custom `getMyKBUri()` function:
+     *
+     * ```html
+     * <script id="KnowledgeArticle" type="text/underscore" class="result-template">
+     *   <div class='CoveoIcon>'></div>
+     *   <a class="CoveoResultLink" href="<%=getMyKBUri(raw)%>"></a>
+     *   <div class="CoveoExcerpt"></div>
      * </script>
      * ```
      */
     field: ComponentOptions.buildFieldOption(),
 
     /**
-     * Specifies whether the result link tries to open in Microsoft Outlook. This is normally intended for ResultLink related to Microsoft Exchange emails.
-     * Default value is false.
+     * Specifies whether the ResultLink should try to open in Microsoft Outlook.
+     *
+     * This option is normally intended for ResultLink instances which are related to Microsoft Exchange emails.
+     *
+     * Default value is `false`.
      */
     openInOutlook: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies whether the result link should open in the Quick View rather than loading through the original URL.
-     * Default value is false.
+     * Specifies whether the ResultLink should open in the {@link Quickview} component rather than loading through the
+     * original URL.
+     *
+     * Default value is `false`.
      */
     openQuickview: ComponentOptions.buildBooleanOption(),
 
     /**
-     * Specifies whether the result link always opens in a new window ( <a target='_blank' /> ).
-     * Default is false
+     * Specifies whether the ResultLink should open in a <a href="/" target="_blank">new tab/window</a> instead of
+     * opening in the current context.
+     *
+     * Default value is `false`.
      */
     alwaysOpenInNewWindow: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies a template string to use to generate the href.
-     * It is possible to reference fields from the associated result:
+     * Specifies a template literal from which to generate the ResultLink href.
      *
-     * Ex: `${clickUri}?id=${title}` will generate something like `http://uri.com?id=documentTitle`
+     * This option overrides the ResultLink `field` option.</br>
+     * The template literal can reference any number of fields from the associated result. It can also reference
+     * global scope properties.
      *
-     * Or from the global scope:
+     * Default value is `undefined`.
+     * 
+     * #### Examples
      *
-     * Ex: `${window.location.hostname}/{Foo.Bar}` will generate something like `localhost/fooBar`
+     * The following markup will generate a ResultLink href such as `http://uri.com?id=documentTitle`:
      *
-     * This option will override the field option.
+     * ```html
+     * <a class="CoveoResultLink" data-href-template="${clickUri}?id=${title}"></a>
+     * ```
      *
-     * Default is `undefined`
+     * The following markup will generate a ResultLink href such as `localhost/fooBar`:
+     * 
+     * ```html
+     * <a class="CoveoResultLink" data-href-template="$${window.location.hostname}/{Foo.Bar}"></a>
+     * ```
      */
     hrefTemplate: ComponentOptions.buildStringOption(),
 
     /**
-     * Specifies a template string to use to generate the display title.
-     * Just like in the hrefTemplate it is possible to reference fields from the associated result:
+     * Specifies a template literal from which to generate the ResultLink display title.
+     *
+     * This option overrides the default ResultLink display title behavior.</br>
+     * The template literal can reference any number of fields from the associated result. However, if the template
+     * literal references a key whose value is undefined in the associated result fields, then the name of this key
+     * will be displayed instead.</br>
+     * This option is ignored if the ResultLink innerHTML contains any value.
+     *
+     * Default value is `undefined`.
      * 
-     * Ex: `${raw.objecttype} number: ${raw.objectnumber}` will generate something like `Case number: 123456`
+     * #### Examples
+     *
+     * The following markup will generate a ResultLink display title such as `Case number: 123456` if both the
+     * `raw.objecttype` and `raw.objectnumber` keys are defined in the associated result fields:
+     *
+     * ```html
+     * <a class="CoveoResultLink" data-title-template="${raw.objecttype} number: ${raw.objectnumber}"></a>
+     * ```
+     *
+     * The following markup will generate `${myField}` as a ResultLink display title if the `myField` key is undefined
+     * in the associated result fields:
+     *
+     * ```html
+     * <a class="CoveoResultLink" data-title-template="${myField}"></a>
+     * ```
+     *
+     * The following markup will generate `This will be displayed` as a ResultLink display title, because the
+     * ResultLink innterHTML is not empty:
      * 
-     * This option will override the default behavior of displaying the `title` of the result.
-     * 
-     * If the value of the key in the template is undefined, it will display the key instead:
-     * 
-     * Ex `${doesNotExist}` will display: "${doesNotExist}"
-     * 
-     * This option is ignored if there is any content as the innerHTML of the ResultLink.
-     * 
-     * Ex `<a class="CoveoResultLink" data-title-template="This is ignored">This will be displayed</a>`
-     * 
-     * Default is `undefined`
+     * ```html
+     * <a class="CoveoResultLink" data-title-template="${will} ${be} ${ignored}">This will be displayed</a>
+     * ```
      */
     titleTemplate: ComponentOptions.buildStringOption(),
+
     /**
-     * Binds an event handler function that is executed when the component link is clicked. The handler function takes an EventObject and a {@link IQueryResult} as its parameters.
+     * Binds an event handler function which is executed when the component link is clicked.
      *
-     * Overriding the default behavior of the onClick event allows to execute specific code instead.
+     * The handler function takes an EventObject and an {@link IQueryResult} as its parameters.
+     *
+     * Overriding the default behavior of the `onClick` event can allow you to execute specific code instead.
+     *
+     * #### Examples
+     *
+     * In the following code excerpt, a ResultLink is used to open the original document in a custom way instead of
+     * using the normal browser behavior:
      *
      * ```javascript
-     * // Example: using a ResultLink to open the original document in a special way instead of the normal browser behavior
-     *
      * Coveo.init(document.querySelector('#search'), {
      *   ResultLink : {
-     *        onClick : function(e, result){
-     *          e.preventDefault();
-     *          // Custom code to execute with the URI and title of the document
-     *          openUriInASpecialTab(result.clickUri, result.title)
-     *        }
-     *    }
-     * })
+     *     onClick : function(e, result) {
+     *       e.preventDefault();
+     *       // Custom code to execute with the URI and title of the document
+     *       openUriInASpecialTab(result.clickUri, result.title);
+     *     }
+     *   }
+     * });
+     *```
      *
-     * // OR using the jquery extension
+     * The same result can be achieved using the jQuery extension:
      *
-     * $("#search").coveo('init' , {
-     *    ResultLink : {
-     *        onClick : function(e, result){
-     *          e.preventDefault();
-     *          // Custom code to execute with the URI and title of the document
-     *          openUriInASpecialTab(result.clickUri, result.title)
-     *        }
-     *    }
+     * ```javascript
+     * $("#search").coveo('init', {
+     *   ResultLink : {
+     *     onClick : function(e, result) {
+     *       e.preventDefault();
+     *       // Custom code to execute with the URI and title of the document
+     *       openUriInASpecialTab(result.clickUri, result.title);
+     *     }
+     *   }
      * });
      * ```
      */
