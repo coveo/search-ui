@@ -73,8 +73,7 @@
                         {{#with model}}{{> breadcrumb}}{{/with}}
                     </ul>
                     <h1>{{#compact}}
-                        {{model.kindString}}&nbsp;
-                        {{model.name}}
+                        {{model.originalName}}&nbsp;{{model.kindString}}
                         {{#if model.typeParameters}}
                             &lt;
                             {{#each model.typeParameters}}
