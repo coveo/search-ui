@@ -113,7 +113,7 @@ export class MockEnvironmentBuilder {
     }
 
     this.queryController.getEndpoint = () => {
-      return this.searchEndpoint
+      return this.searchEndpoint;
     };
 
     if (Utils.isNullOrUndefined(this.searchInterface.isNewDesign())) {
