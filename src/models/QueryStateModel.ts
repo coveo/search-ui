@@ -90,7 +90,7 @@ export class QueryStateModel extends Model {
    */
   public atLeastOneFacetIsActive() {
     return !_.isUndefined(_.find(this.attributes, (value, key: any) => {
-      return key.indexOf('f:') == 0 && Utils.isNonEmptyArray(value) && key.indexOf(':range') < 0;
+      return key.indexOf('f:') == 0 && Utils.isNonEmptyArray(value);
     }));
   }
 
