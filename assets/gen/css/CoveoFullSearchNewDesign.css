@@ -7856,7 +7856,7 @@
       left: -1px; }
 
 .CoveoOmnibox.magic-box.coveo-search-as-you-type .magic-box-ghost-text {
-  visibility: visible; }
+  display: none; }
 
 .CoveoOmnibox.magic-box .coveo-omnibox-selectable {
   cursor: pointer; }
@@ -8382,6 +8382,9 @@ a.coveo-folding-show-more, a.coveo-folding-show-less {
 
 .CoveoSettings + .CoveoSearchbox {
   margin-right: 76px; }
+
+.magic-box .magic-box-input .magic-box-underlay .magic-box-ghost-text, .magic-box.magic-box-hasFocus .magic-box-input .magic-box-underlay .magic-box-ghost-text {
+  display: none; }
 
 .CoveoSearchButton {
   color: white;
