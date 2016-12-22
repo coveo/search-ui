@@ -181,7 +181,7 @@ export class ResultLink extends Component {
      *     }
      *   }
      * });
-     *```
+     * ```
      *
      * The same result can be achieved using the jQuery extension:
      *

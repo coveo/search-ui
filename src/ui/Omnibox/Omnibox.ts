@@ -305,6 +305,7 @@ export class Omnibox extends Component {
       this.triggerNewQuery(false, () => {
         this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
       });
+      this.magicBox.blur();
     };
 
     this.magicBox.onselect = (suggestion: IOmniboxSuggestion) => {
