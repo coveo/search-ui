@@ -102,16 +102,18 @@ export class SearchAlerts extends Component {
       this.message = new SearchAlertsMessage(element, { closeDelay: this.options.messageCloseDelay }, this.getBindings());
     }
 
-    this.bind.onRootElement(SettingsEvents.settingsPopulateMenu, (args: ISettingsPopulateMenuArgs) => {
-      if (this.options.enableManagePanel) {
-        args.menuData.push({
-          text: l('SearchAlerts_Panel'),
-          className: 'coveo-subscriptions-panel',
-          onOpen: () => this.openPanel(),
-          onClose: () => this.close()
-        });
-      }
-    });
+    if (!this.queryController.getEndpoint().options.isGuestUser) {
+      this.bind.onRootElement(SettingsEvents.settingsPopulateMenu, (args: ISettingsPopulateMenuArgs) => {
+        if (this.options.enableManagePanel) {
+          args.menuData.push({
+            text: l('SearchAlerts_Panel'),
+            className: 'coveo-subscriptions-panel',
+            onOpen: () => this.openPanel(),
+            onClose: () => this.close()
+          });
+        }
+      });
+    }
 
     let once = false;
 

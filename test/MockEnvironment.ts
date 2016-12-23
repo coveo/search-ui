@@ -108,7 +108,13 @@ export class MockEnvironmentBuilder {
     this.searchInterface.componentStateModel = this.componentStateModel;
     this.searchInterface.componentOptionsModel = this.componentOptionsModel;
 
-    this.queryController.getEndpoint = () => this.searchEndpoint;
+    if (!this.searchEndpoint) {
+      this.searchEndpoint = mockSearchEndpoint();
+    }
+
+    this.queryController.getEndpoint = () => {
+      return this.searchEndpoint;
+    };
 
     if (Utils.isNullOrUndefined(this.searchInterface.isNewDesign())) {
       this.searchInterface.isNewDesign = () => true;
@@ -234,6 +240,7 @@ export function mockSearchEndpoint(): SearchEndpoint {
   m.extensions.and.returnValue(new Promise((resolve, reject) => {
   }));
   m.getViewAsDatastreamUri.and.returnValue('http://datastream.uri');
+  m.options = {};
   return m;
 }
 

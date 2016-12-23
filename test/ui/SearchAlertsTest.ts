@@ -9,6 +9,8 @@ import {Simulate} from '../Simulate';
 import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
 import {SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs} from '../../src/events/SearchAlertEvents';
 import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import {AdvancedComponentSetupOptions} from '../MockEnvironment';
+import {mockSearchEndpoint} from '../MockEnvironment';
 
 export function SearchAlertsTest() {
   describe('SearchAlerts', function () {
@@ -21,6 +23,7 @@ export function SearchAlertsTest() {
         settings: Mock.basicComponentSetup<Settings>(Settings).cmp,
         menuData: []
       };
+      test.env.searchEndpoint.options.isGuestUser = false;
     });
 
     afterEach(() => {
@@ -40,9 +43,18 @@ export function SearchAlertsTest() {
     });
 
     describe('exposes enableManagePanel option', () => {
-      it('should add the option in the settings menu', () => {
+
+      it('should add the option in the settings menu if the user is not anonymous', () => {
         $$(test.env.root).trigger(SettingsEvents.settingsPopulateMenu, settingsData);
         expect(settingsData.menuData).toContain(jasmine.objectContaining({ className: 'coveo-subscriptions-panel' }));
+      });
+
+      it('should not add the option in the setting menu if the user is anonymous', ()=> {
+        let endpoint = mockSearchEndpoint();
+        endpoint.options.isGuestUser = true;
+        test = Mock.advancedComponentSetup<SearchAlerts>(SearchAlerts, new AdvancedComponentSetupOptions(undefined, undefined, (builder)=> builder.withEndpoint(endpoint)));
+        $$(test.env.root).trigger(SettingsEvents.settingsPopulateMenu, settingsData);
+        expect(settingsData.menuData).not.toContain(jasmine.objectContaining({className: 'coveo-subscriptions-panel'}));
       });
 
       it('should not add option in the settings menu if false', () => {
