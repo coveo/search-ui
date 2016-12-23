@@ -20,8 +20,9 @@ export interface IFollowItemOptions {
 }
 
 /**
- * This component allows the user to follow a particular result. 
- * By following a result, the user will receive emails informing him when the result has changed.
+ * This component allows the user to follow a particular item (document).
+ * A user following an item will receive email notifications when the item changes.
+ *
  * A {@link SearchAlerts} component must be present in the page for this component to work.
  */
 export class FollowItem extends Component {
@@ -36,14 +37,18 @@ export class FollowItem extends Component {
    * @componentOptions
    */
   static options: IFollowItemOptions = {
+
     /**
-     * Specifies the watchedFields to use when sending the follow query request.
-     * This default value is undefined.
+     * Specifies the watchedFields to use when sending the followQuery subscription request.
+     *
+     * Default value is `undefined`.
      */
     watchedFields: ComponentOptions.buildFieldsOption(),
+
     /**
-     * Specifies the modifiedDateField to use when sending the follow query request.
-     * This default value is undefined.
+     * Specifies the modifiedDateField to use when sending the followQuery subscription request.
+     *
+     * Default value is `undefined`.
      */
     modifiedDateField: ComponentOptions.buildStringOption(),
   };
@@ -91,7 +96,8 @@ export class FollowItem extends Component {
   }
 
   /**
-   * Follows the result if it was not followed and stops following the result if it was followed.
+   * Follows the item if it is not currently being followed. Stops following the item otherwise.
+   * By default, this method is called when the user clicks the **Follow Item** menu item under {@link Settings}.
    */
   public toggleFollow() {
     if (!this.container.hasClass('coveo-follow-item-loading')) {
