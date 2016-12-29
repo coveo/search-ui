@@ -829,9 +829,6 @@
 .coveo-sprites-fileType-lithium-thread,
 .coveo-icon.filetype.lithiumthread,
 .coveo-icon.sysfiletype.lithiumthread,
-.coveo-sprites-fileType-salesforce-item,
-.coveo-icon.filetype.saleforceitem,
-.coveo-icon.sysfiletype.saleforceitem,
 .coveo-sprites-fileType-objectType-account,
 .coveo-icon.objecttype.Account,
 .coveo-icon.objecttype.account,
@@ -914,6 +911,9 @@
 .coveo-icon.objecttype.people,
 .coveo-icon.objecttype.User,
 .coveo-icon.objecttype.user,
+.coveo-sprites-fileType-salesforce-item,
+.coveo-icon.filetype.saleforceitem,
+.coveo-icon.sysfiletype.saleforceitem,
 .coveo-sprites-fileType-sharepoint-agenda,
 .coveo-icon.filetype.spagenda,
 .coveo-icon.sysfiletype.spagenda,
@@ -3406,151 +3406,151 @@
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-salesforce-item, .coveo-icon.filetype.saleforceitem, .coveo-icon.sysfiletype.saleforceitem {
+.coveo-sprites-fileType-objectType-account, .coveo-icon.objecttype.Account, .coveo-icon.objecttype.account {
   background-position: -2001px -16px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-account, .coveo-icon.objecttype.Account, .coveo-icon.objecttype.account {
+.coveo-sprites-fileType-objectType-answer, .coveo-icon.objecttype.Solution, .coveo-icon.objecttype.solution, .coveo-icon.objecttype.Kbsolution, .coveo-icon.objecttype.kbsolution {
   background-position: -2001px -32px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-answer, .coveo-icon.objecttype.Solution, .coveo-icon.objecttype.solution, .coveo-icon.objecttype.Kbsolution, .coveo-icon.objecttype.kbsolution {
+.coveo-sprites-fileType-objectType-attachment, .coveo-icon.objecttype.Attachment, .coveo-icon.objecttype.attachment, .coveo-icon.objecttype.Kbattachment, .coveo-icon.objecttype.kbattachment {
   background-position: -2001px -48px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-attachment, .coveo-icon.objecttype.Attachment, .coveo-icon.objecttype.attachment, .coveo-icon.objecttype.Kbattachment, .coveo-icon.objecttype.kbattachment {
+.coveo-sprites-fileType-objectType-board, .coveo-icon.objecttype.Board, .coveo-icon.objecttype.board {
   background-position: -2001px -64px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-board, .coveo-icon.objecttype.Board, .coveo-icon.objecttype.board {
+.coveo-sprites-fileType-objectType-campaign, .coveo-icon.objecttype.Campaign, .coveo-icon.objecttype.campaign {
   background-position: -2001px -80px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-campaign, .coveo-icon.objecttype.Campaign, .coveo-icon.objecttype.campaign {
+.coveo-sprites-fileType-objectType-case, .coveo-icon.objecttype.Case, .coveo-icon.objecttype.case {
   background-position: -2001px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-case, .coveo-icon.objecttype.Case, .coveo-icon.objecttype.case {
+.coveo-sprites-fileType-objectType-category, .coveo-icon.objecttype.Category, .coveo-icon.objecttype.category {
   background-position: -2017px 0px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-category, .coveo-icon.objecttype.Category, .coveo-icon.objecttype.category {
+.coveo-sprites-fileType-objectType-chatter, .coveo-icon.objecttype.Feeditem, .coveo-icon.objecttype.feeditem, .coveo-icon.objecttype.Feedcomment, .coveo-icon.objecttype.feedcomment {
   background-position: -2017px -16px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-chatter, .coveo-icon.objecttype.Feeditem, .coveo-icon.objecttype.feeditem, .coveo-icon.objecttype.Feedcomment, .coveo-icon.objecttype.feedcomment {
+.coveo-sprites-fileType-objectType-comment, .coveo-icon.objecttype.Casecomment, .coveo-icon.objecttype.casecomment {
   background-position: -2017px -32px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-comment, .coveo-icon.objecttype.Casecomment, .coveo-icon.objecttype.casecomment {
+.coveo-sprites-fileType-objectType-contact, .coveo-icon.objecttype.Contact, .coveo-icon.objecttype.contact {
   background-position: -2017px -48px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-contact, .coveo-icon.objecttype.Contact, .coveo-icon.objecttype.contact {
+.coveo-sprites-fileType-objectType-contract, .coveo-icon.objecttype.Contract, .coveo-icon.objecttype.contract {
   background-position: -2017px -64px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-contract, .coveo-icon.objecttype.Contract, .coveo-icon.objecttype.contract {
+.coveo-sprites-fileType-objectType-event, .coveo-icon.objecttype.Event, .coveo-icon.objecttype.event {
   background-position: -2017px -80px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-event, .coveo-icon.objecttype.Event, .coveo-icon.objecttype.event {
+.coveo-sprites-fileType-objectType-file, .coveo-icon.objecttype.File, .coveo-icon.objecttype.file {
   background-position: -2017px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-file, .coveo-icon.objecttype.File, .coveo-icon.objecttype.file {
+.coveo-sprites-fileType-objectType-kb, .coveo-icon.objecttype.Kbdocumentation, .coveo-icon.objecttype.kbdocumentation, .coveo-icon.objecttype.Kbknowledgearticle, .coveo-icon.objecttype.kbknowledgearticle {
   background-position: -2033px 0px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-kb, .coveo-icon.objecttype.Kbdocumentation, .coveo-icon.objecttype.kbdocumentation, .coveo-icon.objecttype.Kbknowledgearticle, .coveo-icon.objecttype.kbknowledgearticle {
+.coveo-sprites-fileType-objectType-lead, .coveo-icon.objecttype.Lead, .coveo-icon.objecttype.lead {
   background-position: -2033px -16px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-lead, .coveo-icon.objecttype.Lead, .coveo-icon.objecttype.lead {
+.coveo-sprites-fileType-objectType-message, .coveo-icon.objecttype.Message, .coveo-icon.objecttype.message {
   background-position: -2033px -32px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-message, .coveo-icon.objecttype.Message, .coveo-icon.objecttype.message {
+.coveo-sprites-fileType-objectType-note, .coveo-icon.objecttype.Note, .coveo-icon.objecttype.note {
   background-position: -2033px -48px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-note, .coveo-icon.objecttype.Note, .coveo-icon.objecttype.note {
+.coveo-sprites-fileType-objectType-opportunity, .coveo-icon.objecttype.Opportunity, .coveo-icon.objecttype.opportunity {
   background-position: -2033px -64px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-opportunity, .coveo-icon.objecttype.Opportunity, .coveo-icon.objecttype.opportunity {
+.coveo-sprites-fileType-objectType-partner, .coveo-icon.objecttype.Partner, .coveo-icon.objecttype.partner {
   background-position: -2033px -80px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-partner, .coveo-icon.objecttype.Partner, .coveo-icon.objecttype.partner {
+.coveo-sprites-fileType-objectType-product, .coveo-icon.objecttype.Product, .coveo-icon.objecttype.product {
   background-position: -2033px -96px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-product, .coveo-icon.objecttype.Product, .coveo-icon.objecttype.product {
+.coveo-sprites-fileType-objectType-rss, .coveo-icon.objecttype.Feed, .coveo-icon.objecttype.feed {
   background-position: -2049px 0px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-rss, .coveo-icon.objecttype.Feed, .coveo-icon.objecttype.feed {
+.coveo-sprites-fileType-objectType-task, .coveo-icon.objecttype.Task, .coveo-icon.objecttype.task {
   background-position: -2049px -16px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-task, .coveo-icon.objecttype.Task, .coveo-icon.objecttype.task {
+.coveo-sprites-fileType-objectType-thread, .coveo-icon.objecttype.Thread, .coveo-icon.objecttype.thread {
   background-position: -2049px -32px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-thread, .coveo-icon.objecttype.Thread, .coveo-icon.objecttype.thread {
+.coveo-sprites-fileType-objectType-user, .coveo-icon.objecttype.People, .coveo-icon.objecttype.people, .coveo-icon.objecttype.User, .coveo-icon.objecttype.user {
   background-position: -2049px -48px;
   width: 16px;
   height: 16px;
   text-indent: 16px; }
 
-.coveo-sprites-fileType-objectType-user, .coveo-icon.objecttype.People, .coveo-icon.objecttype.people, .coveo-icon.objecttype.User, .coveo-icon.objecttype.user {
+.coveo-sprites-fileType-salesforce-item, .coveo-icon.filetype.saleforceitem, .coveo-icon.sysfiletype.saleforceitem {
   background-position: -2049px -64px;
   width: 16px;
   height: 16px;
