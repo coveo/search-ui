@@ -67,9 +67,9 @@ var playground =
 	var Dom_1 = __webpack_require__(3);
 	var Component_1 = __webpack_require__(10);
 	var SearchEndpoint_1 = __webpack_require__(43);
-	var RegisteredNamedMethods_1 = __webpack_require__(84);
-	var PlaygroundConfiguration_1 = __webpack_require__(147);
-	var ResultList_1 = __webpack_require__(148);
+	var RegisteredNamedMethods_1 = __webpack_require__(83);
+	var PlaygroundConfiguration_1 = __webpack_require__(146);
+	var ResultList_1 = __webpack_require__(147);
 	var QueryEvents_1 = __webpack_require__(23);
 	var Playground = (function () {
 	    function Playground(body) {
@@ -1614,9 +1614,9 @@ var playground =
 	var ComponentOptionsModel_1 = __webpack_require__(15);
 	var QueryController_1 = __webpack_require__(16);
 	var SearchInterface_1 = __webpack_require__(42);
-	var NoopAnalyticsClient_1 = __webpack_require__(76);
+	var NoopAnalyticsClient_1 = __webpack_require__(75);
 	var BaseComponent_1 = __webpack_require__(13);
-	var DebugEvents_1 = __webpack_require__(79);
+	var DebugEvents_1 = __webpack_require__(78);
 	/**
 	 * The base class for every component in the framework.
 	 */
@@ -1747,10 +1747,6 @@ var playground =
 	        Assert_1.Assert.exists(result);
 	        Dom_1.$$(element).addClass('CoveoResult');
 	        element['CoveoResult'] = result;
-	        var jQuery = JQueryutils_1.JQueryUtils.getJQuery();
-	        if (jQuery) {
-	            jQuery(element).data(result);
-	        }
 	    };
 	    Component.resolveBinding = function (element, componentClass) {
 	        Assert_1.Assert.exists(element);
@@ -3496,41 +3492,6 @@ var playground =
 	    };
 	    QueryUtils.hasExcerpt = function (result) {
 	        return result.excerpt != undefined && result.excerpt != '';
-	    };
-	    QueryUtils.getAuthor = function (result) {
-	        return result.raw['author'];
-	    };
-	    QueryUtils.getUriHash = function (result) {
-	        return result.raw['urihash'];
-	    };
-	    QueryUtils.getObjectType = function (result) {
-	        return result.raw['objecttype'];
-	    };
-	    QueryUtils.getCollection = function (result) {
-	        return result.raw['collection'];
-	    };
-	    QueryUtils.getSource = function (result) {
-	        return result.raw['source'];
-	    };
-	    QueryUtils.getLanguage = function (result) {
-	        return result.raw['language'];
-	    };
-	    QueryUtils.getUniqueId = function (result) {
-	        var fieldValue;
-	        var fieldUsed;
-	        var uniqueId = result.raw['uniqueid'];
-	        if (uniqueId) {
-	            fieldUsed = 'uniqueid';
-	            fieldValue = uniqueId;
-	        }
-	        else {
-	            fieldUsed = 'urihash';
-	            fieldValue = result.raw['urihash'];
-	        }
-	        return {
-	            fieldValue: fieldValue,
-	            fieldUsed: fieldUsed
-	        };
 	    };
 	    QueryUtils.quoteAndEscapeIfNeeded = function (str) {
 	        Assert_1.Assert.isString(str);
@@ -5830,7 +5791,7 @@ var playground =
 	var ComponentOptions_1 = __webpack_require__(52);
 	var DeviceUtils_1 = __webpack_require__(46);
 	var Dom_1 = __webpack_require__(3);
-	var DomUtils_1 = __webpack_require__(67);
+	var DomUtils_1 = __webpack_require__(66);
 	var Assert_1 = __webpack_require__(8);
 	var QueryStateModel_1 = __webpack_require__(11);
 	var ComponentStateModel_1 = __webpack_require__(14);
@@ -5838,19 +5799,19 @@ var playground =
 	var QueryController_1 = __webpack_require__(16);
 	var Model_1 = __webpack_require__(12);
 	var QueryEvents_1 = __webpack_require__(23);
-	var StandaloneSearchInterfaceEvents_1 = __webpack_require__(73);
-	var HistoryController_1 = __webpack_require__(74);
-	var LocalStorageHistoryController_1 = __webpack_require__(75);
-	var InitializationEvents_1 = __webpack_require__(58);
-	var NoopAnalyticsClient_1 = __webpack_require__(76);
+	var StandaloneSearchInterfaceEvents_1 = __webpack_require__(72);
+	var HistoryController_1 = __webpack_require__(73);
+	var LocalStorageHistoryController_1 = __webpack_require__(74);
+	var InitializationEvents_1 = __webpack_require__(57);
+	var NoopAnalyticsClient_1 = __webpack_require__(75);
 	var Utils_1 = __webpack_require__(6);
 	var RootComponent_1 = __webpack_require__(17);
 	var BaseComponent_1 = __webpack_require__(13);
-	var Debug_1 = __webpack_require__(77);
-	var HashUtils_1 = __webpack_require__(59);
-	var FastClick = __webpack_require__(81);
-	var timezone = __webpack_require__(82);
-	var SentryLogger_1 = __webpack_require__(83);
+	var Debug_1 = __webpack_require__(76);
+	var HashUtils_1 = __webpack_require__(58);
+	var FastClick = __webpack_require__(80);
+	var timezone = __webpack_require__(81);
+	var SentryLogger_1 = __webpack_require__(82);
 	/**
 	 * This component is the root and main component of your search interface.<br/>
 	 * You should place every other component inside this component.<br/>
@@ -7911,8 +7872,8 @@ var playground =
 
 	"use strict";
 	exports.version = {
-	    'lib': '1.0.14-beta',
-	    'product': '1.0.14-beta',
+	    'lib': '1.1865.1-beta',
+	    'product': '1.1865.1-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -8026,11 +7987,11 @@ var playground =
 	var Logger_1 = __webpack_require__(9);
 	var Dom_1 = __webpack_require__(3);
 	var TemplateCache_1 = __webpack_require__(53);
-	var TemplateList_1 = __webpack_require__(63);
-	var UnderscoreTemplate_1 = __webpack_require__(61);
-	var HtmlTemplate_1 = __webpack_require__(62);
+	var TemplateList_1 = __webpack_require__(62);
+	var UnderscoreTemplate_1 = __webpack_require__(60);
+	var HtmlTemplate_1 = __webpack_require__(61);
 	var Utils_1 = __webpack_require__(6);
-	var Strings_1 = __webpack_require__(65);
+	var Strings_1 = __webpack_require__(64);
 	;
 	(function (ComponentOptionsType) {
 	    ComponentOptionsType[ComponentOptionsType["BOOLEAN"] = 0] = "BOOLEAN";
@@ -8534,8 +8495,8 @@ var playground =
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var Template_1 = __webpack_require__(54);
 	var Assert_1 = __webpack_require__(8);
-	var UnderscoreTemplate_1 = __webpack_require__(61);
-	var HtmlTemplate_1 = __webpack_require__(62);
+	var UnderscoreTemplate_1 = __webpack_require__(60);
+	var HtmlTemplate_1 = __webpack_require__(61);
 	/**
 	 * Holds a reference to all template available in the framework
 	 */
@@ -8659,7 +8620,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var Logger_1 = __webpack_require__(9);
 	var StringUtils_1 = __webpack_require__(55);
-	var Initialization_1 = __webpack_require__(57);
+	var Initialization_1 = __webpack_require__(56);
 	var Dom_1 = __webpack_require__(3);
 	var BaseComponent_1 = __webpack_require__(13);
 	var Template = (function () {
@@ -8720,7 +8681,6 @@ var playground =
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var Assert_1 = __webpack_require__(8);
 	var Dom_1 = __webpack_require__(3);
-	var latinize = __webpack_require__(56);
 	var StringUtils = (function () {
 	    function StringUtils() {
 	    }
@@ -8814,8 +8774,10 @@ var playground =
 	        return hash.toString(16);
 	    };
 	    // http://stackoverflow.com/a/25575009
-	    StringUtils.latinize = function (str) {
-	        return latinize(str);
+	    StringUtils.removePunctuation = function (str) {
+	        var punctRE = /[\u2000-\u206F\u2E00-\u2E7F\\'!"#\$%&\(\)\*\+,\-\.\/:;<=>\?@\[\]\^_`\{\|\}~]/g;
+	        var spaceRE = /\s+/g;
+	        return str.replace(punctRE, '').replace(spaceRE, ' ');
 	    };
 	    StringUtils.accented = {
 	        'A': /[Aa\xaa\xc0-\xc5\xe0-\xe5\u0100-\u0105\u01cd\u01ce\u0200-\u0203\u0226\u0227\u1d2c\u1d43\u1e00\u1e01\u1e9a\u1ea0-\u1ea3\u2090\u2100\u2101\u213b\u249c\u24b6\u24d0\u3371-\u3374\u3380-\u3384\u3388\u3389\u33a9-\u33af\u33c2\u33ca\u33df\u33ff\uff21\uff41]/g,
@@ -8855,945 +8817,20 @@ var playground =
 /* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory) {
-	  if (true) {
-	    // AMD. Register as an anonymous module.
-	    !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  } else if (typeof exports === 'object') {
-	    // CommonJS
-	    module.exports = factory();
-	  } else {
-	    // running in browser
-	    root.latinize = factory();
-	  }
-	})(this, function() {
-	
-	  function latinize(str) {
-	    if (typeof str === 'string') {
-	      return str.replace(/[^A-Za-z0-9]/g, function(x) {
-	        return latinize.characters[x] || x;
-	      });
-	    } else {
-	      return str;
-	    }
-	  }
-	
-	  latinize.characters = {
-	    'Á': 'A',
-	    'Ă': 'A',
-	    'Ắ': 'A',
-	    'Ặ': 'A',
-	    'Ằ': 'A',
-	    'Ẳ': 'A',
-	    'Ẵ': 'A',
-	    'Ǎ': 'A',
-	    'Â': 'A',
-	    'Ấ': 'A',
-	    'Ậ': 'A',
-	    'Ầ': 'A',
-	    'Ẩ': 'A',
-	    'Ẫ': 'A',
-	    'Ä': 'A',
-	    'Ǟ': 'A',
-	    'Ȧ': 'A',
-	    'Ǡ': 'A',
-	    'Ạ': 'A',
-	    'Ȁ': 'A',
-	    'À': 'A',
-	    'Ả': 'A',
-	    'Ȃ': 'A',
-	    'Ā': 'A',
-	    'Ą': 'A',
-	    'Å': 'A',
-	    'Ǻ': 'A',
-	    'Ḁ': 'A',
-	    'Ⱥ': 'A',
-	    'Ã': 'A',
-	    'Ꜳ': 'AA',
-	    'Æ': 'AE',
-	    'Ǽ': 'AE',
-	    'Ǣ': 'AE',
-	    'Ꜵ': 'AO',
-	    'Ꜷ': 'AU',
-	    'Ꜹ': 'AV',
-	    'Ꜻ': 'AV',
-	    'Ꜽ': 'AY',
-	    'Ḃ': 'B',
-	    'Ḅ': 'B',
-	    'Ɓ': 'B',
-	    'Ḇ': 'B',
-	    'Ƀ': 'B',
-	    'Ƃ': 'B',
-	    'Ć': 'C',
-	    'Č': 'C',
-	    'Ç': 'C',
-	    'Ḉ': 'C',
-	    'Ĉ': 'C',
-	    'Ċ': 'C',
-	    'Ƈ': 'C',
-	    'Ȼ': 'C',
-	    'Ď': 'D',
-	    'Ḑ': 'D',
-	    'Ḓ': 'D',
-	    'Ḋ': 'D',
-	    'Ḍ': 'D',
-	    'Ɗ': 'D',
-	    'Ḏ': 'D',
-	    'ǲ': 'D',
-	    'ǅ': 'D',
-	    'Đ': 'D',
-	    'Ƌ': 'D',
-	    'Ǳ': 'DZ',
-	    'Ǆ': 'DZ',
-	    'É': 'E',
-	    'Ĕ': 'E',
-	    'Ě': 'E',
-	    'Ȩ': 'E',
-	    'Ḝ': 'E',
-	    'Ê': 'E',
-	    'Ế': 'E',
-	    'Ệ': 'E',
-	    'Ề': 'E',
-	    'Ể': 'E',
-	    'Ễ': 'E',
-	    'Ḙ': 'E',
-	    'Ë': 'E',
-	    'Ė': 'E',
-	    'Ẹ': 'E',
-	    'Ȅ': 'E',
-	    'È': 'E',
-	    'Ẻ': 'E',
-	    'Ȇ': 'E',
-	    'Ē': 'E',
-	    'Ḗ': 'E',
-	    'Ḕ': 'E',
-	    'Ę': 'E',
-	    'Ɇ': 'E',
-	    'Ẽ': 'E',
-	    'Ḛ': 'E',
-	    'Ꝫ': 'ET',
-	    'Ḟ': 'F',
-	    'Ƒ': 'F',
-	    'Ǵ': 'G',
-	    'Ğ': 'G',
-	    'Ǧ': 'G',
-	    'Ģ': 'G',
-	    'Ĝ': 'G',
-	    'Ġ': 'G',
-	    'Ɠ': 'G',
-	    'Ḡ': 'G',
-	    'Ǥ': 'G',
-	    'Ḫ': 'H',
-	    'Ȟ': 'H',
-	    'Ḩ': 'H',
-	    'Ĥ': 'H',
-	    'Ⱨ': 'H',
-	    'Ḧ': 'H',
-	    'Ḣ': 'H',
-	    'Ḥ': 'H',
-	    'Ħ': 'H',
-	    'Í': 'I',
-	    'Ĭ': 'I',
-	    'Ǐ': 'I',
-	    'Î': 'I',
-	    'Ï': 'I',
-	    'Ḯ': 'I',
-	    'İ': 'I',
-	    'Ị': 'I',
-	    'Ȉ': 'I',
-	    'Ì': 'I',
-	    'Ỉ': 'I',
-	    'Ȋ': 'I',
-	    'Ī': 'I',
-	    'Į': 'I',
-	    'Ɨ': 'I',
-	    'Ĩ': 'I',
-	    'Ḭ': 'I',
-	    'Ꝺ': 'D',
-	    'Ꝼ': 'F',
-	    'Ᵹ': 'G',
-	    'Ꞃ': 'R',
-	    'Ꞅ': 'S',
-	    'Ꞇ': 'T',
-	    'Ꝭ': 'IS',
-	    'Ĵ': 'J',
-	    'Ɉ': 'J',
-	    'Ḱ': 'K',
-	    'Ǩ': 'K',
-	    'Ķ': 'K',
-	    'Ⱪ': 'K',
-	    'Ꝃ': 'K',
-	    'Ḳ': 'K',
-	    'Ƙ': 'K',
-	    'Ḵ': 'K',
-	    'Ꝁ': 'K',
-	    'Ꝅ': 'K',
-	    'Ĺ': 'L',
-	    'Ƚ': 'L',
-	    'Ľ': 'L',
-	    'Ļ': 'L',
-	    'Ḽ': 'L',
-	    'Ḷ': 'L',
-	    'Ḹ': 'L',
-	    'Ⱡ': 'L',
-	    'Ꝉ': 'L',
-	    'Ḻ': 'L',
-	    'Ŀ': 'L',
-	    'Ɫ': 'L',
-	    'ǈ': 'L',
-	    'Ł': 'L',
-	    'Ǉ': 'LJ',
-	    'Ḿ': 'M',
-	    'Ṁ': 'M',
-	    'Ṃ': 'M',
-	    'Ɱ': 'M',
-	    'Ń': 'N',
-	    'Ň': 'N',
-	    'Ņ': 'N',
-	    'Ṋ': 'N',
-	    'Ṅ': 'N',
-	    'Ṇ': 'N',
-	    'Ǹ': 'N',
-	    'Ɲ': 'N',
-	    'Ṉ': 'N',
-	    'Ƞ': 'N',
-	    'ǋ': 'N',
-	    'Ñ': 'N',
-	    'Ǌ': 'NJ',
-	    'Ó': 'O',
-	    'Ŏ': 'O',
-	    'Ǒ': 'O',
-	    'Ô': 'O',
-	    'Ố': 'O',
-	    'Ộ': 'O',
-	    'Ồ': 'O',
-	    'Ổ': 'O',
-	    'Ỗ': 'O',
-	    'Ö': 'O',
-	    'Ȫ': 'O',
-	    'Ȯ': 'O',
-	    'Ȱ': 'O',
-	    'Ọ': 'O',
-	    'Ő': 'O',
-	    'Ȍ': 'O',
-	    'Ò': 'O',
-	    'Ỏ': 'O',
-	    'Ơ': 'O',
-	    'Ớ': 'O',
-	    'Ợ': 'O',
-	    'Ờ': 'O',
-	    'Ở': 'O',
-	    'Ỡ': 'O',
-	    'Ȏ': 'O',
-	    'Ꝋ': 'O',
-	    'Ꝍ': 'O',
-	    'Ō': 'O',
-	    'Ṓ': 'O',
-	    'Ṑ': 'O',
-	    'Ɵ': 'O',
-	    'Ǫ': 'O',
-	    'Ǭ': 'O',
-	    'Ø': 'O',
-	    'Ǿ': 'O',
-	    'Õ': 'O',
-	    'Ṍ': 'O',
-	    'Ṏ': 'O',
-	    'Ȭ': 'O',
-	    'Ƣ': 'OI',
-	    'Ꝏ': 'OO',
-	    'Ɛ': 'E',
-	    'Ɔ': 'O',
-	    'Ȣ': 'OU',
-	    'Ṕ': 'P',
-	    'Ṗ': 'P',
-	    'Ꝓ': 'P',
-	    'Ƥ': 'P',
-	    'Ꝕ': 'P',
-	    'Ᵽ': 'P',
-	    'Ꝑ': 'P',
-	    'Ꝙ': 'Q',
-	    'Ꝗ': 'Q',
-	    'Ŕ': 'R',
-	    'Ř': 'R',
-	    'Ŗ': 'R',
-	    'Ṙ': 'R',
-	    'Ṛ': 'R',
-	    'Ṝ': 'R',
-	    'Ȑ': 'R',
-	    'Ȓ': 'R',
-	    'Ṟ': 'R',
-	    'Ɍ': 'R',
-	    'Ɽ': 'R',
-	    'Ꜿ': 'C',
-	    'Ǝ': 'E',
-	    'Ś': 'S',
-	    'Ṥ': 'S',
-	    'Š': 'S',
-	    'Ṧ': 'S',
-	    'Ş': 'S',
-	    'Ŝ': 'S',
-	    'Ș': 'S',
-	    'Ṡ': 'S',
-	    'Ṣ': 'S',
-	    'Ṩ': 'S',
-	    'ß': 'ss',
-	    'Ť': 'T',
-	    'Ţ': 'T',
-	    'Ṱ': 'T',
-	    'Ț': 'T',
-	    'Ⱦ': 'T',
-	    'Ṫ': 'T',
-	    'Ṭ': 'T',
-	    'Ƭ': 'T',
-	    'Ṯ': 'T',
-	    'Ʈ': 'T',
-	    'Ŧ': 'T',
-	    'Ɐ': 'A',
-	    'Ꞁ': 'L',
-	    'Ɯ': 'M',
-	    'Ʌ': 'V',
-	    'Ꜩ': 'TZ',
-	    'Ú': 'U',
-	    'Ŭ': 'U',
-	    'Ǔ': 'U',
-	    'Û': 'U',
-	    'Ṷ': 'U',
-	    'Ü': 'U',
-	    'Ǘ': 'U',
-	    'Ǚ': 'U',
-	    'Ǜ': 'U',
-	    'Ǖ': 'U',
-	    'Ṳ': 'U',
-	    'Ụ': 'U',
-	    'Ű': 'U',
-	    'Ȕ': 'U',
-	    'Ù': 'U',
-	    'Ủ': 'U',
-	    'Ư': 'U',
-	    'Ứ': 'U',
-	    'Ự': 'U',
-	    'Ừ': 'U',
-	    'Ử': 'U',
-	    'Ữ': 'U',
-	    'Ȗ': 'U',
-	    'Ū': 'U',
-	    'Ṻ': 'U',
-	    'Ų': 'U',
-	    'Ů': 'U',
-	    'Ũ': 'U',
-	    'Ṹ': 'U',
-	    'Ṵ': 'U',
-	    'Ꝟ': 'V',
-	    'Ṿ': 'V',
-	    'Ʋ': 'V',
-	    'Ṽ': 'V',
-	    'Ꝡ': 'VY',
-	    'Ẃ': 'W',
-	    'Ŵ': 'W',
-	    'Ẅ': 'W',
-	    'Ẇ': 'W',
-	    'Ẉ': 'W',
-	    'Ẁ': 'W',
-	    'Ⱳ': 'W',
-	    'Ẍ': 'X',
-	    'Ẋ': 'X',
-	    'Ý': 'Y',
-	    'Ŷ': 'Y',
-	    'Ÿ': 'Y',
-	    'Ẏ': 'Y',
-	    'Ỵ': 'Y',
-	    'Ỳ': 'Y',
-	    'Ƴ': 'Y',
-	    'Ỷ': 'Y',
-	    'Ỿ': 'Y',
-	    'Ȳ': 'Y',
-	    'Ɏ': 'Y',
-	    'Ỹ': 'Y',
-	    'Ź': 'Z',
-	    'Ž': 'Z',
-	    'Ẑ': 'Z',
-	    'Ⱬ': 'Z',
-	    'Ż': 'Z',
-	    'Ẓ': 'Z',
-	    'Ȥ': 'Z',
-	    'Ẕ': 'Z',
-	    'Ƶ': 'Z',
-	    'Ĳ': 'IJ',
-	    'Œ': 'OE',
-	    'ᴀ': 'A',
-	    'ᴁ': 'AE',
-	    'ʙ': 'B',
-	    'ᴃ': 'B',
-	    'ᴄ': 'C',
-	    'ᴅ': 'D',
-	    'ᴇ': 'E',
-	    'ꜰ': 'F',
-	    'ɢ': 'G',
-	    'ʛ': 'G',
-	    'ʜ': 'H',
-	    'ɪ': 'I',
-	    'ʁ': 'R',
-	    'ᴊ': 'J',
-	    'ᴋ': 'K',
-	    'ʟ': 'L',
-	    'ᴌ': 'L',
-	    'ᴍ': 'M',
-	    'ɴ': 'N',
-	    'ᴏ': 'O',
-	    'ɶ': 'OE',
-	    'ᴐ': 'O',
-	    'ᴕ': 'OU',
-	    'ᴘ': 'P',
-	    'ʀ': 'R',
-	    'ᴎ': 'N',
-	    'ᴙ': 'R',
-	    'ꜱ': 'S',
-	    'ᴛ': 'T',
-	    'ⱻ': 'E',
-	    'ᴚ': 'R',
-	    'ᴜ': 'U',
-	    'ᴠ': 'V',
-	    'ᴡ': 'W',
-	    'ʏ': 'Y',
-	    'ᴢ': 'Z',
-	    'á': 'a',
-	    'ă': 'a',
-	    'ắ': 'a',
-	    'ặ': 'a',
-	    'ằ': 'a',
-	    'ẳ': 'a',
-	    'ẵ': 'a',
-	    'ǎ': 'a',
-	    'â': 'a',
-	    'ấ': 'a',
-	    'ậ': 'a',
-	    'ầ': 'a',
-	    'ẩ': 'a',
-	    'ẫ': 'a',
-	    'ä': 'a',
-	    'ǟ': 'a',
-	    'ȧ': 'a',
-	    'ǡ': 'a',
-	    'ạ': 'a',
-	    'ȁ': 'a',
-	    'à': 'a',
-	    'ả': 'a',
-	    'ȃ': 'a',
-	    'ā': 'a',
-	    'ą': 'a',
-	    'ᶏ': 'a',
-	    'ẚ': 'a',
-	    'å': 'a',
-	    'ǻ': 'a',
-	    'ḁ': 'a',
-	    'ⱥ': 'a',
-	    'ã': 'a',
-	    'ꜳ': 'aa',
-	    'æ': 'ae',
-	    'ǽ': 'ae',
-	    'ǣ': 'ae',
-	    'ꜵ': 'ao',
-	    'ꜷ': 'au',
-	    'ꜹ': 'av',
-	    'ꜻ': 'av',
-	    'ꜽ': 'ay',
-	    'ḃ': 'b',
-	    'ḅ': 'b',
-	    'ɓ': 'b',
-	    'ḇ': 'b',
-	    'ᵬ': 'b',
-	    'ᶀ': 'b',
-	    'ƀ': 'b',
-	    'ƃ': 'b',
-	    'ɵ': 'o',
-	    'ć': 'c',
-	    'č': 'c',
-	    'ç': 'c',
-	    'ḉ': 'c',
-	    'ĉ': 'c',
-	    'ɕ': 'c',
-	    'ċ': 'c',
-	    'ƈ': 'c',
-	    'ȼ': 'c',
-	    'ď': 'd',
-	    'ḑ': 'd',
-	    'ḓ': 'd',
-	    'ȡ': 'd',
-	    'ḋ': 'd',
-	    'ḍ': 'd',
-	    'ɗ': 'd',
-	    'ᶑ': 'd',
-	    'ḏ': 'd',
-	    'ᵭ': 'd',
-	    'ᶁ': 'd',
-	    'đ': 'd',
-	    'ɖ': 'd',
-	    'ƌ': 'd',
-	    'ı': 'i',
-	    'ȷ': 'j',
-	    'ɟ': 'j',
-	    'ʄ': 'j',
-	    'ǳ': 'dz',
-	    'ǆ': 'dz',
-	    'é': 'e',
-	    'ĕ': 'e',
-	    'ě': 'e',
-	    'ȩ': 'e',
-	    'ḝ': 'e',
-	    'ê': 'e',
-	    'ế': 'e',
-	    'ệ': 'e',
-	    'ề': 'e',
-	    'ể': 'e',
-	    'ễ': 'e',
-	    'ḙ': 'e',
-	    'ë': 'e',
-	    'ė': 'e',
-	    'ẹ': 'e',
-	    'ȅ': 'e',
-	    'è': 'e',
-	    'ẻ': 'e',
-	    'ȇ': 'e',
-	    'ē': 'e',
-	    'ḗ': 'e',
-	    'ḕ': 'e',
-	    'ⱸ': 'e',
-	    'ę': 'e',
-	    'ᶒ': 'e',
-	    'ɇ': 'e',
-	    'ẽ': 'e',
-	    'ḛ': 'e',
-	    'ꝫ': 'et',
-	    'ḟ': 'f',
-	    'ƒ': 'f',
-	    'ᵮ': 'f',
-	    'ᶂ': 'f',
-	    'ǵ': 'g',
-	    'ğ': 'g',
-	    'ǧ': 'g',
-	    'ģ': 'g',
-	    'ĝ': 'g',
-	    'ġ': 'g',
-	    'ɠ': 'g',
-	    'ḡ': 'g',
-	    'ᶃ': 'g',
-	    'ǥ': 'g',
-	    'ḫ': 'h',
-	    'ȟ': 'h',
-	    'ḩ': 'h',
-	    'ĥ': 'h',
-	    'ⱨ': 'h',
-	    'ḧ': 'h',
-	    'ḣ': 'h',
-	    'ḥ': 'h',
-	    'ɦ': 'h',
-	    'ẖ': 'h',
-	    'ħ': 'h',
-	    'ƕ': 'hv',
-	    'í': 'i',
-	    'ĭ': 'i',
-	    'ǐ': 'i',
-	    'î': 'i',
-	    'ï': 'i',
-	    'ḯ': 'i',
-	    'ị': 'i',
-	    'ȉ': 'i',
-	    'ì': 'i',
-	    'ỉ': 'i',
-	    'ȋ': 'i',
-	    'ī': 'i',
-	    'į': 'i',
-	    'ᶖ': 'i',
-	    'ɨ': 'i',
-	    'ĩ': 'i',
-	    'ḭ': 'i',
-	    'ꝺ': 'd',
-	    'ꝼ': 'f',
-	    'ᵹ': 'g',
-	    'ꞃ': 'r',
-	    'ꞅ': 's',
-	    'ꞇ': 't',
-	    'ꝭ': 'is',
-	    'ǰ': 'j',
-	    'ĵ': 'j',
-	    'ʝ': 'j',
-	    'ɉ': 'j',
-	    'ḱ': 'k',
-	    'ǩ': 'k',
-	    'ķ': 'k',
-	    'ⱪ': 'k',
-	    'ꝃ': 'k',
-	    'ḳ': 'k',
-	    'ƙ': 'k',
-	    'ḵ': 'k',
-	    'ᶄ': 'k',
-	    'ꝁ': 'k',
-	    'ꝅ': 'k',
-	    'ĺ': 'l',
-	    'ƚ': 'l',
-	    'ɬ': 'l',
-	    'ľ': 'l',
-	    'ļ': 'l',
-	    'ḽ': 'l',
-	    'ȴ': 'l',
-	    'ḷ': 'l',
-	    'ḹ': 'l',
-	    'ⱡ': 'l',
-	    'ꝉ': 'l',
-	    'ḻ': 'l',
-	    'ŀ': 'l',
-	    'ɫ': 'l',
-	    'ᶅ': 'l',
-	    'ɭ': 'l',
-	    'ł': 'l',
-	    'ǉ': 'lj',
-	    'ſ': 's',
-	    'ẜ': 's',
-	    'ẛ': 's',
-	    'ẝ': 's',
-	    'ḿ': 'm',
-	    'ṁ': 'm',
-	    'ṃ': 'm',
-	    'ɱ': 'm',
-	    'ᵯ': 'm',
-	    'ᶆ': 'm',
-	    'ń': 'n',
-	    'ň': 'n',
-	    'ņ': 'n',
-	    'ṋ': 'n',
-	    'ȵ': 'n',
-	    'ṅ': 'n',
-	    'ṇ': 'n',
-	    'ǹ': 'n',
-	    'ɲ': 'n',
-	    'ṉ': 'n',
-	    'ƞ': 'n',
-	    'ᵰ': 'n',
-	    'ᶇ': 'n',
-	    'ɳ': 'n',
-	    'ñ': 'n',
-	    'ǌ': 'nj',
-	    'ó': 'o',
-	    'ŏ': 'o',
-	    'ǒ': 'o',
-	    'ô': 'o',
-	    'ố': 'o',
-	    'ộ': 'o',
-	    'ồ': 'o',
-	    'ổ': 'o',
-	    'ỗ': 'o',
-	    'ö': 'o',
-	    'ȫ': 'o',
-	    'ȯ': 'o',
-	    'ȱ': 'o',
-	    'ọ': 'o',
-	    'ő': 'o',
-	    'ȍ': 'o',
-	    'ò': 'o',
-	    'ỏ': 'o',
-	    'ơ': 'o',
-	    'ớ': 'o',
-	    'ợ': 'o',
-	    'ờ': 'o',
-	    'ở': 'o',
-	    'ỡ': 'o',
-	    'ȏ': 'o',
-	    'ꝋ': 'o',
-	    'ꝍ': 'o',
-	    'ⱺ': 'o',
-	    'ō': 'o',
-	    'ṓ': 'o',
-	    'ṑ': 'o',
-	    'ǫ': 'o',
-	    'ǭ': 'o',
-	    'ø': 'o',
-	    'ǿ': 'o',
-	    'õ': 'o',
-	    'ṍ': 'o',
-	    'ṏ': 'o',
-	    'ȭ': 'o',
-	    'ƣ': 'oi',
-	    'ꝏ': 'oo',
-	    'ɛ': 'e',
-	    'ᶓ': 'e',
-	    'ɔ': 'o',
-	    'ᶗ': 'o',
-	    'ȣ': 'ou',
-	    'ṕ': 'p',
-	    'ṗ': 'p',
-	    'ꝓ': 'p',
-	    'ƥ': 'p',
-	    'ᵱ': 'p',
-	    'ᶈ': 'p',
-	    'ꝕ': 'p',
-	    'ᵽ': 'p',
-	    'ꝑ': 'p',
-	    'ꝙ': 'q',
-	    'ʠ': 'q',
-	    'ɋ': 'q',
-	    'ꝗ': 'q',
-	    'ŕ': 'r',
-	    'ř': 'r',
-	    'ŗ': 'r',
-	    'ṙ': 'r',
-	    'ṛ': 'r',
-	    'ṝ': 'r',
-	    'ȑ': 'r',
-	    'ɾ': 'r',
-	    'ᵳ': 'r',
-	    'ȓ': 'r',
-	    'ṟ': 'r',
-	    'ɼ': 'r',
-	    'ᵲ': 'r',
-	    'ᶉ': 'r',
-	    'ɍ': 'r',
-	    'ɽ': 'r',
-	    'ↄ': 'c',
-	    'ꜿ': 'c',
-	    'ɘ': 'e',
-	    'ɿ': 'r',
-	    'ś': 's',
-	    'ṥ': 's',
-	    'š': 's',
-	    'ṧ': 's',
-	    'ş': 's',
-	    'ŝ': 's',
-	    'ș': 's',
-	    'ṡ': 's',
-	    'ṣ': 's',
-	    'ṩ': 's',
-	    'ʂ': 's',
-	    'ᵴ': 's',
-	    'ᶊ': 's',
-	    'ȿ': 's',
-	    'ɡ': 'g',
-	    'ᴑ': 'o',
-	    'ᴓ': 'o',
-	    'ᴝ': 'u',
-	    'ť': 't',
-	    'ţ': 't',
-	    'ṱ': 't',
-	    'ț': 't',
-	    'ȶ': 't',
-	    'ẗ': 't',
-	    'ⱦ': 't',
-	    'ṫ': 't',
-	    'ṭ': 't',
-	    'ƭ': 't',
-	    'ṯ': 't',
-	    'ᵵ': 't',
-	    'ƫ': 't',
-	    'ʈ': 't',
-	    'ŧ': 't',
-	    'ᵺ': 'th',
-	    'ɐ': 'a',
-	    'ᴂ': 'ae',
-	    'ǝ': 'e',
-	    'ᵷ': 'g',
-	    'ɥ': 'h',
-	    'ʮ': 'h',
-	    'ʯ': 'h',
-	    'ᴉ': 'i',
-	    'ʞ': 'k',
-	    'ꞁ': 'l',
-	    'ɯ': 'm',
-	    'ɰ': 'm',
-	    'ᴔ': 'oe',
-	    'ɹ': 'r',
-	    'ɻ': 'r',
-	    'ɺ': 'r',
-	    'ⱹ': 'r',
-	    'ʇ': 't',
-	    'ʌ': 'v',
-	    'ʍ': 'w',
-	    'ʎ': 'y',
-	    'ꜩ': 'tz',
-	    'ú': 'u',
-	    'ŭ': 'u',
-	    'ǔ': 'u',
-	    'û': 'u',
-	    'ṷ': 'u',
-	    'ü': 'u',
-	    'ǘ': 'u',
-	    'ǚ': 'u',
-	    'ǜ': 'u',
-	    'ǖ': 'u',
-	    'ṳ': 'u',
-	    'ụ': 'u',
-	    'ű': 'u',
-	    'ȕ': 'u',
-	    'ù': 'u',
-	    'ủ': 'u',
-	    'ư': 'u',
-	    'ứ': 'u',
-	    'ự': 'u',
-	    'ừ': 'u',
-	    'ử': 'u',
-	    'ữ': 'u',
-	    'ȗ': 'u',
-	    'ū': 'u',
-	    'ṻ': 'u',
-	    'ų': 'u',
-	    'ᶙ': 'u',
-	    'ů': 'u',
-	    'ũ': 'u',
-	    'ṹ': 'u',
-	    'ṵ': 'u',
-	    'ᵫ': 'ue',
-	    'ꝸ': 'um',
-	    'ⱴ': 'v',
-	    'ꝟ': 'v',
-	    'ṿ': 'v',
-	    'ʋ': 'v',
-	    'ᶌ': 'v',
-	    'ⱱ': 'v',
-	    'ṽ': 'v',
-	    'ꝡ': 'vy',
-	    'ẃ': 'w',
-	    'ŵ': 'w',
-	    'ẅ': 'w',
-	    'ẇ': 'w',
-	    'ẉ': 'w',
-	    'ẁ': 'w',
-	    'ⱳ': 'w',
-	    'ẘ': 'w',
-	    'ẍ': 'x',
-	    'ẋ': 'x',
-	    'ᶍ': 'x',
-	    'ý': 'y',
-	    'ŷ': 'y',
-	    'ÿ': 'y',
-	    'ẏ': 'y',
-	    'ỵ': 'y',
-	    'ỳ': 'y',
-	    'ƴ': 'y',
-	    'ỷ': 'y',
-	    'ỿ': 'y',
-	    'ȳ': 'y',
-	    'ẙ': 'y',
-	    'ɏ': 'y',
-	    'ỹ': 'y',
-	    'ź': 'z',
-	    'ž': 'z',
-	    'ẑ': 'z',
-	    'ʑ': 'z',
-	    'ⱬ': 'z',
-	    'ż': 'z',
-	    'ẓ': 'z',
-	    'ȥ': 'z',
-	    'ẕ': 'z',
-	    'ᵶ': 'z',
-	    'ᶎ': 'z',
-	    'ʐ': 'z',
-	    'ƶ': 'z',
-	    'ɀ': 'z',
-	    'ﬀ': 'ff',
-	    'ﬃ': 'ffi',
-	    'ﬄ': 'ffl',
-	    'ﬁ': 'fi',
-	    'ﬂ': 'fl',
-	    'ĳ': 'ij',
-	    'œ': 'oe',
-	    'ﬆ': 'st',
-	    'ₐ': 'a',
-	    'ₑ': 'e',
-	    'ᵢ': 'i',
-	    'ⱼ': 'j',
-	    'ₒ': 'o',
-	    'ᵣ': 'r',
-	    'ᵤ': 'u',
-	    'ᵥ': 'v',
-	    'ₓ': 'x',
-	    'Ё': 'YO',
-	    'Й': 'I',
-	    'Ц': 'TS',
-	    'У': 'U',
-	    'К': 'K',
-	    'Е': 'E',
-	    'Н': 'N',
-	    'Г': 'G',
-	    'Ш': 'SH',
-	    'Щ': 'SCH',
-	    'З': 'Z',
-	    'Х': 'H',
-	    'Ъ': "'",
-	    'ё': 'yo',
-	    'й': 'i',
-	    'ц': 'ts',
-	    'у': 'u',
-	    'к': 'k',
-	    'е': 'e',
-	    'н': 'n',
-	    'г': 'g',
-	    'ш': 'sh',
-	    'щ': 'sch',
-	    'з': 'z',
-	    'х': 'h',
-	    'ъ': "'",
-	    'Ф': 'F',
-	    'Ы': 'I',
-	    'В': 'V',
-	    'А': 'a',
-	    'П': 'P',
-	    'Р': 'R',
-	    'О': 'O',
-	    'Л': 'L',
-	    'Д': 'D',
-	    'Ж': 'ZH',
-	    'Э': 'E',
-	    'ф': 'f',
-	    'ы': 'i',
-	    'в': 'v',
-	    'а': 'a',
-	    'п': 'p',
-	    'р': 'r',
-	    'о': 'o',
-	    'л': 'l',
-	    'д': 'd',
-	    'ж': 'zh',
-	    'э': 'e',
-	    'Я': 'Ya',
-	    'Ч': 'CH',
-	    'С': 'S',
-	    'М': 'M',
-	    'И': 'I',
-	    'Т': 'T',
-	    'Ь': "'",
-	    'Б': 'B',
-	    'Ю': 'YU',
-	    'я': 'ya',
-	    'ч': 'ch',
-	    'с': 's',
-	    'м': 'm',
-	    'и': 'i',
-	    'т': 't',
-	    'ь': "'",
-	    'б': 'b',
-	    'ю': 'yu'
-	  };
-	
-	  return latinize;
-	});
-
-
-/***/ },
-/* 57 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var Logger_1 = __webpack_require__(9);
 	var Component_1 = __webpack_require__(10);
 	var Utils_1 = __webpack_require__(6);
 	var Assert_1 = __webpack_require__(8);
 	var Dom_1 = __webpack_require__(3);
-	var InitializationEvents_1 = __webpack_require__(58);
+	var InitializationEvents_1 = __webpack_require__(57);
 	var SearchInterface_1 = __webpack_require__(42);
 	var QueryController_1 = __webpack_require__(16);
-	var HashUtils_1 = __webpack_require__(59);
+	var HashUtils_1 = __webpack_require__(58);
 	var QueryStateModel_1 = __webpack_require__(11);
 	var ComponentStateModel_1 = __webpack_require__(14);
 	var ComponentOptionsModel_1 = __webpack_require__(15);
-	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var AnalyticsActionListMeta_1 = __webpack_require__(59);
 	var JQueryutils_1 = __webpack_require__(7);
 	/**
 	 * The main purpose of this class is to initialize the framework (a.k.a the code executed when calling `Coveo.init`).<br/>
@@ -10256,7 +9293,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 58 */
+/* 57 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -10322,7 +9359,7 @@ var playground =
 
 
 /***/ },
-/* 59 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -10528,7 +9565,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 60 */
+/* 59 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -10836,36 +9873,12 @@ var playground =
 	    advancedSearch: {
 	        name: 'advancedSearch',
 	        type: 'advancedSearch'
-	    },
-	    searchAlertsFollowDocument: {
-	        name: 'followDocument',
-	        type: 'searchAlerts'
-	    },
-	    searchAlertsFollowQuery: {
-	        name: 'followQuery',
-	        type: 'searchAlerts'
-	    },
-	    searchAlertsUpdateSubscription: {
-	        name: 'updateSubscription',
-	        type: 'searchAlerts'
-	    },
-	    searchAlertsDeleteSubscription: {
-	        name: 'deleteSubscription',
-	        type: 'searchAlerts'
-	    },
-	    searchAlertsUnfollowDocument: {
-	        name: 'unfollowDocument',
-	        type: 'searchAlerts'
-	    },
-	    searchAlertsUnfollowQuery: {
-	        name: 'unfollowQuery',
-	        type: 'searchAlerts'
 	    }
 	};
 
 
 /***/ },
-/* 61 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -10954,7 +9967,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 62 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -11023,7 +10036,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 63 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -11033,7 +10046,7 @@ var playground =
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Template_1 = __webpack_require__(54);
-	var DefaultResultTemplate_1 = __webpack_require__(64);
+	var DefaultResultTemplate_1 = __webpack_require__(63);
 	var TemplateList = (function (_super) {
 	    __extends(TemplateList, _super);
 	    function TemplateList(templates) {
@@ -11072,7 +10085,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 64 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -11082,7 +10095,7 @@ var playground =
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Template_1 = __webpack_require__(54);
-	var UnderscoreTemplate_1 = __webpack_require__(61);
+	var UnderscoreTemplate_1 = __webpack_require__(60);
 	var TemplateCache_1 = __webpack_require__(53);
 	var Assert_1 = __webpack_require__(8);
 	var DefaultResultTemplate = (function (_super) {
@@ -11135,11 +10148,11 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 65 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var L10N_1 = __webpack_require__(66);
+	var L10N_1 = __webpack_require__(65);
 	function l() {
 	    var params = [];
 	    for (var _i = 0; _i < arguments.length; _i++) {
@@ -11152,7 +10165,7 @@ var playground =
 
 
 /***/ },
-/* 66 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -11193,13 +10206,13 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 67 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Dom_1 = __webpack_require__(3);
-	var DateUtils_1 = __webpack_require__(68);
-	var FileTypes_1 = __webpack_require__(72);
+	var DateUtils_1 = __webpack_require__(67);
+	var FileTypes_1 = __webpack_require__(71);
 	var Utils_1 = __webpack_require__(6);
 	var StringUtils_1 = __webpack_require__(55);
 	var DomUtils = (function () {
@@ -11229,8 +10242,8 @@ var playground =
 	        return dom;
 	    };
 	    DomUtils.highlightElement = function (initialString, valueToSearch) {
-	        var regex = new RegExp(Utils_1.Utils.escapeRegexCharacter(StringUtils_1.StringUtils.latinize(valueToSearch)), 'i');
-	        var firstChar = StringUtils_1.StringUtils.latinize(initialString).search(regex);
+	        var regex = new RegExp(Utils_1.Utils.escapeRegexCharacter(valueToSearch), 'i');
+	        var firstChar = initialString.search(regex);
 	        var lastChar = firstChar + valueToSearch.length;
 	        return StringUtils_1.StringUtils.htmlEncode(initialString.slice(0, firstChar)) + "<span class='coveo-highlight'>" + StringUtils_1.StringUtils.htmlEncode(initialString.slice(firstChar, lastChar)) + "</span>" + StringUtils_1.StringUtils.htmlEncode(initialString.slice(lastChar));
 	    };
@@ -11261,7 +10274,7 @@ var playground =
 
 
 /***/ },
-/* 68 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -11270,11 +10283,11 @@ var playground =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Options_1 = __webpack_require__(69);
+	var Options_1 = __webpack_require__(68);
 	var Utils_1 = __webpack_require__(6);
-	var Strings_1 = __webpack_require__(65);
+	var Strings_1 = __webpack_require__(64);
 	var TimeSpanUtils_1 = __webpack_require__(45);
-	var Globalize = __webpack_require__(70);
+	var Globalize = __webpack_require__(69);
 	var DefaultDateToStringOptions = (function (_super) {
 	    __extends(DefaultDateToStringOptions, _super);
 	    function DefaultDateToStringOptions() {
@@ -11435,7 +10448,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 69 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -11456,14 +10469,14 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 70 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Globalize"] = __webpack_require__(71);
+	/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Globalize"] = __webpack_require__(70);
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 71 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*! globalize - v0.1.1 - 2013-04-30
@@ -11472,12 +10485,12 @@ var playground =
 	var Globalize = (function(e,r){var t,n,a,s,u,l,i,c,o,f,d,p,h,g,b,m,y,M,v,k,z,F,A,x;t=function(e){return new t.prototype.init(e)}, true?module.exports=t:e.Globalize=t,t.cultures={},t.prototype={constructor:t,init:function(e){return this.cultures=t.cultures,this.cultureSelector=e,this}},t.prototype.init.prototype=t.prototype,t.cultures["default"]={name:"en",englishName:"English",nativeName:"English",isRTL:!1,language:"en",numberFormat:{pattern:["-n"],decimals:2,",":",",".":".",groupSizes:[3],"+":"+","-":"-",NaN:"NaN",negativeInfinity:"-Infinity",positiveInfinity:"Infinity",percent:{pattern:["-n %","n %"],decimals:2,groupSizes:[3],",":",",".":".",symbol:"%"},currency:{pattern:["($n)","$n"],decimals:2,groupSizes:[3],",":",",".":".",symbol:"$"}},calendars:{standard:{name:"Gregorian_USEnglish","/":"/",":":":",firstDay:0,days:{names:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],namesAbbr:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],namesShort:["Su","Mo","Tu","We","Th","Fr","Sa"]},months:{names:["January","February","March","April","May","June","July","August","September","October","November","December",""],namesAbbr:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec",""]},AM:["AM","am","AM"],PM:["PM","pm","PM"],eras:[{name:"A.D.",start:null,offset:0}],twoDigitYearMax:2029,patterns:{d:"M/d/yyyy",D:"dddd, MMMM dd, yyyy",t:"h:mm tt",T:"h:mm:ss tt",f:"dddd, MMMM dd, yyyy h:mm tt",F:"dddd, MMMM dd, yyyy h:mm:ss tt",M:"MMMM dd",Y:"yyyy MMMM",S:"yyyy'-'MM'-'dd'T'HH':'mm':'ss"}}},messages:{}},t.cultures["default"].calendar=t.cultures["default"].calendars.standard,t.cultures.en=t.cultures["default"],t.cultureSelector="en",n=/^0x[a-f0-9]+$/i,a=/^[+\-]?infinity$/i,s=/^[+\-]?\d*\.?\d*(e[+\-]?\d+)?$/,u=/^\s+|\s+$/g,l=function(e,r){if(e.indexOf)return e.indexOf(r);for(var t=0,n=e.length;n>t;t++)if(e[t]===r)return t;return-1},i=function(e,r){return e.substr(e.length-r.length)===r},c=function(){var e,t,n,a,s,u,l=arguments[0]||{},i=1,p=arguments.length,h=!1;for("boolean"==typeof l&&(h=l,l=arguments[1]||{},i=2),"object"==typeof l||f(l)||(l={});p>i;i++)if(null!=(e=arguments[i]))for(t in e)n=l[t],a=e[t],l!==a&&(h&&a&&(d(a)||(s=o(a)))?(s?(s=!1,u=n&&o(n)?n:[]):u=n&&d(n)?n:{},l[t]=c(h,u,a)):a!==r&&(l[t]=a));return l},o=Array.isArray||function(e){return"[object Array]"===Object.prototype.toString.call(e)},f=function(e){return"[object Function]"===Object.prototype.toString.call(e)},d=function(e){return"[object Object]"===Object.prototype.toString.call(e)},p=function(e,r){return 0===e.indexOf(r)},h=function(e){return(e+"").replace(u,"")},g=function(e){return isNaN(e)?0/0:Math[0>e?"ceil":"floor"](e)},b=function(e,r,t){var n;for(n=e.length;r>n;n+=1)e=t?"0"+e:e+"0";return e},m=function(e,r){for(var t=0,n=!1,a=0,s=e.length;s>a;a++){var u=e.charAt(a);switch(u){case"'":n?r.push("'"):t++,n=!1;break;case"\\":n&&r.push("\\"),n=!n;break;default:r.push(u),n=!1}}return t},y=function(e,r){r=r||"F";var t,n=e.patterns,a=r.length;if(1===a){if(t=n[r],!t)throw"Invalid date format string '"+r+"'.";r=t}else 2===a&&"%"===r.charAt(0)&&(r=r.charAt(1));return r},M=function(e,r,t){function n(e,r){var t,n=e+"";return r>1&&r>n.length?(t=v[r-2]+n,t.substr(t.length-r,r)):t=n}function a(){return h||g?h:(h=A.test(r),g=!0,h)}function s(e,r){if(b)return b[r];switch(r){case 0:return e.getFullYear();case 1:return e.getMonth();case 2:return e.getDate();default:throw"Invalid part value "+r}}var u,l=t.calendar,i=l.convert;if(!r||!r.length||"i"===r){if(t&&t.name.length)if(i)u=M(e,l.patterns.F,t);else{var c=new Date(e.getTime()),o=z(e,l.eras);c.setFullYear(F(e,l,o)),u=c.toLocaleString()}else u=""+e;return u}var f=l.eras,d="s"===r;r=y(l,r),u=[];var p,h,g,b,v=["0","00","000"],A=/([^d]|^)(d|dd)([^d]|$)/g,x=0,I=k();for(!d&&i&&(b=i.fromGregorian(e));;){var S=I.lastIndex,w=I.exec(r),C=r.slice(S,w?w.index:r.length);if(x+=m(C,u),!w)break;if(x%2)u.push(w[0]);else{var D=w[0],H=D.length;switch(D){case"ddd":case"dddd":var O=3===H?l.days.namesAbbr:l.days.names;u.push(O[e.getDay()]);break;case"d":case"dd":h=!0,u.push(n(s(e,2),H));break;case"MMM":case"MMMM":var N=s(e,1);u.push(l.monthsGenitive&&a()?l.monthsGenitive[3===H?"namesAbbr":"names"][N]:l.months[3===H?"namesAbbr":"names"][N]);break;case"M":case"MM":u.push(n(s(e,1)+1,H));break;case"y":case"yy":case"yyyy":N=b?b[0]:F(e,l,z(e,f),d),4>H&&(N%=100),u.push(n(N,H));break;case"h":case"hh":p=e.getHours()%12,0===p&&(p=12),u.push(n(p,H));break;case"H":case"HH":u.push(n(e.getHours(),H));break;case"m":case"mm":u.push(n(e.getMinutes(),H));break;case"s":case"ss":u.push(n(e.getSeconds(),H));break;case"t":case"tt":N=12>e.getHours()?l.AM?l.AM[0]:" ":l.PM?l.PM[0]:" ",u.push(1===H?N.charAt(0):N);break;case"f":case"ff":case"fff":u.push(n(e.getMilliseconds(),3).substr(0,H));break;case"z":case"zz":p=e.getTimezoneOffset()/60,u.push((0>=p?"+":"-")+n(Math.floor(Math.abs(p)),H));break;case"zzz":p=e.getTimezoneOffset()/60,u.push((0>=p?"+":"-")+n(Math.floor(Math.abs(p)),2)+":"+n(Math.abs(e.getTimezoneOffset()%60),2));break;case"g":case"gg":l.eras&&u.push(l.eras[z(e,f)].name);break;case"/":u.push(l["/"]);break;default:throw"Invalid date format pattern '"+D+"'."}}}return u.join("")},function(){var e;e=function(e,r,t){var n=t.groupSizes,a=n[0],s=1,u=Math.pow(10,r),l=Math.round(e*u)/u;isFinite(l)||(l=e),e=l;var i=e+"",c="",o=i.split(/e/i),f=o.length>1?parseInt(o[1],10):0;i=o[0],o=i.split("."),i=o[0],c=o.length>1?o[1]:"",f>0?(c=b(c,f,!1),i+=c.slice(0,f),c=c.substr(f)):0>f&&(f=-f,i=b(i,f+1,!0),c=i.slice(-f,i.length)+c,i=i.slice(0,-f)),c=r>0?t["."]+(c.length>r?c.slice(0,r):b(c,r)):"";for(var d=i.length-1,p=t[","],h="";d>=0;){if(0===a||a>d)return i.slice(0,d+1)+(h.length?p+h+c:c);h=i.slice(d-a+1,d+1)+(h.length?p+h:""),d-=a,n.length>s&&(a=n[s],s++)}return i.slice(0,d+1)+p+h+c},v=function(r,t,n){if(!isFinite(r))return 1/0===r?n.numberFormat.positiveInfinity:r===-1/0?n.numberFormat.negativeInfinity:n.numberFormat.NaN;if(!t||"i"===t)return n.name.length?r.toLocaleString():""+r;t=t||"D";var a,s=n.numberFormat,u=Math.abs(r),l=-1;t.length>1&&(l=parseInt(t.slice(1),10));var i,c=t.charAt(0).toUpperCase();switch(c){case"D":a="n",u=g(u),-1!==l&&(u=b(""+u,l,!0)),0>r&&(u="-"+u);break;case"N":i=s;case"C":i=i||s.currency;case"P":i=i||s.percent,a=0>r?i.pattern[0]:i.pattern[1]||"n",-1===l&&(l=i.decimals),u=e(u*("P"===c?100:1),l,i);break;default:throw"Bad number format specifier: "+c}for(var o=/n|\$|-|%/g,f="";;){var d=o.lastIndex,p=o.exec(a);if(f+=a.slice(d,p?p.index:a.length),!p)break;switch(p[0]){case"n":f+=u;break;case"$":f+=s.currency.symbol;break;case"-":/[1-9]/.test(u)&&(f+=s["-"]);break;case"%":f+=s.percent.symbol}}return f}}(),k=function(){return/\/|dddd|ddd|dd|d|MMMM|MMM|MM|M|yyyy|yy|y|hh|h|HH|H|mm|m|ss|s|tt|t|fff|ff|f|zzz|zz|z|gg|g/g},z=function(e,r){if(!r)return 0;for(var t,n=e.getTime(),a=0,s=r.length;s>a;a++)if(t=r[a].start,null===t||n>=t)return a;return 0},F=function(e,r,t,n){var a=e.getFullYear();return!n&&r.eras&&(a-=r.eras[t].offset),a},function(){var e,r,t,n,a,s,u;e=function(e,r){if(100>r){var t=new Date,n=z(t),a=F(t,e,n),s=e.twoDigitYearMax;s="string"==typeof s?(new Date).getFullYear()%100+parseInt(s,10):s,r+=a-a%100,r>s&&(r-=100)}return r},r=function(e,r,t){var n,a=e.days,i=e._upperDays;return i||(e._upperDays=i=[u(a.names),u(a.namesAbbr),u(a.namesShort)]),r=s(r),t?(n=l(i[1],r),-1===n&&(n=l(i[2],r))):n=l(i[0],r),n},t=function(e,r,t){var n=e.months,a=e.monthsGenitive||e.months,i=e._upperMonths,c=e._upperMonthsGen;i||(e._upperMonths=i=[u(n.names),u(n.namesAbbr)],e._upperMonthsGen=c=[u(a.names),u(a.namesAbbr)]),r=s(r);var o=l(t?i[1]:i[0],r);return 0>o&&(o=l(t?c[1]:c[0],r)),o},n=function(e,r){var t=e._parseRegExp;if(t){var n=t[r];if(n)return n}else e._parseRegExp=t={};for(var a,s=y(e,r).replace(/([\^\$\.\*\+\?\|\[\]\(\)\{\}])/g,"\\\\$1"),u=["^"],l=[],i=0,c=0,o=k();null!==(a=o.exec(s));){var f=s.slice(i,a.index);if(i=o.lastIndex,c+=m(f,u),c%2)u.push(a[0]);else{var d,p=a[0],h=p.length;switch(p){case"dddd":case"ddd":case"MMMM":case"MMM":case"gg":case"g":d="(\\D+)";break;case"tt":case"t":d="(\\D*)";break;case"yyyy":case"fff":case"ff":case"f":d="(\\d{"+h+"})";break;case"dd":case"d":case"MM":case"M":case"yy":case"y":case"HH":case"H":case"hh":case"h":case"mm":case"m":case"ss":case"s":d="(\\d\\d?)";break;case"zzz":d="([+-]?\\d\\d?:\\d{2})";break;case"zz":case"z":d="([+-]?\\d\\d?)";break;case"/":d="(\\/)";break;default:throw"Invalid date format pattern '"+p+"'."}d&&u.push(d),l.push(a[0])}}m(s.slice(i),u),u.push("$");var g=u.join("").replace(/\s+/g,"\\s+"),b={regExp:g,groups:l};return t[r]=b},a=function(e,r,t){return r>e||e>t},s=function(e){return e.split("\u00a0").join(" ").toUpperCase()},u=function(e){for(var r=[],t=0,n=e.length;n>t;t++)r[t]=s(e[t]);return r},A=function(s,u,l){s=h(s);var i=l.calendar,c=n(i,u),o=RegExp(c.regExp).exec(s);if(null===o)return null;for(var f,d=c.groups,g=null,b=null,m=null,y=null,M=null,v=0,k=0,z=0,F=0,A=null,x=!1,I=0,S=d.length;S>I;I++){var w=o[I+1];if(w){var C=d[I],D=C.length,H=parseInt(w,10);switch(C){case"dd":case"d":if(y=H,a(y,1,31))return null;break;case"MMM":case"MMMM":if(m=t(i,w,3===D),a(m,0,11))return null;break;case"M":case"MM":if(m=H-1,a(m,0,11))return null;break;case"y":case"yy":case"yyyy":if(b=4>D?e(i,H):H,a(b,0,9999))return null;break;case"h":case"hh":if(v=H,12===v&&(v=0),a(v,0,11))return null;break;case"H":case"HH":if(v=H,a(v,0,23))return null;break;case"m":case"mm":if(k=H,a(k,0,59))return null;break;case"s":case"ss":if(z=H,a(z,0,59))return null;break;case"tt":case"t":if(x=i.PM&&(w===i.PM[0]||w===i.PM[1]||w===i.PM[2]),!x&&(!i.AM||w!==i.AM[0]&&w!==i.AM[1]&&w!==i.AM[2]))return null;break;case"f":case"ff":case"fff":if(F=H*Math.pow(10,3-D),a(F,0,999))return null;break;case"ddd":case"dddd":if(M=r(i,w,3===D),a(M,0,6))return null;break;case"zzz":var O=w.split(/:/);if(2!==O.length)return null;if(f=parseInt(O[0],10),a(f,-12,13))return null;var N=parseInt(O[1],10);if(a(N,0,59))return null;A=60*f+(p(w,"-")?-N:N);break;case"z":case"zz":if(f=H,a(f,-12,13))return null;A=60*f;break;case"g":case"gg":var T=w;if(!T||!i.eras)return null;T=h(T.toLowerCase());for(var j=0,$=i.eras.length;$>j;j++)if(T===i.eras[j].name.toLowerCase()){g=j;break}if(null===g)return null}}}var P,G=new Date,E=i.convert;if(P=E?E.fromGregorian(G)[0]:G.getFullYear(),null===b?b=P:i.eras&&(b+=i.eras[g||0].offset),null===m&&(m=0),null===y&&(y=1),E){if(G=E.toGregorian(b,m,y),null===G)return null}else{if(G.setFullYear(b,m,y),G.getDate()!==y)return null;if(null!==M&&G.getDay()!==M)return null}if(x&&12>v&&(v+=12),G.setHours(v,k,z,F),null!==A){var Y=G.getMinutes()-(A+G.getTimezoneOffset());G.setHours(G.getHours()+parseInt(Y/60,10),Y%60)}return G}}(),x=function(e,r,t){var n,a=r["-"],s=r["+"];switch(t){case"n -":a=" "+a,s=" "+s;case"n-":i(e,a)?n=["-",e.substr(0,e.length-a.length)]:i(e,s)&&(n=["+",e.substr(0,e.length-s.length)]);break;case"- n":a+=" ",s+=" ";case"-n":p(e,a)?n=["-",e.substr(a.length)]:p(e,s)&&(n=["+",e.substr(s.length)]);break;case"(n)":p(e,"(")&&i(e,")")&&(n=["-",e.substr(1,e.length-2)])}return n||["",e]},t.prototype.findClosestCulture=function(e){return t.findClosestCulture.call(this,e)},t.prototype.format=function(e,r,n){return t.format.call(this,e,r,n)},t.prototype.localize=function(e,r){return t.localize.call(this,e,r)},t.prototype.parseInt=function(e,r,n){return t.parseInt.call(this,e,r,n)},t.prototype.parseFloat=function(e,r,n){return t.parseFloat.call(this,e,r,n)},t.prototype.culture=function(e){return t.culture.call(this,e)},t.addCultureInfo=function(e,r,t){var n={},a=!1;"string"!=typeof e?(t=e,e=this.culture().name,n=this.cultures[e]):"string"!=typeof r?(t=r,a=null==this.cultures[e],n=this.cultures[e]||this.cultures["default"]):(a=!0,n=this.cultures[r]),this.cultures[e]=c(!0,{},n,t),a&&(this.cultures[e].calendar=this.cultures[e].calendars.standard)},t.findClosestCulture=function(e){var r;if(!e)return this.findClosestCulture(this.cultureSelector)||this.cultures["default"];if("string"==typeof e&&(e=e.split(",")),o(e)){var t,n,a=this.cultures,s=e,u=s.length,l=[];for(n=0;u>n;n++){e=h(s[n]);var i,c=e.split(";");t=h(c[0]),1===c.length?i=1:(e=h(c[1]),0===e.indexOf("q=")?(e=e.substr(2),i=parseFloat(e),i=isNaN(i)?0:i):i=1),l.push({lang:t,pri:i})}for(l.sort(function(e,r){return e.pri<r.pri?1:e.pri>r.pri?-1:0}),n=0;u>n;n++)if(t=l[n].lang,r=a[t])return r;for(n=0;u>n;n++)for(t=l[n].lang;;){var f=t.lastIndexOf("-");if(-1===f)break;if(t=t.substr(0,f),r=a[t])return r}for(n=0;u>n;n++){t=l[n].lang;for(var d in a){var p=a[d];if(p.language===t)return p}}}else if("object"==typeof e)return e;return r||null},t.format=function(e,r,t){var n=this.findClosestCulture(t);return e instanceof Date?e=M(e,r,n):"number"==typeof e&&(e=v(e,r,n)),e},t.localize=function(e,r){return this.findClosestCulture(r).messages[e]||this.cultures["default"].messages[e]},t.parseDate=function(e,r,t){t=this.findClosestCulture(t);var n,a,s;if(r){if("string"==typeof r&&(r=[r]),r.length)for(var u=0,l=r.length;l>u;u++){var i=r[u];if(i&&(n=A(e,i,t)))break}}else{s=t.calendar.patterns;for(a in s)if(n=A(e,s[a],t))break}return n||null},t.parseInt=function(e,r,n){return g(t.parseFloat(e,r,n))},t.parseFloat=function(e,r,t){"number"!=typeof r&&(t=r,r=10);var u=this.findClosestCulture(t),l=0/0,i=u.numberFormat;if(e.indexOf(u.numberFormat.currency.symbol)>-1&&(e=e.replace(u.numberFormat.currency.symbol,""),e=e.replace(u.numberFormat.currency["."],u.numberFormat["."])),e.indexOf(u.numberFormat.percent.symbol)>-1&&(e=e.replace(u.numberFormat.percent.symbol,"")),e=e.replace(/ /g,""),a.test(e))l=parseFloat(e);else if(!r&&n.test(e))l=parseInt(e,16);else{var c=x(e,i,i.pattern[0]),o=c[0],f=c[1];""===o&&"(n)"!==i.pattern[0]&&(c=x(e,i,"(n)"),o=c[0],f=c[1]),""===o&&"-n"!==i.pattern[0]&&(c=x(e,i,"-n"),o=c[0],f=c[1]),o=o||"+";var d,p,h=f.indexOf("e");0>h&&(h=f.indexOf("E")),0>h?(p=f,d=null):(p=f.substr(0,h),d=f.substr(h+1));var g,b,m=i["."],y=p.indexOf(m);0>y?(g=p,b=null):(g=p.substr(0,y),b=p.substr(y+m.length));var M=i[","];g=g.split(M).join("");var v=M.replace(/\u00A0/g," ");M!==v&&(g=g.split(v).join(""));var k=o+g;if(null!==b&&(k+="."+b),null!==d){var z=x(d,i,"-n");k+="e"+(z[0]||"+")+z[1]}s.test(k)&&(l=parseFloat(k))}return l},t.culture=function(e){return e!==r&&(this.cultureSelector=e),this.findClosestCulture(e)||this.cultures["default"]}; return Globalize;}(this));
 
 /***/ },
-/* 72 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var Utils_1 = __webpack_require__(6);
-	var Strings_1 = __webpack_require__(65);
+	var Strings_1 = __webpack_require__(64);
 	var Assert_1 = __webpack_require__(8);
 	// On-demand mapping of file types to captions. Used by facets, but I don't
 	// really like this. Maybe a dedicated filetype facet would be better? Hmm...
@@ -11553,7 +10566,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 73 */
+/* 72 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -11567,7 +10580,7 @@ var playground =
 
 
 /***/ },
-/* 74 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -11578,9 +10591,9 @@ var playground =
 	};
 	var Assert_1 = __webpack_require__(8);
 	var Model_1 = __webpack_require__(12);
-	var InitializationEvents_1 = __webpack_require__(58);
+	var InitializationEvents_1 = __webpack_require__(57);
 	var Dom_1 = __webpack_require__(3);
-	var HashUtils_1 = __webpack_require__(59);
+	var HashUtils_1 = __webpack_require__(58);
 	var Defer_1 = __webpack_require__(24);
 	var RootComponent_1 = __webpack_require__(17);
 	var Utils_1 = __webpack_require__(6);
@@ -11721,7 +10734,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 75 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -11734,7 +10747,7 @@ var playground =
 	var Model_1 = __webpack_require__(12);
 	var Logger_1 = __webpack_require__(9);
 	var Assert_1 = __webpack_require__(8);
-	var InitializationEvents_1 = __webpack_require__(58);
+	var InitializationEvents_1 = __webpack_require__(57);
 	var RootComponent_1 = __webpack_require__(17);
 	var Dom_1 = __webpack_require__(3);
 	/**
@@ -11805,7 +10818,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 76 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11867,7 +10880,7 @@ var playground =
 
 
 /***/ },
-/* 77 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -11880,8 +10893,8 @@ var playground =
 	var ComponentOptions_1 = __webpack_require__(52);
 	var LocalStorageUtils_1 = __webpack_require__(21);
 	var QueryEvents_1 = __webpack_require__(23);
-	var ResultListEvents_1 = __webpack_require__(78);
-	var DebugEvents_1 = __webpack_require__(79);
+	var ResultListEvents_1 = __webpack_require__(77);
+	var DebugEvents_1 = __webpack_require__(78);
 	var Dom_1 = __webpack_require__(3);
 	var StringUtils_1 = __webpack_require__(55);
 	var SearchEndpoint_1 = __webpack_require__(43);
@@ -11890,9 +10903,9 @@ var playground =
 	var RootComponent_1 = __webpack_require__(17);
 	var BaseComponent_1 = __webpack_require__(13);
 	var ExternalModulesShim_1 = __webpack_require__(28);
-	var Globalize = __webpack_require__(70);
-	var KeyboardUtils_1 = __webpack_require__(80);
-	var InitializationEvents_1 = __webpack_require__(58);
+	var Globalize = __webpack_require__(69);
+	var KeyboardUtils_1 = __webpack_require__(79);
+	var InitializationEvents_1 = __webpack_require__(57);
 	var Debug = (function (_super) {
 	    __extends(Debug, _super);
 	    function Debug(element, queryController, options, modalBox) {
@@ -11919,101 +10932,6 @@ var playground =
 	        this.localStorageDebug = new LocalStorageUtils_1.LocalStorageUtils('DebugPanel');
 	        this.collapsedSections = this.localStorageDebug.load() || [];
 	    }
-	    Debug.prototype.buildFieldsSection = function (result) {
-	        return this.fetchFields()
-	            .then(function (fieldDescriptions) {
-	            var fields = {};
-	            _.each(result.raw, function (value, key) {
-	                var fieldDescription = fieldDescriptions['@' + key];
-	                if (fieldDescription == null && key.match(/^sys/)) {
-	                    fieldDescription = fieldDescriptions['@' + key.substr(3)];
-	                }
-	                if (fieldDescription == null) {
-	                    fields['@' + key] = value;
-	                }
-	                else if (fieldDescription.fieldType == 'Date') {
-	                    fields['@' + key] = new Date(value);
-	                }
-	                else if (fieldDescription.splitGroupByField && _.isString(value)) {
-	                    fields['@' + key] = value.split(/\s*;\s*/);
-	                }
-	                else {
-	                    fields['@' + key] = value;
-	                }
-	            });
-	            return fields;
-	        });
-	    };
-	    Debug.prototype.parseRankingInfo = function (value) {
-	        var _this = this;
-	        var rankingInfo = {};
-	        if (value) {
-	            var documentWeights = /Document weights:\n((?:.)*?)\n+/g.exec(value);
-	            var termsWeight = /Terms weights:\n((?:.|\n)*)\n+/g.exec(value);
-	            var totalWeight = /Total weight: ([0-9]+)/g.exec(value);
-	            if (documentWeights && documentWeights[1]) {
-	                rankingInfo['Document weights'] = this.parseWeights(documentWeights[1]);
-	            }
-	            if (totalWeight && totalWeight[1]) {
-	                rankingInfo['Total weight'] = Number(totalWeight[1]);
-	            }
-	            if (termsWeight && termsWeight[1]) {
-	                var terms = StringUtils_1.StringUtils.match(termsWeight[1], /((?:[^:]+: [0-9]+, [0-9]+; )+)\n((?:\w+: [0-9]+; )+)/g);
-	                rankingInfo['Terms weights'] = _.object(_.map(terms, function (term) {
-	                    var words = _.object(_.map(StringUtils_1.StringUtils.match(term[1], /([^:]+): ([0-9]+), ([0-9]+); /g), function (word) {
-	                        return [
-	                            word[1],
-	                            {
-	                                Correlation: Number(word[2]),
-	                                'TF-IDF': Number(word[3]),
-	                            }
-	                        ];
-	                    }));
-	                    var weights = _this.parseWeights(term[2]);
-	                    return [
-	                        _.keys(words).join(', '),
-	                        {
-	                            terms: words,
-	                            Weights: weights
-	                        }];
-	                }));
-	            }
-	        }
-	        return rankingInfo;
-	    };
-	    Debug.prototype.buildStackPanel = function (stackDebug, results) {
-	        var _this = this;
-	        var body = Dom_1.Dom.createElement('div', { className: 'coveo-debug' });
-	        var keys = _.pairs(_.keys(stackDebug));
-	        keys = keys.sort(function (a, b) {
-	            var indexA = _.indexOf(Debug.customOrder, a[1]);
-	            var indexB = _.indexOf(Debug.customOrder, b[1]);
-	            if (indexA != -1 && indexB != -1) {
-	                return indexA - indexB;
-	            }
-	            if (indexA != -1) {
-	                return -1;
-	            }
-	            if (indexB != -1) {
-	                return 1;
-	            }
-	            return a[0] - b[0];
-	        });
-	        var json = {};
-	        _.forEach(keys, function (key) {
-	            var section = _this.buildSection(key[1]);
-	            var build = _this.buildStackPanelSection(stackDebug[key[1]], results);
-	            section.container.appendChild(build.section);
-	            if (build.json != null) {
-	                json[key[1]] = build.json;
-	            }
-	            body.appendChild(section.dom);
-	        });
-	        return { body: body, json: json };
-	    };
-	    Debug.prototype.debugInfo = function () {
-	        return null;
-	    };
 	    Debug.prototype.showDebugPanel = function (builder) {
 	        var _this = this;
 	        var build = builder();
@@ -12098,6 +11016,36 @@ var playground =
 	    };
 	    Debug.prototype.downloadHref = function (info) {
 	        return 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(info));
+	    };
+	    Debug.prototype.buildStackPanel = function (stackDebug, results) {
+	        var _this = this;
+	        var body = Dom_1.Dom.createElement('div', { className: 'coveo-debug' });
+	        var keys = _.pairs(_.keys(stackDebug));
+	        keys = keys.sort(function (a, b) {
+	            var indexA = _.indexOf(Debug.customOrder, a[1]);
+	            var indexB = _.indexOf(Debug.customOrder, b[1]);
+	            if (indexA != -1 && indexB != -1) {
+	                return indexA - indexB;
+	            }
+	            if (indexA != -1) {
+	                return -1;
+	            }
+	            if (indexB != -1) {
+	                return 1;
+	            }
+	            return a[0] - b[0];
+	        });
+	        var json = {};
+	        _.forEach(keys, function (key) {
+	            var section = _this.buildSection(key[1]);
+	            var build = _this.buildStackPanelSection(stackDebug[key[1]], results);
+	            section.container.appendChild(build.section);
+	            if (build.json != null) {
+	                json[key[1]] = build.json;
+	            }
+	            body.appendChild(section.dom);
+	        });
+	        return { body: body, json: json };
 	    };
 	    Debug.prototype.buildStackPanelSection = function (value, results) {
 	        if (value instanceof HTMLElement) {
@@ -12273,8 +11221,70 @@ var playground =
 	            return es6_promise_1.Promise.resolve(this.fields);
 	        }
 	    };
+	    Debug.prototype.buildFieldsSection = function (result) {
+	        return this.fetchFields()
+	            .then(function (fieldDescriptions) {
+	            var fields = {};
+	            _.each(result.raw, function (value, key) {
+	                var fieldDescription = fieldDescriptions['@' + key];
+	                if (fieldDescription == null && key.match(/^sys/)) {
+	                    fieldDescription = fieldDescriptions['@' + key.substr(3)];
+	                }
+	                if (fieldDescription == null) {
+	                    fields['@' + key] = value;
+	                }
+	                else if (fieldDescription.fieldType == 'Date') {
+	                    fields['@' + key] = new Date(value);
+	                }
+	                else if (fieldDescription.splitGroupByField) {
+	                    fields['@' + key] = value.split(/\s*;\s*/);
+	                }
+	                else {
+	                    fields['@' + key] = value;
+	                }
+	            });
+	            return fields;
+	        });
+	    };
 	    Debug.prototype.buildRankingInfoSection = function (result) {
 	        return result.rankingInfo && this.parseRankingInfo(result.rankingInfo);
+	    };
+	    Debug.prototype.parseRankingInfo = function (value) {
+	        var _this = this;
+	        var rankingInfo = {};
+	        if (value) {
+	            var documentWeights = /Document weights:\n((?:.)*?)\n+/g.exec(value);
+	            var termsWeight = /Terms weights:\n((?:.|\n)*)\n+/g.exec(value);
+	            var totalWeight = /Total weight: ([0-9]+)/g.exec(value);
+	            if (documentWeights && documentWeights[1]) {
+	                rankingInfo['Document weights'] = this.parseWeights(documentWeights[1]);
+	            }
+	            if (totalWeight && totalWeight[1]) {
+	                rankingInfo['Total weight'] = Number(totalWeight[1]);
+	            }
+	            if (termsWeight && termsWeight[1]) {
+	                var terms = StringUtils_1.StringUtils.match(termsWeight[1], /((?:[^:]+: [0-9]+, [0-9]+; )+)\n((?:\w+: [0-9]+; )+)/g);
+	                rankingInfo['Terms weights'] = _.object(_.map(terms, function (term) {
+	                    var words = _.object(_.map(StringUtils_1.StringUtils.match(term[1], /([^:]+): ([0-9]+), ([0-9]+); /g), function (word) {
+	                        return [
+	                            word[1],
+	                            {
+	                                Correlation: Number(word[2]),
+	                                'TF-IDF': Number(word[3]),
+	                            }
+	                        ];
+	                    }));
+	                    var weights = _this.parseWeights(term[2]);
+	                    return [
+	                        _.keys(words).join(', '),
+	                        {
+	                            terms: words,
+	                            Weights: weights
+	                        }];
+	                }));
+	            }
+	        }
+	        return rankingInfo;
 	    };
 	    Debug.prototype.parseWeights = function (value) {
 	        var listOfWeight = value.match(/(\w+(?:\s\w+)*): ([-0-9]+)/g);
@@ -12546,6 +11556,9 @@ var playground =
 	            element.innerHTML = element.innerText;
 	        }
 	    };
+	    Debug.prototype.debugInfo = function () {
+	        return null;
+	    };
 	    Debug.ID = 'Debug';
 	    Debug.options = {
 	        enableDebug: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false })
@@ -12560,7 +11573,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 78 */
+/* 77 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -12576,7 +11589,7 @@ var playground =
 
 
 /***/ },
-/* 79 */
+/* 78 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -12590,7 +11603,7 @@ var playground =
 
 
 /***/ },
-/* 80 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -12685,19 +11698,19 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 81 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;!function(){"use strict";function t(e,o){function i(t,e){return function(){return t.apply(e,arguments)}}var r;if(o=o||{},this.trackingClick=!1,this.trackingClickStart=0,this.targetElement=null,this.touchStartX=0,this.touchStartY=0,this.lastTouchIdentifier=0,this.touchBoundary=o.touchBoundary||10,this.layer=e,this.tapDelay=o.tapDelay||200,this.tapTimeout=o.tapTimeout||700,!t.notNeeded(e)){for(var a=["onMouse","onClick","onTouchStart","onTouchMove","onTouchEnd","onTouchCancel"],c=this,s=0,u=a.length;u>s;s++)c[a[s]]=i(c[a[s]],c);n&&(e.addEventListener("mouseover",this.onMouse,!0),e.addEventListener("mousedown",this.onMouse,!0),e.addEventListener("mouseup",this.onMouse,!0)),e.addEventListener("click",this.onClick,!0),e.addEventListener("touchstart",this.onTouchStart,!1),e.addEventListener("touchmove",this.onTouchMove,!1),e.addEventListener("touchend",this.onTouchEnd,!1),e.addEventListener("touchcancel",this.onTouchCancel,!1),Event.prototype.stopImmediatePropagation||(e.removeEventListener=function(t,n,o){var i=Node.prototype.removeEventListener;"click"===t?i.call(e,t,n.hijacked||n,o):i.call(e,t,n,o)},e.addEventListener=function(t,n,o){var i=Node.prototype.addEventListener;"click"===t?i.call(e,t,n.hijacked||(n.hijacked=function(t){t.propagationStopped||n(t)}),o):i.call(e,t,n,o)}),"function"==typeof e.onclick&&(r=e.onclick,e.addEventListener("click",function(t){r(t)},!1),e.onclick=null)}}var e=navigator.userAgent.indexOf("Windows Phone")>=0,n=navigator.userAgent.indexOf("Android")>0&&!e,o=/iP(ad|hone|od)/.test(navigator.userAgent)&&!e,i=o&&/OS 4_\d(_\d)?/.test(navigator.userAgent),r=o&&/OS [6-7]_\d/.test(navigator.userAgent),a=navigator.userAgent.indexOf("BB10")>0;t.prototype.needsClick=function(t){switch(t.nodeName.toLowerCase()){case"button":case"select":case"textarea":if(t.disabled)return!0;break;case"input":if(o&&"file"===t.type||t.disabled)return!0;break;case"label":case"iframe":case"video":return!0}return/\bneedsclick\b/.test(t.className)},t.prototype.needsFocus=function(t){switch(t.nodeName.toLowerCase()){case"textarea":return!0;case"select":return!n;case"input":switch(t.type){case"button":case"checkbox":case"file":case"image":case"radio":case"submit":return!1}return!t.disabled&&!t.readOnly;default:return/\bneedsfocus\b/.test(t.className)}},t.prototype.sendClick=function(t,e){var n,o;document.activeElement&&document.activeElement!==t&&document.activeElement.blur(),o=e.changedTouches[0],n=document.createEvent("MouseEvents"),n.initMouseEvent(this.determineEventType(t),!0,!0,window,1,o.screenX,o.screenY,o.clientX,o.clientY,!1,!1,!1,!1,0,null),n.forwardedTouchEvent=!0,t.dispatchEvent(n)},t.prototype.determineEventType=function(t){return n&&"select"===t.tagName.toLowerCase()?"mousedown":"click"},t.prototype.focus=function(t){var e;o&&t.setSelectionRange&&0!==t.type.indexOf("date")&&"time"!==t.type&&"month"!==t.type?(e=t.value.length,t.setSelectionRange(e,e)):t.focus()},t.prototype.updateScrollParent=function(t){var e,n;if(e=t.fastClickScrollParent,!e||!e.contains(t)){n=t;do{if(n.scrollHeight>n.offsetHeight){e=n,t.fastClickScrollParent=n;break}n=n.parentElement}while(n)}e&&(e.fastClickLastScrollTop=e.scrollTop)},t.prototype.getTargetElementFromEventTarget=function(t){return t.nodeType===Node.TEXT_NODE?t.parentNode:t},t.prototype.onTouchStart=function(t){var e,n,r;if(t.targetTouches.length>1)return!0;if(e=this.getTargetElementFromEventTarget(t.target),n=t.targetTouches[0],o){if(r=window.getSelection(),r.rangeCount&&!r.isCollapsed)return!0;if(!i){if(n.identifier&&n.identifier===this.lastTouchIdentifier)return t.preventDefault(),!1;this.lastTouchIdentifier=n.identifier,this.updateScrollParent(e)}}return this.trackingClick=!0,this.trackingClickStart=t.timeStamp,this.targetElement=e,this.touchStartX=n.pageX,this.touchStartY=n.pageY,t.timeStamp-this.lastClickTime<this.tapDelay&&t.preventDefault(),!0},t.prototype.touchHasMoved=function(t){var e=t.changedTouches[0],n=this.touchBoundary;return Math.abs(e.pageX-this.touchStartX)>n||Math.abs(e.pageY-this.touchStartY)>n?!0:!1},t.prototype.onTouchMove=function(t){return this.trackingClick?((this.targetElement!==this.getTargetElementFromEventTarget(t.target)||this.touchHasMoved(t))&&(this.trackingClick=!1,this.targetElement=null),!0):!0},t.prototype.findControl=function(t){return void 0!==t.control?t.control:t.htmlFor?document.getElementById(t.htmlFor):t.querySelector("button, input:not([type=hidden]), keygen, meter, output, progress, select, textarea")},t.prototype.onTouchEnd=function(t){var e,a,c,s,u,l=this.targetElement;if(!this.trackingClick)return!0;if(t.timeStamp-this.lastClickTime<this.tapDelay)return this.cancelNextClick=!0,!0;if(t.timeStamp-this.trackingClickStart>this.tapTimeout)return!0;if(this.cancelNextClick=!1,this.lastClickTime=t.timeStamp,a=this.trackingClickStart,this.trackingClick=!1,this.trackingClickStart=0,r&&(u=t.changedTouches[0],l=document.elementFromPoint(u.pageX-window.pageXOffset,u.pageY-window.pageYOffset)||l,l.fastClickScrollParent=this.targetElement.fastClickScrollParent),c=l.tagName.toLowerCase(),"label"===c){if(e=this.findControl(l)){if(this.focus(l),n)return!1;l=e}}else if(this.needsFocus(l))return t.timeStamp-a>100||o&&window.top!==window&&"input"===c?(this.targetElement=null,!1):(this.focus(l),this.sendClick(l,t),o&&"select"===c||(this.targetElement=null,t.preventDefault()),!1);return o&&!i&&(s=l.fastClickScrollParent,s&&s.fastClickLastScrollTop!==s.scrollTop)?!0:(this.needsClick(l)||(t.preventDefault(),this.sendClick(l,t)),!1)},t.prototype.onTouchCancel=function(){this.trackingClick=!1,this.targetElement=null},t.prototype.onMouse=function(t){return this.targetElement?t.forwardedTouchEvent?!0:t.cancelable?!this.needsClick(this.targetElement)||this.cancelNextClick?(t.stopImmediatePropagation?t.stopImmediatePropagation():t.propagationStopped=!0,t.stopPropagation(),t.preventDefault(),!1):!0:!0:!0},t.prototype.onClick=function(t){var e;return this.trackingClick?(this.targetElement=null,this.trackingClick=!1,!0):"submit"===t.target.type&&0===t.detail?!0:(e=this.onMouse(t),e||(this.targetElement=null),e)},t.prototype.destroy=function(){var t=this.layer;n&&(t.removeEventListener("mouseover",this.onMouse,!0),t.removeEventListener("mousedown",this.onMouse,!0),t.removeEventListener("mouseup",this.onMouse,!0)),t.removeEventListener("click",this.onClick,!0),t.removeEventListener("touchstart",this.onTouchStart,!1),t.removeEventListener("touchmove",this.onTouchMove,!1),t.removeEventListener("touchend",this.onTouchEnd,!1),t.removeEventListener("touchcancel",this.onTouchCancel,!1)},t.notNeeded=function(t){var e,o,i,r;if("undefined"==typeof window.ontouchstart)return!0;if(o=+(/Chrome\/([0-9]+)/.exec(navigator.userAgent)||[,0])[1]){if(!n)return!0;if(e=document.querySelector("meta[name=viewport]")){if(-1!==e.content.indexOf("user-scalable=no"))return!0;if(o>31&&document.documentElement.scrollWidth<=window.outerWidth)return!0}}if(a&&(i=navigator.userAgent.match(/Version\/([0-9]*)\.([0-9]*)/),i[1]>=10&&i[2]>=3&&(e=document.querySelector("meta[name=viewport]")))){if(-1!==e.content.indexOf("user-scalable=no"))return!0;if(document.documentElement.scrollWidth<=window.outerWidth)return!0}return"none"===t.style.msTouchAction||"manipulation"===t.style.touchAction?!0:(r=+(/Firefox\/([0-9]+)/.exec(navigator.userAgent)||[,0])[1],r>=27&&(e=document.querySelector("meta[name=viewport]"),e&&(-1!==e.content.indexOf("user-scalable=no")||document.documentElement.scrollWidth<=window.outerWidth))?!0:"none"===t.style.touchAction||"manipulation"===t.style.touchAction?!0:!1)},t.attach=function(e,n){return new t(e,n)}, true?!(__WEBPACK_AMD_DEFINE_RESULT__ = function(){return t}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)):"undefined"!=typeof module&&module.exports?(module.exports=t.attach,module.exports.FastClick=t):window.FastClick=t}();
 
 /***/ },
-/* 82 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function(e){var t=function(){"use strict";var e="s",n=2011,r=function(e){var t=-e.getTimezoneOffset();return t!==null?t:0},i=function(e,t,n){var r=new Date;return e!==undefined&&r.setFullYear(e),r.setDate(n),r.setMonth(t),r},s=function(e){return r(i(e,0,2))},o=function(e){return r(i(e,5,2))},u=function(e){var t=e.getMonth()>7?o(e.getFullYear()):s(e.getFullYear()),n=r(e);return t-n!==0},a=function(){var t=s(n),r=o(n),i=t-r;return i<0?t+",1":i>0?r+",1,"+e:t+",0"},f=function(){var e=a();return new t.TimeZone(t.olson.timezones[e])},l=function(e){var t=new Date(2010,6,15,1,0,0,0),n={"America/Denver":new Date(2011,2,13,3,0,0,0),"America/Mazatlan":new Date(2011,3,3,3,0,0,0),"America/Chicago":new Date(2011,2,13,3,0,0,0),"America/Mexico_City":new Date(2011,3,3,3,0,0,0),"America/Asuncion":new Date(2012,9,7,3,0,0,0),"America/Santiago":new Date(2012,9,3,3,0,0,0),"America/Campo_Grande":new Date(2012,9,21,5,0,0,0),"America/Montevideo":new Date(2011,9,2,3,0,0,0),"America/Sao_Paulo":new Date(2011,9,16,5,0,0,0),"America/Los_Angeles":new Date(2011,2,13,8,0,0,0),"America/Santa_Isabel":new Date(2011,3,5,8,0,0,0),"America/Havana":new Date(2012,2,10,2,0,0,0),"America/New_York":new Date(2012,2,10,7,0,0,0),"Asia/Beirut":new Date(2011,2,27,1,0,0,0),"Europe/Helsinki":new Date(2011,2,27,4,0,0,0),"Europe/Istanbul":new Date(2011,2,28,5,0,0,0),"Asia/Damascus":new Date(2011,3,1,2,0,0,0),"Asia/Jerusalem":new Date(2011,3,1,6,0,0,0),"Asia/Gaza":new Date(2009,2,28,0,30,0,0),"Africa/Cairo":new Date(2009,3,25,0,30,0,0),"Pacific/Auckland":new Date(2011,8,26,7,0,0,0),"Pacific/Fiji":new Date(2010,10,29,23,0,0,0),"America/Halifax":new Date(2011,2,13,6,0,0,0),"America/Goose_Bay":new Date(2011,2,13,2,1,0,0),"America/Miquelon":new Date(2011,2,13,5,0,0,0),"America/Godthab":new Date(2011,2,27,1,0,0,0),"Europe/Moscow":t,"Asia/Yekaterinburg":t,"Asia/Omsk":t,"Asia/Krasnoyarsk":t,"Asia/Irkutsk":t,"Asia/Yakutsk":t,"Asia/Vladivostok":t,"Asia/Kamchatka":t,"Europe/Minsk":t,"Pacific/Apia":new Date(2010,10,1,1,0,0,0),"Australia/Perth":new Date(2008,10,1,1,0,0,0)};return n[e]};return{determine:f,date_is_dst:u,dst_start_for:l}}();t.TimeZone=function(e){"use strict";var n={"America/Denver":["America/Denver","America/Mazatlan"],"America/Chicago":["America/Chicago","America/Mexico_City"],"America/Santiago":["America/Santiago","America/Asuncion","America/Campo_Grande"],"America/Montevideo":["America/Montevideo","America/Sao_Paulo"],"Asia/Beirut":["Asia/Beirut","Europe/Helsinki","Europe/Istanbul","Asia/Damascus","Asia/Jerusalem","Asia/Gaza"],"Pacific/Auckland":["Pacific/Auckland","Pacific/Fiji"],"America/Los_Angeles":["America/Los_Angeles","America/Santa_Isabel"],"America/New_York":["America/Havana","America/New_York"],"America/Halifax":["America/Goose_Bay","America/Halifax"],"America/Godthab":["America/Miquelon","America/Godthab"],"Asia/Dubai":["Europe/Moscow"],"Asia/Dhaka":["Asia/Yekaterinburg"],"Asia/Jakarta":["Asia/Omsk"],"Asia/Shanghai":["Asia/Krasnoyarsk","Australia/Perth"],"Asia/Tokyo":["Asia/Irkutsk"],"Australia/Brisbane":["Asia/Yakutsk"],"Pacific/Noumea":["Asia/Vladivostok"],"Pacific/Tarawa":["Asia/Kamchatka"],"Pacific/Tongatapu":["Pacific/Apia"],"Africa/Johannesburg":["Asia/Gaza","Africa/Cairo"],"Asia/Baghdad":["Europe/Minsk"]},r=e,i=function(){var e=n[r],i=e.length,s=0,o=e[0];for(;s<i;s+=1){o=e[s];if(t.date_is_dst(t.dst_start_for(o))){r=o;return}}},s=function(){return typeof n[r]!="undefined"};return s()&&i(),{name:function(){return r}}},t.olson={},t.olson.timezones={"-720,0":"Pacific/Majuro","-660,0":"Pacific/Pago_Pago","-600,1":"America/Adak","-600,0":"Pacific/Honolulu","-570,0":"Pacific/Marquesas","-540,0":"Pacific/Gambier","-540,1":"America/Anchorage","-480,1":"America/Los_Angeles","-480,0":"Pacific/Pitcairn","-420,0":"America/Phoenix","-420,1":"America/Denver","-360,0":"America/Guatemala","-360,1":"America/Chicago","-360,1,s":"Pacific/Easter","-300,0":"America/Bogota","-300,1":"America/New_York","-270,0":"America/Caracas","-240,1":"America/Halifax","-240,0":"America/Santo_Domingo","-240,1,s":"America/Santiago","-210,1":"America/St_Johns","-180,1":"America/Godthab","-180,0":"America/Argentina/Buenos_Aires","-180,1,s":"America/Montevideo","-120,0":"America/Noronha","-120,1":"America/Noronha","-60,1":"Atlantic/Azores","-60,0":"Atlantic/Cape_Verde","0,0":"UTC","0,1":"Europe/London","60,1":"Europe/Berlin","60,0":"Africa/Lagos","60,1,s":"Africa/Windhoek","120,1":"Asia/Beirut","120,0":"Africa/Johannesburg","180,0":"Asia/Baghdad","180,1":"Europe/Moscow","210,1":"Asia/Tehran","240,0":"Asia/Dubai","240,1":"Asia/Baku","270,0":"Asia/Kabul","300,1":"Asia/Yekaterinburg","300,0":"Asia/Karachi","330,0":"Asia/Kolkata","345,0":"Asia/Kathmandu","360,0":"Asia/Dhaka","360,1":"Asia/Omsk","390,0":"Asia/Rangoon","420,1":"Asia/Krasnoyarsk","420,0":"Asia/Jakarta","480,0":"Asia/Shanghai","480,1":"Asia/Irkutsk","525,0":"Australia/Eucla","525,1,s":"Australia/Eucla","540,1":"Asia/Yakutsk","540,0":"Asia/Tokyo","570,0":"Australia/Darwin","570,1,s":"Australia/Adelaide","600,0":"Australia/Brisbane","600,1":"Asia/Vladivostok","600,1,s":"Australia/Sydney","630,1,s":"Australia/Lord_Howe","660,1":"Asia/Kamchatka","660,0":"Pacific/Noumea","690,0":"Pacific/Norfolk","720,1,s":"Pacific/Auckland","720,0":"Pacific/Tarawa","765,1,s":"Pacific/Chatham","780,0":"Pacific/Tongatapu","780,1,s":"Pacific/Apia","840,0":"Pacific/Kiritimati"}, true?exports.jstz=t:e.jstz=t})(this);
 
 /***/ },
-/* 83 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -12757,16 +11770,16 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 84 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
-	var Initialization_1 = __webpack_require__(57);
+	var Initialization_1 = __webpack_require__(56);
 	var Assert_1 = __webpack_require__(8);
 	var QueryController_1 = __webpack_require__(16);
 	var QueryStateModel_1 = __webpack_require__(11);
-	var Analytics_1 = __webpack_require__(85);
-	var InitializationEvents_1 = __webpack_require__(58);
+	var Analytics_1 = __webpack_require__(84);
+	var InitializationEvents_1 = __webpack_require__(57);
 	var Dom_1 = __webpack_require__(3);
 	var Component_1 = __webpack_require__(10);
 	/**
@@ -13078,7 +12091,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 85 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -13089,7 +12102,7 @@ var playground =
 	};
 	var Component_1 = __webpack_require__(10);
 	var ComponentOptions_1 = __webpack_require__(52);
-	var AnalyticsEndpoint_1 = __webpack_require__(86);
+	var AnalyticsEndpoint_1 = __webpack_require__(85);
 	var SearchEndpoint_1 = __webpack_require__(43);
 	var Assert_1 = __webpack_require__(8);
 	var QueryEvents_1 = __webpack_require__(23);
@@ -13097,13 +12110,13 @@ var playground =
 	var Dom_1 = __webpack_require__(3);
 	var Model_1 = __webpack_require__(12);
 	var Utils_1 = __webpack_require__(6);
-	var NoopAnalyticsClient_1 = __webpack_require__(76);
-	var LiveAnalyticsClient_1 = __webpack_require__(88);
-	var MultiAnalyticsClient_1 = __webpack_require__(93);
-	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var NoopAnalyticsClient_1 = __webpack_require__(75);
+	var LiveAnalyticsClient_1 = __webpack_require__(87);
+	var MultiAnalyticsClient_1 = __webpack_require__(92);
+	var AnalyticsActionListMeta_1 = __webpack_require__(59);
 	var SearchInterface_1 = __webpack_require__(42);
-	var Recommendation_1 = __webpack_require__(94);
-	var RecommendationAnalyticsClient_1 = __webpack_require__(146);
+	var Recommendation_1 = __webpack_require__(93);
+	var RecommendationAnalyticsClient_1 = __webpack_require__(145);
 	/**
 	 * This component logs all user actions performed in the search interface and sends them to a REST web service exposed through the Coveo Cloud platform.<br/>
 	 * You can use data to evaluate how users are interacting with the search interface, improve relevance and produce analytics dashboards in the Coveo platform.
@@ -13399,7 +12412,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 86 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -13407,7 +12420,7 @@ var playground =
 	var EndpointCaller_1 = __webpack_require__(44);
 	var Assert_1 = __webpack_require__(8);
 	var QueryUtils_1 = __webpack_require__(20);
-	var CookieUtils_1 = __webpack_require__(87);
+	var CookieUtils_1 = __webpack_require__(86);
 	var es6_promise_1 = __webpack_require__(25);
 	var AnalyticsEndpoint = (function () {
 	    function AnalyticsEndpoint(options) {
@@ -13541,7 +12554,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 87 */
+/* 86 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -13611,24 +12624,23 @@ var playground =
 
 
 /***/ },
-/* 88 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var DeviceUtils_1 = __webpack_require__(46);
-	var PendingSearchEvent_1 = __webpack_require__(89);
-	var PendingSearchAsYouTypeSearchEvent_1 = __webpack_require__(92);
+	var PendingSearchEvent_1 = __webpack_require__(88);
+	var PendingSearchAsYouTypeSearchEvent_1 = __webpack_require__(91);
 	var Assert_1 = __webpack_require__(8);
 	var Logger_1 = __webpack_require__(9);
-	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var AnalyticsActionListMeta_1 = __webpack_require__(59);
 	var Defer_1 = __webpack_require__(24);
 	var Dom_1 = __webpack_require__(3);
-	var AnalyticsEvents_1 = __webpack_require__(91);
-	var APIAnalyticsBuilder_1 = __webpack_require__(90);
+	var AnalyticsEvents_1 = __webpack_require__(90);
+	var APIAnalyticsBuilder_1 = __webpack_require__(89);
 	var QueryStateModel_1 = __webpack_require__(11);
 	var Component_1 = __webpack_require__(10);
 	var Version_1 = __webpack_require__(47);
-	var QueryUtils_1 = __webpack_require__(20);
 	var LiveAnalyticsClient = (function () {
 	    function LiveAnalyticsClient(endpoint, rootElement, userId, userDisplayName, anonymous, splitTestRunName, splitTestRunVersion, originLevel1, sendToCloud) {
 	        this.endpoint = endpoint;
@@ -13835,13 +12847,13 @@ var playground =
 	            splitTestRunName: this.splitTestRunName || result.splitTestRun,
 	            splitTestRunVersion: this.splitTestRunVersion || (result.splitTestRun != undefined ? result.pipeline : undefined),
 	            documentUri: result.uri,
-	            documentUriHash: QueryUtils_1.QueryUtils.getUriHash(result),
+	            documentUriHash: result.raw['urihash'],
 	            documentUrl: result.clickUri,
 	            documentTitle: result.title,
-	            documentCategory: QueryUtils_1.QueryUtils.getObjectType(result),
+	            documentCategory: result.raw['objecttype'],
 	            originLevel2: this.getOriginLevel2(element),
-	            collectionName: QueryUtils_1.QueryUtils.getCollection(result),
-	            sourceName: QueryUtils_1.QueryUtils.getSource(result),
+	            collectionName: result.raw['collection'],
+	            sourceName: result.raw['source'],
 	            documentPosition: result.index + 1,
 	            responseTime: 0,
 	            viewMethod: actionCause.name,
@@ -13863,9 +12875,19 @@ var playground =
 	        var modifiedMeta = _.extend({}, meta);
 	        modifiedMeta['JSUIVersion'] = Version_1.version.lib + ';' + Version_1.version.product;
 	        if (result) {
-	            var uniqueId = QueryUtils_1.QueryUtils.getUniqueId(result);
-	            modifiedMeta['contentIDKey'] = uniqueId.fieldUsed;
-	            modifiedMeta['contentIDValue'] = uniqueId.fieldValue;
+	            var fieldValue = void 0;
+	            var fieldUsed = void 0;
+	            var uniqueId = result.raw['uniqueid'];
+	            if (uniqueId) {
+	                fieldUsed = 'uniqueid';
+	                fieldValue = uniqueId;
+	            }
+	            else {
+	                fieldUsed = 'urihash';
+	                fieldValue = result.raw['urihash'];
+	            }
+	            modifiedMeta['contentIDKey'] = fieldUsed;
+	            modifiedMeta['contentIDValue'] = fieldValue;
 	        }
 	        return modifiedMeta;
 	    };
@@ -13938,7 +12960,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 89 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -13949,9 +12971,9 @@ var playground =
 	var Component_1 = __webpack_require__(10);
 	var QueryController_1 = __webpack_require__(16);
 	var Defer_1 = __webpack_require__(24);
-	var APIAnalyticsBuilder_1 = __webpack_require__(90);
-	var AnalyticsEvents_1 = __webpack_require__(91);
-	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var APIAnalyticsBuilder_1 = __webpack_require__(89);
+	var AnalyticsEvents_1 = __webpack_require__(90);
+	var AnalyticsActionListMeta_1 = __webpack_require__(59);
 	var QueryStateModel_1 = __webpack_require__(11);
 	var PendingSearchEvent = (function () {
 	    function PendingSearchEvent(root, endpoint, templateSearchEvent, sendToCloud) {
@@ -14077,7 +13099,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 90 */
+/* 89 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -14150,7 +13172,7 @@ var playground =
 
 
 /***/ },
-/* 91 */
+/* 90 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -14177,7 +13199,7 @@ var playground =
 
 
 /***/ },
-/* 92 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14186,9 +13208,9 @@ var playground =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var PendingSearchEvent_1 = __webpack_require__(89);
+	var PendingSearchEvent_1 = __webpack_require__(88);
 	var Dom_1 = __webpack_require__(3);
-	var InitializationEvents_1 = __webpack_require__(58);
+	var InitializationEvents_1 = __webpack_require__(57);
 	var _ = __webpack_require__(4);
 	var PendingSearchAsYouTypeSearchEvent = (function (_super) {
 	    __extends(PendingSearchAsYouTypeSearchEvent, _super);
@@ -14280,7 +13302,7 @@ var playground =
 
 
 /***/ },
-/* 93 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -14352,7 +13374,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 94 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -14364,19 +13386,19 @@ var playground =
 	var SearchInterface_1 = __webpack_require__(42);
 	var ComponentOptions_1 = __webpack_require__(52);
 	var QueryEvents_1 = __webpack_require__(23);
-	var OmniboxEvents_1 = __webpack_require__(95);
-	var ResultListEvents_1 = __webpack_require__(78);
-	var SettingsEvents_1 = __webpack_require__(96);
-	var PreferencesPanelEvents_1 = __webpack_require__(97);
-	var AnalyticsEvents_1 = __webpack_require__(91);
-	var AnalyticsActionListMeta_1 = __webpack_require__(60);
-	var BreadcrumbEvents_1 = __webpack_require__(98);
-	var QuickviewEvents_1 = __webpack_require__(99);
+	var OmniboxEvents_1 = __webpack_require__(94);
+	var ResultListEvents_1 = __webpack_require__(77);
+	var SettingsEvents_1 = __webpack_require__(95);
+	var PreferencesPanelEvents_1 = __webpack_require__(96);
+	var AnalyticsEvents_1 = __webpack_require__(90);
+	var AnalyticsActionListMeta_1 = __webpack_require__(59);
+	var BreadcrumbEvents_1 = __webpack_require__(97);
+	var QuickviewEvents_1 = __webpack_require__(98);
 	var QueryStateModel_1 = __webpack_require__(11);
 	var Model_1 = __webpack_require__(12);
 	var Utils_1 = __webpack_require__(6);
 	var Dom_1 = __webpack_require__(3);
-	var ResponsiveRecommendation_1 = __webpack_require__(100);
+	var ResponsiveRecommendation_1 = __webpack_require__(99);
 	var coveo_analytics_1 = __webpack_require__(32);
 	/**
 	 * This component is a {@link SearchInterface} that will display recommendations based on the user history.
@@ -14612,7 +13634,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 95 */
+/* 94 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -14630,7 +13652,7 @@ var playground =
 
 
 /***/ },
-/* 96 */
+/* 95 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -14644,7 +13666,7 @@ var playground =
 
 
 /***/ },
-/* 97 */
+/* 96 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -14659,7 +13681,7 @@ var playground =
 
 
 /***/ },
-/* 98 */
+/* 97 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -14688,7 +13710,7 @@ var playground =
 
 
 /***/ },
-/* 99 */
+/* 98 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -14703,23 +13725,23 @@ var playground =
 
 
 /***/ },
-/* 100 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
-	var ResponsiveComponentsManager_1 = __webpack_require__(101);
-	var ResponsiveComponentsUtils_1 = __webpack_require__(102);
+	var ResponsiveComponentsManager_1 = __webpack_require__(100);
+	var ResponsiveComponentsUtils_1 = __webpack_require__(101);
 	var SearchInterface_1 = __webpack_require__(42);
 	var Utils_1 = __webpack_require__(6);
 	var Dom_1 = __webpack_require__(3);
 	var Logger_1 = __webpack_require__(9);
-	var Recommendation_1 = __webpack_require__(94);
-	var RecommendationDropdownContent_1 = __webpack_require__(145);
-	var ResponsiveDropdownHeader_1 = __webpack_require__(142);
-	var ResponsiveDropdown_1 = __webpack_require__(140);
-	var Strings_1 = __webpack_require__(65);
-	var FacetSlider_1 = __webpack_require__(125);
-	var Facet_1 = __webpack_require__(103);
+	var Recommendation_1 = __webpack_require__(93);
+	var RecommendationDropdownContent_1 = __webpack_require__(144);
+	var ResponsiveDropdownHeader_1 = __webpack_require__(141);
+	var ResponsiveDropdown_1 = __webpack_require__(139);
+	var Strings_1 = __webpack_require__(64);
+	var FacetSlider_1 = __webpack_require__(124);
+	var Facet_1 = __webpack_require__(102);
 	var Component_1 = __webpack_require__(10);
 	var ResponsiveRecommendation = (function () {
 	    function ResponsiveRecommendation(coveoRoot, ID, options, responsiveDropdown) {
@@ -14877,18 +13899,18 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 101 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var Dom_1 = __webpack_require__(3);
-	var InitializationEvents_1 = __webpack_require__(58);
+	var InitializationEvents_1 = __webpack_require__(57);
 	var Component_1 = __webpack_require__(10);
 	var SearchInterface_1 = __webpack_require__(42);
-	var ResponsiveComponentsUtils_1 = __webpack_require__(102);
+	var ResponsiveComponentsUtils_1 = __webpack_require__(101);
 	var Utils_1 = __webpack_require__(6);
-	var Facet_1 = __webpack_require__(103);
-	var Tab_1 = __webpack_require__(143);
+	var Facet_1 = __webpack_require__(102);
+	var Tab_1 = __webpack_require__(142);
 	var ResponsiveComponentsManager = (function () {
 	    function ResponsiveComponentsManager(root) {
 	        var _this = this;
@@ -15044,7 +14066,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 102 */
+/* 101 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -15091,7 +14113,7 @@ var playground =
 
 
 /***/ },
-/* 103 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {/// <reference path="../../controllers/HierarchicalFacetQueryController.ts" />
@@ -15111,41 +14133,41 @@ var playground =
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Component_1 = __webpack_require__(10);
-	var FacetValues_1 = __webpack_require__(104);
+	var FacetValues_1 = __webpack_require__(103);
 	var ComponentOptions_1 = __webpack_require__(52);
 	var DeviceUtils_1 = __webpack_require__(46);
-	var Strings_1 = __webpack_require__(65);
-	var FacetQueryController_1 = __webpack_require__(105);
-	var FacetSearch_1 = __webpack_require__(108);
-	var FacetSettings_1 = __webpack_require__(115);
-	var FacetSort_1 = __webpack_require__(116);
-	var FacetValuesList_1 = __webpack_require__(117);
-	var FacetHeader_1 = __webpack_require__(118);
-	var FacetUtils_1 = __webpack_require__(107);
-	var InitializationEvents_1 = __webpack_require__(58);
+	var Strings_1 = __webpack_require__(64);
+	var FacetQueryController_1 = __webpack_require__(104);
+	var FacetSearch_1 = __webpack_require__(107);
+	var FacetSettings_1 = __webpack_require__(114);
+	var FacetSort_1 = __webpack_require__(115);
+	var FacetValuesList_1 = __webpack_require__(116);
+	var FacetHeader_1 = __webpack_require__(117);
+	var FacetUtils_1 = __webpack_require__(106);
+	var InitializationEvents_1 = __webpack_require__(57);
 	var QueryEvents_1 = __webpack_require__(23);
 	var Assert_1 = __webpack_require__(8);
 	var Dom_1 = __webpack_require__(3);
-	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var AnalyticsActionListMeta_1 = __webpack_require__(59);
 	var Utils_1 = __webpack_require__(6);
-	var BreadcrumbValueElement_1 = __webpack_require__(119);
-	var BreadcrumbValuesList_1 = __webpack_require__(120);
-	var FacetValueElement_1 = __webpack_require__(111);
-	var FacetSearchValuesList_1 = __webpack_require__(121);
+	var BreadcrumbValueElement_1 = __webpack_require__(118);
+	var BreadcrumbValuesList_1 = __webpack_require__(119);
+	var FacetValueElement_1 = __webpack_require__(110);
+	var FacetSearchValuesList_1 = __webpack_require__(120);
 	var Defer_1 = __webpack_require__(24);
 	var QueryStateModel_1 = __webpack_require__(11);
 	var Model_1 = __webpack_require__(12);
-	var OmniboxEvents_1 = __webpack_require__(95);
-	var OmniboxValueElement_1 = __webpack_require__(122);
-	var OmniboxValuesList_1 = __webpack_require__(123);
-	var ValueElementRenderer_1 = __webpack_require__(113);
-	var FacetSearchParameters_1 = __webpack_require__(106);
-	var Initialization_1 = __webpack_require__(57);
-	var BreadcrumbEvents_1 = __webpack_require__(98);
-	var ResponsiveFacets_1 = __webpack_require__(124);
-	var KeyboardUtils_1 = __webpack_require__(80);
-	var FacetValuesOrder_1 = __webpack_require__(114);
-	var SearchAlertEvents_1 = __webpack_require__(139);
+	var OmniboxEvents_1 = __webpack_require__(94);
+	var OmniboxValueElement_1 = __webpack_require__(121);
+	var OmniboxValuesList_1 = __webpack_require__(122);
+	var ValueElementRenderer_1 = __webpack_require__(112);
+	var FacetSearchParameters_1 = __webpack_require__(105);
+	var Initialization_1 = __webpack_require__(56);
+	var BreadcrumbEvents_1 = __webpack_require__(97);
+	var ResponsiveFacets_1 = __webpack_require__(123);
+	var KeyboardUtils_1 = __webpack_require__(79);
+	var FacetValuesOrder_1 = __webpack_require__(113);
+	var SearchAlertEvents_1 = __webpack_require__(138);
 	/**
 	 * This component displays a facet of the results for the current query. A facet consists of a list of values for a given field occurring in the results, ordered using a configurable criteria.<br/>
 	 * The list of values is obtained using a {@link IGroupByRequest} operation performed at the same time as the main query.<br/>
@@ -16476,13 +15498,13 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 104 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var Assert_1 = __webpack_require__(8);
 	var Utils_1 = __webpack_require__(6);
-	var Globalize = __webpack_require__(70);
+	var Globalize = __webpack_require__(69);
 	/**
 	 * A class which holds information and operation available on a single facet value returned by a {@link IGroupByRequest}.<br/>
 	 * This class is used extensibely in the {@link Facet} component.
@@ -16754,16 +15776,16 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 105 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {/// <reference path='../ui/Facet/Facet.ts' />
 	"use strict";
 	var ExpressionBuilder_1 = __webpack_require__(19);
 	var Utils_1 = __webpack_require__(6);
-	var FacetSearchParameters_1 = __webpack_require__(106);
+	var FacetSearchParameters_1 = __webpack_require__(105);
 	var Assert_1 = __webpack_require__(8);
-	var FacetUtils_1 = __webpack_require__(107);
+	var FacetUtils_1 = __webpack_require__(106);
 	var FacetQueryController = (function () {
 	    function FacetQueryController(facet) {
 	        this.facet = facet;
@@ -16817,15 +15839,14 @@ var playground =
 	            groupByRequest.advancedQueryOverride = queryOverrideObject.advanced;
 	            groupByRequest.constantQueryOverride = queryOverrideObject.constant;
 	            this.expressionToUseForFacetSearch = queryOverrideObject.withoutConstant;
-	            this.basicExpressionToUseForFacetSearch = queryOverrideObject.basic;
-	            this.advancedExpressionToUseForFacetSearch = queryOverrideObject.advanced;
 	            this.constantExpressionToUseForFacetSearch = queryOverrideObject.constant;
 	        }
 	        else {
 	            var parts = queryBuilder.computeCompleteExpressionParts();
-	            this.expressionToUseForFacetSearch = parts.withoutConstant == null ? '@uri' : parts.withoutConstant;
-	            this.basicExpressionToUseForFacetSearch = parts.basic == null ? '@uri' : parts.basic;
-	            this.advancedExpressionToUseForFacetSearch = parts.advanced;
+	            this.expressionToUseForFacetSearch = parts.withoutConstant;
+	            if (this.expressionToUseForFacetSearch == null) {
+	                this.expressionToUseForFacetSearch = '@uri';
+	            }
 	            this.constantExpressionToUseForFacetSearch = parts.constant;
 	        }
 	        this.lastGroupByRequestIndex = queryBuilder.groupByRequests.length;
@@ -17038,13 +16059,13 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 106 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {/// <reference path="Facet.ts" />
 	"use strict";
 	var Utils_1 = __webpack_require__(6);
-	var FacetUtils_1 = __webpack_require__(107);
+	var FacetUtils_1 = __webpack_require__(106);
 	var QueryBuilder_1 = __webpack_require__(18);
 	var Dom_1 = __webpack_require__(3);
 	var FacetSearchParameters = (function () {
@@ -17114,12 +16135,12 @@ var playground =
 	        var lastQuery = _.clone(this.facet.queryController.getLastQuery());
 	        if (!lastQuery) {
 	            // There should normally always be a last query available
-	            // If not, just create an empty one.
+	            // If not, just create en empty one.
 	            lastQuery = new QueryBuilder_1.QueryBuilder().build();
 	        }
-	        lastQuery.q = this.facet.facetQueryController.basicExpressionToUseForFacetSearch;
+	        lastQuery.q = this.facet.facetQueryController.expressionToUseForFacetSearch;
 	        lastQuery.cq = this.facet.facetQueryController.constantExpressionToUseForFacetSearch;
-	        lastQuery.aq = this.facet.facetQueryController.advancedExpressionToUseForFacetSearch;
+	        lastQuery.aq = null;
 	        lastQuery.enableDidYouMean = false;
 	        lastQuery.firstResult = 0;
 	        lastQuery.numberOfResults = 0;
@@ -17153,14 +16174,14 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 107 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var StringUtils_1 = __webpack_require__(55);
 	var QueryUtils_1 = __webpack_require__(20);
-	var FileTypes_1 = __webpack_require__(72);
-	var DateUtils_1 = __webpack_require__(68);
+	var FileTypes_1 = __webpack_require__(71);
+	var DateUtils_1 = __webpack_require__(67);
 	var Utils_1 = __webpack_require__(6);
 	var Dom_1 = __webpack_require__(3);
 	var FacetUtils = (function () {
@@ -17297,33 +16318,33 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 108 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {/// <reference path="Facet.ts" />
 	"use strict";
-	var Facet_1 = __webpack_require__(103);
+	var Facet_1 = __webpack_require__(102);
 	var Dom_1 = __webpack_require__(3);
 	var Utils_1 = __webpack_require__(6);
-	var InitializationEvents_1 = __webpack_require__(58);
+	var InitializationEvents_1 = __webpack_require__(57);
 	var DeviceUtils_1 = __webpack_require__(46);
-	var EventsUtils_1 = __webpack_require__(109);
-	var FacetSearchParameters_1 = __webpack_require__(106);
-	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var EventsUtils_1 = __webpack_require__(108);
+	var FacetSearchParameters_1 = __webpack_require__(105);
+	var AnalyticsActionListMeta_1 = __webpack_require__(59);
 	var Component_1 = __webpack_require__(10);
-	var DomUtils_1 = __webpack_require__(67);
-	var PopupUtils_1 = __webpack_require__(110);
-	var Strings_1 = __webpack_require__(65);
+	var DomUtils_1 = __webpack_require__(66);
+	var PopupUtils_1 = __webpack_require__(109);
+	var Strings_1 = __webpack_require__(64);
 	var Assert_1 = __webpack_require__(8);
-	var KeyboardUtils_1 = __webpack_require__(80);
-	var FacetUtils_1 = __webpack_require__(107);
-	var FacetValues_1 = __webpack_require__(104);
+	var KeyboardUtils_1 = __webpack_require__(79);
+	var FacetUtils_1 = __webpack_require__(106);
+	var FacetValues_1 = __webpack_require__(103);
 	var StringUtils_1 = __webpack_require__(55);
-	var FacetValueElement_1 = __webpack_require__(111);
+	var FacetValueElement_1 = __webpack_require__(110);
 	var ExternalModulesShim_1 = __webpack_require__(28);
 	var SearchInterface_1 = __webpack_require__(42);
-	var ResponsiveComponentsUtils_1 = __webpack_require__(102);
-	var FacetValuesOrder_1 = __webpack_require__(114);
+	var ResponsiveComponentsUtils_1 = __webpack_require__(101);
+	var FacetValuesOrder_1 = __webpack_require__(113);
 	/**
 	 * Used by the {@link Facet} component to render and handle the facet search part of each facet.
 	 */
@@ -17883,7 +16904,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 109 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -17916,7 +16937,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 110 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -18080,7 +17101,7 @@ var playground =
 
 
 /***/ },
-/* 111 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/// <reference path="Facet.ts" />
@@ -18092,7 +17113,7 @@ var playground =
 	};
 	var QueryEvents_1 = __webpack_require__(23);
 	var Dom_1 = __webpack_require__(3);
-	var ValueElement_1 = __webpack_require__(112);
+	var ValueElement_1 = __webpack_require__(111);
 	var FacetValueElement = (function (_super) {
 	    __extends(FacetValueElement, _super);
 	    function FacetValueElement(facet, facetValue, keepDisplayedValueNextTime) {
@@ -18116,18 +17137,18 @@ var playground =
 
 
 /***/ },
-/* 112 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ValueElementRenderer_1 = __webpack_require__(113);
+	var ValueElementRenderer_1 = __webpack_require__(112);
 	var Utils_1 = __webpack_require__(6);
-	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var AnalyticsActionListMeta_1 = __webpack_require__(59);
 	var Dom_1 = __webpack_require__(3);
 	var DeviceUtils_1 = __webpack_require__(46);
 	var Defer_1 = __webpack_require__(24);
 	var ExternalModulesShim_1 = __webpack_require__(28);
-	var KeyboardUtils_1 = __webpack_require__(80);
+	var KeyboardUtils_1 = __webpack_require__(79);
 	var ValueElement = (function () {
 	    function ValueElement(facet, facetValue, onSelect, onExclude) {
 	        this.facet = facet;
@@ -18317,13 +17338,13 @@ var playground =
 
 
 /***/ },
-/* 113 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var Dom_1 = __webpack_require__(3);
 	var Utils_1 = __webpack_require__(6);
-	var Strings_1 = __webpack_require__(65);
+	var Strings_1 = __webpack_require__(64);
 	var Component_1 = __webpack_require__(10);
 	var ValueElementRenderer = (function () {
 	    function ValueElementRenderer(facet, facetValue) {
@@ -18527,7 +17548,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 114 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -18582,7 +17603,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 115 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -18591,15 +17612,15 @@ var playground =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var FacetSort_1 = __webpack_require__(116);
+	var FacetSort_1 = __webpack_require__(115);
 	var Dom_1 = __webpack_require__(3);
 	var LocalStorageUtils_1 = __webpack_require__(21);
 	var Utils_1 = __webpack_require__(6);
-	var Strings_1 = __webpack_require__(65);
+	var Strings_1 = __webpack_require__(64);
 	var QueryStateModel_1 = __webpack_require__(11);
-	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var AnalyticsActionListMeta_1 = __webpack_require__(59);
 	var DeviceUtils_1 = __webpack_require__(46);
-	var PopupUtils_1 = __webpack_require__(110);
+	var PopupUtils_1 = __webpack_require__(109);
 	/**
 	 * Handle the rendering of the {@link Facet} settings menu (typically the ... in the facet header).
 	 */
@@ -19077,12 +18098,12 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 116 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
-	var Strings_1 = __webpack_require__(65);
-	var FacetSettings_1 = __webpack_require__(115);
+	var Strings_1 = __webpack_require__(64);
+	var FacetSettings_1 = __webpack_require__(114);
 	var Utils_1 = __webpack_require__(6);
 	var FacetSort = (function () {
 	    function FacetSort(sorts, facet) {
@@ -19178,17 +18199,17 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 117 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {/// <reference path="Facet.ts" />
 	"use strict";
-	var FacetValueElement_1 = __webpack_require__(111);
+	var FacetValueElement_1 = __webpack_require__(110);
 	var Dom_1 = __webpack_require__(3);
-	var FacetValues_1 = __webpack_require__(104);
+	var FacetValues_1 = __webpack_require__(103);
 	var Utils_1 = __webpack_require__(6);
-	var FacetUtils_1 = __webpack_require__(107);
-	var FacetValuesOrder_1 = __webpack_require__(114);
+	var FacetUtils_1 = __webpack_require__(106);
+	var FacetValuesOrder_1 = __webpack_require__(113);
 	var FacetValuesList = (function () {
 	    function FacetValuesList(facet, facetValueElementKlass) {
 	        this.facet = facet;
@@ -19337,16 +18358,16 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 118 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/// <reference path="Facet.ts" />
 	/// <reference path="FacetSettings.ts" />
 	"use strict";
 	var Dom_1 = __webpack_require__(3);
-	var FacetUtils_1 = __webpack_require__(107);
-	var Strings_1 = __webpack_require__(65);
-	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var FacetUtils_1 = __webpack_require__(106);
+	var Strings_1 = __webpack_require__(64);
+	var AnalyticsActionListMeta_1 = __webpack_require__(59);
 	var FacetHeader = (function () {
 	    function FacetHeader(options) {
 	        this.options = options;
@@ -19538,14 +18559,14 @@ var playground =
 
 
 /***/ },
-/* 119 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {/// <reference path="Facet.ts" />
 	"use strict";
 	var Assert_1 = __webpack_require__(8);
 	var DeviceUtils_1 = __webpack_require__(46);
-	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var AnalyticsActionListMeta_1 = __webpack_require__(59);
 	var Dom_1 = __webpack_require__(3);
 	var BreadcrumbValueElement = (function () {
 	    function BreadcrumbValueElement(facet, facetValue) {
@@ -19600,15 +18621,15 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 120 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var DeviceUtils_1 = __webpack_require__(46);
 	var Assert_1 = __webpack_require__(8);
-	var Strings_1 = __webpack_require__(65);
+	var Strings_1 = __webpack_require__(64);
 	var Dom_1 = __webpack_require__(3);
-	var Globalize = __webpack_require__(70);
+	var Globalize = __webpack_require__(69);
 	var BreadcrumbValueList = (function () {
 	    function BreadcrumbValueList(facet, facetValues, breadcrumbValueElementKlass) {
 	        this.facet = facet;
@@ -19737,7 +18758,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 121 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -19764,7 +18785,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 122 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/// <reference path="Facet.ts" />
@@ -19774,7 +18795,7 @@ var playground =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var ValueElement_1 = __webpack_require__(112);
+	var ValueElement_1 = __webpack_require__(111);
 	var OmniboxValueElement = (function (_super) {
 	    __extends(OmniboxValueElement, _super);
 	    function OmniboxValueElement(facet, facetValue, eventArg, onSelect, onExclude) {
@@ -19792,13 +18813,13 @@ var playground =
 
 
 /***/ },
-/* 123 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var Dom_1 = __webpack_require__(3);
 	var Utils_1 = __webpack_require__(6);
-	var FacetUtils_1 = __webpack_require__(107);
+	var FacetUtils_1 = __webpack_require__(106);
 	var OmniboxValuesList = (function () {
 	    function OmniboxValuesList(facet, facetValues, omniboxObject, omniboxValueElementKlass) {
 	        this.facet = facet;
@@ -19892,22 +18913,22 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 124 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var Dom_1 = __webpack_require__(3);
-	var ResponsiveComponentsManager_1 = __webpack_require__(101);
-	var ResponsiveComponentsUtils_1 = __webpack_require__(102);
+	var ResponsiveComponentsManager_1 = __webpack_require__(100);
+	var ResponsiveComponentsUtils_1 = __webpack_require__(101);
 	var Component_1 = __webpack_require__(10);
 	var Logger_1 = __webpack_require__(9);
-	var Strings_1 = __webpack_require__(65);
+	var Strings_1 = __webpack_require__(64);
 	var Utils_1 = __webpack_require__(6);
-	var Facet_1 = __webpack_require__(103);
-	var FacetSlider_1 = __webpack_require__(125);
-	var ResponsiveDropdown_1 = __webpack_require__(140);
-	var ResponsiveDropdownContent_1 = __webpack_require__(141);
-	var ResponsiveDropdownHeader_1 = __webpack_require__(142);
+	var Facet_1 = __webpack_require__(102);
+	var FacetSlider_1 = __webpack_require__(124);
+	var ResponsiveDropdown_1 = __webpack_require__(139);
+	var ResponsiveDropdownContent_1 = __webpack_require__(140);
+	var ResponsiveDropdownHeader_1 = __webpack_require__(141);
 	var ResponsiveFacets = (function () {
 	    function ResponsiveFacets(coveoRoot, ID, options, responsiveDropdown) {
 	        this.coveoRoot = coveoRoot;
@@ -20074,7 +19095,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 125 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {/// <reference path="../Facet/FacetHeader.ts" />
@@ -20085,28 +19106,28 @@ var playground =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Slider_1 = __webpack_require__(126);
+	var Slider_1 = __webpack_require__(125);
 	var Component_1 = __webpack_require__(10);
 	var ComponentOptions_1 = __webpack_require__(52);
-	var ResponsiveFacets_1 = __webpack_require__(124);
-	var FacetHeader_1 = __webpack_require__(118);
-	var Strings_1 = __webpack_require__(65);
-	var InitializationEvents_1 = __webpack_require__(58);
-	var FeatureDetectionUtils_1 = __webpack_require__(137);
-	var FacetSliderQueryController_1 = __webpack_require__(138);
+	var ResponsiveFacets_1 = __webpack_require__(123);
+	var FacetHeader_1 = __webpack_require__(117);
+	var Strings_1 = __webpack_require__(64);
+	var InitializationEvents_1 = __webpack_require__(57);
+	var FeatureDetectionUtils_1 = __webpack_require__(136);
+	var FacetSliderQueryController_1 = __webpack_require__(137);
 	var QueryEvents_1 = __webpack_require__(23);
-	var BreadcrumbEvents_1 = __webpack_require__(98);
+	var BreadcrumbEvents_1 = __webpack_require__(97);
 	var Model_1 = __webpack_require__(12);
 	var Dom_1 = __webpack_require__(3);
-	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var AnalyticsActionListMeta_1 = __webpack_require__(59);
 	var QueryStateModel_1 = __webpack_require__(11);
-	var SliderEvents_1 = __webpack_require__(127);
+	var SliderEvents_1 = __webpack_require__(126);
 	var Assert_1 = __webpack_require__(8);
 	var Utils_1 = __webpack_require__(6);
-	var ResponsiveComponentsUtils_1 = __webpack_require__(102);
-	var Initialization_1 = __webpack_require__(57);
-	var d3 = __webpack_require__(136);
-	var SearchAlertEvents_1 = __webpack_require__(139);
+	var ResponsiveComponentsUtils_1 = __webpack_require__(101);
+	var Initialization_1 = __webpack_require__(56);
+	var d3 = __webpack_require__(135);
+	var SearchAlertEvents_1 = __webpack_require__(138);
 	/**
 	 * The FacetSlider component allows to create a facet that renders a slider widget to filter on a range of numerical values
 	 * rather than the classic multi-select facet with a label and a count for each values.<br/>
@@ -20888,17 +19909,17 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 126 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var Dom_1 = __webpack_require__(3);
 	var DeviceUtils_1 = __webpack_require__(46);
-	var SliderEvents_1 = __webpack_require__(127);
+	var SliderEvents_1 = __webpack_require__(126);
 	var Utils_1 = __webpack_require__(6);
-	var d3Scale = __webpack_require__(128);
-	var d3 = __webpack_require__(136);
-	var Globalize = __webpack_require__(70);
+	var d3Scale = __webpack_require__(127);
+	var d3 = __webpack_require__(135);
+	var Globalize = __webpack_require__(69);
 	var Slider = (function () {
 	    function Slider(element, options, root) {
 	        var _this = this;
@@ -21589,7 +20610,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 127 */
+/* 126 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -21606,12 +20627,12 @@ var playground =
 
 
 /***/ },
-/* 128 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-scale/ Version 1.0.4. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-	   true ? factory(exports, __webpack_require__(129), __webpack_require__(130), __webpack_require__(131), __webpack_require__(133), __webpack_require__(134), __webpack_require__(135), __webpack_require__(132)) :
+	   true ? factory(exports, __webpack_require__(128), __webpack_require__(129), __webpack_require__(130), __webpack_require__(132), __webpack_require__(133), __webpack_require__(134), __webpack_require__(131)) :
 	  typeof define === 'function' && define.amd ? define(['exports', 'd3-array', 'd3-collection', 'd3-interpolate', 'd3-format', 'd3-time', 'd3-time-format', 'd3-color'], factory) :
 	  (factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3,global.d3,global.d3));
 	}(this, (function (exports,d3Array,d3Collection,d3Interpolate,d3Format,d3Time,d3TimeFormat,d3Color) { 'use strict';
@@ -22515,7 +21536,7 @@ var playground =
 
 
 /***/ },
-/* 129 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-array/ Version 1.0.2. Copyright 2016 Mike Bostock.
@@ -22986,7 +22007,7 @@ var playground =
 
 
 /***/ },
-/* 130 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-collection/ Version 1.0.2. Copyright 2016 Mike Bostock.
@@ -23209,12 +22230,12 @@ var playground =
 
 
 /***/ },
-/* 131 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-interpolate/ Version 1.1.2. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-	   true ? factory(exports, __webpack_require__(132)) :
+	   true ? factory(exports, __webpack_require__(131)) :
 	  typeof define === 'function' && define.amd ? define(['exports', 'd3-color'], factory) :
 	  (factory((global.d3 = global.d3 || {}),global.d3));
 	}(this, (function (exports,d3Color) { 'use strict';
@@ -23760,7 +22781,7 @@ var playground =
 
 
 /***/ },
-/* 132 */
+/* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-color/ Version 1.0.2. Copyright 2016 Mike Bostock.
@@ -24289,7 +23310,7 @@ var playground =
 
 
 /***/ },
-/* 133 */
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-format/ Version 1.0.2. Copyright 2016 Mike Bostock.
@@ -24623,7 +23644,7 @@ var playground =
 	}));
 
 /***/ },
-/* 134 */
+/* 133 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-time/ Version 1.0.4. Copyright 2016 Mike Bostock.
@@ -25007,12 +24028,12 @@ var playground =
 
 
 /***/ },
-/* 135 */
+/* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-time-format/ Version 2.0.3. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-	   true ? factory(exports, __webpack_require__(134)) :
+	   true ? factory(exports, __webpack_require__(133)) :
 	  typeof define === 'function' && define.amd ? define(['exports', 'd3-time'], factory) :
 	  (factory((global.d3 = global.d3 || {}),global.d3));
 	}(this, (function (exports,d3Time) { 'use strict';
@@ -25601,7 +24622,7 @@ var playground =
 
 
 /***/ },
-/* 136 */
+/* 135 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// https://d3js.org Version 4.4.0. Copyright 2016 Mike Bostock.
@@ -42000,7 +41021,7 @@ var playground =
 
 
 /***/ },
-/* 137 */
+/* 136 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -42016,14 +41037,14 @@ var playground =
 
 
 /***/ },
-/* 138 */
+/* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {/// <reference path="../ui/FacetSlider/FacetSlider.ts" />
 	"use strict";
 	var QueryEvents_1 = __webpack_require__(23);
 	var ExpressionBuilder_1 = __webpack_require__(19);
-	var DateUtils_1 = __webpack_require__(68);
+	var DateUtils_1 = __webpack_require__(67);
 	var Logger_1 = __webpack_require__(9);
 	var QueryUtils_1 = __webpack_require__(20);
 	var FacetSliderQueryController = (function () {
@@ -42281,7 +41302,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 139 */
+/* 138 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -42298,12 +41319,12 @@ var playground =
 
 
 /***/ },
-/* 140 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var Dom_1 = __webpack_require__(3);
-	var EventsUtils_1 = __webpack_require__(109);
+	var EventsUtils_1 = __webpack_require__(108);
 	var ResponsiveDropdown = (function () {
 	    function ResponsiveDropdown(dropdownContent, dropdownHeader, coveoRoot) {
 	        this.dropdownContent = dropdownContent;
@@ -42409,13 +41430,13 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 141 */
+/* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Dom_1 = __webpack_require__(3);
-	var PopupUtils_1 = __webpack_require__(110);
-	var ResponsiveComponentsManager_1 = __webpack_require__(101);
+	var PopupUtils_1 = __webpack_require__(109);
+	var ResponsiveComponentsManager_1 = __webpack_require__(100);
 	var ResponsiveDropdownContent = (function () {
 	    function ResponsiveDropdownContent(componentName, element, coveoRoot, minWidth, widthRatio) {
 	        this.element = element;
@@ -42450,7 +41471,7 @@ var playground =
 
 
 /***/ },
-/* 142 */
+/* 141 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -42477,7 +41498,7 @@ var playground =
 
 
 /***/ },
-/* 143 */
+/* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -42486,19 +41507,19 @@ var playground =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var ResponsiveTabs_ts_1 = __webpack_require__(144);
+	var ResponsiveTabs_ts_1 = __webpack_require__(143);
 	var Component_1 = __webpack_require__(10);
 	var ComponentOptions_1 = __webpack_require__(52);
 	var Model_1 = __webpack_require__(12);
 	var QueryEvents_1 = __webpack_require__(23);
 	var QueryStateModel_1 = __webpack_require__(11);
-	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var AnalyticsActionListMeta_1 = __webpack_require__(59);
 	var SearchEndpoint_1 = __webpack_require__(43);
-	var Initialization_1 = __webpack_require__(57);
+	var Initialization_1 = __webpack_require__(56);
 	var Utils_1 = __webpack_require__(6);
 	var Assert_1 = __webpack_require__(8);
 	var Dom_1 = __webpack_require__(3);
-	var KeyboardUtils_1 = __webpack_require__(80);
+	var KeyboardUtils_1 = __webpack_require__(79);
 	/**
 	 * This component is a bar allowing users to select a search interface.
 	 *
@@ -42777,22 +41798,22 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 144 */
+/* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var Dom_1 = __webpack_require__(3);
-	var InitializationEvents_1 = __webpack_require__(58);
-	var PopupUtils_1 = __webpack_require__(110);
-	var EventsUtils_1 = __webpack_require__(109);
+	var InitializationEvents_1 = __webpack_require__(57);
+	var PopupUtils_1 = __webpack_require__(109);
+	var EventsUtils_1 = __webpack_require__(108);
 	var Utils_1 = __webpack_require__(6);
 	var Logger_1 = __webpack_require__(9);
 	var Component_1 = __webpack_require__(10);
 	var SearchInterface_1 = __webpack_require__(42);
-	var Tab_1 = __webpack_require__(143);
-	var ResponsiveComponentsManager_1 = __webpack_require__(101);
-	var ResponsiveComponentsUtils_1 = __webpack_require__(102);
-	var Strings_1 = __webpack_require__(65);
+	var Tab_1 = __webpack_require__(142);
+	var ResponsiveComponentsManager_1 = __webpack_require__(100);
+	var ResponsiveComponentsUtils_1 = __webpack_require__(101);
+	var Strings_1 = __webpack_require__(64);
 	var ResponsiveTabs = (function () {
 	    function ResponsiveTabs(coveoRoot, ID) {
 	        this.coveoRoot = coveoRoot;
@@ -43115,11 +42136,11 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 145 */
+/* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ResponsiveDropdownContent_1 = __webpack_require__(141);
+	var ResponsiveDropdownContent_1 = __webpack_require__(140);
 	var Dom_1 = __webpack_require__(3);
 	var RecommendationDropdownContent = (function () {
 	    function RecommendationDropdownContent(componentName, element, coveoRoot) {
@@ -43155,7 +42176,7 @@ var playground =
 
 
 /***/ },
-/* 146 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -43164,8 +42185,8 @@ var playground =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var LiveAnalyticsClient_1 = __webpack_require__(88);
-	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var LiveAnalyticsClient_1 = __webpack_require__(87);
+	var AnalyticsActionListMeta_1 = __webpack_require__(59);
 	var Component_1 = __webpack_require__(10);
 	var SearchInterface_1 = __webpack_require__(42);
 	var RecommendationAnalyticsClient = (function (_super) {
@@ -43212,7 +42233,7 @@ var playground =
 
 
 /***/ },
-/* 147 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -43536,7 +42557,7 @@ var playground =
 
 
 /***/ },
-/* 148 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
@@ -43545,7 +42566,7 @@ var playground =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var DefaultResultTemplate_1 = __webpack_require__(64);
+	var DefaultResultTemplate_1 = __webpack_require__(63);
 	var Component_1 = __webpack_require__(10);
 	var ComponentOptions_1 = __webpack_require__(52);
 	var Assert_1 = __webpack_require__(8);
@@ -43554,15 +42575,15 @@ var playground =
 	var QueryStateModel_1 = __webpack_require__(11);
 	var QueryUtils_1 = __webpack_require__(20);
 	var Dom_1 = __webpack_require__(3);
-	var AnalyticsActionListMeta_1 = __webpack_require__(60);
-	var Initialization_1 = __webpack_require__(57);
+	var AnalyticsActionListMeta_1 = __webpack_require__(59);
+	var Initialization_1 = __webpack_require__(56);
 	var Defer_1 = __webpack_require__(24);
 	var DeviceUtils_1 = __webpack_require__(46);
-	var ResultListEvents_1 = __webpack_require__(78);
+	var ResultListEvents_1 = __webpack_require__(77);
 	var Utils_1 = __webpack_require__(6);
-	var DomUtils_1 = __webpack_require__(67);
-	var Recommendation_1 = __webpack_require__(94);
-	var DefaultRecommendationTemplate_1 = __webpack_require__(149);
+	var DomUtils_1 = __webpack_require__(66);
+	var Recommendation_1 = __webpack_require__(93);
+	var DefaultRecommendationTemplate_1 = __webpack_require__(148);
 	/**
 	 * This component is responsible for displaying the results of the current query using one or more result templates.<br/>
 	 * It supports many additional features such as infinite scrolling.
@@ -43872,17 +42893,12 @@ var playground =
 	    };
 	    ResultList.prototype.getAutoSelectedFieldsToInclude = function () {
 	        return _.chain(this.options.resultTemplate.getFields())
-	            .concat(this.getMinimalFieldsToInclude())
 	            .compact()
 	            .unique()
 	            .value();
 	    };
 	    ResultList.prototype.isCurrentlyFetchingMoreResults = function () {
 	        return Utils_1.Utils.exists(this.fetchingMoreResults);
-	    };
-	    ResultList.prototype.getMinimalFieldsToInclude = function () {
-	        // these fields are needed for analytics click event
-	        return ['author', 'language', 'urihash', 'objecttype', 'collection', 'source', 'language', 'uniqueid'];
 	    };
 	    ResultList.prototype.isScrollingOfResultListAlmostAtTheBottom = function () {
 	        // this is in a try catch because the unit test fail otherwise (Window does not exist for phantom js in the console)
@@ -44063,7 +43079,7 @@ var playground =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 149 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";

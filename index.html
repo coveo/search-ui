@@ -3,87 +3,189 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Coveo JavaScript Search Framework - Reference Documentation</title>
+	<title>Coveo search ui documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'/>
-	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="https://s3.amazonaws.com/coveostatic/community-unified-navigation/css/styles.css" media="screen" charset="utf-8">
 	<link rel="stylesheet" href="assets/css/main.css">
-	<link rel="stylesheet" href="assets/css/overrides.css">
 	<link rel="stylesheet" href="assets/gen/css/CoveoFullSearchNewDesign.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="assets/js/modernizr.js"></script>
 	<script src="assets/gen/js/CoveoJsSearch.js"></script>
 	<script src="assets/gen/js/templates/templatesNew.js"></script>
-	<script src="assets/js/header.js"></script>
-	<script src="assets/gen/js/playground.js"></script>
-	<script src="assets/js/searchUIrefDoc.js"></script>
-	<link href="https://s3.amazonaws.com/coveostatic/Developers.png" rel="shortcut icon" type="image/png">
-	<link href="https://s3.amazonaws.com/coveostatic/Developers.ico" rel="shortcut icon" type="image/x-icon">
 </head>
 <body>
 <header>
-	<div class="upHeader clear">
-		<div class="logos">
-			<a href="http://www.coveo.com" class="logo" title="Coveo community"></a>
-			<h3>
-				<a href="https://support.coveo.com" id="communityLink" title="Coveo Community">Community</a>
-			</h3>
-		</div>
-		<h1 class="currentSiteName"><em>Support</em> <span>Menu<i class="arrow"></i></span></h1>
-		<nav>
-			<ul id="siteSelection" class="menu floated">
-				<li><a id="jsSupport" href="https://support.coveo.com"  target="_blank">Support</a></li>
-				<li><a id="jsProductDocs" href="https://onlinehelp.coveo.com" target="_blank">Product docs</a></li>
-				<li><a id="jsDevDocs" href="https://developers.coveo.com" target="_blank">Developer docs</a></li>
-				<li><a id="jsAnswers" href="https://answers.coveo.com" target="_blank">Answers</a></li>
-				<li><a id="jsTraining" href="http://www.coveo.com/training" target="_blank">Training</a></li>
-			</ul>
-			<ul id="siteSelection2" class="externalbox with-sub">
-				<li>
-					<a href="#" class="sub">More <i class="arrow"></i></a>
-					<ul>
-						<li><a target="_blank" href="https://cloud.coveo.com">Cloud V1 Administration Console</a></li>
-						<li><a target="_blank" href="https://platform.cloud.coveo.com">Cloud V2 Administration Console</a></li>
-						<li><a target="_blank" href="http://source.coveo.com">Technical Blog</a></li>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
 					</ul>
+					<a href="index.html" class="title">Coveo search ui documentation</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-		</nav>
-	</div>
-	<div class="bottomHeader">
-		<div id="searchBox">
-			<div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
-			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
+			<h1> Coveo search ui documentation</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
-		<div id="toc-column" class="col-1 col-menu menu-sticky-wrap menu-highlight">
-			<div id="filter-box-container">
-				<div id="filter-box-header">Filter</div>
-				<div id="filter-box-body">
-					<div class="container">
-						<div class="table-wrap">
-							<div class="table-cell" id="tsd-widgets">
-								<div id="tsd-filter">
-									<div class="ctr-box-filter">
-										<input type="checkbox" id="tsd-filter-inherited" checked />
-										<label class="tsd-widget" for="tsd-filter-inherited" title="Display inherited methods and properties">  Inherited</label><br>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div id="filter-box-footer"></div>
+		<div class="col-8 col-content">
+			<div class="preview-container tsd-panel">
 			</div>
+			<div class="tsd-panel tsd-typography">
+				<h1 id="search-ui-build-status-https-travis-ci-org-coveo-search-ui-svg-branch-master-https-travis-ci-org-coveo-search-ui-typescript-https-badges-frapsoft-com-typescript-version-typescript-v18-svg-v-100-https-github-com-ellerbrock-typescript-badges-bithound-overall-score-https-www-bithound-io-github-coveo-search-ui-badges-score-svg-https-www-bithound-io-github-coveo-search-ui-bithound-code-https-www-bithound-io-github-coveo-search-ui-badges-code-svg-https-www-bithound-io-github-coveo-search-ui-">Search-UI <a href="https://travis-ci.org/coveo/search-ui"><img src="https://travis-ci.org/coveo/search-ui.svg?branch=master" alt="Build Status"></a> <a href="https://github.com/ellerbrock/typescript-badges/"><img src="https://badges.frapsoft.com/typescript/version/typescript-v18.svg?v=100" alt="TypeScript"></a> <a href="https://www.bithound.io/github/coveo/search-ui"><img src="https://www.bithound.io/github/coveo/search-ui/badges/score.svg" alt="bitHound Overall Score"></a> <a href="https://www.bithound.io/github/coveo/search-ui"><img src="https://www.bithound.io/github/coveo/search-ui/badges/code.svg" alt="bitHound Code"></a></h1>
+				<p>Coveo Search UI Framework</p>
+				<p><img src='./docs/readme.png' /></p>
+				<h2 id="install">Install</h2>
+				<pre><code>npm <span class="hljs-keyword">install</span> <span class="hljs-comment">--save coveo-search-ui</span>
+</code></pre><p>All resources will be available under <code>node_modules/coveo-search-ui/bin</code>. You can simply include those in your pages as a <code>&lt;script&gt;</code> tag.</p>
+				<p>If you are already using a module bundler (Browserify, webpack, Babel, etc.), then you can simply <code>require(&#39;coveo-search-ui&#39;)</code>.</p>
+				<p>You can also download the latest version <a href="http://productupdate.coveo.com/?product=coveo-search-ui&amp;version=1">here</a>.</p>
+				<h2 id="basic-usage">Basic usage</h2>
+				<pre><code><span class="hljs-comment">&lt;!-- Include the library scripts. --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"js/CoveoJsSearch.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"js/templates/templatesNew.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- Every DOM element with a class starting with Coveo (uppercase) will instantiate a component. --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"search"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoSearchInterface'</span>&gt;</span>
+
+    <span class="hljs-comment">&lt;!-- Every DOM element with a class starting with coveo- (lowercase) is only for CSS/alignment purposes. --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'coveo-search-section'</span>&gt;</span>
+
+        <span class="hljs-comment">&lt;!-- Every Coveo component can be removed (or added) and none are actually required for the page to "load". --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoSearchbox"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+    <span class="hljs-comment">&lt;!-- The data- attributes on each component allow you to pass options to a specific component instance. --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFacet"</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">"Author"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@author"</span> <span class="hljs-attr">data-tab</span>=<span class="hljs-string">"All"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFacet"</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">"Year"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@year"</span> <span class="hljs-attr">data-tab</span>=<span class="hljs-string">"All"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+        <span class="hljs-comment">// Configure an endpoint to perform search.</span>
+        <span class="hljs-comment">// Coveo.SearchEndpoint.configureCloudEndpoint('MyCoveoCloudEnpointName', 'my-authentification-token');</span>
+
+        <span class="hljs-comment">// We provide a sample endpoint with public sources for demo purposes.</span>
+        Coveo.SearchEndpoint.configureSampleEndpoint();
+        <span class="hljs-comment">// Initialize the framework by targeting the root in the interface.</span>
+        <span class="hljs-comment">// It does not have to be the body of the document.</span>
+        Coveo.init(<span class="hljs-built_in">document</span>.body);
+    </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+</code></pre><ul>
+					<li><p>See more examples of fully configured pages in <code>./pages</code>.</p>
+					</li>
+					<li><p>We also invite you to consult this <a href="https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Getting+Started+Tutorial">tutorial</a> which should help newcomers.</p>
+					</li>
+				</ul>
+				<h2 id="build">Build</h2>
+				<p>You should have node 6.9.1 installed to build this project.</p>
+				<pre><code>npm <span class="hljs-keyword">install</span> -g gulp
+npm <span class="hljs-keyword">install</span>
+gulp
+</code></pre><h2 id="important-gulp-tasks">Important gulp tasks</h2>
+				<ul>
+					<li><code>gulp default</code> -&gt; Build the whole project (CSS, templates, TypeScript, etc.)</li>
+					<li><code>gulp compile</code> -&gt; Build only the TypeScript code and generate its output in the <code>./bin</code> folder.</li>
+					<li><code>gulp css</code> -&gt; Build only the Sass code and generate its output in the <code>./bin</code> folder.</li>
+					<li><code>gulp sprites</code> -&gt; Regenerate the sprites image as well as the generated Sass/CSS code.</li>
+					<li><code>gulp test</code> -&gt; Build and run the unit tests.</li>
+					<li><code>gulp doc</code> -&gt; Generate the documentation website for the project.</li>
+					<li><code>gulp dev</code> -&gt; Start a webpack dev server for the project.</li>
+					<li><code>gulp devTest</code> -&gt; Start a webpack dev server for the unit tests.</li>
+				</ul>
+				<h2 id="dev">Dev</h2>
+				<p>Ensure that you were able to run <code>gulp</code> completely without any errors first. Then you can start the dev-server.</p>
+				<pre><code><span class="hljs-attribute">gulp dev</span>
+</code></pre><p>This will start a <a href="https://webpack.github.io/docs/webpack-dev-server.html">webpack-dev-server instance</a>.
+				Load <a href="http://localhost:8080/Index.html">http://localhost:8080/Index.html</a> in a web browser.</p>
+				<p>Any time you hit <strong>Save</strong> in a source file, the bundle will be recompiled, and the dev page will reload.</p>
+				<p>If you need to modify the content of the search page (the markup itself and not the TypeScript code), modify the <code>Index.html</code> page under <code>./bin</code>. This page is not committed in the repository, so don&#39;t be afraid to break anything. However, if you need to modify the original <code>Index.html</code> for a good reason, feel free to do so.</p>
+				<h2 id="build-a-custom-version-of-the-library-">Build a custom version of the library.</h2>
+				<p>For advanced users and people concerned with loading speed in their integration, there is a way to compile a completely customized version of the library by including only the components you wish to use.</p>
+				<p>A classic use case would be someone wanting to display only a search box with a minimal result list, with no facets, tabs, or any other more &quot;advanced&quot; components.</p>
+				<p>By building a bundle with only those components, you can cut down the size of the resulting JavaScript code by a substantial amount, without having to include useless code related to components you do not use.</p>
+				<ol>
+					<li>Install <a href="https://github.com/amwmedia/plop">plop</a> globally with <code>npm install -g plop</code>.</li>
+					<li>Change directory to <code>./plop</code>.</li>
+					<li>Run <code>plop</code> to automatically start the small command line utility, choose the &quot;Create a new bundle&quot; option, and choose the components you wish to include in your bundle.</li>
+					<li>Run <code>node plop.build.js</code> to compile the file created in <code>./bin/</code>.</li>
+					<li>Once compilation finished, your new bundle should be available in <code>./bin/CoveoJsSearch.Custom.js</code></li>
+				</ol>
+				<h3 id="i-want-to-add-a-new-component-">I want to add a new component!</h3>
+				<p>First, fork our repo.</p>
+				<ol>
+					<li>Install <a href="https://github.com/amwmedia/plop">plop</a> globally with <code>npm install -g plop</code>.</li>
+					<li>Change directory to <code>./plop</code>.</li>
+					<li>Run <code>plop</code> to automatically start the small command line utility, choose the &quot;Create a new component&quot; option, and choose the component name.</li>
+					<li>This will automatically generate 4 things :<ul>
+							<li>Plop will create a new source file under <code>./src/ui/{{your component name}}/{{your component name}}.ts</code>. This is where your component logic should be implemented.</li>
+							<li>Plop will export your component in <code>./src/Index.ts</code>. This will make it globally available under the Coveo namespace.</li>
+							<li>Plop will add your component to <code>./tsconfig.json</code>. This will make it so it is recognized by the project.</li>
+							<li>Plop will create a new file under <code>./test/ui/{{your component name}}Test.ts</code>. This is a blank test file, and where you should add your UT.</li>
+							<li>Plop will reference your component in <code>./test/Test.ts</code>. This will build your test like the rest of the components.</li>
+						</ul>
+					</li>
+					<li>Now, make it work! (your mileage may vary).</li>
+					<li>Add tests for your component.</li>
+					<li>You should test the entire public API of your component. This means all public methods as well as all available options.</li>
+					<li>Create a pull request to merge your changes in the master branch.</li>
+				</ol>
+				<p>We are very eager to receive external contributions as well as collaborating with other developers!</p>
+				<h3 id="tests">Tests</h3>
+				<p>Tests are written using <a href="http://jasmine.github.io/2.4/introduction.html">Jasmine</a>. To run them you call <code>npm run test</code> to run tests in PhantomJS.</p>
+				<p>If you wish to write new UT, you can do so by starting a new <a href="https://webpack.github.io/docs/webpack-dev-server.html">webpack-dev-server instance</a>.</p>
+				<p>To start the server execute <code>gulp devTest</code>.</p>
+				<p>Load <a href="http://localhost:8081/tests/SpecRunner.html">http://localhost:8081/tests/SpecRunner.html</a>.</p>
+				<p>Every time you hit save in a source file, the dev server will reload and re-execute your tests.</p>
+				<p>The code coverage will be reported in <code>./bin/coverage</code></p>
+				<h2 id="documentation">Documentation</h2>
+				<p>General reference documentation is generated using TypeDoc. Available <a href="https://coveo.github.io/search-ui/">here</a>. You can see the list of all available options and public method that the framework exposes for each component.</p>
+				<p>Hand written documentation with more examples available <a href="https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Home">here</a>.</p>
+				<p>A tutorial is available <a href="https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Getting+Started+Tutorial">here</a>. If you are new to our project, we strongly recommend you to consult the tutorial, as it can provide you with valuable informations.</p>
+				<p>You can also reach <a href="https://search.coveo.com">search.coveo.com</a> to search for a particular issue and/or question.</p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<a id="globals-toc-link" href=globals.html><b>Globals</b></a>
 					<li class=" tsd-kind-class tsd-kind-coveo-component">
 						<a href="components/advancedsearch.html" class="tsd-kind-icon">Advanced<wbr>Search</a>
 					</li>
@@ -687,197 +789,73 @@
 				</ul>
 			</nav>
 		</div>
-		<div id="separator"></div>
-		<div class="col-2 col-content">
-			<div class="tsd-page-title">
-				<div class="container">
-					<ul class="tsd-breadcrumb">
-						<a id="home-menu-link" class="aui-nav-link" title="Go to the home page" href=.>
-							<i class="fa fa-home" aria-hidden="true"></i>
-						</a>
-						<li>
-							<a href="globals.html">Globals</a>
-						</li>
-					</ul>
-					<h1>Coveo JavaScript Search Framework - Reference Documentation </h1>
-				</div>
-			</div>
-			<div class="tsd-panel tsd-typography">
-				<h1 id="search-ui-build-status-https-travis-ci-org-coveo-search-ui-svg-branch-master-https-travis-ci-org-coveo-search-ui-typescript-https-badges-frapsoft-com-typescript-version-typescript-v18-svg-v-100-https-github-com-ellerbrock-typescript-badges-bithound-overall-score-https-www-bithound-io-github-coveo-search-ui-badges-score-svg-https-www-bithound-io-github-coveo-search-ui-bithound-code-https-www-bithound-io-github-coveo-search-ui-badges-code-svg-https-www-bithound-io-github-coveo-search-ui-">Search-UI <a href="https://travis-ci.org/coveo/search-ui"><img src="https://travis-ci.org/coveo/search-ui.svg?branch=master" alt="Build Status"></a> <a href="https://github.com/ellerbrock/typescript-badges/"><img src="https://badges.frapsoft.com/typescript/version/typescript-v18.svg?v=100" alt="TypeScript"></a> <a href="https://www.bithound.io/github/coveo/search-ui"><img src="https://www.bithound.io/github/coveo/search-ui/badges/score.svg" alt="bitHound Overall Score"></a> <a href="https://www.bithound.io/github/coveo/search-ui"><img src="https://www.bithound.io/github/coveo/search-ui/badges/code.svg" alt="bitHound Code"></a></h1>
-				<p>Coveo Search UI Framework</p>
-				<p><img id='readme-image' src='./docs/readme.png' /></p>
-				<h2 id="install">Install</h2>
-				<pre><code>npm <span class="hljs-keyword">install</span> <span class="hljs-comment">--save coveo-search-ui</span>
-</code></pre><p>All resources will be available under <code>node_modules/coveo-search-ui/bin</code>. You can simply include those in your pages as a <code>&lt;script&gt;</code> tag.</p>
-				<p>If you are already using a module bundler (Browserify, webpack, Babel, etc.), then you can simply <code>require(&#39;coveo-search-ui&#39;)</code>.</p>
-				<p>You can also download the latest version <a href="http://productupdate.coveo.com/?product=coveo-search-ui&amp;version=1">here</a>.</p>
-				<h2 id="basic-usage">Basic usage</h2>
-				<pre><code><span class="hljs-comment">&lt;!-- Include the library scripts. --&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"js/CoveoJsSearch.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"js/templates/templatesNew.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-
-<span class="hljs-comment">&lt;!-- Every DOM element with a class starting with Coveo (uppercase) will instantiate a component. --&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">body</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"search"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoSearchInterface'</span>&gt;</span>
-
-    <span class="hljs-comment">&lt;!-- Every DOM element with a class starting with coveo- (lowercase) is only for CSS/alignment purposes. --&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'coveo-search-section'</span>&gt;</span>
-
-        <span class="hljs-comment">&lt;!-- Every Coveo component can be removed (or added) and none are actually required for the page to "load". --&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoSearchbox"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-
-    <span class="hljs-comment">&lt;!-- The data- attributes on each component allow you to pass options to a specific component instance. --&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFacet"</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">"Author"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@author"</span> <span class="hljs-attr">data-tab</span>=<span class="hljs-string">"All"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFacet"</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">"Year"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@year"</span> <span class="hljs-attr">data-tab</span>=<span class="hljs-string">"All"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-
-
-    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
-        <span class="hljs-comment">// Configure an endpoint to perform search.</span>
-        <span class="hljs-comment">// Coveo.SearchEndpoint.configureCloudEndpoint('MyCoveoCloudEnpointName', 'my-authentification-token');</span>
-
-        <span class="hljs-comment">// We provide a sample endpoint with public sources for demo purposes.</span>
-        Coveo.SearchEndpoint.configureSampleEndpoint();
-        <span class="hljs-comment">// Initialize the framework by targeting the root in the interface.</span>
-        <span class="hljs-comment">// It does not have to be the body of the document.</span>
-        Coveo.init(<span class="hljs-built_in">document</span>.body);
-    </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
-</code></pre><ul>
-					<li><p>See more examples of fully configured pages in <code>./pages</code>.</p>
-					</li>
-					<li><p>We also invite you to consult this <a href="https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Getting+Started+Tutorial">tutorial</a> which should help newcomers.</p>
-					</li>
-				</ul>
-				<h2 id="build">Build</h2>
-				<p>You should have node 6.9.1 installed to build this project.</p>
-				<pre><code>npm <span class="hljs-keyword">install</span> -g gulp
-npm <span class="hljs-keyword">install</span>
-gulp
-</code></pre><h2 id="important-gulp-tasks">Important gulp tasks</h2>
-				<ul>
-					<li><code>gulp default</code> -&gt; Build the whole project (CSS, templates, TypeScript, etc.)</li>
-					<li><code>gulp compile</code> -&gt; Build only the TypeScript code and generate its output in the <code>./bin</code> folder.</li>
-					<li><code>gulp css</code> -&gt; Build only the Sass code and generate its output in the <code>./bin</code> folder.</li>
-					<li><code>gulp sprites</code> -&gt; Regenerate the sprites image as well as the generated Sass/CSS code.</li>
-					<li><code>gulp test</code> -&gt; Build and run the unit tests.</li>
-					<li><code>gulp doc</code> -&gt; Generate the documentation website for the project.</li>
-					<li><code>gulp dev</code> -&gt; Start a webpack dev server for the project.</li>
-					<li><code>gulp devTest</code> -&gt; Start a webpack dev server for the unit tests.</li>
-				</ul>
-				<h2 id="dev">Dev</h2>
-				<p>Ensure that you were able to run <code>gulp</code> completely without any errors first. Then you can start the dev-server.</p>
-				<pre><code><span class="hljs-attribute">gulp dev</span>
-</code></pre><p>This will start a <a href="https://webpack.github.io/docs/webpack-dev-server.html">webpack-dev-server instance</a>.
-				Load <a href="http://localhost:8080/Index.html">http://localhost:8080/Index.html</a> in a web browser.</p>
-				<p>Any time you hit <strong>Save</strong> in a source file, the bundle will be recompiled, and the dev page will reload.</p>
-				<p>If you need to modify the content of the search page (the markup itself and not the TypeScript code), modify the <code>Index.html</code> page under <code>./bin</code>. This page is not committed in the repository, so don&#39;t be afraid to break anything. However, if you need to modify the original <code>Index.html</code> for a good reason, feel free to do so.</p>
-				<h2 id="build-a-custom-version-of-the-library-">Build a custom version of the library.</h2>
-				<p>For advanced users and people concerned with loading speed in their integration, there is a way to compile a completely customized version of the library by including only the components you wish to use.</p>
-				<p>A classic use case would be someone wanting to display only a search box with a minimal result list, with no facets, tabs, or any other more &quot;advanced&quot; components.</p>
-				<p>By building a bundle with only those components, you can cut down the size of the resulting JavaScript code by a substantial amount, without having to include useless code related to components you do not use.</p>
-				<ol>
-					<li>Install <a href="https://github.com/amwmedia/plop">plop</a> globally with <code>npm install -g plop</code>.</li>
-					<li>Change directory to <code>./plop</code>.</li>
-					<li>Run <code>plop</code> to automatically start the small command line utility, choose the &quot;Create a new bundle&quot; option, and choose the components you wish to include in your bundle.</li>
-					<li>Run <code>node plop.build.js</code> to compile the file created in <code>./bin/</code>.</li>
-					<li>Once compilation finished, your new bundle should be available in <code>./bin/CoveoJsSearch.Custom.js</code></li>
-				</ol>
-				<h3 id="i-want-to-add-a-new-component-">I want to add a new component!</h3>
-				<p>First, fork our repo.</p>
-				<ol>
-					<li>Install <a href="https://github.com/amwmedia/plop">plop</a> globally with <code>npm install -g plop</code>.</li>
-					<li>Change directory to <code>./plop</code>.</li>
-					<li>Run <code>plop</code> to automatically start the small command line utility, choose the &quot;Create a new component&quot; option, and choose the component name.</li>
-					<li>This will automatically generate 4 things :<ul>
-							<li>Plop will create a new source file under <code>./src/ui/{{your component name}}/{{your component name}}.ts</code>. This is where your component logic should be implemented.</li>
-							<li>Plop will export your component in <code>./src/Index.ts</code>. This will make it globally available under the Coveo namespace.</li>
-							<li>Plop will add your component to <code>./tsconfig.json</code>. This will make it so it is recognized by the project.</li>
-							<li>Plop will create a new file under <code>./test/ui/{{your component name}}Test.ts</code>. This is a blank test file, and where you should add your UT.</li>
-							<li>Plop will reference your component in <code>./test/Test.ts</code>. This will build your test like the rest of the components.</li>
-						</ul>
-					</li>
-					<li>Now, make it work! (your mileage may vary).</li>
-					<li>Add tests for your component.</li>
-					<li>You should test the entire public API of your component. This means all public methods as well as all available options.</li>
-					<li>Create a pull request to merge your changes in the master branch.</li>
-				</ol>
-				<p>We are very eager to receive external contributions as well as collaborating with other developers!</p>
-				<h3 id="tests">Tests</h3>
-				<p>Tests are written using <a href="http://jasmine.github.io/2.4/introduction.html">Jasmine</a>. To run them you call <code>npm run test</code> to run tests in PhantomJS.</p>
-				<p>If you wish to write new UT, you can do so by starting a new <a href="https://webpack.github.io/docs/webpack-dev-server.html">webpack-dev-server instance</a>.</p>
-				<p>To start the server execute <code>gulp devTest</code>.</p>
-				<p>Load <a href="http://localhost:8081/tests/SpecRunner.html">http://localhost:8081/tests/SpecRunner.html</a>.</p>
-				<p>Every time you hit save in a source file, the dev server will reload and re-execute your tests.</p>
-				<p>The code coverage will be reported in <code>./bin/coverage</code></p>
-				<h2 id="documentation">Documentation</h2>
-				<p>General reference documentation is generated using TypeDoc. Available <a href="https://coveo.github.io/search-ui/">here</a>. You can see the list of all available options and public method that the framework exposes for each component.</p>
-				<p>Hand written documentation with more examples available <a href="https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Home">here</a>.</p>
-				<p>A tutorial is available <a href="https://developers.coveo.com/display/JsSearchV1/JavaScript+Search+Framework+V1+Getting+Started+Tutorial">here</a>. If you are new to our project, we strongly recommend you to consult the tutorial, as it can provide you with valuable informations.</p>
-				<p>You can also reach <a href="https://search.coveo.com">search.coveo.com</a> to search for a particular issue and/or question.</p>
-			</div>
-			<footer class="with-border-bottom">
-				<div class="container">
-					<h2>Legend</h2>
-					<div class="tsd-legend-group">
-						<ul class="tsd-legend">
-							<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
-							<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
-							<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
-							<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
-							<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
-							<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
-							<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
-						</ul>
-						<ul class="tsd-legend">
-							<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
-							<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
-							<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
-							<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
-						</ul>
-						<ul class="tsd-legend">
-							<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-							<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
-							<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
-							<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
-							<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
-							<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
-						</ul>
-						<ul class="tsd-legend">
-							<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
-							<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
-							<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
-							<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
-							<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
-							<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
-							<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
-						</ul>
-						<ul class="tsd-legend">
-							<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
-							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
-							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
-							<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
-						</ul>
-						<ul class="tsd-legend">
-							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
-							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
-							<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
-						</ul>
-						<ul class="tsd-legend">
-							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
-							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
-							<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
-						</ul>
-						<ul class="tsd-legend">
-							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
-							<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
-						</ul>
-					</div>
-				</div>
-		</footer>        </div>
 	</div>
 </div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.io" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
 <script src="assets/js/main.js"></script>
+<script src="assets/gen/js/playground.js"></script>
 <script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
-<script src="assets/js/generateMetaData.js"></script>
 </body>
 </html>
