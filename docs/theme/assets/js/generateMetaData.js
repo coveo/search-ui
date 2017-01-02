@@ -45,7 +45,7 @@ function generatePageMetaData() {
   }
 
   /**
-   * Generates the <meta name='item-type' contet='[itemType]'> tag in the page head.
+   * Generates the <meta name='item-type' content='[itemType]'> tag in the page head.
    */
   function generateItemTypeMetaData() {
 
