@@ -52,7 +52,7 @@ function generatePageMetaData() {
     if (contextPipe != "") {
 
       var itemType = toTitleCase(pageTopic).split(" ");
-      itemType.splice(0, 1);
+      itemType.splice(-1, 1);
 
       $('head title').before('<meta name=\'item-type\' content=\'' + itemType.join(" ")  + '\'>');
     }
