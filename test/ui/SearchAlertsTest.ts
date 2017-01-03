@@ -49,12 +49,12 @@ export function SearchAlertsTest() {
         expect(settingsData.menuData).toContain(jasmine.objectContaining({ className: 'coveo-subscriptions-panel' }));
       });
 
-      it('should not add the option in the setting menu if the user is anonymous', ()=> {
+      it('should not add the option in the setting menu if the user is anonymous', () => {
         let endpoint = mockSearchEndpoint();
         endpoint.options.isGuestUser = true;
-        test = Mock.advancedComponentSetup<SearchAlerts>(SearchAlerts, new AdvancedComponentSetupOptions(undefined, undefined, (builder)=> builder.withEndpoint(endpoint)));
+        test = Mock.advancedComponentSetup<SearchAlerts>(SearchAlerts, new AdvancedComponentSetupOptions(undefined, undefined, (builder) => builder.withEndpoint(endpoint)));
         $$(test.env.root).trigger(SettingsEvents.settingsPopulateMenu, settingsData);
-        expect(settingsData.menuData).not.toContain(jasmine.objectContaining({className: 'coveo-subscriptions-panel'}));
+        expect(settingsData.menuData).not.toContain(jasmine.objectContaining({ className: 'coveo-subscriptions-panel' }));
       });
 
       it('should not add option in the settings menu if false', () => {
