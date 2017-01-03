@@ -343,7 +343,7 @@ export class FacetSlider extends Component {
       }
     }, FacetSlider.DEBOUNCED_RESIZE_DELAY);
     window.addEventListener('resize', this.onResize);
-
+    // This is used inside SF integration
     this.bind.onRootElement('onPopupOpen', this.onResize);
     $$(this.root).on(InitializationEvents.nuke, this.handleNuke);
   }
