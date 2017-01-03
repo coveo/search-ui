@@ -580,21 +580,6 @@ export class QuickviewDocument extends Component {
     let rgb = ColorUtils.hsvToRgb(hsv[0], hsv[1], hsv[2]);
     return 'rgb(' + rgb[0].toString() + ', ' + rgb[1].toString() + ', ' + rgb[2].toString() + ')';
   }
-
-  private animateScroll(scroll: HTMLElement, scrollLeftValue: number, scrollTopValue: number, duration: number = 100) {
-    let leftStep = Math.round((scrollLeftValue - scroll.scrollLeft) / duration);
-    let topStep = Math.round((scrollTopValue - scroll.scrollTop) / duration);
-
-    let interval = setInterval(function () {
-      if (duration != 0) {
-        scroll.scrollLeft += leftStep;
-        scroll.scrollTop += topStep;
-        duration -= 1;
-      } else {
-        clearInterval(interval);
-      }
-    }, 1);
-  }
 }
 
 Initialization.registerAutoCreateComponent(QuickviewDocument);
