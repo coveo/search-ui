@@ -343,6 +343,8 @@ export class FacetSlider extends Component {
       }
     }, FacetSlider.DEBOUNCED_RESIZE_DELAY);
     window.addEventListener('resize', this.onResize);
+
+    this.bind.onRootElement('onPopupOpen', this.onResize);
     $$(this.root).on(InitializationEvents.nuke, this.handleNuke);
   }
 
