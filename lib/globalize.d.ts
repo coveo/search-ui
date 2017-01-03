@@ -117,8 +117,7 @@ interface GlobalizeStatic {
   parseFloat(value: string, radix?, cultureSelector?: string): number;
 }
 
-declare var Globalize: GlobalizeStatic;
-
 declare module 'globalize' {
+  var Globalize: GlobalizeStatic;
   export = Globalize;
 }

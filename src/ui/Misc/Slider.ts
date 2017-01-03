@@ -430,16 +430,16 @@ export class SliderButton {
     }
   }
 
-  private getMousePosition(e: MouseEvent) {
+  private getMousePosition(e: MouseEvent | TouchEvent) {
     var posx = 0;
     var posy = 0;
-    if (this.eventMouseMove == 'touchmove') {
-      posx = e['originalEvent']['touches'][0].pageX;
-      posy = e['originalEvent']['touches'][0].pageY;
-    } else if (e.pageX || e.pageY) {
+    if (e instanceof TouchEvent) {
+      posx = e.touches[0].pageX;
+      posy = e.touches[0].pageY;
+    } else if (e.pageX && e.pageY) {
       posx = e.pageX;
       posy = e.pageY;
-    } else if (e.clientX || e.clientY) {
+    } else if (e.clientX && e.clientY) {
       posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
       posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
     }

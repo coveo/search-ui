@@ -305,6 +305,7 @@ export class Omnibox extends Component {
       this.triggerNewQuery(false, () => {
         this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
       });
+      this.magicBox.blur();
     };
 
     this.magicBox.onselect = (suggestion: IOmniboxSuggestion) => {
@@ -357,6 +358,12 @@ export class Omnibox extends Component {
     if (this.options.autoFocus) {
       this.magicBox.focus();
     }
+
+    this.magicBox.ontabpress = () => {
+      this.handleTabPress();
+    };
+
+
     this.magicBox.getSuggestions = () => this.handleSuggestions();
   }
 
@@ -506,6 +513,32 @@ export class Omnibox extends Component {
     new QueryboxQueryParameters(this.options).addParameters(data.queryBuilder, query);
   }
 
+  private handleTabPress() {
+    if (this.options.enableRevealQuerySuggestAddon) {
+      this.handleTabPressForRevealSuggestions();
+    } else {
+      this.handleTabPressForOldOmniboxAddon();
+    }
+  }
+
+  private handleTabPressForRevealSuggestions() {
+    if (!this.options.enableSearchAsYouType) {
+      let suggestions = _.compact(_.map(this.lastSuggestions, (suggestion) => suggestion.text));
+      this.usageAnalytics.logCustomEvent(this.getOmniboxAnalyticsEventCause(), this.buildCustomDataForPartialQueries(0, suggestions), this.element);
+    }
+  }
+
+  private handleTabPressForOldOmniboxAddon() {
+    if (this.lastSuggestions && this.lastSuggestions[0] && this.lastSuggestions[0].dom) {
+      let firstSelected = $$(this.lastSuggestions[0].dom).find('.coveo-omnibox-selected');
+      let firstSelectable = $$(this.lastSuggestions[0].dom).find('.coveo-omnibox-selectable');
+      if (firstSelected) {
+        $$(firstSelected).trigger('tabSelect');
+      } else if (firstSelectable) {
+        $$(firstSelectable).trigger('tabSelect');
+      }
+    }
+  }
 
   private triggerNewQuery(searchAsYouType: boolean, analyticsEvent: () => void) {
     clearTimeout(this.searchAsYouTypeTimeout);
