@@ -11,7 +11,7 @@ import {Quickview} from '../Quickview/Quickview';
 import {$$} from '../../utils/Dom';
 
 /**
- * Possible options for an {@link Icon} component.
+ * Available options for the {@link Icon} component.
  */
 export interface IIconOptions {
   value?: string;
@@ -21,36 +21,54 @@ export interface IIconOptions {
 }
 
 /**
- * An icon component is a Result template component which outputs the corresponding icon for a given filetype. It uses the
- * available icons in the framework, and if no suitable one are found, it fallback on a generic icon.
+ * This component is intended to be used inside a result template, which must in turn be used inside a
+ * {@link ResultList} component.
+ *
+ * The Icon component outputs the corresponding icon for a given file type. The component searches for a suitable icon
+ * from those available in the framework. If no suitable icon is found, the component outputs a generic icon instead.
+ *
+ * For more information on result templates, see
+ * <a target="_blank" href="https://developers.coveo.com/x/v4okAg">Step 6 - Result Templates</a> of the Getting Started
+ * with the JavaScript Search Framework V1 tutorial.
  */
 export class Icon extends Component {
   static ID = 'Icon';
 
   /**
-   * The options for the component
+   * The options for the Icon
    * @componentOptions
    */
   static options: IIconOptions = {
+
     /**
-     * Setting this value will tell the `Icon` component to output this value as its CSS class, instead of the auto-selected one.<br/>
-     * Default is `undefined`, and the framework will determine an icon from the result filetype.
+     * Specifies the value that the Icon component should output as its CSS class instead of the auto-selected value.
+     *
+     * Default value is `undefined`, and the framework will find a suitable icon based on the result file type.
      */
     value: ComponentOptions.buildIconOption(),
+
     /**
-     * Setting this value to true will output the smaller version of the auto-generated icon.<br/>
-     * Default is `false`.
+     * Specifies whether the Icon component should output the smaller version of the icon instead of of the regular one.
+     *
+     * Default value is `false`.
      */
     small: ComponentOptions.buildBooleanOption(),
+
     /**
-     * Setting this to true will force the caption/label to appear.<br/>
-     * Setting this to false will force the caption/label to never appear.<br/>
-     * Default value is `undefined`, and the framework will determine if a label needs to be displayed.
+     * Specifies whether the Icon component should force the output icon to display its caption/label or not.
+     *
+     * Due to limited screen real estate, setting this option to `true` has no effect on icons set into insight panels.
+     *
+     * Default value is `undefined`, and the framework will determine if the icon needs to display a caption/label based
+     * of the result file type.
      */
     withLabel: ComponentOptions.buildBooleanOption(),
+
     /**
-     * Setting this option allow to set the label that should be displayed.<br/>
-     * Default value is `undefined`, and the framework will determine the label that will be displayed.
+     * Specifies what text should be displayed on the icon caption/label.
+     *
+     * Default value is `undefined`, and the framework will determine what text the icon needs to display based on the
+     * result file type.
      */
     labelValue: ComponentOptions.buildLocalizedStringOption()
   };
@@ -61,7 +79,7 @@ export class Icon extends Component {
   ];
 
   /**
-   * Create a new Icon component
+   * Creates a new Icon component
    * @param element
    * @param options
    * @param bindings

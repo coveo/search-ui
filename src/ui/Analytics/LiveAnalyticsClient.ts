@@ -20,6 +20,7 @@ import {ICustomEvent} from '../../rest/CustomEvent';
 import {QueryStateModel} from '../../models/QueryStateModel';
 import {Component} from '../Base/Component';
 import {version} from '../../misc/Version';
+import {QueryUtils} from '../../utils/QueryUtils';
 
 export class LiveAnalyticsClient implements IAnalyticsClient {
   public isContextual: boolean = false;
@@ -242,13 +243,13 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       splitTestRunName: this.splitTestRunName || result.splitTestRun,
       splitTestRunVersion: this.splitTestRunVersion || (result.splitTestRun != undefined ? result.pipeline : undefined),
       documentUri: result.uri,
-      documentUriHash: result.raw['urihash'],
+      documentUriHash: QueryUtils.getUriHash(result),
       documentUrl: result.clickUri,
       documentTitle: result.title,
-      documentCategory: result.raw['objecttype'],
+      documentCategory: QueryUtils.getObjectType(result),
       originLevel2: this.getOriginLevel2(element),
-      collectionName: <string>result.raw['collection'],
-      sourceName: <string>result.raw['source'],
+      collectionName: QueryUtils.getCollection(result),
+      sourceName: QueryUtils.getSource(result),
       documentPosition: result.index + 1,
       responseTime: 0,
       viewMethod: actionCause.name,
@@ -274,18 +275,9 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     modifiedMeta['JSUIVersion'] = version.lib + ';' + version.product;
 
     if (result) {
-      let fieldValue;
-      let fieldUsed;
-      let uniqueId = result.raw['uniqueid'];
-      if (uniqueId) {
-        fieldUsed = 'uniqueid';
-        fieldValue = uniqueId;
-      } else {
-        fieldUsed = 'urihash';
-        fieldValue = result.raw['urihash'];
-      }
-      modifiedMeta['contentIDKey'] = fieldUsed;
-      modifiedMeta['contentIDValue'] = fieldValue;
+      let uniqueId = QueryUtils.getUniqueId(result);
+      modifiedMeta['contentIDKey'] = uniqueId.fieldUsed;
+      modifiedMeta['contentIDValue'] = uniqueId.fieldValue;
     }
 
     return modifiedMeta;
