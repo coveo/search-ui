@@ -3,33 +3,14 @@
  */
 function generatePageMetaData() {
 
-  var contextPipe = getContextPipe();
+  var pageTopic = $('.tsd-page-title h1')[0].textContent;
+  var contextPipe;
   var optionsPipe;
 
+  getContextPipe();
   generatePageTopicMetaData();
+  generateItemTypeMetaData();
   generateIndexContentMetaData();
-
-  /**
-   * Gets the contextPipe from the breadcrumb. The contextPipe is the page topic followed by a dot ('.').
-   * For instance, if the current page topic is "Facet", the contextPipe will be "Facet."
-   * No contextPipe is generated if page topic is "Globals".
-   * @returns {string} The page topic followed by a dot ('.') if page topic was not "Globals". Empty string otherwise.
-   */
-  function getContextPipe() {
-    var temp = $('ul.tsd-breadcrumb li:last-of-type a')[0].textContent + ".";
-
-    return temp == ".Globals" ? "" : temp;
-  }
-
-  /**
-   * Generates the <meta name='page-topic' content='[pageTopic]'> tag in the page head.
-   */
-  function generatePageTopicMetaData() {
-
-    var pageTopic = $('.tsd-page-title h1')[0].textContent;
-
-    $('head title').before('<meta name=\'page-topic\' content=\'' + toTitleCase(pageTopic) + '\'>')
-  }
 
   /**
    * Transforms a string to match title case.
@@ -41,6 +22,40 @@ function generatePageMetaData() {
     return text.replace(/\w\S*/g, function(text) {
       return text.charAt(0).toUpperCase() + text.substr(1);
     });
+  }
+
+  /**
+   * Gets the contextPipe from the breadcrumb. The contextPipe is the page topic followed by a dot ('.').
+   * For instance, if the current page topic is "Facet", the contextPipe will be "Facet."
+   * No contextPipe is generated if page topic is "Globals".
+   * @returns {string} The page topic followed by a dot ('.') if page topic was not "Globals". Empty string otherwise.
+   */
+  function getContextPipe() {
+    var temp = $('ul.tsd-breadcrumb li:last-of-type a')[0].textContent + ".";
+
+    contextPipe = temp == "Globals." ? "" : temp;
+  }
+
+  /**
+   * Generates the <meta name='page-topic' content='[pageTopic]'> tag in the page head.
+   */
+  function generatePageTopicMetaData() {
+
+    $('head title').before('<meta name=\'page-topic\' content=\'' + toTitleCase(pageTopic) + '\'>');
+  }
+
+  /**
+   * Generates the <meta name='item-type' content='[itemType]'> tag in the page head.
+   */
+  function generateItemTypeMetaData() {
+
+    if (contextPipe != "") {
+
+      var itemType = toTitleCase(pageTopic).split(" ");
+      itemType.splice(0, 1);
+
+      $('head title').before('<meta name=\'item-type\' content=\'' + itemType.join(" ")  + '\'>');
+    }
   }
 
   /**

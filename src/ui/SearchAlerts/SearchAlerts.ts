@@ -30,8 +30,12 @@ export interface ISearchAlertsOptions {
 }
 
 /**
- * This component allows the user to manage his search alerts and to follow queries by adding menu items in the {@link Settings} component.
- * By following queries, the user will receive emails informing him when the results of the query have changed.
+ * This component allows the user to manage their search alerts and to follow queries by making the necessary menu
+ * items available under the {@link Settings} component.
+ * A user following a query will receive email notifications when the query results change.
+ *
+ * Certain requirements must be met for this component to work (see
+ * [Deploying Search Alerts on a Coveo JS Search Page](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=248)).
  */
 export class SearchAlerts extends Component {
   static ID = 'SearchAlerts';
@@ -41,29 +45,41 @@ export class SearchAlerts extends Component {
    * @componentOptions
    */
   static options: ISearchAlertsOptions = {
+
     /**
-     * Specifies whether to add a menu item in the {@link Settings} component to allow the user to manage his search alerts.
-     * The default value is true.
+     * Specifies whether to add a menu item in the {@link Settings} component to allow the user to manage their search
+     * alerts.
+     *
+     * Default value is `true`.
      */
     enableManagePanel: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
     /**
-     * Specifies whether to add a menu item in the {@link Settings} component to allow the user to follow the last query.
-     * The default value is true.
+     * Specifies whether to add a menu item in the {@link Settings} component to allow the user to follow the last
+     * query.
+     *
+     * Default value is `true`.
      */
     enableFollowQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
     /**
-     * Specifies the modifiedDateField to use when sending the follow query request.
-     * This default value is undefined.
+     * Specifies the modifiedDateField to use when sending the followQuery subscription request.
+     *
+     * Default value is `undefined`.
      */
     modifiedDateField: ComponentOptions.buildFieldOption(),
+
     /**
      * Specifies whether to display info and error messages when search alerts actions are performed.
-     * This default value is true.
+     *
+     * Default value is `true`.
      */
     enableMessage: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
     /**
-     * Specifies how long to display the search alerts messages (in ms).
-     * This default value is 3000.
+     * Specifies how long to display the search alert messages (in ms).
+     *
+     * Default value is `3000`.
      */
     messageCloseDelay: ComponentOptions.buildNumberOption({ defaultValue: 3000 }),
   };
@@ -71,8 +87,8 @@ export class SearchAlerts extends Component {
   private modal: Coveo.ModalBox.ModalBox;
 
   /**
-   * A reference to a {@link SearchAlertsMessage} component used to display message.
-   * This attribute is set only when the enableMessage option is true.
+   * A reference to a {@link SearchAlertsMessage} component used to display messages.
+   * This attribute is automatically set in the constructor when the enableMessage option value is `true`.
    */
   public message: SearchAlertsMessage;
 
@@ -132,8 +148,8 @@ export class SearchAlerts extends Component {
   }
 
   /**
-   * Follow the last query.
-   * The user will start to receive emails when the results from that query changes.
+   * Follows the last query.
+   * The user will start receiving email notifications when the query results change.
    */
   public followQuery() {
     let queryBuilder = this.queryController.createQueryBuilder({});
@@ -161,9 +177,9 @@ export class SearchAlerts extends Component {
   }
 
   /**
-   * Opens the search alerts manage panel.
-   * This panel allows the user to stop following queries or documents.
-   * It also allows the user to change the frequency at which he will receive emails.
+   * Opens the **Manage Alerts** panel.
+   * This panel allows the user to stop following queries or items.
+   * It also allows the user to specify email notification frequency for each followed query or item.
    */
   public openPanel(): Promise<ISubscription> {
     let title = $$('div');
