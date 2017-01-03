@@ -644,15 +644,17 @@ class SliderGraph {
       var sliderOuterHeight = this.slider.element.offsetHeight;
       var width = sliderOuterWidth - this.slider.options.graph.margin.left - this.slider.options.graph.margin.right;
       var height = sliderOuterHeight - this.slider.options.graph.margin.top - this.slider.options.graph.margin.bottom;
+      if (!isNaN(width) && width >= 0 && !isNaN(height) && height >= 0) {
+        this.applyTransformOnSvg(width, height);
+        this.setXAndYRange(width, height);
+        this.setXAndYDomain(data);
 
-      this.applyTransformOnSvg(width, height);
-      this.setXAndYRange(width, height);
-      this.setXAndYDomain(data);
+        var bars = this.svg.selectAll('.coveo-bar').data(data);
+        var currentSliderValues = this.slider.getValues();
+        this.renderGraphBars(bars, width, height, currentSliderValues);
+        this.setGraphBarsTransition(bars, height, currentSliderValues);
+      }
 
-      var bars = this.svg.selectAll('.coveo-bar').data(data);
-      var currentSliderValues = this.slider.getValues();
-      this.renderGraphBars(bars, width, height, currentSliderValues);
-      this.setGraphBarsTransition(bars, height, currentSliderValues);
       this.oldData = data;
     }
   }
@@ -682,7 +684,7 @@ class SliderGraph {
   }
 
   private padBeginningOfGraphWithEmptyData(data: ISliderGraphData[], oneStepOfGraph: number) {
-    if (data[0].start > this.slider.options.start) {
+    if (data[0].start > this.slider.options.start && data[0].start > oneStepOfGraph) {
       var difToFillAtStart = data[0].start - this.slider.options.start;
       var nbOfStepsAtStart = Math.round(difToFillAtStart / oneStepOfGraph);
       var currentStep = data[0].start;
