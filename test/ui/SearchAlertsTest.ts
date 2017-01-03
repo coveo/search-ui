@@ -8,7 +8,6 @@ import {SettingsEvents} from '../../src/events/SettingsEvents';
 import {Simulate} from '../Simulate';
 import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
 import {SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs} from '../../src/events/SearchAlertEvents';
-import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function SearchAlertsTest() {
   describe('SearchAlerts', function () {
@@ -142,13 +141,6 @@ export function SearchAlertsTest() {
       it('should call the endpoint', () => {
         test.cmp.followQuery();
         expect(followMock).toHaveBeenCalled();
-      });
-
-      it('should log an analytics event', () => {
-        test.cmp.followQuery();
-        expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchAlertsFollowQuery, {
-          'subscription': '<empty>'
-        }, test.cmp.element);
       });
 
       it('should trigger a search alert created event', (done) => {

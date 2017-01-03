@@ -10,16 +10,7 @@ export class RevealQuerySuggestAddon {
 
   static INDEX = 60;
 
-  static suggestiontHtmlTemplate = function (obj) {
-    var __t, __p = '', __j = Array.prototype.join, print = function () { __p += __j.call(arguments, ''); };
-    var obj = obj || {}
-    __p += '<span' +
-      ((__t = (obj.className ? ' class="' + obj.className + '"' : '')) == null ? '' : __t) +
-      '>' +
-      ((__t = (obj.text)) == null ? '' : _.escape(__t)) +
-      '</span>';
-    return __p;
-  }
+  static suggestiontHtmlTemplate = _.template('<span<%= className? \' class="\'+className+\'"\':\'\' %>><%- text %></span>');
 
   private static suggestiontHtml(suggestion: IRevealQuerySuggestCompletion) {
     return suggestion.highlighted.replace(/\[(.*?)\]|\{(.*?)\}|\((.*?)\)/g, (part, notMatched, matched, corrected) => {
@@ -36,7 +27,6 @@ export class RevealQuerySuggestAddon {
       });
     });
   }
-
 
   private static isPartialMatch(suggestion: IRevealQuerySuggestCompletion) {
     // groups : 1=notMatched, 2=matched, 3=corrected

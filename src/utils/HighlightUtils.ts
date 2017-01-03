@@ -280,40 +280,18 @@ export class HighlightUtils {
 }
 
 
-function highlightTemplate(obj) {
-  var __t, __p = '', __j = Array.prototype.join, print = function () { __p += __j.call(arguments, ''); };
-  var obj = (obj || {})
-  __p += '';
-  var i = 0; var lowercaseValue = obj.value.toLowerCase(); while (i < obj.value.length) {
-    __p += '';
-    var index = lowercaseValue.indexOf(obj.search, i); if (index != -1) {
-      __p += '';
-      if (i != index) {
-        __p += ' <span>' +
-          ((__t = (obj.value.substr(i, index))) == null ? '' : _.escape(__t)) +
-          '</span>';
-      }
-      __p += '<span class="coveo-hightlight">' +
-        ((__t = (obj.value.substr(index, obj.search.length))) == null ? '' : _.escape(__t)) +
-        '</span>';
-      i = index + obj.search.length
-      __p += '</span>';
-    } else {
-      __p += '<span>' +
-        ((__t = (obj.value.substr(i))) == null ? '' : _.escape(__t)) +
-        '</span>';
-      i = obj.value.length;
-      __p += '';
-    }
-    __p += '';
-  }
-  __p += '';
-
-  return __p;
-}
 
 export function highlightString(value: string, search: string) {
-  let hightlightTemplate = highlightTemplate
+  let hightlightTemplate = _.template('<% var i = 0; var lowercaseValue = value.toLowerCase(); while(i < value.length) { %>' +
+    '<% var index = lowercaseValue.indexOf(search, i); if(index != -1) { %>' +
+    '<% if(i != index){ %> <span><%- value.substr(i, index) %></span><% } %>' +
+    '<span class="coveo-hightlight"><%- value.substr(index, search.length) %></span>' +
+    '<% i = index + search.length %></span>' +
+    '<% } else { %>' +
+    '<span><%- value.substr(i) %></span>' +
+    '<% i = value.length; %>' +
+    '<% } %>' +
+    '<% } %>');
   if (_.isEmpty(search)) {
     return value;
   }

@@ -168,21 +168,6 @@ export interface IAnalyticsTriggerExecute {
   executed: string;
 }
 
-export interface IAnalyticsSearchAlertsMeta {
-  subscription: string;
-}
-
-export interface IAnalyticsSearchAlertsUpdateMeta extends IAnalyticsSearchAlertsMeta {
-  frequency: string;
-}
-
-export interface IAnalyticsSearchAlertsFollowDocumentMeta extends IAnalyticsDocumentViewMeta {
-  documentSource: string;
-  documentLanguage: string;
-  contentIDKey: string;
-  contentIDValue: string;
-}
-
 export var analyticsActionCauseList = {
   interfaceLoad: <IAnalyticsActionCause>{
     name: 'interfaceLoad',
@@ -487,29 +472,5 @@ export var analyticsActionCauseList = {
   advancedSearch: <IAnalyticsActionCause>{
     name: 'advancedSearch',
     type: 'advancedSearch'
-  },
-  searchAlertsFollowDocument: <IAnalyticsActionCause>{
-    name: 'followDocument',
-    type: 'searchAlerts'
-  },
-  searchAlertsFollowQuery: <IAnalyticsActionCause>{
-    name: 'followQuery',
-    type: 'searchAlerts'
-  },
-  searchAlertsUpdateSubscription: <IAnalyticsActionCause>{
-    name: 'updateSubscription',
-    type: 'searchAlerts'
-  },
-  searchAlertsDeleteSubscription: <IAnalyticsActionCause>{
-    name: 'deleteSubscription',
-    type: 'searchAlerts'
-  },
-  searchAlertsUnfollowDocument: <IAnalyticsActionCause>{
-    name: 'unfollowDocument',
-    type: 'searchAlerts'
-  },
-  searchAlertsUnfollowQuery: <IAnalyticsActionCause>{
-    name: 'unfollowQuery',
-    type: 'searchAlerts'
   }
 };

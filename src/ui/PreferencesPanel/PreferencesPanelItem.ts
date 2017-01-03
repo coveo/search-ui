@@ -13,33 +13,13 @@ export interface IPreferencePanelInputToBuild {
 export class PreferencesPanelBoxInput {
   public inputs: { [label: string]: HTMLElement } = {};
 
-  private inputTemplate = function (obj) {
-    var __t, __p = '', __j = Array.prototype.join, print = function () { __p += __j.call(arguments, ''); };
-    var obj = (obj || {})
-    __p += '<div class=\'coveo-choice-container\'>      <div class=\'coveo-section coveo-section-input\'>        <input ' +
-      ((__t = (obj.otherAttribute)) == null ? '' : _.escape(__t)) +
-      ' class=\'coveo-' +
-      ((__t = (obj.label)) == null ? '' : _.escape(__t)) +
-      '\' id=\'coveo-' +
-      ((__t = (obj.label)) == null ? '' : _.escape(__t)) +
-      '\' type=\'' +
-      ((__t = (obj.type)) == null ? '' : _.escape(__t)) +
-      '\' name=\'' +
-      ((__t = (obj.name)) == null ? '' : _.escape(__t)) +
-      '\' value=\'' +
-      ((__t = (obj.label)) == null ? '' : _.escape(__t)) +
-      '\' ></input><span class=\'coveo-input-icon\'></span><label class=\'coveo-preferences-panel-item-label\' for=\'coveo-' +
-      ((__t = (obj.label)) == null ? '' : _.escape(__t)) +
-      '\'>' +
-      ((__t = (obj.label)) == null ? '' : _.escape(__t)) +
-      '</label>      </div>      <div class=\'coveo-section coveo-section-tab\'>' +
-      ((__t = (obj.tab)) == null ? '' : _.escape(__t)) +
-      '</div>    <div class=\'coveo-section coveo-section-expression\'>' +
-      ((__t = (obj.expression)) == null ? '' : _.escape(__t)) +
-      '</div>    </div>';
-
-    return __p;
-  }
+  private inputTemplate = _.template('<div class=\'coveo-choice-container\'>\
+      <div class=\'coveo-section coveo-section-input\'>\
+        <input <%- otherAttribute %> class=\'coveo-<%- label %>\' id=\'coveo-<%- label %>\' type=\'<%- type %>\' name=\'<%- name%>\' value=\'<%- label %>\' ></input><span class=\'coveo-input-icon\'></span><label class=\'coveo-preferences-panel-item-label\' for=\'coveo-<%- label %>\'><%- label %></label>\
+      </div>\
+      <div class=\'coveo-section coveo-section-tab\'><%- tab %></div>\
+    <div class=\'coveo-section coveo-section-expression\'><%- expression %></div>\
+    </div>');
 
   constructor(private boxInputToBuild: IPreferencePanelInputToBuild[], private nameOfInput: string, private type: string) {
   }
@@ -127,25 +107,7 @@ export class PreferencesPanelCheckboxInput extends PreferencesPanelBoxInput {
 
 export class PreferencesPanelTextInput {
   public inputs: { [label: string]: HTMLElement } = {};
-  public inputTemplate = function (obj) {
-    var __t, __p = '', __j = Array.prototype.join, print = function () { __p += __j.call(arguments, ''); };
-    var obj = (obj || {})
-    __p += '<div class=\'coveo-choice-container\'><input ' +
-      ((__t = (obj.otherAttribute)) == null ? '' : _.escape(__t)) +
-      ' class=\'coveo-' +
-      ((__t = (obj.label)) == null ? '' : _.escape(__t)) +
-      '\' id=\'coveo-' +
-      ((__t = (obj.label)) == null ? '' : _.escape(__t)) +
-      '\' type=\'' +
-      ((__t = (obj.type)) == null ? '' : _.escape(__t)) +
-      '\' name=\'' +
-      ((__t = (obj.name)) == null ? '' : _.escape(__t)) +
-      '\' placeholder=\'' +
-      ((__t = (obj.placeholder)) == null ? '' : _.escape(__t)) +
-      '\' ></input></div>';
-
-    return __p;
-  }
+  public inputTemplate = _.template('<div class=\'coveo-choice-container\'><input <%- otherAttribute %> class=\'coveo-<%- label %>\' id=\'coveo-<%- label %>\' type=\'<%- type %>\' name=\'<%- name%>\' placeholder=\'<%- placeholder %>\' ></input></div>');
 
   constructor(public textElementToBuild: IPreferencePanelInputToBuild[], public name: string) {
   }
@@ -199,23 +161,7 @@ export class PreferencesPanelTextInput {
 }
 
 export class PreferencesPanelTextAreaInput extends PreferencesPanelTextInput {
-  public inputTemplate = function (obj) {
-    var __t, __p = '', __j = Array.prototype.join, print = function () { __p += __j.call(arguments, ''); };
-    var obj = (obj || {})
-    __p += '<div class=\'coveo-choice-container\'><textarea ' +
-      ((__t = (obj.otherAttribute)) == null ? '' : _.escape(__t)) +
-      ' class=\'coveo-' +
-      ((__t = (obj.label)) == null ? '' : _.escape(__t)) +
-      '\' id=\'coveo-' +
-      ((__t = (obj.label)) == null ? '' : _.escape(__t)) +
-      '\' name=\'' +
-      ((__t = (obj.name)) == null ? '' : _.escape(__t)) +
-      '\' placeholder=\'' +
-      ((__t = (obj.placeholder)) == null ? '' : _.escape(__t)) +
-      '\' ></textarea></div>';
-
-    return __p;
-  }
+  public inputTemplate = _.template('<div class=\'coveo-choice-container\'><textarea <%- otherAttribute %> class=\'coveo-<%- label %>\' id=\'coveo-<%- label %>\' name=\'<%- name%>\' placeholder=\'<%- placeholder %>\' ></textarea></div>');
 
   public build(): HTMLElement {
     return _.reduce(_.map(this.textElementToBuild, (toBuild) => {

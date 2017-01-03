@@ -60,7 +60,7 @@ export class AnalyticsSuggestions extends Component {
 
     this.options = ComponentOptions.initComponentOptions(element, AnalyticsSuggestions, this.options);
 
-    let rowTemplate = this.rowTemplate;
+    let rowTemplate = _.template(`<div class='magic-box-suggestion coveo-omnibox-selectable coveo-top-analytics-suggestion-row'><%= data %></div>`);
     this.options.onSelect = this.options.onSelect || this.onRowSelection;
 
     let suggestionStructure: ISuggestionForOmniboxTemplate;
@@ -69,7 +69,7 @@ export class AnalyticsSuggestions extends Component {
         row: rowTemplate
       };
     } else {
-      let headerTemplate = this.headerTemplate
+      let headerTemplate = _.template(`<div class='coveo-top-analytics-suggestion-header'><span class='coveo-icon-top-analytics'></span><span class='coveo-caption'><%= headerTitle %></span></div>`);
       suggestionStructure = {
         header: { template: headerTemplate, title: this.options.headerTitle },
         row: rowTemplate
@@ -84,29 +84,6 @@ export class AnalyticsSuggestions extends Component {
     this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs) => this.handlePopulateOmnibox(args));
     this.bind.onRootElement(QueryEvents.querySuccess, () => this.partialQueries = []);
   }
-
-  private rowTemplate(obj) {
-    var __t, __p = '', __j = Array.prototype.join, print = function () { __p += __j.call(arguments, ''); };
-    var obj = (obj || {});
-
-    __p += '<tr>\n       <td><code>' +
-      ((__t = (obj.cssClass)) == null ? '' : __t) +
-      '</code></td>\n       <td><img src="data:image/png;base64,' +
-      ((__t = (obj.val.img)) == null ? '' : __t) +
-      '" /></td>\n     </tr>';
-    return __p;
-  }
-
-  private headerTemplate(obj) {
-    var __t, __p = '', __j = Array.prototype.join, print = function () { __p += __j.call(arguments, ''); };
-    var obj = (obj || {})
-    __p += '<div class=\'coveo-top-analytics-suggestion-header\'><span class=\'coveo-icon-top-analytics\'></span><span class=\'coveo-caption\'>' +
-      ((__t = (obj.headerTitle)) == null ? '' : __t) +
-      '</span></div>';
-
-    return __p;
-  }
-
 
   /**
    * Select a currently displayed suggestion. This means that at least one suggestion must have been returned at least once.

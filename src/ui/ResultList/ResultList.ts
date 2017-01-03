@@ -440,7 +440,6 @@ export class ResultList extends Component {
 
   private getAutoSelectedFieldsToInclude() {
     return _.chain(this.options.resultTemplate.getFields())
-      .concat(this.getMinimalFieldsToInclude())
       .compact()
       .unique()
       .value();
@@ -448,11 +447,6 @@ export class ResultList extends Component {
 
   private isCurrentlyFetchingMoreResults(): boolean {
     return Utils.exists(this.fetchingMoreResults);
-  }
-
-  private getMinimalFieldsToInclude() {
-    // these fields are needed for analytics click event
-    return ['author', 'language', 'urihash', 'objecttype', 'collection', 'source', 'language', 'uniqueid'];
   }
 
   private isScrollingOfResultListAlmostAtTheBottom(): boolean {

@@ -68,20 +68,13 @@ function fileHandler(sprites, root, fileStats, prefix, next) {
   next();
 }
 
-function rowTemplate(obj){
-  var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
-    var theObject = obj||{};
-
-    __p+='<tr>\n       <td><code>'+
-    ((__t=( theObject.cssClass ))==null?'':__t)+
-    '</code></td>\n       <td><img src="data:image/png;base64,'+
-    ((__t=( theObject.val.img ))==null?'':__t)+
-    '" /></td>\n     </tr>';    
-    return __p;
-}
-
 function generateHtmlOutput(sprites) {
-  let row = rowTemplate
+  let row = _.template(
+    `<tr>
+       <td><code><%= cssClass %></code></td>
+       <td><img src="data:image/png;base64,<%= val.img %>" /></td>
+     </tr>`
+  );
   let header = '<!DOCTYPE html><html><table>';
   let style = '<style>td { border: 1px solid #ccc; } table { text-align: center; }</style>';
   let footer = '</table></html>';

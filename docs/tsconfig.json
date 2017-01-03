@@ -17,7 +17,6 @@
     "../lib/MagicBox.d.ts",
     "../lib/fastclick.d.ts",
     "../lib/globalize.d.ts",
-    "../lib/latinize.d.ts",
     "./playground/src/Index.ts",
     "./playground/src/Playground.ts"
   ]
