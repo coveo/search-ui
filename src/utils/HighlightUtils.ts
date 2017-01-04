@@ -1,6 +1,7 @@
 import {Utils} from './Utils';
 import {IHighlight} from '../rest/Highlight';
 import {Assert} from '../misc/Assert';
+import {$$} from './Dom';
 
 export interface IStringHole {
   begin: number;
@@ -282,6 +283,27 @@ export class HighlightUtils {
 
 
 export function highlightString(value: string, search: string) {
+  if(_.isEmpty(search)) {
+    return value;
+  }
+
+  let i = 0;
+  let lowercaseValue = value.toLowerCase();
+  while(i < value.length) {
+    let index = lowercaseValue.indexOf(search, i);
+    if(index != -1) {
+      if(i != index) {
+
+      }
+    }
+  }
+  let highlight = $$('span', {
+    className : 'coveo-hightlight'
+  });
+
+
+
+
   let hightlightTemplate = _.template('<% var i = 0; var lowercaseValue = value.toLowerCase(); while(i < value.length) { %>' +
     '<% var index = lowercaseValue.indexOf(search, i); if(index != -1) { %>' +
     '<% if(i != index){ %> <span><%- value.substr(i, index) %></span><% } %>' +

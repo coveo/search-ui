@@ -3,6 +3,7 @@ import {UnderscoreTemplate} from './UnderscoreTemplate';
 import {TemplateCache} from './TemplateCache';
 import {IQueryResult} from '../../rest/QueryResult';
 import {Assert} from '../../misc/Assert';
+import {$$} from '../../utils/Dom';
 
 
 export class DefaultResultTemplate extends Template {
@@ -34,11 +35,7 @@ export class DefaultResultTemplate extends Template {
       }
     }
 
-    return _.template('<div>' +
-      '<div class="coveo-title"><a class="CoveoResultLink"><%= title?Coveo.TemplateHelpers.getHelper("highlight").call(title, titleHighlights):clickUri %></a></div>' +
-      '<% if(excerpt){ %><div class="coveo-excerpt"><%= Coveo.TemplateHelpers.getHelper("highlight").call(excerpt, excerptHighlights) %></div><% } %>' +
-      '<table class="CoveoFieldTable"><%= Coveo.TemplateHelpers.getHelper("highlight").call() %></table>' +
-      '</div>')(queryResult);
+    return this.getFallbackTemplate();
   }
 
   instantiateToElement(queryResult?: IQueryResult): HTMLElement {
@@ -55,5 +52,26 @@ export class DefaultResultTemplate extends Template {
 
   getType() {
     return 'DefaultResultTemplate';
+  }
+
+  getFallbackTemplate(): string {
+    let titleContainer = $$('div', {
+      className: 'coveo-title'
+    });
+
+    let resultLink = $$('a', {
+      className: 'CoveoResultLink'
+    });
+
+    titleContainer.append(resultLink.el);
+
+    let excerpt = $$('div', {
+      className: 'CoveoExcerpt'
+    });
+
+    let resultContainer = $$('div');
+    resultContainer.append(titleContainer.el);
+    resultContainer.append(excerpt.el);
+    return resultContainer.el.outerHTML;
   }
 }
