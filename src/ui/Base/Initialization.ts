@@ -14,6 +14,8 @@ import {ComponentStateModel} from '../../models/ComponentStateModel';
 import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
 import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {BaseComponent} from '../Base/BaseComponent';
+import {JQueryUtils} from '../../utils/JQueryutils';
+import {IJQuery} from './CoveoJQuery';
 
 /**
  * Represent the initialization parameters required to init a new component.
@@ -150,7 +152,7 @@ export class Initialization {
     if (searchInterface.options.autoTriggerQuery) {
       Initialization.logFirstQueryCause(searchInterface);
       (<QueryController>Component.get(element, QueryController)).executeQuery({
-        logInActionsHistory: searchInterface instanceof Coveo['Recommendation'] ? false : true,
+        logInActionsHistory: Coveo['Recommendation'] && searchInterface instanceof Coveo['Recommendation'],
         isFirstQuery: true
       });
     }
@@ -487,10 +489,12 @@ export class Initialization {
           root: element
         }
       };
-      _.each(options['externalComponents'], (externalComponent: HTMLElement) => {
+      _.each(options['externalComponents'], (externalComponent: HTMLElement | IJQuery) => {
         let elementToInstantiate = externalComponent;
         if (Utils.isHtmlElement(elementToInstantiate)) {
-          Initialization.automaticallyCreateComponentsInside(elementToInstantiate, initParameters);
+          Initialization.automaticallyCreateComponentsInside(<HTMLElement>elementToInstantiate, initParameters);
+        } else if (JQueryUtils.isInstanceOfJQuery(elementToInstantiate)) {
+          Initialization.automaticallyCreateComponentsInside(<HTMLElement>((<any>elementToInstantiate).get(0)), initParameters);
         }
       });
     }

@@ -2,7 +2,7 @@
 
 import {IIndexFieldValue} from '../../rest/FieldValue';
 import {Facet} from './Facet';
-import {$$} from '../../utils/Dom';
+import {$$, Dom} from '../../utils/Dom';
 import {Utils} from '../../utils/Utils';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {DeviceUtils} from '../../utils/DeviceUtils';
@@ -537,11 +537,13 @@ export class FacetSearch {
     });
     let allSelectables = this.getSelectables();
     let idx = _.indexOf(allSelectables, current);
+    let target: Dom;
     if (idx < allSelectables.length - 1) {
-      $$(allSelectables[idx + 1]).addClass('coveo-current');
+      target = $$(allSelectables[idx + 1]);
     } else {
-      $$(allSelectables[0]).addClass('coveo-current');
+      target = $$(allSelectables[0]);
     }
+    this.highlightAndShowCurrentResultWithKeyboard(target);
   }
 
   private moveCurrentResultUp() {
@@ -552,11 +554,18 @@ export class FacetSearch {
 
     let allSelectables = this.getSelectables();
     let idx = _.indexOf(allSelectables, current);
+    let target: Dom;
     if (idx > 0) {
-      $$(allSelectables[idx - 1]).addClass('coveo-current');
+      target = $$(allSelectables[idx - 1]);
     } else {
-      $$(allSelectables[allSelectables.length - 1]).addClass('coveo-current');
+      target = $$(allSelectables[allSelectables.length - 1]);
     }
+    this.highlightAndShowCurrentResultWithKeyboard(target);
+  }
+
+  private highlightAndShowCurrentResultWithKeyboard(target: Dom) {
+    target.addClass('coveo-current');
+    this.searchResults.scrollTop = target.el.offsetTop;
   }
 
   private getSelectables(target = this.searchResults) {

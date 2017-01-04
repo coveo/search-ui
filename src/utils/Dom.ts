@@ -656,14 +656,14 @@ export class Dom {
   /**
    * Returns the offset width of the element
    */
-  public width() {
+  public width(): number {
     return this.el.offsetWidth;
   }
 
   /**
    * Returns the offset height of the element
    */
-  public height() {
+  public height(): number {
     return this.el.offsetHeight;
   }
   private traverseAncestorForClass(current = this.el, className: string): HTMLElement {
@@ -702,6 +702,22 @@ export class Win {
 
   public width(): number {
     return this.win.innerWidth;
+  }
+
+  public scrollY(): number {
+    return this.supportPageOffset() ? this.win.pageYOffset : this.isCSS1Compat() ? this.win.document.documentElement.scrollTop : this.win.document.body.scrollTop;
+  }
+
+  public scrollX(): number {
+    return this.supportPageOffset() ? window.pageXOffset : this.isCSS1Compat() ? document.documentElement.scrollLeft : document.body.scrollLeft;
+  }
+
+  private isCSS1Compat() {
+    return (this.win.document.compatMode || '') === 'CSS1Compat';
+  }
+
+  private supportPageOffset() {
+    return this.win.pageXOffset !== undefined;
   }
 }
 

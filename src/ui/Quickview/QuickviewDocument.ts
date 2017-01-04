@@ -502,34 +502,14 @@ export class QuickviewDocument extends Component {
       $$(pdf).addClass('opened');
     }
 
-    // pdf2html docs hide the non-visible frames by default, to speed up browsers.
-    // Hack for now: the new Quick View is far too complex to manually scroll
-    // to the content, so SCREW IT and use good ol' scrollIntoView. I'm planning
-    // on a page-based quick view in an upcoming hackaton anyway :)
-    //
-    // Also, mobile devices have troubles with the animation.
-    if (this.isNewQuickviewDocument(window) || DeviceUtils.isMobileDevice()) {
-      element.scrollIntoView();
 
-      // iOS on Safari might scroll the whole modal box body when we do this,
-      // so give it a nudge in the right direction.
-      let body = this.iframe.closest('.coveo-body');
-      body.scrollLeft = 0;
-      body.scrollTop = 0;
+    element.scrollIntoView();
 
-      return;
-    }
-
-    // For other quick views we use a nicer animation that centers the keyword
-
-    this.animateScroll(scroll,
-      element.offsetLeft - scroll.clientWidth / 2 + $$(element).width() / 2,
-      element.offsetTop - scroll.clientHeight / 2 + $$(element).height() / 2);
-
-    this.animateScroll(this.iframe.el,
-      element.offsetLeft - this.iframe.width() / 2 + $$(element).width() / 2,
-      element.offsetTop - this.iframe.height() / 2 + $$(element).height() / 2);
-
+    // iOS on Safari might scroll the whole modal box body when we do this,
+    // so give it a nudge in the right direction.
+    let body = this.iframe.closest('.coveo-body');
+    body.scrollLeft = 0;
+    body.scrollTop = 0;
   }
 
   private buildHeader(): Dom {
@@ -599,21 +579,6 @@ export class QuickviewDocument extends Component {
     }
     let rgb = ColorUtils.hsvToRgb(hsv[0], hsv[1], hsv[2]);
     return 'rgb(' + rgb[0].toString() + ', ' + rgb[1].toString() + ', ' + rgb[2].toString() + ')';
-  }
-
-  private animateScroll(scroll: HTMLElement, scrollLeftValue: number, scrollTopValue: number, duration: number = 100) {
-    let leftStep = Math.round((scrollLeftValue - scroll.scrollLeft) / duration);
-    let topStep = Math.round((scrollTopValue - scroll.scrollTop) / duration);
-
-    let interval = setInterval(function () {
-      if (duration != 0) {
-        scroll.scrollLeft += leftStep;
-        scroll.scrollTop += topStep;
-        duration -= 1;
-      } else {
-        clearInterval(interval);
-      }
-    }, 1);
   }
 }
 

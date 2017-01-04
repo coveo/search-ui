@@ -9,7 +9,9 @@
 .coveo-facet-header-title {
   color: $color-greyish-teal-blue;
   font-size: $font-size-regular;
-  float:left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .coveo-facet-header-settings {

@@ -41,7 +41,7 @@ export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
 }
 
 /**
- * A search endpoint allows to execute letious actions against the Coveo Search API and index.<br/>
+ * A search endpoint allows to execute various actions against the Coveo Search API and index.<br/>
  * For example, you can search, list field values, get the quickview content for a document, etc.<br/>
  * Any actions that you execute using this class will not trigger a full query cycle for the Coveo components.<br/>
  * This is because this class will not trigger any query events directly.<br/>

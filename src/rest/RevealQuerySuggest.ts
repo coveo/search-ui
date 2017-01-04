@@ -54,4 +54,5 @@ export interface IRevealQuerySuggestRequest {
   autoCompleter?: string;
   additionalData?: any;
   format?: string;
+  enableWordCompletion?: boolean;
 }

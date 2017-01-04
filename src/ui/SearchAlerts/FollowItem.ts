@@ -8,6 +8,10 @@ import {ISubscription, ISubscriptionItemRequest, SUBSCRIPTION_TYPE, ISubscriptio
 import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
 import {$$, Dom} from '../../utils/Dom';
+import {
+  analyticsActionCauseList, IAnalyticsSearchAlertsFollowDocumentMeta, IAnalyticsActionCause
+} from '../Analytics/AnalyticsActionListMeta';
+import {QueryUtils} from '../../utils/QueryUtils';
 
 
 export interface IFollowItemOptions {
@@ -16,8 +20,9 @@ export interface IFollowItemOptions {
 }
 
 /**
- * This component allows the user to follow a particular result. 
- * By following a result, the user will receive emails informing him when the result has changed.
+ * This component allows the user to follow a particular item (document).
+ * A user following an item will receive email notifications when the item changes.
+ *
  * A {@link SearchAlerts} component must be present in the page for this component to work.
  */
 export class FollowItem extends Component {
@@ -32,14 +37,18 @@ export class FollowItem extends Component {
    * @componentOptions
    */
   static options: IFollowItemOptions = {
+
     /**
-     * Specifies the watchedFields to use when sending the follow query request.
-     * This default value is undefined.
+     * Specifies the watchedFields to use when sending the followQuery subscription request.
+     *
+     * Default value is `undefined`.
      */
     watchedFields: ComponentOptions.buildFieldsOption(),
+
     /**
-     * Specifies the modifiedDateField to use when sending the follow query request.
-     * This default value is undefined.
+     * Specifies the modifiedDateField to use when sending the followQuery subscription request.
+     *
+     * Default value is `undefined`.
      */
     modifiedDateField: ComponentOptions.buildStringOption(),
   };
@@ -72,6 +81,71 @@ export class FollowItem extends Component {
     this.updateIsFollowed();
   }
 
+  public setFollowed(subscription: ISubscription) {
+    this.container.removeClass('coveo-follow-item-loading');
+    this.subscription = subscription;
+    this.container.addClass('coveo-follow-item-followed');
+    this.text.text(l('SearchAlerts_unFollowing'));
+  }
+
+  public setNotFollowed() {
+    this.container.removeClass('coveo-follow-item-loading');
+    this.subscription = <ISubscription>FollowItem.buildFollowRequest(this.getId(), this.result.title, this.options);
+    this.container.removeClass('coveo-follow-item-followed');
+    this.text.text(l('SearchAlerts_follow'));
+  }
+
+  /**
+   * Follows the item if it is not currently being followed. Stops following the item otherwise.
+   * By default, this method is called when the user clicks the **Follow Item** menu item under {@link Settings}.
+   */
+  public toggleFollow() {
+    if (!this.container.hasClass('coveo-follow-item-loading')) {
+      this.container.removeClass('coveo-follow-item-followed');
+      this.container.addClass('coveo-follow-item-loading');
+      if (this.subscription.id) {
+        this.logAnalyticsEvent(analyticsActionCauseList.searchAlertsUnfollowDocument);
+        this.queryController.getEndpoint()
+          .deleteSubscription(this.subscription)
+          .then(() => {
+            let eventArgs: ISearchAlertsEventArgs = {
+              subscription: this.subscription,
+              dom: this.element
+            };
+            $$(this.root).trigger(SearchAlertsEvents.searchAlertsDeleted, eventArgs);
+          })
+          .catch(() => {
+            this.container.removeClass('coveo-follow-item-loading');
+            let eventArgs: ISearchAlertsFailEventArgs = {
+              dom: this.element
+            };
+            $$(this.root).trigger(SearchAlertsEvents.searchAlertsFail, eventArgs);
+          });
+      } else {
+        this.logAnalyticsEvent(analyticsActionCauseList.searchAlertsFollowDocument);
+        this.queryController.getEndpoint().follow(this.subscription)
+          .then((subscription: ISubscription) => {
+            let eventArgs: ISearchAlertsEventArgs = {
+              subscription: subscription,
+              dom: this.element
+            };
+            $$(this.root).trigger(SearchAlertsEvents.searchAlertsCreated, eventArgs);
+          })
+          .catch(() => {
+            this.container.removeClass('coveo-follow-item-loading');
+            let eventArgs: ISearchAlertsFailEventArgs = {
+              dom: this.element
+            };
+            $$(this.root).trigger(SearchAlertsEvents.searchAlertsFail, eventArgs);
+          });
+      }
+    }
+  }
+
+  protected getText(): string {
+    return this.text.text();
+  }
+
   private updateIsFollowed() {
     this.queryController.getEndpoint()
       .listSubscriptions()
@@ -95,70 +169,8 @@ export class FollowItem extends Component {
       });
   }
 
-  public setFollowed(subscription: ISubscription) {
-    this.container.removeClass('coveo-follow-item-loading');
-    this.subscription = subscription;
-    this.container.addClass('coveo-follow-item-followed');
-    this.text.text(l('SearchAlerts_unFollowing'));
-  }
-
-  public setNotFollowed() {
-    this.container.removeClass('coveo-follow-item-loading');
-    this.subscription = <ISubscription>FollowItem.buildFollowRequest(this.getId(), this.result.title, this.options);
-    this.container.removeClass('coveo-follow-item-followed');
-    this.text.text(l('SearchAlerts_follow'));
-  }
-
-  protected getText(): string {
-    return this.text.text();
-  }
-
-  /**
-   * Follows the result if it was not followed and stops following the result if it was followed.
-   */
-  public toggleFollow() {
-    if (!this.container.hasClass('coveo-follow-item-loading')) {
-      this.container.removeClass('coveo-follow-item-followed');
-      this.container.addClass('coveo-follow-item-loading');
-      if (this.subscription.id) {
-        this.queryController.getEndpoint()
-          .deleteSubscription(this.subscription)
-          .then(() => {
-            let eventArgs: ISearchAlertsEventArgs = {
-              subscription: this.subscription,
-              dom: this.element
-            };
-            $$(this.root).trigger(SearchAlertsEvents.searchAlertsDeleted, eventArgs);
-          })
-          .catch(() => {
-            this.container.removeClass('coveo-follow-item-loading');
-            let eventArgs: ISearchAlertsFailEventArgs = {
-              dom: this.element
-            };
-            $$(this.root).trigger(SearchAlertsEvents.searchAlertsFail, eventArgs);
-          });
-      } else {
-        this.queryController.getEndpoint().follow(this.subscription)
-          .then((subscription: ISubscription) => {
-            let eventArgs: ISearchAlertsEventArgs = {
-              subscription: subscription,
-              dom: this.element
-            };
-            $$(this.root).trigger(SearchAlertsEvents.searchAlertsCreated, eventArgs);
-          })
-          .catch(() => {
-            this.container.removeClass('coveo-follow-item-loading');
-            let eventArgs: ISearchAlertsFailEventArgs = {
-              dom: this.element
-            };
-            $$(this.root).trigger(SearchAlertsEvents.searchAlertsFail, eventArgs);
-          });
-      }
-    }
-  }
-
   private handleSubscriptionDeleted(args: ISearchAlertsEventArgs) {
-    if (args.subscription.type == SUBSCRIPTION_TYPE.followDocument) {
+    if (args.subscription && args.subscription.type == SUBSCRIPTION_TYPE.followDocument) {
       let typeConfig = <ISubscriptionItemRequest>args.subscription.typeConfig;
       if (typeConfig.id == this.getId()) {
         this.setNotFollowed();
@@ -167,7 +179,7 @@ export class FollowItem extends Component {
   }
 
   private handleSubscriptionCreated(args: ISearchAlertsEventArgs) {
-    if (args.subscription.type == SUBSCRIPTION_TYPE.followDocument) {
+    if (args.subscription && args.subscription.type == SUBSCRIPTION_TYPE.followDocument) {
       let typeConfig = <ISubscriptionItemRequest>args.subscription.typeConfig;
       if (typeConfig.id == this.getId()) {
         this.setFollowed(args.subscription);
@@ -202,6 +214,17 @@ export class FollowItem extends Component {
       typeConfig: typeCofig,
       name: title
     };
+  }
+
+  private logAnalyticsEvent(type: IAnalyticsActionCause) {
+    this.usageAnalytics.logCustomEvent<IAnalyticsSearchAlertsFollowDocumentMeta>(type, {
+      author: QueryUtils.getAuthor(this.result),
+      documentLanguage: QueryUtils.getLanguage(this.result),
+      documentSource: QueryUtils.getSource(this.result),
+      documentTitle: this.result.title,
+      contentIDValue: QueryUtils.getUniqueId(this.result).fieldValue,
+      contentIDKey: QueryUtils.getUniqueId(this.result).fieldUsed
+    }, this.element);
   }
 }
 

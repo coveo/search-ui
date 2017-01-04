@@ -12,28 +12,33 @@ export interface IExportToExcelOptions {
 }
 
 /**
- * This component allows users to export the current search results in a Microsoft Excel (.xlsx) format.
+ * This component allows the user to export their current search results to the Microsoft Excel format (.xlsx).
  * It populates the {@link Settings} component menu.
  */
 export class ExportToExcel extends Component {
   static ID = 'ExportToExcel';
+
   /**
-   * The options for the component
+   * The options for the ExportToExcel
    * @componentOptions
    */
   static options: IExportToExcelOptions = {
+
     /**
-     * The number of results included in the exported Excel file.<br/>
-     * The default value of <code>100</code> makes the generation and the download of the resulting Excel file
-     * last about 1 second.<br/>
-     * Increasing this value will exponentially increase the time needed to create the Excel file.<br/>
-     * It is not recommended to go above the default index limit of 1000 search results.
+     * Specifies the number of results to include in the exported Excel file.
+     *
+     * Generating and downloading the Excel file should take a reasonably short amount of time when using the default
+     * value. However, this amount of time will increase exponentially if you set the value higher.
+     *
+     * It is therefore not recommended to set this value above the default index limit of 1000 search results.
+     *
+     * Default value is `100`.
      */
     numberOfResults: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1 })
   };
 
   /**
-   * Create a new ExportToExcel component
+   * Creates a new ExportToExcel component
    * @param element
    * @param options
    * @param bindings
@@ -54,7 +59,9 @@ export class ExportToExcel extends Component {
   }
 
   /**
-   * Download the Excel representation of the current query.
+   * Downloads the Excel representation of the current query.
+   *
+   * This method also logs an `exportToExcel` event in the usage analytics.
    */
   public download() {
     let query = this.queryController.getLastQuery();
