@@ -539,9 +539,9 @@ export class FacetSearch {
     let idx = _.indexOf(allSelectables, current);
     let target: Dom;
     if (idx < allSelectables.length - 1) {
-      target = $$(allSelectables[idx + 1])
+      target = $$(allSelectables[idx + 1]);
     } else {
-      target = $$(allSelectables[0])
+      target = $$(allSelectables[0]);
     }
     this.highlightAndShowCurrentResultWithKeyboard(target);
   }
