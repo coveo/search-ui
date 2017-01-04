@@ -25,6 +25,7 @@ import FastClick = require('fastclick');
 import timezone = require('jstz');
 import {SentryLogger} from '../../misc/SentryLogger';
 import {IComponentBindings} from '../Base/ComponentBindings';
+import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -626,7 +627,13 @@ export class StandaloneSearchInterface extends SearchInterface {
   public redirectToSearchPage(searchPage: string) {
     let stateValues = this.queryStateModel.getAttributes();
     let uaCausedBy = this.usageAnalytics.getCurrentEventCause();
+
     if (uaCausedBy != null) {
+      // for legacy reason, searchbox submit were always logged a search from link in an external search box.
+      // transform them if that's what we hit.
+      if (uaCausedBy == analyticsActionCauseList.searchboxSubmit.name) {
+        uaCausedBy = analyticsActionCauseList.searchFromLink.name;
+      }
       stateValues['firstQueryCause'] = uaCausedBy;
     }
     let uaMeta = this.usageAnalytics.getCurrentEventMeta();

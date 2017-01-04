@@ -47,5 +47,12 @@ export function StandaloneSearchInterfaceTest() {
       cmp.queryController.executeQuery();
       expect(windoh.location.href).toContain('firstQueryCause=omniboxAnalytics');
     });
+
+    it('should transform search box submit to search from link', () => {
+      // for legacy reason, searchbox submit were always logged a search from link in an external search box.
+      cmp.usageAnalytics.logSearchEvent(analyticsActionCauseList.searchboxSubmit, { 'foo': 'bar' });
+      cmp.queryController.executeQuery();
+      expect(windoh.location.href).toContain('firstQueryCause=searchFromLink');
+    });
   });
 }
