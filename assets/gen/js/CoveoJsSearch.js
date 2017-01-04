@@ -1746,8 +1746,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	exports.version = {
-	    'lib': '1.1865.2-beta',
-	    'product': '1.1865.2-beta',
+	    'lib': '1.1865.3-beta',
+	    'product': '1.1865.3-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -12603,6 +12603,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var FastClick = __webpack_require__(117);
 	var timezone = __webpack_require__(118);
 	var SentryLogger_1 = __webpack_require__(119);
+	var AnalyticsActionListMeta_1 = __webpack_require__(120);
 	/**
 	 * This component is the root and main component of your search interface.<br/>
 	 * You should place every other component inside this component.<br/>
@@ -13122,16 +13123,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    };
 	    StandaloneSearchInterface.prototype.redirectToSearchPage = function (searchPage) {
+	        var _this = this;
 	        var stateValues = this.queryStateModel.getAttributes();
 	        var uaCausedBy = this.usageAnalytics.getCurrentEventCause();
 	        if (uaCausedBy != null) {
+	            // for legacy reason, searchbox submit were always logged a search from link in an external search box.
+	            // transform them if that's what we hit.
+	            if (uaCausedBy == AnalyticsActionListMeta_1.analyticsActionCauseList.searchboxSubmit.name) {
+	                uaCausedBy = AnalyticsActionListMeta_1.analyticsActionCauseList.searchFromLink.name;
+	            }
 	            stateValues['firstQueryCause'] = uaCausedBy;
 	        }
 	        var uaMeta = this.usageAnalytics.getCurrentEventMeta();
 	        if (uaMeta != null) {
 	            stateValues['firstQueryMeta'] = uaMeta;
 	        }
-	        this._window.location.href = searchPage + '#' + HashUtils_1.HashUtils.encodeValues(stateValues);
+	        // By using a setTimeout, we allow other possible code related to the search box / magic box time to complete.
+	        // eg: onblur of the magic box.
+	        setTimeout(function () {
+	            _this._window.location.href = searchPage + '#' + HashUtils_1.HashUtils.encodeValues(stateValues);
+	        }, 0);
 	    };
 	    StandaloneSearchInterface.prototype.searchboxIsEmpty = function () {
 	        return Utils_1.Utils.isEmptyString(this.queryStateModel.get(QueryStateModel_1.QueryStateModel.attributesEnum.q));
@@ -19109,12 +19120,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	        var allSelectables = this.getSelectables();
 	        var idx = _.indexOf(allSelectables, current);
+	        var target;
 	        if (idx < allSelectables.length - 1) {
-	            Dom_1.$$(allSelectables[idx + 1]).addClass('coveo-current');
+	            target = Dom_1.$$(allSelectables[idx + 1]);
 	        }
 	        else {
-	            Dom_1.$$(allSelectables[0]).addClass('coveo-current');
+	            target = Dom_1.$$(allSelectables[0]);
 	        }
+	        this.highlightAndShowCurrentResultWithKeyboard(target);
 	    };
 	    FacetSearch.prototype.moveCurrentResultUp = function () {
 	        var current = Dom_1.$$(this.searchResults).find('.coveo-current');
@@ -19123,12 +19136,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	        var allSelectables = this.getSelectables();
 	        var idx = _.indexOf(allSelectables, current);
+	        var target;
 	        if (idx > 0) {
-	            Dom_1.$$(allSelectables[idx - 1]).addClass('coveo-current');
+	            target = Dom_1.$$(allSelectables[idx - 1]);
 	        }
 	        else {
-	            Dom_1.$$(allSelectables[allSelectables.length - 1]).addClass('coveo-current');
+	            target = Dom_1.$$(allSelectables[allSelectables.length - 1]);
 	        }
+	        this.highlightAndShowCurrentResultWithKeyboard(target);
+	    };
+	    FacetSearch.prototype.highlightAndShowCurrentResultWithKeyboard = function (target) {
+	        target.addClass('coveo-current');
+	        this.searchResults.scrollTop = target.el.offsetTop;
 	    };
 	    FacetSearch.prototype.getSelectables = function (target) {
 	        if (target === void 0) { target = this.searchResults; }
@@ -22397,15 +22416,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    SliderButton.prototype.getMousePosition = function (e) {
 	        var posx = 0;
 	        var posy = 0;
-	        if (this.eventMouseMove == 'touchmove') {
-	            posx = e['originalEvent']['touches'][0].pageX;
-	            posy = e['originalEvent']['touches'][0].pageY;
+	        if (e instanceof TouchEvent) {
+	            posx = e.touches[0].pageX;
+	            posy = e.touches[0].pageY;
 	        }
-	        else if (e.pageX || e.pageY) {
+	        else if (e.pageX && e.pageY) {
 	            posx = e.pageX;
 	            posy = e.pageY;
 	        }
-	        else if (e.clientX || e.clientY) {
+	        else if (e.clientX && e.clientY) {
 	            posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
 	            posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
 	        }
