@@ -643,7 +643,7 @@ export class StandaloneSearchInterface extends SearchInterface {
 
     // By using a setTimeout, we allow other possible code related to the search box / magic box time to complete.
     // eg: onblur of the magic box.
-    setTimeout(()=> {
+    setTimeout(() => {
       this._window.location.href = searchPage + '#' + HashUtils.encodeValues(stateValues);
     }, 0);
   }
