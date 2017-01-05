@@ -25,6 +25,7 @@ import FastClick = require('fastclick');
 import timezone = require('jstz');
 import {SentryLogger} from '../../misc/SentryLogger';
 import {IComponentBindings} from '../Base/ComponentBindings';
+import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -189,7 +190,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   public usageAnalytics: IAnalyticsClient;
 
   /**
-   * Create a new search interface. Initialize letious singleton for the interface (eg : Usage analytic, query controller, state model, etc.)<br/>
+   * Create a new search interface. Initialize various singleton for the interface (eg : Usage analytic, query controller, state model, etc.)<br/>
    * Bind event related to the query.<br/>
    * Will hide and show the loading animation, if activated.<br/>
    * @param element The `HTMLElement` on which the element will be instantiated. This cannot be an `HTMLInputElement` for technical reasons.
@@ -598,7 +599,7 @@ export class StandaloneSearchInterface extends SearchInterface {
     redirectIfEmpty: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
-  constructor(public element: HTMLElement, public options?: IStandaloneSearchInterfaceOptions, public analyticsOptions?, _window = window) {
+  constructor(public element: HTMLElement, public options?: IStandaloneSearchInterfaceOptions, public analyticsOptions?, public _window = window) {
     super(element, ComponentOptions.initComponentOptions(element, StandaloneSearchInterface, options), analyticsOptions, _window);
     $$(this.root).on(QueryEvents.newQuery, (e: Event, args: INewQueryEventArgs) => this.handleRedirect(e, args));
   }
@@ -626,14 +627,25 @@ export class StandaloneSearchInterface extends SearchInterface {
   public redirectToSearchPage(searchPage: string) {
     let stateValues = this.queryStateModel.getAttributes();
     let uaCausedBy = this.usageAnalytics.getCurrentEventCause();
+
     if (uaCausedBy != null) {
+      // for legacy reason, searchbox submit were always logged a search from link in an external search box.
+      // transform them if that's what we hit.
+      if (uaCausedBy == analyticsActionCauseList.searchboxSubmit.name) {
+        uaCausedBy = analyticsActionCauseList.searchFromLink.name;
+      }
       stateValues['firstQueryCause'] = uaCausedBy;
     }
     let uaMeta = this.usageAnalytics.getCurrentEventMeta();
     if (uaMeta != null) {
       stateValues['firstQueryMeta'] = uaMeta;
     }
-    window.location.href = searchPage + '#' + HashUtils.encodeValues(stateValues);
+
+    // By using a setTimeout, we allow other possible code related to the search box / magic box time to complete.
+    // eg: onblur of the magic box.
+    setTimeout(() => {
+      this._window.location.href = searchPage + '#' + HashUtils.encodeValues(stateValues);
+    }, 0);
   }
 
   private searchboxIsEmpty(): boolean {

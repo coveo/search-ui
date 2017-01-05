@@ -48,15 +48,16 @@ export function FacetQueryControllerTest() {
     });
 
     describe('should push a group by into a query builder', function () {
+      let queryBuilder;
       beforeEach(function () {
         (<jasmine.Spy>mockFacet.values.getSelected).and.returnValue([FacetValue.create('foo'), FacetValue.create('bar')]);
         (<jasmine.Spy>mockFacet.values.getExcluded).and.returnValue([]);
         mockFacet.numberOfValues = 5;
+        queryBuilder = new QueryBuilder();
       });
 
       it('should put a group by into a query builder', function () {
         mockFacet.numberOfValues = 23;
-        let queryBuilder = new QueryBuilder();
         facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
         let groupByRequest = queryBuilder.build().groupBy[0];
         expect(groupByRequest.allowedValues).toEqual(jasmine.arrayContaining(['foo', 'bar']));
@@ -66,8 +67,6 @@ export function FacetQueryControllerTest() {
 
       it('should request 1 more value if more / less is enabled', function () {
         mockFacet.options.enableMoreLess = true;
-
-        let queryBuilder = new QueryBuilder();
         facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
         let groupByRequest = queryBuilder.build().groupBy[0];
         expect(groupByRequest.maximumNumberOfValues).toBe(6);
@@ -75,7 +74,6 @@ export function FacetQueryControllerTest() {
 
       it('should request only allowed values if set on the facet', function () {
         mockFacet.options.allowedValues = ['a', 'b', 'c'];
-        let queryBuilder = new QueryBuilder();
         facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
         let groupByRequest = queryBuilder.build().groupBy[0];
         expect(groupByRequest.allowedValues).toEqual(jasmine.arrayContaining(['a', 'b', 'c']));
@@ -84,7 +82,6 @@ export function FacetQueryControllerTest() {
 
       it('should use lookupfield if set on facet', function () {
         mockFacet.options.lookupField = '@lookupfield';
-        let queryBuilder = new QueryBuilder();
         facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
         let groupByRequest = queryBuilder.build().groupBy[0];
         expect(groupByRequest.lookupField).toBe('@lookupfield');
@@ -94,7 +91,6 @@ export function FacetQueryControllerTest() {
         mockFacet.options.computedField = '@computedfield';
         mockFacet.options.computedFieldOperation = 'sum';
 
-        let queryBuilder = new QueryBuilder();
         facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
         let groupByRequest = queryBuilder.build().groupBy[0];
         expect(groupByRequest.computedFields[0]).toEqual(jasmine.objectContaining({
@@ -106,20 +102,31 @@ export function FacetQueryControllerTest() {
       it('should use the additional filter if set on facet', function () {
         mockFacet.options.additionalFilter = '@additionalfilter';
 
-        let queryBuilder = new QueryBuilder();
         facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
         let groupByRequest = queryBuilder.build().groupBy[0];
         expect(groupByRequest.constantQueryOverride).toBe('@additionalfilter');
       });
 
       it('should keep the expression to use for facet search after building a group by', function () {
-        let builder = new QueryBuilder();
-        builder.expression.add('something');
-        builder.constantExpression.add('something constant');
-        facetQueryController.putGroupByIntoQueryBuilder(builder);
-        expect(facetQueryController.expressionToUseForFacetSearch).toBe('something');
+        queryBuilder.expression.add('something');
+        queryBuilder.advancedExpression.add('advanced expression');
+        queryBuilder.constantExpression.add('something constant');
+
+        facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
+
+        expect(facetQueryController.expressionToUseForFacetSearch).toBe('(something) (advanced expression)');
+        expect(facetQueryController.basicExpressionToUseForFacetSearch).toBe('something');
+        expect(facetQueryController.advancedExpressionToUseForFacetSearch).toBe('advanced expression');
         expect(facetQueryController.constantExpressionToUseForFacetSearch).toBe('something constant');
+      });
+
+      it('should clear the expressions used for facet search when calling prepareForNewQuery', () => {
+        queryBuilder.expression.add('something');
+        queryBuilder.constantExpression.add('something constant');
+        facetQueryController.putGroupByIntoQueryBuilder(queryBuilder);
+
         facetQueryController.prepareForNewQuery();
+
         expect(facetQueryController.expressionToUseForFacetSearch).toBeUndefined();
         expect(facetQueryController.constantExpressionToUseForFacetSearch).toBeUndefined();
       });

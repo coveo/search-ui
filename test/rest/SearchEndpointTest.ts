@@ -518,7 +518,8 @@ export function SearchEndpointTest() {
             type: 'query',
             typeConfig: {
               query: qbuilder.build()
-            }
+            },
+            name: 'asdasd'
           });
 
           promiseSuccess
@@ -536,6 +537,7 @@ export function SearchEndpointTest() {
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('accessToken=token');
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
           expect(JSON.parse(jasmine.Ajax.requests.mostRecent().params).frequency).toBe('weekly');
+          expect(JSON.parse(jasmine.Ajax.requests.mostRecent().params).name).toBe('asdasd');
 
           jasmine.Ajax.requests.mostRecent().respondWith({
             status: 200,
@@ -651,7 +653,8 @@ export function SearchEndpointTest() {
       user: {
         manageToken: '1',
         email: '42@coveo.com'
-      }
+      },
+      name: 'asdasd'
     };
   }
 }

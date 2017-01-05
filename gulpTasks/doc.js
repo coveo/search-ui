@@ -13,7 +13,7 @@ gulp.task('doc', ['copyBinToDoc', 'buildPlayground'], function () {
     module: 'CommonJS',
     includeDeclarations: true,
     theme: 'docs/theme',
-    name: 'Coveo search ui documentation',
+    name: 'Coveo JavaScript Search Framework - Reference Documentation',
     readme: 'README.md',
     externalPattern: '**/{typings,lib,node_modules}/**',
     ignoreCompilerErrors: true
@@ -22,12 +22,13 @@ gulp.task('doc', ['copyBinToDoc', 'buildPlayground'], function () {
   var project = app.convert(src);
   app.generateDocs(project, 'docgen');
   app.generateJson(project, './bin/docgen/docgen.json', 'https://coveo.github.io/search-ui/');
+  gulp.src('./readme.png').pipe(gulp.dest('./docgen'));
 });
 
 gulp.task('copyBinToDoc', function () {
   return gulp.src('./bin/{js,image,css}/**/*')
-      .pipe(gulp.dest('./docs/theme/assets/gen'))
-})
+    .pipe(gulp.dest('./docs/theme/assets/gen'))
+});
 
 gulp.task('buildPlayground', shell.task([
   'node node_modules/webpack/bin/webpack.js --config webpackConfigFiles/webpack.playground.config.js'

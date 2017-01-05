@@ -18,10 +18,14 @@ import {IQueryBuilderExpression} from '../ui/Base/QueryBuilder';
 
 export class FacetQueryController {
   public expressionToUseForFacetSearch: string;
+  public basicExpressionToUseForFacetSearch: string;
+  public advancedExpressionToUseForFacetSearch: string;
   public constantExpressionToUseForFacetSearch: string;
   public lastGroupByRequestIndex: number;
   public lastGroupByRequest: IGroupByRequest;
   public lastGroupByResult: IGroupByResult;
+
+  private currentSearchPromise: Promise<IQueryResults>;
 
   constructor(public facet: Facet) {
   }
@@ -77,13 +81,14 @@ export class FacetQueryController {
       groupByRequest.advancedQueryOverride = queryOverrideObject.advanced;
       groupByRequest.constantQueryOverride = queryOverrideObject.constant;
       this.expressionToUseForFacetSearch = queryOverrideObject.withoutConstant;
+      this.basicExpressionToUseForFacetSearch = queryOverrideObject.basic;
+      this.advancedExpressionToUseForFacetSearch = queryOverrideObject.advanced;
       this.constantExpressionToUseForFacetSearch = queryOverrideObject.constant;
     } else {
       let parts = queryBuilder.computeCompleteExpressionParts();
-      this.expressionToUseForFacetSearch = parts.withoutConstant;
-      if (this.expressionToUseForFacetSearch == null) {
-        this.expressionToUseForFacetSearch = '@uri';
-      }
+      this.expressionToUseForFacetSearch = parts.withoutConstant == null ? '@uri' : parts.withoutConstant;
+      this.basicExpressionToUseForFacetSearch = parts.basic == null ? '@uri' : parts.basic;
+      this.advancedExpressionToUseForFacetSearch = parts.advanced;
       this.constantExpressionToUseForFacetSearch = parts.constant;
     }
     this.lastGroupByRequestIndex = queryBuilder.groupByRequests.length;
@@ -98,7 +103,6 @@ export class FacetQueryController {
    * @returns {Promise|Promise<T>}
    */
   public search(params: FacetSearchParameters, oldLength = params.nbResults): Promise<IIndexFieldValue[]> {
-
     return new Promise((resolve, reject) => {
       let onResult = (fieldValues?: IIndexFieldValue[]) => {
         let newLength = fieldValues.length;
@@ -112,31 +116,33 @@ export class FacetQueryController {
         }
       };
 
-      this.facet.getEndpoint().search(params.getQuery())
-        .then((queryResults: IQueryResults) => {
-          if (this.facet.searchInterface.isNewDesign()) {
-            // params.getQuery() will generate a query for all excluded values + some new values
-            // there is no clean way to do a group by and remove some values
-            // so instead we request more values than we need, and crop all the one we don't want
-            let valuesCropped: IGroupByValue[] = [];
-            if (queryResults.groupByResults && queryResults.groupByResults[0]) {
-              _.each(queryResults.groupByResults[0].values, (v: IGroupByValue) => {
-                if (v.lookupValue) {
-                  if (!_.contains(params.alwaysExclude, v.lookupValue.toLowerCase())) {
-                    valuesCropped.push(v);
-                  }
-                } else {
-                  if (!_.contains(params.alwaysExclude, v.value.toLowerCase())) {
-                    valuesCropped.push(v);
-                  }
+      let searchPromise = this.facet.getEndpoint().search(params.getQuery());
+      this.currentSearchPromise = searchPromise;
+
+      searchPromise.then((queryResults: IQueryResults) => {
+        if (this.currentSearchPromise == searchPromise) {
+          // params.getQuery() will generate a query for all excluded values + some new values
+          // there is no clean way to do a group by and remove some values
+          // so instead we request more values than we need, and crop all the one we don't want
+          let valuesCropped: IGroupByValue[] = [];
+          if (queryResults.groupByResults && queryResults.groupByResults[0]) {
+            _.each(queryResults.groupByResults[0].values, (v: IGroupByValue) => {
+              if (v.lookupValue) {
+                if (!_.contains(params.alwaysExclude, v.lookupValue.toLowerCase())) {
+                  valuesCropped.push(v);
                 }
-              });
-            }
-            onResult(_.first(valuesCropped, params.nbResults));
-          } else {
-            resolve(queryResults.groupByResults[0].values);
+              } else {
+                if (!_.contains(params.alwaysExclude, v.value.toLowerCase())) {
+                  valuesCropped.push(v);
+                }
+              }
+            });
           }
-        })
+          onResult(_.first(valuesCropped, params.nbResults));
+        } else {
+          reject();
+        }
+      })
         .catch((error: IEndpointError) => {
           reject(error);
         });
@@ -195,7 +201,7 @@ export class FacetQueryController {
     return _.compact(customSort.concat(filtered));
   }
 
-  private getAllowedValuesFromSelected() {
+  protected getAllowedValuesFromSelected() {
     let facetValues: FacetValue[] = [];
     if (this.facet.options.useAnd || !this.facet.keepDisplayedValuesNextTime) {
       let selected = this.facet.values.getSelected();

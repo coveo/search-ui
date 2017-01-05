@@ -12,6 +12,7 @@ import {Simulate} from '../Simulate';
 import {$$} from '../../src/utils/Dom';
 import {AnalyticsEvents} from '../../src/events/AnalyticsEvents';
 import {Defer} from '../../src/misc/Defer';
+import {IQueryResult} from '../../src/rest/QueryResult';
 
 export function LiveAnalyticsClientTest() {
   describe('LiveAnalyticsClient', function () {
@@ -404,22 +405,55 @@ export function LiveAnalyticsClientTest() {
       }));
     });
 
-    it('should send the result data on click event', () => {
-      var spy = jasmine.createSpy('spy');
-      $$(env.root).on(AnalyticsEvents.changeAnalyticsCustomData, spy);
-      let fakeResult = FakeResults.createFakeResult();
-      client.logClickEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentQuickview, {}, fakeResult, document.createElement('div'));
-      Defer.flush();
-      expect(spy).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({
-        originLevel1: 'default',
-        originLevel2: 'default',
-        originLevel3: jasmine.any(String),
-        language: String['locale'],
-        type: 'ClickEvent',
-        metaObject: jasmine.any(Object),
-        resultData: fakeResult
-      }));
+    describe('with click event', () => {
+      let spy: jasmine.Spy;
+      let fakeResult: IQueryResult;
+
+      beforeEach(() => {
+        spy = jasmine.createSpy('spy');
+        $$(env.root).on(AnalyticsEvents.changeAnalyticsCustomData, spy);
+        fakeResult = FakeResults.createFakeResult();
+      });
+
+      afterEach(() => {
+        spy = null;
+        fakeResult = null;
+      });
+
+      it('should send the result data on click event', () => {
+        client.logClickEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentQuickview, {}, fakeResult, document.createElement('div'));
+        Defer.flush();
+        expect(spy).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({
+          originLevel1: 'default',
+          originLevel2: 'default',
+          originLevel3: jasmine.any(String),
+          language: String['locale'],
+          type: 'ClickEvent',
+          metaObject: jasmine.any(Object),
+          resultData: fakeResult
+        }));
+      });
+
+      it('should send the urihash in metadata on click event', () => {
+        fakeResult.raw['urihash'] = '1234567890';
+        client.logClickEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentQuickview, {}, fakeResult, document.createElement('div'));
+        Defer.flush();
+        expect(spy).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({
+          metaObject: jasmine.objectContaining({ contentIDKey: 'urihash', contentIDValue: '1234567890' }),
+        }));
+      });
+
+      it('should send the uniqueid in metadata on click event, with a precedence over the uri hash', () => {
+        fakeResult.raw['urihash'] = '1234567890';
+        fakeResult.raw['uniqueid'] = '0987654321';
+        client.logClickEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentQuickview, {}, fakeResult, document.createElement('div'));
+        Defer.flush();
+        expect(spy).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({
+          metaObject: jasmine.objectContaining({ contentIDKey: 'uniqueid', contentIDValue: '0987654321' }),
+        }));
+      });
     });
+
 
     describe('search as you type', function () {
       beforeEach(function () {

@@ -31,7 +31,7 @@ export function RecommendationTest() {
         clear: () => { }
       };
       test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
-      Mock.initPageViewScript(store);
+      test.cmp.historyStore = store;
     });
 
     afterEach(() => {
@@ -49,13 +49,6 @@ export function RecommendationTest() {
       expect(() => {
         new Recommendation(document.createElement('div'), optionsWithNoMainInterface);
       }).not.toThrow();
-    });
-
-    it('should work if coveoanalytics is not specified', () => {
-      window['coveoanalytics'] = undefined;
-      test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
-      let simulation = Simulate.query(test.env);
-      expect(simulation.queryBuilder.actionsHistory).toEqual('[]');
     });
 
     it('should not modify the query if it was not triggered by the mainInterface', () => {
@@ -86,6 +79,13 @@ export function RecommendationTest() {
         expect(simulation.queryBuilder.recommendation).toEqual('test');
       });
 
+      it('should not send the recommendation id if disabled', () => {
+        test.cmp.options.id = 'test';
+        test.cmp.disable();
+        let simulation = Simulate.query(test.env);
+        expect(simulation.queryBuilder.recommendation).not.toEqual('test');
+      });
+
       it('should only copy the optionsToUse', () => {
 
         _.extend(options, { optionsToUse: ['expression'] });
@@ -111,6 +111,12 @@ export function RecommendationTest() {
         expect(simulation.queryBuilder.context['user_id']).toEqual(userId);
       });
 
+      it('should not add the userContext in the triggered query if disabled', () => {
+        test.cmp.disable();
+        let simulation = Simulate.query(test.env);
+        expect(simulation.queryBuilder.context).toBeUndefined();
+      });
+
       it('should not add the userContext in the triggered query if userContext was not specified', () => {
         options = {
           mainSearchInterface: mainSearchInterface.env.root
@@ -131,6 +137,7 @@ export function RecommendationTest() {
             mainSearchInterface: mainSearchInterface.env.root
           };
           test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
+          test.cmp.historyStore = store;
           let simulation = Simulate.query(test.env);
           expect(simulation.queryBuilder.actionsHistory).toEqual(JSON.stringify(actionsHistory));
         });
@@ -197,6 +204,20 @@ export function RecommendationTest() {
         expect(test.cmp.element.style.display).toEqual('block');
         test.cmp.hide();
         expect(test.cmp.element.style.display).toEqual('none');
+      });
+
+      it('should hide on being disabled', () => {
+        test.cmp.show();
+        expect(test.cmp.element.style.display).toEqual('block');
+        test.cmp.disable();
+        expect(test.cmp.element.style.display).toEqual('none');
+      });
+
+      it('should show on being enabled', () => {
+        test.cmp.hide();
+        expect(test.cmp.element.style.display).toEqual('none');
+        test.cmp.enable();
+        expect(test.cmp.element.style.display).toEqual('block');
       });
     });
   });

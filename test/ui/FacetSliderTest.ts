@@ -169,6 +169,18 @@ export function FacetSliderTest() {
         $$(env.root).trigger(QueryEvents.noResults);
       });
 
+      it('should draw the graph when a popup is opened', (done) => {
+        $$(env.element).addClass('coveo-facet-column');
+        new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider);
+        showFacetColumn(env);
+
+        $$(env.root).trigger('onPopupOpen');
+        setTimeout(() => {
+          expect(slider.drawGraph).toHaveBeenCalled();
+          done();
+        }, FacetSlider.DEBOUNCED_RESIZE_DELAY + 1);
+      });
+
       function hideFacetColumn(env: Mock.IMockEnvironment) {
         env.element.style.display = 'none';
       }

@@ -21,6 +21,7 @@
         "../lib/jstz.d.ts",
         "../lib/pikaday.d.ts",
         "../lib/coveoanalytics.d.ts",
+        "../lib/latinize.d.ts",
         "../test/lib/jasmine.d.ts",
         "../test/controllers/FacetQueryControllerTest.ts",
         "../test/controllers/HistoryControllerTest.ts",
@@ -130,10 +131,20 @@
         "../test/ui/ThumbnailTest.ts",
         "../test/ui/TriggersTest.ts",
         "../test/ui/ValueElementRendererTest.ts",
+        "../test/ui//ResponsiveComponents/ResponsiveDropdownTest.ts",
+        "../test/ui/ResponsiveComponents/ResponsiveFacetsTest.ts",
+        "../test/ui/ResponsiveComponents/ResponsiveRecommendationTest.ts",
+        "../test/ui/ResponsiveComponents/ResponsiveTabsTest.ts",
+        "../test/ui/ResponsiveComponents/ResponsiveDropdownContentTest.ts",
+        "../test/ui/ResponsiveComponents/RecommendationDropdownContentTest.ts",
+        "../test/ui/ResponsiveComponents/ResponsiveDropdownHeaderTest.ts",
         "../test/utils/CookieUtilsTest.ts",
         "../test/utils/DomTest.ts",
         "../test/utils/HighlightUtilsTest.ts",
         "../test/utils/L10NTest.ts",
-        "../test/utils/StreamHighlightUtilsTest.ts"
+        "../test/utils/StreamHighlightUtilsTest.ts",
+        "../test/utils/KeyboardUtilsTest.ts",
+        "../test/utils/HashUtilsTest.ts",
+        "../test/utils/StringUtilsTest.ts"
     ]
 }

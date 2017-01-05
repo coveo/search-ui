@@ -20,7 +20,6 @@ import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {Recommendation} from '../Recommendation/Recommendation';
 import {RecommendationAnalyticsClient} from './RecommendationAnalyticsClient';
 
-
 export interface IAnalyticsOptions {
   user?: string;
   userDisplayName?: string;
@@ -316,7 +315,7 @@ export class Analytics extends Component {
     }, this.element);
   }
 
-  public static create(element: HTMLElement, options: IAnalyticsOptions, bindings: IComponentBindings) {
+  public static create(element: HTMLElement, options: IAnalyticsOptions, bindings: IComponentBindings): IAnalyticsClient {
     let selector = Component.computeSelectorForType(Analytics.ID);
     let found: HTMLElement[] = [];
     found = found.concat($$(element).findAll(selector));

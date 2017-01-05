@@ -1,7 +1,10 @@
 import {Component} from '../Base/Component';
 import {ComponentOptions} from '../Base/ComponentOptions';
 import {IComponentBindings} from '../Base/ComponentBindings';
-import {SearchAlertsEvents, ISearchAlertsEventArgs, ISearchAlertsFailEventArgs} from '../../events/SearchAlertEvents';
+import {
+  SearchAlertsEvents, ISearchAlertsEventArgs, ISearchAlertsFailEventArgs,
+  ISearchAlertsPopulateMessageEventArgs
+} from '../../events/SearchAlertEvents';
 import {QueryEvents} from '../../events/QueryEvents';
 import {ISubscriptionItemRequest, SUBSCRIPTION_TYPE, ISubscriptionQueryRequest} from '../../rest/Subscription';
 import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
@@ -51,6 +54,40 @@ export class SearchAlertsMessage extends Component {
     return 'coveo-subscriptions-messages';
   }
 
+  public getFollowQueryMessage(query?: string, htmlFormatted = false): string {
+    let populateMessageArguments: ISearchAlertsPopulateMessageEventArgs = {
+      text: []
+    };
+
+    let getAdditionalTextFormatted = () => {
+      return _.map(populateMessageArguments.text, (text) => {
+        return `${htmlFormatted ? '<li>' : '('}${_.escape(text)}${htmlFormatted ? '</li>' : ')'}`;
+      }).join(' ');
+    };
+
+    $$(this.root).trigger(SearchAlertsEvents.searchAlertsPopulateMessage, populateMessageArguments);
+    let additionalMessage = `${htmlFormatted ? '<ul>' : ''}${getAdditionalTextFormatted()}${htmlFormatted ? '</ul>' : ''}`;
+
+    let automaticallyBuiltMessage;
+
+    if (query && populateMessageArguments.text.length != 0) {
+      automaticallyBuiltMessage = `${_.escape(query)} ${additionalMessage}`;
+    }
+
+    if (query && populateMessageArguments.text.length == 0) {
+      automaticallyBuiltMessage = `${_.escape(query)}`;
+    }
+    if (!query && populateMessageArguments.text.length != 0) {
+      automaticallyBuiltMessage = `${additionalMessage}`;
+    }
+
+    if (!query && populateMessageArguments.text.length == 0) {
+      automaticallyBuiltMessage = htmlFormatted ? l('EmptyQuery') : _.unescape(l('EmptyQuery'));
+    }
+
+    return automaticallyBuiltMessage;
+  }
+
   /**
    * Displays a message near the dom attribute.
    * @param dom Specifies where to display the message.
@@ -91,7 +128,7 @@ export class SearchAlertsMessage extends Component {
     if (args.dom != null) {
       if (args.subscription.type == SUBSCRIPTION_TYPE.followQuery) {
         let typeConfig = <ISubscriptionQueryRequest>args.subscription.typeConfig;
-        this.showMessage($$(args.dom), l('SubscriptionsMessageFollowQuery', _.escape(typeConfig.query.q) || l('EmptyQuery')), false);
+        this.showMessage($$(args.dom), l('SubscriptionsMessageFollowQuery', this.getFollowQueryMessage(typeConfig.query.q, true)), false);
       } else {
         let typeConfig = <ISubscriptionItemRequest>args.subscription.typeConfig;
         this.showMessage($$(args.dom), l('SubscriptionsMessageFollow', _.escape(typeConfig.title)), false);
