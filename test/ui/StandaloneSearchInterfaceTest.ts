@@ -34,15 +34,12 @@ export function StandaloneSearchInterfaceTest() {
         key: 'value'
       });
       cmp.queryStateModel.getAttributes = spy;
-
       cmp.queryController.executeQuery();
-
       setTimeout(() => {
         expect(spy).toHaveBeenCalled();
         expect(windoh.location.href).toContain('key=value');
         done();
       }, 0);
-
     });
 
     it('should get the meta from the analytics client', (done) => {
@@ -52,7 +49,6 @@ export function StandaloneSearchInterfaceTest() {
         expect(windoh.location.href).toContain('firstQueryMeta={"foo":"bar"}');
         done();
       }, 0);
-
     });
 
     it('should get the cause from the analytics client', (done) => {

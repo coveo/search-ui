@@ -439,8 +439,8 @@ export class Facet extends Component {
   protected moreElement: HTMLElement;
   protected lessElement: HTMLElement;
 
-  private headerElement: HTMLElement;
-  private footerElement: HTMLElement;
+  protected headerElement: HTMLElement;
+  protected footerElement: HTMLElement;
   private canFetchMore: boolean = true;
   private nbAvailableValues: number;
 
