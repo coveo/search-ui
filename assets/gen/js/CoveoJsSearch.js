@@ -1746,8 +1746,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	exports.version = {
-	    'lib': '1.1865.3-beta',
-	    'product': '1.1865.3-beta',
+	    'lib': '1.1865.4-beta',
+	    'product': '1.1865.4-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -51095,11 +51095,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    HierarchicalFacet.prototype.buildParentChildRelationship = function () {
 	        var _this = this;
-	        var sorted = _.chain(this.getAllValueHierarchy())
-	            .toArray()
-	            .sortBy('level')
-	            .value();
-	        _.each(sorted, function (hierarchy) {
+	        var fragment = document.createDocumentFragment();
+	        fragment.appendChild(this.facetValuesList.valueContainer);
+	        _.each(this.getAllValueHierarchy(), function (hierarchy) {
 	            var hierarchyElement = _this.getElementFromFacetValueList(hierarchy.facetValue);
 	            if (Utils_1.Utils.isNonEmptyArray(hierarchy.childs)) {
 	                _this.placeChildsUnderTheirParent(hierarchy, hierarchyElement);
@@ -51110,6 +51108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            hierarchyElement.style.marginLeft = (_this.options.marginByLevel * (hierarchy.level - _this.options.levelStart)) + 'px';
 	        });
+	        Dom_1.$$(fragment).insertAfter(this.headerElement);
 	    };
 	    HierarchicalFacet.prototype.setValueListContent = function () {
 	        var _this = this;
@@ -51445,7 +51444,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/// <reference path="HierarchicalFacet.ts" />
+	/* WEBPACK VAR INJECTION */(function(_) {/// <reference path="HierarchicalFacet.ts" />
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -51461,12 +51460,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.facetValueElementKlass = facetValueElementKlass;
 	    }
 	    HierarchicalFacetValuesList.prototype.getValuesToBuildWith = function () {
-	        return this.hierarchyFacetValues;
+	        if (this.facet.keepDisplayedValuesNextTime) {
+	            return this.hierarchyFacetValues;
+	        }
+	        else {
+	            var ret_1 = [];
+	            var groupedByLevel = _.chain(this.facet.getAllValueHierarchy())
+	                .toArray()
+	                .groupBy('level')
+	                .value();
+	            _.each(groupedByLevel, function (groupByLevel) {
+	                groupByLevel = groupByLevel.sort(function (first, second) {
+	                    if (first.facetValue.selected === second.facetValue.selected) {
+	                        return (first.hasChildSelected === second.hasChildSelected) ? 0 : first.hasChildSelected ? -1 : 1;
+	                    }
+	                    return 0;
+	                });
+	                ret_1 = ret_1.concat(groupByLevel);
+	            });
+	            return _.pluck(ret_1, 'facetValue');
+	        }
 	    };
 	    return HierarchicalFacetValuesList;
 	}(FacetValuesList_1.FacetValuesList));
 	exports.HierarchicalFacetValuesList = HierarchicalFacetValuesList;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ },
 /* 206 */
