@@ -34,7 +34,7 @@ export interface IQuery {
    * This field is mainly used to pass context such a case description, long textual query or any other form of text that might help in
    * refining the query.
    */
-  bfq?: string;
+  lq?: string;
   /**
    * The disjunction query expression.<br/>
    * This is the disjunctive part of the query expression that is merged with the other expression parts using an OR boolean operator.<br/>

@@ -60,7 +60,7 @@ export class QueryBuilder {
    * This field is mainly used to pass context such a case description, long textual query or any other form of text that might help in
    * refining the query.
    */
-  public bigFuzzyExpression: ExpressionBuilder = new ExpressionBuilder();
+  public longQueryExpression: ExpressionBuilder = new ExpressionBuilder();
   /**
    * Used to build the disjunctive part of the query expression.<br/>
    * When present, this part is evaluated separately from the other expressions and the matching results are merged to those matching expressions, `advancedExpression` and `constantExpression`.<br/>
@@ -233,7 +233,7 @@ export class QueryBuilder {
       q: this.expression.build(),
       aq: this.advancedExpression.build(),
       cq: this.constantExpression.build(),
-      bfq: this.bigFuzzyExpression.build(),
+      lq: this.longQueryExpression.build(),
       dq: this.disjunctionExpression.build(),
 
       searchHub: this.searchHub,
