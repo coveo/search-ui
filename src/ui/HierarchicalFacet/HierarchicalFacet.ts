@@ -597,12 +597,10 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   private buildParentChildRelationship() {
-    let sorted = _.chain(this.getAllValueHierarchy())
-      .toArray()
-      .sortBy('level')
-      .value();
+    let fragment = document.createDocumentFragment();
+    fragment.appendChild(this.facetValuesList.valueContainer);
 
-    _.each(<any>sorted, (hierarchy: IValueHierarchy) => {
+    _.each(<any>this.getAllValueHierarchy(), (hierarchy: IValueHierarchy) => {
       let hierarchyElement = this.getElementFromFacetValueList(hierarchy.facetValue);
       if (Utils.isNonEmptyArray(hierarchy.childs)) {
         this.placeChildsUnderTheirParent(hierarchy, hierarchyElement);
@@ -612,6 +610,10 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
       }
       hierarchyElement.style.marginLeft = (this.options.marginByLevel * (hierarchy.level - this.options.levelStart)) + 'px';
     });
+
+
+
+    $$(<HTMLElement>fragment).insertAfter(this.headerElement);
   }
 
   private setValueListContent() {
