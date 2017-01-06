@@ -1,5 +1,5 @@
 import * as Mock from '../MockEnvironment';
-import { CardActionBar } from '../../src/ui/CardActionBar/CardActionBar';
+import { CardActionBar, ICardActionBarOptions } from '../../src/ui/CardActionBar/CardActionBar';
 import { $$ } from '../../src/utils/Dom';
 
 export function CardActionBarTest() {
@@ -61,7 +61,7 @@ export function CardActionBarTest() {
           });
         });
 
-        it('should always be hidden', function () {
+        it('should always be shown', function () {
           spyOn(test.cmp, 'show');
           $$(parentResult).trigger('click');
           expect(test.cmp.show).not.toHaveBeenCalled();
@@ -72,6 +72,37 @@ export function CardActionBarTest() {
         });
       });
 
+      it('openOnMouseOver set to true should call open when mouseentering the arrow container', function () {
+        test = Mock.advancedComponentSetup<CardActionBar>(CardActionBar, <Mock.AdvancedComponentSetupOptions>{
+          modifyBuilder: b => {
+            parentResult = $$('div', { className: 'CoveoResult' }, $$('div')).el;
+            return b.withElement(<HTMLElement>parentResult.firstChild);
+          },
+          cmpOptions: {
+            openOnMouseOver: true
+          }
+        });
+        spyOn(test.cmp, 'show');
+        const arrowContainer = $$(parentResult).find('.coveo-card-action-bar-arrow-container');
+        $$(arrowContainer).trigger('mouseenter');
+        expect(test.cmp.show).toHaveBeenCalledTimes(1);
+      });
+
+      it('openOnMouseOver set to false should not call open when mouseentering the arrow container', function () {
+        test = Mock.advancedComponentSetup<CardActionBar>(CardActionBar, <Mock.AdvancedComponentSetupOptions>{
+          modifyBuilder: b => {
+            parentResult = $$('div', { className: 'CoveoResult' }, $$('div')).el;
+            return b.withElement(<HTMLElement>parentResult.firstChild);
+          },
+          cmpOptions: {
+            openOnMouseOver: false
+          }
+        });
+        spyOn(test.cmp, 'show');
+        const arrowContainer = $$(parentResult).find('.coveo-card-action-bar-arrow-container');
+        $$(arrowContainer).trigger('mouseenter');
+        expect(test.cmp.show).not.toHaveBeenCalled();
+      });
     });
 
     it('show should add coveo-opened class', function () {

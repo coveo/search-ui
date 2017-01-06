@@ -8,6 +8,7 @@ import {$$} from '../../utils/Dom';
 
 export interface ICardActionBarOptions {
   hidden?: boolean;
+  openOnMouseOver?: boolean;
 }
 
 /**
@@ -34,6 +35,7 @@ export class CardActionBar extends Component {
   static ID = 'CardActionBar';
 
   parentResult: HTMLElement;
+  arrowContainer: HTMLElement;
 
   /**
    * @componentOptions
@@ -46,7 +48,11 @@ export class CardActionBar extends Component {
      * By default, it is hidden and a visual indicator is appended to the parent
      * `Result`.
      */
-    hidden: ComponentOptions.buildBooleanOption({ defaultValue: true })
+    hidden: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    /**
+     * Specifies if the hidden CardActionbar is to be opened when it is hovered over.
+     */
+    openOnMouseOver: ComponentOptions.buildBooleanOption({ defaultValue: true, depend: 'hidden' })
   };
 
   constructor(public element: HTMLElement, public options?: ICardActionBarOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
@@ -57,9 +63,9 @@ export class CardActionBar extends Component {
     Assert.check(this.parentResult !== undefined, 'ActionBar needs to be a child of a Result');
 
     if (this.options.hidden) {
-      this.bindEvents();
       $$(this.parentResult).addClass('coveo-clickable');
       this.appendArrow();
+      this.bindEvents();
     } else {
       this.element.style.transition = 'none';
       this.element.style.transform = 'none';
@@ -83,13 +89,15 @@ export class CardActionBar extends Component {
   private bindEvents() {
     $$(this.parentResult).on('click', () => this.show());
     $$(this.parentResult).on('mouseleave', () => this.hide());
+    if (this.options.openOnMouseOver) {
+      $$(this.arrowContainer).on('mouseenter', () => this.show());
+    }
   }
 
   private appendArrow() {
-    this.parentResult.appendChild(
-      $$('div', { className: 'coveo-card-action-bar-arrow-container' },
+    this.arrowContainer = $$('div', { className: 'coveo-card-action-bar-arrow-container' },
         $$('span', { className: 'coveo-icon coveo-sprites-arrow-up' })).el
-    );
+    this.parentResult.appendChild(this.arrowContainer);
   }
 }
 
