@@ -7,7 +7,6 @@ import {Promise} from 'es6-promise';
 import {IQueryResult} from '../../rest/QueryResult';
 import {Utils} from '../../utils/Utils';
 import {QueryUtils} from '../../utils/QueryUtils';
-import {CardOverlay} from '../CardOverlay/CardOverlay';
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
 import {Assert} from '../../misc/Assert';
 import {$$} from '../../utils/Dom';
