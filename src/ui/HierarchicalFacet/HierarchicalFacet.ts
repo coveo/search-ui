@@ -557,21 +557,22 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
     });
   }
 
-  private placeChildsUnderTheirParent(hierarchy: IValueHierarchy, hierarchyElement: HTMLElement, reverse = true) {
+  private placeChildsUnderTheirParent(hierarchy: IValueHierarchy, hierarchyElement: HTMLElement) {
     let toIterateOver = hierarchy.childs;
-    if (reverse) {
-      toIterateOver = toIterateOver.reverse();
-    }
-    _.each(toIterateOver, (child) => {
-      if (this.getValueHierarchy(child.facetValue.value)) {
-        let childElement = this.getElementFromFacetValueList(child.facetValue);
-        $$(childElement).insertAfter(hierarchyElement);
-        let childFromHierarchy = this.getValueFromHierarchy(child.facetValue);
-        if (childFromHierarchy.childs && childFromHierarchy.childs.length != 0) {
-          this.placeChildsUnderTheirParent(childFromHierarchy, childElement);
+    if (toIterateOver) {
+      let toIterateOverSorted = this.facetValuesList.sortFacetValues(_.pluck(toIterateOver, 'facetValue')).reverse();
+      _.each(toIterateOverSorted, (child) => {
+        let childFromHierarchy = this.getValueFromHierarchy(child);
+        if (childFromHierarchy) {
+          let childElement = this.getElementFromFacetValueList(child);
+          $$(childElement).insertAfter(hierarchyElement);
+          if (childFromHierarchy.childs && childFromHierarchy.childs.length != 0) {
+            this.placeChildsUnderTheirParent(childFromHierarchy, childElement);
+          }
         }
-      }
-    });
+      });
+    }
+
     if (hierarchy.keepOpened) {
       this.open(hierarchy);
       this.showChilds(hierarchy.childs);
@@ -599,8 +600,10 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   private buildParentChildRelationship() {
     let fragment = document.createDocumentFragment();
     fragment.appendChild(this.facetValuesList.valueContainer);
-
-    _.each(<any>this.getAllValueHierarchy(), (hierarchy: IValueHierarchy) => {
+    let sorted = _.map(this.facetValuesList.sortFacetValues(), (facetValue: FacetValue) => {
+      return this.getValueFromHierarchy(facetValue);
+    });
+    _.each(sorted, (hierarchy: IValueHierarchy) => {
       let hierarchyElement = this.getElementFromFacetValueList(hierarchy.facetValue);
       if (Utils.isNonEmptyArray(hierarchy.childs)) {
         this.placeChildsUnderTheirParent(hierarchy, hierarchyElement);
@@ -610,7 +613,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
       }
       hierarchyElement.style.marginLeft = (this.options.marginByLevel * (hierarchy.level - this.options.levelStart)) + 'px';
     });
-    
+
     $$(<HTMLElement>fragment).insertAfter(this.headerElement);
   }
 
@@ -801,10 +804,20 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
 
   private flagParentForSelection(valueHierarchy: IValueHierarchy) {
     let parent = valueHierarchy.parent;
+    let current = valueHierarchy;
     while (parent) {
       let parentInHierarchy = this.getValueHierarchy(parent.facetValue.value);
       parentInHierarchy.hasChildSelected = true;
+      let found = _.find(parentInHierarchy.childs, (child: IValueHierarchy) => {
+        return child.facetValue.value.toLowerCase() == current.facetValue.value.toLowerCase();
+      });
+      if (found) {
+        if (this.getValueHierarchy(found.facetValue.value).hasChildSelected) {
+          found.hasChildSelected = true;
+        }
+      }
       parent = parentInHierarchy.parent;
+      current = parentInHierarchy;
     }
   }
 

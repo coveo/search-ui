@@ -2,7 +2,7 @@
 
 import {FacetValuesList} from '../Facet/FacetValuesList';
 import {FacetValue} from '../Facet/FacetValues';
-import {HierarchicalFacet, IValueHierarchy} from './HierarchicalFacet';
+import {HierarchicalFacet} from './HierarchicalFacet';
 import {IFacetValueElementKlass} from '../Facet/FacetValueElement';
 
 export class HierarchicalFacetValuesList extends FacetValuesList {
@@ -12,27 +12,24 @@ export class HierarchicalFacetValuesList extends FacetValuesList {
     super(facet, facetValueElementKlass);
   }
 
+  public sortFacetValues(hierarchyFacetValues = this.hierarchyFacetValues): FacetValue[] {
+    // Normally facet values are sorted by selected first, then inactive, then excluded values.
+    // For hierarchical, we want selected first, then those that have childs selected, then normal sorting.
+    hierarchyFacetValues = hierarchyFacetValues.sort((first, second) => {
+      if (first.selected === second.selected) {
+        let firstFromHierarchy = this.facet.getValueFromHierarchy(first);
+        let secondFromHierarchy = this.facet.getValueFromHierarchy(second);
+        return (firstFromHierarchy.hasChildSelected === secondFromHierarchy.hasChildSelected) ? 0 : firstFromHierarchy.hasChildSelected ? -1 : 1;
+      }
+    });
+    return hierarchyFacetValues;
+  }
+
   protected getValuesToBuildWith() {
     if (this.facet.keepDisplayedValuesNextTime) {
       return this.hierarchyFacetValues;
     } else {
-      let ret = [];
-      let groupedByLevel = _.chain(this.facet.getAllValueHierarchy())
-        .toArray()
-        .groupBy('level')
-        .value();
-
-      _.each(groupedByLevel, (groupByLevel: IValueHierarchy[]) => {
-        groupByLevel = groupByLevel.sort((first, second) => {
-          if (first.facetValue.selected === second.facetValue.selected) {
-            return (first.hasChildSelected === second.hasChildSelected) ? 0 : first.hasChildSelected ? -1 : 1;
-          }
-          return 0;
-        });
-        ret = ret.concat(groupByLevel);
-      });
-      return _.pluck(ret, 'facetValue');
+      return this.sortFacetValues();
     }
-
   }
 }
