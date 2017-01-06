@@ -219,7 +219,9 @@ export function ResultFoldingTest() {
 
     it('should call showMoreResults when its parent CardOverlay *first* triggers openCardOverlay', function () {
       let parentCardOverlay = $$('div', { className: 'CoveoCardOverlay' }, $$('div')).el;
-      test = Mock.advancedResultComponentSetup<ResultFolding>(ResultFolding, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
+      let fakeResult = FakeResults.createFakeResult();
+      fakeResult.moreResults = () => undefined; // moreResults needs to exist
+      test = Mock.advancedResultComponentSetup<ResultFolding>(ResultFolding, fakeResult, <Mock.AdvancedComponentSetupOptions>{
         element: parentCardOverlay.firstChild
       });
       spyOn(test.cmp, 'showMoreResults');
