@@ -7848,7 +7848,7 @@ body.coveo-modalBox-opened, body.coveo-modalBox-opened .CoveoSearchInterface {
     .CoveoHierarchicalFacet ul.coveo-facet-values .coveo-facet-value.coveo-inactive {
       display: none; }
 
-.coveo-facet-breadcrumb .coveo-values .coveo-value.coveo-hierarchical-facet-value .coveo-hierarchical-breadcrumb-separator {
+.coveo-hierarchical-breadcrumb-separator {
   content: "";
   display: inline-block;
   top: 2px;
