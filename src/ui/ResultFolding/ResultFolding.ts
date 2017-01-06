@@ -253,7 +253,11 @@ export class ResultFolding extends Component {
   }
 
   private bindOverlayEvents() {
-    this.bind.one(this.element.parentElement, 'openCardOverlay', () => this.showMoreResults());
+    this.bind.one(this.element.parentElement, 'openCardOverlay', () => {
+      if (this.showMoreResults) {
+        this.showMoreResults();
+      }
+    });
   }
 }
 
