@@ -20,7 +20,6 @@ import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {Recommendation} from '../Recommendation/Recommendation';
 import {RecommendationAnalyticsClient} from './RecommendationAnalyticsClient';
 
-
 export interface IAnalyticsOptions {
   user?: string;
   userDisplayName?: string;

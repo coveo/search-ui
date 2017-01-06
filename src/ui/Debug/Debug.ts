@@ -19,6 +19,7 @@ import {ModalBox} from '../../ExternalModulesShim';
 import Globalize = require('globalize');
 import {KEYBOARD} from '../../utils/KeyboardUtils';
 import {InitializationEvents} from '../../events/InitializationEvents';
+import {IStringMap} from '../../rest/GenericParam';
 
 export interface IDebugOptions {
   enableDebug?: boolean;
@@ -61,6 +62,109 @@ export class Debug extends RootComponent {
 
     this.localStorageDebug = new LocalStorageUtils<string[]>('DebugPanel');
     this.collapsedSections = this.localStorageDebug.load() || [];
+  }
+
+  public buildFieldsSection(result: IQueryResult) {
+    return this.fetchFields()
+      .then((fieldDescriptions: IStringMap<IFieldDescription>) => {
+        let fields = {};
+        _.each(result.raw, (value: any, key: string) => {
+          let fieldDescription = fieldDescriptions['@' + key];
+          if (fieldDescription == null && key.match(/^sys/)) {
+            fieldDescription = fieldDescriptions['@' + key.substr(3)];
+          }
+          if (fieldDescription == null) {
+            fields['@' + key] = value;
+          } else if (fieldDescription.fieldType == 'Date') {
+            fields['@' + key] = new Date(value);
+          } else if (fieldDescription.splitGroupByField && _.isString(value)) {
+            fields['@' + key] = value.split(/\s*;\s*/);
+          } else {
+            fields['@' + key] = value;
+          }
+        });
+        return fields;
+      });
+  }
+
+  public parseRankingInfo(value: string) {
+    let rankingInfo = {};
+    if (value) {
+      let documentWeights = /Document weights:\n((?:.)*?)\n+/g.exec(value);
+      let termsWeight = /Terms weights:\n((?:.|\n)*)\n+/g.exec(value);
+      let totalWeight = /Total weight: ([0-9]+)/g.exec(value);
+
+      if (documentWeights && documentWeights[1]) {
+        rankingInfo['Document weights'] = this.parseWeights(documentWeights[1]);
+      }
+
+      if (totalWeight && totalWeight[1]) {
+        rankingInfo['Total weight'] = Number(totalWeight[1]);
+      }
+
+      if (termsWeight && termsWeight[1]) {
+        let terms = StringUtils.match(termsWeight[1], /((?:[^:]+: [0-9]+, [0-9]+; )+)\n((?:\w+: [0-9]+; )+)/g);
+        rankingInfo['Terms weights'] = _.object(_.map(terms, (term) => {
+          let words = _.object(_.map(StringUtils.match(term[1], /([^:]+): ([0-9]+), ([0-9]+); /g), (word) => {
+            return [
+              word[1],
+              {
+                Correlation: Number(word[2]),
+                'TF-IDF': Number(word[3]),
+              }
+            ];
+          }));
+          let weights = this.parseWeights(term[2]);
+          return [
+            _.keys(words).join(', '),
+            {
+              terms: words,
+              Weights: weights
+            }];
+        }));
+      }
+    }
+
+    return rankingInfo;
+  }
+
+  public buildStackPanel(stackDebug: any, results?: IQueryResults): { body: HTMLElement; json: any; } {
+    let body = Dom.createElement('div', { className: 'coveo-debug' });
+
+    let keys: any[][] = _.pairs(_.keys(stackDebug));
+
+    keys = keys.sort((a: any[], b: any[]) => {
+      let indexA = _.indexOf(Debug.customOrder, a[1]);
+      let indexB = _.indexOf(Debug.customOrder, b[1]);
+      if (indexA != -1 && indexB != -1) {
+        return indexA - indexB;
+      }
+      if (indexA != -1) {
+        return -1;
+      }
+      if (indexB != -1) {
+        return 1;
+      }
+      return a[0] - b[0];
+    });
+
+    let json = {};
+
+    _.forEach(keys, (key: string[]) => {
+      let section = this.buildSection(key[1]);
+      let build = this.buildStackPanelSection(stackDebug[key[1]], results);
+      section.container.appendChild(build.section);
+      if (build.json != null) {
+        json[key[1]] = build.json;
+      }
+      body.appendChild(section.dom);
+    });
+
+    return { body: body, json: json };
+  }
+
+  public debugInfo() {
+    return null;
   }
 
   private showDebugPanel(builder: (results?: IQueryResults) => { body: HTMLElement; json: any; }) {
@@ -153,41 +257,6 @@ export class Debug extends RootComponent {
 
   private downloadHref(info: any) {
     return 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(info));
-  }
-
-  public buildStackPanel(stackDebug: any, results?: IQueryResults): { body: HTMLElement; json: any; } {
-    let body = Dom.createElement('div', { className: 'coveo-debug' });
-
-    let keys: any[][] = _.pairs(_.keys(stackDebug));
-
-    keys = keys.sort((a: any[], b: any[]) => {
-      let indexA = _.indexOf(Debug.customOrder, a[1]);
-      let indexB = _.indexOf(Debug.customOrder, b[1]);
-      if (indexA != -1 && indexB != -1) {
-        return indexA - indexB;
-      }
-      if (indexA != -1) {
-        return -1;
-      }
-      if (indexB != -1) {
-        return 1;
-      }
-      return a[0] - b[0];
-    });
-
-    let json = {};
-
-    _.forEach(keys, (key: string[]) => {
-      let section = this.buildSection(key[1]);
-      let build = this.buildStackPanelSection(stackDebug[key[1]], results);
-      section.container.appendChild(build.section);
-      if (build.json != null) {
-        json[key[1]] = build.json;
-      }
-      body.appendChild(section.dom);
-    });
-
-    return { body: body, json: json };
   }
 
   private buildStackPanelSection(value: any, results: IQueryResults): { section: HTMLElement; json?: any; } {
@@ -362,72 +431,8 @@ export class Debug extends RootComponent {
     }
   }
 
-  private buildFieldsSection(result: IQueryResult) {
-    return this.fetchFields()
-      .then((fieldDescriptions: { [field: string]: IFieldDescription }) => {
-        let fields = {};
-        _.each(result.raw, (value: any, key: string) => {
-          let fieldDescription = fieldDescriptions['@' + key];
-          if (fieldDescription == null && key.match(/^sys/)) {
-            fieldDescription = fieldDescriptions['@' + key.substr(3)];
-          }
-          if (fieldDescription == null) {
-            fields['@' + key] = value;
-          } else if (fieldDescription.fieldType == 'Date') {
-            fields['@' + key] = new Date(value);
-          } else if (fieldDescription.splitGroupByField) {
-            fields['@' + key] = value.split(/\s*;\s*/);
-          } else {
-            fields['@' + key] = value;
-          }
-        });
-        return fields;
-      });
-  }
-
   private buildRankingInfoSection(result: IQueryResult) {
     return result.rankingInfo && this.parseRankingInfo(result.rankingInfo);
-  }
-
-  public parseRankingInfo(value: string) {
-    let rankingInfo = {};
-    if (value) {
-      let documentWeights = /Document weights:\n((?:.)*?)\n+/g.exec(value);
-      let termsWeight = /Terms weights:\n((?:.|\n)*)\n+/g.exec(value);
-      let totalWeight = /Total weight: ([0-9]+)/g.exec(value);
-
-      if (documentWeights && documentWeights[1]) {
-        rankingInfo['Document weights'] = this.parseWeights(documentWeights[1]);
-      }
-
-      if (totalWeight && totalWeight[1]) {
-        rankingInfo['Total weight'] = Number(totalWeight[1]);
-      }
-
-      if (termsWeight && termsWeight[1]) {
-        let terms = StringUtils.match(termsWeight[1], /((?:[^:]+: [0-9]+, [0-9]+; )+)\n((?:\w+: [0-9]+; )+)/g);
-        rankingInfo['Terms weights'] = _.object(_.map(terms, (term) => {
-          let words = _.object(_.map(StringUtils.match(term[1], /([^:]+): ([0-9]+), ([0-9]+); /g), (word) => {
-            return [
-              word[1],
-              {
-                Correlation: Number(word[2]),
-                'TF-IDF': Number(word[3]),
-              }
-            ];
-          }));
-          let weights = this.parseWeights(term[2]);
-          return [
-            _.keys(words).join(', '),
-            {
-              terms: words,
-              Weights: weights
-            }];
-        }));
-      }
-    }
-
-    return rankingInfo;
   }
 
   private parseWeights(value: string) {
@@ -700,9 +705,5 @@ export class Debug extends RootComponent {
     if (element != null) {
       element.innerHTML = element.innerText;
     }
-  }
-
-  public debugInfo() {
-    return null;
   }
 }

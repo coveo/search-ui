@@ -430,16 +430,16 @@ export class SliderButton {
     }
   }
 
-  private getMousePosition(e: MouseEvent) {
+  private getMousePosition(e: MouseEvent | TouchEvent) {
     var posx = 0;
     var posy = 0;
-    if (this.eventMouseMove == 'touchmove') {
-      posx = e['originalEvent']['touches'][0].pageX;
-      posy = e['originalEvent']['touches'][0].pageY;
-    } else if (e.pageX || e.pageY) {
+    if (e instanceof TouchEvent) {
+      posx = e.touches[0].pageX;
+      posy = e.touches[0].pageY;
+    } else if (e.pageX && e.pageY) {
       posx = e.pageX;
       posy = e.pageY;
-    } else if (e.clientX || e.clientY) {
+    } else if (e.clientX && e.clientY) {
       posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
       posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
     }
@@ -644,15 +644,17 @@ class SliderGraph {
       var sliderOuterHeight = this.slider.element.offsetHeight;
       var width = sliderOuterWidth - this.slider.options.graph.margin.left - this.slider.options.graph.margin.right;
       var height = sliderOuterHeight - this.slider.options.graph.margin.top - this.slider.options.graph.margin.bottom;
+      if (!isNaN(width) && width >= 0 && !isNaN(height) && height >= 0) {
+        this.applyTransformOnSvg(width, height);
+        this.setXAndYRange(width, height);
+        this.setXAndYDomain(data);
 
-      this.applyTransformOnSvg(width, height);
-      this.setXAndYRange(width, height);
-      this.setXAndYDomain(data);
+        var bars = this.svg.selectAll('.coveo-bar').data(data);
+        var currentSliderValues = this.slider.getValues();
+        this.renderGraphBars(bars, width, height, currentSliderValues);
+        this.setGraphBarsTransition(bars, height, currentSliderValues);
+      }
 
-      var bars = this.svg.selectAll('.coveo-bar').data(data);
-      var currentSliderValues = this.slider.getValues();
-      this.renderGraphBars(bars, width, height, currentSliderValues);
-      this.setGraphBarsTransition(bars, height, currentSliderValues);
       this.oldData = data;
     }
   }
@@ -682,7 +684,7 @@ class SliderGraph {
   }
 
   private padBeginningOfGraphWithEmptyData(data: ISliderGraphData[], oneStepOfGraph: number) {
-    if (data[0].start > this.slider.options.start) {
+    if (data[0].start > this.slider.options.start && data[0].start > oneStepOfGraph) {
       var difToFillAtStart = data[0].start - this.slider.options.start;
       var nbOfStepsAtStart = Math.round(difToFillAtStart / oneStepOfGraph);
       var currentStep = data[0].start;

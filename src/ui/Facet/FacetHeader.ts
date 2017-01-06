@@ -215,10 +215,12 @@ export class FacetHeader {
   }
 
   private buildTitle(): HTMLElement {
-    var title = document.createElement('div');
-    $$(title).text(this.options.title);
-    $$(title).addClass('coveo-facet-header-title');
-    return title;
+    var title = $$('div', {
+      title: this.options.title,
+      className: 'coveo-facet-header-title'
+    });
+    title.text(this.options.title);
+    return title.el;
   }
 
   public buildEraser(): HTMLElement {
