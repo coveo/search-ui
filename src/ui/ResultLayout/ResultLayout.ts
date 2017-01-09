@@ -16,6 +16,7 @@ export interface IResultLayoutOptions {
 }
 
 export type ValidLayout = 'list' | 'card' | 'table';
+export const defaultLayout: ValidLayout = 'list'
 
 /**
  * This component allows to switch between multiple {@link ResultList}s with
