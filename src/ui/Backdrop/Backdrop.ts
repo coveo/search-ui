@@ -4,18 +4,23 @@ import {IComponentBindings} from '../Base/ComponentBindings';
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
 import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
 import {IQueryResult} from '../../rest/QueryResult';
+import {$$} from '../../utils/Dom';
 
 export interface IBackdropOptions {
   imageUrl?: string;
   imageField?: string;
   overlayColor?: string;
   overlayGradient?: boolean;
+  clickUrlField?: string;
+  clickUrl?: string;
 }
 
 /**
  * This component is used to render an image URL (either passed as a direct URL
  * or contained in a result's field) as a background image. It is useful for
- * displaying information in front of a dynamic background image.
+ * displaying information in front of a dynamic background image. Optionally, it
+ * also supports linking to an URL when clicked, which can be sourced from a
+ * field or specified manually.
  *
  * Backdrop will automatically initialize components embedded within itself :
  *
@@ -56,12 +61,23 @@ export class Backdrop extends Component {
      *
      * The default value is `false`.
      */
-    overlayGradient: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'overlayColor' })
+    overlayGradient: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'overlayColor' }),
+    /**
+     * If specified, the component will redirect the page to this URL when clicked.
+     */
+    clickUrl: ComponentOptions.buildStringOption(),
+    /**
+     * If specified, the component will redirect the page to the URL contained in this field.
+     * If `clickUrl` is specified, this option will not be considered.
+     */
+    clickUrlField: ComponentOptions.buildStringOption()
   };
 
-  constructor(public element: HTMLElement, public options?: IBackdropOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
+  constructor(public element: HTMLElement, public options?: IBackdropOptions, bindings?: IComponentBindings, public result?: IQueryResult, public _window?: Window) {
     super(element, Backdrop.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Backdrop, options);
+
+    this._window = this._window || window;
 
     let background = '';
     if (this.options.overlayColor) {
@@ -71,6 +87,13 @@ export class Backdrop extends Component {
 
     const imageSource = this.options.imageUrl || result.raw[this.options.imageField];
     background += `url('${imageSource}') center center`;
+
+    const clickUrl = this.options.clickUrl || result.raw[this.options.clickUrlField];
+    if (clickUrl) {
+      $$(this.element).on('click', (e: Event) => {
+        this._window.location.replace(clickUrl);
+      })
+    }
 
     this.element.style.background = background;
     this.element.style.backgroundSize = 'cover';
