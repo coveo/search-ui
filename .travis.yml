@@ -27,25 +27,25 @@ env:
   - secure: CEJ4E2GzA31nJc1T4YdcFuG/1ivaMVbmhc+yFg0f4yGzmiy+VCZn673mhysB7zEOTIfxSyz7ZozkNyKaWFUKwzayNoMI2XfGedtfjtniXYX2+VXDf2zwnPtZB5YnAmR1oTqGKtrXj8ietyz6nd5oUYIIF1RkCpFG9ycMqb6YDT2U8ukt+IxpQO+uJyj1vD82CkW4YAydmUPaeGRSzjXDbi5aGNo63gykv74SBskhISHw/PThQLC1TPyRVnbWKdv24ddykR+BK5ZvwQO23x6APZfGzqd2HKpU2cwK+XULHYgIlkNsjPhys6UpY35TcT+h5/OQBTFXXOFucbgOy2SLsjePe7O+9icbb7T4V63mURXCzxuJviDRpjdw2XlCjT5Oj039ClViGzxlW3q9mO4UreeN4975LzJXPId8dSGYJ46KWUZ9e7SIMxBib26ADDom0oJomiENuHp0rYRAYj6TxDilMw8/OK4FL6VwxK27I8fJ6bw0ADSgU57nuzX1rkPWLNGv5mZlZboHWwI/Bq5tqJXjZEc7m2rO9YUmlFjX+YeNkXSokT0I6KxBTU3mRkXQpHO4nP47bUDWQRiAeeoRhsiQnbdCUBkhSLX0QEJbpBJwx2ZlNYDAweiB3fN7nfxhAwEnVtco4U1UBHci9c+hfOxjDjSav0GXeX+hMM8w56U=
   - secure: q/ewpGNJZGO1IuOTh/+UP6Dc02f7qaXpMUweWTCm+R/MQi7uxhegBpw5GtYbqgC9RU22NXIr1r1Zqeam++iNGawDVoX4RPiRaz9y5ZW8I5ZTk48jA6VhJ0sD5VRbRS8i4MYfqi2qi+SZTRCkI23eedWLyNtQe2SsiWNsfD4wKfJItVp2v3R7LyJtIiZNgCjRTHIDIkYBvhqMejbaE2/+wqnw+jy4KRcJ4N3lJJpShUXv7OVZhVktCnbMA2rxOK/rVqGA09wbdx66NdegF/my7M1562BGs3EZ1bqX1N9jVOqNYOsXI0x6TVcQOTTQX9YmvNBHdU+NaMX1dxog/mqTzrPKNdsYdDIewyehLb4dcC2+QCpGIB0KEEAjVvyHiTL0bfJq5LllJ3QKCGpKHd+AZ84grddmaGZHGm2Caz3g0hqK68gsN0RIoDePl5aUXOu2fvRx4UVlwV6TcesxTSqRD4Cskyb9A544a5dxnSCI0neUEMh6oTG/7WtfyQ7xekjhjI7OG8rEeH+izCgTog5CxlnnpOap+srZqPBrL1mwGz4As3Gvub4kCxr6hGKlgy4MRCzokJXiQSt1iLgCLWb27Gyt1ETSz93lIaIzZs8y+2wFmycbW/7xu6XrD70JRqV5BxZjedcY3NbgTvOLGVod7ga3mY5spl4VpNCYMsa/Iws=
 deploy:
-  provider: npm
-  email: sandbox_JSUI@coveo.com
-  skip_cleanup: true
-  api_key:
-    secure: doH59/t/wV/xU+U07Ml+HKuhDLEVuLxPzP3tKEnTpRYyPwEQ/jhoFaruflSXEZ0TtM5okRR6KxJnzNoHsy+rlkaVza4ZCIKkxs5aBXcS4tq+85OAe8fLe/I2o43Prjx56A1VYMU+4ctz155WdqZ6pKIstKuN90jXW+9wZxVrmMdgv7gJ7p1/4HiP1bK9BqI+Ed3+mO2gl4txVOG5FcWJWU2/0LqCXMctYEUgw+u7GlIe3DgofTKaVY6W1Tav2FCCQCRT3qij8S61DRIclclPQeeyrE1FV+VzAdl0lXbK5fPYzdU2V2vLUNjcfVkwHhFd2Z3H62t7sJ/uUHfc9TZLgFLi3PdhJ1OxXAsYwkRcGhsmhYYaFUTN3dmLjDjWYd1WeUhsGkok8/tWVd12HlCwmMShI2ZvNT9XMjl2km7go8mnuOFgqjiHIPa2j7rRGYVgvjJT8ZZpfqUNkX7/26qcz8YXl/G3j/iFuM3nxqnj/Xr8CG8NhwVdaXZmUu3TFWgb8NAYgCFquZHlBX//liwng/s4R0ilNwc8PQ30GC4Up5fEJHlFBMhQpeCS4o3gUNz7AekAxHruzoSHppsHH3emdes0qSZwVw2H+V+51bdRiR4XZX/ekvB6w0JJyTXPOSAL985TZaGiCAP0lHvnUZPNAru5e09godqjHDHSam4n0c8=
-  on:
-    tags: true
-    repo: coveo/search-ui
-    all_branches: true
-    condition: "! $TRAVIS_TAG =~ .*beta.*"
-deploy:
-  provider: script
-  script: node deploy.beta.js
-  skip_cleanup: true
-  on:
-    tags: true
-    repo: coveo/search-ui
-    all_branches: true
-    condition: "$TRAVIS_TAG =~ .*beta.*"
+  - provider: npm
+    email: sandbox_JSUI@coveo.com
+    skip_cleanup: true
+    api_key:
+      secure: doH59/t/wV/xU+U07Ml+HKuhDLEVuLxPzP3tKEnTpRYyPwEQ/jhoFaruflSXEZ0TtM5okRR6KxJnzNoHsy+rlkaVza4ZCIKkxs5aBXcS4tq+85OAe8fLe/I2o43Prjx56A1VYMU+4ctz155WdqZ6pKIstKuN90jXW+9wZxVrmMdgv7gJ7p1/4HiP1bK9BqI+Ed3+mO2gl4txVOG5FcWJWU2/0LqCXMctYEUgw+u7GlIe3DgofTKaVY6W1Tav2FCCQCRT3qij8S61DRIclclPQeeyrE1FV+VzAdl0lXbK5fPYzdU2V2vLUNjcfVkwHhFd2Z3H62t7sJ/uUHfc9TZLgFLi3PdhJ1OxXAsYwkRcGhsmhYYaFUTN3dmLjDjWYd1WeUhsGkok8/tWVd12HlCwmMShI2ZvNT9XMjl2km7go8mnuOFgqjiHIPa2j7rRGYVgvjJT8ZZpfqUNkX7/26qcz8YXl/G3j/iFuM3nxqnj/Xr8CG8NhwVdaXZmUu3TFWgb8NAYgCFquZHlBX//liwng/s4R0ilNwc8PQ30GC4Up5fEJHlFBMhQpeCS4o3gUNz7AekAxHruzoSHppsHH3emdes0qSZwVw2H+V+51bdRiR4XZX/ekvB6w0JJyTXPOSAL985TZaGiCAP0lHvnUZPNAru5e09godqjHDHSam4n0c8=
+    on:
+      tags: true
+      repo: coveo/search-ui
+      all_branches: true
+      condition: "! $TRAVIS_TAG =~ .*beta.*"
+  - provider: script
+    script: node deploy.beta.js
+    skip_cleanup: true
+    on:
+      tags: true
+      repo: coveo/search-ui
+      all_branches: true
+      condition: "$TRAVIS_TAG =~ .*beta.*"
+
 branches:
   only:
     - master
