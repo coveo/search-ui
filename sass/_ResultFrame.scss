@@ -1,9 +1,9 @@
 .coveo-result-frame, .CoveoResult.coveo-result-frame {
   margin-left: 0;
   display: block;
+  width: 100%;
+  height: 100%;
   .coveo-icon {
-    margin: 0 0 4px 0;
-    float: none;
     &.coveo-icon-with-caption-overlay {
       overflow: visible;
       position: relative;

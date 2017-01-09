@@ -1,4 +1,4 @@
-.CoveoResultList.coveo-faded { 
+.CoveoResultList.coveo-faded {
 	opacity : 0.5;
 }
 
@@ -9,9 +9,18 @@
 	opacity : 0.5;
 	@include transition (opacity .5s);
   }
-	
+
   .coveo-wait-animation {
     display: block;
     margin: 10px auto;
   }
+
+  &.coveo-hidden {
+    display: none;
+  }
+}
+
+.coveo-card-layout {
+  @include display(flex);
+  @include flex-wrap(wrap);
 }

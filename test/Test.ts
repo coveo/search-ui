@@ -311,6 +311,9 @@ ValueElementRendererTest();
 import {ResultsPerPageTest} from './ui/ResultsPerPageTest';
 ResultsPerPageTest();
 
+import {ResultLayoutTest} from './ui/ResultLayoutTest';
+ResultLayoutTest();
+
 import { LogoTest } from './ui/LogoTest';
 LogoTest();
 
@@ -329,8 +332,17 @@ DebugTest();
 import {StreamHighlightUtilsTest} from './utils/StreamHighlightUtilsTest';
 StreamHighlightUtilsTest();
 
+import {BackdropTest} from './ui/BackdropTest';
+BackdropTest();
+
+import { CardActionBarTest } from './ui/CardActionBarTest';
+CardActionBarTest();
+
 import {QuickviewTest} from './ui/QuickviewTest';
 QuickviewTest();
+
+import { CardOverlayTest } from './ui/CardOverlayTest';
+CardOverlayTest();
 
 import {ResponsiveDropdownTest} from './ui/ResponsiveComponents/ResponsiveDropdownTest';
 ResponsiveDropdownTest();
