@@ -92,7 +92,7 @@ export class Backdrop extends Component {
     if (clickUrl) {
       $$(this.element).on('click', (e: Event) => {
         this._window.location.replace(clickUrl);
-      })
+      });
     }
 
     this.element.style.background = background;
