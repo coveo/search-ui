@@ -45,23 +45,6 @@ $border-box-sizing: false;
   padding-top: 10px;
   min-height: 35px;
   overflow: hidden;
-  .coveo-summary-section {
-    display: inline-block;
-    font-size: $font-size-smaller;
-  }
-  .coveo-result-layout-section {
-    @include display(flex);
-    margin-left: auto;
-    padding-right: 10px;
-    border-right: 1px solid $color-light-grey;
-    &.coveo-result-layout-hidden {
-      display: none;
-    }
-  }
-  .coveo-sort-section {
-    @include display(flex);
-    margin-left: 10px;
-  }
   box-shadow: 0 -1px 0px 0px $color-light-grey inset;
   &.coveo-no-results {
     box-shadow: none;
@@ -70,20 +53,44 @@ $border-box-sizing: false;
     box-shadow: none;
   }
 }
+.coveo-summary-section {
+  display: inline-block;
+  font-size: $font-size-smaller;
+}
+.coveo-result-layout-section {
+  @include display(flex);
+  margin-left: auto;
+  padding-right: 10px;
+  border-right: 1px solid $color-light-grey;
+  &.coveo-result-layout-hidden {
+    display: none;
+  }
+}
+.coveo-sort-section {
+  @include display(flex);
+  margin-left: 10px;
+}
+
+@include mediaSelector(800) {
+  .coveo-results-header {
+    padding-right: 10px;
+  }
+}
 
 @include mediaSelector(480) {
+  .coveo-summary-section {
+    width: 100%;
+    margin-bottom: 10px;
+  }
   .coveo-results-header {
-    @include flex-direction(column);
-    > * {
-      margin-bottom: 10px;
-    }
-    .coveo-result-layout-section {
-      border-right: none;
-      margin-left: 0;
-    }
-    .coveo-sort-section {
-      margin-left: 0;
-      margin-bottom: 0;
-    }
+    flex-wrap: wrap;
+  }
+  .coveo-result-layout-section {
+    border-right: none;
+    margin-left: 0;
+  }
+  .coveo-sort-section {
+    margin-left: 0;
+    margin-bottom: 0;
   }
 }
