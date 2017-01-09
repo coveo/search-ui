@@ -47,6 +47,7 @@ export function QueryBuilderTest() {
         queryBuilder.advancedExpression.add('advanced');
         queryBuilder.constantExpression.add('constant');
         queryBuilder.disjunctionExpression.add('disjunction');
+        queryBuilder.longQueryExpression.add('long');
       });
 
       it('and computeCompleteExpression', function () {

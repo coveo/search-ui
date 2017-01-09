@@ -10,3 +10,4 @@ npm-debug.log
 gulp-tsc-tmp*
 environments/conf.js
 docs/theme/assets/gen
+.vscode/
