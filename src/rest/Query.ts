@@ -29,6 +29,13 @@ export interface IQuery {
    */
   cq?: string;
   /**
+   * The contextual text.<br/>
+   * This is the contextual text part of the query. It uses Reveal to pick key keywords from the text and add them to the basic expression.
+   * This field is mainly used to pass context such a case description, long textual query or any other form of text that might help in
+   * refining the query.
+   */
+  lq?: string;
+  /**
    * The disjunction query expression.<br/>
    * This is the disjunctive part of the query expression that is merged with the other expression parts using an OR boolean operator.<br/>
    * When specified, the final expression evaluated by the index ends up being (q aq cq) OR (dq).
