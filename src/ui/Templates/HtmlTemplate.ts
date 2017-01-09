@@ -21,7 +21,7 @@ export class HtmlTemplate extends Template {
     if (condition != null) {
       // Allows to add quotes in data-condition on the templates
       condition = condition.toString().replace(/&quot;/g, '"');
-      this.condition = new Function('obj', 'with(obj||{}){return ' + condition + '}');
+      this.setConditionWithFallback(condition);
     }
 
     this.fields = Template.getFieldFromString(element.innerHTML + ' ' + condition);

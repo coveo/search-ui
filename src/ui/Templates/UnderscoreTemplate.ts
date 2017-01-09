@@ -4,6 +4,8 @@ import {Assert} from '../../misc/Assert';
 import {ComponentOptions, IComponentOptionsFieldsOption} from '../Base/ComponentOptions';
 import {Utils} from '../../utils/Utils';
 import {$$} from '../../utils/Dom';
+import {DefaultResultTemplate} from './DefaultResultTemplate';
+import {Logger} from '../../misc/Logger';
 
 _.templateSettings = {
   evaluate: /(?:<%|{{)([\s\S]+?)(?:%>|}})/g,
@@ -28,16 +30,25 @@ export class UnderscoreTemplate extends Template {
 
     Assert.exists(element);
     var templateString = element.innerHTML;
-    this.template = _.template(templateString);
+    try {
+      this.template = _.template(templateString);
+    } catch (e) {
+      new Logger(this).error('Cannot instantiate underscore template. Might be caused by strict Content-Security-Policy. Will fallback on a default template...', e);
+    }
 
     var condition = $$(element).getAttribute('data-condition');
     if (condition != null) {
-      this.condition = new Function('obj', 'with(obj||{}){return ' + condition + '}');
+      this.setConditionWithFallback(condition);
     }
 
     this.dataToString = (object) => {
       var extended = _.extend({}, object, UnderscoreTemplate.templateHelpers);
-      return this.template(extended);
+      if (this.template) {
+        return this.template(extended);
+      } else {
+        return new DefaultResultTemplate().getFallbackTemplate();
+      }
+
     };
 
     this.fields = Template.getFieldFromString(templateString + ' ' + condition);

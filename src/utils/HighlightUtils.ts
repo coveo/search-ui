@@ -1,7 +1,6 @@
 import {Utils} from './Utils';
 import {IHighlight} from '../rest/Highlight';
 import {Assert} from '../misc/Assert';
-import {$$} from './Dom';
 
 export interface IStringHole {
   begin: number;
@@ -279,43 +278,3 @@ export class HighlightUtils {
     return highlighted;
   }
 }
-
-
-
-export function highlightString(value: string, search: string) {
-  if(_.isEmpty(search)) {
-    return value;
-  }
-
-  let i = 0;
-  let lowercaseValue = value.toLowerCase();
-  while(i < value.length) {
-    let index = lowercaseValue.indexOf(search, i);
-    if(index != -1) {
-      if(i != index) {
-
-      }
-    }
-  }
-  let highlight = $$('span', {
-    className : 'coveo-hightlight'
-  });
-
-
-
-
-  let hightlightTemplate = _.template('<% var i = 0; var lowercaseValue = value.toLowerCase(); while(i < value.length) { %>' +
-    '<% var index = lowercaseValue.indexOf(search, i); if(index != -1) { %>' +
-    '<% if(i != index){ %> <span><%- value.substr(i, index) %></span><% } %>' +
-    '<span class="coveo-hightlight"><%- value.substr(index, search.length) %></span>' +
-    '<% i = index + search.length %></span>' +
-    '<% } else { %>' +
-    '<span><%- value.substr(i) %></span>' +
-    '<% i = value.length; %>' +
-    '<% } %>' +
-    '<% } %>');
-  if (_.isEmpty(search)) {
-    return value;
-  }
-  return hightlightTemplate({ value: value, search: search.toLowerCase() });
-};

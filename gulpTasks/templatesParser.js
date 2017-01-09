@@ -54,7 +54,7 @@ function parseDirectory(directory, conditions, callback) {
       var content = fs.readFileSync(template).toString();
       var templateObj = {
         name: name,
-        type: (extname == '.html' ? 'HtmlTemplate' : 'UnderscoreTemplate'),
+        type: (extname == '.html' || extname == '.ejs' ? 'HtmlTemplate' : 'UnderscoreTemplate'),
         condition: condition,
         subtemplate: subtemplate,
         path: path.dirname(path.relative(directory, template)),
