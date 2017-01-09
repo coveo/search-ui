@@ -164,11 +164,10 @@
 
     &.coveo-clickable {
       cursor: pointer;
-    }
-
-    &:hover {
-      box-shadow: 0 0 0 2px $color-vibrant-blue;
-      border-color: $color-vibrant-blue;
+      &:hover {
+        box-shadow: 0 0 0 2px $color-vibrant-blue;
+        border-color: $color-vibrant-blue;
+      }
     }
 
     .coveo-result-row:first-child {
