@@ -119,10 +119,12 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   public facetValuesList: HierarchicalFacetValuesList;
   public numberOfValuesToShow: number;
   public facetQueryController: HierarchicalFacetQueryController;
+  public topLevelHierarchy: IValueHierarchy[];
+
   private valueHierarchy: { [facetValue: string]: IValueHierarchy };
   private firstPlacement = true;
   private originalNumberOfValuesToShow: number;
-  private topLevelHierarchy: IValueHierarchy[];
+
   private correctLevels: IFlatHierarchy[] = [];
 
   /**
