@@ -44,8 +44,9 @@ export class HierarchicalFacetValuesList extends FacetValuesList {
         let firstFromHierarchy = this.facet.getValueFromHierarchy(first);
         let secondFromHierarchy = this.facet.getValueFromHierarchy(second);
         return (firstFromHierarchy.hasChildSelected === secondFromHierarchy.hasChildSelected) ? 0 : firstFromHierarchy.hasChildSelected ? -1 : 1;
+      } else {
+        return first.selected ? -1 : 1;
       }
-      return 0;
     });
     return hierarchyFacetValues;
   }
