@@ -211,6 +211,7 @@ export enum ComponentOptionsType {
   FIELD,
   FIELDS,
   ICON,
+  COLOR,
   OBJECT,
   QUERY,
   HELPER,
@@ -270,7 +271,7 @@ export class ComponentOptions {
   /**
    * Build an icon option.
    *
-   * Normally, this only means that it will build a string that match a css class for an icon.
+   * Normally, this only means that it will build a string that matches a CSS class for an icon.
    *
    * In the markup, this has no advantage over a plain string. This is mostly useful for the interface editor.
    *
@@ -281,9 +282,22 @@ export class ComponentOptions {
   }
 
   /**
+   * Build a color option.
+   *
+   * Normally, this only means that it will build a string that matches a CSS color
+   *
+   * In the markup, this has no advantage over a plain string. This is mostly useful for the interface editor.
+   *
+   * `data-foo="coveo-sprites-user"` or `data-foo="coveo-sprites-database"`.
+   */
+  static buildColorOption(optionArgs?: IComponentOptions<string>): string {
+    return ComponentOptions.buildOption<string>(ComponentOptionsType.COLOR, ComponentOptions.loadStringOption, optionArgs);
+  }
+
+  /**
    * Build an helper option.
    *
-   * Normally, this only means that it will build a string that match the name of a template helper.
+   * Normally, this only means that it will build a string that matches the name of a template helper.
    *
    * In the markup, this has no advantage over a plain string. This is mostly useful for the interface editor.
    *
