@@ -40,6 +40,7 @@ export class OmniboxValuesList {
       var input = $$(omniboxRowContent).find('input[type=checkbox]');
       $$(input).trigger('change');
     });
+    omniboxRow['no-text-suggestion'] = true;
     return omniboxRow;
   }
 
