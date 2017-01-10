@@ -159,9 +159,9 @@ export function FacetTest() {
 
     it('allows to showWaitingAnimation and hideWaitingAnimation', () => {
       test.cmp.showWaitingAnimation();
-      expect($$(test.cmp.element).find('.coveo-facet-header-wait-animation').style.display).not.toBe('none');
+      expect($$(test.cmp.element).find('.coveo-facet-header-wait-animation').style.visibility).toBe('visible');
       test.cmp.hideWaitingAnimation();
-      expect($$(test.cmp.element).find('.coveo-facet-header-wait-animation').style.display).toBe('none');
+      expect($$(test.cmp.element).find('.coveo-facet-header-wait-animation').style.visibility).toBe('hidden');
     });
 
     it('allows to getValueCaption', () => {
