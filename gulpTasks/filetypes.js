@@ -7,9 +7,9 @@ const utilities = require('./buildUtilities');
 
 
 gulp.task('fileTypes', [ 'sprites' ], function (done) {
-  utilities.ensureDirectory
   readJsonForAllRepositories(function (json) {
     var sass = generateSass(json);
+    utilities.ensureDirectory('bin/sass');
     fs.writeFileSync('bin/sass/_GeneratedIconsNew.scss', sass);
 
     var str = generateStrings(json);

@@ -18,7 +18,10 @@ let plugins = [failPlugin, new webpack.ProvidePlugin({_: 'underscore'}), new Ext
       },
       target: {
         image: path.resolve(__dirname, '../bin/image/spritesNew.png'),
-        css: path.resolve(__dirname, '../bin/css/sprites.styl')
+        css: [path.resolve(__dirname, '../bin/css/sprites.styl'),
+              [path.resolve(__dirname, '../bin/css/allSprites.css'), {
+                format: 'css'
+              }]]
       },
       apiOptions: {
         cssImageRef: '~spritesNew.png'
