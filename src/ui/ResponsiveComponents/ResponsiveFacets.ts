@@ -10,6 +10,7 @@ import {FacetSlider} from '../FacetSlider/FacetSlider';
 import {ResponsiveDropdown} from './ResponsiveDropdown/ResponsiveDropdown';
 import {ResponsiveDropdownContent} from './ResponsiveDropdown/ResponsiveDropdownContent';
 import {ResponsiveDropdownHeader} from './ResponsiveDropdown/ResponsiveDropdownHeader';
+import {QueryEvents, IQuerySuccessEventArgs} from '../../events/QueryEvents';
 
 export class ResponsiveFacets implements IResponsiveComponent {
 
@@ -43,8 +44,8 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.bindDropdownContentEvents();
     this.registerOnOpenHandler();
     this.registerOnCloseHandler();
+    this.registerQueryEvents();
     this.logger = new Logger(this);
-
     if (Utils.isNullOrUndefined(options.responsiveBreakpoint)) {
       this.breakpoint = ResponsiveFacets.RESPONSIVE_BREAKPOINT;
     } else {
@@ -140,6 +141,12 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.dropdown.registerOnCloseHandler(this.dismissFacetSearches, this);
   }
 
+  private registerQueryEvents() {
+    this.coveoRoot.on(QueryEvents.noResults, ()=> this.handleNoResults());
+    this.coveoRoot.on(QueryEvents.querySuccess, (e: Event, data: IQuerySuccessEventArgs)=> this.handleQuerySuccess(data));
+    this.coveoRoot.on(QueryEvents.queryError, ()=> this.handleQueryError());
+  }
+
   private bindDropdownContentEvents() {
     this.dropdown.dropdownContent.element.on('scroll', _.debounce(() => {
       _.each(this.facets, facet => {
@@ -192,5 +199,21 @@ export class ResponsiveFacets implements IResponsiveComponent {
     }
 
     return dropdownHeaderLabel;
+  }
+
+  private handleNoResults() {
+    this.dropdown.dropdownHeader.hide();
+  }
+
+  private handleQueryError() {
+    this.dropdown.dropdownHeader.hide();
+  }
+
+  private handleQuerySuccess(data: IQuerySuccessEventArgs) {
+    if (data.results.totalCount === 0) {
+      this.dropdown.dropdownHeader.hide();
+    } else {
+      this.dropdown.dropdownHeader.show();
+    }
   }
 }
