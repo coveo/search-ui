@@ -197,11 +197,11 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
 
   private registerQueryEvents() {
     let recommendationInstance = <Recommendation>get(this.recommendationRoot.el, SearchInterface);
-    if (recommendationInstance.options.hideIfNoResults) {
-      this.coveoRoot.on(QueryEvents.querySuccess, (e: Event, data: IQuerySuccessEventArgs)=>this.handleRecommnendationQuerySucess(data));
-      this.coveoRoot.on(QueryEvents.noResults, (e: Event, args: INoResultsEventArgs) => this.handleRecommendationNoResults());
+    if (recommendationInstance && recommendationInstance.options.hideIfNoResults) {
+      this.coveoRoot.on(QueryEvents.querySuccess, (e: Event, data: IQuerySuccessEventArgs) => this.handleRecommnendationQuerySucess(data));
+      this.coveoRoot.on(QueryEvents.noResults, (e: Event, data: INoResultsEventArgs) => this.handleRecommendationNoResults());
     }
-    this.coveoRoot.on(QueryEvents.queryError, ()=> this.handleRecommendationQueryError());
+    this.coveoRoot.on(QueryEvents.queryError, () => this.handleRecommendationQueryError());
   }
 
   private handleRecommnendationQuerySucess(data: IQuerySuccessEventArgs) {

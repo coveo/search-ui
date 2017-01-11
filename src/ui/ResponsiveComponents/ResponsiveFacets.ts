@@ -142,9 +142,9 @@ export class ResponsiveFacets implements IResponsiveComponent {
   }
 
   private registerQueryEvents() {
-    this.coveoRoot.on(QueryEvents.noResults, ()=> this.handleNoResults());
-    this.coveoRoot.on(QueryEvents.querySuccess, (e: Event, data: IQuerySuccessEventArgs)=> this.handleQuerySuccess(data));
-    this.coveoRoot.on(QueryEvents.queryError, ()=> this.handleQueryError());
+    this.coveoRoot.on(QueryEvents.noResults, () => this.handleNoResults());
+    this.coveoRoot.on(QueryEvents.querySuccess, (e: Event, data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
+    this.coveoRoot.on(QueryEvents.queryError, () => this.handleQueryError());
   }
 
   private bindDropdownContentEvents() {
