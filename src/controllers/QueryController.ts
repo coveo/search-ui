@@ -138,6 +138,14 @@ export class QueryController extends RootComponent {
   }
 
   /**
+   * Return the last query results set.
+   * @returns {IQueryResults|Array}
+   */
+  public getLastResults() {
+    return this.lastQueryResults;
+  }
+
+  /**
    * Execute a query and return a Promise of IQueryResults.<br/>
    * This will execute the normal query flow, triggering all the necessary query events (newQuery <br/>
    * All components present in the interface will act accordingly (modify the query and render results if needed).
