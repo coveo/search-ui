@@ -139,7 +139,7 @@ export class QueryController extends RootComponent {
 
   /**
    * Return the last query results set.
-   * @returns {IQueryResults|Array}
+   * @returns {IQueryResults}
    */
   public getLastResults() {
     return this.lastQueryResults;
