@@ -20,11 +20,15 @@ let plugins = [failPlugin, new webpack.ProvidePlugin({_: 'underscore'}), new Ext
         image: path.resolve(__dirname, '../bin/image/spritesNew.png'),
         css: [path.resolve(__dirname, '../bin/css/sprites.styl'),
               [path.resolve(__dirname, '../bin/css/allSprites.css'), {
-                format: 'css'
+                formatOpts: {
+                  cssSelector: function(spriteGroup) {
+                  return '.coveo-sprites-' + spriteGroup.name;
+                  }
+                },
               }]]
       },
       apiOptions: {
-        cssImageRef: '~spritesNew.png'
+        cssImageRef: '../image/spritesNew.png',
       },
       retina: {
         classifier: function(spritePath) {
@@ -48,7 +52,7 @@ let plugins = [failPlugin, new webpack.ProvidePlugin({_: 'underscore'}), new Ext
           return spriteDescription;
         },
         targetImage: path.resolve(__dirname, '../bin/image/retinaNew.png'),
-        cssImageRef: '~retinaNew.png'
+        cssImageRef: '../image/retinaNew.png'
       }
     })];
 
