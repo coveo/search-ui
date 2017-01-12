@@ -116,7 +116,7 @@
     "yargs": "^4.7.1"
   },
   "dependencies": {
-    "coveo.analytics": "^0.6.0",
+    "coveo.analytics": "^0.7.0",
     "coveomagicbox": "1.0.x",
     "d3": "^4.2.1",
     "d3-scale": "^1.0.3",
