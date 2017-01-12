@@ -19,9 +19,9 @@ export class BreadcrumbValueList {
       className: 'coveo-facet-breadcrumb'
     }).el;
 
-    let title = DeviceUtils.isMobileDevice() ? $$('div') : $$('span');
+    let title = $$('span');
     title.addClass('coveo-facet-breadcrumb-title');
-    title.text(this.facet.options.title + (DeviceUtils.isMobileDevice() ? '' : ':'));
+    title.text(this.facet.options.title + ':');
     this.elem.appendChild(title.el);
 
     this.valueContainer = $$('span', {
