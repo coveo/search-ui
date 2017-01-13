@@ -551,5 +551,5 @@ function resolvePhrasesToHighlight(): IHighlightPhrase {
 }
 
 function termsToHighlightAreDefined(termsToHighlight, phrasesToHighlight) {
-  return Utils.isNonEmptyArray(_.keys(termsToHighlight)) || Utils.isNonEmptyArray(_.keys(phrasesToHighlight))
+  return Utils.isNonEmptyArray(_.keys(termsToHighlight)) || Utils.isNonEmptyArray(_.keys(phrasesToHighlight));
 }
