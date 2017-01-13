@@ -7,13 +7,14 @@ import {Simulate} from '../Simulate';
 import {IQuery} from '../../src/rest/Query';
 import {ISimulateQueryData} from '../Simulate';
 import {IQueryResult} from '../../src/rest/QueryResult';
+import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
 
 export function FoldingTest() {
-  describe('Folding', function () {
+  describe('Folding', ()=> {
     var test: Mock.IBasicComponentSetup<Folding>;
     var fakeResults: IQueryResults;
 
-    beforeEach(function () {
+    beforeEach(()=> {
       test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
         field: '@fieldname',
         enableExpand: true,
@@ -26,15 +27,16 @@ export function FoldingTest() {
       fakeResults.results[0].raw.fieldname = 'fieldvalue';
     });
 
-    afterEach(function () {
+    afterEach(()=> {
       test = null;
       fakeResults = null;
     });
 
-    describe('exposes options', function () {
 
-      describe('field', function () {
-        it('should send the correct field to the outgoing query', function () {
+    describe('exposes options', ()=> {
+
+      describe('field', ()=> {
+        it('should send the correct field to the outgoing query', ()=> {
           test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
             field: '@myfield'
           });
@@ -42,14 +44,14 @@ export function FoldingTest() {
           expect(data.queryBuilder.filterField).toBe('@myfield');
         });
 
-        it('should throw an error when not specified', function () {
+        it('should throw an error when not specified', ()=> {
           expect(() => Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
             field: null
           })).toThrow();
         });
       });
 
-      it('range should set the proper range to the outgoing query', function () {
+      it('range should set the proper range to the outgoing query', ()=> {
         test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
           field: '@fieldname',
           range: 42
@@ -58,7 +60,7 @@ export function FoldingTest() {
         expect(data.queryBuilder.filterFieldRange).toBe(42);
       });
 
-      it('expandExpression should include the custom expand expression to the expand query', function () {
+      it('expandExpression should include the custom expand expression to the expand query', ()=> {
         test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
           field: '@fieldname',
           expandExpression: 'myExpandExpression'
@@ -71,7 +73,7 @@ export function FoldingTest() {
         }));
       });
 
-      it('maximumExpandedResults should set the number of results properly to the expand query', function () {
+      it('maximumExpandedResults should set the number of results properly to the expand query', ()=> {
         test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
           field: '@fieldname',
           maximumExpandedResults: 42
@@ -85,7 +87,7 @@ export function FoldingTest() {
         data.results.results[0].moreResults();
       });
 
-      it('enableExpand set to true should provide an expand function', function () {
+      it('enableExpand set to true should provide an expand function', ()=> {
         test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
           field: '@fieldname',
           enableExpand: true
@@ -94,7 +96,7 @@ export function FoldingTest() {
         expect(data.results.results[0].moreResults).toEqual(jasmine.any(Function));
       });
 
-      it('enableExpand set to false should not provide an expand function', function () {
+      it('enableExpand set to false should not provide an expand function', ()=> {
         test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
           field: '@fieldname',
           enableExpand: false
@@ -104,10 +106,10 @@ export function FoldingTest() {
       });
     });
 
-    describe('expand', function () {
+    describe('expand', ()=> {
       var queryData: ISimulateQueryData;
 
-      beforeEach(function () {
+      beforeEach(()=> {
         test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
           field: '@fieldname',
           maximumExpandedResults: 7
@@ -115,26 +117,47 @@ export function FoldingTest() {
         queryData = Simulate.query(test.env, { query: { q: 'foo bar' }, results: fakeResults });
       });
 
-      afterEach(function () {
+      afterEach(()=> {
         test = null;
         queryData = null;
       });
 
-      it('should perform query with expected expression when moreResults is called', function () {
+      it('should copy the original query, minus some property', ()=> {
+        let query = new QueryBuilder();
+        query.fieldsToInclude = ['should', 'be', 'included'];
+        query.expression.add('should be there');
+        query.advancedExpression.add('should not be there');
+        fakeResults._folded = null;
+        queryData = Simulate.query(test.env, {
+          query: query.build(),
+          results: fakeResults
+        });
+        queryData.results.results[0].moreResults();
+        expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
+          aq: "@fieldname=fieldvalue",
+          fieldsToInclude: jasmine.arrayContaining(['should', 'be', 'included']),
+          filterField: null,
+          filterFieldRange: null,
+          q: '(should be there) OR @uri'
+        }));
+      });
+
+
+      it('should perform query with expected expression when moreResults is called', ()=> {
         queryData.results.results[0].moreResults();
         expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
           aq: '@fieldname=fieldvalue'
         }));
       });
 
-      it('should include query keywords for highlighting', function () {
+      it('should include query keywords for highlighting', ()=> {
         queryData.results.results[0].moreResults();
         expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
           q: '(foo bar) OR @uri'
         }));
       });
 
-      it('should use the specified maximum number of results', function () {
+      it('should use the specified maximum number of results', ()=> {
         queryData.results.results[0].moreResults();
         expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
           numberOfResults: 7
@@ -142,7 +165,7 @@ export function FoldingTest() {
       });
     });
 
-    it('should rearrange a result that is an attachment if it has a parentResult', function () {
+    it('should rearrange a result that is an attachment if it has a parentResult', ()=> {
       test = Mock.optionsComponentSetup<Folding, IFoldingOptions>(Folding, {
         field: '@fieldname',
         childField: '@childfield',
@@ -158,7 +181,7 @@ export function FoldingTest() {
       expect(data.results.results[0].title).toBe('TitleParentResult');
     });
 
-    it('should set the proper childResults and attachments in multiple folded results', function () {
+    it('should set the proper childResults and attachments in multiple folded results', ()=> {
       var results: IQueryResult[] = [];
       _.times(7, (n) => results.push(FakeResults.createFakeResult(n.toString())));
 
@@ -210,7 +233,7 @@ export function FoldingTest() {
       }));
     });
 
-    it('should sort by the original position', function () {
+    it('should sort by the original position', ()=> {
       var results: IQueryResult[] = [];
       _.times(7, (n) => results.push(FakeResults.createFakeResult(n.toString())));
 
@@ -271,7 +294,7 @@ export function FoldingTest() {
       }));
     });
 
-    it('should remove duplicate from the result set if one is loaded through the parentResult field', function () {
+    it('should remove duplicate from the result set if one is loaded through the parentResult field', ()=> {
       var results: IQueryResult[] = [];
       _.times(7, (n) => results.push(FakeResults.createFakeResult(n.toString())));
 
