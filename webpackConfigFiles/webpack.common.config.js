@@ -27,7 +27,7 @@ if (live) {
 
 module.exports = {
   sassLoader: {
-    globals: [__dirname + '/../bin/sass/_GeneratedIconsNew.scss']
+    globals: [__dirname + '/../bin/css/sprites.scss', __dirname + '/../bin/sass/_GeneratedIconsNew.scss']
   },
   resolve: {
     extensions: ['', '.ts', '.js', '.scss'],

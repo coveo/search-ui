@@ -16,7 +16,7 @@
   border-bottom-left-radius: $default-border-radius;
   border-bottom-right-radius: $default-border-radius;
   .coveo-icon {
-    @extend .coveo-sprites-arrow-down !optional;
+    @include retina-sprite($arrow-down-group);
     position: relative;
     top: 1px;
   }
@@ -28,7 +28,7 @@
 
 .coveo-facet-less {
   .coveo-icon {
-    @extend .coveo-sprites-arrow-up !optional;
+    @extend .coveo-sprites-arrow-up;
   }
   display: none;
   &.coveo-active {

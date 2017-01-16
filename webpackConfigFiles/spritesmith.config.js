@@ -1,4 +1,5 @@
 const SpritesmithPlugin = require('webpack-spritesmith');
+const path = require('path');
 
 module.exports = new SpritesmithPlugin({
       src: {
@@ -7,7 +8,7 @@ module.exports = new SpritesmithPlugin({
       },
       target: {
         image: path.resolve(__dirname, '../bin/image/spritesNew.png'),
-        css: [path.resolve(__dirname, '../bin/css/sprites.styl'),
+        css: [path.resolve(__dirname, '../bin/sass/sprites.scss'),
               [path.resolve(__dirname, '../bin/css/allSprites.css'), {
                 formatOpts: {
                   cssSelector: function(spriteGroup) {
