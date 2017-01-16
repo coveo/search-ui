@@ -310,7 +310,7 @@ TemplateHelpers.registerTemplateHelper('highlight', (content: string, highlights
 
 TemplateHelpers.registerTemplateHelper('highlightStreamText', (content: string, termsToHighlight = resolveTermsToHighlight(), phrasesToHighlight = resolvePhrasesToHighlight(), opts?: IStreamHighlightOptions) => {
   if (Utils.exists(content) && Utils.exists(termsToHighlight) && Utils.exists(phrasesToHighlight)) {
-    if (Utils.isNonEmptyArray(_.keys(termsToHighlight)) || Utils.isNonEmptyArray(_.keys(phrasesToHighlight))) {
+    if (termsToHighlightAreDefined(termsToHighlight, phrasesToHighlight)) {
       return StreamHighlightUtils.highlightStreamText(content, termsToHighlight, phrasesToHighlight, opts);
     } else {
       return content;
@@ -322,7 +322,7 @@ TemplateHelpers.registerTemplateHelper('highlightStreamText', (content: string, 
 
 TemplateHelpers.registerTemplateHelper('highlightStreamHTML', (content: string, termsToHighlight = resolveTermsToHighlight(), phrasesToHighlight = resolvePhrasesToHighlight(), opts?: IStreamHighlightOptions) => {
   if (Utils.exists(content) && Utils.exists(termsToHighlight) && Utils.exists(phrasesToHighlight)) {
-    if (Utils.isNonEmptyArray(termsToHighlight)) {
+    if (termsToHighlightAreDefined(termsToHighlight, phrasesToHighlight)) {
       return StreamHighlightUtils.highlightStreamHTML(content, termsToHighlight, phrasesToHighlight, opts);
     } else {
       return content;
@@ -548,4 +548,8 @@ function resolvePhrasesToHighlight(): IHighlightPhrase {
   if (currentQueryResult) {
     return currentQueryResult.phrasesToHighlight;
   }
+}
+
+function termsToHighlightAreDefined(termsToHighlight, phrasesToHighlight) {
+  return Utils.isNonEmptyArray(_.keys(termsToHighlight)) || Utils.isNonEmptyArray(_.keys(phrasesToHighlight));
 }
