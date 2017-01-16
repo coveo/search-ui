@@ -5,7 +5,7 @@
   },
   "CardChatter": {
     "priority": 3,
-    "value": "(raw.objecttype == 'FeedItem' || raw.objecttype == 'FeedComment') && options.layout === 'card'",
+    "value": "raw.objecttype == 'FeedItem' || raw.objecttype == 'FeedComment'",
     "layout": "card"
   },
   "Chatter": {
@@ -19,7 +19,7 @@
   },
   "CardDropbox": {
     "priority": 2,
-    "value": "raw.connectortype == 'DropboxCrawler' && options.layout === 'card'",
+    "value": "raw.connectortype == 'DropboxCrawler'",
     "layout": "card"
   },
   "Dropbox": {
@@ -33,7 +33,7 @@
   },
   "CardDynamicsCrm": {
     "priority": 2,
-    "value": "raw.dycoveoid != null && options.layout === 'card'",
+    "value": "raw.dycoveoid != null",
     "layout": "card"
   },
   "DynamicsCrm": {
@@ -47,7 +47,7 @@
   },
   "CardDynamicsCrmCase": {
     "priority": 3,
-    "value": "raw.dyincidentid != null && Coveo.DeviceUtils.isSmallScreenWidth()",
+    "value": "raw.dyincidentid != null",
     "layout": "card"
   },
   "DynamicsCrmCase": {
@@ -61,7 +61,7 @@
   },
   "CardEmailThread": {
     "priority": 2,
-    "value": "raw.mailbox != undefined && options.layout === 'card'",
+    "value": "raw.mailbox != undefined",
     "layout": "card"
   },
   "EmailThread": {
@@ -75,7 +75,7 @@
   },
   "CardGoogleDrive": {
     "priority": 2,
-    "value": "raw.connectortype == 'GoogleDriveCrawler' && options.layout === 'card'",
+    "value": "raw.connectortype == 'GoogleDriveCrawler'",
     "layout": "card"
   },
   "GoogleDrive": {
@@ -94,7 +94,7 @@
   },
   "CardLithiumThread": {
     "priority": 2,
-    "value": "raw.connectortype == 'LithiumCrawler' && options.layout === 'card'",
+    "value": "raw.connectortype == 'LithiumCrawler'",
     "layout": "card"
   },
   "LithiumThread": {
@@ -108,7 +108,7 @@
   },
   "CardPeople": {
     "priority": 2,
-    "value": "raw.fullname != undefined && options.layout === 'card'",
+    "value": "raw.fullname != undefined",
     "layout": "card"
   },
   "People": {
@@ -122,7 +122,7 @@
   },
   "CardSalesforceCase": {
     "priority": 3,
-    "value": "(raw.sfcaseid != null) && options.layout === 'card'",
+    "value": "raw.sfcaseid != null",
     "layout": "card"
   },
   "SalesforceCase": {
@@ -136,7 +136,7 @@
   },
   "CardSalesforce": {
     "priority": 2,
-    "value": "(raw.sfid != null || raw.sfid != null) && options.layout === 'card'",
+    "value": "raw.sfid != null",
     "layout": "card"
   },
   "Salesforce": {
@@ -150,7 +150,7 @@
   },
   "CardSharePoint": {
     "priority": 2,
-    "value": "raw.spitemtype != null && (raw.spitemtype != 'List' && options.layout === 'card')",
+    "value": "raw.spitemtype != null && raw.spitemtype != 'List'",
     "layout": "card"
   },
   "SharePoint": {
@@ -164,7 +164,7 @@
   },
   "CardSharePointList": {
     "priority": 2,
-    "value": "raw.spitemtype != null && (raw.spitemtype == 'List' && options.layout === 'card')",
+    "value": "raw.spitemtype != null && raw.spitemtype == 'List'",
     "layout": "card"
   },
   "SharePointList": {
@@ -178,7 +178,7 @@
   },
   "CardYouTubeVideo": {
     "priority": 2,
-    "value": "raw.filetype == 'YouTubeVideo' && options.layout === 'card'",
+    "value": "raw.filetype == 'YouTubeVideo'",
     "layout": "card"
   },
   "YouTubeVideo" : {
@@ -192,7 +192,7 @@
   },
   "CardYouTubePlaylistItem" : {
     "priority": 2,
-    "value": "raw.filetype == 'YouTubePlaylistItem' && options.layout === 'card'",
+    "value": "raw.filetype == 'YouTubePlaylistItem'",
     "layout": "card"
   },
   "YouTubePlaylistItem" : {
@@ -206,7 +206,7 @@
   },
   "CardSlack": {
     "priority": 2,
-    "value": "raw.connectortype == 'SlackCrawler' && options.layout === 'card'",
+    "value": "raw.connectortype == 'SlackCrawler'",
     "layout": "card"
   },
   "Slack": {
