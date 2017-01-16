@@ -16,14 +16,14 @@ function createDirectory(directory) {
 }
 
 function findTemplates(directory, callback) {
-  fsReaddir(directory).then(function (files) {
-    Q.all(files.map(function (file) {
+  fsReaddir(directory).then(files => {
+    Q.all(files.map(file => {
       var filePath = path.join(directory, file);
       var extname = path.extname(file);
       var deferred = Q.defer();
-      fsStat(filePath).then(function (stat) {
+      fsStat(filePath).then(stat => {
         if (stat.isDirectory()) {
-          findTemplates(filePath, function (subTemplates) {
+          findTemplates(filePath, subTemplates => {
             deferred.resolve(subTemplates);
           });
         } else if (stat.isFile() && (extname == '.ejs' || extname == '.html')) {
@@ -33,19 +33,13 @@ function findTemplates(directory, callback) {
         }
       });
       return deferred.promise;
-    })).then(function (results) {
-      var templates = [];
-      results.forEach(function (file) {
-        templates = templates.concat(file)
-      });
-      callback(templates)
-    });
+    })).then(results => callback(results.reduce((r1, r2) => r1.concat(r2))));
   });
 }
 
 function parseDirectory(directory, conditions, callback) {
-  findTemplates(directory, function (templates) {
-    callback(templates.map(function (template) {
+  findTemplates(directory, templates => {
+    callback(templates.map(template => {
       var extname = path.extname(template);
       var name = path.basename(template, extname);
       var subtemplate = (name.indexOf("_") == 0);
@@ -64,19 +58,17 @@ function parseDirectory(directory, conditions, callback) {
       buildRegisterTemplate(templateObj);
       buildTemplateHtml(templateObj);
       return templateObj;
-    }).sort(function (a, b) {
-      return a.priority < b.priority ? 1 : -1;
-    }));
+    }).sort((a, b) => a.priority < b.priority ? 1 : -1));
   });
 }
 
 function buildRegisterTemplate(template) {
   template.js = 'Coveo.TemplateCache.registerTemplate(' + [
-        JSON.stringify(template.name),
-        'Coveo.' + template.type + '.fromString(' + JSON.stringify(template.content) + (template.condition != null ? ', ' + JSON.stringify(template.condition.value) : '') + ')',
-        (!template.subtemplate).toString(),
-        (!template.subtemplate).toString()
-      ].join(', ') + ')';
+    JSON.stringify(template.name),
+    'Coveo.' + template.type + '.fromString(' + JSON.stringify(template.content) + (template.condition != null ? ', ' + JSON.stringify(template.condition.value) : '') + ')',
+    (!template.subtemplate).toString(),
+    (!template.subtemplate).toString()
+  ].join(', ') + ')';
 }
 
 function buildTemplateHtml(template) {
@@ -88,25 +80,25 @@ function buildTemplateHtml(template) {
 
 function compileTemplates(directory, destination, fileName, conditions, done) {
   createDirectory(destination);
-  parseDirectory(directory, conditions, function (templates) {
+  parseDirectory(directory, conditions, templates => {
     var groupedTemplates = {};
     groupedTemplates[fileName] = [];
-    templates.forEach(function (template) {
+    templates.forEach(template => {
       if (groupedTemplates[template.path] == null) {
         groupedTemplates[template.path] = [];
       }
       groupedTemplates[template.path].push(template.js);
       groupedTemplates[fileName].push(template.js);
     });
-    Q.all(Object.keys(groupedTemplates).map(function (key) {
-          return fsWriteFile(path.join(destination, key + '.js'), groupedTemplates[key].join('\n'));
-        }))
-        .catch(function (e) {
-          done(e)
-        })
-        .then(function () {
-          done()
-        });
+    Q.all(Object.keys(groupedTemplates).map(key => {
+      return fsWriteFile(path.join(destination, key + '.js'), groupedTemplates[key].join('\n'));
+    }))
+    .catch(e => {
+      done(e)
+    })
+    .then(() => {
+      done()
+    });
   })
 }
 
