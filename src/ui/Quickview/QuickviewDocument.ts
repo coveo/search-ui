@@ -225,18 +225,13 @@ export class QuickviewDocument extends Component {
         // The 'scrolling' part is required otherwise the hack doesn't work.
         //
         // http://stackoverflow.com/questions/23083462/how-to-get-an-iframe-to-be-responsive-in-ios-safari
-        cssText += 'body, html { height: 1px !important; min-height: 100%; overflow: scroll; }';
+        cssText += 'body, html { height: 1px !important; min-height: 100%; width: 1px !important; min-width: 100%; overflow: scroll; }';
         $$(iframe).setAttribute('scrolling', 'no');
 
         // Some content is cropped on iOs if a margin is present
         // We remove it and add one on the iframe wrapper.
         cssText += 'body, html {margin: auto}';
         iframe.parentElement.style.margin = '0 0 5px 5px';
-
-        // While we're on the topic of iOS Safari: This magic trick prevents iOS from NOT
-        // displaying the content of the iframe. If we don't do this, you'll see the body
-        // of the iframe ONLY when viewing the page in the tab switcher.  Isn't that *magical*?
-        iframe.style.position = 'relative';
       }
 
       if ('styleSheet' in style) {
