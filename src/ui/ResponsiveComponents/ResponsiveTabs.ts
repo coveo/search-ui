@@ -94,7 +94,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
   private addTabsToDropdown(tabs: HTMLElement[]): void {
     let currentTab;
-    if (!this.tabSection.find('.coveo-tab-dropdown-header')) {
+    if (!this.tabSection.find('#coveo-tab-dropdown-header')) {
       let facetDropdownHeader = this.tabSection.find('.coveo-facet-dropdown-header');
       if (facetDropdownHeader) {
         this.dropdownHeader.insertBefore(facetDropdownHeader);
@@ -166,7 +166,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private isLargeFormatOverflowing(): boolean {
     let virtualTabSection = $$(<HTMLElement>this.tabSection.el.cloneNode(true));
 
-    let dropdownHeader = virtualTabSection.find('.coveo-tab-dropdown-header');
+    let dropdownHeader = virtualTabSection.find('#coveo-tab-dropdown-header');
     if (dropdownHeader) {
       virtualTabSection.el.removeChild(dropdownHeader);
     }
@@ -225,7 +225,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
     this.documentClickListener = event => {
       if (Utils.isHtmlElement(event.target)) {
         let eventTarget = $$(<HTMLElement>event.target);
-        if (!eventTarget.closest('coveo-tab-list-container') && !eventTarget.closest('coveo-tab-dropdown-header') && !eventTarget.closest('coveo-tab-dropdown')) {
+        if (!eventTarget.closest('coveo-tab-list-container') && !eventTarget.isDescendant(this.dropdownHeader.el) && !eventTarget.closest('coveo-tab-dropdown')) {
           this.closeDropdown();
         }
       }
@@ -334,7 +334,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
   private positionPopup() {
     PopupUtils.positionPopup(this.dropdownContent.el, this.dropdownHeader.el, this.coveoRoot.el,
-      { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM }, this.coveoRoot.el);
+      { horizontal: HorizontalAlignment.INNERRIGHT, vertical: VerticalAlignment.BOTTOM, verticalOffset: 0 }, this.coveoRoot.el);
   }
 
   private getTabsInTabSection(): HTMLElement[] {
