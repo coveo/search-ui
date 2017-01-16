@@ -64,7 +64,7 @@ export class ResultLayout extends Component {
 
     this.resultLayoutSection = $$(this.element).closest('.coveo-result-layout-section');
 
-    this.bind.oneRootElement(InitializationEvents.afterInitialization, () => this.populate());
+    this.bind.oneRootElement(InitializationEvents.afterComponentsInitialization, () => this.populate());
 
     this.bind.oneRootElement(InitializationEvents.afterInitialization, () => this.handleQueryStateChanged());
   }
