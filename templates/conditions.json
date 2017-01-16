@@ -214,7 +214,7 @@
     "value": "raw.connectortype == 'SlackCrawler'",
     "layout": "list"
   },
-  "card": {
+  "Card": {
     "priority": 1,
     "value": "options.layout === 'card'",
     "layout": "card"
