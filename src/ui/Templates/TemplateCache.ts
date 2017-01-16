@@ -2,6 +2,7 @@ import {Template} from './Template';
 import {Assert} from '../../misc/Assert';
 import {UnderscoreTemplate} from './UnderscoreTemplate';
 import {HtmlTemplate} from './HtmlTemplate';
+import {ValidLayout} from '../ResultLayout/ResultLayout';
 
 /**
  * Holds a reference to all template available in the framework
@@ -12,8 +13,8 @@ export class TemplateCache {
   private static defaultTemplates: { [templateName: string]: Template; } = {};
 
 
-  public static registerTemplate(name: string, template: Template, publicTemplate?: boolean, defaultTemplate?: boolean);
-  public static registerTemplate(name: string, template: (data: {}) => string, publicTemplate?: boolean, defaultTemplate?: boolean);
+  public static registerTemplate(name: string, template: Template, layout?: ValidLayout, publicTemplate?: boolean, defaultTemplate?: boolean);
+  public static registerTemplate(name: string, template: (data: {}) => string, layout?: ValidLayout, publicTemplate?: boolean, defaultTemplate?: boolean);
   /**
    * Register a new template in the framework, which will be available to render any results.
    * @param name
@@ -21,11 +22,11 @@ export class TemplateCache {
    * @param publicTemplate
    * @param defaultTemplate
    */
-  public static registerTemplate(name: string, template: any, publicTemplate: boolean = true, defaultTemplate: boolean = false) {
+  public static registerTemplate(name: string, template: any, layout?: ValidLayout, publicTemplate: boolean = true, defaultTemplate: boolean = false) {
     Assert.isNonEmptyString(name);
     Assert.exists(template);
     if (!(template instanceof Template)) {
-      template = new Template(template);
+      template = new Template(template, layout);
     }
     if (template.name == null) {
       template.name = name;
@@ -73,6 +74,10 @@ export class TemplateCache {
     return _.keys(TemplateCache.defaultTemplates);
   }
 
+  /**
+   * Get a default template by name.
+   * @param name The name of the queried template
+   */
   public static getDefaultTemplate(name: string): Template {
     Assert.exists(TemplateCache.defaultTemplates[name]);
     return TemplateCache.defaultTemplates[name];
