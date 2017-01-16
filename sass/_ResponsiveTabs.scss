@@ -1,7 +1,11 @@
 .coveo-small-tabs {
 
-  .coveo-tab-dropdown-header {
+  #coveo-tab-dropdown-header {
     margin-left: auto;
+    height: 40px;
+    * {
+      line-height: 40px;
+    }
   }
 
   .CoveoTab {

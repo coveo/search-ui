@@ -179,8 +179,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
         virtualTabSection.el.appendChild(tab.cloneNode(true));
       });
     }
-
-    this.coveoRoot.append(virtualTabSection.el);
+    virtualTabSection.insertBefore(this.tabSection.el);
 
     ResponsiveComponentsUtils.deactivateSmallTabs(this.coveoRoot);
     let isOverflowing = this.isOverflowing(virtualTabSection.el);
@@ -196,7 +195,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   private buildDropdownHeader(): Dom {
-    let dropdownHeader = $$('a', { className: 'coveo-dropdown-header coveo-tab-dropdown-header' });
+    let dropdownHeader = $$('a', { className: 'coveo-dropdown-header', id: 'coveo-tab-dropdown-header' });
     let content = $$('p');
     content.text(this.dropdownHeaderLabel);
     content.el.appendChild($$('span', { className: 'coveo-sprites-more-tabs' }).el);
