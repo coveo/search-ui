@@ -10,6 +10,8 @@ import {FacetSearch} from '../../../src/ui/Facet/FacetSearch';
 import {FacetSlider} from '../../../src/ui/FacetSlider/FacetSlider';
 import {FacetSearchValuesList} from '../../../src/ui/Facet/FacetSearchValuesList';
 import * as Mock from '../../MockEnvironment';
+import {QueryEvents} from '../../../src/events/QueryEvents';
+import {FakeResults} from '../../Fake';
 
 export function ResponsiveFacetsTest() {
   describe('ResponsiveFacets', () => {
@@ -52,7 +54,7 @@ export function ResponsiveFacetsTest() {
       responsiveDropdown = jasmine.createSpyObj('responsiveDropdown', ['registerOnOpenHandler', 'registerOnCloseHandler', 'cleanUp', 'open', 'close', 'disablePopupBackground']);
       responsiveDropdownContent = jasmine.createSpyObj('responsiveDropdownContent', ['positionDropdown', 'hideDropdown', 'cleanUp', 'element']);
       responsiveDropdownContent.element = $$('div');
-      responsiveDropdownHeader = jasmine.createSpyObj('responsiveDropdownHeader', ['open', 'close', 'cleanUp']);
+      responsiveDropdownHeader = jasmine.createSpyObj('responsiveDropdownHeader', ['open', 'close', 'cleanUp', 'show', 'hide']);
       responsiveDropdownHeader.element = $$('div', { className: dropdownHeaderClassName });
       responsiveDropdown.dropdownContent = responsiveDropdownContent;
       responsiveDropdown.dropdownHeader = responsiveDropdownHeader;
@@ -115,6 +117,26 @@ export function ResponsiveFacetsTest() {
         shouldSwitchToSmallMode();
         responsiveFacets.handleResizeEvent();
         expect(ResponsiveComponentsUtils.activateSmallFacet).toHaveBeenCalled();
+      });
+
+      it('should hide on query error', () => {
+        root.trigger(QueryEvents.queryError);
+        expect(responsiveDropdownHeader.hide).toHaveBeenCalled();
+      });
+
+      it('should hide on query success with 0 results', () => {
+        root.trigger(QueryEvents.querySuccess, { results: FakeResults.createFakeResults(0) });
+        expect(responsiveDropdownHeader.hide).toHaveBeenCalled();
+      });
+
+      it('should show on query success with more than 0 results', () => {
+        root.trigger(QueryEvents.querySuccess, { results: FakeResults.createFakeResults() });
+        expect(responsiveDropdownHeader.show).toHaveBeenCalled();
+      });
+
+      it('should hide on no results', () => {
+        root.trigger(QueryEvents.noResults, { results: FakeResults.createFakeResults() });
+        expect(responsiveDropdownHeader.hide).toHaveBeenCalled();
       });
     });
 

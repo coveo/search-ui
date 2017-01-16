@@ -46,6 +46,12 @@ export class TemplateCache {
    * @returns {Template}
    */
   public static getTemplate(name: string): Template {
+    // In some scenarios, the template we're trying to load might be somewhere in the page
+    // but we could not load it "normally" on page load (eg : UI was loaded with require js)
+    // Try a last ditch effort to scan the needed templates.
+    if (!TemplateCache.templates[name]) {
+      TemplateCache.scanAndRegisterTemplates();
+    }
     Assert.exists(TemplateCache.templates[name]);
     return TemplateCache.templates[name];
   }

@@ -231,8 +231,7 @@ export class ResultList extends Component {
     this.bind.onRootElement<IQuerySuccessEventArgs>(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement<IDuringQueryEventArgs>(QueryEvents.duringQuery, (args: IDuringQueryEventArgs) => this.handleDuringQuery());
     this.bind.onRootElement<IQueryErrorEventArgs>(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError());
-
-    $$(this.root).on(ResultListEvents.changeLayout, (e, args: IChangeLayoutEventArgs) => this.handleChangeLayout(args));
+    $$(this.root).on(ResultListEvents.changeLayout, (e: Event, args: IChangeLayoutEventArgs) => this.handleChangeLayout(args));
 
     if (this.options.enableInfiniteScroll) {
       this.handlePageChanged();
@@ -476,8 +475,16 @@ export class ResultList extends Component {
   }
 
   private handleChangeLayout(args: IChangeLayoutEventArgs) {
-    args.layout === this.options.layout ? this.enable() : this.disable();
-    this.queryController.executeQuery();
+    if (args.layout === this.options.layout) {
+      this.enable();
+      if (args.results) {
+        Defer.defer(() => {
+          this.renderResults(this.buildResults(args.results));
+        });
+      }
+    } else {
+      this.disable();
+    }
   }
 
   private getAutoSelectedFieldsToInclude() {
