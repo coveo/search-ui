@@ -35,7 +35,6 @@ export class DefaultResultTemplate extends Template {
       }
     }
 
-    // TODO: add fallback templates for other layouts ?
     return _.template('<div>' +
       '<div class="coveo-title"><a class="CoveoResultLink"><%= title?Coveo.TemplateHelpers.getHelper("highlight").call(title, titleHighlights):clickUri %></a></div>' +
       '<% if(excerpt){ %><div class="coveo-excerpt"><%= Coveo.TemplateHelpers.getHelper("highlight").call(excerpt, excerptHighlights) %></div><% } %>' +
