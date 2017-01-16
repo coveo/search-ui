@@ -7,5 +7,5 @@ console.log('executing deploy script beta');
 setTimeout(function () {
   exec('npm publish --tag beta', function (error, stdout, stderr) {
     console.log(error, stdout, stderr);
-  })
+  });
 }, 2000);
