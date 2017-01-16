@@ -73,26 +73,20 @@ export function ResultLayoutTest() {
         });
 
         it('calls changeLayout with the new value on queryStateChanged if it is available', function () {
-          let changeLayoutSpy = jasmine.createSpy('changeLayoutSpy');
-          test.cmp.changeLayout = changeLayoutSpy;
           test.env.queryStateModel.set(QueryStateModel.attributesEnum.layout, 'card');
-          expect(changeLayoutSpy).toHaveBeenCalledWith('card');
+          expect(test.cmp.currentLayout).toBe('card');
         });
 
         it('calls changeLayout with its first layout if no value is provided', function () {
-          let changeLayoutSpy = jasmine.createSpy('changeLayoutSpy');
-          test.cmp.changeLayout = changeLayoutSpy;
           test.env.queryStateModel.set(QueryStateModel.attributesEnum.layout, 'list');
           test.env.queryStateModel.set(QueryStateModel.attributesEnum.layout, '');
-          expect(changeLayoutSpy).toHaveBeenCalledWith('list');
+          expect(test.cmp.currentLayout).toBe('list');
         });
 
         it('calls changeLayout with its first layout if an invalid value is provided', function () {
-          let changeLayoutSpy = jasmine.createSpy('changeLayoutSpy');
-          test.cmp.changeLayout = changeLayoutSpy;
           test.env.queryStateModel.set(QueryStateModel.attributesEnum.layout, 'list');
           test.env.queryStateModel.set(QueryStateModel.attributesEnum.layout, 'Emacs <3');
-          expect(changeLayoutSpy).toHaveBeenCalledWith('list');
+          expect(test.cmp.currentLayout).toBe('list');
         });
       });
     });
