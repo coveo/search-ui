@@ -13,8 +13,8 @@ export class TemplateCache {
   private static defaultTemplates: { [templateName: string]: Template; } = {};
 
 
-  public static registerTemplate(name: string, template: Template, layout?: ValidLayout, publicTemplate?: boolean, defaultTemplate?: boolean);
-  public static registerTemplate(name: string, template: (data: {}) => string, layout?: ValidLayout, publicTemplate?: boolean, defaultTemplate?: boolean);
+  public static registerTemplate(name: string, template: Template, publicTemplate?: boolean, defaultTemplate?: boolean);
+  public static registerTemplate(name: string, template: (data: {}) => string, publicTemplate?: boolean, defaultTemplate?: boolean);
   /**
    * Register a new template in the framework, which will be available to render any results.
    * @param name
@@ -22,11 +22,11 @@ export class TemplateCache {
    * @param publicTemplate
    * @param defaultTemplate
    */
-  public static registerTemplate(name: string, template: any, layout?: ValidLayout, publicTemplate: boolean = true, defaultTemplate: boolean = false) {
+  public static registerTemplate(name: string, template: any, publicTemplate: boolean = true, defaultTemplate: boolean = false) {
     Assert.isNonEmptyString(name);
     Assert.exists(template);
     if (!(template instanceof Template)) {
-      template = new Template(template, layout);
+      template = new Template(template);
     }
     if (template.name == null) {
       template.name = name;

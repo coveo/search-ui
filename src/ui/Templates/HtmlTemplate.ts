@@ -23,7 +23,7 @@ export class HtmlTemplate extends Template {
       this.condition = new Function('obj', 'with(obj||{}){return ' + condition + '}');
     }
 
-    const layout = element.getAttribute('data-condition');
+    const layout = element.getAttribute('data-layout');
     if (layout) {
       this.layout = <ValidLayout>layout;
     }

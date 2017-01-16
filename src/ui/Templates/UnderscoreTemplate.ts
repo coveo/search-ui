@@ -36,7 +36,7 @@ export class UnderscoreTemplate extends Template {
       this.condition = new Function('obj', 'with(obj||{}){return ' + condition + '}');
     }
 
-    const layout = element.getAttribute('data-condition');
+    const layout = element.getAttribute('data-layout');
     if (layout) {
       this.layout = <ValidLayout>layout;
     }
@@ -82,7 +82,7 @@ export class UnderscoreTemplate extends Template {
       script.setAttribute('data-layout', layout);
     }
     script.setAttribute('type', UnderscoreTemplate.mimeTypes[0]);
-    return new UnderscoreTemplate(script, layout);
+    return new UnderscoreTemplate(script);
   }
 
   getFields() {

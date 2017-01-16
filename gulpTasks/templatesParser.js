@@ -52,8 +52,11 @@ function parseDirectory(directory, conditions) {
 function buildRegisterTemplate(template) {
   template.js = 'Coveo.TemplateCache.registerTemplate(' + [
     JSON.stringify(template.name),
-    'Coveo.' + template.type + '.fromString(' + JSON.stringify(template.content) + (template.condition != null ? ', ' + JSON.stringify(template.condition.value) : '') + ')',
-    template.condition.layout ? `"${template.condition.layout}"` : 'undefined',
+    `Coveo.${template.type}.fromString(`
+      + JSON.stringify(template.content)
+      + (template.condition != null ? ', ' + JSON.stringify(template.condition.value) : '')
+      + (template.condition != null ? ', ' + JSON.stringify(template.condition.layout) : '')
+      + ')',
     (!template.subtemplate).toString(),
     (!template.subtemplate).toString()
   ].join(', ') + ')';
