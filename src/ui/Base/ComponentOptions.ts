@@ -382,7 +382,7 @@ export class ComponentOptions {
   static buildSelectorOption(optionArgs?: IComponentOptions<HTMLElement>): HTMLElement {
     return ComponentOptions.buildOption<HTMLElement>(ComponentOptionsType.SELECTOR, ComponentOptions.loadSelectorOption, optionArgs);
   }
-
+  
   static buildChildHtmlElementOption(optionArgs?: IComponentOptionsChildHtmlElementOptionArgs): HTMLElement {
     return ComponentOptions.buildOption<HTMLElement>(ComponentOptionsType.CHILD_HTML_ELEMENT, ComponentOptions.loadChildHtmlElementOption, optionArgs);
   }
@@ -390,6 +390,8 @@ export class ComponentOptions {
   static buildTemplateOption(optionArgs?: IComponentOptionsTemplateOptionArgs): Template {
     return ComponentOptions.buildOption<Template>(ComponentOptionsType.TEMPLATE, ComponentOptions.loadTemplateOption, optionArgs);
   }
+
+  
 
   static buildCustomOption<T>(converter: (value: string) => T, optionArgs?: IComponentOptions<T>): T {
     let loadOption: IComponentOptionsLoadOption<T> = (element: HTMLElement, name: string, option: IComponentOptionsOption<T>) => {
@@ -488,6 +490,10 @@ export class ComponentOptions {
     let logger = new Logger(this);
     if (values == null) {
       values = {};
+    }
+    let initializationOptions = ComponentOptions.loadJSONStringAsObjectOption(element, 'initializationOptions', {});
+    if (!Utils.isNullOrUndefined(initializationOptions)) {
+      values = _.extend({}, initializationOptions, values);
     }
     let names: string[] = _.keys(options);
     for (let i = 0; i < names.length; i++) {
@@ -703,6 +709,20 @@ export class ComponentOptions {
     let foundElements = ComponentOptions.loadChildrenHtmlElementFromSelector(element, selector);
     if (foundElements.length > 0) {
       return new TemplateList(_.compact(_.map(foundElements, (element) => ComponentOptions.createResultTemplateFromElement(element))));
+    }
+    return null;
+  }
+
+  static loadJSONStringAsObjectOption(element: HTMLElement, name: string, option: IComponentOptions<any>): {
+    [name: string]: any
+  } {
+    let foundObject = ComponentOptions.loadStringOption(element, name, option);
+    if (Utils.isNonEmptyString(foundObject)) {
+      try {
+        return JSON.parse(foundObject);
+      } catch (exception) {
+        Assert.fail(`Could not parse the object from attribute: ${name}.`);
+      }
     }
     return null;
   }
