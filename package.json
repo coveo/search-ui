@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "@salesforce-ux/design-system": "2.0.3",
+    "bluebird": "^3.4.7",
     "cheerio": "^0.20.0",
     "circular-dependency-plugin": "^1.1.0",
     "colors": "^1.1.2",
