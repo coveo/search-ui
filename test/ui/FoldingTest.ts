@@ -122,10 +122,10 @@ export function FoldingTest() {
         queryData = null;
       });
 
-      describe('should clone the original query', ()=> {
+      describe('should clone the original query', () => {
         let query: QueryBuilder;
 
-        beforeEach(()=> {
+        beforeEach(() => {
           query = new QueryBuilder();
           query.fieldsToInclude = ['should', 'be', 'included'];
           query.expression.add('should be there');
@@ -138,7 +138,7 @@ export function FoldingTest() {
           queryData.results.results[0].moreResults();
         });
 
-        it('and modify q', ()=> {
+        it('and modify q', () => {
           expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
             aq: '@fieldname=fieldvalue',
             fieldsToInclude: jasmine.arrayContaining(['should', 'be', 'included']),
@@ -148,19 +148,19 @@ export function FoldingTest() {
           }));
         });
 
-        it('and modify aq', ()=> {
+        it('and modify aq', () => {
           expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
             aq: '@fieldname=fieldvalue'
           }));
         });
 
-        it('and modify fieldsToInclude', ()=> {
+        it('and modify fieldsToInclude', () => {
           expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
             fieldsToInclude: jasmine.arrayContaining(['should', 'be', 'included']),
           }));
         });
 
-        it('and modify filterFieldRange', ()=> {
+        it('and modify filterFieldRange', () => {
           expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(jasmine.objectContaining({
             filterFieldRange: null
           }));
