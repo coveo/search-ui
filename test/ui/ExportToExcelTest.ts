@@ -26,6 +26,21 @@ export function ExportToExcelTest() {
         test.cmp.download();
         expect(searchEndpointSpy).toHaveBeenCalledWith(_.omit(fakeQuery, 'numberOfResults'), 200);
       });
+
+      it('fieldsToInclude allows to specify the needed fields to download', () => {
+        test = Mock.optionsComponentSetup<ExportToExcel, IExportToExcelOptions>(ExportToExcel, <IExportToExcelOptions>{
+          fieldsToInclude: ['@foo', '@bar']
+        });
+        test.cmp._window = Mock.mockWindow();
+        var searchEndpointSpy = jasmine.createSpy('searchEndpoint');
+        test.env.searchEndpoint.getExportToExcelLink = searchEndpointSpy;
+        var fakeQuery = new QueryBuilder().build();
+        test.env.queryController.getLastQuery = () => fakeQuery;
+        test.cmp.download();
+        expect(searchEndpointSpy).toHaveBeenCalledWith(jasmine.objectContaining({
+          fieldsToInclude: jasmine.arrayContaining(['@foo', '@bar'])
+        }), 100);
+      });
     });
 
     it('download should do nothing if no query was made', function () {

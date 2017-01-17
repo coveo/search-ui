@@ -183,6 +183,10 @@ export interface IAnalyticsSearchAlertsFollowDocumentMeta extends IAnalyticsDocu
   contentIDValue: string;
 }
 
+export interface IAnalyticsResultsLayoutChange {
+  resultsLayoutChangeTo: string;
+}
+
 export var analyticsActionCauseList = {
   interfaceLoad: <IAnalyticsActionCause>{
     name: 'interfaceLoad',
@@ -511,5 +515,9 @@ export var analyticsActionCauseList = {
   searchAlertsUnfollowQuery: <IAnalyticsActionCause>{
     name: 'unfollowQuery',
     type: 'searchAlerts'
+  },
+  resultsLayoutChange: <IAnalyticsActionCause>{
+    name: 'changeResultsLayout',
+    type: 'resultsLayout'
   }
 };

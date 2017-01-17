@@ -284,7 +284,7 @@ export class ComponentOptions {
   /**
    * Build a color option.
    *
-   * Normally, this only means that it will build a string that matches a CSS color
+   * Normally, this only means that it will build a string that matches a CSS color.
    *
    * In the markup, this has no advantage over a plain string. This is mostly useful for the interface editor.
    *
@@ -295,7 +295,7 @@ export class ComponentOptions {
   }
 
   /**
-   * Build an helper option.
+   * Build a helper option.
    *
    * Normally, this only means that it will build a string that matches the name of a template helper.
    *
