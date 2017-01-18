@@ -1,9 +1,10 @@
+@import "../bin/sass/sprites";
+
 .CoveoQuickview {
   display: inline-block;
   @include clickable();
   .coveo-icon-for-quickview {
-    @extend .coveo-sprites-quickview;
-
+    @include retina-sprite($quickview-group);
   }
 
   .coveo-caption-for-quickview {

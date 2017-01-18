@@ -20,15 +20,12 @@ let globalizePath = __dirname + '/../lib/globalize.min.js';
 
 let sassLoader = { test: /\.scss/ };
 if (live) {
-  sassLoader['loader'] = ExtractTextPlugin.extract('style-loader', '!css!resolve-url!sass-loader?sourceMap');
+  sassLoader['loader'] = ExtractTextPlugin.extract('style-loader', '!css-loader!resolve-url-loader!sass-loader?sourceMap');
 } else {
-  sassLoader['loaders'] = ['style?insertAt=bottom', 'css?sourceMap', 'resolve-url', 'sass?sourceMap'];
+  sassLoader['loaders'] = ['style-loader?insertAt=bottom', 'css-loader?sourceMap', 'resolve-url-loader', 'sass-loader?sourceMap'];
 }
 
 module.exports = {
-  sassLoader: {
-    globals: [__dirname + '/../bin/css/sprites.scss', __dirname + '/../bin/sass/_GeneratedIconsNew.scss']
-  },
   resolve: {
     extensions: ['', '.ts', '.js', '.scss'],
     alias: {
@@ -43,7 +40,7 @@ module.exports = {
       'jQuery': __dirname + '/../test/lib/jquery.js',
       'styling': __dirname + '/../sass'
     },
-    moduleDirectories: ['web_modules', 'node_modules', 'spritesmith-generated']
+    moduleDirectories: ['web_modules', 'node_modules', 'bin/image']
   },
   devtool: 'source-map',
   module: {
@@ -86,14 +83,6 @@ module.exports = {
       sassLoader,
       {
         test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'url-loader', query: {limit: '1', name: '[path][name].[ext]'}
-      },
-      {
-        test: /\.styl$/,
-        loaders: ['style', 'css', 'stylus']
-      },
-      {
-        test: /\.png$/,
-        loaders: ['file?name=i/[hash].[ext]']
       }
     ]
   },

@@ -10,11 +10,11 @@
 }
 
 .coveo-results-per-page-list {
-  @extend .coveo-pager-list;
+  @include retina-sprite($pager-list-group);
 }
 
 .coveo-results-per-page-list-item {
-  @extend .coveo-pager-list-item;
+  @include retina-sprite($pager-list-item-group);
   padding: 4px;
 }
 

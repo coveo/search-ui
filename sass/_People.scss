@@ -1,3 +1,5 @@
+@import "../bin/sass/sprites";
+
 .CoveoResult.coveo-people-result {
   padding-left: 75px;
 
@@ -9,7 +11,7 @@
 
   .CoveoThumbnail.coveo-no-thumbnail {
     display: inline-block;
-    @extend .coveo-sprites-user;
+    @include retina-sprite($user-group);
   }
 
   .coveo-people-details {

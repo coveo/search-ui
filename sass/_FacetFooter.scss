@@ -1,4 +1,5 @@
-@import 'Variables';
+@import "Variables";
+@import "../bin/sass/sprites.scss";
 
 .coveo-facet-more, .coveo-facet-less {
   width: 100%;
@@ -28,7 +29,7 @@
 
 .coveo-facet-less {
   .coveo-icon {
-    @extend .coveo-sprites-arrow-up;
+    @include retina-sprite($arrow-up-group);
   }
   display: none;
   &.coveo-active {

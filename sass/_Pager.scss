@@ -38,12 +38,12 @@
 }
 
 .coveo-pager-next > a > span {
-  @extend .coveo-sprites-pager-right-arrow;
+  @include retina-sprite($pager-right-arrow-group);
   vertical-align: middle;
 }
 
 .coveo-pager-previous > a > span {
-  @extend .coveo-sprites-pager-left-arrow;
+  @include retina-sprite($pager-left-arrow-group);
   vertical-align: middle;
 }
 

@@ -23,7 +23,7 @@
     }
     .magic-box-clear .magic-box-icon:before {
       content: '';
-      @extend .coveo-sprites-main-clear;
+      @include retina-sprite($main-clear-group);
     }
     .magic-box-input {
       border-radius: $default-border-radius;

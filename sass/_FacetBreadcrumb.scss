@@ -1,4 +1,5 @@
 @import './mixins/breadcrumb';
+@import '../bin/sass/sprites.scss';
 
 .coveo-facet-breadcrumb, .coveo-facet-slider-breadcrumb {
 
@@ -35,13 +36,13 @@
 .coveo-facet-breadcrumb-multi-icon {
   margin: 0;
   &.coveo-selected {
-    @extend .coveo-sprites-checkbox-hook-active !optional;
+    @include retina-sprite($checkbox-hook-active-group);
     vertical-align: middle;
     margin-left: 0px;
     margin-right: 5px;
   }
   &.coveo-excluded {
-    @extend .coveo-sprites-facet-checkbox-exclusion !optional;
+    @include retina-sprite($facet-checkbox-exclusion);
     vertical-align: middle;
     margin-left: 0px;
     margin-right: 5px;
