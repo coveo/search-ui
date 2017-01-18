@@ -11,7 +11,8 @@
     "docsitemap": "gulp docsitemap",
     "injectTag": "gulp injectTag",
     "heroku-postbuild": "npm run build",
-    "start": "node index.js"
+    "start": "node index.js",
+    "zipForGitReleases": "gulp zip"
   },
   "repository": {
     "type": "git",
