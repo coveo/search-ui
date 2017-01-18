@@ -166,7 +166,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private isLargeFormatOverflowing(): boolean {
     let virtualTabSection = $$(<HTMLElement>this.tabSection.el.cloneNode(true));
 
-    let dropdownHeader = virtualTabSection.find('#coveo-tab-dropdown-header');
+    let dropdownHeader = virtualTabSection.find('.coveo-tab-dropdown-header');
     if (dropdownHeader) {
       virtualTabSection.el.removeChild(dropdownHeader);
     }
@@ -195,7 +195,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   }
 
   private buildDropdownHeader(): Dom {
-    let dropdownHeader = $$('a', { className: 'coveo-dropdown-header', id: 'coveo-tab-dropdown-header' });
+    let dropdownHeader = $$('a', { className: 'coveo-dropdown-header coveo-tab-dropdown-header' });
     let content = $$('p');
     content.text(this.dropdownHeaderLabel);
     content.el.appendChild($$('span', { className: 'coveo-sprites-more-tabs' }).el);
@@ -225,7 +225,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
     this.documentClickListener = event => {
       if (Utils.isHtmlElement(event.target)) {
         let eventTarget = $$(<HTMLElement>event.target);
-        if (!eventTarget.closest('coveo-tab-list-container') && !eventTarget.isDescendant(this.dropdownHeader.el) && !eventTarget.closest('coveo-tab-dropdown')) {
+        if (!eventTarget.closest('coveo-tab-list-container') && !eventTarget.closest('coveo-tab-dropdown-header') && !eventTarget.closest('coveo-tab-dropdown')) {
           this.closeDropdown();
         }
       }
