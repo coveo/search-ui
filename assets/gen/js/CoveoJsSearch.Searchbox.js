@@ -1538,8 +1538,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	exports.version = {
-	    'lib': '1.0.20-beta',
-	    'product': '1.0.20-beta',
+	    'lib': '1.0.21-beta',
+	    'product': '1.0.21-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -2141,6 +2141,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            _.each(queryObject.context, function (value, key) {
 	                queryString.push('context[' + key + ']=' + encodeURIComponent(value));
 	            });
+	            if (queryObject.fieldsToInclude) {
+	                queryString.push("fieldsToInclude=[" + _.map(queryObject.fieldsToInclude, function (field) { return '"' + encodeURIComponent(field.replace('@', '')) + '"'; }).join(',') + "]");
+	            }
 	        }
 	        else if (query) {
 	            queryString.push('q=' + encodeURIComponent(query));
@@ -8866,10 +8869,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    StreamHighlightUtils.highlightStreamHTML = function (stream, termsToHighlight, phrasesToHighlight, options) {
 	        var opts = new DefaultStreamHighlightOptions().merge(options);
 	        var container = createStreamHTMLContainer(stream);
-	        _.each(Dom_1.$$(container).findAll('*'), function (elem, i) {
-	            var text = Dom_1.$$(elem).text();
-	            elem.innerHTML = HighlightUtils_1.HighlightUtils.highlightString(text, getRestHighlightsForAllTerms(text, termsToHighlight, phrasesToHighlight, opts), [], opts.cssClass);
-	        });
+	        var allElements = Dom_1.$$(container).findAll('*');
+	        if (allElements.length > 0) {
+	            _.each(allElements, function (elem, i) {
+	                var text = Dom_1.$$(elem).text();
+	                elem.innerHTML = HighlightUtils_1.HighlightUtils.highlightString(text, getRestHighlightsForAllTerms(text, termsToHighlight, phrasesToHighlight, opts), [], opts.cssClass);
+	            });
+	        }
+	        else {
+	            return StreamHighlightUtils.highlightStreamText(stream, termsToHighlight, phrasesToHighlight, options);
+	        }
 	        return container.innerHTML;
 	    };
 	    StreamHighlightUtils.highlightStreamText = function (stream, termsToHighlight, phrasesToHighlight, options) {
@@ -9046,6 +9055,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    QueryController.prototype.getLastQuery = function () {
 	        return this.lastQuery || new QueryBuilder_1.QueryBuilder().build();
+	    };
+	    /**
+	     * Return the last query results set.
+	     * @returns {IQueryResults}
+	     */
+	    QueryController.prototype.getLastResults = function () {
+	        return this.lastQueryResults;
 	    };
 	    /**
 	     * Execute a query and return a Promise of IQueryResults.<br/>
@@ -14054,7 +14070,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    /**
 	     * Build a color option.
 	     *
-	     * Normally, this only means that it will build a string that matches a CSS color
+	     * Normally, this only means that it will build a string that matches a CSS color.
 	     *
 	     * In the markup, this has no advantage over a plain string. This is mostly useful for the interface editor.
 	     *
@@ -14064,7 +14080,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return ComponentOptions.buildOption(ComponentOptionsType.COLOR, ComponentOptions.loadStringOption, optionArgs);
 	    };
 	    /**
-	     * Build an helper option.
+	     * Build a helper option.
 	     *
 	     * Normally, this only means that it will build a string that matches the name of a template helper.
 	     *
@@ -14527,6 +14543,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @returns {Template}
 	     */
 	    TemplateCache.getTemplate = function (name) {
+	        // In some scenarios, the template we're trying to load might be somewhere in the page
+	        // but we could not load it "normally" on page load (eg : UI was loaded with require js)
+	        // Try a last ditch effort to scan the needed templates.
+	        if (!TemplateCache.templates[name]) {
+	            TemplateCache.scanAndRegisterTemplates();
+	        }
 	        Assert_1.Assert.exists(TemplateCache.templates[name]);
 	        return TemplateCache.templates[name];
 	    };
@@ -16100,6 +16122,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    searchAlertsUnfollowQuery: {
 	        name: 'unfollowQuery',
 	        type: 'searchAlerts'
+	    },
+	    resultsLayoutChange: {
+	        name: 'changeResultsLayout',
+	        type: 'resultsLayout'
 	    }
 	};
 
@@ -44548,10 +44574,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	         */
 	        sort: ComponentOptions_1.ComponentOptions.buildStringOption(),
 	        /**
-	         * Specifies the default layout when this tab is selected.<br/>
-	         * The value must be one of "list", "card", or "table".<br/>
-	         * This parameter is overridden by a URL parameter.<br/>
-	         * Optional. If not specified, the first available layout will be choosed.
+	         * Specifies the default layout to display when this tab is selected (see {@link ResultList.options.layout} and
+	         * {@link ResultLayout}).
+	         * The value must be one of `list`, `card`, or `table`.
+	         * This option is overridden by a URL parameter.
+	         * If not specified, the first available layout will be chosen.
 	         */
 	        layout: ComponentOptions_1.ComponentOptions.buildStringOption(),
 	        /**
@@ -45269,7 +45296,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (termsToHighlight === void 0) { termsToHighlight = resolveTermsToHighlight(); }
 	    if (phrasesToHighlight === void 0) { phrasesToHighlight = resolvePhrasesToHighlight(); }
 	    if (Utils_1.Utils.exists(content) && Utils_1.Utils.exists(termsToHighlight) && Utils_1.Utils.exists(phrasesToHighlight)) {
-	        if (Utils_1.Utils.isNonEmptyArray(_.keys(termsToHighlight)) || Utils_1.Utils.isNonEmptyArray(_.keys(phrasesToHighlight))) {
+	        if (termsToHighlightAreDefined(termsToHighlight, phrasesToHighlight)) {
 	            return StreamHighlightUtils_1.StreamHighlightUtils.highlightStreamText(content, termsToHighlight, phrasesToHighlight, opts);
 	        }
 	        else {
@@ -45284,7 +45311,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (termsToHighlight === void 0) { termsToHighlight = resolveTermsToHighlight(); }
 	    if (phrasesToHighlight === void 0) { phrasesToHighlight = resolvePhrasesToHighlight(); }
 	    if (Utils_1.Utils.exists(content) && Utils_1.Utils.exists(termsToHighlight) && Utils_1.Utils.exists(phrasesToHighlight)) {
-	        if (Utils_1.Utils.isNonEmptyArray(termsToHighlight)) {
+	        if (termsToHighlightAreDefined(termsToHighlight, phrasesToHighlight)) {
 	            return StreamHighlightUtils_1.StreamHighlightUtils.highlightStreamHTML(content, termsToHighlight, phrasesToHighlight, opts);
 	        }
 	        else {
@@ -45506,6 +45533,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (currentQueryResult) {
 	        return currentQueryResult.phrasesToHighlight;
 	    }
+	}
+	function termsToHighlightAreDefined(termsToHighlight, phrasesToHighlight) {
+	    return Utils_1.Utils.isNonEmptyArray(_.keys(termsToHighlight)) || Utils_1.Utils.isNonEmptyArray(_.keys(phrasesToHighlight));
 	}
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
@@ -46839,8 +46869,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    };
 	    ResultList.prototype.handleChangeLayout = function (args) {
-	        args.layout === this.options.layout ? this.enable() : this.disable();
-	        this.queryController.executeQuery();
+	        var _this = this;
+	        if (args.layout === this.options.layout) {
+	            this.enable();
+	            if (args.results) {
+	                Defer_1.Defer.defer(function () {
+	                    _this.renderResults(_this.buildResults(args.results));
+	                });
+	            }
+	        }
+	        else {
+	            this.disable();
+	        }
 	    };
 	    ResultList.prototype.getAutoSelectedFieldsToInclude = function () {
 	        return _.chain(this.options.resultTemplate.getFields())
@@ -47019,20 +47059,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	         */
 	        fieldsToInclude: ComponentOptions_1.ComponentOptions.buildFieldsOption({ includeInResults: true }),
 	        /**
-	         * Specifies that the result list should scan it's template and discover which field it will need to render every results.<br/>
+	         * Specifies that the result list should scan its template and discover which field it will need to render every results.<br/>
 	         * This is to ensure that fields that are not needed for the UI to function are not sent by the search API.<br/>
 	         * Default value is false.<br/>
 	         * NB: Many interface created by the interface editor will actually explicitly set this option to true.
 	         */
 	        autoSelectFieldsToInclude: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
 	        /**
-	         * Specifies the layout to use for displaying Results. Specifying this
-	         * option will automatically populate a {@link ResultLayout} component with
-	         * a switcher for the layout.
+	         * Specifies the layout to use for displaying the results. Specifying a value for this option will automatically
+	         * populate a {@link ResultLayout} component with a switcher for the layout.
 	         *
-	         * For example, if there are 2 ResultLists in the page, one with a `layout`
-	         * of `list` and the other of `card`, the {@link ResultLayout} component
-	         * will have 2 buttons titled respectively "List" and "Card".
+	         * For example, if there are two {@link ResultList} components in the page, one with its
+	         * {@link ResultList.options.layout} set to `list` and the other with the same option set to `card`, then the
+	         * ResultLayout component will have two buttons respectively titled **List** and **Card**.
 	         */
 	        layout: ComponentOptions_1.ComponentOptions.buildStringOption({
 	            defaultValue: 'list',
@@ -47295,6 +47334,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * Specifies whether the Coveo Platform should try to interpret special query syntax such as field references in the
 	         * query entered in the Querybox (see
 	         * <a target="_blank" href="http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005">Coveo Query Syntax Reference</a>).
+	         *
+	         * Query syntax in the Querybox will also be highlighted when this option is enabled.
 	         *
 	         * See also {@link Querybox.options.enableWildcards}, {@link Querybox.options.enableQuestionMarks} and
 	         * {@link Querybox.options.enableLowercaseOperators}.

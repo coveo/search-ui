@@ -59,6 +59,12 @@
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
+	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
+	<script>
+        if (document.location.hash) {
+            $('.CoveoSearchbox').attr('data-auto-focus', 'false');
+        }
+    </script>
 </header>
 <div class="container container-main">
 	<div class="row">
@@ -296,8 +302,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L115">src/ui/Tab/Tab.ts
-							:115</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L116">src/ui/Tab/Tab.ts
+							:116</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -320,8 +326,8 @@ data-constant&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L149">src/ui/Tab/Tab.ts
-							:149</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L150">src/ui/Tab/Tab.ts
+							:150</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -343,8 +349,8 @@ data-constant&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L120">src/ui/Tab/Tab.ts
-							:120</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L121">src/ui/Tab/Tab.ts
+							:121</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -366,8 +372,8 @@ data-enable-duplicate-filtering&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L142">src/ui/Tab/Tab.ts
-							:142</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L143">src/ui/Tab/Tab.ts
+							:143</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -478,16 +484,17 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L109">src/ui/Tab/Tab.ts
-							:109</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L110">src/ui/Tab/Tab.ts
+							:110</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the default layout when this tab is selected.<br/>
-								The value must be one of &quot;list&quot;, &quot;card&quot;, or &quot;table&quot;.<br/>
-								This parameter is overridden by a URL parameter.<br/>
-							Optional. If not specified, the first available layout will be choosed.</p>
+							<p>Specifies the default layout to display when this tab is selected (see <a href="resultlist.html#options.layout">ResultList.options.layout</a> and
+								<a href="resultlayout.html">ResultLayout</a>).
+								The value must be one of <code>list</code>, <code>card</code>, or <code>table</code>.
+								This option is overridden by a URL parameter.
+							If not specified, the first available layout will be chosen.</p>
 						</div>
 					</div>
 					<div class="tsd-panel">
@@ -502,8 +509,8 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L132">src/ui/Tab/Tab.ts
-							:132</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L133">src/ui/Tab/Tab.ts
+							:133</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -526,8 +533,8 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L125">src/ui/Tab/Tab.ts
-							:125</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L126">src/ui/Tab/Tab.ts
+							:126</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -682,8 +689,8 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L196">src/ui/Tab/Tab.ts
-									:196</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L197">src/ui/Tab/Tab.ts
+									:197</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -715,8 +722,8 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L179">src/ui/Tab/Tab.ts
-									:179</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L180">src/ui/Tab/Tab.ts
+									:180</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1007,8 +1014,8 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L153">src/ui/Tab/Tab.ts
-									:153</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L154">src/ui/Tab/Tab.ts
+									:154</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

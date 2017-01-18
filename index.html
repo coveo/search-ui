@@ -59,6 +59,12 @@
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
+	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
+	<script>
+        if (document.location.hash) {
+            $('.CoveoSearchbox').attr('data-auto-focus', 'false');
+        }
+    </script>
 </header>
 <div class="container container-main">
 	<div class="row">
@@ -653,6 +659,9 @@
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#baseformtypes" class="tsd-kind-icon">Base<wbr>Form<wbr>Types</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#validlayout" class="tsd-kind-icon">Valid<wbr>Layout</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#__" class="tsd-kind-icon">$$</a>

@@ -1754,8 +1754,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	exports.version = {
-	    'lib': '1.0.20-beta',
-	    'product': '1.0.20-beta',
+	    'lib': '1.0.21-beta',
+	    'product': '1.0.21-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -2357,6 +2357,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            _.each(queryObject.context, function (value, key) {
 	                queryString.push('context[' + key + ']=' + encodeURIComponent(value));
 	            });
+	            if (queryObject.fieldsToInclude) {
+	                queryString.push("fieldsToInclude=[" + _.map(queryObject.fieldsToInclude, function (field) { return '"' + encodeURIComponent(field.replace('@', '')) + '"'; }).join(',') + "]");
+	            }
 	        }
 	        else if (query) {
 	            queryString.push('q=' + encodeURIComponent(query));
@@ -9082,10 +9085,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    StreamHighlightUtils.highlightStreamHTML = function (stream, termsToHighlight, phrasesToHighlight, options) {
 	        var opts = new DefaultStreamHighlightOptions().merge(options);
 	        var container = createStreamHTMLContainer(stream);
-	        _.each(Dom_1.$$(container).findAll('*'), function (elem, i) {
-	            var text = Dom_1.$$(elem).text();
-	            elem.innerHTML = HighlightUtils_1.HighlightUtils.highlightString(text, getRestHighlightsForAllTerms(text, termsToHighlight, phrasesToHighlight, opts), [], opts.cssClass);
-	        });
+	        var allElements = Dom_1.$$(container).findAll('*');
+	        if (allElements.length > 0) {
+	            _.each(allElements, function (elem, i) {
+	                var text = Dom_1.$$(elem).text();
+	                elem.innerHTML = HighlightUtils_1.HighlightUtils.highlightString(text, getRestHighlightsForAllTerms(text, termsToHighlight, phrasesToHighlight, opts), [], opts.cssClass);
+	            });
+	        }
+	        else {
+	            return StreamHighlightUtils.highlightStreamText(stream, termsToHighlight, phrasesToHighlight, options);
+	        }
 	        return container.innerHTML;
 	    };
 	    StreamHighlightUtils.highlightStreamText = function (stream, termsToHighlight, phrasesToHighlight, options) {
@@ -9262,6 +9271,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    QueryController.prototype.getLastQuery = function () {
 	        return this.lastQuery || new QueryBuilder_1.QueryBuilder().build();
+	    };
+	    /**
+	     * Return the last query results set.
+	     * @returns {IQueryResults}
+	     */
+	    QueryController.prototype.getLastResults = function () {
+	        return this.lastQueryResults;
 	    };
 	    /**
 	     * Execute a query and return a Promise of IQueryResults.<br/>
@@ -14270,7 +14286,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    /**
 	     * Build a color option.
 	     *
-	     * Normally, this only means that it will build a string that matches a CSS color
+	     * Normally, this only means that it will build a string that matches a CSS color.
 	     *
 	     * In the markup, this has no advantage over a plain string. This is mostly useful for the interface editor.
 	     *
@@ -14280,7 +14296,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return ComponentOptions.buildOption(ComponentOptionsType.COLOR, ComponentOptions.loadStringOption, optionArgs);
 	    };
 	    /**
-	     * Build an helper option.
+	     * Build a helper option.
 	     *
 	     * Normally, this only means that it will build a string that matches the name of a template helper.
 	     *
@@ -14743,6 +14759,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @returns {Template}
 	     */
 	    TemplateCache.getTemplate = function (name) {
+	        // In some scenarios, the template we're trying to load might be somewhere in the page
+	        // but we could not load it "normally" on page load (eg : UI was loaded with require js)
+	        // Try a last ditch effort to scan the needed templates.
+	        if (!TemplateCache.templates[name]) {
+	            TemplateCache.scanAndRegisterTemplates();
+	        }
 	        Assert_1.Assert.exists(TemplateCache.templates[name]);
 	        return TemplateCache.templates[name];
 	    };
@@ -16316,6 +16338,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    searchAlertsUnfollowQuery: {
 	        name: 'unfollowQuery',
 	        type: 'searchAlerts'
+	    },
+	    resultsLayoutChange: {
+	        name: 'changeResultsLayout',
+	        type: 'resultsLayout'
 	    }
 	};
 
@@ -44764,10 +44790,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	         */
 	        sort: ComponentOptions_1.ComponentOptions.buildStringOption(),
 	        /**
-	         * Specifies the default layout when this tab is selected.<br/>
-	         * The value must be one of "list", "card", or "table".<br/>
-	         * This parameter is overridden by a URL parameter.<br/>
-	         * Optional. If not specified, the first available layout will be choosed.
+	         * Specifies the default layout to display when this tab is selected (see {@link ResultList.options.layout} and
+	         * {@link ResultLayout}).
+	         * The value must be one of `list`, `card`, or `table`.
+	         * This option is overridden by a URL parameter.
+	         * If not specified, the first available layout will be chosen.
 	         */
 	        layout: ComponentOptions_1.ComponentOptions.buildStringOption(),
 	        /**
@@ -45485,7 +45512,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (termsToHighlight === void 0) { termsToHighlight = resolveTermsToHighlight(); }
 	    if (phrasesToHighlight === void 0) { phrasesToHighlight = resolvePhrasesToHighlight(); }
 	    if (Utils_1.Utils.exists(content) && Utils_1.Utils.exists(termsToHighlight) && Utils_1.Utils.exists(phrasesToHighlight)) {
-	        if (Utils_1.Utils.isNonEmptyArray(_.keys(termsToHighlight)) || Utils_1.Utils.isNonEmptyArray(_.keys(phrasesToHighlight))) {
+	        if (termsToHighlightAreDefined(termsToHighlight, phrasesToHighlight)) {
 	            return StreamHighlightUtils_1.StreamHighlightUtils.highlightStreamText(content, termsToHighlight, phrasesToHighlight, opts);
 	        }
 	        else {
@@ -45500,7 +45527,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (termsToHighlight === void 0) { termsToHighlight = resolveTermsToHighlight(); }
 	    if (phrasesToHighlight === void 0) { phrasesToHighlight = resolvePhrasesToHighlight(); }
 	    if (Utils_1.Utils.exists(content) && Utils_1.Utils.exists(termsToHighlight) && Utils_1.Utils.exists(phrasesToHighlight)) {
-	        if (Utils_1.Utils.isNonEmptyArray(termsToHighlight)) {
+	        if (termsToHighlightAreDefined(termsToHighlight, phrasesToHighlight)) {
 	            return StreamHighlightUtils_1.StreamHighlightUtils.highlightStreamHTML(content, termsToHighlight, phrasesToHighlight, opts);
 	        }
 	        else {
@@ -45722,6 +45749,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (currentQueryResult) {
 	        return currentQueryResult.phrasesToHighlight;
 	    }
+	}
+	function termsToHighlightAreDefined(termsToHighlight, phrasesToHighlight) {
+	    return Utils_1.Utils.isNonEmptyArray(_.keys(termsToHighlight)) || Utils_1.Utils.isNonEmptyArray(_.keys(phrasesToHighlight));
 	}
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
@@ -47055,8 +47085,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    };
 	    ResultList.prototype.handleChangeLayout = function (args) {
-	        args.layout === this.options.layout ? this.enable() : this.disable();
-	        this.queryController.executeQuery();
+	        var _this = this;
+	        if (args.layout === this.options.layout) {
+	            this.enable();
+	            if (args.results) {
+	                Defer_1.Defer.defer(function () {
+	                    _this.renderResults(_this.buildResults(args.results));
+	                });
+	            }
+	        }
+	        else {
+	            this.disable();
+	        }
 	    };
 	    ResultList.prototype.getAutoSelectedFieldsToInclude = function () {
 	        return _.chain(this.options.resultTemplate.getFields())
@@ -47235,20 +47275,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	         */
 	        fieldsToInclude: ComponentOptions_1.ComponentOptions.buildFieldsOption({ includeInResults: true }),
 	        /**
-	         * Specifies that the result list should scan it's template and discover which field it will need to render every results.<br/>
+	         * Specifies that the result list should scan its template and discover which field it will need to render every results.<br/>
 	         * This is to ensure that fields that are not needed for the UI to function are not sent by the search API.<br/>
 	         * Default value is false.<br/>
 	         * NB: Many interface created by the interface editor will actually explicitly set this option to true.
 	         */
 	        autoSelectFieldsToInclude: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
 	        /**
-	         * Specifies the layout to use for displaying Results. Specifying this
-	         * option will automatically populate a {@link ResultLayout} component with
-	         * a switcher for the layout.
+	         * Specifies the layout to use for displaying the results. Specifying a value for this option will automatically
+	         * populate a {@link ResultLayout} component with a switcher for the layout.
 	         *
-	         * For example, if there are 2 ResultLists in the page, one with a `layout`
-	         * of `list` and the other of `card`, the {@link ResultLayout} component
-	         * will have 2 buttons titled respectively "List" and "Card".
+	         * For example, if there are two {@link ResultList} components in the page, one with its
+	         * {@link ResultList.options.layout} set to `list` and the other with the same option set to `card`, then the
+	         * ResultLayout component will have two buttons respectively titled **List** and **Card**.
 	         */
 	        layout: ComponentOptions_1.ComponentOptions.buildStringOption({
 	            defaultValue: 'list',
@@ -47613,6 +47652,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * Specifies whether the Coveo Platform should try to interpret special query syntax such as field references in the
 	         * query entered in the Querybox (see
 	         * <a target="_blank" href="http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005">Coveo Query Syntax Reference</a>).
+	         *
+	         * Query syntax in the Querybox will also be highlighted when this option is enabled.
 	         *
 	         * See also {@link Querybox.options.enableWildcards}, {@link Querybox.options.enableQuestionMarks} and
 	         * {@link Querybox.options.enableLowercaseOperators}.
@@ -49841,15 +49882,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Dom_1 = __webpack_require__(59);
 	var QueryStateModel_1 = __webpack_require__(102);
 	var Model_1 = __webpack_require__(99);
+	var AnalyticsActionListMeta_1 = __webpack_require__(122);
 	/**
-	 * This component allows to switch between multiple {@link ResultList}s with
+	 * The ResultLayout component allows the user to switch between multiple {@link ResultList} components with
 	 * different layouts.
 	 *
-	 * It will automatically populate itself with buttons to switch through {@link
-	 * ResultList}s which each have a valid `data-layout` attribute.
+	 * It will automatically populate itself with buttons to switch between {@link ResultList} components that have a valid
+	 * `data-layout` attribute.
 	 */
 	var ResultLayout = (function (_super) {
 	    __extends(ResultLayout, _super);
+	    /**
+	     * Creates a new ResultLayout component.
+	     * @param element The HTMLElement on which the component will be instantiated.
+	     * @param options The options for the ResultLayout component.
+	     * @param bindings The bindings that the component requires to function normally. If not set, they will be
+	     * automatically resolved (with a slower execution time).
+	     */
 	    function ResultLayout(element, options, bindings) {
 	        var _this = this;
 	        _super.call(this, element, ResultLayout.ID, bindings);
@@ -49865,22 +49914,40 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.bind.oneRootElement(InitializationEvents_1.InitializationEvents.afterInitialization, function () { return _this.handleQueryStateChanged(); });
 	    }
 	    /**
-	     * Change the current layout.
-	     * @param layout The new layout. Available values are `list`, `card` and `table`.
+	     * Changes the current layout.
+	     *
+	     * Triggers a new query.
+	     *
+	     * @param layout The new layout. Possible values are `list`, `card` and `table`.
+	     * You need a valid {@link ResultList} component with the matching layout configured for this to work correctly end to
+	     * end.
 	     */
 	    ResultLayout.prototype.changeLayout = function (layout) {
 	        Assert_1.Assert.check(_.contains(_.keys(this.buttons), layout), 'Layout not available or invalid');
 	        if (layout !== this.currentLayout || this.getModelValue() === '') {
-	            this.bind.trigger(this.root, ResultListEvents_1.ResultListEvents.changeLayout, {
-	                layout: layout
-	            });
-	            if (this.currentLayout) {
-	                Dom_1.$$(this.buttons[this.currentLayout]).removeClass('coveo-selected');
-	            }
-	            Dom_1.$$(this.buttons[layout]).addClass('coveo-selected');
 	            this.setModelValue(layout);
-	            this.currentLayout = layout;
+	            var lastResults = this.queryController.getLastResults();
+	            this.setLayout(layout, lastResults);
+	            if (lastResults) {
+	                this.usageAnalytics.logCustomEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.resultsLayoutChange, {
+	                    resultsLayoutChangeTo: layout
+	                }, this.element);
+	            }
+	            else {
+	                this.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.resultsLayoutChange, {
+	                    resultsLayoutChangeTo: layout
+	                });
+	                this.queryController.executeQuery();
+	            }
 	        }
+	    };
+	    ResultLayout.prototype.setLayout = function (layout, results) {
+	        if (this.currentLayout) {
+	            Dom_1.$$(this.buttons[this.currentLayout]).removeClass('coveo-selected');
+	        }
+	        Dom_1.$$(this.buttons[layout]).addClass('coveo-selected');
+	        this.currentLayout = layout;
+	        Dom_1.$$(this.element).trigger(ResultListEvents_1.ResultListEvents.changeLayout, { layout: layout, results: results });
 	    };
 	    ResultLayout.prototype.handleQuerySuccess = function (args) {
 	        if (args.results.results.length === 0 || !this.shouldShowSelector()) {
@@ -49894,10 +49961,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var modelLayout = this.getModelValue();
 	        var newLayout = _.find(_.keys(this.buttons), function (l) { return l === modelLayout; });
 	        if (newLayout !== undefined) {
-	            this.changeLayout(newLayout);
+	            this.setLayout(newLayout);
 	        }
 	        else {
-	            this.changeLayout(_.keys(this.buttons)[0]);
+	            this.setLayout(_.keys(this.buttons)[0]);
 	        }
 	    };
 	    ResultLayout.prototype.handleQueryError = function (args) {
@@ -49915,6 +49982,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        }
 	    };
+	    /**
+	     * Gets the current layout (`list`, `card` or `table`).
+	     * @returns {string} The current current layout.
+	     */
 	    ResultLayout.prototype.getCurrentLayout = function () {
 	        return this.currentLayout;
 	    };
@@ -49947,6 +50018,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return _.keys(this.buttons).length > 1;
 	    };
 	    ResultLayout.ID = 'ResultLayout';
+	    /**
+	     * The possible valid and supported layout.
+	     */
 	    ResultLayout.validLayouts = ['list', 'card', 'table'];
 	    /**
 	     * @componentOptions
@@ -51614,6 +51688,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var query = this.queryController.getLastQuery();
 	        if (query) {
 	            query = _.omit(query, 'numberOfResults');
+	            if (this.options.fieldsToInclude) {
+	                query.fieldsToInclude = this.options.fieldsToInclude;
+	            }
 	            this.logger.debug('Performing query following \'Export to Excel\' click');
 	            var endpoint = this.queryController.getEndpoint();
 	            this.usageAnalytics.logCustomEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.exportToExcel, {}, this.element);
@@ -51639,7 +51716,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	         *
 	         * Default value is `100`.
 	         */
-	        numberOfResults: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1 })
+	        numberOfResults: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1 }),
+	        /**
+	         * Specifies an array of fields that should be included for the export to excel call.
+	         *
+	         * Those are the fields that will be downloaded. If not specified, all fields returned by the last query will be used.
+	         */
+	        fieldsToInclude: ComponentOptions_1.ComponentOptions.buildFieldsOption()
 	    };
 	    return ExportToExcel;
 	}(Component_1.Component));
@@ -51833,18 +51916,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    Folding.prototype.moreResults = function (result, originalQuery) {
 	        var _this = this;
-	        var query = new QueryBuilder_1.QueryBuilder();
+	        var query = _.clone(originalQuery);
+	        var builder = new QueryBuilder_1.QueryBuilder();
 	        query.numberOfResults = this.options.maximumExpandedResults;
 	        var fieldValue = Utils_1.Utils.getFieldValue(result, this.options.field);
 	        if (Utils_1.Utils.isNonEmptyString(fieldValue)) {
-	            query.advancedExpression.addFieldExpression(this.options.field, '=', [fieldValue]);
+	            builder.advancedExpression.addFieldExpression(this.options.field, '=', [fieldValue]);
+	            query.aq = builder.build().aq;
 	        }
 	        if (Utils_1.Utils.isNonEmptyString(originalQuery.q)) {
 	            // We add keywords to get the highlight and we add @uri to get all results
-	            query.expression.add('(' + originalQuery.q + ') OR @uri');
+	            query.q = '(' + originalQuery.q + ') OR @uri';
 	        }
 	        if (Utils_1.Utils.isNonEmptyString(this.options.expandExpression)) {
-	            query.constantExpression.add(this.options.expandExpression);
+	            query.cq = this.options.expandExpression;
 	        }
 	        if (this.options.parentField != null) {
 	            query.parentField = this.options.parentField;
@@ -51852,15 +51937,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (this.options.childField != null) {
 	            query.childField = this.options.childField;
 	        }
+	        query.filterField = null;
+	        query.filterFieldRange = null;
 	        if (this.options.rearrange) {
-	            this.options.rearrange.putInQueryBuilder(query);
+	            this.options.rearrange.putInQueryBuilder(builder);
+	            query.sortCriteria = builder.sortCriteria;
+	            query.sortField = builder.sortField;
 	        }
 	        else {
 	            query.sortCriteria = originalQuery.sortCriteria;
 	            query.sortField = originalQuery.sortField;
 	        }
-	        var builtQuery = query.build();
-	        return this.queryController.getEndpoint().search(builtQuery)
+	        return this.queryController.getEndpoint().search(query)
 	            .then(function (results) {
 	            _this.handlePreprocessMoreResults(results);
 	            return results.results;
@@ -77565,18 +77653,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ComponentOptions_1 = __webpack_require__(110);
 	var Initialization_1 = __webpack_require__(107);
 	/**
-	 * This component is used to render an image URL (either passed as a direct URL
-	 * or contained in a result's field) as a background image. It is useful for
-	 * displaying information in front of a dynamic background image.
+	 * The Backdrop component renders an image URL (either passed as a direct URL or contained in a result field) as a
+	 * background image. It is useful for displaying information in front of a dynamic background image.
 	 *
-	 * Backdrop will automatically initialize components embedded within itself :
+	 * The Backdrop component will automatically initialize components embedded within itself:
 	 *
-	 *     <div class="CoveoBackdrop" data-image-field="ytthumbnailurl">
-	 *       <div class="CoveoFieldValue" data-field="somefield"></div>
-	 *     </div>
+	 * ```html
+	 *   <div class="CoveoBackdrop" data-image-field="ytthumbnailurl">
+	 *     <div class="CoveoFieldValue" data-field="somefield"></div>
+	 *   </div>
+	 * ```
 	 */
 	var Backdrop = (function (_super) {
 	    __extends(Backdrop, _super);
+	    /**
+	     * Creates a new Backdrop component.
+	     * @param element The HTMLElement on which the component will be instantiated.
+	     * @param options The options for the Backdrop component.
+	     * @param bindings The bindings that the component requires to function normally. If not set, it will be automatically
+	     * resolved (with a slower execution time).
+	     * @param result The {@link IQueryResult}.
+	     */
 	    function Backdrop(element, options, bindings, result) {
 	        _super.call(this, element, Backdrop.ID, bindings);
 	        this.element = element;
@@ -77611,28 +77708,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	        /**
 	         * Specifies a direct URL from which the background image will be sourced.
 	         *
-	         * Has priority over `imageField`.
+	         * Has priority over {@link Backdrop.options.imageField}.
 	         */
 	        imageUrl: ComponentOptions_1.ComponentOptions.buildStringOption(),
 	        /**
 	         * Specifies the field from which the background image will be pulled.
 	         *
-	         * If `imageUrl` is specified, this option will not be considered.
+	         * If {@link Backdrop.options.imageUrl} is specified, it will override this option.
 	         */
 	        imageField: ComponentOptions_1.ComponentOptions.buildStringOption(),
 	        /**
-	         * If specified, this color will be overlaid on top of the background image.
-	         * It needs to be declared as a CSS color (be sure to use RGBA with an alpha
-	         * value lower than 1 in order to be able to see the image behind).
+	         * Specifies the color that will be overlaid on top of the background image.
+	         * This option needs to be declared as a CSS color. Be sure to use RGBA with an alpha value lower than 1 in order to
+	         * be able to see the image behind the overlay color.
 	         *
 	         * Example value : "`rgba(101, 123, 76, 0.5)`"
 	         */
 	        overlayColor: ComponentOptions_1.ComponentOptions.buildColorOption(),
 	        /**
-	         * If true, the overlay color will instead be rendered as a top-to-bottom
-	         * gradient from `overlayColor` to transparent.
+	         * Specifies whether the overlay color should be instead be rendered as a top-to-bottom gradient from
+	         * {@link Backdrop.options.overlayColor} to transparent.
 	         *
-	         * The default value is `false`.
+	         * Default value is `false`.
 	         */
 	        overlayGradient: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'overlayColor' })
 	    };
@@ -77660,20 +77757,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Dom_1 = __webpack_require__(59);
 	var Assert_1 = __webpack_require__(14);
 	/**
-	 * This component is used to display a button which, when clicked, triggers an
-	 * overlay on top of a Result. It is usually found inside a {@link
-	 * CardActionBar} component, although it can be used in any {@link Result}
-	 * component.
+	 * The CardOverlay component displays a button which toggles the visibility of an overlay on top of an
+	 * {@link IQueryResult} when clicked. This component is usually found inside a {@link CardActionBar} component, although
+	 * it can be used in any IQueryResult.
 	 *
-	 * Its primary purpose is to display additional information about a Result in a
-	 * format that fits well within a Card.
+	 * The primary purpose of the CardOverlay component is to display additional information about a result in a format that
+	 * fits well within a Card (see {@link ResultList.options.layout} and {@link ResultLayout}).
 	 *
-	 * When initialized, it will create a `<div class="coveo-card-overlay">` element
-	 * as the last child of its parent {@link Result} component, and will display a
-	 * button which toggles the visibility of the overlay.
+	 * When initialized, this component will create a `<div class="coveo-card-overlay">` element as the last child of its
+	 * parent IQueryResult, and will display a button which toggles the visibility of this overlay.
 	 */
 	var CardOverlay = (function (_super) {
 	    __extends(CardOverlay, _super);
+	    /**
+	     * Creates a new CardOverlay component.
+	     * @param element The HTMLElement on which the component will be instantiated.
+	     * @param options The options for the CardOverlay component.
+	     * @param bindings The bindings that the component requires to function normally. If not set, they will be
+	     * automatically resolved (with a slower execution time).
+	     */
 	    function CardOverlay(element, options, bindings) {
 	        _super.call(this, element, CardOverlay.ID, bindings);
 	        this.element = element;
@@ -77685,9 +77787,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.createButton(this.element);
 	    }
 	    /**
-	     * Toggle the visibility of the CardOverlay
+	     * Toggles the CardOverlay visibility.
 	     *
-	     * @param swtch If specified, will force to this value (`true` for visible, `false` for hidden).
+	     * @param swtch If specified, will force the component visibility to take the corresponding value (`true` for visible,
+	     * `false` for hidden).
 	     */
 	    CardOverlay.prototype.toggleOverlay = function (swtch) {
 	        if (swtch !== undefined) {
@@ -77703,14 +77806,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    };
 	    /**
-	     * Open the CardOverlay
+	     * Opens the CardOverlay.
 	     */
 	    CardOverlay.prototype.openOverlay = function () {
 	        Dom_1.$$(this.overlay).addClass('coveo-opened');
 	        this.bind.trigger(this.element, CardOverlayEvents_1.CardOverlayEvents.openCardOverlay);
 	    };
 	    /**
-	     * Close the CardOverlay
+	     * Closes the CardOverlay.
 	     */
 	    CardOverlay.prototype.closeOverlay = function () {
 	        Dom_1.$$(this.overlay).removeClass('coveo-opened');
@@ -77750,11 +77853,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    CardOverlay.options = {
 	        /**
-	         * The title of the overlay. Will also be displayed as the button's text.
+	         * Specifies the overlay title. This string will also be displayed as the button text.
 	         */
 	        title: ComponentOptions_1.ComponentOptions.buildStringOption({ required: true }),
 	        /**
-	         * The icon of the overlay. Will also be displayed as the button's icon.
+	         * Specifies the overlay icon. This icon will also be displayed as the button icon.
 	         */
 	        icon: ComponentOptions_1.ComponentOptions.buildIconOption()
 	    };
@@ -77795,13 +77898,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Assert_1 = __webpack_require__(14);
 	var Dom_1 = __webpack_require__(59);
 	/**
-	 * This component displays an action bar at the bottom of a Card result (see
-	 * {@link ResultLayout}). It is a simple container for buttons or other
-	 * complementary information.
+	 * The CardActionBar component displays an action bar at the bottom of a Card result (see {ResultList.options.layout}
+	 * and {@link ResultLayout}). It is a simple container for buttons or complementary information.
 	 *
-	 * It is meant to be placed at the **bottom** of a Card result. E.g. as the last
-	 * child of the surrounding `result-frame`.
+	 * This component is meant to be placed at the bottom of a Card result (i.e., as the last child of the surrounding
+	 * `result-frame`.
 	 *
+	 * ### Example
 	 * ```html
 	 * <div class="coveo-result-frame">
 	 *   ...content...
@@ -77812,10 +77915,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * </div>
 	 * ```
 	 *
-	 * By default, CardActionBar is toggleable, with its default state being hidden.
+	 * A CardActionBar component is a two-state widget. Its default state is `hidden`.
 	 */
 	var CardActionBar = (function (_super) {
 	    __extends(CardActionBar, _super);
+	    /**
+	     * Creates a new CardActionBar component.
+	     * @param element The HTMLElement on which the component will be instantiated.
+	     * @param options The options for the CardActionBar component.
+	     * @param bindings The bindings that the component requires to function normally. If not set, it will be automatically
+	     * resolved (with a slower execution time).
+	     * @param result The {@link IQueryResult}.
+	     */
 	    function CardActionBar(element, options, bindings, result) {
 	        _super.call(this, element, CardActionBar.ID, bindings);
 	        this.element = element;
@@ -77835,13 +77946,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }
 	    /**
-	     * Show the ActionBar
+	     * Shows the CardActionBar.
 	     */
 	    CardActionBar.prototype.show = function () {
 	        Dom_1.$$(this.element).addClass('coveo-opened');
 	    };
 	    /**
-	     * Hide the ActionBar
+	     * Hides the CardActionBar.
 	     */
 	    CardActionBar.prototype.hide = function () {
 	        Dom_1.$$(this.element).removeClass('coveo-opened');
@@ -77865,15 +77976,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    CardActionBar.options = {
 	        /**
-	         * Specifies if the CardActionBar is hidden unless the cursor clicks its parent
-	         * `Result` component.
+	         * Specifies whether the CardActionBar is hidden by default unless the user clicks its parent {@link IQueryResult}.
 	         *
-	         * By default, it is hidden and a visual indicator is appended to the parent
-	         * `Result`.
+	         * Default value is `true`, which means the component is hidden and a visual indicator is appended to its parent
+	         * IQueryResult.
 	         */
 	        hidden: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
 	        /**
-	         * Specifies if the hidden CardActionbar is to be opened when it is hovered over.
+	         * If {CardActionBar.options.hidden} is set to `true`, specifies whether the CardActionBar should open when it is
+	         * hovered over.
+	         *
+	         * Default value is `true`.
 	         */
 	        openOnMouseOver: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true, depend: 'hidden' })
 	    };

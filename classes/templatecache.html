@@ -59,6 +59,12 @@
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
+	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
+	<script>
+        if (document.location.hash) {
+            $('.CoveoSearchbox').attr('data-auto-focus', 'false');
+        }
+    </script>
 </header>
 <div class="container container-main">
 	<div class="row">
@@ -169,8 +175,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/TemplateCache.ts#L72">src/ui/Templates/TemplateCache.ts
-									:72</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/TemplateCache.ts#L78">src/ui/Templates/TemplateCache.ts
+									:78</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -223,8 +229,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/TemplateCache.ts#L64">src/ui/Templates/TemplateCache.ts
-									:64</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/TemplateCache.ts#L70">src/ui/Templates/TemplateCache.ts
+									:70</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -247,8 +253,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/TemplateCache.ts#L56">src/ui/Templates/TemplateCache.ts
-									:56</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/TemplateCache.ts#L62">src/ui/Templates/TemplateCache.ts
+									:62</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

@@ -59,6 +59,12 @@
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
+	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
+	<script>
+        if (document.location.hash) {
+            $('.CoveoSearchbox').attr('data-auto-focus', 'false');
+        }
+    </script>
 </header>
 <div class="container container-main">
 	<div class="row">
@@ -149,7 +155,7 @@
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
 								<a href="cardoverlay.html#id" class="tsd-kind-icon">ID</a>
 							</li>
-							<li class=" tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+							<li class=" tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
 								<a href="cardoverlay.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 						</ul>
@@ -180,15 +186,14 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>This component is used to display a button which, when clicked, triggers an
-							overlay on top of a Result. It is usually found inside a <a href="cardactionbar.html">CardActionBar</a> component, although it can be used in any {@link Result}
-						component.</p>
+						<p>The CardOverlay component displays a button which toggles the visibility of an overlay on top of an
+							<a href="../interfaces/iqueryresult.html">IQueryResult</a> when clicked. This component is usually found inside a <a href="cardactionbar.html">CardActionBar</a> component, although
+						it can be used in any IQueryResult.</p>
 					</div>
-					<p>Its primary purpose is to display additional information about a Result in a
-					format that fits well within a Card.</p>
-					<p>When initialized, it will create a <code>&lt;div class=&quot;coveo-card-overlay&quot;&gt;</code> element
-						as the last child of its parent {@link Result} component, and will display a
-					button which toggles the visibility of the overlay.</p>
+					<p>The primary purpose of the CardOverlay component is to display additional information about a result in a format that
+					fits well within a Card (see <a href="resultlist.html#options.layout">ResultList.options.layout</a> and <a href="resultlayout.html">ResultLayout</a>).</p>
+					<p>When initialized, this component will create a <code>&lt;div class=&quot;coveo-card-overlay&quot;&gt;</code> element as the last child of its
+					parent IQueryResult, and will display a button which toggles the visibility of this overlay.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -234,10 +239,10 @@
 								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="cardoverlay.html#id" class="tsd-kind-icon">ID</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="cardoverlay.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite"><a href="cardoverlay.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 					</div>
@@ -258,7 +263,7 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The icon of the overlay. Will also be displayed as the button&#39;s icon.</p>
+							<p>Specifies the overlay icon. This icon will also be displayed as the button icon.</p>
 						</div>
 					</div>
 					<div class="tsd-panel">
@@ -273,13 +278,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardOverlay/CardOverlay.ts#L40">src/ui/CardOverlay/CardOverlay.ts
-							:40</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardOverlay/CardOverlay.ts#L39">src/ui/CardOverlay/CardOverlay.ts
+							:39</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The title of the overlay. Will also be displayed as the button&#39;s text.</p>
+							<p>Specifies the overlay title. This string will also be displayed as the button text.</p>
 						</div>
 					</div>
 					<div class="tsd-panel">
@@ -301,13 +306,13 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardOverlay/CardOverlay.ts#L85">src/ui/CardOverlay/CardOverlay.ts
-									:85</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardOverlay/CardOverlay.ts#L93">src/ui/CardOverlay/CardOverlay.ts
+									:93</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Close the CardOverlay</p>
+									<p>Closes the CardOverlay.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -429,13 +434,13 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardOverlay/CardOverlay.ts#L77">src/ui/CardOverlay/CardOverlay.ts
-									:77</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardOverlay/CardOverlay.ts#L85">src/ui/CardOverlay/CardOverlay.ts
+									:85</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Open the CardOverlay</p>
+									<p>Opens the CardOverlay.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -453,13 +458,13 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardOverlay/CardOverlay.ts#L62">src/ui/CardOverlay/CardOverlay.ts
-									:62</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardOverlay/CardOverlay.ts#L70">src/ui/CardOverlay/CardOverlay.ts
+									:70</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Toggle the visibility of the CardOverlay</p>
+									<p>Toggles the CardOverlay visibility.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -467,7 +472,8 @@
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> swtch: <span class="tsd-signature-type">boolean</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>If specified, will force to this value (<code>true</code> for visible, <code>false</code> for hidden).</p>
+										<p>If specified, will force the component visibility to take the corresponding value (<code>true</code> for visible,
+										<code>false</code> for hidden).</p>
 									</div>
 								</li>
 							</ul>
@@ -739,29 +745,27 @@
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Card<wbr>Overlay<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="cardoverlay.html" class="tsd-signature-type">CardOverlay</a></li>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Card<wbr>Overlay<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ICardOverlayOptions</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="cardoverlay.html" class="tsd-signature-type">CardOverlay</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
+								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L91">src/ui/Base/Component.ts
-									:91</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardOverlay/CardOverlay.ts#L45">src/ui/CardOverlay/CardOverlay.ts
+									:45</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Create a new Component. Resolve all <a href="../interfaces/icomponentbindings.html">IComponentBindings</a> if not provided.<br/>
-										Create a new Logger for this component.
-									Attach the component to the <a href="searchinterface.html">SearchInterface</a>.<br/></p>
+									<p>Creates a new CardOverlay component.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -770,23 +774,24 @@
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The HTMLElement on which to create the component. Used to bind data on the element.</p>
+											<p>The HTMLElement on which the component will be instantiated.</p>
 										</div>
 									</div>
 								</li>
 								<li>
-									<h5>type: <span class="tsd-signature-type">string</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">ICardOverlayOptions</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The unique identifier for this component. See : <a href="../interfaces/icomponentdefinition.html#id">IComponentDefinition.ID</a>. Used to generate the unique Coveo CSS class associated with every component.</p>
+											<p>The options for the CardOverlay component.</p>
 										</div>
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The environment for every component. Optional, but omitting to provide one will impact performance.</p>
+											<p>The bindings that the component requires to function normally. If not set, they will be
+											automatically resolved (with a slower execution time).</p>
 										</div>
 									</div>
 								</li>

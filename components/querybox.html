@@ -59,6 +59,12 @@
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
+	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
+	<script>
+        if (document.location.hash) {
+            $('.CoveoSearchbox').attr('data-auto-focus', 'false');
+        }
+    </script>
 </header>
 <div class="container container-main">
 	<div class="row">
@@ -278,8 +284,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L202">src/ui/Querybox/Querybox.ts
-							:202</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L204">src/ui/Querybox/Querybox.ts
+							:204</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -301,8 +307,8 @@ data-auto-focus&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L117">src/ui/Querybox/Querybox.ts
-							:117</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L119">src/ui/Querybox/Querybox.ts
+							:119</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -334,8 +340,8 @@ data-enable-lowercase-operators&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L142">src/ui/Querybox/Querybox.ts
-							:142</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L144">src/ui/Querybox/Querybox.ts
+							:144</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -373,8 +379,8 @@ data-enable-partial-match&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L71">src/ui/Querybox/Querybox.ts
-							:71</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L73">src/ui/Querybox/Querybox.ts
+							:73</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -383,6 +389,7 @@ data-enable-partial-match&#x3D;&#x27;false&#x27;</pre>
 								query entered in the Querybox (see
 							<a target="_blank" href="http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005">Coveo Query Syntax Reference</a>).</p>
 						</div>
+						<p>Query syntax in the Querybox will also be highlighted when this option is enabled.</p>
 						<p>See also <a href="querybox.html#options.enablewildcards">Querybox.options.enableWildcards</a>, <a href="querybox.html#options.enablequestionmarks">Querybox.options.enableQuestionMarks</a> and
 						<a href="querybox.html#options.enablelowercaseoperators">Querybox.options.enableLowercaseOperators</a>.</p>
 						<p>Default value is <code>true</code>.</p>
@@ -400,8 +407,8 @@ data-enable-query-syntax&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L100">src/ui/Querybox/Querybox.ts
-							:100</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L102">src/ui/Querybox/Querybox.ts
+							:102</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -455,8 +462,8 @@ data-enable-search-as-you-type&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L85">src/ui/Querybox/Querybox.ts
-							:85</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L87">src/ui/Querybox/Querybox.ts
+							:87</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -486,8 +493,8 @@ data-enable-wildcards&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L159">src/ui/Querybox/Querybox.ts
-							:159</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L161">src/ui/Querybox/Querybox.ts
+							:161</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -519,8 +526,8 @@ data-enable-wildcards&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L185">src/ui/Querybox/Querybox.ts
-							:185</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L187">src/ui/Querybox/Querybox.ts
+							:187</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -582,8 +589,8 @@ data-enable-wildcards&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L192">src/ui/Querybox/Querybox.ts
-							:192</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L194">src/ui/Querybox/Querybox.ts
+							:194</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -612,8 +619,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L298">src/ui/Querybox/Querybox.ts
-									:298</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L300">src/ui/Querybox/Querybox.ts
+									:300</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -740,8 +747,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L334">src/ui/Querybox/Querybox.ts
-									:334</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L336">src/ui/Querybox/Querybox.ts
+									:336</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -765,8 +772,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L325">src/ui/Querybox/Querybox.ts
-									:325</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L327">src/ui/Querybox/Querybox.ts
+									:327</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -790,8 +797,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L316">src/ui/Querybox/Querybox.ts
-									:316</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L318">src/ui/Querybox/Querybox.ts
+									:318</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -815,8 +822,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L307">src/ui/Querybox/Querybox.ts
-									:307</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L309">src/ui/Querybox/Querybox.ts
+									:309</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -840,8 +847,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L345">src/ui/Querybox/Querybox.ts
-									:345</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L347">src/ui/Querybox/Querybox.ts
+									:347</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -874,8 +881,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L290">src/ui/Querybox/Querybox.ts
-									:290</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L292">src/ui/Querybox/Querybox.ts
+									:292</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -907,8 +914,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L278">src/ui/Querybox/Querybox.ts
-									:278</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L280">src/ui/Querybox/Querybox.ts
+									:280</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1199,8 +1206,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L207">src/ui/Querybox/Querybox.ts
-									:207</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L209">src/ui/Querybox/Querybox.ts
+									:209</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

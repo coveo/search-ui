@@ -59,6 +59,12 @@
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
+	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
+	<script>
+        if (document.location.hash) {
+            $('.CoveoSearchbox').attr('data-auto-focus', 'false');
+        }
+    </script>
 </header>
 <div class="container container-main">
 	<div class="row">
@@ -335,7 +341,7 @@ Since there is no "default" template with no condition specified, the framework 
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies that the result list should scan it&#39;s template and discover which field it will need to render every results.<br/>
+							<p>Specifies that the result list should scan its template and discover which field it will need to render every results.<br/>
 								This is to ensure that fields that are not needed for the UI to function are not sent by the search API.<br/>
 								Default value is false.<br/>
 							NB: Many interface created by the interface editor will actually explicitly set this option to true.</p>
@@ -466,19 +472,18 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L196">src/ui/ResultList/ResultList.ts
-							:196</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L195">src/ui/ResultList/ResultList.ts
+							:195</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the layout to use for displaying Results. Specifying this
-								option will automatically populate a <a href="resultlayout.html">ResultLayout</a> component with
-							a switcher for the layout.</p>
+							<p>Specifies the layout to use for displaying the results. Specifying a value for this option will automatically
+							populate a <a href="resultlayout.html">ResultLayout</a> component with a switcher for the layout.</p>
 						</div>
-						<p>For example, if there are 2 ResultLists in the page, one with a <code>layout</code>
-							of <code>list</code> and the other of <code>card</code>, the <a href="resultlayout.html">ResultLayout</a> component
-						will have 2 buttons titled respectively &quot;List&quot; and &quot;Card&quot;.</p>
+						<p>For example, if there are two <a href="resultlist.html">ResultList</a> components in the page, one with its
+							<a href="resultlist.html#options.layout">ResultList.options.layout</a> set to <code>list</code> and the other with the same option set to <code>card</code>, then the
+						ResultLayout component will have two buttons respectively titled <strong>List</strong> and <strong>Card</strong>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -564,8 +569,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L292">src/ui/ResultList/ResultList.ts
-									:292</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L290">src/ui/ResultList/ResultList.ts
+									:290</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -594,8 +599,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L275">src/ui/ResultList/ResultList.ts
-									:275</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L273">src/ui/ResultList/ResultList.ts
+									:273</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -678,8 +683,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L310">src/ui/ResultList/ResultList.ts
-									:310</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L308">src/ui/ResultList/ResultList.ts
+									:308</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -765,8 +770,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L350">src/ui/ResultList/ResultList.ts
-									:350</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L348">src/ui/ResultList/ResultList.ts
+									:348</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -789,8 +794,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L358">src/ui/ResultList/ResultList.ts
-									:358</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L356">src/ui/ResultList/ResultList.ts
+									:356</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -813,8 +818,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L256">src/ui/ResultList/ResultList.ts
-									:256</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L254">src/ui/ResultList/ResultList.ts
+									:254</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1117,8 +1122,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L205">src/ui/ResultList/ResultList.ts
-									:205</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L204">src/ui/ResultList/ResultList.ts
+									:204</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

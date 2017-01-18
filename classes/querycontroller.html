@@ -59,6 +59,12 @@
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
+	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
+	<script>
+        if (document.location.hash) {
+            $('.CoveoSearchbox').attr('data-auto-focus', 'false');
+        }
+    </script>
 </header>
 <div class="container container-main">
 	<div class="row">
@@ -112,6 +118,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="querycontroller.html#getlastquery" class="tsd-kind-icon">get<wbr>Last<wbr>Query</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="querycontroller.html#getlastresults" class="tsd-kind-icon">get<wbr>Last<wbr>Results</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="querycontroller.html#setendpoint" class="tsd-kind-icon">set<wbr>Endpoint</a>
@@ -181,6 +190,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="querycontroller.html#fetchmore" class="tsd-kind-icon">fetch<wbr>More</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="querycontroller.html#getendpoint" class="tsd-kind-icon">get<wbr>Endpoint</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="querycontroller.html#getlastquery" class="tsd-kind-icon">get<wbr>Last<wbr>Query</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="querycontroller.html#getlastresults" class="tsd-kind-icon">get<wbr>Last<wbr>Results</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="querycontroller.html#setendpoint" class="tsd-kind-icon">set<wbr>Endpoint</a></li>
 							</ul>
 						</section>
@@ -214,8 +224,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/controllers/QueryController.ts#L367">src/controllers/QueryController.ts
-									:367</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/controllers/QueryController.ts#L375">src/controllers/QueryController.ts
+									:375</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -317,8 +327,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/controllers/QueryController.ts#L147">src/controllers/QueryController.ts
-									:147</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/controllers/QueryController.ts#L155">src/controllers/QueryController.ts
+									:155</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -349,8 +359,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/controllers/QueryController.ts#L308">src/controllers/QueryController.ts
-									:308</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/controllers/QueryController.ts#L316">src/controllers/QueryController.ts
+									:316</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -413,6 +423,30 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/iquery.html" class="tsd-signature-type">IQuery</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getlastresults" class="tsd-anchor"></a>
+					<h3>get<wbr>Last<wbr>Results</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Last<wbr>Results<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/iqueryresults.html" class="tsd-signature-type">IQueryResults</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/controllers/QueryController.ts#L144">src/controllers/QueryController.ts
+									:144</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return the last query results set.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/iqueryresults.html" class="tsd-signature-type">IQueryResults</a></h4>
 						</li>
 					</ul>
 				</section>

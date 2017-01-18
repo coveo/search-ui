@@ -59,6 +59,12 @@
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
+	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
+	<script>
+        if (document.location.hash) {
+            $('.CoveoSearchbox').attr('data-auto-focus', 'false');
+        }
+    </script>
 </header>
 <div class="container container-main">
 	<div class="row">
@@ -243,7 +249,7 @@
 								<div class="lead">
 									<p>Build a color option.</p>
 								</div>
-								<p>Normally, this only means that it will build a string that matches a CSS color</p>
+								<p>Normally, this only means that it will build a string that matches a CSS color.</p>
 								<p>In the markup, this has no advantage over a plain string. This is mostly useful for the interface editor.</p>
 								<p><code>data-foo=&quot;coveo-sprites-user&quot;</code> or <code>data-foo=&quot;coveo-sprites-database&quot;</code>.</p>
 							</div>
@@ -338,7 +344,7 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Build an helper option.</p>
+									<p>Build a helper option.</p>
 								</div>
 								<p>Normally, this only means that it will build a string that matches the name of a template helper.</p>
 								<p>In the markup, this has no advantage over a plain string. This is mostly useful for the interface editor.</p>

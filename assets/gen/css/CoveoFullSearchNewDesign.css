@@ -8275,9 +8275,9 @@
     border-radius: 2px; }
     .coveo-card-layout > .CoveoResult.coveo-clickable {
       cursor: pointer; }
-    .coveo-card-layout > .CoveoResult:hover {
-      box-shadow: 0 0 0 2px #009ddc;
-      border-color: #009ddc; }
+      .coveo-card-layout > .CoveoResult.coveo-clickable:hover {
+        box-shadow: 0 0 0 2px #009ddc;
+        border-color: #009ddc; }
     .coveo-card-layout > .CoveoResult .coveo-result-row:first-child {
       margin-top: 0; }
     .coveo-card-layout > .CoveoResult .coveo-result-frame {

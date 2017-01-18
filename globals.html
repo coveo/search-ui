@@ -59,6 +59,12 @@
 			<div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
 		</div>
 	</div>
+	<!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
+	<script>
+        if (document.location.hash) {
+            $('.CoveoSearchbox').attr('data-auto-focus', 'false');
+        }
+    </script>
 </header>
 <div class="container container-main">
 	<div class="row">
@@ -654,6 +660,9 @@
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#baseformtypes" class="tsd-kind-icon">Base<wbr>Form<wbr>Types</a>
 					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#validlayout" class="tsd-kind-icon">Valid<wbr>Layout</a>
+					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#__" class="tsd-kind-icon">$$</a>
 					</li>
@@ -944,6 +953,7 @@
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-type-alias"><a href="globals.html#baseformtypes" class="tsd-kind-icon">Base<wbr>Form<wbr>Types</a></li>
+								<li class="tsd-kind-type-alias"><a href="globals.html#validlayout" class="tsd-kind-icon">Valid<wbr>Layout</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -984,6 +994,23 @@
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>The basic types of form available to build an advanced search section.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias">
+					<a name="validlayout" class="tsd-anchor"></a>
+					<h3>Valid<wbr>Layout</h3>
+					<div class="tsd-signature tsd-kind-icon">Valid<wbr>Layout<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"list"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"card"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"table"</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultLayout/ResultLayout.ts#L23">src/ui/ResultLayout/ResultLayout.ts
+							:23</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The possible valid and supported layout.</p>
 						</div>
 					</div>
 				</section>
