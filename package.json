@@ -54,6 +54,7 @@
     "cheerio": "^0.20.0",
     "circular-dependency-plugin": "^1.1.0",
     "colors": "^1.1.2",
+    "coveralls": "^2.11.15",
     "css-loader": "^0.23.1",
     "del": "^2.2.2",
     "dts-generator": "^1.7.0",

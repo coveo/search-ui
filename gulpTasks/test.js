@@ -8,6 +8,7 @@ const remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 const event_stream = require('event-stream');
 const shell = require('gulp-shell');
 const replace = require('gulp-replace');
+const coveralls = require('coveralls');
 
 const COVERAGE_DIR = path.resolve('bin/coverage');
 
@@ -63,6 +64,16 @@ gulp.task('lcovCoverage', ['remapCoverage'], function (done) {
     pattern: `${COVERAGE_DIR}/coverage.json`,
     reporters: {
       lcov: {}
+    },
+    print: 'summary'
+  }).then(() => {
+    if (process.ENV.CI) {
+      let content = fs.readFileSync(`${COVERAGE_DIR}/coverage.json`);
+      coveralls.handleInput(content, ()=> {
+        done();
+      });
+    } else {
+      done();
     }
-  }).then(() => done());
+  });
 });
