@@ -70,7 +70,5 @@ gulp.task('lcovCoverage', ['remapCoverage'], function (done) {
       lcov: {}
     },
     print: 'summary'
-  }).then(() => {
-    done()
-  });
+  }).then(() => done());
 });
