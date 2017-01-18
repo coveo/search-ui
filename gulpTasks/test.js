@@ -23,7 +23,7 @@ gulp.task('setupTests', function () {
   ).pipe(event_stream.wait())
 });
 
-gulp.task('coverage', ['lcovCoverage']);
+gulp.task('coverage', ['lcovCoverage' , 'uploadCoverage']);
 
 gulp.task('test', ['setupTests', 'buildTest'], function (done) {
   new TestServer({
@@ -40,6 +40,10 @@ gulp.task('test', ['setupTests', 'buildTest'], function (done) {
 
 gulp.task('buildTest', shell.task([
   'node node_modules/webpack/bin/webpack.js --config ./webpackConfigFiles/webpack.test.config.js'
+]));
+
+gulp.task('uploadCoverage', ['lcovCoverage'], shell.task([
+  'cat bin/coverage/lcov.info | ./node_modules/.bin/coveralls'
 ]));
 
 gulp.task('testDev', ['watchTest'], function (done) {
@@ -67,13 +71,6 @@ gulp.task('lcovCoverage', ['remapCoverage'], function (done) {
     },
     print: 'summary'
   }).then(() => {
-    if (process.ENV.CI) {
-      let content = fs.readFileSync(`${COVERAGE_DIR}/coverage.json`);
-      coveralls.handleInput(content, ()=> {
-        done();
-      });
-    } else {
-      done();
-    }
+    done()
   });
 });
