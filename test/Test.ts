@@ -376,3 +376,6 @@ HashUtilsTest();
 
 import {StringUtilsTests} from './utils/StringUtilsTest';
 StringUtilsTests();
+
+import {CoreHelperTest} from './ui/CoreHelpersTest';
+CoreHelperTest();

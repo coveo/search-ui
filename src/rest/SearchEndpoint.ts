@@ -112,6 +112,13 @@ export class SearchEndpoint implements ISearchEndpoint {
     SearchEndpoint.endpoints['default'] = new SearchEndpoint(SearchEndpoint.removeUndefinedConfigOption(merged));
   }
 
+  /**
+   * Configure an endpoint to a Coveo Cloud index, in the V2 platform.
+   * @param organization The organization id of your Coveo cloud index
+   * @param token The token to use to execute query. If null, you will most probably need to login when querying.
+   * @param uri The uri of your cloud Search API. By default, will point to the production environment
+   * @param otherOptions A set of additional options to use when configuring this endpoint
+   */
   static configureCloudV2Endpoint(organization?: string, token?: string, uri: string = 'https://platform.cloud.coveo.com/rest/search', otherOptions?: ISearchEndpointOptions) {
     return SearchEndpoint.configureCloudEndpoint(organization, token, uri, otherOptions);
   }
