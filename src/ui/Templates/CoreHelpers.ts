@@ -1,5 +1,4 @@
 import {TemplateHelpers, ITemplateHelperFunction} from './TemplateHelpers';
-import {ComponentOptions} from '../Base/ComponentOptions';
 import {IHighlight, IHighlightPhrase, IHighlightTerm} from '../../rest/Highlight';
 import {HighlightUtils, StringAndHoles} from '../../utils/HighlightUtils';
 import {IStreamHighlightOptions} from '../../utils/StreamHighlightUtils';
@@ -182,7 +181,7 @@ export interface ICoreHelpers {
    *   'John S.' instead of 'John Smith').<br/>
    *   The default value is `false`.
    */
-  email: (value: string|string[], companyDomain?: string, me?: string, lengthLimit?: number, truncateName?: boolean) => string;
+  email: (value: string | string[], companyDomain?: string, me?: string, lengthLimit?: number, truncateName?: boolean) => string;
   /**
    * Formats a clickable HTML link (`<a>`).
    *
@@ -254,7 +253,7 @@ export interface ICoreHelpers {
    * - `value`: The number to convert to a timespan
    * - `options` : The options to use (see {@link ITimeSpanUtilsOptions})
    */
-  timeSpan: (value: number, options: ITimeSpanUtilsOptions)=> string;
+  timeSpan: (value: number, options: ITimeSpanUtilsOptions) => string;
   /**
    * Given a number, which represent a file size in bytes, format the value into a logical unit size.
    *
@@ -266,7 +265,7 @@ export interface ICoreHelpers {
    *
    * `size(10240) => 10 KB`
    */
-  size: (value: number, options?: IISizeOptions)=> string;
+  size: (value: number, options?: IISizeOptions) => string;
   /**
    * Given a filetype value, try to return a translated and human readable version.
    *
@@ -278,11 +277,11 @@ export interface ICoreHelpers {
    *
    * `translatedCaption('xls') => Spreadsheet Document`
    */
-  translatedCaption: (value: string)=> string;
+  translatedCaption: (value: string) => string;
   /**
    * Replace all carriage return in a string by a &lt;br /&gt; tag
    */
-  encodeCarriageReturn: (value: string)=> string;
+  encodeCarriageReturn: (value: string) => string;
   /**
    * Detect if the results is being rendered in a mobile device.
    *
@@ -290,7 +289,7 @@ export interface ICoreHelpers {
    *
    * If it's a mobile device, return the type of device (Android, iPhone, iPad) etc.
    */
-  isMobileDevice: ()=> string;
+  isMobileDevice: () => string;
 
 }
 
@@ -437,7 +436,7 @@ TemplateHelpers.registerFieldHelper('timeSpan', (value: any, options: ITimeSpanU
   return new TimeSpan(value, options.isMilliseconds).getHHMMSS();
 });
 
-TemplateHelpers.registerFieldHelper('email', (value: string|string[], ...args: any[]) => {
+TemplateHelpers.registerFieldHelper('email', (value: string | string[], ...args: any[]) => {
   // support old arguments (value: any, companyDomain: string, me: string, lengthLimit = 2, truncateName = false)
   var companyDomain: string;
   var me: string;

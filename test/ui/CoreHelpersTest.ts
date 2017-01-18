@@ -7,7 +7,7 @@ import {SearchEndpoint} from '../../src/rest/SearchEndpoint';
 import {mockSearchEndpoint, MockEnvironmentBuilder} from '../MockEnvironment';
 import {IQueryResult} from '../../src/rest/QueryResult';
 import {IIconOptions} from '../../src/ui/Icon/Icon';
-import {Template} from '../../src/ui/Templates/Template';
+
 export function CoreHelperTest() {
   describe('CoreHelpers', () => {
 
@@ -19,7 +19,7 @@ export function CoreHelperTest() {
       let highlights: IHighlight[] = [{
         offset: 2,
         length: 6
-      }]
+      }];
       expect(TemplateHelpers.getHelper('shorten')('a string that is too long', 20, highlights)).toEqual('a <span class="highlight">string</span> that is...');
     });
 
@@ -39,7 +39,7 @@ export function CoreHelperTest() {
       let highlights: IHighlight[] = [{
         offset: 2,
         length: 6
-      }]
+      }];
       expect(TemplateHelpers.getHelper('highlight')('a string that is too long', highlights)).toEqual('a <span class="highlight">string</span> that is too long');
     });
 
@@ -166,7 +166,7 @@ export function CoreHelperTest() {
 
       it('should work correctly with an undefined value returning an empty string', () => {
         expect(TemplateHelpers.getHelper('currency')(undefined)).toEqual('');
-      })
+      });
     });
 
     describe('timeSpan', () => {
@@ -280,7 +280,7 @@ export function CoreHelperTest() {
       });
 
       it('should call the endpoint', () => {
-        TemplateHelpers.getHelper('thumbnail')(result)
+        TemplateHelpers.getHelper('thumbnail')(result);
         expect(endpoint.getRawDataStream).toHaveBeenCalled();
       });
 
