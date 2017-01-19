@@ -42,7 +42,7 @@
     margin-right: 5px;
   }
   &.coveo-excluded {
-    @include retina-sprite($facet-checkbox-exclusion);
+    @include retina-sprite($facet-checkbox-exclusion-group);
     vertical-align: middle;
     margin-left: 0px;
     margin-right: 5px;
