@@ -4,6 +4,8 @@ import {Initialization} from '../Base/Initialization';
 import {BaseComponent} from '../Base/BaseComponent';
 import {ValidLayout} from '../ResultLayout/ResultLayout';
 import {$$} from '../../utils/Dom';
+import {IQueryResult} from '../../rest/QueryResult';
+import {DeviceUtils} from '../../utils/DeviceUtils';
 
 export interface ITemplateOptions {
   layout: ValidLayout;
@@ -32,7 +34,7 @@ export class Template {
   constructor(public dataToString?: (object?: any) => string) {
   }
 
- 
+
   /*
    * Instantiate the template to a string if the condition matches
    */
