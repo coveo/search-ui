@@ -3,6 +3,7 @@ import {ITemplateHelperFunction} from './TemplateHelpers';
 import {Assert} from '../../misc/Assert';
 import {ComponentOptions, IComponentOptionsFieldsOption} from '../Base/ComponentOptions';
 import {Utils} from '../../utils/Utils';
+import {ValidLayout} from '../ResultLayout/ResultLayout';
 import {$$} from '../../utils/Dom';
 import {DefaultResultTemplate} from './DefaultResultTemplate';
 import {Logger} from '../../misc/Logger';
@@ -36,9 +37,14 @@ export class UnderscoreTemplate extends Template {
       new Logger(this).error('Cannot instantiate underscore template. Might be caused by strict Content-Security-Policy. Will fallback on a default template...', e);
     }
 
-    var condition = $$(element).getAttribute('data-condition');
+    let condition = element.getAttribute('data-condition');
     if (condition != null) {
       this.setConditionWithFallback(condition);
+    }
+
+    const layout = element.getAttribute('data-layout');
+    if (layout) {
+      this.layout = <ValidLayout>layout;
     }
 
     this.dataToString = (object) => {
@@ -77,13 +83,16 @@ export class UnderscoreTemplate extends Template {
     return new UnderscoreTemplate(element);
   }
 
-  static fromString(template: string, condition?: string): UnderscoreTemplate {
+  static fromString(template: string, condition?: string, layout?: ValidLayout): UnderscoreTemplate {
     var script = document.createElement('script');
     script.text = template;
     if (condition != null) {
-      $$(script).setAttribute('data-condition', condition);
+      script.setAttribute('data-condition', condition);
     }
-    $$(script).setAttribute('type', UnderscoreTemplate.mimeTypes[0]);
+    if (layout != null) {
+      script.setAttribute('data-layout', layout);
+    }
+    script.setAttribute('type', UnderscoreTemplate.mimeTypes[0]);
     return new UnderscoreTemplate(script);
   }
 

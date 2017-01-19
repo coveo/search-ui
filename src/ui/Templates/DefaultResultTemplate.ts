@@ -23,13 +23,14 @@ export class DefaultResultTemplate extends Template {
     Assert.exists(queryResult);
     queryResult = _.extend({}, queryResult, UnderscoreTemplate.templateHelpers);
 
-    var defaultTemplates = _.map(TemplateCache.getDefaultTemplates(), name => TemplateCache.getTemplate(name));
+    const templates = _.chain(TemplateCache.getDefaultTemplates())
+      .map(name => TemplateCache.getTemplate(name))
+      .filter(template => template.layout === options.layout)
+      .sortBy(template => template.condition == null) // Put templates with conditions first
+      .value();
 
-    // We want to put templates with conditions first
-    const sortedTemplates = _.sortBy(defaultTemplates, template => template.condition == null);
-
-    for (let i = 0; i < sortedTemplates.length; i++) {
-      var result = sortedTemplates[i].instantiateToString(queryResult, undefined, options);
+    for (let i = 0; i < templates.length; i++) {
+      var result = templates[i].instantiateToString(queryResult, undefined, options);
       if (result != null) {
         return result;
       }

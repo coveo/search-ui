@@ -31,12 +31,13 @@ export class Template {
   public condition: Function;
   public conditionToParse: string;
 
-  constructor(public dataToString?: (object?: any) => string) {
+  constructor(public dataToString?: (object?: any) => string, public layout?: ValidLayout) {
   }
 
 
   /*
-   * Instantiate the template to a string if the condition matches
+   * Instantiate the template to a string if the condition matches.
+   * @returns The instantiated template. If the condition doesn't match, return `null`.
    */
   instantiateToString(object?: any, checkCondition = true, options?: ITemplateOptions): string {
     if (this.dataToString) {
@@ -121,6 +122,19 @@ export class Template {
       this.conditionToParse = condition;
     }
   }
+
+  parseDataAttributes(element: HTMLElement) {
+    return element.dataset;
+  }
+
+  parseFieldsAttributes(element: HTMLElement) {
+    let dataSet = element.dataset;
+    _.each(dataSet, (data)=> {
+      console.log(data);
+    })
+  }
+
+
 
   private evaluateMatchingFieldValues(field: string, condition: string) {
     let foundForCurrentField = [];

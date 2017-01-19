@@ -2,6 +2,7 @@ import {Template} from './Template';
 import {Assert} from '../../misc/Assert';
 import {UnderscoreTemplate} from './UnderscoreTemplate';
 import {HtmlTemplate} from './HtmlTemplate';
+import {ValidLayout} from '../ResultLayout/ResultLayout';
 
 /**
  * Holds a reference to all template available in the framework
@@ -79,6 +80,10 @@ export class TemplateCache {
     return _.keys(TemplateCache.defaultTemplates);
   }
 
+  /**
+   * Get a default template by name.
+   * @param name The name of the queried template
+   */
   public static getDefaultTemplate(name: string): Template {
     Assert.exists(TemplateCache.defaultTemplates[name]);
     return TemplateCache.defaultTemplates[name];

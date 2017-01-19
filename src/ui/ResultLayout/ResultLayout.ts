@@ -21,6 +21,7 @@ export interface IResultLayoutOptions {
  * The possible valid and supported layout.
  */
 export type ValidLayout = 'list' | 'card' | 'table';
+export const defaultLayout: ValidLayout = 'list'
 
 /**
  * The ResultLayout component allows the user to switch between multiple {@link ResultList} components with
@@ -70,7 +71,7 @@ export class ResultLayout extends Component {
 
     this.resultLayoutSection = $$(this.element).closest('.coveo-result-layout-section');
 
-    this.populate();
+    this.bind.oneRootElement(InitializationEvents.afterComponentsInitialization, () => this.populate());
 
     this.bind.oneRootElement(InitializationEvents.afterInitialization, () => this.handleQueryStateChanged());
   }
