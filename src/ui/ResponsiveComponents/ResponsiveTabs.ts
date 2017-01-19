@@ -94,7 +94,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
   private addTabsToDropdown(tabs: HTMLElement[]): void {
     let currentTab;
-    if (!this.tabSection.find('#coveo-tab-dropdown-header')) {
+    if (!this.tabSection.find('.coveo-tab-dropdown-header')) {
       let facetDropdownHeader = this.tabSection.find('.coveo-facet-dropdown-header');
       if (facetDropdownHeader) {
         this.dropdownHeader.insertBefore(facetDropdownHeader);
