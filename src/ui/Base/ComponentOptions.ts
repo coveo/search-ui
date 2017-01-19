@@ -382,7 +382,7 @@ export class ComponentOptions {
   static buildSelectorOption(optionArgs?: IComponentOptions<HTMLElement>): HTMLElement {
     return ComponentOptions.buildOption<HTMLElement>(ComponentOptionsType.SELECTOR, ComponentOptions.loadSelectorOption, optionArgs);
   }
-  
+
   static buildChildHtmlElementOption(optionArgs?: IComponentOptionsChildHtmlElementOptionArgs): HTMLElement {
     return ComponentOptions.buildOption<HTMLElement>(ComponentOptionsType.CHILD_HTML_ELEMENT, ComponentOptions.loadChildHtmlElementOption, optionArgs);
   }
@@ -390,8 +390,6 @@ export class ComponentOptions {
   static buildTemplateOption(optionArgs?: IComponentOptionsTemplateOptionArgs): Template {
     return ComponentOptions.buildOption<Template>(ComponentOptionsType.TEMPLATE, ComponentOptions.loadTemplateOption, optionArgs);
   }
-
-  
 
   static buildCustomOption<T>(converter: (value: string) => T, optionArgs?: IComponentOptions<T>): T {
     let loadOption: IComponentOptionsLoadOption<T> = (element: HTMLElement, name: string, option: IComponentOptionsOption<T>) => {
