@@ -439,8 +439,8 @@ export class Facet extends Component {
   protected moreElement: HTMLElement;
   protected lessElement: HTMLElement;
 
-  private headerElement: HTMLElement;
-  private footerElement: HTMLElement;
+  protected headerElement: HTMLElement;
+  protected footerElement: HTMLElement;
   private canFetchMore: boolean = true;
   private nbAvailableValues: number;
 
@@ -775,8 +775,10 @@ export class Facet extends Component {
       // new design : no need to hide this icon since it's not there
       if (!this.searchInterface.isNewDesign()) {
         $$(this.headerElement).find('.coveo-icon').style.display = 'none';
+        $$(this.headerElement).find('.coveo-facet-header-wait-animation').style.display = '';
+      } else {
+        $$(this.headerElement).find('.coveo-facet-header-wait-animation').style.visibility = 'visible';
       }
-      $$(this.headerElement).find('.coveo-facet-header-wait-animation').style.display = '';
       this.showingWaitAnimation = true;
     }
   }
@@ -788,7 +790,11 @@ export class Facet extends Component {
     this.ensureDom();
     if (this.showingWaitAnimation) {
       $$(this.headerElement).find('.coveo-icon').style.display = '';
-      $$(this.headerElement).find('.coveo-facet-header-wait-animation').style.display = 'none';
+      if (!this.searchInterface.isNewDesign()) {
+        $$(this.headerElement).find('.coveo-facet-header-wait-animation').style.display = 'none';
+      } else {
+        $$(this.headerElement).find('.coveo-facet-header-wait-animation').style.visibility = 'hidden';
+      }
       this.showingWaitAnimation = false;
     }
   }
@@ -957,7 +963,12 @@ export class Facet extends Component {
   protected updateAppearanceDependingOnState() {
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedOrExcludedValues());
     $$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
-    $$(this.facetHeader.eraserElement).toggle(this.values.hasSelectedOrExcludedValues());
+    if (this.searchInterface.isNewDesign()) {
+      $$(this.facetHeader.eraserElement).toggleClass('coveo-facet-header-eraser-visible', this.values.hasSelectedOrExcludedValues());
+    } else {
+      $$(this.facetHeader.eraserElement).toggle(this.values.hasSelectedOrExcludedValues());
+    }
+
   }
 
   protected initQueryEvents() {

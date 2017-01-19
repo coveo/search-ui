@@ -10,7 +10,6 @@
   @include align-items(flex-start);
 }
 
-
 .coveo-breadcrumb-clear-all {
   @include clickable();
   display: inline-block;
@@ -37,4 +36,10 @@
 
 .coveo-breadcrumb-item {
   margin: 5px 0px 5px 0px;
+}
+
+@media (max-width: 800px) {
+  .CoveoBreadcrumb {
+    padding: 10px 8px 10px 10px;
+  }
 }

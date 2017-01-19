@@ -10,6 +10,7 @@
 @import "mixins/login";
 @import "mixins/resultAttachments";
 @import "mixins/breadcrumb";
+@import "mixins/resultsHeaderElement";
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 200 / 100), only screen and (min-device-pixel-ratio: 2) {
 	@import "../bin/sass/retinaNew";
@@ -49,6 +50,7 @@
 @import "ResultFrame";
 @import "ResultLink";
 @import "ResultList";
+@import "ResultLayout";
 @import "ImageResultList";
 @import "Searchbox";
 @import "SearchButton";
@@ -60,6 +62,7 @@
 @import "Debug";
 @import "TabGroup";
 @import "Text";
+@import "Backdrop";
 @import "Slider";
 @import "EmailActions";
 @import "PreferencesPanel";
@@ -83,6 +86,8 @@
 @import "ResponsiveComponents";
 @import "Recommendation";
 @import "AdvancedSearch";
+@import "CardActionBar";
+@import "CardOverlay";
 
 @import "notifications/FollowItem";
 @import "notifications/FollowQuery";

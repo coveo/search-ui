@@ -19,6 +19,7 @@ import {$$} from '../../utils/Dom';
 import {SearchEndpoint} from '../../rest/SearchEndpoint';
 import {ResultList} from '../ResultList/ResultList';
 import {StreamHighlightUtils} from '../../utils/StreamHighlightUtils';
+import {FacetUtils} from '../Facet/FacetUtils';
 import Globalize = require('globalize');
 import {IStringMap} from '../../rest/GenericParam';
 import {Quickview} from '../Quickview/Quickview';
@@ -26,8 +27,14 @@ import {Quickview} from '../Quickview/Quickview';
 /**
  * The core template helpers provided by default.
  *
- * Example usage (using Underscore templating):
+ * Example usage:
  *
+ * ### HTML
+ * ```
+ * <div class="CoveoFieldValue" data-helper="helperName" data-helper-options-optionName="option-value"></div>
+ * ```
+ *
+ * ### Underscore
  * ```
  * <%= helperName(argument1, argument2) %>
  * ```
@@ -303,7 +310,7 @@ TemplateHelpers.registerTemplateHelper('highlight', (content: string, highlights
 
 TemplateHelpers.registerTemplateHelper('highlightStreamText', (content: string, termsToHighlight = resolveTermsToHighlight(), phrasesToHighlight = resolvePhrasesToHighlight(), opts?: IStreamHighlightOptions) => {
   if (Utils.exists(content) && Utils.exists(termsToHighlight) && Utils.exists(phrasesToHighlight)) {
-    if (Utils.isNonEmptyArray(_.keys(termsToHighlight)) || Utils.isNonEmptyArray(_.keys(phrasesToHighlight))) {
+    if (termsToHighlightAreDefined(termsToHighlight, phrasesToHighlight)) {
       return StreamHighlightUtils.highlightStreamText(content, termsToHighlight, phrasesToHighlight, opts);
     } else {
       return content;
@@ -315,7 +322,7 @@ TemplateHelpers.registerTemplateHelper('highlightStreamText', (content: string, 
 
 TemplateHelpers.registerTemplateHelper('highlightStreamHTML', (content: string, termsToHighlight = resolveTermsToHighlight(), phrasesToHighlight = resolvePhrasesToHighlight(), opts?: IStreamHighlightOptions) => {
   if (Utils.exists(content) && Utils.exists(termsToHighlight) && Utils.exists(phrasesToHighlight)) {
-    if (Utils.isNonEmptyArray(termsToHighlight)) {
+    if (termsToHighlightAreDefined(termsToHighlight, phrasesToHighlight)) {
       return StreamHighlightUtils.highlightStreamHTML(content, termsToHighlight, phrasesToHighlight, opts);
     } else {
       return content;
@@ -499,6 +506,10 @@ TemplateHelpers.registerFieldHelper('size', (value: any, options?: { base?: numb
   return size + ' ' + byteMeasure[base];
 });
 
+TemplateHelpers.registerFieldHelper('translatedCaption', (value: string) => {
+  return FacetUtils.tryToGetTranslatedCaption('@filetype', value);
+});
+
 TemplateHelpers.registerTemplateHelper('loadTemplate', (id: string, condition: boolean = true, data?: any) => {
   if (Utils.isNullOrUndefined(data)) {
     data = resolveQueryResult();
@@ -537,4 +548,8 @@ function resolvePhrasesToHighlight(): IHighlightPhrase {
   if (currentQueryResult) {
     return currentQueryResult.phrasesToHighlight;
   }
+}
+
+function termsToHighlightAreDefined(termsToHighlight, phrasesToHighlight) {
+  return Utils.isNonEmptyArray(_.keys(termsToHighlight)) || Utils.isNonEmptyArray(_.keys(phrasesToHighlight));
 }

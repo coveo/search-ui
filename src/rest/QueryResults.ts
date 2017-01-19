@@ -127,6 +127,10 @@ export interface IQueryResults {
    * The Coveo Query Pipeline triggers, if any were configured.
    */
   triggers: ITrigger<any>[];
+  /**
+   * The keywords selected by Reveal's Refined Query feature
+   */
+  refinedKeywords?: string[];
   _folded: boolean;
   _reusedSearchUid?: boolean;
 }

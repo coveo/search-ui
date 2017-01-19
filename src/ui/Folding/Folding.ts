@@ -348,40 +348,47 @@ export class Folding extends Component {
 
 
   private moreResults(result: IQueryResult, originalQuery: IQuery): Promise<IQueryResult[]> {
-    let query = new QueryBuilder();
-    query.numberOfResults = this.options.maximumExpandedResults;
+    let query = _.clone(originalQuery);
+    let builder = new QueryBuilder();
 
+    query.numberOfResults = this.options.maximumExpandedResults;
     let fieldValue = Utils.getFieldValue(result, <string>this.options.field);
 
     if (Utils.isNonEmptyString(fieldValue)) {
-      query.advancedExpression.addFieldExpression(<string>this.options.field, '=', [fieldValue]);
+      builder.advancedExpression.addFieldExpression(<string>this.options.field, '=', [fieldValue]);
+      query.aq = builder.build().aq;
     }
 
     if (Utils.isNonEmptyString(originalQuery.q)) {
       // We add keywords to get the highlight and we add @uri to get all results
-      query.expression.add('(' + originalQuery.q + ') OR @uri');
+      query.q = '(' + originalQuery.q + ') OR @uri';
     }
 
     if (Utils.isNonEmptyString(this.options.expandExpression)) {
-      query.constantExpression.add(this.options.expandExpression);
+      query.cq = this.options.expandExpression;
     }
 
     if (this.options.parentField != null) {
       query.parentField = <string>this.options.parentField;
     }
+
     if (this.options.childField != null) {
       query.childField = <string>this.options.childField;
     }
 
+    query.filterField = null;
+    query.filterFieldRange = null;
+
     if (this.options.rearrange) {
-      this.options.rearrange.putInQueryBuilder(query);
+      this.options.rearrange.putInQueryBuilder(builder);
+      query.sortCriteria = builder.sortCriteria;
+      query.sortField = builder.sortField;
     } else {
       query.sortCriteria = originalQuery.sortCriteria;
       query.sortField = originalQuery.sortField;
     }
 
-    let builtQuery = query.build();
-    return this.queryController.getEndpoint().search(builtQuery)
+    return this.queryController.getEndpoint().search(query)
       .then((results: IQueryResults) => {
         this.handlePreprocessMoreResults(results);
         return results.results;
