@@ -35,7 +35,7 @@ $stop-float: new-breakpoint(max-width 480px 1);
     margin-left: 5px;
     position: relative;
     top: 3px;
-    @include retina-sprite($arrow-down-group);
+    @include retina-sprite($arrow-dowsn-group);
   }
 
   &.coveo-ascending {

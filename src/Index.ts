@@ -1,4 +1,5 @@
-export * from './BaseModules';
+import 'styling/_FacetFooter';
+/*export * from './BaseModules';
 export * from './MiscModules';
 export * from './RestModules';
 export * from './EventsModules';
@@ -117,4 +118,4 @@ export {CurrencyUtils} from './utils/CurrencyUtils';
 export {DateUtils} from './utils/DateUtils';
 
 import {swapVar} from './SwapVar';
-swapVar(this);
+swapVar(this);*/
