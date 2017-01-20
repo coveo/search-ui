@@ -16,7 +16,7 @@ export interface IAggregateOptions {
 /**
  * The Aggregate component allows to display the result on an aggregate operation on the index.
  *
- * It hooks itself to the query to add a new "group by" request, then displays the result.
+ * It hooks itself to the query to add a new {@link IGroupByRequest}, then displays the result.
  */
 export class Aggregate extends Component {
   static ID = 'Aggregate';
@@ -35,7 +35,7 @@ export class Aggregate extends Component {
     /**
      * Specifies the aggregate operation to perform.
      *
-     * Possible values are:
+     * The possible values are:
      * - `sum` - Computes the sum of the computed field values.
      * - `average` - Computes the average of the computed field values.
      * - `minimum` - Finds the minimum value of the computed field values.
@@ -49,7 +49,7 @@ export class Aggregate extends Component {
      * Specifies how to format the value.
      *
      * The available formats are defined in the Globalize library (see
-     * <a href='https://github.com/klaaspieter/jquery-global#globalizeformat-value-format-culture-'>Globalize</a>).
+     * [Globalize](https://github.com/klaaspieter/jquery-global#globalizeformat-value-format-culture-).
      *
      * The most commonly used formats are:
      * - `c0` - Formats the value as a currency.
