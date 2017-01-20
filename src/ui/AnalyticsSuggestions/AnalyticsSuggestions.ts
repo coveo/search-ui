@@ -113,9 +113,6 @@ export class AnalyticsSuggestions extends Component {
     this.bind.onRootElement(QueryEvents.querySuccess, () => this.partialQueries = []);
   }
 
-  public selectSuggestion(suggestion: number);
-  public selectSuggestion(suggestion: string);
-
   /**
    * Selects a currently displayed query suggestion. This implies that at least one suggestion must have been returned
    * at least once. The suggestion parameter can either be a number (0-based index position of the query suggestion to
@@ -123,6 +120,8 @@ export class AnalyticsSuggestions extends Component {
    *
    * @param suggestion
    */
+  public selectSuggestion(suggestion: number);
+  public selectSuggestion(suggestion: string);
   public selectSuggestion(suggestion: any) {
     if (this.currentlyDisplayedSuggestions) {
       if (isNaN(suggestion)) {
