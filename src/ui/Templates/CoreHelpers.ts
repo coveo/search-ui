@@ -265,7 +265,7 @@ export interface ICoreHelpers {
    *
    * `size(10240) => 10 KB`
    */
-  size: (value: number, options?: IISizeOptions) => string;
+  size: (value: number, options?: ISizeOptions) => string;
   /**
    * Given a filetype value, try to return a translated and human readable version.
    *
@@ -297,7 +297,7 @@ export interface ICoreHelpers {
 /**
  * Available options for the size templateHelpers.
  */
-export interface IISizeOptions {
+export interface ISizeOptions {
   /**
    * The base into which to format the value.
    */
@@ -539,7 +539,7 @@ TemplateHelpers.registerTemplateHelper('loadTemplates', (templatesToLoad: { [id:
 
 const byteMeasure = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB'];
 
-TemplateHelpers.registerFieldHelper('size', (value: any, options?: IISizeOptions) => {
+TemplateHelpers.registerFieldHelper('size', (value: any, options?: ISizeOptions) => {
   var size = parseInt(value, 10);
   var precision = (options != null && options.precision != null ? options.precision : 2);
   var base = (options != null && options.base != null ? options.base : 0);
