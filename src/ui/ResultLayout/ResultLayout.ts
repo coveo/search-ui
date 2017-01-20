@@ -11,25 +11,37 @@ import {$$} from '../../utils/Dom';
 import {IQueryErrorEventArgs, IQuerySuccessEventArgs} from '../../events/QueryEvents';
 import {QueryStateModel, QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
 import {MODEL_EVENTS, IAttributesChangedEventArg} from '../../models/Model';
+import {analyticsActionCauseList, IAnalyticsResultsLayoutChange} from '../Analytics/AnalyticsActionListMeta';
+import {IQueryResults} from '../../rest/QueryResults';
 
 export interface IResultLayoutOptions {
 }
 
+/**
+ * The possible valid and supported layout.
+ */
 export type ValidLayout = 'list' | 'card' | 'table';
 
 /**
- * This component allows to switch between multiple {@link ResultList}s with
+ * The ResultLayout component allows the user to switch between multiple {@link ResultList} components with
  * different layouts.
  *
- * It will automatically populate itself with buttons to switch through {@link
- * ResultList}s which each have a valid `data-layout` attribute.
+ * It will automatically populate itself with buttons to switch between {@link ResultList} components that have a valid
+ * `data-layout` attribute.
  */
 export class ResultLayout extends Component {
   static ID = 'ResultLayout';
 
+  /**
+   * The possible valid and supported layout.
+   */
   public static validLayouts: ValidLayout[] = ['list', 'card', 'table'];
+  /**
+   * The current active layout.
+   */
+  public currentLayout: string;
 
-  private currentLayout: string;
+
   private buttons: { [key: string]: HTMLElement };
   private resultLayoutSection: HTMLElement;
 
@@ -39,6 +51,13 @@ export class ResultLayout extends Component {
   static options: IResultLayoutOptions = {
   };
 
+  /**
+   * Creates a new ResultLayout component.
+   * @param element The HTMLElement on which the component will be instantiated.
+   * @param options The options for the ResultLayout component.
+   * @param bindings The bindings that the component requires to function normally. If not set, they will be
+   * automatically resolved (with a slower execution time).
+   */
   constructor(public element: HTMLElement, public options?: IResultLayoutOptions, bindings?: IComponentBindings) {
     super(element, ResultLayout.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultLayout, options);
@@ -57,22 +76,42 @@ export class ResultLayout extends Component {
   }
 
   /**
-   * Change the current layout.
-   * @param layout The new layout. Available values are `list`, `card` and `table`.
+   * Changes the current layout.
+   *
+   * Triggers a new query.
+   *
+   * @param layout The new layout. Possible values are `list`, `card` and `table`.
+   * You need a valid {@link ResultList} component with the matching layout configured for this to work correctly end to
+   * end.
    */
   public changeLayout(layout: ValidLayout) {
     Assert.check(_.contains(_.keys(this.buttons), layout), 'Layout not available or invalid');
+
     if (layout !== this.currentLayout || this.getModelValue() === '') {
-      this.bind.trigger(this.root, ResultListEvents.changeLayout, <IChangeLayoutEventArgs>{
-        layout: layout
-      });
-      if (this.currentLayout) {
-        $$(this.buttons[this.currentLayout]).removeClass('coveo-selected');
-      }
-      $$(this.buttons[layout]).addClass('coveo-selected');
+
       this.setModelValue(layout);
-      this.currentLayout = layout;
+      const lastResults = this.queryController.getLastResults();
+      this.setLayout(layout, lastResults);
+      if (lastResults) {
+        this.usageAnalytics.logCustomEvent<IAnalyticsResultsLayoutChange>(analyticsActionCauseList.resultsLayoutChange, {
+          resultsLayoutChangeTo: layout
+        }, this.element);
+      } else {
+        this.usageAnalytics.logSearchEvent<IAnalyticsResultsLayoutChange>(analyticsActionCauseList.resultsLayoutChange, {
+          resultsLayoutChangeTo: layout
+        });
+        this.queryController.executeQuery();
+      }
     }
+  }
+
+  private setLayout(layout: ValidLayout, results?: IQueryResults) {
+    if (this.currentLayout) {
+      $$(this.buttons[this.currentLayout]).removeClass('coveo-selected');
+    }
+    $$(this.buttons[layout]).addClass('coveo-selected');
+    this.currentLayout = layout;
+    $$(this.element).trigger(ResultListEvents.changeLayout, <IChangeLayoutEventArgs>{ layout: layout, results: results });
   }
 
   private handleQuerySuccess(args: IQuerySuccessEventArgs) {
@@ -87,9 +126,9 @@ export class ResultLayout extends Component {
     const modelLayout = this.getModelValue();
     const newLayout = _.find(_.keys(this.buttons), l => l === modelLayout);
     if (newLayout !== undefined) {
-      this.changeLayout(<ValidLayout>newLayout);
+      this.setLayout(<ValidLayout>newLayout);
     } else {
-      this.changeLayout(<ValidLayout>_.keys(this.buttons)[0]);
+      this.setLayout(<ValidLayout>_.keys(this.buttons)[0]);
     }
   }
 
@@ -109,6 +148,10 @@ export class ResultLayout extends Component {
     }
   }
 
+  /**
+   * Gets the current layout (`list`, `card` or `table`).
+   * @returns {string} The current current layout.
+   */
   public getCurrentLayout() {
     return this.currentLayout;
   }

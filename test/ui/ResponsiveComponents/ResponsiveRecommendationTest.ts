@@ -7,6 +7,9 @@ import {ResponsiveDropdownHeader} from '../../../src/ui/ResponsiveComponents/Res
 import {ResponsiveDropdownContent} from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownContent';
 import {ResponsiveComponentsManager} from '../../../src/ui/ResponsiveComponents/ResponsiveComponentsManager';
 import {$$, Dom} from '../../../src/utils/Dom';
+import {QueryEvents} from '../../../src/events/QueryEvents';
+import {mockComponent} from '../../MockEnvironment';
+import {FakeResults} from '../../Fake';
 
 export function ResponsiveRecommendationTest() {
 
@@ -19,6 +22,7 @@ export function ResponsiveRecommendationTest() {
     let responsiveDropdown: ResponsiveDropdown;
     let responsiveDropdownHeader: ResponsiveDropdownHeader;
     let responsiveDropdownContent: ResponsiveDropdownContent;
+    let recommendation: Recommendation;
 
     function shouldSwitchToSmallMode() {
       let spy = jasmine.createSpy('width').and.returnValue(smallWidth);
@@ -34,10 +38,13 @@ export function ResponsiveRecommendationTest() {
       root = $$('div');
       root.append($$('div', { className: Component.computeCssClassName(Recommendation) }).el);
       root.append($$('div', { className: ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS }).el);
+      recommendation = mockComponent<Recommendation>(Recommendation);
+      recommendation.options = { hideIfNoResults: true };
+      root.find(`.${Component.computeCssClassName(Recommendation)}`)['CoveoSearchInterface'] = recommendation;
       responsiveDropdown = jasmine.createSpyObj('responsiveDropdown', ['registerOnOpenHandler', 'registerOnCloseHandler', 'cleanUp', 'open', 'close', 'disablePopupBackground']);
       responsiveDropdownContent = jasmine.createSpyObj('responsiveDropdownContent', ['positionDropdown', 'hideDropdown', 'cleanUp', 'element']);
       responsiveDropdownContent.element = $$('div');
-      responsiveDropdownHeader = jasmine.createSpyObj('responsiveDropdownHeader', ['open', 'close', 'cleanUp']);
+      responsiveDropdownHeader = jasmine.createSpyObj('responsiveDropdownHeader', ['open', 'close', 'cleanUp', 'show', 'hide']);
       responsiveDropdownHeader.element = $$('div', { className: dropdownHeaderClassName });
       responsiveDropdown.dropdownContent = responsiveDropdownContent;
       responsiveDropdown.dropdownHeader = responsiveDropdownHeader;
@@ -75,6 +82,26 @@ export function ResponsiveRecommendationTest() {
         shouldSwitchToSmallMode();
         responsiveRecommendation.handleResizeEvent();
         expect(ResponsiveComponentsUtils.activateSmallRecommendation).toHaveBeenCalledTimes(2);
+      });
+
+      it('should hide on query error', () => {
+        root.trigger(QueryEvents.queryError);
+        expect(responsiveDropdownHeader.hide).toHaveBeenCalled();
+      });
+
+      it('should show on query success with 1 or more results', () => {
+        root.trigger(QueryEvents.querySuccess, { results: FakeResults.createFakeResults() });
+        expect(responsiveDropdownHeader.show).toHaveBeenCalled();
+      });
+
+      it('should hide on query success with 0 results', () => {
+        root.trigger(QueryEvents.querySuccess, { results: FakeResults.createFakeResults(0) });
+        expect(responsiveDropdownHeader.hide).toHaveBeenCalled();
+      });
+
+      it('should hide on no results', () => {
+        root.trigger(QueryEvents.noResults);
+        expect(responsiveDropdownHeader.hide).toHaveBeenCalled();
       });
     });
 

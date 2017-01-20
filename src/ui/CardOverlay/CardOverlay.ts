@@ -12,17 +12,15 @@ export interface ICardOverlayOptions {
 }
 
 /**
- * This component is used to display a button which, when clicked, triggers an
- * overlay on top of a Result. It is usually found inside a {@link
- * CardActionBar} component, although it can be used in any {@link Result}
- * component.
+ * The CardOverlay component displays a button which toggles the visibility of an overlay on top of an
+ * {@link IQueryResult} when clicked. This component is usually found inside a {@link CardActionBar} component, although
+ * it can be used in any IQueryResult.
  *
- * Its primary purpose is to display additional information about a Result in a
- * format that fits well within a Card.
+ * The primary purpose of the CardOverlay component is to display additional information about a result in a format that
+ * fits well within a Card (see {@link ResultList.options.layout} and {@link ResultLayout}).
  *
- * When initialized, it will create a `<div class="coveo-card-overlay">` element
- * as the last child of its parent {@link Result} component, and will display a
- * button which toggles the visibility of the overlay.
+ * When initialized, this component will create a `<div class="coveo-card-overlay">` element as the last child of its
+ * parent IQueryResult, and will display a button which toggles the visibility of this overlay.
  */
 export class CardOverlay extends Component {
   static ID = 'CardOverlay';
@@ -34,16 +32,25 @@ export class CardOverlay extends Component {
    * @componentOptions
    */
   static options: ICardOverlayOptions = {
+
     /**
-     * The title of the overlay. Will also be displayed as the button's text.
+     * Specifies the overlay title. This string will also be displayed as the button text.
      */
     title: ComponentOptions.buildStringOption({ required: true }),
+
     /**
-     * The icon of the overlay. Will also be displayed as the button's icon.
+     * Specifies the overlay icon. This icon will also be displayed as the button icon.
      */
     icon: ComponentOptions.buildIconOption()
   };
 
+  /**
+   * Creates a new CardOverlay component.
+   * @param element The HTMLElement on which the component will be instantiated.
+   * @param options The options for the CardOverlay component.
+   * @param bindings The bindings that the component requires to function normally. If not set, they will be
+   * automatically resolved (with a slower execution time).
+   */
   constructor(public element: HTMLElement, public options?: ICardOverlayOptions, bindings?: IComponentBindings) {
     super(element, CardOverlay.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, CardOverlay, options);
@@ -55,9 +62,10 @@ export class CardOverlay extends Component {
   }
 
   /**
-   * Toggle the visibility of the CardOverlay
+   * Toggles the CardOverlay visibility.
    *
-   * @param swtch If specified, will force to this value (`true` for visible, `false` for hidden).
+   * @param swtch If specified, will force the component visibility to take the corresponding value (`true` for visible,
+   * `false` for hidden).
    */
   public toggleOverlay(swtch?: boolean) {
     if (swtch !== undefined) {
@@ -72,7 +80,7 @@ export class CardOverlay extends Component {
   }
 
   /**
-   * Open the CardOverlay
+   * Opens the CardOverlay.
    */
   public openOverlay() {
     $$(this.overlay).addClass('coveo-opened');
@@ -80,7 +88,7 @@ export class CardOverlay extends Component {
   }
 
   /**
-   * Close the CardOverlay
+   * Closes the CardOverlay.
    */
   public closeOverlay() {
     $$(this.overlay).removeClass('coveo-opened');

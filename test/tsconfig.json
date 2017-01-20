@@ -145,6 +145,7 @@
         "../test/utils/StreamHighlightUtilsTest.ts",
         "../test/utils/KeyboardUtilsTest.ts",
         "../test/utils/HashUtilsTest.ts",
-        "../test/utils/StringUtilsTest.ts"
+        "../test/utils/StringUtilsTest.ts",
+        "../test/ui/CoreHelpersTest.ts"
     ]
 }

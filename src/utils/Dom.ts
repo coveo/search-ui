@@ -666,6 +666,7 @@ export class Dom {
   public height(): number {
     return this.el.offsetHeight;
   }
+
   private traverseAncestorForClass(current = this.el, className: string): HTMLElement {
     if (className.indexOf('.') == 0) {
       className = className.substr(1);
