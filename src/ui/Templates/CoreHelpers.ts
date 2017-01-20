@@ -1,5 +1,4 @@
 import {TemplateHelpers, ITemplateHelperFunction} from './TemplateHelpers';
-import {ComponentOptions} from '../Base/ComponentOptions';
 import {IHighlight, IHighlightPhrase, IHighlightTerm} from '../../rest/Highlight';
 import {HighlightUtils, StringAndHoles} from '../../utils/HighlightUtils';
 import {IStreamHighlightOptions} from '../../utils/StreamHighlightUtils';
@@ -161,7 +160,7 @@ export interface ICoreHelpers {
   /**
    * Renders one or several email values in `mailto:` hyperlinks.
    *
-   * - `value`: The string that contains a list of semicolon-separated email
+   * - `value`: The string or array of string that contains a list of semicolon-separated email
    *   values. When multiple values are passed, each value is displayed in a
    *   separate hyperlink.
    * - `companyDomain`: The string that contains your own domain (e.g.:
@@ -182,7 +181,7 @@ export interface ICoreHelpers {
    *   'John S.' instead of 'John Smith').<br/>
    *   The default value is `false`.
    */
-  email: (value: string, companyDomain?: string, me?: string, lengthLimit?: number, truncateName?: boolean) => string;
+  email: (value: string | string[], companyDomain?: string, me?: string, lengthLimit?: number, truncateName?: boolean) => string;
   /**
    * Formats a clickable HTML link (`<a>`).
    *
@@ -242,6 +241,71 @@ export interface ICoreHelpers {
    *   as its contextObject.
    */
   loadTemplate: (templateId: string, condition?: boolean, contextObject?: any) => string;
+  /**
+   * Given a number, either in millisecond or second, convert to a HH:MM:SS format.
+   *
+   * eg:
+   *
+   * `timeSpan(1, {isMilliseconds: false}) => '00:01'`
+   *
+   * `timeSpan(1000, {isMilliseconds: true}) => '00:01'`
+   *
+   * - `value`: The number to convert to a timespan
+   * - `options` : The options to use (see {@link ITimeSpanUtilsOptions})
+   */
+  timeSpan: (value: number, options: ITimeSpanUtilsOptions) => string;
+  /**
+   * Given a number, which represent a file size in bytes, format the value into a logical unit size.
+   *
+   * eg:
+   *
+   * `size(1024) => 1024 B`
+   *
+   * `size(1025) => 1 KB`
+   *
+   * `size(10240) => 10 KB`
+   */
+  size: (value: number, options?: ISizeOptions) => string;
+  /**
+   * Given a filetype value, try to return a translated and human readable version.
+   *
+   * If the filetype is known and recognized by the framework, a translated value will be returned.
+   *
+   * eg:
+   *
+   * `translatedCaption('doc') => Document`
+   *
+   * `translatedCaption('xls') => Spreadsheet Document`
+   */
+  translatedCaption: (value: string) => string;
+  /**
+   * Replace all carriage return in a string by a &lt;br /&gt; tag
+   */
+  encodeCarriageReturn: (value: string) => string;
+  /**
+   * Detect if the results is being rendered in a mobile device.
+   *
+   * If it's not a mobile device, the helper return null ;
+   *
+   * If it's a mobile device, return the type of device (Android, iPhone, iPad) etc.
+   */
+  isMobileDevice: () => string;
+
+}
+
+
+/**
+ * Available options for the size templateHelpers.
+ */
+export interface ISizeOptions {
+  /**
+   * The base into which to format the value.
+   */
+  base?: number;
+  /**
+   * The precision to use to format the size.
+   */
+  precision?: number;
 }
 
 export class CoreHelpers {
@@ -372,7 +436,7 @@ TemplateHelpers.registerFieldHelper('timeSpan', (value: any, options: ITimeSpanU
   return new TimeSpan(value, options.isMilliseconds).getHHMMSS();
 });
 
-TemplateHelpers.registerFieldHelper('email', (value: any, ...args: any[]) => {
+TemplateHelpers.registerFieldHelper('email', (value: string | string[], ...args: any[]) => {
   // support old arguments (value: any, companyDomain: string, me: string, lengthLimit = 2, truncateName = false)
   var companyDomain: string;
   var me: string;
@@ -447,25 +511,6 @@ TemplateHelpers.registerTemplateHelper('attrEncode', (value: string) => {
     .replace(/>/g, '&gt;');
 });
 
-TemplateHelpers.registerTemplateHelper('templateFields', (result: IQueryResult = resolveQueryResult()) => {
-  var rows: string[] = [];
-  if (result.fields != null) {
-    _.forEach(result.fields, (tableField: any) => {
-      var tr = $$('tr');
-      _.forEach(tableField, (value: any, key: string) => {
-        if (_.isObject(value)) {
-          tr.setAttribute(ComponentOptions.attrNameFromName(key), JSON.stringify(value));
-        } else {
-          tr.setAttribute(ComponentOptions.attrNameFromName(key), value);
-        }
-      });
-      return rows.push(tr.el.outerHTML);
-    });
-  }
-  return rows.join('');
-}
-);
-
 TemplateHelpers.registerTemplateHelper('loadTemplates', (templatesToLoad: { [id: string]: any }, once = true) => {
   var ret = '';
   var data = resolveQueryResult();
@@ -492,17 +537,17 @@ TemplateHelpers.registerTemplateHelper('loadTemplates', (templatesToLoad: { [id:
   return ret;
 });
 
-var byteMeasure = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB'];
+const byteMeasure = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB'];
 
-TemplateHelpers.registerFieldHelper('size', (value: any, options?: { base?: number; presision?: number; }) => {
-  var size = Number(value);
-  var presision = (options != null && options.presision != null ? options.presision : 2);
+TemplateHelpers.registerFieldHelper('size', (value: any, options?: ISizeOptions) => {
+  var size = parseInt(value, 10);
+  var precision = (options != null && options.precision != null ? options.precision : 2);
   var base = (options != null && options.base != null ? options.base : 0);
   while (size > 1024 && base + 1 < byteMeasure.length) {
     size /= 1024;
     base++;
   }
-  size = Math.floor(size * Math.pow(10, presision)) / Math.pow(10, presision);
+  size = Math.floor(size * Math.pow(10, precision)) / Math.pow(10, precision);
   return size + ' ' + byteMeasure[base];
 });
 

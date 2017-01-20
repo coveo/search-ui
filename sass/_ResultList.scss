@@ -24,3 +24,10 @@
   @include display(flex);
   @include flex-wrap(wrap);
 }
+
+@include mediaSelector(800) {
+  .CoveoResultList {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}

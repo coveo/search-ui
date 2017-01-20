@@ -66,6 +66,12 @@ export function RecommendationTest() {
       expect(test.cmp.options.id).not.toEqual(secondRecommendation.cmp.options.id);
     });
 
+    it('should copy component options model when bound to a main search interface', () => {
+      expect(mainSearchInterface.cmp.componentOptionsModel.getAttributes).toHaveBeenCalled();
+      mainSearchInterface.cmp.componentOptionsModel.setMultiple({ 'resultLink': { 'alwaysOpenInNewWindow': true } });
+      expect(mainSearchInterface.cmp.componentOptionsModel.getAttributes).toHaveBeenCalled();
+    });
+
     describe('when the mainInterface triggered a query', () => {
 
       it('should trigger a query', () => {

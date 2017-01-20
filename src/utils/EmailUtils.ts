@@ -32,7 +32,7 @@ export class EmailUtils {
         name += ' (' + domain + ')';
       }
 
-      return '<a title="' + item.replace(/'/g, '&quot;') + 'href="mailto:' + encodeURI(email) + '">' + name + '</a>';
+      return '<a title="' + item.replace(/'/g, '&quot;') + '" href="mailto:' + encodeURI(email) + '">' + name + '</a>';
     });
     var excess = hyperlinks.length - lengthLimit;
     var andOthers = excess > 0 ? EmailUtils.buildEmailAddressesAndOthers(_.last(hyperlinks, excess)) : '';
