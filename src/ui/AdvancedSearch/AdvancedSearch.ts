@@ -58,10 +58,6 @@ export class AdvancedSearch extends Component {
     includeDocument: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
-  /**
-   * The list of all available inputs inside the AdvancedSearch component.
-   * @type {Array}
-   */
   public inputs: IAdvancedSearchInput[] = [];
   private inputFactory = new AdvancedSearchInputFactory(this.queryController.getEndpoint());
   private externalSections: IExternalAdvancedSearchSection[] = [];
