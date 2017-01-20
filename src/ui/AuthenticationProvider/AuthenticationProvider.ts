@@ -92,8 +92,8 @@ export class AuthenticationProvider extends Component {
    * Creates a new AuthenticationProvider component.
    * @param element The HTMLElement on which to instantiate the component.
    * @param options The options for the AuthenticationProvider component.
-   * @param bindings The bindings that the component requires to function normally. If not set, it will automatically
-   * resolve them (with slower execution time).
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
    */
   constructor(public element: HTMLElement, public options: IAuthenticationProviderOptions = {}, bindings?: IComponentBindings, public _window?: Window) {
     super(element, AuthenticationProvider.ID, bindings);
