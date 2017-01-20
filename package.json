@@ -1,6 +1,6 @@
 {
   "name": "coveo-search-ui",
-  "version": "1.0.20",
+  "version": "1.0.25",
   "description": "Coveo JavaScript Search Framework",
   "main": "./bin/js/CoveoJsSearch.js",
   "scripts": {
@@ -11,7 +11,8 @@
     "docsitemap": "gulp docsitemap",
     "injectTag": "gulp injectTag",
     "heroku-postbuild": "npm run build",
-    "start": "node index.js"
+    "start": "node index.js",
+    "zipForGitReleases": "gulp zip"
   },
   "repository": {
     "type": "git",
@@ -54,6 +55,7 @@
     "cheerio": "^0.20.0",
     "circular-dependency-plugin": "^1.1.0",
     "colors": "^1.1.2",
+    "coveralls": "^2.11.15",
     "css-loader": "^0.23.1",
     "del": "^2.2.2",
     "dts-generator": "^1.7.0",
@@ -74,6 +76,7 @@
     "gulp-shell": "^0.5.2",
     "gulp-sonar": "^2.1.0",
     "gulp-util": "^3.0.7",
+    "gulp-zip": "^3.2.0",
     "image-size": "^0.5.0",
     "imports-loader": "^0.6.5",
     "ini": "^1.3.4",
