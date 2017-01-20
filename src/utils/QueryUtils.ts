@@ -226,5 +226,4 @@ export class QueryUtils {
     }
     return false;
   }
-
 }

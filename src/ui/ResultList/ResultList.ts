@@ -291,7 +291,11 @@ export class ResultList extends Component {
     Assert.exists(result);
     QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), result);
     ResultList.resultCurrentlyBeingRendered = result;
-    let resultElement = this.options.resultTemplate.instantiateToElement(result, true, true, { layout: <ValidLayout>this.options.layout });
+    let resultElement = this.options.resultTemplate.instantiateToElement(result, {
+      wrapInDiv: true,
+      checkCondition: true,
+      currentLayout: <ValidLayout>this.options.layout
+    });
     if (resultElement != null) {
       Component.bindResultToElement(resultElement, result);
     }

@@ -5902,7 +5902,7 @@ interface _Chain<T> {
 
 	/**
 	* Wrapped type `any`.
-	* @see _.value
+	* @see _.values
 	**/
 	value<TResult>(): T[];
 }

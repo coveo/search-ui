@@ -7,6 +7,8 @@ import {ValidLayout} from '../ResultLayout/ResultLayout';
 import {$$} from '../../utils/Dom';
 import {DefaultResultTemplate} from './DefaultResultTemplate';
 import {Logger} from '../../misc/Logger';
+import {TemplateConditionEvaluator} from './TemplateConditionEvaluator';
+import {TemplateFromAScriptTag, ITemplateFromStringProperties} from './TemplateFromAScriptTag';
 
 _.templateSettings = {
   evaluate: /(?:<%|{{)([\s\S]+?)(?:%>|}})/g,
@@ -16,8 +18,9 @@ _.templateSettings = {
 
 export class UnderscoreTemplate extends Template {
   private template: (data: any) => string;
+  private templateFromAScriptTag: TemplateFromAScriptTag;
   public static templateHelpers: { [templateName: string]: ITemplateHelperFunction; } = {};
-  private fields: string[];
+
 
   public static mimeTypes = [
     'text/underscore',
@@ -28,7 +31,6 @@ export class UnderscoreTemplate extends Template {
 
   constructor(public element: HTMLElement) {
     super();
-
     Assert.exists(element);
     var templateString = element.innerHTML;
     try {
@@ -36,66 +38,19 @@ export class UnderscoreTemplate extends Template {
     } catch (e) {
       new Logger(this).error('Cannot instantiate underscore template. Might be caused by strict Content-Security-Policy. Will fallback on a default template...', e);
     }
-
-    let condition = element.getAttribute('data-condition');
-    if (condition != null) {
-      this.setConditionWithFallback(condition);
-    }
-
-    const layout = element.getAttribute('data-layout');
-    if (layout) {
-      this.layout = <ValidLayout>layout;
-    }
-
-    this.dataToString = (object) => {
-      var extended = _.extend({}, object, UnderscoreTemplate.templateHelpers);
-      if (this.template) {
-        return this.template(extended);
-      } else {
-        return new DefaultResultTemplate().getFallbackTemplate();
-      }
-
-    };
-
-    this.fields = Template.getFieldFromString(templateString + ' ' + condition);
-
-    var additionalFields = ComponentOptions.loadFieldsOption(element, 'fields', <IComponentOptionsFieldsOption>{ includeInResults: true });
-    if (additionalFields != null) {
-      // remove the @
-      this.fields = this.fields.concat(_.map(additionalFields, (field) => field.substr(1)));
-    }
+    this.templateFromAScriptTag = new TemplateFromAScriptTag(this, this.element);
   }
 
   toHtmlElement(): HTMLElement {
-    var script = $$('script');
+    let script = this.templateFromAScriptTag.toHtmlElement();
     script.setAttribute('type', _.first(UnderscoreTemplate.mimeTypes));
-    script.setAttribute('data-condition', $$(this.element).getAttribute('data-condition'));
-    script.text(this.element.innerHTML);
-    return script.el;
+    return script;
   }
 
   getType() {
     return 'UnderscoreTemplate';
   }
-
-  static create(element: HTMLElement): UnderscoreTemplate {
-    Assert.exists(element);
-    return new UnderscoreTemplate(element);
-  }
-
-  static fromString(template: string, condition?: string, layout?: ValidLayout): UnderscoreTemplate {
-    var script = document.createElement('script');
-    script.text = template;
-    if (condition != null) {
-      script.setAttribute('data-condition', condition);
-    }
-    if (layout != null) {
-      script.setAttribute('data-layout', layout);
-    }
-    script.setAttribute('type', UnderscoreTemplate.mimeTypes[0]);
-    return new UnderscoreTemplate(script);
-  }
-
+  
   getFields() {
     return this.fields;
   }
@@ -106,5 +61,16 @@ export class UnderscoreTemplate extends Template {
 
   static isLibraryAvailable(): boolean {
     return Utils.exists(window['_']);
+  }
+
+  static fromString(template: string, properties: ITemplateFromStringProperties): UnderscoreTemplate {
+    let script = TemplateFromAScriptTag.fromString(template, properties);
+    script.setAttribute('type', UnderscoreTemplate.mimeTypes[0]);
+    return new UnderscoreTemplate(script);
+  }
+
+  static create(element: HTMLElement): UnderscoreTemplate {
+    Assert.exists(element);
+    return new UnderscoreTemplate(element);
   }
 }

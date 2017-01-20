@@ -225,7 +225,10 @@ export class ResultFolding extends Component {
   private renderChildResult(childResult: IQueryResult) {
     QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), childResult);
 
-    let oneChild = this.options.resultTemplate.instantiateToElement(childResult, false, false);
+    let oneChild = this.options.resultTemplate.instantiateToElement(childResult, {
+      wrapInDiv: false,
+      checkCondition: false
+    });
     $$(oneChild).addClass('coveo-result-folding-child-result');
     this.results.appendChild(oneChild);
 

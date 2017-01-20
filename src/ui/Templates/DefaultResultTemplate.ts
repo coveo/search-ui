@@ -1,4 +1,7 @@
-import {Template, ITemplateOptions} from './Template';
+import {
+    Template, ITemplateProperties, IInstantiateTemplateOptions,
+    DefaultInstantiateTemplateOptions
+} from './Template';
 import {UnderscoreTemplate} from './UnderscoreTemplate';
 import {TemplateCache} from './TemplateCache';
 import {IQueryResult} from '../../rest/QueryResult';
@@ -19,18 +22,18 @@ export class DefaultResultTemplate extends Template {
     super();
   }
 
-  instantiateToString(queryResult?: IQueryResult, checkCondition = true, options?: ITemplateOptions): string {
+  instantiateToString(queryResult: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = {}): string {
     Assert.exists(queryResult);
+    let merged = new DefaultInstantiateTemplateOptions().merge(instantiateOptions);
     queryResult = _.extend({}, queryResult, UnderscoreTemplate.templateHelpers);
 
     const templates = _.chain(TemplateCache.getDefaultTemplates())
       .map(name => TemplateCache.getTemplate(name))
-      .filter(template => template.layout === options.layout)
       .sortBy(template => template.condition == null) // Put templates with conditions first
       .value();
 
     for (let i = 0; i < templates.length; i++) {
-      var result = templates[i].instantiateToString(queryResult, undefined, options);
+      var result = templates[i].instantiateToString(queryResult, merged);
       if (result != null) {
         return result;
       }

@@ -53,11 +53,14 @@ function buildRegisterTemplate(template) {
   template.js = 'Coveo.TemplateCache.registerTemplate(' + [
         JSON.stringify(template.name),
         `Coveo.${template.type}.fromString(`
-        + JSON.stringify(template.content)
-        + (template.condition != null ? ', ' + JSON.stringify(template.condition.value) : '')
-        + (template.condition != null ? ', ' + JSON.stringify(template.condition.layout) : '')
-        + (template.)
-        + ')',
+        + JSON.stringify(template.content) + ','
+        + JSON.stringify({
+          'condition': addToJsonIfNotNull(template, 'value'),
+          'layout': addToJsonIfNotNull(template, 'layout'),
+          'fieldsToMatch': addToJsonIfNotNull(template, 'fieldsToMatch'),
+          'mobile': addToJsonIfNotNull(template, 'mobile')
+        }) + '),'
+        +
         (!template.subtemplate).toString(),
         (!template.subtemplate).toString()
       ].join(', ') + ')';
@@ -88,6 +91,13 @@ function compileTemplates(directory, destination, fileName, conditions, done) {
       fs.writeFileAsync(path.join(destination, key + '.js'), groupedTemplates[key].join('\n'));
     })
   }).catch(e => done(e));
+}
+
+function addToJsonIfNotNull(template, key) {
+  if (template.condition && template.condition[key]) {
+    return template.condition[key]
+  }
+  return null;
 }
 
 module.exports = {
