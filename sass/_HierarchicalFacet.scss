@@ -15,8 +15,7 @@
           .coveo-facet-value-checkbox {
             > span {
               visibility : visible;
-              @debug $line-group;
-@include retina-sprite($line-group);
+              @include retina-sprite($line-group);
               position: relative;
               bottom: 7px;
               left: 0px;
@@ -27,15 +26,13 @@
               > span {
                 bottom: 1px;
                 left: -1px;
-                @debug $checkbox-hook-active-group;
-@include retina-sprite($checkbox-hook-active-group);
+                @include retina-sprite($checkbox-hook-active-group);
               }
             }
             &:hover {
               .coveo-facet-value-checkbox {
                 > span {
-                  @debug $checkbox-exclusion-group;
-@include retina-sprite($checkbox-exclusion-group);
+                  @include retina-sprite($checkbox-exclusion-group);
                 }
               }
             }
@@ -47,8 +44,7 @@
           display: inline-block;
           top: 8px;
           left: 7px;
-          @debug $dropdown-expand-group;
-@include retina-sprite($dropdown-expand-group);
+          @include retina-sprite($dropdown-expand-group);
           &:hover {
             cursor: pointer;
           }
@@ -56,8 +52,7 @@
 
         &.coveo-open {
           .coveo-has-childs-toggle {
-            @debug $dropdown-collapse-group;
-@include retina-sprite($dropdown-collapse-group);
+            @include retina-sprite($dropdown-collapse-group);
           }
         }
       }

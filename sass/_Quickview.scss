@@ -4,8 +4,7 @@
   display: inline-block;
   @include clickable();
   .coveo-icon-for-quickview {
-    @debug $quickview-group;
-@include retina-sprite($quickview-group);
+    @include retina-sprite($quickview-group);
   }
 
   .coveo-caption-for-quickview {

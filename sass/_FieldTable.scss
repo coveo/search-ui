@@ -55,8 +55,7 @@
   position: relative;
   top: 2px;
 
-  @debug $arrow-down-group;
-@include retina-sprite($arrow-down-group);
+  @include retina-sprite($arrow-down-group);
   @include transition(opacity 0.5s);
   opacity: 1;
   &.coveo-opened {
@@ -69,8 +68,7 @@
   bottom: 10px;
   right: 10px;
   margin: 0;
-  @debug $arrow-up-group;
-@include retina-sprite($arrow-up-group);
+  @include retina-sprite($arrow-up-group);
   display: none;
   &.coveo-opened {
     display: inline-block;

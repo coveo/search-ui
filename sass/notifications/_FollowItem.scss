@@ -7,18 +7,15 @@
   cursor: pointer;
   &:before {
     content: '';
-    @debug $result-follow-group;
-@include retina-sprite($result-follow-group);
+    @include retina-sprite($result-follow-group);
     vertical-align: middle;
     margin-right: 6px;
   }
   &.coveo-follow-item-followed:before {
-    @debug $result-follow-active-group;
-@include retina-sprite($result-follow-active-group);
+    @include retina-sprite($result-follow-active-group);
   }
   &.coveo-follow-item-loading:before {
-    @debug $facet-loading-group;
-@include retina-sprite($facet-loading-group);
+    @include retina-sprite($facet-loading-group);
     @include animation-name(coveo-spin);
     @include animation-timing-function(linear);
     @include animation-duration(1s);

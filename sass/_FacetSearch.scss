@@ -124,15 +124,13 @@
 .coveo-facet-search-magnifier {
   float: left;
   margin: 5px 6px 5px 10px;
-  @debug $facet-search-group;
-@include retina-sprite($facet-search-group);
+  @include retina-sprite($facet-search-group);
 }
 
 .coveo-facet-search-wait-animation {
   float: left;
   margin: 3px 3px 5px 10px;
-  @debug $facet-search-loading-group;
-@include retina-sprite($facet-search-loading-group);
+  @include retina-sprite($facet-search-loading-group);
   @include animation-name(coveo-spin);
   @include animation-timing-function(linear);
   @include animation-duration(1s);
@@ -164,8 +162,7 @@
 
 .coveo-facet-value.coveo-facet-search-button {
   .coveo-facet-value-checkbox > span, &:hover .coveo-facet-value-checkbox > span {
-    @debug $checkbox-more-values-group;
-@include retina-sprite($checkbox-more-values-group);
+    @include retina-sprite($checkbox-more-values-group);
     bottom: 1px;
   }
 }

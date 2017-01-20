@@ -57,8 +57,7 @@
   display: inline-block;
   vertical-align: middle;
   .coveo-folding-footer-icon {
-    @debug $arrow-down-group;
-@include retina-sprite($arrow-down-group);
+    @include retina-sprite($arrow-down-group);
     position: relative;
     top: 1px;
   }
@@ -70,8 +69,7 @@
   }
   display: inline-block;
   .coveo-folding-footer-icon {
-    @debug $arrow-up-group;
-@include retina-sprite($arrow-up-group);
+    @include retina-sprite($arrow-up-group);
     position: relative;
     top: 1px;
   }

@@ -36,15 +36,13 @@
 .coveo-facet-breadcrumb-multi-icon {
   margin: 0;
   &.coveo-selected {
-    @debug $checkbox-hook-active-group;
-@include retina-sprite($checkbox-hook-active-group);
+    @include retina-sprite($checkbox-hook-active-group);
     vertical-align: middle;
     margin-left: 0px;
     margin-right: 5px;
   }
   &.coveo-excluded {
-    @debug $facet-checkbox-exclusion-group;
-@include retina-sprite($facet-checkbox-exclusion-group);
+    @include retina-sprite($facet-checkbox-exclusion-group);
     vertical-align: middle;
     margin-left: 0px;
     margin-right: 5px;
