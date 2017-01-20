@@ -35,17 +35,20 @@ $stop-float: new-breakpoint(max-width 480px 1);
     margin-left: 5px;
     position: relative;
     top: 3px;
-    @include retina-sprite($arrow-dowsn-group);
+    @debug $arrow-dowsn-group;
+@include retina-sprite($arrow-dowsn-group);
   }
 
   &.coveo-ascending {
     .coveo-icon {
-      @include retina-sprite($arrow-up-group);
+      @debug $arrow-up-group;
+@include retina-sprite($arrow-up-group);
     }
   }
   &.coveo-descending {
     .coveo-icon {
-      @include retina-sprite($arrow-down-group);
+      @debug $arrow-down-group;
+@include retina-sprite($arrow-down-group);
     }
   }
 

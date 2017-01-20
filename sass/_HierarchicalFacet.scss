@@ -1,4 +1,5 @@
-@import 'bourbon/bourbon';
+@import "bourbon/bourbon";
+@import "../bin/sass/sprites.scss";
 
 .CoveoHierarchicalFacet {
   
@@ -14,7 +15,8 @@
           .coveo-facet-value-checkbox {
             > span {
               visibility : visible;
-              @include retina-sprite($sprites-line-group);
+              @debug $line-group;
+@include retina-sprite($line-group);
               position: relative;
               bottom: 7px;
               left: 0px;
@@ -25,13 +27,15 @@
               > span {
                 bottom: 1px;
                 left: -1px;
-                @include retina-sprite($checkbox-hook-active-group);
+                @debug $checkbox-hook-active-group;
+@include retina-sprite($checkbox-hook-active-group);
               }
             }
             &:hover {
               .coveo-facet-value-checkbox {
                 > span {
-                  @include retina-sprite($checkbox-exclusion-group);
+                  @debug $checkbox-exclusion-group;
+@include retina-sprite($checkbox-exclusion-group);
                 }
               }
             }
@@ -43,7 +47,8 @@
           display: inline-block;
           top: 8px;
           left: 7px;
-          @include retina-sprite($dropdown-expand-group);
+          @debug $dropdown-expand-group;
+@include retina-sprite($dropdown-expand-group);
           &:hover {
             cursor: pointer;
           }
@@ -51,7 +56,8 @@
 
         &.coveo-open {
           .coveo-has-childs-toggle {
-            @include retina-sprite($dropdown-collapse-group);
+            @debug $dropdown-collapse-group;
+@include retina-sprite($dropdown-collapse-group);
           }
         }
       }

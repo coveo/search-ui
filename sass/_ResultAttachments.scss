@@ -16,7 +16,8 @@
   }
 
   .coveo-thumbnail-icon {
-    @include retina-sprite($quickview-group);
+    @debug $quickview-group;
+@include retina-sprite($quickview-group);
     position: relative;
     margin-left: 5px;
     top: 5px;

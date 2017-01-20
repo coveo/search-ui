@@ -19,16 +19,19 @@
 
   & > .coveo-icon {
     vertical-align: middle;
-    @include retina-sprite($main-search-group);
+    @debug $main-search-group;
+@include retina-sprite($main-search-group);
     animation: none;
   }
   &:hover > .coveo-icon {
-    @include retina-sprite($main-search-active-group);
+    @debug $main-search-active-group;
+@include retina-sprite($main-search-active-group);
   }
 }
 
 .coveo-executing-query .CoveoSearchButton > .coveo-icon {
-  @include retina-sprite($facet-loading-group);
+  @debug $facet-loading-group;
+@include retina-sprite($facet-loading-group);
   @include animation-name(coveo-spin);
   @include animation-timing-function(linear);
   @include animation-duration(1s);

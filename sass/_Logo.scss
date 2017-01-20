@@ -1,11 +1,13 @@
 @import "../bin/sass/sprites";
 
 .coveo-logo{
-  @include retina-sprite($coveo-logo-group);
+  @debug $coveo-logo-group;
+@include retina-sprite($coveo-logo-group);
 }
 
 .coveo-powered-by {
-  @include retina-sprite($coveo-powered-by-logo-group);
+  @debug $coveo-powered-by-logo-group;
+@include retina-sprite($coveo-powered-by-logo-group);
 }
 
 .CoveoLogo {

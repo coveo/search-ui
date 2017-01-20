@@ -17,11 +17,13 @@
 
 .coveo-facet-header-settings {
   .coveo-icon {
-    @include retina-sprite($more-menu-group);
+    @debug $more-menu-group;
+@include retina-sprite($more-menu-group);
   }
   &:hover, &:focus {
     .coveo-icon {
-      @include retina-sprite($more-menu-active-group);
+      @debug $more-menu-active-group;
+@include retina-sprite($more-menu-active-group);
     }
     outline: none;
   }
@@ -29,11 +31,13 @@
 
 .coveo-facet-header-operator {
   .coveo-icon.coveo-and {
-    @include retina-sprite($and-group);
+    @debug $and-group;
+@include retina-sprite($and-group);
   }
 
   .coveo-icon.coveo-or {
-    @include retina-sprite($or-group);
+    @debug $or-group;
+@include retina-sprite($or-group);
   }
 }
 
@@ -57,7 +61,8 @@
   position: relative;
   width: 16px;
   height: 16px;
-  @include retina-sprite($facet-loading-group);
+  @debug $facet-loading-group;
+@include retina-sprite($facet-loading-group);
   @include animation-name(coveo-spin);
   @include animation-timing-function(linear);
   @include animation-duration(1s);

@@ -22,7 +22,7 @@ let sassLoader = { test: /\.scss/ };
 if (live) {
   sassLoader['loader'] = ExtractTextPlugin.extract('style-loader', '!css-loader!resolve-url-loader!sass-loader?sourceMap');
 } else {
-  sassLoader['loaders'] = ['style-loader?insertAt=bottom', 'css-loader?sourceMap', 'resolve-url-loader', 'sass-loader?sourceMap'];
+  sassLoader['loaders'] = ['style-loader', 'css-loader', 'resolve-url-loader', 'sass-loader?sourceMap'];
 }
 
 module.exports = {

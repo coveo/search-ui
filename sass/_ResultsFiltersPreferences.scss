@@ -73,7 +73,8 @@
     top: 2px;
     left: 25px;
     .coveo-icon {
-      @include retina-sprite($clear-active-filters-group);
+      @debug $clear-active-filters-group;
+@include retina-sprite($clear-active-filters-group);
     }
     &:hover {
       cursor: pointer;
@@ -85,7 +86,8 @@
     top: 2px;
     left: 10px;
     .coveo-icon {
-      @include retina-sprite($settings-group);
+      @debug $settings-group;
+@include retina-sprite($settings-group);
     }
     &:hover {
       cursor: pointer;
@@ -143,7 +145,8 @@
     .coveo-close-and-save {
 
       .coveo-save {
-        @include retina-sprite($checkbox-hook-active-group);
+        @debug $checkbox-hook-active-group;
+@include retina-sprite($checkbox-hook-active-group);
         @include clickable();
         position: absolute;
         top: 5px;

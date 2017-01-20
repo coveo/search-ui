@@ -2,17 +2,17 @@
 @import "../bin/sass/sprites";
 
 @mixin facetValuesCheckboxes($size: 'normal') {
-  $icon-inactive: '.coveo-sprites-checkbox-hook-inactive';
-  $icon-active: '.coveo-sprites-checkbox-hook-active';
-  $icon-exclusion: '.coveo-sprites-checkbox-exclusion';
+  $icon-inactive: $checkbox-hook-inactive-group;
+  $icon-active: $checkbox-hook-active-group;
+  $icon-exclusion: $checkbox-exclusion-group;
   $pixel-size: '18px';
   $pixel-bottom: '1px';
   $pixel-left: '-1px';
 
   @if $size == 'smaller' {
-    $icon-inactive: '.coveo-sprites-facet-search-checkbox-hook-inactive';
-    $icon-active: '.coveo-sprites-facet-search-checkbox-hook-active';
-    $icon-exclusion: '.coveo-sprites-facet-checkbox-exclusion';
+    $icon-inactive: $facet-search-checkbox-hook-inactive-group; 
+    $icon-active: $facet-search-checkbox-hook-active-group;
+    $icon-exclusion: $facet-checkbox-exclusion-group;
     $pixel-size: '13px';
     $pixel-bottom: '3px';
     $pixel-left: '-1px';
@@ -44,13 +44,13 @@
 
   &.coveo-selected .coveo-facet-value-checkbox {
     > span {
-      @extend #{$icon-active};
+      @include retina-sprite($icon-active);
     }
   }
 
   &:hover .coveo-facet-value-checkbox {
     > span {
-      @extend #{$icon-active};
+      @include retina-sprite($icon-active);
     }
   }
 
@@ -61,7 +61,7 @@
   &:not(.coveo-facet-search-button) {
     .coveo-facet-value-checkbox:focus {
       > span {
-        @extend #{$icon-active};
+        @include retina-sprite($icon-active);
       }
     }
   }
@@ -70,13 +70,13 @@
   &.coveo-selected.coveo-facet-value-will-exclude .coveo-facet-value-checkbox,
   &:hover.coveo-facet-value-will-exclude .coveo-facet-value-checkbox {
     > span {
-      @extend #{$icon-exclusion};
+      @include retina-sprite($icon-exclusion);
     }
   }
 
   &.coveo-excluded .coveo-facet-value-checkbox {
     > span {
-      @extend #{$icon-exclusion};
+      @include retina-sprite($icon-exclusion);
     }
   }
 }
@@ -209,7 +209,8 @@
   opacity: 0;
 
   .coveo-icon {
-    @include retina-sprite($exclusion-hover);
+    @debug $exclusion-hover;
+@include retina-sprite($exclusion-hover-group);
     position: absolute;
     top: -1px;
     left: -1px;

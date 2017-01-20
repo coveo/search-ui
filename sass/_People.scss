@@ -11,7 +11,8 @@
 
   .CoveoThumbnail.coveo-no-thumbnail {
     display: inline-block;
-    @include retina-sprite($user-group);
+    @debug $user-group;
+@include retina-sprite($user-group);
   }
 
   .coveo-people-details {

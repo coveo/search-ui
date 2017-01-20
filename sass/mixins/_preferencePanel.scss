@@ -64,7 +64,8 @@
       &:before {
         content: '';
         display: inline-block;
-        @include retina-sprite($checkbox-hook-white-group);
+        @debug $checkbox-hook-white-group;
+@include retina-sprite($checkbox-hook-white-group);
         position: relative;
         right: -1px;
         bottom: 2px;
