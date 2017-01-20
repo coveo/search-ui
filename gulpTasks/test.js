@@ -8,6 +8,7 @@ const remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 const event_stream = require('event-stream');
 const shell = require('gulp-shell');
 const replace = require('gulp-replace');
+const coveralls = require('coveralls');
 
 const COVERAGE_DIR = path.resolve('bin/coverage');
 
@@ -22,7 +23,7 @@ gulp.task('setupTests', function () {
   ).pipe(event_stream.wait())
 });
 
-gulp.task('coverage', ['lcovCoverage']);
+gulp.task('coverage', ['lcovCoverage' , 'uploadCoverage']);
 
 gulp.task('test', ['setupTests', 'buildTest'], function (done) {
   new TestServer({
@@ -39,6 +40,10 @@ gulp.task('test', ['setupTests', 'buildTest'], function (done) {
 
 gulp.task('buildTest', shell.task([
   'node node_modules/webpack/bin/webpack.js --config ./webpackConfigFiles/webpack.test.config.js'
+]));
+
+gulp.task('uploadCoverage', ['lcovCoverage'], shell.task([
+  'cat bin/coverage/lcov.info | ./node_modules/.bin/coveralls'
 ]));
 
 gulp.task('testDev', ['watchTest'], function (done) {
@@ -63,6 +68,7 @@ gulp.task('lcovCoverage', ['remapCoverage'], function (done) {
     pattern: `${COVERAGE_DIR}/coverage.json`,
     reporters: {
       lcov: {}
-    }
+    },
+    print: 'summary'
   }).then(() => done());
 });

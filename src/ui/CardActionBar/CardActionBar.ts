@@ -12,13 +12,13 @@ export interface ICardActionBarOptions {
 }
 
 /**
- * This component displays an action bar at the bottom of a Card result (see
- * {@link ResultLayout}). It is a simple container for buttons or other
- * complementary information.
+ * The CardActionBar component displays an action bar at the bottom of a Card result (see {ResultList.options.layout}
+ * and {@link ResultLayout}). It is a simple container for buttons or complementary information.
  *
- * It is meant to be placed at the **bottom** of a Card result. E.g. as the last
- * child of the surrounding `result-frame`.
+ * This component is meant to be placed at the bottom of a Card result (i.e., as the last child of the surrounding
+ * `result-frame`.
  *
+ * ### Example
  * ```html
  * <div class="coveo-result-frame">
  *   ...content...
@@ -29,7 +29,7 @@ export interface ICardActionBarOptions {
  * </div>
  * ```
  *
- * By default, CardActionBar is toggleable, with its default state being hidden.
+ * A CardActionBar component is a two-state widget. Its default state is `hidden`.
  */
 export class CardActionBar extends Component {
   static ID = 'CardActionBar';
@@ -41,20 +41,32 @@ export class CardActionBar extends Component {
    * @componentOptions
    */
   static options: ICardActionBarOptions = {
+
     /**
-     * Specifies if the CardActionBar is hidden unless the cursor clicks its parent
-     * `Result` component.
+     * Specifies whether the CardActionBar is hidden by default unless the user clicks its parent {@link IQueryResult}.
      *
-     * By default, it is hidden and a visual indicator is appended to the parent
-     * `Result`.
+     * Default value is `true`, which means the component is hidden and a visual indicator is appended to its parent
+     * IQueryResult.
      */
     hidden: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
     /**
-     * Specifies if the hidden CardActionbar is to be opened when it is hovered over.
+     * If {CardActionBar.options.hidden} is set to `true`, specifies whether the CardActionBar should open when it is
+     * hovered over.
+     *
+     * Default value is `true`.
      */
     openOnMouseOver: ComponentOptions.buildBooleanOption({ defaultValue: true, depend: 'hidden' })
   };
 
+  /**
+   * Creates a new CardActionBar component.
+   * @param element The HTMLElement on which the component will be instantiated.
+   * @param options The options for the CardActionBar component.
+   * @param bindings The bindings that the component requires to function normally. If not set, it will be automatically
+   * resolved (with a slower execution time).
+   * @param result The {@link IQueryResult}.
+   */
   constructor(public element: HTMLElement, public options?: ICardActionBarOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, CardActionBar.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, CardActionBar, options);
@@ -73,14 +85,14 @@ export class CardActionBar extends Component {
   }
 
   /**
-   * Show the ActionBar
+   * Shows the CardActionBar.
    */
   public show() {
     $$(this.element).addClass('coveo-opened');
   }
 
   /**
-   * Hide the ActionBar
+   * Hides the CardActionBar.
    */
   public hide() {
     $$(this.element).removeClass('coveo-opened');

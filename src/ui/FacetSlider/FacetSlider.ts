@@ -361,6 +361,11 @@ export class FacetSlider extends Component {
     this.element.appendChild(this.facetHeader.build());
   }
 
+  public disable() {
+    super.disable();
+    $$(this.element).addClass('coveo-disabled-empty');
+  }
+
   /**
    * Reset the facet (meaning that you need to set the range value as inactive).
    */
