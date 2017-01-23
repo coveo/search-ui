@@ -57,45 +57,6 @@ export function BackdropTest() {
           .toMatch(new RegExp(`url\\(("|')?https://foo.com/baz.png("|')?\\)`));
       });
 
-      it('should redirect page to clickUrl if specified', function () {
-        test = Mock.optionsResultComponentSetup<Backdrop, IBackdropOptions>(Backdrop, {
-          clickUrl: 'coveo.com'
-        }, FakeResults.createFakeResult());
-
-        test.cmp._window = Mock.mockWindow();
-        spyOn(test.cmp._window.location, 'replace');
-        $$(test.env.element).trigger('click');
-        expect(test.cmp._window.location.replace).toHaveBeenCalledWith('coveo.com');
-      });
-
-      it('should redirect page to the value of clickUrlField if specified', function () {
-        let fakeResult = FakeResults.createFakeResult();
-        fakeResult.raw.supercalifragilisticexpialidociouslink = 'https://marypoppins.co.jp';
-        test = Mock.optionsResultComponentSetup<Backdrop, IBackdropOptions>(Backdrop, {
-          clickUrlField: 'supercalifragilisticexpialidociouslink'
-        }, fakeResult);
-
-        test.cmp._window = Mock.mockWindow();
-        spyOn(test.cmp._window.location, 'replace');
-        $$(test.env.element).trigger('click');
-        expect(test.cmp._window.location.replace).toHaveBeenCalledWith('https://marypoppins.co.jp');
-      });
-
-      it('clickUrl should override clickUrlField if both are specified', function () {
-        let fakeResult = FakeResults.createFakeResult();
-        fakeResult.raw.incrediblelink = 'https://imthewrongurl.tk';
-
-        test = Mock.optionsResultComponentSetup<Backdrop, IBackdropOptions>(Backdrop, {
-          clickUrl: 'https://imtherighturl.com',
-          clickUrlField: 'incrediblelink'
-        }, FakeResults.createFakeResult());
-
-        test.cmp._window = Mock.mockWindow();
-        spyOn(test.cmp._window.location, 'replace');
-        $$(test.env.element).trigger('click');
-        expect(test.cmp._window.location.replace).toHaveBeenCalledWith('https://imtherighturl.com');
-      });
-
       it('overlayColor should add an overlay color before image', function () {
         test = Mock.optionsResultComponentSetup<Backdrop, IBackdropOptions>(Backdrop, {
           imageField: 'thumbnailurl',
