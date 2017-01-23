@@ -11,8 +11,6 @@ export interface IBackdropOptions {
   imageField?: string;
   overlayColor?: string;
   overlayGradient?: boolean;
-  clickUrlField?: string;
-  clickUrl?: string;
 }
 
 /**
@@ -65,15 +63,6 @@ export class Backdrop extends Component {
      * Default value is `false`.
      */
     overlayGradient: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'overlayColor' }),
-    /**
-     * If specified, the component will redirect the page to this URL when clicked.
-     */
-    clickUrl: ComponentOptions.buildStringOption(),
-    /**
-     * If specified, the component will redirect the page to the URL contained in this field.
-     * If `clickUrl` is specified, this option will not be considered.
-     */
-    clickUrlField: ComponentOptions.buildStringOption()
   };
 
   /**
@@ -99,16 +88,10 @@ export class Backdrop extends Component {
     const imageSource = this.options.imageUrl || result.raw[this.options.imageField];
     background += `url('${imageSource}') center center`;
 
-    const clickUrl = this.options.clickUrl || result.raw[this.options.clickUrlField];
-    if (clickUrl) {
-      $$(this.element).on('click', (e: Event) => {
-        this._window.location.replace(clickUrl);
-      });
-    }
-
     this.element.style.background = background;
     this.element.style.backgroundSize = 'cover';
 
+    // Initialize components inside
     let initOptions = this.searchInterface.options.originalOptionsObject;
     let resultComponentBindings: IResultsComponentBindings = _.extend({}, this.getBindings(), {
       resultElement: element
