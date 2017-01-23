@@ -165,7 +165,7 @@ export class ResultLayout extends Component {
     }
     const activateAction = () => this.changeLayout(<ValidLayout>layout);
     btn.on('click', activateAction);
-    btn.on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, activateAction))
+    btn.on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, activateAction));
     $$(this.element).append(btn.el);
     this.buttons[layout] = btn.el;
   }
