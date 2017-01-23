@@ -77,7 +77,8 @@ export class ResultAttachments extends Component {
   private renderAttachments() {
     _.each(this.attachments, (attachment) => {
       QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), attachment);
-      var container = this.attachmentLevel > 0 ? this.options.subResultTemplate.instantiateToElement(attachment, {}) : this.options.resultTemplate.instantiateToElement(attachment, {});
+      QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, attachment);
+      var container = this.attachmentLevel > 0 ? this.options.subResultTemplate.instantiateToElement(attachment) : this.options.resultTemplate.instantiateToElement(attachment);
 
       this.autoCreateComponentsInsideResult(container, _.extend({}, attachment, { attachments: [] }));
 

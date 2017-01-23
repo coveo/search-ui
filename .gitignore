@@ -11,3 +11,4 @@ gulp-tsc-tmp*
 environments/conf.js
 docs/theme/assets/gen
 .vscode/
+search-ui.zip

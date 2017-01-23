@@ -1,5 +1,6 @@
 import {IHighlight, IHighlightPhrase, IHighlightTerm} from './Highlight';
 import {Promise} from 'es6-promise';
+import {SearchInterface} from '../ui/SearchInterface/SearchInterface';
 
 /**
  * Describe a single result returned by the Coveo Search API.
@@ -74,7 +75,17 @@ export interface IQueryResult {
   rankingModifier?: string;
 
   // Those fields are added by the JS UI framework
+  /**
+   * The 0 based index of the results, as returned by the search API.
+   */
   index?: number;
+  /**
+   * The queryUid, as returned by the search API.
+   *
+   * This is used mainly for usage analytics.
+   *
+   * This property is added client side on each results, by the framework.
+   */
   queryUid?: string;
   pipeline?: string;
   splitTestRun?: string;
@@ -82,7 +93,22 @@ export interface IQueryResult {
   moreResults?: () => Promise<IQueryResult[]>;
   totalNumberOfChildResults?: number;
   attachments?: IQueryResult[];
+  /**
+   * The query state of the search interface inside which this result is rendered.
+   *
+   * This is used mainly to do conditional rendering inside results templates.
+   *
+   * This property is added client side on each results, by the framework.
+   */
   state: { [attribute: string]: any; };
+  /**
+   * The search interface inside which this result is rendered.
+   *
+   * This is used mainly to do conditional rendering inside results templates.
+   *
+   * This property is added client side on each results, by the framework.
+   */
+  searchInterface: SearchInterface;
   orphan?: boolean;
 
   fields?: { [name: string]: any };

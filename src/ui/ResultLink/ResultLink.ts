@@ -106,7 +106,7 @@ export class ResultLink extends Component {
      * global scope properties.
      *
      * Default value is `undefined`.
-     * 
+     *
      * #### Examples
      *
      * The following markup will generate a ResultLink href such as `http://uri.com?id=documentTitle`:
@@ -116,7 +116,7 @@ export class ResultLink extends Component {
      * ```
      *
      * The following markup will generate a ResultLink href such as `localhost/fooBar`:
-     * 
+     *
      * ```html
      * <a class="CoveoResultLink" data-href-template="$${window.location.hostname}/{Foo.Bar}"></a>
      * ```
@@ -133,7 +133,7 @@ export class ResultLink extends Component {
      * This option is ignored if the ResultLink innerHTML contains any value.
      *
      * Default value is `undefined`.
-     * 
+     *
      * #### Examples
      *
      * The following markup will generate a ResultLink display title such as `Case number: 123456` if both the
@@ -152,7 +152,7 @@ export class ResultLink extends Component {
      *
      * The following markup will generate `This will be displayed` as a ResultLink display title, because the
      * ResultLink innterHTML is not empty:
-     * 
+     *
      * ```html
      * <a class="CoveoResultLink" data-title-template="${will} ${be} ${ignored}">This will be displayed</a>
      * ```

@@ -41,6 +41,10 @@ export class QueryUtils {
     QueryUtils.setPropertyOnResult(result, 'state', state);
   }
 
+  static setSearchInterfaceObjectOnQueryResult(searchInterface, result: IQueryResult) {
+    QueryUtils.setPropertyOnResult(result, 'searchInterface', searchInterface);
+  }
+
   static setIndexAndUidOnQueryResults(query: IQuery, results: IQueryResults, queryUid: string, pipeline: string, splitTestRun: string) {
     Assert.exists(query);
     Assert.exists(results);

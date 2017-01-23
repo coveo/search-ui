@@ -224,6 +224,7 @@ export class ResultFolding extends Component {
 
   private renderChildResult(childResult: IQueryResult) {
     QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), childResult);
+    QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, childResult);
 
     let oneChild = this.options.resultTemplate.instantiateToElement(childResult, {
       wrapInDiv: false,
