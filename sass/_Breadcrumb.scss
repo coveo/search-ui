@@ -46,4 +46,7 @@
   .coveo-breadcrumb-items {
     padding-bottom: 0;
   }
+  .coveo-breadcrumb-item:not(:last-child) {
+    margin-bottom: 10px;
+  }
 }
