@@ -47,7 +47,7 @@
     @include justify-content(flex-end);
 
     a {
-      margin-right: 8px;
+      margin-right: 10px;
     }
   }
 }
@@ -100,5 +100,5 @@
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 15;  
+  z-index: 15;
 }

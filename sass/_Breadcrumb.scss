@@ -38,3 +38,12 @@
 .coveo-breadcrumb-item {
   margin: 5px 0px 5px 0px;
 }
+
+@include mediaSelector(800) {
+  .CoveoBreadcrumb {
+    padding: 10px;
+  }
+  .coveo-breadcrumb-items {
+    padding-bottom: 0;
+  }
+}
