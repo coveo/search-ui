@@ -106,6 +106,12 @@ export class Icon extends Component {
 
   static createIcon(result: IQueryResult, options: IIconOptions = {}, element: HTMLElement = $$('div').el, bindings?: IComponentBindings) {
     var info = FileTypes.get(result);
+
+
+    if (!bindings && result.searchInterface) {
+      // try to resolve results bindings automatically
+      bindings = result.searchInterface.getBindings();
+    }
     info = Icon.preprocessIconInfo(options, info);
     $$(element).toggleClass('coveo-small', options.small === true);
 
@@ -129,6 +135,7 @@ export class Icon extends Component {
         className: 'coveo-icon-caption-overlay'
       }, info.caption).el);
       $$(element).addClass('coveo-icon-with-caption-overlay');
+      $$(element).setAttribute('data-with-label', 'true');
     }
     return element;
   }

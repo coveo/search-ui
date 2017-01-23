@@ -101,10 +101,11 @@ export class Tab extends Component {
      */
     sort: ComponentOptions.buildStringOption(),
     /**
-     * Specifies the default layout when this tab is selected.<br/>
-     * The value must be one of "list", "card", or "table".<br/>
-     * This parameter is overridden by a URL parameter.<br/>
-     * Optional. If not specified, the first available layout will be choosed.
+     * Specifies the default layout to display when this tab is selected (see {@link ResultList.options.layout} and
+     * {@link ResultLayout}).
+     * The value must be one of `list`, `card`, or `table`.
+     * This option is overridden by a URL parameter.
+     * If not specified, the first available layout will be chosen.
      */
     layout: ComponentOptions.buildStringOption(),
     /**

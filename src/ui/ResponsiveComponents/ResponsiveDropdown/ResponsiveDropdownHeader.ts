@@ -1,4 +1,4 @@
-import {Dom} from '../../../utils/Dom';
+import {Dom, $$} from '../../../utils/Dom';
 
 export class ResponsiveDropdownHeader {
 
@@ -20,5 +20,13 @@ export class ResponsiveDropdownHeader {
 
   public cleanUp() {
     this.element.detach();
+  }
+
+  public hide() {
+    $$(this.element).addClass('coveo-hidden');
+  }
+
+  public show() {
+    $$(this.element).removeClass('coveo-hidden');
   }
 }

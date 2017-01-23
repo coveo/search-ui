@@ -178,20 +178,19 @@ export class ResultList extends Component {
      */
     fieldsToInclude: ComponentOptions.buildFieldsOption({ includeInResults: true }),
     /**
-     * Specifies that the result list should scan it's template and discover which field it will need to render every results.<br/>
+     * Specifies that the result list should scan its template and discover which field it will need to render every results.<br/>
      * This is to ensure that fields that are not needed for the UI to function are not sent by the search API.<br/>
      * Default value is false.<br/>
      * NB: Many interface created by the interface editor will actually explicitly set this option to true.
      */
     autoSelectFieldsToInclude: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
-     * Specifies the layout to use for displaying Results. Specifying this
-     * option will automatically populate a {@link ResultLayout} component with
-     * a switcher for the layout.
+     * Specifies the layout to use for displaying the results. Specifying a value for this option will automatically
+     * populate a {@link ResultLayout} component with a switcher for the layout.
      *
-     * For example, if there are 2 ResultLists in the page, one with a `layout`
-     * of `list` and the other of `card`, the {@link ResultLayout} component
-     * will have 2 buttons titled respectively "List" and "Card".
+     * For example, if there are two {@link ResultList} components in the page, one with its
+     * {@link ResultList.options.layout} set to `list` and the other with the same option set to `card`, then the
+     * ResultLayout component will have two buttons respectively titled **List** and **Card**.
      */
     layout: ComponentOptions.buildStringOption({
       defaultValue: 'list',
@@ -231,8 +230,7 @@ export class ResultList extends Component {
     this.bind.onRootElement<IQuerySuccessEventArgs>(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement<IDuringQueryEventArgs>(QueryEvents.duringQuery, (args: IDuringQueryEventArgs) => this.handleDuringQuery());
     this.bind.onRootElement<IQueryErrorEventArgs>(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError());
-
-    $$(this.root).on(ResultListEvents.changeLayout, (e, args: IChangeLayoutEventArgs) => this.handleChangeLayout(args));
+    $$(this.root).on(ResultListEvents.changeLayout, (e: Event, args: IChangeLayoutEventArgs) => this.handleChangeLayout(args));
 
     if (this.options.enableInfiniteScroll) {
       this.handlePageChanged();
@@ -292,6 +290,7 @@ export class ResultList extends Component {
   public buildResult(result: IQueryResult): HTMLElement {
     Assert.exists(result);
     QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), result);
+    QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, result);
     ResultList.resultCurrentlyBeingRendered = result;
     let resultElement = this.options.resultTemplate.instantiateToElement(result, true, true, { layout: <ValidLayout>this.options.layout });
     if (resultElement != null) {
@@ -476,8 +475,16 @@ export class ResultList extends Component {
   }
 
   private handleChangeLayout(args: IChangeLayoutEventArgs) {
-    args.layout === this.options.layout ? this.enable() : this.disable();
-    this.queryController.executeQuery();
+    if (args.layout === this.options.layout) {
+      this.enable();
+      if (args.results) {
+        Defer.defer(() => {
+          this.renderResults(this.buildResults(args.results));
+        });
+      }
+    } else {
+      this.disable();
+    }
   }
 
   private getAutoSelectedFieldsToInclude() {

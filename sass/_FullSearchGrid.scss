@@ -36,6 +36,12 @@ $border-box-sizing: false;
       margin: auto;
       text-align: center;
     }
+
+    @include mediaSelector(800) {
+      &.coveo-no-results {
+        max-width: 100%;
+      }
+    }
   }
 }
 
