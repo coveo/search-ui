@@ -13,6 +13,7 @@ before_script:
 - npm install -g gulp
 script:
 - source read.version.sh
+- echo $PACKAGE_JSON_VERSION
 - npm run injectTag
 - npm run build
 - npm run minimize
