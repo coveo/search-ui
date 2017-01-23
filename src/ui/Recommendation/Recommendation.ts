@@ -10,7 +10,7 @@ import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/Analytics
 import {BreadcrumbEvents} from '../../events/BreadcrumbEvents';
 import {QuickviewEvents} from '../../events/QuickviewEvents';
 import {QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
-import {Model} from '../../models/Model';
+import {Model, MODEL_EVENTS} from '../../models/Model';
 import {Utils} from '../../utils/Utils';
 import {$$} from '../../utils/Dom';
 import {INoResultsEventArgs} from '../../events/QueryEvents';
@@ -18,6 +18,9 @@ import {IQueryErrorEventArgs} from '../../events/QueryEvents';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {ResponsiveRecommendation} from '../ResponsiveComponents/ResponsiveRecommendation';
 import {history} from 'coveo.analytics';
+import {get} from '../Base/RegisteredNamedMethods';
+import {InitializationEvents} from '../../events/InitializationEvents';
+import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
 
 export interface IRecommendationOptions extends ISearchInterfaceOptions {
   mainSearchInterface?: HTMLElement;
@@ -135,6 +138,9 @@ export class Recommendation extends SearchInterface implements IComponentBinding
       this.generateDefaultId();
     }
 
+    // This is done to allow the component to be included in another search interface without triggering the parent events.
+    this.preventEventPropagation();
+
     if (this.options.mainSearchInterface) {
       this.bindToMainSearchInterface();
     }
@@ -144,8 +150,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
     $$(this.element).on(QueryEvents.noResults, (e: Event, args: INoResultsEventArgs) => this.handleRecommendationNoResults());
     $$(this.element).on(QueryEvents.queryError, (e: Event, args: IQueryErrorEventArgs) => this.handleRecommendationQueryError());
 
-    // This is done to allow the component to be included in another search interface without triggering the parent events.
-    this.preventEventPropagation();
+
     this.historyStore = new history.HistoryStore();
     ResponsiveRecommendation.init(this.root, this, options);
   }
@@ -179,6 +184,38 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   }
 
   private bindToMainSearchInterface() {
+    this.bindComponentOptionsModelToMainSearchInterface();
+    this.bindQueryEventsToMainSearchInterface();
+  }
+
+  private bindComponentOptionsModelToMainSearchInterface() {
+    // Try to fetch the componentOptions from the main search interface.
+    // Since we do not know which interface is init first (recommendation or full search interface)
+    // add a mechanism that waits for the full search interface to be correctly initialized
+    // then, set the needed values on the component options model.
+    let searchInterfaceComponent = <SearchInterface>get(this.options.mainSearchInterface, SearchInterface);
+    let alreadyInitialized = searchInterfaceComponent != null;
+
+    let onceInitialized = () => {
+      let mainSearchInterfaceOptionsModel = <ComponentOptionsModel>searchInterfaceComponent.getBindings().componentOptionsModel;
+      this.componentOptionsModel.setMultiple(mainSearchInterfaceOptionsModel.getAttributes());
+      $$(this.options.mainSearchInterface).on(this.componentOptionsModel.getEventName(MODEL_EVENTS.ALL), () => {
+        this.componentOptionsModel.setMultiple(mainSearchInterfaceOptionsModel.getAttributes());
+      });
+    };
+
+    if (alreadyInitialized) {
+      onceInitialized();
+    } else {
+      $$(this.options.mainSearchInterface).on(InitializationEvents.afterComponentsInitialization, () => {
+        searchInterfaceComponent = <SearchInterface>get(this.options.mainSearchInterface, SearchInterface);
+        onceInitialized();
+      });
+    }
+  }
+
+  private bindQueryEventsToMainSearchInterface() {
+    // Whenever a query sucessfully returns on the full search interface, refresh the recommendation component.
     $$(this.options.mainSearchInterface).on(QueryEvents.querySuccess, (e: Event, args: IQuerySuccessEventArgs) => {
       this.mainInterfaceQuery = args;
       this.mainQuerySearchUID = args.results.searchUid;
@@ -256,6 +293,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
     this.preventEventPropagationOn(AnalyticsEvents);
     this.preventEventPropagationOn(BreadcrumbEvents);
     this.preventEventPropagationOn(QuickviewEvents);
+    this.preventEventPropagationOn(InitializationEvents);
     this.preventEventPropagationOn(this.getAllModelEvents());
   }
 

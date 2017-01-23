@@ -1,4 +1,5 @@
 import {IQueryResult} from '../rest/QueryResult';
+import {IQueryResults} from '../rest/QueryResults';
 
 export interface IDisplayedNewResultEventArgs {
   result: IQueryResult;
@@ -14,6 +15,7 @@ export interface IOpenQuickviewEventArgs {
 
 export interface IChangeLayoutEventArgs {
   layout: string;
+  results?: IQueryResults;
 }
 
 export class ResultListEvents {

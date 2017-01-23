@@ -118,7 +118,7 @@ declare namespace CoveoAnalytics {
 
   interface History {
     HistoryStore: {
-      new(): HistoryStore;
+      new(storage?: WebStorage): HistoryStore;
     };
   }
 
@@ -149,12 +149,42 @@ declare namespace CoveoAnalytics {
     onLoad(callback: Function): void;
   }
 
+
+  interface WebStorage {
+    getItem(key: string): string;
+    removeItem(key: string): void;
+    setItem(key: string, data: string): void;
+  }
+  let preferredStorage: WebStorage;
+
+  function getAvailableStorage(): WebStorage;
+
+
+  class NullStorage implements WebStorage {
+    getItem(key: string): string;
+
+    removeItem(key: string): void;
+
+    setItem(key: string, data: string): void;
+  }
+
+  class CookieStorage implements WebStorage {
+    getItem(key: string): string;
+
+    removeItem(key: string): void;
+
+    setItem(key: string, data: string): void;
+  }
+
   type EventType = 'pageview';
 }
 
 declare module 'coveo.analytics' {
   export const analytics: CoveoAnalytics.AnalyticsClient;
   export const history: CoveoAnalytics.History;
+  export const storage: {
+    CookieStorage: new ()=> CoveoAnalytics.CookieStorage
+  }
   export const SimpleAnalytics: {
     SimpleAPI: CoveoAnalytics.SimpleAPI,
     SimpleAnalytics: (action: string, ...params: any[]) => any;

@@ -179,8 +179,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
         virtualTabSection.el.appendChild(tab.cloneNode(true));
       });
     }
-
-    this.coveoRoot.append(virtualTabSection.el);
+    virtualTabSection.insertBefore(this.tabSection.el);
 
     ResponsiveComponentsUtils.deactivateSmallTabs(this.coveoRoot);
     let isOverflowing = this.isOverflowing(virtualTabSection.el);
