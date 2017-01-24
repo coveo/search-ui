@@ -1540,7 +1540,7 @@ export class Facet extends Component {
     }).catch(() => this.hideWaitingAnimation());
   }
 
-  private triggerUpdateDeltaQuery(facetValues: FacetValue[]): void {
+  protected triggerUpdateDeltaQuery(facetValues: FacetValue[]): void {
     this.showWaitingAnimation();
     this.facetQueryController.searchInFacetToUpdateDelta(facetValues).then((queryResults?) => {
       let values: FacetValues = new FacetValues();
