@@ -1,4 +1,3 @@
-//import 'styling/_FacetFooter';
 export * from './BaseModules';
 export * from './MiscModules';
 export * from './RestModules';
