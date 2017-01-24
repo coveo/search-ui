@@ -5,7 +5,8 @@ import {TemplateFromAScriptTag, ITemplateFromStringProperties} from './TemplateF
 export class HtmlTemplate extends Template {
 
   public static mimeTypes = [
-    'text/html'
+    'text/html',
+    'text/HTML'
   ];
 
   private templateFromAScriptTag: TemplateFromAScriptTag;

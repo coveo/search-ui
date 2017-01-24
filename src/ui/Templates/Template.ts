@@ -3,14 +3,16 @@ import {ValidLayout} from '../ResultLayout/ResultLayout';
 import {$$} from '../../utils/Dom';
 import {TemplateConditionEvaluator} from './TemplateConditionEvaluator';
 import {TemplateFieldsEvaluator} from './TemplateFieldsEvaluator';
-import {DeviceUtils} from '../../utils/DeviceUtils';
 import {IQueryResult} from '../../rest/QueryResult';
+import {ResponsiveComponents} from '../ResponsiveComponents/ResponsiveComponents';
 
 export interface ITemplateProperties {
   condition?: Function;
   conditionToParse?: string;
   layout?: ValidLayout
   mobile?: boolean;
+  tablet?: boolean;
+  desktop?: boolean;
   fieldsToMatch?: IFieldsToMatch[];
 }
 
@@ -23,24 +25,28 @@ export interface IInstantiateTemplateOptions {
   currentLayout?: ValidLayout;
   checkCondition?: boolean;
   wrapInDiv?: boolean;
+  responsiveComponents?: ResponsiveComponents;
 }
 
 export class DefaultInstantiateTemplateOptions implements IInstantiateTemplateOptions {
   public currentLayout: ValidLayout;
   public checkCondition: boolean;
   public wrapInDiv: boolean;
+  public responsiveComponents: ResponsiveComponents;
 
   constructor() {
     this.currentLayout = null;
     this.checkCondition = true;
     this.wrapInDiv = true;
+    this.responsiveComponents = new ResponsiveComponents();
   }
 
   get(): IInstantiateTemplateOptions {
     return {
       currentLayout: this.currentLayout,
       checkCondition: this.checkCondition,
-      wrapInDiv: this.wrapInDiv
+      wrapInDiv: this.wrapInDiv,
+      responsiveComponents: this.responsiveComponents
     }
   }
 
@@ -60,16 +66,44 @@ export class Template implements ITemplateProperties {
   public conditionToParse: string;
   public fieldsToMatch: IFieldsToMatch[];
   public mobile: boolean;
+  public tablet: boolean;
+  public desktop: boolean;
   public fields: string[];
   public layout: ValidLayout;
 
   constructor(public dataToString?: (object?: any) => string) {
   }
 
-  instantiateToString(object: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = {}): string {
+  instantiateToString(object: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = new DefaultInstantiateTemplateOptions()): string {
     if (this.dataToString) {
       if (instantiateOptions.checkCondition === false) {
         return this.dataToString(object);
+      }
+
+      // Mobile/tablet/desktop checks are only for "hard" set value (triple equal)
+      // If it's undefined, we skip those checks, and we assume the template works correctly for any given screen size
+      if (this.mobile === true && !instantiateOptions.responsiveComponents.isSmallScreenWidth()) {
+        this.logger.trace('Template was skipped because it is optimized for small screen width', this);
+        return null;
+      } else if (this.mobile === false && instantiateOptions.responsiveComponents.isSmallScreenWidth()) {
+        this.logger.trace('Template was skipped because it is not optimized for small screen width', this);
+        return null;
+      }
+
+      if (this.tablet === true && !instantiateOptions.responsiveComponents.isMediumScreenWidth()) {
+        this.logger.trace('Template was skipped because it is optimized for medium screen width', this);
+        return null;
+      } else if (this.tablet === false && instantiateOptions.responsiveComponents.isMediumScreenWidth()) {
+        this.logger.trace('Template was skipped because it is not optimized for medium screen width', this);
+        return null;
+      }
+
+      if (this.desktop === true && !instantiateOptions.responsiveComponents.isLargeScreenWidth()) {
+        this.logger.trace('Template was skipped because it is optimized for large screen width', this);
+        return null;
+      } else if (this.desktop === false && instantiateOptions.responsiveComponents.isLargeScreenWidth()) {
+        this.logger.trace('Template was skipped because it is not optimized for large screen width', this);
+        return null;
       }
 
       if (this.layout != null && instantiateOptions.currentLayout !== this.layout) {
@@ -77,12 +111,7 @@ export class Template implements ITemplateProperties {
         return null;
       }
 
-      if (this.mobile && !DeviceUtils.isSmallScreenWidth()) {
-        this.logger.trace('Template was skipped because it is optimized for small screen', this);
-        return null;
-      }
-
-      this.logger.trace('Evaluating template ...')
+      this.logger.trace('Evaluating template ...');
       // Condition (as a function) is eval'ed, first
       if (this.condition != null && this.condition(object)) {
         this.logger.trace('Template was loaded because condition was :', this.condition, object);

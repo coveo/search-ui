@@ -4,7 +4,7 @@ import {IQueryResult} from '../../rest/QueryResult';
 
 export class TemplateList extends Template {
 
-  constructor(private templates: Template[]) {
+  constructor(public templates: Template[]) {
     super();
   }
 

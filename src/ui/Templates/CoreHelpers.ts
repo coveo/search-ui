@@ -560,7 +560,9 @@ TemplateHelpers.registerTemplateHelper('loadTemplate', (id: string, condition: b
     data = resolveQueryResult();
   }
   if (condition) {
-    return TemplateCache.getTemplate(id).instantiateToString(data, false);
+    return TemplateCache.getTemplate(id).instantiateToString(data, {
+      checkCondition : false
+    });
   }
   return '';
 });

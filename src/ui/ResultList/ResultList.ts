@@ -23,6 +23,7 @@ import {DomUtils} from '../../utils/DomUtils';
 import {Recommendation} from '../Recommendation/Recommendation';
 import {DefaultRecommendationTemplate} from '../Templates/DefaultRecommendationTemplate';
 import {ValidLayout} from '../ResultLayout/ResultLayout';
+import {TemplateList} from '../Templates/TemplateList';
 
 export interface IResultListOptions {
   resultContainer?: HTMLElement;
@@ -215,7 +216,12 @@ export class ResultList extends Component {
   constructor(public element: HTMLElement, public options?: IResultListOptions, public bindings?: IComponentBindings, elementClassId: string = ResultList.ID) {
     super(element, elementClassId, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultList, options);
-
+    
+    if (this.options.resultTemplate instanceof TemplateList) {
+      _.each((<TemplateList>this.options.resultTemplate).templates, (tmpl: Template)=> {
+        tmpl.layout = <ValidLayout>this.options.layout;
+      });
+    }
     Assert.exists(element);
     Assert.exists(this.options);
     Assert.exists(this.options.resultContainer);
@@ -295,7 +301,8 @@ export class ResultList extends Component {
     let resultElement = this.options.resultTemplate.instantiateToElement(result, {
       wrapInDiv: true,
       checkCondition: true,
-      currentLayout: <ValidLayout>this.options.layout
+      currentLayout: <ValidLayout>this.options.layout,
+      responsiveComponents: this.searchInterface.responsiveComponents
     });
     if (resultElement != null) {
       Component.bindResultToElement(resultElement, result);
@@ -481,6 +488,7 @@ export class ResultList extends Component {
   private handleChangeLayout(args: IChangeLayoutEventArgs) {
     if (args.layout === this.options.layout) {
       this.enable();
+      this.options.resultTemplate.layout = <ValidLayout>this.options.layout;
       if (args.results) {
         Defer.defer(() => {
           this.renderResults(this.buildResults(args.results));

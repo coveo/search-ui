@@ -27,10 +27,14 @@ export class DefaultResultTemplate extends Template {
     let merged = new DefaultInstantiateTemplateOptions().merge(instantiateOptions);
     queryResult = _.extend({}, queryResult, UnderscoreTemplate.templateHelpers);
 
+    // Put templates with conditions first
     const templates = _.chain(TemplateCache.getDefaultTemplates())
       .map(name => TemplateCache.getTemplate(name))
-      .sortBy(template => template.condition == null) // Put templates with conditions first
-      .value();
+                       .sortBy(template => template.condition == null)
+                       .sortBy(template => template.fieldsToMatch == null)
+                       .value();
+
+    console.log(templates);
 
     for (let i = 0; i < templates.length; i++) {
       var result = templates[i].instantiateToString(queryResult, merged);

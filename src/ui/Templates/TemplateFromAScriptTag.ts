@@ -85,12 +85,15 @@ export class TemplateFromAScriptTag {
     }
     if (properties.mobile != null) {
       script.setAttribute('data-mobile', properties.mobile.toString());
-    } else {
-      script.setAttribute('data-mobile', 'false');
     }
     if (properties.fieldsToMatch != null) {
       _.each(properties.fieldsToMatch, (fieldToMatch: IFieldsToMatch)=> {
-        script.setAttribute(`data-field-${fieldToMatch.field.toLowerCase()}`, fieldToMatch.values.join(','));
+        if (fieldToMatch.values) {
+          script.setAttribute(`data-field-${fieldToMatch.field.toLowerCase()}`, fieldToMatch.values.join(','));
+        } else {
+          script.setAttribute(`data-field-${fieldToMatch.field.toLowerCase()}`, null);
+        }
+
       });
     }
     return script;

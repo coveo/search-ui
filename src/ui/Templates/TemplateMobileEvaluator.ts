@@ -1,6 +1,6 @@
 import {IQueryResult} from '../../rest/QueryResult';
 export class TemplateMobileEvaluator {
-  public static  evaluateMobileDevice(result: IQueryResult): boolean {
+  public static  evaluateMobileDevice(): boolean {
     let templateShouldBeLoaded = true;
     return templateShouldBeLoaded;
   }

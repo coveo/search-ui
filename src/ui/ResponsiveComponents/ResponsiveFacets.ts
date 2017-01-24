@@ -11,16 +11,15 @@ import {ResponsiveDropdown} from './ResponsiveDropdown/ResponsiveDropdown';
 import {ResponsiveDropdownContent} from './ResponsiveDropdown/ResponsiveDropdownContent';
 import {ResponsiveDropdownHeader} from './ResponsiveDropdown/ResponsiveDropdownHeader';
 import {QueryEvents, IQuerySuccessEventArgs} from '../../events/QueryEvents';
+import {SearchInterface} from '../SearchInterface/SearchInterface';
 
 export class ResponsiveFacets implements IResponsiveComponent {
-
-  public static RESPONSIVE_BREAKPOINT: number = 800;
   public static DEBOUNCE_SCROLL_WAIT = 250;
 
   private static DROPDOWN_MIN_WIDTH: number = 280;
   private static DROPDOWN_WIDTH_RATIO: number = 0.35; // Used to set the width relative to the coveo root.
   private static DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'Filters';
-
+  private searchInterface: SearchInterface;
   private facets: Facet[] = [];
   private facetSliders: FacetSlider[] = [];
   private preservePositionOriginalValues: boolean[] = [];
@@ -41,13 +40,14 @@ export class ResponsiveFacets implements IResponsiveComponent {
   constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions, responsiveDropdown?: ResponsiveDropdown) {
     this.dropdownHeaderLabel = this.getDropdownHeaderLabel();
     this.dropdown = this.buildDropdown(responsiveDropdown);
+    this.searchInterface = <SearchInterface>Component.get(this.coveoRoot.el, SearchInterface, false);
     this.bindDropdownContentEvents();
     this.registerOnOpenHandler();
     this.registerOnCloseHandler();
     this.registerQueryEvents();
     this.logger = new Logger(this);
     if (Utils.isNullOrUndefined(options.responsiveBreakpoint)) {
-      this.breakpoint = ResponsiveFacets.RESPONSIVE_BREAKPOINT;
+      this.breakpoint = this.searchInterface.responsiveComponents.getMediumScreenWidth();
     } else {
       this.breakpoint = options.responsiveBreakpoint;
     }

@@ -1,18 +1,4 @@
 {
-  "MobileChatter": {
-    "priority": 3,
-    "mobile": true,
-    "layout": "list",
-    "fieldsToMatch": [
-      {
-        "field": "objecttype",
-        "values": [
-          "FeedItem",
-          "FeedComment"
-        ]
-      }
-    ]
-  },
   "CardChatter": {
     "priority": 3,
     "layout": "card",
@@ -35,19 +21,6 @@
         "values": [
           "FeedItem",
           "FeedComment"
-        ]
-      }
-    ]
-  },
-  "MobileDropbox": {
-    "priority": 2,
-    "mobile": true,
-    "layout": "list",
-    "fieldsToMatch": [
-      {
-        "field": "connectortype",
-        "values": [
-          "DropboxCrawler"
         ]
       }
     ]
@@ -76,15 +49,6 @@
       }
     ]
   },
-  "MobileDynamicsCrm": {
-    "priority": 2,
-    "mobile": true,
-    "fieldsToMatch": [
-      {
-        "field": "dycoveoid"
-      }
-    ]
-  },
   "CardDynamicsCrm": {
     "priority": 2,
     "layout": "card",
@@ -100,16 +64,6 @@
     "fieldsToMatch": [
       {
         "field": "dycoveoid"
-      }
-    ]
-  },
-  "MobileDynamicsCrmCase": {
-    "priority": 3,
-    "mobile": true,
-    "layout": "list",
-    "fieldsToMatch": [
-      {
-        "field": "dyincidentid"
       }
     ]
   },
@@ -131,15 +85,6 @@
       }
     ]
   },
-  "MobileEmailThread" : {
-    "priority": 2,
-    "mobile": true,
-    "fieldsToMatch": [
-      {
-        "field": "mailbox"
-      }
-    ]
-  },
   "CardEmailThread": {
     "priority": 2,
     "layout": "card",
@@ -155,18 +100,6 @@
     "fieldsToMatch": [
       {
         "field": "mailbox"
-      }
-    ]
-  },
-  "MobileGoogleDrive": {
-    "priority": 2,
-    "mobile": true,
-    "fieldsToMatch": [
-      {
-        "field": "connectortype",
-        "values": [
-          "GoogleDriveCrawler"
-        ]
       }
     ]
   },
@@ -206,18 +139,6 @@
       }
     ]
   },
-  "MobileLithiumThread": {
-    "priority": 2,
-    "mobile": true,
-    "fieldsToMatch": [
-      {
-        "field": "connectortype",
-        "values": [
-          "LithiumCrawler"
-        ]
-      }
-    ]
-  },
   "CardLithiumThread": {
     "priority": 2,
     "layout": "card",
@@ -242,15 +163,6 @@
       }
     ]
   },
-  "MobilePeople": {
-    "priority": 2,
-    "mobile": true,
-    "fieldsToMatch": [
-      {
-        "field": "fullname"
-      }
-    ]
-  },
   "CardPeople": {
     "priority": 2,
     "layout": "card",
@@ -269,70 +181,94 @@
       }
     ]
   },
-  ///// HEREHRHEHREH
-  "MobileSalesforceCase": {
-    "priority": 3,
-    "value": "(raw.sfcaseid != null) && Coveo.DeviceUtils.isSmallScreenWidth()"
-  },
   "CardSalesforceCase": {
     "priority": 3,
-    "value": "raw.sfcaseid != null",
+    "fieldsToMatch": [
+      {
+        "field": "sfcaseid"
+      }
+    ],
     "layout": "card"
   },
   "SalesforceCase": {
     "priority": 2,
-    "value": "raw.sfcaseid != null",
+    "fieldsToMatch": [
+      {
+        "field": "sfcaseid"
+      }
+    ],
     "layout": "list"
-  },
-  "MobileSalesforce": {
-    "priority": 2,
-    "value": "(raw.sfid != null || raw.sfid != null) && Coveo.DeviceUtils.isSmallScreenWidth()"
   },
   "CardSalesforce": {
     "priority": 2,
-    "value": "raw.sfid != null",
+    "fieldsToMatch": [
+      {
+        "field": "sfid"
+      }
+    ],
     "layout": "card"
   },
   "Salesforce": {
     "priority": 1,
-    "value": "raw.sfid != null",
+    "fieldsToMatch": [
+      {
+        "field": "sfid"
+      }
+    ],
     "layout": "list"
-  },
-  "MobileSharePoint": {
-    "priority": 2,
-    "value": "raw.spitemtype != null && (raw.spitemtype != 'List' && Coveo.DeviceUtils.isSmallScreenWidth())"
   },
   "CardSharePoint": {
     "priority": 2,
-    "value": "raw.spitemtype != null && raw.spitemtype != 'List'",
+    "fieldsToMatch": [
+      {
+        "field": "spitemtype"
+      }
+    ],
     "layout": "card"
   },
   "SharePoint": {
     "priority": 1,
-    "value": "raw.spitemtype != null && raw.spitemtype != 'List'",
+    "fieldsToMatch": [
+      {
+        "field": "spitemtype"
+      }
+    ],
     "layout": "list"
   },
-  "MobileSharePointList": {
-    "priority": 2,
-    "value": "raw.spitemtype != null && (raw.spitemtype == 'List' && Coveo.DeviceUtils.isSmallScreenWidth())"
-  },
   "CardSharePointList": {
-    "priority": 2,
-    "value": "raw.spitemtype != null && raw.spitemtype == 'List'",
+    "priority": 3,
+    "fieldsToMatch": [
+      {
+        "field": "spitemtype",
+        "values": [
+          "List"
+        ]
+      }
+    ],
     "layout": "card"
   },
   "SharePointList": {
-    "priority": 1,
-    "value": "raw.spitemtype != null && raw.spitemtype == 'List'",
-    "layout": "list"
-  },
-  "MobileYouTubeVideo": {
     "priority": 2,
-    "value": "raw.filetype == 'YouTubeVideo' && Coveo.DeviceUtils.isSmallScreenWidth()"
+    "fieldsToMatch": [
+      {
+        "field": "spitemtype",
+        "values": [
+          "List"
+        ]
+      }
+    ],
+    "layout": "list"
   },
   "CardYouTubeVideo": {
     "priority": 2,
-    "value": "raw.filetype == 'YouTubeVideo'",
+    "fieldsToMatch": [
+      {
+        "field": "filetype",
+        "values": [
+          "YoutubeVideo"
+        ]
+      }
+    ],
     "layout": "card"
   },
   "YouTubeVideo" : {
@@ -345,45 +281,60 @@
         ]
       }
     ],
-    "layout": "list",
-    "mobile": "false"
-  },
-  "MobileYouTubePlaylistItem" : {
-    "priority": 2,
-    "value": "raw.filetype == 'YouTubePlaylistItem' && Coveo.DeviceUtils.isSmallScreenWidth()"
+    "layout": "list"
   },
   "CardYouTubePlaylistItem" : {
     "priority": 2,
-    "value": "raw.filetype == 'YouTubePlaylistItem'",
+    "fieldsToMatch": [
+      {
+        "field": "filetype",
+        "values": [
+          "YouTubePlaylistItem"
+        ]
+      }
+    ],
     "layout": "card"
   },
   "YouTubePlaylistItem" : {
     "priority": 1,
-    "value": "raw.filetype == 'YouTubePlaylistItem'",
+    "fieldsToMatch": [
+      {
+        "field": "filetype",
+        "values": [
+          "YouTubePlaylistItem"
+        ]
+      }
+    ],
     "layout": "list"
-  },
-  "MobileSlack": {
-    "priority": 2,
-    "value": "raw.connectortype == 'SlackCrawler' && Coveo.DeviceUtils.isSmallScreenWidth()"
   },
   "CardSlack": {
     "priority": 2,
-    "value": "raw.connectortype == 'SlackCrawler'",
+    "fieldsToMatch": [
+      {
+        "field": "connectortype",
+        "values": [
+          "SlackCrawler"
+        ]
+      }
+    ],
     "layout": "card"
   },
   "Slack": {
     "priority": 1,
-    "value": "raw.connectortype == 'SlackCrawler'",
+    "fieldsToMatch": [
+      {
+        "field": "connectortype",
+        "value": "SlackCrawler"
+      }
+    ],
     "layout": "list"
   },
   "Card": {
     "priority": 1,
-    "value": "options.layout === 'card'",
     "layout": "card"
   },
   "Table": {
     "priority": 4,
-    "value": "options.layout === 'table'",
     "layout": "table"
   }
 }

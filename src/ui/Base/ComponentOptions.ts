@@ -738,9 +738,9 @@ export class ComponentOptions {
       ' ' + HtmlTemplate.mimeTypes.toString();
     Assert.check(Utils.isNonEmptyString(type), mimeTypes);
 
-    if (_.indexOf(UnderscoreTemplate.mimeTypes, type) != -1) {
+    if (_.indexOf(UnderscoreTemplate.mimeTypes, type.toLowerCase()) != -1) {
       return UnderscoreTemplate.create(element);
-    } else if (_.indexOf(HtmlTemplate.mimeTypes, type) != -1) {
+    } else if (_.indexOf(HtmlTemplate.mimeTypes, type.toLowerCase()) != -1) {
       return new HtmlTemplate(element);
     } else {
       Assert.fail('Cannot guess template type from attribute: ' + type + '. Valid values are ' + mimeTypes);

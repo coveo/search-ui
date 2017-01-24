@@ -69,7 +69,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   };
 
   private needSmallMode(): boolean {
-    if (this.coveoRoot.width() <= ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH) {
+    if (this.coveoRoot.width() <= this.searchInterface.responsiveComponents.getMediumScreenWidth()) {
       return true;
     } else if (!ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot)) {
       return this.isOverflowing(this.tabSection.el);

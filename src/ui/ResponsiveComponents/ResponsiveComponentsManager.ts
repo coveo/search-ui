@@ -2,11 +2,12 @@ import {$$, Dom} from '../../utils/Dom';
 import {InitializationEvents} from '../../events/InitializationEvents';
 import {Component} from '../Base/Component';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
-import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
 import {Utils} from '../../utils/Utils';
 import {Facet} from '../Facet/Facet';
 import {Tab} from '../Tab/Tab';
 import {ResponsiveFacets} from './ResponsiveFacets';
+import {ResultLayout} from '../ResultLayout/ResultLayout';
+import {ResponsiveResultLayout} from './ResponsiveResultLayout';
 
 export interface IResponsiveComponentOptions {
   enableResponsiveMode?: boolean;
@@ -42,7 +43,9 @@ export class ResponsiveComponentsManager {
   private responsiveComponents: IResponsiveComponent[] = [];
   private searchBoxElement: HTMLElement;
   private responsiveFacets: ResponsiveFacets;
+  private responsiveResultLayouts: ResponsiveResultLayout;
   private dropdownHeadersWrapper: Dom;
+  private searchInterface: SearchInterface;
 
   // Register takes a class and will instantiate it after framework initialization has completed.
   public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component: Component, options: IResponsiveComponentOptions): void {
@@ -94,6 +97,7 @@ export class ResponsiveComponentsManager {
 
   constructor(root: Dom) {
     this.coveoRoot = root;
+    this.searchInterface = <SearchInterface>Component.get(this.coveoRoot.el, SearchInterface, false);
     this.dropdownHeadersWrapper = $$('div', { className: ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS });
     this.searchBoxElement = this.getSearchBoxElement();
     this.resizeListener = _.debounce(() => {
@@ -121,6 +125,9 @@ export class ResponsiveComponentsManager {
       if (this.isFacet(ID)) {
         this.responsiveFacets = <ResponsiveFacets>responsiveComponent;
       }
+      if (this.isResultLayout(ID)) {
+        this.responsiveResultLayouts = <ResponsiveResultLayout>responsiveComponent;
+      }
 
       if (this.isTabs(ID)) {
         this.responsiveComponents.push(responsiveComponent);
@@ -132,6 +139,10 @@ export class ResponsiveComponentsManager {
 
     if (this.isFacet(ID)) {
       this.responsiveFacets.registerComponent(component);
+    }
+
+    if (this.isResultLayout(ID)) {
+      this.responsiveResultLayouts.registerComponent(<ResultLayout>component);
     }
   }
 
@@ -145,7 +156,7 @@ export class ResponsiveComponentsManager {
 
   private shouldSwitchToSmallMode(): boolean {
     let aComponentNeedsTabSection = this.needDropdownWrapper();
-    let reachedBreakpoint = this.coveoRoot.width() <= ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH;
+    let reachedBreakpoint = this.coveoRoot.width() <= this.searchInterface.responsiveComponents.getMediumScreenWidth();
     return aComponentNeedsTabSection || reachedBreakpoint;
   }
 
@@ -178,6 +189,10 @@ export class ResponsiveComponentsManager {
 
   private isTabs(ID: string): boolean {
     return ID == Tab.ID;
+  }
+
+  private isResultLayout(ID: string): boolean {
+    return ID == ResultLayout.ID;
   }
 
   private isActivated(ID: string): boolean {
