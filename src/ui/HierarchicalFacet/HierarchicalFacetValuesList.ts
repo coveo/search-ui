@@ -18,7 +18,7 @@ export class HierarchicalFacetValuesList extends FacetValuesList {
         return {
           hierarchy: hierarchy,
           idx: idx
-        }
+        };
       });
 
       // If we exclude the top level, the alpha order is not respected (since it is done by the index, and the first level is omitted by client side code).
