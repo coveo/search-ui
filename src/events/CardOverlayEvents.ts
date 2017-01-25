@@ -1,5 +1,5 @@
 /**
- *The CardOverlayEvents class contains string definitions for all events related to the {@link CardOverlay} component.
+ * The CardOverlayEvents class contains string definitions for all events related to the {@link CardOverlay} component.
  */
 export class CardOverlayEvents {
 
