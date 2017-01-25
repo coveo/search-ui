@@ -149,7 +149,7 @@
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
 								<a href="analyticssuggestions.html#id" class="tsd-kind-icon">ID</a>
 							</li>
-							<li class=" tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+							<li class=" tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
 								<a href="analyticssuggestions.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 						</ul>
@@ -180,11 +180,15 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>This component is used to provide query suggestions based on the most commonly logged queries by a Coveo Analytics service.
-							In order to provide relevant suggestions, they are shown in order of successful document views: thus, queries resulting in no clicks from users or that require refinements are not suggested if better options exist.
-							These suggestions appear in the Omnibox Component. This component is thus highly related to the <a href="analytics.html">Analytics</a> Component.
-						While a user is typing in a query box, he will be able to see and select the most commonly used queries.</p>
+						<p>The AnalyticsSuggestion component provides query suggestions based on the queries that a Coveo Analytics service most
+						commonly logs.</p>
 					</div>
+					<p>This component orders possible query suggestions by their respective number of successful document views, thus
+						prioritizing the most relevant query suggestions. Consequently, when better options are available, this component
+					does not suggest queries resulting in no clicks from users or requiring refinements.</p>
+					<p>The query suggestions appear in the <a href="omnibox.html">Omnibox</a> Component. The AnalyticsSuggestion component strongly
+						relates to the <a href="analytics.html">Analytics</a> component. While a user is typing in a query box, the AnalyticsSuggestion component
+					allows them to see and select the most commonly used and relevant queries.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -229,10 +233,10 @@
 								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="analyticssuggestions.html#id" class="tsd-kind-icon">ID</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="analyticssuggestions.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite"><a href="analyticssuggestions.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 					</div>
@@ -247,14 +251,17 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts#L39">src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts
-							:39</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts#L53">src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts
+							:53</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the title in the Omnibox for this group of suggestions. This option is not available when using the Lightning Friendly Theme, which is the default design.</p>
+							<p>Specifies the title of the query suggestions group in the <a href="omnibox.html">Omnibox</a> component. This option is not available
+								when using the default Lightning Friendly Theme (see
+							<a href="https://developers.coveo.com/x/Y4EAAg">Lightning Friendly Theme</a>).</p>
 						</div>
+						<p>Default value is the localized string for <code>&quot;Suggested Queries&quot;</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -268,15 +275,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts#L44">src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts
-							:44</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts#L60">src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts
+							:60</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The number of suggestions that should be requested and displayed in the omnibox.<br/>
-							The default value is <code>5</code>.</p>
+							<p>Specifies the number of query suggestions to request and display in the <a href="omnibox.html">Omnibox</a> component.</p>
 						</div>
+						<p>Default value is <code>5</code> and minimum value is <code>1</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -290,15 +297,16 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts#L35">src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts
-							:35</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts#L44">src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts
+							:44</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The index at which the suggestions should render in the omnibox. Higher value = placed first.<br/>
-							The default value is <code>52</code>.</p>
+							<p>Specifies the z-index position at which the query suggestions render themselves in the <a href="omnibox.html">Omnibox</a>
+							component. Higher values are placed first.</p>
 						</div>
+						<p>Default value is <code>52</code> and minimum value is <code>0</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -423,14 +431,15 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts#L93">src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts
-									:93</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts#L123">src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts
+									:123</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Select a currently displayed suggestion. This means that at least one suggestion must have been returned at least once.
-									The suggestion parameter can either be a number (0 based index of the suggestion to select) or a string that match the suggestion.</p>
+									<p>Selects a currently displayed query suggestion. This implies that at least one suggestion must have been returned
+										at least once. The suggestion parameter can either be a number (0-based index position of the query suggestion to
+									select) or a string that matches the suggestion.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -709,30 +718,31 @@
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Analytics<wbr>Suggestions<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="analyticssuggestions.html" class="tsd-signature-type">AnalyticsSuggestions</a></li>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Analytics<wbr>Suggestions<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IAnalyticsSuggestionsOptions</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="analyticssuggestions.html" class="tsd-signature-type">AnalyticsSuggestions</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
+								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L91">src/ui/Base/Component.ts
-									:91</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts#L67">src/ui/AnalyticsSuggestions/AnalyticsSuggestions.ts
+									:67</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Create a new Component. Resolve all <a href="../interfaces/icomponentbindings.html">IComponentBindings</a> if not provided.<br/>
-										Create a new Logger for this component.
-									Attach the component to the <a href="searchinterface.html">SearchInterface</a>.<br/></p>
+									<p>Creates a new AnalyticsSuggestions component.</p>
 								</div>
+								<p>Also binds event handlers so that when a user selects a suggestion, an <code>omniboxFromLink</code> usage analytics event is
+									logged if the suggestion comes from a standalone search box, or an <code>omniboxAnalytics</code> usage analytics
+								event is logged otherwise.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -740,23 +750,24 @@
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The HTMLElement on which to create the component. Used to bind data on the element.</p>
+											<p>The HTMLElement on which to instantiate the component.</p>
 										</div>
 									</div>
 								</li>
 								<li>
-									<h5>type: <span class="tsd-signature-type">string</span></h5>
+									<h5>options: <span class="tsd-signature-type">IAnalyticsSuggestionsOptions</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The unique identifier for this component. See : <a href="../interfaces/icomponentdefinition.html#id">IComponentDefinition.ID</a>. Used to generate the unique Coveo CSS class associated with every component.</p>
+											<p>The options for the AnalyticsSuggestions component.</p>
 										</div>
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The environment for every component. Optional, but omitting to provide one will impact performance.</p>
+											<p>The bindings that the component requires to function normally. If not set, these will be
+											automatically resolved (with a slower execution time).</p>
 										</div>
 									</div>
 								</li>

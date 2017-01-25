@@ -3890,6 +3890,9 @@
 .coveo-icon[data-with-label="true"] .coveo-icon-caption-overlay {
   display: block; }
 
+.coveo-icon[data-with-label="true"].coveo-small .coveo-icon-caption-overlay {
+  display: none; }
+
 .CoveoIcon .CoveoQuickview, .CoveoIcon.coveo-icon .CoveoQuickview, .CoveoIcon.coveo-icon.filetype .CoveoQuickview, .CoveoIcon.coveo-icon.objecttype .CoveoQuickview, .CoveoIcon.coveo-icon.sysfiletype .CoveoQuickview {
   position: absolute;
   text-indent: 0;
@@ -6279,9 +6282,22 @@
 .coveo-breadcrumb-item {
   margin: 5px 0px 5px 0px; }
 
+.coveo-media-max-width-800 .CoveoBreadcrumb {
+  padding: 10px; }
+
+.coveo-media-max-width-800 .coveo-breadcrumb-items {
+  padding-bottom: 0; }
+
+.coveo-media-max-width-800 .coveo-breadcrumb-item:not(:last-child) {
+  margin-bottom: 10px; }
+
 @media (max-width: 800px) {
   .CoveoBreadcrumb {
-    padding: 10px 8px 10px 10px; } }
+    padding: 10px; }
+  .coveo-breadcrumb-items {
+    padding-bottom: 0; }
+  .coveo-breadcrumb-item:not(:last-child) {
+    margin-bottom: 10px; } }
 
 .coveo-modalBox > .coveo-wrapper > .coveo-title {
   height: 40px;
@@ -8553,6 +8569,15 @@ a.coveo-folding-show-more, a.coveo-folding-show-less {
   -ms-flex-wrap: wrap;
   flex-wrap: wrap; }
 
+.coveo-media-max-width-800 .CoveoResultList {
+  margin-left: 10px;
+  margin-right: 10px; }
+
+@media (max-width: 800px) {
+  .CoveoResultList {
+    margin-left: 10px;
+    margin-right: 10px; } }
+
 .CoveoResultLayout {
   display: -webkit-box;
   display: -moz-box;
@@ -10109,8 +10134,9 @@ body.coveo-modalBox-opened, body.coveo-modalBox-opened .CoveoSearchInterface {
   .coveo-card-overlay .coveo-clickable.coveo-selected * {
     color: #296896; }
 
-.coveo-small-tabs .coveo-tab-dropdown-header {
-  margin-left: auto; }
+.coveo-small-tabs.coveo-tab-section .coveo-tab-dropdown-header {
+  margin-left: auto;
+  line-height: 22px; }
 
 .coveo-small-tabs .CoveoTab {
   -webkit-transition-property: opacity;
@@ -10436,7 +10462,7 @@ body.coveo-modalBox-opened, body.coveo-modalBox-opened .CoveoSearchInterface {
   justify-content: flex-end;
   -ms-flex-pack: end; }
   .CoveoSearchInterface.coveo-small-tabs .coveo-dropdown-header-wrapper a, .CoveoSearchInterface.coveo-small-facets .coveo-dropdown-header-wrapper a, .CoveoSearchInterface.coveo-small-recommendation .coveo-dropdown-header-wrapper a {
-    margin-right: 8px; }
+    margin-right: 10px; }
 
 .CoveoSearchInterface.coveo-small-tabs.coveo-small-facets .coveo-tab-section, .CoveoSearchInterface.coveo-small-tabs .coveo-tab-section {
   min-height: 40px; }
@@ -11425,6 +11451,11 @@ body {
       max-width: 50%;
       margin: auto;
       text-align: center; }
+    .CoveoSearchInterface .coveo-results-column .coveo-media-max-width-800.coveo-no-results {
+      max-width: 100%; }
+    @media (max-width: 800px) {
+      .CoveoSearchInterface .coveo-results-column.coveo-no-results {
+        max-width: 100%; } }
 
 .coveo-results-header {
   display: -webkit-box;
@@ -11447,73 +11478,78 @@ body {
   min-height: 35px;
   overflow: hidden;
   box-shadow: 0 -1px 0px 0px #BCC3CA inset; }
-  .coveo-results-header .coveo-summary-section {
-    display: inline-block;
-    font-size: 14px; }
-  .coveo-results-header .coveo-result-layout-section {
-    display: -webkit-box;
-    display: -moz-box;
-    display: box;
-    display: -webkit-flex;
-    display: -moz-flex;
-    display: -ms-flexbox;
-    display: flex;
-    margin-left: auto;
-    padding-right: 10px;
-    border-right: 1px solid #BCC3CA; }
-    .coveo-results-header .coveo-result-layout-section.coveo-result-layout-hidden {
-      display: none; }
-  .coveo-results-header .coveo-sort-section {
-    display: -webkit-box;
-    display: -moz-box;
-    display: box;
-    display: -webkit-flex;
-    display: -moz-flex;
-    display: -ms-flexbox;
-    display: flex;
-    margin-left: 10px; }
   .coveo-results-header.coveo-no-results {
     box-shadow: none; }
   .coveo-results-header.coveo-query-error {
     box-shadow: none; }
 
+.coveo-summary-section {
+  display: inline-block;
+  font-size: 14px;
+  margin-right: auto; }
+
+.coveo-result-layout-section {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex; }
+  .coveo-result-layout-section.coveo-result-layout-hidden {
+    display: none; }
+
+.coveo-sort-section {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex; }
+
+.coveo-results-header > *:not(:first-child) {
+  padding-right: 10px;
+  margin-left: 10px;
+  border-right: 1px solid #BCC3CA; }
+
+.coveo-results-header > *:last-child {
+  padding-right: 0;
+  border-right: none; }
+
+.coveo-media-max-width-800 .coveo-results-header {
+  padding-right: 10px; }
+
+@media (max-width: 800px) {
+  .coveo-results-header {
+    padding-right: 10px; } }
+
+.coveo-media-max-width-480 .coveo-summary-section {
+  width: 100%;
+  margin-bottom: 10px; }
+
 .coveo-media-max-width-480 .coveo-results-header {
-  -webkit-box-orient: vertical;
-  -moz-box-orient: vertical;
-  box-orient: vertical;
-  -webkit-box-direction: normal;
-  -moz-box-direction: normal;
-  box-direction: normal;
-  -webkit-flex-direction: column;
-  -moz-flex-direction: column;
-  flex-direction: column;
-  -ms-flex-direction: column; }
-  .coveo-media-max-width-480 .coveo-results-header > * {
-    margin-bottom: 10px; }
-  .coveo-media-max-width-480 .coveo-results-header .coveo-result-layout-section {
-    border-right: none;
-    margin-left: 0; }
-  .coveo-media-max-width-480 .coveo-results-header .coveo-sort-section {
-    margin-left: 0;
-    margin-bottom: 0; }
+  flex-wrap: wrap; }
+
+.coveo-media-max-width-480 .coveo-results-header > *:not(:first-child) {
+  border-right: none;
+  margin-left: 0;
+  padding: 0; }
+
+.coveo-media-max-width-480 .coveo-results-header > *:last-child {
+  margin-left: 0;
+  margin-bottom: 0; }
 
 @media (max-width: 480px) {
+  .coveo-summary-section {
+    width: 100%;
+    margin-bottom: 10px; }
   .coveo-results-header {
-    -webkit-box-orient: vertical;
-    -moz-box-orient: vertical;
-    box-orient: vertical;
-    -webkit-box-direction: normal;
-    -moz-box-direction: normal;
-    box-direction: normal;
-    -webkit-flex-direction: column;
-    -moz-flex-direction: column;
-    flex-direction: column;
-    -ms-flex-direction: column; }
-    .coveo-results-header > * {
-      margin-bottom: 10px; }
-    .coveo-results-header .coveo-result-layout-section {
-      border-right: none;
-      margin-left: 0; }
-    .coveo-results-header .coveo-sort-section {
-      margin-left: 0;
-      margin-bottom: 0; } }
+    flex-wrap: wrap; }
+  .coveo-results-header > *:not(:first-child) {
+    border-right: none;
+    margin-left: 0;
+    padding: 0; }
+  .coveo-results-header > *:last-child {
+    margin-left: 0;
+    margin-bottom: 0; } }

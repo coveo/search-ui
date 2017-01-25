@@ -177,15 +177,13 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>This component arranges for queries to be executed with an identity obtained
-							using an Authentication Provider configured on the Coveo Search API
-							(see <a href="https://developers.coveo.com/display/public/SearchREST/On-Premises+SharePoint+Claims+Authentication">On-Premises SharePoint Claims Authentication</a>).
-							When needed, the component will handle redirecting the browser to the address
-						that starts the authentication process.</p>
+						<p>The AuthenticationProvider component arranges for queries to execute with an identity that the user obtains using an
+							Authentication Provider configured on the Coveo Search API
+						(see <a href="https://developers.coveo.com/x/hQLL">On-Premises SharePoint Claims Authentication</a>).</p>
 					</div>
-					<p>Using the standard <code>data-tab</code> attribute, you can enable the
-						<code>AuthenticationProvider</code> component only for tabs in which authentication is
-					required (see <a href="tab.html">Tab</a>).</p>
+					<p>When necessary, this component handles redirecting the browser to the address that starts the authentication process.</p>
+					<p>Using the standard <code>data-tab</code> attribute, you can enable the AuthenticationProvider component only for tabs requiring
+					authentication (see <a href="tab.html">Tab</a>).</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -248,16 +246,16 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AuthenticationProvider/AuthenticationProvider.ts#L53">src/ui/AuthenticationProvider/AuthenticationProvider.ts
-							:53</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AuthenticationProvider/AuthenticationProvider.ts#L56">src/ui/AuthenticationProvider/AuthenticationProvider.ts
+							:56</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the friendly name of the authentication provider that will be
-								displayed in the user interface while logging in.<br/>
-							If not specified, it will default to <a href="authenticationprovider.html#options.name">name</a>.</p>
+							<p>Specifies the friendly name of the authentication provider. This is the name that you want to display in the user
+							interface when a user is logging in.</p>
 						</div>
+						<p>Default value is the value set to <a href="authenticationprovider.html#options.name">AuthenticationProvider.options.name</a>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -271,15 +269,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AuthenticationProvider/AuthenticationProvider.ts#L47">src/ui/AuthenticationProvider/AuthenticationProvider.ts
-							:47</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AuthenticationProvider/AuthenticationProvider.ts#L48">src/ui/AuthenticationProvider/AuthenticationProvider.ts
+							:48</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the name of the authentication provider as specified in the
-							<a href="https://developers.coveo.com/display/public/SearchREST/Windows+Service+Configuration+File">Windows Service Configuration File</a>.</p>
+							<p>Specifies the name of the authentication provider.</p>
 						</div>
+						<p>See <a href="https://developers.coveo.com/x/OQMv">Windows Service Configuration File</a>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -293,19 +291,19 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AuthenticationProvider/AuthenticationProvider.ts#L73">src/ui/AuthenticationProvider/AuthenticationProvider.ts
-							:73</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AuthenticationProvider/AuthenticationProvider.ts#L80">src/ui/AuthenticationProvider/AuthenticationProvider.ts
+							:80</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether the <code>&lt;iframe&gt;</code> used for authentication will be made
-								visible to the user (inside a popup).<br/>
-							By default, this option is set to <code>true</code>.</p>
+							<p>If the <a href="authenticationprovider.html#options.useiframe">AuthenticationProvider.options.useIFrame</a> is set to <code>true</code>, specifies whether to make the
+							authentication <code>&lt;iframe&gt;</code> visible to the user (inside a popup).</p>
 						</div>
-						<p>When the underlying authentication provider requires no user interaction
-							(for example, when Windows Authentication is used along with SharePoint Claims),
-						using this option reduces the visual impact of the authentication process.</p>
+						<p>Default value is <code>true</code>.</p>
+						<p>When the underlying authentication provider requires no user interaction (for example, when a user authenticates
+							using Windows Authentication along with SharePoint Claims), setting this option to <code>false</code> reduces the visual
+						impact of the authentication process.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -320,18 +318,18 @@ data-show-i-frame&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AuthenticationProvider/AuthenticationProvider.ts#L62">src/ui/AuthenticationProvider/AuthenticationProvider.ts
-							:62</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AuthenticationProvider/AuthenticationProvider.ts#L67">src/ui/AuthenticationProvider/AuthenticationProvider.ts
+							:67</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether an <code>&lt;iframe&gt;</code> will be used to host the chain of
-								redirections that make up the authentication process.<br/>
-							By default, this option is set to <code>false</code>.</p>
+							<p>Specifies whether to use an <code>&lt;iframe&gt;</code> to host the chain of redirections that make up the authentication
+							process.</p>
 						</div>
-						<p>Using an <code>&lt;iframe&gt;</code> avoids leaving the search page as part of the authentication
-						process, but some login providers will refuse to load in an <code>&lt;iframe&gt;</code>.</p>
+						<p>Default value is <code>false</code>.</p>
+						<p>Using an <code>&lt;iframe&gt;</code> prevents leaving the search page as part of the authentication process. However, some login
+						providers will refuse to load in an <code>&lt;iframe&gt;</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -724,27 +722,39 @@ data-use-i-frame&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AuthenticationProvider/AuthenticationProvider.ts#L82">src/ui/AuthenticationProvider/AuthenticationProvider.ts
-									:82</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/AuthenticationProvider/AuthenticationProvider.ts#L89">src/ui/AuthenticationProvider/AuthenticationProvider.ts
+									:89</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Build a new <code>AuthenticationProvider</code> component</p>
+									<p>Creates a new AuthenticationProvider component.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The HTMLElement on which to instantiate the component.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">IAuthenticationProviderOptions</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The options for the AuthenticationProvider component.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
+											<p>The bindings that the component requires to function normally. If not set, these will be
+											automatically resolved (with a slower execution time).</p>
 										</div>
 									</div>
 								</li>

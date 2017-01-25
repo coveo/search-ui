@@ -1754,8 +1754,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	exports.version = {
-	    'lib': '1.0.25-beta',
-	    'product': '1.0.25-beta',
+	    'lib': '1.2126.0-beta',
+	    'product': '1.2126.0-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -1883,6 +1883,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var merged = SearchEndpoint.mergeConfigOptions(options, otherOptions);
 	        SearchEndpoint.endpoints['default'] = new SearchEndpoint(SearchEndpoint.removeUndefinedConfigOption(merged));
 	    };
+	    /**
+	     * Configure an endpoint to a Coveo Cloud index, in the V2 platform.
+	     * @param organization The organization id of your Coveo cloud index
+	     * @param token The token to use to execute query. If null, you will most probably need to login when querying.
+	     * @param uri The uri of your cloud Search API. By default, will point to the production environment
+	     * @param otherOptions A set of additional options to use when configuring this endpoint
+	     */
 	    SearchEndpoint.configureCloudV2Endpoint = function (organization, token, uri, otherOptions) {
 	        if (uri === void 0) { uri = 'https://platform.cloud.coveo.com/rest/search'; }
 	        return SearchEndpoint.configureCloudEndpoint(organization, token, uri, otherOptions);
@@ -3990,6 +3997,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    QueryUtils.setStateObjectOnQueryResult = function (state, result) {
 	        QueryUtils.setPropertyOnResult(result, 'state', state);
 	    };
+	    QueryUtils.setSearchInterfaceObjectOnQueryResult = function (searchInterface, result) {
+	        QueryUtils.setPropertyOnResult(result, 'searchInterface', searchInterface);
+	    };
 	    QueryUtils.setIndexAndUidOnQueryResults = function (query, results, queryUid, pipeline, splitTestRun) {
 	        Assert_1.Assert.exists(query);
 	        Assert_1.Assert.exists(results);
@@ -5179,11 +5189,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function AdvancedSearchEvents() {
 	    }
 	    /**
-	     * Triggered when the advanced search component is being built.
+	     * Triggered when the {@link AdvancedSearch} component is being built.
 	     *
-	     * Allows external code to add new sections in the advanced search panel.
+	     * Allows external code to add new sections in the **Advanced Search** panel.
 	     *
-	     * All handlers bound will receive {@link IBuildingAdvancedSearchEventArgs} as an argument
+	     * All bound handlers receive {@link IBuildingAdvancedSearchEventArgs} as an argument
+	     *
 	     * @type {string}
 	     */
 	    AdvancedSearchEvents.buildingAdvancedSearch = 'buildingAdvancedSearch';
@@ -8072,7 +8083,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (Utils_1.Utils.exists(companyDomain) && domain != companyDomain) {
 	                name += ' (' + domain + ')';
 	            }
-	            return '<a title="' + item.replace(/'/g, '&quot;') + 'href="mailto:' + encodeURI(email) + '">' + name + '</a>';
+	            return '<a title="' + item.replace(/'/g, '&quot;') + '" href="mailto:' + encodeURI(email) + '">' + name + '</a>';
 	        });
 	        var excess = hyperlinks.length - lengthLimit;
 	        var andOthers = excess > 0 ? EmailUtils.buildEmailAddressesAndOthers(_.last(hyperlinks, excess)) : '';
@@ -8638,7 +8649,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            text = options.text;
 	            options.text = undefined;
 	        }
-	        return "<a href='" + href + " " + HTMLUtils.buildAttributeString(options) + " '>" + text + "</a>";
+	        return "<a href='" + href + "' " + HTMLUtils.buildAttributeString(options) + ">" + text + "</a>";
 	    };
 	    return AnchorUtils;
 	}());
@@ -16374,62 +16385,105 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Recommendation_1 = __webpack_require__(129);
 	var RecommendationAnalyticsClient_1 = __webpack_require__(169);
 	/**
-	 * This component logs all user actions performed in the search interface and sends them to a REST web service exposed through the Coveo Cloud platform.<br/>
-	 * You can use data to evaluate how users are interacting with the search interface, improve relevance and produce analytics dashboards in the Coveo platform.
+	 * The Analytics component logs all user actions performed in the search interface and sends them to a REST web service
+	 * exposed through the Coveo Cloud Platform.
+	 *
+	 * You can use logged analytics data to evaluate how users are interacting with your search interface, improve relevance
+	 * and produce analytics dashboards within the Coveo Cloud Platform.
+	 *
+	 * See [Step 7 - Usage Analytics](https://developers.coveo.com/x/EYskAg) of the Getting Started with the JavaScript
+	 * Search Framework V1 tutorial for an introduction to usage analytics.
 	 *
 	 * # Send Custom Events
-	 * In some scenarios, you want to send custom data to the Coveo Cloud analytics (see [Coveo Cloud Usage Analytics](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=89)). The Coveo JavaScript Search Framework offers helpers to communicate with the Coveo Analytics REST API, so you do not have to write code to call the API directly.
+	 * In some scenarios, you might want to send custom data to the Coveo Cloud Usage Analytics (see
+	 * [Coveo Cloud Usage Analytics](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=89)). The Coveo JavaScript Search
+	 * Framework offers helper functions to communicate with the Coveo Usage Analytics REST API, so you do not have to write
+	 * code to call the API directly.
 	 *
-	 * 1. First, you need to craft your custom event cause and meta.<br/>**NB: The event names must be unique.**
+	 * ## Create a Custom Event Cause and Metadata
+	 *
 	 * ```
-	 *   // customEventType allows to regroup similar event types together when doing reporting (e.g., search box).
-	 *   var customEventCause = {name: 'customEventName', type:'customEventType'};
-	 *   var metadata = {key1: "value1", key2:"value2"};
+	 * // Each event should have a unique "name" attribute (e.g., "searchboxSubmit", "searchboxClear").
+	 * // The "type" attribute allows you to group similar event types when doing reporting (e.g., "searchbox").
+	 * var customEventCause = {name: 'customEventName', type: 'customEventType'};
+	 *
+	 * // This is arbitrary data you want to send to the Coveo Usage Analytics in order to create custom dimensions (see
+	 * // [Creating and Managing Dimensions on Custom Metada](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=142)).
+	 * var metadata = {key1: 'value1', key2: 'value2'};
 	 * ```
 	 *
-	 * 2. Send your custom event.
+	 * See {@link IAnalyticsActionCause}
+	 *
+	 * ## Send a Custom Event
 	 * ```
-	 *   Coveo.logCustomEvent(document.querySelector('#search'), customEventCause, metadata);
-	 *      // OR (using the jquery extension)
-	 *   $('#search').coveo('logCustomEvent', customEventCause, metadata);
+	 * Coveo.logCustomEvent(document.querySelector('#search'), customEventCause, metadata);
 	 * ```
 	 *
-	 * 3. Send your custom search event<br/>**NB: If you want to log a `searchEvent`, be sure to always call the helper before you call `executeQuery`.**
+	 * Or, using the jQuery extension:
+	 * ```
+	 * $('#search').coveo('logCustomEvent', customEventCause, metadata);
+	 * ```
+	 * See {@link logCustomEvent}.
+	 *
+	 * ## Send a Custom Search Event
+	 *
+	 * NB: If you want to log a search event, be sure to always call the `logSearchEvent` helper before you call
+	 * `executeQuery`.
+	 *
 	 * ```
 	 * function myCustomButtonWasClicked() {
-	 *      Coveo.logSearchEvent(document.querySelector('#search'), customEventCause, metadata);
-	 *      Coveo.executeQuery(document.querySelector('#search'));
-	 *      // OR (using the jquery extension)
-	 *      $('#search').coveo('logSearchEvent', customEventCause, metadata);
-	 *      $('#search').coveo('executeQuery');
-	 * }
+	 *   Coveo.logSearchEvent(document.querySelector('#search'), customEventCause, metadata);
+	 *   Coveo.executeQuery(document.querySelector('#search'));
 	 * ```
 	 *
-	 * 4. Send a custom `searchAsYouType` event<br/>**NB: If you want to log a `searchAsYouTypeEvent`, be sure to always call the helper before you call `executeQuery`.**
+	 * Or, using the jQuery extension:
 	 * ```
 	 * function myCustomButtonWasClicked() {
-	 *      Coveo.logSearchAsYouTypeEvent(document.querySelector('#search'), customEventCause, metadata);
-	 *      Coveo.executeQuery(document.querySelector('#search'));
-	 *      // OR (using the jquery extension)
-	 *      $('#search').coveo('logSearchAsYouTypeEvent', customEventCause, metadata);
-	 *      $('#search').coveo('executeQuery');
+	 *   $('#search').coveo('logSearchEvent', customEventCause, metadata);
+	 *   $('#search').coveo('executeQuery');
 	 * }
 	 * ```
+	 * See {@link logSearchEvent}.
 	 *
-	 * 5. Send a custom click event.
+	 * ## Send a Custom Search-As-You-Type Event
+	 *
+	 * NB: If you want to log a search-as-you-type event, be sure to always call the `logSearchAsYouTypeEvent` helper before
+	 * you call `executeQuery`.
+	 *
+	 * ```
+	 * function myCustomButtonWasClicked() {
+	 *     Coveo.logSearchAsYouTypeEvent(document.querySelector('#search'), customEventCause, metadata);
+	 *     Coveo.executeQuery(document.querySelector('#search'));
+	 * ```
+	 *
+	 * Or, using the jQuery extension:
+	 * ```
+	 * function myCustomButtonWasClicked() {
+	 *   $('#search').coveo('logSearchAsYouTypeEvent', customEventCause, metadata);
+	 *   $('#search').coveo('executeQuery');
+	 * }
+	 * ```
+	 * See {@link logSearchAsYouTypeEvent}.
+	 *
+	 * ## Send a Custom Click Event
 	 * ```
 	 * Coveo.logClickEvent(document.querySelector('#search'), customEventCause, metadata, result);
-	 * // OR (using the jQuery extension)
+	 * ```
+	 *
+	 * Or, using the jQuery extension:
+	 * ```
 	 * $('#search').coveo('logClickEvent', customEventCause, metadata, result);
 	 * ```
+	 * See {@link logClickEvent}.
 	 */
 	var Analytics = (function (_super) {
 	    __extends(Analytics, _super);
 	    /**
-	     * Create a new Analytics component. Create the {@link IAnalyticsClient}.
+	     * Creates a new Analytics component. Creates the {@link IAnalyticsClient}.
 	     * @param element The HTMLElement on which the component will be instantiated.
-	     * @param options The options for the Analytics.
-	     * @param bindings The bindings that the component requires to function normally. If not set, it will automatically resolve them (with slower execution time).
+	     * @param options The options for the Analytics component.
+	     * @param bindings The bindings that the component requires to function normally. If not set, these will be
+	     * automatically resolved (with a slower execution time).
 	     */
 	    function Analytics(element, options, bindings) {
 	        var _this = this;
@@ -16459,47 +16513,67 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }
 	    /**
-	     * Log a search event on the service, using a cause and a meta object.<br/>
-	     * Note that the event will be sent on the service when a query successfully return, not immediately after calling this method.<br/>
-	     * Normally, this should be called using the following "format": <br/>
-	     * usageAnalytics.logSearchEvent<SomeMeta>({name : 'foo', type : 'bar'}, <SomeMeta>{'key':'value'});<br/>
-	     * this.queryController.executeQuery();<br/>
-	     * This will queue up an analytics search event. Then the query is executed. The search event will be sent to the service when the query is successfully completed.<br/>
-	     * @param actionCause
-	     * @param meta Can be an empty object ( {} ).
+	     * Logs a search event on the service, using a {@link IAnalyticsActionCause} and a meta object.
+	     *
+	     * Note that the search event is sent to the service when a query successfully returns, not immediately after calling
+	     * this method.
+	     *
+	     * Normally, you should call this method using the following "format":
+	     *
+	     * ```
+	     * usageAnalytics.logSearchEvent<SomeMeta>({name: 'foo', type: 'bar'}, <SomeMeta>{'key':'value'});
+	     * this.queryController.executeQuery();
+	     * ```
+	     *
+	     * This queues up an analytics search event. Then, the query executes itself. The search event is sent to the service
+	     * when the query successfully returns.
+	     *
+	     * @param actionCause Describes the cause of the event.
+	     * @param meta The metadata which you can use to create custom dimensions. Can be an empty object ( `{}` ).
 	     */
 	    Analytics.prototype.logSearchEvent = function (actionCause, meta) {
 	        this.client.logSearchEvent(actionCause, meta);
 	    };
 	    /**
-	     * Log a search as you type event on the service, using a cause and a meta object.<br/>
-	     * This is extremely similar to a search event, except that search as you type, by definition, will be frequently called.<br/>
-	     * The `PendingSearchAsYouTypeEvent` will take care of logging only the "relevant" last event: After 5 seconds of no event logged, or after another search event is triggered somewhere else in the interface.<br/>
-	     * This is to ensure that we do not needlessly log every single partial query, which would make the reporting very confusing.
-	     * @param actionCause
-	     * @param meta Can be an empty object ( {} ).
+	     * Logs a search-as-you-type event on the service, using an {@link IAnalyticsActionCause} and a meta object.
+	     *
+	     * This method is very similar to the {@link logSearchEvent} method, except that logSearchAsYouType is, by definition,
+	     * more frequently called.
+	     *
+	     * The `PendingSearchAsYouTypeEvent` takes care of logging only the "relevant" last event: an event that occurs after
+	     * 5 seconds elapse without any event being logged, or an event that occurs after another part of the interface
+	     * triggers a search event.
+	     *
+	     * This avoids logging every single partial query, which would make the reporting very confusing.
+	     *
+	     * @param actionCause Describes the cause of the event.
+	     * @param meta The metadata which you can use to create custom dimensions. Can be an empty object ( `{}` ).
 	     */
 	    Analytics.prototype.logSearchAsYouType = function (actionCause, meta) {
 	        this.client.logSearchAsYouType(actionCause, meta);
 	    };
 	    /**
-	     * Log a custom event on the service. A custom event can be used to create customized report, or to track events which are not queries or document views.
-	     * @param actionCause
-	     * @param meta
-	     * @param element The HTMLElement that was interacted with for this custom event.
+	     * Logs a custom event on the service. You can use custom events to create custom reports, or to track events
+	     * that are not queries or document views.
+	     *
+	     * @param actionCause Describes the cause of the event.
+	     * @param meta The metadata which you can use to create custom dimensions. Can be an empty object ( `{}` ).
+	     * @param element The HTMLElement that the user has interacted with for this custom event.
 	     */
 	    Analytics.prototype.logCustomEvent = function (actionCause, meta, element) {
 	        if (element === void 0) { element = this.element; }
 	        this.client.logCustomEvent(actionCause, meta, element);
 	    };
 	    /**
-	     * Log a click event. A click event can be understood as a document view.<br/>
-	     * eg : Clicking on a result link of opening a quickview.<br/>
-	     * This event will be logged immediately on the service.
-	     * @param actionCause
-	     * @param meta Can be an empty object ( {} ).
-	     * @param result The result that was clicked.
-	     * @param element The HTMLElement that was clicked in the interface.
+	     * Logs a click event. You can understand click events as document views (e.g., clicking on a {@link ResultLink} or
+	     * opening a {@link Quickview}).
+	     *
+	     * This event is logged immediately on the service.
+	     *
+	     * @param actionCause Describes the cause of the event.
+	     * @param meta The metadata which you can use to create custom dimensions. Can be an empty object ( `{}` ).
+	     * @param result The result that the user has clicked.
+	     * @param element The HTMLElement that the user has clicked in the interface.
 	     */
 	    Analytics.prototype.logClickEvent = function (actionCause, meta, result, element) {
 	        if (element === void 0) { element = this.element; }
@@ -16618,46 +16692,65 @@ return /******/ (function(modules) { // webpackBootstrap
 	         */
 	        user: ComponentOptions_1.ComponentOptions.buildStringOption(),
 	        /**
-	         * Specifies the name of the user display name for usage analytics logs.
+	         * Specifies the user display name for usage analytics logs.
 	         */
 	        userDisplayName: ComponentOptions_1.ComponentOptions.buildStringOption(),
 	        /**
-	         * Specifies the token used to gain access the analytics endpoint.<br/>
-	         * This attribute is optional, the component will use the search token by default.
+	         * Specifies the token you want to use to access the usage analytics endpoint.
+	         *
+	         * Default value is `undefined`, and the component will use the search token.
 	         */
 	        token: ComponentOptions_1.ComponentOptions.buildStringOption(),
 	        /**
-	         * Specifies the URL of the analytics logger for rare cases where it is different from the default usage analytics Coveo Cloud endpoint (https://usageanalytics.coveo.com).
+	         * Specifies the URL of the usage analytics logger to cover exceptional cases in which this location could differ
+	         * from the default Coveo Cloud Usage Analytics endpoint (https://usageanalytics.coveo.com).
+	         *
+	         * Default value is `https://usageanalytics.coveo.com`.
 	         */
 	        endpoint: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: AnalyticsEndpoint_1.AnalyticsEndpoint.DEFAULT_ANALYTICS_URI }),
 	        /**
-	         * Specifies whether the search user identities are converted in a unique hash in the logged analytics data to prevent analytics reviewers and managers to identify who performs which queries.<br/>
-	         * When enabled, the Coveo Analytics Platform can still properly identify sessions made by anonymous users, versus ones from users that are authenticated in some way with the site containing the search page.<br/>
-	         * The default value is `false`.
+	         * Specifies whether to convert search user identities to unique hash when logging analytics data, so that
+	         * analytics reviewers and managers will not be able to clearly identify which user is performing which query.
+	         *
+	         * When this option is set to `true`, the Coveo Usage Analytics Platform can still properly differentiate sessions
+	         * made by anonymous users from sessions made by users authenticated in some way on the site containing the search
+	         * page.
+	         *
+	         * Default value is `false`.
 	         */
 	        anonymous: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
 	        /**
-	         * Sets the Search Hub dimension on the search events.<br/>
-	         * The Search Hub dimension is typically a name that refers to a specific search page. For example, one could use the CommunitySite value to refer to a search page on a company's public community site.<br/>
-	         * The default value is default.
+	         * Sets the Search Hub dimension on the search events.
+	         *
+	         * The Search Hub dimension is typically a name that refers to a specific search page. For example, you could use
+	         * the `CommunitySite` value to refer to a search page on a company's public community site.
+	         *
+	         * Default value is `default`.
 	         */
 	        searchHub: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'default' }),
 	        /**
-	         * Specifies the name of the split test run that the search page is a part of.<br/>
-	         * This dimension can be used to perform A/B testing using different search page layouts and features, inside the Coveo Query pipeline.<br/>
-	         * By default, this value is not specified and no split test run name is reported to the Coveo Analytics Platform.
+	         * Specifies the name of the split test run that the search page is part of.
+	         *
+	         * You can use this dimension to perform A/B testing using different search page layouts and features inside the
+	         * Coveo Query pipeline.
+	         *
+	         * Default value is `undefined` and no split test run name is reported to the Coveo Usage Analytics Platform.
 	         */
 	        splitTestRunName: ComponentOptions_1.ComponentOptions.buildStringOption(),
 	        /**
-	         * Specifies the version name for the page when a split test run is active.<br/>
-	         * When reporting on A/B testing analytics data, this value specifies the test run version name that has been presented to the user.<br/>
-	         * By default, this value is not specified.
+	         * Specifies the version name for the page when a split test run is active.
+	         *
+	         * When reporting on A/B testing analytics data, this value specifies the test run version name that was
+	         * presented to the user.
 	         */
 	        splitTestRunVersion: ComponentOptions_1.ComponentOptions.buildStringOption(),
 	        sendToCloud: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
 	        /**
-	         * Specifies the organization bound to the access token. This is necessary when using an access token because it can be associated with more than organization.
-	         * If this parameter is not specified, it will fallback on the organization used for the search endpoint.
+	         * Specifies the organization bound to the access token. This is necessary when using an access token, because a
+	         * single access token can be associated to more than one organization.
+	         *
+	         * Default value is `undefined`, and the value of this parameter will fallback to the organization used for the
+	         * search endpoint.
 	         */
 	        organization: ComponentOptions_1.ComponentOptions.buildStringOption()
 	    };
@@ -17413,6 +17506,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Dom_1 = __webpack_require__(59);
 	var ResponsiveRecommendation_1 = __webpack_require__(131);
 	var coveo_analytics_1 = __webpack_require__(82);
+	var RegisteredNamedMethods_1 = __webpack_require__(106);
+	var InitializationEvents_1 = __webpack_require__(45);
 	/**
 	 * This component is a {@link SearchInterface} that will display recommendations based on the user history.
 	 * To get recommendations, the page view script must also be included in the page. View: https://github.com/coveo/coveo.analytics.js
@@ -17435,6 +17530,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (!this.options.id) {
 	            this.generateDefaultId();
 	        }
+	        // This is done to allow the component to be included in another search interface without triggering the parent events.
+	        this.preventEventPropagation();
 	        if (this.options.mainSearchInterface) {
 	            this.bindToMainSearchInterface();
 	        }
@@ -17442,8 +17539,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        Dom_1.$$(this.element).on(QueryEvents_1.QueryEvents.querySuccess, function (e, args) { return _this.handleRecommendationQuerySuccess(args); });
 	        Dom_1.$$(this.element).on(QueryEvents_1.QueryEvents.noResults, function (e, args) { return _this.handleRecommendationNoResults(); });
 	        Dom_1.$$(this.element).on(QueryEvents_1.QueryEvents.queryError, function (e, args) { return _this.handleRecommendationQueryError(); });
-	        // This is done to allow the component to be included in another search interface without triggering the parent events.
-	        this.preventEventPropagation();
 	        this.historyStore = new coveo_analytics_1.history.HistoryStore();
 	        ResponsiveRecommendation_1.ResponsiveRecommendation.init(this.root, this, options);
 	    }
@@ -17471,7 +17566,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.element.style.display = this.displayStyle;
 	    };
 	    Recommendation.prototype.bindToMainSearchInterface = function () {
+	        this.bindComponentOptionsModelToMainSearchInterface();
+	        this.bindQueryEventsToMainSearchInterface();
+	    };
+	    Recommendation.prototype.bindComponentOptionsModelToMainSearchInterface = function () {
 	        var _this = this;
+	        // Try to fetch the componentOptions from the main search interface.
+	        // Since we do not know which interface is init first (recommendation or full search interface)
+	        // add a mechanism that waits for the full search interface to be correctly initialized
+	        // then, set the needed values on the component options model.
+	        var searchInterfaceComponent = RegisteredNamedMethods_1.get(this.options.mainSearchInterface, SearchInterface_1.SearchInterface);
+	        var alreadyInitialized = searchInterfaceComponent != null;
+	        var onceInitialized = function () {
+	            var mainSearchInterfaceOptionsModel = searchInterfaceComponent.getBindings().componentOptionsModel;
+	            _this.componentOptionsModel.setMultiple(mainSearchInterfaceOptionsModel.getAttributes());
+	            Dom_1.$$(_this.options.mainSearchInterface).on(_this.componentOptionsModel.getEventName(Model_1.MODEL_EVENTS.ALL), function () {
+	                _this.componentOptionsModel.setMultiple(mainSearchInterfaceOptionsModel.getAttributes());
+	            });
+	        };
+	        if (alreadyInitialized) {
+	            onceInitialized();
+	        }
+	        else {
+	            Dom_1.$$(this.options.mainSearchInterface).on(InitializationEvents_1.InitializationEvents.afterComponentsInitialization, function () {
+	                searchInterfaceComponent = RegisteredNamedMethods_1.get(_this.options.mainSearchInterface, SearchInterface_1.SearchInterface);
+	                onceInitialized();
+	            });
+	        }
+	    };
+	    Recommendation.prototype.bindQueryEventsToMainSearchInterface = function () {
+	        var _this = this;
+	        // Whenever a query sucessfully returns on the full search interface, refresh the recommendation component.
 	        Dom_1.$$(this.options.mainSearchInterface).on(QueryEvents_1.QueryEvents.querySuccess, function (e, args) {
 	            _this.mainInterfaceQuery = args;
 	            _this.mainQuerySearchUID = args.results.searchUid;
@@ -17540,6 +17665,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.preventEventPropagationOn(AnalyticsEvents_1.AnalyticsEvents);
 	        this.preventEventPropagationOn(BreadcrumbEvents_1.BreadcrumbEvents);
 	        this.preventEventPropagationOn(QuickviewEvents_1.QuickviewEvents);
+	        this.preventEventPropagationOn(InitializationEvents_1.InitializationEvents);
 	        this.preventEventPropagationOn(this.getAllModelEvents());
 	    };
 	    Recommendation.prototype.preventEventPropagationOn = function (eventType, eventName) {
@@ -22570,6 +22696,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            facetSlider: this
 	        });
 	        this.element.appendChild(this.facetHeader.build());
+	    };
+	    FacetSlider.prototype.disable = function () {
+	        _super.prototype.disable.call(this);
+	        Dom_1.$$(this.element).addClass('coveo-disabled-empty');
 	    };
 	    /**
 	     * Reset the facet (meaning that you need to set the range value as inactive).
@@ -45001,7 +45131,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                virtualTabSection.el.appendChild(tab.cloneNode(true));
 	            });
 	        }
-	        this.coveoRoot.append(virtualTabSection.el);
+	        virtualTabSection.insertBefore(this.tabSection.el);
 	        ResponsiveComponentsUtils_1.ResponsiveComponentsUtils.deactivateSmallTabs(this.coveoRoot);
 	        var isOverflowing = this.isOverflowing(virtualTabSection.el);
 	        ResponsiveComponentsUtils_1.ResponsiveComponentsUtils.activateSmallTabs(this.coveoRoot);
@@ -45427,7 +45557,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var TemplateHelpers_1 = __webpack_require__(172);
-	var ComponentOptions_1 = __webpack_require__(110);
 	var HighlightUtils_1 = __webpack_require__(68);
 	var DateUtils_1 = __webpack_require__(58);
 	var CurrencyUtils_1 = __webpack_require__(57);
@@ -45654,25 +45783,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        .replace(/</g, '&lt;')
 	        .replace(/>/g, '&gt;');
 	});
-	TemplateHelpers_1.TemplateHelpers.registerTemplateHelper('templateFields', function (result) {
-	    if (result === void 0) { result = resolveQueryResult(); }
-	    var rows = [];
-	    if (result.fields != null) {
-	        _.forEach(result.fields, function (tableField) {
-	            var tr = Dom_1.$$('tr');
-	            _.forEach(tableField, function (value, key) {
-	                if (_.isObject(value)) {
-	                    tr.setAttribute(ComponentOptions_1.ComponentOptions.attrNameFromName(key), JSON.stringify(value));
-	                }
-	                else {
-	                    tr.setAttribute(ComponentOptions_1.ComponentOptions.attrNameFromName(key), value);
-	                }
-	            });
-	            return rows.push(tr.el.outerHTML);
-	        });
-	    }
-	    return rows.join('');
-	});
 	TemplateHelpers_1.TemplateHelpers.registerTemplateHelper('loadTemplates', function (templatesToLoad, once) {
 	    if (once === void 0) { once = true; }
 	    var ret = '';
@@ -45701,14 +45811,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 	var byteMeasure = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB'];
 	TemplateHelpers_1.TemplateHelpers.registerFieldHelper('size', function (value, options) {
-	    var size = Number(value);
-	    var presision = (options != null && options.presision != null ? options.presision : 2);
+	    var size = parseInt(value, 10);
+	    var precision = (options != null && options.precision != null ? options.precision : 2);
 	    var base = (options != null && options.base != null ? options.base : 0);
 	    while (size > 1024 && base + 1 < byteMeasure.length) {
 	        size /= 1024;
 	        base++;
 	    }
-	    size = Math.floor(size * Math.pow(10, presision)) / Math.pow(10, presision);
+	    size = Math.floor(size * Math.pow(10, precision)) / Math.pow(10, precision);
 	    return size + ' ' + byteMeasure[base];
 	});
 	TemplateHelpers_1.TemplateHelpers.registerFieldHelper('translatedCaption', function (value) {
@@ -45817,6 +45927,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (options === void 0) { options = {}; }
 	        if (element === void 0) { element = Dom_1.$$('div').el; }
 	        var info = FileTypes_1.FileTypes.get(result);
+	        if (!bindings && result.searchInterface) {
+	            // try to resolve results bindings automatically
+	            bindings = result.searchInterface.getBindings();
+	        }
 	        info = Icon.preprocessIconInfo(options, info);
 	        Dom_1.$$(element).toggleClass('coveo-small', options.small === true);
 	        if (options.value != undefined) {
@@ -45838,6 +45952,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                className: 'coveo-icon-caption-overlay'
 	            }, info.caption).el);
 	            Dom_1.$$(element).addClass('coveo-icon-with-caption-overlay');
+	            Dom_1.$$(element).setAttribute('data-with-label', 'true');
 	        }
 	        return element;
 	    };
@@ -46921,6 +47036,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    ResultList.prototype.buildResult = function (result) {
 	        Assert_1.Assert.exists(result);
 	        QueryUtils_1.QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), result);
+	        QueryUtils_1.QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, result);
 	        ResultList.resultCurrentlyBeingRendered = result;
 	        var resultElement = this.options.resultTemplate.instantiateToElement(result, true, true, { layout: this.options.layout });
 	        if (resultElement != null) {
@@ -47349,16 +47465,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Dom_1 = __webpack_require__(59);
 	var Globalize = __webpack_require__(28);
 	/**
-	 * This simple component allows to display the result on an aggregate operation on the index.<br/>
-	 * It hooks itself on the query to add a new group by request, then display the result.
+	 * The Aggregate component allows to display the result on an aggregate operation on the index.
+	 *
+	 * It hooks itself to the query to add a new {@link IGroupByRequest}, then displays the result.
 	 */
 	var Aggregate = (function (_super) {
 	    __extends(Aggregate, _super);
 	    /**
-	     * Create a new `Aggregate` component
-	     * @param element
-	     * @param options
-	     * @param bindings
+	     * Creates a new Aggregate component.
+	     * @param element The HTMLElement on which to instantiate the component.
+	     * @param options The options for the Aggregate component.
+	     * @param bindings The bindings that the component requires to function normally. If not set, these will be
+	     * automatically resolved (with a slower execution time).
 	     */
 	    function Aggregate(element, options, bindings) {
 	        var _this = this;
@@ -47400,31 +47518,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    Aggregate.options = {
 	        /**
-	         * The field on which you do the aggregate operation.
+	         * Specifies the field on which to do the aggregate operation. This parameter is mandatory.
 	         */
 	        field: ComponentOptions_1.ComponentOptions.buildFieldOption({ required: true }),
 	        /**
-	         * The aggregate operation to perform.<br/>
-	         * The available values are:
-	         * <ul>
-	         *   <li>sum - Computes the sum of the computed field values.</li>
-	         *   <li>average - Computes the average of the computed field values.</li>
-	         *   <li>minimum - Finds the minimum value of the computed field values.</li>
-	         *   <li>maximum - Finds the maximum value of the computed field values.</li>
-	         * </ul><br/>
-	         * The default value is sum.
+	         * Specifies the aggregate operation to perform.
+	         *
+	         * The possible values are:
+	         * - `sum` - Computes the sum of the computed field values.
+	         * - `average` - Computes the average of the computed field values.
+	         * - `minimum` - Finds the minimum value of the computed field values.
+	         * - `maximum` - Finds the maximum value of the computed field values.
+	         *
+	         * Default value is `sum`.
 	         */
 	        operation: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'sum' }),
 	        /**
-	         * Specifies how to format the value.<br/>
-	         * The formats available are defined by the Globalize library. The most common used formats are:
-	         * <ul>
-	         *   <li>c0 - Formats the value as a currency.</li>
-	         *   <li>n0 - Formats the value as an integer.</li>
-	         *   <li>n2 - Formats the value as a floating point with 2 decimal digits.</li>
-	         * </ul>
-	         * See : <a href='https://github.com/klaaspieter/jquery-global#globalizeformat-value-format-culture-'>Globalize</a> for more informations.<br/>
-	         * Default value is `'c0`.
+	         * Specifies how to format the value.
+	         *
+	         * The available formats are defined in the Globalize library (see
+	         * [Globalize](https://github.com/klaaspieter/jquery-global#globalizeformat-value-format-culture-).
+	         *
+	         * The most commonly used formats are:
+	         * - `c0` - Formats the value as a currency.
+	         * - `n0` - Formats the value as an integer.
+	         * - `n2` - Formats the value as a floating point with 2 decimal digits.
+	         *
+	         * Default value is `c0`.
 	         */
 	        format: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'c0' })
 	    };
@@ -49883,6 +50003,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var QueryStateModel_1 = __webpack_require__(102);
 	var Model_1 = __webpack_require__(99);
 	var AnalyticsActionListMeta_1 = __webpack_require__(122);
+	var KeyboardUtils_1 = __webpack_require__(70);
 	/**
 	 * The ResultLayout component allows the user to switch between multiple {@link ResultList} components with
 	 * different layouts.
@@ -49991,12 +50112,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    ResultLayout.prototype.addButton = function (layout) {
 	        var _this = this;
-	        var btn = Dom_1.$$('span', { className: 'coveo-result-layout-selector' }, layout);
+	        var btn = Dom_1.$$('span', { className: 'coveo-result-layout-selector', tabindex: 0 }, layout);
 	        btn.prepend(Dom_1.$$('span', { className: "coveo-icon coveo-sprites-" + layout + "-layout" }).el);
 	        if (layout === this.currentLayout) {
 	            btn.addClass('coveo-selected');
 	        }
-	        btn.on('click', function () { return _this.changeLayout(layout); });
+	        var activateAction = function () { return _this.changeLayout(layout); };
+	        btn.on('click', activateAction);
+	        btn.on('keyup', KeyboardUtils_1.KeyboardUtils.keypressAction(KeyboardUtils_1.KEYBOARD.ENTER, activateAction));
 	        Dom_1.$$(this.element).append(btn.el);
 	        this.buttons[layout] = btn.el;
 	    };
@@ -52386,6 +52509,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _super.call(this, element, options, bindings, HierarchicalFacet.ID);
 	        this.element = element;
 	        this.bindings = bindings;
+	        this.shouldReshuffleFacetValuesClientSide = false;
 	        this.firstPlacement = true;
 	        this.correctLevels = [];
 	        this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, HierarchicalFacet, this.options);
@@ -52608,6 +52732,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.selectMultipleValues(facetValues);
 	        this.triggerNewQuery();
 	    };
+	    HierarchicalFacet.prototype.triggerUpdateDeltaQuery = function (facetValues) {
+	        this.shouldReshuffleFacetValuesClientSide = this.keepDisplayedValuesNextTime;
+	        _super.prototype.triggerUpdateDeltaQuery.call(this, facetValues);
+	    };
 	    HierarchicalFacet.prototype.updateSearchInNewDesign = function (moreValuesAvailable) {
 	        if (moreValuesAvailable === void 0) { moreValuesAvailable = true; }
 	        // We always want to show search for hierarchical facet :
@@ -52663,6 +52791,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	    };
 	    HierarchicalFacet.prototype.rebuildValueElements = function () {
+	        this.shouldReshuffleFacetValuesClientSide = this.shouldReshuffleFacetValuesClientSide || this.keepDisplayedValuesNextTime;
 	        this.numberOfValues = Math.max(this.numberOfValues, 10000);
 	        this.processHierarchy();
 	        this.setValueListContent();
@@ -52671,6 +52800,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.checkForOrphans();
 	        this.checkForNewUnselectedChild();
 	        this.crop();
+	        this.shouldReshuffleFacetValuesClientSide = false;
 	    };
 	    HierarchicalFacet.prototype.initFacetValuesList = function () {
 	        this.facetValuesList = new HierarchicalFacetValuesList_1.HierarchicalFacetValuesList(this, HierarchicalFacetValueElement_1.HierarchicalFacetValueElement);
@@ -53148,42 +53278,56 @@ return /******/ (function(modules) { // webpackBootstrap
 	    HierarchicalFacetValuesList.prototype.sortFacetValues = function (hierarchyFacetValues) {
 	        var _this = this;
 	        if (hierarchyFacetValues === void 0) { hierarchyFacetValues = this.hierarchyFacetValues; }
-	        // If we exclude the top level, the alpha order is not respected (since it is done by the index, and the first level is omitted by client side code).
-	        // Do the ordering client side, in the precise case where its alpha ordering and the starting level is not 0;
-	        if (this.facet.options.levelStart != 0 && this.facet.options.sortCriteria && this.facet.options.sortCriteria.toLowerCase().indexOf('alpha') != -1) {
-	            var reversed_1 = this.facet.options.sortCriteria.toLowerCase().indexOf('descending') != -1;
-	            hierarchyFacetValues = hierarchyFacetValues.sort(function (first, second) {
-	                var firstInTopLevel = _.find(_this.facet.topLevelHierarchy, function (hierarchy) {
-	                    return hierarchy.facetValue.value.toLowerCase() == first.value.toLowerCase();
-	                }) != null;
-	                var secondInTopLevel = _.find(_this.facet.topLevelHierarchy, function (hierarchy) {
-	                    return hierarchy.facetValue.value.toLowerCase() == first.value.toLowerCase();
-	                }) != null;
-	                if (firstInTopLevel && secondInTopLevel) {
-	                    var firstValue = _this.facet.getValueCaption(first);
-	                    var secondValue = _this.facet.getValueCaption(second);
-	                    var compared = firstValue.localeCompare(secondValue);
-	                    return reversed_1 ? -1 * compared : compared;
-	                }
-	                return 0;
+	        if (!this.facet.shouldReshuffleFacetValuesClientSide) {
+	            var sortArray = _.map(hierarchyFacetValues, function (hierarchy, idx) {
+	                return {
+	                    hierarchy: hierarchy,
+	                    idx: idx
+	                };
 	            });
+	            // If we exclude the top level, the alpha order is not respected (since it is done by the index, and the first level is omitted by client side code).
+	            // Do the ordering client side, in the precise case where its alpha ordering and the starting level is not 0;
+	            if (this.facet.options.levelStart != 0 && this.facet.options.sortCriteria && this.facet.options.sortCriteria.toLowerCase().indexOf('alpha') != -1) {
+	                var reversed_1 = this.facet.options.sortCriteria.toLowerCase().indexOf('descending') != -1;
+	                sortArray = sortArray.sort(function (first, second) {
+	                    var firstInTopLevel = _.find(_this.facet.topLevelHierarchy, function (hierarchy) {
+	                        return hierarchy.facetValue.value.toLowerCase() == first.hierarchy.value.toLowerCase();
+	                    }) != null;
+	                    var secondInTopLevel = _.find(_this.facet.topLevelHierarchy, function (hierarchy) {
+	                        return hierarchy.facetValue.value.toLowerCase() == first.hierarchy.value.toLowerCase();
+	                    }) != null;
+	                    if (firstInTopLevel && secondInTopLevel) {
+	                        var firstValue = _this.facet.getValueCaption(first.hierarchy);
+	                        var secondValue = _this.facet.getValueCaption(second.hierarchy);
+	                        var compared = firstValue.localeCompare(secondValue);
+	                        return reversed_1 ? -1 * compared : compared;
+	                    }
+	                    return first.idx - second.idx;
+	                });
+	            }
+	            // Normally facet values are sorted by selected first, then inactive, then excluded values.
+	            // For hierarchical, we want selected first, then those that have childs selected, then normal sorting.
+	            sortArray = sortArray.sort(function (first, second) {
+	                if (first.hierarchy.selected === second.hierarchy.selected) {
+	                    var firstFromHierarchy = _this.facet.getValueFromHierarchy(first.hierarchy);
+	                    var secondFromHierarchy = _this.facet.getValueFromHierarchy(second.hierarchy);
+	                    if (firstFromHierarchy.hasChildSelected === secondFromHierarchy.hasChildSelected) {
+	                        return first.idx - second.idx;
+	                    }
+	                    else {
+	                        return firstFromHierarchy.hasChildSelected ? -1 : 1;
+	                    }
+	                }
+	                else {
+	                    return first.hierarchy.selected ? -1 : 1;
+	                }
+	            });
+	            return _.pluck(sortArray, 'hierarchy');
 	        }
-	        // Normally facet values are sorted by selected first, then inactive, then excluded values.
-	        // For hierarchical, we want selected first, then those that have childs selected, then normal sorting.
-	        hierarchyFacetValues = hierarchyFacetValues.sort(function (first, second) {
-	            if (first.selected === second.selected) {
-	                var firstFromHierarchy = _this.facet.getValueFromHierarchy(first);
-	                var secondFromHierarchy = _this.facet.getValueFromHierarchy(second);
-	                return (firstFromHierarchy.hasChildSelected === secondFromHierarchy.hasChildSelected) ? 0 : firstFromHierarchy.hasChildSelected ? -1 : 1;
-	            }
-	            else {
-	                return first.selected ? -1 : 1;
-	            }
-	        });
 	        return hierarchyFacetValues;
 	    };
 	    HierarchicalFacetValuesList.prototype.getValuesToBuildWith = function () {
-	        if (this.facet.keepDisplayedValuesNextTime) {
+	        if (this.facet.shouldReshuffleFacetValuesClientSide) {
 	            return this.hierarchyFacetValues;
 	        }
 	        else {
@@ -54520,6 +54664,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var _this = this;
 	        _.each(this.attachments, function (attachment) {
 	            QueryUtils_1.QueryUtils.setStateObjectOnQueryResult(_this.queryStateModel.get(), attachment);
+	            QueryUtils_1.QueryUtils.setSearchInterfaceObjectOnQueryResult(_this.searchInterface, attachment);
 	            var container = _this.attachmentLevel > 0 ? _this.options.subResultTemplate.instantiateToElement(attachment) : _this.options.resultTemplate.instantiateToElement(attachment);
 	            _this.autoCreateComponentsInsideResult(container, _.extend({}, attachment, { attachments: [] }));
 	            Dom_1.$$(container).addClass('coveo-result-attachments-container');
@@ -54763,6 +54908,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    ResultFolding.prototype.renderChildResult = function (childResult) {
 	        QueryUtils_1.QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), childResult);
+	        QueryUtils_1.QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, childResult);
 	        var oneChild = this.options.resultTemplate.instantiateToElement(childResult, false, false);
 	        Dom_1.$$(oneChild).addClass('coveo-result-folding-child-result');
 	        this.results.appendChild(oneChild);
@@ -57122,13 +57268,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Dom_1 = __webpack_require__(59);
 	var SearchInterface_1 = __webpack_require__(109);
 	/**
-	 * This component is used to provide query suggestions based on the most commonly logged queries by a Coveo Analytics service.
-	 * In order to provide relevant suggestions, they are shown in order of successful document views: thus, queries resulting in no clicks from users or that require refinements are not suggested if better options exist.
-	 * These suggestions appear in the Omnibox Component. This component is thus highly related to the {@link Analytics} Component.
-	 * While a user is typing in a query box, he will be able to see and select the most commonly used queries.
+	 * The AnalyticsSuggestion component provides query suggestions based on the queries that a Coveo Analytics service most
+	 * commonly logs.
+	 *
+	 * This component orders possible query suggestions by their respective number of successful document views, thus
+	 * prioritizing the most relevant query suggestions. Consequently, when better options are available, this component
+	 * does not suggest queries resulting in no clicks from users or requiring refinements.
+	 *
+	 * The query suggestions appear in the {@link Omnibox} Component. The AnalyticsSuggestion component strongly
+	 * relates to the {@link Analytics} component. While a user is typing in a query box, the AnalyticsSuggestion component
+	 * allows them to see and select the most commonly used and relevant queries.
 	 */
 	var AnalyticsSuggestions = (function (_super) {
 	    __extends(AnalyticsSuggestions, _super);
+	    /**
+	     * Creates a new AnalyticsSuggestions component.
+	     *
+	     * Also binds event handlers so that when a user selects a suggestion, an `omniboxFromLink` usage analytics event is
+	     * logged if the suggestion comes from a standalone search box, or an `omniboxAnalytics` usage analytics
+	     * event is logged otherwise.
+	     *
+	     * @param element The HTMLElement on which to instantiate the component.
+	     * @param options The options for the AnalyticsSuggestions component.
+	     * @param bindings The bindings that the component requires to function normally. If not set, these will be
+	     * automatically resolved (with a slower execution time).
+	     */
 	    function AnalyticsSuggestions(element, options, bindings) {
 	        var _this = this;
 	        _super.call(this, element, AnalyticsSuggestions.ID, bindings);
@@ -57284,17 +57448,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    AnalyticsSuggestions.options = {
 	        /**
-	         * The index at which the suggestions should render in the omnibox. Higher value = placed first.<br/>
-	         * The default value is `52`.
+	         * Specifies the z-index position at which the query suggestions render themselves in the {@link Omnibox}
+	         * component. Higher values are placed first.
+	         *
+	         * Default value is `52` and minimum value is `0`.
 	         */
 	        omniboxZIndex: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 52, min: 0 }),
 	        /**
-	         * Specifies the title in the Omnibox for this group of suggestions. This option is not available when using the Lightning Friendly Theme, which is the default design.
+	         * Specifies the title of the query suggestions group in the {@link Omnibox} component. This option is not available
+	         * when using the default Lightning Friendly Theme (see
+	         * [Lightning Friendly Theme](https://developers.coveo.com/x/Y4EAAg)).
+	         *
+	         * Default value is the localized string for `"Suggested Queries"`.
 	         */
 	        headerTitle: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ defaultValue: Strings_1.l('SuggestedQueries') }),
 	        /**
-	         * The number of suggestions that should be requested and displayed in the omnibox.<br/>
-	         * The default value is `5`.
+	         * Specifies the number of query suggestions to request and display in the {@link Omnibox} component.
+	         *
+	         * Default value is `5` and minimum value is `1`.
 	         */
 	        numberOfSuggestions: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1 })
 	    };
@@ -57535,23 +57706,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Strings_1 = __webpack_require__(35);
 	var ExternalModulesShim_1 = __webpack_require__(23);
 	/**
-	 * This component arranges for queries to be executed with an identity obtained
-	 * using an Authentication Provider configured on the Coveo Search API
-	 * (see [On-Premises SharePoint Claims Authentication](https://developers.coveo.com/display/public/SearchREST/On-Premises+SharePoint+Claims+Authentication)).
-	 * When needed, the component will handle redirecting the browser to the address
-	 * that starts the authentication process.
+	 * The AuthenticationProvider component arranges for queries to execute with an identity that the user obtains using an
+	 * Authentication Provider configured on the Coveo Search API
+	 * (see [On-Premises SharePoint Claims Authentication](https://developers.coveo.com/x/hQLL)).
 	 *
-	 * Using the standard `data-tab` attribute, you can enable the
-	 * `AuthenticationProvider` component only for tabs in which authentication is
-	 * required (see {@link Tab}).
+	 * When necessary, this component handles redirecting the browser to the address that starts the authentication process.
+	 *
+	 * Using the standard `data-tab` attribute, you can enable the AuthenticationProvider component only for tabs requiring
+	 * authentication (see {@link Tab}).
 	 */
 	var AuthenticationProvider = (function (_super) {
 	    __extends(AuthenticationProvider, _super);
 	    /**
-	     * Build a new `AuthenticationProvider` component
-	     * @param element
-	     * @param options
-	     * @param bindings
+	     * Creates a new AuthenticationProvider component.
+	     * @param element The HTMLElement on which to instantiate the component.
+	     * @param options The options for the AuthenticationProvider component.
+	     * @param bindings The bindings that the component requires to function normally. If not set, these will be
+	     * automatically resolved (with a slower execution time).
 	     */
 	    function AuthenticationProvider(element, options, bindings, _window) {
 	        var _this = this;
@@ -57654,33 +57825,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    AuthenticationProvider.options = {
 	        /**
-	         * Specifies the name of the authentication provider as specified in the
-	         * [Windows Service Configuration File](https://developers.coveo.com/display/public/SearchREST/Windows+Service+Configuration+File).
+	         * Specifies the name of the authentication provider.
+	         *
+	         * See [Windows Service Configuration File](https://developers.coveo.com/x/OQMv).
 	         */
 	        name: ComponentOptions_1.ComponentOptions.buildStringOption(),
 	        /**
-	         * Specifies the friendly name of the authentication provider that will be
-	         * displayed in the user interface while logging in.<br/>
-	         * If not specified, it will default to {@link options.name name}.
+	         * Specifies the friendly name of the authentication provider. This is the name that you want to display in the user
+	         * interface when a user is logging in.
+	         *
+	         * Default value is the value set to {@link AuthenticationProvider.options.name}.
 	         */
 	        caption: ComponentOptions_1.ComponentOptions.buildStringOption({ postProcessing: function (value, options) { return value || options.name; } }),
 	        /**
-	         * Specifies whether an `<iframe>` will be used to host the chain of
-	         * redirections that make up the authentication process.<br/>
-	         * By default, this option is set to `false`.
+	         * Specifies whether to use an `<iframe>` to host the chain of redirections that make up the authentication
+	         * process.
 	         *
-	         * Using an `<iframe>` avoids leaving the search page as part of the authentication
-	         * process, but some login providers will refuse to load in an `<iframe>`.
+	         * Default value is `false`.
+	         *
+	         * Using an `<iframe>` prevents leaving the search page as part of the authentication process. However, some login
+	         * providers will refuse to load in an `<iframe>`.
 	         */
 	        useIFrame: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false, attrName: 'data-use-iframe' }),
 	        /**
-	         * Specifies whether the `<iframe>` used for authentication will be made
-	         * visible to the user (inside a popup).<br/>
-	         * By default, this option is set to `true`.
+	         * If the {@link AuthenticationProvider.options.useIFrame} is set to `true`, specifies whether to make the
+	         * authentication `<iframe>` visible to the user (inside a popup).
 	         *
-	         * When the underlying authentication provider requires no user interaction
-	         * (for example, when Windows Authentication is used along with SharePoint Claims),
-	         * using this option reduces the visual impact of the authentication process.
+	         * Default value is `true`.
+	         *
+	         * When the underlying authentication provider requires no user interaction (for example, when a user authenticates
+	         * using Windows Authentication along with SharePoint Claims), setting this option to `false` reduces the visual
+	         * impact of the authentication process.
 	         *
 	         */
 	        showIFrame: ComponentOptions_1.ComponentOptions.buildBooleanOption({
@@ -58900,13 +59075,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	var AnalyticsActionListMeta_1 = __webpack_require__(122);
 	var QuerySummaryEvents_1 = __webpack_require__(232);
 	/**
-	 * The Advanced Search component allows the user to easily create a complex query to send to the index.
-	 * The component also allows custom code to modify the content by using the {@link AdvancedSearchEvents.buildingAdvancedSearch} event.
+	 * The AdvancedSearch component is meant to render a section in the {@link Settings} menu to allow the user to easily
+	 * create complex queries to send to the index.
 	 *
-	 * This component is meant to render a section in the {@link Settings} menu.
+	 * You can create custom code that adds new sections in the **Advanced Search** panel generated by this component by
+	 * attaching a handler to the {@link AdvancedSearchEvents.buildingAdvancedSearch} event.
 	 */
 	var AdvancedSearch = (function (_super) {
 	    __extends(AdvancedSearch, _super);
+	    /**
+	     * Creates a new AdvancedSearch component.
+	     *
+	     * Triggers the {@link AdvancedSearchEvents.buildingAdvancedSearch} event.
+	     * @param element The HTMLElement on which to instantiate the component.
+	     * @param options The options for the AdvancedSearch component.
+	     * @param bindings The bindings that the component requires to function normally. If not set, these will be
+	     * automatically resolved (with a slower execution time).
+	     */
 	    function AdvancedSearch(element, options, bindings) {
 	        _super.call(this, element, AdvancedSearch.ID, bindings);
 	        this.element = element;
@@ -58919,14 +59104,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.buildComponent();
 	    }
 	    /**
-	     * Launch the advanced search query.
+	     * Launches the advanced search query.
+	     * If query returns successfully, also logs an `advancedSearch` event in the usage analytics (see
+	     * {@link Analytics.logSearchEvent}).
 	     */
 	    AdvancedSearch.prototype.executeAdvancedSearch = function () {
 	        this.usageAnalytics.logSearchEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.advancedSearch, {});
 	        this.queryController.executeQuery();
 	    };
 	    /**
-	     * Reset the state of all form input inside the advanced search component
+	     * Resets the state of all form inputs inside the AdvancedSearch component.
 	     */
 	    AdvancedSearch.prototype.reset = function () {
 	        _.each(this.inputs, function (input) {
@@ -59082,18 +59269,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    AdvancedSearch.options = {
 	        /**
-	         * Specifies whether or not to include the built-in keywords section.
-	         * Default is `true`
+	         * Specifies whether to include the built-in **Keywords** section.
+	         *
+	         * Default value is `true`.
 	         */
 	        includeKeywords: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
 	        /**
-	         * Specifies whether or not to include the built-in date section.
-	         * Default is `true`
+	         * Specifies whether to include the built-in **Date** section.
+	         *
+	         * Default value is `true`.
 	         */
 	        includeDate: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
 	        /**
-	         * Specifies whether or not to include the built-in document section.
-	         * Default is `true`
+	         * Specifies whether to include the built-in **Document** section.
+	         *
+	         * Default value is `true`.
 	         */
 	        includeDocument: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true })
 	    };
@@ -77674,12 +77864,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * resolved (with a slower execution time).
 	     * @param result The {@link IQueryResult}.
 	     */
-	    function Backdrop(element, options, bindings, result) {
+	    function Backdrop(element, options, bindings, result, _window) {
 	        _super.call(this, element, Backdrop.ID, bindings);
 	        this.element = element;
 	        this.options = options;
 	        this.result = result;
+	        this._window = _window;
 	        this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, Backdrop, options);
+	        this._window = this._window || window;
 	        var background = '';
 	        if (this.options.overlayColor) {
 	            background += ("linear-gradient(" + this.options.overlayColor + ", ")
@@ -77689,6 +77881,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        background += "url('" + imageSource + "') center center";
 	        this.element.style.background = background;
 	        this.element.style.backgroundSize = 'cover';
+	        // Initialize components inside
 	        var initOptions = this.searchInterface.options.originalOptionsObject;
 	        var resultComponentBindings = _.extend({}, this.getBindings(), {
 	            resultElement: element
@@ -77731,7 +77924,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	         *
 	         * Default value is `false`.
 	         */
-	        overlayGradient: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'overlayColor' })
+	        overlayGradient: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'overlayColor' }),
 	    };
 	    return Backdrop;
 	}(Component_1.Component));

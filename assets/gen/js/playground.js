@@ -3478,6 +3478,9 @@ var playground =
 	    QueryUtils.setStateObjectOnQueryResult = function (state, result) {
 	        QueryUtils.setPropertyOnResult(result, 'state', state);
 	    };
+	    QueryUtils.setSearchInterfaceObjectOnQueryResult = function (searchInterface, result) {
+	        QueryUtils.setPropertyOnResult(result, 'searchInterface', searchInterface);
+	    };
 	    QueryUtils.setIndexAndUidOnQueryResults = function (query, results, queryUid, pipeline, splitTestRun) {
 	        Assert_1.Assert.exists(query);
 	        Assert_1.Assert.exists(results);
@@ -6559,6 +6562,13 @@ var playground =
 	        var merged = SearchEndpoint.mergeConfigOptions(options, otherOptions);
 	        SearchEndpoint.endpoints['default'] = new SearchEndpoint(SearchEndpoint.removeUndefinedConfigOption(merged));
 	    };
+	    /**
+	     * Configure an endpoint to a Coveo Cloud index, in the V2 platform.
+	     * @param organization The organization id of your Coveo cloud index
+	     * @param token The token to use to execute query. If null, you will most probably need to login when querying.
+	     * @param uri The uri of your cloud Search API. By default, will point to the production environment
+	     * @param otherOptions A set of additional options to use when configuring this endpoint
+	     */
 	    SearchEndpoint.configureCloudV2Endpoint = function (organization, token, uri, otherOptions) {
 	        if (uri === void 0) { uri = 'https://platform.cloud.coveo.com/rest/search'; }
 	        return SearchEndpoint.configureCloudEndpoint(organization, token, uri, otherOptions);
@@ -7956,8 +7966,8 @@ var playground =
 
 	"use strict";
 	exports.version = {
-	    'lib': '1.0.25-beta',
-	    'product': '1.0.25-beta',
+	    'lib': '1.2126.0-beta',
+	    'product': '1.2126.0-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -13178,62 +13188,105 @@ var playground =
 	var Recommendation_1 = __webpack_require__(94);
 	var RecommendationAnalyticsClient_1 = __webpack_require__(146);
 	/**
-	 * This component logs all user actions performed in the search interface and sends them to a REST web service exposed through the Coveo Cloud platform.<br/>
-	 * You can use data to evaluate how users are interacting with the search interface, improve relevance and produce analytics dashboards in the Coveo platform.
+	 * The Analytics component logs all user actions performed in the search interface and sends them to a REST web service
+	 * exposed through the Coveo Cloud Platform.
+	 *
+	 * You can use logged analytics data to evaluate how users are interacting with your search interface, improve relevance
+	 * and produce analytics dashboards within the Coveo Cloud Platform.
+	 *
+	 * See [Step 7 - Usage Analytics](https://developers.coveo.com/x/EYskAg) of the Getting Started with the JavaScript
+	 * Search Framework V1 tutorial for an introduction to usage analytics.
 	 *
 	 * # Send Custom Events
-	 * In some scenarios, you want to send custom data to the Coveo Cloud analytics (see [Coveo Cloud Usage Analytics](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=89)). The Coveo JavaScript Search Framework offers helpers to communicate with the Coveo Analytics REST API, so you do not have to write code to call the API directly.
+	 * In some scenarios, you might want to send custom data to the Coveo Cloud Usage Analytics (see
+	 * [Coveo Cloud Usage Analytics](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=89)). The Coveo JavaScript Search
+	 * Framework offers helper functions to communicate with the Coveo Usage Analytics REST API, so you do not have to write
+	 * code to call the API directly.
 	 *
-	 * 1. First, you need to craft your custom event cause and meta.<br/>**NB: The event names must be unique.**
+	 * ## Create a Custom Event Cause and Metadata
+	 *
 	 * ```
-	 *   // customEventType allows to regroup similar event types together when doing reporting (e.g., search box).
-	 *   var customEventCause = {name: 'customEventName', type:'customEventType'};
-	 *   var metadata = {key1: "value1", key2:"value2"};
+	 * // Each event should have a unique "name" attribute (e.g., "searchboxSubmit", "searchboxClear").
+	 * // The "type" attribute allows you to group similar event types when doing reporting (e.g., "searchbox").
+	 * var customEventCause = {name: 'customEventName', type: 'customEventType'};
+	 *
+	 * // This is arbitrary data you want to send to the Coveo Usage Analytics in order to create custom dimensions (see
+	 * // [Creating and Managing Dimensions on Custom Metada](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=142)).
+	 * var metadata = {key1: 'value1', key2: 'value2'};
 	 * ```
 	 *
-	 * 2. Send your custom event.
+	 * See {@link IAnalyticsActionCause}
+	 *
+	 * ## Send a Custom Event
 	 * ```
-	 *   Coveo.logCustomEvent(document.querySelector('#search'), customEventCause, metadata);
-	 *      // OR (using the jquery extension)
-	 *   $('#search').coveo('logCustomEvent', customEventCause, metadata);
+	 * Coveo.logCustomEvent(document.querySelector('#search'), customEventCause, metadata);
 	 * ```
 	 *
-	 * 3. Send your custom search event<br/>**NB: If you want to log a `searchEvent`, be sure to always call the helper before you call `executeQuery`.**
+	 * Or, using the jQuery extension:
+	 * ```
+	 * $('#search').coveo('logCustomEvent', customEventCause, metadata);
+	 * ```
+	 * See {@link logCustomEvent}.
+	 *
+	 * ## Send a Custom Search Event
+	 *
+	 * NB: If you want to log a search event, be sure to always call the `logSearchEvent` helper before you call
+	 * `executeQuery`.
+	 *
 	 * ```
 	 * function myCustomButtonWasClicked() {
-	 *      Coveo.logSearchEvent(document.querySelector('#search'), customEventCause, metadata);
-	 *      Coveo.executeQuery(document.querySelector('#search'));
-	 *      // OR (using the jquery extension)
-	 *      $('#search').coveo('logSearchEvent', customEventCause, metadata);
-	 *      $('#search').coveo('executeQuery');
-	 * }
+	 *   Coveo.logSearchEvent(document.querySelector('#search'), customEventCause, metadata);
+	 *   Coveo.executeQuery(document.querySelector('#search'));
 	 * ```
 	 *
-	 * 4. Send a custom `searchAsYouType` event<br/>**NB: If you want to log a `searchAsYouTypeEvent`, be sure to always call the helper before you call `executeQuery`.**
+	 * Or, using the jQuery extension:
 	 * ```
 	 * function myCustomButtonWasClicked() {
-	 *      Coveo.logSearchAsYouTypeEvent(document.querySelector('#search'), customEventCause, metadata);
-	 *      Coveo.executeQuery(document.querySelector('#search'));
-	 *      // OR (using the jquery extension)
-	 *      $('#search').coveo('logSearchAsYouTypeEvent', customEventCause, metadata);
-	 *      $('#search').coveo('executeQuery');
+	 *   $('#search').coveo('logSearchEvent', customEventCause, metadata);
+	 *   $('#search').coveo('executeQuery');
 	 * }
 	 * ```
+	 * See {@link logSearchEvent}.
 	 *
-	 * 5. Send a custom click event.
+	 * ## Send a Custom Search-As-You-Type Event
+	 *
+	 * NB: If you want to log a search-as-you-type event, be sure to always call the `logSearchAsYouTypeEvent` helper before
+	 * you call `executeQuery`.
+	 *
+	 * ```
+	 * function myCustomButtonWasClicked() {
+	 *     Coveo.logSearchAsYouTypeEvent(document.querySelector('#search'), customEventCause, metadata);
+	 *     Coveo.executeQuery(document.querySelector('#search'));
+	 * ```
+	 *
+	 * Or, using the jQuery extension:
+	 * ```
+	 * function myCustomButtonWasClicked() {
+	 *   $('#search').coveo('logSearchAsYouTypeEvent', customEventCause, metadata);
+	 *   $('#search').coveo('executeQuery');
+	 * }
+	 * ```
+	 * See {@link logSearchAsYouTypeEvent}.
+	 *
+	 * ## Send a Custom Click Event
 	 * ```
 	 * Coveo.logClickEvent(document.querySelector('#search'), customEventCause, metadata, result);
-	 * // OR (using the jQuery extension)
+	 * ```
+	 *
+	 * Or, using the jQuery extension:
+	 * ```
 	 * $('#search').coveo('logClickEvent', customEventCause, metadata, result);
 	 * ```
+	 * See {@link logClickEvent}.
 	 */
 	var Analytics = (function (_super) {
 	    __extends(Analytics, _super);
 	    /**
-	     * Create a new Analytics component. Create the {@link IAnalyticsClient}.
+	     * Creates a new Analytics component. Creates the {@link IAnalyticsClient}.
 	     * @param element The HTMLElement on which the component will be instantiated.
-	     * @param options The options for the Analytics.
-	     * @param bindings The bindings that the component requires to function normally. If not set, it will automatically resolve them (with slower execution time).
+	     * @param options The options for the Analytics component.
+	     * @param bindings The bindings that the component requires to function normally. If not set, these will be
+	     * automatically resolved (with a slower execution time).
 	     */
 	    function Analytics(element, options, bindings) {
 	        var _this = this;
@@ -13263,47 +13316,67 @@ var playground =
 	        }
 	    }
 	    /**
-	     * Log a search event on the service, using a cause and a meta object.<br/>
-	     * Note that the event will be sent on the service when a query successfully return, not immediately after calling this method.<br/>
-	     * Normally, this should be called using the following "format": <br/>
-	     * usageAnalytics.logSearchEvent<SomeMeta>({name : 'foo', type : 'bar'}, <SomeMeta>{'key':'value'});<br/>
-	     * this.queryController.executeQuery();<br/>
-	     * This will queue up an analytics search event. Then the query is executed. The search event will be sent to the service when the query is successfully completed.<br/>
-	     * @param actionCause
-	     * @param meta Can be an empty object ( {} ).
+	     * Logs a search event on the service, using a {@link IAnalyticsActionCause} and a meta object.
+	     *
+	     * Note that the search event is sent to the service when a query successfully returns, not immediately after calling
+	     * this method.
+	     *
+	     * Normally, you should call this method using the following "format":
+	     *
+	     * ```
+	     * usageAnalytics.logSearchEvent<SomeMeta>({name: 'foo', type: 'bar'}, <SomeMeta>{'key':'value'});
+	     * this.queryController.executeQuery();
+	     * ```
+	     *
+	     * This queues up an analytics search event. Then, the query executes itself. The search event is sent to the service
+	     * when the query successfully returns.
+	     *
+	     * @param actionCause Describes the cause of the event.
+	     * @param meta The metadata which you can use to create custom dimensions. Can be an empty object ( `{}` ).
 	     */
 	    Analytics.prototype.logSearchEvent = function (actionCause, meta) {
 	        this.client.logSearchEvent(actionCause, meta);
 	    };
 	    /**
-	     * Log a search as you type event on the service, using a cause and a meta object.<br/>
-	     * This is extremely similar to a search event, except that search as you type, by definition, will be frequently called.<br/>
-	     * The `PendingSearchAsYouTypeEvent` will take care of logging only the "relevant" last event: After 5 seconds of no event logged, or after another search event is triggered somewhere else in the interface.<br/>
-	     * This is to ensure that we do not needlessly log every single partial query, which would make the reporting very confusing.
-	     * @param actionCause
-	     * @param meta Can be an empty object ( {} ).
+	     * Logs a search-as-you-type event on the service, using an {@link IAnalyticsActionCause} and a meta object.
+	     *
+	     * This method is very similar to the {@link logSearchEvent} method, except that logSearchAsYouType is, by definition,
+	     * more frequently called.
+	     *
+	     * The `PendingSearchAsYouTypeEvent` takes care of logging only the "relevant" last event: an event that occurs after
+	     * 5 seconds elapse without any event being logged, or an event that occurs after another part of the interface
+	     * triggers a search event.
+	     *
+	     * This avoids logging every single partial query, which would make the reporting very confusing.
+	     *
+	     * @param actionCause Describes the cause of the event.
+	     * @param meta The metadata which you can use to create custom dimensions. Can be an empty object ( `{}` ).
 	     */
 	    Analytics.prototype.logSearchAsYouType = function (actionCause, meta) {
 	        this.client.logSearchAsYouType(actionCause, meta);
 	    };
 	    /**
-	     * Log a custom event on the service. A custom event can be used to create customized report, or to track events which are not queries or document views.
-	     * @param actionCause
-	     * @param meta
-	     * @param element The HTMLElement that was interacted with for this custom event.
+	     * Logs a custom event on the service. You can use custom events to create custom reports, or to track events
+	     * that are not queries or document views.
+	     *
+	     * @param actionCause Describes the cause of the event.
+	     * @param meta The metadata which you can use to create custom dimensions. Can be an empty object ( `{}` ).
+	     * @param element The HTMLElement that the user has interacted with for this custom event.
 	     */
 	    Analytics.prototype.logCustomEvent = function (actionCause, meta, element) {
 	        if (element === void 0) { element = this.element; }
 	        this.client.logCustomEvent(actionCause, meta, element);
 	    };
 	    /**
-	     * Log a click event. A click event can be understood as a document view.<br/>
-	     * eg : Clicking on a result link of opening a quickview.<br/>
-	     * This event will be logged immediately on the service.
-	     * @param actionCause
-	     * @param meta Can be an empty object ( {} ).
-	     * @param result The result that was clicked.
-	     * @param element The HTMLElement that was clicked in the interface.
+	     * Logs a click event. You can understand click events as document views (e.g., clicking on a {@link ResultLink} or
+	     * opening a {@link Quickview}).
+	     *
+	     * This event is logged immediately on the service.
+	     *
+	     * @param actionCause Describes the cause of the event.
+	     * @param meta The metadata which you can use to create custom dimensions. Can be an empty object ( `{}` ).
+	     * @param result The result that the user has clicked.
+	     * @param element The HTMLElement that the user has clicked in the interface.
 	     */
 	    Analytics.prototype.logClickEvent = function (actionCause, meta, result, element) {
 	        if (element === void 0) { element = this.element; }
@@ -13422,46 +13495,65 @@ var playground =
 	         */
 	        user: ComponentOptions_1.ComponentOptions.buildStringOption(),
 	        /**
-	         * Specifies the name of the user display name for usage analytics logs.
+	         * Specifies the user display name for usage analytics logs.
 	         */
 	        userDisplayName: ComponentOptions_1.ComponentOptions.buildStringOption(),
 	        /**
-	         * Specifies the token used to gain access the analytics endpoint.<br/>
-	         * This attribute is optional, the component will use the search token by default.
+	         * Specifies the token you want to use to access the usage analytics endpoint.
+	         *
+	         * Default value is `undefined`, and the component will use the search token.
 	         */
 	        token: ComponentOptions_1.ComponentOptions.buildStringOption(),
 	        /**
-	         * Specifies the URL of the analytics logger for rare cases where it is different from the default usage analytics Coveo Cloud endpoint (https://usageanalytics.coveo.com).
+	         * Specifies the URL of the usage analytics logger to cover exceptional cases in which this location could differ
+	         * from the default Coveo Cloud Usage Analytics endpoint (https://usageanalytics.coveo.com).
+	         *
+	         * Default value is `https://usageanalytics.coveo.com`.
 	         */
 	        endpoint: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: AnalyticsEndpoint_1.AnalyticsEndpoint.DEFAULT_ANALYTICS_URI }),
 	        /**
-	         * Specifies whether the search user identities are converted in a unique hash in the logged analytics data to prevent analytics reviewers and managers to identify who performs which queries.<br/>
-	         * When enabled, the Coveo Analytics Platform can still properly identify sessions made by anonymous users, versus ones from users that are authenticated in some way with the site containing the search page.<br/>
-	         * The default value is `false`.
+	         * Specifies whether to convert search user identities to unique hash when logging analytics data, so that
+	         * analytics reviewers and managers will not be able to clearly identify which user is performing which query.
+	         *
+	         * When this option is set to `true`, the Coveo Usage Analytics Platform can still properly differentiate sessions
+	         * made by anonymous users from sessions made by users authenticated in some way on the site containing the search
+	         * page.
+	         *
+	         * Default value is `false`.
 	         */
 	        anonymous: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
 	        /**
-	         * Sets the Search Hub dimension on the search events.<br/>
-	         * The Search Hub dimension is typically a name that refers to a specific search page. For example, one could use the CommunitySite value to refer to a search page on a company's public community site.<br/>
-	         * The default value is default.
+	         * Sets the Search Hub dimension on the search events.
+	         *
+	         * The Search Hub dimension is typically a name that refers to a specific search page. For example, you could use
+	         * the `CommunitySite` value to refer to a search page on a company's public community site.
+	         *
+	         * Default value is `default`.
 	         */
 	        searchHub: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'default' }),
 	        /**
-	         * Specifies the name of the split test run that the search page is a part of.<br/>
-	         * This dimension can be used to perform A/B testing using different search page layouts and features, inside the Coveo Query pipeline.<br/>
-	         * By default, this value is not specified and no split test run name is reported to the Coveo Analytics Platform.
+	         * Specifies the name of the split test run that the search page is part of.
+	         *
+	         * You can use this dimension to perform A/B testing using different search page layouts and features inside the
+	         * Coveo Query pipeline.
+	         *
+	         * Default value is `undefined` and no split test run name is reported to the Coveo Usage Analytics Platform.
 	         */
 	        splitTestRunName: ComponentOptions_1.ComponentOptions.buildStringOption(),
 	        /**
-	         * Specifies the version name for the page when a split test run is active.<br/>
-	         * When reporting on A/B testing analytics data, this value specifies the test run version name that has been presented to the user.<br/>
-	         * By default, this value is not specified.
+	         * Specifies the version name for the page when a split test run is active.
+	         *
+	         * When reporting on A/B testing analytics data, this value specifies the test run version name that was
+	         * presented to the user.
 	         */
 	        splitTestRunVersion: ComponentOptions_1.ComponentOptions.buildStringOption(),
 	        sendToCloud: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
 	        /**
-	         * Specifies the organization bound to the access token. This is necessary when using an access token because it can be associated with more than organization.
-	         * If this parameter is not specified, it will fallback on the organization used for the search endpoint.
+	         * Specifies the organization bound to the access token. This is necessary when using an access token, because a
+	         * single access token can be associated to more than one organization.
+	         *
+	         * Default value is `undefined`, and the value of this parameter will fallback to the organization used for the
+	         * search endpoint.
 	         */
 	        organization: ComponentOptions_1.ComponentOptions.buildStringOption()
 	    };
@@ -14456,6 +14548,8 @@ var playground =
 	var Dom_1 = __webpack_require__(3);
 	var ResponsiveRecommendation_1 = __webpack_require__(100);
 	var coveo_analytics_1 = __webpack_require__(32);
+	var RegisteredNamedMethods_1 = __webpack_require__(84);
+	var InitializationEvents_1 = __webpack_require__(58);
 	/**
 	 * This component is a {@link SearchInterface} that will display recommendations based on the user history.
 	 * To get recommendations, the page view script must also be included in the page. View: https://github.com/coveo/coveo.analytics.js
@@ -14478,6 +14572,8 @@ var playground =
 	        if (!this.options.id) {
 	            this.generateDefaultId();
 	        }
+	        // This is done to allow the component to be included in another search interface without triggering the parent events.
+	        this.preventEventPropagation();
 	        if (this.options.mainSearchInterface) {
 	            this.bindToMainSearchInterface();
 	        }
@@ -14485,8 +14581,6 @@ var playground =
 	        Dom_1.$$(this.element).on(QueryEvents_1.QueryEvents.querySuccess, function (e, args) { return _this.handleRecommendationQuerySuccess(args); });
 	        Dom_1.$$(this.element).on(QueryEvents_1.QueryEvents.noResults, function (e, args) { return _this.handleRecommendationNoResults(); });
 	        Dom_1.$$(this.element).on(QueryEvents_1.QueryEvents.queryError, function (e, args) { return _this.handleRecommendationQueryError(); });
-	        // This is done to allow the component to be included in another search interface without triggering the parent events.
-	        this.preventEventPropagation();
 	        this.historyStore = new coveo_analytics_1.history.HistoryStore();
 	        ResponsiveRecommendation_1.ResponsiveRecommendation.init(this.root, this, options);
 	    }
@@ -14514,7 +14608,37 @@ var playground =
 	        this.element.style.display = this.displayStyle;
 	    };
 	    Recommendation.prototype.bindToMainSearchInterface = function () {
+	        this.bindComponentOptionsModelToMainSearchInterface();
+	        this.bindQueryEventsToMainSearchInterface();
+	    };
+	    Recommendation.prototype.bindComponentOptionsModelToMainSearchInterface = function () {
 	        var _this = this;
+	        // Try to fetch the componentOptions from the main search interface.
+	        // Since we do not know which interface is init first (recommendation or full search interface)
+	        // add a mechanism that waits for the full search interface to be correctly initialized
+	        // then, set the needed values on the component options model.
+	        var searchInterfaceComponent = RegisteredNamedMethods_1.get(this.options.mainSearchInterface, SearchInterface_1.SearchInterface);
+	        var alreadyInitialized = searchInterfaceComponent != null;
+	        var onceInitialized = function () {
+	            var mainSearchInterfaceOptionsModel = searchInterfaceComponent.getBindings().componentOptionsModel;
+	            _this.componentOptionsModel.setMultiple(mainSearchInterfaceOptionsModel.getAttributes());
+	            Dom_1.$$(_this.options.mainSearchInterface).on(_this.componentOptionsModel.getEventName(Model_1.MODEL_EVENTS.ALL), function () {
+	                _this.componentOptionsModel.setMultiple(mainSearchInterfaceOptionsModel.getAttributes());
+	            });
+	        };
+	        if (alreadyInitialized) {
+	            onceInitialized();
+	        }
+	        else {
+	            Dom_1.$$(this.options.mainSearchInterface).on(InitializationEvents_1.InitializationEvents.afterComponentsInitialization, function () {
+	                searchInterfaceComponent = RegisteredNamedMethods_1.get(_this.options.mainSearchInterface, SearchInterface_1.SearchInterface);
+	                onceInitialized();
+	            });
+	        }
+	    };
+	    Recommendation.prototype.bindQueryEventsToMainSearchInterface = function () {
+	        var _this = this;
+	        // Whenever a query sucessfully returns on the full search interface, refresh the recommendation component.
 	        Dom_1.$$(this.options.mainSearchInterface).on(QueryEvents_1.QueryEvents.querySuccess, function (e, args) {
 	            _this.mainInterfaceQuery = args;
 	            _this.mainQuerySearchUID = args.results.searchUid;
@@ -14583,6 +14707,7 @@ var playground =
 	        this.preventEventPropagationOn(AnalyticsEvents_1.AnalyticsEvents);
 	        this.preventEventPropagationOn(BreadcrumbEvents_1.BreadcrumbEvents);
 	        this.preventEventPropagationOn(QuickviewEvents_1.QuickviewEvents);
+	        this.preventEventPropagationOn(InitializationEvents_1.InitializationEvents);
 	        this.preventEventPropagationOn(this.getAllModelEvents());
 	    };
 	    Recommendation.prototype.preventEventPropagationOn = function (eventType, eventName) {
@@ -20396,6 +20521,10 @@ var playground =
 	            facetSlider: this
 	        });
 	        this.element.appendChild(this.facetHeader.build());
+	    };
+	    FacetSlider.prototype.disable = function () {
+	        _super.prototype.disable.call(this);
+	        Dom_1.$$(this.element).addClass('coveo-disabled-empty');
 	    };
 	    /**
 	     * Reset the facet (meaning that you need to set the range value as inactive).
@@ -43142,7 +43271,7 @@ var playground =
 	                virtualTabSection.el.appendChild(tab.cloneNode(true));
 	            });
 	        }
-	        this.coveoRoot.append(virtualTabSection.el);
+	        virtualTabSection.insertBefore(this.tabSection.el);
 	        ResponsiveComponentsUtils_1.ResponsiveComponentsUtils.deactivateSmallTabs(this.coveoRoot);
 	        var isOverflowing = this.isOverflowing(virtualTabSection.el);
 	        ResponsiveComponentsUtils_1.ResponsiveComponentsUtils.activateSmallTabs(this.coveoRoot);
@@ -43933,6 +44062,7 @@ var playground =
 	    ResultList.prototype.buildResult = function (result) {
 	        Assert_1.Assert.exists(result);
 	        QueryUtils_1.QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), result);
+	        QueryUtils_1.QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, result);
 	        ResultList.resultCurrentlyBeingRendered = result;
 	        var resultElement = this.options.resultTemplate.instantiateToElement(result, true, true, { layout: this.options.layout });
 	        if (resultElement != null) {

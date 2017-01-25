@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IAnalyticsActionCause | Coveo JavaScript Search Framework - Reference Documentation</title>
+	<title>ISizeOptions | Coveo JavaScript Search Framework - Reference Documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'/>
@@ -93,13 +93,13 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="ianalyticsactioncause.html" class="tsd-kind-icon">IAnalytics<wbr>Action<wbr>Cause</a>
+						<a href="isizeoptions.html" class="tsd-kind-icon">ISize<wbr>Options</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="ianalyticsactioncause.html#name" class="tsd-kind-icon">name</a>
+								<a href="isizeoptions.html#base" class="tsd-kind-icon">base</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="ianalyticsactioncause.html#type" class="tsd-kind-icon">type</a>
+								<a href="isizeoptions.html#precision" class="tsd-kind-icon">precision</a>
 							</li>
 						</ul>
 					</li>
@@ -120,18 +120,17 @@
 							<a href="../globals.html">Globals</a>
 						</li>
 						<li>
-							<a href="ianalyticsactioncause.html">IAnalyticsActionCause</a>
+							<a href="isizeoptions.html">ISizeOptions</a>
 						</li>
 					</ul>
-					<h1>Interface IAnalyticsActionCause</h1>
+					<h1>Interface ISizeOptions</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The IAnalyticsActionCause interface describes the cause of an event for the analytics service.</p>
+						<p>Available options for the size templateHelpers.</p>
 					</div>
-					<p>See the <a href="../components/analytics.html">Analytics</a> component</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -144,8 +143,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsactioncause.html#name" class="tsd-kind-icon">name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsactioncause.html#type" class="tsd-kind-icon">type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="isizeoptions.html#base" class="tsd-kind-icon">base</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="isizeoptions.html#precision" class="tsd-kind-icon">precision</a></li>
 							</ul>
 						</section>
 					</div>
@@ -154,43 +153,37 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="name" class="tsd-anchor"></a>
-					<h3>name</h3>
-					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="base" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> base</h3>
+					<div class="tsd-signature tsd-kind-icon">base<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L15">src/ui/Analytics/AnalyticsActionListMeta.ts
-							:15</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L304">src/ui/Templates/CoreHelpers.ts
+							:304</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the name of the event. While you can actually set this property to any arbitrary string value, its value
-								should uniquely identify the precise action that triggers the event. Thus, each individual event should have its
-							own unique <code>name</code> value.</p>
+							<p>The base into which to format the value.</p>
 						</div>
-						<p>Example: <code>searchBoxSubmit</code>, <code>resultSort</code>, etc.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="type" class="tsd-anchor"></a>
-					<h3>type</h3>
-					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="precision" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> precision</h3>
+					<div class="tsd-signature tsd-kind-icon">precision<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Analytics/AnalyticsActionListMeta.ts#L24">src/ui/Analytics/AnalyticsActionListMeta.ts
-							:24</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L308">src/ui/Templates/CoreHelpers.ts
+							:308</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the type of the event. While you can actually set this property to any arbitrary string value, it should
-								describe the general category of the event. Thus, more than one event can have the same <code>type</code> value, which makes
-							it possible to group events with identical types when doing reporting.</p>
+							<p>The precision to use to format the size.</p>
 						</div>
-						<p>Example: All search box related events could have <code>searchbox</code> as their <code>type</code> value.</p>
 					</div>
 				</section>
 			</section>
@@ -198,7 +191,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">IAnalyticsActionCause</span>
+						<span class="target">ISizeOptions</span>
 					</li>
 				</ul>
 			</section>
