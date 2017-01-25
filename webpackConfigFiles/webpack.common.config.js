@@ -20,7 +20,7 @@ let globalizePath = __dirname + '/../lib/globalize.min.js';
 
 let sassLoader = { test: /\.scss/ };
 if (live) {
-  sassLoader['loader'] = ExtractTextPlugin.extract('style-loader', '!css-loader!resolve-url-loader!sass-loader?sourceMap');
+  sassLoader['loader'] = ExtractTextPlugin.extract('style-loader', 'css-loader!resolve-url-loader!sass-loader?sourceMap');
 } else {
   sassLoader['loaders'] = ['style-loader', 'css-loader', 'resolve-url-loader', 'sass-loader?sourceMap'];
 }
@@ -82,7 +82,7 @@ module.exports = {
       },
       sassLoader,
       {
-        test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'url-loader', query: {limit: '1', name: '[path][name].[ext]'}
+        test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'url-loader', query: {limit: '1', name: '[path][name].[ext]', publicPath: 'js/'}
       }
     ]
   },
