@@ -13,6 +13,7 @@ import {QueryStateModel, QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateMo
 import {MODEL_EVENTS, IAttributesChangedEventArg} from '../../models/Model';
 import {analyticsActionCauseList, IAnalyticsResultsLayoutChange} from '../Analytics/AnalyticsActionListMeta';
 import {IQueryResults} from '../../rest/QueryResults';
+import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
 
 export interface IResultLayoutOptions {
 }
@@ -160,12 +161,14 @@ export class ResultLayout extends Component {
   }
 
   private addButton(layout?: string) {
-    const btn = $$('span', { className: 'coveo-result-layout-selector' }, layout);
+    const btn = $$('span', { className: 'coveo-result-layout-selector', tabindex: 0 }, layout);
     btn.prepend($$('span', { className: `coveo-icon coveo-sprites-${layout}-layout` }).el);
     if (layout === this.currentLayout) {
       btn.addClass('coveo-selected');
     }
-    btn.on('click', () => this.changeLayout(<ValidLayout>layout));
+    const activateAction = () => this.changeLayout(<ValidLayout>layout);
+    btn.on('click', activateAction);
+    btn.on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, activateAction));
     $$(this.element).append(btn.el);
     this.buttons[layout] = btn.el;
   }

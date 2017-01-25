@@ -61,7 +61,7 @@ export class Backdrop extends Component {
      *
      * Default value is `false`.
      */
-    overlayGradient: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'overlayColor' })
+    overlayGradient: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'overlayColor' }),
   };
 
   /**
@@ -72,9 +72,11 @@ export class Backdrop extends Component {
    * resolved (with a slower execution time).
    * @param result The {@link IQueryResult}.
    */
-  constructor(public element: HTMLElement, public options?: IBackdropOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
+  constructor(public element: HTMLElement, public options?: IBackdropOptions, bindings?: IComponentBindings, public result?: IQueryResult, public _window?: Window) {
     super(element, Backdrop.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Backdrop, options);
+
+    this._window = this._window || window;
 
     let background = '';
     if (this.options.overlayColor) {
@@ -88,6 +90,7 @@ export class Backdrop extends Component {
     this.element.style.background = background;
     this.element.style.backgroundSize = 'cover';
 
+    // Initialize components inside
     let initOptions = this.searchInterface.options.originalOptionsObject;
     let resultComponentBindings: IResultsComponentBindings = _.extend({}, this.getBindings(), {
       resultElement: element

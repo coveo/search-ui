@@ -153,6 +153,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   public numberOfValuesToShow: number;
   public facetQueryController: HierarchicalFacetQueryController;
   public topLevelHierarchy: IValueHierarchy[];
+  public shouldReshuffleFacetValuesClientSide = false;
 
   private valueHierarchy: { [facetValue: string]: IValueHierarchy };
   private firstPlacement = true;
@@ -465,6 +466,11 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
     this.triggerNewQuery();
   }
 
+  protected triggerUpdateDeltaQuery(facetValues: FacetValue[]) {
+    this.shouldReshuffleFacetValuesClientSide = this.keepDisplayedValuesNextTime;
+    super.triggerUpdateDeltaQuery(facetValues);
+  }
+
   protected updateSearchInNewDesign(moreValuesAvailable = true) {
     // We always want to show search for hierarchical facet :
     // It's useful since child values are folded under their parent most of the time
@@ -526,6 +532,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   protected rebuildValueElements() {
+    this.shouldReshuffleFacetValuesClientSide = this.shouldReshuffleFacetValuesClientSide || this.keepDisplayedValuesNextTime;
     this.numberOfValues = Math.max(this.numberOfValues, 10000);
     this.processHierarchy();
     this.setValueListContent();
@@ -534,6 +541,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
     this.checkForOrphans();
     this.checkForNewUnselectedChild();
     this.crop();
+    this.shouldReshuffleFacetValuesClientSide = false;
   }
 
   protected initFacetValuesList() {
