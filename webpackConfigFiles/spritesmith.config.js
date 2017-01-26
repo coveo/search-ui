@@ -7,7 +7,7 @@ module.exports = new SpritesmithPlugin({
         glob: '{retina,sprites}/*.png'
       },
       target: {
-        image: path.resolve(__dirname, '../bin/image/spritesNew1.png'),
+        image: path.resolve(__dirname, '../bin/image/spritesNew.png'),
         css: [path.resolve(__dirname, '../bin/sass/sprites.scss'),
               [path.resolve(__dirname, '../bin/css/allSprites.scss'), {
                 format: 'css',
@@ -19,7 +19,7 @@ module.exports = new SpritesmithPlugin({
               }]]
       },
       apiOptions: {
-        cssImageRef: '../image/spritesNew1.png',
+        cssImageRef: '../image/spritesNew.png',
       },
       retina: {
         classifier: function(spritePath) {
@@ -43,6 +43,6 @@ module.exports = new SpritesmithPlugin({
           return spriteDescription;
         },
         targetImage: path.resolve(__dirname, '../bin/image/retinaNew1.png'),
-        cssImageRef: '../image/retinaNew1.png'
+        cssImageRef: '../image/retinaNew.png'
       }
     })

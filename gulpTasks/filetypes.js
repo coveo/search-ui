@@ -57,7 +57,7 @@ function generateSass(json, legacy) {
 
   if (!legacy) {
     sass += '@import "' + __dirname + '/../bin/sass/sprites";\n';
-    sass += '@import "' + __dirname + '/../bin/css/allSprites.scss";\n';
+    sass += '@include sprites($spritesheet-sprites);\n';
   }
   sass += '@mixin GeneratedIcons() {\n';
   sass += '  .coveo-icon-caption-overlay { display: none; }';
