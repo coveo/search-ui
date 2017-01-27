@@ -42,6 +42,13 @@ export function ResultLayoutTest() {
         expect(() => test.cmp.changeLayout('table')).toThrow();
       });
 
+      it('should put tabindex=0 on each of the layout buttons', function () {
+        const children = test.cmp.element.children;
+        for (let i = 0; i < children.length; ++i) {
+          expect(children[i].getAttribute('tabindex')).toBe('0');
+        }
+      });
+
       it('hides on querySuccess when there are 0 results', function () {
         let spy = jasmine.createSpy('hideSpy');
         test.cmp['hide'] = spy;
