@@ -8,6 +8,9 @@ import {Tab} from '../Tab/Tab';
 import {ResponsiveFacets} from './ResponsiveFacets';
 import {ResultLayout} from '../ResultLayout/ResultLayout';
 import {ResponsiveResultLayout} from './ResponsiveResultLayout';
+import {ResultLink} from '../ResultLink/ResultLink';
+import {ResultList} from '../ResultList/ResultList';
+import {ResponsiveDefaultResultTemplate} from './ResponsiveDefaultResultTemplate';
 
 export interface IResponsiveComponentOptions {
   enableResponsiveMode?: boolean;
@@ -43,6 +46,7 @@ export class ResponsiveComponentsManager {
   private responsiveComponents: IResponsiveComponent[] = [];
   private searchBoxElement: HTMLElement;
   private responsiveFacets: ResponsiveFacets;
+  private responsiveDefaultResultTemplate: ResponsiveDefaultResultTemplate;
   private responsiveResultLayouts: ResponsiveResultLayout;
   private dropdownHeadersWrapper: Dom;
   private searchInterface: SearchInterface;
@@ -129,6 +133,10 @@ export class ResponsiveComponentsManager {
         this.responsiveResultLayouts = <ResponsiveResultLayout>responsiveComponent;
       }
 
+      if (this.isDefaultResultTemplateId(ID)) {
+        this.responsiveDefaultResultTemplate = <ResponsiveDefaultResultTemplate>responsiveComponent;
+      }
+
       if (this.isTabs(ID)) {
         this.responsiveComponents.push(responsiveComponent);
       } else {
@@ -139,6 +147,14 @@ export class ResponsiveComponentsManager {
 
     if (this.isFacet(ID)) {
       this.responsiveFacets.registerComponent(component);
+    }
+
+    if(this.isDefaultResultTemplateId(ID)) {
+      this.responsiveDefaultResultTemplate.registerComponent(<ResultList>component);
+    }
+
+    if (this.isDefaultResultTemplateId(ID)) {
+
     }
 
     if (this.isResultLayout(ID)) {
@@ -193,6 +209,10 @@ export class ResponsiveComponentsManager {
 
   private isResultLayout(ID: string): boolean {
     return ID == ResultLayout.ID;
+  }
+
+  private isDefaultResultTemplateId(ID: string): boolean {
+    return ID == ResultList.ID;
   }
 
   private isActivated(ID: string): boolean {

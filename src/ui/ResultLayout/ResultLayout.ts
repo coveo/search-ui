@@ -14,13 +14,14 @@ import {MODEL_EVENTS, IAttributesChangedEventArg} from '../../models/Model';
 import {analyticsActionCauseList, IAnalyticsResultsLayoutChange} from '../Analytics/AnalyticsActionListMeta';
 import {IQueryResults} from '../../rest/QueryResults';
 import {ResponsiveResultLayout} from '../ResponsiveComponents/ResponsiveResultLayout';
+import {Utils} from '../../utils/Utils';
 
 interface IActiveLayouts {
   button: {
     el: HTMLElement;
     visible: boolean;
   }
-  active: boolean;
+  enabled: boolean;
 }
 
 export interface IResultLayoutOptions {
@@ -55,7 +56,7 @@ export class ResultLayout extends Component {
   public currentLayout: string;
 
   private currentActiveLayouts: {[key: string]: IActiveLayouts};
-  private buttons: { [key: string]: {el: HTMLElement, visible: boolean}};
+  //private buttons: { [key: string]: {el: HTMLElement, visible: boolean}};
   private resultLayoutSection: HTMLElement;
 
   /**
@@ -78,7 +79,7 @@ export class ResultLayout extends Component {
     super(element, ResultLayout.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultLayout, options);
 
-    this.buttons = {};
+    this.currentActiveLayouts = {};
 
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.LAYOUT, this.handleQueryStateChanged.bind(this));
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
@@ -130,41 +131,56 @@ export class ResultLayout extends Component {
     return this.currentLayout;
   }
 
-  public disableLayout(layout: ValidLayout) {
-    if (this.isLayoutDisplayedByButton(layout)) {
-      this.hideButton(layout);
-      if (this.currentLayout == layout) {
-        let remainingValidLayouts = _.without(_.keys(this.buttons), layout);
-        if (remainingValidLayouts && remainingValidLayouts[0]) {
-          this.changeLayout(<ValidLayout>remainingValidLayouts[0]);
-        }
+  public disableLayouts(layouts: ValidLayout[]) {
+    if (Utils.isNonEmptyArray(layouts)) {
+      _.each(layouts, (layout)=> {
+        this.disableLayout(layout);
+      });
+
+      let remainingValidLayouts = _.difference(_.keys(this.currentActiveLayouts), layouts);
+      if (remainingValidLayouts && remainingValidLayouts[0]) {
+        this.changeLayout(<ValidLayout>remainingValidLayouts[0]);
+      } else {
+        this.logger.error('Cannot disable the last valid layout ... Re-enabling the first one possible');
+        let firstPossibleValidLayout = <ValidLayout>_.keys(this.currentActiveLayouts)[0]
+        this.enableLayout(firstPossibleValidLayout);
+        this.setLayout(firstPossibleValidLayout);
       }
     }
   }
 
-  public enableLayout(layout: ValidLayout) {
+  public enableLayouts(layouts: ValidLayout[]) {
+    _.each(layouts, (layout)=> {
+      this.enableLayout(layout);
+    });
+  }
+
+  private disableLayout(layout: ValidLayout) {
     if (this.isLayoutDisplayedByButton(layout)) {
-      this.showButton(layout);
-      if (this.shouldShowSelector()) {
-        this.show();
-      }
+      this.hideButton(layout);
     }
   }
+
+  private enableLayout(layout: ValidLayout) {
+    if (this.isLayoutDisplayedByButton(layout)) {
+      this.showButton(layout);
+      this.updateSelectorAppearance();
+    }
+  }
+
 
   private hideButton(layout: ValidLayout) {
     if (this.isLayoutDisplayedByButton(layout)) {
-      let btn = this.buttons[<string>layout];
+      let btn = this.currentActiveLayouts[<string>layout].button;
       $$(btn.el).hide();
       btn.visible = false;
-      if (!this.shouldShowSelector()) {
-        this.hide();
-      }
+      this.updateSelectorAppearance();
     }
   }
 
   private showButton(layout: ValidLayout) {
     if (this.isLayoutDisplayedByButton(layout)) {
-      let btn = this.buttons[<string>layout];
+      let btn = this.currentActiveLayouts[<string>layout].button;
       $$(btn.el).show();
       btn.visible = true;
     }
@@ -173,9 +189,9 @@ export class ResultLayout extends Component {
   private setLayout(layout: ValidLayout, results?: IQueryResults) {
     this.isLayoutDisplayedByButton(layout);
     if (this.currentLayout) {
-      $$(this.buttons[this.currentLayout].el).removeClass('coveo-selected');
+      $$(this.currentActiveLayouts[this.currentLayout].button.el).removeClass('coveo-selected');
     }
-    $$(this.buttons[layout].el).addClass('coveo-selected');
+    $$(this.currentActiveLayouts[layout].button.el).addClass('coveo-selected');
     this.currentLayout = layout;
     $$(this.element).trigger(ResultListEvents.changeLayout, <IChangeLayoutEventArgs>{ layout: layout, results: results });
   }
@@ -190,16 +206,24 @@ export class ResultLayout extends Component {
 
   private handleQueryStateChanged(args?: IAttributesChangedEventArg) {
     const modelLayout = this.getModelValue();
-    const newLayout = _.find(_.keys(this.buttons), l => l === modelLayout);
+    const newLayout = _.find(_.keys(this.currentActiveLayouts), l => l === modelLayout);
     if (newLayout !== undefined) {
       this.setLayout(<ValidLayout>newLayout);
     } else {
-      this.setLayout(<ValidLayout>_.keys(this.buttons)[0]);
+      this.setLayout(<ValidLayout>_.keys(this.currentActiveLayouts)[0]);
     }
   }
 
   private handleQueryError(args: IQueryErrorEventArgs) {
     this.hide();
+  }
+
+  private updateSelectorAppearance() {
+    if (this.shouldShowSelector()) {
+      this.show();
+    } else {
+      this.hide();
+    }
   }
 
   private populate() {
@@ -222,7 +246,13 @@ export class ResultLayout extends Component {
     }
     btn.on('click', () => this.changeLayout(<ValidLayout>layout));
     $$(this.element).append(btn.el);
-    this.buttons[layout] = {el: btn.el, visible: true};
+    this.currentActiveLayouts[layout] = {
+      button: {
+        visible: true,
+        el: btn.el
+      },
+      enabled: true
+    };
   }
 
   private hide() {
@@ -244,11 +274,11 @@ export class ResultLayout extends Component {
   }
 
   private shouldShowSelector() {
-    return _.keys(this.buttons).length > 1 && _.filter(this.buttons, (btn)=> btn.visible).length > 1;
+    return _.keys(this.currentActiveLayouts).length > 1 && _.filter(this.currentActiveLayouts, (activeLayout: IActiveLayouts)=> activeLayout.button.visible).length > 1;
   }
 
   private isLayoutDisplayedByButton(layout: ValidLayout) {
-    return _.contains(_.keys(this.buttons), layout);
+    return _.contains(_.keys(this.currentActiveLayouts), layout);
   }
 }
 

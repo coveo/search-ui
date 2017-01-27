@@ -7,6 +7,7 @@ import {analyticsActionCauseList, IAnalyticsResultsPerPageMeta, IAnalyticsAction
 import {Assert} from '../../misc/Assert';
 import {$$} from '../../utils/Dom';
 import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
+import {DeviceUtils} from '../../utils/DeviceUtils';
 
 export interface IResultsPerPageOptions {
   choicesDisplayed?: number[];
@@ -25,15 +26,26 @@ export class ResultsPerPage extends Component {
    */
   static options: IResultsPerPageOptions = {
     /**
-     * Specifies the possible values of the number of results to display per page.<br/>
-     * The default value is 10, 25, 50, 100.
+     * Specifies the possible values of the number of results to display per page.
+     *
+     * On mobile, this default to 10, 25, 50
+     *
+     * On desktop this default to 10, 25, 50, 100
      */
     choicesDisplayed: ComponentOptions.buildCustomListOption<number[]>(function (list: string[]) {
       let values = _.map(list, function (value) {
         return parseInt(value, 10);
       });
       return values.length == 0 ? null : values;
-    }, { defaultValue: [10, 25, 50, 100] }),
+    }, {
+      defaultFunction: () => {
+        if (DeviceUtils.isMobileDevice()) {
+          return [10, 25, 50];
+        } else {
+          return [10, 25, 50, 100];
+        }
+      },
+    }),
     /**
      * Specifies the default value for the number of results to display per page.<br/>
      * The default value is the first value of the choicesDisplayed parameter.

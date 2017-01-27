@@ -22,8 +22,9 @@ import {Utils} from '../../utils/Utils';
 import {DomUtils} from '../../utils/DomUtils';
 import {Recommendation} from '../Recommendation/Recommendation';
 import {DefaultRecommendationTemplate} from '../Templates/DefaultRecommendationTemplate';
-import {ValidLayout} from '../ResultLayout/ResultLayout';
+import {ValidLayout, ResultLayout} from '../ResultLayout/ResultLayout';
 import {TemplateList} from '../Templates/TemplateList';
+import {ResponsiveDefaultResultTemplate} from '../ResponsiveComponents/ResponsiveDefaultResultTemplate';
 
 export interface IResultListOptions {
   resultContainer?: HTMLElement;
@@ -216,12 +217,8 @@ export class ResultList extends Component {
   constructor(public element: HTMLElement, public options?: IResultListOptions, public bindings?: IComponentBindings, elementClassId: string = ResultList.ID) {
     super(element, elementClassId, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultList, options);
-    
-    if (this.options.resultTemplate instanceof TemplateList) {
-      _.each((<TemplateList>this.options.resultTemplate).templates, (tmpl: Template)=> {
-        tmpl.layout = <ValidLayout>this.options.layout;
-      });
-    }
+
+
     Assert.exists(element);
     Assert.exists(this.options);
     Assert.exists(this.options.resultContainer);
@@ -230,6 +227,7 @@ export class ResultList extends Component {
     Assert.exists(this.options.infiniteScrollContainer);
 
     this.showOrHideElementsDependingOnState(false, false);
+
 
     this.bind.onRootElement<INewQueryEventArgs>(QueryEvents.newQuery, (args: INewQueryEventArgs) => this.handleNewQuery());
     this.bind.onRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
@@ -245,9 +243,32 @@ export class ResultList extends Component {
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, () => this.handlePageChanged());
 
     $$(this.options.resultContainer).addClass('coveo-result-list-container');
-    $$(this.options.resultContainer).addClass(`coveo-${this.options.layout}-layout`);
+    this.setupTemplatesVersusLayouts();
 
     $$(this.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => args.layouts.push(this.options.layout));
+  }
+
+  private setupTemplatesVersusLayouts() {
+    let layoutClassToAdd = `coveo-${this.options.layout}-layout-container`;
+
+    let layoutSelector = $$(this.root).find(`.${Component.computeCssClassName(ResultLayout)}`);
+    if (!layoutSelector) {
+      if (this.options.layout != 'list') {
+        this.disable();
+      }
+    }
+
+    if (this.options.resultTemplate instanceof TemplateList) {
+      _.each((<TemplateList>this.options.resultTemplate).templates, (tmpl: Template)=> {
+        if (!tmpl.layout) {
+          tmpl.layout = <ValidLayout>this.options.layout;
+        }
+      });
+      $$(this.options.resultContainer).addClass(layoutClassToAdd);
+    } else if (this.options.resultTemplate instanceof DefaultResultTemplate) {
+      //$$(this.options.resultContainer).addClass(layoutClassToAdd);
+      ResponsiveDefaultResultTemplate.init(this.root, this, this.options);
+    }
   }
 
   /**
@@ -306,6 +327,7 @@ export class ResultList extends Component {
     });
     if (resultElement != null) {
       Component.bindResultToElement(resultElement, result);
+      $$(resultElement).addClass('')
     }
     this.autoCreateComponentsInsideResult(resultElement, result);
     return resultElement;

@@ -43,12 +43,8 @@ export class ResponsiveResultLayout implements IResponsiveComponent {
   private enableAndDisableLayout(validLayouts: ValidLayout[]) {
     let needToDisable = _.difference<any>(ResultLayout.validLayouts, validLayouts);
     let needToEnable = _.intersection<any>(ResultLayout.validLayouts, validLayouts);
-    _.each(needToDisable, (toDisable: ValidLayout)=> {
-      this.resultLayout.disableLayout(toDisable);
-    });
-    _.each(needToEnable, (toEnable: ValidLayout)=> {
-      this.resultLayout.enableLayout(toEnable);
-    });
+    this.resultLayout.disableLayouts(needToDisable);
+    this.resultLayout.enableLayouts(needToEnable);
   }
 
   private needSmallMode(): boolean {

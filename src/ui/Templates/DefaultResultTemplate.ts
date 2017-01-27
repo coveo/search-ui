@@ -28,13 +28,21 @@ export class DefaultResultTemplate extends Template {
     queryResult = _.extend({}, queryResult, UnderscoreTemplate.templateHelpers);
 
     // Put templates with conditions first
-    const templates = _.chain(TemplateCache.getDefaultTemplates())
+    let templates = _.chain(TemplateCache.getDefaultTemplates())
       .map(name => TemplateCache.getTemplate(name))
                        .sortBy(template => template.condition == null)
                        .sortBy(template => template.fieldsToMatch == null)
                        .value();
 
-    console.log(templates);
+    // For the DefaultResultTemplate, we want to display card only in mobile
+    // The default list template are not adapted to mobile.
+    if (instantiateOptions.responsiveComponents.isSmallScreenWidth()) {
+      templates = _.filter(templates, (tmpl)=> tmpl.layout == 'card');
+      merged.currentLayout = 'card';
+      this.layout = 'card';
+    } else {
+      this.layout = instantiateOptions.currentLayout;
+    }
 
     for (let i = 0; i < templates.length; i++) {
       var result = templates[i].instantiateToString(queryResult, merged);
