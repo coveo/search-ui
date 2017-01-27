@@ -12,6 +12,7 @@ import {ResponsiveDropdownContent} from './ResponsiveDropdown/ResponsiveDropdown
 import {ResponsiveDropdownHeader} from './ResponsiveDropdown/ResponsiveDropdownHeader';
 import {QueryEvents, IQuerySuccessEventArgs} from '../../events/QueryEvents';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
+import {ResponsiveComponents} from './ResponsiveComponents';
 
 export class ResponsiveFacets implements IResponsiveComponent {
   public static DEBOUNCE_SCROLL_WAIT = 250;
@@ -47,7 +48,7 @@ export class ResponsiveFacets implements IResponsiveComponent {
     this.registerQueryEvents();
     this.logger = new Logger(this);
     if (Utils.isNullOrUndefined(options.responsiveBreakpoint)) {
-      this.breakpoint = this.searchInterface.responsiveComponents.getMediumScreenWidth();
+      this.breakpoint = this.searchInterface ? this.searchInterface.responsiveComponents.getMediumScreenWidth() : new ResponsiveComponents().getMediumScreenWidth();
     } else {
       this.breakpoint = options.responsiveBreakpoint;
     }

@@ -10,6 +10,7 @@ import {Tab} from'../Tab/Tab';
 import {IResponsiveComponent, ResponsiveComponentsManager, IResponsiveComponentOptions} from './ResponsiveComponentsManager';
 import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
 import {l} from '../../strings/Strings';
+import {ResponsiveComponents} from './ResponsiveComponents';
 
 export class ResponsiveTabs implements IResponsiveComponent {
 
@@ -69,7 +70,8 @@ export class ResponsiveTabs implements IResponsiveComponent {
   };
 
   private needSmallMode(): boolean {
-    if (this.coveoRoot.width() <= this.searchInterface.responsiveComponents.getMediumScreenWidth()) {
+    let mediumWidth = this.searchInterface ? this.searchInterface.responsiveComponents.getMediumScreenWidth() : new ResponsiveComponents().getMediumScreenWidth()
+    if (this.coveoRoot.width() <= mediumWidth) {
       return true;
     } else if (!ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot)) {
       return this.isOverflowing(this.tabSection.el);

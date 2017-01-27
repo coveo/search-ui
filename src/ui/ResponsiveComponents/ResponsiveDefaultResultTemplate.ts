@@ -1,6 +1,6 @@
 import {
-    IResponsiveComponent, IResponsiveComponentOptions,
-    ResponsiveComponentsManager
+  IResponsiveComponent, IResponsiveComponentOptions,
+  ResponsiveComponentsManager
 } from './ResponsiveComponentsManager';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {ResultList} from '../ResultList/ResultList';

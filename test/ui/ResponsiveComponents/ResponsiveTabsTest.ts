@@ -2,6 +2,7 @@ import {ResponsiveComponentsUtils} from '../../../src/ui/ResponsiveComponents/Re
 import {$$, Dom} from '../../../src/utils/Dom';
 import {ResponsiveTabs} from '../../../src/ui/ResponsiveComponents/ResponsiveTabs';
 import {Tab} from '../../../src/ui/Tab/Tab';
+import {ResponsiveComponents} from '../../../src/ui/ResponsiveComponents/ResponsiveComponents';
 
 export function ResponsiveTabsTest() {
 
@@ -18,7 +19,7 @@ export function ResponsiveTabsTest() {
 
     it('activates small tabs when it should switch to small mode', () => {
       spyOn(ResponsiveComponentsUtils, 'activateSmallTabs');
-      spyOn(root, 'width').and.returnValue(ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH - 1);
+      spyOn(root, 'width').and.returnValue(new ResponsiveComponents().getMediumScreenWidth() - 1);
 
       responsiveTabs.handleResizeEvent();
 
@@ -27,7 +28,7 @@ export function ResponsiveTabsTest() {
 
     it('deactivates small tabs when it should switch to large mode', () => {
       spyOn(ResponsiveComponentsUtils, 'deactivateSmallTabs');
-      spyOn(root, 'width').and.returnValue(ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH + 1);
+      spyOn(root, 'width').and.returnValue(new ResponsiveComponents().getMediumScreenWidth() + 1);
       ResponsiveComponentsUtils.activateSmallTabs(root);
 
       responsiveTabs.handleResizeEvent();

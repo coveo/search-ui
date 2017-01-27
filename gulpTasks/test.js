@@ -23,7 +23,7 @@ gulp.task('setupTests', function () {
   ).pipe(event_stream.wait())
 });
 
-gulp.task('coverage', ['lcovCoverage' , 'uploadCoverage']);
+gulp.task('coverage', ['lcovCoverage']);
 
 gulp.task('test', ['setupTests', 'buildTest'], function (done) {
   new TestServer({

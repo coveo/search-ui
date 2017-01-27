@@ -9,7 +9,7 @@ import {ResponsiveComponents} from '../ResponsiveComponents/ResponsiveComponents
 export interface ITemplateProperties {
   condition?: Function;
   conditionToParse?: string;
-  layout?: ValidLayout
+  layout?: ValidLayout;
   mobile?: boolean;
   tablet?: boolean;
   desktop?: boolean;
@@ -47,7 +47,7 @@ export class DefaultInstantiateTemplateOptions implements IInstantiateTemplateOp
       checkCondition: this.checkCondition,
       wrapInDiv: this.wrapInDiv,
       responsiveComponents: this.responsiveComponents
-    }
+    };
   }
 
   merge(other: IInstantiateTemplateOptions): IInstantiateTemplateOptions {
@@ -80,6 +80,13 @@ export class Template implements ITemplateProperties {
         return this.dataToString(object);
       }
 
+      // Should not happen but...
+      // Normally, top level call from sub-class will have already created a DefaultInstantiateTemplateOptions
+      // and merged down
+      if (instantiateOptions.responsiveComponents == null) {
+        instantiateOptions.responsiveComponents = new ResponsiveComponents();
+      }
+
       // Mobile/tablet/desktop checks are only for "hard" set value (triple equal)
       // If it's undefined, we skip those checks, and we assume the template works correctly for any given screen size
       if (this.mobile === true && !instantiateOptions.responsiveComponents.isSmallScreenWidth()) {
@@ -106,7 +113,7 @@ export class Template implements ITemplateProperties {
         return null;
       }
 
-      if (this.layout != null && instantiateOptions.currentLayout !== this.layout) {
+      if (this.layout != null && instantiateOptions.currentLayout != null && instantiateOptions.currentLayout !== this.layout) {
         this.logger.trace('Template was skipped because layout does not match', this, this.layout);
         return null;
       }
@@ -148,7 +155,7 @@ export class Template implements ITemplateProperties {
         element = <HTMLElement>element.firstChild;
       }
       if (this.layout) {
-        $$(element).addClass(`coveo-${this.layout}-layout`)
+        $$(element).addClass(`coveo-${this.layout}-layout`);
       }
       this.logger.trace('Instantiated result template', object, element);
       element['template'] = this;

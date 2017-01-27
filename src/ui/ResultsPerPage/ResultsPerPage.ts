@@ -38,14 +38,14 @@ export class ResultsPerPage extends Component {
       });
       return values.length == 0 ? null : values;
     }, {
-      defaultFunction: () => {
-        if (DeviceUtils.isMobileDevice()) {
-          return [10, 25, 50];
-        } else {
-          return [10, 25, 50, 100];
-        }
-      },
-    }),
+        defaultFunction: () => {
+          if (DeviceUtils.isMobileDevice()) {
+            return [10, 25, 50];
+          } else {
+            return [10, 25, 50, 100];
+          }
+        },
+      }),
     /**
      * Specifies the default value for the number of results to display per page.<br/>
      * The default value is the first value of the choicesDisplayed parameter.

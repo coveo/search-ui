@@ -1,6 +1,6 @@
 import {
-    Template, ITemplateProperties, IInstantiateTemplateOptions,
-    DefaultInstantiateTemplateOptions
+  Template, IInstantiateTemplateOptions,
+  DefaultInstantiateTemplateOptions
 } from './Template';
 import {UnderscoreTemplate} from './UnderscoreTemplate';
 import {TemplateCache} from './TemplateCache';
@@ -30,14 +30,14 @@ export class DefaultResultTemplate extends Template {
     // Put templates with conditions first
     let templates = _.chain(TemplateCache.getDefaultTemplates())
       .map(name => TemplateCache.getTemplate(name))
-                       .sortBy(template => template.condition == null)
-                       .sortBy(template => template.fieldsToMatch == null)
-                       .value();
+      .sortBy(template => template.condition == null)
+      .sortBy(template => template.fieldsToMatch == null)
+      .value();
 
     // For the DefaultResultTemplate, we want to display card only in mobile
     // The default list template are not adapted to mobile.
     if (instantiateOptions.responsiveComponents.isSmallScreenWidth()) {
-      templates = _.filter(templates, (tmpl)=> tmpl.layout == 'card');
+      templates = _.filter(templates, (tmpl) => tmpl.layout == 'card');
       merged.currentLayout = 'card';
       this.layout = 'card';
     } else {

@@ -8,7 +8,6 @@ import {Tab} from '../Tab/Tab';
 import {ResponsiveFacets} from './ResponsiveFacets';
 import {ResultLayout} from '../ResultLayout/ResultLayout';
 import {ResponsiveResultLayout} from './ResponsiveResultLayout';
-import {ResultLink} from '../ResultLink/ResultLink';
 import {ResultList} from '../ResultList/ResultList';
 import {ResponsiveDefaultResultTemplate} from './ResponsiveDefaultResultTemplate';
 
@@ -149,7 +148,7 @@ export class ResponsiveComponentsManager {
       this.responsiveFacets.registerComponent(component);
     }
 
-    if(this.isDefaultResultTemplateId(ID)) {
+    if (this.isDefaultResultTemplateId(ID)) {
       this.responsiveDefaultResultTemplate.registerComponent(<ResultList>component);
     }
 

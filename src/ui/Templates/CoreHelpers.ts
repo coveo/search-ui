@@ -561,7 +561,7 @@ TemplateHelpers.registerTemplateHelper('loadTemplate', (id: string, condition: b
   }
   if (condition) {
     return TemplateCache.getTemplate(id).instantiateToString(data, {
-      checkCondition : false
+      checkCondition: false
     });
   }
   return '';

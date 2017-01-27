@@ -12,7 +12,8 @@
     "injectTag": "gulp injectTag",
     "heroku-postbuild": "npm run build",
     "start": "node index.js",
-    "zipForGitReleases": "gulp zip"
+    "zipForGitReleases": "gulp zip",
+    "uploadCoverage" : "gulp uploadCoverage"
   },
   "repository": {
     "type": "git",

@@ -8,7 +8,7 @@ import {$$} from '../../utils/Dom';
 
 export interface ITemplateFromStringProperties {
   condition?: string;
-  layout?: ValidLayout
+  layout?: ValidLayout;
   mobile?: boolean;
   fieldsToMatch?: IFieldsToMatch[];
 }
@@ -31,7 +31,7 @@ export class TemplateFromAScriptTag {
     this.template.mobile = this.parseIsMobile(scriptTag);
     this.template.fields = TemplateConditionEvaluator.getFieldFromString(scriptTag.innerHTML + ' ' + condition);
 
-    var additionalFields = ComponentOptions.loadFieldsOption(scriptTag, 'fields', <IComponentOptionsFieldsOption>{includeInResults: true});
+    var additionalFields = ComponentOptions.loadFieldsOption(scriptTag, 'fields', <IComponentOptionsFieldsOption>{ includeInResults: true });
     if (additionalFields != null) {
       // remove the @
       this.template.fields = this.template.fields.concat(_.map(additionalFields, (field) => field.substr(1)));
@@ -48,19 +48,19 @@ export class TemplateFromAScriptTag {
   parseFieldsAttributes(element: HTMLElement): IFieldsToMatch[] {
     let dataSet = element.dataset;
     return _.chain(dataSet)
-            .map((value, key: string)=> {
-              let match = key.match(/field([a-z0-9]*)/i);
-              if (match) {
-                return {
-                  field: match[1].toLowerCase(),
-                  values: value.split(',')
-                }
-              } else {
-                return undefined
-              }
-            })
-            .compact()
-            .value();
+      .map((value, key: string) => {
+        let match = key.match(/field([a-z0-9]*)/i);
+        if (match) {
+          return {
+            field: match[1].toLowerCase(),
+            values: value.split(',')
+          };
+        } else {
+          return undefined;
+        }
+      })
+      .compact()
+      .value();
   }
 
   parseIsMobile(element: HTMLElement): boolean {
@@ -87,7 +87,7 @@ export class TemplateFromAScriptTag {
       script.setAttribute('data-mobile', properties.mobile.toString());
     }
     if (properties.fieldsToMatch != null) {
-      _.each(properties.fieldsToMatch, (fieldToMatch: IFieldsToMatch)=> {
+      _.each(properties.fieldsToMatch, (fieldToMatch: IFieldsToMatch) => {
         if (fieldToMatch.values) {
           script.setAttribute(`data-field-${fieldToMatch.field.toLowerCase()}`, fieldToMatch.values.join(','));
         } else {

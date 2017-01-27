@@ -12,11 +12,12 @@ import {FacetSearchValuesList} from '../../../src/ui/Facet/FacetSearchValuesList
 import * as Mock from '../../MockEnvironment';
 import {QueryEvents} from '../../../src/events/QueryEvents';
 import {FakeResults} from '../../Fake';
+import {ResponsiveComponents} from '../../../src/ui/ResponsiveComponents/ResponsiveComponents';
 
 export function ResponsiveFacetsTest() {
   describe('ResponsiveFacets', () => {
-    let largeWidth = ResponsiveFacets.RESPONSIVE_BREAKPOINT + 1;
-    let smallWidth = ResponsiveFacets.RESPONSIVE_BREAKPOINT - 1;
+    let largeWidth = new ResponsiveComponents().getMediumScreenWidth() + 1;
+    let smallWidth = new ResponsiveComponents().getMediumScreenWidth() - 1;
     let dropdownHeaderClassName = 'dropdown-header';
     let root: Dom;
     let responsiveDropdown: ResponsiveDropdown;

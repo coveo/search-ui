@@ -259,14 +259,13 @@ export class ResultList extends Component {
     }
 
     if (this.options.resultTemplate instanceof TemplateList) {
-      _.each((<TemplateList>this.options.resultTemplate).templates, (tmpl: Template)=> {
+      _.each((<TemplateList>this.options.resultTemplate).templates, (tmpl: Template) => {
         if (!tmpl.layout) {
           tmpl.layout = <ValidLayout>this.options.layout;
         }
       });
       $$(this.options.resultContainer).addClass(layoutClassToAdd);
     } else if (this.options.resultTemplate instanceof DefaultResultTemplate) {
-      //$$(this.options.resultContainer).addClass(layoutClassToAdd);
       ResponsiveDefaultResultTemplate.init(this.root, this, this.options);
     }
   }
@@ -327,7 +326,7 @@ export class ResultList extends Component {
     });
     if (resultElement != null) {
       Component.bindResultToElement(resultElement, result);
-      $$(resultElement).addClass('')
+      $$(resultElement).addClass('');
     }
     this.autoCreateComponentsInsideResult(resultElement, result);
     return resultElement;

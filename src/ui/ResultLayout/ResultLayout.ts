@@ -20,7 +20,7 @@ interface IActiveLayouts {
   button: {
     el: HTMLElement;
     visible: boolean;
-  }
+  };
   enabled: boolean;
 }
 
@@ -55,17 +55,16 @@ export class ResultLayout extends Component {
    */
   public currentLayout: string;
 
-  private currentActiveLayouts: {[key: string]: IActiveLayouts};
-  //private buttons: { [key: string]: {el: HTMLElement, visible: boolean}};
+  private currentActiveLayouts: { [key: string]: IActiveLayouts };
   private resultLayoutSection: HTMLElement;
 
   /**
    * @componentOptions
    */
   static options: IResultLayoutOptions = {
-    mobileLayouts: ComponentOptions.buildListOption<ValidLayout>({defaultValue: ['card', 'table']}),
-    tabletLayouts: ComponentOptions.buildListOption<ValidLayout>({defaultValue: ['list', 'card', 'table']}),
-    desktopLayouts: ComponentOptions.buildListOption<ValidLayout>({defaultValue: ['list', 'card', 'table']})
+    mobileLayouts: ComponentOptions.buildListOption<ValidLayout>({ defaultValue: ['card', 'table'] }),
+    tabletLayouts: ComponentOptions.buildListOption<ValidLayout>({ defaultValue: ['list', 'card', 'table'] }),
+    desktopLayouts: ComponentOptions.buildListOption<ValidLayout>({ defaultValue: ['list', 'card', 'table'] })
   };
 
   /**
@@ -133,7 +132,7 @@ export class ResultLayout extends Component {
 
   public disableLayouts(layouts: ValidLayout[]) {
     if (Utils.isNonEmptyArray(layouts)) {
-      _.each(layouts, (layout)=> {
+      _.each(layouts, (layout) => {
         this.disableLayout(layout);
       });
 
@@ -142,7 +141,7 @@ export class ResultLayout extends Component {
         this.changeLayout(<ValidLayout>remainingValidLayouts[0]);
       } else {
         this.logger.error('Cannot disable the last valid layout ... Re-enabling the first one possible');
-        let firstPossibleValidLayout = <ValidLayout>_.keys(this.currentActiveLayouts)[0]
+        let firstPossibleValidLayout = <ValidLayout>_.keys(this.currentActiveLayouts)[0];
         this.enableLayout(firstPossibleValidLayout);
         this.setLayout(firstPossibleValidLayout);
       }
@@ -150,7 +149,7 @@ export class ResultLayout extends Component {
   }
 
   public enableLayouts(layouts: ValidLayout[]) {
-    _.each(layouts, (layout)=> {
+    _.each(layouts, (layout) => {
       this.enableLayout(layout);
     });
   }
@@ -274,7 +273,7 @@ export class ResultLayout extends Component {
   }
 
   private shouldShowSelector() {
-    return _.keys(this.currentActiveLayouts).length > 1 && _.filter(this.currentActiveLayouts, (activeLayout: IActiveLayouts)=> activeLayout.button.visible).length > 1;
+    return _.keys(this.currentActiveLayouts).length > 1 && _.filter(this.currentActiveLayouts, (activeLayout: IActiveLayouts) => activeLayout.button.visible).length > 1;
   }
 
   private isLayoutDisplayedByButton(layout: ValidLayout) {

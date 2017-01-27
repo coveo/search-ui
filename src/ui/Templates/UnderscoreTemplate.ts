@@ -1,14 +1,10 @@
 import {Template} from './Template';
 import {ITemplateHelperFunction} from './TemplateHelpers';
 import {Assert} from '../../misc/Assert';
-import {ComponentOptions, IComponentOptionsFieldsOption} from '../Base/ComponentOptions';
 import {Utils} from '../../utils/Utils';
-import {ValidLayout} from '../ResultLayout/ResultLayout';
-import {$$} from '../../utils/Dom';
-import {DefaultResultTemplate} from './DefaultResultTemplate';
 import {Logger} from '../../misc/Logger';
-import {TemplateConditionEvaluator} from './TemplateConditionEvaluator';
 import {TemplateFromAScriptTag, ITemplateFromStringProperties} from './TemplateFromAScriptTag';
+import {DefaultResultTemplate} from './DefaultResultTemplate';
 
 _.templateSettings = {
   evaluate: /(?:<%|{{)([\s\S]+?)(?:%>|}})/g,
@@ -39,6 +35,15 @@ export class UnderscoreTemplate extends Template {
       new Logger(this).error('Cannot instantiate underscore template. Might be caused by strict Content-Security-Policy. Will fallback on a default template...', e);
     }
     this.templateFromAScriptTag = new TemplateFromAScriptTag(this, this.element);
+    this.dataToString = (object) => {
+      var extended = _.extend({}, object, UnderscoreTemplate.templateHelpers);
+      if (this.template) {
+        return this.template(extended);
+      } else {
+        return new DefaultResultTemplate().getFallbackTemplate();
+      }
+
+    };
   }
 
   toHtmlElement(): HTMLElement {
@@ -50,7 +55,7 @@ export class UnderscoreTemplate extends Template {
   getType() {
     return 'UnderscoreTemplate';
   }
-  
+
   getFields() {
     return this.fields;
   }
@@ -66,6 +71,7 @@ export class UnderscoreTemplate extends Template {
   static fromString(template: string, properties: ITemplateFromStringProperties): UnderscoreTemplate {
     let script = TemplateFromAScriptTag.fromString(template, properties);
     script.setAttribute('type', UnderscoreTemplate.mimeTypes[0]);
+
     return new UnderscoreTemplate(script);
   }
 
