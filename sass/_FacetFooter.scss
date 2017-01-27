@@ -1,5 +1,7 @@
 @import "Variables";
 @import "../bin/sass/sprites.scss";
+@include sprites($spritesheet-sprites);
+@include retina-sprites($retina-groups);
 
 .coveo-facet-more, .coveo-facet-less {
   width: 100%;

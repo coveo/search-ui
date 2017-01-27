@@ -4,7 +4,7 @@ const minimize = process.argv.indexOf('--minimize') !== -1;
 const colors = require('colors');
 const failPlugin = require('webpack-fail-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const spritesmithPlugin = require('./spritesmith.config.js');
+const spritesmithPlugin = require('./spritesmithConfig/spritesmith.config.js');
 const path = require('path');
 const live = process.env.NODE_ENV === 'production';
 
@@ -82,7 +82,7 @@ module.exports = {
       },
       sassLoader,
       {
-        test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'url-loader', query: {limit: '1', name: '[path][name].[ext]', publicPath: 'js/'}
+        test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'url-loader', query: {limit: '1', name: '[path][name].[ext]', publicPath: '../'}
       }
     ]
   },

@@ -3,23 +3,17 @@ const path = require('path');
 
 module.exports = new SpritesmithPlugin({
       src: {
-        cwd: path.resolve(__dirname, '../image'),
+        cwd: path.resolve(__dirname, '../../image'),
         glob: '{retina,sprites}/*.png'
       },
       target: {
-        image: path.resolve(__dirname, '../bin/image/spritesNew.png'),
-        css: [path.resolve(__dirname, '../bin/sass/sprites.scss'),
-              [path.resolve(__dirname, '../bin/css/allSprites.scss'), {
-                format: 'css',
-                formatOpts: {
-                  cssSelector: function(spriteGroup) {
-                  return '.coveo-sprites-' + spriteGroup.name;
-                  }
-                },
-              }]]
+        image: path.resolve(__dirname, '../../bin/image/spritesNew.png'),
+        css: [[path.resolve(__dirname, '../../bin/sass/sprites.scss'),{
+          format: 'optimized_scss_template'
+        }]]
       },
       apiOptions: {
-        cssImageRef: '../image/spritesNew.png',
+        cssImageRef: '../../image/spritesNew.png',
       },
       retina: {
         classifier: function(spritePath) {
@@ -42,7 +36,14 @@ module.exports = new SpritesmithPlugin({
 
           return spriteDescription;
         },
-        targetImage: path.resolve(__dirname, '../bin/image/retinaNew1.png'),
-        cssImageRef: '../image/retinaNew.png'
+        targetImage: path.resolve(__dirname, '../../bin/image/retinaNew.png'),
+        cssImageRef: '../../image/retinaNew.png'
+      },
+      spritesmithOptions: {
+        padding: 1
+      },
+      customTemplates: {
+        'optimized_scss_template': path.resolve(__dirname, './scss_custom.template.handlebars'),
+        'optimized_scss_template_retina': path.resolve(__dirname, './scss_retina_custom.template.handlebars')
       }
     })
