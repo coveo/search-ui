@@ -40,7 +40,7 @@ module.exports = {
       'jQuery': __dirname + '/../test/lib/jquery.js',
       'styling': __dirname + '/../sass'
     },
-    moduleDirectories: ['web_modules', 'node_modules', 'bin/image']
+    moduleDirectories: ['bin/image']
   },
   devtool: 'source-map',
   module: {
@@ -82,7 +82,7 @@ module.exports = {
       },
       sassLoader,
       {
-        test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'url-loader', query: {limit: '1', name: '[path][name].[ext]', publicPath: '../'}
+        test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'url-loader', query: {limit: '1', name: '[path][name].[ext]', publicPath: 'js/'}
       }
     ]
   },
