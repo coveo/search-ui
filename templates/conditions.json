@@ -336,5 +336,9 @@
   "Table": {
     "priority": 4,
     "layout": "table"
+  },
+  "Default": {
+    "priority": 0,
+    "layout": "list"
   }
 }

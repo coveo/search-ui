@@ -1,4 +1,5 @@
-var path = require('path');
+'use strict';
+const path = require('path');
 const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'));
 
@@ -41,12 +42,15 @@ function parseDirectory(directory, conditions) {
       subtemplate: subtemplate,
       path: path.dirname(path.relative(directory, template)),
       content: content,
-      priority: condition != null ? condition.priority || 0 : -1
+      priority: condition != null ? condition.priority || 0 : -1,
+      layout: condition != null ? condition.layout : null
     };
     buildRegisterTemplate(templateObj);
     buildTemplateHtml(templateObj);
     return templateObj;
-  }).then(templates => templates.sort((a, b) => a.priority < b.priority ? 1 : -1));
+  }).then(templates => {
+    return templates.sort((a, b) => a.priority < b.priority ? 1 : -1)
+  })
 }
 
 function buildRegisterTemplate(template) {
@@ -67,10 +71,24 @@ function buildRegisterTemplate(template) {
 }
 
 function buildTemplateHtml(template) {
-  template.html = '<script id=' + JSON.stringify(template.name) +
-      ' class="result-template" type="' + ( template.type == 'HtmlTemplate' ? 'text/html' : 'text/underscore' ) + '" ' +
-      (template.condition != null ? 'data-condition=' + JSON.stringify(template.condition.value) : '') + ' >' +
-      template.content + '</script>';
+  const cssClassName = 'result-template';
+  const type = template.type == 'HtmlTemplate' ? 'text/html' : 'text/underscore';
+  const layout = template.layout != null ? `data-layout="${template.layout}"` : '';
+  let fieldsCondition = '';
+  if (template.condition) {
+
+    if (template.condition.fieldsToMatch) {
+      template.condition.fieldsToMatch.forEach((fieldToMatch)=> {
+        fieldsCondition += `data-field-${fieldToMatch.field}`;
+        if (fieldToMatch.values) {
+          fieldsCondition += `="${fieldToMatch.values.join(',')}" `
+        } else {
+          fieldsCondition += ' ';
+        }
+      });
+    }
+  }
+  template.html = `<script id="${template.name}" class="${cssClassName}" type="${type}" ${layout} ${fieldsCondition}>${template.content}</script>`
 }
 
 function compileTemplates(directory, destination, fileName, conditions, done) {

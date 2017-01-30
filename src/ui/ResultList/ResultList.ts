@@ -244,29 +244,35 @@ export class ResultList extends Component {
 
     $$(this.options.resultContainer).addClass('coveo-result-list-container');
     this.setupTemplatesVersusLayouts();
-
     $$(this.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => args.layouts.push(this.options.layout));
   }
 
   private setupTemplatesVersusLayouts() {
     let layoutClassToAdd = `coveo-${this.options.layout}-layout-container`;
+    $$(this.options.resultContainer).addClass(layoutClassToAdd);
 
-    let layoutSelector = $$(this.root).find(`.${Component.computeCssClassName(ResultLayout)}`);
-    if (!layoutSelector) {
-      if (this.options.layout != 'list') {
-        this.disable();
-      }
-    }
-
+    // A TemplateList is the scenario where the result template are directly embedded inside the ResultList
+    // This is the typical scenario when a page gets created by the interface editor, for example.
+    // In that case, we try to stick closely that what is actually configured inside the page, and do no "special magic".
+    // Stick to the "hardcoded" configuration present in the page.
+    // We only add the correct layout options if it has not been set manually.
     if (this.options.resultTemplate instanceof TemplateList) {
       _.each((<TemplateList>this.options.resultTemplate).templates, (tmpl: Template) => {
         if (!tmpl.layout) {
           tmpl.layout = <ValidLayout>this.options.layout;
         }
       });
-      $$(this.options.resultContainer).addClass(layoutClassToAdd);
-    } else if (this.options.resultTemplate instanceof DefaultResultTemplate) {
-      ResponsiveDefaultResultTemplate.init(this.root, this, this.options);
+    } else if (this.options.resultTemplate instanceof DefaultResultTemplate && this.options.layout == 'list') {
+      let otherResultLists = _.reject($$(this.root).findAll(`.${Component.computeCssClassName(ResultList)}`), (possibleOtherResultList)=> {
+        return possibleOtherResultList == this.element;
+      });
+      if (otherResultLists.length == 0) {
+        // The DefaultResultTemplate is when there is no template set at all inside the page.
+        // This means an empty result list.
+        // In that case, we do a bit more magic to automatically handle page resize and
+        // This will be useful only if there is a single result list in the page with the "list" layout.
+        ResponsiveDefaultResultTemplate.init(this.root, this, this.options);
+      }
     }
   }
 

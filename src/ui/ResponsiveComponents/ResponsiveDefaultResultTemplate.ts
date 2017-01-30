@@ -37,7 +37,7 @@ export class ResponsiveDefaultResultTemplate implements IResponsiveComponent {
     let lastResults = this.resultList.queryController.getLastResults();
     if (this.needSmallMode()) {
       $$(this.resultList.options.resultContainer).addClass('coveo-card-layout-container');
-      $$(this.resultList.options.resultContainer).removeClass(`coveo-card-list-container`);
+      $$(this.resultList.options.resultContainer).removeClass(`coveo-list-layout-container`);
       if (this.currentMode != 'small') {
         if (lastResults) {
           this.resultList.renderResults(this.resultList.buildResults(lastResults));
@@ -46,7 +46,7 @@ export class ResponsiveDefaultResultTemplate implements IResponsiveComponent {
       }
     } else {
       $$(this.resultList.options.resultContainer).removeClass('coveo-card-layout-container');
-      $$(this.resultList.options.resultContainer).addClass(`coveo-card-list-container`);
+      $$(this.resultList.options.resultContainer).addClass(`coveo-list-layout-container`);
       if (this.currentMode != 'large') {
         if (lastResults) {
           this.resultList.renderResults(this.resultList.buildResults(lastResults));

@@ -105,7 +105,7 @@ export class Tab extends Component {
      * {@link ResultLayout}).
      * The value must be one of `list`, `card`, or `table`.
      * This option is overridden by a URL parameter.
-     * If not specified, the first available layout will be chosen.
+     * If not specified, it will default to 'list'.
      */
     layout: ComponentOptions.buildStringOption(),
     /**
@@ -179,10 +179,11 @@ export class Tab extends Component {
    */
   public select() {
     if (!this.disabled) {
+      let currentLayout = this.queryStateModel.get(QUERY_STATE_ATTRIBUTES.LAYOUT);
       this.queryStateModel.setMultiple({
         t: this.options.id,
         sort: this.options.sort || QueryStateModel.defaultAttributes.sort,
-        layout: this.options.layout
+        layout: this.options.layout || currentLayout || QueryStateModel.defaultAttributes.layout
       });
       this.usageAnalytics.logSearchEvent<IAnalyticsInterfaceChange>(analyticsActionCauseList.interfaceChange, { interfaceChangeTo: this.options.id });
       this.queryController.executeQuery();
