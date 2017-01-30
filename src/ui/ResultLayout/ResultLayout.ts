@@ -19,39 +19,32 @@ export interface IResultLayoutOptions {
 }
 
 /**
- * The possible valid and supported layout.
+ * The possible valid and supported layouts.
+ *
+ * See the [Result Layouts](https://developers.coveo.com/x/yQUvAg) documentation.
  */
 export type ValidLayout = 'list' | 'card' | 'table';
 
 /**
- * The ResultLayout component allows the user to switch between multiple {@link ResultList} components that have
+ * The ResultLayout component allows the end user to switch between multiple {@link ResultList} components that have
  * different {@link ResultList.options.layout} values.
  *
  * This component automatically populates itself with buttons to switch between the ResultList components that have a
- * valid layout value.
+ * valid layout value (see the {@link ValidLayout} type).
  *
- * See [Result Layouts](https://developers.coveo.com/x/yQUvAg).
+ * See also the [Result Layouts](https://developers.coveo.com/x/yQUvAg) documentation.
  */
 export class ResultLayout extends Component {
   static ID = 'ResultLayout';
 
-  /**
-   * The possible valid and supported layout.
-   */
   public static validLayouts: ValidLayout[] = ['list', 'card', 'table'];
 
-  /**
-   * The current active layout.
-   */
   public currentLayout: string;
 
 
   private buttons: { [key: string]: HTMLElement };
   private resultLayoutSection: HTMLElement;
 
-  /**
-   * @componentOptions
-   */
   static options: IResultLayoutOptions = {
   };
 
@@ -82,11 +75,12 @@ export class ResultLayout extends Component {
   /**
    * Changes the current layout.
    *
-   * Also logs a `resultLayoutChange` event in the usage analytics and triggers a new query.
+   * Also logs a `resultLayoutChange` event in the usage analytics with the new layout as metadeta.
    *
-   * @param layout The new layout. The possible values are `list`, `card` and `table`. There must be a valid
-   * {@link ResultList} component with a matching {@link ResultList.options.layout} somewhere in the page for this
-   * method to work properly.
+   * Triggers a new query.
+   *
+   * @param layout The new layout. The page must contain a valid {@link ResultList} component with a matching
+   * {@link ResultList.options.layout} value for this method to work.
    */
   public changeLayout(layout: ValidLayout) {
     Assert.check(_.contains(_.keys(this.buttons), layout), 'Layout not available or invalid');
@@ -153,8 +147,8 @@ export class ResultLayout extends Component {
   }
 
   /**
-   * Gets the current layout (`list`, `card` or `table`).
-   * @returns {string} The name of the current layout.
+   * Gets the current layout.
+   * @returns {string} The current layout (see the {@link ValidLayout} type for the list of possible return values).
    */
   public getCurrentLayout() {
     return this.currentLayout;
