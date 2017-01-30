@@ -13,7 +13,7 @@ module.exports = new SpritesmithPlugin({
         }]]
       },
       apiOptions: {
-        cssImageRef: '../../image/spritesNew.png',
+        cssImageRef: path.resolve(__dirname, '../../bin/image/spritesNew1.png'),
       },
       retina: {
         classifier: function(spritePath) {
@@ -37,7 +37,7 @@ module.exports = new SpritesmithPlugin({
           return spriteDescription;
         },
         targetImage: path.resolve(__dirname, '../../bin/image/retinaNew.png'),
-        cssImageRef: '../../image/retinaNew.png'
+        cssImageRef: path.resolve(__dirname, '../../bin/image/retinaNew1.png')
       },
       spritesmithOptions: {
         padding: 1
