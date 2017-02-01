@@ -25,7 +25,6 @@ import {DefaultRecommendationTemplate} from '../Templates/DefaultRecommendationT
 import {ValidLayout} from '../ResultLayout/ResultLayout';
 import {TemplateList} from '../Templates/TemplateList';
 import {ResponsiveDefaultResultTemplate} from '../ResponsiveComponents/ResponsiveDefaultResultTemplate';
-import {get} from '../Base/RegisteredNamedMethods';
 
 export interface IResultListOptions {
   resultContainer?: HTMLElement;

@@ -3,10 +3,7 @@ import {InitializationEvents} from '../../events/InitializationEvents';
 import {Component} from '../Base/Component';
 import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {Utils} from '../../utils/Utils';
-import {Facet} from '../Facet/Facet';
 import {Tab} from '../Tab/Tab';
-import {ResultLayout} from '../ResultLayout/ResultLayout';
-import {ResultList} from '../ResultList/ResultList';
 
 export interface IResponsiveComponentOptions {
   enableResponsiveMode?: boolean;
@@ -128,7 +125,7 @@ export class ResponsiveComponentsManager {
         // Tabs need to be rendered last, so any dropdown header(eg: facet) is already there when the responsive tabs check for overflow.
         this.responsiveComponents.unshift(responsiveComponent);
       }
-      _.each(this.responsiveComponents, (responsiveComponent: IResponsiveComponent)=> {
+      _.each(this.responsiveComponents, (responsiveComponent: IResponsiveComponent) => {
         if (responsiveComponent.registerComponent != null) {
           responsiveComponent.registerComponent(component);
         }
@@ -173,20 +170,8 @@ export class ResponsiveComponentsManager {
     }
   }
 
-  private isFacet(ID: string): boolean {
-    return ID == Facet.ID;
-  }
-
   private isTabs(ID: string): boolean {
     return ID == Tab.ID;
-  }
-
-  private isResultLayout(ID: string): boolean {
-    return ID == ResultLayout.ID;
-  }
-
-  private isDefaultResultTemplateId(ID: string): boolean {
-    return ID == ResultList.ID;
   }
 
   private isActivated(ID: string): boolean {
