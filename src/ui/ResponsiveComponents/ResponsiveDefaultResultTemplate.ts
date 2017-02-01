@@ -29,8 +29,12 @@ export class ResponsiveDefaultResultTemplate implements IResponsiveComponent {
     this.currentMode = 'large';
   }
 
-  public registerComponent(component: ResultList) {
-    this.resultList = component;
+  public registerComponent(accept: ResultList) {
+    if (accept instanceof ResultList) {
+      this.resultList = accept;
+      return true;
+    }
+    return false;
   }
 
   public handleResizeEvent() {

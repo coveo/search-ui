@@ -1,6 +1,5 @@
 export const MEDIUM_SCREEN_WIDTH = 800;
 export const SMALL_SCREEN_WIDTH = 480;
-export const SMALL_SCREEN_HEIGHT = 640;
 
 export class ResponsiveComponents {
   private smallScreenWidth: number;

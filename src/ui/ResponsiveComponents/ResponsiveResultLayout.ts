@@ -26,8 +26,12 @@ export class ResponsiveResultLayout implements IResponsiveComponent {
     this.searchInterface = <SearchInterface>Component.get(this.coveoRoot.el, SearchInterface, false);
   }
 
-  public registerComponent(component: ResultLayout) {
-    this.resultLayout = component;
+  public registerComponent(accept: Component) {
+    if (accept instanceof ResultLayout) {
+      this.resultLayout = accept;
+      return true;
+    }
+    return false;
   }
 
   public handleResizeEvent() {

@@ -5,11 +5,8 @@ import {SearchInterface} from '../SearchInterface/SearchInterface';
 import {Utils} from '../../utils/Utils';
 import {Facet} from '../Facet/Facet';
 import {Tab} from '../Tab/Tab';
-import {ResponsiveFacets} from './ResponsiveFacets';
 import {ResultLayout} from '../ResultLayout/ResultLayout';
-import {ResponsiveResultLayout} from './ResponsiveResultLayout';
 import {ResultList} from '../ResultList/ResultList';
-import {ResponsiveDefaultResultTemplate} from './ResponsiveDefaultResultTemplate';
 
 export interface IResponsiveComponentOptions {
   enableResponsiveMode?: boolean;
@@ -25,6 +22,7 @@ export interface IResponsiveComponent {
   ID: string;
   handleResizeEvent(): void;
   needDropdownWrapper?(): boolean;
+  registerComponent?(accept: Component): boolean;
 }
 
 interface IComponentInitialization {
@@ -44,9 +42,6 @@ export class ResponsiveComponentsManager {
   private resizeListener;
   private responsiveComponents: IResponsiveComponent[] = [];
   private searchBoxElement: HTMLElement;
-  private responsiveFacets: ResponsiveFacets;
-  private responsiveDefaultResultTemplate: ResponsiveDefaultResultTemplate;
-  private responsiveResultLayouts: ResponsiveResultLayout;
   private dropdownHeadersWrapper: Dom;
   private searchInterface: SearchInterface;
 
@@ -75,6 +70,7 @@ export class ResponsiveComponentsManager {
       if (this.remainingComponentInitializations == 0) {
         this.resizeAllComponentsManager();
         this.instantiateResponsiveComponents(); // necessary to verify if all components are disabled before they are initialized.
+
       }
     });
     this.remainingComponentInitializations++;
@@ -125,16 +121,6 @@ export class ResponsiveComponentsManager {
 
     if (!this.isActivated(ID)) {
       let responsiveComponent = new responsiveComponentConstructor(root, ID, options);
-      if (this.isFacet(ID)) {
-        this.responsiveFacets = <ResponsiveFacets>responsiveComponent;
-      }
-      if (this.isResultLayout(ID)) {
-        this.responsiveResultLayouts = <ResponsiveResultLayout>responsiveComponent;
-      }
-
-      if (this.isDefaultResultTemplateId(ID)) {
-        this.responsiveDefaultResultTemplate = <ResponsiveDefaultResultTemplate>responsiveComponent;
-      }
 
       if (this.isTabs(ID)) {
         this.responsiveComponents.push(responsiveComponent);
@@ -142,22 +128,11 @@ export class ResponsiveComponentsManager {
         // Tabs need to be rendered last, so any dropdown header(eg: facet) is already there when the responsive tabs check for overflow.
         this.responsiveComponents.unshift(responsiveComponent);
       }
-    }
-
-    if (this.isFacet(ID)) {
-      this.responsiveFacets.registerComponent(component);
-    }
-
-    if (this.isDefaultResultTemplateId(ID)) {
-      this.responsiveDefaultResultTemplate.registerComponent(<ResultList>component);
-    }
-
-    if (this.isDefaultResultTemplateId(ID)) {
-
-    }
-
-    if (this.isResultLayout(ID)) {
-      this.responsiveResultLayouts.registerComponent(<ResultLayout>component);
+      _.each(this.responsiveComponents, (responsiveComponent: IResponsiveComponent)=> {
+        if (responsiveComponent.registerComponent != null) {
+          responsiveComponent.registerComponent(component);
+        }
+      });
     }
   }
 

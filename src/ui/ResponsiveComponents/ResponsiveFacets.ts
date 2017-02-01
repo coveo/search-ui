@@ -54,13 +54,16 @@ export class ResponsiveFacets implements IResponsiveComponent {
     }
   }
 
-  public registerComponent(component: Component) {
-    if (component instanceof Facet) {
-      this.facets.push(<Facet>component);
-      this.preservePositionOriginalValues.push((<Facet>component).options.preservePosition);
-    } else if (component instanceof FacetSlider) {
-      this.facetSliders.push(<FacetSlider>component);
+  public registerComponent(accept: Component) {
+    if (accept instanceof Facet) {
+      this.facets.push(<Facet>accept);
+      this.preservePositionOriginalValues.push((<Facet>accept).options.preservePosition);
+      return true;
+    } else if (accept instanceof FacetSlider) {
+      this.facetSliders.push(<FacetSlider>accept);
+      return false;
     }
+    return false;
   }
 
   public needDropdownWrapper() {

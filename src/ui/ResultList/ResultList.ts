@@ -25,6 +25,7 @@ import {DefaultRecommendationTemplate} from '../Templates/DefaultRecommendationT
 import {ValidLayout} from '../ResultLayout/ResultLayout';
 import {TemplateList} from '../Templates/TemplateList';
 import {ResponsiveDefaultResultTemplate} from '../ResponsiveComponents/ResponsiveDefaultResultTemplate';
+import {get} from '../Base/RegisteredNamedMethods';
 
 export interface IResultListOptions {
   resultContainer?: HTMLElement;
@@ -243,8 +244,10 @@ export class ResultList extends Component {
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, () => this.handlePageChanged());
 
     $$(this.options.resultContainer).addClass('coveo-result-list-container');
-    this.setupTemplatesVersusLayouts();
-    $$(this.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => args.layouts.push(this.options.layout));
+    if (this.searchInterface.isNewDesign()) {
+      this.setupTemplatesVersusLayouts();
+      $$(this.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => args.layouts.push(this.options.layout));
+    }
   }
 
   private setupTemplatesVersusLayouts() {
@@ -263,16 +266,7 @@ export class ResultList extends Component {
         }
       });
     } else if (this.options.resultTemplate instanceof DefaultResultTemplate && this.options.layout == 'list') {
-      let otherResultLists = _.reject($$(this.root).findAll(`.${Component.computeCssClassName(ResultList)}`), (possibleOtherResultList) => {
-        return possibleOtherResultList == this.element;
-      });
-      if (otherResultLists.length == 0) {
-        // The DefaultResultTemplate is when there is no template set at all inside the page.
-        // This means an empty result list.
-        // In that case, we do a bit more magic to automatically handle page resize and
-        // This will be useful only if there is a single result list in the page with the "list" layout.
-        ResponsiveDefaultResultTemplate.init(this.root, this, this.options);
-      }
+      ResponsiveDefaultResultTemplate.init(this.root, this, this.options);
     }
   }
 
