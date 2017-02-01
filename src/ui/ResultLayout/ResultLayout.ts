@@ -268,14 +268,6 @@ export class ResultLayout extends Component {
     }
   }
 
-  /**
-   * Gets the current layout.
-   * @returns {string} The current layout (see the {@link ValidLayout} type for the list of possible return values).
-   */
-  public getCurrentLayout() {
-    return this.currentLayout;
-  }
-
   private addButton(layout?: string) {
     const btn = $$('span', { className: 'coveo-result-layout-selector', tabindex: 0 }, layout);
     btn.prepend($$('span', { className: `coveo-icon coveo-sprites-${layout}-layout` }).el);

@@ -54,7 +54,6 @@ export class TemplateConditionEvaluator {
     // try to get the field value in the format raw['filetype'] == "YouTubeVideo"
     let secondRegexToGetValue = new RegExp(`raw\[["|']${field}["|']\]\\s*=+\\s*["|']([a-zA-Z]+)["|']`, 'gi');
 
-
     let matches = StringUtils.match(condition, firstRegexToGetValue).concat(StringUtils.match(condition, secondRegexToGetValue));
     matches.forEach((match) => {
       foundForCurrentField = foundForCurrentField.concat(match[1]);
