@@ -186,13 +186,21 @@ export class ResultList extends Component {
      * NB: Many interface created by the interface editor will actually explicitly set this option to true.
      */
     autoSelectFieldsToInclude: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
     /**
-     * Specifies the layout to use for displaying the results. Specifying a value for this option will automatically
-     * populate a {@link ResultLayout} component with a switcher for the layout.
+     * Specifies the layout to use for displaying the results. Specifying a value for this option automatically
+     * populates a {@link ResultLayout} component with a switcher for the layout.
      *
      * For example, if there are two {@link ResultList} components in the page, one with its
      * {@link ResultList.options.layout} set to `list` and the other with the same option set to `card`, then the
      * ResultLayout component will have two buttons respectively titled **List** and **Card**.
+     *
+     * The possible values are:
+     * - `list`
+     * - `card`
+     * - `table`
+     *
+     * Default value is `list`.
      */
     layout: ComponentOptions.buildStringOption({
       defaultValue: 'list',
