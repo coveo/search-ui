@@ -70,7 +70,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
   };
 
   private needSmallMode(): boolean {
-    let mediumWidth = this.searchInterface ? this.searchInterface.responsiveComponents.getMediumScreenWidth() : new ResponsiveComponents().getMediumScreenWidth()
+    let mediumWidth = this.searchInterface ? this.searchInterface.responsiveComponents.getMediumScreenWidth() : new ResponsiveComponents().getMediumScreenWidth();
     if (this.coveoRoot.width() <= mediumWidth) {
       return true;
     } else if (!ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot)) {

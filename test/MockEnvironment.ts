@@ -222,9 +222,9 @@ export function mockSearchInterface(): SearchInterface {
 
 export function mockResponsiveComponents(): ResponsiveComponents {
   var m = mock<ResponsiveComponents>(ResponsiveComponents);
-  m.isSmallScreenWidth = ()=> false;
-  m.isMediumScreenWidth = ()=> false;
-  m.isLargeScreenWidth = ()=> true;
+  m.isSmallScreenWidth = () => false;
+  m.isMediumScreenWidth = () => false;
+  m.isLargeScreenWidth = () => true;
   return m;
 }
 

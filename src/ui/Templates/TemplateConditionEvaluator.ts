@@ -2,11 +2,11 @@ import {IQueryResult} from '../../rest/QueryResult';
 import {StringUtils} from '../../utils/StringUtils';
 import {Initialization} from '../Base/Initialization';
 import {BaseComponent} from '../Base/BaseComponent';
-import {DeviceUtils} from '../../utils/DeviceUtils';
+import {ResponsiveComponents} from '../ResponsiveComponents/ResponsiveComponents';
 
 export class TemplateConditionEvaluator {
   static getFieldFromString(text: string) {
-    var fields: string[] = _.map(StringUtils.match(text, /(?:(?!\b@)@([a-z0-9]+(?:\.[a-z0-9]+)*\b))|\braw.([a-z0-9]+)|\braw\['([^']+)'\]|\braw\['([^']+)'\]/gi), (field) => {
+    var fields: string[] = _.map(StringUtils.match(text, /(?:(?!\b@)@([a-z0-9]+(?:\.[a-z0-9]+)*\b))|\braw.([a-z0-9]+)|\braw\['([^']+)'\]|\braw\["([^"]+)"\]/gi), (field) => {
       return field[1] || field[2] || field[3] || field[4] || null;
     });
 
@@ -20,10 +20,11 @@ export class TemplateConditionEvaluator {
     return fields;
   }
 
-  static evaluateCondition(condition: string, result: IQueryResult): Boolean {
+  static evaluateCondition(condition: string, result: IQueryResult, responsiveComponents = new ResponsiveComponents()): Boolean {
     let templateShouldBeLoaded = true;
 
     let fieldsInCondition = TemplateConditionEvaluator.getFieldFromString(condition);
+
     _.each(fieldsInCondition, (fieldInCondition: string) => {
       let matchingFieldValues = TemplateConditionEvaluator.evaluateMatchingFieldValues(fieldInCondition, condition);
       let fieldShouldNotBeNull = matchingFieldValues.length != 0 || TemplateConditionEvaluator.evaluateFieldShouldNotBeNull(fieldInCondition, condition);
@@ -40,7 +41,7 @@ export class TemplateConditionEvaluator {
 
     if (templateShouldBeLoaded) {
       if (TemplateConditionEvaluator.evaluateShouldUseSmallScreen(condition)) {
-        templateShouldBeLoaded = templateShouldBeLoaded && DeviceUtils.isSmallScreenWidth();
+        templateShouldBeLoaded = templateShouldBeLoaded && responsiveComponents.isSmallScreenWidth();
       }
     }
     return templateShouldBeLoaded;

@@ -10,6 +10,8 @@ export interface ITemplateFromStringProperties {
   condition?: string;
   layout?: ValidLayout;
   mobile?: boolean;
+  tablet?: boolean;
+  desktop?: boolean;
   fieldsToMatch?: IFieldsToMatch[];
 }
 
@@ -21,14 +23,16 @@ export class TemplateFromAScriptTag {
       condition = condition.toString().replace(/&quot;/g, '"');
       template.setConditionWithFallback(condition);
     } else {
-      let parsedFieldsAttributes = this.parseFieldsAttributes(scriptTag);
+      let parsedFieldsAttributes = this.parseFieldsAttributes();
       if (parsedFieldsAttributes && Utils.isNonEmptyArray(parsedFieldsAttributes)) {
         this.template.fieldsToMatch = parsedFieldsAttributes;
       }
     }
 
-    this.template.layout = this.parseLayout(scriptTag);
-    this.template.mobile = this.parseIsMobile(scriptTag);
+    this.template.layout = this.parseLayout();
+    this.template.mobile = this.parseScreenSize('data-mobile');
+    this.template.tablet = this.parseScreenSize('data-tablet');
+    this.template.desktop = this.parseScreenSize('data-desktop');
     this.template.fields = TemplateConditionEvaluator.getFieldFromString(scriptTag.innerHTML + ' ' + condition);
 
     var additionalFields = ComponentOptions.loadFieldsOption(scriptTag, 'fields', <IComponentOptionsFieldsOption>{ includeInResults: true });
@@ -45,8 +49,8 @@ export class TemplateFromAScriptTag {
     return script.el;
   }
 
-  parseFieldsAttributes(element: HTMLElement): IFieldsToMatch[] {
-    let dataSet = element.dataset;
+  parseFieldsAttributes(): IFieldsToMatch[] {
+    let dataSet = this.scriptTag.dataset;
     return _.chain(dataSet)
       .map((value, key: string) => {
         let match = key.match(/field([a-z0-9]*)/i);
@@ -63,12 +67,12 @@ export class TemplateFromAScriptTag {
       .value();
   }
 
-  parseIsMobile(element: HTMLElement): boolean {
-    return Utils.parseBooleanIfNotUndefined(element.getAttribute('data-mobile'));
+  parseScreenSize(attribute: string) {
+    return Utils.parseBooleanIfNotUndefined(this.scriptTag.getAttribute(attribute));
   }
 
-  parseLayout(element: HTMLElement): ValidLayout {
-    const layout = element.getAttribute('data-layout');
+  parseLayout(): ValidLayout {
+    const layout = this.scriptTag.getAttribute('data-layout');
     return <ValidLayout>layout;
   }
 
@@ -85,6 +89,12 @@ export class TemplateFromAScriptTag {
     }
     if (properties.mobile != null) {
       script.setAttribute('data-mobile', properties.mobile.toString());
+    }
+    if (properties.tablet != null) {
+      script.setAttribute('data-tablet', properties.tablet.toString());
+    }
+    if (properties.desktop != null) {
+      script.setAttribute('data-desktop', properties.desktop.toString());
     }
     if (properties.fieldsToMatch != null) {
       _.each(properties.fieldsToMatch, (fieldToMatch: IFieldsToMatch) => {

@@ -63,8 +63,41 @@ export class ResultLayout extends Component {
    * @componentOptions
    */
   static options: IResultLayoutOptions = {
+    /**
+     * Specifies the layouts that should be available when the search page is displayed in mobile mode.
+     *
+     * By default, the mobile mode breakpoint is at 480 px screen width.
+     *
+     * When the breakpoint is reached, layouts that are not specified becomes inactive and the linked result list will be disabled.
+     *
+     * The possible values for layouts are `list`, `card`, `table`.
+     *
+     * The default value is `card`, `table`.
+     */
     mobileLayouts: ComponentOptions.buildListOption<ValidLayout>({ defaultValue: ['card', 'table'] }),
+    /**
+     * Specifies the layouts that should be available when the search page is displayed in tablet mode.
+     *
+     * By default, the tablet mode breakpoint is at 800 px screen width.
+     *
+     *  When the breakpoint is reached, layouts that are not specified becomes inactive and the linked result list will be disabled.
+     *
+     * The possible values for layouts are `list`, `card`, `table`.
+     *
+     * The default value is `list`, `card`, `table`.
+     */
     tabletLayouts: ComponentOptions.buildListOption<ValidLayout>({ defaultValue: ['list', 'card', 'table'] }),
+    /**
+     * Specifies the layouts that should be available when the search page is displayed in desktop mode.
+     *
+     * By default, the desktop mode breakpoint is any screen size over 800 px.
+     *
+     *  When the breakpoint is reached, layouts that are not specified becomes inactive and the linked result list will be disabled.
+     *
+     * The possible values for layouts are `list`, `card`, `table`.
+     *
+     * The default value is `list`, `card`, `table`.
+     */
     desktopLayouts: ComponentOptions.buildListOption<ValidLayout>({ defaultValue: ['list', 'card', 'table'] })
   };
 

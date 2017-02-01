@@ -36,12 +36,12 @@ export class DefaultResultTemplate extends Template {
 
     // For the DefaultResultTemplate, we want to display card only in mobile
     // The default list template are not adapted to mobile.
-    if (instantiateOptions.responsiveComponents.isSmallScreenWidth()) {
+    if (merged.responsiveComponents.isSmallScreenWidth()) {
       templates = _.filter(templates, (tmpl) => tmpl.layout == 'card');
       merged.currentLayout = 'card';
       this.layout = 'card';
     } else {
-      this.layout = instantiateOptions.currentLayout;
+      this.layout = merged.currentLayout;
     }
 
     for (let i = 0; i < templates.length; i++) {

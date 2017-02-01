@@ -17,7 +17,7 @@ export interface ITemplateProperties {
 }
 
 export interface IFieldsToMatch {
-  values: string[];
+  values?: string[];
   field: string;
 }
 
@@ -125,7 +125,7 @@ export class Template implements ITemplateProperties {
         return this.dataToString(object);
       }
       // Condition (as a string) is parsed, if available.
-      if (this.conditionToParse != null && TemplateConditionEvaluator.evaluateCondition(this.conditionToParse, object)) {
+      if (this.conditionToParse != null && TemplateConditionEvaluator.evaluateCondition(this.conditionToParse, object, instantiateOptions.responsiveComponents)) {
         this.logger.trace('Template was loaded because condition was :', this.conditionToParse, object);
         return this.dataToString(object);
       }
@@ -169,7 +169,7 @@ export class Template implements ITemplateProperties {
   }
 
   getFields(): string[] {
-    return [];
+    return this.fields || [];
   }
 
   getType() {

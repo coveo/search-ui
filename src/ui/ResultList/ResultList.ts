@@ -22,7 +22,7 @@ import {Utils} from '../../utils/Utils';
 import {DomUtils} from '../../utils/DomUtils';
 import {Recommendation} from '../Recommendation/Recommendation';
 import {DefaultRecommendationTemplate} from '../Templates/DefaultRecommendationTemplate';
-import {ValidLayout, ResultLayout} from '../ResultLayout/ResultLayout';
+import {ValidLayout} from '../ResultLayout/ResultLayout';
 import {TemplateList} from '../Templates/TemplateList';
 import {ResponsiveDefaultResultTemplate} from '../ResponsiveComponents/ResponsiveDefaultResultTemplate';
 
@@ -263,7 +263,7 @@ export class ResultList extends Component {
         }
       });
     } else if (this.options.resultTemplate instanceof DefaultResultTemplate && this.options.layout == 'list') {
-      let otherResultLists = _.reject($$(this.root).findAll(`.${Component.computeCssClassName(ResultList)}`), (possibleOtherResultList)=> {
+      let otherResultLists = _.reject($$(this.root).findAll(`.${Component.computeCssClassName(ResultList)}`), (possibleOtherResultList) => {
         return possibleOtherResultList == this.element;
       });
       if (otherResultLists.length == 0) {
