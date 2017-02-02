@@ -109,7 +109,6 @@
     "tsconfig-glob": "^0.4.3",
     "typedoc": "https://github.com/coveord/typedoc/tarball/master",
     "typescript": "1.8.x",
-    "url-loader": "^0.5.7",
     "walk": "^2.3.9",
     "webpack": "^1.13.0",
     "webpack-dev-server": "^1.14.1",

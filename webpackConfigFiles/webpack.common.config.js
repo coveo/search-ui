@@ -17,14 +17,16 @@ if (minimize) {
 }
 
 let globalizePath = __dirname + '/../lib/globalize.min.js';
-let urlLoaderOptions = {limit: '1', name: '[path][name].[ext]'};
+let fileLoaderOptions = {name: '[path][name].[ext]', emitFile: false};
 
 let sassLoader = { test: /\.scss/ };
 if (live) {
-  sassLoader['loader'] = ExtractTextPlugin.extract('style-loader', 'css-loader!resolve-url-loader!sass-loader?sourceMap');
-  urlLoaderOptions.publicPath = 'js/'
+  sassLoader['loader'] = ExtractTextPlugin.extract('style-loader', 'css-loader!resolve-url-loader!sass-loader?sourceMap', {
+    publicPath: '../'
+});
 } else {
   sassLoader['loaders'] = ['style-loader', 'css-loader', 'resolve-url-loader', 'sass-loader?sourceMap'];
+  fileLoaderOptions.publicPath = 'js/';
 }
 
 module.exports = {
@@ -84,7 +86,7 @@ module.exports = {
       },
       sassLoader,
       {
-        test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'url-loader', query: urlLoaderOptions, 
+        test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'file-loader', query: fileLoaderOptions, 
       }
     ]
   },
