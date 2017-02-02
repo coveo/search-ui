@@ -108,7 +108,7 @@ function compileTemplates(directory, destination, fileName, conditions, done) {
     Object.keys(groupedTemplates).forEach(key => {
       fs.writeFileAsync(path.join(destination, key + '.js'), groupedTemplates[key].join('\n'));
     })
-  }).catch(e => done(e));
+  }).then(()=> done()).catch(e => done(e));
 }
 
 function addToJsonIfNotNull(template, key) {
