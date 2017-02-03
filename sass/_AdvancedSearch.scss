@@ -1,3 +1,6 @@
+@import "Variables";
+@import "mixins/preferencePanel";
+
 $spaceBetween: 0 5px;
 
 .CoveoAdvancedSearch {
@@ -9,7 +12,7 @@ $spaceBetween: 0 5px;
   margin: 20px 0;
 }
 
-#coveo-advanced-search-in-the-last-select{
+#coveo-advanced-search-in-the-last-select {
   margin-left: 20px;
 
   .coveo-button { 

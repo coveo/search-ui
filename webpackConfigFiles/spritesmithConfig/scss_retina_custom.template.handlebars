@@ -59,7 +59,7 @@ ${{retina_groups_info.strings.name}}: ({{#each retina_groups}}${{strings.name_gr
   @media (-webkit-min-device-pixel-ratio: 2),
          (min-resolution: 192dpi) {
     @include sprite-image($retina-sprite);
-    @include sprite-background-size($retina-sprite);
+    @include sprite-background-size($normal-sprite);
   }
 }
 
@@ -67,6 +67,7 @@ ${{retina_groups_info.strings.name}}: ({{#each retina_groups}}${{strings.name_gr
   $normal-sprite: nth($retina-group, 2);
   $retina-sprite: nth($retina-group, 3);
   @include optimized-sprite($normal-sprite);
+  @include sprite-background-size($normal-sprite);  
 }
 {{/if}}
 {{/content}}
@@ -83,7 +84,6 @@ ${{retina_groups_info.strings.name}}: ({{#each retina_groups}}${{strings.name_gr
     $retina-sprite: nth(nth($retina-groups, 1), 3);
     %retina-sprite {
       @include sprite-image($retina-sprite);
-      @include sprite-background-size($retina-sprite);  
     }
     @each $retina-group in $retina-groups {
       $sprite-name: nth($retina-group, 1);

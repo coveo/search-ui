@@ -11,22 +11,19 @@ const live = process.env.NODE_ENV === 'production';
 // Fail plugin will allow the webpack ts-loader to fail correctly when the TS compilation fails
 // Provide plugin allows us to use underscore in every module, without having to require underscore everywhere.
 let plugins = [failPlugin, new webpack.ProvidePlugin({_: 'underscore'}), new ExtractTextPlugin('../css/[name].css'), spritesmithPlugin];
+let globalizePath = __dirname + '/../lib/globalize.min.js';
+let sassLoader = { test: /\.scss/ };
 
 if (minimize) {
   plugins.push(new webpack.optimize.UglifyJsPlugin());
 }
 
-let globalizePath = __dirname + '/../lib/globalize.min.js';
-let fileLoaderOptions = {name: '[path][name].[ext]', emitFile: false};
-
-let sassLoader = { test: /\.scss/ };
 if (live) {
   sassLoader['loader'] = ExtractTextPlugin.extract('style-loader', 'css-loader!resolve-url-loader!sass-loader?sourceMap', {
-    publicPath: '../'
-});
+    publicPath: ''
+  });
 } else {
   sassLoader['loaders'] = ['style-loader', 'css-loader', 'resolve-url-loader', 'sass-loader?sourceMap'];
-  fileLoaderOptions.publicPath = 'js/';
 }
 
 module.exports = {
@@ -86,7 +83,7 @@ module.exports = {
       },
       sassLoader,
       {
-        test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'file-loader', query: fileLoaderOptions, 
+        test: /\.(gif|svg|png|jpe?g|ttf|woff2?|eot)$/, loader: 'file-loader', query: {name: '../image/[name].[ext]', emitFile: false}, 
       }
     ]
   },
