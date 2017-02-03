@@ -5,6 +5,7 @@ import {Initialization} from '../Base/Initialization';
 import {IQueryResult} from '../../rest/QueryResult';
 import {Assert} from '../../misc/Assert';
 import {$$} from '../../utils/Dom';
+import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
 
 export interface ICardActionBarOptions {
   hidden?: boolean;
@@ -108,7 +109,8 @@ export class CardActionBar extends Component {
   }
 
   private appendArrow() {
-    this.arrowContainer = $$('div', { className: 'coveo-card-action-bar-arrow-container' }).el;
+    this.arrowContainer = $$('div', {className: 'coveo-card-action-bar-arrow-container', tabindex: 0}).el;
+    this.bind.on(this.arrowContainer, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, ()=> this.show()));
     this.arrowContainer.appendChild($$('span', { className: 'coveo-icon coveo-sprites-arrow-up' }).el);
     this.parentResult.appendChild(this.arrowContainer);
   }
