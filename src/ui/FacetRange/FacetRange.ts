@@ -92,6 +92,13 @@ export class FacetRange extends Facet implements IComponentBindings {
 
   public options: IFacetRangeOptions;
 
+  /**
+   * Creates a new FacetRange component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the FacetRange component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   */
   constructor(public element: HTMLElement, options: IFacetRangeOptions, bindings?: IComponentBindings) {
     super(element, ComponentOptions.initComponentOptions(element, FacetRange, options), bindings, FacetRange.ID);
 
