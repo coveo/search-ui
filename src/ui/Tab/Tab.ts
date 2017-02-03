@@ -12,6 +12,7 @@ import {Utils} from '../../utils/Utils';
 import {Assert} from '../../misc/Assert';
 import {$$} from '../../utils/Dom';
 import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
+import 'styling/_Tab';
 
 export interface ITabOptions {
   expression?: string;

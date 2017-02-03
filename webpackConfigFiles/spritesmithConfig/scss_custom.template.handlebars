@@ -129,7 +129,6 @@ ${{spritesheet_info.strings.name}}: ({{spritesheet.px.width}}, {{spritesheet.px.
 @mixin sprites($sprites) {
   $sprite: nth($sprites, 1);
   $sprite-image: nth($sprite, 9);
-  @debug $sprite-image;
   %normal-sprite {
     @include sprite-image($sprite);
     @include sprite-background-size($sprite);    
