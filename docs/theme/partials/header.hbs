@@ -1,70 +1,45 @@
 <header>
-    <div class="tsd-page-toolbar">
-        <div class="container">
-            <div class="table-wrap">
-                <div class="table-cell" id="tsd-search" data-index="{{relativeURL "assets/js/search.js"}}" data-base="{{relativeURL "./"}}">
-                    <div class="field">
-                        <label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
-                        <input id="tsd-search-field" type="text" />
-                    </div>
-
-                    <ul class="results">
-                        <li class="state loading">Preparing search index...</li>
-                        <li class="state failure">The search index is not available</li>
-                    </ul>
-
-                    <a href="{{relativeURL "index.html"}}" class="title">{{project.name}}</a>
-                </div>
-
-                <div class="table-cell" id="tsd-widgets">
-                    <div id="tsd-filter">
-                        <a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
-                        <div class="tsd-filter-group">
-                            <div class="tsd-select" id="tsd-filter-visibility">
-                                <span class="tsd-select-label">All</span>
-                                <ul class="tsd-select-list">
-                                    <li data-value="public">Public</li>
-                                    <li data-value="protected">Public/Protected</li>
-                                    <li data-value="private" class="selected">All</li>
-                                </ul>
-                            </div>
-
-                            <input type="checkbox" id="tsd-filter-inherited" checked />
-                            <label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-                          {{#unless settings.excludeExternals}}
-                            <input type="checkbox" id="tsd-filter-externals" checked />
-                            <label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-                          {{/unless}}
-
-                          <input type="checkbox" id="tsd-filter-only-exported" />
-                          <label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
-
-
-                        </div>
-                    </div>
-
-                    <a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
-                </div>
-            </div>
+    <div class="upHeader clear">
+        <div class="logos">
+            <a href="http://www.coveo.com" class="logo" title="Coveo community"></a>
+            <h3>
+                <a href="https://support.coveo.com" id="communityLink" title="Coveo Community">Community</a>
+            </h3>
         </div>
-    </div>
-    <div class="tsd-page-title">
-        <div class="container">
-            <ul class="tsd-breadcrumb">
-                {{#with model}}{{> breadcrumb}}{{/with}}
+        <h1 class="currentSiteName"><em>Support</em> <span>Menu<i class="arrow"></i></span></h1>
+        <nav>
+            <ul id="siteSelection" class="menu floated">
+                <li><a id="jsSupport" href="https://support.coveo.com"  target="_blank">Support</a></li>
+                <li><a id="jsProductDocs" href="https://onlinehelp.coveo.com" target="_blank">Product docs</a></li>
+                <li><a id="jsDevDocs" href="https://developers.coveo.com" target="_blank">Developer docs</a></li>
+                <li><a id="jsAnswers" href="https://answers.coveo.com" target="_blank">Answers</a></li>
+                <li><a id="jsTraining" href="http://www.coveo.com/training" target="_blank">Training</a></li>
             </ul>
-            <h1>{{#compact}}
-                {{model.kindString}}&nbsp;
-                {{model.name}}
-                {{#if model.typeParameters}}
-                    &lt;
-                    {{#each model.typeParameters}}
-                        {{#if @index}},&nbsp;{{/if}}
-                        {{name}}
-                    {{/each}}
-                    &gt;
-                {{/if}}
-            {{/compact}}</h1>
+            <ul id="siteSelection2" class="externalbox with-sub">
+                <li>
+                    <a href="#" class="sub">More <i class="arrow"></i></a>
+                    <ul>
+                        <li><a target="_blank" href="https://cloud.coveo.com">Cloud V1 Administration Console</a></li>
+                        <li><a target="_blank" href="https://platform.cloud.coveo.com">Cloud V2 Administration Console</a></li>
+                        <li><a target="_blank" href="http://source.coveo.com">Technical Blog</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="bottomHeader">
+        <div id="searchBox">
+            <div class="CoveoSearchbox" data-enable-omnibox="true" data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false" data-enable-reveal-query-suggest-addon="false" data-enable-query-syntax="true" data-enable-field-addon="true"></div>
+            <div class="CoveoFieldSuggestions" data-field="@systitle" data-header-title="Suggested topics"></div>
         </div>
     </div>
+
+    <!-- Do not focus on Querybox when URL contains hash to ensure page scrolls down to corresponding anchor. -->
+    <script>
+        if (document.location.hash) {
+            $('.CoveoSearchbox').attr('data-auto-focus', 'false');
+        }
+    </script>
+
 </header>

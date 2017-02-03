@@ -55,6 +55,13 @@ export class QueryBuilder {
    */
   public constantExpression: ExpressionBuilder = new ExpressionBuilder();
   /**
+   * The contextual text.<br/>
+   * This is the contextual text part of the query. It uses Reveal to pick key keywords from the text and add them to the basic expression.
+   * This field is mainly used to pass context such a case description, long textual query or any other form of text that might help in
+   * refining the query.
+   */
+  public longQueryExpression: ExpressionBuilder = new ExpressionBuilder();
+  /**
    * Used to build the disjunctive part of the query expression.<br/>
    * When present, this part is evaluated separately from the other expressions and the matching results are merged to those matching expressions, `advancedExpression` and `constantExpression`.<br/>
    * The final boolean expression for the query is thus (basic advanced constant) OR (disjunction).
@@ -226,6 +233,7 @@ export class QueryBuilder {
       q: this.expression.build(),
       aq: this.advancedExpression.build(),
       cq: this.constantExpression.build(),
+      lq: this.longQueryExpression.build(),
       dq: this.disjunctionExpression.build(),
 
       searchHub: this.searchHub,

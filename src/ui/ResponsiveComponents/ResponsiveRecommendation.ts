@@ -12,6 +12,8 @@ import {l} from '../../strings/Strings';
 import {FacetSlider} from '../FacetSlider/FacetSlider';
 import {Facet} from '../Facet/Facet';
 import {Component} from '../Base/Component';
+import {get} from '../Base/RegisteredNamedMethods';
+import {QueryEvents, IQuerySuccessEventArgs, INoResultsEventArgs} from '../../events/QueryEvents';
 
 export class ResponsiveRecommendation implements IResponsiveComponent {
 
@@ -50,7 +52,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     return null;
   }
 
-  constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions, responsiveDropdown?: ResponsiveDropdown) {
+  constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions, public responsiveDropdown?: ResponsiveDropdown) {
     this.recommendationRoot = this.getRecommendationRoot();
     this.dropdownHeaderLabel = options.dropdownHeaderLabel;
     this.breakpoint = this.defineResponsiveBreakpoint(options);
@@ -60,6 +62,7 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     this.facetSliders = this.getFacetSliders();
     this.registerOnOpenHandler();
     this.registerOnCloseHandler();
+    this.registerQueryEvents();
     this.dropdownContainer = $$('div', { className: ResponsiveRecommendation.DROPDOWN_CONTAINER_CSS_CLASS_NAME });
   }
 
@@ -190,5 +193,33 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
 
   private getRecommendationRoot(): Dom {
     return $$(this.coveoRoot.find('.' + Component.computeCssClassName(Recommendation)));
+  }
+
+  private registerQueryEvents() {
+    let recommendationInstance = <Recommendation>get(this.recommendationRoot.el, SearchInterface);
+    if (recommendationInstance && recommendationInstance.options.hideIfNoResults) {
+      this.coveoRoot.on(QueryEvents.querySuccess, (e: Event, data: IQuerySuccessEventArgs) => this.handleRecommnendationQuerySucess(data));
+      this.coveoRoot.on(QueryEvents.noResults, (e: Event, data: INoResultsEventArgs) => this.handleRecommendationNoResults());
+    }
+    this.coveoRoot.on(QueryEvents.queryError, () => this.handleRecommendationQueryError());
+  }
+
+  private handleRecommnendationQuerySucess(data: IQuerySuccessEventArgs) {
+    if (data.results.totalCount === 0) {
+      this.dropdown.close();
+      this.dropdown.dropdownHeader.hide();
+    } else {
+      this.dropdown.dropdownHeader.show();
+    }
+  }
+
+  private handleRecommendationNoResults() {
+    this.dropdown.close();
+    this.dropdown.dropdownHeader.hide();
+  }
+
+  private handleRecommendationQueryError() {
+    this.dropdown.close();
+    this.dropdown.dropdownHeader.hide();
   }
 }

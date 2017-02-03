@@ -6,6 +6,7 @@ import {$$} from '../../src/utils/Dom';
 import {IQueryResult} from '../../src/rest/QueryResult';
 import {UnderscoreTemplate} from '../../src/ui/Templates/UnderscoreTemplate';
 import {TemplateCache} from '../../src/ui/Templates/TemplateCache';
+import {CardOverlayEvents} from '../../src/events/CardOverlayEvents';
 
 export function ResultFoldingTest() {
   describe('ResultFolding', function () {
@@ -214,6 +215,19 @@ export function ResultFoldingTest() {
         expect($$(test.cmp.element).find('.coveo-show-if-expanded').style.display).not.toBe('none');
         done();
       });
+    });
+
+    it('should call showMoreResults when its parent CardOverlay *first* triggers openCardOverlay', function () {
+      let parentCardOverlay = $$('div', { className: 'CoveoCardOverlay' }, $$('div')).el;
+      let fakeResult = FakeResults.createFakeResult();
+      fakeResult.moreResults = () => undefined; // moreResults needs to exist
+      test = Mock.advancedResultComponentSetup<ResultFolding>(ResultFolding, fakeResult, <Mock.AdvancedComponentSetupOptions>{
+        element: parentCardOverlay.firstChild
+      });
+      spyOn(test.cmp, 'showMoreResults');
+      $$(parentCardOverlay).trigger(CardOverlayEvents.openCardOverlay);
+      $$(parentCardOverlay).trigger(CardOverlayEvents.openCardOverlay);
+      expect(test.cmp.showMoreResults).toHaveBeenCalledTimes(1);
     });
   });
 }

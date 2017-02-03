@@ -13,6 +13,20 @@
   }
 }
 
+.CoveoCardActionBar .CoveoQuickview {
+  color: #fff;
+  text-decoration: none;
+  > * {
+    display: flex;
+    align-items: center;
+  }
+  .coveo-caption-for-quickview {
+    margin-top: 0;
+    margin-left: 3px;
+    font-size: 11px;
+  }
+}
+
 .CoveoQuickviewDocument {
   overflow: hidden;
   .coveo-quickview-document {
@@ -203,7 +217,7 @@
 .coveo-iframeWrapper iframe {
   position: absolute;
   width: 100%;
-  height: 94%;
+  height: 100%;
   border: none;
   vertical-align: top;
 }

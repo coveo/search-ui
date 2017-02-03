@@ -344,6 +344,8 @@ export class FacetSlider extends Component {
       }
     }, FacetSlider.DEBOUNCED_RESIZE_DELAY);
     window.addEventListener('resize', this.onResize);
+    // This is used inside SF integration
+    this.bind.onRootElement('onPopupOpen', this.onResize);
     $$(this.root).on(InitializationEvents.nuke, this.handleNuke);
   }
 
@@ -358,6 +360,11 @@ export class FacetSlider extends Component {
       facetSlider: this
     });
     this.element.appendChild(this.facetHeader.build());
+  }
+
+  public disable() {
+    super.disable();
+    $$(this.element).addClass('coveo-disabled-empty');
   }
 
   /**

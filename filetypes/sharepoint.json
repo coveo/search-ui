@@ -8,7 +8,7 @@
         "es": "Portal",
         "pt": "Portal",
         "de": "Portal",
-        "nl": "Portaal"
+        "nl": "Portal"
       }
     },
     "spsite": {
@@ -18,7 +18,7 @@
         "fr": "Site",
         "es": "Sitio",
         "pt": "Site",
-        "de": "Site",
+        "de": "Website",
         "nl": "Site"
       }
     },
@@ -27,10 +27,10 @@
       "captions": {
         "en": "SharePoint User",
         "fr": "Utilisateur SharePoint",
-        "es": "Usuario SharePoint ",
-        "pt": "Usuário SharePoint",
+        "es": "Usuario de SharePoint ",
+        "pt": "Usuário do SharePoint",
         "de": "SharePoint-Benutzer",
-        "nl": "SharePoint Gebruiker"
+        "nl": "SharePoint-gebruiker"
       }
     },
     "sparea": {
@@ -40,7 +40,7 @@
         "fr": "Zone",
         "es": "Área",
         "pt": "Área",
-        "de": "Zone",
+        "de": "Bereich",
         "nl": "Gebied"
       }
     },
@@ -52,7 +52,7 @@
         "es": "Anuncio",
         "pt": "Anúncio",
         "de": "Ankündigung",
-        "nl": "Mededeling"
+        "nl": "Aankondiging"
       }
     },
     "spannouncementlist": {
@@ -63,7 +63,7 @@
         "es": "Anuncios",
         "pt": "Anúncios",
         "de": "Ankündigungen",
-        "nl": "Mededelingen"
+        "nl": "Aankondigingen"
       }
     },
     "spcontact": {
@@ -74,7 +74,7 @@
         "es": "Contacto",
         "pt": "Contato",
         "de": "Kontakt",
-        "nl": "Contact"
+        "nl": "Contactpersoon"
       }
     },
     "spcontactlist": {
@@ -94,8 +94,8 @@
         "en": "Custom Lists",
         "fr": "Listes personnalisées",
         "es": "Listas personalizadas",
-        "pt": "Listas personalizadas",
-        "de": "angepasste Listen",
+        "pt": "Listas Personalizadas",
+        "de": "Benutzerdefinierte Listen",
         "nl": "Aangepaste lijsten"
       }
     },
@@ -103,8 +103,8 @@
       "icon": "list",
       "captions": {
         "en": "Discussion Board",
-        "fr": "Babillard de discussion",
-        "es": "Foro de discusión",
+        "fr": "Forum de discussion",
+        "es": "Panel de discusión",
         "pt": "Fórum de discussão",
         "de": "Diskussionsforum",
         "nl": "Discussieforum"
@@ -114,8 +114,8 @@
       "icon": "list",
       "captions": {
         "en": "Discussion Boards",
-        "fr": "Babillards de discussion",
-        "es": "Foros de discusión",
+        "fr": "Forums de discussion",
+        "es": "Paneles de discusión",
         "pt": "Fóruns de discussão",
         "de": "Diskussionsforen",
         "nl": "Discussieforums"
@@ -170,7 +170,7 @@
       "captions": {
         "en": "Issue",
         "fr": "Problème",
-        "es": "Tema",
+        "es": "Asunto",
         "pt": "Questão",
         "de": "Problem",
         "nl": "Probleem"
@@ -181,7 +181,7 @@
       "captions": {
         "en": "Issues",
         "fr": "Problèmes",
-        "es": "Temas",
+        "es": "Asuntos",
         "pt": "Questões",
         "de": "Probleme",
         "nl": "Problemen"
@@ -192,7 +192,7 @@
       "captions": {
         "en": "Link",
         "fr": "Lien",
-        "es": "Enlace",
+        "es": "Vínculo",
         "pt": "Link",
         "de": "Link",
         "nl": "Link"
@@ -203,7 +203,7 @@
       "captions": {
         "en": "Links",
         "fr": "Liens",
-        "es": "Enlaces",
+        "es": "Vínculos",
         "pt": "Links",
         "de": "Links",
         "nl": "Links"
@@ -224,7 +224,7 @@
       "icon": "custom",
       "captions": {
         "en": "Survey",
-        "fr": "Sondage",
+        "fr": "Enquête",
         "es": "Encuesta",
         "pt": "Pesquisa",
         "de": "Umfrage",
@@ -235,7 +235,7 @@
       "icon": "custom",
       "captions": {
         "en": "Surveys",
-        "fr": "Sondages",
+        "fr": "Enquêtes",
         "es": "Encuestas",
         "pt": "Pesquisas",
         "de": "Umfragen",
@@ -268,7 +268,7 @@
       "icon": "calendar",
       "captions": {
         "en": "Agenda",
-        "fr": "Agenda",
+        "fr": "Ordre du jour",
         "es": "Agenda",
         "pt": "Agenda",
         "de": "Agenda",
@@ -278,7 +278,7 @@
     "spagendalist": {
       "icon": "calendar",
       "captions": {
-        "en": "Agendas",
+        "en": "Ordres du jour",
         "fr": "Agendas",
         "es": "Agendas",
         "pt": "Agendas",
@@ -291,7 +291,7 @@
       "captions": {
         "en": "Attendee",
         "fr": "Participant",
-        "es": "Participante",
+        "es": "Asistente",
         "pt": "Participante",
         "de": "Teilnehmer",
         "nl": "Genodigde"
@@ -302,7 +302,7 @@
       "captions": {
         "en": "Attendees",
         "fr": "Participants",
-        "es": "Participantes",
+        "es": "Asistentes",
         "pt": "Participantes",
         "de": "Teilnehmer",
         "nl": "Genodigden"
@@ -378,7 +378,7 @@
       "icon": "list",
       "captions": {
         "en": "Textbox list",
-        "fr": "Zones de texte",
+        "fr": "Liste de zones de texte",
         "es": "Lista de cuadros de texto",
         "pt": "Lista de quadros de texto",
         "de": "Textfeldliste",
@@ -390,7 +390,7 @@
       "captions": {
         "en": "Thing To Bring",
         "fr": "Élément à prévoir",
-        "es": "Elemento a proveer",
+        "es": "Qué llevar",
         "pt": "Coisa para trazer",
         "de": "Element, das geholt werden soll",
         "nl": "Ding meenemen"
@@ -401,7 +401,7 @@
       "captions": {
         "en": "Things To Bring",
         "fr": "Éléments à prévoir",
-        "es": "Elementos a proveer",
+        "es": "Lista Qué llevar",
         "pt": "Coisas para trazer",
         "de": "Elemente, die geholt werden sollen",
         "nl": "Dingen meenemen"
@@ -411,8 +411,8 @@
       "icon": "custom",
       "captions": {
         "en": "Area Listing",
-        "fr": "Liste de zones",
-        "es": "Listado de áreas",
+        "fr": "Listing de zone",
+        "es": "Listado de área",
         "pt": "Lista de áreas",
         "de": "Zonenauflistung",
         "nl": "Lijst van gebieden"
@@ -422,7 +422,7 @@
       "icon": "calendar",
       "captions": {
         "en": "Meeting series",
-        "fr": "Espace de travail de réunion",
+        "fr": "Série de réunions",
         "es": "Serie de reuniones",
         "pt": "Série de reuniões",
         "de": "Terminserie",
@@ -433,7 +433,7 @@
       "icon": "calendar",
       "captions": {
         "en": "Meeting Series List",
-        "fr": "Liste d'espace de travail de réunion",
+        "fr": "Liste de séries de réunions",
         "es": "Lista de series de reuniones",
         "pt": "Lista de séries de reuniões",
         "de": "Liste Terminserien",
@@ -444,7 +444,7 @@
       "icon": "folder",
       "captions": {
         "en": "Site Directory Item",
-        "fr": "Élément d'un répertoire de sites",
+        "fr": "Élément d'un annuaire de sites",
         "es": "Elemento de un directorio de sitios",
         "pt": "Elemento de um diretório de sites",
         "de": "Element in Sitebibliothek",
@@ -455,7 +455,7 @@
       "icon": "folder",
       "captions": {
         "en": "Site Directory",
-        "fr": "Répertoire des sites",
+        "fr": "Annuaire de sites",
         "es": "Directorio de sitios",
         "pt": "Diretório de sites",
         "de": "Sitebibliothek",
@@ -467,7 +467,7 @@
       "captions": {
         "en": "Data Source",
         "fr": "Source de données",
-        "es": "Fuente de datos",
+        "es": "Origen de datos",
         "pt": "Fonte de dados",
         "de": "Datenquelle",
         "nl": "Inhoudsbron"
@@ -478,7 +478,7 @@
       "captions": {
         "en": "Data Source List",
         "fr": "Liste de sources de données",
-        "es": "Lista de fuentes de datos",
+        "es": "Lista de origenes de datos",
         "pt": "Lista de fontes de dados",
         "de": "Liste Datenquellen",
         "nl": "Lijst van Inhoudsbronnen"
@@ -487,9 +487,9 @@
     "splisttemplatecataloglist": {
       "icon": "folder",
       "captions": {
-        "en": "List Template Catalog List",
-        "fr": "Catalogue de modèles de listes",
-        "es": "Lista de catálogos de plantillas de listas",
+        "en": "List Template Gallery",
+        "fr": "Galerie Modèles de listes",
+        "es": "Galería de plantillas de listas",
         "pt": "Lista de catálogos de gabaritos de listas",
         "de": "Vorlagelistenkatalog",
         "nl": "Sjaboloon catalogus lijst"
@@ -498,9 +498,9 @@
     "spwebpartcataloglist": {
       "icon": "folder",
       "captions": {
-        "en": "WebPart catalog list",
-        "fr": "Catalogue de composants WebPart",
-        "es": "Lista de catálogos de webpart",
+        "en": "WebPart Gallery",
+        "fr": "Galerie Composants WebPart",
+        "es": "Galería de elementos web",
         "pt": "Lista de catálogos de Webpart",
         "de": "Webpartkatalogliste",
         "nl": "Webpart catalog lijst"
@@ -509,9 +509,9 @@
     "spwebtemplatecataloglist": {
       "icon": "folder",
       "captions": {
-        "en": "Web Template Catalog List",
-        "fr": "Catalogue de modèles de pages Web",
-        "es": "Lista de catálogos de plantillas Web",
+        "en": "Site Template Gallery",
+        "fr": "Galerie Modèles de sites",
+        "es": "Galería de plantillas de sitio",
         "pt": "Lista de catálogos de gabaritos web",
         "de": "Webvorlagenkatalogliste",
         "nl": "Web Template Catalogus lijst"
@@ -520,9 +520,9 @@
     "spworkspacepagelist": {
       "icon": "folder",
       "captions": {
-        "en": "Workspace Page List",
-        "fr": "Liste de pages d'espace de travail",
-        "es": "Lista de páginas de áreas de trabajo",
+        "en": "Workspace Pages",
+        "fr": "Pages d'espace de travail",
+        "es": "Páginas del área de trabajo",
         "pt": "Lista de páginas de espaço de trabalho",
         "de": "Workspace Seitenliste",
         "nl": "Werkgebied pagina's lijst"
@@ -543,8 +543,8 @@
       "icon": "calendar",
       "captions": {
         "en": "Administrator Task",
-        "fr": "Tâche d'administrateur",
-        "es": "Tarea del administrador",
+        "fr": "Tâche d'administration",
+        "es": "Tarea de administrador",
         "pt": "Tarefa do administrador",
         "de": "Administrator-Aufgabe",
         "nl": "Administrator - Taak"
@@ -554,8 +554,8 @@
       "icon": "calendar",
       "captions": {
         "en": "Administrator Tasks",
-        "fr": "Tâches d'administrateur",
-        "es": "Tareas del administrador",
+        "fr": "Tâches d'administration",
+        "es": "Tareas de administrador",
         "pt": "Tarefas do administrador",
         "de": "Administrator-Aufgaben",
         "nl": "Administrator - Taken"
@@ -565,8 +565,8 @@
       "icon": "folder",
       "captions": {
         "en": "Area Document Library",
-        "fr": "Bibliothèque de documents zonés",
-        "es": "Librería de documentos del área",
+        "fr": "Bibliothèque de documents de zone",
+        "es": "Biblioteca de documentos del área",
         "pt": "Biblioteca de documentos da área",
         "de": "Bereichs-Dokumentenbibliothek",
         "nl": "Dokument bibliotheek gebied"
@@ -586,9 +586,9 @@
     "spblogcategorylist": {
       "icon": "list",
       "captions": {
-        "en": "Blog Category",
-        "fr": "Catégorie de blogue",
-        "es": "Categoría de blog",
+        "en": "Blog Categories",
+        "fr": "Catégories de blogue",
+        "es": "Categorías de blog",
         "pt": "Categoria de blog",
         "de": "Blog-Kategorie",
         "nl": "Blog Categorie"
@@ -599,7 +599,7 @@
       "captions": {
         "en": "Blog Comment",
         "fr": "Commentaire de blogue",
-        "es": "Comentario de blog ",
+        "es": "Comentario de blog",
         "pt": "Comentário de blog",
         "de": "Blog-Kommentar",
         "nl": "Blog Commentaar"
@@ -621,7 +621,7 @@
       "captions": {
         "en": "Blog Post",
         "fr": "Article de blogue",
-        "es": "Escribir un mensaje en un blog ",
+        "es": "Entrada de blog",
         "pt": "Escrever uma mensagem num blog",
         "de": "Blog-Beitrag",
         "nl": "Blog bijdrage"
@@ -632,7 +632,7 @@
       "captions": {
         "en": "Blog Posts",
         "fr": "Articles de blogue",
-        "es": "Escribir mensajes en un blog",
+        "es": "Entradas de blog",
         "pt": "Escrever mensagens num blog",
         "de": "Blog-Beiträge",
         "nl": "Blog bijdragen"
@@ -642,8 +642,8 @@
       "icon": "kb",
       "captions": {
         "en": "Data Connection Library",
-        "fr": "Bibliothèque de connexions",
-        "es": "Librería de conexión de datos",
+        "fr": "Bibliothèque de connexions de données",
+        "es": "Biblioteca de conexiones de datos",
         "pt": "Biblioteca de conexão de dados",
         "de": "Datenverbindungsbibliothek",
         "nl": "Data connectie bibliotheek"
@@ -674,9 +674,9 @@
     "spipfslist": {
       "icon": "kb",
       "captions": {
-        "en": "InfoPath Form Servers",
-        "fr": "Serveurs de formulaire InfoPath",
-        "es": "Servidores InfoPath Form ",
+        "en": "InfoPath Forms Servers",
+        "fr": "Serveurs de formulaires InfoPath",
+        "es": "Servidores de formularios de InfoPath",
         "pt": "Servidores de formulário InfoPath",
         "de": "InfoPath-Formularserver",
         "nl": "InfoPath Form server"
@@ -708,7 +708,7 @@
       "icon": "list",
       "captions": {
         "en": "Languages and Translator",
-        "fr": "Langue et traducteur",
+        "fr": "Langues et traducteur",
         "es": "Idiomas y traductor",
         "pt": "Idiomas e tradutor",
         "de": "Sprachen und Übersetzer",
@@ -729,9 +729,9 @@
     "spmasterpagescataloglist": {
       "icon": "folder",
       "captions": {
-        "en": "Master Pages Library",
-        "fr": "Bibliothèque de pages maîtres",
-        "es": "Programa de páginas maestras",
+        "en": "Master Page Gallery",
+        "fr": "Galerie Pages maîtres",
+        "es": "Galería de páginas maestras",
         "pt": "Programa de páginas master",
         "de": "Masterseiten-Bibliothek",
         "nl": "Masterpage bibliotheek"
@@ -740,9 +740,9 @@
     "spnocodeworkflowlibrarylist": {
       "icon": "folder",
       "captions": {
-        "en": "No Code Workflow Library",
-        "fr": "Bibliothèque de séquences non codées",
-        "es": "No se encuentra un programa de flujo de trabajo de código",
+        "en": "No-code Workflow Libraries",
+        "fr": "Bibliothèques de flux de travail sans code",
+        "es": "Bibliotecas de flujo de trabajo sin código",
         "pt": "Não há biblioteca de fluxo de trabalho de código",
         "de": "No Code-Arbeitsablaufsbibliothek",
         "nl": "Geen code werkproces bibliotheek "
@@ -774,8 +774,8 @@
       "icon": "folder",
       "captions": {
         "en": "Page Library",
-        "fr": "Bibliothèque de page",
-        "es": "Programa de la página",
+        "fr": "Bibliothèque de pages",
+        "es": "Biblioteca de páginas",
         "pt": "Biblioteca de página",
         "de": "Seitenbibliothek",
         "nl": "Pagina bibliotheek"
@@ -785,8 +785,8 @@
       "icon": "folder",
       "captions": {
         "en": "Report Document Library",
-        "fr": "Bibliothèque de documents rapport",
-        "es": "Programa de documento de informe",
+        "fr": "Bibliothèque de documents de rapport",
+        "es": "Biblioteca de documentos de informe",
         "pt": "Biblioteca de documentos de relatórios",
         "de": "Berichts-Dokumentenbibliothek",
         "nl": "Rapport documenten bibliotheek"
@@ -797,7 +797,7 @@
       "captions": {
         "en": "Report Library",
         "fr": "Bibliothèque de rapports",
-        "es": "Librería de informes",
+        "es": "Biblioteca de informes",
         "pt": "Biblioteca de relatórios",
         "de": "Berichtsbibliothek",
         "nl": "Rapport bibliotheek"
@@ -808,7 +808,7 @@
       "captions": {
         "en": "Slide Library",
         "fr": "Bibliothèque de diapositives",
-        "es": "Librería de diapositivas",
+        "es": "Biblioteca de diapositivas",
         "pt": "Biblioteca de slides",
         "de": "Folienbibliothek",
         "nl": "Slide bibliotheek"
@@ -830,7 +830,7 @@
       "captions": {
         "en": "Tabs List",
         "fr": "Liste d'onglets",
-        "es": "Listas de fichas",
+        "es": "Lista de fichas",
         "pt": "Lista de lingüetas",
         "de": "Registerkartenliste",
         "nl": "Tabbladen lijst"
@@ -840,8 +840,8 @@
       "icon": "folder",
       "captions": {
         "en": "Translation Management Library",
-        "fr": "Bibliothèque de traductions",
-        "es": "Translation Management Library",
+        "fr": "Bibliothèque Gestion des traductions",
+        "es": "Biblioteca de administración de traducciones",
         "pt": "Biblioteca de gerenciamento de tradução",
         "de": "Bibliothek zur Übersetzungsverwaltung",
         "nl": "Vertalings management bibliotheek"
@@ -851,8 +851,8 @@
       "icon": "user",
       "captions": {
         "en": "User Information",
-        "fr": "Information d'utilisateur",
-        "es": "Información del usuario",
+        "fr": "Information utilisateur",
+        "es": "Información de usuario",
         "pt": "Informações do usuário",
         "de": "Benutzerinformationen",
         "nl": "Gebruiker informatie"
@@ -862,8 +862,8 @@
       "icon": "user",
       "captions": {
         "en": "User Information List",
-        "fr": "Liste d'information d'utilisateur",
-        "es": "Lista de información del usuario",
+        "fr": "Liste d'informations utilisateur",
+        "es": "Lista de información de usuario",
         "pt": "Lista de informações do usuário",
         "de": "Liste der Benutzerinformationen",
         "nl": "Lijst van gebruikers"
@@ -874,7 +874,7 @@
       "captions": {
         "en": "Wiki Page Library",
         "fr": "Bibliothèque de pages Wiki",
-        "es": "Librería de la página de Wiki",
+        "es": "Biblioteca de páginas Wiki",
         "pt": "Biblioteca de páginas Wiki",
         "de": "Wiki-Seitenbibliothek",
         "nl": "Wiki pagina bibliotheek"
@@ -884,8 +884,8 @@
       "icon": "calendar",
       "captions": {
         "en": "Workflow History",
-        "fr": "Historique de processus",
-        "es": "Antecedente de flujo de trabajo",
+        "fr": "Historique de flux de travail",
+        "es": "Historial de flujo de trabajo",
         "pt": "Antecedente de fluxo de trabalho",
         "de": "Arbeitsablaufs-Verlaufsprotokoll",
         "nl": "Werkproces geschiedenis"
@@ -894,9 +894,9 @@
     "spworkflowhistorylist": {
       "icon": "calendar",
       "captions": {
-        "en": "Workflow Histories",
-        "fr": "Historiques de processus",
-        "es": "Antecedentes de flujo de trabajo",
+        "en": "Workflow History List",
+        "fr": "Liste d'historiques de flux de travail",
+        "es": "Lista de historiales de flujo de trabajo",
         "pt": "Antecedentes de fluxo de trabalho",
         "de": "Arbeitsablaufs-Verlaufsprotokolle",
         "nl": "Werkproces geschiedenis"
@@ -906,8 +906,8 @@
       "icon": "custom",
       "captions": {
         "en": "Custom Workflow Process",
-        "fr": "Séquence de tâche personnalisée",
-        "es": "Proceso de flujo de trabajo personalizado",
+        "fr": "Processus de flux de travail personnalisé",
+        "es": "Proceso personalizado de flujo de trabajo",
         "pt": "Processo de fluxo de trabalho personalizado",
         "de": "Benutzerdefinierter Arbeitsablauf",
         "nl": "Door gebruiker gedefinieert werkproces"
@@ -917,8 +917,8 @@
       "icon": "custom",
       "captions": {
         "en": "Custom Workflow Processes",
-        "fr": "Séquence de tâches personnalisées",
-        "es": "Procesos de flujo de trabajo personalizados",
+        "fr": "Liste de processus de flux de travail personnalisés",
+        "es": "Procesos personalizados de flujos de trabajo",
         "pt": "Processos de fluxo de trabalho personalizados",
         "de": "Benutzerdefinierte Arbeitsabläufe",
         "nl": "Door gebruiker gedefinieerde werkprocessen"
@@ -940,7 +940,7 @@
       "captions": {
         "en": "Circulation",
         "fr": "Circulation",
-        "es": "Circulación",
+        "es": "Circular",
         "pt": "Circulação",
         "de": "Circulation",
         "nl": "Circulatie"
@@ -951,7 +951,7 @@
       "captions": {
         "en": "Circulations",
         "fr": "Circulations",
-        "es": "Circulaciones ",
+        "es": "Circulares ",
         "pt": "Circulações",
         "de": "Circulations",
         "nl": "Circulaties"
@@ -960,9 +960,9 @@
     "spdashboardslibrarylist": {
       "icon": "folder",
       "captions": {
-        "en": "Dashboard Library",
+        "en": "Dashboards Library",
         "fr": "Bibliothèque de tableaux de bord",
-        "es": "Biblioteca del tablero de comandos",
+        "es": "Biblioteca de paneles",
         "pt": "Biblioteca do painel",
         "de": "Dashboard-Bibliothek",
         "nl": "Dashboard bibliotheek"
@@ -971,9 +971,9 @@
     "spdataconnectionforperformancepointlibrarylist": {
       "icon": "folder",
       "captions": {
-        "en": "Data Connection for Performance Point Library",
-        "fr": "Bibliothèque de connexions pour la performance",
-        "es": "Conexión de datos para el funcionamiento de la biblioteca de punto",
+        "en": "PerformancePoint Data Connection Library",
+        "fr": "Bibliothèque de connexions de données PerformancePoint",
+        "es": "Biblioteca de conexión de datos de PerformancePoint",
         "pt": "Conexão de dados para biblioteca de desempenho",
         "de": "Datenverbindung für Performance-Point-Bibliothek",
         "nl": "Data connectie voor Peformance Point Bibliotheek"
@@ -983,8 +983,8 @@
       "icon": "list",
       "captions": {
         "en": "Health Report",
-        "fr": "Rapport de santé",
-        "es": "Informe de integridad",
+        "fr": "Rapport d'intégrité",
+        "es": "Informe de mantenimiento",
         "pt": "Relatório de saúde",
         "de": "Bericht zur Computergesundheit",
         "nl": "Status rapport"
@@ -994,8 +994,8 @@
       "icon": "list",
       "captions": {
         "en": "Health Reports",
-        "fr": "Rapports de santé",
-        "es": "Informes de integridad",
+        "fr": "Rapports d'intégrité",
+        "es": "Informes de mantenimiento",
         "pt": "Relatórios de saúde",
         "de": "Berichte zur Computergesundheit",
         "nl": "Status rapporten"
@@ -1005,8 +1005,8 @@
       "icon": "list",
       "captions": {
         "en": "Health Rule",
-        "fr": "Règle de santé",
-        "es": "Regla de integridad",
+        "fr": "Règle d'intégrité",
+        "es": "Regla de mantenimiento",
         "pt": "Regra de saúde",
         "de": "Regel zur Erhaltung der Computergesundheit",
         "nl": "Status regel"
@@ -1016,8 +1016,8 @@
       "icon": "list",
       "captions": {
         "en": "Health Rules",
-        "fr": "Règles de santé",
-        "es": "Reglas de integridad",
+        "fr": "Règles d'intégrité",
+        "es": "Reglas de mantenimiento",
         "pt": "Regras de saúde",
         "de": "Regeln zur Erhaltung der Computergesundheit",
         "nl": "Status regels"
@@ -1048,9 +1048,9 @@
     "spperformancepointcontent": {
       "icon": "list",
       "captions": {
-        "en": "Performance Point Content",
-        "fr": "Contenu de point de performance",
-        "es": "Contenido de punto de rendimiento",
+        "en": "PerformancePoint Content",
+        "fr": "Contenu PerformancePoint",
+        "es": "Contenido PerformancePoint",
         "pt": "Conteúdo de pontos de desempenho",
         "de": "Performance-Point-Inhalt",
         "nl": "Performance Point Content"
@@ -1059,9 +1059,9 @@
     "spperformancepointcontentlist": {
       "icon": "list",
       "captions": {
-        "en": "Performance Point Contents",
-        "fr": "Contenus de point de performance",
-        "es": "Contenidos de punto de rendimiento",
+        "en": "PerformancePoint Contents",
+        "fr": "Contenus PerformancePoint",
+        "es": "Contenidos PerformancePoint",
         "pt": "Conteúdo de pontos de desempenho",
         "de": "Performance-Point-Inhalte",
         "nl": "Performance Point Contents"
@@ -1072,7 +1072,7 @@
       "captions": {
         "en": "Phone Call Memo",
         "fr": "Mémo d'appel téléphonique",
-        "es": "Memo de llamada telefónica",
+        "es": "Memo de llamada",
         "pt": "Memória de chamadas telefônicas",
         "de": "Anruf-Memo",
         "nl": "Telefoongesprek memo"
@@ -1082,8 +1082,8 @@
       "icon": "list",
       "captions": {
         "en": "Phone Call Memos",
-        "fr": "Mémos d'appel téléphonique",
-        "es": "Memos de llamada telefónica",
+        "fr": "Mémos d'appels téléphoniques",
+        "es": "Memos de llamadas",
         "pt": "Memórias de chamadas telefônicas",
         "de": "Anruf-Memos",
         "nl": "Telefoongesprek memo's"
@@ -1127,7 +1127,7 @@
       "captions": {
         "en": "Process Diagram Library",
         "fr": "Bibliothèque de diagrammes de processus",
-        "es": "Biblioteca de diagrama de proceso",
+        "es": "Biblioteca de diagramas de procesos",
         "pt": "Biblioteca de diagramas de processos",
         "de": "Prozessdiagrammbibliothek  ",
         "nl": "Proces Diagram Bibliotheek"
@@ -1160,7 +1160,7 @@
       "captions": {
         "en": "WFPUB Library",
         "fr": "Bibliothèque de WFPUB",
-        "es": "Biblioteca WFPUB",
+        "es": "Biblioteca de WFPUB",
         "pt": "Biblioteca WFPUB",
         "de": "WFPUB-Bibliothek",
         "nl": "WFPUB Library"
@@ -1170,8 +1170,8 @@
       "icon": "custom",
       "captions": {
         "en": "Whereabout",
-        "fr": "Endroit",
-        "es": "Ubicación",
+        "fr": "Localisation",
+        "es": "Paradero",
         "pt": "Localização",
         "de": "Ort",
         "nl": "Waar is"
@@ -1181,8 +1181,8 @@
       "icon": "custom",
       "captions": {
         "en": "Whereabouts",
-        "fr": "Endroits",
-        "es": "Ubicaciones",
+        "fr": "Localisations",
+        "es": "Paraderos",
         "pt": "Localizações",
         "de": "Orte",
         "nl": "Waar zijn"
@@ -1193,7 +1193,7 @@
       "captions": {
         "en": "Link to a Document",
         "fr": "Lien vers un document",
-        "es": "Vincular a un documento",
+        "es": "Vinculo a un documento",
         "pt": "Associar a um documento",
         "de": "Link zu einem Dokument",
         "nl": "Linken naar een dokument"
@@ -1214,8 +1214,8 @@
       "icon": "list",
       "captions": {
         "en": "Microfeed Post",
-        "fr": "Billet d'un microfil de nouvelles",
-        "es": "",
+        "fr": "Publication d'un microflux",
+        "es": "Publicación de microfuente",
         "pt": "",
         "de": "",
         "nl": ""
@@ -1225,8 +1225,8 @@
       "icon": "list",
       "captions": {
         "en": "Microfeed",
-        "fr": "Microfil de nouvelles",
-        "es": "",
+        "fr": "Microflux",
+        "es": "Microfuente",
         "pt": "",
         "de": "",
         "nl": ""
@@ -1237,7 +1237,7 @@
       "captions": {
         "en": "List Folder",
         "fr": "Dossier de liste",
-        "es": "Carpeta de la lista",
+        "es": "Lista de carpetas",
         "pt": "Pasta lista",
         "de": "Liste Ordner",
         "nl": "Mappenlijst"

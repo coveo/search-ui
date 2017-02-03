@@ -95,6 +95,10 @@ export class ResultFolding extends Component {
     this.displayThoseResults(this.result.childResults);
     this.updateElementVisibility();
 
+    if ($$(this.element.parentElement).hasClass('CoveoCardOverlay')) {
+      this.bindOverlayEvents();
+    }
+
     if (this.result.childResults.length == 0 && !this.result.moreResults) {
       $$(this.element).hide();
     }
@@ -220,8 +224,9 @@ export class ResultFolding extends Component {
 
   private renderChildResult(childResult: IQueryResult) {
     QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), childResult);
+    QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, childResult);
 
-    let oneChild = this.options.resultTemplate.instantiateToElement(childResult);
+    let oneChild = this.options.resultTemplate.instantiateToElement(childResult, false, false);
     $$(oneChild).addClass('coveo-result-folding-child-result');
     this.results.appendChild(oneChild);
 
@@ -245,6 +250,14 @@ export class ResultFolding extends Component {
 
     Assert.doesNotExists(this.moreResultsPromise);
     Assert.doesNotExists(this.waitAnimation);
+  }
+
+  private bindOverlayEvents() {
+    this.bind.one(this.element.parentElement, 'openCardOverlay', () => {
+      if (this.result.moreResults) {
+        this.showMoreResults();
+      }
+    });
   }
 }
 

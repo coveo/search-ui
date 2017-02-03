@@ -1,15 +1,25 @@
 /**
- * Describe the cause of an event for the analytics service.
+ * The IAnalyticsActionCause interface describes the cause of an event for the analytics service.
+ *
+ * See the {@link Analytics} component
  */
 export interface IAnalyticsActionCause {
+
   /**
-   * The name of the event. Should be unique for each event.<br/>
-   * Eg : searchBoxSubmit or resultSort
+   * Specifies the name of the event. While you can actually set this property to any arbitrary string value, its value
+   * should uniquely identify the precise action that triggers the event. Thus, each individual event should have its
+   * own unique `name` value.
+   *
+   * Example: `searchBoxSubmit`, `resultSort`, etc.
    */
   name: string;
+
   /**
-   * The type of the event. Allows to regroup similar event types together when doing reporting.<br/>
-   * For example, all search box events will be of type "search box"
+   * Specifies the type of the event. While you can actually set this property to any arbitrary string value, it should
+   * describe the general category of the event. Thus, more than one event can have the same `type` value, which makes
+   * it possible to group events with identical types when doing reporting.
+   *
+   * Example: All search box related events could have `searchbox` as their `type` value.
    */
   type: string;
   metaMap?: { [name: string]: number };
@@ -166,6 +176,25 @@ export interface IAnalyticsTriggerQuery {
 
 export interface IAnalyticsTriggerExecute {
   executed: string;
+}
+
+export interface IAnalyticsSearchAlertsMeta {
+  subscription: string;
+}
+
+export interface IAnalyticsSearchAlertsUpdateMeta extends IAnalyticsSearchAlertsMeta {
+  frequency: string;
+}
+
+export interface IAnalyticsSearchAlertsFollowDocumentMeta extends IAnalyticsDocumentViewMeta {
+  documentSource: string;
+  documentLanguage: string;
+  contentIDKey: string;
+  contentIDValue: string;
+}
+
+export interface IAnalyticsResultsLayoutChange {
+  resultsLayoutChangeTo: string;
 }
 
 export var analyticsActionCauseList = {
@@ -472,5 +501,33 @@ export var analyticsActionCauseList = {
   advancedSearch: <IAnalyticsActionCause>{
     name: 'advancedSearch',
     type: 'advancedSearch'
+  },
+  searchAlertsFollowDocument: <IAnalyticsActionCause>{
+    name: 'followDocument',
+    type: 'searchAlerts'
+  },
+  searchAlertsFollowQuery: <IAnalyticsActionCause>{
+    name: 'followQuery',
+    type: 'searchAlerts'
+  },
+  searchAlertsUpdateSubscription: <IAnalyticsActionCause>{
+    name: 'updateSubscription',
+    type: 'searchAlerts'
+  },
+  searchAlertsDeleteSubscription: <IAnalyticsActionCause>{
+    name: 'deleteSubscription',
+    type: 'searchAlerts'
+  },
+  searchAlertsUnfollowDocument: <IAnalyticsActionCause>{
+    name: 'unfollowDocument',
+    type: 'searchAlerts'
+  },
+  searchAlertsUnfollowQuery: <IAnalyticsActionCause>{
+    name: 'unfollowQuery',
+    type: 'searchAlerts'
+  },
+  resultsLayoutChange: <IAnalyticsActionCause>{
+    name: 'changeResultsLayout',
+    type: 'resultsLayout'
   }
 };

@@ -9,6 +9,7 @@ import {ISearchEvent} from '../src/rest/SearchEvent';
 import {IClickEvent} from '../src/rest/ClickEvent';
 import {IOmniboxDataRow} from '../src/ui/Omnibox/OmniboxInterface';
 import {IPopulateOmniboxEventArgs} from '../src/events/OmniboxEvents';
+import {mockSearchInterface} from './MockEnvironment';
 
 export class FakeResults {
 
@@ -98,7 +99,8 @@ export class FakeResults {
       queryUid: 'the uid',
       rating: 3,
       state: {},
-      isRecommendation: false
+      isRecommendation: false,
+      searchInterface: mockSearchInterface()
     };
   }
 

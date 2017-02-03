@@ -9,6 +9,7 @@ export interface ITextOptions {
   value?: string;
   size?: string;
   style?: string;
+  color?: string;
   weight?: string;
   textAlign?: string;
 
@@ -40,51 +41,55 @@ export class Text extends Component {
      */
     value: ComponentOptions.buildLocalizedStringOption(),
     /**
-     * The size of the text (set as the font-size css property)
+     * The size of the text (set as the `font-size` CSS property)
      */
     size: ComponentOptions.buildStringOption(),
     /**
-     * The style of the text (set as the font-style css property)
+     * The style of the text (set as the `font-style` CSS property)
      */
     style: ComponentOptions.buildStringOption(),
     /**
-     * The weight of the text (set as the font-weight css property)
+     * The color of the text (set as the `color` CSS property)
+     */
+    color: ComponentOptions.buildStringOption(),
+    /**
+     * The weight of the text (set as the `font-weight` CSS property)
      */
     weight: ComponentOptions.buildStringOption(),
     /**
-     * The alignment of the text (set as the text-align css property)
+     * The alignment of the text (set as the `text-align` CSS property)
      */
     textAlign: ComponentOptions.buildStringOption(),
     /**
-     * The margin top of the text (set as the margin-top css property)
+     * The margin top of the text (set as the `margin-top` CSS property)
      */
     marginTop: ComponentOptions.buildStringOption(),
     /**
-     * The margin bottom of the text (set as the margin-bottom css property)
+     * The margin bottom of the text (set as the `margin-bottom` CSS property)
      */
     marginBottom: ComponentOptions.buildStringOption(),
     /**
-     * The margin left of the text (set as the margin-left css property)
+     * The margin left of the text (set as the `margin-left` CSS property)
      */
     marginLeft: ComponentOptions.buildStringOption(),
     /**
-     * The margin right of the text (set as the margin-right css property)
+     * The margin right of the text (set as the `margin-right` CSS property)
      */
     marginRight: ComponentOptions.buildStringOption(),
     /**
-     * The padding top of the text (set as the padding-top css property)
+     * The padding top of the text (set as the `padding-top` CSS property)
      */
     paddingTop: ComponentOptions.buildStringOption(),
     /**
-     * The padding bottom of the text (set as the padding-bottom css property)
+     * The padding bottom of the text (set as the `padding-bottom` CSS property)
      */
     paddingBottom: ComponentOptions.buildStringOption(),
     /**
-     * The padding left of the text (set as the padding-left css property)
+     * The padding left of the text (set as the `padding-left` CSS property)
      */
     paddingLeft: ComponentOptions.buildStringOption(),
     /**
-     * The padding right of the text (set as the padding-right css property)
+     * The padding right of the text (set as the `padding-right` CSS property)
      */
     paddingRight: ComponentOptions.buildStringOption()
   };
@@ -95,6 +100,7 @@ export class Text extends Component {
     $$(this.element).text(this.options.value);
     this.element.style.fontSize = this.options.size;
     this.element.style.fontStyle = this.options.style;
+    this.element.style.color = this.options.color;
     this.element.style.fontWeight = this.options.weight;
     this.element.style.textAlign = this.options.textAlign;
     this.element.style.marginTop = this.options.marginTop;

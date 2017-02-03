@@ -44,47 +44,13 @@ export class FacetHeader {
   }
 
   public build(): HTMLElement {
-    if (this.options.isNewDesign && this.options.icon != undefined) {
-      this.element.appendChild(this.buildIcon());
-    } else if (!this.options.isNewDesign) {
-      this.element.appendChild(this.buildIcon());
-    }
-
-    if (!this.options.isNewDesign) {
-      this.element.appendChild(this.buildWaitAnimation());
-    }
-
-    if (this.options.settingsKlass) {
-      this.sort = this.settings = new this.options.settingsKlass(this.options.availableSorts, this.options.facet);
-      this.element.appendChild(this.settings.build());
-    } else if (this.options.sortKlass) {
-      this.sort = new this.options.sortKlass(this.options.availableSorts, this.options.facet);
-    }
-
-    if (this.options.enableCollapseElement && !this.options.isNewDesign) {
-      this.collapseElement = this.buildCollapse();
-      this.element.appendChild(this.collapseElement);
-
-      this.expandElement = this.buildExpand();
-      this.element.appendChild(this.expandElement);
-    }
-
-    if (this.options.facet) {
-      this.operatorElement = this.buildOperatorToggle();
-      this.element.appendChild(this.operatorElement);
-      $$(this.operatorElement).toggle(this.options.facet.options.enableTogglingOperator);
-    }
-
-    this.eraserElement = this.buildEraser();
-    this.element.appendChild(this.eraserElement);
-
-    this.element.appendChild(this.buildTitle());
-
     if (this.options.isNewDesign) {
-      this.element.appendChild(this.buildWaitAnimation());
+      return this.buildNewDesign();
+    } else {
+      return this.buildOldDesign();
     }
-    return this.element;
   }
+
 
   public switchToAnd(): void {
     if (this.options.facet) {
@@ -131,6 +97,75 @@ export class FacetHeader {
     }
   }
 
+  private buildNewDesign() {
+    let titleSection = $$('div', {
+      className: 'coveo-facet-header-title-section'
+    });
+    if (this.options.icon != undefined) {
+      this.iconElement = this.buildIcon();
+      titleSection.append(this.iconElement);
+    }
+    titleSection.append(this.buildTitle());
+    this.waitElement = this.buildWaitAnimation();
+    titleSection.append(this.waitElement);
+    this.element.appendChild(titleSection.el);
+
+    let settingsSection = $$('div', {
+      className: 'coveo-facet-header-settings-section'
+    });
+
+    this.eraserElement = this.buildEraser();
+    settingsSection.append(this.eraserElement);
+
+    if (this.options.facet) {
+      this.operatorElement = this.buildOperatorToggle();
+      settingsSection.append(this.operatorElement);
+      $$(this.operatorElement).toggle(this.options.facet.options.enableTogglingOperator);
+    }
+
+    if (this.options.settingsKlass) {
+      this.sort = this.settings = new this.options.settingsKlass(this.options.availableSorts, this.options.facet);
+      settingsSection.append(this.settings.build());
+    } else if (this.options.sortKlass) {
+      this.sort = new this.options.sortKlass(this.options.availableSorts, this.options.facet);
+    }
+    this.element.appendChild(settingsSection.el);
+
+    return this.element;
+  }
+
+  private buildOldDesign() {
+    this.element.appendChild(this.buildIcon());
+    this.element.appendChild(this.buildWaitAnimation());
+
+    if (this.options.settingsKlass) {
+      this.sort = this.settings = new this.options.settingsKlass(this.options.availableSorts, this.options.facet);
+      this.element.appendChild(this.settings.build());
+    } else if (this.options.sortKlass) {
+      this.sort = new this.options.sortKlass(this.options.availableSorts, this.options.facet);
+    }
+
+    if (this.options.enableCollapseElement) {
+      this.collapseElement = this.buildCollapse();
+      this.element.appendChild(this.collapseElement);
+
+      this.expandElement = this.buildExpand();
+      this.element.appendChild(this.expandElement);
+    }
+
+    if (this.options.facet) {
+      this.operatorElement = this.buildOperatorToggle();
+      this.element.appendChild(this.operatorElement);
+      $$(this.operatorElement).toggle(this.options.facet.options.enableTogglingOperator);
+    }
+
+    this.eraserElement = this.buildEraser();
+    this.element.appendChild(this.eraserElement);
+    this.element.appendChild(this.buildTitle());
+
+    return this.element;
+  }
+
   private rebuildOperatorToggle(): void {
     var newElement = this.buildOperatorToggle();
     if (this.operatorElement) {
@@ -154,7 +189,12 @@ export class FacetHeader {
   private buildWaitAnimation(): HTMLElement {
     this.waitElement = document.createElement('div');
     $$(this.waitElement).addClass('coveo-facet-header-wait-animation');
-    $$(this.waitElement).hide();
+
+    if (this.options.isNewDesign) {
+      this.waitElement.style.visibility = 'hidden';
+    } else {
+      $$(this.waitElement).hide();
+    }
     return this.waitElement;
   }
 
@@ -217,10 +257,12 @@ export class FacetHeader {
   }
 
   private buildTitle(): HTMLElement {
-    var title = document.createElement('div');
-    $$(title).text(this.options.title);
-    $$(title).addClass('coveo-facet-header-title');
-    return title;
+    var title = $$('div', {
+      title: this.options.title,
+      className: 'coveo-facet-header-title'
+    });
+    title.text(this.options.title);
+    return title.el;
   }
 
   public buildEraser(): HTMLElement {

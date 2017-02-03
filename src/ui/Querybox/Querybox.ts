@@ -27,9 +27,13 @@ export interface IQueryboxOptions {
 }
 
 /**
- * A component that allows a user to enter a query inside an input.<br/>
- * The component will trigger a query when submitted (the 'Enter' keypress) and log the proper analytics data.<br/>
- * It must be instantiated on a div (and not directly on an input element): This is for styling purpose (ghost type ahead, for example).
+ * The Querybox component allows the user to enter a query in an input.
+ *
+ * When the user submits the query by pressing the **Enter** key, this component triggers a query and logs the
+ * corresponding analytics data.
+ *
+ * For technical reasons, this component must be instantiated on a `div` element rather than directly on an `input`
+ * element.
  */
 export class Querybox extends Component {
   static ID = 'Querybox';
@@ -37,65 +41,165 @@ export class Querybox extends Component {
    * The options for the Querybox.
    * @componentOptions
    */
+
   public static options: IQueryboxOptions = {
     /**
-     * Specify if search as you type should be enabled.<br/>
-     * Default to `false`.
-     */
-    enableSearchAsYouType: ComponentOptions.buildBooleanOption({ defaultValue: false }),
-    /**
-     * If `enableSearchAsYouType` is enabled, this option specify the delay (in ms) between a keypress and a query being triggered<br/>
-     * Default to 500 ms.
-     */
-    searchAsYouTypeDelay: ComponentOptions.buildNumberOption({ defaultValue: 500, min: 0 }),
-    /**
-     * Specifies whether the Coveo Platform does try to interpret special query syntax such as field references in the query entered through the query box.<br/>
-     * The default value is `true`.
-     */
-    enableQuerySyntax: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    /**
-     * Specifies whether the Coveo Platform expands keywords containing wildcard characters (*) to the possible matching keywords to broaden the query.<br/>
-     * The default value is `false`.
-     */
-    enableWildcards: ComponentOptions.buildBooleanOption({ defaultValue: false }),
-    /**
-     * Specifies whether the Coveo Platform expands keywords containing question mark characters (?) to the possible matching keywords to broaden the query.<br/>
-     * The default value is `false`.
-     */
-    enableQuestionMarks: ComponentOptions.buildBooleanOption({ defaultValue: false }),
-    /**
-     * If true, the or and and keywords in the query box will be treated as boolean operators for the query when they are typed in lowercase.<br/>
-     * This applies for all operators<br/>
+     * Specifies whether the search-as-you-type feature should be enabled.
+     *
      * Default value is `false`.
      */
-    enableLowercaseOperators: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    enableSearchAsYouType: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
     /**
-     * Specifies whether a query containing a large number of keywords (see partialMatchKeywords) is automatically converted to a partial match expression in order to match documents containing only a subset of the keywords (see partialMatchThreshold for defining the subset).<br/>
-     * The default value is `false`.
+     * If the {@link Querybox.options.enableSearchAsYouType} option is set to `true`, this option specifies the delay
+     * (in ms) between a keypress and a query being triggered.
+     *
+     * Default value is `500`.
+     */
+    searchAsYouTypeDelay: ComponentOptions.buildNumberOption({ defaultValue: 500, min: 0 }),
+
+    /**
+     * Specifies whether the Coveo Platform should try to interpret special query syntax such as field references in the
+     * query entered in the Querybox (see
+     * <a target="_blank" href="http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005">Coveo Query Syntax Reference</a>).
+     *
+     * Query syntax in the Querybox will also be highlighted when this option is enabled.
+     * 
+     * See also {@link Querybox.options.enableWildcards}, {@link Querybox.options.enableQuestionMarks} and
+     * {@link Querybox.options.enableLowercaseOperators}.
+     *
+     * Default value is `true`.
+     */
+    enableQuerySyntax: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
+    /**
+     * If the {@link Querybox.options.enableQuerySyntax} is set to `true`, specifies whether the Coveo Platform should
+     * expand keywords containing wildcard characters (*) to the possible matching keywords in order to broaden the
+     * query (see
+     * <a target="_blank" href="http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005">Coveo Query Syntax Reference</a>).
+     *
+     * Default value is `false`.
+     *
+     * #### Example
+     * > If this option and the enableQuerySyntax option are both set to `true`, then the Coveo Platform will expand the
+     * > `doc*` keyword to keywords such as `doc`, `dochtml`, `document` or `documentation`.
+     */
+    enableWildcards: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
+    /**
+     * If the {@link Querybox.options.enableQuerySyntax} and {@link Querybox.options.enableWildcards} options are both
+     * set to `true`, specifies whether the Coveo Platform should expand keywords containing question mark characters
+     * (?) to the possible matching keywords in order to broaden the query (see
+     * <a target="_blank" href="http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005">Coveo Query Syntax Reference</a>).
+     *
+     * Default value is `false`.
+     *
+     * #### Example
+     * > If this option, the enableQuerySyntax and the enableWildcards options are all set to `true`, then the Coveo
+     * > Platform will expand the `Cove?` keyword to keywords such as
+     * > `Cove`, `Cover` and `Coveo`.
+     */
+    enableQuestionMarks: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
+    /**
+     * If the {@link Querybox.options.enableQuerySyntax} option is set to `true`, specifies whether the `AND`, `NOT`,
+     * `OR` and `NEAR` keywords in the Querybox should be treated as query operators in the query even when they are
+     * typed in lowercase. This option applies to all query operators (see
+     * <a target="_blank" href="http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005">Coveo Query Syntax Reference</a>).
+     *
+     * Default value is `false`.
+     *
+     * #### Example
+     * > If this option and the enableQuerySyntax option are both set to `true`, then the Coveo Platform will interpret
+     * > the `near` keyword in a query such as `service center near me` as a query operator (not as a query term).
+     *
+     * > Otherwise, if the enableQuerySyntax option is set to `true` and this option is set to `false`, the `NEAR`
+     * > keyword will have to be typed in uppercase in order for it to be interpreted as a query operator.
+     */
+    enableLowercaseOperators: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
+    /**
+     * Specifies whether a basic expression containing at least a certain number of keywords (see
+     * {@link Querybox.options.partialMatchKeywords}) will automatically be converted to a partial match expression, so
+     * that documents containing at least a certain subset of those keywords (see
+     * {@link Querybox.options.partialMatchThreshold}) will match the query.
+     *
+     * Default value is `false`.
+     *
+     * #### Example
+     * ```html
+     * [ ... ]
+     *
+     * <!-- With the following markup configuration, if a basic expression contains at least 4 keywords, -->
+     * <!-- then documents containing at least 75% of those keywords (rounded up) will match the query. -->
+     *
+     * <!-- For instance, if the basic expression is "Coveo custom component configuration help", then documents -->
+     * <!-- containing all 5 of those keywords, or 4 of them (75% of 5 rounded up) will match the query. -->
+     * <div classname="CoveoSearchBox" data-enable-omnibox="false" data-enable-partial-match="true" data-partial-match-keywords="4" data-partial-match-threshold="75%">
+     * </div>
+     *
+     * [ ... ]
+     * ```
      */
     enablePartialMatch: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
     /**
-     * When partial match is enabled, specifies the minimum number of keywords that must be present in the query to activate the partial match.<br/>
-     * The default value is 5.
+     * When the {@link Querybox.options.enablePartialMatch} option is set to `true`, this option specifies the minimum
+     * number of keywords required in the basic expression for it to be converted to a partial match expression.
+     *
+     * See also the {@link Querybox.options.partialMatchThreshold} option.
+     *
+     * Default value is `5`.
+     *
+     * #### Note
+     * > Only the basic expression of the query (see {@link q}) can be converted to a partial match expression.
+     *
+     * #### Example
+     * > If the partialMatchKeywords option is set to `7`, the basic expression will have to contain at least 7 keywords
+     * > to be converted to a partial match expression.
      */
     partialMatchKeywords: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 1 }),
+
     /**
-     * When partial match is enabled, specifies either an absolute or percentage value indicating the minimum number of keywords a document must contain in order to match the query.<br/>
-     * The default value is 50%.
+     * When the {@link Querybox.options.enablePartialMatch} option is set to `true`, this option specifies an absolute
+     * or relative (percentage) value indicating the minimum number of partial match expression keywords a document must
+     * contain in order to match the query.
+     *
+     * See also the {@link Querybox.options.partialMatchKeywords} option.
+     *
+     * Default value is `50%`.
+     *
+     * #### Note
+     * > The relative threshold is always rounded up to the nearest integer.
+     *
+     * #### Example
+     * > If the partialMatchThreshold option is set to `50%` and the partial match expression contains exactly 9
+     * > keywords, then documents will have to contain at least 5 of those keywords to match the query (50% of 9,
+     * >rounded up).
+     *
+     * > With the same configuration, if the partial match expression contains exactly 12 keywords, then documents will
+     * > have to contain at least 6 of those keywords to match the query (50% of 12).
+     *
+     * > If the partialMatchThreshold option is set to `2`, then documents will always have to contain at least 2 of the
+     * > partial match expression keywords to match the query, no matter how many keywords the partial match expression
+     * > actually contains.
      */
     partialMatchThreshold: ComponentOptions.buildStringOption({ defaultValue: '50%' }),
+
     /**
-     * Specifies whether or not to trigger a query when the searchbox is cleared.
-     * The default value is `true`.
+     * Specifies whether or not to trigger a query when the Querybox is cleared.
+     *
+     * Default value is `true`.
      */
     triggerQueryOnClear: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-    /**
-     *  Specifies a placeholder for input.
-     */
+
+    // Removed public doc; this option currently is of no use for this component.
     placeholder: ComponentOptions.buildStringOption(),
+
     /**
-     * Specifies whether the `QueryBox` gets the focus and is selected on initialization.
-     * The default value is `true`.
+     * Specifies whether the Querybox should get the focus and be selected upon initialization.
+     *
+     * Default value is `true`.
      */
     autoFocus: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
@@ -105,18 +209,25 @@ export class Querybox extends Component {
   private searchAsYouTypeTimeout: number;
 
   /**
-   * Create a new Querybox.<br/>
-   * Create a new Coveo.Magicbox instance and wrap magic box method (on blur, on submit etc).<br/>
-   * Bind event on buildingQuery and on redirection (for standalone box).
-   * @param element The `HTMLElement` on which the element will be instantiated. This cannot be an `HTMLInputElement` for technical reasons.
-   * @param options The options for the querybox.
-   * @param bindings The bindings that the component requires to function normally. If not set, will automatically resolve them (with slower execution time).
+   * Creates a new Querybox.
+   *
+   * Creates a new Coveo.Magicbox instance and wraps the Magicbox methods (onblur, onsubmit etc).
+   *
+   * Binds event on buildingQuery and on redirection (for standalone box).
+   *
+   * @param element The `HTMLElement` on which the element will be instantiated. This cannot be an `HTMLInputElement`
+   * for technical reasons.
+   *
+   * @param options The options for the Querybox.
+   *
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
    */
   constructor(public element: HTMLElement, public options?: IQueryboxOptions, public bindings?: IComponentBindings) {
     super(element, Querybox.ID, bindings);
 
     if (element instanceof HTMLInputElement) {
-      this.logger.error('QueryBox can\'t be use on a HTMLInputElement');
+      this.logger.error('Querybox cannot be used on an HTMLInputElement');
     }
 
     this.options = ComponentOptions.initComponentOptions(element, Querybox, options);
@@ -163,8 +274,8 @@ export class Querybox extends Component {
   }
 
   /**
-   * Trigger a query. The current input content will be added to the query.<br/>
-   * If the content of the input has not changed since the last submit, no new query will be triggered.
+   * Triggers a query. The content of the input will be added to the query. If the content of the input has not changed
+   * since the last submit, no new query will be triggered.
    */
   public submit(): void {
     this.magicBox.clearSuggestion();
@@ -174,8 +285,9 @@ export class Querybox extends Component {
   }
 
   /**
-   * Set the content of the input
-   * @param text The string to set in the input
+   * Sets the content of the input.
+   *
+   * @param text The string to set in the input.
    */
   public setText(text: string): void {
     this.magicBox.setText(text);
@@ -183,32 +295,55 @@ export class Querybox extends Component {
   }
 
   /**
-   * Clear the content of the input
+   * Clears the content of the input.
    */
   public clear(): void {
     this.magicBox.clear();
   }
 
   /**
-   * Get the current content of the input
-   * @returns {string}
+   * Gets the content of the input.
+   *
+   * @returns {string} The content of the input.
    */
   public getText(): string {
     return this.magicBox.getText();
   }
 
+  /**
+   * Gets the result from the input.
+   *
+   * @returns {Result} The result.
+   */
   public getResult() {
     return this.magicBox.getResult();
   }
 
+  /**
+   * Gets the displayed result from the input.
+   *
+   * @returns {Result} The displayed result.
+   */
   public getDisplayedResult() {
     return this.magicBox.getDisplayedResult();
   }
 
+  /**
+   * Gets the current cursor position in the input.
+   *
+   * @returns {number} The cursor position (index starts at 0).
+   */
   public getCursor(): number {
     return this.magicBox.getCursor();
   }
 
+  /**
+   * Gets the result at cursor position.
+   *
+   * @param match {string | { (result): boolean }} The match condition.
+   *
+   * @returns {Result[]} The result.
+   */
   public resultAtCursor(match?: string | { (result): boolean; }) {
     return this.magicBox.resultAtCursor(match);
   }

@@ -127,6 +127,15 @@ export function ResultListTest() {
         expect(aNewContainer.children.length).toBe(10);
       });
 
+      it('should get the minimal amount of fields to include when the option is true', () => {
+        test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+          autoSelectFieldsToInclude: true
+        });
+
+        let simulation = Simulate.query(test.env);
+        expect(simulation.queryBuilder.build().fieldsToInclude).toEqual(jasmine.arrayContaining(['author', 'language', 'urihash', 'objecttype', 'collection', 'source', 'language', 'uniqueid']));
+      });
+
       it('resultTemplate allow to specify a template manually', () => {
         let tmpl: UnderscoreTemplate = Mock.mock<UnderscoreTemplate>(UnderscoreTemplate);
         let asSpy = <any>tmpl;

@@ -1,8 +1,13 @@
 import {Logger} from '../../misc/Logger';
 import {StringUtils} from '../../utils/StringUtils';
 import {Initialization} from '../Base/Initialization';
-import {htmlToDom} from '../../utils/Dom';
 import {BaseComponent} from '../Base/BaseComponent';
+import {ValidLayout} from '../ResultLayout/ResultLayout';
+import {$$} from '../../utils/Dom';
+
+export interface ITemplateOptions {
+  layout: ValidLayout;
+}
 
 export class Template {
   static getFieldFromString(text: string) {
@@ -25,17 +30,26 @@ export class Template {
   constructor(public dataToString?: (object?: any) => string, public condition?: Function) {
   }
 
-  instantiateToString(object?: any, checkCondition = true): string {
+  /*
+   * Instantiate the template to a string if the condition matches
+   */
+  instantiateToString(object?: any, checkCondition = true, options?: ITemplateOptions): string {
+    if (options) {
+      object.options = options;
+    }
     if (this.dataToString && (!checkCondition || this.condition == null || this.condition(object))) {
       return this.dataToString(object);
     }
     return null;
   }
 
-  instantiateToElement(object?: any, checkCondition = true): HTMLElement {
-    var html = this.instantiateToString(object, checkCondition);
+  instantiateToElement(object?: any, checkCondition = true, wrapInDiv = true, options?: ITemplateOptions): HTMLElement {
+    var html = this.instantiateToString(object, checkCondition, options);
     if (html != null) {
-      var element = <HTMLElement>htmlToDom(html);
+      var element = $$('div', {}, html).el;
+      if (!wrapInDiv && element.children.length === 1) {
+        element = <HTMLElement>element.firstChild;
+      }
       this.logger.trace('Instantiated result template', object, element);
       element['template'] = this;
       return element;

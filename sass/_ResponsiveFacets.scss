@@ -10,9 +10,11 @@
     }
   }
 
-  .CoveoResult {
-    margin: 0;
-    padding: 15px 10px 15px 15px;
+  .coveo-list-layout {
+    .CoveoResult {
+      margin: 0;
+      padding: 15px 10px 15px 15px;
+    }
   }
 
   .coveo-results-column {
@@ -62,6 +64,7 @@
         border: 0;
         border-radius: 0;
         border-top: $default-border;
+        white-space: initial;
       }
     }
   }

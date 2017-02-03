@@ -54,61 +54,94 @@ interface IFlatHierarchy {
 }
 
 /**
- * This component inherits all of its options and behavior from the normal {@link Facet} component, but is meant to be used for hierarchical values.<br/>
- * The `HierarchicalFacet` component could be used to display files in a file system, or categories for documents in a hierarchy.<br/>
- * This facet require a group by field with a special format in order to work correctly.<br/>
- * Let's say we have the following files indexed on a filesystem:
+ * The HierarchicalFacet component inherits all of its options and behavior from the normal {@link Facet} component, but
+ * is meant to be used for hierarchical values.
+ *
+ * The HierarchicalFacet component could be used to display files in a file system, or categories for documents in a
+ * hierarchy.
+ *
+ * This facet requires a group by field with a special format in order to work correctly.
+ *
+ * **Example:**
+ *
+ * If you have the following files indexed on a file system:
  * ```
- * C:\
+ * c:\
  *    folder1\
  *        text1.txt
  *    folder2\
  *      folder3\
  *        text2.txt
  * ```
- * The document `text1.txt` would need to have a field with the following format:<br/>
- * `@field : c; c|folder1;`<br/>
- * The document `text2.txt` would have a field with the following format:<br/>
- * `@field: c; c|folder2; c|folder2|folder3;`<br/>
- * The | character allows the facet to build its hierarchy (`folder3` inside `folder2` inside `c`).<br/>
- * Since both documents contain the `c` value, selecting that value in the facet would return both documents.<br/>
+ * The document `text1.txt` would need to have a field with the following format:
+ * `@field : c; c|folder1;`
+ *
+ * The document `text2.txt` would have a field with the following format:
+ * `@field: c; c|folder2; c|folder2|folder3;`
+ *
+ * The | character allows the facet to build its hierarchy (`folder3` inside `folder2` inside `c`).
+ *
+ * Since both documents contain the `c` value, selecting that value in the facet would return both documents.
+ *
  * Selecting the `folder3` value in the facet would only return the `text2.txt` document.
  */
 export class HierarchicalFacet extends Facet implements IComponentBindings {
   static ID = 'HierarchicalFacet';
+
   /**
    * The options for the component
    * @componentOptions
    */
   static options: IHierarchicalFacetOptions = {
+
     /**
-     * The character that allows to specify the hierarchy dependency.<br/>
-     * The default value is `|`.<br/>
-     * For example, if your field has the following values: @field: c; c>folder2; c>folder2>folder3; Then your delimiting character would be `>`.
+     * The character that allows to specify the hierarchical dependency.
+     *
+     * **Example:**
+     *
+     * If your field has the following values:
+     *
+     * `@field: c; c>folder2; c>folder2>folder3;`
+     *
+     * Then your delimiting character is `>`.
+     *
+     * Default value is `|`.
      */
     delimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|' }),
+
     /**
-     * Specifies at which level (0 based index) of the hierarchy you want your facet to start displaying its values.<br/>
-     * The default value is `0`.<br/>
-     * Using this example:
+     * Specifies at which level (0-based index) of the hierarchy the HierarchicalFacet should start displaying its
+     * values.
+     *
+     * **Example:**
+     *
+     * If you have the following files indexed on a file system:
      * ```
-     * C:\
+     * c:\
      *    folder1\
      *        text1.txt
      *    folder2\
      *      folder3\
      *        text2.txt
      * ```
-     * Setting levelStart to 1 would only display folder1 and folder2, and omit c:
+     * Then, setting levelStart to `1` displays `folder1` and `folder2` in the HierarchicalFacet, but omits `c:`.
+     *
+     * Default (and minimum) value is `0`.
      */
     levelStart: ComponentOptions.buildNumberOption({ defaultValue: 0, min: 0 }),
+
     /**
-     * Specifies at which level (0 based index) of the hierarchy you want your facet to stop displaying its values.<br/>
-     * The default value is undefined, meaning it will render all levels.
+     * Specifies at which level (0-based index) of the hierarchy the HierarchicalFacet should stop displaying its
+     * values.
+     *
+     * Default value is `undefined`, which means the HierarchicalFacet component renders all hierarchical levels.
+     * Minimum value is `0`.
      */
     levelEnd: ComponentOptions.buildNumberOption({ min: 0 }),
+
     /**
-     * Specifies the margin, in pixel, between each level, when they are expanded.<br/>
+     * Specifies the margin (in pixels) to display between each hierarchical level when expanding.
+     *
      * Default value is `10`.
      */
     marginByLevel: ComponentOptions.buildNumberOption({ defaultValue: 10, min: 0 })
@@ -120,14 +153,17 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   public facetValuesList: HierarchicalFacetValuesList;
   public numberOfValuesToShow: number;
   public facetQueryController: HierarchicalFacetQueryController;
+  public topLevelHierarchy: IValueHierarchy[];
+  public shouldReshuffleFacetValuesClientSide = false;
+
   private valueHierarchy: { [facetValue: string]: IValueHierarchy };
   private firstPlacement = true;
   private originalNumberOfValuesToShow: number;
-  private topLevelHierarchy: IValueHierarchy[];
+
   private correctLevels: IFlatHierarchy[] = [];
 
   /**
-   * Create a new instance of the Hierarchical component
+   * Creates a new HierarchicalFacet.
    * @param element
    * @param options
    * @param bindings
@@ -143,17 +179,18 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   /**
-   * Select a single value
+   * Selects a single value.
    * @param value The value to select.
-   * @param selectChilds Determine if the child values (if any) should also be selected. By default, this is the opposite value of the {@link Facet.options.useAnd} value.
+   * @param selectChildren Specifies whether to also select all child values (if any). Default value is the opposite of
+   * the {@link Facet.options.useAnd} value set for this HierarchicalFacet.
    */
-  public selectValue(value: FacetValue, selectChilds?: boolean): void;
-  public selectValue(value: string, selectChilds?: boolean): void;
-  public selectValue(value: any, selectChilds = !this.options.useAnd) {
+  public selectValue(value: FacetValue, selectChildren?: boolean): void;
+  public selectValue(value: string, selectChildren?: boolean): void;
+  public selectValue(value: any, selectChildren = !this.options.useAnd) {
     this.ensureDom();
     this.ensureValueHierarchyExists([value]);
     let valueHierarchy = this.getValueFromHierarchy(value);
-    if (selectChilds) {
+    if (selectChildren) {
       this.selectChilds(valueHierarchy, valueHierarchy.childs);
     }
     this.flagParentForSelection(valueHierarchy);
@@ -161,19 +198,20 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   /**
-   * Select multiple values
+   * Selects multiple values
    * @param values The array of values to select.
-   * @param selectChilds Determine if the child values (if any) should also be selected. By default, this is the opposite value of the {@link Facet.options.useAnd} value.
+   * @param selectChildren Specifies whether to also select all child values (if any). Default value is the opposite of
+   * the {@link Facet.options.useAnd} value set for this HierarchicalFacet.
    */
-  public selectMultipleValues(values: FacetValue[], selectChilds?: boolean): void;
-  public selectMultipleValues(values: string[], selectChilds?: boolean): void;
-  public selectMultipleValues(values: any[], selectChilds = !this.options.useAnd): void {
+  public selectMultipleValues(values: FacetValue[], selectChildren?: boolean): void;
+  public selectMultipleValues(values: string[], selectChildren?: boolean): void;
+  public selectMultipleValues(values: any[], selectChildren = !this.options.useAnd): void {
     this.ensureDom();
     this.ensureValueHierarchyExists(values);
     _.each(values, (value) => {
       let valueHierarchy = this.getValueFromHierarchy(value);
       this.flagParentForSelection(valueHierarchy);
-      if (selectChilds) {
+      if (selectChildren) {
         _.each(valueHierarchy.childs, (child) => {
           this.selectValue(child.facetValue);
         });
@@ -183,17 +221,17 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   /**
-   * Deselect a single value
+   * Deselects a single value
    * @param value The value to deselect.
-   * @param deselectChilds Determine if the child values (if any) should also be de-selected. By default, this is true.
+   * @param deselectChildren Specifies whether to also deselect all child values (if any). Default value is `true`.
    */
-  public deselectValue(value: FacetValue, deselectChilds?: boolean): void;
-  public deselectValue(value: string, deselectChilds?: boolean): void;
-  public deselectValue(value: any, deselectChilds = true) {
+  public deselectValue(value: FacetValue, deselectChildren?: boolean): void;
+  public deselectValue(value: string, deselectChildren?: boolean): void;
+  public deselectValue(value: any, deselectChildren = true) {
     this.ensureDom();
     this.ensureValueHierarchyExists([value]);
     let valueHierarchy = this.getValueFromHierarchy(value);
-    if (deselectChilds) {
+    if (deselectChildren) {
       let hasChilds = valueHierarchy.childs != undefined;
       if (hasChilds) {
         let activeChilds = _.filter<IValueHierarchy>(valueHierarchy.childs, (child) => {
@@ -212,17 +250,18 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   /**
-   * Exclude a single value
-   * @param value The value to exclude
-   * @param excludeChilds Determine if the child values (if any) should also be excluded. By default, this is the opposite value of the {@link Facet.options.useAnd} value.
+   * Excludes a single value.
+   * @param value The value to exclude.
+   * @param excludeChildren Specifies whether to also exclude all child values (if any). Default value is the opposite
+   * of the {@link Facet.options.useAnd} value set for this HierarchicalFacet.
    */
-  public excludeValue(value: FacetValue, excludeChilds?: boolean): void;
-  public excludeValue(value: string, excludeChilds?: boolean): void;
-  public excludeValue(value: any, excludeChilds = !this.options.useAnd): void {
+  public excludeValue(value: FacetValue, excludeChildren?: boolean): void;
+  public excludeValue(value: string, excludeChildren?: boolean): void;
+  public excludeValue(value: any, excludeChildren = !this.options.useAnd): void {
     this.ensureDom();
     this.ensureValueHierarchyExists([value]);
     let valueHierarchy = this.getValueFromHierarchy(value);
-    if (excludeChilds) {
+    if (excludeChildren) {
       this.excludeChilds(valueHierarchy.childs);
     } else {
       this.deselectChilds(valueHierarchy, valueHierarchy.childs);
@@ -233,17 +272,18 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   /**
-   * Unexclude a single value
-   * @param value The value to unexclude.
-   * @param unexludeChilds Determine if the child values (if any) should also be un-excluded. By default, this is the opposite value of the {@link Facet.options.useAnd} value.
+   * Un-excludes a single value.
+   * @param value The value to un-exclude.
+   * @param unexludeChildren Specifies whether to also un-exclude all child values (if any). Default value is the
+   * opposite of the {@link Facet.options.useAnd} value set for this HierarchicalFacet.
    */
-  public unexcludeValue(value: FacetValue, unexludeChilds?: boolean): void;
-  public unexcludeValue(value: string, unexludeChilds?: boolean): void;
-  public unexcludeValue(value: any, unexludeChilds = !this.options.useAnd): void {
+  public unexcludeValue(value: FacetValue, unexludeChildren?: boolean): void;
+  public unexcludeValue(value: string, unexludeChildren?: boolean): void;
+  public unexcludeValue(value: any, unexludeChildren = !this.options.useAnd): void {
     this.ensureDom();
     this.ensureValueHierarchyExists([value]);
     let valueHierarchy = this.getValueFromHierarchy(value);
-    if (unexludeChilds) {
+    if (unexludeChildren) {
       this.unexcludeChilds(valueHierarchy.childs);
     }
     this.unflagParentForSelection(valueHierarchy);
@@ -251,20 +291,21 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   /**
-   * Deselect multiple values
-   * @param values The array of values to deselect
-   * @param deselectChilds Determine if the child values (if any) should also be deselected. By default, this is the opposite value of the {@link Facet.options.useAnd} value.
+   * Deselects multiple values.
+   * @param values The array of values to deselect.
+   * @param deselectChildren Specifies whether to also deselect all child values (if any). Default value is the opposite
+   * of the {@link Facet.options.useAnd} value set for this HierarchicalFacet.
    */
-  public deselectMultipleValues(values: FacetValue[], deselectChilds?: boolean): void;
-  public deselectMultipleValues(values: string[], deselectChilds?: boolean): void;
-  public deselectMultipleValues(values: any[], deselectChilds = !this.options.useAnd): void {
+  public deselectMultipleValues(values: FacetValue[], deselectChildren?: boolean): void;
+  public deselectMultipleValues(values: string[], deselectChildren?: boolean): void;
+  public deselectMultipleValues(values: any[], deselectChildren = !this.options.useAnd): void {
     this.ensureDom();
     this.ensureValueHierarchyExists(values);
     _.each(values, (value) => {
       let valueHierarchy = this.getValueFromHierarchy(value);
       valueHierarchy.hasChildSelected = false;
       this.unflagParentForSelection(valueHierarchy);
-      if (deselectChilds) {
+      if (deselectChildren) {
         _.each(valueHierarchy.childs, (child) => {
           let childInHierarchy = this.getValueFromHierarchy(child.facetValue);
           childInHierarchy.hasChildSelected = false;
@@ -276,8 +317,8 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   /**
-   * Toggle the selection on a single value (select / deselect).
-   * @param value
+   * Toggles the selection of a single value (selects value if not selected; deselects value if selected).
+   * @param value The value to select or deselect.
    */
   public toggleSelectValue(value: FacetValue): void;
   public toggleSelectValue(value: string): void;
@@ -292,8 +333,8 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   /**
-   * Toggle the exclusion on a single value (exclude / unexclude).
-   * @param value
+   * Toggles the exclusion of a single value (excludes value if not excluded; un-excludes value if excluded).
+   * @param value The value to exclude or un-exclude.
    */
   public toggleExcludeValue(value: FacetValue): void;
   public toggleExcludeValue(value: string): void;
@@ -308,8 +349,9 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   /**
-   * Get the caption for a single value.
-   * @param facetValue
+   * Gets the caption of a single value.
+   * @param facetValue The value whose caption the method should return.
+   * @returns {string} The caption of the value.
    */
   public getValueCaption(facetValue: IIndexFieldValue): string;
   public getValueCaption(facetValue: FacetValue): string;
@@ -328,8 +370,8 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   /**
-   * Get the currently displayed values in the facet.
-   * @returns {any[]}
+   * Gets the values that the HierarchicalFacet is currently displaying.
+   * @returns {any[]} An array containing all the values that the HierarchicalFacet is currently displaying.
    */
   public getDisplayedValues(): string[] {
     let displayed = _.filter(this.values.getAll(), (v) => {
@@ -344,8 +386,8 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   /**
-   * Update the sort criteria for the facet.
-   * @param criteria
+   * Updates the sort criteria for the HierarchicalFacet.
+   * @param criteria The new sort criteria.
    */
   public updateSort(criteria: string) {
     this.firstPlacement = true;
@@ -353,8 +395,8 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   /**
-   * Open a single value and show all its child.
-   * @param value.
+   * Opens (expands) a single value and shows all its children.
+   * @param value The value to open.
    */
   public open(value: FacetValue);
   public open(value: IValueHierarchy);
@@ -379,8 +421,8 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   /**
-   * Close a single value and hide all its child.
-   * @param value
+   * Closes (collapses) a single value and hides all its children.
+   * @param value The value to close.
    */
   public close(value: FacetValue);
   public close(value: IValueHierarchy);
@@ -405,7 +447,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   /**
-   * Reset the facet state
+   * Resets the HierarchicalFacet state.
    */
   public reset() {
     _.each(this.getAllValueHierarchy(), (valueHierarchy) => {
@@ -423,6 +465,11 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   public processFacetSearchAllResultsSelected(facetValues: FacetValue[]): void {
     this.selectMultipleValues(facetValues);
     this.triggerNewQuery();
+  }
+
+  protected triggerUpdateDeltaQuery(facetValues: FacetValue[]) {
+    this.shouldReshuffleFacetValuesClientSide = this.keepDisplayedValuesNextTime;
+    super.triggerUpdateDeltaQuery(facetValues);
   }
 
   protected updateSearchInNewDesign(moreValuesAvailable = true) {
@@ -486,6 +533,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   protected rebuildValueElements() {
+    this.shouldReshuffleFacetValuesClientSide = this.shouldReshuffleFacetValuesClientSide || this.keepDisplayedValuesNextTime;
     this.numberOfValues = Math.max(this.numberOfValues, 10000);
     this.processHierarchy();
     this.setValueListContent();
@@ -494,6 +542,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
     this.checkForOrphans();
     this.checkForNewUnselectedChild();
     this.crop();
+    this.shouldReshuffleFacetValuesClientSide = false;
   }
 
   protected initFacetValuesList() {
@@ -558,21 +607,22 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
     });
   }
 
-  private placeChildsUnderTheirParent(hierarchy: IValueHierarchy, hierarchyElement: HTMLElement, reverse = true) {
+  private placeChildsUnderTheirParent(hierarchy: IValueHierarchy, hierarchyElement: HTMLElement) {
     let toIterateOver = hierarchy.childs;
-    if (reverse) {
-      toIterateOver = toIterateOver.reverse();
-    }
-    _.each(toIterateOver, (child) => {
-      if (this.getValueHierarchy(child.facetValue.value)) {
-        let childElement = this.getElementFromFacetValueList(child.facetValue);
-        $$(childElement).insertAfter(hierarchyElement);
-        let childFromHierarchy = this.getValueFromHierarchy(child.facetValue);
-        if (childFromHierarchy.childs && childFromHierarchy.childs.length != 0) {
-          this.placeChildsUnderTheirParent(childFromHierarchy, childElement);
+    if (toIterateOver) {
+      let toIterateOverSorted = this.facetValuesList.sortFacetValues(_.pluck(toIterateOver, 'facetValue')).reverse();
+      _.each(toIterateOverSorted, (child) => {
+        let childFromHierarchy = this.getValueFromHierarchy(child);
+        if (childFromHierarchy) {
+          let childElement = this.getElementFromFacetValueList(child);
+          $$(childElement).insertAfter(hierarchyElement);
+          if (childFromHierarchy.childs && childFromHierarchy.childs.length != 0) {
+            this.placeChildsUnderTheirParent(childFromHierarchy, childElement);
+          }
         }
-      }
-    });
+      });
+    }
+
     if (hierarchy.keepOpened) {
       this.open(hierarchy);
       this.showChilds(hierarchy.childs);
@@ -598,12 +648,12 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   private buildParentChildRelationship() {
-    let sorted = _.chain(this.getAllValueHierarchy())
-      .toArray()
-      .sortBy('level')
-      .value();
-
-    _.each(<any>sorted, (hierarchy: IValueHierarchy) => {
+    let fragment = document.createDocumentFragment();
+    fragment.appendChild(this.facetValuesList.valueContainer);
+    let sorted = _.map(this.facetValuesList.sortFacetValues(), (facetValue: FacetValue) => {
+      return this.getValueFromHierarchy(facetValue);
+    });
+    _.each(sorted, (hierarchy: IValueHierarchy) => {
       let hierarchyElement = this.getElementFromFacetValueList(hierarchy.facetValue);
       if (Utils.isNonEmptyArray(hierarchy.childs)) {
         this.placeChildsUnderTheirParent(hierarchy, hierarchyElement);
@@ -613,6 +663,8 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
       }
       hierarchyElement.style.marginLeft = (this.options.marginByLevel * (hierarchy.level - this.options.levelStart)) + 'px';
     });
+
+    $$(<HTMLElement>fragment).insertAfter(this.headerElement);
   }
 
   private setValueListContent() {
@@ -802,10 +854,20 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
 
   private flagParentForSelection(valueHierarchy: IValueHierarchy) {
     let parent = valueHierarchy.parent;
+    let current = valueHierarchy;
     while (parent) {
       let parentInHierarchy = this.getValueHierarchy(parent.facetValue.value);
       parentInHierarchy.hasChildSelected = true;
+      let found = _.find(parentInHierarchy.childs, (child: IValueHierarchy) => {
+        return child.facetValue.value.toLowerCase() == current.facetValue.value.toLowerCase();
+      });
+      if (found) {
+        if (this.getValueHierarchy(found.facetValue.value).hasChildSelected) {
+          found.hasChildSelected = true;
+        }
+      }
       parent = parentInHierarchy.parent;
+      current = parentInHierarchy;
     }
   }
 

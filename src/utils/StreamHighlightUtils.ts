@@ -35,10 +35,15 @@ export class StreamHighlightUtils {
   static highlightStreamHTML(stream: string, termsToHighlight: { [originalTerm: string]: string[] }, phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } }, options?: IStreamHighlightOptions) {
     let opts = new DefaultStreamHighlightOptions().merge(options);
     let container = createStreamHTMLContainer(stream);
-    _.each($$(container).findAll('*'), (elem: HTMLElement, i: number) => {
-      let text = $$(elem).text();
-      elem.innerHTML = HighlightUtils.highlightString(text, getRestHighlightsForAllTerms(text, termsToHighlight, phrasesToHighlight, opts), [], opts.cssClass);
-    });
+    let allElements = $$(container).findAll('*');
+    if (allElements.length > 0) {
+      _.each(allElements, (elem: HTMLElement, i: number) => {
+        let text = $$(elem).text();
+        elem.innerHTML = HighlightUtils.highlightString(text, getRestHighlightsForAllTerms(text, termsToHighlight, phrasesToHighlight, opts), [], opts.cssClass);
+      });
+    } else {
+      return StreamHighlightUtils.highlightStreamText(stream, termsToHighlight, phrasesToHighlight, options);
+    }
     return container.innerHTML;
   }
 

@@ -140,5 +140,11 @@ export class PendingSearchEvent {
         searchEvent.customData[`context_${key}`] = value;
       });
     }
+
+    // The refinedKeywords field is important for Reveal in order to learn properly on query
+    // made based on the long query.    
+    if (queryResults.refinedKeywords != undefined && queryResults.refinedKeywords.length != 0) {
+      searchEvent.customData['refinedKeywords'] = queryResults.refinedKeywords;
+    }
   }
 }

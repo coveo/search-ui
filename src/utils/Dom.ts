@@ -666,6 +666,7 @@ export class Dom {
   public height(): number {
     return this.el.offsetHeight;
   }
+
   private traverseAncestorForClass(current = this.el, className: string): HTMLElement {
     if (className.indexOf('.') == 0) {
       className = className.substr(1);
@@ -755,15 +756,4 @@ export function $$(...args: any[]): Dom {
   } else {
     return new Dom(Dom.createElement.apply(Dom, args));
   }
-}
-
-export function htmlToDom(html: string): Element {
-  var parsedHtml = document.createElement('div');
-  parsedHtml.innerHTML = html;
-  // If the template has a single root element, we return it directly. Otherwise
-  // we'll have to wrap this thing in a div as ResultList expects a single element.
-  if (parsedHtml.children.length == 1) {
-    return parsedHtml.children.item(0);
-  }
-  return parsedHtml;
 }
