@@ -25,6 +25,13 @@
   @include flex-wrap(wrap);
 }
 
+.coveo-table-layout-container {
+  display: table;
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
 .coveo-result-list-table-header {
   display: table-row;
   text-align: left;

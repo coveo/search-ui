@@ -201,13 +201,7 @@
 }
 
 .coveo-table-layout {
-  display: table;
-  border-collapse: collapse;
-  width: 100%;
-  margin-bottom: 20px;
-  > .CoveoResult {
-    display: table-row;
-  }
+  display: table-row;
   .coveo-result-cell {
     display: table-cell;
     padding: .5em 0;
