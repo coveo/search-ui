@@ -165,7 +165,7 @@ export class ResultLayout extends Component {
       _.each(layouts, layout => this.disableLayout(layout));
 
       let remainingValidLayouts = _.difference(_.keys(this.currentActiveLayouts), layouts);
-      if (remainingValidLayouts && remainingValidLayouts[0]) {
+      if (!_.isEmpty(remainingValidLayouts)) {
         const newLayout = _.contains(remainingValidLayouts, this.currentLayout) ? this.currentLayout : remainingValidLayouts[0];
         this.changeLayout(<ValidLayout>newLayout);
       } else {
