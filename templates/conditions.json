@@ -5,11 +5,13 @@
   },
   "CardChatter": {
     "priority": 3,
-    "value": "(raw.objecttype == 'FeedItem' || raw.objecttype == 'FeedComment') && options.layout === 'card'"
+    "value": "raw.objecttype == 'FeedItem' || raw.objecttype == 'FeedComment'",
+    "layout": "card"
   },
   "Chatter": {
     "priority": 2,
-    "value": "raw.objecttype == 'FeedItem' || raw.objecttype == 'FeedComment'"
+    "value": "raw.objecttype == 'FeedItem' || raw.objecttype == 'FeedComment'",
+    "layout": "list"
   },
   "MobileDropbox": {
     "priority": 2,
@@ -17,11 +19,13 @@
   },
   "CardDropbox": {
     "priority": 2,
-    "value": "raw.connectortype == 'DropboxCrawler' && options.layout === 'card'"
+    "value": "raw.connectortype == 'DropboxCrawler'",
+    "layout": "card"
   },
   "Dropbox": {
     "priority": 1,
-    "value": "raw.connectortype == 'DropboxCrawler'"
+    "value": "raw.connectortype == 'DropboxCrawler'",
+    "layout": "list"
   },
   "MobileDynamicsCrm": {
     "priority": 2,
@@ -29,11 +33,13 @@
   },
   "CardDynamicsCrm": {
     "priority": 2,
-    "value": "raw.dycoveoid != null && options.layout === 'card'"
+    "value": "raw.dycoveoid != null",
+    "layout": "card"
   },
   "DynamicsCrm": {
     "priority": 1,
-    "value": "raw.dycoveoid != null"
+    "value": "raw.dycoveoid != null",
+    "layout": "list"
   },
   "MobileDynamicsCrmCase": {
     "priority": 3,
@@ -41,11 +47,13 @@
   },
   "CardDynamicsCrmCase": {
     "priority": 3,
-    "value": "raw.dyincidentid != null && Coveo.DeviceUtils.isSmallScreenWidth()"
+    "value": "raw.dyincidentid != null",
+    "layout": "card"
   },
   "DynamicsCrmCase": {
     "priority": 2,
-    "value": "raw.dyincidentid != null"
+    "value": "raw.dyincidentid != null",
+    "layout": "list"
   },
   "MobileEmailThread" : {
     "priority": 2,
@@ -53,11 +61,13 @@
   },
   "CardEmailThread": {
     "priority": 2,
-    "value": "raw.mailbox != undefined && options.layout === 'card'"
+    "value": "raw.mailbox != undefined",
+    "layout": "card"
   },
   "EmailThread": {
     "priority": 1,
-    "value": "raw.mailbox != undefined"
+    "value": "raw.mailbox != undefined",
+    "layout": "list"
   },
   "MobileGoogleDrive": {
     "priority": 2,
@@ -65,15 +75,18 @@
   },
   "CardGoogleDrive": {
     "priority": 2,
-    "value": "raw.connectortype == 'GoogleDriveCrawler' && options.layout === 'card'"
+    "value": "raw.connectortype == 'GoogleDriveCrawler'",
+    "layout": "card"
   },
   "GoogleDrive": {
     "priority": 1,
-    "value": "raw.connectortype == 'GoogleDriveCrawler'"
+    "value": "raw.connectortype == 'GoogleDriveCrawler'",
+    "layout": "list"
   },
   "Jira": {
     "priority": 1,
-    "value": "raw.connectortype == 'JiraCrawler'"
+    "value": "raw.connectortype == 'JiraCrawler'",
+    "layout": "list"
   },
   "MobileLithiumThread": {
     "priority": 2,
@@ -81,11 +94,13 @@
   },
   "CardLithiumThread": {
     "priority": 2,
-    "value": "raw.connectortype == 'LithiumCrawler' && options.layout === 'card'"
+    "value": "raw.connectortype == 'LithiumCrawler'",
+    "layout": "card"
   },
   "LithiumThread": {
     "priority": 1,
-    "value": "raw.connectortype == 'LithiumCrawler'"
+    "value": "raw.connectortype == 'LithiumCrawler'",
+    "layout": "list"
   },
   "MobilePeople": {
     "priority": 2,
@@ -93,11 +108,13 @@
   },
   "CardPeople": {
     "priority": 2,
-    "value": "raw.fullname != undefined && options.layout === 'card'"
+    "value": "raw.fullname != undefined",
+    "layout": "card"
   },
   "People": {
     "priority": 1,
-    "value": "raw.fullname != undefined"
+    "value": "raw.fullname != undefined",
+    "layout": "list"
   },
   "MobileSalesforceCase": {
     "priority": 3,
@@ -105,11 +122,13 @@
   },
   "CardSalesforceCase": {
     "priority": 3,
-    "value": "(raw.sfcaseid != null) && options.layout === 'card'"
+    "value": "raw.sfcaseid != null",
+    "layout": "card"
   },
   "SalesforceCase": {
     "priority": 2,
-    "value": "raw.sfcaseid != null"
+    "value": "raw.sfcaseid != null",
+    "layout": "list"
   },
   "MobileSalesforce": {
     "priority": 2,
@@ -117,11 +136,13 @@
   },
   "CardSalesforce": {
     "priority": 2,
-    "value": "(raw.sfid != null || raw.sfid != null) && options.layout === 'card'"
+    "value": "raw.sfid != null",
+    "layout": "card"
   },
   "Salesforce": {
     "priority": 1,
-    "value": "raw.sfid != null"
+    "value": "raw.sfid != null",
+    "layout": "list"
   },
   "MobileSharePoint": {
     "priority": 2,
@@ -129,11 +150,13 @@
   },
   "CardSharePoint": {
     "priority": 2,
-    "value": "raw.spitemtype != null && (raw.spitemtype != 'List' && options.layout === 'card')"
+    "value": "raw.spitemtype != null && raw.spitemtype != 'List'",
+    "layout": "card"
   },
   "SharePoint": {
     "priority": 1,
-    "value": "raw.spitemtype != null && raw.spitemtype != 'List'"
+    "value": "raw.spitemtype != null && raw.spitemtype != 'List'",
+    "layout": "list"
   },
   "MobileSharePointList": {
     "priority": 2,
@@ -141,11 +164,13 @@
   },
   "CardSharePointList": {
     "priority": 2,
-    "value": "raw.spitemtype != null && (raw.spitemtype == 'List' && options.layout === 'card')"
+    "value": "raw.spitemtype != null && raw.spitemtype == 'List'",
+    "layout": "card"
   },
   "SharePointList": {
     "priority": 1,
-    "value": "raw.spitemtype != null && raw.spitemtype == 'List'"
+    "value": "raw.spitemtype != null && raw.spitemtype == 'List'",
+    "layout": "list"
   },
   "MobileYouTubeVideo": {
     "priority": 2,
@@ -153,11 +178,13 @@
   },
   "CardYouTubeVideo": {
     "priority": 2,
-    "value": "raw.filetype == 'YouTubeVideo' && options.layout === 'card'"
+    "value": "raw.filetype == 'YouTubeVideo'",
+    "layout": "card"
   },
   "YouTubeVideo" : {
     "priority": 1,
-    "value": "raw.filetype == 'YouTubeVideo'"
+    "value": "raw.filetype == 'YouTubeVideo'",
+    "layout": "list"
   },
   "MobileYouTubePlaylistItem" : {
     "priority": 2,
@@ -165,11 +192,13 @@
   },
   "CardYouTubePlaylistItem" : {
     "priority": 2,
-    "value": "raw.filetype == 'YouTubePlaylistItem' && options.layout === 'card'"
+    "value": "raw.filetype == 'YouTubePlaylistItem'",
+    "layout": "card"
   },
   "YouTubePlaylistItem" : {
     "priority": 1,
-    "value": "raw.filetype == 'YouTubePlaylistItem'"
+    "value": "raw.filetype == 'YouTubePlaylistItem'",
+    "layout": "list"
   },
   "MobileSlack": {
     "priority": 2,
@@ -177,18 +206,22 @@
   },
   "CardSlack": {
     "priority": 2,
-    "value": "raw.connectortype == 'SlackCrawler' && options.layout === 'card'"
+    "value": "raw.connectortype == 'SlackCrawler'",
+    "layout": "card"
   },
   "Slack": {
     "priority": 1,
-    "value": "raw.connectortype == 'SlackCrawler'"
+    "value": "raw.connectortype == 'SlackCrawler'",
+    "layout": "list"
   },
   "Card": {
     "priority": 1,
-    "value": "options.layout === 'card'"
+    "value": "options.layout === 'card'",
+    "layout": "card"
   },
   "Table": {
     "priority": 4,
-    "value": "options.layout === 'table'"
+    "value": "options.layout === 'table'",
+    "layout": "table"
   }
 }

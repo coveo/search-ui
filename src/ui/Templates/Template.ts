@@ -27,11 +27,12 @@ export class Template {
 
   private logger: Logger = new Logger(this);
 
-  constructor(public dataToString?: (object?: any) => string, public condition?: Function) {
+  constructor(public dataToString?: (object?: any) => string, public layout?: ValidLayout, public condition?: Function) {
   }
 
   /*
-   * Instantiate the template to a string if the condition matches
+   * Instantiate the template to a string if the condition matches.
+   * @returns The instantiated template. If the condition doesn't match, return `null`.
    */
   instantiateToString(object?: any, checkCondition = true, options?: ITemplateOptions): string {
     if (options) {
