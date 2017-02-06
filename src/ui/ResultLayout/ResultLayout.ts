@@ -19,44 +19,40 @@ export interface IResultLayoutOptions {
 }
 
 /**
- * The possible valid and supported layout.
+ * The possible valid and supported layouts.
+ *
+ * See the [Result Layouts](https://developers.coveo.com/x/yQUvAg) documentation.
  */
 export type ValidLayout = 'list' | 'card' | 'table';
 
 /**
- * The ResultLayout component allows the user to switch between multiple {@link ResultList} components with
- * different layouts.
+ * The ResultLayout component allows the end user to switch between multiple {@link ResultList} components that have
+ * different {@link ResultList.options.layout} values.
  *
- * It will automatically populate itself with buttons to switch between {@link ResultList} components that have a valid
- * `data-layout` attribute.
+ * This component automatically populates itself with buttons to switch between the ResultList components that have a
+ * valid layout value (see the {@link ValidLayout} type).
+ *
+ * See also the [Result Layouts](https://developers.coveo.com/x/yQUvAg) documentation.
  */
 export class ResultLayout extends Component {
   static ID = 'ResultLayout';
 
-  /**
-   * The possible valid and supported layout.
-   */
   public static validLayouts: ValidLayout[] = ['list', 'card', 'table'];
-  /**
-   * The current active layout.
-   */
+
   public currentLayout: string;
 
 
   private buttons: { [key: string]: HTMLElement };
   private resultLayoutSection: HTMLElement;
 
-  /**
-   * @componentOptions
-   */
   static options: IResultLayoutOptions = {
   };
 
   /**
    * Creates a new ResultLayout component.
-   * @param element The HTMLElement on which the component will be instantiated.
+   * @param element The HTMLElement on which to instantiate the component.
    * @param options The options for the ResultLayout component.
-   * @param bindings The bindings that the component requires to function normally. If not set, they will be
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
    * automatically resolved (with a slower execution time).
    */
   constructor(public element: HTMLElement, public options?: IResultLayoutOptions, bindings?: IComponentBindings) {
@@ -79,11 +75,12 @@ export class ResultLayout extends Component {
   /**
    * Changes the current layout.
    *
+   * Also logs a `resultLayoutChange` event in the usage analytics with the new layout as metadeta.
+   *
    * Triggers a new query.
    *
-   * @param layout The new layout. Possible values are `list`, `card` and `table`.
-   * You need a valid {@link ResultList} component with the matching layout configured for this to work correctly end to
-   * end.
+   * @param layout The new layout. The page must contain a valid {@link ResultList} component with a matching
+   * {@link ResultList.options.layout} value for this method to work.
    */
   public changeLayout(layout: ValidLayout) {
     Assert.check(_.contains(_.keys(this.buttons), layout), 'Layout not available or invalid');
@@ -150,8 +147,8 @@ export class ResultLayout extends Component {
   }
 
   /**
-   * Gets the current layout (`list`, `card` or `table`).
-   * @returns {string} The current current layout.
+   * Gets the current layout.
+   * @returns {string} The current layout (see the {@link ValidLayout} type for the list of possible return values).
    */
   public getCurrentLayout() {
     return this.currentLayout;
