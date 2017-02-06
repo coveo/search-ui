@@ -25,6 +25,11 @@
   @include flex-wrap(wrap);
 }
 
+.coveo-result-list-table-header {
+  display: table-row;
+  text-align: left;
+}
+
 @include mediaSelector(800) {
   .CoveoResultList {
     margin-left: 10px;

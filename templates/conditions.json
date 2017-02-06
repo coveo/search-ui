@@ -190,5 +190,9 @@
   "Table": {
     "priority": 4,
     "value": "options.layout === 'table'"
+  },
+  "TableHeader": {
+    "priority": 4,
+    "value": "options.type === 'table-header'"
   }
 }

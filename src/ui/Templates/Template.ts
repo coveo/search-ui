@@ -6,7 +6,8 @@ import {ValidLayout} from '../ResultLayout/ResultLayout';
 import {$$} from '../../utils/Dom';
 
 export interface ITemplateOptions {
-  layout: ValidLayout;
+  layout?: ValidLayout;
+  type?: 'table-header' | 'table-footer';
 }
 
 export class Template {
