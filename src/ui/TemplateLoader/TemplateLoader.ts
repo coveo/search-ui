@@ -13,15 +13,16 @@ export interface ITemplateLoaderOptions {
 }
 
 /**
- * This component can be used to load one result template into another. A reusable result template should normally be
- * declared outside of the {@link ResultList} component. Note that a TemplateLoader cannot load a template into itself.
+ * The TemplateLoader component can load one result template into another. You should normally declare any reusable
+ * result template outside of the {@link ResultList} component. Otherwise, the framework will evaluate the
+ * `data-condition` of the reusable result template and possibly render it.
  *
- * # Example
+ * **Example:**
  *
- * ```
+ * ```html
  * [ ... ]
  *
- * <!-- A reusable result template. Note that it is declared outside of the ResultList component. -->
+ * <!-- A reusable result template. Note that it is important to declare it outside of the ResultList component. -->
  * <script type='text/underscore' class='result-template' id='ReusableTemplate'>
  *   <table class='CoveoFieldTable'>
  *     <tr data-field='@source' data-caption='Source'></tr>
@@ -31,12 +32,10 @@ export interface ITemplateLoaderOptions {
  *
  * [ ... ]
  *
- * <div class="CoveoResultList" data-wait-animation="fade"
- *      data-auto-select-fields-to-include="true">
+ * <div class="CoveoResultList" data-wait-animation="fade" data-auto-select-fields-to-include="true">
  *
  *   <!-- A custom result template for Lithium messages. -->
- *   <script type='text/underscore' class='result-template'
- *           data-condition='raw.filetype == "lithiummessage"'>
+ *   <script type='text/underscore' class='result-template' data-condition='raw.filetype == "lithiummessage"'>
  *     <div>
  *       <img class='CoveoIcon' data-small='true'>
  *       <a class='CoveoResultLink'></a>
@@ -45,8 +44,7 @@ export interface ITemplateLoaderOptions {
  *   </script>
  *
  *   <!-- A custom result template for images. -->
- *   <script type='text/underscore' class='result-template'
- *           data-condition='raw.filetype == "Image"'>
+ *   <script type='text/underscore' class='result-template' data-condition='raw.filetype == "Image"'>
  *     <div>
  *       <img class='CoveoIcon' data-small='true'></img>
  *         <a class='CoveoResultLink'>
@@ -59,6 +57,8 @@ export interface ITemplateLoaderOptions {
  *
  * [ ... ]
  * ```
+ *
+ * See [Result Templates](https://developers.coveo.com/x/aIGfAQ).
  */
 export class TemplateLoader extends Component {
   static ID = 'TemplateLoader';
@@ -68,25 +68,34 @@ export class TemplateLoader extends Component {
    * @componentOptions
    */
   static options: ITemplateLoaderOptions = {
+
     /**
-     * Specifies how the template can be found. This can be either a CSS selector or an HTML id global attribute.<br>
-     * Example with a CSS selector: `data-template-selector='Example_CSS_Selector'`<br>
-     * Example with an HTML id: `data-template-id='Example_HTML_Id'`
+     * Specifies how to find the template. This can be either a CSS selector or an HTML `id` attribute.
+     *
+     * **Examples:**
+     *
+     * - With a CSS selector: `data-template-selector='.MySelector'`
+     * - With an HTML `id`: `data-template-id='MyId'`
      */
     template: ComponentOptions.buildTemplateOption(),
+
     /**
-     * Specifies the boolean condition under which the template should be loaded.<br>
-     * Example: `data-condition='percentScore > 80'`
+     * Specifies the boolean condition that the result must satisfy in order for the template to load.
+     *
+     * **Example:**
+     *
+     * `data-condition='percentScore > 80'`
      */
     condition: ComponentOptions.buildStringOption()
   };
 
   /**
-   * Creates a new TemplateLoader component.
-   * @param element
-   * @param options
-   * @param bindings
-   * @param result
+   * Creates a new TemplateLoader.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the TemplateLoader component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   * @param result The result to associate the component with.
    */
   constructor(public element: HTMLElement, public options?: ITemplateLoaderOptions, public bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, TemplateLoader.ID, bindings);
