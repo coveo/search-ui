@@ -24,6 +24,9 @@
   @include display(flex);
   @include flex-wrap(wrap);
   margin-right: -20px;
+  @include mediaSelector(480) {
+    margin-right: 0;
+  }
 }
 
 .coveo-table-layout-container {
