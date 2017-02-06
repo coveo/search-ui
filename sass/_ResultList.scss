@@ -23,6 +23,7 @@
 .coveo-card-layout-container {
   @include display(flex);
   @include flex-wrap(wrap);
+  margin-right: -20px;
 }
 
 .coveo-table-layout-container {
