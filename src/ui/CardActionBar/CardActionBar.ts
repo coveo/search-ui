@@ -38,6 +38,7 @@ export class CardActionBar extends Component {
 
   parentResult: HTMLElement;
   arrowContainer: HTMLElement;
+  removedTabIndexElements: HTMLElement[] = [];
 
   /**
    * @componentOptions
@@ -80,6 +81,14 @@ export class CardActionBar extends Component {
       $$(this.parentResult).addClass('coveo-clickable');
       this.appendArrow();
       this.bindEvents();
+
+      _.forEach($$(this.element).findAll('*'), (elem: HTMLElement) => {
+        if (elem.hasAttribute('tabindex') && elem.getAttribute('tabindex') == '0') {
+          this.removedTabIndexElements.push(elem);
+          elem.removeAttribute('tabindex');
+        }
+      });
+
     } else {
       this.element.style.transition = 'none';
       this.element.style.transform = 'none';
@@ -91,6 +100,9 @@ export class CardActionBar extends Component {
    */
   public show() {
     $$(this.element).addClass('coveo-opened');
+    _.forEach(this.removedTabIndexElements, (e: Element) => {
+      e.setAttribute('tabindex', '0');
+    });
   }
 
   /**
@@ -98,6 +110,9 @@ export class CardActionBar extends Component {
    */
   public hide() {
     $$(this.element).removeClass('coveo-opened');
+    _.forEach(this.removedTabIndexElements, (e: Element) => {
+      e.removeAttribute('tabindex');
+    });
   }
 
   private bindEvents() {
@@ -109,8 +124,8 @@ export class CardActionBar extends Component {
   }
 
   private appendArrow() {
-    this.arrowContainer = $$('div', {className: 'coveo-card-action-bar-arrow-container', tabindex: 0}).el;
-    this.bind.on(this.arrowContainer, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, ()=> this.show()));
+    this.arrowContainer = $$('div', { className: 'coveo-card-action-bar-arrow-container', tabindex: 0 }).el;
+    this.bind.on(this.arrowContainer, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.show()));
     this.arrowContainer.appendChild($$('span', { className: 'coveo-icon coveo-sprites-arrow-up' }).el);
     this.parentResult.appendChild(this.arrowContainer);
   }

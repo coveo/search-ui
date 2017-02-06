@@ -22,7 +22,11 @@
   transition: transform $slide-duration ease-in-out;
   transform: translateY(100%);
   display: flex;
-  pointer-events: none;
+
+  &.coveo-hidden-for-tab-nav {
+    display: none;
+  }
+
 
   @keyframes coveo-card-overlay-fade-out {
     0% { opacity: 1; }
