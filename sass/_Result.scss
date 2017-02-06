@@ -201,10 +201,11 @@
   margin-bottom: 20px;
   > .CoveoResult {
     display: table-row;
-    > * {
-      padding: .5em 0;
-      border-bottom: $default-border;
-    }
+  }
+  .coveo-result-cell {
+    display: table-cell;
+    padding: .5em 0;
+    border-bottom: $default-border;
   }
 }
 
