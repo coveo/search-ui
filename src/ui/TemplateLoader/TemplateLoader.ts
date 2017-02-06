@@ -121,7 +121,10 @@ export class TemplateLoader extends Component {
         Assert.check(outerHTMLParent.indexOf(this.element.outerHTML) === -1, 'TemplateLoader cannot load a template into itself.');
       });
 
-      this.element.innerHTML = this.options.template.instantiateToString(this.result, false);
+      this.element.innerHTML = this.options.template.instantiateToString(this.result, {
+        checkCondition: false,
+        responsiveComponents: this.bindings ? this.bindings.searchInterface.responsiveComponents : null
+      });
       Initialization.automaticallyCreateComponentsInside(this.element, initParameters);
     }
   }

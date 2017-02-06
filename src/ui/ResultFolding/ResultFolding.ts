@@ -226,7 +226,11 @@ export class ResultFolding extends Component {
     QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), childResult);
     QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, childResult);
 
-    let oneChild = this.options.resultTemplate.instantiateToElement(childResult, false, false);
+    let oneChild = this.options.resultTemplate.instantiateToElement(childResult, {
+      wrapInDiv: false,
+      checkCondition: false,
+      responsiveComponents: this.searchInterface.responsiveComponents
+    });
     $$(oneChild).addClass('coveo-result-folding-child-result');
     this.results.appendChild(oneChild);
 

@@ -764,7 +764,10 @@ export class Matrix extends Component {
   }
 
   private instantiateTemplate(result: IQueryResult): HTMLElement {
-    let content = this.options.previewTemplate.instantiateToElement(result, false);
+    let content = this.options.previewTemplate.instantiateToElement(result, {
+      checkCondition: false,
+      responsiveComponents: this.searchInterface.responsiveComponents
+    });
     let initParameters: IInitializationParameters = {
       options: this.options,
       bindings: this.getBindings(),

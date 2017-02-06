@@ -118,7 +118,9 @@ export class Quickview extends Component {
       if (id != null) {
         let loadingAnimationTemplate = ComponentOptions.loadResultTemplateFromId(id);
         if (loadingAnimationTemplate) {
-          return loadingAnimationTemplate.instantiateToElement({});
+          return loadingAnimationTemplate.instantiateToElement(undefined, {
+            checkCondition: false
+          });
         }
       }
       return DomUtils.getBasicLoadingAnimation();

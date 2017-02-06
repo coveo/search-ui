@@ -19,6 +19,7 @@ export function TemplateLoaderTest() {
           'data-template-id': badTemplateId
         }).el));
       }).toThrow();
+      TemplateCache.unregisterTemplate(badTemplateId);
     });
   });
 }

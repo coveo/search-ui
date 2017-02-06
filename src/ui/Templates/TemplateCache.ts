@@ -40,6 +40,21 @@ export class TemplateCache {
   }
 
   /**
+   * Remove the given template from the cache.
+   * @param name
+   * @param string
+   */
+  public static unregisterTemplate(name) {
+    Assert.isNonEmptyString(name);
+    if (TemplateCache.templates[name] != undefined) {
+      delete TemplateCache.templates[name];
+    }
+    if (TemplateCache.defaultTemplates[name] != undefined) {
+      delete TemplateCache.defaultTemplates[name];
+    }
+  }
+
+  /**
    * Return a template by its name/ID.
    * @param name
    * @returns {Template}
@@ -79,6 +94,10 @@ export class TemplateCache {
     return _.keys(TemplateCache.defaultTemplates);
   }
 
+  /**
+   * Get a default template by name.
+   * @param name The name of the queried template
+   */
   public static getDefaultTemplate(name: string): Template {
     Assert.exists(TemplateCache.defaultTemplates[name]);
     return TemplateCache.defaultTemplates[name];

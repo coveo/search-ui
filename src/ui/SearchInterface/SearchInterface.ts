@@ -26,6 +26,7 @@ import timezone = require('jstz');
 import {SentryLogger} from '../../misc/SentryLogger';
 import {IComponentBindings} from '../Base/ComponentBindings';
 import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
+import {ResponsiveComponents} from '../ResponsiveComponents/ResponsiveComponents';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -190,6 +191,11 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   public usageAnalytics: IAnalyticsClient;
 
   /**
+   * Allow to get and set the different breakpoint for mobile and tablet devices.
+   */
+  public responsiveComponents: ResponsiveComponents;
+
+  /**
    * Create a new search interface. Initialize various singleton for the interface (eg : Usage analytic, query controller, state model, etc.)<br/>
    * Bind event related to the query.<br/>
    * Will hide and show the loading animation, if activated.<br/>
@@ -245,6 +251,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.element.style.display = element.style.display || 'block';
     this.setupDebugInfo();
     this.isNewDesignAttribute = this.root.getAttribute('data-design') == 'new';
+    this.responsiveComponents = new ResponsiveComponents();
   }
 
   /**

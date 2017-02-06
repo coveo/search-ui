@@ -14,6 +14,7 @@ import {BaseComponent} from '../src/ui/Base/BaseComponent';
 import {NoopAnalyticsClient} from '../src/ui/Analytics/NoopAnalyticsClient';
 import {SearchEndpoint} from '../src/rest/SearchEndpoint';
 import {QueryController} from '../src/controllers/QueryController';
+import {ResponsiveComponents} from '../src/ui/ResponsiveComponents/ResponsiveComponents';
 
 export interface IMockEnvironment extends IComponentBindings {
   root: HTMLElement;
@@ -215,6 +216,15 @@ export function mockSearchInterface(): SearchInterface {
   var m = mockComponent<SearchInterface>(SearchInterface, SearchInterface.ID);
   m.options = {};
   m.options.originalOptionsObject = {};
+  m.responsiveComponents = mockResponsiveComponents();
+  return m;
+}
+
+export function mockResponsiveComponents(): ResponsiveComponents {
+  var m = mock<ResponsiveComponents>(ResponsiveComponents);
+  m.isSmallScreenWidth = () => false;
+  m.isMediumScreenWidth = () => false;
+  m.isLargeScreenWidth = () => true;
   return m;
 }
 

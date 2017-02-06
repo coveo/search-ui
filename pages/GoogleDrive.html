@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="css/CoveoFullSearchNewDesign.css" />
     <script>
       document.addEventListener('DOMContentLoaded', function(){
-        Coveo.SearchEndpoint.configureSampleEndpointV2();
+        Coveo.SearchEndpoint.configureSampleEndpoint();
         Coveo.init(document.body);
       })
     </script>
@@ -23,7 +23,7 @@
       <a class="CoveoTab" data-id="GoogleDrive" data-caption="Google Drive" data-expression="@connectortype==GoogleDriveCrawler"></a>
     </div>
     <div class='coveo-search-section'>
-      <div class="CoveoSettings" data-include-in-menu=".CoveoShareQuery,.CoveoExportToExcel,.CoveoPreferencesPanel"></div>
+      <div class="CoveoSettings"></div>
       <div class="CoveoSearchbox" data-enable-omnibox="true"></div>
     </div>
     <div class="coveo-main-section">
