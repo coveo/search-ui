@@ -5,38 +5,38 @@ import {Simulate} from '../Simulate';
 import {Utils} from '../../src/utils/Utils';
 
 export function PipelineContextText() {
-  describe('PipelineContext', ()=> {
+  describe('PipelineContext', () => {
     let test: Mock.IBasicComponentSetup<PipelineContext>;
 
 
-    afterEach(()=> {
+    afterEach(() => {
       test = null;
     });
 
-    describe('when it is a script tag', ()=> {
+    describe('when it is a script tag', () => {
       let scriptTag: HTMLElement;
 
-      beforeEach(()=> {
+      beforeEach(() => {
         scriptTag = document.createElement('script');
       });
 
-      afterEach(()=> {
+      afterEach(() => {
         scriptTag = null;
       });
 
-      describe('when it contains valid JSON context', ()=> {
+      describe('when it contains valid JSON context', () => {
         let context = {
           'qwerty': 'azerty',
           'a key': 'a value'
         };
 
-        beforeEach(()=> {
+        beforeEach(() => {
           $$(scriptTag).text(JSON.stringify(context));
 
           test = Mock.advancedComponentSetup<PipelineContext>(PipelineContext, new Mock.AdvancedComponentSetupOptions(scriptTag));
         });
 
-        it('should add the JSON content in the query', ()=> {
+        it('should add the JSON content in the query', () => {
           let simulation = Simulate.query(test.env);
           expect(simulation.queryBuilder.build().context).toEqual(jasmine.objectContaining({
             'qwerty': 'azerty',
@@ -44,14 +44,16 @@ export function PipelineContextText() {
           }));
         });
 
-        it('should return the context keys', ()=> {
-          expect(test.cmp.getContextKeys()).toEqual(jasmine.arrayContaining(['qwerty', 'a key']))
+        it('should return the context keys', () => {
+          expect(test.cmp.getContextKeys()).toEqual(jasmine.arrayContaining(['qwerty', 'a key']));
         });
 
-        it('should return the ')
+        it('should return the context value', () => {
+          expect(test.cmp.getContextValue('qwerty')).toBe('azerty');
+        });
       });
 
-      it('should add JSON content in the query if it HTML encoded', ()=> {
+      it('should add JSON content in the query if it HTML encoded', () => {
         let context = {
           'qwerty': 'azerty'
         };
@@ -66,15 +68,15 @@ export function PipelineContextText() {
         }));
       });
 
-      it('should not throw an error if the context is malformed', ()=> {
+      it('should not throw an error if the context is malformed', () => {
         $$(scriptTag).text('this is not JSON');
 
-        expect(()=> Mock.advancedComponentSetup<PipelineContext>(PipelineContext, new Mock.AdvancedComponentSetupOptions(scriptTag))).not.toThrowError();
+        expect(() => Mock.advancedComponentSetup<PipelineContext>(PipelineContext, new Mock.AdvancedComponentSetupOptions(scriptTag))).not.toThrowError();
       });
     });
 
-    it('should not throw an error if the context is not a script tag', ()=> {
-      expect(()=> test = Mock.basicComponentSetup<PipelineContext>(PipelineContext)).not.toThrowError();
+    it('should not throw an error if the context is not a script tag', () => {
+      expect(() => test = Mock.basicComponentSetup<PipelineContext>(PipelineContext)).not.toThrowError();
     });
   });
 }

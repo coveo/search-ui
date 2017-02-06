@@ -88,7 +88,7 @@ export class RevealQuerySuggestAddon {
       payload.pipeline = pipeline;
     }
 
-    if(context) {
+    if (context) {
       payload.context = context;
     }
 
