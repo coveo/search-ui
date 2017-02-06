@@ -9,7 +9,6 @@
   top: 0;
   left: 0;
 
-  display: flex;
   flex-direction: column;
 
   z-index: 1;
@@ -22,6 +21,12 @@
   $slide-duration: 0.5s;
   transition: transform $slide-duration ease-in-out;
   transform: translateY(100%);
+  display: flex;
+
+  &.coveo-hidden-for-tab-nav {
+    display: none;
+  }
+
 
   @keyframes coveo-card-overlay-fade-out {
     0% { opacity: 1; }
