@@ -96,6 +96,9 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
 
 @mixin clickable($dark-background: false) {
   color: $color-teal;
+  @if $dark-background == true {
+    color: $color-coveo-for-salesforce;
+  }
   text-decoration: none;
   cursor: pointer;
   &:hover, &:visited {
@@ -103,7 +106,7 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
     @if $dark-background == false {
       color: $color-greyish-dark-blue;
     } @else {
-      color: $color-teal;
+      color: $color-coveo-for-salesforce;
     }
   }
   &:hover, &:hover a {
@@ -113,7 +116,7 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
     @if $dark-background == false {
       color: $color-greyish-dark-blue;
     } @else {
-      color: $color-teal;
+      color: $color-coveo-for-salesforce;
     }
   }
 }
