@@ -2,11 +2,10 @@
 const webpack = require('webpack');
 const minimize = process.argv.indexOf('--minimize') !== -1;
 const colors = require('colors');
-const failPlugin = require('webpack-fail-plugin');
 
 // Fail plugin will allow the webpack ts-loader to fail correctly when the TS compilation fails
 // Provide plugin allows us to use underscore in every module, without having to require underscore everywhere.
-let plugins = [failPlugin, new webpack.ProvidePlugin({_: 'underscore'})];
+let plugins = [new webpack.ProvidePlugin({_: 'underscore'})];
 
 if (minimize) {
   plugins.push(new webpack.optimize.UglifyJsPlugin());
@@ -16,7 +15,7 @@ let globalizePath = __dirname + '/../lib/globalize.min.js';
 
 module.exports = {
   resolve: {
-    extensions: ['', '.ts', '.js'],
+    extensions: ['.ts', '.js'],
     alias: {
       'l10n': __dirname + '/../lib/l10n.min.js',
       'globalize': globalizePath,

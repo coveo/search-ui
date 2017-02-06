@@ -17,6 +17,7 @@ import {BaseComponent} from '../Base/BaseComponent';
 import {JQueryUtils} from '../../utils/JQueryutils';
 import {IJQuery} from './CoveoJQuery';
 
+
 /**
  * Represent the initialization parameters required to init a new component.
  */

@@ -1,5 +1,6 @@
 'use strict';
 const _ = require('underscore');
+const webpack = require('webpack');
 
 let conf = require('./webpack.common.config');
 conf = _.extend(conf, {
@@ -13,9 +14,15 @@ conf = _.extend(conf, {
     library: 'Coveo',
     devtoolModuleFilenameTemplate: '[resource-path]'
   },
-  ts: {
-    project: '../test/tsconfig.json'
-  }
+  plugins: [
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        ts: {
+          project: '../test/tsconfig.json'
+        }
+      }
+    })
+  ]
 })
 
 module.exports = conf;

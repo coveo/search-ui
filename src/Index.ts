@@ -8,6 +8,8 @@ export * from './ModelsModules';
 export * from './UIBaseModules';
 export * from './TemplatesModules';
 
+declare const require: any;
+
 // UI
 export {CoreHelpers} from './ui/Templates/CoreHelpers';
 export {SearchInterface, StandaloneSearchInterface} from './ui/SearchInterface/SearchInterface';
@@ -24,7 +26,8 @@ export {Querybox} from './ui/Querybox/Querybox';
 export {SearchButton} from './ui/SearchButton/SearchButton';
 export {Searchbox} from './ui/Searchbox/Searchbox';
 export {Breadcrumb} from './ui/Breadcrumb/Breadcrumb';
-export {Facet} from './ui/Facet/Facet';
+
+
 export {FacetHeader} from './ui/Facet/FacetHeader';
 export {FacetSearchValuesList} from './ui/Facet/FacetSearchValuesList';
 export {FacetSettings} from './ui/Facet/FacetSettings';
@@ -109,7 +112,6 @@ export {ChatterPostAttachment} from './ui/ChatterPostAttachment/ChatterPostAttac
 export {ChatterPostedBy} from './ui/ChatterPostedBy/ChatterPostedBy';
 export {ChatterTopic} from './ui/ChatterTopic/ChatterTopic';
 export {ChatterUtils} from './utils/ChatterUtils';
-export {Logo} from './ui/Logo/Logo';
 export {Backdrop} from './ui/Backdrop/Backdrop';
 export {CardOverlay} from './ui/CardOverlay/CardOverlay';
 export {CardActionBar} from './ui/CardActionBar/CardActionBar';
@@ -119,6 +121,13 @@ export {ColorUtils} from './utils/ColorUtils';
 export {Cookie} from './utils/CookieUtils';
 export {CurrencyUtils} from './utils/CurrencyUtils';
 export {DateUtils} from './utils/DateUtils';
+
+require.ensure(['./ui/Logo/Logo'], (require)=> {
+  const logo = require('./ui/Logo/Logo');
+  console.log(logo);
+
+}, 'Logo');
+
 
 import {swapVar} from './SwapVar';
 swapVar(this);

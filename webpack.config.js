@@ -1,7 +1,8 @@
 'use strict';
 const _ = require('underscore');
 const minimize = process.argv.indexOf('--minimize') !== -1;
-
+const webpack = require('webpack');
+const path = require('path');
 
 let conf = require('./webpackConfigFiles/webpack.common.config');
 conf = _.extend(conf, {
@@ -10,14 +11,20 @@ conf = _.extend(conf, {
     'CoveoJsSearch.Searchbox': './src/SearchboxIndex.ts'
   },
   output: {
-    path: require('path').resolve('./bin/js'),
+    path: path.resolve(__dirname, 'bin/js'),
     filename: minimize ? '[name].min.js' : '[name].js',
+    chunkFilename: minimize ? '[name].min.js' : '[name].js',
     libraryTarget: 'umd',
     // See Index.ts as for why this need to be a temporary variable
     library: 'Coveo__temporary',
     publicPath : '/js/',
     devtoolModuleFilenameTemplate: '[resource-path]'
-  }
+  },
+  /*plugins: conf.plugins.concat([
+   new webpack.optimize.CommonsChunkPlugin({
+   name: 'base'
+   })
+   ])*/
 })
 
 module.exports = conf;
