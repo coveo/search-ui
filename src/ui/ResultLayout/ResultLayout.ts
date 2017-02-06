@@ -202,7 +202,7 @@ export class ResultLayout extends Component {
   private hideButton(layout: ValidLayout) {
     if (this.isLayoutDisplayedByButton(layout)) {
       let btn = this.currentActiveLayouts[<string>layout].button;
-      $$(btn.el).hide();
+      $$(btn.el).addClass('coveo-hidden');
       btn.visible = false;
       this.updateSelectorAppearance();
     }
@@ -211,7 +211,7 @@ export class ResultLayout extends Component {
   private showButton(layout: ValidLayout) {
     if (this.isLayoutDisplayedByButton(layout)) {
       let btn = this.currentActiveLayouts[<string>layout].button;
-      $$(btn.el).show();
+      $$(btn.el).removeClass('coveo-hidden');
       btn.visible = true;
     }
   }
