@@ -136,7 +136,6 @@ export class ResultLayout extends Component {
     Assert.check(this.isLayoutDisplayedByButton(layout), 'Layout not available or invalid');
 
     if (layout !== this.currentLayout || this.getModelValue() === '') {
-
       this.setModelValue(layout);
       const lastResults = this.queryController.getLastResults();
       this.setLayout(layout, lastResults);
@@ -163,13 +162,12 @@ export class ResultLayout extends Component {
 
   public disableLayouts(layouts: ValidLayout[]) {
     if (Utils.isNonEmptyArray(layouts)) {
-      _.each(layouts, (layout) => {
-        this.disableLayout(layout);
-      });
+      _.each(layouts, layout => this.disableLayout(layout));
 
       let remainingValidLayouts = _.difference(_.keys(this.currentActiveLayouts), layouts);
       if (remainingValidLayouts && remainingValidLayouts[0]) {
-        this.changeLayout(<ValidLayout>remainingValidLayouts[0]);
+        const newLayout = _.contains(remainingValidLayouts, this.currentLayout) ? this.currentLayout : remainingValidLayouts[0];
+        this.changeLayout(<ValidLayout>newLayout);
       } else {
         this.logger.error('Cannot disable the last valid layout ... Re-enabling the first one possible');
         let firstPossibleValidLayout = <ValidLayout>_.keys(this.currentActiveLayouts)[0];
@@ -197,7 +195,6 @@ export class ResultLayout extends Component {
       this.updateSelectorAppearance();
     }
   }
-
 
   private hideButton(layout: ValidLayout) {
     if (this.isLayoutDisplayedByButton(layout)) {
