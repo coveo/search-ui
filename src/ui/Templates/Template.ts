@@ -81,8 +81,8 @@ export class Template implements ITemplateProperties {
       }
 
       // Should not happen but...
-      // Normally, top level call from sub-class will have already created a DefaultInstantiateTemplateOptions
-      // and merged down
+      // Normally, top level call from sub-class will have already created a
+      // DefaultInstantiateTemplateOptions and merged down
       if (instantiateOptions.responsiveComponents == null) {
         instantiateOptions.responsiveComponents = new ResponsiveComponents();
       }
@@ -146,12 +146,12 @@ export class Template implements ITemplateProperties {
   }
 
   instantiateToElement(object: IQueryResult, instantiateTemplateOptions: IInstantiateTemplateOptions = {}): HTMLElement {
-    let merged = new DefaultInstantiateTemplateOptions().merge(instantiateTemplateOptions);
+    let mergedOptions = new DefaultInstantiateTemplateOptions().merge(instantiateTemplateOptions);
 
-    var html = this.instantiateToString(object, merged);
+    var html = this.instantiateToString(object, mergedOptions);
     if (html != null) {
       var element = $$('div', {}, html).el;
-      if (!merged.wrapInDiv && element.children.length === 1) {
+      if (!mergedOptions.wrapInDiv && element.children.length === 1) {
         element = <HTMLElement>element.firstChild;
       }
       if (this.layout) {

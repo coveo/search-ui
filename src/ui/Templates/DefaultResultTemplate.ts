@@ -24,7 +24,7 @@ export class DefaultResultTemplate extends Template {
 
   instantiateToString(queryResult: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = {}): string {
     Assert.exists(queryResult);
-    let merged = new DefaultInstantiateTemplateOptions().merge(instantiateOptions);
+    let mergedOptions = new DefaultInstantiateTemplateOptions().merge(instantiateOptions);
     queryResult = _.extend({}, queryResult, UnderscoreTemplate.templateHelpers);
 
     // Put templates with conditions first
@@ -34,18 +34,8 @@ export class DefaultResultTemplate extends Template {
       .sortBy(template => template.fieldsToMatch == null)
       .value();
 
-    // For the DefaultResultTemplate, we want to display card only in mobile
-    // The default list template are not adapted to mobile.
-    if (merged.responsiveComponents.isSmallScreenWidth()) {
-      templates = _.filter(templates, (tmpl) => tmpl.layout == 'card');
-      merged.currentLayout = 'card';
-      this.layout = 'card';
-    } else {
-      this.layout = merged.currentLayout;
-    }
-
     for (let i = 0; i < templates.length; i++) {
-      var result = templates[i].instantiateToString(queryResult, merged);
+      var result = templates[i].instantiateToString(queryResult, mergedOptions);
       if (result != null) {
         return result;
       }
