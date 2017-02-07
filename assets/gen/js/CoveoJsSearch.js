@@ -1754,8 +1754,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	exports.version = {
-	    'lib': '1.2126.0-beta',
-	    'product': '1.2126.0-beta',
+	    'lib': '1.2126.1-beta',
+	    'product': '1.2126.1-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -1862,7 +1862,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            restUri: 'https://platform.cloud.coveo.com/rest/search',
 	            accessToken: 'xx564559b1-0045-48e1-953c-3addd1ee4457',
 	            queryStringArguments: {
-	                organizationID: 'searchuisamples'
+	                organizationID: 'searchuisamples',
+	                viewAllContent: 1
 	            }
 	        }));
 	    };
@@ -21845,13 +21846,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var settingsSection = Dom_1.$$('div', {
 	            className: 'coveo-facet-header-settings-section'
 	        });
+	        this.eraserElement = this.buildEraser();
+	        settingsSection.append(this.eraserElement);
 	        if (this.options.facet) {
 	            this.operatorElement = this.buildOperatorToggle();
 	            settingsSection.append(this.operatorElement);
 	            Dom_1.$$(this.operatorElement).toggle(this.options.facet.options.enableTogglingOperator);
 	        }
-	        this.eraserElement = this.buildEraser();
-	        settingsSection.append(this.eraserElement);
 	        if (this.options.settingsKlass) {
 	            this.sort = this.settings = new this.options.settingsKlass(this.options.availableSorts, this.options.facet);
 	            settingsSection.append(this.settings.build());
@@ -51840,11 +51841,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * Default value is `100`.
 	         */
 	        numberOfResults: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1 }),
-	        /**
-	         * Specifies an array of fields that should be included for the export to excel call.
-	         *
-	         * Those are the fields that will be downloaded. If not specified, all fields returned by the last query will be used.
-	         */
 	        fieldsToInclude: ComponentOptions_1.ComponentOptions.buildFieldsOption()
 	    };
 	    return ExportToExcel;
@@ -77949,6 +77945,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var CardOverlayEvents_1 = __webpack_require__(396);
 	var Dom_1 = __webpack_require__(59);
 	var Assert_1 = __webpack_require__(14);
+	var KeyboardUtils_1 = __webpack_require__(70);
 	/**
 	 * The CardOverlay component displays a button which toggles the visibility of an overlay on top of an
 	 * {@link IQueryResult} when clicked. This component is usually found inside a {@link CardActionBar} component, although
@@ -77978,6 +77975,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        Assert_1.Assert.exists(this.parentCard);
 	        this.createOverlay();
 	        this.createButton(this.element);
+	        this.closeOverlay();
 	    }
 	    /**
 	     * Toggles the CardOverlay visibility.
@@ -78002,6 +78000,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * Opens the CardOverlay.
 	     */
 	    CardOverlay.prototype.openOverlay = function () {
+	        Dom_1.$$(this.overlay).removeClass('coveo-hidden-for-tab-nav');
 	        Dom_1.$$(this.overlay).addClass('coveo-opened');
 	        this.bind.trigger(this.element, CardOverlayEvents_1.CardOverlayEvents.openCardOverlay);
 	    };
@@ -78009,6 +78008,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * Closes the CardOverlay.
 	     */
 	    CardOverlay.prototype.closeOverlay = function () {
+	        Dom_1.$$(this.overlay).addClass('coveo-hidden-for-tab-nav');
 	        Dom_1.$$(this.overlay).removeClass('coveo-opened');
 	        this.bind.trigger(this.element, CardOverlayEvents_1.CardOverlayEvents.closeCardOverlay);
 	    };
@@ -78027,8 +78027,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        this.overlay.appendChild(overlayBody);
 	        // Create footer
-	        var overlayFooter = Dom_1.$$('div', { className: 'coveo-card-overlay-footer' }, Dom_1.$$('span', { className: 'coveo-icon coveo-sprites-arrow-down' }));
+	        var overlayFooter = Dom_1.$$('div', { className: 'coveo-card-overlay-footer', tabindex: '0' }, Dom_1.$$('span', { className: 'coveo-icon coveo-sprites-arrow-down' }));
 	        overlayFooter.on('click', function () { return _this.toggleOverlay(false); });
+	        this.bind.on(overlayFooter.el, 'keyup', KeyboardUtils_1.KeyboardUtils.keypressAction(KeyboardUtils_1.KEYBOARD.ENTER, function () { return _this.toggleOverlay(false); }));
 	        this.overlay.appendChild(overlayFooter.el);
 	        this.parentCard.appendChild(this.overlay);
 	    };
@@ -78038,7 +78039,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            element.appendChild(Dom_1.$$('span', { className: 'coveo-icon ' + this.options.icon }).el);
 	        }
 	        element.appendChild(Dom_1.$$('span', { className: 'coveo-label' }, this.options.title).el);
+	        element.setAttribute('tabindex', '0');
 	        Dom_1.$$(element).on('click', function () { return _this.toggleOverlay(); });
+	        this.bind.on(element, 'keyup', KeyboardUtils_1.KeyboardUtils.keypressAction(KeyboardUtils_1.KEYBOARD.ENTER, function () { return _this.toggleOverlay(); }));
 	    };
 	    CardOverlay.ID = 'CardOverlay';
 	    /**
@@ -78079,7 +78082,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 397 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
@@ -78090,6 +78093,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Initialization_1 = __webpack_require__(107);
 	var Assert_1 = __webpack_require__(14);
 	var Dom_1 = __webpack_require__(59);
+	var KeyboardUtils_1 = __webpack_require__(70);
 	/**
 	 * The CardActionBar component displays an action bar at the bottom of a Card result (see {ResultList.options.layout}
 	 * and {@link ResultLayout}). It is a simple container for buttons or complementary information.
@@ -78121,10 +78125,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @param result The {@link IQueryResult}.
 	     */
 	    function CardActionBar(element, options, bindings, result) {
+	        var _this = this;
 	        _super.call(this, element, CardActionBar.ID, bindings);
 	        this.element = element;
 	        this.options = options;
 	        this.result = result;
+	        this.removedTabIndexElements = [];
 	        this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, CardActionBar, options);
 	        this.parentResult = Dom_1.$$(this.element).closest('CoveoResult');
 	        Assert_1.Assert.check(this.parentResult !== undefined, 'ActionBar needs to be a child of a Result');
@@ -78132,6 +78138,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	            Dom_1.$$(this.parentResult).addClass('coveo-clickable');
 	            this.appendArrow();
 	            this.bindEvents();
+	            _.forEach(Dom_1.$$(this.element).findAll('*'), function (elem) {
+	                if (elem.hasAttribute('tabindex') && elem.getAttribute('tabindex') == '0') {
+	                    _this.removedTabIndexElements.push(elem);
+	                    elem.removeAttribute('tabindex');
+	                }
+	            });
 	        }
 	        else {
 	            this.element.style.transition = 'none';
@@ -78143,12 +78155,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    CardActionBar.prototype.show = function () {
 	        Dom_1.$$(this.element).addClass('coveo-opened');
+	        _.forEach(this.removedTabIndexElements, function (e) {
+	            e.setAttribute('tabindex', '0');
+	        });
 	    };
 	    /**
 	     * Hides the CardActionBar.
 	     */
 	    CardActionBar.prototype.hide = function () {
 	        Dom_1.$$(this.element).removeClass('coveo-opened');
+	        _.forEach(this.removedTabIndexElements, function (e) {
+	            e.removeAttribute('tabindex');
+	        });
 	    };
 	    CardActionBar.prototype.bindEvents = function () {
 	        var _this = this;
@@ -78159,7 +78177,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    };
 	    CardActionBar.prototype.appendArrow = function () {
-	        this.arrowContainer = Dom_1.$$('div', { className: 'coveo-card-action-bar-arrow-container' }).el;
+	        var _this = this;
+	        this.arrowContainer = Dom_1.$$('div', { className: 'coveo-card-action-bar-arrow-container', tabindex: 0 }).el;
+	        this.bind.on(this.arrowContainer, 'keyup', KeyboardUtils_1.KeyboardUtils.keypressAction(KeyboardUtils_1.KEYBOARD.ENTER, function () { return _this.show(); }));
 	        this.arrowContainer.appendChild(Dom_1.$$('span', { className: 'coveo-icon coveo-sprites-arrow-up' }).el);
 	        this.parentResult.appendChild(this.arrowContainer);
 	    };
@@ -78187,7 +78207,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	}(Component_1.Component));
 	exports.CardActionBar = CardActionBar;
 	Initialization_1.Initialization.registerAutoCreateComponent(CardActionBar);
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ },
 /* 398 */

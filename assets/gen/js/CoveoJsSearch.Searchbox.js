@@ -1538,8 +1538,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	exports.version = {
-	    'lib': '1.2126.0-beta',
-	    'product': '1.2126.0-beta',
+	    'lib': '1.2126.1-beta',
+	    'product': '1.2126.1-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -1646,7 +1646,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            restUri: 'https://platform.cloud.coveo.com/rest/search',
 	            accessToken: 'xx564559b1-0045-48e1-953c-3addd1ee4457',
 	            queryStringArguments: {
-	                organizationID: 'searchuisamples'
+	                organizationID: 'searchuisamples',
+	                viewAllContent: 1
 	            }
 	        }));
 	    };
@@ -21629,13 +21630,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var settingsSection = Dom_1.$$('div', {
 	            className: 'coveo-facet-header-settings-section'
 	        });
+	        this.eraserElement = this.buildEraser();
+	        settingsSection.append(this.eraserElement);
 	        if (this.options.facet) {
 	            this.operatorElement = this.buildOperatorToggle();
 	            settingsSection.append(this.operatorElement);
 	            Dom_1.$$(this.operatorElement).toggle(this.options.facet.options.enableTogglingOperator);
 	        }
-	        this.eraserElement = this.buildEraser();
-	        settingsSection.append(this.eraserElement);
 	        if (this.options.settingsKlass) {
 	            this.sort = this.settings = new this.options.settingsKlass(this.options.availableSorts, this.options.facet);
 	            settingsSection.append(this.settings.build());

@@ -8325,15 +8325,16 @@
 
 .coveo-card-overlay a {
   color: #296896;
+  color: #009DDC;
   text-decoration: none;
   cursor: pointer; }
   .coveo-card-overlay a:hover, .coveo-card-overlay a:visited {
     text-decoration: none;
-    color: #296896; }
+    color: #009DDC; }
   .coveo-card-overlay a:hover, .coveo-card-overlay a:hover a {
     text-decoration: underline; }
   .coveo-card-overlay a.coveo-selected * {
-    color: #296896; }
+    color: #009DDC; }
 
 .CoveoResultsPerPage {
   margin: -10px 0px 0 15px;
@@ -8457,6 +8458,19 @@ a.coveo-folding-show-more, a.coveo-folding-show-less {
   a.coveo-folding-show-more.coveo-selected *, a.coveo-folding-show-less.coveo-selected * {
     color: #263E55; }
 
+.coveo-card-layout a.coveo-folding-show-more, .coveo-card-layout a.coveo-folding-show-less {
+  color: #296896;
+  color: #009DDC;
+  text-decoration: none;
+  cursor: pointer; }
+  .coveo-card-layout a.coveo-folding-show-more:hover, .coveo-card-layout a.coveo-folding-show-more:visited, .coveo-card-layout a.coveo-folding-show-less:hover, .coveo-card-layout a.coveo-folding-show-less:visited {
+    text-decoration: none;
+    color: #009DDC; }
+  .coveo-card-layout a.coveo-folding-show-more:hover, .coveo-card-layout a.coveo-folding-show-more:hover a, .coveo-card-layout a.coveo-folding-show-less:hover, .coveo-card-layout a.coveo-folding-show-less:hover a {
+    text-decoration: underline; }
+  .coveo-card-layout a.coveo-folding-show-more.coveo-selected *, .coveo-card-layout a.coveo-folding-show-less.coveo-selected * {
+    color: #009DDC; }
+
 .coveo-child-result {
   margin-bottom: 5px; }
   .coveo-child-result * {
@@ -8522,16 +8536,17 @@ a.coveo-folding-show-more, a.coveo-folding-show-less {
 
 .coveo-card-overlay a.CoveoResultLink {
   color: #296896;
+  color: #009DDC;
   text-decoration: none;
   cursor: pointer;
   color: #009DDC; }
   .coveo-card-overlay a.CoveoResultLink:hover, .coveo-card-overlay a.CoveoResultLink:visited {
     text-decoration: none;
-    color: #296896; }
+    color: #009DDC; }
   .coveo-card-overlay a.CoveoResultLink:hover, .coveo-card-overlay a.CoveoResultLink:hover a {
     text-decoration: underline; }
   .coveo-card-overlay a.CoveoResultLink.coveo-selected * {
-    color: #296896; }
+    color: #009DDC; }
   .coveo-card-overlay a.CoveoResultLink:hover {
     color: #009DDC; }
   .coveo-card-overlay a.CoveoResultLink.coveo-selected * {
@@ -10124,15 +10139,21 @@ body.coveo-modalBox-opened, body.coveo-modalBox-opened .CoveoSearchInterface {
 
 .coveo-card-overlay .coveo-clickable {
   color: #296896;
+  color: #009DDC;
   text-decoration: none;
-  cursor: pointer; }
+  cursor: pointer;
+  color: #009DDC; }
   .coveo-card-overlay .coveo-clickable:hover, .coveo-card-overlay .coveo-clickable:visited {
     text-decoration: none;
-    color: #296896; }
+    color: #009DDC; }
   .coveo-card-overlay .coveo-clickable:hover, .coveo-card-overlay .coveo-clickable:hover a {
     text-decoration: underline; }
   .coveo-card-overlay .coveo-clickable.coveo-selected * {
-    color: #296896; }
+    color: #009DDC; }
+  .coveo-card-overlay .coveo-clickable:hover {
+    color: #009DDC; }
+  .coveo-card-overlay .coveo-clickable.coveo-selected * {
+    color: #009DDC; }
 
 .coveo-small-tabs.coveo-tab-section .coveo-tab-dropdown-header {
   margin-left: auto;
@@ -10248,7 +10269,8 @@ body.coveo-modalBox-opened, body.coveo-modalBox-opened .CoveoSearchInterface {
     .CoveoSearchInterface.coveo-small-facets .coveo-facet-column.coveo-facet-dropdown-content .CoveoHierarchicalFacet .coveo-facet-header {
       border: 0;
       border-radius: 0;
-      border-top: 1px solid #BCC3CA; }
+      border-top: 1px solid #BCC3CA;
+      white-space: initial; }
 
 .CoveoSearchInterface.coveo-small-facets .coveo-facet-header-filter-by-container {
   background: #F7F8F9;
@@ -10741,7 +10763,6 @@ body {
   width: 100%;
   top: 0;
   left: 0;
-  display: flex;
   flex-direction: column;
   z-index: 1;
   background-color: #263E55;
@@ -10749,7 +10770,10 @@ body {
   cursor: default;
   transition: transform 0.5s ease-in-out;
   transform: translateY(100%);
+  display: flex;
   animation: coveo-card-overlay-fade-out 0.5s linear; }
+  .coveo-card-overlay.coveo-hidden-for-tab-nav {
+    display: none; }
 
 @keyframes coveo-card-overlay-fade-out {
   0% {
@@ -10852,6 +10876,10 @@ body {
 .coveo-subscriptions-panel .coveo-body {
   max-height: 600px;
   min-width: 500px; }
+
+@media (max-width: 600px) {
+  .coveo-subscriptions-panel .coveo-body {
+    min-width: inherit; } }
 
 .coveo-subscriptions-panel .coveo-subscriptions-panel-fail {
   padding: 10px; }
