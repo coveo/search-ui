@@ -68,6 +68,14 @@ export function HashUtilsTest() {
       expect(encodedValue).toEqual(expectedEncodedValue);
     });
 
+    it('should not throw when encoding null or undefined values', () => {
+      let toEncode = null;
+      let expectedEncodedValue = '';
+      let encodedValue = HashUtils.encodeValues({ a: toEncode });
+      expect(() => HashUtils.encodeValues({ a: toEncode })).not.toThrowError();
+      expect(encodedValue).toEqual(expectedEncodedValue);
+    });
+
     it('joins values correctly', () => {
       let firstValue = 'test';
       let secondValue = [1];
