@@ -112,14 +112,14 @@ export class FacetHeader {
       className: 'coveo-facet-header-settings-section'
     });
 
+    this.eraserElement = this.buildEraser();
+    settingsSection.append(this.eraserElement);
+
     if (this.options.facet) {
       this.operatorElement = this.buildOperatorToggle();
       settingsSection.append(this.operatorElement);
       $$(this.operatorElement).toggle(this.options.facet.options.enableTogglingOperator);
     }
-
-    this.eraserElement = this.buildEraser();
-    settingsSection.append(this.eraserElement);
 
     if (this.options.settingsKlass) {
       this.sort = this.settings = new this.options.settingsKlass(this.options.availableSorts, this.options.facet);

@@ -36,11 +36,6 @@ export class ExportToExcel extends Component {
      * Default value is `100`.
      */
     numberOfResults: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1 }),
-    /**
-     * Specifies an array of fields that should be included for the export to excel call.
-     *
-     * Those are the fields that will be downloaded. If not specified, all fields returned by the last query will be used.
-     */
     fieldsToInclude: ComponentOptions.buildFieldsOption()
   };
 
