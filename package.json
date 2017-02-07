@@ -103,7 +103,7 @@
     "phantomjs-prebuilt": "^2.1.7",
     "plop": "^1.5.0",
     "png-sprite": "^0.1.1",
-    "pretty-typescript": "1.13.x",
+    "pretty-typescript": "1.12.x",
     "q": "^1.4.1",
     "remap-istanbul": "^0.6.4",
     "require-dir": "^0.3.0",
@@ -115,9 +115,10 @@
     "sitemap-generator": "^5.0.0",
     "string-replace-loader": "^1.0.2",
     "style-loader": "^0.13.1",
+    "ts-loader": "^2.0.0",
     "tsconfig-glob": "^0.4.3",
     "typedoc": "https://github.com/coveord/typedoc/tarball/master",
-    "typescript": "2.0.x",
+    "typescript": "^2.1.5",
     "url-loader": "^0.5.7",
     "walk": "^2.3.9",
     "webpack": "^1.13.2",
@@ -131,12 +132,12 @@
     "d3": "^4.2.1",
     "d3-scale": "^1.0.3",
     "es6-promise": "^3.1.2",
+    "fastclick": "1.0.6",
+    "jstimezonedetect": "^1.0.6",
     "latinize": "^0.4.0",
     "modal-box": "1.0.7",
     "pikaday": "^1.4.0",
-    "underscore": "^1.8.3",
-    "fastclick": "1.0.6",
-    "jstimezonedetect": "^1.0.6"
-
+    "ts-loader": "^2.0.0",
+    "underscore": "^1.8.3"
   }
 }

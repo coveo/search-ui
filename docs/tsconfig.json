@@ -5,20 +5,20 @@
     "declaration": false,
     "experimentalDecorators": true,
     "outDir": "../bin",
-    "sourceMap": true
+    "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "typeRoots": [
+      "lib",
+      "node_modules/@types"
+    ]
   },
-  "files": [
-    "../typings/browser.d.ts",
-    "../typings/index.d.ts",
-    "../lib/jstz.d.ts",
-    "../lib/promise.d.ts",
-    "../lib/d3.d.ts",
-    "../lib/coveoanalytics.d.ts",
-    "../lib/MagicBox.d.ts",
-    "../lib/fastclick.d.ts",
-    "../lib/globalize.d.ts",
-    "../lib/latinize.d.ts",
-    "./playground/src/Index.ts",
-    "./playground/src/Playground.ts"
+  "lib": [
+    "DOM",
+    "ES5",
+    "ScriptHost",
+    "ES2015.Promise"
+  ],
+  "include": [
+    "./playground/**/*.ts"
   ]
 }
