@@ -48,7 +48,7 @@ export class HashUtils {
         encodedValue = HashUtils.encodeArray(valueToEncode);
       } else if (_.isObject(valueToEncode) && Utils.isNonEmptyArray(_.keys(valueToEncode))) {
         encodedValue = HashUtils.encodeObject(valueToEncode);
-      } else {
+      } else if (!Utils.isNullOrUndefined(valueToEncode)) {
         encodedValue = encodeURIComponent(valueToEncode.toString());
       }
       if (encodedValue != '') {
