@@ -12,6 +12,7 @@ import {IAnalyticsClient} from '../../ui/Analytics/AnalyticsClient';
 import {NoopAnalyticsClient} from '../../ui/Analytics/NoopAnalyticsClient';
 import {BaseComponent} from './BaseComponent';
 import {IComponentBindings} from './ComponentBindings';
+import {DebugEvents} from '../../events/DebugEvents';
 import _ = require('underscore');
 
 /**
@@ -112,6 +113,8 @@ export class Component extends BaseComponent {
     if (this.searchInterface != null) {
       this.searchInterface.attachComponent(type, this);
     }
+
+    this.initDebugInfo();
   }
 
   /**
@@ -168,6 +171,17 @@ export class Component extends BaseComponent {
     return Component.getResult(this.element);
   }
 
+  private initDebugInfo() {
+    $$(this.element).on('dblclick', (e: MouseEvent) => {
+      if (e.altKey) {
+        var debugInfo = this.debugInfo();
+        if (debugInfo != null) {
+          $$(this.root).trigger(DebugEvents.showDebugPanel, this.debugInfo());
+        }
+      }
+    });
+  }
+
   /**
    * Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument.<br/>
    * If there is multiple component bound to the current HTMLElement, you must specify the component class.
@@ -206,6 +220,11 @@ export class Component extends BaseComponent {
     Assert.exists(result);
     $$(element).addClass('CoveoResult');
     element['CoveoResult'] = result;
+    let jQuery = JQueryUtils.getJQuery();
+    if (jQuery) {
+      jQuery(element).data(result);
+    }
+
   }
 
   static resolveBinding(element: HTMLElement, componentClass: any): BaseComponent {
@@ -268,7 +287,7 @@ export class ComponentEvents {
    * @param event The event for which to register an handler.
    * @param handler The function to execute when the event is triggered.
    */
-  public on(el: HTMLElement, event: string, handler: Function);
+  public on(el: HTMLElement | Window | Document, event: string, handler: Function);
   public on(el: Dom, event: string, handler: Function);
   public on(arg: any, event: string, handler: Function) {
     if (!JQueryUtils.getJQuery() || !JQueryUtils.isInstanceOfJQuery(arg)) {

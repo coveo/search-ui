@@ -1,34 +1,35 @@
-import {Template} from './Template';
+import {Template, ITemplateOptions} from './Template';
 import {UnderscoreTemplate} from './UnderscoreTemplate';
 import {TemplateCache} from './TemplateCache';
 import {IQueryResult} from '../../rest/QueryResult';
 import {Assert} from '../../misc/Assert';
 import _ = require('underscore');
 
+/*
+ * This renders the appropriate result template, found in TemplateCache,
+ * according to its condition.
+ *
+ * For example, a result with a filetype of `YoutubeVideo` will get rendered
+ * with the `YoutubeVideo` template, because the latter is registered with a
+ * `condition` of `raw.filetype == 'YoutubeVideo'`.
+ */
 export class DefaultResultTemplate extends Template {
 
   constructor() {
     super();
   }
 
-  instantiateToString(queryResult?: IQueryResult): string {
+  instantiateToString(queryResult?: IQueryResult, checkCondition = true, options?: ITemplateOptions): string {
     Assert.exists(queryResult);
     queryResult = _.extend({}, queryResult, UnderscoreTemplate.templateHelpers);
 
-    var defaultTemplates = _.map(TemplateCache.getDefaultTemplates(), (name) => TemplateCache.getTemplate(name));
+    var defaultTemplates = _.map(TemplateCache.getDefaultTemplates(), name => TemplateCache.getTemplate(name));
 
     // We want to put templates with conditions first
-    defaultTemplates.sort((a, b) => {
-      if (a.condition == null && b.condition != null) {
-        return 1;
-      } else if (a.condition != null && b.condition == null) {
-        return -1;
-      }
-      return 0;
-    });
+    const sortedTemplates = _.sortBy(defaultTemplates, template => template.condition == null);
 
-    for (var i = 0; i < defaultTemplates.length; i++) {
-      var result = defaultTemplates[i].instantiateToString(queryResult);
+    for (let i = 0; i < sortedTemplates.length; i++) {
+      var result = sortedTemplates[i].instantiateToString(queryResult, undefined, options);
       if (result != null) {
         return result;
       }
@@ -40,13 +41,6 @@ export class DefaultResultTemplate extends Template {
       '<table class="CoveoFieldTable"><%= Coveo.TemplateHelpers.getHelper("highlight").call() %></table>' +
       '</div>')(queryResult);
   }
-
-  instantiateToElement(queryResult?: IQueryResult): HTMLElement {
-    var div = document.createElement('div');
-    div.innerHTML = this.instantiateToString(queryResult);
-    return div;
-  }
-
 
   getFields() {
     var defaultTemplates = _.map(TemplateCache.getDefaultTemplates(), (name) => TemplateCache.getTemplate(name));

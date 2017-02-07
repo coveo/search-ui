@@ -86,12 +86,12 @@ export class FacetSearchParameters {
     var lastQuery = _.clone(this.facet.queryController.getLastQuery());
     if (!lastQuery) {
       // There should normally always be a last query available
-      // If not, just create en empty one.
+      // If not, just create an empty one.
       lastQuery = new QueryBuilder().build();
     }
-    lastQuery.q = this.facet.facetQueryController.expressionToUseForFacetSearch;
+    lastQuery.q = this.facet.facetQueryController.basicExpressionToUseForFacetSearch;
     lastQuery.cq = this.facet.facetQueryController.constantExpressionToUseForFacetSearch;
-    lastQuery.aq = null;
+    lastQuery.aq = this.facet.facetQueryController.advancedExpressionToUseForFacetSearch;
     lastQuery.enableDidYouMean = false;
     lastQuery.firstResult = 0;
     lastQuery.numberOfResults = 0;

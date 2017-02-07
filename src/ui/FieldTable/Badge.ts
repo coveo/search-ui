@@ -60,7 +60,8 @@ export class Badge extends FieldValue implements IComponentBindings {
      *
      * Colors can be specified in HTML or hexadecimal code format.
      */
-    colors: ComponentOptions.buildCustomOption<IBadgeColors>((value: string) => Badge.parseColors(value), { defaultValue: { values: {} } })
+    colors: ComponentOptions.buildCustomOption<IBadgeColors>((value: string) => Badge.parseColors(value), { defaultValue: { values: {} } }),
+    textCaption: ComponentOptions.buildLocalizedStringOption()
   };
 
   static parent = FieldValue;
@@ -72,7 +73,7 @@ export class Badge extends FieldValue implements IComponentBindings {
    * @param bindings
    * @param result
    */
-  constructor(element: HTMLElement, public options?: IBadgeOptions, bindings?: IComponentBindings, result?: IQueryResult) {
+  constructor(element: HTMLElement, public options: IBadgeOptions, bindings?: IComponentBindings, result?: IQueryResult) {
     super(element, ComponentOptions.initComponentOptions(element, Badge, options), bindings, result, Badge.ID);
     if (_.isString(this.options.colors)) {
       // to support the old string options
@@ -176,6 +177,13 @@ export class Badge extends FieldValue implements IComponentBindings {
     valueDom.appendChild(label);
     return valueDom;
   }
+
+  // Override the protected method from FieldValue class to ignore a potential textCaption on a Badge.
+  protected prependTextCaptionToDom(): void {
+    return;
+  }
 }
+
+Badge.options = _.omit(Badge.options, 'textCaption');
 
 Initialization.registerAutoCreateComponent(Badge);

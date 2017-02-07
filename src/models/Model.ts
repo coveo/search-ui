@@ -32,23 +32,26 @@ export interface IModelChangedEventArg {
 }
 
 /**
- * A model is basically a key -> value store that trigger letious javascript event when one of the value for each of it's key changes.<br/>
- * This is a class that is meant to be extended : the most important one probably being the {@link QueryStateModel}<br/>
- * Component set values in this key -> value store, and listen to event triggered to react accordingly.<br/>
+ * A *model* is a key-value store that triggers various JavaScript events when any value associated to one of its key changes.<br/>
+ * This class is meant to be extended, one of the most important extension being the {@link QueryStateModel} class.<br/>
+ * Components set values in this key-value store and listen to triggered events in order to update themselves accordingly.<br/>
  */
 export class Model extends BaseComponent {
   /**
-   * The attributes contained in this model. Normally, you should not set attribute directly on this property, as this will not cause the required events to be triggered.
+   * The attributes contained in this model.</br>
+   * Normally, you should not set attributes directly on this property, as this would prevent required events from being triggered.
    */
   public attributes: { [key: string]: any };
   public defaultAttributes: { [key: string]: any };
   private eventNameSpace;
 
-  // changeOne: is when one specific attribute change, change is when any attribute change
   /**
-   * The event type that can be triggered :<br/>
-   * -- preprocess -> triggered before a value is set on an attribute, to allow to modify it before it's set.<br/>
-   * -- changeOne -> triggered when a single value change.
+   * The event types that can be triggered:<br/>
+   * • `preprocess`: triggered before a value is set on an attribute. This allows the value to be modified before it is set.<br/>
+   * • `changeOne`: triggered when a single value changes.</br>
+   * • `change`: triggered when one or many values change.</br>
+   * • `reset`: triggered when all attributes are reset to their default values. </br>
+   * • `all`: triggered after the `change` event.</br>
    * @type {{preprocess: string, changeOne: string, change: string, reset: string, all: string}}
    */
   public static eventTypes = {
@@ -68,12 +71,27 @@ export class Model extends BaseComponent {
     this.logger.debug('Creating model');
   }
 
+  /**
+   * Sets the value of a single specific attribute.</br>
+   * Note: this method calls the `setMultiple` method.
+   * @param attribute
+   * the specific attribute whose value is to be set.
+   * @param value
+   * the value to set the attribute to.
+   * @param options
+   * the options (see {@link setMultiple}).
+   */
   public set(attribute: string, value: any, options?: IModelSetOptions) {
     let toSet: { [key: string]: any } = {};
     toSet[attribute] = value;
     this.setMultiple(toSet, options);
   }
 
+  /**
+   * Gets an object containing all *active* registered attribute key-values.</br>
+   * An attribute is considered active when its value is not in its default state.
+   * @returns {{object}}
+   */
   public getAttributes() {
     let attributes: { [key: string]: any } = {};
     _.each(this.attributes, (attribute, key) => {
@@ -88,6 +106,20 @@ export class Model extends BaseComponent {
     return attributes;
   }
 
+  /**
+   * Sets the values of one or many attributes.</br>
+   * This method may trigger the following events (in order):</br>
+   * • `preprocess`</br>
+   * • `changeOne`</br>
+   * • `change`</br>
+   * • `all`
+   * @param toSet
+   * the key-value list of attributes with their new intended values.
+   * @param options
+   * if the `customAttribute` option is set to `true`, the method will not validate whether an attribute is registered or not.</br>
+   * If the `validateType` option is set to `true`, the method will ensure that each value type is correct.</br>
+   * If the `silent` option is set to `true`, then the `changeOne`, `change` and `all` events will not be triggered.
+   */
   public setMultiple(toSet: { [key: string]: any }, options?: IModelSetOptions) {
     let anythingChanged = false;
     this.preprocessEvent(toSet);
@@ -97,7 +129,9 @@ export class Model extends BaseComponent {
       }
       value = this.parseToCorrectType(attribute, value);
       if (!options || options.validateType) {
-        this.validateType(attribute, value);
+        if (!this.typeIsValid(attribute, value)) {
+          return;
+        }
       }
       if (this.checkIfAttributeChanged(attribute, value)) {
         this.attributes[attribute] = value;
@@ -113,6 +147,16 @@ export class Model extends BaseComponent {
     }
   }
 
+  /**
+   * Sets a new default value to a single specific attribute.</br>
+   * Note: specifying a new attribute default value does not set the attribute to that value. This can be done using the {@link setDefault} method.
+   * @param attribute
+   * the specific attribute whose default value is to be changed.
+   * @param value
+   * the new intended default value.
+   * @param options
+   * if the `customAttribute` option is set to `true`, the method will not validate whether the attribute is registered or not.
+   */
   public setNewDefault(attribute: string, value: any, options?: IModelSetOptions) {
     if (!options || !options.customAttribute) {
       this.checkIfAttributeExists(attribute);
@@ -120,10 +164,23 @@ export class Model extends BaseComponent {
     this.defaultAttributes[attribute] = value;
   }
 
-  public setDefault(attribute: string, options?: IModelSetOptions) {
+  /**
+   * Sets a single specific attribute to its default value.</br>
+   * Note: this method calls the {@link setMultiple} method without specifying any option.
+   * @param attribute
+   * the specific attribute whose value is to be set to its default value.
+   */
+  public setDefault(attribute: string) {
     this.set(attribute, this.defaultAttributes[attribute]);
   }
 
+  /**
+   * Gets the value of a single specific attribute.</br>
+   * If no attribute is specified, the method instead returns an object containing all registered attribute key-values.
+   * @param attribute
+   * the specific attribute whose value should be returned.
+   * @returns {any}
+   */
   public get(attribute?: string): any {
     if (attribute == undefined) {
       return this.attributes;
@@ -132,6 +189,13 @@ export class Model extends BaseComponent {
     }
   }
 
+  /**
+   * Gets the default value of a single specific attribute.</br>
+   * If no attribute is specified, the method instead returns an object containing all registered attribute key-default values.
+   * @param attribute
+   * the specific attribute whose default value should be returned.
+   * @returns {any}
+   */
   public getDefault(attribute?: string): any {
     if (attribute == undefined) {
       return this.defaultAttributes;
@@ -140,16 +204,36 @@ export class Model extends BaseComponent {
     }
   }
 
+  /**
+   * Resets each registered attribute to its default value.</br>
+   * Note: this method calls the {@link setMultiple} method without specifying any options.</br>
+   * After the `setMultiple` call has returned, this method triggers the `reset` event.
+   */
   public reset() {
     this.setMultiple(this.defaultAttributes);
     this.modelWasResetEvent();
   }
 
+  /**
+   * Registers a new attribute key-value.
+   * @param attribute
+   * the name of the new attribute to register.
+   * @param defaultValue
+   * the newly registered attribute default value.
+   */
   public registerNewAttribute(attribute: string, defaultValue: any) {
     this.defaultAttributes[attribute] = defaultValue;
     this.attributes[attribute] = defaultValue;
   }
 
+  /**
+   * Gets a string displaying the event namespace followed by the specific event name. The returned string is formatted thus:</br>
+   * `[eventNameSpace]:[eventName]`
+   * @example `getEventName("reset");` could return `"state:reset"`.
+   * @param event
+   * the event name.
+   * @returns {string}
+   */
   public getEventName(event: string) {
     return this.eventNameSpace + ':' + event;
   }
@@ -190,18 +274,43 @@ export class Model extends BaseComponent {
     Assert.check(_.has(this.attributes, attribute));
   }
 
-  private validateType(attribute: string, value: any) {
+  private typeIsValid(attribute: string, value: any): boolean {
     if (!Utils.isNullOrUndefined(this.attributes[attribute]) && !Utils.isUndefined(value)) {
       if (_.isNumber(this.attributes[attribute])) {
-        Assert.check(_.isNumber(value) && !isNaN(value), 'Non-matching type');
+        return this.validateNumber(attribute, value);
       } else if (_.isBoolean(this.attributes[attribute])) {
-        Assert.check(_.isBoolean(value) || Utils.parseBooleanIfNotUndefined(value) !== undefined, 'Non-matching type');
+        return this.validateBoolean(attribute, value);
       } else {
-        if (!Utils.isNullOrUndefined(this.defaultAttributes[attribute])) {
-          Assert.check(typeof value === typeof this.defaultAttributes[attribute], 'Non-matching type');
-        }
+        return this.validateOther(attribute, value);
       }
     }
+    return true;
+  }
+
+  private validateNumber(attribute: string, value: any): boolean {
+    if (!_.isNumber(value) || isNaN(value)) {
+      this.logger.error(`Non-matching type for ${attribute}. Expected number and got ${value}`);
+      return false;
+    }
+    return true;
+  }
+
+  private validateBoolean(attribute: string, value: any) {
+    if (!_.isBoolean(value) && !Utils.parseBooleanIfNotUndefined(value) !== undefined) {
+      this.logger.error(`Non matching type for ${attribute}. Expected boolean and got ${value}`);
+      return false;
+    }
+    return true;
+  }
+
+  private validateOther(attribute: string, value: any) {
+    if (!Utils.isNullOrUndefined(this.defaultAttributes[attribute])) {
+      if (typeof value !== typeof this.defaultAttributes[attribute]) {
+        this.logger.error(`Non-matching type for ${attribute}. Expected ${typeof this.defaultAttributes[attribute]} and got ${value}`);
+        return false;
+      }
+    }
+    return true;
   }
 
   private parseToCorrectType(attribute: string, value: any): any {

@@ -169,7 +169,13 @@ export function SliderTest() {
           start: 0,
           end: 100,
           graph: {
-            steps: 10
+            steps: 10,
+            margin: {
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0
+            }
           }
         }, root);
         new SearchInterface(root);

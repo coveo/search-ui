@@ -7,7 +7,10 @@ import {$$} from '../../src/utils/Dom';
 import {SettingsEvents} from '../../src/events/SettingsEvents';
 import {Simulate} from '../Simulate';
 import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
-import {SearchAlertsEvents} from '../../src/events/SearchAlertEvents';
+import {SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs} from '../../src/events/SearchAlertEvents';
+import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import {AdvancedComponentSetupOptions} from '../MockEnvironment';
+import {mockSearchEndpoint} from '../MockEnvironment';
 
 export function SearchAlertsTest() {
   describe('SearchAlerts', function () {
@@ -20,6 +23,7 @@ export function SearchAlertsTest() {
         settings: Mock.basicComponentSetup<Settings>(Settings).cmp,
         menuData: []
       };
+      test.env.searchEndpoint.options.isGuestUser = false;
     });
 
     afterEach(() => {
@@ -39,9 +43,18 @@ export function SearchAlertsTest() {
     });
 
     describe('exposes enableManagePanel option', () => {
-      it('should add the option in the settings menu', () => {
+
+      it('should add the option in the settings menu if the user is not anonymous', () => {
         $$(test.env.root).trigger(SettingsEvents.settingsPopulateMenu, settingsData);
         expect(settingsData.menuData).toContain(jasmine.objectContaining({ className: 'coveo-subscriptions-panel' }));
+      });
+
+      it('should not add the option in the setting menu if the user is anonymous', () => {
+        let endpoint = mockSearchEndpoint();
+        endpoint.options.isGuestUser = true;
+        test = Mock.advancedComponentSetup<SearchAlerts>(SearchAlerts, new AdvancedComponentSetupOptions(undefined, undefined, (builder) => builder.withEndpoint(endpoint)));
+        $$(test.env.root).trigger(SettingsEvents.settingsPopulateMenu, settingsData);
+        expect(settingsData.menuData).not.toContain(jasmine.objectContaining({ className: 'coveo-subscriptions-panel' }));
       });
 
       it('should not add option in the settings menu if false', () => {
@@ -143,12 +156,51 @@ export function SearchAlertsTest() {
         expect(followMock).toHaveBeenCalled();
       });
 
+      it('should log an analytics event', () => {
+        test.cmp.followQuery();
+        expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(analyticsActionCauseList.searchAlertsFollowQuery, {
+          'subscription': '<empty>'
+        }, test.cmp.element);
+      });
+
       it('should trigger a search alert created event', (done) => {
         $$(test.env.root).on(SearchAlertsEvents.searchAlertsCreated, () => {
           expect(true).toBe(true);
           done();
         });
         test.cmp.followQuery();
+      });
+
+      it('should send the query property on follow query', () => {
+        let builder = new QueryBuilder();
+        builder.expression.add('yololo');
+        (<jasmine.Spy>test.cmp.queryController.createQueryBuilder).and.returnValue(builder);
+        test.cmp.followQuery();
+        expect(followMock).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            typeConfig: jasmine.objectContaining({
+              query: jasmine.objectContaining({
+                q: jasmine.stringMatching('yololo')
+              })
+            })
+          }));
+      });
+
+      it('should send the name property on follow query', () => {
+        let builder = new QueryBuilder();
+        builder.expression.add('yololo');
+        (<jasmine.Spy>test.cmp.queryController.createQueryBuilder).and.returnValue(builder);
+
+        $$(test.env.root).on(SearchAlertsEvents.searchAlertsPopulateMessage, (e, args: ISearchAlertsPopulateMessageEventArgs) => {
+          args.text.push('Something');
+          args.text.push('Another thing');
+        });
+
+        test.cmp.followQuery();
+        expect(followMock).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            name: 'yololo (Something) (Another thing)'
+          }));
       });
 
       it('should trigger a search alert failed event if there was a problem', (done) => {

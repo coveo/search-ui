@@ -11,6 +11,7 @@ import {DatePicker} from '../../../src/ui/AdvancedSearch/Form/DatePicker';
 import {BaseFormTypes} from '../../../src/ui/AdvancedSearch/AdvancedSearchInput';
 import {AdvancedComponentSetupOptions} from '../../MockEnvironment';
 import {MockEnvironmentBuilder} from '../../MockEnvironment';
+import {analyticsActionCauseList} from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 import _ = require('underscore');
 
 export function AdvancedSearchTest() {
@@ -102,6 +103,11 @@ export function AdvancedSearchTest() {
       it('should execute a query', () => {
         test.cmp.executeAdvancedSearch();
         expect(test.cmp.queryController.executeQuery).toHaveBeenCalled();
+      });
+
+      it('should log an analytics event', () => {
+        test.cmp.executeAdvancedSearch();
+        expect(test.env.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(analyticsActionCauseList.advancedSearch, jasmine.objectContaining({}));
       });
     });
 

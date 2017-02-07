@@ -70,10 +70,11 @@ export class RevealQuerySuggestAddon {
   }
 
   private getRevealQuerySuggest(text: string): Promise<IOmniboxSuggestion[]> {
-    var payload = <IRevealQuerySuggestRequest>{ q: text },
-      language = <string>String['locale'],
-      searchHub = this.omnibox.getBindings().componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchHub),
-      pipeline = this.omnibox.getBindings().searchInterface.options.pipeline;
+    let payload = <IRevealQuerySuggestRequest>{ q: text };
+    let language = <string>String['locale'];
+    let searchHub = this.omnibox.getBindings().componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchHub);
+    let pipeline = this.omnibox.getBindings().searchInterface.options.pipeline;
+    let enableWordCompletion = this.omnibox.options.enableSearchAsYouType;
 
     if (language) {
       payload.language = language;
@@ -87,6 +88,8 @@ export class RevealQuerySuggestAddon {
       payload.pipeline = pipeline;
     }
 
+    payload.enableWordCompletion = enableWordCompletion;
+
     return this.omnibox.queryController.getEndpoint()
       .getRevealQuerySuggest(payload)
       .then((result: IRevealQuerySuggestResponse) => {
@@ -96,7 +99,8 @@ export class RevealQuerySuggestAddon {
             html: RevealQuerySuggestAddon.suggestiontHtml(completion),
             text: completion.expression,
             index: RevealQuerySuggestAddon.INDEX - i / completions.length,
-            partial: RevealQuerySuggestAddon.isPartialMatch(completion)
+            partial: RevealQuerySuggestAddon.isPartialMatch(completion),
+            executableConfidence: completion.executableConfidence
           };
         });
         return results;

@@ -37,3 +37,13 @@
 .CoveoSettings + .CoveoSearchbox {
   margin-right: 76px;
 }
+
+.magic-box, .magic-box.magic-box-hasFocus {
+  .magic-box-input {
+    .magic-box-underlay {
+      .magic-box-ghost-text {
+        display: none;
+      }
+    }
+  }
+}

@@ -45,6 +45,13 @@ export class TextInput {
   }
 
   /**
+   * Reset the text input
+   */
+  public reset() {
+    (<HTMLInputElement>$$(this.element).find('input')).value = '';
+  }
+
+  /**
    * Return the element on which the dropdown is bound.
    * @returns {HTMLElement}
    */

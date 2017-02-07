@@ -22,6 +22,7 @@ export interface IFieldValueOptions {
   splitValues?: boolean;
   separator?: string;
   displaySeparator?: string;
+  textCaption?: string;
 }
 
 export interface IAnalyticsFieldValueMeta {
@@ -127,7 +128,11 @@ export class FieldValue extends Component {
         base: ComponentOptions.buildNumberOption(showOnlyWithHelper(['size'], { min: 0, defaultValue: 0 })),
         isMilliseconds: ComponentOptions.buildBooleanOption(showOnlyWithHelper(['timeSpan'])),
       }
-    })
+    }),
+    /**
+     * Specify a caption to display before the value. <br/>
+     */
+    textCaption: ComponentOptions.buildLocalizedStringOption()
   };
 
   static simpleOptions = _.omit(FieldValue.options, 'helperOptions');
@@ -143,7 +148,7 @@ export class FieldValue extends Component {
    * @param bindings
    * @param result
    */
-  constructor(public element: HTMLElement, public options?: IFieldValueOptions, bindings?: IComponentBindings, public result?: IQueryResult, fieldValueClassId: string = FieldValue.ID) {
+  constructor(public element: HTMLElement, public options: IFieldValueOptions, bindings?: IComponentBindings, public result?: IQueryResult, fieldValueClassId: string = FieldValue.ID) {
     super(element, fieldValueClassId, bindings);
 
     this.options = ComponentOptions.initOptions(element, FieldValue.simpleOptions, options);
@@ -177,6 +182,9 @@ export class FieldValue extends Component {
         values = [loadedValueFromComponent];
       }
       this.appendValuesToDom(values);
+      if (this.options.textCaption != null) {
+        this.prependTextCaptionToDom();
+      }
     }
   }
 
@@ -254,6 +262,18 @@ export class FieldValue extends Component {
         }
       }
     });
+  }
+
+  private renderTextCaption(): HTMLElement {
+    let element = $$('span', { className: 'coveo-field-caption' }, _.escape(this.options.textCaption));
+    return element.el;
+  }
+
+  protected prependTextCaptionToDom(): void {
+    let elem = this.getValueContainer();
+    $$(elem).prepend(this.renderTextCaption());
+    // Add a class to the container so the value and the caption wrap together.
+    $$(elem).addClass('coveo-with-label');
   }
 
   private bindEventOnValue(element: HTMLElement, value: string) {

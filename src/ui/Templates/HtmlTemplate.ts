@@ -13,9 +13,7 @@ export class HtmlTemplate extends Template {
   private fields: string[];
 
   constructor(public element: HTMLElement) {
-    super(() => {
-      return element.innerHTML;
-    });
+    super(() => element.innerHTML);
 
     var condition = $$(element).getAttribute('data-condition');
     if (condition != null) {

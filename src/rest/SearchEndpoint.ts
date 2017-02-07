@@ -42,7 +42,7 @@ export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
 }
 
 /**
- * A search endpoint allows to execute letious actions against the Coveo Search API and index.<br/>
+ * A search endpoint allows to execute various actions against the Coveo Search API and index.<br/>
  * For example, you can search, list field values, get the quickview content for a document, etc.<br/>
  * Any actions that you execute using this class will not trigger a full query cycle for the Coveo components.<br/>
  * This is because this class will not trigger any query events directly.<br/>
@@ -89,7 +89,8 @@ export class SearchEndpoint implements ISearchEndpoint {
       restUri: 'https://platform.cloud.coveo.com/rest/search',
       accessToken: 'xx564559b1-0045-48e1-953c-3addd1ee4457',
       queryStringArguments: {
-        organizationID: 'searchuisamples'
+        organizationID: 'searchuisamples',
+        viewAllContent: 1
       }
     }));
   }
@@ -113,6 +114,13 @@ export class SearchEndpoint implements ISearchEndpoint {
     SearchEndpoint.endpoints['default'] = new SearchEndpoint(SearchEndpoint.removeUndefinedConfigOption(merged));
   }
 
+  /**
+   * Configure an endpoint to a Coveo Cloud index, in the V2 platform.
+   * @param organization The organization id of your Coveo cloud index
+   * @param token The token to use to execute query. If null, you will most probably need to login when querying.
+   * @param uri The uri of your cloud Search API. By default, will point to the production environment
+   * @param otherOptions A set of additional options to use when configuring this endpoint
+   */
   static configureCloudV2Endpoint(organization?: string, token?: string, uri: string = 'https://platform.cloud.coveo.com/rest/search', otherOptions?: ISearchEndpointOptions) {
     return SearchEndpoint.configureCloudEndpoint(organization, token, uri, otherOptions);
   }
@@ -774,6 +782,11 @@ export class SearchEndpoint implements ISearchEndpoint {
       _.each(queryObject.context, (value, key) => {
         queryString.push('context[' + key + ']=' + encodeURIComponent(value));
       });
+
+      if (queryObject.fieldsToInclude) {
+        queryString.push(`fieldsToInclude=[${_.map(queryObject.fieldsToInclude, (field) => '"' + encodeURIComponent(field.replace('@', '')) + '"').join(',')}]`);
+      }
+
     } else if (query) {
       queryString.push('q=' + encodeURIComponent(query));
     }

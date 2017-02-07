@@ -1,6 +1,6 @@
 {
   "name": "coveo-search-ui",
-  "version": "1.0.0",
+  "version": "1.0.25",
   "description": "Coveo JavaScript Search Framework",
   "main": "./bin/js/CoveoJsSearch.js",
   "scripts": {
@@ -8,9 +8,11 @@
     "build": "gulp",
     "minimize": "node node_modules/webpack/bin/webpack.js --minimize",
     "doc": "gulp doc",
+    "docsitemap": "gulp docsitemap",
     "injectTag": "gulp injectTag",
     "heroku-postbuild": "npm run build",
-    "start": "node index.js"
+    "start": "node index.js",
+    "zipForGitReleases": "gulp zip"
   },
   "repository": {
     "type": "git",
@@ -58,6 +60,7 @@
     "awesome-typescript-loader": "^2.2.4",
     "cheerio": "^0.20.0",
     "colors": "^1.1.2",
+    "coveralls": "^2.11.15",
     "css-loader": "^0.23.1",
     "del": "^2.2.2",
     "dts-generator": "https://github.com/coveord/dts-generator",
@@ -78,6 +81,7 @@
     "gulp-shell": "^0.5.2",
     "gulp-sonar": "^2.1.0",
     "gulp-util": "^3.0.7",
+    "gulp-zip": "^3.2.0",
     "image-size": "^0.5.0",
     "imports-loader": "^0.6.5",
     "ini": "^1.3.4",
@@ -95,10 +99,11 @@
     "merge-stream": "^1.0.0",
     "node-fetch": "^1.5.3",
     "node-sass": "^3.7.0",
+    "npm-cli-login": "0.0.10",
     "phantomjs-prebuilt": "^2.1.7",
     "plop": "^1.5.0",
     "png-sprite": "^0.1.1",
-    "pretty-typescript": "^1.12.1",
+    "pretty-typescript": "1.13.x",
     "q": "^1.4.1",
     "remap-istanbul": "^0.6.4",
     "require-dir": "^0.3.0",
@@ -107,6 +112,7 @@
     "run-sequence": "^1.1.5",
     "sass-loader": "^3.2.0",
     "script-loader": "^0.7.0",
+    "sitemap-generator": "^5.0.0",
     "string-replace-loader": "^1.0.2",
     "style-loader": "^0.13.1",
     "tsconfig-glob": "^0.4.3",
@@ -120,14 +126,17 @@
     "yargs": "^4.7.1"
   },
   "dependencies": {
+    "coveo.analytics": "^0.7.0",
     "coveomagicbox": "1.0.x",
     "d3": "^4.2.1",
     "d3-scale": "^1.0.3",
-    "es6-promise": "3.1.2",
-    "fastclick": "1.0.6",
-    "jstimezonedetect": "^1.0.6",
+    "es6-promise": "^3.1.2",
+    "latinize": "^0.4.0",
     "modal-box": "1.0.7",
     "pikaday": "^1.4.0",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "fastclick": "1.0.6",
+    "jstimezonedetect": "^1.0.6"
+
   }
 }

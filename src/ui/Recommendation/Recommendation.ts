@@ -10,15 +10,18 @@ import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/Analytics
 import {BreadcrumbEvents} from '../../events/BreadcrumbEvents';
 import {QuickviewEvents} from '../../events/QuickviewEvents';
 import {QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
-import {Model} from '../../models/Model';
+import {Model, MODEL_EVENTS} from '../../models/Model';
 import {Utils} from '../../utils/Utils';
 import {$$} from '../../utils/Dom';
 import {INoResultsEventArgs} from '../../events/QueryEvents';
 import {IQueryErrorEventArgs} from '../../events/QueryEvents';
 import {IComponentBindings} from '../Base/ComponentBindings';
+import {ResponsiveRecommendation} from '../ResponsiveComponents/ResponsiveRecommendation';
+import {history} from 'coveo.analytics';
+import {get} from '../Base/RegisteredNamedMethods';
+import {InitializationEvents} from '../../events/InitializationEvents';
+import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
 import _ = require('underscore');
-
-declare var coveoanalytics: CoveoAnalytics.CoveoUA;
 
 export interface IRecommendationOptions extends ISearchInterfaceOptions {
   mainSearchInterface?: HTMLElement;
@@ -27,6 +30,9 @@ export interface IRecommendationOptions extends ISearchInterfaceOptions {
   optionsToUse?: string[];
   sendActionsHistory?: boolean;
   hideIfNoResults?: boolean;
+  enableResponsiveMode?: boolean;
+  responsiveBreakpoint?: number;
+  dropdownHeaderLabel?: string;
 }
 
 /**
@@ -82,20 +88,59 @@ export class Recommendation extends SearchInterface implements IComponentBinding
      * Hides the component if there a no results / recommendations.
      * The default value is false.
      */
-    hideIfNoResults: ComponentOptions.buildBooleanOption({ defaultValue: true })
+    hideIfNoResults: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    autoTriggerQuery: ComponentOptions.buildBooleanOption({
+      postProcessing: (value: boolean, options: IRecommendationOptions) => {
+        if (options.mainSearchInterface) {
+          return false;
+        }
+        return value;
+      }
+    }),
 
+    /**
+     * Specifies if the responsive mode should be enabled on the recommendation component. Responsive mode will make the recommendation component
+     * dissapear and instead be availaible using a dropdown button. The responsive recommendation component is enabled when the width
+     * of the element the search interface is bound to reaches 800 pixels. This value can be modified using {@link Recommendation.options.responsiveBreakpoint}.
+     * 
+     * Disabling reponsive mode for one recommendation component will disable it for all of them.
+     * Therefore, this option only needs to be set on one recommendation component to be effective.
+     * The default value is `true`.
+     */
+    enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
+    /**
+     * Specifies the width of the search interface, in pixels, at which the recommendation component will go into responsive mode. The responsive mode will
+     * be triggered when the width is equal or below this value. The search interface corresponds to the element with the class
+     * `CoveoSearchInterface`.
+     * The default value is `1000`.
+     */
+    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 1000 }),
+
+    /**
+     * Specifies the label of the button that allows to show the recommendation component when in responsive mode.
+     * The default value is "Recommendations". 
+     */
+    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'Recommendations' })
   };
 
-  private mainInterfaceQuery: IQuerySuccessEventArgs;
+  // These are used by the analytics client for recommendation
+  // so that clicks event inside the recommendation component can be modified and attached to the main search interface.
   public mainQuerySearchUID: string;
+  public mainQueryPipeline: string;
+  public historyStore: CoveoAnalytics.HistoryStore;
+
+  private mainInterfaceQuery: IQuerySuccessEventArgs;
   private displayStyle: string;
 
   constructor(public element: HTMLElement, public options: IRecommendationOptions = {}, public analyticsOptions = {}, _window = window) {
     super(element, ComponentOptions.initComponentOptions(element, Recommendation, options), analyticsOptions, _window);
-
     if (!this.options.id) {
       this.generateDefaultId();
     }
+
+    // This is done to allow the component to be included in another search interface without triggering the parent events.
+    this.preventEventPropagation();
 
     if (this.options.mainSearchInterface) {
       this.bindToMainSearchInterface();
@@ -103,24 +148,32 @@ export class Recommendation extends SearchInterface implements IComponentBinding
 
     $$(this.element).on(QueryEvents.buildingQuery, (e: Event, args: IBuildingQueryEventArgs) => this.handleRecommendationBuildingQuery(args));
     $$(this.element).on(QueryEvents.querySuccess, (e: Event, args: IQuerySuccessEventArgs) => this.handleRecommendationQuerySuccess(args));
-    $$(this.element).on(QueryEvents.noResults, (e: Event, args: INoResultsEventArgs) => {
-      if (this.options.hideIfNoResults) {
-        this.hide();
-      }
-    });
-    $$(this.element).on(QueryEvents.queryError, (e: Event, args: IQueryErrorEventArgs) => this.hide());
+    $$(this.element).on(QueryEvents.noResults, (e: Event, args: INoResultsEventArgs) => this.handleRecommendationNoResults());
+    $$(this.element).on(QueryEvents.queryError, (e: Event, args: IQueryErrorEventArgs) => this.handleRecommendationQueryError());
 
-    // This is done to allow the component to be included in another search interface without triggering the parent events.
-    this.preventEventPropagation();
 
+    this.historyStore = new history.HistoryStore();
+    ResponsiveRecommendation.init(this.root, this, options);
   }
 
   public getId(): string {
     return this.options.id;
   }
 
+  public enable() {
+    super.enable();
+    this.show();
+  }
+
+  public disable() {
+    super.disable();
+    this.hide();
+  }
+
   public hide(): void {
-    this.displayStyle = this.element.style.display;
+    if (!this.displayStyle) {
+      this.displayStyle = this.element.style.display;
+    }
     $$(this.element).hide();
   }
 
@@ -132,26 +185,78 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   }
 
   private bindToMainSearchInterface() {
+    this.bindComponentOptionsModelToMainSearchInterface();
+    this.bindQueryEventsToMainSearchInterface();
+  }
+
+  private bindComponentOptionsModelToMainSearchInterface() {
+    // Try to fetch the componentOptions from the main search interface.
+    // Since we do not know which interface is init first (recommendation or full search interface)
+    // add a mechanism that waits for the full search interface to be correctly initialized
+    // then, set the needed values on the component options model.
+    let searchInterfaceComponent = <SearchInterface>get(this.options.mainSearchInterface, SearchInterface);
+    let alreadyInitialized = searchInterfaceComponent != null;
+
+    let onceInitialized = () => {
+      let mainSearchInterfaceOptionsModel = <ComponentOptionsModel>searchInterfaceComponent.getBindings().componentOptionsModel;
+      this.componentOptionsModel.setMultiple(mainSearchInterfaceOptionsModel.getAttributes());
+      $$(this.options.mainSearchInterface).on(this.componentOptionsModel.getEventName(MODEL_EVENTS.ALL), () => {
+        this.componentOptionsModel.setMultiple(mainSearchInterfaceOptionsModel.getAttributes());
+      });
+    };
+
+    if (alreadyInitialized) {
+      onceInitialized();
+    } else {
+      $$(this.options.mainSearchInterface).on(InitializationEvents.afterComponentsInitialization, () => {
+        searchInterfaceComponent = <SearchInterface>get(this.options.mainSearchInterface, SearchInterface);
+        onceInitialized();
+      });
+    }
+  }
+
+  private bindQueryEventsToMainSearchInterface() {
+    // Whenever a query sucessfully returns on the full search interface, refresh the recommendation component.
     $$(this.options.mainSearchInterface).on(QueryEvents.querySuccess, (e: Event, args: IQuerySuccessEventArgs) => {
       this.mainInterfaceQuery = args;
       this.mainQuerySearchUID = args.results.searchUid;
+      this.mainQueryPipeline = args.results.pipeline;
       this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.recommendation, {});
       this.queryController.executeQuery();
     });
   }
 
   private handleRecommendationBuildingQuery(data: IBuildingQueryEventArgs) {
-    this.modifyQueryForRecommendation(data);
-    this.addRecommendationInfoInQuery(data);
+    if (!this.disabled) {
+      this.modifyQueryForRecommendation(data);
+      this.addRecommendationInfoInQuery(data);
+    }
+
   }
 
   private handleRecommendationQuerySuccess(data: IQuerySuccessEventArgs) {
-    if (this.options.hideIfNoResults) {
-      if (data.results.totalCount === 0) {
-        this.hide();
-      } else {
-        this.show();
+    if (!this.disabled) {
+      if (this.options.hideIfNoResults) {
+        if (data.results.totalCount === 0) {
+          this.hide();
+        } else {
+          this.show();
+        }
       }
+    }
+  }
+
+  private handleRecommendationNoResults() {
+    if (!this.disabled) {
+      if (this.options.hideIfNoResults) {
+        this.hide();
+      }
+    }
+  }
+
+  private handleRecommendationQueryError() {
+    if (!this.disabled) {
+      this.hide();
     }
   }
 
@@ -173,12 +278,11 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   }
 
   private getHistory(): string {
-    if (typeof coveoanalytics != 'undefined') {
-      var store = new coveoanalytics.history.HistoryStore();
-      return JSON.stringify(store.getHistory());
-    } else {
-      return '[]';
+    let historyFromStore = this.historyStore.getHistory();
+    if (historyFromStore == null) {
+      historyFromStore = [];
     }
+    return JSON.stringify(historyFromStore);
   }
 
   private preventEventPropagation() {
@@ -190,6 +294,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
     this.preventEventPropagationOn(AnalyticsEvents);
     this.preventEventPropagationOn(BreadcrumbEvents);
     this.preventEventPropagationOn(QuickviewEvents);
+    this.preventEventPropagationOn(InitializationEvents);
     this.preventEventPropagationOn(this.getAllModelEvents());
   }
 

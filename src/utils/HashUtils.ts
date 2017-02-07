@@ -2,6 +2,12 @@ import {Assert} from '../misc/Assert';
 import {Utils} from '../utils/Utils';
 import _ = require('underscore');
 
+interface IHashUtils {
+  getHash(w: any);
+  getValue();
+  encodeValues();
+}
+
 export class HashUtils {
   private static DELIMITER = {
     'objectStart': '{',
@@ -20,30 +26,30 @@ export class HashUtils {
     // window.location.hash returns the DECODED hash on Firefox (it's a well known bug),
     // so any & in values will be already unescaped. This breaks our value splitting.
     // The following trick works on all browsers.
-    var ret = '#' + (w.location.href.split('#')[1] || '');
+    let ret = '#' + (w.location.href.split('#')[1] || '');
     return HashUtils.getAjaxcrawlableHash(ret);
   }
 
-  public static getValue(value: string, toParse: string): any {
-    Assert.isNonEmptyString(value);
+  public static getValue(key: string, toParse: string): any {
+    Assert.isNonEmptyString(key);
     Assert.exists(toParse);
     toParse = HashUtils.getAjaxcrawlableHash(toParse);
-    var paramValue = HashUtils.getRawValue(value, toParse);
+    let paramValue = HashUtils.getRawValue(key, toParse);
     if (paramValue != undefined) {
-      paramValue = HashUtils.getValueDependingOnType(paramValue);
+      paramValue = HashUtils.getValueDependingOnType(key, paramValue);
     }
     return paramValue;
   }
 
   public static encodeValues(values: {}): string {
-    var hash: String[] = [];
+    let hash: String[] = [];
     _.each(<_.Dictionary<any>>values, (valueToEncode, key, obj?) => {
-      var encodedValue = '';
+      let encodedValue = '';
       if (Utils.isNonEmptyArray(valueToEncode)) {
         encodedValue = HashUtils.encodeArray(valueToEncode);
       } else if (_.isObject(valueToEncode) && Utils.isNonEmptyArray(_.keys(valueToEncode))) {
         encodedValue = HashUtils.encodeObject(valueToEncode);
-      } else {
+      } else if (!Utils.isNullOrUndefined(valueToEncode)) {
         encodedValue = encodeURIComponent(valueToEncode.toString());
       }
       if (encodedValue != '') {
@@ -62,18 +68,18 @@ export class HashUtils {
     }
   }
 
-  private static getRawValue(value: string, toParse: string): string {
-    Assert.exists(value);
+  private static getRawValue(key: string, toParse: string): string {
+    Assert.exists(key);
     Assert.exists(toParse);
     Assert.check(toParse.indexOf('#') == 0 || toParse == '');
 
-    var toParseArray = toParse.substr(1).split('&');
-    var paramPos = 0;
-    var loop = true;
-    var paramValue: string = undefined;
+    let toParseArray = toParse.substr(1).split('&');
+    let paramPos = 0;
+    let loop = true;
+    let paramValue: string = undefined;
     while (loop) {
-      var paramValuePair = toParseArray[paramPos].split('=');
-      if (paramValuePair[0] == value) {
+      let paramValuePair = toParseArray[paramPos].split('=');
+      if (paramValuePair[0] == key) {
         loop = false;
         paramValue = paramValuePair[1];
       } else {
@@ -87,9 +93,10 @@ export class HashUtils {
     return paramValue;
   }
 
-  private static getValueDependingOnType(paramValue: string): any {
-    var type = HashUtils.getValueType(paramValue);
-    var returnValue;
+  private static getValueDependingOnType(key: string, paramValue: string): any {
+    let type = HashUtils.getValueType(key, paramValue);
+    let returnValue;
+
     if (type == 'object') {
       returnValue = HashUtils.decodeObject(paramValue);
     } else if (type == 'array') {
@@ -100,8 +107,10 @@ export class HashUtils {
     return returnValue;
   }
 
-  private static getValueType(paramValue: string): string {
-    if (HashUtils.isObject(paramValue)) {
+  private static getValueType(key: string, paramValue: string): string {
+    if (key == 'q') {
+      return 'other';
+    } else if (HashUtils.isObject(paramValue)) {
       return 'object';
     } else if (HashUtils.isArray(paramValue)) {
       return 'array';
@@ -143,39 +152,39 @@ export class HashUtils {
   }
 
   private static isObject(value: string) {
-    var isObjectStart = HashUtils.isObjectStartNotEncoded(value) || HashUtils.isObjectStartEncoded(value);
-    var isObjectEnd = HashUtils.isObjectEndNotEncoded(value) || HashUtils.isObjectEndEncoded(value);
+    let isObjectStart = HashUtils.isObjectStartNotEncoded(value) || HashUtils.isObjectStartEncoded(value);
+    let isObjectEnd = HashUtils.isObjectEndNotEncoded(value) || HashUtils.isObjectEndEncoded(value);
     return isObjectStart && isObjectEnd;
   }
 
   private static isArray(value: string) {
-    var isArrayStart = HashUtils.isArrayStartNotEncoded(value) || HashUtils.isArrayStartEncoded(value);
-    var isArrayEnd = HashUtils.isArrayEndNotEncoded(value) || HashUtils.isArrayEndEncoded(value);
+    let isArrayStart = HashUtils.isArrayStartNotEncoded(value) || HashUtils.isArrayStartEncoded(value);
+    let isArrayEnd = HashUtils.isArrayEndNotEncoded(value) || HashUtils.isArrayEndEncoded(value);
     return isArrayStart && isArrayEnd;
   }
 
   public static encodeArray(array: string[]): string {
-    var arrayReturn = _.map(array, (value) => {
+    let arrayReturn = _.map(array, (value) => {
       return encodeURIComponent(value);
     });
     return HashUtils.DELIMITER.arrayStart + arrayReturn.join(',') + HashUtils.DELIMITER.arrayEnd;
   }
 
   public static encodeObject(obj: Object): string {
-    var retArray = _.map(<_.Dictionary<any>>obj, (val, key?, obj?) => {
+    let retArray = _.map(<_.Dictionary<any>>obj, (val, key?, obj?) => {
       return `"${encodeURIComponent(key)}":${this.encodeValue(val)}`;
     });
     return HashUtils.DELIMITER.objectStart + retArray.join(' , ') + HashUtils.DELIMITER.objectEnd;
   }
 
-  private static encodeValue(val: any): string {
-    var encodedValue = '';
+  private static encodeValue(val: any) {
+    let encodedValue = '';
     if (_.isArray(val)) {
       encodedValue = HashUtils.encodeArray(val);
     } else if (_.isObject(val)) {
       encodedValue = HashUtils.encodeObject(val);
     } else if (_.isNumber(val) || _.isBoolean(val)) {
-      encodedValue = encodeURIComponent(val.toString());
+      encodedValue = encodeURIComponent(val);
     } else {
       encodedValue = '"' + encodeURIComponent(val) + '"';
     }
@@ -197,7 +206,7 @@ export class HashUtils {
     }
     value = value.substr(1);
     value = value.substr(0, value.length - 1);
-    var array = value.split(',');
+    let array = value.split(',');
     return _.map(array, (val) => {
       return decodeURIComponent(val);
     });

@@ -32,7 +32,7 @@ export class OldOmniboxAddon {
     this.lastQuery = text;
 
     let eventArgs = this.buildPopulateOmniboxEventArgs();
-    $$(this.omnibox.element).trigger(OmniboxEvents.populateOmnibox, eventArgs);
+    $$(this.omnibox.root).trigger(OmniboxEvents.populateOmnibox, eventArgs);
 
     return this.lastSuggestions = this.rowsToSuggestions(eventArgs.rows);
   }

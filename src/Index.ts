@@ -41,6 +41,7 @@ export {FacetRange} from './ui/FacetRange/FacetRange';
 export {Pager} from './ui/Pager/Pager';
 export {ResultsPerPage} from './ui/ResultsPerPage/ResultsPerPage';
 export {ResultList} from './ui/ResultList/ResultList';
+export {ResultLayout} from './ui/ResultLayout/ResultLayout';
 export {DefaultRecommendationTemplate} from './ui/Templates/DefaultRecommendationTemplate';
 export {Excerpt} from './ui/Excerpt/Excerpt';
 export {ResultLink} from './ui/ResultLink/ResultLink';
@@ -108,39 +109,16 @@ export {ChatterPostAttachment} from './ui/ChatterPostAttachment/ChatterPostAttac
 export {ChatterPostedBy} from './ui/ChatterPostedBy/ChatterPostedBy';
 export {ChatterTopic} from './ui/ChatterTopic/ChatterTopic';
 export {ChatterUtils} from './utils/ChatterUtils';
-export { Logo } from './ui/Logo/Logo';
+export {Logo} from './ui/Logo/Logo';
+export {Backdrop} from './ui/Backdrop/Backdrop';
+export {CardOverlay} from './ui/CardOverlay/CardOverlay';
+export {CardActionBar} from './ui/CardActionBar/CardActionBar';
+export {HashUtils} from './utils/HashUtils';
+export {DeviceUtils} from './utils/DeviceUtils';
+export {ColorUtils} from './utils/ColorUtils';
+export {Cookie} from './utils/CookieUtils';
+export {CurrencyUtils} from './utils/CurrencyUtils';
+export {DateUtils} from './utils/DateUtils';
 
-import {CoreHelpers} from './ui/Templates/CoreHelpers';
-import _ = require('underscore');
-
-// Webpack output a library target with a temporary name.
-// This is to allow end user to put CoveoJsSearch.Dependencie.js before or after the main CoveoJsSearch.js, without breaking
-// This code swap the current module to the "real" Coveo variable.
-let swapVar = () => {
-
-  if (window['Coveo'] == undefined) {
-    window['Coveo'] = this;
-  } else {
-    _.each(_.keys(this), (k) => {
-      window['Coveo'][k] = this[k];
-    });
-  }
-  CoreHelpers.exportAllHelpersGlobally(window['Coveo']);
-  if (window['__extends'] == undefined) {
-    var __extends = function (d, b) {
-      for (var p in b) {
-        if (b.hasOwnProperty(p)) {
-          d[p] = b[p];
-        }
-      }
-      function __() {
-        this.constructor = d;
-      }
-
-      d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-    window['__extends'] = __extends;
-  }
-
-};
-swapVar();
+import {swapVar} from './SwapVar';
+swapVar(this);

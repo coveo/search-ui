@@ -11,7 +11,7 @@ import _ = require('underscore');
 export class BreadcrumbValueList {
   private expanded: FacetValue[];
   private collapsed: FacetValue[];
-  private elem: HTMLElement;
+  protected elem: HTMLElement;
   private valueContainer: HTMLElement;
 
   constructor(public facet: Facet, public facetValues: FacetValue[], public breadcrumbValueElementKlass: IBreadcrumbValueElementKlass) {
@@ -20,9 +20,9 @@ export class BreadcrumbValueList {
       className: 'coveo-facet-breadcrumb'
     }).el;
 
-    let title = DeviceUtils.isMobileDevice() ? $$('div') : $$('span');
+    let title = $$('span');
     title.addClass('coveo-facet-breadcrumb-title');
-    title.text(this.facet.options.title + (DeviceUtils.isMobileDevice() ? '' : ':'));
+    title.text(this.facet.options.title + ':');
     this.elem.appendChild(title.el);
 
     this.valueContainer = $$('span', {
@@ -39,8 +39,18 @@ export class BreadcrumbValueList {
     return this.elem;
   }
 
+  public buildAsString(): string {
+    this.build();
+    if (this.elem) {
+      return `${this.facet.options.title}: ` + _.map($$(this.elem).findAll('.coveo-facet-breadcrumb-value'), (value: HTMLElement) => {
+        return $$(value).text();
+      }).join(', ');
+    }
+    return '';
+  }
+
   private buildExpanded() {
-    _.each(this.expanded, (value: FacetValue, index?: number, list?) => {
+    _.each(this.expanded, (value: FacetValue, index?: number) => {
       if (index != 0 && !DeviceUtils.isMobileDevice() && !this.facet.searchInterface.isNewDesign()) {
         let separator = $$('span', {
           className: 'coveo-facet-breadcrumb-separator'

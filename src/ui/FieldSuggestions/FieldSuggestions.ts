@@ -128,6 +128,8 @@ export class FieldSuggestions extends Component {
 
     this.suggestionForOmnibox = new SuggestionForOmnibox(suggestionStructure, (value: string, args: IPopulateOmniboxEventArgs) => {
       this.options.onSelect.call(this, value, args);
+    }, (value: string, args: IPopulateOmniboxEventArgs) => {
+      this.onRowTab(value, args);
     });
     this.bind.onRootElement(OmniboxEvents.populateOmnibox, (args: IPopulateOmniboxEventArgs) => this.handlePopulateOmnibox(args));
   }
@@ -162,16 +164,22 @@ export class FieldSuggestions extends Component {
       this.queryController.getEndpoint().listFieldValues(this.buildListFieldValueRequest(valueToSearch)).then((results: IIndexFieldValue[]) => {
         let element = this.suggestionForOmnibox.buildOmniboxElement(results, args);
         this.currentlyDisplayedSuggestions = {};
-        _.map($$(element).findAll('.coveo-omnibox-selectable'), (selectable, i?) => {
-          this.currentlyDisplayedSuggestions[$$(selectable).text()] = {
-            element: selectable,
-            pos: i
-          };
-        });
-        resolve({
-          element: element,
-          zIndex: this.options.omniboxZIndex
-        });
+        if (element) {
+          _.map($$(element).findAll('.coveo-omnibox-selectable'), (selectable, i?) => {
+            this.currentlyDisplayedSuggestions[$$(selectable).text()] = {
+              element: selectable,
+              pos: i
+            };
+          });
+          resolve({
+            element: element,
+            zIndex: this.options.omniboxZIndex
+          });
+        } else {
+          resolve({
+            element: undefined
+          });
+        }
       }).catch(() => {
         resolve({
           element: undefined
@@ -189,6 +197,13 @@ export class FieldSuggestions extends Component {
     this.queryStateModel.set(QueryStateModel.attributesEnum.q, value);
     this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.omniboxField, {});
     this.queryController.executeQuery();
+  }
+
+  private onRowTab(value: string, args: IPopulateOmniboxEventArgs) {
+    args.clear();
+    args.closeOmnibox();
+    this.queryStateModel.set(QueryStateModel.attributesEnum.q, `${value}`);
+    this.usageAnalytics.logCustomEvent(analyticsActionCauseList.omniboxField, {}, this.element);
   }
 
   private buildListFieldValueRequest(valueToSearch: string): IListFieldValuesRequest {

@@ -7,7 +7,7 @@
       position: relative;
       margin: 0;
       padding-left:15px;
-
+      white-space: nowrap;
       .coveo-facet-value-caption  {
         text-overflow: initial;
       }
@@ -69,19 +69,13 @@
   }
 }
 
-.coveo-facet-breadcrumb {
-  .coveo-values {
-    .coveo-value.coveo-hierarchical-facet-value {
-      .coveo-hierarchical-breadcrumb-separator {
-        content: "";
-        display: inline-block;
-        top:2px;
-        left:3px;
-        position: relative;
-        margin-left: 2px;
-        margin-right: 2px;
-        @include triangle(10px, #b0b3ae, right);
-      }
-    }
-  }
+.coveo-hierarchical-breadcrumb-separator {
+  content: "";
+  display: inline-block;
+  top:2px;
+  left:3px;
+  position: relative;
+  margin-left: 2px;
+  margin-right: 2px;
+  @include triangle(10px, #b0b3ae, right);
 }

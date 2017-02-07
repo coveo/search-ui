@@ -11,11 +11,9 @@ import {FakeResults} from './Fake';
 import {Component} from '../src/ui/Base/Component';
 import {Utils} from '../src/utils/Utils';
 import {BaseComponent} from '../src/ui/Base/BaseComponent';
-import {IQuery} from '../src/rest/Query';
 import {NoopAnalyticsClient} from '../src/ui/Analytics/NoopAnalyticsClient';
 import {SearchEndpoint} from '../src/rest/SearchEndpoint';
 import {QueryController} from '../src/controllers/QueryController';
-declare var coveoanalytics: CoveoAnalytics.CoveoUA;
 
 export interface IMockEnvironment extends IComponentBindings {
   root: HTMLElement;
@@ -110,7 +108,13 @@ export class MockEnvironmentBuilder {
     this.searchInterface.componentStateModel = this.componentStateModel;
     this.searchInterface.componentOptionsModel = this.componentOptionsModel;
 
-    this.queryController.getEndpoint = () => this.searchEndpoint;
+    if (!this.searchEndpoint) {
+      this.searchEndpoint = mockSearchEndpoint();
+    }
+
+    this.queryController.getEndpoint = () => {
+      return this.searchEndpoint;
+    };
 
     if (Utils.isNullOrUndefined(this.searchInterface.isNewDesign())) {
       this.searchInterface.isNewDesign = () => true;
@@ -236,6 +240,7 @@ export function mockSearchEndpoint(): SearchEndpoint {
   m.extensions.and.returnValue(new Promise((resolve, reject) => {
   }));
   m.getViewAsDatastreamUri.and.returnValue('http://datastream.uri');
+  m.options = {};
   return m;
 }
 
@@ -321,34 +326,5 @@ export function advancedResultComponentSetup<T>(klass, result: IQueryResult, opt
   return {
     env: envBuilder.build(),
     cmp: <T>new klass(envBuilder.getBindings().element, optsMerged.cmpOptions, envBuilder.getBindings(), envBuilder.result, envBuilder.os)
-  };
-}
-
-export function initPageViewScript(store: CoveoAnalytics.HistoryStore) {
-  class HistoryStoreMock {
-    constructor() {
-    }
-
-    public addElement(query: IQuery) {
-      store.addElement(query);
-    }
-
-    public getHistory() {
-      return store.getHistory();
-    }
-
-    public setHistory(history: any[]) {
-      store.setHistory(history);
-    }
-
-    public clear() {
-      store.clear();
-    }
-  }
-
-  window['coveoanalytics'] = {
-    history: {
-      HistoryStore: HistoryStoreMock
-    }
   };
 }

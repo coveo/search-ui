@@ -119,7 +119,7 @@ export function RegisteredNamedMethodsTest() {
           className: 'CoveoAnalytics'
         }).el;
         analytics = { client: mockUsageAnalytics() };
-        analyticsElement['CoveoAnalytics'] = analytics;
+        analyticsElement['Analytics'] = analytics;
         analyticsElement['CoveoBoundComponents'] = [analytics];
         env.root.appendChild(analyticsElement);
       });

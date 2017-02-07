@@ -199,8 +199,9 @@ export class Simulate {
     Defer.flush();
   }
 
-  static addJQuery(): void {
+  static addJQuery(): any {
     window['Coveo']['$'] = JQuery;
+    return JQuery;
   }
 
   static removeJQuery(): void {

@@ -1,7 +1,12 @@
-@import "_Variables.scss";
-@import "mixins/_mediaQuery.scss";
-
 .coveo-small-tabs {
+
+  &.coveo-tab-section {
+    .coveo-tab-dropdown-header {
+      margin-left: auto;
+      line-height: 22px;
+    }
+  }
+
   .CoveoTab {
     @include transition-property(opacity);
     @include transition-duration(0.250s);

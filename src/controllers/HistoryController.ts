@@ -6,6 +6,7 @@ import {$$} from '../utils/Dom';
 import {HashUtils} from '../utils/HashUtils';
 import {Defer} from '../misc/Defer';
 import {RootComponent} from '../ui/Base/RootComponent';
+import {Utils} from '../utils/Utils';
 import _ = require('underscore');
 
 /**
@@ -27,11 +28,12 @@ export class HistoryController extends RootComponent {
   /**
    * Create a new history controller
    * @param element
-   * @param windoh For mock / test purpose.
+   * @param windoh For mock / test purposes.
    * @param model
    * @param queryController
+   * @param hashUtilsModule For mock / test purposes.
    */
-  constructor(element: HTMLElement, public windoh: Window, public model: Model, public queryController: QueryController) {
+  constructor(element: HTMLElement, public windoh: Window, public model: Model, public queryController: QueryController, private hashUtils: typeof HashUtils = HashUtils) {
     super(element, HistoryController.ID);
 
     this.windoh = this.windoh || window;
@@ -61,7 +63,7 @@ export class HistoryController extends RootComponent {
   public setHashValues(values: {}) {
     this.logger.trace('Update history hash');
 
-    var hash = '#' + HashUtils.encodeValues(values);
+    let hash = '#' + this.hashUtils.encodeValues(values);
     this.ignoreNextHashChange = this.windoh.location.hash != hash;
 
     this.logger.trace('ignoreNextHashChange', this.ignoreNextHashChange);
@@ -91,7 +93,7 @@ export class HistoryController extends RootComponent {
       return;
     }
 
-    var diff = this.updateModelFromHash();
+    let diff = this.updateModelFromHash();
 
     if (_.difference(diff, HistoryController.attributesThatDoNotTriggerQuery).length > 0) {
       this.queryController.executeQuery();
@@ -103,7 +105,7 @@ export class HistoryController extends RootComponent {
 
     if (!this.willUpdateHash) {
       Defer.defer(() => {
-        var attributes = this.model.getAttributes();
+        let attributes = this.model.getAttributes();
         this.setHashValues(attributes);
         this.logger.debug('Saving state to hash', attributes);
         this.willUpdateHash = false;
@@ -115,13 +117,10 @@ export class HistoryController extends RootComponent {
   private updateModelFromHash() {
     this.logger.trace('History hash -> model');
 
-    var toSet: { [key: string]: any } = {};
-    var diff: string[] = [];
+    let toSet: { [key: string]: any } = {};
+    let diff: string[] = [];
     _.each(<_.Dictionary<any>>this.model.attributes, (value, key?, obj?) => {
-      var valToSet = this.getHashValue(key);
-      if (valToSet == undefined) {
-        valToSet = this.model.defaultAttributes[key];
-      }
+      let valToSet = this.getHashValue(key);
       toSet[key] = valToSet;
       if (this.model.get(key) != valToSet) {
         diff.push(key);
@@ -132,9 +131,20 @@ export class HistoryController extends RootComponent {
     return diff;
   }
 
-  private getHashValue(value: string): any {
-    Assert.isNonEmptyString(value);
-    return HashUtils.getValue(value, HashUtils.getHash(this.windoh));
+  private getHashValue(key: string): any {
+    Assert.isNonEmptyString(key);
+    let value;
+    try {
+      value = this.hashUtils.getValue(key, this.hashUtils.getHash(this.windoh));
+    } catch (error) {
+      this.logger.error(`Could not parse parameter ${key} from URI`);
+    }
+
+    if (Utils.isUndefined(value)) {
+      value = this.model.defaultAttributes[key];
+    }
+
+    return value;
   }
 
   public debugInfo() {

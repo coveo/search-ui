@@ -657,16 +657,17 @@ export class Dom {
   /**
    * Returns the offset width of the element
    */
-  public width() {
+  public width(): number {
     return this.el.offsetWidth;
   }
 
   /**
    * Returns the offset height of the element
    */
-  public height() {
+  public height(): number {
     return this.el.offsetHeight;
   }
+
   private traverseAncestorForClass(current = this.el, className: string): HTMLElement {
     if (className.indexOf('.') == 0) {
       className = className.substr(1);
@@ -704,6 +705,22 @@ export class Win {
   public width(): number {
     return this.win.innerWidth;
   }
+
+  public scrollY(): number {
+    return this.supportPageOffset() ? this.win.pageYOffset : this.isCSS1Compat() ? this.win.document.documentElement.scrollTop : this.win.document.body.scrollTop;
+  }
+
+  public scrollX(): number {
+    return this.supportPageOffset() ? window.pageXOffset : this.isCSS1Compat() ? document.documentElement.scrollLeft : document.body.scrollLeft;
+  }
+
+  private isCSS1Compat() {
+    return (this.win.document.compatMode || '') === 'CSS1Compat';
+  }
+
+  private supportPageOffset() {
+    return this.win.pageXOffset !== undefined;
+  }
 }
 
 export class Doc {
@@ -740,15 +757,4 @@ export function $$(...args: any[]): Dom {
   } else {
     return new Dom(Dom.createElement.apply(Dom, args));
   }
-}
-
-export function htmlToDom(html: string): Element {
-  var parsedHtml = document.createElement('div');
-  parsedHtml.innerHTML = html;
-  // If the template has a single root element, we return it directly. Otherwise
-  // we'll have to wrap this thing in a div as ResultList expects a single element.
-  if (parsedHtml.children.length == 1) {
-    return parsedHtml.children.item(0);
-  }
-  return parsedHtml;
 }

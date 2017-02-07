@@ -16,11 +16,13 @@ import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/Analytics
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
 import {Defer} from '../../misc/Defer';
 import {DeviceUtils} from '../../utils/DeviceUtils';
-import {ResultListEvents, IDisplayedNewResultEventArgs} from '../../events/ResultListEvents';
+import {ResultListEvents, IDisplayedNewResultEventArgs, IChangeLayoutEventArgs} from '../../events/ResultListEvents';
+import {ResultLayoutEvents} from '../../events/ResultLayoutEvents';
 import {Utils} from '../../utils/Utils';
 import {DomUtils} from '../../utils/DomUtils';
 import {Recommendation} from '../Recommendation/Recommendation';
 import {DefaultRecommendationTemplate} from '../Templates/DefaultRecommendationTemplate';
+import {ValidLayout} from '../ResultLayout/ResultLayout';
 import _ = require('underscore');
 
 export interface IResultListOptions {
@@ -36,7 +38,9 @@ export interface IResultListOptions {
   enableInfiniteScrollWaitingAnimation?: boolean;
   fieldsToInclude?: IFieldOption[];
   autoSelectFieldsToInclude?: boolean;
+  layout?: string;
 }
+
 
 /**
  * This component is responsible for displaying the results of the current query using one or more result templates.<br/>
@@ -117,12 +121,12 @@ export class ResultList extends Component {
   static options: IResultListOptions = {
     /**
      * Specifies the element within which the rendered templates for results are inserted.<br/>
-     * The content of this element is cleared when a new query is performed. If this option is not specified, a &lt;div&gt; element will by dynamically created in javascript and appended to the result list and used as a result container.<br/>
-     * You can change the container by specifying it's selector: Eg  data-result-container-selector="#someCssSelector"
+     * The content of this element is cleared when a new query is performed. If this option is not specified, a &lt;div&gt; element will by dynamically created in JavaScript and appended to the result list and used as a result container.<br/>
+     * You can change the container by specifying its selector: Eg  data-result-container-selector="#someCssSelector"
      */
     resultContainer: ComponentOptions.buildChildHtmlElementOption({
       defaultFunction: (element: HTMLElement) => {
-        var d = document.createElement('div');
+        let d = document.createElement('div');
         element.appendChild(d);
         return d;
       }
@@ -175,12 +179,32 @@ export class ResultList extends Component {
      */
     fieldsToInclude: ComponentOptions.buildFieldsOption({ includeInResults: true }),
     /**
-     * Specifies that the result list should scan it's template and discover which field it will need to render every results.<br/>
+     * Specifies that the result list should scan its template and discover which field it will need to render every results.<br/>
      * This is to ensure that fields that are not needed for the UI to function are not sent by the search API.<br/>
      * Default value is false.<br/>
      * NB: Many interface created by the interface editor will actually explicitly set this option to true.
      */
-    autoSelectFieldsToInclude: ComponentOptions.buildBooleanOption({ defaultValue: false })
+    autoSelectFieldsToInclude: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
+    /**
+     * Specifies the layout to use for displaying the results. Specifying a value for this option automatically
+     * populates a {@link ResultLayout} component with a switcher for the layout.
+     *
+     * For example, if there are two {@link ResultList} components in the page, one with its
+     * {@link ResultList.options.layout} set to `list` and the other with the same option set to `card`, then the
+     * ResultLayout component will have two buttons respectively titled **List** and **Card**.
+     *
+     * The possible values are:
+     * - `list`
+     * - `card`
+     * - `table`
+     *
+     * Default value is `list`.
+     */
+    layout: ComponentOptions.buildStringOption({
+      defaultValue: 'list',
+      required: true,
+    })
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
@@ -215,11 +239,18 @@ export class ResultList extends Component {
     this.bind.onRootElement<IQuerySuccessEventArgs>(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement<IDuringQueryEventArgs>(QueryEvents.duringQuery, (args: IDuringQueryEventArgs) => this.handleDuringQuery());
     this.bind.onRootElement<IQueryErrorEventArgs>(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError());
+    $$(this.root).on(ResultListEvents.changeLayout, (e: Event, args: IChangeLayoutEventArgs) => this.handleChangeLayout(args));
 
     if (this.options.enableInfiniteScroll) {
+      this.handlePageChanged();
       this.bind.on(<HTMLElement>this.options.infiniteScrollContainer, 'scroll', (e: Event) => this.handleScrollOfResultList());
     }
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, () => this.handlePageChanged());
+
+    $$(this.options.resultContainer).addClass('coveo-result-list-container');
+    $$(this.options.resultContainer).addClass(`coveo-${this.options.layout}-layout`);
+
+    $$(this.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => args.layouts.push(this.options.layout));
   }
 
   /**
@@ -237,6 +268,10 @@ export class ResultList extends Component {
       this.options.resultContainer.appendChild(resultElement);
       this.triggerNewResultDisplayed(Component.getResult(resultElement), resultElement);
     });
+    if (this.options.layout == 'card') {
+      // Used to prevent last card from spanning the grid's whole width
+      _.times(3, () => this.options.resultContainer.appendChild($$('div').el));
+    }
     this.triggerNewResultsDisplayed();
   }
 
@@ -245,9 +280,9 @@ export class ResultList extends Component {
    * @param results
    */
   public buildResults(results: IQueryResults): HTMLElement[] {
-    var res: HTMLElement[] = [];
+    let res: HTMLElement[] = [];
     _.each(results.results, (result: IQueryResult) => {
-      var resultElement = this.buildResult(result);
+      let resultElement = this.buildResult(result);
       if (resultElement != null) {
         res.push(resultElement);
       }
@@ -264,8 +299,9 @@ export class ResultList extends Component {
   public buildResult(result: IQueryResult): HTMLElement {
     Assert.exists(result);
     QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), result);
+    QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, result);
     ResultList.resultCurrentlyBeingRendered = result;
-    var resultElement = this.options.resultTemplate.instantiateToElement(result);
+    let resultElement = this.options.resultTemplate.instantiateToElement(result, true, true, { layout: <ValidLayout>this.options.layout });
     if (resultElement != null) {
       Component.bindResultToElement(resultElement, result);
     }
@@ -299,7 +335,7 @@ export class ResultList extends Component {
     this.fetchingMoreResults.then((data: IQueryResults) => {
       Assert.exists(data);
       this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.pagerScrolling, {}, this.element);
-      var results = data.results;
+      let results = data.results;
       this.reachedTheEndOfResults = count > data.results.length;
       this.renderResults(this.buildResults(data), true);
       _.each(results, (result) => {
@@ -331,14 +367,23 @@ export class ResultList extends Component {
     return $$(this.options.resultContainer).findAll('.CoveoResult');
   }
 
+  public enable() {
+    super.enable();
+    $$(this.element).removeClass('coveo-hidden');
+  }
+  public disable() {
+    super.disable();
+    $$(this.element).addClass('coveo-hidden');
+  }
+
   protected autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult) {
     Assert.exists(element);
 
-    var initOptions = this.searchInterface.options.originalOptionsObject;
-    var resultComponentBindings: IResultsComponentBindings = _.extend({}, this.getBindings(), {
+    let initOptions = this.searchInterface.options.originalOptionsObject;
+    let resultComponentBindings: IResultsComponentBindings = _.extend({}, this.getBindings(), {
       resultElement: element
     });
-    var initParameters: IInitializationParameters = {
+    let initParameters: IInitializationParameters = {
       options: initOptions,
       bindings: resultComponentBindings,
       result: result
@@ -347,7 +392,7 @@ export class ResultList extends Component {
   }
 
   protected triggerNewResultDisplayed(result: IQueryResult, resultElement: HTMLElement) {
-    var args: IDisplayedNewResultEventArgs = {
+    let args: IDisplayedNewResultEventArgs = {
       result: result,
       item: resultElement
     };
@@ -374,26 +419,24 @@ export class ResultList extends Component {
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
     Assert.exists(data);
     Assert.exists(data.results);
-    $$(this.element).toggle(!this.disabled);
-    if (!this.disabled) {
-      var results = data.results;
-      this.logger.trace('Received query results from new query', results);
-      this.hideWaitingAnimation();
-      ResultList.resultCurrentlyBeingRendered = undefined;
-      this.currentlyDisplayedResults = [];
-      this.renderResults(this.buildResults(data.results));
-      this.currentlyDisplayedResults = results.results;
-      this.reachedTheEndOfResults = false;
-      this.showOrHideElementsDependingOnState(true, this.currentlyDisplayedResults.length != 0);
+    let results = data.results;
+    this.logger.trace('Received query results from new query', results);
+    this.hideWaitingAnimation();
+    ResultList.resultCurrentlyBeingRendered = undefined;
+    this.currentlyDisplayedResults = [];
+    this.renderResults(this.buildResults(data.results));
+    this.currentlyDisplayedResults = results.results;
+    this.reachedTheEndOfResults = false;
+    this.showOrHideElementsDependingOnState(true, this.currentlyDisplayedResults.length != 0);
 
-      if (this.options.enableInfiniteScroll && results.results.length == data.queryBuilder.numberOfResults) {
-        // This will check right away if we need to add more results to make the scroll container full & scrolling.
-        this.handleScrollOfResultList();
-      }
+    if (DeviceUtils.isMobileDevice() && this.options.mobileScrollContainer != undefined) {
+      this.options.mobileScrollContainer.scrollTop = 0;
+    }
 
-      if (DeviceUtils.isMobileDevice() && this.options.mobileScrollContainer != undefined) {
-        this.options.mobileScrollContainer.scrollTop = 0;
-      }
+    if (this.options.enableInfiniteScroll && results.results.length == data.queryBuilder.numberOfResults) {
+      // This will check right away if we need to add more results to make the scroll container full & scrolling.
+      this.scrollBackToTop();
+      this.handleScrollOfResultList();
     }
   }
 
@@ -407,21 +450,25 @@ export class ResultList extends Component {
   }
 
   private handlePageChanged() {
-    this.bind.oneRootElement(QueryEvents.querySuccess, () => {
-      if (this.options.infiniteScrollContainer instanceof Window) {
-        var win = <Window>this.options.infiniteScrollContainer;
-        win.scrollTo(0, 0);
-      } else {
-        var el = <HTMLElement>this.options.infiniteScrollContainer;
-        if (el.scrollIntoView) {
-          el.scrollIntoView();
-        }
-      }
+    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => {
+      setTimeout(() => {
+        this.scrollBackToTop();
+      }, 0);
     });
   }
 
+  private scrollBackToTop() {
+    if (this.options.infiniteScrollContainer instanceof Window) {
+      let win = <Window>this.options.infiniteScrollContainer;
+      win.scrollTo(0, 0);
+    } else {
+      let el = <HTMLElement>this.options.infiniteScrollContainer;
+      el.scrollTop = 0;
+    }
+  }
+
   private handleNewQuery() {
-    $$(this.element).show();
+    $$(this.element).removeClass('coveo-hidden');
     ResultList.resultCurrentlyBeingRendered = undefined;
   }
 
@@ -436,8 +483,22 @@ export class ResultList extends Component {
     }
   }
 
+  private handleChangeLayout(args: IChangeLayoutEventArgs) {
+    if (args.layout === this.options.layout) {
+      this.enable();
+      if (args.results) {
+        Defer.defer(() => {
+          this.renderResults(this.buildResults(args.results));
+        });
+      }
+    } else {
+      this.disable();
+    }
+  }
+
   private getAutoSelectedFieldsToInclude() {
     return _.chain(this.options.resultTemplate.getFields())
+      .concat(this.getMinimalFieldsToInclude())
       .compact()
       .unique()
       .value();
@@ -447,9 +508,14 @@ export class ResultList extends Component {
     return Utils.exists(this.fetchingMoreResults);
   }
 
+  private getMinimalFieldsToInclude() {
+    // these fields are needed for analytics click event
+    return ['author', 'language', 'urihash', 'objecttype', 'collection', 'source', 'language', 'uniqueid'];
+  }
+
   private isScrollingOfResultListAlmostAtTheBottom(): boolean {
     // this is in a try catch because the unit test fail otherwise (Window does not exist for phantom js in the console)
-    var isWindow;
+    let isWindow;
     try {
       isWindow = this.options.infiniteScrollContainer instanceof Window;
     } catch (e) {
@@ -459,17 +525,18 @@ export class ResultList extends Component {
   }
 
   private isScrollAtBottomForWindowElement() {
-    var windowHeight = new Win(window).height();
-    var scrollTop = window.scrollY;
-    var bodyHeight = new Doc(document).height();
+    let win = new Win(window);
+    let windowHeight = win.height();
+    let scrollTop = win.scrollY();
+    let bodyHeight = new Doc(document).height();
     return bodyHeight - (windowHeight + scrollTop) < windowHeight / 2;
   }
 
   private isScrollAtBottomForHtmlElement() {
-    var el = <HTMLElement>this.options.infiniteScrollContainer;
-    var elementHeight = el.clientHeight;
-    var scrollHeight = el.scrollHeight;
-    var bottomPosition = el.scrollTop + elementHeight;
+    let el = <HTMLElement>this.options.infiniteScrollContainer;
+    let elementHeight = el.clientHeight;
+    let scrollHeight = el.scrollHeight;
+    let bottomPosition = el.scrollTop + elementHeight;
     return (scrollHeight - bottomPosition) < elementHeight / 2;
   }
 
@@ -486,10 +553,10 @@ export class ResultList extends Component {
   }
 
   private showOrHideElementsDependingOnState(hasQuery: boolean, hasResults: boolean) {
-    var showIfQuery = $$(this.element).findAll('.coveo-show-if-query');
-    var showIfNoQuery = $$(this.element).findAll('.coveo-show-if-no-query');
-    var showIfResults = $$(this.element).findAll('.coveo-show-if-results');
-    var showIfNoResults = $$(this.element).findAll('.coveo-show-if-no-results');
+    let showIfQuery = $$(this.element).findAll('.coveo-show-if-query');
+    let showIfNoQuery = $$(this.element).findAll('.coveo-show-if-no-query');
+    let showIfResults = $$(this.element).findAll('.coveo-show-if-results');
+    let showIfNoResults = $$(this.element).findAll('.coveo-show-if-no-results');
 
     _.each(showIfQuery, (s: HTMLElement) => {
       $$(s).toggle(hasQuery);
@@ -527,7 +594,7 @@ export class ResultList extends Component {
         $$(this.options.waitAnimationContainer).removeClass('coveo-fade-out');
         break;
       case 'spinner':
-        var spinner = $$(this.options.waitAnimationContainer).find('.coveo-loading-spinner');
+        let spinner = $$(this.options.waitAnimationContainer).find('.coveo-loading-spinner');
         if (spinner) {
           $$(spinner).detach();
         }
@@ -540,7 +607,7 @@ export class ResultList extends Component {
   }
 
   private hideWaitingAnimationForInfiniteScrolling() {
-    var spinner = $$(this.options.waitAnimationContainer).find('.coveo-loading-spinner');
+    let spinner = $$(this.options.waitAnimationContainer).find('.coveo-loading-spinner');
     if (spinner) {
       $$(spinner).detach();
     }

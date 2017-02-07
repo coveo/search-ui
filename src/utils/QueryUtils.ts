@@ -42,6 +42,10 @@ export class QueryUtils {
     QueryUtils.setPropertyOnResult(result, 'state', state);
   }
 
+  static setSearchInterfaceObjectOnQueryResult(searchInterface, result: IQueryResult) {
+    QueryUtils.setPropertyOnResult(result, 'searchInterface', searchInterface);
+  }
+
   static setIndexAndUidOnQueryResults(query: IQuery, results: IQueryResults, queryUid: string, pipeline: string, splitTestRun: string) {
     Assert.exists(query);
     Assert.exists(results);
@@ -80,6 +84,47 @@ export class QueryUtils {
 
   static hasExcerpt(result: IQueryResult) {
     return result.excerpt != undefined && result.excerpt != '';
+  }
+
+  static getAuthor(result: IQueryResult): string {
+    return result.raw['author'];
+  }
+
+  static getUriHash(result: IQueryResult): string {
+    return result.raw['urihash'];
+  }
+
+  static getObjectType(result: IQueryResult): string {
+    return result.raw['objecttype'];
+  }
+
+  static getCollection(result: IQueryResult): string {
+    return result.raw['collection'];
+  }
+
+  static getSource(result: IQueryResult): string {
+    return result.raw['source'];
+  }
+
+  static getLanguage(result: IQueryResult): string {
+    return result.raw['language'];
+  }
+
+  static getUniqueId(result: IQueryResult): { fieldValue: string, fieldUsed: string } {
+    let fieldValue;
+    let fieldUsed;
+    let uniqueId = result.raw['uniqueid'];
+    if (uniqueId) {
+      fieldUsed = 'uniqueid';
+      fieldValue = uniqueId;
+    } else {
+      fieldUsed = 'urihash';
+      fieldValue = result.raw['urihash'];
+    }
+    return {
+      fieldValue: fieldValue,
+      fieldUsed: fieldUsed
+    };
   }
 
   static quoteAndEscapeIfNeeded(str: string): string {

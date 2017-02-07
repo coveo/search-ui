@@ -39,13 +39,15 @@ $font-size-smaller: 14px;
 $font-size-smallest: 12px;
 
 // Border
-$default-border-radius: 4px;
-$small-border-radius: 2px;
+$default-border-radius: 2px;
+$small-border-radius: 1px;
 $default-border: 1px solid $color-light-grey;
 @mixin defaultRoundedBorder {
   border: $default-border;
   border-radius: $default-border-radius;
 }
+
+$standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
 
 /*
 * @param direction vertical or horizontal
@@ -92,27 +94,37 @@ $default-border: 1px solid $color-light-grey;
   }
 }
 
-@mixin clickable {
+@mixin clickable($dark-background: false) {
   color: $color-teal;
+  @if $dark-background == true {
+    color: $color-coveo-for-salesforce;
+  }
   text-decoration: none;
   cursor: pointer;
   &:hover, &:visited {
     text-decoration: none;
-    color: $color-greyish-dark-blue;
+    @if $dark-background == false {
+      color: $color-greyish-dark-blue;
+    } @else {
+      color: $color-coveo-for-salesforce;
+    }
   }
   &:hover, &:hover a {
     text-decoration: underline;
   }
   &.coveo-selected * {
-    color: $color-greyish-dark-blue;
+    @if $dark-background == false {
+      color: $color-greyish-dark-blue;
+    } @else {
+      color: $color-coveo-for-salesforce;
+    }
   }
 }
 
-@mixin clickableVibrant {
-  @include clickable();
+@mixin clickableVibrant($dark-background: false) {
+  @include clickable($dark-background);
   color: $color-coveo-for-salesforce;
   &:hover {
-    text-decoration: underline;
     color: $color-coveo-for-salesforce;
   }
   &.coveo-selected * {

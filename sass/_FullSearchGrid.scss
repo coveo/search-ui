@@ -1,4 +1,4 @@
-$max-width: 1000px;
+$max-width: 1200px;
 $grid-columns: 10;
 $gutter: 0em;
 $page-width: 1000px;
@@ -8,13 +8,13 @@ $border-box-sizing: false;
 .CoveoSearchInterface {
 
   min-width: 300px;
-  
+
   .coveo-search-section {
     max-width: 800px;
     margin: 54px auto 47px auto;
     padding: 0 10px;
   }
-  
+
   .coveo-main-section {
     @include outer-container;
     position: relative;
@@ -36,22 +36,21 @@ $border-box-sizing: false;
       margin: auto;
       text-align: center;
     }
+
+    @include mediaSelector(800) {
+      &.coveo-no-results {
+        max-width: 100%;
+      }
+    }
   }
 }
 
 .coveo-results-header {
-  padding: 10px 0px 0px 0px;
+  @include display(flex);
+  @include justify-content(space-between);
+  padding-top: 10px;
   min-height: 35px;
   overflow: hidden;
-  .coveo-summary-section {
-    display: inline-block;
-    font-size: $font-size-smaller;
-    margin-bottom: 10px;
-  }
-  .coveo-sort-section {
-    float:right;
-    margin-bottom: 13px;
-  }
   box-shadow: 0 -1px 0px 0px $color-light-grey inset;
   &.coveo-no-results {
     box-shadow: none;
@@ -60,14 +59,53 @@ $border-box-sizing: false;
     box-shadow: none;
   }
 }
+.coveo-summary-section {
+  display: inline-block;
+  font-size: $font-size-smaller;
+  margin-right: auto;
+}
+.coveo-result-layout-section {
+  @include display(flex);
+  &.coveo-result-layout-hidden {
+    display: none;
+  }
+}
+.coveo-sort-section {
+  @include display(flex);
+}
+
+.coveo-results-header > *:not(:first-child) {
+  padding-right: 10px;
+  margin-left: 10px;
+  border-right: 1px solid $color-light-grey;
+}
+
+.coveo-results-header > *:last-child {
+  padding-right: 0;
+  border-right: none;
+}
+
+@include mediaSelector(800) {
+  .coveo-results-header {
+    padding-right: 10px;
+  }
+}
 
 @include mediaSelector(480) {
+  .coveo-summary-section {
+    width: 100%;
+    margin-bottom: 10px;
+  }
   .coveo-results-header {
-    .coveo-sort-section {
-      float:none;
-      display: block;
-      text-align: left;
-      margin: 10px 0px 10px 0px;
-    }
+    flex-wrap: wrap;
+  }
+  .coveo-results-header > *:not(:first-child) {
+    border-right: none;
+    margin-left: 0;
+    padding: 0;
+  }
+  .coveo-results-header > *:last-child {
+    margin-left: 0;
+    margin-bottom: 0;
   }
 }

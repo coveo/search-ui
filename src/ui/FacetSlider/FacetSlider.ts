@@ -23,6 +23,7 @@ import {Utils} from '../../utils/Utils';
 import {ResponsiveComponentsUtils} from '../ResponsiveComponents/ResponsiveComponentsUtils';
 import {Initialization} from '../Base/Initialization';
 import d3 = require('d3');
+import {SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs} from '../../events/SearchAlertEvents';
 import _ = require('underscore');
 
 export interface IFacetSliderOptions extends ISliderOptions {
@@ -33,6 +34,7 @@ export interface IFacetSliderOptions extends ISliderOptions {
   title?: string;
   enableResponsiveMode?: boolean;
   responsiveBreakpoint?: number;
+  dropdownHeaderLabel?: string;
 }
 
 /**
@@ -270,26 +272,33 @@ export class FacetSlider extends Component {
      * `CoveoSearchInterface`.
      * The default value is `800`.
      */
-    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 800 })
+    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 800 }),
+    /**
+     * Specifies the label of the button that allows to show the facets when in responsive mode. If it is specified more than once, the
+     * first occurence of the option will be used.
+     * The default value is "Filters". 
+     */
+    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption()
   };
 
   static ID = 'FacetSlider';
+  public static DEBOUNCED_RESIZE_DELAY = 250;
+
   public startOfSlider: number;
   public endOfSlider: number;
   public initialStartOfSlider: number;
   public initialEndOfSlider: number;
   public facetQueryController: FacetSliderQueryController;
   public facetHeader: FacetHeader;
+  public onResize: EventListener;
 
-  private slider: Slider;
   private rangeQueryStateAttribute: string;
   private isEmpty = false;
   private rangeFromUrlState: number[];
   private delayedGraphData: ISliderGraphData[];
-  private onResize: EventListener;
 
 
-  constructor(public element: HTMLElement, public options: IFacetSliderOptions, bindings?: IComponentBindings) {
+  constructor(public element: HTMLElement, public options: IFacetSliderOptions, bindings?: IComponentBindings, private slider?: Slider) {
     super(element, FacetSlider.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, FacetSlider, options);
 
@@ -326,14 +335,17 @@ export class FacetSlider extends Component {
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (args: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(args));
     this.bind.onRootElement(BreadcrumbEvents.populateBreadcrumb, (args: IPopulateBreadcrumbEventArgs) => this.handlePopulateBreadcrumb(args));
+    this.bind.onRootElement(SearchAlertsEvents.searchAlertsPopulateMessage, (args: ISearchAlertsPopulateMessageEventArgs) => this.handlePopulateSearchAlerts(args));
     this.bind.onRootElement(BreadcrumbEvents.clearBreadcrumb, () => this.reset());
 
     this.onResize = _.debounce(() => {
-      if (!ResponsiveComponentsUtils.isSmallFacetActivated($$(this.root)) && this.slider) {
+      if (ResponsiveComponentsUtils.shouldDrawFacetSlider($$(this.root)) && this.slider && !this.isEmpty) {
         this.slider.drawGraph();
       }
-    }, 250);
+    }, FacetSlider.DEBOUNCED_RESIZE_DELAY);
     window.addEventListener('resize', this.onResize);
+    // This is used inside SF integration
+    this.bind.onRootElement('onPopupOpen', this.onResize);
     $$(this.root).on(InitializationEvents.nuke, this.handleNuke);
   }
 
@@ -348,6 +360,11 @@ export class FacetSlider extends Component {
       facetSlider: this
     });
     this.element.appendChild(this.facetHeader.build());
+  }
+
+  public disable() {
+    super.disable();
+    $$(this.element).addClass('coveo-disabled-empty');
   }
 
   /**
@@ -415,7 +432,7 @@ export class FacetSlider extends Component {
   // There is delayed graph data if at the time the facet slider tried to draw the facet was hidden in the
   // facet dropdown. This method will draw delayed graph data if it exists.
   public drawDelayedGraphData() {
-    if (this.delayedGraphData != undefined) {
+    if (this.delayedGraphData != undefined && !this.isEmpty) {
       this.slider.drawGraph(this.delayedGraphData);
     }
   }
@@ -454,6 +471,12 @@ export class FacetSlider extends Component {
     }
   }
 
+  private handlePopulateSearchAlerts(args: ISearchAlertsPopulateMessageEventArgs) {
+    if (this.isActive()) {
+      args.text.push($$(this.buildBreadcrumbFacetSlider()).text());
+    }
+  }
+
   private buildBreadcrumbFacetSlider(): HTMLElement {
     let elem = $$('div', {
       className: 'coveo-facet-slider-breadcrumb'
@@ -462,7 +485,7 @@ export class FacetSlider extends Component {
     let title = $$('span', {
       className: 'coveo-facet-slider-breadcrumb-title'
     });
-    title.text(this.options.title + ':');
+    title.text(this.options.title + ': ');
     elem.appendChild(title.el);
 
     let values = $$('span', {
@@ -521,7 +544,7 @@ export class FacetSlider extends Component {
     }
     let sliderDiv = $$('div').el;
 
-    this.slider = new Slider(sliderDiv, _.extend({}, this.options, { dateField: this.options.dateField }), this.root);
+    this.slider = this.slider ? this.slider : new Slider(sliderDiv, _.extend({}, this.options, { dateField: this.options.dateField }), this.root);
     $$(sliderDiv).on(SliderEvents.endSlide, (e: MouseEvent, args: IEndSlideEventArgs) => {
       this.handleEndSlide(args);
     });
@@ -661,18 +684,23 @@ export class FacetSlider extends Component {
     if (totalGraphResults == 0) {
       this.isEmpty = true;
       this.updateAppearanceDependingOnState();
-    } else if (graphData != undefined && !this.isFacetDropdownHidden()) {
+    } else if (graphData != undefined && !this.isDropdownHidden()) {
       this.slider.drawGraph(graphData);
-    } else if (graphData != undefined && this.isFacetDropdownHidden()) {
+    } else if (graphData != undefined && this.isDropdownHidden()) {
       this.delayedGraphData = graphData;
     }
   }
 
-  private isFacetDropdownHidden() {
+  private isDropdownHidden() {
     let facetDropdown = this.root.querySelector('.coveo-facet-column');
     if (facetDropdown) {
       return $$(<HTMLElement>facetDropdown).css('display') == 'none';
     }
+    if ($$(this.root).hasClass('CoveoRecommendation')) {
+      let recommendationDropdown = $$(this.root).parents('.coveo-recommendation-column')[0] || this.root;
+      return $$(<HTMLElement>recommendationDropdown).css('display') == 'none';
+    }
+
     return false;
   }
 

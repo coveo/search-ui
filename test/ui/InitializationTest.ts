@@ -6,16 +6,19 @@ import {Component} from '../../src/ui/Base/Component';
 import {Initialization} from '../../src/ui/Base/Initialization';
 import {Facet} from '../../src/ui/Facet/Facet';
 import {Pager} from '../../src/ui/Pager/Pager';
-declare var coveoanalytics;
+import {ResultList} from '../../src/ui/ResultList/ResultList';
+import {Simulate} from '../Simulate';
+declare let coveoanalytics;
+declare let $;
 
 export function InitializationTest() {
-  describe('Initialization', function () {
-    var root: HTMLElement;
-    var endpoint: SearchEndpoint;
-    var searchInterfaceOptions: {};
-    var queryBox: HTMLElement;
+  describe('Initialization', () => {
+    let root: HTMLElement;
+    let endpoint: SearchEndpoint;
+    let searchInterfaceOptions: {};
+    let queryBox: HTMLElement;
 
-    beforeEach(function () {
+    beforeEach(() => {
       root = document.createElement('div');
       $$(root).addClass('CoveoSearchInterface');
       endpoint = Mock.mockSearchEndpoint();
@@ -26,14 +29,14 @@ export function InitializationTest() {
       root.appendChild(queryBox);
     });
 
-    afterEach(function () {
+    afterEach(() => {
       root = null;
       endpoint = null;
       searchInterfaceOptions = null;
       queryBox = null;
     });
 
-    it('can initialize search interface and component', function () {
+    it('can initialize search interface and component', () => {
 
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
@@ -42,7 +45,7 @@ export function InitializationTest() {
       expect(Component.get(queryBox) instanceof Querybox).toBe(true);
     });
 
-    it('should not initialize a search interface twice', function () {
+    it('should not initialize a search interface twice', () => {
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         Initialization.initSearchInterface(root, searchInterfaceOptions);
@@ -77,15 +80,15 @@ export function InitializationTest() {
         Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
       expect(Component.get(queryBox) instanceof Querybox).toBe(true);
-      var sBox = <Querybox>Component.get(queryBox);
+      let sBox = <Querybox>Component.get(queryBox);
       expect(sBox.options.enableSearchAsYouType).toBe(true);
       expect(sBox.options.enablePartialMatch).toBe(true);
     });
 
-    it('allows to registerAutoCreateComponent', function () {
-      var dummyCmp: any = jasmine.createSpy('foobar');
+    it('allows to registerAutoCreateComponent', () => {
+      let dummyCmp: any = jasmine.createSpy('foobar');
       dummyCmp.ID = 'FooBar';
-      var dummyElem = document.createElement('div');
+      let dummyElem = document.createElement('div');
       $$(dummyElem).addClass('CoveoFooBar');
       root.appendChild(dummyElem);
 
@@ -96,15 +99,15 @@ export function InitializationTest() {
       expect(dummyCmp).toHaveBeenCalled();
     });
 
-    it('allows to check if isComponentClassIdRegistered', function () {
-      var dummyCmp: any = () => {
+    it('allows to check if isComponentClassIdRegistered', () => {
+      let dummyCmp: any = () => {
       };
       dummyCmp.ID = 'CheckRegistration';
       Initialization.registerAutoCreateComponent(dummyCmp);
       expect(Initialization.isComponentClassIdRegistered('CheckRegistration')).toBe(true);
     });
 
-    it('allow to getListOfRegisteredComponents', function () {
+    it('allow to getListOfRegisteredComponents', () => {
       expect(Initialization.getListOfRegisteredComponents()).toEqual(jasmine.arrayContaining(['Facet', 'Pager']));
     });
 
@@ -112,8 +115,8 @@ export function InitializationTest() {
       expect(Initialization.getRegisteredComponent('Facet')).toBe(Facet);
     });
 
-    it('allow to automaticallyCreateComponentsInside', function () {
-      var env = new Mock.MockEnvironmentBuilder().build();
+    it('allow to automaticallyCreateComponentsInside', () => {
+      let env = new Mock.MockEnvironmentBuilder().build();
       expect(Component.get(queryBox) instanceof Querybox).toBe(false);
       Initialization.automaticallyCreateComponentsInside(root, {
         options: {},
@@ -122,18 +125,52 @@ export function InitializationTest() {
       expect(Component.get(queryBox) instanceof Querybox).toBe(true);
     });
 
+    it('allow to automaticallyCreateComponentInside, as well as childs components', () => {
+      let env = new Mock.MockEnvironmentBuilder().build();
+      let resultList = $$('div', { className: Component.computeCssClassNameForType(ResultList.ID) });
+      $$(queryBox).append(resultList.el);
+      expect((Component.get(resultList.el) instanceof ResultList)).toBe(false);
+      Initialization.automaticallyCreateComponentsInside(root, {
+        options: {},
+        bindings: env
+      });
+      expect(Component.get(resultList.el) instanceof ResultList).toBe(true);
+    });
+
+    it('allow to automaticallyCreateComponentsInside and can ignore some components', () => {
+      let env = new Mock.MockEnvironmentBuilder().build();
+      expect(Component.get(queryBox) instanceof Querybox).toBe(false);
+      Initialization.automaticallyCreateComponentsInside(root, {
+        options: {},
+        bindings: env
+      }, [Querybox.ID]);
+      expect(Component.get(queryBox) instanceof Querybox).toBe(false);
+    });
+
+    it('allow to automaticallyCreateComponentInside can ignore child components', () => {
+      let env = new Mock.MockEnvironmentBuilder().build();
+      let resultList = $$('div', { className: Component.computeCssClassNameForType(ResultList.ID) });
+      $$(queryBox).append(resultList.el);
+      expect((Component.get(resultList.el) instanceof ResultList)).toBe(false);
+      Initialization.automaticallyCreateComponentsInside(root, {
+        options: {},
+        bindings: env
+      }, [Querybox.ID]);
+      expect(Component.get(resultList.el) instanceof ResultList).toBe(false);
+    });
+
     it('allow to monkeyPatchComponentMethod', function () {
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         Initialization.initSearchInterface(root, searchInterfaceOptions);
       });
-      var patch = jasmine.createSpy('patch');
+      let patch = jasmine.createSpy('patch');
       Initialization.monkeyPatchComponentMethod('submit', queryBox, patch);
       (<Querybox>Component.get(queryBox)).submit();
       expect(patch).toHaveBeenCalled();
     });
 
     it('can initialize external components', function () {
-      var external = $$('div', {
+      let external = $$('div', {
         className: 'CoveoPager'
       }).el;
 
@@ -144,8 +181,19 @@ export function InitializationTest() {
       expect(Component.get(external) instanceof Pager).toBe(true);
     });
 
+    it('can initialize external components passed in as a jquery instance', () => {
+      Simulate.addJQuery();
+      let external = $('<div class="CoveoPager"></div>');
+      searchInterfaceOptions['externalComponents'] = [external];
+      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+        Initialization.initSearchInterface(root, searchInterfaceOptions);
+      });
+      expect(Component.get(external.get(0)) instanceof Pager).toBe(true);
+      Simulate.removeJQuery();
+    });
+
     describe('when initializing recommendation interface', function () {
-      var options;
+      let options;
       beforeEach(function () {
         options = {
           Recommendation: {
@@ -155,7 +203,6 @@ export function InitializationTest() {
           },
           SearchInterface: {}
         };
-        Mock.initPageViewScript(null);
       });
 
       afterEach(function () {

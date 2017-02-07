@@ -16,6 +16,9 @@ import {Initialization} from '../Base/Initialization';
 import {l} from '../../strings/Strings';
 import {$$, Dom} from '../../utils/Dom';
 import {ModalBox} from '../../ExternalModulesShim';
+import {
+  analyticsActionCauseList, IAnalyticsSearchAlertsUpdateMeta, IAnalyticsSearchAlertsMeta, IAnalyticsActionCause
+} from '../Analytics/AnalyticsActionListMeta';
 import _ = require('underscore');
 
 export interface ISearchAlertsOptions {
@@ -27,8 +30,12 @@ export interface ISearchAlertsOptions {
 }
 
 /**
- * This component allows the user to manage his search alerts and to follow queries by adding menu items in the {@link Settings} component.
- * By following queries, the user will receive emails informing him when the results of the query have changed.
+ * This component allows the user to manage their search alerts and to follow queries by making the necessary menu
+ * items available under the {@link Settings} component.
+ * A user following a query will receive email notifications when the query results change.
+ *
+ * Certain requirements must be met for this component to work (see
+ * [Deploying Search Alerts on a Coveo JS Search Page](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=248)).
  */
 export class SearchAlerts extends Component {
   static ID = 'SearchAlerts';
@@ -38,29 +45,41 @@ export class SearchAlerts extends Component {
    * @componentOptions
    */
   static options: ISearchAlertsOptions = {
+
     /**
-     * Specifies whether to add a menu item in the {@link Settings} component to allow the user to manage his search alerts.
-     * The default value is true.
+     * Specifies whether to add a menu item in the {@link Settings} component to allow the user to manage their search
+     * alerts.
+     *
+     * Default value is `true`.
      */
     enableManagePanel: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
     /**
-     * Specifies whether to add a menu item in the {@link Settings} component to allow the user to follow the last query.
-     * The default value is true.
+     * Specifies whether to add a menu item in the {@link Settings} component to allow the user to follow the last
+     * query.
+     *
+     * Default value is `true`.
      */
     enableFollowQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
     /**
-     * Specifies the modifiedDateField to use when sending the follow query request.
-     * This default value is undefined.
+     * Specifies the modifiedDateField to use when sending the followQuery subscription request.
+     *
+     * Default value is `undefined`.
      */
     modifiedDateField: ComponentOptions.buildFieldOption(),
+
     /**
      * Specifies whether to display info and error messages when search alerts actions are performed.
-     * This default value is true.
+     *
+     * Default value is `true`.
      */
     enableMessage: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
     /**
-     * Specifies how long to display the search alerts messages (in ms).
-     * This default value is 3000.
+     * Specifies how long to display the search alert messages (in ms).
+     *
+     * Default value is `3000`.
      */
     messageCloseDelay: ComponentOptions.buildNumberOption({ defaultValue: 3000 }),
   };
@@ -68,8 +87,8 @@ export class SearchAlerts extends Component {
   private modal: Coveo.ModalBox.ModalBox;
 
   /**
-   * A reference to a {@link SearchAlertsMessage} component used to display message.
-   * This attribute is set only when the enableMessage option is true.
+   * A reference to a {@link SearchAlertsMessage} component used to display messages.
+   * This attribute is automatically set in the constructor when the enableMessage option value is `true`.
    */
   public message: SearchAlertsMessage;
 
@@ -83,16 +102,18 @@ export class SearchAlerts extends Component {
       this.message = new SearchAlertsMessage(element, { closeDelay: this.options.messageCloseDelay }, this.getBindings());
     }
 
-    this.bind.onRootElement(SettingsEvents.settingsPopulateMenu, (args: ISettingsPopulateMenuArgs) => {
-      if (this.options.enableManagePanel) {
-        args.menuData.push({
-          text: l('SearchAlerts_Panel'),
-          className: 'coveo-subscriptions-panel',
-          onOpen: () => this.openPanel(),
-          onClose: () => this.close()
-        });
-      }
-    });
+    if (!this.queryController.getEndpoint().options.isGuestUser) {
+      this.bind.onRootElement(SettingsEvents.settingsPopulateMenu, (args: ISettingsPopulateMenuArgs) => {
+        if (this.options.enableManagePanel) {
+          args.menuData.push({
+            text: l('SearchAlerts_Panel'),
+            className: 'coveo-subscriptions-panel',
+            onOpen: () => this.openPanel(),
+            onClose: () => this.close()
+          });
+        }
+      });
+    }
 
     let once = false;
 
@@ -127,16 +148,54 @@ export class SearchAlerts extends Component {
   }
 
   /**
-   * Opens the search alerts manage panel.
-   * This panel allows the user to stop following queries or documents.
-   * It also allows the user to change the frequency at which he will receive emails.
+   * Follows the last query.
+   * The user will start receiving email notifications when the query results change.
+   */
+  public followQuery() {
+    let queryBuilder = this.queryController.createQueryBuilder({});
+    let request = this.buildFollowQueryRequest(queryBuilder.build(), this.options);
+
+    this.usageAnalytics.logCustomEvent<IAnalyticsSearchAlertsMeta>(analyticsActionCauseList.searchAlertsFollowQuery, {
+      subscription: request.name
+    }, this.element);
+
+    this.queryController.getEndpoint().follow(request)
+      .then((subscription: ISubscription) => {
+        if (subscription) {
+          let eventArgs: ISearchAlertsEventArgs = {
+            subscription: subscription,
+            dom: this.findQueryBoxDom()
+          };
+          $$(this.root).trigger(SearchAlertsEvents.searchAlertsCreated, eventArgs);
+        } else {
+          this.triggerSearchAlertsFail();
+        }
+      })
+      .catch(() => {
+        this.triggerSearchAlertsFail();
+      });
+  }
+
+  /**
+   * Opens the **Manage Alerts** panel.
+   * This panel allows the user to stop following queries or items.
+   * It also allows the user to specify email notification frequency for each followed query or item.
    */
   public openPanel(): Promise<ISubscription> {
     let title = $$('div');
-    title.el.innerHTML = `<div class='coveo-subscriptions-panel-close'><span></span></div><div class='coveo-subscriptions-panel-title'>${l('SearchAlerts_Panel')}`;
-    $$(title.find('.coveo-subscriptions-panel-close')).on('click', () => {
-      this.close();
-    });
+
+    let close = $$('div', {
+      className: 'coveo-subscriptions-panel-close'
+    }, $$('span', {
+      className: 'coveo-icon'
+    }));
+
+    let titleInfo = $$('div', {
+      className: 'coveo-subscriptions-panel-title'
+    }, l('SearchAlerts_Panel'));
+
+    title.append(close.el);
+    title.append(titleInfo.el);
 
     let container = $$('div');
     container.el.innerHTML = `
@@ -171,10 +230,13 @@ export class SearchAlerts extends Component {
       })
       .finally(() => {
         this.modal = ModalBox.open(container.el, {
-          titleClose: true,
+          titleClose: false,
           overlayClose: true,
-          title: title.text(),
+          title: title.el.outerHTML,
           className: 'coveo-subscriptions-panel'
+        });
+        $$($$(this.modal.modalBox).find('.coveo-subscriptions-panel-close')).on('click', () => {
+          this.close();
         });
       });
   }
@@ -195,6 +257,7 @@ export class SearchAlerts extends Component {
 
   private addSearchAlert(subscription: ISubscription, container: Dom) {
     let frequencies = [
+      { value: 'monthly', label: l('Monthly') },
       { value: 'daily', label: l('Daily') },
       { value: 'monday', label: l('Monday') },
       { value: 'tuesday', label: l('Tuesday') },
@@ -206,7 +269,9 @@ export class SearchAlerts extends Component {
     ];
 
     let context: string;
-    if (subscription.type == SUBSCRIPTION_TYPE.followQuery) {
+    if (subscription.name) {
+      context = _.escape(subscription.name);
+    } else if (subscription.type == SUBSCRIPTION_TYPE.followQuery) {
       let typeConfig = <ISubscriptionQueryRequest>subscription.typeConfig;
       context = _.escape(typeConfig.query.q) || l('EmptyQuery');
     } else {
@@ -219,7 +284,7 @@ export class SearchAlerts extends Component {
     element.el.innerHTML = `
       <td class='coveo-subscriptions-panel-content-type'>${ l('SearchAlerts_Type_' + subscription.type)}</td>
       <td>
-        <div class='coveo-subscriptions-panel-context'>
+        <div class='coveo-subscriptions-panel-context' title='${context}'>
           ${ context}
         </div>
       </td>
@@ -245,14 +310,24 @@ export class SearchAlerts extends Component {
 
     $$(frequencyInput).on('change', (event) => {
       subscription.frequency = frequencyInput.value;
+      this.usageAnalytics.logCustomEvent<IAnalyticsSearchAlertsUpdateMeta>(analyticsActionCauseList.searchAlertsUpdateSubscription, {
+        subscription: subscription.name,
+        frequency: subscription.frequency
+      }, this.element);
       this.updateAndSyncSearchAlert(subscription);
     });
 
     $$(element.find('.coveo-subscriptions-panel-action-unfollow')).on('click', () => {
       element.addClass('coveo-subscription-unfollowed');
+
       this.queryController.getEndpoint()
         .deleteSubscription(subscription)
         .then(() => {
+          if (subscription.type == SUBSCRIPTION_TYPE.followDocument) {
+            this.logAnalyticsEvent(analyticsActionCauseList.searchAlertsUnfollowDocument, subscription);
+          } else if (subscription.type == SUBSCRIPTION_TYPE.followQuery) {
+            this.logAnalyticsEvent(analyticsActionCauseList.searchAlertsUnfollowQuery, subscription);
+          }
           delete subscription.id;
           let eventArgs: ISearchAlertsEventArgs = { subscription: subscription };
           $$(this.root).trigger(SearchAlertsEvents.searchAlertsDeleted, eventArgs);
@@ -264,9 +339,15 @@ export class SearchAlerts extends Component {
 
     $$(element.find('.coveo-subscriptions-panel-action-follow')).on('click', () => {
       element.removeClass('coveo-subscription-unfollowed');
+
       this.queryController.getEndpoint()
         .follow(subscription)
         .then((updatedSearchAlert) => {
+          if (subscription.type == SUBSCRIPTION_TYPE.followDocument) {
+            this.logAnalyticsEvent(analyticsActionCauseList.searchAlertsFollowDocument, subscription);
+          } else if (subscription.type == SUBSCRIPTION_TYPE.followQuery) {
+            this.logAnalyticsEvent(analyticsActionCauseList.searchAlertsFollowQuery, subscription);
+          }
           subscription.id = updatedSearchAlert.id;
           let eventArgs: ISearchAlertsEventArgs = { subscription: subscription };
           $$(this.root).trigger(SearchAlertsEvents.searchAlertsCreated, eventArgs);
@@ -283,31 +364,6 @@ export class SearchAlerts extends Component {
       .then((updated: ISubscription) => _.extend(subscription, updated))
       .catch(() => {
         this.handleSearchAlertsFail();
-      });
-  }
-
-  /**
-   * Follow the last query.
-   * The user will start to receive emails when the results from that query changes.
-   */
-  public followQuery() {
-    let queryBuilder = this.queryController.createQueryBuilder({});
-    let request = SearchAlerts.buildFollowQueryRequest(queryBuilder.build(), this.options);
-
-    this.queryController.getEndpoint().follow(request)
-      .then((subscription: ISubscription) => {
-        if (subscription) {
-          let eventArgs: ISearchAlertsEventArgs = {
-            subscription: subscription,
-            dom: this.findQueryBoxDom()
-          };
-          $$(this.root).trigger(SearchAlertsEvents.searchAlertsCreated, eventArgs);
-        } else {
-          this.triggerSearchAlertsFail();
-        }
-      })
-      .catch(() => {
-        this.triggerSearchAlertsFail();
       });
   }
 
@@ -332,7 +388,7 @@ export class SearchAlerts extends Component {
     return dom;
   }
 
-  private static buildFollowQueryRequest(query: IQuery, options: ISearchAlertsOptions): ISubscriptionRequest {
+  private buildFollowQueryRequest(query: IQuery, options: ISearchAlertsOptions): ISubscriptionRequest {
     let typeConfig: ISubscriptionQueryRequest = {
       query: query
     };
@@ -343,8 +399,15 @@ export class SearchAlerts extends Component {
 
     return {
       type: SUBSCRIPTION_TYPE.followQuery,
-      typeConfig: typeConfig
+      typeConfig: typeConfig,
+      name: this.message.getFollowQueryMessage(query.q)
     };
+  }
+
+  private logAnalyticsEvent(cause: IAnalyticsActionCause, subscription: ISubscription) {
+    this.usageAnalytics.logCustomEvent<IAnalyticsSearchAlertsMeta>(cause, {
+      subscription: subscription.name
+    }, this.element);
   }
 
   static create(element: HTMLElement, options?: ISearchAlertsOptions, root?: HTMLElement): SearchAlerts {

@@ -3,7 +3,7 @@ const _ = require('underscore');
 const minimize = process.argv.indexOf('--minimize') !== -1;
 
 
-let conf = require('./webpack.common.config');
+let conf = require('./webpackConfigFiles/webpack.common.config');
 conf = _.extend(conf, {
   entry: {
     'CoveoJsSearch': ['./src/Index.ts'],

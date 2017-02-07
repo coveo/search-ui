@@ -21,11 +21,13 @@ export interface ITabOptions {
   icon?: string;
   caption?: string;
   sort?: string;
+  layout?: string;
   endpoint?: SearchEndpoint;
   enableDuplicateFiltering?: boolean;
   pipeline?: string;
   maximumAge?: number;
   enableResponsiveMode?: boolean;
+  dropdownHeaderLabel?: string;
 }
 
 /**
@@ -100,6 +102,14 @@ export class Tab extends Component {
      */
     sort: ComponentOptions.buildStringOption(),
     /**
+     * Specifies the default layout to display when this tab is selected (see {@link ResultList.options.layout} and
+     * {@link ResultLayout}).
+     * The value must be one of `list`, `card`, or `table`.
+     * This option is overridden by a URL parameter.
+     * If not specified, the first available layout will be chosen.
+     */
+    layout: ComponentOptions.buildStringOption(),
+    /**
      * Specifies whether the filter expression should be included in the constant part of the query.<br/>
      * The constant part of the query is specially optimized by the index to execute faster, but you must be careful not to include dynamic query expressions otherwise the cache would lose its efficiency.<br/>
      * By default, this option is set to `true`.
@@ -125,13 +135,20 @@ export class Tab extends Component {
     /**
      * Specifies if the responsive mode should be enabled for the tabs. Responsive mode will make the overflowing tabs dissapear and instead
      * be availaible using a dropdown button. Responsive tabs are enabled when tabs overflow or when the width of the search interface
-     * becomes too small. 
-     * 
+     * becomes too small.
+     *
      * Disabling reponsive mode for one tab will disable it for all tabs.
      * Therefore, this options only needs to be set on one tab to be effective.
      * The default value is `true`.
      */
-    enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true })
+    enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
+    /**
+     * Specifies the label of the button that allows to show the hidden tabs when in responsive mode. If it is specified more than once, the
+     * first occurence of the option will be used.
+     * The default value is "More". 
+     */
+    dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption()
 
   };
 
@@ -165,7 +182,8 @@ export class Tab extends Component {
     if (!this.disabled) {
       this.queryStateModel.setMultiple({
         t: this.options.id,
-        sort: this.options.sort || QueryStateModel.defaultAttributes.sort
+        sort: this.options.sort || QueryStateModel.defaultAttributes.sort,
+        layout: this.options.layout
       });
       this.usageAnalytics.logSearchEvent<IAnalyticsInterfaceChange>(analyticsActionCauseList.interfaceChange, { interfaceChangeTo: this.options.id });
       this.queryController.executeQuery();

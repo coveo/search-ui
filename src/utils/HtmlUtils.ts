@@ -60,7 +60,7 @@ export class AnchorUtils {
       text = options.text;
       options.text = undefined;
     }
-    return `<a href='${href} ${HTMLUtils.buildAttributeString(options)} '>${text}</a>`;
+    return `<a href='${href}' ${HTMLUtils.buildAttributeString(options)}>${text}</a>`;
   }
 }
 

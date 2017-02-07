@@ -12,12 +12,6 @@
   td {
     width: 99%;
     padding: 10px 20px 0px 0px;
-    .coveo-clickable {
-      @include clickable();
-      &.coveo-selected {
-        font-weight: bold;
-      }
-    }
   }
 
   th {
@@ -30,6 +24,12 @@
   border-collapse: separate;
   margin-bottom: 20px;
 
+  .coveo-clickable {
+    @include clickable();
+    &.coveo-selected {
+      font-weight: bold;
+    }
+  }
 }
 
 .coveo-field-table-toggle {
@@ -79,5 +79,27 @@
     &.coveo-selected {
       font-weight: bold;
     }
+  }
+  &.coveo-with-label {
+    display: inline-block;
+  }
+  .coveo-field-caption {
+    color: $color-blueish-gray;
+    margin-right: 10px;
+  }
+}
+
+.coveo-card-overlay {
+  .CoveoFieldTable {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 10px 0 0;
+    th {
+      color: $color-light-grey;
+    }
+  }
+  .coveo-clickable {
+    @include clickableVibrant($dark-background: true);
   }
 }

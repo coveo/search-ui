@@ -3,10 +3,9 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, height=device-height" >
-    <title>Recommendation</title> 
+    <title>Recommendation</title>
     <link rel="stylesheet" href="./css/CoveoFullSearchNewDesign.css"/>
     <script src="js/CoveoJsSearch.js"></script>
-    <script src="js/CoveoJsSearch.Dependencies.js"></script>
     <script src="js/templates/templatesNew.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function(){
@@ -48,6 +47,9 @@
               <span class="CoveoQuerySummary"></span>
               <span class="CoveoQueryDuration"></span>
             </div>
+            <div class="coveo-result-layout-section">
+              <span class="CoveoResultLayout"></span>
+            </div>
             <div class="coveo-sort-section">
               <span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span>
               <span class="CoveoSort" data-sort-criteria="date descending,date ascending" data-caption="Date"></span>
@@ -56,17 +58,17 @@
           <div class="CoveoHiddenQuery"></div>
           <div class="CoveoDidYouMean"></div>
           <div class="CoveoErrorReport"></div>
-          <div class="CoveoResultList" data-wait-animation="fade" data-auto-select-fields-to-include="true">
-          </div>
+          <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
+          <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
           <div class="CoveoPager"></div>
           <div class="CoveoResultsPerPage"></div>
         </div>
         <div class="coveo-recommendation-column">
-          <div id="recommendationYoutube" class="CoveoRecommendation" data-design="new" data-results-per-page="5"> 
+          <div id="recommendationYoutube" class="CoveoRecommendation" data-design="new" data-results-per-page="5">
             <div class="CoveoAnalytics"></div>
             <script class="CoveoRecommendationQuery" type="text/x-query-generic">@sysfiletype=YoutubeVideo</script>
             <div class="coveo-recommendation-header">
-              <div class="coveo-recommendation-title">Videos</div>
+              <div class="coveo-recommendation-title">Recommendations</div>
             </div>
             <div class="coveo-recommendation-body">
               <div class="CoveoResultList"></div>

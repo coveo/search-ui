@@ -9,8 +9,20 @@ import _ = require('underscore');
 // \u2011: http://graphemica.com/%E2%80%91
 let nonWordBoundary = '[\\.\\-\\u2011\\s~=,.\\|\\/:\'`’;_()!?]';
 let regexStart = '(' + nonWordBoundary + '|^)(';
+
+/**
+ * The possible options when highlighting a stream.
+ */
 export interface IStreamHighlightOptions {
+  /**
+   * The css class that the highlight will generate.
+   * Defaults to `coveo-highlight`.
+   */
   cssClass?: string;
+  /**
+   * The regex flags that should be applied to generate the highlighting.
+   * Defaults to `gi`.
+   */
   regexFlags?: string;
 }
 
@@ -24,10 +36,15 @@ export class StreamHighlightUtils {
   static highlightStreamHTML(stream: string, termsToHighlight: { [originalTerm: string]: string[] }, phrasesToHighlight: { [phrase: string]: { [originalTerm: string]: string[] } }, options?: IStreamHighlightOptions) {
     let opts = new DefaultStreamHighlightOptions().merge(options);
     let container = createStreamHTMLContainer(stream);
-    _.each($$(container).findAll('*'), (elem: HTMLElement, i: number) => {
-      let text = $$(elem).text();
-      elem.innerHTML = HighlightUtils.highlightString(text, getRestHighlightsForAllTerms(text, termsToHighlight, phrasesToHighlight, opts), [], opts.cssClass);
-    });
+    let allElements = $$(container).findAll('*');
+    if (allElements.length > 0) {
+      _.each(allElements, (elem: HTMLElement, i: number) => {
+        let text = $$(elem).text();
+        elem.innerHTML = HighlightUtils.highlightString(text, getRestHighlightsForAllTerms(text, termsToHighlight, phrasesToHighlight, opts), [], opts.cssClass);
+      });
+    } else {
+      return StreamHighlightUtils.highlightStreamText(stream, termsToHighlight, phrasesToHighlight, options);
+    }
     return container.innerHTML;
   }
 

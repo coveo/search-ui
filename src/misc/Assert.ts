@@ -88,8 +88,9 @@ export class Assert {
   }
 }
 
-export class PreconditionFailedException {
+export class PreconditionFailedException extends Error {
   constructor(public message: string) {
+    super(message);
   }
 
   toString() {

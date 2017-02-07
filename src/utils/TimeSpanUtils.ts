@@ -1,6 +1,12 @@
 import {Assert} from '../misc/Assert';
 
+/**
+ * The possible options to use when calculating a timespan
+ */
 export interface ITimeSpanUtilsOptions {
+  /**
+   * Specify if the given timespan is in seconds or milliseconds
+   */
   isMilliseconds: boolean;
 }
 

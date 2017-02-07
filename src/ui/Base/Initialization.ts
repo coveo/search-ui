@@ -14,6 +14,8 @@ import {ComponentStateModel} from '../../models/ComponentStateModel';
 import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
 import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
 import {BaseComponent} from '../Base/BaseComponent';
+import {JQueryUtils} from '../../utils/JQueryutils';
+import {IJQuery} from './CoveoJQuery';
 import _ = require('underscore');
 
 /**
@@ -150,7 +152,10 @@ export class Initialization {
 
     if (searchInterface.options.autoTriggerQuery) {
       Initialization.logFirstQueryCause(searchInterface);
-      (<QueryController>Component.get(element, QueryController)).executeQuery();
+      (<QueryController>Component.get(element, QueryController)).executeQuery({
+        logInActionsHistory: Coveo['Recommendation'] && searchInterface instanceof Coveo['Recommendation'],
+        isFirstQuery: true
+      });
     }
   }
 
@@ -164,7 +169,7 @@ export class Initialization {
     let searchInterface = new SearchInterface(element, options.SearchInterface, options.Analytics);
     searchInterface.options.originalOptionsObject = options;
     let initParameters: IInitializationParameters = { options: options, bindings: searchInterface.getBindings() };
-    Initialization.automaticallyCreateComponentsInside(element, initParameters);
+    Initialization.automaticallyCreateComponentsInside(element, initParameters, ['Recommendation']);
   }
 
   /**
@@ -207,6 +212,11 @@ export class Initialization {
     options = Initialization.resolveDefaultOptions(element, options);
     // Since a recommendation interface inherits from a search interface, we need to merge those if passed on init
     let optionsForRecommendation = _.extend({}, options.SearchInterface, options.Recommendation);
+    // If there is a main search interface, modify the loading animation for the recommendation interface to a "noop" element
+    // We don't want 2 animation overlapping
+    if (optionsForRecommendation.mainSearchInterface) {
+      optionsForRecommendation.firstLoadingAnimation = $$('span').el;
+    }
     let recommendation = new window['Coveo']['Recommendation'](element, optionsForRecommendation, options.Analytics);
     recommendation.options.originalOptionsObject = options;
     let initParameters: IInitializationParameters = { options: options, bindings: recommendation.getBindings() };
@@ -224,12 +234,26 @@ export class Initialization {
 
     let codeToExecute: { (): void }[] = [];
 
+    let htmlElementsToIgnore: HTMLElement[] = [];
+    // Scan for elements to ignore which can be a container component (with other component inside)
+    // When a component is ignored, all it's children component should be ignored too.
+    // Add them to the array of html elements that should be skipped.
+    _.each(ignore, (toIgnore) => {
+      let rootToIgnore = $$(element).find(`.${Component.computeCssClassNameForType(toIgnore)}`);
+      if (rootToIgnore) {
+        let childsElementsToIgnore = $$(rootToIgnore).findAll('*');
+        htmlElementsToIgnore = htmlElementsToIgnore.concat(childsElementsToIgnore);
+      }
+    });
+
     for (let componentClassId in Initialization.autoCreateComponents) {
       if (!_.contains(ignore, componentClassId)) {
         let componentClass = Initialization.autoCreateComponents[componentClassId];
         let classname = Component.computeCssClassName(componentClass);
         let elements = $$(element).findAll('.' + classname);
-        if ($$(element).hasClass(classname)) {
+        // From all the component we found which match the current className, remove those that should be ignored
+        elements = _.difference(elements, htmlElementsToIgnore);
+        if ($$(element).hasClass(classname) && !_.contains(htmlElementsToIgnore, element)) {
           elements.push(element);
         }
         if (elements.length != 0) {
@@ -386,6 +410,10 @@ export class Initialization {
     }
   }
 
+  public static isSearchFromLink(searchInterface: SearchInterface) {
+    return Utils.isNonEmptyString(searchInterface.getBindings().queryStateModel.get('q'));
+  }
+
   private static isThereASingleComponentBoundToThisElement(element: HTMLElement): boolean {
     Assert.exists(element);
     return Utils.exists(Component.get(element));
@@ -406,13 +434,14 @@ export class Initialization {
     }
   }
 
+
   private static logFirstQueryCause(searchInterface: SearchInterface) {
     let firstQueryCause = HashUtils.getValue('firstQueryCause', HashUtils.getHash());
     if (firstQueryCause != null) {
       let meta = HashUtils.getValue('firstQueryMeta', HashUtils.getHash()) || {};
       searchInterface.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList[firstQueryCause], meta);
     } else {
-      if (Utils.isNonEmptyString(searchInterface.getBindings().queryStateModel.get('q'))) {
+      if (Initialization.isSearchFromLink(searchInterface)) {
         searchInterface.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchFromLink, {});
       } else {
         searchInterface.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.interfaceLoad, {});
@@ -461,10 +490,12 @@ export class Initialization {
           root: element
         }
       };
-      _.each(options['externalComponents'], (externalComponent: HTMLElement) => {
+      _.each(options['externalComponents'], (externalComponent: HTMLElement | IJQuery) => {
         let elementToInstantiate = externalComponent;
         if (Utils.isHtmlElement(elementToInstantiate)) {
-          Initialization.automaticallyCreateComponentsInside(elementToInstantiate, initParameters);
+          Initialization.automaticallyCreateComponentsInside(<HTMLElement>elementToInstantiate, initParameters);
+        } else if (JQueryUtils.isInstanceOfJQuery(elementToInstantiate)) {
+          Initialization.automaticallyCreateComponentsInside(<HTMLElement>((<any>elementToInstantiate).get(0)), initParameters);
         }
       });
     }

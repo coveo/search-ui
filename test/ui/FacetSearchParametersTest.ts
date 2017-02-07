@@ -124,13 +124,15 @@ export function FacetSearchParametersTest() {
         spy.and.returnValue(builder.build());
 
         mockFacet.facetQueryController = <FacetQueryController>{};
-        mockFacet.facetQueryController.expressionToUseForFacetSearch = '@asdf';
-        mockFacet.facetQueryController.constantExpressionToUseForFacetSearch = '@qwerty';
+        mockFacet.facetQueryController.basicExpressionToUseForFacetSearch = '@basic';
+        mockFacet.facetQueryController.advancedExpressionToUseForFacetSearch = '@advanced';
+        mockFacet.facetQueryController.constantExpressionToUseForFacetSearch = '@constant';
 
         var params = new FacetSearchParameters(mockFacet);
         expect(params.getQuery().partialMatch).toBe(true);
-        expect(params.getQuery().q).toBe('@asdf');
-        expect(params.getQuery().cq).toBe('@qwerty');
+        expect(params.getQuery().q).toBe('@basic');
+        expect(params.getQuery().aq).toBe('@advanced');
+        expect(params.getQuery().cq).toBe('@constant');
       });
 
       it('should use the same group by parameters as the facet', () => {

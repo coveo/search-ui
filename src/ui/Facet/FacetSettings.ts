@@ -77,8 +77,10 @@ export class FacetSettings extends FacetSort {
       this.saveStateSection = this.buildSaveStateSection();
       this.clearStateSection = this.buildClearStateSection();
     }
-    this.hideSection = this.buildHideSection();
-    this.showSection = this.buildShowSection();
+    if (this.facet.options.enableCollapse) {
+      this.hideSection = this.buildHideSection();
+      this.showSection = this.buildShowSection();
+    }
 
     var appendCommon = () => {
       this.appendIfNotUndefined(this.saveStateSection);
@@ -160,8 +162,10 @@ export class FacetSettings extends FacetSort {
       this.facet.root,
       this.getPopupAlignment(), this.facet.root);
 
-    $$(this.hideSection).toggle(!$$(this.facet.element).hasClass('coveo-facet-collapsed'));
-    $$(this.showSection).toggle($$(this.facet.element).hasClass('coveo-facet-collapsed'));
+    if (this.hideSection && this.showSection) {
+      $$(this.hideSection).toggle(!$$(this.facet.element).hasClass('coveo-facet-collapsed'));
+      $$(this.showSection).toggle($$(this.facet.element).hasClass('coveo-facet-collapsed'));
+    }
 
     if (this.facet.options.enableSettingsFacetState) {
       $$(this.clearStateSection).toggle(!Utils.isNullOrUndefined(this.facetStateLocalStorage.load()));

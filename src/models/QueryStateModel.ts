@@ -10,6 +10,7 @@ export const QUERY_STATE_ATTRIBUTES = {
   T: 't',
   TG: 'tg',
   SORT: 'sort',
+  LAYOUT: 'layout',
   HD: 'hd',
   HQ: 'hq',
   QUICKVIEW: 'quickview'
@@ -47,6 +48,7 @@ export class QueryStateModel extends Model {
     hd: '',
     hq: '',
     sort: '',
+    layout: 'list',
     tg: '',
     quickview: ''
   };
@@ -56,6 +58,7 @@ export class QueryStateModel extends Model {
     first: 'first',
     t: 't',
     sort: 'sort',
+    layout: 'layout',
     hd: 'hd',
     hq: 'hq',
     tg: 'tg',
@@ -91,7 +94,7 @@ export class QueryStateModel extends Model {
    */
   public atLeastOneFacetIsActive() {
     return !_.isUndefined(_.find(this.attributes, (value, key: any) => {
-      return key.indexOf('f:') == 0 && Utils.isNonEmptyArray(value) && key.indexOf(':range') < 0;
+      return key.indexOf('f:') == 0 && Utils.isNonEmptyArray(value);
     }));
   }
 
@@ -102,6 +105,7 @@ export class QueryStateModel extends Model {
 
   private validate(attribute: string, value: any) {
     if (attribute == QueryStateModel.attributesEnum.first) {
+      Assert.isNumber(value);
       Assert.isLargerOrEqualsThan(0, value);
     }
   }
