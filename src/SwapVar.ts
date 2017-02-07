@@ -1,4 +1,5 @@
 import {CoreHelpers} from './ui/Templates/CoreHelpers';
+import _ = require('underscore');
 
 // Webpack output a library target with a temporary name.
 // This is to allow end user to put CoveoJsSearch.Dependencie.js before or after the main CoveoJsSearch.js, without breaking

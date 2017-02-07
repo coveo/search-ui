@@ -4,6 +4,7 @@ import {IComponentBindings} from '../Base/ComponentBindings';
 import {Initialization, IInitializationParameters} from '../Base/Initialization';
 import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
 import {IQueryResult} from '../../rest/QueryResult';
+import _ = require('underscore');
 
 export interface IBackdropOptions {
   imageUrl?: string;

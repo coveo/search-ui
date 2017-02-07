@@ -106,7 +106,7 @@ export class FacetSlider extends Component {
      * That ID needs to be unique on the page.
      */
     id: ComponentOptions.buildStringOption({
-      postProcessing: (value, options: IFacetSliderOptions) => value || options.field
+      postProcessing: (value, options: IFacetSliderOptions) => value || <string>options.field
     }),
     /**
      * Specifies the format used to display values if they are dates.<br/>

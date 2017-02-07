@@ -224,7 +224,7 @@ class ValueRow extends FieldValue {
   static parent = FieldValue;
   private valueContainer: HTMLElement;
 
-  constructor(public element: HTMLElement, public options?: IValueRowOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
+  constructor(public element: HTMLElement, public options: IValueRowOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, options, bindings, result, ValueRow.ID);
     this.options = ComponentOptions.initComponentOptions(element, ValueRow, options);
 

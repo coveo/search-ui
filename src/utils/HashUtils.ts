@@ -184,7 +184,7 @@ export class HashUtils {
     } else if (_.isObject(val)) {
       encodedValue = HashUtils.encodeObject(val);
     } else if (_.isNumber(val) || _.isBoolean(val)) {
-      encodedValue = encodeURIComponent(val);
+      encodedValue = encodeURIComponent(val.toString());
     } else {
       encodedValue = '"' + encodeURIComponent(val) + '"';
     }

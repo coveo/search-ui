@@ -166,7 +166,7 @@ export class Facet extends Component {
      * Default value is the {@link Facet.options.field} option value.
      */
     id: ComponentOptions.buildStringOption({
-      postProcessing: (value, options: IFacetOptions) => value || options.field
+      postProcessing: (value, options: IFacetOptions) => value || <string>options.field
     }),
 
     /**

@@ -89,7 +89,7 @@ export class Searchbox extends Component {
 Searchbox.options = _.extend({}, Searchbox.options, Omnibox.options, Querybox.options);
 
 // Only parse omnibox option if omnibox is enabled
-_.each(Searchbox.options, (value, key: string) => {
+_.each(<any>Searchbox.options, (value, key: string) => {
   if (key in Omnibox.options && !(key in Querybox.options)) {
     Searchbox.options[key] = _.extend({ depend: 'enableOmnibox' }, value);
   }
