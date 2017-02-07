@@ -1,13 +1,13 @@
-import {Omnibox} from '../../src/ui/Omnibox/Omnibox';
+import { Omnibox } from '../../src/ui/Omnibox/Omnibox';
 import * as Mock from '../MockEnvironment';
-import {RevealQuerySuggestAddon} from '../../src/ui/Omnibox/RevealQuerySuggestAddon';
-import {SearchEndpoint} from '../../src/rest/SearchEndpoint';
-import {MagicBox} from '../../src/ExternalModulesShim';
-import {ComponentOptionsModel} from '../../src/models/ComponentOptionsModel';
-import {SearchInterface} from '../../src/ui/SearchInterface/SearchInterface';
-import {QueryController} from '../../src/controllers/QueryController';
-import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
-import {Simulate} from '../Simulate';
+import { RevealQuerySuggestAddon } from '../../src/ui/Omnibox/RevealQuerySuggestAddon';
+import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
+import { MagicBox } from '../../src/ExternalModulesShim';
+import { ComponentOptionsModel } from '../../src/models/ComponentOptionsModel';
+import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
+import { QueryController } from '../../src/controllers/QueryController';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { Simulate } from '../Simulate';
 
 export function RevealQuerySuggestAddonTest() {
   describe('RevealQuerySuggest', () => {
@@ -94,7 +94,7 @@ export function RevealQuerySuggestAddonTest() {
 
       // PhantomJS faulty Promise implementation causes issues here
       if (!Simulate.isPhantomJs()) {
-        describe('with a cache', ()=> {
+        describe('with a cache', () => {
           it('should cache the result', (done) => {
             let revealQuerySuggest = new RevealQuerySuggestAddon(omnibox);
             let firstPromise = new Promise((resolve, reject) => {
@@ -145,18 +145,18 @@ export function RevealQuerySuggestAddonTest() {
                 'score': 1012.5762345619406,
                 'highlighted': '{pr}[operly]'
               }, {
-                  'expression': 'properly \'didn\'t',
-                  'score': 12.576234561940641,
-                  'highlighted': '{pr}[operly] [\'didn\'t]'
-                }, {
-                  'expression': 'pointers',
-                  'score': 10.783334340677321,
-                  'highlighted': '(pointers)'
-                }, {
-                  'expression': 'pages',
-                  'score': 10.485485771662475,
-                  'highlighted': '(pages)'
-                }]
+                'expression': 'properly \'didn\'t',
+                'score': 12.576234561940641,
+                'highlighted': '{pr}[operly] [\'didn\'t]'
+              }, {
+                'expression': 'pointers',
+                'score': 10.783334340677321,
+                'highlighted': '(pointers)'
+              }, {
+                'expression': 'pages',
+                'score': 10.485485771662475,
+                'highlighted': '(pages)'
+              }]
             });
           });
           (<any>endpoint).getRevealQuerySuggest.and.returnValue(results);
