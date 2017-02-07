@@ -14,6 +14,7 @@ import {BaseComponent} from '../src/ui/Base/BaseComponent';
 import {NoopAnalyticsClient} from '../src/ui/Analytics/NoopAnalyticsClient';
 import {SearchEndpoint} from '../src/rest/SearchEndpoint';
 import {QueryController} from '../src/controllers/QueryController';
+import {QueryBuilder} from '../src/ui/Base/QueryBuilder';
 
 export interface IMockEnvironment extends IComponentBindings {
   root: HTMLElement;
@@ -224,6 +225,7 @@ export function mockQueryController(): QueryController {
   spy.options = {};
   spy.options.resultsPerPage = 10;
   spy.fetchMore.and.returnValue(new Promise((resolve, reject) => { }));
+  spy.getLastQuery.and.returnValue(new QueryBuilder().build());
   return m;
 }
 

@@ -379,3 +379,9 @@ StringUtilsTests();
 
 import {CoreHelperTest} from './ui/CoreHelpersTest';
 CoreHelperTest();
+
+import {PipelineContextText} from './ui/PipelineContextTest';
+PipelineContextText();
+
+import {RevealQuerySuggestAddonTest} from './ui/RevealQuerySuggestAddonTest';
+RevealQuerySuggestAddonTest();
