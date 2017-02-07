@@ -7967,8 +7967,8 @@ var playground =
 
 	"use strict";
 	exports.version = {
-	    'lib': '1.2126.1-beta',
-	    'product': '1.2126.1-beta',
+	    'lib': '1.2126.2-beta',
+	    'product': '1.2126.2-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -10445,7 +10445,7 @@ var playground =
 	            else if (_.isObject(valueToEncode) && Utils_1.Utils.isNonEmptyArray(_.keys(valueToEncode))) {
 	                encodedValue = HashUtils.encodeObject(valueToEncode);
 	            }
-	            else {
+	            else if (!Utils_1.Utils.isNullOrUndefined(valueToEncode)) {
 	                encodedValue = encodeURIComponent(valueToEncode.toString());
 	            }
 	            if (encodedValue != '') {
