@@ -6,25 +6,18 @@
     "experimentalDecorators": true,
     "outDir": "./bin",
     "sourceMap": true,
-    "strictNullChecks": false,
-    "types": [
-      "underscore",
-      "globalize",
-      "pikaday",
-      "d3",
-      "d3-scale",
-      "es6-promise",
-      "coveoanalytics",
-      "magic-box",
-      "jstimezonedetect",
-      "fastclick",
-      "modal-box"
-    ],
+    "forceConsistentCasingInFileNames": true,
     "typeRoots": [
       "lib",
       "node_modules/@types"
     ]
   },
+  "lib": [
+    "DOM",
+    "ES5",
+    "ScriptHost",
+    "ES2015.Promise"
+  ],
   "include": [
     "test/**/*.ts"
   ]

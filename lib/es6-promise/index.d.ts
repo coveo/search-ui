@@ -45,7 +45,6 @@ declare class Promise<T> implements Thenable<T> {
 
   fail<U>(onFulfilled?: (value: T) => U | Thenable<U>, onRejected?: (error: any) => U | Thenable<U>): Promise<U>;
 
-;
 }
 
 declare module Promise {
