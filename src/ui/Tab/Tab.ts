@@ -196,8 +196,8 @@ export class Tab extends Component {
      * > It is also possible to set a maximum cache age for the entire {@link SearchInterface} rather than for a single
      * > Tab (see {@link SearchInterface.options.maximumAge}).
      *
-     * Default value is `undefined` and the Coveo Search API determines the maximum cache age. This typically takes 15
-     * minutes.
+     * Default value is `undefined` and the Coveo Search API determines the maximum cache age. This is typically
+     * equivalent to 30 minutes (see [Query Parameters - maximumAge](https://developers.coveo.com/display/SearchREST/Query+Parameters#QueryParameters-maximumAge)).
      */
     maximumAge: ComponentOptions.buildNumberOption(),
 
