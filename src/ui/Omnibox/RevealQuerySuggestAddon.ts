@@ -75,6 +75,7 @@ export class RevealQuerySuggestAddon {
     let searchHub = this.omnibox.getBindings().componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchHub);
     let pipeline = this.omnibox.getBindings().searchInterface.options.pipeline;
     let enableWordCompletion = this.omnibox.options.enableSearchAsYouType;
+    let context = this.omnibox.getBindings().queryController.getLastQuery().context;
 
     if (language) {
       payload.language = language;
@@ -86,6 +87,10 @@ export class RevealQuerySuggestAddon {
 
     if (pipeline) {
       payload.pipeline = pipeline;
+    }
+
+    if (context) {
+      payload.context = context;
     }
 
     payload.enableWordCompletion = enableWordCompletion;

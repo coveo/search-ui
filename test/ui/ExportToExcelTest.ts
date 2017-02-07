@@ -44,16 +44,6 @@ export function ExportToExcelTest() {
       });
     });
 
-    it('download should do nothing if no query was made', function () {
-      var exportToExcelEventSpy = jasmine.createSpy('exportToExcelEventSpy');
-      var windowLocationReplaceSpy = jasmine.createSpy('windowLocationReplaceSpy');
-      test.env.usageAnalytics.logCustomEvent = exportToExcelEventSpy;
-      test.cmp._window.location.replace = windowLocationReplaceSpy;
-      test.cmp.download();
-      expect(exportToExcelEventSpy).not.toHaveBeenCalled();
-      expect(windowLocationReplaceSpy).not.toHaveBeenCalled();
-    });
-
     describe('when query was made', function () {
       beforeEach(function () {
         test.env.queryController.getLastQuery = () => new QueryBuilder().build();
