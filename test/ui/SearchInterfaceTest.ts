@@ -1,20 +1,20 @@
 import * as Mock from '../MockEnvironment';
-import {SearchInterface} from '../../src/ui/SearchInterface/SearchInterface';
-import {NoopAnalyticsClient} from '../../src/ui/Analytics/NoopAnalyticsClient';
-import {QueryController} from '../../src/controllers/QueryController';
-import {QueryStateModel} from '../../src/models/QueryStateModel';
-import {ComponentOptionsModel} from '../../src/models/ComponentOptionsModel';
-import {ComponentStateModel} from '../../src/models/ComponentStateModel';
-import {Querybox} from '../../src/ui/Querybox/Querybox';
-import {LiveAnalyticsClient} from '../../src/ui/Analytics/LiveAnalyticsClient';
-import {$$} from '../../src/utils/Dom';
-import {QueryEvents} from '../../src/events/QueryEvents';
-import {Component} from '../../src/ui/Base/Component';
-import {HistoryController} from '../../src/controllers/HistoryController';
-import {LocalStorageHistoryController} from '../../src/controllers/LocalStorageHistoryController';
-import {Simulate} from '../Simulate';
-import {Debug} from '../../src/ui/Debug/Debug';
-import {FakeResults} from '../Fake';
+import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
+import { NoopAnalyticsClient } from '../../src/ui/Analytics/NoopAnalyticsClient';
+import { QueryController } from '../../src/controllers/QueryController';
+import { QueryStateModel } from '../../src/models/QueryStateModel';
+import { ComponentOptionsModel } from '../../src/models/ComponentOptionsModel';
+import { ComponentStateModel } from '../../src/models/ComponentStateModel';
+import { Querybox } from '../../src/ui/Querybox/Querybox';
+import { LiveAnalyticsClient } from '../../src/ui/Analytics/LiveAnalyticsClient';
+import { $$ } from '../../src/utils/Dom';
+import { QueryEvents } from '../../src/events/QueryEvents';
+import { Component } from '../../src/ui/Base/Component';
+import { HistoryController } from '../../src/controllers/HistoryController';
+import { LocalStorageHistoryController } from '../../src/controllers/LocalStorageHistoryController';
+import { Simulate } from '../Simulate';
+import { Debug } from '../../src/ui/Debug/Debug';
+import { FakeResults } from '../Fake';
 import _ = require('underscore');
 
 export function SearchInterfaceTest() {

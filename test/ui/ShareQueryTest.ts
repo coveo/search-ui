@@ -1,10 +1,10 @@
 import * as Mock from '../MockEnvironment';
-import {ShareQuery} from '../../src/ui/ShareQuery/ShareQuery';
-import {Simulate} from '../Simulate';
-import {ISimulateQueryData} from '../Simulate';
-import {IQueryResults} from '../../src/rest/QueryResults';
-import {IQuery} from '../../src/rest/Query';
-import {$$} from '../../src/utils/Dom';
+import { ShareQuery } from '../../src/ui/ShareQuery/ShareQuery';
+import { Simulate } from '../Simulate';
+import { ISimulateQueryData } from '../Simulate';
+import { IQueryResults } from '../../src/rest/QueryResults';
+import { IQuery } from '../../src/rest/Query';
+import { $$ } from '../../src/utils/Dom';
 
 export function ShareQueryTest() {
   describe('ShareQuery', function () {

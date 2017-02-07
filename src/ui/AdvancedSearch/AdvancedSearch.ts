@@ -1,18 +1,18 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {AdvancedSearchEvents} from '../../events/AdvancedSearchEvents';
-import {SettingsEvents} from '../../events/SettingsEvents';
-import {ISettingsPopulateMenuArgs} from '../Settings/Settings';
-import {Initialization} from '../Base/Initialization';
-import {l} from '../../strings/Strings';
-import {$$} from '../../utils/Dom';
-import {IAdvancedSearchInput, IAdvancedSearchPrebuiltInput, IAdvancedSearchSection, IExternalAdvancedSearchSection} from './AdvancedSearchInput';
-import {AdvancedSearchInputFactory} from './AdvancedSearchInputFactory';
-import {IQueryOptions} from '../../controllers/QueryController';
-import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {QuerySummaryEvents} from '../../events/QuerySummaryEvents';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { AdvancedSearchEvents } from '../../events/AdvancedSearchEvents';
+import { SettingsEvents } from '../../events/SettingsEvents';
+import { ISettingsPopulateMenuArgs } from '../Settings/Settings';
+import { Initialization } from '../Base/Initialization';
+import { l } from '../../strings/Strings';
+import { $$ } from '../../utils/Dom';
+import { IAdvancedSearchInput, IAdvancedSearchPrebuiltInput, IAdvancedSearchSection, IExternalAdvancedSearchSection } from './AdvancedSearchInput';
+import { AdvancedSearchInputFactory } from './AdvancedSearchInputFactory';
+import { IQueryOptions } from '../../controllers/QueryController';
+import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { QuerySummaryEvents } from '../../events/QuerySummaryEvents';
 import _ = require('underscore');
 
 

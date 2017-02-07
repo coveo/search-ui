@@ -1,18 +1,18 @@
-import {IDuringQueryEventArgs, QueryEvents} from '../../events/QueryEvents';
-import {IQueryResults} from '../../rest/QueryResults';
-import {IQuery} from '../../rest/Query';
-import {ISearchEvent} from '../../rest/SearchEvent';
-import {AnalyticsEndpoint} from '../../rest/AnalyticsEndpoint';
-import {Assert} from '../../misc/Assert';
-import {$$} from '../../utils/Dom';
-import {SearchInterface} from '../SearchInterface/SearchInterface';
-import {Component} from '../Base/Component';
-import {QueryController} from '../../controllers/QueryController';
-import {Defer} from '../../misc/Defer';
-import {APIAnalyticsBuilder} from '../../rest/APIAnalyticsBuilder';
-import {IAnalyticsSearchEventsArgs, AnalyticsEvents} from '../../events/AnalyticsEvents';
-import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {QueryStateModel} from '../../models/QueryStateModel';
+import { IDuringQueryEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { IQueryResults } from '../../rest/QueryResults';
+import { IQuery } from '../../rest/Query';
+import { ISearchEvent } from '../../rest/SearchEvent';
+import { AnalyticsEndpoint } from '../../rest/AnalyticsEndpoint';
+import { Assert } from '../../misc/Assert';
+import { $$ } from '../../utils/Dom';
+import { SearchInterface } from '../SearchInterface/SearchInterface';
+import { Component } from '../Base/Component';
+import { QueryController } from '../../controllers/QueryController';
+import { Defer } from '../../misc/Defer';
+import { APIAnalyticsBuilder } from '../../rest/APIAnalyticsBuilder';
+import { IAnalyticsSearchEventsArgs, AnalyticsEvents } from '../../events/AnalyticsEvents';
+import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { QueryStateModel } from '../../models/QueryStateModel';
 import _ = require('underscore');
 
 export class PendingSearchEvent {

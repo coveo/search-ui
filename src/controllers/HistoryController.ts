@@ -1,12 +1,12 @@
-import {Assert} from '../misc/Assert';
-import {QueryController} from '../controllers/QueryController';
-import {Model} from '../models/Model';
-import {InitializationEvents} from '../events/InitializationEvents';
-import {$$} from '../utils/Dom';
-import {HashUtils} from '../utils/HashUtils';
-import {Defer} from '../misc/Defer';
-import {RootComponent} from '../ui/Base/RootComponent';
-import {Utils} from '../utils/Utils';
+import { Assert } from '../misc/Assert';
+import { QueryController } from '../controllers/QueryController';
+import { Model } from '../models/Model';
+import { InitializationEvents } from '../events/InitializationEvents';
+import { $$ } from '../utils/Dom';
+import { HashUtils } from '../utils/HashUtils';
+import { Defer } from '../misc/Defer';
+import { RootComponent } from '../ui/Base/RootComponent';
+import { Utils } from '../utils/Utils';
 import _ = require('underscore');
 
 /**

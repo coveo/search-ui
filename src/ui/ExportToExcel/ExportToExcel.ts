@@ -1,11 +1,11 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {SettingsEvents} from '../../events/SettingsEvents';
-import {ISettingsPopulateMenuArgs} from '../Settings/Settings';
-import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {Initialization} from '../Base/Initialization';
-import {l} from '../../strings/Strings';
+import { Component } from '../Base/Component';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { SettingsEvents } from '../../events/SettingsEvents';
+import { ISettingsPopulateMenuArgs } from '../Settings/Settings';
+import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { Initialization } from '../Base/Initialization';
+import { l } from '../../strings/Strings';
 import _ = require('underscore');
 
 export interface IExportToExcelOptions {

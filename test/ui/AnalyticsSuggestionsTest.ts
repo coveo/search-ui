@@ -1,9 +1,9 @@
 import * as Mock from '../MockEnvironment';
-import {AnalyticsSuggestions} from '../../src/ui/AnalyticsSuggestions/AnalyticsSuggestions';
-import {Simulate} from '../Simulate';
-import {$$} from '../../src/utils/Dom';
-import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import {IAnalyticsSuggestionsOptions} from '../../src/ui/AnalyticsSuggestions/AnalyticsSuggestions';
+import { AnalyticsSuggestions } from '../../src/ui/AnalyticsSuggestions/AnalyticsSuggestions';
+import { Simulate } from '../Simulate';
+import { $$ } from '../../src/utils/Dom';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { IAnalyticsSuggestionsOptions } from '../../src/ui/AnalyticsSuggestions/AnalyticsSuggestions';
 import _ = require('underscore');
 
 export function AnalyticsSuggestionsTest() {

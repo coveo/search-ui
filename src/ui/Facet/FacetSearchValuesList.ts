@@ -1,7 +1,7 @@
 /// <reference path="Facet.ts" />
-import {Facet} from './Facet';
-import {IFacetValueElementKlass} from './FacetValueElement';
-import {FacetValue} from './FacetValues';
+import { Facet } from './Facet';
+import { IFacetValueElementKlass } from './FacetValueElement';
+import { FacetValue } from './FacetValues';
 import _ = require('underscore');
 
 export interface IFacetSearchValuesListKlass {

@@ -1,11 +1,11 @@
-import {IStringMap} from '../rest/GenericParam';
-import {Logger} from '../misc/Logger';
-import {Assert} from '../misc/Assert';
-import {TimeSpan} from '../utils/TimeSpanUtils';
-import {DeviceUtils} from '../utils/DeviceUtils';
-import {Utils} from '../utils/Utils';
-import {Promise} from 'es6-promise';
-import {JQueryUtils} from '../utils/JQueryutils';
+import { IStringMap } from '../rest/GenericParam';
+import { Logger } from '../misc/Logger';
+import { Assert } from '../misc/Assert';
+import { TimeSpan } from '../utils/TimeSpanUtils';
+import { DeviceUtils } from '../utils/DeviceUtils';
+import { Utils } from '../utils/Utils';
+import { Promise } from 'es6-promise';
+import { JQueryUtils } from '../utils/JQueryutils';
 import _ = require('underscore');
 
 declare var XDomainRequest;

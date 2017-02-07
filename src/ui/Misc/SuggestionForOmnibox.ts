@@ -1,6 +1,6 @@
-import {IPopulateOmniboxEventArgs} from '../../events/OmniboxEvents';
-import {DomUtils} from '../../utils/DomUtils';
-import {$$} from '../../utils/Dom';
+import { IPopulateOmniboxEventArgs } from '../../events/OmniboxEvents';
+import { DomUtils } from '../../utils/DomUtils';
+import { $$ } from '../../utils/Dom';
 import _ = require('underscore');
 
 export interface ISuggestionForOmniboxOptionsOnSelect {

@@ -1,19 +1,19 @@
-import {IComponentBindings} from '../src/ui/Base/ComponentBindings';
-import {IQueryResult} from '../src/rest/QueryResult';
-import {SearchInterface} from '../src/ui/SearchInterface/SearchInterface';
-import {QueryStateModel} from '../src/models/QueryStateModel';
-import {IAnalyticsClient} from '../src/ui/Analytics/AnalyticsClient';
-import {$$} from '../src/utils/Dom';
-import {ComponentStateModel} from '../src/models/ComponentStateModel';
-import {ComponentOptionsModel} from '../src/models/ComponentOptionsModel';
-import {OS_NAME} from '../src/utils/OSUtils';
-import {FakeResults} from './Fake';
-import {Component} from '../src/ui/Base/Component';
-import {Utils} from '../src/utils/Utils';
-import {BaseComponent} from '../src/ui/Base/BaseComponent';
-import {NoopAnalyticsClient} from '../src/ui/Analytics/NoopAnalyticsClient';
-import {SearchEndpoint} from '../src/rest/SearchEndpoint';
-import {QueryController} from '../src/controllers/QueryController';
+import { IComponentBindings } from '../src/ui/Base/ComponentBindings';
+import { IQueryResult } from '../src/rest/QueryResult';
+import { SearchInterface } from '../src/ui/SearchInterface/SearchInterface';
+import { QueryStateModel } from '../src/models/QueryStateModel';
+import { IAnalyticsClient } from '../src/ui/Analytics/AnalyticsClient';
+import { $$ } from '../src/utils/Dom';
+import { ComponentStateModel } from '../src/models/ComponentStateModel';
+import { ComponentOptionsModel } from '../src/models/ComponentOptionsModel';
+import { OS_NAME } from '../src/utils/OSUtils';
+import { FakeResults } from './Fake';
+import { Component } from '../src/ui/Base/Component';
+import { Utils } from '../src/utils/Utils';
+import { BaseComponent } from '../src/ui/Base/BaseComponent';
+import { NoopAnalyticsClient } from '../src/ui/Analytics/NoopAnalyticsClient';
+import { SearchEndpoint } from '../src/rest/SearchEndpoint';
+import { QueryController } from '../src/controllers/QueryController';
 
 export interface IMockEnvironment extends IComponentBindings {
   root: HTMLElement;

@@ -1,18 +1,18 @@
-import {Assert} from '../../misc/Assert';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Utils} from '../../utils/Utils';
-import {JQueryUtils} from '../../utils/JQueryutils';
-import {$$, Dom} from '../../utils/Dom';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {ComponentStateModel} from '../../models/ComponentStateModel';
-import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
-import {QueryController} from '../../controllers/QueryController';
-import {SearchInterface} from '../../ui/SearchInterface/SearchInterface';
-import {IAnalyticsClient} from '../../ui/Analytics/AnalyticsClient';
-import {NoopAnalyticsClient} from '../../ui/Analytics/NoopAnalyticsClient';
-import {BaseComponent} from './BaseComponent';
-import {IComponentBindings} from './ComponentBindings';
-import {DebugEvents} from '../../events/DebugEvents';
+import { Assert } from '../../misc/Assert';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Utils } from '../../utils/Utils';
+import { JQueryUtils } from '../../utils/JQueryutils';
+import { $$, Dom } from '../../utils/Dom';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { ComponentStateModel } from '../../models/ComponentStateModel';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import { QueryController } from '../../controllers/QueryController';
+import { SearchInterface } from '../../ui/SearchInterface/SearchInterface';
+import { IAnalyticsClient } from '../../ui/Analytics/AnalyticsClient';
+import { NoopAnalyticsClient } from '../../ui/Analytics/NoopAnalyticsClient';
+import { BaseComponent } from './BaseComponent';
+import { IComponentBindings } from './ComponentBindings';
+import { DebugEvents } from '../../events/DebugEvents';
 import _ = require('underscore');
 
 /**

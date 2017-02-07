@@ -1,9 +1,9 @@
 /// <reference path="Facet.ts" />
 /// <reference path="FacetSettings.ts" />
-import {Facet} from './Facet';
-import {l} from '../../strings/Strings';
-import {FacetSettings} from './FacetSettings';
-import {Utils} from '../../utils/Utils';
+import { Facet } from './Facet';
+import { l } from '../../strings/Strings';
+import { FacetSettings } from './FacetSettings';
+import { Utils } from '../../utils/Utils';
 import _ = require('underscore');
 
 declare const Coveo;

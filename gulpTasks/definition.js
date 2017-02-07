@@ -3,6 +3,7 @@ const concat = require('gulp-concat');
 const replace = require('gulp-replace');
 const fs = require('fs');
 const runsequence = require('run-sequence');
+const footer = require('gulp-footer');
 
 gulp.task('definitions', function (done) {
   runsequence('externalDefs', 'internalDefs', 'cleanDefs', done);
@@ -12,6 +13,13 @@ gulp.task('cleanDefs', function () {
   return gulp.src('bin/ts/CoveoJsSearch.d.ts')
       .pipe(replace(/import.*$/gm, ''))
       .pipe(replace(/(declare module )(.*)( {$)/gm, '$1Coveo$3'))
+      .pipe(replace(/export =.+;$/gm, ''))
+      .pipe(replace(/export .+ from .+$/gm, ''))
+      .pipe(replace(/export (?:default )?(.*)$/gm, '$1'))
+      .pipe(replace(/private .+;$/gm, ''))
+      .pipe(replace(/\t[A-Za-z]+;$/gm, ''))
+      .pipe(replace(/\n\t\s*(\n\t\s*)/g, '$1'))
+      .pipe(footer('declare module "coveo-search-ui" {\n\texport = Coveo;\n}'))
       .pipe(gulp.dest('bin/ts/'));
 });
 

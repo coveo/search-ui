@@ -1,10 +1,10 @@
 ///<reference path="Omnibox.ts"/>
-import {Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion} from './Omnibox';
-import {$$} from '../../utils/Dom';
-import {IRevealQuerySuggestCompletion, IRevealQuerySuggestRequest, IRevealQuerySuggestResponse} from '../../rest/RevealQuerySuggest';
-import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
-import {OmniboxEvents} from '../../events/OmniboxEvents';
-import {StringUtils} from '../../utils/StringUtils';
+import { Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion } from './Omnibox';
+import { $$ } from '../../utils/Dom';
+import { IRevealQuerySuggestCompletion, IRevealQuerySuggestRequest, IRevealQuerySuggestResponse } from '../../rest/RevealQuerySuggest';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import { OmniboxEvents } from '../../events/OmniboxEvents';
+import { StringUtils } from '../../utils/StringUtils';
 import _ = require('underscore');
 
 export class RevealQuerySuggestAddon {

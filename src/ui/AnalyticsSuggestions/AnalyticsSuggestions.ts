@@ -1,16 +1,16 @@
-import {ISuggestionForOmniboxOptions, SuggestionForOmnibox, ISuggestionForOmniboxTemplate} from '../Misc/SuggestionForOmnibox';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {Component} from '../Base/Component';
-import {Assert} from '../../misc/Assert';
-import {OmniboxEvents, IPopulateOmniboxEventArgs} from '../../events/OmniboxEvents';
-import {QueryEvents} from '../../events/QueryEvents';
-import {l} from '../../strings/Strings';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {analyticsActionCauseList, IAnalyticsTopSuggestionMeta} from '../Analytics/AnalyticsActionListMeta';
-import {Initialization} from '../Base/Initialization';
-import {$$} from '../../utils/Dom';
-import {StandaloneSearchInterface} from '../SearchInterface/SearchInterface';
+import { ISuggestionForOmniboxOptions, SuggestionForOmnibox, ISuggestionForOmniboxTemplate } from '../Misc/SuggestionForOmnibox';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Component } from '../Base/Component';
+import { Assert } from '../../misc/Assert';
+import { OmniboxEvents, IPopulateOmniboxEventArgs } from '../../events/OmniboxEvents';
+import { QueryEvents } from '../../events/QueryEvents';
+import { l } from '../../strings/Strings';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { analyticsActionCauseList, IAnalyticsTopSuggestionMeta } from '../Analytics/AnalyticsActionListMeta';
+import { Initialization } from '../Base/Initialization';
+import { $$ } from '../../utils/Dom';
+import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
 import _ = require('underscore');
 
 export interface IAnalyticsSuggestionsOptions extends ISuggestionForOmniboxOptions {

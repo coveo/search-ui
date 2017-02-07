@@ -1,19 +1,19 @@
-import {Initialization} from './Initialization';
-import {Assert} from '../../misc/Assert';
-import {QueryController} from '../../controllers/QueryController';
-import {QueryStateModel, setState} from '../../models/QueryStateModel';
-import {IQueryResult} from '../../rest/QueryResult';
-import {IQueryResults} from '../../rest/QueryResults';
-import {Analytics} from '../Analytics/Analytics';
-import {IAnalyticsClient} from '../Analytics/AnalyticsClient';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {$$} from '../../utils/Dom';
-import {IAnalyticsActionCause, IAnalyticsDocumentViewMeta} from '../Analytics/AnalyticsActionListMeta';
-import {IStringMap} from '../../rest/GenericParam';
-import {BaseComponent} from '../Base/BaseComponent';
-import {Component} from '../Base/Component';
-import {IStandaloneSearchInterfaceOptions} from '../SearchInterface/SearchInterface';
-import {IRecommendationOptions} from '../Recommendation/Recommendation';
+import { Initialization } from './Initialization';
+import { Assert } from '../../misc/Assert';
+import { QueryController } from '../../controllers/QueryController';
+import { QueryStateModel, setState } from '../../models/QueryStateModel';
+import { IQueryResult } from '../../rest/QueryResult';
+import { IQueryResults } from '../../rest/QueryResults';
+import { Analytics } from '../Analytics/Analytics';
+import { IAnalyticsClient } from '../Analytics/AnalyticsClient';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { $$ } from '../../utils/Dom';
+import { IAnalyticsActionCause, IAnalyticsDocumentViewMeta } from '../Analytics/AnalyticsActionListMeta';
+import { IStringMap } from '../../rest/GenericParam';
+import { BaseComponent } from '../Base/BaseComponent';
+import { Component } from '../Base/Component';
+import { IStandaloneSearchInterfaceOptions } from '../SearchInterface/SearchInterface';
+import { IRecommendationOptions } from '../Recommendation/Recommendation';
 import _ = require('underscore');
 
 /**

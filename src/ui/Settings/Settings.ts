@@ -1,12 +1,12 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {$$} from '../../utils/Dom';
-import {PopupUtils, IPosition, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
-import {IMenuItem} from '../Menu/MenuItem';
-import {SettingsEvents} from '../../events/SettingsEvents';
-import {Initialization} from '../Base/Initialization';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { $$ } from '../../utils/Dom';
+import { PopupUtils, IPosition, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
+import { IMenuItem } from '../Menu/MenuItem';
+import { SettingsEvents } from '../../events/SettingsEvents';
+import { Initialization } from '../Base/Initialization';
 import _ = require('underscore');
 
 export interface ISettingsPopulateMenuArgs {

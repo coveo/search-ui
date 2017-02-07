@@ -1,10 +1,10 @@
-import {Debug} from '../../src/ui/Debug/Debug';
-import {$$} from '../../src/utils/Dom';
+import { Debug } from '../../src/ui/Debug/Debug';
+import { $$ } from '../../src/utils/Dom';
 import * as Mock from '../MockEnvironment';
-import {DebugEvents} from '../../src/events/DebugEvents';
-import {ModalBox} from '../../src/ExternalModulesShim';
-import {Simulate} from '../Simulate';
-import {KEYBOARD} from '../../src/utils/KeyboardUtils';
+import { DebugEvents } from '../../src/events/DebugEvents';
+import { ModalBox } from '../../src/ExternalModulesShim';
+import { Simulate } from '../Simulate';
+import { KEYBOARD } from '../../src/utils/KeyboardUtils';
 import _ = require('underscore');
 
 export function DebugTest() {

@@ -1,30 +1,30 @@
 /// <reference path="Facet.ts" />
 
-import {IIndexFieldValue} from '../../rest/FieldValue';
-import {Facet} from './Facet';
-import {$$, Dom} from '../../utils/Dom';
-import {Utils} from '../../utils/Utils';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {DeviceUtils} from '../../utils/DeviceUtils';
-import {EventsUtils} from '../../utils/EventsUtils';
-import {FacetSearchParameters} from './FacetSearchParameters';
-import {IAnalyticsFacetMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {IEndpointError} from '../../rest/EndpointError';
-import {Component} from '../Base/Component';
-import {DomUtils} from '../../utils/DomUtils';
-import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
-import {l} from '../../strings/Strings';
-import {Assert} from '../../misc/Assert';
-import {KEYBOARD} from '../../utils/KeyboardUtils';
-import {FacetUtils} from './FacetUtils';
-import {FacetValue} from './FacetValues';
-import {StringUtils} from '../../utils/StringUtils';
-import {IFacetSearchValuesListKlass} from './FacetSearchValuesList';
-import {FacetValueElement} from './FacetValueElement';
-import {ModalBox} from '../../ExternalModulesShim';
-import {SearchInterface} from '../SearchInterface/SearchInterface';
-import {ResponsiveComponentsUtils} from '../ResponsiveComponents/ResponsiveComponentsUtils';
-import {FacetValuesOrder} from './FacetValuesOrder';
+import { IIndexFieldValue } from '../../rest/FieldValue';
+import { Facet } from './Facet';
+import { $$, Dom } from '../../utils/Dom';
+import { Utils } from '../../utils/Utils';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { EventsUtils } from '../../utils/EventsUtils';
+import { FacetSearchParameters } from './FacetSearchParameters';
+import { IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { IEndpointError } from '../../rest/EndpointError';
+import { Component } from '../Base/Component';
+import { DomUtils } from '../../utils/DomUtils';
+import { PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
+import { l } from '../../strings/Strings';
+import { Assert } from '../../misc/Assert';
+import { KEYBOARD } from '../../utils/KeyboardUtils';
+import { FacetUtils } from './FacetUtils';
+import { FacetValue } from './FacetValues';
+import { StringUtils } from '../../utils/StringUtils';
+import { IFacetSearchValuesListKlass } from './FacetSearchValuesList';
+import { FacetValueElement } from './FacetValueElement';
+import { ModalBox } from '../../ExternalModulesShim';
+import { SearchInterface } from '../SearchInterface/SearchInterface';
+import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
+import { FacetValuesOrder } from './FacetValuesOrder';
 import _ = require('underscore');
 
 /**

@@ -1,14 +1,14 @@
-import {Facet} from './Facet';
-import {FacetSort} from './FacetSort';
-import {$$} from '../../utils/Dom';
-import {LocalStorageUtils} from '../../utils/LocalStorageUtils';
-import {IFacetSortDescription} from './FacetSort';
-import {Utils} from '../../utils/Utils';
-import {l} from '../../strings/Strings';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {IAnalyticsFacetMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {DeviceUtils} from '../../utils/DeviceUtils';
-import {PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
+import { Facet } from './Facet';
+import { FacetSort } from './FacetSort';
+import { $$ } from '../../utils/Dom';
+import { LocalStorageUtils } from '../../utils/LocalStorageUtils';
+import { IFacetSortDescription } from './FacetSort';
+import { Utils } from '../../utils/Utils';
+import { l } from '../../strings/Strings';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
 import _ = require('underscore');
 
 export interface IFacetSettingsKlass {

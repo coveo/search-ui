@@ -1,7 +1,7 @@
 import * as Mock from '../MockEnvironment';
-import {QueryDuration} from '../../src/ui/QueryDuration/QueryDuration';
-import {FakeResults} from '../Fake';
-import {Simulate} from '../Simulate';
+import { QueryDuration } from '../../src/ui/QueryDuration/QueryDuration';
+import { FakeResults } from '../Fake';
+import { Simulate } from '../Simulate';
 
 export function QueryDurationTest() {
   describe('QueryDuration', function () {

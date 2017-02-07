@@ -1,11 +1,11 @@
 import * as Mock from '../MockEnvironment';
-import {SearchInterface} from '../../src/ui/SearchInterface/SearchInterface';
-import {Recommendation} from '../../src/ui/Recommendation/Recommendation';
-import {IRecommendationOptions} from '../../src/ui/Recommendation/Recommendation';
-import {IQuery} from '../../src/rest/Query';
-import {Simulate} from '../Simulate';
-import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
-import {FakeResults} from '../Fake';
+import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
+import { Recommendation } from '../../src/ui/Recommendation/Recommendation';
+import { IRecommendationOptions } from '../../src/ui/Recommendation/Recommendation';
+import { IQuery } from '../../src/rest/Query';
+import { Simulate } from '../Simulate';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { FakeResults } from '../Fake';
 import _ = require('underscore');
 
 export function RecommendationTest() {

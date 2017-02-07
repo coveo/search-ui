@@ -1,12 +1,12 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
-import {IQueryResult} from '../../rest/QueryResult';
-import {ResultLink} from '../ResultLink/ResultLink';
-import {Initialization, IInitializationParameters} from '../Base/Initialization';
-import {DomUtils} from '../../utils/DomUtils';
-import {$$} from '../../utils/Dom';
-import {ModalBox} from '../../ExternalModulesShim';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
+import { IQueryResult } from '../../rest/QueryResult';
+import { ResultLink } from '../ResultLink/ResultLink';
+import { Initialization, IInitializationParameters } from '../Base/Initialization';
+import { DomUtils } from '../../utils/DomUtils';
+import { $$ } from '../../utils/Dom';
+import { ModalBox } from '../../ExternalModulesShim';
 import _ = require('underscore');
 
 export interface IYouTubeThumbnailOptions {

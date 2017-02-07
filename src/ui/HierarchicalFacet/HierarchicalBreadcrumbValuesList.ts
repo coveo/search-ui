@@ -1,10 +1,10 @@
 /// <reference path="HierarchicalFacet.ts" />
 
-import {BreadcrumbValueList} from '../Facet/BreadcrumbValuesList';
-import {HierarchicalFacet, IValueHierarchy} from './HierarchicalFacet';
-import {FacetValue} from '../Facet/FacetValues';
-import {HierarchicalBreadcrumbValueElement} from './HierarchicalBreadcrumbValueElement';
-import {$$} from '../../utils/Dom';
+import { BreadcrumbValueList } from '../Facet/BreadcrumbValuesList';
+import { HierarchicalFacet, IValueHierarchy } from './HierarchicalFacet';
+import { FacetValue } from '../Facet/FacetValues';
+import { HierarchicalBreadcrumbValueElement } from './HierarchicalBreadcrumbValueElement';
+import { $$ } from '../../utils/Dom';
 import _ = require('underscore');
 
 export class HierarchicalBreadcrumbValuesList extends BreadcrumbValueList {

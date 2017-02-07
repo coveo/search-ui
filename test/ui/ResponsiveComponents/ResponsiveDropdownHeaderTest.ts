@@ -1,5 +1,5 @@
-import {ResponsiveDropdownHeader} from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownHeader';
-import {$$, Dom} from '../../../src/utils/Dom';
+import { ResponsiveDropdownHeader } from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownHeader';
+import { $$, Dom } from '../../../src/utils/Dom';
 
 export function ResponsiveDropdownHeaderTest() {
   describe('ResponsiveDropdownHeader', () => {

@@ -1,10 +1,10 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {Utils} from '../../utils/Utils';
-import {$$} from '../../utils/Dom';
-import {l} from '../../strings/Strings';
-import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {Initialization} from '../Base/Initialization';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Utils } from '../../utils/Utils';
+import { $$ } from '../../utils/Dom';
+import { l } from '../../strings/Strings';
+import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { Initialization } from '../Base/Initialization';
 
 export interface ISearchButtonOptions {
 }

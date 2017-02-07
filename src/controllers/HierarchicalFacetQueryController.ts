@@ -1,11 +1,11 @@
 /// <reference path="../ui/HierarchicalFacet/HierarchicalFacet.ts" />
 /// <reference path="./FacetQueryController.ts" />
 
-import {FacetQueryController} from './FacetQueryController';
-import {HierarchicalFacet, IValueHierarchy} from '../ui/HierarchicalFacet/HierarchicalFacet';
-import {FacetSearchParameters} from '../ui/Facet/FacetSearchParameters';
-import {IIndexFieldValue} from '../rest/FieldValue';
-import {FacetUtils} from '../ui/Facet/FacetUtils';
+import { FacetQueryController } from './FacetQueryController';
+import { HierarchicalFacet, IValueHierarchy } from '../ui/HierarchicalFacet/HierarchicalFacet';
+import { FacetSearchParameters } from '../ui/Facet/FacetSearchParameters';
+import { IIndexFieldValue } from '../rest/FieldValue';
+import { FacetUtils } from '../ui/Facet/FacetUtils';
 import _ = require('underscore');
 
 export class HierarchicalFacetQueryController extends FacetQueryController {

@@ -1,7 +1,7 @@
 import * as Mock from '../MockEnvironment';
-import {$$} from '../../src/utils/Dom';
-import {RecommendationQuery} from '../../src/ui/Recommendation/RecommendationQuery';
-import {Simulate} from '../Simulate';
+import { $$ } from '../../src/utils/Dom';
+import { RecommendationQuery } from '../../src/ui/Recommendation/RecommendationQuery';
+import { Simulate } from '../Simulate';
 
 export function RecommendationQueryTest() {
   describe('RecommendationQuery', () => {

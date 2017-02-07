@@ -1,5 +1,5 @@
-import {Utils} from './Utils';
-import {l} from '../strings/Strings';
+import { Utils } from './Utils';
+import { l } from '../strings/Strings';
 import _ = require('underscore');
 
 export class EmailUtils {

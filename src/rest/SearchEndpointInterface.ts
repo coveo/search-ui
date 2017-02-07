@@ -1,19 +1,19 @@
-import {IEndpointCallerOptions} from '../rest/EndpointCaller';
-import {IStringMap} from '../rest/GenericParam';
-import {IQuery} from '../rest/Query';
-import {IQueryResults} from '../rest/QueryResults';
-import {IQueryResult} from '../rest/QueryResult';
-import {IIndexFieldValue} from '../rest/FieldValue';
-import {IListFieldValuesRequest} from '../rest/ListFieldValuesRequest';
-import {IFieldDescription} from '../rest/FieldDescription';
-import {IExtension} from '../rest/Extension';
-import {IEndpointError} from '../rest/EndpointError';
-import {ITaggingRequest} from '../rest/TaggingRequest';
-import {IRevealQuerySuggestRequest, IRevealQuerySuggestResponse} from '../rest/RevealQuerySuggest';
-import {IRatingRequest} from '../rest/RatingRequest';
-import {ISubscriptionRequest, ISubscription} from '../rest/Subscription';
-import {Promise} from 'es6-promise';
-import {ISentryLog} from './SentryLog';
+import { IEndpointCallerOptions } from '../rest/EndpointCaller';
+import { IStringMap } from '../rest/GenericParam';
+import { IQuery } from '../rest/Query';
+import { IQueryResults } from '../rest/QueryResults';
+import { IQueryResult } from '../rest/QueryResult';
+import { IIndexFieldValue } from '../rest/FieldValue';
+import { IListFieldValuesRequest } from '../rest/ListFieldValuesRequest';
+import { IFieldDescription } from '../rest/FieldDescription';
+import { IExtension } from '../rest/Extension';
+import { IEndpointError } from '../rest/EndpointError';
+import { ITaggingRequest } from '../rest/TaggingRequest';
+import { IRevealQuerySuggestRequest, IRevealQuerySuggestResponse } from '../rest/RevealQuerySuggest';
+import { IRatingRequest } from '../rest/RatingRequest';
+import { ISubscriptionRequest, ISubscription } from '../rest/Subscription';
+import { Promise } from 'es6-promise';
+import { ISentryLog } from './SentryLog';
 
 /**
  * The possible options when creating a {@link SearchEndpoint}

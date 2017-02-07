@@ -1,7 +1,7 @@
-import {Model} from '../../src/models/Model';
+import { Model } from '../../src/models/Model';
 import * as Mock from '../MockEnvironment';
-import {registerCustomMatcher} from '../CustomMatchers';
-import {$$} from '../../src/utils/Dom';
+import { registerCustomMatcher } from '../CustomMatchers';
+import { $$ } from '../../src/utils/Dom';
 
 export function ModelTest() {
   describe('Model', function () {

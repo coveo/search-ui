@@ -1,4 +1,4 @@
-import {$$, IOffset} from './Dom';
+import { $$, IOffset } from './Dom';
 
 export interface IPosition {
   vertical: VerticalAlignment;

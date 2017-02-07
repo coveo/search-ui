@@ -1,14 +1,14 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {BreadcrumbEvents, IBreadcrumbItem, IPopulateBreadcrumbEventArgs, IClearBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
-import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
-import {$$} from '../../utils/Dom';
-import {l} from '../../strings/Strings';
-import {Initialization} from '../Base/Initialization';
-import {QueryEvents} from '../../events/QueryEvents';
-import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { BreadcrumbEvents, IBreadcrumbItem, IPopulateBreadcrumbEventArgs, IClearBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
+import { $$ } from '../../utils/Dom';
+import { l } from '../../strings/Strings';
+import { Initialization } from '../Base/Initialization';
+import { QueryEvents } from '../../events/QueryEvents';
+import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import _ = require('underscore');
 
 export interface IBreadcrumbOptions {

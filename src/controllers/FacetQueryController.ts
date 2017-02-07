@@ -1,20 +1,20 @@
 /// <reference path='../ui/Facet/Facet.ts' />
 
-import {Facet} from '../ui/Facet/Facet';
-import {IGroupByRequest} from '../rest/GroupByRequest';
-import {IGroupByResult} from '../rest/GroupByResult';
-import {ExpressionBuilder} from '../ui/Base/ExpressionBuilder';
-import {FacetValue} from '../ui/Facet/FacetValues';
-import {Utils} from '../utils/Utils';
-import {QueryBuilder} from '../ui/Base/QueryBuilder';
-import {FacetSearchParameters} from '../ui/Facet/FacetSearchParameters';
-import {Assert} from '../misc/Assert';
-import {IIndexFieldValue} from '../rest/FieldValue';
-import {FacetUtils} from '../ui/Facet/FacetUtils';
-import {IQueryResults} from '../rest/QueryResults';
-import {IGroupByValue} from '../rest/GroupByValue';
-import {IEndpointError} from '../rest/EndpointError';
-import {IQueryBuilderExpression} from '../ui/Base/QueryBuilder';
+import { Facet } from '../ui/Facet/Facet';
+import { IGroupByRequest } from '../rest/GroupByRequest';
+import { IGroupByResult } from '../rest/GroupByResult';
+import { ExpressionBuilder } from '../ui/Base/ExpressionBuilder';
+import { FacetValue } from '../ui/Facet/FacetValues';
+import { Utils } from '../utils/Utils';
+import { QueryBuilder } from '../ui/Base/QueryBuilder';
+import { FacetSearchParameters } from '../ui/Facet/FacetSearchParameters';
+import { Assert } from '../misc/Assert';
+import { IIndexFieldValue } from '../rest/FieldValue';
+import { FacetUtils } from '../ui/Facet/FacetUtils';
+import { IQueryResults } from '../rest/QueryResults';
+import { IGroupByValue } from '../rest/GroupByValue';
+import { IEndpointError } from '../rest/EndpointError';
+import { IQueryBuilderExpression } from '../ui/Base/QueryBuilder';
 import _ = require('underscore');
 
 export class FacetQueryController {

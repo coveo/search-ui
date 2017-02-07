@@ -1,13 +1,13 @@
 import * as Mock from '../MockEnvironment';
-import {Folding} from '../../src/ui/Folding/Folding';
-import {IQueryResults} from '../../src/rest/QueryResults';
-import {IFoldingOptions} from '../../src/ui/Folding/Folding';
-import {FakeResults} from '../Fake';
-import {Simulate} from '../Simulate';
-import {IQuery} from '../../src/rest/Query';
-import {ISimulateQueryData} from '../Simulate';
-import {IQueryResult} from '../../src/rest/QueryResult';
-import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
+import { Folding } from '../../src/ui/Folding/Folding';
+import { IQueryResults } from '../../src/rest/QueryResults';
+import { IFoldingOptions } from '../../src/ui/Folding/Folding';
+import { FakeResults } from '../Fake';
+import { Simulate } from '../Simulate';
+import { IQuery } from '../../src/rest/Query';
+import { ISimulateQueryData } from '../Simulate';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import _ = require('underscore');
 
 export function FoldingTest() {

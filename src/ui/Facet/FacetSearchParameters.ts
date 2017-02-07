@@ -1,12 +1,12 @@
 /// <reference path="Facet.ts" />
 
-import {Facet} from './Facet';
-import {Utils} from '../../utils/Utils';
-import {FacetUtils} from './FacetUtils';
-import {IGroupByRequest} from '../../rest/GroupByRequest';
-import {IQuery} from '../../rest/Query';
-import {QueryBuilder} from '../Base/QueryBuilder';
-import {$$} from '../../utils/Dom';
+import { Facet } from './Facet';
+import { Utils } from '../../utils/Utils';
+import { FacetUtils } from './FacetUtils';
+import { IGroupByRequest } from '../../rest/GroupByRequest';
+import { IQuery } from '../../rest/Query';
+import { QueryBuilder } from '../Base/QueryBuilder';
+import { $$ } from '../../utils/Dom';
 import _ = require('underscore');
 
 export class FacetSearchParameters {

@@ -1,7 +1,7 @@
-import {Folding, IFoldingOptions} from './Folding';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Initialization} from '../Base/Initialization';
+import { Folding, IFoldingOptions } from './Folding';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Initialization } from '../Base/Initialization';
 
 /**
  * This component inherits from the {@link Folding} component.

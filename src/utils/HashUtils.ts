@@ -1,5 +1,5 @@
-import {Assert} from '../misc/Assert';
-import {Utils} from '../utils/Utils';
+import { Assert } from '../misc/Assert';
+import { Utils } from '../utils/Utils';
 import _ = require('underscore');
 
 interface IHashUtils {

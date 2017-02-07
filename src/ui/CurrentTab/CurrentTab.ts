@@ -1,13 +1,13 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {Model} from '../../models/Model';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {Utils} from '../../utils/Utils';
-import {Tab} from '../Tab/Tab';
-import {Assert} from '../../misc/Assert';
-import {Initialization} from '../Base/Initialization';
-import {$$} from '../../utils/Dom';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Model } from '../../models/Model';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { Utils } from '../../utils/Utils';
+import { Tab } from '../Tab/Tab';
+import { Assert } from '../../misc/Assert';
+import { Initialization } from '../Base/Initialization';
+import { $$ } from '../../utils/Dom';
 import _ = require('underscore');
 
 export interface ICurrentTabOptions {

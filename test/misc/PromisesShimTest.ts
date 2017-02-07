@@ -1,5 +1,5 @@
-import {Simulate} from '../Simulate';
-import {shim} from '../../src/misc/PromisesShim';
+import { Simulate } from '../Simulate';
+import { shim } from '../../src/misc/PromisesShim';
 shim();
 
 export function PromisesShimTest() {

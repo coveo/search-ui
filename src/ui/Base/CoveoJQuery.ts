@@ -1,4 +1,4 @@
-import {Initialization} from './Initialization';
+import { Initialization } from './Initialization';
 import _ = require('underscore');
 
 interface IWindow {

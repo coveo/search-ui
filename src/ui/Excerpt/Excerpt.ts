@@ -1,10 +1,10 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {IQueryResult} from '../../rest/QueryResult';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {Assert} from '../../misc/Assert';
-import {HighlightUtils} from '../../utils/HighlightUtils';
-import {Initialization} from '../Base/Initialization';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { IQueryResult } from '../../rest/QueryResult';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Assert } from '../../misc/Assert';
+import { HighlightUtils } from '../../utils/HighlightUtils';
+import { Initialization } from '../Base/Initialization';
 
 /**
  * This component, located in a result template, is used to render the document excerpt,

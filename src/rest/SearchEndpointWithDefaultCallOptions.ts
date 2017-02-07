@@ -1,18 +1,18 @@
-import {ISearchEndpoint, IEndpointCallOptions, IGetDocumentOptions, ISearchEndpointOptions, IViewAsHtmlOptions} from './SearchEndpointInterface';
-import {IQuery} from './Query';
-import {ITaggingRequest} from './TaggingRequest';
-import {IRatingRequest} from './RatingRequest';
-import {IRevealQuerySuggestRequest} from './RevealQuerySuggest';
-import {IRevealQuerySuggestResponse} from './RevealQuerySuggest';
-import {IIndexFieldValue} from '../rest/FieldValue';
-import {IQueryResult} from '../rest/QueryResult';
-import {IEndpointError} from '../rest/EndpointError';
-import {IExtension} from '../rest/Extension';
-import {IQueryResults} from './QueryResults';
-import {IFieldDescription} from '../rest/FieldDescription';
-import {IListFieldValuesRequest} from './ListFieldValuesRequest';
-import {ISubscriptionRequest, ISubscription} from './Subscription';
-import {ISentryLog} from './SentryLog';
+import { ISearchEndpoint, IEndpointCallOptions, IGetDocumentOptions, ISearchEndpointOptions, IViewAsHtmlOptions } from './SearchEndpointInterface';
+import { IQuery } from './Query';
+import { ITaggingRequest } from './TaggingRequest';
+import { IRatingRequest } from './RatingRequest';
+import { IRevealQuerySuggestRequest } from './RevealQuerySuggest';
+import { IRevealQuerySuggestResponse } from './RevealQuerySuggest';
+import { IIndexFieldValue } from '../rest/FieldValue';
+import { IQueryResult } from '../rest/QueryResult';
+import { IEndpointError } from '../rest/EndpointError';
+import { IExtension } from '../rest/Extension';
+import { IQueryResults } from './QueryResults';
+import { IFieldDescription } from '../rest/FieldDescription';
+import { IListFieldValuesRequest } from './ListFieldValuesRequest';
+import { ISubscriptionRequest, ISubscription } from './Subscription';
+import { ISentryLog } from './SentryLog';
 import _ = require('underscore');
 
 export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {

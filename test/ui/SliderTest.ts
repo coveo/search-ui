@@ -1,7 +1,7 @@
-import {Slider} from '../../src/ui/Misc/Slider';
-import {$$} from '../../src/utils/Dom';
-import {ISliderGraphData} from '../../src/ui/Misc/Slider';
-import {SearchInterface} from '../../src/ui/SearchInterface/SearchInterface';
+import { Slider } from '../../src/ui/Misc/Slider';
+import { $$ } from '../../src/utils/Dom';
+import { ISliderGraphData } from '../../src/ui/Misc/Slider';
+import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
 import * as Globalize from 'globalize';
 import _ = require('underscore');
 

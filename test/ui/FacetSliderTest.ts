@@ -1,13 +1,13 @@
 import * as Mock from '../MockEnvironment';
-import {FacetSlider} from '../../src/ui/FacetSlider/FacetSlider';
-import {Slider} from '../../src/ui/Misc/Slider';
-import {IFacetSliderOptions} from '../../src/ui/FacetSlider/FacetSlider';
-import {Simulate} from '../Simulate';
-import {BreadcrumbEvents} from '../../src/events/BreadcrumbEvents';
-import {IPopulateBreadcrumbEventArgs} from '../../src/events/BreadcrumbEvents';
-import {$$} from '../../src/utils/Dom';
-import {FakeResults} from '../Fake';
-import {QueryEvents} from '../../src/events/QueryEvents';
+import { FacetSlider } from '../../src/ui/FacetSlider/FacetSlider';
+import { Slider } from '../../src/ui/Misc/Slider';
+import { IFacetSliderOptions } from '../../src/ui/FacetSlider/FacetSlider';
+import { Simulate } from '../Simulate';
+import { BreadcrumbEvents } from '../../src/events/BreadcrumbEvents';
+import { IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
+import { $$ } from '../../src/utils/Dom';
+import { FakeResults } from '../Fake';
+import { QueryEvents } from '../../src/events/QueryEvents';
 
 export function FacetSliderTest() {
   describe('FacetSlider', function () {

@@ -1,4 +1,4 @@
-import {IAnalyticsEvent} from './AnalyticsEvent';
+import { IAnalyticsEvent } from './AnalyticsEvent';
 
 export interface ISearchEvent extends IAnalyticsEvent {
   searchQueryUid: string;

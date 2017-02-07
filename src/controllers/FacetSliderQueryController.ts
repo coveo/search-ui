@@ -1,14 +1,14 @@
 /// <reference path="../ui/FacetSlider/FacetSlider.ts" />
 
-import {FacetSlider} from '../ui/FacetSlider/FacetSlider';
-import {QueryEvents, IQuerySuccessEventArgs} from '../events/QueryEvents';
-import {QueryBuilder} from '../ui/Base/QueryBuilder';
-import {IGroupByRequest} from '../rest/GroupByRequest';
-import {ExpressionBuilder} from '../ui/Base/ExpressionBuilder';
-import {IRangeValue} from '../rest/RangeValue';
-import {DateUtils} from '../utils/DateUtils';
-import {Logger} from '../misc/Logger';
-import {QueryUtils} from '../utils/QueryUtils';
+import { FacetSlider } from '../ui/FacetSlider/FacetSlider';
+import { QueryEvents, IQuerySuccessEventArgs } from '../events/QueryEvents';
+import { QueryBuilder } from '../ui/Base/QueryBuilder';
+import { IGroupByRequest } from '../rest/GroupByRequest';
+import { ExpressionBuilder } from '../ui/Base/ExpressionBuilder';
+import { IRangeValue } from '../rest/RangeValue';
+import { DateUtils } from '../utils/DateUtils';
+import { Logger } from '../misc/Logger';
+import { QueryUtils } from '../utils/QueryUtils';
 import _ = require('underscore');
 
 export class FacetSliderQueryController {

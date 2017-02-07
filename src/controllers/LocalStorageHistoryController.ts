@@ -1,11 +1,11 @@
-import {LocalStorageUtils} from '../utils/LocalStorageUtils';
-import {Model} from '../models/Model';
-import {QueryController} from './QueryController';
-import {Logger} from '../misc/Logger';
-import {Assert} from '../misc/Assert';
-import {InitializationEvents} from '../events/InitializationEvents';
-import {RootComponent} from '../ui/Base/RootComponent';
-import {$$} from '../utils/Dom';
+import { LocalStorageUtils } from '../utils/LocalStorageUtils';
+import { Model } from '../models/Model';
+import { QueryController } from './QueryController';
+import { Logger } from '../misc/Logger';
+import { Assert } from '../misc/Assert';
+import { InitializationEvents } from '../events/InitializationEvents';
+import { RootComponent } from '../ui/Base/RootComponent';
+import { $$ } from '../utils/Dom';
 import _ = require('underscore');
 
 /**

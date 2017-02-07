@@ -1,7 +1,7 @@
-import {$$} from '../../utils/Dom';
-import {DeviceUtils} from '../../utils/DeviceUtils';
-import {SliderEvents, IGraphValueSelectedArgs} from '../../events/SliderEvents';
-import {Utils} from '../../utils/Utils';
+import { $$ } from '../../utils/Dom';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { SliderEvents, IGraphValueSelectedArgs } from '../../events/SliderEvents';
+import { Utils } from '../../utils/Utils';
 import d3Scale = require('d3-scale');
 import d3 = require('d3');
 import Globalize = require('globalize');

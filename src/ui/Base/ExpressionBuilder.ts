@@ -1,5 +1,5 @@
-import {Assert} from '../../misc/Assert';
-import {QueryUtils} from '../../utils/QueryUtils';
+import { Assert } from '../../misc/Assert';
+import { QueryUtils } from '../../utils/QueryUtils';
 import _ = require('underscore');
 
 /**

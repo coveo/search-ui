@@ -1,6 +1,6 @@
 import * as Mock from '../MockEnvironment';
-import {Logo} from '../../src/ui/Logo/Logo';
-import {$$} from '../../src/utils/Dom';
+import { Logo } from '../../src/ui/Logo/Logo';
+import { $$ } from '../../src/utils/Dom';
 
 export function LogoTest() {
   describe('Logo', () => {

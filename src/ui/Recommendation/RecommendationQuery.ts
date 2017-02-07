@@ -1,10 +1,10 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {Utils} from '../../utils/Utils';
-import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {Initialization} from '../Base/Initialization';
-import {$$} from '../../utils/Dom';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Utils } from '../../utils/Utils';
+import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { Initialization } from '../Base/Initialization';
+import { $$ } from '../../utils/Dom';
 import _ = require('underscore');
 
 export interface IRecommendationQueryOptions {

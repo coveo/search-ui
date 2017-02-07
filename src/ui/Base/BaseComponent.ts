@@ -1,6 +1,6 @@
-import {Assert} from '../../misc/Assert';
-import {$$} from '../../utils/Dom';
-import {Logger} from '../../misc/Logger';
+import { Assert } from '../../misc/Assert';
+import { $$ } from '../../utils/Dom';
+import { Logger } from '../../misc/Logger';
 
 declare var Coveo;
 

@@ -1,9 +1,9 @@
-import {QueryBuilder} from '../Base/QueryBuilder';
-import {NumericSpinner} from './Form/NumericSpinner';
-import {DatePicker} from './Form/DatePicker';
-import {Dropdown} from './Form/Dropdown';
-import {TextInput} from './Form/TextInput';
-import {RadioButton} from './Form/RadioButton';
+import { QueryBuilder } from '../Base/QueryBuilder';
+import { NumericSpinner } from './Form/NumericSpinner';
+import { DatePicker } from './Form/DatePicker';
+import { Dropdown } from './Form/Dropdown';
+import { TextInput } from './Form/TextInput';
+import { RadioButton } from './Form/RadioButton';
 
 /**
  * The basic types of form available to build an advanced search section.

@@ -1,13 +1,13 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {Assert} from '../../misc/Assert';
-import {QueryEvents, IQuerySuccessEventArgs} from '../../events/QueryEvents';
-import {ITriggerNotify, ITriggerExecute, ITriggerRedirect, ITriggerQuery, ITrigger} from '../../rest/Trigger';
-import {$$} from '../../utils/Dom';
-import {IAnalyticsTriggerNotify, analyticsActionCauseList, IAnalyticsTriggerRedirect, IAnalyticsTriggerQuery, IAnalyticsTriggerExecute} from '../Analytics/AnalyticsActionListMeta';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {Initialization} from '../Base/Initialization';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Assert } from '../../misc/Assert';
+import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { ITriggerNotify, ITriggerExecute, ITriggerRedirect, ITriggerQuery, ITrigger } from '../../rest/Trigger';
+import { $$ } from '../../utils/Dom';
+import { IAnalyticsTriggerNotify, analyticsActionCauseList, IAnalyticsTriggerRedirect, IAnalyticsTriggerQuery, IAnalyticsTriggerExecute } from '../Analytics/AnalyticsActionListMeta';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { Initialization } from '../Base/Initialization';
 import _ = require('underscore');
 
 export interface ITriggersOptions {

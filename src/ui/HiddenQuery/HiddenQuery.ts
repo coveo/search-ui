@@ -1,15 +1,15 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {l} from '../../strings/Strings';
-import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {BreadcrumbEvents, IPopulateBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
-import {analyticsActionCauseList, IAnalyticsContextRemoveMeta} from '../Analytics/AnalyticsActionListMeta';
-import {QUERY_STATE_ATTRIBUTES, QueryStateModel} from '../../models/QueryStateModel';
-import {$$} from '../../utils/Dom';
-import {Utils} from '../../utils/Utils';
-import {Initialization} from '../Base/Initialization';
-import {Assert} from '../../misc/Assert';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { l } from '../../strings/Strings';
+import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
+import { analyticsActionCauseList, IAnalyticsContextRemoveMeta } from '../Analytics/AnalyticsActionListMeta';
+import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
+import { $$ } from '../../utils/Dom';
+import { Utils } from '../../utils/Utils';
+import { Initialization } from '../Base/Initialization';
+import { Assert } from '../../misc/Assert';
 import _ = require('underscore');
 
 export interface IHiddenQueryOptions {

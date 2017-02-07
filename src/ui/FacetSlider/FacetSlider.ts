@@ -1,29 +1,29 @@
 /// <reference path="../Facet/FacetHeader.ts" />
 /// <reference path="../../controllers/FacetSliderQueryController.ts" />
 
-import {ISliderOptions, Slider, IEndSlideEventArgs, IDuringSlideEventArgs, ISliderGraphData} from '../Misc/Slider';
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
-import {ResponsiveFacets} from '../ResponsiveComponents/ResponsiveFacets';
-import {FacetHeader} from '../Facet/FacetHeader';
-import {l} from '../../strings/Strings';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {FeatureDetectionUtils} from '../../utils/FeatureDetectionUtils';
-import {FacetSliderQueryController} from '../../controllers/FacetSliderQueryController';
-import {QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {BreadcrumbEvents, IPopulateBreadcrumbEventArgs, IBreadcrumbItem} from '../../events/BreadcrumbEvents';
-import {IAttributeChangedEventArg, Model} from '../../models/Model';
-import {$$} from '../../utils/Dom';
-import {analyticsActionCauseList, IAnalyticsFacetMeta, IAnalyticsFacetSliderChangeMeta, IAnalyticsFacetGraphSelectedMeta} from '../Analytics/AnalyticsActionListMeta';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {SliderEvents, IGraphValueSelectedArgs} from '../../events/SliderEvents';
-import {Assert} from '../../misc/Assert';
-import {Utils} from '../../utils/Utils';
-import {ResponsiveComponentsUtils} from '../ResponsiveComponents/ResponsiveComponentsUtils';
-import {Initialization} from '../Base/Initialization';
+import { ISliderOptions, Slider, IEndSlideEventArgs, IDuringSlideEventArgs, ISliderGraphData } from '../Misc/Slider';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
+import { FacetHeader } from '../Facet/FacetHeader';
+import { l } from '../../strings/Strings';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { FeatureDetectionUtils } from '../../utils/FeatureDetectionUtils';
+import { FacetSliderQueryController } from '../../controllers/FacetSliderQueryController';
+import { QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs, IBreadcrumbItem } from '../../events/BreadcrumbEvents';
+import { IAttributeChangedEventArg, Model } from '../../models/Model';
+import { $$ } from '../../utils/Dom';
+import { analyticsActionCauseList, IAnalyticsFacetMeta, IAnalyticsFacetSliderChangeMeta, IAnalyticsFacetGraphSelectedMeta } from '../Analytics/AnalyticsActionListMeta';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { SliderEvents, IGraphValueSelectedArgs } from '../../events/SliderEvents';
+import { Assert } from '../../misc/Assert';
+import { Utils } from '../../utils/Utils';
+import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
+import { Initialization } from '../Base/Initialization';
 import d3 = require('d3');
-import {SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs} from '../../events/SearchAlertEvents';
+import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
 import _ = require('underscore');
 
 export interface IFacetSliderOptions extends ISliderOptions {

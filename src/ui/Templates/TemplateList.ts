@@ -1,5 +1,5 @@
-import {Template} from './Template';
-import {DefaultResultTemplate} from './DefaultResultTemplate';
+import { Template } from './Template';
+import { DefaultResultTemplate } from './DefaultResultTemplate';
 import _ = require('underscore');
 
 export class TemplateList extends Template {

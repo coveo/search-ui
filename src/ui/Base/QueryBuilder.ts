@@ -1,9 +1,9 @@
-import {ExpressionBuilder} from './ExpressionBuilder';
-import {QueryUtils} from '../../utils/QueryUtils';
-import {IRankingFunction} from '../../rest/RankingFunction';
-import {IQueryFunction} from '../../rest/QueryFunction';
-import {IGroupByRequest} from '../../rest/GroupByRequest';
-import {IQuery} from '../../rest/Query';
+import { ExpressionBuilder } from './ExpressionBuilder';
+import { QueryUtils } from '../../utils/QueryUtils';
+import { IRankingFunction } from '../../rest/RankingFunction';
+import { IQueryFunction } from '../../rest/QueryFunction';
+import { IGroupByRequest } from '../../rest/GroupByRequest';
+import { IQuery } from '../../rest/Query';
 import _ = require('underscore');
 
 /**

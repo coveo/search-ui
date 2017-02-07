@@ -1,9 +1,9 @@
 ///<reference path="Omnibox.ts"/>
-import {Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion} from './Omnibox';
-import {IOmniboxDataRow} from './OmniboxInterface';
-import {OmniboxEvents, IPopulateOmniboxEventArgs, IPopulateOmniboxEventRow} from '../../events/OmniboxEvents';
-import {$$} from '../../utils/Dom';
-import {Utils} from '../../utils/Utils';
+import { Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion } from './Omnibox';
+import { IOmniboxDataRow } from './OmniboxInterface';
+import { OmniboxEvents, IPopulateOmniboxEventArgs, IPopulateOmniboxEventRow } from '../../events/OmniboxEvents';
+import { $$ } from '../../utils/Dom';
+import { Utils } from '../../utils/Utils';
 import _ = require('underscore');
 
 export class OldOmniboxAddon {

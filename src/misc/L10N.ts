@@ -1,4 +1,4 @@
-import {LocaleString} from '../ExternalModulesShim';
+import { LocaleString } from '../ExternalModulesShim';
 import _ = require('underscore');
 
 String.toLocaleString = LocaleString;

@@ -1,9 +1,9 @@
 ///<reference path='Omnibox.ts'/>
-import {Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion} from './Omnibox';
-import {OmniboxEvents} from '../../events/OmniboxEvents';
-import {IFieldDescription} from '../../rest/FieldDescription';
-import {IEndpointError} from '../../rest/EndpointError';
-import {MagicBox} from '../../ExternalModulesShim';
+import { Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion } from './Omnibox';
+import { OmniboxEvents } from '../../events/OmniboxEvents';
+import { IFieldDescription } from '../../rest/FieldDescription';
+import { IEndpointError } from '../../rest/EndpointError';
+import { MagicBox } from '../../ExternalModulesShim';
 import _ = require('underscore');
 
 interface IFieldAddonHash {

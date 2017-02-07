@@ -1,17 +1,17 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
-import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Assert} from '../../misc/Assert';
-import {SearchAlertsEvents, ISearchAlertsEventArgs, ISearchAlertsFailEventArgs} from '../../events/SearchAlertEvents';
-import {ISubscription, ISubscriptionItemRequest, SUBSCRIPTION_TYPE, ISubscriptionRequest} from '../../rest/Subscription';
-import {Initialization} from '../Base/Initialization';
-import {l} from '../../strings/Strings';
-import {$$, Dom} from '../../utils/Dom';
+import { Component } from '../Base/Component';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Assert } from '../../misc/Assert';
+import { SearchAlertsEvents, ISearchAlertsEventArgs, ISearchAlertsFailEventArgs } from '../../events/SearchAlertEvents';
+import { ISubscription, ISubscriptionItemRequest, SUBSCRIPTION_TYPE, ISubscriptionRequest } from '../../rest/Subscription';
+import { Initialization } from '../Base/Initialization';
+import { l } from '../../strings/Strings';
+import { $$, Dom } from '../../utils/Dom';
 import {
   analyticsActionCauseList, IAnalyticsSearchAlertsFollowDocumentMeta, IAnalyticsActionCause
 } from '../Analytics/AnalyticsActionListMeta';
-import {QueryUtils} from '../../utils/QueryUtils';
+import { QueryUtils } from '../../utils/QueryUtils';
 import _ = require('underscore');
 
 

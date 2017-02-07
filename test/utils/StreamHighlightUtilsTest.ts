@@ -1,4 +1,4 @@
-import {StreamHighlightUtils} from '../../src/utils/StreamHighlightUtils';
+import { StreamHighlightUtils } from '../../src/utils/StreamHighlightUtils';
 
 export function StreamHighlightUtilsTest() {
   describe('StreamHighlightUtils', () => {

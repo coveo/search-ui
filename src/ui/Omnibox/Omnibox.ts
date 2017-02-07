@@ -2,32 +2,32 @@
 ///<reference path="QueryExtensionAddon.ts" />
 ///<reference path="RevealQuerySuggestAddon.ts" />
 ///<reference path="OldOmniboxAddon.ts" />
-import {IQueryboxOptions} from '../Querybox/Querybox';
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
-import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {StandaloneSearchInterfaceEvents} from '../../events/StandaloneSearchInterfaceEvents';
-import {MODEL_EVENTS, IAttributeChangedEventArg} from '../../models/Model';
-import {QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
-import {IAnalyticsNoMeta, analyticsActionCauseList, IAnalyticsOmniboxSuggestionMeta} from '../Analytics/AnalyticsActionListMeta';
-import {OmniboxEvents, IOmniboxPreprocessResultForQueryEventArgs} from '../../events/OmniboxEvents';
-import {$$} from '../../utils/Dom';
-import {Assert} from '../../misc/Assert';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {Initialization} from '../Base/Initialization';
-import {Querybox} from '../Querybox/Querybox';
-import {FieldAddon} from './FieldAddon';
-import {QueryExtensionAddon} from './QueryExtensionAddon';
-import {RevealQuerySuggestAddon} from './RevealQuerySuggestAddon';
-import {OldOmniboxAddon} from './OldOmniboxAddon';
-import {QueryboxQueryParameters} from '../Querybox/QueryboxQueryParameters';
-import {IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta';
-import {IDuringQueryEventArgs} from '../../events/QueryEvents';
-import {PendingSearchAsYouTypeSearchEvent} from '../Analytics/PendingSearchAsYouTypeSearchEvent';
-import {Utils} from '../../utils/Utils';
-import {MagicBox} from '../../ExternalModulesShim';
-import {StandaloneSearchInterface} from '../SearchInterface/SearchInterface';
+import { IQueryboxOptions } from '../Querybox/Querybox';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
+import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
+import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
+import { IAnalyticsNoMeta, analyticsActionCauseList, IAnalyticsOmniboxSuggestionMeta } from '../Analytics/AnalyticsActionListMeta';
+import { OmniboxEvents, IOmniboxPreprocessResultForQueryEventArgs } from '../../events/OmniboxEvents';
+import { $$ } from '../../utils/Dom';
+import { Assert } from '../../misc/Assert';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { Initialization } from '../Base/Initialization';
+import { Querybox } from '../Querybox/Querybox';
+import { FieldAddon } from './FieldAddon';
+import { QueryExtensionAddon } from './QueryExtensionAddon';
+import { RevealQuerySuggestAddon } from './RevealQuerySuggestAddon';
+import { OldOmniboxAddon } from './OldOmniboxAddon';
+import { QueryboxQueryParameters } from '../Querybox/QueryboxQueryParameters';
+import { IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
+import { IDuringQueryEventArgs } from '../../events/QueryEvents';
+import { PendingSearchAsYouTypeSearchEvent } from '../Analytics/PendingSearchAsYouTypeSearchEvent';
+import { Utils } from '../../utils/Utils';
+import { MagicBox } from '../../ExternalModulesShim';
+import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
 import _ = require('underscore');
 
 export interface IPopulateOmniboxSuggestionsEventArgs {

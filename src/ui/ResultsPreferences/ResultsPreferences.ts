@@ -1,17 +1,17 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {LocalStorageUtils} from '../../utils/LocalStorageUtils';
-import {PreferencesPanel} from '../PreferencesPanel/PreferencesPanel';
-import {PreferencesPanelCheckboxInput} from '../PreferencesPanel/PreferencesPanelItem';
-import {PreferencesPanelEvents} from '../../events/PreferencesPanelEvents';
-import {analyticsActionCauseList, IAnalyticsPreferencesChangeMeta} from '../Analytics/AnalyticsActionListMeta';
-import {Initialization} from '../Base/Initialization';
-import {IResultLinkOptions} from '../ResultLink/ResultLinkOptions';
-import {Assert} from '../../misc/Assert';
-import {l} from '../../strings/Strings';
-import {$$} from '../../utils/Dom';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { LocalStorageUtils } from '../../utils/LocalStorageUtils';
+import { PreferencesPanel } from '../PreferencesPanel/PreferencesPanel';
+import { PreferencesPanelCheckboxInput } from '../PreferencesPanel/PreferencesPanelItem';
+import { PreferencesPanelEvents } from '../../events/PreferencesPanelEvents';
+import { analyticsActionCauseList, IAnalyticsPreferencesChangeMeta } from '../Analytics/AnalyticsActionListMeta';
+import { Initialization } from '../Base/Initialization';
+import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
+import { Assert } from '../../misc/Assert';
+import { l } from '../../strings/Strings';
+import { $$ } from '../../utils/Dom';
 import _ = require('underscore');
 
 export interface IResultsPreferencesOptions {

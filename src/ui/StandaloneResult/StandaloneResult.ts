@@ -1,7 +1,7 @@
-import {SearchInterface} from '../SearchInterface/SearchInterface';
-import {Template} from '../Templates/Template';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Component} from '../Base/Component';
+import { SearchInterface } from '../SearchInterface/SearchInterface';
+import { Template } from '../Templates/Template';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Component } from '../Base/Component';
 
 export class StandaloneResult {
   public element: HTMLElement;

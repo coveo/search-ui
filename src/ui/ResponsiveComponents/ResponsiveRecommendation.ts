@@ -1,19 +1,19 @@
-import {ResponsiveComponentsManager, IResponsiveComponent, IResponsiveComponentOptions} from './ResponsiveComponentsManager';
-import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
-import {SearchInterface} from '../SearchInterface/SearchInterface';
-import {Utils} from '../../utils/Utils';
-import {$$, Dom} from '../../utils/Dom';
-import {Logger} from '../../misc/Logger';
-import {Recommendation} from '../Recommendation/Recommendation';
-import {RecommendationDropdownContent} from './ResponsiveDropdown/RecommendationDropdownContent';
-import {ResponsiveDropdownHeader} from './ResponsiveDropdown/ResponsiveDropdownHeader';
-import {ResponsiveDropdown} from './ResponsiveDropdown/ResponsiveDropdown';
-import {l} from '../../strings/Strings';
-import {FacetSlider} from '../FacetSlider/FacetSlider';
-import {Facet} from '../Facet/Facet';
-import {Component} from '../Base/Component';
-import {get} from '../Base/RegisteredNamedMethods';
-import {QueryEvents, IQuerySuccessEventArgs, INoResultsEventArgs} from '../../events/QueryEvents';
+import { ResponsiveComponentsManager, IResponsiveComponent, IResponsiveComponentOptions } from './ResponsiveComponentsManager';
+import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
+import { SearchInterface } from '../SearchInterface/SearchInterface';
+import { Utils } from '../../utils/Utils';
+import { $$, Dom } from '../../utils/Dom';
+import { Logger } from '../../misc/Logger';
+import { Recommendation } from '../Recommendation/Recommendation';
+import { RecommendationDropdownContent } from './ResponsiveDropdown/RecommendationDropdownContent';
+import { ResponsiveDropdownHeader } from './ResponsiveDropdown/ResponsiveDropdownHeader';
+import { ResponsiveDropdown } from './ResponsiveDropdown/ResponsiveDropdown';
+import { l } from '../../strings/Strings';
+import { FacetSlider } from '../FacetSlider/FacetSlider';
+import { Facet } from '../Facet/Facet';
+import { Component } from '../Base/Component';
+import { get } from '../Base/RegisteredNamedMethods';
+import { QueryEvents, IQuerySuccessEventArgs, INoResultsEventArgs } from '../../events/QueryEvents';
 import _ = require('underscore');
 
 export class ResponsiveRecommendation implements IResponsiveComponent {

@@ -1,11 +1,11 @@
-import {FacetHeader} from '../../src/ui/Facet/FacetHeader';
-import {IFacetHeaderOptions} from '../../src/ui/Facet/FacetHeader';
-import {$$} from '../../src/utils/Dom';
-import {Facet} from '../../src/ui/Facet/Facet';
-import {IFacetOptions} from '../../src/ui/Facet/Facet';
-import {registerCustomMatcher} from '../CustomMatchers';
+import { FacetHeader } from '../../src/ui/Facet/FacetHeader';
+import { IFacetHeaderOptions } from '../../src/ui/Facet/FacetHeader';
+import { $$ } from '../../src/utils/Dom';
+import { Facet } from '../../src/ui/Facet/Facet';
+import { IFacetOptions } from '../../src/ui/Facet/Facet';
+import { registerCustomMatcher } from '../CustomMatchers';
 import * as Mock from '../MockEnvironment';
-import {FacetSettings} from '../../src/ui/Facet/FacetSettings';
+import { FacetSettings } from '../../src/ui/Facet/FacetSettings';
 import _ = require('underscore');
 
 export function FacetHeaderTest() {

@@ -1,13 +1,13 @@
 /// <reference path="Facet.ts" />
-import {Facet} from './Facet';
-import {FacetValue} from './FacetValues';
-import {IPopulateOmniboxObject} from '../Omnibox/OmniboxInterface';
-import {IOmniboxValueElementKlass} from './OmniboxValueElement';
-import {ValueElement} from './ValueElement';
-import {IAnalyticsActionCause, IAnalyticsOmniboxFacetMeta} from '../Analytics/AnalyticsActionListMeta';
-import {$$} from '../../utils/Dom';
-import {Utils} from '../../utils/Utils';
-import {FacetUtils} from './FacetUtils';
+import { Facet } from './Facet';
+import { FacetValue } from './FacetValues';
+import { IPopulateOmniboxObject } from '../Omnibox/OmniboxInterface';
+import { IOmniboxValueElementKlass } from './OmniboxValueElement';
+import { ValueElement } from './ValueElement';
+import { IAnalyticsActionCause, IAnalyticsOmniboxFacetMeta } from '../Analytics/AnalyticsActionListMeta';
+import { $$ } from '../../utils/Dom';
+import { Utils } from '../../utils/Utils';
+import { FacetUtils } from './FacetUtils';
 import _ = require('underscore');
 
 export class OmniboxValuesList {

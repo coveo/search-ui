@@ -1,12 +1,12 @@
-import {IOmniboxOptions} from '../Omnibox/Omnibox';
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {Omnibox} from '../Omnibox/Omnibox';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {SearchButton} from '../SearchButton/SearchButton';
-import {Querybox} from '../Querybox/Querybox';
-import {$$} from '../../utils/Dom';
-import {Initialization} from '../Base/Initialization';
+import { IOmniboxOptions } from '../Omnibox/Omnibox';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Omnibox } from '../Omnibox/Omnibox';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { SearchButton } from '../SearchButton/SearchButton';
+import { Querybox } from '../Querybox/Querybox';
+import { $$ } from '../../utils/Dom';
+import { Initialization } from '../Base/Initialization';
 import _ = require('underscore');
 
 export interface ISearchboxOptions extends IOmniboxOptions {

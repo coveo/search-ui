@@ -1,6 +1,6 @@
-import {Assert} from '../misc/Assert';
-import {IHighlight} from '../rest/Highlight';
-import {$$} from '../utils/Dom';
+import { Assert } from '../misc/Assert';
+import { IHighlight } from '../rest/Highlight';
+import { $$ } from '../utils/Dom';
 import * as latinize from 'latinize';
 import _ = require('underscore');
 

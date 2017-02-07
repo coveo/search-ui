@@ -1,9 +1,9 @@
-import {HiddenQuery} from '../../src/ui/HiddenQuery/HiddenQuery';
+import { HiddenQuery } from '../../src/ui/HiddenQuery/HiddenQuery';
 import * as Mock from '../MockEnvironment';
-import {$$} from '../../src/utils/Dom';
-import {BreadcrumbEvents} from '../../src/events/BreadcrumbEvents';
-import {Simulate} from '../Simulate';
-import {IPopulateBreadcrumbEventArgs} from '../../src/events/BreadcrumbEvents';
+import { $$ } from '../../src/utils/Dom';
+import { BreadcrumbEvents } from '../../src/events/BreadcrumbEvents';
+import { Simulate } from '../Simulate';
+import { IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
 import _ = require('underscore');
 
 export function HiddenQueryTest() {

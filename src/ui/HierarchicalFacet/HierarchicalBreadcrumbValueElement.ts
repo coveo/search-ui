@@ -1,7 +1,7 @@
-import {BreadcrumbValueElement} from '../Facet/BreadcrumbValueElement';
-import {FacetValue} from '../Facet/FacetValues';
-import {HierarchicalFacet} from './HierarchicalFacet';
-import {Dom} from '../../utils/Dom';
+import { BreadcrumbValueElement } from '../Facet/BreadcrumbValueElement';
+import { FacetValue } from '../Facet/FacetValues';
+import { HierarchicalFacet } from './HierarchicalFacet';
+import { Dom } from '../../utils/Dom';
 import _ = require('underscore');
 
 export class HierarchicalBreadcrumbValueElement extends BreadcrumbValueElement {

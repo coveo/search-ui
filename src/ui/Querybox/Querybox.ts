@@ -1,15 +1,15 @@
-import {Initialization} from '../Base/Initialization';
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {MODEL_EVENTS, IAttributeChangedEventArg} from '../../models/Model';
-import {QUERY_STATE_ATTRIBUTES, QueryStateModel} from '../../models/QueryStateModel';
-import {StandaloneSearchInterfaceEvents} from '../../events/StandaloneSearchInterfaceEvents';
-import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {$$} from '../../utils/Dom';
-import {Assert} from '../../misc/Assert';
-import {QueryboxQueryParameters} from './QueryboxQueryParameters';
+import { Initialization } from '../Base/Initialization';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
+import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
+import { StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
+import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { $$ } from '../../utils/Dom';
+import { Assert } from '../../misc/Assert';
+import { QueryboxQueryParameters } from './QueryboxQueryParameters';
 
 export interface IQueryboxOptions {
   enableSearchAsYouType?: boolean;

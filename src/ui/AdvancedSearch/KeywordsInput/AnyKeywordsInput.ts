@@ -1,5 +1,5 @@
-import {KeywordsInput} from './KeywordsInput';
-import {l} from '../../../strings/Strings';
+import { KeywordsInput } from './KeywordsInput';
+import { l } from '../../../strings/Strings';
 import _ = require('underscore');
 
 export class AnyKeywordsInput extends KeywordsInput {
