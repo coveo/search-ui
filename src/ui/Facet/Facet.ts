@@ -171,7 +171,8 @@ export class Facet extends Component {
     }),
 
     /**
-     * Specifies whether the field is configured in the index as a multi-value field (meaning: comma separated values).
+     * Specifies whether the field is configured in the index as a multi-value field (semicolon separated values such as
+     * `abc;def;ghi`).
      *
      * Default value is `false`.
      */
@@ -566,14 +567,14 @@ export class Facet extends Component {
 
     /**
      * If {@link Facet.options.enableResponsiveMode} is `true` for all facets and
-     * {@link FacetSlider.options.enableResponsiveMode} is also true for all sliders, specifies the width threshold
+     * {@link FacetSlider.options.enableResponsiveMode} is also `true` for all sliders, specifies the width threshold
      * (in pixels) of the search interface at which facets go in responsive mode.
      *
      * Facets go in responsive mode when the width of the search interface is equal to or lower than this value.
      *
      * The `search interface` corresponds to the HTML element with the class `CoveoSearchInterface`.
      *
-     * If more than one FacetSlider or {@link Facet} in the search interface specifies a value for this option, then the
+     * If more than one {@link FacetSlider} or Facet in the search interface specifies a value for this option, then the
      * framework uses the last occurrence of the option.
      *
      * Default value is `800`.
@@ -582,7 +583,7 @@ export class Facet extends Component {
 
     /**
      * If {@link Facet.options.enableResponsiveMode} is `true` for all facets and
-     * {@link FacetSlider.options.enableResponsiveMode} is also true for all sliders, specifies the label of the
+     * {@link FacetSlider.options.enableResponsiveMode} is also `true` for all sliders, specifies the label of the
      * dropdown button that allows to display the facets when in responsive mode.
      *
      * If more than one Facet or {@link FacetSlider} in the search interface specifies a value for this option, then the
