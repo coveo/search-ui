@@ -89,7 +89,6 @@ export {ResultTagging} from './ui/ResultTagging/ResultTagging';
 export {ResultsPreferences} from './ui/ResultsPreferences/ResultsPreferences';
 export {PipelineContext, context} from './ui/PipelineContext/PipelineContext';
 export {OmniboxResultList} from './ui/OmniboxResultList/OmniboxResultList';
-export {CurrentTab} from './ui/CurrentTab/CurrentTab';
 export {QueryboxQueryParameters} from './ui/Querybox/QueryboxQueryParameters';
 export {ImageResultList} from './ui/ImageResultList/ImageResultList';
 export {jQueryInstance as $} from './ui/Base/CoveoJQuery';

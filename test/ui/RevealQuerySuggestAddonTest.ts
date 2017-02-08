@@ -94,7 +94,7 @@ export function RevealQuerySuggestAddonTest() {
 
       // PhantomJS faulty Promise implementation causes issues here
       if (!Simulate.isPhantomJs()) {
-        describe('with a cache', ()=> {
+        describe('with a cache', () => {
           it('should cache the result', (done) => {
             let revealQuerySuggest = new RevealQuerySuggestAddon(omnibox);
             let firstPromise = new Promise((resolve, reject) => {

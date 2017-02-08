@@ -174,7 +174,6 @@
     "src/ui/ChatterPostAttachment/ChatterPostAttachment.ts",
     "src/ui/ChatterPostedBy/ChatterPostedBy.ts",
     "src/ui/ChatterTopic/ChatterTopic.ts",
-    "src/ui/CurrentTab/CurrentTab.ts",
     "src/ui/Debug/Debug.ts",
     "src/ui/DidYouMean/DidYouMean.ts",
     "src/ui/ErrorReport/ErrorReport.ts",

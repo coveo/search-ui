@@ -69,7 +69,6 @@
         "../test/ui/ComponentEventsTest.ts",
         "../test/ui/ComponentOptionsTest.ts",
         "../test/ui/ComponentTest.ts",
-        "../test/ui/CurrentTabTest.ts",
         "../test/ui/DebugTest.ts",
         "../test/ui/DidYouMeanTest.ts",
         "../test/ui/ErrorReportTest.ts",
