@@ -276,7 +276,7 @@ export class FacetSlider extends Component {
     /**
      * Specifies the label of the button that allows to show the facets when in responsive mode. If it is specified more than once, the
      * first occurence of the option will be used.
-     * The default value is "Filters". 
+     * The default value is "Filters".
      */
     dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption()
   };

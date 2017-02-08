@@ -44,8 +44,6 @@ export interface IAdvancedSearchSection {
 
 /**
  * Describe a section populated by external code, using the {@link AdvancedSearchEvents.buildingAdvancedSearch}
- *
- * See : 
  */
 export interface IExternalAdvancedSearchSection extends IAdvancedSearchSection {
   /**

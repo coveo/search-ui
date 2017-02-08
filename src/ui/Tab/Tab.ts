@@ -146,7 +146,7 @@ export class Tab extends Component {
     /**
      * Specifies the label of the button that allows to show the hidden tabs when in responsive mode. If it is specified more than once, the
      * first occurence of the option will be used.
-     * The default value is "More". 
+     * The default value is "More".
      */
     dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption()
 

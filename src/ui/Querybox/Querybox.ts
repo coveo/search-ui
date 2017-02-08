@@ -64,7 +64,7 @@ export class Querybox extends Component {
      * <a target="_blank" href="http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005">Coveo Query Syntax Reference</a>).
      *
      * Query syntax in the Querybox will also be highlighted when this option is enabled.
-     * 
+     *
      * See also {@link Querybox.options.enableWildcards}, {@link Querybox.options.enableQuestionMarks} and
      * {@link Querybox.options.enableLowercaseOperators}.
      *

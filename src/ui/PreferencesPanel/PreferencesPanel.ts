@@ -57,7 +57,7 @@ export class PreferencesPanel extends Component {
   }
 
   /**
-   * Save the changes 
+   * Save the changes
    */
   public save(): void {
     $$(this.element).trigger(PreferencesPanelEvents.savePreferences);
