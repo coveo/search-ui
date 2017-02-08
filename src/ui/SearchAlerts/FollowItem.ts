@@ -20,10 +20,15 @@ export interface IFollowItemOptions {
 }
 
 /**
- * This component allows the user to follow a particular item (document).
- * A user following an item will receive email notifications when the item changes.
+ * The FollowItem component renders a widget that the end user can click to follow a particular item (document). A user
+ * following an item receives email notifications when the item changes.
  *
- * A {@link SearchAlerts} component must be present in the page for this component to work.
+ * **Note:**
+ * > A {@link SearchAlerts} component must be present in the page for this component to work. It is also necessary to
+ * > meet certain requirements to be able to use this component (see
+ * > [Deploying Search Alerts on a Coveo JS Search Page](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=248)).
+ *
+ * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
 export class FollowItem extends Component {
   static ID = 'FollowItem';
@@ -39,14 +44,16 @@ export class FollowItem extends Component {
   static options: IFollowItemOptions = {
 
     /**
-     * Specifies the watchedFields to use when sending the followQuery subscription request.
+     * Specifies the {@link ISubscriptionItemRequest.watchedFields} to use when sending the
+     * {@link ISubscriptionItemRequest}.
      *
      * Default value is `undefined`.
      */
     watchedFields: ComponentOptions.buildFieldsOption(),
 
     /**
-     * Specifies the modifiedDateField to use when sending the followQuery subscription request.
+     * Specifies the {@link ISubscriptionItemRequest.modifiedDateField} to use when sending the
+     * {@link ISubscriptionItemRequest}.
      *
      * Default value is `undefined`.
      */
@@ -57,6 +64,14 @@ export class FollowItem extends Component {
   private text: Dom;
   private subscription: ISubscription;
 
+  /**
+   * Creates a new FollowItem component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the FollowItem component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time)
+   * @param result The result to associate the component with.
+   */
   constructor(public element: HTMLElement,
     public options?: IFollowItemOptions,
     public bindings?: IResultsComponentBindings,
@@ -96,8 +111,10 @@ export class FollowItem extends Component {
   }
 
   /**
-   * Follows the item if it is not currently being followed. Stops following the item otherwise.
-   * By default, this method is called when the user clicks the **Follow Item** menu item under {@link Settings}.
+   * Follows the item if not already following it. Stops following the item otherwise.
+   *
+   * Also logs the appropriate event in the usage analytics (either `searchAlertsFollowDocument` or
+   * `searchAlertsUnfollowDocument`).
    */
   public toggleFollow() {
     if (!this.container.hasClass('coveo-follow-item-loading')) {

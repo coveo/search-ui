@@ -16,8 +16,10 @@ export interface ISearchAlertMessageOptions {
 }
 
 /**
- * This component allows the {@link SearchAlerts} component to display messages.
- * This component should not be included in a web page. Instead, use a {@link SearchAlerts} component and access its message attribute.
+ * The SearchAlertsMessage component allows the {@link SearchAlerts} component to display messages.
+ *
+ * You should not include this component in your page. Instead, use a {@link SearchAlerts} component, and access the
+ * {@link SearchAlerts.message} attribute.
  */
 export class SearchAlertsMessage extends Component {
   static ID = 'SubscriptionsMessages';
@@ -27,9 +29,11 @@ export class SearchAlertsMessage extends Component {
    * @componentOptions
    */
   static options: ISearchAlertMessageOptions = {
+
     /**
-     * Specifies how long to display the search alerts messages (in ms).
-     * This default value is 3000.
+     * Specifies how long to display the search alerts messages (in milliseconds).
+     *
+     * Default value is `3000`.
      */
     closeDelay: ComponentOptions.buildNumberOption({ defaultValue: 3000 }),
   };
@@ -89,10 +93,10 @@ export class SearchAlertsMessage extends Component {
   }
 
   /**
-   * Displays a message near the dom attribute.
+   * Displays a message near the passed dom attribute.
    * @param dom Specifies where to display the message.
    * @param message The message.
-   * @param error Specifies whether this is an error message or not.
+   * @param error Specifies whether the message is an error message.
    */
   public showMessage(dom: Dom, message: string, error: boolean) {
     this.message = $$('div');
