@@ -37,12 +37,15 @@ interface IQuickviewOpenerObject {
  *
  * Most of the time, this component will reference a {@link QuickviewDocument} in its content template.
  *
- * # Choosing what to display for the Quickview
+ * ## Choosing what to display for the Quickview
  * The Quick View uses any HTML structure you put inside its tag and uses that as the content of the dialog box. This content can thus be any element you decide, using your CSS and your structure.
  *
- * > Example
- * > You can change the appearance of the Quick View link by adding HTML inside the body of the div.
- * > You can change the content of the Quick View link by specifying a template ID.
+ * ## Example
+ * - You can change the appearance of the Quick View link by adding HTML inside the body of the div.
+ * 
+ * - You can change the content of the Quick View link by specifying a template ID.
+ * 
+ * - You can use the methods of the [CoreHelpers]{@link ICoreHelpers} in the template.
  *
  * ```html
  * <!-- This would change the appearance of the quickview button itself in the result. -->
