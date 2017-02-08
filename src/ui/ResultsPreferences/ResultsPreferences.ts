@@ -25,6 +25,8 @@ export interface IResultsPreferencesOptions {
  *
  * This component is normally accessible through the {@link Settings} menu. Its usual location in the DOM is inside the
  * {@link PreferencesPanel} component.
+ *
+ * See also the {@link ResultsFiltersPreferences} component.
  */
 export class ResultsPreferences extends Component {
   static ID = 'ResultsPreferences';
