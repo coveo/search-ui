@@ -1,17 +1,18 @@
-import {AdvancedSearch, IAdvancedSearchOptions} from '../../../src/ui/AdvancedSearch/AdvancedSearch';
-import {AdvancedSearchEvents, IBuildingAdvancedSearchEventArgs} from '../../../src/events/AdvancedSearchEvents';
-import {QueryBuilder} from '../../../src/ui/Base/QueryBuilder';
-import {Simulate} from '../../Simulate';
-import {$$} from '../../../src/utils/Dom';
-import {l} from '../../../src/strings/Strings';
+import { AdvancedSearch, IAdvancedSearchOptions } from '../../../src/ui/AdvancedSearch/AdvancedSearch';
+import { AdvancedSearchEvents, IBuildingAdvancedSearchEventArgs } from '../../../src/events/AdvancedSearchEvents';
+import { QueryBuilder } from '../../../src/ui/Base/QueryBuilder';
+import { Simulate } from '../../Simulate';
+import { $$ } from '../../../src/utils/Dom';
+import { l } from '../../../src/strings/Strings';
 import * as Mock from '../../MockEnvironment';
-import {TextInput} from '../../../src/ui/AdvancedSearch/Form/TextInput';
-import {NumericSpinner} from '../../../src/ui/AdvancedSearch/Form/NumericSpinner';
-import {DatePicker} from '../../../src/ui/AdvancedSearch/Form/DatePicker';
-import {BaseFormTypes} from '../../../src/ui/AdvancedSearch/AdvancedSearchInput';
-import {AdvancedComponentSetupOptions} from '../../MockEnvironment';
-import {MockEnvironmentBuilder} from '../../MockEnvironment';
-import {analyticsActionCauseList} from '../../../src/ui/Analytics/AnalyticsActionListMeta';
+import { TextInput } from '../../../src/ui/AdvancedSearch/Form/TextInput';
+import { NumericSpinner } from '../../../src/ui/AdvancedSearch/Form/NumericSpinner';
+import { DatePicker } from '../../../src/ui/AdvancedSearch/Form/DatePicker';
+import { BaseFormTypes } from '../../../src/ui/AdvancedSearch/AdvancedSearchInput';
+import { AdvancedComponentSetupOptions } from '../../MockEnvironment';
+import { MockEnvironmentBuilder } from '../../MockEnvironment';
+import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
+import _ = require('underscore');
 
 export function AdvancedSearchTest() {
   describe('AdvancedSearch', () => {
@@ -50,7 +51,7 @@ export function AdvancedSearchTest() {
             expect(inputs).toEqual(jasmine.arrayContaining([textInput, numericInput, dpicker]));
             expect(queryBuilder).toBeDefined();
           },
-          inputs: [textInput, numericInput, dpicker]
+          inputs: <any[]>[textInput, numericInput, dpicker]
         });
       });
 

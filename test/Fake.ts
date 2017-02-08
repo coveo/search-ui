@@ -1,15 +1,16 @@
-import {IQueryResults} from '../src/rest/QueryResults';
-import {IQueryResult} from '../src/rest/QueryResult';
-import {QueryUtils} from '../src/utils/QueryUtils';
-import {Assert} from '../src/misc/Assert';
-import {IGroupByValue} from '../src/rest/GroupByValue';
-import {IGroupByResult} from '../src/rest/GroupByResult';
-import {IIndexFieldValue} from '../src/rest/FieldValue';
-import {ISearchEvent} from '../src/rest/SearchEvent';
-import {IClickEvent} from '../src/rest/ClickEvent';
-import {IOmniboxDataRow} from '../src/ui/Omnibox/OmniboxInterface';
-import {IPopulateOmniboxEventArgs} from '../src/events/OmniboxEvents';
-import {mockSearchInterface} from './MockEnvironment';
+import { IQueryResults } from '../src/rest/QueryResults';
+import { IQueryResult } from '../src/rest/QueryResult';
+import { QueryUtils } from '../src/utils/QueryUtils';
+import { Assert } from '../src/misc/Assert';
+import { IGroupByValue } from '../src/rest/GroupByValue';
+import { IGroupByResult } from '../src/rest/GroupByResult';
+import { IIndexFieldValue } from '../src/rest/FieldValue';
+import { ISearchEvent } from '../src/rest/SearchEvent';
+import { IClickEvent } from '../src/rest/ClickEvent';
+import { IOmniboxDataRow } from '../src/ui/Omnibox/OmniboxInterface';
+import { IPopulateOmniboxEventArgs } from '../src/events/OmniboxEvents';
+import { mockSearchInterface } from './MockEnvironment';
+import _ = require('underscore');
 
 export class FakeResults {
 

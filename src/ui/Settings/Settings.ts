@@ -1,12 +1,13 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {$$} from '../../utils/Dom';
-import {PopupUtils, IPosition, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
-import {IMenuItem} from '../Menu/MenuItem';
-import {SettingsEvents} from '../../events/SettingsEvents';
-import {Initialization} from '../Base/Initialization';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { $$ } from '../../utils/Dom';
+import { PopupUtils, IPosition, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
+import { IMenuItem } from '../Menu/MenuItem';
+import { SettingsEvents } from '../../events/SettingsEvents';
+import { Initialization } from '../Base/Initialization';
+import _ = require('underscore');
 
 export interface ISettingsPopulateMenuArgs {
   settings: Settings;
@@ -18,10 +19,17 @@ export interface ISettingsOptions {
 }
 
 /**
- * The Settings component is comprised of a settings button (usually located
- * on the right of the search box) which allows for some contextual actions.<br/>
- * This component references other components to show in its menu, for example
- * the {@link ShareQuery} component.
+ * The Settings component renders a **Settings** button that the end user can click to access a popup menu from which
+ * it is possible to perform several contextual actions. The usual location of the **Settings** button in the page is to
+ * the right of the {@link Searchbox}.
+ *
+ * This component can reference several components to populate its popup menu:
+ * - {@link AdvancedSearch}
+ * - {@link ExportToExcel}
+ * - {@link FollowItem}
+ * - {@link PreferencesPanel} (see also {@link ResultsFiltersPreferences} and {@link ResultsPreferences})
+ * - {@link SearchAlerts} (see also {@link SearchAlertsMessage})
+ * - {@link ShareQuery}
  */
 export class Settings extends Component {
   static ID = 'Settings';
@@ -30,9 +38,11 @@ export class Settings extends Component {
    * @componentOptions
    */
   static options: ISettingsOptions = {
+
     /**
-     * The delay before hiding the popup menu when the mouse leaves it.<br/>
-     * The default value is <code>300</code>.
+     * Specifies the delay (in milliseconds) before hiding the popup menu when the cursor is not hovering over it.
+     *
+     * Default value is `300`. Minimum value is `0 `.
      */
     menuDelay: ComponentOptions.buildNumberOption({ defaultValue: 300, min: 0 })
   };
@@ -42,10 +52,11 @@ export class Settings extends Component {
   private isOpened: boolean = false;
 
   /**
-   * Create a new Settings component
-   * @param element
-   * @param options
-   * @param bindings
+   * Creates a new Settings component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the Settings component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
    */
   constructor(public element: HTMLElement, public options: ISettingsOptions, bindings?: IComponentBindings) {
     super(element, Settings.ID, bindings);
@@ -54,7 +65,7 @@ export class Settings extends Component {
   }
 
   /**
-   * Open the settings popup
+   * Opens the **Settings** popup menu.
    */
   public open() {
     this.isOpened = true;
@@ -69,7 +80,7 @@ export class Settings extends Component {
   }
 
   /**
-   * Close the settings popup
+   * Closes the **Settings** popup menu.
    */
   public close() {
     this.isOpened = false;

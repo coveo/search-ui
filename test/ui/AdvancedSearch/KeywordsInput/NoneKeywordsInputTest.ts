@@ -1,4 +1,4 @@
-import {NoneKeywordsInput} from '../../../../src/ui/AdvancedSearch/KeywordsInput/NoneKeywordsInput';
+import { NoneKeywordsInput } from '../../../../src/ui/AdvancedSearch/KeywordsInput/NoneKeywordsInput';
 
 export function NoneKeywordsInputTest() {
   describe('NoneKeywordsInput', () => {

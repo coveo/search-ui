@@ -1,6 +1,6 @@
-import {IHighlight} from '../../src/rest/Highlight';
-import {HighlightUtils} from '../../src/utils/HighlightUtils';
-import {StringAndHoles} from '../../src/utils/HighlightUtils';
+import { IHighlight } from '../../src/rest/Highlight';
+import { HighlightUtils } from '../../src/utils/HighlightUtils';
+import { StringAndHoles } from '../../src/utils/HighlightUtils';
 
 export function HighlightUtilsTest() {
   describe('HighlightUtils', function () {

@@ -1,11 +1,11 @@
 import * as RegisteredNamedMethod from '../../src/ui/Base/RegisteredNamedMethods';
-import {IMockEnvironment, MockEnvironmentBuilder} from '../MockEnvironment';
-import {$$} from '../../src/utils/Dom';
-import {Component} from '../../src/ui/Base/Component';
-import {Searchbox} from '../../src/ui/Searchbox/Searchbox';
-import {FakeResults} from '../Fake';
-import {IAnalyticsClient} from '../../src/ui/Analytics/AnalyticsClient';
-import {mockUsageAnalytics} from '../MockEnvironment';
+import { IMockEnvironment, MockEnvironmentBuilder } from '../MockEnvironment';
+import { $$ } from '../../src/utils/Dom';
+import { Component } from '../../src/ui/Base/Component';
+import { Searchbox } from '../../src/ui/Searchbox/Searchbox';
+import { FakeResults } from '../Fake';
+import { IAnalyticsClient } from '../../src/ui/Analytics/AnalyticsClient';
+import { mockUsageAnalytics } from '../MockEnvironment';
 
 export function RegisteredNamedMethodsTest() {
   describe('RegisteredNamedMethods', () => {

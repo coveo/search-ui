@@ -1,17 +1,17 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {DeviceUtils} from '../../utils/DeviceUtils';
-import {QueryEvents, INewQueryEventArgs, IBuildingQueryEventArgs, IQuerySuccessEventArgs, INoResultsEventArgs} from '../../events/QueryEvents';
-import {MODEL_EVENTS, IAttributeChangedEventArg} from '../../models/Model';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
-import {analyticsActionCauseList, IAnalyticsPagerMeta, IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta';
-import {Initialization} from '../Base/Initialization';
-import {Assert} from '../../misc/Assert';
-import {l} from '../../strings/Strings';
-import {$$} from '../../utils/Dom';
-import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { QueryEvents, INewQueryEventArgs, IBuildingQueryEventArgs, IQuerySuccessEventArgs, INoResultsEventArgs } from '../../events/QueryEvents';
+import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
+import { analyticsActionCauseList, IAnalyticsPagerMeta, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
+import { Initialization } from '../Base/Initialization';
+import { Assert } from '../../misc/Assert';
+import { l } from '../../strings/Strings';
+import { $$ } from '../../utils/Dom';
+import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 
 export interface IPagerOptions {
   numberOfPages?: number;

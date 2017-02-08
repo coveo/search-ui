@@ -1,8 +1,8 @@
 import * as Mock from '../MockEnvironment';
-import {Component} from '../../src/ui/Base/Component';
-import {$$} from '../../src/utils/Dom';
-import {IQueryResult} from '../../src/rest/QueryResult';
-import {FakeResults} from '../Fake';
+import { Component } from '../../src/ui/Base/Component';
+import { $$ } from '../../src/utils/Dom';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { FakeResults } from '../Fake';
 
 
 export function ComponentTest() {

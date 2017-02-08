@@ -1,11 +1,11 @@
 import * as Mock from '../MockEnvironment';
-import {Tab} from '../../src/ui/Tab/Tab';
-import {ITabOptions} from '../../src/ui/Tab/Tab';
-import {Simulate} from '../Simulate';
-import {$$} from '../../src/utils/Dom';
-import {SearchEndpoint} from '../../src/rest/SearchEndpoint';
-import {NoopComponent} from '../NoopComponent';
-import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { Tab } from '../../src/ui/Tab/Tab';
+import { ITabOptions } from '../../src/ui/Tab/Tab';
+import { Simulate } from '../Simulate';
+import { $$ } from '../../src/utils/Dom';
+import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
+import { NoopComponent } from '../NoopComponent';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function TabTest() {
   describe('Tab', function () {

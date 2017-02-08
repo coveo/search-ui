@@ -1,7 +1,7 @@
-import {ResponsiveComponentsUtils} from '../../../src/ui/ResponsiveComponents/ResponsiveComponentsUtils';
-import {$$, Dom} from '../../../src/utils/Dom';
-import {ResponsiveTabs} from '../../../src/ui/ResponsiveComponents/ResponsiveTabs';
-import {Tab} from '../../../src/ui/Tab/Tab';
+import { ResponsiveComponentsUtils } from '../../../src/ui/ResponsiveComponents/ResponsiveComponentsUtils';
+import { $$, Dom } from '../../../src/utils/Dom';
+import { ResponsiveTabs } from '../../../src/ui/ResponsiveComponents/ResponsiveTabs';
+import { Tab } from '../../../src/ui/Tab/Tab';
 
 export function ResponsiveTabsTest() {
 

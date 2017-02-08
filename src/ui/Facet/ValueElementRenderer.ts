@@ -1,9 +1,10 @@
-import {Facet} from './Facet';
-import {FacetValue} from './FacetValues';
-import {$$} from '../../utils/Dom';
-import {Utils} from '../../utils/Utils';
-import {l} from '../../strings/Strings';
-import {Component} from '../Base/Component';
+import { Facet } from './Facet';
+import { FacetValue } from './FacetValues';
+import { $$ } from '../../utils/Dom';
+import { Utils } from '../../utils/Utils';
+import { l } from '../../strings/Strings';
+import { Component } from '../Base/Component';
+import _ = require('underscore');
 
 export class ValueElementRenderer {
   public listItem: HTMLElement;

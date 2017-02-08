@@ -1,12 +1,12 @@
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Initialization} from '../Base/Initialization';
-import {FieldValue, IFieldValueOptions} from './FieldValue';
-import {StringUtils} from '../../utils/StringUtils';
-import {Assert} from '../../misc/Assert';
-import {$$} from '../../utils/Dom';
-
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Initialization } from '../Base/Initialization';
+import { FieldValue, IFieldValueOptions } from './FieldValue';
+import { StringUtils } from '../../utils/StringUtils';
+import { Assert } from '../../misc/Assert';
+import { $$ } from '../../utils/Dom';
+import _ = require('underscore');
 
 export interface IBadgeOptions extends IFieldValueOptions {
   colors: IBadgeColors;

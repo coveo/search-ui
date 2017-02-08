@@ -46,6 +46,7 @@ function findTemplates(directory, callback) {
 function parseDirectory(directory, conditions, callback) {
   findTemplates(directory, function (templates) {
     callback(templates.map(function (template) {
+
       var extname = path.extname(template);
       var name = path.basename(template, extname);
       var subtemplate = (name.indexOf("_") == 0);

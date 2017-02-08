@@ -1,4 +1,4 @@
-import {AnyKeywordsInput} from '../../../../src/ui/AdvancedSearch/KeywordsInput/AnyKeywordsInput';
+import { AnyKeywordsInput } from '../../../../src/ui/AdvancedSearch/KeywordsInput/AnyKeywordsInput';
 
 export function AnyKeywordsInputTest() {
   describe('AnyKeywordsInput', () => {

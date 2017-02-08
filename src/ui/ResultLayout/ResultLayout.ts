@@ -1,19 +1,20 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {QueryEvents} from '../../events/QueryEvents';
-import {Initialization} from '../Base/Initialization';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {Assert} from '../../misc/Assert';
-import {ResultListEvents, IChangeLayoutEventArgs} from '../../events/ResultListEvents';
-import {ResultLayoutEvents, IResultLayoutPopulateArgs} from '../../events/ResultLayoutEvents';
-import {$$} from '../../utils/Dom';
-import {IQueryErrorEventArgs, IQuerySuccessEventArgs} from '../../events/QueryEvents';
-import {QueryStateModel, QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
-import {MODEL_EVENTS, IAttributesChangedEventArg} from '../../models/Model';
-import {analyticsActionCauseList, IAnalyticsResultsLayoutChange} from '../Analytics/AnalyticsActionListMeta';
-import {IQueryResults} from '../../rest/QueryResults';
-import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { QueryEvents } from '../../events/QueryEvents';
+import { Initialization } from '../Base/Initialization';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { Assert } from '../../misc/Assert';
+import { ResultListEvents, IChangeLayoutEventArgs } from '../../events/ResultListEvents';
+import { ResultLayoutEvents, IResultLayoutPopulateArgs } from '../../events/ResultLayoutEvents';
+import { $$ } from '../../utils/Dom';
+import { IQueryErrorEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
+import { MODEL_EVENTS, IAttributesChangedEventArg } from '../../models/Model';
+import { analyticsActionCauseList, IAnalyticsResultsLayoutChange } from '../Analytics/AnalyticsActionListMeta';
+import { IQueryResults } from '../../rest/QueryResults';
+import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
+import _ = require('underscore');
 
 export interface IResultLayoutOptions {
 }

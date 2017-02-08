@@ -1,20 +1,20 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions, ComponentOptionsType} from '../Base/ComponentOptions';
-import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
-import {Template} from '../Templates/Template';
-import {DomUtils} from '../../utils/DomUtils';
-import {DeviceUtils} from '../../utils/DeviceUtils';
-import {IQueryResult} from '../../rest/QueryResult';
-import {$$, Dom} from '../../utils/Dom';
-import {DefaultQuickviewTemplate} from './DefaultQuickviewTemplate';
-import {ResultListEvents} from '../../events/ResultListEvents';
-import {StringUtils} from '../../utils/StringUtils';
-import {QuickviewDocument} from './QuickviewDocument';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {QuickviewEvents} from '../../events/QuickviewEvents';
-import {Initialization, IInitializationParameters} from '../Base/Initialization';
-import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
-import {ModalBox as ModalBoxModule} from '../../ExternalModulesShim';
+import { Component } from '../Base/Component';
+import { ComponentOptions, ComponentOptionsType } from '../Base/ComponentOptions';
+import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
+import { Template } from '../Templates/Template';
+import { DomUtils } from '../../utils/DomUtils';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { IQueryResult } from '../../rest/QueryResult';
+import { $$, Dom } from '../../utils/Dom';
+import { DefaultQuickviewTemplate } from './DefaultQuickviewTemplate';
+import { ResultListEvents } from '../../events/ResultListEvents';
+import { StringUtils } from '../../utils/StringUtils';
+import { QuickviewDocument } from './QuickviewDocument';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { QuickviewEvents } from '../../events/QuickviewEvents';
+import { Initialization, IInitializationParameters } from '../Base/Initialization';
+import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
+import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 
 export interface IQuickviewOptions {
   title?: string;

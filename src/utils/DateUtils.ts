@@ -1,8 +1,9 @@
-import {Options} from '../misc/Options';
-import {Utils} from './Utils';
-import {l} from '../strings/Strings';
-import {TimeSpan} from './TimeSpanUtils';
+import { Options } from '../misc/Options';
+import { Utils } from './Utils';
+import { l } from '../strings/Strings';
+import { TimeSpan } from './TimeSpanUtils';
 import Globalize = require('globalize');
+import _ = require('underscore');
 
 export interface IDateToStringOptions {
   now?: Date;
@@ -185,5 +186,5 @@ if (!Date.prototype.toISOString) {
         '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
         'Z';
     };
-  } ());
+  }());
 }

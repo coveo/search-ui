@@ -1,25 +1,25 @@
-/// <reference path="../../../node_modules/modal-box/bin/ModalBox.d.ts" />
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {LocalStorageUtils} from '../../utils/LocalStorageUtils';
-import {IFieldDescription} from '../../rest/FieldDescription';
-import {IBuildingQueryEventArgs, IQuerySuccessEventArgs, QueryEvents} from '../../events/QueryEvents';
-import {ResultListEvents, IDisplayedNewResultEventArgs} from '../../events/ResultListEvents';
-import {DebugEvents} from '../../events/DebugEvents';
-import {IQueryResults} from '../../rest/QueryResults';
-import {IQueryResult} from '../../rest/QueryResult';
-import {$$, Dom} from '../../utils/Dom';
-import {StringUtils} from '../../utils/StringUtils';
-import {SearchEndpoint} from '../../rest/SearchEndpoint';
-import {Template} from '../Templates/Template';
-import {Promise} from 'es6-promise';
-import {RootComponent} from '../Base/RootComponent';
-import {QueryController} from '../../controllers/QueryController';
-import {BaseComponent} from '../Base/BaseComponent';
-import {ModalBox} from '../../ExternalModulesShim';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { LocalStorageUtils } from '../../utils/LocalStorageUtils';
+import { IFieldDescription } from '../../rest/FieldDescription';
+import { IBuildingQueryEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
+import { ResultListEvents, IDisplayedNewResultEventArgs } from '../../events/ResultListEvents';
+import { DebugEvents } from '../../events/DebugEvents';
+import { IQueryResults } from '../../rest/QueryResults';
+import { IQueryResult } from '../../rest/QueryResult';
+import { $$, Dom } from '../../utils/Dom';
+import { StringUtils } from '../../utils/StringUtils';
+import { SearchEndpoint } from '../../rest/SearchEndpoint';
+import { Template } from '../Templates/Template';
+import { Promise } from 'es6-promise';
+import { RootComponent } from '../Base/RootComponent';
+import { QueryController } from '../../controllers/QueryController';
+import { BaseComponent } from '../Base/BaseComponent';
+import { ModalBox } from '../../ExternalModulesShim';
 import Globalize = require('globalize');
-import {KEYBOARD} from '../../utils/KeyboardUtils';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {IStringMap} from '../../rest/GenericParam';
+import { KEYBOARD } from '../../utils/KeyboardUtils';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { IStringMap } from '../../rest/GenericParam';
+import _ = require('underscore');
 
 export interface IDebugOptions {
   enableDebug?: boolean;
@@ -627,7 +627,7 @@ export class Debug extends RootComponent {
     return stringValue;
   }
 
-  private componentToJson(value: BaseComponent, depth = 0): any {
+  private componentToJson(value: BaseComponent | SearchEndpoint, depth = 0): any {
     let options = _.keys(value['options']);
     if (options.length > 0) {
       return this.toJson(value['options'], depth);

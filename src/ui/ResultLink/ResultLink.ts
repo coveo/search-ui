@@ -1,21 +1,22 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
-import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
-import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {IResultLinkOptions} from './ResultLinkOptions';
-import {ResultListEvents} from '../../events/ResultListEvents';
-import {HighlightUtils} from '../../utils/HighlightUtils';
-import {IQueryResult} from '../../rest/QueryResult';
-import {DeviceUtils} from '../../utils/DeviceUtils';
-import {OS_NAME, OSUtils} from '../../utils/OSUtils';
-import {Initialization} from '../Base/Initialization';
-import {QueryUtils} from '../../utils/QueryUtils';
-import {Assert} from '../../misc/Assert';
-import {Utils} from '../../utils/Utils';
-import {Defer} from '../../misc/Defer';
-import {$$} from '../../utils/Dom';
-import {StreamHighlightUtils} from '../../utils/StreamHighlightUtils';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
+import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { IResultLinkOptions } from './ResultLinkOptions';
+import { ResultListEvents } from '../../events/ResultListEvents';
+import { HighlightUtils } from '../../utils/HighlightUtils';
+import { IQueryResult } from '../../rest/QueryResult';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { OS_NAME, OSUtils } from '../../utils/OSUtils';
+import { Initialization } from '../Base/Initialization';
+import { QueryUtils } from '../../utils/QueryUtils';
+import { Assert } from '../../misc/Assert';
+import { Utils } from '../../utils/Utils';
+import { Defer } from '../../misc/Defer';
+import { $$ } from '../../utils/Dom';
+import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
+import _ = require('underscore');
 
 /**
  * This component is intended to be used inside a result template, which must in turn be used inside a
