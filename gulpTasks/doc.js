@@ -34,10 +34,6 @@ gulp.task('buildPlayground', shell.task([
   'node node_modules/webpack/bin/webpack.js --config webpackConfigFiles/webpack.playground.config.js'
 ]));
 
-gulp.task('buildPlayground', shell.task([
-  'node node_modules/webpack/bin/webpack.js --config webpack.playground.config.js'
-]));
-
 function copyFile(source, target, cb) {
   var cbCalled = false;
 
