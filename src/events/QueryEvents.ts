@@ -1,10 +1,10 @@
-import {Component} from '../ui/Base/Component';
-import {QueryBuilder} from '../ui/Base/QueryBuilder';
-import {IQueryResults} from '../rest/QueryResults';
-import {IQuery} from '../rest/Query';
-import {ISearchEndpoint, IEndpointCallOptions} from '../rest/SearchEndpointInterface';
-import {IEndpointError} from '../rest/EndpointError';
-import {Promise} from 'es6-promise';
+import { Component } from '../ui/Base/Component';
+import { QueryBuilder } from '../ui/Base/QueryBuilder';
+import { IQueryResults } from '../rest/QueryResults';
+import { IQuery } from '../rest/Query';
+import { ISearchEndpoint, IEndpointCallOptions } from '../rest/SearchEndpointInterface';
+import { IEndpointError } from '../rest/EndpointError';
+import { Promise } from 'es6-promise';
 
 /**
  * Argument sent to all handlers bound on {@link QueryEvents.newQuery}

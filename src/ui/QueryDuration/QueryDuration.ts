@@ -1,11 +1,11 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {QueryEvents, IQuerySuccessEventArgs} from '../../events/QueryEvents';
-import {Assert} from '../../misc/Assert';
-import {$$} from '../../utils/Dom';
-import {l} from '../../strings/Strings';
-import {Initialization} from '../Base/Initialization';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { Assert } from '../../misc/Assert';
+import { $$ } from '../../utils/Dom';
+import { l } from '../../strings/Strings';
+import { Initialization } from '../Base/Initialization';
 import Globalize = require('globalize');
 
 export interface IQueryDurationOptions {

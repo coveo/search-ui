@@ -1,10 +1,11 @@
 import * as Mock from '../MockEnvironment';
-import {HierarchicalFacet} from '../../src/ui/HierarchicalFacet/HierarchicalFacet';
-import {IGroupByResult} from '../../src/rest/GroupByResult';
-import {IHierarchicalFacetOptions} from '../../src/ui/HierarchicalFacet/HierarchicalFacet';
-import {FakeResults} from '../Fake';
-import {$$} from '../../src/utils/Dom';
-import {Simulate} from '../Simulate';
+import { HierarchicalFacet } from '../../src/ui/HierarchicalFacet/HierarchicalFacet';
+import { IGroupByResult } from '../../src/rest/GroupByResult';
+import { IHierarchicalFacetOptions } from '../../src/ui/HierarchicalFacet/HierarchicalFacet';
+import { FakeResults } from '../Fake';
+import { $$ } from '../../src/utils/Dom';
+import { Simulate } from '../Simulate';
+import _ = require('underscore');
 
 export function HierarchicalFacetTest() {
   describe('HierarchicalFacet', function () {

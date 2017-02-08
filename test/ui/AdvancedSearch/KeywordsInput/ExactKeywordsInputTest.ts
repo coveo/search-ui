@@ -1,4 +1,4 @@
-import {ExactKeywordsInput} from '../../../../src/ui/AdvancedSearch/KeywordsInput/ExactKeywordsInput';
+import { ExactKeywordsInput } from '../../../../src/ui/AdvancedSearch/KeywordsInput/ExactKeywordsInput';
 
 export function ExactKeywordsInputTest() {
   describe('ExactKeywordsInput', () => {

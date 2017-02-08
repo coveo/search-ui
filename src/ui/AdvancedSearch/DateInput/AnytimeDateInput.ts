@@ -1,7 +1,7 @@
-import {DateInput} from './DateInput';
-import {l} from '../../../strings/Strings';
-import {$$} from '../../../utils/Dom';
-import {AdvancedSearchEvents} from '../../../events/AdvancedSearchEvents';
+import { DateInput } from './DateInput';
+import { l } from '../../../strings/Strings';
+import { $$ } from '../../../utils/Dom';
+import { AdvancedSearchEvents } from '../../../events/AdvancedSearchEvents';
 
 export class AnytimeDateInput extends DateInput {
   constructor() {

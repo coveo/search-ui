@@ -1,7 +1,7 @@
-import {DateInput} from './DateInput';
-import {DatePicker} from '../Form/DatePicker';
-import {l} from '../../../strings/Strings';
-import {$$} from '../../../utils/Dom';
+import { DateInput } from './DateInput';
+import { DatePicker } from '../Form/DatePicker';
+import { l } from '../../../strings/Strings';
+import { $$ } from '../../../utils/Dom';
 
 export class BetweenDateInput extends DateInput {
 

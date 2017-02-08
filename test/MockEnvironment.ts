@@ -1,20 +1,20 @@
-import {IComponentBindings} from '../src/ui/Base/ComponentBindings';
-import {IQueryResult} from '../src/rest/QueryResult';
-import {SearchInterface} from '../src/ui/SearchInterface/SearchInterface';
-import {QueryStateModel} from '../src/models/QueryStateModel';
-import {IAnalyticsClient} from '../src/ui/Analytics/AnalyticsClient';
-import {$$} from '../src/utils/Dom';
-import {ComponentStateModel} from '../src/models/ComponentStateModel';
-import {ComponentOptionsModel} from '../src/models/ComponentOptionsModel';
-import {OS_NAME} from '../src/utils/OSUtils';
-import {FakeResults} from './Fake';
-import {Component} from '../src/ui/Base/Component';
-import {Utils} from '../src/utils/Utils';
-import {BaseComponent} from '../src/ui/Base/BaseComponent';
-import {NoopAnalyticsClient} from '../src/ui/Analytics/NoopAnalyticsClient';
-import {SearchEndpoint} from '../src/rest/SearchEndpoint';
-import {QueryController} from '../src/controllers/QueryController';
-import {QueryBuilder} from '../src/ui/Base/QueryBuilder';
+import { IComponentBindings } from '../src/ui/Base/ComponentBindings';
+import { IQueryResult } from '../src/rest/QueryResult';
+import { SearchInterface } from '../src/ui/SearchInterface/SearchInterface';
+import { QueryStateModel } from '../src/models/QueryStateModel';
+import { IAnalyticsClient } from '../src/ui/Analytics/AnalyticsClient';
+import { $$ } from '../src/utils/Dom';
+import { ComponentStateModel } from '../src/models/ComponentStateModel';
+import { ComponentOptionsModel } from '../src/models/ComponentOptionsModel';
+import { OS_NAME } from '../src/utils/OSUtils';
+import { FakeResults } from './Fake';
+import { Component } from '../src/ui/Base/Component';
+import { Utils } from '../src/utils/Utils';
+import { BaseComponent } from '../src/ui/Base/BaseComponent';
+import { NoopAnalyticsClient } from '../src/ui/Analytics/NoopAnalyticsClient';
+import { SearchEndpoint } from '../src/rest/SearchEndpoint';
+import { QueryController } from '../src/controllers/QueryController';
+import { QueryBuilder } from '../src/ui/Base/QueryBuilder';
 
 export interface IMockEnvironment extends IComponentBindings {
   root: HTMLElement;
@@ -179,7 +179,7 @@ export function mock<T>(contructorFunc, name = 'mock'): T {
 }
 
 export function mockWindow(): Window {
-  var mockWindow = <Window>mock(window);
+  var mockWindow = <any>mock(window);
   mockWindow.location = <Location>{
     'href': '',
     'hash': ''
@@ -203,7 +203,7 @@ export function mockWindow(): Window {
   mockWindow.addEventListener = jasmine.createSpy('addEventListener');
   mockWindow.removeEventListener = jasmine.createSpy('removeEventListener');
   mockWindow.dispatchEvent = jasmine.createSpy('dispatchEvent');
-  return mockWindow;
+  return <Window>mockWindow;
 }
 
 export function mockComponent<T extends BaseComponent>(constructorFunc, name = 'mock'): T {

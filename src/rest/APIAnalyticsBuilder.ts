@@ -1,9 +1,9 @@
-import {ISearchEvent} from './SearchEvent';
-import {IAPISearchEvent} from './APISearchEvent';
-import {IClickEvent} from './ClickEvent';
-import {IAPIDocumentViewEvent} from './APIDocumentViewEvent';
-import {IAPICustomEvent} from './APICustomEvent';
-import {ICustomEvent} from './CustomEvent';
+import { ISearchEvent } from './SearchEvent';
+import { IAPISearchEvent } from './APISearchEvent';
+import { IClickEvent } from './ClickEvent';
+import { IAPIDocumentViewEvent } from './APIDocumentViewEvent';
+import { IAPICustomEvent } from './APICustomEvent';
+import { ICustomEvent } from './CustomEvent';
 
 export class APIAnalyticsBuilder {
   public static convertSearchEventToAPI(searchEvent: ISearchEvent) {

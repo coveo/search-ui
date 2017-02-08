@@ -1,6 +1,6 @@
 declare function require(name: string);
-import {$$} from '../../../utils/Dom';
-import {DateUtils} from '../../../utils/DateUtils';
+import { $$ } from '../../../utils/Dom';
+import { DateUtils } from '../../../utils/DateUtils';
 let Pikaday = require('pikaday');
 
 

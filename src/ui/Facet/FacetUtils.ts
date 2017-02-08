@@ -1,11 +1,12 @@
 /// <reference path='Facet.ts' />
-import {Facet} from './Facet';
-import {StringUtils} from '../../utils/StringUtils';
-import {QueryUtils} from '../../utils/QueryUtils';
-import {FileTypes} from '../Misc/FileTypes';
-import {DateUtils} from '../../utils/DateUtils';
-import {Utils} from '../../utils/Utils';
-import {$$} from '../../utils/Dom';
+import { Facet } from './Facet';
+import { StringUtils } from '../../utils/StringUtils';
+import { QueryUtils } from '../../utils/QueryUtils';
+import { FileTypes } from '../Misc/FileTypes';
+import { DateUtils } from '../../utils/DateUtils';
+import { Utils } from '../../utils/Utils';
+import { $$ } from '../../utils/Dom';
+import _ = require('underscore');
 
 declare const Coveo;
 

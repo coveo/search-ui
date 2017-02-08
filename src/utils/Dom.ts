@@ -1,7 +1,8 @@
-import {Utils} from '../utils/Utils';
-import {JQueryUtils} from '../utils/JQueryutils';
-import {Assert} from '../misc/Assert';
-import {Logger} from '../misc/Logger';
+import { Utils } from '../utils/Utils';
+import { JQueryUtils } from '../utils/JQueryutils';
+import { Assert } from '../misc/Assert';
+import { Logger } from '../misc/Logger';
+import _ = require('underscore');
 
 export interface IOffset {
   left: number;

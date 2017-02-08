@@ -1,15 +1,16 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
 import {
   SearchAlertsEvents, ISearchAlertsEventArgs, ISearchAlertsFailEventArgs,
   ISearchAlertsPopulateMessageEventArgs
 } from '../../events/SearchAlertEvents';
-import {QueryEvents} from '../../events/QueryEvents';
-import {ISubscriptionItemRequest, SUBSCRIPTION_TYPE, ISubscriptionQueryRequest} from '../../rest/Subscription';
-import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
-import {l} from '../../strings/Strings';
-import {$$, Dom} from '../../utils/Dom';
+import { QueryEvents } from '../../events/QueryEvents';
+import { ISubscriptionItemRequest, SUBSCRIPTION_TYPE, ISubscriptionQueryRequest } from '../../rest/Subscription';
+import { PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
+import { l } from '../../strings/Strings';
+import { $$, Dom } from '../../utils/Dom';
+import _ = require('underscore');
 
 export interface ISearchAlertMessageOptions {
   closeDelay: number;

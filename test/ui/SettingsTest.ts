@@ -1,8 +1,8 @@
 import * as Mock from '../MockEnvironment';
-import {Settings} from '../../src/ui/Settings/Settings';
-import {$$} from '../../src/utils/Dom';
-import {InitializationEvents} from '../../src/events/InitializationEvents';
-import {ISettingsOptions} from '../../src/ui/Settings/Settings';
+import { Settings } from '../../src/ui/Settings/Settings';
+import { $$ } from '../../src/utils/Dom';
+import { InitializationEvents } from '../../src/events/InitializationEvents';
+import { ISettingsOptions } from '../../src/ui/Settings/Settings';
 
 export function SettingsTest() {
   describe('Settings', function () {

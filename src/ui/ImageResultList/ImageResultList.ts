@@ -1,11 +1,12 @@
-import {ResultList, IResultListOptions} from '../ResultList/ResultList';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ImageResultListEvents} from '../../events/ImageResultListEvents';
-import {ResultListEvents} from '../../events/ResultListEvents';
-import {Initialization} from '../Base/Initialization';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {$$} from '../../utils/Dom';
+import { ResultList, IResultListOptions } from '../ResultList/ResultList';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ImageResultListEvents } from '../../events/ImageResultListEvents';
+import { ResultListEvents } from '../../events/ResultListEvents';
+import { Initialization } from '../Base/Initialization';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { $$ } from '../../utils/Dom';
+import _ = require('underscore');
 
 export interface IImageResultListOptions extends IResultListOptions {
   layoutType?: string;

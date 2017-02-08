@@ -1,29 +1,30 @@
 /// <reference path="../Facet/FacetHeader.ts" />
 /// <reference path="../../controllers/FacetSliderQueryController.ts" />
 
-import {ISliderOptions, Slider, IEndSlideEventArgs, IDuringSlideEventArgs, ISliderGraphData} from '../Misc/Slider';
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
-import {ResponsiveFacets} from '../ResponsiveComponents/ResponsiveFacets';
-import {FacetHeader} from '../Facet/FacetHeader';
-import {l} from '../../strings/Strings';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {FeatureDetectionUtils} from '../../utils/FeatureDetectionUtils';
-import {FacetSliderQueryController} from '../../controllers/FacetSliderQueryController';
-import {QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {BreadcrumbEvents, IPopulateBreadcrumbEventArgs, IBreadcrumbItem} from '../../events/BreadcrumbEvents';
-import {IAttributeChangedEventArg, Model} from '../../models/Model';
-import {$$} from '../../utils/Dom';
-import {analyticsActionCauseList, IAnalyticsFacetMeta, IAnalyticsFacetSliderChangeMeta, IAnalyticsFacetGraphSelectedMeta} from '../Analytics/AnalyticsActionListMeta';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {SliderEvents, IGraphValueSelectedArgs} from '../../events/SliderEvents';
-import {Assert} from '../../misc/Assert';
-import {Utils} from '../../utils/Utils';
-import {ResponsiveComponentsUtils} from '../ResponsiveComponents/ResponsiveComponentsUtils';
-import {Initialization} from '../Base/Initialization';
+import { ISliderOptions, Slider, IEndSlideEventArgs, IDuringSlideEventArgs, ISliderGraphData } from '../Misc/Slider';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
+import { FacetHeader } from '../Facet/FacetHeader';
+import { l } from '../../strings/Strings';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { FeatureDetectionUtils } from '../../utils/FeatureDetectionUtils';
+import { FacetSliderQueryController } from '../../controllers/FacetSliderQueryController';
+import { QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs, IBreadcrumbItem } from '../../events/BreadcrumbEvents';
+import { IAttributeChangedEventArg, Model } from '../../models/Model';
+import { $$ } from '../../utils/Dom';
+import { analyticsActionCauseList, IAnalyticsFacetMeta, IAnalyticsFacetSliderChangeMeta, IAnalyticsFacetGraphSelectedMeta } from '../Analytics/AnalyticsActionListMeta';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { SliderEvents, IGraphValueSelectedArgs } from '../../events/SliderEvents';
+import { Assert } from '../../misc/Assert';
+import { Utils } from '../../utils/Utils';
+import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
+import { Initialization } from '../Base/Initialization';
 import d3 = require('d3');
-import {SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs} from '../../events/SearchAlertEvents';
+import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
+import _ = require('underscore');
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;
@@ -105,7 +106,7 @@ export class FacetSlider extends Component {
      * That ID needs to be unique on the page.
      */
     id: ComponentOptions.buildStringOption({
-      postProcessing: (value, options: IFacetSliderOptions) => value || options.field
+      postProcessing: (value, options: IFacetSliderOptions) => value || <string>options.field
     }),
     /**
      * Specifies the format used to display values if they are dates.<br/>
@@ -275,7 +276,7 @@ export class FacetSlider extends Component {
     /**
      * Specifies the label of the button that allows to show the facets when in responsive mode. If it is specified more than once, the
      * first occurence of the option will be used.
-     * The default value is "Filters". 
+     * The default value is "Filters".
      */
     dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption()
   };

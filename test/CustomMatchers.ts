@@ -1,6 +1,7 @@
 /// <reference path="lib/jasmine.d.ts" />
 
 import {IStringMap} from '../src/rest/GenericParam';
+import _ = require('underscore');
 
 export function registerCustomMatcher() {
   var customMatcher: jasmine.CustomMatcherFactories = {

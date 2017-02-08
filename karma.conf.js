@@ -1,10 +1,44 @@
-var commonConfig = require('./karma.common.conf');
-var _ = require('underscore');
-
-var configuration = _.extend({}, commonConfig, {
+var configuration = {
   singleRun: true,
-  browsers: ['PhantomJS']
-})
+  browsers: ['PhantomJS'],
+  frameworks: ['jasmine'],
+  files: [
+    {
+      pattern: './node_modules/jasmine-core/lib/jasmine-core/jasmine.css',
+      watched: false
+    },
+    {
+      pattern: './test/lib/jasmine-2.4.1/jasmine.css',
+      watched: false
+    },
+    {
+      pattern: './test/lib/jasmine-ajax/jasmine-ajax.js',
+      watched: false
+    },
+    {
+      pattern: './bin/tests/tests.js',
+      watched: true
+    }
+  ],
+  plugins: [
+    'karma-jasmine',
+    'karma-chrome-launcher',
+    'karma-phantomjs-launcher',
+    'karma-coverage',
+    'karma-spec-reporter'
+  ],
+  preprocessors: {
+    './bin/tests/tests.js': 'coverage'
+  },
+  reporters: ['coverage', 'spec'],
+  coverageReporter: {
+    dir: './bin/coverage',
+    reporters: [
+      {type: 'json', subdir: '.', file: 'coverage-es5.json'},
+      {type: 'lcov', subdir: 'lcov-es5'}
+    ]
+  }
+};
 
 module.exports = function(config) {
   config.set(configuration);

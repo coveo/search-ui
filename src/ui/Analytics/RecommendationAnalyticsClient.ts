@@ -1,11 +1,11 @@
-import {LiveAnalyticsClient} from './LiveAnalyticsClient';
-import {IAnalyticsActionCause, analyticsActionCauseList} from './AnalyticsActionListMeta';
-import {IQueryResult} from '../../rest/QueryResult';
-import {AnalyticsEndpoint} from '../../rest/AnalyticsEndpoint';
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {Recommendation} from '../Recommendation/Recommendation';
-import {SearchInterface} from '../SearchInterface/SearchInterface';
+import { LiveAnalyticsClient } from './LiveAnalyticsClient';
+import { IAnalyticsActionCause, analyticsActionCauseList } from './AnalyticsActionListMeta';
+import { IQueryResult } from '../../rest/QueryResult';
+import { AnalyticsEndpoint } from '../../rest/AnalyticsEndpoint';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Recommendation } from '../Recommendation/Recommendation';
+import { SearchInterface } from '../SearchInterface/SearchInterface';
 
 export class RecommendationAnalyticsClient extends LiveAnalyticsClient {
 

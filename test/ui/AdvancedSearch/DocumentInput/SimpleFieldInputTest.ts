@@ -1,5 +1,5 @@
-import {SimpleFieldInput} from '../../../../src/ui/AdvancedSearch/DocumentInput/SimpleFieldInput';
-import {SearchEndpoint} from '../../../../src/rest/SearchEndpoint';
+import { SimpleFieldInput } from '../../../../src/ui/AdvancedSearch/DocumentInput/SimpleFieldInput';
+import { SearchEndpoint } from '../../../../src/rest/SearchEndpoint';
 import * as Mock from '../../../MockEnvironment';
 
 export function SimpleFieldInputTest() {

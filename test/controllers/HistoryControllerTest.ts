@@ -1,8 +1,9 @@
-import {HistoryController} from '../../src/controllers/HistoryController';
-import {InitializationEvents} from '../../src/events/InitializationEvents';
+import { HistoryController } from '../../src/controllers/HistoryController';
+import { InitializationEvents } from '../../src/events/InitializationEvents';
 import * as Mock from '../MockEnvironment';
-import {$$} from '../../src/utils/Dom';
-import {Defer} from '../../src/misc/Defer';
+import { $$ } from '../../src/utils/Dom';
+import { Defer } from '../../src/misc/Defer';
+import _ = require('underscore');
 
 export function HistoryControllerTest() {
   describe('HistoryController', function () {

@@ -1,16 +1,17 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Initialization} from '../Base/Initialization';
-import {TemplateHelpers} from '../Templates/TemplateHelpers';
-import {Assert} from '../../misc/Assert';
-import {DateUtils, IDateToStringOptions} from '../../utils/DateUtils';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {Utils} from '../../utils/Utils';
-import {Facet} from '../Facet/Facet';
-import {$$} from '../../utils/Dom';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Initialization } from '../Base/Initialization';
+import { TemplateHelpers } from '../Templates/TemplateHelpers';
+import { Assert } from '../../misc/Assert';
+import { DateUtils, IDateToStringOptions } from '../../utils/DateUtils';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { Utils } from '../../utils/Utils';
+import { Facet } from '../Facet/Facet';
+import { $$ } from '../../utils/Dom';
+import _ = require('underscore');
 
 export interface IFieldValueOptions {
   field?: IFieldOption;
