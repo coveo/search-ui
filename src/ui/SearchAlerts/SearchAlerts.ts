@@ -104,6 +104,13 @@ export class SearchAlerts extends Component {
    */
   public message: SearchAlertsMessage;
 
+  /**
+   * Creates a new SearchAlerts component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the SearchAlerts component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   */
   constructor(public element: HTMLElement, public options: ISearchAlertsOptions, bindings?: IComponentBindings) {
 
     super(element, SearchAlerts.ID, bindings);

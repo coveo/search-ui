@@ -41,6 +41,13 @@ export class SearchAlertsMessage extends Component {
   private message: Dom;
   private closeTimeout: number;
 
+  /**
+   * Creates a new SearchAlertsMessage component
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the SearchAlertsMessage component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   */
   constructor(public element: HTMLElement,
     public options: ISearchAlertMessageOptions,
     public bindings?: IComponentBindings) {
