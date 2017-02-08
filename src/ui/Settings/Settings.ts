@@ -25,7 +25,6 @@ export interface ISettingsOptions {
  * This component can reference several components to populate its popup menu:
  * - {@link AdvancedSearch}
  * - {@link ExportToExcel}
- * - {@link FollowItem}
  * - {@link PreferencesPanel} (see also {@link ResultsFiltersPreferences} and {@link ResultsPreferences})
  * - {@link SearchAlerts} (see also {@link SearchAlertsMessage})
  * - {@link ShareQuery}
