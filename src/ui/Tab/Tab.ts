@@ -31,31 +31,35 @@ export interface ITabOptions {
 }
 
 /**
- * This component is a bar allowing users to select a search interface.
+ * The Tab component renders a bar that allows the end user to select a specific search interface.
  *
- * The component attaches itself to an div element and is in charge of adding an advanced expression to the query and thus, modify the outgoing query in order to refine the results in relation to the selected tab.
+ * This component attaches itself to a `div` element. It is in charge of adding an advanced expression to the outgoing
+ * query in order to refine the results.
  *
- * It also allows to hide and show different parts of the UI. In order to do so, each component of the UI can specify whether or not it wishes to be included or excluded from a specific tab.
+ * The Tab component can also hide and show different parts of the UI. For each individual component in the UI, you can
+ * specify whether you wish to include or exclude that component when the user selects a certain Tab.
  *
- * # Including and excluding other HTML components
+ * **Including and Excluding Other HTML Components:**
  *
- * You can hide/show specific HTML components, based on the currently selected search tab by adding the following attributes:
+ * You can hide or show a specific HTML component based on the currently selected Tab by adding one of the following
+ * attributes to its tag:
  *
- * * `<div data-tab="foobar">` -> Include this element only in the tab with the ID 'foobar'.
+ * - `<div data-tab="foobar">`: Only include this element in the Tab with `foobar` as its `data-id`.
+ * - `<div data-tab-not="foobar">`: Do not include this element in the Tab with `foobar` as its `data-id`.
+ * - `<div data-tab="foobar,somethingelse">`: Only include this element in the Tab with `foobar` as its `data-id` and in
+ * the Tab with `somethingelse` as its `data-id`.
  *
- * * `<div data-tab-not="foobar">` -> DO NOT include this element in the tab ID 'foobar'.
+ * **Setting a New Endpoint for a Tab:**
  *
- * * `<div data-tab="foobar,somethingelse">` -> Include this element only in the tab with the ID 'foobar' or 'somethingelse'.
- *
- * # Setting a new endpoint for a tab
- * A tab can use a custom endpoint when performing a query. First, you need to make sure that the endpoint exists in the array of Coveo.SearchEndpoint.endpoints.
+ * A Tab can use a custom endpoint when performing a query. Of course, you need to make sure that the endpoint exists in
+ * the array of Coveo.SearchEndpoint.endpoints (see {@link SearchEndpoint.endpoints}).
  *
  * ```
  * Coveo.SearchEndpoint.endpoints["specialEndpoint"] = new Coveo.SearchEndpoint({
  *     restUri : 'https://somewhere.com/rest/search'
  * })
  *
- * [...]
+ * [ ... ]
  *
  * <div class='CoveoTab' data-endpoint='specialEndpoint'></div>
  *
@@ -69,84 +73,154 @@ export class Tab extends Component {
    * @componentOptions
    */
   static options: ITabOptions = {
+
     /**
-     * The unique ID for a tab.<br/>
-     * This is mandatory and required for the tab to function properly.
+     * Specifies a unique ID for the Tab.
+     *
+     * Specifying a value for this option is necessary for this component to work.
      */
     id: ComponentOptions.buildStringOption({ required: true }),
+
     /**
-     * The caption for the tab.<br/>
-     * This is mandatory and required for the tab to function properly.
+     * Specifies the caption of the Tab.
+     *
+     * Specifying a value for this option is necessary for this component to work.
      */
     caption: ComponentOptions.buildLocalizedStringOption({ required: true }),
+
     /**
-     * Specify an icon for the tab.<br/>
-     * This options is mostly kept for legacy reason. Do not use one if not needed.
+     * Specifies an icon to use for the Tab.
+     *
+     * @deprecated This options is mostly kept for legacy reasons. If possible, you should avoid using it.
      */
     icon: ComponentOptions.buildIconOption(),
+
     /**
-     * Specifies an advanced expression / filter that this tab adds to any outgoing query.<br/>
-     * eg : @objecttype==Message.<br/>
-     * This is optional, normally a "All Content" tab would not set any filter on the query.
+     * Specifies an advanced expression or filter that the Tab should add to any outgoing query.
+     *
+     * **Example:**
+     *
+     * `@objecttype==Message`
+     *
+     * Default value is `undefined` and the Tab applies no additional expression or filter to the query.
      */
     expression: ComponentOptions.buildStringOption(),
+
     /**
-     * Specifies the endpoint that a tab should point to when performing query inside that tab.<br/>
-     * This is optional, by default the tab will use the "default" endpoint.
+     * Specifies the {@link SearchEndpoint} to point to when performing queries from within the Tab.
+     *
+     * By default, the Tab uses the "default" endpoint.
      */
     endpoint: ComponentOptions.buildCustomOption((endpoint) => endpoint != null ? SearchEndpoint.endpoints[endpoint] : null),
+
     /**
-     * Specifies the default sort when this tab is selected. A {@link Sort} component configured with the same specified parameter needs to be in the interface in order for this this option to function properly.<br/>
-     * e.g.: relevancy / date descending<br/>
-     * Optional, by default the normal {@link Sort} component behavior will operate.
+     * Specifies the default sort criteria to use when selecting the Tab. A {@link Sort} component with the same
+     * parameter needs to be present in the search interface in order for this option to function properly.
+     *
+     * **Examples:**
+     *
+     * - `data-sort='relevancy'`
+     * - `data-sort='date descending'`
+     *
+     * Default value is `undefined` and the normal {@link Sort} component behavior applies.
      */
     sort: ComponentOptions.buildStringOption(),
+
     /**
-     * Specifies the default layout to display when this tab is selected (see {@link ResultList.options.layout} and
+     * Specifies the default layout to display when the user selects the Tab (see {@link ResultList.options.layout} and
      * {@link ResultLayout}).
-     * The value must be one of `list`, `card`, or `table`.
+     *
+     * See the {@link ValidLayout} type for the list of possible values.
+     *
      * This option is overridden by a URL parameter.
-     * If not specified, the first available layout will be chosen.
+     *
+     * See also [Result Layouts](https://developers.coveo.com/x/yQUvAg).
+     *
+     * Default value is `undefined` and the component selects the first available layout.
      */
     layout: ComponentOptions.buildStringOption(),
+
     /**
-     * Specifies whether the filter expression should be included in the constant part of the query.<br/>
-     * The constant part of the query is specially optimized by the index to execute faster, but you must be careful not to include dynamic query expressions otherwise the cache would lose its efficiency.<br/>
-     * By default, this option is set to `true`.
+     * Specifies whether to include the {@link Tab.options.expression} in the constant part of the query.
+     *
+     * The index specially optimizes the constant part of the query to execute faster. However, you must be careful not
+     * to include dynamic query expressions, otherwise the cache will lose its efficiency.
+     *
+     * Default value is `true`.
      */
     constant: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
     /**
-     * Specifies whether to filter duplicates on the search results.<br/>
-     * The default value is false.
+     * Specifies whether to filter duplicates in the search results when the user selects the Tab.
+     *
+     * Setting this option to `true` forces duplicates to not appear in the search results. However, {@link Facet}
+     * counts still include duplicates, which can be confusing for the end user. This is a limitation of the index.
+     *
+     * **Example:**
+     *
+     * > The end user narrows a query down to one document that has a duplicate. If this options is `true` and the user
+     * > selects the Tab, only one document appears in the search results while the Facet count is still 2.
+     *
+     * **Note:**
+     *
+     * > It is also possible to enable duplicate filtering for the entire {@link SearchInterface} rather than for a
+     * > single Tab (see {@link SearchInterface.options.enableDuplicateFiltering}).
+     *
+     * Default value is `false`.
      */
     enableDuplicateFiltering: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
     /**
-     * Specifies the name of the query pipeline to use for the queries, in the Coveo platform ( Query Pipeline in the Cloud administration).<br/>
-     * If not specified, the default value is null, in which case pipeline selection conditions defined in a Coveo Cloud organization apply.
+     * Specifies the name of the query pipeline to use for the queries when the Tab is selected.
+     *
+     * You can specify a value for this option if your index is in a Coveo Cloud organization in which pipelines have
+     * been created (see [Managing Query Pipelines](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=128)).
+     *
+     * Default value is `undefined`, which means that pipeline selection conditions defined in the Coveo Cloud
+     * organization apply.
      */
     pipeline: ComponentOptions.buildStringOption(),
+
     /**
-     * Specifies the maximum age in milliseconds that cached query results can have in order to be used (instead of performing a new query on the index).<br/>
-     * The cache is located in the Coveo Search API (which resides between the index and search interface).<br/>
-     * If cached results are available but are older than the specified age, a new query will be performed on the index.<br/>
-     * By default, this is left undefined and the Coveo Search API will decide the cache duration.
+     * Specifies the maximum age (in milliseconds) that cached query results can have to still be usable as results
+     * instead of performing a new query on the index from within the Tab. The cache is located in the Coveo Search API
+     * (which resides between the index and the search interface).
+     *
+     * If cached results that are older than the age you specify in this option are available, a new query will be
+     * performed on the index anyhow.
+     *
+     * On high-volume public web sites, specifying a higher value for this option can greatly improve query response
+     * time at the cost of result freshness.
+     *
+     * **Note:**
+     *
+     * > It is also possible to set a maximum cache age for the entire {@link SearchInterface} rather than for a single
+     * > Tab (see {@link SearchInterface.options.maximumAge}).
+     *
+     * Default value is `undefined` and the Coveo Search API determines the maximum cache age. This is typically
+     * equivalent to 30 minutes (see [Query Parameters - maximumAge](https://developers.coveo.com/display/SearchREST/Query+Parameters#QueryParameters-maximumAge)).
      */
     maximumAge: ComponentOptions.buildNumberOption(),
+
     /**
-     * Specifies if the responsive mode should be enabled for the tabs. Responsive mode will make the overflowing tabs dissapear and instead
-     * be availaible using a dropdown button. Responsive tabs are enabled when tabs overflow or when the width of the search interface
-     * becomes too small.
+     * Specifies whether to enable responsive mode for tabs. Responsive mode makes overflowing tabs disappear, instead
+     * making them available using a dropdown button. Responsive tabs are enabled either when tabs overflow or when the
+     * width of the search interface becomes too small.
      *
-     * Disabling reponsive mode for one tab will disable it for all tabs.
-     * Therefore, this options only needs to be set on one tab to be effective.
-     * The default value is `true`.
+     * Disabling responsive mode for one Tab also disables it for all tabs. Therefore, you only need to set this option
+     * to `false` on one Tab to disable responsive mode.
+     *
+     * Default value is `true`.
      */
     enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
-     * Specifies the label of the button that allows to show the hidden tabs when in responsive mode. If it is specified more than once, the
-     * first occurence of the option will be used.
-     * The default value is "More".
+     * Specifies the label of the button that allows to show the hidden tabs when in responsive mode.
+     *
+     * If more than one Tab in the search interface specifies a value for this option, then the framework uses the first
+     * occurrence of the option.
+     *
+     * The default value is `"More"`.
      */
     dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption()
 
@@ -155,10 +229,11 @@ export class Tab extends Component {
   private isFirstQuery = true;
 
   /**
-   * Create a new Tab. Bind on buildingQuery event as well as on click of the element.
-   * @param element The `HTMLElement` on which to create a new tab. Normally a div
-   * @param options
-   * @param bindings
+   * Creates a new Tab. Binds on buildingQuery event as well as an event on click of the element.
+   * @param element The HTMLElement on which to instantiate the component. Normally a `div`.
+   * @param options The options for the Tab component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
    */
   constructor(public element: HTMLElement, public options?: ITabOptions, bindings?: IComponentBindings) {
     super(element, Tab.ID, bindings);
@@ -175,8 +250,10 @@ export class Tab extends Component {
   }
 
   /**
-   * Select the current tab.<br/>
-   * Trigger a query and log an analytics event.
+   * Selects the current Tab.
+   *
+   * Also logs the `interfaceChange` event in the usage analytics with the new current {@link Tab.options.id} as metada
+   * and triggers a new query.
    */
   public select() {
     if (!this.disabled) {
@@ -191,16 +268,17 @@ export class Tab extends Component {
   }
 
   /**
-   * Check if the given `HTMLElement` is included or not in this tab.
-   * @param element The element to verify.
-   * @returns {boolean}
+   * Indicates whether the HTMLElement argument is included in the Tab. *Included* elements are shown when the Tab is
+   * selected, whereas *excluded* elements are not.
+   * @param element The HTMLElement to verify.
+   * @returns {boolean} `true` if the HTMLElement is included in the Tab; `false` if it is excluded.
    */
   public isElementIncludedInTab(element: HTMLElement): boolean {
     Assert.exists(element);
 
     var includedTabs = this.splitListOfTabs(element.getAttribute('data-tab'));
     var excludedTabs = this.splitListOfTabs(element.getAttribute('data-tab-not'));
-    Assert.check(!(includedTabs.length != 0 && excludedTabs.length != 0), 'You cannot both explicity include and exclude an element from tabs');
+    Assert.check(!(includedTabs.length != 0 && excludedTabs.length != 0), 'You cannot both explicitly include and exclude an element from tabs.');
 
     return (includedTabs.length != 0 && _.indexOf(includedTabs, this.options.id) != -1) ||
       (excludedTabs.length != 0 && _.indexOf(excludedTabs, this.options.id) == -1) ||

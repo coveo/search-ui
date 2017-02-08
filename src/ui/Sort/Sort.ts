@@ -19,29 +19,32 @@ export interface ISortOptions {
   caption?: string;
 }
 /**
- * This component displays a sort criterion for searching.
+ * The Sort component renders a widget that the end user can interact with to sort query results according to a single
+ * criterion or list of criteria.
  */
 export class Sort extends Component {
   static ID = 'Sort';
+
   /**
    * Options for the component
    * @componentOptions
    */
   static options: ISortOptions = {
+
     /**
-     * The criterion for sorting
+     * Specifies the criterion (or criteria) for sorting.
      *
-     * The available criteria are:
+     * The possible criteria are:
      * - `relevancy`
-     * - `Date`
+     * - `date`
      * - `qre`
-     * - `@fieldname` (replace fieldname with an actual field name (e.g. <code>@syssize</code>)
+     * - `@fieldname` (replace `fieldname` with an actual field name (e.g., `@syssize`)
      *
-     * A direction (ascending or descending) can be specified, for example "date ascending".
+     * You can also specify a direction (ascending or descending), for example `date ascending`.
      *
-     * A Sort component can have multiple criteria, passed as a list.
+     * You can pass an array containing multiple criteria to a Sort component.
      *
-     * This option is required.
+     * It is necessary to specify a value for this option in order for this component to work.
      */
     sortCriteria: ComponentOptions.buildCustomListOption((values: string[] | SortCriteria[]) => {
       return _.map(<any>values, (criteria) => { // 'any' because Underscore won't accept the union type as an argument.
@@ -52,10 +55,11 @@ export class Sort extends Component {
         }
       });
     }, { required: true }),
+
     /**
-     * The caption to display on the element.
+     * Specifies the caption to display on the element.
      *
-     * If not specified, the component will use the tag body.
+     * If not specified, the component will use the tag body of the element.
      */
     caption: ComponentOptions.buildLocalizedStringOption({ required: true })
   };
@@ -63,10 +67,11 @@ export class Sort extends Component {
   private currentCriteria: SortCriteria;
 
   /**
-   * Create a new Sort component.
-   * @param element
-   * @param options
-   * @param bindings
+   * Creates a new Sort component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the Sort component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
    */
   constructor(public element: HTMLElement, public options?: ISortOptions, bindings?: IComponentBindings) {
     super(element, Sort.ID, bindings);
@@ -96,10 +101,9 @@ export class Sort extends Component {
   }
 
   /**
-   * Select the Sort component.
-   * @param direction The sort direction (e.g. ascending, descending).
-   *
-   * Will trigger a query if the selection made the criteria change (if it was toggled).
+   * Selects the Sort component. Triggers a new query if selecting the component changes the current
+   * {@link Sort.options.sortCriteria} (if it is toggled).
+   * @param direction The sort direction. Can be either `ascending` or `descending`.
    */
   public select(direction?: string) {
     if (direction) {
@@ -129,15 +133,16 @@ export class Sort extends Component {
   }
 
   /**
-   * Get the current SortCriteria.
+   * Gets the current {@link Sort.options.sortCriteria}.
+   * @returns {SortCriteria}
    */
   public getCurrentCriteria(): SortCriteria {
     return this.currentCriteria;
   }
 
   /**
-   * Returns true if one of the sort criterias matches the passed argument.
-   * @param sortId The sort criteria to verify with (e.g. 'date descending')
+   * Indicates whether the name of any of the {@link Sort.options.sortCriteria} matches the argument.
+   * @param sortId The sort criteria name to look for (e.g., `date descending`).
    */
   public match(sortId: string) {
     return _.any(this.options.sortCriteria, (sortCriteria: SortCriteria) => sortId == sortCriteria.toString());
