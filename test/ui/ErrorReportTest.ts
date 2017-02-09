@@ -1,10 +1,10 @@
 import * as Mock from '../MockEnvironment';
-import {ErrorReport} from '../../src/ui/ErrorReport/ErrorReport';
-import {IErrorReportOptions} from '../../src/ui/ErrorReport/ErrorReport';
-import {Simulate} from '../Simulate';
-import {QueryError} from '../../src/rest/QueryError';
-import {$$} from '../../src/utils/Dom';
-import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { ErrorReport } from '../../src/ui/ErrorReport/ErrorReport';
+import { IErrorReportOptions } from '../../src/ui/ErrorReport/ErrorReport';
+import { Simulate } from '../Simulate';
+import { QueryError } from '../../src/rest/QueryError';
+import { $$ } from '../../src/utils/Dom';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function ErrorReportTest() {
   describe('ErrorReport', function () {

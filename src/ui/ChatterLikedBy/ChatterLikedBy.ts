@@ -1,12 +1,12 @@
-import {Initialization} from '../Base/Initialization';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Utils} from '../../utils/Utils';
-import {$$} from '../../utils/Dom';
-import {l} from '../../strings/Strings';
-import {ChatterUtils} from '../../utils/ChatterUtils';
+import { Initialization } from '../Base/Initialization';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Utils } from '../../utils/Utils';
+import { $$ } from '../../utils/Dom';
+import { l } from '../../strings/Strings';
+import { ChatterUtils } from '../../utils/ChatterUtils';
 
 export interface IChatterLikedByOptions {
   nbLikesToRender: number;

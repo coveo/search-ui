@@ -1,6 +1,6 @@
-import {Template, IInstantiateTemplateOptions} from '../Templates/Template';
-import {IQueryResult} from '../../rest/QueryResult';
-import {$$} from '../../utils/Dom';
+import { Template, IInstantiateTemplateOptions } from '../Templates/Template';
+import { IQueryResult } from '../../rest/QueryResult';
+import { $$ } from '../../utils/Dom';
 import Globalize = require('globalize');
 
 export class DefaultMatrixResultPreviewTemplate extends Template {

@@ -1,6 +1,7 @@
-import {Template} from './Template';
-import {Assert} from '../../misc/Assert';
-import {TemplateFromAScriptTag, ITemplateFromStringProperties} from './TemplateFromAScriptTag';
+import { Template } from './Template';
+import { Assert } from '../../misc/Assert';
+import { TemplateFromAScriptTag, ITemplateFromStringProperties } from './TemplateFromAScriptTag';
+import _ = require('underscore');
 
 export class HtmlTemplate extends Template {
 

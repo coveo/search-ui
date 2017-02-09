@@ -2,11 +2,12 @@ import {
   Template, IInstantiateTemplateOptions,
   DefaultInstantiateTemplateOptions
 } from './Template';
-import {UnderscoreTemplate} from './UnderscoreTemplate';
-import {TemplateCache} from './TemplateCache';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Assert} from '../../misc/Assert';
+import { UnderscoreTemplate } from './UnderscoreTemplate';
+import { TemplateCache } from './TemplateCache';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Assert } from '../../misc/Assert';
 import {$$} from '../../utils/Dom';
+import _ = require('underscore');
 
 /*
  * This renders the appropriate result template, found in TemplateCache,

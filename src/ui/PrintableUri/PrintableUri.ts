@@ -1,12 +1,12 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IQueryResult} from '../../rest/QueryResult';
-import {HighlightUtils, StringAndHoles} from '../../utils/HighlightUtils';
-import {Initialization} from '../Base/Initialization';
-import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {Utils} from '../../utils/Utils';
-import {$$} from '../../utils/Dom';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IQueryResult } from '../../rest/QueryResult';
+import { HighlightUtils, StringAndHoles } from '../../utils/HighlightUtils';
+import { Initialization } from '../Base/Initialization';
+import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { Utils } from '../../utils/Utils';
+import { $$ } from '../../utils/Dom';
 
 export interface IPrintableUriOptions {
 }

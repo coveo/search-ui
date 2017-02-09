@@ -1,12 +1,12 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {SettingsEvents} from '../../events/SettingsEvents';
-import {ISettingsPopulateMenuArgs} from '../Settings/Settings';
-import {PreferencesPanelEvents} from '../../events/PreferencesPanelEvents';
-import {Initialization} from '../Base/Initialization';
-import {l} from '../../strings/Strings';
-import {$$} from '../../utils/Dom';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { SettingsEvents } from '../../events/SettingsEvents';
+import { ISettingsPopulateMenuArgs } from '../Settings/Settings';
+import { PreferencesPanelEvents } from '../../events/PreferencesPanelEvents';
+import { Initialization } from '../Base/Initialization';
+import { l } from '../../strings/Strings';
+import { $$ } from '../../utils/Dom';
 
 export interface IPreferencesPanelOptions {
 }
@@ -57,7 +57,7 @@ export class PreferencesPanel extends Component {
   }
 
   /**
-   * Save the changes 
+   * Save the changes
    */
   public save(): void {
     $$(this.element).trigger(PreferencesPanelEvents.savePreferences);

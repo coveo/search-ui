@@ -1,6 +1,5 @@
-import {Simulate} from '../Simulate';
-import {Promise} from 'es6-promise';
-import {shim} from '../../src/misc/PromisesShim';
+import { Simulate } from '../Simulate';
+import { shim } from '../../src/misc/PromisesShim';
 shim();
 
 export function PromisesShimTest() {

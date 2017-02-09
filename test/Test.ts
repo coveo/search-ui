@@ -380,35 +380,8 @@ StringUtilsTests();
 import {CoreHelperTest} from './ui/CoreHelpersTest';
 CoreHelperTest();
 
-import {TemplateConditionEvaluatorTest} from './ui/TemplateConditionEvaluatorTest';
-TemplateConditionEvaluatorTest();
+import { PipelineContextText } from './ui/PipelineContextTest';
+PipelineContextText();
 
-import {TemplateFieldsEvaluatorTest} from './ui/TemplateFieldsEvaluatorTest';
-TemplateFieldsEvaluatorTest();
-
-import {DefaultRecommendationTemplateTest} from './ui/DefaultRecommendationTemplateTest';
-DefaultRecommendationTemplateTest();
-
-import {DefaultResultTemplateTest} from './ui/DefaultResultTemplateTest';
-DefaultResultTemplateTest();
-
-import {TemplateCacheTest} from './ui/TemplateCacheTest';
-TemplateCacheTest();
-
-import {TemplateTest} from './ui/TemplateTest';
-TemplateTest();
-
-import {DefaultInstantiateTemplateOptionsTest} from './ui/DefaultInstantiateTemplateOptionsTest';
-DefaultInstantiateTemplateOptionsTest();
-
-import {HtmlTemplateTest} from './ui/HtmlTemplateTest';
-HtmlTemplateTest();
-
-import {TemplateFromAScriptTagTest} from './ui/TemplateFromAScriptTagTest';
-TemplateFromAScriptTagTest();
-
-import {TemplateListTest} from './ui/TemplateListTest';
-TemplateListTest();
-
-import {UnderscoreTemplateTest} from './ui/UnderscoreTemplateTest';
-UnderscoreTemplateTest();
+import { RevealQuerySuggestAddonTest } from './ui/RevealQuerySuggestAddonTest';
+RevealQuerySuggestAddonTest();

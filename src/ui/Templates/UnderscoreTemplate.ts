@@ -1,10 +1,11 @@
-import {Template} from './Template';
-import {ITemplateHelperFunction} from './TemplateHelpers';
-import {Assert} from '../../misc/Assert';
-import {Utils} from '../../utils/Utils';
-import {Logger} from '../../misc/Logger';
-import {TemplateFromAScriptTag, ITemplateFromStringProperties} from './TemplateFromAScriptTag';
-import {DefaultResultTemplate} from './DefaultResultTemplate';
+import { Template } from './Template';
+import { ITemplateHelperFunction } from './TemplateHelpers';
+import { Assert } from '../../misc/Assert';
+import { Utils } from '../../utils/Utils';
+import { Logger } from '../../misc/Logger';
+import { TemplateFromAScriptTag, ITemplateFromStringProperties } from './TemplateFromAScriptTag';
+import { DefaultResultTemplate } from './DefaultResultTemplate';
+import _ = require('underscore');
 
 _.templateSettings = {
   evaluate: /(?:<%|{{)([\s\S]+?)(?:%>|}})/g,

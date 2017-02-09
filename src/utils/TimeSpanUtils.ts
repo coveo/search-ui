@@ -1,4 +1,4 @@
-import {Assert} from '../misc/Assert';
+import { Assert } from '../misc/Assert';
 
 /**
  * The possible options to use when calculating a timespan

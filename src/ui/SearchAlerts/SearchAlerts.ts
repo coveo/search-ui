@@ -1,25 +1,25 @@
-/// <reference path='../../../node_modules/modal-box/bin/ModalBox.d.ts' />
-import {Component} from '../Base/Component';
-import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {SearchAlertsMessage} from './SearchAlertsMessage';
-import {SettingsEvents} from '../../events/SettingsEvents';
-import {QueryEvents} from '../../events/QueryEvents';
-import {Assert} from '../../misc/Assert';
-import {Querybox} from '../Querybox/Querybox';
-import {Omnibox} from '../Omnibox/Omnibox';
-import {IQuery} from '../../rest/Query';
-import {AjaxError} from '../../rest/AjaxError';
-import {ISettingsPopulateMenuArgs} from '../Settings/Settings';
-import {SearchAlertsEvents, ISearchAlertsEventArgs, ISearchAlertsFailEventArgs} from '../../events/SearchAlertEvents';
-import {ISubscription, ISubscriptionItemRequest, SUBSCRIPTION_TYPE, ISubscriptionRequest, ISubscriptionQueryRequest} from '../../rest/Subscription';
-import {Initialization} from '../Base/Initialization';
-import {l} from '../../strings/Strings';
-import {$$, Dom} from '../../utils/Dom';
-import {ModalBox} from '../../ExternalModulesShim';
+import { Component } from '../Base/Component';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { SearchAlertsMessage } from './SearchAlertsMessage';
+import { SettingsEvents } from '../../events/SettingsEvents';
+import { QueryEvents } from '../../events/QueryEvents';
+import { Assert } from '../../misc/Assert';
+import { Querybox } from '../Querybox/Querybox';
+import { Omnibox } from '../Omnibox/Omnibox';
+import { IQuery } from '../../rest/Query';
+import { AjaxError } from '../../rest/AjaxError';
+import { ISettingsPopulateMenuArgs } from '../Settings/Settings';
+import { SearchAlertsEvents, ISearchAlertsEventArgs, ISearchAlertsFailEventArgs } from '../../events/SearchAlertEvents';
+import { ISubscription, ISubscriptionItemRequest, SUBSCRIPTION_TYPE, ISubscriptionRequest, ISubscriptionQueryRequest } from '../../rest/Subscription';
+import { Initialization } from '../Base/Initialization';
+import { l } from '../../strings/Strings';
+import { $$, Dom } from '../../utils/Dom';
+import { ModalBox } from '../../ExternalModulesShim';
 import {
   analyticsActionCauseList, IAnalyticsSearchAlertsUpdateMeta, IAnalyticsSearchAlertsMeta, IAnalyticsActionCause
 } from '../Analytics/AnalyticsActionListMeta';
+import _ = require('underscore');
 
 export interface ISearchAlertsOptions {
   enableManagePanel?: boolean;
@@ -220,12 +220,11 @@ export class SearchAlerts extends Component {
         </tbody>
       </table>`;
 
-    return this.queryController.getEndpoint().listSubscriptions()
-      .then((subscriptions: ISubscription[]) => {
-        _.each(subscriptions, (subscription) => {
-          this.addSearchAlert(subscription, container);
-        });
-      })
+    return this.queryController.getEndpoint().listSubscriptions().then((subscriptions: ISubscription[]) => {
+      _.each(subscriptions, (subscription) => {
+        this.addSearchAlert(subscription, container);
+      });
+    })
       .catch(() => {
         container.el.innerHTML = '<div class=\'coveo-subscriptions-panel-fail\'>' + l('SearchAlerts_Fail') + '</div>';
       })

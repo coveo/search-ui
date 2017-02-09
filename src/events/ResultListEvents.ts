@@ -1,5 +1,5 @@
-import {IQueryResult} from '../rest/QueryResult';
-import {IQueryResults} from '../rest/QueryResults';
+import { IQueryResult } from '../rest/QueryResult';
+import { IQueryResults } from '../rest/QueryResults';
 
 export interface IDisplayedNewResultEventArgs {
   result: IQueryResult;

@@ -1,15 +1,15 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
-import {ResultLink} from '../ResultLink/ResultLink';
-import {IQueryResult} from '../../rest/QueryResult';
-import {QueryUtils} from '../../utils/QueryUtils';
-import {DeviceUtils} from '../../utils/DeviceUtils';
-import {Initialization} from '../Base/Initialization';
-import {ISearchEndpoint} from '../../rest/SearchEndpointInterface';
-import {$$} from '../../utils/Dom';
-import {FieldTable} from '../FieldTable/FieldTable';
-import {get} from '../Base/RegisteredNamedMethods';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
+import { ResultLink } from '../ResultLink/ResultLink';
+import { IQueryResult } from '../../rest/QueryResult';
+import { QueryUtils } from '../../utils/QueryUtils';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { Initialization } from '../Base/Initialization';
+import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
+import { $$ } from '../../utils/Dom';
+import { FieldTable } from '../FieldTable/FieldTable';
+import { get } from '../Base/RegisteredNamedMethods';
 
 export interface IThumbnailOptions {
   noThumbnailClass?: string;
@@ -17,8 +17,8 @@ export interface IThumbnailOptions {
 }
 
 /**
- * This component automatically fetches the thumbnail of the result object
- * and formats an HTML image tag (<code>img</code>) with it.
+ * The Thumbnail component automatically fetches the thumbnail of the result object and outputs an HTML `img` tag with
+ * it.
  */
 export class Thumbnail extends Component {
   static ID = 'Thumbnail';
@@ -28,16 +28,21 @@ export class Thumbnail extends Component {
    * @componentOptions
    */
   static options: IThumbnailOptions = {
+
     /**
-     * Specifies the CSS class to use on the thumbnail image tag when a result
-     * has no thumbnail in the index.<br/>
-     * Default value: <code>coveo-no-thumbnail</code>
+     * Specifies the CSS class to use on the `img` tag that the Thumbnail component outputs when a result has no
+     * thumbnail in the index.
+     *
+     * Default value is `coveo-no-thumbnail`.
      */
     noThumbnailClass: ComponentOptions.buildStringOption({ defaultValue: 'coveo-no-thumbnail' }),
+
     /**
-     * Specifies if a clickable {@link ResultLink} is to be created around the Thumbnail.<br/>
-     * Uses all the same options as as {@link ResultLink} except <code>field</code><br/>
-     * Default value is <code>false</code>
+     * Specifies whether to create a clickable {@link ResultLink} around the Thumbnail.
+     *
+     * Uses all the same options as a {@link ResultLink} except for {@link ResultLink.options.field}.
+     *
+     * Default value is `false`.
      */
     clickable: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
@@ -56,11 +61,12 @@ export class Thumbnail extends Component {
   public img: HTMLImageElement;
 
   /**
-   * Create a new Thumbnail component
-   * @param element
-   * @param options
-   * @param bindings
-   * @param result
+   * Creates a new Thumbnail component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the Thumbnail component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   * @param result The result to associate the component with.
    */
   constructor(public element: HTMLElement, public options?: IThumbnailOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {
     super(element, Thumbnail.ID, bindings);

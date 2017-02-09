@@ -1,5 +1,5 @@
-import {Cookie} from '../../src/utils/CookieUtils';
-import {Simulate} from '../Simulate';
+import { Cookie } from '../../src/utils/CookieUtils';
+import { Simulate } from '../Simulate';
 
 export function CookieUtilsTest() {
   describe('CookieUtils', function () {

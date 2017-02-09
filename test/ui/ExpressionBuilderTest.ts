@@ -1,4 +1,4 @@
-import {ExpressionBuilder} from '../../src/ui/Base/ExpressionBuilder';
+import { ExpressionBuilder } from '../../src/ui/Base/ExpressionBuilder';
 
 export function ExpressionBuilderTest() {
   describe('ExpressionBuilder', function () {

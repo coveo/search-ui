@@ -1,12 +1,12 @@
 import * as Mock from '../MockEnvironment';
-import {Sort} from '../../src/ui/Sort/Sort';
-import {Dom} from '../../src/utils/Dom';
-import {$$} from '../../src/utils/Dom';
-import {QueryEvents} from '../../src/events/QueryEvents';
-import {IQuerySuccessEventArgs} from '../../src/events/QueryEvents';
-import {SortCriteria} from '../../src/ui/Sort/SortCriteria';
-import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
-import {QueryStateModel} from '../../src/models/QueryStateModel';
+import { Sort } from '../../src/ui/Sort/Sort';
+import { Dom } from '../../src/utils/Dom';
+import { $$ } from '../../src/utils/Dom';
+import { QueryEvents } from '../../src/events/QueryEvents';
+import { IQuerySuccessEventArgs } from '../../src/events/QueryEvents';
+import { SortCriteria } from '../../src/ui/Sort/SortCriteria';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { QueryStateModel } from '../../src/models/QueryStateModel';
 
 export function SortTest() {
   describe('Sort', function () {

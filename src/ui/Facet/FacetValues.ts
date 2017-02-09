@@ -1,9 +1,10 @@
-import {Assert} from '../../misc/Assert';
-import {Utils} from '../../utils/Utils';
-import {IGroupByValue} from '../../rest/GroupByValue';
-import {IIndexFieldValue} from '../../rest/FieldValue';
-import {IGroupByResult} from '../../rest/GroupByResult';
+import { Assert } from '../../misc/Assert';
+import { Utils } from '../../utils/Utils';
+import { IGroupByValue } from '../../rest/GroupByValue';
+import { IIndexFieldValue } from '../../rest/FieldValue';
+import { IGroupByResult } from '../../rest/GroupByResult';
 import Globalize = require('globalize');
+import _ = require('underscore');
 
 /**
  * A class which holds information and operation available on a single facet value returned by a {@link IGroupByRequest}.<br/>

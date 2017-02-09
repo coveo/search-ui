@@ -1,5 +1,5 @@
-import {Dropdown} from '../../../../src/ui/AdvancedSearch/Form/Dropdown';
-import {$$} from '../../../../src/utils/Dom';
+import { Dropdown } from '../../../../src/ui/AdvancedSearch/Form/Dropdown';
+import { $$ } from '../../../../src/utils/Dom';
 
 export function DropdownTest() {
   describe('Dropdown', () => {

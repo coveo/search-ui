@@ -1,5 +1,5 @@
-import {BetweenDateInput} from '../../../../src/ui/AdvancedSearch/DateInput/BetweenDateInput';
-import {$$} from '../../../../src/utils/Dom';
+import { BetweenDateInput } from '../../../../src/ui/AdvancedSearch/DateInput/BetweenDateInput';
+import { $$ } from '../../../../src/utils/Dom';
 
 export function BetweenDateInputTest() {
   describe('BetweenDateInput', () => {

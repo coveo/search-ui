@@ -15,6 +15,7 @@ import {NoopAnalyticsClient} from '../src/ui/Analytics/NoopAnalyticsClient';
 import {SearchEndpoint} from '../src/rest/SearchEndpoint';
 import {QueryController} from '../src/controllers/QueryController';
 import {ResponsiveComponents} from '../src/ui/ResponsiveComponents/ResponsiveComponents';
+import { QueryBuilder } from '../src/ui/Base/QueryBuilder';
 
 export interface IMockEnvironment extends IComponentBindings {
   root: HTMLElement;
@@ -179,7 +180,7 @@ export function mock<T>(contructorFunc, name = 'mock'): T {
 }
 
 export function mockWindow(): Window {
-  var mockWindow = <Window>mock(window);
+  var mockWindow = <any>mock(window);
   mockWindow.location = <Location>{
     'href': '',
     'hash': ''
@@ -203,7 +204,7 @@ export function mockWindow(): Window {
   mockWindow.addEventListener = jasmine.createSpy('addEventListener');
   mockWindow.removeEventListener = jasmine.createSpy('removeEventListener');
   mockWindow.dispatchEvent = jasmine.createSpy('dispatchEvent');
-  return mockWindow;
+  return <Window>mockWindow;
 }
 
 export function mockComponent<T extends BaseComponent>(constructorFunc, name = 'mock'): T {
@@ -234,6 +235,7 @@ export function mockQueryController(): QueryController {
   spy.options = {};
   spy.options.resultsPerPage = 10;
   spy.fetchMore.and.returnValue(new Promise((resolve, reject) => { }));
+  spy.getLastQuery.and.returnValue(new QueryBuilder().build());
   return m;
 }
 

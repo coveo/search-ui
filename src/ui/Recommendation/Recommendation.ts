@@ -1,26 +1,27 @@
-import {SearchInterface, ISearchInterfaceOptions} from '../SearchInterface/SearchInterface';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {OmniboxEvents} from '../../events/OmniboxEvents';
-import {ResultListEvents} from '../../events/ResultListEvents';
-import {SettingsEvents} from '../../events/SettingsEvents';
-import {PreferencesPanelEvents} from '../../events/PreferencesPanelEvents';
-import {AnalyticsEvents} from '../../events/AnalyticsEvents';
-import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
-import {BreadcrumbEvents} from '../../events/BreadcrumbEvents';
-import {QuickviewEvents} from '../../events/QuickviewEvents';
-import {QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
-import {Model, MODEL_EVENTS} from '../../models/Model';
-import {Utils} from '../../utils/Utils';
-import {$$} from '../../utils/Dom';
-import {INoResultsEventArgs} from '../../events/QueryEvents';
-import {IQueryErrorEventArgs} from '../../events/QueryEvents';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ResponsiveRecommendation} from '../ResponsiveComponents/ResponsiveRecommendation';
-import {history} from 'coveo.analytics';
-import {get} from '../Base/RegisteredNamedMethods';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
+import { SearchInterface, ISearchInterfaceOptions } from '../SearchInterface/SearchInterface';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { OmniboxEvents } from '../../events/OmniboxEvents';
+import { ResultListEvents } from '../../events/ResultListEvents';
+import { SettingsEvents } from '../../events/SettingsEvents';
+import { PreferencesPanelEvents } from '../../events/PreferencesPanelEvents';
+import { AnalyticsEvents } from '../../events/AnalyticsEvents';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
+import { BreadcrumbEvents } from '../../events/BreadcrumbEvents';
+import { QuickviewEvents } from '../../events/QuickviewEvents';
+import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
+import { Model, MODEL_EVENTS } from '../../models/Model';
+import { Utils } from '../../utils/Utils';
+import { $$ } from '../../utils/Dom';
+import { INoResultsEventArgs } from '../../events/QueryEvents';
+import { IQueryErrorEventArgs } from '../../events/QueryEvents';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ResponsiveRecommendation } from '../ResponsiveComponents/ResponsiveRecommendation';
+import { history } from 'coveo.analytics';
+import { get } from '../Base/RegisteredNamedMethods';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import _ = require('underscore');
 
 export interface IRecommendationOptions extends ISearchInterfaceOptions {
   mainSearchInterface?: HTMLElement;
@@ -65,7 +66,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
     /**
      * Specifies the id of the interface.
      * It is used by the analytics to know which recommendation interface was selected.
-     * The default value is "Recommendation" for the first one and "Recommendation_{number}" where {number} depends on the number of recommendation interface with default ids in the page for the others. 
+     * The default value is "Recommendation" for the first one and "Recommendation_{number}" where {number} depends on the number of recommendation interface with default ids in the page for the others.
      */
     id: ComponentOptions.buildStringOption(),
     /**
@@ -101,7 +102,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
      * Specifies if the responsive mode should be enabled on the recommendation component. Responsive mode will make the recommendation component
      * dissapear and instead be availaible using a dropdown button. The responsive recommendation component is enabled when the width
      * of the element the search interface is bound to reaches 800 pixels. This value can be modified using {@link Recommendation.options.responsiveBreakpoint}.
-     * 
+     *
      * Disabling reponsive mode for one recommendation component will disable it for all of them.
      * Therefore, this option only needs to be set on one recommendation component to be effective.
      * The default value is `true`.
@@ -118,7 +119,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
 
     /**
      * Specifies the label of the button that allows to show the recommendation component when in responsive mode.
-     * The default value is "Recommendations". 
+     * The default value is "Recommendations".
      */
     dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'Recommendations' })
   };

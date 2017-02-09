@@ -1,3 +1,5 @@
+import _ = require('underscore');
+
 export let underscoreInstance;
 underscoreInstance = _;
 setCoveoUnderscore();

@@ -1,4 +1,4 @@
-import {HashUtils} from '../../src/utils/HashUtils';
+import { HashUtils } from '../../src/utils/HashUtils';
 
 export function HashUtilsTest() {
   describe('HashUtils', () => {
@@ -65,6 +65,14 @@ export function HashUtilsTest() {
 
       let encodedValue = HashUtils.encodeValues({ a: toEncode });
 
+      expect(encodedValue).toEqual(expectedEncodedValue);
+    });
+
+    it('should not throw when encoding null or undefined values', () => {
+      let toEncode = null;
+      let expectedEncodedValue = '';
+      let encodedValue = HashUtils.encodeValues({ a: toEncode });
+      expect(() => HashUtils.encodeValues({ a: toEncode })).not.toThrowError();
       expect(encodedValue).toEqual(expectedEncodedValue);
     });
 

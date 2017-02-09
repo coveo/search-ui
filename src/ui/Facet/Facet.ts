@@ -9,51 +9,52 @@
 /// <reference path="FacetSearchParameters.ts" />
 /// <reference path="../HierarchicalFacet/HierarchicalFacet.ts" />
 
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {FacetValue, FacetValues} from './FacetValues';
-import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
-import {DeviceUtils} from '../../utils/DeviceUtils';
-import {l} from '../../strings/Strings';
-import {FacetQueryController} from '../../controllers/FacetQueryController';
-import {FacetSearch} from './FacetSearch';
-import {FacetSettings} from './FacetSettings';
-import {FacetSort} from './FacetSort';
-import {FacetValuesList} from './FacetValuesList';
-import {FacetHeader} from './FacetHeader';
-import {FacetUtils} from './FacetUtils';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {QueryEvents, INewQueryEventArgs, IQuerySuccessEventArgs, IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {Assert} from '../../misc/Assert';
-import {ISearchEndpoint} from '../../rest/SearchEndpointInterface';
-import {$$} from '../../utils/Dom';
-import {IAnalyticsFacetMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {Utils} from '../../utils/Utils';
-import {IIndexFieldValue} from '../../rest/FieldValue';
-import {IPopulateBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
-import {BreadcrumbValueElement} from './BreadcrumbValueElement';
-import {BreadcrumbValueList} from './BreadcrumbValuesList';
-import {FacetValueElement} from './FacetValueElement';
-import {FacetSearchValuesList} from './FacetSearchValuesList';
-import {Defer} from '../../misc/Defer';
-import {QueryStateModel, IQueryStateIncludedAttribute, IQueryStateExcludedAttribute} from '../../models/QueryStateModel';
-import {MODEL_EVENTS, IAttributesChangedEventArg} from '../../models/Model';
-import {OmniboxEvents, IPopulateOmniboxEventArgs} from '../../events/OmniboxEvents';
-import {OmniboxValueElement} from './OmniboxValueElement';
-import {OmniboxValuesList} from './OmniboxValuesList';
-import {IGroupByResult} from '../../rest/GroupByResult';
-import {IGroupByValue} from '../../rest/GroupByValue';
-import {ValueElementRenderer} from './ValueElementRenderer';
-import {FacetSearchParameters} from './FacetSearchParameters';
-import {IOmniboxDataRow} from '../Omnibox/OmniboxInterface';
-import {Initialization} from '../Base/Initialization';
-import {BreadcrumbEvents, IClearBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
-import {ResponsiveFacets} from '../ResponsiveComponents/ResponsiveFacets';
-import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
-import {IStringMap} from '../../rest/GenericParam';
-import {FacetValuesOrder} from './FacetValuesOrder';
-import {ValueElement} from './ValueElement';
-import {SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs} from '../../events/SearchAlertEvents';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { FacetValue, FacetValues } from './FacetValues';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { l } from '../../strings/Strings';
+import { FacetQueryController } from '../../controllers/FacetQueryController';
+import { FacetSearch } from './FacetSearch';
+import { FacetSettings } from './FacetSettings';
+import { FacetSort } from './FacetSort';
+import { FacetValuesList } from './FacetValuesList';
+import { FacetHeader } from './FacetHeader';
+import { FacetUtils } from './FacetUtils';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { QueryEvents, INewQueryEventArgs, IQuerySuccessEventArgs, IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { Assert } from '../../misc/Assert';
+import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
+import { $$ } from '../../utils/Dom';
+import { IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { Utils } from '../../utils/Utils';
+import { IIndexFieldValue } from '../../rest/FieldValue';
+import { IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
+import { BreadcrumbValueElement } from './BreadcrumbValueElement';
+import { BreadcrumbValueList } from './BreadcrumbValuesList';
+import { FacetValueElement } from './FacetValueElement';
+import { FacetSearchValuesList } from './FacetSearchValuesList';
+import { Defer } from '../../misc/Defer';
+import { QueryStateModel, IQueryStateIncludedAttribute, IQueryStateExcludedAttribute } from '../../models/QueryStateModel';
+import { MODEL_EVENTS, IAttributesChangedEventArg } from '../../models/Model';
+import { OmniboxEvents, IPopulateOmniboxEventArgs } from '../../events/OmniboxEvents';
+import { OmniboxValueElement } from './OmniboxValueElement';
+import { OmniboxValuesList } from './OmniboxValuesList';
+import { IGroupByResult } from '../../rest/GroupByResult';
+import { IGroupByValue } from '../../rest/GroupByValue';
+import { ValueElementRenderer } from './ValueElementRenderer';
+import { FacetSearchParameters } from './FacetSearchParameters';
+import { IOmniboxDataRow } from '../Omnibox/OmniboxInterface';
+import { Initialization } from '../Base/Initialization';
+import { BreadcrumbEvents, IClearBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
+import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
+import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
+import { IStringMap } from '../../rest/GenericParam';
+import { FacetValuesOrder } from './FacetValuesOrder';
+import { ValueElement } from './ValueElement';
+import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
+import _ = require('underscore');
 
 export interface IFacetOptions {
   title?: string;
@@ -165,11 +166,12 @@ export class Facet extends Component {
      * Default value is the {@link Facet.options.field} option value.
      */
     id: ComponentOptions.buildStringOption({
-      postProcessing: (value, options: IFacetOptions) => value || options.field
+      postProcessing: (value, options: IFacetOptions) => value || <string>options.field
     }),
 
     /**
-     * Specifies whether the field is configured in the index as a multi-value field (meaning: comma separated values).
+     * Specifies whether the field is configured in the index as a multi-value field (semicolon separated values such as
+     * `abc;def;ghi`).
      *
      * Default value is `false`.
      */
@@ -564,14 +566,14 @@ export class Facet extends Component {
 
     /**
      * If {@link Facet.options.enableResponsiveMode} is `true` for all facets and
-     * {@link FacetSlider.options.enableResponsiveMode} is also true for all sliders, specifies the width threshold
+     * {@link FacetSlider.options.enableResponsiveMode} is also `true` for all sliders, specifies the width threshold
      * (in pixels) of the search interface at which facets go in responsive mode.
      *
      * Facets go in responsive mode when the width of the search interface is equal to or lower than this value.
      *
      * The `search interface` corresponds to the HTML element with the class `CoveoSearchInterface`.
      *
-     * If more than one FacetSlider or {@link Facet} in the search interface specifies a value for this option, then the
+     * If more than one {@link FacetSlider} or Facet in the search interface specifies a value for this option, then the
      * framework uses the last occurrence of the option.
      *
      * Default value is `800`.
@@ -580,7 +582,7 @@ export class Facet extends Component {
 
     /**
      * If {@link Facet.options.enableResponsiveMode} is `true` for all facets and
-     * {@link FacetSlider.options.enableResponsiveMode} is also true for all sliders, specifies the label of the
+     * {@link FacetSlider.options.enableResponsiveMode} is also `true` for all sliders, specifies the label of the
      * dropdown button that allows to display the facets when in responsive mode.
      *
      * If more than one Facet or {@link FacetSlider} in the search interface specifies a value for this option, then the

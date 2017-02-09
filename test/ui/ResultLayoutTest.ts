@@ -1,11 +1,11 @@
 import * as Mock from '../MockEnvironment';
-import {ResultLayout} from '../../src/ui/ResultLayout/ResultLayout';
-import {ResultLayoutEvents} from '../../src/events/ResultLayoutEvents';
-import {QueryEvents, IQuerySuccessEventArgs} from '../../src/events/QueryEvents';
+import { ResultLayout } from '../../src/ui/ResultLayout/ResultLayout';
+import { ResultLayoutEvents } from '../../src/events/ResultLayoutEvents';
+import { QueryEvents, IQuerySuccessEventArgs } from '../../src/events/QueryEvents';
+import { FakeResults } from '../Fake';
+import { QueryStateModel } from '../../src/models/QueryStateModel';
+import { $$ } from '../../src/utils/Dom';
 import {InitializationEvents} from '../../src/events/InitializationEvents';
-import {FakeResults} from '../Fake';
-import {QueryStateModel} from '../../src/models/QueryStateModel';
-import {$$} from '../../src/utils/Dom';
 
 export function ResultLayoutTest() {
   describe('ResultLayout', () => {

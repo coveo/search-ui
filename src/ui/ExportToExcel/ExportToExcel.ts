@@ -1,11 +1,12 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {SettingsEvents} from '../../events/SettingsEvents';
-import {ISettingsPopulateMenuArgs} from '../Settings/Settings';
-import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {Initialization} from '../Base/Initialization';
-import {l} from '../../strings/Strings';
+import { Component } from '../Base/Component';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { SettingsEvents } from '../../events/SettingsEvents';
+import { ISettingsPopulateMenuArgs } from '../Settings/Settings';
+import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { Initialization } from '../Base/Initialization';
+import { l } from '../../strings/Strings';
+import _ = require('underscore');
 
 export interface IExportToExcelOptions {
   numberOfResults?: number;
@@ -36,11 +37,6 @@ export class ExportToExcel extends Component {
      * Default value is `100`.
      */
     numberOfResults: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1 }),
-    /**
-     * Specifies an array of fields that should be included for the export to excel call.
-     *
-     * Those are the fields that will be downloaded. If not specified, all fields returned by the last query will be used.
-     */
     fieldsToInclude: ComponentOptions.buildFieldsOption()
   };
 

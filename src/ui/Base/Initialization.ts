@@ -1,21 +1,22 @@
-import {IQueryResult} from '../../rest/QueryResult';
-import {Logger} from '../../misc/Logger';
-import {IComponentDefinition, Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {Utils} from '../../utils/Utils';
-import {Assert} from '../../misc/Assert';
-import {$$} from '../../utils/Dom';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {SearchInterface, StandaloneSearchInterface} from '../SearchInterface/SearchInterface';
-import {QueryController} from '../../controllers/QueryController';
-import {HashUtils} from '../../utils/HashUtils';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {ComponentStateModel} from '../../models/ComponentStateModel';
-import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
-import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {BaseComponent} from '../Base/BaseComponent';
-import {JQueryUtils} from '../../utils/JQueryutils';
-import {IJQuery} from './CoveoJQuery';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Logger } from '../../misc/Logger';
+import { IComponentDefinition, Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Utils } from '../../utils/Utils';
+import { Assert } from '../../misc/Assert';
+import { $$ } from '../../utils/Dom';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { SearchInterface, StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
+import { QueryController } from '../../controllers/QueryController';
+import { HashUtils } from '../../utils/HashUtils';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { ComponentStateModel } from '../../models/ComponentStateModel';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { BaseComponent } from '../Base/BaseComponent';
+import { JQueryUtils } from '../../utils/JQueryutils';
+import { IJQuery } from './CoveoJQuery';
+import _ = require('underscore');
 
 /**
  * Represent the initialization parameters required to init a new component.

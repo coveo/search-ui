@@ -1,20 +1,21 @@
-import {IQuery} from '../src/rest/Query';
-import {QueryBuilder} from '../src/ui/Base/QueryBuilder';
-import {IQueryResults} from '../src/rest/QueryResults';
-import {IEndpointError} from '../src/rest/EndpointError';
-import {IQueryCorrection} from '../src/rest/QueryCorrection';
-import {IGroupByResult} from '../src/rest/GroupByResult';
-import {IMockEnvironment} from './MockEnvironment';
-import {FakeResults} from './Fake';
-import {$$} from '../src/utils/Dom';
-import {QueryEvents} from '../src/events/QueryEvents';
-import {INewQueryEventArgs, IBuildingQueryEventArgs, IDuringQueryEventArgs, IQueryErrorEventArgs, IPreprocessResultsEventArgs, INoResultsEventArgs, IQuerySuccessEventArgs} from '../src/events/QueryEvents';
-import {Utils} from '../src/utils/Utils';
-import {Defer} from '../src/misc/Defer';
-import {IOmniboxData} from '../src/ui/Omnibox/OmniboxInterface';
-import {OmniboxEvents} from '../src/events/OmniboxEvents';
-import {IBreadcrumbItem, IPopulateBreadcrumbEventArgs, BreadcrumbEvents} from '../src/events/BreadcrumbEvents';
-import {JQuery} from '../test/JQueryModule';
+import { IQuery } from '../src/rest/Query';
+import { QueryBuilder } from '../src/ui/Base/QueryBuilder';
+import { IQueryResults } from '../src/rest/QueryResults';
+import { IEndpointError } from '../src/rest/EndpointError';
+import { IQueryCorrection } from '../src/rest/QueryCorrection';
+import { IGroupByResult } from '../src/rest/GroupByResult';
+import { IMockEnvironment } from './MockEnvironment';
+import { FakeResults } from './Fake';
+import { $$ } from '../src/utils/Dom';
+import { QueryEvents } from '../src/events/QueryEvents';
+import { INewQueryEventArgs, IBuildingQueryEventArgs, IDuringQueryEventArgs, IQueryErrorEventArgs, IPreprocessResultsEventArgs, INoResultsEventArgs, IQuerySuccessEventArgs } from '../src/events/QueryEvents';
+import { Utils } from '../src/utils/Utils';
+import { Defer } from '../src/misc/Defer';
+import { IOmniboxData } from '../src/ui/Omnibox/OmniboxInterface';
+import { OmniboxEvents } from '../src/events/OmniboxEvents';
+import { IBreadcrumbItem, IPopulateBreadcrumbEventArgs, BreadcrumbEvents } from '../src/events/BreadcrumbEvents';
+import { JQuery } from '../test/JQueryModule';
+import _ = require('underscore');
 
 export interface ISimulateQueryData {
   query?: IQuery;

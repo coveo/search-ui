@@ -1,15 +1,15 @@
 /// <reference path="Facet.ts" />
-import {Facet} from './Facet';
-import {FacetValue} from './FacetValues';
-import {IPopulateOmniboxObject} from '../Omnibox/OmniboxInterface';
-import {ValueElementRenderer} from './ValueElementRenderer';
-import {Utils} from '../../utils/Utils';
-import {IAnalyticsActionCause, analyticsActionCauseList, IAnalyticsFacetMeta} from '../Analytics/AnalyticsActionListMeta';
-import {$$} from '../../utils/Dom';
-import {DeviceUtils} from '../../utils/DeviceUtils';
-import {Defer} from '../../misc/Defer';
-import {ModalBox} from '../../ExternalModulesShim';
-import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
+import { Facet } from './Facet';
+import { FacetValue } from './FacetValues';
+import { IPopulateOmniboxObject } from '../Omnibox/OmniboxInterface';
+import { ValueElementRenderer } from './ValueElementRenderer';
+import { Utils } from '../../utils/Utils';
+import { IAnalyticsActionCause, analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/AnalyticsActionListMeta';
+import { $$ } from '../../utils/Dom';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { Defer } from '../../misc/Defer';
+import { ModalBox } from '../../ExternalModulesShim';
+import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 
 export interface IValueElementKlass {
   new (facet: Facet, facetValue: FacetValue): ValueElement;

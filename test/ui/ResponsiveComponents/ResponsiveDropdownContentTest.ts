@@ -1,6 +1,6 @@
-import {ResponsiveDropdownContent} from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownContent';
-import {ResponsiveComponentsManager} from '../../../src/ui/ResponsiveComponents/ResponsiveComponentsManager';
-import {$$, Dom} from '../../../src/utils/Dom';
+import { ResponsiveDropdownContent } from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownContent';
+import { ResponsiveComponentsManager } from '../../../src/ui/ResponsiveComponents/ResponsiveComponentsManager';
+import { $$, Dom } from '../../../src/utils/Dom';
 
 export function ResponsiveDropdownContentTest() {
 

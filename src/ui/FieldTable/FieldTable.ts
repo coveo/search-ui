@@ -1,12 +1,13 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {QueryUtils} from '../../utils/QueryUtils';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Initialization} from '../Base/Initialization';
-import {FieldValue, IFieldValueOptions} from './FieldValue';
-import {$$} from '../../utils/Dom';
-import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { QueryUtils } from '../../utils/QueryUtils';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Initialization } from '../Base/Initialization';
+import { FieldValue, IFieldValueOptions } from './FieldValue';
+import { $$ } from '../../utils/Dom';
+import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
+import _ = require('underscore');
 
 export interface IFieldTableOptions {
   allowMinimization: boolean;
@@ -224,7 +225,7 @@ class ValueRow extends FieldValue {
   static parent = FieldValue;
   private valueContainer: HTMLElement;
 
-  constructor(public element: HTMLElement, public options?: IValueRowOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
+  constructor(public element: HTMLElement, public options: IValueRowOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, options, bindings, result, ValueRow.ID);
     this.options = ComponentOptions.initComponentOptions(element, ValueRow, options);
 
