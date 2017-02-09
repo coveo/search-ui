@@ -1,8 +1,8 @@
-import {Template} from './Template';
-import {ComponentOptions, IComponentOptionsFieldsOption} from '../Base/ComponentOptions';
-import {Assert} from '../../misc/Assert';
-import {$$} from '../../utils/Dom';
-
+import { Template } from './Template';
+import { ComponentOptions, IComponentOptionsFieldsOption } from '../Base/ComponentOptions';
+import { Assert } from '../../misc/Assert';
+import { $$ } from '../../utils/Dom';
+import _ = require('underscore');
 
 export class HtmlTemplate extends Template {
 

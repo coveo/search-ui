@@ -1,16 +1,17 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {Assert} from '../../misc/Assert';
-import {QueryEvents, IBuildingQueryEventArgs, INoResultsEventArgs, IQuerySuccessEventArgs} from '../../events/QueryEvents';
-import {$$} from '../../utils/Dom';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {Initialization} from '../Base/Initialization';
-import {IQueryCorrection} from '../../rest/QueryCorrection';
-import {StringUtils} from '../../utils/StringUtils';
-import {Utils} from '../../utils/Utils';
-import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
-import {l} from '../../strings/Strings';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Assert } from '../../misc/Assert';
+import { QueryEvents, IBuildingQueryEventArgs, INoResultsEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { $$ } from '../../utils/Dom';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { Initialization } from '../Base/Initialization';
+import { IQueryCorrection } from '../../rest/QueryCorrection';
+import { StringUtils } from '../../utils/StringUtils';
+import { Utils } from '../../utils/Utils';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
+import { l } from '../../strings/Strings';
+import _ = require('underscore');
 
 export interface IDidYouMeanOptions {
   enableAutoCorrection?: boolean;

@@ -1,15 +1,15 @@
 /// <reference path='../Facet/Facet.ts' />
 
-import {IFacetOptions, Facet} from '../Facet/Facet';
-import {IRangeValue} from '../../rest/RangeValue';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {Utils} from '../../utils/Utils';
-import {TemplateHelpers} from '../Templates/TemplateHelpers';
-import {DateUtils} from '../../utils/DateUtils';
-import {FacetRangeQueryController} from '../../controllers/FacetRangeQueryController';
-import {IGroupByResult} from '../../rest/GroupByResult';
-import {Initialization} from '../Base/Initialization';
+import { IFacetOptions, Facet } from '../Facet/Facet';
+import { IRangeValue } from '../../rest/RangeValue';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Utils } from '../../utils/Utils';
+import { TemplateHelpers } from '../Templates/TemplateHelpers';
+import { DateUtils } from '../../utils/DateUtils';
+import { FacetRangeQueryController } from '../../controllers/FacetRangeQueryController';
+import { IGroupByResult } from '../../rest/GroupByResult';
+import { Initialization } from '../Base/Initialization';
 import Globalize = require('globalize');
 
 export interface IFacetRangeOptions extends IFacetOptions {

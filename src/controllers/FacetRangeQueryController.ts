@@ -1,9 +1,9 @@
 /// <reference path="../ui/FacetRange/FacetRange.ts" />
 
-import {FacetQueryController} from './FacetQueryController';
-import {FacetRange} from '../ui/FacetRange/FacetRange';
-import {Utils} from '../utils/Utils';
-import {IGroupByRequest} from '../rest/GroupByRequest';
+import { FacetQueryController } from './FacetQueryController';
+import { FacetRange } from '../ui/FacetRange/FacetRange';
+import { Utils } from '../utils/Utils';
+import { IGroupByRequest } from '../rest/GroupByRequest';
 
 export class FacetRangeQueryController extends FacetQueryController {
   public graphGroupByQueriesIndex: number;

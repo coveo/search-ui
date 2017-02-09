@@ -1,5 +1,6 @@
-import {IQueryResult} from '../rest/QueryResult';
-import {l} from '../strings/Strings';
+import { IQueryResult } from '../rest/QueryResult';
+import { l } from '../strings/Strings';
+import _ = require('underscore');
 
 export interface IMailToOptions {
   currentUserEmail?: string;

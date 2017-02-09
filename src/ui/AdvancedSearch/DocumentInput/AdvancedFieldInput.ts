@@ -1,7 +1,7 @@
-import {Dropdown} from '../Form/Dropdown';
-import {TextInput} from '../Form/TextInput';
-import {$$} from '../../../utils/Dom';
-import {DocumentInput} from './DocumentInput';
+import { Dropdown } from '../Form/Dropdown';
+import { TextInput } from '../Form/TextInput';
+import { $$ } from '../../../utils/Dom';
+import { DocumentInput } from './DocumentInput';
 
 export class AdvancedFieldInput extends DocumentInput {
 

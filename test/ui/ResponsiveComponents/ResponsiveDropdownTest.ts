@@ -1,7 +1,7 @@
-import {ResponsiveDropdown} from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdown';
-import {ResponsiveDropdownHeader} from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownHeader';
-import {ResponsiveDropdownContent} from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownContent';
-import {$$, Dom} from '../../../src/utils/Dom';
+import { ResponsiveDropdown } from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdown';
+import { ResponsiveDropdownHeader } from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownHeader';
+import { ResponsiveDropdownContent } from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownContent';
+import { $$, Dom } from '../../../src/utils/Dom';
 
 export function ResponsiveDropdownTest() {
   describe('ResponsiveDropdown', () => {

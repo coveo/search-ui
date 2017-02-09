@@ -1,14 +1,15 @@
-import {Template} from '../Templates/Template';
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {DefaultResultAttachmentTemplate} from './DefaultResultAttachmentTemplate';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Utils} from '../../utils/Utils';
-import {QueryUtils} from '../../utils/QueryUtils';
-import {Initialization, IInitializationParameters} from '../Base/Initialization';
-import {Assert} from '../../misc/Assert';
-import {$$} from '../../utils/Dom';
+import { Template } from '../Templates/Template';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { DefaultResultAttachmentTemplate } from './DefaultResultAttachmentTemplate';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Utils } from '../../utils/Utils';
+import { QueryUtils } from '../../utils/QueryUtils';
+import { Initialization, IInitializationParameters } from '../Base/Initialization';
+import { Assert } from '../../misc/Assert';
+import { $$ } from '../../utils/Dom';
+import _ = require('underscore');
 
 export interface IResultAttachmentsOptions {
   resultTemplate?: Template;

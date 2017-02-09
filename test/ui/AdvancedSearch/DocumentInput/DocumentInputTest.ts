@@ -1,6 +1,6 @@
-import {DocumentInput} from '../../../../src/ui/AdvancedSearch/DocumentInput/DocumentInput';
-import {QueryBuilder} from '../../../../src/ui/Base/QueryBuilder';
-import {ExpressionBuilder} from '../../../../src/ui/Base/ExpressionBuilder';
+import { DocumentInput } from '../../../../src/ui/AdvancedSearch/DocumentInput/DocumentInput';
+import { QueryBuilder } from '../../../../src/ui/Base/QueryBuilder';
+import { ExpressionBuilder } from '../../../../src/ui/Base/ExpressionBuilder';
 import * as Mock from '../../../MockEnvironment';
 
 export function DocumentInputTest() {

@@ -1,13 +1,13 @@
 import * as Mock from '../MockEnvironment';
-import {SearchEndpoint} from '../../src/rest/SearchEndpoint';
-import {$$} from '../../src/utils/Dom';
-import {Querybox} from '../../src/ui/Querybox/Querybox';
-import {Component} from '../../src/ui/Base/Component';
-import {Initialization} from '../../src/ui/Base/Initialization';
-import {Facet} from '../../src/ui/Facet/Facet';
-import {Pager} from '../../src/ui/Pager/Pager';
-import {ResultList} from '../../src/ui/ResultList/ResultList';
-import {Simulate} from '../Simulate';
+import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
+import { $$ } from '../../src/utils/Dom';
+import { Querybox } from '../../src/ui/Querybox/Querybox';
+import { Component } from '../../src/ui/Base/Component';
+import { Initialization } from '../../src/ui/Base/Initialization';
+import { Facet } from '../../src/ui/Facet/Facet';
+import { Pager } from '../../src/ui/Pager/Pager';
+import { ResultList } from '../../src/ui/ResultList/ResultList';
+import { Simulate } from '../Simulate';
 declare let coveoanalytics;
 declare let $;
 

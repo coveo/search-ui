@@ -1,4 +1,4 @@
-import {HashUtils} from '../../src/utils/HashUtils';
+import { HashUtils } from '../../src/utils/HashUtils';
 
 export function HashUtilsTest() {
   describe('HashUtils', () => {

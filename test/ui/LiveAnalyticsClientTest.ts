@@ -1,18 +1,19 @@
 import * as Mock from '../MockEnvironment';
-import {AnalyticsEndpoint} from '../../src/rest/AnalyticsEndpoint';
-import {LiveAnalyticsClient} from '../../src/ui/Analytics/LiveAnalyticsClient';
-import {IQueryResults} from '../../src/rest/QueryResults';
-import {FakeResults} from '../Fake';
-import {IAnalyticsNoMeta} from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import {PendingSearchAsYouTypeSearchEvent} from '../../src/ui/Analytics/PendingSearchAsYouTypeSearchEvent';
-import {PendingSearchEvent} from '../../src/ui/Analytics/PendingSearchEvent';
-import {IQuery} from '../../src/rest/Query';
-import {Simulate} from '../Simulate';
-import {$$} from '../../src/utils/Dom';
-import {AnalyticsEvents} from '../../src/events/AnalyticsEvents';
-import {Defer} from '../../src/misc/Defer';
-import {IQueryResult} from '../../src/rest/QueryResult';
+import { AnalyticsEndpoint } from '../../src/rest/AnalyticsEndpoint';
+import { LiveAnalyticsClient } from '../../src/ui/Analytics/LiveAnalyticsClient';
+import { IQueryResults } from '../../src/rest/QueryResults';
+import { FakeResults } from '../Fake';
+import { IAnalyticsNoMeta } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { PendingSearchAsYouTypeSearchEvent } from '../../src/ui/Analytics/PendingSearchAsYouTypeSearchEvent';
+import { PendingSearchEvent } from '../../src/ui/Analytics/PendingSearchEvent';
+import { IQuery } from '../../src/rest/Query';
+import { Simulate } from '../Simulate';
+import { $$ } from '../../src/utils/Dom';
+import { AnalyticsEvents } from '../../src/events/AnalyticsEvents';
+import { Defer } from '../../src/misc/Defer';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import _ = require('underscore');
 
 export function LiveAnalyticsClientTest() {
   describe('LiveAnalyticsClient', function () {

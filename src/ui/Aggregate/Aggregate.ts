@@ -1,11 +1,12 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
-import {QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs} from '../../events/QueryEvents';
-import {IGroupByRequest} from '../../rest/GroupByRequest';
-import {Initialization} from '../Base/Initialization';
-import {$$} from '../../utils/Dom';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { IGroupByRequest } from '../../rest/GroupByRequest';
+import { Initialization } from '../Base/Initialization';
+import { $$ } from '../../utils/Dom';
 import Globalize = require('globalize');
+import _ = require('underscore');
 
 export interface IAggregateOptions {
   field: IFieldOption;

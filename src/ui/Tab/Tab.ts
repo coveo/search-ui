@@ -1,17 +1,18 @@
-import {ResponsiveTabs} from '../ResponsiveComponents/ResponsiveTabs.ts';
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {MODEL_EVENTS, IAttributeChangedEventArg} from '../../models/Model';
-import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {QueryStateModel, QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
-import {analyticsActionCauseList, IAnalyticsInterfaceChange} from '../Analytics/AnalyticsActionListMeta';
-import {SearchEndpoint} from '../../rest/SearchEndpoint';
-import {Initialization} from '../Base/Initialization';
-import {Utils} from '../../utils/Utils';
-import {Assert} from '../../misc/Assert';
-import {$$} from '../../utils/Dom';
-import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
+import { ResponsiveTabs } from '../ResponsiveComponents/ResponsiveTabs.ts';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
+import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
+import { analyticsActionCauseList, IAnalyticsInterfaceChange } from '../Analytics/AnalyticsActionListMeta';
+import { SearchEndpoint } from '../../rest/SearchEndpoint';
+import { Initialization } from '../Base/Initialization';
+import { Utils } from '../../utils/Utils';
+import { Assert } from '../../misc/Assert';
+import { $$ } from '../../utils/Dom';
+import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
+import _ = require('underscore');
 
 export interface ITabOptions {
   expression?: string;

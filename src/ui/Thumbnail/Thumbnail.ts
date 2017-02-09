@@ -1,15 +1,15 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
-import {ResultLink} from '../ResultLink/ResultLink';
-import {IQueryResult} from '../../rest/QueryResult';
-import {QueryUtils} from '../../utils/QueryUtils';
-import {DeviceUtils} from '../../utils/DeviceUtils';
-import {Initialization} from '../Base/Initialization';
-import {ISearchEndpoint} from '../../rest/SearchEndpointInterface';
-import {$$} from '../../utils/Dom';
-import {FieldTable} from '../FieldTable/FieldTable';
-import {get} from '../Base/RegisteredNamedMethods';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
+import { ResultLink } from '../ResultLink/ResultLink';
+import { IQueryResult } from '../../rest/QueryResult';
+import { QueryUtils } from '../../utils/QueryUtils';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { Initialization } from '../Base/Initialization';
+import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
+import { $$ } from '../../utils/Dom';
+import { FieldTable } from '../FieldTable/FieldTable';
+import { get } from '../Base/RegisteredNamedMethods';
 
 export interface IThumbnailOptions {
   noThumbnailClass?: string;

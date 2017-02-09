@@ -1,5 +1,5 @@
-import {TextInput} from '../../../../src/ui/AdvancedSearch/Form/TextInput';
-import {$$} from '../../../../src/utils/Dom';
+import { TextInput } from '../../../../src/ui/AdvancedSearch/Form/TextInput';
+import { $$ } from '../../../../src/utils/Dom';
 
 export function TextInputTest() {
   describe('TextInput', () => {

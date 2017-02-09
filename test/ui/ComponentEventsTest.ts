@@ -1,7 +1,7 @@
 import * as Mock from '../MockEnvironment';
-import {NoopComponent} from '../NoopComponent';
-import {registerCustomMatcher} from '../CustomMatchers';
-import {$$} from '../../src/utils/Dom';
+import { NoopComponent } from '../NoopComponent';
+import { registerCustomMatcher } from '../CustomMatchers';
+import { $$ } from '../../src/utils/Dom';
 
 export function ComponentEventsTest() {
   describe('ComponentEvent', () => {

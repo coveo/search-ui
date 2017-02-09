@@ -1,7 +1,7 @@
-import {QueryController} from '../../src/controllers/QueryController';
-import {SentryLogger} from '../../src/misc/SentryLogger';
-import {mockQueryController, mockWindow, mockSearchEndpoint} from '../MockEnvironment';
-import {SearchEndpoint} from '../../src/rest/SearchEndpoint';
+import { QueryController } from '../../src/controllers/QueryController';
+import { SentryLogger } from '../../src/misc/SentryLogger';
+import { mockQueryController, mockWindow, mockSearchEndpoint } from '../MockEnvironment';
+import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
 
 export function SentryLoggerTest() {
   describe('SentryLoggerTest', () => {
