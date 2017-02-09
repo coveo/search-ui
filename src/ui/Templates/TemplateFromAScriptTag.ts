@@ -1,10 +1,10 @@
-import {Template, IFieldsToMatch} from './Template';
-import {Utils} from '../../utils/Utils';
-import {TemplateConditionEvaluator} from './TemplateConditionEvaluator';
-import {ComponentOptions, IComponentOptionsFieldsOption} from '../Base/ComponentOptions';
-import {ValidLayout} from '../ResultLayout/ResultLayout';
-import {$$} from '../../utils/Dom';
-
+import { Template, IFieldsToMatch } from './Template';
+import { Utils } from '../../utils/Utils';
+import { TemplateConditionEvaluator } from './TemplateConditionEvaluator';
+import { ComponentOptions, IComponentOptionsFieldsOption } from '../Base/ComponentOptions';
+import { ValidLayout } from '../ResultLayout/ResultLayout';
+import { $$ } from '../../utils/Dom';
+import _ = require('underscore');
 
 export interface ITemplateFromStringProperties {
   condition?: string;

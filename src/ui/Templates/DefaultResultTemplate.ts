@@ -6,7 +6,7 @@ import { UnderscoreTemplate } from './UnderscoreTemplate';
 import { TemplateCache } from './TemplateCache';
 import { IQueryResult } from '../../rest/QueryResult';
 import { Assert } from '../../misc/Assert';
-import {$$} from '../../utils/Dom';
+import { $$ } from '../../utils/Dom';
 import _ = require('underscore');
 
 /*

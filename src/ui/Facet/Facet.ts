@@ -556,29 +556,13 @@ export class Facet extends Component {
      *
      * Responsive mode displays all facets under a single dropdown button whenever the width of the HTML element which
      * the search interface is bound to reaches or falls behind a certain threshold (see
-     * {@link Facet.options.responsiveBreakpoint}).
+     * {@link SearchInterface.responsiveComponents}).
      *
      * See also {@link Facet.options.dropdownHeaderLabel}.
      *
      * Default value is `true`.
      */
     enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-
-    /**
-     * If {@link Facet.options.enableResponsiveMode} is `true` for all facets and
-     * {@link FacetSlider.options.enableResponsiveMode} is also `true` for all sliders, specifies the width threshold
-     * (in pixels) of the search interface at which facets go in responsive mode.
-     *
-     * Facets go in responsive mode when the width of the search interface is equal to or lower than this value.
-     *
-     * The `search interface` corresponds to the HTML element with the class `CoveoSearchInterface`.
-     *
-     * If more than one {@link FacetSlider} or Facet in the search interface specifies a value for this option, then the
-     * framework uses the last occurrence of the option.
-     *
-     * Default value is `800`.
-     */
-    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 800 }),
 
     /**
      * If {@link Facet.options.enableResponsiveMode} is `true` for all facets and

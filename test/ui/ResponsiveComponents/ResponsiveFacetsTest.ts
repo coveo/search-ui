@@ -12,7 +12,7 @@ import { FacetSearchValuesList } from '../../../src/ui/Facet/FacetSearchValuesLi
 import * as Mock from '../../MockEnvironment';
 import { QueryEvents } from '../../../src/events/QueryEvents';
 import { FakeResults } from '../../Fake';
-import {ResponsiveComponents} from '../../../src/ui/ResponsiveComponents/ResponsiveComponents';
+import { ResponsiveComponents } from '../../../src/ui/ResponsiveComponents/ResponsiveComponents';
 
 export function ResponsiveFacetsTest() {
   describe('ResponsiveFacets', () => {

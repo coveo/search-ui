@@ -2,12 +2,13 @@ import {
   IResponsiveComponent, IResponsiveComponentOptions,
   ResponsiveComponentsManager
 } from './ResponsiveComponentsManager';
-import {Dom, $$} from '../../utils/Dom';
-import {ResponsiveDropdown} from './ResponsiveDropdown/ResponsiveDropdown';
-import {Component} from '../Base/Component';
-import {ResultLayout, ValidLayout} from '../ResultLayout/ResultLayout';
-import {Logger} from '../../misc/Logger';
-import {SearchInterface} from '../SearchInterface/SearchInterface';
+import { Dom, $$ } from '../../utils/Dom';
+import { ResponsiveDropdown } from './ResponsiveDropdown/ResponsiveDropdown';
+import { Component } from '../Base/Component';
+import { ResultLayout, ValidLayout } from '../ResultLayout/ResultLayout';
+import { Logger } from '../../misc/Logger';
+import { SearchInterface } from '../SearchInterface/SearchInterface';
+import _ = require('underscore');
 
 export class ResponsiveResultLayout implements IResponsiveComponent {
   private searchInterface: SearchInterface;

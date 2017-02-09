@@ -5,7 +5,7 @@ import { QueryEvents, IQuerySuccessEventArgs } from '../../src/events/QueryEvent
 import { FakeResults } from '../Fake';
 import { QueryStateModel } from '../../src/models/QueryStateModel';
 import { $$ } from '../../src/utils/Dom';
-import {InitializationEvents} from '../../src/events/InitializationEvents';
+import { InitializationEvents } from '../../src/events/InitializationEvents';
 
 export function ResultLayoutTest() {
   describe('ResultLayout', () => {

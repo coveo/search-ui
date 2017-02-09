@@ -1,7 +1,7 @@
-import {TemplateConditionEvaluator} from '../../src/ui/Templates/TemplateConditionEvaluator';
-import {FakeResults} from '../Fake';
-import {IQueryResult} from '../../src/rest/QueryResult';
-import {ResponsiveComponents} from '../../src/ui/ResponsiveComponents/ResponsiveComponents';
+import { TemplateConditionEvaluator } from '../../src/ui/Templates/TemplateConditionEvaluator';
+import { FakeResults } from '../Fake';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { ResponsiveComponents } from '../../src/ui/ResponsiveComponents/ResponsiveComponents';
 
 export function TemplateConditionEvaluatorTest() {
   describe('TemplateConditionEvaluator', () => {

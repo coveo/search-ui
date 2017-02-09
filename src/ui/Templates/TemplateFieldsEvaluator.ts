@@ -1,6 +1,6 @@
-import {IQueryResult} from '../../rest/QueryResult';
-import {IFieldsToMatch} from './Template';
-
+import { IQueryResult } from '../../rest/QueryResult';
+import { IFieldsToMatch } from './Template';
+import _ = require('underscore');
 
 export class TemplateFieldsEvaluator {
 

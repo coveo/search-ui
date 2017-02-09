@@ -2,7 +2,7 @@ import { ResponsiveComponentsUtils } from '../../../src/ui/ResponsiveComponents/
 import { $$, Dom } from '../../../src/utils/Dom';
 import { ResponsiveTabs } from '../../../src/ui/ResponsiveComponents/ResponsiveTabs';
 import { Tab } from '../../../src/ui/Tab/Tab';
-import {ResponsiveComponents} from '../../../src/ui/ResponsiveComponents/ResponsiveComponents';
+import { ResponsiveComponents } from '../../../src/ui/ResponsiveComponents/ResponsiveComponents';
 
 export function ResponsiveTabsTest() {
 

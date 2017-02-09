@@ -1,5 +1,5 @@
-import {TemplateCache} from '../../src/ui/Templates/TemplateCache';
-import {Template} from '../../src/ui/Templates/Template';
+import { TemplateCache } from '../../src/ui/Templates/TemplateCache';
+import { Template } from '../../src/ui/Templates/Template';
 export function TemplateCacheTest() {
   describe('TemplateCache', () => {
 

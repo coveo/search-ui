@@ -2,12 +2,12 @@ import {
   IResponsiveComponent, IResponsiveComponentOptions,
   ResponsiveComponentsManager
 } from './ResponsiveComponentsManager';
-import {SearchInterface} from '../SearchInterface/SearchInterface';
-import {ResultList} from '../ResultList/ResultList';
-import {$$, Dom} from '../../utils/Dom';
-import {Component} from '../Base/Component';
-import {Logger} from '../../misc/Logger';
-import {ResponsiveDropdown} from './ResponsiveDropdown/ResponsiveDropdown';
+import { SearchInterface } from '../SearchInterface/SearchInterface';
+import { ResultList } from '../ResultList/ResultList';
+import { $$, Dom } from '../../utils/Dom';
+import { Component } from '../Base/Component';
+import { Logger } from '../../misc/Logger';
+import { ResponsiveDropdown } from './ResponsiveDropdown/ResponsiveDropdown';
 
 export class ResponsiveDefaultResultTemplate implements IResponsiveComponent {
   private searchInterface: SearchInterface;

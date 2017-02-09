@@ -1,5 +1,5 @@
-import {HtmlTemplate} from '../../src/ui/Templates/HtmlTemplate';
-import {ITemplateFromStringProperties} from '../../src/ui/Templates/TemplateFromAScriptTag';
+import { HtmlTemplate } from '../../src/ui/Templates/HtmlTemplate';
+import { ITemplateFromStringProperties } from '../../src/ui/Templates/TemplateFromAScriptTag';
 export function HtmlTemplateTest() {
   describe('HtmlTemplate', () => {
 

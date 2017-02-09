@@ -1,7 +1,7 @@
-import {DefaultRecommendationTemplate} from '../../src/ui/Templates/DefaultRecommendationTemplate';
-import {$$} from '../../src/utils/Dom';
-import {ResultLink} from '../../src/ui/ResultLink/ResultLink';
-import {Component} from '../../src/ui/Base/Component';
+import { DefaultRecommendationTemplate } from '../../src/ui/Templates/DefaultRecommendationTemplate';
+import { $$ } from '../../src/utils/Dom';
+import { ResultLink } from '../../src/ui/ResultLink/ResultLink';
+import { Component } from '../../src/ui/Base/Component';
 
 export function DefaultRecommendationTemplateTest() {
   describe('DefaultRecommendationTemplate', () => {
