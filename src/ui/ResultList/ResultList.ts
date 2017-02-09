@@ -46,8 +46,8 @@ export interface IResultListOptions {
  * This component is responsible for displaying the results of the current query using one or more result templates.<br/>
  * It supports many additional features such as infinite scrolling.
  *
- * # Examples / samples
- * This contains some quick example. Refer to result templates on developers.coveo.com for more information.
+ * ## Examples / samples
+ * This contains some quick examples. Refer to result templates on [developers.coveo.com](https://developers.coveo.com/display/public/JsSearchV1/JavaScript+Search+Framework+V1+Home) for more information.
  *
  * ```html
  * <!-- A very simple result list with a single underscore template.

@@ -44,7 +44,7 @@ export interface IAnalyticsOptions {
  * See [Step 7 - Usage Analytics](https://developers.coveo.com/x/EYskAg) of the Getting Started with the JavaScript
  * Search Framework V1 tutorial for an introduction to usage analytics.
  *
- * # Send Custom Events
+ * ## Send Custom Events
  * In some scenarios, you might want to send custom data to the Coveo Cloud Usage Analytics (see
  * [Coveo Cloud Usage Analytics](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=89)). The Coveo JavaScript Search
  * Framework offers helper functions to communicate with the Coveo Usage Analytics REST API, so you do not have to write
