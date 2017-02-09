@@ -34,10 +34,11 @@ export class ResultsPreferences extends Component {
    */
   static options: IResultsPreferencesOptions = {
     /**
-     * Enable or disable the options to open results in Outlook.<br/>
-     * Default value is <code>true</code>
+     * Specifies whether to make the option to open results in Microsoft Outlook available.
+     *
+     * Default value is `false`
      */
-    enableOpenInOutlook: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    enableOpenInOutlook: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Enable or disable the options to open results in a new window.<br/>
      * Default value is <code>true</code>
