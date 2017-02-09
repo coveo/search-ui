@@ -36,11 +36,16 @@ export interface IResultsFiltersPreferencesOptions {
 }
 
 /**
- * This component allows end-users to create their own customized filters to apply to their search.<br/>
- * It is a feature meant for advanced user that understand the Coveo Query syntax.<br/>
- * These preferences are saved in the localStorage of each user.<br/>
- * This component is normally accessible visually using the {@link Settings} menu.<br/>
- * It is usually located, in the DOM, inside the {@link PreferencesPanel} component.
+ * The ResultFiltersPreferences component allows the end user to create custom filters to apply to queries. These
+ * filters are saved in the local storage of the end user.
+ *
+ * Only advanced end users who understand the Coveo query syntax should actually use this feature (see
+ * [Coveo Query Sytax Reference](http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
+ *
+ * This component is normally accessible through the {@link Settings} menu. Its usual location in the DOM is inside the
+ * {@link PreferencesPanel} component.
+ *
+ * See also the {@link ResultsPreferences} component.
  */
 export class ResultsFiltersPreferences extends Component {
   static ID = 'ResultsFiltersPreferences';
@@ -50,47 +55,57 @@ export class ResultsFiltersPreferences extends Component {
    * @componentOptions
    */
   static options: IResultsFiltersPreferencesOptions = {
+
     /**
-     * Specifies whether to include the active filter(s) in the breadcrumb.<br/>
-     * Default is <code>true</code>.
+     * Specifies whether to include the active filter(s) in the {@link Breadcrumb}.
+     *
+     * Default value is `true`.
      */
     includeInBreadcrumb: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
     /**
-     * Specifies whether to show or hide the Create button to allow end-users to create their own filters.<br/>
-     * If set to false, only pre-populated filter created on initialization using js code will be available to the end user.
-     * Default is <code>true</code>.
+     * Specifies whether to show the **Create** button that allows the end user to create filters.
+     *
+     * If you set this option to `false`, only the pre-populated {@link ResultsFiltersPreferences.options.filters} will
+     * be available to the end user.
+     *
+     * Default value is `true`.
      */
     showAdvancedFilters: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
     /**
-     * Specifies default filters that all users will see.
+     * Specifies the default filters that all end users can apply.
      *
-     * End-users will not be able to modify or delete them, as they are not customized for each user, but instead created by the creator/developer of the search page.
+     * End users will not be able to modify or delete these filters. They do not count as "user-made" filters, but
+     * rather as "built-in" filters created by the developer of the search page.
      *
-     * Filters should follow this definition :
+     * You can only set this option in the `init` call of your search interface. You cannot set it directly in the
+     * markup as an HTML attribute.
      *
-     * ```
-     *   filters: { [caption: string]: { expression: string; tab?: string[]; }};
-     * ```
+     * Filters should follow this definition:
      *
-     * eg :
+     * `filters: { [caption: string]: { expression: string; tab?: string[]; } }`;
+     *
+     * **Example:**
      *
      * ```javascript
-     * Coveo.init(root, {
+     * Coveo.init(document.querySelector('#search'), {
      *   ResultsFiltersPreferences : {
      *     filters : {
-     *       'Only google drive stuff' : {
+     *       "Only Google Drive Items" : {
+     *         expression : "@connectortype == 'GoogleDriveCrawler'"
      *         tab: ['Tab1', 'Tab2'],
-     *         expression : '@connectortype == 'GoogleDriveCrawler''
      *       },
-     *       'Another filter' : {
-     *         expression : 'another expression''
-     *       }
+     *       "Another Filter" : {
+     *         expression : [ ... another expression ... ]
+     *       },
+     *       [ ... ]
      *     }
      *   }
-     * })
+     * });
      * ```
      *
-     * This is optional, and by default this option is left 'empty'.
+     * Default value is `undefined`.
      */
     filters: <any>ComponentOptions.buildJsonOption()
   };
@@ -107,6 +122,13 @@ export class ResultsFiltersPreferences extends Component {
   private advancedFiltersTabSelect: PreferencePanelMultiSelectInput;
   private advancedFilterFormValidate: HTMLFormElement;
 
+  /**
+   * Creates a new ResultsFiltersPreferences component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the ResultsFiltersPreferences component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   */
   constructor(public element: HTMLElement, public options: IResultsFiltersPreferencesOptions, public bindings: IComponentBindings) {
     super(element, ResultsFiltersPreferences.ID, bindings);
 
