@@ -40,10 +40,9 @@ export class ResultsPreferences extends Component {
     /**
      * Specifies whether to make the option to open results in Microsoft Outlook available.
      *
-     * Default value is `true`
+     * Default value is `false`
      */
-    enableOpenInOutlook: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-
+    enableOpenInOutlook: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
      * Specifies whether to make the option to open results in a new window available.
      *
