@@ -42,9 +42,9 @@ interface IQuickviewOpenerObject {
  *
  * ## Example
  * - You can change the appearance of the Quick View link by adding HTML inside the body of the div.
- * 
+ *
  * - You can change the content of the Quick View link by specifying a template ID.
- * 
+ *
  * - You can use the methods of the [CoreHelpers]{@link ICoreHelpers} in the template.
  *
  * ```html
