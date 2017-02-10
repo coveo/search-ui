@@ -646,10 +646,13 @@ export class StandaloneSearchInterface extends SearchInterface {
       stateValues['firstQueryMeta'] = uaMeta;
     }
 
+    let link = document.createElement('a');
+    link.href = searchPage;
+
     // By using a setTimeout, we allow other possible code related to the search box / magic box time to complete.
     // eg: onblur of the magic box.
     setTimeout(() => {
-      this._window.location.href = searchPage + '#' + HashUtils.encodeValues(stateValues);
+      this._window.location.href = `${link.protocol}//${link.host}${link.pathname}${link.search}${link.hash ? link.hash + '&' : '#'}${HashUtils.encodeValues(stateValues)}`;
     }, 0);
   }
 
