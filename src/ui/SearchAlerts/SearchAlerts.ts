@@ -92,9 +92,9 @@ export class SearchAlerts extends Component {
      * If {@link SearchAlerts.options.enableMessage} is `true`, specifies how long to display the search alert messages
      * (in milliseconds).
      *
-     * Default value is `3000`.
+     * Default value is `3000`. Minimum value is `0`.
      */
-    messageCloseDelay: ComponentOptions.buildNumberOption({ defaultValue: 3000 }),
+    messageCloseDelay: ComponentOptions.buildNumberOption({ defaultValue: 3000, min: 0, depend: 'enableMessage' }),
   };
 
   private modal: Coveo.ModalBox.ModalBox;

@@ -33,9 +33,9 @@ export class SearchAlertsMessage extends Component {
     /**
      * Specifies how long to display the search alerts messages (in milliseconds).
      *
-     * Default value is `3000`.
+     * Default value is `3000`. Minimum value is `0`.
      */
-    closeDelay: ComponentOptions.buildNumberOption({ defaultValue: 3000 }),
+    closeDelay: ComponentOptions.buildNumberOption({ defaultValue: 3000, min: 0 }),
   };
 
   private message: Dom;
