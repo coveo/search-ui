@@ -30,12 +30,14 @@ export interface ISearchAlertsOptions {
 }
 
 /**
- * This component allows the user to manage their search alerts and to follow queries by making the necessary menu
- * items available under the {@link Settings} component.
- * A user following a query will receive email notifications when the query results change.
+ * The Search Alerts component renders items in the {@link Settings} menu that allow the end user to follow queries
+ * and to manage search alerts. A user following a query receives email notifications when the query results change.
  *
- * Certain requirements must be met for this component to work (see
- * [Deploying Search Alerts on a Coveo JS Search Page](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=248)).
+ * **Note:**
+ * > It is necessary to meet certain requirements to be able to use this component (see
+ * > [Deploying Search Alerts on a Coveo JS Search Page](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=248)).
+ *
+ * See also the {@link FollowItem} component.
  */
 export class SearchAlerts extends Component {
   static ID = 'SearchAlerts';
@@ -47,51 +49,68 @@ export class SearchAlerts extends Component {
   static options: ISearchAlertsOptions = {
 
     /**
-     * Specifies whether to add a menu item in the {@link Settings} component to allow the user to manage their search
-     * alerts.
+     * Specifies whether to add the **Manage Alerts** item in the {@link Settings} menu to allow the end user to manage
+     * search alerts.
+     *
+     * Clicking the **Manage Alerts** item calls the {@link SearchAlerts.openPanel} method.
      *
      * Default value is `true`.
      */
     enableManagePanel: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
-     * Specifies whether to add a menu item in the {@link Settings} component to allow the user to follow the last
-     * query.
+     * Specifies whether to add the **Follow Query** item in the {@link Settings} menu to allow the end user to follow
+     * the last query.
+     *
+     * Clicking the **Follow Query** item calls the {@link SearchAlerts.followQuery} method.
      *
      * Default value is `true`.
      */
     enableFollowQuery: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
-     * Specifies the modifiedDateField to use when sending the followQuery subscription request.
+     * Specifies which field to use to represent the modification date when sending the
+     * {@link ISubscriptionQueryRequest}.
      *
      * Default value is `undefined`.
      */
     modifiedDateField: ComponentOptions.buildFieldOption(),
 
     /**
-     * Specifies whether to display info and error messages when search alerts actions are performed.
+     * Specifies whether to display info and error messages when performing search alerts actions.
+     *
+     * If this options is `true`, the SearchAlerts constructor will automatically instantiate a
+     * {@link SearchAlertsMessage} component and set it to the {@link SearchAlerts.message} attribute.
+     *
+     * See also {@link SearchAlerts.options.messageCloseDelay}.
      *
      * Default value is `true`.
      */
     enableMessage: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
-     * Specifies how long to display the search alert messages (in ms).
+     * If {@link SearchAlerts.options.enableMessage} is `true`, specifies how long to display the search alert messages
+     * (in milliseconds).
      *
-     * Default value is `3000`.
+     * Default value is `3000`. Minimum value is `0`.
      */
-    messageCloseDelay: ComponentOptions.buildNumberOption({ defaultValue: 3000 }),
+    messageCloseDelay: ComponentOptions.buildNumberOption({ defaultValue: 3000, min: 0, depend: 'enableMessage' }),
   };
 
   private modal: Coveo.ModalBox.ModalBox;
 
   /**
-   * A reference to a {@link SearchAlertsMessage} component used to display messages.
-   * This attribute is automatically set in the constructor when the enableMessage option value is `true`.
+   * A reference to a {@link SearchAlertsMessage} component that the SearchAlerts component uses to display messages.
    */
   public message: SearchAlertsMessage;
 
+  /**
+   * Creates a new SearchAlerts component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the SearchAlerts component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   */
   constructor(public element: HTMLElement, public options: ISearchAlertsOptions, bindings?: IComponentBindings) {
 
     super(element, SearchAlerts.ID, bindings);
@@ -148,8 +167,9 @@ export class SearchAlerts extends Component {
   }
 
   /**
-   * Follows the last query.
-   * The user will start receiving email notifications when the query results change.
+   * Follows the last query. The user will start receiving email notifications when the query results change.
+   *
+   * Also logs the `searchAlertsFollowQuery` event in the usage analytics with the name of the request as meta data.
    */
   public followQuery() {
     let queryBuilder = this.queryController.createQueryBuilder({});
@@ -177,9 +197,8 @@ export class SearchAlerts extends Component {
   }
 
   /**
-   * Opens the **Manage Alerts** panel.
-   * This panel allows the user to stop following queries or items.
-   * It also allows the user to specify email notification frequency for each followed query or item.
+   * Opens the **Manage Alerts** panel. This panel allows the end user to stop following queries or items. It also
+   * allows the end user to specify email notification frequency for each followed query or item.
    */
   public openPanel(): Promise<ISubscription> {
     let title = $$('div');

@@ -29,8 +29,10 @@ export interface IAnalyticsResultTaggingMeta {
 }
 
 /**
- * This component can be used as part of a result template to list the current tag field values for the search result.
- * and display a control that allows end-users to add a value to a tag field.
+ * The ResultTagging component lists the current tag field values of its associated result and renders a control that
+ * allows the end user to add values to a tag field.
+ *
+ * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
 export class ResultTagging extends Component {
   static ID = 'ResultTagging';
@@ -40,22 +42,29 @@ export class ResultTagging extends Component {
    * @componentOptions
    */
   static options: IResultTaggingOptions = {
+
     /**
-     * Specifies the tag field used by the component.<br/>
-     * It is required, and if not specified, the component will not load.
+     * Specifies the tag field that the component will use.
+     *
+     * Specifying a value for this options is necessary for this component to work.
      */
     field: ComponentOptions.buildFieldOption({
       match: (field: IFieldDescription) => field.type == 'Tag',
       required: true
     }),
+
     /**
-     * Specifies the number of items to show in the suggested item list.<br/>
-     * Default value is 5.
+     * Specifies the number of items to show in the list of suggested items.
+     *
+     * Default value is `5`. Minimum value is `0 `.
      */
     suggestBoxSize: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0 }),
+
     /**
-     * Specifies how long to wait in milliseconds until the suggested item list disappears when you focus out.<br/>
-     * Default valus is 2000.
+     * Specifies how much time (in milliseconds) it takes for the list of suggested items to disappear when it loses
+     * focus.
+     *
+     * Default value is `2000`. Minimum value is `0`.
      */
     autoCompleteTimer: ComponentOptions.buildNumberOption({ defaultValue: 2000, min: 0 })
   };
@@ -68,6 +77,14 @@ export class ResultTagging extends Component {
   private tagZone: HTMLElement;
   private tags: string[];
 
+  /**
+   * Creates a new ResultTagging component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the ResultTagging component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   * @param result The result to associate the component with.
+   */
   constructor(public element: HTMLElement, public options?: IResultTaggingOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, ResultTagging.ID, bindings);
 
