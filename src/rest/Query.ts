@@ -1,6 +1,6 @@
-import {IQueryFunction} from './QueryFunction';
-import {IRankingFunction} from './RankingFunction';
-import {IGroupByRequest} from './GroupByRequest';
+import { IQueryFunction } from './QueryFunction';
+import { IRankingFunction } from './RankingFunction';
+import { IGroupByRequest } from './GroupByRequest';
 
 /**
  * Describe a query that can be performed on the Coveo Search API.<br/>

@@ -2,7 +2,7 @@
 const _ = require('underscore');
 const webpack = require('webpack');
 
-let conf = require('./webpack.common.config');
+let conf = require('./webpack.common.config.js');
 conf = _.extend(conf, {
   entry: {
     'tests': ['./test/Test.ts'],
@@ -18,7 +18,7 @@ conf = _.extend(conf, {
     new webpack.LoaderOptionsPlugin({
       options: {
         ts: {
-          project: '../test/tsconfig.json'
+          project: 'test.tsconfig.json'
         }
       }
     })

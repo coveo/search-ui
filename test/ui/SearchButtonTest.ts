@@ -1,6 +1,6 @@
 import * as Mock from '../MockEnvironment';
-import {SearchButton} from '../../src/ui/SearchButton/SearchButton';
-import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { SearchButton } from '../../src/ui/SearchButton/SearchButton';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function SearchButtonTest() {
   describe('SearchButton', () => {

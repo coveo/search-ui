@@ -1,13 +1,14 @@
 /// <reference path="HierarchicalFacet.ts" />
 
-import {FacetSearch} from '../Facet/FacetSearch';
-import {HierarchicalFacet, IValueHierarchy} from './HierarchicalFacet';
-import {IFacetSearchValuesListKlass} from '../Facet/FacetSearchValuesList';
-import {FacetSearchParameters} from '../Facet/FacetSearchParameters';
-import {IIndexFieldValue} from '../../rest/FieldValue';
-import {FacetValue} from '../Facet/FacetValues';
-import {Utils} from '../../utils/Utils';
-import {ModalBox} from '../../ExternalModulesShim';
+import { FacetSearch } from '../Facet/FacetSearch';
+import { HierarchicalFacet, IValueHierarchy } from './HierarchicalFacet';
+import { IFacetSearchValuesListKlass } from '../Facet/FacetSearchValuesList';
+import { FacetSearchParameters } from '../Facet/FacetSearchParameters';
+import { IIndexFieldValue } from '../../rest/FieldValue';
+import { FacetValue } from '../Facet/FacetValues';
+import { Utils } from '../../utils/Utils';
+import { ModalBox } from '../../ExternalModulesShim';
+import _ = require('underscore');
 
 export class HierarchicalFacetSearch extends FacetSearch {
   constructor(public facet: HierarchicalFacet, public facetSearchValuesListKlass: IFacetSearchValuesListKlass, root: HTMLElement) {

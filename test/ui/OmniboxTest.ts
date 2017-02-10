@@ -1,9 +1,9 @@
 import * as Mock from '../MockEnvironment';
-import {Omnibox} from '../../src/ui/Omnibox/Omnibox';
-import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import {IOmniboxOptions, IOmniboxSuggestion} from '../../src/ui/Omnibox/Omnibox';
-import {Simulate} from '../Simulate';
-import {$$} from '../../src/utils/Dom';
+import { Omnibox } from '../../src/ui/Omnibox/Omnibox';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { IOmniboxOptions, IOmniboxSuggestion } from '../../src/ui/Omnibox/Omnibox';
+import { Simulate } from '../Simulate';
+import { $$ } from '../../src/utils/Dom';
 
 export function OmniboxTest() {
   describe('Omnibox', () => {

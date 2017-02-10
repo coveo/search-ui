@@ -1,3 +1,5 @@
+import _ = require('underscore');
+
 export class Defer {
   private static functions = [];
 

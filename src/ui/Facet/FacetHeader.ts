@@ -1,14 +1,14 @@
 /// <reference path="Facet.ts" />
 /// <reference path="FacetSettings.ts" />
 
-import {Facet} from './Facet';
-import {FacetSlider} from '../FacetSlider/FacetSlider';
-import {IFacetSettingsKlass, FacetSettings} from './FacetSettings';
-import {IFacetSortKlass, FacetSort} from './FacetSort';
-import {$$} from '../../utils/Dom';
-import {FacetUtils} from './FacetUtils';
-import {l} from '../../strings/Strings';
-import {IAnalyticsFacetOperatorMeta, IAnalyticsFacetMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
+import { Facet } from './Facet';
+import { FacetSlider } from '../FacetSlider/FacetSlider';
+import { IFacetSettingsKlass, FacetSettings } from './FacetSettings';
+import { IFacetSortKlass, FacetSort } from './FacetSort';
+import { $$ } from '../../utils/Dom';
+import { FacetUtils } from './FacetUtils';
+import { l } from '../../strings/Strings';
+import { IAnalyticsFacetOperatorMeta, IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 
 export interface IFacetHeaderOptions {
   facetElement: HTMLElement;

@@ -1,23 +1,26 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
 import {
   SearchAlertsEvents, ISearchAlertsEventArgs, ISearchAlertsFailEventArgs,
   ISearchAlertsPopulateMessageEventArgs
 } from '../../events/SearchAlertEvents';
-import {QueryEvents} from '../../events/QueryEvents';
-import {ISubscriptionItemRequest, SUBSCRIPTION_TYPE, ISubscriptionQueryRequest} from '../../rest/Subscription';
-import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
-import {l} from '../../strings/Strings';
-import {$$, Dom} from '../../utils/Dom';
+import { QueryEvents } from '../../events/QueryEvents';
+import { ISubscriptionItemRequest, SUBSCRIPTION_TYPE, ISubscriptionQueryRequest } from '../../rest/Subscription';
+import { PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
+import { l } from '../../strings/Strings';
+import { $$, Dom } from '../../utils/Dom';
+import _ = require('underscore');
 
 export interface ISearchAlertMessageOptions {
   closeDelay: number;
 }
 
 /**
- * This component allows the {@link SearchAlerts} component to display messages.
- * This component should not be included in a web page. Instead, use a {@link SearchAlerts} component and access its message attribute.
+ * The SearchAlertsMessage component allows the {@link SearchAlerts} component to display messages.
+ *
+ * You should not include this component in your page. Instead, use a {@link SearchAlerts} component, and access the
+ * {@link SearchAlerts.message} attribute.
  */
 export class SearchAlertsMessage extends Component {
   static ID = 'SubscriptionsMessages';
@@ -27,16 +30,25 @@ export class SearchAlertsMessage extends Component {
    * @componentOptions
    */
   static options: ISearchAlertMessageOptions = {
+
     /**
-     * Specifies how long to display the search alerts messages (in ms).
-     * This default value is 3000.
+     * Specifies how long to display the search alerts messages (in milliseconds).
+     *
+     * Default value is `3000`. Minimum value is `0`.
      */
-    closeDelay: ComponentOptions.buildNumberOption({ defaultValue: 3000 }),
+    closeDelay: ComponentOptions.buildNumberOption({ defaultValue: 3000, min: 0 }),
   };
 
   private message: Dom;
   private closeTimeout: number;
 
+  /**
+   * Creates a new SearchAlertsMessage component
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the SearchAlertsMessage component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   */
   constructor(public element: HTMLElement,
     public options: ISearchAlertMessageOptions,
     public bindings?: IComponentBindings) {
@@ -89,10 +101,10 @@ export class SearchAlertsMessage extends Component {
   }
 
   /**
-   * Displays a message near the dom attribute.
+   * Displays a message near the passed dom attribute.
    * @param dom Specifies where to display the message.
    * @param message The message.
-   * @param error Specifies whether this is an error message or not.
+   * @param error Specifies whether the message is an error message.
    */
   public showMessage(dom: Dom, message: string, error: boolean) {
     this.message = $$('div');

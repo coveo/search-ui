@@ -1,18 +1,19 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {Utils} from '../../utils/Utils';
-import {$$} from '../../utils/Dom';
-import {l} from '../../strings/Strings';
-import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {Initialization} from '../Base/Initialization';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Utils } from '../../utils/Utils';
+import { $$ } from '../../utils/Dom';
+import { l } from '../../strings/Strings';
+import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { Initialization } from '../Base/Initialization';
 
 export interface ISearchButtonOptions {
 }
 
 /**
- * A component that allows user to trigger a query by clicking on it.<br/>
- * This component will instantiate on an element and add a search icon.<br/>
- * It will also sends an analytics event to the Coveo platform when clicked.
+ * The SearchButton component renders a search icon that the end user can click to trigger a new query.
+ *
+ * See also the {@link Searchbox} component, which can automatically instantiate a SearchButton component along with a
+ * {@link Querybox} component or an {@link Omnibox} component.
  */
 export class SearchButton extends Component {
   static ID = 'SearchButton';
@@ -20,12 +21,11 @@ export class SearchButton extends Component {
   static options: ISearchButtonOptions = {};
 
   /**
-   * Create a new SearchButton on the given element with the given options.
-   * Bind a click event on the element
-   * Adds a search icon on the element
-   * @param element
-   * @param options
-   * @param bindings
+   * Creates a new SearchButton. Binds a `click` event on the element. Adds a search icon on the element.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the SearchButton component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
    */
   constructor(public element: HTMLElement, public options?: ISearchButtonOptions, bindings?: IComponentBindings) {
     super(element, SearchButton.ID, bindings);
@@ -38,7 +38,8 @@ export class SearchButton extends Component {
   }
 
   /**
-   * Trigger the click handler
+   * Triggers the `click` event handler, which logs a `searchboxSubmit` event in the usage analytics and executes a
+   * query.
    */
   public click() {
     this.handleClick();

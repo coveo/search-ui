@@ -1,15 +1,15 @@
-import {Initialization} from '../Base/Initialization';
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {MODEL_EVENTS, IAttributeChangedEventArg} from '../../models/Model';
-import {QUERY_STATE_ATTRIBUTES, QueryStateModel} from '../../models/QueryStateModel';
-import {StandaloneSearchInterfaceEvents} from '../../events/StandaloneSearchInterfaceEvents';
-import {IAnalyticsNoMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {$$} from '../../utils/Dom';
-import {Assert} from '../../misc/Assert';
-import {QueryboxQueryParameters} from './QueryboxQueryParameters';
+import { Initialization } from '../Base/Initialization';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
+import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
+import { StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
+import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { $$ } from '../../utils/Dom';
+import { Assert } from '../../misc/Assert';
+import { QueryboxQueryParameters } from './QueryboxQueryParameters';
 
 export interface IQueryboxOptions {
   enableSearchAsYouType?: boolean;
@@ -64,7 +64,7 @@ export class Querybox extends Component {
      * <a target="_blank" href="http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005">Coveo Query Syntax Reference</a>).
      *
      * Query syntax in the Querybox will also be highlighted when this option is enabled.
-     * 
+     *
      * See also {@link Querybox.options.enableWildcards}, {@link Querybox.options.enableQuestionMarks} and
      * {@link Querybox.options.enableLowercaseOperators}.
      *

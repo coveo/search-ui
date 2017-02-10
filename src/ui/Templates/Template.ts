@@ -1,9 +1,10 @@
-import {Logger} from '../../misc/Logger';
-import {StringUtils} from '../../utils/StringUtils';
-import {Initialization} from '../Base/Initialization';
-import {BaseComponent} from '../Base/BaseComponent';
-import {ValidLayout} from '../ResultLayout/ResultLayout';
-import {$$} from '../../utils/Dom';
+import { Logger } from '../../misc/Logger';
+import { StringUtils } from '../../utils/StringUtils';
+import { Initialization } from '../Base/Initialization';
+import { BaseComponent } from '../Base/BaseComponent';
+import { ValidLayout } from '../ResultLayout/ResultLayout';
+import { $$ } from '../../utils/Dom';
+import _ = require('underscore');
 
 export interface ITemplateOptions {
   layout: ValidLayout;

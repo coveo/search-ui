@@ -1,12 +1,13 @@
 import * as Mock from '../MockEnvironment';
-import {ResultFolding} from '../../src/ui/ResultFolding/ResultFolding';
-import {IResultFoldingOptions} from '../../src/ui/ResultFolding/ResultFolding';
-import {FakeResults} from '../Fake';
-import {$$} from '../../src/utils/Dom';
-import {IQueryResult} from '../../src/rest/QueryResult';
-import {UnderscoreTemplate} from '../../src/ui/Templates/UnderscoreTemplate';
-import {TemplateCache} from '../../src/ui/Templates/TemplateCache';
-import {CardOverlayEvents} from '../../src/events/CardOverlayEvents';
+import { ResultFolding } from '../../src/ui/ResultFolding/ResultFolding';
+import { IResultFoldingOptions } from '../../src/ui/ResultFolding/ResultFolding';
+import { FakeResults } from '../Fake';
+import { $$ } from '../../src/utils/Dom';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { UnderscoreTemplate } from '../../src/ui/Templates/UnderscoreTemplate';
+import { TemplateCache } from '../../src/ui/Templates/TemplateCache';
+import { CardOverlayEvents } from '../../src/events/CardOverlayEvents';
+import _ = require('underscore');
 
 export function ResultFoldingTest() {
   describe('ResultFolding', function () {

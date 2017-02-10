@@ -1,9 +1,10 @@
-import {Options} from '../misc/Options';
-import {HighlightUtils} from './HighlightUtils';
-import {StringUtils} from './StringUtils';
-import {Utils} from './Utils';
-import {IHighlight} from '../rest/Highlight';
-import {$$} from './Dom';
+import { Options } from '../misc/Options';
+import { HighlightUtils } from './HighlightUtils';
+import { StringUtils } from './StringUtils';
+import { Utils } from './Utils';
+import { IHighlight } from '../rest/Highlight';
+import { $$ } from './Dom';
+import _ = require('underscore');
 
 // \u2011: http://graphemica.com/%E2%80%91
 let nonWordBoundary = '[\\.\\-\\u2011\\s~=,.\\|\\/:\'`’;_()!?]';

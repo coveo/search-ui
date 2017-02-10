@@ -1,6 +1,6 @@
-import {Assert} from '../misc/Assert';
-import {Options} from '../misc/Options';
-import {Utils} from '../utils/Utils';
+import { Assert } from '../misc/Assert';
+import { Options } from '../misc/Options';
+import { Utils } from '../utils/Utils';
 import Globalize = require('globalize');
 
 export interface ICurrencyToStringOptions {

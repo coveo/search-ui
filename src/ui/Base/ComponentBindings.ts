@@ -1,8 +1,8 @@
-import {QueryStateModel} from '../../models/QueryStateModel'; import {ComponentStateModel} from '../../models/ComponentStateModel';
-import {QueryController} from '../../controllers/QueryController';
-import {SearchInterface} from '../SearchInterface/SearchInterface';
-import {IAnalyticsClient} from '../Analytics/AnalyticsClient';
-import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
+import { QueryStateModel } from '../../models/QueryStateModel'; import { ComponentStateModel } from '../../models/ComponentStateModel';
+import { QueryController } from '../../controllers/QueryController';
+import { SearchInterface } from '../SearchInterface/SearchInterface';
+import { IAnalyticsClient } from '../Analytics/AnalyticsClient';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 
 /**
  * The bindings, or environment in which each component exists.

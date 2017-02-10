@@ -1,10 +1,10 @@
 import * as Mock from '../MockEnvironment';
-import {Thumbnail} from '../../src/ui/Thumbnail/Thumbnail';
-import {SearchEndpoint} from '../../src/rest/SearchEndpoint';
-import {IQueryResult} from '../../src/rest/QueryResult';
-import {IThumbnailOptions} from '../../src/ui/Thumbnail/Thumbnail';
-import {$$} from '../../src/utils/Dom';
-import {FieldTable} from '../../src/ui/FieldTable/FieldTable';
+import { Thumbnail } from '../../src/ui/Thumbnail/Thumbnail';
+import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { IThumbnailOptions } from '../../src/ui/Thumbnail/Thumbnail';
+import { $$ } from '../../src/utils/Dom';
+import { FieldTable } from '../../src/ui/FieldTable/FieldTable';
 
 export function ThumbnailTest() {
   describe('Thumbnail', function () {
