@@ -146,7 +146,7 @@
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
 								<a href="text.html#id" class="tsd-kind-icon">ID</a>
 							</li>
-							<li class=" tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+							<li class=" tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
 								<a href="text.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 						</ul>
@@ -177,10 +177,14 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>This component only role is to be embedded in a result template and to output a simple text value.<br/>
-							Thus, the only purpose is to be able to easily add different text value with the interface editor.<br/>
-						If you are not designing a search using the interface editor, the usage of this component is not pertinent.</p>
+						<p>The Text component embeds itself in a result template to output a simple text value.</p>
 					</div>
+					<p>The only purpose of this component is to make it possible to easily add different text values to result templates
+						when using the Coveo JavaScript Search Interface Editor (see
+					<a href="http://www.coveo.com/go?dest=cloudhelp&amp;lcid=9&amp;context=230">JavaScript Search Interface Editor</a>).</p>
+					<p>If you are not designing a search interface using the Coveo JavaScript Search Interface Editor, using this component
+					is unnecessary.</p>
+					<p>This component is a result template component (see <a href="https://developers.coveo.com/x/aIGfAQ">Result Templates</a>).</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -235,10 +239,10 @@
 								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="text.html#id" class="tsd-kind-icon">ID</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="text.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite"><a href="text.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 					</div>
@@ -253,13 +257,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L54">src/ui/Text/Text.ts
-							:54</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L65">src/ui/Text/Text.ts
+							:65</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The color of the text (set as the <code>color</code> CSS property)</p>
+							<p>Specifies the color of the text (set as the <code>color</code> CSS property).</p>
 						</div>
 					</div>
 					<div class="tsd-panel">
@@ -274,13 +278,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L70">src/ui/Text/Text.ts
-							:70</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L85">src/ui/Text/Text.ts
+							:85</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The margin bottom of the text (set as the <code>margin-bottom</code> CSS property)</p>
+							<p>Specifies the bottom margin of the text (set as the <code>margin-bottom</code> CSS property).</p>
 						</div>
 					</div>
 					<div class="tsd-panel">
@@ -295,13 +299,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L74">src/ui/Text/Text.ts
-							:74</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L90">src/ui/Text/Text.ts
+							:90</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The margin left of the text (set as the <code>margin-left</code> CSS property)</p>
+							<p>Specifies the left margin of the text (set as the <code>margin-left</code> CSS property).</p>
 						</div>
 					</div>
 					<div class="tsd-panel">
@@ -316,13 +320,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L78">src/ui/Text/Text.ts
-							:78</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L95">src/ui/Text/Text.ts
+							:95</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The margin right of the text (set as the <code>margin-right</code> CSS property)</p>
+							<p>Specifies the right margin of the text (set as the <code>margin-right</code> CSS property).</p>
 						</div>
 					</div>
 					<div class="tsd-panel">
@@ -337,13 +341,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L66">src/ui/Text/Text.ts
-							:66</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L80">src/ui/Text/Text.ts
+							:80</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The margin top of the text (set as the <code>margin-top</code> CSS property)</p>
+							<p>Specifies the top margin of the text (set as the <code>margin-top</code> CSS property).</p>
 						</div>
 					</div>
 					<div class="tsd-panel">
@@ -358,13 +362,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L86">src/ui/Text/Text.ts
-							:86</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L105">src/ui/Text/Text.ts
+							:105</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The padding bottom of the text (set as the <code>padding-bottom</code> CSS property)</p>
+							<p>Specifies the bottom padding of the text (set as the <code>padding-bottom</code> CSS property).</p>
 						</div>
 					</div>
 					<div class="tsd-panel">
@@ -379,13 +383,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L90">src/ui/Text/Text.ts
-							:90</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L110">src/ui/Text/Text.ts
+							:110</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The padding left of the text (set as the <code>padding-left</code> CSS property)</p>
+							<p>Specifies the left padding of the text (set as the <code>padding-left</code> CSS property).</p>
 						</div>
 					</div>
 					<div class="tsd-panel">
@@ -400,13 +404,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L94">src/ui/Text/Text.ts
-							:94</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L115">src/ui/Text/Text.ts
+							:115</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The padding right of the text (set as the <code>padding-right</code> CSS property)</p>
+							<p>Specifies the right padding of the text (set as the <code>padding-right</code> CSS property).</p>
 						</div>
 					</div>
 					<div class="tsd-panel">
@@ -421,13 +425,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L82">src/ui/Text/Text.ts
-							:82</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L100">src/ui/Text/Text.ts
+							:100</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The padding top of the text (set as the <code>padding-top</code> CSS property)</p>
+							<p>Specifies the top padding of the text (set as the <code>padding-top</code> CSS property).</p>
 						</div>
 					</div>
 					<div class="tsd-panel">
@@ -442,13 +446,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L46">src/ui/Text/Text.ts
-							:46</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L55">src/ui/Text/Text.ts
+							:55</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The size of the text (set as the <code>font-size</code> CSS property)</p>
+							<p>Specifies the size of the text (set as the <code>font-size</code> CSS property).</p>
 						</div>
 					</div>
 					<div class="tsd-panel">
@@ -463,13 +467,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L50">src/ui/Text/Text.ts
-							:50</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L60">src/ui/Text/Text.ts
+							:60</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The style of the text (set as the <code>font-style</code> CSS property)</p>
+							<p>Specifies the style of the text (set as the <code>font-style</code> CSS property).</p>
 						</div>
 					</div>
 					<div class="tsd-panel">
@@ -484,13 +488,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L62">src/ui/Text/Text.ts
-							:62</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L75">src/ui/Text/Text.ts
+							:75</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The alignment of the text (set as the <code>text-align</code> CSS property)</p>
+							<p>Specifies the alignment of the text (set as the <code>text-align</code> CSS property).</p>
 						</div>
 					</div>
 					<div class="tsd-panel">
@@ -505,13 +509,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L42">src/ui/Text/Text.ts
-							:42</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L50">src/ui/Text/Text.ts
+							:50</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The localized string value that the component should render</p>
+							<p>Specifies the localized string value that the component should render.</p>
 						</div>
 					</div>
 					<div class="tsd-panel">
@@ -526,13 +530,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L58">src/ui/Text/Text.ts
-							:58</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L70">src/ui/Text/Text.ts
+							:70</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The weight of the text (set as the <code>font-weight</code> CSS property)</p>
+							<p>Specifies the weight of the text (set as the <code>font-weight</code> CSS property).</p>
 						</div>
 					</div>
 					<div class="tsd-panel">
@@ -634,8 +638,8 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L123">src/ui/Base/Component.ts
-									:123</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
+									:124</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -659,8 +663,8 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L192">src/ui/Base/Component.ts
-									:192</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
+									:193</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -705,8 +709,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L61">src/ui/Base/Component.ts
-							:61</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
+							:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -730,8 +734,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L89">src/ui/Base/Component.ts
-							:89</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
+							:90</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -748,8 +752,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L73">src/ui/Base/Component.ts
-							:73</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
+							:74</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -809,8 +813,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L77">src/ui/Base/Component.ts
-							:77</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
+							:78</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -827,8 +831,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L69">src/ui/Base/Component.ts
-							:69</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
+							:70</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -845,8 +849,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L65">src/ui/Base/Component.ts
-							:65</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
+							:66</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -863,8 +867,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L81">src/ui/Base/Component.ts
-							:81</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
+							:82</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -881,8 +885,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L85">src/ui/Base/Component.ts
-							:85</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
+							:86</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -911,29 +915,27 @@
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Text<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="text.html" class="tsd-signature-type">Text</a></li>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Text<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ITextOptions</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="text.html" class="tsd-signature-type">Text</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
+								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L91">src/ui/Base/Component.ts
-									:91</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Text/Text.ts#L116">src/ui/Text/Text.ts
+									:116</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Create a new Component. Resolve all <a href="../interfaces/icomponentbindings.html">IComponentBindings</a> if not provided.<br/>
-										Create a new Logger for this component.
-									Attach the component to the <a href="searchinterface.html">SearchInterface</a>.<br/></p>
+									<p>Creates a new Text component.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -942,23 +944,24 @@
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The HTMLElement on which to create the component. Used to bind data on the element.</p>
+											<p>The HTMLElement on which to instantiate the component.</p>
 										</div>
 									</div>
 								</li>
 								<li>
-									<h5>type: <span class="tsd-signature-type">string</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">ITextOptions</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The unique identifier for this component. See : <a href="../interfaces/icomponentdefinition.html#id">IComponentDefinition.ID</a>. Used to generate the unique Coveo CSS class associated with every component.</p>
+											<p>The options for the Text component.</p>
 										</div>
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The environment for every component. Optional, but omitting to provide one will impact performance.</p>
+											<p>The bindings that the component requires to function normally. If not set, these will be
+											automatically resolved (with a slower execution time).</p>
 										</div>
 									</div>
 								</li>
