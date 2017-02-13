@@ -14,7 +14,7 @@ conf = _.extend(conf, {
     library: 'Coveo',
     devtoolModuleFilenameTemplate: '[resource-path]'
   },
-  plugins: [
+  plugins: conf.plugins.concat([
     new webpack.LoaderOptionsPlugin({
       options: {
         ts: {
@@ -22,7 +22,7 @@ conf = _.extend(conf, {
         }
       }
     })
-  ]
+  ])
 })
 
 module.exports = conf;

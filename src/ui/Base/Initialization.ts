@@ -17,6 +17,8 @@ import { BaseComponent } from '../Base/BaseComponent';
 import { JQueryUtils } from '../../utils/JQueryutils';
 import { IJQuery } from './CoveoJQuery';
 import _ = require('underscore');
+declare const require: any;
+//declare const import: any;
 
 
 /**
@@ -502,9 +504,22 @@ export class Initialization {
     }
   }
 
+  private loadCmp(cmp) {
+    return (`../${cmp}`)
+  }
+
   private static createFunctionThatInitializesComponentOnElements(elements: Element[], componentClassId: string, componentClass: BaseComponent, initParameters: IInitializationParameters) {
     return () => {
       _.each(elements, (matchingElement: HTMLElement) => {
+        if (componentClassId == 'Facet') {
+          debugger;
+          /*let componentPath = `../${componentClassId}/${componentClassId}`;
+          require.ensure([], (require) => {
+            const componentLoaded = require(componentPath);
+            console.log(componentLoaded);
+          }, componentClassId);*/
+        }
+
         if (Component.get(matchingElement, componentClassId) == null) {
           // If options were provided, lookup options for this component class and
           // also for the element id. Merge them and pass those to the factory method.

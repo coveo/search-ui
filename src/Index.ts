@@ -111,7 +111,6 @@ export { ChatterPostAttachment } from './ui/ChatterPostAttachment/ChatterPostAtt
 export { ChatterPostedBy } from './ui/ChatterPostedBy/ChatterPostedBy';
 export { ChatterTopic } from './ui/ChatterTopic/ChatterTopic';
 export { ChatterUtils } from './utils/ChatterUtils';
-export { Logo } from './ui/Logo/Logo';
 export { Backdrop } from './ui/Backdrop/Backdrop';
 export { CardOverlay } from './ui/CardOverlay/CardOverlay';
 export { CardActionBar } from './ui/CardActionBar/CardActionBar';
@@ -122,10 +121,7 @@ export { Cookie } from './utils/CookieUtils';
 export { CurrencyUtils } from './utils/CurrencyUtils';
 export { DateUtils } from './utils/DateUtils';
 
-require.ensure(['./ui/Logo/Logo'], (require)=> {
-  const logo = require('./ui/Logo/Logo');
-  console.log(logo);
+require.ensure(['./ui/Logo/Logo'], ()=>{}, 'Logo');
 
-}, 'Logo');
-import {swapVar} from './SwapVar';
+import { swapVar } from './SwapVar';
 swapVar(this);

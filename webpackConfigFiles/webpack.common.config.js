@@ -5,7 +5,7 @@ const colors = require('colors');
 
 // Fail plugin will allow the webpack ts-loader to fail correctly when the TS compilation fails
 // Provide plugin allows us to use underscore in every module, without having to require underscore everywhere.
-let plugins = [failPlugin];
+let plugins = [];
 
 if (minimize) {
   plugins.push(new webpack.optimize.UglifyJsPlugin());

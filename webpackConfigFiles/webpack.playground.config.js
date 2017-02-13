@@ -1,5 +1,6 @@
 'use strict';
 const _ = require('underscore');
+const webpack = require('webpack');
 
 let conf = require('./webpack.common.config');
 conf = _.extend(conf, {
@@ -13,9 +14,15 @@ conf = _.extend(conf, {
     library: 'playground',
     devtoolModuleFilenameTemplate: '[resource-path]'
   },
-  ts: {
-    configFileName: 'docs.tsconfig.json'
-  }
+  plugins: conf.plugins.concat([
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        ts: {
+          project: 'docs.tsconfig.json'
+        }
+      }
+    })
+  ])
 })
 
 module.exports = conf;

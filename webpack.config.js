@@ -20,11 +20,15 @@ conf = _.extend(conf, {
     publicPath : '/js/',
     devtoolModuleFilenameTemplate: '[resource-path]'
   },
-  /*plugins: conf.plugins.concat([
-   new webpack.optimize.CommonsChunkPlugin({
-   name: 'base'
-   })
-   ])*/
+  plugins: conf.plugins.concat([
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        ts: {
+          project: 'tsconfig.json'
+        }
+      }
+    })
+  ])
 })
 
 module.exports = conf;
