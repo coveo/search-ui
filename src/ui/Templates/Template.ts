@@ -34,7 +34,7 @@ export class Template {
   /*
    * Instantiate the template to a string if the condition matches
    */
-  instantiateToString(object?: any, checkCondition = true, options?: ITemplateOptions): string {
+  instantiateToString(object: any = {}, checkCondition = true, options: ITemplateOptions = <ITemplateOptions>{}): string {
     if (options) {
       object.options = options;
     }
@@ -44,7 +44,7 @@ export class Template {
     return null;
   }
 
-  instantiateToElement(object?: any, checkCondition = true, wrapInDiv = true, options?: ITemplateOptions): HTMLElement {
+  instantiateToElement(object: any = {}, checkCondition = true, wrapInDiv = true, options: ITemplateOptions = <ITemplateOptions>{}): HTMLElement {
     var html = this.instantiateToString(object, checkCondition, options);
     if (html != null) {
       var element = $$('div', {}, html).el;
