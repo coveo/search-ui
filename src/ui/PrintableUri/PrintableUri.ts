@@ -1,18 +1,20 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IQueryResult} from '../../rest/QueryResult';
-import {HighlightUtils, StringAndHoles} from '../../utils/HighlightUtils';
-import {Initialization} from '../Base/Initialization';
-import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {Utils} from '../../utils/Utils';
-import {$$} from '../../utils/Dom';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IQueryResult } from '../../rest/QueryResult';
+import { HighlightUtils, StringAndHoles } from '../../utils/HighlightUtils';
+import { Initialization } from '../Base/Initialization';
+import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { Utils } from '../../utils/Utils';
+import { $$ } from '../../utils/Dom';
 
 export interface IPrintableUriOptions {
 }
 
 /**
- * This component is meant to be used inside a result template to display the URI or path to access a result.
+ * The PrintableUri component displays the URI, or path, to access a result.
+ *
+ * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
 export class PrintableUri extends Component {
   static ID = 'PrintableUri';
@@ -25,11 +27,12 @@ export class PrintableUri extends Component {
   private uri: string;
 
   /**
-   * Create a new PrintableUri
-   * @param element
-   * @param options
-   * @param bindings
-   * @param result
+   * Creates a new PrintableUri.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the PrintableUri component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   * @param result The result to associate the component with.
    */
   constructor(public element: HTMLElement, public options: IPrintableUriOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, PrintableUri.ID, bindings);

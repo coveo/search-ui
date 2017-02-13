@@ -1,4 +1,4 @@
-import {ISubscription} from '../rest/Subscription';
+import { ISubscription } from '../rest/Subscription';
 
 export interface ISearchAlertsEventArgs {
   subscription: ISubscription;

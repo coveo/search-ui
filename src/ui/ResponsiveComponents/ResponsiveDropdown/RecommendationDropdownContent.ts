@@ -1,5 +1,5 @@
-import {IResponsiveDropdownContent, ResponsiveDropdownContent} from './ResponsiveDropdownContent';
-import {$$, Dom} from '../../../utils/Dom';
+import { IResponsiveDropdownContent, ResponsiveDropdownContent } from './ResponsiveDropdownContent';
+import { $$, Dom } from '../../../utils/Dom';
 
 export class RecommendationDropdownContent implements IResponsiveDropdownContent {
 

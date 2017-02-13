@@ -1,14 +1,14 @@
 import * as Mock from '../MockEnvironment';
-import {Facet} from '../../src/ui/Facet/Facet';
-import {FacetSearch} from '../../src/ui/Facet/FacetSearch';
-import {FacetSearchValuesList} from '../../src/ui/Facet/FacetSearchValuesList';
-import {$$} from '../../src/utils/Dom';
-import {FacetQueryController} from '../../src/controllers/FacetQueryController';
-import {FakeResults} from '../Fake';
-import {FacetSearchParameters} from '../../src/ui/Facet/FacetSearchParameters';
-import {IIndexFieldValue} from '../../src/rest/FieldValue';
-import {Simulate} from '../Simulate';
-import {KEYBOARD} from '../../src/utils/KeyboardUtils';
+import { Facet } from '../../src/ui/Facet/Facet';
+import { FacetSearch } from '../../src/ui/Facet/FacetSearch';
+import { FacetSearchValuesList } from '../../src/ui/Facet/FacetSearchValuesList';
+import { $$ } from '../../src/utils/Dom';
+import { FacetQueryController } from '../../src/controllers/FacetQueryController';
+import { FakeResults } from '../Fake';
+import { FacetSearchParameters } from '../../src/ui/Facet/FacetSearchParameters';
+import { IIndexFieldValue } from '../../src/rest/FieldValue';
+import { Simulate } from '../Simulate';
+import { KEYBOARD } from '../../src/utils/KeyboardUtils';
 
 export function FacetSearchTest() {
   describe('FacetSearch', function () {

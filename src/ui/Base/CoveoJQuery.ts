@@ -1,4 +1,5 @@
-import {Initialization} from './Initialization';
+import { Initialization } from './Initialization';
+import _ = require('underscore');
 
 interface IWindow {
   $: any;
@@ -12,7 +13,7 @@ export var jQueryInstance: IJQuery;
 
 if (!initCoveoJQuery()) {
   // Adding a check in case jQuery was added after the jsSearch
-  // Since this event listener is registered before the Coveo.init call, JQuery should always be initiated before the Coveo.init call  
+  // Since this event listener is registered before the Coveo.init call, JQuery should always be initiated before the Coveo.init call
   document.addEventListener('DOMContentLoaded', () => {
     initCoveoJQuery();
   });

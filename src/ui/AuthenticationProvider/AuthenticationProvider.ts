@@ -1,18 +1,18 @@
-/// <reference path='../../../node_modules/modal-box/bin/ModalBox.d.ts' />
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {Assert} from '../../misc/Assert';
-import {QueryEvents, IBuildingCallOptionsEventArgs, IQueryErrorEventArgs} from '../../events/QueryEvents';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {SettingsEvents} from '../../events/SettingsEvents';
-import {ISettingsPopulateMenuArgs} from '../Settings/Settings';
-import {DomUtils} from '../../utils/DomUtils';
-import {$$} from '../../utils/Dom';
-import {Initialization} from '../Base/Initialization';
-import {l} from '../../strings/Strings';
-import {ModalBox} from '../../ExternalModulesShim';
-import {MissingAuthenticationError} from '../../rest/MissingAuthenticationError';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Assert } from '../../misc/Assert';
+import { QueryEvents, IBuildingCallOptionsEventArgs, IQueryErrorEventArgs } from '../../events/QueryEvents';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { SettingsEvents } from '../../events/SettingsEvents';
+import { ISettingsPopulateMenuArgs } from '../Settings/Settings';
+import { DomUtils } from '../../utils/DomUtils';
+import { $$ } from '../../utils/Dom';
+import { Initialization } from '../Base/Initialization';
+import { l } from '../../strings/Strings';
+import { ModalBox } from '../../ExternalModulesShim';
+import { MissingAuthenticationError } from '../../rest/MissingAuthenticationError';
+import _ = require('underscore');
 
 export interface IAuthenticationProviderOptions {
   name?: string;

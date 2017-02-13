@@ -1,4 +1,4 @@
-import {IStringMap} from './GenericParam';
+import { IStringMap } from './GenericParam';
 /**
  * Describe a suggestion of completion from reveal
  */

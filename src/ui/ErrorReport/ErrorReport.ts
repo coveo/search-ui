@@ -1,14 +1,14 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {Dom, $$} from '../../utils/Dom';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {QueryEvents, IQueryErrorEventArgs} from '../../events/QueryEvents';
-import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
-import {l} from '../../strings/Strings';
-import {Assert} from '../../misc/Assert';
-import {Initialization} from '../Base/Initialization';
-import {IEndpointError} from '../../rest/EndpointError';
-import {MissingAuthenticationError} from '../../rest/MissingAuthenticationError';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Dom, $$ } from '../../utils/Dom';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { QueryEvents, IQueryErrorEventArgs } from '../../events/QueryEvents';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
+import { l } from '../../strings/Strings';
+import { Assert } from '../../misc/Assert';
+import { Initialization } from '../Base/Initialization';
+import { IEndpointError } from '../../rest/EndpointError';
+import { MissingAuthenticationError } from '../../rest/MissingAuthenticationError';
 
 export interface IErrorReportOptions {
   showDetailedError: boolean;

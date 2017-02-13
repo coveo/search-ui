@@ -1,5 +1,6 @@
-import {$$, Dom} from '../../../utils/Dom';
-import {l} from '../../../strings/Strings';
+import { $$, Dom } from '../../../utils/Dom';
+import { l } from '../../../strings/Strings';
+import _ = require('underscore');
 
 /**
  * This class will create a dropdown meant to be used inside the {@link AdvancedSearch} component.

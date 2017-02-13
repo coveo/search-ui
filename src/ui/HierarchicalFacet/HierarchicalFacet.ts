@@ -4,28 +4,29 @@
 /// <reference path="HierarchicalBreadcrumbValuesList.ts" />
 /// <reference path="HierarchicalFacetValueElement.ts" />
 
-import {IFacetOptions} from '../Facet/Facet';
-import {FacetValue} from '../Facet/FacetValues';
-import {Facet} from '../Facet/Facet';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {HierarchicalFacetValuesList} from './HierarchicalFacetValuesList';
-import {HierarchicalFacetQueryController} from '../../controllers/HierarchicalFacetQueryController';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {IIndexFieldValue} from '../../rest/FieldValue';
-import {Utils} from '../../utils/Utils';
-import {$$} from '../../utils/Dom';
-import {Defer} from '../../misc/Defer';
-import {HierarchicalFacetSearchValuesList} from './HierarchicalFacetSearchValuesList';
-import {HierarchicalFacetSearch} from './HierarchicalFacetSearch';
-import {HierarchicalBreadcrumbValuesList} from './HierarchicalBreadcrumbValuesList';
-import {IQuerySuccessEventArgs} from '../../events/QueryEvents';
-import {Assert} from '../../misc/Assert';
-import {IPopulateBreadcrumbEventArgs} from '../../events/BreadcrumbEvents';
-import {IPopulateOmniboxEventArgs} from '../../events/OmniboxEvents';
-import {OmniboxHierarchicalValuesList} from './OmniboxHierarchicalValuesList';
-import {HierarchicalFacetValueElement} from './HierarchicalFacetValueElement';
-import {Initialization} from '../Base/Initialization';
-import {ISearchAlertsPopulateMessageEventArgs} from '../../events/SearchAlertEvents';
+import { IFacetOptions } from '../Facet/Facet';
+import { FacetValue } from '../Facet/FacetValues';
+import { Facet } from '../Facet/Facet';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { HierarchicalFacetValuesList } from './HierarchicalFacetValuesList';
+import { HierarchicalFacetQueryController } from '../../controllers/HierarchicalFacetQueryController';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { IIndexFieldValue } from '../../rest/FieldValue';
+import { Utils } from '../../utils/Utils';
+import { $$ } from '../../utils/Dom';
+import { Defer } from '../../misc/Defer';
+import { HierarchicalFacetSearchValuesList } from './HierarchicalFacetSearchValuesList';
+import { HierarchicalFacetSearch } from './HierarchicalFacetSearch';
+import { HierarchicalBreadcrumbValuesList } from './HierarchicalBreadcrumbValuesList';
+import { IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { Assert } from '../../misc/Assert';
+import { IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
+import { IPopulateOmniboxEventArgs } from '../../events/OmniboxEvents';
+import { OmniboxHierarchicalValuesList } from './OmniboxHierarchicalValuesList';
+import { HierarchicalFacetValueElement } from './HierarchicalFacetValueElement';
+import { Initialization } from '../Base/Initialization';
+import { ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
+import _ = require('underscore');
 
 export interface IHierarchicalFacetOptions extends IFacetOptions {
   delimitingCharacter?: string;

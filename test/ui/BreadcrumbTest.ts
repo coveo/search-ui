@@ -1,10 +1,10 @@
 import * as Mock from '../MockEnvironment';
-import {Breadcrumb} from '../../src/ui/Breadcrumb/Breadcrumb';
-import {$$} from '../../src/utils/Dom';
-import {BreadcrumbEvents} from '../../src/events/BreadcrumbEvents';
-import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import {InitializationEvents} from '../../src/events/InitializationEvents';
-import {Simulate} from '../Simulate';
+import { Breadcrumb } from '../../src/ui/Breadcrumb/Breadcrumb';
+import { $$ } from '../../src/utils/Dom';
+import { BreadcrumbEvents } from '../../src/events/BreadcrumbEvents';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { InitializationEvents } from '../../src/events/InitializationEvents';
+import { Simulate } from '../Simulate';
 
 export function BreadcrumbTest() {
   describe('Breadcrumb', function () {

@@ -1,9 +1,9 @@
 
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {Initialization} from '../Base/Initialization';
-import {$$} from '../../utils/Dom';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Initialization } from '../Base/Initialization';
+import { $$ } from '../../utils/Dom';
 
 export interface ITextOptions {
   value?: string;

@@ -1,11 +1,11 @@
 import * as Mock from '../MockEnvironment';
-import {ResultsPreferences} from '../../src/ui/ResultsPreferences/ResultsPreferences';
-import {Dom} from '../../src/utils/Dom';
-import {$$} from '../../src/utils/Dom';
-import {Component} from '../../src/ui/Base/Component';
-import {PreferencesPanel} from '../../src/ui/PreferencesPanel/PreferencesPanel';
-import {l} from '../../src/strings/Strings';
-import {PreferencesPanelEvents} from '../../src/events/PreferencesPanelEvents';
+import { ResultsPreferences } from '../../src/ui/ResultsPreferences/ResultsPreferences';
+import { Dom } from '../../src/utils/Dom';
+import { $$ } from '../../src/utils/Dom';
+import { Component } from '../../src/ui/Base/Component';
+import { PreferencesPanel } from '../../src/ui/PreferencesPanel/PreferencesPanel';
+import { l } from '../../src/strings/Strings';
+import { PreferencesPanelEvents } from '../../src/events/PreferencesPanelEvents';
 
 export function ResultsPreferencesTest() {
   describe('ResultsPreferences', function () {

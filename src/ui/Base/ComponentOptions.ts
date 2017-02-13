@@ -1,14 +1,15 @@
-import {IFieldDescription} from '../../rest/FieldDescription';
-import {Assert} from '../../misc/Assert';
-import {Logger} from '../../misc/Logger';
-import {Template} from '../Templates/Template';
-import {$$} from '../../utils/Dom';
-import {TemplateCache} from '../Templates/TemplateCache';
-import {TemplateList} from '../Templates/TemplateList';
-import {UnderscoreTemplate} from '../Templates/UnderscoreTemplate';
-import {HtmlTemplate} from '../Templates/HtmlTemplate';
-import {Utils} from '../../utils/Utils';
-import {l} from '../../strings/Strings';
+import { IFieldDescription } from '../../rest/FieldDescription';
+import { Assert } from '../../misc/Assert';
+import { Logger } from '../../misc/Logger';
+import { Template } from '../Templates/Template';
+import { $$ } from '../../utils/Dom';
+import { TemplateCache } from '../Templates/TemplateCache';
+import { TemplateList } from '../Templates/TemplateList';
+import { UnderscoreTemplate } from '../Templates/UnderscoreTemplate';
+import { HtmlTemplate } from '../Templates/HtmlTemplate';
+import { Utils } from '../../utils/Utils';
+import { l } from '../../strings/Strings';
+import _ = require('underscore');
 
 /**
  * Declare a type for options that should contain a field to be used in a query.

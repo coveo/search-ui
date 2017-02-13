@@ -1,4 +1,8 @@
-import {IOmniboxData, IOmniboxDataRow} from '../ui/Omnibox/OmniboxInterface';
+/// <reference path="../../lib/magic-box/index.d.ts" />
+
+// The reference to magic-box with the triple slash is needed for dts-generator
+
+import { IOmniboxData, IOmniboxDataRow } from '../ui/Omnibox/OmniboxInterface';
 
 export interface IPopulateOmniboxEventArgs extends IOmniboxData {
 }

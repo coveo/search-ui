@@ -1,6 +1,6 @@
-import {IHighlight, IHighlightPhrase, IHighlightTerm} from './Highlight';
-import {Promise} from 'es6-promise';
-import {SearchInterface} from '../ui/SearchInterface/SearchInterface';
+import { IHighlight, IHighlightPhrase, IHighlightTerm } from './Highlight';
+import { Promise } from 'es6-promise';
+import { SearchInterface } from '../ui/SearchInterface/SearchInterface';
 
 /**
  * Describe a single result returned by the Coveo Search API.

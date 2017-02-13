@@ -1,4 +1,5 @@
-import {Utils} from '../utils/Utils';
+import { Utils } from '../utils/Utils';
+import _ = require('underscore');
 
 export class Options {
   public merge<T>(provided: T): T {

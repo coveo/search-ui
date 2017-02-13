@@ -1,7 +1,7 @@
 'use strict';
 const _ = require('underscore');
 
-let conf = require('./webpack.common.config');
+let conf = require('./webpack.common.config.js');
 conf = _.extend(conf, {
   entry: {
     'tests': ['./test/Test.ts'],
@@ -14,7 +14,7 @@ conf = _.extend(conf, {
     devtoolModuleFilenameTemplate: '[resource-path]'
   },
   ts: {
-    project: '../test/tsconfig.json'
+    configFileName: 'test.tsconfig.json'
   }
 })
 

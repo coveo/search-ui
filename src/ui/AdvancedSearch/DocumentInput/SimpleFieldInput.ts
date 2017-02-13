@@ -1,9 +1,10 @@
-import {Dropdown} from '../Form/Dropdown';
-import {FacetUtils} from '../../../ui/Facet/FacetUtils';
-import {IIndexFieldValue} from '../../../rest/FieldValue';
-import {ISearchEndpoint} from '../../../rest/SearchEndpointInterface';
-import {DocumentInput} from './DocumentInput';
-import {$$} from '../../../utils/Dom';
+import { Dropdown } from '../Form/Dropdown';
+import { FacetUtils } from '../../../ui/Facet/FacetUtils';
+import { IIndexFieldValue } from '../../../rest/FieldValue';
+import { ISearchEndpoint } from '../../../rest/SearchEndpointInterface';
+import { DocumentInput } from './DocumentInput';
+import { $$ } from '../../../utils/Dom';
+import _ = require('underscore');
 
 export class SimpleFieldInput extends DocumentInput {
 

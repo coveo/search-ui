@@ -1,6 +1,6 @@
-import {EndpointCaller, IErrorResponse, ISuccessResponse} from '../../src/rest/EndpointCaller';
-import {IQueryResults} from '../../src/rest/QueryResults';
-import {FakeResults} from '../Fake';
+import { EndpointCaller, IErrorResponse, ISuccessResponse } from '../../src/rest/EndpointCaller';
+import { IQueryResults } from '../../src/rest/QueryResults';
+import { FakeResults } from '../Fake';
 
 export function EndpointCallerTest() {
   describe('EndpointCaller', function () {
