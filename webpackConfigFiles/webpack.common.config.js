@@ -12,12 +12,14 @@ if (minimize) {
   plugins.push(new webpack.optimize.UglifyJsPlugin());
 }
 
+let globalizePath = __dirname + '/../lib/globalize/globalize.min.js';
+
 module.exports = {
   resolve: {
     extensions: ['', '.ts', '.js'],
     alias: {
       'l10n': __dirname + '/../lib/l10n/l10n.min.js',
-      'globalize': __dirname + '/../lib/globalize/globalize.min.js',
+      'globalize': globalizePath,
       'modal-box': __dirname + '/../node_modules/modal-box/bin/ModalBox.min.js',
       'magic-box': __dirname + '/../node_modules/coveomagicbox/bin/MagicBox.min.js',
       'default-language': __dirname + '/../src/strings/DefaultLanguage.js',
@@ -28,6 +30,10 @@ module.exports = {
   module: {
     loaders: [
       {test: /\.ts$/, loader: 'ts-loader'},
+      {
+        test: require.resolve(globalizePath),
+        loader: 'expose-loader?Globalize'
+      },
       {
         test: /underscore-min.js/,
         loader: 'string-replace-loader',
