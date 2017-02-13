@@ -50,7 +50,7 @@ export class DefaultResultTemplate extends Template {
       .value();
 
     for (let i = 0; i < sortedTemplates.length; i++) {
-      const result = templates[i].instantiateToString(object, mergedOptions);
+      const result = sortedTemplates[i].instantiateToString(object, mergedOptions);
       if (result != null) {
         return result;
       }

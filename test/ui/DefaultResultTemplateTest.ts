@@ -65,7 +65,7 @@ export function DefaultResultTemplateTest() {
             templateWithCondition = null;
           });
 
-          it('should order template with condition first', () => {
+          it('should order templates with conditions first', () => {
             // Test that the Hello world template is rendered before the fallback template
             templateWithCondition.condition = () => true;
             TemplateCache.registerTemplate('dummy2', templateWithCondition, true, true);
@@ -103,6 +103,15 @@ export function DefaultResultTemplateTest() {
             let created = new DefaultResultTemplate().instantiateToString(result);
             expect(created).toEqual(dataToString(result));
             TemplateCache.unregisterTemplate('dummy2');
+          });
+
+          it('should render only a roled template when a role is passed', () => {
+            const tableHeader = new Template(() => 'Epic table header');
+            tableHeader.role = 'table-header';
+            TemplateCache.registerTemplate('tableHeader', tableHeader, true, true);
+            const instantiatedTemplate = new DefaultResultTemplate().instantiateToString({}, { role: 'table-header' });
+            expect(instantiatedTemplate).toEqual('Epic table header');
+            TemplateCache.unregisterTemplate('tableHeader');
           });
         });
       });
