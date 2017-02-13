@@ -1,6 +1,6 @@
-import {Template, IInstantiateTemplateOptions} from '../Templates/Template';
-import {IQueryResult} from '../../rest/QueryResult';
-import {$$} from '../../utils/Dom';
+import { Template } from '../Templates/Template';
+import { IQueryResult } from '../../rest/QueryResult';
+import { $$ } from '../../utils/Dom';
 import Globalize = require('globalize');
 
 export class DefaultMatrixResultPreviewTemplate extends Template {
@@ -9,7 +9,7 @@ export class DefaultMatrixResultPreviewTemplate extends Template {
     super();
   }
 
-  instantiateToString(object?: IQueryResult, instantiateOptions?: IInstantiateTemplateOptions): string {
+  instantiateToString(object?: IQueryResult, checkCondition?: boolean): string {
     var preview = '<div class=\'coveo-result-frame\'>' +
       '<div class=\'coveo-result-row\'>' +
       '<div class=\'coveo-result-cell\' style=\'width: 40px; padding-right:5px;vertical-align: middle\'>' +
@@ -26,7 +26,7 @@ export class DefaultMatrixResultPreviewTemplate extends Template {
     return preview;
   }
 
-  instantiateToElement(object?: IQueryResult, instantiateOptions?: IInstantiateTemplateOptions): HTMLElement {
+  instantiateToElement(object?: IQueryResult, checkCondition?: boolean): HTMLElement {
     return $$('div', undefined, this.instantiateToString(object)).el;
   }
 }

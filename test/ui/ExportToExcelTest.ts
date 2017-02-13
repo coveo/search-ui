@@ -1,8 +1,9 @@
 import * as Mock from '../MockEnvironment';
-import {ExportToExcel} from '../../src/ui/ExportToExcel/ExportToExcel';
-import {IExportToExcelOptions} from '../../src/ui/ExportToExcel/ExportToExcel';
-import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
-import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { ExportToExcel } from '../../src/ui/ExportToExcel/ExportToExcel';
+import { IExportToExcelOptions } from '../../src/ui/ExportToExcel/ExportToExcel';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import _ = require('underscore');
 
 export function ExportToExcelTest() {
   describe('ExportToExcel', function () {
@@ -41,16 +42,6 @@ export function ExportToExcelTest() {
           fieldsToInclude: jasmine.arrayContaining(['@foo', '@bar'])
         }), 100);
       });
-    });
-
-    it('download should do nothing if no query was made', function () {
-      var exportToExcelEventSpy = jasmine.createSpy('exportToExcelEventSpy');
-      var windowLocationReplaceSpy = jasmine.createSpy('windowLocationReplaceSpy');
-      test.env.usageAnalytics.logCustomEvent = exportToExcelEventSpy;
-      test.cmp._window.location.replace = windowLocationReplaceSpy;
-      test.cmp.download();
-      expect(exportToExcelEventSpy).not.toHaveBeenCalled();
-      expect(windowLocationReplaceSpy).not.toHaveBeenCalled();
     });
 
     describe('when query was made', function () {

@@ -1,17 +1,18 @@
-import {Component} from '../Base/Component';
-import {$$} from '../../utils/Dom';
-import {l} from '../../strings/Strings';
-import {IResultListOptions, ResultList} from '../ResultList/ResultList';
-import {IQueryResult} from '../../rest/QueryResult';
-import {IPopulateOmniboxEventArgs, OmniboxEvents} from '../../events/OmniboxEvents';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
-import {Assert} from '../../misc/Assert';
-import {Utils} from '../../utils/Utils';
-import {Initialization} from '../Base/Initialization';
-import {IQueryResults} from '../../rest/QueryResults';
+import { Component } from '../Base/Component';
+import { $$ } from '../../utils/Dom';
+import { l } from '../../strings/Strings';
+import { IResultListOptions, ResultList } from '../ResultList/ResultList';
+import { IQueryResult } from '../../rest/QueryResult';
+import { IPopulateOmniboxEventArgs, OmniboxEvents } from '../../events/OmniboxEvents';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
+import { Assert } from '../../misc/Assert';
+import { Utils } from '../../utils/Utils';
+import { Initialization } from '../Base/Initialization';
+import { IQueryResults } from '../../rest/QueryResults';
+import _ = require('underscore');
 
 export interface IOmniboxResultListOptions extends IResultListOptions {
   omniboxZIndex?: number;

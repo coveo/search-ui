@@ -1,5 +1,6 @@
-import {Assert} from '../misc/Assert';
-import {Utils} from '../utils/Utils';
+import { Assert } from '../misc/Assert';
+import { Utils } from '../utils/Utils';
+import _ = require('underscore');
 
 interface IHashUtils {
   getHash(w: any);
@@ -48,7 +49,7 @@ export class HashUtils {
         encodedValue = HashUtils.encodeArray(valueToEncode);
       } else if (_.isObject(valueToEncode) && Utils.isNonEmptyArray(_.keys(valueToEncode))) {
         encodedValue = HashUtils.encodeObject(valueToEncode);
-      } else {
+      } else if (!Utils.isNullOrUndefined(valueToEncode)) {
         encodedValue = encodeURIComponent(valueToEncode.toString());
       }
       if (encodedValue != '') {
@@ -183,7 +184,7 @@ export class HashUtils {
     } else if (_.isObject(val)) {
       encodedValue = HashUtils.encodeObject(val);
     } else if (_.isNumber(val) || _.isBoolean(val)) {
-      encodedValue = encodeURIComponent(val);
+      encodedValue = encodeURIComponent(val.toString());
     } else {
       encodedValue = '"' + encodeURIComponent(val) + '"';
     }

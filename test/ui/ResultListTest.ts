@@ -1,12 +1,12 @@
 import * as Mock from '../MockEnvironment';
-import {ResultList} from '../../src/ui/ResultList/ResultList';
-import {registerCustomMatcher} from '../CustomMatchers';
-import {FakeResults} from '../Fake';
-import {Simulate} from '../Simulate';
-import {$$} from '../../src/utils/Dom';
-import {ResultListEvents} from '../../src/events/ResultListEvents';
-import {IResultListOptions} from '../../src/ui/ResultList/ResultList';
-import {UnderscoreTemplate} from '../../src/ui/Templates/UnderscoreTemplate';
+import { ResultList } from '../../src/ui/ResultList/ResultList';
+import { registerCustomMatcher } from '../CustomMatchers';
+import { FakeResults } from '../Fake';
+import { Simulate } from '../Simulate';
+import { $$ } from '../../src/utils/Dom';
+import { ResultListEvents } from '../../src/events/ResultListEvents';
+import { IResultListOptions } from '../../src/ui/ResultList/ResultList';
+import { UnderscoreTemplate } from '../../src/ui/Templates/UnderscoreTemplate';
 
 export function ResultListTest() {
   describe('ResultList', () => {

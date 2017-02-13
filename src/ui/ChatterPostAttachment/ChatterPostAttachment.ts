@@ -1,11 +1,11 @@
-import {Component} from '../Base/Component';
-import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Utils} from '../../utils/Utils';
-import {ChatterUtils} from '../../utils/ChatterUtils';
-import {l} from '../../strings/Strings';
-import {Initialization} from '../Base/Initialization';
-import {$$} from '../../utils/Dom';
+import { Component } from '../Base/Component';
+import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Utils } from '../../utils/Utils';
+import { ChatterUtils } from '../../utils/ChatterUtils';
+import { l } from '../../strings/Strings';
+import { Initialization } from '../Base/Initialization';
+import { $$ } from '../../utils/Dom';
 
 export interface IChatterPostAttachmentOption {
 }

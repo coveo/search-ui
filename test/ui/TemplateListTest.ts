@@ -1,8 +1,8 @@
-import {TemplateList} from '../../src/ui/Templates/TemplateList';
-import {IQueryResult} from '../../src/rest/QueryResult';
-import {FakeResults} from '../Fake';
-import {DefaultResultTemplate} from '../../src/ui/Templates/DefaultResultTemplate';
-import {Template} from '../../src/ui/Templates/Template';
+import { TemplateList } from '../../src/ui/Templates/TemplateList';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { FakeResults } from '../Fake';
+import { DefaultResultTemplate } from '../../src/ui/Templates/DefaultResultTemplate';
+import { Template } from '../../src/ui/Templates/Template';
 export function TemplateListTest() {
   describe('TemplateList', () => {
     let result: IQueryResult;

@@ -1,8 +1,9 @@
-import {IQueryResult} from '../../rest/QueryResult';
-import {StringUtils} from '../../utils/StringUtils';
-import {Initialization} from '../Base/Initialization';
-import {BaseComponent} from '../Base/BaseComponent';
-import {ResponsiveComponents} from '../ResponsiveComponents/ResponsiveComponents';
+import { IQueryResult } from '../../rest/QueryResult';
+import { StringUtils } from '../../utils/StringUtils';
+import { Initialization } from '../Base/Initialization';
+import { BaseComponent } from '../Base/BaseComponent';
+import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
+import _ = require('underscore');
 
 export class TemplateConditionEvaluator {
   static getFieldFromString(text: string) {

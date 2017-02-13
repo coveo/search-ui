@@ -1,4 +1,4 @@
-// Type definitions for Globalize
+﻿// Type definitions for Globalize
 // Project: https://github.com/jquery/globalize
 // Definitions by: Boris Yankov <https://github.com/borisyankov/>
 // Definitions: https://github.com/borisyankov/DefinitelyTyped

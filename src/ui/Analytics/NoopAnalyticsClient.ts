@@ -1,9 +1,9 @@
-import {IAnalyticsClient} from './AnalyticsClient';
-import {IAnalyticsActionCause} from './AnalyticsActionListMeta';
-import {IQueryResult} from '../../rest/QueryResult';
-import {ITopQueries} from '../../rest/TopQueries';
-import {Promise} from 'es6-promise';
-import {IStringMap} from '../../rest/GenericParam';
+import { IAnalyticsClient } from './AnalyticsClient';
+import { IAnalyticsActionCause } from './AnalyticsActionListMeta';
+import { IQueryResult } from '../../rest/QueryResult';
+import { ITopQueries } from '../../rest/TopQueries';
+import { Promise } from 'es6-promise';
+import { IStringMap } from '../../rest/GenericParam';
 
 export class NoopAnalyticsClient implements IAnalyticsClient {
   public isContextual: boolean = false;

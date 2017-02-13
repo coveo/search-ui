@@ -1,4 +1,4 @@
-import {SizeInput} from '../../../../src/ui/AdvancedSearch/DocumentInput/SizeInput';
+import { SizeInput } from '../../../../src/ui/AdvancedSearch/DocumentInput/SizeInput';
 
 export function SizeInputTest() {
   describe('SizeInput', () => {

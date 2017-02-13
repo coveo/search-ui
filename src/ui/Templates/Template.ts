@@ -1,10 +1,11 @@
-import {Logger} from '../../misc/Logger';
-import {ValidLayout} from '../ResultLayout/ResultLayout';
-import {$$} from '../../utils/Dom';
-import {TemplateConditionEvaluator} from './TemplateConditionEvaluator';
-import {TemplateFieldsEvaluator} from './TemplateFieldsEvaluator';
-import {IQueryResult} from '../../rest/QueryResult';
-import {ResponsiveComponents} from '../ResponsiveComponents/ResponsiveComponents';
+import { Logger } from '../../misc/Logger';
+import { ValidLayout } from '../ResultLayout/ResultLayout';
+import { $$ } from '../../utils/Dom';
+import { TemplateConditionEvaluator } from './TemplateConditionEvaluator';
+import { TemplateFieldsEvaluator } from './TemplateFieldsEvaluator';
+import { IQueryResult } from '../../rest/QueryResult';
+import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
+import _ = require('underscore');
 
 export type TemplateRole = 'table-header' | 'table-footer';
 

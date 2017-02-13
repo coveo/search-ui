@@ -1,32 +1,33 @@
-import {SearchEndpoint} from '../../rest/SearchEndpoint';
-import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
-import {DeviceUtils} from '../../utils/DeviceUtils';
-import {$$} from '../../utils/Dom';
-import {DomUtils} from '../../utils/DomUtils';
-import {Assert} from '../../misc/Assert';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {ComponentStateModel} from '../../models/ComponentStateModel';
-import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
-import {QueryController} from '../../controllers/QueryController';
-import {Model, IAttributeChangedEventArg} from '../../models/Model';
-import {QueryEvents, IBuildingQueryEventArgs, INewQueryEventArgs, IQuerySuccessEventArgs, IQueryErrorEventArgs} from '../../events/QueryEvents';
-import {IBeforeRedirectEventArgs, StandaloneSearchInterfaceEvents} from '../../events/StandaloneSearchInterfaceEvents';
-import {HistoryController} from '../../controllers/HistoryController';
-import {LocalStorageHistoryController} from '../../controllers/LocalStorageHistoryController';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {IAnalyticsClient} from '../Analytics/AnalyticsClient';
-import {NoopAnalyticsClient} from '../Analytics/NoopAnalyticsClient';
-import {Utils} from '../../utils/Utils';
-import {RootComponent} from '../Base/RootComponent';
-import {BaseComponent} from '../Base/BaseComponent';
-import {Debug} from '../Debug/Debug';
-import {HashUtils} from '../../utils/HashUtils';
-import FastClick = require('fastclick');
-import timezone = require('jstz');
-import {SentryLogger} from '../../misc/SentryLogger';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {ResponsiveComponents} from '../ResponsiveComponents/ResponsiveComponents';
+import { SearchEndpoint } from '../../rest/SearchEndpoint';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { $$ } from '../../utils/Dom';
+import { DomUtils } from '../../utils/DomUtils';
+import { Assert } from '../../misc/Assert';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { ComponentStateModel } from '../../models/ComponentStateModel';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import { QueryController } from '../../controllers/QueryController';
+import { Model, IAttributeChangedEventArg } from '../../models/Model';
+import { QueryEvents, IBuildingQueryEventArgs, INewQueryEventArgs, IQuerySuccessEventArgs, IQueryErrorEventArgs } from '../../events/QueryEvents';
+import { IBeforeRedirectEventArgs, StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
+import { HistoryController } from '../../controllers/HistoryController';
+import { LocalStorageHistoryController } from '../../controllers/LocalStorageHistoryController';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { IAnalyticsClient } from '../Analytics/AnalyticsClient';
+import { NoopAnalyticsClient } from '../Analytics/NoopAnalyticsClient';
+import { Utils } from '../../utils/Utils';
+import { RootComponent } from '../Base/RootComponent';
+import { BaseComponent } from '../Base/BaseComponent';
+import { Debug } from '../Debug/Debug';
+import { HashUtils } from '../../utils/HashUtils';
+import * as fastclick from 'fastclick';
+import jstz = require('jstimezonedetect');
+import { SentryLogger } from '../../misc/SentryLogger';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
+import _ = require('underscore');
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -138,7 +139,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * This must be an IANA zone info key (aka the Olson time zone database). For example : 'America/New_York'.<br/>
      * By default, we use a library that tries to detect the timezone automatically.<br/>
      */
-    timezone: ComponentOptions.buildStringOption({ defaultFunction: () => timezone.jstz.determine().name() }),
+    timezone: ComponentOptions.buildStringOption({ defaultFunction: () => jstz.determine().name() }),
     /**
      * Specifies whether to enable the feature that allows users to ALT + double click on any results to get the Debug page with a detailed view of all the properties and fields for a given result.<br/>
      * This has no security concern (as all those informations are visible to users through the browser developer console or by calling the Coveo API directly).<br/>
@@ -211,7 +212,10 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       $$(document.body).addClass('coveo-mobile-device');
     }
 
-    FastClick.attach(element);
+    // The definition file for fastclick does not match the way that fast click gets loaded (AMD)
+    if ((<any>fastclick).attach) {
+      (<any>fastclick).attach(element);
+    }
 
     this.options = ComponentOptions.initComponentOptions(element, SearchInterface, options);
     Assert.exists(element);
@@ -648,10 +652,13 @@ export class StandaloneSearchInterface extends SearchInterface {
       stateValues['firstQueryMeta'] = uaMeta;
     }
 
+    let link = document.createElement('a');
+    link.href = searchPage;
+
     // By using a setTimeout, we allow other possible code related to the search box / magic box time to complete.
     // eg: onblur of the magic box.
     setTimeout(() => {
-      this._window.location.href = searchPage + '#' + HashUtils.encodeValues(stateValues);
+      this._window.location.href = `${link.protocol}//${link.host}${link.pathname}${link.search}${link.hash ? link.hash + '&' : '#'}${HashUtils.encodeValues(stateValues)}`;
     }, 0);
   }
 

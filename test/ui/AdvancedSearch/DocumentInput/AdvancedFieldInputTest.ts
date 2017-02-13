@@ -1,4 +1,4 @@
-import {AdvancedFieldInput} from '../../../../src/ui/AdvancedSearch/DocumentInput/AdvancedFieldInput';
+import { AdvancedFieldInput } from '../../../../src/ui/AdvancedSearch/DocumentInput/AdvancedFieldInput';
 
 export function AdvancedFieldInputTest() {
   describe('AdvancedFieldInput', () => {

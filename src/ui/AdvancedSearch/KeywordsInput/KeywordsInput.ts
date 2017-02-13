@@ -1,8 +1,8 @@
-import {IAdvancedSearchInput} from '../AdvancedSearchInput';
-import {TextInput} from '../Form/TextInput';
-import {QueryBuilder} from '../../Base/QueryBuilder';
-import {AdvancedSearchEvents} from '../../../events/AdvancedSearchEvents';
-import {$$} from '../../../utils/Dom';
+import { IAdvancedSearchInput } from '../AdvancedSearchInput';
+import { TextInput } from '../Form/TextInput';
+import { QueryBuilder } from '../../Base/QueryBuilder';
+import { AdvancedSearchEvents } from '../../../events/AdvancedSearchEvents';
+import { $$ } from '../../../utils/Dom';
 
 export class KeywordsInput implements IAdvancedSearchInput {
 

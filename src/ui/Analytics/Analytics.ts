@@ -1,24 +1,25 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {IAnalyticsClient} from './AnalyticsClient';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {AnalyticsEndpoint} from '../../rest/AnalyticsEndpoint';
-import {SearchEndpoint} from '../../rest/SearchEndpoint';
-import {Assert} from '../../misc/Assert';
-import {QueryEvents, IBuildingQueryEventArgs, IQueryErrorEventArgs} from '../../events/QueryEvents';
-import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
-import {$$} from '../../utils/Dom';
-import {Model, IAttributeChangedEventArg} from '../../models/Model';
-import {IAnalyticsActionCause, IAnalyticsDocumentViewMeta} from '../Analytics/AnalyticsActionListMeta';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Utils} from '../../utils/Utils';
-import {NoopAnalyticsClient} from '../Analytics/NoopAnalyticsClient';
-import {LiveAnalyticsClient} from './LiveAnalyticsClient';
-import {MultiAnalyticsClient} from './MultiAnalyticsClient';
-import {IAnalyticsQueryErrorMeta, analyticsActionCauseList} from './AnalyticsActionListMeta';
-import {SearchInterface} from '../SearchInterface/SearchInterface';
-import {Recommendation} from '../Recommendation/Recommendation';
-import {RecommendationAnalyticsClient} from './RecommendationAnalyticsClient';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { IAnalyticsClient } from './AnalyticsClient';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { AnalyticsEndpoint } from '../../rest/AnalyticsEndpoint';
+import { SearchEndpoint } from '../../rest/SearchEndpoint';
+import { Assert } from '../../misc/Assert';
+import { QueryEvents, IBuildingQueryEventArgs, IQueryErrorEventArgs } from '../../events/QueryEvents';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import { $$ } from '../../utils/Dom';
+import { Model, IAttributeChangedEventArg } from '../../models/Model';
+import { IAnalyticsActionCause, IAnalyticsDocumentViewMeta } from '../Analytics/AnalyticsActionListMeta';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Utils } from '../../utils/Utils';
+import { NoopAnalyticsClient } from '../Analytics/NoopAnalyticsClient';
+import { LiveAnalyticsClient } from './LiveAnalyticsClient';
+import { MultiAnalyticsClient } from './MultiAnalyticsClient';
+import { IAnalyticsQueryErrorMeta, analyticsActionCauseList } from './AnalyticsActionListMeta';
+import { SearchInterface } from '../SearchInterface/SearchInterface';
+import { Recommendation } from '../Recommendation/Recommendation';
+import { RecommendationAnalyticsClient } from './RecommendationAnalyticsClient';
+import _ = require('underscore');
 
 export interface IAnalyticsOptions {
   user?: string;
@@ -43,7 +44,7 @@ export interface IAnalyticsOptions {
  * See [Step 7 - Usage Analytics](https://developers.coveo.com/x/EYskAg) of the Getting Started with the JavaScript
  * Search Framework V1 tutorial for an introduction to usage analytics.
  *
- * # Send Custom Events
+ * ## Send Custom Events
  * In some scenarios, you might want to send custom data to the Coveo Cloud Usage Analytics (see
  * [Coveo Cloud Usage Analytics](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=89)). The Coveo JavaScript Search
  * Framework offers helper functions to communicate with the Coveo Usage Analytics REST API, so you do not have to write

@@ -1,10 +1,11 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {Initialization} from '../Base/Initialization';
-import {CardOverlayEvents} from '../../events/CardOverlayEvents';
-import {$$} from '../../utils/Dom';
-import {Assert} from '../../misc/Assert';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Initialization } from '../Base/Initialization';
+import { CardOverlayEvents } from '../../events/CardOverlayEvents';
+import { $$ } from '../../utils/Dom';
+import { Assert } from '../../misc/Assert';
+import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 
 export interface ICardOverlayOptions {
   title: string;
@@ -61,6 +62,7 @@ export class CardOverlay extends Component {
     Assert.exists(this.parentCard);
     this.createOverlay();
     this.createButton(this.element);
+    this.closeOverlay();
   }
 
   /**
@@ -87,6 +89,7 @@ export class CardOverlay extends Component {
    * Also triggers the {@link CardOverlayEvents.openCardOverlay} event.
    */
   public openOverlay() {
+    $$(this.overlay).removeClass('coveo-hidden-for-tab-nav');
     $$(this.overlay).addClass('coveo-opened');
     this.bind.trigger(this.element, CardOverlayEvents.openCardOverlay);
   }
@@ -97,6 +100,7 @@ export class CardOverlay extends Component {
    * Also triggers the {@link CardOverlayEvents.closeCardOverlay} event.
    */
   public closeOverlay() {
+    $$(this.overlay).addClass('coveo-hidden-for-tab-nav');
     $$(this.overlay).removeClass('coveo-opened');
     this.bind.trigger(this.element, CardOverlayEvents.closeCardOverlay);
   }
@@ -118,9 +122,11 @@ export class CardOverlay extends Component {
     this.overlay.appendChild(overlayBody);
 
     // Create footer
-    let overlayFooter = $$('div', { className: 'coveo-card-overlay-footer' },
+    let overlayFooter = $$('div', { className: 'coveo-card-overlay-footer', tabindex: '0' },
       $$('span', { className: 'coveo-icon coveo-sprites-arrow-down' }));
     overlayFooter.on('click', () => this.toggleOverlay(false));
+    this.bind.on(overlayFooter.el, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.toggleOverlay(false)));
+
     this.overlay.appendChild(overlayFooter.el);
 
     this.parentCard.appendChild(this.overlay);
@@ -131,7 +137,10 @@ export class CardOverlay extends Component {
       element.appendChild($$('span', { className: 'coveo-icon ' + this.options.icon }).el);
     }
     element.appendChild($$('span', { className: 'coveo-label' }, this.options.title).el);
+    element.setAttribute('tabindex', '0');
     $$(element).on('click', () => this.toggleOverlay());
+    this.bind.on(element, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.toggleOverlay()));
+
   }
 }
 

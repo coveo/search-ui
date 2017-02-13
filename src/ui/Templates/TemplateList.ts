@@ -1,6 +1,7 @@
-import {Template, IInstantiateTemplateOptions, DefaultInstantiateTemplateOptions, ITemplateMetaFields} from './Template';
-import {DefaultResultTemplate} from './DefaultResultTemplate';
-import {IQueryResult} from '../../rest/QueryResult';
+import { Template, IInstantiateTemplateOptions, DefaultInstantiateTemplateOptions, ITemplateMetaFields } from './Template';
+import { DefaultResultTemplate } from './DefaultResultTemplate';
+import { IQueryResult } from '../../rest/QueryResult';
+import _ = require('underscore');
 
 export class TemplateList extends Template {
 

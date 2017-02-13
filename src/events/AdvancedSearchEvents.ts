@@ -1,6 +1,6 @@
-import {IExternalAdvancedSearchSection} from '../ui/AdvancedSearch/AdvancedSearchInput';
-import {IQueryOptions} from '../controllers/QueryController';
-import {IQueryResults} from '../rest/QueryResults';
+import { IExternalAdvancedSearchSection } from '../ui/AdvancedSearch/AdvancedSearchInput';
+import { IQueryOptions } from '../controllers/QueryController';
+import { IQueryResults } from '../rest/QueryResults';
 
 /**
  * Argument sent to all handlers bound on {@link AdvancedSearchEvents.buildingAdvancedSearch}

@@ -1,3 +1,4 @@
+import { IStringMap } from './GenericParam';
 /**
  * Describe a suggestion of completion from reveal
  */
@@ -50,6 +51,10 @@ export interface IRevealQuerySuggestRequest {
    * The pipeline to use for the request.
    */
   pipeline?: string;
+  /**
+   * The context to use for the request
+   */
+  context?: IStringMap<any>;
   language?: string;
   autoCompleter?: string;
   additionalData?: any;

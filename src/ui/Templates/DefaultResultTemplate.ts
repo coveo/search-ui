@@ -4,11 +4,12 @@ import {
   ITemplateMetaFields,
   TemplateRole
 } from './Template';
-import {UnderscoreTemplate} from './UnderscoreTemplate';
-import {TemplateCache} from './TemplateCache';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Assert} from '../../misc/Assert';
-import {$$} from '../../utils/Dom';
+import { UnderscoreTemplate } from './UnderscoreTemplate';
+import { TemplateCache } from './TemplateCache';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Assert } from '../../misc/Assert';
+import { $$ } from '../../utils/Dom';
+import _ = require('underscore');
 
 /*
  * This renders the appropriate result template, found in TemplateCache,
@@ -91,12 +92,12 @@ export class DefaultResultTemplate extends Template {
 
   getFallbackTemplateForRole(role: TemplateRole): string {
     switch (role) {
-    case 'table-header':
-      return 'Table header <div class="CoveoText" data-value="patate"></div>';
-    case 'table-footer':
-      return 'Table footer';
-    default:
-      return '';
+      case 'table-header':
+        return 'Table header <div class="CoveoText" data-value="patate"></div>';
+      case 'table-footer':
+        return 'Table footer';
+      default:
+        return '';
     }
   }
 

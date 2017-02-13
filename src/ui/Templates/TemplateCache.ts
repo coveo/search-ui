@@ -1,7 +1,8 @@
-import {Template} from './Template';
-import {Assert} from '../../misc/Assert';
-import {UnderscoreTemplate} from './UnderscoreTemplate';
-import {HtmlTemplate} from './HtmlTemplate';
+import { Template } from './Template';
+import { Assert } from '../../misc/Assert';
+import { UnderscoreTemplate } from './UnderscoreTemplate';
+import { HtmlTemplate } from './HtmlTemplate';
+import _ = require('underscore');
 
 /**
  * Holds a reference to all template available in the framework

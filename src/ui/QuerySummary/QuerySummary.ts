@@ -1,15 +1,16 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {QueryEvents, IQuerySuccessEventArgs} from '../../events/QueryEvents';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {$$, Dom} from '../../utils/Dom';
-import {Assert} from '../../misc/Assert';
-import {l} from '../../strings/Strings';
-import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
-import {Initialization} from '../Base/Initialization';
-import {QueryStateModel} from '../../models/QueryStateModel';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { $$, Dom } from '../../utils/Dom';
+import { Assert } from '../../misc/Assert';
+import { l } from '../../strings/Strings';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
+import { Initialization } from '../Base/Initialization';
+import { QueryStateModel } from '../../models/QueryStateModel';
 import Globalize = require('globalize');
-import {QuerySummaryEvents} from '../../events/QuerySummaryEvents';
+import { QuerySummaryEvents } from '../../events/QuerySummaryEvents';
+import _ = require('underscore');
 
 export interface IQuerySummaryOptions {
   enableSearchTips?: boolean;

@@ -1,14 +1,14 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Assert} from '../../misc/Assert';
-import {QueryUtils} from '../../utils/QueryUtils';
-import {Initialization} from '../Base/Initialization';
-import {Utils} from '../../utils/Utils';
-import {FileTypes, IFileTypeInfo} from '../Misc/FileTypes';
-import {Quickview} from '../Quickview/Quickview';
-import {$$} from '../../utils/Dom';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Assert } from '../../misc/Assert';
+import { QueryUtils } from '../../utils/QueryUtils';
+import { Initialization } from '../Base/Initialization';
+import { Utils } from '../../utils/Utils';
+import { FileTypes, IFileTypeInfo } from '../Misc/FileTypes';
+import { Quickview } from '../Quickview/Quickview';
+import { $$ } from '../../utils/Dom';
 
 /**
  * Available options for the {@link Icon} component.

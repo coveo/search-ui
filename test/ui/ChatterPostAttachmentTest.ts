@@ -1,10 +1,10 @@
 import * as Mock from '../MockEnvironment';
-import {ChatterPostAttachment} from '../../src/ui/ChatterPostAttachment/ChatterPostAttachment';
-import {FakeResults} from '../Fake';
-import {IChatterPostAttachmentOption} from '../../src/ui/ChatterPostAttachment/ChatterPostAttachment';
-import {ChatterUtils} from '../../src/utils/ChatterUtils';
-import {$$} from '../../src/utils/Dom';
-import {l} from '../../src/strings/Strings';
+import { ChatterPostAttachment } from '../../src/ui/ChatterPostAttachment/ChatterPostAttachment';
+import { FakeResults } from '../Fake';
+import { IChatterPostAttachmentOption } from '../../src/ui/ChatterPostAttachment/ChatterPostAttachment';
+import { ChatterUtils } from '../../src/utils/ChatterUtils';
+import { $$ } from '../../src/utils/Dom';
+import { l } from '../../src/strings/Strings';
 
 export function ChatterPostAttachmentTest() {
   describe('ChatterPostAttachment', () => {

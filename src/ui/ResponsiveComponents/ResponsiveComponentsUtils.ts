@@ -1,4 +1,4 @@
-import {Dom} from '../../utils/Dom';
+import { Dom } from '../../utils/Dom';
 
 export class ResponsiveComponentsUtils {
 

@@ -1,16 +1,16 @@
 import * as Mock from '../MockEnvironment';
-import {SearchAlerts} from '../../src/ui/SearchAlerts/SearchAlerts';
-import {ISettingsPopulateMenuArgs} from '../../src/ui/Settings/Settings';
-import {Settings} from '../../src/ui/Settings/Settings';
-import {ISearchAlertsOptions} from '../../src/ui/SearchAlerts/SearchAlerts';
-import {$$} from '../../src/utils/Dom';
-import {SettingsEvents} from '../../src/events/SettingsEvents';
-import {Simulate} from '../Simulate';
-import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
-import {SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs} from '../../src/events/SearchAlertEvents';
-import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import {AdvancedComponentSetupOptions} from '../MockEnvironment';
-import {mockSearchEndpoint} from '../MockEnvironment';
+import { SearchAlerts } from '../../src/ui/SearchAlerts/SearchAlerts';
+import { ISettingsPopulateMenuArgs } from '../../src/ui/Settings/Settings';
+import { Settings } from '../../src/ui/Settings/Settings';
+import { ISearchAlertsOptions } from '../../src/ui/SearchAlerts/SearchAlerts';
+import { $$ } from '../../src/utils/Dom';
+import { SettingsEvents } from '../../src/events/SettingsEvents';
+import { Simulate } from '../Simulate';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../../src/events/SearchAlertEvents';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { AdvancedComponentSetupOptions } from '../MockEnvironment';
+import { mockSearchEndpoint } from '../MockEnvironment';
 
 export function SearchAlertsTest() {
   describe('SearchAlerts', function () {

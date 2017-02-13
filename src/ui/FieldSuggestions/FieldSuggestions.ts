@@ -1,19 +1,19 @@
-import {ISuggestionForOmniboxOptions, SuggestionForOmnibox, ISuggestionForOmniboxTemplate} from '../Misc/SuggestionForOmnibox';
-import {Component} from '../Base/Component';
-import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {Assert} from '../../misc/Assert';
-import {Utils} from '../../utils/Utils';
-import {OmniboxEvents, IPopulateOmniboxEventArgs} from '../../events/OmniboxEvents';
-import {IIndexFieldValue} from '../../rest/FieldValue';
-import {IListFieldValuesRequest} from '../../rest/ListFieldValuesRequest';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {Initialization} from '../Base/Initialization';
-import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
-import {l} from '../../strings/Strings';
-import {$$} from '../../utils/Dom';
-import {ISuggestionForOmniboxOptionsOnSelect} from '../Misc/SuggestionForOmnibox';
-import {IStringMap} from '../../rest/GenericParam';
+import { ISuggestionForOmniboxOptions, SuggestionForOmnibox, ISuggestionForOmniboxTemplate } from '../Misc/SuggestionForOmnibox';
+import { Component } from '../Base/Component';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Assert } from '../../misc/Assert';
+import { Utils } from '../../utils/Utils';
+import { OmniboxEvents, IPopulateOmniboxEventArgs } from '../../events/OmniboxEvents';
+import { IIndexFieldValue } from '../../rest/FieldValue';
+import { IListFieldValuesRequest } from '../../rest/ListFieldValuesRequest';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { Initialization } from '../Base/Initialization';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
+import { l } from '../../strings/Strings';
+import { $$ } from '../../utils/Dom';
+import { ISuggestionForOmniboxOptionsOnSelect } from '../Misc/SuggestionForOmnibox';
+import _ = require('underscore');
 
 export interface IFieldSuggestionsOptions extends ISuggestionForOmniboxOptions {
   field?: IFieldOption;
@@ -111,15 +111,7 @@ export class FieldSuggestions extends Component {
 
     this.options.onSelect = this.options.onSelect || this.onRowSelection;
 
-    let rowTemplate = (toRender: IStringMap<string>) => {
-      let rowElement = $$('div', {
-        className: 'magic-box-suggestion coveo-omnibox-selectable coveo-top-field-suggestion-row'
-      });
-      if (toRender['data']) {
-        rowElement.el.innerHTML = toRender['data'];
-      }
-      return rowElement.el.outerHTML;
-    };
+    let rowTemplate = _.template(`<div class='magic-box-suggestion coveo-omnibox-selectable coveo-top-field-suggestion-row'><%= data %></div>`);
 
     let suggestionStructure: ISuggestionForOmniboxTemplate;
     if (this.searchInterface.isNewDesign()) {
@@ -127,29 +119,7 @@ export class FieldSuggestions extends Component {
         row: rowTemplate
       };
     } else {
-      let headerTemplate = () => {
-        let headerElement = $$('div', {
-          className: 'coveo-top-field-suggestion-header'
-        });
-
-        let iconElement = $$('span', {
-          className: 'coveo-icon-top-field'
-        });
-
-        let captionElement = $$('span', {
-          className: 'coveo-caption'
-        });
-
-        if (this.options.headerTitle) {
-          captionElement.text(this.options.headerTitle);
-        }
-
-        headerElement.append(iconElement.el);
-        headerElement.append(captionElement.el);
-
-        return headerElement.el.outerHTML;
-      };
-
+      let headerTemplate = _.template(`<div class='coveo-top-field-suggestion-header'><span class='coveo-icon-top-field'></span><span class='coveo-caption'><%= headerTitle %></span></div>`);
       suggestionStructure = {
         header: { template: headerTemplate, title: this.options.headerTitle },
         row: rowTemplate

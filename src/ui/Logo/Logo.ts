@@ -1,10 +1,10 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {Initialization} from '../Base/Initialization';
-import {$$} from '../../utils/Dom';
-import {QueryEvents} from '../../events/QueryEvents';
-import {IQuerySuccessEventArgs} from '../../events/QueryEvents';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Initialization } from '../Base/Initialization';
+import { $$ } from '../../utils/Dom';
+import { QueryEvents } from '../../events/QueryEvents';
+import { IQuerySuccessEventArgs } from '../../events/QueryEvents';
 
 export interface ILogoOptions {
 }

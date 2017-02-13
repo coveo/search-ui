@@ -1,6 +1,6 @@
-import {$$, Dom} from '../../../utils/Dom';
-import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../../utils/PopupUtils';
-import {ResponsiveComponentsManager} from '../ResponsiveComponentsManager';
+import { $$, Dom } from '../../../utils/Dom';
+import { PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../../utils/PopupUtils';
+import { ResponsiveComponentsManager } from '../ResponsiveComponentsManager';
 
 export interface IResponsiveDropdownContent {
   element: Dom;

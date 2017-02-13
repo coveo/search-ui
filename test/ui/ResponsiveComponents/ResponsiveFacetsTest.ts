@@ -1,18 +1,18 @@
-import {ResponsiveDropdown} from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdown';
-import {ResponsiveDropdownHeader} from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownHeader';
-import {ResponsiveDropdownContent} from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownContent';
-import {ResponsiveComponentsManager} from '../../../src/ui/ResponsiveComponents/ResponsiveComponentsManager';
-import {ResponsiveComponentsUtils} from '../../../src/ui/ResponsiveComponents/ResponsiveComponentsUtils';
-import {ResponsiveFacets} from '../../../src/ui/ResponsiveComponents/ResponsiveFacets';
-import {$$, Dom} from '../../../src/utils/Dom';
-import {Facet} from '../../../src/ui/Facet/Facet';
-import {FacetSearch} from '../../../src/ui/Facet/FacetSearch';
-import {FacetSlider} from '../../../src/ui/FacetSlider/FacetSlider';
-import {FacetSearchValuesList} from '../../../src/ui/Facet/FacetSearchValuesList';
+import { ResponsiveDropdown } from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdown';
+import { ResponsiveDropdownHeader } from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownHeader';
+import { ResponsiveDropdownContent } from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownContent';
+import { ResponsiveComponentsManager } from '../../../src/ui/ResponsiveComponents/ResponsiveComponentsManager';
+import { ResponsiveComponentsUtils } from '../../../src/ui/ResponsiveComponents/ResponsiveComponentsUtils';
+import { ResponsiveFacets } from '../../../src/ui/ResponsiveComponents/ResponsiveFacets';
+import { $$, Dom } from '../../../src/utils/Dom';
+import { Facet } from '../../../src/ui/Facet/Facet';
+import { FacetSearch } from '../../../src/ui/Facet/FacetSearch';
+import { FacetSlider } from '../../../src/ui/FacetSlider/FacetSlider';
+import { FacetSearchValuesList } from '../../../src/ui/Facet/FacetSearchValuesList';
 import * as Mock from '../../MockEnvironment';
-import {QueryEvents} from '../../../src/events/QueryEvents';
-import {FakeResults} from '../../Fake';
-import {ResponsiveComponents} from '../../../src/ui/ResponsiveComponents/ResponsiveComponents';
+import { QueryEvents } from '../../../src/events/QueryEvents';
+import { FakeResults } from '../../Fake';
+import { ResponsiveComponents } from '../../../src/ui/ResponsiveComponents/ResponsiveComponents';
 
 export function ResponsiveFacetsTest() {
   describe('ResponsiveFacets', () => {

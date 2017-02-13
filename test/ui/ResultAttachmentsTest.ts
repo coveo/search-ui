@@ -1,10 +1,10 @@
 import * as Mock from '../MockEnvironment';
-import {ResultAttachments} from '../../src/ui/ResultAttachments/ResultAttachments';
-import {UnderscoreTemplate} from '../../src/ui/Templates/UnderscoreTemplate';
-import {IResultAttachmentsOptions} from '../../src/ui/ResultAttachments/ResultAttachments';
-import {FakeResults} from '../Fake';
-import {$$} from '../../src/utils/Dom';
-import {IQueryResult} from '../../src/rest/QueryResult';
+import { ResultAttachments } from '../../src/ui/ResultAttachments/ResultAttachments';
+import { UnderscoreTemplate } from '../../src/ui/Templates/UnderscoreTemplate';
+import { IResultAttachmentsOptions } from '../../src/ui/ResultAttachments/ResultAttachments';
+import { FakeResults } from '../Fake';
+import { $$ } from '../../src/utils/Dom';
+import { IQueryResult } from '../../src/rest/QueryResult';
 
 export function ResultAttachmentsTest() {
   describe('ResultAttachments', function () {

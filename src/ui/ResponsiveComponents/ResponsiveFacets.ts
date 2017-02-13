@@ -1,18 +1,19 @@
-import {$$, Dom} from '../../utils/Dom';
-import {IResponsiveComponent, ResponsiveComponentsManager, IResponsiveComponentOptions} from './ResponsiveComponentsManager';
-import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
-import {Component} from '../Base/Component';
-import {Logger} from '../../misc/Logger';
-import {l} from '../../strings/Strings';
-import {Utils} from '../../utils/Utils';
-import {Facet} from '../Facet/Facet';
-import {FacetSlider} from '../FacetSlider/FacetSlider';
-import {ResponsiveDropdown} from './ResponsiveDropdown/ResponsiveDropdown';
-import {ResponsiveDropdownContent} from './ResponsiveDropdown/ResponsiveDropdownContent';
-import {ResponsiveDropdownHeader} from './ResponsiveDropdown/ResponsiveDropdownHeader';
-import {QueryEvents, IQuerySuccessEventArgs} from '../../events/QueryEvents';
-import {SearchInterface} from '../SearchInterface/SearchInterface';
-import {ResponsiveComponents} from './ResponsiveComponents';
+import { $$, Dom } from '../../utils/Dom';
+import { IResponsiveComponent, ResponsiveComponentsManager, IResponsiveComponentOptions } from './ResponsiveComponentsManager';
+import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
+import { Component } from '../Base/Component';
+import { Logger } from '../../misc/Logger';
+import { l } from '../../strings/Strings';
+import { Utils } from '../../utils/Utils';
+import { Facet } from '../Facet/Facet';
+import { FacetSlider } from '../FacetSlider/FacetSlider';
+import { ResponsiveDropdown } from './ResponsiveDropdown/ResponsiveDropdown';
+import { ResponsiveDropdownContent } from './ResponsiveDropdown/ResponsiveDropdownContent';
+import { ResponsiveDropdownHeader } from './ResponsiveDropdown/ResponsiveDropdownHeader';
+import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { SearchInterface } from '../SearchInterface/SearchInterface';
+import { ResponsiveComponents } from './ResponsiveComponents';
+import _ = require('underscore');
 
 export class ResponsiveFacets implements IResponsiveComponent {
   public static DEBOUNCE_SCROLL_WAIT = 250;

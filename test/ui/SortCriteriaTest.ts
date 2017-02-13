@@ -1,7 +1,7 @@
-import {SortCriteria} from '../../src/ui/Sort/SortCriteria';
+import { SortCriteria } from '../../src/ui/Sort/SortCriteria';
 import * as Mock from '../MockEnvironment';
-import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
-import {IQueryResult} from '../../src/rest/QueryResult';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { IQueryResult } from '../../src/rest/QueryResult';
 
 export function SortCriteriaTest() {
   describe('SortCriteria', function () {

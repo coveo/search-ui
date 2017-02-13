@@ -1,7 +1,7 @@
-import {TemplateFieldsEvaluator} from '../../src/ui/Templates/TemplateFieldsEvaluator';
-import {IQueryResult} from '../../src/rest/QueryResult';
-import {IFieldsToMatch} from '../../src/ui/Templates/Template';
-import {FakeResults} from '../Fake';
+import { TemplateFieldsEvaluator } from '../../src/ui/Templates/TemplateFieldsEvaluator';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { IFieldsToMatch } from '../../src/ui/Templates/Template';
+import { FakeResults } from '../Fake';
 export function TemplateFieldsEvaluatorTest() {
   describe('TemplateFieldsEvaluatorTest', () => {
 

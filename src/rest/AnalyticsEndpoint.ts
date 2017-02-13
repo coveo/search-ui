@@ -1,19 +1,20 @@
-import {Logger} from '../misc/Logger';
-import {EndpointCaller, IEndpointCallerOptions} from '../rest/EndpointCaller';
-import {IAPIAnalyticsVisitResponseRest} from './APIAnalyticsVisitResponse';
-import {IErrorResponse} from '../rest/EndpointCaller';
-import {IAPIAnalyticsSearchEventsResponse} from '../rest/APIAnalyticsSearchEventsResponse';
-import {ISearchEvent} from '../rest/SearchEvent';
-import {IClickEvent} from '../rest/ClickEvent';
-import {IAPIAnalyticsEventResponse} from './APIAnalyticsEventResponse';
-import {Assert} from '../misc/Assert';
-import {ICustomEvent} from './CustomEvent';
-import {ITopQueries} from './TopQueries';
-import {QueryUtils} from '../utils/QueryUtils';
-import {Cookie} from '../utils/CookieUtils';
-import {ISuccessResponse} from '../rest/EndpointCaller';
-import {IStringMap} from '../rest/GenericParam';
-import {Promise} from 'es6-promise';
+import { Logger } from '../misc/Logger';
+import { EndpointCaller, IEndpointCallerOptions } from '../rest/EndpointCaller';
+import { IAPIAnalyticsVisitResponseRest } from './APIAnalyticsVisitResponse';
+import { IErrorResponse } from '../rest/EndpointCaller';
+import { IAPIAnalyticsSearchEventsResponse } from '../rest/APIAnalyticsSearchEventsResponse';
+import { ISearchEvent } from '../rest/SearchEvent';
+import { IClickEvent } from '../rest/ClickEvent';
+import { IAPIAnalyticsEventResponse } from './APIAnalyticsEventResponse';
+import { Assert } from '../misc/Assert';
+import { ICustomEvent } from './CustomEvent';
+import { ITopQueries } from './TopQueries';
+import { QueryUtils } from '../utils/QueryUtils';
+import { Cookie } from '../utils/CookieUtils';
+import { ISuccessResponse } from '../rest/EndpointCaller';
+import { IStringMap } from '../rest/GenericParam';
+import { Promise } from 'es6-promise';
+import _ = require('underscore');
 
 export interface IAnalyticsEndpointOptions {
   token: string;

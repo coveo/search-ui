@@ -1,16 +1,17 @@
-import {IQueryResult} from '../../rest/QueryResult';
-import {Component} from '../Base/Component';
-import {SortCriteria} from '../Sort/SortCriteria';
-import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {Utils} from '../../utils/Utils';
-import {Assert} from '../../misc/Assert';
-import {QueryEvents, IBuildingQueryEventArgs, IPreprocessResultsEventArgs} from '../../events/QueryEvents';
-import {Initialization} from '../Base/Initialization';
-import {IQueryResults} from '../../rest/QueryResults';
-import {IQuery} from '../../rest/Query';
-import {$$} from '../../utils/Dom';
-import {QueryBuilder} from '../Base/QueryBuilder';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Component } from '../Base/Component';
+import { SortCriteria } from '../Sort/SortCriteria';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Utils } from '../../utils/Utils';
+import { Assert } from '../../misc/Assert';
+import { QueryEvents, IBuildingQueryEventArgs, IPreprocessResultsEventArgs } from '../../events/QueryEvents';
+import { Initialization } from '../Base/Initialization';
+import { IQueryResults } from '../../rest/QueryResults';
+import { IQuery } from '../../rest/Query';
+import { $$ } from '../../utils/Dom';
+import { QueryBuilder } from '../Base/QueryBuilder';
+import _ = require('underscore');
 
 export interface IFoldingOptions {
   field?: IFieldOption;

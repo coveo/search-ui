@@ -1,9 +1,9 @@
 import * as Mock from '../MockEnvironment';
-import {Icon} from '../../src/ui/Icon/Icon';
-import {IQueryResult} from '../../src/rest/QueryResult';
-import {FakeResults} from '../Fake';
-import {IIconOptions} from '../../src/ui/Icon/Icon';
-import {$$} from '../../src/utils/Dom';
+import { Icon } from '../../src/ui/Icon/Icon';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { FakeResults } from '../Fake';
+import { IIconOptions } from '../../src/ui/Icon/Icon';
+import { $$ } from '../../src/utils/Dom';
 
 export function IconTest() {
   describe('Icon', function () {

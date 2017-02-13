@@ -1,16 +1,17 @@
-import {Template} from '../Templates/Template';
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {DefaultFoldingTemplate} from './DefaultFoldingTemplate';
-import {Promise} from 'es6-promise';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Utils} from '../../utils/Utils';
-import {QueryUtils} from '../../utils/QueryUtils';
-import {Initialization, IInitializationParameters} from '../Base/Initialization';
-import {Assert} from '../../misc/Assert';
-import {$$} from '../../utils/Dom';
-import {l} from '../../strings/Strings';
+import { Template } from '../Templates/Template';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { DefaultFoldingTemplate } from './DefaultFoldingTemplate';
+import { Promise } from 'es6-promise';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Utils } from '../../utils/Utils';
+import { QueryUtils } from '../../utils/QueryUtils';
+import { Initialization, IInitializationParameters } from '../Base/Initialization';
+import { Assert } from '../../misc/Assert';
+import { $$ } from '../../utils/Dom';
+import { l } from '../../strings/Strings';
+import _ = require('underscore');
 
 export interface IResultFoldingOptions {
   resultTemplate?: Template;
