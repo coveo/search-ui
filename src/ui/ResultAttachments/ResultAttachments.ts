@@ -60,7 +60,7 @@ export class ResultAttachments extends Component {
      * Specifies the template to use to render sub-attachments, which are attachments within attachments, for example
      * when multiple files are embedded within a .zip attachment.
      *
-     * Sub-attachments can themselves sub-attachments, and so on up to a certain level (see
+     * Sub-attachments can themselves contain sub-attachments, and so on up to a certain level (see
      * {@link ResultAttachments.options.maximumAttachmentLevel}).
      *
      * You can specify a previously registered template for this option by referring the HTML `id` attribute or a CSS
