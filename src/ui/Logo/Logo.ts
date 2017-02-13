@@ -17,6 +17,13 @@ export class Logo extends Component {
 
   static options: ILogoOptions = {};
 
+  /**
+   * Creates a new Logo component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the Logo component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   */
   constructor(public element: HTMLElement, public options?: ILogoOptions, bindings?: IComponentBindings) {
     super(element, Logo.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Logo, options);
