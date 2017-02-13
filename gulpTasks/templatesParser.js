@@ -43,7 +43,8 @@ function parseDirectory(directory, conditions) {
       path: path.dirname(path.relative(directory, template)),
       content: content,
       priority: condition != null ? condition.priority || 0 : -1,
-      layout: condition != null ? condition.layout : null
+      layout: condition != null ? condition.layout : null,
+      role: condition != null ? condition.role : null
     };
     buildRegisterTemplate(templateObj);
     buildTemplateHtml(templateObj);
@@ -62,7 +63,8 @@ function buildRegisterTemplate(template) {
           'condition': addToJsonIfNotNull(template, 'value'),
           'layout': addToJsonIfNotNull(template, 'layout'),
           'fieldsToMatch': addToJsonIfNotNull(template, 'fieldsToMatch'),
-          'mobile': addToJsonIfNotNull(template, 'mobile')
+          'mobile': addToJsonIfNotNull(template, 'mobile'),
+          'role': addToJsonIfNotNull(template, 'role')
         }) + '),'
         +
         (!template.subtemplate).toString(),
@@ -74,9 +76,9 @@ function buildTemplateHtml(template) {
   const cssClassName = 'result-template';
   const type = template.type == 'HtmlTemplate' ? 'text/html' : 'text/underscore';
   const layout = template.layout != null ? `data-layout="${template.layout}"` : '';
+  const role = template.role != null ? `data-role="${template.role}"`: '';
   let fieldsCondition = '';
   if (template.condition) {
-
     if (template.condition.fieldsToMatch) {
       template.condition.fieldsToMatch.forEach((fieldToMatch)=> {
         fieldsCondition += `data-field-${fieldToMatch.field}`;
@@ -88,7 +90,7 @@ function buildTemplateHtml(template) {
       });
     }
   }
-  template.html = `<script id="${template.name}" class="${cssClassName}" type="${type}" ${layout} ${fieldsCondition}>${template.content}</script>`
+  template.html = `<script id="${template.name}" class="${cssClassName}" type="${type}" ${layout} ${role} ${fieldsCondition}>${template.content}</script>`
 }
 
 function compileTemplates(directory, destination, fileName, conditions, done) {

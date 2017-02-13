@@ -1,6 +1,8 @@
 import {
   Template, IInstantiateTemplateOptions,
-  DefaultInstantiateTemplateOptions
+  DefaultInstantiateTemplateOptions,
+  ITemplateMetaFields,
+  TemplateRole
 } from './Template';
 import {UnderscoreTemplate} from './UnderscoreTemplate';
 import {TemplateCache} from './TemplateCache';
@@ -22,20 +24,33 @@ export class DefaultResultTemplate extends Template {
     super();
   }
 
-  instantiateToString(queryResult: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = {}): string {
-    Assert.exists(queryResult);
+  instantiateToString(object: IQueryResult | ITemplateMetaFields, instantiateOptions: IInstantiateTemplateOptions = {}): string {
+    Assert.exists(object);
     let mergedOptions = new DefaultInstantiateTemplateOptions().merge(instantiateOptions);
-    queryResult = _.extend({}, queryResult, UnderscoreTemplate.templateHelpers);
+    object = _.extend({}, object, UnderscoreTemplate.templateHelpers);
+
+
+    const templates = _.chain(TemplateCache.getDefaultTemplates())
+      .map(name => TemplateCache.getTemplate(name))
+      .value();
+
+    if (instantiateOptions.role != null) {
+      const roledTemplate = _.find(templates, t => t.role === instantiateOptions.role);
+      if (roledTemplate) {
+        return roledTemplate.instantiateToString(object, mergedOptions);
+      } else {
+        return this.getFallbackTemplateForRole(instantiateOptions.role);
+      }
+    }
 
     // Put templates with conditions first
-    let templates = _.chain(TemplateCache.getDefaultTemplates())
-      .map(name => TemplateCache.getTemplate(name))
+    const sortedTemplates = _.chain(templates)
       .sortBy(template => template.condition == null)
       .sortBy(template => template.fieldsToMatch == null)
       .value();
 
-    for (let i = 0; i < templates.length; i++) {
-      var result = templates[i].instantiateToString(queryResult, mergedOptions);
+    for (let i = 0; i < sortedTemplates.length; i++) {
+      const result = templates[i].instantiateToString(object, mergedOptions);
       if (result != null) {
         return result;
       }
@@ -73,4 +88,16 @@ export class DefaultResultTemplate extends Template {
     resultContainer.append(excerpt.el);
     return resultContainer.el.outerHTML;
   }
+
+  getFallbackTemplateForRole(role: TemplateRole): string {
+    switch (role) {
+    case 'table-header':
+      return 'Table header <div class="CoveoText" data-value="patate"></div>';
+    case 'table-footer':
+      return 'Table footer';
+    default:
+      return '';
+    }
+  }
+
 }

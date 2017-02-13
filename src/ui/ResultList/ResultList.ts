@@ -25,6 +25,7 @@ import {DefaultRecommendationTemplate} from '../Templates/DefaultRecommendationT
 import {ValidLayout} from '../ResultLayout/ResultLayout';
 import {TemplateList} from '../Templates/TemplateList';
 import {ResponsiveDefaultResultTemplate} from '../ResponsiveComponents/ResponsiveDefaultResultTemplate';
+import {TemplateRole} from '../Templates/Template';
 
 export interface IResultListOptions {
   resultContainer?: HTMLElement;
@@ -288,18 +289,22 @@ export class ResultList extends Component {
     if (!append) {
       this.options.resultContainer.innerHTML = '';
     }
-    // if (this.options.layout === 'table') {
-    //   let tableHeader = this.options.resultTemplate.instantiateToElement({}, true, false, {
-    //     type: 'table-header'
-    //   });
-    //   $$(tableHeader).addClass('coveo-result-list-table-header');
-    //   this.options.resultContainer.appendChild(tableHeader);
-    //   this.autoCreateComponentsInsideResult(tableHeader, undefined);
-    // }
     _.each(resultsElement, (resultElement) => {
       this.options.resultContainer.appendChild(resultElement);
       this.triggerNewResultDisplayed(Component.getResult(resultElement), resultElement);
     });
+
+    if (this.options.layout === 'table') {
+      const headerAndFooter = _.map(['table-header', 'table-footer'], (role: TemplateRole) => {
+        const elem = this.options.resultTemplate.instantiateToElement({}, { role: role });
+        $$(elem).addClass(`coveo-result-list-${role}`);
+        this.autoCreateComponentsInsideResult(elem, undefined);
+        return elem;
+      })
+      $$(this.options.resultContainer).prepend(headerAndFooter[0]);
+      this.options.resultContainer.appendChild(headerAndFooter[1]);
+    }
+
     if (this.options.layout === 'card') {
       // Used to prevent last card from spanning the grid's whole width
       _.times(3, () => this.options.resultContainer.appendChild($$('div').el));
