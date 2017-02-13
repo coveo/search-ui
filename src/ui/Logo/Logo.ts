@@ -10,7 +10,7 @@ export interface ILogoOptions {
 }
 
 /**
- * Add a clickable Coveo logo in the interface.
+ * The Logo component adds a clickable Coveo logo in the search interface.
  */
 export class Logo extends Component {
   static ID = 'Logo';
