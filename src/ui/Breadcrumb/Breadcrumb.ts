@@ -9,7 +9,7 @@ import { l } from '../../strings/Strings';
 import { Initialization } from '../Base/Initialization';
 import { QueryEvents } from '../../events/QueryEvents';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IBreadcrumbOptions {
 }

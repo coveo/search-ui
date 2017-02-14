@@ -54,7 +54,7 @@ import { IStringMap } from '../../rest/GenericParam';
 import { FacetValuesOrder } from './FacetValuesOrder';
 import { ValueElement } from './ValueElement';
 import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IFacetOptions {
   title?: string;

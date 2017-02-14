@@ -6,7 +6,7 @@ import { Assert } from '../../misc/Assert';
 import { $$ } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import { Initialization } from '../Base/Initialization';
-import Globalize = require('globalize');
+import * as Globalize from 'globalize';
 
 export interface IQueryDurationOptions {
 }

@@ -13,7 +13,7 @@ import { NoopAnalyticsClient } from '../../ui/Analytics/NoopAnalyticsClient';
 import { BaseComponent } from './BaseComponent';
 import { IComponentBindings } from './ComponentBindings';
 import { DebugEvents } from '../../events/DebugEvents';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 /**
  * Definition for a Component.

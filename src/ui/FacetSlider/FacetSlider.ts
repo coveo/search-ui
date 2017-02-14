@@ -22,9 +22,9 @@ import { Assert } from '../../misc/Assert';
 import { Utils } from '../../utils/Utils';
 import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
 import { Initialization } from '../Base/Initialization';
-import d3 = require('d3');
+import * as d3 from 'd3';
 import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;

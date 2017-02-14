@@ -7,7 +7,7 @@ import { Utils } from '../../utils/Utils';
 import { Facet } from '../Facet/Facet';
 import { Tab } from '../Tab/Tab';
 import { ResponsiveFacets } from './ResponsiveFacets';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IResponsiveComponentOptions {
   enableResponsiveMode?: boolean;

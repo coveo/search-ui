@@ -21,7 +21,7 @@ import { history } from 'coveo.analytics';
 import { get } from '../Base/RegisteredNamedMethods';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IRecommendationOptions extends ISearchInterfaceOptions {
   mainSearchInterface?: HTMLElement;

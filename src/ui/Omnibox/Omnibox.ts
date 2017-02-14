@@ -28,7 +28,7 @@ import { PendingSearchAsYouTypeSearchEvent } from '../Analytics/PendingSearchAsY
 import { Utils } from '../../utils/Utils';
 import { MagicBox } from '../../ExternalModulesShim';
 import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IPopulateOmniboxSuggestionsEventArgs {
   omnibox: Omnibox;

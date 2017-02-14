@@ -16,7 +16,7 @@ import { Utils } from '../../utils/Utils';
 import { Defer } from '../../misc/Defer';
 import { $$ } from '../../utils/Dom';
 import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 /**
  * The ResultLink component automatically transform a search result title into a clickable link pointing to the original

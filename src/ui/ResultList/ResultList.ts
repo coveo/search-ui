@@ -20,10 +20,9 @@ import { ResultListEvents, IDisplayedNewResultEventArgs, IChangeLayoutEventArgs 
 import { ResultLayoutEvents } from '../../events/ResultLayoutEvents';
 import { Utils } from '../../utils/Utils';
 import { DomUtils } from '../../utils/DomUtils';
-import { Recommendation } from '../Recommendation/Recommendation';
 import { DefaultRecommendationTemplate } from '../Templates/DefaultRecommendationTemplate';
 import { ValidLayout } from '../ResultLayout/ResultLayout';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IResultListOptions {
   resultContainer?: HTMLElement;
@@ -615,7 +614,7 @@ export class ResultList extends Component {
 
   private static getDefaultTemplate(e: HTMLElement): Template {
     let component = <ResultList>Component.get(e);
-    if (component.searchInterface instanceof Recommendation) {
+    if (Coveo['Recommendation'] && component.searchInterface instanceof Coveo['Recommendation']) {
       return new DefaultRecommendationTemplate();
     }
     return new DefaultResultTemplate();

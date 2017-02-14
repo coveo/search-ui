@@ -2,10 +2,10 @@ import { $$ } from '../../utils/Dom';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { SliderEvents, IGraphValueSelectedArgs } from '../../events/SliderEvents';
 import { Utils } from '../../utils/Utils';
-import d3Scale = require('d3-scale');
-import d3 = require('d3');
-import Globalize = require('globalize');
-import _ = require('underscore');
+import * as d3Scale from 'd3-scale';
+import * as d3 from 'd3';
+import * as Globalize from 'globalize';
+import * as _ from 'underscore';
 
 export interface IStartSlideEventArgs {
   slider: Slider;

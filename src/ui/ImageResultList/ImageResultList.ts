@@ -6,7 +6,7 @@ import { ResultListEvents } from '../../events/ResultListEvents';
 import { Initialization } from '../Base/Initialization';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { $$ } from '../../utils/Dom';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IImageResultListOptions extends IResultListOptions {
   layoutType?: string;

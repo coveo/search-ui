@@ -11,7 +11,7 @@ import { ResponsiveDropdown } from './ResponsiveDropdown/ResponsiveDropdown';
 import { ResponsiveDropdownContent } from './ResponsiveDropdown/ResponsiveDropdownContent';
 import { ResponsiveDropdownHeader } from './ResponsiveDropdown/ResponsiveDropdownHeader';
 import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export class ResponsiveFacets implements IResponsiveComponent {
 

@@ -10,7 +10,7 @@ import { DateUtils } from '../../utils/DateUtils';
 import { FacetRangeQueryController } from '../../controllers/FacetRangeQueryController';
 import { IGroupByResult } from '../../rest/GroupByResult';
 import { Initialization } from '../Base/Initialization';
-import Globalize = require('globalize');
+import * as Globalize from 'globalize';
 
 export interface IFacetRangeOptions extends IFacetOptions {
   ranges?: IRangeValue[];

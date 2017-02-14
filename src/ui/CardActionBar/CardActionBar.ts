@@ -6,7 +6,7 @@ import { IQueryResult } from '../../rest/QueryResult';
 import { Assert } from '../../misc/Assert';
 import { $$ } from '../../utils/Dom';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface ICardActionBarOptions {
   hidden?: boolean;

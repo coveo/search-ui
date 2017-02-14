@@ -26,7 +26,7 @@ import { OmniboxHierarchicalValuesList } from './OmniboxHierarchicalValuesList';
 import { HierarchicalFacetValueElement } from './HierarchicalFacetValueElement';
 import { Initialization } from '../Base/Initialization';
 import { ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IHierarchicalFacetOptions extends IFacetOptions {
   delimitingCharacter?: string;

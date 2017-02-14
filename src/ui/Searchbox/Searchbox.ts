@@ -7,7 +7,7 @@ import { SearchButton } from '../SearchButton/SearchButton';
 import { Querybox } from '../Querybox/Querybox';
 import { $$ } from '../../utils/Dom';
 import { Initialization } from '../Base/Initialization';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface ISearchboxOptions extends IOmniboxOptions {
   addSearchButton?: boolean;

@@ -11,7 +11,7 @@ export * from './TemplatesModules';
 declare const require: any;
 
 // UI
-export { CoreHelpers } from './ui/Templates/CoreHelpers';
+/*export { CoreHelpers } from './ui/Templates/CoreHelpers';
 export { SearchInterface, StandaloneSearchInterface } from './ui/SearchInterface/SearchInterface';
 export { Aggregate } from './ui/Aggregate/Aggregate';
 export { Analytics } from './ui/Analytics/Analytics';
@@ -120,8 +120,15 @@ export { ColorUtils } from './utils/ColorUtils';
 export { Cookie } from './utils/CookieUtils';
 export { CurrencyUtils } from './utils/CurrencyUtils';
 export { DateUtils } from './utils/DateUtils';
+ */
 
-require.ensure(['./ui/Logo/Logo'], ()=>{}, 'Logo');
+import { register as registerLogo } from './ui/Logo/Register';
+registerLogo();
+
+require.ensure(['./ui/Logo/Logo'], () => {
+  var logo = require('./ui/Logo/Logo.ts');
+  console.log(logo);
+}, 'Logo');
 
 import { swapVar } from './SwapVar';
 swapVar(this);

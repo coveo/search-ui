@@ -16,7 +16,7 @@ import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/Analyti
 import { BaseComponent } from '../Base/BaseComponent';
 import { JQueryUtils } from '../../utils/JQueryutils';
 import { IJQuery } from './CoveoJQuery';
-import _ = require('underscore');
+import * as _ from 'underscore';
 declare const require: any;
 //declare const import: any;
 
@@ -81,6 +81,16 @@ export class Initialization {
     Assert.doesNotExists(Initialization.autoCreateComponents[componentClass.ID]);
     Assert.doesNotExists(Initialization.namedMethods[componentClass.ID]);
     Initialization.autoCreateComponents[componentClass.ID] = componentClass;
+  }
+
+  public static registerAutoCreateId(id: string): void {
+    Assert.doesNotExists(Initialization.autoCreateComponents[id]);
+    Assert.doesNotExists(Initialization.namedMethods[id]);
+    Initialization.autoCreateComponents[id] = (path, callback) => {
+      require.ensure([], (require)=> {
+        callback(null, require(path));
+      });
+    }
   }
 
   /**
@@ -252,7 +262,7 @@ export class Initialization {
     for (let componentClassId in Initialization.autoCreateComponents) {
       if (!_.contains(ignore, componentClassId)) {
         let componentClass = Initialization.autoCreateComponents[componentClassId];
-        let classname = Component.computeCssClassName(componentClass);
+        let classname = Component.computeCssClassNameForType(`${componentClassId}`);
         let elements = $$(element).findAll('.' + classname);
         // From all the component we found which match the current className, remove those that should be ignored
         elements = _.difference(elements, htmlElementsToIgnore);
@@ -508,11 +518,14 @@ export class Initialization {
     return (`../${cmp}`)
   }
 
-  private static createFunctionThatInitializesComponentOnElements(elements: Element[], componentClassId: string, componentClass: BaseComponent, initParameters: IInitializationParameters) {
+  private static createFunctionThatInitializesComponentOnElements(elements: Element[], componentClassId: string, componentClass: Function, initParameters: IInitializationParameters) {
     return () => {
       _.each(elements, (matchingElement: HTMLElement) => {
-        if (componentClassId == 'Facet') {
+        if (componentClassId == 'Logo') {
           debugger;
+          componentClass((componentClassId)=> {
+            console.log(loaded);
+          })
           /*let componentPath = `../${componentClassId}/${componentClassId}`;
           require.ensure([], (require) => {
             const componentLoaded = require(componentPath);
@@ -520,7 +533,7 @@ export class Initialization {
           }, componentClassId);*/
         }
 
-        if (Component.get(matchingElement, componentClassId) == null) {
+        /*if (Component.get(matchingElement, componentClassId) == null) {
           // If options were provided, lookup options for this component class and
           // also for the element id. Merge them and pass those to the factory method.
           let optionsToUse = undefined;
@@ -533,7 +546,7 @@ export class Initialization {
           }
           let initParamToUse = _.extend({}, initParameters, { options: optionsToUse });
           Initialization.createComponentOfThisClassOnElement(componentClass['ID'], matchingElement, initParamToUse);
-        }
+         }*/
       });
     };
   }

@@ -11,7 +11,7 @@ import { IQueryResults } from '../../rest/QueryResults';
 import { IQuery } from '../../rest/Query';
 import { $$ } from '../../utils/Dom';
 import { QueryBuilder } from '../Base/QueryBuilder';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IFoldingOptions {
   field?: IFieldOption;

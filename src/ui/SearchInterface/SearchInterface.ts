@@ -22,11 +22,11 @@ import { BaseComponent } from '../Base/BaseComponent';
 import { Debug } from '../Debug/Debug';
 import { HashUtils } from '../../utils/HashUtils';
 import * as fastclick from 'fastclick';
-import jstz = require('jstimezonedetect');
+import * as jstz from 'jstimezonedetect';
 import { SentryLogger } from '../../misc/SentryLogger';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;

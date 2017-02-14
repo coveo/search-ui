@@ -4,7 +4,7 @@ import { Initialization } from '../Base/Initialization';
 import { BaseComponent } from '../Base/BaseComponent';
 import { ValidLayout } from '../ResultLayout/ResultLayout';
 import { $$ } from '../../utils/Dom';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface ITemplateOptions {
   layout: ValidLayout;

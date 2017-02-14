@@ -7,7 +7,7 @@ import { Initialization } from '../Base/Initialization';
 import { FieldValue, IFieldValueOptions } from './FieldValue';
 import { $$ } from '../../utils/Dom';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IFieldTableOptions {
   allowMinimization: boolean;

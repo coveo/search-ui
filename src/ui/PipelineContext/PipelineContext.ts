@@ -5,7 +5,7 @@ import { Utils } from '../../utils/Utils';
 import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { $$ } from '../../utils/Dom';
 import { Initialization } from '../Base/Initialization';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export var context: any;
 declare var Coveo;

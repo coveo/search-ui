@@ -12,7 +12,7 @@ import { Initialization } from '../Base/Initialization';
 import { analyticsActionCauseList, IAnalyticsResultsSortMeta } from '../Analytics/AnalyticsActionListMeta';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { IQueryErrorEventArgs } from '../../events/QueryEvents';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface ISortOptions {
   sortCriteria?: SortCriteria[];

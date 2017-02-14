@@ -17,7 +17,7 @@ import { Initialization } from '../Base/Initialization';
 import { l } from '../../strings/Strings';
 import { Utils } from '../../utils/Utils';
 import { $$ } from '../../utils/Dom';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IResultFilterPreference {
   selected?: boolean;

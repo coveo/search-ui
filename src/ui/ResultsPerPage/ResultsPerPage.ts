@@ -7,7 +7,7 @@ import { analyticsActionCauseList, IAnalyticsResultsPerPageMeta, IAnalyticsActio
 import { Assert } from '../../misc/Assert';
 import { $$ } from '../../utils/Dom';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IResultsPerPageOptions {
   choicesDisplayed?: number[];

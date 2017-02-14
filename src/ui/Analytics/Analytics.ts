@@ -19,7 +19,7 @@ import { IAnalyticsQueryErrorMeta, analyticsActionCauseList } from './AnalyticsA
 import { SearchInterface } from '../SearchInterface/SearchInterface';
 import { Recommendation } from '../Recommendation/Recommendation';
 import { RecommendationAnalyticsClient } from './RecommendationAnalyticsClient';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IAnalyticsOptions {
   user?: string;
@@ -343,7 +343,7 @@ export class Analytics extends Component {
 
       }
 
-      let isRecommendation = $$(this.root).hasClass(Component.computeCssClassName(Recommendation));
+      let isRecommendation = $$(this.root).hasClass(Component.computeCssClassNameForType(`Recommendation`));
       this.instantiateAnalyticsClient(endpoint, elementToInitializeClient, isRecommendation);
 
     } else {

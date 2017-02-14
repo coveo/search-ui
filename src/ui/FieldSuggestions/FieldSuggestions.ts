@@ -13,7 +13,7 @@ import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/Analyti
 import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
 import { ISuggestionForOmniboxOptionsOnSelect } from '../Misc/SuggestionForOmnibox';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IFieldSuggestionsOptions extends ISuggestionForOmniboxOptions {
   field?: IFieldOption;

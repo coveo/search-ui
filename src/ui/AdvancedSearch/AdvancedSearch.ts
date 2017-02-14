@@ -13,7 +13,7 @@ import { AdvancedSearchInputFactory } from './AdvancedSearchInputFactory';
 import { IQueryOptions } from '../../controllers/QueryController';
 import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { QuerySummaryEvents } from '../../events/QuerySummaryEvents';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 
 export interface IAdvancedSearchOptions {

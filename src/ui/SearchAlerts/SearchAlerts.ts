@@ -19,7 +19,7 @@ import { ModalBox } from '../../ExternalModulesShim';
 import {
   analyticsActionCauseList, IAnalyticsSearchAlertsUpdateMeta, IAnalyticsSearchAlertsMeta, IAnalyticsActionCause
 } from '../Analytics/AnalyticsActionListMeta';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface ISearchAlertsOptions {
   enableManagePanel?: boolean;

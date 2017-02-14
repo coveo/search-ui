@@ -4,7 +4,6 @@ import { QueryController } from '../../controllers/QueryController';
 import { QueryStateModel, setState } from '../../models/QueryStateModel';
 import { IQueryResult } from '../../rest/QueryResult';
 import { IQueryResults } from '../../rest/QueryResults';
-import { Analytics } from '../Analytics/Analytics';
 import { IAnalyticsClient } from '../Analytics/AnalyticsClient';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { $$ } from '../../utils/Dom';
@@ -14,7 +13,7 @@ import { BaseComponent } from '../Base/BaseComponent';
 import { Component } from '../Base/Component';
 import { IStandaloneSearchInterfaceOptions } from '../SearchInterface/SearchInterface';
 import { IRecommendationOptions } from '../Recommendation/Recommendation';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 /**
  * Initialize the framework with a basic search interface. Calls {@link Initialization.initSearchInterface}.<br/>
@@ -150,7 +149,7 @@ Initialization.registerNamedMethod('result', (element: HTMLElement, noThrow?: bo
 });
 
 function getCoveoAnalyticsClient(element: HTMLElement): IAnalyticsClient {
-  var analytics = getCoveoAnalytics(element);
+  var analytics = <any>getCoveoAnalytics(element);
   if (analytics) {
     return analytics.client;
   } else {
@@ -158,10 +157,10 @@ function getCoveoAnalyticsClient(element: HTMLElement): IAnalyticsClient {
   }
 }
 
-function getCoveoAnalytics(element: HTMLElement): Analytics {
-  var analyticsElement = $$(element).find('.' + Component.computeCssClassName(Analytics));
+function getCoveoAnalytics(element: HTMLElement) {
+  var analyticsElement = $$(element).find('.' + Component.computeCssClassNameForType(`Analytics`));
   if (analyticsElement) {
-    return <Analytics>Component.get(analyticsElement);
+    return Component.get(analyticsElement);
   } else {
     return undefined;
   }

@@ -1,5 +1,5 @@
 import { IQueryResult } from '../rest/QueryResult';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 const isCoveoFieldRegex = /^@[a-zA-Z0-9_\.]+$/;
 

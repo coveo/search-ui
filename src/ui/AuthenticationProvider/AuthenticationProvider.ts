@@ -12,7 +12,7 @@ import { Initialization } from '../Base/Initialization';
 import { l } from '../../strings/Strings';
 import { ModalBox } from '../../ExternalModulesShim';
 import { MissingAuthenticationError } from '../../rest/MissingAuthenticationError';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IAuthenticationProviderOptions {
   name?: string;

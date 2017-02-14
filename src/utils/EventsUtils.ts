@@ -1,4 +1,4 @@
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export class EventsUtils {
   private static prefixes = ['webkit', 'moz', 'MS', 'o', ''];

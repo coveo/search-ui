@@ -14,7 +14,7 @@ import { Facet } from '../Facet/Facet';
 import { Component } from '../Base/Component';
 import { get } from '../Base/RegisteredNamedMethods';
 import { QueryEvents, IQuerySuccessEventArgs, INoResultsEventArgs } from '../../events/QueryEvents';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export class ResponsiveRecommendation implements IResponsiveComponent {
 

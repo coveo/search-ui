@@ -6,7 +6,7 @@ import { ISettingsPopulateMenuArgs } from '../Settings/Settings';
 import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Initialization } from '../Base/Initialization';
 import { l } from '../../strings/Strings';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IExportToExcelOptions {
   numberOfResults?: number;

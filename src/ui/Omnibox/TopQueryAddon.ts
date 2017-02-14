@@ -3,7 +3,7 @@ import { IOmniboxSuggestion, Omnibox, IPopulateOmniboxSuggestionsEventArgs } fro
 import { OmniboxEvents } from '../../events/OmniboxEvents';
 import { $$ } from '../../utils/Dom';
 import { MagicBox } from '../../ExternalModulesShim';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export class TopQueryAddon {
 

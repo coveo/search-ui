@@ -8,9 +8,9 @@ import { l } from '../../strings/Strings';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Initialization } from '../Base/Initialization';
 import { QueryStateModel } from '../../models/QueryStateModel';
-import Globalize = require('globalize');
+import * as Globalize from 'globalize';
 import { QuerySummaryEvents } from '../../events/QuerySummaryEvents';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IQuerySummaryOptions {
   enableSearchTips?: boolean;

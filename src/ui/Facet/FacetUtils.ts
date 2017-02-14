@@ -6,7 +6,7 @@ import { FileTypes } from '../Misc/FileTypes';
 import { DateUtils } from '../../utils/DateUtils';
 import { Utils } from '../../utils/Utils';
 import { $$ } from '../../utils/Dom';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 declare const Coveo;
 

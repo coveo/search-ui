@@ -17,7 +17,7 @@ import { Promise } from 'es6-promise';
 import { BaseComponent } from '../ui/Base/BaseComponent';
 import { ModalBox } from '../ExternalModulesShim';
 import { history } from 'coveo.analytics';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 /**
  * Possible options when performing a query with the query controller

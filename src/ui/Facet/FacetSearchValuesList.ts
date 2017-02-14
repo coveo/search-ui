@@ -2,7 +2,7 @@
 import { Facet } from './Facet';
 import { IFacetValueElementKlass } from './FacetValueElement';
 import { FacetValue } from './FacetValues';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IFacetSearchValuesListKlass {
   new (facet: Facet, facetValueElementKlass: IFacetValueElementKlass): FacetSearchValuesList;

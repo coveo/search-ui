@@ -5,8 +5,8 @@ import { QueryEvents, IBuildingQueryEventArgs, IQuerySuccessEventArgs } from '..
 import { IGroupByRequest } from '../../rest/GroupByRequest';
 import { Initialization } from '../Base/Initialization';
 import { $$ } from '../../utils/Dom';
-import Globalize = require('globalize');
-import _ = require('underscore');
+import * as Globalize from 'globalize';
+import * as _ from 'underscore';
 
 export interface IAggregateOptions {
   field: IFieldOption;

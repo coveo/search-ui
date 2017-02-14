@@ -7,8 +7,7 @@ const path = require('path');
 let conf = require('./webpackConfigFiles/webpack.common.config');
 conf = _.extend(conf, {
   entry: {
-    'CoveoJsSearch': ['./src/Index.ts'],
-    'CoveoJsSearch.Searchbox': './src/SearchboxIndex.ts'
+    'CoveoJsSearch': './src/Index.ts'
   },
   output: {
     path: path.resolve(__dirname, 'bin/js'),
@@ -17,7 +16,7 @@ conf = _.extend(conf, {
     libraryTarget: 'umd',
     // See Index.ts as for why this need to be a temporary variable
     library: 'Coveo__temporary',
-    publicPath : '/js/',
+    publicPath: '/search-ui/bin/js/',
     devtoolModuleFilenameTemplate: '[resource-path]'
   },
   plugins: conf.plugins.concat([

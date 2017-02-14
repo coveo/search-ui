@@ -13,7 +13,7 @@ import { APIAnalyticsBuilder } from '../../rest/APIAnalyticsBuilder';
 import { IAnalyticsSearchEventsArgs, AnalyticsEvents } from '../../events/AnalyticsEvents';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { QueryStateModel } from '../../models/QueryStateModel';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export class PendingSearchEvent {
   private handler: (evt: Event, arg: IDuringQueryEventArgs) => void;

@@ -9,7 +9,7 @@ import { UnderscoreTemplate } from '../Templates/UnderscoreTemplate';
 import { HtmlTemplate } from '../Templates/HtmlTemplate';
 import { Utils } from '../../utils/Utils';
 import { l } from '../../strings/Strings';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 /**
  * Declare a type for options that should contain a field to be used in a query.

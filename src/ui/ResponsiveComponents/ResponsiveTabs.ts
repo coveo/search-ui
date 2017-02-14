@@ -10,7 +10,7 @@ import { Tab } from '../Tab/Tab';
 import { IResponsiveComponent, ResponsiveComponentsManager, IResponsiveComponentOptions } from './ResponsiveComponentsManager';
 import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
 import { l } from '../../strings/Strings';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export class ResponsiveTabs implements IResponsiveComponent {
 

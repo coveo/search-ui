@@ -12,7 +12,7 @@ import { Assert } from '../../misc/Assert';
 import { Utils } from '../../utils/Utils';
 import { Initialization } from '../Base/Initialization';
 import { IQueryResults } from '../../rest/QueryResults';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IOmniboxResultListOptions extends IResultListOptions {
   omniboxZIndex?: number;

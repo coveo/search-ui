@@ -11,7 +11,7 @@ import { analyticsActionCauseList, IAnalyticsTopSuggestionMeta } from '../Analyt
 import { Initialization } from '../Base/Initialization';
 import { $$ } from '../../utils/Dom';
 import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IAnalyticsSuggestionsOptions extends ISuggestionForOmniboxOptions {
 }

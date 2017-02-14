@@ -14,7 +14,7 @@ import { MODEL_EVENTS, IAttributesChangedEventArg } from '../../models/Model';
 import { analyticsActionCauseList, IAnalyticsResultsLayoutChange } from '../Analytics/AnalyticsActionListMeta';
 import { IQueryResults } from '../../rest/QueryResults';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IResultLayoutOptions {
 }

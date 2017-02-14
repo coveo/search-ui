@@ -12,7 +12,7 @@ import {
   analyticsActionCauseList, IAnalyticsSearchAlertsFollowDocumentMeta, IAnalyticsActionCause
 } from '../Analytics/AnalyticsActionListMeta';
 import { QueryUtils } from '../../utils/QueryUtils';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 
 export interface IFollowItemOptions {
