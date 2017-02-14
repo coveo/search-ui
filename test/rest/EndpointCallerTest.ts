@@ -28,6 +28,27 @@ export function EndpointCallerTest() {
         expect(jasmine.Ajax.requests.mostRecent().url).toBe('this is an XMLHTTPRequest');
       });
 
+      it('should use the provided XMLHTTPRequest', function () {
+        var xmlHttpRequest = XMLHttpRequest;
+        xmlHttpRequest.prototype.send = function () {
+          throw new Error('My working XmlHttpRequest implementation');
+        };
+
+        var endpointCaller = new EndpointCaller({ xmlHttpRequest: xmlHttpRequest });
+        try {
+          endpointCaller.call({
+            method: 'POST',
+            requestData: {},
+            url: 'this is an XMLHTTPRequest',
+            queryString: [],
+            responseType: 'text',
+            errorsAsSuccess: false
+          });
+        } catch (e) {
+          expect(e.message).toBe('My working XmlHttpRequest implementation');
+        }
+      });
+
       it('should set the auth if provided', function () {
         var endpointCaller = new EndpointCaller({
           accessToken: 'myToken'
