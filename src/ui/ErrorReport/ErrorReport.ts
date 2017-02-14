@@ -18,7 +18,7 @@ export interface IErrorReportOptions {
  * The ErrorReport component takes care of handling fatal error when doing a query on the index / Search API.
  *
  * For example, the ErrorReport component displays a message when the service responds with a 401 or 503 error. This
- * component also renders a small text area with the JSON content of the error response, for debugging purpose.
+ * component also renders a small text area with the JSON content of the error response, for debugging purposes.
  */
 export class ErrorReport extends Component {
   static ID = 'ErrorReport';
