@@ -7,8 +7,8 @@ import { HighlightUtils } from '../../utils/HighlightUtils';
 import { Initialization } from '../Base/Initialization';
 
 /**
- * The Excerpt component renders an excerpt of the its associated result and highlights the keywords from the query
- * using the appropriate template helpers.
+ * The Excerpt component renders an excerpt of its associated result and highlights the keywords from the query using
+ * the appropriate template helpers.
  *
  * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
