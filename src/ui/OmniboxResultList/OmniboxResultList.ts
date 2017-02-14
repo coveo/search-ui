@@ -145,8 +145,8 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
   }
 
   /**
-   * Creates a result container and appends each `HTMLElement` from the argument array to it. For each element it
-   * appends to the result container, this method triggers a `newResultDisplayed` event. Once all items have been
+   * Creates a result container and appends each element from the received `HTMLElement` array to it. For each element
+   * it appends to the result container, this method triggers a `newResultDisplayed` event. Once all elements have been
    * appended to the result container, the method triggers a `newResultsDisplayed` event.
    * @param resultsElement The array of `HTMLElement` to render.
    * @param append
