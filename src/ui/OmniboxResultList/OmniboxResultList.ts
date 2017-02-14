@@ -23,7 +23,7 @@ export interface IOmniboxResultListOptions extends IResultListOptions {
 
 /**
  * The OmniboxResultList component behaves exactly like the {@link ResultList} component (which it extends), except that
- * theit renders itself inside the {@link Omnibox} component.
+ * it renders itself inside the {@link Omnibox} component.
  *
  * This component can provide a kind of search-as-you-type functionality, allowing you to easily render complex Result
  * Templates inside the Omnibox component.
