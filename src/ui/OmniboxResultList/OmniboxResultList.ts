@@ -22,11 +22,11 @@ export interface IOmniboxResultListOptions extends IResultListOptions {
 }
 
 /**
- * The OmniboxResultList component acts exactly like a normal {@link ResultList} component, except that it renders itself
- * inside the {@link Omnibox} component.
+ * The OmniboxResultList component behaves exactly like the {@link ResultList} component (which it extends), except that
+ * theit renders itself inside the {@link Omnibox} component.
  *
- * This provides a kind of search-as-you-type functionality, allowing you to easily render complex Result Templates
- * inside the Omnibox component.
+ * This component can provide a kind of search-as-you-type functionality, allowing you to easily render complex Result
+ * Templates inside the Omnibox component.
  *
  * **Example:**
  *
@@ -129,8 +129,8 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
   }
 
   /**
-   * Builds and returns an array of `HTMLElement` from the result set received as an argument.
-   * @param results The result set to build an array of `HTMLElement` from.
+   * Builds and returns an array of `HTMLElement` from the {@link IQueryResults} set received as an argument.
+   * @param results The IQueryResults set to build an array of `HTMLElement` from.
    */
   public buildResults(results: IQueryResults): HTMLElement[] {
     return _.map(results.results, (result: IQueryResult) => {
@@ -144,6 +144,13 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     });
   }
 
+  /**
+   * Creates a result container and appends each `HTMLElement` from the argument array to it. For each element it
+   * appends to the result container, this method triggers a `newResultDisplayed` event. Once all items have been
+   * appended to the result container, the method triggers a `newResultsDisplayed` event.
+   * @param resultsElement The array of `HTMLElement` to render.
+   * @param append
+   */
   public renderResults(resultsElement: HTMLElement[], append = false) {
     if (this.lastOmniboxRequest) {
       let content = $$('div').el;
