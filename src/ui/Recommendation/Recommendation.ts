@@ -36,16 +36,22 @@ export interface IRecommendationOptions extends ISearchInterfaceOptions {
 }
 
 /**
- * The Recommendation component is a {@link SearchInterface} that displays recommendations based on the user history.
+ * The Recommendation component is a {@link SearchInterface} that displays recommendations typically based on user
+ * history.
  *
- * To get recommendations, it is necessary to include the `pageview` script in the page (see
- * [coveo.analytics.js](https://github.com/coveo/coveo.analytics.js)).
+ * This component usually listens to the main SearchInterface. When the main SearchInterface generates a query, the
+ * Recommendation component generates another query to get the recommendations at the same time.
  *
- * This component listens when the main SearchInterface generates a query and it generates another query to get the
- * recommendations at the same time.
+ * To get history-based recommendations, you will likely want to include the `pageview` script in your page (see
+ * [coveo.analytics.js](https://github.com/coveo/coveo.analytics.js)). However, including this script is not mandatory.
+ * For instance, you could use the Recommendation component without Reveal to create a simple "recommended people"
+ * interface.
  *
- * It is possible to include this component in another SearchInterface, but in order to do so, you need to initialize
- * the Recommendation component using `Coveo('initRecommendation')` before the parent SearchInterface.
+ * It is possible to include this component inside another SearchInterface, but it is also possible to instantiate it as
+ * a "standalone" search interface, without even instantiating a main SearchInterface component. In any case, a
+ * Recommendation component always acts as a full-fledged search interface. Therefore, you can include any component
+ * inside the Recommendation component (Searchbox, Facet, Sort, etc.), just as you would inside the main SearchInterface
+ * component.
  */
 export class Recommendation extends SearchInterface implements IComponentBindings {
   static ID = 'Recommendation';
