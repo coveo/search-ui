@@ -18,24 +18,33 @@ export interface IQuerySummaryOptions {
 }
 
 /**
- * This component displays information about the current range of results being displayed (ex: 1-10 of 123).<br/>
- * If the query matches no document, it will display advices and tip for the end user on how to remedy the problem.
+ * The QuerySummary component can display information about the currently displayed range of results (e.g., "Results
+ * 1-10 of 123").
+ *
+ * If the query matches no document, the QuerySummary component can instead display tips to help the end user formulate
+ * a better query.
  */
 export class QuerySummary extends Component {
   static ID = 'QuerySummary';
+
   /**
    * Options for the component
    * @componentOptions
    */
   static options: IQuerySummaryOptions = {
+
     /**
-     * Specifies whether the search tips are displayed to the end user when there are no search results.<br/>
-     * The default value is <code>true</code>.
+     * Specifies whether to display the search tips to the end user when there are no search results.
+     *
+     * Default value is `true`.
      */
     enableSearchTips: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
     /**
-     * Specifies whether to hide the information about the current range of results being displayed and only display the search tips.<br/>
-     * The default value is <code>false</code>.
+     * Specifies whether to hide the information about the currently displayed range of results and only display the
+     * search tips instead.
+     *
+     * Default value is `false`.
      */
     onlyDisplaySearchTips: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
@@ -43,6 +52,13 @@ export class QuerySummary extends Component {
   private textContainer: HTMLElement;
   private lastKnownGoodState: any;
 
+  /**
+   * Creates a new QuerySummary component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the QuerySummary component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   */
   constructor(public element: HTMLElement, public options?: IQuerySummaryOptions, bindings?: IComponentBindings) {
     super(element, QuerySummary.ID, bindings);
 

@@ -40,11 +40,13 @@ function showOnlyWithHelper<T>(helpers: string[], options?: T): T {
 }
 
 /**
- * This component can be used as part of a result template to display the value of a field
- * associated with the current search result.<br/>
- * This component is usually located inside a {@link FieldTable}.<br/>
- * A common use of this component is to display a specific field value, when that field also
- * happens to be a facet. When the field value is clicked on, the corresponding facet is activated.
+ * The FieldValue component displays the value of a field associated to its parent search result. It is normally usable
+ * within a {@link FieldTable}.
+ *
+ * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ *
+ * A common use of this component is to display a specific field value which also happens to be an existing
+ * {@link Facet.options.field}. When the user clicks on the FieldValue component, it activates the corresponding Facet.
  */
 export class FieldValue extends Component {
   static ID = 'FieldValue';
@@ -54,49 +56,75 @@ export class FieldValue extends Component {
    * @componentOptions
    */
   static options: IFieldValueOptions = {
+
     /**
-     * Specifies the field to be displayed by the FieldValue.<br/>
-     * This field is required.
+     * Specifies the field that the FieldValue should display.
+     *
+     * Specifying a value for this parameter is required in order for the FieldValue component to work.
      */
     field: ComponentOptions.buildFieldOption({ defaultValue: '@field', required: true }),
+
     /**
-     * Specifies the facet to be toggled when the component is clicked On.<br/>
-     * When no value is specified, the value of the <code>field</code> option is used.<br/>
-     * If the facet ID is custom (e.g. not the same name as its field), you must specify
-     * manually this option in order to link the correct facet.
+     * Specifies the {@link Facet} component to toggle when the end user clicks the FieldValue.
+     *
+     * Default value is the value of {@link FieldValue.options.field}.
+     *
+     * **Note:**
+     * > If the target {@link Facet.options.id} is is not the same as its {@link Facet.options.field}), you must specify
+     * > this option manually in order to link to the correct Facet.
      */
     facet: ComponentOptions.buildStringOption({ postProcessing: (value, options) => value || options.field }),
+
     /**
-     * Specifies if the content to display is an HTML element.<br/>
-     * The default value is <code>false</code>.
+     * Specifies whether the content to display is an HTML element.
+     *
+     * Default value is `false`.
      */
     htmlValue: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
     /**
-     * Specifies if the field value is to be split at each {@link FieldValue.options.separator}.
-     * This is useful for splitting groups by a facet field.<br/>
-     * The values displayed are split by the {@link FieldValue.options.displaySeparator}.<br/>
-     * The default value is <code>false</code>.
+     * Specifies whether to split the FieldValue at each {@link FieldValue.options.separator}.
+     *
+     * This is useful for splitting groups using a {@link Facet.options.field}.
+     *
+     * When this option is `true`, the displayed values are split by the {@link FieldValue.options.displaySeparator}.
+     *
+     * Default value is `false`.
      */
     splitValues: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
     /**
-     * Specifies the string used to split multi-value fields from the index.
-     * The default value is <code>;</code>.
+     * If {@link FieldValue.options.splitValues} is `true`, specifies the separator string which separates multi-value
+     * fields in the index.
+     *
+     * See {@link FieldValue.options.displaySeparator}.
+     *
+     * Default value is `";"`.
      */
-    separator: ComponentOptions.buildStringOption({ defaultValue: ';' }),
+    separator: ComponentOptions.buildStringOption({ depend: 'splitValues', defaultValue: ';' }),
+
     /**
-     * Specifies the string used to display multi-value fields in the UI.
-     * It is inserted between the displayed values.
-     * The default value is <code>, </code>.
+     * If {@link FieldValue.options.splitValues} is `true`, specifies the string to use when displaying multi-value
+     * fields in the UI.
+     *
+     * The component will insert this string between each value it displays from a multi-value field.
+     *
+     * See also {@link FieldValue.options.separator}.
+     *
+     * Default value is `", "`.
      */
-    displaySeparator: ComponentOptions.buildStringOption({ defaultValue: ', ' }),
+    displaySeparator: ComponentOptions.buildStringOption({ depend: 'splitValues', defaultValue: ', ' }),
+
     /**
-     * Specifies the helper to be used by the `FieldValue` to display its content.<br/>
-     * A few helpers exist by default (see {@link ICoreHelpers}), and new ones can be
-     * custom-created (see {@link TemplateHelpers}).
+     * Specifies the helper that the FieldValue should use to display its content.
+     *
+     * While several helpers exist by default (see {@link ICoreHelpers}), it is also possible for you to create your own
+     * custom helpers (see {@link TemplateHelpers}).
      */
     helper: ComponentOptions.buildHelperOption(),
+
     /**
-     * Specifies the options to call on the specified helper.<br/>
+     * Specifies the options to call on the specified helper.
      */
     helperOptions: ComponentOptions.buildObjectOption({
       subOptions: {
@@ -129,8 +157,11 @@ export class FieldValue extends Component {
         isMilliseconds: ComponentOptions.buildBooleanOption(showOnlyWithHelper(['timeSpan'])),
       }
     }),
+
     /**
-     * Specify a caption to display before the value. <br/>
+     * Specifies a caption to display before the value.
+     *
+     * Default value is `undefined`.
      */
     textCaption: ComponentOptions.buildLocalizedStringOption()
   };
@@ -142,11 +173,12 @@ export class FieldValue extends Component {
   };
 
   /**
-   * Build a new FieldValue
-   * @param element
-   * @param options
-   * @param bindings
-   * @param result
+   * Creates a new FieldValue.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the FieldValue component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   * @param result The result to associate the component with.
    */
   constructor(public element: HTMLElement, public options: IFieldValueOptions, bindings?: IComponentBindings, public result?: IQueryResult, fieldValueClassId: string = FieldValue.ID) {
     super(element, fieldValueClassId, bindings);
@@ -189,8 +221,9 @@ export class FieldValue extends Component {
   }
 
   /**
-   * Get the current field value from the current result.<br/>
-   * Returns <code>null</code> if value is an <code>Object</code>.
+   * Gets the current FieldValue from the current {@link IQueryResult}.
+   *
+   * @returns {any} The current FieldValue or `null` if value is and `Object`.
    */
   public getValue() {
     let value = Utils.getFieldValue(this.result, <string>this.options.field);
@@ -201,8 +234,9 @@ export class FieldValue extends Component {
   }
 
   /**
-   * Render the passed value string with all of the component options.<br/>
-   * Returns a <code>HTMLElement</code> containing the rendered value.
+   * Renders a value to HTML using all of the current FieldValue component options.
+   * @param value The value to render.
+   * @returns {HTMLElement} The element containing the rendered value.
    */
   public renderOneValue(value: string): HTMLElement {
     let element = $$('span').el;

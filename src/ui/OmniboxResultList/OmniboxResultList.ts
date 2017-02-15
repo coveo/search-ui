@@ -22,55 +22,70 @@ export interface IOmniboxResultListOptions extends IResultListOptions {
 }
 
 /**
- * This component is exactly like a normal ResultList Component, except that it will render itself inside the Omnibox component.
- * This will provide a kind of search as you type functionnality, allowing you to easily render complex Result Templates inside the Omnibox component.
+ * The OmniboxResultList component behaves exactly like the {@link ResultList} component (which it extends), except that
+ * it renders itself inside the {@link Omnibox} component.
  *
- * # Example
- * ```
- *     <div class="CoveoOmniboxResultList">
- *         <script class="result-template" type="text/x-underscore">
- *             <div>
- *                 <a class='CoveoResultLink'></a>
- *             </div>
- *         </script>
+ * This component can provide a kind of search-as-you-type functionality, allowing you to easily render complex Result
+ * Templates inside the Omnibox component.
+ *
+ * **Example:**
+ *
+ * ```html
+ * <div class="CoveoOmniboxResultList">
+ *   <script class="result-template" type="text/x-underscore">
+ *     <div>
+ *       <a class='CoveoResultLink'></a>
  *     </div>
+ *   </script>
+ * </div>
  * ```
  */
 export class OmniboxResultList extends ResultList implements IComponentBindings {
   static ID = 'OmniboxResultList';
+
   /**
    * The options for the component
    * @componentOptions
    */
   static options: IOmniboxResultListOptions = {
+
     /**
-     * Specifies the index at which the result list should render itself inside the Omnibox.
+     * Specifies the z-index at which to render the ResultList inside the Omnibox.
      *
-     * The default value is 51 (facets are at 50 by default).
+     * Default value is `51`. Minimum value is `16` ({@link Facet} components are at `50` by default)
      */
     omniboxZIndex: ComponentOptions.buildNumberOption({ defaultValue: 51, min: 16 }),
+
     /**
-     * Specifies the title that you want for this section.
+     * Specifies the title to use for this section.
      *
-     * By default this will be Suggested Results.
+     * Default value is the localized string for `Suggested Results`.
      */
     headerTitle: ComponentOptions.buildStringOption(),
+
     /**
-     * Specifies the override you want to use on the query sent to the OmniboxResultList component.
+     * Specifies the override to use on the query sent to the OmniboxResultList component.
      *
-     * By default, there's no override applied.
+     * Default value is `undefined`, which means no default override is specified.
      */
     queryOverride: ComponentOptions.buildStringOption(),
+
     /**
-     * Specifies the function you wish to execute when a result suggestion is selected.
+     * Specifies the function to execute when the user selects a result suggestion.
      *
-     * By default, it will open the corresponding result URI in your browser.
+     * The default function opens the corresponding result URI in the browser.
+     *
+     * It is only possible to specify a value for this option in the {@link init} call of your search interface. You
+     * cannot set it directly as an HTML attribute.
+     *
+     * **Example:**
      *
      * ```javascript
+     * // You can call the init script using "pure" JavaScript:
      * Coveo.init(document.querySelector('#search'), {
      *    OmniboxResultList : {
      *        //Close the omnibox, change the selected HTMLElement background color and alert the result title.
-     *        onSelect:   function(result, resultElement, omniBoxObject) {
+     *        onSelect : function(result, resultElement, omniBoxObject) {
      *            omniBoxObject.close();
      *            resultElement.css('background-color', 'red');
      *            alert(result.title);
@@ -78,12 +93,11 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
      *     }
      * })
      *
-     * // OR using the jQuery extention
-     *
+     * // Or you can call the init script using the jQuery extension:
      * $("#search").coveo("init", {
      *    OmniboxResultList : {
      *        //Close the Omnibox, change the selected HTMLElement background color and alert the result title.
-     *        onSelect:   function(result, resultElement, omniBoxObject) {
+     *        onSelect : function(result, resultElement, omniBoxObject) {
      *            omniBoxObject.close();
      *            resultElement.css('background-color', 'red');
      *            alert(result.title);
@@ -99,6 +113,13 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
 
   private lastOmniboxRequest: { omniboxObject: IPopulateOmniboxEventArgs; resolve: (...args: any[]) => void; };
 
+  /**
+   * Creates a new OmniboxResultList component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the OmniboxResultList component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   */
   constructor(public element: HTMLElement, public options?: IOmniboxResultListOptions, public bindings?: IComponentBindings) {
     super(element, options, bindings, OmniboxResultList.ID);
     this.options = ComponentOptions.initComponentOptions(element, OmniboxResultList, options);
@@ -108,8 +129,8 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
   }
 
   /**
-   * Build and return an array of `HTMLElement` with the given result set.
-   * @param results
+   * Builds and returns an array of `HTMLElement` from the {@link IQueryResults} set received as an argument.
+   * @param results The IQueryResults set to build an array of `HTMLElement` from.
    */
   public buildResults(results: IQueryResults): HTMLElement[] {
     return _.map(results.results, (result: IQueryResult) => {
@@ -123,6 +144,13 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     });
   }
 
+  /**
+   * Creates a result container and appends each element from the received `HTMLElement` array to it. For each element
+   * it appends to the result container, this method triggers a `newResultDisplayed` event. Once all elements have been
+   * appended to the result container, the method triggers a `newResultsDisplayed` event.
+   * @param resultsElement The array of `HTMLElement` to render.
+   * @param append
+   */
   public renderResults(resultsElement: HTMLElement[], append = false) {
     if (this.lastOmniboxRequest) {
       let content = $$('div').el;

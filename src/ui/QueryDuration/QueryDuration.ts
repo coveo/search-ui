@@ -12,27 +12,28 @@ export interface IQueryDurationOptions {
 }
 
 /**
- * This component is used to display the time it took to execute the query.
- * When a {@link QueryEvents.querySuccess} event is called, it shows itself and displays
- * the global duration, the index duration, the proxy duration, and the client duration in a tooltip.<br/>
- * If a {@link QueryEvents.queryError} event is called, it hides.
+ * The QueryDuration component displays the duration of the last query execution.
+ *
+ * When a {@link QueryEvents.querySuccess} event is triggered, the QueryDuration component becomes visible. It also
+ * displays the global duration, the index duration, the proxy duration, and the client duration in a single tooltip.
+ *
+ * If a {@link QueryEvents.queryError} event is triggered, the QueryDuration component becomes hidden.
  */
 export class QueryDuration extends Component {
   static ID = 'QueryDuration';
-  /**
-   * The options for the component
-   * @componentOptions
-   */
+
   static options: IQueryDurationOptions = {
   };
 
   private textContainer: HTMLElement;
 
   /**
-   * Create a new QueryDuration component.
-   * @param element
-   * @param options
-   * @param bindings
+   * Creates a new QueryDuration component.
+   * Binds handlers on the {@link QueryEvents.querySuccess} and {@link QueryEvents.queryError} events.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the QueryDuration component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
    */
   constructor(public element: HTMLElement, public options?: IQueryDurationOptions, bindings?: IComponentBindings) {
     super(element, QueryDuration.ID, bindings);
