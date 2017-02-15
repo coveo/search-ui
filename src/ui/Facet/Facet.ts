@@ -1851,4 +1851,5 @@ export class Facet extends Component {
     return info;
   }
 }
+
 Initialization.registerAutoCreateComponent(Facet);

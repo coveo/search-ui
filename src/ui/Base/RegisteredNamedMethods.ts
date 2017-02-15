@@ -23,7 +23,7 @@ import * as _ from 'underscore';
  */
 export function init(element: HTMLElement, options: any = {}) {
   Initialization.initializeFramework(element, options, () => {
-    Initialization.initSearchInterface(element, options);
+    return Initialization.initSearchInterface(element, options);
   });
 }
 
@@ -47,7 +47,7 @@ export function initSearchbox(element: HTMLElement, searchPageUri: string, optio
   searchInterfaceOptions.enableHistory = false;
   options = _.extend({}, options, { StandaloneSearchInterface: searchInterfaceOptions });
   Initialization.initializeFramework(element, options, () => {
-    Initialization.initStandaloneSearchInterface(element, options);
+    return Initialization.initStandaloneSearchInterface(element, options);
   });
 }
 
@@ -70,7 +70,7 @@ export function initRecommendation(element: HTMLElement, mainSearchInterface?: H
   recommendationOptions.enableHistory = false;
   options = _.extend({}, options, { Recommendation: recommendationOptions });
   Initialization.initializeFramework(element, options, () => {
-    Initialization.initRecommendationInterface(element, options);
+    return Initialization.initRecommendationInterface(element, options);
   });
 }
 
@@ -291,7 +291,7 @@ export function initBox(element: HTMLElement, ...args: any[]) {
   merged[type || 'Container'] = _.extend({}, options.SearchInterface, options[type]);
   options = _.extend({}, options, merged);
   Initialization.initializeFramework(element, options, () => {
-    Initialization.initBoxInterface(element, options, type, injectMarkup);
+    return Initialization.initBoxInterface(element, options, type, injectMarkup);
   });
 }
 

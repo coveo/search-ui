@@ -1,17 +1,7 @@
-export * from './BaseModules';
-export * from './MiscModules';
-export * from './RestModules';
-export * from './EventsModules';
-export * from './UtilsModules';
-export * from './ControllersModules';
-export * from './ModelsModules';
-export * from './UIBaseModules';
-export * from './TemplatesModules';
-
-declare const require: any;
+export * from './Core';
 
 // UI
-/*export { CoreHelpers } from './ui/Templates/CoreHelpers';
+export { CoreHelpers } from './ui/Templates/CoreHelpers';
 export { SearchInterface, StandaloneSearchInterface } from './ui/SearchInterface/SearchInterface';
 export { Aggregate } from './ui/Aggregate/Aggregate';
 export { Analytics } from './ui/Analytics/Analytics';
@@ -37,6 +27,7 @@ export { FacetValue, FacetValues } from './ui/Facet/FacetValues';
 export { ValueElementRenderer } from './ui/Facet/ValueElementRenderer';
 export { FacetSearch } from './ui/Facet/FacetSearch';
 export { FacetSearchParameters } from './ui/Facet/FacetSearchParameters';
+export { Logo } from './ui/Logo/Logo';
 export { Slider } from './ui/Misc/Slider';
 export { FacetSlider } from './ui/FacetSlider/FacetSlider';
 export { FacetRange } from './ui/FacetRange/FacetRange';
@@ -120,15 +111,6 @@ export { ColorUtils } from './utils/ColorUtils';
 export { Cookie } from './utils/CookieUtils';
 export { CurrencyUtils } from './utils/CurrencyUtils';
 export { DateUtils } from './utils/DateUtils';
- */
-
-import { register as registerLogo } from './ui/Logo/Register';
-registerLogo();
-
-require.ensure(['./ui/Logo/Logo'], () => {
-  var logo = require('./ui/Logo/Logo.ts');
-  console.log(logo);
-}, 'Logo');
 
 import { swapVar } from './SwapVar';
 swapVar(this);

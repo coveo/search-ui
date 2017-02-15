@@ -7,7 +7,8 @@ const path = require('path');
 let conf = require('./webpackConfigFiles/webpack.common.config');
 conf = _.extend(conf, {
   entry: {
-    'CoveoJsSearch': './src/Index.ts'
+    'CoveoJsSearch': ['./src/Eager.ts'],
+    'CoveoJsSearch.Lazy': ['./src/Lazy.ts']
   },
   output: {
     path: path.resolve(__dirname, 'bin/js'),

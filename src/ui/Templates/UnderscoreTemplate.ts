@@ -6,12 +6,6 @@ import { Utils } from '../../utils/Utils';
 import { $$ } from '../../utils/Dom';
 import * as _ from 'underscore';
 
-_.templateSettings = {
-  evaluate: /(?:<%|{{)([\s\S]+?)(?:%>|}})/g,
-  interpolate: /(?:<%|{{)=([\s\S]+?)(?:%>|}})/g,
-  escape: /(?:<%|{{)-([\s\S]+?)(?:%>|}})/g
-};
-
 export class UnderscoreTemplate extends Template {
   private template: (data: any) => string;
   public static templateHelpers: { [templateName: string]: ITemplateHelperFunction; } = {};

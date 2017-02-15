@@ -17,9 +17,8 @@ import { BaseComponent } from '../Base/BaseComponent';
 import { JQueryUtils } from '../../utils/JQueryutils';
 import { IJQuery } from './CoveoJQuery';
 import * as _ from 'underscore';
+import { IStringMap } from '../../rest/GenericParam';
 declare const require: any;
-//declare const import: any;
-
 
 /**
  * Represent the initialization parameters required to init a new component.
@@ -37,7 +36,9 @@ export interface IInitializationParameters {
  */
 export class Initialization {
   private static logger = new Logger('Initialization');
-  private static autoCreateComponents: { [s: string]: any; } = {};
+  private static registeredComponents: String[] = [];
+  private static eagerlyLoadedComponents: IStringMap<IComponentDefinition> = {};
+  private static lazyLoadedComponents: IStringMap<() => Promise<IComponentDefinition>> = {};
   private static namedMethods: { [s: string]: any; } = {};
 
   /**
@@ -71,26 +72,48 @@ export class Initialization {
   }
 
   /**
-   * Register a new Component to be recognized by the framework.<br/>
+   * Register a new Component to be recognized by the framework.
    * This essentially mean that when we call `Coveo.init`, the Initialization class will scan the DOM for known component (which have registed themselves with this call) and create a new component on each element.
+   *
+   * This is meant to register the component to be loaded "eagerly" (Immediately available when the UI scripts are included)
    * @param componentClass
    */
   public static registerAutoCreateComponent(componentClass: IComponentDefinition): void {
     Assert.exists(componentClass);
     Assert.exists(componentClass.ID);
-    Assert.doesNotExists(Initialization.autoCreateComponents[componentClass.ID]);
+    Assert.doesNotExists(Initialization.eagerlyLoadedComponents[componentClass.ID]);
     Assert.doesNotExists(Initialization.namedMethods[componentClass.ID]);
-    Initialization.autoCreateComponents[componentClass.ID] = componentClass;
+    if (!_.contains(Initialization.registeredComponents, componentClass.ID)) {
+      Initialization.registeredComponents.push(componentClass.ID);
+    }
+    Initialization.eagerlyLoadedComponents[componentClass.ID] = componentClass;
+    if (Initialization.lazyLoadedComponents[componentClass.ID] == null) {
+      Initialization.lazyLoadedComponents[componentClass.ID] = ()=> {
+        return new Promise((resolve, reject)=> {
+          resolve(componentClass);
+        });
+      }
+    }
   }
 
-  public static registerAutoCreateId(id: string): void {
-    Assert.doesNotExists(Initialization.autoCreateComponents[id]);
-    Assert.doesNotExists(Initialization.namedMethods[id]);
-    Initialization.autoCreateComponents[id] = (path, callback) => {
-      require.ensure([], (require)=> {
-        callback(null, require(path));
-      });
+  /**
+   * Register a new Component to be recognized by the framework.
+   * This essentially mean that when we call `Coveo.init`, the Initialization class will scan the DOM for known component (which have registed themselves with this call) and create a new component on each element.
+   *
+   * This is meant to register the component to be loaded "lazily" (Not immediately available when the UI scripts are included).
+   *
+   * This means using webpack to provided a way to load a given chunk on demand.
+   * @param id
+   * @param load
+   */
+  public static registerLazyComponent(id: string, load: () => Promise<IComponentDefinition>): void {
+    Assert.doesNotExists(Initialization.lazyLoadedComponents[id]);
+    Assert.exists(load);
+    if (!_.contains(Initialization.registeredComponents, id)) {
+      Initialization.registeredComponents.push(id);
     }
+    Initialization.lazyLoadedComponents[id] = load;
+
   }
 
   /**
@@ -99,7 +122,7 @@ export class Initialization {
    * @returns {boolean}
    */
   public static isComponentClassIdRegistered(componentClassId: string): boolean {
-    return Utils.exists(Initialization.autoCreateComponents[componentClassId]);
+    return Utils.exists(Initialization.eagerlyLoadedComponents[componentClassId]);
   }
 
   /**
@@ -107,7 +130,7 @@ export class Initialization {
    * @returns {string[]}
    */
   public static getListOfRegisteredComponents() {
-    return _.keys(Initialization.autoCreateComponents);
+    return Initialization.registeredComponents;
   }
 
   /**
@@ -116,7 +139,11 @@ export class Initialization {
    * @returns {IComponentDefinition}
    */
   public static getRegisteredComponent(name: string) {
-    return Initialization.autoCreateComponents[name];
+    return Initialization.eagerlyLoadedComponents[name];
+  }
+
+  public static getLazyRegisteredComponent(name: string): Promise<IComponentDefinition> {
+    return Initialization.lazyLoadedComponents[name]();
   }
 
   /**
@@ -126,7 +153,7 @@ export class Initialization {
    * @param options The options for all components (eg: {Searchbox : {enableSearchAsYouType : true}}).
    * @param initSearchInterfaceFunction The function to execute to create the {@link SearchInterface} component. Different init call will create different {@link SearchInterface}.
    */
-  public static initializeFramework(element: HTMLElement, options?: any, initSearchInterfaceFunction?: (...args: any[]) => void) {
+  public static initializeFramework(element: HTMLElement, options?: any, initSearchInterfaceFunction?: (...args: any[]) => Promise<boolean>) {
     Assert.exists(element);
     let alreadyInitialized = Component.get(element, QueryController, true);
     if (alreadyInitialized) {
@@ -139,37 +166,39 @@ export class Initialization {
     Initialization.performInitFunctionsOption(options, InitializationEvents.beforeInitialization);
     $$(element).trigger(InitializationEvents.beforeInitialization);
 
-    initSearchInterfaceFunction(element, options);
-    Initialization.initExternalComponents(element, options);
+    initSearchInterfaceFunction(element, options).then(()=> {
+      Initialization.initExternalComponents(element, options);
 
-    Initialization.performInitFunctionsOption(options, InitializationEvents.afterComponentsInitialization);
-    $$(element).trigger(InitializationEvents.afterComponentsInitialization);
+      Initialization.performInitFunctionsOption(options, InitializationEvents.afterComponentsInitialization);
+      $$(element).trigger(InitializationEvents.afterComponentsInitialization);
 
-    $$(element).trigger(InitializationEvents.restoreHistoryState);
+      $$(element).trigger(InitializationEvents.restoreHistoryState);
 
-    Initialization.performInitFunctionsOption(options, InitializationEvents.afterInitialization);
-    $$(element).trigger(InitializationEvents.afterInitialization);
+      Initialization.performInitFunctionsOption(options, InitializationEvents.afterInitialization);
+      $$(element).trigger(InitializationEvents.afterInitialization);
 
-    let searchInterface = <SearchInterface>Component.get(element, SearchInterface);
+      let searchInterface = <SearchInterface>Component.get(element, SearchInterface);
 
 
-    // Elements that have the coveo-hide-until-loaded class are hidden by default.
-    // Now that we're loaded (and before the first query returns), we can remove
-    // the class. Also, we add a class that gives the opportunity for an animation
-    // to apply at startup, such as a fade-in that comes in by default.
-    let elemsHidden = $$(element).findAll('.coveo-hide-until-loaded');
-    _.each(elemsHidden, (e: HTMLElement) => {
-      $$(e).removeClass('coveo-hide-until-loaded');
-      $$(e).addClass('coveo-show-after-loaded');
+      // Elements that have the coveo-hide-until-loaded class are hidden by default.
+      // Now that we're loaded (and before the first query returns), we can remove
+      // the class. Also, we add a class that gives the opportunity for an animation
+      // to apply at startup, such as a fade-in that comes in by default.
+      let elemsHidden = $$(element).findAll('.coveo-hide-until-loaded');
+      _.each(elemsHidden, (e: HTMLElement) => {
+        $$(e).removeClass('coveo-hide-until-loaded');
+        $$(e).addClass('coveo-show-after-loaded');
+      });
+
+      if (searchInterface.options.autoTriggerQuery) {
+        Initialization.logFirstQueryCause(searchInterface);
+        (<QueryController>Component.get(element, QueryController)).executeQuery({
+          logInActionsHistory: Coveo['Recommendation'] && searchInterface instanceof Coveo['Recommendation'],
+          isFirstQuery: true
+        });
+      }
     });
 
-    if (searchInterface.options.autoTriggerQuery) {
-      Initialization.logFirstQueryCause(searchInterface);
-      (<QueryController>Component.get(element, QueryController)).executeQuery({
-        logInActionsHistory: Coveo['Recommendation'] && searchInterface instanceof Coveo['Recommendation'],
-        isFirstQuery: true
-      });
-    }
   }
 
   /**
@@ -182,7 +211,7 @@ export class Initialization {
     let searchInterface = new SearchInterface(element, options.SearchInterface, options.Analytics);
     searchInterface.options.originalOptionsObject = options;
     let initParameters: IInitializationParameters = { options: options, bindings: searchInterface.getBindings() };
-    Initialization.automaticallyCreateComponentsInside(element, initParameters, ['Recommendation']);
+    return Initialization.automaticallyCreateComponentsInside(element, initParameters, ['Recommendation']);
   }
 
   /**
@@ -213,7 +242,7 @@ export class Initialization {
     let searchInterface = new StandaloneSearchInterface(element, options.StandaloneSearchInterface, options.Analytics);
     searchInterface.options.originalOptionsObject = options;
     let initParameters: IInitializationParameters = { options: options, bindings: searchInterface.getBindings() };
-    Initialization.automaticallyCreateComponentsInside(element, initParameters);
+    return Initialization.automaticallyCreateComponentsInside(element, initParameters);
   }
 
   /**
@@ -233,7 +262,7 @@ export class Initialization {
     let recommendation = new window['Coveo']['Recommendation'](element, optionsForRecommendation, options.Analytics);
     recommendation.options.originalOptionsObject = options;
     let initParameters: IInitializationParameters = { options: options, bindings: recommendation.getBindings() };
-    Initialization.automaticallyCreateComponentsInside(element, initParameters);
+    return Initialization.automaticallyCreateComponentsInside(element, initParameters);
   }
 
   /**
@@ -242,10 +271,10 @@ export class Initialization {
    * @param initParameters Needed parameters to initialize all the children components.
    * @param ignore An optional list of component ID to ignore and skip when scanning for known components.
    */
-  public static automaticallyCreateComponentsInside(element: HTMLElement, initParameters: IInitializationParameters, ignore?: string[]) {
+  public static automaticallyCreateComponentsInside(element: HTMLElement, initParameters: IInitializationParameters, ignore?: string[]): Promise<boolean> {
     Assert.exists(element);
 
-    let codeToExecute: { (): void }[] = [];
+    let codeToExecute: { (): Promise<Component>[] }[] = [];
 
     let htmlElementsToIgnore: HTMLElement[] = [];
     // Scan for elements to ignore which can be a container component (with other component inside)
@@ -259,9 +288,8 @@ export class Initialization {
       }
     });
 
-    for (let componentClassId in Initialization.autoCreateComponents) {
+    _.each(Initialization.getListOfRegisteredComponents(), (componentClassId: string)=> {
       if (!_.contains(ignore, componentClassId)) {
-        let componentClass = Initialization.autoCreateComponents[componentClassId];
         let classname = Component.computeCssClassNameForType(`${componentClassId}`);
         let elements = $$(element).findAll('.' + classname);
         // From all the component we found which match the current className, remove those that should be ignored
@@ -280,13 +308,15 @@ export class Initialization {
           // Explanation: If we don't do that, child components for which selector have
           // already been evaluated won't be initialized, whereas those that are next
           // in the list will be.
-          codeToExecute.push(Initialization.createFunctionThatInitializesComponentOnElements(elements, componentClassId, componentClass, initParameters));
+          codeToExecute.push(Initialization.createFunctionThatInitializesComponentOnElements(elements, componentClassId, initParameters));
         }
       }
-    }
+    });
 
     // Now that all selectors are executed, let's really initialize the components.
-    _.each(codeToExecute, (code) => code());
+    return Promise.all(_.map(codeToExecute, (code) => {
+      return Promise.all(code()).then(()=> true);
+    })).then(()=> true);
   }
 
   /**
@@ -296,27 +326,29 @@ export class Initialization {
    * @param initParameters Needed parameters to initialize the component.
    * @returns {Component}
    */
-  public static createComponentOfThisClassOnElement(componentClassId: string, element: HTMLElement, initParameters?: IInitializationParameters): Component {
+  public static createComponentOfThisClassOnElement(componentClassId: string, element: HTMLElement, initParameters?: IInitializationParameters): Promise<Component> {
     Assert.isNonEmptyString(componentClassId);
     Assert.exists(element);
 
-    let componentClass = Initialization.autoCreateComponents[componentClassId];
-    Assert.exists(componentClass);
+    return Initialization.getLazyRegisteredComponent(componentClassId).then((lazyLoadedComponent: IComponentDefinition)=> {
+      Assert.exists(lazyLoadedComponent);
 
-    let bindings: IComponentBindings = {};
-    let options = {};
-    let result: IQueryResult = undefined;
+      let bindings: IComponentBindings = {};
+      let options = {};
+      let result: IQueryResult = undefined;
 
-    if (initParameters != undefined) {
-      _.each(<{ [key: string]: any }>initParameters.bindings, (value, key) => {
-        bindings[key] = value;
-      });
-      options = initParameters.options;
-      result = initParameters.result;
-    }
+      if (initParameters != undefined) {
+        _.each(<{ [key: string]: any }>initParameters.bindings, (value, key) => {
+          bindings[key] = value;
+        });
+        options = initParameters.options;
+        result = initParameters.result;
+      }
 
-    Initialization.logger.trace('Creating component of class ' + componentClassId, element, options);
-    return new componentClass(element, options, bindings, result);
+      Initialization.logger.trace('Creating component of class ' + componentClassId, element, options);
+      return new lazyLoadedComponent(element, options, bindings, result);
+    })
+
   }
 
   /**
@@ -326,7 +358,7 @@ export class Initialization {
    */
   public static registerNamedMethod(methodName: string, handler: (element: HTMLElement, ...args: any[]) => any) {
     Assert.isNonEmptyString(methodName);
-    Assert.doesNotExists(Initialization.autoCreateComponents[methodName]);
+    Assert.doesNotExists(Initialization.eagerlyLoadedComponents[methodName]);
     Assert.doesNotExists(Initialization.namedMethods[methodName]);
     Assert.exists(handler);
     Initialization.namedMethods[methodName] = handler;
@@ -385,10 +417,13 @@ export class Initialization {
       let box = new boxRef(element, options[fromInitTypeToBoxReference], options.Analytics, injectFunction, options);
       box.options.originalOptionsObject = options;
       let initParameters: IInitializationParameters = { options: options, bindings: box.getBindings() };
-      Initialization.automaticallyCreateComponentsInside(element, initParameters);
+      return Initialization.automaticallyCreateComponentsInside(element, initParameters);
     } else {
-      new Logger(element).error('Trying to initialize box of type : ' + fromInitTypeToBoxReference + ' but not found in code (not compiled)!');
-      Assert.fail('Cannot initialize unknown type of box');
+      return new Promise((resolve, reject)=> {
+        new Logger(element).error('Trying to initialize box of type : ' + fromInitTypeToBoxReference + ' but not found in code (not compiled)!');
+        Assert.fail('Cannot initialize unknown type of box');
+        reject(false);
+      });
     }
   }
 
@@ -514,26 +549,12 @@ export class Initialization {
     }
   }
 
-  private loadCmp(cmp) {
-    return (`../${cmp}`)
-  }
-
-  private static createFunctionThatInitializesComponentOnElements(elements: Element[], componentClassId: string, componentClass: Function, initParameters: IInitializationParameters) {
+  private static createFunctionThatInitializesComponentOnElements(elements: Element[], componentClassId: string, initParameters: IInitializationParameters): ()=> Promise<Component>[] {
     return () => {
+      let promises: Promise<Component>[] = [];
       _.each(elements, (matchingElement: HTMLElement) => {
-        if (componentClassId == 'Logo') {
-          debugger;
-          componentClass((componentClassId)=> {
-            console.log(loaded);
-          })
-          /*let componentPath = `../${componentClassId}/${componentClassId}`;
-          require.ensure([], (require) => {
-            const componentLoaded = require(componentPath);
-            console.log(componentLoaded);
-          }, componentClassId);*/
-        }
 
-        /*if (Component.get(matchingElement, componentClassId) == null) {
+        if (Component.get(matchingElement, componentClassId) == null) {
           // If options were provided, lookup options for this component class and
           // also for the element id. Merge them and pass those to the factory method.
           let optionsToUse = undefined;
@@ -545,9 +566,10 @@ export class Initialization {
             optionsToUse = Utils.extendDeep(optionsForComponentClass, optionsToUse);
           }
           let initParamToUse = _.extend({}, initParameters, { options: optionsToUse });
-          Initialization.createComponentOfThisClassOnElement(componentClass['ID'], matchingElement, initParamToUse);
-         }*/
+          promises.push(Initialization.createComponentOfThisClassOnElement(componentClassId, matchingElement, initParamToUse));
+        }
       });
+      return promises;
     };
   }
 }
