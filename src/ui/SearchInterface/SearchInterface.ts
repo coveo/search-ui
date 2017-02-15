@@ -276,7 +276,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      *
      * By default, the search interface allows a library to try to detect the timezone automatically.
      */
-    timezone: ComponentOptions.buildStringOption({defaultFunction: () => jstz.determine().name()}),
+    timezone: ComponentOptions.buildStringOption({ defaultFunction: () => jstz.determine().name() }),
     /**
      * Specifies whether to enable the feature that allows the end user to ALT + double click any result to open a debug
      * page with detailed information about all properties and fields for that result.
