@@ -65,12 +65,12 @@ var playground =
 
 	"use strict";
 	var Dom_1 = __webpack_require__(3);
-	var Component_1 = __webpack_require__(9);
-	var SearchEndpoint_1 = __webpack_require__(42);
+	var Component_1 = __webpack_require__(10);
+	var SearchEndpoint_1 = __webpack_require__(43);
 	var RegisteredNamedMethods_1 = __webpack_require__(84);
 	var PlaygroundConfiguration_1 = __webpack_require__(147);
 	var ResultList_1 = __webpack_require__(148);
-	var QueryEvents_1 = __webpack_require__(22);
+	var QueryEvents_1 = __webpack_require__(23);
 	var Playground = (function () {
 	    function Playground(body) {
 	        this.body = body;
@@ -261,12 +261,11 @@ var playground =
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var Utils_1 = __webpack_require__(4);
-	var JQueryutils_1 = __webpack_require__(6);
-	var Assert_1 = __webpack_require__(7);
-	var Logger_1 = __webpack_require__(8);
-	var _ = __webpack_require__(5);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var Utils_1 = __webpack_require__(6);
+	var JQueryutils_1 = __webpack_require__(7);
+	var Assert_1 = __webpack_require__(8);
+	var Logger_1 = __webpack_require__(9);
 	/**
 	 * This is essentially an helper class for dom manipulation.<br/>
 	 * This is intended to provide some basic functionality normally offered by jQuery.<br/>
@@ -885,11 +884,11 @@ var playground =
 	        }
 	        return undefined;
 	    };
+	    Dom.CLASS_NAME_REGEX = /-?[_a-zA-Z]+[_a-zA-Z0-9-]*/g;
+	    Dom.ONLY_WHITE_SPACE_REGEX = /^\s*$/;
+	    Dom.handlers = [];
 	    return Dom;
 	}());
-	Dom.CLASS_NAME_REGEX = /-?[_a-zA-Z]+[_a-zA-Z0-9-]*/g;
-	Dom.ONLY_WHITE_SPACE_REGEX = /^\s*$/;
-	Dom.handlers = [];
 	exports.Dom = Dom;
 	var Win = (function () {
 	    function Win(win) {
@@ -934,7 +933,7 @@ var playground =
 	function $$() {
 	    var args = [];
 	    for (var _i = 0; _i < arguments.length; _i++) {
-	        args[_i] = arguments[_i];
+	        args[_i - 0] = arguments[_i];
 	    }
 	    if (args.length === 1 && args[0] instanceof Dom) {
 	        return args[0];
@@ -947,14 +946,34 @@ var playground =
 	    }
 	}
 	exports.$$ = $$;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var _ = __webpack_require__(5);
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscore.js 1.8.3
+	//     http://underscorejs.org
+	//     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	//     Underscore may be freely distributed under the MIT license.
+	(function(){function n(n){function t(t,r,e,u,i,o){for(;i>=0&&o>i;i+=n){var a=u?u[i]:i;e=r(e,t[a],a,t)}return e}return function(r,e,u,i){e=b(e,i,4);var o=!k(r)&&m.keys(r),a=(o||r).length,c=n>0?0:a-1;return arguments.length<3&&(u=r[o?o[c]:c],c+=n),t(r,e,u,o,c,a)}}function t(n){return function(t,r,e){r=x(r,e);for(var u=O(t),i=n>0?0:u-1;i>=0&&u>i;i+=n)if(r(t[i],i,t))return i;return-1}}function r(n,t,r){return function(e,u,i){var o=0,a=O(e);if("number"==typeof i)n>0?o=i>=0?i:Math.max(i+a,o):a=i>=0?Math.min(i+1,a):i+a+1;else if(r&&i&&a)return i=r(e,u),e[i]===u?i:-1;if(u!==u)return i=t(l.call(e,o,a),m.isNaN),i>=0?i+o:-1;for(i=n>0?o:a-1;i>=0&&a>i;i+=n)if(e[i]===u)return i;return-1}}function e(n,t){var r=I.length,e=n.constructor,u=m.isFunction(e)&&e.prototype||a,i="constructor";for(m.has(n,i)&&!m.contains(t,i)&&t.push(i);r--;)i=I[r],i in n&&n[i]!==u[i]&&!m.contains(t,i)&&t.push(i)}var u=this,i=u._,o=Array.prototype,a=Object.prototype,c=Function.prototype,f=o.push,l=o.slice,s=a.toString,p=a.hasOwnProperty,h=Array.isArray,v=Object.keys,g=c.bind,y=Object.create,d=function(){},m=function(n){return n instanceof m?n:this instanceof m?void(this._wrapped=n):new m(n)}; true?("undefined"!=typeof module&&module.exports&&(exports=module.exports=m),exports._=m):u._=m,m.VERSION="1.8.3";var b=function(n,t,r){if(t===void 0)return n;switch(null==r?3:r){case 1:return function(r){return n.call(t,r)};case 2:return function(r,e){return n.call(t,r,e)};case 3:return function(r,e,u){return n.call(t,r,e,u)};case 4:return function(r,e,u,i){return n.call(t,r,e,u,i)}}return function(){return n.apply(t,arguments)}},x=function(n,t,r){return null==n?m.identity:m.isFunction(n)?b(n,t,r):m.isObject(n)?m.matcher(n):m.property(n)};m.iteratee=function(n,t){return x(n,t,1/0)};var _=function(n,t){return function(r){var e=arguments.length;if(2>e||null==r)return r;for(var u=1;e>u;u++)for(var i=arguments[u],o=n(i),a=o.length,c=0;a>c;c++){var f=o[c];t&&r[f]!==void 0||(r[f]=i[f])}return r}},j=function(n){if(!m.isObject(n))return{};if(y)return y(n);d.prototype=n;var t=new d;return d.prototype=null,t},w=function(n){return function(t){return null==t?void 0:t[n]}},A=Math.pow(2,53)-1,O=w("length"),k=function(n){var t=O(n);return"number"==typeof t&&t>=0&&A>=t};m.each=m.forEach=function(n,t,r){t=b(t,r);var e,u;if(k(n))for(e=0,u=n.length;u>e;e++)t(n[e],e,n);else{var i=m.keys(n);for(e=0,u=i.length;u>e;e++)t(n[i[e]],i[e],n)}return n},m.map=m.collect=function(n,t,r){t=x(t,r);for(var e=!k(n)&&m.keys(n),u=(e||n).length,i=Array(u),o=0;u>o;o++){var a=e?e[o]:o;i[o]=t(n[a],a,n)}return i},m.reduce=m.foldl=m.inject=n(1),m.reduceRight=m.foldr=n(-1),m.find=m.detect=function(n,t,r){var e;return e=k(n)?m.findIndex(n,t,r):m.findKey(n,t,r),e!==void 0&&e!==-1?n[e]:void 0},m.filter=m.select=function(n,t,r){var e=[];return t=x(t,r),m.each(n,function(n,r,u){t(n,r,u)&&e.push(n)}),e},m.reject=function(n,t,r){return m.filter(n,m.negate(x(t)),r)},m.every=m.all=function(n,t,r){t=x(t,r);for(var e=!k(n)&&m.keys(n),u=(e||n).length,i=0;u>i;i++){var o=e?e[i]:i;if(!t(n[o],o,n))return!1}return!0},m.some=m.any=function(n,t,r){t=x(t,r);for(var e=!k(n)&&m.keys(n),u=(e||n).length,i=0;u>i;i++){var o=e?e[i]:i;if(t(n[o],o,n))return!0}return!1},m.contains=m.includes=m.include=function(n,t,r,e){return k(n)||(n=m.values(n)),("number"!=typeof r||e)&&(r=0),m.indexOf(n,t,r)>=0},m.invoke=function(n,t){var r=l.call(arguments,2),e=m.isFunction(t);return m.map(n,function(n){var u=e?t:n[t];return null==u?u:u.apply(n,r)})},m.pluck=function(n,t){return m.map(n,m.property(t))},m.where=function(n,t){return m.filter(n,m.matcher(t))},m.findWhere=function(n,t){return m.find(n,m.matcher(t))},m.max=function(n,t,r){var e,u,i=-1/0,o=-1/0;if(null==t&&null!=n){n=k(n)?n:m.values(n);for(var a=0,c=n.length;c>a;a++)e=n[a],e>i&&(i=e)}else t=x(t,r),m.each(n,function(n,r,e){u=t(n,r,e),(u>o||u===-1/0&&i===-1/0)&&(i=n,o=u)});return i},m.min=function(n,t,r){var e,u,i=1/0,o=1/0;if(null==t&&null!=n){n=k(n)?n:m.values(n);for(var a=0,c=n.length;c>a;a++)e=n[a],i>e&&(i=e)}else t=x(t,r),m.each(n,function(n,r,e){u=t(n,r,e),(o>u||1/0===u&&1/0===i)&&(i=n,o=u)});return i},m.shuffle=function(n){for(var t,r=k(n)?n:m.values(n),e=r.length,u=Array(e),i=0;e>i;i++)t=m.random(0,i),t!==i&&(u[i]=u[t]),u[t]=r[i];return u},m.sample=function(n,t,r){return null==t||r?(k(n)||(n=m.values(n)),n[m.random(n.length-1)]):m.shuffle(n).slice(0,Math.max(0,t))},m.sortBy=function(n,t,r){return t=x(t,r),m.pluck(m.map(n,function(n,r,e){return{value:n,index:r,criteria:t(n,r,e)}}).sort(function(n,t){var r=n.criteria,e=t.criteria;if(r!==e){if(r>e||r===void 0)return 1;if(e>r||e===void 0)return-1}return n.index-t.index}),"value")};var F=function(n){return function(t,r,e){var u={};return r=x(r,e),m.each(t,function(e,i){var o=r(e,i,t);n(u,e,o)}),u}};m.groupBy=F(function(n,t,r){m.has(n,r)?n[r].push(t):n[r]=[t]}),m.indexBy=F(function(n,t,r){n[r]=t}),m.countBy=F(function(n,t,r){m.has(n,r)?n[r]++:n[r]=1}),m.toArray=function(n){return n?m.isArray(n)?l.call(n):k(n)?m.map(n,m.identity):m.values(n):[]},m.size=function(n){return null==n?0:k(n)?n.length:m.keys(n).length},m.partition=function(n,t,r){t=x(t,r);var e=[],u=[];return m.each(n,function(n,r,i){(t(n,r,i)?e:u).push(n)}),[e,u]},m.first=m.head=m.take=function(n,t,r){return null==n?void 0:null==t||r?n[0]:m.initial(n,n.length-t)},m.initial=function(n,t,r){return l.call(n,0,Math.max(0,n.length-(null==t||r?1:t)))},m.last=function(n,t,r){return null==n?void 0:null==t||r?n[n.length-1]:m.rest(n,Math.max(0,n.length-t))},m.rest=m.tail=m.drop=function(n,t,r){return l.call(n,null==t||r?1:t)},m.compact=function(n){return m.filter(n,m.identity)};var S=function(n,t,r,e){for(var u=[],i=0,o=e||0,a=O(n);a>o;o++){var c=n[o];if(k(c)&&(m.isArray(c)||m.isArguments(c))){t||(c=S(c,t,r));var f=0,l=c.length;for(u.length+=l;l>f;)u[i++]=c[f++]}else r||(u[i++]=c)}return u};m.flatten=function(n,t){return S(n,t,!1)},m.without=function(n){return m.difference(n,l.call(arguments,1))},m.uniq=m.unique=function(n,t,r,e){m.isBoolean(t)||(e=r,r=t,t=!1),null!=r&&(r=x(r,e));for(var u=[],i=[],o=0,a=O(n);a>o;o++){var c=n[o],f=r?r(c,o,n):c;t?(o&&i===f||u.push(c),i=f):r?m.contains(i,f)||(i.push(f),u.push(c)):m.contains(u,c)||u.push(c)}return u},m.union=function(){return m.uniq(S(arguments,!0,!0))},m.intersection=function(n){for(var t=[],r=arguments.length,e=0,u=O(n);u>e;e++){var i=n[e];if(!m.contains(t,i)){for(var o=1;r>o&&m.contains(arguments[o],i);o++);o===r&&t.push(i)}}return t},m.difference=function(n){var t=S(arguments,!0,!0,1);return m.filter(n,function(n){return!m.contains(t,n)})},m.zip=function(){return m.unzip(arguments)},m.unzip=function(n){for(var t=n&&m.max(n,O).length||0,r=Array(t),e=0;t>e;e++)r[e]=m.pluck(n,e);return r},m.object=function(n,t){for(var r={},e=0,u=O(n);u>e;e++)t?r[n[e]]=t[e]:r[n[e][0]]=n[e][1];return r},m.findIndex=t(1),m.findLastIndex=t(-1),m.sortedIndex=function(n,t,r,e){r=x(r,e,1);for(var u=r(t),i=0,o=O(n);o>i;){var a=Math.floor((i+o)/2);r(n[a])<u?i=a+1:o=a}return i},m.indexOf=r(1,m.findIndex,m.sortedIndex),m.lastIndexOf=r(-1,m.findLastIndex),m.range=function(n,t,r){null==t&&(t=n||0,n=0),r=r||1;for(var e=Math.max(Math.ceil((t-n)/r),0),u=Array(e),i=0;e>i;i++,n+=r)u[i]=n;return u};var E=function(n,t,r,e,u){if(!(e instanceof t))return n.apply(r,u);var i=j(n.prototype),o=n.apply(i,u);return m.isObject(o)?o:i};m.bind=function(n,t){if(g&&n.bind===g)return g.apply(n,l.call(arguments,1));if(!m.isFunction(n))throw new TypeError("Bind must be called on a function");var r=l.call(arguments,2),e=function(){return E(n,e,t,this,r.concat(l.call(arguments)))};return e},m.partial=function(n){var t=l.call(arguments,1),r=function(){for(var e=0,u=t.length,i=Array(u),o=0;u>o;o++)i[o]=t[o]===m?arguments[e++]:t[o];for(;e<arguments.length;)i.push(arguments[e++]);return E(n,r,this,this,i)};return r},m.bindAll=function(n){var t,r,e=arguments.length;if(1>=e)throw new Error("bindAll must be passed function names");for(t=1;e>t;t++)r=arguments[t],n[r]=m.bind(n[r],n);return n},m.memoize=function(n,t){var r=function(e){var u=r.cache,i=""+(t?t.apply(this,arguments):e);return m.has(u,i)||(u[i]=n.apply(this,arguments)),u[i]};return r.cache={},r},m.delay=function(n,t){var r=l.call(arguments,2);return setTimeout(function(){return n.apply(null,r)},t)},m.defer=m.partial(m.delay,m,1),m.throttle=function(n,t,r){var e,u,i,o=null,a=0;r||(r={});var c=function(){a=r.leading===!1?0:m.now(),o=null,i=n.apply(e,u),o||(e=u=null)};return function(){var f=m.now();a||r.leading!==!1||(a=f);var l=t-(f-a);return e=this,u=arguments,0>=l||l>t?(o&&(clearTimeout(o),o=null),a=f,i=n.apply(e,u),o||(e=u=null)):o||r.trailing===!1||(o=setTimeout(c,l)),i}},m.debounce=function(n,t,r){var e,u,i,o,a,c=function(){var f=m.now()-o;t>f&&f>=0?e=setTimeout(c,t-f):(e=null,r||(a=n.apply(i,u),e||(i=u=null)))};return function(){i=this,u=arguments,o=m.now();var f=r&&!e;return e||(e=setTimeout(c,t)),f&&(a=n.apply(i,u),i=u=null),a}},m.wrap=function(n,t){return m.partial(t,n)},m.negate=function(n){return function(){return!n.apply(this,arguments)}},m.compose=function(){var n=arguments,t=n.length-1;return function(){for(var r=t,e=n[t].apply(this,arguments);r--;)e=n[r].call(this,e);return e}},m.after=function(n,t){return function(){return--n<1?t.apply(this,arguments):void 0}},m.before=function(n,t){var r;return function(){return--n>0&&(r=t.apply(this,arguments)),1>=n&&(t=null),r}},m.once=m.partial(m.before,2);var M=!{toString:null}.propertyIsEnumerable("toString"),I=["valueOf","isPrototypeOf","toString","propertyIsEnumerable","hasOwnProperty","toLocaleString"];m.keys=function(n){if(!m.isObject(n))return[];if(v)return v(n);var t=[];for(var r in n)m.has(n,r)&&t.push(r);return M&&e(n,t),t},m.allKeys=function(n){if(!m.isObject(n))return[];var t=[];for(var r in n)t.push(r);return M&&e(n,t),t},m.values=function(n){for(var t=m.keys(n),r=t.length,e=Array(r),u=0;r>u;u++)e[u]=n[t[u]];return e},m.mapObject=function(n,t,r){t=x(t,r);for(var e,u=m.keys(n),i=u.length,o={},a=0;i>a;a++)e=u[a],o[e]=t(n[e],e,n);return o},m.pairs=function(n){for(var t=m.keys(n),r=t.length,e=Array(r),u=0;r>u;u++)e[u]=[t[u],n[t[u]]];return e},m.invert=function(n){for(var t={},r=m.keys(n),e=0,u=r.length;u>e;e++)t[n[r[e]]]=r[e];return t},m.functions=m.methods=function(n){var t=[];for(var r in n)m.isFunction(n[r])&&t.push(r);return t.sort()},m.extend=_(m.allKeys),m.extendOwn=m.assign=_(m.keys),m.findKey=function(n,t,r){t=x(t,r);for(var e,u=m.keys(n),i=0,o=u.length;o>i;i++)if(e=u[i],t(n[e],e,n))return e},m.pick=function(n,t,r){var e,u,i={},o=n;if(null==o)return i;m.isFunction(t)?(u=m.allKeys(o),e=b(t,r)):(u=S(arguments,!1,!1,1),e=function(n,t,r){return t in r},o=Object(o));for(var a=0,c=u.length;c>a;a++){var f=u[a],l=o[f];e(l,f,o)&&(i[f]=l)}return i},m.omit=function(n,t,r){if(m.isFunction(t))t=m.negate(t);else{var e=m.map(S(arguments,!1,!1,1),String);t=function(n,t){return!m.contains(e,t)}}return m.pick(n,t,r)},m.defaults=_(m.allKeys,!0),m.create=function(n,t){var r=j(n);return t&&m.extendOwn(r,t),r},m.clone=function(n){return m.isObject(n)?m.isArray(n)?n.slice():m.extend({},n):n},m.tap=function(n,t){return t(n),n},m.isMatch=function(n,t){var r=m.keys(t),e=r.length;if(null==n)return!e;for(var u=Object(n),i=0;e>i;i++){var o=r[i];if(t[o]!==u[o]||!(o in u))return!1}return!0};var N=function(n,t,r,e){if(n===t)return 0!==n||1/n===1/t;if(null==n||null==t)return n===t;n instanceof m&&(n=n._wrapped),t instanceof m&&(t=t._wrapped);var u=s.call(n);if(u!==s.call(t))return!1;switch(u){case"[object RegExp]":case"[object String]":return""+n==""+t;case"[object Number]":return+n!==+n?+t!==+t:0===+n?1/+n===1/t:+n===+t;case"[object Date]":case"[object Boolean]":return+n===+t}var i="[object Array]"===u;if(!i){if("object"!=typeof n||"object"!=typeof t)return!1;var o=n.constructor,a=t.constructor;if(o!==a&&!(m.isFunction(o)&&o instanceof o&&m.isFunction(a)&&a instanceof a)&&"constructor"in n&&"constructor"in t)return!1}r=r||[],e=e||[];for(var c=r.length;c--;)if(r[c]===n)return e[c]===t;if(r.push(n),e.push(t),i){if(c=n.length,c!==t.length)return!1;for(;c--;)if(!N(n[c],t[c],r,e))return!1}else{var f,l=m.keys(n);if(c=l.length,m.keys(t).length!==c)return!1;for(;c--;)if(f=l[c],!m.has(t,f)||!N(n[f],t[f],r,e))return!1}return r.pop(),e.pop(),!0};m.isEqual=function(n,t){return N(n,t)},m.isEmpty=function(n){return null==n?!0:k(n)&&(m.isArray(n)||m.isString(n)||m.isArguments(n))?0===n.length:0===m.keys(n).length},m.isElement=function(n){return!(!n||1!==n.nodeType)},m.isArray=h||function(n){return"[object Array]"===s.call(n)},m.isObject=function(n){var t=typeof n;return"function"===t||"object"===t&&!!n},m.each(["Arguments","Function","String","Number","Date","RegExp","Error"],function(n){m["is"+n]=function(t){return s.call(t)==="[object "+n+"]"}}),m.isArguments(arguments)||(m.isArguments=function(n){return m.has(n,"callee")}),"function"!=typeof/./&&"object"!=typeof Int8Array&&(m.isFunction=function(n){return"function"==typeof n||!1}),m.isFinite=function(n){return isFinite(n)&&!isNaN(parseFloat(n))},m.isNaN=function(n){return m.isNumber(n)&&n!==+n},m.isBoolean=function(n){return n===!0||n===!1||"[object Boolean]"===s.call(n)},m.isNull=function(n){return null===n},m.isUndefined=function(n){return n===void 0},m.has=function(n,t){return null!=n&&p.call(n,t)},m.noConflict=function(){return u._=i,this},m.identity=function(n){return n},m.constant=function(n){return function(){return n}},m.noop=function(){},m.property=w,m.propertyOf=function(n){return null==n?function(){}:function(t){return n[t]}},m.matcher=m.matches=function(n){return n=m.extendOwn({},n),function(t){return m.isMatch(t,n)}},m.times=function(n,t,r){var e=Array(Math.max(0,n));t=b(t,r,1);for(var u=0;n>u;u++)e[u]=t(u);return e},m.random=function(n,t){return null==t&&(t=n,n=0),n+Math.floor(Math.random()*(t-n+1))},m.now=Date.now||function(){return(new Date).getTime()};var B={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#x27;","`":"&#x60;"},T=m.invert(B),R=function(n){var t=function(t){return n[t]},r="(?:"+m.keys(n).join("|")+")",e=RegExp(r),u=RegExp(r,"g");return function(n){return n=null==n?"":""+n,e.test(n)?n.replace(u,t):n}};m.escape=R(B),m.unescape=R(T),m.result=function(n,t,r){var e=null==n?void 0:n[t];return e===void 0&&(e=r),m.isFunction(e)?e.call(n):e};var q=0;m.uniqueId=function(n){var t=++q+"";return n?n+t:t},m.templateSettings={evaluate:/<%([\s\S]+?)%>/g,interpolate:/<%=([\s\S]+?)%>/g,escape:/<%-([\s\S]+?)%>/g};var K=/(.)^/,z={"'":"'","\\":"\\","\r":"r","\n":"n","\u2028":"u2028","\u2029":"u2029"},D=/\\|'|\r|\n|\u2028|\u2029/g,L=function(n){return"\\"+z[n]};m.template=function(n,t,r){!t&&r&&(t=r),t=m.defaults({},t,m.templateSettings);var e=RegExp([(t.escape||K).source,(t.interpolate||K).source,(t.evaluate||K).source].join("|")+"|$","g"),u=0,i="__p+='";n.replace(e,function(t,r,e,o,a){return i+=n.slice(u,a).replace(D,L),u=a+t.length,r?i+="'+\n((__t=("+r+"))==null?'':_.escape(__t))+\n'":e?i+="'+\n((__t=("+e+"))==null?'':__t)+\n'":o&&(i+="';\n"+o+"\n__p+='"),t}),i+="';\n",t.variable||(i="with(obj||{}){\n"+i+"}\n"),i="var __t,__p='',__j=Array.prototype.join,"+"print=function(){__p+=__j.call(arguments,'');};\n"+i+"return __p;\n";try{var o=new Function(t.variable||"obj","_",i)}catch(a){throw a.source=i,a}var c=function(n){return o.call(this,n,m)},f=t.variable||"obj";return c.source="function("+f+"){\n"+i+"}",c},m.chain=function(n){var t=m(n);return t._chain=!0,t};var P=function(n,t){return n._chain?m(t).chain():t};m.mixin=function(n){m.each(m.functions(n),function(t){var r=m[t]=n[t];m.prototype[t]=function(){var n=[this._wrapped];return f.apply(n,arguments),P(this,r.apply(m,n))}})},m.mixin(m),m.each(["pop","push","reverse","shift","sort","splice","unshift"],function(n){var t=o[n];m.prototype[n]=function(){var r=this._wrapped;return t.apply(r,arguments),"shift"!==n&&"splice"!==n||0!==r.length||delete r[0],P(this,r)}}),m.each(["concat","join","slice"],function(n){var t=o[n];m.prototype[n]=function(){return P(this,t.apply(this._wrapped,arguments))}}),m.prototype.value=function(){return this._wrapped},m.prototype.valueOf=m.prototype.toJSON=m.prototype.value,m.prototype.toString=function(){return""+this._wrapped},"function"=="function"&&__webpack_require__(5)&&!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function(){return m}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))}).call(this);
+	
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {module.exports = __webpack_amd_options__;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, {}))
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var isCoveoFieldRegex = /^@[a-zA-Z0-9_\.]+$/;
 	var Utils = (function () {
 	    function Utils() {
@@ -1226,7 +1245,7 @@ var playground =
 	            var _this = this;
 	            var args = [];
 	            for (var _i = 0; _i < arguments.length; _i++) {
-	                args[_i] = arguments[_i];
+	                args[_i - 0] = arguments[_i];
 	            }
 	            if (timeout == null) {
 	                timeout = setTimeout(function () {
@@ -1311,1564 +1330,11 @@ var playground =
 	    return Utils;
 	}());
 	exports.Utils = Utils;
-
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscore.js 1.8.3
-	//     http://underscorejs.org
-	//     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	//     Underscore may be freely distributed under the MIT license.
 	
-	(function() {
-	
-	  // Baseline setup
-	  // --------------
-	
-	  // Establish the root object, `window` in the browser, or `exports` on the server.
-	  var root = this;
-	
-	  // Save the previous value of the `_` variable.
-	  var previousUnderscore = root._;
-	
-	  // Save bytes in the minified (but not gzipped) version:
-	  var ArrayProto = Array.prototype, ObjProto = Object.prototype, FuncProto = Function.prototype;
-	
-	  // Create quick reference variables for speed access to core prototypes.
-	  var
-	    push             = ArrayProto.push,
-	    slice            = ArrayProto.slice,
-	    toString         = ObjProto.toString,
-	    hasOwnProperty   = ObjProto.hasOwnProperty;
-	
-	  // All **ECMAScript 5** native function implementations that we hope to use
-	  // are declared here.
-	  var
-	    nativeIsArray      = Array.isArray,
-	    nativeKeys         = Object.keys,
-	    nativeBind         = FuncProto.bind,
-	    nativeCreate       = Object.create;
-	
-	  // Naked function reference for surrogate-prototype-swapping.
-	  var Ctor = function(){};
-	
-	  // Create a safe reference to the Underscore object for use below.
-	  var _ = function(obj) {
-	    if (obj instanceof _) return obj;
-	    if (!(this instanceof _)) return new _(obj);
-	    this._wrapped = obj;
-	  };
-	
-	  // Export the Underscore object for **Node.js**, with
-	  // backwards-compatibility for the old `require()` API. If we're in
-	  // the browser, add `_` as a global object.
-	  if (true) {
-	    if (typeof module !== 'undefined' && module.exports) {
-	      exports = module.exports = _;
-	    }
-	    exports._ = _;
-	  } else {
-	    root._ = _;
-	  }
-	
-	  // Current version.
-	  _.VERSION = '1.8.3';
-	
-	  // Internal function that returns an efficient (for current engines) version
-	  // of the passed-in callback, to be repeatedly applied in other Underscore
-	  // functions.
-	  var optimizeCb = function(func, context, argCount) {
-	    if (context === void 0) return func;
-	    switch (argCount == null ? 3 : argCount) {
-	      case 1: return function(value) {
-	        return func.call(context, value);
-	      };
-	      case 2: return function(value, other) {
-	        return func.call(context, value, other);
-	      };
-	      case 3: return function(value, index, collection) {
-	        return func.call(context, value, index, collection);
-	      };
-	      case 4: return function(accumulator, value, index, collection) {
-	        return func.call(context, accumulator, value, index, collection);
-	      };
-	    }
-	    return function() {
-	      return func.apply(context, arguments);
-	    };
-	  };
-	
-	  // A mostly-internal function to generate callbacks that can be applied
-	  // to each element in a collection, returning the desired result — either
-	  // identity, an arbitrary callback, a property matcher, or a property accessor.
-	  var cb = function(value, context, argCount) {
-	    if (value == null) return _.identity;
-	    if (_.isFunction(value)) return optimizeCb(value, context, argCount);
-	    if (_.isObject(value)) return _.matcher(value);
-	    return _.property(value);
-	  };
-	  _.iteratee = function(value, context) {
-	    return cb(value, context, Infinity);
-	  };
-	
-	  // An internal function for creating assigner functions.
-	  var createAssigner = function(keysFunc, undefinedOnly) {
-	    return function(obj) {
-	      var length = arguments.length;
-	      if (length < 2 || obj == null) return obj;
-	      for (var index = 1; index < length; index++) {
-	        var source = arguments[index],
-	            keys = keysFunc(source),
-	            l = keys.length;
-	        for (var i = 0; i < l; i++) {
-	          var key = keys[i];
-	          if (!undefinedOnly || obj[key] === void 0) obj[key] = source[key];
-	        }
-	      }
-	      return obj;
-	    };
-	  };
-	
-	  // An internal function for creating a new object that inherits from another.
-	  var baseCreate = function(prototype) {
-	    if (!_.isObject(prototype)) return {};
-	    if (nativeCreate) return nativeCreate(prototype);
-	    Ctor.prototype = prototype;
-	    var result = new Ctor;
-	    Ctor.prototype = null;
-	    return result;
-	  };
-	
-	  var property = function(key) {
-	    return function(obj) {
-	      return obj == null ? void 0 : obj[key];
-	    };
-	  };
-	
-	  // Helper for collection methods to determine whether a collection
-	  // should be iterated as an array or as an object
-	  // Related: http://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength
-	  // Avoids a very nasty iOS 8 JIT bug on ARM-64. #2094
-	  var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
-	  var getLength = property('length');
-	  var isArrayLike = function(collection) {
-	    var length = getLength(collection);
-	    return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
-	  };
-	
-	  // Collection Functions
-	  // --------------------
-	
-	  // The cornerstone, an `each` implementation, aka `forEach`.
-	  // Handles raw objects in addition to array-likes. Treats all
-	  // sparse array-likes as if they were dense.
-	  _.each = _.forEach = function(obj, iteratee, context) {
-	    iteratee = optimizeCb(iteratee, context);
-	    var i, length;
-	    if (isArrayLike(obj)) {
-	      for (i = 0, length = obj.length; i < length; i++) {
-	        iteratee(obj[i], i, obj);
-	      }
-	    } else {
-	      var keys = _.keys(obj);
-	      for (i = 0, length = keys.length; i < length; i++) {
-	        iteratee(obj[keys[i]], keys[i], obj);
-	      }
-	    }
-	    return obj;
-	  };
-	
-	  // Return the results of applying the iteratee to each element.
-	  _.map = _.collect = function(obj, iteratee, context) {
-	    iteratee = cb(iteratee, context);
-	    var keys = !isArrayLike(obj) && _.keys(obj),
-	        length = (keys || obj).length,
-	        results = Array(length);
-	    for (var index = 0; index < length; index++) {
-	      var currentKey = keys ? keys[index] : index;
-	      results[index] = iteratee(obj[currentKey], currentKey, obj);
-	    }
-	    return results;
-	  };
-	
-	  // Create a reducing function iterating left or right.
-	  function createReduce(dir) {
-	    // Optimized iterator function as using arguments.length
-	    // in the main function will deoptimize the, see #1991.
-	    function iterator(obj, iteratee, memo, keys, index, length) {
-	      for (; index >= 0 && index < length; index += dir) {
-	        var currentKey = keys ? keys[index] : index;
-	        memo = iteratee(memo, obj[currentKey], currentKey, obj);
-	      }
-	      return memo;
-	    }
-	
-	    return function(obj, iteratee, memo, context) {
-	      iteratee = optimizeCb(iteratee, context, 4);
-	      var keys = !isArrayLike(obj) && _.keys(obj),
-	          length = (keys || obj).length,
-	          index = dir > 0 ? 0 : length - 1;
-	      // Determine the initial value if none is provided.
-	      if (arguments.length < 3) {
-	        memo = obj[keys ? keys[index] : index];
-	        index += dir;
-	      }
-	      return iterator(obj, iteratee, memo, keys, index, length);
-	    };
-	  }
-	
-	  // **Reduce** builds up a single result from a list of values, aka `inject`,
-	  // or `foldl`.
-	  _.reduce = _.foldl = _.inject = createReduce(1);
-	
-	  // The right-associative version of reduce, also known as `foldr`.
-	  _.reduceRight = _.foldr = createReduce(-1);
-	
-	  // Return the first value which passes a truth test. Aliased as `detect`.
-	  _.find = _.detect = function(obj, predicate, context) {
-	    var key;
-	    if (isArrayLike(obj)) {
-	      key = _.findIndex(obj, predicate, context);
-	    } else {
-	      key = _.findKey(obj, predicate, context);
-	    }
-	    if (key !== void 0 && key !== -1) return obj[key];
-	  };
-	
-	  // Return all the elements that pass a truth test.
-	  // Aliased as `select`.
-	  _.filter = _.select = function(obj, predicate, context) {
-	    var results = [];
-	    predicate = cb(predicate, context);
-	    _.each(obj, function(value, index, list) {
-	      if (predicate(value, index, list)) results.push(value);
-	    });
-	    return results;
-	  };
-	
-	  // Return all the elements for which a truth test fails.
-	  _.reject = function(obj, predicate, context) {
-	    return _.filter(obj, _.negate(cb(predicate)), context);
-	  };
-	
-	  // Determine whether all of the elements match a truth test.
-	  // Aliased as `all`.
-	  _.every = _.all = function(obj, predicate, context) {
-	    predicate = cb(predicate, context);
-	    var keys = !isArrayLike(obj) && _.keys(obj),
-	        length = (keys || obj).length;
-	    for (var index = 0; index < length; index++) {
-	      var currentKey = keys ? keys[index] : index;
-	      if (!predicate(obj[currentKey], currentKey, obj)) return false;
-	    }
-	    return true;
-	  };
-	
-	  // Determine if at least one element in the object matches a truth test.
-	  // Aliased as `any`.
-	  _.some = _.any = function(obj, predicate, context) {
-	    predicate = cb(predicate, context);
-	    var keys = !isArrayLike(obj) && _.keys(obj),
-	        length = (keys || obj).length;
-	    for (var index = 0; index < length; index++) {
-	      var currentKey = keys ? keys[index] : index;
-	      if (predicate(obj[currentKey], currentKey, obj)) return true;
-	    }
-	    return false;
-	  };
-	
-	  // Determine if the array or object contains a given item (using `===`).
-	  // Aliased as `includes` and `include`.
-	  _.contains = _.includes = _.include = function(obj, item, fromIndex, guard) {
-	    if (!isArrayLike(obj)) obj = _.values(obj);
-	    if (typeof fromIndex != 'number' || guard) fromIndex = 0;
-	    return _.indexOf(obj, item, fromIndex) >= 0;
-	  };
-	
-	  // Invoke a method (with arguments) on every item in a collection.
-	  _.invoke = function(obj, method) {
-	    var args = slice.call(arguments, 2);
-	    var isFunc = _.isFunction(method);
-	    return _.map(obj, function(value) {
-	      var func = isFunc ? method : value[method];
-	      return func == null ? func : func.apply(value, args);
-	    });
-	  };
-	
-	  // Convenience version of a common use case of `map`: fetching a property.
-	  _.pluck = function(obj, key) {
-	    return _.map(obj, _.property(key));
-	  };
-	
-	  // Convenience version of a common use case of `filter`: selecting only objects
-	  // containing specific `key:value` pairs.
-	  _.where = function(obj, attrs) {
-	    return _.filter(obj, _.matcher(attrs));
-	  };
-	
-	  // Convenience version of a common use case of `find`: getting the first object
-	  // containing specific `key:value` pairs.
-	  _.findWhere = function(obj, attrs) {
-	    return _.find(obj, _.matcher(attrs));
-	  };
-	
-	  // Return the maximum element (or element-based computation).
-	  _.max = function(obj, iteratee, context) {
-	    var result = -Infinity, lastComputed = -Infinity,
-	        value, computed;
-	    if (iteratee == null && obj != null) {
-	      obj = isArrayLike(obj) ? obj : _.values(obj);
-	      for (var i = 0, length = obj.length; i < length; i++) {
-	        value = obj[i];
-	        if (value > result) {
-	          result = value;
-	        }
-	      }
-	    } else {
-	      iteratee = cb(iteratee, context);
-	      _.each(obj, function(value, index, list) {
-	        computed = iteratee(value, index, list);
-	        if (computed > lastComputed || computed === -Infinity && result === -Infinity) {
-	          result = value;
-	          lastComputed = computed;
-	        }
-	      });
-	    }
-	    return result;
-	  };
-	
-	  // Return the minimum element (or element-based computation).
-	  _.min = function(obj, iteratee, context) {
-	    var result = Infinity, lastComputed = Infinity,
-	        value, computed;
-	    if (iteratee == null && obj != null) {
-	      obj = isArrayLike(obj) ? obj : _.values(obj);
-	      for (var i = 0, length = obj.length; i < length; i++) {
-	        value = obj[i];
-	        if (value < result) {
-	          result = value;
-	        }
-	      }
-	    } else {
-	      iteratee = cb(iteratee, context);
-	      _.each(obj, function(value, index, list) {
-	        computed = iteratee(value, index, list);
-	        if (computed < lastComputed || computed === Infinity && result === Infinity) {
-	          result = value;
-	          lastComputed = computed;
-	        }
-	      });
-	    }
-	    return result;
-	  };
-	
-	  // Shuffle a collection, using the modern version of the
-	  // [Fisher-Yates shuffle](http://en.wikipedia.org/wiki/Fisher–Yates_shuffle).
-	  _.shuffle = function(obj) {
-	    var set = isArrayLike(obj) ? obj : _.values(obj);
-	    var length = set.length;
-	    var shuffled = Array(length);
-	    for (var index = 0, rand; index < length; index++) {
-	      rand = _.random(0, index);
-	      if (rand !== index) shuffled[index] = shuffled[rand];
-	      shuffled[rand] = set[index];
-	    }
-	    return shuffled;
-	  };
-	
-	  // Sample **n** random values from a collection.
-	  // If **n** is not specified, returns a single random element.
-	  // The internal `guard` argument allows it to work with `map`.
-	  _.sample = function(obj, n, guard) {
-	    if (n == null || guard) {
-	      if (!isArrayLike(obj)) obj = _.values(obj);
-	      return obj[_.random(obj.length - 1)];
-	    }
-	    return _.shuffle(obj).slice(0, Math.max(0, n));
-	  };
-	
-	  // Sort the object's values by a criterion produced by an iteratee.
-	  _.sortBy = function(obj, iteratee, context) {
-	    iteratee = cb(iteratee, context);
-	    return _.pluck(_.map(obj, function(value, index, list) {
-	      return {
-	        value: value,
-	        index: index,
-	        criteria: iteratee(value, index, list)
-	      };
-	    }).sort(function(left, right) {
-	      var a = left.criteria;
-	      var b = right.criteria;
-	      if (a !== b) {
-	        if (a > b || a === void 0) return 1;
-	        if (a < b || b === void 0) return -1;
-	      }
-	      return left.index - right.index;
-	    }), 'value');
-	  };
-	
-	  // An internal function used for aggregate "group by" operations.
-	  var group = function(behavior) {
-	    return function(obj, iteratee, context) {
-	      var result = {};
-	      iteratee = cb(iteratee, context);
-	      _.each(obj, function(value, index) {
-	        var key = iteratee(value, index, obj);
-	        behavior(result, value, key);
-	      });
-	      return result;
-	    };
-	  };
-	
-	  // Groups the object's values by a criterion. Pass either a string attribute
-	  // to group by, or a function that returns the criterion.
-	  _.groupBy = group(function(result, value, key) {
-	    if (_.has(result, key)) result[key].push(value); else result[key] = [value];
-	  });
-	
-	  // Indexes the object's values by a criterion, similar to `groupBy`, but for
-	  // when you know that your index values will be unique.
-	  _.indexBy = group(function(result, value, key) {
-	    result[key] = value;
-	  });
-	
-	  // Counts instances of an object that group by a certain criterion. Pass
-	  // either a string attribute to count by, or a function that returns the
-	  // criterion.
-	  _.countBy = group(function(result, value, key) {
-	    if (_.has(result, key)) result[key]++; else result[key] = 1;
-	  });
-	
-	  // Safely create a real, live array from anything iterable.
-	  _.toArray = function(obj) {
-	    if (!obj) return [];
-	    if (_.isArray(obj)) return slice.call(obj);
-	    if (isArrayLike(obj)) return _.map(obj, _.identity);
-	    return _.values(obj);
-	  };
-	
-	  // Return the number of elements in an object.
-	  _.size = function(obj) {
-	    if (obj == null) return 0;
-	    return isArrayLike(obj) ? obj.length : _.keys(obj).length;
-	  };
-	
-	  // Split a collection into two arrays: one whose elements all satisfy the given
-	  // predicate, and one whose elements all do not satisfy the predicate.
-	  _.partition = function(obj, predicate, context) {
-	    predicate = cb(predicate, context);
-	    var pass = [], fail = [];
-	    _.each(obj, function(value, key, obj) {
-	      (predicate(value, key, obj) ? pass : fail).push(value);
-	    });
-	    return [pass, fail];
-	  };
-	
-	  // Array Functions
-	  // ---------------
-	
-	  // Get the first element of an array. Passing **n** will return the first N
-	  // values in the array. Aliased as `head` and `take`. The **guard** check
-	  // allows it to work with `_.map`.
-	  _.first = _.head = _.take = function(array, n, guard) {
-	    if (array == null) return void 0;
-	    if (n == null || guard) return array[0];
-	    return _.initial(array, array.length - n);
-	  };
-	
-	  // Returns everything but the last entry of the array. Especially useful on
-	  // the arguments object. Passing **n** will return all the values in
-	  // the array, excluding the last N.
-	  _.initial = function(array, n, guard) {
-	    return slice.call(array, 0, Math.max(0, array.length - (n == null || guard ? 1 : n)));
-	  };
-	
-	  // Get the last element of an array. Passing **n** will return the last N
-	  // values in the array.
-	  _.last = function(array, n, guard) {
-	    if (array == null) return void 0;
-	    if (n == null || guard) return array[array.length - 1];
-	    return _.rest(array, Math.max(0, array.length - n));
-	  };
-	
-	  // Returns everything but the first entry of the array. Aliased as `tail` and `drop`.
-	  // Especially useful on the arguments object. Passing an **n** will return
-	  // the rest N values in the array.
-	  _.rest = _.tail = _.drop = function(array, n, guard) {
-	    return slice.call(array, n == null || guard ? 1 : n);
-	  };
-	
-	  // Trim out all falsy values from an array.
-	  _.compact = function(array) {
-	    return _.filter(array, _.identity);
-	  };
-	
-	  // Internal implementation of a recursive `flatten` function.
-	  var flatten = function(input, shallow, strict, startIndex) {
-	    var output = [], idx = 0;
-	    for (var i = startIndex || 0, length = getLength(input); i < length; i++) {
-	      var value = input[i];
-	      if (isArrayLike(value) && (_.isArray(value) || _.isArguments(value))) {
-	        //flatten current level of array or arguments object
-	        if (!shallow) value = flatten(value, shallow, strict);
-	        var j = 0, len = value.length;
-	        output.length += len;
-	        while (j < len) {
-	          output[idx++] = value[j++];
-	        }
-	      } else if (!strict) {
-	        output[idx++] = value;
-	      }
-	    }
-	    return output;
-	  };
-	
-	  // Flatten out an array, either recursively (by default), or just one level.
-	  _.flatten = function(array, shallow) {
-	    return flatten(array, shallow, false);
-	  };
-	
-	  // Return a version of the array that does not contain the specified value(s).
-	  _.without = function(array) {
-	    return _.difference(array, slice.call(arguments, 1));
-	  };
-	
-	  // Produce a duplicate-free version of the array. If the array has already
-	  // been sorted, you have the option of using a faster algorithm.
-	  // Aliased as `unique`.
-	  _.uniq = _.unique = function(array, isSorted, iteratee, context) {
-	    if (!_.isBoolean(isSorted)) {
-	      context = iteratee;
-	      iteratee = isSorted;
-	      isSorted = false;
-	    }
-	    if (iteratee != null) iteratee = cb(iteratee, context);
-	    var result = [];
-	    var seen = [];
-	    for (var i = 0, length = getLength(array); i < length; i++) {
-	      var value = array[i],
-	          computed = iteratee ? iteratee(value, i, array) : value;
-	      if (isSorted) {
-	        if (!i || seen !== computed) result.push(value);
-	        seen = computed;
-	      } else if (iteratee) {
-	        if (!_.contains(seen, computed)) {
-	          seen.push(computed);
-	          result.push(value);
-	        }
-	      } else if (!_.contains(result, value)) {
-	        result.push(value);
-	      }
-	    }
-	    return result;
-	  };
-	
-	  // Produce an array that contains the union: each distinct element from all of
-	  // the passed-in arrays.
-	  _.union = function() {
-	    return _.uniq(flatten(arguments, true, true));
-	  };
-	
-	  // Produce an array that contains every item shared between all the
-	  // passed-in arrays.
-	  _.intersection = function(array) {
-	    var result = [];
-	    var argsLength = arguments.length;
-	    for (var i = 0, length = getLength(array); i < length; i++) {
-	      var item = array[i];
-	      if (_.contains(result, item)) continue;
-	      for (var j = 1; j < argsLength; j++) {
-	        if (!_.contains(arguments[j], item)) break;
-	      }
-	      if (j === argsLength) result.push(item);
-	    }
-	    return result;
-	  };
-	
-	  // Take the difference between one array and a number of other arrays.
-	  // Only the elements present in just the first array will remain.
-	  _.difference = function(array) {
-	    var rest = flatten(arguments, true, true, 1);
-	    return _.filter(array, function(value){
-	      return !_.contains(rest, value);
-	    });
-	  };
-	
-	  // Zip together multiple lists into a single array -- elements that share
-	  // an index go together.
-	  _.zip = function() {
-	    return _.unzip(arguments);
-	  };
-	
-	  // Complement of _.zip. Unzip accepts an array of arrays and groups
-	  // each array's elements on shared indices
-	  _.unzip = function(array) {
-	    var length = array && _.max(array, getLength).length || 0;
-	    var result = Array(length);
-	
-	    for (var index = 0; index < length; index++) {
-	      result[index] = _.pluck(array, index);
-	    }
-	    return result;
-	  };
-	
-	  // Converts lists into objects. Pass either a single array of `[key, value]`
-	  // pairs, or two parallel arrays of the same length -- one of keys, and one of
-	  // the corresponding values.
-	  _.object = function(list, values) {
-	    var result = {};
-	    for (var i = 0, length = getLength(list); i < length; i++) {
-	      if (values) {
-	        result[list[i]] = values[i];
-	      } else {
-	        result[list[i][0]] = list[i][1];
-	      }
-	    }
-	    return result;
-	  };
-	
-	  // Generator function to create the findIndex and findLastIndex functions
-	  function createPredicateIndexFinder(dir) {
-	    return function(array, predicate, context) {
-	      predicate = cb(predicate, context);
-	      var length = getLength(array);
-	      var index = dir > 0 ? 0 : length - 1;
-	      for (; index >= 0 && index < length; index += dir) {
-	        if (predicate(array[index], index, array)) return index;
-	      }
-	      return -1;
-	    };
-	  }
-	
-	  // Returns the first index on an array-like that passes a predicate test
-	  _.findIndex = createPredicateIndexFinder(1);
-	  _.findLastIndex = createPredicateIndexFinder(-1);
-	
-	  // Use a comparator function to figure out the smallest index at which
-	  // an object should be inserted so as to maintain order. Uses binary search.
-	  _.sortedIndex = function(array, obj, iteratee, context) {
-	    iteratee = cb(iteratee, context, 1);
-	    var value = iteratee(obj);
-	    var low = 0, high = getLength(array);
-	    while (low < high) {
-	      var mid = Math.floor((low + high) / 2);
-	      if (iteratee(array[mid]) < value) low = mid + 1; else high = mid;
-	    }
-	    return low;
-	  };
-	
-	  // Generator function to create the indexOf and lastIndexOf functions
-	  function createIndexFinder(dir, predicateFind, sortedIndex) {
-	    return function(array, item, idx) {
-	      var i = 0, length = getLength(array);
-	      if (typeof idx == 'number') {
-	        if (dir > 0) {
-	            i = idx >= 0 ? idx : Math.max(idx + length, i);
-	        } else {
-	            length = idx >= 0 ? Math.min(idx + 1, length) : idx + length + 1;
-	        }
-	      } else if (sortedIndex && idx && length) {
-	        idx = sortedIndex(array, item);
-	        return array[idx] === item ? idx : -1;
-	      }
-	      if (item !== item) {
-	        idx = predicateFind(slice.call(array, i, length), _.isNaN);
-	        return idx >= 0 ? idx + i : -1;
-	      }
-	      for (idx = dir > 0 ? i : length - 1; idx >= 0 && idx < length; idx += dir) {
-	        if (array[idx] === item) return idx;
-	      }
-	      return -1;
-	    };
-	  }
-	
-	  // Return the position of the first occurrence of an item in an array,
-	  // or -1 if the item is not included in the array.
-	  // If the array is large and already in sort order, pass `true`
-	  // for **isSorted** to use binary search.
-	  _.indexOf = createIndexFinder(1, _.findIndex, _.sortedIndex);
-	  _.lastIndexOf = createIndexFinder(-1, _.findLastIndex);
-	
-	  // Generate an integer Array containing an arithmetic progression. A port of
-	  // the native Python `range()` function. See
-	  // [the Python documentation](http://docs.python.org/library/functions.html#range).
-	  _.range = function(start, stop, step) {
-	    if (stop == null) {
-	      stop = start || 0;
-	      start = 0;
-	    }
-	    step = step || 1;
-	
-	    var length = Math.max(Math.ceil((stop - start) / step), 0);
-	    var range = Array(length);
-	
-	    for (var idx = 0; idx < length; idx++, start += step) {
-	      range[idx] = start;
-	    }
-	
-	    return range;
-	  };
-	
-	  // Function (ahem) Functions
-	  // ------------------
-	
-	  // Determines whether to execute a function as a constructor
-	  // or a normal function with the provided arguments
-	  var executeBound = function(sourceFunc, boundFunc, context, callingContext, args) {
-	    if (!(callingContext instanceof boundFunc)) return sourceFunc.apply(context, args);
-	    var self = baseCreate(sourceFunc.prototype);
-	    var result = sourceFunc.apply(self, args);
-	    if (_.isObject(result)) return result;
-	    return self;
-	  };
-	
-	  // Create a function bound to a given object (assigning `this`, and arguments,
-	  // optionally). Delegates to **ECMAScript 5**'s native `Function.bind` if
-	  // available.
-	  _.bind = function(func, context) {
-	    if (nativeBind && func.bind === nativeBind) return nativeBind.apply(func, slice.call(arguments, 1));
-	    if (!_.isFunction(func)) throw new TypeError('Bind must be called on a function');
-	    var args = slice.call(arguments, 2);
-	    var bound = function() {
-	      return executeBound(func, bound, context, this, args.concat(slice.call(arguments)));
-	    };
-	    return bound;
-	  };
-	
-	  // Partially apply a function by creating a version that has had some of its
-	  // arguments pre-filled, without changing its dynamic `this` context. _ acts
-	  // as a placeholder, allowing any combination of arguments to be pre-filled.
-	  _.partial = function(func) {
-	    var boundArgs = slice.call(arguments, 1);
-	    var bound = function() {
-	      var position = 0, length = boundArgs.length;
-	      var args = Array(length);
-	      for (var i = 0; i < length; i++) {
-	        args[i] = boundArgs[i] === _ ? arguments[position++] : boundArgs[i];
-	      }
-	      while (position < arguments.length) args.push(arguments[position++]);
-	      return executeBound(func, bound, this, this, args);
-	    };
-	    return bound;
-	  };
-	
-	  // Bind a number of an object's methods to that object. Remaining arguments
-	  // are the method names to be bound. Useful for ensuring that all callbacks
-	  // defined on an object belong to it.
-	  _.bindAll = function(obj) {
-	    var i, length = arguments.length, key;
-	    if (length <= 1) throw new Error('bindAll must be passed function names');
-	    for (i = 1; i < length; i++) {
-	      key = arguments[i];
-	      obj[key] = _.bind(obj[key], obj);
-	    }
-	    return obj;
-	  };
-	
-	  // Memoize an expensive function by storing its results.
-	  _.memoize = function(func, hasher) {
-	    var memoize = function(key) {
-	      var cache = memoize.cache;
-	      var address = '' + (hasher ? hasher.apply(this, arguments) : key);
-	      if (!_.has(cache, address)) cache[address] = func.apply(this, arguments);
-	      return cache[address];
-	    };
-	    memoize.cache = {};
-	    return memoize;
-	  };
-	
-	  // Delays a function for the given number of milliseconds, and then calls
-	  // it with the arguments supplied.
-	  _.delay = function(func, wait) {
-	    var args = slice.call(arguments, 2);
-	    return setTimeout(function(){
-	      return func.apply(null, args);
-	    }, wait);
-	  };
-	
-	  // Defers a function, scheduling it to run after the current call stack has
-	  // cleared.
-	  _.defer = _.partial(_.delay, _, 1);
-	
-	  // Returns a function, that, when invoked, will only be triggered at most once
-	  // during a given window of time. Normally, the throttled function will run
-	  // as much as it can, without ever going more than once per `wait` duration;
-	  // but if you'd like to disable the execution on the leading edge, pass
-	  // `{leading: false}`. To disable execution on the trailing edge, ditto.
-	  _.throttle = function(func, wait, options) {
-	    var context, args, result;
-	    var timeout = null;
-	    var previous = 0;
-	    if (!options) options = {};
-	    var later = function() {
-	      previous = options.leading === false ? 0 : _.now();
-	      timeout = null;
-	      result = func.apply(context, args);
-	      if (!timeout) context = args = null;
-	    };
-	    return function() {
-	      var now = _.now();
-	      if (!previous && options.leading === false) previous = now;
-	      var remaining = wait - (now - previous);
-	      context = this;
-	      args = arguments;
-	      if (remaining <= 0 || remaining > wait) {
-	        if (timeout) {
-	          clearTimeout(timeout);
-	          timeout = null;
-	        }
-	        previous = now;
-	        result = func.apply(context, args);
-	        if (!timeout) context = args = null;
-	      } else if (!timeout && options.trailing !== false) {
-	        timeout = setTimeout(later, remaining);
-	      }
-	      return result;
-	    };
-	  };
-	
-	  // Returns a function, that, as long as it continues to be invoked, will not
-	  // be triggered. The function will be called after it stops being called for
-	  // N milliseconds. If `immediate` is passed, trigger the function on the
-	  // leading edge, instead of the trailing.
-	  _.debounce = function(func, wait, immediate) {
-	    var timeout, args, context, timestamp, result;
-	
-	    var later = function() {
-	      var last = _.now() - timestamp;
-	
-	      if (last < wait && last >= 0) {
-	        timeout = setTimeout(later, wait - last);
-	      } else {
-	        timeout = null;
-	        if (!immediate) {
-	          result = func.apply(context, args);
-	          if (!timeout) context = args = null;
-	        }
-	      }
-	    };
-	
-	    return function() {
-	      context = this;
-	      args = arguments;
-	      timestamp = _.now();
-	      var callNow = immediate && !timeout;
-	      if (!timeout) timeout = setTimeout(later, wait);
-	      if (callNow) {
-	        result = func.apply(context, args);
-	        context = args = null;
-	      }
-	
-	      return result;
-	    };
-	  };
-	
-	  // Returns the first function passed as an argument to the second,
-	  // allowing you to adjust arguments, run code before and after, and
-	  // conditionally execute the original function.
-	  _.wrap = function(func, wrapper) {
-	    return _.partial(wrapper, func);
-	  };
-	
-	  // Returns a negated version of the passed-in predicate.
-	  _.negate = function(predicate) {
-	    return function() {
-	      return !predicate.apply(this, arguments);
-	    };
-	  };
-	
-	  // Returns a function that is the composition of a list of functions, each
-	  // consuming the return value of the function that follows.
-	  _.compose = function() {
-	    var args = arguments;
-	    var start = args.length - 1;
-	    return function() {
-	      var i = start;
-	      var result = args[start].apply(this, arguments);
-	      while (i--) result = args[i].call(this, result);
-	      return result;
-	    };
-	  };
-	
-	  // Returns a function that will only be executed on and after the Nth call.
-	  _.after = function(times, func) {
-	    return function() {
-	      if (--times < 1) {
-	        return func.apply(this, arguments);
-	      }
-	    };
-	  };
-	
-	  // Returns a function that will only be executed up to (but not including) the Nth call.
-	  _.before = function(times, func) {
-	    var memo;
-	    return function() {
-	      if (--times > 0) {
-	        memo = func.apply(this, arguments);
-	      }
-	      if (times <= 1) func = null;
-	      return memo;
-	    };
-	  };
-	
-	  // Returns a function that will be executed at most one time, no matter how
-	  // often you call it. Useful for lazy initialization.
-	  _.once = _.partial(_.before, 2);
-	
-	  // Object Functions
-	  // ----------------
-	
-	  // Keys in IE < 9 that won't be iterated by `for key in ...` and thus missed.
-	  var hasEnumBug = !{toString: null}.propertyIsEnumerable('toString');
-	  var nonEnumerableProps = ['valueOf', 'isPrototypeOf', 'toString',
-	                      'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
-	
-	  function collectNonEnumProps(obj, keys) {
-	    var nonEnumIdx = nonEnumerableProps.length;
-	    var constructor = obj.constructor;
-	    var proto = (_.isFunction(constructor) && constructor.prototype) || ObjProto;
-	
-	    // Constructor is a special case.
-	    var prop = 'constructor';
-	    if (_.has(obj, prop) && !_.contains(keys, prop)) keys.push(prop);
-	
-	    while (nonEnumIdx--) {
-	      prop = nonEnumerableProps[nonEnumIdx];
-	      if (prop in obj && obj[prop] !== proto[prop] && !_.contains(keys, prop)) {
-	        keys.push(prop);
-	      }
-	    }
-	  }
-	
-	  // Retrieve the names of an object's own properties.
-	  // Delegates to **ECMAScript 5**'s native `Object.keys`
-	  _.keys = function(obj) {
-	    if (!_.isObject(obj)) return [];
-	    if (nativeKeys) return nativeKeys(obj);
-	    var keys = [];
-	    for (var key in obj) if (_.has(obj, key)) keys.push(key);
-	    // Ahem, IE < 9.
-	    if (hasEnumBug) collectNonEnumProps(obj, keys);
-	    return keys;
-	  };
-	
-	  // Retrieve all the property names of an object.
-	  _.allKeys = function(obj) {
-	    if (!_.isObject(obj)) return [];
-	    var keys = [];
-	    for (var key in obj) keys.push(key);
-	    // Ahem, IE < 9.
-	    if (hasEnumBug) collectNonEnumProps(obj, keys);
-	    return keys;
-	  };
-	
-	  // Retrieve the values of an object's properties.
-	  _.values = function(obj) {
-	    var keys = _.keys(obj);
-	    var length = keys.length;
-	    var values = Array(length);
-	    for (var i = 0; i < length; i++) {
-	      values[i] = obj[keys[i]];
-	    }
-	    return values;
-	  };
-	
-	  // Returns the results of applying the iteratee to each element of the object
-	  // In contrast to _.map it returns an object
-	  _.mapObject = function(obj, iteratee, context) {
-	    iteratee = cb(iteratee, context);
-	    var keys =  _.keys(obj),
-	          length = keys.length,
-	          results = {},
-	          currentKey;
-	      for (var index = 0; index < length; index++) {
-	        currentKey = keys[index];
-	        results[currentKey] = iteratee(obj[currentKey], currentKey, obj);
-	      }
-	      return results;
-	  };
-	
-	  // Convert an object into a list of `[key, value]` pairs.
-	  _.pairs = function(obj) {
-	    var keys = _.keys(obj);
-	    var length = keys.length;
-	    var pairs = Array(length);
-	    for (var i = 0; i < length; i++) {
-	      pairs[i] = [keys[i], obj[keys[i]]];
-	    }
-	    return pairs;
-	  };
-	
-	  // Invert the keys and values of an object. The values must be serializable.
-	  _.invert = function(obj) {
-	    var result = {};
-	    var keys = _.keys(obj);
-	    for (var i = 0, length = keys.length; i < length; i++) {
-	      result[obj[keys[i]]] = keys[i];
-	    }
-	    return result;
-	  };
-	
-	  // Return a sorted list of the function names available on the object.
-	  // Aliased as `methods`
-	  _.functions = _.methods = function(obj) {
-	    var names = [];
-	    for (var key in obj) {
-	      if (_.isFunction(obj[key])) names.push(key);
-	    }
-	    return names.sort();
-	  };
-	
-	  // Extend a given object with all the properties in passed-in object(s).
-	  _.extend = createAssigner(_.allKeys);
-	
-	  // Assigns a given object with all the own properties in the passed-in object(s)
-	  // (https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
-	  _.extendOwn = _.assign = createAssigner(_.keys);
-	
-	  // Returns the first key on an object that passes a predicate test
-	  _.findKey = function(obj, predicate, context) {
-	    predicate = cb(predicate, context);
-	    var keys = _.keys(obj), key;
-	    for (var i = 0, length = keys.length; i < length; i++) {
-	      key = keys[i];
-	      if (predicate(obj[key], key, obj)) return key;
-	    }
-	  };
-	
-	  // Return a copy of the object only containing the whitelisted properties.
-	  _.pick = function(object, oiteratee, context) {
-	    var result = {}, obj = object, iteratee, keys;
-	    if (obj == null) return result;
-	    if (_.isFunction(oiteratee)) {
-	      keys = _.allKeys(obj);
-	      iteratee = optimizeCb(oiteratee, context);
-	    } else {
-	      keys = flatten(arguments, false, false, 1);
-	      iteratee = function(value, key, obj) { return key in obj; };
-	      obj = Object(obj);
-	    }
-	    for (var i = 0, length = keys.length; i < length; i++) {
-	      var key = keys[i];
-	      var value = obj[key];
-	      if (iteratee(value, key, obj)) result[key] = value;
-	    }
-	    return result;
-	  };
-	
-	   // Return a copy of the object without the blacklisted properties.
-	  _.omit = function(obj, iteratee, context) {
-	    if (_.isFunction(iteratee)) {
-	      iteratee = _.negate(iteratee);
-	    } else {
-	      var keys = _.map(flatten(arguments, false, false, 1), String);
-	      iteratee = function(value, key) {
-	        return !_.contains(keys, key);
-	      };
-	    }
-	    return _.pick(obj, iteratee, context);
-	  };
-	
-	  // Fill in a given object with default properties.
-	  _.defaults = createAssigner(_.allKeys, true);
-	
-	  // Creates an object that inherits from the given prototype object.
-	  // If additional properties are provided then they will be added to the
-	  // created object.
-	  _.create = function(prototype, props) {
-	    var result = baseCreate(prototype);
-	    if (props) _.extendOwn(result, props);
-	    return result;
-	  };
-	
-	  // Create a (shallow-cloned) duplicate of an object.
-	  _.clone = function(obj) {
-	    if (!_.isObject(obj)) return obj;
-	    return _.isArray(obj) ? obj.slice() : _.extend({}, obj);
-	  };
-	
-	  // Invokes interceptor with the obj, and then returns obj.
-	  // The primary purpose of this method is to "tap into" a method chain, in
-	  // order to perform operations on intermediate results within the chain.
-	  _.tap = function(obj, interceptor) {
-	    interceptor(obj);
-	    return obj;
-	  };
-	
-	  // Returns whether an object has a given set of `key:value` pairs.
-	  _.isMatch = function(object, attrs) {
-	    var keys = _.keys(attrs), length = keys.length;
-	    if (object == null) return !length;
-	    var obj = Object(object);
-	    for (var i = 0; i < length; i++) {
-	      var key = keys[i];
-	      if (attrs[key] !== obj[key] || !(key in obj)) return false;
-	    }
-	    return true;
-	  };
-	
-	
-	  // Internal recursive comparison function for `isEqual`.
-	  var eq = function(a, b, aStack, bStack) {
-	    // Identical objects are equal. `0 === -0`, but they aren't identical.
-	    // See the [Harmony `egal` proposal](http://wiki.ecmascript.org/doku.php?id=harmony:egal).
-	    if (a === b) return a !== 0 || 1 / a === 1 / b;
-	    // A strict comparison is necessary because `null == undefined`.
-	    if (a == null || b == null) return a === b;
-	    // Unwrap any wrapped objects.
-	    if (a instanceof _) a = a._wrapped;
-	    if (b instanceof _) b = b._wrapped;
-	    // Compare `[[Class]]` names.
-	    var className = toString.call(a);
-	    if (className !== toString.call(b)) return false;
-	    switch (className) {
-	      // Strings, numbers, regular expressions, dates, and booleans are compared by value.
-	      case '[object RegExp]':
-	      // RegExps are coerced to strings for comparison (Note: '' + /a/i === '/a/i')
-	      case '[object String]':
-	        // Primitives and their corresponding object wrappers are equivalent; thus, `"5"` is
-	        // equivalent to `new String("5")`.
-	        return '' + a === '' + b;
-	      case '[object Number]':
-	        // `NaN`s are equivalent, but non-reflexive.
-	        // Object(NaN) is equivalent to NaN
-	        if (+a !== +a) return +b !== +b;
-	        // An `egal` comparison is performed for other numeric values.
-	        return +a === 0 ? 1 / +a === 1 / b : +a === +b;
-	      case '[object Date]':
-	      case '[object Boolean]':
-	        // Coerce dates and booleans to numeric primitive values. Dates are compared by their
-	        // millisecond representations. Note that invalid dates with millisecond representations
-	        // of `NaN` are not equivalent.
-	        return +a === +b;
-	    }
-	
-	    var areArrays = className === '[object Array]';
-	    if (!areArrays) {
-	      if (typeof a != 'object' || typeof b != 'object') return false;
-	
-	      // Objects with different constructors are not equivalent, but `Object`s or `Array`s
-	      // from different frames are.
-	      var aCtor = a.constructor, bCtor = b.constructor;
-	      if (aCtor !== bCtor && !(_.isFunction(aCtor) && aCtor instanceof aCtor &&
-	                               _.isFunction(bCtor) && bCtor instanceof bCtor)
-	                          && ('constructor' in a && 'constructor' in b)) {
-	        return false;
-	      }
-	    }
-	    // Assume equality for cyclic structures. The algorithm for detecting cyclic
-	    // structures is adapted from ES 5.1 section 15.12.3, abstract operation `JO`.
-	
-	    // Initializing stack of traversed objects.
-	    // It's done here since we only need them for objects and arrays comparison.
-	    aStack = aStack || [];
-	    bStack = bStack || [];
-	    var length = aStack.length;
-	    while (length--) {
-	      // Linear search. Performance is inversely proportional to the number of
-	      // unique nested structures.
-	      if (aStack[length] === a) return bStack[length] === b;
-	    }
-	
-	    // Add the first object to the stack of traversed objects.
-	    aStack.push(a);
-	    bStack.push(b);
-	
-	    // Recursively compare objects and arrays.
-	    if (areArrays) {
-	      // Compare array lengths to determine if a deep comparison is necessary.
-	      length = a.length;
-	      if (length !== b.length) return false;
-	      // Deep compare the contents, ignoring non-numeric properties.
-	      while (length--) {
-	        if (!eq(a[length], b[length], aStack, bStack)) return false;
-	      }
-	    } else {
-	      // Deep compare objects.
-	      var keys = _.keys(a), key;
-	      length = keys.length;
-	      // Ensure that both objects contain the same number of properties before comparing deep equality.
-	      if (_.keys(b).length !== length) return false;
-	      while (length--) {
-	        // Deep compare each member
-	        key = keys[length];
-	        if (!(_.has(b, key) && eq(a[key], b[key], aStack, bStack))) return false;
-	      }
-	    }
-	    // Remove the first object from the stack of traversed objects.
-	    aStack.pop();
-	    bStack.pop();
-	    return true;
-	  };
-	
-	  // Perform a deep comparison to check if two objects are equal.
-	  _.isEqual = function(a, b) {
-	    return eq(a, b);
-	  };
-	
-	  // Is a given array, string, or object empty?
-	  // An "empty" object has no enumerable own-properties.
-	  _.isEmpty = function(obj) {
-	    if (obj == null) return true;
-	    if (isArrayLike(obj) && (_.isArray(obj) || _.isString(obj) || _.isArguments(obj))) return obj.length === 0;
-	    return _.keys(obj).length === 0;
-	  };
-	
-	  // Is a given value a DOM element?
-	  _.isElement = function(obj) {
-	    return !!(obj && obj.nodeType === 1);
-	  };
-	
-	  // Is a given value an array?
-	  // Delegates to ECMA5's native Array.isArray
-	  _.isArray = nativeIsArray || function(obj) {
-	    return toString.call(obj) === '[object Array]';
-	  };
-	
-	  // Is a given variable an object?
-	  _.isObject = function(obj) {
-	    var type = typeof obj;
-	    return type === 'function' || type === 'object' && !!obj;
-	  };
-	
-	  // Add some isType methods: isArguments, isFunction, isString, isNumber, isDate, isRegExp, isError.
-	  _.each(['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp', 'Error'], function(name) {
-	    _['is' + name] = function(obj) {
-	      return toString.call(obj) === '[object ' + name + ']';
-	    };
-	  });
-	
-	  // Define a fallback version of the method in browsers (ahem, IE < 9), where
-	  // there isn't any inspectable "Arguments" type.
-	  if (!_.isArguments(arguments)) {
-	    _.isArguments = function(obj) {
-	      return _.has(obj, 'callee');
-	    };
-	  }
-	
-	  // Optimize `isFunction` if appropriate. Work around some typeof bugs in old v8,
-	  // IE 11 (#1621), and in Safari 8 (#1929).
-	  if (typeof /./ != 'function' && typeof Int8Array != 'object') {
-	    _.isFunction = function(obj) {
-	      return typeof obj == 'function' || false;
-	    };
-	  }
-	
-	  // Is a given object a finite number?
-	  _.isFinite = function(obj) {
-	    return isFinite(obj) && !isNaN(parseFloat(obj));
-	  };
-	
-	  // Is the given value `NaN`? (NaN is the only number which does not equal itself).
-	  _.isNaN = function(obj) {
-	    return _.isNumber(obj) && obj !== +obj;
-	  };
-	
-	  // Is a given value a boolean?
-	  _.isBoolean = function(obj) {
-	    return obj === true || obj === false || toString.call(obj) === '[object Boolean]';
-	  };
-	
-	  // Is a given value equal to null?
-	  _.isNull = function(obj) {
-	    return obj === null;
-	  };
-	
-	  // Is a given variable undefined?
-	  _.isUndefined = function(obj) {
-	    return obj === void 0;
-	  };
-	
-	  // Shortcut function for checking if an object has a given property directly
-	  // on itself (in other words, not on a prototype).
-	  _.has = function(obj, key) {
-	    return obj != null && hasOwnProperty.call(obj, key);
-	  };
-	
-	  // Utility Functions
-	  // -----------------
-	
-	  // Run Underscore.js in *noConflict* mode, returning the `_` variable to its
-	  // previous owner. Returns a reference to the Underscore object.
-	  _.noConflict = function() {
-	    root._ = previousUnderscore;
-	    return this;
-	  };
-	
-	  // Keep the identity function around for default iteratees.
-	  _.identity = function(value) {
-	    return value;
-	  };
-	
-	  // Predicate-generating functions. Often useful outside of Underscore.
-	  _.constant = function(value) {
-	    return function() {
-	      return value;
-	    };
-	  };
-	
-	  _.noop = function(){};
-	
-	  _.property = property;
-	
-	  // Generates a function for a given object that returns a given property.
-	  _.propertyOf = function(obj) {
-	    return obj == null ? function(){} : function(key) {
-	      return obj[key];
-	    };
-	  };
-	
-	  // Returns a predicate for checking whether an object has a given set of
-	  // `key:value` pairs.
-	  _.matcher = _.matches = function(attrs) {
-	    attrs = _.extendOwn({}, attrs);
-	    return function(obj) {
-	      return _.isMatch(obj, attrs);
-	    };
-	  };
-	
-	  // Run a function **n** times.
-	  _.times = function(n, iteratee, context) {
-	    var accum = Array(Math.max(0, n));
-	    iteratee = optimizeCb(iteratee, context, 1);
-	    for (var i = 0; i < n; i++) accum[i] = iteratee(i);
-	    return accum;
-	  };
-	
-	  // Return a random integer between min and max (inclusive).
-	  _.random = function(min, max) {
-	    if (max == null) {
-	      max = min;
-	      min = 0;
-	    }
-	    return min + Math.floor(Math.random() * (max - min + 1));
-	  };
-	
-	  // A (possibly faster) way to get the current timestamp as an integer.
-	  _.now = Date.now || function() {
-	    return new Date().getTime();
-	  };
-	
-	   // List of HTML entities for escaping.
-	  var escapeMap = {
-	    '&': '&amp;',
-	    '<': '&lt;',
-	    '>': '&gt;',
-	    '"': '&quot;',
-	    "'": '&#x27;',
-	    '`': '&#x60;'
-	  };
-	  var unescapeMap = _.invert(escapeMap);
-	
-	  // Functions for escaping and unescaping strings to/from HTML interpolation.
-	  var createEscaper = function(map) {
-	    var escaper = function(match) {
-	      return map[match];
-	    };
-	    // Regexes for identifying a key that needs to be escaped
-	    var source = '(?:' + _.keys(map).join('|') + ')';
-	    var testRegexp = RegExp(source);
-	    var replaceRegexp = RegExp(source, 'g');
-	    return function(string) {
-	      string = string == null ? '' : '' + string;
-	      return testRegexp.test(string) ? string.replace(replaceRegexp, escaper) : string;
-	    };
-	  };
-	  _.escape = createEscaper(escapeMap);
-	  _.unescape = createEscaper(unescapeMap);
-	
-	  // If the value of the named `property` is a function then invoke it with the
-	  // `object` as context; otherwise, return it.
-	  _.result = function(object, property, fallback) {
-	    var value = object == null ? void 0 : object[property];
-	    if (value === void 0) {
-	      value = fallback;
-	    }
-	    return _.isFunction(value) ? value.call(object) : value;
-	  };
-	
-	  // Generate a unique integer id (unique within the entire client session).
-	  // Useful for temporary DOM ids.
-	  var idCounter = 0;
-	  _.uniqueId = function(prefix) {
-	    var id = ++idCounter + '';
-	    return prefix ? prefix + id : id;
-	  };
-	
-	  // By default, Underscore uses ERB-style template delimiters, change the
-	  // following template settings to use alternative delimiters.
-	  _.templateSettings = {
-	    evaluate    : /<%([\s\S]+?)%>/g,
-	    interpolate : /<%=([\s\S]+?)%>/g,
-	    escape      : /<%-([\s\S]+?)%>/g
-	  };
-	
-	  // When customizing `templateSettings`, if you don't want to define an
-	  // interpolation, evaluation or escaping regex, we need one that is
-	  // guaranteed not to match.
-	  var noMatch = /(.)^/;
-	
-	  // Certain characters need to be escaped so that they can be put into a
-	  // string literal.
-	  var escapes = {
-	    "'":      "'",
-	    '\\':     '\\',
-	    '\r':     'r',
-	    '\n':     'n',
-	    '\u2028': 'u2028',
-	    '\u2029': 'u2029'
-	  };
-	
-	  var escaper = /\\|'|\r|\n|\u2028|\u2029/g;
-	
-	  var escapeChar = function(match) {
-	    return '\\' + escapes[match];
-	  };
-	
-	  // JavaScript micro-templating, similar to John Resig's implementation.
-	  // Underscore templating handles arbitrary delimiters, preserves whitespace,
-	  // and correctly escapes quotes within interpolated code.
-	  // NB: `oldSettings` only exists for backwards compatibility.
-	  _.template = function(text, settings, oldSettings) {
-	    if (!settings && oldSettings) settings = oldSettings;
-	    settings = _.defaults({}, settings, _.templateSettings);
-	
-	    // Combine delimiters into one regular expression via alternation.
-	    var matcher = RegExp([
-	      (settings.escape || noMatch).source,
-	      (settings.interpolate || noMatch).source,
-	      (settings.evaluate || noMatch).source
-	    ].join('|') + '|$', 'g');
-	
-	    // Compile the template source, escaping string literals appropriately.
-	    var index = 0;
-	    var source = "__p+='";
-	    text.replace(matcher, function(match, escape, interpolate, evaluate, offset) {
-	      source += text.slice(index, offset).replace(escaper, escapeChar);
-	      index = offset + match.length;
-	
-	      if (escape) {
-	        source += "'+\n((__t=(" + escape + "))==null?'':_.escape(__t))+\n'";
-	      } else if (interpolate) {
-	        source += "'+\n((__t=(" + interpolate + "))==null?'':__t)+\n'";
-	      } else if (evaluate) {
-	        source += "';\n" + evaluate + "\n__p+='";
-	      }
-	
-	      // Adobe VMs need the match returned to produce the correct offest.
-	      return match;
-	    });
-	    source += "';\n";
-	
-	    // If a variable is not specified, place data values in local scope.
-	    if (!settings.variable) source = 'with(obj||{}){\n' + source + '}\n';
-	
-	    source = "var __t,__p='',__j=Array.prototype.join," +
-	      "print=function(){__p+=__j.call(arguments,'');};\n" +
-	      source + 'return __p;\n';
-	
-	    try {
-	      var render = new Function(settings.variable || 'obj', '_', source);
-	    } catch (e) {
-	      e.source = source;
-	      throw e;
-	    }
-	
-	    var template = function(data) {
-	      return render.call(this, data, _);
-	    };
-	
-	    // Provide the compiled source as a convenience for precompilation.
-	    var argument = settings.variable || 'obj';
-	    template.source = 'function(' + argument + '){\n' + source + '}';
-	
-	    return template;
-	  };
-	
-	  // Add a "chain" function. Start chaining a wrapped Underscore object.
-	  _.chain = function(obj) {
-	    var instance = _(obj);
-	    instance._chain = true;
-	    return instance;
-	  };
-	
-	  // OOP
-	  // ---------------
-	  // If Underscore is called as a function, it returns a wrapped object that
-	  // can be used OO-style. This wrapper holds altered versions of all the
-	  // underscore functions. Wrapped objects may be chained.
-	
-	  // Helper function to continue chaining intermediate results.
-	  var result = function(instance, obj) {
-	    return instance._chain ? _(obj).chain() : obj;
-	  };
-	
-	  // Add your own custom functions to the Underscore object.
-	  _.mixin = function(obj) {
-	    _.each(_.functions(obj), function(name) {
-	      var func = _[name] = obj[name];
-	      _.prototype[name] = function() {
-	        var args = [this._wrapped];
-	        push.apply(args, arguments);
-	        return result(this, func.apply(_, args));
-	      };
-	    });
-	  };
-	
-	  // Add all of the Underscore functions to the wrapper object.
-	  _.mixin(_);
-	
-	  // Add all mutator Array functions to the wrapper.
-	  _.each(['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift'], function(name) {
-	    var method = ArrayProto[name];
-	    _.prototype[name] = function() {
-	      var obj = this._wrapped;
-	      method.apply(obj, arguments);
-	      if ((name === 'shift' || name === 'splice') && obj.length === 0) delete obj[0];
-	      return result(this, obj);
-	    };
-	  });
-	
-	  // Add all accessor Array functions to the wrapper.
-	  _.each(['concat', 'join', 'slice'], function(name) {
-	    var method = ArrayProto[name];
-	    _.prototype[name] = function() {
-	      return result(this, method.apply(this._wrapped, arguments));
-	    };
-	  });
-	
-	  // Extracts the result from a wrapped and chained object.
-	  _.prototype.value = function() {
-	    return this._wrapped;
-	  };
-	
-	  // Provide unwrapping proxy for some methods used in engine operations
-	  // such as arithmetic and JSON stringification.
-	  _.prototype.valueOf = _.prototype.toJSON = _.prototype.value;
-	
-	  _.prototype.toString = function() {
-	    return '' + this._wrapped;
-	  };
-	
-	  // AMD registration happens at the end for compatibility with AMD loaders
-	  // that may not enforce next-turn semantics on modules. Even though general
-	  // practice for AMD registration is to be anonymous, underscore registers
-	  // as a named module because, like jQuery, it is a base library that is
-	  // popular enough to be bundled in a third party lib, but not be part of
-	  // an AMD load request. Those cases could generate an error when an
-	  // anonymous define() is called outside of a loader request.
-	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
-	      return _;
-	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  }
-	}.call(this));
-
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2901,18 +1367,17 @@ var playground =
 
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Logger_1 = __webpack_require__(8);
-	var Utils_1 = __webpack_require__(4);
-	var _ = __webpack_require__(5);
+	var Logger_1 = __webpack_require__(9);
+	var Utils_1 = __webpack_require__(6);
 	var Assert = (function () {
 	    function Assert() {
 	    }
@@ -2968,28 +1433,27 @@ var playground =
 	    Assert.isSmallerOrEqualsThan = function (expected, actual) {
 	        Assert.check(actual <= expected, 'Value ' + actual + ' should be smaller or equal than ' + expected);
 	    };
+	    Assert.logger = new Logger_1.Logger('Assert');
+	    Assert.failureHandler = function (message) {
+	        Assert.logger.error('Assertion Failed!', message);
+	        if (window['console'] && console.trace) {
+	            console.trace();
+	        }
+	        if (Utils_1.Utils.isNonEmptyString(message)) {
+	            throw new PreconditionFailedException(message);
+	        }
+	        else {
+	            throw new PreconditionFailedException('Assertion Failed!');
+	        }
+	    };
 	    return Assert;
 	}());
-	Assert.logger = new Logger_1.Logger('Assert');
-	Assert.failureHandler = function (message) {
-	    Assert.logger.error('Assertion Failed!', message);
-	    if (window['console'] && console.trace) {
-	        console.trace();
-	    }
-	    if (Utils_1.Utils.isNonEmptyString(message)) {
-	        throw new PreconditionFailedException(message);
-	    }
-	    else {
-	        throw new PreconditionFailedException('Assertion Failed!');
-	    }
-	};
 	exports.Assert = Assert;
 	var PreconditionFailedException = (function (_super) {
 	    __extends(PreconditionFailedException, _super);
 	    function PreconditionFailedException(message) {
-	        var _this = _super.call(this, message) || this;
-	        _this.message = message;
-	        return _this;
+	        _super.call(this, message);
+	        this.message = message;
 	    }
 	    PreconditionFailedException.prototype.toString = function () {
 	        return this.message;
@@ -2997,10 +1461,11 @@ var playground =
 	    return PreconditionFailedException;
 	}(Error));
 	exports.PreconditionFailedException = PreconditionFailedException;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3056,7 +1521,7 @@ var playground =
 	    Logger.prototype.trace = function () {
 	        var stuff = [];
 	        for (var _i = 0; _i < arguments.length; _i++) {
-	            stuff[_i] = arguments[_i];
+	            stuff[_i - 0] = arguments[_i];
 	        }
 	        if (Logger.level <= Logger.TRACE) {
 	            this.log('TRACE', stuff);
@@ -3065,7 +1530,7 @@ var playground =
 	    Logger.prototype.debug = function () {
 	        var stuff = [];
 	        for (var _i = 0; _i < arguments.length; _i++) {
-	            stuff[_i] = arguments[_i];
+	            stuff[_i - 0] = arguments[_i];
 	        }
 	        if (Logger.level <= Logger.DEBUG) {
 	            this.log('DEBUG', stuff);
@@ -3074,7 +1539,7 @@ var playground =
 	    Logger.prototype.info = function () {
 	        var stuff = [];
 	        for (var _i = 0; _i < arguments.length; _i++) {
-	            stuff[_i] = arguments[_i];
+	            stuff[_i - 0] = arguments[_i];
 	        }
 	        if (Logger.level <= Logger.INFO) {
 	            this.log('INFO', stuff);
@@ -3083,7 +1548,7 @@ var playground =
 	    Logger.prototype.warn = function () {
 	        var stuff = [];
 	        for (var _i = 0; _i < arguments.length; _i++) {
-	            stuff[_i] = arguments[_i];
+	            stuff[_i - 0] = arguments[_i];
 	        }
 	        if (Logger.level <= Logger.WARN) {
 	            this.log('WARN', stuff);
@@ -3092,7 +1557,7 @@ var playground =
 	    Logger.prototype.error = function () {
 	        var stuff = [];
 	        for (var _i = 0; _i < arguments.length; _i++) {
-	            stuff[_i] = arguments[_i];
+	            stuff[_i - 0] = arguments[_i];
 	        }
 	        if (Logger.level <= Logger.ERROR) {
 	            this.log('ERROR', stuff);
@@ -3113,42 +1578,41 @@ var playground =
 	    Logger.disable = function () {
 	        Logger.level = Logger.NOTHING;
 	    };
+	    Logger.TRACE = 1;
+	    Logger.DEBUG = 2;
+	    Logger.INFO = 3;
+	    Logger.WARN = 4;
+	    Logger.ERROR = 5;
+	    Logger.NOTHING = 6;
+	    Logger.level = Logger.INFO;
+	    Logger.executionTime = false;
 	    return Logger;
 	}());
-	Logger.TRACE = 1;
-	Logger.DEBUG = 2;
-	Logger.INFO = 3;
-	Logger.WARN = 4;
-	Logger.ERROR = 5;
-	Logger.NOTHING = 6;
-	Logger.level = Logger.INFO;
-	Logger.executionTime = false;
 	exports.Logger = Logger;
 
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Assert_1 = __webpack_require__(7);
-	var Utils_1 = __webpack_require__(4);
-	var JQueryutils_1 = __webpack_require__(6);
+	var Assert_1 = __webpack_require__(8);
+	var Utils_1 = __webpack_require__(6);
+	var JQueryutils_1 = __webpack_require__(7);
 	var Dom_1 = __webpack_require__(3);
-	var QueryStateModel_1 = __webpack_require__(10);
-	var ComponentStateModel_1 = __webpack_require__(13);
-	var ComponentOptionsModel_1 = __webpack_require__(14);
-	var QueryController_1 = __webpack_require__(15);
-	var SearchInterface_1 = __webpack_require__(41);
-	var NoopAnalyticsClient_1 = __webpack_require__(74);
-	var BaseComponent_1 = __webpack_require__(12);
-	var DebugEvents_1 = __webpack_require__(77);
-	var _ = __webpack_require__(5);
+	var QueryStateModel_1 = __webpack_require__(11);
+	var ComponentStateModel_1 = __webpack_require__(14);
+	var ComponentOptionsModel_1 = __webpack_require__(15);
+	var QueryController_1 = __webpack_require__(16);
+	var SearchInterface_1 = __webpack_require__(42);
+	var NoopAnalyticsClient_1 = __webpack_require__(76);
+	var BaseComponent_1 = __webpack_require__(13);
+	var DebugEvents_1 = __webpack_require__(79);
 	/**
 	 * The base class for every component in the framework.
 	 */
@@ -3163,28 +1627,28 @@ var playground =
 	     * @param bindings The environment for every component. Optional, but omitting to provide one will impact performance.
 	     */
 	    function Component(element, type, bindings) {
+	        var _this = this;
 	        if (bindings === void 0) { bindings = {}; }
-	        var _this = _super.call(this, element, type) || this;
-	        _this.element = element;
-	        _this.type = type;
+	        _super.call(this, element, type);
+	        this.element = element;
+	        this.type = type;
 	        /**
 	         * Allows the component to bind events and execute them only when it is enabled.
 	         * @type {Coveo.ComponentEvents}
 	         */
-	        _this.bind = new ComponentEvents(_this);
-	        _this.root = bindings.root || _this.resolveRoot();
-	        _this.queryStateModel = bindings.queryStateModel || _this.resolveQueryStateModel();
-	        _this.componentStateModel = bindings.componentStateModel || _this.resolveComponentStateModel();
-	        _this.queryController = bindings.queryController || _this.resolveQueryController();
-	        _this.searchInterface = bindings.searchInterface || _this.resolveSearchInterface();
-	        _this.usageAnalytics = bindings.usageAnalytics || _this.resolveUA();
-	        _this.componentOptionsModel = bindings.componentOptionsModel || _this.resolveComponentOptionsModel();
-	        _this.ensureDom = _.once(function () { return _this.createDom(); });
-	        if (_this.searchInterface != null) {
-	            _this.searchInterface.attachComponent(type, _this);
+	        this.bind = new ComponentEvents(this);
+	        this.root = bindings.root || this.resolveRoot();
+	        this.queryStateModel = bindings.queryStateModel || this.resolveQueryStateModel();
+	        this.componentStateModel = bindings.componentStateModel || this.resolveComponentStateModel();
+	        this.queryController = bindings.queryController || this.resolveQueryController();
+	        this.searchInterface = bindings.searchInterface || this.resolveSearchInterface();
+	        this.usageAnalytics = bindings.usageAnalytics || this.resolveUA();
+	        this.componentOptionsModel = bindings.componentOptionsModel || this.resolveComponentOptionsModel();
+	        this.ensureDom = _.once(function () { return _this.createDom(); });
+	        if (this.searchInterface != null) {
+	            this.searchInterface.attachComponent(type, this);
 	        }
-	        _this.initDebugInfo();
-	        return _this;
+	        this.initDebugInfo();
 	    }
 	    /**
 	     * Return the bindings, or environment, for the current component.
@@ -3421,7 +1885,7 @@ var playground =
 	        return function () {
 	            var args = [];
 	            for (var _i = 0; _i < arguments.length; _i++) {
-	                args[_i] = arguments[_i];
+	                args[_i - 0] = arguments[_i];
 	            }
 	            if (!_this.owner.disabled) {
 	                if (args && args[0] instanceof CustomEvent) {
@@ -3454,22 +1918,22 @@ var playground =
 	    return ComponentEvents;
 	}());
 	exports.ComponentEvents = ComponentEvents;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Model_1 = __webpack_require__(11);
-	var Assert_1 = __webpack_require__(7);
-	var Utils_1 = __webpack_require__(4);
-	var _ = __webpack_require__(5);
+	var Model_1 = __webpack_require__(12);
+	var Assert_1 = __webpack_require__(8);
+	var Utils_1 = __webpack_require__(6);
 	exports.QUERY_STATE_ATTRIBUTES = {
 	    Q: 'q',
 	    FIRST: 'first',
@@ -3502,10 +1966,8 @@ var playground =
 	     * @param bindings
 	     */
 	    function QueryStateModel(element, attributes) {
-	        var _this = this;
 	        var merged = _.extend({}, QueryStateModel.defaultAttributes, attributes);
-	        _this = _super.call(this, element, QueryStateModel.ID, merged) || this;
-	        return _this;
+	        _super.call(this, element, QueryStateModel.ID, merged);
 	    }
 	    QueryStateModel.getFacetId = function (id, include) {
 	        if (include === void 0) { include = true; }
@@ -3536,31 +1998,31 @@ var playground =
 	            Assert_1.Assert.isLargerOrEqualsThan(0, value);
 	        }
 	    };
+	    QueryStateModel.ID = 'state';
+	    QueryStateModel.defaultAttributes = {
+	        q: '',
+	        first: 0,
+	        t: '',
+	        hd: '',
+	        hq: '',
+	        sort: '',
+	        layout: 'list',
+	        tg: '',
+	        quickview: ''
+	    };
+	    QueryStateModel.attributesEnum = {
+	        q: 'q',
+	        first: 'first',
+	        t: 't',
+	        sort: 'sort',
+	        layout: 'layout',
+	        hd: 'hd',
+	        hq: 'hq',
+	        tg: 'tg',
+	        quickview: 'quickview'
+	    };
 	    return QueryStateModel;
 	}(Model_1.Model));
-	QueryStateModel.ID = 'state';
-	QueryStateModel.defaultAttributes = {
-	    q: '',
-	    first: 0,
-	    t: '',
-	    hd: '',
-	    hq: '',
-	    sort: '',
-	    layout: 'list',
-	    tg: '',
-	    quickview: ''
-	};
-	QueryStateModel.attributesEnum = {
-	    q: 'q',
-	    first: 'first',
-	    t: 't',
-	    sort: 'sort',
-	    layout: 'layout',
-	    hd: 'hd',
-	    hq: 'hq',
-	    tg: 'tg',
-	    quickview: 'quickview'
-	};
 	exports.QueryStateModel = QueryStateModel;
 	function setState(model, args) {
 	    Assert_1.Assert.exists(model);
@@ -3588,23 +2050,23 @@ var playground =
 	    }
 	}
 	exports.setState = setState;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Dom_1 = __webpack_require__(3);
-	var Assert_1 = __webpack_require__(7);
-	var Utils_1 = __webpack_require__(4);
-	var BaseComponent_1 = __webpack_require__(12);
-	var _ = __webpack_require__(5);
+	var Assert_1 = __webpack_require__(8);
+	var Utils_1 = __webpack_require__(6);
+	var BaseComponent_1 = __webpack_require__(13);
 	exports.MODEL_EVENTS = {
 	    PREPROCESS: 'preprocess',
 	    CHANGE_ONE: 'change:',
@@ -3620,12 +2082,11 @@ var playground =
 	var Model = (function (_super) {
 	    __extends(Model, _super);
 	    function Model(element, id, attributes) {
-	        var _this = _super.call(this, element, id) || this;
-	        _this.eventNameSpace = id;
-	        _this.defaultAttributes = Utils_1.Utils.extendDeep(_this.defaultAttributes, attributes);
-	        _this.attributes = attributes;
-	        _this.logger.debug('Creating model');
-	        return _this;
+	        _super.call(this, element, id);
+	        this.eventNameSpace = id;
+	        this.defaultAttributes = Utils_1.Utils.extendDeep(this.defaultAttributes, attributes);
+	        this.attributes = attributes;
+	        this.logger.debug('Creating model');
 	    }
 	    /**
 	     * Sets the value of a single specific attribute.</br>
@@ -3883,35 +2344,36 @@ var playground =
 	    Model.prototype.debugInfo = function () {
 	        return null;
 	    };
+	    /**
+	     * The event types that can be triggered:<br/>
+	     * • `preprocess`: triggered before a value is set on an attribute. This allows the value to be modified before it is set.<br/>
+	     * • `changeOne`: triggered when a single value changes.</br>
+	     * • `change`: triggered when one or many values change.</br>
+	     * • `reset`: triggered when all attributes are reset to their default values. </br>
+	     * • `all`: triggered after the `change` event.</br>
+	     * @type {{preprocess: string, changeOne: string, change: string, reset: string, all: string}}
+	     */
+	    Model.eventTypes = {
+	        preprocess: 'preprocess',
+	        changeOne: 'change:',
+	        change: 'change',
+	        reset: 'reset',
+	        all: 'all'
+	    };
 	    return Model;
 	}(BaseComponent_1.BaseComponent));
-	/**
-	 * The event types that can be triggered:<br/>
-	 * • `preprocess`: triggered before a value is set on an attribute. This allows the value to be modified before it is set.<br/>
-	 * • `changeOne`: triggered when a single value changes.</br>
-	 * • `change`: triggered when one or many values change.</br>
-	 * • `reset`: triggered when all attributes are reset to their default values. </br>
-	 * • `all`: triggered after the `change` event.</br>
-	 * @type {{preprocess: string, changeOne: string, change: string, reset: string, all: string}}
-	 */
-	Model.eventTypes = {
-	    preprocess: 'preprocess',
-	    changeOne: 'change:',
-	    change: 'change',
-	    reset: 'reset',
-	    all: 'all'
-	};
 	exports.Model = Model;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var Assert_1 = __webpack_require__(7);
+	var Assert_1 = __webpack_require__(8);
 	var Dom_1 = __webpack_require__(3);
-	var Logger_1 = __webpack_require__(8);
+	var Logger_1 = __webpack_require__(9);
 	/**
 	 * Every component in the framework ultimately inherits from this base component class.
 	 */
@@ -3989,7 +2451,7 @@ var playground =
 
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3998,11 +2460,11 @@ var playground =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Model_1 = __webpack_require__(11);
+	var Model_1 = __webpack_require__(12);
 	var ComponentStateModel = (function (_super) {
 	    __extends(ComponentStateModel, _super);
 	    function ComponentStateModel(element) {
-	        return _super.call(this, element, ComponentStateModel.ID, {}) || this;
+	        _super.call(this, element, ComponentStateModel.ID, {});
 	    }
 	    ComponentStateModel.prototype.registerComponent = function (componentId, component) {
 	        var currentAttribute = this.attributes[componentId];
@@ -4013,71 +2475,68 @@ var playground =
 	            this.attributes[componentId].push(component);
 	        }
 	    };
+	    ComponentStateModel.ID = 'ComponentState';
 	    return ComponentStateModel;
 	}(Model_1.Model));
-	ComponentStateModel.ID = 'ComponentState';
 	exports.ComponentStateModel = ComponentStateModel;
-
-
-/***/ },
-/* 14 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var Model_1 = __webpack_require__(11);
-	var _ = __webpack_require__(5);
-	var ComponentOptionsModel = (function (_super) {
-	    __extends(ComponentOptionsModel, _super);
-	    function ComponentOptionsModel(element, attributes) {
-	        var _this = this;
-	        var merged = _.extend({}, ComponentOptionsModel.defaultAttributes, attributes);
-	        _this = _super.call(this, element, ComponentOptionsModel.ID, merged) || this;
-	        return _this;
-	    }
-	    return ComponentOptionsModel;
-	}(Model_1.Model));
-	ComponentOptionsModel.ID = 'ComponentOptions';
-	ComponentOptionsModel.defaultAttributes = {
-	    resultLink: undefined,
-	    searchHub: undefined
-	};
-	ComponentOptionsModel.attributesEnum = {
-	    resultLink: 'resultLink',
-	    searchHub: 'searchHub'
-	};
-	exports.ComponentOptionsModel = ComponentOptionsModel;
 
 
 /***/ },
 /* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var RootComponent_1 = __webpack_require__(16);
-	var QueryBuilder_1 = __webpack_require__(17);
-	var LocalStorageUtils_1 = __webpack_require__(20);
-	var Assert_1 = __webpack_require__(7);
-	var SearchEndpointWithDefaultCallOptions_1 = __webpack_require__(21);
-	var QueryEvents_1 = __webpack_require__(22);
-	var QueryUtils_1 = __webpack_require__(19);
-	var Defer_1 = __webpack_require__(23);
+	var Model_1 = __webpack_require__(12);
+	var ComponentOptionsModel = (function (_super) {
+	    __extends(ComponentOptionsModel, _super);
+	    function ComponentOptionsModel(element, attributes) {
+	        var merged = _.extend({}, ComponentOptionsModel.defaultAttributes, attributes);
+	        _super.call(this, element, ComponentOptionsModel.ID, merged);
+	    }
+	    ComponentOptionsModel.ID = 'ComponentOptions';
+	    ComponentOptionsModel.defaultAttributes = {
+	        resultLink: undefined,
+	        searchHub: undefined
+	    };
+	    ComponentOptionsModel.attributesEnum = {
+	        resultLink: 'resultLink',
+	        searchHub: 'searchHub'
+	    };
+	    return ComponentOptionsModel;
+	}(Model_1.Model));
+	exports.ComponentOptionsModel = ComponentOptionsModel;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var RootComponent_1 = __webpack_require__(17);
+	var QueryBuilder_1 = __webpack_require__(18);
+	var LocalStorageUtils_1 = __webpack_require__(21);
+	var Assert_1 = __webpack_require__(8);
+	var SearchEndpointWithDefaultCallOptions_1 = __webpack_require__(22);
+	var QueryEvents_1 = __webpack_require__(23);
+	var QueryUtils_1 = __webpack_require__(20);
+	var Defer_1 = __webpack_require__(24);
 	var Dom_1 = __webpack_require__(3);
-	var Utils_1 = __webpack_require__(4);
-	var es6_promise_1 = __webpack_require__(24);
-	var BaseComponent_1 = __webpack_require__(12);
-	var ExternalModulesShim_1 = __webpack_require__(27);
-	var coveo_analytics_1 = __webpack_require__(31);
-	var _ = __webpack_require__(5);
+	var Utils_1 = __webpack_require__(6);
+	var es6_promise_1 = __webpack_require__(25);
+	var BaseComponent_1 = __webpack_require__(13);
+	var ExternalModulesShim_1 = __webpack_require__(28);
+	var coveo_analytics_1 = __webpack_require__(32);
 	var DefaultQueryOptions = (function () {
 	    function DefaultQueryOptions() {
 	        this.searchAsYouType = false;
@@ -4101,17 +2560,16 @@ var playground =
 	     * @param options
 	     */
 	    function QueryController(element, options, usageAnalytics, searchInterface) {
-	        var _this = _super.call(this, element, QueryController.ID) || this;
-	        _this.options = options;
-	        _this.usageAnalytics = usageAnalytics;
-	        _this.searchInterface = searchInterface;
-	        _this.showingExecutingQueryAnimation = false;
-	        _this.localStorage = new LocalStorageUtils_1.LocalStorageUtils('lastQueryHash');
+	        _super.call(this, element, QueryController.ID);
+	        this.options = options;
+	        this.usageAnalytics = usageAnalytics;
+	        this.searchInterface = searchInterface;
+	        this.showingExecutingQueryAnimation = false;
+	        this.localStorage = new LocalStorageUtils_1.LocalStorageUtils('lastQueryHash');
 	        Assert_1.Assert.exists(element);
 	        Assert_1.Assert.exists(options);
-	        _this.firstQuery = true;
-	        _this.historyStore = new coveo_analytics_1.history.HistoryStore();
-	        return _this;
+	        this.firstQuery = true;
+	        this.historyStore = new coveo_analytics_1.history.HistoryStore();
 	    }
 	    /**
 	     * Set the {@link SearchEndpoint} that the query controller should use to execute query
@@ -4552,14 +3010,15 @@ var playground =
 	        };
 	        this.historyStore.addElement(queryElement);
 	    };
+	    QueryController.ID = 'QueryController';
 	    return QueryController;
 	}(RootComponent_1.RootComponent));
-	QueryController.ID = 'QueryController';
 	exports.QueryController = QueryController;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4568,14 +3027,13 @@ var playground =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var BaseComponent_1 = __webpack_require__(12);
+	var BaseComponent_1 = __webpack_require__(13);
 	var RootComponent = (function (_super) {
 	    __extends(RootComponent, _super);
 	    function RootComponent(element, type) {
-	        var _this = _super.call(this, element, type) || this;
-	        _this.element = element;
-	        _this.type = type;
-	        return _this;
+	        _super.call(this, element, type);
+	        this.element = element;
+	        this.type = type;
 	    }
 	    return RootComponent;
 	}(BaseComponent_1.BaseComponent));
@@ -4583,13 +3041,12 @@ var playground =
 
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var ExpressionBuilder_1 = __webpack_require__(18);
-	var QueryUtils_1 = __webpack_require__(19);
-	var _ = __webpack_require__(5);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var ExpressionBuilder_1 = __webpack_require__(19);
+	var QueryUtils_1 = __webpack_require__(20);
 	/**
 	 * The QueryBuilder is used to build a {@link IQuery} that will be able to be executed using the Search API.<br/>
 	 * The class exposes several members and methods that help components and external code to build up the final query that is sent to the Search API.<br/>
@@ -4840,16 +3297,16 @@ var playground =
 	    return QueryBuilder;
 	}());
 	exports.QueryBuilder = QueryBuilder;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var Assert_1 = __webpack_require__(7);
-	var QueryUtils_1 = __webpack_require__(19);
-	var _ = __webpack_require__(5);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var Assert_1 = __webpack_require__(8);
+	var QueryUtils_1 = __webpack_require__(20);
 	/**
 	 * An `ExpressionBuilder` that is mostly used by the {@link QueryBuilder}.<br/>
 	 * It is used to build a single query expression.<br/>
@@ -4947,7 +3404,7 @@ var playground =
 	    ExpressionBuilder.merge = function () {
 	        var builders = [];
 	        for (var _i = 0; _i < arguments.length; _i++) {
-	            builders[_i] = arguments[_i];
+	            builders[_i - 0] = arguments[_i];
 	        }
 	        var merged = new ExpressionBuilder();
 	        _.each(builders, function (builder) {
@@ -4963,7 +3420,7 @@ var playground =
 	    ExpressionBuilder.mergeUsingOr = function () {
 	        var builders = [];
 	        for (var _i = 0; _i < arguments.length; _i++) {
-	            builders[_i] = arguments[_i];
+	            builders[_i - 0] = arguments[_i];
 	        }
 	        var nonEmpty = _.filter(builders, function (b) { return !b.isEmpty(); });
 	        var merged = new ExpressionBuilder();
@@ -4979,16 +3436,16 @@ var playground =
 	    return ExpressionBuilder;
 	}());
 	exports.ExpressionBuilder = ExpressionBuilder;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var Assert_1 = __webpack_require__(7);
-	var Utils_1 = __webpack_require__(4);
-	var _ = __webpack_require__(5);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var Assert_1 = __webpack_require__(8);
+	var Utils_1 = __webpack_require__(6);
 	var QueryUtils = (function () {
 	    function QueryUtils() {
 	    }
@@ -5186,10 +3643,11 @@ var playground =
 	    return QueryUtils;
 	}());
 	exports.QueryUtils = QueryUtils;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -5244,11 +3702,10 @@ var playground =
 
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var _ = __webpack_require__(5);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var SearchEndpointWithDefaultCallOptions = (function () {
 	    function SearchEndpointWithDefaultCallOptions(endpoint, callOptions) {
 	        this.endpoint = endpoint;
@@ -5330,10 +3787,11 @@ var playground =
 	    return SearchEndpointWithDefaultCallOptions;
 	}());
 	exports.SearchEndpointWithDefaultCallOptions = SearchEndpointWithDefaultCallOptions;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -5345,140 +3803,139 @@ var playground =
 	var QueryEvents = (function () {
 	    function QueryEvents() {
 	    }
+	    /**
+	     * Triggered when a new query is launched.
+	     *
+	     * All bound handlers will receive {@link INewQueryEventArgs} as an argument.
+	     *
+	     * The string value is `newQuery`.
+	     * @type {string}
+	     */
+	    QueryEvents.newQuery = 'newQuery';
+	    /**
+	     * Triggered when the query is being built.
+	     *
+	     * This is typically where all components will contribute their part to the {@link IQuery} using the {@link QueryBuilder}.
+	     *
+	     * All bound handlers will receive {@link IBuildingQueryEventArgs} as an argument.
+	     *
+	     * The string value is `buildingQuery`.
+	     * @type {string}
+	     */
+	    QueryEvents.buildingQuery = 'buildingQuery';
+	    /**
+	     * Triggered when the query is done being built.
+	     *
+	     * This is typically where the facet will add it's {@link IGroupByRequest} to the {@link IQuery}.
+	     *
+	     * All bound handlers will receive {@link IDoneBuildingQueryEventArgs} as an argument.
+	     *
+	     * The string value is `doneBuildingQuery`.
+	     * @type {string}
+	     */
+	    QueryEvents.doneBuildingQuery = 'doneBuildingQuery';
+	    /**
+	     * Triggered when the query is being executed on the Search API.
+	     *
+	     * All bound handlers will receive {@link IDuringQueryEventArgs} as an argument.
+	     *
+	     * The string value is `duringQuery`.
+	     * @type {string}
+	     */
+	    QueryEvents.duringQuery = 'duringQuery';
+	    /**
+	     * Triggered when more results are being fetched on the Search API (think : infinite scrolling, or pager).
+	     *
+	     * All bound handlers will receive {@link IDuringQueryEventArgs} as an argument.
+	     *
+	     * The string value is `duringFetchMoreQuery`.
+	     * @type {string}
+	     */
+	    QueryEvents.duringFetchMoreQuery = 'duringFetchMoreQuery';
+	    /**
+	     * Triggered when a query successfully returns from the Search API.
+	     *
+	     * All bound handlers will receive {@link IQuerySuccessEventArgs} as an argument.
+	     *
+	     * The string value is `querySuccess`.
+	     * @type {string}
+	     */
+	    QueryEvents.querySuccess = 'querySuccess';
+	    /**
+	     * Triggered when a more results were successfully returned from the Search API. (think : infinite scrolling, or pager).
+	     *
+	     * All bound handlers will receive {@link IFetchMoreSuccessEventArgs} as an argument.
+	     *
+	     * The string value is `fetchMoreSuccess`.
+	     * @type {string}
+	     */
+	    QueryEvents.fetchMoreSuccess = 'fetchMoreSuccess';
+	    /**
+	     * Triggered after the main query success event has finished executing.
+	     *
+	     * This is typically where facets will process the {@link IGroupByResult} and render themselves.
+	     *
+	     * All bound handlers will receive {@link IQuerySuccessEventArgs} as an argument.
+	     *
+	     * The string value is `deferredQuerySuccess`.
+	     * @type {string}
+	     */
+	    QueryEvents.deferredQuerySuccess = 'deferredQuerySuccess';
+	    /**
+	     * Triggered when there was an error executing a query on the Search API.
+	     *
+	     * All bound handlers will receive {@link IQueryErrorEventArgs} as an argument.
+	     *
+	     * The string value is `queryError`.
+	     * @type {string}
+	     */
+	    QueryEvents.queryError = 'queryError';
+	    /**
+	     * Triggered before the {@link QueryEvents.querySuccess} event.
+	     *
+	     * This allows external code to modify the results before rendering them.
+	     *
+	     * For example, the {@link Folding} component might use this event to construct a coherent parent child relationship between query results.
+	     *
+	     * All bound handlers will receive {@link IPreprocessResultsEventArgs} as an argument.
+	     *
+	     * The string value is `preprocessResults`.
+	     * @type {string}
+	     */
+	    QueryEvents.preprocessResults = 'preprocessResults';
+	    /**
+	     * Triggered before the {@link QueryEvents.fetchMoreSuccess} event.
+	     *
+	     * This allows external code to modify the results before rendering them.
+	     *
+	     * For example, the {@link Folding} component might use this event to construct a coherent parent child relationship between query results.
+	     *
+	     * All bound handlers will receive {@link IPreprocessResultsEventArgs} as an argument.
+	     *
+	     * The string value is `preprocessMoreResults`.
+	     * @type {string}
+	     */
+	    QueryEvents.preprocessMoreResults = 'preprocessMoreResults';
+	    /**
+	     * Triggered when there is no result for a particular query.
+	     *
+	     * All bound handlers will receive {@link INoResultsEventArgs} as an argument.
+	     *
+	     * The string value is `noResults`.
+	     * @type {string}
+	     */
+	    QueryEvents.noResults = 'noResults';
+	    QueryEvents.buildingCallOptions = 'buildingCallOptions';
 	    return QueryEvents;
 	}());
-	/**
-	 * Triggered when a new query is launched.
-	 *
-	 * All bound handlers will receive {@link INewQueryEventArgs} as an argument.
-	 *
-	 * The string value is `newQuery`.
-	 * @type {string}
-	 */
-	QueryEvents.newQuery = 'newQuery';
-	/**
-	 * Triggered when the query is being built.
-	 *
-	 * This is typically where all components will contribute their part to the {@link IQuery} using the {@link QueryBuilder}.
-	 *
-	 * All bound handlers will receive {@link IBuildingQueryEventArgs} as an argument.
-	 *
-	 * The string value is `buildingQuery`.
-	 * @type {string}
-	 */
-	QueryEvents.buildingQuery = 'buildingQuery';
-	/**
-	 * Triggered when the query is done being built.
-	 *
-	 * This is typically where the facet will add it's {@link IGroupByRequest} to the {@link IQuery}.
-	 *
-	 * All bound handlers will receive {@link IDoneBuildingQueryEventArgs} as an argument.
-	 *
-	 * The string value is `doneBuildingQuery`.
-	 * @type {string}
-	 */
-	QueryEvents.doneBuildingQuery = 'doneBuildingQuery';
-	/**
-	 * Triggered when the query is being executed on the Search API.
-	 *
-	 * All bound handlers will receive {@link IDuringQueryEventArgs} as an argument.
-	 *
-	 * The string value is `duringQuery`.
-	 * @type {string}
-	 */
-	QueryEvents.duringQuery = 'duringQuery';
-	/**
-	 * Triggered when more results are being fetched on the Search API (think : infinite scrolling, or pager).
-	 *
-	 * All bound handlers will receive {@link IDuringQueryEventArgs} as an argument.
-	 *
-	 * The string value is `duringFetchMoreQuery`.
-	 * @type {string}
-	 */
-	QueryEvents.duringFetchMoreQuery = 'duringFetchMoreQuery';
-	/**
-	 * Triggered when a query successfully returns from the Search API.
-	 *
-	 * All bound handlers will receive {@link IQuerySuccessEventArgs} as an argument.
-	 *
-	 * The string value is `querySuccess`.
-	 * @type {string}
-	 */
-	QueryEvents.querySuccess = 'querySuccess';
-	/**
-	 * Triggered when a more results were successfully returned from the Search API. (think : infinite scrolling, or pager).
-	 *
-	 * All bound handlers will receive {@link IFetchMoreSuccessEventArgs} as an argument.
-	 *
-	 * The string value is `fetchMoreSuccess`.
-	 * @type {string}
-	 */
-	QueryEvents.fetchMoreSuccess = 'fetchMoreSuccess';
-	/**
-	 * Triggered after the main query success event has finished executing.
-	 *
-	 * This is typically where facets will process the {@link IGroupByResult} and render themselves.
-	 *
-	 * All bound handlers will receive {@link IQuerySuccessEventArgs} as an argument.
-	 *
-	 * The string value is `deferredQuerySuccess`.
-	 * @type {string}
-	 */
-	QueryEvents.deferredQuerySuccess = 'deferredQuerySuccess';
-	/**
-	 * Triggered when there was an error executing a query on the Search API.
-	 *
-	 * All bound handlers will receive {@link IQueryErrorEventArgs} as an argument.
-	 *
-	 * The string value is `queryError`.
-	 * @type {string}
-	 */
-	QueryEvents.queryError = 'queryError';
-	/**
-	 * Triggered before the {@link QueryEvents.querySuccess} event.
-	 *
-	 * This allows external code to modify the results before rendering them.
-	 *
-	 * For example, the {@link Folding} component might use this event to construct a coherent parent child relationship between query results.
-	 *
-	 * All bound handlers will receive {@link IPreprocessResultsEventArgs} as an argument.
-	 *
-	 * The string value is `preprocessResults`.
-	 * @type {string}
-	 */
-	QueryEvents.preprocessResults = 'preprocessResults';
-	/**
-	 * Triggered before the {@link QueryEvents.fetchMoreSuccess} event.
-	 *
-	 * This allows external code to modify the results before rendering them.
-	 *
-	 * For example, the {@link Folding} component might use this event to construct a coherent parent child relationship between query results.
-	 *
-	 * All bound handlers will receive {@link IPreprocessResultsEventArgs} as an argument.
-	 *
-	 * The string value is `preprocessMoreResults`.
-	 * @type {string}
-	 */
-	QueryEvents.preprocessMoreResults = 'preprocessMoreResults';
-	/**
-	 * Triggered when there is no result for a particular query.
-	 *
-	 * All bound handlers will receive {@link INoResultsEventArgs} as an argument.
-	 *
-	 * The string value is `noResults`.
-	 * @type {string}
-	 */
-	QueryEvents.noResults = 'noResults';
-	QueryEvents.buildingCallOptions = 'buildingCallOptions';
 	exports.QueryEvents = QueryEvents;
 
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var _ = __webpack_require__(5);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var Defer = (function () {
 	    function Defer() {
 	    }
@@ -5508,14 +3965,15 @@ var playground =
 	            return false;
 	        }
 	    };
+	    Defer.functions = [];
 	    return Defer;
 	}());
-	Defer.functions = [];
 	exports.Defer = Defer;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var require;/* WEBPACK VAR INJECTION */(function(process, global) {/*!
@@ -5650,7 +4108,7 @@ var playground =
 	function attemptVertx() {
 	  try {
 	    var r = require;
-	    var vertx = __webpack_require__(26);
+	    var vertx = __webpack_require__(27);
 	    vertxNext = vertx.runOnLoop || vertx.runOnContext;
 	    return useVertxTimer();
 	  } catch (e) {
@@ -6672,10 +5130,10 @@ var playground =
 	
 	})));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(25), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(26), (function() { return this; }())))
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -6861,23 +5319,23 @@ var playground =
 
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	exports.ModalBox = __webpack_require__(28);
-	exports.MagicBox = __webpack_require__(29);
-	exports.LocaleString = __webpack_require__(30);
+	exports.ModalBox = __webpack_require__(29);
+	exports.MagicBox = __webpack_require__(30);
+	exports.LocaleString = __webpack_require__(31);
 
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports) {
 
 	var Coveo;!function(e){var o;!function(e){function o(e,o){void 0===o&&(o={});var n=o.body||document.body;n.className?n.className.indexOf("coveo-modalBox-opened")==-1&&(n.className+=" coveo-modalBox-opened"):n.className="coveo-modalBox-opened";var c=document.createElement("div");c.className="coveo-modalBox",n.appendChild(c),o.fullscreen===!0&&(c.className+=" coveo-fullscreen");var d=document.createElement("div");d.className="coveo-overlay",c.appendChild(d);var s=document.createElement("div");if(s.className="coveo-wrapper",c.appendChild(s),null!=o.title){var r=document.createElement("div");r.className="coveo-title",s.appendChild(r),r.innerHTML=o.title,o.titleClose===!0&&r.addEventListener("click",function(){return v()})}e.className+=" coveo-body",s.appendChild(e);var i,v=function(e,t){void 0===e&&(e=0),void 0===t&&(t=!1);var d=null==o.validation||o.validation(e);if(d!==!1||t){c.parentElement&&c.parentElement.removeChild(c);var s=l.indexOf(v);return s>=0&&l.splice(s,1),null==n.querySelector(".coveo-modalBox")&&a(n,"coveo-modalBox-opened"),!0}return!1},u=function(e,o){var n=document.createElement("div");n.className="coveo-button",n.textContent=e,n.addEventListener("click",function(){return v(o)}),i.appendChild(n)};return null!=o.buttons&&(i=document.createElement("div"),i.className="coveo-buttons",s.appendChild(i),o.buttons&t.OK&&u("Ok",t.OK),o.buttons&t.APPLY&&u("Apply",t.APPLY),o.buttons&t.YES&&u("Yes",t.YES),o.buttons&t.NO&&u("No",t.NO),o.buttons&t.CANCEL&&u("Cancel",t.CANCEL)),l.push(v),o.overlayClose===!0&&d.addEventListener("click",function(e){return v()}),null!=o.className&&(c.className+=" "+o.className),{modalBox:c,overlay:d,wrapper:s,buttons:i,content:e,close:v}}function n(e){void 0===e&&(e=!1);for(var o=0;l.length>o;){var n=l[o](0,e);n||o++}}function a(e,o){e.className=e.className.replace(new RegExp("(^|\\s)"+o+"(\\s|\\b)","g"),"$1")}!function(e){e[e.OK=1]="OK",e[e.APPLY=2]="APPLY",e[e.YES=4]="YES",e[e.NO=8]="NO",e[e.CANCEL=16]="CANCEL"}(e.BUTTON||(e.BUTTON={}));var t=e.BUTTON,l=[];e.open=o,e.close=n}(o=e.ModalBox||(e.ModalBox={}))}(Coveo||(Coveo={}));
@@ -6886,17 +5344,18 @@ var playground =
 	module.exports = Coveo.ModalBox;
 
 /***/ },
-/* 29 */
-/***/ function(module, exports) {
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
 
-	var __extends=this&&this.__extends||function(t,e){function n(){this.constructor=t}for(var s in e)e.hasOwnProperty(s)&&(t[s]=e[s]);t.prototype=null===e?Object.create(e):(n.prototype=e.prototype,new n)},Coveo;!function(t){var e;!function(t){var e=function(){function e(t,e,n){var s=this;this.expression=e,this.input=n,_.isString(t)?this.value=t:_.isArray(t)&&(this.subResults=t,_.forEach(this.subResults,function(t){t.parent=s}))}return e.prototype.isSuccess=function(){return null!=this.value||null!=this.subResults&&_.all(this.subResults,function(t){return t.isSuccess()})},e.prototype.path=function(t){var e=null!=this.parent&&this.parent!=t?this.parent.path(t):[];return e.push(this),e},e.prototype.findParent=function(t){for(var e=this,n=_.isString(t)?function(e){return t==e.expression.id}:t;null!=e&&!n(e);)e=e.parent;return e},e.prototype.find=function(t){var e=_.isString(t)?function(e){return t==e.expression.id}:t;if(e(this))return this;if(this.subResults)for(var n=0;n<this.subResults.length;n++){var s=this.subResults[n].find(e);if(s)return s}return null},e.prototype.findAll=function(t){var e=[],n=_.isString(t)?function(e){return t==e.expression.id}:t;return n(this)&&e.push(this),this.subResults&&(e=_.reduce(this.subResults,function(t,e){return t.concat(e.findAll(n))},e)),e},e.prototype.resultAt=function(t,e){if(t<0||t>this.getLength())return[];if(null!=e){if(_.isString(e)){if(e==this.expression.id)return[this]}else if(e(this))return[this]}else{var n=null==this.value&&null==this.subResults?this.input:this.value;if(null!=n)return[this]}if(null!=this.subResults){for(var s=[],i=0;i<this.subResults.length;i++){var o=this.subResults[i];if(s=s.concat(o.resultAt(t,e)),t-=o.getLength(),t<0)break}return s}return[]},e.prototype.getExpect=function(){return null==this.value&&null==this.subResults?[this]:null!=this.subResults?_.reduce(this.subResults,function(t,e){return t.concat(e.getExpect())},[]):[]},e.prototype.getBestExpect=function(){var t=this.getExpect(),e=_.groupBy(t,function(t){return t.input}),n=_.last(_.keys(e).sort(function(t,e){return e.length-t.length})),s=e[n],e=_.groupBy(s,function(t){return t.expression.id});return _.map(e,function(t){return _.chain(t).map(function(t){return{path:t.path().length,result:t}}).sortBy("path").pluck("result").first().value()})},e.prototype.getHumanReadableExpect=function(){var t=this.getBestExpect(),e=t.length>0?_.last(t).input:"";return"Expected "+_.map(t,function(t){return t.getHumanReadable()}).join(" or ")+" but "+(e.length>0?JSON.stringify(e[0]):"end of input")+" found."},e.prototype.before=function(){if(null==this.parent)return"";var t=_.indexOf(this.parent.subResults,this);return this.parent.before()+_.chain(this.parent.subResults).first(t).map(function(t){return t.toString()}).join("").value()},e.prototype.after=function(){if(null==this.parent)return"";var t=_.indexOf(this.parent.subResults,this);return _.chain(this.parent.subResults).last(this.parent.subResults.length-t-1).map(function(t){return t.toString()}).join("").value()+this.parent.after()},e.prototype.getLength=function(){return null!=this.value?this.value.length:null!=this.subResults?_.reduce(this.subResults,function(t,e){return t+e.getLength()},0):this.input.length},e.prototype.toHtmlElement=function(){var t=document.createElement("span"),e=null!=this.expression?this.expression.id:null;if(null!=e){var n=document.createAttribute("data-id");n.value=e,t.setAttributeNode(n)}var s=document.createAttribute("data-success");if(s.value=this.isSuccess().toString(),t.setAttributeNode(s),null!=this.value){t.appendChild(document.createTextNode(this.value));var i=document.createAttribute("data-value");i.value=this.value,t.setAttributeNode(i)}else if(null!=this.subResults)_.each(this.subResults,function(e){t.appendChild(e.toHtmlElement())});else{t.appendChild(document.createTextNode(this.input));var o=document.createAttribute("data-input");o.value=this.input,t.setAttributeNode(o),t.className="magic-box-error"+(this.input.length>0?"":" magic-box-error-empty")}return t.result=this,t},e.prototype.clean=function(t){if(null!=t||!this.isSuccess()){t=t||_.last(this.getBestExpect()).path(this);var n=_.first(t);if(null!=n){var s=_.indexOf(this.subResults,n),i=s==-1?[]:_.map(_.first(this.subResults,s),function(t){return t.clean()});return i.push(n.clean(_.rest(t))),new e(i,this.expression,this.input)}return new e(null,this.expression,this.input)}return null!=this.value?new e(this.value,this.expression,this.input):null!=this.subResults?new e(_.map(this.subResults,function(t){return t.clean()}),this.expression,this.input):void 0},e.prototype.clone=function(){return null!=this.value?new e(this.value,this.expression,this.input):null!=this.subResults?new e(_.map(this.subResults,function(t){return t.clone()}),this.expression,this.input):new e(null,this.expression,this.input)},e.prototype.toString=function(){return null!=this.value?this.value:null!=this.subResults?_.map(this.subResults,function(t){return t.toString()}).join(""):this.input},e.prototype.getHumanReadable=function(){return this.expression instanceof t.ExpressionConstant?JSON.stringify(this.expression.value):this.expression.id},e}();t.Result=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(e){function n(n){e.call(this,[n],t.ExpressionEndOfInput,n.input);var s=new t.Result(null,t.ExpressionEndOfInput,n.input.substr(n.getLength()));s.parent=this,this.subResults.push(s)}return __extends(n,e),n}(t.Result);t.EndOfInputResult=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(e){function n(t,n,s,i){var o=this;e.call(this,null!=t?[t]:null,n,s),this.result=t,this.expression=n,this.input=s,this.failAttempt=i,_.forEach(this.failAttempt,function(t){t.parent=o})}return __extends(n,e),n.prototype.getExpect=function(){var t=this,e=[];return null!=this.result&&(e=this.result.getExpect()),e=_.reduce(this.failAttempt,function(t,e){return t.concat(e.getExpect())},e),e.length>0&&_.all(e,function(e){return e.input==t.input})?[this]:e},n.prototype.clean=function(e){if(null!=e||!this.isSuccess()){e=_.rest(e||_.last(this.getBestExpect()).path(this));var n=_.first(e);return null==n?new t.Result(null,this.expression,this.input):new t.Result([n.clean(_.rest(e))],this.expression,this.input)}return new t.Result(_.map(this.result.subResults,function(t){return t.clean()}),this.expression,this.input)},n}(t.Result);t.OptionResult=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(e){function n(t,n,s,i){e.call(this,t,n,s),this.results=t,this.expression=n,this.input=s,_.last(t)!=i&&(this.failAttempt=i,null!=this.failAttempt&&(this.failAttempt.parent=this))}return __extends(n,e),n.prototype.getExpect=function(){var t=e.prototype.getExpect.call(this);return null!=this.failAttempt?t.concat(this.failAttempt.getExpect()):t},n.prototype.clean=function(n){if(null!=this.failAttempt&&(null!=n||!this.isSuccess())){n=n||_.last(this.getBestExpect()).path(this);var s=_.first(n);if(null!=s&&s==this.failAttempt){var i=_.last(this.subResults),o=_.map(null!=i&&i.isSuccess()?this.subResults:_.initial(this.subResults),function(t){return t.clean()});return o.push(s.clean(_.rest(n))),new t.Result(o,this.expression,this.input)}}return e.prototype.clean.call(this,n)},n}(t.Result);t.RefResult=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(){function e(t,e){this.value=t,this.id=e}return e.prototype.parse=function(e,n){var s=0==e.indexOf(this.value),i=new t.Result(s?this.value:null,this,e);return s&&n&&e.length>this.value.length?new t.EndOfInputResult(i):i},e.prototype.toString=function(){return this.value},e}();t.ExpressionConstant=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){t.ExpressionEndOfInput={id:"end of input",parse:null}}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(){function t(t,e,n){this.func=t,this.id=e,this.grammar=n}return t.prototype.parse=function(t,e){return this.func(t,e,this)},t.prototype.toString=function(){return this.id},t}();t.ExpressionFunction=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(){function e(t,e){if(this.parts=t,this.id=e,0==t.length)throw JSON.stringify(e)+" should have at least 1 parts"}return e.prototype.parse=function(e,n){for(var s,i=[],o=e,r=0;r<this.parts.length;r++){var u=this.parts[r];if(s=u.parse(o,n&&r==this.parts.length-1),i.push(s),!s.isSuccess())break;o=o.substr(s.getLength())}return new t.Result(i,this,e)},e.prototype.toString=function(){return this.id},e}();t.ExpressionList=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(){function e(t,e){this.parts=t,this.id=e}return e.prototype.parse=function(e,n){for(var s=[],i=0;i<this.parts.length;i++){var o=this.parts[i].parse(e,n);if(o.isSuccess())return new t.OptionResult(o,this,e,s);s.push(o)}return new t.OptionResult(null,this,e,s)},e.prototype.toString=function(){return this.id},e}();t.ExpressionOptions=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(){function e(t,e,n,s){this.ref=t,this.occurrence=e,this.id=n,this.grammar=s}return e.prototype.parse=function(t,e){var n=this.grammar.getExpression(this.ref);if(null==n)throw"Expression not found:"+this.ref;return"?"==this.occurrence||null==this.occurrence?this.parseOnce(t,e,n):this.parseMany(t,e,n)},e.prototype.parseOnce=function(e,n,s){var i=s.parse(e,n),o=i.isSuccess();return o||"?"!=this.occurrence?new t.RefResult([i],this,e,o?null:i):n?0==e.length?new t.RefResult([],this,e,i):_.all(i.getBestExpect(),function(e){return e.expression==t.ExpressionEndOfInput})?new t.RefResult([new t.Result(null,t.ExpressionEndOfInput,e)],this,e,i):i:new t.RefResult([],this,e,null)},e.prototype.parseMany=function(e,n,s){var i,o,r=[],u=e;do i=s.parse(u,!1),o=i.isSuccess(),o&&(r.push(i),u=u.substr(i.getLength()));while(o&&i.input!=u);var a=_.isNumber(this.occurrence)?this.occurrence:"+"==this.occurrence?1:0;if(r.length<a)r.push(i);else if(n)if(r.length>0){var l=_.last(r);i=s.parse(l.input,!0),i.isSuccess()?r[r.length-1]=i:(r.push(new t.Result(null,t.ExpressionEndOfInput,l.input.substr(l.getLength()))),i=s.parse(l.input.substr(l.getLength()),!0))}else if(0!=e.length){var c=new t.Result(null,t.ExpressionEndOfInput,e);return new t.RefResult([c],this,e,i)}return new t.RefResult(r,this,e,i)},e.prototype.toString=function(){return this.id},e}();t.ExpressionRef=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(){function e(t,e,n){this.value=t,this.id=e}return e.prototype.parse=function(e,n){var s=e.match(this.value);null!=s&&0!=s.index&&(s=null);var i=new t.Result(null!=s?s[0]:null,this,e);return i.isSuccess()&&n&&e.length>i.value.length?new t.EndOfInputResult(i):i},e.prototype.toString=function(){return this.id},e}();t.ExpressionRegExp=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(){function e(e,n){void 0===n&&(n={}),this.expressions={},this.start=new t.ExpressionRef(e,null,"start",this),this.addExpressions(n)}return e.prototype.addExpressions=function(t){var e=this;_.each(t,function(t,n){e.addExpression(n,t)})},e.prototype.addExpression=function(t,n){if(t in this.expressions)throw"Grammar already contain the id:"+t;this.expressions[t]=e.buildExpression(n,t,this)},e.prototype.getExpression=function(t){return this.expressions[t]},e.prototype.parse=function(t){return this.start.parse(t,!0)},e.buildExpression=function(e,n,s){var i=typeof e;if("undefined"==i)throw"Invalid Expression: "+e;if(_.isString(e))return this.buildStringExpression(e,n,s);if(_.isArray(e))return new t.ExpressionOptions(_.map(e,function(e,i){return new t.ExpressionRef(e,null,n+"_"+i,s)}),n);if(_.isRegExp(e))return new t.ExpressionRegExp(e,n,s);if(_.isFunction(e))return new t.ExpressionFunction(e,n,s);throw"Invalid Expression: "+e},e.buildStringExpression=function(n,s,i){var o=e.stringMatch(n,e.spliter),r=_.map(o,function(e,n){if(e[1]){var o=e[1],r=e[3]?Number(e[3]):e[2]||null;return new t.ExpressionRef(o,r,s+"_"+n,i)}return new t.ExpressionConstant(e[4],s+"_"+n)});if(1==r.length){var u=r[0];return u.id=s,u}return new t.ExpressionList(r,s)},e.stringMatch=function(t,e){for(var n,s=[],i=new RegExp(e.source,"g");null!==(n=i.exec(t));)s.push(n);return s},e.spliter=/\[(\w+)(\*|\+|\?|\{([1-9][0-9]*)\})?\]|(.[^\[]*)/,e}();t.Grammar=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(){function e(t,e,n){this.element=t,this.onchange=e,this.magicBox=n,this.hasFocus=!1,this.justPressedTab=!1,this.underlay=document.createElement("div"),this.underlay.className="magic-box-underlay",t.appendChild(this.underlay),this.highlightContainer=document.createElement("span"),this.highlightContainer.className="magic-box-highlight-container",this.underlay.appendChild(this.highlightContainer),this.ghostTextContainer=document.createElement("span"),this.ghostTextContainer.className="magic-box-ghost-text",this.underlay.appendChild(this.ghostTextContainer),this.input=document.createElement("input"),this.input.spellcheck=!1,this.input.setAttribute("form","coveo-dummy-form"),this.input.setAttribute("autocomplete","off"),t.appendChild(this.input),this.setupHandler()}return e.prototype.updateInput=function(){this.input.value!=this.result.input&&(this.input.value=this.result.input,this.hasFocus&&this.setCursor(this.getValue().length))},e.prototype.updateHighlight=function(){this.highlightContainer.innerHTML="",this.highlightContainer.appendChild(this.result.toHtmlElement())},e.prototype.updateWordCompletion=function(){this.ghostTextContainer.innerHTML="",null!=this.wordCompletion&&this.ghostTextContainer.appendChild(document.createTextNode(this.wordCompletion.substr(this.result.input.length)))},e.prototype.updateScroll=function(e){var n=this;void 0===e&&(e=!0);var s=function(){n.underlay.clientWidth<n.underlay.scrollWidth&&(n.underlay.style.visibility="hidden",n.underlay.scrollLeft=n.input.scrollLeft,n.underlay.scrollTop=n.input.scrollTop,n.underlay.style.visibility="visible"),n.updateScrollDefer=null,n.hasFocus&&n.updateScroll()};e?null==this.updateScrollDefer&&(this.updateScrollDefer=t.requestAnimationFrame(s)):s()},e.prototype.setResult=function(t,e){this.result=t,this.updateInput(),this.updateHighlight(),_.isUndefined(e)&&null!=this.wordCompletion&&0==this.wordCompletion.indexOf(this.result.input)?this.updateWordCompletion():this.setWordCompletion(e),this.updateScroll()},e.prototype.setWordCompletion=function(t){null!=t&&0!=t.toLowerCase().indexOf(this.result.input.toLowerCase())&&(t=null),this.wordCompletion=t,this.updateWordCompletion(),this.updateScroll()},e.prototype.setCursor=function(t){if(this.input.focus(),this.input.createTextRange){var e=this.input.createTextRange();e.move("character",t),e.select()}else null!=this.input.selectionStart&&(this.input.focus(),this.input.setSelectionRange(t,t))},e.prototype.getCursor=function(){return this.input.selectionStart},e.prototype.setupHandler=function(){var t=this;this.input.onblur=function(){t.hasFocus=!1,setTimeout(function(){t.hasFocus||t.onblur&&t.onblur()},300),t.updateScroll()},this.input.onfocus=function(){t.hasFocus||(t.hasFocus=!0,t.updateScroll(),t.onfocus&&t.onfocus())},this.input.onkeydown=function(e){t.keydown(e)},this.input.onkeyup=function(e){t.keyup(e)},this.input.onclick=function(){t.onchangecursor()},this.input.select=function(){t.onchangecursor()},this.input.oncut=function(){setTimeout(function(){t.onInputChange()})},this.input.onpaste=function(){setTimeout(function(){t.onInputChange()})}},e.prototype.focus=function(){var t=this;this.hasFocus=!0,setTimeout(function(){t.input.focus(),t.setCursor(t.getValue().length)})},e.prototype.blur=function(){this.hasFocus&&this.input.blur()},e.prototype.keydown=function(e){var n=this;switch(e.keyCode||e.which){case 9:this.justPressedTab?this.blur():this.magicBox.hasSuggestions()&&e.preventDefault(),this.justPressedTab=!0;break;default:e.stopPropagation(),this.justPressedTab=!1,null==this.onkeydown||this.onkeydown(e.keyCode||e.which)?t.requestAnimationFrame(function(){n.onInputChange()}):e.preventDefault()}},e.prototype.keyup=function(t){switch(t.keyCode||t.which){case 9:this.tabPress();break;case 37:case 39:this.onchangecursor();break;default:null==this.onkeydown||this.onkeyup(t.keyCode||t.which)?this.onInputChange():t.preventDefault()}},e.prototype.tabPress=function(){null!=this.wordCompletion&&(this.input.value=this.wordCompletion),this.ontabpress&&this.ontabpress(),this.magicBox.showSuggestion()},e.prototype.onInputChange=function(){this.result.input!=this.input.value&&this.onchange(this.input.value,!1)},e.prototype.getValue=function(){return this.input.value},e.prototype.getWordCompletion=function(){return this.wordCompletion},e}();t.InputManager=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(){function e(e,n){var s=this;this.element=e,this.options=_.defaults(n,{selectableClass:"magic-box-suggestion",selectedClass:"magic-box-selected"}),void 0==this.options.timeout&&(this.options.timeout=500),this.hasSuggestions=!1,this.element.onmouseover=function(e){if(t.$$(e.target).hasClass(s.options.selectableClass)){for(var n=s.element.getElementsByClassName(s.options.selectedClass),i=0;i<n.length;i++){var o=n.item(i);t.$$(o).removeClass(s.options.selectedClass)}t.$$(e.target).addClass(s.options.selectedClass)}},this.element.onmouseout=function(e){t.$$(e.target).hasClass(s.options.selectableClass)&&t.$$(e.target).removeClass(s.options.selectedClass)}}return e.prototype.moveDown=function(){var e=this.element.getElementsByClassName(this.options.selectedClass).item(0),n=this.element.getElementsByClassName(this.options.selectableClass),s=-1;if(null!=e){t.$$(e).removeClass(this.options.selectedClass);for(var i=0;i<n.length;i++)if(e==n.item(i)){s=i;break}s=s==-1?0:s+1}else s=0;return e=n.item(s),null!=e&&t.$$(e).addClass(this.options.selectedClass),this.returnMoved(e)},e.prototype.moveUp=function(){var e=this.element.getElementsByClassName(this.options.selectedClass).item(0),n=this.element.getElementsByClassName(this.options.selectableClass),s=-1;if(null!=e){t.$$(e).removeClass(this.options.selectedClass);for(var i=0;i<n.length;i++)if(e==n.item(i)){s=i;break}s=s==-1?n.length-1:s-1}else s=n.length-1;return e=n.item(s),null!=e&&t.$$(e).addClass(this.options.selectedClass),this.returnMoved(e)},e.prototype.returnMoved=function(e){if(null!=e){if(e.suggestion)return e.suggestion;if(e["no-text-suggestion"])return null;if(e instanceof HTMLElement)return{text:t.$$(e).text()}}return null},e.prototype.select=function(){var e=this.element.getElementsByClassName(this.options.selectedClass).item(0);return null!=e&&t.$$(e).trigger("keyboardSelect"),e},e.prototype.mergeSuggestions=function(t,e){var n,s=this,i=[];t=_.compact(t);var o=this.pendingSuggestion=new Promise(function(e,r){_.each(t,function(t){var e=!1;setTimeout(function(){e=!0},s.options.timeout),t.then(function(t){!e&&t&&(i=i.concat(t))})});var u=function(){n&&clearTimeout(n),0==i.length?e([]):o==s.pendingSuggestion||null==s.pendingSuggestion?e(i.sort(function(t,e){return e.index-t.index})):r("new request queued")};0==t.length&&u(),void 0==t&&u(),n=setTimeout(function(){u()},s.options.timeout),Promise.all(t).then(function(){return u()})});o.then(function(t){return e&&e(t),s.updateSuggestions(t),t})["catch"](function(){return null})},e.prototype.updateSuggestions=function(e){var n=this;this.element.innerHTML="",this.element.className="magic-box-suggestions",_.each(e,function(e){var s=e.dom;if(s){t.$$(s).removeClass(n.options.selectedClass);var i=t.$$(s).find("."+n.options.selectableClass);t.$$(i).removeClass(n.options.selectedClass)}else{if(s=document.createElement("div"),s.className="magic-box-suggestion",null!=e.html)s.innerHTML=e.html;else if(null!=e.text)s.appendChild(document.createTextNode(e.text));else if(null!=e.separator){s.className="magic-box-suggestion-seperator";var o=document.createElement("div");o.className="magic-box-suggestion-seperator-label",o.appendChild(document.createTextNode(e.separator)),s.appendChild(o)}t.$$(s).on("click",function(){e.onSelect()}),t.$$(s).on("keyboardSelect",function(){e.onSelect()}),t.$$(s).addClass(n.options.selectableClass)}s.suggestion=e,n.element.appendChild(s)}),e.length>0?(t.$$(this.element).addClass("magic-box-hasSuggestion"),this.hasSuggestions=!0):(t.$$(this.element).removeClass("magic-box-hasSuggestion"),this.hasSuggestions=!1)},e}();t.SuggestionsManager=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e;!function(e){function n(t){return t.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g,"\\$&")}function s(t,e,s,o,r){if(void 0===s&&(s=!1),void 0===o&&(o="magic-box-hightlight"),void 0===r&&(r=""),0==e.length)return t;var u=n(e),a="("+u+")|(.*?(?="+u+")|.+)",l=new RegExp(a,s?"gi":"g");return t.replace(l,function(t,e,n){return i(null!=e?o:r,t)})}var i=function(t,e){return'<span class="'+t+'">'+_.escape(e)+"</span>"};e.highlightText=s;var o=function(){function e(t){this.el=t}return e.prototype.text=function(t){return t?void(void 0!=this.el.innerText?this.el.innerText=t:void 0!=this.el.textContent&&(this.el.textContent=t)):this.el.innerText||this.el.textContent},e.prototype.nodeListToArray=function(t){for(var e=t.length,n=new Array(e);e--;)n[e]=t.item(e);return n},e.prototype.empty=function(){for(;this.el.firstChild;)this.el.removeChild(this.el.firstChild)},e.prototype.show=function(){this.el.style.display="visible"},e.prototype.hide=function(){this.el.style.display="none"},e.prototype.toggle=function(t){void 0===t?"visible"==this.el.style.display?this.hide():this.show():t?this.show():this.hide()},e.prototype.find=function(t){return this.el.querySelector(t)},e.prototype.is=function(t){return this.el.tagName.toLowerCase()==t.toLowerCase()||(!("."!=t[0]||!this.hasClass(t.substr(1)))||"#"==t[0]&&this.el.getAttribute("id")==t.substr(1))},e.prototype.closest=function(e){for(var n=this.el,s=!1;!s&&(t.$$(n).hasClass(e)&&(s=!0),"body"!=n.tagName.toLowerCase())&&null!=n.parentElement;)s||(n=n.parentElement);if(s)return n},e.prototype.findAll=function(t){return this.nodeListToArray(this.el.querySelectorAll(t))},e.prototype.findClass=function(t){return"getElementsByClassName"in this.el?this.nodeListToArray(this.el.getElementsByClassName(t)):this.nodeListToArray(this.el.querySelectorAll("."+t))},e.prototype.findId=function(t){return document.getElementById(t)},e.prototype.addClass=function(t){this.hasClass(t)||(this.el.className?this.el.className+=" "+t:this.el.className=t)},e.prototype.removeClass=function(t){this.el.className=this.el.className.replace(new RegExp("(^|\\s)"+t+"(\\s|\\b)","g"),"$1")},e.prototype.toggleClass=function(t,e){e?this.addClass(t):this.removeClass(t)},e.prototype.getClass=function(){return this.el.className.match(e.CLASS_NAME_REGEX)||[]},e.prototype.hasClass=function(t){return _.contains(this.getClass(),t)},e.prototype.detach=function(){this.el.parentElement&&this.el.parentElement.removeChild(this.el)},e.prototype.on=function(t,n){var s=this;if(_.isArray(t))_.each(t,function(t){s.on(t,n)});else{var i=this.getJQuery();if(i)i(this.el).on(t,n);else if(this.el.addEventListener){var o=function(t){n(t,t.detail)};e.handlers.push({eventHandle:n,fn:o}),this.el.addEventListener(t,o,!1)}else this.el.on&&this.el.on("on"+t,n)}},e.prototype.one=function(t,e){var n=this;if(_.isArray(t))_.each(t,function(t){n.one(t,e)});else{var s=function(i){return n.off(t,s),e(i)};this.on(t,s)}},e.prototype.off=function(t,n){var s=this;if(_.isArray(t))_.each(t,function(t){s.off(t,n)});else{var i=this.getJQuery();if(i)i(this.el).off(t,n);else if(this.el.removeEventListener){var o=0,r=_.find(e.handlers,function(t,e){if(t.eventHandle==n)return o=e,!0});r&&(this.el.removeEventListener(t,r.fn,!1),e.handlers.splice(o,1))}else this.el.off&&this.el.off("on"+t,n)}},e.prototype.trigger=function(t,e){var n=this.getJQuery();if(n)n(this.el).trigger(t,e);else if(void 0!==CustomEvent){var s=new CustomEvent(t,{detail:e,bubbles:!0});this.el.dispatchEvent(s)}},e.prototype.isEmpty=function(){return e.ONLY_WHITE_SPACE_REGEX.test(this.el.innerHTML)},e.prototype.isDescendant=function(t){for(var e=this.el.parentNode;null!=e;){if(e==t)return!0;e=e.parentNode}return!1},e.prototype.getJQuery=function(){return void 0!=window.jQuery&&window.jQuery},e.CLASS_NAME_REGEX=/-?[_a-zA-Z]+[_a-zA-Z0-9-]*/g,e.ONLY_WHITE_SPACE_REGEX=/^\s*$/,e.handlers=[],e}();e.Dom=o}(e=t.Utils||(t.Utils={}))}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){t.$$=function(e){return window.Coveo&&window.Coveo.$$?window.Coveo.$$(e):new t.Utils.Dom(e)}}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e;!function(e){function n(t,e,n,s){_.each(s.expressions,function(e){_.contains(t,e)||t.push(e)}),_.each(s.basicExpressions,function(t){_.contains(e,t)||e.push(t)}),_.each(s.grammars,function(t,e){if(e in n){if(!_.isArray(n[e])||!_.isArray(t))throw _.each(t,function(t){n[e].push(t)}),"Can not merge "+e+"("+new String(t)+" => "+new String(n[e])+")";_.each(t,function(t){n[e].push(t)})}else n[e]=t})}function s(){for(var t=[],e=0;e<arguments.length;e++)t[e-0]=arguments[e];for(var s=[],i=[],o={Start:["Expressions","Empty"],Expressions:"[OptionalSpaces][Expression][ExpressionsList*][OptionalSpaces]",ExpressionsList:"[Spaces][Expression]",Expression:s,BasicExpression:i,OptionalSpaces:/ */,Spaces:/ +/,Empty:/(?!.)/},r=0;r<t.length;r++)n(s,i,o,t[r]),_.each(t[r].include,function(e){_.contains(t,e)||t.push(e)});return s.push("BasicExpression"),{start:"Start",expressions:o}}function i(){for(var e=[],n=0;n<arguments.length;n++)e[n-0]=arguments[n];var i=s.apply(this,e);return new t.Grammar(i.start,i.expressions)}e.Expressions=s,e.ExpressionsGrammar=i}(e=t.Grammars||(t.Grammars={}))}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e;!function(e){e.notWordStart=" ()[],$@'\"",e.notInWord=" ()[],:",e.Basic={basicExpressions:["Word","DoubleQuoted"],grammars:{DoubleQuoted:'"[NotDoubleQuote]"',NotDoubleQuote:/[^"]*/,SingleQuoted:"'[NotSingleQuote]'",NotSingleQuote:/[^']*/,Number:/[0-9]+/,Word:function(n,s,i){var o=new RegExp("[^"+e.notWordStart.replace(/(.)/g,"\\$1")+"][^"+e.notInWord.replace(/(.)/g,"\\$1")+"]*"),r=n.match(o);null!=r&&0!=r.index&&(r=null);var u=new t.Result(null!=r?r[0]:null,i,n);return u.isSuccess()&&s&&n.length>u.value.length?new t.EndOfInputResult(u):u}}}}(e=t.Grammars||(t.Grammars={}))}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e;!function(t){t.SubExpression={basicExpressions:["SubExpression"],grammars:{SubExpression:"([Expressions])"}}}(e=t.Grammars||(t.Grammars={}))}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e;!function(t){t.Date={grammars:{Date:"[DateYear]/[DateMonth]/[DateDay]",DateYear:/([0-9]{4})/,DateMonth:/(1[0-2]|0?[1-9])/,DateDay:/([1-2][0-9]|3[0-1]|0?[1-9])/,DateRange:"[Date][Spaces?]..[Spaces?][Date]",DateRelative:["DateRelativeNegative","DateRelativeTerm"],DateRelativeTerm:/now|today|yesterday/,DateRelativeNegative:"[DateRelativeTerm][DateRelativeNegativeRef]",DateRelativeNegativeRef:/([\-\+][0-9]+(s|m|h|d|mo|y))/},include:[t.Basic]}}(e=t.Grammars||(t.Grammars={}))}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e;!function(t){t.Field={basicExpressions:["FieldSimpleQuery","FieldQuery","Field"],grammars:{FieldQuery:"[Field][OptionalSpaces][FieldQueryOperation]",FieldQueryOperation:["FieldQueryValue","FieldQueryNumeric"],FieldQueryValue:"[FieldOperator][OptionalSpaces][FieldValue]",FieldQueryNumeric:"[FieldOperatorNumeric][OptionalSpaces][FieldValueNumeric]",FieldSimpleQuery:"[FieldName]:[OptionalSpaces][FieldValue]",Field:"@[FieldName]",FieldName:/[a-zA-Z][a-zA-Z0-9\.\_]*/,FieldOperator:/==|=|<>/,FieldOperatorNumeric:/<=|>=|<|>/,FieldValue:["DateRange","NumberRange","DateRelative","Date","Number","FieldValueList","FieldValueString"],FieldValueNumeric:["DateRelative","Date","Number"],FieldValueString:["DoubleQuoted","FieldValueNotQuoted"],FieldValueList:"([FieldValueString][FieldValueStringList*])",FieldValueStringList:"[FieldValueSeparator][FieldValueString]",FieldValueSeparator:/ *, */,FieldValueNotQuoted:/[^ \(\),]+/,NumberRange:"[Number][Spaces?]..[Spaces?][Number]"},include:[t.Date,t.Basic]}}(e=t.Grammars||(t.Grammars={}))}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e;!function(t){t.QueryExtension={basicExpressions:["QueryExtension"],grammars:{QueryExtension:"$[QueryExtensionName]([QueryExtensionArguments])",QueryExtensionName:/\w+/,QueryExtensionArguments:"[QueryExtensionArgumentList*][QueryExtensionArgument]",QueryExtensionArgumentList:"[QueryExtensionArgument][Spaces?],[Spaces?]",QueryExtensionArgument:"[QueryExtensionArgumentName]:[Spaces?][QueryExtensionArgumentValue]",QueryExtensionArgumentName:/\w+/,QueryExtensionArgumentValue:["SingleQuoted","Expressions"]},include:[t.Basic]}}(e=t.Grammars||(t.Grammars={}))}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e;!function(t){t.NestedQuery={basicExpressions:["NestedQuery"],grammars:{NestedQuery:"[[NestedField][OptionalSpaces][Expressions]]",NestedField:"[[Field]]",FieldValue:["NestedQuery"]},include:[t.Field]}}(e=t.Grammars||(t.Grammars={}))}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e;!function(t){t.Complete={include:[t.NestedQuery,t.QueryExtension,t.SubExpression,t.Field,t.Basic]}}(e=t.Grammars||(t.Grammars={}))}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){function e(t,e,n){return new s(t,e,n)}function n(t){return"requestAnimationFrame"in window?window.requestAnimationFrame(t):setTimeout(t)}var s=function(){function e(e,n,s){var i=this;void 0===s&&(s={}),this.element=e,this.grammar=n,this.options=s,this.lastSuggestions=[],_.isUndefined(this.options.inline)&&(this.options.inline=!1),t.$$(e).addClass("magic-box"),this.options.inline&&t.$$(e).addClass("magic-box-inline"),this.result=this.grammar.parse(""),this.displayedResult=this.result.clean(),this.clearDom=document.createElement("div"),this.clearDom.className="magic-box-clear",this.element.appendChild(this.clearDom);var o=document.createElement("div");o.className="magic-box-icon",this.clearDom.appendChild(o);var r=document.createElement("div");r.className="magic-box-input",e.appendChild(r),this.inputManager=new t.InputManager(r,function(t,e){e?(i.setText(t),i.onselect&&i.onselect(i.getFirstSuggestionText())):(i.setText(t),i.showSuggestion(),i.onchange&&i.onchange())},this),this.inputManager.ontabpress=function(){i.ontabpress&&i.ontabpress()},this.inputManager.setResult(this.displayedResult);var u=document.createElement("div");u.className="magic-box-suggestions",this.element.appendChild(u),this.suggestionsManager=new t.SuggestionsManager(u,{selectableClass:this.options.selectableSuggestionClass,selectedClass:this.options.selectedSuggestionClass,timeout:this.options.suggestionTimeout}),this.setupHandler()}return e.prototype.getResult=function(){return this.result},e.prototype.getDisplayedResult=function(){return this.displayedResult},e.prototype.setText=function(e){t.$$(this.element).toggleClass("magic-box-notEmpty",e.length>0),this.result=this.grammar.parse(e),this.displayedResult=this.result.clean(),this.inputManager.setResult(this.displayedResult)},e.prototype.setCursor=function(t){this.inputManager.setCursor(t);
+	/* WEBPACK VAR INJECTION */(function(_) {var __extends=this&&this.__extends||function(t,e){function n(){this.constructor=t}for(var s in e)e.hasOwnProperty(s)&&(t[s]=e[s]);t.prototype=null===e?Object.create(e):(n.prototype=e.prototype,new n)},Coveo;!function(t){var e;!function(t){var e=function(){function e(t,e,n){var s=this;this.expression=e,this.input=n,_.isString(t)?this.value=t:_.isArray(t)&&(this.subResults=t,_.forEach(this.subResults,function(t){t.parent=s}))}return e.prototype.isSuccess=function(){return null!=this.value||null!=this.subResults&&_.all(this.subResults,function(t){return t.isSuccess()})},e.prototype.path=function(t){var e=null!=this.parent&&this.parent!=t?this.parent.path(t):[];return e.push(this),e},e.prototype.findParent=function(t){for(var e=this,n=_.isString(t)?function(e){return t==e.expression.id}:t;null!=e&&!n(e);)e=e.parent;return e},e.prototype.find=function(t){var e=_.isString(t)?function(e){return t==e.expression.id}:t;if(e(this))return this;if(this.subResults)for(var n=0;n<this.subResults.length;n++){var s=this.subResults[n].find(e);if(s)return s}return null},e.prototype.findAll=function(t){var e=[],n=_.isString(t)?function(e){return t==e.expression.id}:t;return n(this)&&e.push(this),this.subResults&&(e=_.reduce(this.subResults,function(t,e){return t.concat(e.findAll(n))},e)),e},e.prototype.resultAt=function(t,e){if(t<0||t>this.getLength())return[];if(null!=e){if(_.isString(e)){if(e==this.expression.id)return[this]}else if(e(this))return[this]}else{var n=null==this.value&&null==this.subResults?this.input:this.value;if(null!=n)return[this]}if(null!=this.subResults){for(var s=[],i=0;i<this.subResults.length;i++){var o=this.subResults[i];if(s=s.concat(o.resultAt(t,e)),t-=o.getLength(),t<0)break}return s}return[]},e.prototype.getExpect=function(){return null==this.value&&null==this.subResults?[this]:null!=this.subResults?_.reduce(this.subResults,function(t,e){return t.concat(e.getExpect())},[]):[]},e.prototype.getBestExpect=function(){var t=this.getExpect(),e=_.groupBy(t,function(t){return t.input}),n=_.last(_.keys(e).sort(function(t,e){return e.length-t.length})),s=e[n],e=_.groupBy(s,function(t){return t.expression.id});return _.map(e,function(t){return _.chain(t).map(function(t){return{path:t.path().length,result:t}}).sortBy("path").pluck("result").first().value()})},e.prototype.getHumanReadableExpect=function(){var t=this.getBestExpect(),e=t.length>0?_.last(t).input:"";return"Expected "+_.map(t,function(t){return t.getHumanReadable()}).join(" or ")+" but "+(e.length>0?JSON.stringify(e[0]):"end of input")+" found."},e.prototype.before=function(){if(null==this.parent)return"";var t=_.indexOf(this.parent.subResults,this);return this.parent.before()+_.chain(this.parent.subResults).first(t).map(function(t){return t.toString()}).join("").value()},e.prototype.after=function(){if(null==this.parent)return"";var t=_.indexOf(this.parent.subResults,this);return _.chain(this.parent.subResults).last(this.parent.subResults.length-t-1).map(function(t){return t.toString()}).join("").value()+this.parent.after()},e.prototype.getLength=function(){return null!=this.value?this.value.length:null!=this.subResults?_.reduce(this.subResults,function(t,e){return t+e.getLength()},0):this.input.length},e.prototype.toHtmlElement=function(){var t=document.createElement("span"),e=null!=this.expression?this.expression.id:null;if(null!=e){var n=document.createAttribute("data-id");n.value=e,t.setAttributeNode(n)}var s=document.createAttribute("data-success");if(s.value=this.isSuccess().toString(),t.setAttributeNode(s),null!=this.value){t.appendChild(document.createTextNode(this.value));var i=document.createAttribute("data-value");i.value=this.value,t.setAttributeNode(i)}else if(null!=this.subResults)_.each(this.subResults,function(e){t.appendChild(e.toHtmlElement())});else{t.appendChild(document.createTextNode(this.input));var o=document.createAttribute("data-input");o.value=this.input,t.setAttributeNode(o),t.className="magic-box-error"+(this.input.length>0?"":" magic-box-error-empty")}return t.result=this,t},e.prototype.clean=function(t){if(null!=t||!this.isSuccess()){t=t||_.last(this.getBestExpect()).path(this);var n=_.first(t);if(null!=n){var s=_.indexOf(this.subResults,n),i=s==-1?[]:_.map(_.first(this.subResults,s),function(t){return t.clean()});return i.push(n.clean(_.rest(t))),new e(i,this.expression,this.input)}return new e(null,this.expression,this.input)}return null!=this.value?new e(this.value,this.expression,this.input):null!=this.subResults?new e(_.map(this.subResults,function(t){return t.clean()}),this.expression,this.input):void 0},e.prototype.clone=function(){return null!=this.value?new e(this.value,this.expression,this.input):null!=this.subResults?new e(_.map(this.subResults,function(t){return t.clone()}),this.expression,this.input):new e(null,this.expression,this.input)},e.prototype.toString=function(){return null!=this.value?this.value:null!=this.subResults?_.map(this.subResults,function(t){return t.toString()}).join(""):this.input},e.prototype.getHumanReadable=function(){return this.expression instanceof t.ExpressionConstant?JSON.stringify(this.expression.value):this.expression.id},e}();t.Result=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(e){function n(n){e.call(this,[n],t.ExpressionEndOfInput,n.input);var s=new t.Result(null,t.ExpressionEndOfInput,n.input.substr(n.getLength()));s.parent=this,this.subResults.push(s)}return __extends(n,e),n}(t.Result);t.EndOfInputResult=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(e){function n(t,n,s,i){var o=this;e.call(this,null!=t?[t]:null,n,s),this.result=t,this.expression=n,this.input=s,this.failAttempt=i,_.forEach(this.failAttempt,function(t){t.parent=o})}return __extends(n,e),n.prototype.getExpect=function(){var t=this,e=[];return null!=this.result&&(e=this.result.getExpect()),e=_.reduce(this.failAttempt,function(t,e){return t.concat(e.getExpect())},e),e.length>0&&_.all(e,function(e){return e.input==t.input})?[this]:e},n.prototype.clean=function(e){if(null!=e||!this.isSuccess()){e=_.rest(e||_.last(this.getBestExpect()).path(this));var n=_.first(e);return null==n?new t.Result(null,this.expression,this.input):new t.Result([n.clean(_.rest(e))],this.expression,this.input)}return new t.Result(_.map(this.result.subResults,function(t){return t.clean()}),this.expression,this.input)},n}(t.Result);t.OptionResult=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(e){function n(t,n,s,i){e.call(this,t,n,s),this.results=t,this.expression=n,this.input=s,_.last(t)!=i&&(this.failAttempt=i,null!=this.failAttempt&&(this.failAttempt.parent=this))}return __extends(n,e),n.prototype.getExpect=function(){var t=e.prototype.getExpect.call(this);return null!=this.failAttempt?t.concat(this.failAttempt.getExpect()):t},n.prototype.clean=function(n){if(null!=this.failAttempt&&(null!=n||!this.isSuccess())){n=n||_.last(this.getBestExpect()).path(this);var s=_.first(n);if(null!=s&&s==this.failAttempt){var i=_.last(this.subResults),o=_.map(null!=i&&i.isSuccess()?this.subResults:_.initial(this.subResults),function(t){return t.clean()});return o.push(s.clean(_.rest(n))),new t.Result(o,this.expression,this.input)}}return e.prototype.clean.call(this,n)},n}(t.Result);t.RefResult=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(){function e(t,e){this.value=t,this.id=e}return e.prototype.parse=function(e,n){var s=0==e.indexOf(this.value),i=new t.Result(s?this.value:null,this,e);return s&&n&&e.length>this.value.length?new t.EndOfInputResult(i):i},e.prototype.toString=function(){return this.value},e}();t.ExpressionConstant=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){t.ExpressionEndOfInput={id:"end of input",parse:null}}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(){function t(t,e,n){this.func=t,this.id=e,this.grammar=n}return t.prototype.parse=function(t,e){return this.func(t,e,this)},t.prototype.toString=function(){return this.id},t}();t.ExpressionFunction=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(){function e(t,e){if(this.parts=t,this.id=e,0==t.length)throw JSON.stringify(e)+" should have at least 1 parts"}return e.prototype.parse=function(e,n){for(var s,i=[],o=e,r=0;r<this.parts.length;r++){var u=this.parts[r];if(s=u.parse(o,n&&r==this.parts.length-1),i.push(s),!s.isSuccess())break;o=o.substr(s.getLength())}return new t.Result(i,this,e)},e.prototype.toString=function(){return this.id},e}();t.ExpressionList=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(){function e(t,e){this.parts=t,this.id=e}return e.prototype.parse=function(e,n){for(var s=[],i=0;i<this.parts.length;i++){var o=this.parts[i].parse(e,n);if(o.isSuccess())return new t.OptionResult(o,this,e,s);s.push(o)}return new t.OptionResult(null,this,e,s)},e.prototype.toString=function(){return this.id},e}();t.ExpressionOptions=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(){function e(t,e,n,s){this.ref=t,this.occurrence=e,this.id=n,this.grammar=s}return e.prototype.parse=function(t,e){var n=this.grammar.getExpression(this.ref);if(null==n)throw"Expression not found:"+this.ref;return"?"==this.occurrence||null==this.occurrence?this.parseOnce(t,e,n):this.parseMany(t,e,n)},e.prototype.parseOnce=function(e,n,s){var i=s.parse(e,n),o=i.isSuccess();return o||"?"!=this.occurrence?new t.RefResult([i],this,e,o?null:i):n?0==e.length?new t.RefResult([],this,e,i):_.all(i.getBestExpect(),function(e){return e.expression==t.ExpressionEndOfInput})?new t.RefResult([new t.Result(null,t.ExpressionEndOfInput,e)],this,e,i):i:new t.RefResult([],this,e,null)},e.prototype.parseMany=function(e,n,s){var i,o,r=[],u=e;do i=s.parse(u,!1),o=i.isSuccess(),o&&(r.push(i),u=u.substr(i.getLength()));while(o&&i.input!=u);var a=_.isNumber(this.occurrence)?this.occurrence:"+"==this.occurrence?1:0;if(r.length<a)r.push(i);else if(n)if(r.length>0){var l=_.last(r);i=s.parse(l.input,!0),i.isSuccess()?r[r.length-1]=i:(r.push(new t.Result(null,t.ExpressionEndOfInput,l.input.substr(l.getLength()))),i=s.parse(l.input.substr(l.getLength()),!0))}else if(0!=e.length){var c=new t.Result(null,t.ExpressionEndOfInput,e);return new t.RefResult([c],this,e,i)}return new t.RefResult(r,this,e,i)},e.prototype.toString=function(){return this.id},e}();t.ExpressionRef=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(){function e(t,e,n){this.value=t,this.id=e}return e.prototype.parse=function(e,n){var s=e.match(this.value);null!=s&&0!=s.index&&(s=null);var i=new t.Result(null!=s?s[0]:null,this,e);return i.isSuccess()&&n&&e.length>i.value.length?new t.EndOfInputResult(i):i},e.prototype.toString=function(){return this.id},e}();t.ExpressionRegExp=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(){function e(e,n){void 0===n&&(n={}),this.expressions={},this.start=new t.ExpressionRef(e,null,"start",this),this.addExpressions(n)}return e.prototype.addExpressions=function(t){var e=this;_.each(t,function(t,n){e.addExpression(n,t)})},e.prototype.addExpression=function(t,n){if(t in this.expressions)throw"Grammar already contain the id:"+t;this.expressions[t]=e.buildExpression(n,t,this)},e.prototype.getExpression=function(t){return this.expressions[t]},e.prototype.parse=function(t){return this.start.parse(t,!0)},e.buildExpression=function(e,n,s){var i=typeof e;if("undefined"==i)throw"Invalid Expression: "+e;if(_.isString(e))return this.buildStringExpression(e,n,s);if(_.isArray(e))return new t.ExpressionOptions(_.map(e,function(e,i){return new t.ExpressionRef(e,null,n+"_"+i,s)}),n);if(_.isRegExp(e))return new t.ExpressionRegExp(e,n,s);if(_.isFunction(e))return new t.ExpressionFunction(e,n,s);throw"Invalid Expression: "+e},e.buildStringExpression=function(n,s,i){var o=e.stringMatch(n,e.spliter),r=_.map(o,function(e,n){if(e[1]){var o=e[1],r=e[3]?Number(e[3]):e[2]||null;return new t.ExpressionRef(o,r,s+"_"+n,i)}return new t.ExpressionConstant(e[4],s+"_"+n)});if(1==r.length){var u=r[0];return u.id=s,u}return new t.ExpressionList(r,s)},e.stringMatch=function(t,e){for(var n,s=[],i=new RegExp(e.source,"g");null!==(n=i.exec(t));)s.push(n);return s},e.spliter=/\[(\w+)(\*|\+|\?|\{([1-9][0-9]*)\})?\]|(.[^\[]*)/,e}();t.Grammar=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(){function e(t,e,n){this.element=t,this.onchange=e,this.magicBox=n,this.hasFocus=!1,this.justPressedTab=!1,this.underlay=document.createElement("div"),this.underlay.className="magic-box-underlay",t.appendChild(this.underlay),this.highlightContainer=document.createElement("span"),this.highlightContainer.className="magic-box-highlight-container",this.underlay.appendChild(this.highlightContainer),this.ghostTextContainer=document.createElement("span"),this.ghostTextContainer.className="magic-box-ghost-text",this.underlay.appendChild(this.ghostTextContainer),this.input=document.createElement("input"),this.input.spellcheck=!1,this.input.setAttribute("form","coveo-dummy-form"),this.input.setAttribute("autocomplete","off"),t.appendChild(this.input),this.setupHandler()}return e.prototype.updateInput=function(){this.input.value!=this.result.input&&(this.input.value=this.result.input,this.hasFocus&&this.setCursor(this.getValue().length))},e.prototype.updateHighlight=function(){this.highlightContainer.innerHTML="",this.highlightContainer.appendChild(this.result.toHtmlElement())},e.prototype.updateWordCompletion=function(){this.ghostTextContainer.innerHTML="",null!=this.wordCompletion&&this.ghostTextContainer.appendChild(document.createTextNode(this.wordCompletion.substr(this.result.input.length)))},e.prototype.updateScroll=function(e){var n=this;void 0===e&&(e=!0);var s=function(){n.underlay.clientWidth<n.underlay.scrollWidth&&(n.underlay.style.visibility="hidden",n.underlay.scrollLeft=n.input.scrollLeft,n.underlay.scrollTop=n.input.scrollTop,n.underlay.style.visibility="visible"),n.updateScrollDefer=null,n.hasFocus&&n.updateScroll()};e?null==this.updateScrollDefer&&(this.updateScrollDefer=t.requestAnimationFrame(s)):s()},e.prototype.setResult=function(t,e){this.result=t,this.updateInput(),this.updateHighlight(),_.isUndefined(e)&&null!=this.wordCompletion&&0==this.wordCompletion.indexOf(this.result.input)?this.updateWordCompletion():this.setWordCompletion(e),this.updateScroll()},e.prototype.setWordCompletion=function(t){null!=t&&0!=t.toLowerCase().indexOf(this.result.input.toLowerCase())&&(t=null),this.wordCompletion=t,this.updateWordCompletion(),this.updateScroll()},e.prototype.setCursor=function(t){if(this.input.focus(),this.input.createTextRange){var e=this.input.createTextRange();e.move("character",t),e.select()}else null!=this.input.selectionStart&&(this.input.focus(),this.input.setSelectionRange(t,t))},e.prototype.getCursor=function(){return this.input.selectionStart},e.prototype.setupHandler=function(){var t=this;this.input.onblur=function(){t.hasFocus=!1,setTimeout(function(){t.hasFocus||t.onblur&&t.onblur()},300),t.updateScroll()},this.input.onfocus=function(){t.hasFocus||(t.hasFocus=!0,t.updateScroll(),t.onfocus&&t.onfocus())},this.input.onkeydown=function(e){t.keydown(e)},this.input.onkeyup=function(e){t.keyup(e)},this.input.onclick=function(){t.onchangecursor()},this.input.select=function(){t.onchangecursor()},this.input.oncut=function(){setTimeout(function(){t.onInputChange()})},this.input.onpaste=function(){setTimeout(function(){t.onInputChange()})}},e.prototype.focus=function(){var t=this;this.hasFocus=!0,setTimeout(function(){t.input.focus(),t.setCursor(t.getValue().length)})},e.prototype.blur=function(){this.hasFocus&&this.input.blur()},e.prototype.keydown=function(e){var n=this;switch(e.keyCode||e.which){case 9:this.justPressedTab?this.blur():this.magicBox.hasSuggestions()&&e.preventDefault(),this.justPressedTab=!0;break;default:e.stopPropagation(),this.justPressedTab=!1,null==this.onkeydown||this.onkeydown(e.keyCode||e.which)?t.requestAnimationFrame(function(){n.onInputChange()}):e.preventDefault()}},e.prototype.keyup=function(t){switch(t.keyCode||t.which){case 9:this.tabPress();break;case 37:case 39:this.onchangecursor();break;default:null==this.onkeydown||this.onkeyup(t.keyCode||t.which)?this.onInputChange():t.preventDefault()}},e.prototype.tabPress=function(){null!=this.wordCompletion&&(this.input.value=this.wordCompletion),this.ontabpress&&this.ontabpress(),this.magicBox.showSuggestion()},e.prototype.onInputChange=function(){this.result.input!=this.input.value&&this.onchange(this.input.value,!1)},e.prototype.getValue=function(){return this.input.value},e.prototype.getWordCompletion=function(){return this.wordCompletion},e}();t.InputManager=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e=function(){function e(e,n){var s=this;this.element=e,this.options=_.defaults(n,{selectableClass:"magic-box-suggestion",selectedClass:"magic-box-selected"}),void 0==this.options.timeout&&(this.options.timeout=500),this.hasSuggestions=!1,this.element.onmouseover=function(e){if(t.$$(e.target).hasClass(s.options.selectableClass)){for(var n=s.element.getElementsByClassName(s.options.selectedClass),i=0;i<n.length;i++){var o=n.item(i);t.$$(o).removeClass(s.options.selectedClass)}t.$$(e.target).addClass(s.options.selectedClass)}},this.element.onmouseout=function(e){t.$$(e.target).hasClass(s.options.selectableClass)&&t.$$(e.target).removeClass(s.options.selectedClass)}}return e.prototype.moveDown=function(){var e=this.element.getElementsByClassName(this.options.selectedClass).item(0),n=this.element.getElementsByClassName(this.options.selectableClass),s=-1;if(null!=e){t.$$(e).removeClass(this.options.selectedClass);for(var i=0;i<n.length;i++)if(e==n.item(i)){s=i;break}s=s==-1?0:s+1}else s=0;return e=n.item(s),null!=e&&t.$$(e).addClass(this.options.selectedClass),this.returnMoved(e)},e.prototype.moveUp=function(){var e=this.element.getElementsByClassName(this.options.selectedClass).item(0),n=this.element.getElementsByClassName(this.options.selectableClass),s=-1;if(null!=e){t.$$(e).removeClass(this.options.selectedClass);for(var i=0;i<n.length;i++)if(e==n.item(i)){s=i;break}s=s==-1?n.length-1:s-1}else s=n.length-1;return e=n.item(s),null!=e&&t.$$(e).addClass(this.options.selectedClass),this.returnMoved(e)},e.prototype.returnMoved=function(e){if(null!=e){if(e.suggestion)return e.suggestion;if(e["no-text-suggestion"])return null;if(e instanceof HTMLElement)return{text:t.$$(e).text()}}return null},e.prototype.select=function(){var e=this.element.getElementsByClassName(this.options.selectedClass).item(0);return null!=e&&t.$$(e).trigger("keyboardSelect"),e},e.prototype.mergeSuggestions=function(t,e){var n,s=this,i=[];t=_.compact(t);var o=this.pendingSuggestion=new Promise(function(e,r){_.each(t,function(t){var e=!1;setTimeout(function(){e=!0},s.options.timeout),t.then(function(t){!e&&t&&(i=i.concat(t))})});var u=function(){n&&clearTimeout(n),0==i.length?e([]):o==s.pendingSuggestion||null==s.pendingSuggestion?e(i.sort(function(t,e){return e.index-t.index})):r("new request queued")};0==t.length&&u(),void 0==t&&u(),n=setTimeout(function(){u()},s.options.timeout),Promise.all(t).then(function(){return u()})});o.then(function(t){return e&&e(t),s.updateSuggestions(t),t})["catch"](function(){return null})},e.prototype.updateSuggestions=function(e){var n=this;this.element.innerHTML="",this.element.className="magic-box-suggestions",_.each(e,function(e){var s=e.dom;if(s){t.$$(s).removeClass(n.options.selectedClass);var i=t.$$(s).find("."+n.options.selectableClass);t.$$(i).removeClass(n.options.selectedClass)}else{if(s=document.createElement("div"),s.className="magic-box-suggestion",null!=e.html)s.innerHTML=e.html;else if(null!=e.text)s.appendChild(document.createTextNode(e.text));else if(null!=e.separator){s.className="magic-box-suggestion-seperator";var o=document.createElement("div");o.className="magic-box-suggestion-seperator-label",o.appendChild(document.createTextNode(e.separator)),s.appendChild(o)}t.$$(s).on("click",function(){e.onSelect()}),t.$$(s).on("keyboardSelect",function(){e.onSelect()}),t.$$(s).addClass(n.options.selectableClass)}s.suggestion=e,n.element.appendChild(s)}),e.length>0?(t.$$(this.element).addClass("magic-box-hasSuggestion"),this.hasSuggestions=!0):(t.$$(this.element).removeClass("magic-box-hasSuggestion"),this.hasSuggestions=!1)},e}();t.SuggestionsManager=e}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e;!function(e){function n(t){return t.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g,"\\$&")}function s(t,e,s,o,r){if(void 0===s&&(s=!1),void 0===o&&(o="magic-box-hightlight"),void 0===r&&(r=""),0==e.length)return t;var u=n(e),a="("+u+")|(.*?(?="+u+")|.+)",l=new RegExp(a,s?"gi":"g");return t.replace(l,function(t,e,n){return i(null!=e?o:r,t)})}var i=function(t,e){return'<span class="'+t+'">'+_.escape(e)+"</span>"};e.highlightText=s;var o=function(){function e(t){this.el=t}return e.prototype.text=function(t){return t?void(void 0!=this.el.innerText?this.el.innerText=t:void 0!=this.el.textContent&&(this.el.textContent=t)):this.el.innerText||this.el.textContent},e.prototype.nodeListToArray=function(t){for(var e=t.length,n=new Array(e);e--;)n[e]=t.item(e);return n},e.prototype.empty=function(){for(;this.el.firstChild;)this.el.removeChild(this.el.firstChild)},e.prototype.show=function(){this.el.style.display="visible"},e.prototype.hide=function(){this.el.style.display="none"},e.prototype.toggle=function(t){void 0===t?"visible"==this.el.style.display?this.hide():this.show():t?this.show():this.hide()},e.prototype.find=function(t){return this.el.querySelector(t)},e.prototype.is=function(t){return this.el.tagName.toLowerCase()==t.toLowerCase()||(!("."!=t[0]||!this.hasClass(t.substr(1)))||"#"==t[0]&&this.el.getAttribute("id")==t.substr(1))},e.prototype.closest=function(e){for(var n=this.el,s=!1;!s&&(t.$$(n).hasClass(e)&&(s=!0),"body"!=n.tagName.toLowerCase())&&null!=n.parentElement;)s||(n=n.parentElement);if(s)return n},e.prototype.findAll=function(t){return this.nodeListToArray(this.el.querySelectorAll(t))},e.prototype.findClass=function(t){return"getElementsByClassName"in this.el?this.nodeListToArray(this.el.getElementsByClassName(t)):this.nodeListToArray(this.el.querySelectorAll("."+t))},e.prototype.findId=function(t){return document.getElementById(t)},e.prototype.addClass=function(t){this.hasClass(t)||(this.el.className?this.el.className+=" "+t:this.el.className=t)},e.prototype.removeClass=function(t){this.el.className=this.el.className.replace(new RegExp("(^|\\s)"+t+"(\\s|\\b)","g"),"$1")},e.prototype.toggleClass=function(t,e){e?this.addClass(t):this.removeClass(t)},e.prototype.getClass=function(){return this.el.className.match(e.CLASS_NAME_REGEX)||[]},e.prototype.hasClass=function(t){return _.contains(this.getClass(),t)},e.prototype.detach=function(){this.el.parentElement&&this.el.parentElement.removeChild(this.el)},e.prototype.on=function(t,n){var s=this;if(_.isArray(t))_.each(t,function(t){s.on(t,n)});else{var i=this.getJQuery();if(i)i(this.el).on(t,n);else if(this.el.addEventListener){var o=function(t){n(t,t.detail)};e.handlers.push({eventHandle:n,fn:o}),this.el.addEventListener(t,o,!1)}else this.el.on&&this.el.on("on"+t,n)}},e.prototype.one=function(t,e){var n=this;if(_.isArray(t))_.each(t,function(t){n.one(t,e)});else{var s=function(i){return n.off(t,s),e(i)};this.on(t,s)}},e.prototype.off=function(t,n){var s=this;if(_.isArray(t))_.each(t,function(t){s.off(t,n)});else{var i=this.getJQuery();if(i)i(this.el).off(t,n);else if(this.el.removeEventListener){var o=0,r=_.find(e.handlers,function(t,e){if(t.eventHandle==n)return o=e,!0});r&&(this.el.removeEventListener(t,r.fn,!1),e.handlers.splice(o,1))}else this.el.off&&this.el.off("on"+t,n)}},e.prototype.trigger=function(t,e){var n=this.getJQuery();if(n)n(this.el).trigger(t,e);else if(void 0!==CustomEvent){var s=new CustomEvent(t,{detail:e,bubbles:!0});this.el.dispatchEvent(s)}},e.prototype.isEmpty=function(){return e.ONLY_WHITE_SPACE_REGEX.test(this.el.innerHTML)},e.prototype.isDescendant=function(t){for(var e=this.el.parentNode;null!=e;){if(e==t)return!0;e=e.parentNode}return!1},e.prototype.getJQuery=function(){return void 0!=window.jQuery&&window.jQuery},e.CLASS_NAME_REGEX=/-?[_a-zA-Z]+[_a-zA-Z0-9-]*/g,e.ONLY_WHITE_SPACE_REGEX=/^\s*$/,e.handlers=[],e}();e.Dom=o}(e=t.Utils||(t.Utils={}))}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){t.$$=function(e){return window.Coveo&&window.Coveo.$$?window.Coveo.$$(e):new t.Utils.Dom(e)}}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e;!function(e){function n(t,e,n,s){_.each(s.expressions,function(e){_.contains(t,e)||t.push(e)}),_.each(s.basicExpressions,function(t){_.contains(e,t)||e.push(t)}),_.each(s.grammars,function(t,e){if(e in n){if(!_.isArray(n[e])||!_.isArray(t))throw _.each(t,function(t){n[e].push(t)}),"Can not merge "+e+"("+new String(t)+" => "+new String(n[e])+")";_.each(t,function(t){n[e].push(t)})}else n[e]=t})}function s(){for(var t=[],e=0;e<arguments.length;e++)t[e-0]=arguments[e];for(var s=[],i=[],o={Start:["Expressions","Empty"],Expressions:"[OptionalSpaces][Expression][ExpressionsList*][OptionalSpaces]",ExpressionsList:"[Spaces][Expression]",Expression:s,BasicExpression:i,OptionalSpaces:/ */,Spaces:/ +/,Empty:/(?!.)/},r=0;r<t.length;r++)n(s,i,o,t[r]),_.each(t[r].include,function(e){_.contains(t,e)||t.push(e)});return s.push("BasicExpression"),{start:"Start",expressions:o}}function i(){for(var e=[],n=0;n<arguments.length;n++)e[n-0]=arguments[n];var i=s.apply(this,e);return new t.Grammar(i.start,i.expressions)}e.Expressions=s,e.ExpressionsGrammar=i}(e=t.Grammars||(t.Grammars={}))}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e;!function(e){e.notWordStart=" ()[],$@'\"",e.notInWord=" ()[],:",e.Basic={basicExpressions:["Word","DoubleQuoted"],grammars:{DoubleQuoted:'"[NotDoubleQuote]"',NotDoubleQuote:/[^"]*/,SingleQuoted:"'[NotSingleQuote]'",NotSingleQuote:/[^']*/,Number:/[0-9]+/,Word:function(n,s,i){var o=new RegExp("[^"+e.notWordStart.replace(/(.)/g,"\\$1")+"][^"+e.notInWord.replace(/(.)/g,"\\$1")+"]*"),r=n.match(o);null!=r&&0!=r.index&&(r=null);var u=new t.Result(null!=r?r[0]:null,i,n);return u.isSuccess()&&s&&n.length>u.value.length?new t.EndOfInputResult(u):u}}}}(e=t.Grammars||(t.Grammars={}))}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e;!function(t){t.SubExpression={basicExpressions:["SubExpression"],grammars:{SubExpression:"([Expressions])"}}}(e=t.Grammars||(t.Grammars={}))}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e;!function(t){t.Date={grammars:{Date:"[DateYear]/[DateMonth]/[DateDay]",DateYear:/([0-9]{4})/,DateMonth:/(1[0-2]|0?[1-9])/,DateDay:/([1-2][0-9]|3[0-1]|0?[1-9])/,DateRange:"[Date][Spaces?]..[Spaces?][Date]",DateRelative:["DateRelativeNegative","DateRelativeTerm"],DateRelativeTerm:/now|today|yesterday/,DateRelativeNegative:"[DateRelativeTerm][DateRelativeNegativeRef]",DateRelativeNegativeRef:/([\-\+][0-9]+(s|m|h|d|mo|y))/},include:[t.Basic]}}(e=t.Grammars||(t.Grammars={}))}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e;!function(t){t.Field={basicExpressions:["FieldSimpleQuery","FieldQuery","Field"],grammars:{FieldQuery:"[Field][OptionalSpaces][FieldQueryOperation]",FieldQueryOperation:["FieldQueryValue","FieldQueryNumeric"],FieldQueryValue:"[FieldOperator][OptionalSpaces][FieldValue]",FieldQueryNumeric:"[FieldOperatorNumeric][OptionalSpaces][FieldValueNumeric]",FieldSimpleQuery:"[FieldName]:[OptionalSpaces][FieldValue]",Field:"@[FieldName]",FieldName:/[a-zA-Z][a-zA-Z0-9\.\_]*/,FieldOperator:/==|=|<>/,FieldOperatorNumeric:/<=|>=|<|>/,FieldValue:["DateRange","NumberRange","DateRelative","Date","Number","FieldValueList","FieldValueString"],FieldValueNumeric:["DateRelative","Date","Number"],FieldValueString:["DoubleQuoted","FieldValueNotQuoted"],FieldValueList:"([FieldValueString][FieldValueStringList*])",FieldValueStringList:"[FieldValueSeparator][FieldValueString]",FieldValueSeparator:/ *, */,FieldValueNotQuoted:/[^ \(\),]+/,NumberRange:"[Number][Spaces?]..[Spaces?][Number]"},include:[t.Date,t.Basic]}}(e=t.Grammars||(t.Grammars={}))}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e;!function(t){t.QueryExtension={basicExpressions:["QueryExtension"],grammars:{QueryExtension:"$[QueryExtensionName]([QueryExtensionArguments])",QueryExtensionName:/\w+/,QueryExtensionArguments:"[QueryExtensionArgumentList*][QueryExtensionArgument]",QueryExtensionArgumentList:"[QueryExtensionArgument][Spaces?],[Spaces?]",QueryExtensionArgument:"[QueryExtensionArgumentName]:[Spaces?][QueryExtensionArgumentValue]",QueryExtensionArgumentName:/\w+/,QueryExtensionArgumentValue:["SingleQuoted","Expressions"]},include:[t.Basic]}}(e=t.Grammars||(t.Grammars={}))}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e;!function(t){t.NestedQuery={basicExpressions:["NestedQuery"],grammars:{NestedQuery:"[[NestedField][OptionalSpaces][Expressions]]",NestedField:"[[Field]]",FieldValue:["NestedQuery"]},include:[t.Field]}}(e=t.Grammars||(t.Grammars={}))}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){var e;!function(t){t.Complete={include:[t.NestedQuery,t.QueryExtension,t.SubExpression,t.Field,t.Basic]}}(e=t.Grammars||(t.Grammars={}))}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));var Coveo;!function(t){var e;!function(t){function e(t,e,n){return new s(t,e,n)}function n(t){return"requestAnimationFrame"in window?window.requestAnimationFrame(t):setTimeout(t)}var s=function(){function e(e,n,s){var i=this;void 0===s&&(s={}),this.element=e,this.grammar=n,this.options=s,this.lastSuggestions=[],_.isUndefined(this.options.inline)&&(this.options.inline=!1),t.$$(e).addClass("magic-box"),this.options.inline&&t.$$(e).addClass("magic-box-inline"),this.result=this.grammar.parse(""),this.displayedResult=this.result.clean(),this.clearDom=document.createElement("div"),this.clearDom.className="magic-box-clear",this.element.appendChild(this.clearDom);var o=document.createElement("div");o.className="magic-box-icon",this.clearDom.appendChild(o);var r=document.createElement("div");r.className="magic-box-input",e.appendChild(r),this.inputManager=new t.InputManager(r,function(t,e){e?(i.setText(t),i.onselect&&i.onselect(i.getFirstSuggestionText())):(i.setText(t),i.showSuggestion(),i.onchange&&i.onchange())},this),this.inputManager.ontabpress=function(){i.ontabpress&&i.ontabpress()},this.inputManager.setResult(this.displayedResult);var u=document.createElement("div");u.className="magic-box-suggestions",this.element.appendChild(u),this.suggestionsManager=new t.SuggestionsManager(u,{selectableClass:this.options.selectableSuggestionClass,selectedClass:this.options.selectedSuggestionClass,timeout:this.options.suggestionTimeout}),this.setupHandler()}return e.prototype.getResult=function(){return this.result},e.prototype.getDisplayedResult=function(){return this.displayedResult},e.prototype.setText=function(e){t.$$(this.element).toggleClass("magic-box-notEmpty",e.length>0),this.result=this.grammar.parse(e),this.displayedResult=this.result.clean(),this.inputManager.setResult(this.displayedResult)},e.prototype.setCursor=function(t){this.inputManager.setCursor(t);
 	},e.prototype.getCursor=function(){return this.inputManager.getCursor()},e.prototype.resultAtCursor=function(t){return this.displayedResult.resultAt(this.getCursor(),t)},e.prototype.setupHandler=function(){var e=this;this.inputManager.onblur=function(){t.$$(e.element).removeClass("magic-box-hasFocus"),e.onblur&&e.onblur(),e.options.inline||e.clearSuggestion()},this.inputManager.onfocus=function(){t.$$(e.element).addClass("magic-box-hasFocus"),e.showSuggestion(),e.onfocus&&e.onfocus()},this.inputManager.onkeydown=function(t){if(38==t||40==t)return!1;if(13==t){var n=e.suggestionsManager.select();return null==n&&e.onsubmit&&e.onsubmit(),!1}return 27==t&&(e.clearSuggestion(),e.blur()),!0},this.inputManager.onchangecursor=function(){e.showSuggestion()},this.inputManager.onkeyup=function(t){if(38==t)e.onmove&&e.onmove(),e.focusOnSuggestion(e.suggestionsManager.moveUp()),e.onchange&&e.onchange();else{if(40!=t)return!0;e.onmove&&e.onmove(),e.focusOnSuggestion(e.suggestionsManager.moveDown()),e.onchange&&e.onchange()}return!1},this.clearDom.onclick=function(){e.clear()}},e.prototype.showSuggestion=function(){var t=this;this.suggestionsManager.mergeSuggestions(null!=this.getSuggestions?this.getSuggestions():[],function(e){t.updateSuggestion(e)})},e.prototype.updateSuggestion=function(t){var e=this;this.lastSuggestions=t;var n=this.getFirstSuggestionText();this.inputManager.setWordCompletion(n&&n.text),this.onsuggestions&&this.onsuggestions(t),_.each(t,function(t){null==t.onSelect&&null!=t.text&&(t.onSelect=function(){e.setText(t.text),e.onselect&&e.onselect(t)})})},e.prototype.focus=function(){t.$$(this.element).addClass("magic-box-hasFocus"),this.inputManager.focus()},e.prototype.blur=function(){this.inputManager.blur()},e.prototype.clearSuggestion=function(){var t=this;this.suggestionsManager.mergeSuggestions([],function(e){t.updateSuggestion(e)}),this.inputManager.setWordCompletion(null)},e.prototype.focusOnSuggestion=function(t){null==t||null==t.text?(t=this.getFirstSuggestionText(),this.inputManager.setResult(this.displayedResult,t&&t.text)):this.inputManager.setResult(this.grammar.parse(t.text).clean(),t.text)},e.prototype.getFirstSuggestionText=function(){return _.find(this.lastSuggestions,function(t){return null!=t.text})},e.prototype.getText=function(){return this.inputManager.getValue()},e.prototype.getWordCompletion=function(){return this.inputManager.getWordCompletion()},e.prototype.clear=function(){this.setText(""),this.showSuggestion(),this.focus(),this.onclear&&this.onclear()},e.prototype.hasSuggestions=function(){return this.suggestionsManager.hasSuggestions},e}();t.Instance=s,t.create=e,t.requestAnimationFrame=n}(e=t.MagicBox||(t.MagicBox={}))}(Coveo||(Coveo={}));
 	
 	/*** EXPORTS FROM exports-loader ***/
 	module.exports = Coveo.MagicBox;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports) {
 
 	!function(){"use strict";var t,e,n="undefined",r="string",i=self.navigator,o=String,a=Object.prototype.hasOwnProperty,l={},u={},s=!1,f=!0,c=/^\s*application\/(?:vnd\.oftn\.|x-)?l10n\+json\s*(?:$|;)/i,p="locale",g="defaultLocale",h="toLocaleString",y="toLowerCase",v=Array.prototype.indexOf||function(t){for(var e=this.length,n=0;e>n;n++)if(n in this&&this[n]===t)return n;return-1},d=function(e){var n=new t;return n.open("GET",e,s),n.send(null),200!==n.status?(setTimeout(function(){var t=new Error("Unable to load localization data: "+e);throw t.name="Localization Error",t},0),{}):JSON.parse(n.responseText)},m=o[h]=function(t){if(arguments.length>0&&"number"!=typeof t)if(typeof t===r)m(d(t));else if(t===s)u={};else{var e,n,i;for(e in t)if(a.call(t,e)){if(n=t[e],e=e[y](),e in u&&n!==s||(u[e]={}),n===s)continue;if(typeof n===r){if(0!==o[p][y]().indexOf(e)){e in l||(l[e]=[]),l[e].push(n);continue}n=d(n)}for(i in n)a.call(n,i)&&(u[e][i]=n[i])}}return Function.prototype[h].apply(o,arguments)},w=function(t){for(var e,n=l[t],r=0,i=n.length;i>r;r++)e={},e[t]=d(n[r]),m(e);delete l[t]},b=o.prototype[h]=function(){var t,n=e,r=o[n?g:p],i=r[y]().split("-"),a=i.length,c=this.valueOf();e=s;do if(t=i.slice(0,a).join("-"),t in l&&w(t),t in u&&c in u[t])return u[t][c];while(a-->1);return!n&&o[g]?(e=f,b.call(c)):c};if(typeof XMLHttpRequest===n&&typeof ActiveXObject!==n){var L=ActiveXObject;t=function(){try{return new L("Msxml2.XMLHTTP.6.0")}catch(t){}try{return new L("Msxml2.XMLHTTP.3.0")}catch(e){}try{return new L("Msxml2.XMLHTTP")}catch(n){}throw new Error("XMLHttpRequest not supported by this browser.")}}else t=XMLHttpRequest;if(o[g]=o[g]||"",o[p]=i&&(i.language||i.userLanguage)||"",typeof document!==n)for(var T,M=document.getElementsByTagName("link"),O=M.length;O--;){var X=M[O],x=(X.getAttribute("rel")||"")[y]().split(/\s+/);c.test(X.type)&&(-1!==v.call(x,"localizations")?m(X.getAttribute("href")):-1!==v.call(x,"localization")&&(T={},T[(X.getAttribute("hreflang")||"")[y]()]=X.getAttribute("href"),m(T)))}}();
@@ -6905,29 +5364,29 @@ var playground =
 	module.exports = window.String.toLocaleString;
 
 /***/ },
-/* 31 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var analytics = __webpack_require__(32);
-	exports.analytics = analytics;
-	var SimpleAnalytics = __webpack_require__(37);
-	exports.SimpleAnalytics = SimpleAnalytics;
-	var history = __webpack_require__(33);
-	exports.history = history;
-	var donottrack = __webpack_require__(40);
-	exports.donottrack = donottrack;
-	var storage = __webpack_require__(34);
-	exports.storage = storage;
-
-
-/***/ },
 /* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var history_1 = __webpack_require__(33);
-	var detector_1 = __webpack_require__(35);
+	var analytics = __webpack_require__(33);
+	exports.analytics = analytics;
+	var SimpleAnalytics = __webpack_require__(38);
+	exports.SimpleAnalytics = SimpleAnalytics;
+	var history = __webpack_require__(34);
+	exports.history = history;
+	var donottrack = __webpack_require__(41);
+	exports.donottrack = donottrack;
+	var storage = __webpack_require__(35);
+	exports.storage = storage;
+
+
+/***/ },
+/* 33 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var history_1 = __webpack_require__(34);
+	var detector_1 = __webpack_require__(36);
 	exports.Version = 'v15';
 	exports.Endpoints = {
 	    default: 'https://usageanalytics.coveo.com',
@@ -7013,12 +5472,12 @@ var playground =
 
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var storage_1 = __webpack_require__(34);
-	var detector = __webpack_require__(35);
+	var storage_1 = __webpack_require__(35);
+	var detector = __webpack_require__(36);
 	exports.STORE_KEY = '__coveo.analytics.history';
 	exports.MAX_NUMBER_OF_HISTORY_ELEMENTS = 20;
 	exports.MIN_THRESHOLD_FOR_DUPLICATE_VALUE = 1000 * 60;
@@ -7104,12 +5563,12 @@ var playground =
 
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var detector = __webpack_require__(35);
-	var cookieutils_1 = __webpack_require__(36);
+	var detector = __webpack_require__(36);
+	var cookieutils_1 = __webpack_require__(37);
 	exports.preferredStorage = null;
 	function getAvailableStorage() {
 	    if (exports.preferredStorage) {
@@ -7154,7 +5613,7 @@ var playground =
 
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7196,7 +5655,7 @@ var playground =
 
 
 /***/ },
-/* 36 */
+/* 37 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7249,13 +5708,13 @@ var playground =
 
 
 /***/ },
-/* 37 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var analytics = __webpack_require__(32);
-	var objectassign_1 = __webpack_require__(38);
-	var utils_1 = __webpack_require__(39);
+	var analytics = __webpack_require__(33);
+	var objectassign_1 = __webpack_require__(39);
+	var utils_1 = __webpack_require__(40);
 	var SimpleAPI = (function () {
 	    function SimpleAPI() {
 	    }
@@ -7326,7 +5785,7 @@ var playground =
 
 
 /***/ },
-/* 38 */
+/* 39 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7367,7 +5826,7 @@ var playground =
 
 
 /***/ },
-/* 39 */
+/* 40 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7382,7 +5841,7 @@ var playground =
 
 
 /***/ },
-/* 40 */
+/* 41 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7392,42 +5851,41 @@ var playground =
 
 
 /***/ },
-/* 41 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var SearchEndpoint_1 = __webpack_require__(42);
-	var ComponentOptions_1 = __webpack_require__(51);
-	var DeviceUtils_1 = __webpack_require__(45);
+	var SearchEndpoint_1 = __webpack_require__(43);
+	var ComponentOptions_1 = __webpack_require__(52);
+	var DeviceUtils_1 = __webpack_require__(46);
 	var Dom_1 = __webpack_require__(3);
-	var DomUtils_1 = __webpack_require__(66);
-	var Assert_1 = __webpack_require__(7);
-	var QueryStateModel_1 = __webpack_require__(10);
-	var ComponentStateModel_1 = __webpack_require__(13);
-	var ComponentOptionsModel_1 = __webpack_require__(14);
-	var QueryController_1 = __webpack_require__(15);
-	var Model_1 = __webpack_require__(11);
-	var QueryEvents_1 = __webpack_require__(22);
-	var StandaloneSearchInterfaceEvents_1 = __webpack_require__(71);
-	var HistoryController_1 = __webpack_require__(72);
-	var LocalStorageHistoryController_1 = __webpack_require__(73);
-	var InitializationEvents_1 = __webpack_require__(57);
-	var NoopAnalyticsClient_1 = __webpack_require__(74);
-	var Utils_1 = __webpack_require__(4);
-	var RootComponent_1 = __webpack_require__(16);
-	var BaseComponent_1 = __webpack_require__(12);
-	var Debug_1 = __webpack_require__(75);
-	var HashUtils_1 = __webpack_require__(58);
-	var fastclick = __webpack_require__(79);
-	var jstz = __webpack_require__(80);
+	var DomUtils_1 = __webpack_require__(67);
+	var Assert_1 = __webpack_require__(8);
+	var QueryStateModel_1 = __webpack_require__(11);
+	var ComponentStateModel_1 = __webpack_require__(14);
+	var ComponentOptionsModel_1 = __webpack_require__(15);
+	var QueryController_1 = __webpack_require__(16);
+	var Model_1 = __webpack_require__(12);
+	var QueryEvents_1 = __webpack_require__(23);
+	var StandaloneSearchInterfaceEvents_1 = __webpack_require__(73);
+	var HistoryController_1 = __webpack_require__(74);
+	var LocalStorageHistoryController_1 = __webpack_require__(75);
+	var InitializationEvents_1 = __webpack_require__(58);
+	var NoopAnalyticsClient_1 = __webpack_require__(76);
+	var Utils_1 = __webpack_require__(6);
+	var RootComponent_1 = __webpack_require__(17);
+	var BaseComponent_1 = __webpack_require__(13);
+	var Debug_1 = __webpack_require__(77);
+	var HashUtils_1 = __webpack_require__(59);
+	var FastClick = __webpack_require__(81);
+	var timezone = __webpack_require__(82);
 	var SentryLogger_1 = __webpack_require__(83);
-	var AnalyticsActionListMeta_1 = __webpack_require__(59);
-	var _ = __webpack_require__(5);
+	var AnalyticsActionListMeta_1 = __webpack_require__(60);
 	/**
 	 * This component is the root and main component of your search interface.<br/>
 	 * You should place every other component inside this component.<br/>
@@ -7446,55 +5904,52 @@ var playground =
 	     * @param _window The window object for the search interface. Used for unit tests, which can pass a mock. Default is the global window object.
 	     */
 	    function SearchInterface(element, options, analyticsOptions, _window) {
+	        var _this = this;
 	        if (_window === void 0) { _window = window; }
-	        var _this = _super.call(this, element, SearchInterface.ID) || this;
-	        _this.element = element;
-	        _this.options = options;
-	        _this.analyticsOptions = analyticsOptions;
-	        _this.isNewDesignAttribute = false;
+	        _super.call(this, element, SearchInterface.ID);
+	        this.element = element;
+	        this.options = options;
+	        this.analyticsOptions = analyticsOptions;
+	        this.isNewDesignAttribute = false;
 	        if (DeviceUtils_1.DeviceUtils.isMobileDevice()) {
 	            Dom_1.$$(document.body).addClass('coveo-mobile-device');
 	        }
-	        // The definition file for fastclick does not match the way that fast click gets loaded (AMD)
-	        if (fastclick.attach) {
-	            fastclick.attach(element);
-	        }
-	        _this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, SearchInterface, options);
+	        FastClick.attach(element);
+	        this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, SearchInterface, options);
 	        Assert_1.Assert.exists(element);
-	        Assert_1.Assert.exists(_this.options);
-	        if (_this.options.hideUntilFirstQuery) {
-	            _this.showAndHideFirstQueryAnimation();
+	        Assert_1.Assert.exists(this.options);
+	        if (this.options.hideUntilFirstQuery) {
+	            this.showAndHideFirstQueryAnimation();
 	        }
-	        _this.root = element;
-	        _this.queryStateModel = new QueryStateModel_1.QueryStateModel(element);
-	        _this.componentStateModel = new ComponentStateModel_1.ComponentStateModel(element);
-	        _this.componentOptionsModel = new ComponentOptionsModel_1.ComponentOptionsModel(element);
-	        _this.usageAnalytics = _this.initializeAnalytics();
-	        _this.queryController = new QueryController_1.QueryController(element, _this.options, _this.usageAnalytics, _this);
-	        new SentryLogger_1.SentryLogger(_this.queryController);
-	        var eventName = _this.queryStateModel.getEventName(Model_1.Model.eventTypes.preprocess);
-	        Dom_1.$$(_this.element).on(eventName, function (e, args) { return _this.handlePreprocessQueryStateModel(args); });
-	        Dom_1.$$(_this.element).on(QueryEvents_1.QueryEvents.buildingQuery, function (e, args) { return _this.handleBuildingQuery(args); });
-	        Dom_1.$$(_this.element).on(QueryEvents_1.QueryEvents.querySuccess, function (e, args) { return _this.handleQuerySuccess(args); });
-	        Dom_1.$$(_this.element).on(QueryEvents_1.QueryEvents.queryError, function (e, args) { return _this.handleQueryError(args); });
-	        if (_this.options.enableHistory) {
-	            if (!_this.options.useLocalStorageForHistory) {
-	                new HistoryController_1.HistoryController(element, _window, _this.queryStateModel, _this.queryController);
+	        this.root = element;
+	        this.queryStateModel = new QueryStateModel_1.QueryStateModel(element);
+	        this.componentStateModel = new ComponentStateModel_1.ComponentStateModel(element);
+	        this.componentOptionsModel = new ComponentOptionsModel_1.ComponentOptionsModel(element);
+	        this.usageAnalytics = this.initializeAnalytics();
+	        this.queryController = new QueryController_1.QueryController(element, this.options, this.usageAnalytics, this);
+	        new SentryLogger_1.SentryLogger(this.queryController);
+	        var eventName = this.queryStateModel.getEventName(Model_1.Model.eventTypes.preprocess);
+	        Dom_1.$$(this.element).on(eventName, function (e, args) { return _this.handlePreprocessQueryStateModel(args); });
+	        Dom_1.$$(this.element).on(QueryEvents_1.QueryEvents.buildingQuery, function (e, args) { return _this.handleBuildingQuery(args); });
+	        Dom_1.$$(this.element).on(QueryEvents_1.QueryEvents.querySuccess, function (e, args) { return _this.handleQuerySuccess(args); });
+	        Dom_1.$$(this.element).on(QueryEvents_1.QueryEvents.queryError, function (e, args) { return _this.handleQueryError(args); });
+	        if (this.options.enableHistory) {
+	            if (!this.options.useLocalStorageForHistory) {
+	                new HistoryController_1.HistoryController(element, _window, this.queryStateModel, this.queryController);
 	            }
 	            else {
-	                new LocalStorageHistoryController_1.LocalStorageHistoryController(element, _window, _this.queryStateModel, _this.queryController);
+	                new LocalStorageHistoryController_1.LocalStorageHistoryController(element, _window, this.queryStateModel, this.queryController);
 	            }
 	        }
 	        else {
-	            Dom_1.$$(_this.element).on(InitializationEvents_1.InitializationEvents.restoreHistoryState, function () { return _this.queryStateModel.setMultiple(_this.queryStateModel.defaultAttributes); });
+	            Dom_1.$$(this.element).on(InitializationEvents_1.InitializationEvents.restoreHistoryState, function () { return _this.queryStateModel.setMultiple(_this.queryStateModel.defaultAttributes); });
 	        }
-	        var eventNameQuickview = _this.queryStateModel.getEventName(Model_1.Model.eventTypes.changeOne + QueryStateModel_1.QueryStateModel.attributesEnum.quickview);
-	        Dom_1.$$(_this.element).on(eventNameQuickview, function (e, args) { return _this.handleQuickviewChanged(args); });
+	        var eventNameQuickview = this.queryStateModel.getEventName(Model_1.Model.eventTypes.changeOne + QueryStateModel_1.QueryStateModel.attributesEnum.quickview);
+	        Dom_1.$$(this.element).on(eventNameQuickview, function (e, args) { return _this.handleQuickviewChanged(args); });
 	        // shows the UI, since it's been hidden while loading
-	        _this.element.style.display = element.style.display || 'block';
-	        _this.setupDebugInfo();
-	        _this.isNewDesignAttribute = _this.root.getAttribute('data-design') == 'new';
-	        return _this;
+	        this.element.style.display = element.style.display || 'block';
+	        this.setupDebugInfo();
+	        this.isNewDesignAttribute = this.root.getAttribute('data-design') == 'new';
 	    }
 	    /**
 	     * Display the first query animation.<br/>
@@ -7800,140 +6255,140 @@ var playground =
 	            });
 	        }
 	    };
+	    SearchInterface.ID = 'SearchInterface';
+	    /**
+	     * The options for the search interface
+	     * @componentOptions
+	     */
+	    SearchInterface.options = {
+	        /**
+	         * Specifies whether your search interface allows users to navigate in the search history using the browser back/forward buttons.<br/>
+	         * When enabled, the search interface saves the state of the current query in the hash portion of the URL.<br/>
+	         * For example #q=foobar.<br/>
+	         * The default value is `false`.
+	         */
+	        enableHistory: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+	        /**
+	         * Specifies whether the UI should use an automatic responsive mode (eg : The tab(s) and facet(s) being placed automatically under the search box)<br/>
+	         * This can be disabled for design reasons, if it does not fit with the implementation needs.<br/>
+	         * The default value is `true`
+	         */
+	        enableAutomaticResponsiveMode: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+	        /**
+	         * Specifies that you wish to use the local storage of the browser to store the state of the interface.<br/>
+	         * This can be used for very specific purpose, and only if you know what you are doing.<br/>
+	         * Default value is `false`.
+	         */
+	        useLocalStorageForHistory: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+	        /**
+	         * Specifies the number of results that each page displays.<br/>
+	         * Default is 10.
+	         */
+	        resultsPerPage: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 10, min: 0 }),
+	        /**
+	         * Specifies the number of characters of the excerpt to get at query time and display for each query result.<br/>
+	         * This setting is global and can not be modified on a per result basis.<br/>
+	         * The default value is 200.
+	         */
+	        excerptLength: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 200, min: 0 }),
+	        /**
+	         * Specifies an expression to add to each query.<br/>
+	         * This should be use if you wish to add a global filter for your whole search interface that applies for all tabs.<br/>
+	         * Do not use this for security concern ... (It is JavaScript after all).<br/>
+	         * By default none is added.
+	         */
+	        expression: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: '' }),
+	        /**
+	         * Specifies the name of a field to use as a custom filter when executing the query (also referred to as 'folding').<br/>
+	         * Setting this option causes the index to return only one result having any particular value inside the filter field. Any other matching result is 'folded' inside the childResults member of each JSON query result.<br/>
+	         * This feature is typically used with threaded conversations to include only one top-level result per conversation. Thus, the field specified in this option typically is a value unique to each thread that is shared by all items (e.g.: posts, emails, etc.) in the thread.<br/>
+	         * This is obviously an advanced feature. Instead, look into using the {@link Folding} component, which covers a lot of different use cases.<br/>
+	         * By default none is added
+	         */
+	        filterField: ComponentOptions_1.ComponentOptions.buildFieldOption({ defaultValue: '' }),
+	        /**
+	         * Specifies whether the interface should display a loading animation before the first query has completed successfully.<br/>
+	         * Note that if you set autoTriggerQuery to false, this means that the loading animation will not go away automatically.<br/>
+	         * Default is true.
+	         */
+	        hideUntilFirstQuery: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+	        /**
+	         * Specifies the animation that you wish to use for your interface.<br/>
+	         * This can be a selector or an element that matches the correct CSS class.<br/>
+	         * Eg : firstLoadingAnimation : '.CustomFirstLoadingAnimation' / data-first-loading-animation='.CustomFirstLoadingAnimation'.</br>
+	         * Eg : &lt;element class='CoveoSearchInterface'&gt;&lt;element class='coveo-first-loading-animation'/&gt;&lt;/element&gt;<br/>
+	         * By default, this will be a Coveo CSS animation (which can also be customized with CSS).
+	         */
+	        firstLoadingAnimation: ComponentOptions_1.ComponentOptions.buildChildHtmlElementOption({
+	            childSelector: '.coveo-first-loading-animation',
+	            defaultFunction: function () { return DomUtils_1.DomUtils.getBasicLoadingAnimation(); }
+	        }),
+	        /**
+	         * Specifies whether the init function should trigger the first query automatically when the page is loaded.<br/>
+	         * Note that if you set this to false, then the hideUntilFirstQuery option still applies. This means that the animation will still show until a query is triggered.<br/>
+	         * Default is `true`.
+	         */
+	        autoTriggerQuery: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+	        endpoint: ComponentOptions_1.ComponentOptions.buildCustomOption(function (endpoint) { return endpoint != null && endpoint in SearchEndpoint_1.SearchEndpoint.endpoints ? SearchEndpoint_1.SearchEndpoint.endpoints[endpoint] : null; }, { defaultFunction: function () { return SearchEndpoint_1.SearchEndpoint.endpoints['default']; } }),
+	        /**
+	         * Specifies the timezone in which the search interface is loaded. This allows the index to recognize some special query syntax.<br/>
+	         * This must be an IANA zone info key (aka the Olson time zone database). For example : 'America/New_York'.<br/>
+	         * By default, we use a library that tries to detect the timezone automatically.<br/>
+	         */
+	        timezone: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultFunction: function () { return timezone.jstz.determine().name(); } }),
+	        /**
+	         * Specifies whether to enable the feature that allows users to ALT + double click on any results to get the Debug page with a detailed view of all the properties and fields for a given result.<br/>
+	         * This has no security concern (as all those informations are visible to users through the browser developer console or by calling the Coveo API directly).<br/>
+	         * The default value is `true`.
+	         */
+	        enableDebugInfo: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+	        /**
+	         * Specifies whether to enable the collaborative rating for the index and and include the user rating on each results to the normal index ranking.<br/>
+	         * If activated, this option can be leveraged with the {@link ResultRating} component.<br/>
+	         * The default value is `false`.
+	         */
+	        enableCollaborativeRating: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+	        /**
+	         * Specifies whether to filter duplicates on the search results.<br/>
+	         * When true, duplicates do not appear in search results, but they however are included in facet counts, which can be sometimes confusing for the users. This is a limitation of the index.<br/>
+	         * Example: The user narrows a query to one document that has a duplicate. Only one document appears in search results, but the facet count is 2.<br/>
+	         * The default value is `false`.
+	         */
+	        enableDuplicateFiltering: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+	        /**
+	         * Specifies the name of the query pipeline to use for the queries. If not specified, the default value is default, which means the default query pipeline will be used.<br/>
+	         * You can use this parameter when your index is in a Coveo Cloud organization where you created pipelines (see https://onlinehelp.coveo.com/en/cloud/creating_and_managing_query_pipelines.htm).<br/>
+	         * Default value is 'default'.
+	         */
+	        pipeline: ComponentOptions_1.ComponentOptions.buildStringOption(),
+	        /**
+	         * Specifies the maximum age in milliseconds that cached query results can have in order to be used (instead of performing a new query on the index).<br/>
+	         * If cached results are available but are older than the specified age, a new query will be performed on the index.<br/>
+	         * On high-volume public web sites, having a larger maximum age can greatly improve query response time at the cost of result freshness.<br/>
+	         * By default, the Coveo Search API will determine the cache length. This typically takes 15 minutes.
+	         */
+	        maximumAge: ComponentOptions_1.ComponentOptions.buildNumberOption(),
+	        /**
+	         * Specifies the search page you wish to navigate to when instantiating a standalone search box interface.<br/>
+	         * By default this is undefined, meaning the search interface will not redirect.
+	         */
+	        searchPageUri: ComponentOptions_1.ComponentOptions.buildStringOption()
+	    };
+	    SearchInterface.SMALL_INTERFACE_CLASS_NAME = 'coveo-small-search-interface';
 	    return SearchInterface;
 	}(RootComponent_1.RootComponent));
-	SearchInterface.ID = 'SearchInterface';
-	/**
-	 * The options for the search interface
-	 * @componentOptions
-	 */
-	SearchInterface.options = {
-	    /**
-	     * Specifies whether your search interface allows users to navigate in the search history using the browser back/forward buttons.<br/>
-	     * When enabled, the search interface saves the state of the current query in the hash portion of the URL.<br/>
-	     * For example #q=foobar.<br/>
-	     * The default value is `false`.
-	     */
-	    enableHistory: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-	    /**
-	     * Specifies whether the UI should use an automatic responsive mode (eg : The tab(s) and facet(s) being placed automatically under the search box)<br/>
-	     * This can be disabled for design reasons, if it does not fit with the implementation needs.<br/>
-	     * The default value is `true`
-	     */
-	    enableAutomaticResponsiveMode: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-	    /**
-	     * Specifies that you wish to use the local storage of the browser to store the state of the interface.<br/>
-	     * This can be used for very specific purpose, and only if you know what you are doing.<br/>
-	     * Default value is `false`.
-	     */
-	    useLocalStorageForHistory: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-	    /**
-	     * Specifies the number of results that each page displays.<br/>
-	     * Default is 10.
-	     */
-	    resultsPerPage: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 10, min: 0 }),
-	    /**
-	     * Specifies the number of characters of the excerpt to get at query time and display for each query result.<br/>
-	     * This setting is global and can not be modified on a per result basis.<br/>
-	     * The default value is 200.
-	     */
-	    excerptLength: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 200, min: 0 }),
-	    /**
-	     * Specifies an expression to add to each query.<br/>
-	     * This should be use if you wish to add a global filter for your whole search interface that applies for all tabs.<br/>
-	     * Do not use this for security concern ... (It is JavaScript after all).<br/>
-	     * By default none is added.
-	     */
-	    expression: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: '' }),
-	    /**
-	     * Specifies the name of a field to use as a custom filter when executing the query (also referred to as 'folding').<br/>
-	     * Setting this option causes the index to return only one result having any particular value inside the filter field. Any other matching result is 'folded' inside the childResults member of each JSON query result.<br/>
-	     * This feature is typically used with threaded conversations to include only one top-level result per conversation. Thus, the field specified in this option typically is a value unique to each thread that is shared by all items (e.g.: posts, emails, etc.) in the thread.<br/>
-	     * This is obviously an advanced feature. Instead, look into using the {@link Folding} component, which covers a lot of different use cases.<br/>
-	     * By default none is added
-	     */
-	    filterField: ComponentOptions_1.ComponentOptions.buildFieldOption({ defaultValue: '' }),
-	    /**
-	     * Specifies whether the interface should display a loading animation before the first query has completed successfully.<br/>
-	     * Note that if you set autoTriggerQuery to false, this means that the loading animation will not go away automatically.<br/>
-	     * Default is true.
-	     */
-	    hideUntilFirstQuery: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-	    /**
-	     * Specifies the animation that you wish to use for your interface.<br/>
-	     * This can be a selector or an element that matches the correct CSS class.<br/>
-	     * Eg : firstLoadingAnimation : '.CustomFirstLoadingAnimation' / data-first-loading-animation='.CustomFirstLoadingAnimation'.</br>
-	     * Eg : &lt;element class='CoveoSearchInterface'&gt;&lt;element class='coveo-first-loading-animation'/&gt;&lt;/element&gt;<br/>
-	     * By default, this will be a Coveo CSS animation (which can also be customized with CSS).
-	     */
-	    firstLoadingAnimation: ComponentOptions_1.ComponentOptions.buildChildHtmlElementOption({
-	        childSelector: '.coveo-first-loading-animation',
-	        defaultFunction: function () { return DomUtils_1.DomUtils.getBasicLoadingAnimation(); }
-	    }),
-	    /**
-	     * Specifies whether the init function should trigger the first query automatically when the page is loaded.<br/>
-	     * Note that if you set this to false, then the hideUntilFirstQuery option still applies. This means that the animation will still show until a query is triggered.<br/>
-	     * Default is `true`.
-	     */
-	    autoTriggerQuery: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-	    endpoint: ComponentOptions_1.ComponentOptions.buildCustomOption(function (endpoint) { return endpoint != null && endpoint in SearchEndpoint_1.SearchEndpoint.endpoints ? SearchEndpoint_1.SearchEndpoint.endpoints[endpoint] : null; }, { defaultFunction: function () { return SearchEndpoint_1.SearchEndpoint.endpoints['default']; } }),
-	    /**
-	     * Specifies the timezone in which the search interface is loaded. This allows the index to recognize some special query syntax.<br/>
-	     * This must be an IANA zone info key (aka the Olson time zone database). For example : 'America/New_York'.<br/>
-	     * By default, we use a library that tries to detect the timezone automatically.<br/>
-	     */
-	    timezone: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultFunction: function () { return jstz.determine().name(); } }),
-	    /**
-	     * Specifies whether to enable the feature that allows users to ALT + double click on any results to get the Debug page with a detailed view of all the properties and fields for a given result.<br/>
-	     * This has no security concern (as all those informations are visible to users through the browser developer console or by calling the Coveo API directly).<br/>
-	     * The default value is `true`.
-	     */
-	    enableDebugInfo: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-	    /**
-	     * Specifies whether to enable the collaborative rating for the index and and include the user rating on each results to the normal index ranking.<br/>
-	     * If activated, this option can be leveraged with the {@link ResultRating} component.<br/>
-	     * The default value is `false`.
-	     */
-	    enableCollaborativeRating: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-	    /**
-	     * Specifies whether to filter duplicates on the search results.<br/>
-	     * When true, duplicates do not appear in search results, but they however are included in facet counts, which can be sometimes confusing for the users. This is a limitation of the index.<br/>
-	     * Example: The user narrows a query to one document that has a duplicate. Only one document appears in search results, but the facet count is 2.<br/>
-	     * The default value is `false`.
-	     */
-	    enableDuplicateFiltering: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-	    /**
-	     * Specifies the name of the query pipeline to use for the queries. If not specified, the default value is default, which means the default query pipeline will be used.<br/>
-	     * You can use this parameter when your index is in a Coveo Cloud organization where you created pipelines (see https://onlinehelp.coveo.com/en/cloud/creating_and_managing_query_pipelines.htm).<br/>
-	     * Default value is 'default'.
-	     */
-	    pipeline: ComponentOptions_1.ComponentOptions.buildStringOption(),
-	    /**
-	     * Specifies the maximum age in milliseconds that cached query results can have in order to be used (instead of performing a new query on the index).<br/>
-	     * If cached results are available but are older than the specified age, a new query will be performed on the index.<br/>
-	     * On high-volume public web sites, having a larger maximum age can greatly improve query response time at the cost of result freshness.<br/>
-	     * By default, the Coveo Search API will determine the cache length. This typically takes 15 minutes.
-	     */
-	    maximumAge: ComponentOptions_1.ComponentOptions.buildNumberOption(),
-	    /**
-	     * Specifies the search page you wish to navigate to when instantiating a standalone search box interface.<br/>
-	     * By default this is undefined, meaning the search interface will not redirect.
-	     */
-	    searchPageUri: ComponentOptions_1.ComponentOptions.buildStringOption()
-	};
-	SearchInterface.SMALL_INTERFACE_CLASS_NAME = 'coveo-small-search-interface';
 	exports.SearchInterface = SearchInterface;
 	var StandaloneSearchInterface = (function (_super) {
 	    __extends(StandaloneSearchInterface, _super);
 	    function StandaloneSearchInterface(element, options, analyticsOptions, _window) {
+	        var _this = this;
 	        if (_window === void 0) { _window = window; }
-	        var _this = _super.call(this, element, ComponentOptions_1.ComponentOptions.initComponentOptions(element, StandaloneSearchInterface, options), analyticsOptions, _window) || this;
-	        _this.element = element;
-	        _this.options = options;
-	        _this.analyticsOptions = analyticsOptions;
-	        _this._window = _window;
-	        Dom_1.$$(_this.root).on(QueryEvents_1.QueryEvents.newQuery, function (e, args) { return _this.handleRedirect(e, args); });
-	        return _this;
+	        _super.call(this, element, ComponentOptions_1.ComponentOptions.initComponentOptions(element, StandaloneSearchInterface, options), analyticsOptions, _window);
+	        this.element = element;
+	        this.options = options;
+	        this.analyticsOptions = analyticsOptions;
+	        this._window = _window;
+	        Dom_1.$$(this.root).on(QueryEvents_1.QueryEvents.newQuery, function (e, args) { return _this.handleRedirect(e, args); });
 	    }
 	    StandaloneSearchInterface.prototype.handleRedirect = function (e, data) {
 	        var dataToSendOnBeforeRedirect = {
@@ -7974,38 +6429,38 @@ var playground =
 	    StandaloneSearchInterface.prototype.searchboxIsEmpty = function () {
 	        return Utils_1.Utils.isEmptyString(this.queryStateModel.get(QueryStateModel_1.QueryStateModel.attributesEnum.q));
 	    };
+	    StandaloneSearchInterface.ID = 'StandaloneSearchInterface';
+	    StandaloneSearchInterface.options = {
+	        redirectIfEmpty: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true })
+	    };
 	    return StandaloneSearchInterface;
 	}(SearchInterface));
-	StandaloneSearchInterface.ID = 'StandaloneSearchInterface';
-	StandaloneSearchInterface.options = {
-	    redirectIfEmpty: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true })
-	};
 	exports.StandaloneSearchInterface = StandaloneSearchInterface;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 42 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
 	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
 	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
 	    return c > 3 && r && Object.defineProperty(target, key, r), r;
 	};
-	var EndpointCaller_1 = __webpack_require__(43);
-	var Logger_1 = __webpack_require__(8);
-	var Assert_1 = __webpack_require__(7);
-	var Version_1 = __webpack_require__(46);
-	var AjaxError_1 = __webpack_require__(47);
-	var MissingAuthenticationError_1 = __webpack_require__(48);
-	var QueryUtils_1 = __webpack_require__(19);
-	var QueryError_1 = __webpack_require__(49);
-	var Utils_1 = __webpack_require__(4);
-	var es6_promise_1 = __webpack_require__(24);
-	var PromisesShim_1 = __webpack_require__(50);
-	var _ = __webpack_require__(5);
+	var EndpointCaller_1 = __webpack_require__(44);
+	var Logger_1 = __webpack_require__(9);
+	var Assert_1 = __webpack_require__(8);
+	var Version_1 = __webpack_require__(47);
+	var AjaxError_1 = __webpack_require__(48);
+	var MissingAuthenticationError_1 = __webpack_require__(49);
+	var QueryUtils_1 = __webpack_require__(20);
+	var QueryError_1 = __webpack_require__(50);
+	var Utils_1 = __webpack_require__(6);
+	var es6_promise_1 = __webpack_require__(25);
+	var PromisesShim_1 = __webpack_require__(51);
 	PromisesShim_1.shim();
 	var DefaultSearchEndpointOptions = (function () {
 	    function DefaultSearchEndpointOptions() {
@@ -8627,7 +7082,8 @@ var playground =
 	            return response.data;
 	        }).catch(function (error) {
 	            if (autoRenewToken && _this.canRenewAccessToken() && _this.isAccessTokenExpiredStatus(error.statusCode)) {
-	                _this.renewAccessToken().then(function () {
+	                _this.renewAccessToken()
+	                    .then(function () {
 	                    return _this.performOneCall(params, callOptions, autoRenewToken);
 	                })
 	                    .catch(function () {
@@ -8671,7 +7127,8 @@ var playground =
 	            _this.options.accessToken = token;
 	            _this.createEndpointCaller();
 	            return token;
-	        }).catch(function (e) {
+	        })
+	            .catch(function (e) {
 	            _this.logger.error('Failed to renew access token', e);
 	            return e;
 	        });
@@ -8691,123 +7148,123 @@ var playground =
 	    SearchEndpoint.prototype.isAccessTokenExpiredStatus = function (status) {
 	        return status == 419;
 	    };
+	    /**
+	     * A map of all the initialized endpoint.<br/>
+	     * eg : Coveo.SearchEndpoint.endpoints['default'] will return the default endpoint that was created at initialization
+	     * @type {{}}
+	     */
+	    SearchEndpoint.endpoints = {};
+	    __decorate([
+	        path('/login/'),
+	        accessTokenInUrl()
+	    ], SearchEndpoint.prototype, "getAuthenticationProviderUri", null);
+	    __decorate([
+	        path('/'),
+	        method('POST'),
+	        responseType('text')
+	    ], SearchEndpoint.prototype, "search", null);
+	    __decorate([
+	        path('/'),
+	        accessTokenInUrl()
+	    ], SearchEndpoint.prototype, "getExportToExcelLink", null);
+	    __decorate([
+	        path('/datastream'),
+	        accessTokenInUrl(),
+	        method('GET'),
+	        responseType('arraybuffer')
+	    ], SearchEndpoint.prototype, "getRawDataStream", null);
+	    __decorate([
+	        path('/datastream'),
+	        accessTokenInUrl()
+	    ], SearchEndpoint.prototype, "getViewAsDatastreamUri", null);
+	    __decorate([
+	        path('/document'),
+	        method('GET'),
+	        responseType('text')
+	    ], SearchEndpoint.prototype, "getDocument", null);
+	    __decorate([
+	        path('/text'),
+	        method('GET'),
+	        responseType('text')
+	    ], SearchEndpoint.prototype, "getDocumentText", null);
+	    __decorate([
+	        path('/html'),
+	        method('POST'),
+	        responseType('document')
+	    ], SearchEndpoint.prototype, "getDocumentHtml", null);
+	    __decorate([
+	        path('/html'),
+	        accessTokenInUrl()
+	    ], SearchEndpoint.prototype, "getViewAsHtmlUri", null);
+	    __decorate([
+	        path('/values'),
+	        method('POST'),
+	        responseType('text')
+	    ], SearchEndpoint.prototype, "batchFieldValues", null);
+	    __decorate([
+	        path('/values'),
+	        method('POST'),
+	        responseType('text')
+	    ], SearchEndpoint.prototype, "listFieldValues", null);
+	    __decorate([
+	        path('/fields'),
+	        method('GET'),
+	        responseType('text')
+	    ], SearchEndpoint.prototype, "listFields", null);
+	    __decorate([
+	        path('/extensions'),
+	        method('GET'),
+	        responseType('text')
+	    ], SearchEndpoint.prototype, "extensions", null);
+	    __decorate([
+	        path('/rating'),
+	        method('POST'),
+	        responseType('text')
+	    ], SearchEndpoint.prototype, "rateDocument", null);
+	    __decorate([
+	        path('/tag'),
+	        method('POST'),
+	        responseType('text')
+	    ], SearchEndpoint.prototype, "tagDocument", null);
+	    __decorate([
+	        path('/querySuggest'),
+	        method('GET'),
+	        responseType('text')
+	    ], SearchEndpoint.prototype, "getRevealQuerySuggest", null);
+	    __decorate([
+	        alertsPath('/subscriptions'),
+	        accessTokenInUrl('accessToken'),
+	        method('POST'),
+	        requestDataType('application/json'),
+	        responseType('text')
+	    ], SearchEndpoint.prototype, "follow", null);
+	    __decorate([
+	        alertsPath('/subscriptions'),
+	        accessTokenInUrl('accessToken'),
+	        method('GET'),
+	        requestDataType('application/json'),
+	        responseType('text')
+	    ], SearchEndpoint.prototype, "listSubscriptions", null);
+	    __decorate([
+	        alertsPath('/subscriptions/'),
+	        accessTokenInUrl('accessToken'),
+	        method('PUT'),
+	        requestDataType('application/json'),
+	        responseType('text')
+	    ], SearchEndpoint.prototype, "updateSubscription", null);
+	    __decorate([
+	        alertsPath('/subscriptions/'),
+	        accessTokenInUrl('accessToken'),
+	        method('DELETE'),
+	        requestDataType('application/json'),
+	        responseType('text')
+	    ], SearchEndpoint.prototype, "deleteSubscription", null);
+	    __decorate([
+	        path('/log'),
+	        method('POST')
+	    ], SearchEndpoint.prototype, "logError", null);
 	    return SearchEndpoint;
 	}());
-	/**
-	 * A map of all the initialized endpoint.<br/>
-	 * eg : Coveo.SearchEndpoint.endpoints['default'] will return the default endpoint that was created at initialization
-	 * @type {{}}
-	 */
-	SearchEndpoint.endpoints = {};
-	__decorate([
-	    path('/login/'),
-	    accessTokenInUrl()
-	], SearchEndpoint.prototype, "getAuthenticationProviderUri", null);
-	__decorate([
-	    path('/'),
-	    method('POST'),
-	    responseType('text')
-	], SearchEndpoint.prototype, "search", null);
-	__decorate([
-	    path('/'),
-	    accessTokenInUrl()
-	], SearchEndpoint.prototype, "getExportToExcelLink", null);
-	__decorate([
-	    path('/datastream'),
-	    accessTokenInUrl(),
-	    method('GET'),
-	    responseType('arraybuffer')
-	], SearchEndpoint.prototype, "getRawDataStream", null);
-	__decorate([
-	    path('/datastream'),
-	    accessTokenInUrl()
-	], SearchEndpoint.prototype, "getViewAsDatastreamUri", null);
-	__decorate([
-	    path('/document'),
-	    method('GET'),
-	    responseType('text')
-	], SearchEndpoint.prototype, "getDocument", null);
-	__decorate([
-	    path('/text'),
-	    method('GET'),
-	    responseType('text')
-	], SearchEndpoint.prototype, "getDocumentText", null);
-	__decorate([
-	    path('/html'),
-	    method('POST'),
-	    responseType('document')
-	], SearchEndpoint.prototype, "getDocumentHtml", null);
-	__decorate([
-	    path('/html'),
-	    accessTokenInUrl()
-	], SearchEndpoint.prototype, "getViewAsHtmlUri", null);
-	__decorate([
-	    path('/values'),
-	    method('POST'),
-	    responseType('text')
-	], SearchEndpoint.prototype, "batchFieldValues", null);
-	__decorate([
-	    path('/values'),
-	    method('POST'),
-	    responseType('text')
-	], SearchEndpoint.prototype, "listFieldValues", null);
-	__decorate([
-	    path('/fields'),
-	    method('GET'),
-	    responseType('text')
-	], SearchEndpoint.prototype, "listFields", null);
-	__decorate([
-	    path('/extensions'),
-	    method('GET'),
-	    responseType('text')
-	], SearchEndpoint.prototype, "extensions", null);
-	__decorate([
-	    path('/rating'),
-	    method('POST'),
-	    responseType('text')
-	], SearchEndpoint.prototype, "rateDocument", null);
-	__decorate([
-	    path('/tag'),
-	    method('POST'),
-	    responseType('text')
-	], SearchEndpoint.prototype, "tagDocument", null);
-	__decorate([
-	    path('/querySuggest'),
-	    method('GET'),
-	    responseType('text')
-	], SearchEndpoint.prototype, "getRevealQuerySuggest", null);
-	__decorate([
-	    alertsPath('/subscriptions'),
-	    accessTokenInUrl('accessToken'),
-	    method('POST'),
-	    requestDataType('application/json'),
-	    responseType('text')
-	], SearchEndpoint.prototype, "follow", null);
-	__decorate([
-	    alertsPath('/subscriptions'),
-	    accessTokenInUrl('accessToken'),
-	    method('GET'),
-	    requestDataType('application/json'),
-	    responseType('text')
-	], SearchEndpoint.prototype, "listSubscriptions", null);
-	__decorate([
-	    alertsPath('/subscriptions/'),
-	    accessTokenInUrl('accessToken'),
-	    method('PUT'),
-	    requestDataType('application/json'),
-	    responseType('text')
-	], SearchEndpoint.prototype, "updateSubscription", null);
-	__decorate([
-	    alertsPath('/subscriptions/'),
-	    accessTokenInUrl('accessToken'),
-	    method('DELETE'),
-	    requestDataType('application/json'),
-	    responseType('text')
-	], SearchEndpoint.prototype, "deleteSubscription", null);
-	__decorate([
-	    path('/log'),
-	    method('POST')
-	], SearchEndpoint.prototype, "logError", null);
 	exports.SearchEndpoint = SearchEndpoint;
 	// It's taken for granted that methods using decorators have :
 	// IEndpointCallOptions as their second to last parameter
@@ -8827,7 +7284,7 @@ var playground =
 	        descriptor.value = function () {
 	            var args = [];
 	            for (var _i = 0; _i < arguments.length; _i++) {
-	                args[_i] = arguments[_i];
+	                args[_i - 0] = arguments[_i];
 	            }
 	            var uri = this.buildBaseUri(path);
 	            if (args[nbParams - 1]) {
@@ -8857,7 +7314,7 @@ var playground =
 	        descriptor.value = function () {
 	            var args = [];
 	            for (var _i = 0; _i < arguments.length; _i++) {
-	                args[_i] = arguments[_i];
+	                args[_i - 0] = arguments[_i];
 	            }
 	            var uri = this.buildSearchAlertsUri(path);
 	            if (args[nbParams - 1]) {
@@ -8887,7 +7344,7 @@ var playground =
 	        descriptor.value = function () {
 	            var args = [];
 	            for (var _i = 0; _i < arguments.length; _i++) {
-	                args[_i] = arguments[_i];
+	                args[_i - 0] = arguments[_i];
 	            }
 	            if (args[nbParams - 1]) {
 	                args[nbParams - 1].requestDataType = type;
@@ -8917,7 +7374,7 @@ var playground =
 	        descriptor.value = function () {
 	            var args = [];
 	            for (var _i = 0; _i < arguments.length; _i++) {
-	                args[_i] = arguments[_i];
+	                args[_i - 0] = arguments[_i];
 	            }
 	            if (args[nbParams - 1]) {
 	                args[nbParams - 1].method = met;
@@ -8946,7 +7403,7 @@ var playground =
 	        descriptor.value = function () {
 	            var args = [];
 	            for (var _i = 0; _i < arguments.length; _i++) {
-	                args[_i] = arguments[_i];
+	                args[_i - 0] = arguments[_i];
 	            }
 	            if (args[nbParams - 1]) {
 	                args[nbParams - 1].responseType = resp;
@@ -8976,7 +7433,7 @@ var playground =
 	        descriptor.value = function () {
 	            var args = [];
 	            for (var _i = 0; _i < arguments.length; _i++) {
-	                args[_i] = arguments[_i];
+	                args[_i - 0] = arguments[_i];
 	            }
 	            var queryString = this.buildAccessToken(tokenKey);
 	            if (args[nbParams - 1]) {
@@ -8999,21 +7456,21 @@ var playground =
 	        return descriptor;
 	    };
 	}
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 43 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var Logger_1 = __webpack_require__(8);
-	var Assert_1 = __webpack_require__(7);
-	var TimeSpanUtils_1 = __webpack_require__(44);
-	var DeviceUtils_1 = __webpack_require__(45);
-	var Utils_1 = __webpack_require__(4);
-	var es6_promise_1 = __webpack_require__(24);
-	var JQueryutils_1 = __webpack_require__(6);
-	var _ = __webpack_require__(5);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var Logger_1 = __webpack_require__(9);
+	var Assert_1 = __webpack_require__(8);
+	var TimeSpanUtils_1 = __webpack_require__(45);
+	var DeviceUtils_1 = __webpack_require__(46);
+	var Utils_1 = __webpack_require__(6);
+	var es6_promise_1 = __webpack_require__(25);
+	var JQueryutils_1 = __webpack_require__(7);
 	// In ie8, XMLHttpRequest has no status property, so let's use this enum instead
 	var XMLHttpRequestStatus;
 	(function (XMLHttpRequestStatus) {
@@ -9356,18 +7813,19 @@ var playground =
 	        }
 	        return headers;
 	    };
+	    EndpointCaller.JSONP_ERROR_TIMEOUT = 10000;
 	    return EndpointCaller;
 	}());
-	EndpointCaller.JSONP_ERROR_TIMEOUT = 10000;
 	exports.EndpointCaller = EndpointCaller;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 44 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var Assert_1 = __webpack_require__(7);
+	var Assert_1 = __webpack_require__(8);
 	var TimeSpan = (function () {
 	    function TimeSpan(time, isMilliseconds) {
 	        if (isMilliseconds === void 0) { isMilliseconds = true; }
@@ -9423,7 +7881,7 @@ var playground =
 
 
 /***/ },
-/* 45 */
+/* 46 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9504,23 +7962,23 @@ var playground =
 
 
 /***/ },
-/* 46 */
+/* 47 */
 /***/ function(module, exports) {
 
 	"use strict";
 	exports.version = {
-	    'lib': '1.0.26-beta',
-	    'product': '1.0.26-beta',
+	    'lib': '1.2126.5-beta',
+	    'product': '1.2126.5-beta',
 	    'supportedApiVersion': 2
 	};
 
 
 /***/ },
-/* 47 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var Assert_1 = __webpack_require__(7);
+	var Assert_1 = __webpack_require__(8);
 	var AjaxError = (function () {
 	    function AjaxError(message, status) {
 	        this.message = message;
@@ -9535,7 +7993,7 @@ var playground =
 
 
 /***/ },
-/* 48 */
+/* 49 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9551,11 +8009,11 @@ var playground =
 
 
 /***/ },
-/* 49 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var Assert_1 = __webpack_require__(7);
+	var Assert_1 = __webpack_require__(8);
 	var QueryError = (function () {
 	    function QueryError(errorResponse) {
 	        this.status = errorResponse.statusCode;
@@ -9572,11 +8030,11 @@ var playground =
 
 
 /***/ },
-/* 50 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var es6_promise_1 = __webpack_require__(24);
+	var es6_promise_1 = __webpack_require__(25);
 	function shim() {
 	    es6_promise_1.Promise.prototype['finally'] = function finallyPolyfill(callback) {
 	        var constructor = this.constructor;
@@ -9616,22 +8074,20 @@ var playground =
 
 
 /***/ },
-/* 51 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var Assert_1 = __webpack_require__(7);
-	var Logger_1 = __webpack_require__(8);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var Assert_1 = __webpack_require__(8);
+	var Logger_1 = __webpack_require__(9);
 	var Dom_1 = __webpack_require__(3);
-	var TemplateCache_1 = __webpack_require__(52);
-	var TemplateList_1 = __webpack_require__(62);
-	var UnderscoreTemplate_1 = __webpack_require__(60);
-	var HtmlTemplate_1 = __webpack_require__(61);
-	var Utils_1 = __webpack_require__(4);
-	var Strings_1 = __webpack_require__(64);
-	var _ = __webpack_require__(5);
+	var TemplateCache_1 = __webpack_require__(53);
+	var TemplateList_1 = __webpack_require__(63);
+	var UnderscoreTemplate_1 = __webpack_require__(61);
+	var HtmlTemplate_1 = __webpack_require__(62);
+	var Utils_1 = __webpack_require__(6);
+	var Strings_1 = __webpack_require__(65);
 	;
-	var ComponentOptionsType;
 	(function (ComponentOptionsType) {
 	    ComponentOptionsType[ComponentOptionsType["BOOLEAN"] = 0] = "BOOLEAN";
 	    ComponentOptionsType[ComponentOptionsType["NUMBER"] = 1] = "NUMBER";
@@ -9652,7 +8108,8 @@ var playground =
 	    ComponentOptionsType[ComponentOptionsType["JSON"] = 16] = "JSON";
 	    ComponentOptionsType[ComponentOptionsType["JAVASCRIPT"] = 17] = "JAVASCRIPT";
 	    ComponentOptionsType[ComponentOptionsType["NONE"] = 18] = "NONE";
-	})(ComponentOptionsType = exports.ComponentOptionsType || (exports.ComponentOptionsType = {}));
+	})(exports.ComponentOptionsType || (exports.ComponentOptionsType = {}));
+	var ComponentOptionsType = exports.ComponentOptionsType;
 	var camelCaseToHyphenRegex = /([A-Z])|\W+(\w)/g;
 	var fieldsSeperator = /\s*,\s*/;
 	var localizer = /([a-zA-Z\-]+)\s*:\s*(([^,]|,\s*(?!([a-zA-Z\-]+)\s*:))+)/g;
@@ -10136,18 +8593,18 @@ var playground =
 	    return ComponentOptions;
 	}());
 	exports.ComponentOptions = ComponentOptions;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 52 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var Template_1 = __webpack_require__(53);
-	var Assert_1 = __webpack_require__(7);
-	var UnderscoreTemplate_1 = __webpack_require__(60);
-	var HtmlTemplate_1 = __webpack_require__(61);
-	var _ = __webpack_require__(5);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var Template_1 = __webpack_require__(54);
+	var Assert_1 = __webpack_require__(8);
+	var UnderscoreTemplate_1 = __webpack_require__(61);
+	var HtmlTemplate_1 = __webpack_require__(62);
 	/**
 	 * Holds a reference to all template available in the framework
 	 */
@@ -10258,28 +8715,28 @@ var playground =
 	            });
 	        });
 	    };
+	    TemplateCache.templates = {};
+	    TemplateCache.templateNames = [];
+	    TemplateCache.defaultTemplates = {};
 	    return TemplateCache;
 	}());
-	TemplateCache.templates = {};
-	TemplateCache.templateNames = [];
-	TemplateCache.defaultTemplates = {};
 	exports.TemplateCache = TemplateCache;
 	document.addEventListener('DOMContentLoaded', function () {
 	    TemplateCache.scanAndRegisterTemplates();
 	});
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 53 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var Logger_1 = __webpack_require__(8);
-	var StringUtils_1 = __webpack_require__(54);
-	var Initialization_1 = __webpack_require__(56);
-	var BaseComponent_1 = __webpack_require__(12);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var Logger_1 = __webpack_require__(9);
+	var StringUtils_1 = __webpack_require__(55);
+	var Initialization_1 = __webpack_require__(57);
+	var BaseComponent_1 = __webpack_require__(13);
 	var Dom_1 = __webpack_require__(3);
-	var _ = __webpack_require__(5);
 	var Template = (function () {
 	    function Template(dataToString, condition) {
 	        this.dataToString = dataToString;
@@ -10302,7 +8759,9 @@ var playground =
 	     * Instantiate the template to a string if the condition matches
 	     */
 	    Template.prototype.instantiateToString = function (object, checkCondition, options) {
+	        if (object === void 0) { object = {}; }
 	        if (checkCondition === void 0) { checkCondition = true; }
+	        if (options === void 0) { options = {}; }
 	        if (options) {
 	            object.options = options;
 	        }
@@ -10312,8 +8771,10 @@ var playground =
 	        return null;
 	    };
 	    Template.prototype.instantiateToElement = function (object, checkCondition, wrapInDiv, options) {
+	        if (object === void 0) { object = {}; }
 	        if (checkCondition === void 0) { checkCondition = true; }
 	        if (wrapInDiv === void 0) { wrapInDiv = true; }
+	        if (options === void 0) { options = {}; }
 	        var html = this.instantiateToString(object, checkCondition, options);
 	        if (html != null) {
 	            var element = Dom_1.$$('div', {}, html).el;
@@ -10338,17 +8799,17 @@ var playground =
 	    return Template;
 	}());
 	exports.Template = Template;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 54 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var Assert_1 = __webpack_require__(7);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var Assert_1 = __webpack_require__(8);
 	var Dom_1 = __webpack_require__(3);
-	var latinize = __webpack_require__(55);
-	var _ = __webpack_require__(5);
+	var latinize = __webpack_require__(56);
 	var StringUtils = (function () {
 	    function StringUtils() {
 	    }
@@ -10445,41 +8906,42 @@ var playground =
 	    StringUtils.latinize = function (str) {
 	        return latinize(str);
 	    };
+	    StringUtils.accented = {
+	        'A': /[Aa\xaa\xc0-\xc5\xe0-\xe5\u0100-\u0105\u01cd\u01ce\u0200-\u0203\u0226\u0227\u1d2c\u1d43\u1e00\u1e01\u1e9a\u1ea0-\u1ea3\u2090\u2100\u2101\u213b\u249c\u24b6\u24d0\u3371-\u3374\u3380-\u3384\u3388\u3389\u33a9-\u33af\u33c2\u33ca\u33df\u33ff\uff21\uff41]/g,
+	        'B': /[Bb\u1d2e\u1d47\u1e02-\u1e07\u212c\u249d\u24b7\u24d1\u3374\u3385-\u3387\u33c3\u33c8\u33d4\u33dd\uff22\uff42]/g,
+	        'C': /[Cc\xc7\xe7\u0106-\u010d\u1d9c\u2100\u2102\u2103\u2105\u2106\u212d\u216d\u217d\u249e\u24b8\u24d2\u3376\u3388\u3389\u339d\u33a0\u33a4\u33c4-\u33c7\uff23\uff43]/g,
+	        'D': /[Dd\u010e\u010f\u01c4-\u01c6\u01f1-\u01f3\u1d30\u1d48\u1e0a-\u1e13\u2145\u2146\u216e\u217e\u249f\u24b9\u24d3\u32cf\u3372\u3377-\u3379\u3397\u33ad-\u33af\u33c5\u33c8\uff24\uff44]/g,
+	        'E': /[Ee\xc8-\xcb\xe8-\xeb\u0112-\u011b\u0204-\u0207\u0228\u0229\u1d31\u1d49\u1e18-\u1e1b\u1eb8-\u1ebd\u2091\u2121\u212f\u2130\u2147\u24a0\u24ba\u24d4\u3250\u32cd\u32ce\uff25\uff45]/g,
+	        'F': /[Ff\u1da0\u1e1e\u1e1f\u2109\u2131\u213b\u24a1\u24bb\u24d5\u338a-\u338c\u3399\ufb00-\ufb04\uff26\uff46]/g,
+	        'G': /[Gg\u011c-\u0123\u01e6\u01e7\u01f4\u01f5\u1d33\u1d4d\u1e20\u1e21\u210a\u24a2\u24bc\u24d6\u32cc\u32cd\u3387\u338d-\u338f\u3393\u33ac\u33c6\u33c9\u33d2\u33ff\uff27\uff47]/g,
+	        'H': /[Hh\u0124\u0125\u021e\u021f\u02b0\u1d34\u1e22-\u1e2b\u1e96\u210b-\u210e\u24a3\u24bd\u24d7\u32cc\u3371\u3390-\u3394\u33ca\u33cb\u33d7\uff28\uff48]/g,
+	        'I': /[Ii\xcc-\xcf\xec-\xef\u0128-\u0130\u0132\u0133\u01cf\u01d0\u0208-\u020b\u1d35\u1d62\u1e2c\u1e2d\u1ec8-\u1ecb\u2071\u2110\u2111\u2139\u2148\u2160-\u2163\u2165-\u2168\u216a\u216b\u2170-\u2173\u2175-\u2178\u217a\u217b\u24a4\u24be\u24d8\u337a\u33cc\u33d5\ufb01\ufb03\uff29\uff49]/g,
+	        'J': /[Jj\u0132-\u0135\u01c7-\u01cc\u01f0\u02b2\u1d36\u2149\u24a5\u24bf\u24d9\u2c7c\uff2a\uff4a]/g,
+	        'K': /[Kk\u0136\u0137\u01e8\u01e9\u1d37\u1d4f\u1e30-\u1e35\u212a\u24a6\u24c0\u24da\u3384\u3385\u3389\u338f\u3391\u3398\u339e\u33a2\u33a6\u33aa\u33b8\u33be\u33c0\u33c6\u33cd-\u33cf\uff2b\uff4b]/g,
+	        'L': /[Ll\u0139-\u0140\u01c7-\u01c9\u02e1\u1d38\u1e36\u1e37\u1e3a-\u1e3d\u2112\u2113\u2121\u216c\u217c\u24a7\u24c1\u24db\u32cf\u3388\u3389\u33d0-\u33d3\u33d5\u33d6\u33ff\ufb02\ufb04\uff2c\uff4c]/g,
+	        'M': /[Mm\u1d39\u1d50\u1e3e-\u1e43\u2120\u2122\u2133\u216f\u217f\u24a8\u24c2\u24dc\u3377-\u3379\u3383\u3386\u338e\u3392\u3396\u3399-\u33a8\u33ab\u33b3\u33b7\u33b9\u33bd\u33bf\u33c1\u33c2\u33ce\u33d0\u33d4-\u33d6\u33d8\u33d9\u33de\u33df\uff2d\uff4d]/g,
+	        'N': /[Nn\xd1\xf1\u0143-\u0149\u01ca-\u01cc\u01f8\u01f9\u1d3a\u1e44-\u1e4b\u207f\u2115\u2116\u24a9\u24c3\u24dd\u3381\u338b\u339a\u33b1\u33b5\u33bb\u33cc\u33d1\uff2e\uff4e]/g,
+	        'O': /[Oo\xba\xd2-\xd6\xf2-\xf6\u014c-\u0151\u01a0\u01a1\u01d1\u01d2\u01ea\u01eb\u020c-\u020f\u022e\u022f\u1d3c\u1d52\u1ecc-\u1ecf\u2092\u2105\u2116\u2134\u24aa\u24c4\u24de\u3375\u33c7\u33d2\u33d6\uff2f\uff4f]/g,
+	        'P': /[Pp\u1d3e\u1d56\u1e54-\u1e57\u2119\u24ab\u24c5\u24df\u3250\u3371\u3376\u3380\u338a\u33a9-\u33ac\u33b0\u33b4\u33ba\u33cb\u33d7-\u33da\uff30\uff50]/g,
+	        'Q': /[Qq\u211a\u24ac\u24c6\u24e0\u33c3\uff31\uff51]/g,
+	        'R': /[Rr\u0154-\u0159\u0210-\u0213\u02b3\u1d3f\u1d63\u1e58-\u1e5b\u1e5e\u1e5f\u20a8\u211b-\u211d\u24ad\u24c7\u24e1\u32cd\u3374\u33ad-\u33af\u33da\u33db\uff32\uff52]/g,
+	        'S': /[Ss\u015a-\u0161\u017f\u0218\u0219\u02e2\u1e60-\u1e63\u20a8\u2101\u2120\u24ae\u24c8\u24e2\u33a7\u33a8\u33ae-\u33b3\u33db\u33dc\ufb06\uff33\uff53]/g,
+	        'T': /[Tt\u0162-\u0165\u021a\u021b\u1d40\u1d57\u1e6a-\u1e71\u1e97\u2121\u2122\u24af\u24c9\u24e3\u3250\u32cf\u3394\u33cf\ufb05\ufb06\uff34\uff54]/g,
+	        'U': /[Uu\xd9-\xdc\xf9-\xfc\u0168-\u0173\u01af\u01b0\u01d3\u01d4\u0214-\u0217\u1d41\u1d58\u1d64\u1e72-\u1e77\u1ee4-\u1ee7\u2106\u24b0\u24ca\u24e4\u3373\u337a\uff35\uff55]/g,
+	        'V': /[Vv\u1d5b\u1d65\u1e7c-\u1e7f\u2163-\u2167\u2173-\u2177\u24b1\u24cb\u24e5\u2c7d\u32ce\u3375\u33b4-\u33b9\u33dc\u33de\uff36\uff56]/g,
+	        'W': /[Ww\u0174\u0175\u02b7\u1d42\u1e80-\u1e89\u1e98\u24b2\u24cc\u24e6\u33ba-\u33bf\u33dd\uff37\uff57]/g,
+	        'X': /[Xx\u02e3\u1e8a-\u1e8d\u2093\u213b\u2168-\u216b\u2178-\u217b\u24b3\u24cd\u24e7\u33d3\uff38\uff58]/g,
+	        'Y': /[Yy\xdd\xfd\xff\u0176-\u0178\u0232\u0233\u02b8\u1e8e\u1e8f\u1e99\u1ef2-\u1ef9\u24b4\u24ce\u24e8\u33c9\uff39\uff59]/g,
+	        'Z': /[Zz\u0179-\u017e\u01f1-\u01f3\u1dbb\u1e90-\u1e95\u2124\u2128\u24b5\u24cf\u24e9\u3390-\u3394\uff3a\uff5a]/g
+	    };
 	    return StringUtils;
 	}());
-	StringUtils.accented = {
-	    'A': /[Aa\xaa\xc0-\xc5\xe0-\xe5\u0100-\u0105\u01cd\u01ce\u0200-\u0203\u0226\u0227\u1d2c\u1d43\u1e00\u1e01\u1e9a\u1ea0-\u1ea3\u2090\u2100\u2101\u213b\u249c\u24b6\u24d0\u3371-\u3374\u3380-\u3384\u3388\u3389\u33a9-\u33af\u33c2\u33ca\u33df\u33ff\uff21\uff41]/g,
-	    'B': /[Bb\u1d2e\u1d47\u1e02-\u1e07\u212c\u249d\u24b7\u24d1\u3374\u3385-\u3387\u33c3\u33c8\u33d4\u33dd\uff22\uff42]/g,
-	    'C': /[Cc\xc7\xe7\u0106-\u010d\u1d9c\u2100\u2102\u2103\u2105\u2106\u212d\u216d\u217d\u249e\u24b8\u24d2\u3376\u3388\u3389\u339d\u33a0\u33a4\u33c4-\u33c7\uff23\uff43]/g,
-	    'D': /[Dd\u010e\u010f\u01c4-\u01c6\u01f1-\u01f3\u1d30\u1d48\u1e0a-\u1e13\u2145\u2146\u216e\u217e\u249f\u24b9\u24d3\u32cf\u3372\u3377-\u3379\u3397\u33ad-\u33af\u33c5\u33c8\uff24\uff44]/g,
-	    'E': /[Ee\xc8-\xcb\xe8-\xeb\u0112-\u011b\u0204-\u0207\u0228\u0229\u1d31\u1d49\u1e18-\u1e1b\u1eb8-\u1ebd\u2091\u2121\u212f\u2130\u2147\u24a0\u24ba\u24d4\u3250\u32cd\u32ce\uff25\uff45]/g,
-	    'F': /[Ff\u1da0\u1e1e\u1e1f\u2109\u2131\u213b\u24a1\u24bb\u24d5\u338a-\u338c\u3399\ufb00-\ufb04\uff26\uff46]/g,
-	    'G': /[Gg\u011c-\u0123\u01e6\u01e7\u01f4\u01f5\u1d33\u1d4d\u1e20\u1e21\u210a\u24a2\u24bc\u24d6\u32cc\u32cd\u3387\u338d-\u338f\u3393\u33ac\u33c6\u33c9\u33d2\u33ff\uff27\uff47]/g,
-	    'H': /[Hh\u0124\u0125\u021e\u021f\u02b0\u1d34\u1e22-\u1e2b\u1e96\u210b-\u210e\u24a3\u24bd\u24d7\u32cc\u3371\u3390-\u3394\u33ca\u33cb\u33d7\uff28\uff48]/g,
-	    'I': /[Ii\xcc-\xcf\xec-\xef\u0128-\u0130\u0132\u0133\u01cf\u01d0\u0208-\u020b\u1d35\u1d62\u1e2c\u1e2d\u1ec8-\u1ecb\u2071\u2110\u2111\u2139\u2148\u2160-\u2163\u2165-\u2168\u216a\u216b\u2170-\u2173\u2175-\u2178\u217a\u217b\u24a4\u24be\u24d8\u337a\u33cc\u33d5\ufb01\ufb03\uff29\uff49]/g,
-	    'J': /[Jj\u0132-\u0135\u01c7-\u01cc\u01f0\u02b2\u1d36\u2149\u24a5\u24bf\u24d9\u2c7c\uff2a\uff4a]/g,
-	    'K': /[Kk\u0136\u0137\u01e8\u01e9\u1d37\u1d4f\u1e30-\u1e35\u212a\u24a6\u24c0\u24da\u3384\u3385\u3389\u338f\u3391\u3398\u339e\u33a2\u33a6\u33aa\u33b8\u33be\u33c0\u33c6\u33cd-\u33cf\uff2b\uff4b]/g,
-	    'L': /[Ll\u0139-\u0140\u01c7-\u01c9\u02e1\u1d38\u1e36\u1e37\u1e3a-\u1e3d\u2112\u2113\u2121\u216c\u217c\u24a7\u24c1\u24db\u32cf\u3388\u3389\u33d0-\u33d3\u33d5\u33d6\u33ff\ufb02\ufb04\uff2c\uff4c]/g,
-	    'M': /[Mm\u1d39\u1d50\u1e3e-\u1e43\u2120\u2122\u2133\u216f\u217f\u24a8\u24c2\u24dc\u3377-\u3379\u3383\u3386\u338e\u3392\u3396\u3399-\u33a8\u33ab\u33b3\u33b7\u33b9\u33bd\u33bf\u33c1\u33c2\u33ce\u33d0\u33d4-\u33d6\u33d8\u33d9\u33de\u33df\uff2d\uff4d]/g,
-	    'N': /[Nn\xd1\xf1\u0143-\u0149\u01ca-\u01cc\u01f8\u01f9\u1d3a\u1e44-\u1e4b\u207f\u2115\u2116\u24a9\u24c3\u24dd\u3381\u338b\u339a\u33b1\u33b5\u33bb\u33cc\u33d1\uff2e\uff4e]/g,
-	    'O': /[Oo\xba\xd2-\xd6\xf2-\xf6\u014c-\u0151\u01a0\u01a1\u01d1\u01d2\u01ea\u01eb\u020c-\u020f\u022e\u022f\u1d3c\u1d52\u1ecc-\u1ecf\u2092\u2105\u2116\u2134\u24aa\u24c4\u24de\u3375\u33c7\u33d2\u33d6\uff2f\uff4f]/g,
-	    'P': /[Pp\u1d3e\u1d56\u1e54-\u1e57\u2119\u24ab\u24c5\u24df\u3250\u3371\u3376\u3380\u338a\u33a9-\u33ac\u33b0\u33b4\u33ba\u33cb\u33d7-\u33da\uff30\uff50]/g,
-	    'Q': /[Qq\u211a\u24ac\u24c6\u24e0\u33c3\uff31\uff51]/g,
-	    'R': /[Rr\u0154-\u0159\u0210-\u0213\u02b3\u1d3f\u1d63\u1e58-\u1e5b\u1e5e\u1e5f\u20a8\u211b-\u211d\u24ad\u24c7\u24e1\u32cd\u3374\u33ad-\u33af\u33da\u33db\uff32\uff52]/g,
-	    'S': /[Ss\u015a-\u0161\u017f\u0218\u0219\u02e2\u1e60-\u1e63\u20a8\u2101\u2120\u24ae\u24c8\u24e2\u33a7\u33a8\u33ae-\u33b3\u33db\u33dc\ufb06\uff33\uff53]/g,
-	    'T': /[Tt\u0162-\u0165\u021a\u021b\u1d40\u1d57\u1e6a-\u1e71\u1e97\u2121\u2122\u24af\u24c9\u24e3\u3250\u32cf\u3394\u33cf\ufb05\ufb06\uff34\uff54]/g,
-	    'U': /[Uu\xd9-\xdc\xf9-\xfc\u0168-\u0173\u01af\u01b0\u01d3\u01d4\u0214-\u0217\u1d41\u1d58\u1d64\u1e72-\u1e77\u1ee4-\u1ee7\u2106\u24b0\u24ca\u24e4\u3373\u337a\uff35\uff55]/g,
-	    'V': /[Vv\u1d5b\u1d65\u1e7c-\u1e7f\u2163-\u2167\u2173-\u2177\u24b1\u24cb\u24e5\u2c7d\u32ce\u3375\u33b4-\u33b9\u33dc\u33de\uff36\uff56]/g,
-	    'W': /[Ww\u0174\u0175\u02b7\u1d42\u1e80-\u1e89\u1e98\u24b2\u24cc\u24e6\u33ba-\u33bf\u33dd\uff37\uff57]/g,
-	    'X': /[Xx\u02e3\u1e8a-\u1e8d\u2093\u213b\u2168-\u216b\u2178-\u217b\u24b3\u24cd\u24e7\u33d3\uff38\uff58]/g,
-	    'Y': /[Yy\xdd\xfd\xff\u0176-\u0178\u0232\u0233\u02b8\u1e8e\u1e8f\u1e99\u1ef2-\u1ef9\u24b4\u24ce\u24e8\u33c9\uff39\uff59]/g,
-	    'Z': /[Zz\u0179-\u017e\u01f1-\u01f3\u1dbb\u1e90-\u1e95\u2124\u2128\u24b5\u24cf\u24e9\u3390-\u3394\uff3a\uff5a]/g
-	};
 	exports.StringUtils = StringUtils;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory) {
@@ -11404,25 +9866,24 @@ var playground =
 
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var Logger_1 = __webpack_require__(8);
-	var Component_1 = __webpack_require__(9);
-	var Utils_1 = __webpack_require__(4);
-	var Assert_1 = __webpack_require__(7);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var Logger_1 = __webpack_require__(9);
+	var Component_1 = __webpack_require__(10);
+	var Utils_1 = __webpack_require__(6);
+	var Assert_1 = __webpack_require__(8);
 	var Dom_1 = __webpack_require__(3);
-	var InitializationEvents_1 = __webpack_require__(57);
-	var SearchInterface_1 = __webpack_require__(41);
-	var QueryController_1 = __webpack_require__(15);
-	var HashUtils_1 = __webpack_require__(58);
-	var QueryStateModel_1 = __webpack_require__(10);
-	var ComponentStateModel_1 = __webpack_require__(13);
-	var ComponentOptionsModel_1 = __webpack_require__(14);
-	var AnalyticsActionListMeta_1 = __webpack_require__(59);
-	var JQueryutils_1 = __webpack_require__(6);
-	var _ = __webpack_require__(5);
+	var InitializationEvents_1 = __webpack_require__(58);
+	var SearchInterface_1 = __webpack_require__(42);
+	var QueryController_1 = __webpack_require__(16);
+	var HashUtils_1 = __webpack_require__(59);
+	var QueryStateModel_1 = __webpack_require__(11);
+	var ComponentStateModel_1 = __webpack_require__(14);
+	var ComponentOptionsModel_1 = __webpack_require__(15);
+	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var JQueryutils_1 = __webpack_require__(7);
 	/**
 	 * The main purpose of this class is to initialize the framework (a.k.a the code executed when calling `Coveo.init`).<br/>
 	 * It's also in charge or registering the available components, as well as the method that we expost to the global Coveo scope.<br/>
@@ -11874,16 +10335,17 @@ var playground =
 	            });
 	        };
 	    };
+	    Initialization.logger = new Logger_1.Logger('Initialization');
+	    Initialization.autoCreateComponents = {};
+	    Initialization.namedMethods = {};
 	    return Initialization;
 	}());
-	Initialization.logger = new Logger_1.Logger('Initialization');
-	Initialization.autoCreateComponents = {};
-	Initialization.namedMethods = {};
 	exports.Initialization = Initialization;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -11897,65 +10359,64 @@ var playground =
 	var InitializationEvents = (function () {
 	    function InitializationEvents() {
 	    }
+	    /**
+	     * This event is triggered right before each components inside the search interface get initialized (eg: Before the constructor of each component is executed).
+	     *
+	     * The string value is `beforeInitialization`.
+	     * @type {string}
+	     */
+	    InitializationEvents.beforeInitialization = 'beforeInitialization';
+	    /**
+	     * Triggered after the components are initialized (eg: After the constructor of each component is executed)
+	     * but before their state is set from the hash portion of the URL (e.g., http://mysearchinterface#q=myQuery ).
+	     *
+	     * This is also before the first query is launched (if the {@link SearchInterface.options.autoTriggerQuery} is `true`).
+	     *
+	     * The string value is `afterComponentsInitialization`.
+	     * @type {string}
+	     */
+	    InitializationEvents.afterComponentsInitialization = 'afterComponentsInitialization';
+	    /**
+	     * Triggered right before the state from the URL (e.g., http://mysearchinterface#q=myQuery ) gets applied in the interface.
+	     *
+	     * This will typically only be useful if the {@link SearchInterface.options.enableHistory} is set to `true`.
+	     *
+	     * The string value is `restoreHistoryState`.
+	     * @type {string}
+	     */
+	    InitializationEvents.restoreHistoryState = 'restoreHistoryState';
+	    /**
+	     * Triggered right after the UI is fully initialized.
+	     *
+	     * Concretely this means that the constructor of each component has been executed, and that the state coming for the URL (e.g., http://mysearchinterface#q=myquery) has been applied.
+	     *
+	     * It is triggered *before* the first query is launched, and if the {@link SearchInterface.options.autoTriggerQuery} is `true`.
+	     *
+	     * The string value is `afterInitialization`.
+	     * @type {string}
+	     */
+	    InitializationEvents.afterInitialization = 'afterInitialization';
+	    /**
+	     * This is triggered when the UI needs to be dynamically removed so that components can unbind any internal handlers they might have set globally on the window or the document.
+	     *
+	     * After this event has been executed, the search interface can be dynamically removed and all handlers can be considered cleanly removed.
+	     *
+	     * The string value is `nuke`.
+	     * @type {string}
+	     */
+	    InitializationEvents.nuke = 'nuke';
 	    return InitializationEvents;
 	}());
-	/**
-	 * This event is triggered right before each components inside the search interface get initialized (eg: Before the constructor of each component is executed).
-	 *
-	 * The string value is `beforeInitialization`.
-	 * @type {string}
-	 */
-	InitializationEvents.beforeInitialization = 'beforeInitialization';
-	/**
-	 * Triggered after the components are initialized (eg: After the constructor of each component is executed)
-	 * but before their state is set from the hash portion of the URL (e.g., http://mysearchinterface#q=myQuery ).
-	 *
-	 * This is also before the first query is launched (if the {@link SearchInterface.options.autoTriggerQuery} is `true`).
-	 *
-	 * The string value is `afterComponentsInitialization`.
-	 * @type {string}
-	 */
-	InitializationEvents.afterComponentsInitialization = 'afterComponentsInitialization';
-	/**
-	 * Triggered right before the state from the URL (e.g., http://mysearchinterface#q=myQuery ) gets applied in the interface.
-	 *
-	 * This will typically only be useful if the {@link SearchInterface.options.enableHistory} is set to `true`.
-	 *
-	 * The string value is `restoreHistoryState`.
-	 * @type {string}
-	 */
-	InitializationEvents.restoreHistoryState = 'restoreHistoryState';
-	/**
-	 * Triggered right after the UI is fully initialized.
-	 *
-	 * Concretely this means that the constructor of each component has been executed, and that the state coming for the URL (e.g., http://mysearchinterface#q=myquery) has been applied.
-	 *
-	 * It is triggered *before* the first query is launched, and if the {@link SearchInterface.options.autoTriggerQuery} is `true`.
-	 *
-	 * The string value is `afterInitialization`.
-	 * @type {string}
-	 */
-	InitializationEvents.afterInitialization = 'afterInitialization';
-	/**
-	 * This is triggered when the UI needs to be dynamically removed so that components can unbind any internal handlers they might have set globally on the window or the document.
-	 *
-	 * After this event has been executed, the search interface can be dynamically removed and all handlers can be considered cleanly removed.
-	 *
-	 * The string value is `nuke`.
-	 * @type {string}
-	 */
-	InitializationEvents.nuke = 'nuke';
 	exports.InitializationEvents = InitializationEvents;
 
 
 /***/ },
-/* 58 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var Assert_1 = __webpack_require__(7);
-	var Utils_1 = __webpack_require__(4);
-	var _ = __webpack_require__(5);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var Assert_1 = __webpack_require__(8);
+	var Utils_1 = __webpack_require__(6);
 	var HashUtils = (function () {
 	    function HashUtils() {
 	    }
@@ -12113,7 +10574,7 @@ var playground =
 	            encodedValue = HashUtils.encodeObject(val);
 	        }
 	        else if (_.isNumber(val) || _.isBoolean(val)) {
-	            encodedValue = encodeURIComponent(val.toString());
+	            encodedValue = encodeURIComponent(val);
 	        }
 	        else {
 	            encodedValue = '"' + encodeURIComponent(val) + '"';
@@ -12139,23 +10600,24 @@ var playground =
 	            return decodeURIComponent(val);
 	        });
 	    };
+	    HashUtils.DELIMITER = {
+	        'objectStart': '{',
+	        'objectEnd': '}',
+	        'arrayStart': '[',
+	        'arrayEnd': ']',
+	        'objectStartRegExp': '^{',
+	        'objectEndRegExp': '}+$',
+	        'arrayStartRegExp': '^[',
+	        'arrayEndRegExp': ']+$'
+	    };
 	    return HashUtils;
 	}());
-	HashUtils.DELIMITER = {
-	    'objectStart': '{',
-	    'objectEnd': '}',
-	    'arrayStart': '[',
-	    'arrayEnd': ']',
-	    'objectStartRegExp': '^{',
-	    'objectEndRegExp': '}+$',
-	    'arrayStartRegExp': '^[',
-	    'arrayEndRegExp': ']+$'
-	};
 	exports.HashUtils = HashUtils;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -12496,21 +10958,20 @@ var playground =
 
 
 /***/ },
-/* 60 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Template_1 = __webpack_require__(53);
-	var Assert_1 = __webpack_require__(7);
-	var ComponentOptions_1 = __webpack_require__(51);
-	var Utils_1 = __webpack_require__(4);
+	var Template_1 = __webpack_require__(54);
+	var Assert_1 = __webpack_require__(8);
+	var ComponentOptions_1 = __webpack_require__(52);
+	var Utils_1 = __webpack_require__(6);
 	var Dom_1 = __webpack_require__(3);
-	var _ = __webpack_require__(5);
 	_.templateSettings = {
 	    evaluate: /(?:<%|{{)([\s\S]+?)(?:%>|}})/g,
 	    interpolate: /(?:<%|{{)=([\s\S]+?)(?:%>|}})/g,
@@ -12519,26 +10980,26 @@ var playground =
 	var UnderscoreTemplate = (function (_super) {
 	    __extends(UnderscoreTemplate, _super);
 	    function UnderscoreTemplate(element) {
-	        var _this = _super.call(this) || this;
-	        _this.element = element;
+	        var _this = this;
+	        _super.call(this);
+	        this.element = element;
 	        Assert_1.Assert.exists(element);
 	        var templateString = element.innerHTML;
-	        _this.template = _.template(templateString);
+	        this.template = _.template(templateString);
 	        var condition = Dom_1.$$(element).getAttribute('data-condition');
 	        if (condition != null) {
-	            _this.condition = new Function('obj', 'with(obj||{}){return ' + condition + '}');
+	            this.condition = new Function('obj', 'with(obj||{}){return ' + condition + '}');
 	        }
-	        _this.dataToString = function (object) {
+	        this.dataToString = function (object) {
 	            var extended = _.extend({}, object, UnderscoreTemplate.templateHelpers);
 	            return _this.template(extended);
 	        };
-	        _this.fields = Template_1.Template.getFieldFromString(templateString + ' ' + condition);
+	        this.fields = Template_1.Template.getFieldFromString(templateString + ' ' + condition);
 	        var additionalFields = ComponentOptions_1.ComponentOptions.loadFieldsOption(element, 'fields', { includeInResults: true });
 	        if (additionalFields != null) {
 	            // remove the @
-	            _this.fields = _this.fields.concat(_.map(additionalFields, function (field) { return field.substr(1); }));
+	            this.fields = this.fields.concat(_.map(additionalFields, function (field) { return field.substr(1); }));
 	        }
-	        return _this;
 	    }
 	    UnderscoreTemplate.prototype.toHtmlElement = function () {
 	        var script = Dom_1.$$('script');
@@ -12572,51 +11033,50 @@ var playground =
 	    UnderscoreTemplate.isLibraryAvailable = function () {
 	        return Utils_1.Utils.exists(window['_']);
 	    };
+	    UnderscoreTemplate.templateHelpers = {};
+	    UnderscoreTemplate.mimeTypes = [
+	        'text/underscore',
+	        'text/underscore-template',
+	        'text/x-underscore',
+	        'text/x-underscore-template'
+	    ];
 	    return UnderscoreTemplate;
 	}(Template_1.Template));
-	UnderscoreTemplate.templateHelpers = {};
-	UnderscoreTemplate.mimeTypes = [
-	    'text/underscore',
-	    'text/underscore-template',
-	    'text/x-underscore',
-	    'text/x-underscore-template'
-	];
 	exports.UnderscoreTemplate = UnderscoreTemplate;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 61 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Template_1 = __webpack_require__(53);
-	var ComponentOptions_1 = __webpack_require__(51);
-	var Assert_1 = __webpack_require__(7);
+	var Template_1 = __webpack_require__(54);
+	var ComponentOptions_1 = __webpack_require__(52);
+	var Assert_1 = __webpack_require__(8);
 	var Dom_1 = __webpack_require__(3);
-	var _ = __webpack_require__(5);
 	var HtmlTemplate = (function (_super) {
 	    __extends(HtmlTemplate, _super);
 	    function HtmlTemplate(element) {
-	        var _this = _super.call(this, function () { return element.innerHTML; }) || this;
-	        _this.element = element;
+	        _super.call(this, function () { return element.innerHTML; });
+	        this.element = element;
 	        var condition = Dom_1.$$(element).getAttribute('data-condition');
 	        if (condition != null) {
 	            // Allows to add quotes in data-condition on the templates
 	            condition = condition.toString().replace(/&quot;/g, '"');
-	            _this.condition = new Function('obj', 'with(obj||{}){return ' + condition + '}');
+	            this.condition = new Function('obj', 'with(obj||{}){return ' + condition + '}');
 	        }
-	        _this.fields = Template_1.Template.getFieldFromString(element.innerHTML + ' ' + condition);
+	        this.fields = Template_1.Template.getFieldFromString(element.innerHTML + ' ' + condition);
 	        var additionalFields = ComponentOptions_1.ComponentOptions.loadFieldsOption(element, 'fields', { includeInResults: true });
 	        if (additionalFields != null) {
 	            // remove the @
-	            _this.fields = _this.fields.concat(_.map(additionalFields, function (field) { return field.substr(1); }));
+	            this.fields = this.fields.concat(_.map(additionalFields, function (field) { return field.substr(1); }));
 	        }
-	        return _this;
 	    }
 	    HtmlTemplate.prototype.toHtmlElement = function () {
 	        var script = Dom_1.$$('script');
@@ -12644,33 +11104,32 @@ var playground =
 	        Dom_1.$$(script).setAttribute('type', HtmlTemplate.mimeTypes[0]);
 	        return new HtmlTemplate(script);
 	    };
+	    HtmlTemplate.mimeTypes = [
+	        'text/html'
+	    ];
 	    return HtmlTemplate;
 	}(Template_1.Template));
-	HtmlTemplate.mimeTypes = [
-	    'text/html'
-	];
 	exports.HtmlTemplate = HtmlTemplate;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 62 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Template_1 = __webpack_require__(53);
-	var DefaultResultTemplate_1 = __webpack_require__(63);
-	var _ = __webpack_require__(5);
+	var Template_1 = __webpack_require__(54);
+	var DefaultResultTemplate_1 = __webpack_require__(64);
 	var TemplateList = (function (_super) {
 	    __extends(TemplateList, _super);
 	    function TemplateList(templates) {
-	        var _this = _super.call(this) || this;
-	        _this.templates = templates;
-	        return _this;
+	        _super.call(this);
+	        this.templates = templates;
 	    }
 	    TemplateList.prototype.instantiateToString = function (object, checkCondition) {
 	        for (var i = 0; i < this.templates.length; i++) {
@@ -12700,23 +11159,23 @@ var playground =
 	    return TemplateList;
 	}(Template_1.Template));
 	exports.TemplateList = TemplateList;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 63 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Template_1 = __webpack_require__(53);
-	var UnderscoreTemplate_1 = __webpack_require__(60);
-	var TemplateCache_1 = __webpack_require__(52);
-	var Assert_1 = __webpack_require__(7);
-	var _ = __webpack_require__(5);
+	var Template_1 = __webpack_require__(54);
+	var UnderscoreTemplate_1 = __webpack_require__(61);
+	var TemplateCache_1 = __webpack_require__(53);
+	var Assert_1 = __webpack_require__(8);
 	/*
 	 * This renders the appropriate result template, found in TemplateCache,
 	 * according to its condition.
@@ -12728,7 +11187,7 @@ var playground =
 	var DefaultResultTemplate = (function (_super) {
 	    __extends(DefaultResultTemplate, _super);
 	    function DefaultResultTemplate() {
-	        return _super.call(this) || this;
+	        _super.call(this);
 	    }
 	    DefaultResultTemplate.prototype.instantiateToString = function (queryResult, checkCondition, options) {
 	        if (checkCondition === void 0) { checkCondition = true; }
@@ -12759,18 +11218,19 @@ var playground =
 	    return DefaultResultTemplate;
 	}(Template_1.Template));
 	exports.DefaultResultTemplate = DefaultResultTemplate;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var L10N_1 = __webpack_require__(65);
+	var L10N_1 = __webpack_require__(66);
 	function l() {
 	    var params = [];
 	    for (var _i = 0; _i < arguments.length; _i++) {
-	        params[_i] = arguments[_i];
+	        params[_i - 0] = arguments[_i];
 	    }
 	    return L10N_1.L10N.format.apply(this, arguments);
 	}
@@ -12779,12 +11239,11 @@ var playground =
 
 
 /***/ },
-/* 65 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var ExternalModulesShim_1 = __webpack_require__(27);
-	var _ = __webpack_require__(5);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var ExternalModulesShim_1 = __webpack_require__(28);
 	String.toLocaleString = ExternalModulesShim_1.LocaleString;
 	var pluralRegex = /<pl>(((?!<\/pl>).)*)<\/pl>/g;
 	var singularRegex = /<sn>(((?!<\/sn>).)*)<\/sn>/g;
@@ -12817,18 +11276,19 @@ var playground =
 	        return value;
 	    }
 	};
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 66 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Dom_1 = __webpack_require__(3);
-	var DateUtils_1 = __webpack_require__(67);
-	var FileTypes_1 = __webpack_require__(70);
-	var Utils_1 = __webpack_require__(4);
-	var StringUtils_1 = __webpack_require__(54);
+	var DateUtils_1 = __webpack_require__(68);
+	var FileTypes_1 = __webpack_require__(72);
+	var Utils_1 = __webpack_require__(6);
+	var StringUtils_1 = __webpack_require__(55);
 	var DomUtils = (function () {
 	    function DomUtils() {
 	    }
@@ -12888,35 +11348,33 @@ var playground =
 
 
 /***/ },
-/* 67 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Options_1 = __webpack_require__(68);
-	var Utils_1 = __webpack_require__(4);
-	var Strings_1 = __webpack_require__(64);
-	var TimeSpanUtils_1 = __webpack_require__(44);
-	var Globalize = __webpack_require__(69);
-	var _ = __webpack_require__(5);
+	var Options_1 = __webpack_require__(69);
+	var Utils_1 = __webpack_require__(6);
+	var Strings_1 = __webpack_require__(65);
+	var TimeSpanUtils_1 = __webpack_require__(45);
+	var Globalize = __webpack_require__(70);
 	var DefaultDateToStringOptions = (function (_super) {
 	    __extends(DefaultDateToStringOptions, _super);
 	    function DefaultDateToStringOptions() {
-	        var _this = _super !== null && _super.apply(this, arguments) || this;
-	        _this.now = new Date();
-	        _this.useTodayYesterdayAndTomorrow = true;
-	        _this.useWeekdayIfThisWeek = true;
-	        _this.omitYearIfCurrentOne = true;
-	        _this.useLongDateFormat = false;
-	        _this.includeTimeIfToday = true;
-	        _this.includeTimeIfThisWeek = true;
-	        _this.alwaysIncludeTime = false;
-	        _this.predefinedFormat = undefined;
-	        return _this;
+	        _super.apply(this, arguments);
+	        this.now = new Date();
+	        this.useTodayYesterdayAndTomorrow = true;
+	        this.useWeekdayIfThisWeek = true;
+	        this.omitYearIfCurrentOne = true;
+	        this.useLongDateFormat = false;
+	        this.includeTimeIfToday = true;
+	        this.includeTimeIfThisWeek = true;
+	        this.alwaysIncludeTime = false;
+	        this.predefinedFormat = undefined;
 	    }
 	    return DefaultDateToStringOptions;
 	}(Options_1.Options));
@@ -13060,15 +11518,15 @@ var playground =
 	        };
 	    }());
 	}
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 68 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var Utils_1 = __webpack_require__(4);
-	var _ = __webpack_require__(5);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var Utils_1 = __webpack_require__(6);
 	var Options = (function () {
 	    function Options() {
 	    }
@@ -13081,10 +11539,18 @@ var playground =
 	    return Options;
 	}());
 	exports.Options = Options;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 69 */
+/* 70 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Globalize"] = __webpack_require__(71);
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*! globalize - v0.1.1 - 2013-04-30
@@ -13093,14 +11559,13 @@ var playground =
 	var Globalize = (function(e,r){var t,n,a,s,u,l,i,c,o,f,d,p,h,g,b,m,y,M,v,k,z,F,A,x;t=function(e){return new t.prototype.init(e)}, true?module.exports=t:e.Globalize=t,t.cultures={},t.prototype={constructor:t,init:function(e){return this.cultures=t.cultures,this.cultureSelector=e,this}},t.prototype.init.prototype=t.prototype,t.cultures["default"]={name:"en",englishName:"English",nativeName:"English",isRTL:!1,language:"en",numberFormat:{pattern:["-n"],decimals:2,",":",",".":".",groupSizes:[3],"+":"+","-":"-",NaN:"NaN",negativeInfinity:"-Infinity",positiveInfinity:"Infinity",percent:{pattern:["-n %","n %"],decimals:2,groupSizes:[3],",":",",".":".",symbol:"%"},currency:{pattern:["($n)","$n"],decimals:2,groupSizes:[3],",":",",".":".",symbol:"$"}},calendars:{standard:{name:"Gregorian_USEnglish","/":"/",":":":",firstDay:0,days:{names:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],namesAbbr:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],namesShort:["Su","Mo","Tu","We","Th","Fr","Sa"]},months:{names:["January","February","March","April","May","June","July","August","September","October","November","December",""],namesAbbr:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec",""]},AM:["AM","am","AM"],PM:["PM","pm","PM"],eras:[{name:"A.D.",start:null,offset:0}],twoDigitYearMax:2029,patterns:{d:"M/d/yyyy",D:"dddd, MMMM dd, yyyy",t:"h:mm tt",T:"h:mm:ss tt",f:"dddd, MMMM dd, yyyy h:mm tt",F:"dddd, MMMM dd, yyyy h:mm:ss tt",M:"MMMM dd",Y:"yyyy MMMM",S:"yyyy'-'MM'-'dd'T'HH':'mm':'ss"}}},messages:{}},t.cultures["default"].calendar=t.cultures["default"].calendars.standard,t.cultures.en=t.cultures["default"],t.cultureSelector="en",n=/^0x[a-f0-9]+$/i,a=/^[+\-]?infinity$/i,s=/^[+\-]?\d*\.?\d*(e[+\-]?\d+)?$/,u=/^\s+|\s+$/g,l=function(e,r){if(e.indexOf)return e.indexOf(r);for(var t=0,n=e.length;n>t;t++)if(e[t]===r)return t;return-1},i=function(e,r){return e.substr(e.length-r.length)===r},c=function(){var e,t,n,a,s,u,l=arguments[0]||{},i=1,p=arguments.length,h=!1;for("boolean"==typeof l&&(h=l,l=arguments[1]||{},i=2),"object"==typeof l||f(l)||(l={});p>i;i++)if(null!=(e=arguments[i]))for(t in e)n=l[t],a=e[t],l!==a&&(h&&a&&(d(a)||(s=o(a)))?(s?(s=!1,u=n&&o(n)?n:[]):u=n&&d(n)?n:{},l[t]=c(h,u,a)):a!==r&&(l[t]=a));return l},o=Array.isArray||function(e){return"[object Array]"===Object.prototype.toString.call(e)},f=function(e){return"[object Function]"===Object.prototype.toString.call(e)},d=function(e){return"[object Object]"===Object.prototype.toString.call(e)},p=function(e,r){return 0===e.indexOf(r)},h=function(e){return(e+"").replace(u,"")},g=function(e){return isNaN(e)?0/0:Math[0>e?"ceil":"floor"](e)},b=function(e,r,t){var n;for(n=e.length;r>n;n+=1)e=t?"0"+e:e+"0";return e},m=function(e,r){for(var t=0,n=!1,a=0,s=e.length;s>a;a++){var u=e.charAt(a);switch(u){case"'":n?r.push("'"):t++,n=!1;break;case"\\":n&&r.push("\\"),n=!n;break;default:r.push(u),n=!1}}return t},y=function(e,r){r=r||"F";var t,n=e.patterns,a=r.length;if(1===a){if(t=n[r],!t)throw"Invalid date format string '"+r+"'.";r=t}else 2===a&&"%"===r.charAt(0)&&(r=r.charAt(1));return r},M=function(e,r,t){function n(e,r){var t,n=e+"";return r>1&&r>n.length?(t=v[r-2]+n,t.substr(t.length-r,r)):t=n}function a(){return h||g?h:(h=A.test(r),g=!0,h)}function s(e,r){if(b)return b[r];switch(r){case 0:return e.getFullYear();case 1:return e.getMonth();case 2:return e.getDate();default:throw"Invalid part value "+r}}var u,l=t.calendar,i=l.convert;if(!r||!r.length||"i"===r){if(t&&t.name.length)if(i)u=M(e,l.patterns.F,t);else{var c=new Date(e.getTime()),o=z(e,l.eras);c.setFullYear(F(e,l,o)),u=c.toLocaleString()}else u=""+e;return u}var f=l.eras,d="s"===r;r=y(l,r),u=[];var p,h,g,b,v=["0","00","000"],A=/([^d]|^)(d|dd)([^d]|$)/g,x=0,I=k();for(!d&&i&&(b=i.fromGregorian(e));;){var S=I.lastIndex,w=I.exec(r),C=r.slice(S,w?w.index:r.length);if(x+=m(C,u),!w)break;if(x%2)u.push(w[0]);else{var D=w[0],H=D.length;switch(D){case"ddd":case"dddd":var O=3===H?l.days.namesAbbr:l.days.names;u.push(O[e.getDay()]);break;case"d":case"dd":h=!0,u.push(n(s(e,2),H));break;case"MMM":case"MMMM":var N=s(e,1);u.push(l.monthsGenitive&&a()?l.monthsGenitive[3===H?"namesAbbr":"names"][N]:l.months[3===H?"namesAbbr":"names"][N]);break;case"M":case"MM":u.push(n(s(e,1)+1,H));break;case"y":case"yy":case"yyyy":N=b?b[0]:F(e,l,z(e,f),d),4>H&&(N%=100),u.push(n(N,H));break;case"h":case"hh":p=e.getHours()%12,0===p&&(p=12),u.push(n(p,H));break;case"H":case"HH":u.push(n(e.getHours(),H));break;case"m":case"mm":u.push(n(e.getMinutes(),H));break;case"s":case"ss":u.push(n(e.getSeconds(),H));break;case"t":case"tt":N=12>e.getHours()?l.AM?l.AM[0]:" ":l.PM?l.PM[0]:" ",u.push(1===H?N.charAt(0):N);break;case"f":case"ff":case"fff":u.push(n(e.getMilliseconds(),3).substr(0,H));break;case"z":case"zz":p=e.getTimezoneOffset()/60,u.push((0>=p?"+":"-")+n(Math.floor(Math.abs(p)),H));break;case"zzz":p=e.getTimezoneOffset()/60,u.push((0>=p?"+":"-")+n(Math.floor(Math.abs(p)),2)+":"+n(Math.abs(e.getTimezoneOffset()%60),2));break;case"g":case"gg":l.eras&&u.push(l.eras[z(e,f)].name);break;case"/":u.push(l["/"]);break;default:throw"Invalid date format pattern '"+D+"'."}}}return u.join("")},function(){var e;e=function(e,r,t){var n=t.groupSizes,a=n[0],s=1,u=Math.pow(10,r),l=Math.round(e*u)/u;isFinite(l)||(l=e),e=l;var i=e+"",c="",o=i.split(/e/i),f=o.length>1?parseInt(o[1],10):0;i=o[0],o=i.split("."),i=o[0],c=o.length>1?o[1]:"",f>0?(c=b(c,f,!1),i+=c.slice(0,f),c=c.substr(f)):0>f&&(f=-f,i=b(i,f+1,!0),c=i.slice(-f,i.length)+c,i=i.slice(0,-f)),c=r>0?t["."]+(c.length>r?c.slice(0,r):b(c,r)):"";for(var d=i.length-1,p=t[","],h="";d>=0;){if(0===a||a>d)return i.slice(0,d+1)+(h.length?p+h+c:c);h=i.slice(d-a+1,d+1)+(h.length?p+h:""),d-=a,n.length>s&&(a=n[s],s++)}return i.slice(0,d+1)+p+h+c},v=function(r,t,n){if(!isFinite(r))return 1/0===r?n.numberFormat.positiveInfinity:r===-1/0?n.numberFormat.negativeInfinity:n.numberFormat.NaN;if(!t||"i"===t)return n.name.length?r.toLocaleString():""+r;t=t||"D";var a,s=n.numberFormat,u=Math.abs(r),l=-1;t.length>1&&(l=parseInt(t.slice(1),10));var i,c=t.charAt(0).toUpperCase();switch(c){case"D":a="n",u=g(u),-1!==l&&(u=b(""+u,l,!0)),0>r&&(u="-"+u);break;case"N":i=s;case"C":i=i||s.currency;case"P":i=i||s.percent,a=0>r?i.pattern[0]:i.pattern[1]||"n",-1===l&&(l=i.decimals),u=e(u*("P"===c?100:1),l,i);break;default:throw"Bad number format specifier: "+c}for(var o=/n|\$|-|%/g,f="";;){var d=o.lastIndex,p=o.exec(a);if(f+=a.slice(d,p?p.index:a.length),!p)break;switch(p[0]){case"n":f+=u;break;case"$":f+=s.currency.symbol;break;case"-":/[1-9]/.test(u)&&(f+=s["-"]);break;case"%":f+=s.percent.symbol}}return f}}(),k=function(){return/\/|dddd|ddd|dd|d|MMMM|MMM|MM|M|yyyy|yy|y|hh|h|HH|H|mm|m|ss|s|tt|t|fff|ff|f|zzz|zz|z|gg|g/g},z=function(e,r){if(!r)return 0;for(var t,n=e.getTime(),a=0,s=r.length;s>a;a++)if(t=r[a].start,null===t||n>=t)return a;return 0},F=function(e,r,t,n){var a=e.getFullYear();return!n&&r.eras&&(a-=r.eras[t].offset),a},function(){var e,r,t,n,a,s,u;e=function(e,r){if(100>r){var t=new Date,n=z(t),a=F(t,e,n),s=e.twoDigitYearMax;s="string"==typeof s?(new Date).getFullYear()%100+parseInt(s,10):s,r+=a-a%100,r>s&&(r-=100)}return r},r=function(e,r,t){var n,a=e.days,i=e._upperDays;return i||(e._upperDays=i=[u(a.names),u(a.namesAbbr),u(a.namesShort)]),r=s(r),t?(n=l(i[1],r),-1===n&&(n=l(i[2],r))):n=l(i[0],r),n},t=function(e,r,t){var n=e.months,a=e.monthsGenitive||e.months,i=e._upperMonths,c=e._upperMonthsGen;i||(e._upperMonths=i=[u(n.names),u(n.namesAbbr)],e._upperMonthsGen=c=[u(a.names),u(a.namesAbbr)]),r=s(r);var o=l(t?i[1]:i[0],r);return 0>o&&(o=l(t?c[1]:c[0],r)),o},n=function(e,r){var t=e._parseRegExp;if(t){var n=t[r];if(n)return n}else e._parseRegExp=t={};for(var a,s=y(e,r).replace(/([\^\$\.\*\+\?\|\[\]\(\)\{\}])/g,"\\\\$1"),u=["^"],l=[],i=0,c=0,o=k();null!==(a=o.exec(s));){var f=s.slice(i,a.index);if(i=o.lastIndex,c+=m(f,u),c%2)u.push(a[0]);else{var d,p=a[0],h=p.length;switch(p){case"dddd":case"ddd":case"MMMM":case"MMM":case"gg":case"g":d="(\\D+)";break;case"tt":case"t":d="(\\D*)";break;case"yyyy":case"fff":case"ff":case"f":d="(\\d{"+h+"})";break;case"dd":case"d":case"MM":case"M":case"yy":case"y":case"HH":case"H":case"hh":case"h":case"mm":case"m":case"ss":case"s":d="(\\d\\d?)";break;case"zzz":d="([+-]?\\d\\d?:\\d{2})";break;case"zz":case"z":d="([+-]?\\d\\d?)";break;case"/":d="(\\/)";break;default:throw"Invalid date format pattern '"+p+"'."}d&&u.push(d),l.push(a[0])}}m(s.slice(i),u),u.push("$");var g=u.join("").replace(/\s+/g,"\\s+"),b={regExp:g,groups:l};return t[r]=b},a=function(e,r,t){return r>e||e>t},s=function(e){return e.split("\u00a0").join(" ").toUpperCase()},u=function(e){for(var r=[],t=0,n=e.length;n>t;t++)r[t]=s(e[t]);return r},A=function(s,u,l){s=h(s);var i=l.calendar,c=n(i,u),o=RegExp(c.regExp).exec(s);if(null===o)return null;for(var f,d=c.groups,g=null,b=null,m=null,y=null,M=null,v=0,k=0,z=0,F=0,A=null,x=!1,I=0,S=d.length;S>I;I++){var w=o[I+1];if(w){var C=d[I],D=C.length,H=parseInt(w,10);switch(C){case"dd":case"d":if(y=H,a(y,1,31))return null;break;case"MMM":case"MMMM":if(m=t(i,w,3===D),a(m,0,11))return null;break;case"M":case"MM":if(m=H-1,a(m,0,11))return null;break;case"y":case"yy":case"yyyy":if(b=4>D?e(i,H):H,a(b,0,9999))return null;break;case"h":case"hh":if(v=H,12===v&&(v=0),a(v,0,11))return null;break;case"H":case"HH":if(v=H,a(v,0,23))return null;break;case"m":case"mm":if(k=H,a(k,0,59))return null;break;case"s":case"ss":if(z=H,a(z,0,59))return null;break;case"tt":case"t":if(x=i.PM&&(w===i.PM[0]||w===i.PM[1]||w===i.PM[2]),!x&&(!i.AM||w!==i.AM[0]&&w!==i.AM[1]&&w!==i.AM[2]))return null;break;case"f":case"ff":case"fff":if(F=H*Math.pow(10,3-D),a(F,0,999))return null;break;case"ddd":case"dddd":if(M=r(i,w,3===D),a(M,0,6))return null;break;case"zzz":var O=w.split(/:/);if(2!==O.length)return null;if(f=parseInt(O[0],10),a(f,-12,13))return null;var N=parseInt(O[1],10);if(a(N,0,59))return null;A=60*f+(p(w,"-")?-N:N);break;case"z":case"zz":if(f=H,a(f,-12,13))return null;A=60*f;break;case"g":case"gg":var T=w;if(!T||!i.eras)return null;T=h(T.toLowerCase());for(var j=0,$=i.eras.length;$>j;j++)if(T===i.eras[j].name.toLowerCase()){g=j;break}if(null===g)return null}}}var P,G=new Date,E=i.convert;if(P=E?E.fromGregorian(G)[0]:G.getFullYear(),null===b?b=P:i.eras&&(b+=i.eras[g||0].offset),null===m&&(m=0),null===y&&(y=1),E){if(G=E.toGregorian(b,m,y),null===G)return null}else{if(G.setFullYear(b,m,y),G.getDate()!==y)return null;if(null!==M&&G.getDay()!==M)return null}if(x&&12>v&&(v+=12),G.setHours(v,k,z,F),null!==A){var Y=G.getMinutes()-(A+G.getTimezoneOffset());G.setHours(G.getHours()+parseInt(Y/60,10),Y%60)}return G}}(),x=function(e,r,t){var n,a=r["-"],s=r["+"];switch(t){case"n -":a=" "+a,s=" "+s;case"n-":i(e,a)?n=["-",e.substr(0,e.length-a.length)]:i(e,s)&&(n=["+",e.substr(0,e.length-s.length)]);break;case"- n":a+=" ",s+=" ";case"-n":p(e,a)?n=["-",e.substr(a.length)]:p(e,s)&&(n=["+",e.substr(s.length)]);break;case"(n)":p(e,"(")&&i(e,")")&&(n=["-",e.substr(1,e.length-2)])}return n||["",e]},t.prototype.findClosestCulture=function(e){return t.findClosestCulture.call(this,e)},t.prototype.format=function(e,r,n){return t.format.call(this,e,r,n)},t.prototype.localize=function(e,r){return t.localize.call(this,e,r)},t.prototype.parseInt=function(e,r,n){return t.parseInt.call(this,e,r,n)},t.prototype.parseFloat=function(e,r,n){return t.parseFloat.call(this,e,r,n)},t.prototype.culture=function(e){return t.culture.call(this,e)},t.addCultureInfo=function(e,r,t){var n={},a=!1;"string"!=typeof e?(t=e,e=this.culture().name,n=this.cultures[e]):"string"!=typeof r?(t=r,a=null==this.cultures[e],n=this.cultures[e]||this.cultures["default"]):(a=!0,n=this.cultures[r]),this.cultures[e]=c(!0,{},n,t),a&&(this.cultures[e].calendar=this.cultures[e].calendars.standard)},t.findClosestCulture=function(e){var r;if(!e)return this.findClosestCulture(this.cultureSelector)||this.cultures["default"];if("string"==typeof e&&(e=e.split(",")),o(e)){var t,n,a=this.cultures,s=e,u=s.length,l=[];for(n=0;u>n;n++){e=h(s[n]);var i,c=e.split(";");t=h(c[0]),1===c.length?i=1:(e=h(c[1]),0===e.indexOf("q=")?(e=e.substr(2),i=parseFloat(e),i=isNaN(i)?0:i):i=1),l.push({lang:t,pri:i})}for(l.sort(function(e,r){return e.pri<r.pri?1:e.pri>r.pri?-1:0}),n=0;u>n;n++)if(t=l[n].lang,r=a[t])return r;for(n=0;u>n;n++)for(t=l[n].lang;;){var f=t.lastIndexOf("-");if(-1===f)break;if(t=t.substr(0,f),r=a[t])return r}for(n=0;u>n;n++){t=l[n].lang;for(var d in a){var p=a[d];if(p.language===t)return p}}}else if("object"==typeof e)return e;return r||null},t.format=function(e,r,t){var n=this.findClosestCulture(t);return e instanceof Date?e=M(e,r,n):"number"==typeof e&&(e=v(e,r,n)),e},t.localize=function(e,r){return this.findClosestCulture(r).messages[e]||this.cultures["default"].messages[e]},t.parseDate=function(e,r,t){t=this.findClosestCulture(t);var n,a,s;if(r){if("string"==typeof r&&(r=[r]),r.length)for(var u=0,l=r.length;l>u;u++){var i=r[u];if(i&&(n=A(e,i,t)))break}}else{s=t.calendar.patterns;for(a in s)if(n=A(e,s[a],t))break}return n||null},t.parseInt=function(e,r,n){return g(t.parseFloat(e,r,n))},t.parseFloat=function(e,r,t){"number"!=typeof r&&(t=r,r=10);var u=this.findClosestCulture(t),l=0/0,i=u.numberFormat;if(e.indexOf(u.numberFormat.currency.symbol)>-1&&(e=e.replace(u.numberFormat.currency.symbol,""),e=e.replace(u.numberFormat.currency["."],u.numberFormat["."])),e.indexOf(u.numberFormat.percent.symbol)>-1&&(e=e.replace(u.numberFormat.percent.symbol,"")),e=e.replace(/ /g,""),a.test(e))l=parseFloat(e);else if(!r&&n.test(e))l=parseInt(e,16);else{var c=x(e,i,i.pattern[0]),o=c[0],f=c[1];""===o&&"(n)"!==i.pattern[0]&&(c=x(e,i,"(n)"),o=c[0],f=c[1]),""===o&&"-n"!==i.pattern[0]&&(c=x(e,i,"-n"),o=c[0],f=c[1]),o=o||"+";var d,p,h=f.indexOf("e");0>h&&(h=f.indexOf("E")),0>h?(p=f,d=null):(p=f.substr(0,h),d=f.substr(h+1));var g,b,m=i["."],y=p.indexOf(m);0>y?(g=p,b=null):(g=p.substr(0,y),b=p.substr(y+m.length));var M=i[","];g=g.split(M).join("");var v=M.replace(/\u00A0/g," ");M!==v&&(g=g.split(v).join(""));var k=o+g;if(null!==b&&(k+="."+b),null!==d){var z=x(d,i,"-n");k+="e"+(z[0]||"+")+z[1]}s.test(k)&&(l=parseFloat(k))}return l},t.culture=function(e){return e!==r&&(this.cultureSelector=e),this.findClosestCulture(e)||this.cultures["default"]}; return Globalize;}(this));
 
 /***/ },
-/* 70 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var Utils_1 = __webpack_require__(4);
-	var Strings_1 = __webpack_require__(64);
-	var Assert_1 = __webpack_require__(7);
-	var _ = __webpack_require__(5);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var Utils_1 = __webpack_require__(6);
+	var Strings_1 = __webpack_require__(65);
+	var Assert_1 = __webpack_require__(8);
 	// On-demand mapping of file types to captions. Used by facets, but I don't
 	// really like this. Maybe a dedicated filetype facet would be better? Hmm...
 	var fileTypeCaptions;
@@ -13171,41 +11636,41 @@ var playground =
 	    return FileTypes;
 	}());
 	exports.FileTypes = FileTypes;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 71 */
+/* 73 */
 /***/ function(module, exports) {
 
 	"use strict";
 	var StandaloneSearchInterfaceEvents = (function () {
 	    function StandaloneSearchInterfaceEvents() {
 	    }
+	    StandaloneSearchInterfaceEvents.beforeRedirect = 'beforeRedirect';
 	    return StandaloneSearchInterfaceEvents;
 	}());
-	StandaloneSearchInterfaceEvents.beforeRedirect = 'beforeRedirect';
 	exports.StandaloneSearchInterfaceEvents = StandaloneSearchInterfaceEvents;
 
 
 /***/ },
-/* 72 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Assert_1 = __webpack_require__(7);
-	var Model_1 = __webpack_require__(11);
-	var InitializationEvents_1 = __webpack_require__(57);
+	var Assert_1 = __webpack_require__(8);
+	var Model_1 = __webpack_require__(12);
+	var InitializationEvents_1 = __webpack_require__(58);
 	var Dom_1 = __webpack_require__(3);
-	var HashUtils_1 = __webpack_require__(58);
-	var Defer_1 = __webpack_require__(23);
-	var RootComponent_1 = __webpack_require__(16);
-	var Utils_1 = __webpack_require__(4);
-	var _ = __webpack_require__(5);
+	var HashUtils_1 = __webpack_require__(59);
+	var Defer_1 = __webpack_require__(24);
+	var RootComponent_1 = __webpack_require__(17);
+	var Utils_1 = __webpack_require__(6);
 	/**
 	 * This component is instantiated automatically by the framework on the root if the {@link SearchInterface}.<br/>
 	 * When the {@link SearchInterface.options.enableHistory} option is set to true, this component is instantiated.<br/>
@@ -13223,32 +11688,32 @@ var playground =
 	     * @param hashUtilsModule For mock / test purposes.
 	     */
 	    function HistoryController(element, windoh, model, queryController, hashUtils) {
+	        var _this = this;
 	        if (hashUtils === void 0) { hashUtils = HashUtils_1.HashUtils; }
-	        var _this = _super.call(this, element, HistoryController.ID) || this;
-	        _this.windoh = windoh;
-	        _this.model = model;
-	        _this.queryController = queryController;
-	        _this.hashUtils = hashUtils;
-	        _this.ignoreNextHashChange = false;
-	        _this.initialHashChange = false;
-	        _this.willUpdateHash = false;
-	        _this.windoh = _this.windoh || window;
-	        Assert_1.Assert.exists(_this.model);
-	        Assert_1.Assert.exists(_this.queryController);
-	        Dom_1.$$(_this.element).on(InitializationEvents_1.InitializationEvents.restoreHistoryState, function () {
+	        _super.call(this, element, HistoryController.ID);
+	        this.windoh = windoh;
+	        this.model = model;
+	        this.queryController = queryController;
+	        this.hashUtils = hashUtils;
+	        this.ignoreNextHashChange = false;
+	        this.initialHashChange = false;
+	        this.willUpdateHash = false;
+	        this.windoh = this.windoh || window;
+	        Assert_1.Assert.exists(this.model);
+	        Assert_1.Assert.exists(this.queryController);
+	        Dom_1.$$(this.element).on(InitializationEvents_1.InitializationEvents.restoreHistoryState, function () {
 	            _this.logger.trace('Restore history state. Update model');
 	            _this.updateModelFromHash();
 	        });
-	        Dom_1.$$(_this.element).on(_this.model.getEventName(Model_1.Model.eventTypes.all), function () {
+	        Dom_1.$$(this.element).on(this.model.getEventName(Model_1.Model.eventTypes.all), function () {
 	            _this.logger.trace('Query model changed. Update hash');
 	            _this.updateHashFromModel();
 	        });
-	        _this.hashchange = function () {
+	        this.hashchange = function () {
 	            _this.handleHashChange();
 	        };
-	        _this.windoh.addEventListener('hashchange', _this.hashchange);
-	        Dom_1.$$(_this.element).on(InitializationEvents_1.InitializationEvents.nuke, function () { return _this.handleNuke(); });
-	        return _this;
+	        this.windoh.addEventListener('hashchange', this.hashchange);
+	        Dom_1.$$(this.element).on(InitializationEvents_1.InitializationEvents.nuke, function () { return _this.handleNuke(); });
 	    }
 	    /**
 	     * Set the given map of key value in the hash of the URL
@@ -13334,31 +11799,31 @@ var playground =
 	            'state': this.model.getAttributes()
 	        };
 	    };
+	    HistoryController.ID = 'HistoryController';
+	    HistoryController.attributesThatDoNotTriggerQuery = ['quickview'];
 	    return HistoryController;
 	}(RootComponent_1.RootComponent));
-	HistoryController.ID = 'HistoryController';
-	HistoryController.attributesThatDoNotTriggerQuery = ['quickview'];
 	exports.HistoryController = HistoryController;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 73 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var LocalStorageUtils_1 = __webpack_require__(20);
-	var Model_1 = __webpack_require__(11);
-	var Logger_1 = __webpack_require__(8);
-	var Assert_1 = __webpack_require__(7);
-	var InitializationEvents_1 = __webpack_require__(57);
-	var RootComponent_1 = __webpack_require__(16);
+	var LocalStorageUtils_1 = __webpack_require__(21);
+	var Model_1 = __webpack_require__(12);
+	var Logger_1 = __webpack_require__(9);
+	var Assert_1 = __webpack_require__(8);
+	var InitializationEvents_1 = __webpack_require__(58);
+	var RootComponent_1 = __webpack_require__(17);
 	var Dom_1 = __webpack_require__(3);
-	var _ = __webpack_require__(5);
 	/**
 	 * This component acts like the {@link HistoryController} excepts that is saves the {@link QueryStateModel} in the local storage.<br/>
 	 * This will not allow 'back' and 'forward' navigation in the history, like the standard {@link HistoryController} allows. Instead, it load the query state only on page load.<br/>
@@ -13374,22 +11839,22 @@ var playground =
 	     * @param queryController
 	     */
 	    function LocalStorageHistoryController(element, windoh, model, queryController) {
-	        var _this = _super.call(this, element, LocalStorageHistoryController.ID) || this;
-	        _this.windoh = windoh;
-	        _this.model = model;
-	        _this.queryController = queryController;
-	        _this.omit = [];
+	        var _this = this;
+	        _super.call(this, element, LocalStorageHistoryController.ID);
+	        this.windoh = windoh;
+	        this.model = model;
+	        this.queryController = queryController;
+	        this.omit = [];
 	        if (!windoh['localStorage']) {
-	            new Logger_1.Logger(element).info('No local storage available in current browser. LocalStorageHistoryController cannot initialize itself', _this);
+	            new Logger_1.Logger(element).info('No local storage available in current browser. LocalStorageHistoryController cannot initialize itself', this);
 	        }
 	        else {
-	            _this.storage = new LocalStorageUtils_1.LocalStorageUtils(LocalStorageHistoryController.ID);
-	            Assert_1.Assert.exists(_this.model);
-	            Assert_1.Assert.exists(_this.queryController);
-	            Dom_1.$$(_this.element).on(InitializationEvents_1.InitializationEvents.restoreHistoryState, function () { return _this.updateModelFromLocalStorage(); });
-	            Dom_1.$$(_this.element).on(_this.model.getEventName(Model_1.Model.eventTypes.all), function () { return _this.updateLocalStorageFromModel(); });
+	            this.storage = new LocalStorageUtils_1.LocalStorageUtils(LocalStorageHistoryController.ID);
+	            Assert_1.Assert.exists(this.model);
+	            Assert_1.Assert.exists(this.queryController);
+	            Dom_1.$$(this.element).on(InitializationEvents_1.InitializationEvents.restoreHistoryState, function () { return _this.updateModelFromLocalStorage(); });
+	            Dom_1.$$(this.element).on(this.model.getEventName(Model_1.Model.eventTypes.all), function () { return _this.updateLocalStorageFromModel(); });
 	        }
-	        return _this;
 	    }
 	    /**
 	     * Specifies an array of attributes from the query state model that should not be persisted in the local storage
@@ -13419,18 +11884,19 @@ var playground =
 	    LocalStorageHistoryController.prototype.setStorageValues = function (values) {
 	        this.storage.save(values);
 	    };
+	    LocalStorageHistoryController.ID = 'LocalStorageHistoryController';
 	    return LocalStorageHistoryController;
 	}(RootComponent_1.RootComponent));
-	LocalStorageHistoryController.ID = 'LocalStorageHistoryController';
 	exports.LocalStorageHistoryController = LocalStorageHistoryController;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 74 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var es6_promise_1 = __webpack_require__(24);
+	var es6_promise_1 = __webpack_require__(25);
 	var NoopAnalyticsClient = (function () {
 	    function NoopAnalyticsClient() {
 	        this.isContextual = false;
@@ -13488,57 +11954,57 @@ var playground =
 
 
 /***/ },
-/* 75 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var ComponentOptions_1 = __webpack_require__(51);
-	var LocalStorageUtils_1 = __webpack_require__(20);
-	var QueryEvents_1 = __webpack_require__(22);
-	var ResultListEvents_1 = __webpack_require__(76);
-	var DebugEvents_1 = __webpack_require__(77);
+	/// <reference path="../../../node_modules/modal-box/bin/ModalBox.d.ts" />
+	var ComponentOptions_1 = __webpack_require__(52);
+	var LocalStorageUtils_1 = __webpack_require__(21);
+	var QueryEvents_1 = __webpack_require__(23);
+	var ResultListEvents_1 = __webpack_require__(78);
+	var DebugEvents_1 = __webpack_require__(79);
 	var Dom_1 = __webpack_require__(3);
-	var StringUtils_1 = __webpack_require__(54);
-	var SearchEndpoint_1 = __webpack_require__(42);
-	var Template_1 = __webpack_require__(53);
-	var es6_promise_1 = __webpack_require__(24);
-	var RootComponent_1 = __webpack_require__(16);
-	var BaseComponent_1 = __webpack_require__(12);
-	var ExternalModulesShim_1 = __webpack_require__(27);
-	var Globalize = __webpack_require__(69);
-	var KeyboardUtils_1 = __webpack_require__(78);
-	var InitializationEvents_1 = __webpack_require__(57);
-	var _ = __webpack_require__(5);
+	var StringUtils_1 = __webpack_require__(55);
+	var SearchEndpoint_1 = __webpack_require__(43);
+	var Template_1 = __webpack_require__(54);
+	var es6_promise_1 = __webpack_require__(25);
+	var RootComponent_1 = __webpack_require__(17);
+	var BaseComponent_1 = __webpack_require__(13);
+	var ExternalModulesShim_1 = __webpack_require__(28);
+	var Globalize = __webpack_require__(70);
+	var KeyboardUtils_1 = __webpack_require__(80);
+	var InitializationEvents_1 = __webpack_require__(58);
 	var Debug = (function (_super) {
 	    __extends(Debug, _super);
 	    function Debug(element, queryController, options, modalBox) {
+	        var _this = this;
 	        if (modalBox === void 0) { modalBox = ExternalModulesShim_1.ModalBox; }
-	        var _this = _super.call(this, element, Debug.ID) || this;
-	        _this.element = element;
-	        _this.queryController = queryController;
-	        _this.options = options;
-	        _this.modalBox = modalBox;
-	        _this.debug = false;
-	        _this.highlightRecommendation = false;
-	        _this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, Debug, options);
-	        Dom_1.$$(_this.element).on(QueryEvents_1.QueryEvents.buildingQuery, function (e, args) {
+	        _super.call(this, element, Debug.ID);
+	        this.element = element;
+	        this.queryController = queryController;
+	        this.options = options;
+	        this.modalBox = modalBox;
+	        this.debug = false;
+	        this.highlightRecommendation = false;
+	        this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, Debug, options);
+	        Dom_1.$$(this.element).on(QueryEvents_1.QueryEvents.buildingQuery, function (e, args) {
 	            args.queryBuilder.enableDebug = _this.debug || args.queryBuilder.enableDebug;
 	        });
-	        Dom_1.$$(_this.element).on(ResultListEvents_1.ResultListEvents.newResultDisplayed, function (e, args) { return _this.handleNewResultDisplayed(args); });
-	        Dom_1.$$(_this.element).on(DebugEvents_1.DebugEvents.showDebugPanel, function (e, args) {
+	        Dom_1.$$(this.element).on(ResultListEvents_1.ResultListEvents.newResultDisplayed, function (e, args) { return _this.handleNewResultDisplayed(args); });
+	        Dom_1.$$(this.element).on(DebugEvents_1.DebugEvents.showDebugPanel, function (e, args) {
 	            _this.handleShowDebugPanel(args);
 	        });
-	        Dom_1.$$(_this.element).on(InitializationEvents_1.InitializationEvents.nuke, function () {
+	        Dom_1.$$(this.element).on(InitializationEvents_1.InitializationEvents.nuke, function () {
 	            _this.unbindEscapeEvent();
 	        });
-	        _this.localStorageDebug = new LocalStorageUtils_1.LocalStorageUtils('DebugPanel');
-	        _this.collapsedSections = _this.localStorageDebug.load() || [];
-	        return _this;
+	        this.localStorageDebug = new LocalStorageUtils_1.LocalStorageUtils('DebugPanel');
+	        this.collapsedSections = this.localStorageDebug.load() || [];
 	    }
 	    Debug.prototype.buildFieldsSection = function (result) {
 	        return this.fetchFields()
@@ -13596,8 +12062,7 @@ var playground =
 	                        {
 	                            terms: words,
 	                            Weights: weights
-	                        }
-	                    ];
+	                        }];
 	                }));
 	            }
 	        }
@@ -14168,57 +12633,56 @@ var playground =
 	            element.innerHTML = element.innerText;
 	        }
 	    };
+	    Debug.ID = 'Debug';
+	    Debug.options = {
+	        enableDebug: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false })
+	    };
+	    Debug.customOrder = ['error', 'queryDuration', 'result', 'fields', 'rankingInfo', 'template', 'query', 'results', 'state'];
+	    Debug.durationKeys = ['indexDuration', 'proxyDuration', 'clientDuration', 'duration'];
+	    Debug.maxDepth = 10;
 	    return Debug;
 	}(RootComponent_1.RootComponent));
-	Debug.ID = 'Debug';
-	Debug.options = {
-	    enableDebug: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false })
-	};
-	Debug.customOrder = ['error', 'queryDuration', 'result', 'fields', 'rankingInfo', 'template', 'query', 'results', 'state'];
-	Debug.durationKeys = ['indexDuration', 'proxyDuration', 'clientDuration', 'duration'];
-	Debug.maxDepth = 10;
 	exports.Debug = Debug;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 76 */
+/* 78 */
 /***/ function(module, exports) {
 
 	"use strict";
 	var ResultListEvents = (function () {
 	    function ResultListEvents() {
 	    }
+	    ResultListEvents.newResultsDisplayed = 'newResultsDisplayed';
+	    ResultListEvents.newResultDisplayed = 'newResultDisplayed';
+	    ResultListEvents.openQuickview = 'openQuickview';
+	    ResultListEvents.changeLayout = 'changeLayout';
 	    return ResultListEvents;
 	}());
-	ResultListEvents.newResultsDisplayed = 'newResultsDisplayed';
-	ResultListEvents.newResultDisplayed = 'newResultDisplayed';
-	ResultListEvents.openQuickview = 'openQuickview';
-	ResultListEvents.changeLayout = 'changeLayout';
 	exports.ResultListEvents = ResultListEvents;
 
 
 /***/ },
-/* 77 */
+/* 79 */
 /***/ function(module, exports) {
 
 	"use strict";
 	var DebugEvents = (function () {
 	    function DebugEvents() {
 	    }
+	    DebugEvents.showDebugPanel = 'showDebugPanel';
 	    return DebugEvents;
 	}());
-	DebugEvents.showDebugPanel = 'showDebugPanel';
 	exports.DebugEvents = DebugEvents;
 
 
 /***/ },
-/* 78 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var Utils_1 = __webpack_require__(4);
-	var _ = __webpack_require__(5);
-	var KEYBOARD;
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var Utils_1 = __webpack_require__(6);
 	(function (KEYBOARD) {
 	    KEYBOARD[KEYBOARD["BACKSPACE"] = 8] = "BACKSPACE";
 	    KEYBOARD[KEYBOARD["TAB"] = 9] = "TAB";
@@ -14237,7 +12701,8 @@ var playground =
 	    KEYBOARD[KEYBOARD["DOWN_ARROW"] = 40] = "DOWN_ARROW";
 	    KEYBOARD[KEYBOARD["INSERT"] = 45] = "INSERT";
 	    KEYBOARD[KEYBOARD["DELETE"] = 46] = "DELETE";
-	})(KEYBOARD = exports.KEYBOARD || (exports.KEYBOARD = {}));
+	})(exports.KEYBOARD || (exports.KEYBOARD = {}));
+	var KEYBOARD = exports.KEYBOARD;
 	var KeyboardUtils = (function () {
 	    function KeyboardUtils() {
 	    }
@@ -14304,2317 +12769,28 @@ var playground =
 	    return KeyboardUtils;
 	}());
 	exports.KeyboardUtils = KeyboardUtils;
-
-
-/***/ },
-/* 79 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;;(function () {
-		'use strict';
 	
-		/**
-		 * @preserve FastClick: polyfill to remove click delays on browsers with touch UIs.
-		 *
-		 * @codingstandard ftlabs-jsv2
-		 * @copyright The Financial Times Limited [All Rights Reserved]
-		 * @license MIT License (see LICENSE.txt)
-		 */
-	
-		/*jslint browser:true, node:true*/
-		/*global define, Event, Node*/
-	
-	
-		/**
-		 * Instantiate fast-clicking listeners on the specified layer.
-		 *
-		 * @constructor
-		 * @param {Element} layer The layer to listen on
-		 * @param {Object} [options={}] The options to override the defaults
-		 */
-		function FastClick(layer, options) {
-			var oldOnClick;
-	
-			options = options || {};
-	
-			/**
-			 * Whether a click is currently being tracked.
-			 *
-			 * @type boolean
-			 */
-			this.trackingClick = false;
-	
-	
-			/**
-			 * Timestamp for when click tracking started.
-			 *
-			 * @type number
-			 */
-			this.trackingClickStart = 0;
-	
-	
-			/**
-			 * The element being tracked for a click.
-			 *
-			 * @type EventTarget
-			 */
-			this.targetElement = null;
-	
-	
-			/**
-			 * X-coordinate of touch start event.
-			 *
-			 * @type number
-			 */
-			this.touchStartX = 0;
-	
-	
-			/**
-			 * Y-coordinate of touch start event.
-			 *
-			 * @type number
-			 */
-			this.touchStartY = 0;
-	
-	
-			/**
-			 * ID of the last touch, retrieved from Touch.identifier.
-			 *
-			 * @type number
-			 */
-			this.lastTouchIdentifier = 0;
-	
-	
-			/**
-			 * Touchmove boundary, beyond which a click will be cancelled.
-			 *
-			 * @type number
-			 */
-			this.touchBoundary = options.touchBoundary || 10;
-	
-	
-			/**
-			 * The FastClick layer.
-			 *
-			 * @type Element
-			 */
-			this.layer = layer;
-	
-			/**
-			 * The minimum time between tap(touchstart and touchend) events
-			 *
-			 * @type number
-			 */
-			this.tapDelay = options.tapDelay || 200;
-	
-			/**
-			 * The maximum time for a tap
-			 *
-			 * @type number
-			 */
-			this.tapTimeout = options.tapTimeout || 700;
-	
-			if (FastClick.notNeeded(layer)) {
-				return;
-			}
-	
-			// Some old versions of Android don't have Function.prototype.bind
-			function bind(method, context) {
-				return function() { return method.apply(context, arguments); };
-			}
-	
-	
-			var methods = ['onMouse', 'onClick', 'onTouchStart', 'onTouchMove', 'onTouchEnd', 'onTouchCancel'];
-			var context = this;
-			for (var i = 0, l = methods.length; i < l; i++) {
-				context[methods[i]] = bind(context[methods[i]], context);
-			}
-	
-			// Set up event handlers as required
-			if (deviceIsAndroid) {
-				layer.addEventListener('mouseover', this.onMouse, true);
-				layer.addEventListener('mousedown', this.onMouse, true);
-				layer.addEventListener('mouseup', this.onMouse, true);
-			}
-	
-			layer.addEventListener('click', this.onClick, true);
-			layer.addEventListener('touchstart', this.onTouchStart, false);
-			layer.addEventListener('touchmove', this.onTouchMove, false);
-			layer.addEventListener('touchend', this.onTouchEnd, false);
-			layer.addEventListener('touchcancel', this.onTouchCancel, false);
-	
-			// Hack is required for browsers that don't support Event#stopImmediatePropagation (e.g. Android 2)
-			// which is how FastClick normally stops click events bubbling to callbacks registered on the FastClick
-			// layer when they are cancelled.
-			if (!Event.prototype.stopImmediatePropagation) {
-				layer.removeEventListener = function(type, callback, capture) {
-					var rmv = Node.prototype.removeEventListener;
-					if (type === 'click') {
-						rmv.call(layer, type, callback.hijacked || callback, capture);
-					} else {
-						rmv.call(layer, type, callback, capture);
-					}
-				};
-	
-				layer.addEventListener = function(type, callback, capture) {
-					var adv = Node.prototype.addEventListener;
-					if (type === 'click') {
-						adv.call(layer, type, callback.hijacked || (callback.hijacked = function(event) {
-							if (!event.propagationStopped) {
-								callback(event);
-							}
-						}), capture);
-					} else {
-						adv.call(layer, type, callback, capture);
-					}
-				};
-			}
-	
-			// If a handler is already declared in the element's onclick attribute, it will be fired before
-			// FastClick's onClick handler. Fix this by pulling out the user-defined handler function and
-			// adding it as listener.
-			if (typeof layer.onclick === 'function') {
-	
-				// Android browser on at least 3.2 requires a new reference to the function in layer.onclick
-				// - the old one won't work if passed to addEventListener directly.
-				oldOnClick = layer.onclick;
-				layer.addEventListener('click', function(event) {
-					oldOnClick(event);
-				}, false);
-				layer.onclick = null;
-			}
-		}
-	
-		/**
-		* Windows Phone 8.1 fakes user agent string to look like Android and iPhone.
-		*
-		* @type boolean
-		*/
-		var deviceIsWindowsPhone = navigator.userAgent.indexOf("Windows Phone") >= 0;
-	
-		/**
-		 * Android requires exceptions.
-		 *
-		 * @type boolean
-		 */
-		var deviceIsAndroid = navigator.userAgent.indexOf('Android') > 0 && !deviceIsWindowsPhone;
-	
-	
-		/**
-		 * iOS requires exceptions.
-		 *
-		 * @type boolean
-		 */
-		var deviceIsIOS = /iP(ad|hone|od)/.test(navigator.userAgent) && !deviceIsWindowsPhone;
-	
-	
-		/**
-		 * iOS 4 requires an exception for select elements.
-		 *
-		 * @type boolean
-		 */
-		var deviceIsIOS4 = deviceIsIOS && (/OS 4_\d(_\d)?/).test(navigator.userAgent);
-	
-	
-		/**
-		 * iOS 6.0-7.* requires the target element to be manually derived
-		 *
-		 * @type boolean
-		 */
-		var deviceIsIOSWithBadTarget = deviceIsIOS && (/OS [6-7]_\d/).test(navigator.userAgent);
-	
-		/**
-		 * BlackBerry requires exceptions.
-		 *
-		 * @type boolean
-		 */
-		var deviceIsBlackBerry10 = navigator.userAgent.indexOf('BB10') > 0;
-	
-		/**
-		 * Determine whether a given element requires a native click.
-		 *
-		 * @param {EventTarget|Element} target Target DOM element
-		 * @returns {boolean} Returns true if the element needs a native click
-		 */
-		FastClick.prototype.needsClick = function(target) {
-			switch (target.nodeName.toLowerCase()) {
-	
-			// Don't send a synthetic click to disabled inputs (issue #62)
-			case 'button':
-			case 'select':
-			case 'textarea':
-				if (target.disabled) {
-					return true;
-				}
-	
-				break;
-			case 'input':
-	
-				// File inputs need real clicks on iOS 6 due to a browser bug (issue #68)
-				if ((deviceIsIOS && target.type === 'file') || target.disabled) {
-					return true;
-				}
-	
-				break;
-			case 'label':
-			case 'iframe': // iOS8 homescreen apps can prevent events bubbling into frames
-			case 'video':
-				return true;
-			}
-	
-			return (/\bneedsclick\b/).test(target.className);
-		};
-	
-	
-		/**
-		 * Determine whether a given element requires a call to focus to simulate click into element.
-		 *
-		 * @param {EventTarget|Element} target Target DOM element
-		 * @returns {boolean} Returns true if the element requires a call to focus to simulate native click.
-		 */
-		FastClick.prototype.needsFocus = function(target) {
-			switch (target.nodeName.toLowerCase()) {
-			case 'textarea':
-				return true;
-			case 'select':
-				return !deviceIsAndroid;
-			case 'input':
-				switch (target.type) {
-				case 'button':
-				case 'checkbox':
-				case 'file':
-				case 'image':
-				case 'radio':
-				case 'submit':
-					return false;
-				}
-	
-				// No point in attempting to focus disabled inputs
-				return !target.disabled && !target.readOnly;
-			default:
-				return (/\bneedsfocus\b/).test(target.className);
-			}
-		};
-	
-	
-		/**
-		 * Send a click event to the specified element.
-		 *
-		 * @param {EventTarget|Element} targetElement
-		 * @param {Event} event
-		 */
-		FastClick.prototype.sendClick = function(targetElement, event) {
-			var clickEvent, touch;
-	
-			// On some Android devices activeElement needs to be blurred otherwise the synthetic click will have no effect (#24)
-			if (document.activeElement && document.activeElement !== targetElement) {
-				document.activeElement.blur();
-			}
-	
-			touch = event.changedTouches[0];
-	
-			// Synthesise a click event, with an extra attribute so it can be tracked
-			clickEvent = document.createEvent('MouseEvents');
-			clickEvent.initMouseEvent(this.determineEventType(targetElement), true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
-			clickEvent.forwardedTouchEvent = true;
-			targetElement.dispatchEvent(clickEvent);
-		};
-	
-		FastClick.prototype.determineEventType = function(targetElement) {
-	
-			//Issue #159: Android Chrome Select Box does not open with a synthetic click event
-			if (deviceIsAndroid && targetElement.tagName.toLowerCase() === 'select') {
-				return 'mousedown';
-			}
-	
-			return 'click';
-		};
-	
-	
-		/**
-		 * @param {EventTarget|Element} targetElement
-		 */
-		FastClick.prototype.focus = function(targetElement) {
-			var length;
-	
-			// Issue #160: on iOS 7, some input elements (e.g. date datetime month) throw a vague TypeError on setSelectionRange. These elements don't have an integer value for the selectionStart and selectionEnd properties, but unfortunately that can't be used for detection because accessing the properties also throws a TypeError. Just check the type instead. Filed as Apple bug #15122724.
-			if (deviceIsIOS && targetElement.setSelectionRange && targetElement.type.indexOf('date') !== 0 && targetElement.type !== 'time' && targetElement.type !== 'month') {
-				length = targetElement.value.length;
-				targetElement.setSelectionRange(length, length);
-			} else {
-				targetElement.focus();
-			}
-		};
-	
-	
-		/**
-		 * Check whether the given target element is a child of a scrollable layer and if so, set a flag on it.
-		 *
-		 * @param {EventTarget|Element} targetElement
-		 */
-		FastClick.prototype.updateScrollParent = function(targetElement) {
-			var scrollParent, parentElement;
-	
-			scrollParent = targetElement.fastClickScrollParent;
-	
-			// Attempt to discover whether the target element is contained within a scrollable layer. Re-check if the
-			// target element was moved to another parent.
-			if (!scrollParent || !scrollParent.contains(targetElement)) {
-				parentElement = targetElement;
-				do {
-					if (parentElement.scrollHeight > parentElement.offsetHeight) {
-						scrollParent = parentElement;
-						targetElement.fastClickScrollParent = parentElement;
-						break;
-					}
-	
-					parentElement = parentElement.parentElement;
-				} while (parentElement);
-			}
-	
-			// Always update the scroll top tracker if possible.
-			if (scrollParent) {
-				scrollParent.fastClickLastScrollTop = scrollParent.scrollTop;
-			}
-		};
-	
-	
-		/**
-		 * @param {EventTarget} targetElement
-		 * @returns {Element|EventTarget}
-		 */
-		FastClick.prototype.getTargetElementFromEventTarget = function(eventTarget) {
-	
-			// On some older browsers (notably Safari on iOS 4.1 - see issue #56) the event target may be a text node.
-			if (eventTarget.nodeType === Node.TEXT_NODE) {
-				return eventTarget.parentNode;
-			}
-	
-			return eventTarget;
-		};
-	
-	
-		/**
-		 * On touch start, record the position and scroll offset.
-		 *
-		 * @param {Event} event
-		 * @returns {boolean}
-		 */
-		FastClick.prototype.onTouchStart = function(event) {
-			var targetElement, touch, selection;
-	
-			// Ignore multiple touches, otherwise pinch-to-zoom is prevented if both fingers are on the FastClick element (issue #111).
-			if (event.targetTouches.length > 1) {
-				return true;
-			}
-	
-			targetElement = this.getTargetElementFromEventTarget(event.target);
-			touch = event.targetTouches[0];
-	
-			if (deviceIsIOS) {
-	
-				// Only trusted events will deselect text on iOS (issue #49)
-				selection = window.getSelection();
-				if (selection.rangeCount && !selection.isCollapsed) {
-					return true;
-				}
-	
-				if (!deviceIsIOS4) {
-	
-					// Weird things happen on iOS when an alert or confirm dialog is opened from a click event callback (issue #23):
-					// when the user next taps anywhere else on the page, new touchstart and touchend events are dispatched
-					// with the same identifier as the touch event that previously triggered the click that triggered the alert.
-					// Sadly, there is an issue on iOS 4 that causes some normal touch events to have the same identifier as an
-					// immediately preceeding touch event (issue #52), so this fix is unavailable on that platform.
-					// Issue 120: touch.identifier is 0 when Chrome dev tools 'Emulate touch events' is set with an iOS device UA string,
-					// which causes all touch events to be ignored. As this block only applies to iOS, and iOS identifiers are always long,
-					// random integers, it's safe to to continue if the identifier is 0 here.
-					if (touch.identifier && touch.identifier === this.lastTouchIdentifier) {
-						event.preventDefault();
-						return false;
-					}
-	
-					this.lastTouchIdentifier = touch.identifier;
-	
-					// If the target element is a child of a scrollable layer (using -webkit-overflow-scrolling: touch) and:
-					// 1) the user does a fling scroll on the scrollable layer
-					// 2) the user stops the fling scroll with another tap
-					// then the event.target of the last 'touchend' event will be the element that was under the user's finger
-					// when the fling scroll was started, causing FastClick to send a click event to that layer - unless a check
-					// is made to ensure that a parent layer was not scrolled before sending a synthetic click (issue #42).
-					this.updateScrollParent(targetElement);
-				}
-			}
-	
-			this.trackingClick = true;
-			this.trackingClickStart = event.timeStamp;
-			this.targetElement = targetElement;
-	
-			this.touchStartX = touch.pageX;
-			this.touchStartY = touch.pageY;
-	
-			// Prevent phantom clicks on fast double-tap (issue #36)
-			if ((event.timeStamp - this.lastClickTime) < this.tapDelay) {
-				event.preventDefault();
-			}
-	
-			return true;
-		};
-	
-	
-		/**
-		 * Based on a touchmove event object, check whether the touch has moved past a boundary since it started.
-		 *
-		 * @param {Event} event
-		 * @returns {boolean}
-		 */
-		FastClick.prototype.touchHasMoved = function(event) {
-			var touch = event.changedTouches[0], boundary = this.touchBoundary;
-	
-			if (Math.abs(touch.pageX - this.touchStartX) > boundary || Math.abs(touch.pageY - this.touchStartY) > boundary) {
-				return true;
-			}
-	
-			return false;
-		};
-	
-	
-		/**
-		 * Update the last position.
-		 *
-		 * @param {Event} event
-		 * @returns {boolean}
-		 */
-		FastClick.prototype.onTouchMove = function(event) {
-			if (!this.trackingClick) {
-				return true;
-			}
-	
-			// If the touch has moved, cancel the click tracking
-			if (this.targetElement !== this.getTargetElementFromEventTarget(event.target) || this.touchHasMoved(event)) {
-				this.trackingClick = false;
-				this.targetElement = null;
-			}
-	
-			return true;
-		};
-	
-	
-		/**
-		 * Attempt to find the labelled control for the given label element.
-		 *
-		 * @param {EventTarget|HTMLLabelElement} labelElement
-		 * @returns {Element|null}
-		 */
-		FastClick.prototype.findControl = function(labelElement) {
-	
-			// Fast path for newer browsers supporting the HTML5 control attribute
-			if (labelElement.control !== undefined) {
-				return labelElement.control;
-			}
-	
-			// All browsers under test that support touch events also support the HTML5 htmlFor attribute
-			if (labelElement.htmlFor) {
-				return document.getElementById(labelElement.htmlFor);
-			}
-	
-			// If no for attribute exists, attempt to retrieve the first labellable descendant element
-			// the list of which is defined here: http://www.w3.org/TR/html5/forms.html#category-label
-			return labelElement.querySelector('button, input:not([type=hidden]), keygen, meter, output, progress, select, textarea');
-		};
-	
-	
-		/**
-		 * On touch end, determine whether to send a click event at once.
-		 *
-		 * @param {Event} event
-		 * @returns {boolean}
-		 */
-		FastClick.prototype.onTouchEnd = function(event) {
-			var forElement, trackingClickStart, targetTagName, scrollParent, touch, targetElement = this.targetElement;
-	
-			if (!this.trackingClick) {
-				return true;
-			}
-	
-			// Prevent phantom clicks on fast double-tap (issue #36)
-			if ((event.timeStamp - this.lastClickTime) < this.tapDelay) {
-				this.cancelNextClick = true;
-				return true;
-			}
-	
-			if ((event.timeStamp - this.trackingClickStart) > this.tapTimeout) {
-				return true;
-			}
-	
-			// Reset to prevent wrong click cancel on input (issue #156).
-			this.cancelNextClick = false;
-	
-			this.lastClickTime = event.timeStamp;
-	
-			trackingClickStart = this.trackingClickStart;
-			this.trackingClick = false;
-			this.trackingClickStart = 0;
-	
-			// On some iOS devices, the targetElement supplied with the event is invalid if the layer
-			// is performing a transition or scroll, and has to be re-detected manually. Note that
-			// for this to function correctly, it must be called *after* the event target is checked!
-			// See issue #57; also filed as rdar://13048589 .
-			if (deviceIsIOSWithBadTarget) {
-				touch = event.changedTouches[0];
-	
-				// In certain cases arguments of elementFromPoint can be negative, so prevent setting targetElement to null
-				targetElement = document.elementFromPoint(touch.pageX - window.pageXOffset, touch.pageY - window.pageYOffset) || targetElement;
-				targetElement.fastClickScrollParent = this.targetElement.fastClickScrollParent;
-			}
-	
-			targetTagName = targetElement.tagName.toLowerCase();
-			if (targetTagName === 'label') {
-				forElement = this.findControl(targetElement);
-				if (forElement) {
-					this.focus(targetElement);
-					if (deviceIsAndroid) {
-						return false;
-					}
-	
-					targetElement = forElement;
-				}
-			} else if (this.needsFocus(targetElement)) {
-	
-				// Case 1: If the touch started a while ago (best guess is 100ms based on tests for issue #36) then focus will be triggered anyway. Return early and unset the target element reference so that the subsequent click will be allowed through.
-				// Case 2: Without this exception for input elements tapped when the document is contained in an iframe, then any inputted text won't be visible even though the value attribute is updated as the user types (issue #37).
-				if ((event.timeStamp - trackingClickStart) > 100 || (deviceIsIOS && window.top !== window && targetTagName === 'input')) {
-					this.targetElement = null;
-					return false;
-				}
-	
-				this.focus(targetElement);
-				this.sendClick(targetElement, event);
-	
-				// Select elements need the event to go through on iOS 4, otherwise the selector menu won't open.
-				// Also this breaks opening selects when VoiceOver is active on iOS6, iOS7 (and possibly others)
-				if (!deviceIsIOS || targetTagName !== 'select') {
-					this.targetElement = null;
-					event.preventDefault();
-				}
-	
-				return false;
-			}
-	
-			if (deviceIsIOS && !deviceIsIOS4) {
-	
-				// Don't send a synthetic click event if the target element is contained within a parent layer that was scrolled
-				// and this tap is being used to stop the scrolling (usually initiated by a fling - issue #42).
-				scrollParent = targetElement.fastClickScrollParent;
-				if (scrollParent && scrollParent.fastClickLastScrollTop !== scrollParent.scrollTop) {
-					return true;
-				}
-			}
-	
-			// Prevent the actual click from going though - unless the target node is marked as requiring
-			// real clicks or if it is in the whitelist in which case only non-programmatic clicks are permitted.
-			if (!this.needsClick(targetElement)) {
-				event.preventDefault();
-				this.sendClick(targetElement, event);
-			}
-	
-			return false;
-		};
-	
-	
-		/**
-		 * On touch cancel, stop tracking the click.
-		 *
-		 * @returns {void}
-		 */
-		FastClick.prototype.onTouchCancel = function() {
-			this.trackingClick = false;
-			this.targetElement = null;
-		};
-	
-	
-		/**
-		 * Determine mouse events which should be permitted.
-		 *
-		 * @param {Event} event
-		 * @returns {boolean}
-		 */
-		FastClick.prototype.onMouse = function(event) {
-	
-			// If a target element was never set (because a touch event was never fired) allow the event
-			if (!this.targetElement) {
-				return true;
-			}
-	
-			if (event.forwardedTouchEvent) {
-				return true;
-			}
-	
-			// Programmatically generated events targeting a specific element should be permitted
-			if (!event.cancelable) {
-				return true;
-			}
-	
-			// Derive and check the target element to see whether the mouse event needs to be permitted;
-			// unless explicitly enabled, prevent non-touch click events from triggering actions,
-			// to prevent ghost/doubleclicks.
-			if (!this.needsClick(this.targetElement) || this.cancelNextClick) {
-	
-				// Prevent any user-added listeners declared on FastClick element from being fired.
-				if (event.stopImmediatePropagation) {
-					event.stopImmediatePropagation();
-				} else {
-	
-					// Part of the hack for browsers that don't support Event#stopImmediatePropagation (e.g. Android 2)
-					event.propagationStopped = true;
-				}
-	
-				// Cancel the event
-				event.stopPropagation();
-				event.preventDefault();
-	
-				return false;
-			}
-	
-			// If the mouse event is permitted, return true for the action to go through.
-			return true;
-		};
-	
-	
-		/**
-		 * On actual clicks, determine whether this is a touch-generated click, a click action occurring
-		 * naturally after a delay after a touch (which needs to be cancelled to avoid duplication), or
-		 * an actual click which should be permitted.
-		 *
-		 * @param {Event} event
-		 * @returns {boolean}
-		 */
-		FastClick.prototype.onClick = function(event) {
-			var permitted;
-	
-			// It's possible for another FastClick-like library delivered with third-party code to fire a click event before FastClick does (issue #44). In that case, set the click-tracking flag back to false and return early. This will cause onTouchEnd to return early.
-			if (this.trackingClick) {
-				this.targetElement = null;
-				this.trackingClick = false;
-				return true;
-			}
-	
-			// Very odd behaviour on iOS (issue #18): if a submit element is present inside a form and the user hits enter in the iOS simulator or clicks the Go button on the pop-up OS keyboard the a kind of 'fake' click event will be triggered with the submit-type input element as the target.
-			if (event.target.type === 'submit' && event.detail === 0) {
-				return true;
-			}
-	
-			permitted = this.onMouse(event);
-	
-			// Only unset targetElement if the click is not permitted. This will ensure that the check for !targetElement in onMouse fails and the browser's click doesn't go through.
-			if (!permitted) {
-				this.targetElement = null;
-			}
-	
-			// If clicks are permitted, return true for the action to go through.
-			return permitted;
-		};
-	
-	
-		/**
-		 * Remove all FastClick's event listeners.
-		 *
-		 * @returns {void}
-		 */
-		FastClick.prototype.destroy = function() {
-			var layer = this.layer;
-	
-			if (deviceIsAndroid) {
-				layer.removeEventListener('mouseover', this.onMouse, true);
-				layer.removeEventListener('mousedown', this.onMouse, true);
-				layer.removeEventListener('mouseup', this.onMouse, true);
-			}
-	
-			layer.removeEventListener('click', this.onClick, true);
-			layer.removeEventListener('touchstart', this.onTouchStart, false);
-			layer.removeEventListener('touchmove', this.onTouchMove, false);
-			layer.removeEventListener('touchend', this.onTouchEnd, false);
-			layer.removeEventListener('touchcancel', this.onTouchCancel, false);
-		};
-	
-	
-		/**
-		 * Check whether FastClick is needed.
-		 *
-		 * @param {Element} layer The layer to listen on
-		 */
-		FastClick.notNeeded = function(layer) {
-			var metaViewport;
-			var chromeVersion;
-			var blackberryVersion;
-			var firefoxVersion;
-	
-			// Devices that don't support touch don't need FastClick
-			if (typeof window.ontouchstart === 'undefined') {
-				return true;
-			}
-	
-			// Chrome version - zero for other browsers
-			chromeVersion = +(/Chrome\/([0-9]+)/.exec(navigator.userAgent) || [,0])[1];
-	
-			if (chromeVersion) {
-	
-				if (deviceIsAndroid) {
-					metaViewport = document.querySelector('meta[name=viewport]');
-	
-					if (metaViewport) {
-						// Chrome on Android with user-scalable="no" doesn't need FastClick (issue #89)
-						if (metaViewport.content.indexOf('user-scalable=no') !== -1) {
-							return true;
-						}
-						// Chrome 32 and above with width=device-width or less don't need FastClick
-						if (chromeVersion > 31 && document.documentElement.scrollWidth <= window.outerWidth) {
-							return true;
-						}
-					}
-	
-				// Chrome desktop doesn't need FastClick (issue #15)
-				} else {
-					return true;
-				}
-			}
-	
-			if (deviceIsBlackBerry10) {
-				blackberryVersion = navigator.userAgent.match(/Version\/([0-9]*)\.([0-9]*)/);
-	
-				// BlackBerry 10.3+ does not require Fastclick library.
-				// https://github.com/ftlabs/fastclick/issues/251
-				if (blackberryVersion[1] >= 10 && blackberryVersion[2] >= 3) {
-					metaViewport = document.querySelector('meta[name=viewport]');
-	
-					if (metaViewport) {
-						// user-scalable=no eliminates click delay.
-						if (metaViewport.content.indexOf('user-scalable=no') !== -1) {
-							return true;
-						}
-						// width=device-width (or less than device-width) eliminates click delay.
-						if (document.documentElement.scrollWidth <= window.outerWidth) {
-							return true;
-						}
-					}
-				}
-			}
-	
-			// IE10 with -ms-touch-action: none or manipulation, which disables double-tap-to-zoom (issue #97)
-			if (layer.style.msTouchAction === 'none' || layer.style.touchAction === 'manipulation') {
-				return true;
-			}
-	
-			// Firefox version - zero for other browsers
-			firefoxVersion = +(/Firefox\/([0-9]+)/.exec(navigator.userAgent) || [,0])[1];
-	
-			if (firefoxVersion >= 27) {
-				// Firefox 27+ does not have tap delay if the content is not zoomable - https://bugzilla.mozilla.org/show_bug.cgi?id=922896
-	
-				metaViewport = document.querySelector('meta[name=viewport]');
-				if (metaViewport && (metaViewport.content.indexOf('user-scalable=no') !== -1 || document.documentElement.scrollWidth <= window.outerWidth)) {
-					return true;
-				}
-			}
-	
-			// IE11: prefixed -ms-touch-action is no longer supported and it's recomended to use non-prefixed version
-			// http://msdn.microsoft.com/en-us/library/windows/apps/Hh767313.aspx
-			if (layer.style.touchAction === 'none' || layer.style.touchAction === 'manipulation') {
-				return true;
-			}
-	
-			return false;
-		};
-	
-	
-		/**
-		 * Factory method for creating a FastClick object
-		 *
-		 * @param {Element} layer The layer to listen on
-		 * @param {Object} [options={}] The options to override the defaults
-		 */
-		FastClick.attach = function(layer, options) {
-			return new FastClick(layer, options);
-		};
-	
-	
-		if (true) {
-	
-			// AMD. Register as an anonymous module.
-			!(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
-				return FastClick;
-			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-		} else if (typeof module !== 'undefined' && module.exports) {
-			module.exports = FastClick.attach;
-			module.exports.FastClick = FastClick;
-		} else {
-			window.FastClick = FastClick;
-		}
-	}());
-
-
-/***/ },
-/* 80 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root) {/*global exports, Intl*/
-	/**
-	 * This script gives you the zone info key representing your device's time zone setting.
-	 *
-	 * @name jsTimezoneDetect
-	 * @version 1.0.6
-	 * @author Jon Nylander
-	 * @license MIT License - https://bitbucket.org/pellepim/jstimezonedetect/src/default/LICENCE.txt
-	 *
-	 * For usage and examples, visit:
-	 * http://pellepim.bitbucket.org/jstz/
-	 *
-	 * Copyright (c) Jon Nylander
-	 */
-	
-	
-	/**
-	 * Namespace to hold all the code for timezone detection.
-	 */
-	var jstz = (function () {
-	    'use strict';
-	    var HEMISPHERE_SOUTH = 's',
-	
-	        consts = {
-	            DAY: 86400000,
-	            HOUR: 3600000,
-	            MINUTE: 60000,
-	            SECOND: 1000,
-	            BASELINE_YEAR: 2014,
-	            MAX_SCORE: 864000000, // 10 days
-	            AMBIGUITIES: {
-	                'America/Denver':       ['America/Mazatlan'],
-	                'Europe/London':        ['Africa/Casablanca'],
-	                'America/Chicago':      ['America/Mexico_City'],
-	                'America/Asuncion':     ['America/Campo_Grande', 'America/Santiago'],
-	                'America/Montevideo':   ['America/Sao_Paulo', 'America/Santiago'],
-	                // Europe/Minsk should not be in this list... but Windows.
-	                'Asia/Beirut':          ['Asia/Amman', 'Asia/Jerusalem', 'Europe/Helsinki', 'Asia/Damascus', 'Africa/Cairo', 'Asia/Gaza', 'Europe/Minsk'],
-	                'Pacific/Auckland':     ['Pacific/Fiji'],
-	                'America/Los_Angeles':  ['America/Santa_Isabel'],
-	                'America/New_York':     ['America/Havana'],
-	                'America/Halifax':      ['America/Goose_Bay'],
-	                'America/Godthab':      ['America/Miquelon'],
-	                'Asia/Dubai':           ['Asia/Yerevan'],
-	                'Asia/Jakarta':         ['Asia/Krasnoyarsk'],
-	                'Asia/Shanghai':        ['Asia/Irkutsk', 'Australia/Perth'],
-	                'Australia/Sydney':     ['Australia/Lord_Howe'],
-	                'Asia/Tokyo':           ['Asia/Yakutsk'],
-	                'Asia/Dhaka':           ['Asia/Omsk'],
-	                // In the real world Yerevan is not ambigous for Baku... but Windows.
-	                'Asia/Baku':            ['Asia/Yerevan'],
-	                'Australia/Brisbane':   ['Asia/Vladivostok'],
-	                'Pacific/Noumea':       ['Asia/Vladivostok'],
-	                'Pacific/Majuro':       ['Asia/Kamchatka', 'Pacific/Fiji'],
-	                'Pacific/Tongatapu':    ['Pacific/Apia'],
-	                'Asia/Baghdad':         ['Europe/Minsk', 'Europe/Moscow'],
-	                'Asia/Karachi':         ['Asia/Yekaterinburg'],
-	                'Africa/Johannesburg':  ['Asia/Gaza', 'Africa/Cairo']
-	            }
-	        },
-	
-	        /**
-	         * Gets the offset in minutes from UTC for a certain date.
-	         * @param {Date} date
-	         * @returns {Number}
-	         */
-	        get_date_offset = function get_date_offset(date) {
-	            var offset = -date.getTimezoneOffset();
-	            return (offset !== null ? offset : 0);
-	        },
-	
-	        /**
-	         * This function does some basic calculations to create information about
-	         * the user's timezone. It uses REFERENCE_YEAR as a solid year for which
-	         * the script has been tested rather than depend on the year set by the
-	         * client device.
-	         *
-	         * Returns a key that can be used to do lookups in jstz.olson.timezones.
-	         * eg: "720,1,2".
-	         *
-	         * @returns {String}
-	         */
-	        lookup_key = function lookup_key() {
-	            var january_offset = get_date_offset(new Date(consts.BASELINE_YEAR, 0, 2)),
-	                june_offset = get_date_offset(new Date(consts.BASELINE_YEAR, 5, 2)),
-	                diff = january_offset - june_offset;
-	
-	            if (diff < 0) {
-	                return january_offset + ",1";
-	            } else if (diff > 0) {
-	                return june_offset + ",1," + HEMISPHERE_SOUTH;
-	            }
-	
-	            return january_offset + ",0";
-	        },
-	
-	
-	        /**
-	         * Tries to get the time zone key directly from the operating system for those
-	         * environments that support the ECMAScript Internationalization API.
-	         */
-	        get_from_internationalization_api = function get_from_internationalization_api() {
-	            var format, timezone;
-	            if (typeof Intl === "undefined" || typeof Intl.DateTimeFormat === "undefined") {
-	                return;
-	            }
-	
-	            format = Intl.DateTimeFormat();
-	
-	            if (typeof format === "undefined" || typeof format.resolvedOptions === "undefined") {
-	                return;
-	            }
-	
-	            timezone = format.resolvedOptions().timeZone;
-	
-	            if (timezone && (timezone.indexOf("/") > -1 || timezone === 'UTC')) {
-	                return timezone;
-	            }
-	
-	        },
-	
-	        /**
-	         * Starting point for getting all the DST rules for a specific year
-	         * for the current timezone (as described by the client system).
-	         *
-	         * Returns an object with start and end attributes, or false if no
-	         * DST rules were found for the year.
-	         *
-	         * @param year
-	         * @returns {Object} || {Boolean}
-	         */
-	        dst_dates = function dst_dates(year) {
-	            var yearstart = new Date(year, 0, 1, 0, 0, 1, 0).getTime();
-	            var yearend = new Date(year, 12, 31, 23, 59, 59).getTime();
-	            var current = yearstart;
-	            var offset = (new Date(current)).getTimezoneOffset();
-	            var dst_start = null;
-	            var dst_end = null;
-	
-	            while (current < yearend - 86400000) {
-	                var dateToCheck = new Date(current);
-	                var dateToCheckOffset = dateToCheck.getTimezoneOffset();
-	
-	                if (dateToCheckOffset !== offset) {
-	                    if (dateToCheckOffset < offset) {
-	                        dst_start = dateToCheck;
-	                    }
-	                    if (dateToCheckOffset > offset) {
-	                        dst_end = dateToCheck;
-	                    }
-	                    offset = dateToCheckOffset;
-	                }
-	
-	                current += 86400000;
-	            }
-	
-	            if (dst_start && dst_end) {
-	                return {
-	                    s: find_dst_fold(dst_start).getTime(),
-	                    e: find_dst_fold(dst_end).getTime()
-	                };
-	            }
-	
-	            return false;
-	        },
-	
-	        /**
-	         * Probably completely unnecessary function that recursively finds the
-	         * exact (to the second) time when a DST rule was changed.
-	         *
-	         * @param a_date - The candidate Date.
-	         * @param padding - integer specifying the padding to allow around the candidate
-	         *                  date for finding the fold.
-	         * @param iterator - integer specifying how many milliseconds to iterate while
-	         *                   searching for the fold.
-	         *
-	         * @returns {Date}
-	         */
-	        find_dst_fold = function find_dst_fold(a_date, padding, iterator) {
-	            if (typeof padding === 'undefined') {
-	                padding = consts.DAY;
-	                iterator = consts.HOUR;
-	            }
-	
-	            var date_start = new Date(a_date.getTime() - padding).getTime();
-	            var date_end = a_date.getTime() + padding;
-	            var offset = new Date(date_start).getTimezoneOffset();
-	
-	            var current = date_start;
-	
-	            var dst_change = null;
-	            while (current < date_end - iterator) {
-	                var dateToCheck = new Date(current);
-	                var dateToCheckOffset = dateToCheck.getTimezoneOffset();
-	
-	                if (dateToCheckOffset !== offset) {
-	                    dst_change = dateToCheck;
-	                    break;
-	                }
-	                current += iterator;
-	            }
-	
-	            if (padding === consts.DAY) {
-	                return find_dst_fold(dst_change, consts.HOUR, consts.MINUTE);
-	            }
-	
-	            if (padding === consts.HOUR) {
-	                return find_dst_fold(dst_change, consts.MINUTE, consts.SECOND);
-	            }
-	
-	            return dst_change;
-	        },
-	
-	        windows7_adaptations = function windows7_adaptions(rule_list, preliminary_timezone, score, sample) {
-	            if (score !== 'N/A') {
-	                return score;
-	            }
-	            if (preliminary_timezone === 'Asia/Beirut') {
-	                if (sample.name === 'Africa/Cairo') {
-	                    if (rule_list[6].s === 1398376800000 && rule_list[6].e === 1411678800000) {
-	                        return 0;
-	                    }
-	                }
-	                if (sample.name === 'Asia/Jerusalem') {
-	                    if (rule_list[6].s === 1395964800000 && rule_list[6].e === 1411858800000) {
-	                        return 0;
-	                }
-	            }
-	            } else if (preliminary_timezone === 'America/Santiago') {
-	                if (sample.name === 'America/Asuncion') {
-	                    if (rule_list[6].s === 1412481600000 && rule_list[6].e === 1397358000000) {
-	                        return 0;
-	                    }
-	                }
-	                if (sample.name === 'America/Campo_Grande') {
-	                    if (rule_list[6].s === 1413691200000 && rule_list[6].e === 1392519600000) {
-	                        return 0;
-	                    }
-	                }
-	            } else if (preliminary_timezone === 'America/Montevideo') {
-	                if (sample.name === 'America/Sao_Paulo') {
-	                    if (rule_list[6].s === 1413687600000 && rule_list[6].e === 1392516000000) {
-	                        return 0;
-	                    }
-	                }
-	            } else if (preliminary_timezone === 'Pacific/Auckland') {
-	                if (sample.name === 'Pacific/Fiji') {
-	                    if (rule_list[6].s === 1414245600000 && rule_list[6].e === 1396101600000) {
-	                        return 0;
-	                    }
-	                }
-	            }
-	
-	            return score;
-	        },
-	
-	        /**
-	         * Takes the DST rules for the current timezone, and proceeds to find matches
-	         * in the jstz.olson.dst_rules.zones array.
-	         *
-	         * Compares samples to the current timezone on a scoring basis.
-	         *
-	         * Candidates are ruled immediately if either the candidate or the current zone
-	         * has a DST rule where the other does not.
-	         *
-	         * Candidates are ruled out immediately if the current zone has a rule that is
-	         * outside the DST scope of the candidate.
-	         *
-	         * Candidates are included for scoring if the current zones rules fall within the
-	         * span of the samples rules.
-	         *
-	         * Low score is best, the score is calculated by summing up the differences in DST
-	         * rules and if the consts.MAX_SCORE is overreached the candidate is ruled out.
-	         *
-	         * Yah follow? :)
-	         *
-	         * @param rule_list
-	         * @param preliminary_timezone
-	         * @returns {*}
-	         */
-	        best_dst_match = function best_dst_match(rule_list, preliminary_timezone) {
-	            var score_sample = function score_sample(sample) {
-	                var score = 0;
-	
-	                for (var j = 0; j < rule_list.length; j++) {
-	
-	                    // Both sample and current time zone report DST during the year.
-	                    if (!!sample.rules[j] && !!rule_list[j]) {
-	
-	                        // The current time zone's DST rules are inside the sample's. Include.
-	                        if (rule_list[j].s >= sample.rules[j].s && rule_list[j].e <= sample.rules[j].e) {
-	                            score = 0;
-	                            score += Math.abs(rule_list[j].s - sample.rules[j].s);
-	                            score += Math.abs(sample.rules[j].e - rule_list[j].e);
-	
-	                        // The current time zone's DST rules are outside the sample's. Discard.
-	                        } else {
-	                            score = 'N/A';
-	                            break;
-	                        }
-	
-	                        // The max score has been reached. Discard.
-	                        if (score > consts.MAX_SCORE) {
-	                            score = 'N/A';
-	                            break;
-	                        }
-	                    }
-	                }
-	
-	                score = windows7_adaptations(rule_list, preliminary_timezone, score, sample);
-	
-	                return score;
-	            };
-	            var scoreboard = {};
-	            var dst_zones = jstz.olson.dst_rules.zones;
-	            var dst_zones_length = dst_zones.length;
-	            var ambiguities = consts.AMBIGUITIES[preliminary_timezone];
-	
-	            for (var i = 0; i < dst_zones_length; i++) {
-	                var sample = dst_zones[i];
-	                var score = score_sample(dst_zones[i]);
-	
-	                if (score !== 'N/A') {
-	                    scoreboard[sample.name] = score;
-	                }
-	            }
-	
-	            for (var tz in scoreboard) {
-	                if (scoreboard.hasOwnProperty(tz)) {
-	                    for (var j = 0; j < ambiguities.length; j++) {
-	                        if (ambiguities[j] === tz) {
-	                            return tz;
-	                        }
-	                    }
-	                }
-	            }
-	
-	            return preliminary_timezone;
-	        },
-	
-	        /**
-	         * Takes the preliminary_timezone as detected by lookup_key().
-	         *
-	         * Builds up the current timezones DST rules for the years defined
-	         * in the jstz.olson.dst_rules.years array.
-	         *
-	         * If there are no DST occurences for those years, immediately returns
-	         * the preliminary timezone. Otherwise proceeds and tries to solve
-	         * ambiguities.
-	         *
-	         * @param preliminary_timezone
-	         * @returns {String} timezone_name
-	         */
-	        get_by_dst = function get_by_dst(preliminary_timezone) {
-	            var get_rules = function get_rules() {
-	                var rule_list = [];
-	                for (var i = 0; i < jstz.olson.dst_rules.years.length; i++) {
-	                    var year_rules = dst_dates(jstz.olson.dst_rules.years[i]);
-	                    rule_list.push(year_rules);
-	                }
-	                return rule_list;
-	            };
-	            var check_has_dst = function check_has_dst(rules) {
-	                for (var i = 0; i < rules.length; i++) {
-	                    if (rules[i] !== false) {
-	                        return true;
-	                    }
-	                }
-	                return false;
-	            };
-	            var rules = get_rules();
-	            var has_dst = check_has_dst(rules);
-	
-	            if (has_dst) {
-	                return best_dst_match(rules, preliminary_timezone);
-	            }
-	
-	            return preliminary_timezone;
-	        },
-	
-	        /**
-	         * Uses get_timezone_info() to formulate a key to use in the olson.timezones dictionary.
-	         *
-	         * Returns an object with one function ".name()"
-	         *
-	         * @returns Object
-	         */
-	        determine = function determine() {
-	            var preliminary_tz = get_from_internationalization_api();
-	
-	            if (!preliminary_tz) {
-	                preliminary_tz = jstz.olson.timezones[lookup_key()];
-	
-	                if (typeof consts.AMBIGUITIES[preliminary_tz] !== 'undefined') {
-	                    preliminary_tz = get_by_dst(preliminary_tz);
-	                }
-	            }
-	
-	            return {
-	                name: function () {
-	                    return preliminary_tz;
-	                }
-	            };
-	        };
-	
-	    return {
-	        determine: determine
-	    };
-	}());
-	
-	
-	jstz.olson = jstz.olson || {};
-	
-	/**
-	 * The keys in this dictionary are comma separated as such:
-	 *
-	 * First the offset compared to UTC time in minutes.
-	 *
-	 * Then a flag which is 0 if the timezone does not take daylight savings into account and 1 if it
-	 * does.
-	 *
-	 * Thirdly an optional 's' signifies that the timezone is in the southern hemisphere,
-	 * only interesting for timezones with DST.
-	 *
-	 * The mapped arrays is used for constructing the jstz.TimeZone object from within
-	 * jstz.determine();
-	 */
-	jstz.olson.timezones = {
-	    '-720,0': 'Etc/GMT+12',
-	    '-660,0': 'Pacific/Pago_Pago',
-	    '-660,1,s': 'Pacific/Apia', // Why? Because windows... cry!
-	    '-600,1': 'America/Adak',
-	    '-600,0': 'Pacific/Honolulu',
-	    '-570,0': 'Pacific/Marquesas',
-	    '-540,0': 'Pacific/Gambier',
-	    '-540,1': 'America/Anchorage',
-	    '-480,1': 'America/Los_Angeles',
-	    '-480,0': 'Pacific/Pitcairn',
-	    '-420,0': 'America/Phoenix',
-	    '-420,1': 'America/Denver',
-	    '-360,0': 'America/Guatemala',
-	    '-360,1': 'America/Chicago',
-	    '-360,1,s': 'Pacific/Easter',
-	    '-300,0': 'America/Bogota',
-	    '-300,1': 'America/New_York',
-	    '-270,0': 'America/Caracas',
-	    '-240,1': 'America/Halifax',
-	    '-240,0': 'America/Santo_Domingo',
-	    '-240,1,s': 'America/Asuncion',
-	    '-210,1': 'America/St_Johns',
-	    '-180,1': 'America/Godthab',
-	    '-180,0': 'America/Argentina/Buenos_Aires',
-	    '-180,1,s': 'America/Montevideo',
-	    '-120,0': 'America/Noronha',
-	    '-120,1': 'America/Noronha',
-	    '-60,1': 'Atlantic/Azores',
-	    '-60,0': 'Atlantic/Cape_Verde',
-	    '0,0': 'UTC',
-	    '0,1': 'Europe/London',
-	    '60,1': 'Europe/Berlin',
-	    '60,0': 'Africa/Lagos',
-	    '60,1,s': 'Africa/Windhoek',
-	    '120,1': 'Asia/Beirut',
-	    '120,0': 'Africa/Johannesburg',
-	    '180,0': 'Asia/Baghdad',
-	    '180,1': 'Europe/Moscow',
-	    '210,1': 'Asia/Tehran',
-	    '240,0': 'Asia/Dubai',
-	    '240,1': 'Asia/Baku',
-	    '270,0': 'Asia/Kabul',
-	    '300,1': 'Asia/Yekaterinburg',
-	    '300,0': 'Asia/Karachi',
-	    '330,0': 'Asia/Kolkata',
-	    '345,0': 'Asia/Kathmandu',
-	    '360,0': 'Asia/Dhaka',
-	    '360,1': 'Asia/Omsk',
-	    '390,0': 'Asia/Rangoon',
-	    '420,1': 'Asia/Krasnoyarsk',
-	    '420,0': 'Asia/Jakarta',
-	    '480,0': 'Asia/Shanghai',
-	    '480,1': 'Asia/Irkutsk',
-	    '525,0': 'Australia/Eucla',
-	    '525,1,s': 'Australia/Eucla',
-	    '540,1': 'Asia/Yakutsk',
-	    '540,0': 'Asia/Tokyo',
-	    '570,0': 'Australia/Darwin',
-	    '570,1,s': 'Australia/Adelaide',
-	    '600,0': 'Australia/Brisbane',
-	    '600,1': 'Asia/Vladivostok',
-	    '600,1,s': 'Australia/Sydney',
-	    '630,1,s': 'Australia/Lord_Howe',
-	    '660,1': 'Asia/Kamchatka',
-	    '660,0': 'Pacific/Noumea',
-	    '690,0': 'Pacific/Norfolk',
-	    '720,1,s': 'Pacific/Auckland',
-	    '720,0': 'Pacific/Majuro',
-	    '765,1,s': 'Pacific/Chatham',
-	    '780,0': 'Pacific/Tongatapu',
-	    '780,1,s': 'Pacific/Apia',
-	    '840,0': 'Pacific/Kiritimati'
-	};
-	
-	/* Build time: 2015-11-02 13:01:00Z Build by invoking python utilities/dst.py generate */
-	jstz.olson.dst_rules = {
-	    "years": [
-	        2008,
-	        2009,
-	        2010,
-	        2011,
-	        2012,
-	        2013,
-	        2014
-	    ],
-	    "zones": [
-	        {
-	            "name": "Africa/Cairo",
-	            "rules": [
-	                {
-	                    "e": 1219957200000,
-	                    "s": 1209074400000
-	                },
-	                {
-	                    "e": 1250802000000,
-	                    "s": 1240524000000
-	                },
-	                {
-	                    "e": 1285880400000,
-	                    "s": 1284069600000
-	                },
-	                false,
-	                false,
-	                false,
-	                {
-	                    "e": 1411678800000,
-	                    "s": 1406844000000
-	                }
-	            ]
-	        },
-	        {
-	            "name": "Africa/Casablanca",
-	            "rules": [
-	                {
-	                    "e": 1220223600000,
-	                    "s": 1212278400000
-	                },
-	                {
-	                    "e": 1250809200000,
-	                    "s": 1243814400000
-	                },
-	                {
-	                    "e": 1281222000000,
-	                    "s": 1272758400000
-	                },
-	                {
-	                    "e": 1312066800000,
-	                    "s": 1301788800000
-	                },
-	                {
-	                    "e": 1348970400000,
-	                    "s": 1345428000000
-	                },
-	                {
-	                    "e": 1382839200000,
-	                    "s": 1376100000000
-	                },
-	                {
-	                    "e": 1414288800000,
-	                    "s": 1406944800000
-	                }
-	            ]
-	        },
-	        {
-	            "name": "America/Asuncion",
-	            "rules": [
-	                {
-	                    "e": 1205031600000,
-	                    "s": 1224388800000
-	                },
-	                {
-	                    "e": 1236481200000,
-	                    "s": 1255838400000
-	                },
-	                {
-	                    "e": 1270954800000,
-	                    "s": 1286078400000
-	                },
-	                {
-	                    "e": 1302404400000,
-	                    "s": 1317528000000
-	                },
-	                {
-	                    "e": 1333854000000,
-	                    "s": 1349582400000
-	                },
-	                {
-	                    "e": 1364094000000,
-	                    "s": 1381032000000
-	                },
-	                {
-	                    "e": 1395543600000,
-	                    "s": 1412481600000
-	                }
-	            ]
-	        },
-	        {
-	            "name": "America/Campo_Grande",
-	            "rules": [
-	                {
-	                    "e": 1203217200000,
-	                    "s": 1224388800000
-	                },
-	                {
-	                    "e": 1234666800000,
-	                    "s": 1255838400000
-	                },
-	                {
-	                    "e": 1266721200000,
-	                    "s": 1287288000000
-	                },
-	                {
-	                    "e": 1298170800000,
-	                    "s": 1318737600000
-	                },
-	                {
-	                    "e": 1330225200000,
-	                    "s": 1350792000000
-	                },
-	                {
-	                    "e": 1361070000000,
-	                    "s": 1382241600000
-	                },
-	                {
-	                    "e": 1392519600000,
-	                    "s": 1413691200000
-	                }
-	            ]
-	        },
-	        {
-	            "name": "America/Goose_Bay",
-	            "rules": [
-	                {
-	                    "e": 1225594860000,
-	                    "s": 1205035260000
-	                },
-	                {
-	                    "e": 1257044460000,
-	                    "s": 1236484860000
-	                },
-	                {
-	                    "e": 1289098860000,
-	                    "s": 1268539260000
-	                },
-	                {
-	                    "e": 1320555600000,
-	                    "s": 1299988860000
-	                },
-	                {
-	                    "e": 1352005200000,
-	                    "s": 1331445600000
-	                },
-	                {
-	                    "e": 1383454800000,
-	                    "s": 1362895200000
-	                },
-	                {
-	                    "e": 1414904400000,
-	                    "s": 1394344800000
-	                }
-	            ]
-	        },
-	        {
-	            "name": "America/Havana",
-	            "rules": [
-	                {
-	                    "e": 1224997200000,
-	                    "s": 1205643600000
-	                },
-	                {
-	                    "e": 1256446800000,
-	                    "s": 1236488400000
-	                },
-	                {
-	                    "e": 1288501200000,
-	                    "s": 1268542800000
-	                },
-	                {
-	                    "e": 1321160400000,
-	                    "s": 1300597200000
-	                },
-	                {
-	                    "e": 1352005200000,
-	                    "s": 1333256400000
-	                },
-	                {
-	                    "e": 1383454800000,
-	                    "s": 1362891600000
-	                },
-	                {
-	                    "e": 1414904400000,
-	                    "s": 1394341200000
-	                }
-	            ]
-	        },
-	        {
-	            "name": "America/Mazatlan",
-	            "rules": [
-	                {
-	                    "e": 1225008000000,
-	                    "s": 1207472400000
-	                },
-	                {
-	                    "e": 1256457600000,
-	                    "s": 1238922000000
-	                },
-	                {
-	                    "e": 1288512000000,
-	                    "s": 1270371600000
-	                },
-	                {
-	                    "e": 1319961600000,
-	                    "s": 1301821200000
-	                },
-	                {
-	                    "e": 1351411200000,
-	                    "s": 1333270800000
-	                },
-	                {
-	                    "e": 1382860800000,
-	                    "s": 1365325200000
-	                },
-	                {
-	                    "e": 1414310400000,
-	                    "s": 1396774800000
-	                }
-	            ]
-	        },
-	        {
-	            "name": "America/Mexico_City",
-	            "rules": [
-	                {
-	                    "e": 1225004400000,
-	                    "s": 1207468800000
-	                },
-	                {
-	                    "e": 1256454000000,
-	                    "s": 1238918400000
-	                },
-	                {
-	                    "e": 1288508400000,
-	                    "s": 1270368000000
-	                },
-	                {
-	                    "e": 1319958000000,
-	                    "s": 1301817600000
-	                },
-	                {
-	                    "e": 1351407600000,
-	                    "s": 1333267200000
-	                },
-	                {
-	                    "e": 1382857200000,
-	                    "s": 1365321600000
-	                },
-	                {
-	                    "e": 1414306800000,
-	                    "s": 1396771200000
-	                }
-	            ]
-	        },
-	        {
-	            "name": "America/Miquelon",
-	            "rules": [
-	                {
-	                    "e": 1225598400000,
-	                    "s": 1205038800000
-	                },
-	                {
-	                    "e": 1257048000000,
-	                    "s": 1236488400000
-	                },
-	                {
-	                    "e": 1289102400000,
-	                    "s": 1268542800000
-	                },
-	                {
-	                    "e": 1320552000000,
-	                    "s": 1299992400000
-	                },
-	                {
-	                    "e": 1352001600000,
-	                    "s": 1331442000000
-	                },
-	                {
-	                    "e": 1383451200000,
-	                    "s": 1362891600000
-	                },
-	                {
-	                    "e": 1414900800000,
-	                    "s": 1394341200000
-	                }
-	            ]
-	        },
-	        {
-	            "name": "America/Santa_Isabel",
-	            "rules": [
-	                {
-	                    "e": 1225011600000,
-	                    "s": 1207476000000
-	                },
-	                {
-	                    "e": 1256461200000,
-	                    "s": 1238925600000
-	                },
-	                {
-	                    "e": 1288515600000,
-	                    "s": 1270375200000
-	                },
-	                {
-	                    "e": 1319965200000,
-	                    "s": 1301824800000
-	                },
-	                {
-	                    "e": 1351414800000,
-	                    "s": 1333274400000
-	                },
-	                {
-	                    "e": 1382864400000,
-	                    "s": 1365328800000
-	                },
-	                {
-	                    "e": 1414314000000,
-	                    "s": 1396778400000
-	                }
-	            ]
-	        },
-	        {
-	            "name": "America/Santiago",
-	            "rules": [
-	                {
-	                    "e": 1206846000000,
-	                    "s": 1223784000000
-	                },
-	                {
-	                    "e": 1237086000000,
-	                    "s": 1255233600000
-	                },
-	                {
-	                    "e": 1270350000000,
-	                    "s": 1286683200000
-	                },
-	                {
-	                    "e": 1304823600000,
-	                    "s": 1313899200000
-	                },
-	                {
-	                    "e": 1335668400000,
-	                    "s": 1346558400000
-	                },
-	                {
-	                    "e": 1367118000000,
-	                    "s": 1378612800000
-	                },
-	                {
-	                    "e": 1398567600000,
-	                    "s": 1410062400000
-	                }
-	            ]
-	        },
-	        {
-	            "name": "America/Sao_Paulo",
-	            "rules": [
-	                {
-	                    "e": 1203213600000,
-	                    "s": 1224385200000
-	                },
-	                {
-	                    "e": 1234663200000,
-	                    "s": 1255834800000
-	                },
-	                {
-	                    "e": 1266717600000,
-	                    "s": 1287284400000
-	                },
-	                {
-	                    "e": 1298167200000,
-	                    "s": 1318734000000
-	                },
-	                {
-	                    "e": 1330221600000,
-	                    "s": 1350788400000
-	                },
-	                {
-	                    "e": 1361066400000,
-	                    "s": 1382238000000
-	                },
-	                {
-	                    "e": 1392516000000,
-	                    "s": 1413687600000
-	                }
-	            ]
-	        },
-	        {
-	            "name": "Asia/Amman",
-	            "rules": [
-	                {
-	                    "e": 1225404000000,
-	                    "s": 1206655200000
-	                },
-	                {
-	                    "e": 1256853600000,
-	                    "s": 1238104800000
-	                },
-	                {
-	                    "e": 1288303200000,
-	                    "s": 1269554400000
-	                },
-	                {
-	                    "e": 1319752800000,
-	                    "s": 1301608800000
-	                },
-	                false,
-	                false,
-	                {
-	                    "e": 1414706400000,
-	                    "s": 1395957600000
-	                }
-	            ]
-	        },
-	        {
-	            "name": "Asia/Damascus",
-	            "rules": [
-	                {
-	                    "e": 1225486800000,
-	                    "s": 1207260000000
-	                },
-	                {
-	                    "e": 1256850000000,
-	                    "s": 1238104800000
-	                },
-	                {
-	                    "e": 1288299600000,
-	                    "s": 1270159200000
-	                },
-	                {
-	                    "e": 1319749200000,
-	                    "s": 1301608800000
-	                },
-	                {
-	                    "e": 1351198800000,
-	                    "s": 1333058400000
-	                },
-	                {
-	                    "e": 1382648400000,
-	                    "s": 1364508000000
-	                },
-	                {
-	                    "e": 1414702800000,
-	                    "s": 1395957600000
-	                }
-	            ]
-	        },
-	        {
-	            "name": "Asia/Dubai",
-	            "rules": [
-	                false,
-	                false,
-	                false,
-	                false,
-	                false,
-	                false,
-	                false
-	            ]
-	        },
-	        {
-	            "name": "Asia/Gaza",
-	            "rules": [
-	                {
-	                    "e": 1219957200000,
-	                    "s": 1206655200000
-	                },
-	                {
-	                    "e": 1252015200000,
-	                    "s": 1238104800000
-	                },
-	                {
-	                    "e": 1281474000000,
-	                    "s": 1269640860000
-	                },
-	                {
-	                    "e": 1312146000000,
-	                    "s": 1301608860000
-	                },
-	                {
-	                    "e": 1348178400000,
-	                    "s": 1333058400000
-	                },
-	                {
-	                    "e": 1380229200000,
-	                    "s": 1364508000000
-	                },
-	                {
-	                    "e": 1414098000000,
-	                    "s": 1395957600000
-	                }
-	            ]
-	        },
-	        {
-	            "name": "Asia/Irkutsk",
-	            "rules": [
-	                {
-	                    "e": 1224957600000,
-	                    "s": 1206813600000
-	                },
-	                {
-	                    "e": 1256407200000,
-	                    "s": 1238263200000
-	                },
-	                {
-	                    "e": 1288461600000,
-	                    "s": 1269712800000
-	                },
-	                false,
-	                false,
-	                false,
-	                false
-	            ]
-	        },
-	        {
-	            "name": "Asia/Jerusalem",
-	            "rules": [
-	                {
-	                    "e": 1223161200000,
-	                    "s": 1206662400000
-	                },
-	                {
-	                    "e": 1254006000000,
-	                    "s": 1238112000000
-	                },
-	                {
-	                    "e": 1284246000000,
-	                    "s": 1269561600000
-	                },
-	                {
-	                    "e": 1317510000000,
-	                    "s": 1301616000000
-	                },
-	                {
-	                    "e": 1348354800000,
-	                    "s": 1333065600000
-	                },
-	                {
-	                    "e": 1382828400000,
-	                    "s": 1364515200000
-	                },
-	                {
-	                    "e": 1414278000000,
-	                    "s": 1395964800000
-	                }
-	            ]
-	        },
-	        {
-	            "name": "Asia/Kamchatka",
-	            "rules": [
-	                {
-	                    "e": 1224943200000,
-	                    "s": 1206799200000
-	                },
-	                {
-	                    "e": 1256392800000,
-	                    "s": 1238248800000
-	                },
-	                {
-	                    "e": 1288450800000,
-	                    "s": 1269698400000
-	                },
-	                false,
-	                false,
-	                false,
-	                false
-	            ]
-	        },
-	        {
-	            "name": "Asia/Krasnoyarsk",
-	            "rules": [
-	                {
-	                    "e": 1224961200000,
-	                    "s": 1206817200000
-	                },
-	                {
-	                    "e": 1256410800000,
-	                    "s": 1238266800000
-	                },
-	                {
-	                    "e": 1288465200000,
-	                    "s": 1269716400000
-	                },
-	                false,
-	                false,
-	                false,
-	                false
-	            ]
-	        },
-	        {
-	            "name": "Asia/Omsk",
-	            "rules": [
-	                {
-	                    "e": 1224964800000,
-	                    "s": 1206820800000
-	                },
-	                {
-	                    "e": 1256414400000,
-	                    "s": 1238270400000
-	                },
-	                {
-	                    "e": 1288468800000,
-	                    "s": 1269720000000
-	                },
-	                false,
-	                false,
-	                false,
-	                false
-	            ]
-	        },
-	        {
-	            "name": "Asia/Vladivostok",
-	            "rules": [
-	                {
-	                    "e": 1224950400000,
-	                    "s": 1206806400000
-	                },
-	                {
-	                    "e": 1256400000000,
-	                    "s": 1238256000000
-	                },
-	                {
-	                    "e": 1288454400000,
-	                    "s": 1269705600000
-	                },
-	                false,
-	                false,
-	                false,
-	                false
-	            ]
-	        },
-	        {
-	            "name": "Asia/Yakutsk",
-	            "rules": [
-	                {
-	                    "e": 1224954000000,
-	                    "s": 1206810000000
-	                },
-	                {
-	                    "e": 1256403600000,
-	                    "s": 1238259600000
-	                },
-	                {
-	                    "e": 1288458000000,
-	                    "s": 1269709200000
-	                },
-	                false,
-	                false,
-	                false,
-	                false
-	            ]
-	        },
-	        {
-	            "name": "Asia/Yekaterinburg",
-	            "rules": [
-	                {
-	                    "e": 1224968400000,
-	                    "s": 1206824400000
-	                },
-	                {
-	                    "e": 1256418000000,
-	                    "s": 1238274000000
-	                },
-	                {
-	                    "e": 1288472400000,
-	                    "s": 1269723600000
-	                },
-	                false,
-	                false,
-	                false,
-	                false
-	            ]
-	        },
-	        {
-	            "name": "Asia/Yerevan",
-	            "rules": [
-	                {
-	                    "e": 1224972000000,
-	                    "s": 1206828000000
-	                },
-	                {
-	                    "e": 1256421600000,
-	                    "s": 1238277600000
-	                },
-	                {
-	                    "e": 1288476000000,
-	                    "s": 1269727200000
-	                },
-	                {
-	                    "e": 1319925600000,
-	                    "s": 1301176800000
-	                },
-	                false,
-	                false,
-	                false
-	            ]
-	        },
-	        {
-	            "name": "Australia/Lord_Howe",
-	            "rules": [
-	                {
-	                    "e": 1207407600000,
-	                    "s": 1223134200000
-	                },
-	                {
-	                    "e": 1238857200000,
-	                    "s": 1254583800000
-	                },
-	                {
-	                    "e": 1270306800000,
-	                    "s": 1286033400000
-	                },
-	                {
-	                    "e": 1301756400000,
-	                    "s": 1317483000000
-	                },
-	                {
-	                    "e": 1333206000000,
-	                    "s": 1349537400000
-	                },
-	                {
-	                    "e": 1365260400000,
-	                    "s": 1380987000000
-	                },
-	                {
-	                    "e": 1396710000000,
-	                    "s": 1412436600000
-	                }
-	            ]
-	        },
-	        {
-	            "name": "Australia/Perth",
-	            "rules": [
-	                {
-	                    "e": 1206813600000,
-	                    "s": 1224957600000
-	                },
-	                false,
-	                false,
-	                false,
-	                false,
-	                false,
-	                false
-	            ]
-	        },
-	        {
-	            "name": "Europe/Helsinki",
-	            "rules": [
-	                {
-	                    "e": 1224982800000,
-	                    "s": 1206838800000
-	                },
-	                {
-	                    "e": 1256432400000,
-	                    "s": 1238288400000
-	                },
-	                {
-	                    "e": 1288486800000,
-	                    "s": 1269738000000
-	                },
-	                {
-	                    "e": 1319936400000,
-	                    "s": 1301187600000
-	                },
-	                {
-	                    "e": 1351386000000,
-	                    "s": 1332637200000
-	                },
-	                {
-	                    "e": 1382835600000,
-	                    "s": 1364691600000
-	                },
-	                {
-	                    "e": 1414285200000,
-	                    "s": 1396141200000
-	                }
-	            ]
-	        },
-	        {
-	            "name": "Europe/Minsk",
-	            "rules": [
-	                {
-	                    "e": 1224979200000,
-	                    "s": 1206835200000
-	                },
-	                {
-	                    "e": 1256428800000,
-	                    "s": 1238284800000
-	                },
-	                {
-	                    "e": 1288483200000,
-	                    "s": 1269734400000
-	                },
-	                false,
-	                false,
-	                false,
-	                false
-	            ]
-	        },
-	        {
-	            "name": "Europe/Moscow",
-	            "rules": [
-	                {
-	                    "e": 1224975600000,
-	                    "s": 1206831600000
-	                },
-	                {
-	                    "e": 1256425200000,
-	                    "s": 1238281200000
-	                },
-	                {
-	                    "e": 1288479600000,
-	                    "s": 1269730800000
-	                },
-	                false,
-	                false,
-	                false,
-	                false
-	            ]
-	        },
-	        {
-	            "name": "Pacific/Apia",
-	            "rules": [
-	                false,
-	                false,
-	                false,
-	                {
-	                    "e": 1301752800000,
-	                    "s": 1316872800000
-	                },
-	                {
-	                    "e": 1333202400000,
-	                    "s": 1348927200000
-	                },
-	                {
-	                    "e": 1365256800000,
-	                    "s": 1380376800000
-	                },
-	                {
-	                    "e": 1396706400000,
-	                    "s": 1411826400000
-	                }
-	            ]
-	        },
-	        {
-	            "name": "Pacific/Fiji",
-	            "rules": [
-	                false,
-	                false,
-	                {
-	                    "e": 1269698400000,
-	                    "s": 1287842400000
-	                },
-	                {
-	                    "e": 1327154400000,
-	                    "s": 1319292000000
-	                },
-	                {
-	                    "e": 1358604000000,
-	                    "s": 1350741600000
-	                },
-	                {
-	                    "e": 1390050000000,
-	                    "s": 1382796000000
-	                },
-	                {
-	                    "e": 1421503200000,
-	                    "s": 1414850400000
-	                }
-	            ]
-	        },
-	        {
-	            "name": "Europe/London",
-	            "rules": [
-	                {
-	                    "e": 1224982800000,
-	                    "s": 1206838800000
-	                },
-	                {
-	                    "e": 1256432400000,
-	                    "s": 1238288400000
-	                },
-	                {
-	                    "e": 1288486800000,
-	                    "s": 1269738000000
-	                },
-	                {
-	                    "e": 1319936400000,
-	                    "s": 1301187600000
-	                },
-	                {
-	                    "e": 1351386000000,
-	                    "s": 1332637200000
-	                },
-	                {
-	                    "e": 1382835600000,
-	                    "s": 1364691600000
-	                },
-	                {
-	                    "e": 1414285200000,
-	                    "s": 1396141200000
-	                }
-	            ]
-	        }
-	    ]
-	};
-	if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-	    module.exports = jstz;
-	} else if (("function" !== 'undefined' && __webpack_require__(81) !== null) && (__webpack_require__(82) != null)) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
-	        return jstz;
-	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	} else {
-	    if (typeof root === 'undefined') {
-	        window.jstz = jstz;
-	    } else {
-	        root.jstz = jstz;
-	    }
-	}
-	}());
-
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 81 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = function() { throw new Error("define cannot be used indirect"); };
-
+	var __WEBPACK_AMD_DEFINE_RESULT__;!function(){"use strict";function t(e,o){function i(t,e){return function(){return t.apply(e,arguments)}}var r;if(o=o||{},this.trackingClick=!1,this.trackingClickStart=0,this.targetElement=null,this.touchStartX=0,this.touchStartY=0,this.lastTouchIdentifier=0,this.touchBoundary=o.touchBoundary||10,this.layer=e,this.tapDelay=o.tapDelay||200,this.tapTimeout=o.tapTimeout||700,!t.notNeeded(e)){for(var a=["onMouse","onClick","onTouchStart","onTouchMove","onTouchEnd","onTouchCancel"],c=this,s=0,u=a.length;u>s;s++)c[a[s]]=i(c[a[s]],c);n&&(e.addEventListener("mouseover",this.onMouse,!0),e.addEventListener("mousedown",this.onMouse,!0),e.addEventListener("mouseup",this.onMouse,!0)),e.addEventListener("click",this.onClick,!0),e.addEventListener("touchstart",this.onTouchStart,!1),e.addEventListener("touchmove",this.onTouchMove,!1),e.addEventListener("touchend",this.onTouchEnd,!1),e.addEventListener("touchcancel",this.onTouchCancel,!1),Event.prototype.stopImmediatePropagation||(e.removeEventListener=function(t,n,o){var i=Node.prototype.removeEventListener;"click"===t?i.call(e,t,n.hijacked||n,o):i.call(e,t,n,o)},e.addEventListener=function(t,n,o){var i=Node.prototype.addEventListener;"click"===t?i.call(e,t,n.hijacked||(n.hijacked=function(t){t.propagationStopped||n(t)}),o):i.call(e,t,n,o)}),"function"==typeof e.onclick&&(r=e.onclick,e.addEventListener("click",function(t){r(t)},!1),e.onclick=null)}}var e=navigator.userAgent.indexOf("Windows Phone")>=0,n=navigator.userAgent.indexOf("Android")>0&&!e,o=/iP(ad|hone|od)/.test(navigator.userAgent)&&!e,i=o&&/OS 4_\d(_\d)?/.test(navigator.userAgent),r=o&&/OS [6-7]_\d/.test(navigator.userAgent),a=navigator.userAgent.indexOf("BB10")>0;t.prototype.needsClick=function(t){switch(t.nodeName.toLowerCase()){case"button":case"select":case"textarea":if(t.disabled)return!0;break;case"input":if(o&&"file"===t.type||t.disabled)return!0;break;case"label":case"iframe":case"video":return!0}return/\bneedsclick\b/.test(t.className)},t.prototype.needsFocus=function(t){switch(t.nodeName.toLowerCase()){case"textarea":return!0;case"select":return!n;case"input":switch(t.type){case"button":case"checkbox":case"file":case"image":case"radio":case"submit":return!1}return!t.disabled&&!t.readOnly;default:return/\bneedsfocus\b/.test(t.className)}},t.prototype.sendClick=function(t,e){var n,o;document.activeElement&&document.activeElement!==t&&document.activeElement.blur(),o=e.changedTouches[0],n=document.createEvent("MouseEvents"),n.initMouseEvent(this.determineEventType(t),!0,!0,window,1,o.screenX,o.screenY,o.clientX,o.clientY,!1,!1,!1,!1,0,null),n.forwardedTouchEvent=!0,t.dispatchEvent(n)},t.prototype.determineEventType=function(t){return n&&"select"===t.tagName.toLowerCase()?"mousedown":"click"},t.prototype.focus=function(t){var e;o&&t.setSelectionRange&&0!==t.type.indexOf("date")&&"time"!==t.type&&"month"!==t.type?(e=t.value.length,t.setSelectionRange(e,e)):t.focus()},t.prototype.updateScrollParent=function(t){var e,n;if(e=t.fastClickScrollParent,!e||!e.contains(t)){n=t;do{if(n.scrollHeight>n.offsetHeight){e=n,t.fastClickScrollParent=n;break}n=n.parentElement}while(n)}e&&(e.fastClickLastScrollTop=e.scrollTop)},t.prototype.getTargetElementFromEventTarget=function(t){return t.nodeType===Node.TEXT_NODE?t.parentNode:t},t.prototype.onTouchStart=function(t){var e,n,r;if(t.targetTouches.length>1)return!0;if(e=this.getTargetElementFromEventTarget(t.target),n=t.targetTouches[0],o){if(r=window.getSelection(),r.rangeCount&&!r.isCollapsed)return!0;if(!i){if(n.identifier&&n.identifier===this.lastTouchIdentifier)return t.preventDefault(),!1;this.lastTouchIdentifier=n.identifier,this.updateScrollParent(e)}}return this.trackingClick=!0,this.trackingClickStart=t.timeStamp,this.targetElement=e,this.touchStartX=n.pageX,this.touchStartY=n.pageY,t.timeStamp-this.lastClickTime<this.tapDelay&&t.preventDefault(),!0},t.prototype.touchHasMoved=function(t){var e=t.changedTouches[0],n=this.touchBoundary;return Math.abs(e.pageX-this.touchStartX)>n||Math.abs(e.pageY-this.touchStartY)>n?!0:!1},t.prototype.onTouchMove=function(t){return this.trackingClick?((this.targetElement!==this.getTargetElementFromEventTarget(t.target)||this.touchHasMoved(t))&&(this.trackingClick=!1,this.targetElement=null),!0):!0},t.prototype.findControl=function(t){return void 0!==t.control?t.control:t.htmlFor?document.getElementById(t.htmlFor):t.querySelector("button, input:not([type=hidden]), keygen, meter, output, progress, select, textarea")},t.prototype.onTouchEnd=function(t){var e,a,c,s,u,l=this.targetElement;if(!this.trackingClick)return!0;if(t.timeStamp-this.lastClickTime<this.tapDelay)return this.cancelNextClick=!0,!0;if(t.timeStamp-this.trackingClickStart>this.tapTimeout)return!0;if(this.cancelNextClick=!1,this.lastClickTime=t.timeStamp,a=this.trackingClickStart,this.trackingClick=!1,this.trackingClickStart=0,r&&(u=t.changedTouches[0],l=document.elementFromPoint(u.pageX-window.pageXOffset,u.pageY-window.pageYOffset)||l,l.fastClickScrollParent=this.targetElement.fastClickScrollParent),c=l.tagName.toLowerCase(),"label"===c){if(e=this.findControl(l)){if(this.focus(l),n)return!1;l=e}}else if(this.needsFocus(l))return t.timeStamp-a>100||o&&window.top!==window&&"input"===c?(this.targetElement=null,!1):(this.focus(l),this.sendClick(l,t),o&&"select"===c||(this.targetElement=null,t.preventDefault()),!1);return o&&!i&&(s=l.fastClickScrollParent,s&&s.fastClickLastScrollTop!==s.scrollTop)?!0:(this.needsClick(l)||(t.preventDefault(),this.sendClick(l,t)),!1)},t.prototype.onTouchCancel=function(){this.trackingClick=!1,this.targetElement=null},t.prototype.onMouse=function(t){return this.targetElement?t.forwardedTouchEvent?!0:t.cancelable?!this.needsClick(this.targetElement)||this.cancelNextClick?(t.stopImmediatePropagation?t.stopImmediatePropagation():t.propagationStopped=!0,t.stopPropagation(),t.preventDefault(),!1):!0:!0:!0},t.prototype.onClick=function(t){var e;return this.trackingClick?(this.targetElement=null,this.trackingClick=!1,!0):"submit"===t.target.type&&0===t.detail?!0:(e=this.onMouse(t),e||(this.targetElement=null),e)},t.prototype.destroy=function(){var t=this.layer;n&&(t.removeEventListener("mouseover",this.onMouse,!0),t.removeEventListener("mousedown",this.onMouse,!0),t.removeEventListener("mouseup",this.onMouse,!0)),t.removeEventListener("click",this.onClick,!0),t.removeEventListener("touchstart",this.onTouchStart,!1),t.removeEventListener("touchmove",this.onTouchMove,!1),t.removeEventListener("touchend",this.onTouchEnd,!1),t.removeEventListener("touchcancel",this.onTouchCancel,!1)},t.notNeeded=function(t){var e,o,i,r;if("undefined"==typeof window.ontouchstart)return!0;if(o=+(/Chrome\/([0-9]+)/.exec(navigator.userAgent)||[,0])[1]){if(!n)return!0;if(e=document.querySelector("meta[name=viewport]")){if(-1!==e.content.indexOf("user-scalable=no"))return!0;if(o>31&&document.documentElement.scrollWidth<=window.outerWidth)return!0}}if(a&&(i=navigator.userAgent.match(/Version\/([0-9]*)\.([0-9]*)/),i[1]>=10&&i[2]>=3&&(e=document.querySelector("meta[name=viewport]")))){if(-1!==e.content.indexOf("user-scalable=no"))return!0;if(document.documentElement.scrollWidth<=window.outerWidth)return!0}return"none"===t.style.msTouchAction||"manipulation"===t.style.touchAction?!0:(r=+(/Firefox\/([0-9]+)/.exec(navigator.userAgent)||[,0])[1],r>=27&&(e=document.querySelector("meta[name=viewport]"),e&&(-1!==e.content.indexOf("user-scalable=no")||document.documentElement.scrollWidth<=window.outerWidth))?!0:"none"===t.style.touchAction||"manipulation"===t.style.touchAction?!0:!1)},t.attach=function(e,n){return new t(e,n)}, true?!(__WEBPACK_AMD_DEFINE_RESULT__ = function(){return t}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)):"undefined"!=typeof module&&module.exports?(module.exports=t.attach,module.exports.FastClick=t):window.FastClick=t}();
 
 /***/ },
 /* 82 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {module.exports = __webpack_amd_options__;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, {}))
+	(function(e){var t=function(){"use strict";var e="s",n=2011,r=function(e){var t=-e.getTimezoneOffset();return t!==null?t:0},i=function(e,t,n){var r=new Date;return e!==undefined&&r.setFullYear(e),r.setDate(n),r.setMonth(t),r},s=function(e){return r(i(e,0,2))},o=function(e){return r(i(e,5,2))},u=function(e){var t=e.getMonth()>7?o(e.getFullYear()):s(e.getFullYear()),n=r(e);return t-n!==0},a=function(){var t=s(n),r=o(n),i=t-r;return i<0?t+",1":i>0?r+",1,"+e:t+",0"},f=function(){var e=a();return new t.TimeZone(t.olson.timezones[e])},l=function(e){var t=new Date(2010,6,15,1,0,0,0),n={"America/Denver":new Date(2011,2,13,3,0,0,0),"America/Mazatlan":new Date(2011,3,3,3,0,0,0),"America/Chicago":new Date(2011,2,13,3,0,0,0),"America/Mexico_City":new Date(2011,3,3,3,0,0,0),"America/Asuncion":new Date(2012,9,7,3,0,0,0),"America/Santiago":new Date(2012,9,3,3,0,0,0),"America/Campo_Grande":new Date(2012,9,21,5,0,0,0),"America/Montevideo":new Date(2011,9,2,3,0,0,0),"America/Sao_Paulo":new Date(2011,9,16,5,0,0,0),"America/Los_Angeles":new Date(2011,2,13,8,0,0,0),"America/Santa_Isabel":new Date(2011,3,5,8,0,0,0),"America/Havana":new Date(2012,2,10,2,0,0,0),"America/New_York":new Date(2012,2,10,7,0,0,0),"Asia/Beirut":new Date(2011,2,27,1,0,0,0),"Europe/Helsinki":new Date(2011,2,27,4,0,0,0),"Europe/Istanbul":new Date(2011,2,28,5,0,0,0),"Asia/Damascus":new Date(2011,3,1,2,0,0,0),"Asia/Jerusalem":new Date(2011,3,1,6,0,0,0),"Asia/Gaza":new Date(2009,2,28,0,30,0,0),"Africa/Cairo":new Date(2009,3,25,0,30,0,0),"Pacific/Auckland":new Date(2011,8,26,7,0,0,0),"Pacific/Fiji":new Date(2010,10,29,23,0,0,0),"America/Halifax":new Date(2011,2,13,6,0,0,0),"America/Goose_Bay":new Date(2011,2,13,2,1,0,0),"America/Miquelon":new Date(2011,2,13,5,0,0,0),"America/Godthab":new Date(2011,2,27,1,0,0,0),"Europe/Moscow":t,"Asia/Yekaterinburg":t,"Asia/Omsk":t,"Asia/Krasnoyarsk":t,"Asia/Irkutsk":t,"Asia/Yakutsk":t,"Asia/Vladivostok":t,"Asia/Kamchatka":t,"Europe/Minsk":t,"Pacific/Apia":new Date(2010,10,1,1,0,0,0),"Australia/Perth":new Date(2008,10,1,1,0,0,0)};return n[e]};return{determine:f,date_is_dst:u,dst_start_for:l}}();t.TimeZone=function(e){"use strict";var n={"America/Denver":["America/Denver","America/Mazatlan"],"America/Chicago":["America/Chicago","America/Mexico_City"],"America/Santiago":["America/Santiago","America/Asuncion","America/Campo_Grande"],"America/Montevideo":["America/Montevideo","America/Sao_Paulo"],"Asia/Beirut":["Asia/Beirut","Europe/Helsinki","Europe/Istanbul","Asia/Damascus","Asia/Jerusalem","Asia/Gaza"],"Pacific/Auckland":["Pacific/Auckland","Pacific/Fiji"],"America/Los_Angeles":["America/Los_Angeles","America/Santa_Isabel"],"America/New_York":["America/Havana","America/New_York"],"America/Halifax":["America/Goose_Bay","America/Halifax"],"America/Godthab":["America/Miquelon","America/Godthab"],"Asia/Dubai":["Europe/Moscow"],"Asia/Dhaka":["Asia/Yekaterinburg"],"Asia/Jakarta":["Asia/Omsk"],"Asia/Shanghai":["Asia/Krasnoyarsk","Australia/Perth"],"Asia/Tokyo":["Asia/Irkutsk"],"Australia/Brisbane":["Asia/Yakutsk"],"Pacific/Noumea":["Asia/Vladivostok"],"Pacific/Tarawa":["Asia/Kamchatka"],"Pacific/Tongatapu":["Pacific/Apia"],"Africa/Johannesburg":["Asia/Gaza","Africa/Cairo"],"Asia/Baghdad":["Europe/Minsk"]},r=e,i=function(){var e=n[r],i=e.length,s=0,o=e[0];for(;s<i;s+=1){o=e[s];if(t.date_is_dst(t.dst_start_for(o))){r=o;return}}},s=function(){return typeof n[r]!="undefined"};return s()&&i(),{name:function(){return r}}},t.olson={},t.olson.timezones={"-720,0":"Pacific/Majuro","-660,0":"Pacific/Pago_Pago","-600,1":"America/Adak","-600,0":"Pacific/Honolulu","-570,0":"Pacific/Marquesas","-540,0":"Pacific/Gambier","-540,1":"America/Anchorage","-480,1":"America/Los_Angeles","-480,0":"Pacific/Pitcairn","-420,0":"America/Phoenix","-420,1":"America/Denver","-360,0":"America/Guatemala","-360,1":"America/Chicago","-360,1,s":"Pacific/Easter","-300,0":"America/Bogota","-300,1":"America/New_York","-270,0":"America/Caracas","-240,1":"America/Halifax","-240,0":"America/Santo_Domingo","-240,1,s":"America/Santiago","-210,1":"America/St_Johns","-180,1":"America/Godthab","-180,0":"America/Argentina/Buenos_Aires","-180,1,s":"America/Montevideo","-120,0":"America/Noronha","-120,1":"America/Noronha","-60,1":"Atlantic/Azores","-60,0":"Atlantic/Cape_Verde","0,0":"UTC","0,1":"Europe/London","60,1":"Europe/Berlin","60,0":"Africa/Lagos","60,1,s":"Africa/Windhoek","120,1":"Asia/Beirut","120,0":"Africa/Johannesburg","180,0":"Asia/Baghdad","180,1":"Europe/Moscow","210,1":"Asia/Tehran","240,0":"Asia/Dubai","240,1":"Asia/Baku","270,0":"Asia/Kabul","300,1":"Asia/Yekaterinburg","300,0":"Asia/Karachi","330,0":"Asia/Kolkata","345,0":"Asia/Kathmandu","360,0":"Asia/Dhaka","360,1":"Asia/Omsk","390,0":"Asia/Rangoon","420,1":"Asia/Krasnoyarsk","420,0":"Asia/Jakarta","480,0":"Asia/Shanghai","480,1":"Asia/Irkutsk","525,0":"Australia/Eucla","525,1,s":"Australia/Eucla","540,1":"Asia/Yakutsk","540,0":"Asia/Tokyo","570,0":"Australia/Darwin","570,1,s":"Australia/Adelaide","600,0":"Australia/Brisbane","600,1":"Asia/Vladivostok","600,1,s":"Australia/Sydney","630,1,s":"Australia/Lord_Howe","660,1":"Asia/Kamchatka","660,0":"Pacific/Noumea","690,0":"Pacific/Norfolk","720,1,s":"Pacific/Auckland","720,0":"Pacific/Tarawa","765,1,s":"Pacific/Chatham","780,0":"Pacific/Tongatapu","780,1,s":"Pacific/Apia","840,0":"Pacific/Kiritimati"}, true?exports.jstz=t:e.jstz=t})(this);
 
 /***/ },
 /* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var Logger_1 = __webpack_require__(8);
-	var DeviceUtils_1 = __webpack_require__(45);
-	var _ = __webpack_require__(5);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var Logger_1 = __webpack_require__(9);
+	var DeviceUtils_1 = __webpack_require__(46);
 	var SentryLogger = (function () {
 	    function SentryLogger(queryController, windoh) {
 	        if (windoh === void 0) { windoh = window; }
@@ -16631,7 +12807,7 @@ var playground =
 	            this.windoh.onerror = function () {
 	                var args = [];
 	                for (var _i = 0; _i < arguments.length; _i++) {
-	                    args[_i] = arguments[_i];
+	                    args[_i - 0] = arguments[_i];
 	                }
 	                oldHandler.apply(oldHandler, args);
 	                _this.handleError.apply(_this, args);
@@ -16665,22 +12841,22 @@ var playground =
 	    return SentryLogger;
 	}());
 	exports.SentryLogger = SentryLogger;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var Initialization_1 = __webpack_require__(56);
-	var Assert_1 = __webpack_require__(7);
-	var QueryController_1 = __webpack_require__(15);
-	var QueryStateModel_1 = __webpack_require__(10);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var Initialization_1 = __webpack_require__(57);
+	var Assert_1 = __webpack_require__(8);
+	var QueryController_1 = __webpack_require__(16);
+	var QueryStateModel_1 = __webpack_require__(11);
 	var Analytics_1 = __webpack_require__(85);
-	var InitializationEvents_1 = __webpack_require__(57);
+	var InitializationEvents_1 = __webpack_require__(58);
 	var Dom_1 = __webpack_require__(3);
-	var Component_1 = __webpack_require__(9);
-	var _ = __webpack_require__(5);
+	var Component_1 = __webpack_require__(10);
 	/**
 	 * Initialize the framework with a basic search interface. Calls {@link Initialization.initSearchInterface}.<br/>
 	 * If using the jQuery extension, this is called using <code>$('#root').coveo('init');</code>.
@@ -16986,36 +13162,36 @@ var playground =
 	Initialization_1.Initialization.registerNamedMethod('nuke', function (element) {
 	    nuke(element);
 	});
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Component_1 = __webpack_require__(9);
-	var ComponentOptions_1 = __webpack_require__(51);
+	var Component_1 = __webpack_require__(10);
+	var ComponentOptions_1 = __webpack_require__(52);
 	var AnalyticsEndpoint_1 = __webpack_require__(86);
-	var SearchEndpoint_1 = __webpack_require__(42);
-	var Assert_1 = __webpack_require__(7);
-	var QueryEvents_1 = __webpack_require__(22);
-	var ComponentOptionsModel_1 = __webpack_require__(14);
+	var SearchEndpoint_1 = __webpack_require__(43);
+	var Assert_1 = __webpack_require__(8);
+	var QueryEvents_1 = __webpack_require__(23);
+	var ComponentOptionsModel_1 = __webpack_require__(15);
 	var Dom_1 = __webpack_require__(3);
-	var Model_1 = __webpack_require__(11);
-	var Utils_1 = __webpack_require__(4);
-	var NoopAnalyticsClient_1 = __webpack_require__(74);
+	var Model_1 = __webpack_require__(12);
+	var Utils_1 = __webpack_require__(6);
+	var NoopAnalyticsClient_1 = __webpack_require__(76);
 	var LiveAnalyticsClient_1 = __webpack_require__(88);
 	var MultiAnalyticsClient_1 = __webpack_require__(93);
-	var AnalyticsActionListMeta_1 = __webpack_require__(59);
-	var SearchInterface_1 = __webpack_require__(41);
+	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var SearchInterface_1 = __webpack_require__(42);
 	var Recommendation_1 = __webpack_require__(94);
 	var RecommendationAnalyticsClient_1 = __webpack_require__(146);
-	var _ = __webpack_require__(5);
 	/**
 	 * The Analytics component logs all user actions performed in the search interface and sends them to a REST web service
 	 * exposed through the Coveo Cloud Platform.
@@ -17026,7 +13202,7 @@ var playground =
 	 * See [Step 7 - Usage Analytics](https://developers.coveo.com/x/EYskAg) of the Getting Started with the JavaScript
 	 * Search Framework V1 tutorial for an introduction to usage analytics.
 	 *
-	 * ## Send Custom Events
+	 * # Send Custom Events
 	 * In some scenarios, you might want to send custom data to the Coveo Cloud Usage Analytics (see
 	 * [Coveo Cloud Usage Analytics](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=89)). The Coveo JavaScript Search
 	 * Framework offers helper functions to communicate with the Coveo Usage Analytics REST API, so you do not have to write
@@ -17118,31 +13294,31 @@ var playground =
 	     * automatically resolved (with a slower execution time).
 	     */
 	    function Analytics(element, options, bindings) {
+	        var _this = this;
 	        if (options === void 0) { options = {}; }
-	        var _this = _super.call(this, element, Analytics.ID, bindings) || this;
-	        _this.element = element;
-	        _this.options = options;
-	        _this.bindings = bindings;
-	        _this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, Analytics, options);
-	        _this.retrieveInfoFromDefaultSearchEndpoint();
-	        _this.initializeAnalyticsClient();
-	        Assert_1.Assert.exists(_this.client);
-	        _this.bind.onRootElement(QueryEvents_1.QueryEvents.buildingQuery, function (data) { return _this.handleBuildingQuery(data); });
-	        _this.bind.onRootElement(QueryEvents_1.QueryEvents.queryError, function (data) { return _this.handleQueryError(data); });
+	        _super.call(this, element, Analytics.ID, bindings);
+	        this.element = element;
+	        this.options = options;
+	        this.bindings = bindings;
+	        this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, Analytics, options);
+	        this.retrieveInfoFromDefaultSearchEndpoint();
+	        this.initializeAnalyticsClient();
+	        Assert_1.Assert.exists(this.client);
+	        this.bind.onRootElement(QueryEvents_1.QueryEvents.buildingQuery, function (data) { return _this.handleBuildingQuery(data); });
+	        this.bind.onRootElement(QueryEvents_1.QueryEvents.queryError, function (data) { return _this.handleQueryError(data); });
 	        // Analytics component is a bit special: It can be higher in the dom tree than the search interface
 	        // Need to resolve down to find the componentOptionsModel if we need to.
-	        if (!_this.componentOptionsModel) {
+	        if (!this.componentOptionsModel) {
 	            var cmpOptionElement = Dom_1.$$(element).find('.' + Component_1.Component.computeCssClassName(ComponentOptionsModel_1.ComponentOptionsModel));
 	            if (cmpOptionElement) {
-	                _this.componentOptionsModel = cmpOptionElement[Component_1.Component.computeCssClassName(ComponentOptionsModel_1.ComponentOptionsModel)];
+	                this.componentOptionsModel = cmpOptionElement[Component_1.Component.computeCssClassName(ComponentOptionsModel_1.ComponentOptionsModel)];
 	            }
 	        }
-	        if (_this.componentOptionsModel) {
-	            _this.componentOptionsModel.set(ComponentOptionsModel_1.ComponentOptionsModel.attributesEnum.searchHub, _this.options.searchHub);
-	            var event_1 = _this.componentOptionsModel.getEventName(Model_1.Model.eventTypes.changeOne + ComponentOptionsModel_1.ComponentOptionsModel.attributesEnum.searchHub);
-	            _this.bind.onRootElement(event_1, function (args) { return _this.handleSearchHubChanged(args); });
+	        if (this.componentOptionsModel) {
+	            this.componentOptionsModel.set(ComponentOptionsModel_1.ComponentOptionsModel.attributesEnum.searchHub, this.options.searchHub);
+	            var event_1 = this.componentOptionsModel.getEventName(Model_1.Model.eventTypes.changeOne + ComponentOptionsModel_1.ComponentOptionsModel.attributesEnum.searchHub);
+	            this.bind.onRootElement(event_1, function (args) { return _this.handleSearchHubChanged(args); });
 	        }
-	        return _this;
 	    }
 	    /**
 	     * Logs a search event on the service, using a {@link IAnalyticsActionCause} and a meta object.
@@ -17311,98 +13487,98 @@ var playground =
 	            return new Analytics(element, options, bindings).client;
 	        }
 	    };
+	    Analytics.ID = 'Analytics';
+	    // NOTE: The default values for some of those options (`organization`, `endpoint`, `searchHub`) can be
+	    // overridden by generated code when using hosted search pages.
+	    /**
+	     * Options for the component
+	     * @componentOptions
+	     */
+	    Analytics.options = {
+	        /**
+	         * Specifies the name of the user for usage analytics logs.
+	         */
+	        user: ComponentOptions_1.ComponentOptions.buildStringOption(),
+	        /**
+	         * Specifies the user display name for usage analytics logs.
+	         */
+	        userDisplayName: ComponentOptions_1.ComponentOptions.buildStringOption(),
+	        /**
+	         * Specifies the token you want to use to access the usage analytics endpoint.
+	         *
+	         * Default value is `undefined`, and the component will use the search token.
+	         */
+	        token: ComponentOptions_1.ComponentOptions.buildStringOption(),
+	        /**
+	         * Specifies the URL of the usage analytics logger to cover exceptional cases in which this location could differ
+	         * from the default Coveo Cloud Usage Analytics endpoint (https://usageanalytics.coveo.com).
+	         *
+	         * Default value is `https://usageanalytics.coveo.com`.
+	         */
+	        endpoint: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: AnalyticsEndpoint_1.AnalyticsEndpoint.DEFAULT_ANALYTICS_URI }),
+	        /**
+	         * Specifies whether to convert search user identities to unique hash when logging analytics data, so that
+	         * analytics reviewers and managers will not be able to clearly identify which user is performing which query.
+	         *
+	         * When this option is set to `true`, the Coveo Usage Analytics Platform can still properly differentiate sessions
+	         * made by anonymous users from sessions made by users authenticated in some way on the site containing the search
+	         * page.
+	         *
+	         * Default value is `false`.
+	         */
+	        anonymous: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+	        /**
+	         * Sets the Search Hub dimension on the search events.
+	         *
+	         * The Search Hub dimension is typically a name that refers to a specific search page. For example, you could use
+	         * the `CommunitySite` value to refer to a search page on a company's public community site.
+	         *
+	         * Default value is `default`.
+	         */
+	        searchHub: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'default' }),
+	        /**
+	         * Specifies the name of the split test run that the search page is part of.
+	         *
+	         * You can use this dimension to perform A/B testing using different search page layouts and features inside the
+	         * Coveo Query pipeline.
+	         *
+	         * Default value is `undefined` and no split test run name is reported to the Coveo Usage Analytics Platform.
+	         */
+	        splitTestRunName: ComponentOptions_1.ComponentOptions.buildStringOption(),
+	        /**
+	         * Specifies the version name for the page when a split test run is active.
+	         *
+	         * When reporting on A/B testing analytics data, this value specifies the test run version name that was
+	         * presented to the user.
+	         */
+	        splitTestRunVersion: ComponentOptions_1.ComponentOptions.buildStringOption(),
+	        sendToCloud: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+	        /**
+	         * Specifies the organization bound to the access token. This is necessary when using an access token, because a
+	         * single access token can be associated to more than one organization.
+	         *
+	         * Default value is `undefined`, and the value of this parameter will fallback to the organization used for the
+	         * search endpoint.
+	         */
+	        organization: ComponentOptions_1.ComponentOptions.buildStringOption()
+	    };
 	    return Analytics;
 	}(Component_1.Component));
-	Analytics.ID = 'Analytics';
-	// NOTE: The default values for some of those options (`organization`, `endpoint`, `searchHub`) can be
-	// overridden by generated code when using hosted search pages.
-	/**
-	 * Options for the component
-	 * @componentOptions
-	 */
-	Analytics.options = {
-	    /**
-	     * Specifies the name of the user for usage analytics logs.
-	     */
-	    user: ComponentOptions_1.ComponentOptions.buildStringOption(),
-	    /**
-	     * Specifies the user display name for usage analytics logs.
-	     */
-	    userDisplayName: ComponentOptions_1.ComponentOptions.buildStringOption(),
-	    /**
-	     * Specifies the token you want to use to access the usage analytics endpoint.
-	     *
-	     * Default value is `undefined`, and the component will use the search token.
-	     */
-	    token: ComponentOptions_1.ComponentOptions.buildStringOption(),
-	    /**
-	     * Specifies the URL of the usage analytics logger to cover exceptional cases in which this location could differ
-	     * from the default Coveo Cloud Usage Analytics endpoint (https://usageanalytics.coveo.com).
-	     *
-	     * Default value is `https://usageanalytics.coveo.com`.
-	     */
-	    endpoint: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: AnalyticsEndpoint_1.AnalyticsEndpoint.DEFAULT_ANALYTICS_URI }),
-	    /**
-	     * Specifies whether to convert search user identities to unique hash when logging analytics data, so that
-	     * analytics reviewers and managers will not be able to clearly identify which user is performing which query.
-	     *
-	     * When this option is set to `true`, the Coveo Usage Analytics Platform can still properly differentiate sessions
-	     * made by anonymous users from sessions made by users authenticated in some way on the site containing the search
-	     * page.
-	     *
-	     * Default value is `false`.
-	     */
-	    anonymous: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-	    /**
-	     * Sets the Search Hub dimension on the search events.
-	     *
-	     * The Search Hub dimension is typically a name that refers to a specific search page. For example, you could use
-	     * the `CommunitySite` value to refer to a search page on a company's public community site.
-	     *
-	     * Default value is `default`.
-	     */
-	    searchHub: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'default' }),
-	    /**
-	     * Specifies the name of the split test run that the search page is part of.
-	     *
-	     * You can use this dimension to perform A/B testing using different search page layouts and features inside the
-	     * Coveo Query pipeline.
-	     *
-	     * Default value is `undefined` and no split test run name is reported to the Coveo Usage Analytics Platform.
-	     */
-	    splitTestRunName: ComponentOptions_1.ComponentOptions.buildStringOption(),
-	    /**
-	     * Specifies the version name for the page when a split test run is active.
-	     *
-	     * When reporting on A/B testing analytics data, this value specifies the test run version name that was
-	     * presented to the user.
-	     */
-	    splitTestRunVersion: ComponentOptions_1.ComponentOptions.buildStringOption(),
-	    sendToCloud: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-	    /**
-	     * Specifies the organization bound to the access token. This is necessary when using an access token, because a
-	     * single access token can be associated to more than one organization.
-	     *
-	     * Default value is `undefined`, and the value of this parameter will fallback to the organization used for the
-	     * search endpoint.
-	     */
-	    organization: ComponentOptions_1.ComponentOptions.buildStringOption()
-	};
 	exports.Analytics = Analytics;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var Logger_1 = __webpack_require__(8);
-	var EndpointCaller_1 = __webpack_require__(43);
-	var Assert_1 = __webpack_require__(7);
-	var QueryUtils_1 = __webpack_require__(19);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var Logger_1 = __webpack_require__(9);
+	var EndpointCaller_1 = __webpack_require__(44);
+	var Assert_1 = __webpack_require__(8);
+	var QueryUtils_1 = __webpack_require__(20);
 	var CookieUtils_1 = __webpack_require__(87);
-	var es6_promise_1 = __webpack_require__(24);
-	var _ = __webpack_require__(5);
+	var es6_promise_1 = __webpack_require__(25);
 	var AnalyticsEndpoint = (function () {
 	    function AnalyticsEndpoint(options) {
 	        this.options = options;
@@ -17524,14 +13700,15 @@ var playground =
 	    AnalyticsEndpoint.prototype.buildAnalyticsUrl = function (path) {
 	        return this.options.serviceUrl + '/rest/' + (AnalyticsEndpoint.CUSTOM_ANALYTICS_VERSION || AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION) + path;
 	    };
+	    AnalyticsEndpoint.DEFAULT_ANALYTICS_URI = 'https://usageanalytics.coveo.com';
+	    AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION = 'v15';
+	    AnalyticsEndpoint.CUSTOM_ANALYTICS_VERSION = undefined;
+	    AnalyticsEndpoint.VISITOR_COOKIE_TIME = 10000 * 24 * 60 * 60 * 1000;
 	    return AnalyticsEndpoint;
 	}());
-	AnalyticsEndpoint.DEFAULT_ANALYTICS_URI = 'https://usageanalytics.coveo.com';
-	AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION = 'v15';
-	AnalyticsEndpoint.CUSTOM_ANALYTICS_VERSION = undefined;
-	AnalyticsEndpoint.VISITOR_COOKIE_TIME = 10000 * 24 * 60 * 60 * 1000;
 	exports.AnalyticsEndpoint = AnalyticsEndpoint;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 87 */
@@ -17597,9 +13774,9 @@ var playground =
 	    Cookie.erase = function (name) {
 	        Cookie.set(name, '', -1);
 	    };
+	    Cookie.prefix = 'coveo_';
 	    return Cookie;
 	}());
-	Cookie.prefix = 'coveo_';
 	exports.Cookie = Cookie;
 
 
@@ -17607,22 +13784,21 @@ var playground =
 /* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var DeviceUtils_1 = __webpack_require__(45);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var DeviceUtils_1 = __webpack_require__(46);
 	var PendingSearchEvent_1 = __webpack_require__(89);
 	var PendingSearchAsYouTypeSearchEvent_1 = __webpack_require__(92);
-	var Assert_1 = __webpack_require__(7);
-	var Logger_1 = __webpack_require__(8);
-	var AnalyticsActionListMeta_1 = __webpack_require__(59);
-	var Defer_1 = __webpack_require__(23);
+	var Assert_1 = __webpack_require__(8);
+	var Logger_1 = __webpack_require__(9);
+	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var Defer_1 = __webpack_require__(24);
 	var Dom_1 = __webpack_require__(3);
 	var AnalyticsEvents_1 = __webpack_require__(91);
 	var APIAnalyticsBuilder_1 = __webpack_require__(90);
-	var QueryStateModel_1 = __webpack_require__(10);
-	var Component_1 = __webpack_require__(9);
-	var Version_1 = __webpack_require__(46);
-	var QueryUtils_1 = __webpack_require__(19);
-	var _ = __webpack_require__(5);
+	var QueryStateModel_1 = __webpack_require__(11);
+	var Component_1 = __webpack_require__(10);
+	var Version_1 = __webpack_require__(47);
+	var QueryUtils_1 = __webpack_require__(20);
 	var LiveAnalyticsClient = (function () {
 	    function LiveAnalyticsClient(endpoint, rootElement, userId, userDisplayName, anonymous, splitTestRunName, splitTestRunVersion, originLevel1, sendToCloud) {
 	        this.endpoint = endpoint;
@@ -17928,25 +14104,25 @@ var playground =
 	    return LiveAnalyticsClient;
 	}());
 	exports.LiveAnalyticsClient = LiveAnalyticsClient;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var QueryEvents_1 = __webpack_require__(22);
-	var Assert_1 = __webpack_require__(7);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var QueryEvents_1 = __webpack_require__(23);
+	var Assert_1 = __webpack_require__(8);
 	var Dom_1 = __webpack_require__(3);
-	var SearchInterface_1 = __webpack_require__(41);
-	var Component_1 = __webpack_require__(9);
-	var QueryController_1 = __webpack_require__(15);
-	var Defer_1 = __webpack_require__(23);
+	var SearchInterface_1 = __webpack_require__(42);
+	var Component_1 = __webpack_require__(10);
+	var QueryController_1 = __webpack_require__(16);
+	var Defer_1 = __webpack_require__(24);
 	var APIAnalyticsBuilder_1 = __webpack_require__(90);
 	var AnalyticsEvents_1 = __webpack_require__(91);
-	var AnalyticsActionListMeta_1 = __webpack_require__(59);
-	var QueryStateModel_1 = __webpack_require__(10);
-	var _ = __webpack_require__(5);
+	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var QueryStateModel_1 = __webpack_require__(11);
 	var PendingSearchEvent = (function () {
 	    function PendingSearchEvent(root, endpoint, templateSearchEvent, sendToCloud) {
 	        var _this = this;
@@ -18060,11 +14236,11 @@ var playground =
 	        // In this case, Reveal will be the consumer of this information.
 	        if (query.context != undefined) {
 	            _.each(query.context, function (value, key) {
-	                searchEvent.customData["context_" + key] = value;
+	                searchEvent.customData[("context_" + key)] = value;
 	            });
 	        }
 	        // The refinedKeywords field is important for Reveal in order to learn properly on query
-	        // made based on the long query.
+	        // made based on the long query.    
 	        if (queryResults.refinedKeywords != undefined && queryResults.refinedKeywords.length != 0) {
 	            searchEvent.customData['refinedKeywords'] = queryResults.refinedKeywords;
 	        }
@@ -18072,7 +14248,8 @@ var playground =
 	    return PendingSearchEvent;
 	}());
 	exports.PendingSearchEvent = PendingSearchEvent;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 90 */
@@ -18158,19 +14335,19 @@ var playground =
 	var AnalyticsEvents = (function () {
 	    function AnalyticsEvents() {
 	    }
+	    AnalyticsEvents.searchEvent = 'analyticsSearchEvent';
+	    AnalyticsEvents.documentViewEvent = 'analyticsDocumentViewEvent';
+	    AnalyticsEvents.customEvent = 'analyticsCustomEvent';
+	    /**
+	     * Triggered whenever an analytics event is logged. This event allows external code to modify the analytics data.
+	     *
+	     * All bound handlers will receive {@link IChangeAnalyticsCustomDataEventArgs} as an argument.
+	     *
+	     * The string value is `changeAnalyticsCustomData`.
+	     */
+	    AnalyticsEvents.changeAnalyticsCustomData = 'changeAnalyticsCustomData';
 	    return AnalyticsEvents;
 	}());
-	AnalyticsEvents.searchEvent = 'analyticsSearchEvent';
-	AnalyticsEvents.documentViewEvent = 'analyticsDocumentViewEvent';
-	AnalyticsEvents.customEvent = 'analyticsCustomEvent';
-	/**
-	 * Triggered whenever an analytics event is logged. This event allows external code to modify the analytics data.
-	 *
-	 * All bound handlers will receive {@link IChangeAnalyticsCustomDataEventArgs} as an argument.
-	 *
-	 * The string value is `changeAnalyticsCustomData`.
-	 */
-	AnalyticsEvents.changeAnalyticsCustomData = 'changeAnalyticsCustomData';
 	exports.AnalyticsEvents = AnalyticsEvents;
 
 
@@ -18186,24 +14363,24 @@ var playground =
 	};
 	var PendingSearchEvent_1 = __webpack_require__(89);
 	var Dom_1 = __webpack_require__(3);
-	var InitializationEvents_1 = __webpack_require__(57);
-	var _ = __webpack_require__(5);
+	var InitializationEvents_1 = __webpack_require__(58);
+	var _ = __webpack_require__(4);
 	var PendingSearchAsYouTypeSearchEvent = (function (_super) {
 	    __extends(PendingSearchAsYouTypeSearchEvent, _super);
 	    function PendingSearchAsYouTypeSearchEvent(root, endpoint, templateSearchEvent, sendToCloud) {
-	        var _this = _super.call(this, root, endpoint, templateSearchEvent, sendToCloud) || this;
-	        _this.root = root;
-	        _this.endpoint = endpoint;
-	        _this.templateSearchEvent = templateSearchEvent;
-	        _this.sendToCloud = sendToCloud;
-	        _this.delayBeforeSending = 5000;
-	        _this.armBatchDelay = 50;
-	        _this.beforeUnloadHandler = function () {
+	        var _this = this;
+	        _super.call(this, root, endpoint, templateSearchEvent, sendToCloud);
+	        this.root = root;
+	        this.endpoint = endpoint;
+	        this.templateSearchEvent = templateSearchEvent;
+	        this.sendToCloud = sendToCloud;
+	        this.delayBeforeSending = 5000;
+	        this.armBatchDelay = 50;
+	        this.beforeUnloadHandler = function () {
 	            _this.onWindowUnload();
 	        };
-	        window.addEventListener('beforeunload', _this.beforeUnloadHandler);
+	        window.addEventListener('beforeunload', this.beforeUnloadHandler);
 	        Dom_1.$$(root).on(InitializationEvents_1.InitializationEvents.nuke, function () { return _this.handleNuke(); });
-	        return _this;
 	    }
 	    PendingSearchAsYouTypeSearchEvent.prototype.handleDuringQuery = function (e, args) {
 	        var _this = this;
@@ -18281,8 +14458,7 @@ var playground =
 /* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var _ = __webpack_require__(5);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var MultiAnalyticsClient = (function () {
 	    function MultiAnalyticsClient(analyticsClients) {
 	        if (analyticsClients === void 0) { analyticsClients = []; }
@@ -18347,38 +14523,38 @@ var playground =
 	    return MultiAnalyticsClient;
 	}());
 	exports.MultiAnalyticsClient = MultiAnalyticsClient;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var SearchInterface_1 = __webpack_require__(41);
-	var ComponentOptions_1 = __webpack_require__(51);
-	var QueryEvents_1 = __webpack_require__(22);
+	var SearchInterface_1 = __webpack_require__(42);
+	var ComponentOptions_1 = __webpack_require__(52);
+	var QueryEvents_1 = __webpack_require__(23);
 	var OmniboxEvents_1 = __webpack_require__(95);
-	var ResultListEvents_1 = __webpack_require__(76);
+	var ResultListEvents_1 = __webpack_require__(78);
 	var SettingsEvents_1 = __webpack_require__(96);
 	var PreferencesPanelEvents_1 = __webpack_require__(97);
 	var AnalyticsEvents_1 = __webpack_require__(91);
-	var AnalyticsActionListMeta_1 = __webpack_require__(59);
+	var AnalyticsActionListMeta_1 = __webpack_require__(60);
 	var BreadcrumbEvents_1 = __webpack_require__(98);
 	var QuickviewEvents_1 = __webpack_require__(99);
-	var QueryStateModel_1 = __webpack_require__(10);
-	var Model_1 = __webpack_require__(11);
-	var Utils_1 = __webpack_require__(4);
+	var QueryStateModel_1 = __webpack_require__(11);
+	var Model_1 = __webpack_require__(12);
+	var Utils_1 = __webpack_require__(6);
 	var Dom_1 = __webpack_require__(3);
 	var ResponsiveRecommendation_1 = __webpack_require__(100);
-	var coveo_analytics_1 = __webpack_require__(31);
+	var coveo_analytics_1 = __webpack_require__(32);
 	var RegisteredNamedMethods_1 = __webpack_require__(84);
-	var InitializationEvents_1 = __webpack_require__(57);
-	var _ = __webpack_require__(5);
+	var InitializationEvents_1 = __webpack_require__(58);
 	/**
 	 * This component is a {@link SearchInterface} that will display recommendations based on the user history.
 	 * To get recommendations, the page view script must also be included in the page. View: https://github.com/coveo/coveo.analytics.js
@@ -18390,28 +14566,28 @@ var playground =
 	var Recommendation = (function (_super) {
 	    __extends(Recommendation, _super);
 	    function Recommendation(element, options, analyticsOptions, _window) {
+	        var _this = this;
 	        if (options === void 0) { options = {}; }
 	        if (analyticsOptions === void 0) { analyticsOptions = {}; }
 	        if (_window === void 0) { _window = window; }
-	        var _this = _super.call(this, element, ComponentOptions_1.ComponentOptions.initComponentOptions(element, Recommendation, options), analyticsOptions, _window) || this;
-	        _this.element = element;
-	        _this.options = options;
-	        _this.analyticsOptions = analyticsOptions;
-	        if (!_this.options.id) {
-	            _this.generateDefaultId();
+	        _super.call(this, element, ComponentOptions_1.ComponentOptions.initComponentOptions(element, Recommendation, options), analyticsOptions, _window);
+	        this.element = element;
+	        this.options = options;
+	        this.analyticsOptions = analyticsOptions;
+	        if (!this.options.id) {
+	            this.generateDefaultId();
 	        }
 	        // This is done to allow the component to be included in another search interface without triggering the parent events.
-	        _this.preventEventPropagation();
-	        if (_this.options.mainSearchInterface) {
-	            _this.bindToMainSearchInterface();
+	        this.preventEventPropagation();
+	        if (this.options.mainSearchInterface) {
+	            this.bindToMainSearchInterface();
 	        }
-	        Dom_1.$$(_this.element).on(QueryEvents_1.QueryEvents.buildingQuery, function (e, args) { return _this.handleRecommendationBuildingQuery(args); });
-	        Dom_1.$$(_this.element).on(QueryEvents_1.QueryEvents.querySuccess, function (e, args) { return _this.handleRecommendationQuerySuccess(args); });
-	        Dom_1.$$(_this.element).on(QueryEvents_1.QueryEvents.noResults, function (e, args) { return _this.handleRecommendationNoResults(); });
-	        Dom_1.$$(_this.element).on(QueryEvents_1.QueryEvents.queryError, function (e, args) { return _this.handleRecommendationQueryError(); });
-	        _this.historyStore = new coveo_analytics_1.history.HistoryStore();
-	        ResponsiveRecommendation_1.ResponsiveRecommendation.init(_this.root, _this, options);
-	        return _this;
+	        Dom_1.$$(this.element).on(QueryEvents_1.QueryEvents.buildingQuery, function (e, args) { return _this.handleRecommendationBuildingQuery(args); });
+	        Dom_1.$$(this.element).on(QueryEvents_1.QueryEvents.querySuccess, function (e, args) { return _this.handleRecommendationQuerySuccess(args); });
+	        Dom_1.$$(this.element).on(QueryEvents_1.QueryEvents.noResults, function (e, args) { return _this.handleRecommendationNoResults(); });
+	        Dom_1.$$(this.element).on(QueryEvents_1.QueryEvents.queryError, function (e, args) { return _this.handleRecommendationQueryError(); });
+	        this.historyStore = new coveo_analytics_1.history.HistoryStore();
+	        ResponsiveRecommendation_1.ResponsiveRecommendation.init(this.root, this, options);
 	    }
 	    Recommendation.prototype.getId = function () {
 	        return this.options.id;
@@ -18565,99 +14741,99 @@ var playground =
 	        Recommendation.NEXT_ID++;
 	        this.options.id = id;
 	    };
+	    Recommendation.ID = 'Recommendation';
+	    Recommendation.NEXT_ID = 1;
+	    /**
+	     * The options for the recommendation component
+	     * @componentOptions
+	     */
+	    Recommendation.options = {
+	        /**
+	         * Specifies the main {@link SearchInterface} to listen to.
+	         */
+	        mainSearchInterface: ComponentOptions_1.ComponentOptions.buildSelectorOption(),
+	        /**
+	         * Specifies the user context to send to Coveo analytics.
+	         * It will be sent with the query alongside the user history to get the recommendations.
+	         */
+	        userContext: ComponentOptions_1.ComponentOptions.buildJsonOption(),
+	        /**
+	         * Specifies the id of the interface.
+	         * It is used by the analytics to know which recommendation interface was selected.
+	         * The default value is "Recommendation" for the first one and "Recommendation_{number}" where {number} depends on the number of recommendation interface with default ids in the page for the others.
+	         */
+	        id: ComponentOptions_1.ComponentOptions.buildStringOption(),
+	        /**
+	         * Specifies which options from the main {@link QueryBuilder} to use in the triggered query.
+	         * Ex: <code data-options-to-use="expression,advancedExpression"></code> would add the expression and the advanced expression parts from the main query in the triggered query.
+	         * The default value is undefined.
+	         */
+	        optionsToUse: ComponentOptions_1.ComponentOptions.buildListOption({ defaultValue: ['expression'] }),
+	        /**
+	         * Specifies whether or not to send the actions history along with the triggered query.
+	         * Disabling this option means this component won't be able to get Reveal recommendations.
+	         * However, it could be useful to display side results in a search page.
+	         * The default value is true.
+	         */
+	        sendActionsHistory: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+	        /**
+	         * Hides the component if there a no results / recommendations.
+	         * The default value is false.
+	         */
+	        hideIfNoResults: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+	        autoTriggerQuery: ComponentOptions_1.ComponentOptions.buildBooleanOption({
+	            postProcessing: function (value, options) {
+	                if (options.mainSearchInterface) {
+	                    return false;
+	                }
+	                return value;
+	            }
+	        }),
+	        /**
+	         * Specifies if the responsive mode should be enabled on the recommendation component. Responsive mode will make the recommendation component
+	         * dissapear and instead be availaible using a dropdown button. The responsive recommendation component is enabled when the width
+	         * of the element the search interface is bound to reaches 800 pixels. This value can be modified using {@link Recommendation.options.responsiveBreakpoint}.
+	         *
+	         * Disabling reponsive mode for one recommendation component will disable it for all of them.
+	         * Therefore, this option only needs to be set on one recommendation component to be effective.
+	         * The default value is `true`.
+	         */
+	        enableResponsiveMode: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+	        /**
+	         * Specifies the width of the search interface, in pixels, at which the recommendation component will go into responsive mode. The responsive mode will
+	         * be triggered when the width is equal or below this value. The search interface corresponds to the element with the class
+	         * `CoveoSearchInterface`.
+	         * The default value is `1000`.
+	         */
+	        responsiveBreakpoint: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 1000 }),
+	        /**
+	         * Specifies the label of the button that allows to show the recommendation component when in responsive mode.
+	         * The default value is "Recommendations".
+	         */
+	        dropdownHeaderLabel: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ defaultValue: 'Recommendations' })
+	    };
 	    return Recommendation;
 	}(SearchInterface_1.SearchInterface));
-	Recommendation.ID = 'Recommendation';
-	Recommendation.NEXT_ID = 1;
-	/**
-	 * The options for the recommendation component
-	 * @componentOptions
-	 */
-	Recommendation.options = {
-	    /**
-	     * Specifies the main {@link SearchInterface} to listen to.
-	     */
-	    mainSearchInterface: ComponentOptions_1.ComponentOptions.buildSelectorOption(),
-	    /**
-	     * Specifies the user context to send to Coveo analytics.
-	     * It will be sent with the query alongside the user history to get the recommendations.
-	     */
-	    userContext: ComponentOptions_1.ComponentOptions.buildJsonOption(),
-	    /**
-	     * Specifies the id of the interface.
-	     * It is used by the analytics to know which recommendation interface was selected.
-	     * The default value is "Recommendation" for the first one and "Recommendation_{number}" where {number} depends on the number of recommendation interface with default ids in the page for the others.
-	     */
-	    id: ComponentOptions_1.ComponentOptions.buildStringOption(),
-	    /**
-	     * Specifies which options from the main {@link QueryBuilder} to use in the triggered query.
-	     * Ex: <code data-options-to-use="expression,advancedExpression"></code> would add the expression and the advanced expression parts from the main query in the triggered query.
-	     * The default value is undefined.
-	     */
-	    optionsToUse: ComponentOptions_1.ComponentOptions.buildListOption({ defaultValue: ['expression'] }),
-	    /**
-	     * Specifies whether or not to send the actions history along with the triggered query.
-	     * Disabling this option means this component won't be able to get Reveal recommendations.
-	     * However, it could be useful to display side results in a search page.
-	     * The default value is true.
-	     */
-	    sendActionsHistory: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-	    /**
-	     * Hides the component if there a no results / recommendations.
-	     * The default value is false.
-	     */
-	    hideIfNoResults: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-	    autoTriggerQuery: ComponentOptions_1.ComponentOptions.buildBooleanOption({
-	        postProcessing: function (value, options) {
-	            if (options.mainSearchInterface) {
-	                return false;
-	            }
-	            return value;
-	        }
-	    }),
-	    /**
-	     * Specifies if the responsive mode should be enabled on the recommendation component. Responsive mode will make the recommendation component
-	     * dissapear and instead be availaible using a dropdown button. The responsive recommendation component is enabled when the width
-	     * of the element the search interface is bound to reaches 800 pixels. This value can be modified using {@link Recommendation.options.responsiveBreakpoint}.
-	     *
-	     * Disabling reponsive mode for one recommendation component will disable it for all of them.
-	     * Therefore, this option only needs to be set on one recommendation component to be effective.
-	     * The default value is `true`.
-	     */
-	    enableResponsiveMode: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-	    /**
-	     * Specifies the width of the search interface, in pixels, at which the recommendation component will go into responsive mode. The responsive mode will
-	     * be triggered when the width is equal or below this value. The search interface corresponds to the element with the class
-	     * `CoveoSearchInterface`.
-	     * The default value is `1000`.
-	     */
-	    responsiveBreakpoint: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 1000 }),
-	    /**
-	     * Specifies the label of the button that allows to show the recommendation component when in responsive mode.
-	     * The default value is "Recommendations".
-	     */
-	    dropdownHeaderLabel: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ defaultValue: 'Recommendations' })
-	};
 	exports.Recommendation = Recommendation;
 	// We do not register the Recommendation component since it is done with .coveo('initRecommendation')
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 95 */
 /***/ function(module, exports) {
 
-	/// <reference path="../../lib/magic-box/index.d.ts" />
 	"use strict";
 	var OmniboxEvents = (function () {
 	    function OmniboxEvents() {
 	    }
+	    OmniboxEvents.populateOmnibox = 'populateOmnibox';
+	    OmniboxEvents.openOmnibox = 'openOmnibox';
+	    OmniboxEvents.closeOmnibox = 'closeOmnibox';
+	    OmniboxEvents.populateOmniboxSuggestions = 'populateOmniboxSuggestions';
+	    OmniboxEvents.omniboxPreprocessResultForQuery = 'omniboxPreprocessResultForQuery';
 	    return OmniboxEvents;
 	}());
-	OmniboxEvents.populateOmnibox = 'populateOmnibox';
-	OmniboxEvents.openOmnibox = 'openOmnibox';
-	OmniboxEvents.closeOmnibox = 'closeOmnibox';
-	OmniboxEvents.populateOmniboxSuggestions = 'populateOmniboxSuggestions';
-	OmniboxEvents.omniboxPreprocessResultForQuery = 'omniboxPreprocessResultForQuery';
 	exports.OmniboxEvents = OmniboxEvents;
 
 
@@ -18669,9 +14845,9 @@ var playground =
 	var SettingsEvents = (function () {
 	    function SettingsEvents() {
 	    }
+	    SettingsEvents.settingsPopulateMenu = 'settingsPopulateMenu';
 	    return SettingsEvents;
 	}());
-	SettingsEvents.settingsPopulateMenu = 'settingsPopulateMenu';
 	exports.SettingsEvents = SettingsEvents;
 
 
@@ -18683,10 +14859,10 @@ var playground =
 	var PreferencesPanelEvents = (function () {
 	    function PreferencesPanelEvents() {
 	    }
+	    PreferencesPanelEvents.savePreferences = 'savePreferences';
+	    PreferencesPanelEvents.exitPreferencesWithoutSave = 'exitPreferencesWithoutSave';
 	    return PreferencesPanelEvents;
 	}());
-	PreferencesPanelEvents.savePreferences = 'savePreferences';
-	PreferencesPanelEvents.exitPreferencesWithoutSave = 'exitPreferencesWithoutSave';
 	exports.PreferencesPanelEvents = PreferencesPanelEvents;
 
 
@@ -18701,21 +14877,21 @@ var playground =
 	var BreadcrumbEvents = (function () {
 	    function BreadcrumbEvents() {
 	    }
+	    /**
+	     * Triggered when the breadcrumb needs to update its content. External code can use this event to provide bits of HTML that should be included in the breadcrumb.
+	     *
+	     * All handlers bound to this event will receive a {@link IPopulateBreadcrumbEventArgs} as an argument.
+	     */
+	    BreadcrumbEvents.populateBreadcrumb = 'populateBreadcrumb';
+	    /**
+	     * Triggered when the user clicks the Clear All button in the breadcrumb. When this event is raised, every filter that is included in the breadcrumb should be removed.
+	     *
+	     * This event does not provide custom event data.
+	     */
+	    BreadcrumbEvents.clearBreadcrumb = 'clearBreadcrumb';
+	    BreadcrumbEvents.redrawBreadcrumb = 'redrawBreadcrumb';
 	    return BreadcrumbEvents;
 	}());
-	/**
-	 * Triggered when the breadcrumb needs to update its content. External code can use this event to provide bits of HTML that should be included in the breadcrumb.
-	 *
-	 * All handlers bound to this event will receive a {@link IPopulateBreadcrumbEventArgs} as an argument.
-	 */
-	BreadcrumbEvents.populateBreadcrumb = 'populateBreadcrumb';
-	/**
-	 * Triggered when the user clicks the Clear All button in the breadcrumb. When this event is raised, every filter that is included in the breadcrumb should be removed.
-	 *
-	 * This event does not provide custom event data.
-	 */
-	BreadcrumbEvents.clearBreadcrumb = 'clearBreadcrumb';
-	BreadcrumbEvents.redrawBreadcrumb = 'redrawBreadcrumb';
 	exports.BreadcrumbEvents = BreadcrumbEvents;
 
 
@@ -18727,10 +14903,10 @@ var playground =
 	var QuickviewEvents = (function () {
 	    function QuickviewEvents() {
 	    }
+	    QuickviewEvents.quickviewLoaded = 'quickviewLoaded';
+	    QuickviewEvents.openQuickview = 'openQuickview';
 	    return QuickviewEvents;
 	}());
-	QuickviewEvents.quickviewLoaded = 'quickviewLoaded';
-	QuickviewEvents.openQuickview = 'openQuickview';
 	exports.QuickviewEvents = QuickviewEvents;
 
 
@@ -18738,24 +14914,23 @@ var playground =
 /* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var ResponsiveComponentsManager_1 = __webpack_require__(101);
 	var ResponsiveComponentsUtils_1 = __webpack_require__(102);
-	var SearchInterface_1 = __webpack_require__(41);
-	var Utils_1 = __webpack_require__(4);
+	var SearchInterface_1 = __webpack_require__(42);
+	var Utils_1 = __webpack_require__(6);
 	var Dom_1 = __webpack_require__(3);
-	var Logger_1 = __webpack_require__(8);
+	var Logger_1 = __webpack_require__(9);
 	var Recommendation_1 = __webpack_require__(94);
 	var RecommendationDropdownContent_1 = __webpack_require__(145);
 	var ResponsiveDropdownHeader_1 = __webpack_require__(142);
 	var ResponsiveDropdown_1 = __webpack_require__(140);
-	var Strings_1 = __webpack_require__(64);
+	var Strings_1 = __webpack_require__(65);
 	var FacetSlider_1 = __webpack_require__(125);
 	var Facet_1 = __webpack_require__(103);
-	var Component_1 = __webpack_require__(9);
+	var Component_1 = __webpack_require__(10);
 	var RegisteredNamedMethods_1 = __webpack_require__(84);
-	var QueryEvents_1 = __webpack_require__(22);
-	var _ = __webpack_require__(5);
+	var QueryEvents_1 = __webpack_require__(23);
 	var ResponsiveRecommendation = (function () {
 	    function ResponsiveRecommendation(coveoRoot, ID, options, responsiveDropdown) {
 	        this.coveoRoot = coveoRoot;
@@ -18931,27 +15106,27 @@ var playground =
 	        this.dropdown.close();
 	        this.dropdown.dropdownHeader.hide();
 	    };
+	    ResponsiveRecommendation.DROPDOWN_CONTAINER_CSS_CLASS_NAME = 'coveo-recommendation-dropdown-container';
+	    ResponsiveRecommendation.RESPONSIVE_BREAKPOINT = 1000;
 	    return ResponsiveRecommendation;
 	}());
-	ResponsiveRecommendation.DROPDOWN_CONTAINER_CSS_CLASS_NAME = 'coveo-recommendation-dropdown-container';
-	ResponsiveRecommendation.RESPONSIVE_BREAKPOINT = 1000;
 	exports.ResponsiveRecommendation = ResponsiveRecommendation;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var Dom_1 = __webpack_require__(3);
-	var InitializationEvents_1 = __webpack_require__(57);
-	var Component_1 = __webpack_require__(9);
-	var SearchInterface_1 = __webpack_require__(41);
+	var InitializationEvents_1 = __webpack_require__(58);
+	var Component_1 = __webpack_require__(10);
+	var SearchInterface_1 = __webpack_require__(42);
 	var ResponsiveComponentsUtils_1 = __webpack_require__(102);
-	var Utils_1 = __webpack_require__(4);
+	var Utils_1 = __webpack_require__(6);
 	var Facet_1 = __webpack_require__(103);
 	var Tab_1 = __webpack_require__(143);
-	var _ = __webpack_require__(5);
 	var ResponsiveComponentsManager = (function () {
 	    function ResponsiveComponentsManager(root) {
 	        var _this = this;
@@ -19096,14 +15271,15 @@ var playground =
 	            window.removeEventListener('resize', _this.resizeListener);
 	        });
 	    };
+	    ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS = 'coveo-dropdown-header-wrapper';
+	    ResponsiveComponentsManager.componentManagers = [];
+	    ResponsiveComponentsManager.remainingComponentInitializations = 0;
+	    ResponsiveComponentsManager.componentInitializations = [];
 	    return ResponsiveComponentsManager;
 	}());
-	ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS = 'coveo-dropdown-header-wrapper';
-	ResponsiveComponentsManager.componentManagers = [];
-	ResponsiveComponentsManager.remainingComponentInitializations = 0;
-	ResponsiveComponentsManager.componentInitializations = [];
 	exports.ResponsiveComponentsManager = ResponsiveComponentsManager;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 102 */
@@ -19143,12 +15319,12 @@ var playground =
 	    ResponsiveComponentsUtils.deactivateSmallRecommendation = function (root) {
 	        root.removeClass(this.smallRecommendationClassName);
 	    };
+	    ResponsiveComponentsUtils.smallTabsClassName = 'coveo-small-tabs';
+	    ResponsiveComponentsUtils.smallFacetClassName = 'coveo-small-facets';
+	    ResponsiveComponentsUtils.smallRecommendationClassName = 'coveo-small-recommendation';
+	    ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH = 640;
 	    return ResponsiveComponentsUtils;
 	}());
-	ResponsiveComponentsUtils.smallTabsClassName = 'coveo-small-tabs';
-	ResponsiveComponentsUtils.smallFacetClassName = 'coveo-small-facets';
-	ResponsiveComponentsUtils.smallRecommendationClassName = 'coveo-small-recommendation';
-	ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH = 640;
 	exports.ResponsiveComponentsUtils = ResponsiveComponentsUtils;
 
 
@@ -19156,7 +15332,7 @@ var playground =
 /* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/// <reference path="../../controllers/HierarchicalFacetQueryController.ts" />
+	/* WEBPACK VAR INJECTION */(function(_) {/// <reference path="../../controllers/HierarchicalFacetQueryController.ts" />
 	/// <reference path="../../controllers/FacetQueryController.ts" />
 	/// <reference path="FacetSearch.ts" />
 	/// <reference path="FacetSettings.ts" />
@@ -19172,11 +15348,11 @@ var playground =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Component_1 = __webpack_require__(9);
+	var Component_1 = __webpack_require__(10);
 	var FacetValues_1 = __webpack_require__(104);
-	var ComponentOptions_1 = __webpack_require__(51);
-	var DeviceUtils_1 = __webpack_require__(45);
-	var Strings_1 = __webpack_require__(64);
+	var ComponentOptions_1 = __webpack_require__(52);
+	var DeviceUtils_1 = __webpack_require__(46);
+	var Strings_1 = __webpack_require__(65);
 	var FacetQueryController_1 = __webpack_require__(105);
 	var FacetSearch_1 = __webpack_require__(108);
 	var FacetSettings_1 = __webpack_require__(115);
@@ -19184,101 +15360,87 @@ var playground =
 	var FacetValuesList_1 = __webpack_require__(117);
 	var FacetHeader_1 = __webpack_require__(118);
 	var FacetUtils_1 = __webpack_require__(107);
-	var InitializationEvents_1 = __webpack_require__(57);
-	var QueryEvents_1 = __webpack_require__(22);
-	var Assert_1 = __webpack_require__(7);
+	var InitializationEvents_1 = __webpack_require__(58);
+	var QueryEvents_1 = __webpack_require__(23);
+	var Assert_1 = __webpack_require__(8);
 	var Dom_1 = __webpack_require__(3);
-	var AnalyticsActionListMeta_1 = __webpack_require__(59);
-	var Utils_1 = __webpack_require__(4);
+	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var Utils_1 = __webpack_require__(6);
 	var BreadcrumbValueElement_1 = __webpack_require__(119);
 	var BreadcrumbValuesList_1 = __webpack_require__(120);
 	var FacetValueElement_1 = __webpack_require__(111);
 	var FacetSearchValuesList_1 = __webpack_require__(121);
-	var Defer_1 = __webpack_require__(23);
-	var QueryStateModel_1 = __webpack_require__(10);
-	var Model_1 = __webpack_require__(11);
+	var Defer_1 = __webpack_require__(24);
+	var QueryStateModel_1 = __webpack_require__(11);
+	var Model_1 = __webpack_require__(12);
 	var OmniboxEvents_1 = __webpack_require__(95);
 	var OmniboxValueElement_1 = __webpack_require__(122);
 	var OmniboxValuesList_1 = __webpack_require__(123);
 	var ValueElementRenderer_1 = __webpack_require__(113);
 	var FacetSearchParameters_1 = __webpack_require__(106);
-	var Initialization_1 = __webpack_require__(56);
+	var Initialization_1 = __webpack_require__(57);
 	var BreadcrumbEvents_1 = __webpack_require__(98);
 	var ResponsiveFacets_1 = __webpack_require__(124);
-	var KeyboardUtils_1 = __webpack_require__(78);
+	var KeyboardUtils_1 = __webpack_require__(80);
 	var FacetValuesOrder_1 = __webpack_require__(114);
 	var SearchAlertEvents_1 = __webpack_require__(139);
-	var _ = __webpack_require__(5);
 	/**
-	 * The Facet component displays a *facet* of the results for the current query. A facet consists of a list of values for
-	 * a given field occurring in the results, ordered using a configurable criteria.
-	 *
-	 * The list of values is obtained using an {@link IGroupByRequest} operation performed at the same time as the main
-	 * query.
-	 *
-	 * The Facet component allows the user to drill down inside results by restricting them to certain field values. It also
-	 * allows filtering out values from the Facet itself, and can provide a search box to look for specific values inside
-	 * larger sets.
-	 *
-	 * This is probably the most complex component in the Coveo JavaScript Search Framework and as such, it allows for many
-	 * different configuration options.
-	 *
-	 * See also {@link FacetRange} and {@link HierarchicalFacet} (which extend this component), and {@link FacetSlider}
-	 * (which does not properly extend this component, but is very similar).
+	 * This component displays a facet of the results for the current query. A facet consists of a list of values for a given field occurring in the results, ordered using a configurable criteria.<br/>
+	 * The list of values is obtained using a {@link IGroupByRequest} operation performed at the same time as the main query.<br/>
+	 * The Facet component allows the user to drill down inside results by restricting to certain field values. It also allows filtering out values, and can provide a search box to look for specific values inside larger sets.<br/>
+	 * It is probably the most complex component in the Coveo UI, and as such allows many different options.
 	 */
 	var Facet = (function (_super) {
 	    __extends(Facet, _super);
 	    /**
-	     * Creates a new Facet component. Binds multiple query events as well.
-	     * @param element The HTMLElement on which to instantiate the component.
-	     * @param options The options for the Facet component.
-	     * @param bindings The bindings that the component requires to function normally. If not set, these will be
-	     * automatically resolved (with a slower execution time).
-	     * @param facetClassId The ID to use for this facet (as Facet inherited from by other component
-	     * (e.g.: {@link FacetRange}). Default value is `Facet`.
+	     * Create a new Facet component, bind multiple query events as well
+	     * @param element
+	     * @param options
+	     * @param bindings
+	     * @param facetClassId The ID to use for this facet (as Facet inherited from by other component (e.g.: {@link FacetRange}). The default value is `Facet`.
 	     */
 	    function Facet(element, options, bindings, facetClassId) {
+	        var _this = this;
 	        if (facetClassId === void 0) { facetClassId = Facet.ID; }
-	        var _this = _super.call(this, element, facetClassId, bindings) || this;
-	        _this.element = element;
-	        _this.options = options;
-	        _this.keepDisplayedValuesNextTime = false;
-	        _this.values = new FacetValues_1.FacetValues();
-	        _this.currentPage = 0;
-	        _this.firstQuery = true;
-	        _this.canFetchMore = true;
-	        _this.showingWaitAnimation = false;
-	        _this.listenToQueryStateChange = true;
-	        _this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, Facet, options);
-	        if (_this.options.valueCaption != null) {
-	            _this.options.availableSorts = _.filter(_this.options.availableSorts, function (sort) { return !/^alpha.*$/.test(sort); });
+	        _super.call(this, element, facetClassId, bindings);
+	        this.element = element;
+	        this.options = options;
+	        this.keepDisplayedValuesNextTime = false;
+	        this.values = new FacetValues_1.FacetValues();
+	        this.currentPage = 0;
+	        this.firstQuery = true;
+	        this.canFetchMore = true;
+	        this.showingWaitAnimation = false;
+	        this.listenToQueryStateChange = true;
+	        this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, Facet, options);
+	        if (this.options.valueCaption != null) {
+	            this.options.availableSorts = _.filter(this.options.availableSorts, function (sort) { return !/^alpha.*$/.test(sort); });
 	        }
-	        ResponsiveFacets_1.ResponsiveFacets.init(_this.root, _this, _this.options);
+	        ResponsiveFacets_1.ResponsiveFacets.init(this.root, this, this.options);
 	        // Serves as a way to render facet in the omnibox in the order in which they are instantiated
-	        _this.omniboxZIndex = Facet.omniboxIndex;
+	        this.omniboxZIndex = Facet.omniboxIndex;
 	        Facet.omniboxIndex--;
-	        _this.checkForComputedFieldAndSort();
-	        _this.checkForValueCaptionType();
-	        _this.checkForCustomSort();
-	        _this.initFacetQueryController();
-	        _this.initQueryEvents();
-	        _this.initQueryStateEvents();
-	        _this.initComponentStateEvents();
-	        _this.initOmniboxEvents();
-	        _this.initBreadCrumbEvents();
-	        _this.initSearchAlertEvents();
-	        _this.updateNumberOfValues();
-	        _this.resize = function () {
+	        this.checkForComputedFieldAndSort();
+	        this.checkForValueCaptionType();
+	        this.checkForCustomSort();
+	        this.initFacetQueryController();
+	        this.initQueryEvents();
+	        this.initQueryStateEvents();
+	        this.initComponentStateEvents();
+	        this.initOmniboxEvents();
+	        this.initBreadCrumbEvents();
+	        this.initSearchAlertEvents();
+	        this.updateNumberOfValues();
+	        this.resize = function () {
 	            if (!_this.disabled) {
 	                FacetUtils_1.FacetUtils.clipCaptionsToAvoidOverflowingTheirContainer(_this);
 	            }
 	        };
-	        window.addEventListener('resize', _.debounce(_this.resize, 200));
-	        _this.bind.onRootElement(InitializationEvents_1.InitializationEvents.nuke, function () { return _this.handleNuke(); });
-	        _this.bind.oneRootElement(QueryEvents_1.QueryEvents.querySuccess, function () {
+	        window.addEventListener('resize', _.debounce(this.resize, 200));
+	        this.bind.onRootElement(InitializationEvents_1.InitializationEvents.nuke, function () { return _this.handleNuke(); });
+	        this.bind.oneRootElement(QueryEvents_1.QueryEvents.querySuccess, function () {
 	            _this.firstQuery = false;
 	        });
-	        return _this;
 	    }
 	    Facet.prototype.createDom = function () {
 	        var _this = this;
@@ -19368,17 +15530,15 @@ var playground =
 	        this.facetValueHasChanged();
 	    };
 	    /**
-	     * Returns the currently displayed values as a string array.
-	     *
-	     * @returns {any[]} The currently displayed values.
+	     * Return the currently displayed values, as an array of string.
+	     * @returns {any[]}
 	     */
 	    Facet.prototype.getDisplayedValues = function () {
 	        return _.pluck(this.getDisplayedFacetValues(), 'value');
 	    };
 	    /**
-	     * Returns the currently displayed values as an array of {@link FacetValue}.
-	     *
-	     * @returns {T[]} The currently displayed values.
+	     * Return the currently displayed values, as an array of {@link FacetValue}.
+	     * @returns {T[]}
 	     */
 	    Facet.prototype.getDisplayedFacetValues = function () {
 	        this.ensureDom();
@@ -19388,25 +15548,23 @@ var playground =
 	        });
 	    };
 	    /**
-	     * Returns the currently selected values as an array of string.
-	     *
-	     * @returns {TResult[]} The currently selected values.
+	     * Return the currently selected values, as an array of string.
+	     * @returns {TResult[]}
 	     */
 	    Facet.prototype.getSelectedValues = function () {
 	        this.ensureDom();
 	        return _.map(this.values.getSelected(), function (value) { return value.value; });
 	    };
 	    /**
-	     * Returns the currently excluded values as an array of string.
-	     *
-	     * @returns {TResult[]} The currently excluded values.
+	     * Return the currently excluded values, as an array of string.
+	     * @returns {TResult[]}
 	     */
 	    Facet.prototype.getExcludedValues = function () {
 	        this.ensureDom();
 	        return _.map(this.values.getExcluded(), function (value) { return value.value; });
 	    };
 	    /**
-	     * Resets the Facet by unselecting all values, unexcluding all values, and redrawing the Facet.
+	     * Reset the facet. This means unselect all values, unexclude all values, and redraw.
 	     */
 	    Facet.prototype.reset = function () {
 	        this.ensureDom();
@@ -19416,9 +15574,7 @@ var playground =
 	        this.updateQueryStateModel();
 	    };
 	    /**
-	     * Switches the Facet to `AND` mode.
-	     *
-	     * See {@link Facet.options.useAnd} and {@link Facet.otpions.enableTogglingOperator}.
+	     * Switch the facet to AND mode: {@link Facet.options.useAnd}.
 	     */
 	    Facet.prototype.switchToAnd = function () {
 	        this.ensureDom();
@@ -19426,9 +15582,7 @@ var playground =
 	        this.facetHeader.switchToAnd();
 	    };
 	    /**
-	     * Switches the Facet to `OR` mode.
-	     *
-	     * See {@link Facet.options.useAnd} and {@link Facet.otpions.enableTogglingOperator}.
+	     * Switch the facet to OR mode: {@link Facet.options.useAnd}.
 	     */
 	    Facet.prototype.switchToOr = function () {
 	        this.ensureDom();
@@ -19436,21 +15590,17 @@ var playground =
 	        this.facetHeader.switchToOr();
 	    };
 	    /**
-	     * Returns the endpoint for the Facet.
-	     *
-	     * @returns {SearchEndpointInterface|ISearchEndpoint} The endpoint for the Facet.
+	     * Return the endpoint for the facet.
+	     * @returns {SearchEndpointInterface|ISearchEndpoint}
 	     */
 	    Facet.prototype.getEndpoint = function () {
 	        return this.queryController.getEndpoint();
 	    };
 	    /**
-	     * Changes the sort parameter for the Facet.
-	     *
-	     * See {@link Facet.options.availableSorts} for the list of possible values.
-	     *
-	     * Also triggers a new query.
-	     *
-	     * @param criteria The new sort parameter for the Facet.
+	     * Change the sort parameter for the facet.<br/>
+	     * See: {@link Facet.options.availableSorts} the list of possible value.<br/>
+	     * Trigger a new query.
+	     * @param criteria
 	     */
 	    Facet.prototype.updateSort = function (criteria) {
 	        this.ensureDom();
@@ -19466,7 +15616,7 @@ var playground =
 	        Dom_1.$$(this.element).addClass('coveo-facet-fade');
 	    };
 	    /**
-	     * Shows a waiting animation in the Facet header (a spinner).
+	     * Show a waiting animation in the facet header (a spinner).
 	     */
 	    Facet.prototype.showWaitingAnimation = function () {
 	        this.ensureDom();
@@ -19484,7 +15634,7 @@ var playground =
 	        }
 	    };
 	    /**
-	     * Hides the waiting animation in the Facet header.
+	     * Hide the waiting animation in the facet header (a spinner).
 	     */
 	    Facet.prototype.hideWaitingAnimation = function () {
 	        this.ensureDom();
@@ -19544,9 +15694,8 @@ var playground =
 	        return ret;
 	    };
 	    /**
-	     * Shows the next page of results in the Facet.
-	     *
-	     * Triggers a query if needed, or displays the already available values.
+	     * Show the next page of results in the facet.<br/>
+	     * Trigger a query if needed, or display the already available values.
 	     */
 	    Facet.prototype.showMore = function () {
 	        this.currentPage++;
@@ -19559,9 +15708,7 @@ var playground =
 	        }
 	    };
 	    /**
-	     * Shows less elements in the Facet (up to the original number of values).
-	     *
-	     * See {@link Facet.options.numberOfValues}.
+	     * Show less element in the facet (up to the original number of values).
 	     */
 	    Facet.prototype.showLess = function () {
 	        Dom_1.$$(this.lessElement).removeClass('coveo-active');
@@ -19572,7 +15719,7 @@ var playground =
 	        this.rebuildValueElements();
 	    };
 	    /**
-	     * Collapses the Facet.
+	     * Collapse the facet.
 	     */
 	    Facet.prototype.collapse = function () {
 	        this.ensureDom();
@@ -19581,7 +15728,7 @@ var playground =
 	        }
 	    };
 	    /**
-	     * Expands the facet.
+	     * Expand the facet.
 	     */
 	    Facet.prototype.expand = function () {
 	        this.ensureDom();
@@ -20266,452 +16413,327 @@ var playground =
 	        };
 	        return info;
 	    };
+	    Facet.ID = 'Facet';
+	    Facet.omniboxIndex = 50;
+	    /**
+	     * The possible options for a facet
+	     * @componentOptions
+	     */
+	    Facet.options = {
+	        /**
+	         * Specifies the title displayed at the top of the facet.<br/>
+	         * Default is the localized string for "No Title".
+	         */
+	        title: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({
+	            defaultValue: Strings_1.l('NoTitle'),
+	            section: 'Identification',
+	            priority: 10
+	        }),
+	        /**
+	         * Specifies the index field whose values will be used in the facet.<br/>
+	         * This require the given field to be configured correctly in the index as a facet field.<br/>
+	         * This is a required option and cannot be omitted, otherwise the facet component will not work.
+	         */
+	        field: ComponentOptions_1.ComponentOptions.buildFieldOption({ required: true, groupByField: true, section: 'Identification' }),
+	        /**
+	         * Specifies the CSS class to change the facet header icon.<br/>
+	         * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option.
+	         */
+	        headerIcon: ComponentOptions_1.ComponentOptions.buildIconOption({ deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.' }),
+	        /**
+	         * Specifies a unique identifier for a facet. This identifier will be used to save the facet state in the url hash, for example.<br/>
+	         * Optional, since the default will be the {@link Facet.options.field} option.<br/>
+	         * If you have two facets with the same field on the same page, you should specify an ID for at least one of those two facets.<br/>
+	         * That ID need to be unique on the page.
+	         */
+	        id: ComponentOptions_1.ComponentOptions.buildStringOption({
+	            postProcessing: function (value, options) { return value || options.field; }
+	        }),
+	        /**
+	         * Specifies if the field is configured in the index as a multi value field (meaning: comma separated values).<br/>
+	         * Default value is false
+	         */
+	        isMultiValueField: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+	        /**
+	         * Specifies the field whose values will be displayed in the facet.<br/>
+	         * @deprecated This option is exposed for legacy reasons, and the recommendation is to not use this option.
+	         */
+	        lookupField: ComponentOptions_1.ComponentOptions.buildFieldOption({ deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.' }),
+	        /**
+	         * Specifies whether to show the facet settings menu or not.<br/>
+	         * The default value is `true`.
+	         */
+	        enableSettings: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'SettingsMenu', priority: 9 }),
+	        /**
+	         * Specifies if the save state menu option is available on the facet setting menu.<br/>
+	         * Of course {@link Facet.options.enableSettings} needs to be true.<br/>
+	         * Default value is `false`.
+	         */
+	        enableSettingsFacetState: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableSettings' }),
+	        /**
+	         * Specifies the sort criteria options that you want to be displayed in the facet settings menu.<br/>
+	         * Of course {@link Facet.options.enableSettings} needs to be true.<br/>
+	         * Possible values are : `occurrences`, `score`, `alphaAscending`, `alphaDescending`, `computedfieldascending`, `computedfielddescending`, `custom`.
+	         * The default value is `occurrences,score,alphaAscending,alphaDescending`.
+	         */
+	        availableSorts: ComponentOptions_1.ComponentOptions.buildListOption({
+	            defaultValue: ['occurrences', 'score', 'alphaAscending', 'alphaDescending'],
+	            values: ['Occurrences', 'Score', 'AlphaAscending', 'AlphaDescending', 'ComputedFieldAscending', 'ComputedFieldDescending', 'ChiSquare', 'NoSort'],
+	            depend: 'enableSettings'
+	        }),
+	        /**
+	         * Specifies the criteria used to sort facet values.<br/>
+	         * See {@link IGroupByRequest} for the list of available values.<br/>
+	         * The default value is the first value of {@link Facet.options.availableSorts} list, or 'occurrences' if there is none specified.
+	         */
+	        sortCriteria: ComponentOptions_1.ComponentOptions.buildStringOption({ postProcessing: function (value, options) { return value || (options.availableSorts.length > 0 ? options.availableSorts[0] : 'occurrences'); } }),
+	        /**
+	         * Specifies a custom order by which facet values are sorted.<br/>
+	         * For example, you could use this to specify a logical order for support tickets -> customSort : ["New","Opened","Feedback","Resolved","Feedback"].<br/>
+	         */
+	        customSort: ComponentOptions_1.ComponentOptions.buildListOption({ section: 'Identification' }),
+	        /**
+	         * Specifies the maximum number of field values that will be displayed by default in the facet, before the user click **More**.<br/>
+	         * The default value is 5.
+	         */
+	        numberOfValues: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0, section: 'Identification' }),
+	        /**
+	         * Specifies the injection depth that will be used for the group by operation.<br/>
+	         * The injection depth determines how many results are scanned in the index to ensure all potential facet values are listed. Increasing this value enhances the accuracy of the listed values, at the cost of performance.<br/>
+	         * The default value is 1000.
+	         */
+	        injectionDepth: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
+	        /**
+	         * Specifies whether an icon is displayed next to each facet value.<br/>
+	         * The default value is false.
+	         * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option.
+	         */
+	        showIcon: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false, deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.' }),
+	        /**
+	         * Specifies whether the filter generated when multiple values are selected uses the AND operator, meaning that only documents having all selected values matches the resulting query.<br/>
+	         * By default, filters are using the OR operator, and the resulting query matches all documents with at least one of the selected values.
+	         */
+	        useAnd: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+	        /**
+	         * Specifies whether the user is allowed to toggle between OR and AND mode, using an icon in the top right corner of the facet.<br/>
+	         * The default value is `false`.
+	         */
+	        enableTogglingOperator: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false, alias: 'allowTogglingOperator' }),
+	        /**
+	         * Specifies whether the search box for searching inside the available values will be displayed at the bottom of the facet.<br/>
+	         * The default value is true.
+	         */
+	        enableFacetSearch: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'FacetSearch', priority: 8 }),
+	        /**
+	         * Specifies the delay (in milliseconds) before a search is sent to the server when the user starts typing in the facet search box.<br/>
+	         * Using a smaller value means that results will arrive faster, but it increases the chances that many of the requests sent to the server get cancelled as the user continues typing in characters.<br/>
+	         * The default value is 100.
+	         */
+	        facetSearchDelay: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 100, min: 0, depend: 'enableFacetSearch' }),
+	        /**
+	         * Specifies if the accents are ignored in the facet search.<br/>
+	         * The default value is `false`.
+	         */
+	        facetSearchIgnoreAccents: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableFacetSearch' }),
+	        /**
+	         * Specifies the number of values displayed in the facet search results popup.<br/>
+	         * The default value is 15.
+	         */
+	        numberOfValuesInFacetSearch: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 15, min: 1 }),
+	        /**
+	         * Specifies if the facet should push data to the {@link Breadcrumb}.<br/>
+	         * The default value is `true`.
+	         */
+	        includeInBreadcrumb: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+	        /**
+	         * Specifies the maximum number of values that the facet should display in the {@link Breadcrumb}, before outputting a "See more" button.<br/>
+	         * Default is 5 on desktop, 3 on mobile.
+	         */
+	        numberOfValuesInBreadcrumb: ComponentOptions_1.ComponentOptions.buildNumberOption({
+	            defaultFunction: function () { return DeviceUtils_1.DeviceUtils.isMobileDevice() ? 3 : 5; },
+	            min: 0,
+	            depend: 'includeInBreadcrumb'
+	        }),
+	        /**
+	         * Specifies if the facet should push data to the {@link Omnibox}.<br/>
+	         * It can have a real negative impact on index performance.<br/>
+	         * The default value is `false`.
+	         * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option.
+	         */
+	        includeInOmnibox: ComponentOptions_1.ComponentOptions.buildBooleanOption({
+	            defaultValue: false,
+	            deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.'
+	        }),
+	        /**
+	         * Specifies the number of values to populate the {@link Breadcrumb} with.<br/>
+	         * Of course, the {@link Facet.options.includeInOmnibox} option needs to be true.<br/>
+	         * It can have a real negative impact on index performance.<br/>
+	         * The default value is 5 on desktop, 3 on mobile.
+	         * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option.
+	         */
+	        numberOfValuesInOmnibox: ComponentOptions_1.ComponentOptions.buildNumberOption({
+	            defaultFunction: function () { return DeviceUtils_1.DeviceUtils.isMobileDevice() ? 3 : 5; },
+	            min: 0,
+	            depend: 'includeInOmnibox',
+	            deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.'
+	        }),
+	        /**
+	         * Specifies the name of a field on which an aggregate operation should be executed for all distinct values of the facet field.<br/>
+	         * The result of the operation is displayed along with the number of occurrences for each value.<br/>
+	         * You can use this option to compute the sum of a field (like a money amount) for each facet value that is listed.<br/>
+	         * Works in conjunction with {@link Facet.options.computedFieldOperation} , {@link Facet.options.computedFieldFormat}, {@link Facet.options.computedFieldCaption}
+	         */
+	        computedField: ComponentOptions_1.ComponentOptions.buildFieldOption({ section: 'ComputedField', priority: 7 }),
+	        /**
+	         * Specifies the type of aggregate operation to use on the {@link Facet.options.computedField}.<br/>
+	         * The available values are:
+	         * <ul>
+	         *   <li>sum - Computes the sum of the computed field values.</li>
+	         *   <li>average - Computes the average of the computed field values.</li>
+	         *   <li>minimum - Finds the minimum value of the computed field values.</li>
+	         *   <li>maximum - Finds the maximum value of the computed field values.</li>
+	         * </ul><br/>
+	         * The default value is `sum`.
+	         */
+	        computedFieldOperation: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'sum', section: 'ComputedField' }),
+	        /**
+	         * Specifies how to format the values resulting from a {@link Facet.options.computedFieldOperation}.<br/>
+	         * The formats available are defined by the Globalize library. The most common used formats are:
+	         * <ul>
+	         *   <li>c0 - Formats the value as a currency.</li>
+	         *   <li>n0 - Formats the value as an integer.</li>
+	         *   <li>n2 - Formats the value as a floating point with 2 decimal digits.</li>
+	         * </ul>
+	         * See: <a href='https://github.com/klaaspieter/jquery-global#globalizeformat-value-format-culture-'>Globalize</a> for more informations.<br/>
+	         * Default value is `'c0`.
+	         */
+	        computedFieldFormat: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'c0', section: 'ComputedField' }),
+	        /**
+	         * Specifies what will be the caption of the {@link Facet.options.computedField} in the settings menu for sort.<br/>
+	         * For example, the value `Money` will be displayed as `Money Ascending` for computed field ascending.<br/>
+	         * The default value is Computed Field.
+	         */
+	        computedFieldCaption: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({
+	            defaultValue: Strings_1.l('ComputedField'),
+	            section: 'ComputedField'
+	        }),
+	        /**
+	         * Specifies whether the facet should remain stable in its current position in the viewport while the mouse is over it.<br/>
+	         * Whenever values are selected in a facet, a new query is automatically performed. This new query might cause other elements in the page to be resized (typically other facets above the one being used).<br/>
+	         * When this option is enabled, the facet will adjust the scroll amount of the page to ensure that it does not move relative to the mouse when the results are updated.<br/>
+	         * In some cases, the facet will also add margin to the scrollContainer, if scrolling alone is not enough to preserve position.<br/>
+	         * This is the option that will add a div 'coveo-topSpace' / 'coveo-bottomSpace` around the facet container.
+	         * The default value is `true`.
+	         */
+	        preservePosition: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+	        /**
+	         * Specifies the parent container of the facets.<br/>
+	         * Used for the {@link Facet.options.preservePosition}.<br/>
+	         * The default value is `element.parentElement`.
+	         */
+	        paddingContainer: ComponentOptions_1.ComponentOptions.buildSelectorOption({ defaultFunction: function (element) { return element.parentElement; } }),
+	        /**
+	         * Specifies the HTML element (through a CSS selector) whose scroll amount the facet should adjust to preserve its position {@link Facet.options.preservePosition} when results are updated.<br/>
+	         * The default value is `document.body`.
+	         */
+	        scrollContainer: ComponentOptions_1.ComponentOptions.buildSelectorOption({ defaultFunction: function (element) { return document.body; } }),
+	        /**
+	         * Specifies if the more/less button is enabled.<br/>
+	         * The default value is `true`.
+	         */
+	        enableMoreLess: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+	        /**
+	         * Specifies the number of additional results to fetch when clicking on **More** in the facet search.<br/>
+	         * The default value is 10.
+	         */
+	        pageSize: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 10, min: 1, depend: 'enableMoreLess' }),
+	        /**
+	         * Specifies if the facet is collapsible.<br/>
+	         * The default value is `true`.
+	         */
+	        enableCollapse: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true, depend: 'enableSettings' }),
+	        /**
+	         * Specifies an explicit list of `allowedValues` in the {@link IGroupByRequest}.<br/>
+	         * This will whitelist the facet content to some specific values.<br/>
+	         * Example  ["File", "People"].
+	         */
+	        allowedValues: ComponentOptions_1.ComponentOptions.buildListOption(),
+	        /**
+	         * Specifies an additional query expression (query override) to add to each group by that this facet performs.<br/>
+	         * See: {@link IGroupByRequest}.<br/>
+	         * Example: `@date>=2014/01/01`
+	         */
+	        additionalFilter: ComponentOptions_1.ComponentOptions.buildStringOption(),
+	        /**
+	         * Specifies that the facet appears only when a value is selected in its "parent" facet.<br/>
+	         * To specify the parent facet, use its {@link Facet.options.id}. Remember that be default, the ID of a facet is its {@link Facet.options.field}.<br/>
+	         * Example -> dependsOn : @parentfacetField
+	         */
+	        dependsOn: ComponentOptions_1.ComponentOptions.buildStringOption(),
+	        /**
+	         * Specifies a JSON object describing a mapping of facet values to desired captions.
+	         *
+	         * This option can only be set in the init call of your search interface, not directly as an HTML attribute.
+	         *
+	         * ```
+	         * // Example: using a facet for file types
+	         * var myValueCaption = {  "txt": "Text files","html": "Web page", [ etc ... ]};
+	         *
+	         * Coveo.init(document.querySelector('#search'), {
+	         *    Facet : {
+	         *      valueCaption: myValueCaption
+	         *    }
+	         * })
+	         * // Or using the jQuery extension
+	         * $("#search").coveo("init", {
+	         *    Facet: {
+	         *      valueCaption: myValueCaption
+	         *    }
+	         * })
+	         * ```
+	         */
+	        valueCaption: ComponentOptions_1.ComponentOptions.buildCustomOption(function () {
+	            return null;
+	        }),
+	        /**
+	         * Specifies if the responsive mode should be enabled on the facets. Responsive mode will make the facet disappear and will instead be
+	         * available using a dropdown button. Responsive facets are enabled when the width of the element the search interface is bound to
+	         * reaches 800 pixels. This value can be modified using {@link Facet.options.responsiveBreakpoint}.
+	         *
+	         * Disabling reponsive mode for one facet will disable it for all facets.
+	         * Therefore, this options only needs to be set on one facet to be effective.
+	         * The default value is `true`.
+	         */
+	        enableResponsiveMode: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+	        /**
+	         * Specifies the width of the search interface, in pixels, at which the facets will go into responsive mode. The responsive mode will
+	         * be triggered when the width is equal or below this value. The search interface corresponds to the element with the class
+	         * `CoveoSearchInterface`.
+	         * The default value is `800`.
+	         */
+	        responsiveBreakpoint: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 800 }),
+	        /**
+	         * Specifies the label of the button that allows to show the facets when in responsive mode. If it is specified more than once, the
+	         * first occurence of the option will be used.
+	         * The default value is "Filters".
+	         */
+	        dropdownHeaderLabel: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption()
+	    };
 	    return Facet;
 	}(Component_1.Component));
-	Facet.ID = 'Facet';
-	Facet.omniboxIndex = 50;
-	/**
-	 * The possible options for a facet
-	 * @componentOptions
-	 */
-	Facet.options = {
-	    /**
-	     * Specifies the title to display at the top of the Facet.
-	     *
-	     * Default value is the localized string for `No Title`.
-	     */
-	    title: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({
-	        defaultValue: Strings_1.l('NoTitle'),
-	        section: 'Identification',
-	        priority: 10
-	    }),
-	    /**
-	     * Specifies the index field whose values the Facet should use.
-	     *
-	     * This requires the given field to be configured correctly in the index as a Facet field (see
-	     * [Adding Fields to a Source](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=137)).
-	     *
-	     * Specifying a value for this option is required for the Facet component to work.
-	     */
-	    field: ComponentOptions_1.ComponentOptions.buildFieldOption({ required: true, groupByField: true, section: 'Identification' }),
-	    /**
-	     * Specifies the CSS class to change the Facet header icon.
-	     *
-	     * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option.
-	     */
-	    headerIcon: ComponentOptions_1.ComponentOptions.buildIconOption({ deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.' }),
-	    /**
-	     * Specifies a unique identifier for the Facet. Among other things, this identifier serves the purpose of saving the
-	     * facet state in the URL hash.
-	     *
-	     * If you have two facets with the same field on the same page, you should specify an id value for at least one of
-	     * those two facets. This id must be unique in the page.
-	     *
-	     * Default value is the {@link Facet.options.field} option value.
-	     */
-	    id: ComponentOptions_1.ComponentOptions.buildStringOption({
-	        postProcessing: function (value, options) { return value || options.field; }
-	    }),
-	    /**
-	     * Specifies whether the field is configured in the index as a multi-value field (semicolon separated values such as
-	     * `abc;def;ghi`).
-	     *
-	     * Default value is `false`.
-	     */
-	    isMultiValueField: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-	    /**
-	     * Specifies the field whose values the Facet should display.
-	     *
-	     * @deprecated This option is exposed for legacy reasons, and the recommendation is to not use this option.
-	     */
-	    lookupField: ComponentOptions_1.ComponentOptions.buildFieldOption({ deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.' }),
-	    /**
-	     * Specifies whether to display the Facet **Settings** menu.
-	     *
-	     * See also {@link Facet.options.enableSettingsFacetState}, {@link Facet.options.availableSorts} and
-	     * {@link Facet.options.enableCollapse}.
-	     *
-	     * Default value is `true`.
-	     */
-	    enableSettings: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'SettingsMenu', priority: 9 }),
-	    /**
-	     * If {@link Facet.options.enableSettings} is `true`, specifies whether the **Save state** menu option is available
-	     * in the Facet **Settings** menu.
-	     *
-	     * Default value is `false`.
-	     */
-	    enableSettingsFacetState: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableSettings' }),
-	    /**
-	     * If {@link Facet.options.enableSettings} is `true`, specifies the sort criteria options to display in the Facet
-	     * **Settings** menu.
-	     *
-	     * Possible values are : `occurrences`, `score`, `alphaAscending`, `alphaDescending`, `computedfieldascending`,
-	     * `computedfielddescending` and `custom`.
-	     *
-	     * Default value is `occurrences,score,alphaAscending,alphaDescending`.
-	     */
-	    availableSorts: ComponentOptions_1.ComponentOptions.buildListOption({
-	        defaultValue: ['occurrences', 'score', 'alphaAscending', 'alphaDescending'],
-	        values: ['Occurrences', 'Score', 'AlphaAscending', 'AlphaDescending', 'ComputedFieldAscending', 'ComputedFieldDescending', 'ChiSquare', 'NoSort'],
-	        depend: 'enableSettings'
-	    }),
-	    /**
-	     * Specifies the criteria to use to sort the Facet values.
-	     *
-	     * See {@link IGroupByRequest} for the list of possible values.
-	     *
-	     * Default value is the first sort criteria specified in the {@link Facet.options.availableSorts} option, or
-	     * `occurrences` if no sort criteria is specified.
-	     */
-	    sortCriteria: ComponentOptions_1.ComponentOptions.buildStringOption({ postProcessing: function (value, options) { return value || (options.availableSorts.length > 0 ? options.availableSorts[0] : 'occurrences'); } }),
-	    /**
-	     * Specifies a custom order by which to sort the Facet values.
-	     *
-	     * For example, you could use this to specify a logical order for support tickets, such as
-	     * `customSort : ["New","Opened","Feedback","Resolved","Feedback"]`
-	     */
-	    customSort: ComponentOptions_1.ComponentOptions.buildListOption({ section: 'Identification' }),
-	    /**
-	     * Specifies the maximum number of field values to display by default in the Facet before the user
-	     * clicks **More**.
-	     *
-	     * Default value is `5`. Minimum value is `0`.
-	     */
-	    numberOfValues: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0, section: 'Identification' }),
-	    /**
-	     * Specifies the *injection depth* to use for the {@link IGroupByRequest} operation.
-	     *
-	     * The injection depth determines how many results to scan in the index to ensure that the facet lists all potential
-	     * facet values. Increasing this value enhances the accuracy of the listed values at the cost of performance.
-	     *
-	     * Default value is `1000`. Minimum value is `0`.
-	     */
-	    injectionDepth: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
-	    /**
-	     * Specifies whether to display an icon next to each facet value.
-	     *
-	     * Default value is `false`.
-	     *
-	     * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option.
-	     */
-	    showIcon: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false, deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.' }),
-	    /**
-	     * Specifies whether to use the `AND` operator in the resulting filter when multiple values are selected in the
-	     * Facet.
-	     *
-	     * Setting this option to `true` means that documents must have all of the selected values to match the resulting
-	     * query.
-	     *
-	     * Default value is `false`, which means that the filter uses the `OR` operator. Thus, by default, documents must
-	     * have at least one of the selected values to match the query.
-	     */
-	    useAnd: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-	    /**
-	     * Specifies whether to allow the user to toggle between the `OR` and `AND` modes in the Facet.
-	     *
-	     * Setting this option to `true` displays an icon in the top right corner of the Facet. The user can click this icon
-	     * to toggle between between the two modes.
-	     *
-	     * Default value is `false`.
-	     */
-	    enableTogglingOperator: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false, alias: 'allowTogglingOperator' }),
-	    /**
-	     * Specifies whether to display a search box at the bottom of the Facet for searching among the available values.
-	     *
-	     * See also {@link Facet.options.facetSearchDelay}, {@link Facet.options.facetSearchIgnoreAccents},
-	     * {@link Facet.options.numberOfValuesInFacetSearch}.
-	     *
-	     * Default value is `true`.
-	     */
-	    enableFacetSearch: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'FacetSearch', priority: 8 }),
-	    /**
-	     * If {@link Facet.options.enableFacetSearch} is `true`, specifies the delay (in milliseconds) before sending a
-	     * search request to the server when the user starts typing in the Facet search box.
-	     *
-	     * Specifying a smaller value means results will arrive faster. However, chances of having to cancel many requests
-	     * sent to the server will increase as the user keeps on typing new characters.
-	     *
-	     * Default value is `100`. Minimum value is `0`.
-	     */
-	    facetSearchDelay: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 100, min: 0, depend: 'enableFacetSearch' }),
-	    /**
-	     * If {@link Facet.options.enableFacetSearch} is `true`, specifies whether to ignore accents in the Facet search
-	     * box.
-	     *
-	     * Default value is `false`.
-	     */
-	    facetSearchIgnoreAccents: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableFacetSearch' }),
-	    /**
-	     * If {@link Facet.options.enableFacetSearch} is `true`, specifies the number of values to display in the Facet
-	     * search results popup.
-	     *
-	     * Default value is `15`. Minimum value is `1`.
-	     */
-	    numberOfValuesInFacetSearch: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 15, min: 1 }),
-	    /**
-	     * Specifies whether the Facet should push data to the {@link Breadcrumb} component.
-	     *
-	     * See also {@link Facet.options.numberOfValuesInBreadcrumb}.
-	     *
-	     * Default value is `true`.
-	     */
-	    includeInBreadcrumb: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-	    /**
-	     * If {@link Facet.options.includeInBreadcrumb} is `true`, specifies the maximum number of values that the Facet
-	     * should display in the {@link Breadcrumb} before outputting a **See more** button.
-	     *
-	     * Default value is `5` on a desktop computer and `3` on a mobile device. Minimum value is `0`
-	     */
-	    numberOfValuesInBreadcrumb: ComponentOptions_1.ComponentOptions.buildNumberOption({
-	        defaultFunction: function () { return DeviceUtils_1.DeviceUtils.isMobileDevice() ? 3 : 5; },
-	        min: 0,
-	        depend: 'includeInBreadcrumb'
-	    }),
-	    /**
-	     * Specifies whether the Facet should push data to the {@link Omnibox} component.
-	     *
-	     * Setting this option to `true` can have a significant negative impact on index performance.
-	     *
-	     * See also {@link Facet.options.numberOfValuesInOmnibox}.
-	     *
-	     * Default value is `false`.
-	     *
-	     * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option.
-	     */
-	    includeInOmnibox: ComponentOptions_1.ComponentOptions.buildBooleanOption({
-	        defaultValue: false,
-	        deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.'
-	    }),
-	    /**
-	     * If {@link Facet.options.includeInOmnibox} is `true`, specifies the number of values to populate the
-	     * {@link Breadcrumb} with.
-	     *
-	     * Setting this option to `true` can have a significant negative impact on index performance.
-	     *
-	     * Default value is `5` on desktop computer and `3` on a mobile device. Minimum value is `0`.
-	     *
-	     * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option.
-	     */
-	    numberOfValuesInOmnibox: ComponentOptions_1.ComponentOptions.buildNumberOption({
-	        defaultFunction: function () { return DeviceUtils_1.DeviceUtils.isMobileDevice() ? 3 : 5; },
-	        min: 0,
-	        depend: 'includeInOmnibox',
-	        deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.'
-	    }),
-	    /**
-	     * Specifies the name of a field on which to execute an aggregate operation for all distinct values of the Facet
-	     * field.
-	     *
-	     * The Facet displays the result of the operation along with the number of occurrences for each value.
-	     *
-	     * You can use this option to compute the sum of a field (like a money amount) for each listed Facet value.
-	     *
-	     * Works in conjunction with {@link Facet.options.computedFieldOperation},
-	     * {@link Facet.options.computedFieldFormat} and {@link Facet.options.computedFieldCaption}.
-	     */
-	    computedField: ComponentOptions_1.ComponentOptions.buildFieldOption({ section: 'ComputedField', priority: 7 }),
-	    /**
-	     * Specifies the type of aggregate operation to perform on the {@link Facet.options.computedField}.
-	     *
-	     * The possible values are:
-	     * - `sum` - Computes the sum of the computed field values.
-	     * - `average` - Computes the average of the computed field values.
-	     * - `minimum` - Finds the minimum value of the computed field values.
-	     * - `maximum` - Finds the maximum value of the computed field values.
-	     *
-	     * Default value is `sum`.
-	     */
-	    computedFieldOperation: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'sum', section: 'ComputedField' }),
-	    /**
-	     * Specifies how to format the values resulting from a {@link Facet.options.computedFieldOperation}.
-	     *
-	     * The Globalize library defines all available formats (see
-	     * [Globalize](https://github.com/klaaspieter/jquery-global#globalizeformat-value-format-culture-)).
-	     *
-	     * The most commonly used formats are:
-	     * - `c0` - Formats the value as a currency.
-	     * - `n0` - Formats the value as an integer.
-	     * - `n2` - Formats the value as a floating point with 2 decimal digits.
-	     *
-	     * Default value is `c0`.
-	     */
-	    computedFieldFormat: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'c0', section: 'ComputedField' }),
-	    /**
-	     * Specifies what the caption of the {@link Facet.options.computedField} should be in the settings menu for sorting.
-	     *
-	     * For example, setting this option to `Money` will display `Money Ascending` for computed field ascending.
-	     *
-	     * Default value is the localized string for `Computed Field`.
-	     */
-	    computedFieldCaption: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({
-	        defaultValue: Strings_1.l('ComputedField'),
-	        section: 'ComputedField'
-	    }),
-	    /**
-	     * Specifies whether the Facet should remain stable in its current position in the viewport while the mouse cursor
-	     * is over it.
-	     *
-	     * Whenever the value selection changes in a facet, the search interface automatically performs a query. This new
-	     * query might cause other elements in the page to resize themselves (typically, other facets above or below the
-	     * one the user is interacting with).
-	     *
-	     * This option is responsible for adding the `<div class='coveo-topSpace'>` and
-	     * `<div class='coveo-bottomSpace'>` around the Facet container. The Facet adjusts the scroll amount of the page to
-	     * ensure that it does not move relatively to the mouse when the results are updated.
-	     *
-	     * In some cases, the Facet also adds margins to the scrollContainer, if scrolling alone is not enough to
-	     * preserve position.
-	     *
-	     * See also {@link Facet.options.paddingContainer} and {@link Facet.options.scrollContainer}.
-	     *
-	     * Default value is `true`.
-	     */
-	    preservePosition: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-	    /**
-	     * Specifies the parent container of the facets.
-	     *
-	     * Used by the {@link Facet.options.preservePosition}.
-	     *
-	     * Default value is `element.parentElement`.
-	     */
-	    paddingContainer: ComponentOptions_1.ComponentOptions.buildSelectorOption({ defaultFunction: function (element) { return element.parentElement; } }),
-	    /**
-	     * Specifies the HTML element (through a CSS selector) whose scroll amount the Facet should adjust to preserve its
-	     * position when results are updated.
-	     *
-	     * Used by {@link Facet.options.preservePosition}.
-	     *
-	     * Default value is `document.body`.
-	     */
-	    scrollContainer: ComponentOptions_1.ComponentOptions.buildSelectorOption({ defaultFunction: function (element) { return document.body; } }),
-	    /**
-	     * Specifies whether to enable the **More** and **Less** buttons in the Facet.
-	     *
-	     * See also {@link Facet.options.pageSize}.
-	     *
-	     * Default value is `true`.
-	     */
-	    enableMoreLess: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-	    /**
-	     * If {@link Facet.options.enableMoreLess} is `true`, specifies the number of additional results to fetch when
-	     * clicking on the **More** button in the Facet.
-	     *
-	     * Default value is `10`. Minimum value is `1`.
-	     */
-	    pageSize: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 10, min: 1, depend: 'enableMoreLess' }),
-	    /**
-	     * If {@link Facet.options.enableSettings} is `true`, specifies whether the **Collapse**\**Expand** menu option is
-	     * available in the Facet **Settings** menu.
-	     *
-	     * Default value is `true`.
-	     */
-	    enableCollapse: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true, depend: 'enableSettings' }),
-	    /**
-	     * Specifies an explicit list of `allowedValues` in the {@link IGroupByRequest}.
-	     *
-	     * This will whitelist the Facet content to some specific values.
-	     *
-	     * Example: ["File", "People"].
-	     */
-	    allowedValues: ComponentOptions_1.ComponentOptions.buildListOption(),
-	    /**
-	     * Specifies an additional query expression (query override) to add to each {@link IGroupByRequest} that this Facet
-	     * performs.
-	     *
-	     * Example: `@date>=2014/01/01`
-	     */
-	    additionalFilter: ComponentOptions_1.ComponentOptions.buildStringOption(),
-	    /**
-	     * Specifies whether the Facet only appears when a value is selected in its "parent" Facet.
-	     *
-	     * To specify the parent Facet, use its {@link Facet.options.id}. Remember that by default, the id of a Facet is its
-	     * {@link Facet.options.field}.
-	     *
-	     * Example: `dependsOn : @parentfacetField`
-	     */
-	    dependsOn: ComponentOptions_1.ComponentOptions.buildStringOption(),
-	    /**
-	     * Specifies a JSON object describing a mapping of Facet values to their desired captions.
-	     *
-	     * You can only set this option in the `init` call of your search interface. You cannot set it directly in the
-	     * markup as an HTML attribute.
-	     *
-	     * Example:
-	     * ```
-	     * // Using a Facet for file types
-	     * var myValueCaption = {  "txt": "Text files","html": "Web page", [ etc ... ]};
-	     *
-	     * // You can set the option in the 'init' call using 'pure' JavaScript:
-	     * Coveo.init(document.querySelector('#search'), {
-	     *    Facet : {
-	     *      valueCaption: myValueCaption
-	     *    }
-	     * })
-	     *
-	     * // Or  the jQuery extension
-	     * $("#search").coveo("init", {
-	     *    Facet: {
-	     *      valueCaption: myValueCaption
-	     *    }
-	     * })
-	     * ```
-	     */
-	    valueCaption: ComponentOptions_1.ComponentOptions.buildCustomOption(function () {
-	        return null;
-	    }),
-	    /**
-	     * Specifies whether to enable *responsive mode* for facets. Setting this options to `false` on any Facet or
-	     * {@link FacetSlider} in a search interface disables responsive mode for all other facets in the search interface.
-	     *
-	     * Responsive mode displays all facets under a single dropdown button whenever the width of the HTML element which
-	     * the search interface is bound to reaches or falls behind a certain threshold (see
-	     * {@link Facet.options.responsiveBreakpoint}).
-	     *
-	     * See also {@link Facet.options.dropdownHeaderLabel}.
-	     *
-	     * Default value is `true`.
-	     */
-	    enableResponsiveMode: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-	    /**
-	     * If {@link Facet.options.enableResponsiveMode} is `true` for all facets and
-	     * {@link FacetSlider.options.enableResponsiveMode} is also `true` for all sliders, specifies the width threshold
-	     * (in pixels) of the search interface at which facets go in responsive mode.
-	     *
-	     * Facets go in responsive mode when the width of the search interface is equal to or lower than this value.
-	     *
-	     * The `search interface` corresponds to the HTML element with the class `CoveoSearchInterface`.
-	     *
-	     * If more than one {@link FacetSlider} or Facet in the search interface specifies a value for this option, then the
-	     * framework uses the last occurrence of the option.
-	     *
-	     * Default value is `800`.
-	     */
-	    responsiveBreakpoint: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 800 }),
-	    /**
-	     * If {@link Facet.options.enableResponsiveMode} is `true` for all facets and
-	     * {@link FacetSlider.options.enableResponsiveMode} is also `true` for all sliders, specifies the label of the
-	     * dropdown button that allows to display the facets when in responsive mode.
-	     *
-	     * If more than one Facet or {@link FacetSlider} in the search interface specifies a value for this option, then the
-	     * framework uses the first occurrence of the option.
-	     *
-	     * Default value is `Filters`.
-	     */
-	    dropdownHeaderLabel: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption()
-	};
 	exports.Facet = Facet;
 	Initialization_1.Initialization.registerAutoCreateComponent(Facet);
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var Assert_1 = __webpack_require__(7);
-	var Utils_1 = __webpack_require__(4);
-	var Globalize = __webpack_require__(69);
-	var _ = __webpack_require__(5);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var Assert_1 = __webpack_require__(8);
+	var Utils_1 = __webpack_require__(6);
+	var Globalize = __webpack_require__(70);
 	/**
 	 * A class which holds information and operation available on a single facet value returned by a {@link IGroupByRequest}.<br/>
 	 * This class is used extensibely in the {@link Facet} component.
@@ -20979,20 +17001,20 @@ var playground =
 	    return FacetValues;
 	}());
 	exports.FacetValues = FacetValues;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/// <reference path='../ui/Facet/Facet.ts' />
+	/* WEBPACK VAR INJECTION */(function(_) {/// <reference path='../ui/Facet/Facet.ts' />
 	"use strict";
-	var ExpressionBuilder_1 = __webpack_require__(18);
-	var Utils_1 = __webpack_require__(4);
+	var ExpressionBuilder_1 = __webpack_require__(19);
+	var Utils_1 = __webpack_require__(6);
 	var FacetSearchParameters_1 = __webpack_require__(106);
-	var Assert_1 = __webpack_require__(7);
+	var Assert_1 = __webpack_require__(8);
 	var FacetUtils_1 = __webpack_require__(107);
-	var _ = __webpack_require__(5);
 	var FacetQueryController = (function () {
 	    function FacetQueryController(facet) {
 	        this.facet = facet;
@@ -21263,19 +17285,19 @@ var playground =
 	    return FacetQueryController;
 	}());
 	exports.FacetQueryController = FacetQueryController;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/// <reference path="Facet.ts" />
+	/* WEBPACK VAR INJECTION */(function(_) {/// <reference path="Facet.ts" />
 	"use strict";
-	var Utils_1 = __webpack_require__(4);
+	var Utils_1 = __webpack_require__(6);
 	var FacetUtils_1 = __webpack_require__(107);
-	var QueryBuilder_1 = __webpack_require__(17);
+	var QueryBuilder_1 = __webpack_require__(18);
 	var Dom_1 = __webpack_require__(3);
-	var _ = __webpack_require__(5);
 	var FacetSearchParameters = (function () {
 	    function FacetSearchParameters(facet) {
 	        this.facet = facet;
@@ -21378,20 +17400,20 @@ var playground =
 	    return FacetSearchParameters;
 	}());
 	exports.FacetSearchParameters = FacetSearchParameters;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var StringUtils_1 = __webpack_require__(54);
-	var QueryUtils_1 = __webpack_require__(19);
-	var FileTypes_1 = __webpack_require__(70);
-	var DateUtils_1 = __webpack_require__(67);
-	var Utils_1 = __webpack_require__(4);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var StringUtils_1 = __webpack_require__(55);
+	var QueryUtils_1 = __webpack_require__(20);
+	var FileTypes_1 = __webpack_require__(72);
+	var DateUtils_1 = __webpack_require__(68);
+	var Utils_1 = __webpack_require__(6);
 	var Dom_1 = __webpack_require__(3);
-	var _ = __webpack_require__(5);
 	var FacetUtils = (function () {
 	    function FacetUtils() {
 	    }
@@ -21522,37 +17544,37 @@ var playground =
 	    return FacetUtils;
 	}());
 	exports.FacetUtils = FacetUtils;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/// <reference path="Facet.ts" />
+	/* WEBPACK VAR INJECTION */(function(_) {/// <reference path="Facet.ts" />
 	"use strict";
 	var Facet_1 = __webpack_require__(103);
 	var Dom_1 = __webpack_require__(3);
-	var Utils_1 = __webpack_require__(4);
-	var InitializationEvents_1 = __webpack_require__(57);
-	var DeviceUtils_1 = __webpack_require__(45);
+	var Utils_1 = __webpack_require__(6);
+	var InitializationEvents_1 = __webpack_require__(58);
+	var DeviceUtils_1 = __webpack_require__(46);
 	var EventsUtils_1 = __webpack_require__(109);
 	var FacetSearchParameters_1 = __webpack_require__(106);
-	var AnalyticsActionListMeta_1 = __webpack_require__(59);
-	var Component_1 = __webpack_require__(9);
-	var DomUtils_1 = __webpack_require__(66);
+	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var Component_1 = __webpack_require__(10);
+	var DomUtils_1 = __webpack_require__(67);
 	var PopupUtils_1 = __webpack_require__(110);
-	var Strings_1 = __webpack_require__(64);
-	var Assert_1 = __webpack_require__(7);
-	var KeyboardUtils_1 = __webpack_require__(78);
+	var Strings_1 = __webpack_require__(65);
+	var Assert_1 = __webpack_require__(8);
+	var KeyboardUtils_1 = __webpack_require__(80);
 	var FacetUtils_1 = __webpack_require__(107);
 	var FacetValues_1 = __webpack_require__(104);
-	var StringUtils_1 = __webpack_require__(54);
+	var StringUtils_1 = __webpack_require__(55);
 	var FacetValueElement_1 = __webpack_require__(111);
-	var ExternalModulesShim_1 = __webpack_require__(27);
-	var SearchInterface_1 = __webpack_require__(41);
+	var ExternalModulesShim_1 = __webpack_require__(28);
+	var SearchInterface_1 = __webpack_require__(42);
 	var ResponsiveComponentsUtils_1 = __webpack_require__(102);
 	var FacetValuesOrder_1 = __webpack_require__(114);
-	var _ = __webpack_require__(5);
 	/**
 	 * Used by the {@link Facet} component to render and handle the facet search part of each facet.
 	 */
@@ -22116,14 +18138,14 @@ var playground =
 	    return FacetSearch;
 	}());
 	exports.FacetSearch = FacetSearch;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var _ = __webpack_require__(5);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var EventsUtils = (function () {
 	    function EventsUtils() {
 	    }
@@ -22145,11 +18167,12 @@ var playground =
 	            element.removeEventListener(prefix + pascalCaseEventName, callback, false);
 	        });
 	    };
+	    EventsUtils.prefixes = ['webkit', 'moz', 'MS', 'o', ''];
 	    return EventsUtils;
 	}());
-	EventsUtils.prefixes = ['webkit', 'moz', 'MS', 'o', ''];
 	exports.EventsUtils = EventsUtils;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 110 */
@@ -22157,22 +18180,22 @@ var playground =
 
 	"use strict";
 	var Dom_1 = __webpack_require__(3);
-	var VerticalAlignment;
 	(function (VerticalAlignment) {
 	    VerticalAlignment[VerticalAlignment["TOP"] = 0] = "TOP";
 	    VerticalAlignment[VerticalAlignment["MIDDLE"] = 1] = "MIDDLE";
 	    VerticalAlignment[VerticalAlignment["BOTTOM"] = 2] = "BOTTOM";
 	    VerticalAlignment[VerticalAlignment["INNERTOP"] = 3] = "INNERTOP";
 	    VerticalAlignment[VerticalAlignment["INNERBOTTOM"] = 4] = "INNERBOTTOM";
-	})(VerticalAlignment = exports.VerticalAlignment || (exports.VerticalAlignment = {}));
-	var HorizontalAlignment;
+	})(exports.VerticalAlignment || (exports.VerticalAlignment = {}));
+	var VerticalAlignment = exports.VerticalAlignment;
 	(function (HorizontalAlignment) {
 	    HorizontalAlignment[HorizontalAlignment["LEFT"] = 0] = "LEFT";
 	    HorizontalAlignment[HorizontalAlignment["CENTER"] = 1] = "CENTER";
 	    HorizontalAlignment[HorizontalAlignment["RIGHT"] = 2] = "RIGHT";
 	    HorizontalAlignment[HorizontalAlignment["INNERLEFT"] = 3] = "INNERLEFT";
 	    HorizontalAlignment[HorizontalAlignment["INNERRIGHT"] = 4] = "INNERRIGHT";
-	})(HorizontalAlignment = exports.HorizontalAlignment || (exports.HorizontalAlignment = {}));
+	})(exports.HorizontalAlignment || (exports.HorizontalAlignment = {}));
+	var HorizontalAlignment = exports.HorizontalAlignment;
 	var PopupUtils = (function () {
 	    function PopupUtils() {
 	    }
@@ -22326,22 +18349,22 @@ var playground =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var QueryEvents_1 = __webpack_require__(22);
+	var QueryEvents_1 = __webpack_require__(23);
 	var Dom_1 = __webpack_require__(3);
 	var ValueElement_1 = __webpack_require__(112);
 	var FacetValueElement = (function (_super) {
 	    __extends(FacetValueElement, _super);
 	    function FacetValueElement(facet, facetValue, keepDisplayedValueNextTime) {
-	        var _this = _super.call(this, facet, facetValue) || this;
-	        _this.facet = facet;
-	        _this.facetValue = facetValue;
-	        _this.keepDisplayedValueNextTime = keepDisplayedValueNextTime;
-	        _this.firstQuery = true;
+	        var _this = this;
+	        _super.call(this, facet, facetValue);
+	        this.facet = facet;
+	        this.facetValue = facetValue;
+	        this.keepDisplayedValueNextTime = keepDisplayedValueNextTime;
+	        this.firstQuery = true;
 	        // The analytics code expect a first query to be made to link the user action with a query UID
 	        Dom_1.$$(facet.root).one(QueryEvents_1.QueryEvents.querySuccess, function () {
 	            _this.firstQuery = false;
 	        });
-	        return _this;
 	    }
 	    FacetValueElement.prototype.bindEvent = function () {
 	        _super.prototype.bindEvent.call(this, { displayNextTime: this.keepDisplayedValueNextTime, pinFacet: this.facet.options.preservePosition });
@@ -22357,13 +18380,13 @@ var playground =
 
 	"use strict";
 	var ValueElementRenderer_1 = __webpack_require__(113);
-	var Utils_1 = __webpack_require__(4);
-	var AnalyticsActionListMeta_1 = __webpack_require__(59);
+	var Utils_1 = __webpack_require__(6);
+	var AnalyticsActionListMeta_1 = __webpack_require__(60);
 	var Dom_1 = __webpack_require__(3);
-	var DeviceUtils_1 = __webpack_require__(45);
-	var Defer_1 = __webpack_require__(23);
-	var ExternalModulesShim_1 = __webpack_require__(27);
-	var KeyboardUtils_1 = __webpack_require__(78);
+	var DeviceUtils_1 = __webpack_require__(46);
+	var Defer_1 = __webpack_require__(24);
+	var ExternalModulesShim_1 = __webpack_require__(28);
+	var KeyboardUtils_1 = __webpack_require__(80);
 	var ValueElement = (function () {
 	    function ValueElement(facet, facetValue, onSelect, onExclude) {
 	        this.facet = facet;
@@ -22556,12 +18579,11 @@ var playground =
 /* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var Dom_1 = __webpack_require__(3);
-	var Utils_1 = __webpack_require__(4);
-	var Strings_1 = __webpack_require__(64);
-	var Component_1 = __webpack_require__(9);
-	var _ = __webpack_require__(5);
+	var Utils_1 = __webpack_require__(6);
+	var Strings_1 = __webpack_require__(65);
+	var Component_1 = __webpack_require__(10);
 	var ValueElementRenderer = (function () {
 	    function ValueElementRenderer(facet, facetValue) {
 	        this.facet = facet;
@@ -22760,15 +18782,15 @@ var playground =
 	    return ValueElementRenderer;
 	}());
 	exports.ValueElementRenderer = ValueElementRenderer;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var StringUtils_1 = __webpack_require__(54);
-	var _ = __webpack_require__(5);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var StringUtils_1 = __webpack_require__(55);
 	var FacetValuesOrder = (function () {
 	    function FacetValuesOrder(facet, facetSort) {
 	        this.facet = facet;
@@ -22815,13 +18837,14 @@ var playground =
 	    return FacetValuesOrder;
 	}());
 	exports.FacetValuesOrder = FacetValuesOrder;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
@@ -22829,27 +18852,25 @@ var playground =
 	};
 	var FacetSort_1 = __webpack_require__(116);
 	var Dom_1 = __webpack_require__(3);
-	var LocalStorageUtils_1 = __webpack_require__(20);
-	var Utils_1 = __webpack_require__(4);
-	var Strings_1 = __webpack_require__(64);
-	var QueryStateModel_1 = __webpack_require__(10);
-	var AnalyticsActionListMeta_1 = __webpack_require__(59);
-	var DeviceUtils_1 = __webpack_require__(45);
+	var LocalStorageUtils_1 = __webpack_require__(21);
+	var Utils_1 = __webpack_require__(6);
+	var Strings_1 = __webpack_require__(65);
+	var QueryStateModel_1 = __webpack_require__(11);
+	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var DeviceUtils_1 = __webpack_require__(46);
 	var PopupUtils_1 = __webpack_require__(110);
-	var _ = __webpack_require__(5);
 	/**
 	 * Handle the rendering of the {@link Facet} settings menu (typically the ... in the facet header).
 	 */
 	var FacetSettings = (function (_super) {
 	    __extends(FacetSettings, _super);
 	    function FacetSettings(sorts, facet) {
-	        var _this = _super.call(this, sorts, facet) || this;
-	        _this.sorts = sorts;
-	        _this.facet = facet;
-	        _this.customSortDirectionChange = false;
-	        _this.enabledSortsIgnoreRenderBecauseOfPairs = [];
-	        _this.filterDuplicateForRendering();
-	        return _this;
+	        _super.call(this, sorts, facet);
+	        this.sorts = sorts;
+	        this.facet = facet;
+	        this.customSortDirectionChange = false;
+	        this.enabledSortsIgnoreRenderBecauseOfPairs = [];
+	        this.filterDuplicateForRendering();
 	    }
 	    /**
 	     * Build the menu, hook click events.
@@ -23311,17 +19332,17 @@ var playground =
 	    return FacetSettings;
 	}(FacetSort_1.FacetSort));
 	exports.FacetSettings = FacetSettings;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var Strings_1 = __webpack_require__(64);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var Strings_1 = __webpack_require__(65);
 	var FacetSettings_1 = __webpack_require__(115);
-	var Utils_1 = __webpack_require__(4);
-	var _ = __webpack_require__(5);
+	var Utils_1 = __webpack_require__(6);
 	var FacetSort = (function () {
 	    function FacetSort(sorts, facet) {
 	        var _this = this;
@@ -23354,79 +19375,79 @@ var playground =
 	            }
 	        }
 	    };
+	    FacetSort.availableSorts = {
+	        score: {
+	            label: Strings_1.l('Score'),
+	            directionToggle: false,
+	            description: Strings_1.l('ScoreDescription'),
+	            name: 'score'
+	        },
+	        occurrences: {
+	            label: Strings_1.l('Occurrences'),
+	            directionToggle: false,
+	            description: Strings_1.l('OccurrencesDescription'),
+	            name: 'occurrences'
+	        },
+	        alphaascending: {
+	            label: Strings_1.l('Label'),
+	            directionToggle: true,
+	            description: Strings_1.l('LabelDescription'),
+	            name: 'alphaascending',
+	            relatedSort: 'alphadescending'
+	        },
+	        alphadescending: {
+	            label: Strings_1.l('Label'),
+	            directionToggle: true,
+	            description: Strings_1.l('LabelDescription'),
+	            name: 'alphadescending',
+	            relatedSort: 'alphaascending'
+	        },
+	        computedfieldascending: {
+	            label: Strings_1.l('Value'),
+	            directionToggle: true,
+	            description: Strings_1.l('ValueDescription'),
+	            name: 'computedfieldascending',
+	            relatedSort: 'computedfielddescending'
+	        },
+	        computedfielddescending: {
+	            label: Strings_1.l('Value'),
+	            directionToggle: true,
+	            description: Strings_1.l('ValueDescription'),
+	            name: 'computedfielddescending',
+	            relatedSort: 'computedfieldascending'
+	        },
+	        chisquare: {
+	            label: Strings_1.l('RelativeFrequency'),
+	            directionToggle: false,
+	            description: Strings_1.l('RelativeFrequencyDescription'),
+	            name: 'chisquare'
+	        },
+	        custom: {
+	            label: Strings_1.l('Custom'),
+	            directionToggle: true,
+	            description: Strings_1.l('CustomDescription'),
+	            name: 'custom',
+	            relatedSort: 'custom'
+	        }
+	    };
 	    return FacetSort;
 	}());
-	FacetSort.availableSorts = {
-	    score: {
-	        label: Strings_1.l('Score'),
-	        directionToggle: false,
-	        description: Strings_1.l('ScoreDescription'),
-	        name: 'score'
-	    },
-	    occurrences: {
-	        label: Strings_1.l('Occurrences'),
-	        directionToggle: false,
-	        description: Strings_1.l('OccurrencesDescription'),
-	        name: 'occurrences'
-	    },
-	    alphaascending: {
-	        label: Strings_1.l('Label'),
-	        directionToggle: true,
-	        description: Strings_1.l('LabelDescription'),
-	        name: 'alphaascending',
-	        relatedSort: 'alphadescending'
-	    },
-	    alphadescending: {
-	        label: Strings_1.l('Label'),
-	        directionToggle: true,
-	        description: Strings_1.l('LabelDescription'),
-	        name: 'alphadescending',
-	        relatedSort: 'alphaascending'
-	    },
-	    computedfieldascending: {
-	        label: Strings_1.l('Value'),
-	        directionToggle: true,
-	        description: Strings_1.l('ValueDescription'),
-	        name: 'computedfieldascending',
-	        relatedSort: 'computedfielddescending'
-	    },
-	    computedfielddescending: {
-	        label: Strings_1.l('Value'),
-	        directionToggle: true,
-	        description: Strings_1.l('ValueDescription'),
-	        name: 'computedfielddescending',
-	        relatedSort: 'computedfieldascending'
-	    },
-	    chisquare: {
-	        label: Strings_1.l('RelativeFrequency'),
-	        directionToggle: false,
-	        description: Strings_1.l('RelativeFrequencyDescription'),
-	        name: 'chisquare'
-	    },
-	    custom: {
-	        label: Strings_1.l('Custom'),
-	        directionToggle: true,
-	        description: Strings_1.l('CustomDescription'),
-	        name: 'custom',
-	        relatedSort: 'custom'
-	    }
-	};
 	exports.FacetSort = FacetSort;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/// <reference path="Facet.ts" />
+	/* WEBPACK VAR INJECTION */(function(_) {/// <reference path="Facet.ts" />
 	"use strict";
 	var FacetValueElement_1 = __webpack_require__(111);
 	var Dom_1 = __webpack_require__(3);
 	var FacetValues_1 = __webpack_require__(104);
-	var Utils_1 = __webpack_require__(4);
+	var Utils_1 = __webpack_require__(6);
 	var FacetUtils_1 = __webpack_require__(107);
 	var FacetValuesOrder_1 = __webpack_require__(114);
-	var _ = __webpack_require__(5);
 	var FacetValuesList = (function () {
 	    function FacetValuesList(facet, facetValueElementKlass) {
 	        this.facet = facet;
@@ -23571,7 +19592,8 @@ var playground =
 	    return FacetValuesList;
 	}());
 	exports.FacetValuesList = FacetValuesList;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 118 */
@@ -23582,8 +19604,8 @@ var playground =
 	"use strict";
 	var Dom_1 = __webpack_require__(3);
 	var FacetUtils_1 = __webpack_require__(107);
-	var Strings_1 = __webpack_require__(64);
-	var AnalyticsActionListMeta_1 = __webpack_require__(59);
+	var Strings_1 = __webpack_require__(65);
+	var AnalyticsActionListMeta_1 = __webpack_require__(60);
 	var FacetHeader = (function () {
 	    function FacetHeader(options) {
 	        this.options = options;
@@ -23815,13 +19837,12 @@ var playground =
 /* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/// <reference path="Facet.ts" />
+	/* WEBPACK VAR INJECTION */(function(_) {/// <reference path="Facet.ts" />
 	"use strict";
-	var Assert_1 = __webpack_require__(7);
-	var DeviceUtils_1 = __webpack_require__(45);
-	var AnalyticsActionListMeta_1 = __webpack_require__(59);
+	var Assert_1 = __webpack_require__(8);
+	var DeviceUtils_1 = __webpack_require__(46);
+	var AnalyticsActionListMeta_1 = __webpack_require__(60);
 	var Dom_1 = __webpack_require__(3);
-	var _ = __webpack_require__(5);
 	var BreadcrumbValueElement = (function () {
 	    function BreadcrumbValueElement(facet, facetValue) {
 	        this.facet = facet;
@@ -23871,19 +19892,19 @@ var playground =
 	    return BreadcrumbValueElement;
 	}());
 	exports.BreadcrumbValueElement = BreadcrumbValueElement;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var DeviceUtils_1 = __webpack_require__(45);
-	var Assert_1 = __webpack_require__(7);
-	var Strings_1 = __webpack_require__(64);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
+	var DeviceUtils_1 = __webpack_require__(46);
+	var Assert_1 = __webpack_require__(8);
+	var Strings_1 = __webpack_require__(65);
 	var Dom_1 = __webpack_require__(3);
-	var Globalize = __webpack_require__(69);
-	var _ = __webpack_require__(5);
+	var Globalize = __webpack_require__(70);
 	var BreadcrumbValueList = (function () {
 	    function BreadcrumbValueList(facet, facetValues, breadcrumbValueElementKlass) {
 	        this.facet = facet;
@@ -23912,7 +19933,7 @@ var playground =
 	    BreadcrumbValueList.prototype.buildAsString = function () {
 	        this.build();
 	        if (this.elem) {
-	            return this.facet.options.title + ": " + _.map(Dom_1.$$(this.elem).findAll('.coveo-facet-breadcrumb-value'), function (value) {
+	            return (this.facet.options.title + ": ") + _.map(Dom_1.$$(this.elem).findAll('.coveo-facet-breadcrumb-value'), function (value) {
 	                return Dom_1.$$(value).text();
 	            }).join(', ');
 	        }
@@ -24008,14 +20029,14 @@ var playground =
 	    return BreadcrumbValueList;
 	}());
 	exports.BreadcrumbValueList = BreadcrumbValueList;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var _ = __webpack_require__(5);
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var FacetSearchValuesList = (function () {
 	    function FacetSearchValuesList(facet, facetValueElementKlass) {
 	        this.facet = facet;
@@ -24035,7 +20056,8 @@ var playground =
 	    return FacetSearchValuesList;
 	}());
 	exports.FacetSearchValuesList = FacetSearchValuesList;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 122 */
@@ -24052,11 +20074,10 @@ var playground =
 	var OmniboxValueElement = (function (_super) {
 	    __extends(OmniboxValueElement, _super);
 	    function OmniboxValueElement(facet, facetValue, eventArg, onSelect, onExclude) {
-	        var _this = _super.call(this, facet, facetValue, onSelect, onExclude) || this;
-	        _this.facet = facet;
-	        _this.facetValue = facetValue;
-	        _this.eventArg = eventArg;
-	        return _this;
+	        _super.call(this, facet, facetValue, onSelect, onExclude);
+	        this.facet = facet;
+	        this.facetValue = facetValue;
+	        this.eventArg = eventArg;
 	    }
 	    OmniboxValueElement.prototype.bindEvent = function () {
 	        _super.prototype.bindEvent.call(this, { displayNextTime: false, pinFacet: false, omniboxObject: this.eventArg });
@@ -24070,11 +20091,10 @@ var playground =
 /* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var Dom_1 = __webpack_require__(3);
-	var Utils_1 = __webpack_require__(4);
+	var Utils_1 = __webpack_require__(6);
 	var FacetUtils_1 = __webpack_require__(107);
-	var _ = __webpack_require__(5);
 	var OmniboxValuesList = (function () {
 	    function OmniboxValuesList(facet, facetValues, omniboxObject, omniboxValueElementKlass) {
 	        this.facet = facet;
@@ -24165,27 +20185,27 @@ var playground =
 	    return OmniboxValuesList;
 	}());
 	exports.OmniboxValuesList = OmniboxValuesList;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var Dom_1 = __webpack_require__(3);
 	var ResponsiveComponentsManager_1 = __webpack_require__(101);
 	var ResponsiveComponentsUtils_1 = __webpack_require__(102);
-	var Component_1 = __webpack_require__(9);
-	var Logger_1 = __webpack_require__(8);
-	var Strings_1 = __webpack_require__(64);
-	var Utils_1 = __webpack_require__(4);
+	var Component_1 = __webpack_require__(10);
+	var Logger_1 = __webpack_require__(9);
+	var Strings_1 = __webpack_require__(65);
+	var Utils_1 = __webpack_require__(6);
 	var Facet_1 = __webpack_require__(103);
 	var FacetSlider_1 = __webpack_require__(125);
 	var ResponsiveDropdown_1 = __webpack_require__(140);
 	var ResponsiveDropdownContent_1 = __webpack_require__(141);
 	var ResponsiveDropdownHeader_1 = __webpack_require__(142);
-	var QueryEvents_1 = __webpack_require__(22);
-	var _ = __webpack_require__(5);
+	var QueryEvents_1 = __webpack_require__(23);
 	var ResponsiveFacets = (function () {
 	    function ResponsiveFacets(coveoRoot, ID, options, responsiveDropdown) {
 	        this.coveoRoot = coveoRoot;
@@ -24361,21 +20381,22 @@ var playground =
 	            this.dropdown.dropdownHeader.show();
 	        }
 	    };
+	    ResponsiveFacets.RESPONSIVE_BREAKPOINT = 800;
+	    ResponsiveFacets.DEBOUNCE_SCROLL_WAIT = 250;
+	    ResponsiveFacets.DROPDOWN_MIN_WIDTH = 280;
+	    ResponsiveFacets.DROPDOWN_WIDTH_RATIO = 0.35; // Used to set the width relative to the coveo root.
+	    ResponsiveFacets.DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'Filters';
 	    return ResponsiveFacets;
 	}());
-	ResponsiveFacets.RESPONSIVE_BREAKPOINT = 800;
-	ResponsiveFacets.DEBOUNCE_SCROLL_WAIT = 250;
-	ResponsiveFacets.DROPDOWN_MIN_WIDTH = 280;
-	ResponsiveFacets.DROPDOWN_WIDTH_RATIO = 0.35; // Used to set the width relative to the coveo root.
-	ResponsiveFacets.DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'Filters';
 	exports.ResponsiveFacets = ResponsiveFacets;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/// <reference path="../Facet/FacetHeader.ts" />
+	/* WEBPACK VAR INJECTION */(function(_) {/// <reference path="../Facet/FacetHeader.ts" />
 	/// <reference path="../../controllers/FacetSliderQueryController.ts" />
 	"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -24384,28 +20405,27 @@ var playground =
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Slider_1 = __webpack_require__(126);
-	var Component_1 = __webpack_require__(9);
-	var ComponentOptions_1 = __webpack_require__(51);
+	var Component_1 = __webpack_require__(10);
+	var ComponentOptions_1 = __webpack_require__(52);
 	var ResponsiveFacets_1 = __webpack_require__(124);
 	var FacetHeader_1 = __webpack_require__(118);
-	var Strings_1 = __webpack_require__(64);
-	var InitializationEvents_1 = __webpack_require__(57);
+	var Strings_1 = __webpack_require__(65);
+	var InitializationEvents_1 = __webpack_require__(58);
 	var FeatureDetectionUtils_1 = __webpack_require__(137);
 	var FacetSliderQueryController_1 = __webpack_require__(138);
-	var QueryEvents_1 = __webpack_require__(22);
+	var QueryEvents_1 = __webpack_require__(23);
 	var BreadcrumbEvents_1 = __webpack_require__(98);
-	var Model_1 = __webpack_require__(11);
+	var Model_1 = __webpack_require__(12);
 	var Dom_1 = __webpack_require__(3);
-	var AnalyticsActionListMeta_1 = __webpack_require__(59);
-	var QueryStateModel_1 = __webpack_require__(10);
+	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var QueryStateModel_1 = __webpack_require__(11);
 	var SliderEvents_1 = __webpack_require__(127);
-	var Assert_1 = __webpack_require__(7);
-	var Utils_1 = __webpack_require__(4);
+	var Assert_1 = __webpack_require__(8);
+	var Utils_1 = __webpack_require__(6);
 	var ResponsiveComponentsUtils_1 = __webpack_require__(102);
-	var Initialization_1 = __webpack_require__(56);
+	var Initialization_1 = __webpack_require__(57);
 	var d3 = __webpack_require__(136);
 	var SearchAlertEvents_1 = __webpack_require__(139);
-	var _ = __webpack_require__(5);
 	/**
 	 * The FacetSlider component allows to create a facet that renders a slider widget to filter on a range of numerical values
 	 * rather than the classic multi-select facet with a label and a count for each values.<br/>
@@ -24448,52 +20468,52 @@ var playground =
 	var FacetSlider = (function (_super) {
 	    __extends(FacetSlider, _super);
 	    function FacetSlider(element, options, bindings, slider) {
-	        var _this = _super.call(this, element, FacetSlider.ID, bindings) || this;
-	        _this.element = element;
-	        _this.options = options;
-	        _this.slider = slider;
-	        _this.isEmpty = false;
-	        _this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, FacetSlider, options);
-	        ResponsiveFacets_1.ResponsiveFacets.init(_this.root, _this, _this.options);
-	        if (_this.options.excludeOuterBounds == null) {
-	            _this.options.excludeOuterBounds = false;
+	        var _this = this;
+	        _super.call(this, element, FacetSlider.ID, bindings);
+	        this.element = element;
+	        this.options = options;
+	        this.slider = slider;
+	        this.isEmpty = false;
+	        this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, FacetSlider, options);
+	        ResponsiveFacets_1.ResponsiveFacets.init(this.root, this, this.options);
+	        if (this.options.excludeOuterBounds == null) {
+	            this.options.excludeOuterBounds = false;
 	        }
-	        if (_this.options.start) {
-	            _this.options.start = _this.options.dateField ? new Date(_this.options.start.replace(/-/g, '/')).getTime() : Number(_this.options.start);
+	        if (this.options.start) {
+	            this.options.start = this.options.dateField ? new Date(this.options.start.replace(/-/g, '/')).getTime() : Number(this.options.start);
 	        }
-	        if (_this.options.end) {
-	            _this.options.end = _this.options.dateField ? new Date(_this.options.end.replace(/-/g, '/')).getTime() : Number(_this.options.end);
+	        if (this.options.end) {
+	            this.options.end = this.options.dateField ? new Date(this.options.end.replace(/-/g, '/')).getTime() : Number(this.options.end);
 	        }
-	        if (_this.hasAGraph()) {
+	        if (this.hasAGraph()) {
 	            if (!FeatureDetectionUtils_1.FeatureDetectionUtils.supportSVG()) {
-	                _this.options.graph = undefined;
-	                _this.logger.info('Your browser does not support SVG. Cannot add graphic to your facet range', _this);
+	                this.options.graph = undefined;
+	                this.logger.info('Your browser does not support SVG. Cannot add graphic to your facet range', this);
 	            }
 	            if (typeof d3 == 'undefined') {
-	                _this.options.graph = undefined;
-	                _this.logger.info('Cannot find the required dependencies d3.js. Cannot add graphic to your facet range', _this);
+	                this.options.graph = undefined;
+	                this.logger.info('Cannot find the required dependencies d3.js. Cannot add graphic to your facet range', this);
 	            }
 	        }
-	        _this.facetQueryController = new FacetSliderQueryController_1.FacetSliderQueryController(_this);
-	        _this.initQueryStateEvents();
-	        _this.bind.onRootElement(QueryEvents_1.QueryEvents.newQuery, function () { return _this.handleNewQuery(); });
-	        _this.bind.onRootElement(QueryEvents_1.QueryEvents.noResults, function () { return _this.handleNoresults(); });
-	        _this.bind.onRootElement(QueryEvents_1.QueryEvents.deferredQuerySuccess, function (args) { return _this.handleDeferredQuerySuccess(args); });
-	        _this.bind.onRootElement(QueryEvents_1.QueryEvents.buildingQuery, function (args) { return _this.handleBuildingQuery(args); });
-	        _this.bind.onRootElement(QueryEvents_1.QueryEvents.doneBuildingQuery, function (args) { return _this.handleDoneBuildingQuery(args); });
-	        _this.bind.onRootElement(BreadcrumbEvents_1.BreadcrumbEvents.populateBreadcrumb, function (args) { return _this.handlePopulateBreadcrumb(args); });
-	        _this.bind.onRootElement(SearchAlertEvents_1.SearchAlertsEvents.searchAlertsPopulateMessage, function (args) { return _this.handlePopulateSearchAlerts(args); });
-	        _this.bind.onRootElement(BreadcrumbEvents_1.BreadcrumbEvents.clearBreadcrumb, function () { return _this.reset(); });
-	        _this.onResize = _.debounce(function () {
+	        this.facetQueryController = new FacetSliderQueryController_1.FacetSliderQueryController(this);
+	        this.initQueryStateEvents();
+	        this.bind.onRootElement(QueryEvents_1.QueryEvents.newQuery, function () { return _this.handleNewQuery(); });
+	        this.bind.onRootElement(QueryEvents_1.QueryEvents.noResults, function () { return _this.handleNoresults(); });
+	        this.bind.onRootElement(QueryEvents_1.QueryEvents.deferredQuerySuccess, function (args) { return _this.handleDeferredQuerySuccess(args); });
+	        this.bind.onRootElement(QueryEvents_1.QueryEvents.buildingQuery, function (args) { return _this.handleBuildingQuery(args); });
+	        this.bind.onRootElement(QueryEvents_1.QueryEvents.doneBuildingQuery, function (args) { return _this.handleDoneBuildingQuery(args); });
+	        this.bind.onRootElement(BreadcrumbEvents_1.BreadcrumbEvents.populateBreadcrumb, function (args) { return _this.handlePopulateBreadcrumb(args); });
+	        this.bind.onRootElement(SearchAlertEvents_1.SearchAlertsEvents.searchAlertsPopulateMessage, function (args) { return _this.handlePopulateSearchAlerts(args); });
+	        this.bind.onRootElement(BreadcrumbEvents_1.BreadcrumbEvents.clearBreadcrumb, function () { return _this.reset(); });
+	        this.onResize = _.debounce(function () {
 	            if (ResponsiveComponentsUtils_1.ResponsiveComponentsUtils.shouldDrawFacetSlider(Dom_1.$$(_this.root)) && _this.slider && !_this.isEmpty) {
 	                _this.slider.drawGraph();
 	            }
 	        }, FacetSlider.DEBOUNCED_RESIZE_DELAY);
-	        window.addEventListener('resize', _this.onResize);
+	        window.addEventListener('resize', this.onResize);
 	        // This is used inside SF integration
-	        _this.bind.onRootElement('onPopupOpen', _this.onResize);
-	        Dom_1.$$(_this.root).on(InitializationEvents_1.InitializationEvents.nuke, _this.handleNuke);
-	        return _this;
+	        this.bind.onRootElement('onPopupOpen', this.onResize);
+	        Dom_1.$$(this.root).on(InitializationEvents_1.InitializationEvents.nuke, this.handleNuke);
 	    }
 	    FacetSlider.prototype.createDom = function () {
 	        this.facetHeader = new FacetHeader_1.FacetHeader({
@@ -24981,229 +21001,229 @@ var playground =
 	    FacetSlider.prototype.handleNuke = function () {
 	        window.removeEventListener('resize', this.onResize);
 	    };
+	    /**
+	     * The component options
+	     * @componentOptions
+	     */
+	    FacetSlider.options = {
+	        /**
+	         * The title on top of the facet component.<br/>
+	         * Default value is the localized string for 'No title'.
+	         */
+	        title: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ defaultValue: Strings_1.l('NoTitle') }),
+	        /**
+	         * Specifies whether the field for which you are requesting a range is a date field.<br/>
+	         * This allows the facet to correctly build the outgoing group by request, as well as render it correctly.<br/>
+	         */
+	        dateField: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+	        /**
+	         * Specifies the index field whose values will be use in the facet.<br/>
+	         * This require the given field to be configured correctly in the index as a facet field.<br/>
+	         * This is a required option and cannot be omitted, otherwise the facet component will not work.
+	         */
+	        field: ComponentOptions_1.ComponentOptions.buildFieldOption({ groupByField: true, required: true }),
+	        /**
+	         * Specifies a unique identifier for a facet. This identifier will be used to save the facet state in the URL hash, for example.<br/>
+	         * Optional, since the default will be the {@link FacetSlider.options.field} option.<br/>
+	         * If you have two facets with the same field on the same page, you should specify an ID for at least one of those two facets.<br/>
+	         * That ID needs to be unique on the page.
+	         */
+	        id: ComponentOptions_1.ComponentOptions.buildStringOption({
+	            postProcessing: function (value, options) { return value || options.field; }
+	        }),
+	        /**
+	         * Specifies the format used to display values if they are dates.<br/>
+	         * Default value is <code>MMM dd, yyyy</code>.
+	         */
+	        dateFormat: ComponentOptions_1.ComponentOptions.buildStringOption(),
+	        /**
+	         * Specifies the query to filter automatic minimum and maximum range of the slider.<br/>
+	         * This is especially useful for date range, where the index may contain values which are not set, and thus the automatic range will return values from the year 1400 (min date from the boost C++ library).<br/>
+	         * Can be used to do something like queryOverride : @date>2000/01/01 or some arbitrary date which will filter out unwanted values.
+	         */
+	        queryOverride: ComponentOptions_1.ComponentOptions.buildStringOption(),
+	        /**
+	         * Specifies the starting boundary of the slider.<br/>
+	         * Dates values are rounded on the year when the field used is a date type.<br/>
+	         * Optional: Takes the lowest value available in the index by default.
+	         */
+	        start: ComponentOptions_1.ComponentOptions.buildStringOption(),
+	        /**
+	         * Specifies the ending boundary of the slider.<br/>
+	         * Dates values are rounded on the year when the field used is a date type.<br/>
+	         * Optional: Takes the highest value available in the index by default.
+	         */
+	        end: ComponentOptions_1.ComponentOptions.buildStringOption(),
+	        /**
+	         * Specifies if you want to exclude the outer bounds of your slider in the generated query, when they are not active.<br/>
+	         * Default value is `false`.
+	         */
+	        excludeOuterBounds: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+	        /**
+	         * Specifies to how many decimal digit displayed numerical values are rounded.<br/>
+	         * Optional. By default, the number rounds to 0 decimal digits.
+	         */
+	        rounded: ComponentOptions_1.ComponentOptions.buildNumberOption({ min: 0 }),
+	        /**
+	         * Specifies the number of steps that you want in your slider.<br/>
+	         * For example, if your range is [ 0 , 100 ] and you specify 10 steps, then the end user is allowed to move the slider only to the values [ 0, 10, 20. 30 ... , 100 ].<br/>
+	         * Optional: By default the slider will allow all values.
+	         */
+	        steps: ComponentOptions_1.ComponentOptions.buildNumberOption({ min: 2 }),
+	        /**
+	         * Specifies whether you want a slider with two buttons, or only one.<br/>
+	         * Optional: By default only one button appears in the slider.
+	         */
+	        rangeSlider: ComponentOptions_1.ComponentOptions.buildBooleanOption(),
+	        /**
+	         * Specifies the caption that you want to display the field values.<br/>
+	         * Available options are :
+	         * <ul>
+	         *   <li>enable : (data-display-as-value-enable) <code>boolean</code> : Specifies whether the caption should be displayed as a value or not. Default is <code>true</code></li>.
+	         *   <li>unitSign : (data-display-as-value-unit-sign) <code>string</code> : Specifies the unit sign for this value.</li>
+	         *   <li>separator : (data-display-as-value-separator) <code>string</code> : Specifies the character(s) to use as a separator in the caption. Default is `-.`</li>.
+	         * </ul>
+	         */
+	        displayAsValue: ComponentOptions_1.ComponentOptions.buildObjectOption({
+	            subOptions: {
+	                enable: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+	                unitSign: ComponentOptions_1.ComponentOptions.buildStringOption(),
+	                separator: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: '-' })
+	            }
+	        }),
+	        /**
+	         * Specifies the percentage caption that you want to display the field values.<br/>
+	         * Available options are :
+	         * <ul>
+	         *   <li>enable : (data-display-as-percent-enable) <code>boolean</code> : Specifies whether the caption should be displayed as a percentage. Default is <code>false</code></li>.
+	         *   <li>separator : (data-display-as-percent-separator) <code>string</code> : Specifies the character(s) to use as a separator in the caption. Default is `-.`</li>.
+	         * </ul>
+	         */
+	        displayAsPercent: ComponentOptions_1.ComponentOptions.buildObjectOption({
+	            subOptions: {
+	                enable: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+	                separator: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: '-' })
+	            }
+	        }),
+	        /**
+	         * Specifies that you wish to display a small graph on top of the slider.<br/>
+	         * Available options are :
+	         *
+	         *   <li>steps: (data-graph-steps) <code>number</code> : Specifies the number of steps/columns to display in your graph. The default value is `10`</li>.
+	         * </ul>
+	         */
+	        graph: ComponentOptions_1.ComponentOptions.buildObjectOption({
+	            subOptions: {
+	                steps: ComponentOptions_1.ComponentOptions.buildNumberOption({ min: 2 }),
+	                animationDuration: ComponentOptions_1.ComponentOptions.buildNumberOption({ min: 0 }),
+	                margin: ComponentOptions_1.ComponentOptions.buildObjectOption({
+	                    subOptions: {
+	                        top: ComponentOptions_1.ComponentOptions.buildNumberOption({ min: 0 }),
+	                        bottom: ComponentOptions_1.ComponentOptions.buildNumberOption({ min: 0 }),
+	                        left: ComponentOptions_1.ComponentOptions.buildNumberOption({ min: 0 }),
+	                        right: ComponentOptions_1.ComponentOptions.buildNumberOption({ min: 0 })
+	                    }
+	                })
+	            }
+	        }),
+	        /**
+	         * Specifies a function that will generate the steps for the slider. The function receives the slider boundaries and must return an array of number (the steps).
+	         *
+	         * ```
+	         * Coveo.init(document.querySelector('#search'), {
+	         *    FacetSlider: {
+	         *      field: "@size",
+	         *      getSteps: function(start, end) {
+	         *        return [0,2,4,6,8,10];
+	         *      }
+	         *    }
+	         * })
+	         *
+	         * // OR using the jQuery extension
+	         *
+	         * $('#search').coveo('init', {
+	         *    FacetSlider: {
+	         *        field: "@size",
+	         *        getSteps: function(start, end) {
+	         *            return [0,2,4,6,8,10];
+	         *        }
+	         *    }
+	         * })
+	         * ```
+	         */
+	        getSteps: ComponentOptions_1.ComponentOptions.buildCustomOption(function () {
+	            return null;
+	        }),
+	        /**
+	         * Specifies a function that will generate the caption for the slider. Receives the current slider values (number[]) and must return the caption (string).
+	         *
+	         * ```
+	         * Coveo.init(document.querySelector('#search'), {
+	         *    FacetSlider: {
+	         *      field: "@size",
+	         *      valueCaption: function(values) {
+	         *        return values[0] + " hello" + ", " + values[1] + " world";
+	         *      }
+	         *    }
+	         * })
+	         *
+	         * // OR using the jQuery extension
+	         *
+	         * $('#search').coveo('init', {
+	         *    FacetSlider: {
+	         *      field: "@size",
+	         *      valueCaption: function(values) {
+	         *        return values[0] + " hello" + ", " + values[1] + " world";
+	         *      }
+	         *    }
+	         * })
+	         * ```
+	         */
+	        valueCaption: ComponentOptions_1.ComponentOptions.buildCustomOption(function () {
+	            return null;
+	        }),
+	        /**
+	         * Specifies if the responsive mode should be enabled on the facets. Responsive mode will make the facet dissapear and instead be
+	         * availaible using a dropdown button. Responsive facets are enabled when the width of the element the search interface is bound to
+	         * reaches 800 pixels. This value can be modified using {@link Facet.options.responsiveBreakpoint}.
+	         * The default value is `true`.
+	         */
+	        enableResponsiveMode: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+	        /**
+	         * Specifies the width of the search interface, in pixels, at which the facets will go into responsive mode. The responsive mode will
+	         * be triggered when the width is equal or below this value. The search interface corresponds to the element with the class
+	         * `CoveoSearchInterface`.
+	         * The default value is `800`.
+	         */
+	        responsiveBreakpoint: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 800 }),
+	        /**
+	         * Specifies the label of the button that allows to show the facets when in responsive mode. If it is specified more than once, the
+	         * first occurence of the option will be used.
+	         * The default value is "Filters".
+	         */
+	        dropdownHeaderLabel: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption()
+	    };
+	    FacetSlider.ID = 'FacetSlider';
+	    FacetSlider.DEBOUNCED_RESIZE_DELAY = 250;
 	    return FacetSlider;
 	}(Component_1.Component));
-	/**
-	 * The component options
-	 * @componentOptions
-	 */
-	FacetSlider.options = {
-	    /**
-	     * The title on top of the facet component.<br/>
-	     * Default value is the localized string for 'No title'.
-	     */
-	    title: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ defaultValue: Strings_1.l('NoTitle') }),
-	    /**
-	     * Specifies whether the field for which you are requesting a range is a date field.<br/>
-	     * This allows the facet to correctly build the outgoing group by request, as well as render it correctly.<br/>
-	     */
-	    dateField: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-	    /**
-	     * Specifies the index field whose values will be use in the facet.<br/>
-	     * This require the given field to be configured correctly in the index as a facet field.<br/>
-	     * This is a required option and cannot be omitted, otherwise the facet component will not work.
-	     */
-	    field: ComponentOptions_1.ComponentOptions.buildFieldOption({ groupByField: true, required: true }),
-	    /**
-	     * Specifies a unique identifier for a facet. This identifier will be used to save the facet state in the URL hash, for example.<br/>
-	     * Optional, since the default will be the {@link FacetSlider.options.field} option.<br/>
-	     * If you have two facets with the same field on the same page, you should specify an ID for at least one of those two facets.<br/>
-	     * That ID needs to be unique on the page.
-	     */
-	    id: ComponentOptions_1.ComponentOptions.buildStringOption({
-	        postProcessing: function (value, options) { return value || options.field; }
-	    }),
-	    /**
-	     * Specifies the format used to display values if they are dates.<br/>
-	     * Default value is <code>MMM dd, yyyy</code>.
-	     */
-	    dateFormat: ComponentOptions_1.ComponentOptions.buildStringOption(),
-	    /**
-	     * Specifies the query to filter automatic minimum and maximum range of the slider.<br/>
-	     * This is especially useful for date range, where the index may contain values which are not set, and thus the automatic range will return values from the year 1400 (min date from the boost C++ library).<br/>
-	     * Can be used to do something like queryOverride : @date>2000/01/01 or some arbitrary date which will filter out unwanted values.
-	     */
-	    queryOverride: ComponentOptions_1.ComponentOptions.buildStringOption(),
-	    /**
-	     * Specifies the starting boundary of the slider.<br/>
-	     * Dates values are rounded on the year when the field used is a date type.<br/>
-	     * Optional: Takes the lowest value available in the index by default.
-	     */
-	    start: ComponentOptions_1.ComponentOptions.buildStringOption(),
-	    /**
-	     * Specifies the ending boundary of the slider.<br/>
-	     * Dates values are rounded on the year when the field used is a date type.<br/>
-	     * Optional: Takes the highest value available in the index by default.
-	     */
-	    end: ComponentOptions_1.ComponentOptions.buildStringOption(),
-	    /**
-	     * Specifies if you want to exclude the outer bounds of your slider in the generated query, when they are not active.<br/>
-	     * Default value is `false`.
-	     */
-	    excludeOuterBounds: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-	    /**
-	     * Specifies to how many decimal digit displayed numerical values are rounded.<br/>
-	     * Optional. By default, the number rounds to 0 decimal digits.
-	     */
-	    rounded: ComponentOptions_1.ComponentOptions.buildNumberOption({ min: 0 }),
-	    /**
-	     * Specifies the number of steps that you want in your slider.<br/>
-	     * For example, if your range is [ 0 , 100 ] and you specify 10 steps, then the end user is allowed to move the slider only to the values [ 0, 10, 20. 30 ... , 100 ].<br/>
-	     * Optional: By default the slider will allow all values.
-	     */
-	    steps: ComponentOptions_1.ComponentOptions.buildNumberOption({ min: 2 }),
-	    /**
-	     * Specifies whether you want a slider with two buttons, or only one.<br/>
-	     * Optional: By default only one button appears in the slider.
-	     */
-	    rangeSlider: ComponentOptions_1.ComponentOptions.buildBooleanOption(),
-	    /**
-	     * Specifies the caption that you want to display the field values.<br/>
-	     * Available options are :
-	     * <ul>
-	     *   <li>enable : (data-display-as-value-enable) <code>boolean</code> : Specifies whether the caption should be displayed as a value or not. Default is <code>true</code></li>.
-	     *   <li>unitSign : (data-display-as-value-unit-sign) <code>string</code> : Specifies the unit sign for this value.</li>
-	     *   <li>separator : (data-display-as-value-separator) <code>string</code> : Specifies the character(s) to use as a separator in the caption. Default is `-.`</li>.
-	     * </ul>
-	     */
-	    displayAsValue: ComponentOptions_1.ComponentOptions.buildObjectOption({
-	        subOptions: {
-	            enable: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-	            unitSign: ComponentOptions_1.ComponentOptions.buildStringOption(),
-	            separator: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: '-' })
-	        }
-	    }),
-	    /**
-	     * Specifies the percentage caption that you want to display the field values.<br/>
-	     * Available options are :
-	     * <ul>
-	     *   <li>enable : (data-display-as-percent-enable) <code>boolean</code> : Specifies whether the caption should be displayed as a percentage. Default is <code>false</code></li>.
-	     *   <li>separator : (data-display-as-percent-separator) <code>string</code> : Specifies the character(s) to use as a separator in the caption. Default is `-.`</li>.
-	     * </ul>
-	     */
-	    displayAsPercent: ComponentOptions_1.ComponentOptions.buildObjectOption({
-	        subOptions: {
-	            enable: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-	            separator: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: '-' })
-	        }
-	    }),
-	    /**
-	     * Specifies that you wish to display a small graph on top of the slider.<br/>
-	     * Available options are :
-	     *
-	     *   <li>steps: (data-graph-steps) <code>number</code> : Specifies the number of steps/columns to display in your graph. The default value is `10`</li>.
-	     * </ul>
-	     */
-	    graph: ComponentOptions_1.ComponentOptions.buildObjectOption({
-	        subOptions: {
-	            steps: ComponentOptions_1.ComponentOptions.buildNumberOption({ min: 2 }),
-	            animationDuration: ComponentOptions_1.ComponentOptions.buildNumberOption({ min: 0 }),
-	            margin: ComponentOptions_1.ComponentOptions.buildObjectOption({
-	                subOptions: {
-	                    top: ComponentOptions_1.ComponentOptions.buildNumberOption({ min: 0 }),
-	                    bottom: ComponentOptions_1.ComponentOptions.buildNumberOption({ min: 0 }),
-	                    left: ComponentOptions_1.ComponentOptions.buildNumberOption({ min: 0 }),
-	                    right: ComponentOptions_1.ComponentOptions.buildNumberOption({ min: 0 })
-	                }
-	            })
-	        }
-	    }),
-	    /**
-	     * Specifies a function that will generate the steps for the slider. The function receives the slider boundaries and must return an array of number (the steps).
-	     *
-	     * ```
-	     * Coveo.init(document.querySelector('#search'), {
-	     *    FacetSlider: {
-	     *      field: "@size",
-	     *      getSteps: function(start, end) {
-	     *        return [0,2,4,6,8,10];
-	     *      }
-	     *    }
-	     * })
-	     *
-	     * // OR using the jQuery extension
-	     *
-	     * $('#search').coveo('init', {
-	     *    FacetSlider: {
-	     *        field: "@size",
-	     *        getSteps: function(start, end) {
-	     *            return [0,2,4,6,8,10];
-	     *        }
-	     *    }
-	     * })
-	     * ```
-	     */
-	    getSteps: ComponentOptions_1.ComponentOptions.buildCustomOption(function () {
-	        return null;
-	    }),
-	    /**
-	     * Specifies a function that will generate the caption for the slider. Receives the current slider values (number[]) and must return the caption (string).
-	     *
-	     * ```
-	     * Coveo.init(document.querySelector('#search'), {
-	     *    FacetSlider: {
-	     *      field: "@size",
-	     *      valueCaption: function(values) {
-	     *        return values[0] + " hello" + ", " + values[1] + " world";
-	     *      }
-	     *    }
-	     * })
-	     *
-	     * // OR using the jQuery extension
-	     *
-	     * $('#search').coveo('init', {
-	     *    FacetSlider: {
-	     *      field: "@size",
-	     *      valueCaption: function(values) {
-	     *        return values[0] + " hello" + ", " + values[1] + " world";
-	     *      }
-	     *    }
-	     * })
-	     * ```
-	     */
-	    valueCaption: ComponentOptions_1.ComponentOptions.buildCustomOption(function () {
-	        return null;
-	    }),
-	    /**
-	     * Specifies if the responsive mode should be enabled on the facets. Responsive mode will make the facet dissapear and instead be
-	     * availaible using a dropdown button. Responsive facets are enabled when the width of the element the search interface is bound to
-	     * reaches 800 pixels. This value can be modified using {@link Facet.options.responsiveBreakpoint}.
-	     * The default value is `true`.
-	     */
-	    enableResponsiveMode: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-	    /**
-	     * Specifies the width of the search interface, in pixels, at which the facets will go into responsive mode. The responsive mode will
-	     * be triggered when the width is equal or below this value. The search interface corresponds to the element with the class
-	     * `CoveoSearchInterface`.
-	     * The default value is `800`.
-	     */
-	    responsiveBreakpoint: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 800 }),
-	    /**
-	     * Specifies the label of the button that allows to show the facets when in responsive mode. If it is specified more than once, the
-	     * first occurence of the option will be used.
-	     * The default value is "Filters".
-	     */
-	    dropdownHeaderLabel: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption()
-	};
-	FacetSlider.ID = 'FacetSlider';
-	FacetSlider.DEBOUNCED_RESIZE_DELAY = 250;
 	exports.FacetSlider = FacetSlider;
 	Initialization_1.Initialization.registerAutoCreateComponent(FacetSlider);
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var Dom_1 = __webpack_require__(3);
-	var DeviceUtils_1 = __webpack_require__(45);
+	var DeviceUtils_1 = __webpack_require__(46);
 	var SliderEvents_1 = __webpack_require__(127);
-	var Utils_1 = __webpack_require__(4);
+	var Utils_1 = __webpack_require__(6);
 	var d3Scale = __webpack_require__(128);
 	var d3 = __webpack_require__(136);
-	var Globalize = __webpack_require__(69);
-	var _ = __webpack_require__(5);
+	var Globalize = __webpack_require__(70);
 	var Slider = (function () {
 	    function Slider(element, options, root) {
 	        var _this = this;
@@ -25892,7 +21912,8 @@ var playground =
 	    };
 	    return SliderGraph;
 	}());
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 127 */
@@ -25902,12 +21923,12 @@ var playground =
 	var SliderEvents = (function () {
 	    function SliderEvents() {
 	    }
+	    SliderEvents.startSlide = 'startSlide';
+	    SliderEvents.duringSlide = 'duringSlide';
+	    SliderEvents.endSlide = 'endSlide';
+	    SliderEvents.graphValueSelected = 'graphValueSelected';
 	    return SliderEvents;
 	}());
-	SliderEvents.startSlide = 'startSlide';
-	SliderEvents.duringSlide = 'duringSlide';
-	SliderEvents.endSlide = 'endSlide';
-	SliderEvents.graphValueSelected = 'graphValueSelected';
 	exports.SliderEvents = SliderEvents;
 
 
@@ -46337,14 +42358,13 @@ var playground =
 /* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/// <reference path="../ui/FacetSlider/FacetSlider.ts" />
+	/* WEBPACK VAR INJECTION */(function(_) {/// <reference path="../ui/FacetSlider/FacetSlider.ts" />
 	"use strict";
-	var QueryEvents_1 = __webpack_require__(22);
-	var ExpressionBuilder_1 = __webpack_require__(18);
-	var DateUtils_1 = __webpack_require__(67);
-	var Logger_1 = __webpack_require__(8);
-	var QueryUtils_1 = __webpack_require__(19);
-	var _ = __webpack_require__(5);
+	var QueryEvents_1 = __webpack_require__(23);
+	var ExpressionBuilder_1 = __webpack_require__(19);
+	var DateUtils_1 = __webpack_require__(68);
+	var Logger_1 = __webpack_require__(9);
+	var QueryUtils_1 = __webpack_require__(20);
 	var FacetSliderQueryController = (function () {
 	    function FacetSliderQueryController(facet) {
 	        var _this = this;
@@ -46596,7 +42616,8 @@ var playground =
 	    return FacetSliderQueryController;
 	}());
 	exports.FacetSliderQueryController = FacetSliderQueryController;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 139 */
@@ -46606,12 +42627,12 @@ var playground =
 	var SearchAlertsEvents = (function () {
 	    function SearchAlertsEvents() {
 	    }
+	    SearchAlertsEvents.searchAlertsCreated = 'searchAlertsCreated';
+	    SearchAlertsEvents.searchAlertsDeleted = 'searchAlertsDeleted';
+	    SearchAlertsEvents.searchAlertsFail = 'searchAlertsFail';
+	    SearchAlertsEvents.searchAlertsPopulateMessage = 'searchAlertsPopulateMessage';
 	    return SearchAlertsEvents;
 	}());
-	SearchAlertsEvents.searchAlertsCreated = 'searchAlertsCreated';
-	SearchAlertsEvents.searchAlertsDeleted = 'searchAlertsDeleted';
-	SearchAlertsEvents.searchAlertsFail = 'searchAlertsFail';
-	SearchAlertsEvents.searchAlertsPopulateMessage = 'searchAlertsPopulateMessage';
 	exports.SearchAlertsEvents = SearchAlertsEvents;
 
 
@@ -46619,10 +42640,9 @@ var playground =
 /* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var Dom_1 = __webpack_require__(3);
 	var EventsUtils_1 = __webpack_require__(109);
-	var _ = __webpack_require__(5);
 	var ResponsiveDropdown = (function () {
 	    function ResponsiveDropdown(dropdownContent, dropdownHeader, coveoRoot) {
 	        this.dropdownContent = dropdownContent;
@@ -46719,12 +42739,13 @@ var playground =
 	            this.parent.prepend(this.dropdownContent.element.el);
 	        }
 	    };
+	    ResponsiveDropdown.TRANSPARENT_BACKGROUND_OPACITY = '0.9';
+	    ResponsiveDropdown.DROPDOWN_BACKGROUND_CSS_CLASS_NAME = 'coveo-dropdown-background';
 	    return ResponsiveDropdown;
 	}());
-	ResponsiveDropdown.TRANSPARENT_BACKGROUND_OPACITY = '0.9';
-	ResponsiveDropdown.DROPDOWN_BACKGROUND_CSS_CLASS_NAME = 'coveo-dropdown-background';
 	exports.ResponsiveDropdown = ResponsiveDropdown;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 141 */
@@ -46761,9 +42782,9 @@ var playground =
 	    ResponsiveDropdownContent.prototype.cleanUp = function () {
 	        this.element.el.removeAttribute('style');
 	    };
+	    ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-content';
 	    return ResponsiveDropdownContent;
 	}());
-	ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-content';
 	exports.ResponsiveDropdownContent = ResponsiveDropdownContent;
 
 
@@ -46794,10 +42815,10 @@ var playground =
 	    ResponsiveDropdownHeader.prototype.show = function () {
 	        Dom_1.$$(this.element).removeClass('coveo-hidden');
 	    };
+	    ResponsiveDropdownHeader.DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-header';
+	    ResponsiveDropdownHeader.ACTIVE_HEADER_CSS_CLASS_NAME = 'coveo-dropdown-header-active';
 	    return ResponsiveDropdownHeader;
 	}());
-	ResponsiveDropdownHeader.DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-header';
-	ResponsiveDropdownHeader.ACTIVE_HEADER_CSS_CLASS_NAME = 'coveo-dropdown-header-active';
 	exports.ResponsiveDropdownHeader = ResponsiveDropdownHeader;
 
 
@@ -46805,56 +42826,51 @@ var playground =
 /* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var ResponsiveTabs_ts_1 = __webpack_require__(144);
-	var Component_1 = __webpack_require__(9);
-	var ComponentOptions_1 = __webpack_require__(51);
-	var Model_1 = __webpack_require__(11);
-	var QueryEvents_1 = __webpack_require__(22);
-	var QueryStateModel_1 = __webpack_require__(10);
-	var AnalyticsActionListMeta_1 = __webpack_require__(59);
-	var SearchEndpoint_1 = __webpack_require__(42);
-	var Initialization_1 = __webpack_require__(56);
-	var Utils_1 = __webpack_require__(4);
-	var Assert_1 = __webpack_require__(7);
+	var Component_1 = __webpack_require__(10);
+	var ComponentOptions_1 = __webpack_require__(52);
+	var Model_1 = __webpack_require__(12);
+	var QueryEvents_1 = __webpack_require__(23);
+	var QueryStateModel_1 = __webpack_require__(11);
+	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var SearchEndpoint_1 = __webpack_require__(43);
+	var Initialization_1 = __webpack_require__(57);
+	var Utils_1 = __webpack_require__(6);
+	var Assert_1 = __webpack_require__(8);
 	var Dom_1 = __webpack_require__(3);
-	var KeyboardUtils_1 = __webpack_require__(78);
-	var _ = __webpack_require__(5);
+	var KeyboardUtils_1 = __webpack_require__(80);
 	/**
-	 * The Tab component renders a bar that allows the end user to select a specific search interface.
+	 * This component is a bar allowing users to select a search interface.
 	 *
-	 * This component attaches itself to a `div` element. It is in charge of adding an advanced expression to the outgoing
-	 * query in order to refine the results.
+	 * The component attaches itself to an div element and is in charge of adding an advanced expression to the query and thus, modify the outgoing query in order to refine the results in relation to the selected tab.
 	 *
-	 * The Tab component can also hide and show different parts of the UI. For each individual component in the UI, you can
-	 * specify whether you wish to include or exclude that component when the user selects a certain Tab.
+	 * It also allows to hide and show different parts of the UI. In order to do so, each component of the UI can specify whether or not it wishes to be included or excluded from a specific tab.
 	 *
-	 * **Including and Excluding Other HTML Components:**
+	 * # Including and excluding other HTML components
 	 *
-	 * You can hide or show a specific HTML component based on the currently selected Tab by adding one of the following
-	 * attributes to its tag:
+	 * You can hide/show specific HTML components, based on the currently selected search tab by adding the following attributes:
 	 *
-	 * - `<div data-tab="foobar">`: Only include this element in the Tab with `foobar` as its `data-id`.
-	 * - `<div data-tab-not="foobar">`: Do not include this element in the Tab with `foobar` as its `data-id`.
-	 * - `<div data-tab="foobar,somethingelse">`: Only include this element in the Tab with `foobar` as its `data-id` and in
-	 * the Tab with `somethingelse` as its `data-id`.
+	 * * `<div data-tab="foobar">` -> Include this element only in the tab with the ID 'foobar'.
 	 *
-	 * **Setting a New Endpoint for a Tab:**
+	 * * `<div data-tab-not="foobar">` -> DO NOT include this element in the tab ID 'foobar'.
 	 *
-	 * A Tab can use a custom endpoint when performing a query. Of course, you need to make sure that the endpoint exists in
-	 * the array of Coveo.SearchEndpoint.endpoints (see {@link SearchEndpoint.endpoints}).
+	 * * `<div data-tab="foobar,somethingelse">` -> Include this element only in the tab with the ID 'foobar' or 'somethingelse'.
+	 *
+	 * # Setting a new endpoint for a tab
+	 * A tab can use a custom endpoint when performing a query. First, you need to make sure that the endpoint exists in the array of Coveo.SearchEndpoint.endpoints.
 	 *
 	 * ```
 	 * Coveo.SearchEndpoint.endpoints["specialEndpoint"] = new Coveo.SearchEndpoint({
 	 *     restUri : 'https://somewhere.com/rest/search'
 	 * })
 	 *
-	 * [ ... ]
+	 * [...]
 	 *
 	 * <div class='CoveoTab' data-endpoint='specialEndpoint'></div>
 	 *
@@ -46863,32 +42879,29 @@ var playground =
 	var Tab = (function (_super) {
 	    __extends(Tab, _super);
 	    /**
-	     * Creates a new Tab. Binds on buildingQuery event as well as an event on click of the element.
-	     * @param element The HTMLElement on which to instantiate the component. Normally a `div`.
-	     * @param options The options for the Tab component.
-	     * @param bindings The bindings that the component requires to function normally. If not set, these will be
-	     * automatically resolved (with a slower execution time).
+	     * Create a new Tab. Bind on buildingQuery event as well as on click of the element.
+	     * @param element The `HTMLElement` on which to create a new tab. Normally a div
+	     * @param options
+	     * @param bindings
 	     */
 	    function Tab(element, options, bindings) {
-	        var _this = _super.call(this, element, Tab.ID, bindings) || this;
-	        _this.element = element;
-	        _this.options = options;
-	        _this.isFirstQuery = true;
-	        _this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, Tab, options);
-	        _this.bind.onRootElement(QueryEvents_1.QueryEvents.buildingQuery, function (args) { return _this.handleBuildingQuery(args); });
-	        _this.bind.onQueryState(Model_1.MODEL_EVENTS.CHANGE_ONE, QueryStateModel_1.QUERY_STATE_ATTRIBUTES.T, function (args) { return _this.handleQueryStateChanged(args); });
+	        var _this = this;
+	        _super.call(this, element, Tab.ID, bindings);
+	        this.element = element;
+	        this.options = options;
+	        this.isFirstQuery = true;
+	        this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, Tab, options);
+	        this.bind.onRootElement(QueryEvents_1.QueryEvents.buildingQuery, function (args) { return _this.handleBuildingQuery(args); });
+	        this.bind.onQueryState(Model_1.MODEL_EVENTS.CHANGE_ONE, QueryStateModel_1.QUERY_STATE_ATTRIBUTES.T, function (args) { return _this.handleQueryStateChanged(args); });
 	        var clickAction = function () { return _this.handleClick(); };
-	        _this.bind.on(element, 'click', clickAction);
-	        _this.bind.on(element, 'keyup', KeyboardUtils_1.KeyboardUtils.keypressAction(KeyboardUtils_1.KEYBOARD.ENTER, clickAction));
-	        _this.render();
-	        ResponsiveTabs_ts_1.ResponsiveTabs.init(_this.root, _this, _this.options);
-	        return _this;
+	        this.bind.on(element, 'click', clickAction);
+	        this.bind.on(element, 'keyup', KeyboardUtils_1.KeyboardUtils.keypressAction(KeyboardUtils_1.KEYBOARD.ENTER, clickAction));
+	        this.render();
+	        ResponsiveTabs_ts_1.ResponsiveTabs.init(this.root, this, this.options);
 	    }
 	    /**
-	     * Selects the current Tab.
-	     *
-	     * Also logs the `interfaceChange` event in the usage analytics with the new current {@link Tab.options.id} as metada
-	     * and triggers a new query.
+	     * Select the current tab.<br/>
+	     * Trigger a query and log an analytics event.
 	     */
 	    Tab.prototype.select = function () {
 	        if (!this.disabled) {
@@ -46902,16 +42915,15 @@ var playground =
 	        }
 	    };
 	    /**
-	     * Indicates whether the HTMLElement argument is included in the Tab. *Included* elements are shown when the Tab is
-	     * selected, whereas *excluded* elements are not.
-	     * @param element The HTMLElement to verify.
-	     * @returns {boolean} `true` if the HTMLElement is included in the Tab; `false` if it is excluded.
+	     * Check if the given `HTMLElement` is included or not in this tab.
+	     * @param element The element to verify.
+	     * @returns {boolean}
 	     */
 	    Tab.prototype.isElementIncludedInTab = function (element) {
 	        Assert_1.Assert.exists(element);
 	        var includedTabs = this.splitListOfTabs(element.getAttribute('data-tab'));
 	        var excludedTabs = this.splitListOfTabs(element.getAttribute('data-tab-not'));
-	        Assert_1.Assert.check(!(includedTabs.length != 0 && excludedTabs.length != 0), 'You cannot both explicitly include and exclude an element from tabs.');
+	        Assert_1.Assert.check(!(includedTabs.length != 0 && excludedTabs.length != 0), 'You cannot both explicity include and exclude an element from tabs');
 	        return (includedTabs.length != 0 && _.indexOf(includedTabs, this.options.id) != -1) ||
 	            (excludedTabs.length != 0 && _.indexOf(excludedTabs, this.options.id) == -1) ||
 	            (includedTabs.length == 0 && excludedTabs.length == 0);
@@ -47026,174 +43038,116 @@ var playground =
 	        _super.prototype.disable.call(this);
 	        this.element.style.display = 'none';
 	    };
+	    Tab.ID = 'Tab';
+	    /**
+	     * The options for a Tab
+	     * @componentOptions
+	     */
+	    Tab.options = {
+	        /**
+	         * The unique ID for a tab.<br/>
+	         * This is mandatory and required for the tab to function properly.
+	         */
+	        id: ComponentOptions_1.ComponentOptions.buildStringOption({ required: true }),
+	        /**
+	         * The caption for the tab.<br/>
+	         * This is mandatory and required for the tab to function properly.
+	         */
+	        caption: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ required: true }),
+	        /**
+	         * Specify an icon for the tab.<br/>
+	         * This options is mostly kept for legacy reason. Do not use one if not needed.
+	         */
+	        icon: ComponentOptions_1.ComponentOptions.buildIconOption(),
+	        /**
+	         * Specifies an advanced expression / filter that this tab adds to any outgoing query.<br/>
+	         * eg : @objecttype==Message.<br/>
+	         * This is optional, normally a "All Content" tab would not set any filter on the query.
+	         */
+	        expression: ComponentOptions_1.ComponentOptions.buildStringOption(),
+	        /**
+	         * Specifies the endpoint that a tab should point to when performing query inside that tab.<br/>
+	         * This is optional, by default the tab will use the "default" endpoint.
+	         */
+	        endpoint: ComponentOptions_1.ComponentOptions.buildCustomOption(function (endpoint) { return endpoint != null ? SearchEndpoint_1.SearchEndpoint.endpoints[endpoint] : null; }),
+	        /**
+	         * Specifies the default sort when this tab is selected. A {@link Sort} component configured with the same specified parameter needs to be in the interface in order for this this option to function properly.<br/>
+	         * e.g.: relevancy / date descending<br/>
+	         * Optional, by default the normal {@link Sort} component behavior will operate.
+	         */
+	        sort: ComponentOptions_1.ComponentOptions.buildStringOption(),
+	        /**
+	         * Specifies the default layout to display when this tab is selected (see {@link ResultList.options.layout} and
+	         * {@link ResultLayout}).
+	         * The value must be one of `list`, `card`, or `table`.
+	         * This option is overridden by a URL parameter.
+	         * If not specified, the first available layout will be chosen.
+	         */
+	        layout: ComponentOptions_1.ComponentOptions.buildStringOption(),
+	        /**
+	         * Specifies whether the filter expression should be included in the constant part of the query.<br/>
+	         * The constant part of the query is specially optimized by the index to execute faster, but you must be careful not to include dynamic query expressions otherwise the cache would lose its efficiency.<br/>
+	         * By default, this option is set to `true`.
+	         */
+	        constant: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+	        /**
+	         * Specifies whether to filter duplicates on the search results.<br/>
+	         * The default value is false.
+	         */
+	        enableDuplicateFiltering: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+	        /**
+	         * Specifies the name of the query pipeline to use for the queries, in the Coveo platform ( Query Pipeline in the Cloud administration).<br/>
+	         * If not specified, the default value is null, in which case pipeline selection conditions defined in a Coveo Cloud organization apply.
+	         */
+	        pipeline: ComponentOptions_1.ComponentOptions.buildStringOption(),
+	        /**
+	         * Specifies the maximum age in milliseconds that cached query results can have in order to be used (instead of performing a new query on the index).<br/>
+	         * The cache is located in the Coveo Search API (which resides between the index and search interface).<br/>
+	         * If cached results are available but are older than the specified age, a new query will be performed on the index.<br/>
+	         * By default, this is left undefined and the Coveo Search API will decide the cache duration.
+	         */
+	        maximumAge: ComponentOptions_1.ComponentOptions.buildNumberOption(),
+	        /**
+	         * Specifies if the responsive mode should be enabled for the tabs. Responsive mode will make the overflowing tabs dissapear and instead
+	         * be availaible using a dropdown button. Responsive tabs are enabled when tabs overflow or when the width of the search interface
+	         * becomes too small.
+	         *
+	         * Disabling reponsive mode for one tab will disable it for all tabs.
+	         * Therefore, this options only needs to be set on one tab to be effective.
+	         * The default value is `true`.
+	         */
+	        enableResponsiveMode: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
+	        /**
+	         * Specifies the label of the button that allows to show the hidden tabs when in responsive mode. If it is specified more than once, the
+	         * first occurence of the option will be used.
+	         * The default value is "More".
+	         */
+	        dropdownHeaderLabel: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption()
+	    };
 	    return Tab;
 	}(Component_1.Component));
-	Tab.ID = 'Tab';
-	/**
-	 * The options for a Tab
-	 * @componentOptions
-	 */
-	Tab.options = {
-	    /**
-	     * Specifies a unique ID for the Tab.
-	     *
-	     * Specifying a value for this option is necessary for this component to work.
-	     */
-	    id: ComponentOptions_1.ComponentOptions.buildStringOption({ required: true }),
-	    /**
-	     * Specifies the caption of the Tab.
-	     *
-	     * Specifying a value for this option is necessary for this component to work.
-	     */
-	    caption: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption({ required: true }),
-	    /**
-	     * Specifies an icon to use for the Tab.
-	     *
-	     * @deprecated This options is mostly kept for legacy reasons. If possible, you should avoid using it.
-	     */
-	    icon: ComponentOptions_1.ComponentOptions.buildIconOption(),
-	    /**
-	     * Specifies an advanced expression or filter that the Tab should add to any outgoing query.
-	     *
-	     * **Example:**
-	     *
-	     * `@objecttype==Message`
-	     *
-	     * Default value is `undefined` and the Tab applies no additional expression or filter to the query.
-	     */
-	    expression: ComponentOptions_1.ComponentOptions.buildStringOption(),
-	    /**
-	     * Specifies the {@link SearchEndpoint} to point to when performing queries from within the Tab.
-	     *
-	     * By default, the Tab uses the "default" endpoint.
-	     */
-	    endpoint: ComponentOptions_1.ComponentOptions.buildCustomOption(function (endpoint) { return endpoint != null ? SearchEndpoint_1.SearchEndpoint.endpoints[endpoint] : null; }),
-	    /**
-	     * Specifies the default sort criteria to use when selecting the Tab. A {@link Sort} component with the same
-	     * parameter needs to be present in the search interface in order for this option to function properly.
-	     *
-	     * **Examples:**
-	     *
-	     * - `data-sort='relevancy'`
-	     * - `data-sort='date descending'`
-	     *
-	     * Default value is `undefined` and the normal {@link Sort} component behavior applies.
-	     */
-	    sort: ComponentOptions_1.ComponentOptions.buildStringOption(),
-	    /**
-	     * Specifies the default layout to display when the user selects the Tab (see {@link ResultList.options.layout} and
-	     * {@link ResultLayout}).
-	     *
-	     * See the {@link ValidLayout} type for the list of possible values.
-	     *
-	     * This option is overridden by a URL parameter.
-	     *
-	     * See also [Result Layouts](https://developers.coveo.com/x/yQUvAg).
-	     *
-	     * Default value is `undefined` and the component selects the first available layout.
-	     */
-	    layout: ComponentOptions_1.ComponentOptions.buildStringOption(),
-	    /**
-	     * Specifies whether to include the {@link Tab.options.expression} in the constant part of the query.
-	     *
-	     * The index specially optimizes the constant part of the query to execute faster. However, you must be careful not
-	     * to include dynamic query expressions, otherwise the cache will lose its efficiency.
-	     *
-	     * Default value is `true`.
-	     */
-	    constant: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-	    /**
-	     * Specifies whether to filter duplicates in the search results when the user selects the Tab.
-	     *
-	     * Setting this option to `true` forces duplicates to not appear in the search results. However, {@link Facet}
-	     * counts still include duplicates, which can be confusing for the end user. This is a limitation of the index.
-	     *
-	     * **Example:**
-	     *
-	     * > The end user narrows a query down to one document that has a duplicate. If this options is `true` and the user
-	     * > selects the Tab, only one document appears in the search results while the Facet count is still 2.
-	     *
-	     * **Note:**
-	     *
-	     * > It is also possible to enable duplicate filtering for the entire {@link SearchInterface} rather than for a
-	     * > single Tab (see {@link SearchInterface.options.enableDuplicateFiltering}).
-	     *
-	     * Default value is `false`.
-	     */
-	    enableDuplicateFiltering: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-	    /**
-	     * Specifies the name of the query pipeline to use for the queries when the Tab is selected.
-	     *
-	     * You can specify a value for this option if your index is in a Coveo Cloud organization in which pipelines have
-	     * been created (see [Managing Query Pipelines](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=128)).
-	     *
-	     * Default value is `undefined`, which means that pipeline selection conditions defined in the Coveo Cloud
-	     * organization apply.
-	     */
-	    pipeline: ComponentOptions_1.ComponentOptions.buildStringOption(),
-	    /**
-	     * Specifies the maximum age (in milliseconds) that cached query results can have to still be usable as results
-	     * instead of performing a new query on the index from within the Tab. The cache is located in the Coveo Search API
-	     * (which resides between the index and the search interface).
-	     *
-	     * If cached results that are older than the age you specify in this option are available, a new query will be
-	     * performed on the index anyhow.
-	     *
-	     * On high-volume public web sites, specifying a higher value for this option can greatly improve query response
-	     * time at the cost of result freshness.
-	     *
-	     * **Note:**
-	     *
-	     * > It is also possible to set a maximum cache age for the entire {@link SearchInterface} rather than for a single
-	     * > Tab (see {@link SearchInterface.options.maximumAge}).
-	     *
-	     * Default value is `undefined` and the Coveo Search API determines the maximum cache age. This is typically
-	     * equivalent to 30 minutes (see [Query Parameters - maximumAge](https://developers.coveo.com/display/SearchREST/Query+Parameters#QueryParameters-maximumAge)).
-	     */
-	    maximumAge: ComponentOptions_1.ComponentOptions.buildNumberOption(),
-	    /**
-	     * Specifies whether to enable responsive mode for tabs. Responsive mode makes overflowing tabs disappear, instead
-	     * making them available using a dropdown button. Responsive tabs are enabled either when tabs overflow or when the
-	     * width of the search interface becomes too small.
-	     *
-	     * Disabling responsive mode for one Tab also disables it for all tabs. Therefore, you only need to set this option
-	     * to `false` on one Tab to disable responsive mode.
-	     *
-	     * Default value is `true`.
-	     */
-	    enableResponsiveMode: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-	    /**
-	     * Specifies the label of the button that allows to show the hidden tabs when in responsive mode.
-	     *
-	     * If more than one Tab in the search interface specifies a value for this option, then the framework uses the first
-	     * occurrence of the option.
-	     *
-	     * The default value is `"More"`.
-	     */
-	    dropdownHeaderLabel: ComponentOptions_1.ComponentOptions.buildLocalizedStringOption()
-	};
 	exports.Tab = Tab;
 	Initialization_1.Initialization.registerAutoCreateComponent(Tab);
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var Dom_1 = __webpack_require__(3);
-	var InitializationEvents_1 = __webpack_require__(57);
+	var InitializationEvents_1 = __webpack_require__(58);
 	var PopupUtils_1 = __webpack_require__(110);
 	var EventsUtils_1 = __webpack_require__(109);
-	var Utils_1 = __webpack_require__(4);
-	var Logger_1 = __webpack_require__(8);
-	var Component_1 = __webpack_require__(9);
-	var SearchInterface_1 = __webpack_require__(41);
+	var Utils_1 = __webpack_require__(6);
+	var Logger_1 = __webpack_require__(9);
+	var Component_1 = __webpack_require__(10);
+	var SearchInterface_1 = __webpack_require__(42);
 	var Tab_1 = __webpack_require__(143);
 	var ResponsiveComponentsManager_1 = __webpack_require__(101);
 	var ResponsiveComponentsUtils_1 = __webpack_require__(102);
-	var Strings_1 = __webpack_require__(64);
-	var _ = __webpack_require__(5);
+	var Strings_1 = __webpack_require__(65);
 	var ResponsiveTabs = (function () {
 	    function ResponsiveTabs(coveoRoot, ID) {
 	        this.coveoRoot = coveoRoot;
@@ -47508,11 +43462,12 @@ var playground =
 	        }
 	        return dropdownHeaderLabel;
 	    };
+	    ResponsiveTabs.DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'More';
 	    return ResponsiveTabs;
 	}());
-	ResponsiveTabs.DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'More';
 	exports.ResponsiveTabs = ResponsiveTabs;
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 145 */
@@ -47548,9 +43503,9 @@ var playground =
 	        this.element.removeClass(this.cssClassName);
 	        this.element.removeClass(ResponsiveDropdownContent_1.ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
 	    };
+	    RecommendationDropdownContent.OPENED_DROPDOWN_CSS_CLASS_NAME = 'coveo-open-dropdown-content';
 	    return RecommendationDropdownContent;
 	}());
-	RecommendationDropdownContent.OPENED_DROPDOWN_CSS_CLASS_NAME = 'coveo-open-dropdown-content';
 	exports.RecommendationDropdownContent = RecommendationDropdownContent;
 
 
@@ -47565,25 +43520,24 @@ var playground =
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var LiveAnalyticsClient_1 = __webpack_require__(88);
-	var AnalyticsActionListMeta_1 = __webpack_require__(59);
-	var Component_1 = __webpack_require__(9);
-	var SearchInterface_1 = __webpack_require__(41);
+	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var Component_1 = __webpack_require__(10);
+	var SearchInterface_1 = __webpack_require__(42);
 	var RecommendationAnalyticsClient = (function (_super) {
 	    __extends(RecommendationAnalyticsClient, _super);
 	    function RecommendationAnalyticsClient(endpoint, rootElement, userId, userDisplayName, anonymous, splitTestRunName, splitTestRunVersion, originLevel1, sendToCloud, bindings) {
-	        var _this = _super.call(this, endpoint, rootElement, userId, userDisplayName, anonymous, splitTestRunName, splitTestRunVersion, originLevel1, sendToCloud) || this;
-	        _this.endpoint = endpoint;
-	        _this.rootElement = rootElement;
-	        _this.userId = userId;
-	        _this.userDisplayName = userDisplayName;
-	        _this.anonymous = anonymous;
-	        _this.splitTestRunName = splitTestRunName;
-	        _this.splitTestRunVersion = splitTestRunVersion;
-	        _this.originLevel1 = originLevel1;
-	        _this.sendToCloud = sendToCloud;
-	        _this.bindings = bindings;
-	        _this.recommendation = _this.bindings.searchInterface;
-	        return _this;
+	        _super.call(this, endpoint, rootElement, userId, userDisplayName, anonymous, splitTestRunName, splitTestRunVersion, originLevel1, sendToCloud);
+	        this.endpoint = endpoint;
+	        this.rootElement = rootElement;
+	        this.userId = userId;
+	        this.userDisplayName = userDisplayName;
+	        this.anonymous = anonymous;
+	        this.splitTestRunName = splitTestRunName;
+	        this.splitTestRunVersion = splitTestRunVersion;
+	        this.originLevel1 = originLevel1;
+	        this.sendToCloud = sendToCloud;
+	        this.bindings = bindings;
+	        this.recommendation = this.bindings.searchInterface;
 	    }
 	    RecommendationAnalyticsClient.prototype.logSearchEvent = function (actionCause, meta) {
 	        if (actionCause == AnalyticsActionListMeta_1.analyticsActionCauseList.interfaceLoad) {
@@ -47940,38 +43894,37 @@ var playground =
 /* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/* WEBPACK VAR INJECTION */(function(_) {"use strict";
 	var __extends = (this && this.__extends) || function (d, b) {
 	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var DefaultResultTemplate_1 = __webpack_require__(63);
-	var Component_1 = __webpack_require__(9);
-	var ComponentOptions_1 = __webpack_require__(51);
-	var Assert_1 = __webpack_require__(7);
-	var QueryEvents_1 = __webpack_require__(22);
-	var Model_1 = __webpack_require__(11);
-	var QueryStateModel_1 = __webpack_require__(10);
-	var QueryUtils_1 = __webpack_require__(19);
+	var DefaultResultTemplate_1 = __webpack_require__(64);
+	var Component_1 = __webpack_require__(10);
+	var ComponentOptions_1 = __webpack_require__(52);
+	var Assert_1 = __webpack_require__(8);
+	var QueryEvents_1 = __webpack_require__(23);
+	var Model_1 = __webpack_require__(12);
+	var QueryStateModel_1 = __webpack_require__(11);
+	var QueryUtils_1 = __webpack_require__(20);
 	var Dom_1 = __webpack_require__(3);
-	var AnalyticsActionListMeta_1 = __webpack_require__(59);
-	var Initialization_1 = __webpack_require__(56);
-	var Defer_1 = __webpack_require__(23);
-	var DeviceUtils_1 = __webpack_require__(45);
-	var ResultListEvents_1 = __webpack_require__(76);
+	var AnalyticsActionListMeta_1 = __webpack_require__(60);
+	var Initialization_1 = __webpack_require__(57);
+	var Defer_1 = __webpack_require__(24);
+	var DeviceUtils_1 = __webpack_require__(46);
+	var ResultListEvents_1 = __webpack_require__(78);
 	var ResultLayoutEvents_1 = __webpack_require__(149);
-	var Utils_1 = __webpack_require__(4);
-	var DomUtils_1 = __webpack_require__(66);
+	var Utils_1 = __webpack_require__(6);
+	var DomUtils_1 = __webpack_require__(67);
 	var Recommendation_1 = __webpack_require__(94);
 	var DefaultRecommendationTemplate_1 = __webpack_require__(150);
-	var _ = __webpack_require__(5);
 	/**
 	 * This component is responsible for displaying the results of the current query using one or more result templates.<br/>
 	 * It supports many additional features such as infinite scrolling.
 	 *
-	 * ## Examples / samples
-	 * This contains some quick examples. Refer to result templates on [developers.coveo.com](https://developers.coveo.com/display/public/JsSearchV1/JavaScript+Search+Framework+V1+Home) for more information.
+	 * # Examples / samples
+	 * This contains some quick example. Refer to result templates on developers.coveo.com for more information.
 	 *
 	 * ```html
 	 * <!-- A very simple result list with a single underscore template.
@@ -48048,36 +44001,36 @@ var playground =
 	     * @param elementClassId The class that this component should instantiate. By default this will be CoveoResultList. This is used by component that extends the base ResultList
 	     */
 	    function ResultList(element, options, bindings, elementClassId) {
+	        var _this = this;
 	        if (elementClassId === void 0) { elementClassId = ResultList.ID; }
-	        var _this = _super.call(this, element, elementClassId, bindings) || this;
-	        _this.element = element;
-	        _this.options = options;
-	        _this.bindings = bindings;
-	        _this.currentlyDisplayedResults = [];
-	        _this.reachedTheEndOfResults = false;
-	        _this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, ResultList, options);
+	        _super.call(this, element, elementClassId, bindings);
+	        this.element = element;
+	        this.options = options;
+	        this.bindings = bindings;
+	        this.currentlyDisplayedResults = [];
+	        this.reachedTheEndOfResults = false;
+	        this.options = ComponentOptions_1.ComponentOptions.initComponentOptions(element, ResultList, options);
 	        Assert_1.Assert.exists(element);
-	        Assert_1.Assert.exists(_this.options);
-	        Assert_1.Assert.exists(_this.options.resultContainer);
-	        Assert_1.Assert.exists(_this.options.resultTemplate);
-	        Assert_1.Assert.exists(_this.options.waitAnimationContainer);
-	        Assert_1.Assert.exists(_this.options.infiniteScrollContainer);
-	        _this.showOrHideElementsDependingOnState(false, false);
-	        _this.bind.onRootElement(QueryEvents_1.QueryEvents.newQuery, function (args) { return _this.handleNewQuery(); });
-	        _this.bind.onRootElement(QueryEvents_1.QueryEvents.buildingQuery, function (args) { return _this.handleBuildingQuery(args); });
-	        _this.bind.onRootElement(QueryEvents_1.QueryEvents.querySuccess, function (args) { return _this.handleQuerySuccess(args); });
-	        _this.bind.onRootElement(QueryEvents_1.QueryEvents.duringQuery, function (args) { return _this.handleDuringQuery(); });
-	        _this.bind.onRootElement(QueryEvents_1.QueryEvents.queryError, function (args) { return _this.handleQueryError(); });
-	        Dom_1.$$(_this.root).on(ResultListEvents_1.ResultListEvents.changeLayout, function (e, args) { return _this.handleChangeLayout(args); });
-	        if (_this.options.enableInfiniteScroll) {
-	            _this.handlePageChanged();
-	            _this.bind.on(_this.options.infiniteScrollContainer, 'scroll', function (e) { return _this.handleScrollOfResultList(); });
+	        Assert_1.Assert.exists(this.options);
+	        Assert_1.Assert.exists(this.options.resultContainer);
+	        Assert_1.Assert.exists(this.options.resultTemplate);
+	        Assert_1.Assert.exists(this.options.waitAnimationContainer);
+	        Assert_1.Assert.exists(this.options.infiniteScrollContainer);
+	        this.showOrHideElementsDependingOnState(false, false);
+	        this.bind.onRootElement(QueryEvents_1.QueryEvents.newQuery, function (args) { return _this.handleNewQuery(); });
+	        this.bind.onRootElement(QueryEvents_1.QueryEvents.buildingQuery, function (args) { return _this.handleBuildingQuery(args); });
+	        this.bind.onRootElement(QueryEvents_1.QueryEvents.querySuccess, function (args) { return _this.handleQuerySuccess(args); });
+	        this.bind.onRootElement(QueryEvents_1.QueryEvents.duringQuery, function (args) { return _this.handleDuringQuery(); });
+	        this.bind.onRootElement(QueryEvents_1.QueryEvents.queryError, function (args) { return _this.handleQueryError(); });
+	        Dom_1.$$(this.root).on(ResultListEvents_1.ResultListEvents.changeLayout, function (e, args) { return _this.handleChangeLayout(args); });
+	        if (this.options.enableInfiniteScroll) {
+	            this.handlePageChanged();
+	            this.bind.on(this.options.infiniteScrollContainer, 'scroll', function (e) { return _this.handleScrollOfResultList(); });
 	        }
-	        _this.bind.onQueryState(Model_1.MODEL_EVENTS.CHANGE_ONE, QueryStateModel_1.QUERY_STATE_ATTRIBUTES.FIRST, function () { return _this.handlePageChanged(); });
-	        Dom_1.$$(_this.options.resultContainer).addClass('coveo-result-list-container');
-	        Dom_1.$$(_this.options.resultContainer).addClass("coveo-" + _this.options.layout + "-layout");
-	        Dom_1.$$(_this.root).on(ResultLayoutEvents_1.ResultLayoutEvents.populateResultLayout, function (e, args) { return args.layouts.push(_this.options.layout); });
-	        return _this;
+	        this.bind.onQueryState(Model_1.MODEL_EVENTS.CHANGE_ONE, QueryStateModel_1.QUERY_STATE_ATTRIBUTES.FIRST, function () { return _this.handlePageChanged(); });
+	        Dom_1.$$(this.options.resultContainer).addClass('coveo-result-list-container');
+	        Dom_1.$$(this.options.resultContainer).addClass("coveo-" + this.options.layout + "-layout");
+	        Dom_1.$$(this.root).on(ResultLayoutEvents_1.ResultLayoutEvents.populateResultLayout, function (e, args) { return args.layouts.push(_this.options.layout); });
 	    }
 	    /**
 	     * Empty the current result list content and append the given array of HTMLElement.<br/>
@@ -48415,104 +44368,98 @@ var playground =
 	        }
 	        return new DefaultResultTemplate_1.DefaultResultTemplate();
 	    };
+	    ResultList.ID = 'ResultList';
+	    /**
+	     * The options for the ResultList
+	     * @componentOptions
+	     */
+	    ResultList.options = {
+	        /**
+	         * Specifies the element within which the rendered templates for results are inserted.<br/>
+	         * The content of this element is cleared when a new query is performed. If this option is not specified, a &lt;div&gt; element will by dynamically created in JavaScript and appended to the result list and used as a result container.<br/>
+	         * You can change the container by specifying its selector: Eg  data-result-container-selector="#someCssSelector"
+	         */
+	        resultContainer: ComponentOptions_1.ComponentOptions.buildChildHtmlElementOption({
+	            defaultFunction: function (element) {
+	                var d = document.createElement('div');
+	                element.appendChild(d);
+	                return d;
+	            }
+	        }),
+	        resultTemplate: ComponentOptions_1.ComponentOptions.buildTemplateOption({ defaultFunction: ResultList.getDefaultTemplate }),
+	        /**
+	         * Specifies the type of animation to display while waiting for a new query to finish executing.<br/>
+	         * Possible values are :<br/>
+	         * 'fade' : Fades out the currently displayed results while the query is executing.<br/>
+	         * 'spinner' : Shows a spinning animation while the query is executing.<br/>
+	         * 'none' : Use no animation during queries.<br/>
+	         * Default value is 'none'
+	         */
+	        waitAnimation: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'none' }),
+	        /**
+	         * Specifies the element inside which an animation is displayed while waiting for a new query to finish executing.<br/>
+	         * You can change this by specifying a css selector.<br/>
+	         * Eg : data-wait-animation-container-selector="#someCssSelector"
+	         * By default, the animation appears in the the resultContainer.
+	         */
+	        waitAnimationContainer: ComponentOptions_1.ComponentOptions.buildChildHtmlElementOption({ postProcessing: function (value, options) { return value || options.resultContainer; } }),
+	        /**
+	         * Specifies whether the ResultList automatically retrieves an additional page of results and appends them to those already being displayed whenever the user scrolls to the end of the infiniteScrollContainer.<br/>
+	         * The waitAnimation will be displayed while additional results are fetched.<br/>
+	         * Default value is false
+	         */
+	        enableInfiniteScroll: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+	        /**
+	         * When infiniteScroll is enabled, specifies the number of additional results that are fetched when the user scrolls to the bottom of the infiniteScrollContainer.<br/>
+	         * Default value is 10
+	         */
+	        infiniteScrollPageSize: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 10, min: 1, depend: 'enableInfiniteScroll' }),
+	        /**
+	         * When infinite scrolling is enabled, specifies the element whose scrolling is monitored to trigger fetching of additional results.<br/>
+	         * By default, the framework will try to find the first scrolling parent it encounter, starting from the ResultList itself<br/>
+	         * This also means that if it encounter no parent that are scrollable (in css this means having overflow-y: scroll), then the window itself will be the scroll container
+	         */
+	        infiniteScrollContainer: ComponentOptions_1.ComponentOptions.buildChildHtmlElementOption({ depend: 'enableInfiniteScroll', defaultFunction: function (element) { return ComponentOptions_1.ComponentOptions.findParentScrolling(element); } }),
+	        /**
+	         * Specifies if the wait animation should be displayed when a query is being performed using infinite scroll.<br/>
+	         * Default value is true
+	         */
+	        enableInfiniteScrollWaitingAnimation: ComponentOptions_1.ComponentOptions.buildBooleanOption({ depend: 'enableInfiniteScroll', defaultValue: true }),
+	        mobileScrollContainer: ComponentOptions_1.ComponentOptions.buildSelectorOption({ defaultFunction: function () { return document.querySelector('.coveo-results-column'); } }),
+	        /**
+	         * Specifies a list of fields to include in the query.<br/>
+	         * This is to ensure that fields that are not needed for the UI to function are not sent by the search API.<br/>
+	         * By default, this list is empty.<br/>
+	         * Note that this option has an interaction with autoSelectFieldsToInclude
+	         */
+	        fieldsToInclude: ComponentOptions_1.ComponentOptions.buildFieldsOption({ includeInResults: true }),
+	        /**
+	         * Specifies that the result list should scan its template and discover which field it will need to render every results.<br/>
+	         * This is to ensure that fields that are not needed for the UI to function are not sent by the search API.<br/>
+	         * Default value is false.<br/>
+	         * NB: Many interface created by the interface editor will actually explicitly set this option to true.
+	         */
+	        autoSelectFieldsToInclude: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
+	        /**
+	         * Specifies the layout to use for displaying the results. Specifying a value for this option will automatically
+	         * populate a {@link ResultLayout} component with a switcher for the layout.
+	         *
+	         * For example, if there are two {@link ResultList} components in the page, one with its
+	         * {@link ResultList.options.layout} set to `list` and the other with the same option set to `card`, then the
+	         * ResultLayout component will have two buttons respectively titled **List** and **Card**.
+	         */
+	        layout: ComponentOptions_1.ComponentOptions.buildStringOption({
+	            defaultValue: 'list',
+	            required: true,
+	        })
+	    };
+	    ResultList.resultCurrentlyBeingRendered = null;
 	    return ResultList;
 	}(Component_1.Component));
-	ResultList.ID = 'ResultList';
-	/**
-	 * The options for the ResultList
-	 * @componentOptions
-	 */
-	ResultList.options = {
-	    /**
-	     * Specifies the element within which the rendered templates for results are inserted.<br/>
-	     * The content of this element is cleared when a new query is performed. If this option is not specified, a &lt;div&gt; element will by dynamically created in JavaScript and appended to the result list and used as a result container.<br/>
-	     * You can change the container by specifying its selector: Eg  data-result-container-selector="#someCssSelector"
-	     */
-	    resultContainer: ComponentOptions_1.ComponentOptions.buildChildHtmlElementOption({
-	        defaultFunction: function (element) {
-	            var d = document.createElement('div');
-	            element.appendChild(d);
-	            return d;
-	        }
-	    }),
-	    resultTemplate: ComponentOptions_1.ComponentOptions.buildTemplateOption({ defaultFunction: ResultList.getDefaultTemplate }),
-	    /**
-	     * Specifies the type of animation to display while waiting for a new query to finish executing.<br/>
-	     * Possible values are :<br/>
-	     * 'fade' : Fades out the currently displayed results while the query is executing.<br/>
-	     * 'spinner' : Shows a spinning animation while the query is executing.<br/>
-	     * 'none' : Use no animation during queries.<br/>
-	     * Default value is 'none'
-	     */
-	    waitAnimation: ComponentOptions_1.ComponentOptions.buildStringOption({ defaultValue: 'none' }),
-	    /**
-	     * Specifies the element inside which an animation is displayed while waiting for a new query to finish executing.<br/>
-	     * You can change this by specifying a css selector.<br/>
-	     * Eg : data-wait-animation-container-selector="#someCssSelector"
-	     * By default, the animation appears in the the resultContainer.
-	     */
-	    waitAnimationContainer: ComponentOptions_1.ComponentOptions.buildChildHtmlElementOption({ postProcessing: function (value, options) { return value || options.resultContainer; } }),
-	    /**
-	     * Specifies whether the ResultList automatically retrieves an additional page of results and appends them to those already being displayed whenever the user scrolls to the end of the infiniteScrollContainer.<br/>
-	     * The waitAnimation will be displayed while additional results are fetched.<br/>
-	     * Default value is false
-	     */
-	    enableInfiniteScroll: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-	    /**
-	     * When infiniteScroll is enabled, specifies the number of additional results that are fetched when the user scrolls to the bottom of the infiniteScrollContainer.<br/>
-	     * Default value is 10
-	     */
-	    infiniteScrollPageSize: ComponentOptions_1.ComponentOptions.buildNumberOption({ defaultValue: 10, min: 1, depend: 'enableInfiniteScroll' }),
-	    /**
-	     * When infinite scrolling is enabled, specifies the element whose scrolling is monitored to trigger fetching of additional results.<br/>
-	     * By default, the framework will try to find the first scrolling parent it encounter, starting from the ResultList itself<br/>
-	     * This also means that if it encounter no parent that are scrollable (in css this means having overflow-y: scroll), then the window itself will be the scroll container
-	     */
-	    infiniteScrollContainer: ComponentOptions_1.ComponentOptions.buildChildHtmlElementOption({ depend: 'enableInfiniteScroll', defaultFunction: function (element) { return ComponentOptions_1.ComponentOptions.findParentScrolling(element); } }),
-	    /**
-	     * Specifies if the wait animation should be displayed when a query is being performed using infinite scroll.<br/>
-	     * Default value is true
-	     */
-	    enableInfiniteScrollWaitingAnimation: ComponentOptions_1.ComponentOptions.buildBooleanOption({ depend: 'enableInfiniteScroll', defaultValue: true }),
-	    mobileScrollContainer: ComponentOptions_1.ComponentOptions.buildSelectorOption({ defaultFunction: function () { return document.querySelector('.coveo-results-column'); } }),
-	    /**
-	     * Specifies a list of fields to include in the query.<br/>
-	     * This is to ensure that fields that are not needed for the UI to function are not sent by the search API.<br/>
-	     * By default, this list is empty.<br/>
-	     * Note that this option has an interaction with autoSelectFieldsToInclude
-	     */
-	    fieldsToInclude: ComponentOptions_1.ComponentOptions.buildFieldsOption({ includeInResults: true }),
-	    /**
-	     * Specifies that the result list should scan its template and discover which field it will need to render every results.<br/>
-	     * This is to ensure that fields that are not needed for the UI to function are not sent by the search API.<br/>
-	     * Default value is false.<br/>
-	     * NB: Many interface created by the interface editor will actually explicitly set this option to true.
-	     */
-	    autoSelectFieldsToInclude: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: false }),
-	    /**
-	     * Specifies the layout to use for displaying the results. Specifying a value for this option automatically
-	     * populates a {@link ResultLayout} component with a switcher for the layout.
-	     *
-	     * For example, if there are two {@link ResultList} components in the page, one with its
-	     * {@link ResultList.options.layout} set to `list` and the other with the same option set to `card`, then the
-	     * ResultLayout component will have two buttons respectively titled **List** and **Card**.
-	     *
-	     * The possible values are:
-	     * - `list`
-	     * - `card`
-	     * - `table`
-	     *
-	     * Default value is `list`.
-	     */
-	    layout: ComponentOptions_1.ComponentOptions.buildStringOption({
-	        defaultValue: 'list',
-	        required: true,
-	    })
-	};
-	ResultList.resultCurrentlyBeingRendered = null;
 	exports.ResultList = ResultList;
 	Initialization_1.Initialization.registerAutoCreateComponent(ResultList);
-
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 149 */
@@ -48522,9 +44469,9 @@ var playground =
 	var ResultLayoutEvents = (function () {
 	    function ResultLayoutEvents() {
 	    }
+	    ResultLayoutEvents.populateResultLayout = 'populateResultLayout';
 	    return ResultLayoutEvents;
 	}());
-	ResultLayoutEvents.populateResultLayout = 'populateResultLayout';
 	exports.ResultLayoutEvents = ResultLayoutEvents;
 
 
@@ -48538,11 +44485,11 @@ var playground =
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Template_1 = __webpack_require__(53);
+	var Template_1 = __webpack_require__(54);
 	var DefaultRecommendationTemplate = (function (_super) {
 	    __extends(DefaultRecommendationTemplate, _super);
 	    function DefaultRecommendationTemplate() {
-	        return _super !== null && _super.apply(this, arguments) || this;
+	        _super.apply(this, arguments);
 	    }
 	    DefaultRecommendationTemplate.prototype.instantiateToString = function (object) {
 	        var template = "<div class=\"coveo-result-frame\">\n        <div class=\"coveo-result-row\">\n          <div class=\"coveo-result-cell\" style=\"width:40px;text-align:center;vertical-align:middle;\">\n            <span class=\"CoveoIcon\" data-small=\"true\">\n            </span>\n          </div>\n          <div class=\"coveo-result-cell\" style=\"padding:0 0 3px 5px;vertical-align:middle\">\n            <div class=\"coveo-result-row\">\n              <div class=\"coveo-result-cell\" style=\"font-size:10pt;\">\n                <a class=\"CoveoResultLink\" style=\"display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">\n                </a>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>";

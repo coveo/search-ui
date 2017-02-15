@@ -183,29 +183,27 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The Tab component renders a bar that allows the end user to select a specific search interface.</p>
+						<p>This component is a bar allowing users to select a search interface.</p>
 					</div>
-					<p>This component attaches itself to a <code>div</code> element. It is in charge of adding an advanced expression to the outgoing
-					query in order to refine the results.</p>
-					<p>The Tab component can also hide and show different parts of the UI. For each individual component in the UI, you can
-					specify whether you wish to include or exclude that component when the user selects a certain Tab.</p>
-					<p><strong>Including and Excluding Other HTML Components:</strong></p>
-					<p>You can hide or show a specific HTML component based on the currently selected Tab by adding one of the following
-					attributes to its tag:</p>
+					<p>The component attaches itself to an div element and is in charge of adding an advanced expression to the query and thus, modify the outgoing query in order to refine the results in relation to the selected tab.</p>
+					<p>It also allows to hide and show different parts of the UI. In order to do so, each component of the UI can specify whether or not it wishes to be included or excluded from a specific tab.</p>
+					<h1 id="including-and-excluding-other-html-components">Including and excluding other HTML components</h1>
+					<p>You can hide/show specific HTML components, based on the currently selected search tab by adding the following attributes:</p>
 					<ul>
-						<li><code>&lt;div data-tab=&quot;foobar&quot;&gt;</code>: Only include this element in the Tab with <code>foobar</code> as its <code>data-id</code>.</li>
-						<li><code>&lt;div data-tab-not=&quot;foobar&quot;&gt;</code>: Do not include this element in the Tab with <code>foobar</code> as its <code>data-id</code>.</li>
-						<li><code>&lt;div data-tab=&quot;foobar,somethingelse&quot;&gt;</code>: Only include this element in the Tab with <code>foobar</code> as its <code>data-id</code> and in
-						the Tab with <code>somethingelse</code> as its <code>data-id</code>.</li>
+						<li><p><code>&lt;div data-tab=&quot;foobar&quot;&gt;</code> -&gt; Include this element only in the tab with the ID &#39;foobar&#39;.</p>
+						</li>
+						<li><p><code>&lt;div data-tab-not=&quot;foobar&quot;&gt;</code> -&gt; DO NOT include this element in the tab ID &#39;foobar&#39;.</p>
+						</li>
+						<li><p><code>&lt;div data-tab=&quot;foobar,somethingelse&quot;&gt;</code> -&gt; Include this element only in the tab with the ID &#39;foobar&#39; or &#39;somethingelse&#39;.</p>
+						</li>
 					</ul>
-					<p><strong>Setting a New Endpoint for a Tab:</strong></p>
-					<p>A Tab can use a custom endpoint when performing a query. Of course, you need to make sure that the endpoint exists in
-					the array of Coveo.SearchEndpoint.endpoints (see <a href="../classes/searchendpoint.html#endpoints">SearchEndpoint.endpoints</a>).</p>
+					<h1 id="setting-a-new-endpoint-for-a-tab">Setting a new endpoint for a tab</h1>
+					<p>A tab can use a custom endpoint when performing a query. First, you need to make sure that the endpoint exists in the array of Coveo.SearchEndpoint.endpoints.</p>
 					<pre><code>Coveo.SearchEndpoint.endpoints[<span class="hljs-string">"specialEndpoint"</span>] = <span class="hljs-keyword">new</span> Coveo.SearchEndpoint({
     <span class="hljs-attr">restUri</span> : <span class="hljs-string">'https://somewhere.com/rest/search'</span>
 })
 
-[ ... ]
+[...]
 
 &lt;div <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">'CoveoTab'</span> data-endpoint=<span class="hljs-string">'specialEndpoint'</span>&gt;<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
 </code></pre>
@@ -282,15 +280,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L89">src/ui/Tab/Tab.ts
-							:89</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L80">src/ui/Tab/Tab.ts
+							:80</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the caption of the Tab.</p>
+							<p>The caption for the tab.<br/>
+							This is mandatory and required for the tab to function properly.</p>
 						</div>
-						<p>Specifying a value for this option is necessary for this component to work.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -304,17 +302,16 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L151">src/ui/Tab/Tab.ts
-							:151</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L116">src/ui/Tab/Tab.ts
+							:116</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to include the <a href="tab.html#options.expression">Tab.options.expression</a> in the constant part of the query.</p>
+							<p>Specifies whether the filter expression should be included in the constant part of the query.<br/>
+								The constant part of the query is specially optimized by the index to execute faster, but you must be careful not to include dynamic query expressions otherwise the cache would lose its efficiency.<br/>
+							By default, this option is set to <code>true</code>.</p>
 						</div>
-						<p>The index specially optimizes the constant part of the query to execute faster. However, you must be careful not
-						to include dynamic query expressions, otherwise the cache will lose its efficiency.</p>
-						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -329,17 +326,16 @@ data-constant&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L225">src/ui/Tab/Tab.ts
-							:225</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L150">src/ui/Tab/Tab.ts
+							:150</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the label of the button that allows to show the hidden tabs when in responsive mode.</p>
+							<p>Specifies the label of the button that allows to show the hidden tabs when in responsive mode. If it is specified more than once, the
+								first occurence of the option will be used.
+							The default value is &quot;More&quot;.</p>
 						</div>
-						<p>If more than one Tab in the search interface specifies a value for this option, then the framework uses the first
-						occurrence of the option.</p>
-						<p>The default value is <code>&quot;More&quot;</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -353,27 +349,15 @@ data-constant&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L171">src/ui/Tab/Tab.ts
-							:171</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L121">src/ui/Tab/Tab.ts
+							:121</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to filter duplicates in the search results when the user selects the Tab.</p>
+							<p>Specifies whether to filter duplicates on the search results.<br/>
+							The default value is false.</p>
 						</div>
-						<p>Setting this option to <code>true</code> forces duplicates to not appear in the search results. However, <a href="facet.html">Facet</a>
-						counts still include duplicates, which can be confusing for the end user. This is a limitation of the index.</p>
-						<p><strong>Example:</strong></p>
-						<blockquote>
-							<p>The end user narrows a query down to one document that has a duplicate. If this options is <code>true</code> and the user
-							selects the Tab, only one document appears in the search results while the Facet count is still 2.</p>
-						</blockquote>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>It is also possible to enable duplicate filtering for the entire <a href="searchinterface.html">SearchInterface</a> rather than for a
-							single Tab (see <a href="searchinterface.html#options.enableduplicatefiltering">SearchInterface.options.enableDuplicateFiltering</a>).</p>
-						</blockquote>
-						<p>Default value is <code>false</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -388,19 +372,19 @@ data-enable-duplicate-filtering&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L215">src/ui/Tab/Tab.ts
-							:215</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L143">src/ui/Tab/Tab.ts
+							:143</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to enable responsive mode for tabs. Responsive mode makes overflowing tabs disappear, instead
-								making them available using a dropdown button. Responsive tabs are enabled either when tabs overflow or when the
-							width of the search interface becomes too small.</p>
+							<p>Specifies if the responsive mode should be enabled for the tabs. Responsive mode will make the overflowing tabs dissapear and instead
+								be availaible using a dropdown button. Responsive tabs are enabled when tabs overflow or when the width of the search interface
+							becomes too small.</p>
 						</div>
-						<p>Disabling responsive mode for one Tab also disables it for all tabs. Therefore, you only need to set this option
-						to <code>false</code> on one Tab to disable responsive mode.</p>
-						<p>Default value is <code>true</code>.</p>
+						<p>Disabling reponsive mode for one tab will disable it for all tabs.
+							Therefore, this options only needs to be set on one tab to be effective.
+						The default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -415,15 +399,15 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L114">src/ui/Tab/Tab.ts
-							:114</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L96">src/ui/Tab/Tab.ts
+							:96</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the <a href="../classes/searchendpoint.html">SearchEndpoint</a> to point to when performing queries from within the Tab.</p>
+							<p>Specifies the endpoint that a tab should point to when performing query inside that tab.<br/>
+							This is optional, by default the tab will use the &quot;default&quot; endpoint.</p>
 						</div>
-						<p>By default, the Tab uses the &quot;default&quot; endpoint.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -433,17 +417,16 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L107">src/ui/Tab/Tab.ts
-							:107</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L91">src/ui/Tab/Tab.ts
+							:91</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies an advanced expression or filter that the Tab should add to any outgoing query.</p>
+							<p>Specifies an advanced expression / filter that this tab adds to any outgoing query.<br/>
+								eg : @objecttype==Message.<br/>
+							This is optional, normally a &quot;All Content&quot; tab would not set any filter on the query.</p>
 						</div>
-						<p><strong>Example:</strong></p>
-						<p><code>@objecttype==Message</code></p>
-						<p>Default value is <code>undefined</code> and the Tab applies no additional expression or filter to the query.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -457,21 +440,15 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L96">src/ui/Tab/Tab.ts
-							:96</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L85">src/ui/Tab/Tab.ts
+							:85</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-							<dt>deprecated</dt>
-							<dd><p>This options is mostly kept for legacy reasons. If possible, you should avoid using it.</p>
-							</dd>
-						</dl>
 						<div class="lead">
-							<p>Specifies an icon to use for the Tab.</p>
+							<p>Specify an icon for the tab.<br/>
+							This options is mostly kept for legacy reason. Do not use one if not needed.</p>
 						</div>
-						<dl class="tsd-comment-tags">
-						</dl>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -485,15 +462,15 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L82">src/ui/Tab/Tab.ts
-							:82</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L75">src/ui/Tab/Tab.ts
+							:75</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies a unique ID for the Tab.</p>
+							<p>The unique ID for a tab.<br/>
+							This is mandatory and required for the tab to function properly.</p>
 						</div>
-						<p>Specifying a value for this option is necessary for this component to work.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -507,19 +484,18 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L141">src/ui/Tab/Tab.ts
-							:141</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L110">src/ui/Tab/Tab.ts
+							:110</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the default layout to display when the user selects the Tab (see <a href="resultlist.html#options.layout">ResultList.options.layout</a> and
-							<a href="resultlayout.html">ResultLayout</a>).</p>
+							<p>Specifies the default layout to display when this tab is selected (see <a href="resultlist.html#options.layout">ResultList.options.layout</a> and
+								<a href="resultlayout.html">ResultLayout</a>).
+								The value must be one of <code>list</code>, <code>card</code>, or <code>table</code>.
+								This option is overridden by a URL parameter.
+							If not specified, the first available layout will be chosen.</p>
 						</div>
-						<p>See the <a href="../globals.html#validlayout">ValidLayout</a> type for the list of possible values.</p>
-						<p>This option is overridden by a URL parameter.</p>
-						<p>See also <a href="https://developers.coveo.com/x/yQUvAg">Result Layouts</a>.</p>
-						<p>Default value is <code>undefined</code> and the component selects the first available layout.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -533,27 +509,17 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L203">src/ui/Tab/Tab.ts
-							:203</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L133">src/ui/Tab/Tab.ts
+							:133</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the maximum age (in milliseconds) that cached query results can have to still be usable as results
-								instead of performing a new query on the index from within the Tab. The cache is located in the Coveo Search API
-							(which resides between the index and the search interface).</p>
+							<p>Specifies the maximum age in milliseconds that cached query results can have in order to be used (instead of performing a new query on the index).<br/>
+								The cache is located in the Coveo Search API (which resides between the index and search interface).<br/>
+								If cached results are available but are older than the specified age, a new query will be performed on the index.<br/>
+							By default, this is left undefined and the Coveo Search API will decide the cache duration.</p>
 						</div>
-						<p>If cached results that are older than the age you specify in this option are available, a new query will be
-						performed on the index anyhow.</p>
-						<p>On high-volume public web sites, specifying a higher value for this option can greatly improve query response
-						time at the cost of result freshness.</p>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>It is also possible to set a maximum cache age for the entire <a href="searchinterface.html">SearchInterface</a> rather than for a single
-							Tab (see <a href="searchinterface.html#options.maximumage">SearchInterface.options.maximumAge</a>).</p>
-						</blockquote>
-						<p>Default value is <code>undefined</code> and the Coveo Search API determines the maximum cache age. This is typically
-						equivalent to 30 minutes (see <a href="https://developers.coveo.com/display/SearchREST/Query+Parameters#QueryParameters-maximumAge">Query Parameters - maximumAge</a>).</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -567,18 +533,15 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L182">src/ui/Tab/Tab.ts
-							:182</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L126">src/ui/Tab/Tab.ts
+							:126</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the name of the query pipeline to use for the queries when the Tab is selected.</p>
+							<p>Specifies the name of the query pipeline to use for the queries, in the Coveo platform ( Query Pipeline in the Cloud administration).<br/>
+							If not specified, the default value is null, in which case pipeline selection conditions defined in a Coveo Cloud organization apply.</p>
 						</div>
-						<p>You can specify a value for this option if your index is in a Coveo Cloud organization in which pipelines have
-						been created (see <a href="http://www.coveo.com/go?dest=cloudhelp&amp;lcid=9&amp;context=128">Managing Query Pipelines</a>).</p>
-						<p>Default value is <code>undefined</code>, which means that pipeline selection conditions defined in the Coveo Cloud
-						organization apply.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -592,21 +555,16 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L127">src/ui/Tab/Tab.ts
-							:127</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L102">src/ui/Tab/Tab.ts
+							:102</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the default sort criteria to use when selecting the Tab. A <a href="sort.html">Sort</a> component with the same
-							parameter needs to be present in the search interface in order for this option to function properly.</p>
+							<p>Specifies the default sort when this tab is selected. A <a href="sort.html">Sort</a> component configured with the same specified parameter needs to be in the interface in order for this this option to function properly.<br/>
+								e.g.: relevancy / date descending<br/>
+							Optional, by default the normal <a href="sort.html">Sort</a> component behavior will operate.</p>
 						</div>
-						<p><strong>Examples:</strong></p>
-						<ul>
-							<li><code>data-sort=&#39;relevancy&#39;</code></li>
-							<li><code>data-sort=&#39;date descending&#39;</code></li>
-						</ul>
-						<p>Default value is <code>undefined</code> and the normal <a href="sort.html">Sort</a> component behavior applies.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -707,8 +665,8 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
-									:124</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L123">src/ui/Base/Component.ts
+									:123</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -731,14 +689,13 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L276">src/ui/Tab/Tab.ts
-									:276</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L197">src/ui/Tab/Tab.ts
+									:197</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Indicates whether the HTMLElement argument is included in the Tab. <em>Included</em> elements are shown when the Tab is
-									selected, whereas <em>excluded</em> elements are not.</p>
+									<p>Check if the given <code>HTMLElement</code> is included or not in this tab.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -746,12 +703,11 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The HTMLElement to verify.</p>
+										<p>The element to verify.</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-							<p><code>true</code> if the HTMLElement is included in the Tab; <code>false</code> if it is excluded.</p>
 						</li>
 					</ul>
 				</section>
@@ -766,16 +722,15 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L258">src/ui/Tab/Tab.ts
-									:258</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L180">src/ui/Tab/Tab.ts
+									:180</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Selects the current Tab.</p>
+									<p>Select the current tab.<br/>
+									Trigger a query and log an analytics event.</p>
 								</div>
-								<p>Also logs the <code>interfaceChange</code> event in the usage analytics with the new current <a href="tab.html#options.id">Tab.options.id</a> as metada
-								and triggers a new query.</p>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
@@ -793,8 +748,8 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
-									:193</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L192">src/ui/Base/Component.ts
+									:192</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -839,8 +794,8 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
-							:62</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L61">src/ui/Base/Component.ts
+							:61</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -864,8 +819,8 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
-							:90</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L89">src/ui/Base/Component.ts
+							:89</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -882,8 +837,8 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
-							:74</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L73">src/ui/Base/Component.ts
+							:73</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -943,8 +898,8 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
-							:78</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L77">src/ui/Base/Component.ts
+							:77</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -961,8 +916,8 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
-							:70</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L69">src/ui/Base/Component.ts
+							:69</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -979,8 +934,8 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
-							:66</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L65">src/ui/Base/Component.ts
+							:65</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -997,8 +952,8 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
-							:82</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L81">src/ui/Base/Component.ts
+							:81</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1015,8 +970,8 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
-							:86</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L85">src/ui/Base/Component.ts
+							:85</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1059,13 +1014,13 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L229">src/ui/Tab/Tab.ts
-									:229</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Tab/Tab.ts#L154">src/ui/Tab/Tab.ts
+									:154</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new Tab. Binds on buildingQuery event as well as an event on click of the element.</p>
+									<p>Create a new Tab. Bind on buildingQuery event as well as on click of the element.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1074,24 +1029,17 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The HTMLElement on which to instantiate the component. Normally a <code>div</code>.</p>
+											<p>The <code>HTMLElement</code> on which to create a new tab. Normally a div</p>
 										</div>
 									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">ITabOptions</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The options for the Tab component.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The bindings that the component requires to function normally. If not set, these will be
-											automatically resolved (with a slower execution time).</p>
 										</div>
 									</div>
 								</li>
