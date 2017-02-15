@@ -55,7 +55,7 @@ export interface IFacetSliderOptions extends ISliderOptions {
  * // You can call the init script using "pure" JavaScript:
  * Coveo.init(document.querySelector('#search'), {
  *    FacetSlider: {
- *      field: "@syssize",
+ *      field: "@size",
  *      start: 1000,
  *      end: 5000,
  *      rangeSlider: true,
@@ -68,7 +68,7 @@ export interface IFacetSliderOptions extends ISliderOptions {
  * // Or you can call the init script using the jQuery extension:
  * $('#search').coveo('init', {
  *    FacetSlider: {
- *      field: "@syssize",
+ *      field: "@size",
  *      start: 1000,
  *      end: 5000,
  *      rangeSlider: true,
@@ -82,7 +82,7 @@ export interface IFacetSliderOptions extends ISliderOptions {
  * Specifying the same FacetSlider configuration by setting the corresponding HTML attributes directly in the markup:
  *
  * ```html
- * <div class='CoveoFacetSlider' data-field='@syssize' data-start='1000' data-end='5000' data-range-slider='true' data-graph-steps='10'></div>
+ * <div class='CoveoFacetSlider' data-field='@size' data-start='1000' data-end='5000' data-range-slider='true' data-graph-steps='10'></div>
  * ```
  */
 export class FacetSlider extends Component {
