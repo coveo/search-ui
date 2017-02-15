@@ -102,7 +102,7 @@ export class FacetSlider extends Component {
 
     /**
      * Specifies whether the field for which you are requesting a range is a date field. This allows the FacetSlider to
-     * correctly build the outgoing {@link IGroupByRequest} and render itself properly.
+     * correctly build the outgoing [GroupByRequest]{@link IGroupByRequest} and render itself properly.
      *
      * Default value is `false`.
      */
@@ -185,7 +185,7 @@ export class FacetSlider extends Component {
      * Specifies the number of steps to split the slider into.
      *
      * For example, if your range is [ 0 , 100 ] and you specify 10 steps, then the end user can move the slider only to
-     * the values [ 0, 10, 20. 30 ... , 100 ].
+     * the values [ 0, 10, 20, 30 ... , 100 ].
      *
      * Default value is `undefined`, and the slider allows all values. Minimum value is `2`.
      */
@@ -258,7 +258,7 @@ export class FacetSlider extends Component {
     /**
      * Specifies a function to generate the steps for the FacetSlider (see {@link FacetSlider.options.steps}. This
      * function receives the FacetSlider boundaries (see {@link FacetSlider.options.start} and
-     * {@link FacetSlider.options.end}) and must return an array of number (the steps).
+     * {@link FacetSlider.options.end}) and must return an array of numbers (the steps).
      *
      * You can only set this option in the {@link init} call of your search interface. You cannot set it directly in the
      * markup as an HTML attribute.
