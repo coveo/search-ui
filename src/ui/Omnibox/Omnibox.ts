@@ -150,7 +150,7 @@ export class Omnibox extends Component {
     /**
      * Specifies a placeholder for the input.
      */
-    placeholder: ComponentOptions.buildStringOption(),
+    placeholder: ComponentOptions.buildLocalizedStringOption(),
 
     /**
      * Specifies a timeout (in milliseconds) before rejecting suggestions in the Omnibox.
