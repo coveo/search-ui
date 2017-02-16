@@ -7,6 +7,7 @@ import { Utils } from '../../utils/Utils';
 import { Facet } from '../Facet/Facet';
 import { Tab } from '../Tab/Tab';
 import { ResponsiveFacets } from './ResponsiveFacets';
+import { QueryEvents } from '../../events/QueryEvents';
 import _ = require('underscore');
 
 export interface IResponsiveComponentOptions {
@@ -68,8 +69,14 @@ export class ResponsiveComponentsManager {
 
       this.remainingComponentInitializations--;
       if (this.remainingComponentInitializations == 0) {
-        this.resizeAllComponentsManager();
         this.instantiateResponsiveComponents(); // necessary to verify if all components are disabled before they are initialized.
+        if (root.width() == 0) {
+          root.one(QueryEvents.querySuccess, () => {
+            this.resizeAllComponentsManager();
+          });
+        } else {
+          this.resizeAllComponentsManager();
+        }
       }
     });
     this.remainingComponentInitializations++;
