@@ -562,7 +562,7 @@ export class Facet extends Component {
      *
      * Responsive mode displays all facets under a single dropdown button whenever the width of the HTML element which
      * the search interface is bound to reaches or falls behind a certain threshold (see
-     * {@link Facet.options.responsiveBreakpoint}).
+     * {@link SearchInterface.responsiveComponents}).
      *
      * See also {@link Facet.options.dropdownHeaderLabel}.
      *
@@ -594,7 +594,7 @@ export class Facet extends Component {
      * If more than one Facet or {@link FacetSlider} in the search interface specifies a value for this option, then the
      * framework uses the first occurrence of the option.
      *
-     * Default value is `"Filters"`.
+     * Default value is `Filters`.
      */
     dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption()
   };

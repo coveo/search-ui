@@ -11,6 +11,7 @@ import { analyticsActionCauseList, IAnalyticsTopSuggestionMeta } from '../Analyt
 import { Initialization } from '../Base/Initialization';
 import { $$ } from '../../utils/Dom';
 import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
+import { IStringMap } from '../../rest/GenericParam';
 import _ = require('underscore');
 
 export interface IAnalyticsSuggestionsOptions extends ISuggestionForOmniboxOptions {
@@ -89,7 +90,16 @@ export class AnalyticsSuggestions extends Component {
 
     this.options = ComponentOptions.initComponentOptions(element, AnalyticsSuggestions, this.options);
 
-    let rowTemplate = _.template(`<div class='magic-box-suggestion coveo-omnibox-selectable coveo-top-analytics-suggestion-row'><%= data %></div>`);
+    let rowTemplate = (toRender: IStringMap<any>) => {
+      let rowElement = $$('div', {
+        className: 'magic-box-suggestion coveo-omnibox-selectable coveo-top-analytics-suggestion-row'
+      });
+      if (toRender['data']) {
+        rowElement.el.innerHTML = toRender['data'];
+      }
+      return rowElement.el.outerHTML;
+    };
+
     this.options.onSelect = this.options.onSelect || this.onRowSelection;
 
     let suggestionStructure: ISuggestionForOmniboxTemplate;
@@ -98,7 +108,23 @@ export class AnalyticsSuggestions extends Component {
         row: rowTemplate
       };
     } else {
-      let headerTemplate = _.template(`<div class='coveo-top-analytics-suggestion-header'><span class='coveo-icon-top-analytics'></span><span class='coveo-caption'><%= headerTitle %></span></div>`);
+      let headerTemplate = () => {
+        let headerElement = $$('div', {
+          className: 'coveo-top-analytics-suggestion-header'
+        });
+        let iconElement = $$('span', {
+          className: 'coveo-icon-top-analytics'
+        });
+        let captionElement = $$('span', {
+          className: 'coveo-caption'
+        });
+        if (this.options.headerTitle) {
+          captionElement.text(this.options.headerTitle);
+        }
+        headerElement.append(iconElement.el);
+        headerElement.append(captionElement.el);
+        return headerElement.el.outerHTML;
+      };
       suggestionStructure = {
         header: { template: headerTemplate, title: this.options.headerTitle },
         row: rowTemplate
