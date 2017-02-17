@@ -105,15 +105,17 @@ export class ResponsiveComponentsManager {
     this.dropdownHeadersWrapper = $$('div', { className: ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS });
     this.searchBoxElement = this.getSearchBoxElement();
     this.resizeListener = _.debounce(() => {
-      this.addDropdownHeaderWrapperIfNeeded();
-      if (this.shouldSwitchToSmallMode()) {
-        this.coveoRoot.addClass('coveo-small-interface');
-      } else if (!this.shouldSwitchToSmallMode()) {
-        this.coveoRoot.removeClass('coveo-small-interface');
-      }
-      _.each(this.responsiveComponents, responsiveComponent => {
-        responsiveComponent.handleResizeEvent();
-      });
+      if (this.coveoRoot.width() != 0) {
+        this.addDropdownHeaderWrapperIfNeeded();
+        if (this.shouldSwitchToSmallMode()) {
+          this.coveoRoot.addClass('coveo-small-interface');
+        } else if (!this.shouldSwitchToSmallMode()) {
+          this.coveoRoot.removeClass('coveo-small-interface');
+        }
+        _.each(this.responsiveComponents, responsiveComponent => {
+          responsiveComponent.handleResizeEvent();
+        });
+      } 
     }, 200);
     window.addEventListener('resize', this.resizeListener);
     this.bindNukeEvents();
