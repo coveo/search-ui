@@ -9,6 +9,7 @@ const path = require('path');
 
 let webpackConfig = require('../webpack.config.js');
 webpackConfig.entry['CoveoJsSearch'].unshift('webpack-dev-server/client?http://localhost:8080/');
+webpackConfig.entry['CoveoJsSearch.Lazy'].unshift('webpack-dev-server/client?http://localhost:8080/');
 const compiler = webpack(webpackConfig);
 
 let webpackConfigTest = require('../webpackConfigFiles/webpack.test.config');
@@ -40,10 +41,15 @@ compilerPlayground.plugin('done', ()=> {
 
 gulp.task('dev', ['setup', 'prepareSass'], (done)=> {
   let server = new WebpackDevServer(compiler, {
-    publicPath: '/js/',
     compress: true,
+    contentBase: 'bin/',
+    publicPath: 'http://localhost:8080/js/',
     headers: {
       'Content-Security-Policy': "script-src 'self' 'unsafe-inline'"
+    },
+    stats: {
+      colors: true,
+      publicPath: true
     }
   });
   server.listen(8080, 'localhost', ()=> {

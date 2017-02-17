@@ -11,13 +11,13 @@ conf = _.extend(conf, {
     'CoveoJsSearch.Lazy': ['./src/Lazy.ts']
   },
   output: {
-    path: path.resolve(__dirname, 'bin/js'),
+    path: path.resolve('./bin/js'),
     filename: minimize ? '[name].min.js' : '[name].js',
     chunkFilename: minimize ? '[name].min.js' : '[name].js',
     libraryTarget: 'umd',
     // See Index.ts as for why this need to be a temporary variable
     library: 'Coveo__temporary',
-    publicPath: '/search-ui/bin/js/',
+    publicPath: 'js/',
     devtoolModuleFilenameTemplate: '[resource-path]'
   },
   plugins: conf.plugins.concat([

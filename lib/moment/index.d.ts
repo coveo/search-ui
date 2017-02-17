@@ -715,5 +715,6 @@ declare namespace moment {
   export var defaultFormatUtc: string;
 }
 
-export = moment;
-export as namespace moment;
+declare module 'moment' {
+  export = moment;
+}
