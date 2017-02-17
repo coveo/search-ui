@@ -49,7 +49,7 @@ export class Template {
     if (html != null) {
       var element = $$('div', {}, html).el;
       if (!wrapInDiv && element.children.length === 1) {
-        element = <HTMLElement>element.firstChild;
+        element = <HTMLElement>element.children.item(0);
       }
       this.logger.trace('Instantiated result template', object, element);
       element['template'] = this;
