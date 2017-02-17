@@ -5,6 +5,9 @@ import { IQueryResult } from '../../src/rest/QueryResult';
 import { IThumbnailOptions } from '../../src/ui/Thumbnail/Thumbnail';
 import { $$ } from '../../src/utils/Dom';
 import { FieldTable } from '../../src/ui/FieldTable/FieldTable';
+import { get } from '../../src/ui/Base/RegisteredNamedMethods';
+import { ResultLink } from '../../src/ui/ResultLink/ResultLink';
+import { Component } from '../../src/ui/Base/Component';
 
 export function ThumbnailTest() {
   describe('Thumbnail', function () {
@@ -80,6 +83,31 @@ export function ThumbnailTest() {
 
         expect($$(test.cmp.img).hasClass('coveo-heyo-there-is-no-class')).toBe(true);
         expect($$(test.cmp.img).hasClass('coveo-no-thumbnail')).toBe(false);
+      });
+
+      it('should create a result link if the element is not an image', () => {
+        test = Mock.advancedResultComponentSetup<Thumbnail>(Thumbnail, undefined, new Mock.AdvancedComponentSetupOptions($$('div').el, {
+          clickable: true
+        }, (builder: Mock.MockEnvironmentBuilder) => builder.withResult().withEndpoint(endpoint)));
+        expect(get(test.cmp.element, ResultLink) instanceof ResultLink).toBe(true);
+      });
+
+      it('should create a result link if the element is an image', () => {
+        test = Mock.advancedResultComponentSetup<Thumbnail>(Thumbnail, undefined, new Mock.AdvancedComponentSetupOptions($$('img').el, {
+          clickable: true
+        }, (builder: Mock.MockEnvironmentBuilder) => builder.withResult().withEndpoint(endpoint)));
+        expect(get(test.cmp.element, ResultLink) instanceof ResultLink).toBe(false);
+        expect(get($$(test.env.root).find(`.${Component.computeCssClassName(ResultLink)}`)) instanceof ResultLink).toBe(true);
+      });
+
+      it('should accept resultlink option, and pass them correctly', () => {
+        test = Mock.advancedResultComponentSetup<Thumbnail>(Thumbnail, undefined, new Mock.AdvancedComponentSetupOptions($$('div').el, {
+          clickable: true,
+          hrefTemplate: 'foo'
+        }, (builder: Mock.MockEnvironmentBuilder) => builder.withResult().withEndpoint(endpoint)));
+        let resultLink = <ResultLink>get(test.cmp.element, ResultLink);
+        expect(resultLink instanceof ResultLink).toBe(true);
+        expect(resultLink.options.hrefTemplate).toBe('foo');
       });
     });
 

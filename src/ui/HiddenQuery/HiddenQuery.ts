@@ -18,34 +18,46 @@ export interface IHiddenQueryOptions {
 }
 
 /**
- * This component job is to handle an 'hidden' query parameter.<br/>
- * Concretely, this means that a search interface loaded with #hq=foo&hd=bar will add 'foo' as an expression to the query ('hq'=> hidden query) and render 'bar' in the {@link Breadcrumb}.<br/>
+ * The HiddenQuery component handles a "hidden" query parameter (`hq`) and its description (`hd`).
+ *
+ * Concretely, this means that if a HiddenQuery component is present in your page and you load your search interface
+ * with `hq=foo&hd=bar` in the URL hash, the component adds `foo` as an expression to the query (`hq` is the hidden
+ * query) and renders `bar` in the {@link Breadcrumb} (`hd` is the hidden query description).
  */
 export class HiddenQuery extends Component {
   static ID = 'HiddenQuery';
+
   /**
    * Possible options for the `HiddenQuery` component
    * @componentOptions
    */
   static options: IHiddenQueryOptions = {
+
     /**
-     * Specifies a maximum character length for a description.<br/>
-     * After this length, the component will slice the descrption and add [...].<br/>
-     * Default value is 100.
+     * Specifies the maximum number of characters from the hidden query description (`hd`) to display in the
+     * {@link Breadcrumb}.
+     *
+     * Beyond this length, the HiddenQuery component slices the rest of the description and replaces it by `...`.
+     *
+     * Default value is `100`. Minimum value is `0`.
      */
     maximumDescriptionLength: ComponentOptions.buildNumberOption({ min: 0, defaultValue: 100 }),
+
     /**
-     * Specifies a title that will appear in the {@link Breadcrumb} when it is populated by the `HiddenQuery` component.<br/>
-     * By default, it is a localized string for 'Additional filters :'
+     * Specifies the title that should appear in the {@link Breadcrumb} when the HiddenQuery populates it.
+     *
+     * Default value is the localized string for `"Additional filters:"`
      */
-    title: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('AdditionalFilters') + ' : ' })
+    title: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('AdditionalFilters') + ': ' })
   };
 
   /**
-   * Create a new HiddenQuery component, which bind multiple events (building query as well as {@link Breadcrumb} events).
-   * @param element
-   * @param options
-   * @param bindings
+   * Creates a new HiddenQuery component, which binds multiple events ({@link QueryEvents.buildingQuery},
+   * {@link BreadcrumbEvents.populateBreadcrumb} and {@link BreadcrumbEvents.clearBreadcrumb}).
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the HiddenQuery component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
    */
   constructor(public element: HTMLElement, public options?: IHiddenQueryOptions, bindings?: IComponentBindings) {
 
@@ -58,7 +70,8 @@ export class HiddenQuery extends Component {
   }
 
   /**
-   * Clear any hd or hq set in the {@link QueryStateModel}, log an analytics event and trigger a new query.
+   * Clears any `hd` or `hq` set in the {@link QueryStateModel}.
+   * Also logs the `contextRemove` event in the usage analytics and triggers a new query.
    */
   public clear() {
     this.setStateEmpty();
