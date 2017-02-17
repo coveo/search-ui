@@ -376,8 +376,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   public queryController: QueryController;
   public componentOptionsModel: ComponentOptionsModel;
   public usageAnalytics: IAnalyticsClient;
-
-/**
+  /**
    * Allow to get and set the different breakpoint for mobile and tablet devices.
    *
    * This is useful, amongst other, for {@link Facet}, {@link Tab} and {@link ResultList}

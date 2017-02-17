@@ -153,7 +153,7 @@ export class Template implements ITemplateProperties {
     if (html != null) {
       var element = $$('div', {}, html).el;
       if (!merged.wrapInDiv && element.children.length === 1) {
-        element = <HTMLElement>element.firstChild;
+        element = <HTMLElement>element.children.item(0);
       }
       if (this.layout) {
         $$(element).addClass(`coveo-${this.layout}-layout`);
