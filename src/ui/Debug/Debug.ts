@@ -333,7 +333,7 @@ export class Debug extends RootComponent {
       jElement.toggleClass('coveo-search-submatch', submatch);
       return match || submatch;
     } else {
-      if (element['value'].indexOf(value) != -1) {
+      if (element['values'].indexOf(value) != -1) {
         this.highlightSearch(element['valueDom'], value);
         match = true;
       } else {
@@ -523,7 +523,7 @@ export class Debug extends RootComponent {
       } else {
         valueContainer.innerHTML = '{}';
       }
-      dom['value'] = '';
+      dom['values'] = '';
     }
     dom['label'] = label != null ? label.toLowerCase() : '';
     dom.appendChild(valueContainer);
@@ -578,7 +578,7 @@ export class Debug extends RootComponent {
     valueDom.className = className.join(' ');
 
     dom['label'] = label != null ? label.toLowerCase() : '';
-    dom['value'] = stringValue.toLowerCase();
+    dom['values'] = stringValue.toLowerCase();
     return dom;
   }
 

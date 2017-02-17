@@ -22,6 +22,8 @@ import { Utils } from '../../utils/Utils';
 import { DomUtils } from '../../utils/DomUtils';
 import { DefaultRecommendationTemplate } from '../Templates/DefaultRecommendationTemplate';
 import { ValidLayout } from '../ResultLayout/ResultLayout';
+import { TemplateList } from '../Templates/TemplateList';
+import { ResponsiveDefaultResultTemplate } from '../ResponsiveComponents/ResponsiveDefaultResultTemplate';
 import * as _ from 'underscore';
 
 export interface IResultListOptions {
@@ -280,6 +282,7 @@ export class ResultList extends Component {
     super(element, elementClassId, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultList, options);
 
+
     Assert.exists(element);
     Assert.exists(this.options);
     Assert.exists(this.options.resultContainer);
@@ -288,6 +291,7 @@ export class ResultList extends Component {
     Assert.exists(this.options.infiniteScrollContainer);
 
     this.showOrHideElementsDependingOnState(false, false);
+
 
     this.bind.onRootElement<INewQueryEventArgs>(QueryEvents.newQuery, (args: INewQueryEventArgs) => this.handleNewQuery());
     this.bind.onRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
@@ -303,9 +307,30 @@ export class ResultList extends Component {
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, () => this.handlePageChanged());
 
     $$(this.options.resultContainer).addClass('coveo-result-list-container');
-    $$(this.options.resultContainer).addClass(`coveo-${this.options.layout}-layout`);
+    if (this.searchInterface.isNewDesign()) {
+      this.setupTemplatesVersusLayouts();
+      $$(this.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => args.layouts.push(this.options.layout));
+    }
+  }
 
-    $$(this.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => args.layouts.push(this.options.layout));
+  private setupTemplatesVersusLayouts() {
+    let layoutClassToAdd = `coveo-${this.options.layout}-layout-container`;
+    $$(this.options.resultContainer).addClass(layoutClassToAdd);
+
+    // A TemplateList is the scenario where the result template are directly embedded inside the ResultList
+    // This is the typical scenario when a page gets created by the interface editor, for example.
+    // In that case, we try to stick closely that what is actually configured inside the page, and do no "special magic".
+    // Stick to the "hardcoded" configuration present in the page.
+    // We only add the correct layout options if it has not been set manually.
+    if (this.options.resultTemplate instanceof TemplateList) {
+      _.each((<TemplateList>this.options.resultTemplate).templates, (tmpl: Template) => {
+        if (!tmpl.layout) {
+          tmpl.layout = <ValidLayout>this.options.layout;
+        }
+      });
+    } else if (this.options.resultTemplate instanceof DefaultResultTemplate && this.options.layout == 'list') {
+      ResponsiveDefaultResultTemplate.init(this.root, this, this.options);
+    }
   }
 
   /**
@@ -358,9 +383,15 @@ export class ResultList extends Component {
     QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), result);
     QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, result);
     ResultList.resultCurrentlyBeingRendered = result;
-    let resultElement = this.options.resultTemplate.instantiateToElement(result, true, true, { layout: <ValidLayout>this.options.layout });
+    let resultElement = this.options.resultTemplate.instantiateToElement(result, {
+      wrapInDiv: true,
+      checkCondition: true,
+      currentLayout: <ValidLayout>this.options.layout,
+      responsiveComponents: this.searchInterface.responsiveComponents
+    });
     if (resultElement != null) {
       Component.bindResultToElement(resultElement, result);
+      $$(resultElement).addClass('');
     }
     this.autoCreateComponentsInsideResult(resultElement, result);
     return resultElement;
@@ -546,6 +577,7 @@ export class ResultList extends Component {
   private handleChangeLayout(args: IChangeLayoutEventArgs) {
     if (args.layout === this.options.layout) {
       this.enable();
+      this.options.resultTemplate.layout = <ValidLayout>this.options.layout;
       if (args.results) {
         Defer.defer(() => {
           this.renderResults(this.buildResults(args.results));

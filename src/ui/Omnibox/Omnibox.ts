@@ -56,7 +56,7 @@ const MINIMUM_EXECUTABLE_CONFIDENCE = 0.8;
 
 /**
  * The Omnibox component is very similar to the simpler {@link Querybox} component. It supports all of the same options
- * and behaviors, with the exception of the search-as-you-type feature, which it does not support.
+ * and behaviors.
  *
  * The Omnibox component takes care of adding type-ahead capability to the search input. Custom components can extend
  * and customize the type-ahead and the suggestions it provides.
@@ -150,7 +150,7 @@ export class Omnibox extends Component {
     /**
      * Specifies a placeholder for the input.
      */
-    placeholder: ComponentOptions.buildStringOption(),
+    placeholder: ComponentOptions.buildLocalizedStringOption(),
 
     /**
      * Specifies a timeout (in milliseconds) before rejecting suggestions in the Omnibox.

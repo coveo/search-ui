@@ -26,6 +26,7 @@ import * as jstz from 'jstimezonedetect';
 import { SentryLogger } from '../../misc/SentryLogger';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
 import * as _ from 'underscore';
 
 export interface ISearchInterfaceOptions {
@@ -43,6 +44,7 @@ export interface ISearchInterfaceOptions {
   enableDebugInfo?: boolean;
   enableCollaborativeRating?: boolean;
   enableDuplicateFiltering?: boolean;
+
   pipeline?: string;
   maximumAge?: number;
   searchPageUri?: string;
@@ -374,6 +376,12 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   public queryController: QueryController;
   public componentOptionsModel: ComponentOptionsModel;
   public usageAnalytics: IAnalyticsClient;
+  /**
+   * Allow to get and set the different breakpoint for mobile and tablet devices.
+   *
+   * This is useful, amongst other, for {@link Facet}, {@link Tab} and {@link ResultList}
+   */
+  public responsiveComponents: ResponsiveComponents;
 
   /**
    * Creates a new SearchInterface. Initialize various singletons for the interface (e.g., usage analytics, query
@@ -438,6 +446,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.element.style.display = element.style.display || 'block';
     this.setupDebugInfo();
     this.isNewDesignAttribute = this.root.getAttribute('data-design') == 'new';
+    this.responsiveComponents = new ResponsiveComponents();
   }
 
   /**

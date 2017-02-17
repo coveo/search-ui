@@ -47,7 +47,7 @@ export class Icon extends Component {
     /**
      * Specifies whether the Icon component should output the smaller version of the icon instead of the regular one.
      *
-     * Default value is `false`.
+     * Default value is `undefined`.
      */
     small: ComponentOptions.buildBooleanOption(),
 

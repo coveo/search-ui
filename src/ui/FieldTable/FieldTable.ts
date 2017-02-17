@@ -172,8 +172,9 @@ export class FieldTable extends Component {
   protected isTogglable() {
     if (this.searchInterface.isNewDesign() && this.options.allowMinimization) {
       return true;
+    } else if (!this.searchInterface.isNewDesign()) {
+      this.logger.trace('Cannot open or close the field table with older design', this);
     }
-    this.logger.info('Cannot open or close the field table with older design', this);
     return false;
   }
 

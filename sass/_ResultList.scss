@@ -20,7 +20,7 @@
   }
 }
 
-.coveo-card-layout {
+.coveo-card-layout-container {
   @include display(flex);
   @include flex-wrap(wrap);
 }

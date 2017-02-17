@@ -42,7 +42,9 @@ gulp.task('dev', ['setup', 'prepareSass'], (done)=> {
   let server = new WebpackDevServer(compiler, {
     publicPath: '/js/',
     compress: true,
-    watch: true
+    headers: {
+      'Content-Security-Policy': "script-src 'self' 'unsafe-inline'"
+    }
   });
   server.listen(8080, 'localhost', ()=> {
   });
