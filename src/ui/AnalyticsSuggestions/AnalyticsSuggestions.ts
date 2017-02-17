@@ -12,6 +12,7 @@ import { Initialization } from '../Base/Initialization';
 import { $$ } from '../../utils/Dom';
 import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IAnalyticsSuggestionsOptions extends ISuggestionForOmniboxOptions {
 }
@@ -30,6 +31,13 @@ export interface IAnalyticsSuggestionsOptions extends ISuggestionForOmniboxOptio
  */
 export class AnalyticsSuggestions extends Component {
   static ID = 'AnalyticsSuggestions';
+
+  static doExport() {
+    exportGlobally({
+      'AnalyticsSuggestions': AnalyticsSuggestions
+    })
+  }
+
   /**
    * The options for the component
    * @componentOptions

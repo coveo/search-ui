@@ -30,6 +30,10 @@ export interface IComponentDefinition {
    */
   className?: string;
   /**
+   * Function that can be called to export one or multiple module in the global scope.
+   */
+  doExport?: ()=> void;
+  /**
    * Constructor for each component
    * @param element The HTMLElement on which the component will instantiate.
    * @param options The available options for the component.

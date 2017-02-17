@@ -20,6 +20,9 @@ import { SearchInterface } from '../SearchInterface/SearchInterface';
 import { Recommendation } from '../Recommendation/Recommendation';
 import { RecommendationAnalyticsClient } from './RecommendationAnalyticsClient';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import { PendingSearchEvent } from './PendingSearchEvent';
+import { PendingSearchAsYouTypeSearchEvent } from './PendingSearchAsYouTypeSearchEvent';
 
 export interface IAnalyticsOptions {
   user?: string;
@@ -126,8 +129,21 @@ export interface IAnalyticsOptions {
  * ```
  * See {@link logClickEvent}.
  */
+
 export class Analytics extends Component {
   static ID = 'Analytics';
+
+  static doExport() {
+    exportGlobally({
+      'PendingSearchEvent': PendingSearchEvent,
+      'PendingSearchAsYouTypeSearchEvent': PendingSearchAsYouTypeSearchEvent,
+      'analyticsActionCauseList': analyticsActionCauseList,
+      'NoopAnalyticsClient': NoopAnalyticsClient,
+      'LiveAnalyticsClient': LiveAnalyticsClient,
+      'MultiAnalyticsClient': MultiAnalyticsClient
+    })
+  }
+
   // NOTE: The default values for some of those options (`organization`, `endpoint`, `searchHub`) can be
   // overridden by generated code when using hosted search pages.
 

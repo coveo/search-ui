@@ -6,9 +6,7 @@ export function lazyFacet() {
     return new Promise((resolve, reject)=> {
       require.ensure(['./Facet'], ()=> {
         let loaded = require<IComponentDefinition>('./Facet.ts')['Facet'];
-        if (Coveo['Facet'] == null) {
-          Coveo['Facet'] = loaded
-        }
+        loaded.doExport();
         resolve(loaded);
       }, 'Facet');
     });

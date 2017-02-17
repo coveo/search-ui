@@ -3,31 +3,28 @@ export * from './Core';
 // UI
 export { CoreHelpers } from './ui/Templates/CoreHelpers';
 export { SearchInterface, StandaloneSearchInterface } from './ui/SearchInterface/SearchInterface';
-export { Aggregate } from './ui/Aggregate/Aggregate';
-export { Analytics } from './ui/Analytics/Analytics';
-export { PendingSearchEvent } from './ui/Analytics/PendingSearchEvent';
-export { PendingSearchAsYouTypeSearchEvent } from './ui/Analytics/PendingSearchAsYouTypeSearchEvent';
-export { analyticsActionCauseList } from './ui/Analytics/AnalyticsActionListMeta';
-export { NoopAnalyticsClient } from './ui/Analytics/NoopAnalyticsClient';
-export { LiveAnalyticsClient } from './ui/Analytics/LiveAnalyticsClient';
+
+import { Aggregate } from './ui/Aggregate/Aggregate';
+Aggregate.doExport();
+
+import { Analytics } from './ui/Analytics/Analytics';
+Analytics.doExport();
+
+import { AnalyticsSuggestions } from './ui/AnalyticsSuggestions/AnalyticsSuggestions';
+AnalyticsSuggestions.doExport();
+
 export { RecommendationAnalyticsClient } from './ui/Analytics/RecommendationAnalyticsClient';
-export { MultiAnalyticsClient } from './ui/Analytics/MultiAnalyticsClient';
+
+
 export { Querybox } from './ui/Querybox/Querybox';
 export { SearchButton } from './ui/SearchButton/SearchButton';
 export { Searchbox } from './ui/Searchbox/Searchbox';
 export { Breadcrumb } from './ui/Breadcrumb/Breadcrumb';
-export { Facet } from './ui/Facet/Facet';
-export { FacetHeader } from './ui/Facet/FacetHeader';
-export { FacetSearchValuesList } from './ui/Facet/FacetSearchValuesList';
-export { FacetSettings } from './ui/Facet/FacetSettings';
-export { FacetSort } from './ui/Facet/FacetSort';
-export { FacetUtils } from './ui/Facet/FacetUtils';
-export { FacetValueElement } from './ui/Facet/FacetValueElement';
-export { FacetValue, FacetValues } from './ui/Facet/FacetValues';
-export { ValueElementRenderer } from './ui/Facet/ValueElementRenderer';
-export { FacetSearch } from './ui/Facet/FacetSearch';
-export { FacetSearchParameters } from './ui/Facet/FacetSearchParameters';
 export { Logo } from './ui/Logo/Logo';
+
+import { Facet } from './ui/Facet/Facet';
+Facet.doExport();
+
 export { Slider } from './ui/Misc/Slider';
 export { FacetSlider } from './ui/FacetSlider/FacetSlider';
 export { FacetRange } from './ui/FacetRange/FacetRange';
@@ -74,7 +71,7 @@ export { RecommendationQuery } from './ui/Recommendation/RecommendationQuery';
 export { TemplateLoader } from './ui/TemplateLoader/TemplateLoader';
 export { Template } from './ui/Templates/Template';
 export { SuggestionForOmnibox } from './ui/Misc/SuggestionForOmnibox';
-export { AnalyticsSuggestions } from './ui/AnalyticsSuggestions/AnalyticsSuggestions';
+
 export { FieldSuggestions } from './ui/FieldSuggestions/FieldSuggestions';
 export { AuthenticationProvider } from './ui/AuthenticationProvider/AuthenticationProvider';
 export { ResultTagging } from './ui/ResultTagging/ResultTagging';

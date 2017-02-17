@@ -13,7 +13,6 @@ import { QueryStateModel } from '../../models/QueryStateModel';
 import { ComponentStateModel } from '../../models/ComponentStateModel';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
-import { BaseComponent } from '../Base/BaseComponent';
 import { JQueryUtils } from '../../utils/JQueryutils';
 import { IJQuery } from './CoveoJQuery';
 import * as _ from 'underscore';

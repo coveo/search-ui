@@ -55,6 +55,8 @@ import { FacetValuesOrder } from './FacetValuesOrder';
 import { ValueElement } from './ValueElement';
 import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
+import { swapVar } from '../../SwapVar';
 
 export interface IFacetOptions {
   title?: string;
@@ -121,6 +123,19 @@ export interface IFacetOptions {
 export class Facet extends Component {
   static ID = 'Facet';
   static omniboxIndex = 50;
+
+  static doExport = ()=> {
+    exportGlobally({
+      'Facet': Facet,
+      'FacetHeader': FacetHeader,
+      'FacetSearchValuesList': FacetSearchValuesList,
+      'FacetSettings': FacetSettings,
+      'FacetSort': FacetSort,
+      'FacetUtils': FacetUtils,
+      'FacetValueElement': FacetValueElement,
+      'FacetValue': FacetValue
+    })
+  };
 
   /**
    * The possible options for a facet
@@ -1854,5 +1869,18 @@ export class Facet extends Component {
     return info;
   }
 }
+
+/*export { FacetHeader } from './FacetHeader';
+ export { FacetSearchValuesList } from './FacetSearchValuesList';
+ export { FacetSettings } from './FacetSettings';
+ export { FacetSort } from './FacetSort';
+ export { FacetUtils } from './FacetUtils';
+ export { FacetValueElement } from './FacetValueElement';
+ export { FacetValue, FacetValues } from './FacetValues';
+ export { ValueElementRenderer } from './ValueElementRenderer';
+ export { FacetSearch } from './FacetSearch';
+ export { FacetSearchParameters } from './FacetSearchParameters';*/
+
+
 
 Initialization.registerAutoCreateComponent(Facet);

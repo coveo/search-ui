@@ -11,7 +11,7 @@ import { $$ } from '../../utils/Dom';
 import { FieldTable } from '../FieldTable/FieldTable';
 import { get } from '../Base/RegisteredNamedMethods';
 import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IThumbnailOptions extends IResultLinkOptions {
   noThumbnailClass?: string;
