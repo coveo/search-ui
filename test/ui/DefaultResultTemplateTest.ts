@@ -113,6 +113,13 @@ export function DefaultResultTemplateTest() {
             expect(instantiatedTemplate).toEqual('Epic table header');
             TemplateCache.unregisterTemplate('tableHeader');
           });
+
+          it('should render a fallback roled template if no appropriate template with role is found', () => {
+            const instantiatedTemplate = new DefaultResultTemplate().instantiateToString({}, {
+              role: 'table-header'
+            });
+            expect(instantiatedTemplate).toEqual(new DefaultResultTemplate().getFallbackTemplateForRole('table-header'));
+          });
         });
       });
     }
