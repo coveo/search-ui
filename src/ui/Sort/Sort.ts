@@ -97,6 +97,7 @@ export class Sort extends Component {
       this.element.innerHTML += '<span class="coveo-icon" />';
     }
 
+    this.update();
     this.updateAppearance();
   }
 
