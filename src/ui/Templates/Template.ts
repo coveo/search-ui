@@ -164,8 +164,9 @@ export class Template implements ITemplateProperties {
       if (!mergedOptions.wrapInDiv && element.children.length === 1) {
         element = <HTMLElement>element.firstChild;
       }
-      if (this.layout) {
-        $$(element).addClass(`coveo-${this.layout}-layout`);
+      const layout = this.layout || mergedOptions.currentLayout;
+      if (layout) {
+        $$(element).addClass(`coveo-${layout}-layout`);
       }
       this.logger.trace('Instantiated result template', object, element);
       element['template'] = this;

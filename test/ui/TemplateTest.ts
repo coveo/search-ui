@@ -70,10 +70,15 @@ export function TemplateTest() {
         expect($$(created).text()).toBe(`Hello World`);
       });
 
-      it('should add the correct layout class', () => {
+      it('should add the correct layout class when specified in template', () => {
         tmpl.layout = 'card';
         let created = tmpl.instantiateToElement(result);
         expect($$(created).hasClass('coveo-card-layout')).toBe(true);
+      });
+
+      it('should add the correct layout class when specified in instantiateOptions', () => {
+        let created = tmpl.instantiateToElement(result, { currentLayout: 'table' });
+        expect($$(created).hasClass('coveo-table-layout')).toBe(true);
       });
 
       it('should return the correct type', () => {
