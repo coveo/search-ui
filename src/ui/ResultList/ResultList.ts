@@ -283,32 +283,34 @@ export class ResultList extends Component {
    * Empty the current result list content and append the given array of HTMLElement.<br/>
    * Can append to existing elements in the result list, or replace them.<br/>
    * Triggers the newResultDiplayed and newResultsDisplayed event
-   * @param resultsElement
+   * @param resultElements
    * @param append
    */
-  public renderResults(resultsElement: HTMLElement[], append = false) {
+  public renderResults(resultElements: HTMLElement[], append = false) {
     if (!append) {
       this.options.resultContainer.innerHTML = '';
     }
-    _.each(resultsElement, (resultElement) => {
+    _.each(resultElements, (resultElement) => {
       this.options.resultContainer.appendChild(resultElement);
       this.triggerNewResultDisplayed(Component.getResult(resultElement), resultElement);
     });
 
-    if (this.options.layout === 'table') {
-      const headerAndFooter = _.map(['table-header', 'table-footer'], (role: TemplateRole) => {
-        const elem = this.options.resultTemplate.instantiateToElement({}, { role: role });
-        $$(elem).addClass(`coveo-result-list-${role}`);
-        this.autoCreateComponentsInsideResult(elem, undefined);
-        return elem;
-      });
-      $$(this.options.resultContainer).prepend(headerAndFooter[0]);
-      this.options.resultContainer.appendChild(headerAndFooter[1]);
-    }
+    if (!_.isEmpty(resultElements)) {
+      if (this.options.layout === 'table') {
+        const headerAndFooter = _.map(['table-header', 'table-footer'], (role: TemplateRole) => {
+          const elem = this.options.resultTemplate.instantiateToElement({}, { role: role });
+          $$(elem).addClass(`coveo-result-list-${role}`);
+          this.autoCreateComponentsInsideResult(elem, undefined);
+          return elem;
+        });
+        $$(this.options.resultContainer).prepend(headerAndFooter[0]);
+        this.options.resultContainer.appendChild(headerAndFooter[1]);
+      }
 
-    if (this.options.layout === 'card') {
-      // Used to prevent last card from spanning the grid's whole width
-      _.times(3, () => this.options.resultContainer.appendChild($$('div').el));
+      if (this.options.layout === 'card') {
+        // Used to prevent last card from spanning the grid's whole width
+        _.times(3, () => this.options.resultContainer.appendChild($$('div').el));
+      }
     }
     this.triggerNewResultsDisplayed();
   }
