@@ -15,7 +15,7 @@ export function TemplateListTest() {
       result = null;
     });
 
-    describe('when there is no templates', () => {
+    describe('when there are no templates', () => {
 
       it('should return a default result template when instantiating to element', () => {
         let templateList = new TemplateList([]);
@@ -80,6 +80,18 @@ export function TemplateListTest() {
         templates[1].fields = ['b', 'c'];
         let templateList = new TemplateList(templates);
         expect(templateList.getFields()).toEqual(jasmine.arrayContaining(['a', 'b', 'c']));
+      });
+
+      it('should instantiate roled templates before when role is passed, regardless of conditions', () => {
+        templates[1].role = 'table-header';
+        let templateList = new TemplateList(templates);
+        expect(templateList.instantiateToString(result, { role: 'table-header' })).toEqual('Template 2');
+      });
+
+      it('should instantiate with DefaultResultTemplate if role is passed but no internal templates with role found', () => {
+        let templateList = new TemplateList(templates);
+        expect(templateList.instantiateToString(result, { role: 'table-footer' }))
+          .toEqual(new DefaultResultTemplate().instantiateToString(result, { role: 'table-footer' }));
       });
     });
   });
