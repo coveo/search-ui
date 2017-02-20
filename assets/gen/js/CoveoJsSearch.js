@@ -1754,8 +1754,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	exports.version = {
-	    'lib': '1.2126.6',
-	    'product': '1.2126.6',
+	    'lib': '1.2126.7-beta',
+	    'product': '1.2126.7-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -14907,7 +14907,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (html != null) {
 	            var element = Dom_1.$$('div', {}, html).el;
 	            if (!wrapInDiv && element.children.length === 1) {
-	                element = element.firstChild;
+	                element = element.children.item(0);
 	            }
 	            this.logger.trace('Instantiated result template', object, element);
 	            element['template'] = this;
