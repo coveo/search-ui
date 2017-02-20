@@ -7,6 +7,7 @@ import { Initialization } from '../Base/Initialization';
 import { l } from '../../strings/Strings';
 import { Utils } from '../../utils/Utils';
 import { $$ } from '../../utils/Dom';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IChatterPostedByOption {
   enablePostedOn: boolean;
@@ -17,6 +18,13 @@ export interface IChatterPostedByOption {
 
 export class ChatterPostedBy extends Component {
   static ID = 'ChatterPostedBy';
+
+  static doExport = () => {
+    exportGlobally({
+      'ChatterPostedBy': ChatterPostedBy
+    });
+  }
+
   static options: IChatterPostedByOption = {
     enablePostedOn: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     useFromInstead: ComponentOptions.buildBooleanOption({ defaultValue: false }),

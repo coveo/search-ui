@@ -584,7 +584,7 @@ TemplateHelpers.registerTemplateHelper('isMobileDevice', () => {
 
 function resolveQueryResult(): IQueryResult {
   let found;
-  let resultList = Component.getComponentRef('ResultList')
+  let resultList = Component.getComponentRef('ResultList');
   if (resultList) {
     found = resultList.resultCurrentlyBeingRendered;
   }

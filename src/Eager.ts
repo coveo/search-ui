@@ -13,21 +13,68 @@ Analytics.doExport();
 import { AnalyticsSuggestions } from './ui/AnalyticsSuggestions/AnalyticsSuggestions';
 AnalyticsSuggestions.doExport();
 
-export { RecommendationAnalyticsClient } from './ui/Analytics/RecommendationAnalyticsClient';
+import { AuthenticationProvider } from './ui/AuthenticationProvider/AuthenticationProvider';
+AuthenticationProvider.doExport();
 
+import { Backdrop } from './ui/Backdrop/Backdrop';
+Backdrop.doExport();
 
-export { Querybox } from './ui/Querybox/Querybox';
-export { SearchButton } from './ui/SearchButton/SearchButton';
-export { Searchbox } from './ui/Searchbox/Searchbox';
-export { Breadcrumb } from './ui/Breadcrumb/Breadcrumb';
-export { Logo } from './ui/Logo/Logo';
+import { Breadcrumb } from './ui/Breadcrumb/Breadcrumb';
+Breadcrumb.doExport();
+
+import { CardActionBar } from './ui/CardActionBar/CardActionBar';
+CardActionBar.doExport();
+
+import { CardOverlay } from './ui/CardOverlay/CardOverlay';
+CardOverlay.doExport();
+
+import { ChatterLikedBy } from './ui/ChatterLikedBy/ChatterLikedBy';
+ChatterLikedBy.doExport();
+
+import { ChatterPostAttachment } from './ui/ChatterPostAttachment/ChatterPostAttachment';
+ChatterPostAttachment.doExport();
+
+import { ChatterPostedBy } from './ui/ChatterPostedBy/ChatterPostedBy';
+ChatterPostedBy.doExport();
+
+import { ChatterTopic } from './ui/ChatterTopic/ChatterTopic';
+ChatterTopic.doExport();
+
+import { DidYouMean } from './ui/DidYouMean/DidYouMean';
+DidYouMean.doExport();
+
+import { ErrorReport } from './ui/ErrorReport/ErrorReport';
+ErrorReport.doExport();
+
+import { Excerpt } from './ui/Excerpt/Excerpt';
+Excerpt.doExport();
+
+import { ExportToExcel } from './ui/ExportToExcel/ExportToExcel';
+ExportToExcel.doExport();
 
 import { Facet } from './ui/Facet/Facet';
 Facet.doExport();
 
+import { FacetRange } from './ui/FacetRange/FacetRange';
+FacetRange.doExport();
+
+export { RecommendationAnalyticsClient } from './ui/Analytics/RecommendationAnalyticsClient';
+
+import { Querybox } from './ui/Querybox/Querybox';
+Querybox.doExport();
+
+import { SearchButton } from './ui/SearchButton/SearchButton';
+SearchButton.doExport();
+
+export { Searchbox } from './ui/Searchbox/Searchbox';
+export { Breadcrumb } from './ui/Breadcrumb/Breadcrumb';
+export { Logo } from './ui/Logo/Logo';
+
+
 export { Slider } from './ui/Misc/Slider';
 export { FacetSlider } from './ui/FacetSlider/FacetSlider';
-export { FacetRange } from './ui/FacetRange/FacetRange';
+
+
 export { Pager } from './ui/Pager/Pager';
 export { ResultsPerPage } from './ui/ResultsPerPage/ResultsPerPage';
 export { ResultList } from './ui/ResultList/ResultList';
@@ -39,7 +86,6 @@ export { Icon } from './ui/Icon/Icon';
 export { Thumbnail } from './ui/Thumbnail/Thumbnail';
 export { PrintableUri } from './ui/PrintableUri/PrintableUri';
 export { Quickview } from './ui/Quickview/Quickview';
-export { DidYouMean } from './ui/DidYouMean/DidYouMean';
 export { ErrorReport } from './ui/ErrorReport/ErrorReport';
 export { ExportToExcel } from './ui/ExportToExcel/ExportToExcel';
 export { Folding } from './ui/Folding/Folding';
@@ -73,12 +119,11 @@ export { Template } from './ui/Templates/Template';
 export { SuggestionForOmnibox } from './ui/Misc/SuggestionForOmnibox';
 
 export { FieldSuggestions } from './ui/FieldSuggestions/FieldSuggestions';
-export { AuthenticationProvider } from './ui/AuthenticationProvider/AuthenticationProvider';
+
 export { ResultTagging } from './ui/ResultTagging/ResultTagging';
 export { ResultsPreferences } from './ui/ResultsPreferences/ResultsPreferences';
 export { PipelineContext, context } from './ui/PipelineContext/PipelineContext';
 export { OmniboxResultList } from './ui/OmniboxResultList/OmniboxResultList';
-export { CurrentTab } from './ui/CurrentTab/CurrentTab';
 export { QueryboxQueryParameters } from './ui/Querybox/QueryboxQueryParameters';
 export { ImageResultList } from './ui/ImageResultList/ImageResultList';
 export { jQueryInstance as $ } from './ui/Base/CoveoJQuery';
@@ -94,14 +139,6 @@ export { SearchAlerts } from './ui/SearchAlerts/SearchAlerts';
 export { SearchAlertsMessage } from './ui/SearchAlerts/SearchAlertsMessage';
 export { Text } from './ui/Text/Text';
 export { FoldingForThread } from './ui/Folding/FoldingForThread';
-export { ChatterLikedBy } from './ui/ChatterLikedBy/ChatterLikedBy';
-export { ChatterPostAttachment } from './ui/ChatterPostAttachment/ChatterPostAttachment';
-export { ChatterPostedBy } from './ui/ChatterPostedBy/ChatterPostedBy';
-export { ChatterTopic } from './ui/ChatterTopic/ChatterTopic';
-export { ChatterUtils } from './utils/ChatterUtils';
-export { Backdrop } from './ui/Backdrop/Backdrop';
-export { CardOverlay } from './ui/CardOverlay/CardOverlay';
-export { CardActionBar } from './ui/CardActionBar/CardActionBar';
 export { HashUtils } from './utils/HashUtils';
 export { DeviceUtils } from './utils/DeviceUtils';
 export { ColorUtils } from './utils/ColorUtils';

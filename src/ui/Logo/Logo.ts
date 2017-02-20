@@ -5,6 +5,7 @@ import { Initialization } from '../Base/Initialization';
 import { $$ } from '../../utils/Dom';
 import { QueryEvents } from '../../events/QueryEvents';
 import { IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface ILogoOptions {
 }
@@ -14,6 +15,12 @@ export interface ILogoOptions {
  */
 export class Logo extends Component {
   static ID = 'Logo';
+
+  static doExport = () => {
+    exportGlobally({
+      'Logo': Logo
+    });
+  }
 
   static options: ILogoOptions = {};
 

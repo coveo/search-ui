@@ -6,6 +6,7 @@ import { CardOverlayEvents } from '../../events/CardOverlayEvents';
 import { $$ } from '../../utils/Dom';
 import { Assert } from '../../misc/Assert';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface ICardOverlayOptions {
   title: string;
@@ -25,6 +26,12 @@ export interface ICardOverlayOptions {
  */
 export class CardOverlay extends Component {
   static ID = 'CardOverlay';
+
+  static doExport = () => {
+    exportGlobally({
+      'CardOverlay': CardOverlay
+    });
+  }
 
   private parentCard: HTMLElement;
   private overlay: HTMLElement;

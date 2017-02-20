@@ -10,6 +10,7 @@ import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/Analyti
 import { $$ } from '../../utils/Dom';
 import { Assert } from '../../misc/Assert';
 import { QueryboxQueryParameters } from './QueryboxQueryParameters';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IQueryboxOptions {
   enableSearchAsYouType?: boolean;
@@ -41,6 +42,12 @@ export interface IQueryboxOptions {
  */
 export class Querybox extends Component {
   static ID = 'Querybox';
+
+  static doExport = ()=>{
+    exportGlobally({
+      'Querybox' : Querybox
+    });
+  }
 
   /**
    * The options for the Querybox.

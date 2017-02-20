@@ -10,6 +10,7 @@ import { Initialization } from '../Base/Initialization';
 import { QueryEvents } from '../../events/QueryEvents';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IBreadcrumbOptions {
 }
@@ -32,6 +33,12 @@ export interface IBreadcrumbOptions {
 export class Breadcrumb extends Component {
   static ID = 'Breadcrumb';
   static options: IBreadcrumbOptions = {};
+
+  static doExport = ()=> {
+    exportGlobally({
+      'Breadcrumb': Breadcrumb
+    });
+  }
 
   private lastBreadcrumbs: IBreadcrumbItem[];
 

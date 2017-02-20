@@ -5,6 +5,7 @@ import { Initialization, IInitializationParameters } from '../Base/Initializatio
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { IQueryResult } from '../../rest/QueryResult';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IBackdropOptions {
   imageUrl?: string;
@@ -27,6 +28,12 @@ export interface IBackdropOptions {
  */
 export class Backdrop extends Component {
   static ID = 'Backdrop';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'Backdrop': Backdrop
+    });
+  }
 
   /**
    * @componentOptions

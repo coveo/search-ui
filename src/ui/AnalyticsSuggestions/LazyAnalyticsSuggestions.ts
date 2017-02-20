@@ -10,5 +10,5 @@ export function lazyAnalyticsSuggestions() {
         resolve(loaded);
       }, 'AnalyticsSuggestions');
     });
-  })
+  });
 }

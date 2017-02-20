@@ -12,6 +12,7 @@ import { Utils } from '../../utils/Utils';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
 import { l } from '../../strings/Strings';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IDidYouMeanOptions {
   enableAutoCorrection?: boolean;
@@ -24,6 +25,12 @@ export interface IDidYouMeanOptions {
  */
 export class DidYouMean extends Component {
   static ID = 'DidYouMean';
+
+  static doExport = () => {
+    exportGlobally({
+      'DidYouMean': DidYouMean
+    });
+  }
 
   /**
    * The options for the component

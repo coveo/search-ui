@@ -87,11 +87,11 @@ export class Initialization {
     }
     Initialization.eagerlyLoadedComponents[componentClass.ID] = componentClass;
     if (Initialization.lazyLoadedComponents[componentClass.ID] == null) {
-      Initialization.lazyLoadedComponents[componentClass.ID] = ()=> {
-        return new Promise((resolve, reject)=> {
+      Initialization.lazyLoadedComponents[componentClass.ID] = () => {
+        return new Promise((resolve, reject) => {
           resolve(componentClass);
         });
-      }
+      };
     }
   }
 
@@ -165,7 +165,7 @@ export class Initialization {
     Initialization.performInitFunctionsOption(options, InitializationEvents.beforeInitialization);
     $$(element).trigger(InitializationEvents.beforeInitialization);
 
-    initSearchInterfaceFunction(element, options).then(()=> {
+    initSearchInterfaceFunction(element, options).then(() => {
       Initialization.initExternalComponents(element, options);
 
       Initialization.performInitFunctionsOption(options, InitializationEvents.afterComponentsInitialization);
@@ -287,7 +287,7 @@ export class Initialization {
       }
     });
 
-    _.each(Initialization.getListOfRegisteredComponents(), (componentClassId: string)=> {
+    _.each(Initialization.getListOfRegisteredComponents(), (componentClassId: string) => {
       if (!_.contains(ignore, componentClassId)) {
         let classname = Component.computeCssClassNameForType(`${componentClassId}`);
         let elements = $$(element).findAll('.' + classname);
@@ -314,8 +314,8 @@ export class Initialization {
 
     // Now that all selectors are executed, let's really initialize the components.
     return Promise.all(_.map(codeToExecute, (code) => {
-      return Promise.all(code()).then(()=> true);
-    })).then(()=> true);
+      return Promise.all(code()).then(() => true);
+    })).then(() => true);
   }
 
   /**
@@ -329,7 +329,7 @@ export class Initialization {
     Assert.isNonEmptyString(componentClassId);
     Assert.exists(element);
 
-    return Initialization.getLazyRegisteredComponent(componentClassId).then((lazyLoadedComponent: IComponentDefinition)=> {
+    return Initialization.getLazyRegisteredComponent(componentClassId).then((lazyLoadedComponent: IComponentDefinition) => {
       Assert.exists(lazyLoadedComponent);
 
       let bindings: IComponentBindings = {};
@@ -346,7 +346,7 @@ export class Initialization {
 
       Initialization.logger.trace('Creating component of class ' + componentClassId, element, options);
       return new lazyLoadedComponent(element, options, bindings, result);
-    })
+    });
 
   }
 
@@ -418,7 +418,7 @@ export class Initialization {
       let initParameters: IInitializationParameters = { options: options, bindings: box.getBindings() };
       return Initialization.automaticallyCreateComponentsInside(element, initParameters);
     } else {
-      return new Promise((resolve, reject)=> {
+      return new Promise((resolve, reject) => {
         new Logger(element).error('Trying to initialize box of type : ' + fromInitTypeToBoxReference + ' but not found in code (not compiled)!');
         Assert.fail('Cannot initialize unknown type of box');
         reject(false);
@@ -548,7 +548,7 @@ export class Initialization {
     }
   }
 
-  private static createFunctionThatInitializesComponentOnElements(elements: Element[], componentClassId: string, initParameters: IInitializationParameters): ()=> Promise<Component>[] {
+  private static createFunctionThatInitializesComponentOnElements(elements: Element[], componentClassId: string, initParameters: IInitializationParameters): () => Promise<Component>[] {
     return () => {
       let promises: Promise<Component>[] = [];
       _.each(elements, (matchingElement: HTMLElement) => {

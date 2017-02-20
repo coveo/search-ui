@@ -6,12 +6,19 @@ import { ChatterUtils } from '../../utils/ChatterUtils';
 import { l } from '../../strings/Strings';
 import { Initialization } from '../Base/Initialization';
 import { $$ } from '../../utils/Dom';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IChatterPostAttachmentOption {
 }
 
 export class ChatterPostAttachment extends Component {
   static ID = 'ChatterPostAttachment';
+
+  static doExport = () => {
+    exportGlobally({
+      'ChatterPostAttachment': ChatterPostAttachment
+    });
+  }
 
   static fields = [
     'sfcontentversionid',

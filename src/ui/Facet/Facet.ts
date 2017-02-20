@@ -124,7 +124,7 @@ export class Facet extends Component {
   static ID = 'Facet';
   static omniboxIndex = 50;
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'Facet': Facet,
       'FacetHeader': FacetHeader,
@@ -134,8 +134,8 @@ export class Facet extends Component {
       'FacetUtils': FacetUtils,
       'FacetValueElement': FacetValueElement,
       'FacetValue': FacetValue
-    })
-  };
+    });
+  }
 
   /**
    * The possible options for a facet

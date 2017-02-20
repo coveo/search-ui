@@ -7,6 +7,7 @@ import { Utils } from '../../utils/Utils';
 import { $$ } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import { ChatterUtils } from '../../utils/ChatterUtils';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IChatterLikedByOptions {
   nbLikesToRender: number;
@@ -16,6 +17,12 @@ export interface IChatterLikedByOptions {
 
 export class ChatterLikedBy extends Component {
   static ID = 'ChatterLikedBy';
+
+  static doExport = () => {
+    exportGlobally({
+      'ChatterLikedBy': ChatterLikedBy
+    });
+  }
 
   static options: IChatterLikedByOptions = {
     nbLikesToRender: ComponentOptions.buildNumberOption({ defaultValue: 2, min: 0 }),

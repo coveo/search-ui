@@ -141,7 +141,7 @@ export class Analytics extends Component {
       'NoopAnalyticsClient': NoopAnalyticsClient,
       'LiveAnalyticsClient': LiveAnalyticsClient,
       'MultiAnalyticsClient': MultiAnalyticsClient
-    })
+    });
   }
 
   // NOTE: The default values for some of those options (`organization`, `endpoint`, `searchHub`) can be

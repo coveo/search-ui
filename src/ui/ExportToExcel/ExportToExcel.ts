@@ -7,6 +7,7 @@ import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/Analyti
 import { Initialization } from '../Base/Initialization';
 import { l } from '../../strings/Strings';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IExportToExcelOptions {
   numberOfResults?: number;
@@ -19,6 +20,12 @@ export interface IExportToExcelOptions {
  */
 export class ExportToExcel extends Component {
   static ID = 'ExportToExcel';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'ExportToExcel': ExportToExcel
+    });
+  }
 
   /**
    * The options for the ExportToExcel

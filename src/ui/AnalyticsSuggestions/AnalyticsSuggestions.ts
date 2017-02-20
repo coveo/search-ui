@@ -36,7 +36,7 @@ export class AnalyticsSuggestions extends Component {
   static doExport() {
     exportGlobally({
       'AnalyticsSuggestions': AnalyticsSuggestions
-    })
+    });
   }
 
   /**

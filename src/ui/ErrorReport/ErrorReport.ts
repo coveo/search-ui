@@ -9,6 +9,7 @@ import { Assert } from '../../misc/Assert';
 import { Initialization } from '../Base/Initialization';
 import { IEndpointError } from '../../rest/EndpointError';
 import { MissingAuthenticationError } from '../../rest/MissingAuthenticationError';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IErrorReportOptions {
   showDetailedError: boolean;
@@ -22,6 +23,12 @@ export interface IErrorReportOptions {
  */
 export class ErrorReport extends Component {
   static ID = 'ErrorReport';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'ErrorReport': ErrorReport
+    });
+  }
 
   /**
    * The options for the component

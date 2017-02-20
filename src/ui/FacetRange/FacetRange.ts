@@ -11,6 +11,7 @@ import { FacetRangeQueryController } from '../../controllers/FacetRangeQueryCont
 import { IGroupByResult } from '../../rest/GroupByResult';
 import { Initialization } from '../Base/Initialization';
 import * as Globalize from 'globalize';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IFacetRangeOptions extends IFacetOptions {
   ranges?: IRangeValue[];
@@ -26,6 +27,12 @@ export interface IFacetRangeOptions extends IFacetOptions {
 export class FacetRange extends Facet implements IComponentBindings {
   static ID = 'FacetRange';
   static parent = Facet;
+
+  static doExport = ()=> {
+    exportGlobally({
+      'FacetRange': FacetRange
+    });
+  }
 
   /**
    * The options for the component

@@ -4,12 +4,19 @@ import { IQueryResult } from '../../rest/QueryResult';
 import { Utils } from '../../utils/Utils';
 import { Initialization } from '../Base/Initialization';
 import { $$ } from '../../utils/Dom';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IChatterTopicOption {
 }
 
 export class ChatterTopic extends Component {
   static ID = 'ChatterTopic';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'ChatterTopic': ChatterTopic
+    });
+  }
 
   static fields = [
     'coveochatterfeedtopics'

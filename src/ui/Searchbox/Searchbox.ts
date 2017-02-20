@@ -8,6 +8,7 @@ import { Querybox } from '../Querybox/Querybox';
 import { $$ } from '../../utils/Dom';
 import { Initialization } from '../Base/Initialization';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface ISearchboxOptions extends IOmniboxOptions {
   addSearchButton?: boolean;
@@ -25,6 +26,15 @@ export interface ISearchboxOptions extends IOmniboxOptions {
 export class Searchbox extends Component {
   static ID = 'Searchbox';
   static parent = Omnibox;
+
+  static doExport = () => {
+    exportGlobally({
+      'Searchbox': Searchbox,
+      'SearchButton': SearchButton,
+      'Omnibox': Omnibox,
+      'Querybox': Querybox
+    });
+  }
 
   /**
    * Possible options for the {@link Searchbox}

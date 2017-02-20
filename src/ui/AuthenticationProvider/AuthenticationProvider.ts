@@ -13,6 +13,7 @@ import { l } from '../../strings/Strings';
 import { ModalBox } from '../../ExternalModulesShim';
 import { MissingAuthenticationError } from '../../rest/MissingAuthenticationError';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IAuthenticationProviderOptions {
   name?: string;
@@ -33,6 +34,12 @@ export interface IAuthenticationProviderOptions {
  */
 export class AuthenticationProvider extends Component {
   static ID = 'AuthenticationProvider';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'AuthenticationProvider': AuthenticationProvider
+    });
+  }
 
   /**
    * The options for the component.

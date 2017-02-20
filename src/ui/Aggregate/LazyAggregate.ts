@@ -10,5 +10,5 @@ export function lazyAggregate() {
         resolve(loaded);
       }, 'Aggregate');
     });
-  })
+  });
 }
