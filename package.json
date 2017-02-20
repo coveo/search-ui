@@ -1,6 +1,6 @@
 {
   "name": "coveo-search-ui",
-  "version": "1.2126.6",
+  "version": "1.2126.7",
   "description": "Coveo JavaScript Search Framework",
   "main": "./bin/js/CoveoJsSearch.js",
   "scripts": {
