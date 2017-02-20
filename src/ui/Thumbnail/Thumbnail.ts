@@ -10,8 +10,10 @@ import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
 import { $$ } from '../../utils/Dom';
 import { FieldTable } from '../FieldTable/FieldTable';
 import { get } from '../Base/RegisteredNamedMethods';
+import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
+import _ = require('underscore');
 
-export interface IThumbnailOptions {
+export interface IThumbnailOptions extends IResultLinkOptions {
   noThumbnailClass?: string;
   clickable?: boolean;
 }
@@ -40,9 +42,9 @@ export class Thumbnail extends Component {
     /**
      * Specifies whether to create a clickable {@link ResultLink} around the Thumbnail.
      *
-     * Uses all the same options as a {@link ResultLink} except for {@link ResultLink.options.field}.
-     *
      * Default value is `false`.
+     *
+     * If set to true, you can use the options specified on {@link ResultLink.options}
      */
     clickable: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
@@ -73,15 +75,22 @@ export class Thumbnail extends Component {
 
     this.options = ComponentOptions.initOptions(element, <any>Thumbnail.options, options);
 
-    if (this.options.clickable) {
-      new ResultLink(this.element, this.options, this.bindings, this.result);
-    }
-
     if (this.element.tagName.toLowerCase() != 'img') {
       this.img = <HTMLImageElement>$$('img').el;
       this.element.appendChild(this.img);
     } else {
       this.img = <HTMLImageElement>this.element;
+    }
+
+    if (this.options.clickable) {
+      if (this.element.tagName.toLowerCase() != 'img') {
+        new ResultLink(this.element, this.options, this.bindings, this.result);
+      } else {
+        let href = $$('a');
+        $$(this.element).replaceWith(href.el);
+        $$(href).append(this.element);
+        new ResultLink(href.el, this.options, this.bindings, this.result);
+      }
     }
 
 
@@ -96,8 +105,6 @@ export class Thumbnail extends Component {
     } else {
       this.setEmptyThumbnailClass();
     }
-
-
   }
 
   private buildThumbnailImage() {
@@ -144,5 +151,7 @@ export class Thumbnail extends Component {
     $$(this.img).addClass(this.options.noThumbnailClass);
   }
 }
+
+Thumbnail.options = _.extend({}, ResultLink.options, Thumbnail.options);
 
 Initialization.registerAutoCreateComponent(Thumbnail);

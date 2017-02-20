@@ -49,7 +49,7 @@
   ],
   "homepage": "https://github.com/coveo/coveo.search.js#readme",
   "engines": {
-    "node": "4.2.2"
+    "node": "6.9.2"
   },
   "devDependencies": {
     "@salesforce-ux/design-system": "2.0.3",
@@ -61,6 +61,7 @@
     "@types/pikaday": "0.0.31",
     "@types/underscore": "^1.7.33",
     "awesome-typescript-loader": "^2.2.4",
+    "bluebird": "^3.4.7",
     "cheerio": "^0.20.0",
     "colors": "^1.1.2",
     "coveralls": "^2.11.15",

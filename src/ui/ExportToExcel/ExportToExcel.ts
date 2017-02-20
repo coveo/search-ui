@@ -14,8 +14,8 @@ export interface IExportToExcelOptions {
 }
 
 /**
- * This component allows the user to export their current search results to the Microsoft Excel format (.xlsx).
- * It populates the {@link Settings} component menu.
+ * The ExportToExcel component renders an item in the {@link Settings} menu to allow the end user to export the current
+ * search results to the Microsoft Excel format (.xlsx).
  */
 export class ExportToExcel extends Component {
   static ID = 'ExportToExcel';
@@ -27,24 +27,25 @@ export class ExportToExcel extends Component {
   static options: IExportToExcelOptions = {
 
     /**
-     * Specifies the number of results to include in the exported Excel file.
+     * Specifies the number of results to include in the resulting Excel file.
      *
      * Generating and downloading the Excel file should take a reasonably short amount of time when using the default
-     * value. However, this amount of time will increase exponentially if you set the value higher.
+     * value. However, this amount of time will increase exponentially as you set the value higher.
      *
-     * It is therefore not recommended to set this value above the default index limit of 1000 search results.
+     * Consequently, you should avoid setting this value above the default index limit of 1000 search results.
      *
-     * Default value is `100`.
+     * Default value is `100`. Minimum value is `1`.
      */
     numberOfResults: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1 }),
     fieldsToInclude: ComponentOptions.buildFieldsOption()
   };
 
   /**
-   * Creates a new ExportToExcel component
-   * @param element
-   * @param options
-   * @param bindings
+   * Creates a new ExportToExcel component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the ExportToExcel component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
    * @param _window The global Window object (used to download the Excel link).
    */
   constructor(public element: HTMLElement, public options: IExportToExcelOptions, public bindings?: IComponentBindings, public _window?: Window) {
@@ -64,7 +65,7 @@ export class ExportToExcel extends Component {
   /**
    * Downloads the Excel representation of the current query.
    *
-   * This method also logs an `exportToExcel` event in the usage analytics.
+   * Also logs an `exportToExcel` event in the usage analytics.
    */
   public download() {
     let query = this.queryController.getLastQuery();

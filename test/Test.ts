@@ -415,3 +415,6 @@ UnderscoreTemplateTest();
 
 import { RevealQuerySuggestAddonTest } from './ui/RevealQuerySuggestAddonTest';
 RevealQuerySuggestAddonTest();
+
+import { ResponsiveComponentsTest } from './ui/ResponsiveComponentsTest';
+ResponsiveComponentsTest();

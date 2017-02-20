@@ -12,7 +12,11 @@ export interface IPreferencesPanelOptions {
 }
 
 /**
- * A panel that is displayed inside the {@link Settings} component, and allows end user to select some customizations for their interface, saved in local storage.
+ * The PreferencesPanel component renders a **Preferences** item inside the {@link Settings} component which the end
+ * user can click to access a panel from which it is possible to specify certain customization options for the search
+ * interface. These customization options are then saved in the browser local storage.
+ *
+ * See also the {@link ResultsFiltersPreferences} and {@link ResultsPreferences} components.
  */
 export class PreferencesPanel extends Component {
   static ID = 'PreferencesPanel';
@@ -20,10 +24,11 @@ export class PreferencesPanel extends Component {
   static options: IPreferencesPanelOptions = {};
 
   /**
-   * Create a new PreferencesPanel
-   * @param element
-   * @param options
-   * @param bindings
+   * Creates a new PreferencesPanel.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the PreferencesPanel component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
    */
   constructor(public element: HTMLElement, public options: IPreferencesPanelOptions, bindings?: IComponentBindings) {
     super(element, PreferencesPanel.ID, bindings);
@@ -42,14 +47,16 @@ export class PreferencesPanel extends Component {
   }
 
   /**
-   * Open the PreferencesPanel
+   * Opens the PreferencesPanel.
    */
   public open(): void {
     $$(this.element).addClass('coveo-active');
   }
 
   /**
-   * Close the PreferencesPanel without saving changes
+   * Closes the PreferencesPanel without saving changes.
+   *
+   * Also triggers the `exitPreferencesWithoutSave` event.
    */
   public close(): void {
     $$(this.element).removeClass('coveo-active');
@@ -57,7 +64,9 @@ export class PreferencesPanel extends Component {
   }
 
   /**
-   * Save the changes
+   * Saves the changes and executes a new query.
+   *
+   * Also triggers the `savePreferences` event.
    */
   public save(): void {
     $$(this.element).trigger(PreferencesPanelEvents.savePreferences);

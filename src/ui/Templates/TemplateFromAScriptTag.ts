@@ -6,7 +6,6 @@ import { ValidLayout } from '../ResultLayout/ResultLayout';
 import { $$ } from '../../utils/Dom';
 import _ = require('underscore');
 
-
 export interface ITemplateFromStringProperties {
   condition?: string;
   layout?: ValidLayout;
@@ -44,6 +43,9 @@ export class TemplateFromAScriptTag {
       // remove the @
       this.template.fields = this.template.fields.concat(_.map(additionalFields, (field) => field.substr(1)));
     }
+    this.template.fields = this.template.fields.concat(_.map(this.template.fieldsToMatch, (toMatch: IFieldsToMatch) => {
+      return toMatch.field;
+    }));
   }
 
   toHtmlElement(): HTMLElement {

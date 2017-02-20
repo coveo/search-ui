@@ -70,7 +70,19 @@ export function TemplateTest() {
         expect($$(created).text()).toBe(`Hello World`);
       });
 
-      it('should add the correct layout class when specified in template', () => {
+      it('should correctly return the root HTMLElement when not wrapping in a div', () => {
+        tmpl = new Template(() => '<div class="my-stuff"></div>');
+        let created = tmpl.instantiateToElement(result, { wrapInDiv: false });
+        expect($$(created).hasClass('my-stuff')).toBe(true);
+      });
+
+      it('should correctly return the root HTMLElement when not wrapping in a div even if there is a leading whitespace in the content', () => {
+        tmpl = new Template(() => '     <div class="my-stuff"></div>');
+        let created = tmpl.instantiateToElement(result, { wrapInDiv: false });
+        expect($$(created).hasClass('my-stuff')).toBe(true);
+      });
+
+      it('should add the correct layout class', () => {
         tmpl.layout = 'card';
         let created = tmpl.instantiateToElement(result);
         expect($$(created).hasClass('coveo-card-layout')).toBe(true);

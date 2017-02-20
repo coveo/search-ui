@@ -7,6 +7,7 @@ import { analyticsActionCauseList, IAnalyticsResultsPerPageMeta, IAnalyticsActio
 import { Assert } from '../../misc/Assert';
 import { $$ } from '../../utils/Dom';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
+import { DeviceUtils } from '../../utils/DeviceUtils';
 import _ = require('underscore');
 
 export interface IResultsPerPageOptions {
@@ -42,8 +43,15 @@ export class ResultsPerPage extends Component {
         return parseInt(value, 10);
       });
       return values.length == 0 ? null : values;
-    }, { defaultValue: [10, 25, 50, 100] }),
-
+    }, {
+        defaultFunction: () => {
+          if (DeviceUtils.isMobileDevice()) {
+            return [10, 25, 50];
+          } else {
+            return [10, 25, 50, 100];
+          }
+        },
+      }),
     /**
      * Specifies the value to select by default for the number of results to display per page.
      *
