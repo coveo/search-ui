@@ -47,6 +47,12 @@
   text-align: left;
 }
 
+.coveo-result-list-table-footer {
+  .coveo-result-cell {
+    border-bottom: none;
+  }
+}
+
 @include mediaSelector(800) {
   .CoveoResultList {
     margin-left: 10px;
