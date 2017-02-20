@@ -14,10 +14,10 @@ export class TemplateList extends Template {
 
     if (instantiateOptions.role != null) {
       const roledTemplate = _.find(this.templates, t => t.role === instantiateOptions.role);
-      if (roledTemplate === undefined) {
-        return new DefaultResultTemplate().instantiateToString(object, instantiateOptions);
-      } else {
+      if (roledTemplate) {
         return roledTemplate.instantiateToString(object, instantiateOptions);
+      } else {
+        return new DefaultResultTemplate().instantiateToString(object, instantiateOptions);
       }
     }
     const filteredTemplates = _.reject(this.templates, t => t.role != null);
@@ -35,10 +35,10 @@ export class TemplateList extends Template {
 
     if (instantiateOptions.role != null) {
       const roledTemplate = _.find(this.templates, t => t.role === instantiateOptions.role);
-      if (roledTemplate === undefined) {
-        return new DefaultResultTemplate().instantiateToElement(object, instantiateOptions);
-      } else {
+      if (roledTemplate) {
         return roledTemplate.instantiateToElement(object, instantiateOptions);
+      } else {
+        return new DefaultResultTemplate().instantiateToElement(object, instantiateOptions);
       }
     }
     const filteredTemplates = _.reject(this.templates, t => t.role != null);
