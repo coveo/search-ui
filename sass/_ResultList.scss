@@ -21,6 +21,7 @@
 
   &[data-layout="table"] {
     overflow-x: auto;
+    margin-bottom: 20px;
   }
 }
 
@@ -37,7 +38,6 @@
   display: table;
   border-collapse: collapse;
   width: 100%;
-  margin-bottom: 20px;
   @include mediaSelector(480) {
     white-space: nowrap;
   }
