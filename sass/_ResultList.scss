@@ -36,11 +36,10 @@
 
 .coveo-table-layout-container {
   display: table;
+  white-space: nowrap;
+  table-layout: fixed;
   border-collapse: collapse;
   width: 100%;
-  @include mediaSelector(480) {
-    white-space: nowrap;
-  }
 }
 
 .coveo-result-list-table-header {
