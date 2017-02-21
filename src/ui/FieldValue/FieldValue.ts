@@ -12,6 +12,7 @@ import { Utils } from '../../utils/Utils';
 import { Facet } from '../Facet/Facet';
 import { $$ } from '../../utils/Dom';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IFieldValueOptions {
   field?: IFieldOption;
@@ -50,6 +51,12 @@ function showOnlyWithHelper<T>(helpers: string[], options?: T): T {
  */
 export class FieldValue extends Component {
   static ID = 'FieldValue';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'FieldValue': FieldValue
+    });
+  }
 
   /**
    * The options for the component

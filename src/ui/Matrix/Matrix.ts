@@ -17,6 +17,7 @@ import { QueryUtils } from '../../utils/QueryUtils';
 import { IQuery } from '../../rest/Query';
 import * as Globalize from 'globalize';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IMatrixOptions {
   title?: string;
@@ -59,6 +60,12 @@ export interface IMatrixOptions {
  */
 export class Matrix extends Component {
   static ID = 'Matrix';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'Matrix': Matrix
+    });
+  }
 
   /**
    * The possible options for the component

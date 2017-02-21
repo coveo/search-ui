@@ -11,6 +11,7 @@ import { QueryStateModel } from '../../models/QueryStateModel';
 import * as Globalize from 'globalize';
 import { QuerySummaryEvents } from '../../events/QuerySummaryEvents';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IQuerySummaryOptions {
   enableSearchTips?: boolean;
@@ -26,6 +27,12 @@ export interface IQuerySummaryOptions {
  */
 export class QuerySummary extends Component {
   static ID = 'QuerySummary';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'QuerySummary': QuerySummary
+    });
+  }
 
   /**
    * Options for the component

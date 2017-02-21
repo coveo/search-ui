@@ -7,6 +7,7 @@ import { PreferencesPanelEvents } from '../../events/PreferencesPanelEvents';
 import { Initialization } from '../Base/Initialization';
 import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IPreferencesPanelOptions {
 }
@@ -20,6 +21,12 @@ export interface IPreferencesPanelOptions {
  */
 export class PreferencesPanel extends Component {
   static ID = 'PreferencesPanel';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'PreferencesPanel': PreferencesPanel
+    });
+  }
 
   static options: IPreferencesPanelOptions = {};
 

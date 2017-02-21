@@ -11,6 +11,7 @@ import { Utils } from '../../utils/Utils';
 import { Initialization } from '../Base/Initialization';
 import { Assert } from '../../misc/Assert';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IHiddenQueryOptions {
   maximumDescriptionLength: number;
@@ -26,6 +27,12 @@ export interface IHiddenQueryOptions {
  */
 export class HiddenQuery extends Component {
   static ID = 'HiddenQuery';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'HiddenQuery': HiddenQuery
+    });
+  }
 
   /**
    * Possible options for the `HiddenQuery` component

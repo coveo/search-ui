@@ -7,6 +7,7 @@ import { Initialization } from '../Base/Initialization';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { $$ } from '../../utils/Dom';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IImageResultListOptions extends IResultListOptions {
   layoutType?: string;
@@ -24,6 +25,12 @@ export class ImageResultList extends ResultList implements IComponentBindings {
   static ID = 'ImageResultList';
   static rowLayoutTypeStr = 'row';
   static columnLayoutTypeStr = 'column';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'ImageResultList': ImageResultList
+    });
+  }
 
   /**
    * The options for the component

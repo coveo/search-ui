@@ -4,6 +4,9 @@ export * from './Core';
 export { CoreHelpers } from './ui/Templates/CoreHelpers';
 export { SearchInterface, StandaloneSearchInterface } from './ui/SearchInterface/SearchInterface';
 
+import { AdvancedSearch } from './ui/AdvancedSearch/AdvancedSearch';
+AdvancedSearch.doExport();
+
 import { Aggregate } from './ui/Aggregate/Aggregate';
 Aggregate.doExport();
 
@@ -18,6 +21,9 @@ AuthenticationProvider.doExport();
 
 import { Backdrop } from './ui/Backdrop/Backdrop';
 Backdrop.doExport();
+
+import { Badge } from './ui/Badge/Badge';
+Badge.doExport();
 
 import { Breadcrumb } from './ui/Breadcrumb/Breadcrumb';
 Breadcrumb.doExport();
@@ -58,52 +64,106 @@ Facet.doExport();
 import { FacetRange } from './ui/FacetRange/FacetRange';
 FacetRange.doExport();
 
-export { RecommendationAnalyticsClient } from './ui/Analytics/RecommendationAnalyticsClient';
+import { FacetSlider } from './ui/FacetSlider/FacetSlider';
+FacetSlider.doExport();
+
+import { FieldSuggestions } from './ui/FieldSuggestions/FieldSuggestions';
+FieldSuggestions.doExport();
+
+import { FieldTable } from './ui/FieldTable/FieldTable';
+FieldTable.doExport();
+
+import { FieldValue } from './ui/FieldValue/FieldValue';
+FieldValue.doExport();
+
+import { Folding } from './ui/Folding/Folding';
+Folding.doExport();
+
+import { FoldingForThread } from './ui/FoldingForThread/FoldingForThread';
+FoldingForThread.doExport();
+
+import { HiddenQuery } from './ui/HiddenQuery/HiddenQuery';
+HiddenQuery.doExport();
+
+import { HierarchicalFacet } from './ui/HierarchicalFacet/HierarchicalFacet';
+HierarchicalFacet.doExport();
+
+import { Icon } from './ui/Icon/Icon';
+Icon.doExport();
+
+import { ImageResultList } from './ui/ImageResultList/ImageResultList';
+ImageResultList.doExport();
+
+import { Logo } from './ui/Logo/Logo';
+Logo.doExport();
+
+import { Matrix } from './ui/Matrix/Matrix';
+Matrix.doExport();
+
+import { Omnibox } from './ui/Omnibox/Omnibox';
+Omnibox.doExport();
+
+import { OmniboxResultList } from './ui/OmniboxResultList/OmniboxResultList';
+OmniboxResultList.doExport();
+
+import { Pager } from './ui/Pager/Pager';
+Pager.doExport();
+
+import { PipelineContext } from './ui/PipelineContext/PipelineContext';
+PipelineContext.doExport();
+
+import { PreferencesPanel } from './ui/PreferencesPanel/PreferencesPanel';
+PreferencesPanel.doExport();
+
+import { PrintableUri } from './ui/PrintableUri/PrintableUri';
+PrintableUri.doExport();
 
 import { Querybox } from './ui/Querybox/Querybox';
 Querybox.doExport();
 
+import { QueryDuration } from './ui/QueryDuration/QueryDuration';
+QueryDuration.doExport();
+
+import { QuerySummary } from './ui/QuerySummary/QuerySummary';
+QuerySummary.doExport();
+
+import { Quickview } from './ui/Quickview/Quickview';
+Quickview.doExport();
+
+import { Recommendation } from './ui/Recommendation/Recommendation';
+Recommendation.doExport();
+
 import { SearchButton } from './ui/SearchButton/SearchButton';
 SearchButton.doExport();
 
+
 export { Searchbox } from './ui/Searchbox/Searchbox';
 export { Breadcrumb } from './ui/Breadcrumb/Breadcrumb';
-export { Logo } from './ui/Logo/Logo';
 
 
-export { Slider } from './ui/Misc/Slider';
-export { FacetSlider } from './ui/FacetSlider/FacetSlider';
 
-
-export { Pager } from './ui/Pager/Pager';
 export { ResultsPerPage } from './ui/ResultsPerPage/ResultsPerPage';
 export { ResultList } from './ui/ResultList/ResultList';
 export { ResultLayout } from './ui/ResultLayout/ResultLayout';
-export { DefaultRecommendationTemplate } from './ui/Templates/DefaultRecommendationTemplate';
+
 export { Excerpt } from './ui/Excerpt/Excerpt';
 export { ResultLink } from './ui/ResultLink/ResultLink';
-export { Icon } from './ui/Icon/Icon';
 export { Thumbnail } from './ui/Thumbnail/Thumbnail';
 export { PrintableUri } from './ui/PrintableUri/PrintableUri';
 export { Quickview } from './ui/Quickview/Quickview';
 export { ErrorReport } from './ui/ErrorReport/ErrorReport';
 export { ExportToExcel } from './ui/ExportToExcel/ExportToExcel';
-export { Folding } from './ui/Folding/Folding';
-export { HiddenQuery } from './ui/HiddenQuery/HiddenQuery';
-export { HierarchicalFacet } from './ui/HierarchicalFacet/HierarchicalFacet';
-export { Matrix } from './ui/Matrix/Matrix';
+
 export { QuickviewDocument } from './ui/Quickview/QuickviewDocument';
 export { YouTubeThumbnail } from './ui/YouTube/YouTubeThumbnail';
 export { ResultAttachments } from './ui/ResultAttachments/ResultAttachments';
 export { ResultFolding } from './ui/ResultFolding/ResultFolding';
 export { FieldTable } from './ui/FieldTable/FieldTable';
-export { FieldValue } from './ui/FieldTable/FieldValue';
-export { Badge } from './ui/FieldTable/Badge';
+export { FieldValue } from './ui/FieldValue/FieldValue';
 export { ResultRating } from './ui/ResultRating/ResultRating';
-export { PreferencesPanel } from './ui/PreferencesPanel/PreferencesPanel';
 export { ResultsFiltersPreferences } from './ui/ResultsFiltersPreferences/ResultsFiltersPreferences';
 export { Tab } from './ui/Tab/Tab';
-export { Omnibox } from './ui/Omnibox/Omnibox';
+
 export { QueryDuration } from './ui/QueryDuration/QueryDuration';
 export { QuerySummary } from './ui/QuerySummary/QuerySummary';
 export { Debug } from './ui/Debug/Debug';
@@ -112,8 +172,7 @@ export { ShareQuery } from './ui/ShareQuery/ShareQuery';
 export { Sort } from './ui/Sort/Sort';
 export { SortCriteria } from './ui/Sort/SortCriteria';
 export { Triggers } from './ui/Triggers/Triggers';
-export { Recommendation } from './ui/Recommendation/Recommendation';
-export { RecommendationQuery } from './ui/Recommendation/RecommendationQuery';
+
 export { TemplateLoader } from './ui/TemplateLoader/TemplateLoader';
 export { Template } from './ui/Templates/Template';
 export { SuggestionForOmnibox } from './ui/Misc/SuggestionForOmnibox';
@@ -125,20 +184,13 @@ export { ResultsPreferences } from './ui/ResultsPreferences/ResultsPreferences';
 export { PipelineContext, context } from './ui/PipelineContext/PipelineContext';
 export { OmniboxResultList } from './ui/OmniboxResultList/OmniboxResultList';
 export { QueryboxQueryParameters } from './ui/Querybox/QueryboxQueryParameters';
-export { ImageResultList } from './ui/ImageResultList/ImageResultList';
 export { jQueryInstance as $ } from './ui/Base/CoveoJQuery';
 export { underscoreInstance as _ } from './ui/Base/CoveoUnderscore';
-export { AdvancedSearch } from './ui/AdvancedSearch/AdvancedSearch';
-export { NumericSpinner } from './ui/AdvancedSearch/Form/NumericSpinner';
-export { DatePicker } from './ui/AdvancedSearch/Form/DatePicker';
-export { Dropdown } from './ui/AdvancedSearch/Form/Dropdown';
-export { TextInput } from './ui/AdvancedSearch/Form/TextInput';
-export { RadioButton } from './ui/AdvancedSearch/Form/RadioButton';
+
 export { FollowItem } from './ui/SearchAlerts/FollowItem';
 export { SearchAlerts } from './ui/SearchAlerts/SearchAlerts';
 export { SearchAlertsMessage } from './ui/SearchAlerts/SearchAlertsMessage';
 export { Text } from './ui/Text/Text';
-export { FoldingForThread } from './ui/Folding/FoldingForThread';
 export { HashUtils } from './utils/HashUtils';
 export { DeviceUtils } from './utils/DeviceUtils';
 export { ColorUtils } from './utils/ColorUtils';

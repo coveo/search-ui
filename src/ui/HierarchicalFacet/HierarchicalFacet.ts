@@ -27,6 +27,7 @@ import { HierarchicalFacetValueElement } from './HierarchicalFacetValueElement';
 import { Initialization } from '../Base/Initialization';
 import { ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IHierarchicalFacetOptions extends IFacetOptions {
   delimitingCharacter?: string;
@@ -87,6 +88,12 @@ interface IFlatHierarchy {
  */
 export class HierarchicalFacet extends Facet implements IComponentBindings {
   static ID = 'HierarchicalFacet';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'HierarchicalFacet': HierarchicalFacet
+    });
+  }
 
   /**
    * The options for the component

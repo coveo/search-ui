@@ -25,6 +25,7 @@ import { Initialization } from '../Base/Initialization';
 import * as d3 from 'd3';
 import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;
@@ -349,6 +350,14 @@ export class FacetSlider extends Component {
   };
 
   static ID = 'FacetSlider';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'FacetSlider': FacetSlider,
+      'Slider': Slider
+    });
+  }
+
   public static DEBOUNCED_RESIZE_DELAY = 250;
 
   public startOfSlider: number;

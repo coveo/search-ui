@@ -1,7 +1,8 @@
-import { Folding, IFoldingOptions } from './Folding';
+import { Folding, IFoldingOptions } from '../Folding/Folding';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { IQueryResult } from '../../rest/QueryResult';
 import { Initialization } from '../Base/Initialization';
+import { exportGlobally } from '../../GlobalExports';
 
 /**
  * This component inherits from the {@link Folding} component.
@@ -11,6 +12,12 @@ import { Initialization } from '../Base/Initialization';
  */
 export class FoldingForThread extends Folding {
   static ID = 'FoldingForThread';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'FoldingForThread': FoldingForThread
+    });
+  }
 
   /**
    * Create a new FoldingForThread component

@@ -1,7 +1,7 @@
 import { IComponentDefinition } from '../Base/Component';
 import { Initialization } from '../Base/Initialization';
 
-export function lazyFacet() {
+export function lazyFacetRange() {
   Initialization.registerLazyComponent('FacetRange', () => {
     return new Promise((resolve, reject) => {
       require.ensure(['./FacetRange'], () => {

@@ -1,6 +1,6 @@
 import * as Mock from '../MockEnvironment';
-import { Badge } from '../../src/ui/FieldTable/Badge';
-import { IBadgeOptions } from '../../src/ui/FieldTable/Badge';
+import { Badge } from '../../src/ui/Badge/Badge';
+import { IBadgeOptions } from '../../src/ui/Badge/Badge';
 import { FakeResults } from '../Fake';
 import { $$ } from '../../src/utils/Dom';
 

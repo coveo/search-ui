@@ -15,6 +15,7 @@ import { $$ } from '../../utils/Dom';
 import { ISuggestionForOmniboxOptionsOnSelect } from '../Misc/SuggestionForOmnibox';
 import { IStringMap } from '../../rest/GenericParam';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IFieldSuggestionsOptions extends ISuggestionForOmniboxOptions {
   field?: IFieldOption;
@@ -30,6 +31,12 @@ export interface IFieldSuggestionsOptions extends ISuggestionForOmniboxOptions {
  */
 export class FieldSuggestions extends Component {
   static ID = 'FieldSuggestions';
+
+  static doExport = () => {
+    exportGlobally({
+      'FieldSuggestions': FieldSuggestions
+    });
+  }
 
   /**
    * @componentOptions

@@ -6,6 +6,7 @@ import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { $$ } from '../../utils/Dom';
 import { Initialization } from '../Base/Initialization';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export var context: any;
 declare var Coveo;
@@ -47,6 +48,12 @@ export interface IPipelineContextOptions {
 export class PipelineContext extends Component {
   static ID = 'PipelineContext';
   static CURRENT_URL = 'CurrentUrl';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'PipelineContext': PipelineContext
+    });
+  }
 
   private content: { [id: string]: string };
 

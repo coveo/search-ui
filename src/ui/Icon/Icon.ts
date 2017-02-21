@@ -9,6 +9,7 @@ import { Utils } from '../../utils/Utils';
 import { FileTypes, IFileTypeInfo } from '../Misc/FileTypes';
 import { Quickview } from '../Quickview/Quickview';
 import { $$ } from '../../utils/Dom';
+import { exportGlobally } from '../../GlobalExports';
 
 /**
  * Available options for the {@link Icon} component.
@@ -29,6 +30,12 @@ export interface IIconOptions {
  */
 export class Icon extends Component {
   static ID = 'Icon';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'Icon': Icon
+    });
+  }
 
   /**
    * The options for the Icon

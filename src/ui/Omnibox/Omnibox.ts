@@ -29,6 +29,7 @@ import { Utils } from '../../utils/Utils';
 import { MagicBox } from '../../ExternalModulesShim';
 import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IPopulateOmniboxSuggestionsEventArgs {
   omnibox: Omnibox;
@@ -71,6 +72,12 @@ const MINIMUM_EXECUTABLE_CONFIDENCE = 0.8;
  */
 export class Omnibox extends Component {
   public static ID = 'Omnibox';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'Omnibox': Omnibox
+    });
+  }
 
   /**
    * The options for the omnibox

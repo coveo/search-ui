@@ -15,6 +15,7 @@ import { QuickviewEvents } from '../../events/QuickviewEvents';
 import { Initialization, IInitializationParameters } from '../Base/Initialization';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IQuickviewOptions {
   title?: string;
@@ -77,6 +78,12 @@ export class Quickview extends Component {
     'source', // analytics,
     'author' // analytics
   ];
+
+  static doExport = ()=> {
+    exportGlobally({
+      'Quickview': Quickview
+    });
+  }
 
   /**
    * @componentOptions

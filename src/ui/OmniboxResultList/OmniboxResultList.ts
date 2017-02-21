@@ -13,6 +13,7 @@ import { Utils } from '../../utils/Utils';
 import { Initialization } from '../Base/Initialization';
 import { IQueryResults } from '../../rest/QueryResults';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IOmniboxResultListOptions extends IResultListOptions {
   omniboxZIndex?: number;
@@ -42,6 +43,12 @@ export interface IOmniboxResultListOptions extends IResultListOptions {
  */
 export class OmniboxResultList extends ResultList implements IComponentBindings {
   static ID = 'OmniboxResultList';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'OmniboxResultList': OmniboxResultList
+    });
+  }
 
   /**
    * The options for the component

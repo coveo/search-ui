@@ -7,6 +7,7 @@ import { $$ } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import { Initialization } from '../Base/Initialization';
 import * as Globalize from 'globalize';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IQueryDurationOptions {
 }
@@ -21,6 +22,12 @@ export interface IQueryDurationOptions {
  */
 export class QueryDuration extends Component {
   static ID = 'QueryDuration';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'QueryDuration': QueryDuration
+    });
+  }
 
   static options: IQueryDurationOptions = {
   };
