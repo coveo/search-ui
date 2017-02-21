@@ -13,6 +13,7 @@ import {
 } from '../Analytics/AnalyticsActionListMeta';
 import { QueryUtils } from '../../utils/QueryUtils';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 
 export interface IFollowItemOptions {
@@ -33,6 +34,12 @@ export interface IFollowItemOptions {
  */
 export class FollowItem extends Component {
   static ID = 'FollowItem';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'FollowItem': FollowItem
+    });
+  }
 
   static fields = [
     'urihash'

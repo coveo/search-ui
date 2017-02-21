@@ -1,4 +1,4 @@
-import { FollowItem } from '../../src/ui/SearchAlerts/FollowItem';
+import { FollowItem } from '../../src/ui/FollowItem/FollowItem';
 import * as Mock from '../MockEnvironment';
 import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
 import { IQueryResult } from '../../src/rest/QueryResult';

@@ -127,7 +127,7 @@ export interface IResultListOptions {
 export class ResultList extends Component {
   static ID = 'ResultList';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'ResultList': ResultList
     });

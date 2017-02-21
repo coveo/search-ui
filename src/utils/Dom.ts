@@ -61,7 +61,7 @@ export class Dom {
         elem.appendChild(child.el);
       }
     });
-    
+
     return elem;
   }
 

@@ -21,7 +21,7 @@ export interface IResultRatingOptions {
 export class ResultRating extends Component {
   static ID = 'ResultRating';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'ResultRating': ResultRating
     });

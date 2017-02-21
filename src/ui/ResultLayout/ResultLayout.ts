@@ -53,7 +53,7 @@ export const defaultLayout: ValidLayout = 'list';
 export class ResultLayout extends Component {
   static ID = 'ResultLayout';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'ResultLayout': ResultLayout
     });

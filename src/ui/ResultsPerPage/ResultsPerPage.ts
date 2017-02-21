@@ -9,6 +9,7 @@ import { $$ } from '../../utils/Dom';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IResultsPerPageOptions {
   choicesDisplayed?: number[];
@@ -24,6 +25,12 @@ export interface IResultsPerPageOptions {
  */
 export class ResultsPerPage extends Component {
   static ID = 'ResultsPerPage';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'ResultsPerPage': ResultsPerPage
+    });
+  }
 
   /**
    * The options for the ResultsPerPage

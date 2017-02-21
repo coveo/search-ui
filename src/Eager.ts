@@ -82,6 +82,9 @@ Folding.doExport();
 import { FoldingForThread } from './ui/FoldingForThread/FoldingForThread';
 FoldingForThread.doExport();
 
+import { FollowItem } from './ui/FollowItem/FollowItem';
+FollowItem.doExport();
+
 import { HiddenQuery } from './ui/HiddenQuery/HiddenQuery';
 HiddenQuery.doExport();
 
@@ -154,23 +157,38 @@ ResultRating.doExport();
 import { ResultsFiltersPreferences } from './ui/ResultsFiltersPreferences/ResultsFiltersPreferences';
 ResultsFiltersPreferences.doExport();
 
+import { ResultsPerPage } from './ui/ResultsPerPage/ResultsPerPage';
+ResultsPerPage.doExport();
 
+import { ResultsPreferences } from './ui/ResultsPreferences/ResultsPreferences';
+ResultsPreferences.doExport();
 
+import { ResultTagging } from './ui/ResultTagging/ResultTagging';
+ResultTagging.doExport();
 
+import { SearchAlerts } from './ui/SearchAlerts/SearchAlerts';
+SearchAlerts.doExport();
+
+import { Searchbox } from './ui/Searchbox/Searchbox';
+Searchbox.doExport();
 
 import { SearchButton } from './ui/SearchButton/SearchButton';
 SearchButton.doExport();
 
+import { Settings } from './ui/Settings/Settings';
+Settings.doExport();
 
-export { Searchbox } from './ui/Searchbox/Searchbox';
-export { Breadcrumb } from './ui/Breadcrumb/Breadcrumb';
+import { ShareQuery } from './ui/ShareQuery/ShareQuery';
+ShareQuery.doExport();
+
+import { Sort } from './ui/Sort/Sort';
+Sort.doExport();
 
 
 
-export { ResultsPerPage } from './ui/ResultsPerPage/ResultsPerPage';
 
 
-export { Excerpt } from './ui/Excerpt/Excerpt';
+
 export { Thumbnail } from './ui/Thumbnail/Thumbnail';
 export { PrintableUri } from './ui/PrintableUri/PrintableUri';
 export { Quickview } from './ui/Quickview/Quickview';
@@ -180,9 +198,6 @@ export { ExportToExcel } from './ui/ExportToExcel/ExportToExcel';
 export { QuickviewDocument } from './ui/Quickview/QuickviewDocument';
 export { YouTubeThumbnail } from './ui/YouTube/YouTubeThumbnail';
 
-export { ResultFolding } from './ui/ResultFolding/ResultFolding';
-export { FieldTable } from './ui/FieldTable/FieldTable';
-export { FieldValue } from './ui/FieldValue/FieldValue';
 
 export { ResultsFiltersPreferences } from './ui/ResultsFiltersPreferences/ResultsFiltersPreferences';
 export { Tab } from './ui/Tab/Tab';
@@ -190,27 +205,22 @@ export { Tab } from './ui/Tab/Tab';
 export { QueryDuration } from './ui/QueryDuration/QueryDuration';
 export { QuerySummary } from './ui/QuerySummary/QuerySummary';
 export { Debug } from './ui/Debug/Debug';
-export { Settings } from './ui/Settings/Settings';
-export { ShareQuery } from './ui/ShareQuery/ShareQuery';
-export { Sort } from './ui/Sort/Sort';
-export { SortCriteria } from './ui/Sort/SortCriteria';
+
+
 export { Triggers } from './ui/Triggers/Triggers';
 
 export { TemplateLoader } from './ui/TemplateLoader/TemplateLoader';
 export { Template } from './ui/Templates/Template';
 export { SuggestionForOmnibox } from './ui/Misc/SuggestionForOmnibox';
 
-export { FieldSuggestions } from './ui/FieldSuggestions/FieldSuggestions';
 
-export { ResultTagging } from './ui/ResultTagging/ResultTagging';
-export { ResultsPreferences } from './ui/ResultsPreferences/ResultsPreferences';
 export { PipelineContext, context } from './ui/PipelineContext/PipelineContext';
 export { OmniboxResultList } from './ui/OmniboxResultList/OmniboxResultList';
 export { QueryboxQueryParameters } from './ui/Querybox/QueryboxQueryParameters';
 export { jQueryInstance as $ } from './ui/Base/CoveoJQuery';
 export { underscoreInstance as _ } from './ui/Base/CoveoUnderscore';
 
-export { FollowItem } from './ui/SearchAlerts/FollowItem';
+
 export { SearchAlerts } from './ui/SearchAlerts/SearchAlerts';
 export { SearchAlertsMessage } from './ui/SearchAlerts/SearchAlertsMessage';
 export { Text } from './ui/Text/Text';

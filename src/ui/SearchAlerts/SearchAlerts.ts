@@ -20,6 +20,7 @@ import {
   analyticsActionCauseList, IAnalyticsSearchAlertsUpdateMeta, IAnalyticsSearchAlertsMeta, IAnalyticsActionCause
 } from '../Analytics/AnalyticsActionListMeta';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface ISearchAlertsOptions {
   enableManagePanel?: boolean;
@@ -41,6 +42,12 @@ export interface ISearchAlertsOptions {
  */
 export class SearchAlerts extends Component {
   static ID = 'SearchAlerts';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'SearchAlerts': SearchAlerts
+    });
+  }
 
   /**
    * The options for the search alerts

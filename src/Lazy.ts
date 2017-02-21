@@ -61,9 +61,6 @@ lazyExcerpt();
 import { lazyExportToExcel } from './ui/ExportToExcel/LazyExportToExcel';
 lazyExportToExcel();
 
-import { lazySearchbox } from './ui/Searchbox/LazySearchbox';
-lazySearchbox();
-
 import { lazyFacet } from './ui/Facet/LazyFacet';
 lazyFacet();
 
@@ -160,7 +157,34 @@ lazyResultRating();
 import { lazyResultsFiltersPreferences } from './ui/ResultsFiltersPreferences/LazyResultsFiltersPreferences';
 lazyResultsFiltersPreferences();
 
+import { lazyResultsPerPage } from './ui/ResultsPerPage/LazyResultsPerPage';
+lazyResultsPerPage();
 
+import { lazyResultsPreferences } from './ui/ResultsPreferences/LazyResultsPreferences';
+lazyResultsPreferences();
+
+import { lazyResultTagging } from './ui/ResultTagging/LazyResultTagging';
+lazyResultTagging();
+
+import { lazyFollowItem } from './ui/FollowItem/LazyFollowItem';
+lazyFollowItem();
+
+import { lazySearchAlerts } from './ui/SearchAlerts/LazySearchAlerts';
+lazySearchAlerts();
+
+import { lazySearchbox } from './ui/Searchbox/LazySearchbox';
+lazySearchbox();
+
+import { lazySearchButton } from './ui/SearchButton/LazySearchButton';
+lazySearchButton();
+
+import { lazySettings } from './ui/Settings/LazySettings';
+lazySettings();
+
+import { lazyShareQuery } from './ui/ShareQuery/LazyShareQuery';
+lazyShareQuery();
+
+import {} from './ui/Sort/'
 
 
 

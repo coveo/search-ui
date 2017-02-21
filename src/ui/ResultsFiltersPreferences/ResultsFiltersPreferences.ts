@@ -51,7 +51,7 @@ export interface IResultsFiltersPreferencesOptions {
 export class ResultsFiltersPreferences extends Component {
   static ID = 'ResultsFiltersPreferences';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'ResultsFiltersPreferences': ResultsFiltersPreferences
     });

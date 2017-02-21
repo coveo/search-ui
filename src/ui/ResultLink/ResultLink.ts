@@ -28,7 +28,7 @@ import { exportGlobally } from '../../GlobalExports';
 export class ResultLink extends Component {
   static ID = 'ResultLink';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'ResultLink': ResultLink
     });
