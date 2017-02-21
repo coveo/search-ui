@@ -2,6 +2,7 @@ import { Dropdown } from '../Form/Dropdown';
 import { NumericSpinner } from '../Form/NumericSpinner';
 import { $$ } from '../../../utils/Dom';
 import { DocumentInput } from './DocumentInput';
+import { QueryBuilder } from '../../Base/QueryBuilder';
 
 
 export class SizeInput extends DocumentInput {
@@ -42,12 +43,15 @@ export class SizeInput extends DocumentInput {
 
   public getValue(): string {
     let size = this.getSizeInBytes();
+    let queryBuilder = new QueryBuilder();
     if (size) {
       switch (this.modeSelect.getValue()) {
         case 'AtLeast':
-          return '@size>=' + this.getSizeInBytes();
+          queryBuilder.advancedExpression.addFieldExpression('@size', '>=', [this.getSizeInBytes().toString()]);
+          return queryBuilder.build().aq;
         default:
-          return '@size<=' + this.getSizeInBytes();
+          queryBuilder.advancedExpression.addFieldExpression('@size', '<=', [this.getSizeInBytes().toString()]);
+          return queryBuilder.build().aq;
       }
     }
     return '';
