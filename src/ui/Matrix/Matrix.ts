@@ -61,7 +61,7 @@ export interface IMatrixOptions {
 export class Matrix extends Component {
   static ID = 'Matrix';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'Matrix': Matrix
     });

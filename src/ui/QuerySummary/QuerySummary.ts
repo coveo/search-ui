@@ -28,7 +28,7 @@ export interface IQuerySummaryOptions {
 export class QuerySummary extends Component {
   static ID = 'QuerySummary';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'QuerySummary': QuerySummary
     });

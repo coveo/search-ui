@@ -46,7 +46,7 @@ lazyChatterPostAttachment();
 import { lazyChatterPostedBy } from './ui/ChatterPostedBy/LazyChatterPostedBy';
 lazyChatterPostedBy();
 
-import  { lazyChatterTopic } from './ui/ChatterTopic/LazyChatterTopic';
+import { lazyChatterTopic } from './ui/ChatterTopic/LazyChatterTopic';
 lazyChatterTopic();
 
 import { lazyDidYouMean } from './ui/DidYouMean/LazyDidYouMean';
@@ -136,7 +136,33 @@ lazyQuerySummary();
 import { lazyQuickview } from './ui/Quickview/LazyQuickview';
 lazyQuickview();
 
-import {} from './'
+import { lazyRecommendation } from './ui/Recommendation/LazyRecommendation';
+lazyRecommendation();
+
+import { lazyResultAttachment } from './ui/ResultAttachments/LazyResultAttachments';
+lazyResultAttachment();
+
+import { lazyResultFolding } from './ui/ResultFolding/LazyResultFolding';
+lazyResultFolding();
+
+import { lazyResultLayout } from './ui/ResultLayout/LazyResultLayout';
+lazyResultLayout();
+
+import { lazyResultLink } from './ui/ResultLink/LazyResultLink';
+lazyResultLink();
+
+import { lazyResultList } from './ui/ResultList/LazyResultList';
+lazyResultList();
+
+import { lazyResultRating } from './ui/ResultRating/LazyResultRating';
+lazyResultRating();
+
+import { lazyResultsFiltersPreferences } from './ui/ResultsFiltersPreferences/LazyResultsFiltersPreferences';
+lazyResultsFiltersPreferences();
+
+
+
+
 
 import { swapVar } from './SwapVar';
 swapVar(this);

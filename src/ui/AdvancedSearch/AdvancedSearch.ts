@@ -38,7 +38,7 @@ export interface IAdvancedSearchOptions {
 export class AdvancedSearch extends Component {
   static ID = 'AdvancedSearch';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'AdvancedSearch': AdvancedSearch,
       'NumericSpinner': NumericSpinner,

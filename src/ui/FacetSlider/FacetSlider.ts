@@ -351,7 +351,7 @@ export class FacetSlider extends Component {
 
   static ID = 'FacetSlider';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'FacetSlider': FacetSlider,
       'Slider': Slider

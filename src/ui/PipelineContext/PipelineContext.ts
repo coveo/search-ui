@@ -49,7 +49,7 @@ export class PipelineContext extends Component {
   static ID = 'PipelineContext';
   static CURRENT_URL = 'CurrentUrl';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'PipelineContext': PipelineContext
     });

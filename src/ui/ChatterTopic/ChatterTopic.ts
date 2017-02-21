@@ -12,7 +12,7 @@ export interface IChatterTopicOption {
 export class ChatterTopic extends Component {
   static ID = 'ChatterTopic';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'ChatterTopic': ChatterTopic
     });

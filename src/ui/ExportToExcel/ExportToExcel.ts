@@ -21,7 +21,7 @@ export interface IExportToExcelOptions {
 export class ExportToExcel extends Component {
   static ID = 'ExportToExcel';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'ExportToExcel': ExportToExcel
     });

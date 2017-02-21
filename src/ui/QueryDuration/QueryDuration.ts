@@ -23,7 +23,7 @@ export interface IQueryDurationOptions {
 export class QueryDuration extends Component {
   static ID = 'QueryDuration';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'QueryDuration': QueryDuration
     });

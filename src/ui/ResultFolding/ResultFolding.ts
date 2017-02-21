@@ -3,7 +3,6 @@ import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { DefaultFoldingTemplate } from './DefaultFoldingTemplate';
-import { Promise } from 'es6-promise';
 import { IQueryResult } from '../../rest/QueryResult';
 import { Utils } from '../../utils/Utils';
 import { QueryUtils } from '../../utils/QueryUtils';
@@ -12,6 +11,7 @@ import { Assert } from '../../misc/Assert';
 import { $$ } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IResultFoldingOptions {
   resultTemplate?: Template;
@@ -31,6 +31,13 @@ export interface IResultFoldingOptions {
  */
 export class ResultFolding extends Component {
   static ID = 'ResultFolding';
+
+  static doExport = () => {
+    exportGlobally({
+      'ResultFolding': ResultFolding,
+      'DefaultFoldingTemplate': DefaultFoldingTemplate
+    });
+  }
 
   /**
    * The options for the component

@@ -24,7 +24,7 @@ export interface IErrorReportOptions {
 export class ErrorReport extends Component {
   static ID = 'ErrorReport';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'ErrorReport': ErrorReport
     });

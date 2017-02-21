@@ -10,6 +10,7 @@ import { Initialization, IInitializationParameters } from '../Base/Initializatio
 import { Assert } from '../../misc/Assert';
 import { $$ } from '../../utils/Dom';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IResultAttachmentsOptions {
   resultTemplate?: Template;
@@ -25,6 +26,13 @@ export interface IResultAttachmentsOptions {
  */
 export class ResultAttachments extends Component {
   static ID = 'ResultAttachments';
+
+  static doExport = () => {
+    exportGlobally({
+      'ResultAttachments': ResultAttachments,
+      'DefaultResultAttachmentTemplate': DefaultResultAttachmentTemplate
+    });
+  }
 
   /**
    * The options for the component

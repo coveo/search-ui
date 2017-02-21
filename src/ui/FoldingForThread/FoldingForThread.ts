@@ -13,7 +13,7 @@ import { exportGlobally } from '../../GlobalExports';
 export class FoldingForThread extends Folding {
   static ID = 'FoldingForThread';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'FoldingForThread': FoldingForThread
     });

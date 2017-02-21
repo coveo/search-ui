@@ -79,7 +79,7 @@ export class Quickview extends Component {
     'author' // analytics
   ];
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'Quickview': Quickview
     });

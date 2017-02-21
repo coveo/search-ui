@@ -34,7 +34,7 @@ export class Breadcrumb extends Component {
   static ID = 'Breadcrumb';
   static options: IBreadcrumbOptions = {};
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'Breadcrumb': Breadcrumb
     });

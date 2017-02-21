@@ -1,14 +1,3 @@
-/// <reference path="../../controllers/HierarchicalFacetQueryController.ts" />
-/// <reference path="../../controllers/FacetQueryController.ts" />
-/// <reference path="FacetSearch.ts" />
-/// <reference path="FacetSettings.ts" />
-/// <reference path="FacetSort.ts" />
-/// <reference path="FacetHeader.ts" />
-/// <reference path="BreadcrumbValueElement.ts" />
-/// <reference path="ValueElementRenderer.ts" />
-/// <reference path="FacetSearchParameters.ts" />
-/// <reference path="../HierarchicalFacet/HierarchicalFacet.ts" />
-
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { FacetValue, FacetValues } from './FacetValues';
@@ -56,7 +45,6 @@ import { ValueElement } from './ValueElement';
 import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
-import { swapVar } from '../../SwapVar';
 
 export interface IFacetOptions {
   title?: string;

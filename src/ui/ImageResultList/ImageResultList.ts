@@ -26,7 +26,7 @@ export class ImageResultList extends ResultList implements IComponentBindings {
   static rowLayoutTypeStr = 'row';
   static columnLayoutTypeStr = 'column';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'ImageResultList': ImageResultList
     });

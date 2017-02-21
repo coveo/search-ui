@@ -106,13 +106,15 @@ export class Initialization {
    * @param load
    */
   public static registerLazyComponent(id: string, load: () => Promise<IComponentDefinition>): void {
-    Assert.doesNotExists(Initialization.lazyLoadedComponents[id]);
-    Assert.exists(load);
-    if (!_.contains(Initialization.registeredComponents, id)) {
-      Initialization.registeredComponents.push(id);
+    if (Initialization.lazyLoadedComponents[id] == null) {
+      Assert.exists(load);
+      if (!_.contains(Initialization.registeredComponents, id)) {
+        Initialization.registeredComponents.push(id);
+      }
+      Initialization.lazyLoadedComponents[id] = load;
+    } else {
+      this.logger.warn('Component being registered twice', id);
     }
-    Initialization.lazyLoadedComponents[id] = load;
-
   }
 
   /**

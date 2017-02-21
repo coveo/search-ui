@@ -133,6 +133,31 @@ Quickview.doExport();
 import { Recommendation } from './ui/Recommendation/Recommendation';
 Recommendation.doExport();
 
+import { ResultAttachments } from './ui/ResultAttachments/ResultAttachments';
+ResultAttachments.doExport();
+
+import { ResultFolding } from './ui/ResultFolding/ResultFolding';
+ResultFolding.doExport();
+
+import { ResultLayout } from './ui/ResultLayout/ResultLayout';
+ResultLayout.doExport();
+
+import { ResultLink } from './ui/ResultLink/ResultLink';
+ResultLink.doExport();
+
+import { ResultList } from './ui/ResultList/ResultList';
+ResultList.doExport();
+
+import { ResultRating } from './ui/ResultRating/ResultRating';
+ResultRating.doExport();
+
+import { ResultsFiltersPreferences } from './ui/ResultsFiltersPreferences/ResultsFiltersPreferences';
+ResultsFiltersPreferences.doExport();
+
+
+
+
+
 import { SearchButton } from './ui/SearchButton/SearchButton';
 SearchButton.doExport();
 
@@ -143,11 +168,9 @@ export { Breadcrumb } from './ui/Breadcrumb/Breadcrumb';
 
 
 export { ResultsPerPage } from './ui/ResultsPerPage/ResultsPerPage';
-export { ResultList } from './ui/ResultList/ResultList';
-export { ResultLayout } from './ui/ResultLayout/ResultLayout';
+
 
 export { Excerpt } from './ui/Excerpt/Excerpt';
-export { ResultLink } from './ui/ResultLink/ResultLink';
 export { Thumbnail } from './ui/Thumbnail/Thumbnail';
 export { PrintableUri } from './ui/PrintableUri/PrintableUri';
 export { Quickview } from './ui/Quickview/Quickview';
@@ -156,11 +179,11 @@ export { ExportToExcel } from './ui/ExportToExcel/ExportToExcel';
 
 export { QuickviewDocument } from './ui/Quickview/QuickviewDocument';
 export { YouTubeThumbnail } from './ui/YouTube/YouTubeThumbnail';
-export { ResultAttachments } from './ui/ResultAttachments/ResultAttachments';
+
 export { ResultFolding } from './ui/ResultFolding/ResultFolding';
 export { FieldTable } from './ui/FieldTable/FieldTable';
 export { FieldValue } from './ui/FieldValue/FieldValue';
-export { ResultRating } from './ui/ResultRating/ResultRating';
+
 export { ResultsFiltersPreferences } from './ui/ResultsFiltersPreferences/ResultsFiltersPreferences';
 export { Tab } from './ui/Tab/Tab';
 

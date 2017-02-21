@@ -58,7 +58,7 @@ interface IResultNode {
 export class Folding extends Component {
   static ID = 'Folding';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'Folding': Folding
     });

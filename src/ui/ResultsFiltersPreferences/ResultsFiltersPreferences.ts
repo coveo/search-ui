@@ -18,6 +18,7 @@ import { l } from '../../strings/Strings';
 import { Utils } from '../../utils/Utils';
 import { $$ } from '../../utils/Dom';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IResultFilterPreference {
   selected?: boolean;
@@ -49,6 +50,12 @@ export interface IResultsFiltersPreferencesOptions {
  */
 export class ResultsFiltersPreferences extends Component {
   static ID = 'ResultsFiltersPreferences';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'ResultsFiltersPreferences': ResultsFiltersPreferences
+    });
+  }
 
   /**
    * The options for the component

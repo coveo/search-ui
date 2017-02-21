@@ -30,7 +30,7 @@ export interface IPagerOptions {
 export class Pager extends Component {
   static ID = 'Pager';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'Pager': Pager
     });

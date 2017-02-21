@@ -73,7 +73,7 @@ const MINIMUM_EXECUTABLE_CONFIDENCE = 0.8;
 export class Omnibox extends Component {
   public static ID = 'Omnibox';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'Omnibox': Omnibox
     });

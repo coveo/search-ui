@@ -17,6 +17,7 @@ import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { ResponsiveResultLayout } from '../ResponsiveComponents/ResponsiveResultLayout';
 import { Utils } from '../../utils/Utils';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 interface IActiveLayouts {
   button: {
@@ -51,6 +52,12 @@ export const defaultLayout: ValidLayout = 'list';
  */
 export class ResultLayout extends Component {
   static ID = 'ResultLayout';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'ResultLayout': ResultLayout
+    });
+  }
 
   public static validLayouts: ValidLayout[] = ['list', 'card', 'table'];
 
@@ -218,13 +225,18 @@ export class ResultLayout extends Component {
   }
 
   private setLayout(layout: ValidLayout, results?: IQueryResults) {
-    this.isLayoutDisplayedByButton(layout);
-    if (this.currentLayout) {
-      $$(this.currentActiveLayouts[this.currentLayout].button.el).removeClass('coveo-selected');
+    if (layout) {
+      this.isLayoutDisplayedByButton(layout);
+      if (this.currentLayout) {
+        $$(this.currentActiveLayouts[this.currentLayout].button.el).removeClass('coveo-selected');
+      }
+      $$(this.currentActiveLayouts[layout].button.el).addClass('coveo-selected');
+      this.currentLayout = layout;
+      $$(this.element).trigger(ResultListEvents.changeLayout, <IChangeLayoutEventArgs>{
+        layout: layout,
+        results: results
+      });
     }
-    $$(this.currentActiveLayouts[layout].button.el).addClass('coveo-selected');
-    this.currentLayout = layout;
-    $$(this.element).trigger(ResultListEvents.changeLayout, <IChangeLayoutEventArgs>{ layout: layout, results: results });
   }
 
   private handleQuerySuccess(args: IQuerySuccessEventArgs) {

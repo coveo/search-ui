@@ -52,7 +52,7 @@ function showOnlyWithHelper<T>(helpers: string[], options?: T): T {
 export class FieldValue extends Component {
   static ID = 'FieldValue';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'FieldValue': FieldValue
     });

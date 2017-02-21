@@ -43,9 +43,9 @@ export interface IQueryboxOptions {
 export class Querybox extends Component {
   static ID = 'Querybox';
 
-  static doExport = ()=>{
+  static doExport = () => {
     exportGlobally({
-      'Querybox' : Querybox
+      'Querybox': Querybox
     });
   }
 

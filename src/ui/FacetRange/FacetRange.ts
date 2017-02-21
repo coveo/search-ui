@@ -28,7 +28,7 @@ export class FacetRange extends Facet implements IComponentBindings {
   static ID = 'FacetRange';
   static parent = Facet;
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'FacetRange': FacetRange
     });

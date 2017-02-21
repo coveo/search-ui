@@ -25,6 +25,7 @@ import { ValidLayout } from '../ResultLayout/ResultLayout';
 import { TemplateList } from '../Templates/TemplateList';
 import { ResponsiveDefaultResultTemplate } from '../ResponsiveComponents/ResponsiveDefaultResultTemplate';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IResultListOptions {
   resultContainer?: HTMLElement;
@@ -125,6 +126,13 @@ export interface IResultListOptions {
  */
 export class ResultList extends Component {
   static ID = 'ResultList';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'ResultList': ResultList
+    });
+  }
+
   /**
    * The options for the ResultList
    * @componentOptions

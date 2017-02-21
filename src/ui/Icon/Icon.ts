@@ -31,7 +31,7 @@ export interface IIconOptions {
 export class Icon extends Component {
   static ID = 'Icon';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'Icon': Icon
     });

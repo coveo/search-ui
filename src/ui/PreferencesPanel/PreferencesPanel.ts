@@ -22,7 +22,7 @@ export interface IPreferencesPanelOptions {
 export class PreferencesPanel extends Component {
   static ID = 'PreferencesPanel';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'PreferencesPanel': PreferencesPanel
     });

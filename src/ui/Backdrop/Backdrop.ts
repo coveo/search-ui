@@ -29,7 +29,7 @@ export interface IBackdropOptions {
 export class Backdrop extends Component {
   static ID = 'Backdrop';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'Backdrop': Backdrop
     });

@@ -35,7 +35,7 @@ export interface IAuthenticationProviderOptions {
 export class AuthenticationProvider extends Component {
   static ID = 'AuthenticationProvider';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'AuthenticationProvider': AuthenticationProvider
     });

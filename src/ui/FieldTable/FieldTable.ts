@@ -39,7 +39,7 @@ export interface IFieldTableOptions {
 export class FieldTable extends Component {
   static ID = 'FieldTable';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'FieldTable': FieldTable,
       'FieldValue': FieldValue

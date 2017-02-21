@@ -38,7 +38,7 @@ export interface ICardActionBarOptions {
 export class CardActionBar extends Component {
   static ID = 'CardActionBar';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'CardActionBar': CardActionBar
     });

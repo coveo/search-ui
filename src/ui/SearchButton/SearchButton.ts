@@ -19,7 +19,7 @@ export interface ISearchButtonOptions {
 export class SearchButton extends Component {
   static ID = 'SearchButton';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'SearchButton': SearchButton
     });

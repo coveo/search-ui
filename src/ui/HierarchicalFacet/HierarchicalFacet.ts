@@ -89,7 +89,7 @@ interface IFlatHierarchy {
 export class HierarchicalFacet extends Facet implements IComponentBindings {
   static ID = 'HierarchicalFacet';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'HierarchicalFacet': HierarchicalFacet
     });

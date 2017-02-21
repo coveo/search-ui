@@ -34,7 +34,7 @@ export interface IBadgeColor {
 export class Badge extends FieldValue implements IComponentBindings {
   static ID = 'Badge';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'Badge': Badge
     });

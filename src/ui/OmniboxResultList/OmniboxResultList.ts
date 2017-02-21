@@ -44,7 +44,7 @@ export interface IOmniboxResultListOptions extends IResultListOptions {
 export class OmniboxResultList extends ResultList implements IComponentBindings {
   static ID = 'OmniboxResultList';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'OmniboxResultList': OmniboxResultList
     });

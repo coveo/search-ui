@@ -16,7 +16,7 @@ import { exportGlobally } from '../../GlobalExports';
 export class Excerpt extends Component {
   static ID = 'Excerpt';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'Excerpt': Excerpt
     });

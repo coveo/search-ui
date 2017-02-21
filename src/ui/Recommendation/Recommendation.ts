@@ -61,12 +61,12 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   static ID = 'Recommendation';
   private static NEXT_ID = 1;
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'Recommendation': Recommendation,
-      'DefaultRecommendationTemplate' : DefaultRecommendationTemplate,
-      'RecommendationQuery' : RecommendationQuery,
-      'RecommendationAnalyticsClient' : RecommendationAnalyticsClient
+      'DefaultRecommendationTemplate': DefaultRecommendationTemplate,
+      'RecommendationQuery': RecommendationQuery,
+      'RecommendationAnalyticsClient': RecommendationAnalyticsClient
     });
   }
 

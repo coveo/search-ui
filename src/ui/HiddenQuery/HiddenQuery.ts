@@ -28,7 +28,7 @@ export interface IHiddenQueryOptions {
 export class HiddenQuery extends Component {
   static ID = 'HiddenQuery';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'HiddenQuery': HiddenQuery
     });

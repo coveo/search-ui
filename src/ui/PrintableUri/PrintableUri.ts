@@ -21,9 +21,9 @@ export class PrintableUri extends Component {
   static ID = 'PrintableUri';
   static options: IPrintableUriOptions = {};
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
-      'PrintableUri' : PrintableUri
+      'PrintableUri': PrintableUri
     });
   }
 

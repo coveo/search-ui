@@ -17,6 +17,7 @@ import { Defer } from '../../misc/Defer';
 import { $$ } from '../../utils/Dom';
 import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 /**
  * The ResultLink component automatically transform a search result title into a clickable link pointing to the original
@@ -26,6 +27,12 @@ import * as _ from 'underscore';
  */
 export class ResultLink extends Component {
   static ID = 'ResultLink';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'ResultLink': ResultLink
+    });
+  }
 
   /**
    * The options for the ResultLink
