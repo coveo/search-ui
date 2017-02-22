@@ -856,26 +856,31 @@ export class Matrix extends Component {
       });
       let html = '';
       _.each(instantiatedResults, (result) => {
-        html += result.outerHTML;
+        result.then((builtResultElement: HTMLElement)=> {
+          html += builtResultElement.outerHTML;
+        })
       });
-      cell.updatePreview(html);
+      Promise.all(instantiatedResults).then(()=> {
+        cell.updatePreview(html);
+      });
     });
   }
 
-  private instantiateTemplate(result: IQueryResult): HTMLElement {
-    let content = this.options.previewTemplate.instantiateToElement(result, {
+  private instantiateTemplate(result: IQueryResult): Promise<HTMLElement> {
+    return this.options.previewTemplate.instantiateToElement(result, {
       checkCondition: false,
       responsiveComponents: this.searchInterface.responsiveComponents
+    }).then((content: HTMLElement)=> {
+      let initParameters: IInitializationParameters = {
+        options: this.options,
+        bindings: this.getBindings(),
+        result: result
+      };
+
+      return Initialization.automaticallyCreateComponentsInside(content, initParameters).then(()=> {
+        return content;
+      });
     });
-    let initParameters: IInitializationParameters = {
-      options: this.options,
-      bindings: this.getBindings(),
-      result: result
-    };
-
-    Initialization.automaticallyCreateComponentsInside(content, initParameters);
-
-    return content;
   }
 
   private createPreviewQuery(rowNumber: number, columnNumber: number): IQuery {

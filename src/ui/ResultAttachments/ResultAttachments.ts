@@ -126,18 +126,20 @@ export class ResultAttachments extends Component {
     _.each(this.attachments, (attachment) => {
       QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), attachment);
       QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, attachment);
-      var container = this.attachmentLevel > 0 ? this.options.subResultTemplate.instantiateToElement(attachment) : this.options.resultTemplate.instantiateToElement(attachment);
+      let subTemplatePromise = this.attachmentLevel > 0 ? this.options.subResultTemplate.instantiateToElement(attachment) : this.options.resultTemplate.instantiateToElement(attachment);
 
-      this.autoCreateComponentsInsideResult(container, _.extend({}, attachment, { attachments: [] }));
+      subTemplatePromise.then((container: HTMLElement)=>{
+        this.autoCreateComponentsInsideResult(container, _.extend({}, attachment, { attachments: [] }));
 
-      $$(container).addClass('coveo-result-attachments-container');
-      this.element.appendChild(container);
+        $$(container).addClass('coveo-result-attachments-container');
+        this.element.appendChild(container);
 
-      if (this.attachmentHasSubAttachment(attachment) && this.attachmentLevel < this.options.maximumAttachmentLevel) {
-        var childAttachmentContainer = $$('div').el;
-        container.appendChild(childAttachmentContainer);
-        new ResultAttachments(childAttachmentContainer, this.options, this.bindings, attachment, this.attachmentLevel + 1);
-      }
+        if (this.attachmentHasSubAttachment(attachment) && this.attachmentLevel < this.options.maximumAttachmentLevel) {
+          var childAttachmentContainer = $$('div').el;
+          container.appendChild(childAttachmentContainer);
+          new ResultAttachments(childAttachmentContainer, this.options, this.bindings, attachment, this.attachmentLevel + 1);
+        }
+      })
     });
   }
 

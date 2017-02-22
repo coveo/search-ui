@@ -22,7 +22,6 @@ import { Assert } from '../../misc/Assert';
 import { Utils } from '../../utils/Utils';
 import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
 import { Initialization } from '../Base/Initialization';
-import * as d3 from 'd3';
 import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';

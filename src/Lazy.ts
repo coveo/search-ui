@@ -184,9 +184,26 @@ lazySettings();
 import { lazyShareQuery } from './ui/ShareQuery/LazyShareQuery';
 lazyShareQuery();
 
-import {} from './ui/Sort/'
+import { lazySort } from './ui/Sort/LazySort';
+lazySort();
 
+import { lazyTab } from './ui/Tab/LazyTab';
+lazyTab();
 
+import { lazyTemplateLoader } from './ui/TemplateLoader/LazyTemplateLoader';
+lazyTemplateLoader();
+
+import { lazyText } from './ui/Text/LazyText';
+lazyText();
+
+import { lazyThumbnail } from './ui/Thumbnail/LazyThumbnail';
+lazyThumbnail();
+
+import { lazyTriggers } from './ui/Triggers/LazyTriggers';
+lazyTriggers();
+
+import { lazyYouTubeThumbnail } from './ui/YouTube/LazyYouTubeThumbnail';
+lazyYouTubeThumbnail();
 
 import { swapVar } from './SwapVar';
 swapVar(this);

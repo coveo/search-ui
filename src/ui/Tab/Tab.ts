@@ -13,6 +13,7 @@ import { Assert } from '../../misc/Assert';
 import { $$ } from '../../utils/Dom';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface ITabOptions {
   expression?: string;
@@ -67,6 +68,12 @@ export interface ITabOptions {
  */
 export class Tab extends Component {
   static ID = 'Tab';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'Tab': Tab
+    });
+  }
 
   /**
    * The options for a Tab

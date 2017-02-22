@@ -5,6 +5,7 @@ import { ComponentOptions, IComponentOptionsFieldsOption } from '../Base/Compone
 import { ValidLayout } from '../ResultLayout/ResultLayout';
 import { $$ } from '../../utils/Dom';
 import * as _ from 'underscore';
+import { Initialization } from '../Base/Initialization';
 
 export interface ITemplateFromStringProperties {
   condition?: string;
@@ -33,7 +34,9 @@ export class TemplateFromAScriptTag {
     this.template.mobile = this.parseScreenSize('data-mobile');
     this.template.tablet = this.parseScreenSize('data-tablet');
     this.template.desktop = this.parseScreenSize('data-desktop');
-    this.template.fields = TemplateConditionEvaluator.getFieldFromString(scriptTag.innerHTML + ' ' + condition);
+    this.template.fields = TemplateConditionEvaluator.getFieldFromString(scriptTag.innerHTML + ' ' + condition) || [];
+
+
 
     var additionalFields = ComponentOptions.loadFieldsOption(scriptTag, 'fields', <IComponentOptionsFieldsOption>{ includeInResults: true });
     if (additionalFields != null) {

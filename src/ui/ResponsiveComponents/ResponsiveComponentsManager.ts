@@ -2,11 +2,8 @@ import { $$, Dom } from '../../utils/Dom';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { Component } from '../Base/Component';
 import { SearchInterface } from '../SearchInterface/SearchInterface';
-import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
 import { Utils } from '../../utils/Utils';
-import { Facet } from '../Facet/Facet';
 import { Tab } from '../Tab/Tab';
-import { ResponsiveFacets } from './ResponsiveFacets';
 import * as _ from 'underscore';
 
 export interface IResponsiveComponentOptions {

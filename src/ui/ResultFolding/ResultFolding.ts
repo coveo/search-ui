@@ -255,29 +255,31 @@ export class ResultFolding extends Component {
     });
   }
 
-  private renderChildResult(childResult: IQueryResult) {
+  private renderChildResult(childResult: IQueryResult): Promise<boolean> {
     QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), childResult);
     QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, childResult);
 
-    let oneChild = this.options.resultTemplate.instantiateToElement(childResult, {
+    return this.options.resultTemplate.instantiateToElement(childResult, {
       wrapInDiv: false,
       checkCondition: false,
       responsiveComponents: this.searchInterface.responsiveComponents
-    });
-    $$(oneChild).addClass('coveo-result-folding-child-result');
-    this.results.appendChild(oneChild);
+    }).then((oneChild: HTMLElement)=> {
+      $$(oneChild).addClass('coveo-result-folding-child-result');
+      this.results.appendChild(oneChild);
 
-    $$(oneChild).toggleClass('coveo-normal-child-result', !this.showingMoreResults);
-    $$(oneChild).toggleClass('coveo-expanded-child-result', this.showingMoreResults);
-    this.autoCreateComponentsInsideResult(oneChild, childResult);
+      $$(oneChild).toggleClass('coveo-normal-child-result', !this.showingMoreResults);
+      $$(oneChild).toggleClass('coveo-expanded-child-result', this.showingMoreResults);
+      return this.autoCreateComponentsInsideResult(oneChild, childResult);
+    });
+
   }
 
-  private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult) {
+  private autoCreateComponentsInsideResult(element: HTMLElement, result: IQueryResult): Promise<boolean> {
     Assert.exists(element);
 
     let initOptions = this.searchInterface.options;
     let initParameters: IInitializationParameters = { options: initOptions, bindings: this.getBindings(), result: result };
-    Initialization.automaticallyCreateComponentsInside(element, initParameters);
+    return Initialization.automaticallyCreateComponentsInside(element, initParameters);
   }
 
   private cancelAnyPendingShowMore() {

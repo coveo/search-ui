@@ -51,7 +51,8 @@ export class PipelineContext extends Component {
 
   static doExport = () => {
     exportGlobally({
-      'PipelineContext': PipelineContext
+      'PipelineContext': PipelineContext,
+      'context' : context
     });
   }
 

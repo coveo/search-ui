@@ -21,12 +21,12 @@ export class TemplateList extends Template {
     return new DefaultResultTemplate().instantiateToString(object, instantiateOptions);
   }
 
-  instantiateToElement(object: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = {}): HTMLElement {
+  instantiateToElement(object: IQueryResult, instantiateOptions: IInstantiateTemplateOptions = {}): Promise<HTMLElement> {
     let merged = new DefaultInstantiateTemplateOptions().merge(instantiateOptions);
     for (var i = 0; i < this.templates.length; i++) {
-      var element = this.templates[i].instantiateToElement(object, merged);
-      if (element != null) {
-        return element;
+      var promiseOfHTMLElement = this.templates[i].instantiateToElement(object, merged);
+      if (promiseOfHTMLElement != null) {
+        return promiseOfHTMLElement;
       }
     }
     return new DefaultResultTemplate().instantiateToElement(object, merged);

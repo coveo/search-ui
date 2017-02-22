@@ -8,6 +8,7 @@ import { DomUtils } from '../../utils/DomUtils';
 import { $$ } from '../../utils/Dom';
 import { ModalBox } from '../../ExternalModulesShim';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IYouTubeThumbnailOptions {
   width: string;
@@ -29,6 +30,12 @@ export interface IYouTubeThumbnailOptions {
  */
 export class YouTubeThumbnail extends Component {
   static ID = 'YouTubeThumbnail';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'YouTubeThumbnail': YouTubeThumbnail
+    });
+  }
 
   /**
    * @componentOptions

@@ -3,7 +3,7 @@ import { DeviceUtils } from '../../utils/DeviceUtils';
 import { SliderEvents, IGraphValueSelectedArgs } from '../../events/SliderEvents';
 import { Utils } from '../../utils/Utils';
 import * as d3Scale from 'd3-scale';
-import * as d3 from 'd3';
+import {select as d3select} from 'd3';
 import * as Globalize from 'globalize';
 import * as _ from 'underscore';
 
@@ -620,7 +620,7 @@ class SliderGraph {
   private tooltip: HTMLElement;
 
   constructor(public slider: Slider) {
-    this.svg = d3.select(slider.element).append('svg').append('g');
+    this.svg = d3select(slider.element).append('svg').append('g');
     this.x = d3Scale.scaleBand();
     this.y = d3Scale.scaleLinear();
     this.slider.options.graph.margin = Utils.extendDeep({

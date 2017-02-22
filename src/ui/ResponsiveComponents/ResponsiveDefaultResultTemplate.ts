@@ -44,7 +44,9 @@ export class ResponsiveDefaultResultTemplate implements IResponsiveComponent {
       $$(this.resultList.options.resultContainer).removeClass(`coveo-list-layout-container`);
       if (this.currentMode != 'small') {
         if (lastResults) {
-          this.resultList.renderResults(this.resultList.buildResults(lastResults));
+          this.resultList.buildResults(lastResults).then((elements: HTMLElement[])=> {
+            this.resultList.renderResults(elements);
+          })
         }
         this.currentMode = 'small';
       }
@@ -53,7 +55,9 @@ export class ResponsiveDefaultResultTemplate implements IResponsiveComponent {
       $$(this.resultList.options.resultContainer).addClass(`coveo-list-layout-container`);
       if (this.currentMode != 'large') {
         if (lastResults) {
-          this.resultList.renderResults(this.resultList.buildResults(lastResults));
+          this.resultList.buildResults(lastResults).then((elements: HTMLElement[])=> {
+            this.resultList.renderResults(elements);
+          });
         }
         this.currentMode = 'large';
       }

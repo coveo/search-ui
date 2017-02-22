@@ -6,6 +6,7 @@ import { TemplateFieldsEvaluator } from './TemplateFieldsEvaluator';
 import { IQueryResult } from '../../rest/QueryResult';
 import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
 import * as _ from 'underscore';
+import { Initialization } from '../Base/Initialization';
 
 export interface ITemplateProperties {
   condition?: Function;
@@ -146,11 +147,32 @@ export class Template implements ITemplateProperties {
     return null;
   }
 
-  instantiateToElement(object: IQueryResult, instantiateTemplateOptions: IInstantiateTemplateOptions = {}): HTMLElement {
+  instantiateToElement(object: IQueryResult, instantiateTemplateOptions: IInstantiateTemplateOptions = {}): Promise<HTMLElement> {
     let merged = new DefaultInstantiateTemplateOptions().merge(instantiateTemplateOptions);
 
     var html = this.instantiateToString(object, merged);
-    if (html != null) {
+    if (html == null) {
+      return null;
+    }
+
+    let allComponentsInsideCurrentTemplate = _.map(Initialization.getListOfRegisteredComponents(), (componentId: string) => {
+      let regex = new RegExp(`Coveo${componentId}`, 'g');
+      if (regex.exec(html)) {
+        return Initialization.getLazyRegisteredComponent(componentId).then((lazyLoadedComponent)=> {
+          if (lazyLoadedComponent.fields) {
+            if (!this.fields) {
+              this.fields = [];
+            }
+            this.fields = this.fields.concat(lazyLoadedComponent.fields);
+          }
+          return lazyLoadedComponent;
+        });
+      } else {
+        return null;
+      }
+    });
+
+    return Promise.all(allComponentsInsideCurrentTemplate).then(()=> {
       var element = $$('div', {}, html).el;
       if (!merged.wrapInDiv && element.children.length === 1) {
         element = <HTMLElement>element.children.item(0);
@@ -161,8 +183,7 @@ export class Template implements ITemplateProperties {
       this.logger.trace('Instantiated result template', object, element);
       element['template'] = this;
       return element;
-    }
-    return null;
+    })
   }
 
   toHtmlElement(): HTMLElement {

@@ -45,7 +45,8 @@ export class SearchAlerts extends Component {
 
   static doExport = ()=> {
     exportGlobally({
-      'SearchAlerts': SearchAlerts
+      'SearchAlerts': SearchAlerts,
+      'SearchAlertsMessage': SearchAlertsMessage
     });
   }
 

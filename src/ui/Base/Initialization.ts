@@ -138,6 +138,7 @@ export class Initialization {
    * Return the component class definition, using it's ID (e.g. : 'CoveoFacet').
    * @param name
    * @returns {IComponentDefinition}
+   * @deprecated
    */
   public static getRegisteredComponent(name: string) {
     return Initialization.eagerlyLoadedComponents[name];
@@ -410,8 +411,7 @@ export class Initialization {
     if (type != 'Standard') {
       fromInitTypeToBoxReference += 'For' + type;
     }
-    let boxRef = Component.getComponentRef(fromInitTypeToBoxReference);
-    if (boxRef) {
+    return Component.getComponentRef(fromInitTypeToBoxReference).then((boxRef)=> {
       new Logger(element).info('Initializing box of type ' + fromInitTypeToBoxReference);
       let injectFunction: () => any = injectMarkup ? boxRef.getInjection : () => {
       };
@@ -419,13 +419,13 @@ export class Initialization {
       box.options.originalOptionsObject = options;
       let initParameters: IInitializationParameters = { options: options, bindings: box.getBindings() };
       return Initialization.automaticallyCreateComponentsInside(element, initParameters);
-    } else {
+    }).catch(()=> {
       return new Promise((resolve, reject) => {
         new Logger(element).error('Trying to initialize box of type : ' + fromInitTypeToBoxReference + ' but not found in code (not compiled)!');
         Assert.fail('Cannot initialize unknown type of box');
         reject(false);
       });
-    }
+    });
   }
 
   public static dispatchNamedMethodCall(methodName: string, element: HTMLElement, args: any[]): any {

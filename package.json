@@ -13,7 +13,7 @@
     "heroku-postbuild": "npm run build",
     "start": "node index.js",
     "zipForGitReleases": "gulp zip",
-    "uploadCoverage" : "gulp uploadCoverage"
+    "uploadCoverage": "gulp uploadCoverage"
   },
   "repository": {
     "type": "git",
@@ -134,7 +134,7 @@
     "coveomagicbox": "1.0.x",
     "d3": "^4.2.1",
     "d3-scale": "^1.0.3",
-    "es6-promise": "^3.1.2",
+    "es6-promise": "^4.0.5",
     "fastclick": "1.0.6",
     "jstimezonedetect": "^1.0.6",
     "latinize": "^0.4.0",

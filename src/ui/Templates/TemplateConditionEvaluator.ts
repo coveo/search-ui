@@ -6,16 +6,10 @@ import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponen
 import * as _ from 'underscore';
 
 export class TemplateConditionEvaluator {
-  static getFieldFromString(text: string) {
+  static getFieldFromString(text: string): string[] {
+
     var fields: string[] = _.map(StringUtils.match(text, /(?:(?!\b@)@([a-z0-9]+(?:\.[a-z0-9]+)*\b))|\braw.([a-z0-9]+)|\braw\['([^']+)'\]|\braw\["([^"]+)"\]/gi), (field) => {
       return field[1] || field[2] || field[3] || field[4] || null;
-    });
-
-    _.each(Initialization.getListOfRegisteredComponents(), (componentId: string) => {
-      var componentFields = (<any>Initialization.getRegisteredComponent(componentId)).fields;
-      if (componentFields != null && text.indexOf(BaseComponent.computeCssClassNameForType(componentId)) != -1) {
-        fields = fields.concat(componentFields);
-      }
     });
 
     return fields;

@@ -3,6 +3,14 @@ export * from './Core';
 // UI
 export { CoreHelpers } from './ui/Templates/CoreHelpers';
 export { SearchInterface, StandaloneSearchInterface } from './ui/SearchInterface/SearchInterface';
+export { jQueryInstance as $ } from './ui/Base/CoveoJQuery';
+export { underscoreInstance as _ } from './ui/Base/CoveoUnderscore';
+export { HashUtils } from './utils/HashUtils';
+export { DeviceUtils } from './utils/DeviceUtils';
+export { ColorUtils } from './utils/ColorUtils';
+export { Cookie } from './utils/CookieUtils';
+export { CurrencyUtils } from './utils/CurrencyUtils';
+export { DateUtils } from './utils/DateUtils';
 
 import { AdvancedSearch } from './ui/AdvancedSearch/AdvancedSearch';
 AdvancedSearch.doExport();
@@ -184,52 +192,29 @@ ShareQuery.doExport();
 import { Sort } from './ui/Sort/Sort';
 Sort.doExport();
 
+import { Tab } from './ui/Tab/Tab';
+Tab.doExport();
+
+import { TemplateLoader } from './ui/TemplateLoader/TemplateLoader';
+TemplateLoader.doExport();
+
+import { Text } from './ui/Text/Text';
+Text.doExport();
+
+import { Thumbnail } from './ui/Thumbnail/Thumbnail';
+Thumbnail.doExport();
+
+import { Triggers } from './ui/Triggers/Triggers';
+Triggers.doExport();
+
+import { YouTubeThumbnail } from './ui/YouTube/YouTubeThumbnail';
+YouTubeThumbnail.doExport();
 
 
-
-
-
-export { Thumbnail } from './ui/Thumbnail/Thumbnail';
-export { PrintableUri } from './ui/PrintableUri/PrintableUri';
-export { Quickview } from './ui/Quickview/Quickview';
-export { ErrorReport } from './ui/ErrorReport/ErrorReport';
-export { ExportToExcel } from './ui/ExportToExcel/ExportToExcel';
-
-export { QuickviewDocument } from './ui/Quickview/QuickviewDocument';
-export { YouTubeThumbnail } from './ui/YouTube/YouTubeThumbnail';
-
-
-export { ResultsFiltersPreferences } from './ui/ResultsFiltersPreferences/ResultsFiltersPreferences';
-export { Tab } from './ui/Tab/Tab';
-
-export { QueryDuration } from './ui/QueryDuration/QueryDuration';
-export { QuerySummary } from './ui/QuerySummary/QuerySummary';
-export { Debug } from './ui/Debug/Debug';
-
-
-export { Triggers } from './ui/Triggers/Triggers';
-
-export { TemplateLoader } from './ui/TemplateLoader/TemplateLoader';
 export { Template } from './ui/Templates/Template';
-export { SuggestionForOmnibox } from './ui/Misc/SuggestionForOmnibox';
 
 
-export { PipelineContext, context } from './ui/PipelineContext/PipelineContext';
-export { OmniboxResultList } from './ui/OmniboxResultList/OmniboxResultList';
-export { QueryboxQueryParameters } from './ui/Querybox/QueryboxQueryParameters';
-export { jQueryInstance as $ } from './ui/Base/CoveoJQuery';
-export { underscoreInstance as _ } from './ui/Base/CoveoUnderscore';
 
-
-export { SearchAlerts } from './ui/SearchAlerts/SearchAlerts';
-export { SearchAlertsMessage } from './ui/SearchAlerts/SearchAlertsMessage';
-export { Text } from './ui/Text/Text';
-export { HashUtils } from './utils/HashUtils';
-export { DeviceUtils } from './utils/DeviceUtils';
-export { ColorUtils } from './utils/ColorUtils';
-export { Cookie } from './utils/CookieUtils';
-export { CurrencyUtils } from './utils/CurrencyUtils';
-export { DateUtils } from './utils/DateUtils';
 
 import { swapVar } from './SwapVar';
 swapVar(this);

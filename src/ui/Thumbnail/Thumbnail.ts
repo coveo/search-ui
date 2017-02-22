@@ -12,6 +12,7 @@ import { FieldTable } from '../FieldTable/FieldTable';
 import { get } from '../Base/RegisteredNamedMethods';
 import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
 import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IThumbnailOptions extends IResultLinkOptions {
   noThumbnailClass?: string;
@@ -24,6 +25,12 @@ export interface IThumbnailOptions extends IResultLinkOptions {
  */
 export class Thumbnail extends Component {
   static ID = 'Thumbnail';
+
+  static doExport = ()=> {
+    exportGlobally({
+      'Thumbnail': Thumbnail
+    });
+  }
 
   /**
    * Options for the Thumbnail
