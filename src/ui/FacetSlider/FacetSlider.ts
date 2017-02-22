@@ -390,15 +390,9 @@ export class FacetSlider extends Component {
       this.options.end = this.options.dateField ? <any>new Date(this.options.end.replace(/-/g, '/')).getTime() : <any>Number(this.options.end);
     }
 
-    if (this.hasAGraph()) {
-      if (!FeatureDetectionUtils.supportSVG()) {
-        this.options.graph = undefined;
-        this.logger.info('Your browser does not support SVG. Cannot add graphic to your facet range', this);
-      }
-      if (typeof d3 == 'undefined') {
-        this.options.graph = undefined;
-        this.logger.info('Cannot find the required dependencies d3.js. Cannot add graphic to your facet range', this);
-      }
+    if (this.hasAGraph() && typeof d3 == 'undefined') {
+      this.options.graph = undefined;
+      this.logger.info('Cannot find the required dependencies d3.js. Cannot add graphic to your facet range', this);
     }
 
     this.facetQueryController = new FacetSliderQueryController(this);
