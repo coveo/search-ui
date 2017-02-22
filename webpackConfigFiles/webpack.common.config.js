@@ -11,7 +11,6 @@ const live = process.env.NODE_ENV === 'production';
 // Fail plugin will allow the webpack ts-loader to fail correctly when the TS compilation fails
 // Provide plugin allows us to use underscore in every module, without having to require underscore everywhere.
 let plugins = [failPlugin, new ExtractTextPlugin('../css/[name].css'), spritesmithPlugin];
-let globalizePath = __dirname + '/../lib/globalize.min.js';
 let sassLoader = { test: /\.scss/ };
 
 if (minimize) {

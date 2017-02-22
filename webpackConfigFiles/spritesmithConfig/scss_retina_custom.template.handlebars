@@ -95,5 +95,12 @@ ${{retina_groups_info.strings.name}}: ({{#each retina_groups}}${{strings.name_gr
   }
 }
 {{/if}}
+
+// sass map that associates .coveo-sprites-[name] to the corresponde sass variable
+$retina-group-map: (
+  {{#each retina_groups}}
+  '.coveo-sprites-{{name}}': ('{{name}}', ${{normal.strings.name}}, ${{retina.strings.name}},),
+  {{/each}}
+)
 {{/content}}
 {{/extend}}

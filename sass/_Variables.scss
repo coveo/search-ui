@@ -80,17 +80,17 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
 @mixin iconWithHoverState($iconBase, $float:'left', $inactive : 'coveo-disabled') {
   $iconActive: '#{$iconBase}-active';
   .coveo-icon {
-    @extend #{$iconBase} !optional;
+    @include retina-sprite(map-get($retina-group-map, $iconBase));
     float: #{$float};
   }
   &:hover {
     .coveo-icon {
-      @extend #{$iconActive} !optional;
+      @include retina-sprite(map-get($retina-group-map, $iconActive));
     }
   }
   &:hover.#{$inactive} {
     .coveo-icon {
-      @extend #{$iconBase} !optional;
+      @include retina-sprite(map-get($retina-group-map, $iconBase));
     }
   }
 }
@@ -154,11 +154,11 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
   }
 
   #{$selector} {
-    @extend #{$icon} !optional;
+    @include retina-sprite(map-get($retina-group-map, $icon));
   }
   &:hover {
     #{$selector} {
-      @extend #{$icon-clear} !optional;
+      @include retina-sprite(map-get($retina-group-map, $icon-clear))
     }
   }
 }
