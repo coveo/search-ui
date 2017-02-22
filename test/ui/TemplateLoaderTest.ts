@@ -1,8 +1,8 @@
 import * as Mock from '../MockEnvironment';
-import {Template} from '../../src/ui/Templates/Template';
-import {TemplateCache} from '../../src/ui/Templates/TemplateCache';
-import {TemplateLoader} from '../../src/ui/TemplateLoader/TemplateLoader';
-import {$$} from '../../src/utils/Dom';
+import { Template } from '../../src/ui/Templates/Template';
+import { TemplateCache } from '../../src/ui/Templates/TemplateCache';
+import { TemplateLoader } from '../../src/ui/TemplateLoader/TemplateLoader';
+import { $$ } from '../../src/utils/Dom';
 
 export function TemplateLoaderTest() {
   describe('TemplateLoder', () => {
@@ -19,6 +19,7 @@ export function TemplateLoaderTest() {
           'data-template-id': badTemplateId
         }).el));
       }).toThrow();
+      TemplateCache.unregisterTemplate(badTemplateId);
     });
   });
 }

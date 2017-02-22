@@ -1,7 +1,8 @@
-import {IQueryResult} from '../../rest/QueryResult';
-import {Utils} from '../../utils/Utils';
-import {l} from '../../strings/Strings';
-import {Assert} from '../../misc/Assert';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Utils } from '../../utils/Utils';
+import { l } from '../../strings/Strings';
+import { Assert } from '../../misc/Assert';
+import _ = require('underscore');
 
 // On-demand mapping of file types to captions. Used by facets, but I don't
 // really like this. Maybe a dedicated filetype facet would be better? Hmm...

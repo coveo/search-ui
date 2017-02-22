@@ -1,12 +1,13 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {$$} from '../../utils/Dom';
-import {PopupUtils, IPosition, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
-import {IMenuItem} from '../Menu/MenuItem';
-import {SettingsEvents} from '../../events/SettingsEvents';
-import {Initialization} from '../Base/Initialization';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { $$ } from '../../utils/Dom';
+import { PopupUtils, IPosition, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
+import { IMenuItem } from '../Menu/MenuItem';
+import { SettingsEvents } from '../../events/SettingsEvents';
+import { Initialization } from '../Base/Initialization';
+import _ = require('underscore');
 import 'styling/_Settings';
 
 export interface ISettingsPopulateMenuArgs {
@@ -26,7 +27,6 @@ export interface ISettingsOptions {
  * This component can reference several components to populate its popup menu:
  * - {@link AdvancedSearch}
  * - {@link ExportToExcel}
- * - {@link FollowItem}
  * - {@link PreferencesPanel} (see also {@link ResultsFiltersPreferences} and {@link ResultsPreferences})
  * - {@link SearchAlerts} (see also {@link SearchAlertsMessage})
  * - {@link ShareQuery}

@@ -1,11 +1,12 @@
-import {Template} from '../Templates/Template';
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Assert} from '../../misc/Assert';
-import {Initialization, IInitializationParameters} from '../Base/Initialization';
-import {$$} from '../../utils/Dom';
+import { Template } from '../Templates/Template';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Assert } from '../../misc/Assert';
+import { Initialization, IInitializationParameters } from '../Base/Initialization';
+import { $$ } from '../../utils/Dom';
+import _ = require('underscore');
 
 export interface ITemplateLoaderOptions {
   template: Template;
@@ -130,7 +131,10 @@ export class TemplateLoader extends Component {
         Assert.check(outerHTMLParent.indexOf(this.element.outerHTML) === -1, 'TemplateLoader cannot load a template into itself.');
       });
 
-      this.element.innerHTML = this.options.template.instantiateToString(this.result, false);
+      this.element.innerHTML = this.options.template.instantiateToString(this.result, {
+        checkCondition: false,
+        responsiveComponents: this.bindings ? this.bindings.searchInterface.responsiveComponents : null
+      });
       Initialization.automaticallyCreateComponentsInside(this.element, initParameters);
     }
   }

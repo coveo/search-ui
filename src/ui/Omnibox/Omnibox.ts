@@ -2,32 +2,33 @@
 ///<reference path="QueryExtensionAddon.ts" />
 ///<reference path="RevealQuerySuggestAddon.ts" />
 ///<reference path="OldOmniboxAddon.ts" />
-import {IQueryboxOptions} from '../Querybox/Querybox';
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
-import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {StandaloneSearchInterfaceEvents} from '../../events/StandaloneSearchInterfaceEvents';
-import {MODEL_EVENTS, IAttributeChangedEventArg} from '../../models/Model';
-import {QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
-import {IAnalyticsNoMeta, analyticsActionCauseList, IAnalyticsOmniboxSuggestionMeta} from '../Analytics/AnalyticsActionListMeta';
-import {OmniboxEvents, IOmniboxPreprocessResultForQueryEventArgs} from '../../events/OmniboxEvents';
-import {$$} from '../../utils/Dom';
-import {Assert} from '../../misc/Assert';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {Initialization} from '../Base/Initialization';
-import {Querybox} from '../Querybox/Querybox';
-import {FieldAddon} from './FieldAddon';
-import {QueryExtensionAddon} from './QueryExtensionAddon';
-import {RevealQuerySuggestAddon} from './RevealQuerySuggestAddon';
-import {OldOmniboxAddon} from './OldOmniboxAddon';
-import {QueryboxQueryParameters} from '../Querybox/QueryboxQueryParameters';
-import {IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta';
-import {IDuringQueryEventArgs} from '../../events/QueryEvents';
-import {PendingSearchAsYouTypeSearchEvent} from '../Analytics/PendingSearchAsYouTypeSearchEvent';
-import {Utils} from '../../utils/Utils';
-import {MagicBox} from '../../ExternalModulesShim';
-import {StandaloneSearchInterface} from '../SearchInterface/SearchInterface';
+import { IQueryboxOptions } from '../Querybox/Querybox';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
+import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
+import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
+import { IAnalyticsNoMeta, analyticsActionCauseList, IAnalyticsOmniboxSuggestionMeta } from '../Analytics/AnalyticsActionListMeta';
+import { OmniboxEvents, IOmniboxPreprocessResultForQueryEventArgs } from '../../events/OmniboxEvents';
+import { $$ } from '../../utils/Dom';
+import { Assert } from '../../misc/Assert';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { Initialization } from '../Base/Initialization';
+import { Querybox } from '../Querybox/Querybox';
+import { FieldAddon } from './FieldAddon';
+import { QueryExtensionAddon } from './QueryExtensionAddon';
+import { RevealQuerySuggestAddon } from './RevealQuerySuggestAddon';
+import { OldOmniboxAddon } from './OldOmniboxAddon';
+import { QueryboxQueryParameters } from '../Querybox/QueryboxQueryParameters';
+import { IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
+import { IDuringQueryEventArgs } from '../../events/QueryEvents';
+import { PendingSearchAsYouTypeSearchEvent } from '../Analytics/PendingSearchAsYouTypeSearchEvent';
+import { Utils } from '../../utils/Utils';
+import { MagicBox } from '../../ExternalModulesShim';
+import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
+import _ = require('underscore');
 
 export interface IPopulateOmniboxSuggestionsEventArgs {
   omnibox: Omnibox;
@@ -54,10 +55,19 @@ export interface IOmniboxOptions extends IQueryboxOptions {
 const MINIMUM_EXECUTABLE_CONFIDENCE = 0.8;
 
 /**
- * This component is very similar to the simpler {@link Querybox} component and support all the same options/behavior except for the search-as-you-type feature.<br/>
- * In addition, it takes care of adding a type-ahead capability. The type-ahead and the suggestions it displays are customizable and extensible by any custom component.<br/>
- * The type-ahead is configurable by activating addon which are provided OOTB (facets, analytics suggestions, Reveal suggestions, and advanced Coveo syntax suggestions).<br/>
- * It is also possible for external code to provide suggestions.
+ * The Omnibox component is very similar to the simpler {@link Querybox} component. It supports all of the same options
+ * and behaviors.
+ *
+ * The Omnibox component takes care of adding type-ahead capability to the search input. Custom components can extend
+ * and customize the type-ahead and the suggestions it provides.
+ *
+ * The type-ahead is configurable by activating addons, which the Coveo JavaScript Search Framework provides OOTB
+ * (facets, analytics suggestions, Reveal suggestions and advanced Coveo syntax suggestions).
+ *
+ * It is also possible for external code to provide type-ahead suggestions.
+ *
+ * See also the {@link Searchbox} component, which can automatically instantiate an Omnibox component along with an
+ * optional {@link SearchButton} component.
  */
 export class Omnibox extends Component {
   public static ID = 'Omnibox';
@@ -67,59 +77,87 @@ export class Omnibox extends Component {
    * @componentOptions
    */
   static options: IOmniboxOptions = {
+
     /**
-     * Specifies that suggestions appearing in the omnibox should push the result down, instead of appearing over the results.<br/>
-     * Activate this as well a `SearchAsYouType` + Reveal suggestions for a cool effect!<br/>
-     * Default value is false
+     * Specifies whether suggestions appearing in the Omnibox should push the result down instead of appearing over the
+     * results.
+     *
+     * Set this option as well as {@link Omnibox.options.enableSearchAsYouType} and
+     * {@link Omnibox.options.RevealQuerySuggestAddon} to `true` for a cool effect!
+     *
+     * Default value is `false`.
      */
     inline: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
     /**
-     * Specifies whether a new query is automatically triggered whenever the user types new text inside the query box.<br/>
-     * Activate this as well a inline + Reveal suggestions for a cool effect!<br/>
-     * The default is `false`.
+     * Specifies whether to automatically trigger a new query whenever the end user types new text inside the Omnibox.
+     *
+     * Set this option as well a {@link Omnibox.options.inline} and {@link Omnibox.options.RevealQuerySuggestAddon} to
+     * `true` for a cool effect!
+     *
+     * Default value is `false`.
      */
     enableSearchAsYouType: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
     /**
-     * When search as you type is enabled, specifies the delay in milliseconds before a new query is triggered when the user types new text inside the query box.<br/>
-     * The default value is 2000 milliseconds.
+     * If {@link Omnibox.options.enableSearchAsYouType} is `true`, specifies the delay (in milliseconds) before
+     * triggering a new query when the user types new text inside the Omnibox.
+     *
+     * Default value is `2000`. Minimum value is `0`.
      */
     searchAsYouTypeDelay: ComponentOptions.buildNumberOption({
       defaultValue: 2000,
       min: 0,
       depend: 'enableSearchAsYouType'
     }),
+
     /**
-     * Specifies whether the field addon should be enabled.<br/>
-     * The field addon allows the search box to highlight and complete field syntax.<br/>
-     * Default value is `false`.
+     * If {@link Querybox.options.enableQuerySyntax} is `true`, specifies whether to enable the `field` addon.
      *
-     * > Example:
-     * > You want to filter on a file type. You start typing @sysf and matching fields are proposed. You select the @sysfiletype suggestion, enter = and the available matching file types are proposed.
+     * The `field` addon allows the search box to highlight and complete field syntax.
+     *
+     * **Example:**
+     *
+     * > Suppose you want to filter on a certain file type. You start typing `@sysf` in the input. The Omnibox provides
+     * > you with several matching fields. You select the `@sysfiletype` suggestion and type `=`. If this option is set
+     * > to `true`, then the Omnibox provides you with suggestions for available matching file types.
+     *
+     * Default value is `false`.
      */
     enableFieldAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableQuerySyntax' }),
     enableSimpleFieldAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableFieldAddon' }),
     listOfFields: ComponentOptions.buildFieldsOption({ depend: 'enableFieldAddon' }),
+
     /**
-     * Specifies whether the Reveal query suggestions should be enabled.<br/>
-     * This implies that your integration has a proper Reveal integration configured.<br/>
+     * Specifies whether to enable the Reveal query suggestions.
+     *
+     * This implies that you have a proper Reveal integration configured (see
+     * [Coveo Reveal](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=177)).
+     *
      * Default value is `false`.
      */
     enableRevealQuerySuggestAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, alias: 'enableTopQueryAddon' }),
+
     /**
-     * Specifies whether the query extension addon should be enabled.<br/>
-     * This allows the omnibox to complete the syntax for query extensions.<br/>
+     * If {@link Querybox.options.enableQuerySyntax} is `true`, specifies whether to enable the `query extension` addon.
+     *
+     * The `query extension` addon allows the Omnibox to complete the syntax for query extensions.
+     *
      * Default value is `false`.
      */
     enableQueryExtensionAddon: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'enableQuerySyntax' }),
+
     /**
-     * Specifies a placeholder for input
+     * Specifies a placeholder for the input.
      */
-    placeholder: ComponentOptions.buildStringOption(),
+    placeholder: ComponentOptions.buildLocalizedStringOption(),
+
     /**
-     * Specifies a timeout before rejecting suggestions in the omnibox.<br/>
-     * Default value is 2000 (2 seconds).
+     * Specifies a timeout (in milliseconds) before rejecting suggestions in the Omnibox.
+     *
+     * Default value is `2000`. Minimum value is `0`.
      */
-    omniboxTimeout: ComponentOptions.buildNumberOption({ defaultValue: 2000 })
+    omniboxTimeout: ComponentOptions.buildNumberOption({ defaultValue: 2000, min: 0 })
   };
 
   public magicBox: Coveo.MagicBox.Instance;
@@ -132,7 +170,11 @@ export class Omnibox extends Component {
   private skipRevealAutoSuggest = false;
 
   /**
-   * Create a new omnibox with, enable required addons, and bind events on various query events.
+   * Creates a new Omnibox component. Also enables necessary addons and binds events on various query events.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the Omnibox component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
    */
   constructor(public element: HTMLElement, public options?: IOmniboxOptions, bindings?: IComponentBindings) {
     super(element, Omnibox.ID, bindings);
@@ -186,8 +228,10 @@ export class Omnibox extends Component {
   }
 
   /**
-   * Trigger a query. The current input content will be added to the query.<br/>
-   * If the content of the input has not changed since the last submit, no new query will be triggered.
+   * Adds the current content of the input to the query and triggers a query if the current content of the input has
+   * changed since last submit.
+   *
+   * Also logs a `searchboxSubmit` event in the usage analytics.
    */
   public submit() {
     this.magicBox.clearSuggestion();
@@ -198,16 +242,16 @@ export class Omnibox extends Component {
   }
 
   /**
-   * Get the current content of the input
-   * @returns {string}
+   * Gets the current content of the input.
+   * @returns {string} The current content of the input.
    */
   public getText() {
     return this.magicBox.getText();
   }
 
   /**
-   * Set the content of the input
-   * @param text The string to set in the input
+   * Sets the content of the input
+   * @param text The string to set in the input.
    */
   public setText(text: string) {
     this.magicBox.setText(text);
@@ -215,14 +259,14 @@ export class Omnibox extends Component {
   }
 
   /**
-   * Clear the content of the input
+   * Clears the content of the input.
    */
   public clear() {
     this.magicBox.clear();
   }
 
   /**
-   * Get the `HTMLInputElement` of the omnibox
+   * Gets the `HTMLInputElement` of the Omnibox.
    */
   public getInput() {
     return <HTMLInputElement>this.magicBox.element.querySelector('input');
@@ -246,7 +290,7 @@ export class Omnibox extends Component {
 
   private setupMagicBox() {
     this.magicBox.onmove = () => {
-      // We assume that once the user has moved it's selection, it becomes an explicit omnibox analytics event
+      // We assume that once the user has moved its selection, it becomes an explicit omnibox analytics event
       if (this.isRevealAutoSuggestion()) {
         this.modifyEventTo = this.getOmniboxAnalyticsEventCause();
       }

@@ -12,6 +12,9 @@ conf = _.extend(conf, {
     libraryTarget: 'var',
     library: 'playground',
     devtoolModuleFilenameTemplate: '[resource-path]'
+  },
+  ts: {
+    configFileName: 'docs.tsconfig.json'
   }
 })
 

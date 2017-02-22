@@ -1,11 +1,11 @@
 import * as Mock from '../MockEnvironment';
-import {RecommendationAnalyticsClient} from '../../src/ui/Analytics/RecommendationAnalyticsClient';
-import {Recommendation} from '../../src/ui/Recommendation/Recommendation';
-import {SearchInterface} from '../../src/ui/SearchInterface/SearchInterface';
-import {AnalyticsEndpoint} from '../../src/rest/AnalyticsEndpoint';
-import {IRecommendationOptions} from '../../src/ui/Recommendation/Recommendation';
-import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import {FakeResults} from '../Fake';
+import { RecommendationAnalyticsClient } from '../../src/ui/Analytics/RecommendationAnalyticsClient';
+import { Recommendation } from '../../src/ui/Recommendation/Recommendation';
+import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
+import { AnalyticsEndpoint } from '../../src/rest/AnalyticsEndpoint';
+import { IRecommendationOptions } from '../../src/ui/Recommendation/Recommendation';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { FakeResults } from '../Fake';
 
 export function RecommendationAnalyticsClientTest() {
   describe('RecommendationAnalyticsClient', function () {

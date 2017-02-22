@@ -1,17 +1,18 @@
-import {Component} from '../Base/Component';
-import {SortCriteria} from './SortCriteria.ts';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {Assert} from '../../misc/Assert';
-import {Utils} from '../../utils/Utils';
-import {$$} from '../../utils/Dom';
-import {IAttributesChangedEventArg, MODEL_EVENTS} from '../../models/Model';
-import {QueryStateModel, QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
-import {QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {Initialization} from '../Base/Initialization';
-import {analyticsActionCauseList, IAnalyticsResultsSortMeta} from '../Analytics/AnalyticsActionListMeta';
-import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
-import {IQueryErrorEventArgs} from '../../events/QueryEvents';
+import { Component } from '../Base/Component';
+import { SortCriteria } from './SortCriteria.ts';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Assert } from '../../misc/Assert';
+import { Utils } from '../../utils/Utils';
+import { $$ } from '../../utils/Dom';
+import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
+import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
+import { QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { Initialization } from '../Base/Initialization';
+import { analyticsActionCauseList, IAnalyticsResultsSortMeta } from '../Analytics/AnalyticsActionListMeta';
+import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
+import { IQueryErrorEventArgs } from '../../events/QueryEvents';
+import _ = require('underscore');
 
 export interface ISortOptions {
   sortCriteria?: SortCriteria[];

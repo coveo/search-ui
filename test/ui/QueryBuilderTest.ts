@@ -1,5 +1,5 @@
 
-import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 export function QueryBuilderTest() {
   describe('QueryBuilder', function () {
     var queryBuilder: QueryBuilder;

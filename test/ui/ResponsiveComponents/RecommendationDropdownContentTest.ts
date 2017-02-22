@@ -1,6 +1,6 @@
-import {RecommendationDropdownContent} from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/RecommendationDropdownContent';
-import {ResponsiveDropdownContent} from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownContent';
-import {$$, Dom} from '../../../src/utils/Dom';
+import { RecommendationDropdownContent } from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/RecommendationDropdownContent';
+import { ResponsiveDropdownContent } from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownContent';
+import { $$, Dom } from '../../../src/utils/Dom';
 
 export function RecommendationDropdownContentTest() {
   describe('RecommendationDropdownContent', () => {

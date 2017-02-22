@@ -1,7 +1,7 @@
 import * as Mock from '../MockEnvironment';
-import {PreferencesPanel} from '../../src/ui/PreferencesPanel/PreferencesPanel';
-import {$$} from '../../src/utils/Dom';
-import {PreferencesPanelEvents} from '../../src/events/PreferencesPanelEvents';
+import { PreferencesPanel } from '../../src/ui/PreferencesPanel/PreferencesPanel';
+import { $$ } from '../../src/utils/Dom';
+import { PreferencesPanelEvents } from '../../src/events/PreferencesPanelEvents';
 
 export function PreferencesPanelTest() {
   describe('PreferencesPanel', function () {

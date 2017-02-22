@@ -1,6 +1,6 @@
-import {IAPIDocumentViewEvent} from '../rest/APIDocumentViewEvent';
-import {IAPISearchEvent} from '../rest/APISearchEvent';
-import {IAPICustomEvent} from '../rest/APICustomEvent';
+import { IAPIDocumentViewEvent } from '../rest/APIDocumentViewEvent';
+import { IAPISearchEvent } from '../rest/APISearchEvent';
+import { IAPICustomEvent } from '../rest/APICustomEvent';
 
 export interface IAnalyticsSearchEventsArgs {
   searchEvents: IAPISearchEvent[];

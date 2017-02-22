@@ -1,17 +1,18 @@
-import {ResponsiveTabs} from '../ResponsiveComponents/ResponsiveTabs.ts';
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {MODEL_EVENTS, IAttributeChangedEventArg} from '../../models/Model';
-import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {QueryStateModel, QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
-import {analyticsActionCauseList, IAnalyticsInterfaceChange} from '../Analytics/AnalyticsActionListMeta';
-import {SearchEndpoint} from '../../rest/SearchEndpoint';
-import {Initialization} from '../Base/Initialization';
-import {Utils} from '../../utils/Utils';
-import {Assert} from '../../misc/Assert';
-import {$$} from '../../utils/Dom';
-import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
+import { ResponsiveTabs } from '../ResponsiveComponents/ResponsiveTabs.ts';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
+import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
+import { analyticsActionCauseList, IAnalyticsInterfaceChange } from '../Analytics/AnalyticsActionListMeta';
+import { SearchEndpoint } from '../../rest/SearchEndpoint';
+import { Initialization } from '../Base/Initialization';
+import { Utils } from '../../utils/Utils';
+import { Assert } from '../../misc/Assert';
+import { $$ } from '../../utils/Dom';
+import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
+import _ = require('underscore');
 import 'styling/_Tab';
 
 export interface ITabOptions {
@@ -132,7 +133,7 @@ export class Tab extends Component {
      *
      * See the {@link ValidLayout} type for the list of possible values.
      *
-     * This option is overridden by a URL parameter.
+     * If not specified, it will default to 'list'.
      *
      * See also [Result Layouts](https://developers.coveo.com/x/yQUvAg).
      *
@@ -257,10 +258,11 @@ export class Tab extends Component {
    */
   public select() {
     if (!this.disabled) {
+      let currentLayout = this.queryStateModel.get(QUERY_STATE_ATTRIBUTES.LAYOUT);
       this.queryStateModel.setMultiple({
         t: this.options.id,
         sort: this.options.sort || QueryStateModel.defaultAttributes.sort,
-        layout: this.options.layout
+        layout: this.options.layout || currentLayout || QueryStateModel.defaultAttributes.layout
       });
       this.usageAnalytics.logSearchEvent<IAnalyticsInterfaceChange>(analyticsActionCauseList.interfaceChange, { interfaceChangeTo: this.options.id });
       this.queryController.executeQuery();

@@ -1,12 +1,13 @@
-import {IOmniboxOptions} from '../Omnibox/Omnibox';
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {Omnibox} from '../Omnibox/Omnibox';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {SearchButton} from '../SearchButton/SearchButton';
-import {Querybox} from '../Querybox/Querybox';
-import {$$} from '../../utils/Dom';
-import {Initialization} from '../Base/Initialization';
+import { IOmniboxOptions } from '../Omnibox/Omnibox';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Omnibox } from '../Omnibox/Omnibox';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { SearchButton } from '../SearchButton/SearchButton';
+import { Querybox } from '../Querybox/Querybox';
+import { $$ } from '../../utils/Dom';
+import { Initialization } from '../Base/Initialization';
+import _ = require('underscore');
 
 export interface ISearchboxOptions extends IOmniboxOptions {
   addSearchButton?: boolean;
@@ -121,7 +122,7 @@ export class Searchbox extends Component {
 Searchbox.options = _.extend({}, Searchbox.options, Omnibox.options, Querybox.options);
 
 // Only parse omnibox option if omnibox is enabled
-_.each(Searchbox.options, (value, key: string) => {
+_.each(<any>Searchbox.options, (value, key: string) => {
   if (key in Omnibox.options && !(key in Querybox.options)) {
     Searchbox.options[key] = _.extend({ depend: 'enableOmnibox' }, value);
   }

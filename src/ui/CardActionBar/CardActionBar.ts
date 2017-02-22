@@ -1,11 +1,12 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {Initialization} from '../Base/Initialization';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Assert} from '../../misc/Assert';
-import {$$} from '../../utils/Dom';
-import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Initialization } from '../Base/Initialization';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Assert } from '../../misc/Assert';
+import { $$ } from '../../utils/Dom';
+import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
+import _ = require('underscore');
 
 export interface ICardActionBarOptions {
   hidden?: boolean;

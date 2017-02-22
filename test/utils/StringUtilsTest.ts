@@ -1,4 +1,4 @@
-import {StringUtils} from '../../src/utils/StringUtils';
+import { StringUtils } from '../../src/utils/StringUtils';
 
 export function StringUtilsTests() {
   describe('StringUtils', () => {

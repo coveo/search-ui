@@ -1,13 +1,13 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {QueryEvents, IQuerySuccessEventArgs} from '../../events/QueryEvents';
-import {SettingsEvents} from '../../events/SettingsEvents';
-import {ISettingsPopulateMenuArgs} from '../Settings/Settings';
-import {Assert} from '../../misc/Assert';
-import {$$} from '../../utils/Dom';
-import {l} from '../../strings/Strings';
-import {Utils} from '../../utils/Utils';
-import {Initialization} from '../Base/Initialization';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { SettingsEvents } from '../../events/SettingsEvents';
+import { ISettingsPopulateMenuArgs } from '../Settings/Settings';
+import { Assert } from '../../misc/Assert';
+import { $$ } from '../../utils/Dom';
+import { l } from '../../strings/Strings';
+import { Utils } from '../../utils/Utils';
+import { Initialization } from '../Base/Initialization';
 
 export interface IShareQueryOptions {
 }

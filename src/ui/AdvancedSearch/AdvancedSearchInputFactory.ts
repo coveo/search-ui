@@ -1,16 +1,16 @@
-import {ISearchEndpoint} from '../../rest/SearchEndpointInterface';
-import {AllKeywordsInput} from './KeywordsInput/AllKeywordsInput';
-import {ExactKeywordsInput} from './KeywordsInput/ExactKeywordsInput';
-import {AnyKeywordsInput} from './KeywordsInput/AnyKeywordsInput';
-import {NoneKeywordsInput} from './KeywordsInput/NoneKeywordsInput';
-import {AnytimeDateInput} from './DateInput/AnytimeDateInput';
-import {InTheLastDateInput} from './DateInput/InTheLastDateInput';
-import {BetweenDateInput} from './DateInput/BetweenDateInput';
-import {IAdvancedSearchInput} from './AdvancedSearchInput';
-import {SimpleFieldInput} from './DocumentInput/SimpleFieldInput';
-import {AdvancedFieldInput} from './DocumentInput/AdvancedFieldInput';
-import {SizeInput} from './DocumentInput/SizeInput';
-import {IFieldInputParameters} from './AdvancedSearchInput';
+import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
+import { AllKeywordsInput } from './KeywordsInput/AllKeywordsInput';
+import { ExactKeywordsInput } from './KeywordsInput/ExactKeywordsInput';
+import { AnyKeywordsInput } from './KeywordsInput/AnyKeywordsInput';
+import { NoneKeywordsInput } from './KeywordsInput/NoneKeywordsInput';
+import { AnytimeDateInput } from './DateInput/AnytimeDateInput';
+import { InTheLastDateInput } from './DateInput/InTheLastDateInput';
+import { BetweenDateInput } from './DateInput/BetweenDateInput';
+import { IAdvancedSearchInput } from './AdvancedSearchInput';
+import { SimpleFieldInput } from './DocumentInput/SimpleFieldInput';
+import { AdvancedFieldInput } from './DocumentInput/AdvancedFieldInput';
+import { SizeInput } from './DocumentInput/SizeInput';
+import { IFieldInputParameters } from './AdvancedSearchInput';
 
 export class AdvancedSearchInputFactory {
 

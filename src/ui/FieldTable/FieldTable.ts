@@ -1,12 +1,13 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {QueryUtils} from '../../utils/QueryUtils';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Initialization} from '../Base/Initialization';
-import {FieldValue, IFieldValueOptions} from './FieldValue';
-import {$$} from '../../utils/Dom';
-import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { QueryUtils } from '../../utils/QueryUtils';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Initialization } from '../Base/Initialization';
+import { FieldValue, IFieldValueOptions } from './FieldValue';
+import { $$ } from '../../utils/Dom';
+import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
+import _ = require('underscore');
 import 'styling/_FieldTable';
 
 export interface IFieldTableOptions {
@@ -17,15 +18,16 @@ export interface IFieldTableOptions {
 }
 
 /**
- * This component is used to display a set of {@link FieldValue} components in a table which
- * can be optionally expanded and minimized.<br/>
- * Automatically, it will take care of not displaying empty field values.
+ * The FieldTable component displays a set of {@link FieldValue} components in a table that can optionally be
+ * expandable and minimizable. This component automatically takes care of not displaying empty field values.
  *
- * # Examples
+ * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ *
+ * **Example:**
  *
  * ```
  * // This is the FieldTable component itself, which holds a list of table rows.
- * // Each row is a `FieldValue` component
+ * // Each row is a FieldValue component.
  * <table class='CoveoFieldTable'>
  *    // Items
  *    <tr data-field='@sysdate' data-caption='Date' data-helper='dateTime' />
@@ -42,23 +44,40 @@ export class FieldTable extends Component {
    * @componentOptions
    */
   static options: IFieldTableOptions = {
+
     /**
-     * Specifies whether to allow the minimization (collapsing) of the FieldTable or not.<br/>
-     * This creates a 'minimize' and 'expand' link above the table.
+     * Specifies whether to allow the minimization (collapsing) of the FieldTable.
+     *
+     * If you set this option to `false`, the component will not create the **Minimize** / **Expand** toggle links.
+     *
+     * See also {@link FieldTable.options.expandedTitle}, {@link FieldTable.options.minimizedTitle} and
+     * {@link FieldTable.options.minimizedByDefault}.
+     *
+     * Default value is `true`.
      */
     allowMinimization: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
     /**
-     * Specifies the caption to show on the minimize link (when the table is expanded).<br/>
-     * By default, it is set to the localized version of "Details".
+     * If {@link FieldTable.options.allowMinimization} is `true`, specifies the caption to show on the **Minimize** link
+     * (the link that appears when the FieldTable is expanded).
+     *
+     * Default value is `"Details"`.
      */
     expandedTitle: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'Details', depend: 'allowMinimization' }),
+
     /**
-     * Specifies the caption to show on the expand link (when the table is minimized).<br/>
-     * By default, it is set to the localized version of "Details".
+     * If {@link FieldTable.options.allowMinimization} is `true`, specifies the caption to show on the **Expand** link
+     * (the link that appears when the FieldTable is minimized).
+     *
+     * Default value is `"Details"`.
      */
     minimizedTitle: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'Details', depend: 'allowMinimization' }),
+
     /**
-     * Specifies whether the table is minimized by default.
+     * If {@link FieldTable.options.allowMinimization} is `true`, specifies whether to minimize the table by default.
+     *
+     * Default value is `undefined`, and the FieldTable will collapse by default if the result it is associated with has
+     * a non-empty excerpt.
      */
     minimizedByDefault: ComponentOptions.buildBooleanOption({ depend: 'allowMinimization' })
   };
@@ -72,11 +91,12 @@ export class FieldTable extends Component {
   private toggleContainerHeight: number;
 
   /**
-   * Create a new FieldTable
-   * @param element
-   * @param options
-   * @param bindings
-   * @param result
+   * Creates a new FieldTable.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the FieldTable component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   * @param result The result to associate the component with.
    */
   constructor(public element: HTMLElement, public options?: IFieldTableOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, ValueRow.ID, bindings);
@@ -102,8 +122,9 @@ export class FieldTable extends Component {
   }
 
   /**
-   * Toggle between expanding and minimizing the `FieldTable`.
-   * @param anim Specifies whether to show a sliding animation when toggling.
+   * Toggles between expanding (showing) and minimizing (collapsing) the FieldTable.
+   *
+   * @param anim Specifies whether to show a sliding animation when toggling the display of the FieldTable.
    */
   public toggle(anim = false) {
     if (this.isTogglable()) {
@@ -113,8 +134,8 @@ export class FieldTable extends Component {
   }
 
   /**
-   * Expand (show) the FieldTable
-   * @param anim Specifies whether to show a sliding animation when opening
+   * Expands (shows) the FieldTable,
+   * @param anim Specifies whether to show a sliding animation when expanding the FieldTable.
    */
   public expand(anim = false) {
     if (this.isTogglable()) {
@@ -127,8 +148,8 @@ export class FieldTable extends Component {
   }
 
   /**
-   * Minimize (collapse) the FieldTable
-   * @param anim Specifies whether to show a sliding animation when collapsing
+   * Minimizes (collapses) the FieldTable.
+   * @param anim Specifies whether to show a sliding animation when minimizing the FieldTable.
    */
   public minimize(anim = false) {
     if (this.isTogglable()) {
@@ -141,8 +162,8 @@ export class FieldTable extends Component {
   }
 
   /**
-   * Update the toggle height if the content was dynamically resized so that the open and close animation can
-   * match the new content size.
+   * Updates the toggle height if the content was dynamically resized, so that the expanding and minimizing animation
+   * can match the new content size.
    */
   public updateToggleHeight() {
     this.updateToggleContainerHeight();
@@ -152,8 +173,9 @@ export class FieldTable extends Component {
   protected isTogglable() {
     if (this.searchInterface.isNewDesign() && this.options.allowMinimization) {
       return true;
+    } else if (!this.searchInterface.isNewDesign()) {
+      this.logger.trace('Cannot open or close the field table with older design', this);
     }
-    this.logger.info('Cannot open or close the field table with older design', this);
     return false;
   }
 
@@ -224,7 +246,7 @@ class ValueRow extends FieldValue {
   static parent = FieldValue;
   private valueContainer: HTMLElement;
 
-  constructor(public element: HTMLElement, public options?: IValueRowOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
+  constructor(public element: HTMLElement, public options: IValueRowOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, options, bindings, result, ValueRow.ID);
     this.options = ComponentOptions.initComponentOptions(element, ValueRow, options);
 

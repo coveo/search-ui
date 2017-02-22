@@ -1,12 +1,13 @@
 import * as Mock from '../MockEnvironment';
-import {ResultFolding} from '../../src/ui/ResultFolding/ResultFolding';
-import {IResultFoldingOptions} from '../../src/ui/ResultFolding/ResultFolding';
-import {FakeResults} from '../Fake';
-import {$$} from '../../src/utils/Dom';
-import {IQueryResult} from '../../src/rest/QueryResult';
-import {UnderscoreTemplate} from '../../src/ui/Templates/UnderscoreTemplate';
-import {TemplateCache} from '../../src/ui/Templates/TemplateCache';
-import {CardOverlayEvents} from '../../src/events/CardOverlayEvents';
+import { ResultFolding } from '../../src/ui/ResultFolding/ResultFolding';
+import { IResultFoldingOptions } from '../../src/ui/ResultFolding/ResultFolding';
+import { FakeResults } from '../Fake';
+import { $$ } from '../../src/utils/Dom';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { UnderscoreTemplate } from '../../src/ui/Templates/UnderscoreTemplate';
+import { TemplateCache } from '../../src/ui/Templates/TemplateCache';
+import { CardOverlayEvents } from '../../src/events/CardOverlayEvents';
+import _ = require('underscore');
 
 export function ResultFoldingTest() {
   describe('ResultFolding', function () {
@@ -163,7 +164,7 @@ export function ResultFoldingTest() {
 
     it('should load template properly', function () {
       test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
-        resultTemplate: UnderscoreTemplate.fromString('Foo')
+        resultTemplate: UnderscoreTemplate.fromString('Foo', {})
       }, FakeResults.createFakeResultWithChildResult('razzza', 2));
       _.each($$(test.cmp.element).findAll('.coveo-result-folding-child-result'), (result: HTMLElement) => {
         expect(result.innerHTML).toBe('Foo');
@@ -173,7 +174,7 @@ export function ResultFoldingTest() {
     it('should automatically initialize components in child results\' templates', function () {
       let fakeResult = FakeResults.createFakeResultWithChildResult('test', 3);
       test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
-        resultTemplate: UnderscoreTemplate.fromString('<a class="CoveoResultLink" />')
+        resultTemplate: UnderscoreTemplate.fromString('<a class="CoveoResultLink" />', {})
       }, fakeResult);
       _.each($$(test.cmp.element).findAll('.coveo-result-folding-child-result'), (result: HTMLElement, i) => {
         expect(result.getAttribute('href')).toBe(fakeResult.childResults[i].clickUri);
@@ -181,18 +182,18 @@ export function ResultFoldingTest() {
     });
 
     it('can load an external template from an id', function () {
-      TemplateCache.registerTemplate('Foo', UnderscoreTemplate.fromString('foubarre'));
+      TemplateCache.registerTemplate('Foo', UnderscoreTemplate.fromString('foubarre', {}));
       test = Mock.advancedResultComponentSetup<ResultFolding>(ResultFolding, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
         element: $$('div', { 'data-result-template-id': 'Foo' }).el
       });
-      expect(test.cmp.options.resultTemplate.instantiateToElement({}).innerHTML).toBe('foubarre');
+      expect(test.cmp.options.resultTemplate.instantiateToElement(<IQueryResult>{}).innerHTML).toBe('foubarre');
     });
 
     it('should automatically use the template inside its element', function () {
       test = Mock.advancedResultComponentSetup<ResultFolding>(ResultFolding, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
         element: $$('div', {}, $$('script', { className: 'result-template', 'type': 'text/underscore' }, 'heyo')).el,
       });
-      expect(test.cmp.options.resultTemplate.instantiateToElement({}).innerHTML).toBe('heyo');
+      expect(test.cmp.options.resultTemplate.instantiateToElement(<IQueryResult>{}).innerHTML).toBe('heyo');
     });
 
     it('should show or hide elements with special classes when expanding or unexpanding', function (done) {
@@ -202,7 +203,7 @@ export function ResultFoldingTest() {
       result.moreResults = () => new Promise((res, rej) => res(result.childResults));
 
       test = Mock.optionsResultComponentSetup<ResultFolding, IResultFoldingOptions>(ResultFolding, <IResultFoldingOptions>{
-        resultTemplate: UnderscoreTemplate.fromString(templateStr)
+        resultTemplate: UnderscoreTemplate.fromString(templateStr, {})
       }, result);
 
       expect($$(test.cmp.element).find('.coveo-show-if-normal').style.display).not.toBe('none');

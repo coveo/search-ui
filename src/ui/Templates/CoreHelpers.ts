@@ -1,27 +1,28 @@
-import {TemplateHelpers, ITemplateHelperFunction} from './TemplateHelpers';
-import {IHighlight, IHighlightPhrase, IHighlightTerm} from '../../rest/Highlight';
-import {HighlightUtils, StringAndHoles} from '../../utils/HighlightUtils';
-import {IStreamHighlightOptions} from '../../utils/StreamHighlightUtils';
-import {IDateToStringOptions, DateUtils} from '../../utils/DateUtils';
-import {ICurrencyToStringOptions, CurrencyUtils} from '../../utils/CurrencyUtils';
-import {IAnchorUtilsOptions, IImageUtilsOptions, AnchorUtils, ImageUtils} from '../../utils/HtmlUtils';
-import {IQueryResult} from '../../rest/QueryResult';
-import {IIconOptions, Icon} from '../Icon/Icon';
-import {Utils} from '../../utils/Utils';
-import {StringUtils} from '../../utils/StringUtils';
-import {TimeSpan, ITimeSpanUtilsOptions} from '../../utils/TimeSpanUtils';
-import {EmailUtils} from '../../utils/EmailUtils';
-import {QueryUtils} from '../../utils/QueryUtils';
-import {DeviceUtils} from '../../utils/DeviceUtils';
-import {TemplateCache} from './TemplateCache';
-import {$$} from '../../utils/Dom';
-import {SearchEndpoint} from '../../rest/SearchEndpoint';
-import {ResultList} from '../ResultList/ResultList';
-import {StreamHighlightUtils} from '../../utils/StreamHighlightUtils';
-import {FacetUtils} from '../Facet/FacetUtils';
+import { TemplateHelpers, ITemplateHelperFunction } from './TemplateHelpers';
+import { IHighlight, IHighlightPhrase, IHighlightTerm } from '../../rest/Highlight';
+import { HighlightUtils, StringAndHoles } from '../../utils/HighlightUtils';
+import { IStreamHighlightOptions } from '../../utils/StreamHighlightUtils';
+import { IDateToStringOptions, DateUtils } from '../../utils/DateUtils';
+import { ICurrencyToStringOptions, CurrencyUtils } from '../../utils/CurrencyUtils';
+import { IAnchorUtilsOptions, IImageUtilsOptions, AnchorUtils, ImageUtils } from '../../utils/HtmlUtils';
+import { IQueryResult } from '../../rest/QueryResult';
+import { IIconOptions, Icon } from '../Icon/Icon';
+import { Utils } from '../../utils/Utils';
+import { StringUtils } from '../../utils/StringUtils';
+import { TimeSpan, ITimeSpanUtilsOptions } from '../../utils/TimeSpanUtils';
+import { EmailUtils } from '../../utils/EmailUtils';
+import { QueryUtils } from '../../utils/QueryUtils';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { TemplateCache } from './TemplateCache';
+import { $$ } from '../../utils/Dom';
+import { SearchEndpoint } from '../../rest/SearchEndpoint';
+import { ResultList } from '../ResultList/ResultList';
+import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
+import { FacetUtils } from '../Facet/FacetUtils';
 import Globalize = require('globalize');
-import {IStringMap} from '../../rest/GenericParam';
-import {Quickview} from '../Quickview/Quickview';
+import { IStringMap } from '../../rest/GenericParam';
+import { Quickview } from '../Quickview/Quickview';
+import _ = require('underscore');
 
 /**
  * The core template helpers provided by default.
@@ -560,7 +561,9 @@ TemplateHelpers.registerTemplateHelper('loadTemplate', (id: string, condition: b
     data = resolveQueryResult();
   }
   if (condition) {
-    return TemplateCache.getTemplate(id).instantiateToString(data, false);
+    return TemplateCache.getTemplate(id).instantiateToString(data, {
+      checkCondition: false
+    });
   }
   return '';
 });

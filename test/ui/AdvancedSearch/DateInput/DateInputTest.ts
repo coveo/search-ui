@@ -1,7 +1,7 @@
-import {DateInput} from '../../../../src/ui/AdvancedSearch/DateInput/DateInput';
-import {QueryBuilder} from '../../../../src/ui/Base/QueryBuilder';
-import {ExpressionBuilder} from '../../../../src/ui/Base/ExpressionBuilder';
-import {$$} from '../../../../src/utils/Dom';
+import { DateInput } from '../../../../src/ui/AdvancedSearch/DateInput/DateInput';
+import { QueryBuilder } from '../../../../src/ui/Base/QueryBuilder';
+import { ExpressionBuilder } from '../../../../src/ui/Base/ExpressionBuilder';
+import { $$ } from '../../../../src/utils/Dom';
 import * as Mock from '../../../MockEnvironment';
 
 export function DateInputTest() {

@@ -1,16 +1,17 @@
-import {IQueryResult} from '../../rest/QueryResult';
-import {Component} from '../Base/Component';
-import {SortCriteria} from '../Sort/SortCriteria';
-import {ComponentOptions, IFieldOption} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {Utils} from '../../utils/Utils';
-import {Assert} from '../../misc/Assert';
-import {QueryEvents, IBuildingQueryEventArgs, IPreprocessResultsEventArgs} from '../../events/QueryEvents';
-import {Initialization} from '../Base/Initialization';
-import {IQueryResults} from '../../rest/QueryResults';
-import {IQuery} from '../../rest/Query';
-import {$$} from '../../utils/Dom';
-import {QueryBuilder} from '../Base/QueryBuilder';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Component } from '../Base/Component';
+import { SortCriteria } from '../Sort/SortCriteria';
+import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Utils } from '../../utils/Utils';
+import { Assert } from '../../misc/Assert';
+import { QueryEvents, IBuildingQueryEventArgs, IPreprocessResultsEventArgs } from '../../events/QueryEvents';
+import { Initialization } from '../Base/Initialization';
+import { IQueryResults } from '../../rest/QueryResults';
+import { IQuery } from '../../rest/Query';
+import { $$ } from '../../utils/Dom';
+import { QueryBuilder } from '../Base/QueryBuilder';
+import _ = require('underscore');
 
 export interface IFoldingOptions {
   field?: IFieldOption;
@@ -43,97 +44,124 @@ interface IResultNode {
 }
 
 /**
- * This component is used to display search results that share a common field hierarchically.
- * It is typically used to display email conversations and message board threads.
- * The different messages in a given conversation typically have a unique conversation ID.
- * Given that this ID is indexed in a field, you can use it to fold search results
+ * The Folding component makes it possible to render a hierarchic display of search results sharing a common field.
+ *
+ * This component has no visual representation of its own. Its simply folds certain search results so that the
+ * {@link ResultFolding} and {@link ResultAttachments} components can nicely display them inside result templates (see
+ * [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
+ *
+ * A typical use case of the Folding component is to fold email conversations and message board threads to make it
+ * possible to display them in a convenient format. Messages belonging to a single conversation typically have a unique
+ * conversation ID. By indexing this ID on a field, you can use it to fold search results.
  */
 export class Folding extends Component {
   static ID = 'Folding';
+
   /**
    * The options for the component
    * @componentOptions
    */
   static options: IFoldingOptions = {
+
     /**
-     * The name of the field on which the folding is done.<br/>
-     * This option is required.
+     * Specifies the name of the field on which to do the folding.
+     *
+     * Specifying a value for this options is required for this component to work.
      */
     field: ComponentOptions.buildFieldOption({ required: true }),
+
     /**
-     * Specifies the field that determines that a result is a child of another top result.<br/>
-     * The default value is `@topparentid`.
+     * Specifies the field that determines whether a given result is a child of another top result.
+     *
+     * Default value is `@topparentid`.
      */
     childField: ComponentOptions.buildFieldOption({ defaultValue: '@topparentid' }),
+
     /**
-     * Specifies the field that determines if a result is a top result containing other child results.<br/>
-     * The default value is `@syscontainsattachment`.
+     * Specifies the field that determines whether a given result is a top result containing other child results.
+     *
+     * Default value is `@containsattachment`.
      */
     parentField: ComponentOptions.buildFieldOption({ defaultValue: '@containsattachment' }),
+
     /**
-     * The number of child results to fold.
+     * Specifies the number of child results to fold.
      *
-     * The default value is 2.
+     * **Example:**
+     * > For an email thread with a total of 20 messages, using the default value of `2` means that the component loads
+     * > up to a maximum of 2 child messages under the original message, unless the end user expands the entire
+     * > conversation using the **Show More** link (see {@link Folding.options.enableExpand}).
      *
-     * The minimum value is 0.
-     *
-     * > Example:
-     * > For an email thread with 20 messages in total, using the default value means that a maximum of 2 child messages are loaded and displayed under the original message (unless the whole conversation is expanded via the use of a Show all conversation button).
+     * Default value is `2`. Minimum value is `0`.
      */
     range: ComponentOptions.buildNumberOption({ defaultValue: 2, min: 0 }),
+
     /**
-     * Specifies the top result and its related child results, following the sort criteria format
-     * (`date ascending`, `@somefield ascending`, etc.)
+     * Specifies the top result and its related child results, following the sort criteria format (`date ascending`,
+     * `@somefield ascending`, etc.)
      *
-     * The default value is `none`, which means that results are displayed in the order that the index returned them.
+     * **Example**
+     * > If you specify `date descending`, the Folding component re-arranges an email conversation so that the newest
+     * > email is always the top result. Doing the opposite (`date ascending`) would always make the original email the
+     * > top result, since it is also the oldest.
      *
-     * > Example:
-     * > If you specify date descending, the component re-arranges an email conversation so that the newest email is always the top result. Doing the opposite would allow the original email to always be the top result since it is also the oldest.
+     * Default value is `none`, which means that the component displays the results in the order that they were returned
+     * by the index.
      */
     rearrange: ComponentOptions.buildCustomOption((value) => Utils.isNonEmptyString(value) ? SortCriteria.parse(value) : null),
+
     /**
-     * Specifies whether to add a callback function on the top result, allowing to make an additional query.
-     * to load all the conversation of a given thread.
+     * Specifies whether to add a callback function on the top result, allowing to make an additional query to load all
+     * conversations of a given thread.
      *
-     * Concretely, the {@link ResultFolding} component uses this for its <b>Load full conversation</b> option.
+     * Concretely, the {@link ResultFolding} component uses this for its **Show More** link.
      *
-     * The default value is `true`.
+     * See also {@link Folding.options.expandExpression} and {@link Folding.options.maximumExpandedResults}.
+     *
+     * Default value is `true`.
      */
-    enableExpand: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+    enableExpand: ComponentOptions.buildBooleanOption({ defaultValue: true })
+    ,
     /**
-     * Specifies a customized constant expression to send when querying the expanded results.
+     * If {@link Folding.options.enableExpand} is `true`, specifies a custom constant expression to send when querying
+     * the expanded results.
+     *
+     * Default value is `undefined`.
      */
     expandExpression: ComponentOptions.buildStringOption({ depend: 'enableExpand' }),
+
     /**
-     * Specifies the maximum number of expanded results.
+     * If {@link Folding.options.enableExpand} is `true`, specifies the maximum number of results to load when
+     * expanding.
      *
-     * The default value is 100.
-     *
-     * The minimum value is 1.
+     * Default value is `100`. Minimum value is `1`.
      */
     maximumExpandedResults: ComponentOptions.buildNumberOption({ defaultValue: 100, min: 1, depend: 'enableExpand' }),
+
     /**
-     * This function manages folding individually for each result.
+     * Specifies the function that manages the individual folding of each result.
      *
-     * The default value (which is implemented in Coveo.Folding.defaultGetResult):
+     * Default value (which is implemented in Coveo.Folding.defaultGetResult) is:
      *
-     * ```
+     * ```javascript
      * var results = result.childResults || [];
-     * // Add the top result at the top of the list
+     * // Add the top result at the top of the list.
      * results.unshift(result);
-     * // Empty childResults just to clean it
+     * // Empty childResults just to clean it.
      * result.childResults = [];
-     * // Fold those results
+     * // Fold those results.
      * results = Coveo.Folding.foldWithParent(results);
-     * // The first result is the top one
+     * // The first result is the top one.
      * var topResult = results.shift();
-     * // All other results are childResults
+     * // All other results are childResults.
      * topResult.childResults = results;
      * return topResult;
      * ```
      *
-     * You can preprocess all the result with this option:
-     * ```
+     * You can pre-process all the result with this option in the {@link init} call of your search interface:
+     *
+     * ```javascript
+     * // You can call the init script using "pure" JavaScript:
      * Coveo.init(document.querySelector('#search'), {
      *    Folding: {
      *      getResult: function(result) {
@@ -143,8 +171,7 @@ export class Folding extends Component {
      *    }
      * })
      *
-     * // OR using the jQuery extension
-     *
+     * // Or you can call the init script using the jQuery extension:
      * Coveo.$('#search').coveo('init', {
      *    Folding: {
      *      getResult: function(result) {
@@ -158,18 +185,18 @@ export class Folding extends Component {
     getResult: ComponentOptions.buildCustomOption<(result: IQueryResult) => IQueryResult>(() => {
       return null;
     }),
+
     /**
-     * This function manages folding of all results.
+     * Specifies the function that manages the folding of all results.
      *
-     * The default value (Coveo.Folding.defaultGetMoreResults):
+     * Default value (`Coveo.Folding.defaultGetMoreResults`) is:
      *
-     * ```
+     * ```javascript
      * Coveo.Folding.defaultGetMoreResults = function(results) {
-     *    // The results are flat, just do the folding
+     *    // The results are flat, just do the folding.
      *    return Coveo.Folding.foldWithParent(results);
      * }
      * ```
-     *
      */
     getMoreResults: ComponentOptions.buildCustomOption<(results: IQueryResult[]) => IQueryResult[]>(() => {
       return null;
@@ -177,10 +204,11 @@ export class Folding extends Component {
   };
 
   /**
-   * Create a new Folding component
-   * @param element
-   * @param options
-   * @param bindings
+   * Creates a new Folding component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the Folding component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
    */
   constructor(public element: HTMLElement, public options: IFoldingOptions, bindings?: IComponentBindings) {
     super(element, Folding.ID, bindings);

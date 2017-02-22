@@ -1,14 +1,14 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Assert} from '../../misc/Assert';
-import {QueryUtils} from '../../utils/QueryUtils';
-import {Initialization} from '../Base/Initialization';
-import {Utils} from '../../utils/Utils';
-import {FileTypes, IFileTypeInfo} from '../Misc/FileTypes';
-import {Quickview} from '../Quickview/Quickview';
-import {$$} from '../../utils/Dom';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Assert } from '../../misc/Assert';
+import { QueryUtils } from '../../utils/QueryUtils';
+import { Initialization } from '../Base/Initialization';
+import { Utils } from '../../utils/Utils';
+import { FileTypes, IFileTypeInfo } from '../Misc/FileTypes';
+import { Quickview } from '../Quickview/Quickview';
+import { $$ } from '../../utils/Dom';
 import 'styling/_Icons';
 
 /**
@@ -22,15 +22,11 @@ export interface IIconOptions {
 }
 
 /**
- * This component is intended to be used inside a result template, which must in turn be used inside a
- * {@link ResultList} component.
- *
  * The Icon component outputs the corresponding icon for a given file type. The component searches for a suitable icon
- * from those available in the framework. If no suitable icon is found, the component outputs a generic icon instead.
+ * from those available in the Coveo JavaScript Search Framework. If the component finds no suitable icon, it instead
+ * outputs a generic icon.
  *
- * For more information on result templates, see
- * <a target="_blank" href="https://developers.coveo.com/x/v4okAg">Step 6 - Result Templates</a> of the Getting Started
- * with the JavaScript Search Framework V1 tutorial.
+ * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
 export class Icon extends Component {
   static ID = 'Icon';
@@ -44,32 +40,36 @@ export class Icon extends Component {
     /**
      * Specifies the value that the Icon component should output as its CSS class instead of the auto-selected value.
      *
-     * Default value is `undefined`, and the framework will find a suitable icon based on the result file type.
+     * Default value is `undefined`, which means that the Coveo JavaScript Search Framework outputs a suitable icon
+     * depending on the result file type.
      */
     value: ComponentOptions.buildIconOption(),
 
     /**
-     * Specifies whether the Icon component should output the smaller version of the icon instead of of the regular one.
+     * Specifies whether the Icon component should output the smaller version of the icon instead of the regular one.
      *
-     * Default value is `false`.
+     * Default value is `undefined`.
      */
     small: ComponentOptions.buildBooleanOption(),
 
     /**
-     * Specifies whether the Icon component should force the output icon to display its caption/label or not.
+     * Specifies whether the Icon component should force the output icon to display its caption/label.
      *
-     * Due to limited screen real estate, setting this option to `true` has no effect on icons set into insight panels.
+     * **Note:**
      *
-     * Default value is `undefined`, and the framework will determine if the icon needs to display a caption/label based
-     * of the result file type.
+     * > Due to limited screen real estate, setting this option to `true` has no effect on icons used inside Coveo for
+     * > Salesforce Insight Panels.
+     *
+     * Default value is `undefined`, which means that the Coveo JavaScript Search Framework determines whether the icon
+     * needs to display a caption/label depending on the result file type.
      */
     withLabel: ComponentOptions.buildBooleanOption(),
 
     /**
-     * Specifies what text should be displayed on the icon caption/label.
+     * Specifies what text to display as the icon caption/label.
      *
-     * Default value is `undefined`, and the framework will determine what text the icon needs to display based on the
-     * result file type.
+     * Default value is `undefined`, which means that the Coveo JavaScript Search Framework determines what text the icon
+     * needs to display depending on the result file type.
      */
     labelValue: ComponentOptions.buildLocalizedStringOption()
   };
@@ -80,11 +80,12 @@ export class Icon extends Component {
   ];
 
   /**
-   * Creates a new Icon component
-   * @param element
-   * @param options
-   * @param bindings
-   * @param result
+   * Creates a new Icon component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the Icon component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   * @param result The result to associate the component with.
    */
   constructor(public element: HTMLElement, public options?: IIconOptions, bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, Icon.ID, bindings);

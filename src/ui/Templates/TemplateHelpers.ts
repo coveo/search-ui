@@ -1,6 +1,6 @@
-import {Assert} from '../../misc/Assert';
-import {UnderscoreTemplate} from './UnderscoreTemplate';
-import {Utils} from '../../utils/Utils';
+import { Assert } from '../../misc/Assert';
+import { UnderscoreTemplate } from './UnderscoreTemplate';
+import { Utils } from '../../utils/Utils';
 
 /**
  * A function that describe a templates.

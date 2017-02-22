@@ -1,4 +1,4 @@
-import {Promise} from 'es6-promise';
+import { Promise } from 'es6-promise';
 
 /**
  * The `IPopulateOmniboxObject` is an interface that is used by components to interact with the Omnibox and provides a framework for type-ahead suggestions.

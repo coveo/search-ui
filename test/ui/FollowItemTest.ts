@@ -1,11 +1,11 @@
-import {FollowItem} from '../../src/ui/SearchAlerts/FollowItem';
+import { FollowItem } from '../../src/ui/SearchAlerts/FollowItem';
 import * as Mock from '../MockEnvironment';
-import {SearchEndpoint} from '../../src/rest/SearchEndpoint';
-import {IQueryResult} from '../../src/rest/QueryResult';
-import {FakeResults} from '../Fake';
-import {$$} from '../../src/utils/Dom';
-import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import {QueryUtils} from '../../src/utils/QueryUtils';
+import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { FakeResults } from '../Fake';
+import { $$ } from '../../src/utils/Dom';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { QueryUtils } from '../../src/utils/QueryUtils';
 
 export function FollowItemTest() {
   describe('FollowItem', function () {

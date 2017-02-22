@@ -1,32 +1,28 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
-import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
-import {analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {IResultLinkOptions} from './ResultLinkOptions';
-import {ResultListEvents} from '../../events/ResultListEvents';
-import {HighlightUtils} from '../../utils/HighlightUtils';
-import {IQueryResult} from '../../rest/QueryResult';
-import {DeviceUtils} from '../../utils/DeviceUtils';
-import {OS_NAME, OSUtils} from '../../utils/OSUtils';
-import {Initialization} from '../Base/Initialization';
-import {QueryUtils} from '../../utils/QueryUtils';
-import {Assert} from '../../misc/Assert';
-import {Utils} from '../../utils/Utils';
-import {Defer} from '../../misc/Defer';
-import {$$} from '../../utils/Dom';
-import {StreamHighlightUtils} from '../../utils/StreamHighlightUtils';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
+import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { IResultLinkOptions } from './ResultLinkOptions';
+import { ResultListEvents } from '../../events/ResultListEvents';
+import { HighlightUtils } from '../../utils/HighlightUtils';
+import { IQueryResult } from '../../rest/QueryResult';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { OS_NAME, OSUtils } from '../../utils/OSUtils';
+import { Initialization } from '../Base/Initialization';
+import { QueryUtils } from '../../utils/QueryUtils';
+import { Assert } from '../../misc/Assert';
+import { Utils } from '../../utils/Utils';
+import { Defer } from '../../misc/Defer';
+import { $$ } from '../../utils/Dom';
+import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
+import _ = require('underscore');
 
 /**
- * This component is intended to be used inside a result template, which must in turn be used inside a
- * {@link ResultList} component.
+ * The ResultLink component automatically transform a search result title into a clickable link pointing to the original
+ * document.
  *
- * By default, the ResultLink component automatically transforms a search result title into a clickable link pointing
- * to the original document.
- *
- * For more information on result templates, see
- * <a target="_blank" href="https://developers.coveo.com/x/v4okAg">Step 6 - Result Templates</a> of the Getting Started
- * with the JavaScript Search Framework V1 tutorial.
+ * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
 export class ResultLink extends Component {
   static ID = 'ResultLink';
@@ -38,45 +34,51 @@ export class ResultLink extends Component {
   static options: IResultLinkOptions = {
 
     /**
-     * Specifies the field which the ResultLink should use to output its href.
+     * Specifies the field which the ResultLink should use to output its `href` attribute.
      *
-     * By default, the `clickUri` field available on the document is used, but you can override this field with this
-     * option.
+     * By default, the component uses the `clickUri` field available on the document, but you can override this field
+     * by specifying a value for this option.
      *
-     * #### Tip
+     * **Tip:**
      *
-     * When you do not include a field option in your result template, you can include an href attribute on the
-     * ResultLink element. When present, the href attribute value overrides the `clickUri` field, which is otherwise
-     * used by default.
+     * > When you do not include a `field` option in your result template, you can include an `href` attribute on the
+     * > ResultLink element. When present, the `href` attribute value overrides the `clickUri` field, which is otherwise
+     * > the default field.
      *
-     * Specifying an href attribute is useful when you want to build the ResultLink using a custom script or by
-     * concatenating the content of two or more variables.
+     * > Specifying an `href` attribute is useful when you want to build the ResultLink using a custom script or by
+     * > concatenating the content of two or more variables.
      *
-     * #### Examples
+     * **Examples:**
      *
-     * With the following markup, the ResultLink will output its href using the `uri` field instead of the default
-     * `clickUri` field:
+     * - With the following markup, the ResultLink will output its `href` attribute using the `uri` field instead of the
+     * default `clickUri` field:
      *
      * ```html
      * <a class="CoveoResultLink" field="@uri"></a>
      * ```
      *
-     * In the following result template, the link is provided by the custom `getMyKBUri()` function:
+     * - In the following result template, the custom `getMyKBUri()` function will provide the `href`:
      *
      * ```html
      * <script id="KnowledgeArticle" type="text/underscore" class="result-template">
      *   <div class='CoveoIcon>'></div>
-     *   <a class="CoveoResultLink" href="<%=getMyKBUri(raw)%>"></a>
+     *   <a class="CoveoResultLink" href="<%= getMyKBUri(raw) %>"></a>
      *   <div class="CoveoExcerpt"></div>
      * </script>
      * ```
+     *
+     * See also {@link ResultLink.options.hrefTemplate}, which can override this option.
      */
     field: ComponentOptions.buildFieldOption(),
 
     /**
      * Specifies whether the ResultLink should try to open in Microsoft Outlook.
      *
-     * This option is normally intended for ResultLink instances which are related to Microsoft Exchange emails.
+     * Setting this option to `true` is normally useful for ResultLink instances which are related to Microsoft Exchange
+     * emails.
+     *
+     * If this option is `true`, clicking the ResultLink will call the {@link ResultLink.openLinkInOutlook} method
+     * instead of the {@link ResultLink.openLink} method.
      *
      * Default value is `false`.
      */
@@ -88,109 +90,120 @@ export class ResultLink extends Component {
      *
      * Default value is `false`.
      */
-    openQuickview: ComponentOptions.buildBooleanOption(),
+    openQuickview: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies whether the ResultLink should open in a <a href="/" target="_blank">new tab/window</a> instead of
-     * opening in the current context.
+     * Specifies whether the ResultLink should open in a new window instead of opening in the current context.
+     *
+     * If this option is `true`, clicking the ResultLink will call the {@link ResultLink.openLinkInNewWindow} method
+     * instead of the {@link ResultLink.openLink} method.
      *
      * Default value is `false`.
      */
     alwaysOpenInNewWindow: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies a template literal from which to generate the ResultLink href.
+     * Specifies a template literal from which to generate the ResultLink `href` attribute (see
+     * [Template literals](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals)).
      *
-     * This option overrides the ResultLink `field` option.</br>
-     * The template literal can reference any number of fields from the associated result. It can also reference
-     * global scope properties.
+     * This option overrides the value of {@link ResultLink.options.field}.
+     *
+     * The template literal can reference any number of fields from the parent result. It can also reference global
+     * scope properties.
      *
      * Default value is `undefined`.
      *
-     * #### Examples
+     * **Examples:**
      *
-     * The following markup will generate a ResultLink href such as `http://uri.com?id=documentTitle`:
+     * - The following markup generates a ResultLink `href` such as `http://uri.com?id=documentTitle`:
      *
      * ```html
-     * <a class="CoveoResultLink" data-href-template="${clickUri}?id=${title}"></a>
+     * <a class='CoveoResultLink' data-href-template='${clickUri}?id=${title}'></a>
      * ```
      *
-     * The following markup will generate a ResultLink href such as `localhost/fooBar`:
+     * - The following markup generates a ResultLink `href` such as `localhost/fooBar`:
      *
      * ```html
-     * <a class="CoveoResultLink" data-href-template="$${window.location.hostname}/{Foo.Bar}"></a>
+     * <a class='CoveoResultLink' data-href-template='${window.location.hostname}/{Foo.Bar}'></a>
      * ```
      */
     hrefTemplate: ComponentOptions.buildStringOption(),
 
     /**
-     * Specifies a template literal from which to generate the ResultLink display title.
+     * Specifies a template literal from which to generate the ResultLink display title (see
+     * [Template literals](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals)).
      *
-     * This option overrides the default ResultLink display title behavior.</br>
-     * The template literal can reference any number of fields from the associated result. However, if the template
-     * literal references a key whose value is undefined in the associated result fields, then the name of this key
-     * will be displayed instead.</br>
+     * This option overrides the default ResultLink display title behavior.
+     *
+     * The template literal can reference any number of fields from the parent result. However, if the template literal
+     * references a key whose value is undefined in the parent result fields, then the ResultLink title displays the
+     * name of this key instead.
+     *
      * This option is ignored if the ResultLink innerHTML contains any value.
      *
      * Default value is `undefined`.
      *
-     * #### Examples
+     * **Examples:**
      *
-     * The following markup will generate a ResultLink display title such as `Case number: 123456` if both the
-     * `raw.objecttype` and `raw.objectnumber` keys are defined in the associated result fields:
+     * - The following markup generates a ResultLink display title such as `Case number: 123456` if both the
+     * `raw.objecttype` and `raw.objectnumber` keys are defined in the parent result fields:
      *
      * ```html
      * <a class="CoveoResultLink" data-title-template="${raw.objecttype} number: ${raw.objectnumber}"></a>
      * ```
      *
-     * The following markup will generate `${myField}` as a ResultLink display title if the `myField` key is undefined
-     * in the associated result fields:
+     * - The following markup generates `${myField}` as a ResultLink display title if the `myField` key is undefined
+     * in the parent result fields:
      *
      * ```html
      * <a class="CoveoResultLink" data-title-template="${myField}"></a>
      * ```
      *
-     * The following markup will generate `This will be displayed` as a ResultLink display title, because the
-     * ResultLink innterHTML is not empty:
+     * - The following markup generates `Foobar` as a ResultLink display title, because the ResultLink innterHTML is not
+     * empty:
      *
      * ```html
-     * <a class="CoveoResultLink" data-title-template="${will} ${be} ${ignored}">This will be displayed</a>
+     * <a class="CoveoResultLink" data-title-template="${will} ${be} ${ignored}">Foobar</a>
      * ```
      */
     titleTemplate: ComponentOptions.buildStringOption(),
 
     /**
-     * Binds an event handler function which is executed when the component link is clicked.
+     * Specifies an event handler function to execute when the user clicks the ResultLink component.
      *
-     * The handler function takes an EventObject and an {@link IQueryResult} as its parameters.
+     * The handler function takes a JavaScript [Event](https://developer.mozilla.org/en/docs/Web/API/Event) object and
+     * an {@link IQueryResult} as its parameters.
      *
      * Overriding the default behavior of the `onClick` event can allow you to execute specific code instead.
      *
-     * #### Examples
+     * You can only set this option in the {@link init} call of your search interface. You cannot set it directly in the
+     * markup as an HTML attribute.
      *
-     * In the following code excerpt, a ResultLink is used to open the original document in a custom way instead of
-     * using the normal browser behavior:
+     * **Examples:**
+     *
+     * - In the following code excerpt, the ResultLink opens the original document in a custom way instead of using the
+     * normal browser behavior:
      *
      * ```javascript
      * Coveo.init(document.querySelector('#search'), {
      *   ResultLink : {
      *     onClick : function(e, result) {
      *       e.preventDefault();
-     *       // Custom code to execute with the URI and title of the document
+     *       // Custom code to execute with the URI and title of the document.
      *       openUriInASpecialTab(result.clickUri, result.title);
      *     }
      *   }
      * });
      * ```
      *
-     * The same result can be achieved using the jQuery extension:
+     * - You can achieve the same result using the jQuery extension:
      *
      * ```javascript
      * $("#search").coveo('init', {
      *   ResultLink : {
      *     onClick : function(e, result) {
      *       e.preventDefault();
-     *       // Custom code to execute with the URI and title of the document
+     *       // Custom code to execute with the URI and title of the document.
      *       openUriInASpecialTab(result.clickUri, result.title);
      *     }
      *   }
@@ -212,6 +225,15 @@ export class ResultLink extends Component {
     'author' // analytics
   ];
 
+  /**
+   * Creates a new ResultLink component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the ResultLink component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   * @param result The result to associate the component with.
+   * @param os
+   */
   constructor(public element: HTMLElement, public options: IResultLinkOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult, public os?: OS_NAME) {
     super(element, ResultLink.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultLink, options);
@@ -295,21 +317,21 @@ export class ResultLink extends Component {
   }
 
   /**
-   * Opens the result
+   * Opens the result.
    */
   public openLink() {
     window.location.href = this.getResultUri();
   }
 
   /**
-   * Opens the result in a new window
+   * Opens the result in a new window.
    */
   public openLinkInNewWindow() {
     window.open(this.getResultUri(), '_blank');
   }
 
   /**
-   * Opens the result in outlook if the result has an outlook field.
+   * Opens the result in Microsoft Outlook if the result has an `outlookformacuri` or `outlookuri` field.
    */
   public openLinkInOutlook() {
     if (this.hasOutlookField()) {

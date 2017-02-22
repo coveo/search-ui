@@ -1,11 +1,11 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {Utils} from '../../utils/Utils';
-import {QueryEvents, IBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {$$} from '../../utils/Dom';
-import {Initialization} from '../Base/Initialization';
-
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Utils } from '../../utils/Utils';
+import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { $$ } from '../../utils/Dom';
+import { Initialization } from '../Base/Initialization';
+import _ = require('underscore');
 
 export var context: any;
 declare var Coveo;
@@ -42,7 +42,7 @@ export interface IPipelineContextOptions {
  *
  * Using this component as opposed to JavaScript code means you will be able to leverage the interface editor.
  *
- * Regardless of if you use this component or JavaScript to add context, both will add the needed data in the {@link Query.context} parameter.
+ * Regardless of if you use this component or JavaScript to add context, both will add the needed data in the [Query.Context]{@link IQuery.context} parameter.
  */
 export class PipelineContext extends Component {
   static ID = 'PipelineContext';

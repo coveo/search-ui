@@ -1,4 +1,4 @@
-import {$$} from './Dom';
+import { $$ } from './Dom';
 
 export function actionButton(text: string, callback: () => any) {
   let btn = $$('button', {}, text);
