@@ -5,6 +5,7 @@ import { ISearchEndpoint } from '../../../rest/SearchEndpointInterface';
 import { DocumentInput } from './DocumentInput';
 import { $$ } from '../../../utils/Dom';
 import _ = require('underscore');
+import { QueryBuilder } from '../../Base/QueryBuilder';
 
 export class SimpleFieldInput extends DocumentInput {
 
@@ -30,7 +31,13 @@ export class SimpleFieldInput extends DocumentInput {
 
   public getValue(): string {
     let value = this.dropDown ? this.dropDown.getValue() : '';
-    return value ? this.fieldName + '==\"' + value + '\"' : '';
+    let queryBuilder = new QueryBuilder();
+    if (value) {
+      queryBuilder.advancedExpression.addFieldExpression(this.fieldName, '==', [value]);
+      return queryBuilder.build().aq;
+    } else {
+      return '';
+    }
   }
 
   private buildFieldSelect() {

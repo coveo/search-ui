@@ -24,6 +24,7 @@ export interface IResponsiveComponent {
   ID: string;
   handleResizeEvent(): void;
   needDropdownWrapper?(): boolean;
+  registerComponent?(accept: Component): boolean;
 }
 
 interface IComponentInitialization {
@@ -34,17 +35,20 @@ interface IComponentInitialization {
 export class ResponsiveComponentsManager {
 
   public static DROPDOWN_HEADER_WRAPPER_CSS_CLASS = 'coveo-dropdown-header-wrapper';
+  public static RESIZE_DEBOUNCE_DELAY = 200;
+
   private static componentManagers: ResponsiveComponentsManager[] = [];
   private static remainingComponentInitializations: number = 0;
   private static componentInitializations: IComponentInitialization[] = [];
 
+  public resizeListener;
+
   private disabledComponents: string[] = [];
   private coveoRoot: Dom;
-  private resizeListener;
   private responsiveComponents: IResponsiveComponent[] = [];
   private searchBoxElement: HTMLElement;
-  private responsiveFacets: ResponsiveFacets;
   private dropdownHeadersWrapper: Dom;
+  private searchInterface: SearchInterface;
 
   // Register takes a class and will instantiate it after framework initialization has completed.
   public static register(responsiveComponentConstructor: IResponsiveComponentConstructor, root: Dom, ID: string, component: Component, options: IResponsiveComponentOptions): void {
@@ -102,6 +106,7 @@ export class ResponsiveComponentsManager {
 
   constructor(root: Dom) {
     this.coveoRoot = root;
+    this.searchInterface = <SearchInterface>Component.get(this.coveoRoot.el, SearchInterface, false);
     this.dropdownHeadersWrapper = $$('div', { className: ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS });
     this.searchBoxElement = this.getSearchBoxElement();
     this.resizeListener = _.debounce(() => {
@@ -115,8 +120,8 @@ export class ResponsiveComponentsManager {
         _.each(this.responsiveComponents, responsiveComponent => {
           responsiveComponent.handleResizeEvent();
         });
-      } 
-    }, 200);
+      }
+    }, ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY);
     window.addEventListener('resize', this.resizeListener);
     this.bindNukeEvents();
   }
@@ -128,9 +133,6 @@ export class ResponsiveComponentsManager {
 
     if (!this.isActivated(ID)) {
       let responsiveComponent = new responsiveComponentConstructor(root, ID, options);
-      if (this.isFacet(ID)) {
-        this.responsiveFacets = <ResponsiveFacets>responsiveComponent;
-      }
 
       if (this.isTabs(ID)) {
         this.responsiveComponents.push(responsiveComponent);
@@ -138,10 +140,11 @@ export class ResponsiveComponentsManager {
         // Tabs need to be rendered last, so any dropdown header(eg: facet) is already there when the responsive tabs check for overflow.
         this.responsiveComponents.unshift(responsiveComponent);
       }
-    }
-
-    if (this.isFacet(ID)) {
-      this.responsiveFacets.registerComponent(component);
+      _.each(this.responsiveComponents, (responsiveComponent: IResponsiveComponent) => {
+        if (responsiveComponent.registerComponent != null) {
+          responsiveComponent.registerComponent(component);
+        }
+      });
     }
   }
 
@@ -155,7 +158,7 @@ export class ResponsiveComponentsManager {
 
   private shouldSwitchToSmallMode(): boolean {
     let aComponentNeedsTabSection = this.needDropdownWrapper();
-    let reachedBreakpoint = this.coveoRoot.width() <= ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH;
+    let reachedBreakpoint = this.coveoRoot.width() <= this.searchInterface.responsiveComponents.getMediumScreenWidth();
     return aComponentNeedsTabSection || reachedBreakpoint;
   }
 
@@ -180,10 +183,6 @@ export class ResponsiveComponentsManager {
         this.coveoRoot.prepend(this.dropdownHeadersWrapper.el);
       }
     }
-  }
-
-  private isFacet(ID: string): boolean {
-    return ID == Facet.ID;
   }
 
   private isTabs(ID: string): boolean {

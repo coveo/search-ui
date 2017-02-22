@@ -22,7 +22,7 @@ export function SimpleFieldInputTest() {
     describe('getValue', () => {
       it('should return fieldName == the value', () => {
         input.dropDown.selectValue('what');
-        expect(input.getValue()).toEqual('@test=="what"');
+        expect(input.getValue()).toEqual('@test==what');
       });
     });
 

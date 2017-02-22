@@ -1,20 +1,59 @@
-import { ResponsiveComponentsUtils } from '../../../src/ui/ResponsiveComponents/ResponsiveComponentsUtils';
 import { $$, Dom } from '../../../src/utils/Dom';
-import { ResponsiveComponentsManager, IResponsiveComponentConstructor } from '../../../src/ui/ResponsiveComponents/ResponsiveComponentsManager';
-import { ResponsiveTabs } from '../../../src/ui/ResponsiveComponents/ResponsiveTabs';
+import { ResponsiveComponentsManager } from '../../../src/ui/ResponsiveComponents/ResponsiveComponentsManager';
+import * as Mock from '../../MockEnvironment';
+import { SearchInterface, ISearchInterfaceOptions } from '../../../src/ui/SearchInterface/SearchInterface';
 
-export function ResponsiveTabsTest() {
+export function ResponsiveComponentsManagerTest() {
 
   let root: Dom;
 
   describe('ResponsiveComponentsManager', () => {
-    it('calls resize listenter after initialization', () => {
-      let responsiveComponent: any = function() {
-        this.needDrodpownWrapper = jasmine.createSpy('needDropdownWrapper');
-        this.handleResizeEvent = jasmine.createSpy('handleResizeEvent');
+    beforeEach(() => {
+      let searchInterfaceMock = Mock.optionsSearchInterfaceSetup<SearchInterface, ISearchInterfaceOptions>(SearchInterface, {
+        enableAutomaticResponsiveMode: true
+      });
+      searchInterfaceMock.cmp.isNewDesign = () => true;
+      root = $$(searchInterfaceMock.cmp.root);
+    });
+
+    it('calls handle resize event when resize listener is called', (done) => {
+      root.width = () => 400;
+      let handleResizeEvent = jasmine.createSpy('handleResizeEvent');
+      let responsiveComponent: any = function () {
+        this.needDrodpownWrapper = () => {};
+        this.handleResizeEvent = handleResizeEvent;
       };
       let component: any = {};
-      ResponsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
+      let responsiveComponentsManager = new ResponsiveComponentsManager(root);
+      responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
+
+      responsiveComponentsManager.resizeListener();
+
+      setTimeout(() => {
+        expect(handleResizeEvent).toHaveBeenCalled();
+        done();
+      }, ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY + 1);
+
+    });
+
+    it('does not calls handle resize event when resize listener is called and width is zero', (done) => {
+      root.width = () => 0;
+      let handleResizeEvent = jasmine.createSpy('handleResizeEvent');
+      let responsiveComponent: any = function () {
+        this.needDrodpownWrapper = () => {};
+        this.handleResizeEvent = handleResizeEvent;
+      };
+      let component: any = {};
+      let responsiveComponentsManager = new ResponsiveComponentsManager(root);
+      responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
+
+      responsiveComponentsManager.resizeListener();
+
+      setTimeout(() => {
+        expect(handleResizeEvent).not.toHaveBeenCalled();
+        done();
+      }, ResponsiveComponentsManager.RESIZE_DEBOUNCE_DELAY + 1);
+
     });
   });
 }

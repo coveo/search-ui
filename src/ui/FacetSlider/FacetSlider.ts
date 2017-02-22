@@ -333,39 +333,17 @@ export class FacetSlider extends Component {
      *
      * Responsive mode displays all facets under a single dropdown button whenever the width of the HTML element which
      * the search interface is bound to reaches or falls behind a certain threshold (see
-     * {@link FacetSlider.options.responsiveBreakpoint}).
+     * {@link SearchInterface.responsiveComponents}).
      *
      * See also {@link FacetSlider.options.dropdownHeaderLabel}.
      *
      * Default value is `true`.
      */
     enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
-
     /**
-     * If {@link FacetSlider.options.enableResponsiveMode} is `true` for all sliders and
-     * {@link Facet.options.enableResponsiveMode} is also `true` for all facets, specifies the width threshold (in
-     * pixels) of the search interface at which facets go in responsive mode.
-     *
-     * Facets go in responsive mode when the width of the search interface is equal to or lower than this value.
-     *
-     * The *search interface* corresponds to the HTML element with the class `CoveoSearchInterface`.
-     *
-     * If more than one FacetSlider or {@link Facet} in the search interface specifies a value for this option, then the
-     * framework uses the last occurrence of the option.
-     *
-     * Default value is `800`. Minimum value is `0`.
-     */
-    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 800, min: 0 }),
-
-    /**
-     * If {@link FacetSlider.options.enableResponsiveMode} is `true` for all sliders and
-     * {@link Facet.options.enableResponsiveMode} is also `true` for all facets, specifies the label of the dropdown
-     * button that allows to display the facets when in responsive mode.
-     *
-     * If more than one FacetSlider or {@link Facet} in the search interface specifies a value for this option, then the
-     * framework uses the first occurrence of the option.
-     *
-     * Default value is `"Filters"`.
+     * Specifies the label of the button that allows to show the facets when in responsive mode. If it is specified more than once, the
+     * first occurence of the option will be used.
+     * The default value is "Filters".
      */
     dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption()
   };
