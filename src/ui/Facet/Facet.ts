@@ -520,12 +520,33 @@ export class Facet extends Component {
     additionalFilter: ComponentOptions.buildStringOption(),
 
     /**
-     * Specifies whether the Facet only appears when a value is selected in its "parent" Facet.
+     * Specifies whether this Facet only appears when a value is selected in its "parent" Facet.
      *
-     * To specify the parent Facet, use its {@link Facet.options.id}. Remember that by default, the id of a Facet is its
-     * {@link Facet.options.field}.
+     * To specify the parent Facet, use its [id]{@link Facet.options.id}.
      *
-     * Example: `dependsOn : @parentfacetField`
+     * Remember that by default, a Facet id is the same as its [field]{@link Facet.options.field}.
+     *
+     * **Examples:**
+     *
+     * First case: the "parent" Facet has no custom `id`:
+     * ```html
+     * <!-- "Parent" Facet: -->
+     * <div class='CoveoFacet' data-field='@myfield' data-title='My Parent Facet'></div>
+     *
+     * <!-- The "dependent" Facet must refer to the default `id` of its "parent" Facet, which is the name of its field. -->
+     * <div class='CoveoFacet' data-field='@myotherfield' data-title='My Dependent Facet' data-depends-on='@myfield'></div>
+     * ```
+     *
+     * Second case: the "parent" Facet has a custom `id`:
+     * ```html
+     * <!-- "Parent" Facet: -->
+     * <div class='CoveoFacet' data-field='@myfield' data-title='My Parent Facet' data-id='myParentCustomId'></div>
+     *
+     * <!-- The "dependent" Facet must refer to the custom `id` of its "parent" Facet, which is 'myParentCustomId'. -->
+     * <div class='CoveoFacet' data-field='@myotherfield data-title='My Dependent Facet' data-depends-on='myParentCustomId'></div>
+     * ```
+     *
+     * Default value is `undefined`
      */
     dependsOn: ComponentOptions.buildStringOption(),
 
