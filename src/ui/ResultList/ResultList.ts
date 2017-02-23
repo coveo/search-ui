@@ -125,6 +125,15 @@ export interface IResultListOptions {
  * ```
  */
 export class ResultList extends Component {
+
+ private static getDefaultTemplate(e: HTMLElement): Template {
+    let component = <ResultList>Component.get(e);
+    if (Coveo['Recommendation'] && component.searchInterface instanceof Coveo['Recommendation']) {
+      return new DefaultRecommendationTemplate();
+    }
+    return new DefaultResultTemplate();
+  }
+
   static ID = 'ResultList';
 
   static doExport = () => {
@@ -724,14 +733,6 @@ export class ResultList extends Component {
     if (spinner) {
       $$(spinner).detach();
     }
-  }
-
-  private static getDefaultTemplate(e: HTMLElement): Template {
-    let component = <ResultList>Component.get(e);
-    if (Coveo['Recommendation'] && component.searchInterface instanceof Coveo['Recommendation']) {
-      return new DefaultRecommendationTemplate();
-    }
-    return new DefaultResultTemplate();
   }
 }
 
