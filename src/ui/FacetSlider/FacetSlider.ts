@@ -9,7 +9,6 @@ import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
 import { FacetHeader } from '../Facet/FacetHeader';
 import { l } from '../../strings/Strings';
 import { InitializationEvents } from '../../events/InitializationEvents';
-import { FeatureDetectionUtils } from '../../utils/FeatureDetectionUtils';
 import { FacetSliderQueryController } from '../../controllers/FacetSliderQueryController';
 import { QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs, IBreadcrumbItem } from '../../events/BreadcrumbEvents';

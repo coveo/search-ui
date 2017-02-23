@@ -7,7 +7,6 @@ export { Dom, $$ } from './utils/Dom';
 export { DomUtils } from './utils/DomUtils';
 export { EmailActionsUtils } from './utils/EmailActionsUtils';
 export { EmailUtils } from './utils/EmailUtils';
-export { FeatureDetectionUtils } from './utils/FeatureDetectionUtils';
 export { HashUtils } from './utils/HashUtils';
 export { HighlightUtils, StringAndHoles } from './utils/HighlightUtils';
 export { HTMLUtils } from './utils/HtmlUtils';
