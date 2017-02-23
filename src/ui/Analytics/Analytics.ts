@@ -183,24 +183,17 @@ export class Analytics extends Component {
    * Logs a Search event on the service, using an [AnalyticsActionCause]({@link IAnalyticsActionCause}) and a meta
    * object.
    *
-   * Note that the search event is sent to the service when a query successfully returns, not immediately after calling
-   * this method.
+   * Note that the search event is only sent to the service when the query successfully returns, not immediately after
+   * calling this method. Therefore, it is important to call this method before executing the query. Otherwise the
+   * service will log no Search event and you will get a warning message in the console.
    *
-   * Normally, you should call this method using the following "format":
-   *
-   * ```
-   * usageAnalytics.logSearchEvent<SomeMeta>({name: 'foo', type: 'bar'}, <SomeMeta>{'key':'value'});
-   * this.queryController.executeQuery();
-   * ```
-   *
-   * This queues up an analytics search event. Then, the query executes itself. The search event is sent to the service
-   * when the query successfully returns.
+   * See [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ).
    *
    * @param actionCause Describes the cause of the event.
    * @param meta The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
    * pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
    * API automatically converts white spaces to underscores and uppercase characters to lowercase characters in key
-   * names. Each values must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
+   * names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
    * ( `{}` ).
    */
   public logSearchEvent<T>(actionCause: IAnalyticsActionCause, meta: T) {
@@ -215,15 +208,19 @@ export class Analytics extends Component {
    *
    * The `PendingSearchAsYouTypeEvent` takes care of logging only the "relevant" last event: an event that occurs after
    * 5 seconds elapse without any event being logged, or an event that occurs after another part of the interface
-   * triggers a search event.
+   * triggers a search event. This avoids logging every single partial query, which would make the reporting very
+   * confusing.
    *
-   * This avoids logging every single partial query, which would make the reporting very confusing.
+   * It is important to call this method before executing the query. Otherwise the service will log no SearchAsYouType
+   * event and you will get a warning message in the console.
+   *
+   * See [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ).
    *
    * @param actionCause Describes the cause of the event.
    * @param meta The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
    * pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
    * API automatically converts white spaces to underscores and uppercase characters to lowercase characters in key
-   * names. Each values must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
+   * names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
    * ( `{}` ).
    */
   public logSearchAsYouType<T>(actionCause: IAnalyticsActionCause, meta: T) {
@@ -238,7 +235,7 @@ export class Analytics extends Component {
    * @param meta The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
    * pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
    * API automatically converts white spaces to underscores and uppercase characters to lowercase characters in key
-   * names. Each values must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
+   * names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
    * ( `{}` ).
    * @param element The HTMLElement that the user has interacted with for this custom event.
    */
@@ -255,8 +252,9 @@ export class Analytics extends Component {
    * @param actionCause Describes the cause of the event.
    * @param meta The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
    * pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
-   * API automatically converts white spaces to underscores and uppercase characters to lowercase characters in key
-   * names. Each values must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
+   * API automatically converts uppercase characters to lowercase characters in key names. Each value must be a simple
+   * string. You do not have to pass an {@link IAnalyticsDocumentViewMeta} as meta when logging a custom Click event.
+   * You can actually send any arbitrary meta. If you do not need to log metadata, you can simply pass an empty JSON
    * ( `{}` ).
    * @param result The result that the user has clicked.
    * @param element The HTMLElement that the user has clicked in the interface.
