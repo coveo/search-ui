@@ -3,7 +3,7 @@ import { DeviceUtils } from '../../utils/DeviceUtils';
 import { SliderEvents, IGraphValueSelectedArgs } from '../../events/SliderEvents';
 import { Utils } from '../../utils/Utils';
 import * as d3Scale from 'd3-scale';
-import {select as d3select} from 'd3';
+import { select as d3select } from 'd3';
 import * as Globalize from 'globalize';
 import * as _ from 'underscore';
 

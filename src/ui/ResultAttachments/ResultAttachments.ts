@@ -128,7 +128,7 @@ export class ResultAttachments extends Component {
       QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, attachment);
       let subTemplatePromise = this.attachmentLevel > 0 ? this.options.subResultTemplate.instantiateToElement(attachment) : this.options.resultTemplate.instantiateToElement(attachment);
 
-      subTemplatePromise.then((container: HTMLElement)=>{
+      subTemplatePromise.then((container: HTMLElement) => {
         this.autoCreateComponentsInsideResult(container, _.extend({}, attachment, { attachments: [] }));
 
         $$(container).addClass('coveo-result-attachments-container');
@@ -139,7 +139,7 @@ export class ResultAttachments extends Component {
           container.appendChild(childAttachmentContainer);
           new ResultAttachments(childAttachmentContainer, this.options, this.bindings, attachment, this.attachmentLevel + 1);
         }
-      })
+      });
     });
   }
 

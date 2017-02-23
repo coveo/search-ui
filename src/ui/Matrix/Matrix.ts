@@ -856,11 +856,11 @@ export class Matrix extends Component {
       });
       let html = '';
       _.each(instantiatedResults, (result) => {
-        result.then((builtResultElement: HTMLElement)=> {
+        result.then((builtResultElement: HTMLElement) => {
           html += builtResultElement.outerHTML;
-        })
+        });
       });
-      Promise.all(instantiatedResults).then(()=> {
+      Promise.all(instantiatedResults).then(() => {
         cell.updatePreview(html);
       });
     });
@@ -870,14 +870,14 @@ export class Matrix extends Component {
     return this.options.previewTemplate.instantiateToElement(result, {
       checkCondition: false,
       responsiveComponents: this.searchInterface.responsiveComponents
-    }).then((content: HTMLElement)=> {
+    }).then((content: HTMLElement) => {
       let initParameters: IInitializationParameters = {
         options: this.options,
         bindings: this.getBindings(),
         result: result
       };
 
-      return Initialization.automaticallyCreateComponentsInside(content, initParameters).then(()=> {
+      return Initialization.automaticallyCreateComponentsInside(content, initParameters).then(() => {
         return content;
       });
     });

@@ -43,7 +43,7 @@ export interface ISearchAlertsOptions {
 export class SearchAlerts extends Component {
   static ID = 'SearchAlerts';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'SearchAlerts': SearchAlerts,
       'SearchAlertsMessage': SearchAlertsMessage

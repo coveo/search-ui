@@ -142,19 +142,19 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
   public buildResults(results: IQueryResults): Promise<HTMLElement[]> {
     let builtResults: HTMLElement[] = [];
     let builtPromises = _.map(results.results, (result: IQueryResult) => {
-      return this.buildResult(result).then((resultElement: HTMLElement)=> {
+      return this.buildResult(result).then((resultElement: HTMLElement) => {
         $$(resultElement).addClass('coveo-omnibox-selectable');
         $$(resultElement).on('keyboardSelect', () => {
           this.options.onSelect.call(this, result, resultElement, this.lastOmniboxRequest.omniboxObject);
         });
-        return this.autoCreateComponentsInsideResult(resultElement, result).then(()=> {
-          builtResults.push(resultElement)
+        return this.autoCreateComponentsInsideResult(resultElement, result).then(() => {
+          builtResults.push(resultElement);
           return resultElement;
         });
       });
     });
 
-    return Promise.all(builtPromises).then(()=> {
+    return Promise.all(builtPromises).then(() => {
       return builtResults;
     });
   }

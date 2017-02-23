@@ -34,7 +34,7 @@ export interface ISettingsOptions {
 export class Settings extends Component {
   static ID = 'Settings';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'Settings': Settings
     });

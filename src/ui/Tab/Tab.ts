@@ -69,7 +69,7 @@ export interface ITabOptions {
 export class Tab extends Component {
   static ID = 'Tab';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'Tab': Tab
     });

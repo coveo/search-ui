@@ -25,7 +25,7 @@ export class DefaultRecommendationTemplate extends Template {
   }
 
   instantiateToElement(object?: IQueryResult): Promise<HTMLElement> {
-    return new Promise((resolve, reject)=> {
+    return new Promise((resolve, reject) => {
       var div = document.createElement('div');
       div.innerHTML = this.instantiateToString(object);
       return div;

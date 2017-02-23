@@ -32,7 +32,7 @@ export interface IResultsPreferencesOptions {
 export class ResultsPreferences extends Component {
   static ID = 'ResultsPreferences';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'ResultsPreferences': ResultsPreferences
     });

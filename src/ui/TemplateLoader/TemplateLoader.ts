@@ -65,7 +65,7 @@ export interface ITemplateLoaderOptions {
 export class TemplateLoader extends Component {
   static ID = 'TemplateLoader';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'TemplateLoader': TemplateLoader
     });

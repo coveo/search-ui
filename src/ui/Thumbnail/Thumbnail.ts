@@ -26,7 +26,7 @@ export interface IThumbnailOptions extends IResultLinkOptions {
 export class Thumbnail extends Component {
   static ID = 'Thumbnail';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'Thumbnail': Thumbnail
     });

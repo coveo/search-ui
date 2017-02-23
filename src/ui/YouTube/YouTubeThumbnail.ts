@@ -31,7 +31,7 @@ export interface IYouTubeThumbnailOptions {
 export class YouTubeThumbnail extends Component {
   static ID = 'YouTubeThumbnail';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'YouTubeThumbnail': YouTubeThumbnail
     });

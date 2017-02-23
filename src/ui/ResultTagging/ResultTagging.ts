@@ -39,7 +39,7 @@ export class ResultTagging extends Component {
   static ID = 'ResultTagging';
   static autoCompleteClass = 'coveo-result-tagging-auto-complete';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'ResultTagging': ResultTagging
     });

@@ -35,7 +35,7 @@ export interface IFollowItemOptions {
 export class FollowItem extends Component {
   static ID = 'FollowItem';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'FollowItem': FollowItem
     });

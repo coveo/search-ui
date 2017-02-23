@@ -22,14 +22,14 @@ export interface IQuickviewOptions {
   showDate?: boolean;
   contentTemplate?: Template;
   enableLoadingAnimation?: boolean;
-  loadingAnimation?: HTMLElement|Promise<HTMLElement>;
+  loadingAnimation?: HTMLElement | Promise<HTMLElement>;
   alwaysShow?: boolean;
   size?: string;
 }
 
 interface IQuickviewOpenerObject {
   content: Promise<Dom>;
-  loadingAnimation: HTMLElement|Promise<HTMLElement>;
+  loadingAnimation: HTMLElement | Promise<HTMLElement>;
 }
 
 /**
@@ -116,7 +116,7 @@ export class Quickview extends Component {
       selectorAttr: 'data-template-selector',
       idAttr: 'data-template-id'
     }),
-    loadingAnimation: ComponentOptions.buildOption<HTMLElement|Promise<HTMLElement>>(ComponentOptionsType.NONE, (element: HTMLElement) => {
+    loadingAnimation: ComponentOptions.buildOption<HTMLElement | Promise<HTMLElement>>(ComponentOptionsType.NONE, (element: HTMLElement) => {
       let loadingAnimationSelector = element.getAttribute('data-loading-animation-selector');
       if (loadingAnimationSelector != null) {
         let loadingAnimation = $$(document.documentElement).find(loadingAnimationSelector);
@@ -193,7 +193,7 @@ export class Quickview extends Component {
       $$(<HTMLElement>document.activeElement).trigger('blur');
 
       let openerObject = this.prepareOpenQuickviewObject();
-      this.createModalBox(openerObject).then(()=> {
+      this.createModalBox(openerObject).then(() => {
         this.bindQuickviewEvents(openerObject);
         this.animateAndOpen();
         this.queryStateModel.set(QueryStateModel.attributesEnum.quickview, this.getHashId());
@@ -244,9 +244,9 @@ export class Quickview extends Component {
       if (openerObject.loadingAnimation instanceof HTMLElement) {
         $$(openerObject.loadingAnimation).remove();
       } else if (openerObject.loadingAnimation instanceof Promise) {
-        openerObject.loadingAnimation.then((anim)=> {
+        openerObject.loadingAnimation.then((anim) => {
           $$(anim).remove();
-        })
+        });
       }
       this.bindIFrameEscape();
     });
@@ -274,7 +274,7 @@ export class Quickview extends Component {
 
   private createModalBox(openerObject: IQuickviewOpenerObject) {
     let computedModalBoxContent = $$('div');
-    return openerObject.content.then((builtContent)=> {
+    return openerObject.content.then((builtContent) => {
       computedModalBoxContent.append(builtContent.el);
       this.modalbox = this.ModalBox.open(computedModalBoxContent.el, {
         title: DomUtils.getQuickviewHeader(this.result, {
@@ -286,7 +286,7 @@ export class Quickview extends Component {
         body: this.element.ownerDocument.body
       });
       this.setQuickviewSize();
-      return computedModalBoxContent
+      return computedModalBoxContent;
     });
   }
 
@@ -298,8 +298,8 @@ export class Quickview extends Component {
     };
   }
 
-  private prepareQuickviewContent(loadingAnimation: HTMLElement|Promise<HTMLElement>): Promise<Dom> {
-    return this.options.contentTemplate.instantiateToElement(this.result).then((built: HTMLElement)=> {
+  private prepareQuickviewContent(loadingAnimation: HTMLElement | Promise<HTMLElement>): Promise<Dom> {
+    return this.options.contentTemplate.instantiateToElement(this.result).then((built: HTMLElement) => {
       let content = $$(built);
 
       let initOptions = this.searchInterface.options;
@@ -308,14 +308,14 @@ export class Quickview extends Component {
         bindings: this.getBindings(),
         result: this.result
       };
-      return Initialization.automaticallyCreateComponentsInside(content.el, initParameters).then(()=> {
+      return Initialization.automaticallyCreateComponentsInside(content.el, initParameters).then(() => {
         if (content.find('.' + Component.computeCssClassName(QuickviewDocument)) != undefined && this.options.enableLoadingAnimation) {
           if (loadingAnimation instanceof HTMLElement) {
             content.prepend(loadingAnimation);
           } else if (loadingAnimation instanceof Promise) {
-            loadingAnimation.then((anim)=> {
+            loadingAnimation.then((anim) => {
               content.prepend(anim);
-            })
+            });
           }
         }
         return content;

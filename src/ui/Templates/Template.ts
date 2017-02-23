@@ -158,7 +158,7 @@ export class Template implements ITemplateProperties {
     let allComponentsInsideCurrentTemplate = _.map(Initialization.getListOfRegisteredComponents(), (componentId: string) => {
       let regex = new RegExp(`Coveo${componentId}`, 'g');
       if (regex.exec(html)) {
-        return Initialization.getLazyRegisteredComponent(componentId).then((lazyLoadedComponent)=> {
+        return Initialization.getLazyRegisteredComponent(componentId).then((lazyLoadedComponent) => {
           if (lazyLoadedComponent.fields) {
             if (!this.fields) {
               this.fields = [];
@@ -172,7 +172,7 @@ export class Template implements ITemplateProperties {
       }
     });
 
-    return Promise.all(allComponentsInsideCurrentTemplate).then(()=> {
+    return Promise.all(allComponentsInsideCurrentTemplate).then(() => {
       var element = $$('div', {}, html).el;
       if (!merged.wrapInDiv && element.children.length === 1) {
         element = <HTMLElement>element.children.item(0);
@@ -183,7 +183,7 @@ export class Template implements ITemplateProperties {
       this.logger.trace('Instantiated result template', object, element);
       element['template'] = this;
       return element;
-    })
+    });
   }
 
   toHtmlElement(): HTMLElement {

@@ -23,7 +23,7 @@ export class Triggers extends Component {
   static ID = 'Triggers';
   static options: ITriggersOptions = {};
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'Triggers': Triggers
     });

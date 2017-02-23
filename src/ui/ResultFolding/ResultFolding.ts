@@ -263,7 +263,7 @@ export class ResultFolding extends Component {
       wrapInDiv: false,
       checkCondition: false,
       responsiveComponents: this.searchInterface.responsiveComponents
-    }).then((oneChild: HTMLElement)=> {
+    }).then((oneChild: HTMLElement) => {
       $$(oneChild).addClass('coveo-result-folding-child-result');
       this.results.appendChild(oneChild);
 

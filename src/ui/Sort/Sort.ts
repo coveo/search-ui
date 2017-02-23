@@ -26,7 +26,7 @@ export interface ISortOptions {
 export class Sort extends Component {
   static ID = 'Sort';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'Sort': Sort,
       'SortCriteria': SortCriteria

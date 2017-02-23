@@ -40,7 +40,7 @@ export interface ITextOptions {
 export class Text extends Component {
   static ID = 'Text';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'Text': Text
     });

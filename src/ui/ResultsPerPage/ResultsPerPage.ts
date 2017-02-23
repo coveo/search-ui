@@ -26,7 +26,7 @@ export interface IResultsPerPageOptions {
 export class ResultsPerPage extends Component {
   static ID = 'ResultsPerPage';
 
-  static doExport = ()=> {
+  static doExport = () => {
     exportGlobally({
       'ResultsPerPage': ResultsPerPage
     });

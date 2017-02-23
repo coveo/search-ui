@@ -27,7 +27,7 @@ export class DefaultMatrixResultPreviewTemplate extends Template {
   }
 
   instantiateToElement(object?: IQueryResult, instantiateOptions?: IInstantiateTemplateOptions): Promise<HTMLElement> {
-    return new Promise((resolve, reject)=> {
+    return new Promise((resolve, reject) => {
       return $$('div', undefined, this.instantiateToString(object)).el;
     });
 

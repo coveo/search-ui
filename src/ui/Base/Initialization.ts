@@ -411,7 +411,7 @@ export class Initialization {
     if (type != 'Standard') {
       fromInitTypeToBoxReference += 'For' + type;
     }
-    return Component.getComponentRef(fromInitTypeToBoxReference).then((boxRef)=> {
+    return Component.getComponentRef(fromInitTypeToBoxReference).then((boxRef) => {
       new Logger(element).info('Initializing box of type ' + fromInitTypeToBoxReference);
       let injectFunction: () => any = injectMarkup ? boxRef.getInjection : () => {
       };
@@ -419,7 +419,7 @@ export class Initialization {
       box.options.originalOptionsObject = options;
       let initParameters: IInitializationParameters = { options: options, bindings: box.getBindings() };
       return Initialization.automaticallyCreateComponentsInside(element, initParameters);
-    }).catch(()=> {
+    }).catch(() => {
       return new Promise((resolve, reject) => {
         new Logger(element).error('Trying to initialize box of type : ' + fromInitTypeToBoxReference + ' but not found in code (not compiled)!');
         Assert.fail('Cannot initialize unknown type of box');

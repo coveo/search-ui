@@ -372,7 +372,7 @@ export class ResultList extends Component {
   public buildResults(results: IQueryResults): Promise<HTMLElement[]> {
     let res: HTMLElement[] = [];
     let resultsPromises = _.map(results.results, (result: IQueryResult) => {
-      return this.buildResult(result).then((resultElement: HTMLElement)=> {
+      return this.buildResult(result).then((resultElement: HTMLElement) => {
         if (resultElement != null) {
           res.push(resultElement);
         }
@@ -381,7 +381,7 @@ export class ResultList extends Component {
       });
     });
 
-    return Promise.all(resultsPromises).then(()=> {
+    return Promise.all(resultsPromises).then(() => {
       return res;
     });
   }
@@ -401,12 +401,12 @@ export class ResultList extends Component {
       checkCondition: true,
       currentLayout: <ValidLayout>this.options.layout,
       responsiveComponents: this.searchInterface.responsiveComponents
-    }).then((resultElement: HTMLElement)=> {
+    }).then((resultElement: HTMLElement) => {
       if (resultElement != null) {
         Component.bindResultToElement(resultElement, result);
         $$(resultElement).addClass('');
       }
-      return this.autoCreateComponentsInsideResult(resultElement, result).then(()=> {
+      return this.autoCreateComponentsInsideResult(resultElement, result).then(() => {
         return resultElement;
       });
     });
@@ -443,7 +443,7 @@ export class ResultList extends Component {
       this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.pagerScrolling, {}, this.element);
       let results = data.results;
       this.reachedTheEndOfResults = count > data.results.length;
-      this.buildResults(data).then((elements: HTMLElement[])=> {
+      this.buildResults(data).then((elements: HTMLElement[]) => {
         this.renderResults(elements, true);
         _.each(results, (result) => {
           this.currentlyDisplayedResults.push(result);
@@ -532,7 +532,7 @@ export class ResultList extends Component {
     this.hideWaitingAnimation();
     ResultList.resultCurrentlyBeingRendered = undefined;
     this.currentlyDisplayedResults = [];
-    this.buildResults(data.results).then((elements: HTMLElement[])=> {
+    this.buildResults(data.results).then((elements: HTMLElement[]) => {
       this.renderResults(elements);
       this.currentlyDisplayedResults = results.results;
       this.reachedTheEndOfResults = false;
@@ -599,9 +599,9 @@ export class ResultList extends Component {
       this.options.resultTemplate.layout = <ValidLayout>this.options.layout;
       if (args.results) {
         Defer.defer(() => {
-          this.buildResults(args.results).then((elements: HTMLElement[])=> {
+          this.buildResults(args.results).then((elements: HTMLElement[]) => {
             this.renderResults(elements);
-          })
+          });
         });
       }
     } else {
