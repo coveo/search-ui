@@ -15,7 +15,7 @@ gulp.task('doc', ['copyBinToDoc', 'buildPlayground'], function () {
     theme: 'docs/theme',
     name: 'Coveo JavaScript Search Framework - Reference Documentation',
     readme: 'README.md',
-    externalPattern: '**/{typings,lib,node_modules}/**',
+    externalPattern: '**/{sure,lib,node_modules}/**',
     ignoreCompilerErrors: true
   });
   var src = app.expandInputFiles(['src/Doc.ts']);

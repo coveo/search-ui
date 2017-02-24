@@ -3,7 +3,7 @@ import { DeviceUtils } from '../../utils/DeviceUtils';
 import { SliderEvents, IGraphValueSelectedArgs } from '../../events/SliderEvents';
 import { Utils } from '../../utils/Utils';
 import * as d3Scale from 'd3-scale';
-import { select as d3select } from 'd3';
+import { select as d3select, max as d3max } from 'd3';
 import * as Globalize from 'globalize';
 import * as _ from 'underscore';
 
@@ -671,7 +671,7 @@ class SliderGraph {
     this.x.domain(_.map(data, (d) => {
       return d.start;
     }));
-    this.y.domain([0, d3.max(data, (d) => {
+    this.y.domain([0, d3max(data, (d) => {
       return d.y;
     })]);
   }

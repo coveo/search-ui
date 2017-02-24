@@ -91,9 +91,9 @@ export class FacetUtils {
     return found != undefined && Utils.isNonEmptyString(found) ? found : value;
   }
 
-  static clipCaptionsToAvoidOverflowingTheirContainer(facet: Facet, forceClip?: boolean) {
+  static clipCaptionsToAvoidOverflowingTheirContainer(facet: Facet, forceClip = false) {
     // in new design, we don't need this : use flexbox instead (sorry IE user)
-    if (facet.getBindings && facet.getBindings().searchInterface && facet.getBindings().searchInterface.isNewDesign()) {
+    if (facet.getBindings && facet.getBindings().searchInterface && facet.getBindings().searchInterface.isNewDesign() && !forceClip) {
       return;
     }
     if (!(Coveo.HierarchicalFacet && facet instanceof Coveo.HierarchicalFacet) || forceClip) {

@@ -126,7 +126,7 @@ export interface IResultListOptions {
  */
 export class ResultList extends Component {
 
- private static getDefaultTemplate(e: HTMLElement): Template {
+  private static getDefaultTemplate(e: HTMLElement): Template {
     let component = <ResultList>Component.get(e);
     if (Coveo['Recommendation'] && component.searchInterface instanceof Coveo['Recommendation']) {
       return new DefaultRecommendationTemplate();
