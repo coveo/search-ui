@@ -418,3 +418,6 @@ TemplateFromAScriptTagTest();
 
 import { UnderscoreTemplateTest } from './ui/UnderscoreTemplateTest';
 UnderscoreTemplateTest();
+
+import { ResponsiveComponentsManagerTest } from './ui/ResponsiveComponents/ResponsiveComponentsManagerTest';
+ResponsiveComponentsManagerTest();
