@@ -72,7 +72,7 @@ export class BaseComponent {
   }
 
   static computeCssClassName(componentClass: any): string {
-    return componentClass['className'] ? componentClass['className'] : componentClass['className'] = BaseComponent.computeCssClassNameForType(componentClass['ID']);
+    return BaseComponent.computeCssClassNameForType(componentClass['ID']);
   }
 
   static computeCssClassNameForType(type: string): string {
