@@ -21,7 +21,8 @@ export class PrintableUri extends Component {
   static options: IPrintableUriOptions = {};
 
   static fields = [
-    'parents'
+    'parents',
+    'author'
   ];
 
   private uri: string;

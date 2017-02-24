@@ -100,7 +100,8 @@ export function TemplateFromAScriptTagTest() {
         });
         let created = new TemplateFromAScriptTag(tmpl, createdScriptElement);
         expect(created.template.fieldsToMatch).toEqual(jasmine.arrayContaining([jasmine.objectContaining({
-          field: 'foo'
+          field: 'foo',
+          values: undefined
         })]));
       });
     });

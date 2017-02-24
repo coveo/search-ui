@@ -58,9 +58,13 @@ export class TemplateFromAScriptTag {
       .map((value, key: string) => {
         let match = key.match(/field([a-z0-9]*)/i);
         if (match) {
+          let values;
+          if (value != null && value != 'null') {
+            values = value.split(',');
+          }
           return {
             field: match[1].toLowerCase(),
-            values: value.split(',')
+            values: values
           };
         } else {
           return undefined;
