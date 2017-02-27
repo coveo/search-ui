@@ -40,7 +40,7 @@ module.exports = new SpritesmithPlugin({
         cssImageRef: '../image/retinaNew.png'
       },
       spritesmithOptions: {
-        padding: 1  
+        padding: 1
       },
       customTemplates: {
         'optimized_scss_template': path.resolve(__dirname, './scss_custom.template.handlebars'),

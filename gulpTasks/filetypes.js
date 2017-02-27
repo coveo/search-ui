@@ -6,7 +6,7 @@ const gulp = require('gulp');
 const utilities = require('./buildUtilities');
 
 
-gulp.task('fileTypes', [ 'sprites' ], function (done) {
+gulp.task('fileTypes', function (done) {
   readJsonForAllRepositories(function (json) {
     var sass = generateSass(json);
     utilities.ensureDirectory('bin/sass');

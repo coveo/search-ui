@@ -6,7 +6,7 @@ const event_stream = require('event-stream');
 gulp.task('css', ['fullCss']);
 gulp.task('cssLegacy', ['fullCssLegacy', 'miniCssLegacy', 'minimalistCssLegacy', 'mobileCssLegacy']);
 
-gulp.task('prepareSass', ['fileTypes', 'sprites'], function () {
+gulp.task('prepareSass', ['fileTypes'], function () {
   return event_stream.merge(
       gulp.src('./node_modules/modal-box/bin/modalBox.css')
           .pipe(rename('_ModalBox.scss'))
