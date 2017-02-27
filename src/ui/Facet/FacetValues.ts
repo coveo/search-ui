@@ -8,7 +8,7 @@ import * as _ from 'underscore';
 
 /**
  * A class which holds information and operation available on a single facet value returned by a {@link IGroupByRequest}.<br/>
- * This class is used extensibely in the {@link Facet} component.
+ * This class is used extensibely in the {@link FacetModuleDefinition} component.
  */
 export class FacetValue {
   value: string;

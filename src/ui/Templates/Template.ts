@@ -155,16 +155,16 @@ export class Template implements ITemplateProperties {
       return null;
     }
 
+    if (!this.fields) {
+      this.fields = [];
+    }
+
+    this.fields = this.fields.concat(Initialization.getRegisteredComponentFields());
+
     let allComponentsInsideCurrentTemplate = _.map(Initialization.getListOfRegisteredComponents(), (componentId: string) => {
       let regex = new RegExp(`Coveo${componentId}`, 'g');
       if (regex.exec(html)) {
         return Initialization.getLazyRegisteredComponent(componentId).then((lazyLoadedComponent) => {
-          if (lazyLoadedComponent.fields) {
-            if (!this.fields) {
-              this.fields = [];
-            }
-            this.fields = this.fields.concat(lazyLoadedComponent.fields);
-          }
           return lazyLoadedComponent;
         });
       } else {

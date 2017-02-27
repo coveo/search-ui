@@ -1,4 +1,7 @@
 import * as _ from 'underscore';
+import { IComponentDefinition } from './ui/Base/Component';
+import { Logger } from './misc/Logger';
+import { Initialization } from './ui/Base/Initialization';
 
 export interface IExportedGlobally {
   [moduleName: string]: any;
@@ -7,9 +10,28 @@ export interface IExportedGlobally {
 export function exportGlobally(toExportGlobally: IExportedGlobally) {
   if (window['Coveo'] == undefined) {
     window['Coveo'] = {};
-  } else {
-    _.each(_.keys(toExportGlobally), (key: string) => {
-      window['Coveo'][key] = toExportGlobally[key];
-    });
   }
+  _.each(_.keys(toExportGlobally), (key: string) => {
+    window['Coveo'][key] = toExportGlobally[key];
+    if (toExportGlobally[key].fields) {
+      registerComponentRequiredFields(toExportGlobally[key]);
+    }
+  });
+}
+
+export function lazyExport(component: IComponentDefinition, promiseResolve: Function) {
+  if (component.doExport) {
+    component.doExport();
+  } else {
+    new Logger(this).error(`Component ${component} has no export function !`);
+  }
+
+  if (component.fields) {
+    registerComponentRequiredFields(component);
+  }
+  promiseResolve(component);
+}
+
+export function registerComponentRequiredFields(component: IComponentDefinition) {
+
 }

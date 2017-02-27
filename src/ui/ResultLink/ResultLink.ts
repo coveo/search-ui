@@ -222,16 +222,6 @@ export class ResultLink extends Component {
     })
   };
 
-  static fields = [
-    'outlookformacuri',
-    'outlookuri',
-    'connectortype',
-    'urihash', // analytics
-    'collection', // analytics
-    'source', // analytics
-    'author' // analytics
-  ];
-
   /**
    * Creates a new ResultLink component.
    * @param element The HTMLElement on which to instantiate the component.

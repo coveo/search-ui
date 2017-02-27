@@ -59,7 +59,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     /**
      * Specifies the z-index at which to render the ResultList inside the Omnibox.
      *
-     * Default value is `51`. Minimum value is `16` ({@link Facet} components are at `50` by default)
+     * Default value is `51`. Minimum value is `16` ({@link FacetModuleDefinition} components are at `50` by default)
      */
     omniboxZIndex: ComponentOptions.buildNumberOption({ defaultValue: 51, min: 16 }),
 

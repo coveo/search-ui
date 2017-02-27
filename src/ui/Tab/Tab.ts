@@ -160,7 +160,7 @@ export class Tab extends Component {
     /**
      * Specifies whether to filter duplicates in the search results when the user selects the Tab.
      *
-     * Setting this option to `true` forces duplicates to not appear in the search results. However, {@link Facet}
+     * Setting this option to `true` forces duplicates to not appear in the search results. However, {@link FacetModuleDefinition}
      * counts still include duplicates, which can be confusing for the end user. This is a limitation of the index.
      *
      * **Example:**

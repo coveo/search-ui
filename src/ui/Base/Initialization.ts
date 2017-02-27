@@ -35,9 +35,15 @@ export interface IInitializationParameters {
  */
 export class Initialization {
   private static logger = new Logger('Initialization');
+  // List of string of every component registered. Does not mean their implementation are loaded (could be lazy loaded)
   private static registeredComponents: String[] = [];
+  // Map of every component with their implementation (eagerly loaded)
   private static eagerlyLoadedComponents: IStringMap<IComponentDefinition> = {};
+  // Map of every component to a promise that resolve with their implementation (lazily loaded)
   private static lazyLoadedComponents: IStringMap<() => Promise<IComponentDefinition>> = {};
+  // List of every fields that are needed by components when doing a query (the fieldsToInclude property in the query)
+  // Since results components are lazy loaded after the first query (when doing the rendering) we need to register the needed fields before their implementation are loaded in the page.
+  private static fieldsNeededForQuery: string[] = [];
   private static namedMethods: { [s: string]: any; } = {};
 
   /**
@@ -115,6 +121,23 @@ export class Initialization {
     } else {
       this.logger.warn('Component being registered twice', id);
     }
+  }
+
+  public static registerComponentField(field: string) {
+    if (!_.contains(Initialization.fieldsNeededForQuery, field)) {
+      Initialization.fieldsNeededForQuery.push(field);
+    }
+  }
+
+  public static registerComponentFields(fields: string[]) {
+    let diff = _.difference(fields, Initialization.fieldsNeededForQuery);
+    if (diff && diff.length > 0) {
+      Initialization.fieldsNeededForQuery = Initialization.fieldsNeededForQuery.concat(diff);
+    }
+  }
+
+  public static getRegisteredComponentFields() {
+    return Initialization.fieldsNeededForQuery;
   }
 
   /**

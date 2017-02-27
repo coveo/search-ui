@@ -22,7 +22,7 @@ export interface IFacetState {
 }
 
 /**
- * Handle the rendering of the {@link Facet} settings menu (typically the ... in the facet header).
+ * Handle the rendering of the {@link FacetModuleDefinition} settings menu (typically the ... in the facet header).
  */
 export class FacetSettings extends FacetSort {
   public loadedFromSettings: { [attribute: string]: any };

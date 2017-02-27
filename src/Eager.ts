@@ -155,6 +155,8 @@ ResultLayout.doExport();
 
 import { ResultLink } from './ui/ResultLink/ResultLink';
 ResultLink.doExport();
+import { registerFields as registerFieldsResultLink } from './ui/ResultLink/ResultLinkFields';
+registerFieldsResultLink();
 
 import { ResultList } from './ui/ResultList/ResultList';
 ResultList.doExport();
@@ -209,6 +211,8 @@ Triggers.doExport();
 
 import { YouTubeThumbnail } from './ui/YouTube/YouTubeThumbnail';
 YouTubeThumbnail.doExport();
+import { registerFields as registerFieldsYouTubeThumbnail } from './ui/YouTube/YouTubeThumbnailFields';
+registerFieldsYouTubeThumbnail();
 
 
 export { Template } from './ui/Templates/Template';

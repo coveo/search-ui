@@ -36,8 +36,6 @@ export class TemplateFromAScriptTag {
     this.template.desktop = this.parseScreenSize('data-desktop');
     this.template.fields = TemplateConditionEvaluator.getFieldFromString(scriptTag.innerHTML + ' ' + condition) || [];
 
-
-
     var additionalFields = ComponentOptions.loadFieldsOption(scriptTag, 'fields', <IComponentOptionsFieldsOption>{ includeInResults: true });
     if (additionalFields != null) {
       // remove the @

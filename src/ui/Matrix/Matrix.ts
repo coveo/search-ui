@@ -55,7 +55,7 @@ export interface IMatrixOptions {
  * The user specifies the values to use for the columns. An {@link IGroupByRequest} operation performed at the same time
  * as the main query retrieves the values to use for the rows.
  *
- * In a way that is similar to the {@link Facet} component, selecting a Matrix cell allows the end user to drill down
+ * In a way that is similar to the {@link FacetModuleDefinition} component, selecting a Matrix cell allows the end user to drill down
  * inside the results by restricting the row field and the column field to match the values of the selected cell.
  */
 export class Matrix extends Component {

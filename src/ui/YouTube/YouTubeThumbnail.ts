@@ -67,10 +67,6 @@ export class YouTubeThumbnail extends Component {
     embed: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
-  static fields = [
-    'ytthumbnailurl'
-  ];
-
   private modalbox: Coveo.ModalBox.ModalBox;
 
   constructor(public element: HTMLElement, public options?: IYouTubeThumbnailOptions, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {

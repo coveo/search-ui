@@ -1,24 +1,24 @@
 /// <reference path="Facet.ts" />
 /// <reference path="FacetSettings.ts" />
 
-import { FacetSlider, IFacetSliderOptions } from '../FacetSlider/FacetSlider';
+import FacetSliderModuleDefinition = require('../FacetSlider/FacetSlider');
+import FacetModuleDefinition = require('./Facet');
 import { IFacetSettingsKlass, FacetSettings } from './FacetSettings';
 import { IFacetSortKlass, FacetSort } from './FacetSort';
 import { $$ } from '../../utils/Dom';
 import { FacetUtils } from './FacetUtils';
 import { l } from '../../strings/Strings';
 import { IAnalyticsFacetOperatorMeta, IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
-import { IFacetOptions } from './Facet';
 
 export interface IFacetHeaderOptions {
   facetElement: HTMLElement;
-  facetOptions?: IFacetOptions;
+  facet?: FacetModuleDefinition.Facet;
   title: string;
   field: string;
   enableClearElement: boolean;
   enableCollapseElement: boolean;
   icon?: string;
-  facetSlider?: FacetSlider;
+  facetSlider?: FacetSliderModuleDefinition.FacetSlider;
   settingsKlass?: IFacetSettingsKlass;
   sortKlass?: IFacetSortKlass;
   availableSorts?: string[];
@@ -51,16 +51,16 @@ export class FacetHeader {
 
 
   public switchToAnd(): void {
-    if (this.options.facetOptions) {
-      this.options.facetOptions.useAnd = true;
+    if (this.options.facet) {
+      this.options.facet.options.useAnd = true;
       this.rebuildOperatorToggle();
       this.updateOperatorQueryStateModel();
     }
   }
 
   public switchToOr(): void {
-    if (this.options.facetOptions) {
-      this.options.facetOptions.useAnd = false;
+    if (this.options.facet) {
+      this.options.facet.options.useAnd = false;
       this.rebuildOperatorToggle();
       this.updateOperatorQueryStateModel();
     }
@@ -80,13 +80,13 @@ export class FacetHeader {
       $$(this.collapseElement).show();
     }
     $$(this.options.facetElement).removeClass('coveo-facet-collapsed');
-    if (this.options.facetOptions) {
-      FacetUtils.clipCaptionsToAvoidOverflowingTheirContainer(this.options.facetOptions);
+    if (this.options.facet) {
+      FacetUtils.clipCaptionsToAvoidOverflowingTheirContainer(this.options.facet);
     }
   }
 
   public updateOperatorQueryStateModel(): void {
-    if (this.options.facetOptions && this.options.facetOptions.enableTogglingOperator) {
+    if (this.options.facet && this.options.facet.options.enableTogglingOperator) {
       var valueToSet = '';
       if (this.options.facet.getSelectedValues().length != 0 || this.options.facet.getExcludedValues().length != 0) {
         valueToSet = this.options.facet.options.useAnd ? 'and' : 'or';

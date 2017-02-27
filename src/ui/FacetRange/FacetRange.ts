@@ -18,7 +18,7 @@ export interface IFacetRangeOptions extends IFacetOptions {
   dateField?: boolean;
 }
 /**
- * The FacetRange component displays a {@link Facet} whose values are expressed as ranges. These ranges are computed
+ * The FacetRange component displays a {@link FacetModuleDefinition} whose values are expressed as ranges. These ranges are computed
  * from the results of the current query.
  *
  * This component inherits from the Facet component. Thus, any option available for a Facet component is also available

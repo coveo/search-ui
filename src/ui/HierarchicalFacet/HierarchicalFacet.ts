@@ -55,7 +55,7 @@ interface IFlatHierarchy {
 }
 
 /**
- * The HierarchicalFacet component inherits all of its options and behavior from the normal {@link Facet} component, but
+ * The HierarchicalFacet component inherits all of its options and behavior from the normal {@link FacetModuleDefinition} component, but
  * is meant to be used for hierarchical values.
  *
  * The HierarchicalFacet component could be used to display files in a file system, or categories for documents in a
