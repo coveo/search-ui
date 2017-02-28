@@ -17,6 +17,7 @@ import { QueryUtils } from '../../utils/QueryUtils';
 import { IQuery } from '../../rest/Query';
 import Globalize = require('globalize');
 import _ = require('underscore');
+import 'styling/_Matrix';
 
 export interface IMatrixOptions {
   title?: string;

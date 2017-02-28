@@ -47,7 +47,8 @@ export class HiddenQuery extends Component {
     /**
      * Specifies the title that should appear in the {@link Breadcrumb} when the HiddenQuery populates it.
      *
-     * Default value is the localized string for `"Additional filters:"`
+     * Default value is the localized string f
+     * or `"Additional filters:"`
      */
     title: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('AdditionalFilters') + ': ' })
   };
