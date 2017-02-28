@@ -161,8 +161,8 @@ export interface IEndpointCallerOptions {
   requestModifier?: (params: IRequestInfo<any>) => IRequestInfo<any>;
 
   /**
-   * The XmlHttpRequest to use. Usefull when there's a third party overwriting the native one
-   * like Salesforce does with their "Sarissa" implementation.
+   * The XmlHttpRequest implementation to use instead of the native one.
+   * If not specified, the native one is used.
    */
   xmlHttpRequest?: new () => XMLHttpRequest;
 }
