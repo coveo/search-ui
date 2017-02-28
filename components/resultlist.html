@@ -195,58 +195,54 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The ResultList component is responsible for displaying the results of the current query using one or more result
-						templates (see <a href="https://developers.coveo.com/x/aIGfAQ">Result Templates</a>).</p>
+						<p>This component is responsible for displaying the results of the current query using one or more result templates.<br/>
+						It supports many additional features such as infinite scrolling.</p>
 					</div>
-					<p>This component supports many additional features, such as infinite scrolling.</p>
-					<p><strong>Examples:</strong></p>
-					<ul>
-						<li>This first example shows a very simple ResultList with a single Underscore template. This template has no
-						<code>data-condition</code>. Therefore, it is rendered for all results.</li>
-					</ul>
-					<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultList'</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'result-template'</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'MyDefaultTemplate'</span> <span class="hljs-attr">type</span>=<span class="hljs-string">'text/underscore'</span>&gt;</span><span class="handlebars"><span class="xml">
+					<h1 id="examples-samples">Examples / samples</h1>
+					<p>This contains some quick example. Refer to result templates on developers.coveo.com for more information.</p>
+					<pre><code class="lang-html"><span class="hljs-comment">&lt;!-- A very simple result list with a single underscore template.
+The template has no condition : It will load for all results.
+Every results will show the same template. --&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultList"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"result-template"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/underscore"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'MyDefaultTemplate'</span>&gt;</span><span class="handlebars"><span class="xml">
     <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span>&gt;</span>Hey, click on this! <span class="hljs-tag">&lt;<span class="hljs-name">%-</span> <span class="hljs-attr">title</span> %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span>&gt;</span>Hey, click on this ! <span class="hljs-tag">&lt;<span class="hljs-name">%-</span> <span class="hljs-attr">title</span> %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
   </span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
-					<ul>
-						<li>This second example shows two different templates in the same ResultList. The first template has a <code>data-condition</code>
-						attribute while the second template has none.</li>
-					</ul>
-					<p>When the query returns, the conditional expression of the first template is evaluated against the first result.
-						If the result satisfies the condition (in this case, if the <code>result.raw.objecttype</code> property in the JSON equals
-						<code>MyObjectType</code>), the first template is rendered for this result. The second template is neither evaluated nor
-					rendered for this result.</p>
-					<p>If the result does not match the condition of the first template, then the next template is evaluated. Since the
-					second template has no <code>data-condition</code>, it is <code>true</code> for any result and can thus load as a &quot;fallback&quot; template.</p>
-					<p>This process repeats itself for each result.</p>
-					<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultList"</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"result-template"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'MyObjectTypeTemplate'</span> <span class="hljs-attr">type</span>=<span class="hljs-string">'text/underscore'</span> <span class="hljs-attr">data-condition</span>=<span class="hljs-string">'raw.objecttype==MyObjectType'</span>&gt;</span><span class="handlebars"><span class="xml">
+
+<span class="hljs-comment">&lt;!-- 2 different template in the same result list : The first template has a condition attribute, the second one does not.
+
+The first condition will be evaluated against each result. If a result match this condition (in this case if the result.raw.objecttype property in the JSON equals MyObjectType) then the template will be rendered and the next template won't be rendered or evaluated for this result. --&gt;</span>
+
+If the result does not match the first template, the next one will be evaluated. Since the second one has no condition, it is always considered "true" and will load as a fallback.
+
+This process will repeat for each result that was returned by the query to the index. --&gt;
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultList"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"result-template"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/underscore"</span> <span class="hljs-attr">data-condition</span>=<span class="hljs-string">'raw.objecttype==MyObjectType'</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'MyObjectTypeTemplate'</span>&gt;</span><span class="handlebars"><span class="xml">
     <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span>&gt;</span>Hey, click on this! <span class="hljs-tag">&lt;<span class="hljs-name">%-</span> <span class="hljs-attr">title</span> %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span>&gt;</span>Hey, click on this ! <span class="hljs-tag">&lt;<span class="hljs-name">%-</span> <span class="hljs-attr">title</span> %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoExcerpt'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>This is a result for the type: <span class="hljs-tag">&lt;<span class="hljs-name">%-</span> <span class="hljs-attr">raw.objecttype</span> %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>This is a result for the type : <span class="hljs-tag">&lt;<span class="hljs-name">%-</span> <span class="hljs-attr">raw.objecttype</span> %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
   </span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 
-  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'result-template'</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'MyFallbackTemplate'</span> <span class="hljs-attr">type</span>=<span class="hljs-string">'text/underscore'</span>&gt;</span><span class="handlebars"><span class="xml">
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"result-template"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/underscore"</span>&gt;</span><span class="handlebars"><span class="xml">
     <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span>&gt;</span>Hey, click on this! <span class="hljs-tag">&lt;<span class="hljs-name">%-</span> <span class="hljs-attr">title</span> %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span>&gt;</span>Hey, click on this ! <span class="hljs-tag">&lt;<span class="hljs-name">%-</span> <span class="hljs-attr">title</span> %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
   </span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
-					<ul>
-						<li>This third example shows two different templates in the same result list. Both templates have a <code>data-condition</code>
-						attribute.</li>
-					</ul>
-					<p>In this case, there is no &quot;fallback&quot; template, since all templates have a <code>data-condition</code> attribute. Therefore, if a
-						result matches none of the conditions, the default templates included in the Coveo JavaScript Search Framework will
-					load instead. This ensures that all results render themselves.</p>
-					<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultList"</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- 2 different template in the same result list : Both have a data-condition attribute.
+
+Same as before : the condition will be evaluated against all results.
+
+Since there is no "default" template with no condition specified, the framework will fallback on the default templates included in the framework if no template match a given result. This is to ensure that all results get rendered --&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultList"</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"result-template"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/underscore"</span> <span class="hljs-attr">data-condition</span>=<span class="hljs-string">'raw.objecttype==MyObjectType'</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'MyObjectTypeTemplate'</span>&gt;</span><span class="handlebars"><span class="xml">
     <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span>&gt;</span>Hey, click on this ! <span class="hljs-tag">&lt;<span class="hljs-name">%-</span> <span class="hljs-attr">title</span> %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
@@ -339,23 +335,17 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L256">src/ui/ResultList/ResultList.ts
-							:256</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L186">src/ui/ResultList/ResultList.ts
+							:186</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether the ResultList should scan its template and discover which fields it needs to render all
-							results.</p>
+							<p>Specifies that the result list should scan its template and discover which field it will need to render every results.<br/>
+								This is to ensure that fields that are not needed for the UI to function are not sent by the search API.<br/>
+								Default value is false.<br/>
+							NB: Many interface created by the interface editor will actually explicitly set this option to true.</p>
 						</div>
-						<p>Setting this option to <code>true</code> ensures that the Search API does not send fields that are unnecessary for the UI to
-						function.</p>
-						<p>See also <a href="resultlist.html#options.fieldstoinclude">ResultList.options.fieldsToInclude</a>.</p>
-						<p>Default value is <code>false</code>.</p>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>Many interfaces created with the Interface Editor explicitly set this option to <code>true</code>.</p>
-						</blockquote>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -370,19 +360,16 @@ data-auto-select-fields-to-include&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L198">src/ui/ResultList/ResultList.ts
-							:198</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L155">src/ui/ResultList/ResultList.ts
+							:155</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to automatically retrieve an additional page of results and append it to the
-								results that the ResultList is currently displaying when the user scrolls down to the bottom of the infinite
-							scroll container.</p>
+							<p>Specifies whether the ResultList automatically retrieves an additional page of results and appends them to those already being displayed whenever the user scrolls to the end of the infiniteScrollContainer.<br/>
+								The waitAnimation will be displayed while additional results are fetched.<br/>
+							Default value is false</p>
 						</div>
-						<p>See also <a href="resultlist.html#options.infinitescrollpagesize">ResultList.options.infiniteScrollPageSize</a>, <a href="resultlist.html#options.infinitescrollcontainer">ResultList.options.infiniteScrollContainer</a>
-						and <a href="resultlist.html#options.enableinfinitescrollwaitinganimation">ResultList.options.enableInfiniteScrollWaitingAnimation</a>.</p>
-						<p>Default value is <code>false</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -397,16 +384,15 @@ data-enable-infinite-scroll&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L227">src/ui/ResultList/ResultList.ts
-							:227</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L171">src/ui/ResultList/ResultList.ts
+							:171</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If <a href="resultlist.html#options.enableinfinitescroll">ResultList.options.enableInfiniteScroll</a> is <code>true</code>, specifies whether to display the
-							<a href="resultlist.html#options.waitanimation">ResultList.options.waitAnimation</a> while fetching additional results.</p>
+							<p>Specifies if the wait animation should be displayed when a query is being performed using infinite scroll.<br/>
+							Default value is true</p>
 						</div>
-						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -421,18 +407,17 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L240">src/ui/ResultList/ResultList.ts
-							:240</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L179">src/ui/ResultList/ResultList.ts
+							:179</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies a list of fields to include in the query.</p>
+							<p>Specifies a list of fields to include in the query.<br/>
+								This is to ensure that fields that are not needed for the UI to function are not sent by the search API.<br/>
+								By default, this list is empty.<br/>
+							Note that this option has an interaction with autoSelectFieldsToInclude</p>
 						</div>
-						<p>Specifying a list of values for this option ensures that the Search API does not send fields that are unnecessary
-						for the UI to function.</p>
-						<p>See also <a href="resultlist.html#options.autoselectfieldstoinclude">ResultList.options.autoSelectFieldsToInclude</a>.</p>
-						<p>Default value is <code>undefined</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -446,20 +431,16 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L219">src/ui/ResultList/ResultList.ts
-							:219</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L166">src/ui/ResultList/ResultList.ts
+							:166</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If <a href="resultlist.html#options.enableinfinitescroll">ResultList.options.enableInfiniteScroll</a> is <code>true</code>, specifies the element that triggers the fetching of
-							additional results when the end user scrolls down to its bottom.</p>
+							<p>When infinite scrolling is enabled, specifies the element whose scrolling is monitored to trigger fetching of additional results.<br/>
+								By default, the framework will try to find the first scrolling parent it encounter, starting from the ResultList itself<br/>
+							This also means that if it encounter no parent that are scrollable (in css this means having overflow-y: scroll), then the window itself will be the scroll container</p>
 						</div>
-						<p>By default, the framework uses the first vertically scrollable parent element it finds, starting from the
-							ResultList element itself. A vertically scrollable element is an element whose CSS <code>overflow-y</code> attribute is
-						<code>scroll</code>.</p>
-						<p>This implies that if the framework can find no scrollable parent, it uses the window itself as a scrollable
-						container.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -469,16 +450,15 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L206">src/ui/ResultList/ResultList.ts
-							:206</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L160">src/ui/ResultList/ResultList.ts
+							:160</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If <a href="resultlist.html#options.enableinfinitescroll">ResultList.options.enableInfiniteScroll</a> is <code>true</code>, specifies the number of additional results to fetch
-							when the user scrolls down to the bottom of the <a href="resultlist.html#options.infinitescrollcontainer">ResultList.options.infiniteScrollContainer</a>.</p>
+							<p>When infiniteScroll is enabled, specifies the number of additional results that are fetched when the user scrolls to the bottom of the infiniteScrollContainer.<br/>
+							Default value is 10</p>
 						</div>
-						<p>Default value is <code>10</code>. Minimum value is <code>1</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -492,20 +472,18 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L270">src/ui/ResultList/ResultList.ts
-							:270</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L195">src/ui/ResultList/ResultList.ts
+							:195</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the layout to use for displaying the results within this ResultList. Specifying a value for this option
-							automatically populates a <a href="resultlayout.html">ResultLayout</a> component with a switcher for the layout.</p>
+							<p>Specifies the layout to use for displaying the results. Specifying a value for this option will automatically
+							populate a <a href="resultlayout.html">ResultLayout</a> component with a switcher for the layout.</p>
 						</div>
 						<p>For example, if there are two <a href="resultlist.html">ResultList</a> components in the page, one with its
 							<a href="resultlist.html#options.layout">ResultList.options.layout</a> set to <code>list</code> and the other with the same option set to <code>card</code>, then the
-						ResultLayout component will render two buttons respectively titled <strong>List</strong> and <strong>Card</strong>.</p>
-						<p>See the <a href="../globals.html#validlayout">ValidLayout</a> type for the list of possible values.</p>
-						<p>Default value is <code>list</code>.</p>
+						ResultLayout component will have two buttons respectively titled <strong>List</strong> and <strong>Card</strong>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -519,19 +497,16 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L155">src/ui/ResultList/ResultList.ts
-							:155</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L126">src/ui/ResultList/ResultList.ts
+							:126</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the element within which to insert the rendered templates for results.</p>
+							<p>Specifies the element within which the rendered templates for results are inserted.<br/>
+								The content of this element is cleared when a new query is performed. If this option is not specified, a &lt;div&gt; element will by dynamically created in JavaScript and appended to the result list and used as a result container.<br/>
+							You can change the container by specifying its selector: Eg  data-result-container-selector=&quot;#someCssSelector&quot;</p>
 						</div>
-						<p>Performing a new query clears the content of this element.</p>
-						<p>You can change the container by specifying its selector (e.g.,
-						<code>data-result-container-selector=&#39;#someCssSelector&#39;</code>).</p>
-						<p>If you specify no value for this option, a <code>div</code> element will be dynamically created and appended to the result
-						list. This element will then be used as a result container.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -541,22 +516,19 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L176">src/ui/ResultList/ResultList.ts
-							:176</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L142">src/ui/ResultList/ResultList.ts
+							:142</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the type of animation to display while waiting for a query to return.</p>
+							<p>Specifies the type of animation to display while waiting for a new query to finish executing.<br/>
+								Possible values are :<br/>
+								&#39;fade&#39; : Fades out the currently displayed results while the query is executing.<br/>
+								&#39;spinner&#39; : Shows a spinning animation while the query is executing.<br/>
+								&#39;none&#39; : Use no animation during queries.<br/>
+							Default value is &#39;none&#39;</p>
 						</div>
-						<p>The possible values are:</p>
-						<ul>
-							<li><code>fade</code>: Fades out the current list of results while the query is executing.</li>
-							<li><code>spinner</code>: Shows a spinning animation while the query is executing.</li>
-							<li><code>none</code>: Use no animation during queries.</li>
-						</ul>
-						<p>See also <a href="resultlist.html#options.waitanimationcontainer">ResultList.options.waitAnimationContainer</a>.</p>
-						<p>Default value is <code>none</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -570,17 +542,17 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L186">src/ui/ResultList/ResultList.ts
-							:186</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L149">src/ui/ResultList/ResultList.ts
+							:149</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the element inside which to display the <a href="resultlist.html#options.waitanimation">ResultList.options.waitAnimation</a>.</p>
+							<p>Specifies the element inside which an animation is displayed while waiting for a new query to finish executing.<br/>
+								You can change this by specifying a css selector.<br/>
+								Eg : data-wait-animation-container-selector=&quot;#someCssSelector&quot;
+							By default, the animation appears in the the resultContainer.</p>
 						</div>
-						<p>You can change this by specifying a CSS selector (e.g.,
-						<code>data-wait-animation-container-selector=&#39;#someCssSelector&#39;</code>).</p>
-						<p>Default value is the value of <a href="resultlist.html#options.resultcontainer">ResultList.options.resultContainer</a>.</p>
 					</div>
 				</section>
 			</section>
@@ -597,22 +569,19 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L391">src/ui/ResultList/ResultList.ts
-									:391</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L290">src/ui/ResultList/ResultList.ts
+									:290</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Builds and returns an HTMLElement for the given result.</p>
+									<p>Build and return an HTMLElement for the given result.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>result: <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>the result to build an HTMLElement from.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
@@ -630,13 +599,13 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L374">src/ui/ResultList/ResultList.ts
-									:374</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L273">src/ui/ResultList/ResultList.ts
+									:273</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Builds and returns an array of HTMLElement with the given result set.</p>
+									<p>Build and return an array of HTMLElement with the given result set.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -644,7 +613,6 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 								<li>
 									<h5>results: <a href="../interfaces/iqueryresults.html" class="tsd-signature-type">IQueryResults</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>the result set to build an array of HTMLElement from.</p>
 									</div>
 								</li>
 							</ul>
@@ -715,24 +683,23 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L419">src/ui/ResultList/ResultList.ts
-									:419</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L309">src/ui/ResultList/ResultList.ts
+									:309</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Executes a query to fetch new results. After the query returns, renders the new results.</p>
+									<p>Execute a query to fetch new results. After the query is done, render those new results.<br/>
+										Assert that there is actually more results to display by checking that the last query returned as many results as requested.<br/>
+									Assert that the result list is not currently fetching results</p>
 								</div>
-								<p>Asserts that there are more results to display by verifying whether the last query has returned as many results as
-								requested.</p>
-								<p>Asserts that the ResultList is not currently fetching results.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>count: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The number of results to fetch and display.</p>
+										<p>The number of results to fetch and display</p>
 									</div>
 								</li>
 							</ul>
@@ -779,8 +746,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
-									:124</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L123">src/ui/Base/Component.ts
+									:123</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -803,13 +770,13 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L459">src/ui/ResultList/ResultList.ts
-									:459</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L349">src/ui/ResultList/ResultList.ts
+									:349</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Gets the list of currently displayed result.</p>
+									<p>Get the list of currently displayed result</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a><span class="tsd-signature-symbol">[]</span></h4>
@@ -827,13 +794,13 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L467">src/ui/ResultList/ResultList.ts
-									:467</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L357">src/ui/ResultList/ResultList.ts
+									:357</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Gets the list of currently displayed result HTMLElement.</p>
+									<p>Get the list of currently displayed result HTMLElement</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -851,16 +818,16 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L355">src/ui/ResultList/ResultList.ts
-									:355</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L254">src/ui/ResultList/ResultList.ts
+									:254</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Empties the current result list content and appends the given array of HTMLElement.</p>
+									<p>Empty the current result list content and append the given array of HTMLElement.<br/>
+										Can append to existing elements in the result list, or replace them.<br/>
+									Triggers the newResultDiplayed and newResultsDisplayed event</p>
 								</div>
-								<p>Can append to existing elements in the result list, or replace them.</p>
-								<p>Triggers the <code>newResultsDisplayed</code> and <code>newResultDisplayed</code> events.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -889,8 +856,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
-									:193</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L192">src/ui/Base/Component.ts
+									:192</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -935,8 +902,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
-							:62</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L61">src/ui/Base/Component.ts
+							:61</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -960,8 +927,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
-							:90</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L89">src/ui/Base/Component.ts
+							:89</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -978,8 +945,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
-							:74</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L73">src/ui/Base/Component.ts
+							:73</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1039,8 +1006,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
-							:78</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L77">src/ui/Base/Component.ts
+							:77</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1057,8 +1024,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
-							:70</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L69">src/ui/Base/Component.ts
+							:69</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1075,8 +1042,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
-							:66</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L65">src/ui/Base/Component.ts
+							:65</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1093,8 +1060,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
-							:82</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L81">src/ui/Base/Component.ts
+							:81</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1111,8 +1078,8 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
-							:86</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L85">src/ui/Base/Component.ts
+							:85</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1155,14 +1122,15 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L279">src/ui/ResultList/ResultList.ts
-									:279</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L204">src/ui/ResultList/ResultList.ts
+									:204</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new ResultList component. Binds various event related to queries (e.g., on querySuccess -&gt;
-									renderResults). Binds scroll event if <a href="resultlist.html#options.enableinfinitescroll">ResultList.options.enableInfiniteScroll</a> is <code>true</code>.</p>
+									<p>Create a new ResultList.<br/>
+										Bind various event related to queries (eg : on querySuccess -&gt; renderResults)<br/>
+									Bind scroll event if infinite scrolling is enabled.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1171,7 +1139,7 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The HTMLElement on which to instantiate the component.</p>
+											<p>The HTMLElement on which the element will be instantiated.</p>
 										</div>
 									</div>
 								</li>
@@ -1179,7 +1147,7 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">IResultListOptions</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The options for the ResultList component.</p>
+											<p>The options for the ResultList.</p>
 										</div>
 									</div>
 								</li>
@@ -1187,8 +1155,7 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The bindings that the component requires to function normally. If not set, these will be
-											automatically resolved (with a slower execution time).</p>
+											<p>The bindings that the component requires to function normally. If not set, will automatically resolve them (With slower execution time)</p>
 										</div>
 									</div>
 								</li>
@@ -1196,8 +1163,7 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> elementClassId: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;ResultList.ID</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The class that this component should instantiate. Components that extend the base ResultList
-											use this. Default value is <code>CoveoResultList</code>.</p>
+											<p>The class that this component should instantiate. By default this will be CoveoResultList. This is used by component that extends the base ResultList</p>
 										</div>
 									</div>
 								</li>

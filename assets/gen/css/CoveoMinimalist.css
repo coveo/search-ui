@@ -3987,9 +3987,9 @@
   .coveo-sprites-common-delete,
   .coveo-sprites-common-doritos,
   .coveo-sprites-box-icon_external,
-  .coveo-sprites-fileType-salesforce-item,
-  .coveo-icon.filetype.saleforceitem,
-  .coveo-icon.sysfiletype.saleforceitem,
+  .coveo-sprites-fileType-youtube-youtube,
+  .coveo-icon.filetype.youtube,
+  .coveo-icon.sysfiletype.youtube,
   .coveo-sprites-fileType-objectType-task,
   .coveo-icon.objecttype.Task,
   .coveo-icon.objecttype.task,
@@ -4129,9 +4129,9 @@
   .coveo-sprites-quickview-quickview_next,
   .coveo-mobile-device .coveo-modalBox.coveo-mobile-facet-search > .coveo-wrapper > .coveo-body > .coveo-facet-search-results .coveo-facet-search-select-all .coveo-mobile-facet-search-select-all,
   .coveo-sprites-quickview-quickview_previous,
-  .coveo-sprites-fileType-youtube-youtube,
-  .coveo-icon.filetype.youtube,
-  .coveo-icon.sysfiletype.youtube,
+  .coveo-sprites-fileType-salesforce-item,
+  .coveo-icon.filetype.saleforceitem,
+  .coveo-icon.sysfiletype.saleforceitem,
   .coveo-sprites-common-datepicker,
   .coveo-sprites-searchButton-spin,
   .coveo-executing-query .CoveoSearchButton > .coveo-icon,
@@ -4414,7 +4414,7 @@
     width: 13px;
     height: 12px;
     text-indent: 13px; }
-  .coveo-sprites-fileType-salesforce-item, .coveo-icon.filetype.saleforceitem, .coveo-icon.sysfiletype.saleforceitem {
+  .coveo-sprites-fileType-youtube-youtube, .coveo-icon.filetype.youtube, .coveo-icon.sysfiletype.youtube {
     background-position: -359px 0px;
     width: 16px;
     height: 16px;
@@ -4694,7 +4694,7 @@
     width: 16px;
     height: 16px;
     text-indent: 16px; }
-  .coveo-sprites-fileType-youtube-youtube, .coveo-icon.filetype.youtube, .coveo-icon.sysfiletype.youtube {
+  .coveo-sprites-fileType-salesforce-item, .coveo-icon.filetype.saleforceitem, .coveo-icon.sysfiletype.saleforceitem {
     background-position: -494px 0px;
     width: 16px;
     height: 16px;

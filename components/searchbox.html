@@ -183,12 +183,10 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The Searchbox component can conveniently create two components that are frequently used together to allow the end
-						user to input and submit queries.</p>
+						<p>This component is mostly used for simplicity purpose because it creates 2 components that are very frequently used together.<br/>
+							This component attaches itself to a div and takes care of instantiating a <a href="querybox.html">Querybox</a> component or a <a href="omnibox.html">Omnibox</a> component, depending on the options.<br/>
+						Add a <a href="searchbutton.html">SearchButton</a> component if desired, and appends them to the same div.</p>
 					</div>
-					<p>This component attaches itself to a <code>div</code> element and takes care of instantiating either a <a href="querybox.html">Querybox</a> component
-						or an <a href="omnibox.html">Omnibox</a> component, depending on its configuration. Optionally, the Searchbox component can also
-					instantiate a <a href="searchbutton.html">SearchButton</a> component and append it inside the same <code>div</code>.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -251,15 +249,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Searchbox/Searchbox.ts#L40">src/ui/Searchbox/Searchbox.ts
-							:40</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Searchbox/Searchbox.ts#L34">src/ui/Searchbox/Searchbox.ts
+							:34</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to instantiate a <a href="searchbutton.html">SearchButton</a> component.</p>
+							<p>Specifies whether the search box instantiates a <a href="searchbutton.html">SearchButton</a>.<br/>
+							Default value is <code>true</code>.</p>
 						</div>
-						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -274,33 +272,16 @@ data-add-search-button&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Searchbox/Searchbox.ts#L70">src/ui/Searchbox/Searchbox.ts
-							:70</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Searchbox/Searchbox.ts#L40">src/ui/Searchbox/Searchbox.ts
+							:40</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to instantiate an <a href="omnibox.html">Omnibox</a> component.</p>
+							<p>Specifies whether the search box instantiates a <a href="omnibox.html">Omnibox</a> component.<br/>
+								Otherwise, the search box instantiates a <a href="querybox.html">Querybox</a> component.<br/>
+							Default value is <code>false</code>.</p>
 						</div>
-						<p>When this option is <code>false</code>, the Searchbox component instantiates a <a href="querybox.html">Querybox</a> component instead of an
-						Omnibox component.</p>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>You can use configuration options specific to the component that the Searchbox instantiates.</p>
-						</blockquote>
-						<p><strong>Examples:</strong></p>
-						<p>In this first case, the Searchbox will instantiate a Querybox component. It is therefore possible to configure
-							that Querybox instance using any of the Querybox component options such as
-						<a href="querybox.html#options.triggerqueryonclear">Querybox.options.triggerQueryOnClear</a>.</p>
-						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoSearchbox'</span> <span class="hljs-attr">data-trigger-query-on-clear</span>=<span class="hljs-string">'true'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
-						<p>In this second case, the Searchbox will instantiate an Omnibox component. It is therefore possible to configure
-							that Omnibox instance using any of the Omnibox component options such as <a href="omnibox.html#options.placeholder">Omnibox.options.placeholder</a>.
-							Moreover, since the Omnibox component inherits all of the Querybox component options, the
-						<code>data-trigger-query-on-clear</code> option will also work on that Omnibox instance.</p>
-						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoSearchbox'</span> <span class="hljs-attr">data-enableOmnibox</span>=<span class="hljs-string">'true'</span> <span class="hljs-attr">data-place-holder</span>=<span class="hljs-string">'Please enter a query'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
-						<p>Default value is <code>false</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -402,8 +383,8 @@ data-enable-omnibox&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
-									:124</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L123">src/ui/Base/Component.ts
+									:123</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -427,8 +408,8 @@ data-enable-omnibox&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
-									:193</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L192">src/ui/Base/Component.ts
+									:192</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -473,8 +454,8 @@ data-enable-omnibox&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
-							:62</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L61">src/ui/Base/Component.ts
+							:61</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -498,8 +479,8 @@ data-enable-omnibox&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
-							:90</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L89">src/ui/Base/Component.ts
+							:89</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -516,8 +497,8 @@ data-enable-omnibox&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
-							:74</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L73">src/ui/Base/Component.ts
+							:73</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -577,8 +558,8 @@ data-enable-omnibox&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
-							:78</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L77">src/ui/Base/Component.ts
+							:77</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -595,8 +576,8 @@ data-enable-omnibox&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
-							:70</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L69">src/ui/Base/Component.ts
+							:69</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -613,8 +594,8 @@ data-enable-omnibox&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
-							:66</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L65">src/ui/Base/Component.ts
+							:65</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -630,13 +611,13 @@ data-enable-omnibox&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Searchbox/Searchbox.ts#L76">src/ui/Searchbox/Searchbox.ts
-							:76</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Searchbox/Searchbox.ts#L46">src/ui/Searchbox/Searchbox.ts
+							:46</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The <a href="searchbutton.html">SearchButton</a> instance.</p>
+							<p>Instance of the <a href="searchbutton.html">SearchButton</a></p>
 						</div>
 					</div>
 				</section>
@@ -648,8 +629,8 @@ data-enable-omnibox&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
-							:82</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L81">src/ui/Base/Component.ts
+							:81</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -665,16 +646,15 @@ data-enable-omnibox&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Searchbox/Searchbox.ts#L84">src/ui/Searchbox/Searchbox.ts
-							:84</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Searchbox/Searchbox.ts#L52">src/ui/Searchbox/Searchbox.ts
+							:52</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The instance of the component that allows the end user to input queries.</p>
+							<p>Instance of compomnent that allows user to input query.<br/>
+							Can be a <a href="querybox.html">Querybox</a> or <a href="omnibox.html">Omnibox</a></p>
 						</div>
-						<p>Can be either a <a href="querybox.html">Querybox</a> component or an <a href="omnibox.html">Omnibox</a> component, depending on the value of
-						<a href="searchbox.html#options.enableomnibox">Searchbox.options.enableOmnibox</a>.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
@@ -685,8 +665,8 @@ data-enable-omnibox&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
-							:86</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L85">src/ui/Base/Component.ts
+							:85</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -729,14 +709,15 @@ data-enable-omnibox&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Searchbox/Searchbox.ts#L84">src/ui/Searchbox/Searchbox.ts
-									:84</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Searchbox/Searchbox.ts#L52">src/ui/Searchbox/Searchbox.ts
+									:52</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new Searchbox. Creates a new Coveo.Magicbox instance and wraps magic box methods (on blur, on submit
-									etc.). Binds event on <code>buildingQuery</code> and on redirection (for standalone box).</p>
+									<p>Create a new Searchbox<br/>
+										Create a new Coveo.Magicbox instance and wrap magic box method (on blur, on submit etc).<br/>
+									Bind event on <code>buildingQuery</code> and on redirection (for standalone box).</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -745,8 +726,7 @@ data-enable-omnibox&#x3D;&#x27;false&#x27;</pre>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The HTMLElement on which to instantiate the component. This cannot be an <code>HTMLInputElement</code> for
-											technical reasons.</p>
+											<p>The <code>HTMLElement</code> on which the element will be instantiated. This cannot be an <code>HTMLInputElement</code> for technical reason</p>
 										</div>
 									</div>
 								</li>
@@ -754,8 +734,7 @@ data-enable-omnibox&#x3D;&#x27;false&#x27;</pre>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">ISearchboxOptions</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The options for the Searchbox component. These will merge with the options from the component set
-											directly on the <code>HTMLElement</code>.</p>
+											<p>The options for the component. Will be merged with the options from the component set directly on the <code>HTMLElement</code>.</p>
 										</div>
 									</div>
 								</li>
@@ -763,8 +742,7 @@ data-enable-omnibox&#x3D;&#x27;false&#x27;</pre>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The bindings that the component requires to function normally. If not set, these will be
-											automatically resolved (with a slower execution time).</p>
+											<p>The bindings that the component requires to function normally. If not set, will automatically resolve them (with slower execution time).</p>
 										</div>
 									</div>
 								</li>

@@ -189,13 +189,13 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The FieldTable component displays a set of <a href="fieldvalue.html">FieldValue</a> components in a table that can optionally be
-						expandable and minimizable. This component automatically takes care of not displaying empty field values.</p>
+						<p>This component is used to display a set of <a href="fieldvalue.html">FieldValue</a> components in a table which
+							can be optionally expanded and minimized.<br/>
+						Automatically, it will take care of not displaying empty field values.</p>
 					</div>
-					<p>This component is a result template component (see <a href="https://developers.coveo.com/x/aIGfAQ">Result Templates</a>).</p>
-					<p><strong>Example:</strong></p>
+					<h1 id="examples">Examples</h1>
 					<pre><code><span class="hljs-comment">// This is the FieldTable component itself, which holds a list of table rows.</span>
-<span class="hljs-comment">// Each row is a FieldValue component.</span>
+<span class="hljs-comment">// Each row is a `FieldValue` component</span>
 &lt;table <span class="hljs-class"><span class="hljs-keyword">class</span>='<span class="hljs-title">CoveoFieldTable</span>'&gt;</span>
    <span class="hljs-comment">// Items</span>
    &lt;tr <span class="hljs-keyword">data</span>-field=<span class="hljs-string">'@sysdate'</span> <span class="hljs-keyword">data</span>-caption=<span class="hljs-string">'Date'</span> <span class="hljs-keyword">data</span>-helper=<span class="hljs-string">'dateTime'</span> /&gt;
@@ -269,18 +269,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L57">src/ui/FieldTable/FieldTable.ts
-							:57</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L48">src/ui/FieldTable/FieldTable.ts
+							:48</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to allow the minimization (collapsing) of the FieldTable.</p>
+							<p>Specifies whether to allow the minimization (collapsing) of the FieldTable or not.<br/>
+							This creates a &#39;minimize&#39; and &#39;expand&#39; link above the table.</p>
 						</div>
-						<p>If you set this option to <code>false</code>, the component will not create the <strong>Minimize</strong> / <strong>Expand</strong> toggle links.</p>
-						<p>See also <a href="fieldtable.html#options.expandedtitle">FieldTable.options.expandedTitle</a>, <a href="fieldtable.html#options.minimizedtitle">FieldTable.options.minimizedTitle</a> and
-						<a href="fieldtable.html#options.minimizedbydefault">FieldTable.options.minimizedByDefault</a>.</p>
-						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -295,16 +292,15 @@ data-allow-minimization&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L65">src/ui/FieldTable/FieldTable.ts
-							:65</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L53">src/ui/FieldTable/FieldTable.ts
+							:53</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If <a href="fieldtable.html#options.allowminimization">FieldTable.options.allowMinimization</a> is <code>true</code>, specifies the caption to show on the <strong>Minimize</strong> link
-							(the link that appears when the FieldTable is expanded).</p>
+							<p>Specifies the caption to show on the minimize link (when the table is expanded).<br/>
+							By default, it is set to the localized version of &quot;Details&quot;.</p>
 						</div>
-						<p>Default value is <code>&quot;Details&quot;</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -318,16 +314,14 @@ data-allow-minimization&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L81">src/ui/FieldTable/FieldTable.ts
-							:81</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L62">src/ui/FieldTable/FieldTable.ts
+							:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If <a href="fieldtable.html#options.allowminimization">FieldTable.options.allowMinimization</a> is <code>true</code>, specifies whether to minimize the table by default.</p>
+							<p>Specifies whether the table is minimized by default.</p>
 						</div>
-						<p>Default value is <code>undefined</code>, and the FieldTable will collapse by default if the result it is associated with has
-						a non-empty excerpt.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -342,16 +336,15 @@ data-minimized-by-default&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L73">src/ui/FieldTable/FieldTable.ts
-							:73</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L58">src/ui/FieldTable/FieldTable.ts
+							:58</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If <a href="fieldtable.html#options.allowminimization">FieldTable.options.allowMinimization</a> is <code>true</code>, specifies the caption to show on the <strong>Expand</strong> link
-							(the link that appears when the FieldTable is minimized).</p>
+							<p>Specifies the caption to show on the expand link (when the table is minimized).<br/>
+							By default, it is set to the localized version of &quot;Details&quot;.</p>
 						</div>
-						<p>Default value is <code>&quot;Details&quot;</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -451,13 +444,13 @@ data-minimized-by-default&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L139">src/ui/FieldTable/FieldTable.ts
-									:139</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L118">src/ui/FieldTable/FieldTable.ts
+									:118</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Expands (shows) the FieldTable,</p>
+									<p>Expand (show) the FieldTable</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -465,7 +458,7 @@ data-minimized-by-default&#x3D;&#x27;false&#x27;</pre>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> anim: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Specifies whether to show a sliding animation when expanding the FieldTable.</p>
+										<p>Specifies whether to show a sliding animation when opening</p>
 									</div>
 								</li>
 							</ul>
@@ -485,8 +478,8 @@ data-minimized-by-default&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
-									:124</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L123">src/ui/Base/Component.ts
+									:123</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -509,13 +502,13 @@ data-minimized-by-default&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L153">src/ui/FieldTable/FieldTable.ts
-									:153</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L132">src/ui/FieldTable/FieldTable.ts
+									:132</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Minimizes (collapses) the FieldTable.</p>
+									<p>Minimize (collapse) the FieldTable</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -523,7 +516,7 @@ data-minimized-by-default&#x3D;&#x27;false&#x27;</pre>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> anim: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Specifies whether to show a sliding animation when minimizing the FieldTable.</p>
+										<p>Specifies whether to show a sliding animation when collapsing</p>
 									</div>
 								</li>
 							</ul>
@@ -542,13 +535,13 @@ data-minimized-by-default&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L128">src/ui/FieldTable/FieldTable.ts
-									:128</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L107">src/ui/FieldTable/FieldTable.ts
+									:107</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Toggles between expanding (showing) and minimizing (collapsing) the FieldTable.</p>
+									<p>Toggle between expanding and minimizing the <code>FieldTable</code>.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -556,7 +549,7 @@ data-minimized-by-default&#x3D;&#x27;false&#x27;</pre>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> anim: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Specifies whether to show a sliding animation when toggling the display of the FieldTable.</p>
+										<p>Specifies whether to show a sliding animation when toggling.</p>
 									</div>
 								</li>
 							</ul>
@@ -575,14 +568,14 @@ data-minimized-by-default&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L167">src/ui/FieldTable/FieldTable.ts
-									:167</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L146">src/ui/FieldTable/FieldTable.ts
+									:146</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Updates the toggle height if the content was dynamically resized, so that the expanding and minimizing animation
-									can match the new content size.</p>
+									<p>Update the toggle height if the content was dynamically resized so that the open and close animation can
+									match the new content size.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -601,8 +594,8 @@ data-minimized-by-default&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
-									:193</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L192">src/ui/Base/Component.ts
+									:192</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -647,8 +640,8 @@ data-minimized-by-default&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
-							:62</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L61">src/ui/Base/Component.ts
+							:61</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -672,8 +665,8 @@ data-minimized-by-default&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
-							:90</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L89">src/ui/Base/Component.ts
+							:89</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -690,8 +683,8 @@ data-minimized-by-default&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
-							:74</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L73">src/ui/Base/Component.ts
+							:73</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -751,8 +744,8 @@ data-minimized-by-default&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
-							:78</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L77">src/ui/Base/Component.ts
+							:77</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -769,8 +762,8 @@ data-minimized-by-default&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
-							:70</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L69">src/ui/Base/Component.ts
+							:69</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -787,8 +780,8 @@ data-minimized-by-default&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
-							:66</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L65">src/ui/Base/Component.ts
+							:65</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -805,8 +798,8 @@ data-minimized-by-default&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
-							:82</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L81">src/ui/Base/Component.ts
+							:81</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -823,8 +816,8 @@ data-minimized-by-default&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
-							:86</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L85">src/ui/Base/Component.ts
+							:85</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -867,47 +860,30 @@ data-minimized-by-default&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L90">src/ui/FieldTable/FieldTable.ts
-									:90</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldTable.ts#L71">src/ui/FieldTable/FieldTable.ts
+									:71</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new FieldTable.</p>
+									<p>Create a new FieldTable</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The HTMLElement on which to instantiate the component.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">IFieldTableOptions</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The options for the FieldTable component.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The bindings that the component requires to function normally. If not set, these will be
-											automatically resolved (with a slower execution time).</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> result: <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The result to associate the component with.</p>
 										</div>
 									</div>
 								</li>

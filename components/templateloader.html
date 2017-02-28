@@ -177,14 +177,13 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The TemplateLoader component can load one result template into another. You should normally declare any reusable
-							result template outside of the <a href="resultlist.html">ResultList</a> component. Otherwise, the framework will evaluate the
-						<code>data-condition</code> of the reusable result template and possibly render it.</p>
+						<p>This component can be used to load one result template into another. A reusable result template should normally be
+						declared outside of the <a href="resultlist.html">ResultList</a> component. Note that a TemplateLoader cannot load a template into itself.</p>
 					</div>
-					<p><strong>Example:</strong></p>
-					<pre><code class="lang-html">[ ... ]
+					<h1 id="example">Example</h1>
+					<pre><code>[ ... ]
 
-<span class="hljs-comment">&lt;!-- A reusable result template. Note that it is important to declare it outside of the ResultList component. --&gt;</span>
+<span class="hljs-comment">&lt;!-- A reusable result template. Note that it is declared outside of the ResultList component. --&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">'text/underscore'</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'result-template'</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'ReusableTemplate'</span>&gt;</span><span class="handlebars"><span class="xml">
   <span class="hljs-tag">&lt;<span class="hljs-name">table</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoFieldTable'</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">tr</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@source'</span> <span class="hljs-attr">data-caption</span>=<span class="hljs-string">'Source'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
@@ -194,10 +193,12 @@
 
 [ ... ]
 
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultList"</span> <span class="hljs-attr">data-wait-animation</span>=<span class="hljs-string">"fade"</span> <span class="hljs-attr">data-auto-select-fields-to-include</span>=<span class="hljs-string">"true"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultList"</span> <span class="hljs-attr">data-wait-animation</span>=<span class="hljs-string">"fade"</span>
+     <span class="hljs-attr">data-auto-select-fields-to-include</span>=<span class="hljs-string">"true"</span>&gt;</span>
 
   <span class="hljs-comment">&lt;!-- A custom result template for Lithium messages. --&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">'text/underscore'</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'result-template'</span> <span class="hljs-attr">data-condition</span>=<span class="hljs-string">'raw.filetype == "lithiummessage"'</span>&gt;</span><span class="javascript">
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">'text/underscore'</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'result-template'</span>
+          <span class="hljs-attr">data-condition</span>=<span class="hljs-string">'raw.filetype == "lithiummessage"'</span>&gt;</span><span class="javascript">
     &lt;div&gt;
       <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoIcon'</span> <span class="hljs-attr">data-small</span>=<span class="hljs-string">'true'</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
@@ -206,7 +207,8 @@
   </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 
   <span class="hljs-comment">&lt;!-- A custom result template for images. --&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">'text/underscore'</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'result-template'</span> <span class="hljs-attr">data-condition</span>=<span class="hljs-string">'raw.filetype == "Image"'</span>&gt;</span><span class="handlebars"><span class="xml">
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">'text/underscore'</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'result-template'</span>
+          <span class="hljs-attr">data-condition</span>=<span class="hljs-string">'raw.filetype == "Image"'</span>&gt;</span><span class="handlebars"><span class="xml">
     <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoIcon'</span> <span class="hljs-attr">data-small</span>=<span class="hljs-string">'true'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">img</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span>&gt;</span>
@@ -219,7 +221,6 @@
 
 [ ... ]
 </code></pre>
-					<p>See <a href="https://developers.coveo.com/x/aIGfAQ">Result Templates</a>.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -280,16 +281,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/TemplateLoader/TemplateLoader.ts#L90">src/ui/TemplateLoader/TemplateLoader.ts
-							:90</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/TemplateLoader/TemplateLoader.ts#L81">src/ui/TemplateLoader/TemplateLoader.ts
+							:81</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the boolean condition that the result must satisfy in order for the template to load.</p>
+							<p>Specifies the boolean condition under which the template should be loaded.<br>
+							Example: <code>data-condition=&#39;percentScore &gt; 80&#39;</code></p>
 						</div>
-						<p><strong>Example:</strong></p>
-						<p><code>data-condition=&#39;percentScore &gt; 80&#39;</code></p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -303,19 +303,16 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/TemplateLoader/TemplateLoader.ts#L81">src/ui/TemplateLoader/TemplateLoader.ts
-							:81</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/TemplateLoader/TemplateLoader.ts#L76">src/ui/TemplateLoader/TemplateLoader.ts
+							:76</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies how to find the template. This can be either a CSS selector or an HTML <code>id</code> attribute.</p>
+							<p>Specifies how the template can be found. This can be either a CSS selector or an HTML id global attribute.<br>
+								Example with a CSS selector: <code>data-template-selector=&#39;Example_CSS_Selector&#39;</code><br>
+							Example with an HTML id: <code>data-template-id=&#39;Example_HTML_Id&#39;</code></p>
 						</div>
-						<p><strong>Examples:</strong></p>
-						<ul>
-							<li>With a CSS selector: <code>data-template-selector=&#39;.MySelector&#39;</code></li>
-							<li>With an HTML <code>id</code>: <code>data-template-id=&#39;MyId&#39;</code></li>
-						</ul>
 					</div>
 				</section>
 			</section>
@@ -412,8 +409,8 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
-									:124</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L123">src/ui/Base/Component.ts
+									:123</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -437,8 +434,8 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
-									:193</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L192">src/ui/Base/Component.ts
+									:192</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -483,8 +480,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
-							:62</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L61">src/ui/Base/Component.ts
+							:61</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -508,8 +505,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
-							:90</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L89">src/ui/Base/Component.ts
+							:89</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -526,8 +523,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
-							:74</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L73">src/ui/Base/Component.ts
+							:73</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -587,8 +584,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
-							:78</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L77">src/ui/Base/Component.ts
+							:77</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -605,8 +602,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
-							:70</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L69">src/ui/Base/Component.ts
+							:69</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -623,8 +620,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
-							:66</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L65">src/ui/Base/Component.ts
+							:65</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -641,8 +638,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
-							:82</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L81">src/ui/Base/Component.ts
+							:81</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -659,8 +656,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
-							:86</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L85">src/ui/Base/Component.ts
+							:85</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -703,47 +700,30 @@
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/TemplateLoader/TemplateLoader.ts#L91">src/ui/TemplateLoader/TemplateLoader.ts
-									:91</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/TemplateLoader/TemplateLoader.ts#L82">src/ui/TemplateLoader/TemplateLoader.ts
+									:82</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new TemplateLoader.</p>
+									<p>Creates a new TemplateLoader component.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The HTMLElement on which to instantiate the component.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">ITemplateLoaderOptions</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The options for the TemplateLoader component.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The bindings that the component requires to function normally. If not set, these will be
-											automatically resolved (with a slower execution time).</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> result: <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The result to associate the component with.</p>
 										</div>
 									</div>
 								</li>

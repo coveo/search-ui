@@ -189,10 +189,11 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The Badge component outputs a field value with customizable colors and an icon preceding it.</p>
+						<p>This component is used to easily output a field value with customizable colors and an icon preceding it.<br/>
+							It extends <a href="fieldvalue.html">FieldValue</a>, so any option on that component can be used on <code>Badge</code>.<br/>
+							It is possible to configure the default colors, but also to set colors specific to
+						the current field value.</p>
 					</div>
-					<p>This component is a result template component (see <a href="https://developers.coveo.com/x/aIGfAQ">Result Templates</a>). It
-					extends the <a href="fieldvalue.html">FieldValue</a> component. Therefore all FieldValue options are also available for a Badge component.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -252,19 +253,19 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.colors" class="tsd-anchor"></a>
 					<h3>colors</h3>
-					<div class="tsd-signature tsd-kind-icon">colors<span class="tsd-signature-symbol">:</span> <a href="../interfaces/ibadgecolors.html" class="tsd-signature-type">IBadgeColors</a></div>
+					<div class="tsd-signature tsd-kind-icon">colors<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IBadgeColors</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/Badge.ts#L67">src/ui/FieldTable/Badge.ts
-							:67</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/Badge.ts#L63">src/ui/FieldTable/Badge.ts
+							:63</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the colors for the Badge component.</p>
+							<p>Specifies the colors for the badge.</p>
 						</div>
-						<p>You must specify the colors in a JSON format similar to what follows:</p>
+						<p>Colors are specified in a a JSON format like the following:</p>
 						<pre><code class="lang-json">{
   <span class="hljs-attr">"values"</span>:{
     <span class="hljs-attr">"foo"</span>:{
@@ -280,9 +281,9 @@
   <span class="hljs-attr">"text"</span>:<span class="hljs-string">"#9ab52b"</span>
 }
 </code></pre>
-						<p>This format allows you to customize both the icon and text colors for each field value as well as the default
-						values.</p>
-						<p>Colors can be specified in HTML or hexadecimal format.</p>
+						<p>This format allows to customize both the icon and text colors for each
+						field value as well as the default value.</p>
+						<p>Colors can be specified in HTML or hexadecimal code format.</p>
 					</div>
 				</section>
 			</section>
@@ -379,8 +380,8 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
-									:124</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L123">src/ui/Base/Component.ts
+									:123</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -403,13 +404,15 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/Badge.ts#L142">src/ui/FieldTable/Badge.ts
-									:142</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/Badge.ts#L137">src/ui/FieldTable/Badge.ts
+									:137</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Gets the icon and text color of a field value.</p>
+									<p>Get the icon and text color for the passed field value.<br/>
+										Returns an object with the <code>icon</code> and <code>text</code> keys,
+									representing their respective colors.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -417,12 +420,11 @@
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> value: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;&quot;</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The field value whose colors to return.</p>
+										<p>The field value for which the colors are returned.</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">IBadgeColor</span></h4>
-							<p>An object with the <code>icon</code> and <code>text</code> keys.</p>
 						</li>
 					</ul>
 				</section>
@@ -438,17 +440,17 @@
 								<p>Inherited from <a href="fieldvalue.html">FieldValue</a>.<a href="fieldvalue.html#getvalue">getValue</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldValue.ts#L228">src/ui/FieldTable/FieldValue.ts
-									:228</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/FieldValue.ts#L194">src/ui/FieldTable/FieldValue.ts
+									:194</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Gets the current FieldValue from the current <a href="../interfaces/iqueryresult.html">IQueryResult</a>.</p>
+									<p>Get the current field value from the current result.<br/>
+									Returns <code>null</code> if value is an <code>Object</code>.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-							<p>The current FieldValue or <code>null</code> if value is and <code>Object</code>.</p>
 						</li>
 					</ul>
 				</section>
@@ -464,13 +466,14 @@
 								<p>Overwrites <a href="fieldvalue.html">FieldValue</a>.<a href="fieldvalue.html#renderonevalue">renderOneValue</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/Badge.ts#L157">src/ui/FieldTable/Badge.ts
-									:157</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/Badge.ts#L151">src/ui/FieldTable/Badge.ts
+									:151</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Renders one string value with the appropriate colors and icon.</p>
+									<p>Render one string value with the appropriate colors and icon.<br/>
+									Returns an HTML <code>span</code> containing the rendered value.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -483,7 +486,6 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
-							<p>An HTML <code>&lt;span&gt;</code> tag containing the rendered value.</p>
 						</li>
 					</ul>
 				</section>
@@ -499,8 +501,8 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
-									:193</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L192">src/ui/Base/Component.ts
+									:192</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -538,20 +540,21 @@
 					<a name="parsecolors" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> parse<wbr>Colors</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">parse<wbr>Colors<span class="tsd-signature-symbol">(</span>colorsOption<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/ibadgecolors.html" class="tsd-signature-type">IBadgeColors</a></li>
+						<li class="tsd-signature tsd-kind-icon">parse<wbr>Colors<span class="tsd-signature-symbol">(</span>colorsOption<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">IBadgeColors</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/Badge.ts#L108">src/ui/FieldTable/Badge.ts
-									:108</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/Badge.ts#L103">src/ui/FieldTable/Badge.ts
+									:103</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Parses a <a href="badge.html#options.colors">Badge.options.colors</a> option string into a workable JSON format.</p>
+									<p>Parse the passed color string into a workable format.
+									See <a href="badge.html#options.colors">Badge.options.colors</a> for more info on defining colors.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -559,11 +562,11 @@
 								<li>
 									<h5>colorsOption: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The colors option string to parse. See <a href="badge.html#options.colors">Badge.options.colors</a>.</p>
+										<p>The color string to parse.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ibadgecolors.html" class="tsd-signature-type">IBadgeColors</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">IBadgeColors</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -578,8 +581,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
-							:62</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L61">src/ui/Base/Component.ts
+							:61</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -603,8 +606,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
-							:90</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L89">src/ui/Base/Component.ts
+							:89</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -621,8 +624,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
-							:74</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L73">src/ui/Base/Component.ts
+							:73</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -682,8 +685,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
-							:78</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L77">src/ui/Base/Component.ts
+							:77</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -700,8 +703,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
-							:70</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L69">src/ui/Base/Component.ts
+							:69</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -718,8 +721,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
-							:66</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L65">src/ui/Base/Component.ts
+							:65</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -736,8 +739,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
-							:82</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L81">src/ui/Base/Component.ts
+							:81</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -754,8 +757,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
-							:86</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L85">src/ui/Base/Component.ts
+							:85</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -798,47 +801,30 @@
 								<p>Overwrites <a href="fieldvalue.html">FieldValue</a>.<a href="fieldvalue.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/Badge.ts#L71">src/ui/FieldTable/Badge.ts
-									:71</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/FieldTable/Badge.ts#L67">src/ui/FieldTable/Badge.ts
+									:67</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new Badge component.</p>
+									<p>Build a new <code>Badge</code> component</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The HTMLElement on which to instantiate the component.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5>options: <span class="tsd-signature-type">IBadgeOptions</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The options for the Badge component.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The bindings that the component requires to function normally. If not set, these will be
-											automatically resolved (with a slower execution time).</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> result: <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The result to associate the component with.</p>
 										</div>
 									</div>
 								</li>

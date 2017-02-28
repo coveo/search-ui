@@ -134,9 +134,6 @@
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
 								<a href="searchinterface.html#logger" class="tsd-kind-icon">logger</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class">
-								<a href="searchinterface.html#responsivecomponents" class="tsd-kind-icon">responsive<wbr>Components</a>
-							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
 								<a href="searchinterface.html#id" class="tsd-kind-icon">ID</a>
 							</li>
@@ -171,43 +168,11 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The SearchInterface component is the root and main component of your Coveo search interface. You should place all
-						other Coveo components inside the SearchInterface component.</p>
+						<p>This component is the root and main component of your search interface.<br/>
+							You should place every other component inside this component.<br/>
+							It is also on this component that you call the initialization function.<br/>
+						Since this component is the root of your Search UI, it is recommended that you give it a unique HTML id attribute in order to reference it easily.</p>
 					</div>
-					<p>It is also on the HTMLElement of the SearchInterface component that you call the <a href="../globals.html#init">init</a> function.</p>
-					<p>It is advisable to specify a unique HTML <code>id</code> attribute for the SearchInterface component in order to be able to
-					reference it easily.</p>
-					<p><strong>Example:</strong></p>
-					<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-
-[ ... ]
-
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
-  <span class="hljs-built_in">document</span>.addEventListener(<span class="hljs-string">'DOMContentLoaded'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-
-    [ ... ]
-    <span class="hljs-comment">// The init function is called on the SearchInterface element, in this case, the body of the page.</span>
-    Coveo.init(<span class="hljs-built_in">document</span>.body);
-
-    [ ... ]
-
-    });
-</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-
-[ ... ]
-<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
-
-<span class="hljs-comment">&lt;!-- Specifying a unique HTML id attribute for the SearchInterface component is good practice. --&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">body</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'search'</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoSearchInterface'</span> [ <span class="hljs-attr">...</span> <span class="hljs-attr">other</span> <span class="hljs-attr">options</span> <span class="hljs-attr">...</span> ]&gt;</span>
-
-  [ ... ]
-
-  <span class="hljs-comment">&lt;!-- You should place all other Coveo components here, inside the SearchInterface component. --&gt;</span>
-
-  [ ... ]
-
-<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
-</code></pre>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -254,12 +219,11 @@
 								<li class="tsd-kind-method tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="searchinterface.html#showwaitanimation" class="tsd-kind-icon">show<wbr>Wait<wbr>Animation</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="searchinterface.html#disabled" class="tsd-kind-icon">disabled</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited"><a href="searchinterface.html#logger" class="tsd-kind-icon">logger</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class"><a href="searchinterface.html#responsivecomponents" class="tsd-kind-icon">responsive<wbr>Components</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="searchinterface.html#id" class="tsd-kind-icon">ID</a></li>
 							</ul>
 						</section>
@@ -281,20 +245,16 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L268">src/ui/SearchInterface/SearchInterface.ts
-							:268</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L133">src/ui/SearchInterface/SearchInterface.ts
+							:133</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to trigger the first query automatically when the page finishes loading.</p>
+							<p>Specifies whether the init function should trigger the first query automatically when the page is loaded.<br/>
+								Note that if you set this to false, then the hideUntilFirstQuery option still applies. This means that the animation will still show until a query is triggered.<br/>
+							Default is <code>true</code>.</p>
 						</div>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>If you set this option to <code>false</code> while <a href="searchinterface.html#options.hideuntilfirstquery">SearchInterface.options.hideUntilFirstQuery</a> is <code>true</code>, the
-							loading animation will still run until the first query successfully returns.</p>
-						</blockquote>
-						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -309,29 +269,16 @@ data-auto-trigger-query&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L145">src/ui/SearchInterface/SearchInterface.ts
-							:145</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L78">src/ui/SearchInterface/SearchInterface.ts
+							:78</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to enable automatic responsive mode (i.e., automatically placing <a href="facet.html">Facet</a> and <a href="tab.html">Tab</a>
-								components in dropdown menus under the search box when the width of the SearchInterface HTML element reaches or
-							falls behind certain pixel thresholds).</p>
+							<p>Specifies whether the UI should use an automatic responsive mode (eg : The tab(s) and facet(s) being placed automatically under the search box)<br/>
+								This can be disabled for design reasons, if it does not fit with the implementation needs.<br/>
+							The default value is <code>true</code></p>
 						</div>
-						<p>You might want to set this option to <code>false</code> if automatic responsive mode does not suit the specific design needs
-						of your implementation.</p>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>If this option is <code>true</code>, you can also specify whether to enable responsive mode for Facet components (see
-								<a href="facet.html#options.enableresponsivemode">Facet.options.enableResponsiveMode</a>) and for Tab components (see
-							<a href="tab.html#options.enableresponsivemode">Tab.options.enableResponsiveMode</a>).</p>
-							<p>In addition, you can specify the label you wish to display on the dropdown buttons (see
-							<a href="facet.html#options.dropdownheaderlabel">Facet.options.dropdownHeaderLabel</a> and <a href="tab.html#options.dropdownheaderlabel">Tab.options.dropdownHeaderLabel</a>).</p>
-							<p>Furthermore, it is possible to specify the pixel threshold at which Facet components will go in responsive
-							mode (see <a href="facet.html#options.responsivebreakpoint">Facet.options.responsiveBreakpoint</a>.</p>
-						</blockquote>
-						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -346,17 +293,16 @@ data-enable-automatic-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L301">src/ui/SearchInterface/SearchInterface.ts
-							:301</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L152">src/ui/SearchInterface/SearchInterface.ts
+							:152</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to enable the collaborative rating for the index and to include user ratings on each results
-							in addition to the normal index ranking.</p>
+							<p>Specifies whether to enable the collaborative rating for the index and and include the user rating on each results to the normal index ranking.<br/>
+								If activated, this option can be leveraged with the <a href="resultrating.html">ResultRating</a> component.<br/>
+							The default value is <code>false</code>.</p>
 						</div>
-						<p>If you set this option to <code>true</code>, you can leverage it with the <a href="resultrating.html">ResultRating</a> component.</p>
-						<p>Default value is <code>false</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -371,18 +317,16 @@ data-enable-collaborative-rating&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L291">src/ui/SearchInterface/SearchInterface.ts
-							:291</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L146">src/ui/SearchInterface/SearchInterface.ts
+							:146</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to enable the feature that allows the end user to ALT + double click any result to open a debug
-							page with detailed information about all properties and fields for that result.</p>
+							<p>Specifies whether to enable the feature that allows users to ALT + double click on any results to get the Debug page with a detailed view of all the properties and fields for a given result.<br/>
+								This has no security concern (as all those informations are visible to users through the browser developer console or by calling the Coveo API directly).<br/>
+							The default value is <code>true</code>.</p>
 						</div>
-						<p>Enabling this feature causes no security concern; the entire debug information is always visible to the end user
-						through the browser developer console or by calling the Coveo API directly.</p>
-						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -397,27 +341,17 @@ data-enable-debug-info&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L321">src/ui/SearchInterface/SearchInterface.ts
-							:321</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L159">src/ui/SearchInterface/SearchInterface.ts
+							:159</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to filter duplicates in the search results.</p>
+							<p>Specifies whether to filter duplicates on the search results.<br/>
+								When true, duplicates do not appear in search results, but they however are included in facet counts, which can be sometimes confusing for the users. This is a limitation of the index.<br/>
+								Example: The user narrows a query to one document that has a duplicate. Only one document appears in search results, but the facet count is 2.<br/>
+							The default value is <code>false</code>.</p>
 						</div>
-						<p>Setting this option to <code>true</code> forces duplicates to not appear in search results. However, <a href="facet.html">Facet</a> counts
-						still include the duplicates, which can be confusing for the end user. This is a limitation of the index.</p>
-						<p><strong>Example:</strong></p>
-						<blockquote>
-							<p>The end user narrows a query down to a single document that has a duplicate. If the enableDuplicateFiltering
-							option is <code>true</code>, then only one document appears in the search results while the Facet count is still 2.</p>
-						</blockquote>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>It also is possible to set this option separately for each <a href="tab.html">Tab</a> component
-							(see <a href="tab.html#options.enableduplicatefiltering">Tab.options.enableDuplicateFiltering</a>).</p>
-						</blockquote>
-						<p>Default value is <code>false</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -432,23 +366,17 @@ data-enable-duplicate-filtering&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L121">src/ui/SearchInterface/SearchInterface.ts
-							:121</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L72">src/ui/SearchInterface/SearchInterface.ts
+							:72</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to allow the end user to navigate search history using the <strong>Back</strong> and <strong>Forward</strong> buttons
-							of the browser.</p>
+							<p>Specifies whether your search interface allows users to navigate in the search history using the browser back/forward buttons.<br/>
+								When enabled, the search interface saves the state of the current query in the hash portion of the URL.<br/>
+								For example #q=foobar.<br/>
+							The default value is <code>false</code>.</p>
 						</div>
-						<p>If this options is <code>true</code>, the SearchInterface component saves the state of the current query in the hash portion
-						of the URL when the user submits the query.</p>
-						<p><strong>Example:</strong></p>
-						<blockquote>
-							<p>If the <code>enableHistory</code> option is <code>true</code> and the current query is <code>foobar</code>, the SearchInterface component
-							saves <code>q=foobar</code> in the URL hash when the user submits the query.</p>
-						</blockquote>
-						<p>Default value is <code>false</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -463,17 +391,16 @@ data-enable-history&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L174">src/ui/SearchInterface/SearchInterface.ts
-							:174</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L95">src/ui/SearchInterface/SearchInterface.ts
+							:95</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the number of characters to get at query time to create an excerpt of the result.</p>
+							<p>Specifies the number of characters of the excerpt to get at query time and display for each query result.<br/>
+								This setting is global and can not be modified on a per result basis.<br/>
+							The default value is 200.</p>
 						</div>
-						<p>This setting is global and cannot be modified on a per-result basis.</p>
-						<p>See also the <a href="excerpt.html">Excerpt</a> component.</p>
-						<p>Default value is <code>200</code>. Minimum value is <code>0</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -487,23 +414,17 @@ data-enable-history&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L191">src/ui/SearchInterface/SearchInterface.ts
-							:191</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L102">src/ui/SearchInterface/SearchInterface.ts
+							:102</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies an expression to add to each query.</p>
+							<p>Specifies an expression to add to each query.<br/>
+								This should be use if you wish to add a global filter for your whole search interface that applies for all tabs.<br/>
+								Do not use this for security concern ... (It is JavaScript after all).<br/>
+							By default none is added.</p>
 						</div>
-						<p>You might want to use this options to add a global filter to your entire search interface that applies for all
-						tabs.</p>
-						<p>You should not use this option to address security concerns (it is JavaScript, after all).</p>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>It also is possible to set this option separately for each <a href="tab.html">Tab</a> component
-							(see <a href="tab.html#options.expression">Tab.options.expression</a>).</p>
-						</blockquote>
-						<p>Default value is <code>&#39;&#39;</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -517,22 +438,18 @@ data-enable-history&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L208">src/ui/SearchInterface/SearchInterface.ts
-							:208</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L110">src/ui/SearchInterface/SearchInterface.ts
+							:110</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the name of a field to use as a custom filter when executing the query (also referred to as
-							&quot;folding&quot;).</p>
+							<p>Specifies the name of a field to use as a custom filter when executing the query (also referred to as &#39;folding&#39;).<br/>
+								Setting this option causes the index to return only one result having any particular value inside the filter field. Any other matching result is &#39;folded&#39; inside the childResults member of each JSON query result.<br/>
+								This feature is typically used with threaded conversations to include only one top-level result per conversation. Thus, the field specified in this option typically is a value unique to each thread that is shared by all items (e.g.: posts, emails, etc.) in the thread.<br/>
+								This is obviously an advanced feature. Instead, look into using the <a href="folding.html">Folding</a> component, which covers a lot of different use cases.<br/>
+							By default none is added</p>
 						</div>
-						<p>Setting a value for this option causes the index to return only one result having any particular value inside the
-						filter field. Any other matching result is &quot;folded&quot; inside the childResults member of each JSON query result.</p>
-						<p>This feature is typically useful with threaded conversations to include only one top-level result per
-							conversation. Thus, the field you specify for this option will typically be value unique to each thread that is
-						shared by all items (e.g., posts, emails, etc) in the thread.</p>
-						<p>For more advanced features, see the <a href="folding.html">Folding</a> component.</p>
-						<p>Default value is <code>&#39;&#39;</code></p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -546,32 +463,18 @@ data-enable-history&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L252">src/ui/SearchInterface/SearchInterface.ts
-							:252</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L124">src/ui/SearchInterface/SearchInterface.ts
+							:124</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the animation that you wish to use for your interface.</p>
+							<p>Specifies the animation that you wish to use for your interface.<br/>
+								This can be a selector or an element that matches the correct CSS class.<br/>
+								Eg : firstLoadingAnimation : &#39;.CustomFirstLoadingAnimation&#39; / data-first-loading-animation=&#39;.CustomFirstLoadingAnimation&#39;.</br>
+								Eg : &lt;element class=&#39;CoveoSearchInterface&#39;&gt;&lt;element class=&#39;coveo-first-loading-animation&#39;/&gt;&lt;/element&gt;<br/>
+							By default, this will be a Coveo CSS animation (which can also be customized with CSS).</p>
 						</div>
-						<p>This can be a selector or an HTML element that matches the correct CSS class (<code>coveo-first-loading-animation</code>).</p>
-						<p><strong>Examples:</strong></p>
-						<p>Specifying the animation using a CSS selector in the <a href="../globals.html#init">init</a> call:</p>
-						<pre><code class="lang-javascript">Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
-  <span class="hljs-attr">SearchInterface</span> : {
-    <span class="hljs-attr">firstLoadingAnimation</span> : <span class="hljs-string">'.CustomFirstLoadingAnimation'</span>
-  }
-}
-</code></pre>
-						<p>Specifying the animation using a CSS selector in the markup:</p>
-						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">element</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'search'</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoSearchInterface data-first-loading-animation='</span><span class="hljs-attr">.CustomFirstLoadingAnimation</span>'&gt;</span>
-</code></pre>
-						<p>Specifying the animation using an HTML element matching the correct CSS class:</p>
-						<pre><code class="lang-html">  <span class="hljs-tag">&lt;<span class="hljs-name">element</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'search'</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoSearchInterface'</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">element</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'coveo-first-loading-animation'</span>/&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">element</span>&gt;</span>
-</code></pre>
-						<p>By default, the loading animation is a Coveo CSS animation (which you can customize with CSS).</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -581,20 +484,16 @@ data-enable-history&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L220">src/ui/SearchInterface/SearchInterface.ts
-							:220</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L116">src/ui/SearchInterface/SearchInterface.ts
+							:116</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to display a loading animation before the first query successfully returns.</p>
+							<p>Specifies whether the interface should display a loading animation before the first query has completed successfully.<br/>
+								Note that if you set autoTriggerQuery to false, this means that the loading animation will not go away automatically.<br/>
+							Default is true.</p>
 						</div>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>If you do not set this options to <code>false</code>, the loading animation will still run until the first query
-							successfully returns even if <a href="searchinterface.html#options.autotriggerquery">SearchInterface.options.autoTriggerQuery</a> is <code>false</code>.</p>
-						</blockquote>
-						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -609,28 +508,17 @@ data-hide-until-first-query&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L358">src/ui/SearchInterface/SearchInterface.ts
-							:358</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L172">src/ui/SearchInterface/SearchInterface.ts
+							:172</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the maximum age (in milliseconds) that cached query results can have to still be usable as results
-								instead of performing a new query on the index. The cache is located in the Coveo Search API (which resides
-							between the index and the search interface).</p>
+							<p>Specifies the maximum age in milliseconds that cached query results can have in order to be used (instead of performing a new query on the index).<br/>
+								If cached results are available but are older than the specified age, a new query will be performed on the index.<br/>
+								On high-volume public web sites, having a larger maximum age can greatly improve query response time at the cost of result freshness.<br/>
+							By default, the Coveo Search API will determine the cache length. This typically takes 15 minutes.</p>
 						</div>
-						<p>If cached results that are older than the age you specify in this option are available, the framework will not
-						use these results; it will rather perform a new query on the index.</p>
-						<p>On high-volume public web sites, specifying a higher value for this option can greatly improve query response
-						time at the cost of result freshness.</p>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>It also is possible to set this option separately for each <a href="tab.html">Tab</a> component
-							(see <a href="tab.html#options.maximumage">Tab.options.maximumAge</a>).</p>
-						</blockquote>
-						<p>Default value is <code>undefined</code>, which means that the search interface lets the Coveo Search API determine the
-							maximum cache age. This is typically equivalent to 30 minutes (see
-						<a href="https://developers.coveo.com/x/iwEv#QueryParameters-maximumAge">Query Parameters - maximumAge</a>).</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -644,22 +532,16 @@ data-hide-until-first-query&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L336">src/ui/SearchInterface/SearchInterface.ts
-							:336</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L165">src/ui/SearchInterface/SearchInterface.ts
+							:165</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the name of the query pipeline to use for the queries.</p>
+							<p>Specifies the name of the query pipeline to use for the queries. If not specified, the default value is default, which means the default query pipeline will be used.<br/>
+								You can use this parameter when your index is in a Coveo Cloud organization where you created pipelines (see <a href="https://onlinehelp.coveo.com/en/cloud/creating_and_managing_query_pipelines.htm">https://onlinehelp.coveo.com/en/cloud/creating_and_managing_query_pipelines.htm</a>).<br/>
+							Default value is &#39;default&#39;.</p>
 						</div>
-						<p>You can specify a value for this option if your index is in a Coveo Cloud organization in which pipelines have
-						been created (see <a href="http://www.coveo.com/go?dest=cloudhelp&amp;lcid=9&amp;context=128">Managing Query Pipelines</a>).</p>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>It also is possible to set this option separately for each <a href="tab.html">Tab</a> component
-							(see <a href="tab.html#options.pipeline">Tab.options.pipeline</a>).</p>
-						</blockquote>
-						<p>Default value is <code>undefined</code>, which means that the search interface uses the default pipeline.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -673,16 +555,15 @@ data-hide-until-first-query&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L163">src/ui/SearchInterface/SearchInterface.ts
-							:163</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L89">src/ui/SearchInterface/SearchInterface.ts
+							:89</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the number of results to display on each page.</p>
+							<p>Specifies the number of results that each page displays.<br/>
+							Default is 10.</p>
 						</div>
-						<p>For more advanced features, see the <a href="resultsperpage.html">ResultsPerPage</a> component.</p>
-						<p>Default value is <code>10</code>. Minimum value is <code>0</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -696,15 +577,15 @@ data-hide-until-first-query&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L365">src/ui/SearchInterface/SearchInterface.ts
-							:365</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L177">src/ui/SearchInterface/SearchInterface.ts
+							:177</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the search page you wish to navigate to when instantiating a standalone search box interface.</p>
+							<p>Specifies the search page you wish to navigate to when instantiating a standalone search box interface.<br/>
+							By default this is undefined, meaning the search interface will not redirect.</p>
 						</div>
-						<p>Default value is <code>undefined</code>, which means that the search interface does not redirect.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -718,18 +599,16 @@ data-hide-until-first-query&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L281">src/ui/SearchInterface/SearchInterface.ts
-							:281</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L140">src/ui/SearchInterface/SearchInterface.ts
+							:140</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the timezone in which the search interface is loaded. This allows the index to recognize some special
-							query syntax.</p>
+							<p>Specifies the timezone in which the search interface is loaded. This allows the index to recognize some special query syntax.<br/>
+								This must be an IANA zone info key (aka the Olson time zone database). For example : &#39;America/New_York&#39;.<br/>
+							By default, we use a library that tries to detect the timezone automatically.<br/></p>
 						</div>
-						<p>This option must have a valid IANA zone info key (AKA the Olson time zone database) as its value.</p>
-						<p><strong>Example:</strong> <code>America/New_York</code>.</p>
-						<p>By default, the search interface allows a library to try to detect the timezone automatically.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -743,16 +622,16 @@ data-hide-until-first-query&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L154">src/ui/SearchInterface/SearchInterface.ts
-							:154</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L84">src/ui/SearchInterface/SearchInterface.ts
+							:84</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to save the interface state in the local storage of the browser.</p>
+							<p>Specifies that you wish to use the local storage of the browser to store the state of the interface.<br/>
+								This can be used for very specific purpose, and only if you know what you are doing.<br/>
+							Default value is <code>false</code>.</p>
 						</div>
-						<p>You might want to set this option to <code>true</code> for reasons specifically important for your implementation.</p>
-						<p>Default value is <code>false</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -774,14 +653,13 @@ data-use-local-storage-for-history&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L480">src/ui/SearchInterface/SearchInterface.ts
-									:480</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L274">src/ui/SearchInterface/SearchInterface.ts
+									:274</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Attaches a component to the search interface. This allows the search interface to easily list and iterate over its
-									components.</p>
+									<p>Attach a component to the interface. This allows the interface to easily list and traverse its component.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -789,8 +667,7 @@ data-use-local-storage-for-history&#x3D;&#x27;false&#x27;</pre>
 								<li>
 									<h5>type: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Normally, the component type is a unique identifier without the <code>Coveo</code> prefix (e.g., <code>CoveoFacet</code> -&gt;
-										<code>Facet</code>, <code>CoveoPager</code> -&gt; <code>Pager</code>, <code>CoveoQuerybox</code> -&gt; <code>Querybox</code>, etc.).</p>
+										<p>Normally a unique identifier without the Coveo prefix (e.g.: CoveoFacet -&gt; Facet, CoveoPager -&gt; Pager, CoveoQuerybox -&gt; Querybox, etc.)</p>
 									</div>
 								</li>
 								<li>
@@ -840,13 +717,13 @@ data-use-local-storage-for-history&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L490">src/ui/SearchInterface/SearchInterface.ts
-									:490</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L283">src/ui/SearchInterface/SearchInterface.ts
+									:283</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Detaches a component from the search interface.</p>
+									<p>Detach a component from the interface.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -854,8 +731,7 @@ data-use-local-storage-for-history&#x3D;&#x27;false&#x27;</pre>
 								<li>
 									<h5>type: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Normally, the component type is a unique identifier without the <code>Coveo</code> prefix (e.g., <code>CoveoFacet</code> -&gt;
-										<code>Facet</code>, <code>CoveoPager</code> -&gt; <code>Pager</code>, <code>CoveoQuerybox</code> -&gt; <code>Querybox</code>, etc.).</p>
+										<p>Normally a unique identifier without the Coveo prefix (e.g.: CoveoFacet -&gt; Facet, CoveoPager -&gt; Pager, CoveoQuerybox -&gt; Querybox, etc.)</p>
 									</div>
 								</li>
 								<li>
@@ -934,13 +810,13 @@ data-use-local-storage-for-history&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L502">src/ui/SearchInterface/SearchInterface.ts
-									:502</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L295">src/ui/SearchInterface/SearchInterface.ts
+									:295</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns the bindings, or environment, for the current component.</p>
+									<p>Return the bindings, or environment, for the current component</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
@@ -960,13 +836,13 @@ data-use-local-storage-for-history&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L519">src/ui/SearchInterface/SearchInterface.ts
-									:519</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L311">src/ui/SearchInterface/SearchInterface.ts
+									:311</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Gets all the components of a given type.</p>
+									<p>Get all the components for a given type</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -981,8 +857,7 @@ data-use-local-storage-for-history&#x3D;&#x27;false&#x27;</pre>
 									<h5>type: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>Normally, the component type is a unique identifier without the <code>Coveo</code> prefix (e.g., <code>CoveoFacet</code> -&gt;
-											<code>Facet</code>, <code>CoveoPager</code> -&gt; <code>Pager</code>, <code>CoveoQuerybox</code> -&gt; <code>Querybox</code>, etc.).</p>
+											<p>Normally a unique identifier without the Coveo prefix (e.g.: CoveoFacet -&gt; Facet, CoveoPager -&gt; Pager, CoveoQuerybox -&gt; Querybox, etc.)</p>
 										</div>
 									</div>
 								</li>
@@ -1002,15 +877,15 @@ data-use-local-storage-for-history&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L468">src/ui/SearchInterface/SearchInterface.ts
-									:468</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L264">src/ui/SearchInterface/SearchInterface.ts
+									:264</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Hides the first query animation (see <a href="searchinterface.html#options.firstloadinganimation">SearchInterface.options.firstLoadingAnimation</a>).</p>
+									<p>Hide the first query animation.<br/>
+									This is normally the Coveo logo with a CSS animation (which can be customized with options or CSS).</p>
 								</div>
-								<p>By default, this is the Coveo logo with a CSS animation (which can be customized with options or CSS).</p>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
@@ -1027,13 +902,13 @@ data-use-local-storage-for-history&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L540">src/ui/SearchInterface/SearchInterface.ts
-									:540</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L330">src/ui/SearchInterface/SearchInterface.ts
+									:330</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Indicates whether the search interface is using the new design.
+									<p>Determines whether the interface is using the new design.<br/>
 									This changes the rendering of multiple components.</p>
 								</div>
 							</div>
@@ -1052,22 +927,22 @@ data-use-local-storage-for-history&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L457">src/ui/SearchInterface/SearchInterface.ts
-									:457</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L254">src/ui/SearchInterface/SearchInterface.ts
+									:254</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Displays the first query animation (see <a href="searchinterface.html#options.firstloadinganimation">SearchInterface.options.firstLoadingAnimation</a>).</p>
+									<p>Display the first query animation.<br/>
+									This is normally the Coveo logo with a CSS animation (which can be customized with options or CSS).</p>
 								</div>
-								<p>By default, this is the Coveo logo with a CSS animation (which can be customized with options or CSS).</p>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited">
 					<a name="disabled" class="tsd-anchor"></a>
@@ -1112,24 +987,6 @@ data-use-local-storage-for-history&#x3D;&#x27;false&#x27;</pre>
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class">
-					<a name="responsivecomponents" class="tsd-anchor"></a>
-					<h3>responsive<wbr>Components</h3>
-					<div class="tsd-signature tsd-kind-icon">responsive<wbr>Components<span class="tsd-signature-symbol">:</span> <a href="../classes/responsivecomponents.html" class="tsd-signature-type">ResponsiveComponents</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L384">src/ui/SearchInterface/SearchInterface.ts
-							:384</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Allow to get and set the different breakpoint for mobile and tablet devices.</p>
-						</div>
-						<p>This is useful, amongst other, for <a href="facet.html">Facet</a>, <a href="tab.html">Tab</a> and <a href="resultlist.html">ResultList</a></p>
-					</div>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
 					<a name="id" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> ID</h3>
@@ -1163,15 +1020,15 @@ data-use-local-storage-for-history&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L384">src/ui/SearchInterface/SearchInterface.ts
-									:384</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SearchInterface/SearchInterface.ts#L190">src/ui/SearchInterface/SearchInterface.ts
+									:190</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new SearchInterface. Initialize various singletons for the interface (e.g., usage analytics, query
-										controller, state model, etc.). Binds events related to the query. Hides and shows the loading animation, if
-									activated (see <a href="searchinterface.html#options.hideuntilfirstquery">SearchInterface.options.hideUntilFirstQuery</a>).</p>
+									<p>Create a new search interface. Initialize various singleton for the interface (eg : Usage analytic, query controller, state model, etc.)<br/>
+										Bind event related to the query.<br/>
+									Will hide and show the loading animation, if activated.<br/></p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1180,8 +1037,7 @@ data-use-local-storage-for-history&#x3D;&#x27;false&#x27;</pre>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The HTMLElement on which to instantiate the component. This cannot be an <code>HTMLInputElement</code> for
-											technical reasons.</p>
+											<p>The <code>HTMLElement</code> on which the element will be instantiated. This cannot be an <code>HTMLInputElement</code> for technical reasons.</p>
 										</div>
 									</div>
 								</li>
@@ -1189,7 +1045,7 @@ data-use-local-storage-for-history&#x3D;&#x27;false&#x27;</pre>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">ISearchInterfaceOptions</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The options for the SearchInterface.</p>
+											<p>The options for the querybox.</p>
 										</div>
 									</div>
 								</li>
@@ -1197,8 +1053,7 @@ data-use-local-storage-for-history&#x3D;&#x27;false&#x27;</pre>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> analyticsOptions: <span class="tsd-signature-type">any</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The options for the <a href="analytics.html">Analytics</a> component. Since the Analytics component is normally
-											global, it needs to be passed at initialization of the whole interface.</p>
+											<p>The options for the analytics component. Since the analytics component is normally global, it needs to be passed at initialization of the whole interface.</p>
 										</div>
 									</div>
 								</li>
@@ -1206,8 +1061,7 @@ data-use-local-storage-for-history&#x3D;&#x27;false&#x27;</pre>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> _window: <span class="tsd-signature-type">Window</span><span class="tsd-signature-symbol"> =&nbsp;window</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The window object for the search interface. Used for unit tests, which can pass a mock. Default is
-											the global window object.</p>
+											<p>The window object for the search interface. Used for unit tests, which can pass a mock. Default is the global window object.</p>
 										</div>
 									</div>
 								</li>

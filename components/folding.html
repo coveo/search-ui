@@ -177,14 +177,11 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The Folding component makes it possible to render a hierarchic display of search results sharing a common field.</p>
+						<p>This component is used to display search results that share a common field hierarchically.
+							It is typically used to display email conversations and message board threads.
+							The different messages in a given conversation typically have a unique conversation ID.
+						Given that this ID is indexed in a field, you can use it to fold search results</p>
 					</div>
-					<p>This component has no visual representation of its own. Its simply folds certain search results so that the
-						<a href="resultfolding.html">ResultFolding</a> and <a href="resultattachments.html">ResultAttachments</a> components can nicely display them inside result templates (see
-					<a href="https://developers.coveo.com/x/aIGfAQ">Result Templates</a>).</p>
-					<p>A typical use case of the Folding component is to fold email conversations and message board threads to make it
-						possible to display them in a convenient format. Messages belonging to a single conversation typically have a unique
-					conversation ID. By indexing this ID on a field, you can use it to fold search results.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -254,15 +251,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L78">src/ui/Folding/Folding.ts
-							:78</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L67">src/ui/Folding/Folding.ts
+							:67</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the field that determines whether a given result is a child of another top result.</p>
+							<p>Specifies the field that determines that a result is a child of another top result.<br/>
+							The default value is <code>@topparentid</code>.</p>
 						</div>
-						<p>Default value is <code>@topparentid</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -276,18 +273,17 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L123">src/ui/Folding/Folding.ts
-							:123</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L102">src/ui/Folding/Folding.ts
+							:102</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to add a callback function on the top result, allowing to make an additional query to load all
-							conversations of a given thread.</p>
+							<p>Specifies whether to add a callback function on the top result, allowing to make an additional query.
+							to load all the conversation of a given thread.</p>
 						</div>
-						<p>Concretely, the <a href="resultfolding.html">ResultFolding</a> component uses this for its <strong>Show More</strong> link.</p>
-						<p>See also <a href="folding.html#options.expandexpression">Folding.options.expandExpression</a> and <a href="folding.html#options.maximumexpandedresults">Folding.options.maximumExpandedResults</a>.</p>
-						<p>Default value is <code>true</code>.</p>
+						<p>Concretely, the <a href="resultfolding.html">ResultFolding</a> component uses this for its <b>Load full conversation</b> option.</p>
+						<p>The default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -302,16 +298,14 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L131">src/ui/Folding/Folding.ts
-							:131</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L106">src/ui/Folding/Folding.ts
+							:106</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If <a href="folding.html#options.enableexpand">Folding.options.enableExpand</a> is <code>true</code>, specifies a custom constant expression to send when querying
-							the expanded results.</p>
+							<p>Specifies a customized constant expression to send when querying the expanded results.</p>
 						</div>
-						<p>Default value is <code>undefined</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -325,15 +319,15 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L71">src/ui/Folding/Folding.ts
-							:71</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L62">src/ui/Folding/Folding.ts
+							:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the name of the field on which to do the folding.</p>
+							<p>The name of the field on which the folding is done.<br/>
+							This option is required.</p>
 						</div>
-						<p>Specifying a value for this options is required for this component to work.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -347,17 +341,17 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L201">src/ui/Folding/Folding.ts
-							:201</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L174">src/ui/Folding/Folding.ts
+							:174</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the function that manages the folding of all results.</p>
+							<p>This function manages folding of all results.</p>
 						</div>
-						<p>Default value (<code>Coveo.Folding.defaultGetMoreResults</code>) is:</p>
-						<pre><code class="lang-javascript">Coveo.Folding.defaultGetMoreResults = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">results</span>) </span>{
-   <span class="hljs-comment">// The results are flat, just do the folding.</span>
+						<p>The default value (Coveo.Folding.defaultGetMoreResults):</p>
+						<pre><code>Coveo.Folding.defaultGetMoreResults = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(results)</span> </span>{
+   <span class="hljs-comment">// The results are flat, just do the folding</span>
    <span class="hljs-keyword">return</span> Coveo.Folding.foldWithParent(results);
 }
 </code></pre>
@@ -391,31 +385,29 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L185">src/ui/Folding/Folding.ts
-							:185</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L158">src/ui/Folding/Folding.ts
+							:158</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the function that manages the individual folding of each result.</p>
+							<p>This function manages folding individually for each result.</p>
 						</div>
-						<p>Default value (which is implemented in Coveo.Folding.defaultGetResult) is:</p>
-						<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> results = result.childResults || [];
-<span class="hljs-comment">// Add the top result at the top of the list.</span>
-results.unshift(result);
-<span class="hljs-comment">// Empty childResults just to clean it.</span>
-result.childResults = [];
-<span class="hljs-comment">// Fold those results.</span>
+						<p>The default value (which is implemented in Coveo.Folding.defaultGetResult):</p>
+						<pre><code><span class="hljs-keyword">var</span> results = <span class="hljs-keyword">result</span>.childResults || [];
+<span class="hljs-comment">// Add the top result at the top of the list</span>
+results.unshift(<span class="hljs-keyword">result</span>);
+<span class="hljs-comment">// Empty childResults just to clean it</span>
+<span class="hljs-keyword">result</span>.childResults = [];
+<span class="hljs-comment">// Fold those results</span>
 results = Coveo.Folding.foldWithParent(results);
-<span class="hljs-comment">// The first result is the top one.</span>
+<span class="hljs-comment">// The first result is the top one</span>
 <span class="hljs-keyword">var</span> topResult = results.shift();
-<span class="hljs-comment">// All other results are childResults.</span>
+<span class="hljs-comment">// All other results are childResults</span>
 topResult.childResults = results;
-<span class="hljs-keyword">return</span> topResult;
-</code></pre>
-						<p>You can pre-process all the result with this option in the <a href="../globals.html#init">init</a> call of your search interface:</p>
-						<pre><code class="lang-javascript"><span class="hljs-comment">// You can call the init script using "pure" JavaScript:</span>
-Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
+return topResult;
+</code></pre><p>You can preprocess all the result with this option:</p>
+						<pre><code>Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
    <span class="hljs-attr">Folding</span>: {
      <span class="hljs-attr">getResult</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{
        result = Coveo.Folding.defaultGetResult(result);
@@ -424,7 +416,8 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
    }
 })
 
-<span class="hljs-comment">// Or you can call the init script using the jQuery extension:</span>
+<span class="hljs-comment">// OR using the jQuery extension</span>
+
 Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'init'</span>, {
    <span class="hljs-attr">Folding</span>: {
      <span class="hljs-attr">getResult</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{
@@ -464,16 +457,16 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L139">src/ui/Folding/Folding.ts
-							:139</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L114">src/ui/Folding/Folding.ts
+							:114</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If <a href="folding.html#options.enableexpand">Folding.options.enableExpand</a> is <code>true</code>, specifies the maximum number of results to load when
-							expanding.</p>
+							<p>Specifies the maximum number of expanded results.</p>
 						</div>
-						<p>Default value is <code>100</code>. Minimum value is <code>1</code>.</p>
+						<p>The default value is 100.</p>
+						<p>The minimum value is 1.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -487,15 +480,15 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L85">src/ui/Folding/Folding.ts
-							:85</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L72">src/ui/Folding/Folding.ts
+							:72</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the field that determines whether a given result is a top result containing other child results.</p>
+							<p>Specifies the field that determines if a result is a top result containing other child results.<br/>
+							The default value is <code>@syscontainsattachment</code>.</p>
 						</div>
-						<p>Default value is <code>@containsattachment</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -509,21 +502,20 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L97">src/ui/Folding/Folding.ts
-							:97</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L83">src/ui/Folding/Folding.ts
+							:83</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the number of child results to fold.</p>
+							<p>The number of child results to fold.</p>
 						</div>
-						<p><strong>Example:</strong></p>
+						<p>The default value is 2.</p>
+						<p>The minimum value is 0.</p>
 						<blockquote>
-							<p>For an email thread with a total of 20 messages, using the default value of <code>2</code> means that the component loads
-								up to a maximum of 2 child messages under the original message, unless the end user expands the entire
-							conversation using the <strong>Show More</strong> link (see <a href="folding.html#options.enableexpand">Folding.options.enableExpand</a>).</p>
+							<p>Example:
+							For an email thread with 20 messages in total, using the default value means that a maximum of 2 child messages are loaded and displayed under the original message (unless the whole conversation is expanded via the use of a Show all conversation button).</p>
 						</blockquote>
-						<p>Default value is <code>2</code>. Minimum value is <code>0</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -537,23 +529,20 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L111">src/ui/Folding/Folding.ts
-							:111</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L93">src/ui/Folding/Folding.ts
+							:93</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the top result and its related child results, following the sort criteria format (<code>date ascending</code>,
-							<code>@somefield ascending</code>, etc.)</p>
+							<p>Specifies the top result and its related child results, following the sort criteria format
+							(<code>date ascending</code>, <code>@somefield ascending</code>, etc.)</p>
 						</div>
-						<p><strong>Example</strong></p>
+						<p>The default value is <code>none</code>, which means that results are displayed in the order that the index returned them.</p>
 						<blockquote>
-							<p>If you specify <code>date descending</code>, the Folding component re-arranges an email conversation so that the newest
-								email is always the top result. Doing the opposite (<code>date ascending</code>) would always make the original email the
-							top result, since it is also the oldest.</p>
+							<p>Example:
+							If you specify date descending, the component re-arranges an email conversation so that the newest email is always the top result. Doing the opposite would allow the original email to always be the top result since it is also the oldest.</p>
 						</blockquote>
-						<p>Default value is <code>none</code>, which means that the component displays the results in the order that they were returned
-						by the index.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-class tsd-is-inherited tsd-is-static">
@@ -564,8 +553,8 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 						<p>Inherited from <a href="folding.html">Folding</a>.<a href="folding.html#options">options</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L64">src/ui/Folding/Folding.ts
-							:64</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L57">src/ui/Folding/Folding.ts
+							:57</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -586,15 +575,15 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in
-									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L78">src/ui/Folding/Folding.ts
-								:78</a></li>
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L67">src/ui/Folding/Folding.ts
+								:67</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
-								<p>Specifies the field that determines whether a given result is a child of another top result.</p>
+								<p>Specifies the field that determines that a result is a child of another top result.<br/>
+								The default value is <code>@topparentid</code>.</p>
 							</div>
-							<p>Default value is <code>@topparentid</code>.</p>
 						</div>
 						<div class="tsd-panel">
 							<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -608,18 +597,17 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in
-									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L123">src/ui/Folding/Folding.ts
-								:123</a></li>
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L102">src/ui/Folding/Folding.ts
+								:102</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
-								<p>Specifies whether to add a callback function on the top result, allowing to make an additional query to load all
-								conversations of a given thread.</p>
+								<p>Specifies whether to add a callback function on the top result, allowing to make an additional query.
+								to load all the conversation of a given thread.</p>
 							</div>
-							<p>Concretely, the <a href="resultfolding.html">ResultFolding</a> component uses this for its <strong>Show More</strong> link.</p>
-							<p>See also <a href="folding.html#options.expandexpression">Folding.options.expandExpression</a> and <a href="folding.html#options.maximumexpandedresults">Folding.options.maximumExpandedResults</a>.</p>
-							<p>Default value is <code>true</code>.</p>
+							<p>Concretely, the <a href="resultfolding.html">ResultFolding</a> component uses this for its <b>Load full conversation</b> option.</p>
+							<p>The default value is <code>true</code>.</p>
 						</div>
 						<div class="tsd-panel">
 							<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -634,16 +622,14 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in
-									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L131">src/ui/Folding/Folding.ts
-								:131</a></li>
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L106">src/ui/Folding/Folding.ts
+								:106</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
-								<p>If <a href="folding.html#options.enableexpand">Folding.options.enableExpand</a> is <code>true</code>, specifies a custom constant expression to send when querying
-								the expanded results.</p>
+								<p>Specifies a customized constant expression to send when querying the expanded results.</p>
 							</div>
-							<p>Default value is <code>undefined</code>.</p>
 						</div>
 						<div class="tsd-panel">
 							<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -657,15 +643,15 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in
-									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L71">src/ui/Folding/Folding.ts
-								:71</a></li>
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L62">src/ui/Folding/Folding.ts
+								:62</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
-								<p>Specifies the name of the field on which to do the folding.</p>
+								<p>The name of the field on which the folding is done.<br/>
+								This option is required.</p>
 							</div>
-							<p>Specifying a value for this options is required for this component to work.</p>
 						</div>
 						<div class="tsd-panel">
 							<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -679,17 +665,17 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in
-									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L201">src/ui/Folding/Folding.ts
-								:201</a></li>
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L174">src/ui/Folding/Folding.ts
+								:174</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
-								<p>Specifies the function that manages the folding of all results.</p>
+								<p>This function manages folding of all results.</p>
 							</div>
-							<p>Default value (<code>Coveo.Folding.defaultGetMoreResults</code>) is:</p>
-							<pre><code class="lang-javascript">Coveo.Folding.defaultGetMoreResults = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">results</span>) </span>{
-   <span class="hljs-comment">// The results are flat, just do the folding.</span>
+							<p>The default value (Coveo.Folding.defaultGetMoreResults):</p>
+							<pre><code>Coveo.Folding.defaultGetMoreResults = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(results)</span> </span>{
+   <span class="hljs-comment">// The results are flat, just do the folding</span>
    <span class="hljs-keyword">return</span> Coveo.Folding.foldWithParent(results);
 }
 </code></pre>
@@ -723,31 +709,29 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in
-									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L185">src/ui/Folding/Folding.ts
-								:185</a></li>
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L158">src/ui/Folding/Folding.ts
+								:158</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
-								<p>Specifies the function that manages the individual folding of each result.</p>
+								<p>This function manages folding individually for each result.</p>
 							</div>
-							<p>Default value (which is implemented in Coveo.Folding.defaultGetResult) is:</p>
-							<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> results = result.childResults || [];
-<span class="hljs-comment">// Add the top result at the top of the list.</span>
-results.unshift(result);
-<span class="hljs-comment">// Empty childResults just to clean it.</span>
-result.childResults = [];
-<span class="hljs-comment">// Fold those results.</span>
+							<p>The default value (which is implemented in Coveo.Folding.defaultGetResult):</p>
+							<pre><code><span class="hljs-keyword">var</span> results = <span class="hljs-keyword">result</span>.childResults || [];
+<span class="hljs-comment">// Add the top result at the top of the list</span>
+results.unshift(<span class="hljs-keyword">result</span>);
+<span class="hljs-comment">// Empty childResults just to clean it</span>
+<span class="hljs-keyword">result</span>.childResults = [];
+<span class="hljs-comment">// Fold those results</span>
 results = Coveo.Folding.foldWithParent(results);
-<span class="hljs-comment">// The first result is the top one.</span>
+<span class="hljs-comment">// The first result is the top one</span>
 <span class="hljs-keyword">var</span> topResult = results.shift();
-<span class="hljs-comment">// All other results are childResults.</span>
+<span class="hljs-comment">// All other results are childResults</span>
 topResult.childResults = results;
-<span class="hljs-keyword">return</span> topResult;
-</code></pre>
-							<p>You can pre-process all the result with this option in the <a href="../globals.html#init">init</a> call of your search interface:</p>
-							<pre><code class="lang-javascript"><span class="hljs-comment">// You can call the init script using "pure" JavaScript:</span>
-Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
+return topResult;
+</code></pre><p>You can preprocess all the result with this option:</p>
+							<pre><code>Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
    <span class="hljs-attr">Folding</span>: {
      <span class="hljs-attr">getResult</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{
        result = Coveo.Folding.defaultGetResult(result);
@@ -756,7 +740,8 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
    }
 })
 
-<span class="hljs-comment">// Or you can call the init script using the jQuery extension:</span>
+<span class="hljs-comment">// OR using the jQuery extension</span>
+
 Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-string">'init'</span>, {
    <span class="hljs-attr">Folding</span>: {
      <span class="hljs-attr">getResult</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{
@@ -796,16 +781,16 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in
-									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L139">src/ui/Folding/Folding.ts
-								:139</a></li>
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L114">src/ui/Folding/Folding.ts
+								:114</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
-								<p>If <a href="folding.html#options.enableexpand">Folding.options.enableExpand</a> is <code>true</code>, specifies the maximum number of results to load when
-								expanding.</p>
+								<p>Specifies the maximum number of expanded results.</p>
 							</div>
-							<p>Default value is <code>100</code>. Minimum value is <code>1</code>.</p>
+							<p>The default value is 100.</p>
+							<p>The minimum value is 1.</p>
 						</div>
 						<div class="tsd-panel">
 							<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -819,15 +804,15 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in
-									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L85">src/ui/Folding/Folding.ts
-								:85</a></li>
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L72">src/ui/Folding/Folding.ts
+								:72</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
-								<p>Specifies the field that determines whether a given result is a top result containing other child results.</p>
+								<p>Specifies the field that determines if a result is a top result containing other child results.<br/>
+								The default value is <code>@syscontainsattachment</code>.</p>
 							</div>
-							<p>Default value is <code>@containsattachment</code>.</p>
 						</div>
 						<div class="tsd-panel">
 							<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -841,21 +826,20 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in
-									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L97">src/ui/Folding/Folding.ts
-								:97</a></li>
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L83">src/ui/Folding/Folding.ts
+								:83</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
-								<p>Specifies the number of child results to fold.</p>
+								<p>The number of child results to fold.</p>
 							</div>
-							<p><strong>Example:</strong></p>
+							<p>The default value is 2.</p>
+							<p>The minimum value is 0.</p>
 							<blockquote>
-								<p>For an email thread with a total of 20 messages, using the default value of <code>2</code> means that the component loads
-									up to a maximum of 2 child messages under the original message, unless the end user expands the entire
-								conversation using the <strong>Show More</strong> link (see <a href="folding.html#options.enableexpand">Folding.options.enableExpand</a>).</p>
+								<p>Example:
+								For an email thread with 20 messages in total, using the default value means that a maximum of 2 child messages are loaded and displayed under the original message (unless the whole conversation is expanded via the use of a Show all conversation button).</p>
 							</blockquote>
-							<p>Default value is <code>2</code>. Minimum value is <code>0</code>.</p>
 						</div>
 						<div class="tsd-panel">
 							<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -869,23 +853,20 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in
-									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L111">src/ui/Folding/Folding.ts
-								:111</a></li>
+									<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L93">src/ui/Folding/Folding.ts
+								:93</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
-								<p>Specifies the top result and its related child results, following the sort criteria format (<code>date ascending</code>,
-								<code>@somefield ascending</code>, etc.)</p>
+								<p>Specifies the top result and its related child results, following the sort criteria format
+								(<code>date ascending</code>, <code>@somefield ascending</code>, etc.)</p>
 							</div>
-							<p><strong>Example</strong></p>
+							<p>The default value is <code>none</code>, which means that results are displayed in the order that the index returned them.</p>
 							<blockquote>
-								<p>If you specify <code>date descending</code>, the Folding component re-arranges an email conversation so that the newest
-									email is always the top result. Doing the opposite (<code>date ascending</code>) would always make the original email the
-								top result, since it is also the oldest.</p>
+								<p>Example:
+								If you specify date descending, the component re-arranges an email conversation so that the newest email is always the top result. Doing the opposite would allow the original email to always be the top result since it is also the oldest.</p>
 							</blockquote>
-							<p>Default value is <code>none</code>, which means that the component displays the results in the order that they were returned
-							by the index.</p>
 						</div>
 					</section>
 				</section>
@@ -983,8 +964,8 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
-									:124</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L123">src/ui/Base/Component.ts
+									:123</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1008,8 +989,8 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
-									:193</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L192">src/ui/Base/Component.ts
+									:192</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1054,8 +1035,8 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
-							:62</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L61">src/ui/Base/Component.ts
+							:61</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1079,8 +1060,8 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
-							:90</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L89">src/ui/Base/Component.ts
+							:89</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1097,8 +1078,8 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
-							:74</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L73">src/ui/Base/Component.ts
+							:73</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1158,8 +1139,8 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
-							:78</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L77">src/ui/Base/Component.ts
+							:77</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1176,8 +1157,8 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
-							:70</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L69">src/ui/Base/Component.ts
+							:69</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1194,8 +1175,8 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
-							:66</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L65">src/ui/Base/Component.ts
+							:65</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1212,8 +1193,8 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
-							:82</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L81">src/ui/Base/Component.ts
+							:81</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1230,8 +1211,8 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
-							:86</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L85">src/ui/Base/Component.ts
+							:85</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1274,39 +1255,27 @@ Coveo.$(<span class="hljs-string">'#search'</span>).coveo(<span class="hljs-stri
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L204">src/ui/Folding/Folding.ts
-									:204</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Folding/Folding.ts#L177">src/ui/Folding/Folding.ts
+									:177</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new Folding component.</p>
+									<p>Create a new Folding component</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The HTMLElement on which to instantiate the component.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5>options: <span class="tsd-signature-type">IFoldingOptions</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The options for the Folding component.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The bindings that the component requires to function normally. If not set, these will be
-											automatically resolved (with a slower execution time).</p>
 										</div>
 									</div>
 								</li>
