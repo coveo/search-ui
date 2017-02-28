@@ -2,6 +2,7 @@ import { Dropdown } from '../Form/Dropdown';
 import { TextInput } from '../Form/TextInput';
 import { $$ } from '../../../utils/Dom';
 import { DocumentInput } from './DocumentInput';
+import { QueryBuilder } from '../../Base/QueryBuilder';
 
 export class AdvancedFieldInput extends DocumentInput {
 
@@ -30,14 +31,19 @@ export class AdvancedFieldInput extends DocumentInput {
 
   public getValue(): string {
     let inputValue = this.input.getValue();
+    let builder = new QueryBuilder();
     if (inputValue) {
       switch (this.mode.getValue()) {
         case 'Contains':
-          return this.fieldName + '=' + inputValue;
+          builder.advancedExpression.addFieldExpression(this.fieldName, '=', [inputValue]);
+          return builder.build().aq;
+
         case 'DoesNotContain':
-          return this.fieldName + '<>' + inputValue;
+          builder.advancedExpression.addFieldExpression(this.fieldName, '<>', [inputValue]);
+          return builder.build().aq;
         default:
-          return this.fieldName + '==\"' + inputValue + '\"';
+          builder.advancedExpression.addFieldExpression(this.fieldName, '==', [inputValue]);
+          return builder.build().aq;
       }
     }
     return '';

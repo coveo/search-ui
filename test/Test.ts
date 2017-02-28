@@ -385,3 +385,42 @@ PipelineContextText();
 
 import { RevealQuerySuggestAddonTest } from './ui/RevealQuerySuggestAddonTest';
 RevealQuerySuggestAddonTest();
+
+import { ResponsiveComponentsTest } from './ui/ResponsiveComponentsTest';
+ResponsiveComponentsTest();
+
+import { TemplateTest } from './ui/TemplateTest';
+TemplateTest();
+
+import { TemplateListTest } from './ui/TemplateListTest';
+TemplateListTest();
+
+import { TemplateCacheTest } from './ui/TemplateCacheTest';
+TemplateCacheTest();
+
+import { DefaultInstantiateTemplateOptionsTest } from './ui/DefaultInstantiateTemplateOptionsTest';
+DefaultInstantiateTemplateOptionsTest();
+
+import { DefaultRecommendationTemplateTest } from './ui/DefaultRecommendationTemplateTest';
+DefaultRecommendationTemplateTest();
+
+import { DefaultResultTemplateTest } from './ui/DefaultResultTemplateTest';
+DefaultResultTemplateTest();
+
+import { HtmlTemplateTest } from './ui/HtmlTemplateTest';
+HtmlTemplateTest();
+
+import { TemplateConditionEvaluatorTest } from './ui/TemplateConditionEvaluatorTest';
+TemplateConditionEvaluatorTest();
+
+import { TemplateFieldsEvaluatorTest } from './ui/TemplateFieldsEvaluatorTest';
+TemplateFieldsEvaluatorTest();
+
+import { TemplateFromAScriptTagTest } from './ui/TemplateFromAScriptTagTest';
+TemplateFromAScriptTagTest();
+
+import { UnderscoreTemplateTest } from './ui/UnderscoreTemplateTest';
+UnderscoreTemplateTest();
+
+import { ResponsiveComponentsManagerTest } from './ui/ResponsiveComponents/ResponsiveComponentsManagerTest';
+ResponsiveComponentsManagerTest();
