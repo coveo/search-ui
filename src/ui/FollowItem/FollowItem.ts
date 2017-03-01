@@ -41,10 +41,6 @@ export class FollowItem extends Component {
     });
   }
 
-  static fields = [
-    'urihash'
-  ];
-
   /**
    * The options for the follow item component
    * @componentOptions

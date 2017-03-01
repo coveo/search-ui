@@ -5,7 +5,6 @@ import { ISliderOptions, Slider, IEndSlideEventArgs, IDuringSlideEventArgs, ISli
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
-import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
 import { FacetHeader } from '../Facet/FacetHeader';
 import { l } from '../../strings/Strings';
 import { InitializationEvents } from '../../events/InitializationEvents';
@@ -24,6 +23,7 @@ import { Initialization } from '../Base/Initialization';
 import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
 import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
+import { ResponsiveFacetSlider } from '../ResponsiveComponents/ResponsiveFacetSlider';
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;
@@ -383,7 +383,7 @@ export class FacetSlider extends Component {
     super(element, FacetSlider.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, FacetSlider, options);
 
-    ResponsiveFacets.init(this.root, this, this.options);
+    ResponsiveFacetSlider.init(this.root, this, this.options);
 
     if (this.options.excludeOuterBounds == null) {
       this.options.excludeOuterBounds = false;

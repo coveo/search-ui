@@ -44,6 +44,9 @@ export class Initialization {
   // List of every fields that are needed by components when doing a query (the fieldsToInclude property in the query)
   // Since results components are lazy loaded after the first query (when doing the rendering) we need to register the needed fields before their implementation are loaded in the page.
   private static fieldsNeededForQuery: string[] = [];
+  // List of every fields that are needed by components when doing a query (the fieldsToInclude property in the query), linked to the component that needs them
+  // It is a bit different from `fieldsNeededForQuery` because we can, in some scenarios, optimize to only get fields for components that are actually in the page
+  private static fieldsNeededForQueryByComponent: IStringMap<string[]> = {};
   private static namedMethods: { [s: string]: any; } = {};
 
   /**
@@ -123,21 +126,35 @@ export class Initialization {
     }
   }
 
-  public static registerComponentField(field: string) {
+  public static registerComponentField(componentId: string, field: string) {
     if (!_.contains(Initialization.fieldsNeededForQuery, field)) {
       Initialization.fieldsNeededForQuery.push(field);
     }
   }
 
-  public static registerComponentFields(fields: string[]) {
-    let diff = _.difference(fields, Initialization.fieldsNeededForQuery);
-    if (diff && diff.length > 0) {
-      Initialization.fieldsNeededForQuery = Initialization.fieldsNeededForQuery.concat(diff);
-    }
+  public static registerComponentFields(componentId: string, fields: string[]) {
+    Initialization.fieldsNeededForQuery = Utils.concatWithoutDuplicate(Initialization.fieldsNeededForQuery, fields);
+
+    // Register with both name (eg : Facet and CoveoFacet) to reduce possible confusion.
+    // The id concept for component is fuzzy for a lot of people (include the Coveo prefix or not)
+    let registerById = (id) => {
+      if (Initialization.fieldsNeededForQueryByComponent[id] == null) {
+        Initialization.fieldsNeededForQueryByComponent[id] = fields;
+      } else {
+        Initialization.fieldsNeededForQueryByComponent[id] = Utils.concatWithoutDuplicate(Initialization.fieldsNeededForQueryByComponent[id], fields);
+      }
+    };
+
+    registerById(componentId);
+    registerById(Component.computeCssClassNameForType(componentId));
   }
 
-  public static getRegisteredComponentFields() {
+  public static getRegisteredFieldsForQuery() {
     return Initialization.fieldsNeededForQuery;
+  }
+
+  public static getRegisteredFieldsComponentForQuery(componentId: string): string[] {
+    return Initialization.fieldsNeededForQueryByComponent[componentId] || []
   }
 
   /**
@@ -223,7 +240,6 @@ export class Initialization {
         });
       }
     });
-
   }
 
   /**

@@ -39,15 +39,23 @@ lazyCardOverlay();
 
 import { lazyChatterLikedBy } from './ui/ChatterLikedBy/LazyChatterLikedBy';
 lazyChatterLikedBy();
+import { registerFields as chatterLikedByRegisterFields } from './ui/ChatterLikedBy/ChatterLikedByFields';
+chatterLikedByRegisterFields();
 
 import { lazyChatterPostAttachment } from './ui/ChatterPostAttachment/LazyChatterPostAttachment';
 lazyChatterPostAttachment();
+import { registerFields as chatterPostAttachmentRegisterFields } from './ui/ChatterPostAttachment/ChatterPostAttachmentFields';
+chatterPostAttachmentRegisterFields();
 
 import { lazyChatterPostedBy } from './ui/ChatterPostedBy/LazyChatterPostedBy';
 lazyChatterPostedBy();
+import { registerFields as chatterPostedByRegisterFields } from './ui/ChatterPostedBy/ChatterPostedByFields';
+chatterPostedByRegisterFields();
 
 import { lazyChatterTopic } from './ui/ChatterTopic/LazyChatterTopic';
 lazyChatterTopic();
+import { registerFields as chatterTopicRegisterFields } from './ui/ChatterTopic/ChatterTopicFields';
+chatterTopicRegisterFields();
 
 import { lazyDidYouMean } from './ui/DidYouMean/LazyDidYouMean';
 lazyDidYouMean();
@@ -93,6 +101,8 @@ lazyHierarchicalFacet();
 
 import { lazyIcon } from './ui/Icon/LazyIcon';
 lazyIcon();
+import { registerFields as iconRegisterFields } from './ui/Icon/IconFields';
+iconRegisterFields();
 
 import { lazyImageResultList } from './ui/ImageResultList/LazyImageResultList';
 lazyImageResultList();
@@ -120,6 +130,8 @@ lazyPreferencesPanel();
 
 import { lazyPrintableUri } from './ui/PrintableUri/LazyPrintableUri';
 lazyPrintableUri();
+import { registerFields as registerFieldsPrintableUri } from './ui/PrintableUri/PrintableUriFields';
+registerFieldsPrintableUri();
 
 import { lazyQuerybox } from './ui/Querybox/LazyQuerybox';
 lazyQuerybox();
@@ -132,6 +144,8 @@ lazyQuerySummary();
 
 import { lazyQuickview } from './ui/Quickview/LazyQuickview';
 lazyQuickview();
+import { registerFields as quickviewRegisterFields } from './ui/Quickview/QuickviewFields';
+quickviewRegisterFields();
 
 import { lazyRecommendation } from './ui/Recommendation/LazyRecommendation';
 lazyRecommendation();
@@ -147,6 +161,8 @@ lazyResultLayout();
 
 import { lazyResultLink } from './ui/ResultLink/LazyResultLink';
 lazyResultLink();
+import { registerFields as resultLinkRegisterFields } from './ui/ResultLink/ResultLinkFields';
+resultLinkRegisterFields();
 
 import { lazyResultList } from './ui/ResultList/LazyResultList';
 lazyResultList();
@@ -168,6 +184,8 @@ lazyResultTagging();
 
 import { lazyFollowItem } from './ui/FollowItem/LazyFollowItem';
 lazyFollowItem();
+import { registerFields as followItemRegisterFields } from './ui/FollowItem/FollowItemFields';
+followItemRegisterFields();
 
 import { lazySearchAlerts } from './ui/SearchAlerts/LazySearchAlerts';
 lazySearchAlerts();
@@ -198,12 +216,16 @@ lazyText();
 
 import { lazyThumbnail } from './ui/Thumbnail/LazyThumbnail';
 lazyThumbnail();
+import { registerFields as thumbnailRegisterFields } from './ui/Thumbnail/ThumbnailFields';
+thumbnailRegisterFields();
 
 import { lazyTriggers } from './ui/Triggers/LazyTriggers';
 lazyTriggers();
 
 import { lazyYouTubeThumbnail } from './ui/YouTube/LazyYouTubeThumbnail';
 lazyYouTubeThumbnail();
+import { registerFields as youtubeThumbnailRegisterFields } from './ui/YouTube/YouTubeThumbnailFields';
+youtubeThumbnailRegisterFields();
 
 import { swapVar } from './SwapVar';
 swapVar(this);

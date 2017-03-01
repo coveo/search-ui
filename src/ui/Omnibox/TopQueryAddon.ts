@@ -1,8 +1,7 @@
 ///<reference path="Omnibox.ts"/>
-import { IOmniboxSuggestion, Omnibox, IPopulateOmniboxSuggestionsEventArgs } from './Omnibox';
+import { IOmniboxSuggestion, Omnibox, IPopulateOmniboxSuggestionsEventArgs, MagicBox } from './Omnibox';
 import { OmniboxEvents } from '../../events/OmniboxEvents';
 import { $$ } from '../../utils/Dom';
-import { MagicBox } from '../../ExternalModulesShim';
 import * as _ from 'underscore';
 
 export class TopQueryAddon {

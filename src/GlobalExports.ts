@@ -13,9 +13,6 @@ export function exportGlobally(toExportGlobally: IExportedGlobally) {
   }
   _.each(_.keys(toExportGlobally), (key: string) => {
     window['Coveo'][key] = toExportGlobally[key];
-    if (toExportGlobally[key].fields) {
-      registerComponentRequiredFields(toExportGlobally[key]);
-    }
   });
 }
 
@@ -25,13 +22,5 @@ export function lazyExport(component: IComponentDefinition, promiseResolve: Func
   } else {
     new Logger(this).error(`Component ${component} has no export function !`);
   }
-
-  if (component.fields) {
-    registerComponentRequiredFields(component);
-  }
   promiseResolve(component);
-}
-
-export function registerComponentRequiredFields(component: IComponentDefinition) {
-
 }

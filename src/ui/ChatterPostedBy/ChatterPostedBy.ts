@@ -32,16 +32,6 @@ export class ChatterPostedBy extends Component {
     openInSubTab: ComponentOptions.buildBooleanOption({ defaultValue: true }),
   };
 
-  static fields = [
-    'sfcreatedby',
-    'sfcreatedbyid',
-    'sffeeditemid',
-    'sfuserid',
-    'sfinsertedbyid',
-    'sfparentid',
-    'sfparentname'
-  ];
-
   constructor(public element: HTMLElement, public options?: IChatterPostedByOption, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {
     super(element, ChatterPostedBy.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ChatterPostedBy, options);

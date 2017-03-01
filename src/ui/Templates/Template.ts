@@ -7,6 +7,7 @@ import { IQueryResult } from '../../rest/QueryResult';
 import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
 import * as _ from 'underscore';
 import { Initialization } from '../Base/Initialization';
+import { Utils } from '../../utils/Utils';
 
 export interface ITemplateProperties {
   condition?: Function;
@@ -70,7 +71,7 @@ export class Template implements ITemplateProperties {
   public mobile: boolean;
   public tablet: boolean;
   public desktop: boolean;
-  public fields: string[];
+  public fields: string[] = [];
   public layout: ValidLayout;
 
   constructor(public dataToString?: (object?: any) => string) {
@@ -147,6 +148,31 @@ export class Template implements ITemplateProperties {
     return null;
   }
 
+  addField(field: string) {
+    if (!_.contains(this.fields, field)) {
+      this.fields.push(field);
+    }
+  }
+
+  addFields(fields: string[]) {
+    if (Utils.isNonEmptyArray(fields)) {
+      this.fields = Utils.concatWithoutDuplicate(this.fields, fields);
+    }
+  }
+
+  getComponentsInside(tmplString: string): string[] {
+    let allComponentsInsideCurrentTemplate = _.map(Initialization.getListOfRegisteredComponents(), (componentId: string) => {
+      let regex = new RegExp(`Coveo${componentId}`, 'g');
+      if (regex.exec(tmplString)) {
+        return componentId;
+      } else {
+        return null;
+      }
+    });
+
+    return _.compact(allComponentsInsideCurrentTemplate);
+  }
+
   instantiateToElement(object: IQueryResult, instantiateTemplateOptions: IInstantiateTemplateOptions = {}): Promise<HTMLElement> {
     let merged = new DefaultInstantiateTemplateOptions().merge(instantiateTemplateOptions);
 
@@ -155,24 +181,13 @@ export class Template implements ITemplateProperties {
       return null;
     }
 
-    if (!this.fields) {
-      this.fields = [];
-    }
-
-    this.fields = this.fields.concat(Initialization.getRegisteredComponentFields());
-
-    let allComponentsInsideCurrentTemplate = _.map(Initialization.getListOfRegisteredComponents(), (componentId: string) => {
-      let regex = new RegExp(`Coveo${componentId}`, 'g');
-      if (regex.exec(html)) {
-        return Initialization.getLazyRegisteredComponent(componentId).then((lazyLoadedComponent) => {
-          return lazyLoadedComponent;
-        });
-      } else {
-        return null;
-      }
+    let allComponentsLazyLoaded = _.map(this.getComponentsInside(html), (component: string)=> {
+      return Initialization.getLazyRegisteredComponent(component).then((lazyLoadedComponent) => {
+        return lazyLoadedComponent;
+      });
     });
 
-    return Promise.all(allComponentsInsideCurrentTemplate).then(() => {
+    return Promise.all(allComponentsLazyLoaded).then(() => {
       var element = $$('div', {}, html).el;
       if (!merged.wrapInDiv && element.children.length === 1) {
         element = <HTMLElement>element.children.item(0);
@@ -191,7 +206,7 @@ export class Template implements ITemplateProperties {
   }
 
   getFields(): string[] {
-    return this.fields || [];
+    return this.fields;
   }
 
   getType() {

@@ -5,5 +5,5 @@ export const fields = [
 ];
 
 export function registerFields() {
-  Initialization.registerComponentFields(fields);
+  Initialization.registerComponentFields('YouTubeThumbnail', fields);
 }

@@ -1,13 +1,13 @@
 import { IComponentDefinition } from '../Base/Component';
 import { Initialization } from '../Base/Initialization';
+import { lazyExport } from '../../GlobalExports';
 
 export function lazyBackdrop() {
   Initialization.registerLazyComponent('Backdrop', () => {
     return new Promise((resolve, reject) => {
       require.ensure(['./Backdrop'], () => {
         let loaded = require<IComponentDefinition>('./Backdrop.ts')['Backdrop'];
-        loaded.doExport();
-        resolve(loaded);
+        lazyExport(loaded, resolve);
       }, 'Backdrop');
     });
   });

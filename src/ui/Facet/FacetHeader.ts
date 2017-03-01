@@ -1,6 +1,3 @@
-/// <reference path="Facet.ts" />
-/// <reference path="FacetSettings.ts" />
-
 import FacetSliderModuleDefinition = require('../FacetSlider/FacetSlider');
 import FacetModuleDefinition = require('./Facet');
 import { IFacetSettingsKlass, FacetSettings } from './FacetSettings';

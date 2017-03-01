@@ -58,15 +58,6 @@ export class Thumbnail extends Component {
 
   static parent = ResultLink;
 
-  static fields = [
-    'outlookformacuri',
-    'outlookuri',
-    'connectortype',
-    'urihash',  //     ⎫
-    'collection', //   ⎬--- analytics
-    'source' //        ⎭
-  ];
-
   public img: HTMLImageElement;
 
   /**

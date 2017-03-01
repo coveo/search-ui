@@ -18,10 +18,6 @@ export class ChatterTopic extends Component {
     });
   }
 
-  static fields = [
-    'coveochatterfeedtopics'
-  ];
-
   constructor(public element: HTMLElement, public options?: IChatterTopicOption, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {
     super(element, ChatterTopic.ID, bindings);
 

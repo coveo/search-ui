@@ -30,13 +30,6 @@ export class ChatterLikedBy extends Component {
     openInSubTab: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
-  static fields = [
-    'sflikedby',
-    'sflikedbyid',
-    'clickableuri',
-    'sffeeditemid'
-  ];
-
   constructor(public element: HTMLElement, public options?: IChatterLikedByOptions, public bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, ChatterLikedBy.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ChatterLikedBy, options);

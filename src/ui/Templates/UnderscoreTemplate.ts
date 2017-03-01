@@ -51,10 +51,6 @@ export class UnderscoreTemplate extends Template {
     return 'UnderscoreTemplate';
   }
 
-  getFields() {
-    return this.fields;
-  }
-
   static registerTemplateHelper(helperName: string, helper: ITemplateHelperFunction) {
     UnderscoreTemplate.templateHelpers[helperName] = helper;
   }

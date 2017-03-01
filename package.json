@@ -6,7 +6,7 @@
   "scripts": {
     "test": "gulp test && gulp coverage",
     "build": "gulp",
-    "minimize": "node node_modules/webpack/bin/webpack.js --minimize",
+    "minimize": "node node_modules/webpack/bin/webpack.js --env minimize",
     "doc": "gulp doc",
     "docsitemap": "gulp docsitemap",
     "injectTag": "gulp injectTag",

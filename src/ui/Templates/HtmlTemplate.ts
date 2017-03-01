@@ -27,10 +27,6 @@ export class HtmlTemplate extends Template {
     return 'HtmlTemplate';
   }
 
-  getFields(): string[] {
-    return this.fields;
-  }
-
   static create(element: HTMLElement): HtmlTemplate {
     Assert.exists(element);
     return new HtmlTemplate(element);

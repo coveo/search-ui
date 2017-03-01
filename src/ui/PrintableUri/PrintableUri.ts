@@ -27,10 +27,6 @@ export class PrintableUri extends Component {
     });
   }
 
-  static fields = [
-    'parents'
-  ];
-
   private uri: string;
 
   /**

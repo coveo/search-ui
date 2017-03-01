@@ -3,7 +3,6 @@ import { InitializationEvents } from '../../events/InitializationEvents';
 import { Component } from '../Base/Component';
 import { SearchInterface } from '../SearchInterface/SearchInterface';
 import { Utils } from '../../utils/Utils';
-import { Tab } from '../Tab/Tab';
 import * as _ from 'underscore';
 
 export interface IResponsiveComponentOptions {
@@ -172,7 +171,7 @@ export class ResponsiveComponentsManager {
   }
 
   private isTabs(ID: string): boolean {
-    return ID == Tab.ID;
+    return ID == 'Tab';
   }
 
   private isActivated(ID: string): boolean {

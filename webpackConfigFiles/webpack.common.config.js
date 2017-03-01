@@ -1,6 +1,6 @@
 'use strict';
 const webpack = require('webpack');
-const minimize = process.argv.indexOf('--minimize') !== -1;
+const minimize = process.argv.indexOf('minimize') !== -1;
 const colors = require('colors');
 
 // Fail plugin will allow the webpack ts-loader to fail correctly when the TS compilation fails

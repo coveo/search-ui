@@ -1880,17 +1880,4 @@ export class Facet extends Component {
   }
 }
 
-/*export { FacetHeader } from './FacetHeader';
- export { FacetSearchValuesList } from './FacetSearchValuesList';
- export { FacetSettings } from './FacetSettings';
- export { FacetSort } from './FacetSort';
- export { FacetUtils } from './FacetUtils';
- export { FacetValueElement } from './FacetValueElement';
- export { FacetValue, FacetValues } from './FacetValues';
- export { ValueElementRenderer } from './ValueElementRenderer';
- export { FacetSearch } from './FacetSearch';
- export { FacetSearchParameters } from './FacetSearchParameters';*/
-
-
-
 Initialization.registerAutoCreateComponent(Facet);

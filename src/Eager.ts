@@ -44,15 +44,23 @@ CardOverlay.doExport();
 
 import { ChatterLikedBy } from './ui/ChatterLikedBy/ChatterLikedBy';
 ChatterLikedBy.doExport();
+import { registerFields as chatterLikedByRegisterFields } from './ui/ChatterLikedBy/ChatterLikedByFields';
+chatterLikedByRegisterFields();
 
 import { ChatterPostAttachment } from './ui/ChatterPostAttachment/ChatterPostAttachment';
 ChatterPostAttachment.doExport();
+import { registerFields as chatterPostAttachmentRegisterFields } from './ui/ChatterPostAttachment/ChatterPostAttachmentFields';
+chatterPostAttachmentRegisterFields();
 
 import { ChatterPostedBy } from './ui/ChatterPostedBy/ChatterPostedBy';
 ChatterPostedBy.doExport();
+import { registerFields as chatterPostedByRegisterFields } from './ui/ChatterPostedBy/ChatterPostedByFields';
+chatterPostedByRegisterFields();
 
 import { ChatterTopic } from './ui/ChatterTopic/ChatterTopic';
 ChatterTopic.doExport();
+import { registerFields as chatterTopicRegisterFields } from './ui/ChatterTopic/ChatterTopicFields';
+chatterTopicRegisterFields();
 
 import { DidYouMean } from './ui/DidYouMean/DidYouMean';
 DidYouMean.doExport();
@@ -92,6 +100,8 @@ FoldingForThread.doExport();
 
 import { FollowItem } from './ui/FollowItem/FollowItem';
 FollowItem.doExport();
+import { registerFields as followItemRegisterFields } from './ui/FollowItem/FollowItemFields';
+followItemRegisterFields();
 
 import { HiddenQuery } from './ui/HiddenQuery/HiddenQuery';
 HiddenQuery.doExport();
@@ -101,6 +111,8 @@ HierarchicalFacet.doExport();
 
 import { Icon } from './ui/Icon/Icon';
 Icon.doExport();
+import { registerFields as iconRegisterFields } from './ui/Icon/IconFields';
+iconRegisterFields();
 
 import { ImageResultList } from './ui/ImageResultList/ImageResultList';
 ImageResultList.doExport();
@@ -128,6 +140,8 @@ PreferencesPanel.doExport();
 
 import { PrintableUri } from './ui/PrintableUri/PrintableUri';
 PrintableUri.doExport();
+import { registerFields as registerFieldsPrintableUri } from './ui/PrintableUri/PrintableUriFields';
+registerFieldsPrintableUri();
 
 import { Querybox } from './ui/Querybox/Querybox';
 Querybox.doExport();
@@ -140,6 +154,8 @@ QuerySummary.doExport();
 
 import { Quickview } from './ui/Quickview/Quickview';
 Quickview.doExport();
+import { registerFields as quickviewRegisterFields } from './ui/Quickview/QuickviewFields';
+quickviewRegisterFields();
 
 import { Recommendation } from './ui/Recommendation/Recommendation';
 Recommendation.doExport();
@@ -155,8 +171,8 @@ ResultLayout.doExport();
 
 import { ResultLink } from './ui/ResultLink/ResultLink';
 ResultLink.doExport();
-import { registerFields as registerFieldsResultLink } from './ui/ResultLink/ResultLinkFields';
-registerFieldsResultLink();
+import { registerFields as resultLinkRegisterFields } from './ui/ResultLink/ResultLinkFields';
+resultLinkRegisterFields();
 
 import { ResultList } from './ui/ResultList/ResultList';
 ResultList.doExport();
@@ -205,20 +221,18 @@ Text.doExport();
 
 import { Thumbnail } from './ui/Thumbnail/Thumbnail';
 Thumbnail.doExport();
+import { registerFields as thumbnailRegisterFields } from './ui/Thumbnail/ThumbnailFields';
+thumbnailRegisterFields();
 
 import { Triggers } from './ui/Triggers/Triggers';
 Triggers.doExport();
 
 import { YouTubeThumbnail } from './ui/YouTube/YouTubeThumbnail';
 YouTubeThumbnail.doExport();
-import { registerFields as registerFieldsYouTubeThumbnail } from './ui/YouTube/YouTubeThumbnailFields';
-registerFieldsYouTubeThumbnail();
-
+import { registerFields as youtubeThumbnailRegisterFields } from './ui/YouTube/YouTubeThumbnailFields';
+youtubeThumbnailRegisterFields();
 
 export { Template } from './ui/Templates/Template';
-
-
-
 
 import { swapVar } from './SwapVar';
 swapVar(this);

@@ -72,13 +72,6 @@ interface IQuickviewOpenerObject {
 export class Quickview extends Component {
   static ID = 'Quickview';
 
-  static fields = [
-    'urihash', // analytics
-    'collection', // analytics
-    'source', // analytics,
-    'author' // analytics
-  ];
-
   static doExport = () => {
     exportGlobally({
       'Quickview': Quickview,

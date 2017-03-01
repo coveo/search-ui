@@ -362,4 +362,12 @@ export class Utils {
       }
     });
   }
+
+  static concatWithoutDuplicate(firstArray: any[], secondArray: any[]) {
+    let diff = _.difference(secondArray, firstArray);
+    if (diff && diff.length > 0) {
+      firstArray = firstArray.concat(diff);
+    }
+    return firstArray;
+  }
 }

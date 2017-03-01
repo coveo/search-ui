@@ -79,11 +79,6 @@ export class Icon extends Component {
     labelValue: ComponentOptions.buildLocalizedStringOption()
   };
 
-  static fields = [
-    'objecttype',
-    'filetype',
-  ];
-
   /**
    * Creates a new Icon component.
    * @param element The HTMLElement on which to instantiate the component.
