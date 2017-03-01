@@ -3,6 +3,9 @@ $spaceBetween: 0 5px;
 .CoveoAdvancedSearch {
   position: relative;
   text-align: left;
+  @media (max-width: 800px) {
+    margin: 20px;
+  }
 }
 
 .coveo-advanced-search-section {
