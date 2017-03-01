@@ -21,7 +21,8 @@ export class PrintableUri extends Component {
   static options: IPrintableUriOptions = {};
 
   static fields = [
-    'parents'
+    'parents',
+    'author'
   ];
 
   private uri: string;
@@ -155,6 +156,11 @@ export class PrintableUri extends Component {
 
   private bindLogOpenDocument(link: HTMLElement) {
     $$(link).on(['mousedown', 'touchend'], (e: Event) => {
+      // jQuery event != standard dom event for mouse events
+      // if we have access to the original event, use that.
+      if ((<any>e).originalEvent) {
+        e = (<any>e).originalEvent;
+      }
       let url = $$(<HTMLElement>e.srcElement).getAttribute('href');
       let title = $$(<HTMLElement>e.srcElement).text();
       this.usageAnalytics.logClickEvent(analyticsActionCauseList.documentOpen, {

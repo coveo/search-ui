@@ -146,7 +146,15 @@ export class Dropdown {
 
     $$(this.element).on('mouseleave', (e: MouseEvent) => {
       setTimeout(() => {
-        if (e.target == this.element && $$(this.element).hasClass('coveo-open')) {
+        let target;
+        // There is a slight difference between jQuery target/currentTarget
+        // and standard DOM events. Add a special check to cover both cases.
+        if (e.currentTarget) {
+          target = e.currentTarget;
+        } else {
+          target = e.target;
+        }
+        if (target == this.element && $$(this.element).hasClass('coveo-open')) {
           this.close();
         }
       }, 300);

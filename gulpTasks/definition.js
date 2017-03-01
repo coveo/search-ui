@@ -22,6 +22,7 @@ gulp.task('cleanDefs', function () {
       .pipe(footer('declare module "coveo-search-ui" {\n\texport = Coveo;\n}'))
       .pipe(replace(/never/gm, 'void'))
       .pipe(replace(/ensureDom: Function;\n\s*options\?: any;/gm, 'ensureDom: Function;\n\t\toptions: any;'))
+      .pipe(replace(/^(\s*const\s\w+\s)(=\s\w+);$/gm, '$1: any;'))
       .pipe(gulp.dest('bin/ts/'));
 });
 
