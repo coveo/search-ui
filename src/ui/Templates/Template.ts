@@ -181,7 +181,7 @@ export class Template implements ITemplateProperties {
       return null;
     }
 
-    let allComponentsLazyLoaded = _.map(this.getComponentsInside(html), (component: string)=> {
+    let allComponentsLazyLoaded = _.map(this.getComponentsInside(html), (component: string) => {
       return Initialization.getLazyRegisteredComponent(component).then((lazyLoadedComponent) => {
         return lazyLoadedComponent;
       });

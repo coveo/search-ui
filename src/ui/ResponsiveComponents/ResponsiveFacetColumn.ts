@@ -1,8 +1,8 @@
 import { $$, Dom } from '../../utils/Dom';
 import {
-    IResponsiveComponent,
-    ResponsiveComponentsManager,
-    IResponsiveComponentOptions
+  IResponsiveComponent,
+  ResponsiveComponentsManager,
+  IResponsiveComponentOptions
 } from './ResponsiveComponentsManager';
 import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
 import { Component } from '../Base/Component';
@@ -109,8 +109,8 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
 
   private buildDropdownContent(): ResponsiveDropdownContent {
     let dropdownContentElement = $$(this.coveoRoot.find('.coveo-facet-column'));
-    let filterByContainer = $$('div', {className: 'coveo-facet-header-filter-by-container', style: 'display: none'});
-    let filterBy = $$('div', {className: 'coveo-facet-header-filter-by'});
+    let filterByContainer = $$('div', { className: 'coveo-facet-header-filter-by-container', style: 'display: none' });
+    let filterBy = $$('div', { className: 'coveo-facet-header-filter-by' });
     filterBy.text(l('Filter by:'));
     filterByContainer.append(filterBy.el);
     dropdownContentElement.prepend(filterByContainer.el);
@@ -155,7 +155,7 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
       if (component.options) {
         component.options.preservePosition = this.preservePositionOriginalValues[index];
       }
-    })
+    });
   }
 
   private disableFacetPreservePosition() {
@@ -163,7 +163,7 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
       if (component.options) {
         component.options.preservePosition = false;
       }
-    })
+    });
   }
 
   private isFacetSearchScrolledIntoView(facetSearchElement: HTMLElement) {

@@ -154,7 +154,7 @@ export class Initialization {
   }
 
   public static getRegisteredFieldsComponentForQuery(componentId: string): string[] {
-    return Initialization.fieldsNeededForQueryByComponent[componentId] || []
+    return Initialization.fieldsNeededForQueryByComponent[componentId] || [];
   }
 
   /**

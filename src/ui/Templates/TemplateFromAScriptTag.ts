@@ -52,11 +52,11 @@ export class TemplateFromAScriptTag {
     // Scan components in this template
     // return the fields needed for the content of this template
     let neededFieldsForComponents = _.chain(this.template.getComponentsInside(scriptTag.innerHTML))
-                                     .map((component: string)=> {
-                                       return Initialization.getRegisteredFieldsComponentForQuery(component);
-                                     })
-                                     .flatten()
-                                     .value();
+      .map((component: string) => {
+        return Initialization.getRegisteredFieldsComponentForQuery(component);
+      })
+      .flatten()
+      .value();
 
     this.template.addFields(neededFieldsForComponents);
   }

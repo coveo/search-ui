@@ -1,4 +1,4 @@
-//import  { Template } from './Template';
+// import  { Template } from './Template';
 import TemplateModule = require('./Template');
 import { Assert } from '../../misc/Assert';
 import { UnderscoreTemplate } from './UnderscoreTemplate';
