@@ -44,8 +44,8 @@ export interface IRecommendationOptions extends ISearchInterfaceOptions {
  *
  * To get history-based recommendations, you will likely want to include the `pageview` script in your page (see
  * [coveo.analytics.js](https://github.com/coveo/coveo.analytics.js)). However, including this script is not mandatory.
- * For instance, you could use the Recommendation component without Reveal to create a simple "recommended people"
- * interface.
+ * For instance, you could use the Recommendation component without the Coveo Machine Learning service to create a
+ * simple "recommended people" interface.
  *
  * It is possible to include this component inside another SearchInterface, but it is also possible to instantiate it as
  * a "standalone" search interface, without even instantiating a main SearchInterface component. In any case, a
@@ -105,7 +105,8 @@ export class Recommendation extends SearchInterface implements IComponentBinding
     /**
      * Specifies whether to send the actions history along with the triggered query.
      *
-     * Setting this option to `false` makes it impossible for this component to get Reveal recommendations.
+     * Setting this option to `false` makes it impossible for this component to get Coveo Machine Learning
+     * recommendations.
      *
      * However, setting this option to `false` can be useful to display side results in a search page.
      *

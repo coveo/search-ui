@@ -1,58 +1,72 @@
 import { IStringMap } from './GenericParam';
 /**
- * Describe a suggestion of completion from reveal
+ * The IRevealQuerySuggestCompletion interface describes a completion suggestion from the Coveo Machine Learning
+ * service (see [Coveo Machine Learning](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=177).
  */
 export interface IRevealQuerySuggestCompletion {
+
   /**
-   * The expression to complete
+   * Contains the expression to complete.
    */
   expression: string;
+
   /**
-   * The degree of confidence from reveal that the suggestion is relevant
+   * Contains a value indicating how certain the Coveo Machine Learning service is that this suggestion is actually
+   * relevant.
    */
   score: number;
+
   /**
-   * The highlighted expression to complete
+   * Contains the highlighted expression to complete.
    */
   highlighted: string;
+
   /**
-   * The confidence level that this suggestion should be executed
+   * Contains a value indicating the confidence level that this suggestion should be executed.
    */
   executableConfidence: number;
 }
 
 /**
- * Describe a response from reveal query suggestions
+ * The IRevealQuerySuggestResponse interface describes a response from the Coveo Machine Learning service query
+ * suggestions.
  */
 export interface IRevealQuerySuggestResponse {
+
   /**
-   * An array of completions
+   * Contains an array of completions.
    */
   completions: IRevealQuerySuggestCompletion[];
 }
 
 /**
- * Describe a request to reveal query suggest
+ * The IRevealQuerySuggestRequest interface describes a request to the Coveo Machine Learning service query suggest.
  */
 export interface IRevealQuerySuggestRequest {
+
   /**
-   * Query / word for which to get completions
+   * Specifies the query / word for which to get completion.
    */
   q: string;
   /**
-   * The search hub for which to get suggestions
+   * Specifies the search hub for which to get suggestions.
    */
   searchHub?: string;
+
   /**
-   * Number of suggestions that the service should return. Default to 5
+   * Specifies the number of suggestions that the Coveo Machine Learning service should return.
+   *
+   * Default value is `5`.
    */
   count?: number;
+
   /**
-   * The pipeline to use for the request.
+   * Specifies the pipeline to use for the request.
    */
   pipeline?: string;
+
   /**
-   * The context to use for the request
+   * Specifies the context to use for the request.
    */
   context?: IStringMap<any>;
   language?: string;
