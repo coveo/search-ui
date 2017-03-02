@@ -164,7 +164,7 @@
 							<li class=" tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static">
 								<a href="imageresultlist.html#id" class="tsd-kind-icon">ID</a>
 							</li>
-							<li class=" tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+							<li class=" tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
 								<a href="imageresultlist.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 						</ul>
@@ -195,8 +195,10 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>This component is an extension of the <code>ResultList</code> component to display image results.</p>
+						<p>The ImageResultList component extends the <a href="resultlist.html">ResultList</a> component to display image results.</p>
 					</div>
+					<p>This component inherits from the <a href="resultlist.html">ResultList</a> component. Thus, any option available for a ResultList component
+					is also available for an ImageResultList component.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -246,10 +248,10 @@
 								<li class="tsd-kind-property tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="imageresultlist.html#id" class="tsd-kind-icon">ID</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="imageresultlist.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite"><a href="imageresultlist.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 					</div>
@@ -264,15 +266,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ImageResultList/ImageResultList.ts#L50">src/ui/ImageResultList/ImageResultList.ts
-							:50</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ImageResultList/ImageResultList.ts#L59">src/ui/ImageResultList/ImageResultList.ts
+							:59</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the width of a column in a column layout.
-							The default value is 170.</p>
+							<p>Specifies the width of a column in a column layout.</p>
 						</div>
+						<p>Default value is <code>225</code>. Minimum value is <code>16</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -286,15 +288,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ImageResultList/ImageResultList.ts#L45">src/ui/ImageResultList/ImageResultList.ts
-							:45</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ImageResultList/ImageResultList.ts#L52">src/ui/ImageResultList/ImageResultList.ts
+							:52</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the maximum height of a row in a row layout.
-							The default value is 250.</p>
+							<p>Specifies the maximum height of a row in a row layout.</p>
 						</div>
+						<p>Default value is <code>250</code>. Minimum value is <code>16</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -308,17 +310,19 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ImageResultList/ImageResultList.ts#L37">src/ui/ImageResultList/ImageResultList.ts
-							:37</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ImageResultList/ImageResultList.ts#L42">src/ui/ImageResultList/ImageResultList.ts
+							:42</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the type of layout used to display images results.
-								The available values are:
-								row - Displays resized images that fit to the width of the container and have the same height for a row.
-								column - Displays the images in fixed-size columns.
-							The default value is <code>row</code>.</p>
+							<p>Specifies the type of layout to display image results with.
+							Available values are:</p>
+							<ul>
+								<li><code>row</code>: Resizes images to make them fit the width of the container and have the same height for each row.</li>
+								<li><code>column</code>: Displays the images in fixed-size columns.
+								Default value is <code>row</code>.</li>
+							</ul>
 						</div>
 					</div>
 					<div class="tsd-panel">
@@ -341,19 +345,22 @@
 								<p>Inherited from <a href="resultlist.html">ResultList</a>.<a href="resultlist.html#buildresult">buildResult</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L290">src/ui/ResultList/ResultList.ts
-									:290</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L391">src/ui/ResultList/ResultList.ts
+									:391</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Build and return an HTMLElement for the given result.</p>
+									<p>Builds and returns an HTMLElement for the given result.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>result: <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the result to build an HTMLElement from.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
@@ -372,13 +379,13 @@
 								<p>Inherited from <a href="resultlist.html">ResultList</a>.<a href="resultlist.html#buildresults">buildResults</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L273">src/ui/ResultList/ResultList.ts
-									:273</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L374">src/ui/ResultList/ResultList.ts
+									:374</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Build and return an array of HTMLElement with the given result set.</p>
+									<p>Builds and returns an array of HTMLElement with the given result set.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -386,6 +393,7 @@
 								<li>
 									<h5>results: <a href="../interfaces/iqueryresults.html" class="tsd-signature-type">IQueryResults</a></h5>
 									<div class="tsd-comment tsd-typography">
+										<p>the result set to build an array of HTMLElement from.</p>
 									</div>
 								</li>
 							</ul>
@@ -457,23 +465,24 @@
 								<p>Inherited from <a href="resultlist.html">ResultList</a>.<a href="resultlist.html#displaymoreresults">displayMoreResults</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L309">src/ui/ResultList/ResultList.ts
-									:309</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L419">src/ui/ResultList/ResultList.ts
+									:419</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Execute a query to fetch new results. After the query is done, render those new results.<br/>
-										Assert that there is actually more results to display by checking that the last query returned as many results as requested.<br/>
-									Assert that the result list is not currently fetching results</p>
+									<p>Executes a query to fetch new results. After the query returns, renders the new results.</p>
 								</div>
+								<p>Asserts that there are more results to display by verifying whether the last query has returned as many results as
+								requested.</p>
+								<p>Asserts that the ResultList is not currently fetching results.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>count: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The number of results to fetch and display</p>
+										<p>The number of results to fetch and display.</p>
 									</div>
 								</li>
 							</ul>
@@ -520,8 +529,8 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L123">src/ui/Base/Component.ts
-									:123</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
+									:124</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -545,13 +554,13 @@
 								<p>Inherited from <a href="resultlist.html">ResultList</a>.<a href="resultlist.html#getdisplayedresults">getDisplayedResults</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L349">src/ui/ResultList/ResultList.ts
-									:349</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L459">src/ui/ResultList/ResultList.ts
+									:459</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get the list of currently displayed result</p>
+									<p>Gets the list of currently displayed result.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a><span class="tsd-signature-symbol">[]</span></h4>
@@ -570,13 +579,13 @@
 								<p>Inherited from <a href="resultlist.html">ResultList</a>.<a href="resultlist.html#getdisplayedresultselements">getDisplayedResultsElements</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L357">src/ui/ResultList/ResultList.ts
-									:357</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L467">src/ui/ResultList/ResultList.ts
+									:467</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get the list of currently displayed result HTMLElement</p>
+									<p>Gets the list of currently displayed result HTMLElement.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -595,16 +604,16 @@
 								<p>Inherited from <a href="resultlist.html">ResultList</a>.<a href="resultlist.html#renderresults">renderResults</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L254">src/ui/ResultList/ResultList.ts
-									:254</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L355">src/ui/ResultList/ResultList.ts
+									:355</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Empty the current result list content and append the given array of HTMLElement.<br/>
-										Can append to existing elements in the result list, or replace them.<br/>
-									Triggers the newResultDiplayed and newResultsDisplayed event</p>
+									<p>Empties the current result list content and appends the given array of HTMLElement.</p>
 								</div>
+								<p>Can append to existing elements in the result list, or replace them.</p>
+								<p>Triggers the <code>newResultsDisplayed</code> and <code>newResultDisplayed</code> events.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -633,8 +642,8 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L192">src/ui/Base/Component.ts
-									:192</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
+									:193</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -679,8 +688,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L61">src/ui/Base/Component.ts
-							:61</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
+							:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -704,8 +713,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L89">src/ui/Base/Component.ts
-							:89</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
+							:90</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -722,8 +731,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L73">src/ui/Base/Component.ts
-							:73</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
+							:74</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -783,8 +792,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L77">src/ui/Base/Component.ts
-							:77</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
+							:78</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -801,8 +810,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L69">src/ui/Base/Component.ts
-							:69</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
+							:70</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -819,8 +828,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L65">src/ui/Base/Component.ts
-							:65</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
+							:66</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -837,8 +846,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L81">src/ui/Base/Component.ts
-							:81</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
+							:82</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -855,8 +864,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L85">src/ui/Base/Component.ts
-							:85</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
+							:86</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -885,30 +894,27 @@
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Image<wbr>Result<wbr>List<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IResultListOptions</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a>, elementClassId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="imageresultlist.html" class="tsd-signature-type">ImageResultList</a></li>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-coveo-component tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Image<wbr>Result<wbr>List<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IImageResultListOptions</span>, bindings<span class="tsd-signature-symbol">?: </span><a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a>, elementClassId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="imageresultlist.html" class="tsd-signature-type">ImageResultList</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="resultlist.html">ResultList</a>.<a href="resultlist.html#constructor">constructor</a></p>
-								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
+								<p>Overwrites <a href="resultlist.html">ResultList</a>.<a href="resultlist.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L204">src/ui/ResultList/ResultList.ts
-									:204</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ImageResultList/ImageResultList.ts#L65">src/ui/ImageResultList/ImageResultList.ts
+									:65</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Create a new ResultList.<br/>
-										Bind various event related to queries (eg : on querySuccess -&gt; renderResults)<br/>
-									Bind scroll event if infinite scrolling is enabled.</p>
+									<p>Creates a new ImageResultList component.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -917,15 +923,15 @@
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The HTMLElement on which the element will be instantiated.</p>
+											<p>The HTMLElement on which to instantiate the component.</p>
 										</div>
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">IResultListOptions</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">IImageResultListOptions</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The options for the ResultList.</p>
+											<p>The options for the ImageResultList component.</p>
 										</div>
 									</div>
 								</li>
@@ -933,7 +939,8 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The bindings that the component requires to function normally. If not set, will automatically resolve them (With slower execution time)</p>
+											<p>The bindings that the component requires to function normally. If not set, these will be
+											automatically resolved (with a slower execution time).</p>
 										</div>
 									</div>
 								</li>
@@ -941,7 +948,8 @@
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> elementClassId: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;ResultList.ID</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The class that this component should instantiate. By default this will be CoveoResultList. This is used by component that extends the base ResultList</p>
+											<p>The class that this component should instantiate. Components that extend the base
+											<a href="resultlist.html">ResultList</a> component use this. Default value is <code>CoveoResultList</code>.</p>
 										</div>
 									</div>
 								</li>

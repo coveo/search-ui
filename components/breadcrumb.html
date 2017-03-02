@@ -183,13 +183,15 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>This component displays a summary of the filters currently active in the query.</p>
+						<p>The Breadcrumb component displays a summary of the currently active query filters.</p>
 					</div>
-					<p>For example, when the user selects a facet value, the value is displayed in the breadcrumbs.</p>
-					<p>The active filters are obtained by the component by firing an event in the breadcrumb component.</p>
-					<p>All other components having an active state can answer to this event by providing custom bits of HTML that will be displayed inside the breadcrumb.</p>
-					<p>Thus, the breadcrumb can easily be extended by custom code to display information about custom state and filters.</p>
-					<p>See <a href="../classes/breadcrumbevents.html">BreadcrumbEvents</a> for the list of events and parameters sent when a breadcrumb is populated.</p>
+					<p>For example, when the user selects a <a href="facet.html">Facet</a> value, the breadcrumbs display this value.</p>
+					<p>The active filters are obtained by the component by firing an event in the Breadcrumb component.</p>
+					<p>All other components having an active state can react to this event by providing custom bits of HTML to display
+					inside the breadcrumbs.</p>
+					<p>Thus, it is possible to easily extend the Breadcrumb component using custom code to display information about custom
+					states and filters.</p>
+					<p>See <a href="../classes/breadcrumbevents.html">BreadcrumbEvents</a> for the list of events and parameters sent when a Breadcrumb component is populated.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -250,15 +252,15 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Breadcrumb/Breadcrumb.ts#L68">src/ui/Breadcrumb/Breadcrumb.ts
-									:68</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Breadcrumb/Breadcrumb.ts#L76">src/ui/Breadcrumb/Breadcrumb.ts
+									:76</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Trigger the event to clear the current breadcrumbs, that <a href="facet.html">Facet</a> can populate.<br/>
-									Trigger a new query, and log a search event.</p>
+									<p>Triggers the event to clear the current breadcrumbs that components such as <a href="facet.html">Facet</a> can populate.</p>
 								</div>
+								<p>Also triggers a new query and logs the <code>breadcrumbResetAll</code> event in the usage analytics.</p>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
@@ -327,13 +329,13 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Breadcrumb/Breadcrumb.ts#L80">src/ui/Breadcrumb/Breadcrumb.ts
-									:80</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Breadcrumb/Breadcrumb.ts#L88">src/ui/Breadcrumb/Breadcrumb.ts
+									:88</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Draw the given breadcrumbs items.</p>
+									<p>Draws the specified breadcrumb items.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -341,6 +343,7 @@
 								<li>
 									<h5>breadcrumbs: <a href="../interfaces/ibreadcrumbitem.html" class="tsd-signature-type">IBreadcrumbItem</a><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
+										<p>The breadcrumb items to draw.</p>
 									</div>
 								</li>
 							</ul>
@@ -387,8 +390,8 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L123">src/ui/Base/Component.ts
-									:123</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
+									:124</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -411,17 +414,19 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Breadcrumb/Breadcrumb.ts#L56">src/ui/Breadcrumb/Breadcrumb.ts
-									:56</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Breadcrumb/Breadcrumb.ts#L63">src/ui/Breadcrumb/Breadcrumb.ts
+									:63</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Trigger the event to populate breadcrumb, which component such as <a href="facet.html">Facet</a> can populate.<br/>
-									Will trigger an event with <a href="../interfaces/ipopulatebreadcrumbeventargs.html">IPopulateBreadcrumbEventArgs</a> object (an array) which other components or code can populate.</p>
+									<p>Triggers the event to populate the breadcrumbs. Components such as <a href="facet.html">Facet</a> can populate the breadcrumbs.</p>
 								</div>
+								<p>This method triggers a <a href="../classes/breadcrumbevents.html#populatebreadcrumb">BreadcrumbEvents.populateBreadcrumb</a> event with an
+								<a href="../interfaces/ipopulatebreadcrumbeventargs.html">IPopulateBreadcrumbEventArgs</a> object (an array) that other components or code can populate.</p>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ibreadcrumbitem.html" class="tsd-signature-type">IBreadcrumbItem</a><span class="tsd-signature-symbol">[]</span></h4>
+							<p>A populated breadcrumb item list.</p>
 						</li>
 					</ul>
 				</section>
@@ -437,8 +442,8 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L192">src/ui/Base/Component.ts
-									:192</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
+									:193</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -483,8 +488,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L61">src/ui/Base/Component.ts
-							:61</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
+							:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -508,8 +513,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L89">src/ui/Base/Component.ts
-							:89</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
+							:90</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -526,8 +531,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L73">src/ui/Base/Component.ts
-							:73</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
+							:74</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -587,8 +592,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L77">src/ui/Base/Component.ts
-							:77</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
+							:78</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -605,8 +610,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L69">src/ui/Base/Component.ts
-							:69</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
+							:70</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -623,8 +628,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L65">src/ui/Base/Component.ts
-							:65</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
+							:66</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -641,8 +646,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L81">src/ui/Base/Component.ts
-							:81</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
+							:82</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -659,8 +664,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L85">src/ui/Base/Component.ts
-							:85</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
+							:86</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -703,27 +708,40 @@
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Breadcrumb/Breadcrumb.ts#L33">src/ui/Breadcrumb/Breadcrumb.ts
-									:33</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Breadcrumb/Breadcrumb.ts#L36">src/ui/Breadcrumb/Breadcrumb.ts
+									:36</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Create a new breadcrumb element, bind event on <code>deferredQuerySuccess</code> to draw the breadcrumb.</p>
+									<p>Creates a new Breadcrumb component. Binds event on <a href="../classes/queryevents.html#deferredquerysuccess">QueryEvents.deferredQuerySuccess</a> to draw the
+									breadcrumbs.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The HTMLElement on which to instantiate the component.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">IBreadcrumbOptions</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The options for the Breadcrumb component.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
+											<p>The bindings that the component requires to function normally. If not set, these will be
+											automatically resolved (with a slower execution time).</p>
 										</div>
 									</div>
 								</li>

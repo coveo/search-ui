@@ -201,10 +201,13 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>This component uses the values of two fields (row and column) to display the results of the specified computed field in a table.<br/>
-							The values to use for the columns are specified by the user while those for the rows are obtained by a <code>groupBy</code> operation performed at the same time as the main query (see <a href="../interfaces/igroupbyrequest.html">IGroupByRequest</a>).<br/>
-						Like a <a href="facet.html">Facet</a>, selecting a cell allows the user to drill down inside results by restricting the row field and the column field to match the values of the selected cell.</p>
+						<p>The Matrix component uses the values of two fields (row and column) to display the results of the specified computed
+						field in a table.</p>
 					</div>
+					<p>The user specifies the values to use for the columns. An <a href="../interfaces/igroupbyrequest.html">IGroupByRequest</a> operation performed at the same time
+					as the main query retrieves the values to use for the rows.</p>
+					<p>In a way that is similar to the <a href="facet.html">Facet</a> component, selecting a Matrix cell allows the end user to drill down
+					inside the results by restricting the row field and the column field to match the values of the selected cell.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -293,16 +296,18 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L150">src/ui/Matrix/Matrix.ts
-							:150</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L197">src/ui/Matrix/Matrix.ts
+							:197</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the font-size of the cells.<br/>
-								This option is mainly used to reduce the cell font-size when some values are cropped because there are too many columns in the matrix.<br/>
-							Other options to fix this problem are to remove less important columns or modify the CSS to give more place to the matrix.</p>
+							<p>Specifies the font-size to use for displaying text inside the cells.</p>
 						</div>
+						<p>This option is mainly useful to prevent a Matrix containing many columns from cropping some of its values.</p>
+						<p>However, instead of using this option to solve this kind of issue, you could also remove some of the less
+						important columns from your Matrix or modify the CSS of your page to allow the Matrix to occupy a larger space.</p>
+						<p>Default value is <code>&#39;&#39;</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -316,15 +321,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L75">src/ui/Matrix/Matrix.ts
-							:75</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L86">src/ui/Matrix/Matrix.ts
+							:86</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the field to use for the columns.<br/>
-							Required options, otherwise the component will not work.</p>
+							<p>Specifies the field to use for the columns.</p>
 						</div>
+						<p>Specifying a value for this options is required for this component to work.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -338,15 +343,17 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L95">src/ui/Matrix/Matrix.ts
-							:95</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L119">src/ui/Matrix/Matrix.ts
+							:119</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the field values to use for each column.<br/>
-							If not specified, you will not generate any column except one for the &#39;Total&#39; column.</p>
+							<p>Specifies the field values to use for each column.</p>
 						</div>
+						<p>See also <a href="matrix.html#options.columnlabels">Matrix.options.columnLabels</a>.</p>
+						<p>Default valus is <code>[]</code>, which means that the Matrix will not generate any column (except the <strong>Total</strong> column, if
+						<a href="matrix.html#options.enablerowtotals">Matrix.options.enableRowTotals</a> is <code>true</code>).</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -360,14 +367,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L104">src/ui/Matrix/Matrix.ts
-							:104</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L133">src/ui/Matrix/Matrix.ts
+							:133</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the label for the first column on the left, as a description of the <code>columnField</code>.</p>
+							<p>Specifies the label for the first column on the left as a description of the <a href="matrix.html#options.columnfield">Matrix.options.columnField</a>.</p>
 						</div>
+						<p>Default value is <code>undefined</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -381,15 +389,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L100">src/ui/Matrix/Matrix.ts
-							:100</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L126">src/ui/Matrix/Matrix.ts
+							:126</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the labels values to use for each column.<br/>
-							The array should match the <a href="matrix.html#options.columnfieldvalues">Matrix.options.columnFieldValues</a>.</p>
+							<p>Specifies the label values to use for each column.</p>
 						</div>
+						<p>Default value is <code>[]</code>. The array set for this options should match the <a href="matrix.html#options.columnfieldvalues">Matrix.options.columnFieldValues</a>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -403,14 +411,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L119">src/ui/Matrix/Matrix.ts
-							:119</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L157">src/ui/Matrix/Matrix.ts
+							:157</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the field whose computed values are displayed in the cells.</p>
+							<p>Specifies the field whose computed values you want to display in the cells.</p>
 						</div>
+						<p>Specifying a value for this options is required for this component to work.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -424,22 +433,23 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L144">src/ui/Matrix/Matrix.ts
-							:144</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L185">src/ui/Matrix/Matrix.ts
+							:185</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies how to format the values resulting from a computed field operation.<br/>
-								The available formats are the same as those for the <a href="facet.html#options.computedfieldformat">Facet.options.computedFieldFormat</a>.<br/>
-							The formats available are defined by the Globalize library. The most common used formats are:</p>
-							<p><ul>
-									<li>c0 - Formats the value as a currency.</li>
-									<li>n0 - Formats the value as an integer.</li>
-									<li>n2 - Formats the value as a floating point with 2 decimal digits.</li>
-								</ul>
-							The default value is c0.</p>
+							<p>Specifies how to format the values resulting from a <a href="matrix.html#options.computedfieldoperation">Matrix.options.computedFieldOperation</a>.</p>
 						</div>
+						<p>The Globalize library defines all available formats (see
+						<a href="https://github.com/klaaspieter/jquery-global#globalizeformat-value-format-culture-">Globalize</a>).</p>
+						<p>The most commonly used formats are:</p>
+						<ul>
+							<li><code>c0</code> - Formats the value as a currency.</li>
+							<li><code>n0</code> - Formats the value as an integer.</li>
+							<li><code>n2</code> - Formats the value as a floating point with 2 decimal digits.</li>
+						</ul>
+						<p>Default value is <code>c0</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -453,23 +463,22 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L132">src/ui/Matrix/Matrix.ts
-							:132</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L170">src/ui/Matrix/Matrix.ts
+							:170</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the type of aggregate operation to use on the computed field.<br/>
-								The available values are the same as those for the <a href="facet.html#options.computedfieldoperation">Facet.options.computedFieldOperation</a>.<br/>
-							The available values are:</p>
-							<p><ul>
-									<li>sum - Computes the sum of the computed field values.</li>
-									<li>average - Computes the average of the computed field values.</li>
-									<li>minimum - Finds the minimum value of the computed field values.</li>
-									<li>maximum - Finds the maximum value of the computed field values.</li>
-								</ul>
-							The default value is <code>sum</code>.</p>
+							<p>Specifies the type of aggregate operation to perform on the <a href="matrix.html#options.computedfield">Matrix.options.computedField</a>.</p>
 						</div>
+						<p>The possible values are:</p>
+						<ul>
+							<li><code>sum</code> - Computes the sum of the computed field values.</li>
+							<li><code>average</code> - Computes the average of the computed field values.</li>
+							<li><code>minimum</code> - Finds the minimum value of the computed field values.</li>
+							<li><code>maximum</code> - Finds the maximum value of the computed field values.</li>
+						</ul>
+						<p>Default value is <code>sum</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -483,15 +492,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L115">src/ui/Matrix/Matrix.ts
-							:115</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L150">src/ui/Matrix/Matrix.ts
+							:150</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to add a total row which contains the total for each column.<br/>
-							The default value is <code>true</code>.</p>
+							<p>Specifies whether to add a <strong>Total</strong> row containing the total of each column.</p>
 						</div>
+						<p>Default value is <code>true</code></p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -506,14 +515,18 @@ data-enable-column-totals&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L154">src/ui/Matrix/Matrix.ts
-							:154</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L208">src/ui/Matrix/Matrix.ts
+							:208</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to show a preview popup of cell results on hover. The default value is <code>true</code>.</p>
+							<p>Specifies whether to show a preview popup of cell results when hovering over a cell.</p>
 						</div>
+						<p>See also <a href="matrix.html#options.previewsortcriteria">Matrix.options.previewSortCriteria</a>, <a href="matrix.html#options.previewmaxwidth">Matrix.options.previewMaxWidth</a>,
+							<a href="matrix.html#options.previewminwidth">Matrix.options.previewMinWidth</a>, <a href="matrix.html#options.previewdelay">Matrix.options.previewDelay</a> and
+						<a href="matrix.html#options.previewtemplate">Matrix.options.previewTemplate</a>.</p>
+						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -528,15 +541,15 @@ data-enable-hover-preview&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L90">src/ui/Matrix/Matrix.ts
-							:90</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L109">src/ui/Matrix/Matrix.ts
+							:109</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether to add a total column which contains the total for each row.<br/>
-							The default value is <code>true</code>.</p>
+							<p>Specifies whether to display a <strong>Total</strong> column containing the sum of each row.</p>
 						</div>
+						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -551,15 +564,15 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L85">src/ui/Matrix/Matrix.ts
-							:85</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L102">src/ui/Matrix/Matrix.ts
+							:102</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the maximum number of rows to display in the matrix.<br/>
-							The default value is 10.</p>
+							<p>Specifies the maximum number of rows to display in the Matrix.</p>
 						</div>
+						<p>Default value is <code>10</code>. Minimum value is <code>0</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -573,16 +586,17 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L110">src/ui/Matrix/Matrix.ts
-							:110</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L143">src/ui/Matrix/Matrix.ts
+							:143</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the maximum number of results to include in the group by requests for the columns.<br/>
-								This value should always be greater than <a href="matrix.html#options.maximumnumberofrows">Matrix.options.maximumNumberOfRows</a>. If it is too small, some results will not be displayed in the matrix.<br/>
-							The default value is 100.</p>
+							<p>Specifies the maximum number of results to include in the <a href="../interfaces/igroupbyrequest.html">IGroupByRequest</a> for the columns.</p>
 						</div>
+						<p>This value should always be greater than the <a href="matrix.html#options.maximumnumberofrows">Matrix.options.maximumNumberOfRows</a>. If it is too small, some
+						of the results will not be displayed in the Matrix.</p>
+						<p>Default value is <code>100</code>. Minimum value is <code>0</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -596,15 +610,16 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L188">src/ui/Matrix/Matrix.ts
-							:188</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L262">src/ui/Matrix/Matrix.ts
+							:262</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the delay (in milliseconds) before the query used to get the preview results is sent.<br/>
-							The default value is 500.</p>
+							<p>If <a href="matrix.html#options.enablehoverpreview">Matrix.options.enableHoverPreview</a> is <code>true</code>, specifies the delay (in milliseconds) before sending the
+							query to get the preview results.</p>
 						</div>
+						<p>Default value is <code>500</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -618,15 +633,16 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L178">src/ui/Matrix/Matrix.ts
-							:178</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L246">src/ui/Matrix/Matrix.ts
+							:246</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the maximum width of the preview pop-up.<br/>
-							The default value is 500px.</p>
+							<p>If <a href="matrix.html#options.enablehoverpreview">Matrix.options.enableHoverPreview</a> is <code>true</code>, specifies the maximum width (in pixels) of the preview
+							popup.</p>
 						</div>
+						<p>Default value is <code>500px</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -640,15 +656,16 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L183">src/ui/Matrix/Matrix.ts
-							:183</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L254">src/ui/Matrix/Matrix.ts
+							:254</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the minimum width of the preview pop-up.<br/>
-							The default value is 0.</p>
+							<p>If <a href="matrix.html#options.enablehoverpreview">Matrix.options.enableHoverPreview</a> is <code>true</code>, specifies the minimum width (in pixels) of the preview
+							popup.</p>
 						</div>
+						<p>Default value is <code>0</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -662,24 +679,29 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L168">src/ui/Matrix/Matrix.ts
-							:168</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L230">src/ui/Matrix/Matrix.ts
+							:230</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the criteria to use to sort the results of the hover preview.<br/>
-								The available sort criteria values are the same as those of the <a href="../interfaces/iquery.html">IQuery</a>.
-							Possible values are :</p>
-							<p><ul>
-									<li> relevancy :  This uses all the configured ranking weights as well as any specified ranking expressions to rank results.</li>
-									<li> dateascending / datedescending : Sort using the value of the @date field, which is typically the last modification date of an item in the index.</li>
-									<li> qre : Sort using only the weights applied through ranking expressions. This is much like using Relevancy except that automatic weights based on keyword proximity etc., are not computed.<li/>
-											<li> nosort : Do not sort the results. The order in which items are returned is essentially random.</li>
-											<li> fieldascending / fielddescending : Sort using the value of a custom field.</li>
-								</ul>
-							The default value is &#39;FieldDescending&#39;.</p>
+							<p>If <a href="matrix.html#options.enablehoverpreview">Matrix.options.enableHoverPreview</a> is <code>true</code>, specifies the criteria to use for sorting the results of
+							the hover preview.</p>
 						</div>
+						<p>The available sort criteria values are the same as those of the <a href="../interfaces/iquery.html">IQuery</a>.</p>
+						<p>The possible values are:</p>
+						<ul>
+							<li><code>relevancy</code>: Uses all configured ranking weights and any specified ranking expressions to sort the results.</li>
+							<li><code>dateascending</code> / <code>datedescending</code>: Sorts the results using the <code>@date</code> field value, which is typically the
+							last modification date of an item in the index.</li>
+							<li><code>qre</code>: Sorts the results using only the weights applied by ranking expressions. Using <code>qre</code> is much like using
+							<code>relevancy</code>, except that <code>qre</code> does not compute automatic weights, such as weights based on keyword proximity.</li>
+							<li><code>nosort</code>: Does not sort the results. Using <code>nosort</code> returns the items in an essentially random order.</li>
+							<li><code>fieldascending</code> / <code>fielddescending</code>: Sorts the results using the value of a custom field.</li>
+							<li><code>fieldascending</code> / <code>fielddescending</code>: Sorts the results using the value of a custom field.</li>
+						</ul>
+						<p>See also <a href="matrix.html#options.previewsortfield">Matrix.options.previewSortField</a>.</p>
+						<p>Default value is <code>FieldDescending</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -693,15 +715,16 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L173">src/ui/Matrix/Matrix.ts
-							:173</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L238">src/ui/Matrix/Matrix.ts
+							:238</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the field to use when the previewSortCriteria option is FieldDescending or FieldAscending.<br/>
-							By default, the value of the computedField option is used.</p>
+							<p>If <a href="matrix.html#options.previewsortcriteria">Matrix.options.previewSortCriteria</a> is <code>fieldascending</code> or <code>fielddescending</code>, specifies the field to
+							use for sorting the results of the hover preview.</p>
 						</div>
+						<p>Default value is the value of <a href="matrix.html#options.computedfield">Matrix.options.computedField</a>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -715,15 +738,24 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L194">src/ui/Matrix/Matrix.ts
-							:194</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L283">src/ui/Matrix/Matrix.ts
+							:283</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the ID or CSS selector of the template to use to render the results of the hover preview.<br/>
-							Eg : <code>data-template-id=&#39;TemplateId&#39;</code> , <code>data-template-selector=&#39;.templateSelector&#39;</code><br/></p>
+							<p>If <a href="matrix.html#options.enablehoverpreview">Matrix.options.enableHoverPreview</a> is <code>true</code>, specifies the template ID or CSS selector of the template
+							to use to render the results of the hover preview.</p>
 						</div>
+						<p>You must use either <code>data-template-id</code> or <code>data-template-selector</code> in the markup to specify a value for this
+						option.</p>
+						<p><strong>Examples:</strong></p>
+						<p>Specifying what template to use by referring to its template ID:</p>
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoMatrix'</span> <span class="hljs-attr">data-template-id</span>=<span class="hljs-string">'TemplateId'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+						<p>Specifying what template to use by referring to its CSS selector:</p>
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoMatrix'</span> <span class="hljs-attr">data-template-selector</span>=<span class="hljs-string">'.templateSelector'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -733,15 +765,15 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L70">src/ui/Matrix/Matrix.ts
-							:70</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L79">src/ui/Matrix/Matrix.ts
+							:79</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the field to use for the rows.<br/>
-							Required options, otherwise the component will not work.</p>
+							<p>Specifies the field to use for the rows.</p>
 						</div>
+						<p>Specifying a value for this options is required for this component to work.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -755,15 +787,16 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L80">src/ui/Matrix/Matrix.ts
-							:80</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L95">src/ui/Matrix/Matrix.ts
+							:95</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the criteria used to sort the rows. The available sort criteria are the same as those for the Group By parameter (see Group By Parameters - sortCriteria).<br/>
-							The default value is &#39;ComputedFieldDescending&#39;.</p>
+							<p>Specifies the criteria to use for sorting the rows.</p>
 						</div>
+						<p>See <a href="../interfaces/igroupbyrequest.html#sortcriteria">IGroupByRequest.sortCriteria</a> for the list of possible values.</p>
+						<p>Default value is <code>ComputedFieldDescending</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -777,13 +810,13 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L65">src/ui/Matrix/Matrix.ts
-							:65</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L72">src/ui/Matrix/Matrix.ts
+							:72</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the text to display at the top of the matrix.</p>
+							<p>Specifies the text to display at the top of the Matrix.</p>
 						</div>
 					</div>
 					<div class="tsd-panel">
@@ -885,8 +918,8 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L123">src/ui/Base/Component.ts
-									:123</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
+									:124</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -909,25 +942,32 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L302">src/ui/Matrix/Matrix.ts
-									:302</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L394">src/ui/Matrix/Matrix.ts
+									:394</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get the HTMLElement associated to the desired cell.</p>
+									<p>Gets the HTMLElement associated to a cell.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>rowNumber: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The row number of the cell.</p>
+									</div>
 								</li>
 								<li>
 									<h5>columnNumber: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The column number of the cell.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
+							<p>The associated HTMLElement.</p>
 						</li>
 					</ul>
 				</section>
@@ -942,25 +982,32 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L312">src/ui/Matrix/Matrix.ts
-									:312</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L404">src/ui/Matrix/Matrix.ts
+									:404</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get the string associated to the desired cell.</p>
+									<p>Gets the string associated to a cell.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>rowNumber: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The row number of the cell.</p>
+									</div>
 								</li>
 								<li>
 									<h5>columnNumber: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The column number of the cell.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>The associated string.</p>
 						</li>
 					</ul>
 				</section>
@@ -975,13 +1022,13 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L285">src/ui/Matrix/Matrix.ts
-									:285</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L377">src/ui/Matrix/Matrix.ts
+									:377</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Return the currently selected column value.</p>
+									<p>Returns the currently selected column value.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -999,13 +1046,13 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L292">src/ui/Matrix/Matrix.ts
-									:292</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L384">src/ui/Matrix/Matrix.ts
+									:384</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Return the currently selected row value.</p>
+									<p>Returns the currently selected row value.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -1023,23 +1070,27 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L257">src/ui/Matrix/Matrix.ts
-									:257</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L349">src/ui/Matrix/Matrix.ts
+									:349</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Select a cell by its row and column number. Does not execute a query.</p>
+									<p>Selects a cell by its row and column number. Does not execute a query.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>rowNumber: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The row number of the cell to select.</p>
+									</div>
 								</li>
 								<li>
 									<h5>columnNumber: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
+										<p>The column number of the cell to select.</p>
 									</div>
 								</li>
 							</ul>
@@ -1059,8 +1110,8 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L192">src/ui/Base/Component.ts
-									:192</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
+									:193</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1105,8 +1156,8 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L61">src/ui/Base/Component.ts
-							:61</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
+							:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1130,8 +1181,8 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L89">src/ui/Base/Component.ts
-							:89</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
+							:90</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1148,8 +1199,8 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L73">src/ui/Base/Component.ts
-							:73</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
+							:74</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1165,13 +1216,13 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L200">src/ui/Matrix/Matrix.ts
-							:200</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L289">src/ui/Matrix/Matrix.ts
+							:289</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Holds the data for the matrix.</p>
+							<p>Holds the data for the Matrix.</p>
 						</div>
 					</div>
 				</section>
@@ -1226,8 +1277,8 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L77">src/ui/Base/Component.ts
-							:77</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
+							:78</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1244,8 +1295,8 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L69">src/ui/Base/Component.ts
-							:69</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
+							:70</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1262,8 +1313,8 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L65">src/ui/Base/Component.ts
-							:65</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
+							:66</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1280,8 +1331,8 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L81">src/ui/Base/Component.ts
-							:81</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
+							:82</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1297,13 +1348,13 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L211">src/ui/Matrix/Matrix.ts
-							:211</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L302">src/ui/Matrix/Matrix.ts
+							:302</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The currently selected column value, or undefined if nothing is selected.</p>
+							<p>The currently selected column value, or <code>undefined</code> if nothing is selected.</p>
 						</div>
 					</div>
 				</section>
@@ -1314,13 +1365,13 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L207">src/ui/Matrix/Matrix.ts
-							:207</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L297">src/ui/Matrix/Matrix.ts
+							:297</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The currently selected row value, or undefined if nothing is selected.</p>
+							<p>The currently selected row value, or <code>undefined</code> if nothing is selected.</p>
 						</div>
 					</div>
 				</section>
@@ -1332,8 +1383,8 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L85">src/ui/Base/Component.ts
-							:85</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
+							:86</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1376,27 +1427,39 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L215">src/ui/Matrix/Matrix.ts
-									:215</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Matrix/Matrix.ts#L306">src/ui/Matrix/Matrix.ts
+									:306</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Create a new matrix, check if the options are valid and makes sense. Bind query events.</p>
+									<p>Creates a new Matrix. Also verifies whether options are valid and coherent. Binds query events.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The HTMLElement on which to instantiate the component.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">IMatrixOptions</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The options for the Matrix component.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
+											<p>The bindings that the component requires to function normally. If not set, these will be
+											automatically resolved (with a slower execution time).</p>
 										</div>
 									</div>
 								</li>

@@ -177,10 +177,10 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>This component is used to render attachments in a result set, for example when displaying emails.<br/>
-							It is intended to be used inside a result template when there is an active <a href="folding.html">Folding</a> component
-						inside the page.</p>
+						<p>The ResultAttachments component renders attachments in a result set, for example when displaying emails. This
+						component is usable inside a result template when there is an active <a href="folding.html">Folding</a> component in the page.</p>
 					</div>
+					<p>This component is a result template component (see <a href="https://developers.coveo.com/x/aIGfAQ">Result Templates</a>).</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -242,15 +242,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultAttachments/ResultAttachments.ts#L53">src/ui/ResultAttachments/ResultAttachments.ts
-							:53</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultAttachments/ResultAttachments.ts#L92">src/ui/ResultAttachments/ResultAttachments.ts
+							:92</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the maximum nesting depth at which the component should stop rendering sub-attachments.<br/>
-							The default value is 5.</p>
+							<p>Specifies the maximum nesting depth. Beyond this depth, the component stops rendering sub-attachments.</p>
 						</div>
+						<p>Default value is <code>5</code>. Minimum value is <code>0</code>.</p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -264,19 +264,24 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultAttachments/ResultAttachments.ts#L41">src/ui/ResultAttachments/ResultAttachments.ts
-							:41</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultAttachments/ResultAttachments.ts#L57">src/ui/ResultAttachments/ResultAttachments.ts
+							:57</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the template to use to render each of the attachments for a top result.<br/>
-								By default, it will use the template specified in a child element with a <code>&lt;script&gt;</code> tag.<br/>
-							This can be specified directly as an attribute to the element, for example :</p>
-							<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultFolding"</span> <span class="hljs-attr">data-result-template-id</span>=<span class="hljs-string">"Foo"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
-							<p>which will use a previously registered template ID (see <a href="../classes/templatecache.html">TemplateCache</a>)</p>
+							<p>Specifies the template to use to render each attachment for a top result.</p>
 						</div>
+						<p>You can specify a previously registered template for this option by referring the HTML <code>id</code> attribute or a CSS
+						selector for the template (see <a href="../classes/templatecache.html">TemplateCache</a>).</p>
+						<p><strong>Examples:</strong></p>
+						<p>Specifying a previously registered template by referring to its HTML <code>id</code> attribute:</p>
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultAttachments"</span> <span class="hljs-attr">data-result-template-id</span>=<span class="hljs-string">"Foo"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+						<p>Specifying a previously registered template by referring to a CSS selector:</p>
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultAttachments'</span> <span class="hljs-attr">data-result-template-selector</span>=<span class="hljs-string">".Foo"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+						<p>By default, this option uses the template specified in a child element with a <code>script</code> tag</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -286,17 +291,27 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultAttachments/ResultAttachments.ts#L48">src/ui/ResultAttachments/ResultAttachments.ts
-							:48</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultAttachments/ResultAttachments.ts#L85">src/ui/ResultAttachments/ResultAttachments.ts
+							:85</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies the template to use to render sub-attachments, which are attachments within other attachments,
-								for example multiple files embedded in a .zip attachment.<br/>
-								Sub-attachments can also contain other sub-attachments.<br/>
-							The template can be specified the same way as <a href="resultattachments.html#options.resulttemplate">resultTemplate</a></p>
+							<p>Specifies the template to use to render sub-attachments, which are attachments within attachments, for example
+							when multiple files are embedded within a .zip attachment.</p>
 						</div>
+						<p>Sub-attachments can themselves contain sub-attachments, and so on up to a certain level (see
+						<a href="resultattachments.html#options.maximumattachmentlevel">ResultAttachments.options.maximumAttachmentLevel</a>).</p>
+						<p>You can specify a previously registered template for this option by referring the HTML <code>id</code> attribute or a CSS
+						selector for the template (see <a href="../classes/templatecache.html">TemplateCache</a>).</p>
+						<p><strong>Example:</strong></p>
+						<p>Specifying a previously registered template by referring to its HTML <code>id</code> attribute:</p>
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultAttachments"</span> <span class="hljs-attr">data-sub-result-template-id</span>=<span class="hljs-string">"Foo"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+						<p>Specifying a previously registered template by referring to a CSS selector:</p>
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultAttachments"</span> <span class="hljs-attr">data-sub-result-template-selector</span>=<span class="hljs-string">".Foo"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+						<p>By default, this option uses the same value as <a href="resultattachments.html#options.resulttemplate">ResultAttachments.options.resultTemplate</a>.</p>
 					</div>
 				</section>
 			</section>
@@ -393,8 +408,8 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L123">src/ui/Base/Component.ts
-									:123</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
+									:124</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -418,8 +433,8 @@
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L192">src/ui/Base/Component.ts
-									:192</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
+									:193</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -464,8 +479,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L61">src/ui/Base/Component.ts
-							:61</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
+							:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -489,8 +504,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L89">src/ui/Base/Component.ts
-							:89</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
+							:90</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -507,8 +522,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L73">src/ui/Base/Component.ts
-							:73</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
+							:74</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -568,8 +583,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L77">src/ui/Base/Component.ts
-							:77</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
+							:78</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -586,8 +601,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L69">src/ui/Base/Component.ts
-							:69</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
+							:70</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -604,8 +619,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L65">src/ui/Base/Component.ts
-							:65</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
+							:66</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -622,8 +637,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L81">src/ui/Base/Component.ts
-							:81</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
+							:82</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -640,8 +655,8 @@
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L85">src/ui/Base/Component.ts
-							:85</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
+							:86</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -684,33 +699,55 @@
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultAttachments/ResultAttachments.ts#L56">src/ui/ResultAttachments/ResultAttachments.ts
-									:56</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultAttachments/ResultAttachments.ts#L95">src/ui/ResultAttachments/ResultAttachments.ts
+									:95</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Build a new ResultAttachments component</p>
+									<p>Creates a new ResultAttachments component.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The HTMLElement on which to instantiate the component.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">IResultAttachmentsOptions</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The options for the ResultAttachments component.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The bindings that the component requires to function normally. If not set, these will be
+											automatically resolved (with a slower execution time).</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> result: <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The result to associate the component with.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> attachmentLevel: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
+											<p>The nesting depth.</p>
 										</div>
 									</div>
 								</li>

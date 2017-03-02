@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Set | Coveo JavaScript Search Framework - Reference Documentation</title>
+	<title>ResponsiveComponents | Coveo JavaScript Search Framework - Reference Documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'/>
@@ -92,29 +92,29 @@
 					<a id="globals-toc-link" href=../globals.html><b>Globals</b></a>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-module tsd-is-external">
-						<a href="__d3_index_.d3.set.html" class="tsd-kind-icon">Set</a>
+					<li class="current tsd-kind-class">
+						<a href="responsivecomponents.html" class="tsd-kind-icon">Responsive<wbr>Components</a>
 						<ul>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="__d3_index_.d3.set.html#add" class="tsd-kind-icon">add</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="responsivecomponents.html#getmediumscreenwidth" class="tsd-kind-icon">get<wbr>Medium<wbr>Screen<wbr>Width</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="__d3_index_.d3.set.html#empty" class="tsd-kind-icon">empty</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="responsivecomponents.html#getsmallscreenwidth" class="tsd-kind-icon">get<wbr>Small<wbr>Screen<wbr>Width</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="__d3_index_.d3.set.html#foreach" class="tsd-kind-icon">for<wbr>Each</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="responsivecomponents.html#islargescreenwidth" class="tsd-kind-icon">is<wbr>Large<wbr>Screen<wbr>Width</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="__d3_index_.d3.set.html#has" class="tsd-kind-icon">has</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="responsivecomponents.html#ismediumscreenwidth" class="tsd-kind-icon">is<wbr>Medium<wbr>Screen<wbr>Width</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="__d3_index_.d3.set.html#remove" class="tsd-kind-icon">remove</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="responsivecomponents.html#issmallscreenwidth" class="tsd-kind-icon">is<wbr>Small<wbr>Screen<wbr>Width</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="__d3_index_.d3.set.html#size" class="tsd-kind-icon">size</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="responsivecomponents.html#setmediumscreenwidth" class="tsd-kind-icon">set<wbr>Medium<wbr>Screen<wbr>Width</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="__d3_index_.d3.set.html#values" class="tsd-kind-icon">values</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="responsivecomponents.html#setsmallscreenwidth" class="tsd-kind-icon">set<wbr>Small<wbr>Screen<wbr>Width</a>
 							</li>
 						</ul>
 					</li>
@@ -135,23 +135,21 @@
 							<a href="../globals.html">Globals</a>
 						</li>
 						<li>
-							<a href="../modules/__d3_index_.html">&quot;~d3/index&quot;</a>
-						</li>
-						<li>
-							<a href="../modules/__d3_index_.d3.html">d3</a>
-						</li>
-						<li>
-							<a href="__d3_index_.d3.set.html">Set</a>
+							<a href="responsivecomponents.html">ResponsiveComponents</a>
 						</li>
 					</ul>
-					<h1>Interface Set</h1>
+					<h1>Class ResponsiveComponents</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A shim for ES6 sets. Is only able to store strings.</p>
+						<p>This class serves as a way to get and set the different screen size breakpoints for the interface.</p>
 					</div>
+					<p>By settings those, you can impact, amongst other, the <a href="../components/facet.html">Facet</a>, <a href="../components/tab.html">Tab</a> or <a href="../components/resultlist.html">ResultList</a> behaviour.</p>
+					<p>For example, the <a href="../components/facet.html">Facet</a> components of your interface will switch to a dropdown menu when the screen size reaches 800px or less.</p>
+					<p>You could modify this value using this calls</p>
+					<p>Normally, you would interact with this class using the instance bound to <a href="../components/searchinterface.html#responsivecomponents">SearchInterface.responsiveComponents</a></p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -161,230 +159,206 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-external">
+						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="__d3_index_.d3.set.html#add" class="tsd-kind-icon">add</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="__d3_index_.d3.set.html#empty" class="tsd-kind-icon">empty</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="__d3_index_.d3.set.html#foreach" class="tsd-kind-icon">for<wbr>Each</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="__d3_index_.d3.set.html#has" class="tsd-kind-icon">has</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="__d3_index_.d3.set.html#remove" class="tsd-kind-icon">remove</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="__d3_index_.d3.set.html#size" class="tsd-kind-icon">size</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="__d3_index_.d3.set.html#values" class="tsd-kind-icon">values</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="responsivecomponents.html#getmediumscreenwidth" class="tsd-kind-icon">get<wbr>Medium<wbr>Screen<wbr>Width</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="responsivecomponents.html#getsmallscreenwidth" class="tsd-kind-icon">get<wbr>Small<wbr>Screen<wbr>Width</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="responsivecomponents.html#islargescreenwidth" class="tsd-kind-icon">is<wbr>Large<wbr>Screen<wbr>Width</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="responsivecomponents.html#ismediumscreenwidth" class="tsd-kind-icon">is<wbr>Medium<wbr>Screen<wbr>Width</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="responsivecomponents.html#issmallscreenwidth" class="tsd-kind-icon">is<wbr>Small<wbr>Screen<wbr>Width</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="responsivecomponents.html#setmediumscreenwidth" class="tsd-kind-icon">set<wbr>Medium<wbr>Screen<wbr>Width</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="responsivecomponents.html#setsmallscreenwidth" class="tsd-kind-icon">set<wbr>Small<wbr>Screen<wbr>Width</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="add" class="tsd-anchor"></a>
-					<h3>add</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">add<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getmediumscreenwidth" class="tsd-anchor"></a>
+					<h3>get<wbr>Medium<wbr>Screen<wbr>Width</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Medium<wbr>Screen<wbr>Width<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/typings/browser/definitions/d3/index.d.ts#L1258">typings/browser/definitions/d3/index.d.ts
-									:1258</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResponsiveComponents/ResponsiveComponents.ts#L60">src/ui/ResponsiveComponents/ResponsiveComponents.ts
+									:60</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Add the string to this set. Returns the value.</p>
+									<p>Get the current breakpoint for medium screen size.</p>
 								</div>
+								<p>If it was not explicitly set by <a href="responsivecomponents.html#setmediumscreenwidth">ResponsiveComponents.setMediumScreenWidth</a>, the default value is <code>800</code>.</p>
 							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>value: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="empty" class="tsd-anchor"></a>
-					<h3>empty</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">empty<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getsmallscreenwidth" class="tsd-anchor"></a>
+					<h3>get<wbr>Small<wbr>Screen<wbr>Width</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Small<wbr>Screen<wbr>Width<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/typings/browser/definitions/d3/index.d.ts#L1278">typings/browser/definitions/d3/index.d.ts
-									:1278</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResponsiveComponents/ResponsiveComponents.ts#L47">src/ui/ResponsiveComponents/ResponsiveComponents.ts
+									:47</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Is this set empty?</p>
+									<p>Get the current breakpoint for small screen size.</p>
+								</div>
+								<p>If it was not explicitly set by <a href="responsivecomponents.html#setsmallscreenwidth">ResponsiveComponents.setSmallScreenWidth</a>, the default value is <code>480</code>.</p>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="islargescreenwidth" class="tsd-anchor"></a>
+					<h3>is<wbr>Large<wbr>Screen<wbr>Width</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Large<wbr>Screen<wbr>Width<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResponsiveComponents/ResponsiveComponents.ts#L97">src/ui/ResponsiveComponents/ResponsiveComponents.ts
+									:97</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return true if the current screen size is larger than the current breakpoint set for medium and small.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="foreach" class="tsd-anchor"></a>
-					<h3>for<wbr>Each</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">for<wbr>Each<span class="tsd-signature-symbol">(</span>func<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="ismediumscreenwidth" class="tsd-anchor"></a>
+					<h3>is<wbr>Medium<wbr>Screen<wbr>Width</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Medium<wbr>Screen<wbr>Width<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/typings/browser/definitions/d3/index.d.ts#L1273">typings/browser/definitions/d3/index.d.ts
-									:1273</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResponsiveComponents/ResponsiveComponents.ts#L83">src/ui/ResponsiveComponents/ResponsiveComponents.ts
+									:83</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Calls a given function for each value in the set. The return value of the function is ignored. The this context of the function is the set itself.</p>
+									<p>Return true if the current screen size is smaller than the current breakpoint set for medium screen width.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="issmallscreenwidth" class="tsd-anchor"></a>
+					<h3>is<wbr>Small<wbr>Screen<wbr>Width</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Small<wbr>Screen<wbr>Width<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResponsiveComponents/ResponsiveComponents.ts#L71">src/ui/ResponsiveComponents/ResponsiveComponents.ts
+									:71</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return true if the current screen size is smaller than the current breakpoint set for small screen width.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setmediumscreenwidth" class="tsd-anchor"></a>
+					<h3>set<wbr>Medium<wbr>Screen<wbr>Width</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Medium<wbr>Screen<wbr>Width<span class="tsd-signature-symbol">(</span>width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResponsiveComponents/ResponsiveComponents.ts#L36">src/ui/ResponsiveComponents/ResponsiveComponents.ts
+									:36</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Set the breakpoint for medium screen size</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>func: <span class="tsd-signature-type">function</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>value: <span class="tsd-signature-type">string</span></h5>
-														</li>
-													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
+									<h5>width: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="has" class="tsd-anchor"></a>
-					<h3>has</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">has<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setsmallscreenwidth" class="tsd-anchor"></a>
+					<h3>set<wbr>Small<wbr>Screen<wbr>Width</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Small<wbr>Screen<wbr>Width<span class="tsd-signature-symbol">(</span>width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/typings/browser/definitions/d3/index.d.ts#L1253">typings/browser/definitions/d3/index.d.ts
-									:1253</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResponsiveComponents/ResponsiveComponents.ts#L27">src/ui/ResponsiveComponents/ResponsiveComponents.ts
+									:27</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Is the given string stored in this set?</p>
+									<p>Set the breakpoint for small screen size.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>value: <span class="tsd-signature-type">string</span></h5>
+									<h5>width: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="remove" class="tsd-anchor"></a>
-					<h3>remove</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">remove<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/typings/browser/definitions/d3/index.d.ts#L1263">typings/browser/definitions/d3/index.d.ts
-									:1263</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Remove the given value from the set. Returns true if it was stored, and false otherwise.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>value: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="size" class="tsd-anchor"></a>
-					<h3>size</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">size<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/typings/browser/definitions/d3/index.d.ts#L1283">typings/browser/definitions/d3/index.d.ts
-									:1283</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Returns the number of values stored in this set.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="values" class="tsd-anchor"></a>
-					<h3>values</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">values<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/typings/browser/definitions/d3/index.d.ts#L1268">typings/browser/definitions/d3/index.d.ts
-									:1268</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Returns an array of the strings stored in this set.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -393,7 +367,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Set</span>
+						<span class="target">ResponsiveComponents</span>
 					</li>
 				</ul>
 			</section>

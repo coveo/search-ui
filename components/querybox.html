@@ -201,12 +201,15 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The Querybox component allows the user to enter a query in an input.</p>
+						<p>The Querybox component renders an input that the end user can interact with to enter and submit a query.</p>
 					</div>
-					<p>When the user submits the query by pressing the <strong>Enter</strong> key, this component triggers a query and logs the
-					corresponding analytics data.</p>
-					<p>For technical reasons, this component must be instantiated on a <code>div</code> element rather than directly on an <code>input</code>
-					element.</p>
+					<p>When the user submits a query by hitting the <strong>Enter</strong> key, the Querybox component triggers a query and logs the
+					corresponding usage analytics data.</p>
+					<p>For technical reasons, it is necessary to instantiate this component on a <code>div</code> element rather than directly on an
+						<code>input</code> element (i.e., <code>&lt;div class=&#39;CoveoQuerybox&#39;&gt;&lt;/div&gt;</code> will work, but <code>&lt;input class=&#39;CoveoQuerybox&#39;&gt;&lt;/input&gt;</code>
+					will not).</p>
+					<p>See also the <a href="searchbox.html">Searchbox</a> component, which can automatically instantiate a Querybox component along with an
+					optional <a href="searchbutton.html">SearchButton</a> component.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -284,13 +287,13 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L204">src/ui/Querybox/Querybox.ts
-							:204</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L191">src/ui/Querybox/Querybox.ts
+							:191</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether the Querybox should get the focus and be selected upon initialization.</p>
+							<p>Specifies whether the Querybox should get auto focus and selection upon initialization.</p>
 						</div>
 						<p>Default value is <code>true</code>.</p>
 					</div>
@@ -307,24 +310,24 @@ data-auto-focus&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L119">src/ui/Querybox/Querybox.ts
-							:119</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L110">src/ui/Querybox/Querybox.ts
+							:110</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If the <a href="querybox.html#options.enablequerysyntax">Querybox.options.enableQuerySyntax</a> option is set to <code>true</code>, specifies whether the <code>AND</code>, <code>NOT</code>,
-								<code>OR</code> and <code>NEAR</code> keywords in the Querybox should be treated as query operators in the query even when they are
-								typed in lowercase. This option applies to all query operators (see
-							<a target="_blank" href="http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005">Coveo Query Syntax Reference</a>).</p>
+							<p>If <a href="querybox.html#options.enablequerysyntax">Querybox.options.enableQuerySyntax</a> is <code>true</code>, specifies whether to treat the <code>AND</code>, <code>NOT</code>, <code>OR</code> and
+								<code>NEAR</code> keywords in the Querybox as query operators in the query even when the end user types them in lowercase.
+								This option applies to all query operators (see
+							<a href="http://www.coveo.com/go?dest=adminhelp70&amp;lcid=9&amp;context=10005">Coveo Query Syntax Reference</a>).</p>
 						</div>
 						<p>Default value is <code>false</code>.</p>
-						<h4 id="example">Example</h4>
+						<p><strong>Example:</strong></p>
 						<blockquote>
-							<p>If this option and the enableQuerySyntax option are both set to <code>true</code>, then the Coveo Platform will interpret
-							the <code>near</code> keyword in a query such as <code>service center near me</code> as a query operator (not as a query term).</p>
-							<p>Otherwise, if the enableQuerySyntax option is set to <code>true</code> and this option is set to <code>false</code>, the <code>NEAR</code>
-							keyword will have to be typed in uppercase in order for it to be interpreted as a query operator.</p>
+							<p>If this option and the enableQuerySyntax option are both <code>true</code>, then the Coveo Platform interprets the <code>near</code>
+							keyword in a query such as <code>service center near me</code> as a query operator (not as a query term).</p>
+							<p>Otherwise, if the enableQuerySyntax option is <code>true</code> and this option is <code>false</code>, the end user has to type the
+							<code>NEAR</code> keyword in uppercase in order for the Coveo Platform to interpret it as a query operator.</p>
 						</blockquote>
 					</div>
 					<div class="tsd-panel">
@@ -340,30 +343,24 @@ data-enable-lowercase-operators&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L144">src/ui/Querybox/Querybox.ts
-							:144</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L132">src/ui/Querybox/Querybox.ts
+							:132</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether a basic expression containing at least a certain number of keywords (see
-								<a href="querybox.html#options.partialmatchkeywords">Querybox.options.partialMatchKeywords</a>) will automatically be converted to a partial match expression, so
-								that documents containing at least a certain subset of those keywords (see
-							<a href="querybox.html#options.partialmatchthreshold">Querybox.options.partialMatchThreshold</a>) will match the query.</p>
+							<p>Specifies whether to automatically convert a basic expression containing at least a certain number of keywords
+								(see <a href="querybox.html#options.partialmatchkeywords">Querybox.options.partialMatchKeywords</a>) to a partial match expression, so that documents containing
+								at least a certain subset of those keywords (see <a href="querybox.html#options.partialmatchthreshold">Querybox.options.partialMatchThreshold</a>) will match the
+							query.</p>
 						</div>
 						<p>Default value is <code>false</code>.</p>
-						<h4 id="example">Example</h4>
-						<pre><code class="lang-html">[ ... ]
-
-<span class="hljs-comment">&lt;!-- With the following markup configuration, if a basic expression contains at least 4 keywords, --&gt;</span>
-<span class="hljs-comment">&lt;!-- then documents containing at least 75% of those keywords (rounded up) will match the query. --&gt;</span>
-
-<span class="hljs-comment">&lt;!-- For instance, if the basic expression is "Coveo custom component configuration help", then documents --&gt;</span>
-<span class="hljs-comment">&lt;!-- containing all 5 of those keywords, or 4 of them (75% of 5 rounded up) will match the query. --&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">classname</span>=<span class="hljs-string">"CoveoSearchBox"</span> <span class="hljs-attr">data-enable-omnibox</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">data-enable-partial-match</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">data-partial-match-keywords</span>=<span class="hljs-string">"4"</span> <span class="hljs-attr">data-partial-match-threshold</span>=<span class="hljs-string">"75%"</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-
-[ ... ]
+						<p><strong>Example:</strong></p>
+						<p>With the following markup configuration, if a basic expression contains at least 4 keywords, then documents
+						containing at least 75% of those keywords (round up) will match the query.</p>
+						<p>For instance, if the basic expression is <code>Coveo custom component configuration help</code>, then documents containing
+						all 5 of those keywords, or 4 of them (75% of 5 rounded up) will match the query.</p>
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoQuerybox'</span> <span class="hljs-attr">data-enable-partial-match</span>=<span class="hljs-string">'true'</span> <span class="hljs-attr">data-partial-match-keywords</span>=<span class="hljs-string">'4'</span> <span class="hljs-attr">data-partial-match-threshold</span>=<span class="hljs-string">'75%'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 </code></pre>
 					</div>
 					<div class="tsd-panel">
@@ -379,19 +376,17 @@ data-enable-partial-match&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L73">src/ui/Querybox/Querybox.ts
-							:73</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L75">src/ui/Querybox/Querybox.ts
+							:75</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Specifies whether the Coveo Platform should try to interpret special query syntax such as field references in the
-								query entered in the Querybox (see
-							<a target="_blank" href="http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005">Coveo Query Syntax Reference</a>).</p>
+								query that the user enters in the Querybox (see
+							<a href="http://www.coveo.com/go?dest=adminhelp70&amp;lcid=9&amp;context=10005">Coveo Query Syntax Reference</a>).</p>
 						</div>
-						<p>Query syntax in the Querybox will also be highlighted when this option is enabled.</p>
-						<p>See also <a href="querybox.html#options.enablewildcards">Querybox.options.enableWildcards</a>, <a href="querybox.html#options.enablequestionmarks">Querybox.options.enableQuestionMarks</a> and
-						<a href="querybox.html#options.enablelowercaseoperators">Querybox.options.enableLowercaseOperators</a>.</p>
+						<p>Setting this option to <code>true</code> also causes the query syntax in the Querybox to highlight.</p>
 						<p>Default value is <code>true</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -407,24 +402,17 @@ data-enable-query-syntax&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L102">src/ui/Querybox/Querybox.ts
-							:102</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L93">src/ui/Querybox/Querybox.ts
+							:93</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If the <a href="querybox.html#options.enablequerysyntax">Querybox.options.enableQuerySyntax</a> and <a href="querybox.html#options.enablewildcards">Querybox.options.enableWildcards</a> options are both
-								set to <code>true</code>, specifies whether the Coveo Platform should expand keywords containing question mark characters
-								(?) to the possible matching keywords in order to broaden the query (see
-							<a target="_blank" href="http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005">Coveo Query Syntax Reference</a>).</p>
+							<p>Specifies whether the Coveo Platform should expand keywords containing question mark characters (<code>?</code>) to the
+								possible matching keywords in order to broaden the query (see
+							<a href="http://www.coveo.com/go?dest=adminhelp70&amp;lcid=9&amp;context=10005">Coveo Query Syntax Reference</a>).</p>
 						</div>
 						<p>Default value is <code>false</code>.</p>
-						<h4 id="example">Example</h4>
-						<blockquote>
-							<p>If this option, the enableQuerySyntax and the enableWildcards options are all set to <code>true</code>, then the Coveo
-								Platform will expand the <code>Cove?</code> keyword to keywords such as
-							<code>Cove</code>, <code>Cover</code> and <code>Coveo</code>.</p>
-						</blockquote>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -439,13 +427,13 @@ data-enable-question-marks&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L51">src/ui/Querybox/Querybox.ts
-							:51</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L56">src/ui/Querybox/Querybox.ts
+							:56</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether the search-as-you-type feature should be enabled.</p>
+							<p>Specifies whether to enable the search-as-you-type feature.</p>
 						</div>
 						<p>Default value is <code>false</code>.</p>
 					</div>
@@ -462,23 +450,17 @@ data-enable-search-as-you-type&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L87">src/ui/Querybox/Querybox.ts
-							:87</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L84">src/ui/Querybox/Querybox.ts
+							:84</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If the <a href="querybox.html#options.enablequerysyntax">Querybox.options.enableQuerySyntax</a> is set to <code>true</code>, specifies whether the Coveo Platform should
-								expand keywords containing wildcard characters (*) to the possible matching keywords in order to broaden the
-								query (see
-							<a target="_blank" href="http://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005">Coveo Query Syntax Reference</a>).</p>
+							<p>Specifies whether the Coveo Platform should expand keywords containing wildcard characters (<code>*</code>) to the possible
+								matching keywords in order to broaden the query (see
+							<a href="http://www.coveo.com/go?dest=adminhelp70&amp;lcid=9&amp;context=10005">Coveo Query Syntax Reference</a>).</p>
 						</div>
 						<p>Default value is <code>false</code>.</p>
-						<h4 id="example">Example</h4>
-						<blockquote>
-							<p>If this option and the enableQuerySyntax option are both set to <code>true</code>, then the Coveo Platform will expand the
-							<code>doc*</code> keyword to keywords such as <code>doc</code>, <code>dochtml</code>, <code>document</code> or <code>documentation</code>.</p>
-						</blockquote>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -493,24 +475,24 @@ data-enable-wildcards&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L161">src/ui/Querybox/Querybox.ts
-							:161</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L149">src/ui/Querybox/Querybox.ts
+							:149</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>When the <a href="querybox.html#options.enablepartialmatch">Querybox.options.enablePartialMatch</a> option is set to <code>true</code>, this option specifies the minimum
-							number of keywords required in the basic expression for it to be converted to a partial match expression.</p>
+							<p>When <a href="querybox.html#options.enablepartialmatch">Querybox.options.enablePartialMatch</a> is <code>true</code>, specifies the minimum number of keywords that need to
+							be present in the basic expression to convert this expression to a partial match expression.</p>
 						</div>
-						<p>See also the <a href="querybox.html#options.partialmatchthreshold">Querybox.options.partialMatchThreshold</a> option.</p>
+						<p>See also <a href="querybox.html#options.partialmatchthreshold">Querybox.options.partialMatchThreshold</a>.</p>
 						<p>Default value is <code>5</code>.</p>
-						<h4 id="note">Note</h4>
+						<p><strong>Note:</strong></p>
 						<blockquote>
 							<p>Only the basic expression of the query (see <a href="../interfaces/iquery.html#q">q</a>) can be converted to a partial match expression.</p>
 						</blockquote>
-						<h4 id="example">Example</h4>
+						<p><strong>Example:</strong></p>
 						<blockquote>
-							<p>If the partialMatchKeywords option is set to <code>7</code>, the basic expression will have to contain at least 7 keywords
+							<p>If the partialMatchKeywords option is <code>7</code>, the basic expression will have to contain at least 7 keywords
 							to be converted to a partial match expression.</p>
 						</blockquote>
 					</div>
@@ -526,30 +508,29 @@ data-enable-wildcards&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L187">src/ui/Querybox/Querybox.ts
-							:187</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L174">src/ui/Querybox/Querybox.ts
+							:174</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>When the <a href="querybox.html#options.enablepartialmatch">Querybox.options.enablePartialMatch</a> option is set to <code>true</code>, this option specifies an absolute
-								or relative (percentage) value indicating the minimum number of partial match expression keywords a document must
-							contain in order to match the query.</p>
+							<p>When <a href="querybox.html#options.enablepartialmatch">Querybox.options.enablePartialMatch</a> is <code>true</code>, specifies an absolute or relative (percentage) value
+								indicating the minimum number of partial match expression keywords a document must contain in order to match the
+							query.</p>
 						</div>
-						<p>See also the <a href="querybox.html#options.partialmatchkeywords">Querybox.options.partialMatchKeywords</a> option.</p>
+						<p>See also <a href="querybox.html#options.partialmatchkeywords">Querybox.options.partialMatchKeywords</a>.</p>
 						<p>Default value is <code>50%</code>.</p>
-						<h4 id="note">Note</h4>
+						<p><strong>Note:</strong></p>
 						<blockquote>
 							<p>The relative threshold is always rounded up to the nearest integer.</p>
 						</blockquote>
-						<h4 id="example">Example</h4>
+						<p><strong>Examples:</strong></p>
 						<blockquote>
-							<p>If the partialMatchThreshold option is set to <code>50%</code> and the partial match expression contains exactly 9
-								keywords, then documents will have to contain at least 5 of those keywords to match the query (50% of 9,
-							rounded up).</p>
+							<p>If the partialMatchThreshold option is <code>50%</code> and the partial match expression contains exactly 9 keywords, then
+							documents will have to contain at least 5 of those keywords to match the query (50% of 9, rounded up).</p>
 							<p>With the same configuration, if the partial match expression contains exactly 12 keywords, then documents will
 							have to contain at least 6 of those keywords to match the query (50% of 12).</p>
-							<p>If the partialMatchThreshold option is set to <code>2</code>, then documents will always have to contain at least 2 of the
+							<p>If the partialMatchThreshold option is <code>2</code>, then documents will always have to contain at least 2 of the
 								partial match expression keywords to match the query, no matter how many keywords the partial match expression
 							actually contains.</p>
 						</blockquote>
@@ -566,16 +547,16 @@ data-enable-wildcards&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L59">src/ui/Querybox/Querybox.ts
-							:59</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L64">src/ui/Querybox/Querybox.ts
+							:64</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If the <a href="querybox.html#options.enablesearchasyoutype">Querybox.options.enableSearchAsYouType</a> option is set to <code>true</code>, this option specifies the delay
-							(in ms) between a keypress and a query being triggered.</p>
+							<p>If <a href="querybox.html#options.enablesearchasyoutype">Querybox.options.enableSearchAsYouType</a> is <code>true</code>, specifies the delay (in milliseconds) between a
+							key press and a query being triggered.</p>
 						</div>
-						<p>Default value is <code>500</code>.</p>
+						<p>Default value is <code>500</code>. Minimum value is <code>0</code></p>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -589,13 +570,13 @@ data-enable-wildcards&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L194">src/ui/Querybox/Querybox.ts
-							:194</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L181">src/ui/Querybox/Querybox.ts
+							:181</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether or not to trigger a query when the Querybox is cleared.</p>
+							<p>Specifies whether to trigger a query when the Querybox is cleared.</p>
 						</div>
 						<p>Default value is <code>true</code>.</p>
 					</div>
@@ -619,8 +600,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L300">src/ui/Querybox/Querybox.ts
-									:300</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L283">src/ui/Querybox/Querybox.ts
+									:283</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -723,8 +704,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L123">src/ui/Base/Component.ts
-									:123</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
+									:124</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -747,8 +728,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L336">src/ui/Querybox/Querybox.ts
-									:336</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L319">src/ui/Querybox/Querybox.ts
+									:319</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -772,8 +753,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L327">src/ui/Querybox/Querybox.ts
-									:327</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L310">src/ui/Querybox/Querybox.ts
+									:310</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -797,8 +778,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L318">src/ui/Querybox/Querybox.ts
-									:318</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L301">src/ui/Querybox/Querybox.ts
+									:301</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -822,8 +803,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L309">src/ui/Querybox/Querybox.ts
-									:309</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L292">src/ui/Querybox/Querybox.ts
+									:292</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -847,8 +828,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L347">src/ui/Querybox/Querybox.ts
-									:347</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L330">src/ui/Querybox/Querybox.ts
+									:330</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -881,8 +862,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L292">src/ui/Querybox/Querybox.ts
-									:292</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L275">src/ui/Querybox/Querybox.ts
+									:275</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -914,15 +895,16 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L280">src/ui/Querybox/Querybox.ts
-									:280</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L263">src/ui/Querybox/Querybox.ts
+									:263</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Triggers a query. The content of the input will be added to the query. If the content of the input has not changed
-									since the last submit, no new query will be triggered.</p>
+									<p>Adds the current content of the input to the query and triggers a query if the current content of the input has
+									changed since last submit.</p>
 								</div>
+								<p>Also logs the <code>serachboxSubmit</code> event in the usage analytics.</p>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
@@ -940,8 +922,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L192">src/ui/Base/Component.ts
-									:192</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
+									:193</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -986,8 +968,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L61">src/ui/Base/Component.ts
-							:61</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
+							:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1011,8 +993,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L89">src/ui/Base/Component.ts
-							:89</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
+							:90</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1029,8 +1011,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L73">src/ui/Base/Component.ts
-							:73</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
+							:74</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1090,8 +1072,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L77">src/ui/Base/Component.ts
-							:77</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
+							:78</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1108,8 +1090,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L69">src/ui/Base/Component.ts
-							:69</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
+							:70</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1126,8 +1108,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L65">src/ui/Base/Component.ts
-							:65</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
+							:66</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1144,8 +1126,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L81">src/ui/Base/Component.ts
-							:81</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
+							:82</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1162,8 +1144,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L85">src/ui/Base/Component.ts
-							:85</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
+							:86</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1206,16 +1188,15 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L209">src/ui/Querybox/Querybox.ts
-									:209</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Querybox/Querybox.ts#L196">src/ui/Querybox/Querybox.ts
+									:196</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new Querybox.</p>
+									<p>Creates a new Querybox. Creates a new <code>Coveo.Magicbox</code> instance and wraps the Magicbox methods (<code>onblur</code>,
+									<code>onsubmit</code> etc.). Binds event on <code>buildingQuery</code> and on redirection (for standalone box).</p>
 								</div>
-								<p>Creates a new Coveo.Magicbox instance and wraps the Magicbox methods (onblur, onsubmit etc).</p>
-								<p>Binds event on buildingQuery and on redirection (for standalone box).</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -1223,8 +1204,8 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The <code>HTMLElement</code> on which the element will be instantiated. This cannot be an <code>HTMLInputElement</code>
-											for technical reasons.</p>
+											<p>The HTMLElement on which to instantiate the component. This cannot be an HTMLInputElement for
+											technical reasons.</p>
 										</div>
 									</div>
 								</li>
@@ -1232,7 +1213,7 @@ data-trigger-query-on-clear&#x3D;&#x27;false&#x27;</pre>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">IQueryboxOptions</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The options for the Querybox.</p>
+											<p>The options for the ResultLayout component.</p>
 										</div>
 									</div>
 								</li>

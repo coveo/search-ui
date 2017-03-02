@@ -183,21 +183,22 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The CardActionBar component displays an action bar at the bottom of a Card result (see {ResultList.options.layout}
-						and <a href="resultlayout.html">ResultLayout</a>). It is a simple container for buttons or complementary information.</p>
+						<p>The CardActionBar component displays an action bar at the bottom of a card result (see
+							<a href="https://developers.coveo.com/x/yQUvAg">Result Layouts</a>). It is a simple container for buttons or complementary
+						information.</p>
 					</div>
-					<p>This component is meant to be placed at the bottom of a Card result (i.e., as the last child of the surrounding
-					<code>result-frame</code>.</p>
+					<p>You should place this component at the bottom of a card result (i.e., as the last child of the surrounding
+					<code>coveo-result-frame</code>.</p>
 					<h3 id="example">Example</h3>
 					<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"coveo-result-frame"</span>&gt;</span>
-  ...content...
+  [ ... content ... ]
   <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoCardActionBar"</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">some-button</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">some-button</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">some-additional-info</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">some-additional-info</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 </code></pre>
-					<p>A CardActionBar component is a two-state widget. Its default state is <code>hidden</code>.</p>
+					<p>A CardActionBar component is a two-state widget: it can either be shown or hidden. It is hidden by default.</p>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -260,15 +261,15 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardActionBar/CardActionBar.ts#L53">src/ui/CardActionBar/CardActionBar.ts
-							:53</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardActionBar/CardActionBar.ts#L55">src/ui/CardActionBar/CardActionBar.ts
+							:55</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Specifies whether the CardActionBar is hidden by default unless the user clicks its parent <a href="../interfaces/iqueryresult.html">IQueryResult</a>.</p>
+							<p>Specifies whether to hide the CardActionBar by default, unless the user clicks its parent <a href="../interfaces/iqueryresult.html">IQueryResult</a>.</p>
 						</div>
-						<p>Default value is <code>true</code>, which means the component is hidden and a visual indicator is appended to its parent
+						<p>Default value is <code>true</code>. This means that the component is hidden and a visual indicator is appended to its parent
 						IQueryResult.</p>
 					</div>
 					<div class="tsd-panel">
@@ -284,14 +285,14 @@ data-hidden&#x3D;&#x27;false&#x27;</pre>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardActionBar/CardActionBar.ts#L61">src/ui/CardActionBar/CardActionBar.ts
-							:61</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardActionBar/CardActionBar.ts#L63">src/ui/CardActionBar/CardActionBar.ts
+							:63</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If {CardActionBar.options.hidden} is set to <code>true</code>, specifies whether the CardActionBar should open when it is
-							hovered over.</p>
+							<p>If <a href="cardactionbar.html#options.hidden">CardActionBar.options.hidden</a> is <code>true</code>, specifies whether to open the CardActionBar when the cursor
+							hovers over it.</p>
 						</div>
 						<p>Default value is <code>true</code>.</p>
 					</div>
@@ -395,8 +396,8 @@ data-open-on-mouse-over&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#getbindings">getBindings</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L123">src/ui/Base/Component.ts
-									:123</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L124">src/ui/Base/Component.ts
+									:124</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -419,8 +420,8 @@ data-open-on-mouse-over&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardActionBar/CardActionBar.ts#L110">src/ui/CardActionBar/CardActionBar.ts
-									:110</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardActionBar/CardActionBar.ts#L112">src/ui/CardActionBar/CardActionBar.ts
+									:112</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -443,8 +444,8 @@ data-open-on-mouse-over&#x3D;&#x27;false&#x27;</pre>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardActionBar/CardActionBar.ts#L100">src/ui/CardActionBar/CardActionBar.ts
-									:100</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardActionBar/CardActionBar.ts#L102">src/ui/CardActionBar/CardActionBar.ts
+									:102</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -468,8 +469,8 @@ data-open-on-mouse-over&#x3D;&#x27;false&#x27;</pre>
 								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#get">get</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L192">src/ui/Base/Component.ts
-									:192</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L193">src/ui/Base/Component.ts
+									:193</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -514,8 +515,8 @@ data-open-on-mouse-over&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#bind">bind</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L61">src/ui/Base/Component.ts
-							:61</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L62">src/ui/Base/Component.ts
+							:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -539,8 +540,8 @@ data-open-on-mouse-over&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentoptionsmodel">componentOptionsModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L89">src/ui/Base/Component.ts
-							:89</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L90">src/ui/Base/Component.ts
+							:90</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -557,8 +558,8 @@ data-open-on-mouse-over&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#componentstatemodel">componentStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L73">src/ui/Base/Component.ts
-							:73</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L74">src/ui/Base/Component.ts
+							:74</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -618,8 +619,8 @@ data-open-on-mouse-over&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querycontroller">queryController</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L77">src/ui/Base/Component.ts
-							:77</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L78">src/ui/Base/Component.ts
+							:78</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -636,8 +637,8 @@ data-open-on-mouse-over&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#querystatemodel">queryStateModel</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L69">src/ui/Base/Component.ts
-							:69</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L70">src/ui/Base/Component.ts
+							:70</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -654,8 +655,8 @@ data-open-on-mouse-over&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#root">root</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L65">src/ui/Base/Component.ts
-							:65</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L66">src/ui/Base/Component.ts
+							:66</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -672,8 +673,8 @@ data-open-on-mouse-over&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#searchinterface">searchInterface</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L81">src/ui/Base/Component.ts
-							:81</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L82">src/ui/Base/Component.ts
+							:82</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -690,8 +691,8 @@ data-open-on-mouse-over&#x3D;&#x27;false&#x27;</pre>
 						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L85">src/ui/Base/Component.ts
-							:85</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L86">src/ui/Base/Component.ts
+							:86</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -734,8 +735,8 @@ data-open-on-mouse-over&#x3D;&#x27;false&#x27;</pre>
 								<p>Overwrites <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardActionBar/CardActionBar.ts#L62">src/ui/CardActionBar/CardActionBar.ts
-									:62</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/CardActionBar/CardActionBar.ts#L64">src/ui/CardActionBar/CardActionBar.ts
+									:64</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -749,7 +750,7 @@ data-open-on-mouse-over&#x3D;&#x27;false&#x27;</pre>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The HTMLElement on which the component will be instantiated.</p>
+											<p>The HTMLElement on which to instantiate the component.</p>
 										</div>
 									</div>
 								</li>
@@ -765,8 +766,8 @@ data-open-on-mouse-over&#x3D;&#x27;false&#x27;</pre>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The bindings that the component requires to function normally. If not set, it will be automatically
-											resolved (with a slower execution time).</p>
+											<p>The bindings that the component requires to function normally. If not set, these will be
+											automatically resolved (with a slower execution time).</p>
 										</div>
 									</div>
 								</li>
@@ -774,7 +775,7 @@ data-open-on-mouse-over&#x3D;&#x27;false&#x27;</pre>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> result: <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The <a href="../interfaces/iqueryresult.html">IQueryResult</a>.</p>
+											<p>The parent result.</p>
 										</div>
 									</div>
 								</li>
