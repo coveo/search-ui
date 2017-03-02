@@ -123,7 +123,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     /**
      * Specifies whether to enable automatic responsive mode (i.e., automatically placing {@link Facet} and {@link Tab}
      * components in dropdown menus under the search box when the width of the SearchInterface HTML element reaches or
-     * falls behind certain pixel thresholds).
+     * falls behind a certain pixel threshold).
      *
      * You might want to set this option to `false` if automatic responsive mode does not suit the specific design needs
      * of your implementation.
@@ -136,9 +136,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * >
      * > In addition, you can specify the label you wish to display on the dropdown buttons (see
      * > {@link Facet.options.dropdownHeaderLabel} and {@link Tab.options.dropdownHeaderLabel}).
-     * >
-     * > Furthermore, it is possible to specify the pixel threshold at which Facet components will go in responsive
-     * > mode (see {@link Facet.options.responsiveBreakpoint}).
      *
      * Default value is `true`.
      */
@@ -392,9 +389,9 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   public componentOptionsModel: ComponentOptionsModel;
   public usageAnalytics: IAnalyticsClient;
   /**
-   * Allow to get and set the different breakpoint for mobile and tablet devices.
+   * Allows to get and set the different breakpoints for mobile and tablet devices.
    *
-   * This is useful, amongst other, for {@link Facet}, {@link Tab} and {@link ResultList}
+   * This is useful, among other things, for {@link Facet}, {@link Tab} and {@link ResultList} components.
    */
   public responsiveComponents: ResponsiveComponents;
 

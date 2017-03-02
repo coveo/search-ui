@@ -604,8 +604,11 @@ export class Facet extends Component {
      * framework uses the last occurrence of the option.
      *
      * Default value is `800`.
+     *
+     * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option. See
+     * {@link SearchInterface.responsiveComponents} instead.
      */
-    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 800 }),
+    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 800, deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.' }),
 
     /**
      * If {@link Facet.options.enableResponsiveMode} is `true` for all facets and
