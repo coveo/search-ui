@@ -3,6 +3,7 @@
   "version": "1.0.20",
   "description": "Coveo JavaScript Search Framework",
   "main": "./bin/js/CoveoJsSearch.js",
+  "types":"./bin/ts/CoveoJsSearch.d.ts",
   "scripts": {
     "test": "gulp test && gulp coverage",
     "build": "gulp",
