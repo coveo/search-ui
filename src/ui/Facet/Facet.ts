@@ -152,9 +152,9 @@ export class Facet extends Component {
     /**
      * Specifies the CSS class to change the Facet header icon.
      *
-     * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option.
+     * @deprecated This option is exposed for legacy reasons, and the recommendation is to not use this option.
      */
-    headerIcon: ComponentOptions.buildIconOption({ deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.' }),
+    headerIcon: ComponentOptions.buildIconOption({ deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
 
     /**
      * Specifies a unique identifier for the Facet. Among other things, this identifier serves the purpose of saving the
@@ -182,7 +182,7 @@ export class Facet extends Component {
      *
      * @deprecated This option is exposed for legacy reasons, and the recommendation is to not use this option.
      */
-    lookupField: ComponentOptions.buildFieldOption({ deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.' }),
+    lookupField: ComponentOptions.buildFieldOption({ deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
 
     /**
      * Specifies whether to display the Facet **Settings** menu.
@@ -266,7 +266,7 @@ export class Facet extends Component {
      *
      * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option.
      */
-    showIcon: ComponentOptions.buildBooleanOption({ defaultValue: false, deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.' }),
+    showIcon: ComponentOptions.buildBooleanOption({ defaultValue: false, deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
 
     /**
      * Specifies whether to use the `AND` operator in the resulting filter when multiple values are selected in the
@@ -357,11 +357,11 @@ export class Facet extends Component {
      *
      * Default value is `false`.
      *
-     * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option.
+     * @deprecated This option is exposed for legacy reasons, and the recommendation is to not use this option.
      */
     includeInOmnibox: ComponentOptions.buildBooleanOption({
       defaultValue: false,
-      deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.'
+      deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.'
     }),
 
     /**
@@ -372,13 +372,13 @@ export class Facet extends Component {
      *
      * Default value is `5` on desktop computer and `3` on a mobile device. Minimum value is `0`.
      *
-     * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option.
+     * @deprecated This option is exposed for legacy reasons, and the recommendation is to not use this option.
      */
     numberOfValuesInOmnibox: ComponentOptions.buildNumberOption({
       defaultFunction: () => DeviceUtils.isMobileDevice() ? 3 : 5,
       min: 0,
       depend: 'includeInOmnibox',
-      deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.'
+      deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.'
     }),
 
     /**
@@ -605,10 +605,10 @@ export class Facet extends Component {
      *
      * Default value is `800`.
      *
-     * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option. See
+     * @deprecated This option is exposed for legacy reasons, and the recommendation is to not use this option. See
      * {@link SearchInterface.responsiveComponents} instead.
      */
-    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 800, deprecated: 'This option is exposed for legacy reason, and the recommendation is to not use this option.' }),
+    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 800, deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
 
     /**
      * If {@link Facet.options.enableResponsiveMode} is `true` for all facets and
