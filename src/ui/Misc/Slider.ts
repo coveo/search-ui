@@ -430,12 +430,12 @@ export class SliderButton {
     }
   }
 
-  private getMousePosition(e: MouseEvent | TouchEvent) {
+  private getMousePosition(e: MouseEvent) {
     var posx = 0;
     var posy = 0;
-    if (e instanceof TouchEvent) {
-      posx = e.touches[0].pageX;
-      posy = e.touches[0].pageY;
+    if (e['touches'] && e['touches'][0]) {
+      posx = e['touches'][0].pageX;
+      posy = e['touches'][0].pageY;
     } else if (e.pageX && e.pageY) {
       posx = e.pageX;
       posy = e.pageY;
