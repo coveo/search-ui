@@ -33,14 +33,14 @@ conf = _.extend(conf, {
     new webpack.optimize.CommonsChunkPlugin({
       children: true
     }),
-    new webpack.optimize.DedupePlugin(),
-    new BundleAnalyzerPlugin({
+    //new webpack.optimize.DedupePlugin(),
+    /*new BundleAnalyzerPlugin({
       analyzerMode: 'server',
       // Host that will be used in `server` mode to start HTTP server.
       analyzerHost: '127.0.0.1',
       // Port that will be used in `server` mode to start HTTP server.
       analyzerPort: 8888,
-    })
+     })*/
   ])
 })
 

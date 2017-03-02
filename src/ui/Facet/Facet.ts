@@ -1881,3 +1881,5 @@ export class Facet extends Component {
 }
 
 Initialization.registerAutoCreateComponent(Facet);
+
+Facet.doExport();

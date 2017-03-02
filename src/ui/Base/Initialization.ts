@@ -17,6 +17,7 @@ import { JQueryUtils } from '../../utils/JQueryutils';
 import { IJQuery } from './CoveoJQuery';
 import * as _ from 'underscore';
 import { IStringMap } from '../../rest/GenericParam';
+import { Promise } from 'es6-promise';
 declare const require: any;
 
 /**
@@ -89,12 +90,16 @@ export class Initialization {
   public static registerAutoCreateComponent(componentClass: IComponentDefinition): void {
     Assert.exists(componentClass);
     Assert.exists(componentClass.ID);
-    Assert.doesNotExists(Initialization.eagerlyLoadedComponents[componentClass.ID]);
     Assert.doesNotExists(Initialization.namedMethods[componentClass.ID]);
+
     if (!_.contains(Initialization.registeredComponents, componentClass.ID)) {
       Initialization.registeredComponents.push(componentClass.ID);
     }
-    Initialization.eagerlyLoadedComponents[componentClass.ID] = componentClass;
+
+    if (Initialization.eagerlyLoadedComponents[componentClass.ID] == null) {
+      Initialization.eagerlyLoadedComponents[componentClass.ID] = componentClass;
+    }
+
     if (Initialization.lazyLoadedComponents[componentClass.ID] == null) {
       Initialization.lazyLoadedComponents[componentClass.ID] = () => {
         return new Promise((resolve, reject) => {
@@ -172,6 +177,10 @@ export class Initialization {
    */
   public static getListOfRegisteredComponents() {
     return Initialization.registeredComponents;
+  }
+
+  public static getListOfLoadedComponents() {
+    return _.keys(Initialization.eagerlyLoadedComponents);
   }
 
   /**

@@ -3,7 +3,7 @@
 ///<reference path="RevealQuerySuggestAddon.ts" />
 ///<reference path="OldOmniboxAddon.ts" />
 
-export const MagicBox = require('exports-loader?Coveo.MagicBox!../../../node_modules/coveomagicbox/bin/MagicBox.min.js');
+export const MagicBox: any = require('exports-loader?Coveo.MagicBox!../../../node_modules/coveomagicbox/bin/MagicBox.min.js');
 import { IQueryboxOptions } from '../Querybox/Querybox';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
