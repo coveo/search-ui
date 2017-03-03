@@ -10,8 +10,8 @@ import _ = require('underscore');
 export class TemplateCache {
   private static templates: { [templateName: string]: Template; } = {};
   private static templateNames: string[] = [];
+  private static pageTemplateNames: string[] = [];
   private static defaultTemplates: { [templateName: string]: Template; } = {};
-
 
   public static registerTemplate(name: string, template: Template, publicTemplate?: boolean, defaultTemplate?: boolean);
   public static registerTemplate(name: string, template: (data: {}) => string, publicTemplate?: boolean, defaultTemplate?: boolean);
@@ -22,7 +22,7 @@ export class TemplateCache {
    * @param publicTemplate
    * @param defaultTemplate
    */
-  public static registerTemplate(name: string, template: any, publicTemplate: boolean = true, defaultTemplate: boolean = false) {
+  public static registerTemplate(name: string, template: any, publicTemplate: boolean = true, defaultTemplate: boolean = false, pageTemplate: boolean = false) {
     Assert.isNonEmptyString(name);
     Assert.exists(template);
     if (!(template instanceof Template)) {
@@ -35,6 +35,11 @@ export class TemplateCache {
     if (publicTemplate && !_.contains(TemplateCache.templateNames, name)) {
       TemplateCache.templateNames.push(name);
     }
+
+    if (pageTemplate && !_.contains(TemplateCache.pageTemplateNames, name)) {
+      TemplateCache.pageTemplateNames.push(name);
+    }
+
     if (defaultTemplate) {
       TemplateCache.defaultTemplates[name] = template;
     }
@@ -85,6 +90,14 @@ export class TemplateCache {
    */
   public static getTemplateNames(): string[] {
     return TemplateCache.templateNames;
+  }
+
+  /**
+   * Get all page templates name currently registered in the framework.
+   * @returns {string[]}
+   */
+  public static getPageTemplateNames(): string[] {
+    return TemplateCache.pageTemplateNames;
   }
 
   /**
