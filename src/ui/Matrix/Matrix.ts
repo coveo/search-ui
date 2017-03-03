@@ -114,7 +114,7 @@ export class Matrix extends Component {
      *
      * See also {@link Matrix.options.columnLabels}.
      *
-     * Default valus is `[]`, which means that the Matrix will not generate any column (except the **Total** column, if
+     * Default value is `[]`, which means that the Matrix will not generate any column (except the **Total** column, if
      * {@link Matrix.options.enableRowTotals} is `true`).
      */
     columnFieldValues: ComponentOptions.buildListOption<string>({ defaultValue: [] }),
