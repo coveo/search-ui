@@ -707,10 +707,9 @@ export class ComponentOptions {
 
   static loadResultTemplateFromPageTemplatesCache(): Template {
     if (TemplateCache) {
-      var nonDefaultTemplateNames = TemplateCache.getPageTemplateNames();
-      debugger;
-      if (nonDefaultTemplateNames.length > 0) {
-        return new TemplateList(_.compact(_.map(nonDefaultTemplateNames, (templateName) => TemplateCache.getTemplate(templateName))));
+      var pageTemplateNames = TemplateCache.getPageTemplateNames();
+      if (pageTemplateNames.length > 0) {
+        return new TemplateList(_.compact(_.map(pageTemplateNames, (templateName) => TemplateCache.getTemplate(templateName))));
       }
     }
     return null;
