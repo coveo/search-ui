@@ -3,71 +3,101 @@ import { Promise } from 'es6-promise';
 import { SearchInterface } from '../ui/SearchInterface/SearchInterface';
 
 /**
- * Describe a single result returned by the Coveo Search API.
+ * The IQueryResult interface describes a single result returned by the Coveo REST Search API.
  */
 export interface IQueryResult {
+
   /**
-   * The title of the document
+   * Contains the title of the document
    */
   title: string;
   titleHighlights: IHighlight[];
+
   /**
-   * The uri of the document
+   * Contains the URI of the document.
    */
   uri: string;
+
   /**
-   * A printable uri, or path to the document
+   * Contains a printable URI (or path) to the document.
    */
   printableUri: string;
   printableUriHighlights: IHighlight[];
+
   /**
-   * The clickable uri of the document, which can be set on an href in the interface.
+   * Contains the clickable URI of the document, which you can set on an `href` in your search interface.
+   *
+   * See the {@link ResultLink} document.
    */
   clickUri: string;
+
   /**
-   * The document unique id, useful for different call on the {@link SearchEndpoint}
+   * Contains a unique ID for the document.
+   *
+   * This parameter is useful when making certain calls to a {@link SearchEndpoint}.
    */
   uniqueId: string;
+
   /**
-   * The excerpt for the document. Can be empty for some type of documents.
+   * Contains the excerpt of the document. Can be empty for certain types of documents (e.g., images, videos, etc.).
+   *
+   * See the {@link Excerpt} component.
    */
   excerpt: string;
   excerptHighlights: IHighlight[];
   firstSentences: string;
   firstSentencesHighlights: IHighlight[];
+
   /**
-   * Whether the document has an htmlVersion (quickview)
+   * Contains a value specifying whether the document has an HTML version.
+   *
+   * See the {@link Quickview} component.
    */
   hasHtmlVersion: boolean;
   hasMobileHtmlVersion: boolean;
+
   /**
-   * List of flags on the document, separated by ;<br/>
+   * Contains the list of flags that the document has. Each value is separated by a semicolon (`;`).
    */
   flags: string;
   summary: string;
   summaryHighlights: IHighlight[];
+
   /**
-   * Returned on a document if the {@link IQuery.debug} was set to true
+   * Contains a ranking information which is returned along the document if {@link IQuery.debug} is `true`.
    */
   rankingInfo: string;
+
   /**
-   * The rating for the given document. This can be set on a document using the {@link ResultRating} component, and if the collaborative rating is enabled on the index.
+   * Contains the rating of the document.
+   *
+   * See the {@link ResultRating} component.
    */
   rating?: number;
+
   /**
-   * Contains the raw field values on the document, as key->value properties
+   * Contains the raw field values of the document, expressed as key-value pairs.
    */
   raw: any;
+
   /**
-   * The parent result, if parent child loading was performed using the {@link Folding} component.
+   * Contains the parent result if parent-child loading was performed.
+   *
+   * See the {@link Folding} component.
    */
   parentResult?: IQueryResult;
+
   /**
-   * The parent result, if parent child loading was performed using the {@link Folding} component.
+   * Contains the child results if parent-child loading was performed.
+   *
+   * See the {@link Folding} component.
    */
   childResults: IQueryResult[];
+
   /**
-   * This value specifies whether the result was recommended by Coveo Reveal.
+   * Contains a value that specifies whether the result was recommended by the Coveo Machine Learning service.
+   *
+   * See [Coveo Machine Learning](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=177).
    */
   isRecommendation: boolean;
   termsToHighlight?: IHighlightTerm;
@@ -76,15 +106,16 @@ export interface IQueryResult {
 
   // Those fields are added by the JS UI framework
   /**
-   * The 0 based index of the results, as returned by the search API.
+   * Contains the 0-based index value of the result, as returned by the Coveo REST Search API.
    */
   index?: number;
+
   /**
-   * The queryUid, as returned by the search API.
+   * Contains The query UID, as returned by the Coveo REST Search API.
    *
-   * This is used mainly for usage analytics.
+   * This value is used mainly for usage analytics.
    *
-   * This property is added client side on each results, by the framework.
+   * The Coveo JavaScript Search Framework adds this property client-side to each result.
    */
   queryUid?: string;
   pipeline?: string;
@@ -93,20 +124,22 @@ export interface IQueryResult {
   moreResults?: () => Promise<IQueryResult[]>;
   totalNumberOfChildResults?: number;
   attachments?: IQueryResult[];
+
   /**
-   * The query state of the search interface inside which this result is rendered.
+   * Contains the query state of the {@link SearchInterface} inside which this result is rendered.
    *
-   * This is used mainly to do conditional rendering inside results templates.
+   * This value is used mainly to allow for conditional rendering of results templates.
    *
-   * This property is added client side on each results, by the framework.
+   * The Coveo JavaScript Search Framework adds this property client-side to each result.
    */
   state: { [attribute: string]: any; };
+
   /**
-   * The search interface inside which this result is rendered.
+   * The {@link SearchInterface} inside which this result is rendered.
    *
-   * This is used mainly to do conditional rendering inside results templates.
+   * This value is used mainly to allow for conditional rendering of results templates.
    *
-   * This property is added client side on each results, by the framework.
+   * The Coveo JavaScript Search Framework adds this property client-side to each result.
    */
   searchInterface: SearchInterface;
   orphan?: boolean;
