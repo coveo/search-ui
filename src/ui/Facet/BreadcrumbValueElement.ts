@@ -1,11 +1,12 @@
 /// <reference path="Facet.ts" />
 
-import {FacetValue} from './FacetValues';
-import {Facet} from './Facet';
-import {Assert} from '../../misc/Assert';
-import {DeviceUtils} from '../../utils/DeviceUtils';
-import {IAnalyticsFacetMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
-import {$$, Dom} from '../../utils/Dom';
+import { FacetValue } from './FacetValues';
+import { Facet } from './Facet';
+import { Assert } from '../../misc/Assert';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { $$, Dom } from '../../utils/Dom';
+import _ = require('underscore');
 
 export interface IBreadcrumbValueElementKlass {
   new (facet: Facet, facetValue: FacetValue): BreadcrumbValueElement;

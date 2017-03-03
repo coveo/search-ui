@@ -1,9 +1,9 @@
 import * as Mock from '../MockEnvironment';
-import {CurrentTab} from '../../src/ui/CurrentTab/CurrentTab';
-import {QueryStateModel} from '../../src/models/QueryStateModel';
-import {$$} from '../../src/utils/Dom';
-import {Tab} from '../../src/ui/Tab/Tab';
-import {Assert} from '../../src/misc/Assert';
+import { CurrentTab } from '../../src/ui/CurrentTab/CurrentTab';
+import { QueryStateModel } from '../../src/models/QueryStateModel';
+import { $$ } from '../../src/utils/Dom';
+import { Tab } from '../../src/ui/Tab/Tab';
+import { Assert } from '../../src/misc/Assert';
 
 export function CurrentTabTest() {
   describe('CurrentTab', () => {

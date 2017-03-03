@@ -1,5 +1,6 @@
-import {Utils} from './Utils';
-import {l} from '../strings/Strings';
+import { Utils } from './Utils';
+import { l } from '../strings/Strings';
+import _ = require('underscore');
 
 export class EmailUtils {
   static splitSemicolonSeparatedListOfEmailAddresses(addresses: string): string[] {
@@ -32,7 +33,7 @@ export class EmailUtils {
         name += ' (' + domain + ')';
       }
 
-      return '<a title="' + item.replace(/'/g, '&quot;') + 'href="mailto:' + encodeURI(email) + '">' + name + '</a>';
+      return '<a title="' + item.replace(/'/g, '&quot;') + '" href="mailto:' + encodeURI(email) + '">' + name + '</a>';
     });
     var excess = hyperlinks.length - lengthLimit;
     var andOthers = excess > 0 ? EmailUtils.buildEmailAddressesAndOthers(_.last(hyperlinks, excess)) : '';

@@ -8,6 +8,7 @@ const remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 const event_stream = require('event-stream');
 const shell = require('gulp-shell');
 const replace = require('gulp-replace');
+const coveralls = require('coveralls');
 
 const COVERAGE_DIR = path.resolve('bin/coverage');
 
@@ -41,6 +42,10 @@ gulp.task('buildTest', shell.task([
   'node node_modules/webpack/bin/webpack.js --config ./webpackConfigFiles/webpack.test.config.js'
 ]));
 
+gulp.task('uploadCoverage', ['lcovCoverage'], shell.task([
+  'cat bin/coverage/lcov.info | ./node_modules/.bin/coveralls'
+]));
+
 gulp.task('testDev', ['watchTest'], function (done) {
   new TestServer({
     configFile: __dirname + '/../karma.dev.conf.js',
@@ -50,7 +55,7 @@ gulp.task('testDev', ['watchTest'], function (done) {
 gulp.task('remapCoverage', function (done) {
   return gulp.src(`${COVERAGE_DIR}/coverage-es5.json`)
     .pipe(remapIstanbul({
-      exclude: /(webpack|~\/d3\/|~\/es6-promise\/dist\/|~\/process\/|~\/underscore\/|vertx|~\/coveomagicbox\/|~\/d3-.*\/|~\/modal-box\/|~\/moment\/|~\/pikaday\/|test\/|lib\/|es6-promise|coveo\.analytics|latinize)/
+      exclude: /(webpack|~\/d3\/|~\/es6-promise\/dist\/|~\/process\/|~\/underscore\/|vertx|~\/coveomagicbox\/|~\/d3-.*\/|~\/modal-box\/|~\/moment\/|~\/pikaday\/|test\/|lib\/|es6-promise|analytics|jstimezonedetect|latinize)/
     }))
     .pipe(rename('coverage.json'))
     .pipe(gulp.dest(COVERAGE_DIR));
@@ -63,6 +68,7 @@ gulp.task('lcovCoverage', ['remapCoverage'], function (done) {
     pattern: `${COVERAGE_DIR}/coverage.json`,
     reporters: {
       lcov: {}
-    }
+    },
+    print: 'summary'
   }).then(() => done());
 });

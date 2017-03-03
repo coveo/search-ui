@@ -1,10 +1,10 @@
-import {$$, Dom} from './Dom';
-import {IQueryResult} from '../rest/QueryResult';
-import {IResultsComponentBindings} from '../ui/Base/ResultsComponentBindings';
-import {DateUtils} from './DateUtils';
-import {FileTypes} from '../ui/Misc/FileTypes';
-import {Utils} from './Utils';
-import {StringUtils} from './StringUtils';
+import { $$, Dom } from './Dom';
+import { IQueryResult } from '../rest/QueryResult';
+import { IResultsComponentBindings } from '../ui/Base/ResultsComponentBindings';
+import { DateUtils } from './DateUtils';
+import { FileTypes } from '../ui/Misc/FileTypes';
+import { Utils } from './Utils';
+import { StringUtils } from './StringUtils';
 
 export class DomUtils {
   static getPopUpCloseButton(captionForClose: string, captionForReminder: string): string {

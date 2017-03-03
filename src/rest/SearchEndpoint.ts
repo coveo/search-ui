@@ -1,30 +1,31 @@
-import {ISearchEndpointOptions, ISearchEndpoint, IViewAsHtmlOptions} from './SearchEndpointInterface';
-import {EndpointCaller, IEndpointCallParameters, ISuccessResponse, IErrorResponse, IRequestInfo} from '../rest/EndpointCaller';
-import {IEndpointCallOptions} from '../rest/SearchEndpointInterface';
-import {IStringMap} from './GenericParam';
-import {Logger} from '../misc/Logger';
-import {Assert} from '../misc/Assert';
-import {IQuery} from '../rest/Query';
-import {IQueryResults} from '../rest/QueryResults';
-import {IQueryResult} from '../rest/QueryResult';
-import {version} from '../misc/Version';
-import {IListFieldValuesRequest} from '../rest/ListFieldValuesRequest';
-import {IIndexFieldValue} from '../rest/FieldValue';
-import {IFieldDescription} from '../rest/FieldDescription';
-import {IListFieldsResult} from '../rest/ListFieldsResult';
-import {IExtension} from '../rest/Extension';
-import {IRatingRequest} from '../rest/RatingRequest';
-import {ITaggingRequest} from '../rest/TaggingRequest';
-import {IRevealQuerySuggestRequest, IRevealQuerySuggestResponse} from '../rest/RevealQuerySuggest';
-import {ISentryLog} from './SentryLog';
-import {ISubscriptionRequest, ISubscription} from '../rest/Subscription';
-import {AjaxError} from '../rest/AjaxError';
-import {MissingAuthenticationError} from '../rest/MissingAuthenticationError';
-import {QueryUtils} from '../utils/QueryUtils';
-import {QueryError} from '../rest/QueryError';
-import {Utils} from '../utils/Utils';
-import {Promise} from 'es6-promise';
-import {shim} from '../misc/PromisesShim';
+import { ISearchEndpointOptions, ISearchEndpoint, IViewAsHtmlOptions } from './SearchEndpointInterface';
+import { EndpointCaller, IEndpointCallParameters, ISuccessResponse, IErrorResponse, IRequestInfo } from '../rest/EndpointCaller';
+import { IEndpointCallOptions } from '../rest/SearchEndpointInterface';
+import { IStringMap } from './GenericParam';
+import { Logger } from '../misc/Logger';
+import { Assert } from '../misc/Assert';
+import { IQuery } from '../rest/Query';
+import { IQueryResults } from '../rest/QueryResults';
+import { IQueryResult } from '../rest/QueryResult';
+import { version } from '../misc/Version';
+import { IListFieldValuesRequest } from '../rest/ListFieldValuesRequest';
+import { IIndexFieldValue } from '../rest/FieldValue';
+import { IFieldDescription } from '../rest/FieldDescription';
+import { IListFieldsResult } from '../rest/ListFieldsResult';
+import { IExtension } from '../rest/Extension';
+import { IRatingRequest } from '../rest/RatingRequest';
+import { ITaggingRequest } from '../rest/TaggingRequest';
+import { IRevealQuerySuggestRequest, IRevealQuerySuggestResponse } from '../rest/RevealQuerySuggest';
+import { ISentryLog } from './SentryLog';
+import { ISubscriptionRequest, ISubscription } from '../rest/Subscription';
+import { AjaxError } from '../rest/AjaxError';
+import { MissingAuthenticationError } from '../rest/MissingAuthenticationError';
+import { QueryUtils } from '../utils/QueryUtils';
+import { QueryError } from '../rest/QueryError';
+import { Utils } from '../utils/Utils';
+import { Promise } from 'es6-promise';
+import { shim } from '../misc/PromisesShim';
+import _ = require('underscore');
 shim();
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
@@ -88,7 +89,8 @@ export class SearchEndpoint implements ISearchEndpoint {
       restUri: 'https://platform.cloud.coveo.com/rest/search',
       accessToken: 'xx564559b1-0045-48e1-953c-3addd1ee4457',
       queryStringArguments: {
-        organizationID: 'searchuisamples'
+        organizationID: 'searchuisamples',
+        viewAllContent: 1
       }
     }));
   }
@@ -112,6 +114,13 @@ export class SearchEndpoint implements ISearchEndpoint {
     SearchEndpoint.endpoints['default'] = new SearchEndpoint(SearchEndpoint.removeUndefinedConfigOption(merged));
   }
 
+  /**
+   * Configure an endpoint to a Coveo Cloud index, in the V2 platform.
+   * @param organization The organization id of your Coveo cloud index
+   * @param token The token to use to execute query. If null, you will most probably need to login when querying.
+   * @param uri The uri of your cloud Search API. By default, will point to the production environment
+   * @param otherOptions A set of additional options to use when configuring this endpoint
+   */
   static configureCloudV2Endpoint(organization?: string, token?: string, uri: string = 'https://platform.cloud.coveo.com/rest/search', otherOptions?: ISearchEndpointOptions) {
     return SearchEndpoint.configureCloudEndpoint(organization, token, uri, otherOptions);
   }
@@ -559,7 +568,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Return a list of reveal query suggestions, based on the given request
+   * Returns a list of Coveo Machine Learning query suggestions, based on the given request
    * @param request query and number of suggestions to return
    * @param callOptions Additional set of options to use for this call.
    * @param callParams Options injected by the applied decorators.
@@ -773,6 +782,11 @@ export class SearchEndpoint implements ISearchEndpoint {
       _.each(queryObject.context, (value, key) => {
         queryString.push('context[' + key + ']=' + encodeURIComponent(value));
       });
+
+      if (queryObject.fieldsToInclude) {
+        queryString.push(`fieldsToInclude=[${_.map(queryObject.fieldsToInclude, (field) => '"' + encodeURIComponent(field.replace('@', '')) + '"').join(',')}]`);
+      }
+
     } else if (query) {
       queryString.push('q=' + encodeURIComponent(query));
     }
@@ -812,10 +826,9 @@ export class SearchEndpoint implements ISearchEndpoint {
         return response.data;
       }).catch((error?: IErrorResponse) => {
         if (autoRenewToken && this.canRenewAccessToken() && this.isAccessTokenExpiredStatus(error.statusCode)) {
-          this.renewAccessToken()
-            .then(() => {
-              return this.performOneCall(params, callOptions, autoRenewToken);
-            })
+          this.renewAccessToken().then(() => {
+            return this.performOneCall(params, callOptions, autoRenewToken);
+          })
             .catch(() => {
               return Promise.reject(this.handleErrorResponse(error));
             });
@@ -847,18 +860,17 @@ export class SearchEndpoint implements ISearchEndpoint {
     return Utils.isNonEmptyString(this.options.accessToken) && _.isFunction(this.options.renewAccessToken);
   }
 
-  private renewAccessToken(): Promise<string> | Promise<any> {
+  private renewAccessToken(): Promise<string> {
     this.logger.info('Renewing expired access token');
     return this.options.renewAccessToken().then((token: string) => {
       Assert.isNonEmptyString(token);
       this.options.accessToken = token;
       this.createEndpointCaller();
       return token;
-    })
-      .catch((e: any) => {
-        this.logger.error('Failed to renew access token', e);
-        return e;
-      });
+    }).catch((e: string) => {
+      this.logger.error('Failed to renew access token', e);
+      return e;
+    });
   }
 
   private removeTrailingSlash(uri: string) {

@@ -1,4 +1,4 @@
-import {StreamHighlightUtils} from '../../src/utils/StreamHighlightUtils';
+import { StreamHighlightUtils } from '../../src/utils/StreamHighlightUtils';
 
 export function StreamHighlightUtilsTest() {
   describe('StreamHighlightUtils', () => {
@@ -14,6 +14,18 @@ export function StreamHighlightUtilsTest() {
       var toHighlight = 'a b';
       var terms: { [originalTerm: string]: string[]; } = { 'a': [], 'b': [] };
       expect(StreamHighlightUtils.highlightStreamText(toHighlight, terms, {})).toEqual(`${getHighlightResultForTerm('a', 1, 'a')} ${getHighlightResultForTerm('b', 2, 'b')}`);
+    });
+
+    it('should allow to highlight html', () => {
+      var toHighlight = '<div>a b</div>';
+      var terms: { [originalTerm: string]: string[]; } = { 'a': [], 'b': [] };
+      expect(StreamHighlightUtils.highlightStreamHTML(toHighlight, terms, {})).toEqual(`<div>${getHighlightResultForTerm('a', 1, 'a')} ${getHighlightResultForTerm('b', 2, 'b')}</div>`);
+    });
+
+    it('should allow to highlight html even if there is no html', () => {
+      var toHighlight = 'a b';
+      var terms: { [originalTerm: string]: string[]; } = { 'a': [], 'b': [] };
+      expect(StreamHighlightUtils.highlightStreamHTML(toHighlight, terms, {})).toEqual(`${getHighlightResultForTerm('a', 1, 'a')} ${getHighlightResultForTerm('b', 2, 'b')}`);
     });
 
     it('should work with special char', () => {

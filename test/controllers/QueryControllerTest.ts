@@ -1,9 +1,10 @@
 import * as Mock from '../MockEnvironment';
-import {QueryController} from '../../src/controllers/QueryController';
-import {$$} from '../../src/utils/Dom';
-import {FakeResults} from '../Fake';
-import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
-import {IQuery} from '../../src/rest/Query';
+import { QueryController } from '../../src/controllers/QueryController';
+import { $$ } from '../../src/utils/Dom';
+import { FakeResults } from '../Fake';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { IQuery } from '../../src/rest/Query';
+import { QueryEvents, IBuildingQueryEventArgs } from '../../src/events/QueryEvents';
 
 export function QueryControllerTest() {
   describe('QueryController', function () {
@@ -49,6 +50,37 @@ export function QueryControllerTest() {
         firstResult: 10,
         numberOfResults: 50
       }), jasmine.any(Object));
+    });
+
+    it('should allow to get the last query', (done) => {
+      $$(test.cmp.element).on(QueryEvents.buildingQuery, (e, args: IBuildingQueryEventArgs) => {
+        args.queryBuilder.expression.add('mamamia');
+      });
+      var search = <jasmine.Spy>test.env.searchEndpoint.search;
+      var results = FakeResults.createFakeResults();
+      search.and.returnValue(new Promise((resolve, reject) => {
+        resolve(results);
+      }));
+
+      test.cmp.executeQuery();
+      setTimeout(() => {
+        expect(test.cmp.getLastQuery().q).toContain('mamamia');
+        done();
+      }, 10);
+    });
+
+    it('should allow to get the last query results', (done) => {
+      var search = <jasmine.Spy>test.env.searchEndpoint.search;
+      var results = FakeResults.createFakeResults();
+      search.and.returnValue(new Promise((resolve, reject) => {
+        resolve(results);
+      }));
+
+      test.cmp.executeQuery();
+      setTimeout(() => {
+        expect(test.cmp.getLastResults()).toEqual(results);
+        done();
+      }, 10);
     });
 
     describe('trigger query events', function () {

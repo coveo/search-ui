@@ -1,14 +1,15 @@
-import {Template} from '../Templates/Template';
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {DefaultResultAttachmentTemplate} from './DefaultResultAttachmentTemplate';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Utils} from '../../utils/Utils';
-import {QueryUtils} from '../../utils/QueryUtils';
-import {Initialization, IInitializationParameters} from '../Base/Initialization';
-import {Assert} from '../../misc/Assert';
-import {$$} from '../../utils/Dom';
+import { Template } from '../Templates/Template';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { DefaultResultAttachmentTemplate } from './DefaultResultAttachmentTemplate';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Utils } from '../../utils/Utils';
+import { QueryUtils } from '../../utils/QueryUtils';
+import { Initialization, IInitializationParameters } from '../Base/Initialization';
+import { Assert } from '../../misc/Assert';
+import { $$ } from '../../utils/Dom';
+import _ = require('underscore');
 
 export interface IResultAttachmentsOptions {
   resultTemplate?: Template;
@@ -17,9 +18,10 @@ export interface IResultAttachmentsOptions {
 }
 
 /**
- * This component is used to render attachments in a result set, for example when displaying emails.<br/>
- * It is intended to be used inside a result template when there is an active {@link Folding} component
- * inside the page.
+ * The ResultAttachments component renders attachments in a result set, for example when displaying emails. This
+ * component is usable inside a result template when there is an active {@link Folding} component in the page.
+ *
+ * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
 export class ResultAttachments extends Component {
   static ID = 'ResultAttachments';
@@ -29,26 +31,63 @@ export class ResultAttachments extends Component {
    * @componentOptions
    */
   static options: IResultAttachmentsOptions = {
+
     /**
-     * Specifies the template to use to render each of the attachments for a top result.<br/>
-     * By default, it will use the template specified in a child element with a `<script>` tag.<br/>
-     * This can be specified directly as an attribute to the element, for example :
+     * Specifies the template to use to render each attachment for a top result.
+     *
+     * You can specify a previously registered template for this option by referring the HTML `id` attribute or a CSS
+     * selector for the template (see {@link TemplateCache}).
+     *
+     * **Examples:**
+     *
+     * Specifying a previously registered template by referring to its HTML `id` attribute:
+     *
      * ```html
-     * <div class="CoveoResultFolding" data-result-template-id="Foo"></div>
+     * <div class="CoveoResultAttachments" data-result-template-id="Foo"></div>
      * ```
-     * which will use a previously registered template ID (see {@link TemplateCache})
+     *
+     * Specifying a previously registered template by referring to a CSS selector:
+     *
+     * ```html
+     * <div class='CoveoResultAttachments' data-result-template-selector=".Foo"></div>
+     * ```
+     *
+     * By default, this option uses the template specified in a child element with a `script` tag
      */
     resultTemplate: ComponentOptions.buildTemplateOption({ defaultFunction: (e) => new DefaultResultAttachmentTemplate() }),
+
     /**
-     * Specifies the template to use to render sub-attachments, which are attachments within other attachments,
-     * for example multiple files embedded in a .zip attachment.<br/>
-     * Sub-attachments can also contain other sub-attachments.<br/>
-     * The template can be specified the same way as {@link ResultAttachments.options.resultTemplate resultTemplate}
+     * Specifies the template to use to render sub-attachments, which are attachments within attachments, for example
+     * when multiple files are embedded within a .zip attachment.
+     *
+     * Sub-attachments can themselves contain sub-attachments, and so on up to a certain level (see
+     * {@link ResultAttachments.options.maximumAttachmentLevel}).
+     *
+     * You can specify a previously registered template for this option by referring the HTML `id` attribute or a CSS
+     * selector for the template (see {@link TemplateCache}).
+     *
+     * **Example:**
+     *
+     * Specifying a previously registered template by referring to its HTML `id` attribute:
+     *
+     * ```html
+     * <div class="CoveoResultAttachments" data-sub-result-template-id="Foo"></div>
+     * ```
+     *
+     * Specifying a previously registered template by referring to a CSS selector:
+     *
+     * ```html
+     * <div class="CoveoResultAttachments" data-sub-result-template-selector=".Foo"></div>
+     * ```
+     *
+     * By default, this option uses the same value as {@link ResultAttachments.options.resultTemplate}.
      */
     subResultTemplate: ComponentOptions.buildTemplateOption({ postProcessing: (value: Template, options: IResultAttachmentsOptions) => value != null ? value : options.resultTemplate }),
+
     /**
-     * Specifies the maximum nesting depth at which the component should stop rendering sub-attachments.<br/>
-     * The default value is 5.
+     * Specifies the maximum nesting depth. Beyond this depth, the component stops rendering sub-attachments.
+     *
+     * Default value is `5`. Minimum value is `0`.
      */
     maximumAttachmentLevel: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0 })
   };
@@ -56,12 +95,13 @@ export class ResultAttachments extends Component {
   private attachments: IQueryResult[];
 
   /**
-   * Build a new ResultAttachments component
-   * @param element
-   * @param options
-   * @param bindings
-   * @param result
-   * @param attachmentLevel
+   * Creates a new ResultAttachments component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the ResultAttachments component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   * @param result The result to associate the component with.
+   * @param attachmentLevel The nesting depth.
    */
   constructor(public element: HTMLElement, public options?: IResultAttachmentsOptions, public bindings?: IComponentBindings, result?: IQueryResult, public attachmentLevel = 0) {
     super(element, ResultAttachments.ID, bindings);
@@ -77,6 +117,7 @@ export class ResultAttachments extends Component {
   private renderAttachments() {
     _.each(this.attachments, (attachment) => {
       QueryUtils.setStateObjectOnQueryResult(this.queryStateModel.get(), attachment);
+      QueryUtils.setSearchInterfaceObjectOnQueryResult(this.searchInterface, attachment);
       var container = this.attachmentLevel > 0 ? this.options.subResultTemplate.instantiateToElement(attachment) : this.options.resultTemplate.instantiateToElement(attachment);
 
       this.autoCreateComponentsInsideResult(container, _.extend({}, attachment, { attachments: [] }));

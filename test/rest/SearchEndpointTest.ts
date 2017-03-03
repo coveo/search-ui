@@ -1,16 +1,17 @@
-import {SearchEndpoint} from '../../src/rest/SearchEndpoint';
-import {FakeResults} from '../Fake';
-import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
-import {IQueryResults} from '../../src/rest/QueryResults';
-import {IErrorResponse, IRequestInfo} from '../../src/rest/EndpointCaller';
-import {IQueryResult} from '../../src/rest/QueryResult';
-import {IListFieldValuesRequest} from '../../src/rest/ListFieldValuesRequest';
-import {IIndexFieldValue} from '../../src/rest/FieldValue';
-import {IExtension} from '../../src/rest/Extension';
-import {IFieldDescription} from '../../src/rest/FieldDescription';
-import {IRevealQuerySuggestResponse} from '../../src/rest/RevealQuerySuggest';
-import {ISubscription} from '../../src/rest/Subscription';
-import {AjaxError} from '../../src/rest/AjaxError';
+import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
+import { FakeResults } from '../Fake';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { IQueryResults } from '../../src/rest/QueryResults';
+import { IErrorResponse, IRequestInfo } from '../../src/rest/EndpointCaller';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { IListFieldValuesRequest } from '../../src/rest/ListFieldValuesRequest';
+import { IIndexFieldValue } from '../../src/rest/FieldValue';
+import { IExtension } from '../../src/rest/Extension';
+import { IFieldDescription } from '../../src/rest/FieldDescription';
+import { IRevealQuerySuggestResponse } from '../../src/rest/RevealQuerySuggest';
+import { ISubscription } from '../../src/rest/Subscription';
+import { AjaxError } from '../../src/rest/AjaxError';
+import _ = require('underscore');
 
 export function SearchEndpointTest() {
   describe('SearchEndpoint', function () {

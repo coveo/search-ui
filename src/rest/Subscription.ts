@@ -1,4 +1,4 @@
-import {IQuery} from './Query';
+import { IQuery } from './Query';
 
 export const SUBSCRIPTION_TYPE = {
   followQuery: 'followQuery',

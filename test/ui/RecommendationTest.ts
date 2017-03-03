@@ -1,11 +1,12 @@
 import * as Mock from '../MockEnvironment';
-import {SearchInterface} from '../../src/ui/SearchInterface/SearchInterface';
-import {Recommendation} from '../../src/ui/Recommendation/Recommendation';
-import {IRecommendationOptions} from '../../src/ui/Recommendation/Recommendation';
-import {IQuery} from '../../src/rest/Query';
-import {Simulate} from '../Simulate';
-import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
-import {FakeResults} from '../Fake';
+import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
+import { Recommendation } from '../../src/ui/Recommendation/Recommendation';
+import { IRecommendationOptions } from '../../src/ui/Recommendation/Recommendation';
+import { IQuery } from '../../src/rest/Query';
+import { Simulate } from '../Simulate';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { FakeResults } from '../Fake';
+import _ = require('underscore');
 
 export function RecommendationTest() {
   describe('Recommendation', () => {
@@ -64,6 +65,12 @@ export function RecommendationTest() {
     it('should generate a different id by default for each recommendation component', () => {
       let secondRecommendation = Mock.basicSearchInterfaceSetup<Recommendation>(Recommendation);
       expect(test.cmp.options.id).not.toEqual(secondRecommendation.cmp.options.id);
+    });
+
+    it('should copy component options model when bound to a main search interface', () => {
+      expect(mainSearchInterface.cmp.componentOptionsModel.getAttributes).toHaveBeenCalled();
+      mainSearchInterface.cmp.componentOptionsModel.setMultiple({ 'resultLink': { 'alwaysOpenInNewWindow': true } });
+      expect(mainSearchInterface.cmp.componentOptionsModel.getAttributes).toHaveBeenCalled();
     });
 
     describe('when the mainInterface triggered a query', () => {

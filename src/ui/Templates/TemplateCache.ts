@@ -1,7 +1,8 @@
-import {Template} from './Template';
-import {Assert} from '../../misc/Assert';
-import {UnderscoreTemplate} from './UnderscoreTemplate';
-import {HtmlTemplate} from './HtmlTemplate';
+import { Template } from './Template';
+import { Assert } from '../../misc/Assert';
+import { UnderscoreTemplate } from './UnderscoreTemplate';
+import { HtmlTemplate } from './HtmlTemplate';
+import _ = require('underscore');
 
 /**
  * Holds a reference to all template available in the framework
@@ -40,11 +41,32 @@ export class TemplateCache {
   }
 
   /**
+   * Remove the given template from the cache.
+   * @param name
+   * @param string
+   */
+  public static unregisterTemplate(name) {
+    Assert.isNonEmptyString(name);
+    if (TemplateCache.templates[name] != undefined) {
+      delete TemplateCache.templates[name];
+    }
+    if (TemplateCache.defaultTemplates[name] != undefined) {
+      delete TemplateCache.defaultTemplates[name];
+    }
+  }
+
+  /**
    * Return a template by its name/ID.
    * @param name
    * @returns {Template}
    */
   public static getTemplate(name: string): Template {
+    // In some scenarios, the template we're trying to load might be somewhere in the page
+    // but we could not load it "normally" on page load (eg : UI was loaded with require js)
+    // Try a last ditch effort to scan the needed templates.
+    if (!TemplateCache.templates[name]) {
+      TemplateCache.scanAndRegisterTemplates();
+    }
     Assert.exists(TemplateCache.templates[name]);
     return TemplateCache.templates[name];
   }
@@ -73,6 +95,10 @@ export class TemplateCache {
     return _.keys(TemplateCache.defaultTemplates);
   }
 
+  /**
+   * Get a default template by name.
+   * @param name The name of the queried template
+   */
   public static getDefaultTemplate(name: string): Template {
     Assert.exists(TemplateCache.defaultTemplates[name]);
     return TemplateCache.defaultTemplates[name];

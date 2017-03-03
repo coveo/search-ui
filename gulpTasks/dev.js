@@ -41,7 +41,10 @@ gulp.task('dev', ['setup', 'prepareSass'], (done)=> {
   let server = new WebpackDevServer(compiler, {
     contentBase: 'bin/',
     publicPath: '/js/',
-    compress: true
+    compress: true,
+    headers: {
+      'Content-Security-Policy': "script-src 'self' code.jquery.com 'unsafe-inline'"
+    }
   });
   server.listen(8080, 'localhost', ()=> {
   });

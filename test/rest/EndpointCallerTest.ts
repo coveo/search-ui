@@ -1,6 +1,6 @@
-import {EndpointCaller, IErrorResponse, ISuccessResponse} from '../../src/rest/EndpointCaller';
-import {IQueryResults} from '../../src/rest/QueryResults';
-import {FakeResults} from '../Fake';
+import { EndpointCaller, IErrorResponse, ISuccessResponse } from '../../src/rest/EndpointCaller';
+import { IQueryResults } from '../../src/rest/QueryResults';
+import { FakeResults } from '../Fake';
 
 export function EndpointCallerTest() {
   describe('EndpointCaller', function () {
@@ -26,6 +26,21 @@ export function EndpointCallerTest() {
           errorsAsSuccess: false
         });
         expect(jasmine.Ajax.requests.mostRecent().url).toBe('this is an XMLHTTPRequest');
+      });
+
+      it('should use the provided XMLHTTPRequest', function () {
+        class CustomXMLHttpRequest extends XMLHttpRequest { }
+
+        var endpointCaller = new EndpointCaller({ xmlHttpRequest: CustomXMLHttpRequest });
+        endpointCaller.call({
+          method: 'POST',
+          requestData: {},
+          url: 'this is an XMLHTTPRequest',
+          queryString: [],
+          responseType: 'text',
+          errorsAsSuccess: false
+        });
+        expect(jasmine.Ajax.requests.mostRecent() instanceof CustomXMLHttpRequest).toBe(true);
       });
 
       it('should set the auth if provided', function () {

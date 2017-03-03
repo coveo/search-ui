@@ -1,26 +1,27 @@
-import {$$, Dom} from '../../utils/Dom';
-import {IResponsiveComponent, ResponsiveComponentsManager, IResponsiveComponentOptions} from './ResponsiveComponentsManager';
-import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
-import {Component} from '../Base/Component';
-import {Logger} from '../../misc/Logger';
-import {l} from '../../strings/Strings';
-import {Utils} from '../../utils/Utils';
-import {Facet} from '../Facet/Facet';
-import {FacetSlider} from '../FacetSlider/FacetSlider';
-import {ResponsiveDropdown} from './ResponsiveDropdown/ResponsiveDropdown';
-import {ResponsiveDropdownContent} from './ResponsiveDropdown/ResponsiveDropdownContent';
-import {ResponsiveDropdownHeader} from './ResponsiveDropdown/ResponsiveDropdownHeader';
-import {QueryEvents, IQuerySuccessEventArgs} from '../../events/QueryEvents';
+import { $$, Dom } from '../../utils/Dom';
+import { IResponsiveComponent, ResponsiveComponentsManager, IResponsiveComponentOptions } from './ResponsiveComponentsManager';
+import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
+import { Component } from '../Base/Component';
+import { Logger } from '../../misc/Logger';
+import { l } from '../../strings/Strings';
+import { Utils } from '../../utils/Utils';
+import { Facet } from '../Facet/Facet';
+import { FacetSlider } from '../FacetSlider/FacetSlider';
+import { ResponsiveDropdown } from './ResponsiveDropdown/ResponsiveDropdown';
+import { ResponsiveDropdownContent } from './ResponsiveDropdown/ResponsiveDropdownContent';
+import { ResponsiveDropdownHeader } from './ResponsiveDropdown/ResponsiveDropdownHeader';
+import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { SearchInterface } from '../SearchInterface/SearchInterface';
+import { ResponsiveComponents } from './ResponsiveComponents';
+import _ = require('underscore');
 
 export class ResponsiveFacets implements IResponsiveComponent {
-
-  public static RESPONSIVE_BREAKPOINT: number = 800;
   public static DEBOUNCE_SCROLL_WAIT = 250;
 
   private static DROPDOWN_MIN_WIDTH: number = 280;
   private static DROPDOWN_WIDTH_RATIO: number = 0.35; // Used to set the width relative to the coveo root.
   private static DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'Filters';
-
+  private searchInterface: SearchInterface;
   private facets: Facet[] = [];
   private facetSliders: FacetSlider[] = [];
   private preservePositionOriginalValues: boolean[] = [];
@@ -41,25 +42,29 @@ export class ResponsiveFacets implements IResponsiveComponent {
   constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions, responsiveDropdown?: ResponsiveDropdown) {
     this.dropdownHeaderLabel = this.getDropdownHeaderLabel();
     this.dropdown = this.buildDropdown(responsiveDropdown);
+    this.searchInterface = <SearchInterface>Component.get(this.coveoRoot.el, SearchInterface, false);
     this.bindDropdownContentEvents();
     this.registerOnOpenHandler();
     this.registerOnCloseHandler();
     this.registerQueryEvents();
     this.logger = new Logger(this);
     if (Utils.isNullOrUndefined(options.responsiveBreakpoint)) {
-      this.breakpoint = ResponsiveFacets.RESPONSIVE_BREAKPOINT;
+      this.breakpoint = this.searchInterface ? this.searchInterface.responsiveComponents.getMediumScreenWidth() : new ResponsiveComponents().getMediumScreenWidth();
     } else {
       this.breakpoint = options.responsiveBreakpoint;
     }
   }
 
-  public registerComponent(component: Component) {
-    if (component instanceof Facet) {
-      this.facets.push(<Facet>component);
-      this.preservePositionOriginalValues.push((<Facet>component).options.preservePosition);
-    } else if (component instanceof FacetSlider) {
-      this.facetSliders.push(<FacetSlider>component);
+  public registerComponent(accept: Component) {
+    if (accept instanceof Facet) {
+      this.facets.push(<Facet>accept);
+      this.preservePositionOriginalValues.push((<Facet>accept).options.preservePosition);
+      return true;
+    } else if (accept instanceof FacetSlider) {
+      this.facetSliders.push(<FacetSlider>accept);
+      return false;
     }
+    return false;
   }
 
   public needDropdownWrapper() {

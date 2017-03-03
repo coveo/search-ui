@@ -1,6 +1,7 @@
-import {DeviceUtils} from './DeviceUtils';
-import {IQueryResult} from '../rest/QueryResult';
-import {SearchEndpoint} from '../rest/SearchEndpoint';
+import { DeviceUtils } from './DeviceUtils';
+import { IQueryResult } from '../rest/QueryResult';
+import { SearchEndpoint } from '../rest/SearchEndpoint';
+import _ = require('underscore');
 
 /**
  * Options for building an `<a>` tag.
@@ -59,7 +60,7 @@ export class AnchorUtils {
       text = options.text;
       options.text = undefined;
     }
-    return `<a href='${href} ${HTMLUtils.buildAttributeString(options)} '>${text}</a>`;
+    return `<a href='${href}' ${HTMLUtils.buildAttributeString(options)}>${text}</a>`;
   }
 }
 

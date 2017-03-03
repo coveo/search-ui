@@ -1,8 +1,9 @@
 import * as Mock from '../MockEnvironment';
-import {ExportToExcel} from '../../src/ui/ExportToExcel/ExportToExcel';
-import {IExportToExcelOptions} from '../../src/ui/ExportToExcel/ExportToExcel';
-import {QueryBuilder} from '../../src/ui/Base/QueryBuilder';
-import {analyticsActionCauseList} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { ExportToExcel } from '../../src/ui/ExportToExcel/ExportToExcel';
+import { IExportToExcelOptions } from '../../src/ui/ExportToExcel/ExportToExcel';
+import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import _ = require('underscore');
 
 export function ExportToExcelTest() {
   describe('ExportToExcel', function () {
@@ -26,16 +27,21 @@ export function ExportToExcelTest() {
         test.cmp.download();
         expect(searchEndpointSpy).toHaveBeenCalledWith(_.omit(fakeQuery, 'numberOfResults'), 200);
       });
-    });
 
-    it('download should do nothing if no query was made', function () {
-      var exportToExcelEventSpy = jasmine.createSpy('exportToExcelEventSpy');
-      var windowLocationReplaceSpy = jasmine.createSpy('windowLocationReplaceSpy');
-      test.env.usageAnalytics.logCustomEvent = exportToExcelEventSpy;
-      test.cmp._window.location.replace = windowLocationReplaceSpy;
-      test.cmp.download();
-      expect(exportToExcelEventSpy).not.toHaveBeenCalled();
-      expect(windowLocationReplaceSpy).not.toHaveBeenCalled();
+      it('fieldsToInclude allows to specify the needed fields to download', () => {
+        test = Mock.optionsComponentSetup<ExportToExcel, IExportToExcelOptions>(ExportToExcel, <IExportToExcelOptions>{
+          fieldsToInclude: ['@foo', '@bar']
+        });
+        test.cmp._window = Mock.mockWindow();
+        var searchEndpointSpy = jasmine.createSpy('searchEndpoint');
+        test.env.searchEndpoint.getExportToExcelLink = searchEndpointSpy;
+        var fakeQuery = new QueryBuilder().build();
+        test.env.queryController.getLastQuery = () => fakeQuery;
+        test.cmp.download();
+        expect(searchEndpointSpy).toHaveBeenCalledWith(jasmine.objectContaining({
+          fieldsToInclude: jasmine.arrayContaining(['@foo', '@bar'])
+        }), 100);
+      });
     });
 
     describe('when query was made', function () {

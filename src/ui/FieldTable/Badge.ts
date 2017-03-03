@@ -1,17 +1,20 @@
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Initialization} from '../Base/Initialization';
-import {FieldValue, IFieldValueOptions} from './FieldValue';
-import {StringUtils} from '../../utils/StringUtils';
-import {Assert} from '../../misc/Assert';
-import {$$} from '../../utils/Dom';
-
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Initialization } from '../Base/Initialization';
+import { FieldValue, IFieldValueOptions } from './FieldValue';
+import { StringUtils } from '../../utils/StringUtils';
+import { Assert } from '../../misc/Assert';
+import { $$ } from '../../utils/Dom';
+import _ = require('underscore');
 
 export interface IBadgeOptions extends IFieldValueOptions {
   colors: IBadgeColors;
 }
 
+/**
+ * Badge Colors
+ */
 export interface IBadgeColors extends IBadgeColor {
   values?: { [value: string]: IBadgeColors };
 }
@@ -22,10 +25,10 @@ export interface IBadgeColor {
 }
 
 /**
- * This component is used to easily output a field value with customizable colors and an icon preceding it.<br/>
- * It extends {@link FieldValue}, so any option on that component can be used on `Badge`.<br/>
- * It is possible to configure the default colors, but also to set colors specific to
- * the current field value.
+ * The Badge component outputs a field value with customizable colors and an icon preceding it.
+ *
+ * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)). It
+ * extends the {@link FieldValue} component. Therefore all FieldValue options are also available for a Badge component.
  */
 export class Badge extends FieldValue implements IComponentBindings {
   static ID = 'Badge';
@@ -35,10 +38,11 @@ export class Badge extends FieldValue implements IComponentBindings {
    * @componentOptions
    */
   static options: IBadgeOptions = {
+
     /**
-     * Specifies the colors for the badge.
+     * Specifies the colors for the Badge component.
      *
-     * Colors are specified in a a JSON format like the following:
+     * You must specify the colors in a JSON format similar to what follows:
      * ```json
      * {
      *   "values":{
@@ -55,10 +59,10 @@ export class Badge extends FieldValue implements IComponentBindings {
      *   "text":"#9ab52b"
      * }
      * ```
-     * This format allows to customize both the icon and text colors for each
-     * field value as well as the default value.
+     * This format allows you to customize both the icon and text colors for each field value as well as the default
+     * values.
      *
-     * Colors can be specified in HTML or hexadecimal code format.
+     * Colors can be specified in HTML or hexadecimal format.
      */
     colors: ComponentOptions.buildCustomOption<IBadgeColors>((value: string) => Badge.parseColors(value), { defaultValue: { values: {} } }),
     textCaption: ComponentOptions.buildLocalizedStringOption()
@@ -67,11 +71,12 @@ export class Badge extends FieldValue implements IComponentBindings {
   static parent = FieldValue;
 
   /**
-   * Build a new `Badge` component
-   * @param element
-   * @param options
-   * @param bindings
-   * @param result
+   * Creates a new Badge component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the Badge component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   * @param result The result to associate the component with.
    */
   constructor(element: HTMLElement, public options: IBadgeOptions, bindings?: IComponentBindings, result?: IQueryResult) {
     super(element, ComponentOptions.initComponentOptions(element, Badge, options), bindings, result, Badge.ID);
@@ -96,9 +101,9 @@ export class Badge extends FieldValue implements IComponentBindings {
   private static colorsRegex = new RegExp('^(\\s*' + Badge.colorRegex.source + '\\s*;)*(\\s*' + Badge.colorRegex.source + ')?\\s*$');
 
   /**
-   * Parse the passed color string into a workable format.
-   * See {@link Badge.options.colors} for more info on defining colors.
-   * @param colorsOption The color string to parse.
+   * Parses a {@link Badge.options.colors} option string into a workable JSON format.
+   *
+   * @param colorsOption The colors option string to parse. See {@link Badge.options.colors}.
    */
   public static parseColors(colorsOption: string): IBadgeColors {
     if (colorsOption) {
@@ -129,10 +134,10 @@ export class Badge extends FieldValue implements IComponentBindings {
   }
 
   /**
-   * Get the icon and text color for the passed field value.<br/>
-   * Returns an object with the `icon` and `text` keys,
-   * representing their respective colors.
-   * @param value The field value for which the colors are returned.
+   * Gets the icon and text color of a field value.
+   *
+   * @param value The field value whose colors to return.
+   * @returns {{icon: string, text: string}} An object with the `icon` and `text` keys.
    */
   public getColor(value: string = ''): IBadgeColor {
     var colorKey = _.find(_.keys(this.options.colors.values), (key: string) => value.toLowerCase() == key.toLowerCase());
@@ -144,9 +149,10 @@ export class Badge extends FieldValue implements IComponentBindings {
   }
 
   /**
-   * Render one string value with the appropriate colors and icon.<br/>
-   * Returns an HTML `span` containing the rendered value.
+   * Renders one string value with the appropriate colors and icon.
+   *
    * @param value The field value to render.
+   * @returns {HTMLElement} An HTML `<span>` tag containing the rendered value.
    */
   public renderOneValue(value: string): HTMLElement {
     let valueDom = super.renderOneValue(value);

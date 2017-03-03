@@ -1,8 +1,9 @@
-import {IQueryResults} from '../rest/QueryResults';
-import {IQueryResult} from '../rest/QueryResult';
-import {IQuery} from '../rest/Query';
-import {Assert} from '../misc/Assert';
-import {Utils} from '../utils/Utils';
+import { IQueryResults } from '../rest/QueryResults';
+import { IQueryResult } from '../rest/QueryResult';
+import { IQuery } from '../rest/Query';
+import { Assert } from '../misc/Assert';
+import { Utils } from '../utils/Utils';
+import _ = require('underscore');
 
 declare let crypto: Crypto;
 
@@ -39,6 +40,10 @@ export class QueryUtils {
 
   static setStateObjectOnQueryResult(state: any, result: IQueryResult) {
     QueryUtils.setPropertyOnResult(result, 'state', state);
+  }
+
+  static setSearchInterfaceObjectOnQueryResult(searchInterface, result: IQueryResult) {
+    QueryUtils.setPropertyOnResult(result, 'searchInterface', searchInterface);
   }
 
   static setIndexAndUidOnQueryResults(query: IQuery, results: IQueryResults, queryUid: string, pipeline: string, splitTestRun: string) {
@@ -226,5 +231,4 @@ export class QueryUtils {
     }
     return false;
   }
-
 }

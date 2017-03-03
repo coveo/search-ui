@@ -1,49 +1,115 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {QueryEvents} from '../../events/QueryEvents';
-import {Initialization} from '../Base/Initialization';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {Assert} from '../../misc/Assert';
-import {ResultListEvents, IChangeLayoutEventArgs} from '../../events/ResultListEvents';
-import {ResultLayoutEvents, IResultLayoutPopulateArgs} from '../../events/ResultLayoutEvents';
-import {$$} from '../../utils/Dom';
-import {IQueryErrorEventArgs, IQuerySuccessEventArgs} from '../../events/QueryEvents';
-import {QueryStateModel, QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
-import {MODEL_EVENTS, IAttributesChangedEventArg} from '../../models/Model';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { QueryEvents } from '../../events/QueryEvents';
+import { Initialization } from '../Base/Initialization';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { Assert } from '../../misc/Assert';
+import { ResultListEvents, IChangeLayoutEventArgs } from '../../events/ResultListEvents';
+import { ResultLayoutEvents, IResultLayoutPopulateArgs } from '../../events/ResultLayoutEvents';
+import { $$ } from '../../utils/Dom';
+import { IQueryErrorEventArgs, IQuerySuccessEventArgs } from '../../events/QueryEvents';
+import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
+import { MODEL_EVENTS, IAttributesChangedEventArg } from '../../models/Model';
+import { analyticsActionCauseList, IAnalyticsResultsLayoutChange } from '../Analytics/AnalyticsActionListMeta';
+import { IQueryResults } from '../../rest/QueryResults';
+import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
+import { ResponsiveResultLayout } from '../ResponsiveComponents/ResponsiveResultLayout';
+import { Utils } from '../../utils/Utils';
+import _ = require('underscore');
 
-export interface IResultLayoutOptions {
+interface IActiveLayouts {
+  button: {
+    el: HTMLElement;
+    visible: boolean;
+  };
+  enabled: boolean;
 }
 
-export type ValidLayout = 'list' | 'card' | 'table';
+export interface IResultLayoutOptions {
+  mobileLayouts: string[];
+  tabletLayouts: string[];
+  desktopLayouts: string[];
+}
 
 /**
- * This component allows to switch between multiple {@link ResultList}s with
- * different layouts.
+ * The possible valid and supported layouts.
  *
- * It will automatically populate itself with buttons to switch through {@link
- * ResultList}s which each have a valid `data-layout` attribute.
+ * See the [Result Layouts](https://developers.coveo.com/x/yQUvAg) documentation.
+ */
+export type ValidLayout = 'list' | 'card' | 'table';
+export const defaultLayout: ValidLayout = 'list';
+
+/**
+ * The ResultLayout component allows the end user to switch between multiple {@link ResultList} components that have
+ * different {@link ResultList.options.layout} values.
+ *
+ * This component automatically populates itself with buttons to switch between the ResultList components that have a
+ * valid layout value (see the {@link ValidLayout} type).
+ *
+ * See also the [Result Layouts](https://developers.coveo.com/x/yQUvAg) documentation.
  */
 export class ResultLayout extends Component {
   static ID = 'ResultLayout';
 
   public static validLayouts: ValidLayout[] = ['list', 'card', 'table'];
 
-  private currentLayout: string;
-  private buttons: { [key: string]: HTMLElement };
+  public currentLayout: string;
+
+  private currentActiveLayouts: { [key: string]: IActiveLayouts };
   private resultLayoutSection: HTMLElement;
 
-  /**
-   * @componentOptions
-   */
   static options: IResultLayoutOptions = {
+    /**
+     * Specifies the layouts that should be available when the search page is displayed in mobile mode.
+     *
+     * By default, the mobile mode breakpoint is at 480 px screen width.
+     *
+     * When the breakpoint is reached, layouts that are not specified becomes inactive and the linked result list will be disabled.
+     *
+     * The possible values for layouts are `list`, `card`, `table`.
+     *
+     * The default value is `card`, `table`.
+     */
+    mobileLayouts: ComponentOptions.buildListOption<ValidLayout>({ defaultValue: ['card', 'table'] }),
+    /**
+     * Specifies the layouts that should be available when the search page is displayed in tablet mode.
+     *
+     * By default, the tablet mode breakpoint is at 800 px screen width.
+     *
+     *  When the breakpoint is reached, layouts that are not specified becomes inactive and the linked result list will be disabled.
+     *
+     * The possible values for layouts are `list`, `card`, `table`.
+     *
+     * The default value is `list`, `card`, `table`.
+     */
+    tabletLayouts: ComponentOptions.buildListOption<ValidLayout>({ defaultValue: ['list', 'card', 'table'] }),
+    /**
+     * Specifies the layouts that should be available when the search page is displayed in desktop mode.
+     *
+     * By default, the desktop mode breakpoint is any screen size over 800 px.
+     *
+     *  When the breakpoint is reached, layouts that are not specified becomes inactive and the linked result list will be disabled.
+     *
+     * The possible values for layouts are `list`, `card`, `table`.
+     *
+     * The default value is `list`, `card`, `table`.
+     */
+    desktopLayouts: ComponentOptions.buildListOption<ValidLayout>({ defaultValue: ['list', 'card', 'table'] })
   };
 
+  /**
+   * Creates a new ResultLayout component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the ResultLayout component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   */
   constructor(public element: HTMLElement, public options?: IResultLayoutOptions, bindings?: IComponentBindings) {
     super(element, ResultLayout.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, ResultLayout, options);
 
-    this.buttons = {};
+    this.currentActiveLayouts = {};
 
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.LAYOUT, this.handleQueryStateChanged.bind(this));
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
@@ -51,28 +117,114 @@ export class ResultLayout extends Component {
 
     this.resultLayoutSection = $$(this.element).closest('.coveo-result-layout-section');
 
-    this.populate();
-
+    this.bind.oneRootElement(InitializationEvents.afterComponentsInitialization, () => this.populate());
     this.bind.oneRootElement(InitializationEvents.afterInitialization, () => this.handleQueryStateChanged());
+
+    ResponsiveResultLayout.init(this.root, this, this.options);
   }
 
   /**
-   * Change the current layout.
-   * @param layout The new layout. Available values are `list`, `card` and `table`.
+   * Changes the current layout.
+   *
+   * Also logs a `resultLayoutChange` event in the usage analytics with the new layout as metadeta.
+   *
+   * Triggers a new query.
+   *
+   * @param layout The new layout. The page must contain a valid {@link ResultList} component with a matching
+   * {@link ResultList.options.layout} value for this method to work.
    */
   public changeLayout(layout: ValidLayout) {
-    Assert.check(_.contains(_.keys(this.buttons), layout), 'Layout not available or invalid');
+    Assert.check(this.isLayoutDisplayedByButton(layout), 'Layout not available or invalid');
+
     if (layout !== this.currentLayout || this.getModelValue() === '') {
-      this.bind.trigger(this.root, ResultListEvents.changeLayout, <IChangeLayoutEventArgs>{
-        layout: layout
-      });
-      if (this.currentLayout) {
-        $$(this.buttons[this.currentLayout]).removeClass('coveo-selected');
-      }
-      $$(this.buttons[layout]).addClass('coveo-selected');
+
       this.setModelValue(layout);
-      this.currentLayout = layout;
+      const lastResults = this.queryController.getLastResults();
+      this.setLayout(layout, lastResults);
+      if (lastResults) {
+        this.usageAnalytics.logCustomEvent<IAnalyticsResultsLayoutChange>(analyticsActionCauseList.resultsLayoutChange, {
+          resultsLayoutChangeTo: layout
+        }, this.element);
+      } else {
+        this.usageAnalytics.logSearchEvent<IAnalyticsResultsLayoutChange>(analyticsActionCauseList.resultsLayoutChange, {
+          resultsLayoutChangeTo: layout
+        });
+        this.queryController.executeQuery();
+      }
     }
+  }
+
+  /**
+   * Gets the current layout (`list`, `card` or `table`).
+   * @returns {string} The current current layout.
+   */
+  public getCurrentLayout() {
+    return this.currentLayout;
+  }
+
+  public disableLayouts(layouts: ValidLayout[]) {
+    if (Utils.isNonEmptyArray(layouts)) {
+      _.each(layouts, (layout) => {
+        this.disableLayout(layout);
+      });
+
+      let remainingValidLayouts = _.difference(_.keys(this.currentActiveLayouts), layouts);
+      if (remainingValidLayouts && remainingValidLayouts[0]) {
+        this.changeLayout(<ValidLayout>remainingValidLayouts[0]);
+      } else {
+        this.logger.error('Cannot disable the last valid layout ... Re-enabling the first one possible');
+        let firstPossibleValidLayout = <ValidLayout>_.keys(this.currentActiveLayouts)[0];
+        this.enableLayout(firstPossibleValidLayout);
+        this.setLayout(firstPossibleValidLayout);
+      }
+    }
+  }
+
+  public enableLayouts(layouts: ValidLayout[]) {
+    _.each(layouts, (layout) => {
+      this.enableLayout(layout);
+    });
+  }
+
+  private disableLayout(layout: ValidLayout) {
+    if (this.isLayoutDisplayedByButton(layout)) {
+      this.hideButton(layout);
+    }
+  }
+
+  private enableLayout(layout: ValidLayout) {
+    if (this.isLayoutDisplayedByButton(layout)) {
+      this.showButton(layout);
+      this.updateSelectorAppearance();
+    }
+  }
+
+
+  private hideButton(layout: ValidLayout) {
+    if (this.isLayoutDisplayedByButton(layout)) {
+      let btn = this.currentActiveLayouts[<string>layout].button;
+      $$(btn.el).hide();
+      btn.visible = false;
+      this.updateSelectorAppearance();
+    }
+  }
+
+  private showButton(layout: ValidLayout) {
+    if (this.isLayoutDisplayedByButton(layout)) {
+      let btn = this.currentActiveLayouts[<string>layout].button;
+      $$(btn.el).show();
+      btn.visible = true;
+    }
+  }
+
+  private setLayout(layout: ValidLayout, results?: IQueryResults) {
+    this.isLayoutDisplayedByButton(layout);
+    if (this.currentLayout) {
+      $$(this.currentActiveLayouts[this.currentLayout].button.el).removeClass('coveo-selected');
+    }
+    $$(this.currentActiveLayouts[layout].button.el).addClass('coveo-selected');
+    this.currentLayout = layout;
+    $$(this.element).trigger(ResultListEvents.changeLayout, <IChangeLayoutEventArgs>{ layout: layout, results: results });
   }
 
   private handleQuerySuccess(args: IQuerySuccessEventArgs) {
@@ -85,16 +237,24 @@ export class ResultLayout extends Component {
 
   private handleQueryStateChanged(args?: IAttributesChangedEventArg) {
     const modelLayout = this.getModelValue();
-    const newLayout = _.find(_.keys(this.buttons), l => l === modelLayout);
+    const newLayout = _.find(_.keys(this.currentActiveLayouts), l => l === modelLayout);
     if (newLayout !== undefined) {
-      this.changeLayout(<ValidLayout>newLayout);
+      this.setLayout(<ValidLayout>newLayout);
     } else {
-      this.changeLayout(<ValidLayout>_.keys(this.buttons)[0]);
+      this.setLayout(<ValidLayout>_.keys(this.currentActiveLayouts)[0]);
     }
   }
 
   private handleQueryError(args: IQueryErrorEventArgs) {
     this.hide();
+  }
+
+  private updateSelectorAppearance() {
+    if (this.shouldShowSelector()) {
+      this.show();
+    } else {
+      this.hide();
+    }
   }
 
   private populate() {
@@ -109,19 +269,23 @@ export class ResultLayout extends Component {
     }
   }
 
-  public getCurrentLayout() {
-    return this.currentLayout;
-  }
-
   private addButton(layout?: string) {
-    const btn = $$('span', { className: 'coveo-result-layout-selector' }, layout);
+    const btn = $$('span', { className: 'coveo-result-layout-selector', tabindex: 0 }, layout);
     btn.prepend($$('span', { className: `coveo-icon coveo-sprites-${layout}-layout` }).el);
     if (layout === this.currentLayout) {
       btn.addClass('coveo-selected');
     }
-    btn.on('click', () => this.changeLayout(<ValidLayout>layout));
+    const activateAction = () => this.changeLayout(<ValidLayout>layout);
+    btn.on('click', activateAction);
+    btn.on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, activateAction));
     $$(this.element).append(btn.el);
-    this.buttons[layout] = btn.el;
+    this.currentActiveLayouts[layout] = {
+      button: {
+        visible: true,
+        el: btn.el
+      },
+      enabled: true
+    };
   }
 
   private hide() {
@@ -143,7 +307,11 @@ export class ResultLayout extends Component {
   }
 
   private shouldShowSelector() {
-    return _.keys(this.buttons).length > 1;
+    return _.keys(this.currentActiveLayouts).length > 1 && _.filter(this.currentActiveLayouts, (activeLayout: IActiveLayouts) => activeLayout.button.visible).length > 1;
+  }
+
+  private isLayoutDisplayedByButton(layout: ValidLayout) {
+    return _.contains(_.keys(this.currentActiveLayouts), layout);
   }
 }
 

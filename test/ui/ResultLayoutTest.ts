@@ -1,10 +1,11 @@
 import * as Mock from '../MockEnvironment';
-import {ResultLayout} from '../../src/ui/ResultLayout/ResultLayout';
-import {ResultLayoutEvents} from '../../src/events/ResultLayoutEvents';
-import {QueryEvents, IQuerySuccessEventArgs} from '../../src/events/QueryEvents';
-import {FakeResults} from '../Fake';
-import {QueryStateModel} from '../../src/models/QueryStateModel';
-import {$$} from '../../src/utils/Dom';
+import { ResultLayout } from '../../src/ui/ResultLayout/ResultLayout';
+import { ResultLayoutEvents } from '../../src/events/ResultLayoutEvents';
+import { QueryEvents, IQuerySuccessEventArgs } from '../../src/events/QueryEvents';
+import { FakeResults } from '../Fake';
+import { QueryStateModel } from '../../src/models/QueryStateModel';
+import { $$ } from '../../src/utils/Dom';
+import { InitializationEvents } from '../../src/events/InitializationEvents';
 
 export function ResultLayoutTest() {
   describe('ResultLayout', () => {
@@ -29,6 +30,7 @@ export function ResultLayoutTest() {
             return builder;
           }
         });
+        $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
       });
 
       it('changeLayout should switch the layout when entering a valid and available layout', function () {
@@ -38,6 +40,13 @@ export function ResultLayoutTest() {
 
       it('changeLayout should throw an error when switching to a valid but unavailable layout', function () {
         expect(() => test.cmp.changeLayout('table')).toThrow();
+      });
+
+      it('should put tabindex=0 on each of the layout buttons', function () {
+        const children = test.cmp.element.children;
+        for (let i = 0; i < children.length; ++i) {
+          expect(children[i].getAttribute('tabindex')).toBe('0');
+        }
       });
 
       it('hides on querySuccess when there are 0 results', function () {
@@ -70,29 +79,24 @@ export function ResultLayoutTest() {
               return builder;
             }
           });
+          $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
         });
 
         it('calls changeLayout with the new value on queryStateChanged if it is available', function () {
-          let changeLayoutSpy = jasmine.createSpy('changeLayoutSpy');
-          test.cmp.changeLayout = changeLayoutSpy;
           test.env.queryStateModel.set(QueryStateModel.attributesEnum.layout, 'card');
-          expect(changeLayoutSpy).toHaveBeenCalledWith('card');
+          expect(test.cmp.getCurrentLayout()).toBe('card');
         });
 
         it('calls changeLayout with its first layout if no value is provided', function () {
-          let changeLayoutSpy = jasmine.createSpy('changeLayoutSpy');
-          test.cmp.changeLayout = changeLayoutSpy;
           test.env.queryStateModel.set(QueryStateModel.attributesEnum.layout, 'list');
           test.env.queryStateModel.set(QueryStateModel.attributesEnum.layout, '');
-          expect(changeLayoutSpy).toHaveBeenCalledWith('list');
+          expect(test.cmp.getCurrentLayout()).toBe('list');
         });
 
         it('calls changeLayout with its first layout if an invalid value is provided', function () {
-          let changeLayoutSpy = jasmine.createSpy('changeLayoutSpy');
-          test.cmp.changeLayout = changeLayoutSpy;
           test.env.queryStateModel.set(QueryStateModel.attributesEnum.layout, 'list');
           test.env.queryStateModel.set(QueryStateModel.attributesEnum.layout, 'Emacs <3');
-          expect(changeLayoutSpy).toHaveBeenCalledWith('list');
+          expect(test.cmp.getCurrentLayout()).toBe('list');
         });
       });
     });
@@ -106,18 +110,20 @@ export function ResultLayoutTest() {
           return builder;
         }
       });
+      $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
       expect(() => test.cmp.changeLayout('table')).not.toThrow();
     });
 
     it('should throw an error when being populated with invalid result layout names', function () {
-      expect(() => Mock.advancedComponentSetup<ResultLayout>(ResultLayout, <Mock.AdvancedComponentSetupOptions>{
+      test = Mock.advancedComponentSetup<ResultLayout>(ResultLayout, <Mock.AdvancedComponentSetupOptions>{
         modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
           $$(builder.root).on(ResultLayoutEvents.populateResultLayout, (e, args) => {
             args.layouts.push('star-shaped');
           });
           return builder;
         }
-      })).toThrowError(/Invalid layout/);
+      });
+      expect(() => test.cmp['populate']()).toThrowError(/Invalid layout/);
     });
 
     it('changeLayout should throw an error at runtime when entering an invalid layout', function () {
@@ -133,6 +139,7 @@ export function ResultLayoutTest() {
           return builder;
         }
       });
+      $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
       expect(test.cmp.element.classList).toContain('coveo-result-layout-hidden');
     });
 
@@ -147,6 +154,7 @@ export function ResultLayoutTest() {
           return builder;
         }
       });
+      $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
       expect(test.cmp.element.classList).not.toContain('coveo-result-layout-hidden');
     });
 
@@ -161,6 +169,7 @@ export function ResultLayoutTest() {
           return builder;
         }
       });
+      $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization);
       expect(parentSection.el.classList).toContain('coveo-result-layout-hidden');
       expect(test.cmp.element.classList).not.toContain('coveo-result-layout-hidden');
     });

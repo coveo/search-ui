@@ -1,8 +1,8 @@
 import * as Mock from '../MockEnvironment';
-import {SearchAlertsMessage} from '../../src/ui/SearchAlerts/SearchAlertsMessage';
-import {PopupUtils} from '../../src/utils/PopupUtils';
-import {$$} from '../../src/utils/Dom';
-import {SearchAlertsEvents} from '../../src/events/SearchAlertEvents';
+import { SearchAlertsMessage } from '../../src/ui/SearchAlerts/SearchAlertsMessage';
+import { PopupUtils } from '../../src/utils/PopupUtils';
+import { $$ } from '../../src/utils/Dom';
+import { SearchAlertsEvents } from '../../src/events/SearchAlertEvents';
 
 export function SearchAlertsMessageTest() {
   describe('SearchAlertsMessage', function () {

@@ -1,23 +1,27 @@
-import {SearchInterface, ISearchInterfaceOptions} from '../SearchInterface/SearchInterface';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs} from '../../events/QueryEvents';
-import {OmniboxEvents} from '../../events/OmniboxEvents';
-import {ResultListEvents} from '../../events/ResultListEvents';
-import {SettingsEvents} from '../../events/SettingsEvents';
-import {PreferencesPanelEvents} from '../../events/PreferencesPanelEvents';
-import {AnalyticsEvents} from '../../events/AnalyticsEvents';
-import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
-import {BreadcrumbEvents} from '../../events/BreadcrumbEvents';
-import {QuickviewEvents} from '../../events/QuickviewEvents';
-import {QUERY_STATE_ATTRIBUTES} from '../../models/QueryStateModel';
-import {Model} from '../../models/Model';
-import {Utils} from '../../utils/Utils';
-import {$$} from '../../utils/Dom';
-import {INoResultsEventArgs} from '../../events/QueryEvents';
-import {IQueryErrorEventArgs} from '../../events/QueryEvents';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ResponsiveRecommendation} from '../ResponsiveComponents/ResponsiveRecommendation';
-import {history} from 'coveo.analytics';
+import { SearchInterface, ISearchInterfaceOptions } from '../SearchInterface/SearchInterface';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { QueryEvents, IQuerySuccessEventArgs, IBuildingQueryEventArgs } from '../../events/QueryEvents';
+import { OmniboxEvents } from '../../events/OmniboxEvents';
+import { ResultListEvents } from '../../events/ResultListEvents';
+import { SettingsEvents } from '../../events/SettingsEvents';
+import { PreferencesPanelEvents } from '../../events/PreferencesPanelEvents';
+import { AnalyticsEvents } from '../../events/AnalyticsEvents';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
+import { BreadcrumbEvents } from '../../events/BreadcrumbEvents';
+import { QuickviewEvents } from '../../events/QuickviewEvents';
+import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
+import { Model, MODEL_EVENTS } from '../../models/Model';
+import { Utils } from '../../utils/Utils';
+import { $$ } from '../../utils/Dom';
+import { INoResultsEventArgs } from '../../events/QueryEvents';
+import { IQueryErrorEventArgs } from '../../events/QueryEvents';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ResponsiveRecommendation } from '../ResponsiveComponents/ResponsiveRecommendation';
+import { history } from 'coveo.analytics';
+import { get } from '../Base/RegisteredNamedMethods';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import _ = require('underscore');
 
 export interface IRecommendationOptions extends ISearchInterfaceOptions {
   mainSearchInterface?: HTMLElement;
@@ -32,12 +36,22 @@ export interface IRecommendationOptions extends ISearchInterfaceOptions {
 }
 
 /**
- * This component is a {@link SearchInterface} that will display recommendations based on the user history.
- * To get recommendations, the page view script must also be included in the page. View: https://github.com/coveo/coveo.analytics.js
- * This component listens when the main search interface generates a query and it generates another to get the recommendations at the same time.
+ * The Recommendation component is a {@link SearchInterface} that displays recommendations typically based on user
+ * history.
  *
- * This component can be included in another SearchInterface, but you need to initialize the recommendation component with Coveo('initRecommendation'), before
- * the parent SearchInterface.
+ * This component usually listens to the main SearchInterface. When the main SearchInterface generates a query, the
+ * Recommendation component generates another query to get the recommendations at the same time.
+ *
+ * To get history-based recommendations, you will likely want to include the `pageview` script in your page (see
+ * [coveo.analytics.js](https://github.com/coveo/coveo.analytics.js)). However, including this script is not mandatory.
+ * For instance, you could use the Recommendation component without the Coveo Machine Learning service to create a
+ * simple "recommended people" interface.
+ *
+ * It is possible to include this component inside another SearchInterface, but it is also possible to instantiate it as
+ * a "standalone" search interface, without even instantiating a main SearchInterface component. In any case, a
+ * Recommendation component always acts as a full-fledged search interface. Therefore, you can include any component
+ * inside the Recommendation component (Searchbox, Facet, Sort, etc.), just as you would inside the main SearchInterface
+ * component.
  */
 export class Recommendation extends SearchInterface implements IComponentBindings {
   static ID = 'Recommendation';
@@ -48,41 +62,62 @@ export class Recommendation extends SearchInterface implements IComponentBinding
    * @componentOptions
    */
   static options: IRecommendationOptions = {
+
     /**
      * Specifies the main {@link SearchInterface} to listen to.
      */
     mainSearchInterface: ComponentOptions.buildSelectorOption(),
 
     /**
-     * Specifies the user context to send to Coveo analytics.
-     * It will be sent with the query alongside the user history to get the recommendations.
+     * Specifies the user context to send to Coveo usage analytics.
+     * The component sends this information with the query alongside the user history to get the recommendations.
      */
     userContext: ComponentOptions.buildJsonOption(),
 
     /**
-     * Specifies the id of the interface.
-     * It is used by the analytics to know which recommendation interface was selected.
-     * The default value is "Recommendation" for the first one and "Recommendation_{number}" where {number} depends on the number of recommendation interface with default ids in the page for the others. 
+     * Specifies the ID of the interface.
+     * The usage analytics use the interface ID to know which recommendation interface was selected.
+     *
+     * Default value is `Recommendation` for the first one and `Recommendation_{number}`, where {number} depends on the
+     * number of Recommendation interfaces with default IDs in the page for the others.
      */
     id: ComponentOptions.buildStringOption(),
+
     /**
      * Specifies which options from the main {@link QueryBuilder} to use in the triggered query.
-     * Ex: <code data-options-to-use="expression,advancedExpression"></code> would add the expression and the advanced expression parts from the main query in the triggered query.
-     * The default value is undefined.
+     *
+     * Possible values are:
+     * - `expression`
+     * - `advancedExpression`
+     * - `constantExpression`
+     * - `disjunctionExpression`
+     *
+     * **Example:**
+     *
+     * Adding the expression (`q`) and the advanced expression (`aq`) parts of the main query in the triggered query:
+     *
+     * `data-options-to-use="expression,advancedExpression"`
+     *
+     * Default value is `expression`.
      */
     optionsToUse: ComponentOptions.buildListOption<'expression' | 'advancedExpression' | 'constantExpression' | 'disjunctionExpression'>({ defaultValue: ['expression'] }),
 
     /**
-     * Specifies whether or not to send the actions history along with the triggered query.
-     * Disabling this option means this component won't be able to get Reveal recommendations.
-     * However, it could be useful to display side results in a search page.
-     * The default value is true.
+     * Specifies whether to send the actions history along with the triggered query.
+     *
+     * Setting this option to `false` makes it impossible for this component to get Coveo Machine Learning
+     * recommendations.
+     *
+     * However, setting this option to `false` can be useful to display side results in a search page.
+     *
+     * Default value is `true`.
      */
     sendActionsHistory: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
-     * Hides the component if there a no results / recommendations.
-     * The default value is false.
+     * Specifies whether to hide the Recommendations component if no result or recommendation is available.
+     *
+     * Default value is `false`.
      */
     hideIfNoResults: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     autoTriggerQuery: ComponentOptions.buildBooleanOption({
@@ -95,27 +130,44 @@ export class Recommendation extends SearchInterface implements IComponentBinding
     }),
 
     /**
-     * Specifies if the responsive mode should be enabled on the recommendation component. Responsive mode will make the recommendation component
-     * dissapear and instead be availaible using a dropdown button. The responsive recommendation component is enabled when the width
-     * of the element the search interface is bound to reaches 800 pixels. This value can be modified using {@link Recommendation.options.responsiveBreakpoint}.
-     * 
-     * Disabling reponsive mode for one recommendation component will disable it for all of them.
-     * Therefore, this option only needs to be set on one recommendation component to be effective.
-     * The default value is `true`.
+     * Specifies whether to enable *responsive mode* for Recommendation components. Setting this options to `false` on
+     * any Recommendation component in a search interface disables responsive mode for all other Recommendation
+     * components in the search interface.
+     *
+     * Responsive mode displays all Recommendation components under a single dropdown button whenever the width of the
+     * HTML element which the search interface is bound to reaches or falls behind a certain threshold (see
+     * {@link Recommendation.options.responsiveBreakpoint}).
+     *
+     * See also {@link Recommendation.options.dropdownHeaderLabel}.
+     *
+     * Default value is `true`.
      */
     enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     /**
-     * Specifies the width of the search interface, in pixels, at which the recommendation component will go into responsive mode. The responsive mode will
-     * be triggered when the width is equal or below this value. The search interface corresponds to the element with the class
-     * `CoveoSearchInterface`.
-     * The default value is `1000`.
+     * If {@link Recommendation.options.enableResponsiveMode} is `true` for all Recommendation components, specifies the
+     * width threshold (in pixels) of the search interface at which Recommendation components go in responsive mode.
+     *
+     * Recommendation components go in responsive mode when the width of the search interface is equal to or lower than
+     * this value.
+     *
+     * The `search interface` corresponds to the HTML element with the class `CoveoSearchInterface`.
+     *
+     * If more than one Recommendation component in the search interface specifies a value for this option, then the
+     * framework uses the last occurrence of the option.
+     *
+     * Default value is `1000`.
      */
     responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 1000 }),
 
     /**
-     * Specifies the label of the button that allows to show the recommendation component when in responsive mode.
-     * The default value is "Recommendations". 
+     * If {@link Recommendation.options.enableResponsiveMode} is `true` for all Recommendation components, specifies the
+     * label of the dropdown button that allows to display the Recommendation components when in responsive mode.
+     *
+     * If more than one Recommendation component in the search interface specifies a value for this option, then the
+     * framework uses the first occurrence of the option.
+     *
+     * Default value is `Recommendations`.
      */
     dropdownHeaderLabel: ComponentOptions.buildLocalizedStringOption({ defaultValue: 'Recommendations' })
   };
@@ -129,11 +181,22 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   private mainInterfaceQuery: IQuerySuccessEventArgs;
   private displayStyle: string;
 
+  /**
+   * Creates a new Recommendation component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the Recommendation component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time)
+   * @param _window
+   */
   constructor(public element: HTMLElement, public options: IRecommendationOptions = {}, public analyticsOptions = {}, _window = window) {
     super(element, ComponentOptions.initComponentOptions(element, Recommendation, options), analyticsOptions, _window);
     if (!this.options.id) {
       this.generateDefaultId();
     }
+
+    // This is done to allow the component to be included in another search interface without triggering the parent events.
+    this.preventEventPropagation();
 
     if (this.options.mainSearchInterface) {
       this.bindToMainSearchInterface();
@@ -144,8 +207,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
     $$(this.element).on(QueryEvents.noResults, (e: Event, args: INoResultsEventArgs) => this.handleRecommendationNoResults());
     $$(this.element).on(QueryEvents.queryError, (e: Event, args: IQueryErrorEventArgs) => this.handleRecommendationQueryError());
 
-    // This is done to allow the component to be included in another search interface without triggering the parent events.
-    this.preventEventPropagation();
+
     this.historyStore = new history.HistoryStore();
     ResponsiveRecommendation.init(this.root, this, options);
   }
@@ -179,6 +241,38 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   }
 
   private bindToMainSearchInterface() {
+    this.bindComponentOptionsModelToMainSearchInterface();
+    this.bindQueryEventsToMainSearchInterface();
+  }
+
+  private bindComponentOptionsModelToMainSearchInterface() {
+    // Try to fetch the componentOptions from the main search interface.
+    // Since we do not know which interface is init first (recommendation or full search interface)
+    // add a mechanism that waits for the full search interface to be correctly initialized
+    // then, set the needed values on the component options model.
+    let searchInterfaceComponent = <SearchInterface>get(this.options.mainSearchInterface, SearchInterface);
+    let alreadyInitialized = searchInterfaceComponent != null;
+
+    let onceInitialized = () => {
+      let mainSearchInterfaceOptionsModel = <ComponentOptionsModel>searchInterfaceComponent.getBindings().componentOptionsModel;
+      this.componentOptionsModel.setMultiple(mainSearchInterfaceOptionsModel.getAttributes());
+      $$(this.options.mainSearchInterface).on(this.componentOptionsModel.getEventName(MODEL_EVENTS.ALL), () => {
+        this.componentOptionsModel.setMultiple(mainSearchInterfaceOptionsModel.getAttributes());
+      });
+    };
+
+    if (alreadyInitialized) {
+      onceInitialized();
+    } else {
+      $$(this.options.mainSearchInterface).on(InitializationEvents.afterComponentsInitialization, () => {
+        searchInterfaceComponent = <SearchInterface>get(this.options.mainSearchInterface, SearchInterface);
+        onceInitialized();
+      });
+    }
+  }
+
+  private bindQueryEventsToMainSearchInterface() {
+    // Whenever a query sucessfully returns on the full search interface, refresh the recommendation component.
     $$(this.options.mainSearchInterface).on(QueryEvents.querySuccess, (e: Event, args: IQuerySuccessEventArgs) => {
       this.mainInterfaceQuery = args;
       this.mainQuerySearchUID = args.results.searchUid;
@@ -256,6 +350,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
     this.preventEventPropagationOn(AnalyticsEvents);
     this.preventEventPropagationOn(BreadcrumbEvents);
     this.preventEventPropagationOn(QuickviewEvents);
+    this.preventEventPropagationOn(InitializationEvents);
     this.preventEventPropagationOn(this.getAllModelEvents());
   }
 

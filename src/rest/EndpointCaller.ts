@@ -1,11 +1,12 @@
-import {IStringMap} from '../rest/GenericParam';
-import {Logger} from '../misc/Logger';
-import {Assert} from '../misc/Assert';
-import {TimeSpan} from '../utils/TimeSpanUtils';
-import {DeviceUtils} from '../utils/DeviceUtils';
-import {Utils} from '../utils/Utils';
-import {Promise} from 'es6-promise';
-import {JQueryUtils} from '../utils/JQueryutils';
+import { IStringMap } from '../rest/GenericParam';
+import { Logger } from '../misc/Logger';
+import { Assert } from '../misc/Assert';
+import { TimeSpan } from '../utils/TimeSpanUtils';
+import { DeviceUtils } from '../utils/DeviceUtils';
+import { Utils } from '../utils/Utils';
+import { Promise } from 'es6-promise';
+import { JQueryUtils } from '../utils/JQueryutils';
+import _ = require('underscore');
 
 declare var XDomainRequest;
 declare var $;
@@ -158,6 +159,12 @@ export interface IEndpointCallerOptions {
    * Used in very specific scenario where the network infrastructure require special request headers to be added or removed, for example.
    */
   requestModifier?: (params: IRequestInfo<any>) => IRequestInfo<any>;
+
+  /**
+   * The XmlHttpRequest implementation to use instead of the native one.
+   * If not specified, the native one is used.
+   */
+  xmlHttpRequest?: new () => XMLHttpRequest;
 }
 
 // In ie8, XMLHttpRequest has no status property, so let's use this enum instead
@@ -256,7 +263,7 @@ export class EndpointCaller {
    */
   public callUsingXMLHttpRequest<T>(requestInfo: IRequestInfo<T>, responseType = 'text'): Promise<ISuccessResponse<T>> {
     return new Promise((resolve, reject) => {
-      var xmlHttpRequest = new XMLHttpRequest();
+      var xmlHttpRequest = this.getXmlHttpRequest();
 
       // Beware, most stuff must be set on the event that says the request is OPENED.
       // Otherwise it'll bork on some browsers. Gotta love standards.
@@ -425,6 +432,11 @@ export class EndpointCaller {
     return urlObject;
   }
 
+  private getXmlHttpRequest(): XMLHttpRequest {
+    var newXmlHttpRequest = this.options.xmlHttpRequest || XMLHttpRequest;
+    return new newXmlHttpRequest();
+  }
+
   private convertJsonToQueryString(json: { [key: string]: any; }): string[] {
     Assert.exists(json);
 
@@ -486,7 +498,7 @@ export class EndpointCaller {
   }
 
   private isCORSSupported(): boolean {
-    return 'withCredentials' in new XMLHttpRequest();
+    return 'withCredentials' in this.getXmlHttpRequest();
   }
 
   private isSuccessHttpStatus(status: number): boolean {

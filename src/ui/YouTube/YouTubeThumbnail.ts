@@ -1,12 +1,13 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
-import {IQueryResult} from '../../rest/QueryResult';
-import {ResultLink} from '../ResultLink/ResultLink';
-import {Initialization, IInitializationParameters} from '../Base/Initialization';
-import {DomUtils} from '../../utils/DomUtils';
-import {$$} from '../../utils/Dom';
-import {ModalBox} from '../../ExternalModulesShim';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
+import { IQueryResult } from '../../rest/QueryResult';
+import { ResultLink } from '../ResultLink/ResultLink';
+import { Initialization, IInitializationParameters } from '../Base/Initialization';
+import { DomUtils } from '../../utils/DomUtils';
+import { $$ } from '../../utils/Dom';
+import { ModalBox } from '../../ExternalModulesShim';
+import _ = require('underscore');
 
 export interface IYouTubeThumbnailOptions {
   width: string;
@@ -15,11 +16,16 @@ export interface IYouTubeThumbnailOptions {
 }
 
 /**
- * This component automatically fetches the thumbnail for a YouTube video.
+ * The YouTubeThumbnail component automatically fetches the thumbnail of a YouTube video.
  *
- * It differs from the standard {@link Thumbnail} component by making it clickable.
+ * This component differs from the standard {@link Thumbnail} component because the thumbnail it outputs is always
+ * clickable.
  *
- * By clicking on this thumbnail, it will automatically open a modal box containing the iframe from YouTube.
+ * Depending on the component configuration, clicking a YouTube thumbnail can either automatically open a modal box
+ * containing the `iframe` from YouTube, or open the target URL in the current window (see
+ * {@link YouTubeThumbnail.options.embed}).
+ *
+ * This component is a result template component (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  */
 export class YouTubeThumbnail extends Component {
   static ID = 'YouTubeThumbnail';
@@ -28,22 +34,28 @@ export class YouTubeThumbnail extends Component {
    * @componentOptions
    */
   static options: IYouTubeThumbnailOptions = {
+
     /**
-     * Specify the width that the thumbnail should have.
+     * Specifies the width (in pixels) of the YouTube thumbnail.
      *
-     * The default value is `200px`
+     * Default value is `200px`.
      */
     width: ComponentOptions.buildStringOption({ defaultValue: '200px' }),
+
     /**
-     * Specify the height that the thumbnaild should have.
+     * Specifies the height (in pixels) of the YouTube thumbnail.
      *
-     * The default value is `112px`
+     * Default value is `112px`.
      */
     height: ComponentOptions.buildStringOption({ defaultValue: '112px' }),
+
     /**
-     * The embed option specify if the video should be loaded on click in a modal box.
+     * Specifies whether clicking on the YouTube thumbnail loads the video in a modal box.
      *
-     * The default value is `true`.
+     * Setting this option to `false` causes the browser to change its current location to that of the target URL when
+     * the end user clicks the YouTube thumbnail.
+     *
+     * Default value is `true`.
      */
     embed: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };

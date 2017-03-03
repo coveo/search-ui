@@ -1,13 +1,14 @@
 /// <reference path="Facet.ts" />
 
-import {FacetValueElement, IFacetValueElementKlass} from './FacetValueElement';
-import {Facet} from './Facet';
-import {$$} from '../../utils/Dom';
-import {ValueElement} from './ValueElement';
-import {FacetValue} from './FacetValues';
-import {Utils} from '../../utils/Utils';
-import {FacetUtils} from './FacetUtils';
-import {FacetValuesOrder} from './FacetValuesOrder';
+import { FacetValueElement, IFacetValueElementKlass } from './FacetValueElement';
+import { Facet } from './Facet';
+import { $$ } from '../../utils/Dom';
+import { ValueElement } from './ValueElement';
+import { FacetValue } from './FacetValues';
+import { Utils } from '../../utils/Utils';
+import { FacetUtils } from './FacetUtils';
+import { FacetValuesOrder } from './FacetValuesOrder';
+import _ = require('underscore');
 
 export class FacetValuesList {
   // Dictionary of values. The key is always in lowercase.
