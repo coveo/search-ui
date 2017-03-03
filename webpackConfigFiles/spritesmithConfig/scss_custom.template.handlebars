@@ -100,6 +100,7 @@ ${{spritesheet_info.strings.name}}: ({{spritesheet.px.width}}, {{spritesheet.px.
   display: inline-block;
   background-repeat: no-repeat;
   overflow: hidden;
+  text-indent: nth($sprite, 5);
   @include sprite-image($sprite);
   @include sprite-position($sprite);
   @include sprite-width($sprite);

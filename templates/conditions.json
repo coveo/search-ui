@@ -338,7 +338,7 @@
     "layout": "table"
   },
   "Default": {
-    "priority": 10,
+    "priority": 0,
     "layout": "list"
   }
 }

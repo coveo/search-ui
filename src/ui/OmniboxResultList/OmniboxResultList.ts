@@ -14,6 +14,8 @@ import { Initialization } from '../Base/Initialization';
 import { IQueryResults } from '../../rest/QueryResults';
 import _ = require('underscore');
 
+import 'styling/_OmniboxResultList';
+
 export interface IOmniboxResultListOptions extends IResultListOptions {
   omniboxZIndex?: number;
   onSelect?: (result: IQueryResult, resultElement: HTMLElement, omniboxObject: IPopulateOmniboxEventArgs) => void;

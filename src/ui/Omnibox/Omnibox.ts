@@ -29,6 +29,7 @@ import { Utils } from '../../utils/Utils';
 import { MagicBox } from '../../ExternalModulesShim';
 import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
 import _ = require('underscore');
+import 'styling/_Omnibox';
 
 export interface IPopulateOmniboxSuggestionsEventArgs {
   omnibox: Omnibox;
