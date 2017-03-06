@@ -336,7 +336,7 @@ export class ResultList extends Component {
   /**
    * Executes a query to fetch new results. After the query returns, renders the new results.
    *
-   * Asserts that there are more results to display by verifying whether the last query has returned as many results as
+   * Asserts that there are more results to display by verifying whether t3he last query has returned as many results as
    * requested.
    *
    * Asserts that the ResultList is not currently fetching results.
