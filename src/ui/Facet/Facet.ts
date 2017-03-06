@@ -149,12 +149,7 @@ export class Facet extends Component {
      */
     field: ComponentOptions.buildFieldOption({ required: true, groupByField: true, section: 'Identification' }),
 
-    /**
-     * Specifies the CSS class to change the Facet header icon.
-     *
-     * @deprecated This option is exposed for legacy reasons, and the recommendation is to not use this option.
-     */
-    headerIcon: ComponentOptions.buildIconOption(),
+    headerIcon: ComponentOptions.buildIconOption({ deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
 
     /**
      * Specifies a unique identifier for the Facet. Among other things, this identifier serves the purpose of saving the
@@ -177,12 +172,7 @@ export class Facet extends Component {
      */
     isMultiValueField: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
-    /**
-     * Specifies the field whose values the Facet should display.
-     *
-     * @deprecated This option is exposed for legacy reasons, and the recommendation is to not use this option.
-     */
-    lookupField: ComponentOptions.buildFieldOption(),
+    lookupField: ComponentOptions.buildFieldOption({ deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
 
     /**
      * Specifies whether to display the Facet **Settings** menu.
@@ -259,14 +249,7 @@ export class Facet extends Component {
      */
     injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
 
-    /**
-     * Specifies whether to display an icon next to each facet value.
-     *
-     * Default value is `false`.
-     *
-     * @deprecated This option is exposed for legacy reason, and the recommendation is to not use this option.
-     */
-    showIcon: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    showIcon: ComponentOptions.buildBooleanOption({ defaultValue: false, deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
 
     /**
      * Specifies whether to use the `AND` operator in the resulting filter when multiple values are selected in the
@@ -342,37 +325,11 @@ export class Facet extends Component {
      *
      * Default value is `5` on a desktop computer and `3` on a mobile device. Minimum value is `0`.
      */
-    numberOfValuesInBreadcrumb: ComponentOptions.buildNumberOption({
-      defaultFunction: () => DeviceUtils.isMobileDevice() ? 3 : 5,
-      min: 0,
-      depend: 'includeInBreadcrumb'
-    }),
+    numberOfValuesInBreadcrumb: ComponentOptions.buildNumberOption({ defaultFunction: () => DeviceUtils.isMobileDevice() ? 3 : 5, min: 0, depend: 'includeInBreadcrumb' }),
 
-    /**
-     * Specifies whether the Facet should push data to the {@link Omnibox} component.
-     *
-     * Setting this option to `true` can have a significant negative impact on index performance.
-     *
-     * See also {@link Facet.options.numberOfValuesInOmnibox}.
-     *
-     * Default value is `false`.
-     *
-     * @deprecated This option is exposed for legacy reasons, and the recommendation is to not use this option.
-     */
-    includeInOmnibox: ComponentOptions.buildBooleanOption({defaultValue: false}),
+    includeInOmnibox: ComponentOptions.buildBooleanOption({ defaultValue: false, deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
 
-    /**
-     * If {@link Facet.options.includeInOmnibox} is `true`, specifies the number of values to populate the
-     * {@link Breadcrumb} with.
-     *
-     * Setting this option to `true` can have a significant negative impact on index performance.
-     *
-     * Default value is `5` on desktop computer and `3` on a mobile device. Minimum value is `0`.
-     *
-     * @deprecated This option is exposed for legacy reasons, and the recommendation is to not use this option.
-     */
-    numberOfValuesInOmnibox: ComponentOptions.buildNumberOption({
-      defaultFunction: () => DeviceUtils.isMobileDevice() ? 3 : 5, min: 0, depend: 'includeInOmnibox'}),
+    numberOfValuesInOmnibox: ComponentOptions.buildNumberOption({ defaultFunction: () => DeviceUtils.isMobileDevice() ? 3 : 5, min: 0, depend: 'includeInOmnibox', deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
 
     /**
      * Specifies the name of a field on which to execute an aggregate operation for all distinct values of the Facet
@@ -422,7 +379,7 @@ export class Facet extends Component {
      *
      * Default value is the localized string for `"ComputedField"`.
      */
-    computedFieldCaption: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('ComputedField'), section: 'ComputedField'}),
+    computedFieldCaption: ComponentOptions.buildLocalizedStringOption({ defaultValue: l('ComputedField'), section: 'ComputedField' }),
 
     /**
      * Specifies whether the Facet should remain stable in its current position in the viewport while the mouse cursor
@@ -581,24 +538,7 @@ export class Facet extends Component {
      */
     enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
-    /**
-     * If {@link Facet.options.enableResponsiveMode} is `true` for all facets and
-     * {@link FacetSlider.options.enableResponsiveMode} is also `true` for all sliders, specifies the width threshold
-     * (in pixels) of the search interface at which facets go in responsive mode.
-     *
-     * Facets go in responsive mode when the width of the search interface is equal to or lower than this value.
-     *
-     * The "search interface" corresponds to the HTML element with the class `CoveoSearchInterface`.
-     *
-     * If more than one {@link FacetSlider} or Facet in the search interface specifies a value for this option, then the
-     * framework uses the last occurrence of the option.
-     *
-     * Default value is `800`.
-     *
-     * @deprecated This option is exposed for legacy reasons, and the recommendation is to not use this option. See
-     * {@link SearchInterface.responsiveComponents} instead.
-     */
-    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 800 }),
+    responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 800, deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
 
     /**
      * If {@link Facet.options.enableResponsiveMode} is `true` for all facets and
