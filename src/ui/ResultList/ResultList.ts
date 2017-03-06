@@ -42,6 +42,8 @@ export interface IResultListOptions {
   fieldsToInclude?: IFieldOption[];
   autoSelectFieldsToInclude?: boolean;
   layout?: string;
+  displayTableHeader?: boolean;
+  displayTableFooter?: boolean;
 }
 
 
@@ -197,7 +199,19 @@ export class ResultList extends Component {
     layout: ComponentOptions.buildStringOption({
       defaultValue: 'list',
       required: true,
-    })
+    }),
+    /**
+     * Specifies if the table header is to be shown when layout is 'table'
+     *
+     * Default value is `true`.
+     */
+    displayTableHeader: ComponentOptions.buildBooleanOption({ defaultValue: true, depend: 'layout' }),
+    /**
+     * Specifies if the table footer is to be shown when layout is 'table'
+     *
+     * Default value is `false`.
+     */
+    displayTableFooter: ComponentOptions.buildBooleanOption({ defaultValue: false, depend: 'layout' })
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
@@ -290,18 +304,7 @@ export class ResultList extends Component {
 
     if (!_.isEmpty(resultElements)) {
       if (this.options.layout === 'table') {
-        const headerAndFooter = _.map(['table-header', 'table-footer'], (role: TemplateRole) => {
-          const elem = this.options.resultTemplate.instantiateToElement({}, {
-            role: role,
-            checkCondition: false,
-            currentLayout: <ValidLayout>this.options.layout
-          });
-          $$(elem).addClass(`coveo-result-list-${role}`);
-          this.autoCreateComponentsInsideResult(elem, undefined);
-          return elem;
-        });
-        $$(this.options.resultContainer).prepend(headerAndFooter[0]);
-        this.options.resultContainer.appendChild(headerAndFooter[1]);
+        this.displayDecorations();
       }
 
       if (this.options.layout === 'card') {
@@ -657,6 +660,32 @@ export class ResultList extends Component {
     let spinner = $$(this.options.waitAnimationContainer).find('.coveo-loading-spinner');
     if (spinner) {
       $$(spinner).detach();
+    }
+  }
+
+  private displayDecorations() {
+    const decorationsToDisplay = {};
+    if (this.options.displayTableHeader) {
+      decorationsToDisplay['tableHeader'] = 'table-header';
+    }
+    if (this.options.displayTableFooter) {
+      decorationsToDisplay['tableFooter'] = 'table-footer';
+    }
+    const renderedDecorations = _.mapObject(decorationsToDisplay, (role: TemplateRole) => {
+      const elem = this.options.resultTemplate.instantiateToElement({}, {
+        role: role,
+        checkCondition: false,
+        currentLayout: <ValidLayout>this.options.layout
+      });
+      $$(elem).addClass(`coveo-result-list-${role}`);
+      this.autoCreateComponentsInsideResult(elem, undefined);
+      return elem;
+    });
+    if (decorationsToDisplay['tableHeader']) {
+      $$(this.options.resultContainer).prepend(renderedDecorations['tableHeader']);
+    }
+    if (decorationsToDisplay['tableFooter']) {
+      this.options.resultContainer.appendChild(renderedDecorations['tableFooter']);
     }
   }
 }

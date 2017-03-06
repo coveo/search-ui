@@ -222,9 +222,23 @@ export function ResultListTest() {
         expect(simulation.queryBuilder.fieldsToInclude).toContain('field3');
       });
 
-      it('layout set to table should instantiate table-header and table-footer', () => {
+      it('layout set to table should only instantiate table-header by default', () => {
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
           layout: 'table'
+        });
+        spyOn(test.cmp.options.resultTemplate, 'instantiateToElement').and.callThrough();
+        test.cmp.renderResults([test.cmp.buildResult(FakeResults.createFakeResult())]);
+        expect(test.cmp.options.resultTemplate.instantiateToElement).toHaveBeenCalledWith({}, {
+          role: 'table-header',
+          checkCondition: false,
+          currentLayout: 'table'
+        });
+      });
+
+      it('displayTableFooter should enable the display of table-footer', () => {
+        test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+          layout: 'table',
+          displayTableFooter: true
         });
         spyOn(test.cmp.options.resultTemplate, 'instantiateToElement').and.callThrough();
         test.cmp.renderResults([test.cmp.buildResult(FakeResults.createFakeResult())]);
@@ -238,6 +252,18 @@ export function ResultListTest() {
           checkCondition: false,
           currentLayout: 'table'
         });
+      });
+
+      it('displayTableHeader set to false should display the display of table-header', () => {
+        test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+          layout: 'table',
+          displayTableHeader: false
+        });
+        spyOn(test.cmp.options.resultTemplate, 'instantiateToElement').and.callThrough();
+        test.cmp.renderResults([test.cmp.buildResult(FakeResults.createFakeResult())]);
+        expect(test.cmp.options.resultTemplate.instantiateToElement).not.toHaveBeenCalledWith({}, jasmine.objectContaining({
+          role: 'table-header'
+        }));
       });
     });
   });
