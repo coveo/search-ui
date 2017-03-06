@@ -1754,8 +1754,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	exports.version = {
-	    'lib': '1.2359.1-beta',
-	    'product': '1.2359.1-beta',
+	    'lib': '1.2359.2-beta',
+	    'product': '1.2359.2-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -52253,7 +52253,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    /**
 	     * Executes a query to fetch new results. After the query returns, renders the new results.
 	     *
-	     * Asserts that there are more results to display by verifying whether the last query has returned as many results as
+	     * Asserts that there are more results to display by verifying whether t3he last query has returned as many results as
 	     * requested.
 	     *
 	     * Asserts that the ResultList is not currently fetching results.
@@ -53187,8 +53187,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * Default value is `true`.
 	     */
 	    triggerQueryOnClear: ComponentOptions_1.ComponentOptions.buildBooleanOption({ defaultValue: true }),
-	    // Removed public doc; this option currently is of no use for this component.
-	    placeholder: ComponentOptions_1.ComponentOptions.buildStringOption(),
 	    /**
 	     * Specifies whether the Querybox should get auto focus and selection upon initialization.
 	     *
@@ -65795,7 +65793,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @returns {string}
 	     */
 	    Dropdown.prototype.getValue = function () {
-	        return Dom_1.$$(this.element).find('.coveo-dropdown-selected-value').getAttribute('value');
+	        return Dom_1.$$(this.element).find('.coveo-dropdown-selected-value').getAttribute('data-value');
 	    };
 	    /**
 	     * Select a value from it's 0 based index in the {@link Dropdown.listOfValues}.
@@ -65820,13 +65818,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        button.append(this.selected.el);
 	        button.append(Dom_1.$$('span', { className: 'coveo-dropdown-toggle-arrow' }).el);
 	        dropdown.append(button.el);
-	        dropdown.append(this.buildDropdownMenu(this.selected));
+	        dropdown.append(this.buildDropdownMenu());
 	        this.element = dropdown.el;
 	    };
 	    Dropdown.prototype.selectValue = function (value) {
 	        var _this = this;
 	        _.each(this.options, function (option) {
-	            if (Dom_1.$$(option).getAttribute('value') == value) {
+	            if (Dom_1.$$(option).getAttribute('data-value') == value) {
 	                _this.selectOption(option);
 	            }
 	        });
@@ -65836,15 +65834,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.selectedIcon.detach();
 	        var content = Dom_1.$$(option).find('span');
 	        Dom_1.$$(content).prepend(this.selectedIcon.el);
-	        var value = Dom_1.$$(option).getAttribute('value');
-	        this.selected.setAttribute('value', value);
+	        var value = Dom_1.$$(option).getAttribute('data-value');
+	        this.selected.setAttribute('data-value', value);
 	        this.selected.text(this.getDisplayValue(value));
 	        this.close();
 	        if (executeOnChange) {
 	            this.onChange();
 	        }
 	    };
-	    Dropdown.prototype.buildDropdownMenu = function (selected) {
+	    Dropdown.prototype.buildDropdownMenu = function () {
 	        var _this = this;
 	        var dropdownMenu = Dom_1.$$('ul', { className: 'coveo-dropdown-menu' });
 	        this.selectedIcon = Dom_1.$$('span', { className: 'coveo-selected-icon coveo-sprites-facet-search-checkbox-hook-active' });
@@ -65856,7 +65854,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    Dropdown.prototype.buildOption = function (value) {
 	        var _this = this;
 	        var option = Dom_1.$$('li');
-	        option.setAttribute('value', value);
+	        option.setAttribute('data-value', value);
 	        var content = Dom_1.$$('span');
 	        content.text(this.getDisplayValue(value));
 	        option.append(content.el);
