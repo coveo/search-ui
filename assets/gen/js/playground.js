@@ -10524,8 +10524,8 @@ var playground =
 
 	"use strict";
 	exports.version = {
-	    'lib': '1.2359.2-beta',
-	    'product': '1.2359.2-beta',
+	    'lib': '1.2359.3-beta',
+	    'product': '1.2359.3-beta',
 	    'supportedApiVersion': 2
 	};
 
@@ -17334,6 +17334,7 @@ var playground =
 	        return layout;
 	    };
 	    TemplateFromAScriptTag.fromString = function (template, properties) {
+	        if (properties === void 0) { properties = {}; }
 	        var script = document.createElement('script');
 	        script.text = template;
 	        if (properties.condition != null) {
