@@ -221,6 +221,24 @@ export function ResultListTest() {
         expect(simulation.queryBuilder.fieldsToInclude).toContain('field2');
         expect(simulation.queryBuilder.fieldsToInclude).toContain('field3');
       });
+
+      it('layout set to table should instantiate table-header and table-footer', () => {
+        test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+          layout: 'table'
+        });
+        spyOn(test.cmp.options.resultTemplate, 'instantiateToElement').and.callThrough();
+        test.cmp.renderResults([test.cmp.buildResult(FakeResults.createFakeResult())]);
+        expect(test.cmp.options.resultTemplate.instantiateToElement).toHaveBeenCalledWith({}, {
+          role: 'table-header',
+          checkCondition: false,
+          currentLayout: 'table'
+        });
+        expect(test.cmp.options.resultTemplate.instantiateToElement).toHaveBeenCalledWith({}, {
+          role: 'table-footer',
+          checkCondition: false,
+          currentLayout: 'table'
+        });
+      });
     });
   });
 }

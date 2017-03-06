@@ -291,7 +291,11 @@ export class ResultList extends Component {
     if (!_.isEmpty(resultElements)) {
       if (this.options.layout === 'table') {
         const headerAndFooter = _.map(['table-header', 'table-footer'], (role: TemplateRole) => {
-          const elem = this.options.resultTemplate.instantiateToElement({}, { role: role });
+          const elem = this.options.resultTemplate.instantiateToElement({}, {
+            role: role,
+            checkCondition: false,
+            currentLayout: <ValidLayout>this.options.layout
+          });
           $$(elem).addClass(`coveo-result-list-${role}`);
           this.autoCreateComponentsInsideResult(elem, undefined);
           return elem;
