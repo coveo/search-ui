@@ -25,12 +25,13 @@ import * as fastclick from 'fastclick';
 import jstz = require('jstimezonedetect');
 import { SentryLogger } from '../../misc/SentryLogger';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import 'styling/Globals';
-import 'styling/_SearchInterface';
-import 'styling/_SearchModalBox';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
 import _ = require('underscore');
+
+import 'styling/Globals';
+import 'styling/_SearchInterface';
+import 'styling/_SearchModalBox';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;

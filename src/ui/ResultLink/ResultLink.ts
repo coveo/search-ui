@@ -18,6 +18,8 @@ import { $$ } from '../../utils/Dom';
 import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
 import _ = require('underscore');
 
+import 'styling/_ResultLink';
+
 /**
  * The ResultLink component automatically transform a search result title into a clickable link pointing to the original
  * document.

@@ -27,6 +27,9 @@ import { TemplateList } from '../Templates/TemplateList';
 import { ResponsiveDefaultResultTemplate } from '../ResponsiveComponents/ResponsiveDefaultResultTemplate';
 import _ = require('underscore');
 
+import 'styling/_ResultList';
+import 'styling/_Result';
+
 export interface IResultListOptions {
   resultContainer?: HTMLElement;
   resultTemplate?: Template;
