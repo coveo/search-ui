@@ -1,14 +1,14 @@
 /// <reference path="Facet.ts" />
 /// <reference path="FacetSettings.ts" />
 
-import {Facet} from './Facet';
-import {FacetSlider} from '../FacetSlider/FacetSlider';
-import {IFacetSettingsKlass, FacetSettings} from './FacetSettings';
-import {IFacetSortKlass, FacetSort} from './FacetSort';
-import {$$} from '../../utils/Dom';
-import {FacetUtils} from './FacetUtils';
-import {l} from '../../strings/Strings';
-import {IAnalyticsFacetOperatorMeta, IAnalyticsFacetMeta, analyticsActionCauseList} from '../Analytics/AnalyticsActionListMeta';
+import { Facet } from './Facet';
+import { FacetSlider } from '../FacetSlider/FacetSlider';
+import { IFacetSettingsKlass, FacetSettings } from './FacetSettings';
+import { IFacetSortKlass, FacetSort } from './FacetSort';
+import { $$ } from '../../utils/Dom';
+import { FacetUtils } from './FacetUtils';
+import { l } from '../../strings/Strings';
+import { IAnalyticsFacetOperatorMeta, IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 
 export interface IFacetHeaderOptions {
   facetElement: HTMLElement;
@@ -112,14 +112,14 @@ export class FacetHeader {
       className: 'coveo-facet-header-settings-section'
     });
 
+    this.eraserElement = this.buildEraser();
+    settingsSection.append(this.eraserElement);
+
     if (this.options.facet) {
       this.operatorElement = this.buildOperatorToggle();
       settingsSection.append(this.operatorElement);
       $$(this.operatorElement).toggle(this.options.facet.options.enableTogglingOperator);
     }
-
-    this.eraserElement = this.buildEraser();
-    settingsSection.append(this.eraserElement);
 
     if (this.options.settingsKlass) {
       this.sort = this.settings = new this.options.settingsKlass(this.options.availableSorts, this.options.facet);

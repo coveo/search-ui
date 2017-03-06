@@ -1,7 +1,8 @@
-import {Template} from './Template';
-import {Assert} from '../../misc/Assert';
-import {UnderscoreTemplate} from './UnderscoreTemplate';
-import {HtmlTemplate} from './HtmlTemplate';
+import { Template } from './Template';
+import { Assert } from '../../misc/Assert';
+import { UnderscoreTemplate } from './UnderscoreTemplate';
+import { HtmlTemplate } from './HtmlTemplate';
+import _ = require('underscore');
 
 /**
  * Holds a reference to all template available in the framework
@@ -36,6 +37,21 @@ export class TemplateCache {
     }
     if (defaultTemplate) {
       TemplateCache.defaultTemplates[name] = template;
+    }
+  }
+
+  /**
+   * Remove the given template from the cache.
+   * @param name
+   * @param string
+   */
+  public static unregisterTemplate(name) {
+    Assert.isNonEmptyString(name);
+    if (TemplateCache.templates[name] != undefined) {
+      delete TemplateCache.templates[name];
+    }
+    if (TemplateCache.defaultTemplates[name] != undefined) {
+      delete TemplateCache.defaultTemplates[name];
     }
   }
 
@@ -79,6 +95,10 @@ export class TemplateCache {
     return _.keys(TemplateCache.defaultTemplates);
   }
 
+  /**
+   * Get a default template by name.
+   * @param name The name of the queried template
+   */
   public static getDefaultTemplate(name: string): Template {
     Assert.exists(TemplateCache.defaultTemplates[name]);
     return TemplateCache.defaultTemplates[name];

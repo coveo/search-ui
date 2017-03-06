@@ -1,5 +1,5 @@
-import {Template} from './Template';
-import {IQueryResult} from '../../rest/QueryResult';
+import { Template } from './Template';
+import { IQueryResult } from '../../rest/QueryResult';
 
 export class DefaultRecommendationTemplate extends Template {
 

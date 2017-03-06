@@ -62,19 +62,27 @@ $border-box-sizing: false;
 .coveo-summary-section {
   display: inline-block;
   font-size: $font-size-smaller;
+  margin-right: auto;
 }
 .coveo-result-layout-section {
   @include display(flex);
-  margin-left: auto;
-  padding-right: 10px;
-  border-right: 1px solid $color-light-grey;
   &.coveo-result-layout-hidden {
     display: none;
   }
 }
 .coveo-sort-section {
   @include display(flex);
+}
+
+.coveo-results-header > *:not(:first-child) {
+  padding-right: 10px;
   margin-left: 10px;
+  border-right: 1px solid $color-light-grey;
+}
+
+.coveo-results-header > *:last-child {
+  padding-right: 0;
+  border-right: none;
 }
 
 @include mediaSelector(800) {
@@ -91,11 +99,12 @@ $border-box-sizing: false;
   .coveo-results-header {
     flex-wrap: wrap;
   }
-  .coveo-result-layout-section {
+  .coveo-results-header > *:not(:first-child) {
     border-right: none;
     margin-left: 0;
+    padding: 0;
   }
-  .coveo-sort-section {
+  .coveo-results-header > *:last-child {
     margin-left: 0;
     margin-bottom: 0;
   }

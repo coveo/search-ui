@@ -1,24 +1,25 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {IAnalyticsClient} from './AnalyticsClient';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {AnalyticsEndpoint} from '../../rest/AnalyticsEndpoint';
-import {SearchEndpoint} from '../../rest/SearchEndpoint';
-import {Assert} from '../../misc/Assert';
-import {QueryEvents, IBuildingQueryEventArgs, IQueryErrorEventArgs} from '../../events/QueryEvents';
-import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
-import {$$} from '../../utils/Dom';
-import {Model, IAttributeChangedEventArg} from '../../models/Model';
-import {IAnalyticsActionCause, IAnalyticsDocumentViewMeta} from '../Analytics/AnalyticsActionListMeta';
-import {IQueryResult} from '../../rest/QueryResult';
-import {Utils} from '../../utils/Utils';
-import {NoopAnalyticsClient} from '../Analytics/NoopAnalyticsClient';
-import {LiveAnalyticsClient} from './LiveAnalyticsClient';
-import {MultiAnalyticsClient} from './MultiAnalyticsClient';
-import {IAnalyticsQueryErrorMeta, analyticsActionCauseList} from './AnalyticsActionListMeta';
-import {SearchInterface} from '../SearchInterface/SearchInterface';
-import {Recommendation} from '../Recommendation/Recommendation';
-import {RecommendationAnalyticsClient} from './RecommendationAnalyticsClient';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { IAnalyticsClient } from './AnalyticsClient';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { AnalyticsEndpoint } from '../../rest/AnalyticsEndpoint';
+import { SearchEndpoint } from '../../rest/SearchEndpoint';
+import { Assert } from '../../misc/Assert';
+import { QueryEvents, IBuildingQueryEventArgs, IQueryErrorEventArgs } from '../../events/QueryEvents';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import { $$ } from '../../utils/Dom';
+import { Model, IAttributeChangedEventArg } from '../../models/Model';
+import { IAnalyticsActionCause, IAnalyticsDocumentViewMeta } from '../Analytics/AnalyticsActionListMeta';
+import { IQueryResult } from '../../rest/QueryResult';
+import { Utils } from '../../utils/Utils';
+import { NoopAnalyticsClient } from '../Analytics/NoopAnalyticsClient';
+import { LiveAnalyticsClient } from './LiveAnalyticsClient';
+import { MultiAnalyticsClient } from './MultiAnalyticsClient';
+import { IAnalyticsQueryErrorMeta, analyticsActionCauseList } from './AnalyticsActionListMeta';
+import { SearchInterface } from '../SearchInterface/SearchInterface';
+import { Recommendation } from '../Recommendation/Recommendation';
+import { RecommendationAnalyticsClient } from './RecommendationAnalyticsClient';
+import _ = require('underscore');
 
 export interface IAnalyticsOptions {
   user?: string;
@@ -34,54 +35,16 @@ export interface IAnalyticsOptions {
 }
 
 /**
- * This component logs all user actions performed in the search interface and sends them to a REST web service exposed through the Coveo Cloud platform.<br/>
- * You can use data to evaluate how users are interacting with the search interface, improve relevance and produce analytics dashboards in the Coveo platform.
+ * The Analytics component logs user actions performed in the search interface and sends them to a REST web service
+ * exposed through the Coveo Cloud Platform.
  *
- * # Send Custom Events
- * In some scenarios, you want to send custom data to the Coveo Cloud analytics (see [Coveo Cloud Usage Analytics](http://www.coveo.com/go?dest=cloudhelp&lcid=9&context=89)). The Coveo JavaScript Search Framework offers helpers to communicate with the Coveo Analytics REST API, so you do not have to write code to call the API directly.
+ * You can use analytics data to evaluate how users are interacting with your search interface, improve relevance and
+ * produce analytics dashboards within the Coveo Cloud Platform.
  *
- * 1. First, you need to craft your custom event cause and meta.<br/>**NB: The event names must be unique.**
- * ```
- *   // customEventType allows to regroup similar event types together when doing reporting (e.g., search box).
- *   var customEventCause = {name: 'customEventName', type:'customEventType'};
- *   var metadata = {key1: "value1", key2:"value2"};
- * ```
+ * See [Step 7 - Usage Analytics](https://developers.coveo.com/x/EYskAg) of the Getting Started with the JavaScript
+ * Search Framework V1 tutorial for an introduction to usage analytics.
  *
- * 2. Send your custom event.
- * ```
- *   Coveo.logCustomEvent(document.querySelector('#search'), customEventCause, metadata);
- *      // OR (using the jquery extension)
- *   $('#search').coveo('logCustomEvent', customEventCause, metadata);
- * ```
- *
- * 3. Send your custom search event<br/>**NB: If you want to log a `searchEvent`, be sure to always call the helper before you call `executeQuery`.**
- * ```
- * function myCustomButtonWasClicked() {
- *      Coveo.logSearchEvent(document.querySelector('#search'), customEventCause, metadata);
- *      Coveo.executeQuery(document.querySelector('#search'));
- *      // OR (using the jquery extension)
- *      $('#search').coveo('logSearchEvent', customEventCause, metadata);
- *      $('#search').coveo('executeQuery');
- * }
- * ```
- *
- * 4. Send a custom `searchAsYouType` event<br/>**NB: If you want to log a `searchAsYouTypeEvent`, be sure to always call the helper before you call `executeQuery`.**
- * ```
- * function myCustomButtonWasClicked() {
- *      Coveo.logSearchAsYouTypeEvent(document.querySelector('#search'), customEventCause, metadata);
- *      Coveo.executeQuery(document.querySelector('#search'));
- *      // OR (using the jquery extension)
- *      $('#search').coveo('logSearchAsYouTypeEvent', customEventCause, metadata);
- *      $('#search').coveo('executeQuery');
- * }
- * ```
- *
- * 5. Send a custom click event.
- * ```
- * Coveo.logClickEvent(document.querySelector('#search'), customEventCause, metadata, result);
- * // OR (using the jQuery extension)
- * $('#search').coveo('logClickEvent', customEventCause, metadata, result);
- * ```
+ * See also [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ) for more advanced use cases.
  */
 export class Analytics extends Component {
   static ID = 'Analytics';
@@ -93,65 +56,101 @@ export class Analytics extends Component {
    * @componentOptions
    */
   static options: IAnalyticsOptions = {
+
     /**
-     * Specifies the name of the user for usage analytics logs.
+     * Specifies the name of the user for the usage analytics logs.
+     *
+     * Default value is `undefined`
      */
     user: ComponentOptions.buildStringOption(),
+
     /**
-     * Specifies the name of the user display name for usage analytics logs.
+     * Specifies the user display name for the usage analytics logs.
+     *
+     * Default value is `undefined`
      */
     userDisplayName: ComponentOptions.buildStringOption(),
+
     /**
-     * Specifies the token used to gain access the analytics endpoint.<br/>
-     * This attribute is optional, the component will use the search token by default.
+     * Specifies the token to use to access the usage analytics endpoint.
+     *
+     * Default value is `undefined`, and the component uses the search token.
      */
     token: ComponentOptions.buildStringOption(),
+
     /**
-     * Specifies the URL of the analytics logger for rare cases where it is different from the default usage analytics Coveo Cloud endpoint (https://usageanalytics.coveo.com).
+     * Specifies the URL of the usage analytics logger to cover exceptional cases in which this location could differ
+     * from the default Coveo Cloud Usage Analytics endpoint (https://usageanalytics.coveo.com).
+     *
+     * Default value is `https://usageanalytics.coveo.com`.
      */
     endpoint: ComponentOptions.buildStringOption({ defaultValue: AnalyticsEndpoint.DEFAULT_ANALYTICS_URI }),
+
     /**
-     * Specifies whether the search user identities are converted in a unique hash in the logged analytics data to prevent analytics reviewers and managers to identify who performs which queries.<br/>
-     * When enabled, the Coveo Analytics Platform can still properly identify sessions made by anonymous users, versus ones from users that are authenticated in some way with the site containing the search page.<br/>
-     * The default value is `false`.
+     * Specifies whether to convert search user identities to unique hash when logging analytics data, so that
+     * analytics reviewers and managers will not be able to clearly identify which user is performing which query.
+     *
+     * When this option is `true`, the Coveo Usage Analytics Platform can still properly differentiate sessions
+     * made by anonymous users from sessions made by users authenticated in some way on the site containing the search
+     * page.
+     *
+     * Default value is `false`.
      */
     anonymous: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+
     /**
-     * Sets the Search Hub dimension on the search events.<br/>
-     * The Search Hub dimension is typically a name that refers to a specific search page. For example, one could use the CommunitySite value to refer to a search page on a company's public community site.<br/>
-     * The default value is default.
+     * Sets the Search Hub dimension on the search events.
+     *
+     * The Search Hub dimension is typically a name that refers to a specific search page. For example, you could use
+     * the `CommunitySite` value to refer to a search page on a company's public community site.
+     *
+     * Default value is `default`.
      */
     searchHub: ComponentOptions.buildStringOption({ defaultValue: 'default' }),
+
     /**
-     * Specifies the name of the split test run that the search page is a part of.<br/>
-     * This dimension can be used to perform A/B testing using different search page layouts and features, inside the Coveo Query pipeline.<br/>
-     * By default, this value is not specified and no split test run name is reported to the Coveo Analytics Platform.
+     * Specifies the name of the split test run that the search page is part of.
+     *
+     * You can use this dimension to perform A/B testing using different search page layouts and features inside the
+     * Coveo Query pipeline.
+     *
+     * Default value is `undefined` and no split test run name is reported to the Coveo Usage Analytics Platform.
      */
     splitTestRunName: ComponentOptions.buildStringOption(),
+
     /**
-     * Specifies the version name for the page when a split test run is active.<br/>
-     * When reporting on A/B testing analytics data, this value specifies the test run version name that has been presented to the user.<br/>
-     * By default, this value is not specified.
+     * Specifies the version name for the page when a split test run is active.
+     *
+     * When reporting on A/B testing analytics data, this value specifies the test run version name that was
+     * presented to the user.
+     *
+     * Default value is `undefined`
      */
     splitTestRunVersion: ComponentOptions.buildStringOption(),
     sendToCloud: ComponentOptions.buildBooleanOption({ defaultValue: true }),
+
     /**
-     * Specifies the organization bound to the access token. This is necessary when using an access token because it can be associated with more than organization.
-     * If this parameter is not specified, it will fallback on the organization used for the search endpoint.
+     * Specifies the organization bound to the access token. This is necessary when using an access token, because a
+     * single access token can be associated to more than one organization.
+     *
+     * Default value is `undefined`, and the value of this parameter will fallback to the organization used for the
+     * search endpoint.
      */
     organization: ComponentOptions.buildStringOption()
   };
 
   /**
-   * A reference to the `analyticsClient`, which will perform the heavy duty part of logging the actual events on the service.
+   * A reference to the `analyticsClient`, which performs the heavy duty part of logging the actual events on the
+   * service.
    */
   public client: IAnalyticsClient;
 
   /**
-   * Create a new Analytics component. Create the {@link IAnalyticsClient}.
+   * Creates a new Analytics component. Creates the {@link IAnalyticsClient}.
    * @param element The HTMLElement on which the component will be instantiated.
-   * @param options The options for the Analytics.
-   * @param bindings The bindings that the component requires to function normally. If not set, it will automatically resolve them (with slower execution time).
+   * @param options The options for the Analytics component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
    */
   constructor(public element: HTMLElement, public options: IAnalyticsOptions = {}, public bindings?: IComponentBindings) {
     super(element, Analytics.ID, bindings);
@@ -181,49 +180,84 @@ export class Analytics extends Component {
   }
 
   /**
-   * Log a search event on the service, using a cause and a meta object.<br/>
-   * Note that the event will be sent on the service when a query successfully return, not immediately after calling this method.<br/>
-   * Normally, this should be called using the following "format": <br/>
-   * usageAnalytics.logSearchEvent<SomeMeta>({name : 'foo', type : 'bar'}, <SomeMeta>{'key':'value'});<br/>
-   * this.queryController.executeQuery();<br/>
-   * This will queue up an analytics search event. Then the query is executed. The search event will be sent to the service when the query is successfully completed.<br/>
-   * @param actionCause
-   * @param meta Can be an empty object ( {} ).
+   * Logs a Search event on the service, using an [AnalyticsActionCause]({@link IAnalyticsActionCause}) and a meta
+   * object.
+   *
+   * Note that the search event is only sent to the service when the query successfully returns, not immediately after
+   * calling this method. Therefore, it is important to call this method before executing the query. Otherwise the
+   * service will log no Search event and you will get a warning message in the console.
+   *
+   * See [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ).
+   *
+   * @param actionCause Describes the cause of the event.
+   * @param meta The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
+   * pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
+   * API automatically converts white spaces to underscores and uppercase characters to lowercase characters in key
+   * names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
+   * ( `{}` ).
    */
   public logSearchEvent<T>(actionCause: IAnalyticsActionCause, meta: T) {
     this.client.logSearchEvent<T>(actionCause, meta);
   }
 
   /**
-   * Log a search as you type event on the service, using a cause and a meta object.<br/>
-   * This is extremely similar to a search event, except that search as you type, by definition, will be frequently called.<br/>
-   * The `PendingSearchAsYouTypeEvent` will take care of logging only the "relevant" last event: After 5 seconds of no event logged, or after another search event is triggered somewhere else in the interface.<br/>
-   * This is to ensure that we do not needlessly log every single partial query, which would make the reporting very confusing.
-   * @param actionCause
-   * @param meta Can be an empty object ( {} ).
+   * Logs a SearchAsYouType event on the service, using an {@link IAnalyticsActionCause} and a meta object.
+   *
+   * This method is very similar to the {@link logSearchEvent} method, except that logSearchAsYouType is, by definition,
+   * more frequently called.
+   *
+   * The `PendingSearchAsYouTypeEvent` takes care of logging only the "relevant" last event: an event that occurs after
+   * 5 seconds elapse without any event being logged, or an event that occurs after another part of the interface
+   * triggers a search event. This avoids logging every single partial query, which would make the reporting very
+   * confusing.
+   *
+   * It is important to call this method before executing the query. Otherwise the service will log no SearchAsYouType
+   * event and you will get a warning message in the console.
+   *
+   * See [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ).
+   *
+   * @param actionCause Describes the cause of the event.
+   * @param meta The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
+   * pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
+   * API automatically converts white spaces to underscores and uppercase characters to lowercase characters in key
+   * names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
+   * ( `{}` ).
    */
   public logSearchAsYouType<T>(actionCause: IAnalyticsActionCause, meta: T) {
     this.client.logSearchAsYouType(actionCause, meta);
   }
 
   /**
-   * Log a custom event on the service. A custom event can be used to create customized report, or to track events which are not queries or document views.
-   * @param actionCause
-   * @param meta
-   * @param element The HTMLElement that was interacted with for this custom event.
+   * Logs a Custom event on the service. You can use custom events to create custom reports, or to track events
+   * that are not queries or document views.
+   *
+   * @param actionCause Describes the cause of the event.
+   * @param meta The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
+   * pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
+   * API automatically converts white spaces to underscores and uppercase characters to lowercase characters in key
+   * names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
+   * ( `{}` ).
+   * @param element The HTMLElement that the user has interacted with for this custom event.
    */
   public logCustomEvent<T>(actionCause: IAnalyticsActionCause, meta: T, element: HTMLElement = this.element) {
     this.client.logCustomEvent(actionCause, meta, element);
   }
 
   /**
-   * Log a click event. A click event can be understood as a document view.<br/>
-   * eg : Clicking on a result link of opening a quickview.<br/>
-   * This event will be logged immediately on the service.
-   * @param actionCause
-   * @param meta Can be an empty object ( {} ).
-   * @param result The result that was clicked.
-   * @param element The HTMLElement that was clicked in the interface.
+   * Logs a Click event. You can understand click events as document views (e.g., clicking on a {@link ResultLink} or
+   * opening a {@link Quickview}).
+   *
+   * This event is logged immediately on the service.
+   *
+   * @param actionCause Describes the cause of the event.
+   * @param meta The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
+   * pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
+   * API automatically converts uppercase characters to lowercase characters in key names. Each value must be a simple
+   * string. You do not have to pass an {@link IAnalyticsDocumentViewMeta} as meta when logging a custom Click event.
+   * You can actually send any arbitrary meta. If you do not need to log metadata, you can simply pass an empty JSON
+   * ( `{}` ).
+   * @param result The result that the user has clicked.
+   * @param element The HTMLElement that the user has clicked in the interface.
    */
   public logClickEvent(actionCause: IAnalyticsActionCause, meta: IAnalyticsDocumentViewMeta, result: IQueryResult, element: HTMLElement = this.element) {
     this.client.logClickEvent(actionCause, meta, result, element);

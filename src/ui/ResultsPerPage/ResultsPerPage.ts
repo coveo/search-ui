@@ -1,12 +1,14 @@
-import {Component} from '../Base/Component';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {Initialization} from '../Base/Initialization';
-import {QueryEvents, IQuerySuccessEventArgs, INoResultsEventArgs} from '../../events/QueryEvents';
-import {analyticsActionCauseList, IAnalyticsResultsPerPageMeta, IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta';
-import {Assert} from '../../misc/Assert';
-import {$$} from '../../utils/Dom';
-import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
+import { Component } from '../Base/Component';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Initialization } from '../Base/Initialization';
+import { QueryEvents, IQuerySuccessEventArgs, INoResultsEventArgs } from '../../events/QueryEvents';
+import { analyticsActionCauseList, IAnalyticsResultsPerPageMeta, IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
+import { Assert } from '../../misc/Assert';
+import { $$ } from '../../utils/Dom';
+import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import _ = require('underscore');
 
 export interface IResultsPerPageOptions {
   choicesDisplayed?: number[];
@@ -14,7 +16,11 @@ export interface IResultsPerPageOptions {
 }
 
 /**
- * This component attaches itself to a div and allows users to choose the number of results displayed per page.<br/>
+ * The ResultsPerPage component attaches itself to a `div` and allows the end user to choose how many results to
+ * display per page.
+ *
+ * **Note:** Adding a ResultPerPage component to your page overrides the value of
+ * {@link SearchInterface.options.resultsPerPage}.
  */
 export class ResultsPerPage extends Component {
   static ID = 'ResultsPerPage';
@@ -24,19 +30,32 @@ export class ResultsPerPage extends Component {
    * @componentOptions
    */
   static options: IResultsPerPageOptions = {
+
     /**
-     * Specifies the possible values of the number of results to display per page.<br/>
-     * The default value is 10, 25, 50, 100.
+     * Specifies the possible values of number of results to display per page that the end user can select from.
+     *
+     * See also {@link ResultsPerPage.options.initialChoice}.
+     *
+     * Default value is `[10, 25, 50, 100]`.
      */
     choicesDisplayed: ComponentOptions.buildCustomListOption<number[]>(function (list: string[]) {
       let values = _.map(list, function (value) {
         return parseInt(value, 10);
       });
       return values.length == 0 ? null : values;
-    }, { defaultValue: [10, 25, 50, 100] }),
+    }, {
+        defaultFunction: () => {
+          if (DeviceUtils.isMobileDevice()) {
+            return [10, 25, 50];
+          } else {
+            return [10, 25, 50, 100];
+          }
+        },
+      }),
     /**
-     * Specifies the default value for the number of results to display per page.<br/>
-     * The default value is the first value of the choicesDisplayed parameter.
+     * Specifies the value to select by default for the number of results to display per page.
+     *
+     * Default value is the first value of {@link ResultsPerPage.options.choicesDisplayed}.
      */
     initialChoice: ComponentOptions.buildNumberOption()
   };
@@ -46,11 +65,11 @@ export class ResultsPerPage extends Component {
   private list: HTMLElement;
 
   /**
-   * Create a new ResultsPerPage<br/>
-   * Render itself on every query success.
-   * @param element HTMLElement on which to instantiate the page (Normally : a div).
-   * @param options
-   * @param bindings
+   * Creates a new ResultsPerPage. The component renders itself on every query success.
+   * @param element The HTMLElement on which to instantiate the component (normally a `div`).
+   * @param options The options for the ResultsPerPage component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
    */
   constructor(public element: HTMLElement, public options?: IResultsPerPageOptions, bindings?: IComponentBindings) {
     super(element, ResultsPerPage.ID, bindings);
@@ -66,10 +85,12 @@ export class ResultsPerPage extends Component {
   }
 
   /**
-   * Set the current number of results per page, and execute a query.<br/>
-   * Log the required analytics event (pagerResize by default).
-   * @param resultsPerPage
-   * @param analyticCause
+   * Sets the current number of results per page, then executes a query.
+   *
+   * Also logs an event in the usage analytics (`pagerResize` by default) with the new current number of results per
+   * page as meta data.
+   * @param resultsPerPage The new number of results per page to select.
+   * @param analyticCause The event to log in the usage analytics.
    */
   public setResultsPerPage(resultsPerPage: number, analyticCause: IAnalyticsActionCause = analyticsActionCauseList.pagerResize) {
     Assert.exists(resultsPerPage);

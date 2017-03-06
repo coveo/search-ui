@@ -17,6 +17,13 @@
     max-height: 600px;
     min-width: 500px;
   }
+
+  @media (max-width: 600px) {
+    .coveo-body {
+      min-width: inherit;
+    }
+  }
+
   .coveo-subscriptions-panel-fail {
     padding: 10px;
   }

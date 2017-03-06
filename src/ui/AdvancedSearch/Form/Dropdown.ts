@@ -1,5 +1,6 @@
-import {$$, Dom} from '../../../utils/Dom';
-import {l} from '../../../strings/Strings';
+import { $$, Dom } from '../../../utils/Dom';
+import { l } from '../../../strings/Strings';
+import _ = require('underscore');
 
 /**
  * This class will create a dropdown meant to be used inside the {@link AdvancedSearch} component.
@@ -65,7 +66,7 @@ export class Dropdown {
    * @returns {string}
    */
   public getValue(): string {
-    return $$(this.element).find('.coveo-dropdown-selected-value').getAttribute('value');
+    return $$(this.element).find('.coveo-dropdown-selected-value').getAttribute('data-value');
   }
 
   /**
@@ -92,13 +93,13 @@ export class Dropdown {
     button.append(this.selected.el);
     button.append($$('span', { className: 'coveo-dropdown-toggle-arrow' }).el);
     dropdown.append(button.el);
-    dropdown.append(this.buildDropdownMenu(this.selected));
+    dropdown.append(this.buildDropdownMenu());
     this.element = dropdown.el;
   }
 
   public selectValue(value: string) {
     _.each(this.options, (option) => {
-      if ($$(option).getAttribute('value') == value) {
+      if ($$(option).getAttribute('data-value') == value) {
         this.selectOption(option);
       }
     });
@@ -108,8 +109,8 @@ export class Dropdown {
     this.selectedIcon.detach();
     let content = $$(option).find('span');
     $$(content).prepend(this.selectedIcon.el);
-    let value = $$(option).getAttribute('value');
-    this.selected.setAttribute('value', value);
+    let value = $$(option).getAttribute('data-value');
+    this.selected.setAttribute('data-value', value);
     this.selected.text(this.getDisplayValue(value));
     this.close();
     if (executeOnChange) {
@@ -118,7 +119,7 @@ export class Dropdown {
   }
 
 
-  private buildDropdownMenu(selected: Dom): HTMLElement {
+  private buildDropdownMenu(): HTMLElement {
     let dropdownMenu = $$('ul', { className: 'coveo-dropdown-menu' });
     this.selectedIcon = $$('span', { className: 'coveo-selected-icon coveo-sprites-facet-search-checkbox-hook-active' });
     _.each(this.listOfValues, (value: string) => {
@@ -129,7 +130,7 @@ export class Dropdown {
 
   private buildOption(value: string): HTMLElement {
     let option = $$('li');
-    option.setAttribute('value', value);
+    option.setAttribute('data-value', value);
     let content = $$('span');
     content.text(this.getDisplayValue(value));
     option.append(content.el);
@@ -145,7 +146,15 @@ export class Dropdown {
 
     $$(this.element).on('mouseleave', (e: MouseEvent) => {
       setTimeout(() => {
-        if (e.target == this.element && $$(this.element).hasClass('coveo-open')) {
+        let target;
+        // There is a slight difference between jQuery target/currentTarget
+        // and standard DOM events. Add a special check to cover both cases.
+        if (e.currentTarget) {
+          target = e.currentTarget;
+        } else {
+          target = e.target;
+        }
+        if (target == this.element && $$(this.element).hasClass('coveo-open')) {
           this.close();
         }
       }, 300);

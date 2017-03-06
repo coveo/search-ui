@@ -1,7 +1,7 @@
-import {ComponentOptions} from '../../src/ui/Base/ComponentOptions';
-import {ComponentOptionsType} from '../../src/ui/Base/ComponentOptions';
-import {Dom} from '../../src/utils/Dom';
-import {TemplateCache} from '../../src/ui/Templates/TemplateCache';
+import { ComponentOptions } from '../../src/ui/Base/ComponentOptions';
+import { ComponentOptionsType } from '../../src/ui/Base/ComponentOptions';
+import { Dom } from '../../src/utils/Dom';
+import { TemplateCache } from '../../src/ui/Templates/TemplateCache';
 
 export function ComponentOptionsTest() {
   describe('ComponentOptions', () => {
@@ -455,6 +455,7 @@ export function ComponentOptionsTest() {
           TemplateCache.registerTemplate('CoveoTemplateId', template);
           let option = ComponentOptions.loadTemplateOption(elem, '', { idAttr: 'data-my-template-id' }, doc);
           expect(option.toHtmlElement()).toEqual(template.toHtmlElement());
+          TemplateCache.unregisterTemplate('CoveoTemplateId');
         });
         it('which loads html templates from the html elements matching the child selector in the html element option', () => {
           let option = ComponentOptions.loadTemplateOption(elem, '', { childSelector: '.coveo-child' }, doc);
@@ -472,6 +473,7 @@ export function ComponentOptionsTest() {
           TemplateCache.registerTemplate('CoveoTemplateId', template);
           let option = ComponentOptions.loadResultTemplateFromId('CoveoTemplateId');
           expect(option.toHtmlElement()).toEqual(template.toHtmlElement());
+          TemplateCache.unregisterTemplate('CoveoTemplateId');
         });
       });
 

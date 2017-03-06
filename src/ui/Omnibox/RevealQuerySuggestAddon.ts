@@ -1,16 +1,15 @@
 ///<reference path="Omnibox.ts"/>
-import {Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion} from './Omnibox';
-import {$$} from '../../utils/Dom';
-import {IRevealQuerySuggestCompletion, IRevealQuerySuggestRequest, IRevealQuerySuggestResponse} from '../../rest/RevealQuerySuggest';
-import {ComponentOptionsModel} from '../../models/ComponentOptionsModel';
-import {OmniboxEvents} from '../../events/OmniboxEvents';
-import {StringUtils} from '../../utils/StringUtils';
+import { Omnibox, IPopulateOmniboxSuggestionsEventArgs, IOmniboxSuggestion } from './Omnibox';
+import { $$, Dom } from '../../utils/Dom';
+import { IRevealQuerySuggestCompletion, IRevealQuerySuggestRequest, IRevealQuerySuggestResponse } from '../../rest/RevealQuerySuggest';
+import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
+import { OmniboxEvents } from '../../events/OmniboxEvents';
+import { StringUtils } from '../../utils/StringUtils';
+import _ = require('underscore');
 
 export class RevealQuerySuggestAddon {
 
   static INDEX = 60;
-
-  static suggestiontHtmlTemplate = _.template('<span<%= className? \' class="\'+className+\'"\':\'\' %>><%- text %></span>');
 
   private static suggestiontHtml(suggestion: IRevealQuerySuggestCompletion) {
     return suggestion.highlighted.replace(/\[(.*?)\]|\{(.*?)\}|\((.*?)\)/g, (part, notMatched, matched, corrected) => {
@@ -21,10 +20,17 @@ export class RevealQuerySuggestAddon {
       if (corrected) {
         className = 'coveo-omnibox-hightlight2';
       }
-      return RevealQuerySuggestAddon.suggestiontHtmlTemplate({
-        className: className,
-        text: notMatched || matched || corrected
-      });
+
+      let ret: Dom;
+      if (className) {
+        ret = $$('span', {
+          className: className
+        });
+      } else {
+        ret = $$('span');
+      }
+      ret.text(notMatched || matched || corrected);
+      return ret.el.outerHTML;
     });
   }
 
@@ -74,6 +80,7 @@ export class RevealQuerySuggestAddon {
     let searchHub = this.omnibox.getBindings().componentOptionsModel.get(ComponentOptionsModel.attributesEnum.searchHub);
     let pipeline = this.omnibox.getBindings().searchInterface.options.pipeline;
     let enableWordCompletion = this.omnibox.options.enableSearchAsYouType;
+    let context = this.omnibox.getBindings().queryController.getLastQuery().context;
 
     if (language) {
       payload.language = language;
@@ -85,6 +92,10 @@ export class RevealQuerySuggestAddon {
 
     if (pipeline) {
       payload.pipeline = pipeline;
+    }
+
+    if (context) {
+      payload.context = context;
     }
 
     payload.enableWordCompletion = enableWordCompletion;

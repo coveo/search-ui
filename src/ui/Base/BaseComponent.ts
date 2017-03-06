@@ -1,6 +1,6 @@
-import {Assert} from '../../misc/Assert';
-import {$$} from '../../utils/Dom';
-import {Logger} from '../../misc/Logger';
+import { Assert } from '../../misc/Assert';
+import { $$ } from '../../utils/Dom';
+import { Logger } from '../../misc/Logger';
 
 declare var Coveo;
 
@@ -72,7 +72,7 @@ export class BaseComponent {
   }
 
   static computeCssClassName(componentClass: any): string {
-    return componentClass['className'] ? componentClass['className'] : componentClass['className'] = BaseComponent.computeCssClassNameForType(componentClass['ID']);
+    return BaseComponent.computeCssClassNameForType(componentClass['ID']);
   }
 
   static computeCssClassNameForType(type: string): string {

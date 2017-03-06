@@ -83,6 +83,12 @@ a.coveo-folding-show-more, a.coveo-folding-show-less {
   @include clickable();
 }
 
+.coveo-card-layout {
+  a.coveo-folding-show-more, a.coveo-folding-show-less {
+    @include clickable($dark-background: true);
+  }
+}
+
 .coveo-child-result {
   margin-bottom: 5px;
   * {

@@ -1,22 +1,29 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {Initialization} from '../Base/Initialization';
-import {$$} from '../../utils/Dom';
-import {QueryEvents} from '../../events/QueryEvents';
-import {IQuerySuccessEventArgs} from '../../events/QueryEvents';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { Initialization } from '../Base/Initialization';
+import { $$ } from '../../utils/Dom';
+import { QueryEvents } from '../../events/QueryEvents';
+import { IQuerySuccessEventArgs } from '../../events/QueryEvents';
 
 export interface ILogoOptions {
 }
 
 /**
- * Add a clickable Coveo logo in the interface.
+ * The Logo component adds a clickable Coveo logo in the search interface.
  */
 export class Logo extends Component {
   static ID = 'Logo';
 
   static options: ILogoOptions = {};
 
+  /**
+   * Creates a new Logo component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the Logo component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   */
   constructor(public element: HTMLElement, public options?: ILogoOptions, bindings?: IComponentBindings) {
     super(element, Logo.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, Logo, options);

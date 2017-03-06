@@ -1,65 +1,111 @@
-import {IAnalyticsActionCause} from '../Analytics/AnalyticsActionListMeta';
-import {IQueryResult} from '../../rest/QueryResult';
-import {ITopQueries} from '../../rest/TopQueries';
-import {Promise} from 'es6-promise';
-import {PendingSearchEvent} from './PendingSearchEvent';
+import { IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
+import { IQueryResult } from '../../rest/QueryResult';
+import { ITopQueries } from '../../rest/TopQueries';
+import { Promise } from 'es6-promise';
+import { PendingSearchEvent } from './PendingSearchEvent';
 
 /**
- * Describe an analytics client, that can log events or return information from the service.
+ * The IAnalyticsClient interface describes an analytics client that can log events to, or return information from the
+ * usage analytics service.
+ *
+ * See also the {@link Analytics} component.
  */
 export interface IAnalyticsClient {
   isContextual: boolean;
+
   /**
-   * Return false if there is no {@link Analytics} component in your page.
+   * Indicates whether there is an {@link Analytics} component in your page. Returns `true` if an Analytics component
+   * is present and `false` otherwise.
    */
   isActivated(): boolean;
   getCurrentEventCause(): string;
   getCurrentEventMeta(): { [key: string]: any };
+
   /**
-   * Log a search event on the service, using a cause and a meta object.<br/>
-   * Note that the event will be sent on the service when a query successfully return, not immediately after calling this method.<br/>
-   * Normally, this should be called using the following "format": <br/>
-   * this.usageAnalytics.logSearchEvent<SomeMeta>({name : 'foo', type : 'bar'}, <SomeMeta>{'key':'value'});<br/>
-   * this.queryController.executeQuery();<br/>
-   * This will queue up an analytics search event. Then the query is executed. The search event will be sent to the service when the query is successfully completed.<br/>
-   * @param actionCause
-   * @param meta Can be an empty object ( {} )
+   * Logs a Search event on the service, using an [AnalyticsActionCause]({@link IAnalyticsActionCause}) and a meta
+   * object.
+   *
+   * Note that the search event is only sent to the service when the query successfully returns, not immediately after
+   * calling this method. Therefore, it is important to call this method before executing the query. Otherwise the
+   * service will log no Search event and you will get a warning message in the console.
+   *
+   * See [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ).
+   *
+   * @param actionCause Describes the cause of the event.
+   * @param meta The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
+   * pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
+   * API automatically converts white spaces to underscores and uppercase characters to lowercase characters in key
+   * names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
+   * ( `{}` ).
    */
   logSearchEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta): void;
+
   /**
-   * Log a search as you type event on the service, using a cause and a meta object.<br/>
-   * This is extremely similar to a search event, except that search as you type, by definition, will be frequently called.<br/>
-   * The PendingSearchAsYouTypeEvent will take care of logging only the "relevant" last event: After 5 seconds of no event logged, or after another search event is triggered somewhere else in the interface.<br/>
-   * This is to ensure that we do not needlessly log every single partial query, which would make the reporting very confusing.
-   * @param actionCause
-   * @param meta Can be an empty object ( {} ).
+   * Logs a SearchAsYouType event on the service, using an {@link IAnalyticsActionCause} and a meta object.
+   *
+   * This method is very similar to the {@link logSearchEvent} method, except that logSearchAsYouType is, by definition,
+   * more frequently called.
+   *
+   * The `PendingSearchAsYouTypeEvent` takes care of logging only the "relevant" last event: an event that occurs after
+   * 5 seconds elapse without any event being logged, or an event that occurs after another part of the interface
+   * triggers a search event. This avoids logging every single partial query, which would make the reporting very
+   * confusing.
+   *
+   * It is important to call this method before executing the query. Otherwise the service will log no SearchAsYouType
+   * event and you will get a warning message in the console.
+   *
+   * See [Sending Custom Analytics Events](https://developers.coveo.com/x/KoGfAQ).
+   *
+   * @param actionCause Describes the cause of the event.
+   * @param meta The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
+   * pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
+   * API automatically converts white spaces to underscores and uppercase characters to lowercase characters in key
+   * names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
+   * ( `{}` ).
    */
   logSearchAsYouType<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta): void;
+
   /**
-   * Log a click event. A click event can be understood as a document view.<br/>
-   * eg : Clicking on a result link of opening a quickview.<br/>
-   * This event will be logged immediately on the service.
-   * @param actionCause
-   * @param meta Can be an empty object ( {} ).
-   * @param result The result that was clicked.
-   * @param element The HTMLElement that was clicked in the interface.
+   * Logs a Click event. You can understand click events as document views (e.g., clicking on a {@link ResultLink} or
+   * opening a {@link Quickview}).
+   *
+   * This event is logged immediately on the service.
+   *
+   * @param actionCause Describes the cause of the event.
+   * @param meta The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
+   * pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
+   * API automatically converts uppercase characters to lowercase characters in key names. Each value must be a simple
+   * string. You do not have to pass an {@link IAnalyticsDocumentViewMeta} as meta when logging a custom Click event.
+   * You can actually send any arbitrary meta. If you do not need to log metadata, you can simply pass an empty JSON
+   * ( `{}` ).
+   * @param result The result that the user has clicked.
+   * @param element The HTMLElement that the user has clicked in the interface.
    */
   logClickEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, result: IQueryResult, element: HTMLElement): void;
+
   /**
-   * Log a custom event on the service. A custom event can be used to create customized report, or to track events which are not queries or document views.
-   * @param actionCause
-   * @param meta
-   * @param element The HTMLElement that was interacted with for this custom event.
+   * Logs a Custom event on the service. You can use custom events to create custom reports, or to track events
+   * that are not queries or document views.
+   *
+   * @param actionCause Describes the cause of the event.
+   * @param meta The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
+   * pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
+   * API automatically converts white spaces to underscores and uppercase characters to lowercase characters in key
+   * names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
+   * ( `{}` ).
+   * @param element The HTMLElement that the user has interacted with for this custom event.
    */
   logCustomEvent<TMeta>(actionCause: IAnalyticsActionCause, meta: TMeta, element: HTMLElement): void;
+
   /**
-   * Get suggested queries from the Coveo analytics service.
+   * Gets suggested queries from the Coveo Usage Analytics service.
    * @param params
    */
   getTopQueries(params: ITopQueries): Promise<string[]>;
   getCurrentVisitId(): string;
+
   /**
-   * Get the current visitor ID for tracking purpose in the Coveo Analytics service.
+   * Gets the current visitor ID for tracking purpose in the Coveo Usage Analytics service.
    */
   getCurrentVisitIdPromise(): Promise<string>;
   cancelAllPendingEvents(): void;

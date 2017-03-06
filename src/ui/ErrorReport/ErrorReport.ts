@@ -1,34 +1,38 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {Dom, $$} from '../../utils/Dom';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {QueryEvents, IQueryErrorEventArgs} from '../../events/QueryEvents';
-import {analyticsActionCauseList, IAnalyticsNoMeta} from '../Analytics/AnalyticsActionListMeta';
-import {l} from '../../strings/Strings';
-import {Assert} from '../../misc/Assert';
-import {Initialization} from '../Base/Initialization';
-import {IEndpointError} from '../../rest/EndpointError';
-import {MissingAuthenticationError} from '../../rest/MissingAuthenticationError';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { Dom, $$ } from '../../utils/Dom';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { QueryEvents, IQueryErrorEventArgs } from '../../events/QueryEvents';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
+import { l } from '../../strings/Strings';
+import { Assert } from '../../misc/Assert';
+import { Initialization } from '../Base/Initialization';
+import { IEndpointError } from '../../rest/EndpointError';
+import { MissingAuthenticationError } from '../../rest/MissingAuthenticationError';
 
 export interface IErrorReportOptions {
   showDetailedError: boolean;
 }
 
 /**
- * This component takes care of handling fatal error when doing a query on the index / Search API.<br/>
- * For example, it will display a message when the service responds with something like a 401 or 503.<br/>
- * It will also render a small text area with the JSON content of the error response, for debugging purpose.
+ * The ErrorReport component takes care of handling fatal error when doing a query on the index / Search API.
+ *
+ * For example, the ErrorReport component displays a message when the service responds with a 401 or 503 error. This
+ * component also renders a small text area with the JSON content of the error response, for debugging purposes.
  */
 export class ErrorReport extends Component {
   static ID = 'ErrorReport';
+
   /**
    * The options for the component
    * @componentOptions
    */
   static options: IErrorReportOptions = {
+
     /**
-     * Display the detailed error message as a JSON in a text content area.<br/>
-     * The default value is <code>true</code>.
+     * Specifies whether to display a detailed error message as a JSON in a text content area.
+     *
+     * Default value is `true`.
      */
     showDetailedError: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
@@ -36,10 +40,11 @@ export class ErrorReport extends Component {
   private closePopup: () => void;
 
   /**
-   * Create a new ErrorReport component
-   * @param element
-   * @param options
-   * @param bindings
+   * Creates a new ErrorReport component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the ErrorReport component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
    */
   constructor(public element: HTMLElement, public options?: IErrorReportOptions, bindings?: IComponentBindings) {
     super(element, ErrorReport.ID, bindings);
@@ -68,7 +73,8 @@ export class ErrorReport extends Component {
   }
 
   /**
-   * Do the "back" action in the browser.
+   * Performs the "back" action in the browser.
+   * Also logs an `errorBack` event in the usage analytics.
    */
   public back(): void {
     this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.errorBack, {}, this.root);
@@ -77,7 +83,8 @@ export class ErrorReport extends Component {
   }
 
   /**
-   * Reset the current state of the query to 'empty', and trigger a new query.
+   * Resets the current state of the query and triggers a new query.
+   * Also logs an `errorClearQuery` event in the usage analytics.
    */
   public reset(): void {
     this.queryStateModel.reset();
@@ -87,7 +94,8 @@ export class ErrorReport extends Component {
   }
 
   /**
-   * Retry the same query, in case of a temporary service error.
+   * Retries the same query, in case of a temporary service error.
+   * Also logs an `errorRetry` event in the usage analytics.
    */
   public retry(): void {
     this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.errorRetry, {});

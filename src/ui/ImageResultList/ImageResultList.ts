@@ -1,11 +1,12 @@
-import {ResultList, IResultListOptions} from '../ResultList/ResultList';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IComponentBindings} from '../Base/ComponentBindings';
-import {ImageResultListEvents} from '../../events/ImageResultListEvents';
-import {ResultListEvents} from '../../events/ResultListEvents';
-import {Initialization} from '../Base/Initialization';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {$$} from '../../utils/Dom';
+import { ResultList, IResultListOptions } from '../ResultList/ResultList';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IComponentBindings } from '../Base/ComponentBindings';
+import { ImageResultListEvents } from '../../events/ImageResultListEvents';
+import { ResultListEvents } from '../../events/ResultListEvents';
+import { Initialization } from '../Base/Initialization';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { $$ } from '../../utils/Dom';
+import _ = require('underscore');
 
 export interface IImageResultListOptions extends IResultListOptions {
   layoutType?: string;
@@ -14,7 +15,10 @@ export interface IImageResultListOptions extends IResultListOptions {
 }
 
 /**
- * This component is an extension of the `ResultList` component to display image results.
+ * The ImageResultList component extends the {@link ResultList} component to display image results.
+ *
+ * This component inherits from the {@link ResultList} component. Thus, any option available for a ResultList component
+ * is also available for an ImageResultList component.
  */
 export class ImageResultList extends ResultList implements IComponentBindings {
   static ID = 'ImageResultList';
@@ -27,25 +31,30 @@ export class ImageResultList extends ResultList implements IComponentBindings {
    * @componentOptions
    */
   static options: IImageResultListOptions = {
+
     /**
-     * Specifies the type of layout used to display images results.
-     * The available values are:
-     *    row - Displays resized images that fit to the width of the container and have the same height for a row.
-     *    column - Displays the images in fixed-size columns.
-     * The default value is `row`.
+     * Specifies the type of layout to display image results with.
+     * Available values are:
+     * - `row`: Resizes images to make them fit the width of the container and have the same height for each row.
+     * - `column`: Displays the images in fixed-size columns.
+     * Default value is `row`.
      */
     layoutType: ComponentOptions.buildStringOption({
       defaultValue: 'row',
       postProcessing: (value: string) => value.toLowerCase()
     }),
+
     /**
      * Specifies the maximum height of a row in a row layout.
-     * The default value is 250.
+     *
+     * Default value is `250`. Minimum value is `16`.
      */
     heightThreshold: ComponentOptions.buildNumberOption({ defaultValue: 250, min: 16 }),
+
     /**
      * Specifies the width of a column in a column layout.
-     * The default value is 170.
+     *
+     * Default value is `225`. Minimum value is `16`.
      */
     columnWidth: ComponentOptions.buildNumberOption({ defaultValue: 225, min: 16 })
   };
@@ -55,6 +64,15 @@ export class ImageResultList extends ResultList implements IComponentBindings {
   private resultIndex: number = 0;
   private lastRowHeight: number = 0;
 
+  /**
+   * Creates a new ImageResultList component.
+   * @param element The HTMLElement on which to instantiate the component.
+   * @param options The options for the ImageResultList component.
+   * @param bindings The bindings that the component requires to function normally. If not set, these will be
+   * automatically resolved (with a slower execution time).
+   * @param elementClassId The class that this component should instantiate. Components that extend the base
+   * {@link ResultList} component use this. Default value is `CoveoResultList`.
+   */
   constructor(public element: HTMLElement, public options?: IImageResultListOptions, bindings?: IComponentBindings, elementClassId: string = ResultList.ID) {
 
     super(element, options, bindings, ImageResultList.ID);

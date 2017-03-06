@@ -1,12 +1,12 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions} from '../Base/ComponentOptions';
-import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
-import {IQueryResult} from '../../rest/QueryResult';
-import {ChatterUtils} from '../../utils/ChatterUtils';
-import {Initialization} from '../Base/Initialization';
-import {l} from '../../strings/Strings';
-import {Utils} from '../../utils/Utils';
-import {$$} from '../../utils/Dom';
+import { Component } from '../Base/Component';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
+import { IQueryResult } from '../../rest/QueryResult';
+import { ChatterUtils } from '../../utils/ChatterUtils';
+import { Initialization } from '../Base/Initialization';
+import { l } from '../../strings/Strings';
+import { Utils } from '../../utils/Utils';
+import { $$ } from '../../utils/Dom';
 
 export interface IChatterPostedByOption {
   enablePostedOn: boolean;

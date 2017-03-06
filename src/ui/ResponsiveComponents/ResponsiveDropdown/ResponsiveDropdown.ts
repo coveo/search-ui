@@ -1,7 +1,8 @@
-import {ResponsiveDropdownHeader} from './ResponsiveDropdownHeader';
-import {IResponsiveDropdownContent} from './ResponsiveDropdownContent';
-import {$$, Dom} from '../../../utils/Dom';
-import {EventsUtils} from '../../../utils/EventsUtils';
+import { ResponsiveDropdownHeader } from './ResponsiveDropdownHeader';
+import { IResponsiveDropdownContent } from './ResponsiveDropdownContent';
+import { $$, Dom } from '../../../utils/Dom';
+import { EventsUtils } from '../../../utils/EventsUtils';
+import _ = require('underscore');
 
 type HandlerCall = { handler: Function, context: any };
 

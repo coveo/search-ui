@@ -1,5 +1,5 @@
-import {SimpleFieldInput} from '../../../../src/ui/AdvancedSearch/DocumentInput/SimpleFieldInput';
-import {SearchEndpoint} from '../../../../src/rest/SearchEndpoint';
+import { SimpleFieldInput } from '../../../../src/ui/AdvancedSearch/DocumentInput/SimpleFieldInput';
+import { SearchEndpoint } from '../../../../src/rest/SearchEndpoint';
 import * as Mock from '../../../MockEnvironment';
 
 export function SimpleFieldInputTest() {
@@ -22,7 +22,7 @@ export function SimpleFieldInputTest() {
     describe('getValue', () => {
       it('should return fieldName == the value', () => {
         input.dropDown.selectValue('what');
-        expect(input.getValue()).toEqual('@test=="what"');
+        expect(input.getValue()).toEqual('@test==what');
       });
     });
 

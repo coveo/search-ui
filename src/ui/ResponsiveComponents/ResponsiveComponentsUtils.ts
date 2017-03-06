@@ -1,12 +1,10 @@
-import {Dom} from '../../utils/Dom';
+import { Dom } from '../../utils/Dom';
 
 export class ResponsiveComponentsUtils {
 
   private static smallTabsClassName: string = 'coveo-small-tabs';
   private static smallFacetClassName: string = 'coveo-small-facets';
   private static smallRecommendationClassName: string = 'coveo-small-recommendation';
-
-  public static MEDIUM_MOBILE_WIDTH = 640;
 
   static shouldDrawFacetSlider(root: Dom): boolean {
     return !this.isSmallFacetActivated(root) && !this.isSmallRecommendationActivated(root);

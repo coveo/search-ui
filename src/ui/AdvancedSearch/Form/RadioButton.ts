@@ -1,4 +1,4 @@
-import {$$} from '../../../utils/Dom';
+import { $$ } from '../../../utils/Dom';
 
 /**
  * This class will create a radio button meant to be used inside the {@link AdvancedSearch} component.

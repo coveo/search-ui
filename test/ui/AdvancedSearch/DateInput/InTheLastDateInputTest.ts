@@ -1,6 +1,6 @@
-import {InTheLastDateInput} from '../../../../src/ui/AdvancedSearch/DateInput/InTheLastDateInput';
-import {$$} from '../../../../src/utils/Dom';
-import {DateUtils} from '../../../../src/utils/DateUtils';
+import { InTheLastDateInput } from '../../../../src/ui/AdvancedSearch/DateInput/InTheLastDateInput';
+import { $$ } from '../../../../src/utils/Dom';
+import { DateUtils } from '../../../../src/utils/DateUtils';
 
 export function InTheLastDateInputTest() {
   describe('InTheLastDateInput', () => {

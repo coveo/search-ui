@@ -6,34 +6,34 @@ const failPlugin = require('webpack-fail-plugin');
 
 // Fail plugin will allow the webpack ts-loader to fail correctly when the TS compilation fails
 // Provide plugin allows us to use underscore in every module, without having to require underscore everywhere.
-let plugins = [failPlugin, new webpack.ProvidePlugin({_: 'underscore'})];
+let plugins = [failPlugin];
 
 if (minimize) {
   plugins.push(new webpack.optimize.UglifyJsPlugin());
 }
 
-let globalizePath = __dirname + '/../lib/globalize.min.js';
+let globalizePath = __dirname + '/../lib/globalize/globalize.min.js';
 
 module.exports = {
   resolve: {
     extensions: ['', '.ts', '.js'],
     alias: {
-      'l10n': __dirname + '/../lib/l10n.min.js',
+      'l10n': __dirname + '/../lib/l10n/l10n.min.js',
       'globalize': globalizePath,
       'modal-box': __dirname + '/../node_modules/modal-box/bin/ModalBox.min.js',
-      'fastclick': __dirname + '/../lib/fastclick.min.js',
-      'jstz': __dirname + '/../lib/jstz.min.js',
       'magic-box': __dirname + '/../node_modules/coveomagicbox/bin/MagicBox.min.js',
       'default-language': __dirname + '/../src/strings/DefaultLanguage.js',
-      'underscore': __dirname + '/../node_modules/underscore/underscore-min.js',
       'jQuery': __dirname + '/../test/lib/jquery.js'
     }
   },
   devtool: 'source-map',
   module: {
     loaders: [
-      { test: /\.ts$/, loader: 'ts-loader' },
-      { test: require.resolve(globalizePath), loader: 'expose-loader?Globalize' },
+      {test: /\.ts$/, loader: 'ts-loader'},
+      {
+        test: require.resolve(globalizePath),
+        loader: 'expose-loader?Globalize'
+      },
       {
         test: /underscore-min.js/,
         loader: 'string-replace-loader',

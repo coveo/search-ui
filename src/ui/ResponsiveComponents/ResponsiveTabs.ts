@@ -1,15 +1,17 @@
-import {$$, Dom} from '../../utils/Dom';
-import {InitializationEvents} from '../../events/InitializationEvents';
-import {PopupUtils, HorizontalAlignment, VerticalAlignment} from '../../utils/PopupUtils';
-import {EventsUtils} from '../../utils/EventsUtils';
-import {Utils} from '../../utils/Utils';
-import {Logger} from '../../misc/Logger';
-import {Component} from '../Base/Component';
-import {SearchInterface} from '../SearchInterface/SearchInterface';
-import {Tab} from'../Tab/Tab';
-import {IResponsiveComponent, ResponsiveComponentsManager, IResponsiveComponentOptions} from './ResponsiveComponentsManager';
-import {ResponsiveComponentsUtils} from './ResponsiveComponentsUtils';
-import {l} from '../../strings/Strings';
+import { $$, Dom } from '../../utils/Dom';
+import { InitializationEvents } from '../../events/InitializationEvents';
+import { PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
+import { EventsUtils } from '../../utils/EventsUtils';
+import { Utils } from '../../utils/Utils';
+import { Logger } from '../../misc/Logger';
+import { Component } from '../Base/Component';
+import { SearchInterface } from '../SearchInterface/SearchInterface';
+import { Tab } from '../Tab/Tab';
+import { IResponsiveComponent, ResponsiveComponentsManager, IResponsiveComponentOptions } from './ResponsiveComponentsManager';
+import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
+import { l } from '../../strings/Strings';
+import { ResponsiveComponents } from './ResponsiveComponents';
+import _ = require('underscore');
 
 export class ResponsiveTabs implements IResponsiveComponent {
 
@@ -69,7 +71,8 @@ export class ResponsiveTabs implements IResponsiveComponent {
   };
 
   private needSmallMode(): boolean {
-    if (this.coveoRoot.width() <= ResponsiveComponentsUtils.MEDIUM_MOBILE_WIDTH) {
+    let mediumWidth = this.searchInterface ? this.searchInterface.responsiveComponents.getMediumScreenWidth() : new ResponsiveComponents().getMediumScreenWidth();
+    if (this.coveoRoot.width() <= mediumWidth) {
       return true;
     } else if (!ResponsiveComponentsUtils.isSmallTabsActivated(this.coveoRoot)) {
       return this.isOverflowing(this.tabSection.el);

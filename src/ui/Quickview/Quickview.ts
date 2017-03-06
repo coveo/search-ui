@@ -1,20 +1,20 @@
-import {Component} from '../Base/Component';
-import {ComponentOptions, ComponentOptionsType} from '../Base/ComponentOptions';
-import {IResultsComponentBindings} from '../Base/ResultsComponentBindings';
-import {Template} from '../Templates/Template';
-import {DomUtils} from '../../utils/DomUtils';
-import {DeviceUtils} from '../../utils/DeviceUtils';
-import {IQueryResult} from '../../rest/QueryResult';
-import {$$, Dom} from '../../utils/Dom';
-import {DefaultQuickviewTemplate} from './DefaultQuickviewTemplate';
-import {ResultListEvents} from '../../events/ResultListEvents';
-import {StringUtils} from '../../utils/StringUtils';
-import {QuickviewDocument} from './QuickviewDocument';
-import {QueryStateModel} from '../../models/QueryStateModel';
-import {QuickviewEvents} from '../../events/QuickviewEvents';
-import {Initialization, IInitializationParameters} from '../Base/Initialization';
-import {KeyboardUtils, KEYBOARD} from '../../utils/KeyboardUtils';
-import {ModalBox as ModalBoxModule} from '../../ExternalModulesShim';
+import { Component } from '../Base/Component';
+import { ComponentOptions, ComponentOptionsType } from '../Base/ComponentOptions';
+import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
+import { Template } from '../Templates/Template';
+import { DomUtils } from '../../utils/DomUtils';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { IQueryResult } from '../../rest/QueryResult';
+import { $$, Dom } from '../../utils/Dom';
+import { DefaultQuickviewTemplate } from './DefaultQuickviewTemplate';
+import { ResultListEvents } from '../../events/ResultListEvents';
+import { StringUtils } from '../../utils/StringUtils';
+import { QuickviewDocument } from './QuickviewDocument';
+import { QueryStateModel } from '../../models/QueryStateModel';
+import { QuickviewEvents } from '../../events/QuickviewEvents';
+import { Initialization, IInitializationParameters } from '../Base/Initialization';
+import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
+import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 
 export interface IQuickviewOptions {
   title?: string;
@@ -37,12 +37,15 @@ interface IQuickviewOpenerObject {
  *
  * Most of the time, this component will reference a {@link QuickviewDocument} in its content template.
  *
- * # Choosing what to display for the Quickview
+ * ## Choosing what to display for the Quickview
  * The Quick View uses any HTML structure you put inside its tag and uses that as the content of the dialog box. This content can thus be any element you decide, using your CSS and your structure.
  *
- * > Example
- * > You can change the appearance of the Quick View link by adding HTML inside the body of the div.
- * > You can change the content of the Quick View link by specifying a template ID.
+ * ## Example
+ * - You can change the appearance of the Quick View link by adding HTML inside the body of the div.
+ *
+ * - You can change the content of the Quick View link by specifying a template ID.
+ *
+ * - You can use the methods of the [CoreHelpers]{@link ICoreHelpers} in the template.
  *
  * ```html
  * <!-- This would change the appearance of the quickview button itself in the result. -->
@@ -118,7 +121,9 @@ export class Quickview extends Component {
       if (id != null) {
         let loadingAnimationTemplate = ComponentOptions.loadResultTemplateFromId(id);
         if (loadingAnimationTemplate) {
-          return loadingAnimationTemplate.instantiateToElement({});
+          return loadingAnimationTemplate.instantiateToElement(undefined, {
+            checkCondition: false
+          });
         }
       }
       return DomUtils.getBasicLoadingAnimation();

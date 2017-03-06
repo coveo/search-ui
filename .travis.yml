@@ -18,6 +18,7 @@ script:
 - npm run build
 - npm run minimize
 - npm run test
+- npm run uploadCoverage
 after_success:
 - npm run doc
 - if [ "x$TRAVIS_TAG" != "x" ]; then bash ./deploy.doc.sh ; fi

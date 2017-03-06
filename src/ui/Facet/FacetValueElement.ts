@@ -1,10 +1,10 @@
 /// <reference path="Facet.ts" />
 
-import {Facet} from './Facet';
-import {FacetValue} from './FacetValues';
-import {QueryEvents} from '../../events/QueryEvents';
-import {$$} from '../../utils/Dom';
-import {ValueElement} from './ValueElement';
+import { Facet } from './Facet';
+import { FacetValue } from './FacetValues';
+import { QueryEvents } from '../../events/QueryEvents';
+import { $$ } from '../../utils/Dom';
+import { ValueElement } from './ValueElement';
 
 
 export interface IFacetValueElementKlass {

@@ -1,5 +1,5 @@
-import {$$} from '../../../utils/Dom';
-import {KEYBOARD} from '../../../utils/KeyboardUtils';
+import { $$ } from '../../../utils/Dom';
+import { KEYBOARD } from '../../../utils/KeyboardUtils';
 
 /**
  * This class will create a text input meant to be used inside the {@link AdvancedSearch} component.

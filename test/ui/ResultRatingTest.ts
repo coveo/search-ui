@@ -1,11 +1,11 @@
 import * as Mock from '../MockEnvironment';
-import {ResultRating} from '../../src/ui/ResultRating/ResultRating';
-import {IQueryResult} from '../../src/rest/QueryResult';
-import {FakeResults} from '../Fake';
-import {RatingValues} from '../../src/ui/ResultRating/ResultRating';
-import {$$} from '../../src/utils/Dom';
-import {IRatingRequest} from '../../src/rest/RatingRequest';
-import {Simulate} from '../Simulate';
+import { ResultRating } from '../../src/ui/ResultRating/ResultRating';
+import { IQueryResult } from '../../src/rest/QueryResult';
+import { FakeResults } from '../Fake';
+import { RatingValues } from '../../src/ui/ResultRating/ResultRating';
+import { $$ } from '../../src/utils/Dom';
+import { IRatingRequest } from '../../src/rest/RatingRequest';
+import { Simulate } from '../Simulate';
 
 export function ResultRatingTest() {
   describe('ResultRating', function () {
