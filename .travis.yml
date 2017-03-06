@@ -66,12 +66,13 @@ deploy:
       secure: rE1I0tkPU4n9e6bjm+eAujC1ttRTGtDjOvyYIyz/0K62n7pZ8IRAH/5AIHKrNbbGu0ImQrrz8owP/jamhk5AN9+9ISrqe/jTtid9garlnfrgQtvZJNw6jVcqj9WXycz7nFLLyArPR9oXHa7GSbwk8yjn0Ho216Xf1FNGq71Jv4sCEkwfvUwi9Hs427K6p09s/dsf/q04+hZVASc1L4CMLgTj5BBOPPP9cw7QusHYCaviyy0tCtiNq5tt+R64DfNTY4mbg3wIMp4ouyfxkKYCpVngoWBm+dFtH2p3SJnTPullvEm6HA/domQHlCzsUXles4rsBZ3/8Rb1xUteqdlthyt0+WC8vpip5gsPDwk/+GcD+bVoBPCIUbQxVjmSSuZ7heJz5aPQOg0t23u/nZ2mYdXR6xjpocaf7awtAMm1lHfvQkV0SUKMNVMH2rYEfRYuans0edleVaBTri2VSCzXwqrNd7q+LcWJdxHfibXunQ3x7eQuWaLY2rw+VKHQTdwvPKjw9eqioiTN7HEhKoZn+bYU0M3XimuE9DKo7MRWXRkFvNSAQkbFRA45/nSgh317nHuXmyelyFm/Teqqy7zZYPctJ+yJD1QRvRv2kBnev/G6p6466JMLpQVQw4JzUhU9X5hyGYaCeDROHOnRoWLngDUuN9vs1v4O7M/PSeJMsdg=
     bucket: coveo-nprod-binaries
     local-dir: bin
-    upload-dir: proda/StaticCDN/searchui/$PACKAGE_JSON_VERSION
+    upload-dir: proda/StaticCDN/searchui/v$PACKAGE_JSON_VERSION
     acl: public_read
     skip_cleanup: true
     on:
       repo: coveo/search-ui
       branch: JSUI-1387
+
 branches:
   only:
     - master
