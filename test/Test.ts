@@ -418,3 +418,6 @@ RevealQuerySuggestAddonTest();
 
 import { ResponsiveComponentsTest } from './ui/ResponsiveComponentsTest';
 ResponsiveComponentsTest();
+
+import { ResponsiveComponentsManagerTest } from './ui/ResponsiveComponents/ResponsiveComponentsManagerTest';
+ResponsiveComponentsManagerTest();

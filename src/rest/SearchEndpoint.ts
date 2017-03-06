@@ -568,7 +568,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Return a list of reveal query suggestions, based on the given request
+   * Returns a list of Coveo Machine Learning query suggestions, based on the given request
    * @param request query and number of suggestions to return
    * @param callOptions Additional set of options to use for this call.
    * @param callParams Options injected by the applied decorators.
