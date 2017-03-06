@@ -51,15 +51,21 @@
   border-bottom: $default-border;
 }
 
-.coveo-table-header-cell {
+.coveo-table-decorator-cell {
   display: table-cell;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  &:not(:first-child) {
+    padding-left: 5px;
+  }
+  &:not(:last-child) {
+    padding-right: 5px;
+  }
 }
 
 .coveo-result-list-table-footer {
   @extend .coveo-result-list-table-header;
-  .coveo-result-cell {
-    border-bottom: none;
-  }
+  border-bottom: none;
 }
 
 @include mediaSelector(800) {
