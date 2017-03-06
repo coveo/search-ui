@@ -70,8 +70,10 @@ deploy:
     acl: public_read
     skip_cleanup: true
     on:
+      tags: true
       repo: coveo/search-ui
-      branch: JSUI-1387
+      all_branches: true
+      condition: "! $TRAVIS_TAG =~ .*beta.*"
 
 branches:
   only:
