@@ -83,7 +83,7 @@ export class TemplateFromAScriptTag {
     return <ValidLayout>layout;
   }
 
-  static fromString(template: string, properties: ITemplateFromStringProperties): HTMLElement {
+  static fromString(template: string, properties: ITemplateFromStringProperties = {}): HTMLElement {
     var script = document.createElement('script');
     script.text = template;
     if (properties.condition != null) {
