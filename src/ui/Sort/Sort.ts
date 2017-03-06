@@ -17,6 +17,7 @@ import _ = require('underscore');
 export interface ISortOptions {
   sortCriteria?: SortCriteria[];
   caption?: string;
+  displayUnselectedIcon?: boolean;
 }
 /**
  * The Sort component renders a widget that the end user can interact with to sort query results according to a single
@@ -61,10 +62,18 @@ export class Sort extends Component {
      *
      * If not specified, the component will use the tag body of the element.
      */
-    caption: ComponentOptions.buildLocalizedStringOption({ required: true })
+    caption: ComponentOptions.buildLocalizedStringOption({ required: true }),
+    /**
+     * Specifies if a toggle icon should be displayed when the Sort is not selected.
+     *
+     * The default value is `true`.
+     */
+    displayUnselectedIcon: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
   private currentCriteria: SortCriteria;
+
+  private icon: HTMLElement;
 
   /**
    * Creates a new Sort component.
@@ -94,7 +103,8 @@ export class Sort extends Component {
     }
 
     if (this.isToggle()) {
-      this.element.innerHTML += '<span class="coveo-icon" />';
+      this.icon = $$('span', { className: 'coveo-icon' }).el;
+      this.element.appendChild(this.icon);
     }
 
     this.update();
@@ -216,6 +226,9 @@ export class Sort extends Component {
       $$(this.element).removeClass('coveo-descending');
       if (this.isSelected()) {
         $$(this.element).addClass(direction === 'ascending' ? 'coveo-ascending' : 'coveo-descending');
+      }
+      if (!this.options.displayUnselectedIcon) {
+        $$(this.icon).toggleClass('coveo-hidden', !this.isSelected());
       }
     }
   }
