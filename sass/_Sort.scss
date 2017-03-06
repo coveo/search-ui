@@ -28,4 +28,10 @@ $stop-float: new-breakpoint(max-width 480px 1);
   &.coveo-sort-hidden {
     display: none;
   }
+
+  &.coveo-table-header-sort {
+    font-size: inherit;
+    font-weight: inherit;
+    text-transform: inherit;
+  }
 }

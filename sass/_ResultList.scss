@@ -45,9 +45,17 @@
 .coveo-result-list-table-header {
   display: table-row;
   text-align: left;
+  font-size: 12px;
+  color: $color-greyish-teal-blue;
+  font-weight: bold;
+}
+
+.coveo-table-header-cell {
+  display: table-cell;
 }
 
 .coveo-result-list-table-footer {
+  @extend .coveo-result-list-table-header;
   .coveo-result-cell {
     border-bottom: none;
   }
