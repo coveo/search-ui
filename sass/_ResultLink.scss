@@ -1,4 +1,4 @@
-//@import "Variables";
+@import "Variables";
 
 .CoveoResultLink, a.CoveoResultLink, .CoveoResult a.CoveoResultLink {
   @include clickableVibrant();

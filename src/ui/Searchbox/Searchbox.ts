@@ -10,7 +10,7 @@ import { Initialization } from '../Base/Initialization';
 import _ = require('underscore');
 
 import 'styling/_Searchbox';
-import 'styling/_SearchButton'
+import 'styling/_SearchButton';
 
 export interface ISearchboxOptions extends IOmniboxOptions {
   addSearchButton?: boolean;

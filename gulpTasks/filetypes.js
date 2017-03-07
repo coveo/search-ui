@@ -172,11 +172,10 @@ function ensureImageIsValid(filetype, image, legacy) {
   var retinaPath = './image/retina/' + image.replace('-', '/') + '.png';
   // DO not validate legacy because this pollutes the build console
   // with useless stuff
+
   if (!legacy) {
-    if (!legacy) {
-      if (!fs.existsSync(retinaPath)) {
-        console.warn('WARNING: Icon ' + path + ' is referenced by file type ' + filetype + ' but cannot be found in Retina sprites!');
-      }
+    if (!fs.existsSync(retinaPath)) {
+      console.warn('WARNING: Icon ' + path + ' is referenced by file type ' + filetype + ' but cannot be found in Retina sprites!');
     }
   }
 }

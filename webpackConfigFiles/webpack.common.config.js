@@ -10,8 +10,9 @@ const live = process.env.NODE_ENV === 'production';
 
 // Fail plugin will allow the webpack ts-loader to fail correctly when the TS compilation fails
 // Provide plugin allows us to use underscore in every module, without having to require underscore everywhere.
-let plugins = [failPlugin, new ExtractTextPlugin('../css/[name].css'), spritesmithPlugin];
+let plugins = [new ExtractTextPlugin('../css/[name].css'), spritesmithPlugin];
 let sassLoader = { test: /\.scss/ };
+let bail;
 
 if (minimize) {
   plugins.push(new webpack.optimize.UglifyJsPlugin());
@@ -22,8 +23,10 @@ if (live) {
   sassLoader['loader'] = ExtractTextPlugin.extract('style-loader', 'css-loader!resolve-url-loader!sass-loader?sourceMap', {
     publicPath: ''
   });
+  bail = true;
 } else {
   sassLoader['loaders'] = ['style-loader', 'css-loader', 'resolve-url-loader', 'sass-loader?sourceMap'];
+  bail = false;
 }
 
 module.exports = {
@@ -88,5 +91,5 @@ module.exports = {
     ]
   },
   plugins: plugins,
-  bail: true
+  bail: bail  
 }
