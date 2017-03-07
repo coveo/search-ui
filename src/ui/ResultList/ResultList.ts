@@ -135,6 +135,9 @@ export class ResultList extends Component {
      * If {@link ResultList.options.enableInfiniteScroll} is `true`, specifies the element that triggers the fetching of
      * additional results when the end user scrolls down to its bottom.
      *
+     * You can change the container by specifying its selector (e.g.,
+     * `data-infinite-scroll-container-selector='#someCssSelector'`).
+     *
      * By default, the framework uses the first vertically scrollable parent element it finds, starting from the
      * ResultList element itself. A vertically scrollable element is an element whose CSS `overflow-y` attribute is
      * `scroll`.
