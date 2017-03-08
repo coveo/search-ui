@@ -1,7 +1,7 @@
 .CoveoCardActionBar {
   display: flex;
   flex-wrap: wrap;
-
+  min-height: 44px;
   background-color: $color-greyish-dark-blue;
   color: #fff;
   margin: auto -20px -20px -20px;
@@ -39,4 +39,5 @@
   width: 100%;
   background-color: $color-greyish-dark-blue;
   color: #fff;
+  left: 0;
 }
