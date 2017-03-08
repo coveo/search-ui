@@ -1,6 +1,6 @@
 import { IQueryResult } from '../rest/QueryResult';
 import { SearchEndpoint } from '../rest/SearchEndpoint';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 /**
  * Options for building an `<a>` tag.

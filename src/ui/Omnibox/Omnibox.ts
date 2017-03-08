@@ -2,6 +2,8 @@
 ///<reference path="QueryExtensionAddon.ts" />
 ///<reference path="RevealQuerySuggestAddon.ts" />
 ///<reference path="OldOmniboxAddon.ts" />
+
+export const MagicBox: any = require('exports-loader?Coveo.MagicBox!../../../node_modules/coveomagicbox/bin/MagicBox.min.js');
 import { IQueryboxOptions } from '../Querybox/Querybox';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
@@ -26,9 +28,9 @@ import { IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
 import { IDuringQueryEventArgs } from '../../events/QueryEvents';
 import { PendingSearchAsYouTypeSearchEvent } from '../Analytics/PendingSearchAsYouTypeSearchEvent';
 import { Utils } from '../../utils/Utils';
-import { MagicBox } from '../../ExternalModulesShim';
 import { StandaloneSearchInterface } from '../SearchInterface/SearchInterface';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Omnibox';
 
 export interface IPopulateOmniboxSuggestionsEventArgs {
@@ -72,6 +74,13 @@ const MINIMUM_EXECUTABLE_CONFIDENCE = 0.8;
  */
 export class Omnibox extends Component {
   public static ID = 'Omnibox';
+
+  static doExport = () => {
+    exportGlobally({
+      'Omnibox': Omnibox,
+      'MagicBox': MagicBox
+    });
+  }
 
   /**
    * The options for the omnibox

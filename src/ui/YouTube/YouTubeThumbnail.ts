@@ -7,7 +7,8 @@ import { Initialization, IInitializationParameters } from '../Base/Initializatio
 import { DomUtils } from '../../utils/DomUtils';
 import { $$ } from '../../utils/Dom';
 import { ModalBox } from '../../ExternalModulesShim';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IYouTubeThumbnailOptions {
   width: string;
@@ -29,6 +30,12 @@ export interface IYouTubeThumbnailOptions {
  */
 export class YouTubeThumbnail extends Component {
   static ID = 'YouTubeThumbnail';
+
+  static doExport = () => {
+    exportGlobally({
+      'YouTubeThumbnail': YouTubeThumbnail
+    });
+  }
 
   /**
    * @componentOptions
@@ -59,10 +66,6 @@ export class YouTubeThumbnail extends Component {
      */
     embed: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
-
-  static fields = [
-    'ytthumbnailurl'
-  ];
 
   private modalbox: Coveo.ModalBox.ModalBox;
 

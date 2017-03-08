@@ -12,6 +12,7 @@ import { Assert } from '../../misc/Assert';
 import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IPagerOptions {
   numberOfPages?: number;
@@ -28,6 +29,12 @@ export interface IPagerOptions {
  */
 export class Pager extends Component {
   static ID = 'Pager';
+
+  static doExport = () => {
+    exportGlobally({
+      'Pager': Pager
+    });
+  }
 
   /**
    * The options for the Pager

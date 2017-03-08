@@ -6,7 +6,7 @@ import { Assert } from '../misc/Assert';
 import { InitializationEvents } from '../events/InitializationEvents';
 import { RootComponent } from '../ui/Base/RootComponent';
 import { $$ } from '../utils/Dom';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 /**
  * This component acts like the {@link HistoryController} excepts that is saves the {@link QueryStateModel} in the local storage.<br/>

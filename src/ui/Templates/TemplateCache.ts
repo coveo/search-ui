@@ -1,19 +1,20 @@
-import { Template } from './Template';
+import  { Template } from './Template';
+import TemplateModule = require('./Template');
 import { Assert } from '../../misc/Assert';
 import { UnderscoreTemplate } from './UnderscoreTemplate';
 import { HtmlTemplate } from './HtmlTemplate';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 /**
  * Holds a reference to all template available in the framework
  */
 export class TemplateCache {
-  private static templates: { [templateName: string]: Template; } = {};
+  private static templates: { [templateName: string]: TemplateModule.Template; } = {};
   private static templateNames: string[] = [];
-  private static defaultTemplates: { [templateName: string]: Template; } = {};
+  private static defaultTemplates: { [templateName: string]: TemplateModule.Template; } = {};
 
 
-  public static registerTemplate(name: string, template: Template, publicTemplate?: boolean, defaultTemplate?: boolean);
+  public static registerTemplate(name: string, template: TemplateModule.Template, publicTemplate?: boolean, defaultTemplate?: boolean);
   public static registerTemplate(name: string, template: (data: {}) => string, publicTemplate?: boolean, defaultTemplate?: boolean);
   /**
    * Register a new template in the framework, which will be available to render any results.
@@ -25,7 +26,7 @@ export class TemplateCache {
   public static registerTemplate(name: string, template: any, publicTemplate: boolean = true, defaultTemplate: boolean = false) {
     Assert.isNonEmptyString(name);
     Assert.exists(template);
-    if (!(template instanceof Template)) {
+    if (!(template instanceof TemplateModule.Template)) {
       template = new Template(template);
     }
     if (template.name == null) {
@@ -56,7 +57,7 @@ export class TemplateCache {
   }
 
   /**
-   * Return a template by its name/ID.
+   * Return a template by its name/FacID.
    * @param name
    * @returns {Template}
    */

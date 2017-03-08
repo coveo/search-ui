@@ -10,7 +10,7 @@ import { ISubscriptionItemRequest, SUBSCRIPTION_TYPE, ISubscriptionQueryRequest 
 import { PopupUtils, HorizontalAlignment, VerticalAlignment } from '../../utils/PopupUtils';
 import { l } from '../../strings/Strings';
 import { $$, Dom } from '../../utils/Dom';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface ISearchAlertMessageOptions {
   closeDelay: number;

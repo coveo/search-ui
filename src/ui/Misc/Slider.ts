@@ -2,10 +2,10 @@ import { $$ } from '../../utils/Dom';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { SliderEvents, IGraphValueSelectedArgs } from '../../events/SliderEvents';
 import { Utils } from '../../utils/Utils';
-import d3Scale = require('d3-scale');
-import d3 = require('d3');
-import Globalize = require('globalize');
-import _ = require('underscore');
+import { scaleBand, scaleLinear } from 'd3-scale';
+import { select as d3select, max as d3max } from 'd3';
+import * as Globalize from 'globalize';
+import * as _ from 'underscore';
 
 export interface IStartSlideEventArgs {
   slider: Slider;
@@ -620,9 +620,9 @@ class SliderGraph {
   private tooltip: HTMLElement;
 
   constructor(public slider: Slider) {
-    this.svg = d3.select(slider.element).append('svg').append('g');
-    this.x = d3Scale.scaleBand();
-    this.y = d3Scale.scaleLinear();
+    this.svg = d3select(slider.element).append('svg').append('g');
+    this.x = scaleBand();
+    this.y = scaleLinear();
     this.slider.options.graph.margin = Utils.extendDeep({
       top: 20,
       right: 0,
@@ -671,7 +671,7 @@ class SliderGraph {
     this.x.domain(_.map(data, (d) => {
       return d.start;
     }));
-    this.y.domain([0, d3.max(data, (d) => {
+    this.y.domain([0, d3max(data, (d) => {
       return d.y;
     })]);
   }

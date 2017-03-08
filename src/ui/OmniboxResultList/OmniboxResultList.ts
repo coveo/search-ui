@@ -12,7 +12,8 @@ import { Assert } from '../../misc/Assert';
 import { Utils } from '../../utils/Utils';
 import { Initialization } from '../Base/Initialization';
 import { IQueryResults } from '../../rest/QueryResults';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 import 'styling/_OmniboxResultList';
 
@@ -45,6 +46,12 @@ export interface IOmniboxResultListOptions extends IResultListOptions {
 export class OmniboxResultList extends ResultList implements IComponentBindings {
   static ID = 'OmniboxResultList';
 
+  static doExport = () => {
+    exportGlobally({
+      'OmniboxResultList': OmniboxResultList
+    });
+  }
+
   /**
    * The options for the component
    * @componentOptions
@@ -54,7 +61,7 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
     /**
      * Specifies the z-index at which to render the ResultList inside the Omnibox.
      *
-     * Default value is `51`. Minimum value is `16` ({@link Facet} components are at `50` by default)
+     * Default value is `51`. Minimum value is `16` ({@link FacetModuleDefinition} components are at `50` by default)
      */
     omniboxZIndex: ComponentOptions.buildNumberOption({ defaultValue: 51, min: 16 }),
 
@@ -134,15 +141,23 @@ export class OmniboxResultList extends ResultList implements IComponentBindings 
    * Builds and returns an array of `HTMLElement` from the {@link IQueryResults} set received as an argument.
    * @param results The IQueryResults set to build an array of `HTMLElement` from.
    */
-  public buildResults(results: IQueryResults): HTMLElement[] {
-    return _.map(results.results, (result: IQueryResult) => {
-      let resultElement = this.buildResult(result);
-      $$(resultElement).addClass('coveo-omnibox-selectable');
-      $$(resultElement).on('keyboardSelect', () => {
-        this.options.onSelect.call(this, result, resultElement, this.lastOmniboxRequest.omniboxObject);
+  public buildResults(results: IQueryResults): Promise<HTMLElement[]> {
+    let builtResults: HTMLElement[] = [];
+    let builtPromises = _.map(results.results, (result: IQueryResult) => {
+      return this.buildResult(result).then((resultElement: HTMLElement) => {
+        $$(resultElement).addClass('coveo-omnibox-selectable');
+        $$(resultElement).on('keyboardSelect', () => {
+          this.options.onSelect.call(this, result, resultElement, this.lastOmniboxRequest.omniboxObject);
+        });
+        return this.autoCreateComponentsInsideResult(resultElement, result).then(() => {
+          builtResults.push(resultElement);
+          return resultElement;
+        });
       });
-      this.autoCreateComponentsInsideResult(resultElement, result);
-      return resultElement;
+    });
+
+    return Promise.all(builtPromises).then(() => {
+      return builtResults;
     });
   }
 

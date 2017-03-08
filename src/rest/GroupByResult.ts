@@ -3,7 +3,7 @@ import { IGroupByValue } from './GroupByValue';
 /**
  * A result for a {@link IGroupByRequest}.
  *
- * This is typically what the {@link Facet} component will use to render themselves.
+ * This is typically what the {@link FacetModuleDefinition} component will use to render themselves.
  */
 export interface IGroupByResult {
   /**

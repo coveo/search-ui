@@ -12,7 +12,8 @@ import { Initialization } from '../Base/Initialization';
 import { l } from '../../strings/Strings';
 import { ModalBox } from '../../ExternalModulesShim';
 import { MissingAuthenticationError } from '../../rest/MissingAuthenticationError';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 import 'styling/_AuthenticationProvider';
 
 export interface IAuthenticationProviderOptions {
@@ -34,6 +35,12 @@ export interface IAuthenticationProviderOptions {
  */
 export class AuthenticationProvider extends Component {
   static ID = 'AuthenticationProvider';
+
+  static doExport = () => {
+    exportGlobally({
+      'AuthenticationProvider': AuthenticationProvider
+    });
+  }
 
   /**
    * The options for the component.

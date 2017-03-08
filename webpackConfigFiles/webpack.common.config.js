@@ -1,8 +1,7 @@
 'use strict';
 const webpack = require('webpack');
-const minimize = process.argv.indexOf('--minimize') !== -1;
+const minimize = process.argv.indexOf('minimize') !== -1;
 const colors = require('colors');
-const failPlugin = require('webpack-fail-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const spritesmithPlugin = require('./spritesmithConfig/spritesmith.config.js');
 const path = require('path');
@@ -10,7 +9,7 @@ const live = process.env.NODE_ENV === 'production';
 
 // Fail plugin will allow the webpack ts-loader to fail correctly when the TS compilation fails
 // Provide plugin allows us to use underscore in every module, without having to require underscore everywhere.
-let plugins = [failPlugin, new ExtractTextPlugin('../css/[name].css'), spritesmithPlugin];
+let plugins = [new ExtractTextPlugin('../css/[name].css'), spritesmithPlugin];
 let sassLoader = { test: /\.scss/ };
 let bail;
 
@@ -31,7 +30,7 @@ if (live) {
 
 module.exports = {
   resolve: {
-    extensions: ['', '.ts', '.js', '.scss'],
+    extensions: ['.ts', '.js', '.scss'],
     alias: {
       'l10n': __dirname + '/../lib/l10n/l10n.min.js',
       'globalize': globalizePath,

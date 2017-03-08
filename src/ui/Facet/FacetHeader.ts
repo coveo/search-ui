@@ -1,8 +1,5 @@
-/// <reference path="Facet.ts" />
-/// <reference path="FacetSettings.ts" />
-
-import { Facet } from './Facet';
-import { FacetSlider } from '../FacetSlider/FacetSlider';
+import FacetSliderModuleDefinition = require('../FacetSlider/FacetSlider');
+import FacetModuleDefinition = require('./Facet');
 import { IFacetSettingsKlass, FacetSettings } from './FacetSettings';
 import { IFacetSortKlass, FacetSort } from './FacetSort';
 import { $$ } from '../../utils/Dom';
@@ -14,13 +11,13 @@ import '../../../bin/sass/_GeneratedIconsNew';
 
 export interface IFacetHeaderOptions {
   facetElement: HTMLElement;
+  facet?: FacetModuleDefinition.Facet;
   title: string;
   field: string;
   enableClearElement: boolean;
   enableCollapseElement: boolean;
   icon?: string;
-  facet?: Facet;
-  facetSlider?: FacetSlider;
+  facetSlider?: FacetSliderModuleDefinition.FacetSlider;
   settingsKlass?: IFacetSettingsKlass;
   sortKlass?: IFacetSortKlass;
   availableSorts?: string[];

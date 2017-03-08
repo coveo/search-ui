@@ -10,7 +10,8 @@ import { $$ } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
 import { Initialization } from '../Base/Initialization';
 import { Assert } from '../../misc/Assert';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 import 'styling/_HiddenQuery';
 
 export interface IHiddenQueryOptions {
@@ -27,6 +28,12 @@ export interface IHiddenQueryOptions {
  */
 export class HiddenQuery extends Component {
   static ID = 'HiddenQuery';
+
+  static doExport = () => {
+    exportGlobally({
+      'HiddenQuery': HiddenQuery
+    });
+  }
 
   /**
    * Possible options for the `HiddenQuery` component

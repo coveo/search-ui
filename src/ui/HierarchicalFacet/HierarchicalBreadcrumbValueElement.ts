@@ -2,7 +2,7 @@ import { BreadcrumbValueElement } from '../Facet/BreadcrumbValueElement';
 import { FacetValue } from '../Facet/FacetValues';
 import { HierarchicalFacet } from './HierarchicalFacet';
 import { Dom } from '../../utils/Dom';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export class HierarchicalBreadcrumbValueElement extends BreadcrumbValueElement {
   constructor(public facet: HierarchicalFacet, public facetValue: FacetValue) {

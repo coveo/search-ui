@@ -8,9 +8,10 @@ import { l } from '../../strings/Strings';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Initialization } from '../Base/Initialization';
 import { QueryStateModel } from '../../models/QueryStateModel';
-import Globalize = require('globalize');
+import * as Globalize from 'globalize';
 import { QuerySummaryEvents } from '../../events/QuerySummaryEvents';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IQuerySummaryOptions {
   enableSearchTips?: boolean;
@@ -26,6 +27,12 @@ export interface IQuerySummaryOptions {
  */
 export class QuerySummary extends Component {
   static ID = 'QuerySummary';
+
+  static doExport = () => {
+    exportGlobally({
+      'QuerySummary': QuerySummary
+    });
+  }
 
   /**
    * Options for the component

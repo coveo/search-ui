@@ -7,8 +7,8 @@ import { QueryUtils } from '../../utils/QueryUtils';
 import { Initialization } from '../Base/Initialization';
 import { Utils } from '../../utils/Utils';
 import { FileTypes, IFileTypeInfo } from '../Misc/FileTypes';
-import { Quickview } from '../Quickview/Quickview';
 import { $$ } from '../../utils/Dom';
+import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Icons';
 
 /**
@@ -30,6 +30,12 @@ export interface IIconOptions {
  */
 export class Icon extends Component {
   static ID = 'Icon';
+
+  static doExport = () => {
+    exportGlobally({
+      'Icon': Icon
+    });
+  }
 
   /**
    * The options for the Icon
@@ -74,11 +80,6 @@ export class Icon extends Component {
     labelValue: ComponentOptions.buildLocalizedStringOption()
   };
 
-  static fields = [
-    'objecttype',
-    'filetype',
-  ];
-
   /**
    * Creates a new Icon component.
    * @param element The HTMLElement on which to instantiate the component.
@@ -94,11 +95,11 @@ export class Icon extends Component {
     this.result = this.result || this.resolveResult();
     Assert.exists(this.result);
 
-    var possibleInternalQuickview = $$(this.element).find('.' + Component.computeCssClassNameForType(Quickview.ID));
+    var possibleInternalQuickview = $$(this.element).find('.' + Component.computeCssClassNameForType('Quickview'));
     if (!Utils.isNullOrUndefined(possibleInternalQuickview) && QueryUtils.hasHTMLVersion(this.result)) {
       $$(this.element).addClass('coveo-with-quickview');
       $$(this.element).on('click', () => {
-        var qv: Quickview = <Quickview>Component.get(possibleInternalQuickview);
+        var qv = <any>Component.get(possibleInternalQuickview);
         qv.open();
       });
     }

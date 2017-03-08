@@ -2,11 +2,12 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { IQueryResult } from '../../rest/QueryResult';
 import { Initialization } from '../Base/Initialization';
-import { FieldValue, IFieldValueOptions } from './FieldValue';
+import { FieldValue, IFieldValueOptions } from '../FieldValue/FieldValue';
 import { StringUtils } from '../../utils/StringUtils';
 import { Assert } from '../../misc/Assert';
 import { $$ } from '../../utils/Dom';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IBadgeOptions extends IFieldValueOptions {
   colors: IBadgeColors;
@@ -32,6 +33,12 @@ export interface IBadgeColor {
  */
 export class Badge extends FieldValue implements IComponentBindings {
   static ID = 'Badge';
+
+  static doExport = () => {
+    exportGlobally({
+      'Badge': Badge
+    });
+  }
 
   /**
    * The options for the component

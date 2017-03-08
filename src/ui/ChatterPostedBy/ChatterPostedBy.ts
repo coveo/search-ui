@@ -7,6 +7,7 @@ import { Initialization } from '../Base/Initialization';
 import { l } from '../../strings/Strings';
 import { Utils } from '../../utils/Utils';
 import { $$ } from '../../utils/Dom';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IChatterPostedByOption {
   enablePostedOn: boolean;
@@ -17,22 +18,19 @@ export interface IChatterPostedByOption {
 
 export class ChatterPostedBy extends Component {
   static ID = 'ChatterPostedBy';
+
+  static doExport = () => {
+    exportGlobally({
+      'ChatterPostedBy': ChatterPostedBy
+    });
+  }
+
   static options: IChatterPostedByOption = {
     enablePostedOn: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     useFromInstead: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     openInPrimaryTab: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     openInSubTab: ComponentOptions.buildBooleanOption({ defaultValue: true }),
   };
-
-  static fields = [
-    'sfcreatedby',
-    'sfcreatedbyid',
-    'sffeeditemid',
-    'sfuserid',
-    'sfinsertedbyid',
-    'sfparentid',
-    'sfparentname'
-  ];
 
   constructor(public element: HTMLElement, public options?: IChatterPostedByOption, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {
     super(element, ChatterPostedBy.ID, bindings);

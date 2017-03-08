@@ -12,7 +12,8 @@ import {
   analyticsActionCauseList, IAnalyticsSearchAlertsFollowDocumentMeta, IAnalyticsActionCause
 } from '../Analytics/AnalyticsActionListMeta';
 import { QueryUtils } from '../../utils/QueryUtils';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 
 export interface IFollowItemOptions {
@@ -34,9 +35,11 @@ export interface IFollowItemOptions {
 export class FollowItem extends Component {
   static ID = 'FollowItem';
 
-  static fields = [
-    'urihash'
-  ];
+  static doExport = () => {
+    exportGlobally({
+      'FollowItem': FollowItem
+    });
+  }
 
   /**
    * The options for the follow item component

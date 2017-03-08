@@ -14,7 +14,7 @@ import { Cookie } from '../utils/CookieUtils';
 import { ISuccessResponse } from '../rest/EndpointCaller';
 import { IStringMap } from '../rest/GenericParam';
 import { Promise } from 'es6-promise';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IAnalyticsEndpointOptions {
   token: string;
@@ -67,7 +67,7 @@ export class AnalyticsEndpoint {
       }
     });
   }
-
+  
   public sendSearchEvents(searchEvents: ISearchEvent[]): Promise<IAPIAnalyticsSearchEventsResponse> {
     if (searchEvents.length > 0) {
       this.logger.info('Logging analytics search events', searchEvents);

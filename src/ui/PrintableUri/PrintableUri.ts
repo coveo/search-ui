@@ -7,6 +7,7 @@ import { Initialization } from '../Base/Initialization';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Utils } from '../../utils/Utils';
 import { $$ } from '../../utils/Dom';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IPrintableUriOptions {
 }
@@ -20,10 +21,11 @@ export class PrintableUri extends Component {
   static ID = 'PrintableUri';
   static options: IPrintableUriOptions = {};
 
-  static fields = [
-    'parents',
-    'author'
-  ];
+  static doExport = () => {
+    exportGlobally({
+      'PrintableUri': PrintableUri
+    });
+  }
 
   private uri: string;
 

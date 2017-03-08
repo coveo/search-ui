@@ -6,6 +6,7 @@ import { ChatterUtils } from '../../utils/ChatterUtils';
 import { l } from '../../strings/Strings';
 import { Initialization } from '../Base/Initialization';
 import { $$ } from '../../utils/Dom';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IChatterPostAttachmentOption {
 }
@@ -13,11 +14,11 @@ export interface IChatterPostAttachmentOption {
 export class ChatterPostAttachment extends Component {
   static ID = 'ChatterPostAttachment';
 
-  static fields = [
-    'sfcontentversionid',
-    'sffeeditemid',
-    'sfcontentfilename'
-  ];
+  static doExport = () => {
+    exportGlobally({
+      'ChatterPostAttachment': ChatterPostAttachment
+    });
+  }
 
   constructor(public element: HTMLElement, public options?: IChatterPostAttachmentOption, public bindings?: IResultsComponentBindings, public result?: IQueryResult) {
     super(element, ChatterPostAttachment.ID, bindings);

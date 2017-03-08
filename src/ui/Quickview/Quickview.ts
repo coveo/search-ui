@@ -15,20 +15,21 @@ import { QuickviewEvents } from '../../events/QuickviewEvents';
 import { Initialization, IInitializationParameters } from '../Base/Initialization';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IQuickviewOptions {
   title?: string;
   showDate?: boolean;
   contentTemplate?: Template;
   enableLoadingAnimation?: boolean;
-  loadingAnimation?: HTMLElement;
+  loadingAnimation?: HTMLElement | Promise<HTMLElement>;
   alwaysShow?: boolean;
   size?: string;
 }
 
 interface IQuickviewOpenerObject {
-  content: Dom;
-  loadingAnimation: HTMLElement;
+  content: Promise<Dom>;
+  loadingAnimation: HTMLElement | Promise<HTMLElement>;
 }
 
 /**
@@ -71,12 +72,12 @@ interface IQuickviewOpenerObject {
 export class Quickview extends Component {
   static ID = 'Quickview';
 
-  static fields = [
-    'urihash', // analytics
-    'collection', // analytics
-    'source', // analytics,
-    'author' // analytics
-  ];
+  static doExport = () => {
+    exportGlobally({
+      'Quickview': Quickview,
+      'QuickviewDocument': QuickviewDocument
+    });
+  }
 
   /**
    * @componentOptions
@@ -108,7 +109,7 @@ export class Quickview extends Component {
       selectorAttr: 'data-template-selector',
       idAttr: 'data-template-id'
     }),
-    loadingAnimation: ComponentOptions.buildOption<HTMLElement>(ComponentOptionsType.NONE, (element: HTMLElement) => {
+    loadingAnimation: ComponentOptions.buildOption<HTMLElement | Promise<HTMLElement>>(ComponentOptionsType.NONE, (element: HTMLElement) => {
       let loadingAnimationSelector = element.getAttribute('data-loading-animation-selector');
       if (loadingAnimationSelector != null) {
         let loadingAnimation = $$(document.documentElement).find(loadingAnimationSelector);
@@ -185,11 +186,13 @@ export class Quickview extends Component {
       $$(<HTMLElement>document.activeElement).trigger('blur');
 
       let openerObject = this.prepareOpenQuickviewObject();
-      this.createModalBox(openerObject);
-      this.bindQuickviewEvents(openerObject);
-      this.animateAndOpen();
-      this.queryStateModel.set(QueryStateModel.attributesEnum.quickview, this.getHashId());
-      Quickview.resultCurrentlyBeingRendered = null;
+      this.createModalBox(openerObject).then(() => {
+        this.bindQuickviewEvents(openerObject);
+        this.animateAndOpen();
+        this.queryStateModel.set(QueryStateModel.attributesEnum.quickview, this.getHashId());
+        Quickview.resultCurrentlyBeingRendered = null;
+      });
+
     }
   }
 
@@ -231,10 +234,15 @@ export class Quickview extends Component {
     });
 
     $$(this.modalbox.content).on(QuickviewEvents.quickviewLoaded, () => {
-      $$(openerObject.loadingAnimation).remove();
+      if (openerObject.loadingAnimation instanceof HTMLElement) {
+        $$(openerObject.loadingAnimation).remove();
+      } else if (openerObject.loadingAnimation instanceof Promise) {
+        openerObject.loadingAnimation.then((anim) => {
+          $$(anim).remove();
+        });
+      }
       this.bindIFrameEscape();
     });
-
     this.bindEscape();
   }
 
@@ -259,17 +267,20 @@ export class Quickview extends Component {
 
   private createModalBox(openerObject: IQuickviewOpenerObject) {
     let computedModalBoxContent = $$('div');
-    computedModalBoxContent.append(openerObject.content.el);
-    this.modalbox = this.ModalBox.open(computedModalBoxContent.el, {
-      title: DomUtils.getQuickviewHeader(this.result, {
-        showDate: this.options.showDate,
-        title: this.options.title
-      }, this.bindings).el.outerHTML,
-      className: 'coveo-quick-view',
-      validation: () => true,
-      body: this.element.ownerDocument.body
+    return openerObject.content.then((builtContent) => {
+      computedModalBoxContent.append(builtContent.el);
+      this.modalbox = this.ModalBox.open(computedModalBoxContent.el, {
+        title: DomUtils.getQuickviewHeader(this.result, {
+          showDate: this.options.showDate,
+          title: this.options.title
+        }, this.bindings).el.outerHTML,
+        className: 'coveo-quick-view',
+        validation: () => true,
+        body: this.element.ownerDocument.body
+      });
+      this.setQuickviewSize();
+      return computedModalBoxContent;
     });
-    this.setQuickviewSize();
   }
 
   private prepareOpenQuickviewObject() {
@@ -280,19 +291,29 @@ export class Quickview extends Component {
     };
   }
 
-  private prepareQuickviewContent(loadingAnimation: HTMLElement) {
-    let content = $$(this.options.contentTemplate.instantiateToElement(this.result));
-    let initOptions = this.searchInterface.options;
-    let initParameters: IInitializationParameters = {
-      options: initOptions,
-      bindings: this.getBindings(),
-      result: this.result
-    };
-    Initialization.automaticallyCreateComponentsInside(content.el, initParameters);
-    if (content.find('.' + Component.computeCssClassName(QuickviewDocument)) != undefined && this.options.enableLoadingAnimation) {
-      content.prepend(loadingAnimation);
-    }
-    return content;
+  private prepareQuickviewContent(loadingAnimation: HTMLElement | Promise<HTMLElement>): Promise<Dom> {
+    return this.options.contentTemplate.instantiateToElement(this.result).then((built: HTMLElement) => {
+      let content = $$(built);
+
+      let initOptions = this.searchInterface.options;
+      let initParameters: IInitializationParameters = {
+        options: initOptions,
+        bindings: this.getBindings(),
+        result: this.result
+      };
+      return Initialization.automaticallyCreateComponentsInside(content.el, initParameters).then(() => {
+        if (content.find('.' + Component.computeCssClassName(QuickviewDocument)) != undefined && this.options.enableLoadingAnimation) {
+          if (loadingAnimation instanceof HTMLElement) {
+            content.prepend(loadingAnimation);
+          } else if (loadingAnimation instanceof Promise) {
+            loadingAnimation.then((anim) => {
+              content.prepend(anim);
+            });
+          }
+        }
+        return content;
+      });
+    });
   }
 
   private bindEscape() {

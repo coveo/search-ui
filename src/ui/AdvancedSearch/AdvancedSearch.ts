@@ -13,8 +13,14 @@ import { AdvancedSearchInputFactory } from './AdvancedSearchInputFactory';
 import { IQueryOptions } from '../../controllers/QueryController';
 import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { QuerySummaryEvents } from '../../events/QuerySummaryEvents';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 import 'styling/_AdvancedSearch';
+import { NumericSpinner } from './Form/NumericSpinner';
+import { DatePicker } from './Form/DatePicker';
+import { Dropdown } from './Form/Dropdown';
+import { TextInput } from './Form/TextInput';
+import { RadioButton } from './Form/RadioButton';
 
 
 export interface IAdvancedSearchOptions {
@@ -32,6 +38,17 @@ export interface IAdvancedSearchOptions {
  */
 export class AdvancedSearch extends Component {
   static ID = 'AdvancedSearch';
+
+  static doExport = () => {
+    exportGlobally({
+      'AdvancedSearch': AdvancedSearch,
+      'NumericSpinner': NumericSpinner,
+      'DatePicker': DatePicker,
+      'Dropdown': Dropdown,
+      'TextInput': TextInput,
+      'RadioButton': RadioButton
+    });
+  }
 
   /**
    * @componentOptions

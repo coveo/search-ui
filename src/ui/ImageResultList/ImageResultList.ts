@@ -6,7 +6,8 @@ import { ResultListEvents } from '../../events/ResultListEvents';
 import { Initialization } from '../Base/Initialization';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { $$ } from '../../utils/Dom';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 import 'styling/_ImageResultList';
 
 export interface IImageResultListOptions extends IResultListOptions {
@@ -25,6 +26,12 @@ export class ImageResultList extends ResultList implements IComponentBindings {
   static ID = 'ImageResultList';
   static rowLayoutTypeStr = 'row';
   static columnLayoutTypeStr = 'column';
+
+  static doExport = () => {
+    exportGlobally({
+      'ImageResultList': ImageResultList
+    });
+  }
 
   /**
    * The options for the component

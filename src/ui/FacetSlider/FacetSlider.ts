@@ -5,7 +5,6 @@ import { ISliderOptions, Slider, IEndSlideEventArgs, IDuringSlideEventArgs, ISli
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions, IFieldOption } from '../Base/ComponentOptions';
-import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
 import { FacetHeader } from '../Facet/FacetHeader';
 import { l } from '../../strings/Strings';
 import { InitializationEvents } from '../../events/InitializationEvents';
@@ -21,10 +20,11 @@ import { Assert } from '../../misc/Assert';
 import { Utils } from '../../utils/Utils';
 import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
 import { Initialization } from '../Base/Initialization';
-import d3 = require('d3');
 import { SearchAlertsEvents, ISearchAlertsPopulateMessageEventArgs } from '../../events/SearchAlertEvents';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 import 'styling/_FacetSlider';
+import { ResponsiveFacetSlider } from '../ResponsiveComponents/ResponsiveFacetSlider';
 
 export interface IFacetSliderOptions extends ISliderOptions {
   dateField?: boolean;
@@ -39,7 +39,7 @@ export interface IFacetSliderOptions extends ISliderOptions {
 
 /**
  * The FacetSlider component creates a facet containing a slider widget that allows the end user to filter results based
- * on a range of numerical values, rather than a "classic" multi-select {@link Facet} with a label and a count for each
+ * on a range of numerical values, rather than a "classic" multi-select {@link FacetModuleDefinition} with a label and a count for each
  * value.
  *
  * Note that this component does not inherit from the Facet component, and thus does not offer the same configuration
@@ -125,7 +125,7 @@ export class FacetSlider extends Component {
      * If you have two facets with the same field on the same page, you should specify a unique id value for at least
      * one of those two facets. This id must be unique in the page.
      *
-     * Default value is the {@link FacetSlider.options.field} option value.
+     * Default value is the {@link FacetSliderModuleDefinition.options.field} option value.
      */
     id: ComponentOptions.buildStringOption({
       postProcessing: (value, options: IFacetSliderOptions) => value || <string>options.field
@@ -152,7 +152,7 @@ export class FacetSlider extends Component {
     /**
      * Specifies the starting boundary of the slider.
      *
-     * Date values are rounded to the nearest year when {@link FacetSlider.options.dateField} is `true`.
+     * Date values are rounded to the nearest year when {@link FacetSliderModuleDefinition.options.dateField} is `true`.
      *
      * Default value is the lowest available field value in the index.
      */
@@ -161,7 +161,7 @@ export class FacetSlider extends Component {
     /**
      * Specifies the ending boundary of the slider.
      *
-     * Date values are rounded to the nearest year when {@link FacetSlider.options.dateField} is `true`.
+     * Date values are rounded to the nearest year when {@link FacetSliderModuleDefinition.options.dateField} is `true`.
      *
      * Default value is the highest available field value in the index.
      */
@@ -256,9 +256,9 @@ export class FacetSlider extends Component {
     }),
 
     /**
-     * Specifies a function to generate the steps for the FacetSlider (see {@link FacetSlider.options.steps}. This
-     * function receives the FacetSlider boundaries (see {@link FacetSlider.options.start} and
-     * {@link FacetSlider.options.end}) and must return an array of numbers (the steps).
+     * Specifies a function to generate the steps for the FacetSlider (see {@link FacetSliderModuleDefinition.options.steps}. This
+     * function receives the FacetSlider boundaries (see {@link FacetSliderModuleDefinition.options.start} and
+     * {@link FacetSliderModuleDefinition.options.end}) and must return an array of numbers (the steps).
      *
      * You can only set this option in the {@link init} call of your search interface. You cannot set it directly in the
      * markup as an HTML attribute.
@@ -328,14 +328,14 @@ export class FacetSlider extends Component {
     }),
 
     /**
-     * Specifies whether to enable *responsive mode* for facets. Setting this options to `false` on any {@link Facet} or
-     * {@link FacetSlider} in a search interface disables responsive mode for all other facets in the search interface.
+     * Specifies whether to enable *responsive mode* for facets. Setting this options to `false` on any {@link FacetModuleDefinition} or
+     * {@link FacetSliderModuleDefinition} in a search interface disables responsive mode for all other facets in the search interface.
      *
      * Responsive mode displays all facets under a single dropdown button whenever the width of the HTML element which
      * the search interface is bound to reaches or falls behind a certain threshold (see
      * {@link SearchInterface.responsiveComponents}).
      *
-     * See also {@link FacetSlider.options.dropdownHeaderLabel}.
+     * See also {@link FacetSliderModuleDefinition.options.dropdownHeaderLabel}.
      *
      * Default value is `true`.
      */
@@ -349,6 +349,14 @@ export class FacetSlider extends Component {
   };
 
   static ID = 'FacetSlider';
+
+  static doExport = () => {
+    exportGlobally({
+      'FacetSlider': FacetSlider,
+      'Slider': Slider
+    });
+  }
+
   public static DEBOUNCED_RESIZE_DELAY = 250;
 
   public startOfSlider: number;
@@ -376,7 +384,7 @@ export class FacetSlider extends Component {
     super(element, FacetSlider.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, FacetSlider, options);
 
-    ResponsiveFacets.init(this.root, this, this.options);
+    ResponsiveFacetSlider.init(this.root, this, this.options);
 
     if (this.options.excludeOuterBounds == null) {
       this.options.excludeOuterBounds = false;
@@ -388,11 +396,6 @@ export class FacetSlider extends Component {
 
     if (this.options.end) {
       this.options.end = this.options.dateField ? <any>new Date(this.options.end.replace(/-/g, '/')).getTime() : <any>Number(this.options.end);
-    }
-
-    if (this.hasAGraph() && typeof d3 == 'undefined') {
-      this.options.graph = undefined;
-      this.logger.info('Cannot find the required dependencies d3.js. Cannot add graphic to your facet range', this);
     }
 
     this.facetQueryController = new FacetSliderQueryController(this);

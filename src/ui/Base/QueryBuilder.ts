@@ -4,7 +4,7 @@ import { IRankingFunction } from '../../rest/RankingFunction';
 import { IQueryFunction } from '../../rest/QueryFunction';
 import { IGroupByRequest } from '../../rest/GroupByRequest';
 import { IQuery } from '../../rest/Query';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 /**
  * Describe the expressions part of a QueryBuilder.
@@ -305,7 +305,7 @@ export class QueryBuilder {
 
   /**
    * Return only the expression(s) part(s) of the query, as a string, except the given expression.<br/>
-   * This is used by {@link Facet}, to build their group by request with query override.
+   * This is used by {@link FacetModuleDefinition}, to build their group by request with query override.
    * @param except
    * @returns {string}
    */
@@ -315,7 +315,7 @@ export class QueryBuilder {
 
   /**
    * Return only the expression(s) part(s) of the query, as an object, except the given expression.<br/>
-   * This is used by {@link Facet}, to build their group by request with query override.
+   * This is used by {@link FacetModuleDefinition}, to build their group by request with query override.
    * @param except
    * @returns {{full: string, withoutConstant: string, constant: string}}
    */

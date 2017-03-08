@@ -7,6 +7,7 @@ import { Utils } from '../../utils/Utils';
 import { $$ } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import { ChatterUtils } from '../../utils/ChatterUtils';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IChatterLikedByOptions {
   nbLikesToRender: number;
@@ -17,18 +18,17 @@ export interface IChatterLikedByOptions {
 export class ChatterLikedBy extends Component {
   static ID = 'ChatterLikedBy';
 
+  static doExport = () => {
+    exportGlobally({
+      'ChatterLikedBy': ChatterLikedBy
+    });
+  }
+
   static options: IChatterLikedByOptions = {
     nbLikesToRender: ComponentOptions.buildNumberOption({ defaultValue: 2, min: 0 }),
     openInPrimaryTab: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     openInSubTab: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
-
-  static fields = [
-    'sflikedby',
-    'sflikedbyid',
-    'clickableuri',
-    'sffeeditemid'
-  ];
 
   constructor(public element: HTMLElement, public options?: IChatterLikedByOptions, public bindings?: IComponentBindings, public result?: IQueryResult) {
     super(element, ChatterLikedBy.ID, bindings);

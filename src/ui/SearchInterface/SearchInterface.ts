@@ -22,12 +22,12 @@ import { BaseComponent } from '../Base/BaseComponent';
 import { Debug } from '../Debug/Debug';
 import { HashUtils } from '../../utils/HashUtils';
 import * as fastclick from 'fastclick';
-import jstz = require('jstimezonedetect');
+import * as jstz from 'jstimezonedetect';
 import { SentryLogger } from '../../misc/SentryLogger';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { ResponsiveComponents } from '../ResponsiveComponents/ResponsiveComponents';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 import 'styling/Globals';
 import 'styling/_SearchInterface';
@@ -125,7 +125,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     enableHistory: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies whether to enable automatic responsive mode (i.e., automatically placing {@link Facet} and {@link Tab}
+     * Specifies whether to enable automatic responsive mode (i.e., automatically placing {@link FacetModuleDefinition} and {@link Tab}
      * components in dropdown menus under the search box when the width of the SearchInterface HTML element reaches or
      * falls behind a certain pixel threshold).
      *
@@ -135,11 +135,12 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      * **Note:**
      *
      * > If this option is `true`, you can also specify whether to enable responsive mode for Facet components (see
-     * > {@link Facet.options.enableResponsiveMode}) and for Tab components (see
+     * > {@link FacetModuleDefinition.options.enableResponsiveMode}) and for Tab components (see
      * > {@link Tab.options.enableResponsiveMode}).
      * >
      * > In addition, you can specify the label you wish to display on the dropdown buttons (see
-     * > {@link Facet.options.dropdownHeaderLabel} and {@link Tab.options.dropdownHeaderLabel}).
+     * > {@link FacetModuleDefinition.options.dropdownHeaderLabel} and {@link Tab.options.dropdownHeaderLabel}).
+     * > mode (see {@link FacetModuleDefinition.options.responsiveBreakpoint}.
      *
      * Default value is `true`.
      */
@@ -319,7 +320,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     /**
      * Specifies whether to filter duplicates in the search results.
      *
-     * Setting this option to `true` forces duplicates to not appear in search results. However, {@link Facet} counts
+     * Setting this option to `true` forces duplicates to not appear in search results. However, {@link FacetModuleDefinition} counts
      * still include the duplicates, which can be confusing for the end user. This is a limitation of the index.
      *
      * **Example:**
@@ -395,7 +396,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   /**
    * Allows to get and set the different breakpoints for mobile and tablet devices.
    *
-   * This is useful, among other things, for {@link Facet}, {@link Tab} and {@link ResultList} components.
+   * This is useful, amongst other, for {@link FacetModuleDefinition}, {@link Tab} and {@link ResultList}
    */
   public responsiveComponents: ResponsiveComponents;
 

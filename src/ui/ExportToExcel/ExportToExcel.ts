@@ -6,7 +6,8 @@ import { ISettingsPopulateMenuArgs } from '../Settings/Settings';
 import { IAnalyticsNoMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { Initialization } from '../Base/Initialization';
 import { l } from '../../strings/Strings';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 import 'styling/_ExportToExcel';
 
 export interface IExportToExcelOptions {
@@ -20,6 +21,12 @@ export interface IExportToExcelOptions {
  */
 export class ExportToExcel extends Component {
   static ID = 'ExportToExcel';
+
+  static doExport = () => {
+    exportGlobally({
+      'ExportToExcel': ExportToExcel
+    });
+  }
 
   /**
    * The options for the ExportToExcel

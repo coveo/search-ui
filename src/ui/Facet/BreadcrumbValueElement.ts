@@ -6,7 +6,7 @@ import { Assert } from '../../misc/Assert';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { $$, Dom } from '../../utils/Dom';
-import _ = require('underscore');
+import * as _ from 'underscore';
 import 'styling/_FacetBreadcrumb';
 
 export interface IBreadcrumbValueElementKlass {

@@ -4,7 +4,8 @@ import { TemplateConditionEvaluator } from './TemplateConditionEvaluator';
 import { ComponentOptions, IComponentOptionsFieldsOption } from '../Base/ComponentOptions';
 import { ValidLayout } from '../ResultLayout/ResultLayout';
 import { $$ } from '../../utils/Dom';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { Initialization } from '../Base/Initialization';
 
 export interface ITemplateFromStringProperties {
   condition?: string;
@@ -33,16 +34,31 @@ export class TemplateFromAScriptTag {
     this.template.mobile = this.parseScreenSize('data-mobile');
     this.template.tablet = this.parseScreenSize('data-tablet');
     this.template.desktop = this.parseScreenSize('data-desktop');
-    this.template.fields = TemplateConditionEvaluator.getFieldFromString(scriptTag.innerHTML + ' ' + condition);
 
+    this.template.addFields(TemplateConditionEvaluator.getFieldFromString(scriptTag.innerHTML + ' ' + condition) || []);
+
+    // Additional fields that might be specified directly on the script element
     var additionalFields = ComponentOptions.loadFieldsOption(scriptTag, 'fields', <IComponentOptionsFieldsOption>{ includeInResults: true });
     if (additionalFields != null) {
       // remove the @
-      this.template.fields = this.template.fields.concat(_.map(additionalFields, (field) => field.substr(1)));
+      this.template.addFields(_.map(additionalFields, (field) => field.substr(1)));
     }
-    this.template.fields = this.template.fields.concat(_.map(this.template.fieldsToMatch, (toMatch: IFieldsToMatch) => {
+
+    // Additional fields that might be used to conditionally load the template when it's going to be rendered.
+    this.template.addFields(_.map(this.template.fieldsToMatch, (toMatch: IFieldsToMatch) => {
       return toMatch.field;
     }));
+
+    // Scan components in this template
+    // return the fields needed for the content of this template
+    let neededFieldsForComponents = _.chain(this.template.getComponentsInside(scriptTag.innerHTML))
+      .map((component: string) => {
+        return Initialization.getRegisteredFieldsComponentForQuery(component);
+      })
+      .flatten()
+      .value();
+
+    this.template.addFields(neededFieldsForComponents);
   }
 
   toHtmlElement(): HTMLElement {

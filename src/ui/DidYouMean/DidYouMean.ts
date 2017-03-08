@@ -11,7 +11,8 @@ import { StringUtils } from '../../utils/StringUtils';
 import { Utils } from '../../utils/Utils';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
 import { l } from '../../strings/Strings';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 import 'styling/_DidYouMean';
 
 export interface IDidYouMeanOptions {
@@ -25,6 +26,12 @@ export interface IDidYouMeanOptions {
  */
 export class DidYouMean extends Component {
   static ID = 'DidYouMean';
+
+  static doExport = () => {
+    exportGlobally({
+      'DidYouMean': DidYouMean
+    });
+  }
 
   /**
    * The options for the component

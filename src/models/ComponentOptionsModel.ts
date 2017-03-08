@@ -1,5 +1,5 @@
 import { Model } from './Model';
-import _ = require('underscore');
+import * as _ from 'underscore';
 
 export interface IComponentOptionsAttributes {
   resultLink: any;

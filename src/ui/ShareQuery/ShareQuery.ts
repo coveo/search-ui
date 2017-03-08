@@ -8,6 +8,7 @@ import { $$ } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import { Utils } from '../../utils/Utils';
 import { Initialization } from '../Base/Initialization';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface IShareQueryOptions {
 }
@@ -20,6 +21,12 @@ export interface IShareQueryOptions {
 export class ShareQuery extends Component {
   static ID = 'ShareQuery';
   static options: IShareQueryOptions = {};
+
+  static doExport = () => {
+    exportGlobally({
+      'ShareQuery': ShareQuery
+    });
+  }
 
   public dialogBoxContent: HTMLElement;
   private linkToThisQuery: HTMLInputElement;

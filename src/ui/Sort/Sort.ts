@@ -12,7 +12,8 @@ import { Initialization } from '../Base/Initialization';
 import { analyticsActionCauseList, IAnalyticsResultsSortMeta } from '../Analytics/AnalyticsActionListMeta';
 import { KeyboardUtils, KEYBOARD } from '../../utils/KeyboardUtils';
 import { IQueryErrorEventArgs } from '../../events/QueryEvents';
-import _ = require('underscore');
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 
 export interface ISortOptions {
   sortCriteria?: SortCriteria[];
@@ -24,6 +25,13 @@ export interface ISortOptions {
  */
 export class Sort extends Component {
   static ID = 'Sort';
+
+  static doExport = () => {
+    exportGlobally({
+      'Sort': Sort,
+      'SortCriteria': SortCriteria
+    });
+  }
 
   /**
    * Options for the component

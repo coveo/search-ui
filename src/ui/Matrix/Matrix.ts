@@ -15,8 +15,9 @@ import { IQueryResult } from '../../rest/QueryResult';
 import { Initialization, IInitializationParameters } from '../Base/Initialization';
 import { QueryUtils } from '../../utils/QueryUtils';
 import { IQuery } from '../../rest/Query';
-import Globalize = require('globalize');
-import _ = require('underscore');
+import * as Globalize from 'globalize';
+import * as _ from 'underscore';
+import { exportGlobally } from '../../GlobalExports';
 import 'styling/_Matrix';
 
 export interface IMatrixOptions {
@@ -55,11 +56,17 @@ export interface IMatrixOptions {
  * The user specifies the values to use for the columns. An {@link IGroupByRequest} operation performed at the same time
  * as the main query retrieves the values to use for the rows.
  *
- * In a way that is similar to the {@link Facet} component, selecting a Matrix cell allows the end user to drill down
+ * In a way that is similar to the {@link FacetModuleDefinition} component, selecting a Matrix cell allows the end user to drill down
  * inside the results by restricting the row field and the column field to match the values of the selected cell.
  */
 export class Matrix extends Component {
   static ID = 'Matrix';
+
+  static doExport = () => {
+    exportGlobally({
+      'Matrix': Matrix
+    });
+  }
 
   /**
    * The possible options for the component
@@ -850,26 +857,31 @@ export class Matrix extends Component {
       });
       let html = '';
       _.each(instantiatedResults, (result) => {
-        html += result.outerHTML;
+        result.then((builtResultElement: HTMLElement) => {
+          html += builtResultElement.outerHTML;
+        });
       });
-      cell.updatePreview(html);
+      Promise.all(instantiatedResults).then(() => {
+        cell.updatePreview(html);
+      });
     });
   }
 
-  private instantiateTemplate(result: IQueryResult): HTMLElement {
-    let content = this.options.previewTemplate.instantiateToElement(result, {
+  private instantiateTemplate(result: IQueryResult): Promise<HTMLElement> {
+    return this.options.previewTemplate.instantiateToElement(result, {
       checkCondition: false,
       responsiveComponents: this.searchInterface.responsiveComponents
+    }).then((content: HTMLElement) => {
+      let initParameters: IInitializationParameters = {
+        options: this.options,
+        bindings: this.getBindings(),
+        result: result
+      };
+
+      return Initialization.automaticallyCreateComponentsInside(content, initParameters).then(() => {
+        return content;
+      });
     });
-    let initParameters: IInitializationParameters = {
-      options: this.options,
-      bindings: this.getBindings(),
-      result: result
-    };
-
-    Initialization.automaticallyCreateComponentsInside(content, initParameters);
-
-    return content;
   }
 
   private createPreviewQuery(rowNumber: number, columnNumber: number): IQuery {

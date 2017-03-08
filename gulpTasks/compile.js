@@ -11,7 +11,7 @@ gulp.task('compile', ['addEolDependencies', 'deprecatedDependencies', 'prepareSa
 ]));
 
 gulp.task('minimize', ['addEolDependencies'], shell.task([
-  'node node_modules/webpack/bin/webpack.js --minimize'
+  'node node_modules/webpack/bin/webpack.js --optimize-minimize'
 ]));
 
 gulp.task('deprecatedDependencies', function () {
