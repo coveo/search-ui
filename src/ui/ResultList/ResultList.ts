@@ -52,80 +52,6 @@ export interface IResultListOptions {
  * templates (see [Result Templates](https://developers.coveo.com/x/aIGfAQ)).
  *
  * This component supports many additional features, such as infinite scrolling.
- *
- * **Examples:**
- *
- * - This first example shows a very simple ResultList with a single Underscore template. This template has no
- * `data-condition`. Therefore, it is rendered for all results.
- *
- * ```html
- * <div class='CoveoResultList'>
- *   <script class='result-template' id='MyDefaultTemplate' type='text/underscore'>
- *     <div>
- *       <a class='CoveoResultLink'>Hey, click on this! <%- title %></a>
- *     </div>
- *   </script>
- * </div>
- * ```
- *
- * - This second example shows two different templates in the same ResultList. The first template has a `data-condition`
- * attribute while the second template has none.
- *
- * When the query returns, the conditional expression of the first template is evaluated against the first result.
- * If the result satisfies the condition (in this case, if the `result.raw.objecttype` property in the JSON equals
- * `MyObjectType`), the first template is rendered for this result. The second template is neither evaluated nor
- * rendered for this result.
- *
- * If the result does not match the condition of the first template, then the next template is evaluated. Since the
- * second template has no `data-condition`, it is `true` for any result and can thus load as a "fallback" template.
- *
- * This process repeats itself for each result.
- *
- * ```html
- * <div class="CoveoResultList">
- *   <script class="result-template" id='MyObjectTypeTemplate' type='text/underscore' data-condition='raw.objecttype==MyObjectType'>
- *     <div>
- *       <a class='CoveoResultLink'>Hey, click on this! <%- title %></a>
- *       <div class='CoveoExcerpt'></div>
- *       <span>This is a result for the type: <%- raw.objecttype %></span>
- *     </div>
- *   </script>
- *
- *   <script class='result-template' id='MyFallbackTemplate' type='text/underscore'>
- *     <div>
- *       <a class='CoveoResultLink'>Hey, click on this! <%- title %></a>
- *     </div>
- *   </script>
- * </div>
- * ```
- *
- * - This third example shows two different templates in the same result list. Both templates have a `data-condition`
- * attribute.
- *
- * In this case, there is no "fallback" template, since all templates have a `data-condition` attribute. Therefore, if a
- * result matches none of the conditions, the default templates included in the Coveo JavaScript Search Framework will
- * load instead. This ensures that all results render themselves.
- *
- * ```html
- * <div class="CoveoResultList">
- *   <script class="result-template" type="text/underscore" data-condition='raw.objecttype==MyObjectType' id='MyObjectTypeTemplate'>
- *     <div>
- *       <a class='CoveoResultLink'>Hey, click on this ! <%- title %></a>
- *       <div class='CoveoExcerpt'></div>
- *       <span>This is a result for the type : <%- raw.objecttype %></span>
- *      </div>
- *   </script>
- *
- *   <script class="result-template" type="text/underscore" data-condition='raw.objecttype==MySecondObjectType' id='MySecondObjectTypeTemplate'>
- *     <div>
- *       <span class='CoveoIcon'></span>
- *       <a class='CoveoResultLink'></a>
- *     </div>
- *     <div class='CoveoExcerpt'></div>
- *     <div class='CoveoPrintableUri'></div>
- *   </script>
- * </div>
- * ```
  */
 export class ResultList extends Component {
 
@@ -211,6 +137,9 @@ export class ResultList extends Component {
     /**
      * If {@link ResultList.options.enableInfiniteScroll} is `true`, specifies the element that triggers the fetching of
      * additional results when the end user scrolls down to its bottom.
+     *
+     * You can change the container by specifying its selector (e.g.,
+     * `data-infinite-scroll-container-selector='#someCssSelector'`).
      *
      * By default, the framework uses the first vertically scrollable parent element it finds, starting from the
      * ResultList element itself. A vertically scrollable element is an element whose CSS `overflow-y` attribute is
@@ -413,7 +342,7 @@ export class ResultList extends Component {
   /**
    * Executes a query to fetch new results. After the query returns, renders the new results.
    *
-   * Asserts that there are more results to display by verifying whether the last query has returned as many results as
+   * Asserts that there are more results to display by verifying whether t3he last query has returned as many results as
    * requested.
    *
    * Asserts that the ResultList is not currently fetching results.
