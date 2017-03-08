@@ -51,7 +51,19 @@ ${{retina_groups_info.strings.name}}: ({{#each retina_groups}}${{strings.name_gr
 //   @include retina-sprite($icon-home-group);
 // }
 
+@mixin validate-retina-group($retina-group) {
+  $error-message: 'Wrong variable has been passed to the retina-sprite mixin';
+  @if type-of($retina-group) != 'list' or length($retina-group) != 3 {
+    @error $error-message;
+  }
+  @if type-of(nth($retina-group, 1)) != 'string' or type-of(nth($retina-group, 2)) != 'list' or type-of(nth($retina-group, 3)) != 'list' {
+    @error $error-message;
+  }
+}
+
 @mixin retina-sprite($retina-group) {
+  @include validate-retina-group($retina-group);
+
   $normal-sprite: nth($retina-group, 2);
   $retina-sprite: nth($retina-group, 3);
   @include sprite($normal-sprite);
@@ -63,6 +75,7 @@ ${{retina_groups_info.strings.name}}: ({{#each retina_groups}}${{strings.name_gr
   }
 }
 
+// used only when generating the bundle
 @mixin optimized-retina-sprite($retina-group) {
   $normal-sprite: nth($retina-group, 2);
   $retina-sprite: nth($retina-group, 3);
