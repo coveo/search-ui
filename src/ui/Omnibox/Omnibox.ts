@@ -83,7 +83,7 @@ export class Omnibox extends Component {
      * results.
      *
      * Set this option as well as {@link Omnibox.options.enableSearchAsYouType} and
-     * {@link Omnibox.options.RevealQuerySuggestAddon} to `true` for a cool effect!
+     * {@link Omnibox.options.enableRevealQuerySuggestAddon} to `true` for a cool effect!
      *
      * Default value is `false`.
      */
@@ -92,8 +92,8 @@ export class Omnibox extends Component {
     /**
      * Specifies whether to automatically trigger a new query whenever the end user types new text inside the Omnibox.
      *
-     * Set this option as well a {@link Omnibox.options.inline} and {@link Omnibox.options.RevealQuerySuggestAddon} to
-     * `true` for a cool effect!
+     * Set this option as well a {@link Omnibox.options.inline} and
+     * {@link Omnibox.options.enableRevealQuerySuggestAddon} to `true` for a cool effect!
      *
      * Default value is `false`.
      */
