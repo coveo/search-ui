@@ -102,7 +102,7 @@ export function SliderTest() {
         expect(slider.steps).toEqual(jasmine.arrayContaining(_.range(0, 104, 4)));
       });
 
-      it('step should not go above 100 for performance reason', ()=> {
+      it('step should not go above 100 for performance reason', () => {
         slider = new Slider(el, {
           start: 0,
           end: 1000,
