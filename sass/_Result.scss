@@ -154,6 +154,8 @@
   margin-right: -20px;
   &.CoveoResult {
     overflow: hidden;
+    display: flex;
+    position: relative;
 
     font-size: 0.9em;
 
@@ -184,6 +186,8 @@
       display: flex;
       padding: 20px;
       flex-direction: column;
+      width: auto;
+      height: auto;
     }
 
     .CoveoResultLink {
