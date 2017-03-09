@@ -155,6 +155,10 @@ export class ValueElement {
       event.stopPropagation();
       event.preventDefault();
       this.handleExcludeClick(eventBindings);
+
+      if (this.facet && this.facet.facetSearch && this.facet.facetSearch.completelyDismissSearch) {
+        this.facet.facetSearch.completelyDismissSearch();
+      }
       return false;
     };
     $$(this.renderer.excludeIcon).on('click', excludeAction);
