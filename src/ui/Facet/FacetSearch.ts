@@ -283,7 +283,7 @@ export class FacetSearch {
   }
 
   private handleClickElsewhere(event: Event) {
-    if (this.currentlyDisplayedResults && !this.isMobileDevice() && this.search != event.target && this.searchResults != event.target) {
+    if (this.currentlyDisplayedResults && !this.isMobileDevice() && this.search != event.target && this.searchResults != event.target && this.input != event.target) {
       this.completelyDismissSearch();
     }
   }
