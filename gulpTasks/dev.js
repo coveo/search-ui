@@ -6,13 +6,11 @@ const WebpackDevServer = require('webpack-dev-server');
 const buildUtilities = require('../gulpTasks/buildUtilities.js');
 const _ = require('underscore');
 const path = require('path');
-const DashboardPlugin = require('webpack-dashboard/plugin');
 
 let webpackConfig = require('../webpack.config.js');
 //webpackConfig.entry['CoveoJsSearch'].unshift('webpack-dev-server/client?http://localhost:8080/');
 webpackConfig.entry['CoveoJsSearch.Lazy'].unshift('webpack-dev-server/client?http://localhost:8080/');
 const compiler = webpack(webpackConfig);
-compiler.apply(new DashboardPlugin());
 
 let webpackConfigTest = require('../webpackConfigFiles/webpack.test.config');
 webpackConfigTest.entry['tests'].unshift('webpack-dev-server/client?http://localhost:8081/');

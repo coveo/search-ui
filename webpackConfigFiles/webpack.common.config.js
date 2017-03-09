@@ -7,8 +7,8 @@ const spritesmithPlugin = require('./spritesmithConfig/spritesmith.config.js');
 const path = require('path');
 const live = process.env.NODE_ENV === 'production';
 
-// Fail plugin will allow the webpack ts-loader to fail correctly when the TS compilation fails
-// Provide plugin allows us to use underscore in every module, without having to require underscore everywhere.
+// ExtractTextPlugin allows to output a css bundle instead of dynamically adding style tags
+// SpritesmithPlugin takes care of outputting the stylesheets.
 let plugins = [new ExtractTextPlugin('../css/[name].css'), spritesmithPlugin];
 let sassLoader = { test: /\.scss/ };
 let bail;
@@ -19,7 +19,9 @@ if (minimize) {
 
 let globalizePath = __dirname + '/../lib/globalize/globalize.min.js';
 if (live) {
-  sassLoader['loader'] = ExtractTextPlugin.extract('style-loader', 'css-loader!resolve-url-loader!sass-loader?sourceMap', {
+  sassLoader['loader'] = ExtractTextPlugin.extract({ 
+    fallback: 'style-loader',
+    use: 'css-loader!resolve-url-loader!sass-loader?sourceMap',
     publicPath: ''
   });
   bail = true;
@@ -40,7 +42,7 @@ module.exports = {
       'jQuery': __dirname + '/../test/lib/jquery.js',
       'styling': __dirname + '/../sass'
     },
-    moduleDirectories: [path.resolve(__dirname, '../bin/image/css')]
+    modules: ['node_modules', path.resolve(__dirname, '../bin/image/css')]
   },
   devtool: 'source-map',
   module: {

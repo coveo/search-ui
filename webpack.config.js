@@ -3,7 +3,6 @@ const _ = require('underscore');
 const minimize = process.argv.indexOf('minimize') !== -1;
 const webpack = require('webpack');
 const path = require('path');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 
 let conf = require('./webpackConfigFiles/webpack.common.config');
@@ -42,5 +41,5 @@ conf = _.extend(conf, {
       analyzerPort: 8888,
      })*/
   ])
-
+});
 module.exports = conf;

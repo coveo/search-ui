@@ -16,21 +16,21 @@ $form-section-header-margin-bottom: 20px;
 $form-heading-description-margin-top: 10px;
 
 @mixin slim-scroll($track-color: $color-light-grey, $thumb-color: $color-dark-grey) {
-  &::-webkit-scrollbar, ::-webkit-scrollbar {
+  #{if(&, "&", "*")}::-webkit-scrollbar, ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
 
-  &::-webkit-scrollbar-track, ::-webkit-scrollbar-track {
+  #{if(&, "&", "*")}::-webkit-scrollbar-track, ::-webkit-scrollbar-track {
     background-color: $track-color;
   }
 
-  &::-webkit-scrollbar-thumb, ::-webkit-scrollbar-thumb {
+  #{if(&, "&", "*")}::-webkit-scrollbar-thumb, ::-webkit-scrollbar-thumb {
     background-color: $thumb-color;
     border-radius: 3px;
   }
 
-  &::-webkit-scrollbar-button, ::-webkit-scrollbar-button {
+  #{if(&, "&", "*")}::-webkit-scrollbar-button, ::-webkit-scrollbar-button {
     width: 0;
     height: 0;
   }
@@ -135,7 +135,7 @@ $form-heading-description-margin-top: 10px;
   }
 }
 
-&.coveo-open > .coveo-dropdown-menu {
+*.coveo-open > .coveo-dropdown-menu {
   display: block;
   margin-bottom: $form-bottom-padding;
 }
@@ -152,7 +152,7 @@ $form-heading-description-margin-top: 10px;
   border-top: 5px solid $color-teal;
 }
 
-&.coveo-open > .coveo-dropdown-toggle .coveo-dropdown-toggle-arrow {
+*.coveo-open > .coveo-dropdown-toggle .coveo-dropdown-toggle-arrow {
   top: calc(50% - #{$dropdown-arrow-icon-size} / 2 - 2px);
   border-top: none;
   border-bottom: 5px solid $color-teal;

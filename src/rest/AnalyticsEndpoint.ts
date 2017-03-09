@@ -67,7 +67,7 @@ export class AnalyticsEndpoint {
       }
     });
   }
-  
+
   public sendSearchEvents(searchEvents: ISearchEvent[]): Promise<IAPIAnalyticsSearchEventsResponse> {
     if (searchEvents.length > 0) {
       this.logger.info('Logging analytics search events', searchEvents);

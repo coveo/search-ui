@@ -334,10 +334,8 @@ export class Facet extends Component {
     numberOfValuesInBreadcrumb: ComponentOptions.buildNumberOption({ defaultFunction: () => DeviceUtils.isMobileDevice() ? 3 : 5, min: 0, depend: 'includeInBreadcrumb' }),
 
     includeInOmnibox: ComponentOptions.buildBooleanOption({ defaultValue: false, deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
-     * See also {@link FacetModuleDefinition.options.numberOfValuesInOmnibox}.
 
     numberOfValuesInOmnibox: ComponentOptions.buildNumberOption({ defaultFunction: () => DeviceUtils.isMobileDevice() ? 3 : 5, min: 0, depend: 'includeInOmnibox', deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
-     * If {@link FacetModuleDefinition.options.includeInOmnibox} is `true`, specifies the number of values to populate the
 
     /**
      * Specifies the name of a field on which to execute an aggregate operation for all distinct values of the Facet
@@ -547,9 +545,6 @@ export class Facet extends Component {
     enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
     responsiveBreakpoint: ComponentOptions.buildNumberOption({ defaultValue: 800, deprecated: 'This option is exposed for legacy reasons, and the recommendation is to not use this option.' }),
-     * If {@link FacetModuleDefinition.options.enableResponsiveMode} is `true` for all facets and
-     * {@link FacetSliderModuleDefinition.options.enableResponsiveMode} is also `true` for all sliders, specifies the width threshold
-     * If more than one {@link FacetSliderModuleDefinition} or Facet in the search interface specifies a value for this option, then the
 
     /**
      * If {@link FacetModuleDefinition.options.enableResponsiveMode} is `true` for all facets and
